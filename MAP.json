@@ -766,14 +766,50 @@
     "spdx_license_identifier": "CC-BY-NC-ND-4.0",
     "copyright": "Copyright (c) 2026 Ingolf Lohmann.",
     "urheber_rechteinhaber": "Ingolf Lohmann",
-    "lizenz_und_urheberrechtsinformationen_vererben_sich": true,
-    "vererbung": "Klone, QIK-VRT-Repositories, Templates, Forks, Releases, Repackages und Folgeartefakte.",
-    "non_regression": "Gut bleibt stets zugleich besser."
+    "vererbung_erforderlich": true,
+    "kuenftige_outputs_benoetigen_header_oder_manifestabdeckung": true
   },
   "recursive_license_umlaut_layer": {
     "status": "PASS_IMPLEMENTED_LOCALLY",
     "source_code_layer": "ASCII-safe German-free code comments/messages/headers",
     "document_layer": "German umlauts allowed and used correctly",
     "repository_layer": "recursive enrichment including nested ZIPs"
+  },
+  "github_ensure_repository_domain": {
+    "status": "PASS_IMPLEMENTED_LOCALLY",
+    "script": "GITHUB_ENSURE.py",
+    "source": "_payload/_internal/GITHUB_ENSURE_REPO_DOMAIN.py",
+    "repo_check": "GET /repos/{owner}/{repo}",
+    "repo_create": "POST /user/repos or POST /orgs/{org}/repos or template generate",
+    "pages_check": "GET /repos/{owner}/{repo}/pages",
+    "pages_create": "POST /repos/{owner}/{repo}/pages",
+    "pages_domain_update": "PUT /repos/{owner}/{repo}/pages"
+  },
+  "script_termination_information_header_guard": {
+    "status": "PASS_IMPLEMENTED_LOCALLY",
+    "guard_module": "_payload/_internal/QALL_TERMINATION_AND_INFORMATION_HEADER_GUARD.py",
+    "termination_logs": "LOGS/*.termination.json",
+    "future_output_templates": [
+      "FUTURE_OUTPUT_HEADER_TEMPLATE_SOURCE.txt",
+      "FUTURE_OUTPUT_HEADER_TEMPLATE_DOCUMENT.md",
+      "STREAM_AND_INFORMATION_OBJECT_MANIFEST_SCHEMA.json"
+    ]
+  },
+  "github_repository_metadata": {
+    "status": "PASS_IMPLEMENTED_LOCALLY",
+    "script": "GITHUB_METADATA.py",
+    "github_patch_repo": "PATCH /repos/{owner}/{repo}",
+    "github_topics": "PUT /repos/{owner}/{repo}/topics",
+    "github_contents": "PUT /repos/{owner}/{repo}/contents/{path}",
+    "files": [
+      "LICENSE",
+      "CITATION.cff",
+      "QIKVRT_REPOSITORY_DETAILS.md",
+      "QIKVRT_LICENSE_PROFILE.md"
+    ]
+  },
+  "powershell_param_block_guard_placement": {
+    "status": "PASS_IMPLEMENTED_LOCALLY",
+    "rule": "PS1 guard insertion after top-level param block"
   }
 }
