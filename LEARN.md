@@ -224,3 +224,27 @@ English: Official license texts and file headers/notices must be materialized be
 Deutsch: Sourcecode bleibt ohne deutsche Umlaute. Nicht-Software-Dokumente verwenden deutsche Umlaute korrekt. Lizenz- und Urheberrechtsinformationen werden rekursiv in allen Repository-Dateien ergänzt oder manifestiert.
 
 English: Source code remains free of German umlauts. Non-software documents use German umlauts correctly. License and copyright information is recursively added to or manifested for all repository files.
+
+## GITHUB_REPOSITORY_DOMAIN_ENSURE_CREATE_IF_MISSING
+
+Deutsch: Fehlende GitHub-Repositories und fehlende GitHub-Pages-Custom-Domain-Konfigurationen werden nach strikter Akzeptanz angelegt bzw. konfiguriert. Öffentliche DNS-/Registrar-Domains sind ausdrücklich ausgenommen.
+
+English: Missing GitHub repositories and missing GitHub Pages custom-domain configurations are created or configured after strict acceptance. Public DNS/registrar domains are explicitly excluded.
+
+## SCRIPT_TERMINATION_AND_INFORMATION_HEADER_GUARD
+
+Deutsch: Jedes Skript terminiert mit Status, Exit-Code und konkreten Fehlerdetails. Jede künftig erzeugte Datei, jeder Stream und jedes sonstige Informationsobjekt erhält Urheberrechts- und Lizenzrechtsinformationen per Header oder Manifestabdeckung.
+
+English: Every script terminates with status, exit code, and concrete error details. Every future generated file, stream, and other information object receives copyright and license information via header or manifest coverage.
+
+## GITHUB_REPOSITORY_METADATA_DETAILS_TOPICS_LICENSE_CITATION
+
+Deutsch: QIK-VRT-GitHub-Repositories benötigen Description, Topics, bestmögliche GitHub-Lizenzdarstellung und `CITATION.cff`.
+
+English: QIK-VRT GitHub repositories require description, topics, best-effort GitHub license display, and `CITATION.cff`.
+
+## POWERSHELL_PARAM_BLOCK_GUARD_PLACEMENT
+
+Deutsch: PowerShell-Guards müssen bei vorhandenen top-level `param(...)`-Blöcken hinter dem vollständigen Parameterblock stehen.
+
+English: PowerShell guards must be placed after the complete top-level `param(...)` block when such a block exists.
