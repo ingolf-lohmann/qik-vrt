@@ -302,3 +302,153 @@ This package explicitly separates source code and non-software documents:
 - Non-software files use German umlauts correctly.
 - Copyright and license information is recursively added to or manifested for all repository files.
 - The rule also applies to nested repository payloads, clones, templates, forks, releases, repackages, and follow-up artifacts.
+
+
+## GitHub Ensure Repository and Domain / GitHub-Repository und Domain sicherstellen
+
+### Deutsch
+
+Dieses Paket enthält zusätzlich:
+
+```text
+GITHUB_ENSURE.py
+GITHUB_ENSURE.sh
+GITHUB_ENSURE.bat
+GITHUB_ENSURE.command
+```
+
+Zweck:
+
+1. Prüfen, ob das angegebene GitHub-Repository existiert.
+2. Falls es nicht existiert, nach strikter Akzeptanz und Gegenstellenprüfung anlegen.
+3. Falls GitHub Pages oder die GitHub-Pages-Custom-Domain fehlen, anlegen bzw. konfigurieren.
+4. Danach erneut prüfen und alles in `LOGS/` protokollieren.
+
+Standardmäßig läuft das Skript als Trockenlauf:
+
+```text
+python GITHUB_ENSURE.py
+```
+
+Reale GitHub-Wirkung entsteht erst mit:
+
+```text
+python GITHUB_ENSURE.py --execute
+```
+
+Grenze: Das Skript registriert keine öffentliche DNS-/Registrar-Domain. Es konfiguriert nur GitHub-Repository und GitHub Pages. DNS muss beim Domain-Provider gesetzt werden.
+
+### English
+
+This package additionally contains:
+
+```text
+GITHUB_ENSURE.py
+GITHUB_ENSURE.sh
+GITHUB_ENSURE.bat
+GITHUB_ENSURE.command
+```
+
+Purpose:
+
+1. Check whether the requested GitHub repository exists.
+2. If it does not exist, create it after strict acceptance and counterparty validation.
+3. If GitHub Pages or the GitHub Pages custom domain are missing, create or configure them.
+4. Re-check and record everything in `LOGS/`.
+
+By default the script runs as dry-run:
+
+```text
+python GITHUB_ENSURE.py
+```
+
+Real GitHub effect requires:
+
+```text
+python GITHUB_ENSURE.py --execute
+```
+
+Boundary: The script does not register a public DNS/registrar domain. It configures only GitHub repository and GitHub Pages. DNS must be configured at the domain provider.
+
+
+## Skripttermination und Informationsobjekt-Header
+
+### Deutsch
+
+Dieses Paket erzwingt:
+
+- Jedes Skript terminiert mit eindeutiger Rückmeldung.
+- Erfolg wird als `SCRIPT_TERMINATION=PASS` gemeldet.
+- Fehler werden als `SCRIPT_TERMINATION=ERROR`, `FAIL` oder `BLOCK` mit Exit-Code und Fehlerdetails protokolliert.
+- Jede künftig erzeugte Datei muss einen passenden Header oder eine eindeutige Manifestabdeckung erhalten.
+- Streams und sonstige Informationsobjekte müssen ebenfalls über ein Manifest mit Urheberrechts-, Lizenzrechts- und Provenance-Angaben abgedeckt werden.
+
+### English
+
+This package enforces:
+
+- Every script terminates with an explicit report.
+- Success is reported as `SCRIPT_TERMINATION=PASS`.
+- Errors are reported as `SCRIPT_TERMINATION=ERROR`, `FAIL`, or `BLOCK` with exit code and error details.
+- Every future generated file must receive an appropriate header or explicit manifest coverage.
+- Streams and other information objects must also be covered by a manifest with copyright, license, and provenance information.
+
+
+## GitHub-Repository-Metadaten: Description, Topics, Lizenz, Citation
+
+### Deutsch
+
+Dieses Paket ergänzt die GitHub-Repository-Metadaten um:
+
+- eine QIK-VRT-Kurzbeschreibung für das GitHub-Description-Feld,
+- eine ausführliche Beschreibung in `QIKVRT_REPOSITORY_DETAILS.md`,
+- maximal 20 GitHub-konforme QIK-VRT-Topics,
+- eine bestmögliche GitHub-Lizenzdarstellung durch `LICENSE` als Apache-2.0-Wurzeldatei,
+- getrennte Creative-Commons-Abdeckung für Nicht-Softwarematerial,
+- eine gepflegte `CITATION.cff`,
+- ein Skript `GITHUB_METADATA.py`, das diese Metadaten bei realer GitHub-Ausführung aktualisiert.
+
+Reale GitHub-Wirkung entsteht erst mit:
+
+```text
+python GITHUB_METADATA.py --execute
+```
+
+### English
+
+This package adds GitHub repository metadata:
+
+- a QIK-VRT short description for the GitHub description field,
+- a detailed description in `QIKVRT_REPOSITORY_DETAILS.md`,
+- up to 20 GitHub-compliant QIK-VRT topics,
+- best-effort GitHub license display through `LICENSE` as Apache-2.0 root file,
+- separate Creative Commons coverage for non-software material,
+- a maintained `CITATION.cff`,
+- a `GITHUB_METADATA.py` script that updates these metadata fields during real GitHub execution.
+
+Real GitHub effect requires:
+
+```text
+python GITHUB_METADATA.py --execute
+```
+
+
+## PowerShell-param-Guard-Fix
+
+### Deutsch
+
+Dieses Paket korrigiert die PowerShell-Regel:
+
+- Header und Kommentare dürfen vor `param(...)` stehen.
+- Ausführbarer Termination-/Logging-Guard darf nicht vor `param(...)` stehen.
+- Wenn ein PowerShell-Skript einen top-level `param(...)`-Block besitzt, wird der Guard erst nach dem vollständigen Parameterblock eingefügt.
+- Diese Prüfung wird rekursiv auf Root-Dateien, Repository-Payloads und verschachtelte ZIPs angewandt.
+
+### English
+
+This package corrects the PowerShell rule:
+
+- Headers and comments may appear before `param(...)`.
+- Executable termination/logging guard code must not appear before `param(...)`.
+- If a PowerShell script has a top-level `param(...)` block, the guard is inserted only after the complete parameter block.
+- This check is applied recursively to root files, repository payloads, and nested ZIPs.
