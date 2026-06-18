@@ -74,6 +74,34 @@
       "status": "PASS_IMPLEMENTED_LOCALLY",
       "finding": "Source code must be free of German umlauts, while non-software German documents must use German umlauts correctly; license and copyright notices must be recursively added to all repository files.",
       "error_class": "SOURCE_CODE_UMLAUT_LAYER_AND_RECURSIVE_LICENSE_ENRICHMENT_MISSING"
+    },
+    {
+      "id": "L025_GITHUB_REPOSITORY_DOMAIN_ENSURE_CREATE_IF_MISSING",
+      "status": "PASS_IMPLEMENTED_LOCALLY",
+      "finding": "If a GitHub repository or GitHub Pages custom domain is missing, the workflow must ensure and create/configure it instead of failing silently or claiming false DONE.",
+      "error_class": "GITHUB_REPOSITORY_OR_DOMAIN_MISSING_NOT_ENSURED"
+    },
+    {
+      "id": "L026_SCRIPT_TERMINATION_AND_INFORMATION_HEADER_GUARD",
+      "status": "PASS_IMPLEMENTED_LOCALLY",
+      "finding": "Every script must terminate with explicit status and error details; every future file, stream, or information object must carry license/copyright notices or explicit manifest coverage.",
+      "error_classes": [
+        "SCRIPT_TERMINATION_WITHOUT_STATUS_OR_ERROR_DETAILS",
+        "FUTURE_OUTPUT_WITHOUT_LICENSE_COPYRIGHT_HEADER_OR_MANIFEST",
+        "STREAM_OR_INFORMATION_OBJECT_WITHOUT_LICENSE_PROVENANCE_COVERAGE"
+      ]
+    },
+    {
+      "id": "L027_GITHUB_REPOSITORY_METADATA_DETAILS_TOPICS_LICENSE_CITATION",
+      "status": "PASS_IMPLEMENTED_LOCALLY",
+      "finding": "QIK-VRT GitHub repositories require detailed description, compliant topics, GitHub-detectable license, and CITATION.cff.",
+      "error_class": "GITHUB_REPOSITORY_METADATA_DETAILS_TOPICS_LICENSE_CITATION_MISSING"
+    },
+    {
+      "id": "L028_POWERSHELL_PARAM_BLOCK_GUARD_PLACEMENT",
+      "status": "PASS_IMPLEMENTED_LOCALLY",
+      "finding": "PowerShell termination guard insertion must preserve top-level param(...) block semantics.",
+      "error_class": "POWERSHELL_PARAM_BLOCK_BROKEN_BY_TERMINATION_GUARD_INSERTION"
     }
   ],
   "no_false_claim_boundary": {
@@ -81,7 +109,7 @@
     "github_success_claimed": false,
     "reason": "No real Windows runtime or GitHub write execution happened in this sandbox."
   },
-  "latest_implemented_learning": "L024_RECURSIVE_LICENSE_AND_UMLAUT_LAYER",
+  "latest_implemented_learning": "L028_POWERSHELL_PARAM_BLOCK_GUARD_PLACEMENT",
   "mapping_learning": {
     "id": "L003_POWERSHELL_LINUX_SANDBOX_MAPPING",
     "status": "IMPLEMENTED_LOCALLY",
@@ -699,8 +727,7 @@
     "spdx_license_identifier": "CC-BY-NC-ND-4.0",
     "copyright": "Copyright (c) 2026 Ingolf Lohmann.",
     "urheber_rechteinhaber": "Ingolf Lohmann",
-    "lizenz_und_urheberrechtsinformationen_vererben_sich": true,
-    "vererbung": "Klone, QIK-VRT-Repositories, Templates, Forks, Releases, Repackages und Folgeartefakte.",
-    "non_regression": "Gut bleibt stets zugleich besser."
+    "vererbung_erforderlich": true,
+    "kuenftige_outputs_benoetigen_header_oder_manifestabdeckung": true
   }
 }
