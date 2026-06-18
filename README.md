@@ -1,33 +1,304 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20712301.svg)](https://doi.org/10.5281/zenodo.20712301)
+<!--
+SPDX-License-Identifier: CC-BY-NC-ND-4.0
+Copyright (c) 2026 Ingolf Lohmann.
+Author/Rights holder: Ingolf Lohmann.
+-->
 
-# QIK-VRT V8.33 Repository
+# QALL Delivery Bundle / QALL-Auslieferungsbundle
 
-This repository was created as a clean GitHub publication target for the QIK-VRT V8.33 state.
+## Deutsch: Was ist das?
 
-## Asset
+Dieses Bundle enthält eine plattformübergreifende QIK-VRT-Delivery-, Reproduktions- und GitHub-Template-Automationsstruktur.
 
-The V8.33 package is published as a GitHub release asset:
-
-```text
-v833.zip
-SHA256 = a446a0c5b9fac78e47c3b51bc88ac81a6eaa7d15add089804d46c4f294fbd2f7
-SIZE = 148269
-```
-
-## Boundary
+Direkte Startpunkte:
 
 ```text
-GITHUB_PUBLICATION = TECHNICAL_PUBLICATION
-ZENODO_DOI = NOT_CLAIMED
-PEER_REVIEW = NOT_CLAIMED
-PATENT_GRANT = NOT_CLAIMED
-PRODUCTION_DEPLOYMENT = NOT_CLAIMED
-SCHEINEVIDENZ = BLOCKED
+WINDOWS.bat
+LINUX.sh
+MACOS.command
 ```
 
-q.e.d. Ingolf Lohmann
+Technische Nutzdaten:
+
+```text
+_payload/
+```
+
+Lauf- und Ergebnisdateien:
+
+```text
+LOGS/
+```
+
+## English: What is this?
+
+This bundle contains a cross-platform QIK-VRT delivery, reproduction, and GitHub-template automation structure.
+
+Direct start files:
+
+```text
+WINDOWS.bat
+LINUX.sh
+MACOS.command
+```
+
+Technical payload:
+
+```text
+_payload/
+```
+
+Runtime and result files:
+
+```text
+LOGS/
+```
+
+## Deutsch: Urheber / Rechteinhaber
+
+```text
+Ingolf Lohmann
+```
+
+## English: Author / rights holder
+
+```text
+Ingolf Lohmann
+```
+
+## Deutsch: Lizenzhinweise
+
+Grundlinie, sofern in den enthaltenen Repository-Dateien nicht abweichend oder spezifischer geregelt:
+
+```text
+QIK-VRT-Nichtsoftwarematerial: CC-BY-NC-ND-4.0
+ausdrücklich markierte Software-/Skriptbestandteile: Apache-2.0
+```
+
+Vor jeder Repository-Persistenzänderung wird erneut auf Urheberrecht und Lizenzbedingungen hingewiesen. Ohne konkrete, zweifelsfreie Akzeptanz wird keine GitHub-/Repository-Schreiboperation ausgeführt.
+
+Akzeptiert wird nur exakt:
+
+```text
+ICH AKZEPTIERE
+```
+
+## English: License notices
+
+Baseline unless repository files contain different or more specific terms:
+
+```text
+QIK-VRT non-software material: CC-BY-NC-ND-4.0
+expressly marked software/script components: Apache-2.0
+```
+
+Before every repository persistence change, copyright and license terms are shown again. Without concrete, unambiguous acceptance, no GitHub/repository write operation is performed.
+
+Only the exact phrase is accepted:
+
+```text
+ICH AKZEPTIERE
+```
+
+## Deutsch: Gegenstellentyp
+
+Zulässig sind exakt:
+
+```text
+NATURAL_PERSON
+ARTIFICIAL_COGNITIVE_SYSTEM
+LEGAL_PERSON
+ORGANIZATION
+OTHER
+```
+
+Bei `OTHER` muss zusätzlich beschrieben werden, was darunter konkret zu verstehen ist.
+
+## English: Counterparty type
+
+Exactly these values are allowed:
+
+```text
+NATURAL_PERSON
+ARTIFICIAL_COGNITIVE_SYSTEM
+LEGAL_PERSON
+ORGANIZATION
+OTHER
+```
+
+If `OTHER` is selected, an additional concrete description is required.
+
+## Deutsch: Reflexiver Finding-Workflow
+
+Wenn dieses Bundle beim Download, Entpacken, Starten, Konfigurieren, Nutzen, Klonen, Mergen oder Persistieren nicht auf Anhieb funktioniert, ist jedes Finding als reflexive Fehlerklasse zu behandeln.
+
+Keine isolierten Hotfixes. Relevante Korrekturen müssen durch alle betroffenen Schichten gespiegelt werden.
+
+## English: Reflexive finding workflow
+
+If this bundle does not work immediately during download, extraction, startup, configuration, use, cloning, merging, or persistence, every finding must be treated as a reflexive error class.
+
+No isolated hotfixes. Relevant corrections must be mirrored through all affected layers.
 
 
-## Zenodo
+Bilingual UI Inheritance / Vererbung der zweisprachigen UI
 
-Zenodo status: [docs/ZENODO_STATUS.md](docs/ZENODO_STATUS.md)
+Deutsch:
+    Alles, was aus diesem Bundle, Repository oder GitHub heraus erzeugt wird,
+    muss die zweisprachige Deutsch/Englisch-Eigenschaft für interaktive UI und
+    Nutzerinformationen weitertragen.
+
+English:
+    Everything derived from this bundle, repository, or GitHub must preserve
+    the bilingual German/English property for interactive UI and user-facing
+    information.
+
+
+Official License Refresh / Aktualisierung offizieller Lizenzdateien
+
+Deutsch:
+    Vor jeder Repository-Persistenz werden die offiziellen aktuellen Lizenzdateien
+    von Apache-2.0 und CC-BY-NC-ND-4.0 erneut geladen und überschreiben lokale Kopien.
+    Danach werden alle Dateien mit Lizenz-/Urheberrechtsinformationen angereichert
+    oder manifestbasiert abgedeckt.
+
+English:
+    Before every repository persistence, the official current Apache-2.0 and
+    CC-BY-NC-ND-4.0 license files are fetched again and overwrite local copies.
+    Then all files are enriched with license/copyright information or covered
+    by manifest records.
+
+Sources / Quellen:
+    https://www.apache.org/licenses/LICENSE-2.0.txt
+    https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.txt
+
+
+## GitHub Domain Factory / GitHub-Domain-Factory
+
+### Deutsch
+
+Dieses Bundle enthält zusätzlich:
+
+```text
+GITHUB_DOMAIN.py
+GITHUB_DOMAIN.sh
+GITHUB_DOMAIN.bat
+GITHUB_DOMAIN.command
+```
+
+Zweck: Eine neue GitHub-Repository-Domäne anlegen und optional GitHub Pages mit einer Custom Domain konfigurieren.
+
+Standardmäßig läuft das Skript im Trockenlauf. Reale GitHub-Wirkung entsteht erst mit:
+
+```text
+python GITHUB_DOMAIN.py --execute
+```
+
+Vor realer Wirkung fragt das Skript alle notwendigen Angaben ab:
+
+```text
+Aktion
+GitHub-Zieltyp USER/ORG
+Owner/Organisation
+Repository-Name
+Beschreibung
+Sichtbarkeit
+Default-Branch
+Quelle EMPTY/FROM_TEMPLATE
+GitHub-Pages-Einstellungen
+Custom Domain
+Gegenstellentyp
+OTHER-Beschreibung falls OTHER
+Akzeptanzphrase ICH AKZEPTIERE
+GitHub-Token
+```
+
+Grenze: Das Skript registriert keine öffentliche DNS-Domain bei einem Registrar. Für GitHub Pages Custom Domains muss DNS weiterhin beim Domain-Provider korrekt gesetzt werden.
+
+### English
+
+This bundle additionally contains:
+
+```text
+GITHUB_DOMAIN.py
+GITHUB_DOMAIN.sh
+GITHUB_DOMAIN.bat
+GITHUB_DOMAIN.command
+```
+
+Purpose: Create a new GitHub repository domain and optionally configure GitHub Pages with a custom domain.
+
+By default the script runs in dry-run mode. Real GitHub effect requires:
+
+```text
+python GITHUB_DOMAIN.py --execute
+```
+
+Before real effect, the script asks for all required data:
+
+```text
+action
+GitHub target type USER/ORG
+owner/organization
+repository name
+description
+visibility
+default branch
+source EMPTY/FROM_TEMPLATE
+GitHub Pages settings
+custom domain
+counterparty type
+OTHER description if OTHER
+acceptance phrase ICH AKZEPTIERE
+GitHub token
+```
+
+Boundary: The script does not register a public DNS domain at a registrar. For GitHub Pages custom domains, DNS still has to be configured correctly at the domain provider.
+
+
+## License placeholder/header repair / Lizenzplatzhalter- und Header-Reparatur
+
+### Deutsch
+
+Dieses Paket ersetzt vor Auslieferung die bisherigen Lizenzplatzhalter durch die offiziellen Lizenztexte:
+
+```text
+LICENSES/Apache-2.0.txt
+LICENSES/CC-BY-NC-ND-4.0.txt
+LICENSES/Creative-Commons-BY-NC-ND-4.0.txt
+```
+
+Zusätzlich werden Sourcecode-Dateien mit SPDX-/Copyright-/Rechteinhaber-Headern versehen. Nicht-Software-Dokumente erhalten konkrete Lizenz-/Urheberrechtshinweise oder werden eindeutig über `FILE_LICENSE_HEADER_COVERAGE.tsv` und `FILE_LICENSE_HEADER_COVERAGE.json` erfasst.
+
+### English
+
+Before delivery, this package replaces previous license placeholders with the official license texts:
+
+```text
+LICENSES/Apache-2.0.txt
+LICENSES/CC-BY-NC-ND-4.0.txt
+LICENSES/Creative-Commons-BY-NC-ND-4.0.txt
+```
+
+Additionally, source code files receive SPDX/copyright/rights-holder headers. Non-software documents receive concrete license/copyright notices or are explicitly covered by `FILE_LICENSE_HEADER_COVERAGE.tsv` and `FILE_LICENSE_HEADER_COVERAGE.json`.
+
+
+## Rekursive Lizenz-/Urheberrechts- und Umlaut-Schicht
+
+### Deutsch
+
+Dieses Paket trennt Sourcecode und Nicht-Software-Dokumente ausdrücklich:
+
+- Sourcecode-Dateien enthalten keine deutschen Umlaute.
+- Nicht-Software-Dateien verwenden deutsche Umlaute korrekt.
+- Urheberrechts- und Lizenzrechtsinformationen werden rekursiv in allen Repository-Dateien ergänzt oder manifestiert.
+- Die Regel gilt auch für verschachtelte Repository-Payloads, Klone, Templates, Forks, Releases, Repackages und Folgeartefakte.
+
+### English
+
+This package explicitly separates source code and non-software documents:
+
+- Source code files contain no German umlauts.
+- Non-software files use German umlauts correctly.
+- Copyright and license information is recursively added to or manifested for all repository files.
+- The rule also applies to nested repository payloads, clones, templates, forks, releases, repackages, and follow-up artifacts.
