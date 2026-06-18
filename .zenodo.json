@@ -1,0 +1,19 @@
+{
+    "title":  "RFC-QIKVRT-0001",
+    "creators":  [
+                     {
+                         "affiliation":  "Independent Researcher",
+                         "name":  "Lohmann, Ingolf"
+                     }
+                 ],
+    "upload_type":  "software",
+    "description":  "QIK-VRT repository release with Zenodo DOI status materialized in repository metadata.",
+    "license":  "cc-by-nc-nd-4.0",
+    "related_identifiers":  [
+                                {
+                                    "scheme":  "url",
+                                    "relation":  "isSupplementTo",
+                                    "identifier":  "https://github.com/Goldkelch/qik-vrt"
+                                }
+                            ]
+}
