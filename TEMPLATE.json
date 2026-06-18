@@ -1,11 +1,4 @@
 {
-  "_qikvrt_spdx_license_identifier": "CC-BY-NC-ND-4.0",
-  "_qikvrt_copyright": "Copyright (c) 2026 Ingolf Lohmann",
-  "_qikvrt_urheber_rechteinhaber": "Ingolf Lohmann",
-  "_qikvrt_rights_holder": "Ingolf Lohmann",
-  "_qikvrt_license": "CC-BY-NC-ND-4.0",
-  "_qikvrt_legal_metadata_visibility": "top_level",
-  "_qikvrt_applies_to_json_data_reports_results": true,
   "id": "QALL_TEMPLATE_ADAPTIVE_TARGET",
   "status": "IMPLEMENTED",
   "template_ready": true,
@@ -61,13 +54,12 @@
   },
   "delivery_logs_next_to_start_files": true,
   "unnecessary_details_hidden_under_internal": true,
-  "legal": {
-    "SPDX-License-Identifier": "CC-BY-NC-ND-4.0",
-    "copyright": "Copyright (c) 2026 Ingolf Lohmann",
-    "rights_holder": "Ingolf Lohmann",
-    "license": "CC-BY-NC-ND-4.0",
-    "license_assignment": "embedded_top_level_json_metadata",
-    "applies_to_json_data_reports_results": true,
-    "urheber_rechteinhaber": "Ingolf Lohmann"
+  "qikvrt_file_license_notice": {
+    "spdx_license_identifier": "CC-BY-NC-ND-4.0",
+    "copyright": "Copyright (c) 2026 Ingolf Lohmann.",
+    "urheber_rechteinhaber": "Ingolf Lohmann",
+    "lizenz_und_urheberrechtsinformationen_vererben_sich": true,
+    "vererbung": "Klone, QIK-VRT-Repositories, Templates, Forks, Releases, Repackages und Folgeartefakte.",
+    "non_regression": "Gut bleibt stets zugleich besser."
   }
 }
