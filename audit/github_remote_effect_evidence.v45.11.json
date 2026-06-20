@@ -1,0 +1,40 @@
+﻿{
+    "evidence_version":  "QIKVRT_GITHUB_REMOTE_EFFECT_EVIDENCE_V45_11",
+    "status":  "PASS",
+    "release_claim":  true,
+    "real_remote_effects":  true,
+    "repository_url":  "https://github.com/Goldkelch/qik-vrt.git",
+    "target_branch":  "main",
+    "source_branch":  "",
+    "local_commit_sha":  "a41263b1e9d4dbfe37c1a0ede33b2643345f0655",
+    "remote_commit_sha":  "a41263b1e9d4dbfe37c1a0ede33b2643345f0655",
+    "pushed_ref_verified":  true,
+    "release_tag":  "v45.11",
+    "release_id":  "RE_kwDOS8giZs4UZ_-V",
+    "release_url":  "https://github.com/Goldkelch/qik-vrt/releases/tag/v45.11",
+    "release_target_commitish":  "a41263b1e9d4dbfe37c1a0ede33b2643345f0655",
+    "acceptance":  {
+                       "version":  "V45.11",
+                       "status":  "ACCEPTED",
+                       "persisted":  true,
+                       "accepted_by":  "Ingolf Lohmann",
+                       "timestamp_utc":  "2026-06-20T16:07:14.6026763Z",
+                       "scope":  "QIKVRT V45.11 real GitHub merge/commit/push/release with git bootstrap, origin-safe remote evidence",
+                       "required_confirmation":  "JA, ICH AKZEPTIERE",
+                       "requirement":  "No GitHub state-changing effect before persisted Product Owner acceptance. The real-release CMD wrapper sets QIKVRT_ENABLE_REAL_GITHUB_EFFECTS only after this record is written.",
+                       "effect_boundary":  "git fetch/checkout/pull, optional merge, commit, push, tag, GitHub release, asset upload, evidence publication"
+                   },
+    "uploaded_assets":  [
+                            {
+                                "name":  "QIKVRT_V45_11.zip",
+                                "local_path":  "C:\\Users\\ingol\\_script_runner_\\QIKVRT_V45_11\\QIKVRT_V45_11\\dist\\QIKVRT_V45_11.zip",
+                                "local_sha256":  "c06b7ada121697f35132cd4a53d413377e6a3894f227e6ea618585d6eb09e20c",
+                                "downloaded_sha256":  "c06b7ada121697f35132cd4a53d413377e6a3894f227e6ea618585d6eb09e20c",
+                                "sha256_match":  true
+                            }
+                        ],
+    "actor":  "Goldkelch",
+    "timestamp_start_utc":  "2026-06-20T16:07:19.5189715Z",
+    "timestamp_end_utc":  "2026-06-20T16:07:31.7837661Z",
+    "generated_by":  "tools/qikvrt_github_automated_merge_commit_push_release_windows.ps1"
+}
