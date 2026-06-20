@@ -1,0 +1,17 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "evidence_json"
+  },
+  "schema": "qikvrt_v31_product_owner_final_artifact_delivery_override_verification_report",
+  "created_utc": "2026-06-20T13:02:42Z",
+  "status": "FINAL_ARTIFACT_DELIVERY_AUTHORIZED_BY_PRODUCT_OWNER_OVERRIDE",
+  "artifact_delivery_allowed": true,
+  "product_owner_override": true,
+  "external_evidence_claims": false,
+  "no_false_external_claims": true,
+  "master_gate": "PASS"
+}

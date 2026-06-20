@@ -1,0 +1,35 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "evidence_json"
+  },
+  "schema": "qikvrt_github_automated_release_attempt_v45",
+  "created_utc": "2026-06-20T14:47:56Z",
+  "status": "BLOCK_NOT_A_GIT_REPOSITORY",
+  "reason": "This extracted ZIP is not inside a Git repository. Copy into the real repo first.",
+  "steps": [
+    {
+      "cmd": [
+        "git",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "git version 2.47.3\n",
+      "stderr": ""
+    },
+    {
+      "cmd": [
+        "git",
+        "rev-parse",
+        "--is-inside-work-tree"
+      ],
+      "returncode": 128,
+      "stdout": "",
+      "stderr": "fatal: not a git repository (or any of the parent directories): .git\n"
+    }
+  ],
+  "external_evidence_claims": false
+}

@@ -1,45 +1,32 @@
-# QIKVRT V45.12
+# QIKVRT V45.16 — QV45 + IETF Evidence Merge Release, Clean Checkout Overlay-Staging Repair
 
-Evidence-freeze continuation after V45.11 real GitHub effect.
+This package carries the uploaded `QV45_WINZIP_OK.zip` artifact and merges/releases it together with the V45.13 rejected-confirmation evidence, the V45.14 packaging/ZIP-preview evidence, the V45.15 untracked-working-tree checkout failure evidence, and the IETF/EFFECT_ACK evidence case.
 
-## Local verify
+V45.16 repairs the V45.15 checkout failure:
 
-Run:
+- the extracted package is first copied into a temporary overlay staging directory;
+- the working tree is then cleaned before `origin/main` checkout;
+- `origin/main` is used as canonical base;
+- QV45 + V45.16 evidence are restored after checkout;
+- push must be fast-forward;
+- tag `v45.16` is immutable: no force tag update;
+- release assets are not clobbered: existing assets are downloaded and hash-verified.
 
-```cmd
-QIKVRT_V45_12_RUN_LOCAL_VERIFY.cmd
+Incoming QV45 artifact SHA256:
+
+```text
+4e6baa3a3998774ae65120ce620669558e1d50dc8572c601ce4a75a2e4be37b8
 ```
 
-## Build ZIP and SHA256
-
-Run:
+Run after fully extracting the ZIP, not from Windows compressed-folder preview:
 
 ```cmd
-QIKVRT_V45_12_BUILD_ZIP_AND_HASH.cmd
+QIKVRT_V45_16_RUN_LOCAL_VERIFY.cmd
+QIKVRT_V45_16_REAL_GITHUB_RELEASE.cmd
 ```
 
-## Real GitHub evidence-freeze release
-
-Run:
-
-```cmd
-QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd
-```
-
-Then enter exactly:
+Required exact confirmation:
 
 ```text
 JA, ICH AKZEPTIERE
 ```
-
-Origin example:
-
-```text
-Goldkelch/qik-vrt
-```
-
-## V45.12 freeze rule
-
-V45.12 refuses force tag updates and release asset clobbering. If the remote tag already exists but points elsewhere, the run blocks. If a release asset already exists, it is downloaded and SHA256-verified instead of overwritten.
-
-Local package status: `PASS_LOCAL_ZIP_AND_HASH`. Remote status remains `BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE_FREEZE` until the real GitHub wrapper succeeds.

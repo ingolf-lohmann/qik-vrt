@@ -1,13 +1,9 @@
 {
-  "package": "QIKVRT_V45_12",
-  "version": "V45.12",
-  "status": "local_repository_build_input",
-  "remote_release_status": "BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE_FREEZE",
-  "freeze_policy": "NO_FORCE_TAG_UPDATE_AND_NO_RELEASE_ASSET_CLOBBER",
-  "entrypoints": [
-    "QIKVRT_V45_12_RUN_LOCAL_VERIFY.cmd",
-    "QIKVRT_V45_12_BUILD_ZIP_AND_HASH.cmd",
-    "QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd"
-  ],
-  "created_utc": "2026-06-20T16:28:40.409352+00:00"
+  "schema": "qikvrt_v45_16_local_package_manifest",
+  "version": "V45.16",
+  "created_utc": "2026-06-20T17:02:27.896232+00:00",
+  "incoming_artifact_sha256": "4e6baa3a3998774ae65120ce620669558e1d50dc8572c601ce4a75a2e4be37b8",
+  "files": 20,
+  "status": "LOCAL_PACKAGE_READY_REMOTE_PENDING",
+  "target_tag": "v45.16"
 }

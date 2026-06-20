@@ -1,0 +1,18 @@
+{
+  "audit_id": "V12_CICD_RUNTIME_PERSISTENCE_AUDIT",
+  "created_utc": "2026-06-20T09:22:45Z",
+  "result": "CICD_RUNTIME_PERSISTENCE_LAYER_MATERIALIZED",
+  "dry_run_default": true,
+  "interactive_parameter_collection": true,
+  "non_interactive_ci_mode": true,
+  "github_persistence": "runtime_gated",
+  "zenodo_persistence": "runtime_gated",
+  "evidence_ledger": "evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "evidence_json"
+  }
+}

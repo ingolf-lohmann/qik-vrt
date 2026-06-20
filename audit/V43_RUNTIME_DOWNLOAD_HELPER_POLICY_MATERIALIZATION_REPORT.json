@@ -1,0 +1,24 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "evidence_json"
+  },
+  "schema": "qikvrt_v43_runtime_download_helper_policy_materialization_report",
+  "created_utc": "2026-06-20T14:20:11Z",
+  "status": "FINAL_ARTIFACT_DELIVERY_AUTHORIZED_BY_PRODUCT_OWNER_OVERRIDE",
+  "runtime_download_helper_policy_materialization_gate": "PASS",
+  "master_gate_after_policy_deletion": "PASS",
+  "master_gate_after_download_helper_mutation": "PASS",
+  "json_repaired_before_gate": [],
+  "runtime_helper_files": [
+    "runtime/download_python_runtime.ps1"
+  ],
+  "runtime_helper_policy_files": [
+    "runtime/download_python_runtime.policy.json"
+  ],
+  "artifact_delivery_allowed": true,
+  "external_evidence_claims": false
+}

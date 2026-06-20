@@ -1,0 +1,921 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "test_or_backfill_json"
+  },
+  "schema": "qikvrt_technical_debt_register_v40",
+  "created_utc": "2026-06-20T10:20:51Z",
+  "status": "BACKFILL_MATERIALIZED_WITH_VOLATILE_RUNTIME_STATE_PERSISTED_IN_DELIVERY_ZIP_GATE",
+  "debt_items": [
+    {
+      "error_class": "SCRIPT_ONLY_PACKAGE_DELIVERED_WHEN_CONTENT_PACKAGE_REQUIRED",
+      "cleanup_test": "tests/regression/test_physical_payload.py",
+      "gate_function": "check_content_payload",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MONTHLY_CONTENT_NOT_PHYSICALLY_INCLUDED",
+      "cleanup_test": "tests/regression/test_physical_payload.py",
+      "gate_function": "check_content_payload",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TARGET_PLATFORM_SCOPE_COLLAPSED_TO_SINGLE_PLATFORM",
+      "cleanup_test": "tests/platform/test_target_platform_matrix.py",
+      "gate_function": "check_platform_matrix",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "JSON_FILE_MISSING_EMBEDDED_LICENSE_TERMS",
+      "cleanup_test": "tests/regression/test_json_embedded_license.py",
+      "gate_function": "check_json_embedded_license",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "SOURCE_FILE_MISSING_APACHE_2_0_HEADER",
+      "cleanup_test": "tests/regression/test_dual_license.py",
+      "gate_function": "check_dual_license",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "NON_SOURCE_FILE_MISSING_CC_LICENSE_NOTICE",
+      "cleanup_test": "tests/regression/test_dual_license.py",
+      "gate_function": "check_dual_license",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "LICENSE_ACCEPTANCE_NOT_PERSISTED_IN_V14",
+      "cleanup_test": "tests/regression/test_license_acceptance.py",
+      "gate_function": "check_license_acceptance",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MASTER_GATE_CHECKS_MARKERS_INSTEAD_OF_SEMANTICS",
+      "cleanup_test": "tests/regression/test_semantic_gate.py",
+      "gate_function": "check_reflexive_mapping",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RECURSIVE_SUBPROCESS_GATE_HANG",
+      "cleanup_test": "tests/regression/test_non_recursive_cicd.py",
+      "gate_function": "check_non_recursive_cicd",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DOCUMENTATION_MISSING_OR_INSUFFICIENT",
+      "cleanup_test": "tests/regression/test_documentation.py",
+      "gate_function": "check_documentation",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "SOFTWARE_NOT_SELF_EXPLANATORY_CLEAN_CODE_VIOLATION",
+      "cleanup_test": "tests/regression/test_self_explanatory.py",
+      "gate_function": "check_clean_code_self_explanatory",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TEST_FIRST_APPROACH_NOT_ENFORCED",
+      "cleanup_test": "tests/regression/test_test_first_backfill.py",
+      "gate_function": "check_test_backfill",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TECHNICAL_DEBT_CLEANUP_NOT_ACCEPTANCE_TESTED",
+      "cleanup_test": "tests/regression/test_technical_debt.py",
+      "gate_function": "check_technical_debt",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RETROACTIVE_TEST_BACKFILL_MISSING",
+      "cleanup_test": "tests/regression/test_test_first_backfill.py",
+      "gate_function": "check_test_backfill",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RETROACTIVE_TEST_BACKFILL_ONLY_PLACEHOLDER_TESTS",
+      "cleanup_test": "tests/regression/test_semantic_gate.py",
+      "gate_function": "check_test_body_semantics",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PLACEHOLDER_TEST_PASSED_AS_REAL_TEST",
+      "cleanup_test": "tests/regression/test_semantic_gate.py",
+      "gate_function": "check_test_body_semantics",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TEST_BACKFILL_ASSERTIONS_NOT_SEMANTIC",
+      "cleanup_test": "tests/regression/test_semantic_gate.py",
+      "gate_function": "check_test_body_semantics",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MASTER_GATE_DID_NOT_VALIDATE_TEST_BODY_SEMANTICS",
+      "cleanup_test": "tests/regression/test_semantic_gate.py",
+      "gate_function": "check_test_body_semantics",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "GENERAL_USABILITY_ACCEPTANCE_TEST_FAILED",
+      "cleanup_test": "tests/regression/test_general_usability_logging.py",
+      "gate_function": "check_general_usability",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "NO_SINGLE_MACHINE_READABLE_LOGFILE_WRITTEN",
+      "cleanup_test": "tests/regression/test_general_usability_logging.py",
+      "gate_function": "check_general_usability",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "EXIT_CODE_NOT_VISIBLE_OR_NOT_PROPAGATED",
+      "cleanup_test": "tests/regression/test_general_usability_logging.py",
+      "gate_function": "check_general_usability",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ERROR_RESULTS_NOT_PERSISTED_FOR_NEXT_REPAIR_LOOP",
+      "cleanup_test": "tests/regression/test_general_usability_logging.py",
+      "gate_function": "check_general_usability",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "HELP_AND_USAGE_NOT_DISCOVERABLE",
+      "cleanup_test": "tests/regression/test_general_usability_logging.py",
+      "gate_function": "check_general_usability",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "REPAIR_HINTS_NOT_MACHINE_READABLE",
+      "cleanup_test": "tests/regression/test_general_usability_logging.py",
+      "gate_function": "check_general_usability",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TEST_MODULE_CACHE_NOT_ISOLATED_BETWEEN_PACKAGE_RUNS",
+      "cleanup_test": "tests/regression/test_semantic_gate.py",
+      "gate_function": "run_backfill_tests",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "USABILITY_ACCEPTANCE_TEST_FAILED_WINDOWS_WINDOW_CLOSES_IMMEDIATELY",
+      "cleanup_test": "tests/platform/test_windows_usability_ack.py",
+      "gate_function": "check_windows_user_acknowledgement",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "USER_ACKNOWLEDGEMENT_REQUIRED_BEFORE_WINDOW_CLOSE_NOT_ENFORCED",
+      "cleanup_test": "tests/platform/test_windows_usability_ack.py",
+      "gate_function": "check_windows_user_acknowledgement",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCY_RUNTIME_NOT_BUNDLED",
+      "cleanup_test": "tests/runtime/test_runtime_dependency_discovery.py",
+      "gate_function": "check_runtime_dependency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_NOT_FOUND_ON_WINDOWS_REAL_MACHINE",
+      "cleanup_test": "tests/runtime/test_runtime_dependency_discovery.py",
+      "gate_function": "check_runtime_dependency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CANONICAL_REPOSITORY_NOT_SELF_CONTAINED",
+      "cleanup_test": "tests/runtime/test_runtime_dependency_discovery.py",
+      "gate_function": "check_runtime_dependency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CONSOLE_OUTPUT_ENCODING_UNSAFE_FOR_WINDOWS_CODEPAGE",
+      "cleanup_test": "tests/runtime/test_console_ascii_safe_output.py",
+      "gate_function": "check_console_ascii_safety",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "SCRIPT_STDOUT_STDERR_CONTAINS_UMLAUTS",
+      "cleanup_test": "tests/runtime/test_console_ascii_safe_output.py",
+      "gate_function": "check_console_ascii_safety",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_DOWNLOAD_CONSENT_GATE_MISSING",
+      "cleanup_test": "tests/runtime/test_runtime_download_consent_continue_path.py",
+      "gate_function": "check_runtime_download_consent_path",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CANONICAL_REPOSITORY_BLOCKS_INSTEAD_OF_REQUESTING_DEPENDENCY_CONSENT",
+      "cleanup_test": "tests/runtime/test_runtime_download_consent_continue_path.py",
+      "gate_function": "check_runtime_download_consent_path",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCY_DOWNLOAD_WITHOUT_LICENSE_ACCEPTANCE",
+      "cleanup_test": "tests/runtime/test_runtime_download_consent_continue_path.py",
+      "gate_function": "check_runtime_download_consent_path",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "THIRD_PARTY_RUNTIME_PROVENANCE_NOT_ACCEPTED",
+      "cleanup_test": "tests/runtime/test_runtime_download_consent_continue_path.py",
+      "gate_function": "check_runtime_download_consent_path",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MISSING_CONTINUE_PATH_FOR_RUNTIME_DEPENDENCY",
+      "cleanup_test": "tests/runtime/test_runtime_download_consent_continue_path.py",
+      "gate_function": "check_runtime_download_consent_path",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_REPAIR_FLOW_NOT_USER_GUIDED",
+      "cleanup_test": "tests/runtime/test_runtime_download_consent_continue_path.py",
+      "gate_function": "check_runtime_download_consent_path",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CANONICAL_REPOSITORY_DEAD_BLOCKED",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BLOCK_WITHOUT_CONTINUE_PATH",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BLOCK_WITHOUT_REPAIR_HINT",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BLOCK_WITHOUT_CONSENT_PATH",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BLOCK_WITHOUT_LICENSE_CONTEXT",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BLOCK_WITHOUT_PROVENANCE_REQUIREMENT",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BLOCK_WITHOUT_RETRY_OR_REBUILD_PATH",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "SILENT_FAILURE_WITHOUT_LOG",
+      "cleanup_test": "tests/canonical/test_primary_continue_gate.py",
+      "gate_function": "check_primary_continue_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "JSONL_LOG_INVALID_ON_WINDOWS_PATHS",
+      "cleanup_test": "tests/logging/test_jsonl_log_validity_and_exit_state.py",
+      "gate_function": "check_jsonl_log_validity",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WINDOWS_PATH_BACKSLASHES_NOT_JSON_ESCAPED",
+      "cleanup_test": "tests/logging/test_jsonl_log_validity_and_exit_state.py",
+      "gate_function": "check_jsonl_log_validity",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUN_END_STATUS_MISLEADING_FOR_NONZERO_EXIT",
+      "cleanup_test": "tests/logging/test_jsonl_log_validity_and_exit_state.py",
+      "gate_function": "check_jsonl_log_validity",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "NONZERO_EXIT_WITHOUT_STDOUT_STDERR_CAPTURE",
+      "cleanup_test": "tests/logging/test_jsonl_log_validity_and_exit_state.py",
+      "gate_function": "check_jsonl_log_validity",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "NONZERO_EXIT_WITHOUT_REPAIR_HINT",
+      "cleanup_test": "tests/logging/test_jsonl_log_validity_and_exit_state.py",
+      "gate_function": "check_jsonl_log_validity",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "LOG_EXISTS_BUT_NOT_MACHINE_READABLE",
+      "cleanup_test": "tests/logging/test_jsonl_log_validity_and_exit_state.py",
+      "gate_function": "check_jsonl_log_validity",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DOUBLE_CLICK_WITHOUT_ARGUMENTS_NOT_HANDLED",
+      "cleanup_test": "tests/usability/test_double_click_default_and_license_areas.py",
+      "gate_function": "check_double_click_default_action",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MISSING_DEFAULT_COMMAND_ON_INTERACTIVE_LAUNCH",
+      "cleanup_test": "tests/usability/test_double_click_default_and_license_areas.py",
+      "gate_function": "check_double_click_default_action",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ARGPARSE_FAILURE_ON_EMPTY_LAUNCH",
+      "cleanup_test": "tests/usability/test_double_click_default_and_license_areas.py",
+      "gate_function": "check_double_click_default_action",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "NO_PARAMETER_LAUNCH_NOT_USABILITY_SAFE",
+      "cleanup_test": "tests/usability/test_double_click_default_and_license_areas.py",
+      "gate_function": "check_double_click_default_action",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_THIRD_PARTY_LICENSE_AREA_NOT_SEPARATED",
+      "cleanup_test": "tests/usability/test_double_click_default_and_license_areas.py",
+      "gate_function": "check_three_license_areas",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCY_RESOLUTION_LOGIC_WINDOWS_ONLY",
+      "cleanup_test": "tests/dependency/test_general_dependency_resolution.py",
+      "gate_function": "check_general_dependency_resolution",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCY_DOWNLOAD_CONSENT_NOT_PLATFORM_GENERAL",
+      "cleanup_test": "tests/dependency/test_general_dependency_resolution.py",
+      "gate_function": "check_general_dependency_resolution",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_REPAIR_FLOW_NOT_GENERALIZED",
+      "cleanup_test": "tests/dependency/test_general_dependency_resolution.py",
+      "gate_function": "check_general_dependency_resolution",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCY_RESOLUTION_POLICY_MISSING",
+      "cleanup_test": "tests/dependency/test_general_dependency_resolution.py",
+      "gate_function": "check_general_dependency_resolution",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PLATFORM_ADAPTER_WITHOUT_GENERAL_DEPENDENCY_CONTRACT",
+      "cleanup_test": "tests/dependency/test_general_dependency_resolution.py",
+      "gate_function": "check_general_dependency_resolution",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "GENERAL_DEPENDENCY_RESOLUTION_GATE_NOT_ENFORCED",
+      "cleanup_test": "tests/dependency/test_general_dependency_resolution.py",
+      "gate_function": "check_general_dependency_resolution",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "IP_REVERSE_ENGINEERING_NOT_MATERIALIZED",
+      "cleanup_test": "tests/ip/test_ip_reverse_engineered_effect_ack.py",
+      "gate_function": "check_ip_reverse_engineered_effect_ack",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "IETF_DRAFT_PROVENANCE_NOT_RECORDED",
+      "cleanup_test": "tests/ip/test_ip_reverse_engineered_effect_ack.py",
+      "gate_function": "check_ip_reverse_engineered_effect_ack",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FALSE_GITHUB_ARRIVAL_CLAIM",
+      "cleanup_test": "tests/ip/test_ip_reverse_engineered_effect_ack.py",
+      "gate_function": "check_ip_reverse_engineered_effect_ack",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_RUNTIME_REQUESTED_BUT_NOT_BUNDLED_OR_CONTINUED",
+      "cleanup_test": "tests/ip/test_ip_reverse_engineered_effect_ack.py",
+      "gate_function": "check_ip_reverse_engineered_effect_ack",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TCPIP_EFFECT_ACK_NOT_LINKED_TO_DEVOPS_CICD",
+      "cleanup_test": "tests/ip/test_ip_reverse_engineered_effect_ack.py",
+      "gate_function": "check_ip_reverse_engineered_effect_ack",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CANONICAL_RUN_END_EVENT_MISSING",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WRAPPER_END_WITHOUT_RUN_END",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_LAUNCHER_TARGET_FAILED_WITHOUT_CANONICAL_FINALIZATION",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "SHIFT_LEFT_REGRESSION_GATE_MISSING",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MANUAL_FIELD_TEST_REQUIRED_TO_FIND_BASIC_LAUNCHER_ERROR",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "USABILITY_ITERATION_LOOP_NOT_CLOSED",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CI_DEVOPS_SHIT_LEFT_INSTEAD_OF_SHIFT_LEFT",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "UNBOUNDED_SUBPROCESS_IN_MASTER_GATE",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "IMPLICIT_PYTHON_PACKAGE_IMPORT_IN_HARNESS",
+      "cleanup_test": "tests/usability/test_shift_left_root_cause_run_end.py",
+      "gate_function": "check_shift_left_root_cause_run_end",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_LAUNCHER_TARGET_FAILED_WITHOUT_STDOUT_STDERR",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TARGET_PROCESS_FAILURE_WITHOUT_ROOT_CAUSE_EVIDENCE",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MASTER_GATE_FAILURE_NOT_DIAGNOSED",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "REMAINING_ERROR_NOT_SHIFT_LEFT_BLOCKED",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "COLLECTOR_ERROR_CLASS_WITHOUT_UNDERLYING_CAUSE",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "VOLATILE_LOG_INCLUDED_IN_IMMUTABLE_HASH_MANIFEST",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MASTER_GATE_FAILS_AFTER_OWN_LOG_MUTATION",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PASS_RUN_END_MISSING_CANONICAL_FIELDS",
+      "cleanup_test": "tests/usability/test_root_cause_logging_remaining_errors.py",
+      "gate_function": "check_root_cause_logging_remaining_errors",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "REFLEXIVE_USABILITY_ACCEPTANCE_FAILURE",
+      "cleanup_test": "tests/usability/test_reflexive_usability_acceptance_gate.py",
+      "gate_function": "check_reflexive_usability_acceptance_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FALSE_COMPLETE_REPAIR_CLAIM_WITH_KNOWN_OPEN_CONDITIONS",
+      "cleanup_test": "tests/usability/test_reflexive_usability_acceptance_gate.py",
+      "gate_function": "check_reflexive_usability_acceptance_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "KNOWN_REMAINING_FIELD_CONFIRMATION_NOT_GATED",
+      "cleanup_test": "tests/usability/test_reflexive_usability_acceptance_gate.py",
+      "gate_function": "check_reflexive_usability_acceptance_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ARTIFACT_DELIVERY_WITH_UNRESOLVED_EXTERNAL_RELEASE_CONDITIONS",
+      "cleanup_test": "tests/usability/test_reflexive_usability_acceptance_gate.py",
+      "gate_function": "check_reflexive_usability_acceptance_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_BUNDLING_OPEN_BUT_ALL_REMAINING_ERRORS_CLAIMED_FIXED",
+      "cleanup_test": "tests/usability/test_reflexive_usability_acceptance_gate.py",
+      "gate_function": "check_reflexive_usability_acceptance_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "LOCAL_GREEN_CLAIM_WITH_EXTERNAL_BLOCKERS_OPEN",
+      "cleanup_test": "tests/usability/test_reflexive_usability_acceptance_gate.py",
+      "gate_function": "check_reflexive_usability_acceptance_gate",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ASSISTANT_DELIVERY_TEXT_CONTRADICTS_OWN_KNOWN_OPEN_CONDITIONS_GATE",
+      "cleanup_test": "tests/usability/test_assistant_delivery_response_consistency.py",
+      "gate_function": "check_assistant_delivery_response_consistency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "UNQUALIFIED_FIXED_CLAIM_WITH_OPEN_CONDITIONS",
+      "cleanup_test": "tests/usability/test_assistant_delivery_response_consistency.py",
+      "gate_function": "check_assistant_delivery_response_consistency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DELIVERY_RESPONSE_NOT_MACHINE_CHECKED_AGAINST_VERDICT",
+      "cleanup_test": "tests/usability/test_assistant_delivery_response_consistency.py",
+      "gate_function": "check_assistant_delivery_response_consistency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FINAL_ANSWER_BYPASSED_REPOSITORY_CLAIM_GATE",
+      "cleanup_test": "tests/usability/test_assistant_delivery_response_consistency.py",
+      "gate_function": "check_assistant_delivery_response_consistency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RESPONSE_LAYER_NOT_PART_OF_ACCEPTANCE_SCOPE",
+      "cleanup_test": "tests/usability/test_assistant_delivery_response_consistency.py",
+      "gate_function": "check_assistant_delivery_response_consistency",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "BATCH_START_WITHOUT_INITIAL_ACCEPTANCE_GATE",
+      "cleanup_test": "tests/usability/test_initial_launcher_acceptance_before_any_effect.py",
+      "gate_function": "check_initial_launcher_acceptance_before_any_effect",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "LAUNCHER_CONTINUES_BEFORE_ACCEPTANCE_PERSISTED",
+      "cleanup_test": "tests/usability/test_initial_launcher_acceptance_before_any_effect.py",
+      "gate_function": "check_initial_launcher_acceptance_before_any_effect",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "INITIAL_ACCEPTANCE_NOT_PERSISTED_BEFORE_EFFECT",
+      "cleanup_test": "tests/usability/test_initial_launcher_acceptance_before_any_effect.py",
+      "gate_function": "check_initial_launcher_acceptance_before_any_effect",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "POST_START_ACTIVITY_WITHOUT_PRODUCT_OWNER_ACCEPTANCE",
+      "cleanup_test": "tests/usability/test_initial_launcher_acceptance_before_any_effect.py",
+      "gate_function": "check_initial_launcher_acceptance_before_any_effect",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "REFLEXIVE_ACCEPTANCE_GATE_BYPASSED_BY_LAUNCHER",
+      "cleanup_test": "tests/usability/test_initial_launcher_acceptance_before_any_effect.py",
+      "gate_function": "check_initial_launcher_acceptance_before_any_effect",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ACCEPTANCE_REQUIRED_BEFORE_ANY_EFFECT_NOT_ENFORCED",
+      "cleanup_test": "tests/usability/test_initial_launcher_acceptance_before_any_effect.py",
+      "gate_function": "check_initial_launcher_acceptance_before_any_effect",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "OWNER_FINAL_DELIVERY_OVERRIDE_NOT_MATERIALIZED",
+      "cleanup_test": "tests/usability/test_product_owner_final_artifact_delivery_override.py",
+      "gate_function": "check_product_owner_final_artifact_delivery_override",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FINAL_DELIVERY_OVERRIDE_CONFUSED_WITH_EXTERNAL_EVIDENCE",
+      "cleanup_test": "tests/usability/test_product_owner_final_artifact_delivery_override.py",
+      "gate_function": "check_product_owner_final_artifact_delivery_override",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FALSE_EXTERNAL_CLAIM_AFTER_OWNER_OVERRIDE",
+      "cleanup_test": "tests/usability/test_product_owner_final_artifact_delivery_override.py",
+      "gate_function": "check_product_owner_final_artifact_delivery_override",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DELIVERY_BLOCK_NOT_RESCINDED_AFTER_OWNER_AUTHORIZATION",
+      "cleanup_test": "tests/usability/test_product_owner_final_artifact_delivery_override.py",
+      "gate_function": "check_product_owner_final_artifact_delivery_override",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WINDOWS_COMMAND_PATH_NOT_JSON_ESCAPED_IN_COMMAND_START",
+      "cleanup_test": "tests/usability/test_windows_command_start_json_escape.py",
+      "gate_function": "check_windows_command_start_json_escape",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CMD_ECHO_WRITES_RAW_WINDOWS_PATH_IN_JSON",
+      "cleanup_test": "tests/usability/test_windows_command_start_json_escape.py",
+      "gate_function": "check_windows_command_start_json_escape",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "COMMAND_START_JSONL_INVALID_ON_WINDOWS_RUNTIME_PATH",
+      "cleanup_test": "tests/usability/test_windows_command_start_json_escape.py",
+      "gate_function": "check_windows_command_start_json_escape",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ACCEPTANCE_ORDER_PASS_BUT_LOG_MACHINE_READABILITY_FAIL",
+      "cleanup_test": "tests/usability/test_windows_command_start_json_escape.py",
+      "gate_function": "check_windows_command_start_json_escape",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "REGRESSION_TEST_CONTAINS_RAW_UNESCAPED_WINDOWS_STRING",
+      "cleanup_test": "tests/usability/test_windows_command_start_json_escape.py",
+      "gate_function": "check_windows_command_start_json_escape",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CMD_WRAPPER_TARGET_FAILURE_WITHOUT_STDOUT_STDERR_EVIDENCE",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_target_stdout_stderr_capture.py",
+      "gate_function": "check_cmd_wrapper_target_stdout_stderr_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_TARGET_EXIT_1_WITHOUT_CAPTURED_STDOUT",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_target_stdout_stderr_capture.py",
+      "gate_function": "check_cmd_wrapper_target_stdout_stderr_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_TARGET_EXIT_1_WITHOUT_CAPTURED_STDERR",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_target_stdout_stderr_capture.py",
+      "gate_function": "check_cmd_wrapper_target_stdout_stderr_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CMD_WRAPPER_LOSES_TARGET_PROCESS_ROOT_CAUSE",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_target_stdout_stderr_capture.py",
+      "gate_function": "check_cmd_wrapper_target_stdout_stderr_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TARGET_PROCESS_RESULT_EVENT_MISSING_AFTER_COMMAND_START",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_target_stdout_stderr_capture.py",
+      "gate_function": "check_cmd_wrapper_target_stdout_stderr_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "QIKVRT_PY_CANNOT_IMPORT_TOOLS_UNDER_WINDOWS_RUNTIME",
+      "cleanup_test": "tests/usability/test_qikvrt_py_repo_root_sys_path_bootstrap.py",
+      "gate_function": "check_qikvrt_py_repo_root_sys_path_bootstrap",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_EMBEDDED_RUNTIME_SYS_PATH_MISSING_REPO_ROOT",
+      "cleanup_test": "tests/usability/test_qikvrt_py_repo_root_sys_path_bootstrap.py",
+      "gate_function": "check_qikvrt_py_repo_root_sys_path_bootstrap",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TOOLS_PACKAGE_IMPORT_NOT_BOOTSTRAPPED",
+      "cleanup_test": "tests/usability/test_qikvrt_py_repo_root_sys_path_bootstrap.py",
+      "gate_function": "check_qikvrt_py_repo_root_sys_path_bootstrap",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "QIKVRT_PY_IMPORTS_TOOLS_BEFORE_SYS_PATH_REPAIR",
+      "cleanup_test": "tests/usability/test_qikvrt_py_repo_root_sys_path_bootstrap.py",
+      "gate_function": "check_qikvrt_py_repo_root_sys_path_bootstrap",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WINDOWS_RUNTIME_TARGET_IMPORT_PATH_FAILURE",
+      "cleanup_test": "tests/usability/test_qikvrt_py_repo_root_sys_path_bootstrap.py",
+      "gate_function": "check_qikvrt_py_repo_root_sys_path_bootstrap",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_DEPENDENCIES_JSON_HASH_MISMATCH_AFTER_FIELD_RUN",
+      "cleanup_test": "tests/usability/test_runtime_dependencies_json_volatile_classification.py",
+      "gate_function": "check_runtime_dependencies_json_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_DEPENDENCIES_MANIFEST_MUTABLE_BUT_HASHED_IMMUTABLE",
+      "cleanup_test": "tests/usability/test_runtime_dependencies_json_volatile_classification.py",
+      "gate_function": "check_runtime_dependencies_json_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCY_STATE_FILE_INCLUDED_IN_IMMUTABLE_SHA256SUMS",
+      "cleanup_test": "tests/usability/test_runtime_dependencies_json_volatile_classification.py",
+      "gate_function": "check_runtime_dependencies_json_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MASTER_GATE_HASHES_RUNTIME_DEPENDENCY_STATE_AS_RELEASE_CONSTANT",
+      "cleanup_test": "tests/usability/test_runtime_dependencies_json_volatile_classification.py",
+      "gate_function": "check_runtime_dependencies_json_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DEPENDENCIES_JSON_MUST_BE_POLICY_OR_VOLATILE_SEPARATED",
+      "cleanup_test": "tests/usability/test_runtime_dependencies_json_volatile_classification.py",
+      "gate_function": "check_runtime_dependencies_json_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WINDOWS_ZIP_EXTRACTION_FAILURE",
+      "cleanup_test": "tests/usability/test_windows_zip_extraction_compatibility.py",
+      "gate_function": "check_windows_zip_extraction_compatibility",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FINAL_ARTIFACT_NOT_WINDOWS_EXTRACTABLE",
+      "cleanup_test": "tests/usability/test_windows_zip_extraction_compatibility.py",
+      "gate_function": "check_windows_zip_extraction_compatibility",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ZIP_INTERNAL_PATHS_TOO_LONG_FOR_WINDOWS_EXPLORER",
+      "cleanup_test": "tests/usability/test_windows_zip_extraction_compatibility.py",
+      "gate_function": "check_windows_zip_extraction_compatibility",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WINDOWS_DELIVERY_PACKAGE_NOT_VALIDATED_BEFORE_RELEASE",
+      "cleanup_test": "tests/usability/test_windows_zip_extraction_compatibility.py",
+      "gate_function": "check_windows_zip_extraction_compatibility",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "ARTIFACT_DELIVERY_WITHOUT_WINDOWS_ZIP_COMPATIBILITY_GATE",
+      "cleanup_test": "tests/usability/test_windows_zip_extraction_compatibility.py",
+      "gate_function": "check_windows_zip_extraction_compatibility",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_RUNTIME_BUNDLING_ATTEMPT_V24_HASH_MISMATCH_AFTER_FIELD_RUN",
+      "cleanup_test": "tests/usability/test_runtime_attempt_state_volatile_classification.py",
+      "gate_function": "check_runtime_attempt_state_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_BUNDLING_ATTEMPT_STATE_FILE_HASHED_IMMUTABLE",
+      "cleanup_test": "tests/usability/test_runtime_attempt_state_volatile_classification.py",
+      "gate_function": "check_runtime_attempt_state_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_RUNTIME_BUNDLING_ATTEMPT_IS_ENVIRONMENT_STATE_NOT_RELEASE_CONSTANT",
+      "cleanup_test": "tests/usability/test_runtime_attempt_state_volatile_classification.py",
+      "gate_function": "check_runtime_attempt_state_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MASTER_GATE_HASHES_RUNTIME_ATTEMPT_STATE_AS_IMMUTABLE",
+      "cleanup_test": "tests/usability/test_runtime_attempt_state_volatile_classification.py",
+      "gate_function": "check_runtime_attempt_state_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_STATE_CLASSIFICATION_INCOMPLETE",
+      "cleanup_test": "tests/usability/test_runtime_attempt_state_volatile_classification.py",
+      "gate_function": "check_runtime_attempt_state_volatile_classification",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "VOLATILE_RUNTIME_FILE_REGISTERED_BUT_NOT_MATERIALIZED",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_materialization.py",
+      "gate_function": "check_volatile_runtime_state_materialization",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_DEPENDENCIES_JSON_DECLARED_VOLATILE_BUT_MISSING",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_materialization.py",
+      "gate_function": "check_volatile_runtime_state_materialization",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "RUNTIME_STATE_REGISTRY_CONTAINS_NONEXISTENT_FILE",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_materialization.py",
+      "gate_function": "check_volatile_runtime_state_materialization",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "VOLATILE_FILE_POLICY_WITHOUT_PAYLOAD_MATERIALIZATION",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_materialization.py",
+      "gate_function": "check_volatile_runtime_state_materialization",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "WINDOWS_SHORT_PACKAGE_DROPPED_REQUIRED_RUNTIME_STATE_FILE",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_materialization.py",
+      "gate_function": "check_volatile_runtime_state_materialization",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CMD_WRAPPER_EXIT_9009_WITHOUT_TARGET_PROCESS_RESULT",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_interpreter_probe_and_9009_capture.py",
+      "gate_function": "check_cmd_wrapper_interpreter_probe_and_9009_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "PYTHON_RUNTIME_CANDIDATE_NOT_EXECUTABLE_BUT_USED",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_interpreter_probe_and_9009_capture.py",
+      "gate_function": "check_cmd_wrapper_interpreter_probe_and_9009_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "TARGET_RUNNER_NOT_STARTED_WHEN_PYTHON_INTERPRETER_FAILS",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_interpreter_probe_and_9009_capture.py",
+      "gate_function": "check_cmd_wrapper_interpreter_probe_and_9009_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "CMD_WRAPPER_CANNOT_RELY_ON_TARGET_RUNNER_FOR_INTERPRETER_FAILURE",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_interpreter_probe_and_9009_capture.py",
+      "gate_function": "check_cmd_wrapper_interpreter_probe_and_9009_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "COMMAND_START_LOGGED_BEFORE_INTERPRETER_PROBE",
+      "cleanup_test": "tests/usability/test_cmd_wrapper_interpreter_probe_and_9009_capture.py",
+      "gate_function": "check_cmd_wrapper_interpreter_probe_and_9009_capture",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "VOLATILE_RUNTIME_STATE_MATERIALIZATION_NOT_PERSISTED_IN_DELIVERY_ZIP",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_persisted_in_delivery_zip.py",
+      "gate_function": "check_volatile_runtime_state_persisted_in_delivery_zip",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "MATERIALIZATION_GATE_ASSERTS_BEFORE_CREATING_REQUIRED_STUBS",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_persisted_in_delivery_zip.py",
+      "gate_function": "check_volatile_runtime_state_persisted_in_delivery_zip",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "DELIVERY_ZIP_MISSING_REGISTERED_VOLATILE_RUNTIME_STATE",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_persisted_in_delivery_zip.py",
+      "gate_function": "check_volatile_runtime_state_persisted_in_delivery_zip",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "VOLATILE_RUNTIME_STATE_FILE_NOT_VERIFIED_INSIDE_FINAL_ZIP",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_persisted_in_delivery_zip.py",
+      "gate_function": "check_volatile_runtime_state_persisted_in_delivery_zip",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    },
+    {
+      "error_class": "FIELD_PACKAGE_LOST_RUNTIME_DEPENDENCIES_JSON",
+      "cleanup_test": "tests/usability/test_volatile_runtime_state_persisted_in_delivery_zip.py",
+      "gate_function": "check_volatile_runtime_state_persisted_in_delivery_zip",
+      "status": "REGRESSION_TEST_MATERIALIZED"
+    }
+  ],
+  "runtime_dependency_status": "BLOCKED_UNTIL_REAL_WINDOWS_PYTHON_RUNTIME_BUNDLED"
+}

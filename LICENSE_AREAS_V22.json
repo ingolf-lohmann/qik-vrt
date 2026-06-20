@@ -1,0 +1,56 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "json_non_source"
+  },
+  "schema": "qikvrt_three_license_areas_v22",
+  "created_utc": "2026-06-20T11:40:51Z",
+  "areas": [
+    {
+      "area": "third_party_python_runtime",
+      "owner": "Python Software Foundation / Python contributors",
+      "license": "Python Software Foundation License Version 2",
+      "files": [
+        "runtime/python/windows/**",
+        "third_party/python/**"
+      ],
+      "status": "accepted_by_owner_for_download_and_bundling_attempt",
+      "separation_rule": "Third-party runtime remains separately attributed and must not be relicensed as QIK-VRT content."
+    },
+    {
+      "area": "qikvrt_source_code",
+      "owner": "Ingolf Lohmann",
+      "license": "Apache-2.0",
+      "files": [
+        "*.py",
+        "*.cmd",
+        "*.bat",
+        "*.ps1",
+        "*.sh",
+        "*.yml",
+        "*.yaml",
+        "tools/**",
+        "tests/**"
+      ],
+      "status": "accepted"
+    },
+    {
+      "area": "qikvrt_non_source_content",
+      "owner": "Ingolf Lohmann",
+      "license": "CC-BY-NC-ND-4.0",
+      "files": [
+        "docs/**",
+        "acceptance/**",
+        "canonical/**",
+        "payload/**",
+        "*.md",
+        "*.json"
+      ],
+      "status": "accepted"
+    }
+  ],
+  "non_interference_rule": "The three license areas are separated by path, classification, notice and provenance. Python runtime license does not relicense QIK-VRT; QIK-VRT licenses do not relicense Python."
+}

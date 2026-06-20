@@ -1,0 +1,18 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "evidence_json"
+  },
+  "schema": "qikvrt_v24_ip_reverse_engineered_effect_ack_verification_report",
+  "created_utc": "2026-06-20T11:57:59Z",
+  "status": "PASS_WITH_RUNTIME_BINARY_CONTINUE_AND_GITHUB_NOT_PUSHED",
+  "ip_reverse_engineered_effect_ack": "PASS",
+  "ietf_draft_provenance": "PASS",
+  "python_runtime_bundling_attempt": "CONTINUE_RUNTIME_BINARY_NOT_EMBEDDED_DUE_ENVIRONMENT_LIMIT",
+  "github_ready": "PASS",
+  "github_arrived": false,
+  "master_gate": "PASS"
+}
