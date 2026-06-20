@@ -1,0 +1,24 @@
+{
+  "version": "QIKVRT V45.11",
+  "timestamp_utc": "2026-06-20T15:46:17.841191+00:00",
+  "status": "PASS_LOCAL_PACKAGE_BUILD_STATIC_VERIFICATION",
+  "real_github_release_done": false,
+  "remote_release_status": "BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE",
+  "repairs": [
+    "PowerShell 5.1 compatible Invoke-QikvrtCapture using ProcessStartInfo.Arguments instead of ArgumentList",
+    "Optional Python resolver also uses Invoke-QikvrtCapture and no longer calls ArgumentList",
+    "Lowercase tag/evidence references advanced to v45.11",
+    "V45.8 acceptance/origin prompt retained",
+    "V45.8 short-root Windows path-length mitigation retained",
+    "Real GitHub merge/commit/push/release remains evidence-gated"
+  ],
+  "error_class_closed": "POWERSHELL_5_1_PROCESSSTARTINFO_ARGUMENTLIST_NOT_AVAILABLE",
+  "gates": {
+    "zip_integrity": "PASS",
+    "internal_sha256sums": "PASS",
+    "no_argumentlist_usage_in_tools": "PASS",
+    "local_verify_entrypoint_present": "PASS",
+    "real_github_entrypoint_present": "PASS",
+    "remote_effect_evidence_required": "PASS"
+  }
+}

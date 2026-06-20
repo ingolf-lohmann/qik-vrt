@@ -1,9 +1,16 @@
-QIK-VRT NOTICE
+QIKVRT V45.11 Windows CMD Trailing-Backslash-Safe Full Repository
 
-QIK-VRT is authored by Ingolf Lohmann.
+Author / Product Owner: Ingolf Lohmann
+Created: 2026-06-20T15:23:53Z
 
-This repository preserves QIK-VRT V8.33 as a public technical persistence and release handoff.
-
-Publication on GitHub is not, by itself, Zenodo DOI evidence, peer review, patent grant, legal clearance, production deployment authorization, or external scientific validation.
-
-Spur bleibt. Hash muss stimmen. Ordnung wird schärfer.
+Operational boundary:
+- Local Windows verification remains PowerShell-only and does not require Python.
+- CMD wrappers no longer pass `%~dp0` with a trailing backslash directly into
+  quoted PowerShell arguments. The repository root is normalized before handoff.
+- Build ZIP and hash strictly separate Root and OutDir. OutDir may be missing and
+  is created before use; Resolve-Path is never applied to a missing output path.
+- Optional Python helpers still go through a runtime resolver and must never leak
+  Windows App Execution Alias exit code 9009 as repository verification result.
+- Real GitHub merge/commit/push/release is implemented via PowerShell + git + gh.
+- No real GitHub release may be claimed without persisted owner acceptance and
+  strict remote-effect evidence.

@@ -1,0 +1,14 @@
+{
+  "version": "V45.11",
+  "status": "PASS_LOCAL_REPOSITORY_CREATED_REMOTE_BLOCK_UNTIL_LIVE_EVIDENCE",
+  "fixes": [
+    "git bootstrap when .git missing",
+    "origin prompt or clean block",
+    "no null method crash",
+    "acceptance before real effects",
+    "no false pass without remote evidence"
+  ],
+  "real_github_release_done": false,
+  "remote_release_status": "BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE",
+  "created_utc": "2026-06-20T15:33:34.149898Z"
+}

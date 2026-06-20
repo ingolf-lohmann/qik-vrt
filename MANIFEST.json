@@ -1,0 +1,13 @@
+{
+  "name": "QIKVRT_V45_11",
+  "version": "QIKVRT V45.11",
+  "created_utc": "2026-06-20T15:53:58.235479+00:00",
+  "status": "LOCAL_REPOSITORY_FULLSTACK_CREATED",
+  "repair": "REMOTE_BRANCH_DIVERGENCE_REPAIR_OVERLAY_ON_ORIGIN_MAIN",
+  "real_github_release_done": false,
+  "remote_release_status": "BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE",
+  "entrypoint_local_verify": "QIKVRT_V45_11_RUN_LOCAL_VERIFY.cmd",
+  "entrypoint_build": "QIKVRT_V45_11_BUILD_ZIP_AND_HASH.cmd",
+  "entrypoint_real_github_release": "QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd",
+  "release_claim": false
+}

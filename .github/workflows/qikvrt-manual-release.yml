@@ -1,0 +1,31 @@
+name: QIKVRT V45.11 Manual Release Evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag'
+        required: true
+        default: 'v45.11'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Local verify without Python dependency
+        shell: pwsh
+        run: .\tools\qikvrt_local_verify_windows.ps1
+      - name: Build ZIP and hash
+        shell: pwsh
+        run: .\tools\qikvrt_build_zip_and_hash_windows.ps1 -Root . -OutDir .\dist
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qikvrt-v45-4-local-build
+          path: dist/*
