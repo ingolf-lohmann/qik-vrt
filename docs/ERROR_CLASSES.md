@@ -1,4 +1,4 @@
-# QIKVRT V45.11 Error Classes
+# QIKVRT V45.12 Error Classes
 
 ## WINDOWS_PYTHON_APP_EXECUTION_ALIAS_9009_UNHANDLED
 
@@ -119,7 +119,7 @@ Resolve existing Root literally. Normalize missing OutDir with
 ```
 
 
-## V45.11 additional repair class
+## V45.12 additional repair class
 
 ### REAL_GITHUB_WRAPPER_REQUIRES_EXTERNAL_ENV_WITHOUT_INTERACTIVE_ACCEPTANCE_PATH
 
@@ -130,7 +130,7 @@ A user-facing real GitHub release wrapper must not require the user to know and 
 Correction: the external environment variable remains a lower-level hard guard inside the automation script, but the official wrapper is responsible for setting it after successful acceptance persistence.
 
 
-## V45.11 additional reflexive error classes
+## V45.12 additional reflexive error classes
 
 ### ZIP_EXTRACTION_NOT_TREATED_AS_GIT_BOOTSTRAP_STATE
 
@@ -155,7 +155,7 @@ A real GitHub release wrapper cannot assume origin is configured after ZIP extra
 Severity: BLOCK
 
 
-## POWERSHELL_COMMON_FUNCTION_NOT_LOADED_BEFORE_USE_V45_11
+## POWERSHELL_COMMON_FUNCTION_NOT_LOADED_BEFORE_USE_V45_12
 
 Severity: BLOCK
 
@@ -164,13 +164,13 @@ A PowerShell entrypoint uses a shared helper function such as `Normalize-QikvrtP
 Correction: every PowerShell entrypoint must dot-source `tools/qikvrt_common_windows.ps1`, and `qikvrt_common_windows.ps1` must define every shared function used by build, verify, Git bootstrap, GitHub release and evidence-gate scripts. Missing helper functions are BLOCK, not CONTINUE and not PASS.
 
 
-## WINDOWS_COMPRESS_ARCHIVE_OUTPUT_PARENT_OR_LONG_PATH_FAILURE_V45_11
+## WINDOWS_COMPRESS_ARCHIVE_OUTPUT_PARENT_OR_LONG_PATH_FAILURE_V45_12
 
 Severity: BLOCK
 
 A Windows ZIP build must not fail because the build wrapper passes an overlong nested output path or because `Compress-Archive` opens a destination ZIP stream before the parent directory exists. Repository package names and generated ZIP filenames must remain short enough for default Windows PowerShell environments, and `dist` must be created before ZIP creation.
 
-Correction: V45.11 uses `QIKVRT_V45_11` as short root and `dist\QIKVRT_V45_11.zip` as short output artifact; the build script creates `OutDir` and ZIP parent before compression and excludes `dist` from staged package content.
+Correction: V45.12 uses `QIKVRT_V45_12` as short root and `dist\QIKVRT_V45_12.zip` as short output artifact; the build script creates `OutDir` and ZIP parent before compression and excludes `dist` from staged package content.
 
 
 ## QIKVRT-RQL-V45-009 POWERSHELL_5_1_PROCESSSTARTINFO_ARGUMENTLIST_NOT_AVAILABLE
@@ -191,3 +191,8 @@ ArgumentList usage in tools/*.ps1 => BLOCK
 A ZIP-extracted repository initialized a new local root commit and then attempted `git pull --ff-only` against an existing `origin/main`. This is a false Git strategy for publication kits. If a remote target branch exists, it must be used as canonical base before the QIKVRT overlay commit is created.
 
 Rule: `origin/<target>` exists => fetch remote base => restore QIKVRT overlay => commit overlay => verify `origin/<target>` is ancestor of `HEAD` => push/release.
+
+
+## QIKVRT-RQL-V45-012 TAG_FORCE_UPDATE_AND_RELEASE_ASSET_CLOBBER_NOT_ALLOWED
+
+A GitHub release automation must not report a frozen evidence state when it force-updates an existing tag or overwrites an existing release asset. V45.12 requires a new immutable tag for a new effect state or exact hash verification of already-existing release assets.

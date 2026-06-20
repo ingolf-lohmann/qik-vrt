@@ -1,5 +1,5 @@
 {
-  "version": "QIKVRT V45.11",
+  "version": "QIKVRT V45.12",
   "status": "PASS_LOCAL_PACKAGE_CREATED",
   "repair": "repository-local Git identity bootstrap after git init and before commit",
   "previous_failure": "V45.9 git commit failed because user.name/user.email were not configured",

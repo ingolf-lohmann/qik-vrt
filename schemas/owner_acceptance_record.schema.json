@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "QIKVRT Owner Acceptance Record V45.11",
+  "title": "QIKVRT Owner Acceptance Record V45.12",
   "type": "object",
   "required": [
     "status",
@@ -34,7 +34,7 @@
       "const": "JA, ICH AKZEPTIERE"
     },
     "version": {
-      "const": "V45.11"
+      "const": "V45.12"
     }
   }
 }

@@ -1,33 +1,45 @@
-# QIKVRT V45.11
+# QIKVRT V45.12
 
-Windows-safe local QIKVRT repository with interactive Product Owner acceptance, Git bootstrap, GitHub origin handling, remote-branch divergence repair, release asset build, GitHub Release creation, and remote-effect evidence gate.
+Evidence-freeze continuation after V45.11 real GitHub effect.
 
-## Why V45.11 exists
+## Local verify
 
-V45.10 reached the real GitHub integration path but failed when the freshly initialized local repository created an independent root commit and then tried `git pull --ff-only origin main`. Because `Goldkelch/qik-vrt` already had `origin/main`, that produced a divergent-history block.
-
-V45.11 fixes this by treating `origin/main` as the canonical base when it exists. The extracted ZIP content is backed up as an overlay, `origin/main` is checked out, the QIKVRT overlay is restored, and a normal non-divergent overlay commit is created on top of the remote branch. That means the later push can be a fast-forward push instead of a false or unsafe unrelated-history merge.
-
-## Run
+Run:
 
 ```cmd
-QIKVRT_V45_11_RUN_LOCAL_VERIFY.cmd
-QIKVRT_V45_11_BUILD_ZIP_AND_HASH.cmd
-QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd
+QIKVRT_V45_12_RUN_LOCAL_VERIFY.cmd
 ```
 
-Use exact confirmation:
+## Build ZIP and SHA256
+
+Run:
+
+```cmd
+QIKVRT_V45_12_BUILD_ZIP_AND_HASH.cmd
+```
+
+## Real GitHub evidence-freeze release
+
+Run:
+
+```cmd
+QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd
+```
+
+Then enter exactly:
 
 ```text
 JA, ICH AKZEPTIERE
 ```
 
-Use origin input:
+Origin example:
 
 ```text
 Goldkelch/qik-vrt
 ```
 
-## Gate rule
+## V45.12 freeze rule
 
-No local PASS can claim a real GitHub release. The remote release gate remains BLOCK until real GitHub evidence exists: branch SHA, pushed ref, tag, release id, release URL and release asset hash verification.
+V45.12 refuses force tag updates and release asset clobbering. If the remote tag already exists but points elsewhere, the run blocks. If a release asset already exists, it is downloaded and SHA256-verified instead of overwritten.
+
+Local package status: `PASS_LOCAL_ZIP_AND_HASH`. Remote status remains `BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE_FREEZE` until the real GitHub wrapper succeeds.

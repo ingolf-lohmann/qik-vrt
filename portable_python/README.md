@@ -1,6 +1,6 @@
 # Optional portable Python location
 
-V45.11 does not require Python for normal Windows local verification or real GitHub
+V45.12 does not require Python for normal Windows local verification or real GitHub
 automation. The primary path is PowerShell-only.
 
 If you still want Python helpers, place a portable Python runtime here:
@@ -12,7 +12,7 @@ If you still want Python helpers, place a portable Python runtime here:
 Then run:
 
 ```cmd
-QIKVRT_V45_11_RUN_PYTHON_VERIFY_OPTIONAL.cmd
+QIKVRT_V45_12_RUN_PYTHON_VERIFY_OPTIONAL.cmd
 ```
 
 The optional resolver must never expose Windows alias exit code 9009 as repository

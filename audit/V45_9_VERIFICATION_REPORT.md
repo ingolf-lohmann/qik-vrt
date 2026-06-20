@@ -1,4 +1,4 @@
-# QIKVRT V45.11 Verification Report
+# QIKVRT V45.12 Verification Report
 
 Timestamp UTC: 2026-06-20T15:45:34.589846+00:00
 
@@ -18,7 +18,7 @@ V45.8 failed on Windows PowerShell 5.1 at:
 $psi.ArgumentList.Add($a)
 ```
 
-V45.11 removes that dependency and uses a compatibility command-line builder assigned to:
+V45.12 removes that dependency and uses a compatibility command-line builder assigned to:
 
 ```powershell
 $psi.Arguments
@@ -28,6 +28,6 @@ $psi.Arguments
 
 - No direct Python dependency in official local verify path.
 - Trailing-backslash-safe CMD wrappers retained.
-- Short repository root retained: `QIKVRT_V45_11`.
+- Short repository root retained: `QIKVRT_V45_12`.
 - Acceptance must be persisted before real GitHub effect attempt.
 - Missing remote evidence cannot produce a green release status.

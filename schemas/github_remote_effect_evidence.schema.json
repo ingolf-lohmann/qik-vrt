@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "QIKVRT GitHub Remote Effect Evidence V45.11",
+  "title": "QIKVRT GitHub Remote Effect Evidence V45.12",
   "type": "object",
   "required": [
     "evidence_version",
@@ -21,7 +21,7 @@
   ],
   "properties": {
     "evidence_version": {
-      "const": "QIKVRT_GITHUB_REMOTE_EFFECT_EVIDENCE_V45_11"
+      "const": "QIKVRT_GITHUB_REMOTE_EFFECT_EVIDENCE_V45_12"
     },
     "status": {
       "const": "PASS"

@@ -1,30 +1,33 @@
 {
-  "evidence_version": "QIKVRT_GITHUB_REMOTE_EFFECT_EVIDENCE_V45_11",
+  "evidence_version": "QIKVRT_GITHUB_REMOTE_EFFECT_EVIDENCE_V45_12",
   "status": "PASS",
   "release_claim": true,
   "real_remote_effects": true,
-  "repository_url": "https://github.com/example/qikvrt",
+  "synthetic_example": true,
+  "no_force_tag_update": true,
+  "tag_force_updated": false,
+  "asset_clobbered": false,
+  "repository_url": "https://github.com/OWNER/REPO.git",
   "target_branch": "main",
-  "local_commit_sha": "0123456789abcdef0123456789abcdef01234567",
-  "remote_commit_sha": "0123456789abcdef0123456789abcdef01234567",
+  "local_commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "remote_commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "remote_tag_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "pushed_ref_verified": true,
-  "release_tag": "v45.11",
-  "release_id": "123456789",
-  "release_url": "https://github.com/example/qikvrt/releases/tag/v45.11",
-  "release_target_commitish": "0123456789abcdef0123456789abcdef01234567",
+  "tag_ref_verified": true,
+  "release_tag": "v45.12",
+  "release_id": 123,
+  "release_url": "https://github.com/OWNER/REPO/releases/tag/v45.12",
+  "release_target_commitish": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "acceptance": {
     "status": "ACCEPTED",
-    "persisted": true,
-    "accepted_by": "Ingolf Lohmann"
+    "persisted": true
   },
   "uploaded_assets": [
     {
-      "name": "QIKVRT_V45_11.zip",
-      "local_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "downloaded_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "name": "QIKVRT_V45_12.zip",
+      "local_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "downloaded_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "sha256_match": true
     }
-  ],
-  "synthetic_example": true,
-  "warning": "Example only. Must not be used as real release evidence."
+  ]
 }

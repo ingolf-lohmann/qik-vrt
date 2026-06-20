@@ -1,5 +1,5 @@
 {
-  "version": "QIKVRT V45.11",
+  "version": "QIKVRT V45.12",
   "timestamp_utc": "2026-06-20T15:46:17.841191+00:00",
   "status": "PASS_LOCAL_PACKAGE_BUILD_STATIC_VERIFICATION",
   "real_github_release_done": false,
@@ -7,7 +7,7 @@
   "repairs": [
     "PowerShell 5.1 compatible Invoke-QikvrtCapture using ProcessStartInfo.Arguments instead of ArgumentList",
     "Optional Python resolver also uses Invoke-QikvrtCapture and no longer calls ArgumentList",
-    "Lowercase tag/evidence references advanced to v45.11",
+    "Lowercase tag/evidence references advanced to v45.12",
     "V45.8 acceptance/origin prompt retained",
     "V45.8 short-root Windows path-length mitigation retained",
     "Real GitHub merge/commit/push/release remains evidence-gated"

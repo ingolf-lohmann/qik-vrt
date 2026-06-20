@@ -4,7 +4,7 @@ The Product Owner's usability acceptance test is authoritative.
 
 A machine-generated PASS is not sufficient if the observed user workflow fails.
 
-V45.11 specifically repairs the Windows local verification failure:
+V45.12 specifically repairs the Windows local verification failure:
 
 ```text
 Python was not found ... Exit code: 9009

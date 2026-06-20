@@ -1,4 +1,4 @@
-# QIKVRT V45.11 verification report
+# QIKVRT V45.12 verification report
 
 PASS: repository-local Git identity bootstrap functions are present.
 
