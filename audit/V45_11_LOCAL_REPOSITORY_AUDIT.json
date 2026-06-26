@@ -1,9 +1,0 @@
-{
-  "version": "QIKVRT V45.12",
-  "status": "PASS_LOCAL_BUILD_CREATED_REMOTE_DIVERGENCE_REPAIR",
-  "repair": "REMOTE_MAIN_AS_CANONICAL_BASE_BEFORE_OVERLAY_COMMIT",
-  "fixed_previous_failure": "git pull --ff-only failed because local root commit diverged from origin/main",
-  "real_github_release_done": false,
-  "remote_release_status": "BLOCK_UNTIL_LIVE_GITHUB_EVIDENCE",
-  "created_utc": "2026-06-20T16:20:00Z"
-}
