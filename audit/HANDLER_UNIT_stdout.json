@@ -1,0 +1,15 @@
+{
+  "license_header": {
+    "origin": "QIK-VRT self-contained GitHub REST/TCP/IP deployment package",
+    "rights_holder": "Ingolf Lohmann",
+    "project": "QIK-VRT",
+    "source_code_license": "Apache-2.0",
+    "non_source_code_license": "CC BY-NC 4.0",
+    "notice": "JSON cannot carry comments; this object is the machine-readable license header."
+  },
+  "gate": "HANDLER_UNIT_GATE",
+  "dry_run_ingest_pass": true,
+  "bad_hash_blocked": true,
+  "release_status_not_confirmed": true,
+  "pass": true
+}

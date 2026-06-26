@@ -1,0 +1,145 @@
+{
+  "license_header": {
+    "origin": "QIK-VRT self-contained GitHub REST/TCP/IP deployment package",
+    "rights_holder": "Ingolf Lohmann",
+    "project": "QIK-VRT",
+    "source_code_license": "Apache-2.0",
+    "non_source_code_license": "CC BY-NC 4.0",
+    "notice": "JSON cannot carry comments; this object is the machine-readable license header."
+  },
+  "artifact": "QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1",
+  "final_gate": "PASS",
+  "passed_acceptance_gate_count": 37,
+  "blocked_acceptance_gate_count": 0,
+  "test_inventory": {
+    "test_files_existing": 2,
+    "test_files_executed": 2,
+    "runtime_subtests_total": 15,
+    "runtime_subtests_passed": 15,
+    "runtime_subtests_blocked": 0,
+    "support_checks_total": 1,
+    "support_checks_passed": 1,
+    "support_checks_blocked": 0,
+    "all_acceptance_gates_total": 37,
+    "all_acceptance_gates_passed": 37,
+    "all_acceptance_gates_blocked": 0,
+    "runtime_subtests": [
+      {
+        "suite": "handler_unit",
+        "name": "dry_run_ingest_pass",
+        "status": "PASS"
+      },
+      {
+        "suite": "handler_unit",
+        "name": "bad_hash_blocked",
+        "status": "PASS"
+      },
+      {
+        "suite": "handler_unit",
+        "name": "release_status_not_confirmed",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "health",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "unauthorized_blocked",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "ingest_pass",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "verify_pass",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "stage_pass",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "release_status_pass",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "bad_hash_blocked",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "repository_dispatch_pass",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "payload_written",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "audit_exists",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "audit_contains_ingest",
+        "status": "PASS"
+      },
+      {
+        "suite": "tcpip_e2e",
+        "name": "audit_contains_block",
+        "status": "PASS"
+      }
+    ]
+  },
+  "unit_report": {
+    "gate": "HANDLER_UNIT_GATE",
+    "dry_run_ingest_pass": true,
+    "bad_hash_blocked": true,
+    "release_status_not_confirmed": true,
+    "pass": true
+  },
+  "e2e_report": {
+    "gate": "TCPIP_GITHUB_COMPATIBLE_API_E2E_GATE",
+    "health": [
+      200,
+      {
+        "status": "PASS",
+        "service": "QIKVRT GitHub-Compatible REST API Shim",
+        "tcpip": true,
+        "github_compatible_dispatch": true
+      }
+    ],
+    "unauthorized_status": 401,
+    "unauthorized_blocked": true,
+    "ingest_status": 202,
+    "ingest_pass": true,
+    "verify_status": 202,
+    "verify_pass": true,
+    "stage_status": 202,
+    "stage_pass": true,
+    "release_status": 202,
+    "release_status_pass": true,
+    "bad_hash_status": 400,
+    "bad_hash_blocked": true,
+    "repository_dispatch_status": 202,
+    "repository_dispatch_pass": true,
+    "payload_written": true,
+    "audit_exists": true,
+    "audit_contains_ingest": true,
+    "audit_contains_block": true,
+    "pass": true
+  },
+  "remote_github_persistence": "NOT_EXECUTED_IN_SANDBOX",
+  "remote_byte_exact_asset_hash": "NOT_CONFIRMED",
+  "live_github_actions_run": "REQUIRES_OWNER_UPLOAD_AND_DISPATCH"
+}

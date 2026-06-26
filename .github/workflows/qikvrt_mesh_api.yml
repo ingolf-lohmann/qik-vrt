@@ -1,0 +1,61 @@
+# SPDX-License-Identifier: Apache-2.0
+# Origin: QIK-VRT self-contained GitHub REST/TCP/IP deployment package
+# Rights-Holder: Ingolf Lohmann
+# Project: QIK-VRT
+# Source-Code-License: Apache-2.0
+# Non-Source-Code-License: CC BY-NC 4.0 for non-code repository materials
+# Notice: See QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .qikvrt/license/.
+name: QIKVRT Mesh API
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        required: true
+        type: choice
+        options: [ingest, verify, stage, release_status]
+      artifact_id:
+        required: true
+        type: string
+      payload_b64:
+        required: false
+        default: ''
+        type: string
+      expected_sha256:
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        required: true
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+  repository_dispatch:
+    types: [qikvrt_mesh_api]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  qikvrt-mesh-api:
+    runs-on: ubuntu-latest
+    env:
+      QIKVRT_OPERATION: ${{ github.event.inputs.operation || github.event.client_payload.operation }}
+      QIKVRT_ARTIFACT_ID: ${{ github.event.inputs.artifact_id || github.event.client_payload.artifact_id }}
+      QIKVRT_PAYLOAD_B64: ${{ github.event.inputs.payload_b64 || github.event.client_payload.payload_b64 }}
+      QIKVRT_EXPECTED_SHA256: ${{ github.event.inputs.expected_sha256 || github.event.client_payload.expected_sha256 }}
+      QIKVRT_DRY_RUN: ${{ github.event.inputs.dry_run || github.event.client_payload.dry_run || 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run QIKVRT API handler
+        run: python3 src/qikvrt_api_handler.py
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: qikvrt-api-audit
+          path: |
+            .qikvrt/api/audit/*.json
+            .qikvrt/api/audit/*.jsonl
+            .qikvrt/api/out/*
+          if-no-files-found: warn

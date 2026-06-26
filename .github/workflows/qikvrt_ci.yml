@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+# Origin: QIK-VRT self-contained GitHub REST/TCP/IP deployment package
+# Rights-Holder: Ingolf Lohmann
+# Project: QIK-VRT
+# Source-Code-License: Apache-2.0
+# Non-Source-Code-License: CC BY-NC 4.0 for non-code repository materials
+# Notice: See QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .qikvrt/license/.
+name: QIKVRT CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Python files
+        run: |
+          python3 -m py_compile src/qikvrt_api_handler.py src/qikvrt_github_api_shim.py scripts/qikvrt_api_client.py tests/test_handler_unit.py tests/test_tcpip_e2e.py
+      - name: Handler unit tests
+        run: python3 tests/test_handler_unit.py
+      - name: TCP/IP E2E tests
+        run: python3 tests/test_tcpip_e2e.py
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: qikvrt-ci-audit
+          path: audit/*.json
+          if-no-files-found: warn
