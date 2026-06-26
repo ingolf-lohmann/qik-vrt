@@ -1,12 +1,4 @@
 {
-  "license_header": {
-    "origin": "QIK-VRT V38 remote format repair and dispatch attestation kit",
-    "rights_holder": "Ingolf Lohmann",
-    "project": "QIK-VRT",
-    "source_code_license": "Apache-2.0",
-    "non_source_code_license": "CC BY-NC 4.0",
-    "notice": "V38 repairs remote file formatting and preserves short Windows paths."
-  },
   "gate": "TCPIP_GITHUB_COMPATIBLE_API_E2E_GATE",
   "health": [
     200,
