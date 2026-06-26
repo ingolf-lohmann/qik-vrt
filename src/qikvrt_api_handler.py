@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# Origin: QIK-VRT V38 remote format repair and dispatch attestation kit
-# Rights-Holder: Ingolf Lohmann
-# Project: QIK-VRT
-# Source-Code-License: Apache-2.0
-# Non-Source-Code-License: CC BY-NC 4.0 for non-code repository materials
-# Notice: See RIGHTS.md / QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .q/lic/.
-# SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
 import base64

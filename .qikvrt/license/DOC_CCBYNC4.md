@@ -1,5 +1,5 @@
 <!--
-Origin: QIK-VRT V38 remote format repair and dispatch attestation kit
+Origin: QIK-VRT V39.1 raw GitHub linecount hard gate kit
 Rights-Holder: Ingolf Lohmann
 Project: QIK-VRT
 Document-License: Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
