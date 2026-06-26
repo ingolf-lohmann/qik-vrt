@@ -1,10 +1,12 @@
 <!--
-Origin: QIK-VRT short-path Windows deploy kit
+Origin: QIK-VRT V38 remote format repair and dispatch attestation kit
 Rights-Holder: Ingolf Lohmann
 Project: QIK-VRT
 Document-License: Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 Source-Code-License-Reference: Apache-2.0 applies only to source-code files.
-Notice: See RIGHTS.md, LICENSE, NOTICE, and .q/lic/.
+Notice: See RIGHTS.md / QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .q/lic/.
 -->
 
-# Source-code license: Apache-2.0
+# Source-code license
+
+Apache-2.0 applies to source-code files.

@@ -1,10 +1,10 @@
 <!--
-Origin: QIK-VRT self-contained GitHub REST/TCP/IP deployment package
+Origin: QIK-VRT V38 remote format repair and dispatch attestation kit
 Rights-Holder: Ingolf Lohmann
 Project: QIK-VRT
 Document-License: Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 Source-Code-License-Reference: Apache-2.0 applies only to source-code files.
-Notice: See QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .qikvrt/license/.
+Notice: See RIGHTS.md / QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .q/lic/.
 -->
 
 # QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1
