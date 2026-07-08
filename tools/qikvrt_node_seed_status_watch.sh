@@ -24,7 +24,7 @@ UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 mkdir -p qikvrt/runtime/onboarding evidence/node_seed_link/runs
 cat > qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json <<JSON
 {
-  "qikvrt_event": "NODE_ACK_OF_SEED_ACCEPTANCE_4AU",
+  "qikvrt_event": "NODE_ACK_OF_SEED_ACCEPTANCE_4AV1",
   "guid": "$guid",
   "repository": "$source_repo",
   "seed_repository": "$seed_repo",
@@ -43,7 +43,7 @@ cat > qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json <<JSON
 JSON
 cat > "evidence/node_seed_link/runs/$RUN_ID.json" <<JSON
 {
-  "qikvrt_event": "NODE_SEED_LINK_CONFIRMED_4AU",
+  "qikvrt_event": "NODE_SEED_LINK_CONFIRMED_4AV1",
   "guid": "$guid",
   "repository": "$source_repo",
   "seed_repository": "$seed_repo",
