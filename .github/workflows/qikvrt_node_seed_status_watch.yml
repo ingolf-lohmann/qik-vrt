@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Ingolf Lohmann.
+name: QIKVRT Node Seed Status Watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  node-seed-status-watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Node Repository
+        uses: actions/checkout@v4
+      - name: Build ANSI C handshake core
+        run: gcc -std=c89 -Wall -Wextra -pedantic tools/qikvrt_handshake_core.c -o /tmp/qikvrt_handshake_core
+      - name: Run Node Seed Status Watch
+        run: sh tools/qikvrt_node_seed_status_watch.sh
+      - name: Commit Node Seed Acceptance Status
+        run: |
+          git config user.name "qikvrt-node-bot"
+          git config user.email "actions@github.com"
+          git add qikvrt/runtime/onboarding evidence || true
+          git commit -m "QIKVRT node seed status acknowledgement" || echo "QIKVRT_COMMIT no changes"
+          git push || echo "QIKVRT_PUSH no changes or no permission"
