@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-mkdir -p audit evidence/seed_mesh_audit/runs
+mkdir -p audit docs evidence/seed_mesh_audit/runs
 UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 RUN_ID="${QIKVRT_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)}"
 INDEX="registry/NODEMESH_INDEX.json"
@@ -34,6 +34,7 @@ cat > "$REPORT" <<MD
 
 The Seed reads only authorized known Node entries. The Seed writes only to the Seed repository. Nodes write only to their own Node repository. No global scanning, no self propagation, and no remote mutation without authorization are part of this audit surface.
 MD
+cp "$REPORT" docs/QIKVRT_AUDIT_EXPORT.md
 cat > audit/QIKVRT_MESH_AUDIT_SUMMARY.json <<JSON
 {
   "qikvrt_event": "SEED_MESH_AUDIT_EXPORT_4AU",
@@ -44,7 +45,8 @@ cat > audit/QIKVRT_MESH_AUDIT_SUMMARY.json <<JSON
   "node_count": $node_count,
   "active_count": $active_count,
   "stale_count": $stale_count,
-  "report_path": "$REPORT"
+  "report_path": "$REPORT",
+  "doc_report_path": "docs/QIKVRT_AUDIT_EXPORT.md"
 }
 JSON
 EVID="evidence/seed_mesh_audit/runs/$RUN_ID.json"
