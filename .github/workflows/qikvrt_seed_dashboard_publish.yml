@@ -30,7 +30,7 @@ jobs:
             echo "QIKVRT_NO_CHANGES"
             exit 0
           fi
-          git commit -m "QIKVRT 4AU1 Seed Dashboard Publish $QIKVRT_RUN_ID"
+          git commit -m "QIKVRT 4AV1 Seed Dashboard Publish $QIKVRT_RUN_ID"
           branch="${GITHUB_REF_NAME:-main}"
           n=1
           while [ "$n" -le 5 ]; do
