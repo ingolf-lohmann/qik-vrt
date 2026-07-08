@@ -1,0 +1,16 @@
+{
+  "spdx_license_identifier": "CC-BY-NC-4.0",
+  "copyright": "Copyright (c) 2026 Ingolf Lohmann",
+  "qikvrt_record_type": "seed_node_registry_entry",
+  "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "seed_repository": "Goldkelch/qik-vrt",
+  "status": "ACCEPTED",
+  "acceptance_mode": "AUTONOMOUS_SEED_WORKFLOW",
+  "boundaries": {
+    "authorized_manifest_graph_only": true,
+    "no_global_scanning": true,
+    "no_self_propagation": true,
+    "no_remote_mutation_without_authorization": true
+  }
+}
