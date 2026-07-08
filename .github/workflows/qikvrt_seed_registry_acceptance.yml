@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Ingolf Lohmann.
+name: QIKVRT Seed Registry Acceptance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  seed-registry-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Seed Repository
+        uses: actions/checkout@v4
+      - name: Build ANSI C handshake core
+        run: gcc -std=c89 -Wall -Wextra -pedantic tools/qikvrt_handshake_core.c -o /tmp/qikvrt_handshake_core
+      - name: Run Seed Registry Acceptance
+        run: sh tools/qikvrt_seed_registry_acceptance.sh
+      - name: Commit Seed Registry Results
+        run: |
+          git config user.name "qikvrt-seed-bot"
+          git config user.email "actions@github.com"
+          git add registry evidence ledger || true
+          git commit -m "QIKVRT seed registry autonomous acceptance" || echo "QIKVRT_COMMIT no changes"
+          git push || echo "QIKVRT_PUSH no changes or no permission"
