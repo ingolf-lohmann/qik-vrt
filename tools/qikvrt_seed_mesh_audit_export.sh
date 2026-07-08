@@ -7,6 +7,8 @@ INDEX="registry/NODEMESH_INDEX.json"
 STATUS="registry/NODEMESH_STATUS.json"
 [ -f "$INDEX" ] || { echo "BLOCK missing $INDEX"; exit 2; }
 [ -f "$STATUS" ] || { echo "BLOCK missing $STATUS"; exit 3; }
+REVALIDATION="registry/NODEMESH_REVALIDATION.json"
+[ -f "$REVALIDATION" ] || REVALIDATION=""
 node_count=$(sed -n 's/.*"node_count"[[:space:]]*:[[:space:]]*\([0-9][0-9]*\).*/\1/p' "$STATUS" | head -n 1)
 active_count=$(sed -n 's/.*"active_count"[[:space:]]*:[[:space:]]*\([0-9][0-9]*\).*/\1/p' "$STATUS" | head -n 1)
 stale_count=$(sed -n 's/.*"stale_count"[[:space:]]*:[[:space:]]*\([0-9][0-9]*\).*/\1/p' "$STATUS" | head -n 1)
@@ -29,6 +31,8 @@ cat > "$REPORT" <<MD
 - registry/NODEMESH_INDEX.json
 - registry/NODEMESH_STATUS.json
 - evidence/seed_mesh_maintenance/LATEST.json
+- registry/NODEMESH_REVALIDATION.json
+- evidence/seed_node_revalidation/LATEST.json
 
 ## Boundary statement
 
@@ -37,7 +41,7 @@ MD
 cp "$REPORT" docs/QIKVRT_AUDIT_EXPORT.md
 cat > audit/QIKVRT_MESH_AUDIT_SUMMARY.json <<JSON
 {
-  "qikvrt_event": "SEED_MESH_AUDIT_EXPORT_4AU",
+  "qikvrt_event": "SEED_MESH_AUDIT_EXPORT_4AV1",
   "generated_utc": "$UTC",
   "run_id": "$RUN_ID",
   "status": "PASS",
@@ -46,6 +50,7 @@ cat > audit/QIKVRT_MESH_AUDIT_SUMMARY.json <<JSON
   "active_count": $active_count,
   "stale_count": $stale_count,
   "report_path": "$REPORT",
+  "revalidation_path": "registry/NODEMESH_REVALIDATION.json",
   "doc_report_path": "docs/QIKVRT_AUDIT_EXPORT.md"
 }
 JSON
