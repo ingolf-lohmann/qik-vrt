@@ -14,7 +14,7 @@ RUN_ID="${QIKVRT_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)}"
 mkdir -p qikvrt/runtime/onboarding evidence/node_registration_renewal
 cat > qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json <<JSON
 {
-  "qikvrt_event": "NODE_REGISTRATION_RENEWAL_4AU",
+  "qikvrt_event": "NODE_REGISTRATION_RENEWAL_4AV1",
   "guid": "$guid",
   "repository": "$source_repo",
   "seed_repository": "$seed_repo",
@@ -33,7 +33,7 @@ cat > qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json <<JSON
 JSON
 cat > "evidence/node_registration_renewal/$RUN_ID.json" <<JSON
 {
-  "qikvrt_event": "NODE_REGISTRATION_RENEWAL_EVIDENCE_4AU",
+  "qikvrt_event": "NODE_REGISTRATION_RENEWAL_EVIDENCE_4AV1",
   "guid": "$guid",
   "repository": "$source_repo",
   "status": "PASS",
