@@ -1,33 +1,32 @@
 name: QIKVRT Node Seed Status Watch
-
 on:
   workflow_dispatch:
+    inputs:
+      run_id:
+        description: QIKVRT run id
+        required: false
+        type: string
   schedule:
     - cron: '47 */6 * * *'
-
 permissions:
   contents: write
-
-defaults:
-  run:
-    shell: sh
-
 jobs:
-  node-seed-status-watch:
+  run:
     runs-on: ubuntu-latest
+    env:
+      QIKVRT_RUN_ID: ${{ inputs.run_id || github.run_id }}
     steps:
-      - name: Checkout node repository
-        uses: actions/checkout@v4
-      - name: Run node seed status watch
+      - uses: actions/checkout@v4
+      - name: Run QIKVRT Node Seed Status Watch
         run: sh tools/qikvrt_node_seed_status_watch.sh
-      - name: Persist node seed status outputs
+      - name: Commit QIKVRT outputs
         run: |
-          git config user.name "qikvrt-actions"
-          git config user.email "qikvrt-actions@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add qikvrt/runtime/onboarding evidence || true
           if git diff --cached --quiet; then
-            echo "QIKVRT_NODE_SEED_STATUS_COMMIT no_changes"
+            echo "QIKVRT_NO_CHANGES"
           else
-            git commit -m "QIKVRT autonomous node ack of seed acceptance"
+            git commit -m "QIKVRT 4AU QIKVRT Node Seed Status Watch $QIKVRT_RUN_ID"
             git push
           fi
