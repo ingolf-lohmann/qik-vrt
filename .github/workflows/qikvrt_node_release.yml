@@ -1,0 +1,73 @@
+name: QIKVRT Node Git Tag Release
+
+on:
+  push:
+    tags:
+      - 'v2.13.4-node'
+      - 'v2.13.4-node-r'
+      - 'v2.13.4-node-*'
+      - 'qikvrt-node-*'
+
+permissions:
+  contents: write
+
+jobs:
+  qikvrt-node-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tagged node repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate node role and committed release artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f qikvrt/config/ROLE.json
+          grep -q '"role"[[:space:]]*:[[:space:]]*"node"' qikvrt/config/ROLE.json
+          test -f SHA256SUMS.txt
+          test -f .gitattributes
+          test -f tools/gh_deploy.ps1
+          test -f tools/gh_deploy.sh
+          test -f release/artifacts/qv2134_node.zip
+          test -f release/artifacts/qv2134_node.zip.sha256
+          test -f release/artifacts/NODE_RELEASE_ARTIFACT.json
+
+      - name: Verify committed local artifact hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          ASSET=release/artifacts/qv2134_node.zip
+          EXPECTED=$(awk '{print $1}' release/artifacts/qv2134_node.zip.sha256)
+          ACTUAL=$(sha256sum "$ASSET" | awk '{print $1}')
+          test "$EXPECTED" = "$ACTUAL"
+          cp "$ASSET" qv2134_node.zip
+          cp release/artifacts/qv2134_node.zip.sha256 qv2134_node.zip.sha256
+          {
+            echo "QIKVRT node release uploaded from committed local artifact."
+            echo ""
+            echo "Tag: ${GITHUB_REF_NAME}"
+            echo "Commit: ${GITHUB_SHA}"
+            echo "Asset: qv2134_node.zip"
+            echo "SHA256: ${ACTUAL}"
+            echo ""
+            echo "Hash parity policy: GitHub Actions uploads the committed artifact verbatim; no server-side ZIP regeneration."
+            echo "Local direct GitHub Release REST create/upload is intentionally disabled in 2.13.4R."
+          } > RELEASE_NOTES.md
+
+      - name: Create or update GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          TITLE="QIKVRT V2.13.4R node repository"
+          ASSET=qv2134_node.zip
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ASSET" "$ASSET.sha256" --clobber
+            gh release edit "$TAG" --title "$TITLE" --notes-file RELEASE_NOTES.md
+          else
+            gh release create "$TAG" "$ASSET" "$ASSET.sha256" --title "$TITLE" --notes-file RELEASE_NOTES.md
+          fi

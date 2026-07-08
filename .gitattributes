@@ -1,0 +1,13 @@
+* text=auto eol=lf
+# QIKVRT 2.13.4R Git archive export policy.
+# Runtime evidence and local deploy state are intentionally excluded from release assets.
+.gitignore export-ignore
+.gitattributes export-ignore
+.git/** export-ignore
+qikvrt/runtime/deploy/** export-ignore
+qikvrt/runtime/bootstrap/** export-ignore
+qikvrt/runtime/win_acceptance/** export-ignore
+qikvrt/runtime/setup/** export-ignore
+package_staging/** export-ignore
+build/** export-ignore
+release/artifacts/** export-ignore

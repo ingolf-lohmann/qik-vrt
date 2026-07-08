@@ -1,0 +1,15 @@
+{
+  "version": "2.6",
+  "bootstrap_services": [
+    "verify",
+    "multicast",
+    "ontology",
+    "governance",
+    "active",
+    "watchdog"
+  ],
+  "guid_path": "qikvrt/runtime/REPOSITORY_GUID.txt",
+  "ledger_path": "qikvrt/runtime/BOOTSTRAP_LEDGER.jsonl",
+  "network_login": "AUTHORIZED_MANIFEST_ONLY",
+  "remote_side_effects_without_authorization": false
+}

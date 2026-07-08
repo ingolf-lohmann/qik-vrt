@@ -1,0 +1,13 @@
+{
+  "version": "2.13.4",
+  "gate": "WINDOWS_ADMIN_CHOCO_BOOTSTRAP",
+  "status": "required",
+  "requirements": [
+    "admin_before_dependency_install",
+    "license_acceptance_persisted_before_choco",
+    "guid_persisted_before_choco",
+    "chocolatey_installed_or_available",
+    "zig_resolved_via_chocolatey",
+    "no_winget_dependency_for_windows_compiler_bootstrap"
+  ]
+}

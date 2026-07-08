@@ -1,0 +1,13 @@
+{
+  "manifest": "QIKVRT_MUTABLE_STATE_INTEGRITY_MANIFEST",
+  "version": "2.13.4",
+  "role": "node",
+  "mutable_paths": [
+    "qikvrt/config/LICENSE_ACCEPTED.json",
+    "qikvrt/config/REPOSITORY_TARGET.json",
+    "qikvrt/config/ONBOARDING.json",
+    "qikvrt/runtime/**"
+  ],
+  "immutable_hash_file": "SHA256SUMS.txt",
+  "mutable_license_runtime_acceptance_ledger_excluded_from_sha256sums": true
+}

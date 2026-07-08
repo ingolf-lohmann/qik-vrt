@@ -1,0 +1,37 @@
+{
+  "version": "2.2",
+  "status": "ACTIVE",
+  "gates": [
+    {
+      "id": "MULTICAST_MODEL_PRESENT",
+      "requires": [
+        "sender",
+        "payload",
+        "recipient_group",
+        "delivery",
+        "feedback",
+        "traceability"
+      ]
+    },
+    {
+      "id": "ONTOLOGY_CHAIN_PRESENT",
+      "requires": [
+        "difference",
+        "information",
+        "causality",
+        "responsibility",
+        "verification",
+        "feedback",
+        "traceability"
+      ]
+    },
+    {
+      "id": "NO_FINAL_PASS_WITHOUT_MULTICAST_ONTOLOGY",
+      "rule": "No final pass unless multicast and ontology selftests pass."
+    },
+    {
+      "id": "NO_METAPHOR_ONLY_MULTICAST",
+      "rule": "Multicast must be implemented as a checkable delivery model, not only named in prose."
+    }
+  ]
+}

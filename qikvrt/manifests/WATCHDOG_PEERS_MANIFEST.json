@@ -1,0 +1,28 @@
+{
+  "manifest_id": "WATCHDOG_PEERS_MANIFEST",
+  "version": "2.6",
+  "mode": "reference_selftest_only",
+  "peers": [
+    {
+      "node_id": "repo-alpha",
+      "opt_in": true,
+      "authorized": true,
+      "expected_interval_seconds": 300,
+      "location_hint": "lab-A"
+    },
+    {
+      "node_id": "repo-beta",
+      "opt_in": true,
+      "authorized": true,
+      "expected_interval_seconds": 300,
+      "location_hint": "lab-B"
+    },
+    {
+      "node_id": "repo-gamma",
+      "opt_in": true,
+      "authorized": true,
+      "expected_interval_seconds": 300,
+      "location_hint": "privacy-preserved-zone"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "gate": "LICENSE_COPYRIGHT_VISIBILITY_GATE",
+  "version": "2.13.4",
+  "author": "Ingolf Lohmann",
+  "rights_holder": "Ingolf Lohmann or a legal entity designated by him",
+  "software_license": "Apache-2.0",
+  "non_software_license": "CC-BY-NC-ND-4.0",
+  "requires_source_headers": true,
+  "requires_document_headers_and_footers": true,
+  "requires_delivery_split": true,
+  "blocks_final_pass_if_missing": true
+}

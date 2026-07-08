@@ -1,0 +1,22 @@
+{
+  "gate": "SHORT_PATH_PACKAGE_COMPATIBILITY",
+  "version": "2.10.3",
+  "archive_basename": "qv211.zip",
+  "max_archive_basename_len": 16,
+  "max_internal_path_len": 80,
+  "forbidden": [
+    "long archive basename",
+    "wrapper directory",
+    "absolute paths",
+    "drive letters",
+    "parent traversal"
+  ],
+  "required": [
+    "README.md at root",
+    "Makefile at root",
+    "SHA256SUMS.txt at root",
+    "path length evidence",
+    "no final pass without runner evidence"
+  ],
+  "status": "PASS_IN_SANDBOX_PENDING_EXTERNAL_WINDOWS_RUNNER"
+}

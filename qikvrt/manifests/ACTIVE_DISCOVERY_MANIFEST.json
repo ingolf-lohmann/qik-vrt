@@ -1,0 +1,11 @@
+{
+  "repository_id": "QIKVRT_VERFASSUNG_DER_NACHVOLLZIEHBARKEIT",
+  "version": "2.6",
+  "artifact_name": "QIKVRT_VERFASSUNG_DER_NACHVOLLZIEHBARKEIT_V2_4_ANSI_C_POSIX_AUTHORIZED_ACTIVE_LAYER_REPOSITORY.zip",
+  "opt_in_active_layer": true,
+  "authorization_scope": "local-verification-and-proposal-generation-only",
+  "network_policy": "no-unauthorized-scanning-no-self-propagation",
+  "boundary_statement": "not a surveillance instrument; not an official legal act; not a third-party accusation instrument",
+  "verification_command": "make all test && ./build/qikvrt_verify --verify-repo .",
+  "nonregression_anchor": "V2.3 plus active-layer gates"
+}
