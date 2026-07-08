@@ -8,4 +8,4 @@ Initial offers:
 4. Managed Seed Registry
 5. Verified Repository Badge
 
-This document is a commercial readiness draft, not a legal or compliance certification.
+This document is a multi-node readiness draft, not a legal or compliance certification.
