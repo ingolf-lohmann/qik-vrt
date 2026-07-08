@@ -1,0 +1,19 @@
+{
+  "manifest": "GITHUB_SEED_DISCOVERY_MANIFEST",
+  "version": "2.9",
+  "seed_repository": "https://github.com/Goldkelch/qik-vrt",
+  "seed_kind": "single_initial_seed",
+  "service_policy": "no service except seed",
+  "repository_guid_required": true,
+  "peer_manifest_required": true,
+  "graph_reachability_required": true,
+  "watchdog_keepalive_required": true,
+  "peer_requestable_sanity_required": true,
+  "security_boundaries": {
+    "no_global_address_scanning": true,
+    "no_unauthorized_probing": true,
+    "no_self_propagation": true,
+    "no_surveillance_instrument": true,
+    "no_remote_mutation_without_authorization": true
+  }
+}

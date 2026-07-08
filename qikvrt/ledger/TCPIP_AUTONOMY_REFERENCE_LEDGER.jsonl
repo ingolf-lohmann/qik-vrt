@@ -1,0 +1,2 @@
+{"event":"TCPIP_AUTONOMY_SELFTEST_REFERENCE","transport":"loopback_tcp","request":"QIKVRT_SELFTEST_SANITY","authorized":true,"trace":true,"result":"PASS","remote_mutation":false}
+{"event":"DAMAGE_CONTAINMENT_REFERENCE","node":"repo-beta","reason":"WATCHDOG_SELFTEST_FAILED_OR_MISSING","status":"QUARANTINE_REQUIRED_PENDING_REVIEW","authorized_multicast_notice":true,"remote_mutation":false,"trace":true}

@@ -1,0 +1,10 @@
+{
+  "manifest": "QIKVRT_NODE_ONBOARDING_MANIFEST",
+  "version": "2.11.8",
+  "node_profile": "generic-qikvrt-node",
+  "operator_alias": "optional-not-node-identity",
+  "guid_source": "qikvrt/runtime/REPOSITORY_GUID.txt",
+  "seed": "https://github.com/Goldkelch/qik-vrt",
+  "privacy": "sanitize personal paths before release evidence",
+  "runtime_selftest": "--selftest-node-onboarding"
+}

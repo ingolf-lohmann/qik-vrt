@@ -1,0 +1,71 @@
+# QIKVRT Artifact Header
+# Version: 2.13.4
+# Author / Urheber: Ingolf Lohmann
+# Rights holder / Rechteinhaber: Ingolf Lohmann or a legal entity designated by him.
+# License: Software source code licensed under Apache-2.0 unless otherwise stated.
+# Non-software texts/docs: CC BY-NC-ND 4.0 unless otherwise stated.
+# Traceability: QIKVRT Verfassung der Nachvollziehbarkeit; NO_TRACEABILITY_NO_FINAL_PASS.
+
+openapi: 3.0.3
+info:
+  title: QIKVRT GitHub-Compatible Repository API
+  version: 1.0.0
+  description: >
+    Self-contained QIK-VRT repository API. Locally, the TCP/IP shim exposes
+    GitHub-compatible REST paths over TCP/IP. On GitHub, the repository exposes
+    the same operational semantics through GitHub REST workflow_dispatch and
+    repository_dispatch into .github/workflows/qikvrt_mesh_api.yml.
+servers:
+  - url: http://127.0.0.1:8766
+    description: Local TCP/IP E2E test shim
+  - url: https://api.github.com
+    description: GitHub REST API
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        '200': { description: API shim alive. }
+  /repos/{owner}/{repo}/actions/workflows/qikvrt_mesh_api.yml/dispatches:
+    post:
+      operationId: workflowDispatch
+      summary: GitHub-compatible workflow_dispatch endpoint.
+      parameters:
+        - { name: owner, in: path, required: true, schema: { type: string } }
+        - { name: repo, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ref, inputs]
+              properties:
+                ref: { type: string }
+                inputs:
+                  type: object
+                  required: [operation, artifact_id]
+                  properties:
+                    operation: { type: string, enum: [ingest, verify, stage, release_status] }
+                    artifact_id: { type: string }
+                    payload_b64: { type: string }
+                    expected_sha256: { type: string }
+                    dry_run: { type: string, enum: ['true', 'false'], default: 'true' }
+      responses:
+        '202': { description: Local shim accepted and executed dispatch. }
+        '200': { description: GitHub dispatch accepted with workflow run details when enabled. }
+        '204': { description: GitHub dispatch accepted. }
+        '400': { description: Invalid dispatch. }
+        '401': { description: Unauthorized. }
+  /repos/{owner}/{repo}/dispatches:
+    post:
+      operationId: repositoryDispatch
+      summary: GitHub-compatible repository_dispatch endpoint.
+      responses:
+        '202': { description: Local shim accepted and executed dispatch. }
+        '204': { description: GitHub repository_dispatch accepted. }
+components:
+  securitySchemes:
+    bearerToken: { type: http, scheme: bearer }
+security:
+  - bearerToken: []

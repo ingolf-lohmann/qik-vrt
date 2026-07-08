@@ -1,0 +1,20 @@
+{
+  "gate": "LIVE_EVIDENCE_CLOSURE",
+  "version": "2.11.1",
+  "seed": "https://github.com/Goldkelch/qik-vrt",
+  "requires": [
+    "GITHUB_WEB_VISIBILITY_PASS",
+    "RAW_MANIFEST_REFERENCE_PASS",
+    "REST_TCPIP_MANIFEST_REFERENCE_PASS",
+    "EXTERNAL_LIVE_FETCH_REQUIRED",
+    "NO_FALSE_LIVE_PASS"
+  ],
+  "blocks": [
+    "FULL_LIVE_PASS_WITHOUT_C_POSIX_FETCH",
+    "ARTICLE_PROPERTY_CLAIM_WITHOUT_EVIDENCE",
+    "GLOBAL_ADDRESS_SCAN",
+    "UNAUTHORIZED_PROBING",
+    "SELF_PROPAGATION"
+  ],
+  "status": "ENFORCED"
+}

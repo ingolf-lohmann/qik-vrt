@@ -1,0 +1,11 @@
+{
+  "gate": "GT",
+  "version": "2.13.4",
+  "role": "node",
+  "status": "TOKEN_HEADER_SANITIZATION_REQUIRED",
+  "token_persisted": false,
+  "control_characters_removed_before_header": true,
+  "token_capture_in_deploy_process": true,
+  "cmd_for_f_token_capture_removed": true,
+  "empty_token_blocks_remote_mutation": true
+}

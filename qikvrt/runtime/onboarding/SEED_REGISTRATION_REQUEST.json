@@ -1,0 +1,15 @@
+﻿{
+    "version":  "2.13.4",
+    "event":  "QIKVRT_NODE_ONBOARDING_REQUEST",
+    "role":  "node",
+    "repository_guid":  "79d56e97-62b0-4fda-9f4f-5afc0fc4fb6c",
+    "source_repository":  "ingolf-lohmann/qik-vrt",
+    "seed_repository":  "Goldkelch/qik-vrt",
+    "seed_url":  "https://github.com/Goldkelch/qik-vrt",
+    "automatic_after_setup":  true,
+    "no_further_human_machine_interaction_after_setup":  true,
+    "authorized_manifest_graph_only":  true,
+    "no_global_scanning":  true,
+    "no_self_propagation":  true,
+    "no_remote_mutation_without_authorization":  true
+}

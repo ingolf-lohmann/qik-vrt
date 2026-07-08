@@ -1,0 +1,3 @@
+{"event": "HEARTBEAT", "node_id": "repo-alpha", "status": "NODE_ONLINE", "last_seen_epoch": 1000, "observed_epoch": 1100, "trace": "TRACE-WD-001", "location_hint": "lab-A"}
+{"event": "NODE_LOSS_DETECTED", "node_id": "repo-beta", "status": "NODE_LOST_PENDING_REVIEW", "last_seen_epoch": 1000, "observed_epoch": 1600, "lost_since_epoch": 1301, "trace": "TRACE-WD-002", "location_hint": "lab-B"}
+{"event": "HEARTBEAT", "node_id": "repo-gamma", "status": "NODE_ONLINE", "last_seen_epoch": 1000, "observed_epoch": 1200, "trace": "TRACE-WD-003", "location_hint": "privacy-preserved-zone"}

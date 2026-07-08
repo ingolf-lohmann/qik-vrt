@@ -1,0 +1,14 @@
+{
+  "gate": "WINDOWS_COMPILER_BOOTSTRAP_DISCOVERY_REPAIR",
+  "version": "2.11.3",
+  "defect_class": "WINDOWS_COMPILER_INSTALLED_BUT_NOT_DISCOVERED_AFTER_WINGET",
+  "requirements": [
+    "PowerShell 5.1 compatibility",
+    "no POSIX tools required",
+    "runtime compiler dependency bootstrap through Windows package mechanisms",
+    "known-path compiler discovery after winget/choco",
+    "full compiler path execution when PATH refresh is insufficient",
+    "no false C selftest PASS without build\\qikvrt_verify.exe"
+  ],
+  "status": "ENFORCED"
+}

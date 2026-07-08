@@ -1,0 +1,11 @@
+{
+  "gate": "BOUNDARY_GATES",
+  "checks": [
+    "NO_OFFICIAL_LEGAL_EFFECT_CLAIM",
+    "NO_SURVEILLANCE_INSTRUMENT",
+    "NO_SPECIFIC_THIRD_PARTY_GUILT_CLAIM",
+    "PRIVACY_AND_DATA_PROTECTION_PRESENT",
+    "SECURITY_AND_MISUSE_LIMIT_PRESENT"
+  ],
+  "rule": "No final pass without boundary gates. No final pass without traceability."
+}

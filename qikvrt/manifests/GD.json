@@ -1,0 +1,18 @@
+{
+  "id": "GD",
+  "version": "2.13.4",
+  "de": "Generisches GitHub Deployment ohne hart verdrahteten Owner/Repo",
+  "en": "Generic GitHub deployment without hard-coded owner/repo",
+  "scripts": [
+    "QIKVRT.cmd",
+    "QIKVRT.sh",
+    "tools/gh_deploy.ps1",
+    "tools/gh_deploy.sh"
+  ],
+  "runtime_resolution": [
+    "QIKVRT_GITHUB_OWNER/QIKVRT_GITHUB_REPO",
+    "git remote origin",
+    "interactive prompt"
+  ],
+  "remote_mutation_requires": "GITHUB_TOKEN"
+}

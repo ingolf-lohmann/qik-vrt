@@ -1,0 +1,22 @@
+{
+  "evidence": "LIVE_GITHUB_WEB_REFERENCE",
+  "version": "2.11.1",
+  "seed": "https://github.com/Goldkelch/qik-vrt",
+  "status_markers": [
+    "GITHUB_WEB_VISIBILITY_PASS",
+    "RAW_MANIFEST_REFERENCE_PASS",
+    "REST_TCPIP_MANIFEST_REFERENCE_PASS",
+    "SANDBOX_DNS_BLOCK_RECORDED",
+    "EXTERNAL_LIVE_FETCH_REQUIRED",
+    "NO_FALSE_LIVE_PASS"
+  ],
+  "web_observation": "GitHub page visible as public template with 149 commits; MANIFEST.json and QIKVRT_SELF_CONTAINED...MANIFEST.json visible through GitHub/raw references.",
+  "sandbox_runtime_network": "C/POSIX live curl/git fetch blocked by DNS in assistant sandbox; external runner required.",
+  "claim_boundary": "no full live final pass without external C/POSIX fetch evidence",
+  "assistant_sandbox_live_fetch_attempt": {
+    "command": "tools/gh_live_fetch.sh .",
+    "exit_code": 6,
+    "stderr": "curl: (6) Could not resolve host: raw.githubusercontent.com",
+    "status": "SANDBOX_DNS_BLOCK_RECORDED"
+  }
+}
