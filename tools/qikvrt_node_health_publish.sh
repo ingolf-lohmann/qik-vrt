@@ -16,7 +16,7 @@ RUN_ID="${QIKVRT_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)}"
 mkdir -p qikvrt/runtime/onboarding evidence/node_health
 cat > qikvrt/runtime/onboarding/NODE_HEALTH.json <<JSON
 {
-  "qikvrt_event": "NODE_HEALTH_HEARTBEAT_4AU",
+  "qikvrt_event": "NODE_HEALTH_HEARTBEAT_4AV1",
   "guid": "$guid",
   "repository": "$source_repo",
   "seed_repository": "$seed_repo",
@@ -36,7 +36,7 @@ cat > qikvrt/runtime/onboarding/NODE_HEALTH.json <<JSON
 JSON
 cat > "evidence/node_health/$RUN_ID.json" <<JSON
 {
-  "qikvrt_event": "NODE_HEALTH_EVIDENCE_4AU",
+  "qikvrt_event": "NODE_HEALTH_EVIDENCE_4AV1",
   "guid": "$guid",
   "repository": "$source_repo",
   "status": "PASS",
