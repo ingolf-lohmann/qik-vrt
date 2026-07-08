@@ -1,9 +1,24 @@
 {
-  "spdx_license_identifier": "CC-BY-NC-4.0",
-  "copyright": "Copyright (c) 2026 Ingolf Lohmann",
-  "qikvrt_nodemesh_index_version": "1.0",
+  "qikvrt_event": "NODEMESH_INDEX_AGGREGATE",
+  "generated_utc": "2026-07-08T16:36:19Z",
   "seed_repository": "Goldkelch/qik-vrt",
+  "node_count": 1,
   "nodes": [
-    { "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe", "repository": "ingolf-lohmann/qik-vrt", "status": "ACCEPTED" }
-  ]
+    {
+      "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "seed_repository": "Goldkelch/qik-vrt",
+      "node_branch": "main",
+      "status": "ACCEPTED",
+      "registry_path": "registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
+      "node_request_url": "https://raw.githubusercontent.com/ingolf-lohmann/qik-vrt/qikvrt-node/v2.13.4-node-r/qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
+    }
+  ],
+  "boundaries": {
+    "seed_index_only_reads_authorized_known_nodes": true,
+    "seed_writes_only_to_seed_repository": true,
+    "no_global_scanning": true,
+    "no_self_propagation": true,
+    "no_remote_mutation_without_authorization": true
+  }
 }
