@@ -13,8 +13,20 @@ if [ ! -f "$KNOWN" ]; then
   exit 81
 fi
 mkdir -p registry/nodes evidence/seed_acceptance ledger tmp
-while IFS='\t' read -r guid source_repo seed_repo request_url; do
-  case "$guid" in ""|\#*) continue ;; esac
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in ""|\#*) continue ;; esac
+  guid=$(printf '%s
+' "$line" | cut -f1)
+  source_repo=$(printf '%s
+' "$line" | cut -f2)
+  seed_repo=$(printf '%s
+' "$line" | cut -f3)
+  request_url=$(printf '%s
+' "$line" | cut -f4-)
+  if [ -z "$guid" ] || [ -z "$source_repo" ] || [ -z "$seed_repo" ] || [ -z "$request_url" ]; then
+    echo "QIKVRT_SEED_ACCEPTANCE BLOCK malformed known-node line" >&2
+    exit 82
+  fi
   echo "QIKVRT_SEED_ACCEPTANCE CHECK $guid $source_repo"
   curl -fsSL "$request_url" -o tmp/seed_registration_request.json
   "$CORE" seed "$guid" "$source_repo" "$seed_repo" tmp/seed_registration_request.json
