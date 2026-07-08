@@ -1,0 +1,10 @@
+﻿{
+    "qikvrt_version":  "2.13.4R",
+    "role":  "node",
+    "tag":  "v2.13.4-node-r",
+    "artifact":  "release/artifacts/qv2134_node.zip",
+    "sha256":  "fb50b526976fae31d21b82e54b4f8187f70ff8d9113554fb4db45329cb284574",
+    "hash_parity_policy":  "target GitHub Actions uploads this committed artifact verbatim; no server-side ZIP regeneration",
+    "local_release_rest_api":  "disabled",
+    "generated_utc":  "2026-07-08T02:15:18Z"
+}
