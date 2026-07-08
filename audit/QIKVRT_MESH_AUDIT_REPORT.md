@@ -1,7 +1,7 @@
 # QIK-VRT Mesh Audit Report
 
-- generated_utc: 2026-07-08T17:09:14Z
-- run_id: 4AU_20260708T170628Z_362577
+- generated_utc: 2026-07-08T17:43:55Z
+- run_id: 4AV1_20260708T174034Z_709544
 - seed_repository: Goldkelch/qik-vrt
 - node_count: 1
 - active_count: 1
@@ -12,6 +12,8 @@
 - registry/NODEMESH_INDEX.json
 - registry/NODEMESH_STATUS.json
 - evidence/seed_mesh_maintenance/LATEST.json
+- registry/NODEMESH_REVALIDATION.json
+- evidence/seed_node_revalidation/LATEST.json
 
 ## Boundary statement
 
