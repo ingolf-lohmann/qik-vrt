@@ -1,0 +1,20 @@
+{
+  "version": "QIKVRT_V2_13_4AX3",
+  "artifact": "PUBLIC_HOMEPAGE_UX_POLISH_COGNITION_CONSOLE_TOKEN_HEADER_FIX",
+  "created_utc": "20260708T184056Z",
+  "homepage_path": "docs/index.html",
+  "reference_run": "4AV1_20260708T174034Z_709544",
+  "status": "PASS_BUILT",
+  "boundaries": {
+    "no_embedded_token": true,
+    "static_site_no_shared_secret": true,
+    "github_models_by_user_token_or_future_proxy": true,
+    "no_legal_certification_claim": true
+  },
+  "qikvrt_version": "V2.13.4AX3",
+  "fix": "4AX2_HTTP_AUTH_HEADER_ERROR_TOKEN_HANDOFF_FIX",
+  "no_powershell": true,
+  "no_ps1": true,
+  "no_git_command_path": true,
+  "no_embedded_token": true
+}
