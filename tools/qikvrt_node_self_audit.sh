@@ -12,7 +12,7 @@ status="PASS"
 [ "$ack" = "true" ] || status="BLOCK"
 cat > "evidence/node_self_audit/$RUN_ID.json" <<JSON
 {
-  "qikvrt_event": "NODE_SELF_AUDIT_4AU",
+  "qikvrt_event": "NODE_SELF_AUDIT_4AV1",
   "generated_utc": "$UTC",
   "run_id": "$RUN_ID",
   "status": "$status",
