@@ -1,0 +1,11 @@
+# Volatile Python/runtime outputs. These are never repository integrity inputs.
+__pycache__/
+*.py[cod]
+unit_state/
+e2e_state/
+logs/
+.qikvrt/runtime/
+.qikvrt/evidence/
+.qikvrt/api/
+.qikvrt-integrity.lock
+.*.qikvrt-integrity.tmp

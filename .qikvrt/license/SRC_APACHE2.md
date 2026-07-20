@@ -1,12 +1,10 @@
-<!--
-Origin: QIK-VRT V39.1 raw GitHub linecount hard gate kit
-Rights-Holder: Ingolf Lohmann
-Project: QIK-VRT
-Document-License: Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
-Source-Code-License-Reference: Apache-2.0 applies only to source-code files.
-Notice: See RIGHTS.md / QIKVRT_LICENSE_AND_RIGHTS.md, LICENSE, NOTICE, and .q/lic/.
--->
+# Historical Apache-2.0 compatibility notice
 
-# Source-code license
+This filename is retained so earlier artifacts and references remain
+interpretable. It does not define the current source-code default.
 
-Apache-2.0 applies to source-code files.
+Versions and files validly received under Apache-2.0 retain that license and
+the exact text in `LICENSES/Apache-2.0.txt`. Current QIK-VRT-controlled source
+code carrying the new notice uses `PolyForm-Noncommercial-1.0.0`; see
+`.qikvrt/license/SRC_POLYFORM_NONCOMMERCIAL.md` and
+`LICENSE_TRANSITION.md`.

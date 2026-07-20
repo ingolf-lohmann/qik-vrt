@@ -1,12 +1,12 @@
 ﻿# QIK-VRT 4AV2A Open Multi-Node Release Freeze HTA Token Fix
 
-Role: node
+Role: seed
 
-Repository: `ingolf-lohmann/qik-vrt`
+Repository: `Goldkelch/qik-vrt`
 
 Branch: `main`
 
-Tag: `v2.13.4av1-node-open-multi-node`
+Tag: `v2.13.4av1-seed-open-multi-node`
 
 Reference run: `4AV1_20260708T174034Z_709544`
 

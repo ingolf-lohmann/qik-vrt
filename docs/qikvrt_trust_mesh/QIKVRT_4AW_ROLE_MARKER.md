@@ -1,6 +1,6 @@
 # QIKVRT 4AW Role Marker
 
-Role: node
+Role: seed
 
 Commercial readiness package for QIK-VRT Trust Mesh.
 

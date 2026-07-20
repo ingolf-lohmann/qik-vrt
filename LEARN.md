@@ -203,9 +203,9 @@ Everything derived from the bundle, repository, or GitHub must inherit the bilin
 
 ## L021_OFFICIAL_LICENSE_REFRESH_AND_FILE_ENRICHMENT_BEFORE_PERSISTENCE
 
-Vor jeder Repository-Persistenz werden die offiziellen Lizenzdateien von Apache-2.0 und CC-BY-NC-ND-4.0 neu geladen und lokale Kopien überschrieben. Alle Dateien werden mit Lizenz-/Urheberrechtsinformationen angereichert oder manifestiert.
+Historischer Lernstand: Vor der Lizenzumstellung wurden Apache-2.0 und CC-BY-NC-ND-4.0 als Standardtexte geladen. Seit dem Übergang vom 20.07.2026 wird für aktuellen QIK-VRT-Sourcecode stattdessen PolyForm-Noncommercial-1.0.0 bytegenau geprüft; Apache-2.0 bleibt nur für frühere oder ausdrücklich so markierte Fassungen erhalten. Alle Dateien werden mit Lizenz-/Urheberrechtsinformationen angereichert oder manifestiert.
 
-Before every repository persistence, official Apache-2.0 and CC-BY-NC-ND-4.0 license files are refreshed and local copies overwritten. All files are enriched with license/copyright information or manifested.
+Historical learning state: before the transition, Apache-2.0 and CC-BY-NC-ND-4.0 were refreshed as the standard texts. Since the 2026-07-20 transition, current QIK-VRT source code instead uses a byte-verified PolyForm-Noncommercial-1.0.0 text; Apache-2.0 is retained only for earlier or specifically marked versions. All files are enriched with license/copyright information or manifested.
 
 ## L022_GITHUB_DOMAIN_FACTORY_AND_INHERITANCE
 

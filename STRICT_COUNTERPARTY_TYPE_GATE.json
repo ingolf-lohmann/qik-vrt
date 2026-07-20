@@ -1,6 +1,10 @@
 {
   "id": "QALL_STRICT_COUNTERPARTY_TYPE_GATE",
   "status": "IMPLEMENTED",
+  "license_metadata_status": "HISTORICAL_APACHE_ERA_QALL_SNAPSHOT",
+  "current_license_authority": "LICENSE and LICENSE_TRANSITION.md",
+  "semantics": "RESPONSIBLE_PRINCIPAL_BINDING_FOR_EXTERNAL_EFFECTS",
+  "not_an_additional_license_condition": true,
   "valid_counterparty_types": [
     "NATURAL_PERSON",
     "ARTIFICIAL_COGNITIVE_SYSTEM",
@@ -9,18 +13,17 @@
     "OTHER"
   ],
   "ambiguous_counterparty_type_policy": "BLOCK",
-  "type_required_before_license_acceptance": true,
+  "type_required_before_license_acceptance": false,
   "type_required_before_repository_persistence": true,
   "preserve_in_github_repository": true,
   "preserve_in_all_clones": true,
-  "preserve_on_download": true,
-  "preserve_on_use": true,
-  "preserve_on_merge": true,
+  "preserve_on_download": false,
+  "preserve_on_use": false,
+  "preserve_on_merge": false,
   "blocker_error_classes": [
     "AMBIGUOUS_COUNTERPARTY_TYPE_INPUT",
     "MISSING_COUNTERPARTY_TYPE",
-    "STRICT_COUNTERPARTY_TYPE_GATE_MISSING_IN_CLONE",
-    "MERGE_WITHOUT_STRICT_COUNTERPARTY_TYPE_GATE"
+    "RESPONSIBLE_PRINCIPAL_MISSING_FOR_EXTERNAL_WRITE"
   ],
   "author": "Ingolf Lohmann",
   "rights_holder": "Ingolf Lohmann",
@@ -56,9 +59,9 @@
     ],
     "preserve_in_github_repository": true,
     "preserve_in_all_clones": true,
-    "preserve_on_download": true,
-    "preserve_on_use": true,
-    "preserve_on_merge": true
+    "preserve_on_download": false,
+    "preserve_on_use": false,
+    "preserve_on_merge": false
   },
   "other_requires_description_and_persistence": true,
   "standard_counterparty_types": [

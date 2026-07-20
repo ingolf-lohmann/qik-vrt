@@ -1,11 +1,21 @@
 cff-version: 1.2.0
-message: "If you use this work, please cite it using the metadata from this file.
-title: RFC-QIKVRT-0001
+title: "QIK-VRT: Wirkungshaltepunkt, Ontologie des Unterschieds und verantwortete Effektfreigabe"
+message: "If you use this repository, please cite it using the metadata from this file."
+type: software
 authors:
- - family-names: Lohmann
- given-names: Ingolf
-doi: 10.5281/zenodo.20712301
-url: https://zenodo.org/records/20712301
-license: CC-BY-NC-ND-4.0
-date-released: 2026-06-18
-repository-code: https://github.com/Goldkelch/qik-vrt
+  - family-names: Lohmann
+    given-names: Ingolf
+version: "2026.07.20"
+date-released: "2026-07-20"
+license: "PolyForm-Noncommercial-1.0.0"
+abstract: "Research implementation of a bounded five-state effect haltpoint with provenance, responsibility, audit, release gating, tests, and an interdisciplinary documentation of the ontology of difference. Current QIK-VRT-owned code uses PolyForm Noncommercial 1.0.0; historical and third-party license boundaries remain separate."
+keywords:
+  - QIKVRT
+  - Ontologie des Unterschieds
+  - transzendierende Information
+  - Retrokausalitaet
+  - kuenstlich-kognitive Systeme
+  - Zenodo
+  - GitHub
+  - effect haltpoint
+  - Wirkungshaltepunkt

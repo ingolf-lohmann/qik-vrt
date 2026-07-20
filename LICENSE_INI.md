@@ -6,6 +6,10 @@ Author/Rights holder: Ingolf Lohmann.
 
 # LICENSE_INI
 
+> Historischer QALL-/Apache-2.0-Snapshot. Die aktuelle Lizenzzuordnung steht in
+> `LICENSE` und `LICENSE_TRANSITION.md`; die folgenden Angaben werden als
+> Provenienz des früheren Delivery-Modells erhalten.
+
 Root enthält:
 
 ```text

@@ -1,90 +1,24 @@
 {
-  "test_files_existing": 2,
-  "test_files_executed": 2,
-  "runtime_subtests_total": 15,
-  "runtime_subtests_passed": 15,
-  "runtime_subtests_blocked": 0,
-  "support_checks_total": 1,
-  "support_checks_passed": 1,
-  "support_checks_blocked": 0,
-  "all_acceptance_gates_total": 37,
-  "all_acceptance_gates_passed": 37,
-  "all_acceptance_gates_blocked": 0,
-  "runtime_subtests": [
-    {
-      "suite": "handler_unit",
-      "name": "dry_run_ingest_pass",
-      "status": "PASS"
-    },
-    {
-      "suite": "handler_unit",
-      "name": "bad_hash_blocked",
-      "status": "PASS"
-    },
-    {
-      "suite": "handler_unit",
-      "name": "release_status_not_confirmed",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "health",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "unauthorized_blocked",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "ingest_pass",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "verify_pass",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "stage_pass",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "release_status_pass",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "bad_hash_blocked",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "repository_dispatch_pass",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "payload_written",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "audit_exists",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "audit_contains_ingest",
-      "status": "PASS"
-    },
-    {
-      "suite": "tcpip_e2e",
-      "name": "audit_contains_block",
-      "status": "PASS"
-    }
-  ]
+  "schema": "qikvrt_test_inventory_execution_status_v4",
+  "snapshot_date": "2026-07-20",
+  "status": "LOCAL_PASS",
+  "test_modules_existing": 9,
+  "test_modules_executed": 9,
+  "tests_total": 102,
+  "tests_passed": 102,
+  "tests_failed": 0,
+  "tests_skipped": 0,
+  "module_counts": {
+    "test_api_client.py": 4,
+    "test_effect_ack_conformance.py": 41,
+    "test_handler_security.py": 17,
+    "test_handler_unit.py": 6,
+    "test_integrity.py": 1,
+    "test_launcher_runtime.py": 15,
+    "test_license_transition.py": 5,
+    "test_seed_workflows.py": 12,
+    "test_tcpip_e2e.py": 1
+  },
+  "external_effects_performed": false,
+  "current_authority": "BUILD_SUMMARY.json"
 }

@@ -1,10 +1,10 @@
 ﻿{
   "qikvrt_event": "4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX",
   "version": "QIKVRT_V2_13_4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX",
-  "role": "node",
-  "repository": "ingolf-lohmann/qik-vrt",
+  "role": "seed",
+  "repository": "Goldkelch/qik-vrt",
   "branch": "main",
-  "tag": "v2.13.4av1-node-open-multi-node",
+  "tag": "v2.13.4av1-seed-open-multi-node",
   "reference_run_id": "4AV1_20260708T174034Z_709544",
   "reference_state": "4AV1_OPEN_MULTI_NODE_REVALIDATION_PASS",
   "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",

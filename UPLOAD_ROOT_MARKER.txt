@@ -1,8 +1,12 @@
-QIKVRT self-contained GitHub repository with REST/TCP-IP API
-artifact=QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1
-created_at_local=2026-06-26 05:43:26 CEST
-final_gate=PASS
-runtime_subtests_total=15
-runtime_subtests_passed=15
-acceptance_gates_total=37
-acceptance_gates_passed=37
+QIK-VRT repository root marker
+snapshot_date=2026-07-20
+public_baseline=8ae1884116221087bdcc75eed9905bb80bdd9e95
+release_version=2026.07.20
+release_tag=qikvrt-effect-haltpoint-2026-07-20
+workspace_status=REPAIR_SET_CONTAINED_IN_THE_COMMIT_PUBLISHING_THIS_MARKER
+local_tests=102/102_PASS_IN_9_MODULES
+repository_publication=VERIFY_COMMIT_CONTAINING_THIS_MARKER_AGAINST_ORIGIN_MAIN
+remote_release=SEPARATE_FROM_LOCAL_TEST_EVIDENCE
+authoritative_status=STATUS.md
+authoritative_build_summary=BUILD_SUMMARY.json
+historical_boundary=HISTORICAL_ARTIFACT_BOUNDARIES.md
