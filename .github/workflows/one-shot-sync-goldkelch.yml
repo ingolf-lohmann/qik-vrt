@@ -1,0 +1,61 @@
+name: One-shot synchronize with Goldkelch release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/one-shot-sync-goldkelch.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-shot-sync-goldkelch-main
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out target repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Verify and synchronize exact source tree
+        shell: bash
+        env:
+          SOURCE_COMMIT: a8a9cb2666a91411489d4fc90a5306908f8428ea
+          SOURCE_TREE: c5cefebd20b5836d730a4e9da82eeaa5c9363ebf
+          SOURCE_TAG: v2026.07.20-wirkungshaltepunkt-evolution
+        run: |
+          set -euo pipefail
+
+          test "$GITHUB_REF" = "refs/heads/main"
+          target_head="$(git rev-parse HEAD)"
+
+          git remote add goldkelch https://github.com/Goldkelch/qik-vrt.git
+          git fetch --no-tags --depth=1 goldkelch "$SOURCE_COMMIT"
+          test "$(git rev-parse FETCH_HEAD)" = "$SOURCE_COMMIT"
+          test "$(git rev-parse FETCH_HEAD^{tree})" = "$SOURCE_TREE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          sync_commit="$(
+            git commit-tree "$SOURCE_TREE"               -p "$target_head"               -m "Synchronize with Goldkelch/qik-vrt at a8a9cb2"               -m "Source commit: $SOURCE_COMMIT
+Source tree: $SOURCE_TREE
+Release tag: $SOURCE_TAG
+
+Preserve the existing ingolf-lohmann/qik-vrt history and synchronize its complete repository contents without a force-push."
+          )"
+
+          test "$(git rev-parse "$sync_commit^{tree}")" = "$SOURCE_TREE"
+          test "$(git rev-parse "$sync_commit^")" = "$target_head"
+
+          git fetch --no-tags origin main
+          test "$(git rev-parse origin/main)" = "$target_head"
+          git push origin "$sync_commit:refs/heads/main"
