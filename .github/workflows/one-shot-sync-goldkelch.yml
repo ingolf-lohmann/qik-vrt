@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify and synchronize exact source tree
+      - name: Verify source and synchronize non-workflow tree
         shell: bash
         env:
           SOURCE_COMMIT: a8a9cb2666a91411489d4fc90a5306908f8428ea
@@ -42,12 +42,19 @@ jobs:
           test "$(git rev-parse FETCH_HEAD)" = "$SOURCE_COMMIT"
           test "$(git rev-parse FETCH_HEAD^{tree})" = "$SOURCE_TREE"
 
+          git read-tree "$SOURCE_TREE"
+          git restore --source="$target_head" --staged -- .github/workflows
+          sync_tree="$(git write-tree)"
+
+          git diff --quiet "$target_head" "$sync_tree" -- .github/workflows
+          git diff --quiet "$SOURCE_TREE" "$sync_tree" -- . ':(exclude).github/workflows/**'
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          sync_commit="$(git commit-tree "$SOURCE_TREE" -p "$target_head" -m "Synchronize with Goldkelch/qik-vrt at a8a9cb2" -m "Source commit: $SOURCE_COMMIT" -m "Source tree: $SOURCE_TREE" -m "Release tag: $SOURCE_TAG" -m "Preserve the existing ingolf-lohmann/qik-vrt history and synchronize its complete repository contents without a force-push.")"
+          sync_commit="$(git commit-tree "$sync_tree" -p "$target_head" -m "Synchronize non-workflow tree with Goldkelch/qik-vrt" -m "Source commit: $SOURCE_COMMIT" -m "Source tree: $SOURCE_TREE" -m "Release tag: $SOURCE_TAG" -m "The workflow subtree is intentionally finalized by the authorized GitHub App in the following fast-forward commit.")"
 
-          test "$(git rev-parse "$sync_commit^{tree}")" = "$SOURCE_TREE"
+          test "$(git rev-parse "$sync_commit^{tree}")" = "$sync_tree"
           test "$(git rev-parse "$sync_commit^")" = "$target_head"
 
           git fetch --no-tags origin main
