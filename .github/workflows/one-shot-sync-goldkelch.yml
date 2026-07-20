@@ -45,13 +45,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          sync_commit="$(
-            git commit-tree "$SOURCE_TREE"               -p "$target_head"               -m "Synchronize with Goldkelch/qik-vrt at a8a9cb2"               -m "Source commit: $SOURCE_COMMIT
-Source tree: $SOURCE_TREE
-Release tag: $SOURCE_TAG
-
-Preserve the existing ingolf-lohmann/qik-vrt history and synchronize its complete repository contents without a force-push."
-          )"
+          sync_commit="$(git commit-tree "$SOURCE_TREE" -p "$target_head" -m "Synchronize with Goldkelch/qik-vrt at a8a9cb2" -m "Source commit: $SOURCE_COMMIT" -m "Source tree: $SOURCE_TREE" -m "Release tag: $SOURCE_TAG" -m "Preserve the existing ingolf-lohmann/qik-vrt history and synchronize its complete repository contents without a force-push.")"
 
           test "$(git rev-parse "$sync_commit^{tree}")" = "$SOURCE_TREE"
           test "$(git rev-parse "$sync_commit^")" = "$target_head"
