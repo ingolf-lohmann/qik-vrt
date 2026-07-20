@@ -1,137 +1,68 @@
 {
-  "artifact": "QIKVRT_SELF_CONTAINED_GITHUB_REPOSITORY_WITH_REST_TCPIP_API_V1",
-  "final_gate": "PASS",
-  "passed_acceptance_gate_count": 37,
-  "blocked_acceptance_gate_count": 0,
-  "test_inventory": {
-    "test_files_existing": 2,
-    "test_files_executed": 2,
-    "runtime_subtests_total": 15,
-    "runtime_subtests_passed": 15,
-    "runtime_subtests_blocked": 0,
-    "support_checks_total": 1,
-    "support_checks_passed": 1,
-    "support_checks_blocked": 0,
-    "all_acceptance_gates_total": 37,
-    "all_acceptance_gates_passed": 37,
-    "all_acceptance_gates_blocked": 0,
-    "runtime_subtests": [
-      {
-        "suite": "handler_unit",
-        "name": "dry_run_ingest_pass",
-        "status": "PASS"
-      },
-      {
-        "suite": "handler_unit",
-        "name": "bad_hash_blocked",
-        "status": "PASS"
-      },
-      {
-        "suite": "handler_unit",
-        "name": "release_status_not_confirmed",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "health",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "unauthorized_blocked",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "ingest_pass",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "verify_pass",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "stage_pass",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "release_status_pass",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "bad_hash_blocked",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "repository_dispatch_pass",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "payload_written",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "audit_exists",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "audit_contains_ingest",
-        "status": "PASS"
-      },
-      {
-        "suite": "tcpip_e2e",
-        "name": "audit_contains_block",
-        "status": "PASS"
-      }
-    ]
+  "schema": "qikvrt_local_verification_summary_v3",
+  "snapshot_date": "2026-07-20",
+  "public_baseline_commit": "8ae1884116221087bdcc75eed9905bb80bdd9e95",
+  "verified_object": "REPAIR_SET_CONTENT_TREE_IN_COMMIT_PUBLISHING_THIS_SUMMARY",
+  "local_test_result": "PASS",
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest discover -s tests -p test_*.py -v",
+  "test_modules_discovered": 9,
+  "tests_run": 102,
+  "tests_passed": 102,
+  "tests_failed": 0,
+  "tests_skipped": 0,
+  "modules": [
+    {"name": "api_client", "tests": 4},
+    {"name": "effect_ack_conformance", "tests": 41},
+    {"name": "handler_security", "tests": 17},
+    {"name": "handler_unit", "tests": 6},
+    {"name": "integrity", "tests": 1},
+    {"name": "launcher_runtime", "tests": 15},
+    {"name": "license_transition", "tests": 5},
+    {"name": "seed_workflows", "tests": 12},
+    {"name": "tcpip_e2e", "tests": 1}
+  ],
+  "static_checks": {
+    "python_syntax": "PASS",
+    "shell_syntax": "PASS",
+    "workflow_yaml_parse": "PASS",
+    "openapi_yaml_parse": "PASS",
+    "json_parse": "PASS_WITH_UTF8_BOM_ACCEPTED_FOR_HISTORICAL_ARCHIVES",
+    "license_transition": "PASS",
+    "git_diff_check": "PASS"
   },
-  "unit_report": {
-    "gate": "HANDLER_UNIT_GATE",
-    "dry_run_ingest_pass": true,
-    "bad_hash_blocked": true,
-    "release_status_not_confirmed": true,
-    "pass": true
+  "local_gates": {
+    "canonical_integrity": "PASS",
+    "make_test": "PASS",
+    "master_gate": "PASS"
   },
-  "e2e_report": {
-    "gate": "TCPIP_GITHUB_COMPATIBLE_API_E2E_GATE",
-    "health": [
-      200,
-      {
-        "status": "PASS",
-        "service": "QIKVRT GitHub-Compatible REST API Shim",
-        "tcpip": true,
-        "github_compatible_dispatch": true
-      }
-    ],
-    "unauthorized_status": 401,
-    "unauthorized_blocked": true,
-    "ingest_status": 202,
-    "ingest_pass": true,
-    "verify_status": 202,
-    "verify_pass": true,
-    "stage_status": 202,
-    "stage_pass": true,
-    "release_status": 202,
-    "release_status_pass": true,
-    "bad_hash_status": 400,
-    "bad_hash_blocked": true,
-    "repository_dispatch_status": 202,
-    "repository_dispatch_pass": true,
-    "payload_written": true,
-    "audit_exists": true,
-    "audit_contains_ingest": true,
-    "audit_contains_block": true,
-    "pass": true
+  "normative_effect_states_exercised": [
+    "EFFECT_NACK",
+    "EFFECT_ACK_CONTINUE",
+    "EFFECT_ACK_DONE",
+    "EFFECT_ACK_ISOLATE",
+    "EFFECT_ACK_BLOCK"
+  ],
+  "ordinary_release_state": "EFFECT_ACK_DONE",
+  "demonstrated_local_controls": [
+    "bounded_subprocess_time_and_output",
+    "descendant_process_group_termination",
+    "unique_per_run_logging",
+    "byte_safe_jsonl_logging",
+    "durable_publication_effect_journal",
+    "head_and_remote_digest_bound_release_assets",
+    "crash_recoverable_integrity_locking",
+    "bounded_symlink_safe_authorization_records",
+    "authenticated_exact_prior_workflow_run_binding",
+    "canonical_role_separated_api_and_hmac_secrets",
+    "cross_bound_ingest_provenance_receipt_transaction_and_protocol"
+  ],
+  "external_effects": {
+    "scope": "EXCLUDED_FROM_LOCAL_TEST_RESULT_AND_REQUIRES_SEPARATE_REMOTE_VERIFICATION",
+    "repository_publication": "VERIFY_REMOTE_HEAD_AGAINST_COMMIT_CONTAINING_THIS_SUMMARY",
+    "github_release": "VERIFY_TAG_AND_RELEASE_RECORD_SEPARATELY",
+    "live_github_actions": "VERIFY_EXACT_REMOTE_COMMIT_RUN_SEPARATELY",
+    "zenodo": "DIRECT_PUBLISHER_PATH_UNSUPPORTED_VERIFY_ANY_EXTERNAL_INTEGRATION_SEPARATELY"
   },
-  "remote_github_persistence": "NOT_EXECUTED_IN_SANDBOX",
-  "remote_byte_exact_asset_hash": "NOT_CONFIRMED",
-  "live_github_actions_run": "REQUIRES_OWNER_UPLOAD_AND_DISPATCH"
+  "certification_claim": false,
+  "scientific_validation_claim": false
 }

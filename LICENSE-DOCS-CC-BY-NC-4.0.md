@@ -1,10 +1,24 @@
-# Dokumentationslizenz
+# Documentation license notice
 
-Die Dokumente, Artikel und konzeptionellen Texte dieses Repositorys stehen, soweit nicht anders gekennzeichnet, unter:
+> Compatibility filename: this file's historical name omits `ND`. The
+> repository's current documentation license identifier is
+> `CC-BY-NC-ND-4.0`, not `CC-BY-NC-4.0`.
 
-**Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**
+Canonical short notice: `LICENSE-DOCS-CC-BY-NC-ND-4.0.md`.
 
-Urheber / Originator: **Ingolf Lohmann**  
-Titel: **QIKVRT Ontologie des Unterschieds — Transzendierende Information, Reifeprüfung und rekursive Wirkraumordnung V1.0**
+QIK-VRT documentation and other non-source material identified as such are,
+unless a more specific file notice states otherwise, licensed under Creative
+Commons Attribution-NonCommercial-NoDerivatives 4.0 International
+(`CC-BY-NC-ND-4.0`).
 
-Kurzfassung: Weitergabe und Bearbeitung sind bei Namensnennung und nichtkommerzieller Nutzung erlaubt. Maßgeblich ist der vollständige Lizenztext der Creative Commons BY-NC 4.0.
+Creator and rights holder: Ingolf Lohmann.
+
+The complete, unmodified legal code is stored at:
+
+`LICENSES/CC-BY-NC-ND-4.0.txt`
+
+Official source:
+
+`https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.txt`
+
+This notice is not a substitute for and does not modify the legal code.

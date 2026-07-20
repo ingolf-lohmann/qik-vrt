@@ -1,3 +1,5 @@
 * text=auto eol=lf
 *.cmd text eol=crlf
+qikvrt.cmd text eol=lf
 *.ps1 text eol=crlf
+LICENSES/CC-BY-NC-ND-4.0.txt text eol=lf whitespace=-blank-at-eof

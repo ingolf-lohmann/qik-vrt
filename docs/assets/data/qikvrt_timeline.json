@@ -1,51 +1,42 @@
 [
   {
-    "phase": "Jetzt",
-    "title": "Oeffentliches Trust-Mesh",
+    "phase": "Lokal nachgewiesen",
+    "title": "Wirkungshaltepunkt und Referenzpfade",
     "items": [
-      "Seed/Node-Handshake ist autonom",
-      "Open Multi-Node Registry ist eingefroren",
-      "4AW Commercial Readiness ist veroeffentlicht"
+      "Fuenf normative EFFECT_ACK-Zustaende",
+      "DONE als einzige gewoehnliche Freigabe",
+      "Hash-, Replay-, Audit- und Attestierungspruefungen",
+      "Fail-closed Seed-/Node-Referenzworkflows"
     ]
   },
   {
-    "phase": "Nahe Zukunft",
-    "title": "Homepage, Kognitionskonsole und Pilotfaehigkeit",
+    "phase": "Offene Verifikation",
+    "title": "Unabhaengige Reproduktion und Feldtest",
     "items": [
-      "GitHub Pages Homepage",
-      "QIK-VRT Kognitionskonsole",
-      "Pilotkundenpaket",
-      "rechtlich anschlussfaehige Evidence-Packs"
+      "Live-GitHub-Actions-Lauf",
+      "Mehrknoten-Langzeittest",
+      "Bedrohungsmodell und unabhaengiges Sicherheitsaudit",
+      "Messbare Akzeptanzkriterien je Einsatzfall"
     ]
   },
   {
-    "phase": "Naechste Ausbaustufe",
-    "title": "GitHub App und no-token KI-Nutzung",
+    "phase": "Moegliche Produktentwicklung",
+    "title": "Gehaertete Integrationen",
     "items": [
-      "Server-/App-Proxy fuer GitHub Models",
-      "keine Nutzer-Tokens im Browser",
-      "Mandantenfaehigkeit",
-      "Policy Packs"
+      "Kurzlebige, repository-begrenzte Berechtigungen",
+      "Rollen, Widerruf und Vier-Augen-Freigaben",
+      "Signierte Releases und externe Vertrauensanker",
+      "Rechts- und Compliance-Pruefung je Zielmarkt"
     ]
   },
   {
-    "phase": "Produktreife",
-    "title": "Enterprise Trust Mesh",
+    "phase": "Forschung",
+    "title": "Wirkungsorientierte Informatik",
     "items": [
-      "Multi-Seed/Multi-Node",
-      "Rollen und Freigaben",
-      "SBOM/SSDF/ISO-42001-Mapping",
-      "Zertifizierungsanschluss"
-    ]
-  },
-  {
-    "phase": "Fernere Zukunft",
-    "title": "Kuenstliche Kognition als Informatik-Paradigma",
-    "items": [
-      "Systeme begruenden ihre Zustandsuebergaenge",
-      "Kognition wird auditierbar",
-      "Repositorys werden zu verantwortbaren Wirkungsraeumen",
-      "Softwareentwicklung verschiebt sich von Code-Ausgabe zu Evidence-gesteuerter Realitaetspruefung"
+      "Systeme begruenden begrenzte Zustandsuebergaenge",
+      "Stabilitaet wird von Freigabe unterschieden",
+      "Evidenz und Wirkung werden versioniert rueckgekoppelt",
+      "Paradigmenstatus bleibt Gegenstand fachlicher Pruefung"
     ]
   }
 ]

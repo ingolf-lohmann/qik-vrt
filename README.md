@@ -1,97 +1,229 @@
-# QIKVRT ODU V2.7 PowerShell 5.1 Git CLI Windows Package
+# QIK-VRT
 
-This package supersedes V2.1. V2.7 replaces the failing Windows PowerShell Git invocation helper with `System.Diagnostics.PowerShell 5.1 call operator.ArgumentList` and `-GitArgs`, contains the primary PDF artifact, and uses GitHub Release publication as the Zenodo integration trigger. No Zenodo API token is used.
+QIK-VRT is a research implementation of an **effect haltpoint**: successful
+transport, computation, or storage does not by itself authorize an ordinary
+downstream effect. A bounded decision gate records provenance, context, risk,
+responsibility, evidence, and a connection decision before release.
 
-Recommended Windows order:
+The reference protocol has exactly five normative states:
 
-1. `POWERSHELL_PARSE_CHECK_ONLY.cmd`
-2. `GIT_INVOCATION_SELFTEST.cmd`
-3. `GITHUB_DRY_RUN_VERIFY_ONLY.cmd`
-4. `GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd`
+| State | Meaning |
+|---|---|
+| `EFFECT_NACK` | No effect-checkable reception exists. |
+| `EFFECT_ACK_CONTINUE` | Checking may continue; the effect is not released. |
+| `EFFECT_ACK_DONE` | All declared release conditions are satisfied. This is the only ordinary-release state. |
+| `EFFECT_ACK_ISOLATE` | Separate the candidate effect from ordinary flow for controlled examination. |
+| `EFFECT_ACK_BLOCK` | Do not continue the candidate effect. |
 
-Zenodo requires that the target GitHub repository is enabled in the Zenodo GitHub integration before the GitHub Release is processed by Zenodo.
+The core invariant is:
 
-# QIKVRT ODU V2.7 GitHub-only Zenodo Release Package
+```text
+TRANSPORT_ACK != EFFECT_ACK
+ordinary_release(result) == (result.effect_state == EFFECT_ACK_DONE)
+```
 
-Author: Ingolf Lohmann
+## Scope of the claim
 
-This Windows-safe QIKVRT repository contains the Zenodo PDF artifact and the operative article/insight corpus for the Ontologie des Unterschieds.
+This repository defines, implements, and tests a policy/effect release
+haltpoint for a specific bounded decision. It **does not solve Turing's
+halting problem** and does not predict whether an arbitrary program will
+terminate. Program termination, exit code `0`, message delivery, and a local
+test PASS are not effect permission.
 
-## Primary PDF artifact
+The software demonstrates a concrete reference protocol and selected local
+adapters. It is not a certification of every historical file in the
+repository, a scientific validation of every accompanying theory, or evidence
+of external adoption. See [STATUS.md](STATUS.md) for the precise verification
+boundary.
 
-- `assets/pdf/odu_proof.pdf`
-- SHA256: `2382b5d4970559bc28649a6deb6797fe867fc70439140e4cf1c1e59964a37de6`
+The complete German-language synthesis, including the ontology of difference,
+the effect haltpoint, evidence boundaries, the personal starting chronology,
+and the interdisciplinary argument, is published as
+[Die Spirale des entscheidenden Unterschieds](docs/Die_Spirale_des_entscheidenden_Unterschieds.md).
 
-## Owner-side GitHub-only Zenodo workflow
+## Current runnable core
 
-This version assumes the owner has a GitHub token, not a Zenodo token.
+- `src/qikvrt_effect_ack.py` — pure five-state reference state machine,
+  canonical JSON, deterministic protocol hashes, deadlines, immutable
+  versions, and hash-linked responsibility records.
+- `src/qikvrt_api_handler.py` — content-addressed ingest, verify, stage, and
+  HMAC-authenticated release-status paths with replay protection, transaction recovery,
+  provenance records, receipts, and an append-only audit hash chain.
+- `src/qikvrt_github_api_shim.py` — authenticated, repository-scoped local
+  GitHub-shaped HTTP adapter.
+- `scripts/qikvrt_api_client.py` — validating client; cleartext bearer tokens
+  are permitted only on loopback endpoints.
+- `qikvrt.py` — authorization-before-effect launcher for the master gate and the
+  explicitly confirmed publication planner.
+- `tools/qikvrt_subprocess.py` — subprocess runner with hard time and captured-
+  output bounds plus descendant process-group termination on POSIX.
+- `tools/qikvrt_integrity.py` — HEAD-independent content-tree manifest and
+  detached digest generation/verification with a crash-recoverable held lock.
+- `.github/workflows/` — least-privilege CI and state-artifact workflows with
+  immutable third-party action pins. A restored API-state artifact is accepted
+  only after its producing run is bound through GitHub's authenticated API to
+  the same repository, workflow, commit, permitted event, and successful end.
 
-1. Enable the target repository once in Zenodo's GitHub integration web UI.
-2. Extract this ZIP under Windows.
-3. Run `GITHUB_DRY_RUN_VERIFY_ONLY.cmd`.
-4. Set or enter `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`.
-5. Run `GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd`.
-6. The script publishes a GitHub Release and uploads PDF/bundle release assets.
-7. Zenodo automatically archives the release if the GitHub integration is enabled for that repository.
+The active Python core uses only the standard library. The verified local
+runtime target is Python 3 on POSIX systems. Some lock and durability behavior
+uses POSIX facilities; Windows compatibility is **not claimed** for the
+current core. Historical Windows/Zenodo material remains in the repository as
+an archive and is not the current runtime authority.
 
-## Important boundary
+## Verify
 
-No Zenodo API token is used. A GitHub token cannot directly publish to the Zenodo REST deposit API. Publication to Zenodo occurs through Zenodo's GitHub integration after the GitHub Release is published.
+Run the complete local gate:
 
-## QIKVRT status
+```bash
+make test
+```
 
-`V1_6_GITHUB_TOKEN_ONLY_ZENODO_INTEGRATION_PATH | WINDOWS_SAFE | PDF_INCLUDED | RELEASE_PUBLISH_SCRIPT_INCLUDED | NO_ZENODO_TOKEN_ASSUMPTION`
+The gate compiles the active Python entry points and runs integrity, launcher,
+protocol-conformance, handler, security, client, and TCP/IP end-to-end tests.
+It verifies the canonical repository manifest before and after the tests.
 
+To regenerate the canonical content-tree manifest after an intentional
+change, then verify it:
 
-## V2.7 correction
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py generate
+PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+```
 
-V1.6 is BLOCKED by a Windows PowerShell path-normalization bug in `TrimStart`. V2.7 fixes relative-path generation in `tools/github_zenodo_release_publish.ps1` by using `[char]92` and `[char]47` and adds verifier gates preventing the same bug from returning.
+The current integrity authorities are:
 
+- `REPOSITORY_FILE_MANIFEST.json`
+- `SHA256SUMS.txt`
+- `REPOSITORY_FILE_MANIFEST.json.sha256`
 
-## V2.7 field correction
+Older inventories are historical snapshots; see
+[LEGACY_INTEGRITY_INVENTORIES.md](LEGACY_INTEGRITY_INVENTORIES.md).
+Historical files whose original payload is not present, and earlier reports
+whose claims have been superseded, are classified in
+[HISTORICAL_ARTIFACT_BOUNDARIES.md](HISTORICAL_ARTIFACT_BOUNDARIES.md).
 
-V2.7 replaces V1.7 after owner-side GitHub API field error `403 Resource not accessible by personal access token` at the GitHub Git-Blobs endpoint. V2.7 uses Git CLI branch/tag push and GitHub Release publishing. A token without repository `Contents: read and write` permission will still be blocked by GitHub; the script now fails before misleading continuation and explains the required permission.
+## Launcher
 
+The launcher deliberately refuses effectful work until a local operator has
+authorized the exact, repository-bound command scope. This declaration is not
+identity authentication and is not acceptance of, or an extra condition on,
+the repository licenses:
 
-## V2.7 critical fix
+```bash
+python3 qikvrt.py --accept
+python3 qikvrt.py master-gate
+```
 
-V2.7 blocked on an expected GitHub `404 Not Found` when checking for an existing release by tag. V2.7 treats that 404 as the normal absence of a release and proceeds to create the GitHub Release.
+Publication is a separate planner with an additional explicit confirmation.
+It does not silently commit or push:
 
-Run order under Windows:
+```bash
+python3 qikvrt.py cicd-publish
+```
 
-1. `GITHUB_DRY_RUN_VERIFY_ONLY.cmd`
-2. Set `GITHUB_OWNER`, `GITHUB_REPO`, optional `GITHUB_TAG`, and `GITHUB_TOKEN`.
-3. `GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd`
-4. Check GitHub Release and Zenodo GitHub-integration ingestion.
+Inspect its result and provide the requested confirmation only when the exact
+repository, branch, changes, and destination are intended.
+An executing publication plan writes a durable local effect journal through
+`PREPARED`, `APPLIED`, `VERIFIED`, and `COMMITTED`; a verification failure
+after a remote command is recorded as an unknown external state rather than
+misreported as a rollback.
 
-No Zenodo API token is used. GitHub token must have write access to the repository contents/releases.
+## Local API
 
+Start the adapter only with an explicit scoped credential and repository:
 
-## V2.7 Parser-Fix
+```bash
+export QIKVRT_API_TOKEN="b64url:$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')"
+export QIKVRT_API_TOKEN_EXPIRES_UTC='2099-01-01T00:00:00Z'
+export QIKVRT_ALLOWED_REPOSITORY='owner/repository'
+export QIKVRT_API_PRINCIPAL='responsible-operator'
+make run-api
+```
 
-V2.7 ersetzt V1.9 wegen eines PowerShell-Parserfehlers in der Invoke-GitHubUpload-Funktion. Zusätzlich enthalten: `POWERSHELL_PARSE_CHECK_ONLY.cmd`.
+API tokens use exactly `b64url:<unpadded-value>` and must decode to 32--128
+bytes. When remote release attestations are enabled,
+`QIKVRT_REMOTE_ATTESTATION_SECRET` uses the same encoding and size rule and
+must be paired with `QIKVRT_TRUSTED_ATTESTATION_SIGNER`. The decoded bytes,
+not the encoded environment string, are the HMAC key. Generate the HMAC key
+independently from the bearer token; never reuse one secret for both roles.
+The adapter rejects configurations that reuse identical decoded bytes for the
+two roles.
 
+The default listener is loopback. Do not expose the development adapter as an
+internet service. A non-loopback deployment needs TLS termination, secret
+management, host hardening, monitoring, and a separately reviewed trust
+boundary. The request and response contract is documented in
+[`api/qikvrt_github_api.openapi.yaml`](api/qikvrt_github_api.openapi.yaml).
 
-## V2.7 correction
+Non-dry mutations require all of the following: an authenticated and unexpired
+credential, the allowed owner/repository route, a stable request identifier,
+an explicit `effect_accepted=true` decision, and a server-derived responsible
+owner. Release status reaches `EFFECT_ACK_DONE` only after verification of a
+trusted, HMAC-authenticated remote attestation bound to the repository,
+artifact, size, immutable source identifier, and hash. HMAC is a keyed
+message-authentication mechanism, not a public-key digital signature; its
+trust therefore depends on protecting and independently governing the shared
+verification secret.
 
-V2.0 is BLOCK due to PowerShell positional array binding in Invoke-GitSafe. V2.7 fixes all Git calls to named parameter invocation and adds `GIT_INVOCATION_SELFTEST.cmd`.
+`GET /health` returns `ALIVE` only while the scoped credential, expiry,
+repository, principal, numeric limits, and any configured remote-attestation
+key pair all pass validation. An invalid configuration returns HTTP 503 and
+`BLOCK`.
 
+## Security and evidence boundaries
 
-## V2.7 correction
+- Payload size, identifiers, metadata, JSON bodies, and synchronous decision
+  time are bounded.
+- Symlink targets and unsafe paths are rejected; artifact names are validated.
+- Same-key/different-fact replay conflicts are isolated.
+- Audit, protocol, provenance, receipt, and stage records are append-only or
+  content-addressed within the local trust boundary.
+- Ingest provenance is cross-bound to the request, receipt, transaction,
+  result hash, exact effect set, responsibility protocol, repository, and
+  responsible owner before staging.
+- Runtime commands use unique per-run logs and a latest-run pointer; captured
+  child-process output remains bounded and byte-safe in JSONL.
+- Authorization context, records, actor/scope values and prior logs are bounded
+  and symlink-safe; repeated operation scopes fail closed instead of widening
+  authority. Arbitrary child-process bytes remain valid JSONL log data.
+- Publication assets are bound in the plan by repository path, byte count and
+  SHA-256, must be tracked and byte-identical to `HEAD` immediately before the
+  effect, and must match GitHub's reported remote SHA-256 and size afterward.
+- A local hash chain detects later changes only when at least one trusted hash
+  or signature is retained outside the writable chain.
+- Remote GitHub workflow execution and external platform persistence are not
+  proven by a local test run.
+- Legal, medical, psychological, physical, ethical, or historical conclusions
+  require their own evidence and qualified review; software structure does
+  not make an input claim true.
 
-V2.2 is BLOCK on Windows PowerShell 5.1 because `ProcessStartInfo.ArgumentList` may not exist. V2.7 removes that API and uses `& $gitExe @GitArgs` with an explicit `-GitArgs` parameter. Local Git substrate was executed in the sandbox; GitHub remote publish remains owner-side only.
+## Repository organization
 
+The repository contains both the current runtime and a large historical
+research/delivery archive. Current operational authority is intentionally
+narrow: the files named above, the active tests, the canonical integrity
+manifest, the OpenAPI contract, and the current status. Cumulative delivery,
+acceptance, or audit reports from earlier versions are retained for provenance
+but must not be read as current certification unless [STATUS.md](STATUS.md)
+expressly names them.
 
-## V2.7 GitHub authentication correction
+## Licensing
 
-V2.7 supersedes V2.3 after `remote: invalid credentials`. Git transport now uses a GitHub Basic Authorization extraHeader and a non-mutating `GITHUB_AUTH_PREFLIGHT_ONLY.cmd` gate before any mutating upload/publish operation.
+Current QIK-VRT-controlled source code and executable tooling are offered under
+`PolyForm-Noncommercial-1.0.0` unless a more specific file or third-party
+notice applies. The standard public license permits its defined noncommercial
+uses; ordinary commercial use requires a separate written license from the
+rights holder. This makes the current code source-available, not OSI-approved
+open source.
 
+Documentation and other non-source material are offered under Creative Commons
+Attribution-NonCommercial-NoDerivatives 4.0 International unless a file says
+otherwise. Earlier versions or files validly received under Apache-2.0 retain
+that historical grant; the transition cannot withdraw it retroactively.
 
-## V2.7 correction
+The licenses do not merge and grant no rights the licensor does not hold. See
+[LICENSE](LICENSE), [LICENSE_TRANSITION.md](LICENSE_TRANSITION.md),
+[LICENSE_NOTICE.md](LICENSE_NOTICE.md), and
+[COMMERCIAL_USE_POLICY.md](COMMERCIAL_USE_POLICY.md).
 
-V2.7 fixes the Windows PowerShell `NativeCommandError` caused by normal Git progress written to stderr, e.g. `From https://github.com/...` during fetch. Git commands are now executed through a stderr-capturing wrapper and evaluated by exit code, not by stderr presence.
-
-
-## V2.7 correction
-
-V2.7 adds an early GitHub authorization preflight. If the token is authenticated as `Goldkelch` but the target is `ingolf-lohmann/qik-vrt` and Goldkelch has no write permission, the workflow BLOCKs before local publish worktree creation. Use a writer token, grant write access, or target the Zenodo-enabled repository owned by the authenticated account.
+Copyright 2026 Ingolf Lohmann.

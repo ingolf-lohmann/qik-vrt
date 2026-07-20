@@ -1,6 +1,8 @@
 {
   "id": "QALL_TEMPLATE_CLONE_ACCEPTANCE",
   "status": "REQUIRED_FOR_DELIVERY",
+  "license_metadata_status": "HISTORICAL_APACHE_ERA_QALL_SNAPSHOT",
+  "current_license_authority": "LICENSE and LICENSE_TRANSITION.md",
   "test_name": "template_clone_target_autodetect",
   "purpose": "Verify that a repository created from a GitHub template and cloned locally auto-adapts owner/repo/branch from .git/config.",
   "acceptance_criteria": {
@@ -112,6 +114,8 @@
   "license_acceptance_gate": {
     "id": "QALL_LICENSE_ACCEPTANCE_GATE",
     "status": "IMPLEMENTED",
+    "semantics": "OPERATIONAL_EFFECT_AUTHORIZATION_ONLY",
+    "not_an_additional_license_condition": true,
     "required_before_every_repository_persistence_change": true,
     "applies_to_counterparty_types": [
       "NATURAL_PERSON",
@@ -128,8 +132,8 @@
     },
     "acceptance_record": "LOGS/LICENSE_ACCEPTANCE_RECORD.json",
     "repository_record": "LICENSE_ACCEPTANCE_RECORD.json",
-    "github_persistence_rule": "No GitHub API PUT/push may occur unless acceptance was obtained for the concrete persistence action.",
-    "blocker_error_class": "REPOSITORY_PERSISTENCE_WITHOUT_LICENSE_ACCEPTANCE",
+    "github_persistence_rule": "No GitHub API PUT/push may occur unless the responsible operator authorized the concrete external effect.",
+    "blocker_error_class": "REPOSITORY_PERSISTENCE_WITHOUT_EFFECT_AUTHORIZATION",
     "valid_acceptance_phrases": [
       "JA",
       "YES",
@@ -140,7 +144,8 @@
   },
   "acceptance_required_before_every_repository_persistence_change": true,
   "applies_to_artificial_cognitive_natural_and_legal_counterparties": true,
-  "acceptance_missing_blocker_error_class": "REPOSITORY_PERSISTENCE_WITHOUT_LICENSE_ACCEPTANCE",
+  "acceptance_missing_blocker_error_class": "REPOSITORY_PERSISTENCE_WITHOUT_EFFECT_AUTHORIZATION",
+  "public_license_grants_do_not_require_runtime_acceptance": true,
   "strict_acceptance_gate": {
     "id": "QALL_STRICT_LICENSE_ACCEPTANCE_GATE",
     "status": "IMPLEMENTED",
@@ -162,22 +167,17 @@
       "I ACCEPT"
     ],
     "applies_to_events": [
-      "CLONE",
-      "DOWNLOAD",
-      "USE",
-      "MERGE",
       "REPOSITORY_PERSISTENCE",
       "GITHUB_WRITE"
     ],
     "preserve_in_github_repository": true,
     "preserve_in_all_clones": true,
-    "preserve_on_download": true,
-    "preserve_on_use": true,
-    "preserve_on_merge": true,
+    "preserve_on_download": false,
+    "preserve_on_use": false,
+    "preserve_on_merge": false,
     "blocker_error_classes": [
       "AMBIGUOUS_LICENSE_ACCEPTANCE_INPUT",
-      "STRICT_ACCEPTANCE_GATE_MISSING_IN_CLONE",
-      "MERGE_WITHOUT_STRICT_LICENSE_ACCEPTANCE"
+      "EFFECT_AUTHORIZATION_MISSING_FOR_EXTERNAL_WRITE"
     ],
     "author": "Ingolf Lohmann",
     "rights_holder": "Ingolf Lohmann",
@@ -187,7 +187,7 @@
     }
   },
   "ambiguous_acceptance_input_blocks": true,
-  "strict_acceptance_must_survive_clone_download_use_merge": true,
+  "strict_acceptance_must_survive_clone_download_use_merge": false,
   "strict_counterparty_type_gate": {
     "id": "QALL_STRICT_COUNTERPARTY_TYPE_GATE",
     "status": "IMPLEMENTED",
@@ -199,18 +199,17 @@
       "OTHER"
     ],
     "ambiguous_counterparty_type_policy": "BLOCK",
-    "type_required_before_license_acceptance": true,
+    "type_required_before_license_acceptance": false,
     "type_required_before_repository_persistence": true,
     "preserve_in_github_repository": true,
     "preserve_in_all_clones": true,
-    "preserve_on_download": true,
-    "preserve_on_use": true,
-    "preserve_on_merge": true,
+    "preserve_on_download": false,
+    "preserve_on_use": false,
+    "preserve_on_merge": false,
     "blocker_error_classes": [
       "AMBIGUOUS_COUNTERPARTY_TYPE_INPUT",
       "MISSING_COUNTERPARTY_TYPE",
-      "STRICT_COUNTERPARTY_TYPE_GATE_MISSING_IN_CLONE",
-      "MERGE_WITHOUT_STRICT_COUNTERPARTY_TYPE_GATE"
+      "RESPONSIBLE_PRINCIPAL_MISSING_FOR_EXTERNAL_WRITE"
     ],
     "author": "Ingolf Lohmann",
     "rights_holder": "Ingolf Lohmann",
@@ -220,7 +219,7 @@
     }
   },
   "ambiguous_counterparty_type_blocks": true,
-  "strict_counterparty_type_must_survive_clone_download_use_merge": true,
+  "strict_counterparty_type_must_survive_clone_download_use_merge": false,
   "other_counterparty_description_gate": {
     "id": "QALL_OTHER_COUNTERPARTY_DESCRIPTION_GATE",
     "status": "IMPLEMENTED",

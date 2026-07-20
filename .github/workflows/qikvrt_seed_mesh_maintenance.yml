@@ -1,46 +1,58 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
 name: QIKVRT Seed Mesh Maintenance
+
 on:
   workflow_dispatch:
     inputs:
       run_id:
-        description: QIKVRT run id
+        description: Optional safe QIKVRT run id
         required: false
         type: string
   schedule:
     - cron: '37 */6 * * *'
+
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: qikvrt-seed-mesh-maintenance
+  cancel-in-progress: false
+
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
-      QIKVRT_RUN_ID: ${{ inputs.run_id || github.run_id }}
+      QIKVRT_RUN_ID: ${{ inputs.run_id || format('{0}-{1}', github.run_id, github.run_attempt) }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Run QIKVRT Seed Mesh Maintenance
-        run: sh tools/qikvrt_seed_mesh_maintenance.sh
-      - name: Commit QIKVRT outputs
-        shell: sh
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Maintain and revalidate
+        shell: bash
         run: |
-          set -eu
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add registry evidence || true
-          if git diff --cached --quiet; then
-            echo "QIKVRT_NO_CHANGES"
-            exit 0
-          fi
-          git commit -m "QIKVRT 4AV1 Seed Mesh Maintenance $QIKVRT_RUN_ID"
-          branch="${GITHUB_REF_NAME:-main}"
-          n=1
-          while [ "$n" -le 5 ]; do
-            echo "QIKVRT_PUSH_ATTEMPT $n branch=$branch"
-            if git pull --rebase --autostash origin "$branch" && git push origin "HEAD:$branch"; then
-              echo "QIKVRT_PUSH_PASS attempt=$n"
-              exit 0
-            fi
-            n=$((n+1))
-            sleep 5
-          done
-          echo "BLOCK QIKVRT_PUSH_FAILED_AFTER_RETRY"
-          exit 44
+          set -euo pipefail
+          mkdir -p .qikvrt/seed-workflow
+          {
+            sh tools/qikvrt_seed_mesh_maintenance.sh
+            sh tools/qikvrt_seed_node_revalidation.sh
+          } 2>&1 | tee .qikvrt/seed-workflow/mesh-maintenance.log
+      - name: Preserve local evidence without mutating the repository
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-seed-maintenance-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            .qikvrt/seed-workflow/mesh-maintenance.log
+            registry/NODEMESH_INDEX.json
+            registry/NODEMESH_STATUS.json
+            registry/NODEMESH_REVALIDATION.json
+            evidence/seed_mesh_maintenance/LATEST.json
+            evidence/seed_mesh_maintenance/runs/${{ env.QIKVRT_RUN_ID }}.json
+            evidence/seed_node_revalidation/LATEST.json
+            evidence/seed_node_revalidation/runs/${{ env.QIKVRT_RUN_ID }}.json

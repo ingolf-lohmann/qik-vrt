@@ -8,7 +8,8 @@
   },
   "schema": "qikvrt_initial_launcher_acceptance_before_any_effect_gate_v29",
   "created_utc": "2026-06-20T12:54:45Z",
-  "status": "ACTIVE",
+  "status": "SUPERSEDED_HISTORICAL",
+  "superseded_by": "canonical/INITIAL_LAUNCHER_EFFECT_AUTHORIZATION_GATE_V30.json",
   "gate_id": "INITIAL_LAUNCHER_ACCEPTANCE_BEFORE_ANY_EFFECT_GATE",
   "error_classes": [
     "BATCH_START_WITHOUT_INITIAL_ACCEPTANCE_GATE",

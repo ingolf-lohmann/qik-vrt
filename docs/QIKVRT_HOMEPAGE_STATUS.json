@@ -1,20 +1,24 @@
 {
-  "version": "QIKVRT_V2_13_4AX3",
-  "artifact": "PUBLIC_HOMEPAGE_UX_POLISH_COGNITION_CONSOLE_TOKEN_HEADER_FIX",
-  "created_utc": "20260708T184056Z",
+  "schema": "qikvrt_static_homepage_status_v1",
+  "updated_utc": "2026-07-20T00:00:00Z",
   "homepage_path": "docs/index.html",
-  "reference_run": "4AV1_20260708T174034Z_709544",
-  "status": "PASS_BUILT",
+  "status": "STATIC_BUILD_REVIEW_REQUIRED",
+  "demonstrated": [
+    "static HTML/CSS/JavaScript assets exist",
+    "local transparent rule console is wired",
+    "public page accepts no API token"
+  ],
+  "not_demonstrated": [
+    "production deployment",
+    "multi-node operation",
+    "commercial readiness",
+    "legal or compliance certification",
+    "scientific validation"
+  ],
   "boundaries": {
     "no_embedded_token": true,
+    "no_browser_token_input": true,
     "static_site_no_shared_secret": true,
-    "github_models_by_user_token_or_future_proxy": true,
-    "no_legal_certification_claim": true
-  },
-  "qikvrt_version": "V2.13.4AX3",
-  "fix": "4AX2_HTTP_AUTH_HEADER_ERROR_TOKEN_HANDOFF_FIX",
-  "no_powershell": true,
-  "no_ps1": true,
-  "no_git_command_path": true,
-  "no_embedded_token": true
+    "authoritative_status": "STATUS.md"
+  }
 }

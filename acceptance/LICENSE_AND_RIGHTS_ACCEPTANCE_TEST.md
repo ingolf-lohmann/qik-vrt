@@ -15,7 +15,10 @@ Deutsch:
 
 ## Regel
 
-Keine Persistenz ohne Lizenz- und Urheberrechtsfreigabe. Drittmaterial ohne Rechte-/Quellenstatus wird blockiert oder isoliert.
+Keine externe Persistenz ohne Effektfreigabe und nachvollziehbare
+Rechte-/Quellenklassifikation. Drittmaterial ohne Rechte-/Quellenstatus wird
+blockiert oder isoliert. Die Effektfreigabe ist keine zusätzliche Bedingung für
+Rechte, die Apache-2.0 oder CC-BY-NC-ND-4.0 bereits gewähren.
 
 q.e.d.  
 Ingolf Lohmann

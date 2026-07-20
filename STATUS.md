@@ -1,17 +1,96 @@
-<!--
-Copyright 2026 Ingolf Lohmann.
-Non-source content in this file is licensed under Creative Commons
-Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
-See LICENSES/CC-BY-NC-ND-4.0.txt.
--->
+# Verification status
 
-# Status
+**Snapshot date:** 2026-07-20
 
-```text
-V16_REAL_RETROACTIVE_TEST_ASSERTION_SEMANTICS
-```
+**Baseline inspected:** public checkout at commit
+`8ae1884116221087bdcc75eed9905bb80bdd9e95`, followed by the repair set carried
+by the repository commit that publishes this status.
 
-V16 replaces placeholder tests with real semantic assertions and makes the master gate execute those tests.
+**License transition:** the public baseline and earlier Apache-2.0 grants remain
+under Apache-2.0. Current QIK-VRT-controlled repair-set code carrying the new
+notice is licensed prospectively under `PolyForm-Noncommercial-1.0.0`;
+commercial use requires separate written permission. See
+`LICENSE_TRANSITION.md` for the rights-chain boundary.
 
-q.e.d.  
-Ingolf Lohmann
+## Demonstrated locally
+
+- Exact five-state `EFFECT_ACK` model and DONE-only ordinary release.
+- Bounded, fail-closed decision behavior, deterministic canonical protocol
+  hashes, immutable protocol versions, predecessor validation, and optional
+  external trusted hash anchors.
+- Authenticated, repository-scoped API paths for ingest, verify, stage, and
+  release status.
+- Explicit effect authorization and responsibility binding before non-dry mutation.
+- Content-addressed storage/staging, append-only provenance, idempotent replay,
+  replay-conflict isolation, transaction recovery, symlink/path rejection,
+  and hash-linked audit records.
+- HMAC-authenticated, repository- and artifact-bound remote release
+  attestation before DONE.
+- Authorization-before-effect launcher, master gate, safe publication planner,
+  durable publication effect journal, bounded subprocess execution, unique
+  per-run logging, and deterministic repository-integrity tooling.
+- Release assets bound to their planned bytes and local `HEAD`, with symlink
+  rejection and post-effect comparison against GitHub's remote SHA-256 and size.
+- Descendant process-group termination, crash-recoverable integrity locking,
+  byte-safe JSONL logging, and bounded symlink-safe authorization records with
+  fail-closed operation-scope parsing.
+- Exact prior-run binding before workflow state restoration: authenticated API
+  metadata must match the repository, workflow path, source commit, allowed
+  event, completed status, and successful conclusion.
+- Canonically encoded 32--128 byte bearer/HMAC secrets with role separation,
+  plus exact cross-binding of ingest provenance, receipt, recovery transaction,
+  effect set, result hash, and responsibility protocol.
+- Negative tests for malformed, oversized, unauthenticated, expired,
+  conflicting, tampered, and timeout inputs.
+
+The exact command and final counts are recorded in [BUILD_SUMMARY.md](BUILD_SUMMARY.md)
+after the canonical manifest has been regenerated and the final test run has
+completed.
+
+The final local `make test`, canonical integrity verification, and the real
+authorization-bound launcher `master-gate` all pass on this workspace state.
+
+## Not demonstrated by the local run
+
+- A live GitHub Actions run, remote persistence, repository upload, release,
+  or Zenodo ingestion.
+- Non-bypassability across every possible downstream software or hardware
+  integration.
+- Production internet-service hardening, independent security audit, formal
+  verification, or cross-platform certification.
+- Historical priority, scientific novelty, peer review, standards status,
+  external adoption, or correctness of every archived claim.
+- Truth of legal, medical, psychological, physical, metaphysical, religious,
+  historical, UAP, or personal-event assertions supplied to the software.
+
+## Precise haltpoint claim
+
+The repair set makes the QIK-VRT effect haltpoint **defined, described,
+executable, testable, and applicable as a bounded policy/effect gate**. This is
+not a solution of the classical undecidable halting problem. Calling the
+architecture a paradigm shift, revolution, or evolution is a theoretical and
+historical assessment whose field-wide status depends on independent review,
+reproduction, and adoption.
+
+The public baseline commit named above does not contain the complete repaired
+state described here. The exact repaired state is the content tree of the
+repository commit containing this status; it must not be attributed
+retroactively to the baseline. Remote branch, release, CI, and archival status
+remain separately verifiable external effects.
+
+## Current authority
+
+Current verification authority consists of the active source files and tests,
+this status, `BUILD_SUMMARY.*`, and the canonical integrity trio:
+
+- `REPOSITORY_FILE_MANIFEST.json`
+- `SHA256SUMS.txt`
+- `REPOSITORY_FILE_MANIFEST.json.sha256`
+
+Earlier `PASS`, `READY`, delivery, or test reports are retained as historical
+records only. They do not override a current failure or the boundaries above.
+The detailed classification is recorded in
+[HISTORICAL_ARTIFACT_BOUNDARIES.md](HISTORICAL_ARTIFACT_BOUNDARIES.md).
+
+Copyright 2026 Ingolf Lohmann. Non-source content: CC BY-NC-ND 4.0 unless a
+file states otherwise.

@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* Copyright 2026 Ingolf Lohmann. */
 
 (function(){
   const KB_URL='assets/data/qikvrt_knowledge_base.json';
@@ -33,13 +35,13 @@
     lines.push(qikMap(text));
     lines.push('');
     if(tags.includes('Rechts-/Nachweiskontext')){
-      lines.push('Einordnung: Für KI-, Software- und Lieferkettenprozesse wird nicht nur Funktion, sondern belegbare Verantwortbarkeit relevant: technische Dokumentation, Transparenz, Logging, Risk Control, Human Oversight, Cybersecurity und revisionsfähige Nachweise. QIK-VRT beantwortet diesen Bedarf mit run-id-spezifischen Evidence-Artefakten, Audit-Export, Dashboard und Release Freeze.');
-      lines.push('Grenze: Das ist rechtlich anschlussfähige Evidenz, keine anwaltliche Einzelfallberatung und keine behördliche Zertifizierung.');
+      lines.push('Einordnung: Für KI-, Software- und Lieferkettenprozesse sind technische Dokumentation, Transparenz, Logging, Risikokontrolle, menschliche Aufsicht und Cybersecurity wichtige Prüfgegenstände. QIK-VRT erprobt dafür run-id-spezifische Evidenz, Audit-Export und Wirkungshaltepunkte.');
+      lines.push('Grenze: Die Artefakte können eine weitere rechtliche oder organisatorische Prüfung unterstützen; sie sind keine Rechtsberatung, Zertifizierung oder Konformitätsfeststellung.');
       lines.push('');
     }
     if(tags.includes('Technische Architektur')){
-      lines.push('Architektur: Seed und Node interagieren autonom über öffentliche, autorisierte Repository-Artefakte. Der Seed akzeptiert Nodes, pflegt Index und Status, revalidiert bekannte oder queued Nodes und publiziert Audit/Dashboard. Nodes erneuern Registrierung, senden Health und bestätigen Seed-Acceptance.');
-      lines.push('Schutzgrenzen: kein globales Scanning, keine Selbstverbreitung, keine fremde Repository-Mutation, keine Remote-Wirkung ohne Autorisierung.');
+      lines.push('Referenzarchitektur: Seed und Node tauschen ausdrücklich autorisierte Repository-Artefakte aus. Der Seed validiert eine Allowlist, erzeugt lokalen Index, Status, Revalidierung und Audit/Dashboard-Artefakte. Die aktiven Workflows schreiben keine fremden Repositories.');
+      lines.push('Schutzgrenzen: kein globales Scanning, keine Selbstverbreitung, strikte URL-/Repo-Bindung und fail-closed Fehlerstatus. Produktions- und Mehrknotenbetrieb sind gesondert zu validieren.');
       lines.push('');
     }
     if(tags.includes('Künstliche Kognition')){
@@ -47,12 +49,12 @@
       lines.push('');
     }
     if(tags.includes('Produkt/Monetarisierung')){
-      lines.push('Produktnutzen: QIK-VRT Trust Mesh verkauft nicht nur Automatisierung, sondern prüfbare Vertrauenszustände: Repository-native Evidence, Auditfähigkeit, Provenienz, Governance, Pilotfähigkeit und Compliance-Readiness.');
+      lines.push('Moeglicher Nutzen: Der Forschungsprototyp zeigt, wie Repository-Evidenz, Provenienz, Wirkungsgates und Auditdaten fuer konkrete Pilotpruefungen strukturiert werden koennen. Produkt- und Compliance-Reife werden damit nicht behauptet.');
       lines.push('');
     }
     lines.push('Nächster sinnvoller Anschluss: Formuliere den konkreten Fall als Repository, Artefakt, Risiko, gewünschte Entscheidung und benötigten Nachweis. Die Konsole kann daraus eine QIK/VRT-Prüfstruktur ableiten.');
     lines.push('');
-    lines.push('Basis: '+(kb&&kb.product?kb.product:'QIK-VRT Trust Mesh')+' | Referenzlauf '+(kb&&kb.reference_run?kb.reference_run:'4AV1_20260708T174034Z_709544'));
+    lines.push('Basis: '+(kb&&kb.product?kb.product:'QIK-VRT Forschungsprototyp')+' | Verbindliche Grenze: '+(kb&&kb.authoritative_status?kb.authoritative_status:'STATUS.md'));
     return lines.join('\n');
   }
   window.QIKVRTLocalEngine={loadKB, answerLocal, classify};

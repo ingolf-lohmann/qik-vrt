@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
+/* Copyright 2026 Ingolf Lohmann. */
 
 (function(){
   const $=sel=>document.querySelector(sel);
@@ -16,21 +18,12 @@
     ask.addEventListener('click',async()=>{
       const prompt=$('#promptInput').value.trim();
       if(!prompt){out.textContent='Bitte eine Frage oder einen Fall eingeben.';return;}
-      const mode=$('#modeSelect').value;
       out.textContent='Arbeite...';
       try{
-        if(mode==='github'){
-          const token=$('#ghToken').value.trim();
-          if(!token){out.textContent='GitHub Models Modus benötigt einen eigenen Token mit models:read. Für öffentliche No-Token-Nutzung ist die nächste Ausbaustufe eine GitHub App oder ein Server-Proxy.';return;}
-          const model=$('#modelInput').value.trim()||'openai/gpt-4o-mini';
-          out.textContent=await window.QIKVRTGitHubModels.askGitHubModels(prompt,token,model);
-        }else{
-          out.textContent=window.QIKVRTLocalEngine.answerLocal(prompt,kb);
-        }
+        out.textContent=window.QIKVRTLocalEngine.answerLocal(prompt,kb);
       }catch(e){out.textContent=String(e.message||e);}
     });
     $$('#examplePrompts button').forEach(b=>b.addEventListener('click',()=>{$('#promptInput').value=b.dataset.prompt; ask.click();}));
-    $('#modeSelect')?.addEventListener('change',e=>{$('#githubFields').hidden=e.target.value!=='github';});
   }
   document.addEventListener('DOMContentLoaded',()=>{initTheme();initTimeline();initConsole();$('#copyLink')?.addEventListener('click',copyLink)});
 })();

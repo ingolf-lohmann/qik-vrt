@@ -5,6 +5,9 @@ See LICENSES/CC-BY-NC-ND-4.0.txt.
 -->
 # NO_PERSISTENCE_WITHOUT_CURRENT_LICENSE_ACCEPTANCE_TEST
 
-PERSISTENCE_EXECUTED_WITHOUT_CURRENT_LICENSE_ACCEPTANCE
+Compatibility filename. Public-license rights do not require runtime assent.
+The operational gate applies only to the concrete external effect:
+
+PERSISTENCE_EXECUTED_WITHOUT_CURRENT_EFFECT_AUTHORIZATION
 
 q.e.d. Ingolf Lohmann

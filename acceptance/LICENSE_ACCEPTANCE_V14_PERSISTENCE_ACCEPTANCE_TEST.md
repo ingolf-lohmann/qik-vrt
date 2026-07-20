@@ -9,11 +9,13 @@ See LICENSES/CC-BY-NC-ND-4.0.txt.
 
 ## Fehlerklasse
 
-`LICENSE_ACCEPTANCE_NOT_PERSISTED_IN_V14`
+`EFFECT_AUTHORIZATION_NOT_PERSISTED_IN_V14`
 
 ## Regel
 
-V14 muss die aktuelle Akzeptanz persistieren.
+Kompatibilitätsdateiname: V14 muss die Autorisierung des konkreten externen
+Effekts persistieren. Diese Autorisierung ist keine zusätzliche
+Lizenzbedingung.
 
 q.e.d.  
 Ingolf Lohmann

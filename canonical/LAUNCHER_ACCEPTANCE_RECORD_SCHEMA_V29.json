@@ -7,6 +7,8 @@
     "classification": "canonical_json"
   },
   "schema": "qikvrt_launcher_acceptance_record_schema_v29",
+  "status": "SUPERSEDED_HISTORICAL",
+  "superseded_by": "canonical/LAUNCHER_EFFECT_AUTHORIZATION_RECORD_SCHEMA_V30.json",
   "required_fields": [
     "accepted",
     "accepted_by",

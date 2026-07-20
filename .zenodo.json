@@ -1,17 +1,15 @@
 {
-  "title": "QIKVRT ODU V1.9: Ontologie des Unterschieds, transzendierende Information und Reifepruefung",
-  "upload_type": "publication",
-  "publication_type": "article",
-  "description": "Windows-safe QIKVRT repository with PDF proof artifact and GitHub-token-only Git-CLI Zenodo release path via Zenodo GitHub integration.",
+  "title": "QIK-VRT: Wirkungshaltepunkt, Ontologie des Unterschieds und verantwortete Effektfreigabe",
+  "upload_type": "software",
+  "description": "Research implementation of a bounded five-state effect haltpoint with provenance, responsibility, audit, release gating and 102 passing local tests. Current QIK-VRT-owned software is licensed under PolyForm Noncommercial 1.0.0, current documentation under CC BY-NC-ND 4.0, and earlier or specifically marked Apache-2.0 material retains its historical grant. See LICENSE and LICENSE_TRANSITION.md for the exact mixed-license boundary.",
   "creators": [
     {
       "name": "Lohmann, Ingolf",
-      "affiliation": "QIK-VRT; GitHub-authenticated Zenodo owner account"
+      "affiliation": "Independent researcher; QIK-VRT"
     }
   ],
   "access_right": "open",
-  "license": "cc-by-nc-4.0",
-  "version": "1.6",
+  "version": "2026.07.20",
   "language": "deu",
   "keywords": [
     "Ontologie des Unterschieds",
@@ -24,7 +22,9 @@
     "Plattformmacht",
     "KI",
     "Audit",
-    "Ethik"
+    "Ethik",
+    "Wirkungshaltepunkt",
+    "effect haltpoint"
   ],
   "related_identifiers": [
     {
@@ -34,5 +34,5 @@
       "resource_type": "software"
     }
   ],
-  "notes": "GitHub-identifizierende Metadaten werden beim Skriptlauf aus GITHUB_USERNAME und optional GITHUB_REPO_URL in die Zenodo-Metadaten eingetragen. Das Zenodo-API-Token muss ownerseitig aus dem Zenodo-Konto stammen, in das per GitHub-Login eingeloggt wurde. GitHub-Tokens werden nicht an Zenodo uebertragen."
+  "notes": "Intended release tag: qikvrt-effect-haltpoint-2026-07-20. This metadata does not merge the repository's distinct licenses. A Zenodo record or DOI exists only if the GitHub-Zenodo integration actually archives a tagged release; the local QIK-VRT publisher performs no direct Zenodo API effect."
 }

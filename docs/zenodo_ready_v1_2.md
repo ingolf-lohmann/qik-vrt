@@ -1,14 +1,22 @@
 # Zenodo Upload Readiness Record V1.2
 
-Status: `READY_FOR_OWNER_SIDE_ZENODO_UPLOAD`
+Status: `HISTORICAL_SUPERSEDED_UPLOAD_READINESS_RECORD`
+
+This record describes the historical V1.2 package only. It is not the release
+plan or metadata authority for the current `2026.07.20` repository state. The
+current reference publisher does not implement a direct Zenodo effect.
 
 ## Main repository artifact
 
 - ZIP artifact to upload: `QIKVRT_ODU_V1_2_WINSAFE.zip`
 - Intended version: `V1.2 PDF Zenodo-ready`
 - Creator: Ingolf Lohmann
-- Document license: CC BY-NC 4.0, unless a different owner-side Zenodo license decision is explicitly made.
-- Code/tool license: Apache-2.0 for verification code.
+- Document license: CC-BY-NC-ND-4.0, unless a different owner-side Zenodo license decision is explicitly made.
+- Historical artifact boundary: verification code contained in this V1.2
+  package remains under the Apache-2.0 grant attached to that artifact. This
+  record does not license the current QIK-VRT repair-set code; see the root
+  `LICENSE` and `LICENSE_TRANSITION.md` for the current PolyForm
+  Noncommercial transition.
 
 ## Additional PDF artifact included inside repository
 
@@ -39,6 +47,6 @@ DOI status: `PENDING_OWNER_ZENODO_PUBLICATION`
 
 ## Windows-safe upload correction
 
-Use V1.2 for Zenodo upload. V1.1 is superseded because Windows extraction was reported failing. V1.2 is the Windows-safe delivery artifact with the same substantive PDF/applicability content and shortened paths.
+For the historical V1.2 workflow, V1.2 superseded V1.1 because Windows extraction was reported failing. This statement records that earlier package decision; it is not an instruction to use V1.2 for the current release.
 
 Boundary remains: live upload not executed here; DOI pending owner-side Zenodo publication.
