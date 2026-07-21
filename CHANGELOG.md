@@ -11,7 +11,10 @@ remain the authoritative detailed record.
 ## Unreleased
 
 - Competition-readiness documentation, community guidance, and a no-network
-  effect-haltpoint demonstration are prepared on a review branch.
+  effect-haltpoint demonstration were merged into `main` through
+  [PR #1](https://github.com/Goldkelch/qik-vrt/pull/1) at merge commit
+  `0d9c90eaeec73405e0a360e94830e7d28db2bbc2`. The fixed release tag remains
+  unchanged.
 
 ## 2026.07.20 — Wirkungshaltepunkt-Evolution
 
