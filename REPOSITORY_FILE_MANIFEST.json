@@ -289,13 +289,13 @@
       "sha256": "381b187f216ce72900d91f10bce72e31ca3ad69df1d9df287ac5bc59a12505d8"
     },
     {
-      "bytes": 997,
+      "bytes": 1156,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "CHANGELOG.md",
-      "sha256": "1f31b0b74384a5f3f7d96b46aae679b187761b3a1225aba26c5343c2bb686111"
+      "sha256": "539488dd8df9848ca6545d5f6b8dc75652acae976082357112ffe25f32d05165"
     },
     {
       "bytes": 1107,
@@ -8581,13 +8581,13 @@
       "sha256": "783e43f3b97496273f75e4a55240287433a1b8e941b57aeef76e2c42565559c3"
     },
     {
-      "bytes": 3177,
+      "bytes": 3928,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "docs/competition/EVIDENCE.md",
-      "sha256": "85118905d126dc5ae4db2e893998df45480a526015a779101f165d80ebae6442"
+      "sha256": "14d0c2af492ed1bc8fcb0e2388c42d232994bbdac8e76360b47fc6ac46366a5c"
     },
     {
       "bytes": 5923,
@@ -21065,7 +21065,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "c3690e6cf3024580a9ad21e3035b290755010ce9f8f32f477359f6f3eb41ec72",
+  "repository_content_tree_sha256": "6666c5bf0c956909811593589e97e47b9ed43fb3509ed7358dfd4ab229449db4",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
