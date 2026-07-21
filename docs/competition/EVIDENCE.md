@@ -18,6 +18,21 @@ Copyright (c) 2026 Ingolf Lohmann.
 | Document SHA-256 | `b4d3601c831db8bb70704a3dbed1e95deb47779de9a15bac8ea463f2693f89fe` |
 | Force-push used for publication | No |
 
+## Competition-ready main identity
+
+| Item | Value |
+|---|---|
+| Pull request | [PR #1](https://github.com/Goldkelch/qik-vrt/pull/1) |
+| Prepared commit | `dcc63ba23564422224d3ce71a31dc8856c0c2abf` |
+| Merge commit | `0d9c90eaeec73405e0a360e94830e7d28db2bbc2` |
+| Tree SHA | `b92fd74ce1429741a40ca0c00d8249dd50312ee2` |
+| Main CI | [successful run 29802292584](https://github.com/Goldkelch/qik-vrt/actions/runs/29802292584) |
+| Pages deployment | [successful run 29802292020](https://github.com/Goldkelch/qik-vrt/actions/runs/29802292020) |
+
+The competition merge does not move or rewrite the fixed release tag. Release
+identity and current evaluator identity remain distinct and independently
+addressable.
+
 ## Demonstrated evidence
 
 | Claim | Evidence | Boundary |
@@ -47,18 +62,24 @@ Copyright (c) 2026 Ingolf Lohmann.
 | TCP/IP end-to-end adapter | 1 |
 | **Total** | **102** |
 
-## Reproduce
+## Reproduce the fixed release
 
 ```bash
 git clone https://github.com/Goldkelch/qik-vrt.git
 cd qik-vrt
 git checkout a8a9cb2666a91411489d4fc90a5306908f8428ea
-python3 examples/effect_haltpoint_demo.py  # available on the competition branch
 make test
 ```
 
-For the fixed release itself, omit the example command if the competition
-branch has not yet been merged. The authoritative integrity check is:
+## Reproduce the competition-ready evaluator path
+
+```bash
+git checkout 0d9c90eaeec73405e0a360e94830e7d28db2bbc2
+python3 examples/effect_haltpoint_demo.py
+make test
+```
+
+The authoritative repository-integrity command for either checked-out state is:
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
