@@ -150,6 +150,32 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
         self.assertIn("path: .qikvrt/toolchains/gh", text)
         self.assertNotIn("restore-keys:", text)
         self.assertNotIn("enableCrossOsArchive: true", text)
+        exact_restore = text[
+            text.index("Restore exact renderer and GH cache") :
+            text.index("Restore GH-only cache without exact renderer")
+        ]
+        exact_save = text[
+            text.index("Save verified exact renderer and GH cache") :
+            text.index("Save verified GH-only cache without exact renderer")
+        ]
+        for cache_step in (exact_restore, exact_save):
+            self.assertIn(
+                ".qikvrt/toolchains/xml2rfc/3.34.0/"
+                "python-3.12.13/*/wheelhouse",
+                cache_step,
+            )
+            self.assertNotIn("/venv", cache_step)
+            self.assertNotIn("\\venv", cache_step)
+        self.assertIn(
+            'renderer=".qikvrt/toolchains/xml2rfc/3.34.0/'
+            'python-3.12.13/$renderer_platform/venv/bin/xml2rfc"',
+            text,
+        )
+        self.assertIn(
+            "'.qikvrt\\toolchains\\xml2rfc\\3.34.0\\python-3.12.13\\"
+            "windows-amd64\\venv\\Scripts\\xml2rfc.exe'",
+            text,
+        )
         exact_save = text.index("Save verified exact renderer and GH cache")
         posix_recheck = text.index(
             "Revalidate exact POSIX renderer before cache publication"
