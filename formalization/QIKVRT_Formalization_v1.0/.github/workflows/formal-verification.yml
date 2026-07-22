@@ -27,8 +27,11 @@ jobs:
       - run: python -m pytest
       - run: python scripts/build_monolith.py
       - run: lake env lean --json build/All.lean > build/lean.stdout.jsonl
-      - run: python scripts/make_lean_receipt.py --checker "Lean 4 native kernel"
+      - run: >-
+          python scripts/make_lean_receipt.py
+          --checker "Lean 4 native kernel"
+          --version "4.19.0"
+          --commit "6caaee842e9495688c1567e78c0e68dbb96942aa"
       - run: python scripts/generate_checksums.py
       - run: npm run gate20
       - run: python -m python.gate20
-

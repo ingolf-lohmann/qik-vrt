@@ -19,8 +19,8 @@ def sha256(path: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--checker", default="Lean 4 kernel")
-    parser.add_argument("--version", default="4.28.0-pre (WebAssembly independent checker)")
-    parser.add_argument("--commit", default="38f3c0c45b8df6da2652faff6dcaa15afb5a6981")
+    parser.add_argument("--version", required=True)
+    parser.add_argument("--commit", required=True)
     args = parser.parse_args()
 
     stream = ROOT / "build" / "lean.stdout.jsonl"
@@ -63,4 +63,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

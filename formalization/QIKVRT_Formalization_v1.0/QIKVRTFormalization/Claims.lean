@@ -10,7 +10,7 @@ encoded as `proved` by the compatibility predicate.
 
 namespace QIKVRT
 
-public inductive ClaimKind where
+inductive ClaimKind where
   | mathematicalTheorem
   | modelDefinition
   | modelTheorem
@@ -22,7 +22,7 @@ public inductive ClaimKind where
   | normativeConclusion
 deriving DecidableEq, Repr, BEq
 
-public inductive ClaimStatus where
+inductive ClaimStatus where
   | proved
   | provedConditional
   | defined
@@ -35,7 +35,7 @@ public inductive ClaimStatus where
   | falseInGeneral
 deriving DecidableEq, Repr, BEq
 
-@[expose] public def compatible : ClaimKind → ClaimStatus → Bool
+def compatible : ClaimKind → ClaimStatus → Bool
   | .mathematicalTheorem, .proved => true
   | .mathematicalTheorem, .falseInGeneral => true
   | .modelDefinition, .defined => true
@@ -56,14 +56,14 @@ deriving DecidableEq, Repr, BEq
   | .normativeConclusion, .normative => true
   | _, _ => false
 
-public structure Claim where
+structure Claim where
   id : String
   kind : ClaimKind
   status : ClaimStatus
   statement : String
 deriving Repr
 
-@[expose] public def coreClaims : List Claim := [
+def coreClaims : List Claim := [
   ⟨"SET-001", .mathematicalTheorem, .proved,
    "A class and its relative complement form a disjoint partition."⟩,
   ⟨"MAP-001", .mathematicalTheorem, .proved,
@@ -90,18 +90,18 @@ deriving Repr
    "Technology should be developed for peaceful and responsibility-preserving use."⟩
 ]
 
-@[expose] public def claimValid (c : Claim) : Bool :=
+def claimValid (c : Claim) : Bool :=
   compatible c.kind c.status
 
-public theorem coreClaimsCompatible : coreClaims.all claimValid = true := by rfl
+theorem coreClaimsCompatible : coreClaims.all claimValid = true := by rfl
 
-public theorem interpretationCannotBeProved :
+theorem interpretationCannotBeProved :
     compatible ClaimKind.interpretation ClaimStatus.proved = false := rfl
 
-public theorem ontologyCannotBeProvedByStatusCollapse :
+theorem ontologyCannotBeProvedByStatusCollapse :
     compatible ClaimKind.ontologicalInterpretation ClaimStatus.proved = false := rfl
 
-public theorem normativeCannotBeProvedByStatusCollapse :
+theorem normativeCannotBeProvedByStatusCollapse :
     compatible ClaimKind.normativeConclusion ClaimStatus.proved = false := rfl
 
 end QIKVRT
