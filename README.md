@@ -150,11 +150,13 @@ corresponding versioned source export is archived under
 
 The active Python core uses only the standard library; the additional decision
 core is strict ANSI C90. The verified local integration target remains Python
-3 on POSIX systems. The C interface and checksum-gated bootstrap definitions
-are written for POSIX, macOS, and Windows, but cross-platform certification is
-**not claimed** until the corresponding hosted jobs succeed. Some lock and
-durability behavior still uses POSIX facilities. Historical Windows/Zenodo
-material remains an archive and is not the current runtime authority.
+3 on POSIX systems. The checksum-gated GitHub-CLI bootstrap and its failure
+controls execute on Linux, macOS, and Windows. The canonical `xml2rfc` renderer
+remains CPython 3.12.13: Linux exercises it end to end, while macOS and Windows
+remain fail closed and automatically activate the same gate when that exact
+patch release becomes available in their hosted toolcaches. A fallback Python
+may run syntax checks but is never represented as the canonical renderer.
+General cross-platform certification is not claimed.
 
 ## Verify
 

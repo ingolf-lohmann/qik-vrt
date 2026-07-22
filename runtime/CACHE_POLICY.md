@@ -32,11 +32,14 @@ A shared CI cache key MUST contain all of:
 1. operating system and architecture;
 2. a format-version prefix;
 3. the exact renderer interpreter version (`3.12.13`);
-4. a digest of `runtime/toolchains/**`; and
-5. digests of every runtime/GitHub-CLI bootstrap used to consume the cache.
+4. the exact-renderer capability outcome for the selected hosted runner;
+5. a digest of `runtime/toolchains/**`; and
+6. digests of every runtime/GitHub-CLI bootstrap used to consume the cache.
 
 Restoration MUST use an exact key. Broad restore prefixes and cross-OS cache
-archives are prohibited. A GitHub CLI executable installed in or loaded from
+archives are prohibited. A runner without CPython 3.12.13 can warm only the
+GitHub-CLI portion under a distinct capability key; it cannot seed or satisfy
+the renderer cache. A GitHub CLI executable installed in or loaded from
 the managed cache is compared byte-for-byte with a fresh extraction of the
 repo-hash-anchored upstream archive before it is executed. Cache metadata is
 not trusted merely because a hosting service returned it. In check-only mode,

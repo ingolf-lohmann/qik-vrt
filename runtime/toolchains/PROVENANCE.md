@@ -37,7 +37,7 @@ committed or cached by these scripts.
 - Upstream project: <https://github.com/ietf-tools/xml2rfc>
 - Package index: <https://pypi.org/project/xml2rfc/3.34.0/>
 - Bound renderer interpreter: CPython 3.12.13, x64.
-- Supported locked runners: Linux x64, macOS x64, and Windows x64.
+- Supported wheel lock targets: Linux x64, macOS x64, and Windows x64.
 - Exact direct version: `xml2rfc==3.34.0`.
 - License: BSD-3-Clause; copyright IETF Trust. See
   `THIRD_PARTY_NOTICES.md`.
@@ -48,6 +48,15 @@ committed or cached by these scripts.
 The lock file itself has SHA-256
 `18d213a57ee9005adaf0906c8287a04af1692f15a651c3b9c8e5cfdcebb1fd2c`,
 also recorded in `TOOLCHAIN.lock.tsv`.
+
+The hosted CI toolcache currently supplies the exact CPython 3.12.13 runtime
+on Linux x64 but not on the selected macOS Intel and Windows x64 runners. Those
+runners therefore execute the independently locked GitHub-CLI and bootstrap
+failure contracts and report the renderer capability as unavailable. The
+workflow probes the exact version on every run and automatically activates the
+same XML install/render gate if it becomes available. A fallback Python 3.12
+is used only for non-renderer contract checks and never satisfies the renderer
+identity predicate.
 
 Installation requires explicit third-party consent. Pip runs in isolated mode
 with its configuration file set to the platform null device, an explicit PyPI
