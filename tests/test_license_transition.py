@@ -30,6 +30,8 @@ CURRENT_SOURCE_FILES = (
     ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
     ".github/workflows/qikvrt_seed_node_revalidation.yml",
     ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+    ".github/workflows/qikvrt_status_report_finalize.yml",
+    ".github/workflows/qikvrt_status_report_reserve.yml",
     ".github/workflows/qikvrt_zenodo_reserve.yml",
     "api/qikvrt_github_api.openapi.yaml",
     "include/qikvrt/effect_ack.h",
@@ -62,6 +64,9 @@ CURRENT_SOURCE_FILES = (
     "tests/test_zenodo_actions.py",
     "tests/test_zenodo_manifest_builder.py",
     "tests/test_seed_workflows.py",
+    "tests/test_status_clarification_bundle.py",
+    "tests/test_status_release_workflows.py",
+    "tests/test_status_zenodo.py",
     "tests/test_tcpip_e2e.py",
     "tools/__init__.py",
     "tools/bootstrap-gh.ps1",
@@ -83,6 +88,7 @@ CURRENT_SOURCE_FILES = (
     "tools/qikvrt_seed_node_revalidation.sh",
     "tools/qikvrt_seed_registry_acceptance.sh",
     "tools/qikvrt_subprocess.py",
+    "tools/qikvrt_status_zenodo.py",
     "tools/qikvrt_validate_state_run.py",
 )
 

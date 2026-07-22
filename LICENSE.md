@@ -29,6 +29,14 @@ PolyForm Noncommercial is source-available but is not an OSI-approved
 open-source license. Its special permissions for the organizations and uses
 named in the standard text remain fully applicable.
 
+The separately scoped package
+[`formalization/QIKVRT_Formalization_v1.0`](formalization/QIKVRT_Formalization_v1.0)
+is an explicit exception. Its newly created Lean, TypeScript, and Python code
+is MIT-licensed under that package's `LICENSE-CODE`; embedded documentary
+source material retains its own CC BY-NC-ND 4.0 boundary. The component notice
+controls for that package and does not change the current source-code default
+elsewhere.
+
 Required Notice: Copyright 2026 Ingolf Lohmann. Commercial use is not licensed without a separate written agreement from the rights holder.
 
 ## Documentation and non-source content
