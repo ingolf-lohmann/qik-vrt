@@ -318,6 +318,11 @@ Attribution-NonCommercial-NoDerivatives 4.0 International unless a file says
 otherwise. Earlier versions or files validly received under Apache-2.0 retain
 that historical grant; the transition cannot withdraw it retroactively.
 
+The explicitly scoped verification code in
+[`formalization/QIKVRT_Formalization_v1.0`](formalization/QIKVRT_Formalization_v1.0)
+is a component-level MIT exception under its `LICENSE-CODE`; embedded
+documentary source material retains its own CC BY-NC-ND 4.0 boundary.
+
 The licenses do not merge and grant no rights the licensor does not hold. See
 [LICENSE](LICENSE), [LICENSE_TRANSITION.md](LICENSE_TRANSITION.md),
 [LICENSE_NOTICE.md](LICENSE_NOTICE.md), and
