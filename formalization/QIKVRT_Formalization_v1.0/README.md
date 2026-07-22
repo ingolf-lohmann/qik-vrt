@@ -85,7 +85,10 @@ npm run test:negative
 python -m pytest
 python scripts/build_monolith.py
 lake env lean --json build/All.lean > build/lean.stdout.jsonl
-python scripts/make_lean_receipt.py --checker "Lean 4 native kernel"
+python scripts/make_lean_receipt.py \
+  --checker "Lean 4 native kernel" \
+  --version "4.19.0" \
+  --commit "6caaee842e9495688c1567e78c0e68dbb96942aa"
 python scripts/generate_checksums.py
 npm run gate20
 python -m python.gate20
@@ -111,4 +114,3 @@ Claim-Matrix und die Prüfbelege zur Verfügung.
 
 - Dokumentarisches Ausgangsmaterial: CC BY-NC-ND 4.0 gemäß Zenodo-Datensatz.
 - Neu erstellter Lean-, TypeScript- und Python-Code: MIT, siehe `LICENSE-CODE`.
-
