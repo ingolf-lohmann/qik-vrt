@@ -51,7 +51,8 @@
   },
   "adaptive_runtime": {
     "posix_tests": "PASS",
-    "powershell_execution": "PENDING_WINDOWS_CI",
+    "windows_github_cli_contract": "PASS",
+    "exact_renderer_capability_policy": "PROBE_EACH_RUN_FAIL_CLOSED",
     "automatic_acceleration": "EXACT_KEY_VERIFIED_CACHE_REUSE_ONLY",
     "performance_measurements": "REVIEWABLE_PROPOSALS_ONLY",
     "autonomous_reordering": false,
@@ -78,8 +79,15 @@
     "txt_render": "PASS",
     "html_render": "PASS",
     "offline_render_command_test": "PASS",
-    "cross_platform_ci_contract": [
+    "canonical_renderer_ci": [
+      "linux-amd64"
+    ],
+    "github_cli_bootstrap_ci": [
       "linux-amd64",
+      "macOS-amd64",
+      "windows-amd64"
+    ],
+    "exact_renderer_pending_toolcache": [
       "macOS-amd64",
       "windows-amd64"
     ],

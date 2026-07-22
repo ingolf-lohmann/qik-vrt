@@ -42,9 +42,9 @@ commercial use requires separate written permission. See
   cache. Performance measurements can produce a reviewable proposal only; they
   do not autonomously reorder work, skip a mandatory gate, approve a change, or
   authorize a repository, publication, protocol, network, or physical effect.
-- POSIX bootstrap, cache-manipulation, cleanup, and platform-simulation tests
-  pass. The PowerShell implementation has static coverage but remains pending
-  real execution in Windows CI.
+- POSIX and Windows GitHub-CLI bootstrap, cache-manipulation, cleanup, and
+  rollback contracts pass on their hosted runners. Exact renderer setup remains
+  fail closed when CPython 3.12.13 is absent from a runner toolcache.
 - The reproducible scientific bundle passes its finite-model proof while
   explicitly separating process universalizability, semantic factorization on
   observation fibres, conditional historical inversion, and conditional
@@ -55,8 +55,11 @@ commercial use requires separate written permission. See
   the clean TXT and HTML renderings. The existing versioned bytes are preserved
   because the fresh outputs are identical; no normative Draft-01 change is
   required.
-- The locked offline renderer is also exercised by the adaptive-runtime CI
-  contract on Linux x64, macOS Intel, and Windows x64 pull requests.
+- The locked offline renderer is exercised by adaptive-runtime CI on Linux x64.
+  macOS Intel and Windows x64 still execute the GitHub-CLI and bootstrap
+  contracts; they automatically add the exact renderer gate when their
+  `setup-python` toolcache supplies CPython 3.12.13. No fallback interpreter is
+  represented as the canonical renderer.
 - The scientific PDF renders as six A4 pages and passes local visual inspection.
 
 The exact component commands and counts are recorded in
@@ -83,8 +86,8 @@ workspace state.
 
 ## Not demonstrated
 
-- Windows PowerShell execution of the new runtime bootstrap outside static
-  inspection; that check remains pending Windows CI.
+- Exact CPython 3.12.13 renderer execution on macOS Intel and Windows x64; the
+  hosted toolcaches do not currently provide that exact patch release there.
 - Independent third-party reproduction or peer review of the scientific
   finding; archival publication establishes identity and fixity, not consensus.
 - Non-bypassability across every possible downstream software or hardware

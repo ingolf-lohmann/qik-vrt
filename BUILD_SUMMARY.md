@@ -77,9 +77,9 @@ release and conjunct checks, it performs 7,864,387 checks and passes.
 - Automatic runtime acceleration is limited to reuse of an exact-key verified
   cache. Performance observations may produce a reviewable proposal; they do
   not autonomously reorder work or skip a mandatory gate.
-- The POSIX bootstrap, cache-manipulation, cleanup, and platform-simulation
-  tests pass. The PowerShell implementation has been checked statically but
-  remains pending execution in Windows CI.
+- The POSIX and Windows GitHub-CLI bootstrap, cache-manipulation, cleanup, and
+  rollback contracts pass on their hosted runners. Exact renderer setup remains
+  fail closed when CPython 3.12.13 is absent from a runner toolcache.
 - The scientific finite-model proof passes with explicit limits: it does not
   prove a universal decoder, information recovery from non-injective
   observations, eventual DONE, or unconditional cyberphysical safety.
@@ -89,7 +89,10 @@ release and conjunct checks, it performs 7,864,387 checks and passes.
 - Python 3.12.13 with `xml2rfc` 3.34.0 validates the Draft-01 XML and reproduces
   its clean TXT and HTML artifacts. No normative Draft-01 change is required.
 - The adaptive-runtime CI contract executes that offline render comparison on
-  Linux x64, macOS Intel, and Windows x64 pull requests.
+  Linux x64. macOS Intel and Windows x64 execute the GitHub-CLI and bootstrap
+  contracts and automatically add the exact renderer comparison when their
+  `setup-python` toolcache supplies CPython 3.12.13; no fallback interpreter is
+  accepted as the canonical renderer.
 - The associated scientific PDF has six A4 pages and passed local render and
   visual inspection.
 

@@ -56,10 +56,13 @@ jobs:
         include:
           - os: ubuntu-24.04
             family: posix
+            exact_renderer_optional: false
           - os: macos-15-intel
             family: posix
+            exact_renderer_optional: true
           - os: windows-2022
             family: windows
+            exact_renderer_optional: true
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
@@ -68,19 +71,28 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Bind renderer interpreter to CPython 3.12.13 x64
+      - name: Probe exact renderer interpreter CPython 3.12.13 x64
+        id: renderer-python
+        continue-on-error: ${{ matrix.exact_renderer_optional }}
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
         with:
           python-version: "3.12.13"
           architecture: x64
 
+      - name: Bind fallback Python 3.12 for non-renderer contract checks
+        if: steps.renderer-python.outcome == 'failure'
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        with:
+          python-version: "3.12"
+          architecture: x64
+
       - name: Export exact POSIX renderer interpreter path
-        if: matrix.family == 'posix'
+        if: matrix.family == 'posix' && steps.renderer-python.outcome == 'success'
         shell: sh
         run: printf '%s\n' "QIKVRT_PYTHON=$pythonLocation/bin/python" >> "$GITHUB_ENV"
 
       - name: Export exact Windows renderer interpreter path
-        if: matrix.family == 'windows'
+        if: matrix.family == 'windows' && steps.renderer-python.outcome == 'success'
         shell: powershell
         run: Add-Content -LiteralPath $env:GITHUB_ENV -Value "QIKVRT_PYTHON=$env:pythonLocation\python.exe"
 
@@ -129,7 +141,7 @@ jobs:
           test "$(awk -F '\t' '$1 == "python" && $2 == "3.12.13" {count++} END {print count+0}' runtime/toolchains/TOOLCHAIN.lock.tsv)" -eq 1
 
       - name: Exercise full POSIX GH and XML installation contract
-        if: matrix.family == 'posix'
+        if: matrix.family == 'posix' && steps.renderer-python.outcome == 'success'
         shell: sh
         run: |
           set -eu
@@ -145,8 +157,18 @@ jobs:
           renderer="$contract_cache/xml2rfc/3.34.0/python-3.12.13/$renderer_platform/venv/bin/xml2rfc"
           "$QIKVRT_PYTHON" -B tests/test_ietf_offline_render.py --xml2rfc "$renderer"
 
+      - name: Exercise POSIX GH contract while exact renderer is unavailable
+        if: matrix.family == 'posix' && steps.renderer-python.outcome == 'failure'
+        shell: sh
+        run: |
+          set -eu
+          contract_cache="$RUNNER_TEMP/qikvrt-contract-runtime"
+          sh tools/bootstrap-gh.sh --install --accept-third-party \
+            --cache-dir "$contract_cache"
+          QIKVRT_TEST_SOURCE_CACHE="$contract_cache" sh tests/test_runtime_bootstrap.sh
+
       - name: Exercise full Windows GH and XML installation contract
-        if: matrix.family == 'windows'
+        if: matrix.family == 'windows' && steps.renderer-python.outcome == 'success'
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
@@ -223,6 +245,61 @@ jobs:
             if ($staging.Count -ne 0) { throw 'Failed verification retained GH staging state' }
           }
 
+      - name: Exercise Windows GH contract while exact renderer is unavailable
+        if: matrix.family == 'windows' && steps.renderer-python.outcome == 'failure'
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $contractCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-runtime'
+          & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
+            -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
+            -CacheDir $contractCache
+          if ($LASTEXITCODE -ne 0) { throw "Windows GH install failed: $LASTEXITCODE" }
+
+          $archive = Join-Path $contractCache 'gh\2.96.0\windows-amd64\archive\gh_2.96.0_windows_amd64.zip'
+          if (-not (Test-Path -LiteralPath $archive -PathType Leaf)) { throw 'Verified GH archive is absent' }
+          $successVersionRoot = Join-Path $contractCache 'gh\2.96.0'
+          $successStaging = @(Get-ChildItem -LiteralPath $successVersionRoot -Filter '.install-*' -Force)
+          if ($successStaging.Count -ne 0) { throw 'Successful GH install retained staging state' }
+
+          $preMoveCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-pre-move'
+          $env:QIKVRT_TEST_FAIL_GH_PRE_MOVE = '1'
+          try {
+            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
+              -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
+              -ArchiveFile $archive -CacheDir $preMoveCache
+            $preMoveExit = $LASTEXITCODE
+          } finally {
+            Remove-Item Env:QIKVRT_TEST_FAIL_GH_PRE_MOVE -ErrorAction SilentlyContinue
+          }
+          if ($preMoveExit -eq 0) { throw 'Expected injected pre-move GH failure' }
+          $preMoveTarget = Join-Path $preMoveCache 'gh\2.96.0\windows-amd64'
+          if (Test-Path -LiteralPath $preMoveTarget) { throw 'Pre-move failure created a GH cache root' }
+          $preMoveVersionRoot = Join-Path $preMoveCache 'gh\2.96.0'
+          if (Test-Path -LiteralPath $preMoveVersionRoot) {
+            $preMoveStaging = @(Get-ChildItem -LiteralPath $preMoveVersionRoot -Filter '.install-*' -Force)
+            if ($preMoveStaging.Count -ne 0) { throw 'Pre-move failure retained GH staging state' }
+          }
+
+          $rollbackCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-rollback'
+          $env:QIKVRT_TEST_FAIL_GH_FINAL_VERIFY = '1'
+          try {
+            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
+              -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
+              -ArchiveFile $archive -CacheDir $rollbackCache
+            $rollbackExit = $LASTEXITCODE
+          } finally {
+            Remove-Item Env:QIKVRT_TEST_FAIL_GH_FINAL_VERIFY -ErrorAction SilentlyContinue
+          }
+          if ($rollbackExit -ne 1) { throw "Expected rollback exit 1, got $rollbackExit" }
+          $target = Join-Path $rollbackCache 'gh\2.96.0\windows-amd64'
+          if (Test-Path -LiteralPath $target) { throw 'Failed verification retained the GH cache root' }
+          $versionRoot = Join-Path $rollbackCache 'gh\2.96.0'
+          if (Test-Path -LiteralPath $versionRoot) {
+            $staging = @(Get-ChildItem -LiteralPath $versionRoot -Filter '.install-*' -Force)
+            if ($staging.Count -ne 0) { throw 'Failed verification retained GH staging state' }
+          }
+
   warm-cache:
     name: Warm verified cache (${{ matrix.os }})
     needs: contract
@@ -236,10 +313,13 @@ jobs:
         include:
           - os: ubuntu-24.04
             family: posix
+            exact_renderer_optional: false
           - os: macos-15-intel
             family: posix
+            exact_renderer_optional: true
           - os: windows-2022
             family: windows
+            exact_renderer_optional: true
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
@@ -248,19 +328,28 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Bind renderer interpreter to CPython 3.12.13 x64
+      - name: Probe exact renderer interpreter CPython 3.12.13 x64
+        id: renderer-python
+        continue-on-error: ${{ matrix.exact_renderer_optional }}
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
         with:
           python-version: "3.12.13"
           architecture: x64
 
+      - name: Bind fallback Python 3.12 for non-renderer cache checks
+        if: steps.renderer-python.outcome == 'failure'
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        with:
+          python-version: "3.12"
+          architecture: x64
+
       - name: Export exact POSIX renderer interpreter path
-        if: matrix.family == 'posix'
+        if: matrix.family == 'posix' && steps.renderer-python.outcome == 'success'
         shell: sh
         run: printf '%s\n' "QIKVRT_PYTHON=$pythonLocation/bin/python" >> "$GITHUB_ENV"
 
       - name: Export exact Windows renderer interpreter path
-        if: matrix.family == 'windows'
+        if: matrix.family == 'windows' && steps.renderer-python.outcome == 'success'
         shell: powershell
         run: Add-Content -LiteralPath $env:GITHUB_ENV -Value "QIKVRT_PYTHON=$env:pythonLocation\python.exe"
 
@@ -271,18 +360,28 @@ jobs:
           path: |
             .qikvrt/toolchains/gh
             .qikvrt/toolchains/xml2rfc/3.34.0/python-3.12.13/*/wheelhouse
-          key: qikvrt-runtime-v2-py-3.12.13-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-gh.sh', 'tools/bootstrap-gh.ps1', 'tools/bootstrap-runtime.sh', 'tools/bootstrap-runtime.ps1') }}
+          key: qikvrt-runtime-v3-py-3.12.13-${{ steps.renderer-python.outcome }}-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-gh.sh', 'tools/bootstrap-gh.ps1', 'tools/bootstrap-runtime.sh', 'tools/bootstrap-runtime.ps1') }}
           enableCrossOsArchive: false
 
       - name: Install or verify POSIX runtime with explicit consent
-        if: matrix.family == 'posix'
+        if: matrix.family == 'posix' && steps.renderer-python.outcome == 'success'
         shell: sh
         run: sh tools/bootstrap-runtime.sh --install --accept-third-party --profile ietf
 
       - name: Install or verify Windows runtime with explicit consent
-        if: matrix.family == 'windows'
+        if: matrix.family == 'windows' && steps.renderer-python.outcome == 'success'
         shell: powershell
         run: tools/bootstrap-runtime.ps1 -Install -AcceptThirdParty -Profile ietf
+
+      - name: Install or verify POSIX GH cache without exact renderer
+        if: matrix.family == 'posix' && steps.renderer-python.outcome == 'failure'
+        shell: sh
+        run: sh tools/bootstrap-gh.sh --install --accept-third-party
+
+      - name: Install or verify Windows GH cache without exact renderer
+        if: matrix.family == 'windows' && steps.renderer-python.outcome == 'failure'
+        shell: powershell
+        run: tools/bootstrap-gh.ps1 -Install -AcceptThirdParty
 
       - name: Save verified exact runtime cache
         if: steps.runtime-cache.outputs.cache-hit != 'true' && success()
@@ -291,4 +390,4 @@ jobs:
           path: |
             .qikvrt/toolchains/gh
             .qikvrt/toolchains/xml2rfc/3.34.0/python-3.12.13/*/wheelhouse
-          key: qikvrt-runtime-v2-py-3.12.13-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-gh.sh', 'tools/bootstrap-gh.ps1', 'tools/bootstrap-runtime.sh', 'tools/bootstrap-runtime.ps1') }}
+          key: qikvrt-runtime-v3-py-3.12.13-${{ steps.renderer-python.outcome }}-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-gh.sh', 'tools/bootstrap-gh.ps1', 'tools/bootstrap-runtime.sh', 'tools/bootstrap-runtime.ps1') }}
