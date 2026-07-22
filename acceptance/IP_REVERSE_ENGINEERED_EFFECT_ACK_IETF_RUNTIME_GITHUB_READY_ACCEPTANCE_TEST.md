@@ -21,7 +21,7 @@ TCPIP_EFFECT_ACK_NOT_LINKED_TO_DEVOPS_CICD
 
 Das Repository muss IP-Reverse-Engineering als QIK-VRT/DevOps/CI-CD-Wirkprotokoll materialisieren.
 
-Es muss den IETF-Draft `draft-lohmann-qikvrt-effect-ack-00` als externen wissenschaftlichen Anschlussanker dokumentieren.
+Es muss den aktuellen IETF-Draft `draft-lohmann-qikvrt-effect-ack-01` als externen wissenschaftlichen Anschlussanker dokumentieren und `draft-lohmann-qikvrt-effect-ack-00` als historische Provenienz erhalten.
 
 Es darf keinen GitHub-Push oder GitHub-Release behaupten, solange kein realer GitHub-Nachweis vorhanden ist.
 
