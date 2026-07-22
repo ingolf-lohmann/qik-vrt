@@ -109,7 +109,8 @@ exact_version() {
     candidate=$1
     [ -f "$candidate" ] && [ -x "$candidate" ] || return 1
     first_line=$("$candidate" --version 2>/dev/null | sed -n '1p') || return 1
-    [ "$first_line" = "gh version $VERSION (2026-07-02)" ]
+    printf '%s\n' "$first_line" | grep -Eq \
+        '^gh version 2\.96\.0 \([0-9]{4}-[0-9]{2}-[0-9]{2}\)$'
 }
 
 reject_symlink_chain() {

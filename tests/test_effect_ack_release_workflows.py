@@ -159,6 +159,16 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
         )
         self.assertLess(posix_recheck, exact_save)
         self.assertLess(windows_recheck, exact_save)
+        posix_bootstrap = (ROOT / "tools/bootstrap-gh.sh").read_text(
+            encoding="utf-8"
+        )
+        windows_bootstrap = (ROOT / "tools/bootstrap-gh.ps1").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn("gh version $VERSION (2026-07-02)", posix_bootstrap)
+        self.assertNotIn("gh version $Version (2026-07-02)", windows_bootstrap)
+        self.assertIn("^gh version 2\\.96\\.0", posix_bootstrap)
+        self.assertIn("[regex]::Escape($Version)", windows_bootstrap)
 
     def test_embedded_python_is_syntactically_valid(self) -> None:
         pattern = re.compile(r"python -B - <<'PY'\n(.*?)\n\s*PY(?:\n|$)", re.S)
