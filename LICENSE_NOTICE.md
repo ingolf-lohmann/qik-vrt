@@ -8,6 +8,9 @@ QIK-VRT is a mixed-license, source-available repository:
   `CC-BY-NC-ND-4.0`.
 - Earlier versions and files expressly licensed under `Apache-2.0` keep that
   historical license; the change does not withdraw earlier grants.
+- The expressly scoped verification code in
+  `formalization/QIKVRT_Formalization_v1.0` remains under its component-level
+  MIT `LICENSE-CODE`; its documentary source material keeps its own license.
 - Third-party material remains under its own license.
 
 Required Notice: Copyright 2026 Ingolf Lohmann. Commercial use is not licensed without a separate written agreement from the rights holder.

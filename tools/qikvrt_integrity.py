@@ -48,6 +48,7 @@ LEGACY_GLOBAL_INVENTORIES = (
 )
 TRACKED_RUNTIME_STATE = {
     "release/effect-ack-universality-request.json",
+    "release/status-clarification-request.json",
     "state/launcher_acceptance_record.json",
     "runtime/DEPENDENCIES.json",
     "runtime/PYTHON_RUNTIME_BUNDLING_ATTEMPT_V24.json",
@@ -205,7 +206,10 @@ def classification(relative: str) -> tuple[str, bool, str]:
         )
     ):
         legacy = relative == "state/launcher_acceptance_record.json"
-        authorization = relative == "release/effect-ack-universality-request.json"
+        authorization = relative in {
+            "release/effect-ack-universality-request.json",
+            "release/status-clarification-request.json",
+        }
         return (
             (
                 "legacy_runtime_state"
