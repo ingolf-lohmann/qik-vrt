@@ -28,6 +28,13 @@ the bootstrap therefore verifies the cached archive against the committed
 upstream SHA-256, freshly extracts it, compares the candidate executable bytes
 with that extraction, and only then runs `gh --version`.
 
+The execution check requires the exact semantic version `2.96.0` and a
+well-formed upstream build date. It does not hard-code one build date across
+platforms: upstream may rebuild platform assets while retaining the release
+version. Byte identity remains controlled by the platform-specific committed
+archive SHA-256 and, for every cached executable, fresh re-extraction and byte
+comparison.
+
 Authentication is deliberately outside this runtime definition. Neither
 `GH_TOKEN`, `GITHUB_TOKEN`, nor the state produced by `gh auth login` may be
 committed or cached by these scripts.

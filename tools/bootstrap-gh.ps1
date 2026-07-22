@@ -86,7 +86,8 @@ function Test-ExactVersion([string]$Path) {
     try {
         $output = @(& $Path --version 2>$null)
         if ($LASTEXITCODE -ne 0 -or $output.Count -eq 0) { return $false }
-        return ([string]$output[0] -eq "gh version $Version (2026-07-02)")
+        $escapedVersion = [regex]::Escape($Version)
+        return ([string]$output[0] -match "^gh version $escapedVersion \([0-9]{4}-[0-9]{2}-[0-9]{2}\)$")
     } catch {
         return $false
     }
