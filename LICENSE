@@ -23,6 +23,13 @@ Required Notice: Copyright 2026 Ingolf Lohmann. Commercial use is not licensed w
    carrying the PolyForm SPDX identifier. A more specific file notice,
    historical boundary, or third-party notice still controls.
 
+   The independently scoped verification code below
+   `formalization/QIKVRT_Formalization_v1.0/` is an explicit exception: its
+   newly created Lean, TypeScript, and Python code is MIT-licensed under that
+   package's `LICENSE-CODE`. The embedded documentary source material keeps
+   its own CC BY-NC-ND 4.0 boundary. This exception does not change the
+   repository default for newly licensed QIK-VRT software elsewhere.
+
 2. QIK-VRT DOCUMENTATION AND NON-SOURCE MATERIAL
 
    QIK-VRT documentation and other non-source content identified as
