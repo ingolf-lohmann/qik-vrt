@@ -82,13 +82,13 @@
       "sha256": "1c10779c4571e16f6ee8f21addc6450052083f557ea0ec2a4dcbb893ecd4e74a"
     },
     {
-      "bytes": 19781,
+      "bytes": 22918,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
-      "sha256": "e9f479746d4007d25d53c4c528f138de759182a11202f223ec8ed0f1ffd0c334"
+      "sha256": "8c295f004d6c46c27bd27ab1c5c4f84e2739989394a24f05f2a5b5900ccf3799"
     },
     {
       "bytes": 900,
@@ -340,16 +340,16 @@
       "file_type": "regular",
       "immutable": true,
       "path": "BUILD_SUMMARY.json",
-      "sha256": "c6a0beff9f21c80c8bc37cc8962bb1e1cc4f77faf76344c679054447cc67ec6d"
+      "sha256": "9622ebd707b9ab5ac00a7ce84c22e3d2bf0aeaa895beac86b2d407e31bd66595"
     },
     {
-      "bytes": 5025,
+      "bytes": 5096,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "BUILD_SUMMARY.md",
-      "sha256": "a59daf8e7a239ee87eab5c69c96cd38b81ef0a0381faace0879d161e2fe2fc28"
+      "sha256": "344b22d6d08d7c6327b4791e2418076174e0d9d4da117f46ecc9307a4abc5d1c"
     },
     {
       "bytes": 3098,
@@ -6541,7 +6541,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "README.md",
-      "sha256": "7399d0cdf18cd19c8c2a2fd29060c3118d9a5177922743f071a044d28753797b"
+      "sha256": "2f94d7a51a6b12babc51cbc27c80661dbf9e3fd12773ae83ec601448486ef431"
     },
     {
       "bytes": 2145,
@@ -6616,7 +6616,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "STATUS.md",
-      "sha256": "e2b420bbd2954c2829493c9f745b00a33e418ce79739c8e1a2ec16e6065e2bf5"
+      "sha256": "ca047c6cad468a11227b09614f8b0557838b2b095c54869c33dd70f03ee0054e"
     },
     {
       "bytes": 2545,
@@ -6706,7 +6706,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "UPLOAD_ROOT_MARKER.txt",
-      "sha256": "55d85562d2f8108bb36995ff0931fca022b5338d51d9154b915e89000dfdb5ae"
+      "sha256": "4d81c65aed93b571fed4be5c027f48a99f607540cf3d60132521f2362b21a6f8"
     },
     {
       "bytes": 1010,
@@ -8452,7 +8452,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "docs/TEST_INVENTORY.md",
-      "sha256": "68911f3ce2cc4a6c4cf9c6c945e29bded4bd2864b74c2efc9c5c38bc346227bf"
+      "sha256": "cb67c95511f168dfdf158320c0c052733927c220f670d5cccbfdd3bd4a6ba2fc"
     },
     {
       "bytes": 1958,
@@ -8794,7 +8794,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "docs/publications/2026-07-22-effect-ack-universal-effect-control/ARTICLE_DE.md",
-      "sha256": "75a166e38887ee8a9dc9e3444e12bff2854672f6b1451c1374d88192d873b571"
+      "sha256": "7d1b92ee6df450be1469cacae894d43adff30938997e7a502a383fc5e9a2adbe"
     },
     {
       "bytes": 1660,
@@ -8875,7 +8875,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "docs/publications/2026-07-22-effect-ack-universal-effect-control/SHA256SUMS",
-      "sha256": "ee1c72b989d4a70b069f8db29835065ccd94dce5d3219f7c70d8a83433c7d2ca"
+      "sha256": "b071e98a6f8012606c01a112ce0086eec6c13c54360ea01b0966103656db330e"
     },
     {
       "bytes": 1326,
@@ -8893,7 +8893,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "docs/publications/2026-07-22-effect-ack-universal-effect-control/ZENODO_SHA256SUMS",
-      "sha256": "6a2046cc9fd0f1b7abd5f32390dd981b6e89de13f65ababedc91e557e556933d"
+      "sha256": "fc8005471a73f33eda8eab287995a16b4c768ef1374d232734c61d5884f8b749"
     },
     {
       "bytes": 37640,
@@ -21329,7 +21329,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "release/effect-ack-universality-zenodo.json",
-      "sha256": "629ec1c1bd7b16e6a4c9b97103e8c23b74051bbe17fb71aaf5f3df996c4aeff7"
+      "sha256": "237fa6eaa5ec7f24848c2a44ffff92ec7a1840358aa695e60d6c8e85d76f7d74"
     },
     {
       "bytes": 912,
@@ -21693,13 +21693,13 @@
       "sha256": "e93ecf9f3ee29eae461ead230f509a2399743659a074ccddc98331cc127bc611"
     },
     {
-      "bytes": 9340,
+      "bytes": 11106,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_effect_ack_release_workflows.py",
-      "sha256": "423fe6bc6737be33f0a4a7c32d405a5b64d28210d32816c9ba890c11da8b6de2"
+      "sha256": "1efa4565a557de65a0d79632fd0ff54aad68f03d046b7274ad03ff4e8eadd8c0"
     },
     {
       "bytes": 3807,
@@ -22197,7 +22197,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "639298bc21c4d95282cc9c9d9a2798f2549457f1f123179cc37f3663229d0bd6",
+  "repository_content_tree_sha256": "ceb83bfb27756cd9b1f4c7e49ef9cedb48fa958c640bed7ea54ab28a3c994bc1",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [

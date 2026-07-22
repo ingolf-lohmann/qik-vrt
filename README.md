@@ -54,7 +54,7 @@ open checks, controlled isolation, responsible blocking, and a fully bound
 | Release | [`v2026.07.22-effect-ack-universality-1.0.0`](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0) in both repositories |
 | Working paper | [DOI 10.5281/zenodo.21498773](https://doi.org/10.5281/zenodo.21498773) |
 | Software | [DOI 10.5281/zenodo.21498774](https://doi.org/10.5281/zenodo.21498774) |
-| Python tests | 127/127 in twelve modules with test cases |
+| Python tests | 128/128 in twelve modules with test cases |
 | ANSI-C90 model | 2,621,440 valid snapshots; 7,864,387 checks |
 | Draft rendering | Python 3.12.13 and `xml2rfc` 3.34.0; XML/TXT/HTML preserved |
 | GitHub Release object | Intentionally absent; the annotated tag is the release identity |

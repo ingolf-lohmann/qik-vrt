@@ -1,7 +1,7 @@
 # Test inventory
 
 The 2026-07-22 EFFECT_ACK-universality release discovers twelve executable
-Python test modules and runs 127 tests. The command-line offline-render checker
+Python test modules and runs 128 tests. The command-line offline-render checker
 and the C90/shell gates are exercised separately by `make test`.
 
 | Module | Tests |
@@ -18,7 +18,7 @@ and the C90/shell gates are exercised separately by `make test`.
 | `tests/test_effect_ack_release_workflows.py` | 6 |
 | `tests/test_zenodo_actions.py` | 17 |
 | `tests/test_zenodo_manifest_builder.py` | 2 |
-| **Total** | **127** |
+| **Total** | **128** |
 
 The complete gate is:
 

@@ -20,7 +20,7 @@ commercial use requires separate written permission. See
 
 ## Demonstrated locally
 
-- The Python suite passes all 127 tests across twelve modules containing test
+- The Python suite passes all 128 tests across twelve modules containing test
   cases, with no failures or skips. Thirteen `test_*.py` files are matched; the
   thirteenth is the command-line offline-render verifier exercised separately.
 - The strict ANSI-C90 Draft-01 core implementation matches an independently
