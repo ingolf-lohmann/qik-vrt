@@ -1,0 +1,64 @@
+name: QIK-VRT formalization and audio tooling
+
+on:
+  push:
+    paths:
+      - "formalization/QIKVRT_Formalization_v1.0/**"
+      - "tools/offline-audio-transcription/**"
+      - ".github/workflows/qikvrt_formalization_and_audio.yml"
+  pull_request:
+    paths:
+      - "formalization/QIKVRT_Formalization_v1.0/**"
+      - "tools/offline-audio-transcription/**"
+      - ".github/workflows/qikvrt_formalization_and_audio.yml"
+  workflow_dispatch:
+
+jobs:
+  formal-verification:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: formalization/QIKVRT_Formalization_v1.0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: formalization/QIKVRT_Formalization_v1.0
+          test: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: formalization/QIKVRT_Formalization_v1.0/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: formalization/QIKVRT_Formalization_v1.0/requirements-dev.txt
+      - run: npm ci
+      - run: python -m pip install -r requirements-dev.txt
+      - run: lake build
+      - run: npm run validate
+      - run: npm run test:negative
+      - run: python -m pytest
+      - run: python scripts/build_monolith.py
+      - run: lake env lean --json build/All.lean > build/lean.stdout.jsonl
+      - run: python scripts/make_lean_receipt.py --checker "Lean 4 native kernel"
+      - run: npm run gate20
+      - run: python -m python.gate20
+
+  audio-tool-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/offline-audio-transcription
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: tools/offline-audio-transcription/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: bash -n bin/transcribe-audio scripts/install-model.sh
