@@ -83,6 +83,16 @@ a [verifiable publication bundle](docs/publications/2026-07-21-mandelbrot-retroc
 with the [rendered PDF](docs/publications/2026-07-21-mandelbrot-retrocausality/Mandelbrot_Anschlussordnung_Physik_Retrokausalitaet_V3_2026-07-21.pdf),
 LaTeX source, bibliography, and SHA-256 checksums.
 
+The formal decidable core is now also available as a
+[machine-verifiable Lean/TypeScript/Python package](formalization/QIKVRT_Formalization_v1.0/README.md),
+archived at [Zenodo DOI 10.5281/zenodo.21488116](https://doi.org/10.5281/zenodo.21488116).
+The [public-language article and exact evidence boundary](docs/publications/2026-07-22-machine-verifiable-proof-status/README.md)
+state separately what is proved, conditionally proved, empirically open,
+interpretive, or normative. A reproducible local-only
+[audio-transcription tool](tools/offline-audio-transcription/README.md) keeps
+speech recognition, human correction, interpretation, and publication as
+distinct steps.
+
 ## Current runnable core
 
 - `src/qikvrt_effect_ack.py` — pure five-state reference state machine,
