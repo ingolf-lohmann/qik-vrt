@@ -125,10 +125,10 @@ jobs:
               throw "PowerShell parser rejected ${path}: $($errors -join '; ')"
             }
           }
-          $ErrorActionPreference = 'Continue'
-          & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File tools/bootstrap-runtime.ps1 -CheckOnly -Profile all
-          $checkOnlyExit = $LASTEXITCODE
-          $ErrorActionPreference = 'Stop'
+          $checkProcess = Start-Process -FilePath powershell.exe -NoNewWindow -Wait -PassThru `
+            -ArgumentList @('-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', `
+              '-File', 'tools/bootstrap-runtime.ps1', '-CheckOnly', '-Profile', 'all')
+          $checkOnlyExit = $checkProcess.ExitCode
           if ($checkOnlyExit -ne 0 -and $checkOnlyExit -ne 20) {
             throw "Unexpected check-only exit code: $checkOnlyExit"
           }
@@ -181,11 +181,16 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
+          function Invoke-BoundPowerShell([string[]]$Arguments) {
+            $process = Start-Process -FilePath powershell.exe -NoNewWindow -Wait -PassThru `
+              -ArgumentList $Arguments
+            return $process.ExitCode
+          }
           $contractCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-runtime'
-          & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-            -File tools/bootstrap-runtime.ps1 -Install -AcceptThirdParty `
-            -Profile ietf -CacheDir $contractCache
-          if ($LASTEXITCODE -ne 0) { throw "Windows runtime install failed: $LASTEXITCODE" }
+          $installExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+            '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-runtime.ps1', `
+            '-Install', '-AcceptThirdParty', '-Profile', 'ietf', '-CacheDir', $contractCache)
+          if ($installExit -ne 0) { throw "Windows runtime install failed: $installExit" }
 
           $renderer = Join-Path $contractCache 'xml2rfc\3.34.0\python-3.12.13\windows-amd64\venv\Scripts\xml2rfc.exe'
           & $env:QIKVRT_PYTHON -B tests/test_ietf_offline_render.py --xml2rfc $renderer
@@ -202,13 +207,10 @@ jobs:
           $venvHashBefore = (Get-FileHash -Algorithm SHA256 -LiteralPath $venvPython).Hash
           $env:QIKVRT_TEST_FAIL_XML_AFTER_VENV_BACKUP = '1'
           try {
-            $ErrorActionPreference = 'Continue'
-            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-              -File tools/bootstrap-runtime.ps1 -Install -AcceptThirdParty `
-              -Profile ietf -CacheDir $contractCache
-            $xmlRollbackExit = $LASTEXITCODE
+            $xmlRollbackExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+              '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-runtime.ps1', `
+              '-Install', '-AcceptThirdParty', '-Profile', 'ietf', '-CacheDir', $contractCache)
           } finally {
-            $ErrorActionPreference = 'Stop'
             Remove-Item Env:QIKVRT_TEST_FAIL_XML_AFTER_VENV_BACKUP -ErrorAction SilentlyContinue
           }
           if ($xmlRollbackExit -eq 0) { throw 'Expected injected XML derivation failure' }
@@ -221,13 +223,10 @@ jobs:
           $preMoveCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-pre-move'
           $env:QIKVRT_TEST_FAIL_GH_PRE_MOVE = '1'
           try {
-            $ErrorActionPreference = 'Continue'
-            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-              -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
-              -ArchiveFile $archive -CacheDir $preMoveCache
-            $preMoveExit = $LASTEXITCODE
+            $preMoveExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+              '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-gh.ps1', `
+              '-Install', '-AcceptThirdParty', '-ArchiveFile', $archive, '-CacheDir', $preMoveCache)
           } finally {
-            $ErrorActionPreference = 'Stop'
             Remove-Item Env:QIKVRT_TEST_FAIL_GH_PRE_MOVE -ErrorAction SilentlyContinue
           }
           if ($preMoveExit -eq 0) { throw 'Expected injected pre-move GH failure' }
@@ -242,13 +241,10 @@ jobs:
           $rollbackCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-rollback'
           $env:QIKVRT_TEST_FAIL_GH_FINAL_VERIFY = '1'
           try {
-            $ErrorActionPreference = 'Continue'
-            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-              -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
-              -ArchiveFile $archive -CacheDir $rollbackCache
-            $rollbackExit = $LASTEXITCODE
+            $rollbackExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+              '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-gh.ps1', `
+              '-Install', '-AcceptThirdParty', '-ArchiveFile', $archive, '-CacheDir', $rollbackCache)
           } finally {
-            $ErrorActionPreference = 'Stop'
             Remove-Item Env:QIKVRT_TEST_FAIL_GH_FINAL_VERIFY -ErrorAction SilentlyContinue
           }
           if ($rollbackExit -ne 1) { throw "Expected rollback exit 1, got $rollbackExit" }
@@ -265,11 +261,16 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
+          function Invoke-BoundPowerShell([string[]]$Arguments) {
+            $process = Start-Process -FilePath powershell.exe -NoNewWindow -Wait -PassThru `
+              -ArgumentList $Arguments
+            return $process.ExitCode
+          }
           $contractCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-runtime'
-          & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-            -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
-            -CacheDir $contractCache
-          if ($LASTEXITCODE -ne 0) { throw "Windows GH install failed: $LASTEXITCODE" }
+          $installExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+            '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-gh.ps1', `
+            '-Install', '-AcceptThirdParty', '-CacheDir', $contractCache)
+          if ($installExit -ne 0) { throw "Windows GH install failed: $installExit" }
 
           $archive = Join-Path $contractCache 'gh\2.96.0\windows-amd64\archive\gh_2.96.0_windows_amd64.zip'
           if (-not (Test-Path -LiteralPath $archive -PathType Leaf)) { throw 'Verified GH archive is absent' }
@@ -280,13 +281,10 @@ jobs:
           $preMoveCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-pre-move'
           $env:QIKVRT_TEST_FAIL_GH_PRE_MOVE = '1'
           try {
-            $ErrorActionPreference = 'Continue'
-            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-              -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
-              -ArchiveFile $archive -CacheDir $preMoveCache
-            $preMoveExit = $LASTEXITCODE
+            $preMoveExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+              '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-gh.ps1', `
+              '-Install', '-AcceptThirdParty', '-ArchiveFile', $archive, '-CacheDir', $preMoveCache)
           } finally {
-            $ErrorActionPreference = 'Stop'
             Remove-Item Env:QIKVRT_TEST_FAIL_GH_PRE_MOVE -ErrorAction SilentlyContinue
           }
           if ($preMoveExit -eq 0) { throw 'Expected injected pre-move GH failure' }
@@ -301,13 +299,10 @@ jobs:
           $rollbackCache = Join-Path $env:RUNNER_TEMP 'qikvrt-contract-rollback'
           $env:QIKVRT_TEST_FAIL_GH_FINAL_VERIFY = '1'
           try {
-            $ErrorActionPreference = 'Continue'
-            & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass `
-              -File tools/bootstrap-gh.ps1 -Install -AcceptThirdParty `
-              -ArchiveFile $archive -CacheDir $rollbackCache
-            $rollbackExit = $LASTEXITCODE
+            $rollbackExit = Invoke-BoundPowerShell @('-NoProfile', '-NonInteractive', `
+              '-ExecutionPolicy', 'Bypass', '-File', 'tools/bootstrap-gh.ps1', `
+              '-Install', '-AcceptThirdParty', '-ArchiveFile', $archive, '-CacheDir', $rollbackCache)
           } finally {
-            $ErrorActionPreference = 'Stop'
             Remove-Item Env:QIKVRT_TEST_FAIL_GH_FINAL_VERIFY -ErrorAction SilentlyContinue
           }
           if ($rollbackExit -ne 1) { throw "Expected rollback exit 1, got $rollbackExit" }
