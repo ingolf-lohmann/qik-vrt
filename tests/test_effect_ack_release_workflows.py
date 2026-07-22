@@ -20,6 +20,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 RESERVE = ROOT / ".github/workflows/qikvrt_zenodo_reserve.yml"
 FINALIZE = ROOT / ".github/workflows/qikvrt_effect_ack_finalize.yml"
 GENERAL_CI = ROOT / ".github/workflows/qikvrt_ci.yml"
+ADAPTIVE_RUNTIME = ROOT / ".github/workflows/qikvrt_adaptive_runtime.yml"
 MARKER = ROOT / "release/effect-ack-universality-request.json"
 SCHEMA = ROOT / "policy/qikvrt-effect-ack-release-request.schema.json"
 MARKER_PATH = "release/effect-ack-universality-request.json"
@@ -116,12 +117,48 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
         self.assertNotRegex(finalize, r"runner\.temp[^\n]*zenodo-finalization")
 
     def test_workflows_pin_external_actions_by_full_sha(self) -> None:
-        for path in (RESERVE, FINALIZE):
+        for path in (RESERVE, FINALIZE, ADAPTIVE_RUNTIME):
             text = path.read_text(encoding="utf-8")
             uses = re.findall(r"(?m)^\s*uses:\s*([^\s#]+)", text)
             self.assertTrue(uses)
             for reference in uses:
                 self.assertRegex(reference, r"^[^@]+@[0-9a-f]{40}$")
+
+    def test_adaptive_runtime_exact_renderer_capability_is_fail_closed(self) -> None:
+        text = ADAPTIVE_RUNTIME.read_text(encoding="utf-8")
+        self.assertEqual(text.count("exact_renderer_optional: false"), 2)
+        self.assertEqual(text.count("exact_renderer_optional: true"), 4)
+        self.assertEqual(text.count("id: renderer-python"), 2)
+        self.assertEqual(
+            text.count("continue-on-error: ${{ matrix.exact_renderer_optional }}"),
+            2,
+        )
+        self.assertGreaterEqual(
+            text.count("steps.renderer-python.outcome == 'success'"), 12
+        )
+        self.assertGreaterEqual(
+            text.count("steps.renderer-python.outcome == 'failure'"), 8
+        )
+        self.assertIn(
+            "Revalidate exact POSIX renderer before cache publication", text
+        )
+        self.assertIn(
+            "Revalidate exact Windows renderer before cache publication", text
+        )
+        self.assertIn("qikvrt-runtime-v4-py-3.12.13-success-", text)
+        self.assertIn("qikvrt-runtime-v4-py-3.12.13-unavailable-", text)
+        self.assertIn("path: .qikvrt/toolchains/gh", text)
+        self.assertNotIn("restore-keys:", text)
+        self.assertNotIn("enableCrossOsArchive: true", text)
+        exact_save = text.index("Save verified exact renderer and GH cache")
+        posix_recheck = text.index(
+            "Revalidate exact POSIX renderer before cache publication"
+        )
+        windows_recheck = text.index(
+            "Revalidate exact Windows renderer before cache publication"
+        )
+        self.assertLess(posix_recheck, exact_save)
+        self.assertLess(windows_recheck, exact_save)
 
     def test_embedded_python_is_syntactically_valid(self) -> None:
         pattern = re.compile(r"python -B - <<'PY'\n(.*?)\n\s*PY(?:\n|$)", re.S)
