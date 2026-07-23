@@ -10,12 +10,14 @@ import QIKVRTFormalization.Physics.Lorentz
 # Completion of the remaining theorem-like manuscript environments
 
 Theorems that require analytic or topological infrastructure unavailable in the
-Std-only package are represented as explicit conditional statements.  Their
+Std-only package are represented as explicit conditional statements. Their
 assumptions encode exactly the bridge used by the manuscript proof; no hidden
 axiom or empirical promotion is introduced.
 -/
 
 namespace QIKVRT.V2.Completion
+
+universe u v w
 
 open Definitions
 
@@ -74,6 +76,7 @@ structure ExactEscapeCriterion (radius : Nat → Nat) where
 theorem bounded_iff_no_finite_escape (radius : Nat → Nat)
     (criterion : ExactEscapeCriterion radius) :
     BoundedNat radius ↔ ¬ FiniteEscape radius := by
+  classical
   constructor
   · intro hBounded hEscape
     exact criterion.escapeImpliesUnbounded hEscape hBounded
@@ -189,7 +192,7 @@ def QUA005Statement : Prop :=
 
 theorem QUA005_checked : QUA005Statement := by
   intro α β DistanceA DistanceB _ _ metricA metricB subset epsilonA epsilonB
-    forward backward hLeftInverse hTransport hQuantizer
+    forward backward _hLeftInverse hTransport hQuantizer
   rcases hQuantizer with ⟨quantizer⟩
   refine ⟨{
     grid := quantizer.grid.map backward
@@ -207,7 +210,7 @@ theorem QUA005_checked : QUA005Statement := by
     apply quantizer.error_bound
     exact ⟨point, hPoint, rfl⟩
 
-/-! ## QUA-003: a finite-at-every-precision non-discrete countermodel -/
+/-! ## QUA-003: finite representations do not imply ontic discreteness -/
 
 def PrefixRepresentationDiscrete : Prop :=
   ∃ precision, Quantization.Injective (Quantization.observe precision)
@@ -217,10 +220,14 @@ def QUA003Statement : Prop :=
     Quantization.HasFiniteEnumeration (Quantization.BitPrefix precision) ∧
     Quantization.LeftInverse (Quantization.observe precision)
       (Quantization.zeroExtend precision)) ∧
+  (∀ precision stream,
+    ∃ alternative, alternative ≠ stream ∧
+      Quantization.observe precision alternative =
+        Quantization.observe precision stream) ∧
   ¬ PrefixRepresentationDiscrete
 
 theorem QUA003_checked : QUA003Statement := by
-  constructor
+  refine ⟨?_, Quantization.prefix_does_not_determine_stream, ?_⟩
   · intro precision
     have h := Quantization.finitePrefixCodingAtEveryPrecision precision
     exact ⟨h.1, h.2.1⟩
@@ -294,7 +301,9 @@ theorem boundary_implies_discontinuous (system : NeighborhoodSystem α)
     (classify_eq_block_iff inside exterior).2 hExteriorOutside
   rw [hPass] at hMemberStatus
   rw [hBlock] at hExteriorStatus
-  exact BinaryStatus.noConfusion (hMemberStatus.trans hExteriorStatus.symm)
+  have hImpossible : BinaryStatus.pass = BinaryStatus.block :=
+    hMemberStatus.trans hExteriorStatus.symm
+  cases hImpossible
 
 theorem discontinuous_implies_boundary (system : NeighborhoodSystem α)
     (inside : SetOf α) (point : α) :
@@ -355,7 +364,7 @@ theorem sameUnderEveryUnitProbe_iff_eq (left right : Physics.Dimension) :
     rfl
 
 def DIM006Statement : Prop :=
-  Physics.DIM006AAdditiveStatement ∧
+  DIM006AAdditiveStatement ∧
   (∀ left right : Physics.Dimension,
     SameUnderEveryUnitProbe left right → left = right) ∧
   (∀ dimension : Physics.Dimension,
@@ -363,7 +372,7 @@ def DIM006Statement : Prop :=
       dimension = Physics.dimensionless)
 
 theorem DIM006_checked : DIM006Statement := by
-  refine ⟨Physics.DIM006A_additive_checked, ?_, ?_⟩
+  refine ⟨DIM006A_additive_checked, ?_, ?_⟩
   · intro left right h
     exact (sameUnderEveryUnitProbe_iff_eq left right).1 h
   · intro dimension h
