@@ -1,24 +1,55 @@
 {
   "schema": "qikvrt-ai-progress/1.0",
-  "operation_id": "human-machine-progress-protocol",
+  "operation_id": "effect-ack-lean-formalization-2026-07-23",
   "repository": "Goldkelch/qik-vrt",
-  "ref_name": "agent/human-machine-progress-protocol",
-  "source_sha": "PENDING",
+  "ref_name": "agent/effect-ack-lean-v1",
+  "source_sha": "aa2763b5bbcce914063d12b1027b47c6e0e34004",
   "state": "RUNNING",
-  "percent": 60,
-  "current_action": "Persist and validate the human-machine progress protocol",
+  "percent": 20,
+  "current_action": "Persist the verified AI context-schema handoff repair",
   "completed_steps": [
-    "Define compact live status format",
-    "Define machine-readable policy"
+    "Transcribe and verify both source audios offline",
+    "Identify draft-lohmann-qikvrt-effect-ack-01 from primary IETF sources",
+    "Reconstruct the current authority branch from repository evidence",
+    "Run the repository bootloader and reproduce the schema-version BLOCK",
+    "Repair the handoff validator for the authoritative context schema",
+    "Pass all five AI runtime bootloader contract tests",
+    "Regenerate and verify repository integrity",
+    "Rerun the bootloader to the understood CONTINUE state"
   ],
   "pending_steps": [
-    "Bind protocol into AI startup context",
-    "Run repository checks",
-    "Merge to main"
+    "Formalize the EFFECT_ACK decision and release core in Lean 4",
+    "Bind formal claims to exact Draft-01 source bytes",
+    "Write the truth-bounded WhatsApp status article",
+    "Run tests, integrity, review, repository synchronization, and Zenodo publication"
   ],
   "blockers": [],
-  "next_action": "Bind protocol into AI_CONTEXT.json and AGENTS.md",
-  "checks": [],
-  "evidence": [],
-  "updated_at": "2026-07-23T14:00:00+02:00"
+  "next_action": "Commit the schema repair, then implement the Lean formalization",
+  "checks": [
+    {
+      "name": "AI runtime bootloader before repair",
+      "state": "BLOCK",
+      "evidence": "AI_HANDOFF_BLOCK: unsupported schema 'qikvrt-ai-context/1.2'"
+    },
+    {
+      "name": "AI runtime bootloader contract",
+      "state": "PASS",
+      "evidence": "5/5 tests"
+    },
+    {
+      "name": "Repository integrity",
+      "state": "PASS",
+      "evidence": "2600 classified entries and 2591 immutable digests"
+    },
+    {
+      "name": "AI runtime bootloader after repair",
+      "state": "CONTINUE",
+      "evidence": "handoff, integrity, and tool-cache gates PASS; optional local formal/audio/IETF runtimes absent"
+    }
+  ],
+  "evidence": [
+    "IETF draft -01 XML SHA-256 13ff9ace408d82eaea88127343883d888795efd25e7a01d0bbee5b862e9f954b",
+    "IETF draft -01 TXT SHA-256 ad8af57390beeb9a1316e3940b9f75c2334834376288f6f1ab018e10b0b87b16"
+  ],
+  "updated_at": "2026-07-23T18:46:00Z"
 }

@@ -532,22 +532,22 @@
       "sha256": "2c145ad6f03ed4254194d1eced5abfa9218994c5da55a462b1384a7313a9f0f1"
     },
     {
-      "bytes": 724,
+      "bytes": 2218,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_PROGRESS.json",
-      "sha256": "df7b95d2804d16f50d442270e1ecfb4091e859714bae0459f4b7337e35aa66a5"
+      "sha256": "4463dd94aa44182fcc0e121fcc4a5149ba8f754c5799c854d15968a2f440aed7"
     },
     {
-      "bytes": 468,
+      "bytes": 1115,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_STATUS.md",
-      "sha256": "42fd5be4f695ca2d8743ff2ddc4f6e7cf69d19573f964443f37b5ae833d76f39"
+      "sha256": "b77f03ffadaaccac641b95b29fa1a3cf3a12d00d8fc0363811e079597eb1db10"
     },
     {
       "bytes": 15,
@@ -22780,13 +22780,13 @@
       "sha256": "154e66d303aa99591f177049bb1f99566037cd6524c2899248100af71d42de94"
     },
     {
-      "bytes": 2834,
+      "bytes": 3516,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_ai_runtime_bootloader.py",
-      "sha256": "0ad5c6bb7a2668aae46f15fe48171b12f5080d4247452d3f7ee960e242e3622f"
+      "sha256": "98cba9b78b4b93fc23dbe049a1a7fc8c10a0b7c8065d9ac92febe8e31e60e764"
     },
     {
       "bytes": 3190,
@@ -23014,13 +23014,13 @@
       "sha256": "91c068aed44979bcbdfb28388120a95a49136c7451b5ce9e954048006179ee76"
     },
     {
-      "bytes": 4639,
+      "bytes": 4764,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/ai_handoff.py",
-      "sha256": "f3dd72f78f8c7f976b4c34a98d7b5acd3b5b2d77cbe4880476a40dcfd0a507e6"
+      "sha256": "781437c443933d1987943a86f5c883cc7818c2e4264c3734768426e63f659bdb"
     },
     {
       "bytes": 6296,
@@ -23419,7 +23419,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "ba36f3fd4929cdbe6ad44efefaf4b5ebb3f7d6f368b062b61d3c987609eb9cb8",
+  "repository_content_tree_sha256": "1af778bcbbec230d90387ab5fae63416027fde36d2cae3fc9193cf014072cfa8",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
