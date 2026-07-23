@@ -31,7 +31,8 @@ Actions operation, the client MUST follow
 `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json`.
 
 The client MUST work before explaining, report progress in the compact
-repository/branch/commit/progress-bar/checklist format, and name concrete
+repository/branch/commit/progress-bar/checklist format before and after each
+GitHub action and at every workflow, job, or step transition, and name concrete
 blockers and next actions. Persistent workflows MUST maintain `AI_PROGRESS.json`
 and `AI_STATUS.md`. Repetitive unchanged status and long explanations in place
 of executable work are prohibited.
@@ -45,6 +46,30 @@ generalized, or refactored. New parallel machinery is permitted only when the
 repository contains explicit evidence that reuse is technically insufficient.
 Optimization and perfection of an existing path take precedence over duplicate
 implementation.
+
+## Cumulative repository runtime and complete tool caching
+
+The repository is the durable runtime authority; chat sessions are disposable
+transport surfaces. Before invoking any runtime tool, the agent MUST verify
+`runtime/toolchains/TOOLCHAIN.lock.tsv`,
+`runtime/toolchains/CACHE_REGISTRY.json`, and
+`runtime/toolchains/CACHE_COVERAGE.json` with
+`python3 tools/qikvrt_tool_cache.py verify`.
+
+Every tool required by a declared runtime profile MUST have an exact version or
+behavioral contract, a cache/provision strategy, source or provider authority,
+verification, self-test, provenance/license metadata, failure/rollback handling,
+and step-level progress telemetry. Coverage MUST remain 100 percent. A newly
+required tool MUST extend the existing lock, registry, bootstrap/cache path,
+tests, receipts, and recovery rules before it is used. Undeclared environment
+dependencies are prohibited.
+
+Payload bytes may reside in repository-managed caches, GitHub Actions caches,
+GitHub-hosted tool caches, verified build caches, pinned runner-image layers, or
+reviewed content-addressed release assets. Credentials, mutable authentication
+state, and unverified binaries MUST NOT enter those caches. Each successful
+runtime change SHOULD make the existing repository runtime faster, more capable,
+more diagnosable, or more reproducible without weakening any verification gate.
 
 ## Persistence-run completion boundary
 
