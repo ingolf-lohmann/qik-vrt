@@ -15,6 +15,12 @@ from typing import Any, NoReturn
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTEXT_PATH = ROOT / "AI_CONTEXT.json"
+SUPPORTED_CONTEXT_SCHEMAS = frozenset(
+    {
+        "qikvrt-ai-context/1.0",
+        "qikvrt-ai-context/1.2",
+    }
+)
 
 
 def fail(message: str) -> NoReturn:
@@ -46,9 +52,13 @@ def require(obj: dict[str, Any], key: str, expected: type) -> Any:
 def git_value(*args: str) -> str:
     try:
         proc = subprocess.run(
-            ["git", *args], cwd=ROOT, check=True,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            text=True, timeout=10,
+            ["git", *args],
+            cwd=ROOT,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=10,
         )
     except (OSError, subprocess.SubprocessError):
         return "unavailable"
@@ -80,7 +90,7 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
 def main() -> int:
     context = load_json(CONTEXT_PATH)
     schema = require(context, "schema", str)
-    if schema != "qikvrt-ai-context/1.0":
+    if schema not in SUPPORTED_CONTEXT_SCHEMAS:
         fail(f"unsupported schema {schema!r}")
 
     project = require(context, "project", dict)
@@ -93,11 +103,13 @@ def main() -> int:
     read_order = require(context, "required_read_order", list)
     if not read_order or not all(isinstance(x, str) and x for x in read_order):
         fail("required_read_order must be a non-empty string list")
+
     missing = [path for path in read_order if not (ROOT / path).is_file()]
     if missing:
         fail("missing required files: " + ", ".join(missing))
 
     registry_name, adapter_count = validate_adapters(context)
+
     licensing = require(context, "licensing_policy", dict)
     architecture = require(licensing, "architecture", dict)
     implementation = require(licensing, "implementation", dict)
