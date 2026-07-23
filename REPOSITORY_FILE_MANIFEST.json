@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2508,
+  "file_count": 2513,
   "files": [
     {
       "bytes": 47,
@@ -197,6 +197,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_mesh_api.yml",
       "sha256": "8890866631ce55f1e68ebf53897d9e98ec3287568a0aace58f9d79c6e0a4cd6f"
+    },
+    {
+      "bytes": 1683,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_progress_protocol_integrity.yml",
+      "sha256": "8b38b16c46cbf0c9fdddae99147861b7d2b3f8e0b19a03409a1df47c56b4286c"
     },
     {
       "bytes": 2165,
@@ -397,13 +406,13 @@
       "sha256": "6f61443c397539de43465bfc3a10548b630ee46b5153cf6a3e87c44e40b4ab72"
     },
     {
-      "bytes": 2579,
+      "bytes": 3180,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AGENTS.md",
-      "sha256": "17b5cd231552f0e55495c154429065ab1f7f3a4dcd6dc5505476e9b37cfa2430"
+      "sha256": "e0c446b6d4e548d0d3db742784d0080e209222854fa36f9fea28be72f4b5058e"
     },
     {
       "bytes": 614,
@@ -433,13 +442,31 @@
       "sha256": "c2d36e21c7c940d4a30906cde3dfeff0fff0b2cf256dba8432b490282d4790c2"
     },
     {
-      "bytes": 3393,
+      "bytes": 3797,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_CONTEXT.json",
-      "sha256": "0e4f9ca49842c019f0901f9f584af8fcc96673dc1da4d52d6d6ebf293dd3ff91"
+      "sha256": "ec6aa9e3d7528d98bfa45e7771a177b2912b71e0cfb0c9dcb93e327f861780aa"
+    },
+    {
+      "bytes": 729,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "AI_PROGRESS.json",
+      "sha256": "92108c898a27e223f9afb81c8367b8d078b90ecde09bf2e296cf890a714385bc"
+    },
+    {
+      "bytes": 473,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "AI_STATUS.md",
+      "sha256": "f5472c795b569d6997fa1f7f89bc561e64964c624687a63abc46c4ab57d2a604"
     },
     {
       "bytes": 15,
@@ -8498,6 +8525,15 @@
       "immutable": true,
       "path": "docs/GITHUB_DEPLOYMENT.md",
       "sha256": "f84aa0a7a148377a807ca963c30507892d630e0d0bf08ed457fd85e515ebdb6e"
+    },
+    {
+      "bytes": 2396,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "sha256": "f46355b463fa24a50872fb9115c96f9111d635dde5e42bb1b2761aba73a9b6db"
     },
     {
       "bytes": 773,
@@ -21019,6 +21055,15 @@
       "sha256": "25e93915d7cae8bd752cc27f5059cdc7cbfaf978249b1ed55e71d3ccb14b56e8"
     },
     {
+      "bytes": 1262,
+      "classification": "policy_or_acceptance",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "sha256": "6d11855f2c1f87bcd6906aeac5eb18ce5eb5e86566d13df6fddbbd914431c926"
+    },
+    {
       "bytes": 610,
       "classification": "policy_or_acceptance",
       "excluded_from_sha256_index": false,
@@ -22566,7 +22611,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2499,
+  "immutable_file_count": 2504,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -22591,7 +22636,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "0ff69b8cffefb69a3150baca08b544d4d7eb72f3f73ee4559816ba06398c97fc",
+  "repository_content_tree_sha256": "749f969d19f77ccda3d71d94af8125165bbfdd9cfc761ba023630f6ef32c0d75",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
