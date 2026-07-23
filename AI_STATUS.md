@@ -4,7 +4,7 @@ Repository: `Goldkelch/qik-vrt`
 Branch: `agent/effect-ack-lean-v1`
 Source commit: `aa2763b5bbcce914063d12b1027b47c6e0e34004`
 
-`[█████▏░░░░] 52%`
+`[█████▌░░░░] 56%`
 
 - ✓ Two source audios transcribed and verified offline
 - ✓ `draft-lohmann-qikvrt-effect-ack-01` identified from primary IETF sources
@@ -17,17 +17,18 @@ Source commit: `aa2763b5bbcce914063d12b1027b47c6e0e34004`
 - ✓ Lean 4 protocol model and proposition-indexed claim registry implemented
 - ✓ Exact Draft-01 source/structure binding and 21/21 local support tests
 - ✓ First Lean 4.19 run isolated three conjunction-association goals
-- ⟳ Persisting the focused normalization repair and rerunning the kernel gate
+- ✓ Second Lean 4.19 run compiled `Model.lean`
+- ⟳ Persisting the exhaustive selector-case proof and rerunning the kernel gate
 - □ Truth-bounded WhatsApp article
 - □ Full verification, repository synchronization, and Zenodo publication
 
 ## BLOCKER
 
-None. The first CI attempt reached the exact Lean sources and reported three
-association-only goals in `Model.lean`; no protocol condition was missing.
-The focused normalization repair is pending a fresh CI result.
+None. The second CI attempt compiled `Model.lean` and isolated one remaining
+symbolic priority proof in `Safety.lean`. The selector is now split over all
+decision-relevant cases; the fresh CI result remains pending.
 
 ## NEXT
 
-Persist the association repair, inspect the second CI result, and continue
+Persist the selector proof, inspect the third CI result, and continue
 until kernel, axiom, proof-escape, and provenance gates all pass.

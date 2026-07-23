@@ -23,7 +23,14 @@ def DoneSelectionConditions (snapshot : Snapshot) : Prop :=
 
 theorem selectState_eq_done_iff (snapshot : Snapshot) :
     selectState snapshot = .done ↔ DoneSelectionConditions snapshot := by
-  simp [selectState, DoneSelectionConditions]
+  cases hPredecessor : snapshot.predecessorInvalid <;>
+  cases hDeadline : snapshot.deadlineExceeded <;>
+  cases hReception : effectCheckableReception snapshot <;>
+  cases hIntegrity : snapshot.integrityFailure <;>
+  cases hDecision : snapshot.connectionDecision <;>
+  cases hCore : coreDone snapshot <;>
+  simp [selectState, DoneSelectionConditions, hPredecessor, hDeadline,
+    hReception, hIntegrity, hDecision, hCore]
 
 theorem predecessorInvalid_blocks (snapshot : Snapshot)
     (h : snapshot.predecessorInvalid = true) :
@@ -65,11 +72,10 @@ theorem explicitIsolate_precedes_done (snapshot : Snapshot)
     (hDeadline : snapshot.deadlineExceeded ≠ true)
     (hReception : effectCheckableReception snapshot ≠ false)
     (hIntegrity : snapshot.integrityFailure ≠ true)
-    (hNotBlock : snapshot.connectionDecision ≠ .block)
     (hIsolate : snapshot.connectionDecision = .isolate) :
     selectState snapshot = .isolate := by
   simp [selectState, hPredecessor, hDeadline, hReception, hIntegrity,
-    hNotBlock, hIsolate]
+    hIsolate]
 
 theorem selectedDone_implies_coreDone (snapshot : Snapshot)
     (hDone : selectState snapshot = .done) :
