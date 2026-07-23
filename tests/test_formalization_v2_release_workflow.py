@@ -29,7 +29,7 @@ EFFECT = (
 MAKEFILE = ROOT / "Makefile"
 INSPECTION_WORKFLOW = ROOT / ".github/workflows/qikvrt_formalization_v2_inspect.yml"
 INSPECTION_MARKER = ROOT / "release/formalization-v2-inspection-request.json"
-AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723-v2"
+AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723-v3"
 FEATURE_BRANCH = "agent/manuscript-formalization-v2-alpha"
 
 
@@ -67,6 +67,7 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
     def test_trigger_is_one_inert_marker_on_one_authority_branch(self) -> None:
         trigger = self.workflow.split("permissions:", 1)[0]
         self.assertIn(f"      - {AUTOMATION_BRANCH}\n", trigger)
+        self.assertNotIn("formalization-v2-publish-20260723-v2", trigger)
         self.assertIn("      - release/formalization-v2-request.json\n", trigger)
         self.assertNotIn(FEATURE_BRANCH, trigger)
         self.assertNotIn("workflow_dispatch", self.workflow)
@@ -151,9 +152,18 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
             'candidate["candidate_tree"] != candidate["mirror_tree"]',
             'd037a44d2893b9ea094d7cad55954223eb90a186',
             '7aaee4e1b182e18c9f0e927685f31d3c1190031a',
+            '9624466b84dc785d9bc6d18ff6b3c0966de89684',
+            '661b9ecd66bd91d1359e3d47ab77a8991522b662',
+            'f45b713bddbb6377e0f3ebb3cb2061235f41ceb4',
+            '8d39c93b738ac53ea952f8d8dda78aea973961cd',
+            '48a9f2c642ed6fb22daa4d841f606d33d5b65c37',
+            '7d4f6238063eb18c56cef8d03f111b7ddc1530a1',
             'ed4f61fb4f09043eb8683932a1fed5222ad524f7',
             'c9a7bcabebd66768f2f728d8b35a9317c5ea7323',
-            'fetch-depth: 4',
+            '00e71ed364b388727aafea133122eda02c046692',
+            'AUTHORITY_ANCESTRY',
+            'MIRROR_ANCESTRY',
+            'fetch-depth: 6',
             'git checkout --detach "${{ steps.marker.outputs.candidate_commit }}"',
             'EVENT_BEFORE',
             'EVENT_FORCED',

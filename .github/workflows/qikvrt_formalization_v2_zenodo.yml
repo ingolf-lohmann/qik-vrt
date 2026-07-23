@@ -6,7 +6,7 @@ name: QIK-VRT formalization v2 Zenodo publication
 on:
   push:
     branches:
-      - automation/formalization-v2-publish-20260723-v2
+      - automation/formalization-v2-publish-20260723-v3
     paths:
       - release/formalization-v2-request.json
 
@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 4
+          fetch-depth: 6
           persist-credentials: false
 
       - name: Validate inert or marker-only publication request
@@ -53,15 +53,24 @@ jobs:
           from pathlib import Path
 
           MARKER_PATH = "release/formalization-v2-request.json"
-          AUTOMATION_REF = "refs/heads/automation/formalization-v2-publish-20260723-v2"
+          AUTOMATION_REF = "refs/heads/automation/formalization-v2-publish-20260723-v3"
           AUTHORITY = "Goldkelch/qik-vrt"
           MIRROR = "ingolf-lohmann/qik-vrt"
           FEATURE = "agent/manuscript-formalization-v2-alpha"
           AUTHORITY_BASE = "d037a44d2893b9ea094d7cad55954223eb90a186"
           MIRROR_BASE = "7aaee4e1b182e18c9f0e927685f31d3c1190031a"
-          AUTHORITY_CANDIDATE_PARENT = "ed4f61fb4f09043eb8683932a1fed5222ad524f7"
-          MIRROR_CANDIDATE_PARENT = "c9a7bcabebd66768f2f728d8b35a9317c5ea7323"
-          PREVIOUS_CANDIDATE_TREE = "00e71ed364b388727aafea133122eda02c046692"
+          AUTHORITY_ANCESTRY = (
+              ("9624466b84dc785d9bc6d18ff6b3c0966de89684", "f45b713bddbb6377e0f3ebb3cb2061235f41ceb4", "8d39c93b738ac53ea952f8d8dda78aea973961cd"),
+              ("8d39c93b738ac53ea952f8d8dda78aea973961cd", "7d4f6238063eb18c56cef8d03f111b7ddc1530a1", "ed4f61fb4f09043eb8683932a1fed5222ad524f7"),
+              ("ed4f61fb4f09043eb8683932a1fed5222ad524f7", "00e71ed364b388727aafea133122eda02c046692", AUTHORITY_BASE),
+          )
+          MIRROR_ANCESTRY = (
+              ("661b9ecd66bd91d1359e3d47ab77a8991522b662", "f45b713bddbb6377e0f3ebb3cb2061235f41ceb4", "48a9f2c642ed6fb22daa4d841f606d33d5b65c37"),
+              ("48a9f2c642ed6fb22daa4d841f606d33d5b65c37", "7d4f6238063eb18c56cef8d03f111b7ddc1530a1", "c9a7bcabebd66768f2f728d8b35a9317c5ea7323"),
+              ("c9a7bcabebd66768f2f728d8b35a9317c5ea7323", "00e71ed364b388727aafea133122eda02c046692", MIRROR_BASE),
+          )
+          AUTHORITY_CANDIDATE_PARENT = AUTHORITY_ANCESTRY[0][0]
+          MIRROR_CANDIDATE_PARENT = MIRROR_ANCESTRY[0][0]
           REQUEST_ID = "2026-07-23-formalization-v2.0-alpha.1"
           ZERO40 = "0" * 40
           ZERO64 = "0" * 64
@@ -225,9 +234,13 @@ jobs:
           if git("show", "-s", "--format=%T", "HEAD^") != candidate["candidate_tree"]:
               fail("candidate tree differs from marker binding")
           if git("show", "-s", "--format=%P", "HEAD^").split() != [AUTHORITY_CANDIDATE_PARENT]:
-              fail("authority candidate does not extend the first verified candidate")
-          if git("show", "-s", "--format=%P", AUTHORITY_CANDIDATE_PARENT).split() != [AUTHORITY_BASE]:
-              fail("first authority candidate does not extend the reviewed main commit")
+              fail("authority candidate does not extend the latest verified candidate")
+          for commit_sha, tree_sha, parent_sha in AUTHORITY_ANCESTRY:
+              if (
+                  git("show", "-s", "--format=%T", commit_sha) != tree_sha
+                  or git("show", "-s", "--format=%P", commit_sha).split() != [parent_sha]
+              ):
+                  fail("authority candidate ancestry changed identity or baseline")
           changes = git("diff-tree", "--no-commit-id", "--name-status", "-r", "HEAD^", "HEAD").splitlines()
           if changes != ["M\t" + MARKER_PATH]:
               fail("finalize commit must modify only the regular publication marker")
@@ -299,10 +312,12 @@ jobs:
               fail("authority feature branch no longer identifies the candidate")
           if mirror_head != (candidate["mirror_commit"], candidate["mirror_tree"], [MIRROR_CANDIDATE_PARENT]):
               fail("mirror feature branch no longer identifies the mirrored candidate")
-          if remote_commit(AUTHORITY, AUTHORITY_CANDIDATE_PARENT, token) != (PREVIOUS_CANDIDATE_TREE, [AUTHORITY_BASE]):
-              fail("first authority candidate changed identity or baseline")
-          if remote_commit(MIRROR, MIRROR_CANDIDATE_PARENT, "") != (PREVIOUS_CANDIDATE_TREE, [MIRROR_BASE]):
-              fail("first mirror candidate changed identity or baseline")
+          for commit_sha, tree_sha, parent_sha in AUTHORITY_ANCESTRY:
+              if remote_commit(AUTHORITY, commit_sha, token) != (tree_sha, [parent_sha]):
+                  fail("authority candidate ancestry changed identity or baseline")
+          for commit_sha, tree_sha, parent_sha in MIRROR_ANCESTRY:
+              if remote_commit(MIRROR, commit_sha, "") != (tree_sha, [parent_sha]):
+                  fail("mirror candidate ancestry changed identity or baseline")
           if candidate["candidate_tree"] != candidate["mirror_tree"]:
               fail("authority and mirror candidate trees are not identical")
 
@@ -410,9 +425,18 @@ jobs:
           FEATURE = "agent/manuscript-formalization-v2-alpha"
           AUTHORITY_BASE = "d037a44d2893b9ea094d7cad55954223eb90a186"
           MIRROR_BASE = "7aaee4e1b182e18c9f0e927685f31d3c1190031a"
-          AUTHORITY_CANDIDATE_PARENT = "ed4f61fb4f09043eb8683932a1fed5222ad524f7"
-          MIRROR_CANDIDATE_PARENT = "c9a7bcabebd66768f2f728d8b35a9317c5ea7323"
-          PREVIOUS_CANDIDATE_TREE = "00e71ed364b388727aafea133122eda02c046692"
+          AUTHORITY_ANCESTRY = (
+              ("9624466b84dc785d9bc6d18ff6b3c0966de89684", "f45b713bddbb6377e0f3ebb3cb2061235f41ceb4", "8d39c93b738ac53ea952f8d8dda78aea973961cd"),
+              ("8d39c93b738ac53ea952f8d8dda78aea973961cd", "7d4f6238063eb18c56cef8d03f111b7ddc1530a1", "ed4f61fb4f09043eb8683932a1fed5222ad524f7"),
+              ("ed4f61fb4f09043eb8683932a1fed5222ad524f7", "00e71ed364b388727aafea133122eda02c046692", AUTHORITY_BASE),
+          )
+          MIRROR_ANCESTRY = (
+              ("661b9ecd66bd91d1359e3d47ab77a8991522b662", "f45b713bddbb6377e0f3ebb3cb2061235f41ceb4", "48a9f2c642ed6fb22daa4d841f606d33d5b65c37"),
+              ("48a9f2c642ed6fb22daa4d841f606d33d5b65c37", "7d4f6238063eb18c56cef8d03f111b7ddc1530a1", "c9a7bcabebd66768f2f728d8b35a9317c5ea7323"),
+              ("c9a7bcabebd66768f2f728d8b35a9317c5ea7323", "00e71ed364b388727aafea133122eda02c046692", MIRROR_BASE),
+          )
+          AUTHORITY_CANDIDATE_PARENT = AUTHORITY_ANCESTRY[0][0]
+          MIRROR_CANDIDATE_PARENT = MIRROR_ANCESTRY[0][0]
           SHA1 = re.compile(r"[0-9a-f]{40}\Z")
           PATHS = {
               "effect_ack_sha256": "formalization/QIKVRT_Formalization_v2.0/release_authorization/EFFECT_ACK_DONE.json",
@@ -496,10 +520,12 @@ jobs:
               fail("authority feature branch moved before effect")
           if mirror != (candidate["mirror_commit"], candidate["mirror_tree"], [MIRROR_CANDIDATE_PARENT]):
               fail("mirror feature branch moved before effect")
-          if remote_commit(AUTHORITY, AUTHORITY_CANDIDATE_PARENT, os.environ["GH_API_TOKEN"]) != (PREVIOUS_CANDIDATE_TREE, [AUTHORITY_BASE]):
-              fail("first authority candidate changed before effect")
-          if remote_commit(MIRROR, MIRROR_CANDIDATE_PARENT, "") != (PREVIOUS_CANDIDATE_TREE, [MIRROR_BASE]):
-              fail("first mirror candidate changed before effect")
+          for commit_sha, tree_sha, parent_sha in AUTHORITY_ANCESTRY:
+              if remote_commit(AUTHORITY, commit_sha, os.environ["GH_API_TOKEN"]) != (tree_sha, [parent_sha]):
+                  fail("authority candidate ancestry changed before effect")
+          for commit_sha, tree_sha, parent_sha in MIRROR_ANCESTRY:
+              if remote_commit(MIRROR, commit_sha, "") != (tree_sha, [parent_sha]):
+                  fail("mirror candidate ancestry changed before effect")
           if authority[1] != mirror[1]:
               fail("authority and mirror trees diverged before effect")
           PY
