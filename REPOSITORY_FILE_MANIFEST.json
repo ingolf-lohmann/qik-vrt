@@ -7,8 +7,53 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2490,
+  "file_count": 2508,
   "files": [
+    {
+      "bytes": 47,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".aider.conf.yml",
+      "sha256": "56445aa157975c5fc2777118be222dd4c130832b3059cfa2610ed04c3f5bb8f1"
+    },
+    {
+      "bytes": 307,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".amazonq/rules/qikvrt-ai-entry.md",
+      "sha256": "249af1165d5f783f648a7072032c194db3a5afb4ccfe86df58daaf544bd667cb"
+    },
+    {
+      "bytes": 319,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".clinerules",
+      "sha256": "4493a48703859899b9a3c7953fd29f8771244af91ee6f6f8d288be0ec0ff0252"
+    },
+    {
+      "bytes": 303,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".continue/rules/qikvrt-ai-entry.md",
+      "sha256": "e29bc50e4be00b8f32bfcd79e1ae903dfae39ae9b214a42363e73c2ecded8f40"
+    },
+    {
+      "bytes": 330,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".cursor/rules/qikvrt-ai-entry.mdc",
+      "sha256": "2af0341945928695996c669b353acfedcf4a76e0e2c40fbeefedcff767049c2f"
+    },
     {
       "bytes": 283,
       "classification": "repository_content",
@@ -73,6 +118,15 @@
       "sha256": "70644b5c8c76b1cac115015265756e20354c1f7956b7b103846296b560adaee1"
     },
     {
+      "bytes": 495,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/copilot-instructions.md",
+      "sha256": "3c591ebf03b73f2a38c163b969f7620c8a54fa5fdaf5138f8faed136129a6596"
+    },
+    {
       "bytes": 1732,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -80,6 +134,15 @@
       "immutable": true,
       "path": ".github/dependabot.yml",
       "sha256": "1c10779c4571e16f6ee8f21addc6450052083f557ea0ec2a4dcbb893ecd4e74a"
+    },
+    {
+      "bytes": 304,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/instructions/qikvrt-ai-entry.instructions.md",
+      "sha256": "8b76f11a8c2c95a183cd9182fdef428a1f3467c84fda67cacd7387986bf56505"
     },
     {
       "bytes": 23189,
@@ -217,6 +280,24 @@
       "sha256": "b6fea49e36c9855ccd5cdae1805f1dcfc514c686cbd296c420f00b847a02c361"
     },
     {
+      "bytes": 349,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".junie/guidelines.md",
+      "sha256": "b371bdebdb399b9bbb3a2cfe1302b882e1204993fe4a31e078d77e6d50f8e897"
+    },
+    {
+      "bytes": 291,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".kiro/steering/qikvrt-ai-entry.md",
+      "sha256": "940907fd9da48a44815051f98f7299962c9ac98be57ce7be8e9f905a65faac60"
+    },
+    {
       "bytes": 603,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -271,6 +352,24 @@
       "sha256": "bab55ac0474500cf41b29737e1ca6766946788f134c943f63e825f43310bd165"
     },
     {
+      "bytes": 282,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".roo/rules/qikvrt-ai-entry.md",
+      "sha256": "993551dbfec3d41c2d82a3687977cf87ab7ccbf45f15c431da4571dc11462bb2"
+    },
+    {
+      "bytes": 303,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".windsurf/rules/qikvrt-ai-entry.md",
+      "sha256": "a930a7c587221e0cf60d9baae194d185c372e77758eba161566b84a11c77fbbb"
+    },
+    {
       "bytes": 2801,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -298,13 +397,49 @@
       "sha256": "6f61443c397539de43465bfc3a10548b630ee46b5153cf6a3e87c44e40b4ab72"
     },
     {
-      "bytes": 1914,
+      "bytes": 2579,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AGENTS.md",
-      "sha256": "2dc7f08b3a3b272a814ea570c9fe0ea9e2b1d23a85a1684af04561b17cabdeae"
+      "sha256": "17b5cd231552f0e55495c154429065ab1f7f3a4dcd6dc5505476e9b37cfa2430"
+    },
+    {
+      "bytes": 614,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "AI",
+      "sha256": "2a4a12e57f8c85cb46f4855122145adfad98a8ca448ff096236d0bd47caf502f"
+    },
+    {
+      "bytes": 1457,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "AI_ADAPTERS.json",
+      "sha256": "814933c932159fb1dd161dc332f3469dc40989065928723a3d81e8de713be120"
+    },
+    {
+      "bytes": 269,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "AI_BOOTSTRAP.md",
+      "sha256": "c2d36e21c7c940d4a30906cde3dfeff0fff0b2cf256dba8432b490282d4790c2"
+    },
+    {
+      "bytes": 3393,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "AI_CONTEXT.json",
+      "sha256": "0e4f9ca49842c019f0901f9f584af8fcc96673dc1da4d52d6d6ebf293dd3ff91"
     },
     {
       "bytes": 15,
@@ -386,6 +521,15 @@
       "immutable": true,
       "path": "CITATION.cff",
       "sha256": "d2322063693059ed8f9dbb24efcf76cc75456582b807fe238da5b881ff7622eb"
+    },
+    {
+      "bytes": 455,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "CLAUDE.md",
+      "sha256": "cfc9285fae010a2cdb874bb8dfe9540832f78f1d2b07cbe52cabc66edfe624ec"
     },
     {
       "bytes": 1641,
@@ -485,6 +629,15 @@
       "immutable": true,
       "path": "FILE_LICENSE_ENRICHMENT_REPORT.tsv",
       "sha256": "25a8b0302fe47a5b1eee6ea7d92f4dbb77ea04c0da2602ef8f84f017724c366a"
+    },
+    {
+      "bytes": 413,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "GEMINI.md",
+      "sha256": "e5acb0ec9bea9f5a8339086c81119f85737dd0e3b44b47d4e6a148f9b6959bb7"
     },
     {
       "bytes": 197,
@@ -22060,6 +22213,15 @@
       "sha256": "91c068aed44979bcbdfb28388120a95a49136c7451b5ce9e954048006179ee76"
     },
     {
+      "bytes": 4589,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tools/ai_handoff.py",
+      "sha256": "ef44ed4e4f3fc4a8e3e6b2a8b7f8b3f16267ed7692bc1068bdb53a750fad1b75"
+    },
+    {
       "bytes": 11664,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
@@ -22404,7 +22566,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2481,
+  "immutable_file_count": 2499,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -22429,7 +22591,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "9e1643107edd3b116b173c880c7ce57b5c94941e7eaa53d350b53187615d758f",
+  "repository_content_tree_sha256": "0ff69b8cffefb69a3150baca08b544d4d7eb72f3f73ee4559816ba06398c97fc",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
