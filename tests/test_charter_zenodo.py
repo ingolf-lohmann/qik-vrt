@@ -58,9 +58,10 @@ class GenericZenodoPublicationContractTests(unittest.TestCase):
             with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "owner/repository"}):
                 manifest = publish.load_manifest(path, root)
             entry = manifest["files"][0]
-            self.assertEqual(entry["git_blob_sha"], publish._git_blob_sha((root / entry["path"]).read_bytes()))
-            self.assertEqual(entry["sha256"], hashlib.sha256((root / entry["path"]).read_bytes()).hexdigest())
-            self.assertEqual(entry["size"], (root / entry["path"]).stat().st_size)
+            data = (root / entry["path"]).read_bytes()
+            self.assertEqual(entry["git_blob_sha"], publish._git_blob_sha(data))
+            self.assertEqual(entry["sha256"], hashlib.sha256(data).hexdigest())
+            self.assertEqual(entry["size"], len(data))
 
     def test_git_blob_mismatch_blocks_before_remote_effect(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -73,19 +74,25 @@ class GenericZenodoPublicationContractTests(unittest.TestCase):
                 with self.assertRaisesRegex(zenodo.ZenodoError, "Git blob mismatch"):
                     publish.load_manifest(path, root)
 
-    def test_generic_implementation_contains_no_charter_identity(self) -> None:
+    def test_generic_implementation_contains_no_specific_identity(self) -> None:
         source = (ROOT / "tools/qikvrt_zenodo_publish.py").read_text(encoding="utf-8")
         self.assertNotIn("Charta einer maschinenprüfbaren Wissenschaft", source)
         self.assertNotIn("21498774", source)
         self.assertNotIn("10.5281/zenodo", source)
 
-    def test_persisted_capability_points_to_generic_implementation(self) -> None:
+    def test_capability_is_generic_and_workflow_independent(self) -> None:
         capability = json.loads(
-            (ROOT / "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json").read_text(encoding="utf-8")
+            (ROOT / "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json").read_text(
+                encoding="utf-8"
+            )
         )
         self.assertEqual(capability["implementation"], "tools/qikvrt_zenodo_publish.py")
+        self.assertIn("tools/qikvrt_zenodo_publish.py --manifest", capability["invocation"])
+        self.assertTrue(capability["workflow_binding"].startswith("none"))
         self.assertFalse(capability["genericity"]["document_specific_constants"])
-        self.assertTrue((ROOT / ".github/workflows/qikvrt_charter_zenodo_publish.yml").is_file())
+        self.assertFalse(capability["genericity"]["release_specific_constants"])
+        self.assertFalse(capability["genericity"]["record_or_doi_constants"])
+        self.assertFalse(capability["genericity"]["workflow_specific_constants"])
 
 
 if __name__ == "__main__":
