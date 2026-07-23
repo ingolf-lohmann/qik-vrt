@@ -1,11 +1,19 @@
 {
-  "schema": "qikvrt_runtime_capability_v1",
+  "schema": "qikvrt_runtime_capability_v2",
   "capability": "zenodo-production-publication",
   "profile": "publication",
-  "implementation": "tools/qikvrt_charter_zenodo.py",
+  "implementation": "tools/qikvrt_zenodo_publish.py",
   "reused_transport": "tools/qikvrt_zenodo_actions.py",
   "workflow": ".github/workflows/qikvrt_charter_zenodo_publish.yml",
-  "trigger": "hash-bound explicit publish request on a dedicated authorization branch",
+  "manifest_schema": "qikvrt_zenodo_publication_manifest_v1",
+  "trigger": "Git-blob-bound explicit publication manifest on a dedicated authorization branch",
+  "genericity": {
+    "document_specific_constants": false,
+    "release_specific_constants": false,
+    "record_or_doi_constants": false,
+    "metadata_source": "repository manifest",
+    "artifact_identity": "repository path plus exact Git blob SHA-1"
+  },
   "credential": {
     "environment_variable": "ZENODO_ACCESS_TOKEN",
     "storage": "GitHub Actions secret only",
@@ -15,14 +23,14 @@
     "class": "ecosystem-cache",
     "location": ".qikvrt/cache/zenodo-publication",
     "key_inputs": [
-      "tools/qikvrt_charter_zenodo.py",
+      "tools/qikvrt_zenodo_publish.py",
       "tools/qikvrt_zenodo_actions.py",
       "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json"
     ],
     "contents": [
       "validated source digests",
       "CPython bytecode cache",
-      "capability self-test receipt"
+      "generic capability self-test receipt"
     ],
     "excludes": [
       "credentials",
@@ -31,7 +39,8 @@
     ]
   },
   "verification": [
-    "closed publish-request contract",
+    "closed generic manifest contract",
+    "Git blob identity gate",
     "standard-library compilation",
     "allowlisted HTTPS Zenodo origin",
     "artifact MD5 and SHA-256 before upload",
@@ -40,8 +49,9 @@
     "published metadata and DOI gate",
     "repository evidence commit"
   ],
+  "recovery": "Existing publication evidence blocks duplicate mutation. Interrupted runs leave no DONE claim and require explicit remote-state reconciliation before retry.",
   "rollback": "No destructive rollback of a published DOI. Corrections require a new version with preserved history.",
-  "effect_boundary": "Workflow success is not publication evidence until zenodo-publication.json is committed and the public record is independently reachable.",
+  "effect_boundary": "Workflow success is not publication evidence until a generic evidence JSON is committed and the public record is independently reachable.",
   "rights_holder": "Ingolf Lohmann",
-  "license": "PolyForm-Noncommercial-1.0.0 for implementation; artifact license declared separately"
+  "license": "PolyForm-Noncommercial-1.0.0 for implementation; each artifact declares its own license"
 }
