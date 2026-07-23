@@ -13153,13 +13153,13 @@
       "sha256": "d6d404e97207b0e0a14e90553ca2d6a210ab05330af43823e916a962f04d03e4"
     },
     {
-      "bytes": 4910,
+      "bytes": 3574,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Physics/EmpiricalBridge.lean",
-      "sha256": "35cdc0fad56118e90fbe33e7259183f7e840e88501c0210868667bcc0ff1e470"
+      "sha256": "2d92c66b94a02960146d8ad5f11c066b1723bf4882c0315e9bcfe371f5982a56"
     },
     {
       "bytes": 3841,
@@ -23077,7 +23077,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "d57fb0c9143708bf37354e2e012f2f7d6d6c5a860e3dcdd9de2b3e8635edb904",
+  "repository_content_tree_sha256": "410a6a854c368a1361243ee0a96b25bc99f1a97efaa10112fd4e6f6c639f0977",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
