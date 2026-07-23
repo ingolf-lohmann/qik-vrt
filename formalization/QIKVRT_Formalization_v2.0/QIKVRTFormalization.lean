@@ -4,6 +4,7 @@ import QIKVRTFormalization.Process.Gates
 import QIKVRTFormalization.Process.GateCompleteness
 import QIKVRTFormalization.Retrocausality.ForwardProcess
 import QIKVRTFormalization.Retrocausality.Reclassification
+import QIKVRTFormalization.Physics.EmpiricalBridge
 import QIKVRTFormalization.Claims.CheckedRegistry
 import QIKVRTFormalization.Claims.Batch01
 import QIKVRTFormalization.Claims.Batch02
