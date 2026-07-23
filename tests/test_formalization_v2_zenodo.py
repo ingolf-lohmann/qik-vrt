@@ -13,6 +13,7 @@ import sys
 import tempfile
 import unittest
 import urllib.parse
+from unittest import mock
 
 REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPOSITORY_ROOT))
@@ -22,8 +23,8 @@ from tools import qikvrt_zenodo_actions as zenodo  # noqa: E402
 
 
 TOKEN = "f" * 64
-DRAFT_ID = 21510001
-DRAFT_DOI = "10.5281/zenodo.21510001"
+DRAFT_ID = release.RECOVERY_DRAFT_RECORD_ID
+DRAFT_DOI = release.RECOVERY_DRAFT_DOI
 
 
 def json_response(status: int, value: object) -> zenodo.HttpResponse:
@@ -42,33 +43,29 @@ class FakeTransport:
         target_metadata: dict[str, object],
         *,
         existing_draft: bool,
-        action_status: int = 201,
         draft_concept: int = release.CONCEPT_RECORD_ID,
         corrupt_download: bool = False,
         source_self_latest_draft: bool = False,
-        action_self_latest_draft: bool = False,
-        post_action_self_polls: int = 0,
         source_submitted: bool | None = True,
         source_state: str | None = "done",
-        action_draft_id: int = DRAFT_ID,
+        recovery_draft: dict[str, object] | None = None,
     ) -> None:
         self.calls: list[tuple[str, str, bytes | None]] = []
         self.target_metadata = copy.deepcopy(target_metadata)
-        self.action_status = action_status
         self.corrupt_download = corrupt_download
         self.source_self_latest_draft = source_self_latest_draft
-        self.action_self_latest_draft = action_self_latest_draft
-        self.post_action_self_polls = post_action_self_polls
         self.source_submitted = source_submitted
         self.source_state = source_state
-        self.action_draft_id = action_draft_id
-        self.newversion_called = False
+        self.recovery_draft = copy.deepcopy(recovery_draft)
         self.published = False
         self.latest_record_id = release.SOURCE_RECORD_ID
         self.source_has_draft = existing_draft
         self.draft: dict[str, object] = {
             "id": DRAFT_ID,
             "conceptrecid": draft_concept,
+            "created": release.RECOVERY_DRAFT_CREATED,
+            "state": "unsubmitted",
+            "submitted": False,
             "doi": DRAFT_DOI,
             "metadata": {
                 **copy.deepcopy(target_metadata),
@@ -86,6 +83,17 @@ class FakeTransport:
                 "bucket": "https://zenodo.org/api/files/formalization-v2-bucket",
             },
         }
+        if self.recovery_draft is not None:
+            self.draft = copy.deepcopy(self.recovery_draft)
+            self.draft["doi"] = DRAFT_DOI
+            links = self.draft.setdefault("links", {})
+            assert isinstance(links, dict)
+            links["self"] = (
+                "https://zenodo.org/api/deposit/depositions/" + str(DRAFT_ID)
+            )
+            links["bucket"] = (
+                "https://zenodo.org/api/files/formalization-v2-bucket"
+            )
 
     @staticmethod
     def _file(name: str, data: bytes, file_id: str) -> dict[str, object]:
@@ -131,19 +139,15 @@ class FakeTransport:
                 + str(release.SOURCE_RECORD_ID)
             )
         }
-        if self.source_has_draft and not (
-            self.newversion_called and self.post_action_self_polls > 0
-        ):
+        if self.source_has_draft:
             links["latest_draft"] = (
                 "https://zenodo.org/api/deposit/depositions/" + str(DRAFT_ID)
             )
-        elif self.source_self_latest_draft or self.newversion_called:
+        elif self.source_self_latest_draft:
             links["latest_draft"] = (
                 "https://zenodo.org/api/deposit/depositions/"
                 + str(release.SOURCE_RECORD_ID)
             )
-            if self.newversion_called and self.post_action_self_polls > 0:
-                self.post_action_self_polls -= 1
         value: dict[str, object] = {
             "id": release.SOURCE_RECORD_ID,
             "conceptrecid": release.CONCEPT_RECORD_ID,
@@ -218,28 +222,13 @@ class FakeTransport:
             f"/api/deposit/depositions/{release.SOURCE_RECORD_ID}"
         ):
             return json_response(200, self._source_owner())
-        if method == "POST" and path == (
-            f"/api/deposit/depositions/{release.SOURCE_RECORD_ID}/actions/newversion"
+        if method == "GET" and path == (
+            f"/api/deposit/depositions/{release.RECOVERY_DRAFT_RECORD_ID}"
         ):
-            self.newversion_called = True
-            self.source_has_draft = True
-            linked_id = (
-                release.SOURCE_RECORD_ID
-                if self.action_self_latest_draft
-                else self.action_draft_id
-            )
-            return json_response(
-                self.action_status,
-                {
-                    "id": 99999999,
-                    "links": {
-                        "latest_draft": (
-                            "https://zenodo.org/api/deposit/depositions/"
-                            + str(linked_id)
-                        )
-                    },
-                },
-            )
+            if self.recovery_draft is not None:
+                return json_response(200, self._clean(self.recovery_draft))
+            if not self.source_has_draft:
+                return json_response(404, {"message": "no audited recovery draft"})
         if method == "GET" and path == f"/api/deposit/depositions/{DRAFT_ID}":
             if self.published:
                 return json_response(404, {"message": "not editable"})
@@ -247,6 +236,11 @@ class FakeTransport:
         if method == "PUT" and path == f"/api/deposit/depositions/{DRAFT_ID}":
             payload = json.loads((body or b"{}").decode("utf-8"))
             self.draft["metadata"] = copy.deepcopy(payload["metadata"])
+            metadata = self.draft["metadata"]
+            assert isinstance(metadata, dict)
+            metadata["prereserve_doi"] = {"doi": DRAFT_DOI}
+            self.recovery_draft = None
+            self.source_has_draft = True
             return json_response(200, self._clean(self.draft))
         if method == "POST" and path == (
             f"/api/deposit/depositions/{DRAFT_ID}/actions/publish"
@@ -390,63 +384,175 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
         names = [item["filename"] for item in transport.draft["files"]]
         self.assertEqual(names, [self.payload.name])
 
-    def test_new_201_draft_is_initialized_and_response_id_is_ignored(self) -> None:
-        transport = FakeTransport(
-            self.metadata,
-            existing_draft=False,
-            action_status=201,
-        )
-        transport.draft["metadata"] = {
-            "title": "Inherited predecessor metadata",
-            "version": "1.0.0",
-            "creators": [{"name": "Lohmann, Ingolf"}],
-            "upload_type": "software",
-            "prereserve_doi": {"doi": DRAFT_DOI},
-        }
-        result = self.invoke(transport)
-        self.assertEqual(result["published_record_id"], DRAFT_ID)
-        action_paths = [
-            path
-            for method, path, _body in transport.calls
-            if method == "POST" and path.endswith("/actions/newversion")
-        ]
-        self.assertEqual(
-            action_paths,
-            [
-                f"/api/deposit/depositions/{release.SOURCE_RECORD_ID}/actions/newversion"
-            ],
-        )
-        self.assertFalse(any("99999999" in path for _m, path, _b in transport.calls))
-
-    def test_newversion_200_and_202_responses_remain_fail_closed_and_publish(self) -> None:
-        for action_status in (200, 202):
-            with self.subTest(action_status=action_status):
-                transport = FakeTransport(
-                    self.metadata,
-                    existing_draft=False,
-                    action_status=action_status,
-                )
-                result = self.invoke(transport)
-                self.assertEqual(result["published_record_id"], DRAFT_ID)
-                self.assertTrue(result["published_by_this_run"])
-
-    def test_published_source_self_link_creates_and_publishes_new_version(self) -> None:
+    def test_missing_audited_recovery_blocks_without_any_remote_mutation(self) -> None:
         transport = FakeTransport(
             self.metadata,
             existing_draft=False,
             source_self_latest_draft=True,
-            action_self_latest_draft=True,
-            post_action_self_polls=1,
         )
-        result = self.invoke(transport)
-        action = (
-            "POST",
-            f"/api/deposit/depositions/{release.SOURCE_RECORD_ID}/actions/newversion",
+        with self.assertRaisesRegex(
+            zenodo.ZenodoError, "audited formalization recovery draft is missing"
+        ):
+            self.invoke(transport)
+        self.assertFalse(
+            any(method in {"POST", "PUT", "DELETE"} for method, _path, _body in transport.calls)
         )
-        paths = [(method, path) for method, path, _body in transport.calls]
-        self.assertEqual(paths.count(action), 1)
-        self.assertEqual(result["published_record_id"], DRAFT_ID)
+
+    def test_client_contains_no_newversion_mutation_path(self) -> None:
+        client_source = pathlib.Path(release.__file__).read_text(encoding="utf-8")
+        self.assertNotIn("/actions/newversion", client_source)
+
+    def test_exact_audited_recovery_draft_is_fully_gated_and_published(self) -> None:
+        recovery_metadata = {
+            "title": "Inherited predecessor metadata",
+            "upload_type": "software",
+            "creators": [{"name": "Lohmann, Ingolf"}],
+            "prereserve_doi": {"doi": release.RECOVERY_DRAFT_DOI},
+        }
+        recovery = {
+            "id": release.RECOVERY_DRAFT_RECORD_ID,
+            "conceptrecid": release.CONCEPT_RECORD_ID,
+            "created": release.RECOVERY_DRAFT_CREATED,
+            "state": "unsubmitted",
+            "submitted": False,
+            "metadata": recovery_metadata,
+            "files": [],
+            "links": {
+                "self": (
+                    "https://zenodo.org/api/deposit/depositions/"
+                    + str(release.RECOVERY_DRAFT_RECORD_ID)
+                )
+            },
+        }
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            source_self_latest_draft=True,
+            recovery_draft=recovery,
+        )
+        fingerprint = hashlib.sha256(
+            zenodo._json_bytes(recovery_metadata)
+        ).hexdigest()
+        with mock.patch.object(
+            release, "RECOVERY_DRAFT_METADATA_SHA256", fingerprint
+        ):
+            result = self.invoke(transport)
+        self.assertEqual(result["published_record_id"], release.RECOVERY_DRAFT_RECORD_ID)
+        self.assertEqual(result["doi"], release.RECOVERY_DRAFT_DOI)
         self.assertTrue(result["published_by_this_run"])
+        self.assertFalse(
+            any(
+                method == "POST" and path.endswith("/actions/newversion")
+                for method, path, _body in transport.calls
+            )
+        )
+
+    def test_changed_recovery_fingerprint_blocks_before_newversion(self) -> None:
+        recovery = {
+            "id": release.RECOVERY_DRAFT_RECORD_ID,
+            "conceptrecid": release.CONCEPT_RECORD_ID,
+            "created": release.RECOVERY_DRAFT_CREATED,
+            "state": "unsubmitted",
+            "submitted": False,
+            "metadata": {
+                "title": "Different draft",
+                "upload_type": "software",
+                "prereserve_doi": {"doi": release.RECOVERY_DRAFT_DOI},
+            },
+            "files": [],
+            "links": {},
+        }
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            source_self_latest_draft=True,
+            recovery_draft=recovery,
+        )
+        with self.assertRaisesRegex(
+            zenodo.ZenodoError, "recovery draft changed identity or state"
+        ):
+            release.resolve_or_create_source_latest_draft(
+                self.client(transport), self.metadata
+            )
+        self.assertFalse(
+            any(
+                method == "POST" and path.endswith("/actions/newversion")
+                for method, path, _body in transport.calls
+            )
+        )
+
+    def test_recovery_state_delta_blocks_before_remote_mutation(self) -> None:
+        recovery_metadata = copy.deepcopy(self.metadata)
+        recovery_metadata["prereserve_doi"] = {
+            "doi": release.RECOVERY_DRAFT_DOI
+        }
+        recovery = {
+            "id": release.RECOVERY_DRAFT_RECORD_ID,
+            "conceptrecid": release.CONCEPT_RECORD_ID,
+            "created": release.RECOVERY_DRAFT_CREATED,
+            "state": "inprogress",
+            "submitted": False,
+            "metadata": recovery_metadata,
+            "files": [],
+            "links": {},
+        }
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            source_self_latest_draft=True,
+            recovery_draft=recovery,
+        )
+        with self.assertRaisesRegex(
+            zenodo.ZenodoError, "recovery draft changed identity or state"
+        ):
+            release.resolve_or_create_source_latest_draft(
+                self.client(transport), self.metadata
+            )
+        self.assertFalse(
+            any(method in {"POST", "PUT", "DELETE"} for method, _path, _body in transport.calls)
+        )
+
+    def test_initialized_recovery_requires_every_audited_invariant(self) -> None:
+        metadata = copy.deepcopy(self.metadata)
+        metadata["prereserve_doi"] = {"doi": release.RECOVERY_DRAFT_DOI}
+        baseline: dict[str, object] = {
+            "id": release.RECOVERY_DRAFT_RECORD_ID,
+            "conceptrecid": release.CONCEPT_RECORD_ID,
+            "created": release.RECOVERY_DRAFT_CREATED,
+            "state": "unsubmitted",
+            "submitted": False,
+            "metadata": metadata,
+            "files": [{"filename": "partial-upload"}],
+        }
+        deltas = {
+            "record_id": ("id", release.RECOVERY_DRAFT_RECORD_ID + 1),
+            "concept": ("conceptrecid", release.CONCEPT_RECORD_ID + 1),
+            "created": ("created", "2026-07-23T00:33:38+00:00"),
+            "state": ("state", "inprogress"),
+            "submitted": ("submitted", True),
+        }
+        for name, (key, value) in deltas.items():
+            with self.subTest(name=name):
+                candidate = copy.deepcopy(baseline)
+                candidate[key] = value
+                with self.assertRaises(zenodo.ZenodoError):
+                    release._require_resumable_draft_identity(
+                        candidate, self.metadata
+                    )
+        for missing in ("created", "state", "submitted"):
+            with self.subTest(missing=missing):
+                candidate = copy.deepcopy(baseline)
+                candidate.pop(missing)
+                with self.assertRaises(zenodo.ZenodoError):
+                    release._require_resumable_draft_identity(
+                        candidate, self.metadata
+                    )
+        wrong_doi = copy.deepcopy(baseline)
+        wrong_metadata = wrong_doi["metadata"]
+        assert isinstance(wrong_metadata, dict)
+        wrong_metadata["prereserve_doi"] = {"doi": "10.5281/zenodo.99999999"}
+        with self.assertRaises(zenodo.ZenodoError):
+            release._require_resumable_draft_identity(wrong_doi, self.metadata)
 
     def test_source_self_link_accepts_done_state_without_submitted_field(self) -> None:
         transport = FakeTransport(
@@ -456,8 +562,12 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
             source_submitted=None,
             source_state="done",
         )
-        result = self.invoke(transport)
-        self.assertEqual(result["published_record_id"], DRAFT_ID)
+        owner = transport._source_owner()
+        self.assertIsNone(
+            release._new_version_draft_url(
+                owner, self.client(transport), source_owner_view=True
+            )
+        )
 
     def test_source_self_link_without_published_state_fails_before_newversion(self) -> None:
         transport = FakeTransport(
@@ -478,42 +588,96 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
             )
         )
 
-    def test_action_self_link_timeout_fails_before_draft_mutation(self) -> None:
-        transport = FakeTransport(
-            self.metadata,
-            existing_draft=False,
-            action_self_latest_draft=True,
-            post_action_self_polls=99,
-        )
-        with self.assertRaisesRegex(
-            zenodo.ZenodoError, "new-version response has no source latest_draft"
-        ):
-            self.invoke(transport)
+    def test_prepublish_public_latest_drift_blocks_publish(self) -> None:
+        transport = FakeTransport(self.metadata, existing_draft=True)
+        transport.latest_record_id = DRAFT_ID
+        transport.published = True
+        with self.assertRaises(zenodo.ZenodoError):
+            release._assert_still_source_latest_draft(
+                self.client(transport),
+                f"https://zenodo.org/api/deposit/depositions/{DRAFT_ID}",
+                DRAFT_ID,
+                self.metadata,
+                [self.entry()],
+                DRAFT_DOI,
+            )
         self.assertFalse(
             any(
-                method in {"PUT", "DELETE"}
-                or (method == "POST" and path.endswith("/actions/publish"))
+                method == "POST" and path.endswith("/actions/publish")
                 for method, path, _body in transport.calls
             )
         )
 
-    def test_action_and_owner_draft_ids_must_match(self) -> None:
-        transport = FakeTransport(
-            self.metadata,
-            existing_draft=False,
-            action_draft_id=DRAFT_ID + 1,
-        )
+    def test_prepublish_state_drift_blocks_publish(self) -> None:
+        transport = FakeTransport(self.metadata, existing_draft=True)
+        payload = self.payload.read_bytes()
+        transport.draft["files"] = [
+            transport._file(self.payload.name, payload, "payload")
+        ]
+        transport.draft["state"] = "inprogress"
         with self.assertRaisesRegex(
-            zenodo.ZenodoError, "identify different drafts"
+            zenodo.ZenodoError, "recovery draft changed identity or state"
         ):
-            self.invoke(transport)
+            release._assert_still_source_latest_draft(
+                self.client(transport),
+                f"https://zenodo.org/api/deposit/depositions/{DRAFT_ID}",
+                DRAFT_ID,
+                self.metadata,
+                [self.entry()],
+                DRAFT_DOI,
+            )
         self.assertFalse(
             any(
-                method in {"PUT", "DELETE"}
-                or (method == "POST" and path.endswith("/actions/publish"))
+                method == "POST" and path.endswith("/actions/publish")
                 for method, path, _body in transport.calls
             )
         )
+
+    def test_prepublish_regates_metadata_files_and_doi(self) -> None:
+        def change_metadata(transport: FakeTransport) -> None:
+            metadata = transport.draft["metadata"]
+            assert isinstance(metadata, dict)
+            metadata["version"] = "drifted"
+
+        def change_files(transport: FakeTransport) -> None:
+            files = transport.draft["files"]
+            assert isinstance(files, list) and isinstance(files[0], dict)
+            files[0]["checksum"] = "md5:" + "0" * 32
+
+        def change_doi(transport: FakeTransport) -> None:
+            metadata = transport.draft["metadata"]
+            assert isinstance(metadata, dict)
+            reserved = metadata["prereserve_doi"]
+            assert isinstance(reserved, dict)
+            reserved["doi"] = "10.5281/zenodo.99999999"
+
+        for name, mutate, error in (
+            ("metadata", change_metadata, "final GET gate"),
+            ("files", change_files, "final GET gate"),
+            ("doi", change_doi, "recovery draft changed identity or state"),
+        ):
+            with self.subTest(name=name):
+                transport = FakeTransport(self.metadata, existing_draft=True)
+                payload = self.payload.read_bytes()
+                transport.draft["files"] = [
+                    transport._file(self.payload.name, payload, "payload")
+                ]
+                mutate(transport)
+                with self.assertRaisesRegex(zenodo.ZenodoError, error):
+                    release._assert_still_source_latest_draft(
+                        self.client(transport),
+                        f"https://zenodo.org/api/deposit/depositions/{DRAFT_ID}",
+                        DRAFT_ID,
+                        self.metadata,
+                        [self.entry()],
+                        DRAFT_DOI,
+                    )
+                self.assertFalse(
+                    any(
+                        method == "POST" and path.endswith("/actions/publish")
+                        for method, path, _body in transport.calls
+                    )
+                )
 
     def test_completed_rerun_reconciles_exact_public_latest_without_mutation(self) -> None:
         transport = FakeTransport(self.metadata, existing_draft=True)
@@ -564,7 +728,7 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
             "prereserve_doi": {"doi": DRAFT_DOI},
         }
         with self.assertRaisesRegex(
-            zenodo.ZenodoError, "metadata does not match this exact release"
+            zenodo.ZenodoError, "recovery draft changed identity or state"
         ):
             self.invoke(transport)
         mutating = [
@@ -575,31 +739,6 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
         ]
         self.assertEqual(mutating, [])
 
-    def test_409_unidentified_draft_is_never_repurposed(self) -> None:
-        transport = FakeTransport(
-            self.metadata,
-            existing_draft=False,
-            action_status=409,
-        )
-        transport.draft["metadata"] = {
-            "title": "Unrelated already-open draft",
-            "version": "3.0.0",
-            "creators": [{"name": "Other, Person"}],
-            "upload_type": "software",
-            "prereserve_doi": {"doi": DRAFT_DOI},
-        }
-        with self.assertRaisesRegex(
-            zenodo.ZenodoError, "metadata does not match this exact release"
-        ):
-            self.invoke(transport)
-        self.assertFalse(
-            any(
-                method in {"PUT", "DELETE"}
-                or (method == "POST" and path.endswith("/actions/publish"))
-                for method, path, _body in transport.calls
-            )
-        )
-
     def test_matching_identity_with_different_description_is_not_resumed(self) -> None:
         transport = FakeTransport(self.metadata, existing_draft=True)
         metadata = copy.deepcopy(transport.draft["metadata"])
@@ -607,7 +746,7 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
         metadata["description"] = "Unrelated concurrent release"
         transport.draft["metadata"] = metadata
         with self.assertRaisesRegex(
-            zenodo.ZenodoError, "metadata does not match this exact release"
+            zenodo.ZenodoError, "recovery draft changed identity or state"
         ):
             self.invoke(transport)
         self.assertFalse(
@@ -625,35 +764,13 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
         metadata["communities"] = [{"identifier": "unrelated-release"}]
         transport.draft["metadata"] = metadata
         with self.assertRaisesRegex(
-            zenodo.ZenodoError, "metadata outside this exact release"
+            zenodo.ZenodoError, "recovery draft changed identity or state"
         ):
             self.invoke(transport)
         self.assertFalse(
             any(
                 method in {"PUT", "DELETE"}
                 or (method == "POST" and path.endswith("/actions/publish"))
-                for method, path, _body in transport.calls
-            )
-        )
-
-    def test_409_exact_release_draft_is_resumed_and_gated(self) -> None:
-        transport = FakeTransport(
-            self.metadata,
-            existing_draft=False,
-            action_status=409,
-        )
-        result = self.invoke(transport)
-        self.assertEqual(result["published_record_id"], DRAFT_ID)
-        self.assertTrue(result["published_by_this_run"])
-        self.assertTrue(
-            any(
-                method == "POST" and path.endswith("/actions/newversion")
-                for method, path, _body in transport.calls
-            )
-        )
-        self.assertTrue(
-            any(
-                method == "POST" and path.endswith("/actions/publish")
                 for method, path, _body in transport.calls
             )
         )

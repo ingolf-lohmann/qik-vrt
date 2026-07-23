@@ -29,7 +29,10 @@ EFFECT = (
 MAKEFILE = ROOT / "Makefile"
 INSPECTION_WORKFLOW = ROOT / ".github/workflows/qikvrt_formalization_v2_inspect.yml"
 INSPECTION_MARKER = ROOT / "release/formalization-v2-inspection-request.json"
-AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723-v3"
+INVENTORY_WORKFLOW = ROOT / ".github/workflows/qikvrt_formalization_v2_inventory.yml"
+INVENTORY_MARKER = ROOT / "release/formalization-v2-inventory-request.json"
+RECOVERY_EVIDENCE = ROOT / "release/formalization-v2-draft-recovery.json"
+AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723-v4"
 FEATURE_BRANCH = "agent/manuscript-formalization-v2-alpha"
 
 
@@ -67,7 +70,7 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
     def test_trigger_is_one_inert_marker_on_one_authority_branch(self) -> None:
         trigger = self.workflow.split("permissions:", 1)[0]
         self.assertIn(f"      - {AUTOMATION_BRANCH}\n", trigger)
-        self.assertNotIn("formalization-v2-publish-20260723-v2", trigger)
+        self.assertNotIn("formalization-v2-publish-20260723-v3", trigger)
         self.assertIn("      - release/formalization-v2-request.json\n", trigger)
         self.assertNotIn(FEATURE_BRANCH, trigger)
         self.assertNotIn("workflow_dispatch", self.workflow)
@@ -105,6 +108,7 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
                 "shared_client_sha256",
                 "client_test_sha256",
                 "workflow_sha256",
+                "recovery_evidence_sha256",
                 "archive_sha256",
             },
         )
@@ -152,6 +156,9 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
             'candidate["candidate_tree"] != candidate["mirror_tree"]',
             'd037a44d2893b9ea094d7cad55954223eb90a186',
             '7aaee4e1b182e18c9f0e927685f31d3c1190031a',
+            'af6762da33e19f3a1525b3a726eabc70994542b0',
+            '6d6d1866779f1d907b8a33d1515f951d7cbd2a81',
+            '6d14ac019cde5be15ea12fd6993e015efd041d26',
             '9624466b84dc785d9bc6d18ff6b3c0966de89684',
             '661b9ecd66bd91d1359e3d47ab77a8991522b662',
             'f45b713bddbb6377e0f3ebb3cb2061235f41ceb4',
@@ -163,7 +170,7 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
             '00e71ed364b388727aafea133122eda02c046692',
             'AUTHORITY_ANCESTRY',
             'MIRROR_ANCESTRY',
-            'fetch-depth: 6',
+            'fetch-depth: 7',
             'git checkout --detach "${{ steps.marker.outputs.candidate_commit }}"',
             'EVENT_BEFORE',
             'EVENT_FORCED',
@@ -177,6 +184,7 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
             "shared_client_sha256": SHARED_CLIENT,
             "client_test_sha256": CLIENT_TEST,
             "workflow_sha256": WORKFLOW,
+            "recovery_evidence_sha256": RECOVERY_EVIDENCE,
             "archive_sha256": ARCHIVE,
         }
         for key, path in paths.items():
@@ -252,6 +260,38 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
         self.assertTrue(uses)
         for action in uses:
             self.assertRegex(action, r"@(?:[0-9a-f]{40}|[0-9a-f]{64})$")
+
+    def test_recovery_evidence_and_inventory_are_exact_and_read_only(self) -> None:
+        inventory = INVENTORY_WORKFLOW.read_text(encoding="utf-8")
+        marker = json.loads(INVENTORY_MARKER.read_text(encoding="utf-8"))
+        evidence = json.loads(RECOVERY_EVIDENCE.read_text(encoding="utf-8"))
+        client = CLIENT.read_text(encoding="utf-8")
+        self.assertEqual(marker["state"], "inactive")
+        self.assertEqual(marker["confirm"], "NOT_AUTHORIZED")
+        self.assertTrue(all(value == "0" * 64 for value in marker["bindings"].values()))
+        self.assertIn("automation/formalization-v2-inventory-20260723", inventory)
+        self.assertIn("INSPECT_ZENODO_FORMALIZATION_V2_DEPOSITIONS_READ_ONLY", inventory)
+        self.assertIn('method="GET"', inventory)
+        for method in ('method="POST"', 'method="PUT"', 'method="PATCH"', 'method="DELETE"'):
+            self.assertNotIn(method, inventory)
+        self.assertEqual(
+            evidence["schema"],
+            "qikvrt_formalization_v2_draft_recovery_evidence_v1",
+        )
+        self.assertTrue(evidence["read_only"])
+        recovery = evidence["recovery_draft"]
+        self.assertEqual(recovery["record_id"], 21501365)
+        self.assertEqual(recovery["concept_record_id"], 21488115)
+        self.assertEqual(recovery["prereserved_doi"], "10.5281/zenodo.21501365")
+        self.assertEqual(recovery["file_count"], 0)
+        self.assertIn(str(recovery["record_id"]), client)
+        self.assertIn(recovery["created"], client)
+        self.assertIn(recovery["metadata_sha256"], client)
+        boundary = evidence["failed_publication"]["effect_boundary"]
+        self.assertTrue(boundary["newversion_post_reached"])
+        self.assertFalse(boundary["metadata_put_reached"])
+        self.assertFalse(boundary["file_delete_or_upload_reached"])
+        self.assertFalse(boundary["publish_post_reached"])
 
     def test_release_tests_are_part_of_root_test_and_candidate_workflow(self) -> None:
         makefile = MAKEFILE.read_text(encoding="utf-8")
