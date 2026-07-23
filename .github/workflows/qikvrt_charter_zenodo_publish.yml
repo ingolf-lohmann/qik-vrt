@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
 
-name: QIKVRT charter Zenodo publication
+name: QIKVRT generic Zenodo publication
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-charter-zenodo-production
+  group: qikvrt-generic-zenodo-production
   cancel-in-progress: false
 
 jobs:
@@ -35,11 +35,11 @@ jobs:
           python-version: '3.12.13'
           architecture: x64
 
-      - name: Restore verified Zenodo capability cache
+      - name: Restore verified generic publication cache
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809
         with:
           path: .qikvrt/cache/zenodo-publication
-          key: zenodo-publication-${{ runner.os }}-${{ hashFiles('tools/qikvrt_charter_zenodo.py', 'tools/qikvrt_zenodo_actions.py', 'runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json') }}
+          key: zenodo-publication-v2-${{ runner.os }}-${{ hashFiles('tools/qikvrt_zenodo_publish.py', 'tools/qikvrt_zenodo_actions.py', 'runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json') }}
 
       - name: Materialize capability receipts and self-test
         shell: bash
@@ -47,25 +47,27 @@ jobs:
           set -euo pipefail
           mkdir -p .qikvrt/cache/zenodo-publication/pycache
           sha256sum \
-            tools/qikvrt_charter_zenodo.py \
+            tools/qikvrt_zenodo_publish.py \
             tools/qikvrt_zenodo_actions.py \
             runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json \
             > .qikvrt/cache/zenodo-publication/SHA256SUMS.txt
           PYTHONPYCACHEPREFIX="$PWD/.qikvrt/cache/zenodo-publication/pycache" \
             python -B -m py_compile \
-              tools/qikvrt_charter_zenodo.py \
+              tools/qikvrt_zenodo_publish.py \
               tools/qikvrt_zenodo_actions.py \
               tests/test_charter_zenodo.py
           python -B -m unittest -v tests.test_charter_zenodo
-          printf '%s\n' 'CAPABILITY_SELF_TEST=PASS' > .qikvrt/cache/zenodo-publication/self-test.receipt
+          printf '%s\n' 'GENERIC_CAPABILITY_SELF_TEST=PASS' \
+            > .qikvrt/cache/zenodo-publication/self-test.receipt
 
-      - name: Publish hash-gated charter to production Zenodo
+      - name: Publish Git-blob-bound manifest to production Zenodo
         env:
           ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
           ZENODO_API_BASE: https://zenodo.org/api
         run: |
           set -euo pipefail
-          python -B tools/qikvrt_charter_zenodo.py
+          python -B tools/qikvrt_zenodo_publish.py \
+            --manifest release/machine-verifiable-science/publish-request.json
           test -s release/machine-verifiable-science/zenodo-publication.json
 
       - name: Commit publication evidence to authorization branch
