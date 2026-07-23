@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2554,
+  "file_count": 2558,
   "files": [
     {
       "bytes": 283,
@@ -21919,6 +21919,15 @@
       "sha256": "58c2e8ae5ace4a36e01738f75fd384b914d5447d386c9db53ad7b6e5f5406f67"
     },
     {
+      "bytes": 2509,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/FORMALIZATION_V2_PUBLICATION_WHATSAPP_DE.md",
+      "sha256": "9584f053c2ba5a8a1640a7e7206a89000178b3cf330699c56f1b238079e2cf3c"
+    },
+    {
       "bytes": 531,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
@@ -21989,6 +21998,15 @@
       "sha256": "ea36f9326fdd828cb7319f9a9530a2ee4f08872b805c46f0c56450f173f77d74"
     },
     {
+      "bytes": 1317,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2-publication-provenance.json",
+      "sha256": "c8bedf7f95c6e63d0fb6d2b3247753ed983cdfff09fc4feb527ad7bc34581c5a"
+    },
+    {
       "bytes": 1487,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -21996,6 +22014,24 @@
       "immutable": true,
       "path": "release/formalization-v2-request.json",
       "sha256": "37f8b93f97553c83f5e7afeeb16730e4f3659059a1483e71dd6eb1e8d36bdc79"
+    },
+    {
+      "bytes": 3393,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2-zenodo-independent-verification.json",
+      "sha256": "9e11b097af8951b3590586f8b8751cca0995f59c42873823fd94ee0f7b96a550"
+    },
+    {
+      "bytes": 3308,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2-zenodo-publication.json",
+      "sha256": "37256003ab587ab9994f272202e7e27b63477d31f17941ad53406a20fdd2e434"
     },
     {
       "bytes": 7497,
@@ -22456,13 +22492,13 @@
       "sha256": "b9ddd19f0bb49b97ec29a546d691e2df5e23aa23fd18d858f93ad6c9c7aed33b"
     },
     {
-      "bytes": 17414,
+      "bytes": 19889,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_formalization_v2_release_workflow.py",
-      "sha256": "4102b3678e9ae6690657657507afba5c3e607cc76355cc9cd1df078c1936e21f"
+      "sha256": "4953a3c3c9ac1ed6845c371a735b91fc836a3302f6f9860f0df6dc1b558b025e"
     },
     {
       "bytes": 35835,
@@ -22980,7 +23016,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2545,
+  "immutable_file_count": 2549,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -23005,7 +23041,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "2024e72e1197e730040e9ab57c3679601210653de01e35261c1eb8169fc2eef6",
+  "repository_content_tree_sha256": "7d91e3007330818a339d460f2e70ddbd2c873965a95e9242da66d1e1674f75af",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
