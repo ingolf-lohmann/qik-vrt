@@ -532,22 +532,22 @@
       "sha256": "2c145ad6f03ed4254194d1eced5abfa9218994c5da55a462b1384a7313a9f0f1"
     },
     {
-      "bytes": 3912,
+      "bytes": 4407,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_PROGRESS.json",
-      "sha256": "2a3a675866cc13f7dc58c53f7524cc3e6305f4d17aca712c9966b39b7c7ade91"
+      "sha256": "a7097d42b5c61239e0c8be93108cc5cd00fd941638d60467f1d278d903ecb58e"
     },
     {
-      "bytes": 1654,
+      "bytes": 1714,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_STATUS.md",
-      "sha256": "f025b96f69974e79bd628324b8858a0f1bceb8b48a004eb1e822c7707fb17ac5"
+      "sha256": "411231f38d61c284d90b595646191bac717daf81892fd8dc87dbe9abe2ecc90b"
     },
     {
       "bytes": 15,
@@ -13594,13 +13594,13 @@
       "sha256": "3104ef4a62c5a92cef1a359e06adb61859c2840a9cc3b1f72d9339172a2b0d1f"
     },
     {
-      "bytes": 11669,
+      "bytes": 11647,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/effect_ack/DRAFT01_CLAIM_MATRIX.json",
-      "sha256": "c60ffb9c1cea57ec135865ac4558586a846b48cbc2c8fca53a58b157525fab5a"
+      "sha256": "df13e45d0af2050ecd8fb9d6cd132882021cbd0e2550b678fb06c23b4f56892a"
     },
     {
       "bytes": 1431,
@@ -23518,7 +23518,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "7253aca8cad888fdec0352f175778d4665d48eef15a308d82d680eb1e1a73b74",
+  "repository_content_tree_sha256": "3972bb54c7df2118d495499269ea6efc9b4ab79a7130bee9623a9b1393d34c37",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [

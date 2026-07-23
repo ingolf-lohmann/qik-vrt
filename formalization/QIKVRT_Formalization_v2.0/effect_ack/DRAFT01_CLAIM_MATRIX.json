@@ -17,7 +17,7 @@
       "QIKVRT.EffectAck.V1.Claims.ConditionalPhysicalBridge": ["propext"],
       "QIKVRT.EffectAck.V1.Claims.DoneSelection": ["propext"],
       "QIKVRT.EffectAck.V1.Claims.ReleaseSafety": ["propext"],
-      "QIKVRT.EffectAck.V1.Claims.SemanticBoundary": ["Classical.choice", "Quot.sound", "propext"],
+      "QIKVRT.EffectAck.V1.Claims.SemanticBoundary": ["Classical.choice", "Quot.sound"],
       "QIKVRT.EffectAck.V1.Claims.StateSpace": ["propext"],
       "QIKVRT.EffectAck.V1.authorized_implies_consumer_checks": ["propext"],
       "QIKVRT.EffectAck.V1.authorized_implies_recorded_and_recomputed_done": ["propext"],
@@ -33,7 +33,7 @@
       "QIKVRT.EffectAck.V1.physicalOccurrence_implies_authorized_done_conditionally": ["propext"],
       "QIKVRT.EffectAck.V1.predecessorInvalid_blocks": ["propext"],
       "QIKVRT.EffectAck.V1.selectState_eq_done_iff": ["propext"],
-      "QIKVRT.EffectAck.V1.semanticReconstruction_iff_fiberConstant": ["Classical.choice", "Quot.sound", "propext"],
+      "QIKVRT.EffectAck.V1.semanticReconstruction_iff_fiberConstant": ["Classical.choice", "Quot.sound"],
       "QIKVRT.EffectAck.V1.stale_record_never_authorized": ["propext"],
       "QIKVRT.EffectAck.V1.states_complete": ["propext"]
     }

@@ -4,7 +4,7 @@ Repository: `Goldkelch/qik-vrt`
 Branch: `agent/effect-ack-lean-v1`
 Source commit: `aa2763b5bbcce914063d12b1027b47c6e0e34004`
 
-`[██████▏░░░] 62%`
+`[██████▌░░░] 65%`
 
 - ✓ Two source audios transcribed and verified offline
 - ✓ `draft-lohmann-qikvrt-effect-ack-01` identified from primary IETF sources
@@ -19,18 +19,19 @@ Source commit: `aa2763b5bbcce914063d12b1027b47c6e0e34004`
 - ✓ First Lean 4.19 run isolated three conjunction-association goals
 - ✓ Second Lean 4.19 run compiled `Model.lean`
 - ✓ Third Lean 4.19 run compiled both libraries and passed all source/tests
-- ⟳ Persisting the observed constant-specific foundational axiom inventory
+- ✓ Fourth Lean 4.19 run reconfirmed the build, source gates, and 21 tests
+- ⟳ Correcting the two semantic constants to their exact observed axiom sets
 - □ Truth-bounded WhatsApp article
 - □ Full verification, repository synchronization, and Zenodo publication
 
 ## BLOCKER
 
-None. The complete Lean build now passes. The remaining gate is audit-policy
-materialization: 21 simplifier-produced constants use Lean's standard
-`propext`; semantic factorization additionally uses the already declared
-classical foundations. No project-specific axiom or proof placeholder appeared.
+None. The complete Lean build now passes. The fourth run isolated the final
+audit mismatch to two semantic constants: both use `Classical.choice` and
+`Quot.sound`, but not `propext`. The policy now records that exact set. No
+project-specific axiom or proof placeholder appeared.
 
 ## NEXT
 
-Persist the exact per-constant policy, inspect the fourth CI result, and continue
+Persist the two exact policy corrections, inspect the fifth CI result, and continue
 until kernel, axiom, proof-escape, and provenance gates all pass.
