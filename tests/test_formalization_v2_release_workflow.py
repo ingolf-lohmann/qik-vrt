@@ -33,6 +33,12 @@ INVENTORY_WORKFLOW = ROOT / ".github/workflows/qikvrt_formalization_v2_inventory
 INVENTORY_MARKER = ROOT / "release/formalization-v2-inventory-request.json"
 RECOVERY_EVIDENCE = ROOT / "release/formalization-v2-draft-recovery.json"
 DIRECT_INVENTORY = ROOT / "release/formalization-v2-direct-draft-inventory.json"
+PUBLICATION_RESULT = ROOT / "release/formalization-v2-zenodo-publication.json"
+INDEPENDENT_VERIFICATION = (
+    ROOT / "release/formalization-v2-zenodo-independent-verification.json"
+)
+PUBLICATION_PROVENANCE = ROOT / "release/formalization-v2-publication-provenance.json"
+PUBLICATION_WHATSAPP = ROOT / "release/FORMALIZATION_V2_PUBLICATION_WHATSAPP_DE.md"
 AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723-v5"
 FEATURE_BRANCH = "agent/manuscript-formalization-v2-alpha"
 
@@ -342,6 +348,51 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
             self.assertIn(module, makefile)
             self.assertIn(module, self.workflow)
         self.assertIn("tools/qikvrt_formalization_v2_zenodo.py", makefile)
+
+    def test_persisted_publication_evidence_is_exact_and_truthful(self) -> None:
+        publication = json.loads(PUBLICATION_RESULT.read_text(encoding="utf-8"))
+        independent = json.loads(
+            INDEPENDENT_VERIFICATION.read_text(encoding="utf-8")
+        )
+        provenance = json.loads(PUBLICATION_PROVENANCE.read_text(encoding="utf-8"))
+        note = PUBLICATION_WHATSAPP.read_text(encoding="utf-8")
+        self.assertEqual(
+            publication["schema"], "qikvrt_formalization_v2_zenodo_result_v1"
+        )
+        self.assertEqual(
+            independent["schema"],
+            "qikvrt_formalization_v2_zenodo_independent_verification_v1",
+        )
+        self.assertEqual(publication["published_record_id"], 21501365)
+        self.assertEqual(publication["doi"], "10.5281/zenodo.21501365")
+        self.assertEqual(publication["files"], independent["files"])
+        self.assertTrue(publication["published_by_this_run"])
+        self.assertTrue(publication["public_record_verified"])
+        self.assertTrue(independent["anonymous"])
+        self.assertTrue(independent["source_latest_verified"])
+        manifest_files = [
+            {
+                "name": item["name"],
+                "size": item["size"],
+                "md5": item["md5"],
+                "sha256": item["sha256"],
+            }
+            for item in self.manifest["software"]["files"]
+        ]
+        self.assertEqual(publication["files"], manifest_files)
+        self.assertEqual(
+            provenance["artifact"]["publication_json_sha256"],
+            sha256(PUBLICATION_RESULT),
+        )
+        self.assertEqual(
+            provenance["artifact"]["independent_verification_json_sha256"],
+            sha256(INDEPENDENT_VERIFICATION),
+        )
+        self.assertEqual(provenance["workflow"]["run_id"], 29971603518)
+        self.assertEqual(provenance["publication"]["verified_file_count"], 14)
+        self.assertIn("https://doi.org/10.5281/zenodo.21501365", note)
+        self.assertIn("beweist nicht", note)
+        self.assertIn("partielle, quellengebundene Lean‑4‑Formalisierung", note)
 
     def test_manifest_continues_only_live_latest_concept_version(self) -> None:
         software = self.manifest["software"]
