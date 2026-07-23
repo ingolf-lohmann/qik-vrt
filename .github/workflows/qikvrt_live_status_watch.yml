@@ -63,7 +63,7 @@ jobs:
             latest="$(printf '%s' "$runs" | jq --arg self "$WATCH_WORKFLOW" '[.workflow_runs[] | select(.name != $self)][0:20]')"
             active_count="$(printf '%s' "$active" | jq 'length')"
 
-            workflow_lines="$(printf '%s' "$latest" | jq -r 'if length == 0 then "| none | PENDING | - |" else .[] | "| " + .name + " | " + (.conclusion // .status) + " | " + (.run_number|tostring) + " |" end')"
+            workflow_lines="$(printf '%s' "$latest" | jq -r 'if length == 0 then "| none | PENDING | - | - |" else .[] | "| " + .name + " | " + (.conclusion // .status) + " | [" + (.run_number|tostring) + "](" + .html_url + ") | `" + (.id|tostring) + "` |" end')"
             step_rows=''
             total_steps=0
             completed_steps=0
@@ -113,8 +113,8 @@ jobs:
 
           ### Workflows
 
-          | Workflow | State | Run |
-          |---|---|---:|
+          | Workflow | State | Run | Run ID |
+          |---|---|---:|---:|
           $workflow_lines
 
           ### Jobs and steps
