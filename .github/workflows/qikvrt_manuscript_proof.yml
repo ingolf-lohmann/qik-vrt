@@ -46,10 +46,41 @@ jobs:
           restore-keys: |
             qikvrt-lean-${{ runner.os }}-${{ hashFiles('formalization/QIKVRT_Formalization_v2.0/lean-toolchain', 'formalization/QIKVRT_Formalization_v2.0/lakefile.toml', 'formalization/QIKVRT_Formalization_v2.0/lake-manifest.json') }}-
             qikvrt-lean-${{ runner.os }}-
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
+      - name: Initial Lean build
+        id: initial_lean_build
+        continue-on-error: true
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
         with:
           lake-package-directory: formalization/QIKVRT_Formalization_v2.0
           test: false
+      - name: Capture compact Lean compiler diagnostics
+        if: steps.initial_lean_build.outcome == 'failure'
+        shell: bash
+        run: |
+          set +e
+          mkdir -p .lake/build
+          lake build > .lake/build/lean-build-diagnostics.log 2>&1
+          status=$?
+          {
+            printf 'LEAN_BUILD_EXIT=%s\n' "$status"
+            printf '%s\n' '--- LAST 400 LINES ---'
+            tail -n 400 .lake/build/lean-build-diagnostics.log
+          } > .lake/build/lean-build-diagnostics-tail.log
+          exit 0
+      - name: Upload Lean compiler diagnostics
+        if: steps.initial_lean_build.outcome == 'failure'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-lean-build-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          path: >-
+            formalization/QIKVRT_Formalization_v2.0/.lake/build/lean-build-diagnostics-tail.log
+          if-no-files-found: error
+      - name: Enforce initial Lean build
+        if: steps.initial_lean_build.outcome == 'failure'
+        run: |
+          cat .lake/build/lean-build-diagnostics-tail.log
+          exit 1
       - name: Verify locked manuscript bytes and page count
         run: python3 scripts/verify_source_lock.py
       - name: Verify generated source inventory is current
