@@ -1,0 +1,8 @@
+{
+  "schema": "qikvrt_ci_retrigger_v1",
+  "purpose": "Trigger checks without changing integrity-classified repository content.",
+  "repository": "Goldkelch/qik-vrt",
+  "branch": "infra/live-status-default-branch",
+  "source_commit": "436e5a894abee0411745ba3a5676794dcbef2fea",
+  "classification": "transient_evidence_excluded_from_integrity"
+}
