@@ -52,8 +52,11 @@ jobs:
             runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json \
             > .qikvrt/cache/zenodo-publication/SHA256SUMS.txt
           PYTHONPYCACHEPREFIX="$PWD/.qikvrt/cache/zenodo-publication/pycache" \
-            python -B -m py_compile tools/qikvrt_charter_zenodo.py tools/qikvrt_zenodo_actions.py
-          python -B tools/qikvrt_charter_zenodo.py --help >/dev/null 2>&1 || test $? -eq 2
+            python -B -m py_compile \
+              tools/qikvrt_charter_zenodo.py \
+              tools/qikvrt_zenodo_actions.py \
+              tests/test_charter_zenodo.py
+          python -B -m unittest -v tests.test_charter_zenodo
           printf '%s\n' 'CAPABILITY_SELF_TEST=PASS' > .qikvrt/cache/zenodo-publication/self-test.receipt
 
       - name: Publish hash-gated charter to production Zenodo
