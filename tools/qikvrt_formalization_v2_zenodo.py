@@ -11,11 +11,14 @@ single-software-release manifest and reads every payload through the hardened
 file/hash helpers in :mod:`tools.qikvrt_zenodo_actions`.
 
 An interrupted run may resume only the source record's server-provided
-``links.latest_draft``.  The client never accepts a caller-provided deposition
-identifier.  Inherited draft files are deleted, exact manifest bytes are
-uploaded and downloaded again for MD5/SHA-256 verification, exact
-client-controlled metadata values are gated, and only then is the draft
-published.  The resulting public record is independently gated afterward.
+``links.latest_draft`` or the one exact, read-only-audited recovery draft
+created by the hash-bound publication run recorded in
+``release/formalization-v2-draft-recovery.json``.  The client never accepts a
+caller-provided deposition identifier.  Inherited draft files are deleted,
+exact manifest bytes are uploaded and downloaded again for MD5/SHA-256
+verification, exact client-controlled metadata values are gated, and only
+then is the draft published.  The resulting public record is independently
+gated afterward.
 
 There is intentionally no command-line token option.  The bearer token is read
 only from ``ZENODO_ACCESS_TOKEN`` by the shared transport.
@@ -44,6 +47,12 @@ SOURCE_RECORD_ID = 21498774
 CONCEPT_RECORD_ID = 21488115
 SOURCE_VERSION_DOI = "10.5281/zenodo.21498774"
 PRIOR_VERSION_RECORD_ID = 21488116
+RECOVERY_DRAFT_RECORD_ID = 21501365
+RECOVERY_DRAFT_DOI = "10.5281/zenodo.21501365"
+RECOVERY_DRAFT_CREATED = "2026-07-23T00:33:37.286596+00:00"
+RECOVERY_DRAFT_METADATA_SHA256 = (
+    "dbd3cc9fb13448bab03c5b7c37dc3024eca1812aad3f0e11dea8da434b0662ea"
+)
 MAX_RELEASE_FILES = 100
 MAX_RELEASE_BYTES = zenodo.MAX_UPLOAD_BYTES
 
@@ -284,66 +293,73 @@ def _require_existing_draft_identity(
         )
 
 
-def _newversion_action(
+def _recovery_draft_url(client: zenodo.ZenodoClient) -> str:
+    return zenodo.validate_response_url(
+        f"{client.base_url}/deposit/depositions/{RECOVERY_DRAFT_RECORD_ID}",
+        client.base_url,
+    )
+
+
+def _require_recovery_draft_invariants(draft: Mapping[str, Any]) -> None:
+    """Require the audited identity/state in every recovery phase."""
+    metadata = draft.get("metadata")
+    reserved = metadata.get("prereserve_doi") if isinstance(metadata, dict) else None
+    if (
+        zenodo._record_id(draft, "formalization recovery draft")
+        != RECOVERY_DRAFT_RECORD_ID
+        or zenodo._concept_id(draft, "formalization recovery draft")
+        != CONCEPT_RECORD_ID
+        or draft.get("created") != RECOVERY_DRAFT_CREATED
+        or draft.get("submitted") is not False
+        or draft.get("state") != "unsubmitted"
+        or not isinstance(reserved, dict)
+        or reserved.get("doi") != RECOVERY_DRAFT_DOI
+    ):
+        raise zenodo.ZenodoError(
+            "audited formalization recovery draft changed identity or state"
+        )
+
+
+def _require_exact_recovery_draft_identity(draft: Mapping[str, Any]) -> None:
+    """Accept only the immutable fingerprint from the GET-only recovery audit."""
+    _require_recovery_draft_invariants(draft)
+    metadata = draft.get("metadata")
+    metadata_sha256 = (
+        hashlib.sha256(zenodo._json_bytes(metadata)).hexdigest()
+        if isinstance(metadata, dict)
+        else None
+    )
+    if metadata_sha256 != RECOVERY_DRAFT_METADATA_SHA256 or draft.get("files") != []:
+        raise zenodo.ZenodoError(
+            "audited formalization recovery draft changed identity or state"
+        )
+
+
+def _require_resumable_draft_identity(
+    draft: Mapping[str, Any], target_metadata: Mapping[str, Any]
+) -> None:
+    _require_recovery_draft_invariants(draft)
+    try:
+        _require_existing_draft_identity(draft, target_metadata)
+        return
+    except zenodo.ZenodoError:
+        pass
+    _require_exact_recovery_draft_identity(draft)
+
+
+def _recover_exact_audited_draft(
     client: zenodo.ZenodoClient,
     target_metadata: Mapping[str, Any],
 ) -> tuple[dict[str, Any], str]:
-    response, value = client.request(
-        "POST",
-        f"/api/deposit/depositions/{SOURCE_RECORD_ID}/actions/newversion",
-        accept=(200, 201, 202, 409),
-    )
-    # Some successful legacy-API responses repeat the published source's
-    # self-link while the distinct draft link is becoming visible.  The owner
-    # view is authoritative, so poll it even when the action response already
-    # contains a plausible non-source link.
-    action_latest_draft_url = _new_version_draft_url(value, client)
-    latest_draft_url = None
-    for attempt in range(client.poll_attempts):
-        status, source = client.get(
-            f"/api/deposit/depositions/{SOURCE_RECORD_ID}",
-            accept=(200, 202, 404),
-        )
-        if status == 200:
-            if (
-                zenodo._record_id(source, "source owner view")
-                != SOURCE_RECORD_ID
-                or zenodo._concept_id(source, "source owner view")
-                != CONCEPT_RECORD_ID
-            ):
-                raise zenodo.ZenodoError(
-                    "source owner view changed lineage during new-version creation"
-                )
-            latest_draft_url = _new_version_draft_url(
-                source, client, source_owner_view=True
-            )
-        if latest_draft_url is not None:
-            break
-        if attempt + 1 < client.poll_attempts:
-            client.sleeper(client.poll_interval)
-    if latest_draft_url is None:
-        raise zenodo.ZenodoError("new-version response has no source latest_draft")
-    if action_latest_draft_url is not None:
-        action_id = zenodo._id_from_api_url(
-            action_latest_draft_url,
-            client.base_url,
-            "/api/deposit/depositions",
-        )
-        owner_id = zenodo._id_from_api_url(
-            latest_draft_url,
-            client.base_url,
-            "/api/deposit/depositions",
-        )
-        if action_id != owner_id:
-            raise zenodo.ZenodoError(
-                "new-version response and source owner view identify different drafts"
-            )
-    draft = _get_linked_draft(client, latest_draft_url)
-    if response.status not in (201, 202):
-        # HTTP 409 means an editable draft already existed.  HTTP 200 is
-        # ambiguous and is treated with the same fail-closed resume rule.
-        _require_existing_draft_identity(draft, target_metadata)
-    return draft, latest_draft_url
+    recovery_url = _recovery_draft_url(client)
+    status, candidate = client.get(recovery_url, accept=(200, 403, 404))
+    if status == 404:
+        raise zenodo.ZenodoError("audited formalization recovery draft is missing")
+    if status != 200:
+        raise zenodo.ZenodoError("audited formalization recovery draft is unreadable")
+    draft = _validate_editable_draft(candidate, recovery_url, client)
+    _require_resumable_draft_identity(draft, target_metadata)
+    return draft, recovery_url
 
 
 def resolve_or_create_source_latest_draft(
@@ -369,42 +385,14 @@ def resolve_or_create_source_latest_draft(
         )
         if latest_draft_url is not None:
             draft = _get_linked_draft(client, latest_draft_url)
-            _require_existing_draft_identity(draft, target_metadata)
+            _require_resumable_draft_identity(draft, target_metadata)
             return draft, latest_draft_url
 
-    # Recheck the public latest pointer immediately before the sole permitted
-    # new-version mutation.  Zenodo remains responsible for rejecting a race.
+    recovered = _recover_exact_audited_draft(client, target_metadata)
+    # The public latest pointer was checked above; repeat it immediately before
+    # returning the only draft this recovery release is permitted to mutate.
     client.check_live_software_source(SOURCE_RECORD_ID, CONCEPT_RECORD_ID)
-    draft, action_latest_draft_url = _newversion_action(client, target_metadata)
-    source_status, source_after = client.get(
-        f"/api/deposit/depositions/{SOURCE_RECORD_ID}",
-        accept=(200, 202),
-    )
-    if source_status != 200:
-        raise zenodo.ZenodoError("source latest_draft was not readable after creation")
-    if (
-        zenodo._record_id(source_after, "source owner view") != SOURCE_RECORD_ID
-        or zenodo._concept_id(source_after, "source owner view")
-        != CONCEPT_RECORD_ID
-    ):
-        raise zenodo.ZenodoError("source owner view changed lineage after creation")
-    latest_draft_url = _new_version_draft_url(
-        source_after, client, source_owner_view=True
-    )
-    if latest_draft_url is None:
-        raise zenodo.ZenodoError("source record has no latest_draft after creation")
-    latest_draft_id = zenodo._id_from_api_url(
-        latest_draft_url, client.base_url, "/api/deposit/depositions"
-    )
-    action_latest_draft_id = zenodo._id_from_api_url(
-        action_latest_draft_url,
-        client.base_url,
-        "/api/deposit/depositions",
-    )
-    if latest_draft_id != action_latest_draft_id:
-        raise zenodo.ZenodoError("source latest_draft changed during creation")
-    validated = _validate_editable_draft(draft, latest_draft_url, client)
-    return validated, latest_draft_url
+    return recovered
 
 
 def _reserved_new_version_doi(draft: Mapping[str, Any]) -> str:
@@ -426,8 +414,16 @@ def _reserved_new_version_doi(draft: Mapping[str, Any]) -> str:
 
 
 def _assert_still_source_latest_draft(
-    client: zenodo.ZenodoClient, expected_url: str, expected_id: int
+    client: zenodo.ZenodoClient,
+    expected_url: str,
+    expected_id: int,
+    metadata: Mapping[str, Any],
+    entries: Sequence[Mapping[str, Any]],
+    expected_doi: str,
 ) -> None:
+    # Re-resolve the public latest pointer immediately before the irreversible
+    # action.  It must still identify the exact published source version.
+    client.check_live_software_source(SOURCE_RECORD_ID, CONCEPT_RECORD_ID)
     status, source = client.get(
         f"/api/deposit/depositions/{SOURCE_RECORD_ID}", accept=(200, 202)
     )
@@ -437,13 +433,29 @@ def _assert_still_source_latest_draft(
         or zenodo._concept_id(source, "source owner view") != CONCEPT_RECORD_ID
     ):
         raise zenodo.ZenodoError("source owner view is unavailable before publication")
-    actual_url = _latest_draft_url(source, client)
-    if actual_url is None or actual_url != expected_url:
-        raise zenodo.ZenodoError("source links.latest_draft changed before publication")
-    if zenodo._id_from_api_url(
+    actual_url = _new_version_draft_url(source, client, source_owner_view=True)
+    if actual_url is not None and zenodo._id_from_api_url(
         actual_url, client.base_url, "/api/deposit/depositions"
     ) != expected_id:
         raise zenodo.ZenodoError("source latest_draft ID changed before publication")
+    expected_url_id = zenodo._id_from_api_url(
+        expected_url, client.base_url, "/api/deposit/depositions"
+    )
+    if expected_url_id != expected_id:
+        raise zenodo.ZenodoError("authorized draft URL changed before publication")
+    # When the owner source remains self-linked, the directly bound draft must
+    # still be readable, editable, and in the same concept immediately before
+    # the irreversible publish action.
+    directly_bound = _get_linked_draft(client, expected_url)
+    _require_recovery_draft_invariants(directly_bound)
+    fully_gated = client.wait_for_gated_record(
+        expected_id,
+        metadata,
+        entries,
+        expected_doi,
+        published=False,
+    )
+    _require_recovery_draft_invariants(fully_gated)
 
 
 def _verify_public_lineage(
@@ -613,7 +625,12 @@ def publish_release(
 
     # Revalidate provenance after all uploads and immediately before publish.
     _assert_still_source_latest_draft(
-        client, latest_draft_url, draft_id
+        client,
+        latest_draft_url,
+        draft_id,
+        metadata,
+        entries,
+        expected_doi,
     )
     public = client.publish_and_poll(
         draft_id,

@@ -1,0 +1,59 @@
+{
+  "schema": "qikvrt_formalization_v2_draft_recovery_evidence_v1",
+  "read_only": true,
+  "authority_repository": "Goldkelch/qik-vrt",
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "feature_branch": "agent/manuscript-formalization-v2-alpha",
+  "failed_publication": {
+    "workflow_run_id": 29969362257,
+    "job_id": 89087762137,
+    "marker_commit": "d3ab0aaf1fb1d595992bf2a8bc01d9f99403cb58",
+    "authority_candidate_commit": "af6762da33e19f3a1525b3a726eabc70994542b0",
+    "mirror_candidate_commit": "6d6d1866779f1d907b8a33d1515f951d7cbd2a81",
+    "candidate_tree": "6d14ac019cde5be15ea12fd6993e015efd041d26",
+    "newversion_step_started_at": "2026-07-23T00:33:31.571630+00:00",
+    "failed_at": "2026-07-23T00:34:50.103293+00:00",
+    "failure": "new-version response has no source latest_draft",
+    "effect_boundary": {
+      "newversion_post_reached": true,
+      "metadata_put_reached": false,
+      "file_delete_or_upload_reached": false,
+      "publish_post_reached": false
+    }
+  },
+  "inventory": {
+    "workflow_run_id": 29969659294,
+    "marker_commit": "1bfe7babe281d01f4f23dbe17ac5c807dbb4319e",
+    "artifact_id": 8549141956,
+    "artifact_name": "formalization-v2-draft-inventory-1bfe7babe281d01f4f23dbe17ac5c807dbb4319e",
+    "artifact_sha256": "cf2a4f2070d114c2496ab6e81b3e7d35710e363267d9dcdabdd01ef62eaa1fe2",
+    "inventory_json_sha256": "9f6c3d6e6c820040dda0d7dd0a074c0a9920fc0abd21a61114e99f84b4dbb864",
+    "account_deposition_count": 6
+  },
+  "source": {
+    "record_id": 21498774,
+    "concept_record_id": 21488115,
+    "state": "done",
+    "submitted": true,
+    "latest_draft_link_id": 21498774
+  },
+  "recovery_draft": {
+    "record_id": 21501365,
+    "concept_record_id": 21488115,
+    "created": "2026-07-23T00:33:37.286596+00:00",
+    "observed_modified": "2026-07-23T00:33:37.569400+00:00",
+    "state": "unsubmitted",
+    "submitted": false,
+    "prereserved_doi": "10.5281/zenodo.21501365",
+    "metadata_sha256": "dbd3cc9fb13448bab03c5b7c37dc3024eca1812aad3f0e11dea8da434b0662ea",
+    "file_count": 0,
+    "target_metadata_subset_matches": false,
+    "target_metadata_exact_keys_plus_prereserve": false
+  },
+  "recovery_policy": {
+    "may_initialize_only_this_exact_draft": true,
+    "must_match_record_concept_created_doi_metadata_hash_and_empty_files": true,
+    "must_recheck_public_source_is_still_latest_before_mutation": true,
+    "must_fail_closed_on_any_identity_or_state_delta": true
+  }
+}
