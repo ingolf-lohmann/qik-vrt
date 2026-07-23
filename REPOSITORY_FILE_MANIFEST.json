@@ -136,13 +136,13 @@
       "sha256": "63a811497784bd1fbba76ff482ee53a23275658ff6c238b459f6611f689f97d4"
     },
     {
-      "bytes": 41161,
+      "bytes": 43111,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
-      "sha256": "2cad02888fa837d8aed34b3cf5154afd1808e0fa0f8ca583e6744f9697e76c1a"
+      "sha256": "0ef41083f643347008873f7f1b5432dd9cb769508994ff4954c84861dd3d90d2"
     },
     {
       "bytes": 1903,
@@ -22420,22 +22420,22 @@
       "sha256": "b9ddd19f0bb49b97ec29a546d691e2df5e23aa23fd18d858f93ad6c9c7aed33b"
     },
     {
-      "bytes": 12698,
+      "bytes": 13229,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_formalization_v2_release_workflow.py",
-      "sha256": "ad0d18dc7dd05546d36d17a05b6c3762de7450575e421d49efbdd20e8a824136"
+      "sha256": "70722e49ca21ccb8c058f98902190407e1aaf0f364205f9df0a0747240aa45b3"
     },
     {
-      "bytes": 22597,
+      "bytes": 27784,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_formalization_v2_zenodo.py",
-      "sha256": "8ba84e74b928fe040e206073a195c9c7af3b3e120b655b7ff2a4857b31946480"
+      "sha256": "cddd5bdd98bdef7b9389823608ca86c2cb84a00ebaaae0853e5623625cf08dc7"
     },
     {
       "bytes": 26883,
@@ -22771,13 +22771,13 @@
       "sha256": "6ff10abda9af7f8f2fcd50464e03637bdc84eaf1d2148be599203e713b41dfe9"
     },
     {
-      "bytes": 25200,
+      "bytes": 27441,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_formalization_v2_zenodo.py",
-      "sha256": "80180ba9651783a86f8dbc6d4ac8e366e032e62450f19dd6c509e7b18de485a2"
+      "sha256": "53769cc4abc9aaca2328aadcb6fe9648cc7a3fd5fd8a7aa9ec9cae556a9b1de1"
     },
     {
       "bytes": 189,
@@ -22969,7 +22969,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "235a176eb410b2c5655965ec9f7b19b568bc0b1862bb14f24b280d2f586b1e01",
+  "repository_content_tree_sha256": "3353a53899ecc348e8e83e332ac63c320748583236de681c4c1945a89b923e88",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [

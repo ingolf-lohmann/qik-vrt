@@ -45,11 +45,24 @@ class FakeTransport:
         action_status: int = 201,
         draft_concept: int = release.CONCEPT_RECORD_ID,
         corrupt_download: bool = False,
+        source_self_latest_draft: bool = False,
+        action_self_latest_draft: bool = False,
+        post_action_self_polls: int = 0,
+        source_submitted: bool | None = True,
+        source_state: str | None = "done",
+        action_draft_id: int = DRAFT_ID,
     ) -> None:
         self.calls: list[tuple[str, str, bytes | None]] = []
         self.target_metadata = copy.deepcopy(target_metadata)
         self.action_status = action_status
         self.corrupt_download = corrupt_download
+        self.source_self_latest_draft = source_self_latest_draft
+        self.action_self_latest_draft = action_self_latest_draft
+        self.post_action_self_polls = post_action_self_polls
+        self.source_submitted = source_submitted
+        self.source_state = source_state
+        self.action_draft_id = action_draft_id
+        self.newversion_called = False
         self.published = False
         self.latest_record_id = release.SOURCE_RECORD_ID
         self.source_has_draft = existing_draft
@@ -118,18 +131,31 @@ class FakeTransport:
                 + str(release.SOURCE_RECORD_ID)
             )
         }
-        if self.source_has_draft:
+        if self.source_has_draft and not (
+            self.newversion_called and self.post_action_self_polls > 0
+        ):
             links["latest_draft"] = (
                 "https://zenodo.org/api/deposit/depositions/" + str(DRAFT_ID)
             )
-        return {
+        elif self.source_self_latest_draft or self.newversion_called:
+            links["latest_draft"] = (
+                "https://zenodo.org/api/deposit/depositions/"
+                + str(release.SOURCE_RECORD_ID)
+            )
+            if self.newversion_called and self.post_action_self_polls > 0:
+                self.post_action_self_polls -= 1
+        value: dict[str, object] = {
             "id": release.SOURCE_RECORD_ID,
             "conceptrecid": release.CONCEPT_RECORD_ID,
-            "submitted": True,
             "metadata": {},
             "files": [],
             "links": links,
         }
+        if self.source_submitted is not None:
+            value["submitted"] = self.source_submitted
+        if self.source_state is not None:
+            value["state"] = self.source_state
+        return value
 
     def _public_draft(self) -> dict[str, object]:
         value = copy.deepcopy(self.draft)
@@ -195,7 +221,13 @@ class FakeTransport:
         if method == "POST" and path == (
             f"/api/deposit/depositions/{release.SOURCE_RECORD_ID}/actions/newversion"
         ):
+            self.newversion_called = True
             self.source_has_draft = True
+            linked_id = (
+                release.SOURCE_RECORD_ID
+                if self.action_self_latest_draft
+                else self.action_draft_id
+            )
             return json_response(
                 self.action_status,
                 {
@@ -203,7 +235,7 @@ class FakeTransport:
                     "links": {
                         "latest_draft": (
                             "https://zenodo.org/api/deposit/depositions/"
-                            + str(DRAFT_ID)
+                            + str(linked_id)
                         )
                     },
                 },
@@ -385,6 +417,103 @@ class FormalizationV2ZenodoTests(unittest.TestCase):
             ],
         )
         self.assertFalse(any("99999999" in path for _m, path, _b in transport.calls))
+
+    def test_newversion_200_and_202_responses_remain_fail_closed_and_publish(self) -> None:
+        for action_status in (200, 202):
+            with self.subTest(action_status=action_status):
+                transport = FakeTransport(
+                    self.metadata,
+                    existing_draft=False,
+                    action_status=action_status,
+                )
+                result = self.invoke(transport)
+                self.assertEqual(result["published_record_id"], DRAFT_ID)
+                self.assertTrue(result["published_by_this_run"])
+
+    def test_published_source_self_link_creates_and_publishes_new_version(self) -> None:
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            source_self_latest_draft=True,
+            action_self_latest_draft=True,
+            post_action_self_polls=1,
+        )
+        result = self.invoke(transport)
+        action = (
+            "POST",
+            f"/api/deposit/depositions/{release.SOURCE_RECORD_ID}/actions/newversion",
+        )
+        paths = [(method, path) for method, path, _body in transport.calls]
+        self.assertEqual(paths.count(action), 1)
+        self.assertEqual(result["published_record_id"], DRAFT_ID)
+        self.assertTrue(result["published_by_this_run"])
+
+    def test_source_self_link_accepts_done_state_without_submitted_field(self) -> None:
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            source_self_latest_draft=True,
+            source_submitted=None,
+            source_state="done",
+        )
+        result = self.invoke(transport)
+        self.assertEqual(result["published_record_id"], DRAFT_ID)
+
+    def test_source_self_link_without_published_state_fails_before_newversion(self) -> None:
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            source_self_latest_draft=True,
+            source_submitted=False,
+            source_state="inprogress",
+        )
+        with self.assertRaisesRegex(
+            zenodo.ZenodoError, "self latest_draft is not a completed published"
+        ):
+            self.invoke(transport)
+        self.assertFalse(
+            any(
+                method == "POST" and path.endswith("/actions/newversion")
+                for method, path, _body in transport.calls
+            )
+        )
+
+    def test_action_self_link_timeout_fails_before_draft_mutation(self) -> None:
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            action_self_latest_draft=True,
+            post_action_self_polls=99,
+        )
+        with self.assertRaisesRegex(
+            zenodo.ZenodoError, "new-version response has no source latest_draft"
+        ):
+            self.invoke(transport)
+        self.assertFalse(
+            any(
+                method in {"PUT", "DELETE"}
+                or (method == "POST" and path.endswith("/actions/publish"))
+                for method, path, _body in transport.calls
+            )
+        )
+
+    def test_action_and_owner_draft_ids_must_match(self) -> None:
+        transport = FakeTransport(
+            self.metadata,
+            existing_draft=False,
+            action_draft_id=DRAFT_ID + 1,
+        )
+        with self.assertRaisesRegex(
+            zenodo.ZenodoError, "identify different drafts"
+        ):
+            self.invoke(transport)
+        self.assertFalse(
+            any(
+                method in {"PUT", "DELETE"}
+                or (method == "POST" and path.endswith("/actions/publish"))
+                for method, path, _body in transport.calls
+            )
+        )
 
     def test_completed_rerun_reconciles_exact_public_latest_without_mutation(self) -> None:
         transport = FakeTransport(self.metadata, existing_draft=True)

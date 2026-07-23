@@ -199,6 +199,36 @@ def _latest_draft_url(value: Mapping[str, Any], client: zenodo.ZenodoClient) -> 
     return zenodo.validate_response_url(candidate, client.base_url)
 
 
+def _new_version_draft_url(
+    value: Mapping[str, Any],
+    client: zenodo.ZenodoClient,
+    *,
+    source_owner_view: bool = False,
+) -> str | None:
+    """Return only a ``latest_draft`` link for a distinct new version.
+
+    Zenodo's legacy owner view can expose the already-published source
+    deposition itself as ``links.latest_draft``.  That self-link is not an
+    editable new-version draft.  It is therefore treated as absence, but only
+    a demonstrably published source owner view may use that representation.
+    """
+    latest_draft_url = _latest_draft_url(value, client)
+    if latest_draft_url is None:
+        return None
+    linked_id = zenodo._id_from_api_url(
+        latest_draft_url, client.base_url, "/api/deposit/depositions"
+    )
+    if linked_id != SOURCE_RECORD_ID:
+        return latest_draft_url
+    if source_owner_view and not (
+        value.get("submitted") is True or value.get("state") == "done"
+    ):
+        raise zenodo.ZenodoError(
+            "source self latest_draft is not a completed published deposition"
+        )
+    return None
+
+
 def _validate_editable_draft(
     draft: Mapping[str, Any],
     latest_draft_url: str,
@@ -263,30 +293,51 @@ def _newversion_action(
         f"/api/deposit/depositions/{SOURCE_RECORD_ID}/actions/newversion",
         accept=(200, 201, 202, 409),
     )
-    latest_draft_url = _latest_draft_url(value, client)
-    if latest_draft_url is None:
-        for attempt in range(client.poll_attempts):
-            status, source = client.get(
-                f"/api/deposit/depositions/{SOURCE_RECORD_ID}",
-                accept=(200, 202, 404),
+    # Some successful legacy-API responses repeat the published source's
+    # self-link while the distinct draft link is becoming visible.  The owner
+    # view is authoritative, so poll it even when the action response already
+    # contains a plausible non-source link.
+    action_latest_draft_url = _new_version_draft_url(value, client)
+    latest_draft_url = None
+    for attempt in range(client.poll_attempts):
+        status, source = client.get(
+            f"/api/deposit/depositions/{SOURCE_RECORD_ID}",
+            accept=(200, 202, 404),
+        )
+        if status == 200:
+            if (
+                zenodo._record_id(source, "source owner view")
+                != SOURCE_RECORD_ID
+                or zenodo._concept_id(source, "source owner view")
+                != CONCEPT_RECORD_ID
+            ):
+                raise zenodo.ZenodoError(
+                    "source owner view changed lineage during new-version creation"
+                )
+            latest_draft_url = _new_version_draft_url(
+                source, client, source_owner_view=True
             )
-            if status == 200:
-                if (
-                    zenodo._record_id(source, "source owner view")
-                    != SOURCE_RECORD_ID
-                    or zenodo._concept_id(source, "source owner view")
-                    != CONCEPT_RECORD_ID
-                ):
-                    raise zenodo.ZenodoError(
-                        "source owner view changed lineage during new-version creation"
-                    )
-                latest_draft_url = _latest_draft_url(source, client)
-            if latest_draft_url is not None:
-                break
-            if attempt + 1 < client.poll_attempts:
-                client.sleeper(client.poll_interval)
+        if latest_draft_url is not None:
+            break
+        if attempt + 1 < client.poll_attempts:
+            client.sleeper(client.poll_interval)
     if latest_draft_url is None:
         raise zenodo.ZenodoError("new-version response has no source latest_draft")
+    if action_latest_draft_url is not None:
+        action_id = zenodo._id_from_api_url(
+            action_latest_draft_url,
+            client.base_url,
+            "/api/deposit/depositions",
+        )
+        owner_id = zenodo._id_from_api_url(
+            latest_draft_url,
+            client.base_url,
+            "/api/deposit/depositions",
+        )
+        if action_id != owner_id:
+            raise zenodo.ZenodoError(
+                "new-version response and source owner view identify different drafts"
+            )
     draft = _get_linked_draft(client, latest_draft_url)
     if response.status not in (201, 202):
         # HTTP 409 means an editable draft already existed.  HTTP 200 is
@@ -313,7 +364,9 @@ def resolve_or_create_source_latest_draft(
             != CONCEPT_RECORD_ID
         ):
             raise zenodo.ZenodoError("source owner view changed lineage")
-        latest_draft_url = _latest_draft_url(source_owner_view, client)
+        latest_draft_url = _new_version_draft_url(
+            source_owner_view, client, source_owner_view=True
+        )
         if latest_draft_url is not None:
             draft = _get_linked_draft(client, latest_draft_url)
             _require_existing_draft_identity(draft, target_metadata)
@@ -335,10 +388,20 @@ def resolve_or_create_source_latest_draft(
         != CONCEPT_RECORD_ID
     ):
         raise zenodo.ZenodoError("source owner view changed lineage after creation")
-    latest_draft_url = _latest_draft_url(source_after, client)
+    latest_draft_url = _new_version_draft_url(
+        source_after, client, source_owner_view=True
+    )
     if latest_draft_url is None:
         raise zenodo.ZenodoError("source record has no latest_draft after creation")
-    if latest_draft_url != action_latest_draft_url:
+    latest_draft_id = zenodo._id_from_api_url(
+        latest_draft_url, client.base_url, "/api/deposit/depositions"
+    )
+    action_latest_draft_id = zenodo._id_from_api_url(
+        action_latest_draft_url,
+        client.base_url,
+        "/api/deposit/depositions",
+    )
+    if latest_draft_id != action_latest_draft_id:
         raise zenodo.ZenodoError("source latest_draft changed during creation")
     validated = _validate_editable_draft(draft, latest_draft_url, client)
     return validated, latest_draft_url
