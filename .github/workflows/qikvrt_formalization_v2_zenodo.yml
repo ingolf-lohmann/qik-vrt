@@ -6,7 +6,7 @@ name: QIK-VRT formalization v2 Zenodo publication
 on:
   push:
     branches:
-      - automation/formalization-v2-publish-20260723
+      - automation/formalization-v2-publish-20260723-v2
     paths:
       - release/formalization-v2-request.json
 
@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 2
+          fetch-depth: 4
           persist-credentials: false
 
       - name: Validate inert or marker-only publication request
@@ -53,12 +53,15 @@ jobs:
           from pathlib import Path
 
           MARKER_PATH = "release/formalization-v2-request.json"
-          AUTOMATION_REF = "refs/heads/automation/formalization-v2-publish-20260723"
+          AUTOMATION_REF = "refs/heads/automation/formalization-v2-publish-20260723-v2"
           AUTHORITY = "Goldkelch/qik-vrt"
           MIRROR = "ingolf-lohmann/qik-vrt"
           FEATURE = "agent/manuscript-formalization-v2-alpha"
           AUTHORITY_BASE = "d037a44d2893b9ea094d7cad55954223eb90a186"
           MIRROR_BASE = "7aaee4e1b182e18c9f0e927685f31d3c1190031a"
+          AUTHORITY_CANDIDATE_PARENT = "ed4f61fb4f09043eb8683932a1fed5222ad524f7"
+          MIRROR_CANDIDATE_PARENT = "c9a7bcabebd66768f2f728d8b35a9317c5ea7323"
+          PREVIOUS_CANDIDATE_TREE = "00e71ed364b388727aafea133122eda02c046692"
           REQUEST_ID = "2026-07-23-formalization-v2.0-alpha.1"
           ZERO40 = "0" * 40
           ZERO64 = "0" * 64
@@ -161,6 +164,16 @@ jobs:
                   fail("GitHub API returned a non-object")
               return value
 
+          def remote_commit(repository, commit_sha, token):
+              commit = api_json(repository, "git/commits/" + commit_sha, token)
+              tree = commit.get("tree")
+              tree_sha = tree.get("sha") if isinstance(tree, dict) else None
+              if not isinstance(tree_sha, str) or SHA1.fullmatch(tree_sha) is None:
+                  fail(f"{repository} feature commit has no exact tree SHA")
+              parents = commit.get("parents")
+              parent_shas = [item.get("sha") for item in parents] if isinstance(parents, list) and all(isinstance(item, dict) for item in parents) else []
+              return tree_sha, parent_shas
+
           def remote_head(repository, branch, token):
               encoded = urllib.parse.quote(branch, safe="/")
               ref = api_json(repository, "git/ref/heads/" + encoded, token)
@@ -170,13 +183,7 @@ jobs:
               commit_sha = obj.get("sha")
               if not isinstance(commit_sha, str) or SHA1.fullmatch(commit_sha) is None:
                   fail(f"{repository} feature ref has no exact commit SHA")
-              commit = api_json(repository, "git/commits/" + commit_sha, token)
-              tree = commit.get("tree")
-              tree_sha = tree.get("sha") if isinstance(tree, dict) else None
-              if not isinstance(tree_sha, str) or SHA1.fullmatch(tree_sha) is None:
-                  fail(f"{repository} feature commit has no exact tree SHA")
-              parents = commit.get("parents")
-              parent_shas = [item.get("sha") for item in parents] if isinstance(parents, list) and all(isinstance(item, dict) for item in parents) else []
+              tree_sha, parent_shas = remote_commit(repository, commit_sha, token)
               return commit_sha, tree_sha, parent_shas
 
           if os.environ["GITHUB_REPOSITORY"] != AUTHORITY:
@@ -217,8 +224,10 @@ jobs:
               fail("finalize push was not a fast-forward from the exact candidate")
           if git("show", "-s", "--format=%T", "HEAD^") != candidate["candidate_tree"]:
               fail("candidate tree differs from marker binding")
-          if git("show", "-s", "--format=%P", "HEAD^").split() != [AUTHORITY_BASE]:
-              fail("authority candidate does not have the reviewed main commit as its single parent")
+          if git("show", "-s", "--format=%P", "HEAD^").split() != [AUTHORITY_CANDIDATE_PARENT]:
+              fail("authority candidate does not extend the first verified candidate")
+          if git("show", "-s", "--format=%P", AUTHORITY_CANDIDATE_PARENT).split() != [AUTHORITY_BASE]:
+              fail("first authority candidate does not extend the reviewed main commit")
           changes = git("diff-tree", "--no-commit-id", "--name-status", "-r", "HEAD^", "HEAD").splitlines()
           if changes != ["M\t" + MARKER_PATH]:
               fail("finalize commit must modify only the regular publication marker")
@@ -286,10 +295,14 @@ jobs:
           token = os.environ["GH_API_TOKEN"]
           authority_head = remote_head(AUTHORITY, FEATURE, token)
           mirror_head = remote_head(MIRROR, FEATURE, "")
-          if authority_head != (candidate["candidate_commit"], candidate["candidate_tree"], [AUTHORITY_BASE]):
+          if authority_head != (candidate["candidate_commit"], candidate["candidate_tree"], [AUTHORITY_CANDIDATE_PARENT]):
               fail("authority feature branch no longer identifies the candidate")
-          if mirror_head != (candidate["mirror_commit"], candidate["mirror_tree"], [MIRROR_BASE]):
+          if mirror_head != (candidate["mirror_commit"], candidate["mirror_tree"], [MIRROR_CANDIDATE_PARENT]):
               fail("mirror feature branch no longer identifies the mirrored candidate")
+          if remote_commit(AUTHORITY, AUTHORITY_CANDIDATE_PARENT, token) != (PREVIOUS_CANDIDATE_TREE, [AUTHORITY_BASE]):
+              fail("first authority candidate changed identity or baseline")
+          if remote_commit(MIRROR, MIRROR_CANDIDATE_PARENT, "") != (PREVIOUS_CANDIDATE_TREE, [MIRROR_BASE]):
+              fail("first mirror candidate changed identity or baseline")
           if candidate["candidate_tree"] != candidate["mirror_tree"]:
               fail("authority and mirror candidate trees are not identical")
 
@@ -397,6 +410,9 @@ jobs:
           FEATURE = "agent/manuscript-formalization-v2-alpha"
           AUTHORITY_BASE = "d037a44d2893b9ea094d7cad55954223eb90a186"
           MIRROR_BASE = "7aaee4e1b182e18c9f0e927685f31d3c1190031a"
+          AUTHORITY_CANDIDATE_PARENT = "ed4f61fb4f09043eb8683932a1fed5222ad524f7"
+          MIRROR_CANDIDATE_PARENT = "c9a7bcabebd66768f2f728d8b35a9317c5ea7323"
+          PREVIOUS_CANDIDATE_TREE = "00e71ed364b388727aafea133122eda02c046692"
           SHA1 = re.compile(r"[0-9a-f]{40}\Z")
           PATHS = {
               "effect_ack_sha256": "formalization/QIKVRT_Formalization_v2.0/release_authorization/EFFECT_ACK_DONE.json",
@@ -439,13 +455,7 @@ jobs:
                   fail("GitHub API returned a non-object")
               return value
 
-          def remote(repository, token):
-              branch = urllib.parse.quote(FEATURE, safe="/")
-              ref = api(repository, "git/ref/heads/" + branch, token)
-              obj = ref.get("object")
-              sha = obj.get("sha") if isinstance(obj, dict) else None
-              if not isinstance(sha, str) or SHA1.fullmatch(sha) is None:
-                  fail(f"{repository} feature branch has no exact commit")
+          def remote_commit(repository, sha, token):
               commit = api(repository, "git/commits/" + sha, token)
               tree = commit.get("tree")
               tree_sha = tree.get("sha") if isinstance(tree, dict) else None
@@ -453,6 +463,16 @@ jobs:
                   fail(f"{repository} feature commit has no exact tree")
               parents = commit.get("parents")
               parent_shas = [item.get("sha") for item in parents] if isinstance(parents, list) and all(isinstance(item, dict) for item in parents) else []
+              return tree_sha, parent_shas
+
+          def remote(repository, token):
+              branch = urllib.parse.quote(FEATURE, safe="/")
+              ref = api(repository, "git/ref/heads/" + branch, token)
+              obj = ref.get("object")
+              sha = obj.get("sha") if isinstance(obj, dict) else None
+              if not isinstance(sha, str) or SHA1.fullmatch(sha) is None:
+                  fail(f"{repository} feature branch has no exact commit")
+              tree_sha, parent_shas = remote_commit(repository, sha, token)
               return sha, tree_sha, parent_shas
 
           marker_raw = subprocess.check_output(
@@ -472,10 +492,14 @@ jobs:
                   fail(f"bound candidate file changed before effect: {path_text}")
           authority = remote(AUTHORITY, os.environ["GH_API_TOKEN"])
           mirror = remote(MIRROR, "")
-          if authority != (candidate["candidate_commit"], candidate["candidate_tree"], [AUTHORITY_BASE]):
+          if authority != (candidate["candidate_commit"], candidate["candidate_tree"], [AUTHORITY_CANDIDATE_PARENT]):
               fail("authority feature branch moved before effect")
-          if mirror != (candidate["mirror_commit"], candidate["mirror_tree"], [MIRROR_BASE]):
+          if mirror != (candidate["mirror_commit"], candidate["mirror_tree"], [MIRROR_CANDIDATE_PARENT]):
               fail("mirror feature branch moved before effect")
+          if remote_commit(AUTHORITY, AUTHORITY_CANDIDATE_PARENT, os.environ["GH_API_TOKEN"]) != (PREVIOUS_CANDIDATE_TREE, [AUTHORITY_BASE]):
+              fail("first authority candidate changed before effect")
+          if remote_commit(MIRROR, MIRROR_CANDIDATE_PARENT, "") != (PREVIOUS_CANDIDATE_TREE, [MIRROR_BASE]):
+              fail("first mirror candidate changed before effect")
           if authority[1] != mirror[1]:
               fail("authority and mirror trees diverged before effect")
           PY
