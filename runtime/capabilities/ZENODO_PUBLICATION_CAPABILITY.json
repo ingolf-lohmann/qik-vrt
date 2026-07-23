@@ -1,0 +1,47 @@
+{
+  "schema": "qikvrt_runtime_capability_v1",
+  "capability": "zenodo-production-publication",
+  "profile": "publication",
+  "implementation": "tools/qikvrt_charter_zenodo.py",
+  "reused_transport": "tools/qikvrt_zenodo_actions.py",
+  "workflow": ".github/workflows/qikvrt_charter_zenodo_publish.yml",
+  "trigger": "hash-bound explicit publish request on a dedicated authorization branch",
+  "credential": {
+    "environment_variable": "ZENODO_ACCESS_TOKEN",
+    "storage": "GitHub Actions secret only",
+    "cacheable": false
+  },
+  "cache": {
+    "class": "ecosystem-cache",
+    "location": ".qikvrt/cache/zenodo-publication",
+    "key_inputs": [
+      "tools/qikvrt_charter_zenodo.py",
+      "tools/qikvrt_zenodo_actions.py",
+      "runtime/capabilities/ZENODO_PUBLICATION_CAPABILITY.json"
+    ],
+    "contents": [
+      "validated source digests",
+      "CPython bytecode cache",
+      "capability self-test receipt"
+    ],
+    "excludes": [
+      "credentials",
+      "mutable authentication state",
+      "unverified remote payloads"
+    ]
+  },
+  "verification": [
+    "closed publish-request contract",
+    "standard-library compilation",
+    "allowlisted HTTPS Zenodo origin",
+    "artifact MD5 and SHA-256 before upload",
+    "server file-list and checksum gate",
+    "byte-exact remote redownload SHA-256 gate",
+    "published metadata and DOI gate",
+    "repository evidence commit"
+  ],
+  "rollback": "No destructive rollback of a published DOI. Corrections require a new version with preserved history.",
+  "effect_boundary": "Workflow success is not publication evidence until zenodo-publication.json is committed and the public record is independently reachable.",
+  "rights_holder": "Ingolf Lohmann",
+  "license": "PolyForm-Noncommercial-1.0.0 for implementation; artifact license declared separately"
+}
