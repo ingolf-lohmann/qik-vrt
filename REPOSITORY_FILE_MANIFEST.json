@@ -532,22 +532,22 @@
       "sha256": "2c145ad6f03ed4254194d1eced5abfa9218994c5da55a462b1384a7313a9f0f1"
     },
     {
-      "bytes": 3132,
+      "bytes": 3365,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_PROGRESS.json",
-      "sha256": "db01d5ce58bb0ce5d6112a5d625e839062b0580d37d8fd84b85ebab1d0a913b7"
+      "sha256": "4a8422e3dcf3a3a217bccb3dc332aee233a5997990725a0b1149fda6a41a3376"
     },
     {
-      "bytes": 1384,
+      "bytes": 1438,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_STATUS.md",
-      "sha256": "65c39b7cd3974bfd436f84f4e192ce4e2d42f3743344bbce8f6adcb7a60c556a"
+      "sha256": "95d46d1d49037352d167062c49f9fe89238affbfa5f0382a1915cb6caa2805d9"
     },
     {
       "bytes": 15,
@@ -13261,13 +13261,13 @@
       "sha256": "1e8ce147908212a406fc2eedcdf6f64ac63174b53d612a372fedf12f10b2d9bc"
     },
     {
-      "bytes": 6821,
+      "bytes": 6854,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTEffectAck/Model.lean",
-      "sha256": "41ccb487561a300cd565be6ce3aa38841b34344e454dbdfcd28d0048e28c8d88"
+      "sha256": "83ab0d7a50152545beefc0f88fe3dc479ae681d3d2e04615a4ab9f7c2f305499"
     },
     {
       "bytes": 6387,
@@ -23518,7 +23518,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "3f2e6bec522414fd7bb0c8c7765560ca4c4b850d9c62e3ebe43144452eda7678",
+  "repository_content_tree_sha256": "f81d7588c8e175c23f3603ee4c2ec57bfaa72ccb9014915aad953ef1db32fe60",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [

@@ -125,7 +125,7 @@ def CoreDoneConditions (snapshot : Snapshot) : Prop :=
 
 theorem coreDone_eq_true_iff (snapshot : Snapshot) :
     coreDone snapshot = true ↔ CoreDoneConditions snapshot := by
-  simp [coreDone, CoreDoneConditions]
+  simp [coreDone, CoreDoneConditions, and_assoc]
 
 def selectState (snapshot : Snapshot) : State :=
   if snapshot.predecessorInvalid = true then .block
@@ -171,7 +171,7 @@ def ConsumerCheckConditions (checks : ConsumerChecks) : Prop :=
 
 theorem allConsumerChecks_eq_true_iff (checks : ConsumerChecks) :
     allConsumerChecks checks = true ↔ ConsumerCheckConditions checks := by
-  simp [allConsumerChecks, ConsumerCheckConditions]
+  simp [allConsumerChecks, ConsumerCheckConditions, and_assoc]
 
 def authorizeOrdinaryRelease
     (checks : ConsumerChecks)
@@ -201,7 +201,7 @@ theorem authorizeOrdinaryRelease_eq_true_iff
     authorizeOrdinaryRelease checks snapshot recordState ordinaryReleaseClaim =
       true ↔
     AuthorizationConditions checks snapshot recordState ordinaryReleaseClaim := by
-  simp [authorizeOrdinaryRelease, AuthorizationConditions]
+  simp [authorizeOrdinaryRelease, AuthorizationConditions, and_assoc]
 
 def fullyValidConsumerChecks : ConsumerChecks where
   wireVersionSupported := true

@@ -5,8 +5,8 @@
   "ref_name": "agent/effect-ack-lean-v1",
   "source_sha": "aa2763b5bbcce914063d12b1027b47c6e0e34004",
   "state": "RUNNING",
-  "percent": 45,
-  "current_action": "Persist the Draft-01-bound Lean model for kernel compilation in GitHub Actions",
+  "percent": 52,
+  "current_action": "Persist the conjunction-normalization repair reported by Lean 4.19 and rerun GitHub Actions",
   "completed_steps": [
     "Transcribe and verify both source audios offline",
     "Identify draft-lohmann-qikvrt-effect-ack-01 from primary IETF sources",
@@ -60,11 +60,16 @@
       "name": "Local formalization support suite",
       "state": "PASS",
       "evidence": "21/21 Python tests; Lean kernel compilation pending in CI"
+    },
+    {
+      "name": "GitHub Actions kernel gate attempt 1",
+      "state": "FAIL",
+      "evidence": "run 30036767107: three iff goals differ only by conjunction association in Model.lean; focused repair applied"
     }
   ],
   "evidence": [
     "IETF draft -01 XML SHA-256 13ff9ace408d82eaea88127343883d888795efd25e7a01d0bbee5b862e9f954b",
     "IETF draft -01 TXT SHA-256 ad8af57390beeb9a1316e3940b9f75c2334834376288f6f1ab018e10b0b87b16"
   ],
-  "updated_at": "2026-07-23T18:55:14Z"
+  "updated_at": "2026-07-23T19:10:33Z"
 }
