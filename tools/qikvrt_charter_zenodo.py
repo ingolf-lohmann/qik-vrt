@@ -5,11 +5,10 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import pathlib
 import sys
-from typing import Any
+from typing import Any, NoReturn
 
 from tools import qikvrt_zenodo_actions as zenodo
 
@@ -22,7 +21,7 @@ TITLE = "Charta einer maschinenprüfbaren Wissenschaft"
 VERSION = "1.0.0-2026-07-23"
 
 
-def fail(message: str) -> "NoReturn":
+def fail(message: str) -> NoReturn:
     raise zenodo.ZenodoError(message)
 
 
@@ -38,6 +37,8 @@ def load_request() -> dict[str, Any]:
         fail("publish request artifact differs from the fixed charter path")
     if value["expected_repository"] != "Goldkelch/qik-vrt":
         fail("publish request repository differs from the authority repository")
+    if EVIDENCE.exists():
+        fail("publication evidence already exists; refusing a duplicate deposition")
     return value
 
 
@@ -91,34 +92,17 @@ def metadata() -> dict[str, Any]:
     }
 
 
-def find_existing(client: zenodo.ZenodoClient) -> dict[str, Any] | None:
-    status, value = client.get("/api/deposit/depositions", accept=(200,))
-    if status != 200:
-        return None
-    items = value if isinstance(value, list) else value.get("hits", {}).get("hits", [])
-    if not isinstance(items, list):
-        return None
-    for item in items:
-        if not isinstance(item, dict):
-            continue
-        meta = item.get("metadata")
-        if isinstance(meta, dict) and meta.get("title") == TITLE and meta.get("version") == VERSION:
-            return item
-    return None
-
-
 def main() -> int:
     try:
         load_request()
         token = os.environ.get(zenodo.TOKEN_ENVIRONMENT_VARIABLE, "")
-        client = zenodo.ZenodoClient(token, os.environ.get("ZENODO_API_BASE", zenodo.DEFAULT_BASE_URL))
+        client = zenodo.ZenodoClient(
+            token,
+            os.environ.get("ZENODO_API_BASE", zenodo.DEFAULT_BASE_URL),
+        )
         item, data = entry_for(ARTIFACT)
         meta = metadata()
-        existing = find_existing(client)
-        if existing is None:
-            draft = client.create_paper(meta)
-        else:
-            draft = existing
+        draft = client.create_paper(meta)
         record_id = zenodo._record_id(draft, "charter deposition")
         doi = zenodo._doi_from_deposition(draft, "charter deposition")
         verified = {("paper", item["name"]): data}
@@ -138,7 +122,7 @@ def main() -> int:
             "repository_commit": os.environ.get("GITHUB_SHA", "unavailable")
         }
         zenodo._atomic_json(EVIDENCE, evidence, token)
-        print(f"ZENODO_PUBLICATION_STATE=published")
+        print("ZENODO_PUBLICATION_STATE=published")
         print(f"ZENODO_RECORD_ID={record_id}")
         print(f"ZENODO_DOI={doi}")
         return 0
