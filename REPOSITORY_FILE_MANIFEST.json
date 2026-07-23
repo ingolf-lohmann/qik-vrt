@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2611,
+  "file_count": 2628,
   "files": [
     {
       "bytes": 47,
@@ -226,13 +226,22 @@
       "sha256": "cedbd071ed827ae87020a106297283e4844cbf119224310f05745ff738d8c486"
     },
     {
-      "bytes": 44669,
+      "bytes": 24718,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
-      "sha256": "7f39afc364fd8139f089f12e1f49bcc9d88311085009bb8c255cae4e584c0d0b"
+      "sha256": "e631d3d676b8e6a99799cf1e19e0514bcf10513a97e949a6c4954201f87d0db7"
+    },
+    {
+      "bytes": 34137,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+      "sha256": "add46675a592c895c2fda75e2ac064f5c86806dffd7b69e3e34f3b5439e90aaa"
     },
     {
       "bytes": 5231,
@@ -244,13 +253,13 @@
       "sha256": "490992db05913e2551e1480dcec7373414388478374c0fb145f0af5ec294bea8"
     },
     {
-      "bytes": 4117,
+      "bytes": 4562,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_manuscript_proof.yml",
-      "sha256": "b8d97ed916292061c5fbf534f4bdd203a88e6a5b5f104929e0a2f50b02210fd7"
+      "sha256": "c8f6b3cce0eaf871057f537cac9927012698da856b2557e6124227f0a70ddebd"
     },
     {
       "bytes": 4890,
@@ -532,22 +541,22 @@
       "sha256": "2c145ad6f03ed4254194d1eced5abfa9218994c5da55a462b1384a7313a9f0f1"
     },
     {
-      "bytes": 4407,
+      "bytes": 6728,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_PROGRESS.json",
-      "sha256": "a7097d42b5c61239e0c8be93108cc5cd00fd941638d60467f1d278d903ecb58e"
+      "sha256": "5441e34b1198b679ee635a7477363b90e08885112b286d0e5c6d3f654f7b0d75"
     },
     {
-      "bytes": 1714,
+      "bytes": 2219,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "AI_STATUS.md",
-      "sha256": "411231f38d61c284d90b595646191bac717daf81892fd8dc87dbe9abe2ecc90b"
+      "sha256": "cb6ad81a4fa47afcbc34297132c5ca7e569b93120438b32144424f8e6e0bc510"
     },
     {
       "bytes": 15,
@@ -9418,6 +9427,60 @@
       "sha256": "0c69b10202d1a1ee40bcb271d58dfb3f3dc5b5847b962672ad8304cfa119c62f"
     },
     {
+      "bytes": 2279,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/publications/2026-07-23-effect-ack-lean-status/CITATION.cff",
+      "sha256": "a9286a3f91df97ec27a97246a96e42821f4859245a7e1f2552df517b611f8c86"
+    },
+    {
+      "bytes": 7107,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/publications/2026-07-23-effect-ack-lean-status/EVIDENCE_BOUNDARY.md",
+      "sha256": "883209cf2bb774044c2cbda0055e38c3fb4670a71d4239bec36107fa9da64557"
+    },
+    {
+      "bytes": 1061,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/publications/2026-07-23-effect-ack-lean-status/LICENSE_NOTICE.md",
+      "sha256": "a37f8c3df0bc63b67991d85c1d68dc7ff04d5219158b84f52a8e9f97e2404815"
+    },
+    {
+      "bytes": 6679,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/publications/2026-07-23-effect-ack-lean-status/README.md",
+      "sha256": "cd2a8852e234fdc57c79fdb6a3c26178250bb231e2a8c3db4410874bffb105c8"
+    },
+    {
+      "bytes": 3929,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/publications/2026-07-23-effect-ack-lean-status/STATUSERKLAERUNG_WHATSAPP_DE.md",
+      "sha256": "c99ae13e06680c9f9b686754af50254ed528c3f3ded9e9743f54c68ed821be99"
+    },
+    {
+      "bytes": 5685,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "docs/publications/2026-07-23-effect-ack-lean-status/ZENODO_FILESET.md",
+      "sha256": "6945bb41dfbbc2d3e5d7e6fdfbd4fbc23e516ce4b0296cae73ecd1f04ee91459"
+    },
+    {
       "bytes": 1102,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
@@ -13639,13 +13702,31 @@
       "sha256": "ee6fd37555065223ddad24dff70b5447dfbac23c14f48fb8e3ddf266104bfa87"
     },
     {
-      "bytes": 1305,
+      "bytes": 8579,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json",
-      "sha256": "84faab29fad1ae57a49b7a414aa16e864e6c55783714c22119a2c01198f73415"
+      "sha256": "3f91ed4512c758e1458f66274e22de1f6be9835b3eb89ad0f5c42320ab93a0f8"
+    },
+    {
+      "bytes": 2641,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/ALPHA2_EFFECT_ACK_DONE.json",
+      "sha256": "372d72124f139625b52c618007d9bfcf05a3f310f71dcf34d446214874146cf5"
+    },
+    {
+      "bytes": 2687,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/release_authorization/ALPHA2_INPUT.json",
+      "sha256": "8052132fc71bec90bccdc0ab72b3120a9bf7cf3be50044d4bdaf95f30f6b8397"
     },
     {
       "bytes": 2935,
@@ -13693,6 +13774,15 @@
       "sha256": "9d1e48337caa99730c60f37790c5c1456d6d5b76092887d3e30785a21c7d10cf"
     },
     {
+      "bytes": 8866,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py",
+      "sha256": "d6e81b981bd46b778b0aae445c01bb93dfab1c8e39f3f6cbc2e476a59b65fcf2"
+    },
+    {
       "bytes": 7246,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
@@ -13720,13 +13810,13 @@
       "sha256": "f5f34141308d2d7719ea83de9de2ae57f4146eb39aeb4d6f7a6c8062d9222e28"
     },
     {
-      "bytes": 2280,
+      "bytes": 18317,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/scripts/verify_proof_object_manifest.py",
-      "sha256": "6957e42d239306fa78a696a53712429730910d45585470e88939b953d90fa16d"
+      "sha256": "a99886dff0ee42262c713902f267160a0ca13cea9e2ea3f4944a78e27c020533"
     },
     {
       "bytes": 4484,
@@ -13763,6 +13853,15 @@
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_effect_ack_claims.py",
       "sha256": "5a131907c6b72e557ae79a542b34b8adbd25a2273a1574bb0178c55824c28494"
+    },
+    {
+      "bytes": 10156,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/tests/test_proof_object_manifest.py",
+      "sha256": "31978c290b32e6815f7072191ef88989e3c50eec8f8768cfba2af9fdd1368014"
     },
     {
       "bytes": 2118,
@@ -21784,6 +21883,15 @@
       "sha256": "24b0223600088257052d7391bcc85ed041ab7450fadb4783d3a3f52cc475eb21"
     },
     {
+      "bytes": 8817,
+      "classification": "policy_or_acceptance",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "policy/qikvrt-formalization-v2-alpha2-release-request.schema.json",
+      "sha256": "90b7df8154603ff1ddb1d64ef0e27c7ab370456b73e8fd88fd5afe5f223ea934"
+    },
+    {
       "bytes": 9537,
       "classification": "policy_or_acceptance",
       "excluded_from_sha256_index": false,
@@ -22376,6 +22484,24 @@
       "sha256": "237fa6eaa5ec7f24848c2a44ffff92ec7a1840358aa695e60d6c8e85d76f7d74"
     },
     {
+      "bytes": 2667,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2-alpha2-request.json",
+      "sha256": "2efadda75c56fb4988de69722680e508a5f6b5dc7492781bd2d8953f928742ae"
+    },
+    {
+      "bytes": 8468,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2-alpha2-zenodo.json",
+      "sha256": "a60e6cf164cc34823945e3b949b63d0140ba4406e885f30ee1eb081805d3daed"
+    },
+    {
       "bytes": 2508,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -22482,6 +22608,33 @@
       "immutable": true,
       "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.1.zip.sha256",
       "sha256": "ef1b79a3cc49aed84b32f4693977354f70776bdea9f3a58bc1ce88157041585c"
+    },
+    {
+      "bytes": 823942,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip",
+      "sha256": "3ce079746f55545a5b5f89f736338882727f911ed1d67db5f2b5688c0e27910c"
+    },
+    {
+      "bytes": 104,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip.sha256",
+      "sha256": "191e5dc84763ac870a3b73d640c60ead4a81af71c34fd6d755a7e1f0aea7b6ed"
+    },
+    {
+      "bytes": 1606,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2/ZENODO_SHA256SUMS-alpha.2",
+      "sha256": "e72b5da2c99186a094bd64e604f0e028c3f2ad9b440f91374149daa65343dc97"
     },
     {
       "bytes": 912,
@@ -22942,22 +23095,22 @@
       "sha256": "b9ddd19f0bb49b97ec29a546d691e2df5e23aa23fd18d858f93ad6c9c7aed33b"
     },
     {
-      "bytes": 19889,
+      "bytes": 16915,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_formalization_v2_release_workflow.py",
-      "sha256": "4953a3c3c9ac1ed6845c371a735b91fc836a3302f6f9860f0df6dc1b558b025e"
+      "sha256": "826f6c0967c330ae1c5421b865b53f096b251a7dc4f9a0d3472c377efca1f936"
     },
     {
-      "bytes": 35835,
+      "bytes": 25903,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_formalization_v2_zenodo.py",
-      "sha256": "1f60333aaf8ac13aef7015973e2bb6d607f71d07a0fc848ce110a057c4210080"
+      "sha256": "7d2bffbbbfb58c0d905a1b8738370d044d7857ded7b897d23cca5d16cb522b43"
     },
     {
       "bytes": 26883,
@@ -23311,13 +23464,13 @@
       "sha256": "6ff10abda9af7f8f2fcd50464e03637bdc84eaf1d2148be599203e713b41dfe9"
     },
     {
-      "bytes": 29296,
+      "bytes": 33826,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_formalization_v2_zenodo.py",
-      "sha256": "0339f3cc381a2bb29f4078a13a2f6b9680bb1efa137b803bd9054e87b088483f"
+      "sha256": "30afef04c3707f5d7802ee53c509fe66e006d21d821e7c8adcf0d72d5afe2514"
     },
     {
       "bytes": 189,
@@ -23464,13 +23617,13 @@
       "sha256": "981966296018900bced04a131c256a480571ee8684a5dfa604107182dc4c6b94"
     },
     {
-      "bytes": 59694,
+      "bytes": 64823,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_zenodo_actions.py",
-      "sha256": "8ce5df311dde78f0ae7bf6cb8a0729ceaff5f43ce50a3c74f50016b45ffae1e7"
+      "sha256": "77ab829b5018143568917762328366e5698dc2cd599f0ba0cd4106a5b5c292d8"
     },
     {
       "bytes": 6544,
@@ -23493,7 +23646,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2602,
+  "immutable_file_count": 2619,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -23518,7 +23671,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "3972bb54c7df2118d495499269ea6efc9b4ab79a7130bee9623a9b1393d34c37",
+  "repository_content_tree_sha256": "6df78876beafdb0fe3c6acb469f933e4388cac98a0fd6887160dc38fa590724b",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
