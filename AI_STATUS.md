@@ -4,7 +4,7 @@ Repository: `Goldkelch/qik-vrt`
 Branch: `agent/effect-ack-lean-v1`
 Source commit: `aa2763b5bbcce914063d12b1027b47c6e0e34004`
 
-`[█████▌░░░░] 56%`
+`[██████▏░░░] 62%`
 
 - ✓ Two source audios transcribed and verified offline
 - ✓ `draft-lohmann-qikvrt-effect-ack-01` identified from primary IETF sources
@@ -18,17 +18,19 @@ Source commit: `aa2763b5bbcce914063d12b1027b47c6e0e34004`
 - ✓ Exact Draft-01 source/structure binding and 21/21 local support tests
 - ✓ First Lean 4.19 run isolated three conjunction-association goals
 - ✓ Second Lean 4.19 run compiled `Model.lean`
-- ⟳ Persisting the exhaustive selector-case proof and rerunning the kernel gate
+- ✓ Third Lean 4.19 run compiled both libraries and passed all source/tests
+- ⟳ Persisting the observed constant-specific foundational axiom inventory
 - □ Truth-bounded WhatsApp article
 - □ Full verification, repository synchronization, and Zenodo publication
 
 ## BLOCKER
 
-None. The second CI attempt compiled `Model.lean` and isolated one remaining
-symbolic priority proof in `Safety.lean`. The selector is now split over all
-decision-relevant cases; the fresh CI result remains pending.
+None. The complete Lean build now passes. The remaining gate is audit-policy
+materialization: 21 simplifier-produced constants use Lean's standard
+`propext`; semantic factorization additionally uses the already declared
+classical foundations. No project-specific axiom or proof placeholder appeared.
 
 ## NEXT
 
-Persist the selector proof, inspect the third CI result, and continue
+Persist the exact per-constant policy, inspect the fourth CI result, and continue
 until kernel, axiom, proof-escape, and provenance gates all pass.

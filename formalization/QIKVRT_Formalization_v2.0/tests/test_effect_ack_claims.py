@@ -61,7 +61,7 @@ class EffectAckClaimBindingTests(unittest.TestCase):
                     "from scripts.audit_lean_axioms import effect_ack_policy; "
                     "policy = effect_ack_policy(); "
                     "assert len(policy) == 34; "
-                    "assert sum(bool(value) for value in policy.values()) == 2"
+                    "assert sum(bool(value) for value in policy.values()) == 23"
                 ),
             ],
             cwd=ROOT,

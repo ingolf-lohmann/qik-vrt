@@ -9,6 +9,35 @@
     "core_done_conjuncts": 17,
     "scope": "Abstract Draft-01 decision and consumer-authorization core"
   },
+  "axiom_policy": {
+    "foundational_allowlist": ["Classical.choice", "Quot.sound", "propext"],
+    "default_expected_axioms": [],
+    "per_constant_expected_axioms": {
+      "QIKVRT.EffectAck.V1.Claims.CompleteMediation": ["propext"],
+      "QIKVRT.EffectAck.V1.Claims.ConditionalPhysicalBridge": ["propext"],
+      "QIKVRT.EffectAck.V1.Claims.DoneSelection": ["propext"],
+      "QIKVRT.EffectAck.V1.Claims.ReleaseSafety": ["propext"],
+      "QIKVRT.EffectAck.V1.Claims.SemanticBoundary": ["Classical.choice", "Quot.sound", "propext"],
+      "QIKVRT.EffectAck.V1.Claims.StateSpace": ["propext"],
+      "QIKVRT.EffectAck.V1.authorized_implies_consumer_checks": ["propext"],
+      "QIKVRT.EffectAck.V1.authorized_implies_recorded_and_recomputed_done": ["propext"],
+      "QIKVRT.EffectAck.V1.completelyMediated_execution_implies_done": ["propext"],
+      "QIKVRT.EffectAck.V1.connectionDecisions_complete": ["propext"],
+      "QIKVRT.EffectAck.V1.coreDone_eq_true_iff": ["propext"],
+      "QIKVRT.EffectAck.V1.deadlineExceeded_blocks": ["propext"],
+      "QIKVRT.EffectAck.V1.explicitBlock_precedes_later_outcomes": ["propext"],
+      "QIKVRT.EffectAck.V1.explicitIsolate_precedes_done": ["propext"],
+      "QIKVRT.EffectAck.V1.integrityFailure_blocks": ["propext"],
+      "QIKVRT.EffectAck.V1.missingEffectCheckableReception_nacks": ["propext"],
+      "QIKVRT.EffectAck.V1.nonDone_record_never_authorized": ["propext"],
+      "QIKVRT.EffectAck.V1.physicalOccurrence_implies_authorized_done_conditionally": ["propext"],
+      "QIKVRT.EffectAck.V1.predecessorInvalid_blocks": ["propext"],
+      "QIKVRT.EffectAck.V1.selectState_eq_done_iff": ["propext"],
+      "QIKVRT.EffectAck.V1.semanticReconstruction_iff_fiberConstant": ["Classical.choice", "Quot.sound", "propext"],
+      "QIKVRT.EffectAck.V1.stale_record_never_authorized": ["propext"],
+      "QIKVRT.EffectAck.V1.states_complete": ["propext"]
+    }
+  },
   "claims": [
     {
       "id": "EA-LEAN-001",
@@ -147,7 +176,6 @@
       "classification": "INFORMATION_THEOREM",
       "status": "KERNEL_PROVED",
       "statement": "A target meaning is reconstructible on the observation image exactly when it is constant on every observation fiber.",
-      "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "proof_constants": [
         "QIKVRT.EffectAck.V1.semanticReconstruction_iff_fiberConstant"
       ],

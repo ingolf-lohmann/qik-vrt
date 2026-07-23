@@ -5,9 +5,10 @@ import QIKVRTEffectAck.Claims
 
 This generated list covers every proof and registry constant referenced by
 the Draft-01 claim matrix, plus both claim-ID inventory theorems.  The
-external audit enforces an empty axiom set for the protocol, safety, mediation
-and inversion results.  Only semantic factorization may use the explicitly
-declared Lean foundations.
+external audit enforces the exact constant-specific axiom sets declared in
+the matrix.  `propext` is used by several simplifier-produced proofs;
+semantic factorization additionally uses the explicitly declared classical
+foundations.  No project-specific axiom is admitted.
 -/
 
 #print axioms QIKVRT.EffectAck.V1.Claims.CollapsedDecoderCounterexample

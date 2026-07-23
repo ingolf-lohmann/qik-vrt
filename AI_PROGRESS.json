@@ -5,8 +5,8 @@
   "ref_name": "agent/effect-ack-lean-v1",
   "source_sha": "aa2763b5bbcce914063d12b1027b47c6e0e34004",
   "state": "RUNNING",
-  "percent": 56,
-  "current_action": "Persist the exhaustive selector-case proof reported by Lean 4.19 and rerun GitHub Actions",
+  "percent": 62,
+  "current_action": "Persist the exact per-constant axiom inventory observed from the successful Lean build",
   "completed_steps": [
     "Transcribe and verify both source audios offline",
     "Identify draft-lohmann-qikvrt-effect-ack-01 from primary IETF sources",
@@ -70,11 +70,16 @@
       "name": "GitHub Actions kernel gate attempt 2",
       "state": "FAIL",
       "evidence": "run 30037006314: Model.lean PASS; one remaining selectState iff requires explicit priority-case split in Safety.lean; exhaustive repair applied"
+    },
+    {
+      "name": "GitHub Actions kernel gate attempt 3",
+      "state": "PARTIAL_PASS",
+      "evidence": "run 30037191913: complete Lean build, Draft/source gates and 21 tests PASS; exact axiom audit found propext on 21 simplifier-produced constants and requires policy materialization"
     }
   ],
   "evidence": [
     "IETF draft -01 XML SHA-256 13ff9ace408d82eaea88127343883d888795efd25e7a01d0bbee5b862e9f954b",
     "IETF draft -01 TXT SHA-256 ad8af57390beeb9a1316e3940b9f75c2334834376288f6f1ab018e10b0b87b16"
   ],
-  "updated_at": "2026-07-23T19:14:04Z"
+  "updated_at": "2026-07-23T19:17:20Z"
 }

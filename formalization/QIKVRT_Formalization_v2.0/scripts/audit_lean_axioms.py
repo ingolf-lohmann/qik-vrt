@@ -52,38 +52,57 @@ def effect_ack_policy() -> dict[str, set[str]]:
     claims = matrix.get("claims")
     if not isinstance(claims, list):
         raise ValueError("claim matrix claims must be an array")
-    policy: dict[str, set[str]] = {}
+    constants: set[str] = set()
     for index, raw_claim in enumerate(claims):
         claim = require_object(raw_claim, f"claim {index}")
-        raw_allowed = claim.get("allowed_axioms", [])
-        if not isinstance(raw_allowed, list) or not all(
-            isinstance(item, str) and item for item in raw_allowed
-        ):
-            raise ValueError(f"claim {index} allowed_axioms must be strings")
-        allowed = set(raw_allowed)
-        unknown = allowed - FOUNDATIONAL_AXIOMS
-        if unknown:
-            raise ValueError(
-                f"claim {index} declares forbidden axioms {sorted(unknown)}"
-            )
         raw_constants = claim.get("proof_constants", [])
         if not isinstance(raw_constants, list):
             raise ValueError(f"claim {index} proof_constants must be an array")
-        constants = list(raw_constants)
+        claim_constants = list(raw_constants)
         registry = claim.get("registry_constant")
         if registry is not None:
-            constants.append(registry)
-        for constant in constants:
+            claim_constants.append(registry)
+        for constant in claim_constants:
             if not isinstance(constant, str) or not constant:
                 raise ValueError(f"claim {index} contains an invalid constant")
-            if constant in policy and policy[constant] != allowed:
-                raise ValueError(
-                    f"{constant} has conflicting per-claim axiom policies"
-                )
-            policy[constant] = allowed
-    for constant, allowed in EFFECT_ACK_SUPPLEMENTAL.items():
-        if constant in policy and policy[constant] != allowed:
-            raise ValueError(f"{constant} conflicts with supplemental policy")
+            constants.add(constant)
+    constants.update(EFFECT_ACK_SUPPLEMENTAL)
+
+    raw_axiom_policy = require_object(
+        matrix.get("axiom_policy"),
+        "axiom_policy",
+    )
+    foundational = raw_axiom_policy.get("foundational_allowlist")
+    if not isinstance(foundational, list) or set(foundational) != FOUNDATIONAL_AXIOMS:
+        raise ValueError("foundational_allowlist does not match the locked policy")
+    raw_default = raw_axiom_policy.get("default_expected_axioms")
+    if not isinstance(raw_default, list) or not all(
+        isinstance(item, str) and item for item in raw_default
+    ):
+        raise ValueError("default_expected_axioms must be an array of strings")
+    default = set(raw_default)
+    if default - FOUNDATIONAL_AXIOMS:
+        raise ValueError("default_expected_axioms contains forbidden axioms")
+    raw_overrides = require_object(
+        raw_axiom_policy.get("per_constant_expected_axioms"),
+        "per_constant_expected_axioms",
+    )
+    unknown_constants = set(raw_overrides) - constants
+    if unknown_constants:
+        raise ValueError(
+            f"axiom policy names unknown constants {sorted(unknown_constants)}"
+        )
+    policy: dict[str, set[str]] = {}
+    for constant in constants:
+        raw_allowed = raw_overrides.get(constant, raw_default)
+        if not isinstance(raw_allowed, list) or not all(
+            isinstance(item, str) and item for item in raw_allowed
+        ):
+            raise ValueError(f"{constant} axiom policy must be strings")
+        allowed = set(raw_allowed)
+        unknown = allowed - FOUNDATIONAL_AXIOMS
+        if unknown:
+            raise ValueError(f"{constant} declares forbidden axioms {sorted(unknown)}")
         policy[constant] = allowed
 
     expected_lines = {f"#print axioms {name}" for name in policy}
@@ -111,8 +130,8 @@ def main() -> int:
         name: set(FOUNDATIONAL_AXIOMS) for name in MANUSCRIPT_EXPECTED
     }
     audits = (
-        (MANUSCRIPT_AUDIT_SOURCE, manuscript_policy),
-        (EFFECT_ACK_AUDIT_SOURCE, effect_policy),
+        (MANUSCRIPT_AUDIT_SOURCE, manuscript_policy, False),
+        (EFFECT_ACK_AUDIT_SOURCE, effect_policy, True),
     )
     seen: set[str] = set()
     violations: list[str] = []
@@ -120,8 +139,8 @@ def main() -> int:
         r"^'(?P<name>[^']+)' (?:does not depend on any axioms|"
         r"depends on axioms: \[(?P<axioms>[^]]*)\])$"
     )
-    expected = set().union(*(policy for _, policy in audits))
-    for audit_source, audit_policy in audits:
+    expected = set().union(*(policy for _, policy, _ in audits))
+    for audit_source, audit_policy, require_exact in audits:
         result = subprocess.run(
             ["lake", "env", "lean", str(audit_source)],
             cwd=ROOT,
@@ -151,6 +170,11 @@ def main() -> int:
             if unexpected:
                 violations.append(
                     f"{name}: forbidden axioms {sorted(unexpected)}"
+                )
+            elif require_exact and axioms != audit_policy[name]:
+                violations.append(
+                    f"{name}: actual axioms {sorted(axioms)} do not equal "
+                    f"declared {sorted(audit_policy[name])}"
                 )
 
     missing = expected - seen
