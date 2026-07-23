@@ -10,11 +10,12 @@ collect or use adaptive evidence.
 
 ## Session reconstruction
 
-Every new AI, agent, IDE-assistant, or automation session MUST begin with `AI`,
-parse `AI_CONTEXT.json`, and follow its `required_read_order`. Repository evidence
-is authoritative over conversation memory. The declared repositories are
-symmetrically canonical only for a scope whose exact bytes and state have been
-verified equivalent.
+Every new AI, agent, IDE-assistant, or automation session MUST begin with the
+root file `AI`, parse `AI_CONTEXT.json`, and follow its `required_read_order`.
+The identical GitHub-native handoff path in every QIK-VRT repository is `/AI`.
+Repository evidence is authoritative over conversation memory. The declared
+repositories are symmetrically canonical only for a scope whose exact bytes and
+state have been verified equivalent.
 
 The architecture/implementation licensing boundary in `AI_CONTEXT.json` is
 mandatory context: freely available architecture and interoperability
@@ -30,25 +31,55 @@ Actions operation, the client MUST follow
 `policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json`.
 
 The client MUST work before explaining, report progress in the compact
-repository/branch/commit/progress-bar/checklist format, and name concrete
+repository/branch/commit/progress-bar/checklist format before and after each
+GitHub action and at every workflow, job, or step transition, and name concrete
 blockers and next actions. Persistent workflows MUST maintain `AI_PROGRESS.json`
 and `AI_STATUS.md`. Repetitive unchanged status and long explanations in place
 of executable work are prohibited.
 
 ## Reuse before creation
 
-`REUSE_BEFORE_CREATE` is mandatory. Existing workflows, scripts, policies,
-adapters, pipelines, tools, and repository artifacts MUST be reused, extended,
-parameterized, generalized, or refactored before a new parallel component is
-created. A new component requires repository evidence that reuse is technically
-insufficient.
+`REUSE_BEFORE_CREATE` is mandatory. Before creating a new workflow, script,
+policy, adapter, pipeline, tool, or repository artifact, the agent MUST first
+search for an existing component that can be reused, extended, parameterized,
+generalized, or refactored. New parallel machinery is permitted only when the
+repository contains explicit evidence that reuse is technically insufficient.
+Optimization and perfection of an existing path take precedence over duplicate
+implementation.
 
-## Persistence completion
+## Cumulative repository runtime and complete tool caching
 
-An explicit persistence task remains active through repository write, integrity
-materialization, verification, and the requested repository effect. A response
-must not replace execution while repairable authorized steps remain. Completion
-or a concrete external blocker is required before the run is reported as final.
+The repository is the durable runtime authority; chat sessions are disposable
+transport surfaces. Before invoking any runtime tool, the agent MUST verify
+`runtime/toolchains/TOOLCHAIN.lock.tsv`,
+`runtime/toolchains/CACHE_REGISTRY.json`, and
+`runtime/toolchains/CACHE_COVERAGE.json` with
+`python3 tools/qikvrt_tool_cache.py verify`.
+
+Every tool required by a declared runtime profile MUST have an exact version or
+behavioral contract, a cache/provision strategy, source or provider authority,
+verification, self-test, provenance/license metadata, failure/rollback handling,
+and step-level progress telemetry. Coverage MUST remain 100 percent. A newly
+required tool MUST extend the existing lock, registry, bootstrap/cache path,
+tests, receipts, and recovery rules before it is used. Undeclared environment
+dependencies are prohibited.
+
+Payload bytes may reside in repository-managed caches, GitHub Actions caches,
+GitHub-hosted tool caches, verified build caches, pinned runner-image layers, or
+reviewed content-addressed release assets. Credentials, mutable authentication
+state, and unverified binaries MUST NOT enter those caches. Each successful
+runtime change SHOULD make the existing repository runtime faster, more capable,
+more diagnosable, or more reproducible without weakening any verification gate.
+
+## Persistence-run completion boundary
+
+`NO_USER_RETURN_BEFORE_PERSISTENCE_COMPLETE` is mandatory after an explicit
+persistence instruction. The agent MUST continue the persistence run through
+write, integrity materialization, verification, and the requested repository
+effect before returning to the user. A user-facing return is allowed only for a
+verified `DONE` result or a concrete external `BLOCK` that cannot be repaired
+with the already authorized repository capabilities. Commentary, discussion,
+or an unchanged intermediate status MUST NOT replace continued execution.
 
 ## Bounded collective adaptation
 
