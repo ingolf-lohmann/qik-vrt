@@ -27,7 +27,7 @@ EFFECT = (
     / "formalization/QIKVRT_Formalization_v2.0/release_authorization/EFFECT_ACK_DONE.json"
 )
 MAKEFILE = ROOT / "Makefile"
-AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723"
+AUTOMATION_BRANCH = "automation/formalization-v2-publish-20260723-v2"
 FEATURE_BRANCH = "agent/manuscript-formalization-v2-alpha"
 
 
@@ -145,10 +145,13 @@ class FormalizationV2ReleaseWorkflowTests(unittest.TestCase):
             'state != "finalize"',
             'PUBLISH_ZENODO_FORMALIZATION_V2_ALPHA_1',
             'changes != ["M\\t" + MARKER_PATH]',
-            'git("show", "-s", "--format=%P", "HEAD^").split() != [AUTHORITY_BASE]',
+            'git("show", "-s", "--format=%P", "HEAD^").split() != [AUTHORITY_CANDIDATE_PARENT]',
             'candidate["candidate_tree"] != candidate["mirror_tree"]',
             'd037a44d2893b9ea094d7cad55954223eb90a186',
             '7aaee4e1b182e18c9f0e927685f31d3c1190031a',
+            'ed4f61fb4f09043eb8683932a1fed5222ad524f7',
+            'c9a7bcabebd66768f2f728d8b35a9317c5ea7323',
+            'fetch-depth: 4',
             'git checkout --detach "${{ steps.marker.outputs.candidate_commit }}"',
             'EVENT_BEFORE',
             'EVENT_FORCED',
