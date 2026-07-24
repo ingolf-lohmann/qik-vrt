@@ -154,13 +154,13 @@
       "sha256": "5b75b78b564c0684ac94fd49e5d04ac1028cb67d23bcae663959b9704ce44ac9"
     },
     {
-      "bytes": 5763,
+      "bytes": 6622,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_batch04_integrity.yml",
-      "sha256": "75e234706409fb92271c668e183b956eac0249c6d284e66db5d3d08b2f88da7c"
+      "sha256": "af272f982e2d6221ca5c4b08960f7c1e3d6673cbf3661987aabd1f3c9d68c9bb"
     },
     {
       "bytes": 3031,
@@ -23914,7 +23914,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "5d2ad3ea52b07b96316f3479874f78d9fe6b5b432915c4cc6610ed7c59c6e17d",
+  "repository_content_tree_sha256": "7a31b05e5f7fe1c1800c43ab87d4b7ce3d8fa59ed39de780a6134ac3a4a75d40",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [

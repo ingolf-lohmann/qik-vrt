@@ -1,27 +1,44 @@
+# Generalized deterministic evidence materializer for protected repository states.
 name: QIKVRT repository evidence materialization
 
 on:
   push:
     branches:
+      - main
       - agent/formalization-cache-hmi-batch04
       - agent/manuscript-formalization-v2-completion
+      - automation/generalize-repository-evidence-20260724
+      - automation/machine-verifiable-science-zenodo-20260723
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-repository-evidence-${{ github.ref_name }}
+  group: qikvrt-repository-evidence-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   materialize:
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.head_ref == 'automation/generalize-repository-evidence-20260724' ||
+      github.head_ref == 'automation/machine-verifiable-science-zenodo-20260723'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      TARGET_REF: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ env.TARGET_REF }}
           fetch-depth: 0
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -108,6 +125,12 @@ jobs:
           set -euo pipefail
           python3 tools/qikvrt_integrity.py generate
           python3 tools/qikvrt_integrity.py verify
+      - name: Run repository gates before persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          make test
+          python3 tools/qikvrt_integrity.py verify
       - name: Commit materialized evidence and integrity outputs
         run: |
           set -euo pipefail
@@ -131,5 +154,5 @@ jobs:
             echo "Repository evidence is already current."
             exit 0
           fi
-          git commit -m "ci: materialize completed manuscript evidence"
-          git push origin "HEAD:${{ github.ref_name }}"
+          git commit -m "ci: materialize repository evidence"
+          git push origin "HEAD:$TARGET_REF"
