@@ -1,8 +1,8 @@
 {
   "schema": "qikvrt_transient_check_retrigger_v1",
   "scope": "authority-tree-mirror-bootstrap",
-  "source_head": "6be6085683a7024e2d62eac0c73ac7f12ee63c1f",
-  "purpose": "Trigger final review checks after deterministic bootstrap integrity materialization.",
+  "source_head": "703c2c4c5632fafbb2dc64683621209020037bd9",
+  "purpose": "Trigger simplified registered QIKVRT CI mirror execution from current main.",
   "integrity_classification": "TRANSIENT_EXCLUDED",
   "effect_status": "EFFECT_ACK_CONTINUE"
 }
