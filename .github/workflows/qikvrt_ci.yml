@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test:
@@ -32,3 +32,75 @@ jobs:
             audit/**
             .qikvrt/**
           if-no-files-found: warn
+
+  mirror-authority-tree:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'automation/mirror-manuscript-formalization-v2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Materialize exact verified authority tree
+        shell: bash
+        env:
+          AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+          AUTHORITY_COMMIT: 3d640b05e815ff8644fe7640ddd7dcf89d4094c4
+          EXPECTED_MIRROR_BASE_COMMIT: ac05aeff4835aeab049a22f3b6271c3224856dc2
+          TARGET_BRANCH: mirror/manuscript-formalization-v2-completion
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git remote get-url authority >/dev/null 2>&1; then
+            git remote set-url authority "$AUTHORITY_URL"
+          else
+            git remote add authority "$AUTHORITY_URL"
+          fi
+          git fetch --no-tags --prune authority +refs/heads/main:refs/remotes/authority/main
+          git fetch --no-tags --prune origin +refs/heads/main:refs/remotes/origin/main
+
+          git cat-file -e "$AUTHORITY_COMMIT^{commit}"
+          git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
+          mirror_parent="$(git rev-parse refs/remotes/origin/main)"
+          authority_tree="$(git rev-parse "$AUTHORITY_COMMIT^{tree}")"
+          git merge-base --is-ancestor "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent"
+
+          unexpected=0
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/qikvrt_batch04_integrity.yml|\
+              .github/workflows/qikvrt_ci.yml|\
+              .github/workflows/qikvrt_mirror_authority_main.yml|\
+              .qikvrt/evidence/mirror-bootstrap-final-retrigger.json|\
+              REPOSITORY_FILE_MANIFEST.json|\
+              REPOSITORY_FILE_MANIFEST.json.sha256|\
+              SHA256SUMS.txt)
+                ;;
+              *)
+                printf 'BLOCK unexpected bootstrap path: %s\n' "$path" >&2
+                unexpected=1
+                ;;
+            esac
+          done < <(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent")
+          test "$unexpected" -eq 0
+
+          export GIT_AUTHOR_DATE="$(git show -s --format=%aI "$AUTHORITY_COMMIT")"
+          export GIT_COMMITTER_DATE="$(git show -s --format=%cI "$AUTHORITY_COMMIT")"
+          message="Mirror completed 62-page manuscript formalization
+
+Authority commit: $AUTHORITY_COMMIT
+Authority tree: $authority_tree
+Mirror parent: $mirror_parent
+
+Exact verified authority tree persisted with mirror main as first parent and authority commit as second parent."
+          mirror_commit="$(printf '%s\n' "$message" | git commit-tree "$authority_tree" -p "$mirror_parent" -p "$AUTHORITY_COMMIT")"
+          git push --force-with-lease origin "$mirror_commit:refs/heads/$TARGET_BRANCH"
+          remote_commit="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          test "$remote_commit" = "$mirror_commit"
+          remote_tree="$(git rev-parse "$remote_commit^{tree}")"
+          test "$remote_tree" = "$authority_tree"
+          printf 'PASS mirror commit=%s tree=%s\n' "$mirror_commit" "$remote_tree"
