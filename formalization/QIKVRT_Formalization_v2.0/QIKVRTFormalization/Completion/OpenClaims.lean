@@ -41,8 +41,12 @@ theorem escape_growth_lower_bound (radius : Nat → Nat)
   induction offset with
   | zero => simp
   | succ offset ih =>
-      have hGrowth := witness.grows (witness.crossing + offset)
-        (Nat.le_add_right witness.crossing offset)
+      have hGrowth :
+          radius (witness.crossing + offset) <
+            radius (witness.crossing + (offset + 1)) := by
+        simpa [Nat.add_assoc] using
+          witness.grows (witness.crossing + offset)
+            (Nat.le_add_right witness.crossing offset)
       omega
 
 theorem escape_growth_unbounded (radius : Nat → Nat)
@@ -76,13 +80,12 @@ structure ExactEscapeCriterion (radius : Nat → Nat) where
 theorem bounded_iff_no_finite_escape (radius : Nat → Nat)
     (criterion : ExactEscapeCriterion radius) :
     BoundedNat radius ↔ ¬ FiniteEscape radius := by
-  classical
   constructor
   · intro hBounded hEscape
     exact criterion.escapeImpliesUnbounded hEscape hBounded
   · intro hNoEscape
-    by_contra hUnbounded
-    exact hNoEscape (criterion.unboundedImpliesEscape hUnbounded)
+    exact Classical.byContradiction (fun hUnbounded =>
+      hNoEscape (criterion.unboundedImpliesEscape hUnbounded))
 
 theorem unbounded_iff_finite_escape (radius : Nat → Nat)
     (criterion : ExactEscapeCriterion radius) :
@@ -92,7 +95,7 @@ theorem unbounded_iff_finite_escape (radius : Nat → Nat)
   · exact criterion.escapeImpliesUnbounded
 
 def ESC005Statement : Prop :=
-  ∀ (radius : Nat → Nat) (criterion : ExactEscapeCriterion radius),
+  ∀ (radius : Nat → Nat), ExactEscapeCriterion radius →
     (BoundedNat radius ↔ ¬ FiniteEscape radius) ∧
     (¬ BoundedNat radius ↔ FiniteEscape radius)
 
@@ -103,50 +106,50 @@ theorem ESC005_checked : ESC005Statement := by
 
 /-! ## ESC-003: relative staged reconstruction -/
 
-def RelativeStage (universe : SetOf α) (escapeAt : α → Nat → Prop)
+def RelativeStage (ambient : SetOf α) (escapeAt : α → Nat → Prop)
     (stage : Nat) : SetOf α :=
-  fun point => universe point ∧ Escape.Stage escapeAt stage point
+  fun point => ambient point ∧ Escape.Stage escapeAt stage point
 
-def RelativeFiniteExterior (universe : SetOf α)
+def RelativeFiniteExterior (ambient : SetOf α)
     (escapeAt : α → Nat → Prop) : SetOf α :=
-  fun point => universe point ∧ Escape.FiniteWitnessExterior escapeAt point
+  fun point => ambient point ∧ Escape.FiniteWitnessExterior escapeAt point
 
-theorem relative_stage_mono (universe : SetOf α)
+theorem relative_stage_mono (ambient : SetOf α)
     (escapeAt : α → Nat → Prop) (stage : Nat) :
-    ∀ point, RelativeStage universe escapeAt stage point →
-      RelativeStage universe escapeAt (stage + 1) point := by
+    ∀ point, RelativeStage ambient escapeAt stage point →
+      RelativeStage ambient escapeAt (stage + 1) point := by
   intro point hPoint
   exact ⟨hPoint.1, Escape.stage_succ_mono escapeAt stage point hPoint.2⟩
 
-theorem relative_stages_reconstruct (universe : SetOf α)
+theorem relative_stages_reconstruct (ambient : SetOf α)
     (escapeAt : α → Nat → Prop) :
-    (fun point => ∃ stage, RelativeStage universe escapeAt stage point) =
-      RelativeFiniteExterior universe escapeAt := by
+    (fun point => ∃ stage, RelativeStage ambient escapeAt stage point) =
+      RelativeFiniteExterior ambient escapeAt := by
   funext point
   apply propext
   constructor
-  · rintro ⟨stage, hUniverse, hStage⟩
-    exact ⟨hUniverse, (Escape.exists_stage_iff_finite_witness escapeAt point).1
+  · rintro ⟨stage, hAmbient, hStage⟩
+    exact ⟨hAmbient, (Escape.exists_stage_iff_finite_witness escapeAt point).1
       ⟨stage, hStage⟩⟩
-  · rintro ⟨hUniverse, hFinite⟩
+  · rintro ⟨hAmbient, hFinite⟩
     rcases (Escape.exists_stage_iff_finite_witness escapeAt point).2 hFinite with
       ⟨stage, hStage⟩
-    exact ⟨stage, hUniverse, hStage⟩
+    exact ⟨stage, hAmbient, hStage⟩
 
 def ESC003Statement : Prop :=
-  ∀ (α : Type) (universe exterior : SetOf α)
+  ∀ (α : Type) (ambient exterior : SetOf α)
       (escapeAt : α → Nat → Prop),
     (∀ point, exterior point ↔
-      RelativeFiniteExterior universe escapeAt point) →
-    (∀ stage point, RelativeStage universe escapeAt stage point →
-      RelativeStage universe escapeAt (stage + 1) point) ∧
-    (fun point => ∃ stage, RelativeStage universe escapeAt stage point) = exterior
+      RelativeFiniteExterior ambient escapeAt point) →
+    (∀ stage point, RelativeStage ambient escapeAt stage point →
+      RelativeStage ambient escapeAt (stage + 1) point) ∧
+    (fun point => ∃ stage, RelativeStage ambient escapeAt stage point) = exterior
 
 theorem ESC003_checked : ESC003Statement := by
-  intro α universe exterior escapeAt hExterior
+  intro α ambient exterior escapeAt hExterior
   constructor
-  · exact relative_stage_mono universe escapeAt
-  · rw [relative_stages_reconstruct universe escapeAt]
+  · exact relative_stage_mono ambient escapeAt
+  · rw [relative_stages_reconstruct ambient escapeAt]
     funext point
     exact propext (Iff.symm (hExterior point))
 
@@ -314,17 +317,20 @@ theorem discontinuous_implies_boundary (system : NeighborhoodSystem α)
   have hPointNeighborhood := system.contains point neighborhood hNeighborhood
   by_cases hInside : inside point
   · refine ⟨⟨point, hPointNeighborhood, hInside⟩, ?_⟩
-    by_contra hNoExterior
+    apply Classical.byContradiction
+    intro hNoExterior
     apply hDiscontinuous
     refine ⟨neighborhood, hNeighborhood, ?_⟩
     intro candidate hCandidate
     have hCandidateInside : inside candidate := by
-      by_contra hOutside
+      apply Classical.byContradiction
+      intro hOutside
       exact hNoExterior ⟨candidate, hCandidate, hOutside⟩
     rw [(classify_eq_pass_iff inside candidate).2 hCandidateInside,
       (classify_eq_pass_iff inside point).2 hInside]
   · refine ⟨?_, ⟨point, hPointNeighborhood, hInside⟩⟩
-    by_contra hNoMember
+    apply Classical.byContradiction
+    intro hNoMember
     apply hDiscontinuous
     refine ⟨neighborhood, hNeighborhood, ?_⟩
     intro candidate hCandidate
@@ -364,7 +370,7 @@ theorem sameUnderEveryUnitProbe_iff_eq (left right : Physics.Dimension) :
     rfl
 
 def DIM006Statement : Prop :=
-  DIM006AAdditiveStatement ∧
+  DIM006AAdditiveStatement.{0} ∧
   (∀ left right : Physics.Dimension,
     SameUnderEveryUnitProbe left right → left = right) ∧
   (∀ dimension : Physics.Dimension,
@@ -372,7 +378,7 @@ def DIM006Statement : Prop :=
       dimension = Physics.dimensionless)
 
 theorem DIM006_checked : DIM006Statement := by
-  refine ⟨DIM006A_additive_checked, ?_, ?_⟩
+  refine ⟨DIM006A_additive_checked.{0}, ?_, ?_⟩
   · intro left right h
     exact (sameUnderEveryUnitProbe_iff_eq left right).1 h
   · intro dimension h
