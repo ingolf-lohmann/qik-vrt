@@ -26,6 +26,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          show-progress: false
 
       - name: Fetch and validate verified authority commit
         shell: bash
@@ -37,7 +38,7 @@ jobs:
           set -euo pipefail
           git remote remove authority 2>/dev/null || true
           git remote add authority "$AUTHORITY_URL"
-          git fetch --no-tags --prune authority \
+          git fetch --quiet --no-tags --prune authority \
             "+refs/heads/main:refs/remotes/authority/main"
           git cat-file -e "$AUTHORITY_COMMIT^{commit}"
           git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
@@ -96,12 +97,18 @@ jobs:
             -p "$mirror_parent" \
             -p "$AUTHORITY_COMMIT")"
 
-          git push --force-with-lease origin \
-            "$mirror_commit:refs/heads/$TARGET_BRANCH"
+          remote_before="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          test -z "$remote_before" || {
+            echo "BLOCK: target branch unexpectedly exists at $remote_before" >&2
+            exit 1
+          }
+          echo "CREATE target=$TARGET_BRANCH commit=$mirror_commit tree=$authority_tree"
+          git push --quiet origin "$mirror_commit:refs/heads/$TARGET_BRANCH"
 
           remote_commit="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
           test "$remote_commit" = "$mirror_commit"
           test "$(git show -s --format=%T "$remote_commit")" = "$authority_tree"
+          echo "PASS target=$TARGET_BRANCH commit=$remote_commit tree=$authority_tree"
 
           {
             echo '## QIK-VRT Alpha 3 mirror materialization'
