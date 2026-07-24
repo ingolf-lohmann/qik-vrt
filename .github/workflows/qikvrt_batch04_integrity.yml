@@ -1,16 +1,16 @@
-name: QIKVRT batch04 integrity materialization
+name: QIKVRT mirror-bootstrap integrity materialization
 
 on:
   push:
     branches:
-      - agent/formalization-cache-hmi-batch04
+      - automation/mirror-manuscript-formalization-v2
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-batch04-integrity
+  group: qikvrt-mirror-bootstrap-integrity
   cancel-in-progress: false
 
 jobs:
@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          ref: agent/formalization-cache-hmi-batch04
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
       - name: Regenerate and verify repository integrity
         run: |
@@ -37,5 +37,5 @@ jobs:
             echo "Integrity outputs already current."
             exit 0
           fi
-          git commit -m "fix: regenerate integrity for batch04"
-          git push origin HEAD:agent/formalization-cache-hmi-batch04
+          git commit -m "ci: materialize mirror-bootstrap integrity"
+          git push origin "HEAD:${{ github.ref_name }}"
