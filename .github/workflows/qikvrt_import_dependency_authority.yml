@@ -1,0 +1,199 @@
+# Temporary object-import transport; never merge this workflow.
+name: QIKVRT import verified dependency Authority objects
+
+on:
+  push:
+    branches:
+      - automation/import-dependency-authority-20260724
+    paths:
+      - .github/workflows/qikvrt_import_dependency_authority.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-import-dependency-authority-objects
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+      AUTHORITY_COMMIT: f4d1660be3e602bbe872634b226cadc18bac6fc2
+      EXPECTED_AUTHORITY_TREE: fdf526598bdba3b5e16d61e08a4472c0ba22e575
+      MIRROR_PARENT: f969cc984f2204f61adb833d7ca4987525f031e3
+    steps:
+      - name: Checkout temporary transport branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch and validate public Authority and Mirror baselines
+        shell: bash
+        run: |
+          set -euo pipefail
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "$AUTHORITY_URL"
+          git fetch --no-tags --prune authority \
+            "+refs/heads/main:refs/remotes/authority/main"
+          git fetch --no-tags --prune origin \
+            "+refs/heads/main:refs/remotes/origin/main"
+          test "$(git rev-parse refs/remotes/origin/main)" = "$MIRROR_PARENT"
+          test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_COMMIT"
+          test "$(git show -s --format=%T "$AUTHORITY_COMMIT")" = "$EXPECTED_AUTHORITY_TREE"
+          git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
+
+      - name: Import changed blobs and exact Authority tree through GitHub Git Data API
+        id: import
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/import-dependency-authority
+          python3 -B - <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import urllib.error
+          import urllib.request
+
+          repository = os.environ["GITHUB_REPOSITORY"]
+          token = os.environ["GH_TOKEN"]
+          authority = os.environ["AUTHORITY_COMMIT"]
+          expected_tree = os.environ["EXPECTED_AUTHORITY_TREE"]
+          mirror_parent = os.environ["MIRROR_PARENT"]
+          output = Path(".qikvrt/import-dependency-authority")
+
+          def git_bytes(*args: str) -> bytes:
+              return subprocess.run(
+                  ["git", *args],
+                  check=True,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+              ).stdout
+
+          def api(method: str, path: str, payload: dict[str, object]) -> dict[str, object]:
+              request = urllib.request.Request(
+                  f"https://api.github.com/repos/{repository}/{path}",
+                  data=json.dumps(payload, separators=(",", ":")).encode("utf-8"),
+                  method=method,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {token}",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "Content-Type": "application/json",
+                      "User-Agent": "qikvrt-authority-object-import",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=180) as response:
+                      return json.loads(response.read().decode("utf-8"))
+              except urllib.error.HTTPError as error:
+                  detail = error.read().decode("utf-8", errors="replace")
+                  raise RuntimeError(f"GitHub API {method} {path} failed: {error.code}: {detail}") from error
+
+          changed = [
+              raw.decode("utf-8")
+              for raw in git_bytes("diff", "--name-only", "-z", "--no-renames", mirror_parent, authority).split(b"\0")
+              if raw
+          ]
+          if not changed:
+              raise SystemExit("BLOCK: Authority and Mirror unexpectedly have no changed paths")
+
+          entries: list[dict[str, object]] = []
+          imported: list[dict[str, object]] = []
+          for path in changed:
+              listing = git_bytes("ls-tree", "-z", authority, "--", path)
+              if not listing:
+                  entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
+                  imported.append({"path": path, "status": "deleted"})
+                  continue
+              record = listing.rstrip(b"\0")
+              header, encoded_path = record.split(b"\t", 1)
+              mode, object_type, object_sha = header.decode("ascii").split()
+              actual_path = encoded_path.decode("utf-8")
+              if actual_path != path:
+                  raise SystemExit(f"BLOCK: ls-tree path differs: {actual_path!r} != {path!r}")
+              if object_type != "blob":
+                  raise SystemExit(f"BLOCK: unsupported changed Git object {object_type} at {path}")
+              payload = git_bytes("cat-file", "blob", object_sha)
+              created = api(
+                  "POST",
+                  "git/blobs",
+                  {"content": base64.b64encode(payload).decode("ascii"), "encoding": "base64"},
+              )
+              created_sha = str(created["sha"])
+              if created_sha != object_sha:
+                  raise SystemExit(
+                      f"BLOCK: imported blob SHA differs for {path}: {created_sha} != {object_sha}"
+                  )
+              entries.append({"path": path, "mode": mode, "type": "blob", "sha": created_sha})
+              imported.append(
+                  {"path": path, "status": "imported", "mode": mode, "sha": created_sha, "bytes": len(payload)}
+              )
+
+          base_tree = git_bytes("show", "-s", "--format=%T", mirror_parent).decode("ascii").strip()
+          tree = api("POST", "git/trees", {"base_tree": base_tree, "tree": entries})
+          tree_sha = str(tree["sha"])
+          if tree_sha != expected_tree:
+              raise SystemExit(f"BLOCK: imported tree differs: {tree_sha} != {expected_tree}")
+
+          mirror_message = (
+              "Mirror consolidated dependency-security authority\n\n"
+              f"Authority commit: {authority}\n"
+              f"Authority tree: {tree_sha}\n"
+              f"Mirror parent: {mirror_parent}\n\n"
+              "Exact verified public Authority tree imported through the Git Data API."
+          )
+          commit_sha = None
+          commit_error = None
+          try:
+              commit = api(
+                  "POST",
+                  "git/commits",
+                  {"message": mirror_message, "tree": tree_sha, "parents": [mirror_parent, authority]},
+              )
+              commit_sha = str(commit["sha"])
+          except RuntimeError as error:
+              commit_error = str(error)
+
+          evidence = {
+              "schema": "qikvrt_dependency_authority_object_import_v1",
+              "repository": repository,
+              "authority_commit": authority,
+              "authority_tree": expected_tree,
+              "mirror_parent": mirror_parent,
+              "changed_path_count": len(changed),
+              "imported_tree": tree_sha,
+              "two_parent_commit": commit_sha,
+              "two_parent_commit_error": commit_error,
+              "entries": imported,
+              "status": "PASS",
+          }
+          evidence_path = output / "IMPORT_EVIDENCE.json"
+          evidence_path.write_text(
+              json.dumps(evidence, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps({key: evidence[key] for key in (
+              "status", "changed_path_count", "imported_tree", "two_parent_commit", "two_parent_commit_error"
+          )}, sort_keys=True))
+          PY
+
+      - name: Upload exact object-import evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-dependency-authority-object-import
+          retention-days: 30
+          path: .qikvrt/import-dependency-authority/IMPORT_EVIDENCE.json
+          if-no-files-found: error
