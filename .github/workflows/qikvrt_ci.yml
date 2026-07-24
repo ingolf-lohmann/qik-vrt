@@ -4,10 +4,6 @@
 name: QIKVRT CI
 
 on:
-  push:
-    branches-ignore:
-      - automation/effect-ack-universality-reserve-20260722
-      - automation/effect-ack-universality-finalize-20260722
   pull_request:
   workflow_dispatch:
 
@@ -34,9 +30,6 @@ jobs:
           if-no-files-found: warn
 
   mirror-authority-tree:
-    if: >-
-      github.event_name == 'pull_request' &&
-      github.head_ref == 'automation/mirror-manuscript-formalization-v2'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -55,11 +48,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if git remote get-url authority >/dev/null 2>&1; then
-            git remote set-url authority "$AUTHORITY_URL"
-          else
-            git remote add authority "$AUTHORITY_URL"
-          fi
+          git remote add authority "$AUTHORITY_URL"
           git fetch --no-tags --prune authority +refs/heads/main:refs/remotes/authority/main
           git fetch --no-tags --prune origin +refs/heads/main:refs/remotes/origin/main
 
@@ -69,24 +58,11 @@ jobs:
           authority_tree="$(git rev-parse "$AUTHORITY_COMMIT^{tree}")"
           git merge-base --is-ancestor "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent"
 
-          unexpected=0
-          while IFS= read -r path; do
-            case "$path" in
-              .github/workflows/qikvrt_batch04_integrity.yml|\
-              .github/workflows/qikvrt_ci.yml|\
-              .github/workflows/qikvrt_mirror_authority_main.yml|\
-              .qikvrt/evidence/mirror-bootstrap-final-retrigger.json|\
-              REPOSITORY_FILE_MANIFEST.json|\
-              REPOSITORY_FILE_MANIFEST.json.sha256|\
-              SHA256SUMS.txt)
-                ;;
-              *)
-                printf 'BLOCK unexpected bootstrap path: %s\n' "$path" >&2
-                unexpected=1
-                ;;
-            esac
-          done < <(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent")
-          test "$unexpected" -eq 0
+          unexpected="$(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent" | grep -Ev '^(.github/workflows/qikvrt_batch04_integrity.yml|.github/workflows/qikvrt_ci.yml|.github/workflows/qikvrt_mirror_authority_main.yml|.qikvrt/evidence/mirror-bootstrap-final-retrigger.json|REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)$' || true)"
+          if [ -n "$unexpected" ]; then
+            printf 'BLOCK unexpected bootstrap paths:\n%s\n' "$unexpected" >&2
+            exit 1
+          fi
 
           export GIT_AUTHOR_DATE="$(git show -s --format=%aI "$AUTHORITY_COMMIT")"
           export GIT_COMMITTER_DATE="$(git show -s --format=%cI "$AUTHORITY_COMMIT")"
@@ -99,6 +75,7 @@ Mirror parent: $mirror_parent
 Exact verified authority tree persisted with mirror main as first parent and authority commit as second parent."
           mirror_commit="$(printf '%s\n' "$message" | git commit-tree "$authority_tree" -p "$mirror_parent" -p "$AUTHORITY_COMMIT")"
           git push --force-with-lease origin "$mirror_commit:refs/heads/$TARGET_BRANCH"
+
           remote_commit="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
           test "$remote_commit" = "$mirror_commit"
           remote_tree="$(git rev-parse "$remote_commit^{tree}")"
