@@ -1,0 +1,8 @@
+{
+  "schema": "qikvrt_transient_check_retrigger_v1",
+  "scope": "62-page-manuscript-formalization-v2",
+  "source_head": "f33dc7ad1b7a07e63afc70a92dab4561b0190543",
+  "purpose": "Trigger repository and manuscript verification from a human-authored commit after deterministic integrity materialization.",
+  "integrity_classification": "TRANSIENT_EXCLUDED",
+  "effect_status": "EFFECT_ACK_CONTINUE"
+}
