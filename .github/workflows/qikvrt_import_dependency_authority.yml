@@ -1,5 +1,5 @@
 # Temporary object-import transport; never merge this workflow.
-name: QIKVRT import verified dependency Authority objects
+name: QIKVRT import final repository mesh Authority objects
 
 on:
   push:
@@ -13,20 +13,21 @@ permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-import-dependency-authority-objects
+  group: qikvrt-import-final-repository-mesh-authority-objects
   cancel-in-progress: false
 
 jobs:
   import:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
-      AUTHORITY_COMMIT: f4d1660be3e602bbe872634b226cadc18bac6fc2
-      EXPECTED_AUTHORITY_TREE: fdf526598bdba3b5e16d61e08a4472c0ba22e575
-      MIRROR_PARENT: f969cc984f2204f61adb833d7ca4987525f031e3
+      AUTHORITY_COMMIT: 187113e970f810db54697db5681a6c8d77c26e98
+      MIRROR_PARENT: 9c4ac1fc95875b09dee291b1a3ef284804e7a56b
+      EXPECTED_CONTENT_TREE_SHA256: 71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae
+      EXPECTED_TAG: v2026.07.24-repository-mesh-sync-1.0.0
     steps:
-      - name: Checkout temporary transport branch
+      - name: Check out temporary transport branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
@@ -44,8 +45,40 @@ jobs:
             "+refs/heads/main:refs/remotes/origin/main"
           test "$(git rev-parse refs/remotes/origin/main)" = "$MIRROR_PARENT"
           test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_COMMIT"
-          test "$(git show -s --format=%T "$AUTHORITY_COMMIT")" = "$EXPECTED_AUTHORITY_TREE"
           git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
+
+          authority_root="$RUNNER_TEMP/qikvrt-final-authority"
+          git worktree add --detach "$authority_root" "$AUTHORITY_COMMIT"
+          python3 -B "$authority_root/tools/qikvrt_integrity.py" verify --root "$authority_root" 2>/dev/null || \
+            (cd "$authority_root" && python3 -B tools/qikvrt_integrity.py verify)
+          python3 -B - "$authority_root" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          manifest = json.loads((root / 'REPOSITORY_FILE_MANIFEST.json').read_text(encoding='utf-8'))
+          if manifest.get('repository_content_tree_sha256') != os.environ['EXPECTED_CONTENT_TREE_SHA256']:
+              raise SystemExit('BLOCK: Authority content-tree digest differs')
+          readme = (root / 'README.md').read_text(encoding='utf-8')
+          status = (root / 'STATUS.md').read_text(encoding='utf-8')
+          for needle in (
+              os.environ['EXPECTED_TAG'],
+              '10.5281/zenodo.21500322',
+              '10.5281/zenodo.21515074',
+              '10.5281/zenodo.21529081',
+          ):
+              if needle not in readme or needle not in status:
+                  raise SystemExit(f'BLOCK: Authority documentation lacks {needle}')
+          marker = json.loads((root / 'release/repository-mesh-sync-request.json').read_text(encoding='utf-8'))
+          if marker.get('action') != 'inactive' or marker.get('confirm') != 'NOT_AUTHORIZED':
+              raise SystemExit('BLOCK: Authority tag marker is not inert')
+          if marker.get('release', {}).get('tag') != os.environ['EXPECTED_TAG']:
+              raise SystemExit('BLOCK: Authority tag identity differs')
+          if not (root / '.github/workflows/qikvrt_repository_mesh_sync_tag.yml').is_file():
+              raise SystemExit('BLOCK: Authority common-tag workflow is absent')
+          PY
 
       - name: Import changed blobs and emit exact Authority tree plan
         shell: bash
@@ -53,12 +86,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          mkdir -p .qikvrt/import-dependency-authority
-          exec > >(tee .qikvrt/import-dependency-authority/IMPORT.log) 2>&1
+          mkdir -p .qikvrt/import-final-repository-mesh-authority
+          exec > >(tee .qikvrt/import-final-repository-mesh-authority/IMPORT.log) 2>&1
           python3 -B - <<'PY'
           from __future__ import annotations
 
           import base64
+          import hashlib
           import json
           import os
           from pathlib import Path
@@ -66,16 +100,15 @@ jobs:
           import urllib.error
           import urllib.request
 
-          repository = os.environ["GITHUB_REPOSITORY"]
-          token = os.environ["GH_TOKEN"]
-          authority = os.environ["AUTHORITY_COMMIT"]
-          expected_tree = os.environ["EXPECTED_AUTHORITY_TREE"]
-          mirror_parent = os.environ["MIRROR_PARENT"]
-          output = Path(".qikvrt/import-dependency-authority")
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          authority = os.environ['AUTHORITY_COMMIT']
+          mirror_parent = os.environ['MIRROR_PARENT']
+          output = Path('.qikvrt/import-final-repository-mesh-authority')
 
           def git_bytes(*args: str) -> bytes:
               return subprocess.run(
-                  ["git", *args],
+                  ['git', *args],
                   check=True,
                   stdout=subprocess.PIPE,
                   stderr=subprocess.PIPE,
@@ -83,92 +116,110 @@ jobs:
 
           def api(method: str, path: str, payload: dict[str, object]) -> dict[str, object]:
               request = urllib.request.Request(
-                  f"https://api.github.com/repos/{repository}/{path}",
-                  data=json.dumps(payload, separators=(",", ":")).encode("utf-8"),
+                  f'https://api.github.com/repos/{repository}/{path}',
+                  data=json.dumps(payload, separators=(',', ':')).encode('utf-8'),
                   method=method,
                   headers={
-                      "Accept": "application/vnd.github+json",
-                      "Authorization": f"Bearer {token}",
-                      "X-GitHub-Api-Version": "2022-11-28",
-                      "Content-Type": "application/json",
-                      "User-Agent": "qikvrt-authority-object-import",
+                      'Accept': 'application/vnd.github+json',
+                      'Authorization': f'Bearer {token}',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'Content-Type': 'application/json',
+                      'User-Agent': 'qikvrt-final-authority-object-import',
                   },
               )
               try:
                   with urllib.request.urlopen(request, timeout=180) as response:
-                      return json.loads(response.read().decode("utf-8"))
+                      return json.loads(response.read().decode('utf-8'))
               except urllib.error.HTTPError as error:
-                  detail = error.read().decode("utf-8", errors="replace")
-                  raise RuntimeError(f"GitHub API {method} {path} failed: {error.code}: {detail}") from error
+                  detail = error.read().decode('utf-8', errors='replace')
+                  raise RuntimeError(
+                      f'GitHub API {method} {path} failed: {error.code}: {detail}'
+                  ) from error
 
+          authority_tree = git_bytes('show', '-s', '--format=%T', authority).decode('ascii').strip()
+          base_tree = git_bytes('show', '-s', '--format=%T', mirror_parent).decode('ascii').strip()
           changed = [
-              raw.decode("utf-8")
-              for raw in git_bytes("diff", "--name-only", "-z", "--no-renames", mirror_parent, authority).split(b"\0")
+              raw.decode('utf-8')
+              for raw in git_bytes(
+                  'diff', '--name-only', '-z', '--no-renames', mirror_parent, authority
+              ).split(b'\0')
               if raw
           ]
           if not changed:
-              raise SystemExit("BLOCK: Authority and Mirror unexpectedly have no changed paths")
+              raise SystemExit('BLOCK: Authority and Mirror unexpectedly have no changed paths')
 
           tree_entries: list[dict[str, object]] = []
           imported: list[dict[str, object]] = []
           for index, path in enumerate(changed, 1):
-              print(f"IMPORT {index}/{len(changed)} {path}", flush=True)
-              listing = git_bytes("ls-tree", "-z", authority, "--", path)
+              print(f'IMPORT {index}/{len(changed)} {path}', flush=True)
+              listing = git_bytes('ls-tree', '-z', authority, '--', path)
               if not listing:
-                  tree_entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
-                  imported.append({"path": path, "status": "deleted"})
+                  tree_entries.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': None})
+                  imported.append({'path': path, 'status': 'deleted'})
                   continue
-              record = listing.rstrip(b"\0")
-              header, encoded_path = record.split(b"\t", 1)
-              mode, object_type, object_sha = header.decode("ascii").split()
-              actual_path = encoded_path.decode("utf-8")
+              record = listing.rstrip(b'\0')
+              header, encoded_path = record.split(b'\t', 1)
+              mode, object_type, object_sha = header.decode('ascii').split()
+              actual_path = encoded_path.decode('utf-8')
               if actual_path != path:
-                  raise SystemExit(f"BLOCK: ls-tree path differs: {actual_path!r} != {path!r}")
-              if object_type != "blob":
-                  raise SystemExit(f"BLOCK: unsupported changed Git object {object_type} at {path}")
-              payload = git_bytes("cat-file", "blob", object_sha)
+                  raise SystemExit(f'BLOCK: ls-tree path differs: {actual_path!r} != {path!r}')
+              if object_type != 'blob':
+                  raise SystemExit(f'BLOCK: unsupported changed Git object {object_type} at {path}')
+              payload = git_bytes('cat-file', 'blob', object_sha)
               created = api(
-                  "POST",
-                  "git/blobs",
-                  {"content": base64.b64encode(payload).decode("ascii"), "encoding": "base64"},
+                  'POST',
+                  'git/blobs',
+                  {'content': base64.b64encode(payload).decode('ascii'), 'encoding': 'base64'},
               )
-              created_sha = str(created["sha"])
+              created_sha = str(created['sha'])
               if created_sha != object_sha:
                   raise SystemExit(
-                      f"BLOCK: imported blob SHA differs for {path}: {created_sha} != {object_sha}"
+                      f'BLOCK: imported blob SHA differs for {path}: {created_sha} != {object_sha}'
                   )
-              tree_entries.append({"path": path, "mode": mode, "type": "blob", "sha": created_sha})
-              imported.append(
-                  {"path": path, "status": "imported", "mode": mode, "sha": created_sha, "bytes": len(payload)}
-              )
+              tree_entries.append({'path': path, 'mode': mode, 'type': 'blob', 'sha': created_sha})
+              imported.append({
+                  'path': path,
+                  'status': 'imported',
+                  'mode': mode,
+                  'sha': created_sha,
+                  'bytes': len(payload),
+                  'sha256': hashlib.sha256(payload).hexdigest(),
+              })
 
-          base_tree = git_bytes("show", "-s", "--format=%T", mirror_parent).decode("ascii").strip()
           evidence = {
-              "schema": "qikvrt_dependency_authority_object_import_v2",
-              "repository": repository,
-              "authority_commit": authority,
-              "authority_tree": expected_tree,
-              "mirror_parent": mirror_parent,
-              "mirror_base_tree": base_tree,
-              "changed_path_count": len(changed),
-              "tree_entries": tree_entries,
-              "imported": imported,
-              "status": "BLOBS_IMPORTED_AND_TREE_PLAN_READY",
+              'schema': 'qikvrt_final_repository_mesh_authority_object_import_v1',
+              'repository': repository,
+              'authority_commit': authority,
+              'authority_tree': authority_tree,
+              'authority_content_tree_sha256': os.environ['EXPECTED_CONTENT_TREE_SHA256'],
+              'mirror_parent': mirror_parent,
+              'mirror_base_tree': base_tree,
+              'tag': os.environ['EXPECTED_TAG'],
+              'changed_path_count': len(changed),
+              'tree_entries': tree_entries,
+              'imported': imported,
+              'status': 'BLOBS_IMPORTED_AND_EXACT_TREE_PLAN_READY',
           }
-          evidence_path = output / "IMPORT_EVIDENCE.json"
+          canonical = json.dumps(
+              evidence, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+          ).encode('utf-8')
+          evidence['canonical_sha256'] = hashlib.sha256(canonical).hexdigest()
+          evidence_path = output / 'IMPORT_EVIDENCE.json'
           evidence_path.write_text(
-              json.dumps(evidence, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-              encoding="utf-8",
+              json.dumps(evidence, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
           )
           print(json.dumps({key: evidence[key] for key in (
-              "status", "changed_path_count", "authority_tree", "mirror_base_tree"
+              'status', 'changed_path_count', 'authority_tree', 'mirror_base_tree',
+              'authority_content_tree_sha256', 'canonical_sha256'
           )}, sort_keys=True))
           PY
 
       - name: Upload exact object-import evidence and tree plan
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: qikvrt-dependency-authority-object-import
+          name: qikvrt-final-repository-mesh-authority-object-import
           retention-days: 30
-          path: .qikvrt/import-dependency-authority/**
+          path: .qikvrt/import-final-repository-mesh-authority/**
           if-no-files-found: error
+          include-hidden-files: true
