@@ -1,12 +1,14 @@
-# Execute registered mirror executor now; the exact authority-tree merge removes it.
+# Temporary PR-observable executor; the exact authority-tree merge removes it.
 name: QIKVRT exact authority-tree mirror executor
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-    paths:
-      - .github/workflows/qikvrt_batch04_integrity.yml
+    types:
+      - opened
+      - synchronize
+      - reopened
   workflow_dispatch:
 
 permissions:
@@ -18,6 +20,9 @@ concurrency:
 
 jobs:
   mirror:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.head_ref == 'automation/mirror-manuscript-formalization-v2'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -35,7 +40,11 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote add authority "$AUTHORITY_URL"
+          if git remote get-url authority >/dev/null 2>&1; then
+            git remote set-url authority "$AUTHORITY_URL"
+          else
+            git remote add authority "$AUTHORITY_URL"
+          fi
           git fetch --no-tags --prune authority +refs/heads/main:refs/remotes/authority/main
           git fetch --no-tags --prune origin +refs/heads/main:refs/remotes/origin/main
           git cat-file -e "$AUTHORITY_COMMIT^{commit}"
