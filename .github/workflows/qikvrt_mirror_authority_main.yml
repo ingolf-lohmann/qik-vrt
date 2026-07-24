@@ -2,6 +2,9 @@
 name: QIKVRT mirror verified Alpha 3 authority tree
 
 "on":
+  push:
+    branches: ["main"]
+    paths: [".github/workflows/qikvrt_mirror_authority_main.yml"]
   pull_request:
     branches: ["main"]
     types: [opened, synchronize, reopened]
@@ -17,6 +20,7 @@ concurrency:
 jobs:
   mirror:
     if: >-
+      github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       github.head_ref == 'automation/execute-alpha3-authority-mirror'
     runs-on: ubuntu-24.04
@@ -25,7 +29,7 @@ jobs:
       - name: Checkout mirror repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           show-progress: false
 
       - name: Fetch and validate verified authority commit
@@ -36,9 +40,10 @@ jobs:
           EXPECTED_MIRROR_BASE_COMMIT: 5698d7d3c3360db1bcba538b7c06e135e1936e02
         run: |
           set -euo pipefail
+          git fetch --quiet --no-tags origin "$EXPECTED_MIRROR_BASE_COMMIT"
           git remote remove authority 2>/dev/null || true
           git remote add authority "$AUTHORITY_URL"
-          git fetch --quiet --no-tags --prune authority \
+          git fetch --quiet --no-tags authority \
             "+refs/heads/main:refs/remotes/authority/main"
           git cat-file -e "$AUTHORITY_COMMIT^{commit}"
           git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
@@ -103,7 +108,10 @@ jobs:
             exit 1
           }
           echo "CREATE target=$TARGET_BRANCH commit=$mirror_commit tree=$authority_tree"
-          git push --quiet origin "$mirror_commit:refs/heads/$TARGET_BRANCH"
+          if ! push_output="$(git push origin "$mirror_commit:refs/heads/$TARGET_BRANCH" 2>&1)"; then
+            printf '::error title=Exact-tree mirror push failed::%s\n' "${push_output//$'\n'/' | '}"
+            exit 1
+          fi
 
           remote_commit="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
           test "$remote_commit" = "$mirror_commit"
