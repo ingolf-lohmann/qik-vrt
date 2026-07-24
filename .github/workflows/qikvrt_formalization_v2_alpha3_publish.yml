@@ -72,7 +72,7 @@ jobs:
             --zenodo-checksums release/formalization-v2/ZENODO_SHA256SUMS-alpha.3 \
             --manifest release/formalization-v2-alpha3-zenodo.json
 
-      - name: Run repository and integrity gates before Zenodo mutation
+      - name: Verify and persist deterministic release inputs before Zenodo mutation
         shell: bash
         run: |
           set -euo pipefail
@@ -80,6 +80,20 @@ jobs:
           python -I -S -B tools/qikvrt_integrity.py verify
           make test
           python -I -S -B tools/qikvrt_integrity.py verify
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip \
+            release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip.sha256 \
+            release/formalization-v2/ZENODO_SHA256SUMS-alpha.3 \
+            release/formalization-v2-alpha3-zenodo.json \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "Persist Alpha 3 deterministic release inputs"
+            git push origin HEAD:"$GITHUB_REF_NAME"
+          fi
 
       - name: Reserve one new Alpha 3 draft from public Alpha 2
         shell: bash
@@ -97,7 +111,7 @@ jobs:
             --reservation .qikvrt/release/formalization-v2-alpha3/zenodo-reservation.json \
             --base-url https://zenodo.org/api
 
-      - name: Persist reservation and deterministic release inputs before publication
+      - name: Persist reservation before publication
         shell: bash
         run: |
           set -euo pipefail
@@ -109,16 +123,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
-            release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip \
-            release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip.sha256 \
-            release/formalization-v2/ZENODO_SHA256SUMS-alpha.3 \
-            release/formalization-v2-alpha3-zenodo.json \
             release/formalization-v2-alpha3/zenodo-reservation.json \
             REPOSITORY_FILE_MANIFEST.json \
             REPOSITORY_FILE_MANIFEST.json.sha256 \
             SHA256SUMS.txt
-          git commit -m "Persist Alpha 3 Zenodo reservation and release bytes"
-          git push origin HEAD:"$GITHUB_REF_NAME"
+          if ! git diff --cached --quiet; then
+            git commit -m "Persist Alpha 3 Zenodo reservation"
+            git push origin HEAD:"$GITHUB_REF_NAME"
+          fi
 
       - name: Recheck repository gates after reservation persistence
         shell: bash
@@ -151,9 +163,8 @@ jobs:
           readarray -t values < <(python -I -S -B - <<'PY'
           import json
           value = json.load(open('.qikvrt/release/formalization-v2-alpha3/zenodo-publication.json', encoding='utf-8'))
-          software = value['software']
-          print(software['published_record_id'])
-          print(software['doi'])
+          print(value['published_record_id'])
+          print(value['doi'])
           PY
           )
           test "${#values[@]}" -eq 2
@@ -184,7 +195,7 @@ jobs:
 
           publication = json.loads(Path('release/formalization-v2-alpha3/zenodo-publication.json').read_text(encoding='utf-8'))
           verification = json.loads(Path('release/formalization-v2-alpha3/zenodo-public-verification.json').read_text(encoding='utf-8'))
-          if publication.get('state') != 'published' or verification.get('status') != 'PASS':
+          if publication.get('public_record_verified') is not True or verification.get('status') != 'PASS':
               raise SystemExit('BLOCK: publication or independent public verification is incomplete')
           evidence = {
               'schema': 'qikvrt_formalization_v2_alpha3_publication_provenance_v1',
@@ -194,8 +205,8 @@ jobs:
               'repository_content_tree_sha256': '964801915be7eb1f33bfad52326c33bf47582fa77bd44dd572a46fc21ad79dcb',
               'source_record_id': 21518464,
               'source_doi': '10.5281/zenodo.21518464',
-              'target_record_id': publication['software']['published_record_id'],
-              'target_doi': publication['software']['doi'],
+              'target_record_id': publication['published_record_id'],
+              'target_doi': publication['doi'],
               'target_version': '2.0.0-alpha.3',
               'manifest_sha256': sha('release/formalization-v2-alpha3-zenodo.json'),
               'archive_sha256': sha('release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip'),
@@ -228,6 +239,7 @@ jobs:
         with:
           name: qikvrt-formalization-v2-alpha3-publication-evidence
           retention-days: 90
+          include-hidden-files: true
           path: |
             .qikvrt/release/formalization-v2-alpha3/**
             release/formalization-v2-alpha3/**
