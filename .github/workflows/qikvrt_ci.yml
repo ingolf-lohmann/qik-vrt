@@ -35,6 +35,9 @@ jobs:
             printf '%s\n' '--- LAST 500 LINES ---'
             tail -n 500 "$diagnostics/MAKE_TEST_FULL.log"
           } > "$diagnostics/MAKE_TEST_DIAGNOSTICS.log"
+          mkdir -p audit/ci-diagnostics
+          cp "$diagnostics/MAKE_TEST_DIAGNOSTICS.log" \
+            audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
           cat "$diagnostics/MAKE_TEST_DIAGNOSTICS.log"
           exit "$status"
       - name: Upload audit
@@ -47,9 +50,10 @@ jobs:
             audit/**
             .qikvrt/**
           if-no-files-found: warn
+          include-hidden-files: true
       - name: Enforce full repository test result
         if: steps.full_test.outcome == 'failure'
         shell: bash
         run: |
-          cat .qikvrt/runtime/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
+          cat audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
           exit 1
