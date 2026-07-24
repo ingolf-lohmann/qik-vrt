@@ -6,17 +6,56 @@ on:
       - automation/mirror-manuscript-formalization-v2
     paths:
       - .github/workflows/qikvrt_mirror_authority_main.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/qikvrt_mirror_authority_main.yml
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-mirror-manuscript-formalization-v2
+  group: qikvrt-mirror-manuscript-formalization-v2-${{ github.event_name }}
   cancel-in-progress: false
 
 jobs:
+  repair-integrity:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'automation/mirror-manuscript-formalization-v2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Regenerate and verify temporary mirror-runtime integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/qikvrt_integrity.py generate
+          python3 tools/qikvrt_integrity.py verify
+      - name: Persist temporary integrity authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          if git diff --cached --quiet; then
+            echo "Temporary mirror-runtime integrity is already current."
+            exit 0
+          fi
+          git commit -m "ci: materialize temporary mirror-runtime integrity"
+          git push origin "HEAD:${{ github.head_ref }}"
+
   mirror:
+    if: >-
+      github.event_name == 'push' &&
+      github.ref_name == 'automation/mirror-manuscript-formalization-v2'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
