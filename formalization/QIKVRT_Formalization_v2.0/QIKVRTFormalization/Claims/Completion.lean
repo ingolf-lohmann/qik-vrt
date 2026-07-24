@@ -6,7 +6,8 @@ import QIKVRTFormalization.Completion.OpenClaims
 
 Every constructor below carries the proof of the exact proposition indexed by
 its manuscript claim identifier. A registry value cannot be created without the
-corresponding kernel proof.
+corresponding kernel proof. `GAT-003` deliberately reuses the pre-existing
+Batch04 registry entry rather than introducing a duplicate constructor.
 -/
 
 namespace QIKVRT.V2.Claims
@@ -18,7 +19,7 @@ inductive CompletionClaimId where
   | def016 | def017 | def018 | def019 | def020
   | esc004 | esc005 | esc003
   | qua004 | qua005 | qua003
-  | gat003 | gat007
+  | gat007
   | dim006 | dim007
   deriving DecidableEq, Repr, BEq
 
@@ -33,9 +34,9 @@ def completionClaimIds : List CompletionClaimId :=
    .def016, .def017, .def018, .def019, .def020,
    .esc004, .esc005, .esc003,
    .qua004, .qua005, .qua003,
-   .gat003, .gat007, .dim006, .dim007]
+   .gat007, .dim006, .dim007]
 
-theorem completionClaimIds_count : completionClaimIds.length = 30 := by
+theorem completionClaimIds_count : completionClaimIds.length = 29 := by
   decide
 
 theorem completionClaimIds_pairwise : completionClaimIds.Pairwise (· ≠ ·) := by
@@ -96,8 +97,6 @@ def QUA005 : CheckedCompletionClaim .qua005 Completion.QUA005Statement :=
   ⟨Completion.QUA005_checked⟩
 def QUA003 : CheckedCompletionClaim .qua003 Completion.QUA003Statement :=
   ⟨Completion.QUA003_checked⟩
-def GAT003 : CheckedCompletionClaim .gat003 Completion.GAT003Statement :=
-  ⟨Completion.GAT003_checked⟩
 def GAT007 : CheckedCompletionClaim .gat007 Completion.GAT007Statement :=
   ⟨Completion.GAT007_checked⟩
 def DIM006 : CheckedCompletionClaim .dim006 Completion.DIM006Statement :=
