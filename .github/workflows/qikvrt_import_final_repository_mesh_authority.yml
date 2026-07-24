@@ -1,5 +1,5 @@
-# Temporary object-import transport; never merge this workflow.
-name: QIKVRT import final repository mesh Authority objects
+# Temporary read-only verification transport; never merge this workflow.
+name: QIKVRT verify common repository mesh tag objects
 
 on:
   pull_request:
@@ -13,223 +13,125 @@ on:
       - .github/workflows/qikvrt_import_final_repository_mesh_authority.yml
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: qikvrt-import-final-repository-mesh-authority-objects
+  group: qikvrt-verify-common-repository-mesh-tag-objects
   cancel-in-progress: false
 
 jobs:
-  import:
+  verify:
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.head_ref == 'automation/import-final-repository-mesh-authority-20260724'
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    env:
-      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
-      AUTHORITY_COMMIT: 187113e970f810db54697db5681a6c8d77c26e98
-      EXPECTED_AUTHORITY_TREE: cd91a4961934610b95464dea8a5b912cdc4683a7
-      MIRROR_PARENT: 9c4ac1fc95875b09dee291b1a3ef284804e7a56b
-      EXPECTED_CONTENT_TREE_SHA256: 71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae
-      EXPECTED_TAG: v2026.07.24-repository-mesh-sync-1.0.0
+    timeout-minutes: 10
     steps:
-      - name: Check out temporary transport branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Fetch and validate public Authority and Mirror baselines
+      - name: Verify both public annotated tag objects and target trees
         shell: bash
         run: |
           set -euo pipefail
-          git remote remove authority 2>/dev/null || true
-          git remote add authority "$AUTHORITY_URL"
-          git fetch --no-tags --prune authority \
-            "+refs/heads/main:refs/remotes/authority/main"
-          git fetch --no-tags --prune origin \
-            "+refs/heads/main:refs/remotes/origin/main"
-          test "$(git rev-parse refs/remotes/origin/main)" = "$MIRROR_PARENT"
-          test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_COMMIT"
-          test "$(git show -s --format=%T "$AUTHORITY_COMMIT")" = "$EXPECTED_AUTHORITY_TREE"
-          git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
-
-          authority_root="$RUNNER_TEMP/qikvrt-final-authority"
-          git worktree add --detach "$authority_root" "$AUTHORITY_COMMIT"
-          (cd "$authority_root" && python3 -B tools/qikvrt_integrity.py verify)
-          python3 -B - "$authority_root" <<'PY'
-          import json
-          import os
-          import sys
-          from pathlib import Path
-
-          root = Path(sys.argv[1])
-          manifest = json.loads((root / 'REPOSITORY_FILE_MANIFEST.json').read_text(encoding='utf-8'))
-          if manifest.get('repository_content_tree_sha256') != os.environ['EXPECTED_CONTENT_TREE_SHA256']:
-              raise SystemExit('BLOCK: Authority content-tree digest differs')
-          readme = (root / 'README.md').read_text(encoding='utf-8')
-          status = (root / 'STATUS.md').read_text(encoding='utf-8')
-          for needle in (
-              os.environ['EXPECTED_TAG'],
-              '10.5281/zenodo.21500322',
-              '10.5281/zenodo.21515074',
-              '10.5281/zenodo.21529081',
-          ):
-              if needle not in readme or needle not in status:
-                  raise SystemExit(f'BLOCK: Authority documentation lacks {needle}')
-          marker = json.loads((root / 'release/repository-mesh-sync-request.json').read_text(encoding='utf-8'))
-          if marker.get('action') != 'inactive' or marker.get('confirm') != 'NOT_AUTHORIZED':
-              raise SystemExit('BLOCK: Authority tag marker is not inert')
-          if marker.get('release', {}).get('tag') != os.environ['EXPECTED_TAG']:
-              raise SystemExit('BLOCK: Authority tag identity differs')
-          if not (root / '.github/workflows/qikvrt_repository_mesh_sync_tag.yml').is_file():
-              raise SystemExit('BLOCK: Authority common-tag workflow is absent')
-          PY
-
-      - name: Import changed blobs and emit exact Authority tree plan
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p .qikvrt/import-final-repository-mesh-authority
-          exec > >(tee .qikvrt/import-final-repository-mesh-authority/IMPORT.log) 2>&1
+          mkdir -p .qikvrt/tag-verification
           python3 -B - <<'PY'
           from __future__ import annotations
 
-          import base64
-          import hashlib
           import json
-          import os
           from pathlib import Path
-          import subprocess
-          import urllib.error
+          import urllib.parse
           import urllib.request
 
-          repository = os.environ['GITHUB_REPOSITORY']
-          token = os.environ['GH_TOKEN']
-          authority = os.environ['AUTHORITY_COMMIT']
-          mirror_parent = os.environ['MIRROR_PARENT']
-          output = Path('.qikvrt/import-final-repository-mesh-authority')
+          TAG = 'v2026.07.24-repository-mesh-sync-1.0.0'
+          SHARED_TREE = 'cd91a4961934610b95464dea8a5b912cdc4683a7'
+          TAGGER = {
+              'name': 'Ingolf Lohmann',
+              'email': 'ingolf.lohmann@live.com',
+              'date': '2026-07-24T17:30:00Z',
+          }
+          MESSAGE = (
+              'QIK-VRT synchronized repository mesh snapshot 1.0.0\n\n'
+              'Common annotated tag for the byte-identical Authority and Mirror '
+              'content tree after dependency-security maintenance, authenticated '
+              'repository-native audio requests, Zenodo inventory refresh, and '
+              'status documentation synchronization. No GitHub Release object and '
+              'no new Zenodo publication are created.'
+          )
+          EXPECTED = {
+              'Goldkelch/qik-vrt': '187113e970f810db54697db5681a6c8d77c26e98',
+              'ingolf-lohmann/qik-vrt': '5266ae8625a20508a7c1af1c3a6aa4d0b104f170',
+          }
 
-          def git_bytes(*args: str) -> bytes:
-              return subprocess.run(
-                  ['git', *args],
-                  check=True,
-                  stdout=subprocess.PIPE,
-                  stderr=subprocess.PIPE,
-              ).stdout
-
-          def api(method: str, path: str, payload: dict[str, object]) -> dict[str, object]:
+          def get(repository: str, path: str) -> dict:
               request = urllib.request.Request(
-                  f'https://api.github.com/repos/{repository}/{path}',
-                  data=json.dumps(payload, separators=(',', ':')).encode('utf-8'),
-                  method=method,
+                  f'https://api.github.com/repos/{repository}{path}',
                   headers={
                       'Accept': 'application/vnd.github+json',
-                      'Authorization': f'Bearer {token}',
                       'X-GitHub-Api-Version': '2022-11-28',
-                      'Content-Type': 'application/json',
-                      'User-Agent': 'qikvrt-final-authority-object-import',
+                      'User-Agent': 'qikvrt-public-common-tag-verifier',
                   },
               )
-              try:
-                  with urllib.request.urlopen(request, timeout=180) as response:
-                      return json.loads(response.read().decode('utf-8'))
-              except urllib.error.HTTPError as error:
-                  detail = error.read().decode('utf-8', errors='replace')
-                  raise RuntimeError(
-                      f'GitHub API {method} {path} failed: {error.code}: {detail}'
-                  ) from error
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
 
-          authority_tree = git_bytes('show', '-s', '--format=%T', authority).decode('ascii').strip()
-          base_tree = git_bytes('show', '-s', '--format=%T', mirror_parent).decode('ascii').strip()
-          if authority_tree != os.environ['EXPECTED_AUTHORITY_TREE']:
-              raise SystemExit('BLOCK: runtime Authority tree differs')
-          changed = [
-              raw.decode('utf-8')
-              for raw in git_bytes(
-                  'diff', '--name-only', '-z', '--no-renames', mirror_parent, authority
-              ).split(b'\0')
-              if raw
-          ]
-          if not changed:
-              raise SystemExit('BLOCK: Authority and Mirror unexpectedly have no changed paths')
-
-          tree_entries: list[dict[str, object]] = []
-          imported: list[dict[str, object]] = []
-          for index, path in enumerate(changed, 1):
-              print(f'IMPORT {index}/{len(changed)} {path}', flush=True)
-              listing = git_bytes('ls-tree', '-z', authority, '--', path)
-              if not listing:
-                  tree_entries.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': None})
-                  imported.append({'path': path, 'status': 'deleted'})
-                  continue
-              record = listing.rstrip(b'\0')
-              header, encoded_path = record.split(b'\t', 1)
-              mode, object_type, object_sha = header.decode('ascii').split()
-              actual_path = encoded_path.decode('utf-8')
-              if actual_path != path:
-                  raise SystemExit(f'BLOCK: ls-tree path differs: {actual_path!r} != {path!r}')
-              if object_type != 'blob':
-                  raise SystemExit(f'BLOCK: unsupported changed Git object {object_type} at {path}')
-              payload = git_bytes('cat-file', 'blob', object_sha)
-              created = api(
-                  'POST',
-                  'git/blobs',
-                  {'content': base64.b64encode(payload).decode('ascii'), 'encoding': 'base64'},
-              )
-              created_sha = str(created['sha'])
-              if created_sha != object_sha:
-                  raise SystemExit(
-                      f'BLOCK: imported blob SHA differs for {path}: {created_sha} != {object_sha}'
-                  )
-              tree_entries.append({'path': path, 'mode': mode, 'type': 'blob', 'sha': created_sha})
-              imported.append({
-                  'path': path,
-                  'status': 'imported',
-                  'mode': mode,
-                  'sha': created_sha,
-                  'bytes': len(payload),
-                  'sha256': hashlib.sha256(payload).hexdigest(),
+          results = []
+          encoded_tag = urllib.parse.quote(TAG, safe='')
+          for repository, expected_commit in EXPECTED.items():
+              ref = get(repository, '/git/ref/tags/' + encoded_tag)
+              ref_object = ref.get('object', {})
+              if ref.get('ref') != 'refs/tags/' + TAG or ref_object.get('type') != 'tag':
+                  raise SystemExit(f'BLOCK: {repository} tag ref is not annotated')
+              tag_object_sha = ref_object.get('sha')
+              if not isinstance(tag_object_sha, str) or len(tag_object_sha) != 40:
+                  raise SystemExit(f'BLOCK: {repository} annotated tag object SHA is invalid')
+              tag_object = get(repository, '/git/tags/' + tag_object_sha)
+              target = tag_object.get('object', {})
+              tagger = tag_object.get('tagger', {})
+              if (
+                  tag_object.get('tag') != TAG
+                  or tag_object.get('message') != MESSAGE
+                  or target.get('type') != 'commit'
+                  or target.get('sha') != expected_commit
+                  or {key: tagger.get(key) for key in TAGGER} != TAGGER
+              ):
+                  raise SystemExit(f'BLOCK: {repository} annotated tag contract differs')
+              commit = get(repository, '/git/commits/' + expected_commit)
+              if commit.get('tree', {}).get('sha') != SHARED_TREE:
+                  raise SystemExit(f'BLOCK: {repository} tagged commit tree differs')
+              main_ref = get(repository, '/git/ref/heads/main')
+              main_commit = main_ref.get('object', {}).get('sha')
+              main = get(repository, '/git/commits/' + str(main_commit))
+              if main.get('tree', {}).get('sha') != SHARED_TREE:
+                  raise SystemExit(f'BLOCK: {repository} current main tree differs')
+              results.append({
+                  'repository': repository,
+                  'tag': TAG,
+                  'tag_ref_type': ref_object.get('type'),
+                  'tag_object_sha': tag_object_sha,
+                  'target_commit': expected_commit,
+                  'target_tree': SHARED_TREE,
+                  'current_main_commit': main_commit,
+                  'current_main_tree': main.get('tree', {}).get('sha'),
+                  'tagger': TAGGER,
+                  'message_verified': True,
+                  'status': 'ANNOTATED_TAG_VERIFIED',
               })
 
           evidence = {
-              'schema': 'qikvrt_final_repository_mesh_authority_object_import_v1',
-              'repository': repository,
-              'authority_commit': authority,
-              'authority_tree': authority_tree,
-              'authority_content_tree_sha256': os.environ['EXPECTED_CONTENT_TREE_SHA256'],
-              'mirror_parent': mirror_parent,
-              'mirror_base_tree': base_tree,
-              'tag': os.environ['EXPECTED_TAG'],
-              'changed_path_count': len(changed),
-              'tree_entries': tree_entries,
-              'imported': imported,
-              'status': 'BLOBS_IMPORTED_AND_EXACT_TREE_PLAN_READY',
+              'schema': 'qikvrt_common_repository_mesh_tag_public_verification_v1',
+              'anonymous': True,
+              'tag': TAG,
+              'shared_tree': SHARED_TREE,
+              'results': results,
+              'status': 'PASS',
           }
-          canonical = json.dumps(
-              evidence, ensure_ascii=False, sort_keys=True, separators=(',', ':')
-          ).encode('utf-8')
-          evidence['canonical_sha256'] = hashlib.sha256(canonical).hexdigest()
-          evidence_path = output / 'IMPORT_EVIDENCE.json'
-          evidence_path.write_text(
-              json.dumps(evidence, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
-              encoding='utf-8',
-          )
-          print(json.dumps({key: evidence[key] for key in (
-              'status', 'changed_path_count', 'authority_tree', 'mirror_base_tree',
-              'authority_content_tree_sha256', 'canonical_sha256'
-          )}, sort_keys=True))
+          path = Path('.qikvrt/tag-verification/COMMON_TAG_PUBLIC_VERIFICATION.json')
+          path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(evidence, sort_keys=True))
           PY
 
-      - name: Upload exact object-import evidence and tree plan
+      - name: Upload public common-tag verification evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: qikvrt-final-repository-mesh-authority-object-import-${{ github.sha }}
-          retention-days: 30
-          path: .qikvrt/import-final-repository-mesh-authority/**
+          name: qikvrt-common-repository-mesh-tag-public-verification-${{ github.sha }}
+          path: .qikvrt/tag-verification/COMMON_TAG_PUBLIC_VERIFICATION.json
           if-no-files-found: error
-          include-hidden-files: true
+          retention-days: 30
