@@ -1,8 +1,8 @@
 {
   "schema": "qikvrt_transient_check_retrigger_v1",
   "scope": "authority-tree-mirror-bootstrap",
-  "source_head": "4410c5479a142bdedf337aa6ac77a7aa40d1c11a",
-  "purpose": "Trigger exact verified authority-tree materialization from a clean current-main baseline.",
+  "source_head": "e9e49170d3c98121a40c338b812fe33d1d767025",
+  "purpose": "Trigger the registered CI mirror executor from the current main baseline.",
   "integrity_classification": "TRANSIENT_EXCLUDED",
   "effect_status": "EFFECT_ACK_CONTINUE"
 }
