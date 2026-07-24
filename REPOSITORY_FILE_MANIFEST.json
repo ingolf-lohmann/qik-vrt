@@ -253,13 +253,13 @@
       "sha256": "56951285641dc71931cc44c750ded54a18d104886db80e230f2e6a920c59a5f0"
     },
     {
-      "bytes": 6300,
+      "bytes": 7568,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_manuscript_proof.yml",
-      "sha256": "2d68d7bbf689d1d4d2ce803f8960bfd4052fe8dbbdbb7ececadc39b7f5866bec"
+      "sha256": "3542eb3d812382c59ceb715d9ca4c641f4cfe8ca482b2ab80a4ea4aced931076"
     },
     {
       "bytes": 4890,
@@ -23761,7 +23761,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "5c9e31f21085838900bbf0dda6c58f962517895b6f1bd7df14b88c88395c7db8",
+  "repository_content_tree_sha256": "72b572080d99730a38e3b241412db0870984d007aed6a485476927cb207ce5c0",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
