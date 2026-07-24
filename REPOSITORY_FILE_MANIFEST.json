@@ -22637,13 +22637,13 @@
       "sha256": "6e72d52d6b5c280f871bc621569a67100ac6ad9f045bce854ce33bf25069ae8c"
     },
     {
-      "bytes": 574,
+      "bytes": 533,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "release/formalization-v2-alpha3-publication-request.json",
-      "sha256": "507a0bed63f8bbb6117f2d1141802de99f222ff6f80bafb893f2a3db89b8004e"
+      "sha256": "5abb317bfb4a4d4f31bf5a61e4f73dd13edcba4a7f72a3f0c076dfffd295e680"
     },
     {
       "bytes": 8392,
@@ -22652,7 +22652,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "release/formalization-v2-alpha3-zenodo.json",
-      "sha256": "3db4ce7dc661fe7d12c8e64905abb558e3d7c299b7392f9d00927df1946ff3ba"
+      "sha256": "92858b52b93cddb9c2b68a2c3119a2e8e5f154ba79dda5276c4552d9f319569f"
     },
     {
       "bytes": 2508,
@@ -22781,13 +22781,13 @@
       "sha256": "56ac75e41b1a653b6e0b64df9c4fe2a2fd6eb80d0b2ee6bb622dbc1189429b00"
     },
     {
-      "bytes": 866151,
+      "bytes": 866323,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip",
-      "sha256": "d0d1ccf702537bb5b4bafbf5fe8e1256a658695778970894127aa11ad4bb338a"
+      "sha256": "8fabb58ccadd49847e8eb19593f71eefd5dfbcaf03c830e9dbd92ce07ae5f83e"
     },
     {
       "bytes": 104,
@@ -22796,7 +22796,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip.sha256",
-      "sha256": "8f78e53a31a06bef01d67a54aeb17e681beab431f8bb1ea2480d633106a50416"
+      "sha256": "0ac757e788507036e63eb4baba2192f80f67c19ff037bd9826f7ced9b092ea0c"
     },
     {
       "bytes": 1606,
@@ -22814,7 +22814,7 @@
       "file_type": "regular",
       "immutable": true,
       "path": "release/formalization-v2/ZENODO_SHA256SUMS-alpha.3",
-      "sha256": "209150c45287215a003a58d3d4aedffc9ab2a92934e3e3e7c62b99fd31fa4e76"
+      "sha256": "7bfc4c7d2a832b73becd548af03632084640721c15a9e201e40738976e79e37f"
     },
     {
       "bytes": 912,
@@ -23653,13 +23653,13 @@
       "sha256": "e42dedf842369cffa59b12b2cfc393943939e1b2053953de22be6c1b1acc34a2"
     },
     {
-      "bytes": 6077,
+      "bytes": 6440,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_formalization_v2_alpha3_zenodo.py",
-      "sha256": "c05388b4092bb0f6e0184a2dc48e79fe8a13e269ebf3b686873cb7af4640f930"
+      "sha256": "04cd3a16a4b4927f8d14f21083e604c5992552dfeabf809c9e7cac3631cc924f"
     },
     {
       "bytes": 33826,
@@ -23878,7 +23878,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "23da8f58ee84bc9379d5a7bcb1e2b99d556db70355e68c1cfe85fa86acc3bd48",
+  "repository_content_tree_sha256": "93afa9b7c22c1a0da29917cb23d786b0a562c2e27399bb946e00cb53f3349ba4",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
