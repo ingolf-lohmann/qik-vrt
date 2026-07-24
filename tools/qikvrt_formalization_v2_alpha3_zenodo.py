@@ -153,7 +153,135 @@ def validate_source_evidence(value: Mapping[str, Any]) -> dict[str, Any]:
     return result
 
 
+def require_pristine_source_snapshot(
+    draft: Mapping[str, Any],
+    source_public: Mapping[str, Any],
+    source_evidence: Mapping[str, Any],
+) -> tuple[int, str]:
+    """Bind a newly created or recovered draft to the exact public Alpha 2 source."""
+    record_id = shared._record_id(draft, "new alpha.3 draft")
+    if record_id in implementation.PROTECTED_ZENODO_IDS:
+        raise implementation.ZenodoError("new alpha.3 draft reused a protected ID")
+    if shared._concept_id(draft, "new alpha.3 draft") != implementation.CONCEPT_RECORD_ID:
+        raise implementation.ZenodoError("new alpha.3 draft changed concept")
+    if draft.get("submitted") is True or draft.get("state") == "done":
+        raise implementation.ZenodoError("new alpha.3 draft is not editable")
+    doi = shared._doi_from_deposition(draft, "new alpha.3 draft")
+    if doi != f"10.5281/zenodo.{record_id}":
+        raise implementation.ZenodoError("new alpha.3 draft DOI is not record-bound")
+    if implementation._draft_file_fingerprint(
+        draft
+    ) != implementation._expected_source_fingerprint(source_evidence):
+        raise implementation.ZenodoError(
+            "new alpha.3 draft did not inherit the exact public Alpha 2 files"
+        )
+    source_metadata = source_public.get("metadata")
+    draft_metadata = draft.get("metadata")
+    if not isinstance(source_metadata, dict) or not isinstance(draft_metadata, dict):
+        raise implementation.ZenodoError("source or draft metadata is missing")
+    if source_metadata.get("version") != implementation.SOURCE_VERSION:
+        raise implementation.ZenodoError(
+            "published Alpha 2 source metadata has an unexpected version"
+        )
+    identity = {
+        key: source_metadata[key]
+        for key in ("title", "creators")
+        if key in source_metadata
+    }
+    if set(identity) != {"title", "creators"} or not shared._metadata_matches(
+        draft_metadata, identity
+    ):
+        raise implementation.ZenodoError(
+            "new alpha.3 draft did not inherit source title and creators"
+        )
+    if (
+        "version" in draft_metadata
+        and draft_metadata["version"] != implementation.SOURCE_VERSION
+    ):
+        raise implementation.ZenodoError(
+            "new alpha.3 draft inherited an unexpected source version"
+        )
+    return record_id, doi
+
+
+def reserve_release(
+    client: implementation.FormalizationVersionClient,
+    manifest: Mapping[str, Any],
+    root: pathlib.Path,
+    manifest_sha256: str,
+    source_evidence: Mapping[str, Any],
+    source_evidence_sha256: str,
+    reservation_path: pathlib.Path,
+) -> dict[str, Any]:
+    """Reserve or recover exactly one pristine Alpha 3 draft without mutating it."""
+    normalized = implementation.validate_manifest(dict(manifest), root)
+    verified_evidence = validate_source_evidence(source_evidence)
+    implementation.verify_manifest_files(normalized, root, client.token)
+    if reservation_path.exists():
+        existing, _ = shared._load_json_file(reservation_path, client.token)
+        implementation._validate_reservation(
+            existing,
+            normalized,
+            manifest_sha256,
+            source_evidence_sha256,
+            client,
+        )
+        return existing
+
+    source_public = client.check_live_software_source(
+        implementation.SOURCE_RECORD_ID, implementation.CONCEPT_RECORD_ID
+    )
+    editable_drafts = implementation._unknown_existing_concept_drafts(client)
+    if len(editable_drafts) > 1:
+        raise implementation.ZenodoError(
+            "multiple unreserved editable drafts exist in the formalization concept"
+        )
+    if editable_drafts:
+        _, draft = client.get(
+            f"/api/deposit/depositions/{editable_drafts[0]}"
+        )
+    else:
+        draft = client.create_version()
+
+    record_id, doi = require_pristine_source_snapshot(
+        draft, source_public, verified_evidence
+    )
+    client.authorize_draft(draft, record_id=record_id, doi=doi)
+    client.check_live_software_source(
+        implementation.SOURCE_RECORD_ID, implementation.CONCEPT_RECORD_ID
+    )
+    metadata_sha256, files_sha256 = implementation._manifest_hashes(normalized)
+    reservation = implementation._sign_reservation(
+        {
+            "schema_version": 2,
+            "kind": implementation.RESERVATION_KIND,
+            "phase": "reserved",
+            "api_base_url": client.base_url,
+            "release_id": implementation.RELEASE_ID,
+            "manifest_sha256": manifest_sha256,
+            "metadata_sha256": metadata_sha256,
+            "files_sha256": files_sha256,
+            "source_evidence_sha256": source_evidence_sha256,
+            "source": {
+                "record_id": implementation.SOURCE_RECORD_ID,
+                "concept_record_id": implementation.CONCEPT_RECORD_ID,
+                "doi": implementation.SOURCE_VERSION_DOI,
+            },
+            "software": {
+                "deposition_id": record_id,
+                "concept_record_id": implementation.CONCEPT_RECORD_ID,
+                "doi": doi,
+            },
+        },
+        client.token,
+    )
+    shared._atomic_json(reservation_path, reservation, client.token)
+    return reservation
+
+
 implementation.validate_source_evidence = validate_source_evidence
+implementation._require_pristine_source_snapshot = require_pristine_source_snapshot
+implementation.reserve_release = reserve_release
 
 
 def main() -> int:
