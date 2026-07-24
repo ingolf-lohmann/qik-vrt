@@ -1,5 +1,5 @@
 # Temporary object-import transport; never merge this workflow.
-name: QIKVRT import verified audio-runtime Authority tree
+name: QIKVRT import verified audio-runtime Authority objects
 
 on:
   push:
@@ -75,7 +75,7 @@ jobs:
             echo "mirror_tree=$mirror_tree"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Import changed blobs and create exact-tree Mirror candidate
+      - name: Import changed blobs and materialize exact-tree commit object
         id: import
         shell: bash
         env:
@@ -96,7 +96,6 @@ jobs:
           from pathlib import Path
           import subprocess
           import urllib.error
-          import urllib.parse
           import urllib.request
 
           repository = os.environ["GITHUB_REPOSITORY"]
@@ -116,7 +115,7 @@ jobs:
                   stderr=subprocess.PIPE,
               ).stdout
 
-          def api(method: str, path: str, payload=None, missing: bool = False):
+          def api(method: str, path: str, payload=None):
               data = None if payload is None else json.dumps(payload, separators=(",", ":")).encode("utf-8")
               request = urllib.request.Request(
                   f"https://api.github.com/repos/{repository}/{path}",
@@ -134,8 +133,6 @@ jobs:
                   with urllib.request.urlopen(request, timeout=180) as response:
                       return json.loads(response.read().decode("utf-8"))
               except urllib.error.HTTPError as error:
-                  if missing and error.code == 404:
-                      return None
                   detail = error.read().decode("utf-8", errors="replace")
                   raise RuntimeError(f"GitHub API {method} {path} failed: {error.code}: {detail}") from error
 
@@ -203,27 +200,12 @@ jobs:
               "parents": [mirror_parent],
           })
           commit_sha = str(commit["sha"])
-
-          encoded_branch = urllib.parse.quote(target_branch, safe="")
-          existing = api("GET", "git/ref/heads/" + encoded_branch, missing=True)
-          if existing is None:
-              api("POST", "git/refs", {"ref": "refs/heads/" + target_branch, "sha": commit_sha})
-          else:
-              current = str(existing.get("object", {}).get("sha"))
-              if current not in {mirror_parent, commit_sha}:
-                  raise SystemExit(f"BLOCK: target branch unexpectedly exists at {current}")
-              if current != commit_sha:
-                  api("PATCH", "git/refs/heads/" + encoded_branch, {"sha": commit_sha, "force": False})
-
-          remote_ref = api("GET", "git/ref/heads/" + encoded_branch)
           remote_commit = api("GET", "git/commits/" + commit_sha)
-          if remote_ref.get("object", {}).get("sha") != commit_sha:
-              raise SystemExit("BLOCK: remote candidate ref differs")
           if remote_commit.get("tree", {}).get("sha") != expected_tree:
-              raise SystemExit("BLOCK: remote candidate tree differs")
+              raise SystemExit("BLOCK: remote candidate commit tree differs")
 
           evidence = {
-              "schema": "qikvrt_audio_runtime_authority_object_import_v1",
+              "schema": "qikvrt_audio_runtime_authority_object_import_v2",
               "repository": repository,
               "authority_commit": authority,
               "authority_tree": expected_tree,
@@ -231,13 +213,14 @@ jobs:
               "mirror_parent": mirror_parent,
               "mirror_base_tree": mirror_base_tree,
               "mirror_previous_content_digest": os.environ["EXPECTED_MIRROR_CONTENT_DIGEST"],
-              "candidate_branch": target_branch,
+              "intended_candidate_branch": target_branch,
               "candidate_commit": commit_sha,
               "candidate_tree": tree_sha,
               "changed_path_count": len(changed),
               "tree_entries": tree_entries,
               "imported": imported,
-              "status": "EXACT_AUTHORITY_TREE_CANDIDATE_CREATED_AND_VERIFIED",
+              "ref_creation_boundary": "GITHUB_ACTIONS_TOKEN_MUST_NOT_CREATE_REF_CONTAINING_CHANGED_WORKFLOW; CONNECTED_GITHUB_APP_SETS_ONLY_THE_ALREADY_VERIFIED_COMMIT_REF",
+              "status": "EXACT_AUTHORITY_TREE_COMMIT_OBJECT_CREATED_AND_VERIFIED",
           }
           evidence_path = output / "IMPORT_EVIDENCE.json"
           evidence_path.write_text(
@@ -254,6 +237,7 @@ jobs:
           PY
 
       - name: Upload exact object-import evidence and tree plan
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qikvrt-audio-runtime-authority-object-import
@@ -265,11 +249,12 @@ jobs:
         shell: bash
         run: |
           {
-            echo "## QIK-VRT exact Authority-tree Mirror import"
+            echo "## QIK-VRT exact Authority-tree Mirror object import"
             echo
             echo "- Authority commit: \`${AUTHORITY_COMMIT}\`"
-            echo "- Candidate commit: \`${{ steps.import.outputs.candidate_commit }}\`"
+            echo "- Candidate commit object: \`${{ steps.import.outputs.candidate_commit }}\`"
             echo "- Shared Git tree: \`${{ steps.import.outputs.candidate_tree }}\`"
             echo "- Imported changed paths: \`${{ steps.import.outputs.changed_path_count }}\`"
-            echo "- State: \`EXACT_AUTHORITY_TREE_CANDIDATE_CREATED_AND_VERIFIED\`"
+            echo "- Ref boundary: connected GitHub App only"
+            echo "- State: \`EXACT_AUTHORITY_TREE_COMMIT_OBJECT_CREATED_AND_VERIFIED\`"
           } >> "$GITHUB_STEP_SUMMARY"
