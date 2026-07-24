@@ -19,6 +19,13 @@ import sys
 from collections.abc import Mapping
 from typing import Any, TextIO
 
+# ``python -I`` deliberately removes both the working directory and the script
+# directory from the import search path. Bind sibling imports explicitly to the
+# immutable directory containing this reviewed wrapper.
+_TOOLS_DIRECTORY = pathlib.Path(__file__).resolve().parent
+if str(_TOOLS_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(_TOOLS_DIRECTORY))
+
 import qikvrt_formalization_v2_zenodo as implementation
 import qikvrt_zenodo_actions as shared
 
