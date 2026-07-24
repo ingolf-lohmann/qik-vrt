@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2669,
+  "file_count": 2670,
   "files": [
     {
       "bytes": 47,
@@ -260,6 +260,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
       "sha256": "968a2f12bd0c0dd9d1adc7e04fd2080c31667f1cc2285e6aa82cc7c110c72cd8"
+    },
+    {
+      "bytes": 12405,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_import_audio_runtime_authority.yml",
+      "sha256": "69390750fcdae69a6f75530846715f6ff78965f691569cd84dbfc4e3c30a8d9c"
     },
     {
       "bytes": 5527,
@@ -24015,7 +24024,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2660,
+  "immutable_file_count": 2661,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -24040,7 +24049,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae",
+  "repository_content_tree_sha256": "444717ce80bb87159664e23c0f9106e3a5a3bee1b94dec211383b48425faab94",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
