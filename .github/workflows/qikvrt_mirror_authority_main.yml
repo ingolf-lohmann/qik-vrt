@@ -5,9 +5,6 @@ name: QIKVRT mirror verified Alpha 3 authority tree
   push:
     branches: ["main"]
     paths: [".github/workflows/qikvrt_mirror_authority_main.yml"]
-  pull_request:
-    branches: ["main"]
-    types: [opened, synchronize, reopened]
   workflow_dispatch: {}
 
 permissions:
@@ -19,17 +16,13 @@ concurrency:
 
 jobs:
   mirror:
-    if: >-
-      github.event_name == 'push' ||
-      github.event_name == 'workflow_dispatch' ||
-      github.head_ref == 'automation/execute-alpha3-authority-mirror'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - name: Checkout mirror repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           show-progress: false
 
       - name: Fetch and validate verified authority commit
@@ -40,10 +33,9 @@ jobs:
           EXPECTED_MIRROR_BASE_COMMIT: 5698d7d3c3360db1bcba538b7c06e135e1936e02
         run: |
           set -euo pipefail
-          git fetch --quiet --no-tags origin "$EXPECTED_MIRROR_BASE_COMMIT"
           git remote remove authority 2>/dev/null || true
           git remote add authority "$AUTHORITY_URL"
-          git fetch --quiet --no-tags authority \
+          git fetch --quiet --no-tags --prune authority \
             "+refs/heads/main:refs/remotes/authority/main"
           git cat-file -e "$AUTHORITY_COMMIT^{commit}"
           git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
