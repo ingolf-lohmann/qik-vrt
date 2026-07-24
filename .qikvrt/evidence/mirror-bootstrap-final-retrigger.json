@@ -1,8 +1,8 @@
 {
   "schema": "qikvrt_transient_check_retrigger_v1",
   "scope": "authority-tree-mirror-bootstrap",
-  "source_head": "main-qikvrt-ci-executor-active-2026-07-24T0143Z",
-  "purpose": "Trigger exact authority-tree materialization after the registered QIKVRT CI mirror executor became active on mirror main.",
+  "source_head": "main-qikvrt-ci-executor-active-2026-07-24T0144Z",
+  "purpose": "Retrigger exact authority-tree materialization after reopening the transport pull request.",
   "integrity_classification": "TRANSIENT_EXCLUDED",
   "effect_status": "EFFECT_ACK_CONTINUE"
 }
