@@ -21,7 +21,21 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
-        run: make test
+        id: full_test
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          mkdir -p audit
+          make test > audit/MAKE_TEST_FULL.log 2>&1
+          status=$?
+          {
+            printf 'MAKE_TEST_EXIT=%s\n' "$status"
+            printf '%s\n' '--- LAST 500 LINES ---'
+            tail -n 500 audit/MAKE_TEST_FULL.log
+          } > audit/MAKE_TEST_DIAGNOSTICS.log
+          cat audit/MAKE_TEST_DIAGNOSTICS.log
+          exit "$status"
       - name: Upload audit
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -32,3 +46,9 @@ jobs:
             audit/**
             .qikvrt/**
           if-no-files-found: warn
+      - name: Enforce full repository test result
+        if: steps.full_test.outcome == 'failure'
+        shell: bash
+        run: |
+          cat audit/MAKE_TEST_DIAGNOSTICS.log
+          exit 1
