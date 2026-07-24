@@ -4,17 +4,17 @@
     "concept_record_id": 21488115,
     "files": [
       {
-        "md5": "72a37122230ea6e4e64d2bb01e26e9bd",
+        "md5": "7aaf2b8426e35459d8c1ece038c5bcd7",
         "name": "QIKVRT_Formalization_v2.0-alpha.3.zip",
         "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip",
-        "sha256": "8fabb58ccadd49847e8eb19593f71eefd5dfbcaf03c830e9dbd92ce07ae5f83e",
-        "size": 866323
+        "sha256": "f62ef815cc578735c97f3cc94ca4d156a11a6c130231f94d40d0bfe2e2b7f6ab",
+        "size": 867503
       },
       {
-        "md5": "aac8390227c78b49de89cd29decf8174",
+        "md5": "937cbc8f3abc543fd921ae44a155dbf7",
         "name": "QIKVRT_Formalization_v2.0-alpha.3.zip.sha256",
         "path": "release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.3.zip.sha256",
-        "sha256": "0ac757e788507036e63eb4baba2192f80f67c19ff037bd9826f7ced9b092ea0c",
+        "sha256": "926ac27514b58d255aa0fe3b8186f1231a552dc5781bb25865e469d6db943715",
         "size": 104
       },
       {
@@ -130,10 +130,10 @@
         "size": 4460
       },
       {
-        "md5": "9f4ca461ac41cebda47c769ea9af06ee",
+        "md5": "057206dbb47922b45e325066cbf8b2a0",
         "name": "ZENODO_SHA256SUMS",
         "path": "release/formalization-v2/ZENODO_SHA256SUMS-alpha.3",
-        "sha256": "7bfc4c7d2a832b73becd548af03632084640721c15a9e201e40738976e79e37f",
+        "sha256": "9a6834a4f520014e92cc5d4c156b31cf9c290b61e652f4ecee2eeb32bedf441b",
         "size": 1623
       }
     ],
@@ -160,7 +160,7 @@
       ],
       "language": "deu",
       "license": "other-nc",
-      "notes": "Formal-environment completion with explicit epistemic boundaries. Authority commit 3d640b05e815ff8644fe7640ddd7dcf89d4094c4; Git tree 6056f024cc0376f6820eca948205c30ac75d7d41; repository content-tree SHA-256 964801915be7eb1f33bfad52326c33bf47582fa77bd44dd572a46fc21ad79dcb; deterministic archive SHA-256 8fabb58ccadd49847e8eb19593f71eefd5dfbcaf03c830e9dbd92ce07ae5f83e; public Alpha-2 source-evidence SHA-256 f3e3903830abaf945ca296bcbf87277cd8cc1d9aa29053927a177a441659599b. Zenodo persistence establishes identity and byte fixity, not peer review or empirical confirmation.",
+      "notes": "Formal-environment completion with explicit epistemic boundaries. Authority commit 3d640b05e815ff8644fe7640ddd7dcf89d4094c4; Git tree 6056f024cc0376f6820eca948205c30ac75d7d41; repository content-tree SHA-256 964801915be7eb1f33bfad52326c33bf47582fa77bd44dd572a46fc21ad79dcb; deterministic archive SHA-256 f62ef815cc578735c97f3cc94ca4d156a11a6c130231f94d40d0bfe2e2b7f6ab; public Alpha-2 source-evidence SHA-256 f3e3903830abaf945ca296bcbf87277cd8cc1d9aa29053927a177a441659599b. Zenodo persistence establishes identity and byte fixity, not peer review or empirical confirmation.",
       "publication_date": "2026-07-24",
       "related_identifiers": [
         {
