@@ -49,12 +49,14 @@ jobs:
 
       - name: Import changed blobs and exact Authority tree through GitHub Git Data API
         id: import
+        continue-on-error: true
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
           mkdir -p .qikvrt/import-dependency-authority
+          exec > >(tee .qikvrt/import-dependency-authority/IMPORT.log) 2>&1
+          set -euxo pipefail
           python3 -B - <<'PY'
           from __future__ import annotations
 
@@ -111,7 +113,8 @@ jobs:
 
           entries: list[dict[str, object]] = []
           imported: list[dict[str, object]] = []
-          for path in changed:
+          for index, path in enumerate(changed, 1):
+              print(f"IMPORT {index}/{len(changed)} {path}", flush=True)
               listing = git_bytes("ls-tree", "-z", authority, "--", path)
               if not listing:
                   entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
@@ -189,11 +192,16 @@ jobs:
           )}, sort_keys=True))
           PY
 
-      - name: Upload exact object-import evidence
+      - name: Upload exact object-import evidence and diagnostics
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qikvrt-dependency-authority-object-import
           retention-days: 30
-          path: .qikvrt/import-dependency-authority/IMPORT_EVIDENCE.json
-          if-no-files-found: error
+          path: .qikvrt/import-dependency-authority/**
+          if-no-files-found: warn
+
+      - name: Enforce exact object import
+        if: steps.import.outcome == 'failure'
+        shell: bash
+        run: exit 1
