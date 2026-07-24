@@ -1,0 +1,275 @@
+# Temporary object-import transport; never merge this workflow.
+name: QIKVRT import verified audio-runtime Authority tree
+
+on:
+  push:
+    branches:
+      - automation/import-audio-runtime-authority-20260725
+    paths:
+      - .github/workflows/qikvrt_import_audio_runtime_authority.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-import-audio-runtime-authority-20260725
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+      AUTHORITY_COMMIT: e0f6c92b3cf16373188f14deba224086c8767b48
+      EXPECTED_AUTHORITY_CONTENT_DIGEST: 914da212cca7d7966192059b0e2f39931f83c79660f826bc4fa7fa6201c90b3c
+      EXPECTED_MIRROR_CONTENT_DIGEST: 71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae
+      TARGET_BRANCH: mirror/audio-runtime-final-20260725
+    steps:
+      - name: Check out temporary transport branch without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch and validate public Authority and current Mirror baselines
+        id: baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "$AUTHORITY_URL"
+          git fetch --no-tags --prune authority \
+            "+refs/heads/main:refs/remotes/authority/main"
+          git fetch --no-tags --prune origin \
+            "+refs/heads/main:refs/remotes/origin/main"
+          authority="$(git rev-parse refs/remotes/authority/main)"
+          mirror="$(git rev-parse refs/remotes/origin/main)"
+          test "$authority" = "$AUTHORITY_COMMIT"
+          python3 -B - "$mirror" "$authority" <<'PY'
+          from __future__ import annotations
+          import json, subprocess, sys
+
+          mirror, authority = sys.argv[1:]
+          expected = {
+              mirror: "71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae",
+              authority: "914da212cca7d7966192059b0e2f39931f83c79660f826bc4fa7fa6201c90b3c",
+          }
+          for commit, digest in expected.items():
+              raw = subprocess.check_output(
+                  ["git", "show", f"{commit}:REPOSITORY_FILE_MANIFEST.json"],
+              )
+              manifest = json.loads(raw)
+              actual = manifest.get("repository_content_tree_sha256")
+              if actual != digest:
+                  raise SystemExit(
+                      f"BLOCK: content digest mismatch at {commit}: {actual} != {digest}"
+                  )
+          PY
+          authority_tree="$(git show -s --format=%T "$authority")"
+          mirror_tree="$(git show -s --format=%T "$mirror")"
+          {
+            echo "authority=$authority"
+            echo "authority_tree=$authority_tree"
+            echo "mirror=$mirror"
+            echo "mirror_tree=$mirror_tree"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Import changed blobs and create exact-tree Mirror candidate
+        id: import
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHORITY_TREE: ${{ steps.baseline.outputs.authority_tree }}
+          MIRROR_PARENT: ${{ steps.baseline.outputs.mirror }}
+          MIRROR_BASE_TREE: ${{ steps.baseline.outputs.mirror_tree }}
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/import-audio-runtime-authority
+          exec > >(tee .qikvrt/import-audio-runtime-authority/IMPORT.log) 2>&1
+          python3 -B - <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          repository = os.environ["GITHUB_REPOSITORY"]
+          token = os.environ["GH_TOKEN"]
+          authority = os.environ["AUTHORITY_COMMIT"]
+          expected_tree = os.environ["AUTHORITY_TREE"]
+          mirror_parent = os.environ["MIRROR_PARENT"]
+          mirror_base_tree = os.environ["MIRROR_BASE_TREE"]
+          target_branch = os.environ["TARGET_BRANCH"]
+          output = Path(".qikvrt/import-audio-runtime-authority")
+
+          def git_bytes(*args: str) -> bytes:
+              return subprocess.run(
+                  ["git", *args],
+                  check=True,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+              ).stdout
+
+          def api(method: str, path: str, payload=None, missing: bool = False):
+              data = None if payload is None else json.dumps(payload, separators=(",", ":")).encode("utf-8")
+              request = urllib.request.Request(
+                  f"https://api.github.com/repos/{repository}/{path}",
+                  data=data,
+                  method=method,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {token}",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                      "Content-Type": "application/json",
+                      "User-Agent": "qikvrt-audio-runtime-authority-import",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=180) as response:
+                      return json.loads(response.read().decode("utf-8"))
+              except urllib.error.HTTPError as error:
+                  if missing and error.code == 404:
+                      return None
+                  detail = error.read().decode("utf-8", errors="replace")
+                  raise RuntimeError(f"GitHub API {method} {path} failed: {error.code}: {detail}") from error
+
+          changed = [
+              raw.decode("utf-8")
+              for raw in git_bytes("diff", "--name-only", "-z", "--no-renames", mirror_parent, authority).split(b"\0")
+              if raw
+          ]
+          if not changed:
+              raise SystemExit("BLOCK: Authority and Mirror unexpectedly have no changed paths")
+
+          tree_entries = []
+          imported = []
+          for index, path in enumerate(changed, 1):
+              print(f"IMPORT {index}/{len(changed)} {path}", flush=True)
+              listing = git_bytes("ls-tree", "-z", authority, "--", path)
+              if not listing:
+                  tree_entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None})
+                  imported.append({"path": path, "status": "deleted"})
+                  continue
+              record = listing.rstrip(b"\0")
+              header, encoded_path = record.split(b"\t", 1)
+              mode, object_type, object_sha = header.decode("ascii").split()
+              actual_path = encoded_path.decode("utf-8")
+              if actual_path != path:
+                  raise SystemExit(f"BLOCK: ls-tree path differs: {actual_path!r} != {path!r}")
+              if object_type != "blob":
+                  raise SystemExit(f"BLOCK: unsupported changed Git object {object_type} at {path}")
+              payload = git_bytes("cat-file", "blob", object_sha)
+              created = api(
+                  "POST",
+                  "git/blobs",
+                  {"content": base64.b64encode(payload).decode("ascii"), "encoding": "base64"},
+              )
+              created_sha = str(created["sha"])
+              if created_sha != object_sha:
+                  raise SystemExit(
+                      f"BLOCK: imported blob SHA differs for {path}: {created_sha} != {object_sha}"
+                  )
+              tree_entries.append({"path": path, "mode": mode, "type": "blob", "sha": created_sha})
+              imported.append({
+                  "path": path,
+                  "status": "imported",
+                  "mode": mode,
+                  "sha": created_sha,
+                  "bytes": len(payload),
+              })
+
+          tree = api("POST", "git/trees", {
+              "base_tree": mirror_base_tree,
+              "tree": tree_entries,
+          })
+          tree_sha = str(tree["sha"])
+          if tree_sha != expected_tree:
+              raise SystemExit(f"BLOCK: created tree differs: {tree_sha} != {expected_tree}")
+
+          commit = api("POST", "git/commits", {
+              "message": (
+                  "Mirror verified audio-request runtime Authority tree\n\n"
+                  f"Authority commit: {authority}\n"
+                  f"Authority tree: {expected_tree}\n"
+                  f"Mirror parent: {mirror_parent}\n"
+              ),
+              "tree": tree_sha,
+              "parents": [mirror_parent],
+          })
+          commit_sha = str(commit["sha"])
+
+          encoded_branch = urllib.parse.quote(target_branch, safe="")
+          existing = api("GET", "git/ref/heads/" + encoded_branch, missing=True)
+          if existing is None:
+              api("POST", "git/refs", {"ref": "refs/heads/" + target_branch, "sha": commit_sha})
+          else:
+              current = str(existing.get("object", {}).get("sha"))
+              if current not in {mirror_parent, commit_sha}:
+                  raise SystemExit(f"BLOCK: target branch unexpectedly exists at {current}")
+              if current != commit_sha:
+                  api("PATCH", "git/refs/heads/" + encoded_branch, {"sha": commit_sha, "force": False})
+
+          remote_ref = api("GET", "git/ref/heads/" + encoded_branch)
+          remote_commit = api("GET", "git/commits/" + commit_sha)
+          if remote_ref.get("object", {}).get("sha") != commit_sha:
+              raise SystemExit("BLOCK: remote candidate ref differs")
+          if remote_commit.get("tree", {}).get("sha") != expected_tree:
+              raise SystemExit("BLOCK: remote candidate tree differs")
+
+          evidence = {
+              "schema": "qikvrt_audio_runtime_authority_object_import_v1",
+              "repository": repository,
+              "authority_commit": authority,
+              "authority_tree": expected_tree,
+              "authority_content_digest": os.environ["EXPECTED_AUTHORITY_CONTENT_DIGEST"],
+              "mirror_parent": mirror_parent,
+              "mirror_base_tree": mirror_base_tree,
+              "mirror_previous_content_digest": os.environ["EXPECTED_MIRROR_CONTENT_DIGEST"],
+              "candidate_branch": target_branch,
+              "candidate_commit": commit_sha,
+              "candidate_tree": tree_sha,
+              "changed_path_count": len(changed),
+              "tree_entries": tree_entries,
+              "imported": imported,
+              "status": "EXACT_AUTHORITY_TREE_CANDIDATE_CREATED_AND_VERIFIED",
+          }
+          evidence_path = output / "IMPORT_EVIDENCE.json"
+          evidence_path.write_text(
+              json.dumps(evidence, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps({key: evidence[key] for key in (
+              "status", "changed_path_count", "authority_tree", "candidate_commit", "candidate_tree"
+          )}, sort_keys=True))
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a", encoding="utf-8") as handle:
+              handle.write(f"candidate_commit={commit_sha}\n")
+              handle.write(f"candidate_tree={tree_sha}\n")
+              handle.write(f"changed_path_count={len(changed)}\n")
+          PY
+
+      - name: Upload exact object-import evidence and tree plan
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-audio-runtime-authority-object-import
+          retention-days: 30
+          path: .qikvrt/import-audio-runtime-authority/**
+          if-no-files-found: error
+
+      - name: Record bounded execution summary
+        shell: bash
+        run: |
+          {
+            echo "## QIK-VRT exact Authority-tree Mirror import"
+            echo
+            echo "- Authority commit: \`${AUTHORITY_COMMIT}\`"
+            echo "- Candidate commit: \`${{ steps.import.outputs.candidate_commit }}\`"
+            echo "- Shared Git tree: \`${{ steps.import.outputs.candidate_tree }}\`"
+            echo "- Imported changed paths: \`${{ steps.import.outputs.changed_path_count }}\`"
+            echo "- State: \`EXACT_AUTHORITY_TREE_CANDIDATE_CREATED_AND_VERIFIED\`"
+          } >> "$GITHUB_STEP_SUMMARY"
