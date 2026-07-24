@@ -8,7 +8,6 @@ name: QIKVRT diagnose Alpha 3 exact-tree mirror transport
 
 permissions:
   contents: write
-  issues: write
   pull-requests: write
 
 concurrency:
@@ -27,7 +26,7 @@ jobs:
           fetch-depth: 0
           show-progress: false
 
-      - name: Persist exact remote rejection
+      - name: Persist rejection in PR description
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -47,12 +46,8 @@ jobs:
           git cat-file -e "$AUTHORITY_COMMIT^{commit}"
           git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
           git merge-base --is-ancestor "$EXPECTED_MIRROR_BASE_COMMIT" refs/remotes/origin/main
-
           unexpected="$(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" refs/remotes/origin/main | grep -vFx '.github/workflows/qikvrt_mirror_authority_main.yml' || true)"
-          test -z "$unexpected" || {
-            echo "BLOCK unexpected bootstrap paths: $unexpected" >&2
-            exit 1
-          }
+          test -z "$unexpected"
 
           mirror_parent="$(git rev-parse refs/remotes/origin/main)"
           authority_tree="$(git show -s --format=%T "$AUTHORITY_COMMIT")"
@@ -60,36 +55,33 @@ jobs:
           export GIT_COMMITTER_DATE="$(git show -s --format=%cI "$AUTHORITY_COMMIT")"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          message="Mirror published QIK-VRT Formalization 2.0.0-alpha.3
+          mirror_commit="$(printf '%s\n' "Mirror published QIK-VRT Formalization 2.0.0-alpha.3
 
           Authority commit: $AUTHORITY_COMMIT
           Authority tree: $authority_tree
           Mirror parent: $mirror_parent
           DOI: 10.5281/zenodo.21529081
 
-          This two-parent commit preserves the mirror mainline while using the exact verified authority tree."
-          mirror_commit="$(printf '%s\n' "$message" | git commit-tree \
-            "$authority_tree" -p "$mirror_parent" -p "$AUTHORITY_COMMIT")"
+          This two-parent commit preserves the mirror mainline while using the exact verified authority tree." | git commit-tree "$authority_tree" -p "$mirror_parent" -p "$AUTHORITY_COMMIT")"
 
           test -z "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
           set +e
           push_output="$(git push --porcelain origin "$mirror_commit:refs/heads/$TARGET_BRANCH" 2>&1)"
           push_status=$?
           set -e
-
           concise="$(printf '%s\n' "$push_output" | grep -Ei 'remote:|rejected|refusing|error:|fatal:|denied|GH[0-9]{3}|!.*refs/heads' || printf '%s\n' "$push_output")"
-          body="## Exact-tree mirror remote result
+          body="## Exact-tree mirror transport diagnostic
 
-          - Authority tree: \`$authority_tree\`
-          - Mirror parent: \`$mirror_parent\`
-          - Candidate commit: \`$mirror_commit\`
-          - Target: \`$TARGET_BRANCH\`
-          - Exit status: \`$push_status\`
+          Authority tree: \`$authority_tree\`
+          Mirror parent: \`$mirror_parent\`
+          Candidate commit: \`$mirror_commit\`
+          Target: \`$TARGET_BRANCH\`
+          Exit status: \`$push_status\`
 
           \`\`\`text
           $concise
           \`\`\`"
-          gh api --method POST \
-            "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
-            -f body="$body"
+          gh api --method PATCH \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+            -f body="$body" >/dev/null
           exit "$push_status"
