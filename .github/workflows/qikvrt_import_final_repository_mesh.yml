@@ -1,0 +1,230 @@
+# Temporary object-import transport; never merge this workflow.
+name: QIKVRT import final repository mesh
+
+on:
+  push:
+    branches:
+      - automation/import-dependency-authority-20260724
+    paths:
+      - .github/workflows/qikvrt_import_final_repository_mesh.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-import-final-repository-mesh
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+      AUTHORITY_COMMIT: 187113e970f810db54697db5681a6c8d77c26e98
+      MIRROR_PARENT: 9c4ac1fc95875b09dee291b1a3ef284804e7a56b
+      EXPECTED_CONTENT_TREE_SHA256: 71916ac07dcb9d0cf8f51b41b3c3d00f4b9d14037e5bc1819ec223d0773dd3ae
+      EXPECTED_TAG: v2026.07.24-repository-mesh-sync-1.0.0
+      EVIDENCE_PATH: release/import-final-repository-mesh-evidence.json
+      TRANSPORT_BRANCH: automation/import-dependency-authority-20260724
+    steps:
+      - name: Check out temporary transport branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Import exact Authority objects and persist the tree plan
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "$AUTHORITY_URL"
+          git fetch --no-tags --prune authority \
+            "+refs/heads/main:refs/remotes/authority/main"
+          git fetch --no-tags --prune origin \
+            "+refs/heads/main:refs/remotes/origin/main"
+          test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_COMMIT"
+          test "$(git rev-parse refs/remotes/origin/main)" = "$MIRROR_PARENT"
+
+          authority_root="$RUNNER_TEMP/qikvrt-final-authority"
+          git worktree add --detach "$authority_root" "$AUTHORITY_COMMIT"
+          (cd "$authority_root" && python3 -B tools/qikvrt_integrity.py verify)
+
+          python3 -B - "$authority_root" <<'PY'
+          from __future__ import annotations
+
+          import base64
+          import hashlib
+          import json
+          import os
+          import subprocess
+          import sys
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          authority_root = Path(sys.argv[1])
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          authority = os.environ['AUTHORITY_COMMIT']
+          mirror_parent = os.environ['MIRROR_PARENT']
+          evidence_path = os.environ['EVIDENCE_PATH']
+          transport_branch = os.environ['TRANSPORT_BRANCH']
+
+          def git_bytes(*args: str) -> bytes:
+              return subprocess.run(
+                  ['git', *args],
+                  check=True,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+              ).stdout
+
+          def api(method: str, path: str, payload=None, missing: bool = False):
+              data = None if payload is None else json.dumps(
+                  payload, separators=(',', ':')
+              ).encode('utf-8')
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/{repository}/{path}',
+                  data=data,
+                  method=method,
+                  headers={
+                      'Accept': 'application/vnd.github+json',
+                      'Authorization': f'Bearer {token}',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'Content-Type': 'application/json',
+                      'User-Agent': 'qikvrt-final-repository-mesh-import',
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=180) as response:
+                      return json.loads(response.read().decode('utf-8'))
+              except urllib.error.HTTPError as error:
+                  if missing and error.code == 404:
+                      return None
+                  detail = error.read().decode('utf-8', errors='replace')
+                  raise RuntimeError(
+                      f'GitHub API {method} {path} failed: {error.code}: {detail}'
+                  ) from error
+
+          manifest = json.loads(
+              (authority_root / 'REPOSITORY_FILE_MANIFEST.json').read_text(encoding='utf-8')
+          )
+          if manifest.get('repository_content_tree_sha256') != os.environ['EXPECTED_CONTENT_TREE_SHA256']:
+              raise SystemExit('BLOCK: Authority content-tree digest differs')
+          readme = (authority_root / 'README.md').read_text(encoding='utf-8')
+          status = (authority_root / 'STATUS.md').read_text(encoding='utf-8')
+          for needle in (
+              os.environ['EXPECTED_TAG'],
+              '10.5281/zenodo.21500322',
+              '10.5281/zenodo.21515074',
+              '10.5281/zenodo.21529081',
+          ):
+              if needle not in readme or needle not in status:
+                  raise SystemExit(f'BLOCK: Authority documentation lacks {needle}')
+          marker = json.loads(
+              (authority_root / 'release/repository-mesh-sync-request.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          if marker.get('action') != 'inactive' or marker.get('confirm') != 'NOT_AUTHORIZED':
+              raise SystemExit('BLOCK: Authority tag marker is not inert')
+          if marker.get('release', {}).get('tag') != os.environ['EXPECTED_TAG']:
+              raise SystemExit('BLOCK: Authority tag identity differs')
+
+          authority_tree = git_bytes('show', '-s', '--format=%T', authority).decode().strip()
+          mirror_base_tree = git_bytes(
+              'show', '-s', '--format=%T', mirror_parent
+          ).decode().strip()
+          changed = [
+              item.decode('utf-8')
+              for item in git_bytes(
+                  'diff', '--name-only', '-z', '--no-renames', mirror_parent, authority
+              ).split(b'\0')
+              if item
+          ]
+          if not changed:
+              raise SystemExit('BLOCK: no Authority/Mirror delta')
+
+          tree_entries = []
+          imported = []
+          for index, path in enumerate(changed, 1):
+              print(f'IMPORT {index}/{len(changed)} {path}', flush=True)
+              listing = git_bytes('ls-tree', '-z', authority, '--', path)
+              if not listing:
+                  tree_entries.append({
+                      'path': path, 'mode': '100644', 'type': 'blob', 'sha': None
+                  })
+                  imported.append({'path': path, 'status': 'deleted'})
+                  continue
+              header, encoded_path = listing.rstrip(b'\0').split(b'\t', 1)
+              mode, object_type, object_sha = header.decode('ascii').split()
+              if encoded_path.decode('utf-8') != path or object_type != 'blob':
+                  raise SystemExit(f'BLOCK: unsafe changed object at {path}')
+              payload = git_bytes('cat-file', 'blob', object_sha)
+              created = api('POST', 'git/blobs', {
+                  'content': base64.b64encode(payload).decode('ascii'),
+                  'encoding': 'base64',
+              })
+              if created.get('sha') != object_sha:
+                  raise SystemExit(f'BLOCK: imported blob identity differs at {path}')
+              tree_entries.append({
+                  'path': path, 'mode': mode, 'type': 'blob', 'sha': object_sha
+              })
+              imported.append({
+                  'path': path,
+                  'status': 'imported',
+                  'mode': mode,
+                  'sha': object_sha,
+                  'bytes': len(payload),
+                  'sha256': hashlib.sha256(payload).hexdigest(),
+              })
+
+          evidence = {
+              'schema': 'qikvrt_final_repository_mesh_authority_object_import_v1',
+              'repository': repository,
+              'authority_commit': authority,
+              'authority_tree': authority_tree,
+              'authority_content_tree_sha256': os.environ['EXPECTED_CONTENT_TREE_SHA256'],
+              'mirror_parent': mirror_parent,
+              'mirror_base_tree': mirror_base_tree,
+              'tag': os.environ['EXPECTED_TAG'],
+              'changed_path_count': len(changed),
+              'tree_entries': tree_entries,
+              'imported': imported,
+              'status': 'BLOBS_IMPORTED_AND_EXACT_TREE_PLAN_READY',
+          }
+          canonical = json.dumps(
+              evidence, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+          ).encode('utf-8')
+          evidence['canonical_sha256'] = hashlib.sha256(canonical).hexdigest()
+          raw = (json.dumps(
+              evidence, ensure_ascii=False, indent=2, sort_keys=True
+          ) + '\n').encode('utf-8')
+
+          encoded_path = urllib.parse.quote(evidence_path, safe='/')
+          existing = api(
+              'GET', f'contents/{encoded_path}?ref={urllib.parse.quote(transport_branch, safe="")}',
+              missing=True,
+          )
+          payload = {
+              'message': 'Record final repository mesh Authority import evidence',
+              'content': base64.b64encode(raw).decode('ascii'),
+              'branch': transport_branch,
+          }
+          if existing is not None:
+              payload['sha'] = existing['sha']
+          result = api('PUT', f'contents/{encoded_path}', payload)
+          print(json.dumps({
+              'status': evidence['status'],
+              'authority_tree': authority_tree,
+              'mirror_base_tree': mirror_base_tree,
+              'changed_path_count': len(changed),
+              'canonical_sha256': evidence['canonical_sha256'],
+              'evidence_commit': result['commit']['sha'],
+          }, sort_keys=True))
+          PY
