@@ -1,4 +1,4 @@
-# Retriggered after temporary bootstrap integrity was materialized.
+# Temporary bootstrap workflow; the exact authority-tree merge removes it again.
 name: QIKVRT mirror verified authority tree
 
 on:
@@ -69,7 +69,7 @@ jobs:
         env:
           AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
           AUTHORITY_COMMIT: 3d640b05e815ff8644fe7640ddd7dcf89d4094c4
-          EXPECTED_MIRROR_BASE_TREE: a09cbdcbcc6c64975a06f2ddd92264547bc31ee0
+          EXPECTED_MIRROR_BASE_COMMIT: ac05aeff4835aeab049a22f3b6271c3224856dc2
           TARGET_BRANCH: mirror/manuscript-formalization-v2-completion
         run: |
           set -euo pipefail
@@ -90,15 +90,40 @@ jobs:
 
           git cat-file -e "$AUTHORITY_COMMIT^{commit}"
           git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
+          git cat-file -e "$EXPECTED_MIRROR_BASE_COMMIT^{commit}"
 
           mirror_parent="$(git rev-parse refs/remotes/origin/main)"
-          mirror_parent_tree="$(git rev-parse "$mirror_parent^{tree}")"
           authority_tree="$(git rev-parse "$AUTHORITY_COMMIT^{tree}")"
 
-          if [ "$mirror_parent_tree" != "$EXPECTED_MIRROR_BASE_TREE" ]; then
-            printf 'BLOCK: mirror main tree drifted: expected %s, got %s\n' \
-              "$EXPECTED_MIRROR_BASE_TREE" "$mirror_parent_tree" >&2
-            exit 1
+          if [ "$mirror_parent" = "$EXPECTED_MIRROR_BASE_COMMIT" ]; then
+            echo "Mirror main is still the verified common base."
+          else
+            first_parent="$(git rev-parse "$mirror_parent^1")"
+            if [ "$first_parent" != "$EXPECTED_MIRROR_BASE_COMMIT" ]; then
+              printf 'BLOCK: temporary bootstrap main does not preserve expected first parent %s\n' \
+                "$EXPECTED_MIRROR_BASE_COMMIT" >&2
+              exit 1
+            fi
+
+            unexpected=0
+            while IFS= read -r path; do
+              case "$path" in
+                .github/workflows/qikvrt_batch04_integrity.yml|\
+                .github/workflows/qikvrt_mirror_authority_main.yml|\
+                .qikvrt/evidence/mirror-bootstrap-final-retrigger.json|\
+                REPOSITORY_FILE_MANIFEST.json|\
+                REPOSITORY_FILE_MANIFEST.json.sha256|\
+                SHA256SUMS.txt)
+                  ;;
+                *)
+                  printf 'BLOCK: unexpected bootstrap-main path: %s\n' "$path" >&2
+                  unexpected=1
+                  ;;
+              esac
+            done < <(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" "$mirror_parent")
+            if [ "$unexpected" -ne 0 ]; then
+              exit 1
+            fi
           fi
 
           export GIT_AUTHOR_DATE="$(git show -s --format=%aI "$AUTHORITY_COMMIT")"
@@ -124,6 +149,13 @@ The resulting commit uses the exact verified authority tree while preserving the
           if [ "$remote_commit" != "$mirror_commit" ]; then
             printf 'BLOCK: remote mirror branch mismatch: expected %s, got %s\n' \
               "$mirror_commit" "$remote_commit" >&2
+            exit 1
+          fi
+
+          remote_tree="$(git rev-parse "$remote_commit^{tree}")"
+          if [ "$remote_tree" != "$authority_tree" ]; then
+            printf 'BLOCK: remote mirror tree mismatch: expected %s, got %s\n' \
+              "$authority_tree" "$remote_tree" >&2
             exit 1
           fi
 
