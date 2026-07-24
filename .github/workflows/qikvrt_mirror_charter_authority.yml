@@ -1,0 +1,124 @@
+# Temporary one-shot bootstrap; the exact authority-tree candidate does not contain this file.
+name: QIKVRT mirror published Charter authority tree
+
+"on":
+  push:
+    branches:
+      - automation/mirror-charter-authority-20260724
+    paths:
+      - .github/workflows/qikvrt_mirror_charter_authority.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-mirror-published-charter-authority
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout temporary mirror trigger
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Fetch and validate public Authority state
+        shell: bash
+        env:
+          AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+          AUTHORITY_COMMIT: b872a1bd3a5b86532280adf7557cbf989f8ff5a5
+          EXPECTED_MIRROR_BASE_COMMIT: 9fca8cf3cd2806b5f943375f3debe549d0c046be
+        run: |
+          set -euo pipefail
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "$AUTHORITY_URL"
+          git fetch --no-tags --prune authority \
+            "+refs/heads/main:refs/remotes/authority/main"
+          git fetch --no-tags --prune origin \
+            "+refs/heads/main:refs/remotes/origin/main"
+          git cat-file -e "$AUTHORITY_COMMIT^{commit}"
+          git merge-base --is-ancestor "$AUTHORITY_COMMIT" refs/remotes/authority/main
+          test "$(git rev-parse refs/remotes/origin/main)" = "$EXPECTED_MIRROR_BASE_COMMIT"
+
+      - name: Verify trigger-only divergence
+        shell: bash
+        env:
+          EXPECTED_MIRROR_BASE_COMMIT: 9fca8cf3cd2806b5f943375f3debe549d0c046be
+        run: |
+          set -euo pipefail
+          unexpected_file="$(mktemp)"
+          trap 'rm -f "$unexpected_file"' EXIT
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/qikvrt_mirror_charter_authority.yml)
+                ;;
+              *)
+                printf '%s\n' "$path" >> "$unexpected_file"
+                ;;
+            esac
+          done < <(git diff --name-only "$EXPECTED_MIRROR_BASE_COMMIT" HEAD)
+          if [ -s "$unexpected_file" ]; then
+            echo 'BLOCK: unexpected temporary-trigger paths:' >&2
+            cat "$unexpected_file" >&2
+            exit 1
+          fi
+
+      - name: Materialize exact verified Authority tree
+        shell: bash
+        env:
+          AUTHORITY_COMMIT: b872a1bd3a5b86532280adf7557cbf989f8ff5a5
+          EXPECTED_MIRROR_BASE_COMMIT: 9fca8cf3cd2806b5f943375f3debe549d0c046be
+          TARGET_BRANCH: mirror/charter-publication
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          mirror_parent="$(git rev-parse refs/remotes/origin/main)"
+          test "$mirror_parent" = "$EXPECTED_MIRROR_BASE_COMMIT"
+          authority_tree="$(git show -s --format=%T "$AUTHORITY_COMMIT")"
+          export GIT_AUTHOR_DATE="$(git show -s --format=%aI "$AUTHORITY_COMMIT")"
+          export GIT_COMMITTER_DATE="$(git show -s --format=%cI "$AUTHORITY_COMMIT")"
+
+          message="Mirror published Charter of Machine-Verifiable Science
+
+          Authority commit: $AUTHORITY_COMMIT
+          Authority tree: $authority_tree
+          Mirror parent: $mirror_parent
+          Charter DOI: 10.5281/zenodo.21515074
+          Formalization DOI: 10.5281/zenodo.21529081
+
+          This two-parent commit preserves the Mirror mainline while using the exact verified public Authority tree."
+
+          mirror_commit="$(printf '%s\n' "$message" | git commit-tree \
+            "$authority_tree" \
+            -p "$mirror_parent" \
+            -p "$AUTHORITY_COMMIT")"
+
+          if git ls-remote --exit-code origin "refs/heads/$TARGET_BRANCH" >/dev/null 2>&1; then
+            echo "BLOCK: target branch already exists: $TARGET_BRANCH" >&2
+            exit 1
+          fi
+          git push origin "$mirror_commit:refs/heads/$TARGET_BRANCH"
+
+          remote_commit="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          test "$remote_commit" = "$mirror_commit"
+          test "$(git show -s --format=%T "$remote_commit")" = "$authority_tree"
+
+          {
+            echo '## QIK-VRT Charter mirror materialization'
+            echo
+            echo "- Authority commit: \`$AUTHORITY_COMMIT\`"
+            echo "- Authority tree: \`$authority_tree\`"
+            echo "- Mirror parent: \`$mirror_parent\`"
+            echo "- Mirror commit: \`$mirror_commit\`"
+            echo "- Target branch: \`$TARGET_BRANCH\`"
+            echo '- Charter DOI: `10.5281/zenodo.21515074`'
+            echo '- Formalization DOI: `10.5281/zenodo.21529081`'
+            echo
+            echo 'Result: exact verified Authority tree persisted as a two-parent Mirror commit.'
+          } >> "$GITHUB_STEP_SUMMARY"
