@@ -1,4 +1,4 @@
-# Temporary read-only verification transport; never merge this workflow.
+# Temporary read-only verification transport; never merge this workflow. Verification only.
 name: QIKVRT verify common repository mesh tag objects
 
 on:
