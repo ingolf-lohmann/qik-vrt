@@ -1,4 +1,5 @@
 # Temporary read-only verification transport; never merge this workflow.
+# Final verification rerun after Mirror PR #47 merge; this branch will be reset.
 name: QIKVRT verify final audio-runtime repository equivalence
 
 on:
