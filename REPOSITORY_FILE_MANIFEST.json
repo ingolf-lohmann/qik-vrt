@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2681,
+  "file_count": 2682,
   "files": [
     {
       "bytes": 47,
@@ -22180,13 +22180,13 @@
       "sha256": "0cc8077b032d805406f5cafe599dfa91f90e28a5bfa68292aaf4aaa232058589"
     },
     {
-      "bytes": 1061,
+      "bytes": 1212,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "publications/ontology-des-unterschieds-reverse-engineering/PUBLICATION.json",
-      "sha256": "a58c0f7fbe5ef0bf0e3fca1bcd379fedcf99e1a0b6bdf507d48682d50ac703dc"
+      "sha256": "adfcc0457baad9c120c054aa5acea3c575eaba135597a4002ab26eb2d92c6c27"
     },
     {
       "bytes": 756,
@@ -23004,6 +23004,15 @@
       "immutable": true,
       "path": "release/ontology-difference-mirror-sync-request.json",
       "sha256": "e7a57eca87a24ba5c11db9b31bb6faef9e0b887b4e6841246c8ac597e30c8cd8"
+    },
+    {
+      "bytes": 897,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/ontology-difference-zenodo-receipt.json",
+      "sha256": "8c17f96973657a7be92c627482825df56575864df121785d77c7ea400f1d8f27"
     },
     {
       "bytes": 609,
@@ -24123,7 +24132,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2672,
+  "immutable_file_count": 2673,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -24148,7 +24157,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "c9b7404f4dc332bbe459140fa853e218c2e507b7d7fcd2b7a17065704025714d",
+  "repository_content_tree_sha256": "b8ea4d8abc4062263a56a587b9388b64bb08ffe7e3186666b635cf64e2759db1",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
