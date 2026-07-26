@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2675,
+  "file_count": 2682,
   "files": [
     {
       "bytes": 47,
@@ -395,6 +395,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
       "sha256": "69248103773de20a670ee980678748bbf2fe17d2c2c3dcc0bdaeb85985d93a91"
+    },
+    {
+      "bytes": 2529,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/sync_ontology_difference_publication.yml",
+      "sha256": "38477830e857e27846f6b7dcdbf81e3a570b16c21a33acc4a594a74d6ecb4d62"
     },
     {
       "bytes": 352,
@@ -22153,6 +22162,42 @@
       "sha256": "59b0b43e4de6e72cca1e33081734497362d602afa3e618feef5e8987fea5ae8e"
     },
     {
+      "bytes": 3084,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "publications/ontology-des-unterschieds-reverse-engineering/META_REVIEW.md",
+      "sha256": "855687ec791c5d054ea235ad0388217954fdc0dc2d3e053684820a46289ac629"
+    },
+    {
+      "bytes": 17229,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "publications/ontology-des-unterschieds-reverse-engineering/ORIGINAL_ARTICLE.md",
+      "sha256": "0cc8077b032d805406f5cafe599dfa91f90e28a5bfa68292aaf4aaa232058589"
+    },
+    {
+      "bytes": 1212,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "publications/ontology-des-unterschieds-reverse-engineering/PUBLICATION.json",
+      "sha256": "adfcc0457baad9c120c054aa5acea3c575eaba135597a4002ab26eb2d92c6c27"
+    },
+    {
+      "bytes": 756,
+      "classification": "documentation",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "publications/ontology-des-unterschieds-reverse-engineering/README.md",
+      "sha256": "ed923d53022888f67ac49da271ae12bdaf9cf725b3986699b075a42cba0bae15"
+    },
+    {
       "bytes": 0,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -22950,6 +22995,24 @@
       "immutable": true,
       "path": "release/machine-verifiable-science/zenodo-publication.json",
       "sha256": "98da185be923efa13384dc295bc305140f2e97b7d7346604c3cdd6d3f4ec9512"
+    },
+    {
+      "bytes": 235,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/ontology-difference-mirror-sync-request.json",
+      "sha256": "e7a57eca87a24ba5c11db9b31bb6faef9e0b887b4e6841246c8ac597e30c8cd8"
+    },
+    {
+      "bytes": 897,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/ontology-difference-zenodo-receipt.json",
+      "sha256": "8c17f96973657a7be92c627482825df56575864df121785d77c7ea400f1d8f27"
     },
     {
       "bytes": 609,
@@ -24069,7 +24132,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2666,
+  "immutable_file_count": 2673,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -24094,7 +24157,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "16ebf70034a44329ecc67d09c6561708dd188078ac302c41b9d8773ba4c5a4b6",
+  "repository_content_tree_sha256": "b8ea4d8abc4062263a56a587b9388b64bb08ffe7e3186666b635cf64e2759db1",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
