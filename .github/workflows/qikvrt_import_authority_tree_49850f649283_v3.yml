@@ -71,14 +71,14 @@ jobs:
           note "Mirror import v3 bound Authority \`$EXPECTED_AUTHORITY\`, exact green head \`$GREEN_AUTHORITY_HEAD\`, shared tree \`$authority_tree\`, and previous Mirror main \`$mirror_before\`."
 
           STAGE=COMMIT_CONSTRUCTION
-          message="Synchronize Authority content tree 49850f649283
-
-Authority commit: $EXPECTED_AUTHORITY
-Authority tree: $authority_tree
-Previous Mirror main: $mirror_before
-Semantics: preserve Mirror history as the sole parent while replacing the complete content tree with the verified Authority tree.
-No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed by this commit."
-          sync_commit="$(printf '%s\n' "$message" | env \
+          message="$(printf '%s\n%s\n%s\n%s\n%s\n%s\n' \
+            'Synchronize Authority content tree 49850f649283' \
+            "Authority commit: $EXPECTED_AUTHORITY" \
+            "Authority tree: $authority_tree" \
+            "Previous Mirror main: $mirror_before" \
+            'Semantics: preserve Mirror history as the sole parent while replacing the complete content tree with the verified Authority tree.' \
+            'No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed by this commit.')"
+          sync_commit="$(printf '%s' "$message" | env \
             GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
             GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
             GIT_AUTHOR_DATE="$FIXED_GIT_DATE" \
@@ -113,14 +113,12 @@ No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed by this commit."
             --arg mirror_staging_commit "$sync_commit" \
             --arg staging_branch "$STAGING_BRANCH" \
             '{schema:$schema,state:$state,authority:{repository:$authority_repository,commit:$authority_commit,exact_green_head:$authority_green_head},mirror:{previous_commit:$mirror_previous_commit,staging_commit:$mirror_staging_commit,staging_branch:$staging_branch},equality:{shared_git_tree:$shared_tree,staging_tree_equal:true},claims:{synchronized_main:false,pass:false,final_pass:false,effect_ack_done:false}}')"
-          body="## Authority tree import stage receipt
-
-The exact Authority tree is now persisted in the Mirror object database on \`$STAGING_BRANCH\`. Mirror \`main\` remains \`$mirror_before\`.
-
-\`\`\`json
-$(printf '%s' "$receipt" | jq '.')
-\`\`\`
-
-No \`PASS\`, \`FINAL_PASS\`, or \`EFFECT_ACK_DONE\` is claimed."
+          body="$(printf '%s\n\n%s\n\n%s\n%s\n%s\n\n%s' \
+            '## Authority tree import stage receipt' \
+            "The exact Authority tree is now persisted in the Mirror object database on \`$STAGING_BRANCH\`. Mirror \`main\` remains \`$mirror_before\`." \
+            '\`\`\`json' \
+            "$(printf '%s' "$receipt" | jq '.')" \
+            '\`\`\`' \
+            'No \`PASS\`, \`FINAL_PASS\`, or \`EFFECT_ACK_DONE\` is claimed.')"
           note "$body"
           printf '%s\n' "$receipt" | jq '.'
