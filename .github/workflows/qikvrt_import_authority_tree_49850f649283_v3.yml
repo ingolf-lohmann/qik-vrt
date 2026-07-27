@@ -1,0 +1,126 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIKVRT import Authority tree 49850f649283 v3
+
+on:
+  push:
+    branches:
+      - automation/import-authority-tree-49850f649283
+    paths:
+      - .github/workflows/qikvrt_import_authority_tree_49850f649283_v3.yml
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: qikvrt-import-authority-tree-49850f649283-v3
+  cancel-in-progress: false
+
+jobs:
+  import-tree:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      EXPECTED_AUTHORITY: 49850f6492831cf6421889498e4f9d71b1efb132
+      GREEN_AUTHORITY_HEAD: 1c9469e7825bcc75157f601a575d82690180a36e
+      EXPECTED_MIRROR_BEFORE: 650b3bd17d32a297f492eb9765a5d4fd2d6672ce
+      EXPECTED_SHARED_TREE: bec0eea87bf55a73993b1111ee13d83069d2cd11
+      STAGING_BRANCH: staging/authority-49850f649283
+      LEDGER_ISSUE: '52'
+      FIXED_GIT_DATE: '2026-07-27T21:05:00Z'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out Mirror object database
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Create and push exact-tree staging commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          note() {
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/issues/${LEDGER_ISSUE}/comments" -f body="$1" >/dev/null || true
+          }
+          fail() {
+            note "Mirror import v3 run \`${GITHUB_RUN_ID}\` failed closed at stage \`${STAGE:-UNSET}\`. Mirror main was not changed. No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed."
+            echo "::error::stage=${STAGE:-UNSET}: $*"
+            exit 1
+          }
+
+          STAGE=AUTHORITY_FETCH
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+          authority_main="$(git ls-remote authority refs/heads/main | awk '{print $1}')"
+          [ "$authority_main" = "$EXPECTED_AUTHORITY" ] || fail "Authority main moved to $authority_main"
+          git fetch --no-tags authority main
+
+          STAGE=OBJECT_BINDING
+          authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY^{tree}")"
+          green_tree="$(git rev-parse "$GREEN_AUTHORITY_HEAD^{tree}")"
+          [ "$authority_tree" = "$EXPECTED_SHARED_TREE" ] || fail "Authority tree is $authority_tree"
+          [ "$green_tree" = "$EXPECTED_SHARED_TREE" ] || fail "green-head tree is $green_tree"
+          mirror_before="$(git rev-parse refs/remotes/origin/main)"
+          [ "$mirror_before" = "$EXPECTED_MIRROR_BEFORE" ] || fail "Mirror main moved to $mirror_before"
+          note "Mirror import v3 bound Authority \`$EXPECTED_AUTHORITY\`, exact green head \`$GREEN_AUTHORITY_HEAD\`, shared tree \`$authority_tree\`, and previous Mirror main \`$mirror_before\`."
+
+          STAGE=COMMIT_CONSTRUCTION
+          message="Synchronize Authority content tree 49850f649283
+
+Authority commit: $EXPECTED_AUTHORITY
+Authority tree: $authority_tree
+Previous Mirror main: $mirror_before
+Semantics: preserve Mirror history as the sole parent while replacing the complete content tree with the verified Authority tree.
+No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed by this commit."
+          sync_commit="$(printf '%s\n' "$message" | env \
+            GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
+            GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
+            GIT_AUTHOR_DATE="$FIXED_GIT_DATE" \
+            GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
+            GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
+            GIT_COMMITTER_DATE="$FIXED_GIT_DATE" \
+            git commit-tree "$authority_tree" -p "$mirror_before")"
+          [ "$(git rev-parse "$sync_commit^{tree}")" = "$authority_tree" ] || fail 'constructed tree mismatch'
+          [ "$(git show -s --format=%P "$sync_commit")" = "$mirror_before" ] || fail 'constructed parent mismatch'
+          note "Mirror import v3 constructed history-preserving staging commit \`$sync_commit\` with tree \`$authority_tree\` and sole parent \`$mirror_before\`."
+
+          STAGE=REF_PERSISTENCE
+          push_url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          remote_stage="$(git ls-remote --heads "$push_url" "refs/heads/$STAGING_BRANCH" | awk '{print $1}')"
+          if [ -z "$remote_stage" ]; then
+            git push "$push_url" "$sync_commit:refs/heads/$STAGING_BRANCH"
+          elif [ "$remote_stage" != "$sync_commit" ]; then
+            fail "existing staging ref differs: $remote_stage"
+          fi
+          persisted="$(git ls-remote --heads "$push_url" "refs/heads/$STAGING_BRANCH" | awk '{print $1}')"
+          [ "$persisted" = "$sync_commit" ] || fail "persisted ref is $persisted"
+
+          STAGE=RECEIPT
+          receipt="$(jq -n \
+            --arg schema 'qikvrt_authority_tree_import_stage_v1' \
+            --arg state 'AUTHORITY_TREE_IMPORTED_TO_MIRROR_OBJECT_DATABASE' \
+            --arg authority_repository "$AUTHORITY_REPOSITORY" \
+            --arg authority_commit "$EXPECTED_AUTHORITY" \
+            --arg authority_green_head "$GREEN_AUTHORITY_HEAD" \
+            --arg shared_tree "$authority_tree" \
+            --arg mirror_previous_commit "$mirror_before" \
+            --arg mirror_staging_commit "$sync_commit" \
+            --arg staging_branch "$STAGING_BRANCH" \
+            '{schema:$schema,state:$state,authority:{repository:$authority_repository,commit:$authority_commit,exact_green_head:$authority_green_head},mirror:{previous_commit:$mirror_previous_commit,staging_commit:$mirror_staging_commit,staging_branch:$staging_branch},equality:{shared_git_tree:$shared_tree,staging_tree_equal:true},claims:{synchronized_main:false,pass:false,final_pass:false,effect_ack_done:false}}')"
+          body="## Authority tree import stage receipt
+
+The exact Authority tree is now persisted in the Mirror object database on \`$STAGING_BRANCH\`. Mirror \`main\` remains \`$mirror_before\`.
+
+\`\`\`json
+$(printf '%s' "$receipt" | jq '.')
+\`\`\`
+
+No \`PASS\`, \`FINAL_PASS\`, or \`EFFECT_ACK_DONE\` is claimed."
+          note "$body"
+          printf '%s\n' "$receipt" | jq '.'
