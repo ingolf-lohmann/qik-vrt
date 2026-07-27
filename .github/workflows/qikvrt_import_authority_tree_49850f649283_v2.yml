@@ -1,0 +1,150 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIKVRT import Authority tree 49850f649283 v2
+
+on:
+  push:
+    branches:
+      - automation/import-authority-tree-49850f649283
+    paths:
+      - .github/workflows/qikvrt_import_authority_tree_49850f649283_v2.yml
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: qikvrt-import-authority-tree-49850f649283-v2
+  cancel-in-progress: false
+
+jobs:
+  import-tree:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      EXPECTED_AUTHORITY: 49850f6492831cf6421889498e4f9d71b1efb132
+      GREEN_AUTHORITY_HEAD: 1c9469e7825bcc75157f601a575d82690180a36e
+      EXPECTED_MIRROR_BEFORE: 650b3bd17d32a297f492eb9765a5d4fd2d6672ce
+      STAGING_BRANCH: staging/authority-49850f649283
+      LEDGER_ISSUE: '52'
+      FIXED_GIT_DATE: '2026-07-27T21:00:00Z'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out the isolated Mirror import branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Import verified Authority tree into Mirror staging
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          post_comment() {
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/issues/${LEDGER_ISSUE}/comments" -f body="$1" >/dev/null || true
+          }
+          failure_report() {
+            rc=$?
+            if [ "$rc" -ne 0 ]; then
+              post_comment "Mirror import v2 failed closed on run \`${GITHUB_RUN_ID}\` before any synchronization claim. Exit code: \`$rc\`. No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed."
+            fi
+          }
+          trap failure_report EXIT
+
+          fail() {
+            echo "::error::$*"
+            exit 1
+          }
+
+          authority_runs='[
+            {"name":"QIKVRT CI","id":30300229840,"run_number":1528,"status":"completed","conclusion":"success","head_sha":"1c9469e7825bcc75157f601a575d82690180a36e"},
+            {"name":"QIKVRT repository evidence materialization","id":30300229828,"run_number":223,"status":"completed","conclusion":"success","head_sha":"1c9469e7825bcc75157f601a575d82690180a36e"},
+            {"name":"QIKVRT Collective Proposal Review","id":30300229985,"run_number":380,"status":"completed","conclusion":"success","head_sha":"1c9469e7825bcc75157f601a575d82690180a36e"},
+            {"name":"QIKVRT live status watch","id":30300229863,"run_number":534,"status":"completed","conclusion":"success","head_sha":"1c9469e7825bcc75157f601a575d82690180a36e"},
+            {"name":"QIKVRT PR18 integrity repair","id":30300229976,"run_number":349,"status":"completed","conclusion":"skipped","head_sha":"1c9469e7825bcc75157f601a575d82690180a36e"}
+          ]'
+          [ "$(printf '%s' "$authority_runs" | jq '[.[] | select(.head_sha != "1c9469e7825bcc75157f601a575d82690180a36e" or .status != "completed" or (.name != "QIKVRT PR18 integrity repair" and .conclusion != "success") or (.name == "QIKVRT PR18 integrity repair" and (.conclusion != "success" and .conclusion != "skipped")))] | length')" = '0' ] || fail 'Bound Authority workflow receipt is not green'
+
+          post_comment "Mirror import v2 run \`${GITHUB_RUN_ID}\` started with the already verified exact-head workflow receipt for \`$GREEN_AUTHORITY_HEAD\`. Mirror main remains unchanged."
+
+          git remote remove authority 2>/dev/null || true
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+          authority_main="$(git ls-remote authority refs/heads/main | awk '{print $1}')"
+          [ "$authority_main" = "$EXPECTED_AUTHORITY" ] || fail "Authority main moved: $authority_main"
+
+          git fetch --no-tags authority main
+          authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY^{tree}")"
+          green_tree="$(git rev-parse "$GREEN_AUTHORITY_HEAD^{tree}")"
+          [ "$authority_tree" = "$green_tree" ] || fail 'Authority merge tree differs from the exact green head tree'
+
+          authority_root="$RUNNER_TEMP/qikvrt-authority-exact-v2"
+          rm -rf "$authority_root"
+          git worktree add --detach "$authority_root" "$EXPECTED_AUTHORITY"
+          (cd "$authority_root" && python3 -B tools/qikvrt_integrity.py verify)
+          post_comment "Mirror import v2 verified Authority main \`$EXPECTED_AUTHORITY\`, shared green tree \`$authority_tree\`, and repository integrity. Mirror main remains unchanged."
+
+          git fetch --force origin main:refs/remotes/origin/main
+          mirror_before="$(git rev-parse refs/remotes/origin/main)"
+          [ "$mirror_before" = "$EXPECTED_MIRROR_BEFORE" ] || fail "Mirror main moved before import: $mirror_before"
+
+          sync_message="$(cat <<EOF
+          Synchronize Authority content tree 49850f649283
+
+          Authority commit: $EXPECTED_AUTHORITY
+          Authority tree: $authority_tree
+          Previous Mirror main: $mirror_before
+          Semantics: preserve Mirror history as the sole parent while replacing the complete content tree with the verified Authority tree.
+          No PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed by this commit.
+          EOF
+          )"
+
+          sync_commit="$(printf '%s\n' "$sync_message" | env \
+            GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
+            GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
+            GIT_AUTHOR_DATE="$FIXED_GIT_DATE" \
+            GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
+            GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
+            GIT_COMMITTER_DATE="$FIXED_GIT_DATE" \
+            git commit-tree "$authority_tree" -p "$mirror_before")"
+
+          [ "$(git rev-parse "$sync_commit^{tree}")" = "$authority_tree" ] || fail 'Imported sync commit tree mismatch'
+          [ "$(git show -s --format=%P "$sync_commit")" = "$mirror_before" ] || fail 'Imported sync commit parent mismatch'
+
+          remote_stage="$(git ls-remote --heads origin "refs/heads/$STAGING_BRANCH" | awk '{print $1}')"
+          if [ -z "$remote_stage" ]; then
+            git push origin "$sync_commit:refs/heads/$STAGING_BRANCH"
+          elif [ "$remote_stage" != "$sync_commit" ]; then
+            fail "Existing staging branch differs: $remote_stage"
+          fi
+
+          receipt="$(jq -n \
+            --arg schema 'qikvrt_authority_tree_import_stage_v1' \
+            --arg state 'AUTHORITY_TREE_IMPORTED_TO_MIRROR_OBJECT_DATABASE' \
+            --arg authority_repository "$AUTHORITY_REPOSITORY" \
+            --arg authority_commit "$EXPECTED_AUTHORITY" \
+            --arg authority_green_head "$GREEN_AUTHORITY_HEAD" \
+            --arg authority_tree "$authority_tree" \
+            --arg mirror_previous_commit "$mirror_before" \
+            --arg mirror_staging_commit "$sync_commit" \
+            --arg staging_branch "$STAGING_BRANCH" \
+            --argjson authority_runs "$authority_runs" \
+            '{schema:$schema,state:$state,authority:{repository:$authority_repository,commit:$authority_commit,exact_green_head:$authority_green_head,tree:$authority_tree,required_workflows:$authority_runs},mirror:{previous_commit:$mirror_previous_commit,staging_commit:$mirror_staging_commit,staging_branch:$staging_branch},claims:{synchronized_main:false,pass:false,final_pass:false,effect_ack_done:false}}')"
+
+          body="$(cat <<EOF
+          ## Authority tree import stage receipt
+
+          The verified Authority tree is present in the Mirror object database on a staging ref. Mirror \`main\` is still unchanged. The next allowed effect is an externally created SHA-bound synchronization branch and pull request, followed by mandatory Mirror workflows.
+
+          \`\`\`json
+          $(printf '%s' "$receipt" | jq '.')
+          \`\`\`
+
+          No \`PASS\`, \`FINAL_PASS\`, or \`EFFECT_ACK_DONE\` is claimed.
+          EOF
+          )"
+          post_comment "$body"
+          trap - EXIT
+          printf '%s\n' "$receipt" | jq '.'
