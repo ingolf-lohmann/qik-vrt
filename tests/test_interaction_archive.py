@@ -10,6 +10,7 @@ import unittest
 
 from tools import qikvrt_interaction_archive as archive
 
+
 FAKE_AGE = r'''#!/usr/bin/env python3
 import pathlib
 import sys
@@ -28,6 +29,7 @@ if '--decrypt' in args:
     raise SystemExit(0)
 raise SystemExit(9)
 '''
+
 
 class InteractionArchiveTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -66,9 +68,14 @@ class InteractionArchiveTests(unittest.TestCase):
         assistant = self.root / "assistant.txt"
         user.write_text("What is the scientific consequence?", encoding="utf-8")
         assistant.write_text("The answer remains linked to its evidence.", encoding="utf-8")
-        archive.append(self.append_args(user, "user", "event-user-0001"))
-        archive.append(self.append_args(assistant, "assistant", "event-assistant-0002"))
-        self.assertEqual(archive.verify(self.archive_root)["event_count"], 2)
+
+        first = archive.append(self.append_args(user, "user", "event-user-0001"))
+        second = archive.append(self.append_args(assistant, "assistant", "event-assistant-0002"))
+        self.assertEqual(first["state"], "PERSISTED_ENCRYPTED")
+        self.assertEqual(second["state"], "PERSISTED_ENCRYPTED")
+        verified = archive.verify(self.archive_root)
+        self.assertEqual(verified["event_count"], 2)
+
         exported = self.root / "export.json"
         args = type("Args", (), {
             "confirm": archive.CONFIRM_EXPORT,
@@ -96,8 +103,8 @@ class InteractionArchiveTests(unittest.TestCase):
             archive.append(args)
         args.confirm = archive.CONFIRM_APPEND
         archive.append(args)
-        raw = b"".join(path.read_bytes() for path in self.archive_root.rglob("*") if path.is_file())
-        self.assertNotIn(b"private input", raw)
+        all_repository_bytes = b"".join(path.read_bytes() for path in self.archive_root.rglob("*") if path.is_file())
+        self.assertNotIn(b"private input", all_repository_bytes)
 
     def test_tamper_breaks_verification(self) -> None:
         content = self.root / "input.txt"
@@ -119,8 +126,10 @@ class InteractionArchiveTests(unittest.TestCase):
             "authorization_id": "retention-request-001",
             "created_at": "2026-07-25T09:00:00+02:00",
         })()
-        self.assertEqual(archive.tombstone(args)["state"], "TOMBSTONE_RECORDED")
+        result = archive.tombstone(args)
+        self.assertEqual(result["state"], "TOMBSTONE_RECORDED")
         self.assertEqual(archive.verify(self.archive_root)["event_count"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()
