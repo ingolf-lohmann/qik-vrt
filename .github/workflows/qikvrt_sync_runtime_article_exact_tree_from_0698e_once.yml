@@ -28,6 +28,7 @@ jobs:
       MIRROR_BASE: 0698e6fe8e10c5d81c370dc8d12a45cc3da36565
       TARGET_BRANCH: sync/runtime-article-authority-tree-3a186-from-0698e-v1
       EXECUTION_WORKFLOW: .github/workflows/qikvrt_sync_runtime_article_exact_tree_from_0698e_once.yml
+      WRITE_TOKEN: ${{ github.token }}
     steps:
       - name: Check out exact execution branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -98,7 +99,7 @@ jobs:
           [ "$(git rev-parse "$sync_commit^{tree}")" = "$AUTHORITY_TREE" ]
           [ "$(git show -s --format=%P "$sync_commit")" = "$MIRROR_BASE" ]
           git diff --exit-code "$AUTHORITY_COMMIT" "$sync_commit" --
-          push_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          push_url="https://x-access-token:${WRITE_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "$push_url" \
             --force-with-lease="refs/heads/$TARGET_BRANCH:$MIRROR_BASE" \
             "$sync_commit:refs/heads/$TARGET_BRANCH"
