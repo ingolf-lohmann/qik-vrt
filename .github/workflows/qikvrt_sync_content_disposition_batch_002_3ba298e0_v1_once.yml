@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ingolf Lohmann.
-name: QIK-VRT exact-tree Batch-002 Mirror sync 3ba298e0 v1
+name: QIK-VRT exact-tree Batch-002 Mirror sync 3ba298e0 v2
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: qikvrt-sync-content-disposition-batch-002-3ba298e0-v1
+  group: qikvrt-sync-content-disposition-batch-002-3ba298e0-v2
   cancel-in-progress: false
 jobs:
   construct-exact-authority-tree:
@@ -24,12 +24,12 @@ jobs:
       TRIGGER_BRANCH: trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1
       WORKFLOW_PATH: .github/workflows/qikvrt_sync_content_disposition_batch_002_3ba298e0_v1_once.yml
       TARGET_BRANCH: sync/content-disposition-batch-002-3ba298e0-v1
-      FIXED_GIT_DATE: '2026-07-28T20:50:00+02:00'
+      FIXED_GIT_DATE: '2026-07-28T21:10:00+02:00'
     steps:
-      - name: Check out exact Mirror trigger branch
+      - name: Check out immutable event SHA
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1
+          ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
       - name: Construct, verify and persist exact Authority tree
@@ -37,21 +37,49 @@ jobs:
         env:
           PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euo pipefail
+          set -Eeuo pipefail
+          stage=bootstrap
+          trap 'rc=$?; echo "::error title=QIKVRT Mirror sync failure::stage=${stage} rc=${rc}"; exit "$rc"' ERR
+
+          stage=bind_event
           [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
           [ "$GITHUB_REF_NAME" = "$TRIGGER_BRANCH" ]
           [ "$(git rev-parse HEAD)" = "$GITHUB_SHA" ]
-          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
-          [ "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
-          mapfile -t changed < <(git diff --name-only "$EXPECTED_MIRROR_MAIN" HEAD -- | LC_ALL=C sort)
-          [ "${#changed[@]}" -eq 1 ]
-          [ "${changed[0]}" = "$WORKFLOW_PATH" ]
           [ -n "$PUSH_TOKEN" ]
+
+          stage=bind_frozen_refs
+          observed_mirror="$(git ls-remote origin refs/heads/main | cut -f1)"
+          observed_target="$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)"
+          [ "$observed_mirror" = "$EXPECTED_MIRROR_MAIN" ]
+          [ "$observed_target" = "$EXPECTED_MIRROR_MAIN" ]
+
+          stage=validate_trigger_delta
+          mapfile -t changed < <(git diff --name-only "$EXPECTED_MIRROR_MAIN" "$GITHUB_SHA" -- | LC_ALL=C sort)
+          printf 'changed_path=%s\n' "${changed[@]}"
+          allowed=(
+            "$WORKFLOW_PATH"
+            "REPOSITORY_FILE_MANIFEST.json"
+            "REPOSITORY_FILE_MANIFEST.json.sha256"
+            "SHA256SUMS.txt"
+          )
+          for path in "${changed[@]}"; do
+            ok=false
+            for accepted in "${allowed[@]}"; do
+              [ "$path" = "$accepted" ] && ok=true && break
+            done
+            [ "$ok" = true ]
+          done
+          printf '%s\n' "${changed[@]}" | grep -Fxq "$WORKFLOW_PATH"
+
+          stage=fetch_authority
+          git remote remove authority 2>/dev/null || true
           git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
           observed_authority="$(git ls-remote authority refs/heads/main | cut -f1)"
           [ "$observed_authority" = "$EXPECTED_AUTHORITY_MAIN" ]
           git fetch --no-tags authority "$EXPECTED_AUTHORITY_MAIN"
           authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY_MAIN^{tree}")"
+
+          stage=construct_candidate
           message_file="$RUNNER_TEMP/qikvrt-sync-message.txt"
           cat > "$message_file" <<EOF
           Synchronize content-disposition Batch 002 from Authority 3ba298e0
@@ -65,26 +93,58 @@ jobs:
           No PASS, FINAL_PASS or EFFECT_ACK_DONE is claimed.
           EOF
           sed -i 's/^          //' "$message_file"
-          sync_commit="$(env GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' GIT_AUTHOR_DATE="$FIXED_GIT_DATE" GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' GIT_COMMITTER_DATE="$FIXED_GIT_DATE" git commit-tree "$authority_tree" -p "$EXPECTED_MIRROR_MAIN" < "$message_file")"
+          sync_commit="$(env \
+            GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
+            GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
+            GIT_AUTHOR_DATE="$FIXED_GIT_DATE" \
+            GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
+            GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
+            GIT_COMMITTER_DATE="$FIXED_GIT_DATE" \
+            git commit-tree "$authority_tree" -p "$EXPECTED_MIRROR_MAIN" < "$message_file")"
           [ "$(git rev-parse "$sync_commit^{tree}")" = "$authority_tree" ]
           [ "$(git show -s --format=%P "$sync_commit")" = "$EXPECTED_MIRROR_MAIN" ]
           git diff --exit-code "$EXPECTED_AUTHORITY_MAIN" "$sync_commit" --
+
+          stage=verify_candidate
           verify_root="$RUNNER_TEMP/qikvrt-batch-002-mirror-sync"
           git worktree add --detach "$verify_root" "$sync_commit"
           PYTHONDONTWRITEBYTECODE=1 python3 -B "$verify_root/tools/qikvrt_integrity.py" verify
           VERIFY_ROOT="$verify_root" python3 -B - <<'PY'
           import json, os, pathlib
-          root=pathlib.Path(os.environ['VERIFY_ROOT'])
-          s=json.loads((root/'.well-known/qik-vrt-self-disclosure.json').read_text())
-          assert s['state']=='AVAILABLE'
-          assert s['completion_claims']=={'pass':False,'final_pass':False,'effect_ack_done':False}
-          r=json.loads((root/'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-002/public-candidate-byte-freeze/PUBLIC_CANDIDATE_BYTE_FREEZE_RECEIPT.json').read_text())
-          assert r['record_count']==6 and r['file_count']==70
-          assert r['completion_claims']['candidate_byte_freeze_complete'] is True
-          assert r['completion_claims']['claim_disposition_complete'] is False
+          root = pathlib.Path(os.environ['VERIFY_ROOT'])
+          disclosure = json.loads((root / '.well-known/qik-vrt-self-disclosure.json').read_text())
+          assert disclosure['state'] == 'AVAILABLE'
+          assert disclosure['completion_claims'] == {
+              'pass': False,
+              'final_pass': False,
+              'effect_ack_done': False,
+          }
+          receipt = json.loads((root / 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-002/public-candidate-byte-freeze/PUBLIC_CANDIDATE_BYTE_FREEZE_RECEIPT.json').read_text())
+          assert receipt['record_count'] == 6
+          assert receipt['file_count'] == 70
+          assert receipt['completion_claims']['candidate_byte_freeze_complete'] is True
+          assert receipt['completion_claims']['claim_disposition_complete'] is False
           PY
+
+          stage=persist_candidate
           push_url="https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push "$push_url" --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_MIRROR_MAIN" "$sync_commit:refs/heads/$TARGET_BRANCH"
+          git push "$push_url" \
+            --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_MIRROR_MAIN" \
+            "$sync_commit:refs/heads/$TARGET_BRANCH"
           persisted="$(git ls-remote "$push_url" refs/heads/$TARGET_BRANCH | cut -f1)"
           [ "$persisted" = "$sync_commit" ]
-          printf '%s\n' "authority_commit=$EXPECTED_AUTHORITY_MAIN" "authority_tree=$authority_tree" "previous_mirror_main=$EXPECTED_MIRROR_MAIN" "mirror_candidate=$persisted" "complete_file_diff_empty=true" >> "$GITHUB_STEP_SUMMARY"
+
+          stage=emit_receipt
+          printf '%s\n' \
+            "authority_commit=$EXPECTED_AUTHORITY_MAIN" \
+            "authority_tree=$authority_tree" \
+            "previous_mirror_main=$EXPECTED_MIRROR_MAIN" \
+            "mirror_candidate=$persisted" \
+            "candidate_parent_verified=true" \
+            "complete_file_diff_empty=true" \
+            "repository_integrity_verified=true" \
+            "candidate_byte_freeze_complete=true" \
+            "claim_disposition_complete=false" \
+            "PASS=false" \
+            "FINAL_PASS=false" \
+            "EFFECT_ACK_DONE=false" >> "$GITHUB_STEP_SUMMARY"
