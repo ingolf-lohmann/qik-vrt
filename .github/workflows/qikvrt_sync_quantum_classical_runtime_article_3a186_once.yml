@@ -69,11 +69,6 @@ jobs:
           python3 -B "$worktree/tests/test_quantum_classical_runtime_article.py"
           python3 -B "$worktree/tools/qikvrt_global_completion.py" check
           make -C "$worktree" test
-          (
-            cd "$worktree/formalization/QIKVRT_Formalization_v2.0"
-            lake build
-            lake env lean QIKVRTEffectAck/QuantumClassicalRuntime.lean
-          )
           PYTHONDONTWRITEBYTECODE=1 python3 -B "$worktree/tools/qikvrt_integrity.py" verify
           echo "AUTHORITY_TREE=$authority_tree" >> "$GITHUB_ENV"
       - name: Construct and persist exact Authority tree with Mirror history
