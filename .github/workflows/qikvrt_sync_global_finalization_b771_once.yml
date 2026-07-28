@@ -1,0 +1,142 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT one-shot final completion Mirror sync b771
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/qikvrt_sync_global_finalization_b771_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-final-completion-mirror-sync-b771
+  cancel-in-progress: true
+
+jobs:
+  synchronize:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_COMMIT: b77131935d74078763f6c4f316a7d6d3ce5276c6
+      MIRROR_BASE: 6a5b3c0ace91a327258f945b82f3fb40c16b18fe
+      TARGET_BRANCH: sync/global-finalization-b771-v1
+      EXECUTION_HEAD: ${{ github.event.pull_request.head.sha }}
+      EXECUTION_WORKFLOW: .github/workflows/qikvrt_sync_global_finalization_b771_once.yml
+    steps:
+      - name: Check out exact Mirror execution head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Verify executor-plus-integrity authorization boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
+          [ "$(git rev-parse HEAD)" = "$EXECUTION_HEAD" ]
+          [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
+          [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
+          permitted=(
+            "$EXECUTION_WORKFLOW"
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+          )
+          mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
+          mapfile -t expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq "${#expected[@]}" ]
+          for index in "${!expected[@]}"; do
+            [ "${changed[$index]}" = "${expected[$index]}" ]
+          done
+          remote_main=$(git ls-remote "https://github.com/$AUTHORITY_REPOSITORY.git" refs/heads/main | awk '{print $1}')
+          [ "$remote_main" = "$AUTHORITY_COMMIT" ]
+      - name: Copy exact Authority finalization delta and remove executor
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            'AI_PROGRESS.json'
+            'GLOBAL_COMPLETION_FINALIZATION_INPUT.json'
+            'GLOBAL_COMPLETION_RECEIPT.json'
+            'README.md'
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+            'STATUS.md'
+            'formalization/QIKVRT_Formalization_v2.0/COMPLETION_PLAN.md'
+            'formalization/QIKVRT_Formalization_v2.0/GLOBAL_COMPLETION_STATUS.json'
+          )
+          git fetch --no-tags --depth=1 "https://github.com/$AUTHORITY_REPOSITORY.git" "$AUTHORITY_COMMIT"
+          [ "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_COMMIT" ]
+          git checkout FETCH_HEAD -- "${paths[@]}"
+          rm -- "$EXECUTION_WORKFLOW"
+          mapfile -t actual < <(git diff --name-only "$MIRROR_BASE" -- | LC_ALL=C sort)
+          mapfile -t expected < <(printf '%s\n' "${paths[@]}" | LC_ALL=C sort)
+          [ "${#actual[@]}" -eq "${#expected[@]}" ]
+          for index in "${!expected[@]}"; do
+            [ "${actual[$index]}" = "${expected[$index]}" ]
+          done
+      - name: Verify exact finalized candidate before persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_freeze_alpha2_status.py check
+          python3 -B tools/qikvrt_verify_alpha2_archive.py
+          python3 -B tools/qikvrt_global_completion.py check
+          python3 - <<'PY'
+          import json
+          value = json.load(open('GLOBAL_COMPLETION_RECEIPT.json', encoding='utf-8'))
+          required = {
+              'PASS', 'FINAL_PASS', 'EFFECT_ACK_DONE',
+              'fully_kernel_verified_overall_completion',
+              'complete_claim_inventory', 'complete_lean_kernel_coverage',
+              'complete_source_claim_proof_traceability',
+          }
+          if value.get('state') != 'FINAL_PASS' or set(value.get('claims', {})) != required:
+              raise SystemExit('BLOCK: global completion receipt contract differs')
+          if not all(value['claims'].values()):
+              raise SystemExit('BLOCK: a scoped final claim is false')
+          semantics = value.get('claim_semantics', {})
+          if semantics.get('scope_qualified') is not True or semantics.get('open_claims_are_not_claimed_proved') is not True:
+              raise SystemExit('BLOCK: final claim semantics are not truth-bounded')
+          if semantics.get('open_claims_remain_open') != [
+              'EFFECT_ACK::EA-OPEN-001',
+              'EFFECT_ACK::EA-OPEN-002',
+              'EFFECT_ACK::EA-OPEN-003',
+          ]:
+              raise SystemExit('BLOCK: OPEN boundary set differs')
+          PY
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+      - name: Persist exact Mirror finalization candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          permitted=(
+            "$EXECUTION_WORKFLOW"
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+          )
+          remote_head=$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')
+          [ -n "$remote_head" ]
+          git fetch --no-tags origin "$remote_head"
+          [ "$(git rev-parse FETCH_HEAD)" = "$remote_head" ]
+          [ "$(git merge-base "$EXECUTION_HEAD" "$remote_head")" = "$EXECUTION_HEAD" ]
+          mapfile -t remote_changed < <(git diff --name-only "$MIRROR_BASE" "$remote_head" -- | LC_ALL=C sort)
+          mapfile -t remote_expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
+          [ "${#remote_changed[@]}" -eq "${#remote_expected[@]}" ]
+          for index in "${!remote_expected[@]}"; do
+            [ "${remote_changed[$index]}" = "${remote_expected[$index]}" ]
+          done
+          git config user.name 'qikvrt-mirror-sync[bot]'
+          git config user.email 'qikvrt-mirror-sync[bot]@users.noreply.github.com'
+          git add -A
+          tree=$(git write-tree)
+          commit=$(printf '%s\n' 'Synchronize scoped global completion receipt from Authority b771' | git commit-tree "$tree" -p "$remote_head")
+          git push origin "$commit:refs/heads/$TARGET_BRANCH"
