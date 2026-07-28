@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2734,
+  "file_count": 2735,
   "files": [
     {
       "bytes": 47,
@@ -23357,6 +23357,15 @@
       "sha256": "6c3fef6842b05261a4c04cd7859fcc5741c3ebb3bef57e3e4eec260496eed8d2"
     },
     {
+      "bytes": 1008,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/quantum-classical-runtime-article-2026-07-28/mirror-sync-trigger.json",
+      "sha256": "50068e6980f8bc51e5daab57cb96d9771551930f3810b13d47b39ace7d68c5dd"
+    },
+    {
       "bytes": 1691,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -24600,7 +24609,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2725,
+  "immutable_file_count": 2726,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -24625,7 +24634,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "d4b4f87a7c06558bbac5fbd80f9cc821fc8392c8fb7d715fef4fbe8f6cedfa0c",
+  "repository_content_tree_sha256": "775860e1704b4699a656711f474bc73c09190ae1bee8ad01851163281009b3bf",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
