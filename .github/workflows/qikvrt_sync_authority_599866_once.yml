@@ -1,0 +1,54 @@
+# One-shot self-removing exact-tree synchronizer.
+name: QIKVRT one-shot Authority global completion sync
+
+on:
+  push:
+    branches:
+      - sync/authority-599866-global-completion
+    paths:
+      - .github/workflows/qikvrt_sync_authority_599866_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-sync-authority-599866-global-completion
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact Mirror synchronization branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: sync/authority-599866-global-completion
+          fetch-depth: 0
+      - name: Replace index with the exact Authority tree and self-remove
+        shell: bash
+        run: |
+          set -euo pipefail
+          authority_repository='Goldkelch/qik-vrt'
+          authority_commit='599866689400bcb825e5534bd85e4653db44432f'
+          remote_main="$(git ls-remote "https://github.com/${authority_repository}.git" refs/heads/main | cut -f1)"
+          [ "$remote_main" = "$authority_commit" ] || {
+            echo "BLOCK: Authority main moved: $remote_main" >&2
+            exit 1
+          }
+          git fetch --no-tags "https://github.com/${authority_repository}.git" "$authority_commit"
+          [ "$(git rev-parse FETCH_HEAD)" = "$authority_commit" ]
+          authority_tree="$(git rev-parse 'FETCH_HEAD^{tree}')"
+          git read-tree --reset -u FETCH_HEAD
+          candidate_tree="$(git write-tree)"
+          [ "$candidate_tree" = "$authority_tree" ] || {
+            echo "BLOCK: reconstructed Mirror tree differs from Authority" >&2
+            exit 1
+          }
+          git config user.name 'qikvrt-mirror-sync[bot]'
+          git config user.email 'qikvrt-mirror-sync[bot]@users.noreply.github.com'
+          git commit -m 'Synchronize Mirror to Authority global completion tree 59986668'
+          [ "$(git rev-parse 'HEAD^{tree}')" = "$authority_tree" ]
+          git push origin HEAD:sync/authority-599866-global-completion
+          printf 'AUTHORITY_COMMIT=%s\nSHARED_TREE=%s\nMIRROR_HEAD=%s\n' \
+            "$authority_commit" "$authority_tree" "$(git rev-parse HEAD)"
