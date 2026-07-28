@@ -1,0 +1,107 @@
+# One-shot exact-tree synchronizer with a workflow-safe two-phase boundary.
+name: QIKVRT one-shot Authority global completion sync
+
+on:
+  push:
+    branches:
+      - sync/authority-599866-global-completion
+    paths:
+      - .github/workflows/qikvrt_sync_authority_599866_once.yml
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - .github/workflows/qikvrt_sync_authority_599866_once.yml
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: qikvrt-sync-authority-599866-global-completion
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Check out exact Mirror synchronization branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: sync/authority-599866-global-completion
+          fetch-depth: 0
+      - name: Import the exact Authority tree except the two workflow-path transitions
+        shell: bash
+        run: |
+          set -euo pipefail
+          authority_repository='Goldkelch/qik-vrt'
+          authority_commit='599866689400bcb825e5534bd85e4653db44432f'
+          target_ref='refs/heads/sync/authority-599866-global-completion'
+          one_shot_path='.github/workflows/qikvrt_sync_authority_599866_once.yml'
+          authority_workflow='.github/workflows/qikvrt_global_completion.yml'
+
+          remote_main="$(git ls-remote "https://github.com/${authority_repository}.git" refs/heads/main | cut -f1)"
+          [ "$remote_main" = "$authority_commit" ] || {
+            echo "BLOCK: Authority main moved: $remote_main" >&2
+            exit 1
+          }
+
+          git fetch --no-tags "https://github.com/${authority_repository}.git" "$authority_commit"
+          [ "$(git rev-parse FETCH_HEAD)" = "$authority_commit" ]
+          authority_tree="$(git rev-parse 'FETCH_HEAD^{tree}')"
+          one_shot_blob="$(git rev-parse "HEAD:${one_shot_path}")"
+
+          export GIT_INDEX_FILE="$RUNNER_TEMP/qikvrt-authority-sync.index"
+          rm -f "$GIT_INDEX_FILE"
+          git read-tree "$authority_tree"
+          git update-index --force-remove "$authority_workflow"
+          git update-index --add --cacheinfo "100644,${one_shot_blob},${one_shot_path}"
+          candidate_tree="$(git write-tree)"
+
+          actual_delta="$(git diff-tree --no-commit-id --name-only -r "$authority_tree" "$candidate_tree" | LC_ALL=C sort)"
+          expected_delta="$(printf '%s\n%s\n' "$authority_workflow" "$one_shot_path" | LC_ALL=C sort)"
+          [ "$actual_delta" = "$expected_delta" ] || {
+            printf 'BLOCK: workflow-safe candidate has unexpected Authority delta:\n%s\n' "$actual_delta" >&2
+            exit 1
+          }
+          [ -z "$(git ls-tree "$candidate_tree" "$authority_workflow")" ]
+          [ "$(git rev-parse "${candidate_tree}:${one_shot_path}")" = "$one_shot_blob" ]
+
+          export GIT_AUTHOR_NAME='qikvrt-mirror-sync[bot]'
+          export GIT_AUTHOR_EMAIL='qikvrt-mirror-sync[bot]@users.noreply.github.com'
+          export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+          export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+
+          for attempt in 1 2 3 4 5; do
+            parent="$(git ls-remote origin "$target_ref" | cut -f1)"
+            [ -n "$parent" ]
+            new_commit="$(printf '%s\n' \
+              'Import Authority global completion tree with workflow-safe boundary' \
+              '' \
+              "Authority commit: $authority_commit" \
+              "Authority tree: $authority_tree" \
+              "Deferred workflow add: $authority_workflow" \
+              "Deferred workflow delete: $one_shot_path" \
+              | git commit-tree "$candidate_tree" -p "$parent")"
+            [ "$(git rev-parse "${new_commit}^{tree}")" = "$candidate_tree" ]
+            if git push --force-with-lease="$target_ref:$parent" origin "$new_commit:$target_ref"; then
+              printf 'AUTHORITY_COMMIT=%s\nAUTHORITY_TREE=%s\nMIRROR_HEAD=%s\n' \
+                "$authority_commit" "$authority_tree" "$new_commit"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo 'BLOCK: synchronization branch advanced during all bounded push attempts' >&2
+          exit 1
