@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT one-shot canonical status article Mirror sync b47d
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+    paths:
+      - .github/workflows/qikvrt_sync_canonical_status_article_b47d_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-sync-canonical-status-article-b47d
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_COMMIT: b47d4a5398978f79f199f0a7bcc132666d88cb36
+      MIRROR_BASE: 9ceac37bb41ab947c903fda064078d355ab60e13
+      TARGET_BRANCH: sync/canonical-status-article-b47d-v1
+      EXECUTION_WORKFLOW: .github/workflows/qikvrt_sync_canonical_status_article_b47d_once.yml
+    steps:
+      - name: Check out exact Mirror execution branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: sync/canonical-status-article-b47d-v1
+          fetch-depth: 0
+      - name: Verify executor-only authorization boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
+          [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
+          [ "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha }}' ]
+          [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
+          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
+          [ "$(git ls-remote https://github.com/$AUTHORITY_REPOSITORY.git refs/heads/main | cut -f1)" = "$AUTHORITY_COMMIT" ]
+          mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq 1 ]
+          [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
+      - name: Import exact Authority status article and publication tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+            'docs/publications/2026-07-28-canonical-closing-statement-historical-context/ARTICLE_DE.md'
+            'docs/publications/2026-07-28-canonical-closing-statement-historical-context/README.md'
+            'docs/publications/2026-07-28-canonical-closing-statement-historical-context/STATUS_ARTICLE_MANIFEST.json'
+            'release/canonical-closing-status-article-2026-07-28/publish-request.json'
+            'release/canonical-closing-status-article-2026-07-28/zenodo-publication.json'
+            'tests/test_canonical_closing_status_article.py'
+          )
+          git fetch --no-tags https://github.com/$AUTHORITY_REPOSITORY.git "$AUTHORITY_COMMIT"
+          [ "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_COMMIT" ]
+          git checkout FETCH_HEAD -- "${paths[@]}"
+          rm -- "$EXECUTION_WORKFLOW"
+          git add -A
+          mapfile -t actual < <(git diff --cached --name-only "$MIRROR_BASE" -- | LC_ALL=C sort)
+          mapfile -t expected < <(printf '%s\n' "${paths[@]}" | LC_ALL=C sort)
+          [ "${#actual[@]}" -eq "${#expected[@]}" ]
+          for i in "${!expected[@]}"; do [ "${actual[$i]}" = "${expected[$i]}" ]; done
+          for path in "${paths[@]}"; do
+            [ "$(git rev-parse ":$path")" = "$(git rev-parse "FETCH_HEAD:$path")" ]
+          done
+          [ "$(git write-tree)" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]
+      - name: Verify exact synchronized candidate before persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+          python3 -B tests/test_canonical_closing_status_article.py
+          python3 -B tools/qikvrt_global_completion.py check
+          make test
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+          [ "$(git write-tree)" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]
+      - name: Persist exact Mirror tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = '${{ github.event.pull_request.head.sha }}' ]
+          git config user.name 'qikvrt-mirror-sync[bot]'
+          git config user.email 'qikvrt-mirror-sync[bot]@users.noreply.github.com'
+          git commit -m 'Synchronize canonical closing status article and Zenodo receipt from Authority b47d'
+          git push origin "HEAD:$TARGET_BRANCH"
