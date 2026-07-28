@@ -4,9 +4,7 @@
 name: QIK-VRT one-shot global completion Mirror sync 599866
 
 on:
-  push:
-    branches:
-      - sync/global-completion-599866-v2
+  pull_request:
     paths:
       - .github/workflows/qikvrt_sync_global_completion_599866_once.yml
 
@@ -15,32 +13,36 @@ permissions:
 
 concurrency:
   group: qikvrt-global-completion-mirror-sync-599866
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   synchronize:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
       AUTHORITY_COMMIT: 599866689400bcb825e5534bd85e4653db44432f
       MIRROR_BASE: 5c710e98bea2a10035cf0ba2c8e30ffd5c98c279
+      TARGET_BRANCH: sync/global-completion-599866-v2
+      EXECUTION_HEAD: ${{ github.event.pull_request.head.sha }}
       EXECUTION_WORKFLOW: .github/workflows/qikvrt_sync_global_completion_599866_once.yml
     steps:
-      - name: Check out exact Mirror authorization commit
+      - name: Check out exact Mirror execution head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           fetch-tags: true
-      - name: Verify one-parent authorization boundary
+      - name: Verify executor-only authorization boundary
         shell: bash
         run: |
           set -euo pipefail
           [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
-          [ "${{ github.event.before }}" = "$MIRROR_BASE" ]
-          [ "${{ github.event.forced }}" = 'false' ]
-          [ "$(git show -s --format=%P HEAD)" = "$MIRROR_BASE" ]
-          mapfile -t changed < <(git diff-tree --no-commit-id --name-only -r HEAD^ HEAD)
+          [ "$(git rev-parse HEAD)" = "$EXECUTION_HEAD" ]
+          [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
+          [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
+          mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
           [ "${#changed[@]}" -eq 1 ]
           [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
           remote_main=$(git ls-remote "https://github.com/$AUTHORITY_REPOSITORY.git" refs/heads/main | awk '{print $1}')
@@ -96,8 +98,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          remote_head=$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')
+          [ "$remote_head" = "$EXECUTION_HEAD" ]
           git config user.name 'qikvrt-mirror-sync[bot]'
           git config user.email 'qikvrt-mirror-sync[bot]@users.noreply.github.com'
           git add -A
           git commit -m 'Synchronize global completion candidate from Authority 599866'
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push origin "HEAD:$TARGET_BRANCH"
