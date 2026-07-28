@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT execute Authority Batch-002 combined Mirror sync
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/qikvrt_execute_authority_batch002_combined_sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  construct-exact-mirror-candidate:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_COMMIT: 3ba298e09753a5096c65ec09f82a3b568bd30efa
+      EXPECTED_MIRROR_MAIN: 1bb5af6597e1d90075396a9abf6c61e993388a59
+      CANDIDATE_BRANCH: sync/authority-batch002-combined-3ba298e0
+    steps:
+      - name: Check out Mirror history
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+
+      - name: Construct exact Authority-tree commit with Mirror parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'qik-vrt-sync-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          mirror_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$mirror_main" = "$EXPECTED_MIRROR_MAIN"
+
+          git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
+          git fetch --no-tags authority "$AUTHORITY_COMMIT"
+          fetched="$(git rev-parse FETCH_HEAD)"
+          test "$fetched" = "$AUTHORITY_COMMIT"
+
+          authority_tree="$(git rev-parse "${AUTHORITY_COMMIT}^{tree}")"
+          candidate="$(printf '%s\n' \
+            'Synchronize combined Batch-002 evidence, transactional trigger and self-disclosure from Authority' \
+            '' \
+            "Authority repository: ${AUTHORITY_REPOSITORY}" \
+            "Authority commit: ${AUTHORITY_COMMIT}" \
+            "Authority tree: ${authority_tree}" \
+            "Previous Mirror main: ${mirror_main}" \
+            'Semantics: preserve Mirror history as sole parent while replacing the complete content tree with the exact promoted Authority tree.' \
+            'Terminal claim disposition, PASS, FINAL_PASS and EFFECT_ACK_DONE remain false.' \
+            | git commit-tree "$authority_tree" -p "$mirror_main")"
+
+          test "$(git rev-parse "${candidate}^{tree}")" = "$authority_tree"
+          test "$(git rev-parse "${candidate}^")" = "$mirror_main"
+          git push --force-with-lease="refs/heads/${CANDIDATE_BRANCH}:" origin "${candidate}:refs/heads/${CANDIDATE_BRANCH}"
+
+          mkdir -p out
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          authority = os.environ['AUTHORITY_COMMIT']
+          mirror_parent = os.environ['EXPECTED_MIRROR_MAIN']
+          branch = os.environ['CANDIDATE_BRANCH']
+          candidate = git('rev-parse', f'refs/remotes/origin/{branch}') if False else git('ls-remote', 'origin', f'refs/heads/{branch}').split()[0]
+          receipt = {
+              'schema': 'qikvrt_authority_mirror_sync_candidate_receipt_v1',
+              'authority_repository': os.environ['AUTHORITY_REPOSITORY'],
+              'authority_commit': authority,
+              'authority_tree': git('rev-parse', f'{authority}^{{tree}}'),
+              'mirror_parent': mirror_parent,
+              'mirror_candidate_branch': branch,
+              'mirror_candidate_commit': candidate,
+              'mirror_candidate_tree': git('rev-parse', f'{candidate}^{{tree}}'),
+              'tree_equal': git('rev-parse', f'{authority}^{{tree}}') == git('rev-parse', f'{candidate}^{{tree}}'),
+              'completion_claims': {
+                  'mirror_synchronized': False,
+                  'claim_disposition_complete': False,
+                  'pass': False,
+                  'final_pass': False,
+                  'effect_ack_done': False,
+              },
+              'next_deterministic_effect': 'OPEN_AND_VERIFY_MIRROR_EXACT_HEAD_PR',
+          }
+          raw = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
+          open('out/MIRROR_SYNC_CANDIDATE_RECEIPT.json','wb').write(raw)
+          open('out/MIRROR_SYNC_CANDIDATE_RECEIPT.json.sha256','w').write(hashlib.sha256(raw).hexdigest()+'  MIRROR_SYNC_CANDIDATE_RECEIPT.json\n')
+          assert receipt['tree_equal'] is True
+          PY
+
+      - name: Publish immutable synchronization-candidate artifact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-authority-batch002-combined-mirror-sync-${{ github.run_id }}-${{ github.run_attempt }}
+          path: out
+          if-no-files-found: error
+          retention-days: 90
