@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ingolf Lohmann.
-name: QIK-VRT exact-tree Batch-002 Mirror sync 3ba298e0 v3
+name: QIK-VRT exact-tree Batch-002 Mirror sync 3ba298e0 v4
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: qikvrt-sync-content-disposition-batch-002-3ba298e0-v3
+  group: qikvrt-sync-content-disposition-batch-002-3ba298e0-v4
   cancel-in-progress: false
 jobs:
   construct-exact-authority-tree:
@@ -24,7 +24,7 @@ jobs:
       TRIGGER_BRANCH: trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1
       WORKFLOW_PATH: .github/workflows/qikvrt_sync_content_disposition_batch_002_3ba298e0_v1_once.yml
       TARGET_BRANCH: sync/content-disposition-batch-002-3ba298e0-v1
-      FIXED_GIT_DATE: '2026-07-28T21:20:00+02:00'
+      FIXED_GIT_DATE: '2026-07-28T21:30:00+02:00'
     steps:
       - name: Check out immutable event SHA
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -43,17 +43,14 @@ jobs:
           [ "$GITHUB_REF_NAME" = "$TRIGGER_BRANCH" ]
           [ "$(git rev-parse HEAD)" = "$GITHUB_SHA" ]
           [ -n "$PUSH_TOKEN" ]
-          observed_mirror="$(git ls-remote origin refs/heads/main | cut -f1)"
-          observed_target="$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)"
-          [ "$observed_mirror" = "$EXPECTED_MIRROR_MAIN" ]
-          [ "$observed_target" = "$EXPECTED_MIRROR_MAIN" ]
+          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
+          [ "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$EXPECTED_MIRROR_MAIN" ]
 
       - name: Validate execution-only trigger delta
         shell: bash
         run: |
           set -euo pipefail
           mapfile -t changed < <(git diff --name-only "$EXPECTED_MIRROR_MAIN" "$GITHUB_SHA" -- | LC_ALL=C sort)
-          printf 'changed_path=%s\n' "${changed[@]}"
           allowed=(
             "$WORKFLOW_PATH"
             "REPOSITORY_FILE_MANIFEST.json"
@@ -75,8 +72,7 @@ jobs:
           set -euo pipefail
           git remote remove authority 2>/dev/null || true
           git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
-          observed_authority="$(git ls-remote authority refs/heads/main | cut -f1)"
-          [ "$observed_authority" = "$EXPECTED_AUTHORITY_MAIN" ]
+          [ "$(git ls-remote authority refs/heads/main | cut -f1)" = "$EXPECTED_AUTHORITY_MAIN" ]
           git fetch --no-tags authority "$EXPECTED_AUTHORITY_MAIN"
           authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY_MAIN^{tree}")"
           echo "AUTHORITY_TREE=$authority_tree" >> "$GITHUB_ENV"
@@ -123,11 +119,7 @@ jobs:
           root = pathlib.Path(os.environ['VERIFY_ROOT'])
           disclosure = json.loads((root / '.well-known/qik-vrt-self-disclosure.json').read_text())
           assert disclosure['state'] == 'AVAILABLE'
-          assert disclosure['completion_claims'] == {
-              'pass': False,
-              'final_pass': False,
-              'effect_ack_done': False,
-          }
+          assert disclosure['completion_claims'] == {'pass': False, 'final_pass': False, 'effect_ack_done': False}
           receipt = json.loads((root / 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-002/public-candidate-byte-freeze/PUBLIC_CANDIDATE_BYTE_FREEZE_RECEIPT.json').read_text())
           assert receipt['record_count'] == 6
           assert receipt['file_count'] == 70
@@ -135,19 +127,56 @@ jobs:
           assert receipt['completion_claims']['claim_disposition_complete'] is False
           PY
 
-      - name: Persist exact Mirror candidate under frozen lease
+      - name: Attempt exact candidate persistence and capture diagnostics
+        id: persist
+        continue-on-error: true
         shell: bash
         env:
           PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euo pipefail
+          set +e
           push_url="https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "$push_url" \
             --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_MIRROR_MAIN" \
-            "$SYNC_COMMIT:refs/heads/$TARGET_BRANCH"
-          persisted="$(git ls-remote "$push_url" refs/heads/$TARGET_BRANCH | cut -f1)"
-          [ "$persisted" = "$SYNC_COMMIT" ]
-          echo "PERSISTED_CANDIDATE=$persisted" >> "$GITHUB_ENV"
+            "$SYNC_COMMIT:refs/heads/$TARGET_BRANCH" \
+            > qikvrt-mirror-push.stdout 2> qikvrt-mirror-push.stderr
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > qikvrt-mirror-push.rc
+          printf '%s\n' "$SYNC_COMMIT" > qikvrt-mirror-candidate.sha
+          printf '%s\n' "$AUTHORITY_TREE" > qikvrt-authority-tree.sha
+          cat qikvrt-mirror-push.stdout || true
+          cat qikvrt-mirror-push.stderr >&2 || true
+          echo "PUSH_RC=$rc" >> "$GITHUB_ENV"
+          if [ "$rc" -eq 0 ]; then
+            persisted="$(git ls-remote "$push_url" refs/heads/$TARGET_BRANCH | cut -f1)"
+            printf '%s\n' "$persisted" > qikvrt-mirror-persisted.sha
+            [ "$persisted" = "$SYNC_COMMIT" ]
+            echo "PERSISTED_CANDIDATE=$persisted" >> "$GITHUB_ENV"
+          fi
+          exit "$rc"
+
+      - name: Upload immutable push diagnostic receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-batch-002-mirror-push-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            qikvrt-mirror-push.stdout
+            qikvrt-mirror-push.stderr
+            qikvrt-mirror-push.rc
+            qikvrt-mirror-candidate.sha
+            qikvrt-authority-tree.sha
+            qikvrt-mirror-persisted.sha
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Enforce candidate persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "${PUSH_RC:-1}" = "0" ]
+          [ -n "${PERSISTED_CANDIDATE:-}" ]
 
       - name: Emit synchronization receipt
         shell: bash
