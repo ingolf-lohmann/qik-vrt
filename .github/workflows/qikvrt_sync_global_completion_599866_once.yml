@@ -34,7 +34,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           fetch-tags: true
-      - name: Verify executor-only authorization boundary
+      - name: Verify executor-plus-integrity authorization boundary
         shell: bash
         run: |
           set -euo pipefail
@@ -42,9 +42,18 @@ jobs:
           [ "$(git rev-parse HEAD)" = "$EXECUTION_HEAD" ]
           [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
           [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
+          permitted=(
+            "$EXECUTION_WORKFLOW"
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+          )
           mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
-          [ "${#changed[@]}" -eq 1 ]
-          [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
+          mapfile -t expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq "${#expected[@]}" ]
+          for index in "${!expected[@]}"; do
+            [ "${changed[$index]}" = "${expected[$index]}" ]
+          done
           remote_main=$(git ls-remote "https://github.com/$AUTHORITY_REPOSITORY.git" refs/heads/main | awk '{print $1}')
           [ "$remote_main" = "$AUTHORITY_COMMIT" ]
       - name: Copy exact Authority tree delta and remove executor
