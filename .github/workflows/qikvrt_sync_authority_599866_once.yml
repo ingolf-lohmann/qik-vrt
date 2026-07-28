@@ -1,4 +1,4 @@
-# One-shot self-removing exact-tree synchronizer.
+# One-shot exact-tree synchronizer. The final workflow-path writes are applied by the owner connector.
 name: QIKVRT one-shot Authority global completion sync
 
 on:
@@ -19,8 +19,6 @@ on:
 
 permissions:
   contents: write
-  issues: write
-  pull-requests: write
 
 concurrency:
   group: qikvrt-sync-authority-599866-global-completion
@@ -33,21 +31,21 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Check out exact Mirror synchronization branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: sync/authority-599866-global-completion
           fetch-depth: 0
-      - name: Create a Mirror-history commit with the exact Authority tree
+      - name: Commit the exact Authority non-workflow tree
         shell: bash
         run: |
           set -euo pipefail
           authority_repository='Goldkelch/qik-vrt'
           authority_commit='599866689400bcb825e5534bd85e4653db44432f'
           target_ref='refs/heads/sync/authority-599866-global-completion'
+          one_shot='.github/workflows/qikvrt_sync_authority_599866_once.yml'
+          authority_workflow='.github/workflows/qikvrt_global_completion.yml'
           remote_main="$(git ls-remote "https://github.com/${authority_repository}.git" refs/heads/main | cut -f1)"
           [ "$remote_main" = "$authority_commit" ] || {
             echo "BLOCK: Authority main moved: $remote_main" >&2
@@ -57,17 +55,30 @@ jobs:
           [ "$(git rev-parse FETCH_HEAD)" = "$authority_commit" ]
           authority_tree="$(git rev-parse 'FETCH_HEAD^{tree}')"
           parent="$(git rev-parse HEAD)"
+
+          # Build the Authority tree, but retain the already-authorized one-shot workflow
+          # and omit the new Authority workflow until the owner connector writes it.
+          git read-tree FETCH_HEAD
+          git checkout "$parent" -- "$one_shot"
+          git rm --cached --ignore-unmatch "$authority_workflow"
+          temporary_tree="$(git write-tree)"
+
           export GIT_AUTHOR_NAME='qikvrt-mirror-sync[bot]'
           export GIT_AUTHOR_EMAIL='qikvrt-mirror-sync[bot]@users.noreply.github.com'
           export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
           export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
           new_commit="$(printf '%s\n' \
-            'Synchronize Mirror to Authority global completion tree 59986668' \
+            'Synchronize Authority global completion non-workflow tree 59986668' \
             '' \
             "Authority commit: $authority_commit" \
-            "Authority tree: $authority_tree" \
-            | git commit-tree "$authority_tree" -p "$parent")"
-          [ "$(git rev-parse "${new_commit}^{tree}")" = "$authority_tree" ]
+            "Authority tree pending owner workflow writes: $authority_tree" \
+            | git commit-tree "$temporary_tree" -p "$parent")"
+
+          if git diff-tree --no-commit-id --name-only -r "$parent" "$new_commit" \
+              | grep -q '^.github/workflows/'; then
+            echo 'BLOCK: Actions phase attempted a workflow-path change' >&2
+            exit 1
+          fi
           git push origin "$new_commit:$target_ref"
-          printf 'AUTHORITY_COMMIT=%s\nSHARED_TREE=%s\nMIRROR_HEAD=%s\n' \
-            "$authority_commit" "$authority_tree" "$new_commit"
+          printf 'AUTHORITY_COMMIT=%s\nAUTHORITY_TREE=%s\nTEMPORARY_MIRROR_TREE=%s\nMIRROR_HEAD=%s\n' \
+            "$authority_commit" "$authority_tree" "$temporary_tree" "$new_commit"
