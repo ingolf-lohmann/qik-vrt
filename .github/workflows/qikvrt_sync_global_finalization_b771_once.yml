@@ -34,7 +34,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           fetch-tags: true
-      - name: Verify executor-plus-integrity authorization boundary
+      - name: Verify executor or executor-plus-integrity authorization boundary
         shell: bash
         run: |
           set -euo pipefail
@@ -49,11 +49,17 @@ jobs:
             'SHA256SUMS.txt'
           )
           mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
-          mapfile -t expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
-          [ "${#changed[@]}" -eq "${#expected[@]}" ]
-          for index in "${!expected[@]}"; do
-            [ "${changed[$index]}" = "${expected[$index]}" ]
-          done
+          if [ "${#changed[@]}" -eq 1 ]; then
+            [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
+          elif [ "${#changed[@]}" -eq 4 ]; then
+            mapfile -t expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
+            for index in "${!expected[@]}"; do
+              [ "${changed[$index]}" = "${expected[$index]}" ]
+            done
+          else
+            echo "BLOCK: authorization diff has ${#changed[@]} paths" >&2
+            exit 1
+          fi
           remote_main=$(git ls-remote "https://github.com/$AUTHORITY_REPOSITORY.git" refs/heads/main | awk '{print $1}')
           [ "$remote_main" = "$AUTHORITY_COMMIT" ]
       - name: Copy exact Authority finalization delta and remove executor
@@ -129,11 +135,17 @@ jobs:
           [ "$(git rev-parse FETCH_HEAD)" = "$remote_head" ]
           [ "$(git merge-base "$EXECUTION_HEAD" "$remote_head")" = "$EXECUTION_HEAD" ]
           mapfile -t remote_changed < <(git diff --name-only "$MIRROR_BASE" "$remote_head" -- | LC_ALL=C sort)
-          mapfile -t remote_expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
-          [ "${#remote_changed[@]}" -eq "${#remote_expected[@]}" ]
-          for index in "${!remote_expected[@]}"; do
-            [ "${remote_changed[$index]}" = "${remote_expected[$index]}" ]
-          done
+          if [ "${#remote_changed[@]}" -eq 1 ]; then
+            [ "${remote_changed[0]}" = "$EXECUTION_WORKFLOW" ]
+          elif [ "${#remote_changed[@]}" -eq 4 ]; then
+            mapfile -t remote_expected < <(printf '%s\n' "${permitted[@]}" | LC_ALL=C sort)
+            for index in "${!remote_expected[@]}"; do
+              [ "${remote_changed[$index]}" = "${remote_expected[$index]}" ]
+            done
+          else
+            echo "BLOCK: remote authorization diff has ${#remote_changed[@]} paths" >&2
+            exit 1
+          fi
           git config user.name 'qikvrt-mirror-sync[bot]'
           git config user.email 'qikvrt-mirror-sync[bot]@users.noreply.github.com'
           git add -A
