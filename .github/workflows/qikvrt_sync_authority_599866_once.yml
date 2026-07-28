@@ -7,6 +7,15 @@ on:
       - sync/authority-599866-global-completion
     paths:
       - .github/workflows/qikvrt_sync_authority_599866_once.yml
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - .github/workflows/qikvrt_sync_authority_599866_once.yml
 
 permissions:
   contents: write
@@ -17,6 +26,9 @@ concurrency:
 
 jobs:
   synchronize:
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
