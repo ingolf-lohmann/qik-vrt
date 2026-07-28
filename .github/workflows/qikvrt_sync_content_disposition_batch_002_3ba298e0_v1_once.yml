@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ingolf Lohmann.
-name: QIK-VRT exact-tree Batch-002 Mirror sync 3ba298e0 v2
+name: QIK-VRT exact-tree Batch-002 Mirror sync 3ba298e0 v3
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: qikvrt-sync-content-disposition-batch-002-3ba298e0-v2
+  group: qikvrt-sync-content-disposition-batch-002-3ba298e0-v3
   cancel-in-progress: false
 jobs:
   construct-exact-authority-tree:
@@ -24,7 +24,7 @@ jobs:
       TRIGGER_BRANCH: trusted/trigger-content-disposition-batch-002-sync-3ba298e0-v1
       WORKFLOW_PATH: .github/workflows/qikvrt_sync_content_disposition_batch_002_3ba298e0_v1_once.yml
       TARGET_BRANCH: sync/content-disposition-batch-002-3ba298e0-v1
-      FIXED_GIT_DATE: '2026-07-28T21:10:00+02:00'
+      FIXED_GIT_DATE: '2026-07-28T21:20:00+02:00'
     steps:
       - name: Check out immutable event SHA
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -32,28 +32,26 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Construct, verify and persist exact Authority tree
+
+      - name: Bind immutable event and frozen refs
         shell: bash
         env:
           PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -Eeuo pipefail
-          stage=bootstrap
-          trap 'rc=$?; echo "::error title=QIKVRT Mirror sync failure::stage=${stage} rc=${rc}"; exit "$rc"' ERR
-
-          stage=bind_event
+          set -euo pipefail
           [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
           [ "$GITHUB_REF_NAME" = "$TRIGGER_BRANCH" ]
           [ "$(git rev-parse HEAD)" = "$GITHUB_SHA" ]
           [ -n "$PUSH_TOKEN" ]
-
-          stage=bind_frozen_refs
           observed_mirror="$(git ls-remote origin refs/heads/main | cut -f1)"
           observed_target="$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)"
           [ "$observed_mirror" = "$EXPECTED_MIRROR_MAIN" ]
           [ "$observed_target" = "$EXPECTED_MIRROR_MAIN" ]
 
-          stage=validate_trigger_delta
+      - name: Validate execution-only trigger delta
+        shell: bash
+        run: |
+          set -euo pipefail
           mapfile -t changed < <(git diff --name-only "$EXPECTED_MIRROR_MAIN" "$GITHUB_SHA" -- | LC_ALL=C sort)
           printf 'changed_path=%s\n' "${changed[@]}"
           allowed=(
@@ -71,22 +69,29 @@ jobs:
           done
           printf '%s\n' "${changed[@]}" | grep -Fxq "$WORKFLOW_PATH"
 
-          stage=fetch_authority
+      - name: Fetch frozen Authority head
+        shell: bash
+        run: |
+          set -euo pipefail
           git remote remove authority 2>/dev/null || true
           git remote add authority "https://github.com/${AUTHORITY_REPOSITORY}.git"
           observed_authority="$(git ls-remote authority refs/heads/main | cut -f1)"
           [ "$observed_authority" = "$EXPECTED_AUTHORITY_MAIN" ]
           git fetch --no-tags authority "$EXPECTED_AUTHORITY_MAIN"
           authority_tree="$(git rev-parse "$EXPECTED_AUTHORITY_MAIN^{tree}")"
+          echo "AUTHORITY_TREE=$authority_tree" >> "$GITHUB_ENV"
 
-          stage=construct_candidate
+      - name: Construct history-preserving exact-tree candidate
+        shell: bash
+        run: |
+          set -euo pipefail
           message_file="$RUNNER_TEMP/qikvrt-sync-message.txt"
           cat > "$message_file" <<EOF
           Synchronize content-disposition Batch 002 from Authority 3ba298e0
 
           Authority repository: $AUTHORITY_REPOSITORY
           Authority commit: $EXPECTED_AUTHORITY_MAIN
-          Authority tree: $authority_tree
+          Authority tree: $AUTHORITY_TREE
           Previous Mirror main: $EXPECTED_MIRROR_MAIN
           Semantics: preserve Mirror history as sole parent while replacing the complete content tree with the exact verified Authority tree.
           Batch-002 candidate byte freeze complete; terminal claim disposition remains incomplete.
@@ -100,14 +105,18 @@ jobs:
             GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
             GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
             GIT_COMMITTER_DATE="$FIXED_GIT_DATE" \
-            git commit-tree "$authority_tree" -p "$EXPECTED_MIRROR_MAIN" < "$message_file")"
-          [ "$(git rev-parse "$sync_commit^{tree}")" = "$authority_tree" ]
+            git commit-tree "$AUTHORITY_TREE" -p "$EXPECTED_MIRROR_MAIN" < "$message_file")"
+          [ "$(git rev-parse "$sync_commit^{tree}")" = "$AUTHORITY_TREE" ]
           [ "$(git show -s --format=%P "$sync_commit")" = "$EXPECTED_MIRROR_MAIN" ]
           git diff --exit-code "$EXPECTED_AUTHORITY_MAIN" "$sync_commit" --
+          echo "SYNC_COMMIT=$sync_commit" >> "$GITHUB_ENV"
 
-          stage=verify_candidate
+      - name: Verify repository integrity and Batch-002 truth boundary
+        shell: bash
+        run: |
+          set -euo pipefail
           verify_root="$RUNNER_TEMP/qikvrt-batch-002-mirror-sync"
-          git worktree add --detach "$verify_root" "$sync_commit"
+          git worktree add --detach "$verify_root" "$SYNC_COMMIT"
           PYTHONDONTWRITEBYTECODE=1 python3 -B "$verify_root/tools/qikvrt_integrity.py" verify
           VERIFY_ROOT="$verify_root" python3 -B - <<'PY'
           import json, os, pathlib
@@ -126,20 +135,29 @@ jobs:
           assert receipt['completion_claims']['claim_disposition_complete'] is False
           PY
 
-          stage=persist_candidate
+      - name: Persist exact Mirror candidate under frozen lease
+        shell: bash
+        env:
+          PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
           push_url="https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push "$push_url" \
             --force-with-lease="refs/heads/$TARGET_BRANCH:$EXPECTED_MIRROR_MAIN" \
-            "$sync_commit:refs/heads/$TARGET_BRANCH"
+            "$SYNC_COMMIT:refs/heads/$TARGET_BRANCH"
           persisted="$(git ls-remote "$push_url" refs/heads/$TARGET_BRANCH | cut -f1)"
-          [ "$persisted" = "$sync_commit" ]
+          [ "$persisted" = "$SYNC_COMMIT" ]
+          echo "PERSISTED_CANDIDATE=$persisted" >> "$GITHUB_ENV"
 
-          stage=emit_receipt
+      - name: Emit synchronization receipt
+        shell: bash
+        run: |
+          set -euo pipefail
           printf '%s\n' \
             "authority_commit=$EXPECTED_AUTHORITY_MAIN" \
-            "authority_tree=$authority_tree" \
+            "authority_tree=$AUTHORITY_TREE" \
             "previous_mirror_main=$EXPECTED_MIRROR_MAIN" \
-            "mirror_candidate=$persisted" \
+            "mirror_candidate=$PERSISTED_CANDIDATE" \
             "candidate_parent_verified=true" \
             "complete_file_diff_empty=true" \
             "repository_integrity_verified=true" \
