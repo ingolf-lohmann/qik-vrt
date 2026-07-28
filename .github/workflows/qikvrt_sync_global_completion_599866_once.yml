@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT one-shot global completion Mirror sync 599866
+
+on:
+  push:
+    branches:
+      - sync/global-completion-599866-v2
+    paths:
+      - .github/workflows/qikvrt_sync_global_completion_599866_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-global-completion-mirror-sync-599866
+  cancel-in-progress: false
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_COMMIT: 599866689400bcb825e5534bd85e4653db44432f
+      MIRROR_BASE: 5c710e98bea2a10035cf0ba2c8e30ffd5c98c279
+      EXECUTION_WORKFLOW: .github/workflows/qikvrt_sync_global_completion_599866_once.yml
+    steps:
+      - name: Check out exact Mirror authorization commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Verify one-parent authorization boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
+          [ "${{ github.event.before }}" = "$MIRROR_BASE" ]
+          [ "${{ github.event.forced }}" = 'false' ]
+          [ "$(git show -s --format=%P HEAD)" = "$MIRROR_BASE" ]
+          mapfile -t changed < <(git diff-tree --no-commit-id --name-only -r HEAD^ HEAD)
+          [ "${#changed[@]}" -eq 1 ]
+          [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
+          remote_main=$(git ls-remote "https://github.com/$AUTHORITY_REPOSITORY.git" refs/heads/main | awk '{print $1}')
+          [ "$remote_main" = "$AUTHORITY_COMMIT" ]
+      - name: Copy exact Authority tree delta and remove executor
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            '.github/workflows/qikvrt_global_completion.yml'
+            'AI_PROGRESS.json'
+            'GLOBAL_CLAIM_INVENTORY.json'
+            'GLOBAL_COMPLETION_SCOPE.json'
+            'GLOBAL_EXACT_TAG_KERNEL_RECEIPTS.json'
+            'GLOBAL_SOURCE_CLAIM_DISPOSITION_TRACEABILITY.json'
+            'README.md'
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+            'STATUS.md'
+            'formalization/QIKVRT_Formalization_v2.0/COMPLETION_PLAN.md'
+            'formalization/QIKVRT_Formalization_v2.0/GLOBAL_COMPLETION_STATUS.json'
+            'formalization/QIKVRT_Formalization_v2.0/README.md'
+            'formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py'
+            'release/formalization-v2/alpha2-frozen/FREEZE_MANIFEST.json'
+            'release/formalization-v2/alpha2-frozen/formalization/QIKVRT_Formalization_v2.0/COMPLETION_PLAN.md'
+            'release/formalization-v2/alpha2-frozen/formalization/QIKVRT_Formalization_v2.0/README.md'
+            'release/formalization-v2/alpha2-frozen/formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py'
+            'tests/test_global_completion.py'
+            'tools/qikvrt_freeze_alpha2_status.py'
+            'tools/qikvrt_global_completion.py'
+            'tools/qikvrt_verify_alpha2_archive.py'
+          )
+          git fetch --no-tags --depth=1 "https://github.com/$AUTHORITY_REPOSITORY.git" "$AUTHORITY_COMMIT"
+          [ "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_COMMIT" ]
+          git checkout FETCH_HEAD -- "${paths[@]}"
+          rm -- "$EXECUTION_WORKFLOW"
+          mapfile -t actual < <(git diff --name-only "$MIRROR_BASE" -- | LC_ALL=C sort)
+          mapfile -t expected < <(printf '%s\n' "${paths[@]}" | LC_ALL=C sort)
+          [ "${#actual[@]}" -eq "${#expected[@]}" ]
+          for index in "${!expected[@]}"; do
+            [ "${actual[$index]}" = "${expected[$index]}" ]
+          done
+      - name: Verify exact synchronized candidate before persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_freeze_alpha2_status.py check
+          python3 -B tools/qikvrt_verify_alpha2_archive.py
+          python3 -B tools/qikvrt_global_completion.py check
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+      - name: Persist exact Mirror synchronization candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'qikvrt-mirror-sync[bot]'
+          git config user.email 'qikvrt-mirror-sync[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Synchronize global completion candidate from Authority 599866'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
