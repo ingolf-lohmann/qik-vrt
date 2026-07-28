@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
 
-name: QIK-VRT trusted trigger quantum runtime article Mirror sync 3a186cb5
+name: QIK-VRT exact-tree quantum runtime article Mirror sync 3a186cb5
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
       - opened
       - reopened
     paths:
-      - .github/workflows/qikvrt_trigger_quantum_runtime_article_sync_3a186cb5_once.yml
+      - release/quantum-classical-runtime-article-2026-07-28/mirror-sync-trigger.json
 
 permissions:
   contents: write
@@ -33,10 +33,10 @@ jobs:
       TARGET_BRANCH: sync/quantum-runtime-article-zenodo-3a186cb5-v1
       FIXED_GIT_DATE: '2026-07-28T08:45:00Z'
     steps:
-      - name: Check out current Mirror object graph
+      - name: Check out frozen Mirror synchronization source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: main
+          ref: sync/quantum-runtime-article-zenodo-3a186cb5-v1
           fetch-depth: 0
           persist-credentials: false
 
@@ -45,9 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
-          [ "${{ github.event.pull_request.base.sha }}" = "$EXPECTED_MIRROR_BEFORE" ]
           [ "$(git rev-parse HEAD)" = "$EXPECTED_MIRROR_BEFORE" ]
-          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$EXPECTED_MIRROR_BEFORE" ]
           [ "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$EXPECTED_MIRROR_BEFORE" ]
 
           git remote remove authority 2>/dev/null || true
