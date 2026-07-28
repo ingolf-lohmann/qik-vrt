@@ -34,7 +34,7 @@ jobs:
         with:
           ref: sync/quantum-classical-runtime-article-3a186-v1
           fetch-depth: 0
-      - name: Verify executor-only authorization boundary
+      - name: Verify executor and canonical integrity authorization boundary
         shell: bash
         run: |
           set -euo pipefail
@@ -45,8 +45,16 @@ jobs:
           [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
           [ "$(git ls-remote https://github.com/$AUTHORITY_REPOSITORY.git refs/heads/main | cut -f1)" = "$AUTHORITY_COMMIT" ]
           mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
-          [ "${#changed[@]}" -eq 1 ]
-          [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
+          expected=(
+            "$EXECUTION_WORKFLOW"
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+          )
+          mapfile -t expected_sorted < <(printf '%s\n' "${expected[@]}" | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq "${#expected_sorted[@]}" ]
+          for i in "${!expected_sorted[@]}"; do [ "${changed[$i]}" = "${expected_sorted[$i]}" ]; done
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
       - name: Fetch and verify exact Authority tree in isolation
         shell: bash
         run: |
