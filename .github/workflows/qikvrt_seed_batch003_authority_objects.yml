@@ -27,9 +27,9 @@ jobs:
     timeout-minutes: 30
     env:
       AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
-      AUTHORITY_SHA: 6f4a57ddd18b6a7db749bc30cd3b40fb42e01bd5
-      MIRROR_MAIN: 3c8a68165eb3fcb70a629b73732de5da31463e07
-      TARGET_REF: seed/batch003-authority-objects-6f4a57dd
+      AUTHORITY_SHA: db60a0801c4435d560f7ef3472c0147880e9d616
+      MIRROR_MAIN: 518677ee2c216b3fb67a49fc7d5a1047e14c2cc1
+      TARGET_REF: seed/batch003-current-authority-db60a080
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -46,7 +46,7 @@ jobs:
           test "$(git rev-parse origin/main)" = "$MIRROR_MAIN"
           test "$(git rev-parse HEAD)" = "$MIRROR_MAIN"
           test "$(git rev-parse origin/$TARGET_REF)" = "$MIRROR_MAIN"
-      - name: Fetch exact Authority paths and verify source blobs
+      - name: Fetch exact current Authority paths and verify source blobs
         shell: bash
         run: |
           set -euo pipefail
@@ -59,22 +59,24 @@ jobs:
 
           root = pathlib.Path('.').resolve()
           repository = 'Goldkelch/qik-vrt'
-          sha = '6f4a57ddd18b6a7db749bc30cd3b40fb42e01bd5'
+          sha = 'db60a0801c4435d560f7ef3472c0147880e9d616'
           expected = {
               '.github/workflows/qikvrt_batch04_integrity.yml': '48fab44aa61a7c801501bb92f8c352b3615ecbd6',
               'AI_PROGRESS.json': '6bcad237315e532f53ae9cf37e3a64a71e5c970c',
               'AI_STATUS.md': 'b03ffa0c07ab7b4b76f01af415c9cef5bc8f511d',
               'Makefile': 'a23e730ba757f41812f32c5d3c308981cbb2a1cf',
-              'REPOSITORY_FILE_MANIFEST.json': '6fde2214243e48e3335e3fc7d84aa996b63929c3',
-              'REPOSITORY_FILE_MANIFEST.json.sha256': 'c2cd0414ef089705a4c6e92d40eb5e6bc2f9657a',
-              'SHA256SUMS.txt': 'e8e2f8771d50a638a254af5dbbb986f7bc3d07d9',
+              'REPOSITORY_FILE_MANIFEST.json': '741cfcf552cd40d2b51af4a1c1c87dd49219618c',
+              'REPOSITORY_FILE_MANIFEST.json.sha256': 'e313ca68c4e23ec4e5966e1f800809bf2385e663',
+              'SHA256SUMS.txt': '7adcbeccf2bc26cb958d37d55c88990bc4f38241',
               'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/dispatch/BATCH_003_DISPATCH_RECEIPT.json': 'acdb9d295429eb8adf08b7999a988c883e1f8628',
               'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/dispatch/subjects/SUBJECT-2581811b342e505d/CLAIM_EXTRACTION_WORK_PACKAGE.json': 'e0b32ec44a8d73ac7226d50ac8db004c82f176a3',
               'schemas/human_machine_progress.schema.json': '89169c024bc7d55f6dbe741c30d9d28ae03f8b2c',
               'tests/test_content_disposition_batch_002_terminal.py': '3aaaa0f87b2a9723bbc555df976df2e6262c5761',
               'tests/test_content_disposition_batch_003_dispatch.py': 'ee9a6a8d73c890792d90446e1fe9e693dcc43fef',
+              'tests/test_content_disposition_batch_003_live_index_append.py': 'be9edf10ec61ffa4150108ebce4b4d4f41f1c3a3',
               'tests/test_content_disposition_status_after_batch_002_acceptance.py': 'b82177c484eb0828f5c8ff0454a47869c6866bfc',
-              'tools/qikvrt_content_disposition_batch_003_dispatch.py': 'a0ddbf87b4c3770b57f310e5c1b3554b7e626db6',
+              'tools/qikvrt_content_disposition_batch_003_dispatch.py': '23d3be52757578f4070ce534b1a8856b8609c063',
+              'tools/qikvrt_content_disposition_batch_003_dispatch_legacy.py': 'a0ddbf87b4c3770b57f310e5c1b3554b7e626db6',
               'work-units/ADVANCE_CANONICAL_STATUS_AND_DISPATCH_BATCH_003.json': 'f5d9824f9b748f1daaef5f4484000a4cd05bc2bf',
           }
           for relative, expected_blob in expected.items():
@@ -98,8 +100,9 @@ jobs:
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
           make test
+          python3 -B tests/test_content_disposition_batch_003_live_index_append.py
           python3 -B tools/qikvrt_integrity.py verify
-      - name: Verify exact final Authority blobs
+      - name: Verify exact final current Authority blobs
         shell: bash
         run: |
           set -euo pipefail
@@ -107,18 +110,20 @@ jobs:
           test "$(git hash-object AI_PROGRESS.json)" = 6bcad237315e532f53ae9cf37e3a64a71e5c970c
           test "$(git hash-object AI_STATUS.md)" = b03ffa0c07ab7b4b76f01af415c9cef5bc8f511d
           test "$(git hash-object Makefile)" = a23e730ba757f41812f32c5d3c308981cbb2a1cf
-          test "$(git hash-object REPOSITORY_FILE_MANIFEST.json)" = 6fde2214243e48e3335e3fc7d84aa996b63929c3
-          test "$(git hash-object REPOSITORY_FILE_MANIFEST.json.sha256)" = c2cd0414ef089705a4c6e92d40eb5e6bc2f9657a
-          test "$(git hash-object SHA256SUMS.txt)" = e8e2f8771d50a638a254af5dbbb986f7bc3d07d9
+          test "$(git hash-object REPOSITORY_FILE_MANIFEST.json)" = 741cfcf552cd40d2b51af4a1c1c87dd49219618c
+          test "$(git hash-object REPOSITORY_FILE_MANIFEST.json.sha256)" = e313ca68c4e23ec4e5966e1f800809bf2385e663
+          test "$(git hash-object SHA256SUMS.txt)" = 7adcbeccf2bc26cb958d37d55c88990bc4f38241
           test "$(git hash-object release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/dispatch/BATCH_003_DISPATCH_RECEIPT.json)" = acdb9d295429eb8adf08b7999a988c883e1f8628
           test "$(git hash-object release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/dispatch/subjects/SUBJECT-2581811b342e505d/CLAIM_EXTRACTION_WORK_PACKAGE.json)" = e0b32ec44a8d73ac7226d50ac8db004c82f176a3
           test "$(git hash-object schemas/human_machine_progress.schema.json)" = 89169c024bc7d55f6dbe741c30d9d28ae03f8b2c
           test "$(git hash-object tests/test_content_disposition_batch_002_terminal.py)" = 3aaaa0f87b2a9723bbc555df976df2e6262c5761
           test "$(git hash-object tests/test_content_disposition_batch_003_dispatch.py)" = ee9a6a8d73c890792d90446e1fe9e693dcc43fef
+          test "$(git hash-object tests/test_content_disposition_batch_003_live_index_append.py)" = be9edf10ec61ffa4150108ebce4b4d4f41f1c3a3
           test "$(git hash-object tests/test_content_disposition_status_after_batch_002_acceptance.py)" = b82177c484eb0828f5c8ff0454a47869c6866bfc
-          test "$(git hash-object tools/qikvrt_content_disposition_batch_003_dispatch.py)" = a0ddbf87b4c3770b57f310e5c1b3554b7e626db6
+          test "$(git hash-object tools/qikvrt_content_disposition_batch_003_dispatch.py)" = 23d3be52757578f4070ce534b1a8856b8609c063
+          test "$(git hash-object tools/qikvrt_content_disposition_batch_003_dispatch_legacy.py)" = a0ddbf87b4c3770b57f310e5c1b3554b7e626db6
           test "$(git hash-object work-units/ADVANCE_CANONICAL_STATUS_AND_DISPATCH_BATCH_003.json)" = f5d9824f9b748f1daaef5f4484000a4cd05bc2bf
-      - name: Seed non-workflow Authority objects on isolated branch
+      - name: Seed non-workflow current Authority objects on isolated branch
         shell: bash
         run: |
           set -euo pipefail
@@ -131,9 +136,11 @@ jobs:
             schemas/human_machine_progress.schema.json \
             tests/test_content_disposition_batch_002_terminal.py \
             tests/test_content_disposition_batch_003_dispatch.py \
+            tests/test_content_disposition_batch_003_live_index_append.py \
             tests/test_content_disposition_status_after_batch_002_acceptance.py \
             tools/qikvrt_content_disposition_batch_003_dispatch.py \
+            tools/qikvrt_content_disposition_batch_003_dispatch_legacy.py \
             work-units/ADVANCE_CANONICAL_STATUS_AND_DISPATCH_BATCH_003.json
           git diff --cached --check
-          git commit -m "Seed exact Batch-003 Authority objects for Mirror candidate"
+          git commit -m "Seed exact current Batch-003 Authority objects for Mirror candidate"
           git push origin "HEAD:$TARGET_REF"
