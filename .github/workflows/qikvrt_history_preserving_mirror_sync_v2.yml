@@ -8,32 +8,46 @@ on:
       - 'execution/history-preserving-mirror-sync-*'
     paths:
       - work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST.json
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST.json
 
 permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-history-preserving-mirror-sync-v2
+  group: qikvrt-history-preserving-mirror-sync-v2-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   construct-and-persist:
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       MARKER_PATH: work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST.json
+      TRIGGER_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      TRIGGER_REF_NAME: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
     steps:
-      - name: Check out immutable trigger event
+      - name: Check out immutable trigger head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ env.TRIGGER_SHA }}
           fetch-depth: 0
 
       - name: Validate request and export frozen transaction
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$TRIGGER_SHA"
           python3 - <<'PY'
           import json, os, pathlib, re
 
@@ -46,7 +60,7 @@ jobs:
           assert marker['state'] == 'READY'
           assert marker['authority_repository'] == 'Goldkelch/qik-vrt'
           assert marker['mirror_repository'] == 'ingolf-lohmann/qik-vrt'
-          assert marker['execution_branch'] == os.environ['GITHUB_REF_NAME']
+          assert marker['execution_branch'] == os.environ['TRIGGER_REF_NAME']
           assert marker['execution_branch'].startswith('execution/history-preserving-mirror-sync-')
           assert marker['target_branch'].startswith('sync/')
           assert branch.fullmatch(marker['execution_branch'])
@@ -104,7 +118,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$GITHUB_REF_NAME" = "$EXECUTION_BRANCH"
+          test "$TRIGGER_REF_NAME" = "$EXECUTION_BRANCH"
+          test "$(git ls-remote origin refs/heads/$EXECUTION_BRANCH | cut -f1)" = "$TRIGGER_SHA"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
           test "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$MIRROR_PARENT"
           test "$(git ls-remote "$AUTHORITY_URL" refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
