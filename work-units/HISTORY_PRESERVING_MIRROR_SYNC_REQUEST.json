@@ -1,0 +1,58 @@
+{
+  "_license": {
+    "classification": "machine_readable_effect_request",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_history_preserving_mirror_candidate_request_v3",
+  "state": "READY",
+  "transaction_id": "CONSTRUCT-HISTORY-PRESERVING-MIRROR-CANDIDATE-6F4A57DD-FROM-3C8A6816-PR217-20260730-V1",
+  "operation": "ADVANCE_CANONICAL_STATUS_AND_DISPATCH_BATCH_003",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "authority_pull_request": 217,
+  "authority_exact_green_head": "c26b181bf924dcd453f6c39821b5b468e80ff779",
+  "authority_main": "6f4a57ddd18b6a7db749bc30cd3b40fb42e01bd5",
+  "authority_manifest_git_blob_sha1": "6fde2214243e48e3335e3fc7d84aa996b63929c3",
+  "authority_manifest_sha256": "d7d3a9eded093fb4eb6382758b655b64321261be3ee1282ee0aec4d853872461",
+  "repository_content_tree_sha256": "693413204691cdfd3f97d256bc270e34ed2ca3558b9adbea497e420a76d737c2",
+  "authority_file_count": 2951,
+  "authority_immutable_file_count": 2942,
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_parent": "3c8a68165eb3fcb70a629b73732de5da31463e07",
+  "orchestration_branch": "orchestration/history-preserving-mirror-sync-pr217-v1",
+  "execution_branch": "execution/history-preserving-mirror-sync-6f4a57dd-from-3c8a6816-v1",
+  "target_branch": "sync/batch003-dispatch-authority-6f4a57dd-from-3c8a6816-v1",
+  "corpus_binding": {
+    "subject_count": 19,
+    "dispositioned_subject_count": 12,
+    "open_subject_count": 7,
+    "active_batch": "CONTENT-DISPOSITION-BATCH-003",
+    "active_subject": "SUBJECT-2581811b342e505d",
+    "batch_state": "DISPATCHED_FIRST_SUBJECT_ACTIVE"
+  },
+  "projected_next_effect": "RECOVER_EXACT_PUBLIC_INDEX_BYTES_AND_EXTRACT_CLASSIFY_BATCH_003_SUBJECT_2581811B342E505D",
+  "next_deterministic_effect_after_sync": "REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_BATCH003_DISPATCH",
+  "requirements": [
+    "reobserve exact Authority main and frozen Mirror parent",
+    "require Authority PR 217 to remain merged at the declared Authority main",
+    "verify manifest blob, detached manifest digest, repository content-tree digest and file counts",
+    "create every changed blob content-addressedly in the Mirror object store",
+    "construct the complete target tree from the frozen Mirror-parent tree",
+    "require the constructed target tree SHA-1 to equal the exact Authority tree SHA-1",
+    "create one commit whose sole parent is the frozen Mirror parent",
+    "publish only after both main leases are rechecked",
+    "keep Batch-003 terminal disposition, Zenodo mutation, reciprocal equality and repository-wide release claims false"
+  ],
+  "completion_claims": {
+    "candidate_created": false,
+    "mirror_promoted": false,
+    "reciprocal_equality_refreshed": false,
+    "batch_003_dispatch_synchronized": false,
+    "batch_003_terminal": false,
+    "zenodo_mutation_authorized": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}
