@@ -20,6 +20,7 @@
     "zenodo_mutation_authorized": false
   },
   "execution_branch": "execution/sync-post-acceptance-status-191bee0e-from-c0bbf858-v1",
+  "execution_workflow_commit": "9b0db5e291434ccd947c6226f24cf3d37ddde2b7",
   "mirror_parent": "c0bbf85881c996cca5fff32be91847b7e537a493",
   "mirror_repository": "ingolf-lohmann/qik-vrt",
   "next_deterministic_effect_after_sync": "REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_POST_ACCEPTANCE_STATUS",
@@ -35,5 +36,6 @@
   ],
   "schema": "qikvrt_history_preserving_mirror_candidate_request_v1",
   "state": "READY",
-  "target_branch": "sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1"
+  "target_branch": "sync/post-acceptance-status-authority-191bee0e-from-c0bbf858-v1",
+  "transaction_id": "CONSTRUCT-HISTORY-PRESERVING-MIRROR-CANDIDATE-191BEE0E-FROM-C0BBF858-20260730-V1"
 }
