@@ -1,16 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ingolf Lohmann.
-name: QIK-VRT history-preserving Mirror synchronizer v2
+name: QIK-VRT exact Batch-003 dispatch Mirror candidate constructor
 
 on:
-  push:
-    branches:
-      - 'execution/history-preserving-mirror-sync-*'
-    paths:
-      - work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST.json
   pull_request:
     branches:
-      - main
+      - orchestration/history-preserving-mirror-sync-pr217-v1
     types:
       - opened
       - synchronize
@@ -22,20 +17,19 @@ permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-history-preserving-mirror-sync-v2-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  group: qikvrt-batch003-dispatch-mirror-candidate-pr217-v1
   cancel-in-progress: false
 
 jobs:
-  construct-and-persist:
-    if: >-
-      github.event_name != 'pull_request' ||
-      github.event.pull_request.head.repo.full_name == github.repository
+  construct-candidate-object:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       MARKER_PATH: work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST.json
-      TRIGGER_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
-      TRIGGER_REF_NAME: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+      TRIGGER_SHA: ${{ github.event.pull_request.head.sha }}
+      TRIGGER_REF_NAME: ${{ github.head_ref }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Check out immutable trigger head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -43,7 +37,7 @@ jobs:
           ref: ${{ env.TRIGGER_SHA }}
           fetch-depth: 0
 
-      - name: Validate request and export frozen transaction
+      - name: Validate exact request and export frozen transaction
         shell: bash
         run: |
           set -euo pipefail
@@ -56,10 +50,15 @@ jobs:
           sha64 = re.compile(r'^[0-9a-f]{64}$')
           branch = re.compile(r'^[A-Za-z0-9._/-]+$')
 
-          assert marker['schema'] == 'qikvrt_history_preserving_mirror_candidate_request_v2'
+          assert marker['schema'] == 'qikvrt_history_preserving_mirror_candidate_request_v3'
           assert marker['state'] == 'READY'
+          assert marker['operation'] == 'ADVANCE_CANONICAL_STATUS_AND_DISPATCH_BATCH_003'
           assert marker['authority_repository'] == 'Goldkelch/qik-vrt'
+          assert marker['authority_pull_request'] == 217
+          assert marker['authority_main'] == '6f4a57ddd18b6a7db749bc30cd3b40fb42e01bd5'
+          assert marker['authority_exact_green_head'] == 'c26b181bf924dcd453f6c39821b5b468e80ff779'
           assert marker['mirror_repository'] == 'ingolf-lohmann/qik-vrt'
+          assert marker['mirror_parent'] == '3c8a68165eb3fcb70a629b73732de5da31463e07'
           assert marker['execution_branch'] == os.environ['TRIGGER_REF_NAME']
           assert marker['execution_branch'].startswith('execution/history-preserving-mirror-sync-')
           assert marker['target_branch'].startswith('sync/')
@@ -67,31 +66,44 @@ jobs:
           assert branch.fullmatch(marker['target_branch'])
           assert '..' not in marker['execution_branch']
           assert '..' not in marker['target_branch']
-          for key in ('authority_main', 'mirror_parent', 'authority_manifest_git_blob_sha1'):
-              assert sha40.fullmatch(marker[key])
           for key in (
-              'authority_manifest_sha256',
-              'repository_content_tree_sha256',
+              'authority_main', 'authority_exact_green_head', 'mirror_parent',
+              'authority_manifest_git_blob_sha1',
           ):
+              assert sha40.fullmatch(marker[key])
+          for key in ('authority_manifest_sha256', 'repository_content_tree_sha256'):
               assert sha64.fullmatch(marker[key])
-          assert isinstance(marker['authority_file_count'], int)
-          assert marker['authority_file_count'] > 0
-          assert isinstance(marker['authority_immutable_file_count'], int)
-          assert marker['authority_immutable_file_count'] > 0
-          assert marker['authority_immutable_file_count'] <= marker['authority_file_count']
+          assert marker['authority_manifest_git_blob_sha1'] == '6fde2214243e48e3335e3fc7d84aa996b63929c3'
+          assert marker['authority_manifest_sha256'] == 'd7d3a9eded093fb4eb6382758b655b64321261be3ee1282ee0aec4d853872461'
+          assert marker['repository_content_tree_sha256'] == '693413204691cdfd3f97d256bc270e34ed2ca3558b9adbea497e420a76d737c2'
+          assert marker['authority_file_count'] == 2951
+          assert marker['authority_immutable_file_count'] == 2942
+          assert marker['corpus_binding'] == {
+              'subject_count': 19,
+              'dispositioned_subject_count': 12,
+              'open_subject_count': 7,
+              'active_batch': 'CONTENT-DISPOSITION-BATCH-003',
+              'active_subject': 'SUBJECT-2581811b342e505d',
+              'batch_state': 'DISPATCHED_FIRST_SUBJECT_ACTIVE',
+          }
+          assert marker['projected_next_effect'] == (
+              'RECOVER_EXACT_PUBLIC_INDEX_BYTES_AND_EXTRACT_CLASSIFY_'
+              'BATCH_003_SUBJECT_2581811B342E505D'
+          )
+          assert marker['next_deterministic_effect_after_sync'] == (
+              'REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_BATCH003_DISPATCH'
+          )
           assert marker['completion_claims'] == {
               'candidate_created': False,
               'mirror_promoted': False,
               'reciprocal_equality_refreshed': False,
-              'batch_003_executed': False,
+              'batch_003_dispatch_synchronized': False,
+              'batch_003_terminal': False,
               'zenodo_mutation_authorized': False,
               'pass': False,
               'final_pass': False,
               'effect_ack_done': False,
           }
-          assert marker['next_deterministic_effect_after_sync'] == (
-              'REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_POST_ACCEPTANCE_STATUS'
-          )
 
           values = {
               'AUTHORITY_URL': 'https://github.com/' + marker['authority_repository'] + '.git',
@@ -114,7 +126,7 @@ jobs:
                   handle.write(f'{key}={value}\n')
           PY
 
-      - name: Verify remote leases
+      - name: Verify remote leases and exact Authority integrity
         shell: bash
         run: |
           set -euo pipefail
@@ -123,11 +135,6 @@ jobs:
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
           test "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$MIRROR_PARENT"
           test "$(git ls-remote "$AUTHORITY_URL" refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
-
-      - name: Fetch and verify exact Authority tree
-        shell: bash
-        run: |
-          set -euo pipefail
           git fetch --no-tags "$AUTHORITY_URL" "refs/heads/main:refs/remotes/authority/main"
           test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_MAIN"
           test "$(git rev-parse "$AUTHORITY_MAIN:REPOSITORY_FILE_MANIFEST.json")" = "$EXPECTED_MANIFEST_BLOB"
@@ -149,43 +156,154 @@ jobs:
           assert detached == os.environ['EXPECTED_MANIFEST_SHA256'] + '  REPOSITORY_FILE_MANIFEST.json'
           PY
 
-      - name: Construct exact candidate and publish under lease
+      - name: Create exact one-parent candidate object through Git Data API
+        id: candidate
         shell: bash
         run: |
           set -euo pipefail
-          authority_tree="$(git rev-parse "$AUTHORITY_MAIN^{tree}")"
-          git config user.name 'QIK-VRT Mirror Synchronizer'
-          git config user.email 'ingolf.lohmann@live.com'
-          candidate="$(cat <<EOF | git commit-tree "$authority_tree" -p "$MIRROR_PARENT"
-          Synchronize repository state from Authority $AUTHORITY_MAIN
+          python3 - <<'PY'
+          import base64, json, os, pathlib, subprocess, urllib.error, urllib.request
 
-          Authority repository: Goldkelch/qik-vrt
-          Authority main: $AUTHORITY_MAIN
-          Mirror parent: $MIRROR_PARENT
-          Authority tree: $authority_tree
-          Repository manifest SHA-256: $EXPECTED_MANIFEST_SHA256
-          Repository content-tree SHA-256: $EXPECTED_CONTENT_DIGEST
-          Operation: $OPERATION
-          Next content effect: $NEXT_EFFECT
+          repo = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          authority = os.environ['AUTHORITY_MAIN']
+          parent = os.environ['MIRROR_PARENT']
+          api = 'https://api.github.com/repos/' + repo
 
-          The sole parent is the frozen Mirror main and the complete Git tree is the exact Authority tree. This candidate does not execute the projected next content effect, authorize Zenodo mutation, complete the corpus, publish a proof corpus, or claim repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE.
-          EOF
-          )"
-          test "$(git rev-parse "$candidate^")" = "$MIRROR_PARENT"
-          test "$(git rev-parse "$candidate^{tree}")" = "$authority_tree"
-          git diff --quiet "$AUTHORITY_MAIN^{tree}" "$candidate^{tree}"
-          git push origin \
-            --force-with-lease="refs/heads/$TARGET_BRANCH:$MIRROR_PARENT" \
-            "$candidate:refs/heads/$TARGET_BRANCH"
-          persisted="$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)"
-          test "$persisted" = "$candidate"
-          {
-            echo "CANDIDATE_HEAD=$candidate"
-            echo "AUTHORITY_TREE=$authority_tree"
-            echo "MIRROR_PARENT=$MIRROR_PARENT"
-            echo "AUTHORITY_MAIN=$AUTHORITY_MAIN"
-            echo "REPOSITORY_MANIFEST_SHA256=$EXPECTED_MANIFEST_SHA256"
-            echo "REPOSITORY_CONTENT_TREE_SHA256=$EXPECTED_CONTENT_DIGEST"
-            echo "PROJECTED_NEXT_EFFECT=$NEXT_EFFECT"
-            echo "PASS=false FINAL_PASS=false EFFECT_ACK_DONE=false"
-          } | tee -a "$GITHUB_STEP_SUMMARY"
+          def git_bytes(*args: str) -> bytes:
+              return subprocess.check_output(['git', *args])
+
+          def git_text(*args: str) -> str:
+              return subprocess.check_output(['git', *args], text=True).strip()
+
+          def post(path: str, payload: dict) -> dict:
+              request = urllib.request.Request(
+                  api + path,
+                  data=json.dumps(payload, separators=(',', ':')).encode('utf-8'),
+                  method='POST',
+                  headers={
+                      'Accept': 'application/vnd.github+json',
+                      'Authorization': 'Bearer ' + token,
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'qikvrt-history-preserving-mirror-sync/3',
+                      'Content-Type': 'application/json',
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=120) as response:
+                      value = json.loads(response.read().decode('utf-8'))
+              except urllib.error.HTTPError as exc:
+                  body = exc.read().decode('utf-8', 'replace')
+                  raise RuntimeError(f'GitHub API {path} failed: {exc.code}: {body}') from exc
+              if not isinstance(value, dict):
+                  raise RuntimeError(f'GitHub API {path} returned a non-object')
+              return value
+
+          authority_tree = git_text('rev-parse', authority + '^{tree}')
+          parent_tree = git_text('rev-parse', parent + '^{tree}')
+          raw = git_bytes('diff', '--name-status', '-z', '--no-renames', parent, authority)
+          fields = raw.split(b'\0')
+          if fields and fields[-1] == b'':
+              fields.pop()
+          if len(fields) % 2:
+              raise RuntimeError('unexpected git diff --name-status -z shape')
+
+          entries = []
+          changed_paths = []
+          for index in range(0, len(fields), 2):
+              status = fields[index].decode('ascii')
+              path = fields[index + 1].decode('utf-8', 'surrogateescape')
+              changed_paths.append(path)
+              if status == 'D':
+                  entries.append({'path': path, 'mode': '100644', 'type': 'blob', 'sha': None})
+                  continue
+              tree_line = git_text('ls-tree', authority, '--', path)
+              if not tree_line:
+                  raise RuntimeError('Authority tree entry missing: ' + path)
+              metadata, observed_path = tree_line.split('\t', 1)
+              mode, object_type, object_sha = metadata.split(' ', 2)
+              if observed_path != path or object_type not in {'blob', 'commit'}:
+                  raise RuntimeError('unexpected Authority tree entry: ' + tree_line)
+              if object_type == 'blob':
+                  content = git_bytes('cat-file', 'blob', object_sha)
+                  created = post('/git/blobs', {
+                      'content': base64.b64encode(content).decode('ascii'),
+                      'encoding': 'base64',
+                  })
+                  if created.get('sha') != object_sha:
+                      raise RuntimeError('content-addressed blob identity drift: ' + path)
+              entries.append({
+                  'path': path,
+                  'mode': mode,
+                  'type': object_type,
+                  'sha': object_sha,
+              })
+
+          if not entries:
+              raise RuntimeError('Authority and Mirror parent unexpectedly have identical trees')
+          tree = post('/git/trees', {'base_tree': parent_tree, 'tree': entries})
+          if tree.get('sha') != authority_tree:
+              raise RuntimeError(
+                  'constructed tree is not exact Authority tree: '
+                  + str(tree.get('sha')) + ' != ' + authority_tree
+              )
+
+          message = f'''Synchronize Batch-003 dispatch from Authority {authority[:8]}
+
+Authority repository: Goldkelch/qik-vrt
+Authority main: {authority}
+Authority PR: 217
+Authority tree: {authority_tree}
+Mirror parent: {parent}
+Repository manifest SHA-256: {os.environ['EXPECTED_MANIFEST_SHA256']}
+Repository content-tree SHA-256: {os.environ['EXPECTED_CONTENT_DIGEST']}
+Operation: {os.environ['OPERATION']}
+Next content effect: {os.environ['NEXT_EFFECT']}
+Preserved corpus: 19 subjects, 12 dispositioned, 7 open
+Active subject: SUBJECT-2581811b342e505d
+
+The sole parent is the frozen Mirror main and the complete Git tree is the exact Authority tree. This candidate does not complete Batch 003, recover the historical public index freeze, authorize Zenodo mutation, publish a proof corpus, establish Mirror promotion or reciprocal equality, or claim repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE.'''
+          commit = post('/git/commits', {
+              'message': message,
+              'tree': authority_tree,
+              'parents': [parent],
+          })
+          candidate = commit.get('sha')
+          commit_tree = (commit.get('tree') or {}).get('sha')
+          parents = [item.get('sha') for item in commit.get('parents', []) if isinstance(item, dict)]
+          if not isinstance(candidate, str) or len(candidate) != 40:
+              raise RuntimeError('candidate SHA missing')
+          if commit_tree != authority_tree or parents != [parent]:
+              raise RuntimeError('candidate tree or sole-parent binding drift')
+
+          output = pathlib.Path(os.environ['GITHUB_OUTPUT'])
+          with output.open('a', encoding='utf-8', newline='\n') as handle:
+              handle.write('candidate_sha=' + candidate + '\n')
+              handle.write('authority_tree=' + authority_tree + '\n')
+              handle.write('changed_file_count=' + str(len(changed_paths)) + '\n')
+          summary = pathlib.Path(os.environ['GITHUB_STEP_SUMMARY'])
+          with summary.open('a', encoding='utf-8', newline='\n') as handle:
+              handle.write(f'CANDIDATE_HEAD={candidate}\n')
+              handle.write(f'AUTHORITY_TREE={authority_tree}\n')
+              handle.write(f'MIRROR_PARENT={parent}\n')
+              handle.write(f'AUTHORITY_MAIN={authority}\n')
+              handle.write(f'CHANGED_FILE_COUNT={len(changed_paths)}\n')
+              handle.write('TREE_EQUALITY=true\n')
+              handle.write('SOLE_PARENT_BOUND=true\n')
+              handle.write('PASS=false FINAL_PASS=false EFFECT_ACK_DONE=false\n')
+          print('CANDIDATE_HEAD=' + candidate)
+          print('AUTHORITY_TREE=' + authority_tree)
+          print('MIRROR_PARENT=' + parent)
+          print('CHANGED_FILE_COUNT=' + str(len(changed_paths)))
+          print('TREE_EQUALITY=true')
+          print('SOLE_PARENT_BOUND=true')
+          PY
+
+      - name: Preserve fail-closed effect boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${{ steps.candidate.outputs.candidate_sha }}"
+          test -n "${{ steps.candidate.outputs.authority_tree }}"
+          echo "Candidate object is content-addressed but intentionally unreferenced until the connector rechecks both main leases."
+          echo "PASS=false FINAL_PASS=false EFFECT_ACK_DONE=false"
