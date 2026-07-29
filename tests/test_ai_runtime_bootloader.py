@@ -5,9 +5,11 @@
 from __future__ import annotations
 
 import json
+import os
 import pathlib
 import subprocess
 import sys
+import tempfile
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -33,6 +35,18 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
         self.assertEqual(boot["accepted_states"], ["PASS", "CONTINUE"])
         self.assertEqual(boot["blocking_state"], "BLOCK")
         self.assertGreaterEqual(len(boot["lifecycle"]), 8)
+        self.assertEqual(
+            context["progress_protocol"]["machine_schema"],
+            "schemas/human_machine_progress.schema.json",
+        )
+        self.assertIn(
+            "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md",
+            context["required_read_order"],
+        )
+        self.assertIn(
+            "schemas/human_machine_progress.schema.json",
+            context["required_read_order"],
+        )
         for authority in (
             "tools/ai_handoff.py",
             "tools/qikvrt_integrity.py",
@@ -74,6 +88,7 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
             f"{completed.stderr}",
         )
         self.assertIn("AI_HANDOFF_STATUS=VALID", completed.stdout)
+        self.assertIn("AI_PROGRESS_CHECK=", completed.stdout)
 
     def test_bootloader_source_preserves_effect_boundary(self) -> None:
         source = (ROOT / "tools/ai_runtime_bootloader.py").read_text(encoding="utf-8")
@@ -83,6 +98,45 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
         self.assertIn("tools/bootstrap-runtime.sh", source)
         self.assertIn('report["state"] = "BLOCK"', source)
         self.assertNotIn("shell=True", source)
+
+    def test_ci_retains_full_history_as_authority_side_cross_check(self) -> None:
+        workflow = (
+            ROOT / ".github" / "workflows" / "qikvrt_ci.yml"
+        ).read_text(encoding="utf-8")
+        checkout = (
+            "      - uses: "
+            "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 "
+            "# v7.0.1\n"
+            "        with:\n"
+            "          fetch-depth: 0\n"
+        )
+        self.assertIn(checkout, workflow)
+
+    def test_handoff_is_portable_when_source_commit_is_not_in_local_git(self) -> None:
+        with tempfile.TemporaryDirectory() as empty_objects:
+            environment = dict(os.environ)
+            environment.update(
+                {
+                    "GIT_OBJECT_DIRECTORY": empty_objects,
+                    "GIT_ALTERNATE_OBJECT_DIRECTORIES": "",
+                    "GIT_NO_LAZY_FETCH": "1",
+                    "GIT_NO_REPLACE_OBJECTS": "1",
+                    "GIT_TERMINAL_PROMPT": "0",
+                }
+            )
+            completed = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py"],
+                cwd=ROOT,
+                env=environment,
+                check=False,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=30,
+            )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("AI_HANDOFF_STATUS=VALID", completed.stdout)
+        self.assertNotIn("source commit is unavailable", completed.stderr)
 
 
 if __name__ == "__main__":

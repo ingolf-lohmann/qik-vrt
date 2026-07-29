@@ -50,14 +50,56 @@ The repository runtime MUST improve cumulatively by reusing and refining existin
 
 ## State semantics
 
+- `IDLE`: no live operation owns the durable root handoff snapshot.
 - `RUNNING`: work is actively progressing.
 - `WAITING`: an external system is running or a review/approval is pending.
 - `PASS`: all declared gates for the stated scope are verified.
 - `BLOCK`: a concrete blocker prevents continuation.
 - `FAIL`: an executed gate failed.
+- `TIMEOUT`: observation ended because its declared time bound expired.
 - `CANCELLED`: the operation was explicitly stopped.
 
 `PASS` is scope-bound. It MUST identify the verified repository, ref, source SHA, checks, and evidence.
+
+## Durable multi-scope handoff
+
+`AI_PROGRESS.json` uses the durable `qikvrt-ai-progress/3.1` variant of
+`schemas/human_machine_progress.schema.json` when several repository scopes
+must be represented together. The root snapshot MUST be `IDLE` when no live
+operation owns it and MUST label its ref and SHA as projection-input
+provenance, not as current remote state.
+
+The projection input MUST be bound by a committed
+`portable-git-object-closure`. Its capsule contains the exact source commit
+payload, every Git tree object needed to traverse the selected paths, and the
+selected blob payloads. Validators MUST recompute every Git SHA-1 using the
+canonical object header, recompute every payload SHA-256, traverse each path
+from the commit's root tree, reject missing or surplus objects, and verify the
+capsule file's own byte, SHA-256, and Git-blob binding. When the declared
+source commit exists locally, all embedded objects MUST additionally be
+byte-identical to local Git. The proof remains bounded: it does not establish
+complete history, a current remote ref, repository synchronization, merge,
+publication, deployment, or repository-wide `PASS`.
+
+Every scope has its own evidence, boundary, percentage and effect state. A
+scope-specific `PASS`, `FINAL_PASS` or `EFFECT_ACK_DONE` MUST remain nested
+under that scope and MUST NOT promote an incomplete sibling scope or the
+top-level repository effect state. When the top-level effect state is
+`EFFECT_ACK_CONTINUE` or `EFFECT_ACK_BLOCK`, all top-level release claims MUST
+be false. Every nested `EFFECT_ACK_DONE` scope MUST bind its own repository,
+ref, source SHA, checks and evidence; it cannot borrow the root projection
+input SHA.
+
+The durable projection MUST name a checkable `projection_owner`. A later
+workflow MAY supersede that owner only by materializing a conforming snapshot
+that preserves all still-authoritative bounded scopes. A historical workflow
+MUST NOT key ownership solely to the continued existence of one receipt.
+
+The tracked snapshot MUST not freeze transient claims such as a pull request
+being open, checks running, a merge pending, or repositories synchronized
+unless a durable repository receipt binds that exact assertion. A live watcher
+is telemetry, not exact-head proof: current PR, check, merge, promotion, or
+synchronization claims require current commit/run/check evidence.
 
 ## Communication boundary
 

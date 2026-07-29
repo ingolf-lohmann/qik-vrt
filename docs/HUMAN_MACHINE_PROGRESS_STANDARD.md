@@ -64,11 +64,28 @@ A persistent watcher MUST:
 
 The human projection MUST be available in the repository-native client surface, at minimum a persistent pull-request comment and the GitHub Actions step summary. Machine state MUST conform to `schemas/human_machine_progress.schema.json`.
 
+That schema preserves `qikvrt_human_machine_progress_v1` for live workflow
+frames and defines `qikvrt-ai-progress/3.1` for durable root handoff snapshots.
+A durable snapshot may carry several explicitly bounded scopes; a nested
+scope-specific `PASS` never promotes an incomplete sibling scope or the
+top-level repository effect state.
+
+Version 3.1 makes projection-input evidence portable between canonical
+repositories with different commit histories. The committed capsule is an
+exact selected-path Git-object closure, not a worktree copy or a network
+fallback. Its commit, tree, path, mode, blob, size, SHA-256 and capsule-file
+bindings are verified offline; available local Git objects are a mandatory
+second check. This proves only the declared historical projection inputs.
+
 ## Tracked status artifacts
 
 `AI_PROGRESS.json` and `AI_STATUS.md` are durable handoff snapshots. When no repository operation owns them, they MUST be `IDLE` or terminal. A tracked root snapshot MUST NOT remain falsely `RUNNING`, `WAITING`, or `PENDING` after its owner has ended.
 
-Live workflow frames are persisted by `QIKVRT live status watch`; the tracked root snapshots identify the last stable handoff state and where to obtain live state.
+Live workflow frames may be persisted by `QIKVRT live status watch`, but a
+branch-level watcher is telemetry only. Exact PR, check, merge, promotion, or
+synchronization claims require evidence bound to the current commit and run.
+The tracked root snapshots identify the last stable handoff state without
+promoting watcher output into exact-head proof.
 
 ## Repository runtime authority
 
