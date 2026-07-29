@@ -1,0 +1,30 @@
+{
+  "schema": "qikvrt_history_preserving_mirror_candidate_request_v1",
+  "state": "READY",
+  "transaction_id": "CONSTRUCT-HISTORY-PRESERVING-MIRROR-CANDIDATE-524FABD5-FROM-DAF42FD3-20260729-V1",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "authority_main": "524fabd51f3492aa99da1430557f4f515074450e",
+  "authority_manifest_blob": "5f85943fa623d57189672d34d316947689bdaa07",
+  "authority_repository_content_tree_sha256": "6ac38cf4b33b638dcc57ac415eb2bee626ade900998f72c2e2a542890535d113",
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_parent": "daf42fd30c654c768f369a581d6448cb0945cfb6",
+  "execution_branch": "execution/sync-accepted-corrected-batch002-524fabd5-from-daf42fd3-v1",
+  "execution_workflow_commit": "b2bcbbde2e3a5c043a96a89ba15c7817ef51ba42",
+  "target_branch": "sync/accepted-corrected-batch002-authority-524fabd5-from-daf42fd3-v1",
+  "requirements": [
+    "reobserve exact Authority main and frozen Mirror parent",
+    "fetch the exact Authority tree",
+    "construct one commit whose sole parent is the frozen Mirror parent",
+    "require the candidate Git tree to equal the Authority Git tree",
+    "publish only under a frozen force-with-lease",
+    "keep PASS, FINAL_PASS and EFFECT_ACK_DONE false"
+  ],
+  "completion_claims": {
+    "candidate_created": false,
+    "mirror_promoted": false,
+    "reciprocal_equality_refreshed": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}
