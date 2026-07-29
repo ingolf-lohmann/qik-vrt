@@ -1,0 +1,124 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT construct accepted corrected Batch-002 Mirror candidate once
+
+on:
+  push:
+    branches:
+      - execution/sync-accepted-corrected-batch002-524fabd5-from-daf42fd3-v1
+    paths:
+      - work-units/CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE_524FABD5_READY.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-construct-accepted-corrected-batch002-mirror-524fabd5-v1
+  cancel-in-progress: false
+
+jobs:
+  construct-and-persist:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      AUTHORITY_URL: https://github.com/Goldkelch/qik-vrt.git
+      AUTHORITY_MAIN: 524fabd51f3492aa99da1430557f4f515074450e
+      MIRROR_PARENT: daf42fd30c654c768f369a581d6448cb0945cfb6
+      EXECUTION_BRANCH: execution/sync-accepted-corrected-batch002-524fabd5-from-daf42fd3-v1
+      TARGET_BRANCH: sync/accepted-corrected-batch002-authority-524fabd5-from-daf42fd3-v1
+      MARKER_PATH: work-units/CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE_524FABD5_READY.json
+      EXPECTED_MANIFEST_BLOB: 5f85943fa623d57189672d34d316947689bdaa07
+      EXPECTED_CONTENT_DIGEST: 6ac38cf4b33b638dcc57ac415eb2bee626ade900998f72c2e2a542890535d113
+    steps:
+      - name: Check out immutable trigger event
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify frozen transaction and remote leases
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess
+          marker = json.loads(pathlib.Path(os.environ['MARKER_PATH']).read_text(encoding='utf-8'))
+          assert marker['schema'] == 'qikvrt_history_preserving_mirror_candidate_request_v1'
+          assert marker['state'] == 'READY'
+          assert marker['authority_repository'] == 'Goldkelch/qik-vrt'
+          assert marker['authority_main'] == os.environ['AUTHORITY_MAIN']
+          assert marker['mirror_repository'] == 'ingolf-lohmann/qik-vrt'
+          assert marker['mirror_parent'] == os.environ['MIRROR_PARENT']
+          assert marker['execution_branch'] == os.environ['EXECUTION_BRANCH']
+          assert marker['target_branch'] == os.environ['TARGET_BRANCH']
+          assert marker['completion_claims'] == {
+              'candidate_created': False,
+              'mirror_promoted': False,
+              'reciprocal_equality_refreshed': False,
+              'pass': False,
+              'final_pass': False,
+              'effect_ack_done': False,
+          }
+          parent = subprocess.check_output(['git', 'rev-parse', 'HEAD^'], text=True).strip()
+          assert parent != ''
+          PY
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote "$AUTHORITY_URL" refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
+
+      - name: Fetch and verify exact Authority tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags "$AUTHORITY_URL" "refs/heads/main:refs/remotes/authority/main"
+          test "$(git rev-parse refs/remotes/authority/main)" = "$AUTHORITY_MAIN"
+          test "$(git rev-parse "$AUTHORITY_MAIN:REPOSITORY_FILE_MANIFEST.json")" = "$EXPECTED_MANIFEST_BLOB"
+          python3 - <<'PY'
+          import json, os, subprocess
+          raw = subprocess.check_output(
+              ['git', 'show', os.environ['AUTHORITY_MAIN'] + ':REPOSITORY_FILE_MANIFEST.json']
+          )
+          manifest = json.loads(raw)
+          assert manifest['repository_content_tree_sha256'] == os.environ['EXPECTED_CONTENT_DIGEST']
+          assert manifest['file_count'] == 2940
+          assert manifest['immutable_file_count'] == 2931
+          PY
+
+      - name: Construct exact history-preserving candidate and publish under lease
+        shell: bash
+        run: |
+          set -euo pipefail
+          authority_tree="$(git rev-parse "$AUTHORITY_MAIN^{tree}")"
+          git config user.name 'QIK-VRT Mirror Synchronizer'
+          git config user.email 'ingolf.lohmann@live.com'
+          candidate="$(cat <<EOF | git commit-tree "$authority_tree" -p "$MIRROR_PARENT"
+          Synchronize accepted corrected Batch-002 candidate from Authority 524fabd5
+
+          Authority repository: Goldkelch/qik-vrt
+          Authority main: $AUTHORITY_MAIN
+          Mirror parent: $MIRROR_PARENT
+          Authority tree: $authority_tree
+          Repository content-tree SHA-256: $EXPECTED_CONTENT_DIGEST
+          Owner decision: ACCEPT by Ingolf Lohmann
+          Scope: CONTENT-DISPOSITION-BATCH-002 / SUBJECT-43c59da1cfd26267
+
+          The sole parent is the frozen Mirror main and the complete Git tree is the exact Authority tree. This candidate does not authorize Zenodo mutation, establish Mirror promotion or reciprocal equality, complete the remaining corpus, or claim repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE.
+          EOF
+          )"
+          test "$(git rev-parse "$candidate^")" = "$MIRROR_PARENT"
+          test "$(git rev-parse "$candidate^{tree}")" = "$authority_tree"
+          git diff --quiet "$AUTHORITY_MAIN^{tree}" "$candidate^{tree}"
+          git push origin \
+            --force-with-lease="refs/heads/$TARGET_BRANCH:$MIRROR_PARENT" \
+            "$candidate:refs/heads/$TARGET_BRANCH"
+          persisted="$(git ls-remote origin refs/heads/$TARGET_BRANCH | cut -f1)"
+          test "$persisted" = "$candidate"
+          {
+            echo "CANDIDATE_HEAD=$candidate"
+            echo "AUTHORITY_TREE=$authority_tree"
+            echo "MIRROR_PARENT=$MIRROR_PARENT"
+            echo "AUTHORITY_MAIN=$AUTHORITY_MAIN"
+            echo "REPOSITORY_CONTENT_TREE_SHA256=$EXPECTED_CONTENT_DIGEST"
+            echo "PASS=false FINAL_PASS=false EFFECT_ACK_DONE=false"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
