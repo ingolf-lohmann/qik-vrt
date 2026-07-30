@@ -3,20 +3,26 @@
 name: QIKVRT construct Mirror candidate for Authority PR249
 
 on:
-  push:
+  pull_request:
     branches:
       - sync/construction-base-authority-7d87a600-from-afcd0255-v1
-  workflow_dispatch:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST_PR249.json
 
 permissions:
   contents: write
 
 concurrency:
-  group: qikvrt-construct-mirror-pr249-7d87a600-afcd0255
+  group: qikvrt-construct-mirror-pr249-${{ github.event.pull_request.head.sha }}
   cancel-in-progress: false
 
 jobs:
   construct:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -24,12 +30,54 @@ jobs:
       AUTHORITY_MAIN: 7d87a6003135a6e3efbca34b2d898967d7f66018
       MIRROR_PARENT: afcd0255aab6bc5ad18275a2d91516688a41e302
       CANDIDATE_BRANCH: sync/owner-accepted-six-authority-7d87a600-from-afcd0255-v1
+      MARKER_PATH: work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST_PR249.json
+      TRIGGER_SHA: ${{ github.event.pull_request.head.sha }}
+      TRIGGER_REF_NAME: ${{ github.head_ref }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      BASE_REF_NAME: ${{ github.base_ref }}
     steps:
-      - name: Check out exact Mirror construction lease
+      - name: Check out immutable execution head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: sync/construction-base-authority-7d87a600-from-afcd0255-v1
+          ref: ${{ env.TRIGGER_SHA }}
           fetch-depth: 0
+
+      - name: Validate exact request and frozen transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TRIGGER_SHA"
+          test "$(git rev-parse HEAD^)" = "$BASE_SHA"
+          test "$BASE_REF_NAME" = "sync/construction-base-authority-7d87a600-from-afcd0255-v1"
+          test "$TRIGGER_REF_NAME" = "execution/construct-owner-accepted-six-mirror-candidate-7d87a600-v1"
+          test "$(git ls-remote origin "refs/heads/${BASE_REF_NAME}" | awk '{print $1}')" = "$BASE_SHA"
+          test "$(git ls-remote origin "refs/heads/${TRIGGER_REF_NAME}" | awk '{print $1}')" = "$TRIGGER_SHA"
+          python3 - <<'PY'
+          import json, os, pathlib
+          value = json.loads(pathlib.Path(os.environ["MARKER_PATH"]).read_text(encoding="utf-8"))
+          assert value == {
+              "schema": "qikvrt_history_preserving_mirror_candidate_request_pr249_v1",
+              "state": "READY",
+              "operation": "CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE",
+              "owner_authorization": "ACCEPT",
+              "authority_repository": "Goldkelch/qik-vrt",
+              "authority_main": "7d87a6003135a6e3efbca34b2d898967d7f66018",
+              "authority_pull_request": 249,
+              "mirror_repository": "ingolf-lohmann/qik-vrt",
+              "mirror_parent": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+              "execution_branch": "execution/construct-owner-accepted-six-mirror-candidate-7d87a600-v1",
+              "target_branch": "sync/owner-accepted-six-authority-7d87a600-from-afcd0255-v1",
+              "completion_claims": {
+                  "candidate_created": False,
+                  "mirror_promoted": False,
+                  "reciprocal_equality_receipt_complete": False,
+                  "zenodo_mutation_authorized": False,
+                  "pass": False,
+                  "final_pass": False,
+                  "effect_ack_done": False,
+              },
+          }
+          PY
 
       - name: Verify frozen Authority and Mirror leases
         shell: bash
@@ -39,7 +87,10 @@ jobs:
           authority_main="$(git ls-remote "https://github.com/${AUTHORITY_REPOSITORY}.git" refs/heads/main | awk '{print $1}')"
           test "$mirror_main" = "$MIRROR_PARENT"
           test "$authority_main" = "$AUTHORITY_MAIN"
-          test "$(git rev-parse HEAD^)" = "$MIRROR_PARENT"
+          if git ls-remote --exit-code origin "refs/heads/${CANDIDATE_BRANCH}" >/dev/null 2>&1; then
+            echo "Candidate branch unexpectedly exists" >&2
+            exit 2
+          fi
 
       - name: Fetch exact promoted Authority commit
         shell: bash
@@ -72,10 +123,6 @@ jobs:
           authority_main="$(git ls-remote "https://github.com/${AUTHORITY_REPOSITORY}.git" refs/heads/main | awk '{print $1}')"
           test "$mirror_main" = "$MIRROR_PARENT"
           test "$authority_main" = "$AUTHORITY_MAIN"
-          if git ls-remote --exit-code origin "refs/heads/${CANDIDATE_BRANCH}" >/dev/null 2>&1; then
-            echo "Candidate branch unexpectedly exists" >&2
-            exit 2
-          fi
           git push origin "${candidate}:refs/heads/${CANDIDATE_BRANCH}"
           printf 'candidate=%s\n' "$candidate" >> "$GITHUB_OUTPUT"
           printf 'authority_tree=%s\n' "$authority_tree" >> "$GITHUB_OUTPUT"
