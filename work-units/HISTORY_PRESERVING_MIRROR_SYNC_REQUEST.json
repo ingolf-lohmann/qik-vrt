@@ -1,0 +1,46 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authority_exact_green_head": "0a760662fca8796117430ff4be452b47e959b6bb",
+  "authority_file_count": 2967,
+  "authority_immutable_file_count": 2958,
+  "authority_main": "0fea97ca7957c1ea76611fb9eb6c39f558f33355",
+  "authority_manifest_git_blob_sha1": "901daa49e5bb9c03b7ce523d6b56f6e1392a4314",
+  "authority_manifest_sha256": "3b077ff0574719ced950deb357f44935685a9e93123deb9ec29d33c20e4ab7a9",
+  "authority_pull_request": 225,
+  "authority_repository": "Goldkelch/qik-vrt",
+  "completion_claims": {
+    "batch_003_terminal": false,
+    "candidate_created": false,
+    "effect_ack_done": false,
+    "final_pass": false,
+    "first_subject_disposition_synchronized": false,
+    "mirror_promoted": false,
+    "pass": false,
+    "reciprocal_equality_refreshed": false,
+    "zenodo_mutation_authorized": false
+  },
+  "corpus_binding": {
+    "active_batch": "CONTENT-DISPOSITION-BATCH-003",
+    "active_subject": "SUBJECT-172dd9bc2738fa43",
+    "batch_state": "FIRST_SUBJECT_TERMINAL_NEXT_SUBJECT_READY",
+    "dispositioned_subject_count": 13,
+    "open_subject_count": 6,
+    "subject_count": 19,
+    "terminal_subject": "SUBJECT-2581811b342e505d"
+  },
+  "execution_branch": "execution/history-preserving-mirror-sync-0fea97ca-from-1ac57c68-v1",
+  "mirror_parent": "1ac57c68e498722833d47d4d9e92b3985e5fd826",
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "next_deterministic_effect_after_sync": "REOBSERVE_AND_PERSIST_RECIPROCAL_EQUALITY_RECEIPT_FOR_BATCH003_FIRST_SUBJECT_DISPOSITION",
+  "operation": "DISPOSITION_BATCH_003_FIRST_SUBJECT_FROM_EXACT_PUBLIC_FREEZE",
+  "projected_next_effect": "EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_172DD9BC2738FA43",
+  "repository_content_tree_sha256": "975c76ef7b2743a2b1502eabe240adf5375e43e5641eee388e925354de9d8c37",
+  "schema": "qikvrt_history_preserving_mirror_candidate_request_v4",
+  "state": "READY",
+  "target_branch": "sync/batch003-first-subject-authority-0fea97ca-from-1ac57c68-v1"
+}
