@@ -21,13 +21,14 @@
   "mirror": {
     "repository": "ingolf-lohmann/qik-vrt",
     "parent_main": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+    "current_main_lease": "c2a6e75eb24721029865a9dd5fd94fa55590a955",
     "target_branch": "sync/six-corrected-candidates-authority-7d87a600-from-afcd0255-v1"
   },
   "owner_decision": {
     "actor": "Ingolf Lohmann",
     "actor_type": "NATURAL_PERSON",
     "decision": "ACCEPT",
-    "scope": "Synchronize the already owner-accepted and Authority-promoted six corrected corpus candidates from PR249 to Mirror, then gate only the exact history-preserving candidate."
+    "scope": "Synchronize the already owner-accepted and Authority-promoted six corrected corpus candidates from PR249 to Mirror, then gate only the exact history-preserving candidate. The candidate parent remains the frozen pre-infrastructure Mirror main; the separately bound current-main lease protects the constructor transport state."
   },
   "candidate_contract": {
     "sole_parent_required": true,
