@@ -40,13 +40,13 @@ jobs:
           set -euo pipefail
           python3 -B -m unittest -v tests.test_construct_history_preserving_mirror_candidate_pr249
           python3 -B -m py_compile tools/qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes.py
-          python3 -B tools/qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes.py --check-request --json
+          python3 -B -m tools.qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes --check-request --json
       - name: Construct and attach exact one-parent candidate
         shell: bash
         run: |
           set -euo pipefail
           result="$RUNNER_TEMP/qikvrt-mirror-pr249-candidate.json"
-          python3 -B tools/qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes.py --json | tee "$result"
+          python3 -B -m tools.qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes --json | tee "$result"
           grep -F '"sole_parent_verified": true' "$result"
           grep -F '"authority_tree_equality_verified": true' "$result"
           grep -F '"repository_manifest_git_blob_sha1": "bcfa9f5f91bddf17328edbe22afa44b4dc1ebeff"' "$result"
