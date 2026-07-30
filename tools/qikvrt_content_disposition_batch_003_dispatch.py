@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 Ingolf Lohmann.
-"""Append-tolerant compatibility front-end for the Batch-003 dispatcher.
-
-The immutable dispatch inputs remain exact-blob-bound. The live reciprocal
-receipt index is an append-only registry owned by the equality-receipt
-subsystem and must therefore be validated semantically rather than frozen to
-the blob that existed at dispatch time. Once the first subject disposition is
-materialized, this compatibility layer preserves and validates the historical
-dispatch while delegating the root status projection to the more advanced
-subject projector. It never mutates the imported legacy module namespace.
-"""
-
+"""Append-tolerant compatibility front-end for Batch-003 status ownership."""
 from __future__ import annotations
 
 import argparse
@@ -33,7 +23,6 @@ EXPECTED_SOURCE_BLOBS = {
     for path, blob in _legacy.EXPECTED_SOURCE_BLOBS.items()
     if path != _legacy.LIVE_INDEX
 }
-
 _REQUIRED_PRE_DISPATCH_RECEIPT_IDS = frozenset(
     {
         "authority-mirror-equality-2026-07-27-pr106-pr56",
@@ -42,30 +31,39 @@ _REQUIRED_PRE_DISPATCH_RECEIPT_IDS = frozenset(
         "authority-mirror-equality-2026-07-29-batch002-corrected-pr209-pr100",
     }
 )
-
-ADVANCED_SUBJECT_RECEIPT = (
-    ROOT
-    / "release/zenodo-corpus-proof-2026-07-28/canonical-union/"
+ADVANCED_SUBJECT_RECEIPT = ROOT / (
+    "release/zenodo-corpus-proof-2026-07-28/canonical-union/"
     "content-disposition-batch-003/subject-dispositions/"
     "SUBJECT-2581811b342e505d/SUBJECT_DISPOSITION_RECEIPT.json"
 )
+SECOND_SUBJECT_RECEIPT = ROOT / (
+    "release/zenodo-corpus-proof-2026-07-28/canonical-union/"
+    "content-disposition-batch-003/subject-dispositions/"
+    "SUBJECT-172dd9bc2738fa43/SUBJECT_DISPOSITION_RECEIPT.json"
+)
+FINAL_CORPUS_RECEIPT = ROOT / (
+    "release/zenodo-corpus-proof-2026-07-28/canonical-union/"
+    "retrospective-proof-corpus/RETROSPECTIVE_PROOF_CORPUS_RECEIPT.json"
+)
+
+STAGE_DISPATCH = "DISPATCH"
+STAGE_FIRST_SUBJECT = "FIRST_SUBJECT"
+STAGE_SECOND_SUBJECT = "SECOND_SUBJECT"
+STAGE_FINAL_CORPUS = "FINAL_CORPUS"
 
 
 def validate_live_index(index: Mapping[str, Any] | None = None) -> None:
-    """Require a valid append-only live index without freezing its current blob."""
     if not LIVE_INDEX.is_file():
         fail(f"dispatch source missing: {LIVE_INDEX.relative_to(ROOT)}")
     value = read_json(LIVE_INDEX) if index is None else index
     if value.get("schema") != "qikvrt_equality_receipt_index_v1":
         fail("live receipt index schema drift")
-    integration = value.get("manifest_integration", {})
-    if integration.get("direct_generated_manifest_mutation") is not False:
+    if value.get("manifest_integration", {}).get("direct_generated_manifest_mutation") is not False:
         fail("live receipt index manifest boundary drift")
     rows = value.get("equality_receipts")
     if not isinstance(rows, list):
         fail("live receipt index rows are absent")
-
-    receipt_ids: list[str] = []
+    ids: list[str] = []
     paths: list[str] = []
     for row in rows:
         if not isinstance(row, Mapping):
@@ -78,14 +76,11 @@ def validate_live_index(index: Mapping[str, Any] | None = None) -> None:
             fail(f"live receipt index path is invalid: {receipt_id}")
         if row.get("state") != "equality_verified_for_scoped_promotion":
             fail(f"live receipt index state drift: {receipt_id}")
-        receipt_ids.append(receipt_id)
+        ids.append(receipt_id)
         paths.append(path)
-
-    if len(receipt_ids) != len(set(receipt_ids)):
-        fail("live receipt index contains duplicate receipt identities")
-    if len(paths) != len(set(paths)):
-        fail("live receipt index contains duplicate receipt paths")
-    missing = sorted(_REQUIRED_PRE_DISPATCH_RECEIPT_IDS.difference(receipt_ids))
+    if len(ids) != len(set(ids)) or len(paths) != len(set(paths)):
+        fail("live receipt index contains duplicates")
+    missing = sorted(_REQUIRED_PRE_DISPATCH_RECEIPT_IDS.difference(ids))
     if missing:
         fail("live receipt index lost required pre-dispatch receipts: " + ",".join(missing))
     if sha256_bytes(LIVE_INDEX.read_bytes()) == PUBLIC_INDEX["sha256"]:
@@ -96,44 +91,73 @@ def validate_source_blobs() -> None:
     for path, expected in EXPECTED_SOURCE_BLOBS.items():
         if not path.is_file():
             fail(f"dispatch source missing: {path.relative_to(ROOT)}")
-        actual = git_blob_sha1(path.read_bytes())
-        if actual != expected:
+        if git_blob_sha1(path.read_bytes()) != expected:
             fail(f"dispatch source blob drift: {path.relative_to(ROOT)}")
     validate_live_index()
 
 
 def base_expected_projection() -> tuple[dict[str, Any], str]:
-    """Build the immutable dispatch projection without touching root status files."""
     queue = read_json(QUEUE)
     corpus = read_json(CORPUS)
     envelope = read_json(PROOF_ENVELOPE)
     dispatch = read_json(DISPATCH)
     package = read_json(WORK_PACKAGE)
     work = read_json(WORK_UNIT)
-
     validate_source_blobs()
     validate_queue(queue)
     validate_corpus(corpus)
     validate_public_sources(envelope)
     validate_dispatch(dispatch, package, work)
-
     post_progress, _ = _legacy.previous.expected_projection()
     progress = _legacy.build_progress(post_progress, dispatch)
     _legacy.validate_progress(progress)
     return progress, _legacy.render_ai_status(progress)
 
 
-def _advanced_module() -> Any:
-    from tools import (  # type: ignore
-        qikvrt_content_disposition_batch_003_subject_2581811b342e505d as advanced,
-    )
+def projection_stage() -> str:
+    """Select the most advanced durable projection, newest evidence first."""
+    if FINAL_CORPUS_RECEIPT.is_file():
+        return STAGE_FINAL_CORPUS
+    if SECOND_SUBJECT_RECEIPT.is_file():
+        return STAGE_SECOND_SUBJECT
+    if ADVANCED_SUBJECT_RECEIPT.is_file():
+        return STAGE_FIRST_SUBJECT
+    return STAGE_DISPATCH
+
+
+def _first_advanced_module() -> Any:
+    from tools import qikvrt_content_disposition_batch_003_subject_2581811b342e505d as advanced
 
     return advanced
 
 
+def _second_advanced_module() -> Any:
+    from tools import qikvrt_content_disposition_batch_003_subject_172dd9bc2738fa43_compat as advanced
+
+    return advanced
+
+
+def _final_advanced_module() -> Any:
+    from tools import qikvrt_content_disposition_batch_003_all_subjects_compat as advanced
+
+    return advanced
+
+
+def _advanced_module(stage: str | None = None) -> Any:
+    selected = stage or projection_stage()
+    if selected == STAGE_FINAL_CORPUS:
+        return _final_advanced_module()
+    if selected == STAGE_SECOND_SUBJECT:
+        return _second_advanced_module()
+    if selected == STAGE_FIRST_SUBJECT:
+        return _first_advanced_module()
+    fail("advanced projector requested while only immutable dispatch is present")
+
+
 def expected_projection() -> tuple[dict[str, Any], str]:
-    if ADVANCED_SUBJECT_RECEIPT.is_file():
-        return _advanced_module().build_progress_projection()
+    stage = projection_stage()
+    if stage != STAGE_DISPATCH:
+        return _advanced_module(stage).build_progress_projection()
     return base_expected_projection()
 
 
@@ -160,23 +184,30 @@ def _verify_base_root() -> dict[str, Any]:
 
 
 def verify() -> dict[str, Any]:
-    if not ADVANCED_SUBJECT_RECEIPT.is_file():
+    stage = projection_stage()
+    if stage == STAGE_DISPATCH:
         return _verify_base_root()
-
     base_expected_projection()
-    advanced = _advanced_module()
-    advanced_result = advanced.verify_materialized()
+    advanced = _advanced_module(stage)
+    result = advanced.verify_materialized()
+    final = stage == STAGE_FINAL_CORPUS
+    second = stage == STAGE_SECOND_SUBJECT
     return {
         "schema": "qikvrt_batch_003_dispatch_verification_v1",
-        "state": "BATCH_003_DISPATCH_PRESERVED_ADVANCED_PROJECTION_CURRENT",
+        "state": (
+            "ALL_19_SUBJECTS_DISPOSITIONED_PROOF_CORPUS_VERIFIED_PUBLICATION_NOT_AUTHORIZED"
+            if final
+            else "BATCH_003_DISPATCH_PRESERVED_ADVANCED_PROJECTION_CURRENT"
+        ),
         "batch_id": BATCH_ID,
         "active_subject": advanced.NEXT_SUBJECT_ID,
-        "active_subject_count": 5,
-        "open_subject_count": 6,
+        "active_subject_count": 0 if final else (4 if second else 5),
+        "open_subject_count": 0 if final else (5 if second else 6),
         "next_deterministic_effect": advanced.NEXT_EFFECT,
         "claim_extraction_complete": True,
-        "advanced_subject_state": advanced_result["state"],
+        "advanced_subject_state": result["state"],
         "zenodo_mutation_authorized": False,
+        "proof_corpus_published_on_zenodo": False,
         "pass": False,
         "final_pass": False,
         "effect_ack_done": False,
@@ -184,8 +215,13 @@ def verify() -> dict[str, Any]:
 
 
 def materialize() -> None:
-    if ADVANCED_SUBJECT_RECEIPT.is_file():
-        _advanced_module().verify_materialized()
+    stage = projection_stage()
+    if stage != STAGE_DISPATCH:
+        advanced = _advanced_module(stage)
+        if stage == STAGE_FINAL_CORPUS:
+            advanced.current.materialize()
+        else:
+            advanced.verify_materialized()
         return
     progress, status = base_expected_projection()
     AI_PROGRESS.write_text(pretty(progress), encoding="utf-8", newline="\n")
@@ -203,20 +239,22 @@ def main(argv: list[str] | None = None) -> int:
             materialize()
         result = verify()
     except (E, OSError, ValueError, json.JSONDecodeError) as exc:
-        payload = {
-            "state": "BLOCK",
-            "failure_class": "BATCH_003_DISPATCH_STATUS_PROJECTION_INVALID",
-            "reason": str(exc),
-            "pass": False,
-            "final_pass": False,
-            "effect_ack_done": False,
-        }
-        print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+        print(
+            json.dumps(
+                {
+                    "state": "BLOCK",
+                    "failure_class": "BATCH_003_DISPATCH_STATUS_PROJECTION_INVALID",
+                    "reason": str(exc),
+                    "pass": False,
+                    "final_pass": False,
+                    "effect_ack_done": False,
+                },
+                ensure_ascii=False,
+                sort_keys=True,
+            )
+        )
         return 2
-    if args.json:
-        print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
-    else:
-        print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    print(json.dumps(result, ensure_ascii=False, indent=2 if args.json else None, sort_keys=True))
     return 0
 
 
