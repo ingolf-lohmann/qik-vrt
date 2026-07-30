@@ -20,21 +20,22 @@
   },
   "mirror": {
     "repository": "ingolf-lohmann/qik-vrt",
-    "parent_main": "afcd0255aab6bc5ad18275a2d91516688a41e302",
-    "target_branch": "sync/six-corrected-candidates-authority-7d87a600-from-afcd0255-v1"
+    "parent_main": "c2a6e75eb24721029865a9dd5fd94fa55590a955",
+    "current_main_lease": "c2a6e75eb24721029865a9dd5fd94fa55590a955",
+    "target_branch": "sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75e-v1"
   },
   "owner_decision": {
     "actor": "Ingolf Lohmann",
     "actor_type": "NATURAL_PERSON",
     "decision": "ACCEPT",
-    "scope": "Synchronize the already owner-accepted and Authority-promoted six corrected corpus candidates from PR249 to Mirror, then gate only the exact history-preserving candidate."
+    "scope": "Synchronize the already owner-accepted and Authority-promoted six corrected corpus candidates from PR249. The candidate has current post-infrastructure Mirror main as its sole parent and the exact Authority tree, so temporary constructor paths are removed while their history is preserved."
   },
   "candidate_contract": {
     "sole_parent_required": true,
     "authority_tree_equality_required": true,
     "current_authority_main_lease_required": true,
     "current_mirror_main_lease_required": true,
-    "candidate_timestamp": "2026-07-30T07:35:00Z"
+    "candidate_timestamp": "2026-07-30T08:10:00Z"
   },
   "accepted_candidate_sha256": {
     "SUBJECT-172dd9bc2738fa43": "10591f0bfd314af227a1b75cb3a85d3db032c4ea5a9dd4129a94830cd2dabe59",
