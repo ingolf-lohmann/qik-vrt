@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2987,
+  "file_count": 2990,
   "files": [
     {
       "bytes": 47,
@@ -242,6 +242,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_construct_mirror_candidate_pr249.yml",
       "sha256": "3257f374611ff05cc6bc77d217e815db6d78c71d824f91aa8419b499d346d82d"
+    },
+    {
+      "bytes": 3589,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_construct_mirror_candidate_pr249_current_main.yml",
+      "sha256": "c73b74c0490fe9c8d9f838f732b6d7917d70d9b68ebd36ef8d44ffd65a32aaf0"
     },
     {
       "bytes": 46881,
@@ -26326,6 +26335,15 @@
       "sha256": "e815bc2100ff1255da73b51e47345c1c60163563a2666562fc7d48afdf0bd46b"
     },
     {
+      "bytes": 2050,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tools/qikvrt_construct_history_preserving_mirror_candidate_pr249_current_main.py",
+      "sha256": "c348ac679a7cd51341549f02c6de7c74f26ea24d954776876e43040ab6e716f7"
+    },
+    {
       "bytes": 3017,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
@@ -26821,6 +26839,15 @@
       "sha256": "69a435c52bc7fe752f4051ce2c1920e16f7c3132948fad6f617b1c15c5cd6be4"
     },
     {
+      "bytes": 2757,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST_PR249_CURRENT_MAIN_C2A6.json",
+      "sha256": "5b6cb7a02ca1abff89ddfedc3afb09ccc7629acf112260ea3a9d424113d8a5ba"
+    },
+    {
       "bytes": 1925,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -26877,7 +26904,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2978,
+  "immutable_file_count": 2981,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -26902,7 +26929,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "cae29a96d711fd61fde10570cbcf6a5b416f3d451a73185587168908cfe00682",
+  "repository_content_tree_sha256": "dd46777b61fe04d980eb4b9905aeceed624735b83b86dd083a0b5314d8c7ec4f",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
