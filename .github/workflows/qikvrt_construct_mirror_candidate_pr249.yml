@@ -3,6 +3,9 @@
 name: QIKVRT construct history-preserving Mirror candidate for PR249
 
 on:
+  push:
+    branches:
+      - execution/history-preserving-mirror-sync-pr249-v1
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
@@ -19,7 +22,8 @@ jobs:
   construct:
     if: >-
       github.actor != 'github-actions[bot]' &&
-      (github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' ||
+       github.event_name == 'workflow_dispatch' ||
        (github.event.pull_request.head.repo.full_name == github.repository &&
         github.event.pull_request.head.ref == 'execution/history-preserving-mirror-sync-pr249-v1'))
     runs-on: ubuntu-24.04
