@@ -12,8 +12,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import pathlib
 import subprocess
+import sys
 from typing import Any
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+ROOT_STR = str(ROOT)
+if ROOT_STR not in sys.path:
+    sys.path.insert(0, ROOT_STR)
 
 from tools import qikvrt_construct_history_preserving_mirror_candidate_pr249 as base
 
