@@ -111,22 +111,47 @@ jobs:
           authority_main="$(git ls-remote "https://github.com/${AUTHORITY_REPOSITORY}.git" refs/heads/main | awk '{print $1}')"
           test "$mirror_main" = "$MIRROR_PARENT"
           test "$authority_main" = "$AUTHORITY_MAIN"
-          git push origin "${candidate}:refs/heads/${CANDIDATE_BRANCH}"
+
+          printf 'CANDIDATE_SHA=%s\n' "$candidate"
+          printf 'AUTHORITY_TREE_SHA=%s\n' "$authority_tree"
+          printf 'MIRROR_PARENT_SHA=%s\n' "$MIRROR_PARENT"
+          git show -s --format='CANDIDATE_OBJECT tree=%T parents=%P commit=%H' "$candidate"
           printf 'candidate=%s\n' "$candidate" >> "$GITHUB_OUTPUT"
           printf 'authority_tree=%s\n' "$authority_tree" >> "$GITHUB_OUTPUT"
           printf 'observed_at=%s\n' "$observed_at" >> "$GITHUB_OUTPUT"
 
+          set +e
+          push_output="$(git push origin "${candidate}:refs/heads/${CANDIDATE_BRANCH}" 2>&1)"
+          push_status=$?
+          set -e
+          printf '%s\n' "$push_output"
+          if [ "$push_status" -ne 0 ]; then
+            echo "CANDIDATE_REF_ATTACHMENT_BLOCKED=true"
+            exit "$push_status"
+          fi
+          echo "CANDIDATE_REF_ATTACHMENT_BLOCKED=false"
+
       - name: Reobserve remote candidate and write immutable construction receipt
+        if: always() && steps.construct.outputs.candidate != ''
         shell: bash
         run: |
           set -euo pipefail
           remote_candidate="$(git ls-remote origin "refs/heads/${CANDIDATE_BRANCH}" | awk '{print $1}')"
-          test "$remote_candidate" = "${{ steps.construct.outputs.candidate }}"
+          attached=false
+          state="CANDIDATE_OBJECT_CONSTRUCTED_REF_ATTACHMENT_PENDING"
+          if [ "$remote_candidate" = "${{ steps.construct.outputs.candidate }}" ]; then
+            attached=true
+            state="CANDIDATE_CONSTRUCTED_NOT_PROMOTED"
+          elif [ -n "$remote_candidate" ]; then
+            echo "Unexpected candidate branch value: $remote_candidate" >&2
+            exit 2
+          fi
+          export REMOTE_CANDIDATE="$remote_candidate" CANDIDATE_ATTACHED="$attached" RECEIPT_STATE="$state"
           python3 - <<'PY'
           import json, os, pathlib
           value = {
               "schema": "qikvrt_history_preserving_mirror_candidate_construction_v1",
-              "state": "CANDIDATE_CONSTRUCTED_NOT_PROMOTED",
+              "state": os.environ["RECEIPT_STATE"],
               "authority": {
                   "repository": os.environ["AUTHORITY_REPOSITORY"],
                   "main": os.environ["AUTHORITY_MAIN"],
@@ -137,6 +162,8 @@ jobs:
                   "parent": os.environ["MIRROR_PARENT"],
                   "candidate_branch": os.environ["CANDIDATE_BRANCH"],
                   "candidate": "${{ steps.construct.outputs.candidate }}",
+                  "candidate_ref_attached": os.environ["CANDIDATE_ATTACHED"] == "true",
+                  "remote_candidate": os.environ["REMOTE_CANDIDATE"] or None,
               },
               "shared_git_tree": "${{ steps.construct.outputs.authority_tree }}",
               "complete_authority_to_candidate_diff_empty": True,
@@ -155,8 +182,10 @@ jobs:
               encoding="utf-8",
           )
           PY
+          cat /tmp/MIRROR_CANDIDATE_CONSTRUCTION_RECEIPT.json
 
       - name: Upload immutable construction receipt
+        if: always() && steps.construct.outputs.candidate != ''
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: qikvrt-mirror-candidate-pr249-construction
