@@ -9,7 +9,7 @@ import pathlib
 import tempfile
 import unittest
 
-from tools import qikvrt_construct_history_preserving_mirror_candidate_pr249 as m
+from tools import qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes as m
 
 
 class HistoryPreservingMirrorCandidatePr249Tests(unittest.TestCase):
@@ -19,6 +19,8 @@ class HistoryPreservingMirrorCandidatePr249Tests(unittest.TestCase):
         self.assertEqual(value["authority"]["source_pr"], 249)
         self.assertEqual(value["authority"]["accepted_exact_head"], m.ACCEPTED_EXACT_HEAD)
         self.assertEqual(value["mirror"]["parent_main"], m.MIRROR_PARENT)
+        self.assertEqual(value["mirror"]["target_branch"], m.TARGET_BRANCH)
+        self.assertEqual(value["candidate_contract"]["candidate_timestamp"], m.CANDIDATE_TIMESTAMP)
         self.assertEqual(value["owner_decision"]["decision"], "ACCEPT")
 
     def test_truth_boundary_inflation_is_rejected(self) -> None:
