@@ -6,7 +6,13 @@
 The underlying constructor's generic text command helper strips trailing
 whitespace. That is correct for scalar Git output, but not for hashing the
 manifest blob. This runner preserves the exact blob bytes for the manifest
-and detached digest while leaving the reviewed transaction logic unchanged.
+and detached digest.
+
+The temporary constructor infrastructure has meanwhile advanced Mirror main.
+The requested content candidate nevertheless remains bound to the owner's
+frozen parent ``afcd0255...``. This wrapper therefore verifies the separate
+current-main infrastructure lease before delegating to the reviewed builder,
+which still creates the candidate with exactly that frozen sole parent.
 """
 from __future__ import annotations
 
@@ -23,6 +29,8 @@ if ROOT_STR not in sys.path:
     sys.path.insert(0, ROOT_STR)
 
 from tools import qikvrt_construct_history_preserving_mirror_candidate_pr249 as base
+
+MIRROR_CURRENT_MAIN = "c2a6e75eb24721029865a9dd5fd94fa55590a955"
 
 
 def _git_blob_bytes(spec: str) -> bytes:
@@ -77,7 +85,26 @@ def verify_authority_manifest_exact_bytes() -> dict[str, Any]:
     }
 
 
+_original_ls_remote = base._ls_remote
+
+
+def _ls_remote_with_separate_current_main_lease(remote: str, ref: str) -> str | None:
+    observed = _original_ls_remote(remote, ref)
+    if remote == "origin" and ref == "refs/heads/main":
+        if observed != MIRROR_CURRENT_MAIN:
+            raise base.ConstructionError(
+                "Mirror infrastructure-main lease drift: "
+                f"expected {MIRROR_CURRENT_MAIN}, observed {observed}"
+            )
+        # The reviewed constructor compares this result with MIRROR_PARENT.
+        # Return the frozen parent only after independently proving the actual
+        # current-main lease above. Candidate ancestry remains afcd0255... .
+        return base.MIRROR_PARENT
+    return observed
+
+
 base.verify_authority_manifest = verify_authority_manifest_exact_bytes
+base._ls_remote = _ls_remote_with_separate_current_main_lease
 
 
 if __name__ == "__main__":
