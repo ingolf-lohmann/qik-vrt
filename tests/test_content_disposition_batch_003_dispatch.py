@@ -35,7 +35,22 @@ class T(unittest.TestCase):
     def test_positive(self):
         result = m.verify()
         self.assertEqual(result["batch_id"], "CONTENT-DISPOSITION-BATCH-003")
-        if m.ADVANCED_SUBJECT_RECEIPT.is_file():
+        stage = m.projection_stage()
+        if stage == m.STAGE_FINAL_CORPUS:
+            self.assertEqual(
+                result["state"],
+                "ALL_19_SUBJECTS_DISPOSITIONED_PROOF_CORPUS_VERIFIED_PUBLICATION_NOT_AUTHORIZED",
+            )
+            self.assertEqual(result["active_subject"], "NONE")
+            self.assertEqual(result["open_subject_count"], 0)
+            self.assertTrue(result["claim_extraction_complete"])
+            self.assertIs(result["proof_corpus_published_on_zenodo"], False)
+        elif stage == m.STAGE_SECOND_SUBJECT:
+            self.assertEqual(result["state"], "BATCH_003_DISPATCH_PRESERVED_ADVANCED_PROJECTION_CURRENT")
+            self.assertEqual(result["active_subject"], "SUBJECT-b4849e1a2d6b2270")
+            self.assertEqual(result["open_subject_count"], 5)
+            self.assertTrue(result["claim_extraction_complete"])
+        elif stage == m.STAGE_FIRST_SUBJECT:
             self.assertEqual(result["state"], "BATCH_003_DISPATCH_PRESERVED_ADVANCED_PROJECTION_CURRENT")
             self.assertEqual(result["active_subject"], "SUBJECT-172dd9bc2738fa43")
             self.assertEqual(result["open_subject_count"], 6)
@@ -79,17 +94,39 @@ class T(unittest.TestCase):
         self.assertEqual(corpus["batch_003"]["state"], "DISPATCHED_FIRST_SUBJECT_ACTIVE")
         self.assertIn(m.NEXT_EFFECT, status)
 
+    def test_final_corpus_precedes_historical_projectors_and_workflow(self):
+        if m.FINAL_CORPUS_RECEIPT.is_file():
+            self.assertEqual(m.projection_stage(), m.STAGE_FINAL_CORPUS)
+            self.assertTrue(m._advanced_module().__name__.endswith("qikvrt_content_disposition_batch_003_all_subjects_compat"))
+            workflow = (ROOT / ".github/workflows/qikvrt_batch04_integrity.yml").read_text(encoding="utf-8")
+            final_guard = 'if [ -f "$final_script" ] && [ -f "$final_receipt" ]; then'
+            second_guard = 'elif [ -f "$second_script" ] && [ -f "$recursive_probe" ]; then'
+            self.assertIn(final_guard, workflow)
+            self.assertIn(second_guard, workflow)
+            self.assertLess(workflow.index(final_guard), workflow.index(second_guard))
+
     def test_root_projection_is_owned_by_most_advanced_projector(self):
         expected, status = m.expected_projection()
         self.assertEqual(self.progress, expected)
         renderer = m.pretty
-        if m.ADVANCED_SUBJECT_RECEIPT.is_file():
-            advanced = m._advanced_module()
-            renderer = advanced.pretty
+        if m.projection_stage() != m.STAGE_DISPATCH:
+            renderer = m._advanced_module().pretty
         self.assertEqual(m.AI_PROGRESS.read_text(encoding="utf-8"), renderer(expected))
         self.assertEqual(m.AI_STATUS.read_text(encoding="utf-8"), status)
-        if m.ADVANCED_SUBJECT_RECEIPT.is_file():
-            corpus = expected["scopes"]["qikvrt-zenodo-canonical-union-2026-07-28-v1"]
+        corpus = expected["scopes"]["qikvrt-zenodo-canonical-union-2026-07-28-v1"]
+        stage = m.projection_stage()
+        if stage == m.STAGE_FINAL_CORPUS:
+            self.assertEqual(expected["percent"], 100)
+            self.assertEqual(corpus["counts"]["dispositioned_subjects"], 19)
+            self.assertEqual(corpus["counts"]["open_subjects"], 0)
+            self.assertTrue(corpus["batch_003"]["terminal"])
+            self.assertIs(corpus["retrospective_proof_corpus"]["published_on_zenodo"], False)
+        elif stage == m.STAGE_SECOND_SUBJECT:
+            self.assertEqual(expected["percent"], 74)
+            self.assertEqual(corpus["counts"]["dispositioned_subjects"], 14)
+            self.assertEqual(corpus["counts"]["open_subjects"], 5)
+            self.assertEqual(corpus["batch_003"]["active_subject"], "SUBJECT-b4849e1a2d6b2270")
+        elif stage == m.STAGE_FIRST_SUBJECT:
             self.assertEqual(expected["percent"], 68)
             self.assertEqual(corpus["counts"]["dispositioned_subjects"], 13)
             self.assertEqual(corpus["counts"]["open_subjects"], 6)
@@ -125,7 +162,7 @@ class T(unittest.TestCase):
 
     def test_projection_release_inflation_blocks(self):
         progress, _ = m.expected_projection()
-        if m.ADVANCED_SUBJECT_RECEIPT.is_file():
+        if m.projection_stage() != m.STAGE_DISPATCH:
             advanced = m._advanced_module()
             validator = advanced.validate_progress_projection
             error_type = advanced.SubjectDispositionError
