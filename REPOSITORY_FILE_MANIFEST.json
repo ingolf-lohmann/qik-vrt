@@ -25687,13 +25687,13 @@
       "sha256": "f4f48208d4e83596ce1e8d1e2d7077765e3092caa77e4ce9da9e385378ff6f96"
     },
     {
-      "bytes": 3740,
+      "bytes": 3928,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_construct_history_preserving_mirror_candidate_pr249.py",
-      "sha256": "03d1a9adc3ddc838f812958660e8481b7b778f6b133cebbca5d1b3037f193a7b"
+      "sha256": "5500157cfaddb6dc20a8ce4e2690e7f6b92ad2753fc9bdb4d1a288b97dc2a580"
     },
     {
       "bytes": 5281,
@@ -26326,13 +26326,13 @@
       "sha256": "e815bc2100ff1255da73b51e47345c1c60163563a2666562fc7d48afdf0bd46b"
     },
     {
-      "bytes": 3017,
+      "bytes": 3877,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_construct_history_preserving_mirror_candidate_pr249_exact_bytes.py",
-      "sha256": "7058c58532a845679943529a9d35dfd1b158a18c67d00a4ec2c0ba66fd83ecef"
+      "sha256": "e8e1456d173d405a33bb582c07b796d99661852f749182c9f3776b1ed9029228"
     },
     {
       "bytes": 46586,
@@ -26812,13 +26812,13 @@
       "sha256": "69a435c52bc7fe752f4051ce2c1920e16f7c3132948fad6f617b1c15c5cd6be4"
     },
     {
-      "bytes": 2651,
+      "bytes": 2840,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST_PR249.json",
-      "sha256": "69a435c52bc7fe752f4051ce2c1920e16f7c3132948fad6f617b1c15c5cd6be4"
+      "sha256": "cacd5e9a840bb035c07e006a0828b10a77cd3bfd45fcb4f40d1c7246aa629757"
     },
     {
       "bytes": 1925,
@@ -26902,7 +26902,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "cae29a96d711fd61fde10570cbcf6a5b416f3d451a73185587168908cfe00682",
+  "repository_content_tree_sha256": "817641ab1f6068a51ca18e7ae1fa322e8119ed3a20756f5eeacb7fb798b853bb",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
