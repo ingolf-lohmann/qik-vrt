@@ -1,0 +1,43 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_history_preserving_mirror_sync_request_v1",
+  "operation": "CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE",
+  "state": "AUTHORIZED",
+  "authority": {
+    "repository": "Goldkelch/qik-vrt",
+    "main": "1f559a197e0770dc735bbd020d7cefbe9ed6acaf",
+    "source_pr": 240,
+    "accepted_exact_head": "166624c3ca75c6da3d1026628e5a2895e8437ae8"
+  },
+  "mirror": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "parent_main": "465b46fd69f9311ff02f80a31790691b59affe9e",
+    "target_branch": "sync/projector-repair-authority-1f559a19-from-465b46fd-v1"
+  },
+  "owner_decision": {
+    "actor": "Ingolf Lohmann",
+    "actor_type": "NATURAL_PERSON",
+    "decision": "ACCEPT",
+    "scope": "Construct and gate the history-preserving Mirror candidate for the immediately preceding accepted Authority PR240 promotion."
+  },
+  "candidate_contract": {
+    "sole_parent_required": true,
+    "authority_tree_equality_required": true,
+    "current_authority_main_lease_required": true,
+    "current_mirror_main_lease_required": true,
+    "candidate_timestamp": "2026-07-30T07:05:00Z"
+  },
+  "truth_boundary": {
+    "mirror_promoted": false,
+    "reciprocal_equality_receipt_materialized": false,
+    "zenodo_mutation_authorized": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}
