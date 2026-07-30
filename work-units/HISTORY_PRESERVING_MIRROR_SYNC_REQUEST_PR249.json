@@ -1,0 +1,22 @@
+{
+  "schema": "qikvrt_history_preserving_mirror_candidate_request_pr249_v1",
+  "state": "READY",
+  "operation": "CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE",
+  "owner_authorization": "ACCEPT",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "authority_main": "7d87a6003135a6e3efbca34b2d898967d7f66018",
+  "authority_pull_request": 249,
+  "mirror_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_parent": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+  "trigger_branch": "trusted/trigger-construct-mirror-pr249-clean-v1",
+  "target_branch": "sync/owner-accepted-six-authority-7d87a600-from-afcd0255-v1",
+  "completion_claims": {
+    "candidate_created": false,
+    "mirror_promoted": false,
+    "reciprocal_equality_receipt_complete": false,
+    "zenodo_mutation_authorized": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}
