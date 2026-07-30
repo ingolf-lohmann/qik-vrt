@@ -1,0 +1,12 @@
+{
+  "schema": "qikvrt_history_preserving_mirror_sync_request_pointer_v1",
+  "active_request": "work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST_PR240.json",
+  "state": "AUTHORIZED",
+  "truth_boundary": {
+    "mirror_promoted": false,
+    "reciprocal_equality_receipt_materialized": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}
