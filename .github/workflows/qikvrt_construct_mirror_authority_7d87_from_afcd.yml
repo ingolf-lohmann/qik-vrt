@@ -27,287 +27,169 @@ jobs:
       TARGET_BRANCH: sync/accepted-six-candidates-authority-7d87-from-afcd-v1
       EXECUTOR_PATH: .github/workflows/qikvrt_construct_mirror_authority_7d87_from_afcd.yml
       RECEIPT_PATH: evidence/runtime/HISTORY_PRESERVING_MIRROR_CANDIDATE_7D87_FROM_AFCD.json
+      CANDIDATE_TIMESTAMP: '2026-07-30T08:05:00Z'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check out exact trigger head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Verify frozen transport and both main leases
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
-          observed=$(git diff --name-only "$MIRROR_PARENT" HEAD | sort)
-          expected=$(printf '%s\n' "$EXECUTOR_PATH" | sort)
+          observed="$(git diff --name-only "$MIRROR_PARENT" HEAD | sort)"
+          expected="$(printf '%s\n' \
+            "$EXECUTOR_PATH" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt | sort)"
           test "$observed" = "$expected"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
           test "$(git ls-remote https://github.com/${AUTHORITY_REPOSITORY}.git refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
 
-      - name: Import Authority blobs and create unreferenced one-parent candidate
+      - name: Construct exact one-parent candidate and seed Mirror object store
         id: construct
         shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           mkdir -p mirror-candidate-output
-          python3 -B - <<'PY'
-          from __future__ import annotations
 
-          import base64
+          authority_url="https://github.com/${AUTHORITY_REPOSITORY}.git"
+          git fetch --no-tags --force "$authority_url" "$AUTHORITY_MAIN"
+          test "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_MAIN"
+
+          authority_tree="$(git rev-parse "${AUTHORITY_MAIN}^{tree}")"
+          mirror_parent_tree="$(git rev-parse "${MIRROR_PARENT}^{tree}")"
+          export GIT_AUTHOR_NAME='qik-vrt mirror synchronizer'
+          export GIT_AUTHOR_EMAIL='41898282+github-actions[bot]@users.noreply.github.com'
+          export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+          export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+          export GIT_AUTHOR_DATE="$CANDIDATE_TIMESTAMP"
+          export GIT_COMMITTER_DATE="$CANDIDATE_TIMESTAMP"
+
+          candidate="$(printf '%s\n\n%s\n%s\n%s\n\n%s\n' \
+            'Synchronize owner-accepted six corrected corpus candidates from Authority' \
+            "Authority main: ${AUTHORITY_MAIN}" \
+            "Mirror parent: ${MIRROR_PARENT}" \
+            "Authority tree: ${authority_tree}" \
+            'History-preserving candidate only. No Mirror promotion, reciprocal equality, Zenodo mutation, repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.' \
+            | git commit-tree "$authority_tree" -p "$MIRROR_PARENT")"
+
+          test "$(git rev-parse "${candidate}^{tree}")" = "$authority_tree"
+          test "$(git show -s --format=%P "$candidate")" = "$MIRROR_PARENT"
+          git diff --exit-code --no-renames "$AUTHORITY_MAIN" "$candidate"
+
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
+          test "$(git ls-remote "$authority_url" refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
+
+          existing="$(git ls-remote origin "refs/heads/${TARGET_BRANCH}" | cut -f1)"
+          attached=false
+          push_status=0
+          push_output=''
+          state='CANDIDATE_OBJECT_CONSTRUCTED_REF_ATTACHMENT_PENDING'
+
+          if [ -n "$existing" ]; then
+            test "$existing" = "$candidate"
+            attached=true
+            state='EXACT_CANDIDATE_ALREADY_ATTACHED'
+          else
+            set +e
+            push_output="$(git push origin "${candidate}:refs/heads/${TARGET_BRANCH}" 2>&1)"
+            push_status=$?
+            set -e
+            printf '%s\n' "$push_output"
+            remote_after="$(git ls-remote origin "refs/heads/${TARGET_BRANCH}" | cut -f1)"
+            if [ "$remote_after" = "$candidate" ]; then
+              attached=true
+              state='CANDIDATE_CONSTRUCTED_NOT_PROMOTED'
+              push_status=0
+            elif [ -n "$remote_after" ]; then
+              echo "BLOCK: unexpected target branch value $remote_after" >&2
+              exit 2
+            fi
+          fi
+
+          printf 'AUTHORITY_TREE=%s\n' "$authority_tree"
+          printf 'MIRROR_PARENT_TREE=%s\n' "$mirror_parent_tree"
+          printf 'CANDIDATE_SHA=%s\n' "$candidate"
+          printf 'CANDIDATE_BRANCH_ATTACHED=%s\n' "$attached"
+          printf 'TARGET_PUSH_STATUS=%s\n' "$push_status"
+          git show -s --format='CANDIDATE_OBJECT tree=%T parents=%P commit=%H' "$candidate"
+
+          export AUTHORITY_TREE="$authority_tree"
+          export MIRROR_PARENT_TREE="$mirror_parent_tree"
+          export CANDIDATE_SHA="$candidate"
+          export CANDIDATE_BRANCH_ATTACHED="$attached"
+          export TARGET_PUSH_STATUS="$push_status"
+          export TARGET_PUSH_OUTPUT="$push_output"
+          export RECEIPT_STATE="$state"
+          python3 -B - <<'PY'
           import datetime as dt
           import json
           import os
           import pathlib
-          import subprocess
-          import urllib.error
-          import urllib.request
-
-          authority_repository = os.environ['AUTHORITY_REPOSITORY']
-          authority_main = os.environ['AUTHORITY_MAIN']
-          mirror_parent = os.environ['MIRROR_PARENT']
-          target_branch = os.environ['TARGET_BRANCH']
-          mirror_repository = os.environ['GITHUB_REPOSITORY']
-          token = os.environ['GH_TOKEN']
-          api_root = 'https://api.github.com'
-
-          def git(*args: str, text: bool = True):
-              return subprocess.run(
-                  ['git', *args],
-                  check=True,
-                  stdout=subprocess.PIPE,
-                  stderr=subprocess.PIPE,
-                  text=text,
-              ).stdout
-
-          def api(method: str, path: str, payload=None):
-              data = None
-              headers = {
-                  'Accept': 'application/vnd.github+json',
-                  'Authorization': f'Bearer {token}',
-                  'X-GitHub-Api-Version': '2022-11-28',
-                  'User-Agent': 'qikvrt-history-preserving-mirror-constructor',
-              }
-              if payload is not None:
-                  data = json.dumps(payload, separators=(',', ':')).encode('utf-8')
-                  headers['Content-Type'] = 'application/json'
-              request = urllib.request.Request(
-                  api_root + path,
-                  data=data,
-                  headers=headers,
-                  method=method,
-              )
-              try:
-                  with urllib.request.urlopen(request, timeout=180) as response:
-                      raw = response.read()
-              except urllib.error.HTTPError as exc:
-                  body = exc.read().decode('utf-8', errors='replace')
-                  raise RuntimeError(
-                      f'GitHub API {method} {path} failed: {exc.code} {body}'
-                  ) from exc
-              return json.loads(raw.decode('utf-8')) if raw else None
-
-          authority_url = f'https://github.com/{authority_repository}.git'
-          git('fetch', '--no-tags', '--force', authority_url, authority_main)
-          fetched = git('rev-parse', 'FETCH_HEAD').strip()
-          if fetched != authority_main:
-              raise SystemExit(
-                  f'BLOCK: Authority fetch drift: expected {authority_main}, observed {fetched}'
-              )
-
-          authority_tree = git('show', '-s', '--format=%T', authority_main).strip()
-          mirror_parent_tree = git('show', '-s', '--format=%T', mirror_parent).strip()
-
-          raw_names = git(
-              'diff', '--name-status', '--no-renames', '-z',
-              mirror_parent, authority_main,
-              text=False,
-          )
-          tokens = raw_names.split(b'\0')
-          changes: list[tuple[str, str]] = []
-          index = 0
-          while index < len(tokens) and tokens[index]:
-              status = tokens[index].decode('ascii')
-              path = tokens[index + 1].decode('utf-8', errors='strict')
-              changes.append((status, path))
-              index += 2
-
-          tree_entries = []
-          imported_blobs = 0
-          deleted_paths = 0
-          source_blob_bindings = []
-
-          for status, path in changes:
-              if status == 'D':
-                  tree_entries.append({'path': path, 'sha': None})
-                  deleted_paths += 1
-                  continue
-              if status not in {'A', 'M', 'T'}:
-                  raise SystemExit(f'BLOCK: unsupported diff status {status!r} for {path!r}')
-
-              ls_tree = git('ls-tree', authority_main, '--', path).rstrip('\n')
-              if not ls_tree:
-                  raise SystemExit(f'BLOCK: Authority tree path absent: {path}')
-              metadata, observed_path = ls_tree.split('\t', 1)
-              mode, object_type, source_sha = metadata.split(' ', 2)
-              if observed_path != path:
-                  raise SystemExit(f'BLOCK: path decoding drift for {path!r}')
-              if object_type == 'blob':
-                  raw = git('cat-file', 'blob', source_sha, text=False)
-                  created = api(
-                      'POST',
-                      f'/repos/{mirror_repository}/git/blobs',
-                      {
-                          'content': base64.b64encode(raw).decode('ascii'),
-                          'encoding': 'base64',
-                      },
-                  )
-                  if created['sha'] != source_sha:
-                      raise SystemExit(
-                          f'BLOCK: content-addressed blob mismatch for {path}: '
-                          f"{created['sha']} != {source_sha}"
-                      )
-                  imported_blobs += 1
-                  target_type = 'blob'
-              elif object_type == 'commit' and mode == '160000':
-                  target_type = 'commit'
-              else:
-                  raise SystemExit(
-                      f'BLOCK: unsupported Authority object {object_type}/{mode} at {path}'
-                  )
-              tree_entries.append(
-                  {
-                      'path': path,
-                      'mode': mode,
-                      'type': target_type,
-                      'sha': source_sha,
-                  }
-              )
-              source_blob_bindings.append(
-                  {'path': path, 'mode': mode, 'type': target_type, 'sha': source_sha}
-              )
-
-          created_tree = api(
-              'POST',
-              f'/repos/{mirror_repository}/git/trees',
-              {'base_tree': mirror_parent_tree, 'tree': tree_entries},
-          )
-          candidate_tree = created_tree['sha']
-          if candidate_tree != authority_tree:
-              raise SystemExit(
-                  'BLOCK: reconstructed Mirror candidate tree differs from Authority tree: '
-                  f'{candidate_tree} != {authority_tree}'
-              )
-
-          message = (
-              'Synchronize owner-accepted six corrected corpus candidates from Authority\n\n'
-              f'Authority main: {authority_main}\n'
-              f'Mirror parent: {mirror_parent}\n'
-              f'Authority tree: {authority_tree}\n\n'
-              'History-preserving candidate only. No Mirror promotion, reciprocal equality, '
-              'Zenodo mutation, repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.'
-          )
-          created_commit = api(
-              'POST',
-              f'/repos/{mirror_repository}/git/commits',
-              {
-                  'message': message,
-                  'tree': authority_tree,
-                  'parents': [mirror_parent],
-              },
-          )
-          candidate_sha = created_commit['sha']
-          observed_commit = api(
-              'GET', f'/repos/{mirror_repository}/git/commits/{candidate_sha}'
-          )
-          observed_parents = [item['sha'] for item in observed_commit['parents']]
-          observed_tree = observed_commit['tree']['sha']
-          if observed_parents != [mirror_parent]:
-              raise SystemExit(
-                  f'BLOCK: candidate parent drift: {observed_parents!r} != {[mirror_parent]!r}'
-              )
-          if observed_tree != authority_tree:
-              raise SystemExit(
-                  f'BLOCK: candidate tree drift: {observed_tree} != {authority_tree}'
-              )
-
-          authority_lease_after = git(
-              'ls-remote', authority_url, 'refs/heads/main'
-          ).split('\t', 1)[0]
-          mirror_lease_after = git(
-              'ls-remote', 'origin', 'refs/heads/main'
-          ).split('\t', 1)[0]
-          if authority_lease_after != authority_main:
-              raise SystemExit(
-                  f'BLOCK: Authority main moved during construction: {authority_lease_after}'
-              )
-          if mirror_lease_after != mirror_parent:
-              raise SystemExit(
-                  f'BLOCK: Mirror main moved during construction: {mirror_lease_after}'
-              )
 
           receipt = {
-              'schema': 'qikvrt_history_preserving_mirror_candidate_receipt_v1',
-              'repository': mirror_repository,
-              'authority_repository': authority_repository,
-              'authority_main': authority_main,
-              'authority_tree': authority_tree,
-              'mirror_parent': mirror_parent,
-              'mirror_parent_tree': mirror_parent_tree,
-              'candidate_sha': candidate_sha,
-              'candidate_tree': candidate_tree,
-              'candidate_parents': observed_parents,
-              'target_branch': target_branch,
-              'changed_path_count': len(changes),
-              'imported_blob_count': imported_blobs,
-              'deleted_path_count': deleted_paths,
-              'authority_tree_equality': True,
-              'sole_parent_verified': True,
-              'authority_main_lease_unchanged': True,
-              'mirror_main_lease_unchanged': True,
-              'branch_attached': False,
-              'mirror_promoted': False,
-              'reciprocal_equality_receipt_complete': False,
-              'zenodo_mutation_authorized': False,
-              'pass': False,
-              'final_pass': False,
-              'effect_ack_done': False,
-              'constructed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
-              'source_blob_bindings': source_blob_bindings,
+              "schema": "qikvrt_history_preserving_mirror_candidate_receipt_v1",
+              "state": os.environ["RECEIPT_STATE"],
+              "authority_repository": os.environ["AUTHORITY_REPOSITORY"],
+              "authority_main": os.environ["AUTHORITY_MAIN"],
+              "authority_tree": os.environ["AUTHORITY_TREE"],
+              "mirror_parent": os.environ["MIRROR_PARENT"],
+              "mirror_parent_tree": os.environ["MIRROR_PARENT_TREE"],
+              "candidate_sha": os.environ["CANDIDATE_SHA"],
+              "candidate_tree": os.environ["AUTHORITY_TREE"],
+              "candidate_parents": [os.environ["MIRROR_PARENT"]],
+              "target_branch": os.environ["TARGET_BRANCH"],
+              "candidate_timestamp": os.environ["CANDIDATE_TIMESTAMP"],
+              "complete_authority_to_candidate_diff_empty": True,
+              "authority_tree_equality": True,
+              "sole_parent_verified": True,
+              "authority_main_lease_unchanged": True,
+              "mirror_main_lease_unchanged": True,
+              "branch_attached": os.environ["CANDIDATE_BRANCH_ATTACHED"] == "true",
+              "target_push_status": int(os.environ["TARGET_PUSH_STATUS"]),
+              "target_push_output": os.environ["TARGET_PUSH_OUTPUT"],
+              "constructed_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+              "mirror_promoted": False,
+              "reciprocal_equality_receipt_complete": False,
+              "zenodo_mutation_authorized": False,
+              "proof_corpus_published_on_zenodo": False,
+              "pass": False,
+              "final_pass": False,
+              "effect_ack_done": False,
           }
-          output = pathlib.Path(
-              'mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json'
+          path = pathlib.Path("mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json")
+          path.write_text(
+              json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
           )
-          output.write_text(
-              json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
-              encoding='utf-8',
-          )
-          print(f'AUTHORITY_TREE={authority_tree}')
-          print(f'MIRROR_PARENT_TREE={mirror_parent_tree}')
-          print(f'CANDIDATE_SHA={candidate_sha}')
-          print(f'CHANGED_PATH_COUNT={len(changes)}')
-          print(f'IMPORTED_BLOB_COUNT={imported_blobs}')
-          print('AUTHORITY_TREE_EQUALITY=true')
-          print('SOLE_PARENT_VERIFIED=true')
-          print('BRANCH_ATTACHED=false')
-          print('MIRROR_PROMOTED=false')
-          print('PASS=false')
-          print('FINAL_PASS=false')
-          print('EFFECT_ACK_DONE=false')
+          print(json.dumps(receipt, ensure_ascii=False, sort_keys=True))
           PY
 
       - name: Persist constructor receipt on execution branch
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$(dirname "$RECEIPT_PATH")"
-          cp mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json "$RECEIPT_PATH"
+          cp mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json /tmp/qikvrt-mirror-candidate-receipt.json
+          git fetch --no-tags origin "refs/heads/${EXECUTION_BRANCH}"
+          git checkout -B receipt-persist FETCH_HEAD
+          mkdir -p "$(dirname "$RECEIPT_PATH")" mirror-candidate-output
+          cp /tmp/qikvrt-mirror-candidate-receipt.json "$RECEIPT_PATH"
+          cp /tmp/qikvrt-mirror-candidate-receipt.json mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- "$RECEIPT_PATH"
-          git commit -m 'evidence: persist exact Mirror candidate constructor receipt'
-          git push origin "HEAD:$EXECUTION_BRANCH"
+          if git diff --cached --quiet; then
+            echo 'Constructor receipt is already byte-current.'
+          else
+            git commit -m 'evidence: persist exact Mirror candidate constructor receipt'
+            git push origin "HEAD:${EXECUTION_BRANCH}"
+          fi
 
       - name: Upload immutable constructor receipt
         if: always()
