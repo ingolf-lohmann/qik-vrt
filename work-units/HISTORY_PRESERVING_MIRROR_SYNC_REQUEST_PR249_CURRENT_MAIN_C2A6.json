@@ -1,0 +1,58 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_history_preserving_mirror_sync_request_v1",
+  "operation": "CONSTRUCT_HISTORY_PRESERVING_MIRROR_CANDIDATE",
+  "state": "AUTHORIZED",
+  "authority": {
+    "repository": "Goldkelch/qik-vrt",
+    "main": "7d87a6003135a6e3efbca34b2d898967d7f66018",
+    "source_pr": 249,
+    "accepted_exact_head": "264fe1215d129b32a7013346be6e09035db797f3",
+    "owner_acceptance_receipt_sha256": "58000ba0768cab4aee06c60b625df9fdc5b422c2ed0d14dde4fc55199d1eff72",
+    "repository_manifest_git_blob_sha1": "bcfa9f5f91bddf17328edbe22afa44b4dc1ebeff",
+    "repository_manifest_sha256": "4443f86882381c8c7c3b1fecedfdd471a11ea6f801cec75d4f7a506b4a76f464",
+    "repository_content_tree_sha256": "1116331256858d9b4206f9e80f6d1db2e6a67c5a8bd86a4bfba53c893655d0c0"
+  },
+  "mirror": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pre_infrastructure_main": "afcd0255aab6bc5ad18275a2d91516688a41e302",
+    "infrastructure_promotion_pr": 134,
+    "parent_main": "c2a6e75eb24721029865a9dd5fd94fa55590a955",
+    "target_branch": "sync/six-corrected-candidates-authority-7d87a600-from-c2a6e75-v1"
+  },
+  "owner_decision": {
+    "actor": "Ingolf Lohmann",
+    "actor_type": "NATURAL_PERSON",
+    "decision": "ACCEPT",
+    "scope": "Construct the exact Authority-tree Mirror candidate after the owner-authorized temporary constructor infrastructure has been promoted; do not promote Mirror main."
+  },
+  "candidate_contract": {
+    "sole_parent_required": true,
+    "authority_tree_equality_required": true,
+    "current_authority_main_lease_required": true,
+    "current_mirror_main_lease_required": true,
+    "candidate_timestamp": "2026-07-30T08:10:00Z"
+  },
+  "accepted_candidate_sha256": {
+    "SUBJECT-172dd9bc2738fa43": "10591f0bfd314af227a1b75cb3a85d3db032c4ea5a9dd4129a94830cd2dabe59",
+    "SUBJECT-b4849e1a2d6b2270": "43def64a5bb351bbb1fd4a589878aceef86a5b4b989091ed63884d56f1396724",
+    "SUBJECT-7956d8acdc473825": "ec3c4a8712a2f24a8c074e3d487bcfc16541edfd6a3fdf567bf6b25dcb5752ec",
+    "SUBJECT-ce2390f18618ad0c": "b0414047e9e9ab0cd28782d4963acc9c2a9ee7deb99705a7bec6118fa3227ef3",
+    "SUBJECT-780b9bf86425cee3": "7fe183f215ca7044081a5123c7b3d46a812ac21cc7770ae7a9a5acca620d3eea",
+    "SUBJECT-7fdb36aa7c07c07d": "4f1255749f3d09f9fc0cad2c8a9071dbf244cef0c7dc3c883226be8d1be1bbd6"
+  },
+  "truth_boundary": {
+    "mirror_promoted": false,
+    "reciprocal_equality_receipt_materialized": false,
+    "zenodo_mutation_authorized": false,
+    "proof_corpus_published_on_zenodo": false,
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
+}
