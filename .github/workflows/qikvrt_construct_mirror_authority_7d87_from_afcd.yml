@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   construct:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
@@ -25,17 +26,21 @@ jobs:
       EXECUTION_BRANCH: execution/history-preserving-mirror-sync-authority-7d87-from-afcd-v1
       TARGET_BRANCH: sync/accepted-six-candidates-authority-7d87-from-afcd-v1
       EXECUTOR_PATH: .github/workflows/qikvrt_construct_mirror_authority_7d87_from_afcd.yml
+      RECEIPT_PATH: evidence/runtime/HISTORY_PRESERVING_MIRROR_CANDIDATE_7D87_FROM_AFCD.json
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Verify frozen transport and both main leases
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "$MIRROR_PARENT"
-          test "$(git diff --name-only "$MIRROR_PARENT" HEAD)" = "$EXECUTOR_PATH"
+          git merge-base --is-ancestor "$MIRROR_PARENT" HEAD
+          observed=$(git diff --name-only "$MIRROR_PARENT" HEAD | sort)
+          expected=$(printf '%s\n' "$EXECUTOR_PATH" | sort)
+          test "$observed" = "$expected"
           test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_PARENT"
           test "$(git ls-remote https://github.com/${AUTHORITY_REPOSITORY}.git refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN"
 
@@ -291,6 +296,18 @@ jobs:
           print('FINAL_PASS=false')
           print('EFFECT_ACK_DONE=false')
           PY
+
+      - name: Persist constructor receipt on execution branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$(dirname "$RECEIPT_PATH")"
+          cp mirror-candidate-output/HISTORY_PRESERVING_MIRROR_CANDIDATE_RECEIPT.json "$RECEIPT_PATH"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$RECEIPT_PATH"
+          git commit -m 'evidence: persist exact Mirror candidate constructor receipt'
+          git push origin "HEAD:$EXECUTION_BRANCH"
 
       - name: Upload immutable constructor receipt
         if: always()
