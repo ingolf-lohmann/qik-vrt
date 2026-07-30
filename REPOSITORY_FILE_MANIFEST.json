@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 2981,
+  "file_count": 2986,
   "files": [
     {
       "bytes": 47,
@@ -233,6 +233,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
       "sha256": "3ce527399b85688a0935674f11cb874748bdec43a6972659e14612f335ac6b6c"
+    },
+    {
+      "bytes": 2855,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_construct_mirror_candidate_pr249.yml",
+      "sha256": "141cac31ced7120fb7b03e473e9edcbf0835c89e5267d7a32a5ce1cc614c3080"
     },
     {
       "bytes": 46881,
@@ -25678,6 +25687,15 @@
       "sha256": "f4f48208d4e83596ce1e8d1e2d7077765e3092caa77e4ce9da9e385378ff6f96"
     },
     {
+      "bytes": 3740,
+      "classification": "test_source",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tests/test_construct_history_preserving_mirror_candidate_pr249.py",
+      "sha256": "03d1a9adc3ddc838f812958660e8481b7b778f6b133cebbca5d1b3037f193a7b"
+    },
+    {
       "bytes": 5281,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
@@ -26299,6 +26317,15 @@
       "sha256": "6ff10abda9af7f8f2fcd50464e03637bdc84eaf1d2148be599203e713b41dfe9"
     },
     {
+      "bytes": 12876,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tools/qikvrt_construct_history_preserving_mirror_candidate_pr249.py",
+      "sha256": "e815bc2100ff1255da73b51e47345c1c60163563a2666562fc7d48afdf0bd46b"
+    },
+    {
       "bytes": 46586,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
@@ -26767,6 +26794,24 @@
       "sha256": "ba5bbc418ade565342c7fab040d5236b646e3531528c03b048bb8efd23021c04"
     },
     {
+      "bytes": 2651,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST.json",
+      "sha256": "69a435c52bc7fe752f4051ce2c1920e16f7c3132948fad6f617b1c15c5cd6be4"
+    },
+    {
+      "bytes": 2651,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "work-units/HISTORY_PRESERVING_MIRROR_SYNC_REQUEST_PR249.json",
+      "sha256": "69a435c52bc7fe752f4051ce2c1920e16f7c3132948fad6f617b1c15c5cd6be4"
+    },
+    {
       "bytes": 1925,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -26823,7 +26868,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 2972,
+  "immutable_file_count": 2977,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -26848,7 +26893,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "0cd8b5c15f34c0879a31dd6a76d343c51f500583c8000a59bdd9d8eb46297e0d",
+  "repository_content_tree_sha256": "0db824df9d117749dbee7939f3dfe484a62e52c997d84c399da0a23387aa2230",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
