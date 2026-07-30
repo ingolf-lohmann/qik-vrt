@@ -48,7 +48,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          python3 -B tools/qikvrt_construct_history_preserving_mirror_candidate_v4.py
+          GITHUB_SHA="${{ github.event.pull_request.head.sha }}" \
+            python3 -B tools/qikvrt_construct_history_preserving_mirror_candidate_v4.py
       - name: Materialize completed manuscript evidence when present
         shell: bash
         run: |
