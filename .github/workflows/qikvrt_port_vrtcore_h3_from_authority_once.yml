@@ -32,9 +32,10 @@ jobs:
       TARGET_BRANCH: candidate/vrtcore-h3-authority-pr320-port-v1
       EXECUTION_WORKFLOW: .github/workflows/qikvrt_port_vrtcore_h3_from_authority_once.yml
     steps:
-      - name: Check out exact trusted execution proxy
+      - name: Check out exact trusted execution proxy head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Verify exact proxy, source, and target leases
@@ -43,6 +44,7 @@ jobs:
           set -euo pipefail
           [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
           [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
+          [ "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha }}' ]
           [ "$(git rev-parse HEAD^)" = "$PR192_HEAD" ]
           [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
           [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
@@ -67,10 +69,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --no-tags https://github.com/$AUTHORITY_REPOSITORY.git "$AUTHORITY_HEAD"
-          [ "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_HEAD" ]
-          [ "$(git rev-parse 'FETCH_HEAD^{tree}')" = "$AUTHORITY_TREE" ]
-          [ "$(git merge-base --is-ancestor "$AUTHORITY_HEAD" "$AUTHORITY_MAIN"; echo $?)" = 0 ]
+          git fetch --no-tags https://github.com/$AUTHORITY_REPOSITORY.git "$AUTHORITY_HEAD" "$AUTHORITY_MAIN"
+          [ "$(git cat-file -t "$AUTHORITY_HEAD")" = commit ]
+          [ "$(git cat-file -t "$AUTHORITY_MAIN")" = commit ]
+          [ "$(git rev-parse "$AUTHORITY_HEAD^{tree}")" = "$AUTHORITY_TREE" ]
+          git merge-base --is-ancestor "$AUTHORITY_HEAD" "$AUTHORITY_MAIN"
 
       - name: Regenerate Mirror-native integrity on portable Authority scope
         shell: bash
