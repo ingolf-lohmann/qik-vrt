@@ -26,7 +26,7 @@ jobs:
       AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
       AUTHORITY_BASE: 319f2629a7224fd32e4e818f09cce2f3c64e574f
       AUTHORITY_HEAD: b60d0c12cd41ede40ed5438ec83d9b69da2ef7c5
-      AUTHORITY_MAIN: 4d00723c7f6f52f1b2b279fd91f902647e0547cc
+      AUTHORITY_PROMOTION: 4d00723c7f6f52f1b2b279fd91f902647e0547cc
       AUTHORITY_TREE: 4ce9c07b1a78df2f23f81b751612baf110d22fb6
       MIRROR_BASE: 6a5868097c580772aa80f763743d4326559bc919
       TARGET_BRANCH: candidate/vrtcore-h56-authority-pr323-port-v1
@@ -38,7 +38,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
-      - name: Verify exact proxy and repository leases
+      - name: Verify exact proxy and Mirror leases
         shell: bash
         run: |
           set -euo pipefail
@@ -47,22 +47,21 @@ jobs:
           [ "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha }}' ]
           [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
           [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
-          [ "$(git ls-remote https://github.com/$AUTHORITY_REPOSITORY.git refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN" ]
           [ -z "$(git ls-remote origin refs/heads/$TARGET_BRANCH)" ]
           mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
           [ "${#changed[@]}" -eq 1 ]
           [ "${changed[0]}" = "$EXECUTION_WORKFLOW" ]
 
-      - name: Fetch and verify exact Authority source
+      - name: Fetch and verify exact Authority source and promotion
         shell: bash
         run: |
           set -euo pipefail
           git fetch --no-tags https://github.com/$AUTHORITY_REPOSITORY.git \
-            "$AUTHORITY_BASE" "$AUTHORITY_HEAD" "$AUTHORITY_MAIN"
+            "$AUTHORITY_BASE" "$AUTHORITY_HEAD" "$AUTHORITY_PROMOTION"
           [ "$(git rev-parse "$AUTHORITY_HEAD^{tree}")" = "$AUTHORITY_TREE" ]
           git merge-base --is-ancestor "$AUTHORITY_BASE" "$AUTHORITY_HEAD"
-          git merge-base --is-ancestor "$AUTHORITY_HEAD" "$AUTHORITY_MAIN"
-          [ -z "$(git diff --name-only "$AUTHORITY_HEAD" "$AUTHORITY_MAIN" --)" ]
+          git merge-base --is-ancestor "$AUTHORITY_HEAD" "$AUTHORITY_PROMOTION"
+          [ -z "$(git diff --name-only "$AUTHORITY_HEAD" "$AUTHORITY_PROMOTION" --)" ]
 
       - name: Materialize portable PR323 paths on current Mirror main
         shell: bash
@@ -101,7 +100,7 @@ jobs:
             'Port promoted VRTCore H5/H6 bundle from Authority PR #323' \
             '' \
             "Authority source head: $AUTHORITY_HEAD" \
-            "Authority promoted main: $AUTHORITY_MAIN" \
+            "Authority promotion commit: $AUTHORITY_PROMOTION" \
             "Authority freeze tree: $AUTHORITY_TREE" \
             "Mirror parent: $MIRROR_BASE" \
             "Portable path count: $PORTABLE_PATH_COUNT" \
