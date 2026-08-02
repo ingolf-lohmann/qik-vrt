@@ -45,7 +45,7 @@ jobs:
           [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
           [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
           [ "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha }}' ]
-          [ "$(git rev-parse HEAD^)" = "$PR192_HEAD" ]
+          git merge-base --is-ancestor "$PR192_HEAD" HEAD
           [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
           [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
           [ "$(git ls-remote https://github.com/$AUTHORITY_REPOSITORY.git refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN" ]
