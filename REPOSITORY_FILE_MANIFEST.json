@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3241,
+  "file_count": 3242,
   "files": [
     {
       "bytes": 47,
@@ -386,6 +386,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_physics_bridge_integrity.yml",
       "sha256": "7812c4f81ab32cf5179bf4bfd3e1a8c075fd5de63689b6f6c0bb5446435116d3"
+    },
+    {
+      "bytes": 5517,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_port_vrtcore_h56_from_authority_once.yml",
+      "sha256": "69a8f3b10089f6665cd88270d0025c9945df5245580cb92938bd85cd1500cbe7"
     },
     {
       "bytes": 1438,
@@ -29163,7 +29172,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3232,
+  "immutable_file_count": 3233,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -29188,7 +29197,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "a3be9f73a4ee68f29c981fd75c230c236edf72c9e68c17c474e5f04e581f7c64",
+  "repository_content_tree_sha256": "1946da3cf84ca37a3d4421cf402f2009b2b80df6d48c6006c28eddee685d5aa6",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
