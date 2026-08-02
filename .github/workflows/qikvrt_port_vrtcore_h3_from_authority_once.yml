@@ -1,0 +1,124 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIK-VRT one-shot VRTCore H3 Mirror port
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+    paths:
+      - .github/workflows/qikvrt_port_vrtcore_h3_from_authority_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-port-vrtcore-h3-from-authority-once
+  cancel-in-progress: false
+
+jobs:
+  port:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_HEAD: 8b3f8cdc3ac5fc381b0796d5f7503f3a0e9689ba
+      AUTHORITY_MAIN: 319f2629a7224fd32e4e818f09cce2f3c64e574f
+      AUTHORITY_TREE: e074876250148a218597ead39eedf003af139462
+      MIRROR_BASE: 2cf14d3229f9ad335b8f48f94e79c4ebcd30b8df
+      PR192_HEAD: e1c7ae2b8f1a80a6125c31da5598a779724bfe77
+      TARGET_BRANCH: candidate/vrtcore-h3-authority-pr320-port-v1
+      EXECUTION_WORKFLOW: .github/workflows/qikvrt_port_vrtcore_h3_from_authority_once.yml
+    steps:
+      - name: Check out exact trusted execution proxy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact proxy, source, and target leases
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REPOSITORY" = 'ingolf-lohmann/qik-vrt' ]
+          [ "${{ github.event.pull_request.base.sha }}" = "$MIRROR_BASE" ]
+          [ "$(git rev-parse HEAD^)" = "$PR192_HEAD" ]
+          [ "$(git merge-base HEAD "$MIRROR_BASE")" = "$MIRROR_BASE" ]
+          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
+          [ "$(git ls-remote https://github.com/$AUTHORITY_REPOSITORY.git refs/heads/main | cut -f1)" = "$AUTHORITY_MAIN" ]
+          [ -z "$(git ls-remote origin refs/heads/$TARGET_BRANCH)" ]
+          mapfile -t changed < <(git diff --name-only "$MIRROR_BASE" HEAD -- | LC_ALL=C sort)
+          expected=(
+            "$EXECUTION_WORKFLOW"
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+            'state/authorization/delegations/OWNER_NO_REINTERACTION_STANDING_DELEGATION_V1.json'
+            'work-units/PORT_PROMOTED_VRTCORE_H3_TO_MIRROR.json'
+          )
+          mapfile -t expected_sorted < <(printf '%s\n' "${expected[@]}" | LC_ALL=C sort)
+          [ "${#changed[@]}" -eq "${#expected_sorted[@]}" ]
+          for i in "${!expected_sorted[@]}"; do
+            [ "${changed[$i]}" = "${expected_sorted[$i]}" ]
+          done
+
+      - name: Fetch exact Authority H3 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags https://github.com/$AUTHORITY_REPOSITORY.git "$AUTHORITY_HEAD"
+          [ "$(git rev-parse FETCH_HEAD)" = "$AUTHORITY_HEAD" ]
+          [ "$(git rev-parse 'FETCH_HEAD^{tree}')" = "$AUTHORITY_TREE" ]
+          [ "$(git merge-base --is-ancestor "$AUTHORITY_HEAD" "$AUTHORITY_MAIN"; echo $?)" = 0 ]
+
+      - name: Regenerate Mirror-native integrity on portable Authority scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          worktree="$RUNNER_TEMP/qikvrt-vrtcore-h3-port"
+          git worktree add --detach "$worktree" "$AUTHORITY_HEAD"
+          cd "$worktree"
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py generate
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+          make test
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
+          mapfile -t changed < <(git diff --name-only -- | LC_ALL=C sort)
+          allowed=(
+            'REPOSITORY_FILE_MANIFEST.json'
+            'REPOSITORY_FILE_MANIFEST.json.sha256'
+            'SHA256SUMS.txt'
+          )
+          mapfile -t allowed_sorted < <(printf '%s\n' "${allowed[@]}" | LC_ALL=C sort)
+          for path in "${changed[@]}"; do
+            printf '%s\n' "${allowed_sorted[@]}" | grep -Fx -- "$path" >/dev/null
+          done
+          git add -- REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          candidate_tree="$(git write-tree)"
+          test -n "$candidate_tree"
+          echo "CANDIDATE_TREE=$candidate_tree" >> "$GITHUB_ENV"
+
+      - name: Construct current-Mirror-main-child port and push target branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ "$(git ls-remote origin refs/heads/main | cut -f1)" = "$MIRROR_BASE" ]
+          [ -z "$(git ls-remote origin refs/heads/$TARGET_BRANCH)" ]
+          message="$(printf '%s\n' \
+            'Port promoted VRTCore H3 bundle from Authority PR #320' \
+            '' \
+            "Authority source head: $AUTHORITY_HEAD" \
+            "Authority promoted main: $AUTHORITY_MAIN" \
+            "Portable source tree: $AUTHORITY_TREE" \
+            "Mirror parent: $MIRROR_BASE" \
+            "Mirror-native candidate tree: $CANDIDATE_TREE" \
+            'No merge, publication, deployment, PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.')"
+          port_commit="$(printf '%s\n' "$message" | env \
+            GIT_AUTHOR_NAME='QIK-VRT Repository Mesh' \
+            GIT_AUTHOR_EMAIL='ingolf.lohmann@live.com' \
+            GIT_COMMITTER_NAME='QIK-VRT Repository Mesh' \
+            GIT_COMMITTER_EMAIL='ingolf.lohmann@live.com' \
+            git commit-tree "$CANDIDATE_TREE" -p "$MIRROR_BASE")"
+          [ "$(git show -s --format=%P "$port_commit")" = "$MIRROR_BASE" ]
+          [ "$(git rev-parse "$port_commit^{tree}")" = "$CANDIDATE_TREE" ]
+          git push origin "$port_commit:refs/heads/$TARGET_BRANCH"
