@@ -379,13 +379,13 @@
       "sha256": "4f4eecefa918529b5d2f547e007c67a6a30e09203bdb9334610f96a71fae1dd7"
     },
     {
-      "bytes": 8619,
+      "bytes": 9043,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_mirror_aphorism_bootstrap.yml",
-      "sha256": "9568aa0aedc35e3478190a843c2a5caa240c67c7cd41771758ae833eeda2b72a"
+      "sha256": "4fa0b457546953a9396b6fa0b3b55fc9150d9979938c939021e1801f5b65fa17"
     },
     {
       "bytes": 1313,
@@ -29818,7 +29818,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "0b605ecdd5173f2a440b0ae4bc5a1904cbbce645dbfb6899b1aaf422db3660fb",
+  "repository_content_tree_sha256": "746ed8988f6c00cca85c75b386860c70383a638744741a8ee3099babb0082d3f",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
