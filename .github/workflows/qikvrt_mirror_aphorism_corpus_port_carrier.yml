@@ -222,7 +222,8 @@ jobs:
             Makefile \
             REPOSITORY_FILE_MANIFEST.json \
             REPOSITORY_FILE_MANIFEST.json.sha256 \
-            SHA256SUMS.txt >> "$RUNNER_TEMP/allowed_paths.txt"
+            SHA256SUMS.txt \
+            "$CARRIER_PATH" >> "$RUNNER_TEMP/allowed_paths.txt"
           sort -u "$RUNNER_TEMP/allowed_paths.txt" -o "$RUNNER_TEMP/allowed_paths.txt"
 
           mapfile -t final_paths < <(
