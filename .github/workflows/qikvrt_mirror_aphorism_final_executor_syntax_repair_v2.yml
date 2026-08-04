@@ -1,0 +1,133 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Ingolf Lohmann.
+
+name: QIK-VRT Mirror aphorism final executor syntax repair v2
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair_v2.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-repository-evidence-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'repair/mirror-aphorism-final-boundary-v3' &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      TARGET_REF: repair/mirror-aphorism-final-boundary-v3
+      TARGET_PATH: .github/workflows/qikvrt_mirror_aphorism_final_target_executor.yml
+      REPAIR_V1_PATH: .github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair.yml
+      REPAIR_V2_PATH: .github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair_v2.yml
+      EXPECTED_TARGET_BLOB: 160c73346a0b15b1401e39a337456aefe1d15294
+      EXPECTED_REPAIR_V1_BLOB: a38207eaa04e81b6ace360e22a7c0b69e194d1d6
+    steps:
+      - name: Check out exact repair carrier with bounded credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.TARGET_REF }}
+          fetch-depth: 0
+
+      - name: Apply exact one-token repair and validate embedded Python
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object "$TARGET_PATH")" = "$EXPECTED_TARGET_BLOB"
+          test "$(git hash-object "$REPAIR_V1_PATH")" = "$EXPECTED_REPAIR_V1_BLOB"
+          test -f "$REPAIR_V2_PATH"
+          python3 -B - <<'PY'
+          from __future__ import annotations
+
+          import ast
+          import textwrap
+          from pathlib import Path
+
+          path = Path('.github/workflows/qikvrt_mirror_aphorism_final_target_executor.yml')
+          text = path.read_text(encoding='utf-8')
+          broken = (
+              '          raw = subprocess.check_output(\n'
+              '              ["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"]\n'
+              '          entries = [entry for entry in raw.split(b"\\0") if entry]\n'
+          )
+          fixed = (
+              '          raw = subprocess.check_output(\n'
+              '              ["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"]\n'
+              '          )\n'
+              '          entries = [entry for entry in raw.split(b"\\0") if entry]\n'
+          )
+          if text.count(broken) != 1:
+              raise SystemExit('BLOCK: exact broken syntax anchor is absent or ambiguous')
+          text = text.replace(broken, fixed, 1)
+          if broken in text or text.count(fixed) != 1:
+              raise SystemExit('BLOCK: exact syntax replacement did not close')
+          path.write_text(text, encoding='utf-8', newline='\n')
+
+          lines = text.splitlines()
+          snippets = []
+          index = 0
+          while index < len(lines):
+              if lines[index].strip().endswith("<<'PY'"):
+                  index += 1
+                  body = []
+                  while index < len(lines) and lines[index].strip() != 'PY':
+                      body.append(lines[index])
+                      index += 1
+                  if index >= len(lines):
+                      raise SystemExit('BLOCK: unterminated Python heredoc')
+                  snippets.append(textwrap.dedent('\n'.join(body)) + '\n')
+              index += 1
+          if len(snippets) != 2:
+              raise SystemExit(
+                  f'BLOCK: embedded Python snippet count is {len(snippets)}, expected 2'
+              )
+          for source in snippets:
+              ast.parse(source)
+          print('PASS: exact target syntax repaired and 2/2 Python snippets parsed')
+          PY
+
+      - name: Remove one-shot repair workflows and regenerate integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm "$REPAIR_V1_PATH" "$REPAIR_V2_PATH"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git diff --check
+
+      - name: Persist syntax repair without external effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_head="$(git rev-parse --verify HEAD^{commit})"
+          test "$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )" = "$source_head"
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            "$TARGET_PATH" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt
+          git add -u "$REPAIR_V1_PATH" "$REPAIR_V2_PATH"
+          git commit -m "ci: repair Mirror target executor syntax"
+          test "$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )" = "$source_head"
+          printf 'REPAIR_COMMIT=%s\n' "$(git rev-parse --verify HEAD^{commit})"
+          printf 'REPAIR_TREE=%s\n' "$(git rev-parse --verify HEAD^{tree})"
+          git push origin "HEAD:$TARGET_REF"
