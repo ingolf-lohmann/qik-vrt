@@ -31,7 +31,7 @@ jobs:
       TARGET_REF: agent/aphorism-corpus-scientific-assessment-mirror-v2
       CARRIER_PATH: .github/workflows/qikvrt_mirror_aphorism_corpus_port_carrier.yml
       REPAIR_PATH: .github/workflows/qikvrt_mirror_aphorism_carrier_boundary_repair.yml
-      EXPECTED_CARRIER_BLOB: 59663bb774dabe74c834fdbb8a1c6677c0678b1f
+      EXPECTED_CARRIER_BLOB: ada3f753290cb18d953ef5871b47c9986dc18198
     steps:
       - name: Check out exact same-repository repair branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
