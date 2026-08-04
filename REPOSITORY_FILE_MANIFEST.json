@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3310,
+  "file_count": 3312,
   "files": [
     {
       "bytes": 47,
@@ -377,6 +377,24 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_mesh_api.yml",
       "sha256": "4f4eecefa918529b5d2f547e007c67a6a30e09203bdb9334610f96a71fae1dd7"
+    },
+    {
+      "bytes": 13185,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport.yml",
+      "sha256": "7b54d68ce080cf299e08d75ef444abe257d4af84c06508b00d536f36eb8a4824"
+    },
+    {
+      "bytes": 9435,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport_v2.yml",
+      "sha256": "2f8db9c98ff24635cc4bb09f898be6d82a50782d2682a217997c8ea1b9eb1b10"
     },
     {
       "bytes": 1313,
@@ -29784,7 +29802,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3301,
+  "immutable_file_count": 3303,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -29809,7 +29827,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "f5d06149a3dff14f75148465e79a7b17b668ba6ea1e7f63e58a51ce4a1c45938",
+  "repository_content_tree_sha256": "a7138a2d4d54beb67c3200fdc20e62961f1a36713f581033155a30a4287a50c3",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
