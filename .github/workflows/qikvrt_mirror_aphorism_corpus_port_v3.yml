@@ -1,0 +1,323 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Ingolf Lohmann.
+
+name: QIK-VRT Mirror aphorism corpus port v3
+
+on:
+  push:
+    branches:
+      - agent/aphorism-corpus-scientific-assessment-mirror-v3
+    paths:
+      - .github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-mirror-aphorism-corpus-port-v3
+  cancel-in-progress: false
+
+jobs:
+  port:
+    if: >-
+      github.event_name == 'push' &&
+      github.ref_name == 'agent/aphorism-corpus-scientific-assessment-mirror-v3' &&
+      github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      MIRROR_PARENT: 3568e24a31764ad0b3704d15645b1b2dbd3d2ec4
+      TARGET_REF: agent/aphorism-corpus-scientific-assessment-mirror-v3
+      AUTHORITY_BASE: bad1a0558b88b9bc13a6b47fe621ac27d8bfaa62
+      AUTHORITY_HEAD: 770ac0c1e192aba7134020d972f42e50c27889ca
+      CARRIER_PATH: .github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml
+      MIRROR_MAKEFILE_BLOB: 469bd4fa9a3af1f3a1f3bcff140f4ca41f4f53f3
+    steps:
+      - name: Check out the exact single-writer carrier head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify exact predecessor and one-path carrier delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git show -s --format=%P HEAD)" = "$MIRROR_PARENT"
+          test "$(git diff --name-only --no-renames "$MIRROR_PARENT" HEAD --)" = \
+            "$CARRIER_PATH"
+          test "$(git rev-parse "$MIRROR_PARENT:Makefile")" = \
+            "$MIRROR_MAKEFILE_BLOB"
+
+      - name: Fetch exact Authority source and copy portable paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          git remote add authority https://github.com/Goldkelch/qik-vrt.git
+          git fetch --no-tags authority "$AUTHORITY_BASE" "$AUTHORITY_HEAD"
+          test "$(git rev-parse --verify "$AUTHORITY_BASE^{commit}")" = \
+            "$AUTHORITY_BASE"
+          test "$(git rev-parse --verify "$AUTHORITY_HEAD^{commit}")" = \
+            "$AUTHORITY_HEAD"
+          git merge-base --is-ancestor "$AUTHORITY_BASE" "$AUTHORITY_HEAD"
+
+          mapfile -t all_paths < <(
+            git diff --name-only --no-renames \
+              "$AUTHORITY_BASE" "$AUTHORITY_HEAD" --
+          )
+          test "${#all_paths[@]}" -eq 76
+
+          printf '%s\n' \
+            Makefile \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt > "$RUNNER_TEMP/adapted_paths.txt"
+
+          : > "$RUNNER_TEMP/portable_paths.txt"
+          for path in "${all_paths[@]}"; do
+            case "$path" in
+              Makefile|REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)
+                continue
+                ;;
+            esac
+            status="$(
+              git diff --name-status --no-renames \
+                "$AUTHORITY_BASE" "$AUTHORITY_HEAD" -- "$path" |
+                awk 'NR == 1 { print $1 }'
+            )"
+            case "$status" in
+              A|M) ;;
+              *)
+                printf 'BLOCK: unsupported Authority path status %s for %s\n' \
+                  "$status" "$path" >&2
+                exit 2
+                ;;
+            esac
+            printf '%s\n' "$path" >> "$RUNNER_TEMP/portable_paths.txt"
+            git checkout "$AUTHORITY_HEAD" -- "$path"
+            expected_blob="$(git rev-parse "$AUTHORITY_HEAD:$path")"
+            observed_blob="$(git hash-object "$path")"
+            test "$observed_blob" = "$expected_blob"
+          done
+          test "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")" -eq 72
+
+      - name: Adapt only the Mirror Makefile registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Makefile)" = "$MIRROR_MAKEFILE_BLOB"
+          python3 -B - <<'PY'
+          from pathlib import Path
+
+          path = Path("Makefile")
+          text = path.read_text(encoding="utf-8")
+          replacements = (
+              (
+                  "tests/test_virtual_past_reception.py tests/test_quantum_classical_runtime_article.py",
+                  "tests/test_virtual_past_reception.py tests/test_aphorism_corpus_v2.py tests/test_quantum_classical_runtime_article.py",
+                  "py_compile registration",
+              ),
+              (
+                  "tests.test_virtual_past_reception tests.test_quantum_classical_runtime_article",
+                  "tests.test_virtual_past_reception tests.test_aphorism_corpus_v2 tests.test_quantum_classical_runtime_article",
+                  "unittest registration",
+              ),
+          )
+          for old, new, label in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(
+                      f"BLOCK: Mirror Makefile {label} anchor count is {count}, expected 1"
+                  )
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding="utf-8", newline="\n")
+          PY
+          test "$(git hash-object Makefile)" != "$MIRROR_MAKEFILE_BLOB"
+
+      - name: Provision and verify the declared publication runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=0
+          for command in xelatex pdfinfo pdftotext pdftoppm pdffonts; do
+            if ! command -v "$command" >/dev/null 2>&1; then
+              missing=1
+            fi
+          done
+          if test "$missing" -ne 0; then
+            sudo apt-get update -o Acquire::Retries=3
+            sudo env DEBIAN_FRONTEND=noninteractive \
+              apt-get install --yes --no-install-recommends \
+                texlive-xetex \
+                texlive-latex-extra \
+                texlive-lang-german \
+                texlive-fonts-recommended \
+                fonts-lmodern \
+                poppler-utils
+          fi
+          command -v xelatex
+          command -v pdfinfo
+          command -v pdftotext
+          command -v pdftoppm
+          command -v pdffonts
+          xelatex --version | sed -n '1p'
+          pdfinfo -v 2>&1 | sed -n '1p'
+          pdftotext -v 2>&1 | sed -n '1p'
+          pdftoppm -v 2>&1 | sed -n '1p'
+          pdffonts -v 2>&1 | sed -n '1p'
+
+      - name: Re-materialize and verify the portable scientific bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_aphorism_corpus_v2.py \
+            --materialize --json
+          python3 -B tools/qikvrt_aphorism_corpus_v2.py \
+            --check --json
+          python3 -B -m unittest -v tests.test_aphorism_corpus_v2
+
+          while IFS= read -r path; do
+            expected_blob="$(git rev-parse "$AUTHORITY_HEAD:$path")"
+            observed_blob="$(git hash-object "$path")"
+            if test "$observed_blob" != "$expected_blob"; then
+              printf 'BLOCK: portable blob differs after materialization: %s\n' \
+                "$path" >&2
+              exit 2
+            fi
+          done < "$RUNNER_TEMP/portable_paths.txt"
+
+      - name: Remove carrier and regenerate Mirror-native integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm "$CARRIER_PATH"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Run the complete Mirror repository gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Verify the final path and status boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/portable_paths.txt" \
+            "$RUNNER_TEMP/allowed_paths.txt"
+          printf '%s\n' \
+            Makefile \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt \
+            "$CARRIER_PATH" >> "$RUNNER_TEMP/allowed_paths.txt"
+          sort -u "$RUNNER_TEMP/allowed_paths.txt" \
+            -o "$RUNNER_TEMP/allowed_paths.txt"
+
+          mapfile -t final_paths < <(
+            git diff --name-only --no-renames "$MIRROR_PARENT" --
+          )
+          test "${#final_paths[@]}" -ge 55
+          for path in "${final_paths[@]}"; do
+            grep -Fqx "$path" "$RUNNER_TEMP/allowed_paths.txt" || {
+              printf 'BLOCK: unexpected final path: %s\n' "$path" >&2
+              exit 2
+            }
+          done
+          test -f \
+            docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.pdf
+          test -f tests/test_ietf_revision_02.py
+          test -f tests/test_aphorism_corpus_v2.py
+          test ! -e "$CARRIER_PATH"
+
+          python3 -B - "$RUNNER_TEMP/allowed_paths.txt" <<'PY'
+          from pathlib import Path
+          import os
+          import subprocess
+          import sys
+
+          allowed = set(
+              Path(sys.argv[1]).read_text(encoding="utf-8").splitlines()
+          )
+          raw = subprocess.check_output(
+              [
+                  "git",
+                  "status",
+                  "--porcelain=v1",
+                  "-z",
+                  "--untracked-files=all",
+              ]
+          )
+          entries = [entry for entry in raw.split(b"\0") if entry]
+          if not entries:
+              raise SystemExit("BLOCK: Mirror candidate has no materialized delta")
+          for entry in entries:
+              status = entry[:2].decode("ascii")
+              path = entry[3:].decode("utf-8")
+              if path == os.environ["CARRIER_PATH"]:
+                  if status != " D":
+                      raise SystemExit(
+                          f"BLOCK: carrier status is not the expected deletion: {status!r}"
+                      )
+                  continue
+              if status.startswith("R") or status.startswith("C"):
+                  raise SystemExit(
+                      f"BLOCK: rename/copy is outside the port contract: {path}"
+                  )
+              if path not in allowed:
+                  raise SystemExit(
+                      f"BLOCK: unexpected status path {status!r}: {path}"
+                  )
+          PY
+
+      - name: Persist the exact history-preserving Mirror candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_head="$(git rev-parse --verify HEAD^{commit})"
+          remote_head="$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )"
+          if test "$remote_head" != "$source_head"; then
+            printf 'BLOCK: Mirror target advanced before persistence\n' >&2
+            printf 'source_head=%s\nremote_head=%s\n' \
+              "$source_head" "$remote_head" >&2
+            exit 2
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          test -n "$(git diff --cached --name-only)"
+          git commit -m \
+            "science: materialize Mirror aphorism corpus assessment"
+
+          remote_head_after_commit="$(
+            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+              awk 'NR == 1 { print $1 }'
+          )"
+          if test "$remote_head_after_commit" != "$source_head"; then
+            printf 'BLOCK: Mirror target advanced during persistence\n' >&2
+            printf 'source_head=%s\nremote_head_after_commit=%s\n' \
+              "$source_head" "$remote_head_after_commit" >&2
+            exit 2
+          fi
+
+          final_commit="$(git rev-parse --verify HEAD^{commit})"
+          final_tree="$(git rev-parse --verify HEAD^{tree})"
+          printf 'FINAL_COMMIT=%s\n' "$final_commit"
+          printf 'FINAL_TREE=%s\n' "$final_tree"
+          printf 'PORTABLE_PATH_COUNT=%s\n' \
+            "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")"
+          printf 'FINAL_CHANGED_PATH_COUNT=%s\n' \
+            "$(git diff --name-only "$MIRROR_PARENT" HEAD -- | wc -l)"
+          git push origin "HEAD:$TARGET_REF"
