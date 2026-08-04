@@ -40,11 +40,11 @@ jobs:
           ref: ${{ env.TARGET_REF }}
           fetch-depth: 0
 
-      - name: Verify predecessor and one-path bootstrap delta
+      - name: Verify predecessor ancestry and bootstrap-only delta
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git show -s --format=%P HEAD)" = "$EXPECTED_PREDECESSOR"
+          git merge-base --is-ancestor "$EXPECTED_PREDECESSOR" HEAD
           test "$(git diff --name-only "$EXPECTED_PREDECESSOR" HEAD --)" = \
             ".github/workflows/qikvrt_mirror_aphorism_bootstrap.yml"
           test "$(git hash-object .github/workflows/qikvrt_batch04_integrity.yml)" = \
@@ -70,14 +70,23 @@ jobs:
             test -n "$path"
             mkdir -p "$(dirname "$path")"
             tmp="$(mktemp)"
-            curl --fail --location --silent --show-error \
-              --retry 3 --retry-all-errors \
-              --proto '=https' --tlsv1.2 \
-              "$AUTHORITY_RAW/$path" \
-              --output "$tmp"
-            test "$(wc -c < "$tmp" | tr -d ' ')" = "$expected_bytes"
-            test "$(sha256sum "$tmp" | awk '{print $1}')" = "$expected_sha256"
-            test "$(git hash-object "$tmp")" = "$expected_blob"
+            http_code="$(
+              curl --location --silent --show-error \
+                --retry 3 --retry-all-errors \
+                --proto '=https' --tlsv1.2 \
+                --write-out '%{http_code}' \
+                "$AUTHORITY_RAW/$path" \
+                --output "$tmp"
+            )"
+            observed_bytes="$(wc -c < "$tmp" | tr -d ' ')"
+            observed_sha256="$(sha256sum "$tmp" | awk '{print $1}')"
+            observed_blob="$(git hash-object "$tmp")"
+            printf 'source_path=%s http=%s bytes=%s sha256=%s blob=%s\n' \
+              "$path" "$http_code" "$observed_bytes" "$observed_sha256" "$observed_blob"
+            test "$http_code" = "200"
+            test "$observed_bytes" = "$expected_bytes"
+            test "$observed_sha256" = "$expected_sha256"
+            test "$observed_blob" = "$expected_blob"
             mv "$tmp" "$path"
           done <<'EOF'
           .github/workflows/qikvrt_batch04_integrity.yml|15199|74357bc710a0aed7fb0eb17ff2e236aa7919572307485587b2a6df79b49b1b87|becccbcfa60658fc131ed572b2860d2f170f8ea2
