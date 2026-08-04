@@ -244,6 +244,7 @@ jobs:
 
           python3 -B - "$RUNNER_TEMP/allowed_paths.txt" <<'PY'
           from pathlib import Path
+          import os
           import subprocess
           import sys
 
@@ -265,6 +266,12 @@ jobs:
           for entry in entries:
               status = entry[:2].decode("ascii")
               path = entry[3:].decode("utf-8")
+              if path == os.environ["CARRIER_PATH"]:
+                  if status != " D":
+                      raise SystemExit(
+                          f"BLOCK: carrier status is not the expected deletion: {status!r}"
+                      )
+                  continue
               if status.startswith("R") or status.startswith("C"):
                   raise SystemExit(
                       f"BLOCK: rename/copy is outside the port contract: {path}"
