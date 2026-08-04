@@ -4,9 +4,13 @@
 name: QIK-VRT Mirror aphorism corpus port v3
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/aphorism-corpus-scientific-assessment-mirror-v3
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
     paths:
       - .github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml
 
@@ -20,8 +24,8 @@ concurrency:
 jobs:
   port:
     if: >-
-      github.event_name == 'push' &&
-      github.ref_name == 'agent/aphorism-corpus-scientific-assessment-mirror-v3' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.head_ref == 'agent/aphorism-corpus-scientific-assessment-mirror-v3' &&
       github.actor != 'github-actions[bot]'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
@@ -32,11 +36,12 @@ jobs:
       AUTHORITY_HEAD: 770ac0c1e192aba7134020d972f42e50c27889ca
       CARRIER_PATH: .github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml
       MIRROR_MAKEFILE_BLOB: 469bd4fa9a3af1f3a1f3bcff140f4ca41f4f53f3
+      EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
     steps:
-      - name: Check out the exact single-writer carrier head
+      - name: Check out the exact pull-request carrier head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ env.EVENT_HEAD }}
           fetch-depth: 0
 
       - name: Set up Python 3.12
@@ -44,12 +49,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verify exact predecessor and one-path carrier delta
+      - name: Verify exact predecessor ancestry and one-path carrier delta
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git show -s --format=%P HEAD)" = "$MIRROR_PARENT"
-          test "$(git diff --name-only --no-renames "$MIRROR_PARENT" HEAD --)" = \
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EVENT_HEAD"
+          git merge-base --is-ancestor "$MIRROR_PARENT" "$EVENT_HEAD"
+          test "$(git diff --name-only --no-renames "$MIRROR_PARENT" "$EVENT_HEAD" --)" = \
             "$CARRIER_PATH"
           test "$(git rev-parse "$MIRROR_PARENT:Makefile")" = \
             "$MIRROR_MAKEFILE_BLOB"
@@ -277,21 +283,11 @@ jobs:
                   )
           PY
 
-      - name: Persist the exact history-preserving Mirror candidate
+      - name: Persist through any bounded competing-writer ancestry
         shell: bash
         run: |
           set -euo pipefail
-          source_head="$(git rev-parse --verify HEAD^{commit})"
-          remote_head="$(
-            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
-              awk 'NR == 1 { print $1 }'
-          )"
-          if test "$remote_head" != "$source_head"; then
-            printf 'BLOCK: Mirror target advanced before persistence\n' >&2
-            printf 'source_head=%s\nremote_head=%s\n' \
-              "$source_head" "$remote_head" >&2
-            exit 2
-          fi
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EVENT_HEAD"
 
           git config user.name "github-actions[bot]"
           git config user.email \
@@ -301,23 +297,53 @@ jobs:
           git commit -m \
             "science: materialize Mirror aphorism corpus assessment"
 
-          remote_head_after_commit="$(
-            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
-              awk 'NR == 1 { print $1 }'
-          )"
-          if test "$remote_head_after_commit" != "$source_head"; then
-            printf 'BLOCK: Mirror target advanced during persistence\n' >&2
-            printf 'source_head=%s\nremote_head_after_commit=%s\n' \
-              "$source_head" "$remote_head_after_commit" >&2
-            exit 2
-          fi
+          candidate_commit="$(git rev-parse --verify HEAD^{commit})"
+          candidate_tree="$(git rev-parse --verify HEAD^{tree})"
+          final_commit=
+          final_remote_parent=
 
-          final_commit="$(git rev-parse --verify HEAD^{commit})"
-          final_tree="$(git rev-parse --verify HEAD^{tree})"
+          for attempt in 1 2 3 4 5; do
+            git fetch --no-tags --force origin \
+              "refs/heads/$TARGET_REF:refs/remotes/origin/$TARGET_REF"
+            remote_head="$(
+              git rev-parse --verify "refs/remotes/origin/$TARGET_REF^{commit}"
+            )"
+            git merge-base --is-ancestor "$EVENT_HEAD" "$remote_head" || {
+              printf 'BLOCK: competing writer is outside carrier ancestry\n' >&2
+              printf 'event_head=%s\nremote_head=%s\n' \
+                "$EVENT_HEAD" "$remote_head" >&2
+              exit 2
+            }
+
+            if test "$remote_head" = "$EVENT_HEAD"; then
+              target_commit="$candidate_commit"
+            else
+              target_commit="$(
+                printf '%s\n' \
+                  "science: reconcile Mirror aphorism candidate after bounded writers" |
+                  git commit-tree "$candidate_tree" \
+                    -p "$remote_head" \
+                    -p "$candidate_commit"
+              )"
+            fi
+
+            if git push origin \
+              "$target_commit:refs/heads/$TARGET_REF"; then
+              final_commit="$target_commit"
+              final_remote_parent="$remote_head"
+              break
+            fi
+            sleep "$((attempt * 2))"
+          done
+
+          test -n "$final_commit"
+          test "$(git rev-parse "$final_commit^{tree}")" = "$candidate_tree"
+          printf 'EVENT_HEAD=%s\n' "$EVENT_HEAD"
+          printf 'CANDIDATE_COMMIT=%s\n' "$candidate_commit"
+          printf 'FINAL_REMOTE_PARENT=%s\n' "$final_remote_parent"
           printf 'FINAL_COMMIT=%s\n' "$final_commit"
-          printf 'FINAL_TREE=%s\n' "$final_tree"
+          printf 'FINAL_TREE=%s\n' "$candidate_tree"
           printf 'PORTABLE_PATH_COUNT=%s\n' \
             "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")"
           printf 'FINAL_CHANGED_PATH_COUNT=%s\n' \
-            "$(git diff --name-only "$MIRROR_PARENT" HEAD -- | wc -l)"
-          git push origin "HEAD:$TARGET_REF"
+            "$(git diff --name-only "$MIRROR_PARENT" "$final_commit" -- | wc -l)"
