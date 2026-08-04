@@ -58,11 +58,8 @@ jobs:
           carrier_seen=0
           while IFS= read -r path; do
             case "$path" in
-              "$CARRIER_PATH")
-                carrier_seen=1
-                ;;
-              REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)
-                ;;
+              "$CARRIER_PATH") carrier_seen=1 ;;
+              REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt) ;;
               *)
                 printf 'BLOCK: unexpected target path before port: %s\n' "$path" >&2
                 exit 2
@@ -81,37 +78,24 @@ jobs:
           test "$(git rev-parse --verify "$AUTHORITY_BASE^{commit}")" = "$AUTHORITY_BASE"
           test "$(git rev-parse --verify "$AUTHORITY_HEAD^{commit}")" = "$AUTHORITY_HEAD"
           git merge-base --is-ancestor "$AUTHORITY_BASE" "$AUTHORITY_HEAD"
-
-          mapfile -t all_paths < <(
-            git diff --name-only --no-renames "$AUTHORITY_BASE" "$AUTHORITY_HEAD" --
-          )
+          mapfile -t all_paths < <(git diff --name-only --no-renames "$AUTHORITY_BASE" "$AUTHORITY_HEAD" --)
           test "${#all_paths[@]}" -eq 76
-
           : > "$RUNNER_TEMP/portable_paths.txt"
           for path in "${all_paths[@]}"; do
             case "$path" in
-              Makefile|REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)
-                continue
-                ;;
+              Makefile|REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt) continue ;;
             esac
-            status="$(
-              git diff --name-status --no-renames \
-                "$AUTHORITY_BASE" "$AUTHORITY_HEAD" -- "$path" |
-                awk 'NR == 1 { print $1 }'
-            )"
+            status="$(git diff --name-status --no-renames "$AUTHORITY_BASE" "$AUTHORITY_HEAD" -- "$path" | awk 'NR == 1 { print $1 }')"
             case "$status" in
               A|M) ;;
               *)
-                printf 'BLOCK: unsupported Authority path status %s for %s\n' \
-                  "$status" "$path" >&2
+                printf 'BLOCK: unsupported Authority path status %s for %s\n' "$status" "$path" >&2
                 exit 2
                 ;;
             esac
             printf '%s\n' "$path" >> "$RUNNER_TEMP/portable_paths.txt"
             git checkout "$AUTHORITY_HEAD" -- "$path"
-            expected_blob="$(git rev-parse "$AUTHORITY_HEAD:$path")"
-            observed_blob="$(git hash-object "$path")"
-            test "$observed_blob" = "$expected_blob"
+            test "$(git hash-object "$path")" = "$(git rev-parse "$AUTHORITY_HEAD:$path")"
           done
           test "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")" -eq 72
 
@@ -122,7 +106,6 @@ jobs:
           test "$(git hash-object Makefile)" = "$MIRROR_MAKEFILE_BLOB"
           python3 -B - <<'PY'
           from pathlib import Path
-
           path = Path("Makefile")
           text = path.read_text(encoding="utf-8")
           replacements = (
@@ -140,9 +123,7 @@ jobs:
           for old, new, label in replacements:
               count = text.count(old)
               if count != 1:
-                  raise SystemExit(
-                      f"BLOCK: Mirror Makefile {label} anchor count is {count}, expected 1"
-                  )
+                  raise SystemExit(f"BLOCK: Mirror Makefile {label} anchor count is {count}, expected 1")
               text = text.replace(old, new, 1)
           path.write_text(text, encoding="utf-8", newline="\n")
           PY
@@ -154,20 +135,13 @@ jobs:
           set -euo pipefail
           missing=0
           for command in xelatex pdfinfo pdftotext pdftoppm pdffonts; do
-            if ! command -v "$command" >/dev/null 2>&1; then
-              missing=1
-            fi
+            command -v "$command" >/dev/null 2>&1 || missing=1
           done
           if test "$missing" -ne 0; then
             sudo apt-get update -o Acquire::Retries=3
-            sudo env DEBIAN_FRONTEND=noninteractive \
-              apt-get install --yes --no-install-recommends \
-                texlive-xetex \
-                texlive-latex-extra \
-                texlive-lang-german \
-                texlive-fonts-recommended \
-                fonts-lmodern \
-                poppler-utils
+            sudo env DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+              texlive-xetex texlive-latex-extra texlive-lang-german \
+              texlive-fonts-recommended fonts-lmodern poppler-utils
           fi
           command -v xelatex
           command -v pdfinfo
@@ -187,13 +161,9 @@ jobs:
           python3 -B tools/qikvrt_aphorism_corpus_v2.py --materialize --json
           python3 -B tools/qikvrt_aphorism_corpus_v2.py --check --json
           python3 -B -m unittest -v tests.test_aphorism_corpus_v2
-
           while IFS= read -r path; do
-            expected_blob="$(git rev-parse "$AUTHORITY_HEAD:$path")"
-            observed_blob="$(git hash-object "$path")"
-            if test "$observed_blob" != "$expected_blob"; then
-              printf 'BLOCK: portable blob differs after materialization: %s\n' \
-                "$path" >&2
+            if test "$(git hash-object "$path")" != "$(git rev-parse "$AUTHORITY_HEAD:$path")"; then
+              printf 'BLOCK: portable blob differs after materialization: %s\n' "$path" >&2
               exit 2
             fi
           done < "$RUNNER_TEMP/portable_paths.txt"
@@ -218,27 +188,31 @@ jobs:
         run: |
           set -euo pipefail
           cp "$RUNNER_TEMP/portable_paths.txt" "$RUNNER_TEMP/allowed_paths.txt"
-          printf '%s\n' \
-            Makefile \
-            REPOSITORY_FILE_MANIFEST.json \
-            REPOSITORY_FILE_MANIFEST.json.sha256 \
-            SHA256SUMS.txt >> "$RUNNER_TEMP/allowed_paths.txt"
+          printf '%s\n' Makefile REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt >> "$RUNNER_TEMP/allowed_paths.txt"
           sort -u "$RUNNER_TEMP/allowed_paths.txt" -o "$RUNNER_TEMP/allowed_paths.txt"
           test "$(wc -l < "$RUNNER_TEMP/allowed_paths.txt")" -eq 76
 
-          mapfile -t final_paths < <(
-            git diff --name-only --no-renames "$MIRROR_PARENT" --
-          )
-          test "${#final_paths[@]}" -eq 76
-          for path in "${final_paths[@]}"; do
-            grep -Fqx "$path" "$RUNNER_TEMP/allowed_paths.txt" || {
-              printf 'BLOCK: unexpected final path: %s\n' "$path" >&2
-              exit 2
-            }
-          done
+          : > "$RUNNER_TEMP/expected_final_paths.txt"
+          while IFS= read -r path; do
+            if ! git diff --quiet --no-ext-diff "$MIRROR_PARENT" -- "$path"; then
+              printf '%s\n' "$path" >> "$RUNNER_TEMP/expected_final_paths.txt"
+            fi
+          done < "$RUNNER_TEMP/allowed_paths.txt"
+          sort -u "$RUNNER_TEMP/expected_final_paths.txt" -o "$RUNNER_TEMP/expected_final_paths.txt"
 
-          test -f \
-            docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.pdf
+          git diff --name-only --no-renames "$MIRROR_PARENT" -- | sort -u > "$RUNNER_TEMP/final_paths.txt"
+          expected_count="$(wc -l < "$RUNNER_TEMP/expected_final_paths.txt")"
+          final_count="$(wc -l < "$RUNNER_TEMP/final_paths.txt")"
+          printf 'EXPECTED_NET_PATH_COUNT=%s\n' "$expected_count"
+          printf 'FINAL_NET_PATH_COUNT=%s\n' "$final_count"
+          test "$expected_count" -eq 64
+          cmp -s "$RUNNER_TEMP/expected_final_paths.txt" "$RUNNER_TEMP/final_paths.txt" || {
+            diff -u "$RUNNER_TEMP/expected_final_paths.txt" "$RUNNER_TEMP/final_paths.txt" >&2 || true
+            printf 'BLOCK: final net path set differs from the exact predecessor-relative expectation\n' >&2
+            exit 2
+          }
+
+          test -f docs/publications/2026-08-04-aphorism-corpus-scientific-assessment/QIK-VRT_Aphorism_Corpus_Scientific_Assessment_2026-08-04.pdf
           test -f tests/test_ietf_revision_02.py
           test -f tests/test_aphorism_corpus_v2.py
           test ! -e "$CARRIER_PATH"
@@ -248,18 +222,9 @@ jobs:
           import os
           import subprocess
           import sys
-
           allowed = set(Path(sys.argv[1]).read_text(encoding="utf-8").splitlines())
           carrier = os.environ["CARRIER_PATH"]
-          raw = subprocess.check_output(
-              [
-                  "git",
-                  "status",
-                  "--porcelain=v1",
-                  "-z",
-                  "--untracked-files=all",
-              ]
-          )
+          raw = subprocess.check_output(["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"])
           entries = [entry for entry in raw.split(b"\0") if entry]
           if not entries:
               raise SystemExit("BLOCK: Mirror candidate has no materialized delta")
@@ -269,19 +234,13 @@ jobs:
               path = entry[3:].decode("utf-8")
               if path == carrier:
                   if status != " D":
-                      raise SystemExit(
-                          f"BLOCK: carrier status is not the expected deletion: {status!r}"
-                      )
+                      raise SystemExit(f"BLOCK: carrier status is not the expected deletion: {status!r}")
                   seen_carrier_deletion = True
                   continue
               if status.startswith("R") or status.startswith("C"):
-                  raise SystemExit(
-                      f"BLOCK: rename/copy is outside the port contract: {path}"
-                  )
+                  raise SystemExit(f"BLOCK: rename/copy is outside the port contract: {path}")
               if path not in allowed:
-                  raise SystemExit(
-                      f"BLOCK: unexpected status path {status!r}: {path}"
-                  )
+                  raise SystemExit(f"BLOCK: unexpected status path {status!r}: {path}")
           if not seen_carrier_deletion:
               raise SystemExit("BLOCK: exact carrier deletion is absent")
           PY
@@ -292,31 +251,19 @@ jobs:
           set -euo pipefail
           source_head="$(git rev-parse --verify HEAD^{commit})"
           test "$source_head" = "$EXPECTED_TARGET_HEAD"
-          remote_head="$(
-            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
-              awk 'NR == 1 { print $1 }'
-          )"
+          remote_head="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
           test "$remote_head" = "$source_head"
-
           git config user.name "github-actions[bot]"
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           test -n "$(git diff --cached --name-only)"
           git commit -m "science: materialize Mirror aphorism corpus assessment"
-
-          remote_head_after_commit="$(
-            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
-              awk 'NR == 1 { print $1 }'
-          )"
+          remote_head_after_commit="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
           test "$remote_head_after_commit" = "$source_head"
-
           final_commit="$(git rev-parse --verify HEAD^{commit})"
           final_tree="$(git rev-parse --verify HEAD^{tree})"
           printf 'FINAL_COMMIT=%s\n' "$final_commit"
           printf 'FINAL_TREE=%s\n' "$final_tree"
-          printf 'PORTABLE_PATH_COUNT=%s\n' \
-            "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")"
-          printf 'FINAL_CHANGED_PATH_COUNT=%s\n' \
-            "$(git diff --name-only "$MIRROR_PARENT" HEAD -- | wc -l)"
+          printf 'PORTABLE_PATH_COUNT=%s\n' "$(wc -l < "$RUNNER_TEMP/portable_paths.txt")"
+          printf 'FINAL_CHANGED_PATH_COUNT=%s\n' "$(git diff --name-only "$MIRROR_PARENT" HEAD -- | wc -l)"
           git push origin "HEAD:$TARGET_REF"
