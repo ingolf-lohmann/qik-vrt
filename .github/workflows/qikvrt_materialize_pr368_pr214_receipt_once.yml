@@ -1,0 +1,114 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT one-shot PR368 PR214 reciprocal equality receipt
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+    paths:
+      - .github/workflows/qikvrt_materialize_pr368_pr214_receipt_once.yml
+permissions:
+  contents: write
+concurrency:
+  group: qikvrt-pr368-pr214-reciprocal-receipt-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  materialize:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_MAIN: d0c0076cf1aeb6ce52bc99823ec55fda124d2f71
+      AUTHORITY_EXACT_HEAD: fe4d82a4841d8fcc35de516561842b17060f6f99
+      MIRROR_MAIN: 923a508566bb27c977bdac7e2313f4038e2a7111
+      MIRROR_EXACT_HEAD: 0f592a75a8f309b23a311f7fa10df0667364a61c
+      TARGET_BRANCH: evidence/pr368-pr214-reciprocal-equality-mirror-v1
+      WORKFLOW_PATH: .github/workflows/qikvrt_materialize_pr368_pr214_receipt_once.yml
+      RECEIPT_PATH: evidence/receipts/authority-mirror-equality-2026-08-05-pre-spacetime-ontology-pr368-pr214.json
+      RECEIPT_ID: authority-mirror-equality-2026-08-05-pre-spacetime-ontology-pr368-pr214
+    steps:
+      - name: Check out exact trusted proxy head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Materialize exact reciprocal Mirror candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$MIRROR_MAIN"
+          git remote add authority "https://github.com/$AUTHORITY_REPOSITORY.git"
+          git fetch --no-tags authority "$AUTHORITY_MAIN" "$AUTHORITY_EXACT_HEAD"
+          git cat-file -e "$MIRROR_MAIN^{commit}"
+          git cat-file -e "$MIRROR_EXACT_HEAD^{commit}"
+          python3 -B - <<'PY'
+          from pathlib import Path
+          import hashlib, json, subprocess
+
+          A='d0c0076cf1aeb6ce52bc99823ec55fda124d2f71'
+          M='923a508566bb27c977bdac7e2313f4038e2a7111'
+          paths=[
+            '.github/workflows/qikvrt_publication_router.yml',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/IETF_DISPOSITION.json',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/PAPER.tex',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/PUBLICATION_ROUTING.json',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/README.md',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/REFERENCES.bib',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/WHATSAPP_READALOUD.md',
+            'docs/publications/2026-08-04-pre-spacetime-ontology/ZENODO_CANDIDATE.json',
+            'docs/publications/index.html',
+            'docs/publications/index.json',
+            'tests/test_publication_router.py',
+            'tools/qikvrt_publication_router.py',
+          ]
+          def git(*args):
+              return subprocess.check_output(['git',*args], text=True).strip()
+          amap={p:git('rev-parse',f'{A}:{p}') for p in paths}
+          mmap={p:git('rev-parse',f'{M}:{p}') for p in paths}
+          if amap != mmap:
+              bad=[p for p in paths if amap[p]!=mmap[p]]
+              raise SystemExit('BLOCK: portable blob mismatch: '+','.join(bad))
+          path_set='\n'.join(paths).encode()
+          blob_map=json.dumps(amap,sort_keys=True,separators=(',',':')).encode()
+          binding={
+            'receipt_id':'authority-mirror-equality-2026-08-05-pre-spacetime-ontology-pr368-pr214',
+            'observed_at':'2026-08-05T05:45:00Z',
+            'authority':{'repository':'Goldkelch/qik-vrt','promotion_pull_request':368,'exact_green_head':'fe4d82a4841d8fcc35de516561842b17060f6f99','main':A},
+            'mirror':{'repository':'ingolf-lohmann/qik-vrt','synchronization_pull_request':214,'exact_green_head':'0f592a75a8f309b23a311f7fa10df0667364a61c','main':M},
+            'equality':{'portable_path_count':len(paths),'portable_path_set_sha256':hashlib.sha256(path_set).hexdigest(),'portable_blob_map_sha256':hashlib.sha256(blob_map).hexdigest(),'portable_payload_byte_equality_verified':True,'complete_repository_tree_equality':False},
+          }
+          bp=json.dumps(binding,sort_keys=True,separators=(',',':')).encode()
+          receipt={
+            '_license':{'classification':'machine_readable_equality_evidence','copyright':'Copyright 2026 Ingolf Lohmann','license':'CC-BY-NC-ND-4.0','license_text_ref':'LICENSES/CC-BY-NC-ND-4.0.txt','rights_holder':'Ingolf Lohmann'},
+            'schema':'qikvrt_authority_mirror_equality_receipt_v1',
+            'receipt_id':binding['receipt_id'],
+            'scope':'promotion_2026-08-05_pre_spacetime_ontology_pr368_pr214',
+            'state':'equality_verified_for_scoped_promotion',
+            'materialized_at':binding['observed_at'],
+            'authority':binding['authority'],
+            'mirror':binding['mirror'],
+            'equality':{**binding['equality'],'scope_kind':'portable_pr368_pr214_pre_spacetime_ontology_payload','portable_paths':paths,'portable_blob_map':amap,'repository_native_integrity':['REPOSITORY_FILE_MANIFEST.json','REPOSITORY_FILE_MANIFEST.json.sha256','SHA256SUMS.txt']},
+            'claims':{'authority_mirror_equality_verified':True,'authority_promotion_complete':True,'mirror_synchronization_complete':True,'pass':False,'final_pass':False,'effect_ack_done':False,'zenodo_mutation_performed_by_this_receipt':False,'ietf_mutation_performed_by_this_receipt':False,'release_or_deployment_performed_by_this_receipt':False},
+            'reciprocal_repository_binding':{'authority_path':str(Path(__import__('os').environ['RECEIPT_PATH'])),'mirror_path':str(Path(__import__('os').environ['RECEIPT_PATH'])),'binding_payload':binding,'binding_payload_canonicalization':"UTF-8 JSON with recursively sorted object keys and separators ',' ':'; no trailing newline",'binding_payload_sha256':hashlib.sha256(bp).hexdigest(),'persistence_method':'identical receipt and append-only index payloads proposed in both repositories; integrity regenerated repository-natively; independent exact-head gates required'},
+            'non_claims':['complete repository tree equality','physical retrocausality or mutation of past events','authorization to perform any new Zenodo mutation','IETF submission or Datatracker mutation','GitHub release creation','deployment','repository-wide PASS','FINAL_PASS','EFFECT_ACK_DONE'],
+          }
+          out=(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n').encode()
+          rp=Path(__import__('os').environ['RECEIPT_PATH']); rp.parent.mkdir(parents=True,exist_ok=True); rp.write_bytes(out)
+          file_sha=hashlib.sha256(out).hexdigest()
+          git_blob=hashlib.sha1(f'blob {len(out)}\0'.encode()+out).hexdigest()
+          idxp=Path('evidence/receipts/index.json'); idx=json.loads(idxp.read_text())
+          if any(x['receipt_id']==receipt['receipt_id'] for x in idx['equality_receipts']): raise SystemExit('BLOCK: duplicate receipt id')
+          idx['equality_receipts'].append({'authority':{'main':A,'pull_request':368,'repository':'Goldkelch/qik-vrt'},'file_sha256':file_sha,'git_blob_sha1':git_blob,'mirror':{'main':M,'pull_request':214,'repository':'ingolf-lohmann/qik-vrt'},'path':str(rp),'receipt_id':receipt['receipt_id'],'scope':receipt['scope'],'source_receipt_payload_sha256':receipt['reciprocal_repository_binding']['binding_payload_sha256'],'state':receipt['state']})
+          idxp.write_text(json.dumps(idx,ensure_ascii=False,indent=2)+'\n')
+          PY
+          rm -f "$WORKFLOW_PATH"
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'evidence: materialize PR368↔PR214 reciprocal equality receipt'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
