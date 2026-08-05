@@ -1,0 +1,254 @@
+name: QIK-VRT promote Mirror PR228 after materializer repair
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/qikvrt_promote_mirror_pr228_after_materializer_repair.yml
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+  statuses: read
+
+jobs:
+  promote:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      CANDIDATE_PR: '228'
+      PROXY_PR: '230'
+      CANDIDATE_HEAD: 2c2a8e2b75cfd5f6fac487474c56bf05b04c7f49
+      BASE_HEAD: 17f66b5ae7a2b1121141c6a0775da361415d58ff
+      CANCELLED_MATERIALIZER_RUN_1: '31012776680'
+      CANCELLED_MATERIALIZER_RUN_2: '31015151516'
+    steps:
+      - name: Wait for repaired exact-head materializer and terminal gate matrix
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          candidate = os.environ['CANDIDATE_HEAD']
+          base = os.environ['BASE_HEAD']
+          cancelled = {
+              int(os.environ['CANCELLED_MATERIALIZER_RUN_1']),
+              int(os.environ['CANCELLED_MATERIALIZER_RUN_2']),
+          }
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-pr228-promotion-controller',
+          }
+
+          def get(path):
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+
+          def exact_leases():
+              main_ref = get('/git/ref/heads/main')
+              pull = get('/pulls/' + os.environ['CANDIDATE_PR'])
+              return (
+                  main_ref['object']['sha'] == base
+                  and pull['state'] == 'open'
+                  and pull['head']['sha'] == candidate
+                  and pull['base']['sha'] == base
+              )
+
+          required_success_names = {
+              'QIKVRT CI',
+              'QIKVRT Collective Proposal Review',
+              'QIK-VRT global claim completion',
+              'QIKVRT Batch-003 remaining subject disposition',
+              'QIKVRT live status watch',
+          }
+
+          for attempt in range(180):
+              if not exact_leases():
+                  raise SystemExit('BLOCK: PR228 or Mirror main lease moved while waiting')
+
+              status = get('/commits/' + candidate + '/status')
+              contexts = {
+                  item.get('context'): item.get('state')
+                  for item in status.get('statuses', [])
+              }
+              repaired = (
+                  contexts.get('QIKVRT repository evidence materialization') == 'success'
+                  and contexts.get('materialize') == 'success'
+              )
+
+              run_page = get('/actions/runs?head_sha=' + candidate + '&per_page=100')
+              runs = run_page.get('workflow_runs', [])
+              active = [run for run in runs if run.get('status') != 'completed']
+              invalid_terminal = [
+                  run for run in runs
+                  if run.get('status') == 'completed'
+                  and run.get('conclusion') not in {'success', 'skipped', 'cancelled'}
+              ]
+              invalid_cancelled = [
+                  run for run in runs
+                  if run.get('conclusion') == 'cancelled' and int(run['id']) not in cancelled
+              ]
+              successful_names = {
+                  run.get('name') for run in runs if run.get('conclusion') == 'success'
+              }
+              scoped_success = any(
+                  run.get('path') == '.github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml'
+                  and run.get('conclusion') == 'success'
+                  for run in runs
+              )
+
+              if (
+                  repaired
+                  and not active
+                  and not invalid_terminal
+                  and not invalid_cancelled
+                  and required_success_names.issubset(successful_names)
+                  and scoped_success
+              ):
+                  print('PR228_REPAIRED_EXACT_HEAD_MATRIX=TERMINAL_GREEN')
+                  break
+
+              if attempt == 179:
+                  raise SystemExit(
+                      'BLOCK: repaired materializer or exact-head matrix did not become terminal green'
+                  )
+              time.sleep(30)
+          PY
+
+      - name: Revalidate and promote exact Mirror PR228 head
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          candidate = os.environ['CANDIDATE_HEAD']
+          base = os.environ['BASE_HEAD']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-pr228-promotion-controller',
+          }
+
+          def request(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode('utf-8')
+              req = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  data=data,
+                  method=method,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(req, timeout=60) as response:
+                  return json.load(response)
+
+          main_ref = request('GET', '/git/ref/heads/main')
+          pull = request('GET', '/pulls/' + os.environ['CANDIDATE_PR'])
+          if main_ref['object']['sha'] != base:
+              raise SystemExit('BLOCK: Mirror main lease moved before promotion')
+          if pull['state'] != 'open' or pull['head']['sha'] != candidate or pull['base']['sha'] != base:
+              raise SystemExit('BLOCK: PR228 exact binding moved before promotion')
+
+          result = request(
+              'PUT',
+              '/pulls/' + os.environ['CANDIDATE_PR'] + '/merge',
+              {
+                  'sha': candidate,
+                  'merge_method': 'merge',
+                  'commit_title': 'Promote scoped pre-spacetime Zenodo Effect-ACK to Mirror',
+                  'commit_message': (
+                      'Promote exact Mirror PR228 after the trusted long-timeout materializer '
+                      'repair and terminal exact-head matrix. No new Zenodo, IETF, release or '
+                      'deployment effect; no repository-wide PASS, FINAL_PASS or EFFECT_ACK_DONE claim.'
+                  ),
+              },
+          )
+          if not result.get('merged'):
+              raise SystemExit('BLOCK: GitHub refused exact-head PR228 promotion')
+
+          merge_sha = result['sha']
+          main_after = request('GET', '/git/ref/heads/main')['object']['sha']
+          merge_commit = request('GET', '/git/commits/' + merge_sha)
+          candidate_commit = request('GET', '/git/commits/' + candidate)
+          parents = [item['sha'] for item in merge_commit.get('parents', [])]
+          if main_after != merge_sha:
+              raise SystemExit('BLOCK: promoted merge is not current Mirror main')
+          if parents != [base, candidate]:
+              raise SystemExit('BLOCK: promoted merge parent binding mismatch')
+          if merge_commit['tree']['sha'] != candidate_commit['tree']['sha']:
+              raise SystemExit('BLOCK: candidate-to-merge tree drift detected')
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write('merge_sha=' + merge_sha + '\n')
+          print('MIRROR_PR228_PROMOTION=COMPLETE')
+          print('MIRROR_CURRENT_MAIN=' + merge_sha)
+          PY
+        id: promote
+
+      - name: Close execution-only proxy without merge
+        if: ${{ success() }}
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          proxy = os.environ['PROXY_PR']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-pr228-promotion-controller',
+          }
+          current_request = urllib.request.Request(
+              'https://api.github.com/repos/' + repository + '/pulls/' + proxy,
+              headers=headers,
+          )
+          with urllib.request.urlopen(current_request, timeout=30) as response:
+              current = json.load(response)
+          payload = json.dumps({
+              'state': 'closed',
+              'title': '[EXECUTED; CLOSED WITHOUT MERGE] Complete Mirror PR228 materializer and promotion',
+          }).encode('utf-8')
+          request = urllib.request.Request(
+              'https://api.github.com/repos/' + repository + '/pulls/' + proxy,
+              data=payload,
+              method='PATCH',
+              headers=headers,
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              result = json.load(response)
+          if result.get('state') != 'closed' or result.get('merged'):
+              raise SystemExit('BLOCK: execution proxy was not closed cleanly')
+          PY
