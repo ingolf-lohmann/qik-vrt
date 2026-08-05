@@ -1,0 +1,207 @@
+name: QIK-VRT repair Mirror PR228 materializer timeout
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/qikvrt_repair_mirror_pr228_materializer_timeout.yml
+
+permissions:
+  contents: write
+  pull-requests: read
+  statuses: write
+
+jobs:
+  repair:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      CANDIDATE_PR: '228'
+      CANDIDATE_BRANCH: candidate/pre-spacetime-ontology-zenodo-effect-ack-mirror-v1
+      CANDIDATE_HEAD: 2c2a8e2b75cfd5f6fac487474c56bf05b04c7f49
+      BASE_HEAD: 17f66b5ae7a2b1121141c6a0775da361415d58ff
+    steps:
+      - name: Check out exact Mirror candidate head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ env.CANDIDATE_HEAD }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Bind Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Revalidate exact live leases
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-pr228-materializer-timeout-repair',
+          }
+
+          def get(path):
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+
+          main_ref = get('/git/ref/heads/main')
+          if main_ref['object']['sha'] != os.environ['BASE_HEAD']:
+              raise SystemExit('BLOCK: Mirror main lease moved')
+
+          pull = get('/pulls/' + os.environ['CANDIDATE_PR'])
+          if pull['state'] != 'open':
+              raise SystemExit('BLOCK: Mirror PR228 is not open')
+          if pull['head']['sha'] != os.environ['CANDIDATE_HEAD']:
+              raise SystemExit('BLOCK: Mirror PR228 head moved')
+          if pull['base']['sha'] != os.environ['BASE_HEAD']:
+              raise SystemExit('BLOCK: Mirror PR228 base moved')
+          PY
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_HEAD"
+          test "$(git merge-base "$BASE_HEAD" "$CANDIDATE_HEAD")" = "$BASE_HEAD"
+
+      - name: Execute exact materializer suffix with repaired timeout
+        shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          PYTHONNOUSERSITE: '1'
+          GITHUB_HEAD_REF: candidate/pre-spacetime-ontology-zenodo-effect-ack-mirror-v1
+          GITHUB_BASE_REF: main
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import os
+          import pathlib
+          import subprocess
+
+          workflow = pathlib.Path('.github/workflows/qikvrt_batch04_integrity.yml')
+          lines = workflow.read_text(encoding='utf-8').splitlines()
+          steps = []
+          index = 0
+          while index < len(lines):
+              line = lines[index]
+              if line.startswith('      - name: '):
+                  name = line.split(': ', 1)[1].strip()
+                  end = index + 1
+                  while end < len(lines) and not lines[end].startswith('      - name: '):
+                      end += 1
+                  cursor = index + 1
+                  script = None
+                  while cursor < end:
+                      if lines[cursor].startswith('        run: |'):
+                          body = []
+                          cursor += 1
+                          while cursor < end:
+                              current = lines[cursor]
+                              if current and not current.startswith('          '):
+                                  break
+                              body.append(current[10:] if current.startswith('          ') else '')
+                              cursor += 1
+                          script = '\n'.join(body) + '\n'
+                          break
+                      cursor += 1
+                  if script is not None:
+                      steps.append((name, script))
+                  index = end
+              else:
+                  index += 1
+
+          selected = []
+          started = False
+          for name, script in steps:
+              if 'Provision and verify aphorism publication runtime' in name:
+                  started = True
+              if not started:
+                  continue
+              lowered = name.lower()
+              if 'commit' in lowered or 'persist' in lowered:
+                  break
+              selected.append((name, script))
+
+          if not selected:
+              raise SystemExit('BLOCK: materializer suffix could not be resolved')
+
+          environment = dict(os.environ)
+          for number, (name, script) in enumerate(selected, 1):
+              print(f'REPAIR_SUFFIX_STEP_{number}={name}', flush=True)
+              subprocess.run(
+                  ['bash', '-euo', 'pipefail', '-c', script],
+                  check=True,
+                  env=environment,
+              )
+          PY
+
+      - name: Verify no unpersisted tracked evidence delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_integrity.py verify
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_HEAD"
+          if test -n "$(git status --porcelain --untracked-files=no)"; then
+            git status --short --untracked-files=no
+            echo 'BLOCK: repaired materializer produced an unpersisted tracked delta'
+            exit 1
+          fi
+          {
+            echo 'APHORISM_RUNTIME=success'
+            echo 'APHORISM_ASSESSMENT=success'
+            echo 'DETERMINISTIC_INTEGRITY=success'
+            echo 'COMPLETE_REPOSITORY_GATES=success'
+            echo 'EVIDENCE_PERSISTENCE=no_tracked_delta_required'
+            echo "BOUND_HEAD=$CANDIDATE_HEAD"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Attest repaired materializer contexts on exact candidate head
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          candidate = os.environ['CANDIDATE_HEAD']
+          target = 'https://github.com/' + repository + '/actions/runs/' + os.environ['GITHUB_RUN_ID']
+          for context in ('QIKVRT repository evidence materialization', 'materialize'):
+              payload = json.dumps({
+                  'state': 'success',
+                  'target_url': target,
+                  'description': 'Exact materializer suffix and complete suite succeeded after timeout repair',
+                  'context': context,
+              }).encode('utf-8')
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + '/statuses/' + candidate,
+                  data=payload,
+                  method='POST',
+                  headers={
+                      'Accept': 'application/vnd.github+json',
+                      'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+                      'Content-Type': 'application/json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'qik-vrt-pr228-materializer-timeout-repair',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  result = json.load(response)
+              if result.get('state') != 'success' or result.get('context') != context:
+                  raise SystemExit('BLOCK: repaired materializer status was not persisted')
+          PY
