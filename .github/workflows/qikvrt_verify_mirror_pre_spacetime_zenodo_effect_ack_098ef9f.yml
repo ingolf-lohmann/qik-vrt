@@ -1,0 +1,173 @@
+name: QIK-VRT verify Mirror scoped pre-spacetime Zenodo Effect-ACK 098ef9f
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/qikvrt_verify_mirror_pre_spacetime_zenodo_effect_ack_098ef9f.yml
+
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+
+jobs:
+  verify:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      CANDIDATE_PR: '228'
+      CANDIDATE_HEAD: 098ef9f57af583bff1b4d287333384162ca3bc9b
+      BASE_HEAD: 17f66b5ae7a2b1121141c6a0775da361415d58ff
+      AUTHORITY_SOURCE_HEAD: 443316921392faa8aec9e8e0be5ef6a57f83f6a1
+      EXPECTED_WORKFLOW_BLOB: b0ea760964cd669305a52cf98f0b8551cd73e271
+      EXPECTED_RECEIPT_BLOB: c108def2f85a43ddfd72a3dd9be5aac1571b996f
+      EXPECTED_TEST_BLOB: def6c33e8c152f5488fed8f890378ffedac201b7
+    steps:
+      - name: Check out exact Mirror candidate head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ env.CANDIDATE_HEAD }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Bind Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify live binding, exact delta, portable bytes, integrity and complete suite
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+          PYTHONDONTWRITEBYTECODE: '1'
+          PYTHONNOUSERSITE: '1'
+        run: |
+          set -euo pipefail
+
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-mirror-scoped-effect-ack-verifier',
+          }
+
+          def get(path):
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+
+          main_ref = get('/git/ref/heads/main')
+          if main_ref['object']['sha'] != os.environ['BASE_HEAD']:
+              raise SystemExit('BLOCK: Mirror main lease moved')
+
+          pull = get('/pulls/' + os.environ['CANDIDATE_PR'])
+          if pull['state'] != 'open':
+              raise SystemExit('BLOCK: candidate PR is not open')
+          if pull['head']['sha'] != os.environ['CANDIDATE_HEAD']:
+              raise SystemExit('BLOCK: candidate head moved')
+          if pull['base']['sha'] != os.environ['BASE_HEAD']:
+              raise SystemExit('BLOCK: candidate base binding moved')
+          PY
+
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_HEAD"
+          test "$(git merge-base "$BASE_HEAD" "$CANDIDATE_HEAD")" = "$BASE_HEAD"
+          test "$(git rev-list --count "$BASE_HEAD..$CANDIDATE_HEAD")" -eq 2
+
+          git diff --name-only "$BASE_HEAD" "$CANDIDATE_HEAD" | LC_ALL=C sort > /tmp/actual-paths
+          cat > /tmp/expected-paths <<'EOF'
+          .github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml
+          REPOSITORY_FILE_MANIFEST.json
+          REPOSITORY_FILE_MANIFEST.json.sha256
+          SHA256SUMS.txt
+          receipts/effects/pre-spacetime-ontology-zenodo-publication-v1.json
+          tests/test_pre_spacetime_ontology_zenodo_effect_ack.py
+          EOF
+          LC_ALL=C sort -o /tmp/expected-paths /tmp/expected-paths
+          diff -u /tmp/expected-paths /tmp/actual-paths
+
+          test "$(git rev-parse HEAD:.github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml)" = "$EXPECTED_WORKFLOW_BLOB"
+          test "$(git rev-parse HEAD:receipts/effects/pre-spacetime-ontology-zenodo-publication-v1.json)" = "$EXPECTED_RECEIPT_BLOB"
+          test "$(git rev-parse HEAD:tests/test_pre_spacetime_ontology_zenodo_effect_ack.py)" = "$EXPECTED_TEST_BLOB"
+
+          python3 -B - <<'PY'
+          import json
+          from pathlib import Path
+
+          receipt = json.loads(
+              Path('receipts/effects/pre-spacetime-ontology-zenodo-publication-v1.json').read_text(encoding='utf-8')
+          )
+          assert receipt['schema'] == 'qikvrt_scoped_effect_ack_receipt_v1'
+          assert receipt['scope_id'] == 'pre-spacetime-ontology-zenodo-publication-v1'
+          assert receipt['effect_id'] == 'qikvrt-pre-spacetime-ontology-zenodo-request-20260805-v1'
+          assert receipt['effect_state'] == 'EFFECT_ACK_DONE'
+          assert receipt['ordinary_release'] is True
+          assert receipt['global_completion'] is False
+          assert receipt['repository_wide_effect_ack_done'] is False
+          assert receipt['publication']['doi'] == '10.5281/zenodo.21804399'
+          assert receipt['publication']['record_id'] == 21804399
+          assert receipt['publication']['public_redownload_performed'] is True
+          assert receipt['publication']['public_byte_equality_established'] is True
+          assert receipt['publication']['verified_file_count'] == 4
+          assert receipt['observed_transition']['authority']['source_head'] == '443316921392faa8aec9e8e0be5ef6a57f83f6a1'
+          assert receipt['observed_transition']['mirror']['previous_main'] == '17f66b5ae7a2b1121141c6a0775da361415d58ff'
+          assert receipt['observed_transition']['mirror']['next_main'] is None
+          assert receipt['claims']['pass'] is False
+          assert receipt['claims']['final_pass'] is False
+          assert receipt['claims']['repository_wide_effect_ack_done'] is False
+          PY
+
+          python3 -B tools/qikvrt_integrity.py verify
+          python3 -B -m unittest -v tests.test_pre_spacetime_ontology_zenodo_effect_ack
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_HEAD"
+          test -z "$(git status --porcelain)"
+      - name: Attest required test status on exact candidate head
+        if: ${{ success() }}
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          candidate = os.environ['CANDIDATE_HEAD']
+          payload = json.dumps({
+              'state': 'success',
+              'target_url': (
+                  'https://github.com/' + repository + '/actions/runs/' + os.environ['GITHUB_RUN_ID']
+              ),
+              'description': 'Trusted exact-head integrity and complete suite succeeded',
+              'context': 'test',
+          }).encode('utf-8')
+          request = urllib.request.Request(
+              'https://api.github.com/repos/' + repository + '/statuses/' + candidate,
+              data=payload,
+              method='POST',
+              headers={
+                  'Accept': 'application/vnd.github+json',
+                  'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+                  'Content-Type': 'application/json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                  'User-Agent': 'qik-vrt-mirror-scoped-effect-ack-verifier',
+              },
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              result = json.load(response)
+          if result.get('state') != 'success' or result.get('context') != 'test':
+              raise SystemExit('BLOCK: exact-head test status was not persisted')
+          PY
