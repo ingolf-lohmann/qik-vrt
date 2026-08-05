@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3388,
+  "file_count": 3391,
   "files": [
     {
       "bytes": 47,
@@ -28893,6 +28893,15 @@
       "sha256": "7dbf343ef03f2a9321e27acf1c6b88a47c2e39e13dcb6f06cd600b258476f5b2"
     },
     {
+      "bytes": 7184,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "state/authorization/r11/R11_READ_ONLY_OBSERVATION_DISPATCH_V2.json",
+      "sha256": "a07b32938b7c05a1a20537413d773baa8ea9b07167dba5f9fd7d35e45ee2a70e"
+    },
+    {
       "classification": "legacy_runtime_state",
       "excluded_from_sha256_index": true,
       "exclusion_reason": "runtime_state_is_not_release_constant",
@@ -29294,6 +29303,15 @@
       "immutable": true,
       "path": "tests/test_r11_read_only_observation_dispatch_contract.py",
       "sha256": "4781d30ded8216a909628bcc9de41f41eee1aaca7b0185ffe1d1b1b72187830d"
+    },
+    {
+      "bytes": 9900,
+      "classification": "test_source",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tests/test_r11_read_only_observation_dispatch_contract_v2.py",
+      "sha256": "7ac8d21f483037f7d6d62822e6efb33ed43519cab85fac27f0d15ee9ee025cff"
     },
     {
       "bytes": 2885,
@@ -30070,6 +30088,15 @@
       "sha256": "3c6095c967dc1b27b7a14ec6e93bec347a52cc04ddef5145036003b77573b777"
     },
     {
+      "bytes": 19789,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tools/qikvrt_r11_read_only_observation_dispatch_v2.py",
+      "sha256": "cbb8a89ad9075e20068d3f9000837c2ccc819eff895661160bd8a9f1564e23aa"
+    },
+    {
       "bytes": 11241,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
@@ -30486,7 +30513,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3379,
+  "immutable_file_count": 3382,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -30511,7 +30538,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "8bfd3b4a6eeb760ff2664a9ccc1502ed0953ba1954ed3b3301866a6410ac07f3",
+  "repository_content_tree_sha256": "78a5aa6da3ac69ae7d875c234cbcb9557e1111fb8c806b15a1e81a79e3b3467b",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
