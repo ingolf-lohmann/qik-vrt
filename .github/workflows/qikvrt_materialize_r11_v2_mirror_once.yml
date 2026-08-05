@@ -3,6 +3,11 @@
 name: QIKVRT one-shot exact Mirror R11 V2 materializer
 
 on:
+  push:
+    branches:
+      - transport/r11-v2-mirror-materializer-once
+    paths:
+      - .github/workflows/qikvrt_materialize_r11_v2_mirror_once.yml
   pull_request:
     branches: [main]
     types: [opened]
@@ -20,10 +25,14 @@ jobs:
   materialize:
     if: >-
       github.repository == 'ingolf-lohmann/qik-vrt' &&
-      github.event.action == 'opened' &&
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      github.event.pull_request.head.ref == 'transport/r11-v2-mirror-materializer-once' &&
-      github.event.pull_request.base.sha == '8cdf8e71fe5edbadae4d80c606c07bdeea3ed4bc'
+      github.actor != 'github-actions[bot]' &&
+      ((github.event_name == 'push' &&
+        github.ref_name == 'transport/r11-v2-mirror-materializer-once') ||
+       (github.event_name == 'pull_request' &&
+        github.event.action == 'opened' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.pull_request.head.ref == 'transport/r11-v2-mirror-materializer-once' &&
+        github.event.pull_request.base.sha == '8cdf8e71fe5edbadae4d80c606c07bdeea3ed4bc'))
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
@@ -31,12 +40,12 @@ jobs:
       MIRROR_BASE: 8cdf8e71fe5edbadae4d80c606c07bdeea3ed4bc
       AUTHORITY_SOURCE: 0b2360fa0c66c86e6ee6e71798adcdaf3ac2fac5
       AUTHORITY_TREE: ee7b66f6e1be72b340e28ab825dd7c18478d043d
-      SOURCE_HEAD: ${{ github.event.pull_request.head.sha }}
+      SOURCE_HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
     steps:
       - name: Check out exact Mirror carrier head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ env.SOURCE_HEAD }}
           fetch-depth: 0
           persist-credentials: true
           path: mirror
