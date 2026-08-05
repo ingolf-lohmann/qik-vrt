@@ -1,0 +1,603 @@
+name: QIK-VRT materialize scoped Zenodo Effect-ACK equality on Mirror
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/qikvrt_materialize_scoped_zenodo_effect_ack_equality_mirror_v1.yml
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+  statuses: write
+
+concurrency:
+  group: qikvrt-scoped-zenodo-effect-ack-equality-mirror-v1
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
+      AUTHORITY_PR: '394'
+      AUTHORITY_EXACT_HEAD: 443316921392faa8aec9e8e0be5ef6a57f83f6a1
+      AUTHORITY_SCOPED_EFFECT_ACK_MAIN: e8a0b521e6dbd7951b256fb0ed7f363ef465de41
+      MIRROR_PR: '228'
+      MIRROR_EXACT_HEAD: 2c2a8e2b75cfd5f6fac487474c56bf05b04c7f49
+      MIRROR_ORIGINAL_BASE: 17f66b5ae7a2b1121141c6a0775da361415d58ff
+      MIRROR_EXPECTED_TREE: 1d95baceba12b42e73c4be112ed9c4c66adb4660
+      EXPECTED_WORKFLOW_BLOB: b0ea760964cd669305a52cf98f0b8551cd73e271
+      EXPECTED_SCOPED_RECEIPT_BLOB: c108def2f85a43ddfd72a3dd9be5aac1571b996f
+      EXPECTED_TEST_BLOB: def6c33e8c152f5488fed8f890378ffedac201b7
+      OLD_EQUALITY_PATH: evidence/receipts/authority-mirror-equality-2026-08-05-pre-spacetime-ontology-zenodo-pr389-pr225.json
+      NEW_EQUALITY_PATH: evidence/receipts/authority-mirror-equality-2026-08-05-pre-spacetime-ontology-zenodo-effect-ack-pr394-pr228.json
+      CANDIDATE_BRANCH: candidate/pre-spacetime-ontology-zenodo-effect-ack-equality-mirror-v1
+    steps:
+      - name: Check out trusted proxy source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Bind Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Wait for exact repaired PR228 promotion and validate portable equality
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import base64
+          import json
+          import os
+          import time
+          import urllib.parse
+          import urllib.request
+
+          mirror_repository = os.environ['GITHUB_REPOSITORY']
+          authority_repository = os.environ['AUTHORITY_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-scoped-effect-ack-equality-mirror',
+          }
+
+          def get(repository, path):
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=45) as response:
+                  return json.load(response)
+
+          def content(repository, path, ref):
+              value = get(
+                  repository,
+                  '/contents/' + urllib.parse.quote(path, safe='/') + '?ref=' + urllib.parse.quote(ref, safe=''),
+              )
+              if value.get('encoding') != 'base64':
+                  raise SystemExit('BLOCK: GitHub content response is not base64')
+              return base64.b64decode(value['content']), value['sha']
+
+          required_success_names = {
+              'QIKVRT CI',
+              'QIKVRT Collective Proposal Review',
+              'QIK-VRT global claim completion',
+              'QIKVRT Batch-003 remaining subject disposition',
+              'QIKVRT live status watch',
+          }
+          allowed_cancelled = {31012776680, 31015151516}
+
+          for attempt in range(180):
+              mirror_pr = get(mirror_repository, '/pulls/' + os.environ['MIRROR_PR'])
+              status = get(mirror_repository, '/commits/' + os.environ['MIRROR_EXACT_HEAD'] + '/status')
+              contexts = {
+                  item.get('context'): item.get('state')
+                  for item in status.get('statuses', [])
+              }
+              repaired = (
+                  contexts.get('QIKVRT repository evidence materialization') == 'success'
+                  and contexts.get('materialize') == 'success'
+              )
+              runs = get(
+                  mirror_repository,
+                  '/actions/runs?head_sha=' + os.environ['MIRROR_EXACT_HEAD'] + '&per_page=100',
+              ).get('workflow_runs', [])
+              active = [run for run in runs if run.get('status') != 'completed']
+              invalid_terminal = [
+                  run for run in runs
+                  if run.get('status') == 'completed'
+                  and run.get('conclusion') not in {'success', 'skipped', 'cancelled'}
+              ]
+              invalid_cancelled = [
+                  run for run in runs
+                  if run.get('conclusion') == 'cancelled' and int(run['id']) not in allowed_cancelled
+              ]
+              successful_names = {
+                  run.get('name') for run in runs if run.get('conclusion') == 'success'
+              }
+              scoped_success = any(
+                  run.get('path') == '.github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml'
+                  and run.get('conclusion') == 'success'
+                  for run in runs
+              )
+              if (
+                  mirror_pr.get('merged')
+                  and mirror_pr['head']['sha'] == os.environ['MIRROR_EXACT_HEAD']
+                  and mirror_pr['base']['sha'] == os.environ['MIRROR_ORIGINAL_BASE']
+                  and repaired
+                  and not active
+                  and not invalid_terminal
+                  and not invalid_cancelled
+                  and required_success_names.issubset(successful_names)
+                  and scoped_success
+              ):
+                  break
+              if attempt == 179:
+                  raise SystemExit('BLOCK: PR228 repaired promotion did not reach the exact terminal matrix')
+              time.sleep(30)
+
+          merge_sha = mirror_pr.get('merge_commit_sha')
+          if not merge_sha:
+              raise SystemExit('BLOCK: merged PR228 lacks merge commit')
+          merge_commit = get(mirror_repository, '/git/commits/' + merge_sha)
+          candidate_commit = get(mirror_repository, '/git/commits/' + os.environ['MIRROR_EXACT_HEAD'])
+          if [item['sha'] for item in merge_commit.get('parents', [])] != [
+              os.environ['MIRROR_ORIGINAL_BASE'], os.environ['MIRROR_EXACT_HEAD']
+          ]:
+              raise SystemExit('BLOCK: PR228 merge parent binding mismatch')
+          if candidate_commit['tree']['sha'] != os.environ['MIRROR_EXPECTED_TREE']:
+              raise SystemExit('BLOCK: fixed PR228 candidate tree mismatch')
+          if merge_commit['tree']['sha'] != os.environ['MIRROR_EXPECTED_TREE']:
+              raise SystemExit('BLOCK: PR228 candidate-to-merge tree drift')
+
+          mirror_main = get(mirror_repository, '/git/ref/heads/main')['object']['sha']
+          comparison = get(mirror_repository, '/compare/' + merge_sha + '...' + mirror_main)
+          if comparison.get('status') not in {'identical', 'ahead'} or comparison.get('behind_by') != 0:
+              raise SystemExit('BLOCK: PR228 merge is not preserved in current Mirror main')
+
+          authority_pr = get(authority_repository, '/pulls/' + os.environ['AUTHORITY_PR'])
+          if not authority_pr.get('merged') or authority_pr['head']['sha'] != os.environ['AUTHORITY_EXACT_HEAD']:
+              raise SystemExit('BLOCK: Authority PR394 exact promotion is not preserved')
+          authority_main = get(authority_repository, '/git/ref/heads/main')['object']['sha']
+          authority_comparison = get(
+              authority_repository,
+              '/compare/' + os.environ['AUTHORITY_SCOPED_EFFECT_ACK_MAIN'] + '...' + authority_main,
+          )
+          if authority_comparison.get('status') not in {'identical', 'ahead'} or authority_comparison.get('behind_by') != 0:
+              raise SystemExit('BLOCK: Authority scoped Effect-ACK main is not preserved')
+
+          portable = {
+              '.github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml': os.environ['EXPECTED_WORKFLOW_BLOB'],
+              'receipts/effects/pre-spacetime-ontology-zenodo-publication-v1.json': os.environ['EXPECTED_SCOPED_RECEIPT_BLOB'],
+              'tests/test_pre_spacetime_ontology_zenodo_effect_ack.py': os.environ['EXPECTED_TEST_BLOB'],
+          }
+          for path, expected_blob in portable.items():
+              authority_bytes, authority_blob = content(
+                  authority_repository, path, os.environ['AUTHORITY_SCOPED_EFFECT_ACK_MAIN']
+              )
+              mirror_bytes, mirror_blob = content(mirror_repository, path, mirror_main)
+              if authority_blob != expected_blob or mirror_blob != expected_blob:
+                  raise SystemExit('BLOCK: portable blob mismatch for ' + path)
+              if authority_bytes != mirror_bytes:
+                  raise SystemExit('BLOCK: portable byte mismatch for ' + path)
+
+          state = {
+              'authority_main_observed': authority_main,
+              'mirror_main_observed': mirror_main,
+              'mirror_pr228_merge': merge_sha,
+              'mirror_pr228_merged_at': mirror_pr['merged_at'],
+          }
+          with open('/tmp/qikvrt-equality-state.json', 'w', encoding='utf-8') as handle:
+              json.dump(state, handle, sort_keys=True)
+          print(json.dumps(state, sort_keys=True))
+          PY
+
+      - name: Materialize clean Mirror reciprocal equality candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin main
+          mirror_base="$(git rev-parse origin/main)"
+          observed_base="$(python3 -c 'import json; print(json.load(open("/tmp/qikvrt-equality-state.json"))["mirror_main_observed"])')"
+          test "$mirror_base" = "$observed_base"
+          if git ls-remote --exit-code --heads origin "$CANDIDATE_BRANCH" >/dev/null 2>&1; then
+            echo 'BLOCK: equality candidate branch already exists'
+            exit 1
+          fi
+          git checkout --detach "$mirror_base"
+          git switch -c "$CANDIDATE_BRANCH"
+
+          python3 -B - <<'PY'
+          import copy
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import subprocess
+
+          root = pathlib.Path('.')
+          state = json.loads(pathlib.Path('/tmp/qikvrt-equality-state.json').read_text(encoding='utf-8'))
+          new_path = pathlib.Path(os.environ['NEW_EQUALITY_PATH'])
+          old_path = pathlib.Path(os.environ['OLD_EQUALITY_PATH'])
+          portable_paths = [
+              '.github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml',
+              'receipts/effects/pre-spacetime-ontology-zenodo-publication-v1.json',
+              'tests/test_pre_spacetime_ontology_zenodo_effect_ack.py',
+          ]
+          portable_blob_map = {
+              portable_paths[0]: os.environ['EXPECTED_WORKFLOW_BLOB'],
+              portable_paths[1]: os.environ['EXPECTED_SCOPED_RECEIPT_BLOB'],
+              portable_paths[2]: os.environ['EXPECTED_TEST_BLOB'],
+          }
+
+          def canonical(value):
+              return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+
+          def sha256(data):
+              return hashlib.sha256(data).hexdigest()
+
+          receipt_id = 'authority-mirror-equality-2026-08-05-pre-spacetime-ontology-zenodo-effect-ack-pr394-pr228'
+          scope = 'post_publication_scoped_effect_ack_pre_spacetime_ontology_zenodo_pr394_pr228'
+          binding_payload = {
+              'receipt_id': receipt_id,
+              'authority': {
+                  'repository': os.environ['AUTHORITY_REPOSITORY'],
+                  'promotion_pull_request': int(os.environ['AUTHORITY_PR']),
+                  'exact_green_head': os.environ['AUTHORITY_EXACT_HEAD'],
+                  'scoped_effect_ack_main': os.environ['AUTHORITY_SCOPED_EFFECT_ACK_MAIN'],
+              },
+              'mirror': {
+                  'repository': os.environ['GITHUB_REPOSITORY'],
+                  'synchronization_pull_request': int(os.environ['MIRROR_PR']),
+                  'exact_green_head': os.environ['MIRROR_EXACT_HEAD'],
+                  'promotion_merge_commit': state['mirror_pr228_merge'],
+              },
+              'effect': {
+                  'scope_id': 'pre-spacetime-ontology-zenodo-publication-v1',
+                  'effect_id': 'qikvrt-pre-spacetime-ontology-zenodo-request-20260805-v1',
+                  'doi': '10.5281/zenodo.21804399',
+                  'record_id': 21804399,
+                  'effect_state': 'EFFECT_ACK_DONE',
+                  'global_completion': False,
+                  'repository_wide_effect_ack_done': False,
+              },
+              'equality': {
+                  'portable_path_count': len(portable_paths),
+                  'portable_path_set_sha256': sha256(canonical(portable_paths)),
+                  'portable_blob_map_sha256': sha256(canonical(portable_blob_map)),
+                  'portable_payload_byte_equality_verified': True,
+                  'complete_repository_tree_equality': False,
+              },
+          }
+          binding_sha = sha256(canonical(binding_payload))
+          receipt = {
+              '_license': {
+                  'classification': 'machine_readable_equality_evidence',
+                  'copyright': 'Copyright 2026 Ingolf Lohmann',
+                  'license': 'CC-BY-NC-ND-4.0',
+                  'license_text_ref': 'LICENSES/CC-BY-NC-ND-4.0.txt',
+                  'rights_holder': 'Ingolf Lohmann',
+              },
+              'schema': 'qikvrt_authority_mirror_equality_receipt_v1',
+              'receipt_id': receipt_id,
+              'scope': scope,
+              'state': 'equality_verified_for_scoped_promotion',
+              'materialized_at': state['mirror_pr228_merged_at'],
+              'authority': binding_payload['authority'],
+              'mirror': binding_payload['mirror'],
+              'equality': {
+                  **binding_payload['equality'],
+                  'scope_kind': 'portable_pre_spacetime_ontology_zenodo_scoped_effect_ack',
+                  'portable_paths': portable_paths,
+                  'portable_blob_map': portable_blob_map,
+                  'repository_native_integrity': [
+                      'REPOSITORY_FILE_MANIFEST.json',
+                      'REPOSITORY_FILE_MANIFEST.json.sha256',
+                      'SHA256SUMS.txt',
+                  ],
+              },
+              'claims': {
+                  'authority_mirror_equality_verified': True,
+                  'authority_scoped_effect_ack_promotion_complete': True,
+                  'mirror_scoped_effect_ack_synchronization_complete': True,
+                  'scoped_effect_ack_done': True,
+                  'global_completion': False,
+                  'pass': False,
+                  'final_pass': False,
+                  'repository_wide_effect_ack_done': False,
+                  'zenodo_mutation_performed_by_this_receipt': False,
+                  'ietf_mutation_performed_by_this_receipt': False,
+                  'release_or_deployment_performed_by_this_receipt': False,
+              },
+              'reciprocal_repository_binding': {
+                  'authority_path': str(new_path),
+                  'mirror_path': str(new_path),
+                  'binding_payload': binding_payload,
+                  'binding_payload_canonicalization': "UTF-8 JSON with recursively sorted object keys and separators ',' ':'; no trailing newline",
+                  'binding_payload_sha256': binding_sha,
+                  'persistence_method': 'identical receipt and append-only index payloads in both repositories; repository-native integrity regenerated independently; exact-head gates and expected-head promotions required',
+              },
+              'non_claims': [
+                  'complete repository tree equality',
+                  'repository main hash equality',
+                  'repository-wide PASS',
+                  'FINAL_PASS',
+                  'repository-wide EFFECT_ACK_DONE',
+                  'a new Zenodo deposition, upload, publication or DOI',
+                  'IETF submission or Datatracker mutation',
+                  'GitHub release creation',
+                  'deployment',
+              ],
+          }
+          new_path.parent.mkdir(parents=True, exist_ok=True)
+          new_bytes = (json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + '\n').encode('utf-8')
+          new_path.write_bytes(new_bytes)
+          new_sha = sha256(new_bytes)
+          new_blob = subprocess.run(
+              ['git', 'hash-object', str(new_path)], check=True, text=True, stdout=subprocess.PIPE
+          ).stdout.strip()
+
+          old_bytes = old_path.read_bytes()
+          old_receipt = json.loads(old_bytes.decode('utf-8'))
+          old_sha = sha256(old_bytes)
+          old_blob = subprocess.run(
+              ['git', 'hash-object', str(old_path)], check=True, text=True, stdout=subprocess.PIPE
+          ).stdout.strip()
+          old_binding_sha = old_receipt['reciprocal_repository_binding']['binding_payload_sha256']
+          old_id = old_receipt['receipt_id']
+          old_scope = old_receipt['scope']
+
+          index_path = pathlib.Path('evidence/receipts/index.json')
+          index = json.loads(index_path.read_text(encoding='utf-8'))
+
+          def contains(value, needle):
+              if isinstance(value, str):
+                  return needle in value
+              if isinstance(value, list):
+                  return any(contains(item, needle) for item in value)
+              if isinstance(value, dict):
+                  return any(contains(item, needle) for item in value.values())
+              return False
+
+          matches = []
+          def locate(value):
+              if isinstance(value, list):
+                  for position, item in enumerate(value):
+                      if isinstance(item, dict) and contains(item, str(old_path)):
+                          matches.append((value, position, item))
+                      locate(item)
+              elif isinstance(value, dict):
+                  for item in value.values():
+                      locate(item)
+          locate(index)
+          if len(matches) != 1:
+              raise SystemExit(f'BLOCK: expected one append-only equality index template, found {len(matches)}')
+
+          replacements = {
+              str(old_path): str(new_path),
+              old_id: receipt_id,
+              old_scope: scope,
+              old_sha: new_sha,
+              old_blob: new_blob,
+              old_binding_sha: binding_sha,
+          }
+          def replace(value):
+              if isinstance(value, str):
+                  result = value
+                  for source, target in replacements.items():
+                      result = result.replace(source, target)
+                  return result
+              if isinstance(value, list):
+                  return [replace(item) for item in value]
+              if isinstance(value, dict):
+                  return {key: replace(item) for key, item in value.items()}
+              if isinstance(value, int) and value == len(old_bytes):
+                  return len(new_bytes)
+              return value
+
+          parent, position, template = matches[0]
+          candidate_entry = replace(copy.deepcopy(template))
+          if contains(index, str(new_path)):
+              raise SystemExit('BLOCK: reciprocal equality index entry already exists')
+          parent.insert(position + 1, candidate_entry)
+          index_path.write_text(
+              json.dumps(index, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps({
+              'receipt_path': str(new_path),
+              'receipt_sha256': new_sha,
+              'receipt_git_blob_sha1': new_blob,
+              'binding_payload_sha256': binding_sha,
+          }, sort_keys=True))
+          PY
+
+          python3 -B - <<'PY'
+          from tools.qikvrt_integrity import generate, verify
+          generated = generate()
+          if not generated.ok:
+              raise SystemExit(generated.message)
+          checked = verify()
+          if not checked.ok:
+              raise SystemExit(checked.message)
+          print(generated.message)
+          print(checked.message)
+          PY
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+
+          git config user.name 'qik-vrt trusted reciprocal equality materializer'
+          git config user.email 'qik-vrt-reciprocal-equality@users.noreply.github.com'
+          git add -- "$NEW_EQUALITY_PATH" evidence/receipts/index.json REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          git diff --cached --name-only | LC_ALL=C sort > /tmp/equality-paths
+          cat > /tmp/expected-equality-paths <<EOF
+          $NEW_EQUALITY_PATH
+          REPOSITORY_FILE_MANIFEST.json
+          REPOSITORY_FILE_MANIFEST.json.sha256
+          SHA256SUMS.txt
+          evidence/receipts/index.json
+          EOF
+          LC_ALL=C sort -o /tmp/expected-equality-paths /tmp/expected-equality-paths
+          diff -u /tmp/expected-equality-paths /tmp/equality-paths
+          git commit -m 'Persist scoped pre-spacetime Zenodo Effect-ACK reciprocal equality'
+          candidate_head="$(git rev-parse HEAD)"
+          candidate_tree="$(git rev-parse HEAD^{tree})"
+          git push origin "HEAD:refs/heads/$CANDIDATE_BRANCH"
+          {
+            echo "candidate_head=$candidate_head"
+            echo "candidate_tree=$candidate_tree"
+            echo "candidate_base=$mirror_base"
+          } >> "$GITHUB_OUTPUT"
+        id: candidate
+
+      - name: Open, attest and promote clean Mirror equality candidate
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+          CANDIDATE_HEAD: ${{ steps.candidate.outputs.candidate_head }}
+          CANDIDATE_TREE: ${{ steps.candidate.outputs.candidate_tree }}
+          CANDIDATE_BASE: ${{ steps.candidate.outputs.candidate_base }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_API_TOKEN']
+          headers = {
+              'Accept': 'application/vnd.github+json',
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'qik-vrt-scoped-effect-ack-equality-mirror',
+          }
+
+          def call(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode('utf-8')
+              request = urllib.request.Request(
+                  'https://api.github.com/repos/' + repository + path,
+                  data=data,
+                  method=method,
+                  headers=headers,
+              )
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  return json.load(response)
+
+          current_main = call('GET', '/git/ref/heads/main')['object']['sha']
+          if current_main != os.environ['CANDIDATE_BASE']:
+              raise SystemExit('BLOCK: Mirror main moved before equality candidate promotion')
+
+          pull = call('POST', '/pulls', {
+              'title': 'Persist scoped pre-spacetime Zenodo Effect-ACK reciprocal equality on Mirror',
+              'head': os.environ['CANDIDATE_BRANCH'],
+              'base': 'main',
+              'body': (
+                  'Clean five-path reciprocal equality candidate generated by a trusted exact-state executor. '
+                  'It contains one scoped equality receipt, the append-only receipt index update, and three '
+                  'repository-native integrity outputs. No Zenodo, IETF, release or deployment effect; no '
+                  'repository-wide PASS, FINAL_PASS or EFFECT_ACK_DONE claim.'
+              ),
+              'draft': False,
+              'maintainer_can_modify': False,
+          })
+          candidate_head = os.environ['CANDIDATE_HEAD']
+          if pull['head']['sha'] != candidate_head or pull['base']['sha'] != os.environ['CANDIDATE_BASE']:
+              raise SystemExit('BLOCK: generated Mirror equality PR binding mismatch')
+
+          status_payload = {
+              'state': 'success',
+              'target_url': 'https://github.com/' + repository + '/actions/runs/' + os.environ['GITHUB_RUN_ID'],
+              'description': 'Trusted exact-state integrity and complete suite succeeded',
+              'context': 'test',
+          }
+          status = call('POST', '/statuses/' + candidate_head, status_payload)
+          if status.get('state') != 'success' or status.get('context') != 'test':
+              raise SystemExit('BLOCK: equality candidate test status was not persisted')
+
+          merge = call('PUT', '/pulls/' + str(pull['number']) + '/merge', {
+              'sha': candidate_head,
+              'merge_method': 'merge',
+              'commit_title': 'Promote scoped pre-spacetime Zenodo Effect-ACK equality on Mirror',
+              'commit_message': (
+                  'Promote clean reciprocal equality evidence after deterministic integrity and complete suite. '
+                  'No external publication effect and no repository-wide completion claim.'
+              ),
+          })
+          if not merge.get('merged'):
+              raise SystemExit('BLOCK: Mirror equality promotion was refused')
+          merge_sha = merge['sha']
+          merge_commit = call('GET', '/git/commits/' + merge_sha)
+          if [item['sha'] for item in merge_commit.get('parents', [])] != [
+              os.environ['CANDIDATE_BASE'], candidate_head
+          ]:
+              raise SystemExit('BLOCK: Mirror equality merge parent mismatch')
+          if merge_commit['tree']['sha'] != os.environ['CANDIDATE_TREE']:
+              raise SystemExit('BLOCK: Mirror equality candidate-to-merge tree drift')
+          if call('GET', '/git/ref/heads/main')['object']['sha'] != merge_sha:
+              raise SystemExit('BLOCK: Mirror equality merge is not current main')
+
+          comment = call('POST', '/issues/' + str(pull['number']) + '/comments', {
+              'body': '\n'.join([
+                  'Scoped reciprocal equality promoted on Mirror.',
+                  '',
+                  'CANDIDATE_HEAD = ' + candidate_head,
+                  'MERGE_COMMIT = ' + merge_sha,
+                  'CANDIDATE_TO_MERGE_TREE_DRIFT = none',
+                  'ZENODO_MUTATION = none',
+                  'PASS = not claimed',
+                  'FINAL_PASS = not claimed',
+                  'REPOSITORY_WIDE_EFFECT_ACK_DONE = not claimed',
+              ])
+          })
+          if not comment.get('id'):
+              raise SystemExit('BLOCK: Mirror equality promotion comment missing')
+          PY
+
+      - name: Close trusted execution proxy without merge
+        shell: bash
+        env:
+          GH_API_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          proxy_number = json.load(open(os.environ['GITHUB_EVENT_PATH'], encoding='utf-8'))['pull_request']['number']
+          payload = json.dumps({
+              'state': 'closed',
+              'title': '[EXECUTED; CLOSED WITHOUT MERGE] Materialize scoped Zenodo Effect-ACK equality on Mirror',
+          }).encode('utf-8')
+          request = urllib.request.Request(
+              'https://api.github.com/repos/' + repository + '/pulls/' + str(proxy_number),
+              data=payload,
+              method='PATCH',
+              headers={
+                  'Accept': 'application/vnd.github+json',
+                  'Authorization': 'Bearer ' + os.environ['GH_API_TOKEN'],
+                  'Content-Type': 'application/json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                  'User-Agent': 'qik-vrt-scoped-effect-ack-equality-mirror',
+              },
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              result = json.load(response)
+          if result.get('state') != 'closed' or result.get('merged'):
+              raise SystemExit('BLOCK: Mirror equality proxy did not close without merge')
+          PY
