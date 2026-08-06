@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT repair self-healing repository publication once
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+    paths:
+      - .github/workflows/qikvrt_repair_self_healing_repository_publication_once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-repair-self-healing-publication-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/self-healing-repository-collective-intelligence-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Port exact overview and materialize Mirror integrity
+        env:
+          TARGET_REF: ${{ github.event.pull_request.head.ref }}
+          AUTHORITY_COMMIT: 0fc126248ba0e7f0b1c16101414a0aa640f9dc79
+        run: |
+          set -euo pipefail
+          source_head="$(git rev-parse --verify HEAD^{commit})"
+          remote_head="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 {print $1}')"
+          test "$source_head" = "$remote_head" || {
+            echo 'BLOCK: target head drift before repair' >&2
+            exit 2
+          }
+
+          python3 -B - <<'PY'
+          import hashlib
+          import os
+          import urllib.request
+          from pathlib import Path
+
+          commit = os.environ['AUTHORITY_COMMIT']
+          expected = {
+              'docs/publications/index.json': '8cb374be38d2c78faffa4441b658432e2567d103',
+              'docs/publications/index.html': '470ecdd5a8511c842710f8916d79d5410267734b',
+          }
+          for path, blob_sha in expected.items():
+              url = f'https://raw.githubusercontent.com/Goldkelch/qik-vrt/{commit}/{path}'
+              with urllib.request.urlopen(url, timeout=60) as response:
+                  data = response.read()
+              actual = hashlib.sha1(b'blob ' + str(len(data)).encode('ascii') + b'\0' + data).hexdigest()
+              if actual != blob_sha:
+                  raise SystemExit(f'BLOCK Git blob mismatch {path}: {actual}')
+              Path(path).write_bytes(data)
+          if '2026-08-06-self-healing-repository-collective-intelligence' not in Path('docs/publications/index.json').read_text(encoding='utf-8'):
+              raise SystemExit('BLOCK publication missing from ported index')
+          print('OK exact Authority overview port')
+          PY
+
+          python3 -B docs/publications/2026-08-06-self-healing-repository-collective-intelligence/verify_package.py
+          rm .github/workflows/qikvrt_repair_self_healing_repository_publication_once.yml
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          make test
+          python3 -B tools/qikvrt_integrity.py verify
+
+          git config user.name 'qik-vrt mirror publication self-heal'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A \
+            .github/workflows/qikvrt_repair_self_healing_repository_publication_once.yml \
+            docs/publications/index.json \
+            docs/publications/index.html \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt
+          git diff --cached --exit-code && {
+            echo 'BLOCK: deterministic repair produced no persisted delta' >&2
+            exit 2
+          }
+          git commit -m 'ci: bind exact publication overview and Mirror integrity'
+
+          remote_head_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 {print $1}')"
+          test "$source_head" = "$remote_head_after" || {
+            echo 'BLOCK: target head drift before push' >&2
+            exit 2
+          }
+          git push origin "HEAD:$TARGET_REF"
