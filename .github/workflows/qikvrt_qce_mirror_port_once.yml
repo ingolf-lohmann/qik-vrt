@@ -129,16 +129,10 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- \
-            .github/workflows/qikvrt_qce_candidate.yml \
-            .github/workflows/qikvrt_qce_mirror_port_once.yml \
-            docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence \
-            docs/publications/index.json \
-            docs/publications/index.html \
-            release/qce-formal-model-run-31056926203-attempt-1 \
-            REPOSITORY_FILE_MANIFEST.json \
-            REPOSITORY_FILE_MANIFEST.json.sha256 \
-            SHA256SUMS.txt
+          # The preceding allowlist gate has already bounded every committed
+          # and worktree path. Stage additions, modifications, and the
+          # self-deleting workflow removal in one atomic index operation.
+          git add -A
           test -n "$(git diff --cached --name-only)"
           git commit -m "port(qce): materialize normalized Authority candidate on Mirror main"
           git push origin HEAD:automation/qce-current-main-port-v1
