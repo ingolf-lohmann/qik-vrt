@@ -1,0 +1,136 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT one-shot current-main QCE Mirror port
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+    paths:
+      - ".github/workflows/qikvrt_qce_mirror_port_once.yml"
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: qikvrt-qce-mirror-port-current-main-v1
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      github.event.pull_request.head.ref == 'automation/qce-current-main-port-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Bind exact Mirror base and candidate head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ github.event.pull_request.base.sha }}" = "31d79c5baba91c9fa69cac9039af6a4a9e1a2512"
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test "$(git rev-parse origin/main)" = "31d79c5baba91c9fa69cac9039af6a4a9e1a2512"
+
+      - name: Fetch exact promoted Authority source
+        shell: bash
+        run: |
+          set -euo pipefail
+          authority="${RUNNER_TEMP}/qikvrt-authority"
+          git init "${authority}"
+          git -C "${authority}" remote add origin https://github.com/Goldkelch/qik-vrt.git
+          git -C "${authority}" fetch --depth=1 origin 6dbd758186ab69989ff8bf3432373984321c0ab3
+          git -C "${authority}" checkout --detach FETCH_HEAD
+          test "$(git -C "${authority}" rev-parse HEAD)" = "6dbd758186ab69989ff8bf3432373984321c0ab3"
+          test "$(git -C "${authority}" rev-parse 'HEAD^{tree}')" = "00d682c29306dc0dd5a95e9c360e312d68f7405c"
+
+      - name: Copy only the portable QCE allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          authority="${RUNNER_TEMP}/qikvrt-authority"
+          qce="docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence"
+          release="release/qce-formal-model-run-31056926203-attempt-1"
+          rm -rf "${qce}" "${release}"
+          mkdir -p .github/workflows docs/publications release
+          cp -a "${authority}/.github/workflows/qikvrt_qce_candidate.yml" .github/workflows/
+          cp -a "${authority}/${qce}" "${qce}"
+          cp -a "${authority}/docs/publications/index.json" docs/publications/index.json
+          cp -a "${authority}/docs/publications/index.html" docs/publications/index.html
+          cp -a "${authority}/${release}" "${release}"
+          git rm -- .github/workflows/qikvrt_qce_mirror_port_once.yml
+
+      - name: Regenerate QCE and Mirror-native integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/regenerate_qce_integrity.py
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+
+      - name: Enforce bounded final diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import subprocess
+          allowed_exact = {
+              '.github/workflows/qikvrt_qce_candidate.yml',
+              '.github/workflows/qikvrt_qce_mirror_port_once.yml',
+              'docs/publications/index.json',
+              'docs/publications/index.html',
+              'REPOSITORY_FILE_MANIFEST.json',
+              'REPOSITORY_FILE_MANIFEST.json.sha256',
+              'SHA256SUMS.txt',
+          }
+          allowed_prefixes = (
+              'docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/',
+              'release/qce-formal-model-run-31056926203-attempt-1/',
+          )
+          paths = subprocess.check_output(
+              ['git', 'diff', '--name-only', '31d79c5baba91c9fa69cac9039af6a4a9e1a2512...HEAD'],
+              text=True,
+          ).splitlines()
+          # Include worktree changes not yet committed.
+          paths += subprocess.check_output(['git', 'status', '--porcelain=v1'], text=True).splitlines()
+          normalized = set()
+          for item in paths:
+              path = item[3:] if len(item) > 3 and item[:2].strip() else item
+              if ' -> ' in path:
+                  path = path.split(' -> ', 1)[1]
+              if path:
+                  normalized.add(path)
+          unexpected = sorted(
+              path for path in normalized
+              if path not in allowed_exact and not path.startswith(allowed_prefixes)
+          )
+          if unexpected:
+              raise SystemExit('BLOCK unexpected paths: ' + ', '.join(unexpected))
+          PY
+
+      - name: Persist exactly one materialized successor commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- \
+            .github/workflows/qikvrt_qce_candidate.yml \
+            .github/workflows/qikvrt_qce_mirror_port_once.yml \
+            docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence \
+            docs/publications/index.json \
+            docs/publications/index.html \
+            release/qce-formal-model-run-31056926203-attempt-1 \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt
+          test -n "$(git diff --cached --name-only)"
+          git commit -m "port(qce): materialize normalized Authority candidate on Mirror main"
+          git push origin HEAD:automation/qce-current-main-port-v1
