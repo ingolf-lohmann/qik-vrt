@@ -34,6 +34,7 @@ SUPPORTED_CONTEXT_SCHEMAS = frozenset(
     {
         "qikvrt-ai-context/1.0",
         "qikvrt-ai-context/1.2",
+        "qikvrt-ai-context/1.3",
     }
 )
 
@@ -416,7 +417,6 @@ def main() -> int:
     print("IMPLEMENTATION_POLICY=" + str(implementation.get("intent", "unknown")))
     print("NEXT_ACTION=Read required files, inspect task-relevant verified state, then continue without relying on chat memory.")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
