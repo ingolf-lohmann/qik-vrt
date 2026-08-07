@@ -418,5 +418,6 @@ def main() -> int:
     print("NEXT_ACTION=Read required files, inspect task-relevant verified state, then continue without relying on chat memory.")
     return 0
 
+
 if __name__ == "__main__":
     raise SystemExit(main())
