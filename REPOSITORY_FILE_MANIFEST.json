@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3462,
+  "file_count": 3475,
   "files": [
     {
       "bytes": 47,
@@ -368,6 +368,15 @@
       "immutable": true,
       "path": ".github/workflows/qikvrt_live_status_watch.yml",
       "sha256": "56951285641dc71931cc44c750ded54a18d104886db80e230f2e6a920c59a5f0"
+    },
+    {
+      "bytes": 7718,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+      "sha256": "dd6373a0280788d1a96b688b2be5f38b809751c5973e2a8a09ba997f7530f698"
     },
     {
       "bytes": 19689,
@@ -16501,13 +16510,13 @@
       "sha256": "473d35b74ff40ddcf76ad5775687ac70d1829fa4309ed656e717478ae5039cf5"
     },
     {
-      "bytes": 1721,
+      "bytes": 3617,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization.lean",
-      "sha256": "a673be2c2d71c38c849c68c32897fc2f585f1d48a18779a1a8081ecf44e17440"
+      "sha256": "01ff01b2fbb5819da49a8efb7087a7ac90994138c844ca0487cc65bbc7374638"
     },
     {
       "bytes": 466,
@@ -16654,6 +16663,15 @@
       "sha256": "96a7bc98e3ed132e46e697739fad037f3547bc9c5320f2cebe879daab9d1405c"
     },
     {
+      "bytes": 6827,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Decision/ObservationSufficiency.lean",
+      "sha256": "17c16ef883bcde7293880ba383bcd1faf9782595e9dc603a61bfb8bc300d74ec"
+    },
+    {
       "bytes": 15783,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -16697,6 +16715,24 @@
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Foundation/RelativeComplement.lean",
       "sha256": "fa8cc089badd85f29dc62ef2deaa50b8f7e79f679bd1dca7a71eca15a17bd6c5"
+    },
+    {
+      "bytes": 9241,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AuthorityMirrorWitness.lean",
+      "sha256": "f07daf36ccffeaa5e83b7e4cbb0ffd7167407622faf603b5a9287dbbfcc6b475"
+    },
+    {
+      "bytes": 1907,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Hardware/AxiomAudit.lean",
+      "sha256": "6e5d1aea19876e0f184f309d02588173985a1a4868a4500e67dac0a0ed595b3d"
     },
     {
       "bytes": 6463,
@@ -16798,6 +16834,24 @@
       "sha256": "8596b3ecac01ce1c107925faab99c1c9b0038c9065909eff20fa4edd4e616d85"
     },
     {
+      "bytes": 1069,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/AxiomAudit.lean",
+      "sha256": "93c3d1288b8413bacfe65e9281db3cdeac5820b570616a324def4cb24e40dedd"
+    },
+    {
+      "bytes": 6096,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/QuantumFoundations/MeasurementIndependence.lean",
+      "sha256": "f62f4532f5650cfedeef97c9f09251e5945efcd34439273fe5807101056ab103"
+    },
+    {
       "bytes": 2459,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -16814,6 +16868,51 @@
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/Retrocausality/Reclassification.lean",
       "sha256": "d674237eeb3e9ce0ade50a31b3ebe705695a5bcc28b88163b776f6e25c0adc24"
+    },
+    {
+      "bytes": 11291,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTFormalization/WorldFormula/Relations.lean",
+      "sha256": "557c736d042a06103d45810d10293b797980544d9d5a63c7cdb81540c4e6ce36"
+    },
+    {
+      "bytes": 431,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology.lean",
+      "sha256": "3f689dbc1267af85ab66e6690e107847f470d359bc0e3e777ff5473861588e60"
+    },
+    {
+      "bytes": 2263,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/AxiomAudit.lean",
+      "sha256": "2e6b967c30e4b1d724953bd8aceb9168f71bd162820b76fbe49349bab89f06d6"
+    },
+    {
+      "bytes": 8099,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/Core.lean",
+      "sha256": "c547c9f0a84ffb7d99d80748e47f75d8f412c2a6c5eb7c8e3652afd3cdc1f1d5"
+    },
+    {
+      "bytes": 5562,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "formalization/QIKVRT_Formalization_v2.0/QIKVRTUniversalOntology/ExtendedAxiomAudit.lean",
+      "sha256": "9d5415247ead0a2de44657039361d446865128b464c816038a234a1071a1f29a"
     },
     {
       "bytes": 2739,
@@ -16897,13 +16996,13 @@
       "sha256": "07d6545fe29e15a39f08519aac71f6ea5fc0530d0d5101d5b3e8df93cf9f7e5e"
     },
     {
-      "bytes": 191,
+      "bytes": 265,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
-      "sha256": "b2d38c03edd8b20c991172ecfeeada6c3072adf6321928eda475a7608579e8df"
+      "sha256": "45d01cd75d0b966cceaed22a246d804811544f8b7c0403ba5d7a6d0e78a55f30"
     },
     {
       "bytes": 26,
@@ -17014,13 +17113,13 @@
       "sha256": "fbdaefadc12435285e1fde418757375dba7234a4fd2356faac6fa09c9742ce1d"
     },
     {
-      "bytes": 11234,
+      "bytes": 13156,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py",
-      "sha256": "c1dea2d70d02603ca86d537cb3b7769c4da644a80f091e3aa0b8fc069a9c7e11"
+      "sha256": "216ad24c763066ea5871dbcc6503a2b0e535617cca9e80ecc4f4ec2b4fe983f4"
     },
     {
       "bytes": 6886,
@@ -26282,13 +26381,13 @@
       "sha256": "c749c633401eb9de4c22b20bf2d701e79286fb9d06cb3012f7704bbf247b2d5a"
     },
     {
-      "bytes": 3467,
+      "bytes": 3779,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "release/formalization-v2/alpha2-frozen/FREEZE_MANIFEST.json",
-      "sha256": "281b7311602a3643eff7e02317bfaffc9b438d9b81974a015e1729888e97b2cb"
+      "sha256": "c9f0bdcfa941a366d6ec1bdd0a8c37afe88ba0d2440959532d1ae2aff62d8c14"
     },
     {
       "bytes": 2338,
@@ -26334,6 +26433,15 @@
       "immutable": true,
       "path": "release/formalization-v2/alpha2-frozen/formalization/QIKVRT_Formalization_v2.0/README.md",
       "sha256": "a8dc9d93a093ea6a02fa7772040b58bd6ad3770d4f15db4cecb859200e8c14a6"
+    },
+    {
+      "bytes": 191,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/formalization-v2/alpha2-frozen/formalization/QIKVRT_Formalization_v2.0/lakefile.toml",
+      "sha256": "b2d38c03edd8b20c991172ecfeeada6c3072adf6321928eda475a7608579e8df"
     },
     {
       "bytes": 7238,
@@ -29521,6 +29629,15 @@
       "sha256": "b172c3000bff841eab01f7c552b0e456d8a3a43373605a2dce3420eff756e08f"
     },
     {
+      "bytes": 2649,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "state/work_units/MANDELBROT_42_PROOF_REPRODUCTION_V1.json",
+      "sha256": "8f28cbc6dd5dcea1b15e3b9187ec3cf68a2d9c9c8b4f9cebcfb363069cb58dd7"
+    },
+    {
       "bytes": 1725,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
@@ -30628,13 +30745,13 @@
       "sha256": "30afef04c3707f5d7802ee53c509fe66e006d21d821e7c8adcf0d72d5afe2514"
     },
     {
-      "bytes": 5391,
+      "bytes": 5452,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_freeze_alpha2_status.py",
-      "sha256": "a0c46acf3e202c324afcd4dd559a1a2a13a3e7f8e059fbd67b6b4e5468a5b263"
+      "sha256": "9108c7670a5b17ab3bd12ebf1e4cbbd39e04be6f3de9c64623c97a167214ad6d"
     },
     {
       "bytes": 189,
@@ -31152,7 +31269,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3453,
+  "immutable_file_count": 3466,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -31177,7 +31294,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "9078b2859f27d16b4946c6ad74609bd30a17c559e6d43e9c3dca10051d4a84b7",
+  "repository_content_tree_sha256": "1cd8100840ee89292848d81ee84bcf10c34208a9704eb58ab9103bb86efc1fe9",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
