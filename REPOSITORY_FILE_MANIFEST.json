@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3563,
+  "file_count": 3564,
   "files": [
     {
       "bytes": 47,
@@ -26203,22 +26203,22 @@
       "sha256": "1deb0540c032f04416157905f8465d51af07d44d5969ffb97147c9a4c8831922"
     },
     {
-      "bytes": 588,
+      "bytes": 591,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
-      "sha256": "de25d88f60319a314a7eaa0a5db149581ba53b5c91f22447de08c4205a72530d"
+      "sha256": "65134bc5cdca397adc63f4ce99d2d6ccc2fc6ae2f187cea6180ad709168890b2"
     },
     {
-      "bytes": 567,
+      "bytes": 570,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
-      "sha256": "1828231ca1bd22c4ba266d343b9eb5d8b58afee3a1739a6360819b6561ce6dc8"
+      "sha256": "11043085b0610f10935c2462333fe5905ec3f25c310675448db533db64d0ede9"
     },
     {
       "bytes": 829,
@@ -30259,6 +30259,15 @@
       "sha256": "d61f1e0dc9df4827e5ff46b38c83b70976d89037410c7d149000525b73a2dcd6"
     },
     {
+      "bytes": 6412,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "state/work_units/RENEW_MIRROR_NODE_LIVENESS_AFTER_EXPIRY_V1.json",
+      "sha256": "d94109b3c0897633133af89f2748dfe85c58587dd0e527eedf7fb92bc8ba4554"
+    },
+    {
       "bytes": 5501,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -32061,7 +32070,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3554,
+  "immutable_file_count": 3555,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -32086,7 +32095,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "b97c39506523c694ed535939a43bc6e3c60c98a168876518845c318f5a2e7557",
+  "repository_content_tree_sha256": "e5ce281f2318d3b9e6db907ef2fac3b2ffdbf7cffd8d2298979932cfcc0d0546",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
