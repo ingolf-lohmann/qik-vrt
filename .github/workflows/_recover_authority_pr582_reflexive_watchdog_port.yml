@@ -32,7 +32,7 @@ jobs:
       SOURCE_RUN_ID: '31419887528'
       SOURCE_ARTIFACT_ID: '9074972541'
       EXPECTED_GENERATED_COMMIT: 76733f185237fddf72511b2e18d1236f7c1d7840
-      EXPECTED_GENERATED_TREE: 85eed6631de0920dc45cae87b62b07db774e6d03
+      EXPECTED_GENERATED_TREE: 85eed663d9299c065e352308260aca78fe968b34
       RECOVERY_PATH: .github/workflows/_recover_authority_pr582_reflexive_watchdog_port.yml
       ORIGINAL_CARRIER_PATH: .github/workflows/_materialize_authority_pr582_reflexive_watchdog_port.yml
     steps:
@@ -167,7 +167,7 @@ jobs:
               printf '%s\n' \
                 'Recover exact Authority PR #582 reflexive-watchdog Mirror tree' \
                 '' \
-                'Adopt the exact artifact-generated tree 85eed6631de0920dc45cae87b62b07db774e6d03 as a history-preserving fast-forward successor. No content reconstruction, force push, release, deployment, Zenodo/DOI/IETF effect, PASS, FINAL_PASS, EFFECT_ACK_DONE, Authority-Mirror equality, universal database-superiority, or global deadlock-freedom claim.' \
+                'Adopt the exact artifact-generated tree 85eed663d9299c065e352308260aca78fe968b34 as a history-preserving fast-forward successor. No content reconstruction, force push, release, deployment, Zenodo/DOI/IETF effect, PASS, FINAL_PASS, EFFECT_ACK_DONE, Authority-Mirror equality, universal database-superiority, or global deadlock-freedom claim.' \
                 | git commit-tree "$EXPECTED_GENERATED_TREE" -p "$live_head"
             )"
             test "$(git rev-parse --verify "$successor^{tree}")" = "$EXPECTED_GENERATED_TREE"
