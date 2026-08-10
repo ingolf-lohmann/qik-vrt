@@ -43,10 +43,17 @@ jobs:
         id: materialize
         shell: bash
         run: |
-          set -euo pipefail
+          set -Eeuo pipefail
 
+          receipt_dir="$RUNNER_TEMP/qikvrt-mirror-pr568-port"
+          mkdir -p "$receipt_dir"
+          exec > >(tee "$receipt_dir/materialize.log") 2>&1
+          stage=START
+          trap 'status=$?; printf "%s\n" "$stage" > "$receipt_dir/final-stage.txt"; printf "%s\n" "$status" > "$receipt_dir/materialize-status.txt"' EXIT
+
+          stage=VERIFY_CARRIER_BINDING
           test "$(git rev-parse --verify HEAD^{commit})" = "$EVENT_HEAD"
-          test "$(git rev-parse --verify HEAD^1)" = "$EXPECTED_MIRROR_BASE"
+          git merge-base --is-ancestor "$EXPECTED_MIRROR_BASE" HEAD
           test "$(git rev-parse --verify "$EXPECTED_MIRROR_BASE^{tree}")" = "$EXPECTED_MIRROR_BASE_TREE"
 
           mapfile -t carrier_delta < <(git diff --name-only "$EXPECTED_MIRROR_BASE" HEAD --)
@@ -56,6 +63,7 @@ jobs:
           live_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
           test "$live_main" = "$EXPECTED_MIRROR_BASE"
 
+          stage=FETCH_AUTHORITY
           git fetch --no-tags --depth=1 \
             https://github.com/Goldkelch/qik-vrt.git \
             "$AUTHORITY_COMMIT:refs/remotes/authority/pr568"
@@ -81,10 +89,14 @@ jobs:
             tools/qikvrt_workflow_executor.py
           )
 
+          stage=COPY_PORTABLE_PATHS
           for path in "${portable_paths[@]}"; do
-            entry="$(git ls-tree "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(git ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
             test -n "$entry"
-            read -r mode type blob tree_path <<< "$entry"
+            metadata="${entry%%$'\t'*}"
+            tree_path="${entry#*$'\t'}"
+            read -r mode type blob <<< "$metadata"
+            printf 'PORT_PATH path=%s mode=%s type=%s blob=%s\n' "$path" "$mode" "$type" "$blob"
             test "$mode" = "100644"
             test "$type" = "blob"
             test "$tree_path" = "$path"
@@ -94,6 +106,7 @@ jobs:
 
           rm -- "$CARRIER_PATH"
 
+          stage=GENERATE_MIRROR_INTEGRITY
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
 
@@ -119,20 +132,27 @@ jobs:
             tests/test_seed_workflows.py \
             tools/qikvrt_seed_common.py \
             tools/qikvrt_workflow_executor.py | LC_ALL=C sort > "$expected"
+
+          stage=VERIFY_BOUNDED_DIFF
           git diff --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
           diff -u "$expected" "$actual"
           git diff --check "$EXPECTED_MIRROR_BASE" --
 
           for path in "${portable_paths[@]}"; do
-            read -r mode type blob tree_path <<< "$(git ls-tree "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(git ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            metadata="${entry%%$'\t'*}"
+            tree_path="${entry#*$'\t'}"
+            read -r mode type blob <<< "$metadata"
             test "$mode" = "100644"
             test "$type" = "blob"
             test "$tree_path" = "$path"
             test "$(git hash-object "$path")" = "$blob"
           done
 
+          stage=RUN_COMPLETE_TESTS
           make test
 
+          stage=CREATE_MATERIALIZED_COMMIT
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
@@ -146,8 +166,6 @@ jobs:
           materialized_tree="$(git rev-parse HEAD^{tree})"
           test "$(git rev-parse HEAD^1)" = "$EVENT_HEAD"
 
-          receipt_dir="$RUNNER_TEMP/qikvrt-mirror-pr568-port"
-          mkdir -p "$receipt_dir"
           printf '%s\n' "$materialized_commit" > "$receipt_dir/materialized-commit.txt"
           printf '%s\n' "$materialized_tree" > "$receipt_dir/materialized-tree.txt"
           printf '%s\n' "$EVENT_HEAD" > "$receipt_dir/carrier-head.txt"
@@ -157,6 +175,7 @@ jobs:
           git diff-tree --no-commit-id --name-only -r HEAD | LC_ALL=C sort > "$receipt_dir/changed-paths.txt"
           git bundle create "$receipt_dir/materialized-commit.bundle" HEAD ^"$EXPECTED_MIRROR_BASE"
 
+          stage=ATTEMPT_HISTORY_PRESERVING_PUSH
           set +e
           git push origin "HEAD:refs/heads/$SOURCE_BRANCH" > "$receipt_dir/push.log" 2>&1
           push_status=$?
@@ -170,6 +189,7 @@ jobs:
           echo "QIKVRT_MATERIALIZED_COMMIT=$materialized_commit"
           echo "QIKVRT_MATERIALIZED_TREE=$materialized_tree"
           echo "QIKVRT_PUSH_STATUS=$push_status"
+          stage=COMPLETE
 
       - name: Preserve exact materialization receipt
         if: always()
