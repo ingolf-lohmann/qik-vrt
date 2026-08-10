@@ -112,6 +112,29 @@ class AutonomousSelfHealTests(unittest.TestCase):
             with self.assertRaises(MODULE.SelfHealBlock):
                 MODULE.repair_handler(handler)
 
+    def test_workflow_persists_pre_effect_block_receipt_before_exit(self) -> None:
+        workflow = (
+            ROOT / ".github/workflows/qikvrt_autonomous_self_heal.yml"
+        ).read_text(encoding="utf-8")
+        ordered_fragments = (
+            "set -euo pipefail",
+            "set +e",
+            "python3 -B tools/qikvrt_autonomous_pre_effect_controller.py apply > /tmp/qikvrt-self-heal.json",
+            "rc=$?",
+            "set -e\n          cat /tmp/qikvrt-self-heal.json",
+            "exit \"$rc\"",
+        )
+        positions = [workflow.index(fragment) for fragment in ordered_fragments]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn(
+            "- name: Preserve autonomous pre-effect controller receipt\n"
+            "        if: always()\n"
+            "        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+            workflow,
+        )
+        self.assertIn("path: /tmp/qikvrt-self-heal.json", workflow)
+        self.assertIn("if-no-files-found: error", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
