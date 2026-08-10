@@ -26,6 +26,7 @@ jobs:
     env:
       EXPECTED_MIRROR_BASE: 04622e3f96b9c547e26dfc89cc2d363ccbc37666
       EXPECTED_MIRROR_BASE_TREE: 72fc0be18b175e71bb5a3f29f6623a0e304b46a6
+      AUTHORITY_PARENT: 9659ecc301850955d64d7ffdb13d3d17b88fa4cb
       AUTHORITY_COMMIT: 134f53a1d82e3175a5a1bff4cdd3464a506b7e5f
       AUTHORITY_TREE: 7c834f434b0477a9f574f581a5bf7cb829b428c8
       SOURCE_BRANCH: mirror/port-authority-pr568-workflow-executor-mesh-v1
@@ -78,6 +79,10 @@ jobs:
             "$AUTHORITY_COMMIT"
           test "$(git -C "$authority_git" rev-parse --verify FETCH_HEAD^{commit})" = "$AUTHORITY_COMMIT"
           test "$(git -C "$authority_git" rev-parse --verify FETCH_HEAD^{tree})" = "$AUTHORITY_TREE"
+          git -C "$authority_git" fetch --no-tags --depth=1 \
+            https://github.com/Goldkelch/qik-vrt.git \
+            "$AUTHORITY_PARENT"
+          test "$(git -C "$authority_git" rev-parse --verify FETCH_HEAD^{commit})" = "$AUTHORITY_PARENT"
 
           portable_paths=(
             .github/workflows/qikvrt_autonomous_pr_continuation.yml
@@ -85,7 +90,6 @@ jobs:
             .github/workflows/qikvrt_workflow_executor.yml
             .github/workflows/qikvrt_workflow_executor_watchdog.yml
             AI
-            Makefile
             acceptance/WORKFLOW_EXECUTOR_MESH_NODE_CONTINUITY_ACCEPTANCE_TEST.md
             registry/NODE_DISCOVERY_POLICY.json
             state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json
@@ -130,19 +134,28 @@ jobs:
             test "$raw_blob" = "$blob"
           done
 
+          stage=APPLY_SEMANTIC_MAKEFILE_PORT
+          git show "$EXPECTED_MIRROR_BASE:Makefile" > Makefile
+          authority_makefile_patch="$RUNNER_TEMP/pr568-Makefile.patch"
+          git -C "$authority_git" diff --binary "$AUTHORITY_PARENT" "$AUTHORITY_COMMIT" -- Makefile > "$authority_makefile_patch"
+          test -s "$authority_makefile_patch"
+          test "$(grep -c '^diff --git a/Makefile b/Makefile$' "$authority_makefile_patch")" = "1"
+          git apply --check "$authority_makefile_patch"
+          git apply "$authority_makefile_patch"
+          makefile_expected_blob="$(git hash-object --no-filters Makefile)"
+          printf 'MAKEFILE_SEMANTIC_BLOB=%s\n' "$makefile_expected_blob"
+
           rm -- "$CARRIER_PATH"
 
           stage=GENERATE_MIRROR_INTEGRITY
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
 
-          # Derive the exact effective delta from the fixed Mirror base and
-          # exact Authority tree, then add the three Mirror-native integrity
-          # projections. New portable paths are deliberately included.
           expected="$RUNNER_TEMP/pr568-port-expected.txt"
           actual="$RUNNER_TEMP/pr568-port-actual.txt"
           {
             printf '%s\n' \
+              Makefile \
               REPOSITORY_FILE_MANIFEST.json \
               REPOSITORY_FILE_MANIFEST.json.sha256 \
               SHA256SUMS.txt
@@ -177,6 +190,7 @@ jobs:
             test "$tree_path" = "$path"
             test "$(git hash-object --no-filters "$path")" = "$blob"
           done
+          test "$(git hash-object --no-filters Makefile)" = "$makefile_expected_blob"
 
           stage=RUN_COMPLETE_TESTS
           make test
@@ -186,9 +200,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
 
-          # `git add` can apply `.gitattributes` clean/EOL filters. The portable
-          # contract is Git-blob/byte identity, so verify raw working-tree bytes
-          # and pin any filtered index entry back to the exact Authority blob.
           for path in "${portable_paths[@]}"; do
             entry="$(authority_entry "$path")"
             metadata="${entry%%$'\t'*}"
@@ -206,11 +217,18 @@ jobs:
             test "$(git rev-parse ":$path")" = "$blob"
           done
 
+          staged_makefile_blob="$(git rev-parse ':Makefile')"
+          if test "$staged_makefile_blob" != "$makefile_expected_blob"; then
+            printf 'MAKEFILE_INDEX_REPIN staged=%s expected=%s\n' "$staged_makefile_blob" "$makefile_expected_blob"
+            git update-index --add --cacheinfo "100644,$makefile_expected_blob,Makefile"
+          fi
+          test "$(git rev-parse ':Makefile')" = "$makefile_expected_blob"
+
           git diff --cached --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
           diff -u "$expected" "$actual"
           git diff --cached --check
           git commit -m "Port Authority PR #568 workflow executor Mesh scope" \
-            -m "Establish exact identity for 16 portable Authority blobs, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
+            -m "Establish exact identity for 15 portable Authority blobs, apply the exact PR568 Makefile hunks to the Mirror base, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
 
           materialized_commit="$(git rev-parse HEAD)"
           materialized_tree="$(git rev-parse HEAD^{tree})"
@@ -225,9 +243,11 @@ jobs:
             test "$tree_path" = "$path"
             test "$(git rev-parse "HEAD:$path")" = "$blob"
           done
+          test "$(git rev-parse 'HEAD:Makefile')" = "$makefile_expected_blob"
 
           printf '%s\n' "$materialized_commit" > "$receipt_dir/materialized-commit.txt"
           printf '%s\n' "$materialized_tree" > "$receipt_dir/materialized-tree.txt"
+          printf '%s\n' "$makefile_expected_blob" > "$receipt_dir/makefile-semantic-blob.txt"
           printf '%s\n' "$EVENT_HEAD" > "$receipt_dir/carrier-head.txt"
           printf '%s\n' "$EXPECTED_MIRROR_BASE" > "$receipt_dir/mirror-base.txt"
           printf '%s\n' "$AUTHORITY_COMMIT" > "$receipt_dir/authority-commit.txt"
