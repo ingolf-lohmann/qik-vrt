@@ -56,9 +56,15 @@ jobs:
           git merge-base --is-ancestor "$EXPECTED_MIRROR_BASE" HEAD
           test "$(git rev-parse --verify "$EXPECTED_MIRROR_BASE^{tree}")" = "$EXPECTED_MIRROR_BASE_TREE"
 
-          mapfile -t carrier_delta < <(git diff --name-only "$EXPECTED_MIRROR_BASE" HEAD --)
-          test "${#carrier_delta[@]}" -eq 1
-          test "${carrier_delta[0]}" = "$CARRIER_PATH"
+          carrier_expected="$RUNNER_TEMP/pr568-carrier-expected.txt"
+          carrier_actual="$RUNNER_TEMP/pr568-carrier-actual.txt"
+          printf '%s\n' \
+            "$CARRIER_PATH" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt | LC_ALL=C sort > "$carrier_expected"
+          git diff --name-only "$EXPECTED_MIRROR_BASE" HEAD -- | LC_ALL=C sort > "$carrier_actual"
+          diff -u "$carrier_expected" "$carrier_actual"
 
           live_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
           test "$live_main" = "$EXPECTED_MIRROR_BASE"
