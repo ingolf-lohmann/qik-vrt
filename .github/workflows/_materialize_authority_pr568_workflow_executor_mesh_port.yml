@@ -100,7 +100,8 @@ jobs:
 
           stage=COPY_PORTABLE_PATHS
           for path in "${portable_paths[@]}"; do
-            entry="$(git -C "$authority_git" ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(git -C "$authority_git" ls-tree -r --full-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            printf 'PORT_LOOKUP path=%s entry=%q\n' "$path" "$entry"
             test -n "$entry"
             metadata="${entry%%$'\t'*}"
             tree_path="${entry#*$'\t'}"
@@ -150,7 +151,7 @@ jobs:
           git diff --check "$EXPECTED_MIRROR_BASE" --
 
           for path in "${portable_paths[@]}"; do
-            entry="$(git -C "$authority_git" ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(git -C "$authority_git" ls-tree -r --full-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
             metadata="${entry%%$'\t'*}"
             tree_path="${entry#*$'\t'}"
             read -r mode type blob <<< "$metadata"
