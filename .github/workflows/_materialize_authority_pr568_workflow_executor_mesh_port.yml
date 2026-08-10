@@ -136,10 +136,9 @@ jobs:
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
 
-          # The portable contract requires all 16 final blobs to equal Authority,
-          # not that already-identical Mirror paths be rewritten.  Derive the
-          # exact effective delta from the fixed Mirror base and exact Authority
-          # tree, then add only the three Mirror-native integrity projections.
+          # Derive the exact effective delta from the fixed Mirror base and
+          # exact Authority tree, then add the three Mirror-native integrity
+          # projections. New portable paths are deliberately included.
           expected="$RUNNER_TEMP/pr568-port-expected.txt"
           actual="$RUNNER_TEMP/pr568-port-actual.txt"
           {
@@ -161,7 +160,10 @@ jobs:
           printf 'EXPECTED_EFFECTIVE_DIFF_COUNT=%s\n' "$(wc -l < "$expected")"
 
           stage=VERIFY_BOUNDED_DIFF
-          git diff --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
+          {
+            git diff --name-only "$EXPECTED_MIRROR_BASE" --
+            git ls-files --others --exclude-standard
+          } | LC_ALL=C sort -u > "$actual"
           diff -u "$expected" "$actual"
           git diff --check "$EXPECTED_MIRROR_BASE" --
 
@@ -184,10 +186,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
 
-          # `git hash-object` and `git add` can apply `.gitattributes` clean/EOL
-          # filters. The portable contract is Git-blob/byte identity, so verify
-          # raw working-tree bytes and pin any filtered index entry back to the
-          # exact Authority blob before committing.
+          # `git add` can apply `.gitattributes` clean/EOL filters. The portable
+          # contract is Git-blob/byte identity, so verify raw working-tree bytes
+          # and pin any filtered index entry back to the exact Authority blob.
           for path in "${portable_paths[@]}"; do
             entry="$(authority_entry "$path")"
             metadata="${entry%%$'\t'*}"
