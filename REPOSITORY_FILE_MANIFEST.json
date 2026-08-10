@@ -208,13 +208,13 @@
       "sha256": "c5b8532cde108b3fae8a03b49d3420203b687f3c25e2a3b16347b84960b5555a"
     },
     {
-      "bytes": 5794,
+      "bytes": 6248,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
-      "sha256": "bf6138a1091fc89e7f4086bd93e51839bb31a5c153b8c4220ce71878b6c97e19"
+      "sha256": "7bf6e242c883a23871e954932b8f70b786f21b8a62d05f3a63393d5dc6db8c65"
     },
     {
       "bytes": 2201,
@@ -30790,13 +30790,13 @@
       "sha256": "1fbc8f0c28e3628e61a6f58efe0d86e7e3722ee3dae2160fedc79a0055ccb6c9"
     },
     {
-      "bytes": 4248,
+      "bytes": 5304,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_qikvrt_autonomous_self_heal.py",
-      "sha256": "833a28174de8b00adae19dc0f973bd629fc999ca965c5039cccab919244c4e6e"
+      "sha256": "dca660b123bc4d0a563684a4b66b6be5fedfb90e5d237215573146f9a5747839"
     },
     {
       "bytes": 13432,
@@ -32176,7 +32176,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "9474c9e922e81abfbc6bfd21ce086d0f2aa6af9f9493638d2e345492858a8cc4",
+  "repository_content_tree_sha256": "85760723d5e0dbb64b18d6e0f29f7edfeead5dd4a6b1acafdacab515e48e7be0",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
