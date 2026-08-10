@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3573,
+  "file_count": 3575,
   "files": [
     {
       "bytes": 47,
@@ -30799,6 +30799,15 @@
       "sha256": "dca660b123bc4d0a563684a4b66b6be5fedfb90e5d237215573146f9a5747839"
     },
     {
+      "bytes": 6976,
+      "classification": "test_source",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tests/test_qikvrt_publication_overview.py",
+      "sha256": "ddb0bab5c75a5496d88f1a3795504df86ecec5c7454025a491a39ee795e74632"
+    },
+    {
       "bytes": 13432,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
@@ -31681,6 +31690,15 @@
       "sha256": "fedd67380997a8865f37c43c05c10f07f4c0f5c497829777bafc8e8b296dc116"
     },
     {
+      "bytes": 11733,
+      "classification": "source_code",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "tools/qikvrt_publication_overview.py",
+      "sha256": "3bb2a04cae174527cd015a15c5d79e297e7e1897f9875f16e82e9f1342c024a5"
+    },
+    {
       "bytes": 2328,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
@@ -32151,7 +32169,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3564,
+  "immutable_file_count": 3566,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -32176,7 +32194,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "85760723d5e0dbb64b18d6e0f29f7edfeead5dd4a6b1acafdacab515e48e7be0",
+  "repository_content_tree_sha256": "de90d632a029db0c8830ea2dc62511fd64071fad1ca1c79bce38c12ce084f70d",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
