@@ -98,9 +98,15 @@ jobs:
             tools/qikvrt_workflow_executor.py
           )
 
+          authority_entry() {
+            git -C "$authority_git" ls-tree -r --full-tree \
+              --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' \
+              "$AUTHORITY_COMMIT" -- "$1"
+          }
+
           stage=COPY_PORTABLE_PATHS
           for path in "${portable_paths[@]}"; do
-            entry="$(git -C "$authority_git" ls-tree -r --full-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(authority_entry "$path")"
             printf 'PORT_LOOKUP path=%s entry=%q\n' "$path" "$entry"
             test -n "$entry"
             metadata="${entry%%$'\t'*}"
@@ -113,7 +119,9 @@ jobs:
             mkdir -p "$(dirname "$path")"
             git -C "$authority_git" cat-file blob "$AUTHORITY_COMMIT:$path" > "$path"
             chmod 0644 "$path"
-            test "$(git hash-object "$path")" = "$blob"
+            raw_blob="$(git hash-object --no-filters "$path")"
+            printf 'PORT_RAW_HASH path=%s raw=%s expected=%s\n' "$path" "$raw_blob" "$blob"
+            test "$raw_blob" = "$blob"
           done
 
           rm -- "$CARRIER_PATH"
@@ -151,14 +159,14 @@ jobs:
           git diff --check "$EXPECTED_MIRROR_BASE" --
 
           for path in "${portable_paths[@]}"; do
-            entry="$(git -C "$authority_git" ls-tree -r --full-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(authority_entry "$path")"
             metadata="${entry%%$'\t'*}"
             tree_path="${entry#*$'\t'}"
             read -r mode type blob <<< "$metadata"
             test "$mode" = "100644"
             test "$type" = "blob"
             test "$tree_path" = "$path"
-            test "$(git hash-object "$path")" = "$blob"
+            test "$(git hash-object --no-filters "$path")" = "$blob"
           done
 
           stage=RUN_COMPLETE_TESTS
@@ -168,15 +176,47 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
+
+          # `git hash-object` and `git add` can apply `.gitattributes` clean/EOL
+          # filters.  The portable contract is Git-blob/byte identity, so verify
+          # raw working-tree bytes and pin any filtered index entry back to the
+          # exact Authority blob before committing.
+          for path in "${portable_paths[@]}"; do
+            entry="$(authority_entry "$path")"
+            metadata="${entry%%$'\t'*}"
+            tree_path="${entry#*$'\t'}"
+            read -r mode type blob <<< "$metadata"
+            test "$mode" = "100644"
+            test "$type" = "blob"
+            test "$tree_path" = "$path"
+            test "$(git hash-object --no-filters "$path")" = "$blob"
+            staged_blob="$(git rev-parse ":$path")"
+            if test "$staged_blob" != "$blob"; then
+              printf 'PORT_INDEX_REPIN path=%s staged=%s expected=%s\n' "$path" "$staged_blob" "$blob"
+              git update-index --add --cacheinfo "$mode,$blob,$path"
+            fi
+            test "$(git rev-parse ":$path")" = "$blob"
+          done
+
           git diff --cached --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
           diff -u "$expected" "$actual"
           git diff --cached --check
           git commit -m "Port Authority PR #568 workflow executor Mesh scope" \
-            -m "Copy exactly 16 portable Authority paths, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
+            -m "Copy exactly 16 portable Authority blobs, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
 
           materialized_commit="$(git rev-parse HEAD)"
           materialized_tree="$(git rev-parse HEAD^{tree})"
           test "$(git rev-parse HEAD^1)" = "$EVENT_HEAD"
+
+          stage=VERIFY_MATERIALIZED_TREE
+          for path in "${portable_paths[@]}"; do
+            entry="$(authority_entry "$path")"
+            metadata="${entry%%$'\t'*}"
+            tree_path="${entry#*$'\t'}"
+            read -r mode type blob <<< "$metadata"
+            test "$tree_path" = "$path"
+            test "$(git rev-parse "HEAD:$path")" = "$blob"
+          done
 
           printf '%s\n' "$materialized_commit" > "$receipt_dir/materialized-commit.txt"
           printf '%s\n' "$materialized_tree" > "$receipt_dir/materialized-tree.txt"
