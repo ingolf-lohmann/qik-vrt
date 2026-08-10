@@ -69,12 +69,15 @@ jobs:
           live_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
           test "$live_main" = "$EXPECTED_MIRROR_BASE"
 
-          stage=FETCH_AUTHORITY
-          git fetch --no-tags --depth=1 \
+          stage=FETCH_AUTHORITY_ISOLATED
+          authority_git="$RUNNER_TEMP/authority-pr568.git"
+          rm -rf "$authority_git"
+          git init --bare "$authority_git"
+          git -C "$authority_git" fetch --no-tags --depth=1 \
             https://github.com/Goldkelch/qik-vrt.git \
-            "$AUTHORITY_COMMIT:refs/remotes/authority/pr568"
-          test "$(git rev-parse --verify refs/remotes/authority/pr568^{commit})" = "$AUTHORITY_COMMIT"
-          test "$(git rev-parse --verify "$AUTHORITY_COMMIT^{tree}")" = "$AUTHORITY_TREE"
+            "$AUTHORITY_COMMIT"
+          test "$(git -C "$authority_git" rev-parse --verify FETCH_HEAD^{commit})" = "$AUTHORITY_COMMIT"
+          test "$(git -C "$authority_git" rev-parse --verify FETCH_HEAD^{tree})" = "$AUTHORITY_TREE"
 
           portable_paths=(
             .github/workflows/qikvrt_autonomous_pr_continuation.yml
@@ -97,7 +100,7 @@ jobs:
 
           stage=COPY_PORTABLE_PATHS
           for path in "${portable_paths[@]}"; do
-            entry="$(git ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(git -C "$authority_git" ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
             test -n "$entry"
             metadata="${entry%%$'\t'*}"
             tree_path="${entry#*$'\t'}"
@@ -106,7 +109,9 @@ jobs:
             test "$mode" = "100644"
             test "$type" = "blob"
             test "$tree_path" = "$path"
-            git checkout "$AUTHORITY_COMMIT" -- "$path"
+            mkdir -p "$(dirname "$path")"
+            git -C "$authority_git" cat-file blob "$AUTHORITY_COMMIT:$path" > "$path"
+            chmod 0644 "$path"
             test "$(git hash-object "$path")" = "$blob"
           done
 
@@ -145,7 +150,7 @@ jobs:
           git diff --check "$EXPECTED_MIRROR_BASE" --
 
           for path in "${portable_paths[@]}"; do
-            entry="$(git ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
+            entry="$(git -C "$authority_git" ls-tree --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' "$AUTHORITY_COMMIT" -- "$path")"
             metadata="${entry%%$'\t'*}"
             tree_path="${entry#*$'\t'}"
             read -r mode type blob <<< "$metadata"
