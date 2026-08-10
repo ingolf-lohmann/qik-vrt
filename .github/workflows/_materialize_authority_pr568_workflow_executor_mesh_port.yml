@@ -201,9 +201,6 @@ jobs:
           done
           test "$(git hash-object --no-filters Makefile)" = "$makefile_expected_blob"
 
-          stage=RUN_COMPLETE_TESTS
-          make test
-
           stage=CREATE_MATERIALIZED_COMMIT
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -253,6 +250,15 @@ jobs:
             test "$(git rev-parse "HEAD:$path")" = "$blob"
           done
           test "$(git rev-parse 'HEAD:Makefile')" = "$makefile_expected_blob"
+          git diff --name-only "$EXPECTED_MIRROR_BASE" HEAD -- | LC_ALL=C sort > "$actual"
+          diff -u "$expected" "$actual"
+
+          stage=RUN_COMPLETE_TESTS_ON_MATERIALIZED_HEAD
+          make test
+
+          stage=VERIFY_POST_TEST_INTEGRITY_AND_CLEAN_TREE
+          python3 -B tools/qikvrt_integrity.py verify
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
 
           printf '%s\n' "$materialized_commit" > "$receipt_dir/materialized-commit.txt"
           printf '%s\n' "$materialized_tree" > "$receipt_dir/materialized-tree.txt"
