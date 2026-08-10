@@ -135,14 +135,23 @@ jobs:
           done
 
           stage=APPLY_SEMANTIC_MAKEFILE_PORT
+          authority_parent_makefile="$RUNNER_TEMP/Makefile.authority-parent"
+          authority_pr568_makefile="$RUNNER_TEMP/Makefile.authority-pr568"
+          merged_makefile="$RUNNER_TEMP/Makefile.merged"
+          git -C "$authority_git" show "$AUTHORITY_PARENT:Makefile" > "$authority_parent_makefile"
+          git -C "$authority_git" show "$AUTHORITY_COMMIT:Makefile" > "$authority_pr568_makefile"
           git show "$EXPECTED_MIRROR_BASE:Makefile" > Makefile
-          authority_makefile_patch="$RUNNER_TEMP/pr568-Makefile.patch"
-          git -C "$authority_git" diff --binary "$AUTHORITY_PARENT" "$AUTHORITY_COMMIT" -- Makefile > "$authority_makefile_patch"
-          test -s "$authority_makefile_patch"
-          test "$(grep -c '^diff --git a/Makefile b/Makefile$' "$authority_makefile_patch")" = "1"
-          git apply --check "$authority_makefile_patch"
-          git apply "$authority_makefile_patch"
+          set +e
+          git merge-file --stdout Makefile "$authority_parent_makefile" "$authority_pr568_makefile" > "$merged_makefile"
+          merge_status=$?
+          set -e
+          printf 'MAKEFILE_THREE_WAY_STATUS=%s\n' "$merge_status"
+          test "$merge_status" = "0"
+          test -s "$merged_makefile"
+          ! grep -q '^<<<<<<<\|^=======\|^>>>>>>>' "$merged_makefile"
+          mv "$merged_makefile" Makefile
           makefile_expected_blob="$(git hash-object --no-filters Makefile)"
+          test "$makefile_expected_blob" != "$(git rev-parse "$EXPECTED_MIRROR_BASE:Makefile")"
           printf 'MAKEFILE_SEMANTIC_BLOB=%s\n' "$makefile_expected_blob"
 
           rm -- "$CARRIER_PATH"
@@ -228,7 +237,7 @@ jobs:
           diff -u "$expected" "$actual"
           git diff --cached --check
           git commit -m "Port Authority PR #568 workflow executor Mesh scope" \
-            -m "Establish exact identity for 15 portable Authority blobs, apply the exact PR568 Makefile hunks to the Mirror base, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
+            -m "Establish exact identity for 15 portable Authority blobs, three-way rebase the exact PR568 Makefile delta onto the Mirror base, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
 
           materialized_commit="$(git rev-parse HEAD)"
           materialized_tree="$(git rev-parse HEAD^{tree})"
