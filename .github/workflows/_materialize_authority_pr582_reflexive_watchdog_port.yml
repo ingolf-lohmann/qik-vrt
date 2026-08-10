@@ -1,0 +1,185 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: One-shot Authority PR582 reflexive watchdog Mirror port
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - ".github/workflows/_materialize_authority_pr582_reflexive_watchdog_port.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-mirror-port-authority-pr582-reflexive-watchdog
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'mirror/port-authority-pr582-reflexive-watchdog-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      EXPECTED_MIRROR_BASE: b559841ea03d3103435125f8d0ac095ff8e2346e
+      EXPECTED_MIRROR_BASE_TREE: afe752c514718c7a09e37ea6687b08365a787d65
+      AUTHORITY_COMMIT: 8c4845af39b33895ae40c0861b257488f9875a0b
+      AUTHORITY_TREE: 05c6af302cf89e946b5378f1dc3a1930e10c17ef
+      SOURCE_BRANCH: mirror/port-authority-pr582-reflexive-watchdog-v1
+      CARRIER_PATH: .github/workflows/_materialize_authority_pr582_reflexive_watchdog_port.yml
+      EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Check out literal carrier head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Materialize exact portable Authority bytes and Mirror-native integrity
+        id: materialize
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          receipt_dir="$RUNNER_TEMP/qikvrt-mirror-pr582-reflexive-port"
+          mkdir -p "$receipt_dir"
+          printf '%s\n' "$EVENT_HEAD" > "$receipt_dir/carrier-head.txt"
+          printf '%s\n' "$EXPECTED_MIRROR_BASE" > "$receipt_dir/mirror-base.txt"
+          printf '%s\n' "$EXPECTED_MIRROR_BASE_TREE" > "$receipt_dir/mirror-base-tree.txt"
+          printf '%s\n' "$AUTHORITY_COMMIT" > "$receipt_dir/authority-commit.txt"
+          printf '%s\n' "$AUTHORITY_TREE" > "$receipt_dir/authority-tree.txt"
+          trap 'status=$?; printf "%s\n" "$status" > "$receipt_dir/materialize-step-status.txt"' EXIT
+
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EVENT_HEAD"
+          test "$(git rev-parse --verify HEAD^1)" = "$EXPECTED_MIRROR_BASE"
+          test "$(git rev-parse --verify "$EXPECTED_MIRROR_BASE^{tree}")" = "$EXPECTED_MIRROR_BASE_TREE"
+
+          mapfile -t carrier_delta < <(git diff --name-only "$EXPECTED_MIRROR_BASE" HEAD --)
+          test "${#carrier_delta[@]}" -eq 1
+          test "${carrier_delta[0]}" = "$CARRIER_PATH"
+
+          live_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$live_main" = "$EXPECTED_MIRROR_BASE"
+
+          git fetch --no-tags --depth=1 \
+            https://github.com/Goldkelch/qik-vrt.git \
+            "$AUTHORITY_COMMIT:refs/remotes/authority/pr582"
+          test "$(git rev-parse --verify refs/remotes/authority/pr582^{commit})" = "$AUTHORITY_COMMIT"
+          test "$(git rev-parse --verify "$AUTHORITY_COMMIT^{tree}")" = "$AUTHORITY_TREE"
+
+          portable_paths=(
+            .github/workflows/qikvrt_reflexive_repository_watchdog.yml
+            .github/workflows/qikvrt_workflow_executor_watchdog.yml
+            docs/REFLEXIVE_REPOSITORY_WATCHDOG.md
+            registry/NODE_DISCOVERY_POLICY.json
+            state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json
+            state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json
+            tests/test_qikvrt_reflexive_repository_watchdog.py
+            tools/qikvrt_reflexive_repository_watchdog.py
+          )
+
+          for path in "${portable_paths[@]}"; do
+            entry="$(git ls-tree "$AUTHORITY_COMMIT" -- "$path")"
+            test -n "$entry"
+            read -r mode type blob tree_path <<< "$entry"
+            expected_mode=100644
+            if test "$path" = tools/qikvrt_reflexive_repository_watchdog.py; then
+              expected_mode=100755
+            fi
+            test "$mode" = "$expected_mode"
+            test "$type" = blob
+            test "$tree_path" = "$path"
+            git checkout "$AUTHORITY_COMMIT" -- "$path"
+            test "$(git hash-object "$path")" = "$blob"
+          done
+
+          rm -- "$CARRIER_PATH"
+
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+
+          expected="$RUNNER_TEMP/pr582-port-expected.txt"
+          actual="$RUNNER_TEMP/pr582-port-actual.txt"
+          printf '%s\n' \
+            .github/workflows/qikvrt_reflexive_repository_watchdog.yml \
+            .github/workflows/qikvrt_workflow_executor_watchdog.yml \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 \
+            SHA256SUMS.txt \
+            docs/REFLEXIVE_REPOSITORY_WATCHDOG.md \
+            registry/NODE_DISCOVERY_POLICY.json \
+            state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json \
+            state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json \
+            tests/test_qikvrt_reflexive_repository_watchdog.py \
+            tools/qikvrt_reflexive_repository_watchdog.py | LC_ALL=C sort > "$expected"
+          git diff --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
+          diff -u "$expected" "$actual"
+          git diff --check "$EXPECTED_MIRROR_BASE" --
+
+          for path in "${portable_paths[@]}"; do
+            read -r mode type blob tree_path <<< "$(git ls-tree "$AUTHORITY_COMMIT" -- "$path")"
+            expected_mode=100644
+            if test "$path" = tools/qikvrt_reflexive_repository_watchdog.py; then
+              expected_mode=100755
+            fi
+            test "$mode" = "$expected_mode"
+            test "$type" = blob
+            test "$tree_path" = "$path"
+            test "$(git hash-object "$path")" = "$blob"
+          done
+
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
+            tests.test_qikvrt_reflexive_repository_watchdog \
+            tests.test_qikvrt_workflow_executor_mesh_contract \
+            tests.test_seed_workflows
+          make test
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
+          diff -u "$expected" "$actual"
+          git diff --cached --check
+          git commit -m "Port Authority PR #582 reflexive pre-deadlock watchdog" \
+            -m "Copy exactly eight portable Authority paths, regenerate Mirror-native integrity, preserve history, and perform no release/deployment/Zenodo/DOI/IETF effect."
+
+          materialized_commit="$(git rev-parse HEAD)"
+          materialized_tree="$(git rev-parse HEAD^{tree})"
+          test "$(git rev-parse HEAD^1)" = "$EVENT_HEAD"
+
+          printf '%s\n' "$materialized_commit" > "$receipt_dir/materialized-commit.txt"
+          printf '%s\n' "$materialized_tree" > "$receipt_dir/materialized-tree.txt"
+          cp "$expected" "$receipt_dir/final-diff-expected.txt"
+          git diff --name-only "$EXPECTED_MIRROR_BASE" HEAD -- | LC_ALL=C sort \
+            > "$receipt_dir/final-diff-from-base.txt"
+          diff -u "$receipt_dir/final-diff-expected.txt" "$receipt_dir/final-diff-from-base.txt"
+          git diff-tree --no-commit-id --name-status -r HEAD \
+            > "$receipt_dir/materialized-commit-delta.txt"
+          git bundle create "$receipt_dir/materialized-commit.bundle" HEAD ^"$EXPECTED_MIRROR_BASE"
+
+          set +e
+          git push origin "HEAD:refs/heads/$SOURCE_BRANCH" > "$receipt_dir/push.log" 2>&1
+          push_status=$?
+          set -e
+          printf '%s\n' "$push_status" > "$receipt_dir/push-status.txt"
+          cat "$receipt_dir/push.log"
+
+          echo "materialized_commit=$materialized_commit" >> "$GITHUB_OUTPUT"
+          echo "materialized_tree=$materialized_tree" >> "$GITHUB_OUTPUT"
+          echo "push_status=$push_status" >> "$GITHUB_OUTPUT"
+          echo "QIKVRT_MATERIALIZED_COMMIT=$materialized_commit"
+          echo "QIKVRT_MATERIALIZED_TREE=$materialized_tree"
+          echo "QIKVRT_PUSH_STATUS=$push_status"
+
+      - name: Preserve exact materialization receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-mirror-pr582-reflexive-port-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 30
+          path: ${{ runner.temp }}/qikvrt-mirror-pr582-reflexive-port
