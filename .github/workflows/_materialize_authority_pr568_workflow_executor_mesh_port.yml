@@ -104,6 +104,12 @@ jobs:
               "$AUTHORITY_COMMIT" -- "$1"
           }
 
+          mirror_base_entry() {
+            git ls-tree -r --full-tree \
+              --format='%(objectmode) %(objecttype) %(objectname)%x09%(path)' \
+              "$EXPECTED_MIRROR_BASE" -- "$1"
+          }
+
           stage=COPY_PORTABLE_PATHS
           for path in "${portable_paths[@]}"; do
             entry="$(authority_entry "$path")"
@@ -130,28 +136,29 @@ jobs:
           python3 -B tools/qikvrt_integrity.py generate
           python3 -B tools/qikvrt_integrity.py verify
 
+          # The portable contract requires all 16 final blobs to equal Authority,
+          # not that already-identical Mirror paths be rewritten.  Derive the
+          # exact effective delta from the fixed Mirror base and exact Authority
+          # tree, then add only the three Mirror-native integrity projections.
           expected="$RUNNER_TEMP/pr568-port-expected.txt"
           actual="$RUNNER_TEMP/pr568-port-actual.txt"
-          printf '%s\n' \
-            .github/workflows/qikvrt_autonomous_pr_continuation.yml \
-            .github/workflows/qikvrt_live_status_watch.yml \
-            .github/workflows/qikvrt_workflow_executor.yml \
-            .github/workflows/qikvrt_workflow_executor_watchdog.yml \
-            AI \
-            Makefile \
-            REPOSITORY_FILE_MANIFEST.json \
-            REPOSITORY_FILE_MANIFEST.json.sha256 \
-            SHA256SUMS.txt \
-            acceptance/WORKFLOW_EXECUTOR_MESH_NODE_CONTINUITY_ACCEPTANCE_TEST.md \
-            registry/NODE_DISCOVERY_POLICY.json \
-            state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json \
-            state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json \
-            state/work_units/WORKFLOW_EXECUTOR_LITERAL_PR_HEAD_BINDING_REPAIR_V1.json \
-            tests/test_qikvrt_autonomous_pr_continuation.py \
-            tests/test_qikvrt_workflow_executor_mesh_contract.py \
-            tests/test_seed_workflows.py \
-            tools/qikvrt_seed_common.py \
-            tools/qikvrt_workflow_executor.py | LC_ALL=C sort > "$expected"
+          {
+            printf '%s\n' \
+              REPOSITORY_FILE_MANIFEST.json \
+              REPOSITORY_FILE_MANIFEST.json.sha256 \
+              SHA256SUMS.txt
+            for path in "${portable_paths[@]}"; do
+              authority="$(authority_entry "$path")"
+              base_entry="$(mirror_base_entry "$path")"
+              if test "$authority" != "$base_entry"; then
+                printf '%s\n' "$path"
+              else
+                printf 'PORT_ALREADY_CANONICAL path=%s\n' "$path" >&2
+              fi
+            done
+          } | LC_ALL=C sort > "$expected"
+          cp "$expected" "$receipt_dir/expected-final-paths.txt"
+          printf 'EXPECTED_EFFECTIVE_DIFF_COUNT=%s\n' "$(wc -l < "$expected")"
 
           stage=VERIFY_BOUNDED_DIFF
           git diff --name-only "$EXPECTED_MIRROR_BASE" -- | LC_ALL=C sort > "$actual"
@@ -178,7 +185,7 @@ jobs:
           git add -A
 
           # `git hash-object` and `git add` can apply `.gitattributes` clean/EOL
-          # filters.  The portable contract is Git-blob/byte identity, so verify
+          # filters. The portable contract is Git-blob/byte identity, so verify
           # raw working-tree bytes and pin any filtered index entry back to the
           # exact Authority blob before committing.
           for path in "${portable_paths[@]}"; do
@@ -202,7 +209,7 @@ jobs:
           diff -u "$expected" "$actual"
           git diff --cached --check
           git commit -m "Port Authority PR #568 workflow executor Mesh scope" \
-            -m "Copy exactly 16 portable Authority blobs, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
+            -m "Establish exact identity for 16 portable Authority blobs, regenerate Mirror-native integrity, preserve history, and perform no Zenodo/IETF/release/deployment effect."
 
           materialized_commit="$(git rev-parse HEAD)"
           materialized_tree="$(git rev-parse HEAD^{tree})"
