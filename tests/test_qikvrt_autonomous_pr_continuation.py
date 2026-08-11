@@ -20,7 +20,7 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         value = contract["pull_request_continuation"]
         self.assertEqual(
             value["opt_in_marker"],
-            "<!-- qikvrt-autonomous-self-heal:enabled -->",
+            "<!-- qikvrt-autonomous-pr-continuation:enabled -->",
         )
         self.assertTrue(value["same_repository_only"])
         self.assertTrue(value["draft_only"])

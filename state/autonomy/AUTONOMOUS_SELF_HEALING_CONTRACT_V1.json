@@ -60,7 +60,7 @@
   ],
   "pull_request_continuation": {
     "workflow_path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
-    "opt_in_marker": "<!-- qikvrt-autonomous-self-heal:enabled -->",
+    "opt_in_marker": "<!-- qikvrt-autonomous-pr-continuation:enabled -->",
     "same_repository_only": true,
     "draft_only": true,
     "merge_current_main_before_repair": true,
@@ -87,6 +87,47 @@
     "external_effect": "FORBIDDEN"
   },
   "allowlisted_handlers": [
+    {
+      "failure_class": "MIRROR_NODE_LIVENESS_REFRESH_REQUIRED",
+      "probe": [
+        "python3",
+        "-B",
+        "tools/qikvrt_node_liveness.py",
+        "check"
+      ],
+      "repair": [
+        "python3",
+        "-B",
+        "tools/qikvrt_node_liveness.py",
+        "materialize"
+      ],
+      "failure_signature": "MIRROR_NODE_LIVENESS_REFRESH_REQUIRED",
+      "mutable_paths": [
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "state/work_units/RENEW_MIRROR_NODE_LIVENESS_AFTER_EXPIRY_V1.json"
+      ]
+    },
+    {
+      "failure_class": "MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED",
+      "probe": [
+        "python3",
+        "-B",
+        "tools/qikvrt_node_liveness.py",
+        "check-acceptance"
+      ],
+      "repair": [
+        "python3",
+        "-B",
+        "tools/qikvrt_node_liveness.py",
+        "materialize-acceptance"
+      ],
+      "failure_signature": "MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED",
+      "mutable_paths": [
+        "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
+        "state/work_units/REFRESH_MIRROR_SEED_ACCEPTANCE_AFTER_LIVENESS_V1.json"
+      ]
+    },
     {
       "failure_class": "ANTICIPATION_PROJECTION_DRIFT",
       "probe": [
@@ -188,6 +229,7 @@
       "-v",
       "tests.test_qikvrt_publication_overview",
       "tests.test_qikvrt_autonomous_self_heal",
+      "tests.test_qikvrt_node_liveness",
       "tests.test_qikvrt_expected_head_promotion"
     ]
   ],
