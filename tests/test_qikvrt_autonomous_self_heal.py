@@ -63,6 +63,18 @@ class AutonomousSelfHealTests(unittest.TestCase):
         allowed = MODULE.allowed_paths(contract)
         self.assertIn("anticipation/next-effect.json", allowed)
         self.assertIn("REPOSITORY_FILE_MANIFEST.json", allowed)
+        self.assertIn(
+            "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+            allowed,
+        )
+        self.assertIn(
+            "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
+            allowed,
+        )
+        self.assertIn(
+            "state/work_units/REFRESH_MIRROR_SEED_ACCEPTANCE_AFTER_LIVENESS_V1.json",
+            allowed,
+        )
         self.assertNotIn("AI_STATUS.md", allowed)
         self.assertNotIn(
             ".github/workflows/qikvrt_autonomous_self_heal.yml",
@@ -112,6 +124,18 @@ class AutonomousSelfHealTests(unittest.TestCase):
             with self.assertRaises(MODULE.SelfHealBlock):
                 MODULE.repair_handler(handler)
 
+    def test_signed_handler_refuses_unclassified_probe_failure(self) -> None:
+        handler = {
+            "failure_class": "MIRROR_NODE_LIVENESS_REFRESH_REQUIRED",
+            "probe": ["probe"],
+            "repair": ["repair"],
+            "failure_signature": "MIRROR_NODE_LIVENESS_REFRESH_REQUIRED",
+        }
+        result = MODULE.CommandResult(("probe",), 2, "BLOCK", "malformed input")
+        with mock.patch.object(MODULE, "run", return_value=result):
+            with self.assertRaises(MODULE.SelfHealBlock):
+                MODULE.repair_handler(handler)
+
     def test_workflow_persists_pre_effect_block_receipt_before_exit(self) -> None:
         workflow = (
             ROOT / ".github/workflows/qikvrt_autonomous_self_heal.yml"
@@ -134,6 +158,18 @@ class AutonomousSelfHealTests(unittest.TestCase):
         )
         self.assertIn("path: /tmp/qikvrt-self-heal.json", workflow)
         self.assertIn("if-no-files-found: error", workflow)
+        self.assertIn(
+            "qikvrt-self-heal-candidate:base:$BASE_SHA fingerprint:$FINGERPRINT",
+            workflow,
+        )
+        self.assertIn("current-base autonomous self-heal candidate already exists", workflow)
+
+    def test_controller_reobserves_origin_main_after_repairs(self) -> None:
+        source = (ROOT / "tools/qikvrt_autonomous_self_heal.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("def reobserve_origin_main", source)
+        self.assertIn("reobserve_origin_main(base_revision)", source)
 
 
 if __name__ == "__main__":

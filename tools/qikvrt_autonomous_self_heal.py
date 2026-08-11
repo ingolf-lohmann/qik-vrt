@@ -160,7 +160,40 @@ def load_contract() -> dict[str, Any]:
         or candidate.get("proposal_workflow_may_merge") is not False
     ):
         raise SelfHealBlock("candidate review boundary differs")
+    _validate_handlers(value.get("allowlisted_handlers"))
     return value
+
+
+def _validate_handlers(handlers: Any) -> None:
+    if not isinstance(handlers, list) or not handlers:
+        raise SelfHealBlock("allowlisted handlers are absent")
+    failure_classes: set[str] = set()
+    for handler in handlers:
+        if not isinstance(handler, Mapping):
+            raise SelfHealBlock("allowlisted handler is not an object")
+        failure_class = handler.get("failure_class")
+        if (
+            not isinstance(failure_class, str)
+            or not failure_class
+            or failure_class in failure_classes
+        ):
+            raise SelfHealBlock("handler failure class is missing or duplicated")
+        failure_classes.add(failure_class)
+        for key in ("probe", "repair", "mutable_paths"):
+            value = handler.get(key)
+            if not isinstance(value, list) or not value or not all(
+                isinstance(item, str) and item for item in value
+            ):
+                raise SelfHealBlock(
+                    f"handler {failure_class} has invalid {key}"
+                )
+        signature = handler.get("failure_signature")
+        if signature is not None and (
+            not isinstance(signature, str) or not signature
+        ):
+            raise SelfHealBlock(
+                f"handler {failure_class} has invalid failure signature"
+            )
 
 
 def allowed_paths(contract: dict[str, Any]) -> set[str]:
@@ -171,10 +204,27 @@ def allowed_paths(contract: dict[str, Any]) -> set[str]:
 
 
 def changed_paths() -> list[str]:
-    result = run(("git", "diff", "--name-only", "--"), timeout=60)
-    if result.returncode:
-        raise SelfHealBlock(result.stderr.strip() or "git diff failed")
-    return sorted(line for line in result.stdout.splitlines() if line)
+    # Include both staged changes and newly created work units.  The prior
+    # unstaged-only query could omit the first occurrence of a receipt and
+    # produce a branch that cannot be committed deterministically.
+    tracked = run(("git", "diff", "--name-only", "HEAD", "--"), timeout=60)
+    if tracked.returncode:
+        raise SelfHealBlock(tracked.stderr.strip() or "git diff failed")
+    untracked = run(
+        ("git", "ls-files", "--others", "--exclude-standard"), timeout=60
+    )
+    if untracked.returncode:
+        raise SelfHealBlock(
+            untracked.stderr.strip() or "git untracked-file scan failed"
+        )
+    return sorted(
+        {
+            line
+            for output in (tracked.stdout, untracked.stdout)
+            for line in output.splitlines()
+            if line
+        }
+    )
 
 
 def semantic_fingerprint(paths: Sequence[str]) -> str:
@@ -213,18 +263,41 @@ def observed_base_revision() -> str:
     return value
 
 
+def reobserve_origin_main(expected_base: str) -> str:
+    result = run(
+        ("git", "ls-remote", "--heads", "origin", "refs/heads/main"),
+        timeout=90,
+    )
+    fields = result.stdout.split()
+    if result.returncode or len(fields) != 2:
+        raise SelfHealBlock(result.stderr.strip() or "cannot reobserve origin/main")
+    observed = fields[0]
+    if len(observed) != 40 or any(
+        character not in "0123456789abcdef" for character in observed
+    ):
+        raise SelfHealBlock("origin/main is not a Git SHA-1")
+    if observed != expected_base:
+        raise SelfHealBlock(
+            f"origin/main drifted during repair: {expected_base} != {observed}"
+        )
+    return observed
+
+
 def repair_handler(handler: dict[str, Any]) -> dict[str, Any]:
     probe = run(tuple(handler["probe"]))
     if probe.returncode == 0:
         return {"failure_class": handler["failure_class"], "state": "NOOP"}
     combined = probe.stdout + "\n" + probe.stderr
-    if (
-        handler["failure_class"] == "ANTICIPATION_PROJECTION_DRIFT"
-        and "projection drift:" not in combined
-    ):
-        raise SelfHealBlock(
-            "anticipation failure is not an allowlisted projection drift"
-        )
+    failure_signature = handler.get("failure_signature")
+    if failure_signature is not None:
+        if not isinstance(failure_signature, str) or not failure_signature:
+            raise SelfHealBlock(
+                f"failure signature is invalid for {handler['failure_class']}"
+            )
+        if failure_signature not in combined:
+            raise SelfHealBlock(
+                f"probe failure is not allowlisted for {handler['failure_class']}"
+            )
     repair = run(tuple(handler["repair"]))
     if repair.returncode:
         raise SelfHealBlock(
@@ -263,6 +336,7 @@ def execute(apply: bool) -> dict[str, Any]:
     unexpected = sorted(set(paths) - allowed_paths(contract))
     if unexpected:
         raise SelfHealBlock(f"non-allowlisted mutation: {unexpected}")
+    reobserved_origin_main = reobserve_origin_main(base_revision)
     fingerprint = semantic_fingerprint(paths) if paths else None
     candidate_id = (
         candidate_identity(base_revision, fingerprint)
@@ -274,6 +348,7 @@ def execute(apply: bool) -> dict[str, Any]:
         "schema": "qikvrt_autonomous_self_heal_result_v1",
         "state": state,
         "observed_base_revision": base_revision,
+        "reobserved_origin_main": reobserved_origin_main,
         "semantic_fingerprint": fingerprint,
         "candidate_identity": candidate_id,
         "changed_paths": paths,

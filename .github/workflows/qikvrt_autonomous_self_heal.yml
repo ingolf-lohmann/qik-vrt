@@ -16,7 +16,23 @@ on:
   pull_request:
     paths:
       - ".github/workflows/qikvrt_autonomous_self_heal.yml"
+      - ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
+      - ".github/workflows/qikvrt_expected_head_promotion.yml"
+      - ".github/workflows/qikvrt_autonomous_pr_continuation.yml"
       - "tests/test_qikvrt_continuous_auto_repair.py"
+      - "tools/qikvrt_node_liveness.py"
+      - "tests/test_qikvrt_node_liveness.py"
+      - "tools/qikvrt_autonomous_self_heal.py"
+      - "tools/qikvrt_autonomous_pre_effect_controller.py"
+      - "tools/qikvrt_expected_head_promotion.py"
+      - "tests/test_qikvrt_autonomous_self_heal.py"
+      - "tests/test_qikvrt_autonomous_pre_effect_controller.py"
+      - "tests/test_qikvrt_expected_head_promotion.py"
+      - "tests/test_qikvrt_expected_head_promotion_contract.py"
+      - "tests/test_qikvrt_autonomous_pr_continuation.py"
+      - "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
+      - "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json"
+      - "Makefile"
 
 permissions:
   contents: read
@@ -84,6 +100,8 @@ jobs:
 
       - name: Execute bounded repository-native repairs before external effects
         id: repair
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -124,11 +142,14 @@ jobs:
           python3 -B tools/qikvrt_anticipation.py check
           python3 -B tools/qikvrt_publication_overview.py check
           python3 -B tools/qikvrt_integrity.py verify
+          python3 -B tools/qikvrt_node_liveness.py check
           python3 -B -m unittest -v \
             tests.test_qikvrt_publication_overview \
             tests.test_qikvrt_autonomous_self_heal \
             tests.test_qikvrt_autonomous_pre_effect_controller \
+            tests.test_qikvrt_node_liveness \
             tests.test_qikvrt_expected_head_promotion \
+            tests.test_qikvrt_expected_head_promotion_contract \
             tests.test_qikvrt_continuous_auto_repair
           python3 -B - <<'PY'
           import base64
@@ -139,9 +160,20 @@ jobs:
               if path
           )
           actual = sorted(
-              path for path in subprocess.check_output(
-                  ['git', 'diff', '--name-only', '--'], text=True
-              ).splitlines() if path
+              {
+                  path
+                  for output in (
+                      subprocess.check_output(
+                          ['git', 'diff', '--name-only', 'HEAD', '--'], text=True
+                      ),
+                      subprocess.check_output(
+                          ['git', 'ls-files', '--others', '--exclude-standard'],
+                          text=True,
+                      ),
+                  )
+                  for path in output.splitlines()
+                  if path
+              }
           )
           if actual != expected:
               raise SystemExit(f'BLOCK: controller/worktree path mismatch: expected={expected}, actual={actual}')
@@ -162,7 +194,88 @@ jobs:
           test -n "$FINGERPRINT"
           test -n "$CANDIDATE_ID"
           test "$(git rev-parse --verify HEAD^{commit})" = "$BASE_SHA"
+          remote_main="$(git ls-remote --exit-code origin refs/heads/main | awk '{print $1}')"
+          test "$remote_main" = "$BASE_SHA"
           branch="automation/self-heal-${CANDIDATE_ID:0:24}"
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/pulls?state=open&base=main&per_page=100" > /tmp/qikvrt-open-self-heal-prs.json
+          existing_pr="$(python3 -B - <<'PY'
+          import json
+          import os
+
+          base = os.environ["BASE_SHA"]
+          repository = os.environ["GITHUB_REPOSITORY"]
+          pages = json.load(
+              open("/tmp/qikvrt-open-self-heal-prs.json", encoding="utf-8")
+          )
+          fingerprint = os.environ["FINGERPRINT"]
+          marker = (
+              "<!-- qikvrt-self-heal-candidate:"
+              f"base:{base} fingerprint:{fingerprint} -->"
+          )
+          for page in pages:
+              for pull in page:
+                  head_repo = ((pull.get("head") or {}).get("repo") or {}).get(
+                      "full_name"
+                  )
+                  if (
+                      pull.get("draft") is True
+                      and head_repo == repository
+                      and marker in (pull.get("body") or "")
+                  ):
+                      print(pull["number"])
+                      raise SystemExit(0)
+          PY
+          )"
+          if test -n "$existing_pr"; then
+            echo "A current-base autonomous self-heal candidate already exists: #$existing_pr"
+            exit 0
+          fi
+          python3 -B - <<'PY'
+          import base64
+          import json
+          import os
+          import subprocess
+          import sys
+
+          repository = os.environ['GITHUB_REPOSITORY']
+          base = os.environ['BASE_SHA']
+          candidate = {
+              path
+              for path in base64.b64decode(
+                  os.environ['CHANGED_PATHS_B64']
+              ).decode('utf-8').split('\0')
+              if path
+          }
+          pages = json.load(
+              open('/tmp/qikvrt-open-self-heal-prs.json', encoding='utf-8')
+          )
+          for page in pages:
+              for pull in page:
+                  if (pull.get('base') or {}).get('sha') != base:
+                      continue
+                  number = pull.get('number')
+                  raw = subprocess.check_output(
+                      [
+                          'gh', 'api', '--paginate', '--slurp',
+                          f'repos/{repository}/pulls/{number}/files?per_page=100',
+                      ],
+                      text=True,
+                  )
+                  changed = {
+                      name
+                      for response in json.loads(raw)
+                      for item in response
+                      for name in (item.get('filename'), item.get('previous_filename'))
+                      if isinstance(name, str) and name
+                  }
+                  overlap = sorted(candidate & changed)
+                  if overlap:
+                      raise SystemExit(
+                          f'BLOCK: current-base competing writer #{number} overlaps {overlap}'
+                      )
+          PY
+          remote_main_after_scan="$(git ls-remote --exit-code origin refs/heads/main | awk '{print $1}')"
+          test "$remote_main_after_scan" = "$BASE_SHA"
           if gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/${branch}" >/dev/null 2>&1; then
             exit 0
           fi
@@ -194,6 +307,8 @@ jobs:
           PY
           cat > /tmp/qikvrt-self-heal-pr.md <<EOF
           <!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->
+          <!-- qikvrt-autonomous-self-heal:enabled -->
+          <!-- qikvrt-self-heal-candidate:base:$BASE_SHA fingerprint:$FINGERPRINT -->
 
           Repository-native opportunistic pre-effect repair candidate.
 
@@ -212,12 +327,29 @@ jobs:
 
           No force push, release, deployment, Zenodo or IETF mutation, credentialed external write, scientific confirmation, physical correspondence, repository-wide PASS, FINAL_PASS, EFFECT_ACK_DONE, full synchronization, or symmetric canonicality is claimed.
           EOF
-          gh pr create \
+          pr_url="$(gh pr create \
             --draft \
             --base main \
             --head "$branch" \
             --title "fix(autonomy): bounded deterministic self-heal ${CANDIDATE_ID:0:16}" \
-            --body-file /tmp/qikvrt-self-heal-pr.md
+            --body-file /tmp/qikvrt-self-heal-pr.md)"
+          pr_number="${pr_url##*/}"
+          test -n "$pr_number"
+          python3 -B - <<PY > /tmp/qikvrt-autonomous-dispatch.json
+          import json
+          print(json.dumps({
+              'event_type': 'qikvrt_autonomous_exact_head_verify',
+              'client_payload': {
+                  'repository': '${GITHUB_REPOSITORY}',
+                  'pull_request': int('${pr_number}'),
+                  'head_ref': '${branch}',
+                  'head_sha': '${candidate_head}',
+                  'base_sha': '${BASE_SHA}',
+              },
+          }))
+          PY
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" \
+            --input /tmp/qikvrt-autonomous-dispatch.json
 
       - name: Assert unchanged state is a repository NOOP
         if: steps.repair.outputs.state == 'NOOP'
