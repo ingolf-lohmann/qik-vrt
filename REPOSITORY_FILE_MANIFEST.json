@@ -26293,22 +26293,22 @@
       "sha256": "1deb0540c032f04416157905f8465d51af07d44d5969ffb97147c9a4c8831922"
     },
     {
-      "bytes": 591,
+      "bytes": 587,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
-      "sha256": "e12eff721fcf1c40ea4c5ac2888e68c9d71b6501690524f023f00438946f76b3"
+      "sha256": "fa687c31dc94822c2d0af880745b8ac102a525f8c0f9f242aae84120ac00c6ab"
     },
     {
-      "bytes": 570,
+      "bytes": 566,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
-      "sha256": "242788bc84cd07bf19a6b760e423c18b7afb4ad2bfa7f61879d24bb3b3d1a592"
+      "sha256": "4cddcb2141ac4a2d8420b7e80c006faf3c220711317780915c7c12340012a0c6"
     },
     {
       "bytes": 1053,
@@ -30412,13 +30412,13 @@
       "sha256": "3953368140ff43c9b4c83d4de1b1fb11800c54124c7d1b6626190fe8a1917b87"
     },
     {
-      "bytes": 6412,
+      "bytes": 5340,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "state/work_units/RENEW_MIRROR_NODE_LIVENESS_AFTER_EXPIRY_V1.json",
-      "sha256": "d94109b3c0897633133af89f2748dfe85c58587dd0e527eedf7fb92bc8ba4554"
+      "sha256": "bb0253e1515736bc36314aa8c81d6e975ee7c8d3620eea64b372f68c63743de9"
     },
     {
       "bytes": 2762,
@@ -32401,7 +32401,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "2eaff578285ea26e50d79192c083567ecb027421c00c22e761b98963c078e957",
+  "repository_content_tree_sha256": "a9a515891350a9a7b505bbf77d0e0946258b2e3b9aa64aefe6328c2a841db8ed",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
