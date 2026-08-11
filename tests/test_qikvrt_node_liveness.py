@@ -127,6 +127,11 @@ def git(root: pathlib.Path, *arguments: str) -> str:
 
 def initialize_git(root: pathlib.Path) -> None:
     git(root, "init", "-q")
+    # Git may detach automatic object maintenance after a commit.  These
+    # repositories are intentionally tiny and ephemeral, so disable it
+    # before the fixture can race TemporaryDirectory cleanup.
+    git(root, "config", "maintenance.auto", "false")
+    git(root, "config", "gc.auto", "0")
     git(root, "config", "user.name", "test")
     git(root, "config", "user.email", "test@example.invalid")
 
