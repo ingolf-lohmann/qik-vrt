@@ -1,18 +1,21 @@
 {
-  "qikvrt_event": "NODE_ACK_OF_SEED_ACCEPTANCE",
+  "boundaries": {
+    "no_global_scanning": true,
+    "no_remote_mutation_without_authorization": true,
+    "no_self_propagation": true,
+    "node_writes_only_to_node_repository": true
+  },
+  "checked_utc": "2026-08-11T03:45:30Z",
   "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+  "observed_authority_commit": "d0593450077161a83d35b6d373ebe7968df7229d",
+  "observed_authority_tree": "2c73a13d44ec0b5ea134fa4e912b3db48bc4815b",
+  "observed_mirror_commit": "126f46e1ccddde06390414194c15ee586460b76e",
+  "observed_mirror_tree": "753225a47a162fa7859e533afa230eddb112301b",
+  "qikvrt_event": "NODE_ACK_OF_SEED_ACCEPTANCE",
   "repository": "ingolf-lohmann/qik-vrt",
-  "seed_repository": "Goldkelch/qik-vrt",
-  "status": "ACCEPTED_BY_SEED",
-  "checked_utc": "2026-08-08T19:11:03Z",
-  "run_id": "codex-liveness-repair-20260808T191103Z",
+  "run_id": "qikvrt-seed-acceptance-refresh-20260811T034530Z",
   "seed_index_url": "https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/registry/NODEMESH_INDEX.json",
   "seed_node_entry_url": "https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/registry/nodes/a84f157a-cef2-4c47-bca9-8f407085bdbe.json",
-  "observed_authority_commit": "50cefe332ad8663432c5bcff6b09e3ab3e838086",
-  "boundaries": {
-    "node_writes_only_to_node_repository": true,
-    "no_global_scanning": true,
-    "no_self_propagation": true,
-    "no_remote_mutation_without_authorization": true
-  }
+  "seed_repository": "Goldkelch/qik-vrt",
+  "status": "ACCEPTED_BY_SEED"
 }
