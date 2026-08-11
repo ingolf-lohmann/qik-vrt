@@ -129,6 +129,8 @@ def initialize_git(root: pathlib.Path) -> None:
     git(root, "init", "-q")
     git(root, "config", "user.name", "test")
     git(root, "config", "user.email", "test@example.invalid")
+    git(root, "config", "maintenance.auto", "false")
+    git(root, "config", "gc.auto", "0")
 
 
 def snapshot(root: pathlib.Path) -> MODULE.RepositorySnapshot:
@@ -146,6 +148,14 @@ class NodeLivenessTests(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_temporary_git_fixtures_disable_background_maintenance(self) -> None:
+        initialize_git(self.root)
+        self.assertEqual(
+            "false",
+            git(self.root, "config", "--bool", "maintenance.auto"),
+        )
+        self.assertEqual("0", git(self.root, "config", "--int", "gc.auto"))
 
     def test_all_absent_active_mirror_records_fail_closed(self) -> None:
         with self.assertRaisesRegex(MODULE.NodeLivenessBlock, "all required"):
