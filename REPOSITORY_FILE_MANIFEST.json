@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "excluded_file_count": 9,
-  "file_count": 3594,
+  "file_count": 3598,
   "files": [
     {
       "bytes": 47,
@@ -12613,22 +12613,22 @@
       "sha256": "1c4d27087ecf5f80f7512240191ea112228620531f053822b04e45f682ab4c16"
     },
     {
-      "bytes": 25350,
+      "bytes": 25635,
       "classification": "documentation",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "docs/publications/index.html",
-      "sha256": "0bbc6d55c8225793eee14c832625ebfabd5c035e24d827d007ae262452b1f422"
+      "sha256": "f2b968ac8204899d8a513d8b23054fc904ea3cfb25b75724854a2ba24fdf7230"
     },
     {
-      "bytes": 24272,
+      "bytes": 25267,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "docs/publications/index.json",
-      "sha256": "63e992df17cacd1d984b66e3b9e3218b2377649ffdd5729bd01d0a92d9c2679a"
+      "sha256": "cfaed6d13f545030956e22a617fdb5782a34645f8ceaa3aa9f0cf84985c357eb"
     },
     {
       "bytes": 1102,
@@ -27083,6 +27083,33 @@
       "sha256": "43ff5d548162f009e778f630888e67a6e317a5b5c9f2a2aa61b3baed9c160f2d"
     },
     {
+      "bytes": 23477,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/round-trip-canonical-publication-zenodo-authorization-v2/OWNER_ZENODO_AUTHORIZATION.json",
+      "sha256": "42a816255d4c08e67e721bbdde638efe20c176dcfada0756426892e3c73c23a8"
+    },
+    {
+      "bytes": 18329,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/round-trip-canonical-publication-zenodo-authorization-v2/publish-request.json",
+      "sha256": "8ffb87633855a21f41184fd51d9215bf7793dbeaa725e29f053b9db38cbfdc0e"
+    },
+    {
+      "bytes": 30866,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "release/round-trip-canonical-publication-zenodo-authorization-v2/zenodo-publication.json",
+      "sha256": "ca3905184c69c12262e9b1578f519a74e2827b2f4c3f70e393369555571c0352"
+    },
+    {
       "bytes": 3853,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -30448,6 +30475,15 @@
       "sha256": "77115148e59896d0b4c7b4100800125620124587c281a18212f49d99ec02695e"
     },
     {
+      "bytes": 4783,
+      "classification": "repository_content",
+      "excluded_from_sha256_index": false,
+      "file_type": "regular",
+      "immutable": true,
+      "path": "state/work_units/ROUND_TRIP_ZENODO_EXACT_AUTHORIZATION_V2.json",
+      "sha256": "f43248c4bf808f4d572c22d360e3b14d02ee584d4eaa135209548d2d8cb542c2"
+    },
+    {
       "bytes": 3114,
       "classification": "repository_content",
       "excluded_from_sha256_index": false,
@@ -32340,7 +32376,7 @@
   ],
   "generator": "tools/qikvrt_integrity.py",
   "generator_version": "3.1",
-  "immutable_file_count": 3585,
+  "immutable_file_count": 3589,
   "immutable_file_max_bytes": 268435456,
   "includes_deliberate_untracked_sources": true,
   "integrity_authority": {
@@ -32365,7 +32401,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "a4b55949a4c29eabbfb4aaf1c3a0a9ed3de958899af96cf4e0478512a6913dd8",
+  "repository_content_tree_sha256": "dbd57af1d03c4f363529915491d9d38a7f5eb3ab1c0cbf81499098977212ee2a",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
