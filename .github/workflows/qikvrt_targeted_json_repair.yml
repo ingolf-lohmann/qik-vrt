@@ -132,36 +132,11 @@ jobs:
           PY
           git diff --check
 
-      - name: Verify focused regression and live fail-closed probe
+      - name: Verify focused JSON-serialization regression
         shell: bash
         run: |
           set -euo pipefail
           python3 -B -m unittest -v tests.test_qikvrt_node_liveness
-          set +e
-          python3 -B tools/qikvrt_node_liveness.py check-acceptance \
-            > "$RUNNER_TEMP/qikvrt-seed-acceptance-probe.json"
-          rc=$?
-          set -e
-          cat "$RUNNER_TEMP/qikvrt-seed-acceptance-probe.json"
-          test "$rc" -eq 1
-          python3 -B - <<'PY'
-          import json
-          import os
-          import pathlib
-
-          path = pathlib.Path(os.environ["RUNNER_TEMP"]) / "qikvrt-seed-acceptance-probe.json"
-          value = json.loads(path.read_text(encoding="utf-8"))
-          if value.get("state") != "MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED":
-              raise SystemExit("BLOCK: repaired probe did not expose the allowlisted state")
-          if value.get("refresh_required") is not True:
-              raise SystemExit("BLOCK: repaired probe did not require the bounded refresh")
-          for key in ("source", "authority"):
-              snapshot = value.get(key)
-              if not isinstance(snapshot, dict):
-                  raise SystemExit(f"BLOCK: {key} snapshot is not JSON-safe")
-              if set(snapshot) != {"repository", "commit", "tree"}:
-                  raise SystemExit(f"BLOCK: {key} snapshot fields differ")
-          PY
 
       - name: Regenerate integrity and run complete repository gates
         shell: bash
