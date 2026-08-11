@@ -30862,13 +30862,13 @@
       "sha256": "bda88c41190042ff01ba4dd748b3de43f1da501f322d097abf7a725ed35845e4"
     },
     {
-      "bytes": 2801,
+      "bytes": 3623,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
-      "sha256": "1fbc8f0c28e3628e61a6f58efe0d86e7e3722ee3dae2160fedc79a0055ccb6c9"
+      "sha256": "cf080ad4baf2b7d8abf23b1b5c1e8b5f33795662b7af771ff48ba2e06e56667c"
     },
     {
       "bytes": 6804,
@@ -31492,13 +31492,13 @@
       "sha256": "122ebce7521eb1365c1cde8c699692f70e1124a5c7ced4e0c223d4e6edb8a774"
     },
     {
-      "bytes": 9856,
+      "bytes": 9851,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
-      "sha256": "96f5c576c0aa1ab716e0fa1f6c4173520ba01336ee43cc1ff159c16493e98284"
+      "sha256": "3468bd3b7f7382168256940a45445a2fa5ec0f24b54e190ee2591809d12eea79"
     },
     {
       "bytes": 14303,
@@ -32347,7 +32347,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "6d5463039d049340b0571ac091ae93dd60c1090b7c62f622ebffccaf0bdcb92a",
+  "repository_content_tree_sha256": "ba20ab66cd2face849836366ec7525c6b997a37df8dea407e910fc480240ca64",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [

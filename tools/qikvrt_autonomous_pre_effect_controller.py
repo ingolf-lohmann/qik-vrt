@@ -107,7 +107,7 @@ def _github_repository_from_origin() -> str | None:
         return None
     origin = result.stdout.strip()
     match = re.fullmatch(
-        r"(?:https://github\\.com/|git@github\\.com:)([^/\\s]+)/([^/\\s]+?)(?:\\.git)?",
+        r"(?:https://github\.com/|git@github\.com:)([^/\s]+)/([^/\s]+?)(?:\.git)?",
         origin,
     )
     if match is None:
