@@ -90,33 +90,34 @@ jobs:
           method_marker = (
               "    def test_acceptance_refresh_is_separate_and_exact_pair_bound(self) -> None:\n"
           )
-          regression = """    def test_check_acceptance_cli_serializes_bound_snapshots(self) -> None:
-              assessment = {
-                  "state": "MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED",
-                  "refresh_required": True,
-                  "guid": GUID,
-                  "source": SOURCE,
-                  "authority": AUTHORITY,
-              }
-              with (
-                  mock.patch.object(
-                      MODULE,
-                      "acceptance_assessment",
-                      return_value=assessment,
-                  ),
-                  mock.patch("sys.stdout", new_callable=io.StringIO) as output,
-              ):
-                  returncode = MODULE.main(["check-acceptance"])
-              self.assertEqual(1, returncode)
-              rendered = output.getvalue()
-              self.assertIn("MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED", rendered)
-              value = json.loads(rendered)
-              self.assertEqual(SOURCE.commit, value["source"]["commit"])
-              self.assertEqual(SOURCE.tree, value["source"]["tree"])
-              self.assertEqual(AUTHORITY.commit, value["authority"]["commit"])
-              self.assertEqual(AUTHORITY.tree, value["authority"]["tree"])
-
-          """
+          regression = (
+              "    def test_check_acceptance_cli_serializes_bound_snapshots(self) -> None:\n"
+              "        assessment = {\n"
+              "            \"state\": \"MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED\",\n"
+              "            \"refresh_required\": True,\n"
+              "            \"guid\": GUID,\n"
+              "            \"source\": SOURCE,\n"
+              "            \"authority\": AUTHORITY,\n"
+              "        }\n"
+              "        with (\n"
+              "            mock.patch.object(\n"
+              "                MODULE,\n"
+              "                \"acceptance_assessment\",\n"
+              "                return_value=assessment,\n"
+              "            ),\n"
+              "            mock.patch(\"sys.stdout\", new_callable=io.StringIO) as output,\n"
+              "        ):\n"
+              "            returncode = MODULE.main([\"check-acceptance\"])\n"
+              "        self.assertEqual(1, returncode)\n"
+              "        rendered = output.getvalue()\n"
+              "        self.assertIn(\"MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED\", rendered)\n"
+              "        value = json.loads(rendered)\n"
+              "        self.assertEqual(SOURCE.commit, value[\"source\"][\"commit\"])\n"
+              "        self.assertEqual(SOURCE.tree, value[\"source\"][\"tree\"])\n"
+              "        self.assertEqual(AUTHORITY.commit, value[\"authority\"][\"commit\"])\n"
+              "        self.assertEqual(AUTHORITY.tree, value[\"authority\"][\"tree\"])\n"
+              "\n"
+          )
           if tests.count(method_marker) != 1 or regression in tests:
               raise SystemExit("BLOCK: node-liveness regression insertion point changed")
           test_path.write_text(
