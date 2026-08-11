@@ -26,6 +26,13 @@ jobs:
       TARGET_SHA: ${{ github.event.client_payload.head_sha }}
       TARGET_BASE_SHA: ${{ github.event.client_payload.base_sha }}
     steps:
+      - name: Check out exact base validation contract
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.client_payload.base_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Validate dispatch envelope
         env:
           GH_TOKEN: ${{ github.token }}
@@ -35,6 +42,7 @@ jobs:
           test "$TARGET_REPOSITORY" = "$GITHUB_REPOSITORY"
           test "${#TARGET_SHA}" -eq 40
           test "${#TARGET_BASE_SHA}" -eq 40
+          test "$(git rev-parse --verify HEAD^{commit})" = "$TARGET_BASE_SHA"
           gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}" \
             > /tmp/qikvrt-exact-head-pr.json
           python3 -B - <<'PY'
