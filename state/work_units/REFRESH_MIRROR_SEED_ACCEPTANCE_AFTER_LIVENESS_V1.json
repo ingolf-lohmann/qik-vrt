@@ -23,7 +23,7 @@
       "type": "LIVE_REOBSERVATION_AND_MATERIALIZATION"
     }
   ],
-  "created_at": "2026-08-11T05:02:55Z",
+  "created_at": "2026-08-11T10:02:50Z",
   "external_effects": {
     "deployment": "NOT_AUTHORIZED",
     "doi": "NOT_AUTHORIZED",
@@ -36,7 +36,7 @@
     "zenodo": "NOT_AUTHORIZED"
   },
   "git_history": {
-    "base_commit": "9dcc2e53f8479aae520153c0cf769e959dba3466",
+    "base_commit": "59bfd92a8a71cf6b6d66d1ee262e8825f8a5eeb9",
     "branch": "automation/self-heal-BASE_AND_FINGERPRINT_BOUND",
     "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
     "force_push": false,
@@ -60,14 +60,14 @@
     "directive": "RECEIVED"
   },
   "inputs": {
-    "authority_main": "d0593450077161a83d35b6d373ebe7968df7229d",
+    "authority_main": "b3a925522e262f31b14c27dc640f5759c581bc9e",
     "authority_registry_reobserved": true,
     "authority_repository": "Goldkelch/qik-vrt",
-    "authority_tree": "2c73a13d44ec0b5ea134fa4e912b3db48bc4815b",
+    "authority_tree": "b141d6fbb6f0637234fa5356a27445af4cac893b",
     "liveness_current_before_ack_refresh": true,
-    "mirror_main": "9dcc2e53f8479aae520153c0cf769e959dba3466",
+    "mirror_main": "59bfd92a8a71cf6b6d66d1ee262e8825f8a5eeb9",
     "mirror_repository": "ingolf-lohmann/qik-vrt",
-    "mirror_tree": "68c26e67904a6c99a229d361b63a3c975fcd7515",
+    "mirror_tree": "38f1fb2498c07a891a6182d981d6186076ffb8d9",
     "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
     "raw_transcript_persisted": false,
     "retention_mode": "METADATA_ONLY"
@@ -81,8 +81,8 @@
     }
   ],
   "outputs": {
-    "acknowledgement_checked_utc": "2026-08-11T05:02:55Z",
-    "acknowledgement_sha256": "d37f8041afee1b44278c0acfeaec7ba3b3e7aa4cf37dfa96028dcd71f6b32ee9",
+    "acknowledgement_checked_utc": "2026-08-11T10:02:50Z",
+    "acknowledgement_sha256": "ab44b3b0203c70065a6f94a938cbaba158a303252fc29efa212df04fd7123b89",
     "integrity_binding": "BOUND_BY_FINAL_REPOSITORY_NATIVE_INTEGRITY_TRIO",
     "paths": [
       "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
@@ -100,10 +100,10 @@
     "PASS": false
   },
   "schema": "qikvrt_node_liveness_repair_work_unit_v1",
-  "source_commit": "9dcc2e53f8479aae520153c0cf769e959dba3466",
+  "source_commit": "59bfd92a8a71cf6b6d66d1ee262e8825f8a5eeb9",
   "source_ref": "refs/heads/main",
   "source_repository": "ingolf-lohmann/qik-vrt",
-  "source_tree": "68c26e67904a6c99a229d361b63a3c975fcd7515",
+  "source_tree": "38f1fb2498c07a891a6182d981d6186076ffb8d9",
   "unresolved_origin": [],
   "verification": {
     "record_parser_contract": "PENDING_EXACT_HEAD_GATES",
