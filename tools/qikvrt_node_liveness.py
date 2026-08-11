@@ -960,8 +960,28 @@ def materialize_acceptance(
     }
 
 
+def _json_default(value: Any) -> dict[str, str]:
+    if isinstance(value, RepositorySnapshot):
+        return {
+            "repository": value.repository,
+            "commit": value.commit,
+            "tree": value.tree,
+        }
+    raise TypeError(
+        f"Object of type {type(value).__name__} is not JSON serializable"
+    )
+
+
 def _print(value: Mapping[str, Any]) -> None:
-    print(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2))
+    print(
+        json.dumps(
+            value,
+            ensure_ascii=False,
+            sort_keys=True,
+            indent=2,
+            default=_json_default,
+        )
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:

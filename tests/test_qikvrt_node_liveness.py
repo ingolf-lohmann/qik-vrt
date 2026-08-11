@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import io
 import importlib.util
 import json
 import pathlib
@@ -206,6 +207,32 @@ class NodeLivenessTests(unittest.TestCase):
             "PRESERVE_UNCHANGED_UNTIL_POST_PROMOTION_AUTHORITY_REOBSERVATION",
             work_unit["inputs"]["seed_acceptance_status_policy"],
         )
+
+    def test_check_acceptance_cli_serializes_bound_snapshots(self) -> None:
+        assessment = {
+            "state": "MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED",
+            "refresh_required": True,
+            "guid": GUID,
+            "source": SOURCE,
+            "authority": AUTHORITY,
+        }
+        with (
+            mock.patch.object(
+                MODULE,
+                "acceptance_assessment",
+                return_value=assessment,
+            ),
+            mock.patch("sys.stdout", new_callable=io.StringIO) as output,
+        ):
+            returncode = MODULE.main(["check-acceptance"])
+        self.assertEqual(1, returncode)
+        rendered = output.getvalue()
+        self.assertIn("MIRROR_SEED_ACCEPTANCE_REFRESH_REQUIRED", rendered)
+        value = json.loads(rendered)
+        self.assertEqual(SOURCE.commit, value["source"]["commit"])
+        self.assertEqual(SOURCE.tree, value["source"]["tree"])
+        self.assertEqual(AUTHORITY.commit, value["authority"]["commit"])
+        self.assertEqual(AUTHORITY.tree, value["authority"]["tree"])
 
     def test_acceptance_refresh_is_separate_and_exact_pair_bound(self) -> None:
         write_documents(self.root, fresh_documents())

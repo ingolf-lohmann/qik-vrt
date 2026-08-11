@@ -30907,13 +30907,13 @@
       "sha256": "8f6dce799a89c230d36a6288cc0d2bae066007cf53929d86f2b8f4c2504cbd37"
     },
     {
-      "bytes": 14334,
+      "bytes": 15420,
       "classification": "test_source",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tests/test_qikvrt_node_liveness.py",
-      "sha256": "8206e951df16a922189f69411594c783e4da5b15663d9cd070a37c152134c3b3"
+      "sha256": "e842fe23c3b16ea8fabbef737f5c147b0abd470542f06ac5a78eb4e06b943bbd"
     },
     {
       "bytes": 6976,
@@ -31825,13 +31825,13 @@
       "sha256": "fedd67380997a8865f37c43c05c10f07f4c0f5c497829777bafc8e8b296dc116"
     },
     {
-      "bytes": 35847,
+      "bytes": 36292,
       "classification": "source_code",
       "excluded_from_sha256_index": false,
       "file_type": "regular",
       "immutable": true,
       "path": "tools/qikvrt_node_liveness.py",
-      "sha256": "b48dfdeb2cd0cff09cc07b6e0916e0682594cabc4a2b971372a1dfde734fd422"
+      "sha256": "60503098bfa0c1071b9c230ac24aa8eb160b7ffb4861768002c349855a674069"
     },
     {
       "bytes": 11733,
@@ -32347,7 +32347,7 @@
   },
   "integrity_metadata_max_bytes": 67108864,
   "repository_content_tree_digest_specification": "sha256(canonical-json-v1 immutable records: path,file_type,bytes,sha256; integrity outputs excluded)",
-  "repository_content_tree_sha256": "ba20ab66cd2face849836366ec7525c6b997a37df8dea407e910fc480240ca64",
+  "repository_content_tree_sha256": "1fe2d2c9a2bf102df437d9b264d5149f0c570b31470e1c6d1c26b3a82c6b3500",
   "schema": "qikvrt_repository_integrity_manifest_v3",
   "source_command": "git ls-files -z --cached --others --exclude-standard -- .; subtract git ls-files -z --deleted -- .",
   "transient_exclusion_rules": [
