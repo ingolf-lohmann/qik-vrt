@@ -1,0 +1,121 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT recover missed PR309 exact-head verifier dispatch
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/qikvrt_recover_pr309_exact_verifier_dispatch.yml"
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: read
+  statuses: read
+
+concurrency:
+  group: qikvrt-recover-pr309-exact-verifier-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch-exact-bound-verifier:
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_REPOSITORY: ingolf-lohmann/qik-vrt
+      TARGET_PR: "309"
+      TARGET_REF: automation/self-heal-96a7cf0d88215107a856705a
+      TARGET_HEAD: 4464814dd4ec04666c7527c7a759b54c2461f0d5
+      TARGET_TREE: 548764a0558455250a9a8d16376798f40fc348ae
+      TARGET_BASE: 126f46e1ccddde06390414194c15ee586460b76e
+      PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
+      SELF_HEAL_MARKER: "<!-- qikvrt-autonomous-self-heal:enabled -->"
+      STATUS_CONTEXT: QIKVRT autonomous exact-head verification
+    steps:
+      - name: Validate exact current target and issue one repository dispatch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          live_main="$(gh api "repos/${TARGET_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$live_main" = "$TARGET_BASE"
+          test "${{ github.event.pull_request.base.sha }}" = "$TARGET_BASE"
+
+          gh api "repos/${TARGET_REPOSITORY}/pulls/${TARGET_PR}" > /tmp/qikvrt-target-pr.json
+          jq -e \
+            --arg base "$TARGET_BASE" \
+            --arg head "$TARGET_HEAD" \
+            --arg ref "$TARGET_REF" \
+            --arg repo "$TARGET_REPOSITORY" \
+            --arg promotion "$PROMOTION_MARKER" \
+            --arg self_heal "$SELF_HEAL_MARKER" \
+            '.state == "open" and
+             .merged == false and
+             .draft == true and
+             .base.ref == "main" and
+             .base.sha == $base and
+             .head.sha == $head and
+             .head.ref == $ref and
+             .head.repo.full_name == $repo and
+             (.body | contains($promotion)) and
+             (.body | contains($self_heal))' \
+            /tmp/qikvrt-target-pr.json >/dev/null
+
+          observed_tree="$(gh api "repos/${TARGET_REPOSITORY}/git/commits/${TARGET_HEAD}" --jq '.tree.sha')"
+          test "$observed_tree" = "$TARGET_TREE"
+
+          gh api --paginate --slurp \
+            "repos/${TARGET_REPOSITORY}/pulls/${TARGET_PR}/files?per_page=100" \
+            | jq -r '.[][] | .filename' \
+            | sort -u > /tmp/qikvrt-target-paths.txt
+          cat > /tmp/qikvrt-expected-paths.txt <<'EOF'
+          REPOSITORY_FILE_MANIFEST.json
+          REPOSITORY_FILE_MANIFEST.json.sha256
+          SHA256SUMS.txt
+          qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json
+          state/work_units/REFRESH_MIRROR_SEED_ACCEPTANCE_AFTER_LIVENESS_V1.json
+          EOF
+          sed -i 's/^          //' /tmp/qikvrt-expected-paths.txt
+          diff -u /tmp/qikvrt-expected-paths.txt /tmp/qikvrt-target-paths.txt
+
+          existing_state="$(
+            gh api "repos/${TARGET_REPOSITORY}/commits/${TARGET_HEAD}/statuses?per_page=100" \
+              --jq '[.[] | select(.context == env.STATUS_CONTEXT)][0].state // ""'
+          )"
+          if test "$existing_state" = success || test "$existing_state" = pending; then
+            echo "Exact-head verifier status already exists: $existing_state"
+            exit 0
+          fi
+
+          jq -n \
+            --arg repository "$TARGET_REPOSITORY" \
+            --argjson pull_request "$TARGET_PR" \
+            --arg head_ref "$TARGET_REF" \
+            --arg head_sha "$TARGET_HEAD" \
+            --arg base_sha "$TARGET_BASE" \
+            '{
+              event_type: "qikvrt_autonomous_exact_head_verify",
+              client_payload: {
+                repository: $repository,
+                pull_request: $pull_request,
+                head_ref: $head_ref,
+                head_sha: $head_sha,
+                base_sha: $base_sha
+              }
+            }' > /tmp/qikvrt-exact-head-dispatch.json
+
+          gh api --method POST \
+            "repos/${TARGET_REPOSITORY}/dispatches" \
+            --input /tmp/qikvrt-exact-head-dispatch.json
+
+          {
+            echo "Exact-bound repository dispatch issued."
+            echo "Target PR: ${TARGET_PR}"
+            echo "Target head: ${TARGET_HEAD}"
+            echo "External effect: NONE"
+          } >> "$GITHUB_STEP_SUMMARY"
