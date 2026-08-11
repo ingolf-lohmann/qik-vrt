@@ -6,6 +6,7 @@ import importlib.util
 import pathlib
 import sys
 import unittest
+from unittest import mock
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -53,6 +54,22 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
         self.assertFalse(policy["epistemic_boundaries"]["physical_correspondence_inferable"])
         self.assertFalse(policy["epistemic_boundaries"]["independent_review_fabricable"])
         self.assertFalse(policy["epistemic_boundaries"]["measurement_fabricable"])
+
+    def test_https_origin_resolves_repository_for_writer_observation(self) -> None:
+        result = mock.Mock(returncode=0, stdout="https://github.com/ingolf-lohmann/qik-vrt\n")
+        with mock.patch.object(MODULE.self_heal, "run", return_value=result):
+            self.assertEqual(
+                MODULE._github_repository_from_origin(),
+                "ingolf-lohmann/qik-vrt",
+            )
+
+    def test_ssh_origin_resolves_repository_and_strips_dot_git(self) -> None:
+        result = mock.Mock(returncode=0, stdout="git@github.com:ingolf-lohmann/qik-vrt.git\n")
+        with mock.patch.object(MODULE.self_heal, "run", return_value=result):
+            self.assertEqual(
+                MODULE._github_repository_from_origin(),
+                "ingolf-lohmann/qik-vrt",
+            )
 
 
 if __name__ == "__main__":
