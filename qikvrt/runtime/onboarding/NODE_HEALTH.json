@@ -1,18 +1,18 @@
 {
-  "qikvrt_event": "NODE_HEALTH_HEARTBEAT",
-  "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
-  "repository": "ingolf-lohmann/qik-vrt",
-  "seed_repository": "Goldkelch/qik-vrt",
-  "node_branch": "main",
-  "status": "ACTIVE",
-  "heartbeat_utc": "2026-08-11T00:36:02Z",
-  "expires_utc": "2026-08-12T01:36:02Z",
-  "heartbeat_ttl_minutes": 1500,
-  "run_id": "chatgpt-liveness-renewal-20260811T003602Z",
   "boundaries": {
-    "node_writes_only_to_node_repository": true,
     "no_global_scanning": true,
+    "no_remote_mutation_without_authorization": true,
     "no_self_propagation": true,
-    "no_remote_mutation_without_authorization": true
-  }
+    "node_writes_only_to_node_repository": true
+  },
+  "expires_utc": "2026-08-13T00:56:15Z",
+  "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+  "heartbeat_ttl_minutes": 1500,
+  "heartbeat_utc": "2026-08-11T23:56:15Z",
+  "node_branch": "main",
+  "qikvrt_event": "NODE_HEALTH_HEARTBEAT",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "run_id": "qikvrt-node-liveness-20260811T235615Z",
+  "seed_repository": "Goldkelch/qik-vrt",
+  "status": "ACTIVE"
 }
