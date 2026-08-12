@@ -180,7 +180,6 @@ jobs:
 
           if test "$merge_created" = false && ! test -s /tmp/qikvrt-pr-self-heal-paths; then
             test -z "$(git status --porcelain=v1 --untracked-files=all)"
-            exit 0
           fi
 
           make test
@@ -218,11 +217,11 @@ jobs:
           fi
           cat > /tmp/qikvrt-autonomous-pr-comment.md <<EOF
           <!-- qikvrt-autonomous-pr-continuation -->
-          Autonomous deterministic continuation materialized a history-preserving successor.
+          Autonomous deterministic continuation materialized or reverified the exact draft head.
 
           - previous exact head: \`${EXPECTED_HEAD}\`
           - current candidate head: \`${candidate_head}\`
-          - current main merged: \`${live_main}\`
+          - current main merged when required: \`${live_main}\`
           - deterministic generated-output conflicts reset before regeneration: \`${conflict_summary}\`
           - external effects: none
           - next state: exact-head repository-dispatch verification
