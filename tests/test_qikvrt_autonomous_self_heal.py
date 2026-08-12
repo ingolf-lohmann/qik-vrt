@@ -169,7 +169,11 @@ class AutonomousSelfHealTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("def reobserve_origin_main", source)
-        self.assertIn("reobserve_origin_main(base_revision)", source)
+        self.assertIn(
+            "expected_main = expected_origin_main or base_revision",
+            source,
+        )
+        self.assertIn("reobserve_origin_main(expected_main)", source)
 
 
 if __name__ == "__main__":
