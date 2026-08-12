@@ -307,7 +307,10 @@ def repair_handler(handler: dict[str, Any]) -> dict[str, Any]:
     return {"failure_class": handler["failure_class"], "state": "REPAIRED"}
 
 
-def execute(apply: bool) -> dict[str, Any]:
+def execute(
+    apply: bool,
+    expected_origin_main: str | None = None,
+) -> dict[str, Any]:
     contract = load_contract()
     initial = run(
         ("git", "status", "--porcelain=v1", "--untracked-files=all"),
@@ -336,7 +339,8 @@ def execute(apply: bool) -> dict[str, Any]:
     unexpected = sorted(set(paths) - allowed_paths(contract))
     if unexpected:
         raise SelfHealBlock(f"non-allowlisted mutation: {unexpected}")
-    reobserved_origin_main = reobserve_origin_main(base_revision)
+    expected_main = expected_origin_main or base_revision
+    reobserved_origin_main = reobserve_origin_main(expected_main)
     fingerprint = semantic_fingerprint(paths) if paths else None
     candidate_id = (
         candidate_identity(base_revision, fingerprint)
@@ -372,9 +376,13 @@ def execute(apply: bool) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("check", "apply"))
+    parser.add_argument("--expected-origin-main")
     args = parser.parse_args(argv)
     try:
-        result = execute(args.command == "apply")
+        result = execute(
+            args.command == "apply",
+            expected_origin_main=args.expected_origin_main,
+        )
     except (
         OSError,
         ValueError,
