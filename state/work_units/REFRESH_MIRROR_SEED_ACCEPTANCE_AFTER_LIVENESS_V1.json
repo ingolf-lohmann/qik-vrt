@@ -23,7 +23,7 @@
       "type": "LIVE_REOBSERVATION_AND_MATERIALIZATION"
     }
   ],
-  "created_at": "2026-08-11T11:37:56Z",
+  "created_at": "2026-08-12T02:34:42Z",
   "external_effects": {
     "deployment": "NOT_AUTHORIZED",
     "doi": "NOT_AUTHORIZED",
@@ -36,7 +36,7 @@
     "zenodo": "NOT_AUTHORIZED"
   },
   "git_history": {
-    "base_commit": "df78af0f743545e6247fe64fa88b6cc53c2921ab",
+    "base_commit": "1b9c9924d1a75850a5857a6913a518ad916c0557",
     "branch": "automation/self-heal-BASE_AND_FINGERPRINT_BOUND",
     "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
     "force_push": false,
@@ -65,9 +65,9 @@
     "authority_repository": "Goldkelch/qik-vrt",
     "authority_tree": "e43ac6663daae7d38a1005a6eca240e95e966848",
     "liveness_current_before_ack_refresh": true,
-    "mirror_main": "df78af0f743545e6247fe64fa88b6cc53c2921ab",
+    "mirror_main": "1b9c9924d1a75850a5857a6913a518ad916c0557",
     "mirror_repository": "ingolf-lohmann/qik-vrt",
-    "mirror_tree": "d3d65160598bf063c788cb136a3ba7634a55672d",
+    "mirror_tree": "14b21d028844ccf5e8831ad1c87d51c16339c6c7",
     "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
     "raw_transcript_persisted": false,
     "retention_mode": "METADATA_ONLY"
@@ -81,8 +81,8 @@
     }
   ],
   "outputs": {
-    "acknowledgement_checked_utc": "2026-08-11T11:37:56Z",
-    "acknowledgement_sha256": "b30f13431332dd0204939cc6561ed220ea35358250941c36c0a050f33497ffb6",
+    "acknowledgement_checked_utc": "2026-08-12T02:34:42Z",
+    "acknowledgement_sha256": "f695e24d51dfc7e40653c81c6bb6144e8ccd36893bbdab654e8cb63067fa8d52",
     "integrity_binding": "BOUND_BY_FINAL_REPOSITORY_NATIVE_INTEGRITY_TRIO",
     "paths": [
       "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
@@ -100,10 +100,10 @@
     "PASS": false
   },
   "schema": "qikvrt_node_liveness_repair_work_unit_v1",
-  "source_commit": "df78af0f743545e6247fe64fa88b6cc53c2921ab",
+  "source_commit": "1b9c9924d1a75850a5857a6913a518ad916c0557",
   "source_ref": "refs/heads/main",
   "source_repository": "ingolf-lohmann/qik-vrt",
-  "source_tree": "d3d65160598bf063c788cb136a3ba7634a55672d",
+  "source_tree": "14b21d028844ccf5e8831ad1c87d51c16339c6c7",
   "unresolved_origin": [],
   "verification": {
     "record_parser_contract": "PENDING_EXACT_HEAD_GATES",
