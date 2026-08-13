@@ -152,7 +152,9 @@ jobs:
             fi
           fi
 
-          python3 -B tools/qikvrt_autonomous_self_heal.py apply > /tmp/qikvrt-pr-self-heal.json
+          python3 -B tools/qikvrt_autonomous_self_heal.py apply \
+            --expected-origin-main "$live_main" \
+            > /tmp/qikvrt-pr-self-heal.json
           cat /tmp/qikvrt-pr-self-heal.json
           python3 -B - <<'PY' > /tmp/qikvrt-pr-self-heal-paths
           import json
