@@ -1,0 +1,110 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIK-VRT trusted PR334 exact-head dispatch
+
+on:
+  push:
+    branches:
+      - trusted/dispatch-pr334-exact-901943d6-v2
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: qikvrt-trusted-pr334-exact-dispatch-901943d6
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SOURCE_PR: "334"
+      SOURCE_BASE: "fc21066a12d0f3b0d72c1be30a2c3c413daf727c"
+      SOURCE_REF: "automation/self-heal-bcc2676f3f3c7105a1a02057"
+      SOURCE_HEAD: "901943d61d618f4ce09e206083655ee76e5d52a9"
+    steps:
+      - name: Reobserve exact source and dispatch verifier once
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "ingolf-lohmann/qik-vrt"
+
+          live_main="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$live_main" = "$SOURCE_BASE"
+
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${SOURCE_PR}" > /tmp/source-pr.json
+          python3 -B - <<'PY'
+          import json
+          import os
+          pr = json.load(open('/tmp/source-pr.json', encoding='utf-8'))
+          body = pr.get('body') or ''
+          expected = {
+              'state': 'open',
+              'draft': True,
+              'base_ref': 'main',
+              'base_sha': os.environ['SOURCE_BASE'],
+              'head_ref': os.environ['SOURCE_REF'],
+              'head_sha': os.environ['SOURCE_HEAD'],
+              'head_repo': os.environ['GITHUB_REPOSITORY'],
+          }
+          observed = {
+              'state': pr.get('state'),
+              'draft': pr.get('draft'),
+              'base_ref': (pr.get('base') or {}).get('ref'),
+              'base_sha': (pr.get('base') or {}).get('sha'),
+              'head_ref': (pr.get('head') or {}).get('ref'),
+              'head_sha': (pr.get('head') or {}).get('sha'),
+              'head_repo': ((pr.get('head') or {}).get('repo') or {}).get('full_name'),
+          }
+          if observed != expected:
+              raise SystemExit(f'BLOCK: source PR binding drifted: {observed!r}')
+          for marker in (
+              '<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->',
+              '<!-- qikvrt-autonomous-self-heal:enabled -->',
+          ):
+              if marker not in body:
+                  raise SystemExit(f'BLOCK: required source marker absent: {marker}')
+          PY
+
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${SOURCE_PR}/files?per_page=100" \
+            --jq '.[].filename' | LC_ALL=C sort -u > /tmp/observed-files
+          cat > /tmp/expected-files <<'EOF'
+          REPOSITORY_FILE_MANIFEST.json
+          REPOSITORY_FILE_MANIFEST.json.sha256
+          SHA256SUMS.txt
+          qikvrt/runtime/onboarding/NODE_HEALTH.json
+          qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json
+          state/work_units/RENEW_MIRROR_NODE_LIVENESS_AFTER_EXPIRY_V1.json
+          EOF
+          LC_ALL=C sort -u /tmp/expected-files -o /tmp/expected-files
+          diff -u /tmp/expected-files /tmp/observed-files
+
+          existing_success="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${SOURCE_HEAD}/status" \
+            --jq '.statuses[] | select(.context == "QIKVRT autonomous exact-head verification" and .state == "success") | .id' \
+            | head -n 1 || true)"
+          if test -n "$existing_success"; then
+            echo "Exact-head verifier success already exists; dispatch is a strict NOOP."
+            exit 0
+          fi
+
+          python3 -B - <<'PY' > /tmp/dispatch.json
+          import json
+          import os
+          print(json.dumps({
+              'event_type': 'qikvrt_autonomous_exact_head_verify',
+              'client_payload': {
+                  'repository': os.environ['GITHUB_REPOSITORY'],
+                  'pull_request': int(os.environ['SOURCE_PR']),
+                  'head_ref': os.environ['SOURCE_REF'],
+                  'head_sha': os.environ['SOURCE_HEAD'],
+                  'source_head_sha': os.environ['SOURCE_HEAD'],
+                  'base_sha': os.environ['SOURCE_BASE'],
+              },
+          }))
+          PY
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" --input /tmp/dispatch.json
+          echo "Dispatched repository-internal exact-head verification only; no external effect."
