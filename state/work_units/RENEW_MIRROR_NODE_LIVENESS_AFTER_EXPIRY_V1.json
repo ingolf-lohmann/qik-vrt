@@ -23,7 +23,7 @@
       "type": "LIVE_REOBSERVATION_AND_MATERIALIZATION"
     }
   ],
-  "created_at": "2026-08-13T01:31:02Z",
+  "created_at": "2026-08-14T22:59:30Z",
   "external_effects": {
     "deployment": "NOT_AUTHORIZED",
     "doi": "NOT_AUTHORIZED",
@@ -36,7 +36,7 @@
     "zenodo": "NOT_AUTHORIZED"
   },
   "git_history": {
-    "base_commit": "fc21066a12d0f3b0d72c1be30a2c3c413daf727c",
+    "base_commit": "0b61e150f36213526f2a2ad8dc317aab4328999c",
     "branch": "automation/self-heal-BASE_AND_FINGERPRINT_BOUND",
     "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
     "force_push": false,
@@ -61,16 +61,16 @@
   },
   "inputs": {
     "authority_heartbeat_ttl_minutes": 1500,
-    "authority_main": "358d1953dd73f0c25a1f16496d024ed2efcbd4f2",
+    "authority_main": "17bf684b08363bdb8ae95775ea5a4ae22ce4f0a9",
     "authority_repository": "Goldkelch/qik-vrt",
-    "authority_tree": "8141e3681c02815ee7f89fe4e29b95b589688c48",
-    "mirror_main": "fc21066a12d0f3b0d72c1be30a2c3c413daf727c",
+    "authority_tree": "3c0d0e1067ffff10f2bfb20614a94beca646b24b",
+    "mirror_main": "0b61e150f36213526f2a2ad8dc317aab4328999c",
     "mirror_repository": "ingolf-lohmann/qik-vrt",
-    "mirror_tree": "eed28100d401075f0f7e73581f27af4be5b219ed",
+    "mirror_tree": "9a5e3b5cfe9bf2df3b1dfc74cc28f54764ba31ef",
     "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
-    "previous_effective_health_expires_utc": "2026-08-13T00:56:15Z",
-    "previous_health_expires_utc": "2026-08-13T00:56:15Z",
-    "previous_renewal_due_utc": "2026-08-12T23:56:15Z",
+    "previous_effective_health_expires_utc": "2026-08-14T02:31:02Z",
+    "previous_health_expires_utc": "2026-08-14T02:31:02Z",
+    "previous_renewal_due_utc": "2026-08-14T01:31:02Z",
     "raw_transcript_persisted": false,
     "refresh_lead_seconds": 3600,
     "retention_mode": "METADATA_ONLY",
@@ -85,11 +85,11 @@
     }
   ],
   "outputs": {
-    "health_sha256": "29772c71d2fa3888922e97342786c61a4f2f732ca47ee286fac120524e9a84b2",
+    "health_sha256": "ee0aa121ba197d9d866c2e7aade06011470cab007daeeefda386be3d6ab8cd9a",
     "integrity_binding": "BOUND_BY_FINAL_REPOSITORY_NATIVE_INTEGRITY_TRIO",
-    "new_health_expires_utc": "2026-08-14T02:31:02Z",
-    "new_next_renewal_due_utc": "2026-08-14T01:31:02Z",
-    "new_renewed_utc": "2026-08-13T01:31:02Z",
+    "new_health_expires_utc": "2026-08-15T23:59:30Z",
+    "new_next_renewal_due_utc": "2026-08-15T22:59:30Z",
+    "new_renewed_utc": "2026-08-14T22:59:30Z",
     "paths": [
       "qikvrt/runtime/onboarding/NODE_HEALTH.json",
       "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
@@ -98,7 +98,7 @@
       "REPOSITORY_FILE_MANIFEST.json.sha256",
       "SHA256SUMS.txt"
     ],
-    "renewal_sha256": "2003697ed8206cc04eab7628dafd11a91e7d3ae26b56b9f80c25d579ac892d89",
+    "renewal_sha256": "0ed722c0d2b47f49411ba8bcf72bd25677ae5aac0578f3f2be034ca1b71a7e44",
     "self_binding_rule": "The containing Git commit and tree bind the exact work-unit bytes; no impossible in-file self-hash is claimed."
   },
   "release_claims": {
@@ -108,10 +108,10 @@
     "PASS": false
   },
   "schema": "qikvrt_node_liveness_repair_work_unit_v1",
-  "source_commit": "fc21066a12d0f3b0d72c1be30a2c3c413daf727c",
+  "source_commit": "0b61e150f36213526f2a2ad8dc317aab4328999c",
   "source_ref": "refs/heads/main",
   "source_repository": "ingolf-lohmann/qik-vrt",
-  "source_tree": "eed28100d401075f0f7e73581f27af4be5b219ed",
+  "source_tree": "9a5e3b5cfe9bf2df3b1dfc74cc28f54764ba31ef",
   "unresolved_origin": [],
   "verification": {
     "record_parser_contract": "PENDING_EXACT_HEAD_GATES",
