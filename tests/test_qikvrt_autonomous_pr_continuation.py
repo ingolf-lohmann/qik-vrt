@@ -86,7 +86,12 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         self.assertIn("test \"$(git rev-parse --verify HEAD^{commit})\" = \"$TARGET_SHA\"", source)
         self.assertIn("make test", source)
         self.assertIn("verify_qce_package.py", source)
-        self.assertIn("QIKVRT autonomous exact-head verification", source)
+        self.assertIn("QIK-VRT autonomous exact-head verification", source)
+        self.assertNotIn("QIKVRT autonomous exact-head verification", source)
+        self.assertIn(
+            'Exact-head verified: pr=${TARGET_PR}; base=${TARGET_BASE_SHA}',
+            source,
+        )
         self.assertNotIn("gh pr merge", source)
         self.assertNotIn("zenodo", source.casefold())
         self.assertNotIn("ietf", source.casefold())

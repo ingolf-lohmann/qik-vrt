@@ -29,6 +29,23 @@ class AutonomousExactHeadVerifyWorkflowTests(unittest.TestCase):
         self.assertLess(workflow.index(base_checkout), workflow.index(contract_read))
         self.assertLess(workflow.index(validation), workflow.index(candidate_checkout))
 
+    def test_canonical_status_binds_the_pr_and_base(self) -> None:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn(
+            'VERIFIER_STATUS_CONTEXT: "QIK-VRT autonomous exact-head verification"',
+            workflow,
+        )
+        self.assertEqual(workflow.count('-f context="$VERIFIER_STATUS_CONTEXT"'), 2)
+        self.assertIn(
+            '-f description="Exact-head verified: pr=${TARGET_PR}; base=${TARGET_BASE_SHA}"',
+            workflow,
+        )
+        self.assertIn(
+            '-f description="Exact-head blocked: pr=${TARGET_PR}; base=${TARGET_BASE_SHA}"',
+            workflow,
+        )
+        self.assertNotIn("QIKVRT autonomous exact-head verification", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

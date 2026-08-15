@@ -44,6 +44,14 @@
     "same_head_verification_proxy_is_competing_writer": false,
     "stale_base_pull_request_is_current_competing_writer": false,
     "current_base_overlapping_pull_request_is_competing_writer": true,
+    "exact_head_verifier_evidence": {
+      "canonical_status_context": "QIK-VRT autonomous exact-head verification",
+      "description_binding": "Exact-head verified: pr={pr}; base={base}",
+      "linked_run_event": "repository_dispatch",
+      "linked_run_path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "linked_run_default_branch": "main",
+      "legacy_status_context": "REJECTED"
+    },
     "external_effect": "FORBIDDEN",
     "completion_claims": {
       "PASS": false,

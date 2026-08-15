@@ -19,13 +19,47 @@ SPEC.loader.exec_module(MODULE)
 
 
 class ExpectedHeadPromotionTests(unittest.TestCase):
+    def exact_head_verifier_status(self, **overrides):
+        base = "a" * 40
+        head = "b" * 40
+        run_id = 31687778942
+        run_url = f"https://github.com/ingolf-lohmann/qik-vrt/actions/runs/{run_id}"
+        value = {
+            "id": 910,
+            "sha": head,
+            "context": MODULE.EXACT_HEAD_VERIFIER,
+            "state": "success",
+            "description": MODULE.EXACT_HEAD_VERIFIER_SUCCESS_DESCRIPTION.format(
+                pr=459, base=base
+            ),
+            "target_url": run_url,
+            "workflow_run": {
+                "id": run_id,
+                "html_url": run_url,
+                "name": MODULE.EXACT_HEAD_VERIFIER,
+                "path": MODULE.EXACT_HEAD_VERIFIER_WORKFLOW_PATH,
+                "event": "repository_dispatch",
+                "status": "completed",
+                "conclusion": "success",
+                "head_sha": base,
+                "head_branch": "main",
+                "repository": "ingolf-lohmann/qik-vrt",
+                "head_repository": "ingolf-lohmann/qik-vrt",
+            },
+        }
+        value.update(overrides)
+        return value
+
     def snapshot(self, **overrides):
         value = {
             "pr_number": 459,
+            "repository": "ingolf-lohmann/qik-vrt",
+            "github_server_url": "https://github.com",
             "current_main_sha": "a" * 40,
             "base_sha": "a" * 40,
             "expected_head_sha": "b" * 40,
             "current_head_sha": "b" * 40,
+            "commit_status_sha": "b" * 40,
             "draft": True,
             "mergeable": True,
             "external_effect": "NONE",
@@ -56,14 +90,8 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
                 {"name": "QIKVRT Collective Proposal Review", "status": "completed", "conclusion": "success", "run_number": 30},
                 {"name": "QIK-VRT global claim completion", "status": "completed", "conclusion": "success", "run_number": 40},
                 {"name": "QIKVRT conditional probe", "status": "completed", "conclusion": "skipped", "run_number": 1},
-                {
-                    "name": "QIK-VRT autonomous exact-head verification",
-                    "event": "repository_dispatch",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "run_number": 1,
-                },
             ],
+            "exact_head_verifier_statuses": [self.exact_head_verifier_status()],
             "competing_writer_overlaps": [],
         }
         value.update(overrides)
@@ -166,27 +194,117 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
         self.assertEqual(result["state"], "BLOCK")
         self.assertEqual(result["first_blocker"], "CANDIDATE_DIFF_NOT_ALLOWLISTED")
 
-    def test_exact_head_verifier_workflow_is_required(self) -> None:
+    def test_exact_head_verifier_status_is_required(self) -> None:
         snapshot = self.snapshot()
-        snapshot["workflow_runs"] = [
-            run
-            for run in snapshot["workflow_runs"]
-            if run["name"] != "QIK-VRT autonomous exact-head verification"
-        ]
+        snapshot["exact_head_verifier_statuses"] = []
         result = MODULE.evaluate_promotion(snapshot)
         self.assertEqual(result["state"], "BLOCK")
         self.assertEqual(result["first_blocker"], "EXACT_HEAD_VERIFIER_MISSING")
 
-    def test_non_dispatch_exact_head_verifier_blocks(self) -> None:
+    def test_head_filtered_dispatch_run_cannot_substitute_for_status_receipt(self) -> None:
+        snapshot = self.snapshot(exact_head_verifier_statuses=[])
+        snapshot["workflow_runs"].append(
+            {
+                "name": MODULE.EXACT_HEAD_VERIFIER,
+                "event": "repository_dispatch",
+                "status": "completed",
+                "conclusion": "success",
+                "run_number": 999,
+            }
+        )
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(result["first_blocker"], "EXACT_HEAD_VERIFIER_MISSING")
+
+    def test_legacy_unhyphenated_status_context_is_not_accepted(self) -> None:
         snapshot = self.snapshot()
-        for run in snapshot["workflow_runs"]:
-            if run["name"] == "QIK-VRT autonomous exact-head verification":
-                run["event"] = "pull_request"
+        snapshot["exact_head_verifier_statuses"][0]["context"] = (
+            "QIKVRT autonomous exact-head verification"
+        )
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(result["first_blocker"], "EXACT_HEAD_VERIFIER_MISSING")
+
+    def test_verifier_status_must_target_the_candidate_head(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["sha"] = "c" * 40
         result = MODULE.evaluate_promotion(snapshot)
         self.assertEqual(result["state"], "BLOCK")
         self.assertEqual(
-            result["first_blocker"], "EXACT_HEAD_VERIFIER_UNTRUSTED_EVENT"
+            result["first_blocker"], "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH"
         )
+
+    def test_verifier_status_must_bind_current_pr_and_base(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["description"] = (
+            "Exact-head verified: pr=458; base=" + "a" * 40
+        )
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(
+            result["first_blocker"], "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH"
+        )
+
+    def test_verifier_status_must_link_to_its_exact_workflow_run(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["workflow_run"]["html_url"] = (
+            "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/1"
+        )
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(
+            result["first_blocker"], "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH"
+        )
+
+    def test_verifier_workflow_identity_and_main_binding_are_required(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["workflow_run"]["path"] = (
+            ".github/workflows/untrusted.yml"
+        )
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(
+            result["first_blocker"], "EXACT_HEAD_VERIFIER_UNTRUSTED_WORKFLOW"
+        )
+
+    def test_verifier_run_must_be_bound_to_main_at_candidate_base(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["workflow_run"]["head_sha"] = "c" * 40
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(
+            result["first_blocker"], "EXACT_HEAD_VERIFIER_UNTRUSTED_WORKFLOW"
+        )
+
+    def test_non_dispatch_exact_head_verifier_blocks(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["workflow_run"]["event"] = "pull_request"
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(result["first_blocker"], "EXACT_HEAD_VERIFIER_UNTRUSTED_EVENT")
+
+    def test_non_green_exact_head_verifier_blocks(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["exact_head_verifier_statuses"][0]["state"] = "failure"
+        snapshot["exact_head_verifier_statuses"][0]["description"] = (
+            "Exact-head blocked: pr=459; base=" + "a" * 40
+        )
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(result["first_blocker"], "EXACT_HEAD_VERIFIER_NOT_GREEN")
+
+    def test_newest_canonical_verifier_status_supersedes_older_success(self) -> None:
+        snapshot = self.snapshot()
+        older = self.exact_head_verifier_status(id=910)
+        newest = self.exact_head_verifier_status(
+            id=911,
+            state="failure",
+            description="Exact-head blocked: pr=459; base=" + "a" * 40,
+        )
+        snapshot["exact_head_verifier_statuses"] = [older, newest]
+        result = MODULE.evaluate_promotion(snapshot)
+        self.assertEqual(result["state"], "BLOCK")
+        self.assertEqual(result["first_blocker"], "EXACT_HEAD_VERIFIER_NOT_GREEN")
 
 
 if __name__ == "__main__":
