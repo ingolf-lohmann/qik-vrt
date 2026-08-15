@@ -60,7 +60,7 @@ workflow-executor-mesh-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_workflow_executor.py snapshot --expect-head "$$(git rev-parse --verify HEAD^{commit})" --json >/dev/null
 
 autonomy-contract:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_autonomous_pre_effect_controller tests.test_qikvrt_node_liveness tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_continuous_auto_repair
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_autonomous_pre_effect_controller tests.test_qikvrt_node_liveness tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_qikvrt_autonomous_exact_head_verify tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_continuous_auto_repair
 
 integrity:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_integrity.py

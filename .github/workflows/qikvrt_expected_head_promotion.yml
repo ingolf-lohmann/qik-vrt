@@ -29,6 +29,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  statuses: read
 
 concurrency:
   group: qikvrt-expected-head-promotion-${{ github.repository }}
@@ -42,6 +43,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
+      EXACT_HEAD_VERIFIER_CONTEXT: "QIK-VRT autonomous exact-head verification"
       REQUIRED_GATES_JSON: >-
         ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion"]
     steps:
@@ -151,6 +153,8 @@ jobs:
           repository = os.environ['REPOSITORY']
           pr_number = int(os.environ['PR_NUMBER'])
           required_gates = json.loads(os.environ['REQUIRED_GATES_JSON'])
+          verifier_context = os.environ['EXACT_HEAD_VERIFIER_CONTEXT']
+          github_server_url = os.environ['GITHUB_SERVER_URL'].rstrip('/')
 
           def gh_json(path):
               raw = subprocess.check_output(['gh', 'api', path], text=True)
@@ -180,6 +184,42 @@ jobs:
                       runs.extend(page.get('workflow_runs', []))
               return runs
 
+          def workflow_run_from_status(status):
+              target_url = status.get('target_url')
+              prefix = f'{github_server_url}/{repository}/actions/runs/'
+              if not isinstance(target_url, str) or not target_url.startswith(prefix):
+                  return None
+              run_id = target_url.removeprefix(prefix)
+              if not run_id.isascii() or not run_id.isdecimal() or int(run_id) <= 0:
+                  return None
+              try:
+                  run = gh_json(f'repos/{repository}/actions/runs/{run_id}')
+              except subprocess.CalledProcessError:
+                  return None
+              run_repository = run.get('repository')
+              head_repository = run.get('head_repository')
+              return {
+                  'id': run.get('id'),
+                  'html_url': run.get('html_url'),
+                  'name': run.get('name'),
+                  'path': run.get('path'),
+                  'event': run.get('event'),
+                  'status': run.get('status'),
+                  'conclusion': run.get('conclusion'),
+                  'head_sha': run.get('head_sha'),
+                  'head_branch': run.get('head_branch'),
+                  'repository': (
+                      run_repository.get('full_name')
+                      if isinstance(run_repository, dict)
+                      else None
+                  ),
+                  'head_repository': (
+                      head_repository.get('full_name')
+                      if isinstance(head_repository, dict)
+                      else None
+                  ),
+              }
+
           pr = gh_json(f'repos/{repository}/pulls/{pr_number}')
           current_main = gh_json(f'repos/{repository}/commits/main')['sha']
           head = pr['head']['sha']
@@ -195,6 +235,21 @@ jobs:
                   'event': run.get('event'),
               }
               for run in runs
+          ]
+          exact_head_verifier_statuses = [
+              {
+                  'id': status.get('id'),
+                  'sha': status.get('sha'),
+                  'context': status.get('context'),
+                  'state': status.get('state'),
+                  'description': status.get('description'),
+                  'target_url': status.get('target_url'),
+                  'workflow_run': workflow_run_from_status(status),
+              }
+              for status in gh_pages(
+                  f'repos/{repository}/commits/{head}/statuses?per_page=100'
+              )
+              if status.get('context') == verifier_context
           ]
 
           candidate_files = {
@@ -237,10 +292,13 @@ jobs:
 
           print(json.dumps({
               'pr_number': pr_number,
+              'repository': repository,
+              'github_server_url': github_server_url,
               'current_main_sha': current_main,
               'base_sha': pr['base']['sha'],
               'expected_head_sha': head,
               'current_head_sha': head,
+              'commit_status_sha': head,
               'draft': bool(pr.get('draft')),
               'mergeable': pr.get('mergeable') is True,
               'external_effect': 'NONE',
@@ -254,6 +312,7 @@ jobs:
               'allowed_paths': allowed_paths,
               'required_gates': required_gates,
               'workflow_runs': workflow_runs,
+              'exact_head_verifier_statuses': exact_head_verifier_statuses,
               'competing_writer_overlaps': overlaps,
           }, sort_keys=True))
           PY
