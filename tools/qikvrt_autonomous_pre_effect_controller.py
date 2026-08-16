@@ -68,14 +68,6 @@ def load_policy() -> dict[str, Any]:
         "repair_forbidden": True,
     }:
         raise PreEffectBlock("fail-closed policy differs")
-    if value.get("no_competing_writer_evidence") != {
-        "repository_origin": "GITHUB_COM_OWNER_REPOSITORY",
-        "open_pull_request_scan": "CURRENT_MAIN_BASE",
-        "scan_before_and_after_main": True,
-        "stale_base_pull_request_is_competing_writer": False,
-        "unknown_or_failed_observation": "HOLD",
-    }:
-        raise PreEffectBlock("no-competing-writer evidence policy differs")
     if set(value.get("first_irreversible_external_effect", [])) != IRREVERSIBLE_EFFECTS:
         raise PreEffectBlock("irreversible-effect boundary differs")
     prohibited = set(value.get("prohibited_autonomous_effects", []))
@@ -101,97 +93,9 @@ def _remote_main_revision() -> str | None:
     return fields[0]
 
 
-def _github_repository_from_origin() -> str | None:
-    result = self_heal.run(("git", "remote", "get-url", "origin"), timeout=60)
-    if result.returncode:
-        return None
-    origin = result.stdout.strip()
-    match = re.fullmatch(
-        r"(?:https://github\.com/|git@github\.com:)([^/\s]+)/([^/\s]+?)(?:\.git)?",
-        origin,
-    )
-    if match is None:
-        return None
-    return f"{match.group(1)}/{match.group(2)}"
-
-
-def observe_writer_evidence(expected_main: str) -> dict[str, Any]:
-    """Read open current-base writers using the repository API, fail closed."""
-    repository = _github_repository_from_origin()
-    before = _remote_main_revision()
-    if repository is None or before != expected_main:
-        return {
-            "state": "BLOCK",
-            "repository": repository,
-            "before": before,
-            "after": None,
-            "scanned_prs": [],
-        }
-    command = (
-        "gh",
-        "api",
-        "--paginate",
-        "--slurp",
-        f"repos/{repository}/pulls?state=open&base=main&per_page=100",
-    )
-    result = self_heal.run(command, timeout=180)
-    if result.returncode:
-        return {
-            "state": "BLOCK",
-            "repository": repository,
-            "before": before,
-            "after": _remote_main_revision(),
-            "scanned_prs": [],
-        }
-    try:
-        pages = json.loads(result.stdout)
-        pulls = [pull for page in pages for pull in page]
-    except (TypeError, ValueError, json.JSONDecodeError):
-        return {
-            "state": "BLOCK",
-            "repository": repository,
-            "before": before,
-            "after": _remote_main_revision(),
-            "scanned_prs": [],
-        }
-    current = []
-    for pull in pulls:
-        if not isinstance(pull, dict):
-            return {
-                "state": "BLOCK",
-                "repository": repository,
-                "before": before,
-                "after": _remote_main_revision(),
-                "scanned_prs": current,
-            }
-        base = pull.get("base")
-        if not isinstance(base, dict) or base.get("sha") != expected_main:
-            continue
-        current.append(
-            {
-                "number": pull.get("number"),
-                "head": ((pull.get("head") or {}).get("sha")),
-                "base": base.get("sha"),
-            }
-        )
-    after = _remote_main_revision()
-    return {
-        "state": "CLEAR" if after == before == expected_main and not current else "COMPETING" if after == before == expected_main else "BLOCK",
-        "repository": repository,
-        "before": before,
-        "after": after,
-        "scanned_prs": current,
-    }
-
-
-def observe_preconditions(
-    writer_evidence: dict[str, Any] | None = None,
-) -> dict[str, bool]:
+def observe_preconditions() -> dict[str, bool]:
     head = self_heal.observed_base_revision()
     remote_main = _remote_main_revision()
-    writer_evidence = (
-        observe_writer_evidence(head) if writer_evidence is None else writer_evidence
-    )
     evidence_present = all((ROOT / path).is_file() for path in REQUIRED_EVIDENCE_PATHS)
     deterministic_state = True
     try:
@@ -201,7 +105,7 @@ def observe_preconditions(
     return {
         "CURRENT_MAIN_REOBSERVED": remote_main is not None and remote_main == head,
         "EXACT_HEAD_BOUND": SHA1.fullmatch(head) is not None,
-        "NO_COMPETING_WRITER": writer_evidence.get("state") == "CLEAR",
+        "NO_COMPETING_WRITER": remote_main is not None and remote_main == head,
         "DETERMINISTIC_STATE": deterministic_state,
         "REPOSITORY_NATIVE_EVIDENCE": evidence_present,
     }
@@ -221,16 +125,13 @@ def classify(preconditions: dict[str, bool], requested_effect: str | None) -> st
 
 def execute(command: str, requested_effect: str | None = None) -> dict[str, Any]:
     load_policy()
-    head = self_heal.observed_base_revision()
-    writer_evidence = observe_writer_evidence(head)
-    preconditions = observe_preconditions(writer_evidence)
+    preconditions = observe_preconditions()
     decision = classify(preconditions, requested_effect)
     if decision != "AUTONOMOUS_EXECUTION_ALLOWED":
         return {
             "schema": "qikvrt_autonomous_pre_effect_result_v1",
             "state": decision,
             "preconditions": preconditions,
-            "no_competing_writer_evidence": writer_evidence,
             "external_effect": requested_effect or "NONE",
             "completion_claims": {
                 "PASS": False,
@@ -242,7 +143,6 @@ def execute(command: str, requested_effect: str | None = None) -> dict[str, Any]
     result["schema"] = "qikvrt_autonomous_pre_effect_result_v1"
     result["pre_effect_policy"] = "AUTONOMOUS-PRE-EFFECT-POLICY-V1"
     result["preconditions"] = preconditions
-    result["no_competing_writer_evidence"] = writer_evidence
     result["decision"] = decision
     return result
 

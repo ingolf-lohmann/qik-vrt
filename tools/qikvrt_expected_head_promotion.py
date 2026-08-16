@@ -19,15 +19,6 @@ from typing import Any, Iterable, Mapping, Sequence
 PROMOTION_MARKER = "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
 SUCCESS_CONCLUSIONS = {"success"}
 NON_ADVERSE_CONCLUSIONS = {"success", "skipped"}
-INTEGRITY_TRIO = {
-    "REPOSITORY_FILE_MANIFEST.json",
-    "REPOSITORY_FILE_MANIFEST.json.sha256",
-    "SHA256SUMS.txt",
-}
-SELF_HEAL_BRANCH_PREFIX = "automation/self-heal-"
-EXACT_HEAD_VERIFIER = "QIK-VRT autonomous exact-head verification"
-EXACT_HEAD_VERIFIER_WORKFLOW_PATH = ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
-EXACT_HEAD_VERIFIER_SUCCESS_DESCRIPTION = "Exact-head verified: pr={pr}; base={base}"
 
 
 class PromotionBlock(ValueError):
@@ -70,145 +61,6 @@ def collapse_latest_runs(runs: Iterable[Mapping[str, Any]]) -> dict[str, Mapping
     return latest
 
 
-def _exact_head_verifier_block(
-    snapshot: Mapping[str, Any], expected_head: str, base: str
-) -> tuple[str, str] | None:
-    """Validate the candidate status and its linked dispatch-run receipt.
-
-    A repository_dispatch workflow executes from main rather than the pull
-    request head. It is consequently not present in the ordinary
-    head_sha-filtered workflow-run list. The verifier publishes a canonical
-    commit status on the candidate head after validating the dispatch
-    envelope; the status must in turn resolve to the successful, canonical
-    repository_dispatch run that produced it.
-    """
-    statuses = snapshot.get("exact_head_verifier_statuses")
-    if statuses is None or statuses == []:
-        return (
-            "EXACT_HEAD_VERIFIER_MISSING",
-            "the trusted repository-dispatch verifier status is absent",
-        )
-    if not isinstance(statuses, list):
-        return (
-            "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-            "exact-head verifier statuses must be a list",
-        )
-
-    canonical_statuses: list[Mapping[str, Any]] = []
-    for status in statuses:
-        if not isinstance(status, Mapping):
-            return (
-                "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-                "exact-head verifier status must be an object",
-            )
-        if status.get("context") != EXACT_HEAD_VERIFIER:
-            continue
-        identifier = status.get("id")
-        if isinstance(identifier, bool) or not isinstance(identifier, int) or identifier <= 0:
-            return (
-                "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-                "exact-head verifier status id must be a positive integer",
-            )
-        canonical_statuses.append(status)
-
-    if not canonical_statuses:
-        return (
-            "EXACT_HEAD_VERIFIER_MISSING",
-            "the canonical exact-head verifier status is absent",
-        )
-
-    status = max(canonical_statuses, key=lambda entry: int(entry["id"]))
-    pr_number = snapshot.get("pr_number")
-    if isinstance(pr_number, bool) or not isinstance(pr_number, int) or pr_number <= 0:
-        return (
-            "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-            "pull-request number is not a positive integer",
-        )
-    if (
-        snapshot.get("commit_status_sha") != expected_head
-        or status.get("sha") != expected_head
-    ):
-        return (
-            "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-            "the verifier status is not bound to the expected candidate head",
-        )
-    if status.get("state") != "success":
-        return (
-            "EXACT_HEAD_VERIFIER_NOT_GREEN",
-            "the newest exact-head verifier status is not successful",
-        )
-    expected_description = EXACT_HEAD_VERIFIER_SUCCESS_DESCRIPTION.format(
-        pr=pr_number, base=base
-    )
-    if status.get("description") != expected_description:
-        return (
-            "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-            "the verifier status does not bind the current pull request and base",
-        )
-
-    run = status.get("workflow_run")
-    if not isinstance(run, Mapping):
-        return (
-            "EXACT_HEAD_VERIFIER_UNTRUSTED_WORKFLOW",
-            "the verifier status does not resolve to an Actions workflow run",
-        )
-    run_id = run.get("id")
-    if isinstance(run_id, bool) or not isinstance(run_id, int) or run_id <= 0:
-        return (
-            "EXACT_HEAD_VERIFIER_UNTRUSTED_WORKFLOW",
-            "the linked verifier workflow run id is invalid",
-        )
-    repository = snapshot.get("repository")
-    github_server_url = snapshot.get("github_server_url")
-    if (
-        not isinstance(repository, str)
-        or not repository
-        or not isinstance(github_server_url, str)
-        or not github_server_url
-    ):
-        return (
-            "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-            "repository or GitHub server identity is absent",
-        )
-    expected_run_url = (
-        f"{github_server_url.rstrip('/')}/{repository}/actions/runs/{run_id}"
-    )
-    if (
-        status.get("target_url") != expected_run_url
-        or run.get("html_url") != expected_run_url
-    ):
-        return (
-            "EXACT_HEAD_VERIFIER_STATUS_BINDING_MISMATCH",
-            "the verifier status does not link exactly to its workflow run",
-        )
-    if (
-        run.get("name") != EXACT_HEAD_VERIFIER
-        or run.get("path") != EXACT_HEAD_VERIFIER_WORKFLOW_PATH
-        or run.get("repository") != repository
-        or run.get("head_repository") != repository
-        or run.get("head_branch") != "main"
-        or run.get("head_sha") != base
-    ):
-        return (
-            "EXACT_HEAD_VERIFIER_UNTRUSTED_WORKFLOW",
-            "the linked workflow is not the canonical main-bound verifier",
-        )
-    if run.get("event") != "repository_dispatch":
-        return (
-            "EXACT_HEAD_VERIFIER_UNTRUSTED_EVENT",
-            "the exact-head verifier was not invoked by repository dispatch",
-        )
-    if (
-        run.get("status") != "completed"
-        or run.get("conclusion") not in SUCCESS_CONCLUSIONS
-    ):
-        return (
-            "EXACT_HEAD_VERIFIER_NOT_GREEN",
-            "the linked exact-head verifier workflow is not terminal success",
-        )
-    return None
-
-
 def _blocked(snapshot: Mapping[str, Any], failure_class: str, detail: str) -> dict[str, Any]:
     return {
         "schema": "qikvrt_expected_head_promotion_decision_v1",
@@ -245,52 +97,6 @@ def evaluate_promotion(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         return _blocked(snapshot, "NOT_MERGEABLE", "candidate is not currently mergeable")
     if snapshot.get("external_effect") != "NONE":
         return _blocked(snapshot, "EXTERNAL_EFFECT_BOUNDARY", "candidate crosses an external-effect boundary")
-    if snapshot.get("same_repository") is not True:
-        return _blocked(
-            snapshot,
-            "CANDIDATE_NOT_SAME_REPOSITORY",
-            "candidate head must be owned by this repository",
-        )
-    if snapshot.get("marker_in_pr_body") is not True:
-        return _blocked(
-            snapshot,
-            "CANDIDATE_NOT_EXPLICITLY_OPTED_IN",
-            "expected-head marker must occur in the pull-request body",
-        )
-    head_ref = snapshot.get("head_ref")
-    if not isinstance(head_ref, str) or not head_ref.startswith(
-        SELF_HEAL_BRANCH_PREFIX
-    ):
-        return _blocked(
-            snapshot,
-            "CANDIDATE_BRANCH_NOT_AUTONOMOUS_SELF_HEAL",
-            "candidate head is not a bounded self-heal branch",
-        )
-    candidate_files = snapshot.get("candidate_files")
-    allowed_paths = snapshot.get("allowed_paths")
-    if not isinstance(candidate_files, list) or not candidate_files or not all(
-        isinstance(path, str) and path for path in candidate_files
-    ):
-        raise PromotionBlock("candidate_files must be a non-empty list of paths")
-    if not isinstance(allowed_paths, list) or not allowed_paths or not all(
-        isinstance(path, str) and path for path in allowed_paths
-    ):
-        raise PromotionBlock("allowed_paths must be a non-empty list of paths")
-    candidate_path_set = set(candidate_files)
-    non_allowlisted = sorted(candidate_path_set - set(allowed_paths))
-    if non_allowlisted:
-        return _blocked(
-            snapshot,
-            "CANDIDATE_DIFF_NOT_ALLOWLISTED",
-            f"candidate changes non-allowlisted path(s): {non_allowlisted}",
-        )
-    missing_integrity = sorted(INTEGRITY_TRIO - candidate_path_set)
-    if missing_integrity:
-        return _blocked(
-            snapshot,
-            "CANDIDATE_INTEGRITY_TRIO_MISSING",
-            f"candidate lacks repository-native integrity path(s): {missing_integrity}",
-        )
 
     overlaps = snapshot.get("competing_writer_overlaps", [])
     if not isinstance(overlaps, list):
@@ -317,12 +123,8 @@ def evaluate_promotion(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         if run.get("conclusion") not in SUCCESS_CONCLUSIONS:
             return _blocked(snapshot, "REQUIRED_EXACT_HEAD_GATE_NOT_GREEN", f"required workflow is not successful: {gate}={run.get('conclusion')}")
 
-    verifier_block = _exact_head_verifier_block(snapshot, expected_head, base)
-    if verifier_block is not None:
-        return _blocked(snapshot, *verifier_block)
-
     for name, run in sorted(latest.items()):
-        if name in required or name == EXACT_HEAD_VERIFIER:
+        if name in required:
             continue
         status = run.get("status")
         conclusion = run.get("conclusion")

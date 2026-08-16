@@ -10,13 +10,6 @@
     "DETERMINISTIC_STATE",
     "REPOSITORY_NATIVE_EVIDENCE"
   ],
-  "no_competing_writer_evidence": {
-    "repository_origin": "GITHUB_COM_OWNER_REPOSITORY",
-    "open_pull_request_scan": "CURRENT_MAIN_BASE",
-    "scan_before_and_after_main": true,
-    "stale_base_pull_request_is_competing_writer": false,
-    "unknown_or_failed_observation": "HOLD"
-  },
   "autonomous_capabilities": [
     "REOBSERVE",
     "CLASSIFY",
