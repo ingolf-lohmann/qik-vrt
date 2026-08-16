@@ -81,8 +81,7 @@ class ContinuousAutoRepairContractTests(unittest.TestCase):
         self.assertNotIn("gh pr merge", workflow)
         self.assertNotIn("gh release", workflow)
         self.assertNotIn("git push origin main", workflow)
-        self.assertIn("qikvrt_autonomous_exact_head_verify", workflow)
-        self.assertIn("/dispatches", workflow)
+        self.assertNotIn("/dispatches", workflow)
 
 
 if __name__ == "__main__":

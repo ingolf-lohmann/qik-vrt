@@ -62,23 +62,48 @@ class AutonomousSelfHealTests(unittest.TestCase):
         contract = MODULE.load_contract()
         allowed = MODULE.allowed_paths(contract)
         self.assertIn("anticipation/next-effect.json", allowed)
+        self.assertIn("docs/publications/index.json", allowed)
+        self.assertIn("docs/publications/index.html", allowed)
         self.assertIn("REPOSITORY_FILE_MANIFEST.json", allowed)
-        self.assertIn(
-            "qikvrt/runtime/onboarding/NODE_HEALTH.json",
-            allowed,
-        )
-        self.assertIn(
-            "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
-            allowed,
-        )
-        self.assertIn(
-            "state/work_units/REFRESH_MIRROR_SEED_ACCEPTANCE_AFTER_LIVENESS_V1.json",
-            allowed,
-        )
         self.assertNotIn("AI_STATUS.md", allowed)
         self.assertNotIn(
             ".github/workflows/qikvrt_autonomous_self_heal.yml",
             allowed,
+        )
+
+    def test_publication_overview_precedes_integrity(self) -> None:
+        handlers = MODULE.load_contract()["allowlisted_handlers"]
+        order = [handler["failure_class"] for handler in handlers]
+        self.assertLess(
+            order.index("PUBLICATION_OVERVIEW_DRIFT"),
+            order.index("REPOSITORY_NATIVE_INTEGRITY_STALE"),
+        )
+        publication = next(
+            handler
+            for handler in handlers
+            if handler["failure_class"] == "PUBLICATION_OVERVIEW_DRIFT"
+        )
+        self.assertEqual(
+            publication["failure_signature"],
+            "publication overview drift:",
+        )
+
+    def test_pr_continuation_is_explicitly_opt_in_and_external_gate_bounded(self) -> None:
+        continuation = MODULE.load_contract()["pull_request_continuation"]
+        self.assertEqual(
+            continuation["opt_in_marker"],
+            "<!-- qikvrt-autonomous-self-heal:enabled -->",
+        )
+        self.assertTrue(continuation["same_repository_only"])
+        self.assertTrue(continuation["draft_only"])
+        self.assertEqual(continuation["maximum_pull_requests_per_run"], 1)
+        self.assertIn(
+            "IDENTIFIED_HUMAN_PHYSICS_REVIEW_WHEN_REQUIRED",
+            continuation["external_gates"],
+        )
+        self.assertIn(
+            "SEPARATE_EXPLICIT_ZENODO_AUTHORIZATION",
+            continuation["external_gates"],
         )
 
     def test_semantic_fingerprint_is_path_and_byte_bound(self) -> None:
@@ -113,6 +138,7 @@ class AutonomousSelfHealTests(unittest.TestCase):
             "failure_class": "ANTICIPATION_PROJECTION_DRIFT",
             "probe": ["probe"],
             "repair": ["repair"],
+            "failure_signature": "projection drift:",
         }
         result = MODULE.CommandResult(
             ("probe",),
@@ -124,56 +150,35 @@ class AutonomousSelfHealTests(unittest.TestCase):
             with self.assertRaises(MODULE.SelfHealBlock):
                 MODULE.repair_handler(handler)
 
-    def test_signed_handler_refuses_unclassified_probe_failure(self) -> None:
+    def test_generic_failure_signature_blocks_unrecognized_failure(self) -> None:
         handler = {
-            "failure_class": "MIRROR_NODE_LIVENESS_REFRESH_REQUIRED",
+            "failure_class": "PUBLICATION_OVERVIEW_DRIFT",
             "probe": ["probe"],
             "repair": ["repair"],
-            "failure_signature": "MIRROR_NODE_LIVENESS_REFRESH_REQUIRED",
+            "failure_signature": "publication overview drift:",
         }
-        result = MODULE.CommandResult(("probe",), 2, "BLOCK", "malformed input")
+        result = MODULE.CommandResult(("probe",), 2, "", "different failure")
         with mock.patch.object(MODULE, "run", return_value=result):
             with self.assertRaises(MODULE.SelfHealBlock):
                 MODULE.repair_handler(handler)
 
-    def test_workflow_persists_pre_effect_block_receipt_before_exit(self) -> None:
-        workflow = (
-            ROOT / ".github/workflows/qikvrt_autonomous_self_heal.yml"
-        ).read_text(encoding="utf-8")
-        ordered_fragments = (
-            "set -euo pipefail",
-            "set +e",
-            "python3 -B tools/qikvrt_autonomous_pre_effect_controller.py apply > /tmp/qikvrt-self-heal.json",
-            "rc=$?",
-            "set -e\n          cat /tmp/qikvrt-self-heal.json",
-            "exit \"$rc\"",
-        )
-        positions = [workflow.index(fragment) for fragment in ordered_fragments]
-        self.assertEqual(positions, sorted(positions))
-        self.assertIn(
-            "- name: Preserve autonomous pre-effect controller receipt\n"
-            "        if: always()\n"
-            "        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
-            workflow,
-        )
-        self.assertIn("path: /tmp/qikvrt-self-heal.json", workflow)
-        self.assertIn("if-no-files-found: error", workflow)
-        self.assertIn(
-            "qikvrt-self-heal-candidate:base:$BASE_SHA fingerprint:$FINGERPRINT",
-            workflow,
-        )
-        self.assertIn("current-base autonomous self-heal candidate already exists", workflow)
-
-    def test_controller_reobserves_origin_main_after_repairs(self) -> None:
-        source = (ROOT / "tools/qikvrt_autonomous_self_heal.py").read_text(
-            encoding="utf-8"
-        )
-        self.assertIn("def reobserve_origin_main", source)
-        self.assertIn(
-            "expected_main = expected_origin_main or base_revision",
-            source,
-        )
-        self.assertIn("reobserve_origin_main(expected_main)", source)
+    def test_recognized_failure_runs_exact_repair(self) -> None:
+        handler = {
+            "failure_class": "PUBLICATION_OVERVIEW_DRIFT",
+            "probe": ["probe"],
+            "repair": ["repair"],
+            "failure_signature": "publication overview drift:",
+        }
+        results = [
+            MODULE.CommandResult(
+                ("probe",), 2, "publication overview drift: missing", ""
+            ),
+            MODULE.CommandResult(("repair",), 0, "MATERIALIZED", ""),
+        ]
+        with mock.patch.object(MODULE, "run", side_effect=results) as mocked:
+            value = MODULE.repair_handler(handler)
+        self.assertEqual(value["state"], "REPAIRED")
+        self.assertEqual(mocked.call_count, 2)
 
 
 if __name__ == "__main__":

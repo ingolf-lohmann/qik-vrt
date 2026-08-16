@@ -16,14 +16,12 @@ on:
       - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
       - ".github/workflows/qikvrt_live_status_watch.yml"
       - "tools/qikvrt_autonomous_self_heal.py"
-      - "tools/qikvrt_node_liveness.py"
       - "tools/qikvrt_workflow_executor.py"
       - "tools/qikvrt_seed_common.py"
       - "tools/qikvrt_publication_overview.py"
       - "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
       - "tests/test_qikvrt_workflow_executor_mesh_contract.py"
-      - "tests/test_qikvrt_node_liveness.py"
       - "tests/test_seed_workflows.py"
 
 permissions:
@@ -40,7 +38,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
-      OPT_IN_MARKER: "<!-- qikvrt-autonomous-pr-continuation:enabled -->"
+      OPT_IN_MARKER: "<!-- qikvrt-autonomous-self-heal:enabled -->"
     steps:
       - name: Check out current main with history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -152,9 +150,7 @@ jobs:
             fi
           fi
 
-          python3 -B tools/qikvrt_autonomous_self_heal.py apply \
-            --expected-origin-main "$live_main" \
-            > /tmp/qikvrt-pr-self-heal.json
+          python3 -B tools/qikvrt_autonomous_self_heal.py apply > /tmp/qikvrt-pr-self-heal.json
           cat /tmp/qikvrt-pr-self-heal.json
           python3 -B - <<'PY' > /tmp/qikvrt-pr-self-heal-paths
           import json
@@ -172,7 +168,6 @@ jobs:
             python3 -B -m unittest -v \
               tests.test_qikvrt_publication_overview \
               tests.test_qikvrt_autonomous_self_heal \
-              tests.test_qikvrt_node_liveness \
               tests.test_qikvrt_autonomous_pr_continuation
             mapfile -t changed_paths < /tmp/qikvrt-pr-self-heal-paths
             git add -- "${changed_paths[@]}"
@@ -182,6 +177,7 @@ jobs:
 
           if test "$merge_created" = false && ! test -s /tmp/qikvrt-pr-self-heal-paths; then
             test -z "$(git status --porcelain=v1 --untracked-files=all)"
+            exit 0
           fi
 
           make test
@@ -219,11 +215,11 @@ jobs:
           fi
           cat > /tmp/qikvrt-autonomous-pr-comment.md <<EOF
           <!-- qikvrt-autonomous-pr-continuation -->
-          Autonomous deterministic continuation materialized or reverified the exact draft head.
+          Autonomous deterministic continuation materialized a history-preserving successor.
 
           - previous exact head: \`${EXPECTED_HEAD}\`
           - current candidate head: \`${candidate_head}\`
-          - current main merged when required: \`${live_main}\`
+          - current main merged: \`${live_main}\`
           - deterministic generated-output conflicts reset before regeneration: \`${conflict_summary}\`
           - external effects: none
           - next state: exact-head repository-dispatch verification

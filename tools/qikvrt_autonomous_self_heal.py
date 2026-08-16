@@ -119,6 +119,43 @@ def load_delegation() -> dict[str, Any]:
     return value
 
 
+def _validate_handlers(handlers: Any) -> list[dict[str, Any]]:
+    if not isinstance(handlers, list) or not handlers:
+        raise SelfHealBlock("allowlisted_handlers must be a non-empty list")
+    result: list[dict[str, Any]] = []
+    failure_classes: set[str] = set()
+    for raw in handlers:
+        if not isinstance(raw, dict):
+            raise SelfHealBlock("each repair handler must be an object")
+        failure_class = raw.get("failure_class")
+        if not isinstance(failure_class, str) or not failure_class:
+            raise SelfHealBlock("repair handler failure_class is missing")
+        if failure_class in failure_classes:
+            raise SelfHealBlock(f"duplicate repair handler: {failure_class}")
+        failure_classes.add(failure_class)
+        for key in ("probe", "repair", "mutable_paths"):
+            value = raw.get(key)
+            if not isinstance(value, list) or not value or not all(
+                isinstance(item, str) and item for item in value
+            ):
+                raise SelfHealBlock(f"{failure_class} has invalid {key}")
+        signature = raw.get("failure_signature")
+        if signature is not None and (
+            not isinstance(signature, str) or not signature
+        ):
+            raise SelfHealBlock(f"{failure_class} has invalid failure_signature")
+        result.append(raw)
+    order = [handler["failure_class"] for handler in result]
+    if (
+        "PUBLICATION_OVERVIEW_DRIFT" in order
+        and "REPOSITORY_NATIVE_INTEGRITY_STALE" in order
+        and order.index("PUBLICATION_OVERVIEW_DRIFT")
+        > order.index("REPOSITORY_NATIVE_INTEGRITY_STALE")
+    ):
+        raise SelfHealBlock("publication overview repair must precede integrity repair")
+    return result
+
+
 def load_contract() -> dict[str, Any]:
     value = _load_json(CONTRACT, "autonomous self-healing contract")
     if value.get("schema") != "qikvrt_autonomous_self_healing_contract_v1":
@@ -160,40 +197,10 @@ def load_contract() -> dict[str, Any]:
         or candidate.get("proposal_workflow_may_merge") is not False
     ):
         raise SelfHealBlock("candidate review boundary differs")
-    _validate_handlers(value.get("allowlisted_handlers"))
+    value["allowlisted_handlers"] = _validate_handlers(
+        value.get("allowlisted_handlers")
+    )
     return value
-
-
-def _validate_handlers(handlers: Any) -> None:
-    if not isinstance(handlers, list) or not handlers:
-        raise SelfHealBlock("allowlisted handlers are absent")
-    failure_classes: set[str] = set()
-    for handler in handlers:
-        if not isinstance(handler, Mapping):
-            raise SelfHealBlock("allowlisted handler is not an object")
-        failure_class = handler.get("failure_class")
-        if (
-            not isinstance(failure_class, str)
-            or not failure_class
-            or failure_class in failure_classes
-        ):
-            raise SelfHealBlock("handler failure class is missing or duplicated")
-        failure_classes.add(failure_class)
-        for key in ("probe", "repair", "mutable_paths"):
-            value = handler.get(key)
-            if not isinstance(value, list) or not value or not all(
-                isinstance(item, str) and item for item in value
-            ):
-                raise SelfHealBlock(
-                    f"handler {failure_class} has invalid {key}"
-                )
-        signature = handler.get("failure_signature")
-        if signature is not None and (
-            not isinstance(signature, str) or not signature
-        ):
-            raise SelfHealBlock(
-                f"handler {failure_class} has invalid failure signature"
-            )
 
 
 def allowed_paths(contract: dict[str, Any]) -> set[str]:
@@ -204,27 +211,10 @@ def allowed_paths(contract: dict[str, Any]) -> set[str]:
 
 
 def changed_paths() -> list[str]:
-    # Include both staged changes and newly created work units.  The prior
-    # unstaged-only query could omit the first occurrence of a receipt and
-    # produce a branch that cannot be committed deterministically.
-    tracked = run(("git", "diff", "--name-only", "HEAD", "--"), timeout=60)
-    if tracked.returncode:
-        raise SelfHealBlock(tracked.stderr.strip() or "git diff failed")
-    untracked = run(
-        ("git", "ls-files", "--others", "--exclude-standard"), timeout=60
-    )
-    if untracked.returncode:
-        raise SelfHealBlock(
-            untracked.stderr.strip() or "git untracked-file scan failed"
-        )
-    return sorted(
-        {
-            line
-            for output in (tracked.stdout, untracked.stdout)
-            for line in output.splitlines()
-            if line
-        }
-    )
+    result = run(("git", "diff", "--name-only", "--"), timeout=60)
+    if result.returncode:
+        raise SelfHealBlock(result.stderr.strip() or "git diff failed")
+    return sorted(line for line in result.stdout.splitlines() if line)
 
 
 def semantic_fingerprint(paths: Sequence[str]) -> str:
@@ -263,41 +253,23 @@ def observed_base_revision() -> str:
     return value
 
 
-def reobserve_origin_main(expected_base: str) -> str:
-    result = run(
-        ("git", "ls-remote", "--heads", "origin", "refs/heads/main"),
-        timeout=90,
-    )
-    fields = result.stdout.split()
-    if result.returncode or len(fields) != 2:
-        raise SelfHealBlock(result.stderr.strip() or "cannot reobserve origin/main")
-    observed = fields[0]
-    if len(observed) != 40 or any(
-        character not in "0123456789abcdef" for character in observed
-    ):
-        raise SelfHealBlock("origin/main is not a Git SHA-1")
-    if observed != expected_base:
-        raise SelfHealBlock(
-            f"origin/main drifted during repair: {expected_base} != {observed}"
-        )
-    return observed
-
-
 def repair_handler(handler: dict[str, Any]) -> dict[str, Any]:
     probe = run(tuple(handler["probe"]))
     if probe.returncode == 0:
         return {"failure_class": handler["failure_class"], "state": "NOOP"}
     combined = probe.stdout + "\n" + probe.stderr
-    failure_signature = handler.get("failure_signature")
-    if failure_signature is not None:
-        if not isinstance(failure_signature, str) or not failure_signature:
-            raise SelfHealBlock(
-                f"failure signature is invalid for {handler['failure_class']}"
-            )
-        if failure_signature not in combined:
-            raise SelfHealBlock(
-                f"probe failure is not allowlisted for {handler['failure_class']}"
-            )
+    signature = handler.get("failure_signature")
+    if signature and signature not in combined:
+        raise SelfHealBlock(
+            f"{handler['failure_class']} probe did not emit its exact failure signature"
+        )
+    if (
+        handler["failure_class"] == "ANTICIPATION_PROJECTION_DRIFT"
+        and "projection drift:" not in combined
+    ):
+        raise SelfHealBlock(
+            "anticipation failure is not an allowlisted projection drift"
+        )
     repair = run(tuple(handler["repair"]))
     if repair.returncode:
         raise SelfHealBlock(
@@ -307,10 +279,7 @@ def repair_handler(handler: dict[str, Any]) -> dict[str, Any]:
     return {"failure_class": handler["failure_class"], "state": "REPAIRED"}
 
 
-def execute(
-    apply: bool,
-    expected_origin_main: str | None = None,
-) -> dict[str, Any]:
+def execute(apply: bool) -> dict[str, Any]:
     contract = load_contract()
     initial = run(
         ("git", "status", "--porcelain=v1", "--untracked-files=all"),
@@ -339,8 +308,6 @@ def execute(
     unexpected = sorted(set(paths) - allowed_paths(contract))
     if unexpected:
         raise SelfHealBlock(f"non-allowlisted mutation: {unexpected}")
-    expected_main = expected_origin_main or base_revision
-    reobserved_origin_main = reobserve_origin_main(expected_main)
     fingerprint = semantic_fingerprint(paths) if paths else None
     candidate_id = (
         candidate_identity(base_revision, fingerprint)
@@ -352,7 +319,6 @@ def execute(
         "schema": "qikvrt_autonomous_self_heal_result_v1",
         "state": state,
         "observed_base_revision": base_revision,
-        "reobserved_origin_main": reobserved_origin_main,
         "semantic_fingerprint": fingerprint,
         "candidate_identity": candidate_id,
         "changed_paths": paths,
@@ -376,13 +342,9 @@ def execute(
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("check", "apply"))
-    parser.add_argument("--expected-origin-main")
     args = parser.parse_args(argv)
     try:
-        result = execute(
-            args.command == "apply",
-            expected_origin_main=args.expected_origin_main,
-        )
+        result = execute(args.command == "apply")
     except (
         OSError,
         ValueError,
