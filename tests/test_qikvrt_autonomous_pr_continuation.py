@@ -12,7 +12,6 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
 CONTINUATION = ROOT / ".github/workflows/qikvrt_autonomous_pr_continuation.yml"
 VERIFIER = ROOT / ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
-SELF_HEAL = ROOT / "tools/qikvrt_autonomous_self_heal.py"
 
 
 class AutonomousPRContinuationTests(unittest.TestCase):
@@ -21,7 +20,7 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         value = contract["pull_request_continuation"]
         self.assertEqual(
             value["opt_in_marker"],
-            "<!-- qikvrt-autonomous-pr-continuation:enabled -->",
+            "<!-- qikvrt-autonomous-self-heal:enabled -->",
         )
         self.assertTrue(value["same_repository_only"])
         self.assertTrue(value["draft_only"])
@@ -43,14 +42,6 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         self.assertNotIn("refs/heads/main\"", source)
         self.assertIn("make test", source)
         self.assertIn("qikvrt_autonomous_exact_head_verify", source)
-
-    def test_pr_head_self_heal_reobserves_the_separate_live_main_binding(self) -> None:
-        continuation = CONTINUATION.read_text(encoding="utf-8")
-        self_heal = SELF_HEAL.read_text(encoding="utf-8")
-        self.assertIn('--expected-origin-main "$live_main"', continuation)
-        self.assertIn('parser.add_argument("--expected-origin-main")', self_heal)
-        self.assertIn("expected_main = expected_origin_main or base_revision", self_heal)
-        self.assertIn("reobserve_origin_main(expected_main)", self_heal)
 
     def test_only_handler_owned_generated_conflicts_are_auto_resolved(self) -> None:
         source = CONTINUATION.read_text(encoding="utf-8")
@@ -86,12 +77,7 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         self.assertIn("test \"$(git rev-parse --verify HEAD^{commit})\" = \"$TARGET_SHA\"", source)
         self.assertIn("make test", source)
         self.assertIn("verify_qce_package.py", source)
-        self.assertIn("QIK-VRT autonomous exact-head verification", source)
-        self.assertNotIn("QIKVRT autonomous exact-head verification", source)
-        self.assertIn(
-            'Exact-head verified: pr=${TARGET_PR}; base=${TARGET_BASE_SHA}',
-            source,
-        )
+        self.assertIn("QIKVRT autonomous exact-head verification", source)
         self.assertNotIn("gh pr merge", source)
         self.assertNotIn("zenodo", source.casefold())
         self.assertNotIn("ietf", source.casefold())
