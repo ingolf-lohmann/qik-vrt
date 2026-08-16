@@ -31,9 +31,11 @@ jobs:
           AUTHORITY_TREE: 0d1d23ae6811f755ce3b08f36b34df673d86c0e4
           MIRROR_BASE: 781cf7a9c1a3457b31004934166e6dacc223c4b9
           TARGET_BRANCH: agent/authority-4211d774-exact-transfer
+          MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
         run: |
           set -euo pipefail
           test "$(git rev-parse origin/main)" = "$MIRROR_BASE"
+          test -n "${MESH_TOKEN:-}"
           if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" >/dev/null 2>&1; then
             echo "BLOCK: target branch already exists" >&2
             exit 1
@@ -47,7 +49,7 @@ jobs:
           candidate="$(printf '%s\n' "Materialize Authority exact tree $AUTHORITY_SHA" | git commit-tree "$AUTHORITY_TREE" -p "$MIRROR_BASE")"
           test "$(git rev-parse "$candidate^{tree}")" = "$AUTHORITY_TREE"
           test "$(git rev-parse "$candidate^1")" = "$MIRROR_BASE"
-          git push origin "$candidate:refs/heads/$TARGET_BRANCH"
+          git push "https://x-access-token:${MESH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$candidate:refs/heads/$TARGET_BRANCH"
           printf 'candidate=%s\n' "$candidate" >> "$GITHUB_STEP_SUMMARY"
           printf 'authority=%s\n' "$AUTHORITY_SHA" >> "$GITHUB_STEP_SUMMARY"
           printf 'tree=%s\n' "$AUTHORITY_TREE" >> "$GITHUB_STEP_SUMMARY"
