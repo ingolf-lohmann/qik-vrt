@@ -1,40 +1,15 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 name: QIKVRT bootstrap Authority 041fb501 objects
 
+# Obsolete after successful object materialization into the Mirror object database.
+# Retained only as bootstrap provenance; no further transfer action is permitted.
 on:
-  pull_request:
-    paths:
-      - ".github/workflows/qikvrt_bootstrap_authority_041fb501.yml"
+  workflow_dispatch:
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
-  materialize:
+  noop:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
     steps:
-      - name: Check out Mirror exact head
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 1
-      - name: Import exact Authority object graph and attempt create-only transfer ref
-        shell: bash
-        env:
-          AUTHORITY_COMMIT: 041fb501a848946af31dd65e178674a1753e69a9
-          AUTHORITY_TREE: e1c786847c285219b5cbe3dd5100e9a9e4bc1d1a
-          MIRROR_BASE: 781cf7a9c1a3457b31004934166e6dacc223c4b9
-          TRANSFER_REF: refs/heads/agent/authority-041fb501-exact-transfer
-        run: |
-          set -euo pipefail
-          git config user.name 'qikvrt-mesh-bootstrap'
-          git config user.email 'qikvrt-mesh-bootstrap@users.noreply.github.com'
-          git remote add authority https://github.com/Goldkelch/qik-vrt.git
-          git fetch --no-tags authority "$AUTHORITY_COMMIT"
-          test "$(git rev-parse FETCH_HEAD^{tree})" = "$AUTHORITY_TREE"
-          git fetch --no-tags origin "$MIRROR_BASE"
-          commit="$(printf '%s\n' 'mirror: exact Authority tree 041fb501 history-preserving transfer' | git commit-tree "$AUTHORITY_TREE" -p "$MIRROR_BASE")"
-          test "$(git rev-parse "$commit^{tree}")" = "$AUTHORITY_TREE"
-          test "$(git rev-parse "$commit^1")" = "$MIRROR_BASE"
-          echo "candidate_commit=$commit"
-          git push origin "$commit:$TRANSFER_REF"
+      - run: echo 'Bootstrap provenance retained; object materialization already completed.'
