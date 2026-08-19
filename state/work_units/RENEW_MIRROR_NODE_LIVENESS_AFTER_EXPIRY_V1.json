@@ -1,0 +1,137 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_renew_mirror_node_liveness_after_expiry_work_unit_v1",
+  "work_unit_id": "RENEW-MIRROR-NODE-LIVENESS-AFTER-MAIN-RESTORATION-20260819-V1",
+  "created_at": "2026-08-19T21:46:15Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "ca2db82cd351a7307be65cfdf725d0c8691dcadf",
+  "source_tree": "3cc6c820cdb8e8c9f2769f7317918a4572f36b12",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "identity_proof_boundary": "Repository and platform records attribute the standing authorization to the named account context; they are not biometric identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "ChatGPT",
+    "model_or_build": "GPT-5.6 Pro",
+    "session_or_run_id": "chatgpt-liveness-renewal-20260819T214615Z",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "QIK-VRT /AI bootstrap contract"
+    ],
+    "identity_and_observation_limits": "The system identity is the active runtime declaration; no claim is made about hidden implementation internals, legal personhood, or independent human identity."
+  },
+  "human_contributions": [
+    {
+      "type": "STANDING_AUTHORIZATION_AND_ORDERING",
+      "description": "Product Owner authorized deterministic repository-internal continuation, exact-head verification, history-preserving promotion, and role-local Mirror state preservation without repeated interaction."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "LIVE_REOBSERVATION",
+      "description": "Reobserved Authority main 836a068d42b30f4df496caf4d712dbe8da45c043 and newly repaired Mirror main ca2db82cd351a7307be65cfdf725d0c8691dcadf before constructing the renewal candidate."
+    },
+    {
+      "type": "FAILURE_CLASSIFICATION",
+      "description": "Confirmed that the restored Mirror heartbeat expired at 2026-08-19T04:18:00Z and registration renewal became overdue at 2026-08-19T03:18:00Z. The required node-state paths are present; the new failure class is expired role-local liveness rather than absent state."
+    },
+    {
+      "type": "REPOSITORY_MUTATION",
+      "description": "Materialized only a parser-compatible registration renewal, a current health heartbeat, and this current-main-bound provenance work unit on a history-preserving Mirror review branch."
+    }
+  ],
+  "joint_components": [
+    {
+      "component": "Mirror node-liveness renewal after role-local state restoration",
+      "human_part": "standing scope authorization and Product Owner ordering",
+      "artificial_cognitive_part": "live diagnosis, exact record construction, repository persistence, and gate reobservation",
+      "separable": true
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "human_directive_transport": "STANDING_REPOSITORY_CONTINUATION_AUTHORIZATION",
+    "raw_transcript_persisted": false,
+    "authority_main": "836a068d42b30f4df496caf4d712dbe8da45c043",
+    "mirror_main": "ca2db82cd351a7307be65cfdf725d0c8691dcadf",
+    "mirror_tree": "3cc6c820cdb8e8c9f2769f7317918a4572f36b12",
+    "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+    "previous_heartbeat_utc": "2026-08-18T03:18:00Z",
+    "previous_health_expires_utc": "2026-08-19T04:18:00Z",
+    "previous_renewed_utc": "2026-08-18T03:18:00Z",
+    "previous_next_renewal_due_utc": "2026-08-19T03:18:00Z",
+    "heartbeat_ttl_minutes": 1500,
+    "renewal_interval_minutes": 1440,
+    "seed_acceptance_status_policy": "PRESERVE_UNCHANGED_UNTIL_POST_PROMOTION_AUTHORITY_REOBSERVATION"
+  },
+  "outputs": {
+    "paths": [
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "state/work_units/RENEW_MIRROR_NODE_LIVENESS_AFTER_EXPIRY_V1.json",
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "new_heartbeat_utc": "2026-08-19T21:46:15Z",
+    "new_health_expires_utc": "2026-08-20T22:46:15Z",
+    "new_renewed_utc": "2026-08-19T21:46:15Z",
+    "new_next_renewal_due_utc": "2026-08-20T21:46:15Z",
+    "sha256_binding": "BOUND_BY_FINAL_REPOSITORY_NATIVE_INTEGRITY_TRIO",
+    "self_binding_rule": "The containing Git commit and tree bind the exact work-unit bytes; no impossible in-file self-hash is claimed."
+  },
+  "git_history": {
+    "branch": "repair/renew-mirror-node-liveness-after-main-restoration-20260819-v1",
+    "base_commit": "ca2db82cd351a7307be65cfdf725d0c8691dcadf",
+    "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
+    "force_push": false,
+    "history_rewrite": false,
+    "merge": "NOT_EXECUTED"
+  },
+  "verification": {
+    "record_parser_contract": "PENDING_REPOSITORY_NATIVE_EXECUTION",
+    "focused_seed_tests": "PENDING_REPOSITORY_NATIVE_EXECUTION",
+    "complete_repository_gate": "PENDING_REPOSITORY_NATIVE_EXECUTION",
+    "repository_native_integrity": "PENDING_DETERMINISTIC_REGENERATION",
+    "exact_head_ci": "PENDING",
+    "post_promotion_seed_acceptance": "PENDING",
+    "first_current_blocker": "MIRROR_NATIVE_INTEGRITY_NOT_YET_REGENERATED"
+  },
+  "human_decision": {
+    "directive": "RECEIVED",
+    "candidate_review": "AUTHORIZED_FOR_AUTONOMOUS_REPOSITORY_INTERNAL_CONTINUATION_UNDER_EXACT_HEAD_RULES",
+    "acceptance": "SCOPE_AUTHORIZATION_RECORDED",
+    "rejection": "NOT_RECORDED",
+    "manual_modification": "NOT_RECORDED"
+  },
+  "external_effects": {
+    "review_branch_creation": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "repository_file_commits": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "pull_request": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "merge": "CONDITIONAL_ON_UNCHANGED_EXPECTED_HEAD_AND_TERMINAL_VERIFIED_GATES",
+    "authority_seed_acceptance_dispatch": "POST_PROMOTION_ONLY",
+    "release": "NOT_AUTHORIZED",
+    "deployment": "NOT_AUTHORIZED",
+    "zenodo": "NOT_AUTHORIZED_BY_THIS_WORK_UNIT",
+    "doi": "NOT_AUTHORIZED_BY_THIS_WORK_UNIT",
+    "ietf": "NOT_AUTHORIZED_BY_THIS_WORK_UNIT"
+  },
+  "candidate_state": "SOURCE_MATERIALIZED_PENDING_MIRROR_NATIVE_INTEGRITY_AND_EXACT_HEAD_GATES",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_SYNCHRONIZED": false
+  }
+}
