@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_dynamic_simplex_role_local_adoption_v1",
+  "role": "Mirror",
+  "authority_candidate": {
+    "repository": "Goldkelch/qik-vrt",
+    "pr": 732,
+    "head": "8bd77f438cb45f090d0e5cc67a518a0c9662ce7c",
+    "branch": "agent/dynamic-simplex-moving-target-v1"
+  },
+  "adoption_mode": "ROLE_LOCAL_CONSUMER_AFTER_TRUSTED_AUTHORITY_PROMOTION_OR_EXACTLY_BOUND_VERIFICATION",
+  "invariants": [
+    "Identitaet != Gleichheit",
+    "Integration != Einebnung",
+    "Authority and Mirror role-local state remains distinct",
+    "No whole-tree convergence is required for adoption",
+    "Optimization recommendation is not execution authority",
+    "Snapshot evidence does not transfer across target drift",
+    "Mirror reobserves its own target generation before any pivot"
+  ],
+  "current_state": "WAIT_AUTHORITY_CANDIDATE_VERIFICATION",
+  "product_owner_authorization": {
+    "granted": true,
+    "date": "2026-08-20",
+    "scope": "role-local QIK-VRT Mirror adoption and autonomous optimization without erasing Mirror identity"
+  }
+}
