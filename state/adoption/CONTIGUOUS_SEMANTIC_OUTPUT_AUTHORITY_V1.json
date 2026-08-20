@@ -1,0 +1,46 @@
+{
+  "schema": "qikvrt_role_local_contiguous_output_adoption_v1",
+  "version": "1.0",
+  "status": "AUTHORITY_CANDIDATE_DISCOVERED_AWAITING_TRUSTED_PROMOTION",
+  "mirror_role": "ROLE_LOCAL_CONSUMER",
+  "authority": {
+    "repository": "Goldkelch/qik-vrt",
+    "pull_request": 660,
+    "branch": "agent/metagrammar-of-understanding-v1",
+    "observed_candidate_head": "d5dc2d4ffe34bdc559fcb8dbc9d58ddabbcb0c62",
+    "contract_path": "state/autonomy/METAGRAMMAR_OF_UNDERSTANDING_V1.json",
+    "documentation_path": "docs/CONTIGUOUS_SEMANTIC_OUTPUT_V1.md",
+    "head_drift_invalidates_binding": true
+  },
+  "public_interfaces": [
+    "GITHUB_WEB_CONTENT_OVER_HTTPS",
+    "RAW_GITHUB_CONTENT_OVER_HTTPS",
+    "GITHUB_CONTENTS_API_OVER_HTTPS"
+  ],
+  "anonymous_public_read_expected": true,
+  "adoption_semantics": {
+    "semantic_unit": "ATOMIC_DELIVERY_OBJECT",
+    "default_delivery_mode": "CONTIGUOUS",
+    "avoid_artificial_partial_delivery": true,
+    "forced_continuation_preserves_same_semantic_object": true,
+    "required_reobservation_before_consumption": [
+      "AUTHORITY_PR_STATE",
+      "AUTHORITY_EXACT_HEAD",
+      "AUTHORITY_CONTRACT_BYTES",
+      "AUTHORITY_PROMOTION_STATE"
+    ]
+  },
+  "role_local_invariants": [
+    "AUTHORITY_DISCOVERY_DOES_NOT_EQUAL_MIRROR_CANONICALITY",
+    "PUBLIC_READABILITY_DOES_NOT_EQUAL_PROMOTION",
+    "DISCOVERED_DOES_NOT_EQUAL_ADOPTED",
+    "AUTHORITY_HEAD_DRIFT_REQUIRES_REBINDING",
+    "MIRROR_IDENTITY_IS_PRESERVED"
+  ],
+  "non_claims": [
+    "No Authority promotion is claimed.",
+    "No Mirror main adoption is claimed.",
+    "No whole-tree convergence is requested.",
+    "No review, merge, publication, deployment, PASS, FINAL_PASS or EFFECT_ACK_DONE is implied."
+  ]
+}
