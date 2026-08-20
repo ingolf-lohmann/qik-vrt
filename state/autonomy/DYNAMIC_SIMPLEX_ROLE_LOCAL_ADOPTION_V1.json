@@ -4,7 +4,8 @@
   "authority_candidate": {
     "repository": "Goldkelch/qik-vrt",
     "pr": 733,
-    "head": "1eee7dc0062b61682452c0c91c30c71868e1b633",
+    "head": "2445179d9b1182d6b7641d6fffadb63d0500ad65",
+    "tree": "ce386148b463781d5c55e37e5f3c8764bdf08e84",
     "branch": "agent/dynamic-simplex-optimizer-v1"
   },
   "adoption_mode": "ROLE_LOCAL_CONSUMER_AFTER_TRUSTED_AUTHORITY_PROMOTION_OR_EXACTLY_BOUND_VERIFICATION",
@@ -18,7 +19,15 @@
     "Snapshot evidence does not transfer across target drift",
     "Mirror reobserves its own target generation before consuming any selected move"
   ],
-  "current_state": "WAIT_AUTHORITY_CANDIDATE_VERIFICATION",
+  "authority_exact_head_verification": {
+    "observed": true,
+    "head": "2445179d9b1182d6b7641d6fffadb63d0500ad65",
+    "tree": "ce386148b463781d5c55e37e5f3c8764bdf08e84",
+    "required_workflows_terminal_success": true,
+    "independent_code_owner_review_observed": false,
+    "authority_promotion_observed": false
+  },
+  "current_state": "AUTHORITY_EXACT_HEAD_VERIFIED_AWAITING_TRUSTED_PROMOTION",
   "product_owner_authorization": {
     "granted": true,
     "date": "2026-08-20",
