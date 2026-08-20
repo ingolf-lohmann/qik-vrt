@@ -1,0 +1,35 @@
+{
+  "schema": "qikvrt_role_local_observer_time_transport_adoption_v1",
+  "version": "1.0",
+  "status": "AUTHORITY_CANDIDATE_DISCOVERED_AWAITING_TRUSTED_PROMOTION",
+  "mirror_role": "ROLE_LOCAL_CONSUMER",
+  "authority": {
+    "repository": "Goldkelch/qik-vrt",
+    "pull_request": 660,
+    "branch": "agent/metagrammar-of-understanding-v1",
+    "observed_candidate_head": "3cb9e56e65b44dbe3c0f34cf5d4a400e11bf3be4",
+    "documentation_path": "docs/PROPER_TIME_BOUND_INFORMATION_TRANSPORT.md",
+    "head_drift_invalidates_binding": true
+  },
+  "semantic_invariants": [
+    "SEQUENCE_NE_CAUSALITY",
+    "SOURCE_ORDER_NE_ARRIVAL_ORDER",
+    "ARRIVAL_ORDER_NE_EFFECT_ORDER",
+    "SERIALIZATION_NE_CAUSAL_GRAPH",
+    "OPERATIONAL_LOCAL_CHANGE_TIME_NE_METRIC_RELATIVISTIC_PROPER_TIME",
+    "TRANSPORT_CARRIES_BYTES_AND_QIKVRT_BINDS_TEMPORAL_CAUSAL_SEMANTICS"
+  ],
+  "required_boundaries": [
+    "NO_RECEPTION_BEFORE_EMISSION_CLAIM",
+    "NO_BACKWARD_RUNNING_PROPER_TIME_CLAIM",
+    "NO_CAUSAL_LOOP_CLAIM",
+    "NO_SUPERLUMINAL_OR_NO_SIGNALLING_VIOLATION_CLAIM",
+    "NO_CONTROLLABLE_SIGNAL_TO_OWN_CAUSAL_PAST_CLAIM"
+  ],
+  "role_local_invariants": [
+    "DISCOVERED_DOES_NOT_EQUAL_ADOPTED",
+    "PUBLIC_READABILITY_DOES_NOT_EQUAL_PROMOTION",
+    "AUTHORITY_HEAD_DRIFT_REQUIRES_REBINDING",
+    "MIRROR_IDENTITY_IS_PRESERVED"
+  ]
+}
