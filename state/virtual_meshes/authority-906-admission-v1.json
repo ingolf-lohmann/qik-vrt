@@ -27,6 +27,31 @@
       "merge_sha": "9509f905534f8375a859ab600c38c7f91f67048b",
       "ci_job": 98566551583,
       "collective_review_job": 98566551887
+    },
+    "materialization_receipt": {
+      "state": "OBSERVED_SUCCESS",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pull_request": 367,
+      "predecessor_head_sha": "35e1c56093dd030189f561c2eeb52afe3a88d729",
+      "materialized_head_sha": "6e600a2f7843c8130770414b34e7b9b0595bc1c6",
+      "materialized_tree_sha": "ae0b71e7522cf7f3c08de42474aa4e14314a0fb8",
+      "workflow_run": 33086464673,
+      "job": 98567775616,
+      "artifacts": [],
+      "integrity_verification": "PASS_3817_CLASSIFIED_3808_IMMUTABLE_DIGESTS"
+    },
+    "post_materialization_admission": {
+      "state": "BLOCKED",
+      "blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "status_context": "QIKVRT requested review execution",
+      "observer_run": 33091851740,
+      "observer_job": 98586465588,
+      "zero_job_action_required_runs": 10,
+      "unexpected_side_effect": {
+        "kind": "SCHEDULED_OBSERVER_FANOUT_TO_UNRELATED_OPEN_PR",
+        "affected_pull_request": 366,
+        "affected_head_sha": "3e6c31b65098842392970680c666a5b4cef6bb4c"
+      }
     }
   },
   "work_queue": [
@@ -37,14 +62,18 @@
     },
     {
       "kind": "MATERIALIZE_AND_VERIFY_MIRROR_INTEGRITY_PROJECTION",
+      "state": "OBSERVED_SUCCESS",
+      "receipt": "observed_progress.materialization_receipt"
+    },
+    {
+      "kind": "REOBSERVE_USER_AUTHORED_SUCCESSOR_ADMISSION_AND_CONTAIN_OBSERVER_FANOUT",
       "state": "PENDING",
+      "blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
       "required_observation": [
-        "EXACT_MIRROR_HEAD_AND_TREE",
-        "MATERIALIZER_OUTPUT",
-        "REPOSITORY_FILE_MANIFEST",
-        "REPOSITORY_FILE_MANIFEST_SHA256",
-        "SHA256SUMS",
-        "POST_MATERIALIZATION_EXACT_HEAD_GATES",
+        "EXACT_SUCCESSOR_HEAD_AND_TREE",
+        "ALL_SUCCESSOR_CHECK_RUNS_JOBS_AND_STEPS",
+        "EXACT_HEAD_REVIEW_DECISION",
+        "NO_UNRELATED_PR_STATUS_MUTATION",
         "NODE_LOCAL_RECEIPT"
       ]
     }
