@@ -1,0 +1,36 @@
+{
+  "schema": "qikvrt_recursive_virtual_mesh_instance_v1",
+  "instance_id": "f4f612cfd68e4fe1e1bb7d9a8c13d6ef70e2cb5e4a2d9b8e39d4c3f6a5e7b120",
+  "role": "VIRTUAL_AUTHORITY",
+  "parent": {
+    "repository": "Goldkelch/qik-vrt",
+    "pull_request": 906,
+    "head_sha": "90c85cafa214ec57fc7013711858209bef9079c0",
+    "tree_sha": "71135f3a4b31b83affdb7f545541a690368bd258",
+    "blocker": "ACTION_REQUIRED_ZERO_JOB_ADMISSION_PLANE"
+  },
+  "inherited_invariant": {
+    "contract_id": "QIKVRT-MESH-AUTHORITY-DEEP-REOBSERVATION-V1",
+    "deduplicated_dispatch": true,
+    "post_dispatch_deep_reobservation": "REQUIRED",
+    "predecessor_evidence_transfer": "FORBIDDEN",
+    "missing_or_ambiguous_receipt": "HOLD_UNVERIFIED"
+  },
+  "work_queue": [{
+    "kind": "IDENTIFY_AND_REPAIR_ADMISSION_PLANE",
+    "state": "PENDING",
+    "required_observation": [
+      "EXACT_AUTHORITY_HEAD_AND_TREE",
+      "ZERO_JOB_WORKFLOW_IDENTITIES",
+      "ACTIONS_ADMISSION_POLICY",
+      "MIRROR_LOCAL_EXECUTION_AVAILABILITY",
+      "NODE_LOCAL_RECEIPT"
+    ]
+  }],
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "MERGE": false
+  }
+}
