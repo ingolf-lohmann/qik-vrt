@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT authority review report receiver
+
+on:
+  repository_dispatch:
+    types: [qikvrt_authority_review_report_v1]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-authority-review-report-receiver-${{ github.repository }}-${{ github.event.client_payload.dedupe_key }}
+  cancel-in-progress: false
+
+jobs:
+  receive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      EVENT_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+      RECEIVER_REPOSITORY: ${{ github.repository }}
+    steps:
+      - name: Validate and bind the Authority report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, re
+
+          value=json.loads(os.environ["EVENT_PAYLOAD"])
+          required={
+              "schema","authority_repository","source_run_id","pr_number",
+              "head_sha","tree_sha","evidence_fingerprint","mesh_disposition",
+              "authority_review_id","completion_claims","dedupe_key",
+          }
+          if set(value) != required:
+              raise SystemExit("HOLD_UNVERIFIED: authority report field set is invalid")
+          if value["schema"] != "qikvrt_authority_review_report_v1":
+              raise SystemExit("HOLD_UNVERIFIED: authority report schema is invalid")
+          if value["authority_repository"] != "Goldkelch/qik-vrt":
+              raise SystemExit("HOLD_UNVERIFIED: authority identity is invalid")
+          if not isinstance(value["pr_number"],int) or value["pr_number"] < 1:
+              raise SystemExit("HOLD_UNVERIFIED: PR number is invalid")
+          if not isinstance(value["source_run_id"],int) or value["source_run_id"] < 1:
+              raise SystemExit("HOLD_UNVERIFIED: source run identity is invalid")
+          if not isinstance(value["authority_review_id"],int) or value["authority_review_id"] < 1:
+              raise SystemExit("HOLD_UNVERIFIED: authority review identity is invalid")
+          for field,size in (("head_sha",40),("tree_sha",40),("evidence_fingerprint",64),("dedupe_key",64)):
+              if not isinstance(value[field],str) or not re.fullmatch(r"[0-9a-f]{%d}" % size,value[field]):
+                  raise SystemExit(f"HOLD_UNVERIFIED: {field} is invalid")
+          if not isinstance(value["mesh_disposition"],str) or not re.fullmatch(r"[A-Z_]+",value["mesh_disposition"]):
+              raise SystemExit("HOLD_UNVERIFIED: disposition is invalid")
+          if value["completion_claims"] != {"PASS":False,"FINAL_PASS":False,"EFFECT_ACK_DONE":False,"MERGE":False}:
+              raise SystemExit("HOLD_UNVERIFIED: completion-claim boundary is invalid")
+          expected=dict(value)
+          observed_key=expected.pop("dedupe_key")
+          canonical=json.dumps(expected,sort_keys=True,separators=(",",":")).encode()
+          if hashlib.sha256(canonical).hexdigest() != observed_key:
+              raise SystemExit("HOLD_UNVERIFIED: Authority report dedupe key mismatches payload")
+          receipt={
+              "schema":"qikvrt_authority_review_report_receipt_v1",
+              "receiver_repository":os.environ["RECEIVER_REPOSITORY"],
+              "delivery":"REPOSITORY_DISPATCH_RECEIVED",
+              "report":value,
+              "completion_claims":{"PASS":False,"FINAL_PASS":False,"EFFECT_ACK_DONE":False,"MERGE":False},
+          }
+          with open("/tmp/qikvrt-authority-review-report-receipt.json","w",encoding="utf-8") as handle:
+              json.dump(receipt,handle,sort_keys=True,indent=2)
+              handle.write("\n")
+          PY
+          cat /tmp/qikvrt-authority-review-report-receipt.json
+
+      - name: Preserve node-local report receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-authority-review-report-${{ github.event.client_payload.dedupe_key }}
+          path: /tmp/qikvrt-authority-review-report-receipt.json
+          if-no-files-found: error
+          retention-days: 90
