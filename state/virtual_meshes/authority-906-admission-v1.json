@@ -16,17 +16,39 @@
     "predecessor_evidence_transfer": "FORBIDDEN",
     "missing_or_ambiguous_receipt": "HOLD_UNVERIFIED"
   },
-  "work_queue": [{
-    "kind": "IDENTIFY_AND_REPAIR_ADMISSION_PLANE",
-    "state": "PENDING",
-    "required_observation": [
-      "EXACT_AUTHORITY_HEAD_AND_TREE",
-      "ZERO_JOB_WORKFLOW_IDENTITIES",
-      "ACTIONS_ADMISSION_POLICY",
-      "MIRROR_LOCAL_EXECUTION_AVAILABILITY",
-      "NODE_LOCAL_RECEIPT"
-    ]
-  }],
+  "observed_progress": {
+    "mirror_requested_review_executor": "SUCCESS",
+    "mirror_local_execution_availability": "OBSERVED",
+    "first_causal_failure": "REPOSITORY_MANIFEST_DIFFERS_FROM_DETERMINISTIC_REGENERATION",
+    "failure_binding": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pull_request": 367,
+      "head_sha": "9bcd12a4855a55d8500deb2505d955f281c4038d",
+      "merge_sha": "9509f905534f8375a859ab600c38c7f91f67048b",
+      "ci_job": 98566551583,
+      "collective_review_job": 98566551887
+    }
+  },
+  "work_queue": [
+    {
+      "kind": "IDENTIFY_AND_REPAIR_ADMISSION_PLANE",
+      "state": "OBSERVED_ON_MIRROR",
+      "result": "MIRROR_LOCAL_EXECUTION_AVAILABLE"
+    },
+    {
+      "kind": "MATERIALIZE_AND_VERIFY_MIRROR_INTEGRITY_PROJECTION",
+      "state": "PENDING",
+      "required_observation": [
+        "EXACT_MIRROR_HEAD_AND_TREE",
+        "MATERIALIZER_OUTPUT",
+        "REPOSITORY_FILE_MANIFEST",
+        "REPOSITORY_FILE_MANIFEST_SHA256",
+        "SHA256SUMS",
+        "POST_MATERIALIZATION_EXACT_HEAD_GATES",
+        "NODE_LOCAL_RECEIPT"
+      ]
+    }
+  ],
   "completion_claims": {
     "PASS": false,
     "FINAL_PASS": false,
