@@ -1,0 +1,161 @@
+name: QIKVRT reciprocal Mesh review
+
+on:
+  pull_request:
+    paths:
+      - 'state/mesh_reviews/*_REQUEST.json'
+      - '.github/workflows/qikvrt_cross_repository_mesh_review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: qikvrt-cross-repository-review-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  review-exact-authority-subject:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out Mirror review carrier
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select one exact pending cross-repository request
+        id: req
+        shell: bash
+        run: |
+          set -euo pipefail
+          req="$(find state/mesh_reviews -maxdepth 1 -name '*_REQUEST.json' -type f | sort | tail -n 1)"
+          test -n "$req"
+          python3 - "$req" >> "$GITHUB_OUTPUT" <<'PY'
+          import json, pathlib, sys
+          p=pathlib.Path(sys.argv[1]); d=json.loads(p.read_text())
+          print(f"request={p}")
+          print(f"repo={d['subject_repository']}")
+          print(f"pr={d['subject_pull_request']}")
+          print(f"head={d['subject_head_sha']}")
+          print(f"base={d['subject_base_sha']}")
+          print(f"receipt={d['result_contract']['receipt_path']}")
+          PY
+
+      - name: Reobserve Authority PR and bind same exact head
+        env:
+          SUBJECT_REPO: ${{ steps.req.outputs.repo }}
+          SUBJECT_PR: ${{ steps.req.outputs.pr }}
+          SUBJECT_HEAD: ${{ steps.req.outputs.head }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          live="$(curl -fsSL -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/${SUBJECT_REPO}/pulls/${SUBJECT_PR}")"
+          live_head="$(jq -r '.head.sha' <<<"$live")"
+          test "$live_head" = "$SUBJECT_HEAD" || { echo "HOLD_UNVERIFIED head mutated: expected=$SUBJECT_HEAD live=$live_head"; exit 78; }
+
+      - name: Check out exact Authority subject in isolated directory
+        uses: actions/checkout@v4
+        with:
+          repository: Goldkelch/qik-vrt
+          ref: ${{ steps.req.outputs.head }}
+          path: authority-subject
+          fetch-depth: 0
+
+      - name: Execute Lean/Lake proof verification when configured
+        id: lean
+        working-directory: authority-subject
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f lean-toolchain ] && { [ -f lakefile.lean ] || [ -f lakefile.toml ]; }; then
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+            export PATH="$HOME/.elan/bin:$PATH"
+            lake build
+            echo 'state=VERIFIED' >> "$GITHUB_OUTPUT"
+          else
+            echo 'state=NOT_CONFIGURED' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Execute repository-native deterministic tests
+        id: tests
+        working-directory: authority-subject
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d tests ]; then
+            python3 -m unittest discover -s tests -p 'test*.py'
+            echo 'state=VERIFIED' >> "$GITHUB_OUTPUT"
+          else
+            echo 'state=NO_TEST_DIRECTORY' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify universal-terminal contract presence and boundaries
+        id: dod
+        working-directory: authority-subject
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f policy/QIKVRT_UNIVERSAL_TERMINAL_DOD_V1.json
+          test -f tools/qikvrt_universal_terminal_materialize.py
+          test -f .github/workflows/qikvrt_universal_terminal_materialize.yml
+          test -f docs/science/index.html
+          grep -q 'HOLD_UNVERIFIED' policy/QIKVRT_UNIVERSAL_TERMINAL_DOD_V1.json
+          grep -q 'empirical' policy/QIKVRT_UNIVERSAL_TERMINAL_DOD_V1.json
+          echo 'state=VERIFIED' >> "$GITHUB_OUTPUT"
+
+      - name: Materialize Mirror-local independent review receipt
+        env:
+          SUBJECT_REPO: ${{ steps.req.outputs.repo }}
+          SUBJECT_PR: ${{ steps.req.outputs.pr }}
+          SUBJECT_HEAD: ${{ steps.req.outputs.head }}
+          SUBJECT_BASE: ${{ steps.req.outputs.base }}
+          RECEIPT: ${{ steps.req.outputs.receipt }}
+          LEAN_STATE: ${{ steps.lean.outputs.state }}
+          TEST_STATE: ${{ steps.tests.outputs.state }}
+          DOD_STATE: ${{ steps.dod.outputs.state }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          lean=os.environ['LEAN_STATE']; tests=os.environ['TEST_STATE']; dod=os.environ['DOD_STATE']
+          approved=(lean in ('VERIFIED','NOT_CONFIGURED') and tests=='VERIFIED' and dod=='VERIFIED')
+          d={
+            'schema':'qikvrt_cross_repository_review_receipt_v1',
+            'reviewer_repository':'ingolf-lohmann/qik-vrt',
+            'subject_repository':os.environ['SUBJECT_REPO'],
+            'subject_pull_request':int(os.environ['SUBJECT_PR']),
+            'subject_head_sha':os.environ['SUBJECT_HEAD'],
+            'subject_base_sha':os.environ['SUBJECT_BASE'],
+            'observed_at':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'checks':{'lean_lake':lean,'repository_tests':tests,'universal_terminal_dod_contract':dod},
+            'disposition':'APPROVE_WITHIN_SCOPE' if approved else 'COMMENT_WITH_BLOCKER',
+            'independent_repository_role':True,
+            'github_account_review_equivalence':False,
+            'predecessor_evidence_transferred':False,
+            'boundaries':{
+              'merge_implied':False,'publication_implied':False,'PASS':False,'FINAL_PASS':False,'EFFECT_ACK_DONE':False,
+              'empirical_confirmation':False
+            }
+          }
+          p=Path(os.environ['RECEIPT']); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(d,indent=2)+'\n')
+          PY
+
+      - name: Persist only the exact Mirror review receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add "${{ steps.req.outputs.receipt }}"
+          if git diff --cached --quiet; then
+            echo 'NOOP receipt already current'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "mesh: review Authority PR #${{ steps.req.outputs.pr }} exact head ${{ steps.req.outputs.head }}"
+          git push origin HEAD:${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}
