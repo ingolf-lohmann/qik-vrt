@@ -48,7 +48,6 @@ jobs:
           SUBJECT_REPO: ${{ steps.req.outputs.repo }}
           SUBJECT_PR: ${{ steps.req.outputs.pr }}
           SUBJECT_HEAD: ${{ steps.req.outputs.head }}
-          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -63,6 +62,16 @@ jobs:
           ref: ${{ steps.req.outputs.head }}
           path: authority-subject
           fetch-depth: 0
+
+      - name: Reobserve immutable exact Authority checkout
+        working-directory: authority-subject
+        env:
+          SUBJECT_HEAD: ${{ steps.req.outputs.head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SUBJECT_HEAD"
+          test -z "$(git status --porcelain)"
 
       - name: Execute Lean/Lake proof verification when configured
         id: lean
@@ -79,18 +88,32 @@ jobs:
             echo 'state=NOT_CONFIGURED' >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Execute repository-native deterministic tests
+      - name: Execute Authority canonical deterministic repository gate
         id: tests
         working-directory: authority-subject
         shell: bash
         run: |
           set -euo pipefail
-          if [ -d tests ]; then
-            python3 -m unittest discover -s tests -p 'test*.py'
-            echo 'state=VERIFIED' >> "$GITHUB_OUTPUT"
-          else
-            echo 'state=NO_TEST_DIRECTORY' >> "$GITHUB_OUTPUT"
-          fi
+          # Mirror the Authority CI's canonical gate rather than inventing a
+          # different unittest-discovery environment. The Authority CI itself
+          # executes `make test`; this independent repository role executes the
+          # same repository-native gate against the literal requested head.
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 make test
+          python3 -B tools/qikvrt_integrity.py verify
+          test -z "$(git status --porcelain)"
+          echo 'state=VERIFIED' >> "$GITHUB_OUTPUT"
+
+      - name: Reobserve Authority PR after proof and deterministic gate
+        env:
+          SUBJECT_REPO: ${{ steps.req.outputs.repo }}
+          SUBJECT_PR: ${{ steps.req.outputs.pr }}
+          SUBJECT_HEAD: ${{ steps.req.outputs.head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          live="$(curl -fsSL -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/${SUBJECT_REPO}/pulls/${SUBJECT_PR}")"
+          live_head="$(jq -r '.head.sha' <<<"$live")"
+          test "$live_head" = "$SUBJECT_HEAD" || { echo "HOLD_UNVERIFIED head mutated during review: expected=$SUBJECT_HEAD live=$live_head"; exit 78; }
 
       - name: Verify universal-terminal contract presence and boundaries
         id: dod
@@ -103,7 +126,7 @@ jobs:
           test -f .github/workflows/qikvrt_universal_terminal_materialize.yml
           test -f docs/science/index.html
           grep -q 'HOLD_UNVERIFIED' policy/QIKVRT_UNIVERSAL_TERMINAL_DOD_V1.json
-          grep -q 'empirical' policy/QIKVRT_UNIVERSAL_TERMINAL_DOD_V1.json
+          grep -qi 'empirical' policy/QIKVRT_UNIVERSAL_TERMINAL_DOD_V1.json
           echo 'state=VERIFIED' >> "$GITHUB_OUTPUT"
 
       - name: Materialize Mirror-local independent review receipt
