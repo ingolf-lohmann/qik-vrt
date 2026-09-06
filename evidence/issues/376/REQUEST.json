@@ -1,0 +1,10 @@
+{
+  "author": "Goldkelch",
+  "body": "Repository verification failed when bare Git fixtures were configured from their working directory and when fixture commits inherited runner-level GPG signing settings.\n\n- **Bare repositories:** Bind configuration and symbolic-ref operations explicitly with `--git-dir`.\n- **Fixture commits:** Disable signing for isolated test commits.\n- **Integrity:** Refresh repository integrity metadata for the modified tests.\n\n```python\nrun_git(root, \"--git-dir\", str(remote), \"config\", \"gc.auto\", \"0\")\nrun_git(root, \"--git-dir\", str(remote), \"symbolic-ref\", \"HEAD\", \"refs/heads/main\")\n```\n\n_Ursprünglich gepostet von @Copilot in https://github.com/Goldkelch/qik-vrt/pull/1019_",
+  "created_at": "2026-09-06T13:46:44Z",
+  "html_url": "https://github.com/ingolf-lohmann/qik-vrt/issues/376",
+  "issue_number": 376,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "title": "Repository verification failed when bare Git fixtures were configured from their working directory and when fixture commits inherited runner-level GPG signing settings.",
+  "updated_at": "2026-09-06T13:46:44Z"
+}
