@@ -26,6 +26,36 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
             entry,
         )
 
+    def test_github_copilot_adapters_preserve_ai_entrypoint_contract(self) -> None:
+        adapters = json.loads((ROOT / "AI_ADAPTERS.json").read_text(encoding="utf-8"))
+        self.assertEqual("AI", adapters["canonical_entrypoint"])
+        self.assertIn("/AI first", adapters["generic_fallback"])
+
+        declared = {
+            item["system"]: item["path"] for item in adapters["adapters"]
+        }
+        self.assertEqual(
+            ".github/copilot-instructions.md",
+            declared["GitHub Copilot"],
+        )
+        self.assertEqual(
+            ".github/instructions/qikvrt-ai-entry.instructions.md",
+            declared["GitHub Copilot path instructions"],
+        )
+
+        copilot = (ROOT / declared["GitHub Copilot"]).read_text(encoding="utf-8")
+        self.assertIn("bootstrap entrypoint `/AI`", copilot)
+        self.assertIn("parse `AI_CONTEXT.json`", copilot)
+        self.assertIn("required_read_order", copilot)
+        self.assertIn("remain authoritative", copilot)
+
+        path_instruction = (
+            ROOT / declared["GitHub Copilot path instructions"]
+        ).read_text(encoding="utf-8")
+        self.assertIn("Read `/AI` before any project analysis or modification", path_instruction)
+        self.assertIn("Load `AI_CONTEXT.json`", path_instruction)
+        self.assertIn("required_read_order", path_instruction)
+
     def test_context_binds_complete_runtime_lifecycle(self) -> None:
         context = json.loads((ROOT / "AI_CONTEXT.json").read_text(encoding="utf-8"))
         boot = context["runtime_bootloader"]
