@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate an issue-agent lifecycle disposition and promote only terminal closures.
+"""Validate a proposal without promoting it to a repository effect.
 
 This attests the repository processing state, not universal scientific truth.
 """
@@ -45,27 +45,27 @@ def promote(directory: Path) -> None:
     if not answer:
         raise SystemExit("BLOCK: answer is empty")
 
-    inference_completed = status.get("model_inference_completed") is True
+    compilation_completed = status.get("deterministic_compilation_completed") is True
     explicit_block = "## Gate result\n\nBLOCK" in answer
     now = datetime.now(timezone.utc).isoformat()
 
     if disposition in CLOSURE_DISPOSITIONS:
-        if not inference_completed:
-            raise SystemExit("BLOCK: terminal closure requires completed inference")
+        if not compilation_completed:
+            raise SystemExit("BLOCK: terminal closure requires deterministic compilation")
         if explicit_block:
             raise SystemExit("BLOCK: terminal closure conflicts with blocking gate result")
         status.update({
-            "status": "DONE",
-            "automatic_merge": True,
-            "automatic_issue_close": True,
-            "mirror_sync_required": True,
-            "common_tag_required": True,
-            "validated_completion_promoted_at": now,
+            "status": "CONTINUE",
+            "automatic_merge": False,
+            "automatic_issue_close": False,
+            "mirror_sync_required": False,
+            "common_tag_required": False,
+            "validated_disposition_at": now,
             "no_false_pass": True,
         })
     elif disposition == "EXECUTE_NOW":
-        if not inference_completed:
-            raise SystemExit("BLOCK: executable disposition requires completed inference")
+        if not compilation_completed:
+            raise SystemExit("BLOCK: executable disposition requires deterministic compilation")
         if explicit_block:
             raise SystemExit("BLOCK: executable disposition conflicts with blocking gate result")
         status.update({
@@ -88,6 +88,8 @@ def promote(directory: Path) -> None:
             "no_false_pass": True,
         })
 
+    # Historical promotion timestamps are not current effect receipts.
+    status.pop("validated_completion_promoted_at", None)
     status_path.write_text(
         json.dumps(status, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

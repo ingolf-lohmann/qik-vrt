@@ -2,12 +2,17 @@ import hashlib
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
+import contextlib
+import io
+import os
+import textwrap
 from pathlib import Path
 
 import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scripts.issue_agent.infer import SYSTEM_PROMPT
+from scripts.issue_agent.compile import ALLOWED_DISPOSITIONS, compile_issue
 from scripts.issue_agent.promote import promote
 from scripts.issue_agent.validate import validate
 
@@ -28,7 +33,9 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
         )
         (directory / "STATUS.json").write_text(json.dumps({
             "status": "CONTINUE",
-            "model_inference_completed": True,
+            "deterministic_compilation_completed": True,
+            "external_model_used": False,
+            "model_inference_completed": False,
             "issue_disposition": "EXECUTE_NOW",
             "disposition_reason": "The request is clear and actionable.",
             "next_action": "Execute the smallest bounded work unit.",
@@ -108,7 +115,7 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             status_path = directory / "STATUS.json"
             status = json.loads(status_path.read_text(encoding="utf-8"))
             status.update({
-                "model_inference_completed": False,
+                "deterministic_compilation_completed": True,
                 "issue_disposition": "BLOCKED_WITH_NEXT_ACTION",
                 "disposition_reason": "MODEL_INFERENCE_UNAVAILABLE",
                 "next_action": "Retry when trusted inference is available.",
@@ -122,7 +129,7 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             self.assertFalse(promoted["automatic_issue_close"])
             validate(directory)
 
-    def test_terminal_closure_alone_promotes_to_done(self):
+    def test_terminal_closure_proposal_does_not_authorize_effects(self):
         with tempfile.TemporaryDirectory() as temp:
             directory = Path(temp)
             self.make_bundle(directory)
@@ -144,12 +151,65 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             status_path.write_text(json.dumps(status), encoding="utf-8")
             promote(directory)
             promoted = json.loads(status_path.read_text(encoding="utf-8"))
-            self.assertEqual(promoted["status"], "DONE")
-            self.assertTrue(promoted["automatic_merge"])
-            self.assertTrue(promoted["automatic_issue_close"])
-            self.assertTrue(promoted["mirror_sync_required"])
-            self.assertTrue(promoted["common_tag_required"])
+            self.assertEqual(promoted["status"], "CONTINUE")
+            self.assertFalse(promoted["automatic_merge"])
+            self.assertFalse(promoted["automatic_issue_close"])
+            self.assertFalse(promoted["mirror_sync_required"])
+            self.assertFalse(promoted["common_tag_required"])
             validate(directory)
+
+    def test_predecessor_done_is_not_current_effect_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            self.make_bundle(directory)
+            path = directory / "STATUS.json"
+            status = json.loads(path.read_text(encoding="utf-8"))
+            status.update(status="DONE", automatic_merge=True,
+                          automatic_issue_close=True, mirror_sync_required=True,
+                          common_tag_required=True)
+            path.write_text(json.dumps(status), encoding="utf-8")
+            with self.assertRaisesRegex(SystemExit, "PROPOSAL_IS_NOT_AN_EFFECT_RECEIPT"):
+                validate(directory)
+
+    def test_review_gate_has_its_own_status_context(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_required_review_gate.yml").read_text()
+        self.assertIn("STATUS_CONTEXT: QIKVRT required code-owner review", workflow)
+        self.assertNotIn("STATUS_CONTEXT: QIKVRT requested review execution", workflow)
+        contract = (ROOT / ".github/workflows/qikvrt_requested_review_contract.yml").read_text()
+        self.assertIn("grep -F 'STATUS_CONTEXT: QIKVRT required code-owner review'", contract)
+        self.assertIn("! grep -F 'STATUS_CONTEXT: QIKVRT requested review execution'", contract)
+
+    def test_completion_observer_is_role_local_paginated_and_non_effecting(self):
+        workflow = (ROOT / ".github/workflows/issue-agent-autofinish.yml").read_text()
+        for forbidden in ("Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt",
+                          ": write", "secrets.", "schedule:", "git push"):
+            self.assertNotIn(forbidden, workflow)
+        program = textwrap.dedent(workflow.split("<<'PY'\n", 1)[1].rsplit("          PY", 1)[0])
+        for repository in ("Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt", "node/qik-vrt"):
+            for pages in ([[]], [[{"number": 1}], [{"number": 2, "pull_request": {}}]]):
+                with self.subTest(repository=repository, pages=pages), tempfile.TemporaryDirectory() as temp:
+                    calls = []
+                    def gh(arguments, **kwargs):
+                        calls.append(arguments)
+                        if "--paginate" in arguments:
+                            self.assertIn("--slurp", arguments)
+                            self.assertEqual(arguments[-1], f"repos/{repository}/issues?state=open&per_page=100")
+                            return json.dumps(pages)
+                        self.assertEqual(arguments, ["gh", "api", f"repos/{repository}/git/ref/heads/main"])
+                        return json.dumps({"object": {"sha": "a" * 40}})
+                    output = io.StringIO()
+                    with patch.dict(os.environ, {"REPOSITORY": repository, "GITHUB_RUN_ID": "1",
+                            "GITHUB_RUN_ATTEMPT": "1", "GITHUB_STEP_SUMMARY": str(Path(temp) / "summary")}), \
+                            patch("subprocess.check_output", side_effect=gh), contextlib.redirect_stdout(output):
+                        exec(compile(program, "completion-observer", "exec"), {})
+                    receipt = json.loads(output.getvalue())
+                    self.assertEqual(len(calls), 2)
+                    self.assertEqual(receipt["repository"], repository)
+                    self.assertEqual(receipt["open_issues"], [1] if pages[0] else [])
+                    self.assertEqual(receipt["open_pull_requests"], [2] if pages[0] else [])
+                    self.assertFalse(receipt["completion_proven"])
+                    self.assertFalse(receipt["cross_repository_evidence_reused"])
+                    self.assertEqual(receipt["effects_performed"], [])
 
     def test_policy_and_owner_delegation_are_active_and_fail_closed(self):
         policy = json.loads((
@@ -167,6 +227,14 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             "qikvrt_requested_review_and_issue_lifecycle_policy_v1",
         )
         self.assertEqual(policy["status"], "ACTIVE")
+        self.assertEqual(
+            policy["issue_agent_integration"]["external_model_use"],
+            "FORBIDDEN",
+        )
+        self.assertEqual(
+            policy["issue_agent_integration"]["deterministic_compiler"],
+            "scripts/issue_agent/compile.py",
+        )
         self.assertEqual(
             policy["issue_lifecycle"]["unclassified_open_issue"],
             "FORBIDDEN",
@@ -206,17 +274,42 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             continuation["related_delegations"],
         )
 
-    def test_issue_agent_prompt_requires_one_lifecycle_disposition(self):
-        for token in (
+    def test_issue_agent_compiler_declares_every_lifecycle_disposition(self):
+        self.assertEqual(set(ALLOWED_DISPOSITIONS), {
             "EXECUTE_NOW",
             "CLARIFICATION_REQUIRED",
             "BLOCKED_WITH_NEXT_ACTION",
             "CLOSE_COMPLETED",
             "CLOSE_NOT_PLANNED",
             "CLOSE_INVALID_OR_UNSUPPORTED",
-        ):
-            self.assertIn(token, SYSTEM_PROMPT)
-        self.assertIn("Do not leave an issue in an unclassified waiting state", SYSTEM_PROMPT)
+        })
+
+    def test_compiler_is_external_free_and_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            issue = root / "issue.json"
+            context = root / "context.md"
+            answer = root / "answer.md"
+            issue.write_text(json.dumps({"number": 376, "title": "arbitrary"}), encoding="utf-8")
+            context.write_text("bounded context", encoding="utf-8")
+            compile_issue(issue, context, answer)
+            output = answer.read_text(encoding="utf-8")
+            self.assertIn("BLOCKED_WITH_NEXT_ACTION", output)
+            self.assertIn("UNSUPPORTED_DETERMINISTIC_WORK_UNIT", output)
+            source = (ROOT / "scripts/issue_agent/compile.py").read_text(encoding="utf-8")
+            for forbidden in ("urllib", "requests", "GH_TOKEN", "openai", "github.ai"):
+                self.assertNotIn(forbidden, source.lower())
+
+    def test_workflow_has_no_external_model_permission_or_call(self):
+        workflow = (ROOT / ".github/workflows/issue-autonomous-processing.yml").read_text()
+        for forbidden in ("models: read", "scripts/issue_agent/infer.py", "openai/gpt"):
+            self.assertNotIn(forbidden, workflow)
+        self.assertIn("scripts/issue_agent/compile.py", workflow)
+        self.assertNotIn("--force", workflow)
+        self.assertNotIn("checkout -B", workflow)
+        self.assertIn("git merge --no-edit", workflow)
+        self.assertIn("qikvrt_integrity.py generate", workflow)
+        self.assertFalse((ROOT / "scripts/issue_agent/infer.py").exists())
 
 
 if __name__ == "__main__":
