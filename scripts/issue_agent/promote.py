@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate an issue-agent lifecycle disposition and promote only terminal closures.
+"""Validate a proposal without promoting it to a repository effect.
 
 This attests the repository processing state, not universal scientific truth.
 """
@@ -55,12 +55,12 @@ def promote(directory: Path) -> None:
         if explicit_block:
             raise SystemExit("BLOCK: terminal closure conflicts with blocking gate result")
         status.update({
-            "status": "DONE",
-            "automatic_merge": True,
-            "automatic_issue_close": True,
-            "mirror_sync_required": True,
-            "common_tag_required": True,
-            "validated_completion_promoted_at": now,
+            "status": "CONTINUE",
+            "automatic_merge": False,
+            "automatic_issue_close": False,
+            "mirror_sync_required": False,
+            "common_tag_required": False,
+            "validated_disposition_at": now,
             "no_false_pass": True,
         })
     elif disposition == "EXECUTE_NOW":
@@ -88,6 +88,8 @@ def promote(directory: Path) -> None:
             "no_false_pass": True,
         })
 
+    # Historical promotion timestamps are not current effect receipts.
+    status.pop("validated_completion_promoted_at", None)
     status_path.write_text(
         json.dumps(status, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

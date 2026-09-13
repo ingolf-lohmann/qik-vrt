@@ -112,9 +112,9 @@ jobs:
               --base main \
               --head "$branch" \
               --title "Issue agent: process #$ISSUE_NUMBER" \
-              --body "Repository-native processing artifacts for #$ISSUE_NUMBER.\n\nThe resumable auto-finish workflow may merge this PR only after EFFECT_ACK_DONE and successful repository checks. It then synchronizes the mirror, creates the common tag, and closes the issue."
+              --body "Processing proposal for #$ISSUE_NUMBER. No model answer or predecessor receipt authorizes merge, issue closure, synchronization, or tagging. Current repository-bound review and effect verification remain required."
           fi
 
           pr_url="$(gh pr list --head "$branch" --state open --json url --jq '.[0].url')"
           status="$(jq -r '.status' "evidence/issues/$ISSUE_NUMBER/STATUS.json")"
-          gh issue comment "$ISSUE_NUMBER" --body "Repository processing status: **$status**\n\nWork product: $pr_url\n\nThe repository auto-finish transaction now owns merge, mirror synchronization, common tagging, and issue closure. Any failed gate remains BLOCK."
+          gh issue comment "$ISSUE_NUMBER" --body "Repository proposal status: **$status**\n\nWork product: $pr_url\n\nThe completion observer has read-only, repository-local scope. Review and effect verification remain separate; no automatic closure is authorized by this proposal."
