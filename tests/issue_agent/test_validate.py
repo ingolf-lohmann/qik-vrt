@@ -173,6 +173,9 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/qikvrt_required_review_gate.yml").read_text()
         self.assertIn("STATUS_CONTEXT: QIKVRT required code-owner review", workflow)
         self.assertNotIn("STATUS_CONTEXT: QIKVRT requested review execution", workflow)
+        contract = (ROOT / ".github/workflows/qikvrt_requested_review_contract.yml").read_text()
+        self.assertIn("grep -F 'STATUS_CONTEXT: QIKVRT required code-owner review'", contract)
+        self.assertIn("! grep -F 'STATUS_CONTEXT: QIKVRT requested review execution'", contract)
 
     def test_completion_observer_is_role_local_paginated_and_non_effecting(self):
         workflow = (ROOT / ".github/workflows/issue-agent-autofinish.yml").read_text()
