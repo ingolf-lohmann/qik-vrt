@@ -23,12 +23,12 @@ pagination is not an atomic snapshot. Historical DONE bundles are not current
 authorization. Tests, reviews, rules and effect receipts must be freshly bound
 to the executing repository, exact base, head, tree and work unit.
 
-Still required: a validated allowlisted deterministic issue executor replacing
-the external-model inference path; event-bound resumption instead of unchanged
+Still required: validated allowlisted deterministic issue handlers beyond the
+initial fail-closed compiler; event-bound resumption instead of unchanged
 backlog retries; exact-subject native review and effect verification; and actual
-resolution of the remaining local issues and PRs. The current proposal workflow
-still calls an external model. This repair must not be advertised as removal of
-that dependency or as autonomous backlog completion. No predecessor or other
+resolution of the remaining local issues and PRs. The proposal workflow no
+longer calls an external model, but unsupported work units remain `BLOCK`. This
+repair must not be advertised as autonomous backlog completion. No predecessor or other
 repository's validation is imported as proof for this candidate.
 
 The code-owner gate must emit its own `QIKVRT required code-owner review`

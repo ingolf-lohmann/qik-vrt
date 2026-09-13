@@ -98,7 +98,8 @@
     "closure_may_not_hide_a_real_unresolved_defect": true
   },
   "issue_agent_integration": {
-    "system_prompt": "scripts/issue_agent/infer.py",
+    "deterministic_compiler": "scripts/issue_agent/compile.py",
+    "external_model_use": "FORBIDDEN",
     "status_materializer": "scripts/issue_agent/finalize.py",
     "bundle_validator": "scripts/issue_agent/validate.py",
     "required_status_fields": [

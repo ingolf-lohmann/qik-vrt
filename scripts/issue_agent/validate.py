@@ -37,6 +37,10 @@ def validate(directory: Path) -> None:
         raise SystemExit("INVALID_ISSUE_NUMBER")
 
     status = json.loads((directory / "STATUS.json").read_text(encoding="utf-8"))
+    if status.get("external_model_used") is not False:
+        raise SystemExit("EXTERNAL_MODEL_USE_FORBIDDEN")
+    if status.get("model_inference_completed") is not False:
+        raise SystemExit("MODEL_INFERENCE_MUST_REMAIN_FALSE")
     gate = status.get("status")
     if gate not in {"DONE", "CONTINUE", "ISOLATE", "BLOCK"}:
         raise SystemExit("INVALID_GATE_STATUS")

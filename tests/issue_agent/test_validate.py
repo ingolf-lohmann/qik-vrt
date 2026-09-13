@@ -12,7 +12,7 @@ from pathlib import Path
 import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scripts.issue_agent.infer import SYSTEM_PROMPT
+from scripts.issue_agent.compile import ALLOWED_DISPOSITIONS, compile_issue
 from scripts.issue_agent.promote import promote
 from scripts.issue_agent.validate import validate
 
@@ -33,7 +33,9 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
         )
         (directory / "STATUS.json").write_text(json.dumps({
             "status": "CONTINUE",
-            "model_inference_completed": True,
+            "deterministic_compilation_completed": True,
+            "external_model_used": False,
+            "model_inference_completed": False,
             "issue_disposition": "EXECUTE_NOW",
             "disposition_reason": "The request is clear and actionable.",
             "next_action": "Execute the smallest bounded work unit.",
@@ -113,7 +115,7 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             status_path = directory / "STATUS.json"
             status = json.loads(status_path.read_text(encoding="utf-8"))
             status.update({
-                "model_inference_completed": False,
+                "deterministic_compilation_completed": True,
                 "issue_disposition": "BLOCKED_WITH_NEXT_ACTION",
                 "disposition_reason": "MODEL_INFERENCE_UNAVAILABLE",
                 "next_action": "Retry when trusted inference is available.",
@@ -226,6 +228,14 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
         )
         self.assertEqual(policy["status"], "ACTIVE")
         self.assertEqual(
+            policy["issue_agent_integration"]["external_model_use"],
+            "FORBIDDEN",
+        )
+        self.assertEqual(
+            policy["issue_agent_integration"]["deterministic_compiler"],
+            "scripts/issue_agent/compile.py",
+        )
+        self.assertEqual(
             policy["issue_lifecycle"]["unclassified_open_issue"],
             "FORBIDDEN",
         )
@@ -264,17 +274,42 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             continuation["related_delegations"],
         )
 
-    def test_issue_agent_prompt_requires_one_lifecycle_disposition(self):
-        for token in (
+    def test_issue_agent_compiler_declares_every_lifecycle_disposition(self):
+        self.assertEqual(set(ALLOWED_DISPOSITIONS), {
             "EXECUTE_NOW",
             "CLARIFICATION_REQUIRED",
             "BLOCKED_WITH_NEXT_ACTION",
             "CLOSE_COMPLETED",
             "CLOSE_NOT_PLANNED",
             "CLOSE_INVALID_OR_UNSUPPORTED",
-        ):
-            self.assertIn(token, SYSTEM_PROMPT)
-        self.assertIn("Do not leave an issue in an unclassified waiting state", SYSTEM_PROMPT)
+        })
+
+    def test_compiler_is_external_free_and_fail_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            issue = root / "issue.json"
+            context = root / "context.md"
+            answer = root / "answer.md"
+            issue.write_text(json.dumps({"number": 376, "title": "arbitrary"}), encoding="utf-8")
+            context.write_text("bounded context", encoding="utf-8")
+            compile_issue(issue, context, answer)
+            output = answer.read_text(encoding="utf-8")
+            self.assertIn("BLOCKED_WITH_NEXT_ACTION", output)
+            self.assertIn("UNSUPPORTED_DETERMINISTIC_WORK_UNIT", output)
+            source = (ROOT / "scripts/issue_agent/compile.py").read_text(encoding="utf-8")
+            for forbidden in ("urllib", "requests", "GH_TOKEN", "openai", "github.ai"):
+                self.assertNotIn(forbidden, source.lower())
+
+    def test_workflow_has_no_external_model_permission_or_call(self):
+        workflow = (ROOT / ".github/workflows/issue-autonomous-processing.yml").read_text()
+        for forbidden in ("models: read", "scripts/issue_agent/infer.py", "openai/gpt"):
+            self.assertNotIn(forbidden, workflow)
+        self.assertIn("scripts/issue_agent/compile.py", workflow)
+        self.assertNotIn("--force", workflow)
+        self.assertNotIn("checkout -B", workflow)
+        self.assertIn("git merge --no-edit", workflow)
+        self.assertIn("qikvrt_integrity.py generate", workflow)
+        self.assertFalse((ROOT / "scripts/issue_agent/infer.py").exists())
 
 
 if __name__ == "__main__":
