@@ -1,0 +1,22 @@
+{
+  "schema": "qikvrt_ruleset_admin_carrier_v1",
+  "kind": "BOUNDED_ADMINISTRATIVE_EXECUTION_CARRIER",
+  "provenance": {
+    "human_principal": "Ingolf Lohmann",
+    "human_contribution": "Previously explicit authorization to enforce Goldkelch/qik-vrt ruleset 19344903 and use the personal repository admin capability; current instruction to unblock legitimate launch without weakening gates.",
+    "artificial_contribution": "Adapter wiring and stdin regression repair authored by the assistant; not a native human code review."
+  },
+  "carrier_parent": {"head": "be4ec7935383a816c810514132d1bbb8ccb8e088", "tree": "35a0c6c61df21666d98879a0db2715d73fc200d8"},
+  "product_subject": {"repository": "Goldkelch/qik-vrt", "pr": 1104, "head": "e5901d0d3d1205715047aace0bbbb19345c60e1f", "tree": "904ae8f851ddaf6d33e082d2000b66061e49a83e"},
+  "execution_source": {"repository": "Goldkelch/qik-vrt", "head": "a86054139b49c13c5cd344753b248b46b5daf66f", "tree": "feff1cae2401a3df83febc3b9458de70d79b818e", "tool_blob": "98947b7c11c31c2d078db1d08b6128c7ef49d237", "policy_blob": "0d89056d4d745a2c77e7de1f9b9e512dbc43a1e3"},
+  "reuse": "Extend existing qikvrt_mesh_authority_edge.yml; execute existing trusted Main qikvrt_ruleset_reconcile.py and GITHUB_MAIN_RULESET_V1.json, not a new ruleset compiler.",
+  "allowed_effect": "Conditional PUT only to existing Goldkelch/qik-vrt ruleset 19344903 using the exact pinned normative policy and independent GET readback.",
+  "credentials": "Existing personal-node QIKVRT_GITHUB_ADMIN_TOKEN mapped only into the trusted tool's QIKVRT_RULESET_ADMIN_TOKEN environment; no credential copied to Authority, artifacts or chat.",
+  "invocation": "One owner non-force push from the exact carrier parent; run_attempt must equal 1; changed Main or product head/tree blocks before apply. No polling or automatic rerun.",
+  "local_validation": {"scope": "YAML parsing, every Bash block syntax, four inline Python blocks compile, existing admission validator positive and wrong-head negative cases", "result": "PASS", "native_execution": "NOT_YET_OBSERVED"},
+  "allowlist": [".github/workflows/qikvrt_mesh_authority_edge.yml", "state/work_units/RULESET_ADMIN_BRIDGE_20260915.json"],
+  "carrier_integrity_projection": "Not yet regenerated; this carrier is not eligible for Main adoption. Executed reconciler and policy are checked out from exact unchanged Authority Main and verified there before credential access.",
+  "forbidden": ["force push", "Main source changes", "review submission", "merge", "deployment", "publication", "credential disclosure", "product P2 evidence transfer", "EFFECT_ACK_DONE claim"],
+  "effect_observed": false,
+  "effect_ack_done": false
+}
