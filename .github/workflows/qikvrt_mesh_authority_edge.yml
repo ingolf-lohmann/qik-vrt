@@ -1,6 +1,9 @@
 name: QIKVRT Mesh authority edge
 
 on:
+  push:
+    branches: [ops/ruleset-admin-bridge-20260915]
+    paths: [.github/workflows/qikvrt_mesh_authority_edge.yml]
   repository_dispatch:
     types: [qikvrt-authority-admit]
   workflow_dispatch:
@@ -21,6 +24,7 @@ permissions:
 
 jobs:
   admit:
+    if: github.event_name != 'push'
     runs-on: ubuntu-24.04
     env:
       TARGET_REPOSITORY: ${{ github.event.client_payload.repository || inputs.repository }}
@@ -46,10 +50,10 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "$api")"
-          python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY' <<<"$receipt"
-          import json,sys
+          QIKVRT_RECEIPT_JSON="$receipt" python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY'
+          import json,os,sys
           expected_head, expected_run = sys.argv[1], int(sys.argv[2])
-          value=json.load(sys.stdin)
+          value=json.loads(os.environ["QIKVRT_RECEIPT_JSON"])
           assert value['id'] == expected_run, value
           assert value['head_sha'] == expected_head, value
           assert value['status'] == 'completed', value
@@ -75,12 +79,135 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "$api")"
-          python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY' <<<"$receipt"
-          import json,sys
+          QIKVRT_RECEIPT_JSON="$receipt" python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY'
+          import json,os,sys
           expected_head, expected_run = sys.argv[1], int(sys.argv[2])
-          value=json.load(sys.stdin)
+          value=json.loads(os.environ["QIKVRT_RECEIPT_JSON"])
           assert value['id'] == expected_run, value
           assert value['head_sha'] == expected_head, value
           assert value.get('conclusion') != 'action_required', value
           print(json.dumps({'run_id': value['id'], 'head_sha': value['head_sha'], 'status': value['status'], 'conclusion': value.get('conclusion')}, sort_keys=True))
           PY
+
+  reconcile-authorized-ruleset:
+    # One-shot administrative carrier, not a product Main promotion.
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/ops/ruleset-admin-bridge-20260915' &&
+      github.actor == 'ingolf-lohmann'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency:
+      group: qikvrt-authorized-ruleset-19344903
+      cancel-in-progress: false
+    env:
+      EXPECTED_MAIN: a86054139b49c13c5cd344753b248b46b5daf66f
+      EXPECTED_MAIN_TREE: feff1cae2401a3df83febc3b9458de70d79b818e
+      EXPECTED_PR: '1104'
+      EXPECTED_PR_HEAD: e5901d0d3d1205715047aace0bbbb19345c60e1f
+      EXPECTED_PR_TREE: 904ae8f851ddaf6d33e082d2000b66061e49a83e
+    steps:
+      - name: Bind one explicit owner push, without rerun or predecessor transfer
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          mkdir -p "$RUNNER_TEMP/ruleset-bridge"
+          python3 -B - <<'PY'
+          import json, os
+          event = json.load(open(os.environ['GITHUB_EVENT_PATH'], encoding='utf-8'))
+          if event.get('before') != 'be4ec7935383a816c810514132d1bbb8ccb8e088':
+              raise SystemExit('HOLD: administrative carrier parent changed')
+          if event.get('after') != os.environ['GITHUB_SHA'] or event.get('forced') is not False:
+              raise SystemExit('HOLD: exact non-force push required')
+          if event.get('deleted') or event.get('created'):
+              raise SystemExit('HOLD: existing branch update required')
+          PY
+      - name: Check out existing trusted Authority implementation only
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Goldkelch/qik-vrt
+          ref: a86054139b49c13c5cd344753b248b46b5daf66f
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up declared Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify pinned implementation, canonical policy and its regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_MAIN_TREE"
+          test "$(git hash-object tools/qikvrt_ruleset_reconcile.py)" = 98947b7c11c31c2d078db1d08b6128c7ef49d237
+          test "$(git hash-object policy/GITHUB_MAIN_RULESET_V1.json)" = 0d89056d4d745a2c77e7de1f9b9e512dbc43a1e3
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          python3 -B -m unittest -v tests.test_qikvrt_ruleset_reconcile
+          git diff --exit-code
+      - name: Freshly bind Authority Main and current product PR before effect
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json, os, pathlib, subprocess
+          def read(path):
+              return json.loads(subprocess.check_output(['gh','api',path], text=True))
+          repo = 'repos/Goldkelch/qik-vrt'
+          main = read(repo + '/git/ref/heads/main')['object']['sha']
+          pull = read(repo + '/pulls/' + os.environ['EXPECTED_PR'])
+          if main != os.environ['EXPECTED_MAIN']:
+              raise SystemExit('HOLD: Authority Main changed')
+          if pull['head']['sha'] != os.environ['EXPECTED_PR_HEAD'] or pull['state'] != 'open':
+              raise SystemExit('HOLD: product subject changed')
+          if pull['base']['ref'] != 'main' or pull['base']['sha'] != main:
+              raise SystemExit('HOLD: product base changed')
+          tree = read(repo + '/git/commits/' + pull['head']['sha'])['tree']['sha']
+          if tree != os.environ['EXPECTED_PR_TREE']:
+              raise SystemExit('HOLD: product tree changed')
+          receipt = {'schema':'qikvrt_ruleset_admin_bridge_v1',
+              'carrier_repository':os.environ['GITHUB_REPOSITORY'],
+              'carrier_head':os.environ['GITHUB_SHA'], 'run_id':os.environ['GITHUB_RUN_ID'],
+              'authority_main':main, 'authority_main_tree':os.environ['EXPECTED_MAIN_TREE'],
+              'pr':int(os.environ['EXPECTED_PR']), 'pr_head':pull['head']['sha'], 'pr_tree':tree,
+              'ruleset_id':19344903, 'scope':'APPLY_EXISTING_MAIN_RULESET_POLICY_ONLY',
+              'source_promotion':False, 'review_submission':False, 'deployment':False,
+              'evidence_transfer':False, 'effect_ack_done':False}
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ruleset-bridge'
+          (root / 'binding.json').write_text(json.dumps(receipt, indent=2)+'\n', encoding='utf-8')
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+      - name: Apply existing authorized policy using the existing personal admin credential
+        # Credential remains on the personal node and enters only the pinned tool.
+        env:
+          QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_ruleset_reconcile.py --apply \
+            --receipt "$RUNNER_TEMP/ruleset-bridge/apply.json"
+      - name: Independently read back public ruleset without the admin credential
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/ruleset-bridge/binding.json"
+          gh api repos/Goldkelch/qik-vrt/rulesets/19344903 \
+            > "$RUNNER_TEMP/ruleset-bridge/public-readback.json"
+          python3 -B tools/qikvrt_ruleset_reconcile.py \
+            --snapshot "$RUNNER_TEMP/ruleset-bridge/public-readback.json" \
+            --receipt "$RUNNER_TEMP/ruleset-bridge/public-evaluation.json"
+      - name: Preserve non-secret scope, apply receipt and independent readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-ruleset-admin-bridge-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/ruleset-bridge/*.json
+          if-no-files-found: error
+          retention-days: 90
