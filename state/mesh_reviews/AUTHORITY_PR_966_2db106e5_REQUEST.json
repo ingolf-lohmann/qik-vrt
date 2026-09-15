@@ -1,0 +1,28 @@
+{
+  "schema": "qikvrt_cross_repository_review_request_v1",
+  "reviewer_repository": "ingolf-lohmann/qik-vrt",
+  "subject_repository": "Goldkelch/qik-vrt",
+  "subject_pull_request": 966,
+  "subject_head_sha": "2db106e5b505ab9e91b74b3ed0a71579aa62bf48",
+  "subject_base_sha": "03759aebbd983602b3ddfe7bf751a79535559a6f",
+  "authority_release": {
+    "human_release_observed": true,
+    "released_predecessor_sha": "766659af79fc520d8a202fead886a71b3063f03b",
+    "transfer_to_subject_head": false
+  },
+  "required_review": {
+    "exact_head_fetch": true,
+    "lean_lake_build": true,
+    "repository_tests": true,
+    "universal_terminal_dod_check": true,
+    "claim_boundary_check": true,
+    "no_predecessor_evidence_transfer": true
+  },
+  "result_contract": {
+    "receipt_path": "state/mesh_reviews/AUTHORITY_PR_966_2db106e5_RECEIPT.json",
+    "states": ["APPROVE_WITHIN_SCOPE", "COMMENT_WITH_BLOCKER", "HOLD_UNVERIFIED"],
+    "github_review_equivalence": false,
+    "note": "This is an independent repository-native Mesh review. GitHub account-level self-review restrictions do not erase repository-role independence. Promotion policy must explicitly accept this receipt if it is to satisfy P3."
+  },
+  "status": "REQUESTED"
+}
