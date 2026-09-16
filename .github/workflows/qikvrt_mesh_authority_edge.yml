@@ -121,7 +121,7 @@ jobs:
           set -euo pipefail
           test "$GITHUB_RUN_ATTEMPT" = 1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git show -s --format=%P HEAD)" = 59dc49b16c8ff43c229809aa9245c72cfbc44b2a
+          test "$(git show -s --format=%P HEAD)" = 3cf103828efe7b5087b7b61f406557454b0bffb2
           python3 -B - <<'PY'
           import json, os, subprocess
           from tools.qikvrt_ruleset_admin_bridge import validate_event

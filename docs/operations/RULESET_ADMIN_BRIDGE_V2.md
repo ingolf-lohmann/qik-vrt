@@ -13,7 +13,7 @@ an empty static `QIKVRT_GITHUB_ADMIN_TOKEN`. A declared credential name was bein
 treated as an available credential. The earlier event guard also still required
 the bootstrap parent, rather than the actual materialized predecessor.
 
-The successor binds sole parent `59dc49b16c8ff43c229809aa9245c72cfbc44b2a` and
+The successor binds sole parent `3cf103828efe7b5087b7b61f406557454b0bffb2` and
 its own live PR/ref/head/tree. It runs on one genuine non-force owner push, not a
 rerun or a timer. Every subsequent mutation requires a new, explicitly bound
 successor; receipts cannot be transferred to a child, even with identical files.
@@ -65,3 +65,35 @@ three-file integrity allowlist and validated on its own literal successor.
 No generated worktree result, predecessor test or administrative receipt may be
 used as successor-local P2 evidence. This administrative job always executes the
 pinned Authority Main implementation, not a new product implementation.
+
+## Scope correction after native execution on 2026-09-16
+
+Native run `35076597819`, job `104730374372`, executed the 22 adapter
+regressions and seven pinned Authority-reconciler tests successfully on source
+`277c25f2cde3b996939e24373b11ba2368ff8ad5`. It then held with
+`PRODUCT_PR_DRIFT`: the copied product #1104 binding was already stale. Its
+non-secret receipt independently exposed all three documented App fields as
+empty in that particular Actions step. No token was minted and no PUT occurred.
+This result belongs only to that source head, not to any successor.
+
+The existing materializer produced child
+`3cf103828efe7b5087b7b61f406557454b0bffb2`, tree
+`b1e99fe5d23dd7b559e81681f88622bb3d071dd7`, with exactly the three
+canonical integrity paths changed. The next source increment preserves it as
+its sole parent. No tests or administrative receipt are transferred from it.
+
+Ruleset #19344903 is an independent administrative subject. Binding its repair
+to the head of unrelated product PR #1104 caused unrelated development to stop
+an otherwise unchanged administrative work unit. The corrected adapter binds
+only the live #381 carrier/ref/head/tree/parent and exact Authority Main, pinned
+reconciler bytes, canonical policy, installation and ruleset. It never submits
+or authorizes a product review, merge or deployment. Product heads retain their
+own separate P2-P7 obligations; none is certified by this receipt.
+
+Two additional permanent regressions reproduce the unwanted product dependency
+and require an actionable missing-configuration result that retains the exact
+Main and carrier bindings. Missing App configuration now explicitly requests
+`BIND_EXISTING_RULESET_APP_CONFIGURATION_IN_CARRIER_ACTIONS`, rather than another
+unspecified source repair or an unproductive rerun. The previously observed
+empty configuration does not prove that an App or a credential is absent from
+all repository Environments or from the owner's account.

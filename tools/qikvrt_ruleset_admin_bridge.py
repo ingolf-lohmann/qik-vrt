@@ -28,10 +28,8 @@ CARRIER = "ingolf-lohmann/qik-vrt"
 BRANCH = "ops/ruleset-admin-bridge-20260915"
 MAIN = "a86054139b49c13c5cd344753b248b46b5daf66f"
 MAIN_TREE = "feff1cae2401a3df83febc3b9458de70d79b818e"
-PARENT = "59dc49b16c8ff43c229809aa9245c72cfbc44b2a"
+PARENT = "3cf103828efe7b5087b7b61f406557454b0bffb2"
 REPO_ID = 1271407206
-PR_HEAD = "e5901d0d3d1205715047aace0bbbb19345c60e1f"
-PR_TREE = "904ae8f851ddaf6d33e082d2000b66061e49a83e"
 RULESET = 19344903
 
 
@@ -169,21 +167,20 @@ def bind(api, read_token: str, head: str) -> dict[str, str]:
     require([p.get("sha") for p in commit.get("parents", [])] == [PARENT], "CARRIER_ANCESTRY_MISMATCH")
     require(get(AUTHORITY + "/git/ref/heads/main").get("object", {}).get("sha") == MAIN, "AUTHORITY_MAIN_DRIFT")
     require(get(AUTHORITY + "/git/commits/" + MAIN).get("tree", {}).get("sha") == MAIN_TREE, "AUTHORITY_TREE_DRIFT")
-    product = get(AUTHORITY + "/pulls/1104")
-    require(product.get("state") == "open" and product.get("head", {}).get("sha") == PR_HEAD
-            and product.get("base", {}).get("sha") == MAIN and product.get("base", {}).get("ref") == "main", "PRODUCT_PR_DRIFT")
-    require(get(AUTHORITY + "/git/commits/" + PR_HEAD).get("tree", {}).get("sha") == PR_TREE, "PRODUCT_TREE_DRIFT")
+    # Ruleset administration is bound to this carrier and the canonical Main
+    # policy, not to a separately evolving product PR. No product approval or
+    # product effect can be derived from this administrative receipt.
     tree = commit.get("tree", {}).get("sha", "")
     require(bool(re.fullmatch(r"[0-9a-f]{40}", tree)), "CARRIER_TREE_INVALID")
     return {"carrier_head": head, "carrier_tree": tree, "carrier_parent": PARENT,
-            "authority_main": MAIN, "authority_main_tree": MAIN_TREE,
-            "product_head": PR_HEAD, "product_tree": PR_TREE}
+            "authority_main": MAIN, "authority_main_tree": MAIN_TREE}
 
 
 def execute(event, env, reconciler, api=request, signer=sign_jwt, clock=time.time):
     receipt = {"schema": "qikvrt_ruleset_admin_bridge_v2", "repository": AUTHORITY,
                "carrier_repository": CARRIER, "carrier_head": env.get("GITHUB_SHA"),
                "run_id": env.get("GITHUB_RUN_ID"), "ruleset_id": RULESET,
+               "scope": "APPLY_EXISTING_MAIN_RULESET_POLICY_ONLY",
                "state": "HOLD_UNVERIFIED", "mutation": "NONE", "effect_observed": False,
                "ruleset_current": False, "continuation_required": True,
                "review_submission": False, "source_promotion": False, "deployment": False,
@@ -229,7 +226,10 @@ def execute(event, env, reconciler, api=request, signer=sign_jwt, clock=time.tim
                        next_action="REOBSERVE_NATIVE_REVIEW_AND_MAIN_ADMISSION",
                        ruleset_digest=final["pre_state_sha256"])
     except Hold as exc:
-        receipt.update(first_blocker=str(exc), next_action="REPAIR_BOUND_ADMINISTRATIVE_CARRIER")
+        next_action = ("BIND_EXISTING_RULESET_APP_CONFIGURATION_IN_CARRIER_ACTIONS"
+                       if str(exc) == "RULESET_APP_CONFIGURATION_MISSING"
+                       else "REPAIR_BOUND_ADMINISTRATIVE_CARRIER")
+        receipt.update(first_blocker=str(exc), next_action=next_action)
     except Exception:
         receipt.update(first_blocker="ADAPTER_OR_PINNED_TOOL_FAILED", next_action="INSPECT_BOUND_ADAPTER_FAILURE")
     finally:

@@ -68,10 +68,6 @@ class Api:
             return {"object": {"sha": bridge.MAIN}}
         if path.endswith("/git/commits/" + bridge.MAIN):
             return {"tree": {"sha": bridge.MAIN_TREE}}
-        if path.endswith("/pulls/1104"):
-            return {"state": "open", "head": {"sha": bridge.PR_HEAD}, "base": {"sha": bridge.MAIN, "ref": "main"}}
-        if path.endswith("/git/commits/" + bridge.PR_HEAD):
-            return {"tree": {"sha": bridge.PR_TREE}}
         if path.endswith("/rulesets/19344903"):
             return {"current": self.reconciler.current}
         if path == "/app":
@@ -288,6 +284,27 @@ class RulesetAdminBridgeTests(unittest.TestCase):
         self.assertLess(administrative.index("make ruleset-admin-bridge-test"), administrative.index("secrets.QIKVRT_RULESET_APP_PRIVATE_KEY"))
         self.assertNotIn("continue-on-error", administrative)
         self.assertNotIn("schedule:", source)
+
+    def test_product_pr_drift_is_not_a_ruleset_administration_dependency(self):
+        self.api.overrides["/repos/" + bridge.AUTHORITY + "/pulls/1104"] = {
+            "state": "open", "head": {"sha": "55e6ff0cc2e527f9ef615deed6d30a21c3f9aee1"},
+            "base": {"sha": bridge.MAIN, "ref": "main"}}
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "RULESET_CURRENT")
+        self.assertFalse(any(c[1].endswith("/pulls/1104") for c in self.api.calls))
+        self.assertEqual(result["scope"], "APPLY_EXISTING_MAIN_RULESET_POLICY_ONLY")
+        self.assertNotIn("product_head", result)
+
+    def test_missing_configuration_keeps_exact_bindings_and_actionable_route(self):
+        self.env["QIKVRT_RULESET_APP_PRIVATE_KEY"] = ""
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "HOLD_UNVERIFIED")
+        self.assertEqual(result["carrier_parent"], bridge.PARENT)
+        self.assertEqual(result["carrier_tree"], TREE)
+        self.assertEqual(result["authority_main_tree"], bridge.MAIN_TREE)
+        self.assertEqual(result["pre_ruleset_state"], "DRIFT")
+        self.assertEqual(result["next_action"], "BIND_EXISTING_RULESET_APP_CONFIGURATION_IN_CARRIER_ACTIONS")
+        self.assertEqual(self.reconciler.calls, 0)
 
     def test_permanent_regressions_are_admitted_to_normal_make_test(self):
         root = Path(__file__).resolve().parents[1]
