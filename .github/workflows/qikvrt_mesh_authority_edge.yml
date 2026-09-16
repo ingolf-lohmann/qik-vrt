@@ -1,86 +1,85 @@
 name: QIKVRT Mesh authority edge
-
 on:
+  push:
+    branches: [ops/ruleset-admin-bridge-20260915]
+    paths: [.github/workflows/qikvrt_mesh_authority_edge.yml, tools/qikvrt_ruleset_admin_bridge.py, tools/qikvrt_ruleset_admin_reentry.py, tests/test_qikvrt_ruleset_admin_bridge.py, docs/operations/RULESET_ADMIN_BRIDGE_V2.md, Makefile]
   repository_dispatch:
-    types: [qikvrt-authority-admit]
-  workflow_dispatch:
-    inputs:
-      repository:
-        description: Exact target repository
-        required: true
-        default: Goldkelch/qik-vrt
-      run_id:
-        description: Exact ACTION_REQUIRED workflow run id
-        required: true
-      head_sha:
-        description: Exact target head SHA
-        required: true
-
-permissions:
-  contents: read
-
+    types: [qikvrt-authority-admit, qikvrt-ruleset-reconcile]
+permissions: {contents: read}
 jobs:
   admit:
+    if: github.event_name == 'repository_dispatch' && github.event.action == 'qikvrt-authority-admit'
     runs-on: ubuntu-24.04
     env:
-      TARGET_REPOSITORY: ${{ github.event.client_payload.repository || inputs.repository }}
-      TARGET_RUN_ID: ${{ github.event.client_payload.run_id || inputs.run_id }}
-      EXPECTED_HEAD: ${{ github.event.client_payload.head_sha || inputs.head_sha }}
+      TARGET_REPOSITORY: ${{ github.event.client_payload.repository }}
+      TARGET_RUN_ID: ${{ github.event.client_payload.run_id }}
+      EXPECTED_HEAD: ${{ github.event.client_payload.head_sha }}
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
     steps:
       - name: Fail closed on target contract
-        shell: bash
+        run: |
+          set -euo pipefail; test "$TARGET_REPOSITORY" = "Goldkelch/qik-vrt"; test -n "$EXPECTED_HEAD"; test -n "$TARGET_RUN_ID"; test -n "$ADMIN_TOKEN"
+      - name: Bind and approve exact ACTION_REQUIRED run
         run: |
           set -euo pipefail
-          test "$TARGET_REPOSITORY" = "Goldkelch/qik-vrt"
-          test "$EXPECTED_HEAD" != ""
-          test "$TARGET_RUN_ID" != ""
-          test "$ADMIN_TOKEN" != ""
-      - name: Bind exact ACTION_REQUIRED run and head
-        shell: bash
-        run: |
-          set -euo pipefail
-          api="https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$TARGET_RUN_ID"
-          receipt="$(curl --fail-with-body --silent --show-error \
-            -H "Authorization: Bearer $ADMIN_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "$api")"
-          python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY' <<<"$receipt"
-          import json,sys
-          expected_head, expected_run = sys.argv[1], int(sys.argv[2])
-          value=json.load(sys.stdin)
-          assert value['id'] == expected_run, value
-          assert value['head_sha'] == expected_head, value
-          assert value['status'] == 'completed', value
-          assert value['conclusion'] == 'action_required', value
+          api="https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$TARGET_RUN_ID"; receipt="$(curl --fail-with-body --silent --show-error -H "Authorization: Bearer $ADMIN_TOKEN" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "$api")"
+          QIKVRT_RECEIPT_JSON="$receipt" python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY'
+          import json,os,sys
+          v=json.loads(os.environ['QIKVRT_RECEIPT_JSON']); assert v['id']==int(sys.argv[2]) and v['head_sha']==sys.argv[1]; assert v['status']=='completed' and v['conclusion']=='action_required'
           PY
-      - name: Approve exact workflow execution
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl --fail-with-body --silent --show-error \
-            -X POST \
-            -H "Authorization: Bearer $ADMIN_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$TARGET_RUN_ID/approve"
+          curl --fail-with-body --silent --show-error -X POST -H "Authorization: Bearer $ADMIN_TOKEN" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$TARGET_RUN_ID/approve"
       - name: Effect readback
-        shell: bash
         run: |
           set -euo pipefail
-          api="https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$TARGET_RUN_ID"
-          receipt="$(curl --fail-with-body --silent --show-error \
-            -H "Authorization: Bearer $ADMIN_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "$api")"
-          python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY' <<<"$receipt"
-          import json,sys
-          expected_head, expected_run = sys.argv[1], int(sys.argv[2])
-          value=json.load(sys.stdin)
-          assert value['id'] == expected_run, value
-          assert value['head_sha'] == expected_head, value
-          assert value.get('conclusion') != 'action_required', value
-          print(json.dumps({'run_id': value['id'], 'head_sha': value['head_sha'], 'status': value['status'], 'conclusion': value.get('conclusion')}, sort_keys=True))
+          api="https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$TARGET_RUN_ID"; receipt="$(curl --fail-with-body --silent --show-error -H "Authorization: Bearer $ADMIN_TOKEN" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "$api")"
+          QIKVRT_RECEIPT_JSON="$receipt" python3 - "$EXPECTED_HEAD" "$TARGET_RUN_ID" <<'PY'
+          import json,os,sys
+          v=json.loads(os.environ['QIKVRT_RECEIPT_JSON']); assert v['id']==int(sys.argv[2]) and v['head_sha']==sys.argv[1]; assert v.get('conclusion')!='action_required'; print(json.dumps({'run_id':v['id'],'head_sha':v['head_sha'],'status':v['status'],'conclusion':v.get('conclusion')},sort_keys=True))
           PY
+  reconcile-authorized-ruleset:
+    if: github.event_name == 'push' || (github.event_name == 'repository_dispatch' && github.event.action == 'qikvrt-ruleset-reconcile')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    concurrency: {group: qikvrt-authorized-ruleset-19344903, cancel-in-progress: false}
+    env:
+      CARRIER_HEAD: ${{ github.event_name == 'push' && github.sha || github.event.client_payload.head_sha }}
+    steps:
+      - name: Check out exact carrier without credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {ref: "${{ env.CARRIER_HEAD }}", fetch-depth: 2, persist-credentials: false, path: carrier}
+      - name: Verify exact source event or immutable reentry
+        working-directory: carrier
+        run: |
+          set -euo pipefail; test "$GITHUB_RUN_ATTEMPT" = 1; test -n "$CARRIER_HEAD"; test "$(git rev-parse HEAD)" = "$CARRIER_HEAD"
+          python3 -B - <<'PY'
+          import json,os,re,subprocess
+          e=json.load(open(os.environ['GITHUB_EVENT_PATH'],encoding='utf-8')); h=os.environ['CARRIER_HEAD']; n=os.environ['GITHUB_EVENT_NAME']; assert re.fullmatch(r'[0-9a-f]{40}',h)
+          if n=='push':
+              assert os.environ['GITHUB_ACTOR']=='ingolf-lohmann' and os.environ['GITHUB_REF']=='refs/heads/ops/ruleset-admin-bridge-20260915'; assert e['after']==h and not e['forced'] and not e['created'] and not e['deleted']; allowed={'.github/workflows/qikvrt_mesh_authority_edge.yml','tools/qikvrt_ruleset_admin_bridge.py','tools/qikvrt_ruleset_admin_reentry.py','tests/test_qikvrt_ruleset_admin_bridge.py','docs/operations/RULESET_ADMIN_BRIDGE_V2.md','Makefile'}; changed=set(subprocess.check_output(['git','diff','--name-only','HEAD^','HEAD'],text=True).splitlines()); assert changed and changed<=allowed
+          else:
+              assert e['action']=='qikvrt-ruleset-reconcile'; p=e.get('client_payload') or {}; assert p.get('head_sha')==h and p.get('repository')=='Goldkelch/qik-vrt'
+          print(json.dumps({'head':h,'event':n,'predecessor_evidence_transfer':False}))
+          PY
+      - name: Execute permanent adapter regressions without administrative secrets
+        working-directory: carrier
+        run: |
+          set -euo pipefail; command -v openssl; make ruleset-admin-bridge-test
+      - name: Check out unchanged trusted Authority reconciler and policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: Goldkelch/qik-vrt, ref: a86054139b49c13c5cd344753b248b46b5daf66f, fetch-depth: 1, persist-credentials: false, path: authority}
+      - name: Verify exact Authority bytes and existing reconciler regressions
+        working-directory: authority
+        run: |
+          set -euo pipefail; test "$(git rev-parse HEAD)" = a86054139b49c13c5cd344753b248b46b5daf66f; test "$(git rev-parse HEAD^{tree})" = feff1cae2401a3df83febc3b9458de70d79b818e; test "$(git hash-object tools/qikvrt_ruleset_reconcile.py)" = 98947b7c11c31c2d078db1d08b6128c7ef49d237; test "$(git hash-object policy/GITHUB_MAIN_RULESET_V1.json)" = 0d89056d4d745a2c77e7de1f9b9e512dbc43a1e3; python3 -B tools/qikvrt_integrity.py verify; python3 -B -m unittest -v tests.test_qikvrt_ruleset_reconcile; git diff --exit-code
+      - name: Bind current App authority, reconcile once, independently read back and revoke
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QIKVRT_RULESET_APP_CLIENT_ID: ${{ vars.QIKVRT_RULESET_APP_CLIENT_ID }}
+          QIKVRT_RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          QIKVRT_RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail; test -f carrier/tools/qikvrt_ruleset_admin_bridge.py; PYTHONPATH="$GITHUB_WORKSPACE/carrier" python3 -B carrier/tools/qikvrt_ruleset_admin_reentry.py --authority-root "$GITHUB_WORKSPACE/authority" --receipt "$RUNNER_TEMP/ruleset-bridge/result.json"
+      - name: Preserve only non-secret exact-bound administrative receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with: {name: "qikvrt-ruleset-admin-bridge-${{ github.run_id }}-${{ github.run_attempt }}", path: "${{ runner.temp }}/ruleset-bridge/result.json", if-no-files-found: error, retention-days: 90}
