@@ -23,16 +23,20 @@ class Reconciler:
         self.current = False
         self.calls = 0
         self.fail_after_put = False
+        self.bypass_actors = []
+        self.bypass_resists_put = False
 
     def load_policy(self):
         return {"repository": bridge.AUTHORITY, "ruleset_id": bridge.RULESET}
 
     def evaluate(self, snapshot, policy):
-        return {"state": "CURRENT" if snapshot["current"] else "DRIFT", "pre_state_sha256": "digest"}
+        return {"state": "CURRENT" if snapshot["current"] and not snapshot.get("bypass_actors") else "DRIFT", "pre_state_sha256": "digest", "desired_state_sha256": "digest"}
 
     def reconcile(self, token, policy):
         self.calls += 1
         self.current = True
+        if not self.bypass_resists_put:
+            self.bypass_actors = []
         if self.fail_after_put:
             raise RuntimeError("unsafe upstream response MUST NOT be printed")
         return {"state": "CURRENT", "mutation": "PUT", "effect_observed": True}
@@ -46,6 +50,7 @@ class Api:
         self.carrier_reads = 0
         self.drift_after = None
         self.revoke_fails = False
+        self.ruleset_filter = lambda snapshot, token: snapshot
         self.app = {"id": 7, "client_id": "Iv23fixture"}
         self.installation = {"id": 8, "app_id": 7, "account": {"login": "Goldkelch"},
                              "permissions": {"administration": "write"}, "suspended_at": None}
@@ -69,7 +74,8 @@ class Api:
         if path.endswith("/git/commits/" + bridge.MAIN):
             return {"tree": {"sha": bridge.MAIN_TREE}}
         if path.endswith("/rulesets/19344903"):
-            return {"current": self.reconciler.current}
+            snapshot = {"current": self.reconciler.current, "bypass_actors": list(self.reconciler.bypass_actors)}
+            return self.ruleset_filter(snapshot, token)
         if path == "/app":
             return self.app
         if path.endswith("/installation"):
@@ -214,7 +220,7 @@ class RulesetAdminBridgeTests(unittest.TestCase):
         self.assertTrue(result["token_revoked"])
 
     def test_transport_success_without_independent_match_is_not_effect(self):
-        self.api.overrides["/repos/" + bridge.AUTHORITY + "/rulesets/19344903"] = {"current": False}
+        self.api.overrides["/repos/" + bridge.AUTHORITY + "/rulesets/19344903"] = {"current": False, "bypass_actors": []}
         result = self.run_bridge()
         self.assertEqual(result["first_blocker"], "INDEPENDENT_RULESET_READBACK_NOT_CURRENT")
         self.assertFalse(result["effect_observed"])
@@ -311,6 +317,108 @@ class RulesetAdminBridgeTests(unittest.TestCase):
         source = (root / "Makefile").read_text()
         self.assertIn("test: ruleset-admin-bridge-test", source)
         self.assertIn("test_qikvrt_ruleset_admin_bridge.py", source)
+
+
+    def redact_public_bypass(self, snapshot, token):
+        if token == "fixture-read-token":
+            snapshot.pop("bypass_actors", None)
+        return snapshot
+
+    def test_hidden_current_projection_cannot_certify_unseen_bypass(self):
+        self.reconciler.current = True
+        self.api.ruleset_filter = lambda snapshot, token: {"current": snapshot["current"]}
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "HOLD_UNVERIFIED")
+        self.assertEqual(result["first_blocker"], "RULESET_BYPASS_VISIBILITY_MISSING")
+        self.assertFalse(result["ruleset_current"])
+        self.assertEqual(self.reconciler.calls, 0)
+        self.assertTrue(result["token_revoked"])
+
+    def test_redacted_public_read_requires_separate_complete_get(self):
+        self.api.ruleset_filter = self.redact_public_bypass
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "RULESET_CURRENT")
+        self.assertEqual(result.get("ruleset_comparison"), "MATCH")
+        self.assertTrue(result.get("full_readback"))
+        self.assertEqual(result.get("readback_credential"), "SCOPED_APP_TOKEN_GET_ONLY")
+        self.assertEqual(result.get("readback_independence"), "SEPARATE_GET_NOT_SEPARATE_PRINCIPAL")
+        reads = [c for c in self.api.calls if c[1].endswith("/rulesets/19344903")]
+        self.assertEqual([c[2] for c in reads], ["fixture-read-token", "fixture-installation-token", "fixture-read-token", "fixture-installation-token"])
+        self.assertEqual(self.reconciler.calls, 1)
+        self.assertTrue(result["token_revoked"])
+
+    def test_redacted_but_truly_current_mints_for_visibility_without_put(self):
+        self.reconciler.current = True
+        self.api.ruleset_filter = self.redact_public_bypass
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "RULESET_CURRENT")
+        self.assertEqual(self.signed, 1)
+        self.assertEqual(self.reconciler.calls, 0)
+        self.assertEqual(result["mutation"], "NONE")
+        self.assertFalse(result["effect_observed"])
+        self.assertTrue(result["token_revoked"])
+
+    def test_hidden_nonempty_bypass_cannot_skip_pinned_reconciliation(self):
+        self.reconciler.current = True
+        self.reconciler.bypass_actors = [{"actor_type": "RepositoryRole", "actor_id": 5, "bypass_mode": "always"}]
+        self.api.ruleset_filter = self.redact_public_bypass
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "RULESET_CURRENT")
+        self.assertEqual(self.reconciler.calls, 1)
+        self.assertEqual(result["mutation"], "PUT")
+        self.assertEqual(self.reconciler.bypass_actors, [])
+
+    def test_put_response_cannot_hide_nonempty_bypass_on_independent_get(self):
+        self.reconciler.bypass_actors = [{"actor_type": "RepositoryRole", "actor_id": 5, "bypass_mode": "always"}]
+        self.reconciler.bypass_resists_put = True
+        self.api.ruleset_filter = self.redact_public_bypass
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "HOLD_UNVERIFIED")
+        self.assertEqual(result["first_blocker"], "INDEPENDENT_RULESET_READBACK_NOT_CURRENT")
+        self.assertEqual(result["mutation"], "PUT")
+        self.assertFalse(result["effect_observed"])
+        self.assertTrue(result["token_revoked"])
+
+    def test_missing_null_or_malformed_full_bypass_blocks_before_put(self):
+        for value in (None, "[]", {}, False, "MISSING"):
+            with self.subTest(value=value):
+                self.setUp()
+                def filter_snapshot(snapshot, token):
+                    if token == "fixture-read-token" or value == "MISSING":
+                        snapshot.pop("bypass_actors", None)
+                    else:
+                        snapshot["bypass_actors"] = value
+                    return snapshot
+                self.api.ruleset_filter = filter_snapshot
+                result = self.run_bridge()
+                self.assertEqual(result["state"], "HOLD_UNVERIFIED")
+                self.assertEqual(result["first_blocker"], "RULESET_BYPASS_VISIBILITY_MISSING")
+                self.assertEqual(self.reconciler.calls, 0)
+                self.assertTrue(result["token_revoked"])
+
+    def test_post_put_visibility_loss_cannot_reuse_full_preflight_snapshot(self):
+        def filter_snapshot(snapshot, token):
+            if token == "fixture-read-token" or self.reconciler.calls:
+                snapshot.pop("bypass_actors", None)
+            return snapshot
+        self.api.ruleset_filter = filter_snapshot
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "HOLD_UNVERIFIED")
+        self.assertEqual(result["first_blocker"], "RULESET_BYPASS_VISIBILITY_MISSING")
+        self.assertEqual(result["mutation"], "PUT")
+        self.assertFalse(result["effect_observed"])
+        self.assertTrue(result["token_revoked"])
+
+    def test_hidden_current_without_configuration_stays_exact_bound_hold(self):
+        self.reconciler.current = True
+        self.api.ruleset_filter = self.redact_public_bypass
+        self.env["QIKVRT_RULESET_APP_PRIVATE_KEY"] = ""
+        result = self.run_bridge()
+        self.assertEqual(result["state"], "HOLD_UNVERIFIED")
+        self.assertEqual(result["first_blocker"], "RULESET_APP_CONFIGURATION_MISSING")
+        self.assertEqual(result["carrier_tree"], TREE)
+        self.assertEqual(self.signed, 0)
+        self.assertFalse(any(c[0] != "GET" for c in self.api.calls))
 
 if __name__ == "__main__":
     unittest.main()

@@ -13,8 +13,8 @@ an empty static `QIKVRT_GITHUB_ADMIN_TOKEN`. A declared credential name was bein
 treated as an available credential. The earlier event guard also still required
 the bootstrap parent, rather than the actual materialized predecessor.
 
-The successor binds sole parent `3cf103828efe7b5087b7b61f406557454b0bffb2` and
-its own live PR/ref/head/tree. It runs on one genuine non-force owner push, not a
+The current adapter binds the actual sole parent returned for its exact head,
+the native push before/after pair, and its own live PR/ref/head/tree. It runs on one genuine non-force owner push, not a
 rerun or a timer. Every subsequent mutation requires a new, explicitly bound
 successor; receipts cannot be transferred to a child, even with identical files.
 
@@ -33,8 +33,10 @@ verifies App identity, the Goldkelch installation and Administration:write
 before requesting a token restricted to repository ID 1271407206. It checks the
 returned permissions, single-repository grant and expiry, then independently
 checks the token's accessible repositories. It reobserves the exact subjects
-before calling the pinned reconciler and afterwards. The read credential used
-for the final ruleset readback is not the administrative credential. The
+before calling the pinned reconciler and afterwards. A separate GET first uses
+the read credential. When GitHub hides the bypass list, a further complete GET
+uses the already-scoped App token through the adapter's GET-only ruleset path.
+This is HTTP-response independence, not independent-principal evidence. The
 installation token remains process-local and is revoked in `finally`.
 
 No private key, JWT, installation token, raw API exception or unrestricted
@@ -97,3 +99,45 @@ Main and carrier bindings. Missing App configuration now explicitly requests
 unspecified source repair or an unproductive rerun. The previously observed
 empty configuration does not prove that an App or a credential is absent from
 all repository Environments or from the owner's account.
+
+## Complete readback, not a redacted projection (2026-09-16)
+
+GitHub documents that GET `/repos/{owner}/{repo}/rulesets/{ruleset_id}` returns
+`bypass_actors` only to callers with ruleset write access:
+https://docs.github.com/en/rest/repos/rules#get-a-repository-ruleset
+
+The pinned reconciler normalizes an omitted bypass list to an empty list. The
+adapter must therefore not infer `bypass_actors=[]` from the ordinary read
+credential's redacted response. The pinned writer and canonical policy remain
+unchanged; the bridge now requires an explicitly present list before accepting
+full equality. No new credential, permission, scheduler or writer is introduced.
+
+When the first public projection lacks a list, the existing scoped token must
+obtain a complete pre-operation snapshot before the writer is called. This also
+handles an apparently CURRENT public projection whose hidden bypass list still
+differs. Missing, null or malformed full visibility is a fail-closed
+`RULESET_BYPASS_VISIBILITY_MISSING`, before PUT. A truly current full snapshot
+needs no PUT even if token creation was necessary just for visibility.
+
+After any operation, the bridge performs a new public GET and, when redacted,
+a new complete GET using the same scoped App token. Neither the PUT response
+nor the pre-operation snapshot is reused. Both the visible projection and full
+policy evaluation must agree, the normalized observed and desired digests must
+be equal, and the carrier/Main bindings must still match. Only then does receipt
+schema `qikvrt_ruleset_admin_bridge_v5` record `ruleset_comparison=MATCH` and
+`full_readback=true`. It names its readback credential class, never its value,
+and declares `SEPARATE_GET_NOT_SEPARATE_PRINCIPAL`. Review, source promotion,
+deployment, predecessor evidence transfer and `effect_ack_done` remain false.
+
+Eight permanent regressions cover redacted false-current responses, complete
+GET selection, already-current visibility without PUT, hidden nonempty bypass
+repair, nonempty post-PUT bypass, malformed or missing full visibility, visibility
+loss after PUT, and missing configuration despite a matching visible projection.
+They extend the existing test module and normal Makefile/workflow admission.
+
+This source change does not provision or prove delivery of App configuration.
+Exact source `36829a18b79fcb3ce4a72c5d49d508b57183a04e`, native run
+`35085096153`, returned all three configuration-presence booleans false and
+`mutation=NONE`. That is historical evidence of non-delivery to that specific
+Actions job, not proof of absence from the owner's account and not evidence for
+any successor. Current-head execution and full repository P2 remain mandatory.
