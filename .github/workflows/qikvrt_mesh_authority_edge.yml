@@ -5,8 +5,7 @@ on:
     paths: [.github/workflows/qikvrt_mesh_authority_edge.yml, tools/qikvrt_ruleset_admin_bridge.py, tools/qikvrt_ruleset_admin_reentry.py, tests/test_qikvrt_ruleset_admin_bridge.py, docs/operations/RULESET_ADMIN_BRIDGE_V2.md, Makefile]
   repository_dispatch:
     types: [qikvrt-authority-admit, qikvrt-ruleset-reconcile]
-permissions:
-  contents: read
+permissions: {contents: read}
 jobs:
   admit:
     if: github.event_name == 'repository_dispatch' && github.event.action == 'qikvrt-authority-admit'
@@ -41,9 +40,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'repository_dispatch' && github.event.action == 'qikvrt-ruleset-reconcile')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    concurrency:
-      group: qikvrt-authorized-ruleset-19344903
-      cancel-in-progress: false
+    concurrency: {group: qikvrt-authorized-ruleset-19344903, cancel-in-progress: false}
     env:
       CARRIER_HEAD: ${{ github.event_name == 'push' && github.sha || github.event.client_payload.head_sha }}
     steps:
@@ -81,7 +78,7 @@ jobs:
           QIKVRT_RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
           QIKVRT_RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
         run: |
-          set -euo pipefail; PYTHONPATH="$GITHUB_WORKSPACE/carrier" python3 -B carrier/tools/qikvrt_ruleset_admin_reentry.py --authority-root "$GITHUB_WORKSPACE/authority" --receipt "$RUNNER_TEMP/ruleset-bridge/result.json"
+          set -euo pipefail; test -f carrier/tools/qikvrt_ruleset_admin_bridge.py; PYTHONPATH="$GITHUB_WORKSPACE/carrier" python3 -B carrier/tools/qikvrt_ruleset_admin_reentry.py --authority-root "$GITHUB_WORKSPACE/authority" --receipt "$RUNNER_TEMP/ruleset-bridge/result.json"
       - name: Preserve only non-secret exact-bound administrative receipt
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
