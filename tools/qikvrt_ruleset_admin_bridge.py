@@ -6,38 +6,22 @@ from __future__ import annotations
 import argparse, base64, importlib.util, json, os, re, subprocess, tempfile, time, urllib.error, urllib.request
 from pathlib import Path
 from typing import Any
-
 AUTHORITY="Goldkelch/qik-vrt"; CARRIER="ingolf-lohmann/qik-vrt"; BRANCH="ops/ruleset-admin-bridge-20260915"
-MAIN="a86054139b49c13c5cd344753b248b46b5daf66f"; MAIN_TREE="feff1cae2401a3df83febc3b9458de70d79b818e"
-PARENT="4384c0a3ca811563e359a681a35149c210afbeae"; REPO_ID=1271407206; RULESET=19344903
+MAIN="a86054139b49c13c5cd344753b248b46b5daf66f"; MAIN_TREE="feff1cae2401a3df83febc3b9458de70d79b818e"; PARENT="4384c0a3ca811563e359a681a35149c210afbeae"; REPO_ID=1271407206; RULESET=19344903
 class Hold(RuntimeError): pass
 def require(ok:bool,code:str)->None:
     if not ok: raise Hold(code)
 def validate_event(event:dict[str,Any],env:dict[str,str])->None:
-    require(env.get("GITHUB_REPOSITORY")==CARRIER,"WRONG_CARRIER_REPOSITORY")
-    require(env.get("GITHUB_RUN_ATTEMPT")=="1","RERUN_FORBIDDEN")
-    head=env.get("CARRIER_HEAD") or env.get("GITHUB_SHA","")
-    require(bool(re.fullmatch(r"[0-9a-f]{40}",head)),"INVALID_CARRIER_SHA")
-    name=env.get("GITHUB_EVENT_NAME")
+    require(env.get("GITHUB_REPOSITORY")==CARRIER,"WRONG_CARRIER_REPOSITORY"); require(env.get("GITHUB_RUN_ATTEMPT")=="1","RERUN_FORBIDDEN"); head=env.get("CARRIER_HEAD") or env.get("GITHUB_SHA",""); require(bool(re.fullmatch(r"[0-9a-f]{40}",head)),"INVALID_CARRIER_SHA"); name=env.get("GITHUB_EVENT_NAME")
     if name=="push":
-        require(env.get("GITHUB_ACTOR")=="ingolf-lohmann","OWNER_PUSH_REQUIRED")
-        require(env.get("GITHUB_REF")=="refs/heads/"+BRANCH,"WRONG_CARRIER_REF")
-        require(event.get("before")==PARENT and event.get("after")==head,"PUSH_BINDING_MISMATCH")
-        require(event.get("forced") is False and event.get("created") is False and event.get("deleted") is False,"EXISTING_NONFORCE_PUSH_REQUIRED")
+        require(env.get("GITHUB_ACTOR")=="ingolf-lohmann","OWNER_PUSH_REQUIRED"); require(env.get("GITHUB_REF")=="refs/heads/"+BRANCH,"WRONG_CARRIER_REF"); require(event.get("before")==PARENT and event.get("after")==head,"PUSH_BINDING_MISMATCH"); require(event.get("forced") is False and event.get("created") is False and event.get("deleted") is False,"EXISTING_NONFORCE_PUSH_REQUIRED")
     elif name=="workflow_dispatch":
-        require((event.get("inputs") or {}).get("operation")=="reconcile-ruleset","WRONG_DISPATCH_OPERATION")
-        require((event.get("inputs") or {}).get("head_sha")==head,"DISPATCH_HEAD_MISMATCH")
-        require((event.get("inputs") or {}).get("repository")==AUTHORITY,"DISPATCH_REPOSITORY_MISMATCH")
+        require((event.get("inputs") or {}).get("operation")=="reconcile-ruleset","WRONG_DISPATCH_OPERATION"); require((event.get("inputs") or {}).get("head_sha")==head,"DISPATCH_HEAD_MISMATCH"); require((event.get("inputs") or {}).get("repository")==AUTHORITY,"DISPATCH_REPOSITORY_MISMATCH")
     elif name=="repository_dispatch":
-        require(event.get("action")=="qikvrt-ruleset-reconcile","WRONG_REPOSITORY_DISPATCH")
-        payload=event.get("client_payload") or {}
-        require(payload.get("head_sha")==head and payload.get("repository")==AUTHORITY,"REPOSITORY_DISPATCH_BINDING_MISMATCH")
+        require(event.get("action")=="qikvrt-ruleset-reconcile","WRONG_REPOSITORY_DISPATCH"); p=event.get("client_payload") or {}; require(p.get("head_sha")==head and p.get("repository")==AUTHORITY,"REPOSITORY_DISPATCH_BINDING_MISMATCH")
     else: raise Hold("UNSUPPORTED_ADMIN_EVENT")
 def config(env):
-    client=env.get("QIKVRT_RULESET_APP_CLIENT_ID","").strip(); app=env.get("QIKVRT_RULESET_APP_ID","").strip(); key=env.get("QIKVRT_RULESET_APP_PRIVATE_KEY","")
-    require(bool((client or app) and key.strip()),"RULESET_APP_CONFIGURATION_MISSING")
-    require(not app or bool(re.fullmatch(r"[1-9][0-9]*",app)),"RULESET_APP_ID_INVALID"); require(not client or bool(re.fullmatch(r"[A-Za-z0-9_]+",client)),"RULESET_CLIENT_ID_INVALID")
-    return client,app,key
+    client=env.get("QIKVRT_RULESET_APP_CLIENT_ID","").strip(); app=env.get("QIKVRT_RULESET_APP_ID","").strip(); key=env.get("QIKVRT_RULESET_APP_PRIVATE_KEY",""); require(bool((client or app) and key.strip()),"RULESET_APP_CONFIGURATION_MISSING"); require(not app or bool(re.fullmatch(r"[1-9][0-9]*",app)),"RULESET_APP_ID_INVALID"); require(not client or bool(re.fullmatch(r"[A-Za-z0-9_]+",client)),"RULESET_CLIENT_ID_INVALID"); return client,app,key
 def validate_app(v,client,app_id):
     require(type(v.get("id")) is int and v["id"]>0,"APP_IDENTITY_INVALID"); require(not app_id or str(v["id"])==app_id,"APP_IDENTITY_MISMATCH"); require(not client or v.get("client_id")==client,"APP_CLIENT_ID_MISMATCH"); return v["id"]
 def validate_installation(v,app_id):
@@ -62,8 +46,7 @@ def sign_jwt(issuer,key,now):
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self,req,fp,code,msg,headers,newurl): raise Hold("API_REDIRECT_FORBIDDEN")
 def request(method,path,token,payload=None):
-    allowed=(method=="GET" and (path=="/app" or path=="/installation/repositories?per_page=100" or path.startswith("/repos/"))) or (method=="POST" and re.fullmatch(r"/app/installations/[1-9][0-9]*/access_tokens",path)) or (method=="DELETE" and path=="/installation/token"); require(bool(allowed),"ADAPTER_OPERATION_FORBIDDEN")
-    h={"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"qikvrt-ruleset-admin-bridge","Authorization":"Bearer "+token}; data=None if payload is None else json.dumps(payload).encode();
+    allowed=(method=="GET" and (path=="/app" or path=="/installation/repositories?per_page=100" or path.startswith("/repos/"))) or (method=="POST" and re.fullmatch(r"/app/installations/[1-9][0-9]*/access_tokens",path)) or (method=="DELETE" and path=="/installation/token"); require(bool(allowed),"ADAPTER_OPERATION_FORBIDDEN"); h={"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","User-Agent":"qikvrt-ruleset-admin-bridge","Authorization":"Bearer "+token}; data=None if payload is None else json.dumps(payload).encode()
     if data is not None:h["Content-Type"]="application/json"
     try:
         with urllib.request.build_opener(NoRedirect()).open(urllib.request.Request("https://api.github.com"+path,data=data,headers=h,method=method),timeout=30) as response:
@@ -72,7 +55,7 @@ def request(method,path,token,payload=None):
     except (OSError,ValueError): raise Hold("API_READ_FAILED") from None
     require(isinstance(value,dict),"API_OBJECT_REQUIRED"); return value
 def bind(api,read_token,head):
-    get=lambda path:api("GET","/repos/"+path,read_token); carrier=get(CARRIER+"/pulls/381"); require(carrier.get("state")=="open" and (carrier.get("head") or {}).get("sha")==head and (carrier.get("head") or {}).get("ref")==BRANCH,"CARRIER_PR_DRIFT"); require(get(CARRIER+"/git/ref/heads/"+BRANCH).get("object",{}).get("sha")==head,"CARRIER_REF_DRIFT"); commit=get(CARRIER+"/git/commits/"+head); require(get(AUTHORITY+"/git/ref/heads/main").get("object",{}).get("sha")==MAIN,"AUTHORITY_MAIN_DRIFT"); require(get(AUTHORITY+"/git/commits/"+MAIN).get("tree",{}).get("sha")==MAIN_TREE,"AUTHORITY_TREE_DRIFT"); tree=commit.get("tree",{}).get("sha",""); require(bool(re.fullmatch(r"[0-9a-f]{40}",tree)),"CARRIER_TREE_INVALID"); return {"carrier_head":head,"carrier_tree":tree,"authority_main":MAIN,"authority_main_tree":MAIN_TREE}
+    get=lambda path:api("GET","/repos/"+path,read_token); carrier=get(CARRIER+"/pulls/381"); require(carrier.get("state")=="open" and (carrier.get("head") or {}).get("sha")==head and (carrier.get("head") or {}).get("ref")==BRANCH,"CARRIER_PR_DRIFT"); require(get(CARRIER+"/git/ref/heads/"+BRANCH).get("object",{}).get("sha")==head,"CARRIER_REF_DRIFT"); commit=get(CARRIER+"/git/commits/"+head); require(get(AUTHORITY+"/git/ref/heads/main").get("object",{}).get("sha")==MAIN,"AUTHORITY_MAIN_DRIFT"); require(get(AUTHORITY+"/git/commits/"+MAIN).get("tree",{}).get("sha")==MAIN_TREE,"AUTHORITY_TREE_DRIFT"); tree=commit.get("tree",{}).get("sha",""); require(bool(re.fullmatch(r"[0-9a-f]{40}",tree)),"CARRIER_TREE_INVALID"); parents=[p.get("sha") for p in commit.get("parents",[])]; require(len(parents)==1 and bool(re.fullmatch(r"[0-9a-f]{40}",parents[0] or "")),"CARRIER_ANCESTRY_INVALID"); return {"carrier_head":head,"carrier_tree":tree,"carrier_parent":parents[0],"authority_main":MAIN,"authority_main_tree":MAIN_TREE}
 def execute(event,env,reconciler,api=request,signer=sign_jwt,clock=time.time):
     head=env.get("CARRIER_HEAD") or env.get("GITHUB_SHA",""); receipt={"schema":"qikvrt_ruleset_admin_bridge_v3","repository":AUTHORITY,"carrier_repository":CARRIER,"carrier_head":head,"run_id":env.get("GITHUB_RUN_ID"),"ruleset_id":RULESET,"scope":"APPLY_EXISTING_MAIN_RULESET_POLICY_ONLY","state":"HOLD_UNVERIFIED","mutation":"NONE","effect_observed":False,"ruleset_current":False,"continuation_required":True,"review_submission":False,"source_promotion":False,"deployment":False,"evidence_transfer":False,"effect_ack_done":False,"event_name":env.get("GITHUB_EVENT_NAME"),"configuration_presence":{k:bool(env.get(k,"").strip()) for k in ("QIKVRT_RULESET_APP_CLIENT_ID","QIKVRT_RULESET_APP_ID","QIKVRT_RULESET_APP_PRIVATE_KEY")}}; minted=""; read_token=env.get("GH_TOKEN","")
     try:
