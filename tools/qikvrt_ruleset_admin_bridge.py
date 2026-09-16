@@ -7,7 +7,7 @@ import argparse, base64, importlib.util, json, os, re, subprocess, tempfile, tim
 from pathlib import Path
 from typing import Any
 AUTHORITY="Goldkelch/qik-vrt"; CARRIER="ingolf-lohmann/qik-vrt"; BRANCH="ops/ruleset-admin-bridge-20260915"
-MAIN="a86054139b49c13c5cd344753b248b46b5daf66f"; MAIN_TREE="feff1cae2401a3df83febc3b9458de70d79b818e"; REPO_ID=1271407206; RULESET=19344903
+MAIN="a86054139b49c13c5cd344753b248b46b5daf66f"; MAIN_TREE="feff1cae2401a3df83febc3b9458de70d79b818e"; PARENT="4384c0a3ca811563e359a681a35149c210afbeae"; REPO_ID=1271407206; RULESET=19344903
 class Hold(RuntimeError): pass
 def require(ok:bool,code:str)->None:
     if not ok: raise Hold(code)
