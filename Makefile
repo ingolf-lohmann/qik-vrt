@@ -100,3 +100,10 @@ run-api:
 
 clean:
 	rm -rf unit_state e2e_state .qikvrt/runtime .qikvrt/evidence .qikvrt/api .qikvrt/cache .qikvrt/release .qikvrt/interactions logs __pycache__ src/__pycache__ scripts/__pycache__ tests/__pycache__ tools/__pycache__
+
+
+# Existing administrative carrier: permanent regression admission.
+.PHONY: ruleset-admin-bridge-test
+test: ruleset-admin-bridge-test
+ruleset-admin-bridge-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest discover -s tests -p test_qikvrt_ruleset_admin_bridge.py -v
