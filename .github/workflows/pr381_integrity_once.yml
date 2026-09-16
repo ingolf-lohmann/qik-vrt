@@ -1,0 +1,71 @@
+name: PR381 one-shot exact integrity materialization
+
+on:
+  push:
+    branches:
+      - ops/ruleset-admin-bridge-20260915
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr381-integrity-once
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    if: github.actor == 'ingolf-lohmann' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact triggering head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Verify exact bounded parent and remove one-shot carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          test "${GITHUB_REF}" = "refs/heads/ops/ruleset-admin-bridge-20260915"
+          rm .github/workflows/pr381_integrity_once.yml
+      - name: Generate and verify canonical integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py generate
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
+          git diff --check
+          python3 - <<'PY'
+          import subprocess
+          observed=set(subprocess.check_output(['git','status','--porcelain=v1'],text=True).splitlines())
+          paths={line[3:] for line in observed}
+          expected={'.github/workflows/pr381_integrity_once.yml','REPOSITORY_FILE_MANIFEST.json','REPOSITORY_FILE_MANIFEST.json.sha256','SHA256SUMS.txt'}
+          if paths != expected:
+              raise SystemExit(f'BLOCK scope mismatch expected={sorted(expected)} observed={sorted(paths)}')
+          PY
+      - name: Persist exact integrity-only successor
+        shell: bash
+        env:
+          EXPECTED_PARENT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${EXPECTED_PARENT}"
+          git config user.name 'qikvrt-integrity-materializer'
+          git config user.email 'qikvrt-integrity-materializer@users.noreply.github.com'
+          git add -A .github/workflows/pr381_integrity_once.yml REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          git commit -m 'chore(integrity): adopt PR381 authority bridge bytes'
+          successor="$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD^)" = "${EXPECTED_PARENT}"
+          git push origin HEAD:ops/ruleset-admin-bridge-20260915
+          echo "SUCCESSOR=${successor}" >> "$GITHUB_ENV"
+      - name: Fresh successor-local integrity verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin ops/ruleset-admin-bridge-20260915
+          test "$(git rev-parse origin/ops/ruleset-admin-bridge-20260915)" = "${SUCCESSOR}"
+          test ! -e .github/workflows/pr381_integrity_once.yml
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
+          test -z "$(git status --porcelain=v1)"
