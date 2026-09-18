@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import pathlib
 import re
 import sys
@@ -19,6 +20,7 @@ POLICY = ROOT / "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json"
 PERSONAL_ORIGIN_POLICY = (
     ROOT / "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json"
 )
+CANONICAL_UPSTREAM_POLICY = ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 EXPECTED_PRECONDITIONS = [
     "CURRENT_MAIN_REOBSERVED",
     "EXACT_HEAD_BOUND",
@@ -112,6 +114,78 @@ def _canonical_source_remote() -> str:
     return candidate
 
 
+def _normalized_repository_url(value: str) -> str:
+    value = value.strip().rstrip("/")
+    if value.endswith(".git"):
+        value = value[:-4]
+    return value
+
+
+def _role_local_remote_contract() -> dict[str, str]:
+    try:
+        policy = json.loads(CANONICAL_UPSTREAM_POLICY.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        raise PreEffectBlock("canonical upstream policy cannot be loaded") from exc
+    if (
+        policy.get("schema") != "qikvrt_canonical_upstream_remote_v1"
+        or policy.get("status") != "NORMATIVE"
+    ):
+        raise PreEffectBlock("canonical upstream policy contract mismatch")
+
+    candidates: list[dict[str, Any]] = []
+    for key, expected_role in (("canonical_upstream", "AUTHORITY"), ("mirror", "MIRROR")):
+        value = policy.get(key, {})
+        if (
+            isinstance(value, dict)
+            and value.get("role") == expected_role
+            and isinstance(value.get("repository"), str)
+            and isinstance(value.get("canonical_https_url"), str)
+            and isinstance(value.get("default_branch"), str)
+        ):
+            candidates.append(value)
+    if len(candidates) != 2:
+        raise PreEffectBlock("role-local repository contracts are incomplete")
+
+    origin = self_heal.run(("git", "remote", "get-url", "origin"), timeout=60)
+    if origin.returncode:
+        raise PreEffectBlock("role-local origin remote is absent")
+    origin_url = _normalized_repository_url(origin.stdout)
+
+    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    matching = [
+        value
+        for value in candidates
+        if (
+            (not repository or value["repository"] == repository)
+            and _normalized_repository_url(value["canonical_https_url"]) == origin_url
+        )
+    ]
+    if len(matching) != 1:
+        raise PreEffectBlock("role-local origin identity mismatch")
+    selected = matching[0]
+    return {
+        "repository": selected["repository"],
+        "remote_name": "origin",
+        "remote_url": selected["canonical_https_url"],
+        "default_branch": selected["default_branch"],
+        "role": selected["role"],
+    }
+
+
+def _role_local_main_revision() -> str | None:
+    contract = _role_local_remote_contract()
+    ref = f"refs/heads/{contract['default_branch']}"
+    result = self_heal.run((
+        "git", "ls-remote", "--heads", contract["remote_name"], ref,
+    ), timeout=60)
+    if result.returncode:
+        return None
+    fields = result.stdout.split()
+    if len(fields) != 2 or not SHA1.fullmatch(fields[0]) or fields[1] != ref:
+        return None
+    return fields[0]
+
+
 def _remote_main_revision() -> str | None:
     remote = _canonical_source_remote()
     result = self_heal.run((
@@ -127,7 +201,7 @@ def _remote_main_revision() -> str | None:
 
 def observe_preconditions() -> dict[str, bool]:
     head = self_heal.observed_base_revision()
-    remote_main = _remote_main_revision()
+    remote_main = _role_local_main_revision()
     evidence_present = all((ROOT / path).is_file() for path in REQUIRED_EVIDENCE_PATHS)
     deterministic_state = True
     try:
