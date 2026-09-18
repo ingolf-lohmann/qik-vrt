@@ -16,6 +16,9 @@ on:
   pull_request:
     paths:
       - ".github/workflows/qikvrt_autonomous_self_heal.yml"
+      - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+      - "tools/qikvrt_autonomous_pre_effect_controller.py"
+      - "tests/test_qikvrt_autonomous_pre_effect_controller.py"
       - "tests/test_qikvrt_continuous_auto_repair.py"
 
 permissions:
@@ -50,7 +53,8 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_autonomous_pre_effect_controller
 
   observe-repair-propose:
     if: >-
@@ -80,7 +84,8 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_autonomous_pre_effect_controller
 
       - name: Execute bounded repository-native repairs before external effects
         id: repair

@@ -107,6 +107,60 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
             ):
                 MODULE._canonical_source_remote()
 
+    def test_role_local_mirror_main_revision_uses_mirror_origin(self) -> None:
+        expected = "2" * 40
+
+        def fake_run(command, timeout=900):
+            del timeout
+            command = tuple(command)
+            if command == ("git", "remote", "get-url", "origin"):
+                return self.command_result(
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
+                )
+            if command == (
+                "git", "ls-remote", "--heads", "origin", "refs/heads/main"
+            ):
+                return self.command_result(command, f"{expected}\trefs/heads/main\n")
+            raise AssertionError(command)
+
+        with mock.patch.dict(
+            MODULE.os.environ,
+            {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"},
+            clear=False,
+        ):
+            with mock.patch.object(MODULE.self_heal, "run", side_effect=fake_run):
+                contract = MODULE._role_local_remote_contract()
+                self.assertEqual(contract["role"], "MIRROR")
+                self.assertEqual(contract["repository"], "ingolf-lohmann/qik-vrt")
+                self.assertEqual(MODULE._role_local_main_revision(), expected)
+
+    def test_role_local_authority_main_revision_uses_authority_origin(self) -> None:
+        expected = "a" * 40
+
+        def fake_run(command, timeout=900):
+            del timeout
+            command = tuple(command)
+            if command == ("git", "remote", "get-url", "origin"):
+                return self.command_result(
+                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                )
+            if command == (
+                "git", "ls-remote", "--heads", "origin", "refs/heads/main"
+            ):
+                return self.command_result(command, f"{expected}\trefs/heads/main\n")
+            raise AssertionError(command)
+
+        with mock.patch.dict(
+            MODULE.os.environ,
+            {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
+            clear=False,
+        ):
+            with mock.patch.object(MODULE.self_heal, "run", side_effect=fake_run):
+                contract = MODULE._role_local_remote_contract()
+                self.assertEqual(contract["role"], "AUTHORITY")
+                self.assertEqual(contract["repository"], "Goldkelch/qik-vrt")
+                self.assertEqual(MODULE._role_local_main_revision(), expected)
+
     def test_remote_main_revision_queries_resolved_upstream(self) -> None:
         expected = "17bf684b08363bdb8ae95775ea5a4ae22ce4f0a9"
 
