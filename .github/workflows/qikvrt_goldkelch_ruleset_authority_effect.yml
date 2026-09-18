@@ -25,15 +25,44 @@ jobs:
       EXPECTED_POST_SHA256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
       MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+      RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+      RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
 
     steps:
-      - name: Fail closed on authority
+      - name: Resolve least-privilege authority route
+        id: authority
         shell: bash
         run: |
           set -euo pipefail
-          test -n "${ADMIN_TOKEN:-}${MESH_TOKEN:-}"
+          direct=false
+          app=false
+          if [ -n "${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
+            direct=true
+          fi
+          if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then
+            app=true
+          fi
+          echo "direct=$direct" >> "$GITHUB_OUTPUT"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+          if [ "$direct" != true ] && [ "$app" != true ]; then
+            echo "No repository-provided authority credential route is configured." >&2
+            exit 2
+          fi
+
+      - name: Mint target-scoped GitHub App administration token
+        id: app-token
+        if: steps.authority.outputs.direct != 'true' && steps.authority.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-administration: write
 
       - name: Conditional canonical projection with exact readback
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -46,7 +75,9 @@ jobs:
 
           repo = os.environ["TARGET_REPOSITORY"]
           ruleset_id = int(os.environ["RULESET_ID"])
-          token = os.environ.get("ADMIN_TOKEN", "") or os.environ.get("MESH_TOKEN", "")
+          token = (os.environ.get("ADMIN_TOKEN", "") or
+                   os.environ.get("MESH_TOKEN", "") or
+                   os.environ.get("APP_TOKEN", ""))
           if not token:
               raise SystemExit("no authority token available")
           expected_pre = os.environ["EXPECTED_PRE_SHA256"]
