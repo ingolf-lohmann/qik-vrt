@@ -24,13 +24,14 @@ jobs:
       EXPECTED_PRE_SHA256: c6af530067c49e0d7bfa9512f081c5be291d33815cdcc76595a8bc24796d8e32
       EXPECTED_POST_SHA256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+      MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
 
     steps:
       - name: Fail closed on authority
         shell: bash
         run: |
           set -euo pipefail
-          test -n "${ADMIN_TOKEN:-}"
+          test -n "${ADMIN_TOKEN:-}${MESH_TOKEN:-}"
 
       - name: Conditional canonical projection with exact readback
         shell: bash
@@ -45,7 +46,9 @@ jobs:
 
           repo = os.environ["TARGET_REPOSITORY"]
           ruleset_id = int(os.environ["RULESET_ID"])
-          token = os.environ["ADMIN_TOKEN"]
+          token = os.environ.get("ADMIN_TOKEN", "") or os.environ.get("MESH_TOKEN", "")
+          if not token:
+              raise SystemExit("no authority token available")
           expected_pre = os.environ["EXPECTED_PRE_SHA256"]
           expected_post = os.environ["EXPECTED_POST_SHA256"]
           url = f"https://api.github.com/repos/{repo}/rulesets/{ruleset_id}"
