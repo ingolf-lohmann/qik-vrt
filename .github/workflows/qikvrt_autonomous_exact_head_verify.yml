@@ -7,6 +7,7 @@ on:
     types: [qikvrt_autonomous_exact_head_verify]
 
 permissions:
+  actions: write
   contents: read
   pull-requests: write
   statuses: write
@@ -80,11 +81,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          qce_tmpdir="$(mktemp -d "${RUNNER_TEMP}/qikvrt-qce-exact-head.XXXXXX")"
+          cleanup_qce_tmpdir() {
+            rm -rf -- "$qce_tmpdir"
+          }
+          trap cleanup_qce_tmpdir EXIT HUP INT TERM
           lake build
           python3 -B verify_qce_package.py \
             --lean "$(command -v lean)" \
-            --axiom-output qce-autonomous-axiom-output.txt \
-            > qce-autonomous-verification.json
+            --axiom-output "$qce_tmpdir/qce-autonomous-axiom-output.txt" \
+            > "$qce_tmpdir/qce-autonomous-verification.json"
+          test -s "$qce_tmpdir/qce-autonomous-axiom-output.txt"
+          test -s "$qce_tmpdir/qce-autonomous-verification.json"
 
       - name: Publish exact-head success status
         if: success()
@@ -105,6 +113,21 @@ jobs:
           Repository-internal deterministic gates are green for this verification scope. Any declared independent human review, Mirror promotion, or separately authorized publication remains a distinct downstream gate. No repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.
           EOF
           gh pr comment "$TARGET_PR" --body-file /tmp/qikvrt-autonomous-verified.md
+
+      - name: Dispatch exact-head requested-review continuation
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}" --jq '.head.sha')"
+          test "$current" = "$TARGET_SHA"
+          gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows/qikvrt_requested_review_executor.yml/dispatches" \
+            -f ref=main \
+            -f "inputs[pr]=$TARGET_PR" \
+            -f "inputs[head]=$TARGET_SHA"
 
       - name: Publish exact-head failure status
         if: failure()
