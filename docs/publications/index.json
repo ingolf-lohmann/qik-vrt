@@ -146,6 +146,21 @@
       "title": "QIK-VRT: Beobachterrelative Retrokausalität",
       "path": "docs/publications/2026-08-12-observer-relative-retrocausality/README.md",
       "state": "repository_candidate"
+    },
+    {
+      "id": "2026-09-20-qikvrt-roundtrip-unified",
+      "title": "QIK-VRT – gemeinsame Publikation: Erkenntnis, Macht und Verantwortung",
+      "path": "docs/publications/2026-09-20-qikvrt-roundtrip-unified/README.md",
+      "state": "repository_bundle_release_prepared",
+      "artifact_path": "docs/publications/2026-09-20-qikvrt-roundtrip-unified/QIKVRT_Roundtrip.html",
+      "bytes": 1297144,
+      "sha256": "cc22c37b4708c793f14a6110fe0f83df70fba1fceee13b74c8deb6cd710fd9c5",
+      "embedded_originals": 65,
+      "new_depth_chapters": 24,
+      "replaces_current_editions": [
+        "2026-09-20-qikvrt-roundtrip-snapshot",
+        "2026-09-20-qikvrt-roundtrip-snapshot-v2"
+      ]
     }
   ],
   "featured_artifacts": [

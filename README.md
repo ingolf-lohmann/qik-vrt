@@ -368,3 +368,7 @@ merge. See [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md),
 for the current reporting, support, decision, and participation boundaries.
 
 Copyright 2026 Ingolf Lohmann.
+
+## Gemeinsame statische Roundtrip-Publikation
+
+[Erkenntnis, Macht und Verantwortung](docs/publications/2026-09-20-qikvrt-roundtrip-unified/README.md): ein gemeinsamer vollständiger Lesestand mit 65 Originaltexten, 24 neuen Vertiefungskapiteln und 1.297.144 Byte. Online-Ansicht und Download beruhen auf derselben HTML-Datei; konstruktive und kritische Perspektive gehören zusammen. Frühere Snapshots bleiben ausschließlich als historische Fassungen erhalten.
