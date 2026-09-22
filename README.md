@@ -1,3 +1,28 @@
+<!-- universal-effect-ack-frontdoor:v1 -->
+# QIK-VRT — Wirkung statt Aktivität
+
+> **TRANSPORT_ACK ≠ EFFECT_ACK. Beobachtung ≠ Handlung. Aktivität ≠ Wirkung. DONE gilt erst nach frischem, subject-gebundenem Wirkungs-Readback.**
+
+Universalisierbare Kontrollmethode:
+
+```text
+ZIEL → INSPECT → SOLVE → EXECUTE → OBSERVE_EFFECT → VERIFY
+     → verbleibende Abweichung := nächstes Work Unit → CONTINUE
+     → EFFECT_ACK_DONE erst bei frisch nachgewiesener Postcondition
+```
+
+**Fail-closed ≠ globally idle.** Ein nicht autorisierter oder nicht belegter Übergang wird nicht als Wirkung ausgegeben; unabhängige zulässige Arbeit bleibt ausführbar. Diagnose, Tool-Erfolg und laufender Prozess sind keine Postcondition.
+
+Canonical Mesh Authority and full falsifiable self-declaration:
+https://github.com/Goldkelch/qik-vrt
+
+Authority front-door carrier:
+https://github.com/Goldkelch/qik-vrt/pull/1158
+
+This Mirror is an independent repository subject. Its own checks, review, integration and readback remain necessary; evidence is not transferred from Authority.
+
+<!-- /universal-effect-ack-frontdoor:v1 -->
+
 # QIK-VRT
 
 [![QIKVRT CI](https://github.com/Goldkelch/qik-vrt/actions/workflows/qikvrt_ci.yml/badge.svg?branch=main)](https://github.com/Goldkelch/qik-vrt/actions/workflows/qikvrt_ci.yml)
