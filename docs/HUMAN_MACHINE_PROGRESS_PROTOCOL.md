@@ -41,6 +41,9 @@ A GitHub action includes every connector/API mutation or read that advances the 
 9. Machine-readable state MUST be written to `AI_PROGRESS.json`; the human-readable projection MUST be written to `AI_STATUS.md` whenever a persistent repository workflow owns the operation.
 10. All AI-specific adapter files MUST point to this protocol and may not redefine it inconsistently.
 11. `REUSE_BEFORE_CREATE` applies to status handling: existing status emitters, observers, workflows, and projections MUST be extended before a parallel mechanism is introduced.
+12. **Observation is not a snapshot or terminal handoff while a follow-up action exists.** Any observation that yields an executable, expected, or causally required successor action keeps the owning operation in `RUNNING` (or `WAITING` only while an external effect is genuinely pending). The client MUST execute or continue that successor within the same round trip, then observe its effect and verify readback. It MUST NOT freeze, summarize, hand off, or present the intermediate observation as completion merely because a read succeeded.
+13. **Continuation is the default after a non-terminal observation.** The round trip is `OBSERVE -> DIAGNOSE -> ACT -> OBSERVE EFFECT -> VERIFY READBACK -> CONTINUE` until a scope-bound terminal state is actually established. A snapshot is admissible only when no executable successor remains for the owned scope, a concrete blocker requires external authority/input, or an explicitly bounded observation window has ended.
+14. Observation frequency MUST be event- and workload-sensitive rather than a fixed polling ritual. New input, active effects, unresolved causal defects, expected receipts, or successor-carrier movement increase observation pressure; unchanged stable state is deduplicated. Monitoring activity alone is not progress.
 
 ## Repository runtime objective
 
@@ -51,8 +54,8 @@ The repository runtime MUST improve cumulatively by reusing and refining existin
 ## State semantics
 
 - `IDLE`: no live operation owns the durable root handoff snapshot.
-- `RUNNING`: work is actively progressing.
-- `WAITING`: an external system is running or a review/approval is pending.
+- `RUNNING`: work is actively progressing, including continuation after any non-terminal observation with an available successor.
+- `WAITING`: an external system is running or a review/approval is pending and there is no immediately executable local successor.
 - `PASS`: all declared gates for the stated scope are verified.
 - `BLOCK`: a concrete blocker prevents continuation.
 - `FAIL`: an executed gate failed.
@@ -99,7 +102,9 @@ The tracked snapshot MUST not freeze transient claims such as a pull request
 being open, checks running, a merge pending, or repositories synchronized
 unless a durable repository receipt binds that exact assertion. A live watcher
 is telemetry, not exact-head proof: current PR, check, merge, promotion, or
-synchronization claims require current commit/run/check evidence.
+synchronization claims require current commit/run/check evidence. In
+particular, a live observation with a known successor MUST remain live state
+and MUST NOT be projected as a terminal snapshot.
 
 ## Communication boundary
 
