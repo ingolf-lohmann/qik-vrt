@@ -1,0 +1,65 @@
+name: QIKVRT exact PR-head admission carrier
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Open pull request number"
+        required: true
+        type: string
+      expected_head:
+        description: "Exact pull-request HEAD SHA"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+
+concurrency:
+  group: qikvrt-exact-pr-head-admission-${{ inputs.pr_number }}-${{ inputs.expected_head }}
+  cancel-in-progress: false
+
+jobs:
+  exact-pr-head-gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Resolve and bind exact pull-request subject
+        id: bind
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pr="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
+          test "$(jq -r '.state' <<<"$pr")" = open
+          test "$(jq -r '.base.ref' <<<"$pr")" = main
+          actual_head="$(jq -r '.head.sha' <<<"$pr")"
+          test "$actual_head" = "$EXPECTED_HEAD"
+          printf 'head=%s\n' "$actual_head" >> "$GITHUB_OUTPUT"
+
+      - name: Check out exact pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ steps.bind.outputs.head }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Bind exact HEAD and TREE
+        env:
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          git rev-parse --verify HEAD^{tree}
+
+      - name: Run mandatory repository gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          make test
