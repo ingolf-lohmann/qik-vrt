@@ -2250,3 +2250,12 @@ JSON Schema serialisiert die Struktur der Policy. Dynamische Prädikate wie
 Signaturprüfung, Zeitrelationen, Trust-Root-Auflösung, Quorum und
 domänenspezifische Acceptance werden durch den normativen Policy-Evaluator
 ausgeführt; JSON Schema allein beweist diese Laufzeiteigenschaften nicht.
+
+
+---
+
+# 42. Maschinenlesbare normative Artefakte
+
+TEMDD 1.1-rc1 bindet die Normativsemantik an die Referenzschemas für Transaction, Evidence, Readback, Effect Certificate, Error, Verification Policy und Verification Context sowie an OpenAPI, AsyncAPI, Security Profiles und Policy-Testvektoren.
+
+JSON Schema validiert Struktur und statische Constraints. Freshness, Signaturprüfung, Trust-Root-Auflösung, Kausalbindung, Quorum und domänenspezifische Acceptance bleiben Laufzeitprädikate des normativen Policy-Evaluators. Schema-Validität allein ist niemals Wirkungsnachweis oder EFFECT_ACK_DONE.
