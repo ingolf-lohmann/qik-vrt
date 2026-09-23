@@ -17,7 +17,10 @@ SUCCESS = "success"
 PENDING = "pending"
 FAILURE = "failure"
 DECISIVE_REVIEW_STATES = {"APPROVED", "CHANGES_REQUESTED", "DISMISSED"}
-REQUIRED_NATIVE_STATUS_CHECKS = {\n    ("test", 15368),\n    ("QIKVRT required code-owner review", 15368),\n}\n
+REQUIRED_NATIVE_STATUS_CHECKS = {
+    ("test", 15368),
+    ("QIKVRT required code-owner review", 15368),
+}
 
 class ReviewGateInputError(ValueError):
     pass
