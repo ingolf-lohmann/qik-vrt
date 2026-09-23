@@ -57,3 +57,15 @@ turn a pending or failed publication into `EFFECT_ACK_DONE`.
 ## Mesh enforcement
 
 The successor-freshness and public-effect guard runs on every repository node that carries the registry. Only the Authority node may execute the production Zenodo mutation. Mirror nodes independently enforce the same source/candidate/public-receipt identity and therefore cannot silently treat an Authority predecessor receipt as current after local semantic drift.
+
+## Mirror recovery
+
+The Mirror has its own trusted default-branch recovery workflow. Every five
+minutes, and after completion of the Mirror evidence materializer or successor
+guard, it can rebind a stalled exact PR head and dispatch the trusted exact-head
+verifier. The Mirror never receives authority to mutate Zenodo; it only enforces
+candidate/public-receipt identity and recovery of repository-local verification.
+
+Transient GitHub installation quota exhaustion is a non-terminal HOLD and is
+retried with bounded 0/15/45-second backoff before the periodic recovery edge
+takes over.

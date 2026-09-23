@@ -24,7 +24,10 @@
     "zero_job_fallback": "TRUSTED_MAIN_WORKFLOW_RUN_REOBSERVE",
     "publication_receipt_successor_reverification": "IMMEDIATE_REPOSITORY_DISPATCH_WHEN_OPEN_PR_EXISTS",
     "mesh_enforcement": "ALL_REGISTERED_REPOSITORY_NODES",
-    "production_mutation_authority": "AUTHORITY_REPOSITORY_ONLY"
+    "production_mutation_authority": "AUTHORITY_REPOSITORY_ONLY",
+    "mirror_trusted_recovery_workflow": ".github/workflows/qikvrt_mirror_publication_successor_recovery.yml",
+    "mirror_trusted_recovery_cadence": "EVERY_5_MINUTES",
+    "github_rate_limit_strategy": "BOUNDED_0_15_45_SECOND_BACKOFF_THEN_SEPARATE_TRUSTED_RECOVERY"
   },
   "human_authority_boundary": {
     "standing_blanket_authorization": false,

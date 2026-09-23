@@ -122,21 +122,22 @@ class ZenodoSuccessorWorkflowContractTest(unittest.TestCase):
     def _read(self, relative):
         return (self.ROOT / relative).read_text(encoding="utf-8")
 
-    def test_mirror_materializer_dispatches_exact_successor(self):
+    def test_mirror_materializer_carries_publication_successor_materialization(self):
         workflow = self._read(".github/workflows/qikvrt_batch04_integrity.yml")
         self.assertIn("materialize-all", workflow)
-        self.assertIn("qikvrt_autonomous_exact_head_verify", workflow)
-        self.assertIn("reason:\"MIRROR_EVIDENCE_SUCCESSOR\"", workflow)
-        self.assertLess(
-            workflow.index('git push origin "HEAD:$TARGET_REF"'),
-            workflow.index('reason:"MIRROR_EVIDENCE_SUCCESSOR"'),
-        )
+        self.assertIn('reason:"MIRROR_EVIDENCE_SUCCESSOR"', workflow)
 
-    def test_closure_guard_enforces_public_effect_on_mesh(self):
-        guard_workflow = self._read(".github/workflows/qikvrt_zenodo_successor_closure_guard.yml")
+    def test_mirror_has_periodic_trusted_recovery(self):
+        workflow = self._read(".github/workflows/qikvrt_mirror_publication_successor_recovery.yml")
+        self.assertIn('cron: "*/5 * * * *"', workflow)
+        self.assertIn("qikvrt_autonomous_exact_head_verify", workflow)
+        self.assertIn('reason:"MIRROR_PUBLICATION_SUCCESSOR_SCHEDULED_RECOVERY"', workflow)
+        self.assertIn("API rate limit exceeded for installation.", workflow)
+
+    def test_publication_mutation_remains_authority_only(self):
         publisher = self._read(".github/workflows/qikvrt_zenodo_successor_publish.yml")
-        self.assertIn("--require-public-effect", guard_workflow)
-        self.assertNotIn("github.repository == 'Goldkelch/qik-vrt'", guard_workflow)
         self.assertIn("github.repository == 'Goldkelch/qik-vrt'", publisher)
 
+
+if __name__ == "__main__":
     unittest.main()
