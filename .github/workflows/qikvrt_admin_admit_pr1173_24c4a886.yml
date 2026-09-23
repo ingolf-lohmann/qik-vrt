@@ -48,15 +48,10 @@ jobs:
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id")"
-            python3 - "$EXPECTED_HEAD" "$run_id" <<'PY' <<<"$receipt"
-import json, sys
-expected_head, expected_run = sys.argv[1], int(sys.argv[2])
-value = json.load(sys.stdin)
-assert value["id"] == expected_run, value
-assert value["head_sha"] == expected_head, value
-assert value["status"] == "completed", value
-assert value["conclusion"] == "action_required", value
-PY
+            test "$(jq -r '.id' <<<"$receipt")" = "$run_id"
+            test "$(jq -r '.head_sha' <<<"$receipt")" = "$EXPECTED_HEAD"
+            test "$(jq -r '.status' <<<"$receipt")" = "completed"
+            test "$(jq -r '.conclusion' <<<"$receipt")" = "action_required"
           done
 
       - name: Approve exact workflow executions
@@ -84,15 +79,9 @@ PY
                 -H "Accept: application/vnd.github+json" \
                 -H "X-GitHub-Api-Version: 2022-11-28" \
                 "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id")"
-              conclusion="$(python3 - "$EXPECTED_HEAD" "$run_id" <<'PY' <<<"$receipt"
-import json, sys
-expected_head, expected_run = sys.argv[1], int(sys.argv[2])
-value = json.load(sys.stdin)
-assert value["id"] == expected_run, value
-assert value["head_sha"] == expected_head, value
-print(value.get("conclusion") or "")
-PY
-)"
+              test "$(jq -r '.id' <<<"$receipt")" = "$run_id"
+              test "$(jq -r '.head_sha' <<<"$receipt")" = "$EXPECTED_HEAD"
+              conclusion="$(jq -r '.conclusion // ""' <<<"$receipt")"
               if [ "$conclusion" = "action_required" ]; then
                 remaining=1
               fi
