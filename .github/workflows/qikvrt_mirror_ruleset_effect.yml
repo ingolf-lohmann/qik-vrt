@@ -1,0 +1,281 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT mirror ruleset effect
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - policy/GITHUB_MAIN_RULESET_V1.json
+      - .github/workflows/qikvrt_mirror_ruleset_effect.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-mirror-ruleset-effect
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      REPOSITORY: ${{ github.repository }}
+      ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+      MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+      RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+      RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+      RECEIPT: /tmp/qikvrt-mirror-ruleset-receipt.json
+
+    steps:
+      - name: Check out trusted main policy
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Resolve least-privilege authority route
+        id: authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          direct=false
+          app=false
+          if [ -n "${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
+            direct=true
+          fi
+          if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then
+            app=true
+          fi
+          echo "direct=$direct" >> "$GITHUB_OUTPUT"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+          if [ "$direct" != true ] && [ "$app" != true ]; then
+            jq -n '{
+              schema:"qikvrt_mirror_ruleset_effect_v1",
+              state:"REQUEST_AUTHORITY",
+              first_blocker:"RULESET_ADMIN_AUTHORITY_UNAVAILABLE",
+              mutation:"NONE",
+              effect_observed:false
+            }' | tee "$RECEIPT"
+            exit 2
+          fi
+
+      - name: Mint mirror-scoped GitHub App administration token
+        id: app-token
+        if: steps.authority.outputs.direct != 'true' && steps.authority.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: ingolf-lohmann
+          repositories: qik-vrt
+          permission-administration: write
+
+      - name: Create or reconcile native main ruleset and read back
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import urllib.error
+          import urllib.request
+
+          repo = os.environ["REPOSITORY"]
+          token = (
+              os.environ.get("ADMIN_TOKEN", "")
+              or os.environ.get("MESH_TOKEN", "")
+              or os.environ.get("APP_TOKEN", "")
+          )
+          if not token:
+              raise SystemExit("RULESET_ADMIN_AUTHORITY_UNAVAILABLE")
+
+          policy_path = pathlib.Path("policy/GITHUB_MAIN_RULESET_V1.json")
+          policy = json.loads(policy_path.read_text(encoding="utf-8"))
+          if policy.get("schema") != "qikvrt_github_main_ruleset_v1":
+              raise SystemExit("RULESET_POLICY_SCHEMA_INVALID")
+          if policy.get("repository") != repo:
+              raise SystemExit("RULESET_POLICY_REPOSITORY_MISMATCH")
+
+          desired = {
+              key: policy[key]
+              for key in (
+                  "name",
+                  "target",
+                  "enforcement",
+                  "conditions",
+                  "bypass_actors",
+                  "rules",
+              )
+          }
+
+          def canonical_bytes(value):
+              return (
+                  json.dumps(
+                      value,
+                      ensure_ascii=False,
+                      sort_keys=True,
+                      indent=2,
+                      allow_nan=False,
+                  )
+                  + "\n"
+              ).encode("utf-8")
+
+          def digest(value):
+              return hashlib.sha256(canonical_bytes(value)).hexdigest()
+
+          def normalize(value):
+              rules = []
+              for raw in value.get("rules") or []:
+                  item = json.loads(json.dumps(raw))
+                  parameters = item.get("parameters")
+                  if isinstance(parameters, dict):
+                      checks = parameters.get("required_status_checks")
+                      if isinstance(checks, list):
+                          parameters["required_status_checks"] = sorted(
+                              checks,
+                              key=lambda check: (
+                                  str(check.get("context", "")),
+                                  int(check.get("integration_id") or 0),
+                              ),
+                          )
+                      reviewers = parameters.get("required_reviewers")
+                      if isinstance(reviewers, list):
+                          parameters["required_reviewers"] = sorted(
+                              reviewers,
+                              key=lambda reviewer: json.dumps(
+                                  reviewer, sort_keys=True
+                              ),
+                          )
+                  rules.append(item)
+              return {
+                  "name": value.get("name"),
+                  "target": value.get("target"),
+                  "enforcement": value.get("enforcement"),
+                  "conditions": value.get("conditions"),
+                  "bypass_actors": value.get("bypass_actors") or [],
+                  "rules": sorted(rules, key=lambda item: item["type"]),
+              }
+
+          headers = {
+              "Accept": "application/vnd.github+json",
+              "Authorization": "Bearer " + token,
+              "X-GitHub-Api-Version": "2022-11-28",
+          }
+
+          def request(method, url, *, payload=None, etag=None):
+              local_headers = dict(headers)
+              if etag:
+                  local_headers["If-Match"] = etag
+              data = canonical_bytes(payload) if payload is not None else None
+              if data is not None:
+                  local_headers["Content-Type"] = "application/json"
+              req = urllib.request.Request(
+                  url, data=data, method=method, headers=local_headers
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      raw = response.read()
+                      value = json.loads(raw.decode("utf-8")) if raw else {}
+                      return value, response.headers.get("ETag")
+              except urllib.error.HTTPError as exc:
+                  detail = exc.read().decode("utf-8", errors="replace")
+                  raise RuntimeError(
+                      f"GitHub ruleset API HTTP {exc.code}: {detail}"
+                  ) from exc
+
+          collection = f"https://api.github.com/repos/{repo}/rulesets"
+          listing, _ = request("GET", collection)
+          if not isinstance(listing, list):
+              raise SystemExit("RULESET_LIST_INVALID")
+          matches = [
+              item for item in listing
+              if isinstance(item, dict)
+              and item.get("name") == desired["name"]
+              and item.get("target") == desired["target"]
+              and item.get("source") == repo
+          ]
+          if len(matches) > 1:
+              raise SystemExit("RULESET_IDENTITY_AMBIGUOUS")
+
+          before_sha = None
+          mutation = "NONE"
+          if not matches:
+              listing2, _ = request("GET", collection)
+              matches2 = [
+                  item for item in listing2
+                  if isinstance(item, dict)
+                  and item.get("name") == desired["name"]
+                  and item.get("target") == desired["target"]
+                  and item.get("source") == repo
+              ]
+              if matches2:
+                  matches = matches2
+              else:
+                  created, _ = request("POST", collection, payload=desired)
+                  ruleset_id = created.get("id")
+                  if not isinstance(ruleset_id, int):
+                      raise SystemExit("RULESET_CREATE_READBACK_ID_MISSING")
+                  mutation = "POST"
+          if matches:
+              ruleset_id = matches[0].get("id")
+              if not isinstance(ruleset_id, int):
+                  raise SystemExit("RULESET_ID_INVALID")
+              url = f"{collection}/{ruleset_id}"
+              current, etag = request("GET", url)
+              before_sha = digest(normalize(current))
+              desired_sha = digest(normalize(desired))
+              if before_sha != desired_sha:
+                  current2, etag2 = request("GET", url)
+                  if digest(normalize(current2)) != before_sha:
+                      raise SystemExit("RULESET_DRIFTED_AFTER_PLANNING")
+                  conditional = etag2 or etag
+                  if not conditional:
+                      raise SystemExit("RULESET_ETAG_UNAVAILABLE")
+                  request("PUT", url, payload=desired, etag=conditional)
+                  mutation = "PUT"
+
+          url = f"{collection}/{ruleset_id}"
+          observed, _ = request("GET", url)
+          desired_sha = digest(normalize(desired))
+          post_sha = digest(normalize(observed))
+          if post_sha != desired_sha:
+              raise SystemExit("RULESET_POST_EFFECT_READBACK_MISMATCH")
+          if observed.get("source") != repo:
+              raise SystemExit("RULESET_SOURCE_READBACK_MISMATCH")
+
+          receipt = {
+              "schema": "qikvrt_mirror_ruleset_effect_v1",
+              "repository": repo,
+              "ruleset_id": ruleset_id,
+              "state": "CURRENT",
+              "mutation": mutation,
+              "pre_sha256": before_sha,
+              "post_sha256": post_sha,
+              "desired_sha256": desired_sha,
+              "effect_observed": True,
+              "readback_exact": True,
+          }
+          pathlib.Path(os.environ["RECEIPT"]).write_text(
+              json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(receipt, sort_keys=True))
+          PY
+
+      - name: Preserve ruleset effect receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-mirror-ruleset-effect-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 90
+          path: /tmp/qikvrt-mirror-ruleset-receipt.json
