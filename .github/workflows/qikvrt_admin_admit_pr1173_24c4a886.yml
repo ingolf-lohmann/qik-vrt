@@ -1,0 +1,107 @@
+name: QIKVRT Admin admit PR1173 exact head
+
+on:
+  push:
+    branches:
+      - admin/admit-pr1173-24c4a886
+
+permissions:
+  contents: read
+
+jobs:
+  admit:
+    if: github.repository == 'ingolf-lohmann/qik-vrt'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      TARGET_REPOSITORY: Goldkelch/qik-vrt
+      EXPECTED_HEAD: 24c4a886ed4f4dd86b2884a58ac48ab812303950
+      RUN_IDS: >-
+        35844877868
+        35844877870
+        35844877858
+        35844877806
+        35844877874
+        35844877801
+        35844877861
+        35844877927
+        35844877839
+        35844877855
+        35844877813
+        35844877811
+        35844877817
+        35844877851
+        35844877850
+        35844877938
+      ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+    steps:
+      - name: Fail closed and bind all exact ACTION_REQUIRED runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$TARGET_REPOSITORY" = "Goldkelch/qik-vrt"
+          test "$EXPECTED_HEAD" = "24c4a886ed4f4dd86b2884a58ac48ab812303950"
+          test -n "${ADMIN_TOKEN:-}"
+          for run_id in $RUN_IDS; do
+            receipt="$(curl --fail-with-body --silent --show-error \
+              -H "Authorization: Bearer $ADMIN_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id")"
+            python3 - "$EXPECTED_HEAD" "$run_id" <<'PY' <<<"$receipt"
+import json, sys
+expected_head, expected_run = sys.argv[1], int(sys.argv[2])
+value = json.load(sys.stdin)
+assert value["id"] == expected_run, value
+assert value["head_sha"] == expected_head, value
+assert value["status"] == "completed", value
+assert value["conclusion"] == "action_required", value
+PY
+          done
+
+      - name: Approve exact workflow executions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for run_id in $RUN_IDS; do
+            curl --fail-with-body --silent --show-error \
+              -X POST \
+              -H "Authorization: Bearer $ADMIN_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id/approve"
+          done
+
+      - name: Effect readback
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 20); do
+            remaining=0
+            for run_id in $RUN_IDS; do
+              receipt="$(curl --fail-with-body --silent --show-error \
+                -H "Authorization: Bearer $ADMIN_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "https://api.github.com/repos/$TARGET_REPOSITORY/actions/runs/$run_id")"
+              conclusion="$(python3 - "$EXPECTED_HEAD" "$run_id" <<'PY' <<<"$receipt"
+import json, sys
+expected_head, expected_run = sys.argv[1], int(sys.argv[2])
+value = json.load(sys.stdin)
+assert value["id"] == expected_run, value
+assert value["head_sha"] == expected_head, value
+print(value.get("conclusion") or "")
+PY
+)"
+              if [ "$conclusion" = "action_required" ]; then
+                remaining=1
+              fi
+            done
+            if [ "$remaining" -eq 0 ]; then
+              echo "All exact-head workflow admissions left action_required."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "BLOCK: at least one exact-head run remains action_required after approval requests" >&2
+          exit 1
