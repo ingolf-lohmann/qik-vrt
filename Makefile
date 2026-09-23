@@ -100,3 +100,9 @@ run-api:
 
 clean:
 	rm -rf unit_state e2e_state .qikvrt/runtime .qikvrt/evidence .qikvrt/api .qikvrt/cache .qikvrt/release .qikvrt/interactions logs __pycache__ src/__pycache__ scripts/__pycache__ tests/__pycache__ tools/__pycache__
+
+.PHONY: machine-verifiable-science-charter-test
+machine-verifiable-science-charter-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
+
+test: machine-verifiable-science-charter-test
