@@ -1,0 +1,84 @@
+{
+  "candidate_specific_owner_authorization_required": true,
+  "predecessor_evidence_transfer": false,
+  "public_effect_ack_done": false,
+  "publication_id": "qikvrt-temdd-executable-language-runtime-v1",
+  "schema": "qikvrt_zenodo_auto_successor_candidate_v1",
+  "source_files": [
+    {
+      "bytes": 2389,
+      "git_blob_sha1": "080e5bfdef9b3637e7ec3b8e4a8901e851e334ab",
+      "path": "TEMDD.md",
+      "sha256": "729ce0465fedc7c03f1d905395403535d637fd1138bbf548a8ebfe93d81bb876"
+    },
+    {
+      "bytes": 8130,
+      "git_blob_sha1": "12fc8919f3d4c08ad13f84c1595ff01d2dc1411e",
+      "path": "spec/temdd/TEMDD_EXECUTABLE_LANGUAGE_RUNTIME_V1.md",
+      "sha256": "9b083f054904ffaa95ce399c68b463d8fd2752e29174560a8b547092d97151c5"
+    },
+    {
+      "bytes": 3966,
+      "git_blob_sha1": "f782e3a6aa58ecdbb12e446294f6fa15aae50039",
+      "path": "policy/QIKVRT_TEMDD_EXECUTABLE_LANGUAGE_RUNTIME_V1.json",
+      "sha256": "e61de849de14789aa27458b2efb176565b73bdd51ea3e0586b5994b46b2ed5c2"
+    },
+    {
+      "bytes": 2390,
+      "git_blob_sha1": "e764fe5fd862a65ab80dd96da2afa58a3cfc96d4",
+      "path": "policy/QIKVRT_INFORMATION_CARRIER_EFFECT_VERIFICATION_V1.json",
+      "sha256": "78dbbb7b091d182792925b6adb7db51434c893f0432dfb3c93ef2d15b0645159"
+    },
+    {
+      "bytes": 5514,
+      "git_blob_sha1": "956af44f86ff01e3eae682d96f993d20aa5bf60e",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/README.md",
+      "sha256": "9b93e19825b6a343100bd4268272bb3e5d5ad802ded241e6c07cbe5d5eadc472"
+    },
+    {
+      "bytes": 1057,
+      "git_blob_sha1": "cefd9f6ef3677a5c2b3a4724edebd1e643415cbd",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/CITATION.cff",
+      "sha256": "bcf48215be1b967ea12cf1e7d78a7e6e570464f48abeeccd4b985af6e1d01903"
+    },
+    {
+      "bytes": 2123,
+      "git_blob_sha1": "93e41a7723d0cc006f21dd4273f181b2ad71890a",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/ZENODO_METADATA.json",
+      "sha256": "9fc38eac0944532f2e26ec44637ae398a5af546ecddb36f82992940151b72e17"
+    },
+    {
+      "bytes": 2237,
+      "git_blob_sha1": "981b56276fbde281c88fd6467d09f82e6a4853df",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/CLAIM_MATRIX.json",
+      "sha256": "3320ad1f0043c32c681a9415760c6cc60f69723bbaa3bfbe01ad4a33d52c3ace"
+    },
+    {
+      "bytes": 1246,
+      "git_blob_sha1": "e086a66f250334acba971e12bb100a78714ea550",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "964b02d0b9d486b2d40d46f79379cdea47de0919f1bb74b8eca6e1b4dd4cef43"
+    },
+    {
+      "bytes": 2119,
+      "git_blob_sha1": "57c7cd563fd087d4b8914df392db89b40eaee51c",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/BOUNDARY_TEST_REPORT.json",
+      "sha256": "7cb28fe73a4d09cc49d7b878c58e65c4d76ba21e4e31349384c6b23618e0b096"
+    },
+    {
+      "bytes": 1221,
+      "git_blob_sha1": "c4f2fa90a3fb13986e974fe00bbbf00e3ac4aa2e",
+      "path": "docs/publications/2026-09-23-temdd-executable-language-runtime/CHANGE_NOTICE.md",
+      "sha256": "d08da12d254029c1eebcae7b9fb140c5ba91cabcce724280181f887d2c58f579"
+    },
+    {
+      "bytes": 4987,
+      "git_blob_sha1": "742cdc976ab0a418407b6aff11764dd57f617710",
+      "path": "docs/research/2026-09-24-information-singularity-effect-verification.md",
+      "sha256": "da576e6ce98c835a03800990d0cc5b92b8ba37a1a627a27ac5ea42318689a8a0"
+    }
+  ],
+  "source_set_sha256": "37a5ecf686917392cce39d4bdf3151f94fa7ef1bea6df517bd8552afe9930121",
+  "state": "MATERIALIZED_AWAITING_EXACT_OWNER_AUTHORIZATION",
+  "target_id": "temdd-executable-language-runtime"
+}

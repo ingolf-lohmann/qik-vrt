@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  statuses: write
 
 concurrency:
   group: qikvrt-repository-evidence-${{ github.head_ref || github.ref_name }}
@@ -224,6 +225,15 @@ jobs:
           python3 -B "$script" --materialize --json
           python3 -B "$script" --check --json
           python3 -B -m unittest -v tests.test_aphorism_corpus_v2
+      - name: Materialize registered publication successors
+        shell: bash
+        run: |
+          set -euo pipefail
+          if test -f tools/qikvrt_zenodo_successor_guard.py &&
+             test -f policy/QIKVRT_ZENODO_SUCCESSOR_TARGETS_V1.json; then
+            python3 -B tools/qikvrt_zenodo_successor_guard.py materialize-all
+            python3 -B tools/qikvrt_zenodo_successor_guard.py check-all
+          fi
       - name: Regenerate and verify repository integrity
         shell: bash
         run: |
@@ -238,6 +248,10 @@ jobs:
           python3 tools/qikvrt_integrity.py verify
       - name: Commit materialized repository evidence
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
           source_head="$(git rev-parse --verify HEAD^{commit})"
@@ -294,6 +308,23 @@ jobs:
               git add "$path"
             fi
           done
+          if test -f policy/QIKVRT_ZENODO_SUCCESSOR_TARGETS_V1.json; then
+            python3 -B - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          registry = json.loads(
+              Path("policy/QIKVRT_ZENODO_SUCCESSOR_TARGETS_V1.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          for target in registry.get("targets", []):
+              path = target.get("candidate_path")
+              if isinstance(path, str) and path:
+                  subprocess.run(["git", "add", "--", path], check=True)
+          PY
+          fi
           if git diff --cached --quiet; then
             echo "Repository evidence is already current."
             exit 0
@@ -310,3 +341,28 @@ jobs:
             exit 2
           fi
           git push origin "HEAD:$TARGET_REF"
+
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            successor_head="$(git rev-parse --verify HEAD^{commit})"
+            live_successor="$(
+              git ls-remote --heads origin "refs/heads/$TARGET_REF" |
+                awk 'NR == 1 { print $1 }'
+            )"
+            test "$live_successor" = "$successor_head"
+
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${successor_head}" \
+              -f state=pending \
+              -f context='QIKVRT autonomous exact-head verification' \
+              -f description='Mirror evidence successor dispatched for exact-head verification' \
+              -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
+            jq -n \
+              --arg repository "$GITHUB_REPOSITORY" \
+              --arg pr "$PR_NUMBER" \
+              --arg ref "$TARGET_REF" \
+              --arg head "$successor_head" \
+              --arg source "$source_head" \
+              --arg base "$BASE_SHA" \
+              '{event_type:"qikvrt_autonomous_exact_head_verify",client_payload:{repository:$repository,pull_request:($pr|tonumber),head_ref:$ref,head_sha:$head,source_head_sha:$source,base_sha:$base,d0:2,causal_state:"REOBSERVE",reason:"MIRROR_EVIDENCE_SUCCESSOR"}}' \
+              | gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" --input -
+          fi
