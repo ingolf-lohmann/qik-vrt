@@ -17,7 +17,7 @@ SUCCESS = "success"
 PENDING = "pending"
 FAILURE = "failure"
 DECISIVE_REVIEW_STATES = {"APPROVED", "CHANGES_REQUESTED", "DISMISSED"}
-
+REQUIRED_NATIVE_STATUS_CHECKS = {\n    ("test", 15368),\n    ("QIKVRT required code-owner review", 15368),\n}\n
 
 class ReviewGateInputError(ValueError):
     pass
@@ -62,23 +62,34 @@ def _block(*, gate_state: str, blocker: str, detail: str, pr_number: Any, head_s
 
 
 def native_code_owner_rule_is_enforced(rules: Sequence[Mapping[str, Any]]) -> bool:
+    pull_request_enforced = False
+    status_checks_enforced = False
     for rule in rules:
-        if rule.get("type") != "pull_request":
-            continue
+        rule_type = rule.get("type")
         parameters = rule.get("parameters")
         if not isinstance(parameters, Mapping):
             continue
-        count = parameters.get("required_approving_review_count")
-        if isinstance(count, bool) or not isinstance(count, int):
-            continue
-        if (
-            count >= 1
-            and parameters.get("require_code_owner_review") is True
-            and parameters.get("dismiss_stale_reviews_on_push") is True
-            and parameters.get("require_last_push_approval") is True
-        ):
-            return True
-    return False
+        if rule_type == "pull_request":
+            count = parameters.get("required_approving_review_count")
+            if isinstance(count, bool) or not isinstance(count, int):
+                continue
+            pull_request_enforced = (
+                count >= 1
+                and parameters.get("require_code_owner_review") is True
+                and parameters.get("dismiss_stale_reviews_on_push") is True
+                and parameters.get("require_last_push_approval") is True
+            )
+        elif rule_type == "required_status_checks":
+            raw_checks = parameters.get("required_status_checks")
+            if not isinstance(raw_checks, Sequence) or isinstance(raw_checks, (str, bytes)):
+                continue
+            observed = {
+                (check.get("context"), check.get("integration_id"))
+                for check in raw_checks
+                if isinstance(check, Mapping)
+            }
+            status_checks_enforced = REQUIRED_NATIVE_STATUS_CHECKS <= observed
+    return pull_request_enforced and status_checks_enforced
 
 
 def evaluate_required_review(pr: Mapping[str, Any], rules: Sequence[Mapping[str, Any]], reviews: Sequence[Mapping[str, Any]], *, required_code_owner: str = DEFAULT_CODE_OWNER) -> dict[str, Any]:
@@ -106,7 +117,7 @@ def evaluate_required_review(pr: Mapping[str, Any], rules: Sequence[Mapping[str,
         return _block(
             gate_state=FAILURE,
             blocker="CODE_OWNER_RULE_NOT_ENFORCED",
-            detail="main must require one approval, Code Owner review, stale-review dismissal, and last-push approval",
+            detail="main must require one approval, Code Owner review, stale-review dismissal, last-push approval, and the exact test and review-gate statuses",
             pr_number=pr_number,
             head_sha=head_sha,
             required_code_owner=owner_login,
