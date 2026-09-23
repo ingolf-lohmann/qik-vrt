@@ -27,12 +27,20 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
         return value
 
     def enforced_rules(self):
-        return [{"type": "pull_request", "parameters": {
-            "required_approving_review_count": 1,
-            "require_code_owner_review": True,
-            "dismiss_stale_reviews_on_push": True,
-            "require_last_push_approval": True,
-        }}]
+        return [
+            {"type": "pull_request", "parameters": {
+                "required_approving_review_count": 1,
+                "require_code_owner_review": True,
+                "dismiss_stale_reviews_on_push": True,
+                "require_last_push_approval": True,
+            }},
+            {"type": "required_status_checks", "parameters": {
+                "required_status_checks": [
+                    {"context": "test", "integration_id": 15368},
+                    {"context": "QIKVRT required code-owner review", "integration_id": 15368},
+                ],
+            }},
+        ]
 
     def approval(self, **overrides):
         value = {
@@ -63,6 +71,17 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
                 weak = self.enforced_rules(); weak[0]["parameters"][field] = False
                 result = self.evaluate([], rules=weak)
                 self.assertEqual(result["first_blocker"], "CODE_OWNER_RULE_NOT_ENFORCED")
+
+    def test_missing_required_review_status_check_is_not_enforced(self):
+        weak = self.enforced_rules()
+        weak[1]["parameters"]["required_status_checks"] = [
+            {"context": "test", "integration_id": 15368}
+        ]
+        result = self.evaluate([], rules=weak)
+        self.assertEqual(
+            (result["gate_state"], result["first_blocker"]),
+            ("failure", "CODE_OWNER_RULE_NOT_ENFORCED"),
+        )
 
     def test_no_review_is_pending_not_approval(self):
         result = self.evaluate([])
