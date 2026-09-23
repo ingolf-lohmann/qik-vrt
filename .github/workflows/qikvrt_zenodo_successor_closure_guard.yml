@@ -4,18 +4,20 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: qikvrt-zenodo-successor-closure-mirror-${{ github.event.pull_request.number || github.ref_name }}
+  group: qikvrt-zenodo-successor-closure-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   candidate-freshness:
-    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -24,17 +26,37 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Bind exact Mirror PR subject
+      - name: Bind exact PR subject
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
-      - name: Reject stale registered Mirror candidates
+      - name: Reject stale registered candidates
         run: python3 -B tools/qikvrt_zenodo_successor_guard.py check-all
-      - name: Keep production publication authority separated
-        run: |
-          set -euo pipefail
-          test "${GITHUB_REPOSITORY}" = "ingolf-lohmann/qik-vrt"
-          printf '%s\n' 'MIRROR_PUBLICATION_MUTATION=FORBIDDEN'
-          printf '%s\n' 'AUTHORITY_PUBLICATION_REPOSITORY=Goldkelch/qik-vrt'
+
+  publication-effect:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Require exact public effect for registered publication subjects
+        run: python3 -B tools/qikvrt_zenodo_successor_guard.py check-all --require-public-effect
+
+  main-public-effect:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Fail closed on an unclosed publication successor
+        run: python3 -B tools/qikvrt_zenodo_successor_guard.py check-all --require-public-effect
