@@ -42,6 +42,7 @@ def check() -> dict[str, object]:
     policy = json.loads(POLICY.read_text(encoding="utf-8"))
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     notes = discover_notes()
+
     if policy["scope"]["future_notes"] != "ALL_FUTURE_TRACKED_NOTE_CARRIERS":
         raise SystemExit("BLOCK future Note inheritance is not universal")
     if not policy["future_inheritance"]["automatic"]:
@@ -50,10 +51,12 @@ def check() -> dict[str, object]:
         raise SystemExit("BLOCK private counsel payload may not be publicly materialized")
     if policy["private_counsel_packet"]["private_payload_bytes_in_public_repository"]:
         raise SystemExit("BLOCK private counsel payload bytes must remain out of public repositories")
+
     observed = registry["observation"]["observed_existing_note_paths"]
     missing = sorted(set(observed) - set(notes))
     if missing:
         raise SystemExit("BLOCK observed Note carriers disappeared: " + ", ".join(missing))
+
     leaks: list[str] = []
     for path in notes:
         try:
@@ -64,6 +67,7 @@ def check() -> dict[str, object]:
             leaks.append(path)
     if leaks:
         raise SystemExit("BLOCK private patent-counsel payload leaked into public Notes: " + ", ".join(leaks))
+
     return {
         "schema": "qikvrt_notes_inheritance_check_v1",
         "policy_id": policy["policy_id"],
