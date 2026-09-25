@@ -110,6 +110,9 @@
   "required_read_order": [
     "AI",
     "AI_CONTEXT.json",
+    "state/mesh/QIKVRT_REQUIRED_KNOWLEDGE_ARTIFACTS_20260925_V1.json",
+    "docs/publications/2026-09-25-leibniz-qikvrt/PROSA_VOM_UNTERSCHIED_ZU_QIKVRT_DE.md",
+    "docs/publications/2026-09-25-leibniz-qikvrt/SCIENTIFIC_ARTICLE_LEIBNIZ_QIKVRT_DE.md",
     "docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md",
     "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json",
     "state/charter/CHARTER_ADOPTION_V1.json",
@@ -210,5 +213,14 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "required_knowledge_artifacts_20260925": {
+    "manifest": "state/mesh/QIKVRT_REQUIRED_KNOWLEDGE_ARTIFACTS_20260925_V1.json",
+    "authority_manifest_git_blob_sha1": "302a0ac6741bcd6665a2551052269e693808be65",
+    "prose_article": "docs/publications/2026-09-25-leibniz-qikvrt/PROSA_VOM_UNTERSCHIED_ZU_QIKVRT_DE.md",
+    "scientific_source": "docs/publications/2026-09-25-leibniz-qikvrt/SCIENTIFIC_ARTICLE_LEIBNIZ_QIKVRT_DE.md",
+    "scientific_pdf": "docs/publications/2026-09-25-leibniz-qikvrt/Leibniz_QIK-VRT_Monaden_und_evidenzgebundener_Unterschied.pdf",
+    "mandatory_for_node_conformance": true,
+    "predecessor_evidence_transfer": false
   }
 }
