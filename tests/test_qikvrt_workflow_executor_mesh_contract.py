@@ -65,12 +65,23 @@ class WorkflowExecutorMeshContractTests(unittest.TestCase):
             [
                 "tests/test_qikvrt_workflow_executor_mesh_contract.py",
                 "tests/test_seed_workflows.py",
+                "tests/test_universal_proof_thought_schema.py",
             ],
+        )
+        schema = continuity["universal_proof_thought_schema"]
+        self.assertTrue(schema["mandatory_for_node_acceptance"])
+        self.assertTrue(schema["mandatory_for_every_node_output"])
+        self.assertTrue(schema["fail_closed_on_missing_or_mismatch"])
+        self.assertTrue(schema["downstream_weakening_forbidden"])
+        self.assertEqual(
+            schema["runtime_enforcement_status"],
+            "OPEN_UNTIL_RUNTIME_CARRIER_PRESENT_AND_FRESHLY_VERIFIED",
         )
         self.assertEqual(
             continuity["connection_order"],
             [
                 "AUTHORITY_CONTRACT_BOUND",
+                "UNIVERSAL_PROOF_THOUGHT_SCHEMA_BOUND",
                 "NODE_RECEIPT_DECLARED",
                 "NODE_STRUCTURAL_ACCEPTANCE",
                 "SEED_QUEUE_ACCEPTANCE",
