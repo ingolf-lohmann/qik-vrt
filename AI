@@ -230,3 +230,47 @@ Competitiveness loop: identical reproducible workload and conditions -> QIK-VRT 
 Prioritize the first causal defect on the real end-user path over cosmetic CI activity or additional green infrastructure. The canonical end-user distribution path is public download -> exact bytes -> firmware/standard-platform boot -> Linux -> Mega-ST/MC68000 -> Metatransputer/Cloud Transputer -> Universal Terminal -> Firefox -> TEMDD -> Effect-Acknowledgement -> useful human task. Repair the first failing edge, create a successor subject, and restart fresh validation; never hide it behind unrelated successful lanes.
 
 Release acceptance remains finite and evidence-bound under canonical TEMDD T1-T16, including DONE only from Working Software AND publicly reachable URL AND fresh readback of that URL. Continuous improvement does not terminate when a release reaches DONE: Release_n = DONE does not imply Improvement = DONE.
+
+
+<!-- qikvrt-universal-proof-thought-schema:v1 -->
+UNIVERSAL PROOF-AND-THOUGHT OUTPUT CONTRACT
+
+Read and apply before emitting any repository/Mesh-node output:
+
+- docs/QIKVRT_UNIVERSAL_PROOF_AND_THOUGHT_SCHEMA_DE.md
+- policy/QIKVRT_UNIVERSAL_PROOF_THOUGHT_SCHEMA_V1.json
+- tools/qikvrt_output_contract.py
+
+Policy identity: QIKVRT-UNIVERSAL-PROOF-THOUGHT-SCHEMA-V1
+Canonical article SHA-256:
+3179af0c1a7c16bf63208a1c91e23213b7746f61f6a0d60ed100728c6064d392
+
+Every current or future QIK-VRT repository node, Mesh node, agent adapter and
+runtime claiming conformance MUST bind every node-generated output to the exact
+subject, claim kind, scope, evidence class, epistemic status, effect boundary,
+new-difference state and canonical article identity. Missing or mismatched
+bindings are BLOCK.
+
+SEQUENCE != CAUSALITY
+FORMAL_PROOF != EMPIRICAL_CONFIRMATION
+FORMAL_ESTABLISHMENT != PHYSICAL_QUALIFICATION
+TRANSPORT_ACK != EFFECT_ACK
+EXECUTE != DONE
+TEST != DONE
+OBSERVE != DONE
+PREDECESSOR_EVIDENCE_TRANSFER = FALSE
+
+A mutation creates a successor subject. OPEN remains OPEN. Downstream nodes may
+strengthen but may not weaken the contract. A replacement requires a new policy
+version, explicit Product/Code-Owner authorization and ordinary code-owner
+review. Historical versions remain immutable evidence.
+
+This Mirror currently binds the policy and explanation. Real-Mesh runtime
+enforcement remains OPEN until the corresponding runtime carrier exists here
+and is freshly verified on the exact subject; Authority runtime evidence does
+not transfer to this Mirror.
+
+This contract does not itself establish physical correspondence, independent
+empirical confirmation, scientific consensus, deployment, publication, or
+general EFFECT_ACK_DONE.
+<!-- /qikvrt-universal-proof-thought-schema:v1 -->
