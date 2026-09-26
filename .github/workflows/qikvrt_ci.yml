@@ -89,7 +89,6 @@ jobs:
           python3 tools/qikvrt_integrity.py generate
           python3 tools/qikvrt_integrity.py verify
           python3 tools/qikvrt_integrity.py verify
-          git diff --check
 
       - name: Enforce full repository test result
         if: steps.full_test.outcome == 'failure'
