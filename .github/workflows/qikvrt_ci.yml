@@ -98,7 +98,12 @@ jobs:
           generate_status=$?
           set -e
           test "$generate_status" -eq 0 -o "$generate_status" -eq 1
-          python3 tools/qikvrt_integrity.py verify
+          echo "QIKVRT_INTEGRITY_GENERATE_STATUS=$generate_status"
+          python3 tools/qikvrt_integrity.py verify || {
+            verify_status=$?
+            echo "QIKVRT_INTEGRITY_VERIFY_STATUS=$verify_status"
+            exit "$verify_status"
+          }
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
