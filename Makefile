@@ -106,3 +106,9 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: mesh-worker-test
+mesh-worker-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_mesh_worker_installation tests.test_qikvrt_github_observation_transport
+
+test: mesh-worker-test
