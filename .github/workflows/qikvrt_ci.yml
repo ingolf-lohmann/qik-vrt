@@ -88,10 +88,18 @@ jobs:
 
           source_head="$(git rev-parse --verify HEAD^{commit})"
           source_tree="$(git rev-parse --verify HEAD^{tree})"
-          test "$source_head" = "$EXPECTED_HEAD"
+          if [ "$source_head" != "$EXPECTED_HEAD" ]; then
+            echo "QIKVRT_BIND_FAIL source_head=$source_head expected_head=$EXPECTED_HEAD"
+            exit 11
+          fi
+          echo "QIKVRT_BIND_PASS source_head=$source_head"
 
           remote_before="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
-          test "$remote_before" = "$source_head"
+          if [ "$remote_before" != "$source_head" ]; then
+            echo "QIKVRT_REMOTE_BIND_FAIL remote_before=$remote_before source_head=$source_head"
+            exit 12
+          fi
+          echo "QIKVRT_REMOTE_BIND_PASS remote_before=$remote_before"
 
           set +e
           python3 tools/qikvrt_integrity.py generate
