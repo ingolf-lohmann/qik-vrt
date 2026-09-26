@@ -17,6 +17,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -314,3 +315,17 @@ jobs:
             exit 2
           fi
           git push origin "HEAD:$TARGET_REF"
+
+          # A push performed with GITHUB_TOKEN creates a pull_request synchronize
+          # event whose workflows require approval and therefore have zero jobs.
+          # Explicitly re-run those exact-successor workflow runs through the
+          # Actions API so the bot-authored successor is actually executed.
+          successor="$(git rev-parse --verify HEAD^{commit})"
+          sleep 3
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$successor&event=pull_request&per_page=100" \
+            --jq '.workflow_runs[] | select(.conclusion == "action_required") | .id' |
+          while read -r run_id; do
+            test -n "$run_id" || continue
+            gh api --method POST "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/rerun"
+            echo "QIKVRT_SUCCESSOR_REENTRY requested run_id=$run_id head=$successor"
+          done
