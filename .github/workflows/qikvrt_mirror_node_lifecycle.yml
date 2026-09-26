@@ -25,6 +25,21 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+      - name: Verify canonical TEMDD effect-proof architecture
+        shell: bash
+        run: |
+          set -euo pipefail
+          contract=state/autonomy/REPOSITORY_NATIVE_EFFECT_PROOF_ARCHITECTURE_V1.json
+          test -f "$contract"
+          jq -e '
+            .schema == "qikvrt_repository_native_effect_proof_architecture_v1" and
+            .invariants.predecessor_evidence_transfer == false and
+            .invariants.mutation_creates_successor == true and
+            .invariants.successor_requires_fresh_evidence == true and
+            .invariants.fail_closed == true and
+            (.terminal_conjunction | length == 8)
+          ' "$contract" >/dev/null
+
       - name: Materialize fresh mirror lifecycle evidence
         shell: bash
         run: |
