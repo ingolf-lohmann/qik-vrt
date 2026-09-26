@@ -25,11 +25,15 @@ concurrency:
 
 jobs:
   materialize:
+    # Bot-authored synchronize events are legitimate successors when this
+    # materializer or another bounded repository writer advances the same PR.
+    # The exact-ref compare-and-swap guard below prevents stale writers from
+    # overwriting a newer successor, so admission must not be suppressed merely
+    # because the event actor is github-actions[bot].
     if: >-
-      github.actor != 'github-actions[bot]' &&
-      (github.event_name != 'pull_request' ||
-       (github.event.pull_request.head.repo.full_name == github.repository &&
-        github.actor != 'dependabot[bot]'))
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.actor != 'dependabot[bot]')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
