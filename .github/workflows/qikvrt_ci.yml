@@ -78,70 +78,77 @@ jobs:
             .qikvrt/**
           if-no-files-found: warn
           include-hidden-files: true
-      - name: Materialize, persist and read back exact-subject integrity successor
+      - name: Same-writer successor re-entry to tested fixpoint
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
           TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          MAX_SUCCESSORS: "4"
         shell: bash
         run: |
           set -euo pipefail
 
-          source_head="$(git rev-parse --verify HEAD^{commit})"
-          source_tree="$(git rev-parse --verify HEAD^{tree})"
-          if [ "$source_head" != "$EXPECTED_HEAD" ]; then
-            echo "QIKVRT_BIND_FAIL source_head=$source_head expected_head=$EXPECTED_HEAD"
-            exit 11
-          fi
-          echo "QIKVRT_BIND_PASS source_head=$source_head"
+          subject="$(git rev-parse --verify HEAD^{commit})"
+          test "$subject" = "$EXPECTED_HEAD"
 
-          remote_before="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
-          if [ "$remote_before" != "$source_head" ]; then
-            echo "QIKVRT_REMOTE_BIND_FAIL remote_before=$remote_before source_head=$source_head"
-            exit 12
-          fi
-          echo "QIKVRT_REMOTE_BIND_PASS remote_before=$remote_before"
+          for iteration in $(seq 0 "$MAX_SUCCESSORS"); do
+            subject="$(git rev-parse --verify HEAD^{commit})"
+            tree="$(git rev-parse --verify HEAD^{tree})"
+            remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+            test "$remote" = "$subject"
+            echo "QIKVRT_REENTRY_SUBJECT iteration=$iteration head=$subject tree=$tree"
 
-          set +e
-          python3 tools/qikvrt_integrity.py generate
-          generate_status=$?
-          set -e
-          test "$generate_status" -eq 0 -o "$generate_status" -eq 1
-          echo "QIKVRT_INTEGRITY_GENERATE_STATUS=$generate_status"
-          python3 tools/qikvrt_integrity.py verify || {
-            verify_status=$?
-            echo "QIKVRT_INTEGRITY_VERIFY_STATUS=$verify_status"
-            exit "$verify_status"
-          }
+            # Test the exact active subject. Integrity staleness is the only
+            # expected pre-materialization failure and is repaired below.
+            set +e
+            make test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
+            test_status=$?
+            set -e
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+            python3 tools/qikvrt_integrity.py generate
+            python3 tools/qikvrt_integrity.py verify
 
-          if git diff --cached --quiet; then
-            echo "QIKVRT_INTEGRITY_ALREADY_CURRENT head=$source_head tree=$source_tree"
-            exit 0
-          fi
+            # Re-run the complete gates against the regenerated state. Any
+            # remaining failure is a real successor failure, not predecessor
+            # evidence and must stop the writer fail-closed.
+            make test
+            python3 tools/qikvrt_integrity.py verify
 
-          git commit -m "ci: materialize exact-subject repository integrity"
-          successor_head="$(git rev-parse --verify HEAD^{commit})"
-          successor_tree="$(git rev-parse --verify HEAD^{tree})"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
 
-          remote_pre_push="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
-          test "$remote_pre_push" = "$source_head"
+            if git diff --cached --quiet; then
+              echo "QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status"
+              exit 0
+            fi
 
-          git push origin "HEAD:$TARGET_REF"
+            test "$iteration" -lt "$MAX_SUCCESSORS"
+            remote_pre_push="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+            test "$remote_pre_push" = "$subject"
 
-          remote_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
-          test "$remote_after" = "$successor_head"
+            git commit -m "ci: materialize exact-subject repository integrity"
+            successor="$(git rev-parse --verify HEAD^{commit})"
+            successor_tree="$(git rev-parse --verify HEAD^{tree})"
+            git push origin "HEAD:$TARGET_REF"
 
-          git fetch --no-tags origin "$TARGET_REF"
-          readback_head="$(git rev-parse --verify FETCH_HEAD^{commit})"
-          readback_tree="$(git rev-parse --verify FETCH_HEAD^{tree})"
-          test "$readback_head" = "$successor_head"
-          test "$readback_tree" = "$successor_tree"
+            remote_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+            test "$remote_after" = "$successor"
+            git fetch --no-tags origin "$TARGET_REF"
+            readback_head="$(git rev-parse --verify FETCH_HEAD^{commit})"
+            readback_tree="$(git rev-parse --verify FETCH_HEAD^{tree})"
+            test "$readback_head" = "$successor"
+            test "$readback_tree" = "$successor_tree"
 
-          echo "QIKVRT_INTEGRITY_EFFECT_ACK source_head=$source_head source_tree=$source_tree successor_head=$successor_head successor_tree=$successor_tree readback_head=$readback_head readback_tree=$readback_tree"
+            echo "QIKVRT_SUCCESSOR_REENTRY iteration=$iteration predecessor=$subject successor=$successor successor_tree=$successor_tree readback_head=$readback_head readback_tree=$readback_tree"
+
+            # The freshly read-back successor is now the next exact subject in
+            # this same admitted writer; no nested workflow admission is used.
+            git reset --hard "$readback_head"
+          done
+
+          echo "BLOCK successor fixpoint not reached within $MAX_SUCCESSORS mutations" >&2
+          exit 2
 
       - name: Enforce full repository test result
         if: steps.full_test.outcome == 'failure'
