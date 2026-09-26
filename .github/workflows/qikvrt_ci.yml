@@ -79,6 +79,7 @@ jobs:
           if-no-files-found: warn
           include-hidden-files: true
       - name: Same-writer successor re-entry to tested fixpoint
+        id: fixpoint
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
           TARGET_REF: ${{ github.head_ref }}
@@ -150,9 +151,14 @@ jobs:
           echo "BLOCK successor fixpoint not reached within $MAX_SUCCESSORS mutations" >&2
           exit 2
 
-      - name: Enforce full repository test result
-        if: steps.full_test.outcome == 'failure'
+      - name: Enforce terminal tested-fixpoint disposition
+        if: always()
         shell: bash
         run: |
-          cat audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
-          exit 1
+          set -euo pipefail
+          # The pre-materialization full_test result belongs to the predecessor.
+          # Terminal disposition is determined only by the same-writer re-entry
+          # step, which re-tests the freshly read-back successor and exits
+          # successfully only at a verified fixpoint.
+          test "${{ steps.fixpoint.outcome }}" = "success"
+          echo "QIKVRT_TERMINAL_DISPOSITION PASS"
