@@ -25,5 +25,13 @@
     "MESH_EXECUTED": false,
     "GLOBAL_ADOPTION": false,
     "EFFECT_ACK_DONE": false
+  },
+  "implementation_repair": {
+    "run": 36237487868,
+    "job": 108391809898,
+    "failure": "ModuleNotFoundError before new transport existed on trusted Main",
+    "repair": "Select installed transport before requests; retain existing gh reads on the predecessor Main",
+    "targeted_local_tests": 26,
+    "successor_ci_required": true
   }
 }

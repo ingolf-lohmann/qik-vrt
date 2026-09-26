@@ -102,10 +102,18 @@ jobs:
           python3 -B - <<'PY' > /tmp/qikvrt-review-selection.json
           import json, os, subprocess
           repo=os.environ['REPOSITORY']; requested=os.environ.get('REQUESTED_PR','').strip(); event_pr=os.environ.get('EVENT_PR','').strip(); event_head=os.environ.get('EVENT_HEAD','').strip()
-          from tools.qikvrt_github_observation import environment_client
-          def one(path): return environment_client().get(path)[0]
+          from pathlib import Path
+          if Path('tools/qikvrt_github_observation.py').is_file():
+              from tools.qikvrt_github_observation import environment_client
+          else:
+              environment_client=None
+          def one(path):
+              if environment_client is not None: return environment_client().get(path)[0]
+              return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):
-              value=environment_client().pages(path); out=[]
+              if environment_client is not None: value=environment_client().pages(path)
+              else: value=json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path],text=True))
+              out=[]
               for page in value: out.extend(page if isinstance(page,list) else [page])
               return out
           if requested: prs=[one(f'repos/{repo}/pulls/{int(requested)}')]
@@ -141,10 +149,18 @@ jobs:
           python3 -B - <<'PY' > /tmp/qikvrt-review-snapshot.json
           import json, os, subprocess
           repo=os.environ['REPOSITORY']; n=int(os.environ['PR_NUMBER']); required=json.loads(os.environ['REQUIRED_GATES_JSON'])
-          from tools.qikvrt_github_observation import environment_client
-          def one(path): return environment_client().get(path)[0]
+          from pathlib import Path
+          if Path('tools/qikvrt_github_observation.py').is_file():
+              from tools.qikvrt_github_observation import environment_client
+          else:
+              environment_client=None
+          def one(path):
+              if environment_client is not None: return environment_client().get(path)[0]
+              return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):
-              value=environment_client().pages(path); out=[]
+              if environment_client is not None: value=environment_client().pages(path)
+              else: value=json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path],text=True))
+              out=[]
               for page in value:
                   if isinstance(page,dict) and 'workflow_runs' in page: out.extend(page['workflow_runs'])
                   else: out.extend(page if isinstance(page,list) else [page])
