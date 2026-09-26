@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+name: QIKVRT mirror node lifecycle
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: qikvrt-mirror-node-lifecycle
+  cancel-in-progress: false
+
+jobs:
+  renew:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      QIKVRT_RUN_ID: ${{ format('{0}-{1}', github.run_id, github.run_attempt) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Materialize fresh mirror lifecycle evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          sh tools/qikvrt_mirror_node_lifecycle.sh
+      - name: Persist lifecycle successor on mirror main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qikvrt/runtime/onboarding/NODE_HEALTH.json \
+                  qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json \
+                  evidence/node_health \
+                  evidence/node_registration_renewal
+          git diff --cached --quiet && { echo "BLOCK no lifecycle delta"; exit 3; }
+          git commit -m "chore(mesh): renew mirror node lifecycle"
+          git push origin HEAD:main
+          successor="$(git rev-parse HEAD)"
+          tree="$(git rev-parse HEAD^{tree})"
+          echo "QIKVRT_MIRROR_LIFECYCLE_PERSISTED head=$successor tree=$tree"
