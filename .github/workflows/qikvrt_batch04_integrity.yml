@@ -2,6 +2,10 @@
 name: QIKVRT repository evidence materialization
 
 on:
+  workflow_run:
+    workflows:
+      - "QIKVRT CI"
+    types: [completed]
   push:
     branches:
       - main
@@ -26,23 +30,32 @@ concurrency:
 
 jobs:
   materialize:
+    # A completed CI run is an independent repository-native admission carrier
+    # for the same exact PR head when GitHub leaves the materializer check
+    # pending with zero jobs. Ignore the materializer's own workflow_run events
+    # by listening only to QIKVRT CI above.
+    if: >-
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.event == 'pull_request' &&
+       github.event.workflow_run.head_repository.full_name == github.repository) ||
+      (github.event_name != 'workflow_run' &&
+       (github.event_name != 'pull_request' ||
+        (github.event.pull_request.head.repo.full_name == github.repository &&
+         github.actor != 'dependabot[bot]')))
+
     # Bot-authored synchronize events are legitimate successors when this
     # materializer or another bounded repository writer advances the same PR.
     # The exact-ref compare-and-swap guard below prevents stale writers from
     # overwriting a newer successor, so admission must not be suppressed merely
     # because the event actor is github-actions[bot].
-    if: >-
-      github.event_name != 'pull_request' ||
-      (github.event.pull_request.head.repo.full_name == github.repository &&
-       github.actor != 'dependabot[bot]')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
-      TARGET_REF: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+      TARGET_REF: ${{ github.event_name == 'pull_request' && github.head_ref || github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref_name }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ env.TARGET_REF }}
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || env.TARGET_REF }}
           fetch-depth: 0
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
