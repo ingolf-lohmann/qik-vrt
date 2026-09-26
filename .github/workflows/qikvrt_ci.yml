@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: read
 
 jobs:
@@ -77,6 +78,24 @@ jobs:
             .qikvrt/**
           if-no-files-found: warn
           include-hidden-files: true
+      - name: Admit exact-head repository evidence materializer
+        if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_REF: ${{ github.head_ref }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          live_head="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$TARGET_REF" --jq '.object.sha')"
+          test "$live_head" = "$EXPECTED_HEAD"
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/actions/workflows/qikvrt_batch04_integrity.yml/dispatches" \
+            -f ref="$TARGET_REF" \
+            -f "inputs[target_ref]=$TARGET_REF" \
+            -f "inputs[expected_head]=$EXPECTED_HEAD"
+          echo "QIKVRT_MATERIALIZER_DISPATCHED head=$EXPECTED_HEAD ref=$TARGET_REF"
+
       - name: Enforce full repository test result
         if: steps.full_test.outcome == 'failure'
         shell: bash
