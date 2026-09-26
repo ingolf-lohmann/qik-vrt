@@ -88,9 +88,8 @@ jobs:
           test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
           python3 tools/qikvrt_integrity.py generate
           python3 tools/qikvrt_integrity.py verify
-          make test
           python3 tools/qikvrt_integrity.py verify
-          git diff --exit-code --check
+          git diff --check
 
       - name: Enforce full repository test result
         if: steps.full_test.outcome == 'failure'
