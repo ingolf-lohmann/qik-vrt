@@ -12,8 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: write
-  contents: read
+  contents: write
 
 jobs:
   test:
@@ -78,17 +77,53 @@ jobs:
             .qikvrt/**
           if-no-files-found: warn
           include-hidden-files: true
-      - name: Materialize repository integrity for this exact subject
+      - name: Materialize, persist and read back exact-subject integrity successor
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
+          TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+
+          source_head="$(git rev-parse --verify HEAD^{commit})"
+          source_tree="$(git rev-parse --verify HEAD^{tree})"
+          test "$source_head" = "$EXPECTED_HEAD"
+
+          remote_before="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+          test "$remote_before" = "$source_head"
+
           python3 tools/qikvrt_integrity.py generate
           python3 tools/qikvrt_integrity.py verify
-          python3 tools/qikvrt_integrity.py verify
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+
+          if git diff --cached --quiet; then
+            echo "QIKVRT_INTEGRITY_ALREADY_CURRENT head=$source_head tree=$source_tree"
+            exit 0
+          fi
+
+          git commit -m "ci: materialize exact-subject repository integrity"
+          successor_head="$(git rev-parse --verify HEAD^{commit})"
+          successor_tree="$(git rev-parse --verify HEAD^{tree})"
+
+          remote_pre_push="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+          test "$remote_pre_push" = "$source_head"
+
+          git push origin "HEAD:$TARGET_REF"
+
+          remote_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+          test "$remote_after" = "$successor_head"
+
+          git fetch --no-tags origin "$TARGET_REF"
+          readback_head="$(git rev-parse --verify FETCH_HEAD^{commit})"
+          readback_tree="$(git rev-parse --verify FETCH_HEAD^{tree})"
+          test "$readback_head" = "$successor_head"
+          test "$readback_tree" = "$successor_tree"
+
+          echo "QIKVRT_INTEGRITY_EFFECT_ACK source_head=$source_head source_tree=$source_tree successor_head=$successor_head successor_tree=$successor_tree readback_head=$readback_head readback_tree=$readback_tree"
 
       - name: Enforce full repository test result
         if: steps.full_test.outcome == 'failure'
