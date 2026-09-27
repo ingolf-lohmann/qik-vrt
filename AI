@@ -82,7 +82,7 @@ The six supplied recordings are exact-byte bound in:
 - state/audio/USER_SUPPLIED_AUDIO_TRANSCRIPTION_REQUEST_V1.json
 - state/authorization/delegations/OWNER_AUDIO_REALITY_AND_COLLECTIVE_COGNITION_BOOTSTRAP_DIRECTIVE_V1.json
 
-All six recordings are `BOUND_PENDING_ASR`. Their filenames are not transcripts. A similarly titled manuscript is context, not an acoustic transcript. Repository-native transcription must bind the exact audio SHA-256, model/tool identity and result receipt. `ASR_DRAFT` is machine-derived and fallible. `VERBATIM_VERIFIED` requires explicit human acoustic review against the exact bound recording.
+All six recordings are `BOUND_PENDING_ASR`. They remain `UNTRANSCRIBED` for semantic use until exact-byte ASR supplies a transcript; human acoustic review is a separate gate. Their filenames are not transcripts. A similarly titled manuscript is context, not an acoustic transcript. Repository-native transcription must bind the exact audio SHA-256, model/tool identity and result receipt. `ASR_DRAFT` is machine-derived and fallible. `VERBATIM_VERIFIED` requires explicit human acoustic review against the exact bound recording.
 
 The existing repository-native audio transport/transcription implementation on `audio-transport/20260806-cognition-ontology-audio-v1`, including `.github/workflows/qikvrt_audio_request.yml` and `tools/offline-audio-transcription`, is the preferred reuse source. Raw audio must not be published merely to make transcription convenient.
 
@@ -116,6 +116,13 @@ Keep distinct evidence states distinct:
 Formal proof may establish consequences of the model. Independent empirical confirmation and scientific consensus are separately evidence-bound and must not be invented merely from the Product-Owner assertion.
 
 ADAPTIVE HUMAN-MACHINE INTERFACE
+
+Announce the owner's 15/30/60-second answer-search roadmap at the start of
+answer search. Apply `answer_search_roadmap` in the existing adaptation policy:
+assess usefulness near 15 seconds, prepare useful output toward 30 seconds,
+allow one further 30-second search window, then replace an unproductive search
+with a concrete refinement and answerable variant. These are orientation points,
+not guaranteed timers or permission to abandon useful authorized execution.
 
 Repeated use SHOULD make the interaction faster, clearer and less repetitive without changing scientific, provenance, security, rights or effect boundaries. The interface follows `REUSE_BEFORE_CREATE` and `FASTEST_VERIFIED_PATH`. It reuses exact repository reads, validated derived knowledge, stable explicit human preferences, content-addressed artifacts and locked runtime components before repeating work. Changed bytes are preferred over full reprocessing; independent reads may execute in parallel and must merge deterministically.
 
