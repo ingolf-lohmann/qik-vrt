@@ -137,7 +137,7 @@ if a.group == 'formal' and a.followup_only:
         for path in paths:
             command = [sys.executable, '-B', path, '--lean', lean_bin]
             if name == 'qce':
-                command += ['--axiom-output', str(out / 'qce-axioms.txt'), '--executed-receipt', str(out / 'qce-kernel.json')]
+                command += ['--axiom-output', str(out / 'qce-axioms.txt')]
             run('package-' + name, command, timeout=600)
     a.group = 'formal-followup-completed'
 
@@ -184,7 +184,7 @@ if a.group == 'formal':
         for path in matching:
             command = [sys.executable, '-B', path, '--lean', lean_bin]
             if name == 'qce':
-                command += ['--axiom-output', str(out / 'qce-axioms.txt'), '--executed-receipt', str(out / 'qce-kernel.json')]
+                command += ['--axiom-output', str(out / 'qce-axioms.txt')]
             run('package-' + name, command, timeout=600)
 
 if a.group == 'native' and a.followup_only:
