@@ -1,0 +1,141 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+name: QIKVRT complete repository self-test
+'on':
+  push:
+    branches:
+    - audit/full-repository-selftest-20260928-v1
+permissions:
+  contents: read
+concurrency:
+  group: qikvrt-complete-selftest-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  mirror-python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      SUBJECT_REPOSITORY: ingolf-lohmann/qik-vrt
+      SUBJECT_HEAD: f44bc930523431d8349e8815582bac051d3f26d4
+      SUBJECT_TREE: e7f0ecd571a3717421ea63b035c1d7b6be7ac01e
+      QIKVRT_EXTERNAL_EFFECTS: disabled
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+    steps:
+    - name: Read bounded self-test carrier
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        ref: ${{ github.sha }}
+        persist-credentials: false
+    - name: Preserve carrier outside subject checkout
+      run: cp tools/qikvrt_full_repository_selftest.py "$RUNNER_TEMP/qikvrt_full_repository_selftest.py"
+    - name: Check out immutable test subject
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        repository: ingolf-lohmann/qik-vrt
+        ref: f44bc930523431d8349e8815582bac051d3f26d4
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Set up declared Python
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.12.13
+    - name: Set up declared Node
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: '24'
+    - name: Verify source and tool contracts
+      shell: bash
+      run: 'set -euo pipefail
+
+        test "$(git rev-parse HEAD)" = "$SUBJECT_HEAD"
+
+        test "$(git rev-parse HEAD^{tree})" = "$SUBJECT_TREE"
+
+        test -z "$(git status --porcelain)"
+
+        python3 -B tools/qikvrt_tool_cache.py verify
+
+        python3 -B tools/qikvrt_integrity.py verify'
+    - name: Execute every selected test and preserve failures
+      shell: bash
+      run: "python3 -B \"$RUNNER_TEMP/qikvrt_full_repository_selftest.py\" \\\n  --group python --repository \"$SUBJECT_REPOSITORY\"\
+        \ \\\n  --head \"$SUBJECT_HEAD\" --tree \"$SUBJECT_TREE\" \\\n  --output \"$RUNNER_TEMP/selftest-evidence\""
+    - name: Preserve complete exact-subject results
+      if: always()
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: mirror-python-selftest-${{ github.run_id }}-${{ github.run_attempt }}
+        path: ${{ runner.temp }}/selftest-evidence
+        include-hidden-files: true
+        if-no-files-found: error
+        retention-days: 30
+  mirror-formal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      SUBJECT_REPOSITORY: ingolf-lohmann/qik-vrt
+      SUBJECT_HEAD: f44bc930523431d8349e8815582bac051d3f26d4
+      SUBJECT_TREE: e7f0ecd571a3717421ea63b035c1d7b6be7ac01e
+      QIKVRT_EXTERNAL_EFFECTS: disabled
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONNOUSERSITE: '1'
+    steps:
+    - name: Read bounded self-test carrier
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        ref: ${{ github.sha }}
+        persist-credentials: false
+    - name: Preserve carrier outside subject checkout
+      run: cp tools/qikvrt_full_repository_selftest.py "$RUNNER_TEMP/qikvrt_full_repository_selftest.py"
+    - name: Check out immutable test subject
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      with:
+        repository: ingolf-lohmann/qik-vrt
+        ref: f44bc930523431d8349e8815582bac051d3f26d4
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Set up declared Python
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.12.13
+    - name: Set up declared Node
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: '24'
+    - name: Verify source and tool contracts
+      shell: bash
+      run: 'set -euo pipefail
+
+        test "$(git rev-parse HEAD)" = "$SUBJECT_HEAD"
+
+        test "$(git rev-parse HEAD^{tree})" = "$SUBJECT_TREE"
+
+        test -z "$(git status --porcelain)"
+
+        python3 -B tools/qikvrt_tool_cache.py verify
+
+        python3 -B tools/qikvrt_integrity.py verify'
+    - name: Provision existing document inspection dependencies
+      shell: bash
+      run: 'sudo apt-get update -qq
+
+        sudo apt-get install -y --no-install-recommends poppler-utils'
+    - name: Provision existing Lean runtime and initial build
+      uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+      continue-on-error: true
+      with:
+        lake-package-directory: formalization/QIKVRT_Formalization_v2.0
+        test: false
+    - name: Execute every selected test and preserve failures
+      shell: bash
+      run: "python3 -B \"$RUNNER_TEMP/qikvrt_full_repository_selftest.py\" \\\n  --group formal --followup-only --repository\
+        \ \"$SUBJECT_REPOSITORY\" \\\n  --head \"$SUBJECT_HEAD\" --tree \"$SUBJECT_TREE\" \\\n  --output \"$RUNNER_TEMP/selftest-evidence\""
+    - name: Preserve complete exact-subject results
+      if: always()
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: mirror-formal-selftest-${{ github.run_id }}-${{ github.run_attempt }}
+        path: ${{ runner.temp }}/selftest-evidence
+        include-hidden-files: true
+        if-no-files-found: error
+        retention-days: 30

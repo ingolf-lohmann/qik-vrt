@@ -1,0 +1,46 @@
+{
+  "artificial_cognitive_actor": "OpenAI Codex",
+  "boundaries": {
+    "automatic_source_repair": false,
+    "deployment": false,
+    "external_write": false,
+    "main_mutation": false,
+    "merge": false,
+    "physical_hardware_evidence": false,
+    "predecessor_evidence_transfer": false,
+    "raw_audio_upload": false,
+    "release": false,
+    "zenodo": false
+  },
+  "execution_correction": "Use each repository own native executor; provision locked IETF and Poppler dependencies, invoke CLI test modules through their main entrypoints and provide exact historical Git fixtures. Repository subjects remain unchanged. Prior test failures remain preserved.",
+  "followup_of": "https://github.com/Goldkelch/qik-vrt/actions/runs/36393211437",
+  "generated_implementation_author": "OpenAI Codex",
+  "human_actor": "Ingolf Lohmann",
+  "human_generated_content_approval_claimed": false,
+  "human_request": "Führe einen vollständigen Selbsttest des gesamten Repositories durch, nicht von irgendeinem einzelnen Bestandteil.",
+  "id": "FULL_REPOSITORY_SELFTEST_20260928_V1",
+  "return_condition": "Read every execution outcome, verify exact subject bindings and report failures and unavailable profiles; a green selected CI is insufficient.",
+  "reuse_evidence": {
+    "adaptation": "Read-only push carrier runs existing repository tests on immutable source commits and records complete outcomes including failures.",
+    "canonical_make_test": "Fresh native reruns 36346727864 and 36385045505",
+    "canonical_temdd": "Fresh native rerun 36346728035",
+    "insufficiency": "Makefile selects root modules explicitly and omits full master execution, nested formal/audio suites and separate Smalltalk/roundtrip/system acceptance targets. Existing workflow executor admits only its narrow watchdog. No callable workflow_dispatch operation exists in this client.",
+    "master_gate": "Existing tools/qikvrt_master_acceptance_gate.py reused without modification; root test inventory 153 Authority / 86 Mirror"
+  },
+  "schema": "qikvrt_bounded_repository_selftest_work_unit_v1",
+  "subjects": [
+    {
+      "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "repository": "Goldkelch/qik-vrt",
+      "role": "authority",
+      "tree": "956c16b291c05243437b1f018321936e4438949a"
+    },
+    {
+      "head": "f44bc930523431d8349e8815582bac051d3f26d4",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "mirror",
+      "tree": "e7f0ecd571a3717421ea63b035c1d7b6be7ac01e"
+    }
+  ],
+  "task_scope": "Fresh complete repository self-test of Authority and Mirror main snapshots"
+}
