@@ -1,0 +1,248 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artifacts": [
+    {
+      "git_blob_sha1": "335caaf0746498bbb597d207c3e8bb42f148362d",
+      "kind": "CLAIM_MATRIX",
+      "path": "release/qikvrt-closure-archive-20260915-v1/CLAIM_MATRIX.json",
+      "sha256": "1c877c8dc6ac0a9d27446f0462b4793dd5eaef141cef4e75a18aa830b47021a2"
+    },
+    {
+      "git_blob_sha1": "d5c389fd42da87ef7157b8a19decb5fcdbdbb08c",
+      "kind": "EVIDENCE",
+      "path": "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "83c56e51c539ad75448657868156b39198fbe36a2896f8753953ac586dd85d69"
+    },
+    {
+      "git_blob_sha1": "49466fdf5510b79909b1b5c6c08d9d4f52673ffc",
+      "kind": "RETURN_RECEIPT",
+      "path": "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4"
+    },
+    {
+      "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+      "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+    },
+    {
+      "git_blob_sha1": "e59ee5ebb4ecb1573410850da3a2de35a5cc7fc5",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-09-15-closure-archive/ARCHIVE_NOTE.md",
+      "sha256": "9c3330b8e5a42ee0daa527259c4f62acb6cffb977b8678a1babc5c32b823acfe"
+    },
+    {
+      "git_blob_sha1": "b0105f50afee791f9dab7d59fbcc9ed0ada8c4d1",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "sha256": "14a248d87844e1dee50865f4e27cdcfb9a27808f0393eba3f62f0088c7c95e18"
+    }
+  ],
+  "candidate": {
+    "files": [
+      {
+        "bytes": 160673,
+        "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+        "name": "QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+        "role": "PRIMARY",
+        "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+      },
+      {
+        "bytes": 27862,
+        "git_blob_sha1": "f13fdfc614f8e28a74c1c1bc8e74def2729a1dc6",
+        "name": "VORLESEFASSUNG.txt",
+        "path": "docs/publications/2026-09-15-closure-archive/VORLESEFASSUNG.txt",
+        "role": "SUPPLEMENT",
+        "sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e"
+      }
+    ],
+    "primary_document_path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf"
+  },
+  "claims": [
+    {
+      "claim_id": "A01",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Historische unbegutachtete Arbeitsfassung; Archivdatum ist kein rückdatierter Publikationszeitpunkt.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A01"
+      ],
+      "statement": "Das Primär-PDF ist die unveränderte 160673-Byte-Fassung vom 15. September 2026 mit SHA-256 d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A02",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Belegt Dateiprovenienz, nicht erste Nutzersichtbarkeit, Vorhersage oder Retrokausalität.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A02"
+      ],
+      "statement": "Zwei Katalogeinträge derselben Primär-PDF-Bytes sind auf den 15. und 27. September datiert.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A03",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Quellengebundene Wiedergabe der handschriftlichen Argumentation und Definitionen; kein neu kernelgeprüfter Satz.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A03"
+      ],
+      "statement": "Der historische Text definiert zulässige endliche Spuren und eine Erreichbarkeitsschließung und argumentiert bedingt für Extensivität, Monotonie und Idempotenz.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A04",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Existenz dieses neuen Punktes ist Voraussetzung, keine Folge von Abgeschlossenheit; kein weltumfassender Abschluss.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A04"
+      ],
+      "statement": "Der historische Text trennt Abgeschlossenheit von Maximalität und echte Erweiterung durch einen neuen zulässigen Ausgangspunkt außerhalb der bisherigen Schließung.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A05",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Keine unendliche reale Laufzeit oder unbegrenzte Ressourcen; bedingte Modellargumentation.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A05"
+      ],
+      "statement": "Der Text argumentiert endliche Fortsetzbarkeit unter Nachfolgerexistenz und nennt einen zulässigen Zustand ohne Übergang als Gegenmodell.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A06",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Anwendungsbezogene Kausalität, Referenz und Messfehler bleiben gesondert zu prüfen.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A06"
+      ],
+      "statement": "Der Text bindet Receipts an Artefakt, Revision und Policy und trennt Transportbestätigung von Wirkungsbestätigung.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A07",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Dateiinventar; die im Artikel genannten 14 neuen Theoreme und 17 Auditkonstanten sind vorbereiteter Umfang, keine 17 erfolgreichen Prüfungen.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A07"
+      ],
+      "statement": "Das originale ZIP enthält EvidenceClosure.lean, Audit.lean, zwei wiederverwendete Module, drei Negativdateien und den Lean-4.19.0-Prüfharness.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A08",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Das Paket dokumentiert damalige Laufzeitfehler vor Quellprüfung; kein neuer Lean-Lauf in diesem Archivauftrag.",
+      "source_refs": [],
+      "statement": "Der neue Lean-Kernelnachweis einschließlich Axiom-Audit und semantischer Negativkontrollen ist für diesen historischen Artikel weiterhin offen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "A09",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Fehlende Implementierungs-, Synthese-, Boot- und Wirkungsnachweise bleiben ausdrücklich offen.",
+      "source_refs": [],
+      "statement": "Hardware-/SoC-Realisierung, physische Korrespondenz und tatsächliche externe Wirkung folgen nicht aus dem historischen Modell.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "A10",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Keine Behauptung binärer oder visueller Identität der beiden PDF-Varianten; beide Hashes bleiben getrennt.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A10"
+      ],
+      "statement": "Das unveränderte ZIP enthält eine andere PDF-Bytefassung (135698 Byte); ihr extrahierter Seitentext stimmt mit dem separat gelieferten Primär-PDF überein.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "A11",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Redaktionelle Fassung, keine neue formale oder technische Zertifizierung.",
+      "source_refs": [],
+      "statement": "Die Vorlesefassung ist eine sachliche sprachliche Bearbeitung des historischen Artikels und bewahrt seine Vorbehalte.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "A12",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Herkunfts- und Lizenzhinweis, kein Nachweis weltweiter Priorität oder Patentanspruchs.",
+      "source_refs": [
+        "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json#A12"
+      ],
+      "statement": "Die Provenienz weist Ingolf Lohmann die Konzeption und Ausgangsfrage und OpenAI Codex die neue Ausarbeitung zu; wiederverwendete Lean-Dateien behalten Apache-2.0-Hinweise.",
+      "status": "BOUND"
+    }
+  ],
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "policy": {
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "version": "2.0.0"
+  },
+  "prepublication_return": {
+    "candidate_returned_to_owner": true,
+    "change_notice_path": null,
+    "content_changed": false,
+    "receipt_path": "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "publication_id": "qikvrt-closure-archive-20260915-v1",
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2"
+}

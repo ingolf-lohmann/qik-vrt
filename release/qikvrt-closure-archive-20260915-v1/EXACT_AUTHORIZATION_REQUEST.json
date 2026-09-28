@@ -1,0 +1,37 @@
+{
+  "audited_software_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+  "authorization_id": "closure-archive-20260928-auth-01",
+  "candidate_return_receipt": {
+    "bytes": 1527,
+    "git_blob_sha1": "49466fdf5510b79909b1b5c6c08d9d4f52673ffc",
+    "path": "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+    "sha256": "8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4"
+  },
+  "canonical_metadata_sha256": "af74fa824f55322359c765eb3dbca58ea705df03831a95e672dfecd1a04136e1",
+  "canonical_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=closure-archive-20260928-auth-01 publication_id=qikvrt-closure-archive-20260915-v1 return_sha256=8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4 metadata_sha256=af74fa824f55322359c765eb3dbca58ea705df03831a95e672dfecd1a04136e1 machine_proof_sha256=485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec",
+  "effect_ack_done": false,
+  "machine_proof": {
+    "bytes": 10939,
+    "git_blob_sha1": "4a1c37f1f51f16f3707302807c224bbc90a42297",
+    "path": "release/qikvrt-closure-archive-20260915-v1/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec"
+  },
+  "owner_authorization_observed": false,
+  "production_effect_released": false,
+  "publication_id": "qikvrt-closure-archive-20260915-v1",
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt-publication-authorization-request-v1",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "state": "AWAITING_EXPLICIT_OWNER_AUTHORIZATION",
+  "uploads": [
+    "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+    "docs/publications/2026-09-15-closure-archive/VORLESEFASSUNG.txt",
+    "release/qikvrt-closure-archive-20260915-v1/CLAIM_MATRIX.json",
+    "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json",
+    "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+    "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+    "docs/publications/2026-09-15-closure-archive/ARCHIVE_NOTE.md",
+    "docs/publications/2026-09-15-closure-archive/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+    "release/qikvrt-closure-archive-20260915-v1/MACHINE_PROOF_BUNDLE.json"
+  ]
+}

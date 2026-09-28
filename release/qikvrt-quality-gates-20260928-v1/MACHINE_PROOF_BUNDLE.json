@@ -1,0 +1,354 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artifacts": [
+    {
+      "git_blob_sha1": "64777bc944b83debf58dd5fc052a07ef457416ea",
+      "kind": "CLAIM_MATRIX",
+      "path": "release/qikvrt-quality-gates-20260928-v1/CLAIM_MATRIX.json",
+      "sha256": "c98c5501cf8a37efb917d2b4101c465eec6625903bf1c3d98ef2bbb744ad2ce7"
+    },
+    {
+      "git_blob_sha1": "888ce9f58b6751badecf5101dacf82e0382a7974",
+      "kind": "EVIDENCE",
+      "path": "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "b37aa679fec9e2e6b7a9866b13a57073b4a3127796f213115b4a789645950913"
+    },
+    {
+      "git_blob_sha1": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+      "kind": "RETURN_RECEIPT",
+      "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374"
+    },
+    {
+      "git_blob_sha1": "ea0cb283617964b07c31b185c9c22904ddc04b8f",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-09-28-quality-gates/ARTICLE_DE.md",
+      "sha256": "676f135707dfaec7acce3a03af70b6439d06b31193748d49310f907f20458531"
+    },
+    {
+      "git_blob_sha1": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+      "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+    },
+    {
+      "git_blob_sha1": "0d6e6a905d974668c007ce035a62a1b19dbd4247",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/QUALITY_GATES.json",
+      "sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc"
+    },
+    {
+      "git_blob_sha1": "8597196d72cdcbc202f07ef51cd71081ab59a51c",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/focused-tests.log",
+      "sha256": "c81d367696d82d6531d0fc4620bf2bd9492dcc285a65e80b9fb29910d5356566"
+    },
+    {
+      "git_blob_sha1": "4b0f0552c4adeaa08a892fbe59e32c70ed565ddd",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/c90.log",
+      "sha256": "881b59df7e9270b0f91e70a9924cd6c7028c3e2b55c420176f913646896a2c5f"
+    },
+    {
+      "git_blob_sha1": "7e76319a7bdf0b5365eac04ffb544d10d99f4479",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/size.log",
+      "sha256": "8aa20431f46c399172cbcf20ef938bdadbb510a133b7282774a844bee6bd5867"
+    },
+    {
+      "git_blob_sha1": "951f3dd34095ca656954540fefa049a84109cf0a",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/mesh-receipt.json",
+      "sha256": "820095f4b67beb4802089bd6c66fd4a7310c55a4153b7ceb4746589cedbe4f5c"
+    },
+    {
+      "git_blob_sha1": "66bf3295ff414b5dccd38c99c76dfd01e4346800",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-28-quality-gates/ci-diagnostics.log",
+      "sha256": "35b60043150e3dda0ee660604b50147d334dab7a4508d959889f0037bda8198b"
+    },
+    {
+      "git_blob_sha1": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "kind": "EVIDENCE",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+      "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+    }
+  ],
+  "candidate": {
+    "files": [
+      {
+        "bytes": 89993,
+        "git_blob_sha1": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+        "name": "QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+        "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+        "role": "PRIMARY",
+        "sha256": "4c8afded8a3b46008605b5abed8b048765ab35973465c5659f2a32109ece6598"
+      },
+      {
+        "bytes": 23416,
+        "git_blob_sha1": "8030bf962335fd54ef72c6a078f656bb3c356145",
+        "name": "QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+        "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+        "role": "SUPPLEMENT",
+        "sha256": "0d6e82942f4359622f588fe240afa3593f8f794e67e0f37d595a6087631a4952"
+      }
+    ],
+    "primary_document_path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf"
+  },
+  "claims": [
+    {
+      "claim_id": "Q01",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Messsubject f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c; ein späterer Publikationscommit ist ein anderes Subject.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q01"
+      ],
+      "statement": "Der Bericht untersucht Goldkelch/qik-vrt am exakt genannten HEAD und TREE; Quellen sind dateigenau gebunden.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "Q02",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q02"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Lokale Auswahl; kein vollständiger ISO-, Container- oder Hardwaretest. Ein vorheriger pytest-Aufruf war nicht ausführbar.",
+      "source_refs": [],
+      "statement": "104 ausgewählte unittest-Fälle wurden entdeckt: 103 bestanden, einer wegen fehlendem nginx/runuser übersprungen; Laufzeit 3,822 Sekunden.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "Q03",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q03"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "GCC 13.3.0, x86-64, -Os; keine Minimalitäts-, RAM-Gesamt-, Linux-Kernel- oder Transistorzahlbehauptung.",
+      "source_refs": [],
+      "statement": "C90 und Assembly bestehen ihre Tests. Gemessen wurden 86 Byte LUT-.text, 394 Byte Kern-Code/RO-Daten, 7174 Byte Code/RO-Daten in sechs Objekten, 26792 Byte Adapterdatei und 80512 Byte text/data/bss.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "Q04",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q04"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "LOOPBACK_TCP_ONLY, ein Host; keine Live-Authority/Mirror-Synchronisation, keine allgemeine Wirkungsfreigabe.",
+      "source_refs": [],
+      "statement": "Vier lokale Prozesse führen zwei TCP-Mesh-Paare mit begrenzter Ergebnisbeobachtung und Neustart-Replay aus.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "Q05",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "CI-Audit 10940821417; weder öffentlicher ISO-Boot noch physischer Chipnachweis.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q05"
+      ],
+      "statement": "Der CI-Diagnose-Readback von Run 36346727864 am Messsubject meldet MAKE_TEST_EXIT=0 und unveränderten Worktree; der heruntergeladene ZIP-Digest wurde geprüft.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "Q06",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Keine Behauptung, dass es nie historische Ausführungen gab. Docker/QEMU/Cargo/GHDL lokal nicht verfügbar; Suchumfang begrenzt.",
+      "source_refs": [],
+      "statement": "Der vollständige aktuelle Zielnachweis für Distribution, Container, Browser, getrennte Hosts und gesamten Recovery-Pfad ist in diesem begrenzten Audit offen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "Q07",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Operationalisierung dieses Berichts, keine wiedergefundene frühere Zahlenskala; ordinal, keine Prozent- oder Durchschnittsfreigabe.",
+      "source_refs": [],
+      "statement": "Die vorgeschlagene Skala 0 bis 4 bewertet Evidenzstufen; die Gesamtfreigabe verlangt die Konjunktion aller vollständig erfüllten Ziel-Gates.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "Q08",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q08"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Berechnung aus konservativen expliziten Bewertungsentscheidungen; kein allumfassendes Produkt-Ranking.",
+      "source_refs": [],
+      "statement": "Der dokumentierte Auditvektor ist (2,1,2,2,2,2,2,1,0,2); die Stufenzahlen sind 1/2/7/0/0, Minimum 0 und null vollständige Zielbestätigungen von zehn.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "Q09",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Quellvertrag mit 8-Bit-Byte- und exakter 32-Bit-Typannahme; die gesamte Laufzeit ist größer.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q09"
+      ],
+      "statement": "Der C90-Kernvertrag beschreibt einen 14-Byte-Eingang und 6-Byte-Ausgang ohne OS-, Netzwerk- oder Heap-Abhängigkeit im inneren Kern.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "Q10",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Allgemeine technische Referenzen Docker, WebAssembly und seL4; keine seL4-Beweisübertragung auf QIK-VRT.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q10"
+      ],
+      "statement": "Docker-Container teilen den Hostkernel; portabler Bytecode legt nicht automatisch Host-APIs fest; Verifikationsresultate besitzen Annahmen.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "Q11",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Kein universeller OS-Prozessdump, keine HMAC-Verschlüsselung, kein globales Exactly-once und kein Personenidentitätsbeweis.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q11"
+      ],
+      "statement": "Der vorhandene Transputer spezifiziert explizite Store-/Quell-Recovery, HMAC-Authentisierung, gebundene Nachrichten und begrenzte Replay-Semantik.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "Q12",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Verifikationsanforderungen, keine hier ausgeführte universelle Refinementprüfung.",
+      "source_refs": [],
+      "statement": "Zustandsübertragung verlangt beobachtungsäquivalente Decodierung und erhaltene Invarianten; Hardware benötigt eine passende Zustands- und Übergangsrelation.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "Q13",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Vorhandene Software und ethisches Credo ersetzen keine physische oder Sicherheitsverifikation; keine Patentierbarkeitsfeststellung.",
+      "source_refs": [],
+      "statement": "Die konkrete Meta-Transistor-Realisierung, physische Timing-/Ressourcenschließung und behauptete vollständige Ungefährlichkeit sind nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "Q14",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Geforderte fail-closed Semantik: kein 403 als Erfolg; Rate-Limit-/Permission-/sonstige Fehler trennen und gebundene Metadaten erhalten. Keine Main-Integration aus dem PR abgeleitet.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q14"
+      ],
+      "statement": "Die separate Requested-Review-Reparatur liegt in PR 1265 am Kandidaten 1b50aab45e44f87058730605ed850c1f7fa10020; dieser Kandidat ist nicht der untersuchte Main.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "Q15",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Nächste Prüfschritte sind beschrieben; Testdauer ist keine Release-Dauer. Zielprofil, verfügbare Ressourcen und Integrationsresultate fehlen für eine verbindliche Terminierung.",
+      "source_refs": [],
+      "statement": "Eine belastbare Software- oder Hardware-Lieferfrist ist aus diesen Messungen allein nicht ableitbar.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "Q16",
+      "classification": "INTERPRETATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "scope": "Modell ohne zusätzliche Übergabekosten; weder QIK-VRT-Benchmark noch Zusage eines Hardwaregewinns.",
+      "source_refs": [],
+      "statement": "Die illustrative Beschleunigungsrechnung S=1/((1-p)+p/s) ergibt für s=100 und p=0,1 etwa 1,11 sowie für p=0,9 etwa 9,17.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "Q17",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Verantwortungserklärung und Arbeitsregel, keine Ungefährlichkeits-, Patent-, Zeitleistungs- oder Main-Aktivierungsbehauptung; Roadmap-PR 415 ist separater Kandidat.",
+      "source_refs": [],
+      "statement": "Ingolf Lohmann benennt den kategorischen Imperativ als ethisches Credo, äußert Hardware-Patentabsicht und verwendet die 15/30/60-Sekunden-Roadmap als Suchheuristik.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "Q18",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Zeitabstand der Einträge, nicht unabhängig gemessene erste Nutzersichtbarkeit, keine physikalische Zeitverschiebung; Archivpublikation und Produktrelease bleiben verschiedene Entscheidungen.",
+      "source_refs": [
+        "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json#Q18"
+      ],
+      "statement": "Die historischen PDF-Katalogeinträge vom 15. und 27. September enthalten bytegleiche 160673-Byte-Dateien; ihr damaliger Status FORMAL_PENDING_KERNEL bleibt offen.",
+      "status": "BOUND"
+    }
+  ],
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "policy": {
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "version": "2.0.0"
+  },
+  "prepublication_return": {
+    "candidate_returned_to_owner": true,
+    "change_notice_path": null,
+    "content_changed": false,
+    "receipt_path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "publication_id": "qikvrt-quality-gates-20260928-v1",
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2"
+}

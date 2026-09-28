@@ -1,0 +1,43 @@
+{
+  "audited_software_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+  "authorization_id": "quality-gates-20260928-auth-01",
+  "candidate_return_receipt": {
+    "bytes": 1553,
+    "git_blob_sha1": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+    "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+    "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374"
+  },
+  "canonical_metadata_sha256": "457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31",
+  "canonical_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=quality-gates-20260928-auth-01 publication_id=qikvrt-quality-gates-20260928-v1 return_sha256=3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374 metadata_sha256=457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31 machine_proof_sha256=7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069",
+  "effect_ack_done": false,
+  "machine_proof": {
+    "bytes": 16356,
+    "git_blob_sha1": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+    "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069"
+  },
+  "owner_authorization_observed": false,
+  "production_effect_released": false,
+  "publication_id": "qikvrt-quality-gates-20260928-v1",
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt-publication-authorization-request-v1",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "state": "AWAITING_EXPLICIT_OWNER_AUTHORIZATION",
+  "uploads": [
+    "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+    "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+    "release/qikvrt-quality-gates-20260928-v1/CLAIM_MATRIX.json",
+    "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json",
+    "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+    "docs/publications/2026-09-28-quality-gates/ARTICLE_DE.md",
+    "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+    "docs/publications/2026-09-28-quality-gates/QUALITY_GATES.json",
+    "docs/publications/2026-09-28-quality-gates/focused-tests.log",
+    "docs/publications/2026-09-28-quality-gates/c90.log",
+    "docs/publications/2026-09-28-quality-gates/size.log",
+    "docs/publications/2026-09-28-quality-gates/mesh-receipt.json",
+    "docs/publications/2026-09-28-quality-gates/ci-diagnostics.log",
+    "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+    "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json"
+  ]
+}

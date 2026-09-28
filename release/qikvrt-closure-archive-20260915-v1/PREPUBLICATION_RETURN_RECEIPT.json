@@ -1,0 +1,38 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "candidate_files": [
+    {
+      "bytes": 160673,
+      "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+      "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+      "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+    },
+    {
+      "bytes": 27862,
+      "git_blob_sha1": "f13fdfc614f8e28a74c1c1bc8e74def2729a1dc6",
+      "path": "docs/publications/2026-09-15-closure-archive/VORLESEFASSUNG.txt",
+      "sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e"
+    }
+  ],
+  "change_notice_path": null,
+  "change_reasons": [],
+  "changed_claim_ids": [],
+  "content_changed": false,
+  "original_files": [],
+  "publication_id": "qikvrt-closure-archive-20260915-v1",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "ChatGPT Work conversation: linked exact PDFs and read-aloud texts before packaging; publication candidates are unchanged first return / unchanged historical archive.",
+    "returned_at": "2026-09-28T00:12:03Z",
+    "visible_change_notice_returned": false
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2"
+}
