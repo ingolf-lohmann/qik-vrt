@@ -393,6 +393,24 @@
       "file_count": 9,
       "state": "published_receipt",
       "boundary": "Historisches Archiv des Artikels vom 15. September 2026 einschließlich originalem Lean/Lake-Paket; öffentliche Bytes geprüft. Kein neuer Lean-Kernel- oder Hardwarebeweis und kein abgeschlossener Gesamtprodukt-Release."
+    },
+    {
+      "id": "qikvrt-quality-gates-20260928-v1",
+      "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+      "version": "0.1-20260928",
+      "record_id": 23008704,
+      "doi": "10.5281/zenodo.23008704",
+      "doi_url": "https://doi.org/10.5281/zenodo.23008704",
+      "concept_doi": "10.5281/zenodo.23008703",
+      "receipt_path": "release/qikvrt-quality-gates-20260928-v1/zenodo-publication.json",
+      "receipt_url": "https://github.com/Goldkelch/qik-vrt/blob/e948d1cf464dd84aeb78f1c6b179480ad6aeae20/release/qikvrt-quality-gates-20260928-v1/zenodo-publication.json",
+      "receipt_sha256": "3c1c6ba22bf7979dd1ecab926c5eaefbfc3dfbe1f3255ee8c53a7e8552b49578",
+      "manifest_sha256": "07e5862b9df0b2fe854c9d92eb0dbee312cea0c392c54252958851f263789b6f",
+      "repository_commit": "072a2dc779ab6d31d92cdd5b3982d476c2589d05",
+      "receipt_commit": "e948d1cf464dd84aeb78f1c6b179480ad6aeae20",
+      "file_count": 15,
+      "state": "published_receipt",
+      "boundary": "Technischer Bericht über konservativ bewertete Quality Gates des exakt gebundenen Quellstands; offene Auslieferungs- und Hardwareprüfungen ausdrücklich dokumentiert. Kein Produktrelease und kein neuer Lean-Kernelnachweis."
     }
   ],
   "ietf_documents": [

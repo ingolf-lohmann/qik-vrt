@@ -1,0 +1,276 @@
+{
+  "binding": {
+    "authorization_id": "quality-gates-20260928-auth-01",
+    "consumption_key": {
+      "algorithm": "SHA-256",
+      "schema": "qikvrt_zenodo_authorization_consumption_key_v2",
+      "value": "5effe85f409e0e428064454a39ea9fb249ba70d20d34a4c36ff91275ba2cba83"
+    },
+    "execution_head": "072a2dc779ab6d31d92cdd5b3982d476c2589d05",
+    "manifest_sha256": "07e5862b9df0b2fe854c9d92eb0dbee312cea0c392c54252958851f263789b6f",
+    "publication_id": "qikvrt-quality-gates-20260928-v1",
+    "repository": "Goldkelch/qik-vrt",
+    "schema": "qikvrt_zenodo_authorization_consumption_key_v2",
+    "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+    "statement_sha256": "4133bd5c00893a3ab881156d8c85617efc9aa01ce70b7590335eb799587a9d2c"
+  },
+  "conceptdoi": "10.5281/zenodo.23008703",
+  "doi": "10.5281/zenodo.23008704",
+  "files": [
+    {
+      "git_blob_sha": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+      "md5": "b79b65965556f207a18f599ab0b509ac",
+      "name": "QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "sha256": "4c8afded8a3b46008605b5abed8b048765ab35973465c5659f2a32109ece6598",
+      "size": 89993
+    },
+    {
+      "git_blob_sha": "8030bf962335fd54ef72c6a078f656bb3c356145",
+      "md5": "4a270218ef7deb87f9315f55e2a27cf1",
+      "name": "QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+      "sha256": "0d6e82942f4359622f588fe240afa3593f8f794e67e0f37d595a6087631a4952",
+      "size": 23416
+    },
+    {
+      "git_blob_sha": "64777bc944b83debf58dd5fc052a07ef457416ea",
+      "md5": "9a55c5193b421abd69874a48e917bccb",
+      "name": "CLAIM_MATRIX.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/CLAIM_MATRIX.json",
+      "sha256": "c98c5501cf8a37efb917d2b4101c465eec6625903bf1c3d98ef2bbb744ad2ce7",
+      "size": 9093
+    },
+    {
+      "git_blob_sha": "888ce9f58b6751badecf5101dacf82e0382a7974",
+      "md5": "8e714fdab3b8837245fddc7289a15684",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "b37aa679fec9e2e6b7a9866b13a57073b4a3127796f213115b4a789645950913",
+      "size": 13950
+    },
+    {
+      "git_blob_sha": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+      "md5": "d686dfbb3931f739e691cd0d26ccf690",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374",
+      "size": 1553
+    },
+    {
+      "git_blob_sha": "ea0cb283617964b07c31b185c9c22904ddc04b8f",
+      "md5": "77646b659268967f35ab01d5be5bd5fa",
+      "name": "ARTICLE_DE.md",
+      "path": "docs/publications/2026-09-28-quality-gates/ARTICLE_DE.md",
+      "sha256": "676f135707dfaec7acce3a03af70b6439d06b31193748d49310f907f20458531",
+      "size": 22048
+    },
+    {
+      "git_blob_sha": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+      "md5": "afe7e744ef228c0fa4ded42c1b84f577",
+      "name": "MEASUREMENTS.json",
+      "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+      "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664",
+      "size": 10301
+    },
+    {
+      "git_blob_sha": "0d6e6a905d974668c007ce035a62a1b19dbd4247",
+      "md5": "68624e3384d33ce8278f26a6bb8e2df5",
+      "name": "QUALITY_GATES.json",
+      "path": "docs/publications/2026-09-28-quality-gates/QUALITY_GATES.json",
+      "sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc",
+      "size": 6261
+    },
+    {
+      "git_blob_sha": "8597196d72cdcbc202f07ef51cd71081ab59a51c",
+      "md5": "6a70a73f00e6035077866b8a25962d9c",
+      "name": "focused-tests.log",
+      "path": "docs/publications/2026-09-28-quality-gates/focused-tests.log",
+      "sha256": "c81d367696d82d6531d0fc4620bf2bd9492dcc285a65e80b9fb29910d5356566",
+      "size": 18586
+    },
+    {
+      "git_blob_sha": "4b0f0552c4adeaa08a892fbe59e32c70ed565ddd",
+      "md5": "daa3662cce7e90e81aec06766ccc598b",
+      "name": "c90.log",
+      "path": "docs/publications/2026-09-28-quality-gates/c90.log",
+      "sha256": "881b59df7e9270b0f91e70a9924cd6c7028c3e2b55c420176f913646896a2c5f",
+      "size": 3218
+    },
+    {
+      "git_blob_sha": "7e76319a7bdf0b5365eac04ffb544d10d99f4479",
+      "md5": "992d94b218c82d76df21898295f5d58a",
+      "name": "size.log",
+      "path": "docs/publications/2026-09-28-quality-gates/size.log",
+      "sha256": "8aa20431f46c399172cbcf20ef938bdadbb510a133b7282774a844bee6bd5867",
+      "size": 2871
+    },
+    {
+      "git_blob_sha": "951f3dd34095ca656954540fefa049a84109cf0a",
+      "md5": "1ca8185b39c9bacb23fdf8b33e3f0003",
+      "name": "mesh-receipt.json",
+      "path": "docs/publications/2026-09-28-quality-gates/mesh-receipt.json",
+      "sha256": "820095f4b67beb4802089bd6c66fd4a7310c55a4153b7ceb4746589cedbe4f5c",
+      "size": 14498
+    },
+    {
+      "git_blob_sha": "66bf3295ff414b5dccd38c99c76dfd01e4346800",
+      "md5": "9ee6dc3d39fdfeffe859c976b2909e6f",
+      "name": "ci-diagnostics.log",
+      "path": "docs/publications/2026-09-28-quality-gates/ci-diagnostics.log",
+      "sha256": "35b60043150e3dda0ee660604b50147d334dab7a4508d959889f0037bda8198b",
+      "size": 69841
+    },
+    {
+      "git_blob_sha": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "md5": "09e0b145557114c8f149763dc7d8218d",
+      "name": "PROVENANCE.json",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+      "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be",
+      "size": 1654
+    },
+    {
+      "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+      "md5": "ef5dde1c40ad932849921a42a67e7913",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069",
+      "size": 16356
+    }
+  ],
+  "governance_boundaries": [
+    "ADMIN_GOVERNANCE_NOT_ESTABLISHED",
+    "REPOSITORY_SECRET_TRUSTS_PRIVILEGED_WRITE_ACTORS",
+    "PRIVILEGED_TAG_DELETION_NOT_PREVENTED"
+  ],
+  "machine_proof": {
+    "bytes": 16356,
+    "candidate_return_receipt": {
+      "bytes": 1553,
+      "git_blob_sha": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+      "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374"
+    },
+    "claim_count": 18,
+    "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+    "machine_proof_complete": true,
+    "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "prepublication_returned_at": "2026-09-28T00:12:03Z",
+    "publication_id": "qikvrt-quality-gates-20260928-v1",
+    "returned_candidate_files": [
+      {
+        "bytes": 89993,
+        "git_blob_sha": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+        "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+        "sha256": "4c8afded8a3b46008605b5abed8b048765ab35973465c5659f2a32109ece6598"
+      },
+      {
+        "bytes": 23416,
+        "git_blob_sha": "8030bf962335fd54ef72c6a078f656bb3c356145",
+        "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+        "sha256": "0d6e82942f4359622f588fe240afa3593f8f794e67e0f37d595a6087631a4952"
+      }
+    ],
+    "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069",
+    "zenodo_upload_authorized": true
+  },
+  "manifest_path": "release/qikvrt-quality-gates-20260928-v1/publish-request.json",
+  "manifest_sha256": "07e5862b9df0b2fe854c9d92eb0dbee312cea0c392c54252958851f263789b6f",
+  "owner_authorization": {
+    "attestation_scope": "PLATFORM_REPOSITORY_BOUND",
+    "authorization_event": {
+      "authorized_at": "2026-09-28T06:59:15Z",
+      "candidate_return_receipt_sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374",
+      "channel": "ChatGPT Work: explicit user message, 2026-09-28T08:59:15+02:00",
+      "decision": "AUTHORIZE_EXACT_UPLOAD",
+      "exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=quality-gates-20260928-auth-01 publication_id=qikvrt-quality-gates-20260928-v1 return_sha256=3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374 metadata_sha256=457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31 machine_proof_sha256=7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069",
+      "principal": {
+        "name": "Ingolf Lohmann",
+        "type": "NATURAL_PERSON"
+      },
+      "statement_sha256": "4133bd5c00893a3ab881156d8c85617efc9aa01ce70b7590335eb799587a9d2c"
+    },
+    "authorization_id": "quality-gates-20260928-auth-01",
+    "authorized_effects": [
+      "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+      "CREATE_PRODUCTION_ZENODO_RECORD",
+      "UPLOAD_EXACT_AUTHORIZED_FILES",
+      "PUBLISH_PRODUCTION_ZENODO_RECORD",
+      "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+      "PERSIST_PUBLICATION_EVIDENCE"
+    ],
+    "bytes": 7313,
+    "candidate_return_receipt": {
+      "bytes": 1553,
+      "git_blob_sha": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+      "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374"
+    },
+    "canonical_metadata_sha256": "457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31",
+    "consumption_key": {
+      "algorithm": "SHA-256",
+      "schema": "qikvrt_zenodo_authorization_consumption_key_v2",
+      "value": "5effe85f409e0e428064454a39ea9fb249ba70d20d34a4c36ff91275ba2cba83"
+    },
+    "git_blob_sha": "7b33e15ed2d51b00eb0b4c53b06a4b34c8a73dae",
+    "machine_proof": {
+      "bytes": 16356,
+      "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+      "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069"
+    },
+    "nonce_digest": {
+      "algorithm": "SHA-256",
+      "value": "580c0c48539b3faed27795543267d031d51ce32ba0035a50afa4578bb754633e"
+    },
+    "path": "release/qikvrt-quality-gates-20260928-v1/OWNER_ZENODO_AUTHORIZATION.json",
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "principal_authentication": "NOT_CRYPTOGRAPHICALLY_VERIFIED",
+    "publication_evidence_path": "release/qikvrt-quality-gates-20260928-v1/zenodo-publication.json",
+    "publication_id": "qikvrt-quality-gates-20260928-v1",
+    "remote_consumption_ref": "refs/tags/qikvrt-zenodo-auth/5effe85f409e0e428064454a39ea9fb249ba70d20d34a4c36ff91275ba2cba83",
+    "repository": "Goldkelch/qik-vrt",
+    "schema": "qikvrt_zenodo_owner_authorization_v1",
+    "sha256": "3982b7fc7961b192a8eb2054e996d44680bb4eb83679988edf65c71d0570989d",
+    "single_use": true,
+    "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+    "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+    "upload_count": 15
+  },
+  "phase": "public_verified",
+  "record_id": 23008704,
+  "record_url": "https://zenodo.org/records/23008704",
+  "recovery": {
+    "authorization_consumed": true,
+    "create_requested": true,
+    "duplicate_remote_mutation_forbidden": true,
+    "phase": "public_verified",
+    "prepared": true,
+    "public_verified": true,
+    "publish_requested": true,
+    "record_created": true,
+    "remote_state_requires_reconciliation": false
+  },
+  "remote_consumption": {
+    "acquisition": "GITHUB_GIT_DATA_REST_CREATE_ONLY",
+    "api_origin": "https://api.github.com",
+    "execution_head": "072a2dc779ab6d31d92cdd5b3982d476c2589d05",
+    "object_type": "tag",
+    "recovery_mode": "NEWLY_CREATED_REF",
+    "ref": "refs/tags/qikvrt-zenodo-auth/5effe85f409e0e428064454a39ea9fb249ba70d20d34a4c36ff91275ba2cba83",
+    "remote": "github_git_data_api",
+    "repository": "Goldkelch/qik-vrt",
+    "tag_object": "7b67780d3a416e06f96fa3b32715420916aeb8ae"
+  },
+  "repository": "Goldkelch/qik-vrt",
+  "repository_commit": "072a2dc779ab6d31d92cdd5b3982d476c2589d05",
+  "schema": "qikvrt_zenodo_publication_evidence_v2",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "state": "published",
+  "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+  "version": "0.1-20260928"
+}

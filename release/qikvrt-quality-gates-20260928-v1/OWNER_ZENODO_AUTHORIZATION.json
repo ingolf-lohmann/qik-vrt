@@ -1,0 +1,162 @@
+{
+  "_license": {
+    "classification": "owner_effect_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authorization_event": {
+    "authorized_at": "2026-09-28T06:59:15Z",
+    "candidate_return_receipt_sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374",
+    "channel": "ChatGPT Work: explicit user message, 2026-09-28T08:59:15+02:00",
+    "decision": "AUTHORIZE_EXACT_UPLOAD",
+    "exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=quality-gates-20260928-auth-01 publication_id=qikvrt-quality-gates-20260928-v1 return_sha256=3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374 metadata_sha256=457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31 machine_proof_sha256=7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069",
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "statement_sha256": "4133bd5c00893a3ab881156d8c85617efc9aa01ce70b7590335eb799587a9d2c"
+  },
+  "authorization_id": "quality-gates-20260928-auth-01",
+  "authorized_effects": [
+    "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+    "CREATE_PRODUCTION_ZENODO_RECORD",
+    "UPLOAD_EXACT_AUTHORIZED_FILES",
+    "PUBLISH_PRODUCTION_ZENODO_RECORD",
+    "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+    "PERSIST_PUBLICATION_EVIDENCE"
+  ],
+  "candidate_return_receipt": {
+    "bytes": 1553,
+    "git_blob_sha": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+    "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+    "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374"
+  },
+  "canonical_metadata_sha256": "457b54f9022e727a91dae9bb86c65277b51702ac6ce55b27dd0fa60a0a626b31",
+  "machine_proof": {
+    "bytes": 16356,
+    "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+    "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069"
+  },
+  "nonce": "fd08ca3f159e1a3f3d1933749185b9d90f67a516b7b708c2bfebcbc253e641c4",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_evidence_path": "release/qikvrt-quality-gates-20260928-v1/zenodo-publication.json",
+  "publication_id": "qikvrt-quality-gates-20260928-v1",
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt_zenodo_owner_authorization_v1",
+  "single_use": true,
+  "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "uploads": [
+    {
+      "bytes": 89993,
+      "git_blob_sha": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+      "name": "QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "sha256": "4c8afded8a3b46008605b5abed8b048765ab35973465c5659f2a32109ece6598"
+    },
+    {
+      "bytes": 23416,
+      "git_blob_sha": "8030bf962335fd54ef72c6a078f656bb3c356145",
+      "name": "QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+      "sha256": "0d6e82942f4359622f588fe240afa3593f8f794e67e0f37d595a6087631a4952"
+    },
+    {
+      "bytes": 9093,
+      "git_blob_sha": "64777bc944b83debf58dd5fc052a07ef457416ea",
+      "name": "CLAIM_MATRIX.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/CLAIM_MATRIX.json",
+      "sha256": "c98c5501cf8a37efb917d2b4101c465eec6625903bf1c3d98ef2bbb744ad2ce7"
+    },
+    {
+      "bytes": 13950,
+      "git_blob_sha": "888ce9f58b6751badecf5101dacf82e0382a7974",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "b37aa679fec9e2e6b7a9866b13a57073b4a3127796f213115b4a789645950913"
+    },
+    {
+      "bytes": 1553,
+      "git_blob_sha": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "3de512821d5767ba85f53a9aaf00a029e3a9dd0056f2d9d5ab53bc630540b374"
+    },
+    {
+      "bytes": 22048,
+      "git_blob_sha": "ea0cb283617964b07c31b185c9c22904ddc04b8f",
+      "name": "ARTICLE_DE.md",
+      "path": "docs/publications/2026-09-28-quality-gates/ARTICLE_DE.md",
+      "sha256": "676f135707dfaec7acce3a03af70b6439d06b31193748d49310f907f20458531"
+    },
+    {
+      "bytes": 10301,
+      "git_blob_sha": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+      "name": "MEASUREMENTS.json",
+      "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json",
+      "sha256": "50a52ce9db0f2bc27d65b2d149eb70ab46a7c83f808351057f3be0cbaa6cb664"
+    },
+    {
+      "bytes": 6261,
+      "git_blob_sha": "0d6e6a905d974668c007ce035a62a1b19dbd4247",
+      "name": "QUALITY_GATES.json",
+      "path": "docs/publications/2026-09-28-quality-gates/QUALITY_GATES.json",
+      "sha256": "d6eec9879e301d74bb35bb1033c5deac2cede874c6151db38547648e9525a3fc"
+    },
+    {
+      "bytes": 18586,
+      "git_blob_sha": "8597196d72cdcbc202f07ef51cd71081ab59a51c",
+      "name": "focused-tests.log",
+      "path": "docs/publications/2026-09-28-quality-gates/focused-tests.log",
+      "sha256": "c81d367696d82d6531d0fc4620bf2bd9492dcc285a65e80b9fb29910d5356566"
+    },
+    {
+      "bytes": 3218,
+      "git_blob_sha": "4b0f0552c4adeaa08a892fbe59e32c70ed565ddd",
+      "name": "c90.log",
+      "path": "docs/publications/2026-09-28-quality-gates/c90.log",
+      "sha256": "881b59df7e9270b0f91e70a9924cd6c7028c3e2b55c420176f913646896a2c5f"
+    },
+    {
+      "bytes": 2871,
+      "git_blob_sha": "7e76319a7bdf0b5365eac04ffb544d10d99f4479",
+      "name": "size.log",
+      "path": "docs/publications/2026-09-28-quality-gates/size.log",
+      "sha256": "8aa20431f46c399172cbcf20ef938bdadbb510a133b7282774a844bee6bd5867"
+    },
+    {
+      "bytes": 14498,
+      "git_blob_sha": "951f3dd34095ca656954540fefa049a84109cf0a",
+      "name": "mesh-receipt.json",
+      "path": "docs/publications/2026-09-28-quality-gates/mesh-receipt.json",
+      "sha256": "820095f4b67beb4802089bd6c66fd4a7310c55a4153b7ceb4746589cedbe4f5c"
+    },
+    {
+      "bytes": 69841,
+      "git_blob_sha": "66bf3295ff414b5dccd38c99c76dfd01e4346800",
+      "name": "ci-diagnostics.log",
+      "path": "docs/publications/2026-09-28-quality-gates/ci-diagnostics.log",
+      "sha256": "35b60043150e3dda0ee660604b50147d334dab7a4508d959889f0037bda8198b"
+    },
+    {
+      "bytes": 1654,
+      "git_blob_sha": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "name": "PROVENANCE.json",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+      "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+    },
+    {
+      "bytes": 16356,
+      "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069"
+    }
+  ]
+}
