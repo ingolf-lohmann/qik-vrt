@@ -23,6 +23,7 @@ jobs:
       RULESET_ID: "19344903"
       EXPECTED_PRE_SHA256: c6af530067c49e0d7bfa9512f081c5be291d33815cdcc76595a8bc24796d8e32
       EXPECTED_POST_SHA256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
+      RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
       MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
       RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
@@ -36,7 +37,7 @@ jobs:
           set -euo pipefail
           direct=false
           app=false
-          if [ -n "${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
+          if [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
             direct=true
           fi
           if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then
@@ -75,7 +76,8 @@ jobs:
 
           repo = os.environ["TARGET_REPOSITORY"]
           ruleset_id = int(os.environ["RULESET_ID"])
-          token = (os.environ.get("ADMIN_TOKEN", "") or
+          token = (os.environ.get("RULESET_ADMIN_TOKEN", "") or
+                   os.environ.get("ADMIN_TOKEN", "") or
                    os.environ.get("MESH_TOKEN", "") or
                    os.environ.get("APP_TOKEN", ""))
           if not token:
