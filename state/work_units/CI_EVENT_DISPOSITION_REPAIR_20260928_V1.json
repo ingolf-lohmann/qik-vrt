@@ -66,5 +66,21 @@
     "terminal_command": "test \"skipped\" = \"success\"",
     "terminal_exit": 1,
     "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36381926402/job/108799281136"
+  },
+  "regression_extension": {
+    "date": "2026-09-28",
+    "human_actor": "Ingolf Lohmann",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "scope": "Explicit push, workflow_dispatch and fork-PR cases plus a genuinely failing make target through the existing full_test and fixpoint shell scripts.",
+    "base_head": "57b232d84e185e789709b451d7526c4586d725f0",
+    "base_tree": "c29a8e29edad56fca191214092319b7dee0f87aa",
+    "reuse": "Preserve the already implemented CI workflow bytes; extend the existing PR and regression module.",
+    "test_path": "tests/test_effect_ack_release_workflows.py",
+    "test_sha256": "82a0c0d31d7b5541cf7541dd973f1cd3d1e1b07cbf3e79d4a33e6f59e81a103d",
+    "command": "python3 -B -m unittest -v tests.test_effect_ack_release_workflows",
+    "result": "18 tests passed",
+    "negative_control": "A real make test target exits 17, make returns 2. Both original workflow paths fail despite successful integrity generation; terminal PASS is absent and source/local-remote HEAD are unchanged.",
+    "new_runtime_dependency": false,
+    "fresh_exact_head_ci": "Required after this successor is committed; results are recorded in the PR readback without inheriting predecessor success."
   }
 }

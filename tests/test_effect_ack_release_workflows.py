@@ -453,9 +453,82 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
 
     def test_push_dispatch_and_fork_pr_accept_successful_exact_checkout(self):
         # These events all exclude the writer under the scope checked below.
-        result = self.run_terminal("false", "success", "skipped")
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("QIKVRT_TERMINAL_DISPOSITION PASS", result.stdout)
+        for event, head_repository in (
+            ("push", ""),
+            ("workflow_dispatch", ""),
+            ("pull_request", "contributor/qik-vrt"),
+        ):
+            with self.subTest(event=event, head_repository=head_repository):
+                required = str(
+                    event == "pull_request"
+                    and head_repository == "ingolf-lohmann/qik-vrt"
+                ).lower()
+                self.assertEqual(required, "false")
+                result = self.run_terminal(required, "success", "skipped")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn("QIKVRT_TERMINAL_DISPOSITION PASS", result.stdout)
+
+    def test_real_make_failure_remains_failure_in_both_paths(self):
+        workflow = GENERAL_CI.read_text(encoding="utf-8")
+
+        def script_for(name):
+            block = workflow.split("      - name: " + name + "\n", 1)[1]
+            block = block.split("\n      - ", 1)[0]
+            return textwrap.dedent(block.split("        run: |\n", 1)[1])
+
+        full_script = script_for(
+            "Full compile, launcher, protocol, handler, security and TCP/IP tests"
+        )
+        fixpoint_script = script_for("Same-writer successor re-entry to tested fixpoint")
+        with tempfile.TemporaryDirectory(prefix="qikvrt-ci-real-failure-") as raw:
+            root = pathlib.Path(raw) / "source"
+            root.mkdir()
+            remote = pathlib.Path(raw) / "remote.git"
+            run_git(pathlib.Path(raw), "init", "--bare", os.fspath(remote))
+            run_git(root, "init")
+            run_git(root, "config", "user.name", "CI regression")
+            run_git(root, "config", "user.email", "ci-regression@example.invalid")
+            (root / "Makefile").write_text("test:\n\t@exit 17\n", encoding="utf-8")
+            (root / "REPOSITORY_FILE_MANIFEST.json").write_text(
+                '{"files": []}\n', encoding="utf-8"
+            )
+            (root / "tools").mkdir()
+            # Successful integrity generation must not hide a real test failure.
+            (root / "tools/qikvrt_integrity.py").write_text(
+                'MANIFEST_NAME = "REPOSITORY_FILE_MANIFEST.json"\n'
+                'def build_outputs():\n'
+                '    return None, None, None, {"files": []}\n',
+                encoding="utf-8",
+            )
+            run_git(root, "add", ".")
+            run_git(root, "commit", "-m", "test fixture")
+            subject = run_git(root, "rev-parse", "HEAD")
+            run_git(root, "remote", "add", "origin", os.fspath(remote))
+            run_git(root, "push", "origin", "HEAD:refs/heads/fixture")
+            environment = dict(
+                os.environ, EXPECTED_HEAD=subject, TARGET_REF="fixture", MAX_SUCCESSORS="4",
+            )
+            full_result = subprocess.run(
+                ["bash", "-c", full_script], cwd=root, env=environment,
+                text=True, capture_output=True, timeout=20, check=False,
+            )
+            self.assertEqual(full_result.returncode, 2, full_result.stdout + full_result.stderr)
+            self.assertIn("MAKE_TEST_EXIT=2", full_result.stdout)
+            fixpoint_result = subprocess.run(
+                ["bash", "-c", fixpoint_script], cwd=root, env=environment,
+                text=True, capture_output=True, timeout=20, check=False,
+            )
+            self.assertNotEqual(fixpoint_result.returncode, 0)
+            self.assertNotIn("QIKVRT_FIXPOINT_REACHED", fixpoint_result.stdout)
+            self.assertEqual(run_git(root, "rev-parse", "HEAD"), subject)
+            self.assertEqual(run_git(remote, "rev-parse", "refs/heads/fixture"), subject)
+            full_outcome = "success" if full_result.returncode == 0 else "failure"
+            fixpoint_outcome = "success" if fixpoint_result.returncode == 0 else "failure"
+            for required, outcome in (("false", "skipped"), ("true", fixpoint_outcome)):
+                with self.subTest(fixpoint_required=required):
+                    terminal = self.run_terminal(required, full_outcome, outcome)
+                    self.assertNotEqual(terminal.returncode, 0)
+                    self.assertNotIn("QIKVRT_TERMINAL_DISPOSITION PASS", terminal.stdout)
 
     def test_non_writer_test_failures_cannot_be_hidden_by_continue_on_error(self):
         for outcome in ("failure", "cancelled", "skipped", "", "unknown"):
@@ -498,6 +571,7 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         terminal = workflow.split(self.STEP, 1)[1]
         self.assertIn("if: always() && " + self.SCOPE, writer)
         self.assertIn("if: always()", terminal)
+        self.assertNotIn("continue-on-error:", terminal)
         self.assertIn("FIXPOINT_REQUIRED: ${{ " + self.SCOPE + " }}", terminal)
         self.assertIn("FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}", terminal)
         self.assertIn("FIXPOINT_OUTCOME: ${{ steps.fixpoint.outcome }}", terminal)
