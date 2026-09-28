@@ -375,6 +375,24 @@
       "receipt_commit": "67dbb53c4a244e66aa0ac41cc69a2dc114f0b61f",
       "file_count": 21,
       "state": "published_receipt"
+    },
+    {
+      "id": "qikvrt-closure-archive-20260915-v1",
+      "title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+      "version": "0.1-archive-20260928",
+      "record_id": 23008330,
+      "doi": "10.5281/zenodo.23008330",
+      "doi_url": "https://doi.org/10.5281/zenodo.23008330",
+      "concept_doi": "10.5281/zenodo.23008329",
+      "receipt_path": "release/qikvrt-closure-archive-20260915-v1/zenodo-publication.json",
+      "receipt_url": "https://github.com/Goldkelch/qik-vrt/blob/f7e4e80d5b74efc78b2dd1188e95c58877688828/release/qikvrt-closure-archive-20260915-v1/zenodo-publication.json",
+      "receipt_sha256": "301ac25d282a7a5a3b238143c0305f6d2da96b40f85aca7cb04445b999ce4806",
+      "manifest_sha256": "80d6a925e67fb77445f095d19bb54de168bbf25176c38bf27bdf5ef779c1f45e",
+      "repository_commit": "7883eb1eb1eec7e54e2e770e04bd59c20d315fc1",
+      "receipt_commit": "f7e4e80d5b74efc78b2dd1188e95c58877688828",
+      "file_count": 9,
+      "state": "published_receipt",
+      "boundary": "Historisches Archiv des Artikels vom 15. September 2026 einschließlich originalem Lean/Lake-Paket; öffentliche Bytes geprüft. Kein neuer Lean-Kernel- oder Hardwarebeweis und kein abgeschlossener Gesamtprodukt-Release."
     }
   ],
   "ietf_documents": [
