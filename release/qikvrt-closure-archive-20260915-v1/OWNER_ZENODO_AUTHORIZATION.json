@@ -1,0 +1,120 @@
+{
+  "_license": {
+    "classification": "owner_effect_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authorization_event": {
+    "authorized_at": "2026-09-28T06:17:11Z",
+    "candidate_return_receipt_sha256": "8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4",
+    "channel": "ChatGPT Work: explicit user message, 2026-09-28T08:17:11+02:00",
+    "decision": "AUTHORIZE_EXACT_UPLOAD",
+    "exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=closure-archive-20260928-auth-01 publication_id=qikvrt-closure-archive-20260915-v1 return_sha256=8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4 metadata_sha256=af74fa824f55322359c765eb3dbca58ea705df03831a95e672dfecd1a04136e1 machine_proof_sha256=485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec",
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "statement_sha256": "f3a9e3f7e13926cf87dda805775fc9312d7052f485cd969544e5e28e9ce5f08a"
+  },
+  "authorization_id": "closure-archive-20260928-auth-01",
+  "authorized_effects": [
+    "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+    "CREATE_PRODUCTION_ZENODO_RECORD",
+    "UPLOAD_EXACT_AUTHORIZED_FILES",
+    "PUBLISH_PRODUCTION_ZENODO_RECORD",
+    "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+    "PERSIST_PUBLICATION_EVIDENCE"
+  ],
+  "candidate_return_receipt": {
+    "bytes": 1527,
+    "git_blob_sha": "49466fdf5510b79909b1b5c6c08d9d4f52673ffc",
+    "path": "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+    "sha256": "8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4"
+  },
+  "canonical_metadata_sha256": "af74fa824f55322359c765eb3dbca58ea705df03831a95e672dfecd1a04136e1",
+  "machine_proof": {
+    "bytes": 10939,
+    "git_blob_sha": "4a1c37f1f51f16f3707302807c224bbc90a42297",
+    "path": "release/qikvrt-closure-archive-20260915-v1/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec"
+  },
+  "nonce": "b63c8ab80dbfec3c15f4503599633beaf66e0b42fd7261e94684dccc4b4950eb",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_evidence_path": "release/qikvrt-closure-archive-20260915-v1/zenodo-publication.json",
+  "publication_id": "qikvrt-closure-archive-20260915-v1",
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt_zenodo_owner_authorization_v1",
+  "single_use": true,
+  "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "uploads": [
+    {
+      "bytes": 160673,
+      "git_blob_sha": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+      "name": "QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+      "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+      "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+    },
+    {
+      "bytes": 27862,
+      "git_blob_sha": "f13fdfc614f8e28a74c1c1bc8e74def2729a1dc6",
+      "name": "VORLESEFASSUNG.txt",
+      "path": "docs/publications/2026-09-15-closure-archive/VORLESEFASSUNG.txt",
+      "sha256": "2f0b9a6caa5dda0eecfc81157c068c7a4b8380b4a2ab82b222cca6cc38eb0f7e"
+    },
+    {
+      "bytes": 5908,
+      "git_blob_sha": "335caaf0746498bbb597d207c3e8bb42f148362d",
+      "name": "CLAIM_MATRIX.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/CLAIM_MATRIX.json",
+      "sha256": "1c877c8dc6ac0a9d27446f0462b4793dd5eaef141cef4e75a18aa830b47021a2"
+    },
+    {
+      "bytes": 9642,
+      "git_blob_sha": "d5c389fd42da87ef7157b8a19decb5fcdbdbb08c",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "83c56e51c539ad75448657868156b39198fbe36a2896f8753953ac586dd85d69"
+    },
+    {
+      "bytes": 1527,
+      "git_blob_sha": "49466fdf5510b79909b1b5c6c08d9d4f52673ffc",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "8101f1d86abd91b3eae720443831740ef9278456fd0ae79afdc713301ea1e5a4"
+    },
+    {
+      "bytes": 1654,
+      "git_blob_sha": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "name": "PROVENANCE.json",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json",
+      "sha256": "14351278015bf59b3202c4b3be8a5c797e47766874fa29a18cfef83d6780e6be"
+    },
+    {
+      "bytes": 1208,
+      "git_blob_sha": "e59ee5ebb4ecb1573410850da3a2de35a5cc7fc5",
+      "name": "ARCHIVE_NOTE.md",
+      "path": "docs/publications/2026-09-15-closure-archive/ARCHIVE_NOTE.md",
+      "sha256": "9c3330b8e5a42ee0daa527259c4f62acb6cffb977b8678a1babc5c32b823acfe"
+    },
+    {
+      "bytes": 178084,
+      "git_blob_sha": "b0105f50afee791f9dab7d59fbcc9ed0ada8c4d1",
+      "name": "QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "path": "docs/publications/2026-09-15-closure-archive/QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+      "sha256": "14a248d87844e1dee50865f4e27cdcfb9a27808f0393eba3f62f0088c7c95e18"
+    },
+    {
+      "bytes": 10939,
+      "git_blob_sha": "4a1c37f1f51f16f3707302807c224bbc90a42297",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "release/qikvrt-closure-archive-20260915-v1/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "485b98d2033d54f1e35008dde3d4425d1a2bad178f5e79dd3839cb88e38f17ec"
+    }
+  ]
+}
