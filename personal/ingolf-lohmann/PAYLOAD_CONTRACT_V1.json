@@ -81,5 +81,11 @@
     "retry_without_new_information": "FORBIDDEN_AS_PROGRESS",
     "repeated_user_transport": "Repeated presentation of the same canonical reference is not new proof evidence, but it is evidence that a prior response path may be non-progressing and MUST trigger liveness classification.",
     "human_reconfirmation_required": false
+  },
+  "epistemic_exact_subject": {
+    "rule": "A proof component is admissible only when its path/blob is present on the currently bound exact subject and freshly read back.",
+    "predecessor_or_successor_membership": "NOT_CURRENT_PROOF_EVIDENCE",
+    "correction": "A disproven membership claim is retained as historical error evidence and removed from the current proof immediately.",
+    "human_reconfirmation_required": false
   }
 }
