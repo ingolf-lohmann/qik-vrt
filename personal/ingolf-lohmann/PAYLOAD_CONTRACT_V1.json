@@ -69,5 +69,17 @@
     "owner_principle": "QIK-VRT should preserve responsibility, provenance, admissibility and effect-readback boundaries rather than silently deciding the human purpose of an effect.",
     "categorical_imperative_reference": "OWNER_NORMATIVE_ENGINEERING_PRINCIPLE",
     "responsibility_not_eliminated": true
+  },
+  "liveness": {
+    "repeated_identical_observation_rule": "An identical unresolved observation MUST NOT cause an identical no-effect transition indefinitely.",
+    "deadlock_signature": "SAME_SUBJECT + SAME_BLOCKER + SAME_ACTION + NO_NEW_EVIDENCE",
+    "required_transition": [
+      "ALTERNATE_VERIFIER_IF_AVAILABLE",
+      "TYPED_EXTERNAL_HOLD_IF_NO_AUTHORIZED_ALTERNATIVE",
+      "EVIDENCE_BOUND_SUCCESSOR_IF_NEW_INFORMATION_EXISTS"
+    ],
+    "retry_without_new_information": "FORBIDDEN_AS_PROGRESS",
+    "repeated_user_transport": "Repeated presentation of the same canonical reference is not new proof evidence, but it is evidence that a prior response path may be non-progressing and MUST trigger liveness classification.",
+    "human_reconfirmation_required": false
   }
 }
