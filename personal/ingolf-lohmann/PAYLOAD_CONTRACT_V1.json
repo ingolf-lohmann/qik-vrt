@@ -94,5 +94,20 @@
     "sustainable_devops": "Eliminate identical no-effect retries and root causes; minimize avoidable compute, network, storage, rework and human attention per verified useful transition without weakening gates.",
     "reflexive": "These principles apply to changes of these principles themselves.",
     "uncertainty": "Unknown or unavailable evidence becomes a typed HOLD, never an invented fact."
+  },
+  "owner_engineering_principles": {
+    "reverse_engineering": {
+      "attribution": "Ingolf Lohmann",
+      "epistemic_class": "OWNER_NORMATIVE_ENGINEERING_PRINCIPLE",
+      "statement": "Die Königsdisziplin des Ingenierens ist und bleibt das Reverse-Ingenieren. Die Königsdisziplin darin ist und bleibt die Physik und die Mathematik und die Informatik.",
+      "operational_rule": "OBSERVE_EFFECT -> RECONSTRUCT_CONDITIONS_MODEL_IMPLEMENTATION_AND_INVARIANTS -> FORWARD_REBUILD -> EXECUTE -> INDEPENDENT_COMPARE -> READBACK -> BIND_SUCCESSOR -> REPEAT",
+      "complementary_domains": [
+        "physics",
+        "mathematics",
+        "computer_science"
+      ],
+      "persistence": "ACCEPT_APPLY_REPEAT_AS_OWNER_ENGINEERING_HEURISTIC",
+      "boundary": "This is Ingolf Lohmann's normative engineering principle and methodology, not an independently proven universal ranking of engineering or scientific disciplines."
+    }
   }
 }
