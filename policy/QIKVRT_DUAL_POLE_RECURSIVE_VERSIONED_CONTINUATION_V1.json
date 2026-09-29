@@ -1,0 +1,56 @@
+{
+  "schema": "qikvrt_dual_pole_recursive_versioned_continuation_v1",
+  "authorization": {
+    "owner": "Ingolf Lohmann",
+    "autonomous_recursive_application": true,
+    "scope": "AUTHORITY_MIRROR_DIGITAL_TWIN_AND_CLOUD_TRANSPUTER_CONTINUATION"
+  },
+  "bound_at": {
+    "authority_subject": "f5a92ad393f3198fdb17f9d6d0b624c6e64946b1",
+    "mirror_subject": "4ba769dc1cdec008314234c2fdf296ec90d87cae"
+  },
+  "reuse": {
+    "monotonic_evidence_sphere": "docs/notes/QIKVRT_MESH_EVIDENCE_SPHERE_MONOTONIC_V1.json",
+    "authority_mirror_observer": "tools/qikvrt_authority_mirror_mesh_instance.py",
+    "mesh_instance_contract": "docs/architecture/QIKVRT_MESH_AUTHORITY_MIRROR_INSTANCE_V1.md",
+    "temdd_evolution": "spec/temdd/TEMDD_TECHNICAL_EVOLUTION_DECLARATION_V1.md",
+    "digital_twin_rest": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+    "integration_claim": "policy/QIKVRT_UNIVERSAL_TRANSPUTER_TERMINAL_INTEGRATION_CLAIM_V1.json"
+  },
+  "hard_cut": {
+    "trigger": "ANY_MATERIAL_MUTATION_OF_BOUND_SUBJECT_OR_VERSIONED_CONTRACT",
+    "action": [
+      "FREEZE_PREDECESSOR_AS_HISTORICAL_EVIDENCE",
+      "CREATE_OR_SELECT_SUCCESSOR_SUBJECT_WITHIN_EXISTING_AUTHORITY",
+      "RESET_DEPENDENT_PASS_CLAIMS",
+      "EXECUTE_SUCCESSOR",
+      "FRESH_READBACK",
+      "BIND_SUPERSEDES_OR_REFINES_EDGE",
+      "REPEAT"
+    ],
+    "delete_predecessor": false,
+    "predecessor_evidence_transfer": false,
+    "new_pull_request": "FORBIDDEN_FOR_CURRENT_CONTINUATION",
+    "review_bypass": false
+  },
+  "dual_pole": {
+    "authority_and_mirror_distinct": true,
+    "consume_useful_artifacts_from_either_repository": true,
+    "consumption_requires_license_rights_security_provenance_and_subject_checks": true,
+    "byte_copy_is_not_evidence_transfer": true,
+    "convergence_requires_fresh_pair_observation": true,
+    "reciprocal_runtime_equivalence_requires_execution_on_both_poles": true
+  },
+  "recursion": {
+    "relation": "OBSERVE_BOTH -> CLASSIFY_GAP -> ADMIT_EXISTING_AUTHORITY_ACTION -> MATERIALIZE_SUCCESSOR -> EXECUTE_BOTH -> READBACK_BOTH -> COMPARE -> BIND -> REPEAT",
+    "first_success_terminal": false,
+    "first_failure_terminal": false,
+    "stop_only_on": "DECLARED_SCOPED_EFFECT_ACK_DONE_OR_HARD_AUTHORITY_BOUNDARY"
+  },
+  "universality_claim_boundary": {
+    "cloud_transputer_universal_functionality": "TARGET_REQUIRES_CONNECTABILITY_EVIDENCE_ACROSS_DECLARED_INTERFACES",
+    "repository_pair_alone_proves_universality": false,
+    "external_connectability_required": true,
+    "effect_ack_done": false
+  }
+}
