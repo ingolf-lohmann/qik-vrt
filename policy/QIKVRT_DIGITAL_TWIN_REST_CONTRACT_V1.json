@@ -37,5 +37,7 @@
   "implementation": "src/qikvrt_digital_twin_rest.py",
   "reference_model": "src/qikvrt_siemens_reference_integration.py",
   "tests": "tests/test_qikvrt_digital_twin_rest.py",
-  "scope": "REFERENCE_DIGITAL_TWIN_API_NOT_VENDOR_TENANT_OR_PHYSICAL_ACTUATION"
+  "scope": "REFERENCE_DIGITAL_TWIN_API_NOT_VENDOR_TENANT_OR_PHYSICAL_ACTUATION",
+  "recursive_versioned_continuation": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+  "hard_cut_semantics": "MUTATION_CREATES_SUCCESSOR_AND_RESETS_DEPENDENT_EVIDENCE"
 }
