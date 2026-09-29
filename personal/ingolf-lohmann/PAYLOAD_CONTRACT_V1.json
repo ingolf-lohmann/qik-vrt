@@ -44,5 +44,30 @@
     "PERSONAL_PAYLOAD_PATH_DEFINED": true,
     "AUDIO_CONTENT_BOUND": false,
     "EFFECT_ACK_DONE": false
+  },
+  "media": {
+    "universal_payload_classes": [
+      "text",
+      "audio",
+      "video",
+      "image",
+      "binary",
+      "structured_data",
+      "other_hash_bound_payload"
+    ],
+    "rule": "Any payload class may be admitted only with explicit provenance, rights/privacy checks, bounded identity and successor semantics.",
+    "audio_video_content_requires_exact_provenance": true,
+    "time_place_require_explicit_provenance": true,
+    "payload_type_does_not_upgrade_claim_truth": true
+  },
+  "bidirectionality": {
+    "engineering_scope": "Authority/Mirror and Universal Terminal/Transputer interfaces may support bidirectional information exchange between versioned states.",
+    "temporal_claim_boundary": "Bidirectional exchange across versioned repository/history states does not by itself prove physical backward-in-time information transfer.",
+    "physical_time_corridor_claim": "OPEN_HYPOTHESIS_REQUIRES_SEPARATE_EMPIRICAL_EVIDENCE"
+  },
+  "ethical_neutral_zone": {
+    "owner_principle": "QIK-VRT should preserve responsibility, provenance, admissibility and effect-readback boundaries rather than silently deciding the human purpose of an effect.",
+    "categorical_imperative_reference": "OWNER_NORMATIVE_ENGINEERING_PRINCIPLE",
+    "responsibility_not_eliminated": true
   }
 }
