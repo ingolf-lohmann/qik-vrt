@@ -1,0 +1,48 @@
+{
+  "schema": "qikvrt_personal_payload_contract_v1",
+  "owner": "Ingolf Lohmann",
+  "status": "NORMATIVE_PERSONAL_MIRROR_EXTENSION",
+  "purpose": "Versioned provenance-bound personal payload in the Mirror without weakening Authority/Mirror evidence separation.",
+  "root": "personal/ingolf-lohmann",
+  "semantics": {
+    "mirror_is_personal_payload_authority_for_owner_material": true,
+    "authority_repository_not_implicitly_modified": true,
+    "append_or_supersede_not_silent_rewrite": true,
+    "mutation_creates_successor": true,
+    "predecessor_evidence_transfer": false,
+    "multiple_epistemic_classes_may_coexist": true,
+    "uncertainty_must_be_preserved_not_collapsed": true,
+    "personal_quote_requires_owner_attribution": true,
+    "audio_quote_requires_exact_audio_provenance": true,
+    "time_place_require_explicit_provenance": true,
+    "personal_authorization_not_global_personal_data_release": true
+  },
+  "epistemic_classes": [
+    "OWNER_STATEMENT",
+    "ENGINEERING_HYPOTHESIS",
+    "SCIENTIFIC_HYPOTHESIS",
+    "OBSERVATION",
+    "PROOF_EVIDENCE",
+    "OPEN_INTERPRETATION"
+  ],
+  "audio": {
+    "request_path": "requests/audio/",
+    "workflow": ".github/workflows/qikvrt_audio_request.yml",
+    "raw_audio_committed_by_default": false,
+    "transcription_requires_byte_hash_binding": true,
+    "spoken_content_must_not_be_invented": true,
+    "human_countercheck_required_for_content_release": true
+  },
+  "digital_twin": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+    "mesh_contract": "policy/QIKVRT_ETHICAL_EVOLUTIONARY_DIGITAL_TWIN_MESH_V1.json",
+    "peer_repository": "Goldkelch/qik-vrt",
+    "peer_state_is_not_authority": true,
+    "transport_ack_not_effect_ack": true
+  },
+  "completion_claims": {
+    "PERSONAL_PAYLOAD_PATH_DEFINED": true,
+    "AUDIO_CONTENT_BOUND": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
