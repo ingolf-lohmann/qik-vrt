@@ -1,0 +1,41 @@
+{
+  "schema": "qikvrt_digital_twin_rest_contract_v1",
+  "base_path": "/api/digital-twin/v1",
+  "media_type": "application/json",
+  "resources": {
+    "contract": {
+      "method": "GET",
+      "path": "/api/digital-twin/v1"
+    },
+    "state": {
+      "method": "GET",
+      "path": "/api/digital-twin/v1/state"
+    },
+    "receipt": {
+      "method": "GET",
+      "path": "/api/digital-twin/v1/receipt"
+    },
+    "transition": {
+      "method": "POST",
+      "path": "/api/digital-twin/v1/transitions",
+      "request": [
+        "expected_version",
+        "target_velocity_mps"
+      ]
+    }
+  },
+  "semantics": {
+    "exact_twin_version_required": true,
+    "closed_request_schema": true,
+    "post_effect_readback_required": true,
+    "authority_and_mirror_are_distinct_evidence_identities": true,
+    "pole_equality_requires_fresh_dual_readback": true,
+    "physical_effect": false,
+    "predecessor_evidence_transfer": false,
+    "transport_ack_not_effect_ack": true
+  },
+  "implementation": "src/qikvrt_digital_twin_rest.py",
+  "reference_model": "src/qikvrt_siemens_reference_integration.py",
+  "tests": "tests/test_qikvrt_digital_twin_rest.py",
+  "scope": "REFERENCE_DIGITAL_TWIN_API_NOT_VENDOR_TENANT_OR_PHYSICAL_ACTUATION"
+}
