@@ -87,5 +87,12 @@
     "predecessor_or_successor_membership": "NOT_CURRENT_PROOF_EVIDENCE",
     "correction": "A disproven membership claim is retained as historical error evidence and removed from the current proof immediately.",
     "human_reconfirmation_required": false
+  },
+  "engineering_practice": {
+    "clean_code": "One normative source per rule; explicit typed states; smallest cohesive change; no duplicated controller semantics.",
+    "agile": "Observe current state first; use small verifiable successors; executed feedback outranks status prose; proven repeated failures must change the process.",
+    "sustainable_devops": "Eliminate identical no-effect retries and root causes; minimize avoidable compute, network, storage, rework and human attention per verified useful transition without weakening gates.",
+    "reflexive": "These principles apply to changes of these principles themselves.",
+    "uncertainty": "Unknown or unavailable evidence becomes a typed HOLD, never an invented fact."
   }
 }
