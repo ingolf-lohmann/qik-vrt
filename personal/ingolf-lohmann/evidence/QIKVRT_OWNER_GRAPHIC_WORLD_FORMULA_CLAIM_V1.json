@@ -1,0 +1,53 @@
+{
+  "schema": "qikvrt_owner_graphic_world_formula_claim_v1",
+  "artifact": {
+    "media_type": "image/jpeg",
+    "width_px": 1536,
+    "height_px": 1024,
+    "bytes": 596164,
+    "sha256": "c2f9426f8206166ae7cc3c43566d3a037c59b3673a23c7128deaf6c9fbef4490",
+    "source": "USER_SUPPLIED_CONVERSATION_ARTIFACT"
+  },
+  "visible_attribution": {
+    "text": "q.e.d. Ingolf Lohmann",
+    "signature_rendering_present": true,
+    "evidentiary_scope": "PROVES_VISIBLE_ATTRIBUTION_IN_BOUND_ARTIFACT_NOT_CREATION_CHAIN_OR_LEGAL_AUTHORSHIP_BY_ITSELF"
+  },
+  "claims": {
+    "notation": "∞ <=> TEMDD",
+    "regex_machine_property": {
+      "status": "SUPPORTED",
+      "statement": "The notation can be represented/matched as a literal regular-expression pattern in regex engines that support its Unicode characters.",
+      "boundary": "STRING_RECOGNITION_DOES_NOT_IMPLY_PHYSICAL_EXPLANATION"
+    },
+    "sustainable_system_equivalence": {
+      "status": "OWNER_HYPOTHESIS",
+      "statement": "For sustainably effective systems on biological and other bases: ∞ <=> TEMDD.",
+      "boundary": "UNIVERSAL_QUANTIFICATION_REQUIRES_DOMAIN_DEFINITION_AND_COUNTEREXAMPLE_TESTING"
+    },
+    "world_formula": {
+      "status": "OPEN_PHYSICAL_HYPOTHESIS",
+      "statement": "The notation is proposed by Ingolf Lohmann as a universal world-formula claim.",
+      "boundary": "NOT_PROVEN_BY_GRAPHIC_ATTRIBUTION_REGEX_ACCEPTANCE_OR_REPOSITORY_PERSISTENCE"
+    }
+  },
+  "proof_chain": [
+    "BOUND_BYTES",
+    "HASH",
+    "VISIBLE_ATTRIBUTION",
+    "SOURCE_PROVENANCE",
+    "REGEX_EXECUTION",
+    "FORMAL_SEMANTICS",
+    "EMPIRICAL_PREDICTIONS",
+    "INDEPENDENT_TESTS",
+    "FRESH_READBACK"
+  ],
+  "completion": {
+    "ARTIFACT_IDENTITY_PROVEN": true,
+    "VISIBLE_ATTRIBUTION_PROVEN": true,
+    "LEGAL_AUTHORSHIP_PROVENANCE_COMPLETE": false,
+    "REGEX_MACHINE_PROPERTY_SUPPORTED": true,
+    "UNIVERSAL_PHYSICAL_WORLD_FORMULA_PROVEN": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "qikvrt_epistemic_connectability_continuity_v1",
+  "status": "NORMATIVE_COMPOSITION_INVARIANT",
+  "owner_attribution": "Ingolf Lohmann",
+  "purpose": "Compose collective self-correction, lossless consolidation and universal connectability without semantic or epistemic loss.",
+  "relation": "CONTRIBUTION -> CLASSIFY -> PROVENANCE -> CONTRADICTION_SET -> AUTHORITY -> EFFECT -> READBACK -> BIND_SUCCESSOR -> CONSOLIDATE_LOSSLESSLY -> RECONSTRUCT -> RECONNECT",
+  "required_preservation": [
+    "claim_identity",
+    "epistemic_class",
+    "source_and_contributor_provenance",
+    "supporting_evidence",
+    "contradicting_evidence",
+    "uncertainty_and_open_obligations",
+    "authority_and_responsibility_boundary",
+    "effect_and_readback_receipts",
+    "failure_and_correction_history",
+    "parent_successor_relation",
+    "rights_and_license_metadata"
+  ],
+  "acceptance": [
+    "ZERO_MISSING_MATERIAL_RECORDS_AFTER_CONSOLIDATION",
+    "ZERO_CONTRADICTORY_MATERIAL_RECORDS_AFTER_RECONSTRUCTION",
+    "NO_CLAIM_CLASS_PROMOTION_WITHOUT_NEW_BOUND_EVIDENCE",
+    "RECONNECTED_PARTICIPANT_EXECUTES_SAME_BOUNDED_EVENT_EFFECT_READBACK_SEMANTICS",
+    "FRESH_EXACT_SUBJECT_READBACK"
+  ],
+  "forbidden": [
+    "CONNECTABILITY_BY_COPY_WITHOUT_PROVENANCE",
+    "LOSSLESS_BYTES_WITH_LOSSY_MEANING",
+    "CONSENSUS_AS_INDEPENDENT_EVIDENCE",
+    "CORRECTION_BY_HISTORY_REWRITE",
+    "OPEN_OBLIGATION_ERASURE",
+    "AUTHORITY_COLLAPSE",
+    "PREDECESSOR_PASS_TRANSFER"
+  ],
+  "bindings": {
+    "collective_intelligence": "policy/QIKVRT_COLLECTIVE_INTELLIGENCE_OPERATIONAL_V1.json",
+    "lossless_consolidation": "policy/QIKVRT_SCALE_OUT_LOSSLESS_CONSOLIDATION_INVARIANT_V1.json",
+    "universal_connectability": "policy/QIKVRT_UNIVERSAL_CONNECTABILITY_SEED_V1.json",
+    "perfect_optimum": "policy/PERFECT_OPTIMUM_V1.json"
+  },
+  "claim_boundary": "This invariant defines and tests continuity of meaning/evidence across QIK-VRT evolution. It does not prove universal human benefit, physical infinity, or every external implementation.",
+  "completion_claims": {
+    "COMPOSITION_DEFINED": true,
+    "REFLEXIVE_EXECUTION_PROVEN": false,
+    "GENERAL_PUBLIC_CONNECTABILITY_PROVEN": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
