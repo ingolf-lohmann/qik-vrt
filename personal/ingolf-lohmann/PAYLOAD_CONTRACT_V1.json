@@ -118,5 +118,13 @@
     },
     "remediation": "A recurrence must strengthen executable prevention; apology alone is not remediation.",
     "authority_boundary": "No completion rule may fabricate authority or bypass safety, review, provenance or effect-readback requirements."
+  },
+  "seed_connectability_continuity": {
+    "authority_seed_path": "runtime/m68000/QIKVRT_SELF_REFLEXIVE_SEED_BINDING_V1.json",
+    "continuity_contract": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+    "mirror_seed_descriptor_status": "ABSENT_ON_MIRROR_MAIN_AT_BINDING_TIME",
+    "rule": "Mirror preserves the continuity contract and explicit Authority seed reference; absence MUST NOT be represented as local seed execution or reciprocal seed proof.",
+    "required_future_transition": "AUTHORIZED_HISTORY_PRESERVING_SUCCESSOR_MAY_MATERIALIZE_LOCAL_SEED_DESCRIPTOR_THEN_FRESHLY_REOBSERVE",
+    "predecessor_evidence_transfer": false
   }
 }
