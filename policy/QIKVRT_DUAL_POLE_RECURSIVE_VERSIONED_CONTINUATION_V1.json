@@ -54,5 +54,42 @@
     "effect_ack_done": false
   },
   "ethical_evolutionary_digital_twin_mesh": "policy/QIKVRT_ETHICAL_EVOLUTIONARY_DIGITAL_TWIN_MESH_V1.json",
-  "artificial_cognition_audit": "evidence/audits/ACOG_VIS_20260930_001.json"
+  "artificial_cognition_audit": "evidence/audits/ACOG_VIS_20260930_001.json",
+  "primary_purpose_conformance": {
+    "rule_id": "QIKVRT_PRIMARY_PURPOSE_CONTINUOUS_CONFORMANCE_V1",
+    "status": "NORMATIVE_ROOT_INVARIANT",
+    "purpose": "WITHOUT_PROVEN_COMPLETION_RETURN_IS_UNACCEPTABLE",
+    "applies_to": "EVERY_MATERIAL_QIKVRT_ACTIVITY_AND_SUCCESSOR",
+    "evaluation": "CONTINUOUS_AND_RECURSIVE",
+    "relation": "BIND_PURPOSE -> EXECUTE_AUTHORIZED_ACTIVITY -> OBSERVE_EFFECT -> FRESH_READBACK -> COMPARE_WITH_PURPOSE -> ACCEPT_OR_ERROR_STATE -> CONTINUE",
+    "compatibility": "QIKVRT_COMPATIBLE(a,S_n) iff PURPOSE_PRESERVING(a) AND EVIDENCE_BOUND(a) AND AUTHORIZED(a) AND OBSERVABLE(a) AND CORRECTABLE(a)",
+    "non_inheritance": [
+      "LOCAL_SUCCESS_DOES_NOT_IMPLY_GLOBAL_DONE",
+      "QIKVRT_COMPATIBLE(S_n)_DOES_NOT_IMPLY_QIKVRT_COMPATIBLE(S_n+1)",
+      "PREDECESSOR_EVIDENCE_TRANSFER=false"
+    ],
+    "fail_closed": "NOT_VERIFIED_PURPOSE_PRESERVATION -> NOT_QIKVRT_COMPATIBLE -> HOLD_OR_ERROR_STATE -> ROOT_CAUSE -> CORRECTION -> REEXECUTE -> FRESH_READBACK",
+    "participant_scope": [
+      "AUTHORITY",
+      "MIRROR",
+      "MESH_NODE",
+      "WORKFLOW",
+      "ARTIFICIAL_COGNITION_CLIENT",
+      "NATURAL_COGNITION_EFFECT_PATH",
+      "DIGITAL_TWIN",
+      "BROWSER_TERMINAL",
+      "FUTURE_QIKVRT_VERSION"
+    ],
+    "no_bypass": [
+      "REVIEW",
+      "SECURITY",
+      "RIGHTS",
+      "PRIVACY",
+      "SCIENTIFIC_STATUS",
+      "PROVENANCE",
+      "AUTHORIZATION",
+      "EFFECT_ACK"
+    ],
+    "generalization_boundary": "This is a QIK-VRT conformance rule. It does not assert that every non-QIK-VRT system is universally unacceptable."
+  }
 }
