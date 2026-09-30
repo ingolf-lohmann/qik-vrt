@@ -75,6 +75,22 @@
     "repository_pair_acceptance": "EACH_REPOSITORY_REQUIRES_ITS_OWN_EXACT_CLEAN_CHECKOUT_EXECUTION; COUNTERPART_REFERENCE_IS_NOT_EXECUTION",
     "temdd_boundary": "Preserve T1-T16; this workload does not replace separate full TEMDD conformance, native review, Main integration or public product readback.",
     "whole_repository_completion": false,
-    "unbounded_scalability": false
+    "unbounded_scalability": false,
+    "qualification": {
+      "verifier": "tools/qikvrt_real_mesh_system_verification.py verify-multitasking",
+      "rule": "NO_QUALIFICATION_WITHOUT_EXACT_CLEAN_SUBJECT_CURRENT_INPUT_VERSIONS_ALL_NINE_TRIALS_AND_ORIGINAL_CORPUS_READBACK",
+      "mutation_rule": "ANY_SUBJECT_INPUT_OR_RUNTIME_VERSION_CHANGE_INVALIDATES_QUALIFICATION",
+      "per_repository_execution_required": true,
+      "reference_is_execution": false,
+      "qualification_is_hosted_run_authentication": false,
+      "continuous_operation_proven": false,
+      "unbounded_scalability_proven": false,
+      "missing_failed_stale_or_incomplete_evidence": "BLOCK_UNQUALIFIED",
+      "production_activation": "SEPARATE_PROTECTED_MAIN_REVIEW_AND_EXECUTION_BOUNDARY",
+      "future_regression_prevention": "EXECUTABLE_NEGATIVE_CONTROLS_IN_CANONICAL_MAKE_TEST_AND_EXISTING_REAL_MESH_WORKFLOW",
+      "proof_scope": "DECLARED_4_8_16_NODE_WORKLOAD_AND_EXACT_IMPLEMENTATION_VERSION_ONLY",
+      "reobservation": "EXISTING_REAL_MESH_WORKFLOW_ON_EVERY_PR_HEAD_MAIN_PUSH_AND_15_MINUTE_DEFAULT_BRANCH_SCHEDULE",
+      "schedule_activation": "ONLY_AFTER_PROTECTED_DEFAULT_BRANCH_PROMOTION"
+    }
   }
 }

@@ -6,9 +6,13 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import pathlib
 import socket
+import subprocess
+import sys
 import tempfile
+import textwrap
 import unittest
 import zipfile
 from unittest.mock import patch
@@ -317,6 +321,248 @@ class MultitaskingCorpusTests(unittest.TestCase):
             projection = dict(report)
             stored = projection.pop("receipt_sha256")
             self.assertEqual(stored, sysverify.canonical_sha256(projection))
+
+
+
+class WorkflowScratchBoundaryTests(unittest.TestCase):
+    """Keep generated multitasking evidence outside the exact source checkout."""
+
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="qikvrt-workflow-source-")
+        self.addCleanup(temporary.cleanup)
+        self.source = pathlib.Path(temporary.name) / "checkout"
+        self.scratch = pathlib.Path(temporary.name) / "runner-temp" / "multitasking"
+        self.source.mkdir()
+        self.repository = "Goldkelch/qik-vrt"
+        self.workflow = (
+            sysverify.ROOT
+            / ".github/workflows/qikvrt_real_mesh_system_verification.yml"
+        ).read_text(encoding="utf-8")
+        # Commit the actual implementation and every input hashed by its report.
+        for name in (
+            "tools/__init__.py",
+            "tools/qikvrt_real_mesh.py",
+            "tools/qikvrt_real_mesh_system_verification.py",
+            "src/qikvrt_effect_ack.py",
+            "tests/test_qikvrt_real_mesh.py",
+            "tests/test_qikvrt_real_mesh_system_verification.py",
+            "state/mesh/QIKVRT_REAL_MESH_V1.json",
+        ):
+            target = self.source / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((sysverify.ROOT / name).read_bytes())
+        self._git("init", "--quiet", "--template=")
+        self._git("remote", "add", "origin", "https://github.com/Goldkelch/qik-vrt.git")
+        self._git("add", ".")
+        self._git("-c", "user.name=Workflow regression fixture",
+                  "-c", "user.email=workflow-fixture@example.invalid",
+                  "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", "Fixture")
+        self.head = self._git("rev-parse", "HEAD").strip()
+        self.tree = self._git("rev-parse", "HEAD^{tree}").strip()
+        self.counterpart = {"sha": SOURCE_HEAD, "commit": {"tree": {"sha": SOURCE_TREE}}}
+
+    def _git(self, *args: str) -> str:
+        return subprocess.check_output(
+            ["git", "-C", str(self.source), *args], text=True, stderr=subprocess.PIPE
+        )
+
+    def _python(self, script: str, *, scratch: pathlib.Path | None = None):
+        return subprocess.run(
+            [sys.executable, "-B", "-c", script], cwd=self.source,
+            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1",
+                 "PYTHONPATH": str(self.source),
+                 "REPOSITORY": self.repository, "GH_TOKEN": "OFFLINE_TEST_FIXTURE",
+                 "MULTITASKING_DIR": str(scratch or self.scratch)},
+            text=True, capture_output=True, timeout=120,
+        )
+
+    def _workflow_execution(self, *, scratch: pathlib.Path | None = None):
+        step = self.workflow.split(
+            "      - name: Execute bounded repository multitasking and lossless corpus\n", 1
+        )[1].split("\n      - name:", 1)[0]
+        script = textwrap.dedent(step.split("python3 - <<'PY'\n", 1)[1].split("\n          PY", 1)[0])
+        # Reproduce mkdir + the actual workflow heredoc. Only the remote HTTP
+        # observation is an explicit offline fixture; Git, CLI and TCP are real.
+        (scratch or self.scratch).mkdir(parents=True)
+        wrapper = (
+            "import io\nfrom unittest.mock import patch\n"
+            f"with patch('urllib.request.urlopen', return_value=io.BytesIO({json.dumps(self.counterpart).encode()!r})):\n"
+            f"    exec({script!r}, {{'__name__': '__main__'}})\n"
+        )
+        return self._python(wrapper, scratch=scratch)
+
+    def _cli(self) -> list[str]:
+        return ["multitasking", "--repository", self.repository,
+                "--source-head", self.head, "--source-tree", self.tree,
+                "--counterpart-head", SOURCE_HEAD, "--counterpart-tree", SOURCE_TREE,
+                "--workdir", str(self.scratch / "runtime"),
+                "--output", str(self.scratch / "report.json")]
+
+    def test_actual_workflow_runs_corpus_and_leaves_committed_source_clean(self) -> None:
+        result = self._workflow_execution()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads((self.scratch / "report.json").read_text())
+        self.assertEqual(report["implementation_subject"], {
+            "repository": self.repository, "head": self.head, "tree": self.tree,
+        })
+        self.assertTrue(report["source_binding_verified"])
+        self.assertEqual(report["node_counts"], [4, 8, 16])
+        self.assertEqual(report["repetitions"], 3)
+        self.assertEqual(len(report["runs"]), 9)
+        for run in report["runs"]:
+            self.assertEqual(run["messages_completed"], run["node_count"])
+            self.assertEqual(run["ledger_records"], 2 * run["node_count"] ** 2)
+            self.assertTrue(run["restart_recovery_success"])
+            self.assertTrue(run["consolidation"]["zero_missing_or_changed_bytes"])
+        self.assertEqual(json.loads((self.scratch / "counterpart-reference.json").read_text()),
+                         self.counterpart)
+        self.assertFalse(report["counterpart_reference"]["execution_verified_by_this_run"])
+        self.assertEqual(self._git("rev-parse", "HEAD").strip(), self.head)
+        self.assertEqual(self._git("rev-parse", "HEAD^{tree}").strip(), self.tree)
+        self.assertEqual(self._git("status", "--porcelain"), "")
+        qualification = json.loads((self.scratch / "qualification.json").read_text())
+        self.assertEqual(qualification["status"], "QUALIFIED_FOR_EXACT_BOUNDED_SCOPE")
+        self.assertFalse(qualification["continuous_operation_proven"])
+        self.assertFalse(qualification["remote_counterpart_execution"])
+        # Recomputed digests cannot turn incomplete, stale or inflated evidence
+        # into qualification. Use the original real corpus for every control.
+        mutations = {
+            "unbound": lambda r: r.update(source_binding_verified=False),
+            "missing_trial": lambda r: r["runs"].pop(),
+            "duplicate_trial": lambda r: r["runs"].__setitem__(1, copy.deepcopy(r["runs"][0])),
+            "wrong_version": lambda r: r["input_sha256"].update({"tools/qikvrt_real_mesh.py": "0" * 64}),
+            "wrong_runtime": lambda r: r["runtime"].update(python="unverified-runtime"),
+            "remote_claim": lambda r: r["completion_claims"].update(remote_counterpart_executed=True),
+            "unbounded_claim": lambda r: r["completion_claims"].update(unbounded_scalability=True),
+            "lost_effect": lambda r: r["runs"][0].update(messages_completed=0),
+            "restart_failure": lambda r: r["runs"][0].update(restart_recovery_success=False),
+            "fake_overlap": lambda r: r["runs"][0]["peak_inflight_by_node"].update({"pair-a-authority": 999}),
+        }
+        with patch.object(sysverify, "ROOT", self.source):
+            for name, mutate in mutations.items():
+                with self.subTest(qualification_control=name):
+                    candidate = copy.deepcopy(report)
+                    mutate(candidate)
+                    candidate.pop("receipt_sha256")
+                    candidate["receipt_sha256"] = sysverify.canonical_sha256(candidate)
+                    with self.assertRaises(sysverify.VerificationError):
+                        sysverify.verify_multitasking_report(candidate, self.scratch / "runtime",
+                            repository=self.repository, source_head=self.head, source_tree=self.tree)
+            with self.assertRaises(sysverify.VerificationError):
+                sysverify.verify_multitasking_report(report, self.scratch / "runtime",
+                    repository=self.repository, source_head="0" * 40, source_tree=self.tree)
+            ledger = self.scratch / "runtime/nodes-4-trial-1/ledgers/pair-a-authority.jsonl"
+            original = ledger.read_bytes()
+            ledger.write_bytes(original + b"{}\n")
+            with self.assertRaises(sysverify.VerificationError):
+                sysverify.verify_multitasking_report(report, self.scratch / "runtime",
+                    repository=self.repository, source_head=self.head, source_tree=self.tree)
+            ledger.write_bytes(original)
+
+    def test_actual_mirror_workflow_requires_its_own_qualified_execution(self) -> None:
+        self.repository = "ingolf-lohmann/qik-vrt"
+        self._git("remote", "set-url", "origin", "https://github.com/ingolf-lohmann/qik-vrt.git")
+        self.test_actual_workflow_runs_corpus_and_leaves_committed_source_clean()
+
+    def test_legacy_in_worktree_observation_blocks_before_corpus(self) -> None:
+        scratch = self.source / ".qikvrt" / "real-mesh-multitasking"
+        result = self._workflow_execution(scratch=scratch)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("exact clean committed implementation", result.stderr)
+        self.assertTrue((scratch / "counterpart-reference.json").is_file())
+        self.assertFalse((scratch / "runtime").exists())
+        self.assertFalse((scratch / "report.json").exists())
+
+    def test_tracked_and_untracked_source_mutations_block_before_corpus(self) -> None:
+        for name in ("src/qikvrt_effect_ack.py", "untracked-source.py"):
+            with self.subTest(path=name):
+                target = self.source / name
+                original = target.read_bytes() if target.exists() else None
+                target.write_bytes((original or b"") + b"\n# intentional source mutation\n")
+                result = self._workflow_execution()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("exact clean committed implementation", result.stderr)
+                self.assertFalse((self.scratch / "runtime").exists())
+                self.assertFalse((self.scratch / "report.json").exists())
+                if original is None:
+                    target.unlink()
+                else:
+                    target.write_bytes(original)
+                (self.scratch / "counterpart-reference.json").unlink()
+                self.scratch.rmdir()
+
+    def test_head_and_tree_mismatch_block_before_corpus(self) -> None:
+        for field in ("--source-head", "--source-tree"):
+            with self.subTest(field=field):
+                args = self._cli()
+                args[args.index(field) + 1] = "0" * 40
+                result = self._python(
+                    "from tools import qikvrt_real_mesh_system_verification as verifier\n"
+                    f"raise SystemExit(verifier.main({args!r}))\n"
+                )
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn("exact clean committed implementation", result.stderr)
+                self.assertFalse((self.scratch / "runtime").exists())
+
+    def test_tracked_and_untracked_mutations_during_execution_block_report(self) -> None:
+        for name in ("src/qikvrt_effect_ack.py", "untracked-source.py"):
+            with self.subTest(path=name):
+                target = self.source / name
+                original = target.read_bytes() if target.exists() else None
+                self.scratch.mkdir(parents=True)
+                # Execute real network work, then inject a mutation between
+                # the opening and closing source snapshots. Do not mock Git.
+                script = (
+                    "from pathlib import Path\n"
+                    "from tools import qikvrt_real_mesh_system_verification as verifier\n"
+                    "original_run = verifier.run_multitasking\n"
+                    "def mutate_during_run(*args, **kwargs):\n"
+                    "    report = original_run(*args, **kwargs, node_counts=(4,), repetitions=1)\n"
+                    f"    target = Path({name!r})\n"
+                    "    target.write_bytes((target.read_bytes() if target.exists() else b'') + b'\\n# mutation during execution\\n')\n"
+                    "    return report\n"
+                    "verifier.run_multitasking = mutate_during_run\n"
+                    f"raise SystemExit(verifier.main({self._cli()!r}))\n"
+                )
+                result = self._python(script)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn("exact clean committed implementation", result.stderr)
+                self.assertTrue((self.scratch / "runtime" / "nodes-4-trial-1" /
+                                 "CONSOLIDATED_LEDGERS.zip").is_file(), result.stdout + result.stderr)
+                self.assertFalse((self.scratch / "report.json").exists())
+                self.assertNotEqual(self._git("status", "--porcelain"), "")
+                if original is None:
+                    target.unlink()
+                else:
+                    target.write_bytes(original)
+                # Each subtest must execute in a fresh ephemeral runtime.
+                self.scratch = self.scratch.with_name("multitasking-next")
+
+    def test_multitasking_outputs_do_not_dirty_exact_checkout(self) -> None:
+        workflow = self.workflow
+        self.assertIn("'verify-multitasking'", workflow)
+        self.assertIn("    - cron: '*/15 * * * *'", workflow)
+        self.assertNotIn("    paths:", workflow)
+        self.assertIn(
+            "MULTITASKING_DIR: ${{ runner.temp }}/qikvrt-real-mesh-multitasking",
+            workflow,
+        )
+        self.assertIn(
+            "scratch = Path(os.environ['MULTITASKING_DIR'])",
+            workflow,
+        )
+        self.assertIn(
+            "path: ${{ runner.temp }}/qikvrt-real-mesh-multitasking",
+            workflow,
+        )
+        self.assertNotIn(
+            "mkdir -p .qikvrt/real-mesh-multitasking",
+            workflow,
+        )
+        self.assertNotIn(
+            "Path('.qikvrt/real-mesh-multitasking",
+            workflow,
+        )
 
 
 class ReflexiveNetworkSystemTest(unittest.TestCase):

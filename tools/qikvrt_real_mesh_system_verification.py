@@ -24,6 +24,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import hashlib
+import io
 import json
 import pathlib
 import re
@@ -577,35 +578,175 @@ def run_multitasking(workdir: pathlib.Path, *, repository: str, source_head: str
     return report
 
 
+def verify_multitasking_report(report: dict, workdir: pathlib.Path, *, repository: str,
+                              source_head: str, source_tree: str) -> dict:
+    """Qualify only the exact bounded implementation and original ledger corpus.
+
+    Callers must supply freshly observed subjects, never subjects copied from
+    the receipt being checked. This is neither hosted-run authentication nor
+    remote execution, lifetime stability or an unbounded scalability proof.
+    """
+    from tools import qikvrt_real_mesh as mesh
+    def require(condition, reason):
+        if not condition:
+            raise VerificationError(reason)
+    require(repository in ("Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt") and
+            all(isinstance(value, str) and SHA1_RE.fullmatch(value) for value in (source_head, source_tree)),
+            "unbound expected implementation subject")
+    require(isinstance(report, dict), "multitasking evidence must be an object")
+    require(report.get("schema") == "qikvrt_repository_multitasking_v1", "unknown multitasking evidence")
+    require(report.get("implementation_subject") == {"repository": repository, "head": source_head,
+                                                     "tree": source_tree}, "stale or substituted implementation subject")
+    require(report.get("source_binding_verified") is True, "unverified implementation source")
+    require(report.get("status") == "SCOPED_WORKLOAD_CHECKED", "workload was not completed")
+    projection = dict(report)
+    digest = projection.pop("receipt_sha256", None)
+    require(digest == canonical_sha256(projection), "multitasking receipt digest mismatch")
+    inputs = ("tools/qikvrt_real_mesh.py", "tools/qikvrt_real_mesh_system_verification.py",
+              "src/qikvrt_effect_ack.py", "tests/test_qikvrt_real_mesh.py",
+              "tests/test_qikvrt_real_mesh_system_verification.py", "state/mesh/QIKVRT_REAL_MESH_V1.json")
+    require(report.get("input_sha256") == {
+        name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in inputs
+    }, "implementation or contract version changed; reverify required")
+    require(report.get("runtime") == {"python": sys.version, "executable": sys.executable},
+            "execution runtime changed; reverify required")
+    claims = report.get("completion_claims", {})
+    require(isinstance(claims, dict), "invalid completion claims")
+    require(claims.get("tested_scope_multitasking") is True and all(claims.get(name) is False for name in
+        ("unbounded_scalability", "remote_counterpart_executed", "whole_repository_completion",
+         "all_temdd_layers_conformant", "main_activation", "authority_mirror_equality", "general_effect_ack_done")),
+        "unsupported completion claim")
+    require(report.get("scope") == "THIS_CHECKOUT_LOOPBACK_AUTHORITY_MIRROR_ROLE_PROCESSES_AND_DECLARED_LEDGER_CORPUS",
+            "unsupported qualification scope")
+    reference = report.get("counterpart_reference", {})
+    require(isinstance(reference, dict), "invalid counterpart reference")
+    require(reference.get("execution_verified_by_this_run") is False, "reference promoted to remote execution")
+    require(reference.get("repository") == ("ingolf-lohmann/qik-vrt" if repository == "Goldkelch/qik-vrt"
+                                            else "Goldkelch/qik-vrt"), "counterpart substitution")
+    require(all(isinstance(reference.get(name), str) and SHA1_RE.fullmatch(reference[name])
+                for name in ("head", "tree")), "unbound counterpart reference")
+    require(report.get("node_counts") == [4, 8, 16] and type(report.get("repetitions")) is int
+            and report["repetitions"] == 3, "incomplete scale or repetition coverage")
+    runs = report.get("runs", [])
+    expected = {(count, trial) for count in (4, 8, 16) for trial in (1, 2, 3)}
+    require(isinstance(runs, list) and len(runs) == 9, "missing execution trials")
+    seen = set()
+    for run in runs:
+        require(isinstance(run, dict), "invalid execution trial")
+        count, trial = run.get("node_count"), run.get("trial")
+        require(type(count) is int and type(trial) is int and (count, trial) in expected
+                and (count, trial) not in seen, "unknown or duplicate execution trial")
+        seen.add((count, trial))
+        for name, value in (("messages_attempted", count), ("messages_completed", count),
+                            ("effect_ack_done_count", count), ("ledger_records", 2 * count * count),
+                            ("process_failures", 0), ("integrity_failures", 0)):
+            require(type(run.get(name)) is int and run[name] == value, "invalid execution counter: " + name)
+        require(run.get("restart_recovery_success") is True, "restart replay not verified")
+        nodes = {f"pair-{chr(97 + pair)}-{role}" for pair in range(count // 2)
+                 for role in ("authority", "mirror")}
+        consolidation = run.get("consolidation", {})
+        require(isinstance(consolidation, dict) and isinstance(consolidation.get("inputs"), dict)
+                and isinstance(run.get("peak_inflight_by_node"), dict), "invalid node corpus inventory")
+        require(consolidation.get("zero_missing_or_changed_bytes") is True and
+                consolidation.get("restart_reconstruction") is True, "lossless readback missing")
+        require(set(consolidation.get("inputs", {})) == nodes and set(run.get("peak_inflight_by_node", {})) == nodes,
+                "missing or substituted node")
+        require(consolidation.get("archive") == "CONSOLIDATED_LEDGERS.zip", "unsafe corpus archive path")
+        directory = workdir / f"nodes-{count}-trial-{trial}"
+        require(not directory.is_symlink() and not (directory / "ledgers").is_symlink()
+                and not (directory / "CONSOLIDATED_LEDGERS.zip").is_symlink(), "redirected corpus path")
+        require({path.name for path in (directory / "ledgers").iterdir()} == {node + ".jsonl" for node in nodes},
+                "undeclared original ledger")
+        raw_archive = (directory / "CONSOLIDATED_LEDGERS.zip").read_bytes()
+        require(hashlib.sha256(raw_archive).hexdigest() == consolidation.get("archive_sha256"), "archive changed")
+        with zipfile.ZipFile(io.BytesIO(raw_archive)) as archive:
+            require(sorted(archive.namelist()) == sorted(node + ".jsonl" for node in nodes), "corpus membership changed")
+            for node in nodes:
+                path = directory / "ledgers" / (node + ".jsonl")
+                require(path.is_file() and not path.is_symlink(), "original ledger missing or redirected")
+                raw = path.read_bytes()
+                require(archive.read(node + ".jsonl") == raw, "original and consolidated ledger bytes differ")
+                ledger = mesh.AppendOnlyNodeLedger(path, node)
+                item = consolidation["inputs"][node]
+                require(item == {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+                                  "records": ledger.sequence, "accepted": sorted(ledger.accepted),
+                                  "completed": sorted(ledger.completed)}, "ledger reconstruction differs")
+                messages = {f"multitask-{count}-{trial}-{index}" for index in range(count)}
+                require(set(ledger.accepted) == set(ledger.completed) == messages and ledger.sequence == 2 * count,
+                        "missing or duplicated message effect")
+                active, peak = set(), 0
+                for line in raw.splitlines():
+                    record = json.loads(line)
+                    if record["event"] == "ACCEPTED":
+                        active.add(record["message_id"])
+                        peak = max(peak, len(active))
+                    elif record["event"] in ("COMPLETED", "HELD"):
+                        active.discard(record["message_id"])
+                require(not active and peak >= 2 and run["peak_inflight_by_node"][node] == peak,
+                        "node overlap is not supported by original ledger")
+    receipt = {"schema": "qikvrt_multitasking_qualification_v1", "status": "QUALIFIED_FOR_EXACT_BOUNDED_SCOPE",
+               "implementation_subject": report["implementation_subject"], "report_sha256": digest,
+               "input_sha256": report["input_sha256"], "scope": report["scope"],
+               "runtime": report["runtime"],
+               "mutation_rule": "ANY_SUBJECT_INPUT_OR_RUNTIME_VERSION_CHANGE_INVALIDATES_QUALIFICATION",
+               "remote_counterpart_execution": False, "continuous_operation_proven": False,
+               "unbounded_scalability_proven": False, "general_effect_ack_done": False}
+    receipt["receipt_sha256"] = canonical_sha256(receipt)
+    return receipt
+
+
+def _multitasking_source(args: argparse.Namespace):
+    remote = subprocess.check_output(["git", "-C", str(ROOT), "config", "--get", "remote.origin.url"], text=True).strip()
+    if remote not in (f"https://github.com/{args.repository}.git", f"https://github.com/{args.repository}",
+                      f"git@github.com:{args.repository}.git"):
+        raise VerificationError("implementation repository does not match the configured origin")
+    values = [subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", ref], text=True).strip()
+              for ref in ("HEAD", "HEAD^{tree}")]
+    dirty = subprocess.check_output(["git", "-C", str(ROOT), "status", "--porcelain"], text=True)
+    if values != [args.source_head, args.source_tree] or dirty:
+        raise VerificationError("multitasking requires the exact clean committed implementation")
+    return values
+
 def _multitasking_command(args: argparse.Namespace) -> int:
-    def source():
-        remote = subprocess.check_output(["git", "-C", str(ROOT), "config", "--get", "remote.origin.url"], text=True).strip()
-        if remote not in (f"https://github.com/{args.repository}.git", f"https://github.com/{args.repository}",
-                          f"git@github.com:{args.repository}.git"):
-            raise VerificationError("implementation repository does not match the configured origin")
-        values = [subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", ref], text=True).strip()
-                  for ref in ("HEAD", "HEAD^{tree}")]
-        dirty = subprocess.check_output(["git", "-C", str(ROOT), "status", "--porcelain"], text=True)
-        if values != [args.source_head, args.source_tree] or dirty:
-            raise VerificationError("multitasking requires the exact clean committed implementation")
-        return values
     try:
-        before = source()
+        before = _multitasking_source(args)
         report = run_multitasking(pathlib.Path(args.workdir), repository=args.repository,
             source_head=args.source_head, source_tree=args.source_tree,
             counterpart_head=args.counterpart_head, counterpart_tree=args.counterpart_tree)
-        if source() != before:
+        if _multitasking_source(args) != before:
             raise VerificationError("implementation mutated during execution")
         report["source_binding_verified"] = True
         report.pop("receipt_sha256")
         report["receipt_sha256"] = canonical_sha256(report)
+        verify_multitasking_report(report, pathlib.Path(args.workdir), repository=args.repository,
+                                  source_head=args.source_head, source_tree=args.source_tree)
+        if _multitasking_source(args) != before:
+            raise VerificationError("implementation mutated during qualification")
         pathlib.Path(args.output).write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
         print(json.dumps({"status": report["status"], "runs": len(report["runs"]),
                           "subject": report["implementation_subject"], "receipt_sha256": report["receipt_sha256"]}))
-    except (VerificationError, OSError, ValueError, RuntimeError) as exc:
+    except (VerificationError, OSError, ValueError, RuntimeError, KeyError, TypeError, zipfile.BadZipFile) as exc:
         print("BLOCK: " + str(exc), file=sys.stderr)
         return 2
     return 0
+
+
+def _qualification_command(args: argparse.Namespace) -> int:
+    try:
+        before = _multitasking_source(args)
+        report = json.loads(pathlib.Path(args.report).read_text())
+        receipt = verify_multitasking_report(report, pathlib.Path(args.workdir), repository=args.repository,
+                                            source_head=args.source_head, source_tree=args.source_tree)
+        if _multitasking_source(args) != before:
+            raise VerificationError("implementation mutated during qualification")
+        encoded = json.dumps(receipt, sort_keys=True, indent=2) + "\n"
+        if args.output:
+            pathlib.Path(args.output).write_text(encoded)
+        print(encoded, end="")
+        return 0
+    except (VerificationError, OSError, ValueError, RuntimeError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        print("BLOCK: " + str(exc), file=sys.stderr)
+        return 2
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
@@ -628,6 +769,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     for name in ("repository", "source-head", "source-tree", "counterpart-head", "counterpart-tree", "workdir", "output"):
         multitasking.add_argument("--" + name, required=True)
     multitasking.set_defaults(func=_multitasking_command)
+
+    qualification = sub.add_parser("verify-multitasking", help="qualify exact implementation and original bounded corpus")
+    for name in ("repository", "source-head", "source-tree", "report", "workdir"):
+        qualification.add_argument("--" + name, required=True)
+    qualification.add_argument("--output")
+    qualification.set_defaults(func=_qualification_command)
 
     return parser.parse_args(argv)
 

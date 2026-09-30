@@ -9,13 +9,15 @@
     "attribution_id": "Ingolf Lohmann"
   },
   "human_contributions": [
-    "Authorized diagnosis, repair and an autonomous test framework for Authority, Mirror and Mesh multitasking, scalability and lossless consolidation."
+    "Authorized diagnosis, repair and an autonomous test framework for Authority, Mirror and Mesh multitasking, scalability and lossless consolidation.",
+    "Authorized closing the observed per-repository qualification and regression gap through the existing carriers, without unsupported perpetual or universal completion claims."
   ],
   "artificial_cognitive_contributions": [
     "Reproduced node-wide-lock head-of-line blocking on both roles with a controlled downstream wait.",
     "Repaired the existing NodeRuntime with identity-scoped holder/waiter-counted locks.",
     "Extended the existing Real-Mesh verifier and harness for three trials each at 4/8/16 independent TCP processes, restart replay and exact ledger-byte consolidation.",
-    "Ported the same components through existing Mirror PR410, retaining its worker and current Mirror Main via an explicit three-way merge."
+    "Ported the same components through existing Mirror PR410, retaining its worker and current Mirror Main via an explicit three-way merge.",
+    "Added independent exact-subject/current-input/runtime qualification of all nine original ledger corpora, executable negative controls, and the same scratch-boundary repair and per-repository execution test for Mirror PR410."
   ],
   "diagnosis": {
     "observed_cause": "One node-wide asyncio.Lock remains held across send_message_async await.",
@@ -92,5 +94,28 @@
     "merge_base": "a9097186f8f570b6f1c9d339b73c22f18785ecb4",
     "conflicts": "Only generated integrity manifest and detached digest; regenerate, do not choose either stale projection.",
     "preserve_both_parents": true
+  },
+  "qualification_successor": {
+    "baseline_head": "5ee37ac6a16204bc6bd9bb91f61a621725f1c765",
+    "baseline_tree": "80d82384d2375be5df608f60c03b1f4a895c646c",
+    "scope": "EXACT_COMMITTED_CHECKOUT_LOOPBACK_4_8_16_NODES_THREE_TRIALS",
+    "qualified_scope_is_general_reentrancy": false,
+    "continuous_operation_proven": false,
+    "remote_counterpart_reference_is_execution": false,
+    "test_count": 49,
+    "test_failures": 0,
+    "test_log_sha256": "ff2841ddccc14e9529e8776b01be9e2e68cf753818b8605e3d2a67453272ae8d",
+    "native_successor_execution": "REQUIRED_AFTER_PERSISTENCE",
+    "reobservation": "EXISTING_WORKFLOW_EVERY_PR_HEAD_MAIN_PUSH_15_MINUTE_SCHEDULE_AFTER_PROTECTED_MAIN_PROMOTION",
+    "admission": "NO_BYPASS_OF_NATIVE_WORKFLOW_REVIEW_OR_PROTECTED_MAIN",
+    "invalidations": [
+      "subject",
+      "implementation inputs",
+      "runtime",
+      "missing or duplicate trials",
+      "original or consolidated ledger mutation",
+      "unsupported completion claims"
+    ],
+    "general_effect_ack_done": false
   }
 }
