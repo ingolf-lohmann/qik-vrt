@@ -4,9 +4,13 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import pathlib
+import shutil
+import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from datetime import datetime, timezone
 
@@ -446,6 +450,96 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertNotIn("/dispatches", workflow)
         self.assertNotIn("gh pr merge", workflow)
         self.assertNotIn("issues/comments", workflow)
+
+
+class ReflexiveObservationFailureTests(unittest.TestCase):
+    @staticmethod
+    def step_body(name: str) -> str:
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+        section = workflow.split(f"      - name: {name}\n", 1)[1]
+        section = section.split("\n      - name:", 1)[0]
+        body = section.split("        run: |\n", 1)[1]
+        return textwrap.dedent(body).replace(
+            "${{ github.event.pull_request.base.ref }}", "main"
+        )
+
+    def test_authority_404_preserves_a_failure_receipt_without_hiding_the_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            binary = root / "bin"
+            binary.mkdir()
+            (root / "tools").mkdir()
+            shutil.copyfile(
+                ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
+                root / "tools/qikvrt_reflexive_repository_watchdog.py",
+            )
+            stubs = {
+                "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
+                "jq": "#!/bin/bash\necho Goldkelch/qik-vrt\n",
+                "gh": f'#!/bin/bash\nif [[ "$2" == "repos/example/qik-vrt/git/ref/heads/main" ]]; then echo {HEAD}; else echo "gh: Not Found (HTTP 404)" >&2; exit 1; fi\n',
+            }
+            for name, source in stubs.items():
+                path = binary / name
+                path.write_text(source, encoding="utf-8")
+                path.chmod(0o700)
+            environment = {
+                **os.environ,
+                "PATH": str(binary) + os.pathsep + os.environ["PATH"],
+                "REPOSITORY": "example/qik-vrt",
+                "EVENT_NAME": "workflow_run",
+                "EVENT_PR": "",
+                "EXPECTED_HEAD": HEAD,
+                "CURRENT_RUN_ID": "12345",
+                "CURRENT_RUN_ATTEMPT": "2",
+            }
+            observed = subprocess.run(
+                ["bash", "-c", self.step_body("Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")],
+                cwd=root, env=environment, capture_output=True, text=True, timeout=10,
+            )
+            self.assertNotEqual(observed.returncode, 0)
+            self.assertIn("HTTP 404", observed.stderr)
+            fallback = subprocess.run(
+                ["bash", "-c", self.step_body("Preserve failed observation as machine-readable HOLD")],
+                cwd=root, env=environment, capture_output=True, text=True, timeout=10,
+            )
+            self.assertEqual(fallback.returncode, 0, fallback.stderr)
+            receipt_path = root / ".qikvrt/reflexive-repository-watchdog/reflexive-watchdog-receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            failure_contract = json.loads(CONTRACT.read_text(encoding="utf-8"))["reflexive_deadlock_prevention"]["observation_failure"]
+            self.assertEqual(receipt["schema"], failure_contract["receipt_schema"])
+            self.assertEqual(receipt["state"], "OBSERVATION_FAILED")
+            self.assertEqual(receipt["disposition"], "HOLD")
+            self.assertEqual(receipt["failure"]["stage"], "AUTHORITY_READBACK")
+            self.assertEqual(receipt["head_sha"], HEAD)
+            self.assertEqual(receipt["tree_sha"], TREE)
+            self.assertEqual(receipt["run_id"], 12345)
+            self.assertEqual(receipt["run_attempt"], 2)
+            self.assertFalse(receipt["live_subject_reobserved"])
+            self.assertFalse(receipt["productive_edge"])
+            self.assertFalse(any(receipt["completion_claims"].values()))
+            self.assertEqual(
+                receipt_path.read_bytes(),
+                (receipt_path.parent / "gatewatch-receipt.json").read_bytes(),
+            )
+
+    def test_failure_receipt_rejects_invalid_identity_and_zero_exit(self) -> None:
+        arguments = dict(
+            expected_head=HEAD, observed_head=HEAD, observed_tree=TREE,
+            repository="example/qik-vrt", now=datetime.now(timezone.utc),
+            run_id=12345, run_attempt=1, stage="AUTHORITY_READBACK", exit_code=1,
+        )
+        for replacement in ({"expected_head": "unknown"}, {"exit_code": 0}):
+            with self.assertRaises(MODULE.ReflexiveWatchdogBlock):
+                MODULE.observation_failure_receipt(**{**arguments, **replacement})
+
+    def test_drifted_checkout_is_recorded_as_failure_not_exact_binding(self) -> None:
+        receipt = MODULE.observation_failure_receipt(
+            expected_head=HEAD, observed_head="c" * 40, observed_tree=TREE,
+            repository="example/qik-vrt", now=datetime.now(timezone.utc),
+            run_id=12345, run_attempt=1, stage="CHECKOUT_BINDING", exit_code=1,
+        )
+        self.assertFalse(receipt["expected_head_matches_checkout"])
+        self.assertFalse(receipt["completion_claims"]["EFFECT_ACK_DONE"])
 
 
 if __name__ == "__main__":
