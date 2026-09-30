@@ -109,5 +109,14 @@
       "persistence": "ACCEPT_APPLY_REPEAT_AS_OWNER_ENGINEERING_HEURISTIC",
       "boundary": "This is Ingolf Lohmann's normative engineering principle and methodology, not an independently proven universal ranking of engineering or scientific disciplines."
     }
+  },
+  "usability_completion": {
+    "rule": "Clear authorized user intent must resolve to the requested effect, a typed HOLD, or an explicit error in the same interaction scope; analysis-only substitution and silent promise-without-effect are unacceptable.",
+    "metrics": {
+      "promise_without_effect_incidents": 0,
+      "redundant_human_reconfirmations": 0
+    },
+    "remediation": "A recurrence must strengthen executable prevention; apology alone is not remediation.",
+    "authority_boundary": "No completion rule may fabricate authority or bypass safety, review, provenance or effect-readback requirements."
   }
 }
