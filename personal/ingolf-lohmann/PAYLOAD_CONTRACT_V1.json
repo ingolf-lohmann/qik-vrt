@@ -126,5 +126,20 @@
     "rule": "Mirror preserves the continuity contract and explicit Authority seed reference; absence MUST NOT be represented as local seed execution or reciprocal seed proof.",
     "required_future_transition": "AUTHORIZED_HISTORY_PRESERVING_SUCCESSOR_MAY_MATERIALIZE_LOCAL_SEED_DESCRIPTOR_THEN_FRESHLY_REOBSERVE",
     "predecessor_evidence_transfer": false
+  },
+  "non_self_fulfilling_roundtrip": {
+    "rule": "DONE_CLAIM_IS_NOT_DONE_EVIDENCE",
+    "sequence": [
+      "BIND_EXACT_SUBJECT",
+      "EXECUTE",
+      "OBSERVE_EFFECT",
+      "FRESH_READBACK",
+      "BIND_SUCCESSOR",
+      "EVALUATE_DONE"
+    ],
+    "reflexive": true,
+    "authority_seed_contract": "runtime/m68000/QIKVRT_SELF_REFLEXIVE_SEED_BINDING_V1.json",
+    "mirror_seed_descriptor_status": "ABSENT_ON_MIRROR_MAIN_DO_NOT_FABRICATE_LOCAL_EXECUTION",
+    "product_goal": "PUBLIC_DOWNLOADABLE_FIREFOX_MVP"
   }
 }
