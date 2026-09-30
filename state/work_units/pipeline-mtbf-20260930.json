@@ -59,5 +59,28 @@
     "DONE": false,
     "EFFECT_ACK_DONE": false
   },
-  "PREDECESSOR_EVIDENCE_TRANSFER": false
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "extensions": [
+    {
+      "at": "2026-09-30T17:32:58.993Z",
+      "human_contribution": "Ingolf Lohmann authorized a complete KPI tree in place of the sole MTBF optimization objective",
+      "ai_contribution": "Defined 7 diagnostic branches and 37 metrics, operational definitions, evidence/aggregation contract, non-compensatory decision policy and acceptance cases",
+      "source_head": "3f4d5fa58c6a92a385286d44a77b655caed9290e",
+      "source_tree": "9c3af85fec990b376591c61212faf5e2ccaf73c1",
+      "paths": [
+        "policy/PIPELINE_KPI_TREE_V1.json",
+        "policy/repository-status-stall-detection-v1.md"
+      ],
+      "verification": {
+        "json_serialization": "VALID",
+        "unique_ids": true,
+        "hierarchy_edges": "VALID",
+        "runtime_instrumentation": "NOT_IMPLEMENTED",
+        "runtime_tests": "NOT_RUN",
+        "targets": "EXPLICITLY_UNSET",
+        "mesh_rollout": "NOT_VERIFIED"
+      },
+      "supersedes": "Earlier MTBF-only objective; historical provenance retained"
+    }
+  ]
 }
