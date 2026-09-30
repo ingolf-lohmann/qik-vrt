@@ -87,3 +87,131 @@ When there is no relevant change, silence is forbidden: the response must explic
 ## Repository architecture priority
 
 This policy is intended to be consumed by repository-native workflows and issue-agent logic. Future automation should persist each observation as a machine-readable snapshot, compare it with the prior snapshot, and derive the category deterministically before emitting a human-readable report.
+
+
+## Pipeline reliability measurement (owner directive, 2026-09-30)
+
+This section specifies the next implementation of the existing stall detector.
+Its presence is NOT evidence of deployed instrumentation or node-wide adoption.
+Human contribution: Ingolf Lohmann requested per-node stall frequency/duration
+and MTBF as the sole optimization objective. AI contribution: operational
+definitions, evidence constraints and acceptance cases below.
+
+### Objective and invariants
+
+Maximize empirical pipeline MTBF under the SAME declared workload, service
+obligation, measurement coverage, stall threshold and recovery criterion.
+Correctness, TEMDD evidence, authorization, security, losslessness and existing
+required gates are hard feasibility constraints, not competing score weights.
+Do not improve the number by rejecting work, reducing coverage, weakening gates,
+lengthening timeouts, relabeling an outage as idle, or leaving an incident open.
+MTTR and downtime remain compulsory diagnostics; a candidate with worse
+availability or longer recovery is not admitted as a reliability improvement.
+A claim of statistically established improvement requires a declared comparison
+method and sufficient exposure; a small-sample point estimate is descriptive only.
+
+### Scope and clocks
+
+Each record binds node ID, repository, scope/work-unit, exact HEAD AND TREE,
+evaluator commit/tree, policy version/hash, observer ID, source event IDs,
+source timestamps, observation timestamp and measurement window.
+Run evidence additionally carries run ID, attempt, event, workflow and actual
+checkout scope. A trusted-main observer is not a candidate test.
+Use UTC for persisted event times, monotonic clocks for local elapsed durations;
+reject negative intervals, clock rollback and incompatible clock epochs.
+Polling gives bounded onset/recovery intervals, not invented exact timestamps.
+
+### State and incident semantics
+
+Keep separate states: PRODUCTIVE, IDLE, WAITING_WITHIN_CONTRACT,
+STALLED, BLOCKED and OBSERVATION_UNKNOWN.
+IDLE requires positive evidence of no owed work; an empty or inaccessible query
+does not prove idle. Pending admission is not productive execution.
+A pipeline failure begins when an owed, declared progress/effect deadline is
+missed. Authorized waiting is separately visible; it becomes a service failure
+if the declared delivery obligation is missed, without bypassing its gate.
+A failed subjob is not automatically a pipeline failure if redundant processing
+continues to satisfy the same obligation.
+
+Heartbeat, comments, retries, commits and a successful observer do not reset the
+progress deadline. Only a validated semantic checkpoint satisfying the declared
+obligation qualifies. Close an incident only after the same work scope has a
+verified progress/effect readback and the versioned recovery criterion is met.
+Repeated observations of one incident increment its duration, not failure count.
+Overlapping per-work-unit stalls use union duration at node level; retain
+individual incidents. A node-level incident ends only when all missed node
+obligations have recovered. Mesh failure uses its declared end-to-end service
+predicate, never the sum or mean of node MTBFs.
+
+Persist incident IDs, onset/recovery bounds, cause status (UNKNOWN until proven),
+last useful checkpoint, pending work, current age and evidence references.
+Restarts replay the durable append-only ledger idempotently. HEAD mutation starts
+a new validation subject but does NOT erase operational downtime or reset the
+incident. Link successor records for operational continuity; never transfer
+candidate validation (PREDECESSOR_EVIDENCE_TRANSFER=false).
+
+### Computation and uncertainty
+
+For a declared, fully observed service window:
+- failure_count = distinct node-level transitions into pipeline failure;
+- operating_seconds = known available service time, excluding downtime;
+- MTBF_seconds = operating_seconds / failure_count, if failure_count > 0;
+- downtime_seconds = union of failed-service intervals, including open incidents
+  clipped at the window end;
+- MTTR_seconds = sum of fully observed completed recovery durations /
+  count of those recoveries (report open/censored cases separately);
+- observed_availability = operating_seconds /
+  (operating_seconds + downtime_seconds), when the denominator is positive.
+
+Report eligible service seconds, known observed seconds, idle seconds,
+authorized-wait seconds and unknown seconds separately. Overlapping concurrent
+jobs must not multiply node exposure. Readiness exposure during idle may count
+only under an explicit service contract with independent readiness evidence;
+otherwise label the estimate active-workload-only.
+
+Zero observed failures means MTBF=null, status=NO_FAILURE_OBSERVED and recorded
+exposure; never infinity or proven reliability. Unknown intervals must not
+silently count as uptime or downtime. A window crossing a telemetry gap is
+INCOMPLETE; retain coverage and bounds and do not rank it as an improvement.
+An incident already open at window start is left-censored and is not a new
+failure; disclose it and do not fabricate its onset. A still-open incident is
+right-censored, keeps increasing in age and cannot disappear from reporting.
+
+HTTP 404 from the external observer is OBSERVATION_UNKNOWN for the target node
+unless independent evidence proves a pipeline failure. Record observer
+availability separately, including failure to persist telemetry.
+Use a repository-native monitor with independently scheduled observation and
+durable storage; a process unable to observe its own death cannot certify uptime.
+
+### Required implementation and acceptance
+
+Extend the existing repository status/watchdog and ledger path, not a parallel
+controller. Every registered node must independently publish a bound adoption
+receipt and measured window; missing nodes remain UNKNOWN. A Mirror record does
+not establish Authority adoption. Keep node and Mesh scope distinct.
+
+Required executable tests before activation:
+1. Regular idle produces no failure.
+2. Owed work crossing its deadline creates exactly one incident.
+3. Repeated polls/retries/noise do not reset onset or increase failure count.
+4. Same-scope verified recovery closes it; unrelated green runs do not.
+5. An open incident contributes downtime through window end.
+6. Observer 404, incomplete pagination and telemetry gaps remain UNKNOWN.
+7. Duplicate/out-of-order events, process restart and replay are deterministic.
+8. HEAD/TREE changes retain operational history but invalidate candidate evidence.
+9. Concurrent stalls use union durations; cross-node incidents are not summed
+   into Mesh MTBF.
+10. Zero failures, zero exposure, left/right censoring and clock rollback are
+    handled explicitly.
+11. A benchmark with reduced work, relaxed thresholds, missing nodes, worse
+    recovery or weaker mandatory gates cannot win the optimization comparison.
+12. Kill the pipeline and separately kill its observer; independently verify
+    detection, durable recording, restart/replay and real work recovery.
+
+Reference definitions:
+https://www.ibm.com/think/topics/mttr-vs-mtbf
+https://cloud.ibm.com/docs/resiliency?topic=resiliency-understanding-ha
+
+Activation requires executable instrumentation, the tests above, repository
+integrity materialization, exact-head gates and per-node readback. Until then:
+SPECIFICATION_CANDIDATE; INSTRUMENTATION_NOT_VERIFIED; MESH_ADOPTION_NOT_VERIFIED.
