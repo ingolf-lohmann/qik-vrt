@@ -94,13 +94,16 @@ This policy is intended to be consumed by repository-native workflows and issue-
 This section specifies the next implementation of the existing stall detector.
 Its presence is NOT evidence of deployed instrumentation or node-wide adoption.
 Human contribution: Ingolf Lohmann requested per-node stall frequency/duration
-and MTBF as the sole optimization objective. AI contribution: operational
+and initially MTBF as the sole optimization objective. The subsequent owner
+instruction expands this to the KPI tree below. AI contribution: operational
 definitions, evidence constraints and acceptance cases below.
 
 ### Objective and invariants
 
-Maximize empirical pipeline MTBF under the SAME declared workload, service
-obligation, measurement coverage, stall threshold and recovery criterion.
+Use the non-compensatory KPI tree in `policy/PIPELINE_KPI_TREE_V1.json`.
+MTBF remains a reliability indicator, but is no longer the sole optimization
+objective. Compare under the SAME declared workload, service obligation,
+measurement coverage, stall threshold and recovery criterion.
 Correctness, TEMDD evidence, authorization, security, losslessness and existing
 required gates are hard feasibility constraints, not competing score weights.
 Do not improve the number by rejecting work, reducing coverage, weakening gates,
@@ -215,3 +218,37 @@ https://cloud.ibm.com/docs/resiliency?topic=resiliency-understanding-ha
 Activation requires executable instrumentation, the tests above, repository
 integrity materialization, exact-head gates and per-node readback. Until then:
 SPECIFICATION_CANDIDATE; INSTRUMENTATION_NOT_VERIFIED; MESH_ADOPTION_NOT_VERIFIED.
+
+## KPI tree expansion (subsequent owner directive, 2026-09-30)
+
+Machine-readable authority for this candidate: `policy/PIPELINE_KPI_TREE_V1.json`.
+This supersedes the earlier MTBF-only ranking and preserves the incident semantics
+above. The root is **verified, timely, reliable fulfillment of service obligations**.
+The tree is a diagnostic hierarchy, not a proved causal model or weighted score.
+
+| Branch | Indicators |
+| --- | --- |
+| Nachgewiesene Auftragserfüllung | Fristgerechte Effekte; Verifizierter Durchsatz; Ende-zu-Ende-Latenz; Überfällige Aufträge |
+| Verfügbarkeit und Stillstand | Beobachtete Verfügbarkeit; Mittlere Betriebszeit zwischen Ausfällen; Ausfallhäufigkeit; Stillstandsdauer; Alter offener Störungen; Wiederholungsfehler |
+| Erkennung und Wiederherstellung | Erkennungszeit; Wiederherstellungszeit; Lange Wiederherstellungen; Autonome Wiederherstellung; Verlustfreie Wiederaufnahme |
+| Fluss und Kapazität | Wartezeit bis Ausführung; Offene Arbeit; Ältester offener Auftrag; Wiederholungsaufwand; Ressourcenauslastung; Skalierungseffizienz |
+| Korrektheit und Änderungssicherheit | Verlorene Effekte; Doppelte Effekte; Fehler nach Freigabe; Änderungsbedingte Ausfälle; Einhaltung verbindlicher Gates; Unzulässige Wirkungen |
+| Messqualität und Selbstbeobachtung | Beobachtungsabdeckung; Vollständige Evidenzbindung; Alter der Telemetrie; Verfügbarkeit des Beobachters; Dauerhafte Messwertspeicherung |
+| Mesh-Zusammenarbeit | Aktive Metrik auf allen Nodes; Verifizierte Übergaben; Übergabezeit bis Wirkung; Konsolidierungszeit; Fehlerisolation |
+
+Every indicator declares its unit, definition, data source and direction.
+Targets are explicitly UNSET, not fabricated. Bind targets, measurement windows,
+service population and allowable tradeoffs in a versioned service contract before
+issuing an SLO verdict. Emit descriptive values and uncertainty before that point.
+No denominator, no numerical ratio; no observed failures, no infinite MTBF.
+Keep incomplete observations and unfinished obligations visible.
+
+Optimization order: valid evidence -> hard correctness/authority constraints ->
+recovery of breached user-facing service obligations -> comparable service-SLO
+vector -> Pareto improvement. No universal weighted score may conceal a failed
+gate, missing node, unresolved incident or worsened delivery obligation.
+Only owner-approved explicit budgets permit a tradeoff. Independent Mesh
+service measurement is required; do not average node MTBFs or percentiles.
+
+This change defines 7 branches and 37 indicators. It is a specification candidate;
+it does not install collectors, validate runtime performance or establish adoption.
