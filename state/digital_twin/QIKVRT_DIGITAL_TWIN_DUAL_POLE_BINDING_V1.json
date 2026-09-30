@@ -1,0 +1,23 @@
+{
+  "schema": "qikvrt_digital_twin_dual_pole_binding_v1",
+  "authority": {
+    "repository": "Goldkelch/qik-vrt",
+    "subject": "6599d291463b39881c4ee12291e0604c16884f16"
+  },
+  "mirror": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "subject": "e8cf26d7c82bcc7fe1f664e03a6b37600c7b8ded"
+  },
+  "contract_path": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+  "implementation_path": "src/qikvrt_digital_twin_rest.py",
+  "test_path": "tests/test_qikvrt_digital_twin_rest.py",
+  "invariants": {
+    "distinct_evidence_identities": true,
+    "predecessor_evidence_transfer": false,
+    "byte_equality_requires_fresh_hash_compare": true,
+    "runtime_equivalence_requires_fresh_execution": true,
+    "mutual_replication_is_not_independent_scientific_validation": true
+  },
+  "state": "MATERIALIZED_PENDING_FRESH_DUAL_POLE_EXECUTION",
+  "effect_ack_done": false
+}

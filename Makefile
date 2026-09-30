@@ -112,3 +112,11 @@ mesh-worker-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_mesh_worker_installation tests.test_qikvrt_github_observation_transport
 
 test: mesh-worker-test
+
+# Port of the existing Authority Real-Mesh verification components.
+.PHONY: real-mesh-test real-mesh-system-verification
+real-mesh-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_real_mesh
+real-mesh-system-verification:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_real_mesh_system_verification
+test: real-mesh-test real-mesh-system-verification

@@ -1,0 +1,59 @@
+{
+  "schema": "qikvrt_ethical_evolutionary_digital_twin_mesh_v1",
+  "purpose": "Operate Authority and Mirror as reciprocal, versioned Digital Twin knowledge stores through the QIK-VRT REST contract while preserving independent evidence identities.",
+  "ethics": {
+    "human_authority_preserved": true,
+    "no_hidden_external_effects": true,
+    "rights_and_license_checks_required": true,
+    "privacy_and_security_checks_required": true,
+    "provenance_required": true,
+    "scientific_claim_boundaries_required": true,
+    "fail_closed_on_ambiguity": true,
+    "external_content_requires_explicit_admission": true
+  },
+  "growth": {
+    "direction": "INSIDE_OUT_THROUGH_EXPLICIT_INTERFACES",
+    "unit": "VERSIONED_SUCCESSOR",
+    "recursive": true,
+    "hard_cut_on_material_mutation": true,
+    "predecessor_evidence_transfer": false,
+    "append_or_supersede_not_silent_rewrite": true,
+    "arbitrary_web_ingestion": false,
+    "uncontrolled_self_modification": false
+  },
+  "reciprocal_rest": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+    "authority_repository": "Goldkelch/qik-vrt",
+    "mirror_repository": "ingolf-lohmann/qik-vrt",
+    "sequence": [
+      "OBSERVE_LOCAL",
+      "GET_PEER_STATE",
+      "COMPARE_BOUND_SUBJECTS",
+      "CLASSIFY_DELTA",
+      "ADMIT_IF_POLICY_ALLOWS",
+      "PREPARE_SUCCESSOR",
+      "EXECUTE_LOCAL",
+      "READBACK_LOCAL",
+      "PUBLISH_RECEIPT",
+      "PEER_REOBSERVES",
+      "BIND_SUPERSEDES_OR_REFINES",
+      "REPEAT"
+    ],
+    "peer_state_is_not_authority": true,
+    "transport_ack_not_effect_ack": true
+  },
+  "artificial_cognition_audit": {
+    "latest_case": "evidence/audits/ACOG_VIS_20260930_001.json",
+    "audit_failure_may_generate_corrective_successor": true,
+    "audit_failure_does_not_authorize_gate_bypass": true
+  },
+  "stop_conditions": [
+    "SCOPED_EFFECT_ACK_DONE",
+    "AUTHORITY_BOUNDARY",
+    "RIGHTS_HOLD",
+    "SECURITY_HOLD",
+    "PROVENANCE_HOLD",
+    "SCIENTIFIC_CLAIM_HOLD"
+  ],
+  "effect_ack_done": false
+}
