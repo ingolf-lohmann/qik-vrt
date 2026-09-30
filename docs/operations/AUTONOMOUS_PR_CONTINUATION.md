@@ -5,6 +5,38 @@ Copyright 2026 Ingolf Lohmann.
 
 # Autonomous PR continuation
 
+## Mesh-wide target and current implementation boundary
+
+The owner's target applies to every Mesh repository, not only Goldkelch:
+process inputs using persisted cognition and ethics without external artificial
+cognition or repeated owner intervention; return to zero open issues and pull
+requests after actually delivering the requested effects. Returning to rest
+does not reset history or erase unresolved work. Stable workflow rules must
+process supported work units without rewriting themselves for each input.
+
+This is a target, not an assertion that the current implementation meets it.
+The first role-local repair on `ingolf-lohmann/qik-vrt`, based on
+`25c4df4caf063d0545621f9958941c3cd0dfd5fa`, removes proposal-to-effect promotion
+and replaces the cross-repository auto-finish effect runner with a read-only,
+fully paginated local queue observer. Empty-at-observation is not completion;
+pagination is not an atomic snapshot. Historical DONE bundles are not current
+authorization. Tests, reviews, rules and effect receipts must be freshly bound
+to the executing repository, exact base, head, tree and work unit.
+
+Still required: validated allowlisted deterministic issue handlers beyond the
+initial fail-closed compiler; event-bound resumption instead of unchanged
+backlog retries; exact-subject native review and effect verification; and actual
+resolution of the remaining local issues and PRs. The proposal workflow no
+longer calls an external model, but unsupported work units remain `BLOCK`. This
+repair must not be advertised as autonomous backlog completion. No predecessor or other
+repository's validation is imported as proof for this candidate.
+
+The code-owner gate must emit its own `QIKVRT required code-owner review`
+context, not overwrite `QIKVRT requested review execution`. Native code-owner
+approval remains independently required; correcting the status label cannot
+manufacture it. Platform protection and activation on trusted main are separate
+effects from local candidate tests.
+
 ## Purpose
 
 The repository may independently continue deterministic, repository-internal

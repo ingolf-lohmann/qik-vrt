@@ -9,7 +9,7 @@ The processor:
 1. fetches the authoritative GitHub issue payload;
 2. materializes a canonical request and SHA-256 evidence;
 3. gathers deterministic, size-bounded repository context;
-4. requests a repository-grounded answer from GitHub Models;
+4. compiles a repository-grounded disposition using reviewed local code;
 5. emits truthful status metadata;
 6. validates the evidence bundle and no-false-pass rules;
 7. creates or updates `issue-agent/<number>`;
@@ -20,14 +20,19 @@ The processor:
 
 - No automatic merge.
 - No automatic issue closure.
-- Model failure produces `BLOCK`, not a fabricated answer.
+- Compiler failure or an unsupported work-unit class produces `BLOCK`, not a fabricated answer.
 - Generated work remains `CONTINUE` until repository checks and human review establish a stronger state.
 - The issue payload and its digest remain part of the committed evidence.
 - Formal derivation, repository evidence, hypothesis, and empirical confirmation must remain distinguishable.
 
-## Authentication and inference
+## Authentication and compilation
 
-The workflow uses GitHub's ephemeral `GITHUB_TOKEN` and requests `models: read`, `contents: write`, `issues: write`, and `pull-requests: write`. The inference implementation calls the GitHub Models REST endpoint. No repository-stored external model secret is required.
+The workflow uses GitHub's ephemeral `GITHUB_TOKEN` only for repository-local
+contents, issues, and pull requests. It grants no model permission and performs
+no external-model call. `scripts/issue_agent/compile.py` is fail-closed: only
+schema-validated handlers added through reviewed repository changes may become
+executable work units. The initial compiler deliberately classifies unsupported
+inputs as `BLOCKED_WITH_NEXT_ACTION`; this is not backlog completion.
 
 ## Processing an existing issue
 

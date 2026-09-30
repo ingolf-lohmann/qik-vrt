@@ -35,7 +35,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       REQUIRED_CODE_OWNER: Goldkelch
-      STATUS_CONTEXT: QIKVRT requested review execution
+      STATUS_CONTEXT: QIKVRT required code-owner review
       REQUESTED_PR: ${{ inputs.pr || '' }}
       EVENT_NAME: ${{ github.event_name }}
       EVENT_PRS: ${{ toJSON(github.event.workflow_run.pull_requests || fromJSON('[]')) }}
