@@ -1,0 +1,126 @@
+{
+  "audited_software_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+  "authorization_request_path": "release/qikvrt-quality-gates-20260928-v1/EXACT_AUTHORIZATION_REQUEST.json",
+  "effect_ack_done": false,
+  "evidence_path": "release/qikvrt-quality-gates-20260928-v1/zenodo-publication.json",
+  "files": [
+    {
+      "git_blob_sha": "88b0701a256c699116d04ab466c522ee3c0c5bf6",
+      "name": "QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf"
+    },
+    {
+      "git_blob_sha": "8030bf962335fd54ef72c6a078f656bb3c356145",
+      "name": "QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt",
+      "path": "docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Vorlesefassung_2026-09-28.txt"
+    },
+    {
+      "git_blob_sha": "64777bc944b83debf58dd5fc052a07ef457416ea",
+      "name": "CLAIM_MATRIX.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/CLAIM_MATRIX.json"
+    },
+    {
+      "git_blob_sha": "888ce9f58b6751badecf5101dacf82e0382a7974",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/SOURCE_EVIDENCE_BINDINGS.json"
+    },
+    {
+      "git_blob_sha": "2be5b0872dbe02fd99a06584a525c04bd242264e",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/PREPUBLICATION_RETURN_RECEIPT.json"
+    },
+    {
+      "git_blob_sha": "ea0cb283617964b07c31b185c9c22904ddc04b8f",
+      "name": "ARTICLE_DE.md",
+      "path": "docs/publications/2026-09-28-quality-gates/ARTICLE_DE.md"
+    },
+    {
+      "git_blob_sha": "eb2d7456eb21469a1d68dd291f9f09250c4fb9f1",
+      "name": "MEASUREMENTS.json",
+      "path": "docs/publications/2026-09-28-quality-gates/MEASUREMENTS.json"
+    },
+    {
+      "git_blob_sha": "0d6e6a905d974668c007ce035a62a1b19dbd4247",
+      "name": "QUALITY_GATES.json",
+      "path": "docs/publications/2026-09-28-quality-gates/QUALITY_GATES.json"
+    },
+    {
+      "git_blob_sha": "8597196d72cdcbc202f07ef51cd71081ab59a51c",
+      "name": "focused-tests.log",
+      "path": "docs/publications/2026-09-28-quality-gates/focused-tests.log"
+    },
+    {
+      "git_blob_sha": "4b0f0552c4adeaa08a892fbe59e32c70ed565ddd",
+      "name": "c90.log",
+      "path": "docs/publications/2026-09-28-quality-gates/c90.log"
+    },
+    {
+      "git_blob_sha": "7e76319a7bdf0b5365eac04ffb544d10d99f4479",
+      "name": "size.log",
+      "path": "docs/publications/2026-09-28-quality-gates/size.log"
+    },
+    {
+      "git_blob_sha": "951f3dd34095ca656954540fefa049a84109cf0a",
+      "name": "mesh-receipt.json",
+      "path": "docs/publications/2026-09-28-quality-gates/mesh-receipt.json"
+    },
+    {
+      "git_blob_sha": "66bf3295ff414b5dccd38c99c76dfd01e4346800",
+      "name": "ci-diagnostics.log",
+      "path": "docs/publications/2026-09-28-quality-gates/ci-diagnostics.log"
+    },
+    {
+      "git_blob_sha": "515fc6192a1e43a7b119fe982a37995871abab27",
+      "name": "PROVENANCE.json",
+      "path": "docs/publications/2026-09-15-closure-archive/PROVENANCE.json"
+    },
+    {
+      "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json"
+    }
+  ],
+  "machine_proof": {
+    "git_blob_sha": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+    "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "description": "Technischer Bericht über zehn konservativ bewertete Quality Gates am exakt gebundenen QIK-VRT-Main. Enthält frische lokale C90-, Assembly-, Terminal- und Loopback-Mesh-Nachweise, gemessene Kerngrößen, Invarianten der Zustandsübertragung und ausdrücklich offene Auslieferungs- und Hardwareprüfungen.",
+    "keywords": [
+      "QIK-VRT",
+      "Universal Transputer",
+      "Universal Terminal",
+      "Quality Gates",
+      "serialization",
+      "evidence",
+      "fail-closed"
+    ],
+    "language": "deu",
+    "license": "cc-by-nc-nd-4.0",
+    "notes": "Konzeption und Verantwortung: Ingolf Lohmann. KI-assistierte Ausarbeitung: OpenAI Codex. Kein Produktrelease, kein neuer Lean-Kernelnachweis, kein Hardware- oder Patentnachweis. Konservative Evidenzbewertung eines exakt gebundenen Quellstands; offene Gates ausdrücklich dokumentiert.",
+    "prereserve_doi": true,
+    "publication_date": "2026-09-28",
+    "publication_type": "technicalnote",
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/Goldkelch/qik-vrt/tree/f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+        "relation": "isDocumentedBy",
+        "scheme": "url"
+      }
+    ],
+    "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
+    "upload_type": "publication",
+    "version": "0.1-20260928"
+  },
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt-publication-request-draft-v1",
+  "source_head": "5895ef4a18627244d24f6fd93d4cb63c97df4746",
+  "state": "DRAFT_EXACT_OWNER_AUTHORIZATION_PENDING"
+}

@@ -1,0 +1,36 @@
+{
+  "archive_preparation_date": "2026-09-28",
+  "byte_identity_verified": true,
+  "chronology_boundary": "Catalog entry creation is not independently measured user visibility or publication time. No retrocausality or prediction is inferred.",
+  "content_modified": false,
+  "document": {
+    "bytes": 160673,
+    "git_blob_sha1": "4d309f060c7661b21a3d97678bf29e07a212ced8",
+    "path": "QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+    "sha256": "d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4"
+  },
+  "first_library_entry": {
+    "created_at": "2026-09-15T05:39:52.621957Z",
+    "id": "libfile_c49060397ba08191a63aa083450ac7b1"
+  },
+  "formal_status_as_printed": "FORMAL_PENDING_KERNEL",
+  "historical_document_date": "2026-09-15",
+  "new_kernel_execution_for_this_document": false,
+  "original_proof_package": {
+    "bytes": 178084,
+    "embedded_pdf_bytes": 135698,
+    "embedded_pdf_not_byte_identical_to_primary": true,
+    "embedded_pdf_path": "qikvrt-evidence-closure-20260915/article/QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf",
+    "embedded_pdf_sha256": "3cdcbc6b826fc6ac568000cd268446bd8d3e1993b25489e19c1370b56371889d",
+    "lean_kernel_rerun": false,
+    "path": "QIKVRT_Lean_Lake_Pruefpaket_2026-09-15.zip",
+    "pypdf_extracted_text_equal": true,
+    "sha256": "14a248d87844e1dee50865f4e27cdcfb9a27808f0393eba3f62f0088c7c95e18",
+    "text_comparison_does_not_prove_visual_or_binary_identity": true
+  },
+  "schema": "qikvrt-historical-document-provenance-v1",
+  "second_library_entry": {
+    "created_at": "2026-09-27T22:14:51.790783Z",
+    "id": "libfile_2e2fc3eaee3481918974bccd46a55a86"
+  }
+}

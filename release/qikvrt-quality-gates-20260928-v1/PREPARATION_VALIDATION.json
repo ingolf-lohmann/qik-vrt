@@ -1,0 +1,29 @@
+{
+  "actual_zenodo_upload_authorized": false,
+  "bundle_identity": {
+    "bytes": 16356,
+    "git_blob_sha1": "3cedd9a94f122c8cfcd951c38d9e2de9c8eb9588",
+    "path": "release/qikvrt-quality-gates-20260928-v1/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "7497e6339361fd1dd3519323e098694b07285ed1d82ace38a4cba584f40f5069"
+  },
+  "candidate_count": 2,
+  "claim_count": 18,
+  "clarification": "The legacy v2 bundle zenodo_upload_authorized=true is its structural claim-disposition predicate. Separate candidate-specific natural-person authorization and single-use consumption remain mandatory. No owner authorization file or event was fabricated.",
+  "negative_tests": [
+    {
+      "case": "candidate-hash",
+      "reason": "SHA-256 mismatch for docs/publications/2026-09-28-quality-gates/QIKVRT_Quality_Gates_Universal_Transputer_2026-09-28.pdf",
+      "result": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "open-wording",
+      "reason": "Q06 has a disposition inconsistent with OPEN",
+      "result": "EXPECTED_REJECTION"
+    }
+  ],
+  "owner_authorization_observed": false,
+  "positive_bundle_validation": "PASS",
+  "production_effect_released": false,
+  "schema": "qikvrt-publication-preparation-validation-v1",
+  "upload_count": 15
+}

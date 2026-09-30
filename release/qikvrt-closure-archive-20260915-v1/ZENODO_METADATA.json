@@ -1,0 +1,34 @@
+{
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "description": "Unveränderte historische Arbeitsfassung vom 15. September 2026 mit Vorlesetext, originalem Lean/Lake-Prüfpaket und aktueller Provenienzeinordnung. Der neue Kernelstatus bleibt ausdrücklich FORMAL_PENDING_KERNEL. Archivierung begründet weder einen neuen Beweis noch einen Hardware- oder Produktabschluss.",
+  "keywords": [
+    "QIK-VRT",
+    "Universal Transputer",
+    "Universal Terminal",
+    "Quality Gates",
+    "serialization",
+    "evidence",
+    "fail-closed"
+  ],
+  "language": "deu",
+  "license": "cc-by-nc-nd-4.0",
+  "notes": "Konzeption und Verantwortung: Ingolf Lohmann. KI-assistierte Ausarbeitung: OpenAI Codex. Kein Produktrelease, kein neuer Lean-Kernelnachweis, kein Hardware- oder Patentnachweis. Historischer Artikel vom 15.09.2026 und originales Prüfpaket unverändert; PDF-Bytevarianten separat gebunden.",
+  "prereserve_doi": true,
+  "publication_date": "2026-09-28",
+  "publication_type": "technicalnote",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Goldkelch/qik-vrt/tree/f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    }
+  ],
+  "title": "Abgeschlossen und anschlussfähig: bedingte Formalisierung evidenzgebundener Zustandsarchitekturen",
+  "upload_type": "publication",
+  "version": "0.1-archive-20260928"
+}

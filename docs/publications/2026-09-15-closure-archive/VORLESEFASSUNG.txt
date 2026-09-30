@@ -1,0 +1,279 @@
+QIK-VRT: Abgeschlossen und anschlussfähig
+
+Vorlesefassung des Arbeitsartikels vom 15. September 2026, Version 0.1.
+Für das Hören bearbeitet am 28. September 2026.
+
+Die Architekturidee, der Ausgangstext und die Fragestellung stammen von Ingolf Lohmann. Die Präzisierung, die neue Formalisierung und die Artikelfassung wurden mit OpenAI Codex ausgearbeitet. Auch diese Vorlesefassung ist eine KI-assistierte Bearbeitung.
+
+Diese Fassung gibt den Inhalt aller neun Abschnitte des zehnseitigen PDFs in sprechbarer Form wieder. Formeln und Tabellen sind in Sätze aufgelöst. Der wissenschaftliche und technische Status entspricht dem Ausgangsartikel vom 15. September. Eine heutige Neubewertung der darin beschriebenen Lean-Prüfung ist damit nicht verbunden.
+
+Zusammenfassung.
+
+Kann ein System in sich abgeschlossen und trotzdem offen für neue Erkenntnisse sein?
+
+Ja. Entscheidend ist, was das Wort abgeschlossen bedeutet.
+
+Der Artikel unterscheidet vier Dinge: den mathematischen Abschluss eines Modellbestands, die operative Fortsetzung eines Prozesses, die aktuell vorhandene Evidenz und eine tatsächlich eingetretene physische Wirkung.
+
+Für ein ausdrücklich festgelegtes Übergangsmodell wird ein Abschlussoperator definiert. Er sammelt die Zustände, die sich aus einem Anfangsbestand durch endlich viele zulässige Schritte ableiten lassen. Dieser Operator ist unter den angegebenen Voraussetzungen monoton und idempotent. Monoton bedeutet: Mehr zulässige Ausgangspunkte verkleinern den ableitbaren Bestand nicht. Idempotent bedeutet: Wendet man den Abschluss ein zweites Mal an, kommt nichts hinzu.
+
+Trotzdem kann der abgeschlossene Bestand echt erweitert werden, wenn eine neue zulässige Grundlage von außen hinzukommt. Abgeschlossen bedeutet deshalb nicht notwendig maximal.
+
+Die Übertragung auf QIK-VRT ist eine Architekturinterpretation. Aussagen müssen an den richtigen Gegenstand und seine Version gebunden bleiben. Eine Verkettung braucht passende Anschlüsse. Eine Fortsetzung benötigt eine eigene Annahme darüber, dass ein zulässiger Nachfolger existiert. Für Hardware und physische Prozesse bleiben zusätzliche Implementierungs- und Beobachtungsnachweise erforderlich.
+
+Der damalige Ausführungsstatus lautet: Der neue Lean-Code und das Prüfpaket sind vorhanden. Die Lean-Umgebung startete jedoch nicht ordnungsgemäß. Deshalb wurden die neuen Quellen noch nicht durch den Lean-Kernel geprüft. Der Status ist „Formal pending kernel“, also: formale Bestätigung durch den Kernel ausstehend. Der Artikel behauptet weder einen erfolgreichen neuen Lean-Prüflauf noch einen fertigen Chip oder eine Publikationsfreigabe.
+
+Erster Abschnitt. Fragestellung und Beitrag.
+
+Ingolf Lohmanns Ausgangsgedanke verbindet Beobachten, Binden, Handeln und Rückbeobachten zu einem fortsetzbaren Erkenntnisprozess.
+
+Diese Folge ist keine automatische Wahrheitsgarantie. Sie beschreibt Verpflichtungen: Zuerst ist der Ausgangszustand zu bestimmen. Dann muss feststehen, auf welchen Gegenstand und welche Version sich eine Handlung bezieht. Ihre Zulässigkeit wird geprüft. Anschließend wird das tatsächlich beobachtete Ergebnis eingeordnet.
+
+Eine abgeschlossene Begründung kann die Grundlage einer neuen Begründung bilden. Darin liegt kein Widerspruch. Der Abschluss bezieht sich immer auf einen bestimmten Bestand, bestimmte Regeln und eine bestimmte Geltungsgrenze. Daraus folgt nicht, dass sämtliche Eigenschaften der gesamten Umwelt bewiesen wären.
+
+Der Artikel unterscheidet drei Bedeutungen von Abschluss.
+
+Erstens: Modellabschluss. Unter festgelegten Regeln entstehen bei erneuter Abschlussbildung keine zusätzlichen Elemente. Das sagt nicht, dass schon alle denkbaren Grundlagen enthalten sind.
+
+Zweitens: operativer Abschluss. Ein abgegrenzter Auftrag hat seine festgelegten Nachweise erbracht. Das macht nicht automatisch jede Folgehandlung zulässig oder ausführbar.
+
+Drittens: empirischer Nachweis. Beobachtungen tragen eine begrenzte Aussage unter offengelegten Messbedingungen. Das beweist weder die Unfehlbarkeit eines Sensors noch eine universelle Kausalität.
+
+Das Prüfpaket verwendet zwei vorhandene Repository-Module unverändert. Sie heißen „Operational Continuation“ und „Connectability Simulation“. Dort sind bereits endliche zulässige Fortsetzungen, zulässige Spuren und Simulationen definiert. Der neue Zusatz ergänzt die Verkettung dieser Spuren, den darauf aufgebauten Abschlussoperator und Gegenmodelle.
+
+Abschlussoperatoren und die Verkettung endlicher Übergänge sind etablierte mathematische Konstruktionen. Der Beitrag des Artikels ist ihre nachvollziehbare Zuordnung zur QIK-VRT-These. Eine historische Priorität oder die Erfindung von Rückkopplung wird damit nicht bewiesen. Eine vollständige Neuheitsprüfung wurde nicht ausgeführt.
+
+Auch bei verteilten Systemen ist eine zeitliche Reihenfolge von einer durch Prozesse und Nachrichten begründeten Ordnung zu unterscheiden. Lamports „happens before“-Beziehung ist dafür ein klassischer Bezugspunkt. Sie beweist aber keine beliebige physische Ursache-Wirkungs-Behauptung.
+
+Zweiter Abschnitt. Modell und Begriffe.
+
+Wir betrachten Zustände und Bezeichnungen für Übergänge. Ein System legt fest, welche Übergänge zwischen Zuständen möglich sind und welche Zustände als zulässig gelten. Der Artikel nennt diese Zulässigkeit Viabilität.
+
+Ein gültiger Einzelschritt verlangt drei Dinge: Der Ausgangszustand ist viable. Die vorgesehene Übergangsrelation gilt. Und der Zielzustand ist ebenfalls viable.
+
+Eine viable Spur ist eine endliche Folge solcher gültigen Schritte. Bei der leeren Spur findet kein Schritt statt. Anfang und Ende sind identisch, und dieser Zustand muss viable sein. Eine nichtleere Spur besteht aus einem gültigen ersten Schritt und einer gültigen Restspur.
+
+Die Beschreibung einer solchen Spur ist zunächst eine Aussage innerhalb des Modells. Sie behauptet nicht, dass die entsprechende Ausführung tatsächlich stattgefunden hat.
+
+Nun wählen wir einen Anfangsbestand, genannt S. Sein Abschluss enthält genau diejenigen Zustände, die von einem Zustand aus S über eine endliche viable Spur erreichbar sind.
+
+Wird das Übergangssystem als Regelgraph verstanden, ist dies ein Abschluss unter diesen Regeln. Wird es als operatives Modell verstanden, sind es mögliche Modellzustände. Beides ist von einer Sammlung bereits gemessener Wirkungen zu unterscheiden.
+
+Damit der Abschluss jeden Ausgangszustand enthält, muss der Anfangsbestand ausschließlich aus viablen Zuständen bestehen. Diese Einschränkung ist notwendig: Ein nichtviabler Zustand besitzt in diesem Modell nicht einmal eine gültige leere Spur.
+
+Ein Bestand heißt abgeschlossen, wenn er mit seinem Abschluss übereinstimmt. Jeder Zustand gehört dann genau dann zu diesem Bestand, wenn er zu dessen Abschluss gehört.
+
+Der Ausdruck Fixpunkt bezeichnet nur diese Übereinstimmung. Er bezeichnet kein selbstbestätigendes Programm und keinen abgeschlossenen Beweis über die Welt. In der Lean-Fassung wird die Übereinstimmung für jeden einzelnen Zustand formuliert.
+
+Eine Erweiterung fügt dem Anfangsbestand einen neuen Zustand hinzu. Für eine echte Erweiterung des Abschlusses muss dieser Zustand viable sein und außerhalb des bisherigen Abschlusses liegen. Ob ein solcher Zustand existiert und ob er als neue empirische Grundlage gelten darf, ist gesondert zu klären. Der Erweiterungssatz setzt ihn voraus; er erzeugt ihn nicht aus dem Begriff Abschluss.
+
+Dritter Abschnitt. Abschlusssatz und Beweise.
+
+Der erste Satz betrifft die Verkettung.
+
+Angenommen, eine gültige Spur führt von A nach B. Eine zweite gültige Spur führt von B nach C. Dann lassen sich beide zu einer gültigen Spur von A nach C verbinden.
+
+Der Beweis erfolgt durch Induktion über die erste Spur. Ist sie leer, sind A und B derselbe Zustand, und die zweite Spur genügt. Ist sie nicht leer, bleibt ihr erster gültiger Schritt erhalten. Ihre Restspur wird nach der Induktionsannahme mit der zweiten Spur verkettet.
+
+Entscheidend ist der identische Anschlusspunkt B. Ein bloß späterer Zeitstempel reicht nicht.
+
+Der zweite Satz betrifft den Abschlussoperator.
+
+Jeder viable Anfangszustand gehört zu seinem Abschluss, denn die leere Spur erreicht ihn ohne weiteren Schritt. Das ist die Extensivität.
+
+Wird der Anfangsbestand vergrößert, bleiben die bisherigen Anfangspunkte und Spuren weiterhin gültig. Der Abschluss kann dadurch nicht kleiner werden. Das ist die Monotonie.
+
+Alle Zustände im Abschluss sind viable, denn jede viable Spur endet an einem viablen Zustand.
+
+Schließlich gilt: Der Abschluss des Abschlusses ist gleich dem ersten Abschluss. Das ist die Idempotenz.
+
+Warum? Ein Zustand, der vom bereits gebildeten Abschluss aus erreichbar ist, wird von einem Zwischenzustand aus erreicht. Dieser Zwischenzustand war seinerseits vom ursprünglichen Anfangsbestand aus erreichbar. Nach dem ersten Satz lassen sich beide Spuren verketten. Der Zielzustand gehörte also schon zum ersten Abschluss.
+
+Umgekehrt gehört jeder Zustand des ersten Abschlusses über seine leere Spur auch zum zweiten Abschluss. Beide Richtungen zusammen ergeben die Gleichheit. Der Abschluss ist damit ein Fixpunkt des Operators.
+
+Der dritte Satz lautet: abgeschlossen und dennoch echt erweiterbar.
+
+Wir nehmen einen neuen viablen Zustand Z an, der nicht zum bisherigen Abschluss gehört. Fügen wir Z dem Anfangsbestand hinzu und bilden den Abschluss erneut, erhalten wir einen echt größeren abgeschlossenen Bestand.
+
+Beide Bestände sind nach dem zweiten Satz abgeschlossen. Die Monotonie erhält alle bisherigen Elemente. Die leere Spur sorgt dafür, dass Z im neuen Abschluss enthalten ist. Nach Voraussetzung fehlte Z im alten Abschluss. Darum ist die Erweiterung echt.
+
+Ein einfaches Beispiel verwendet nur zwei Zustände: falsch und wahr. Beide sind viable. Es gibt überhaupt keine Übergänge zwischen verschiedenen Zuständen. Der Abschluss eines Bestands ist deshalb genau dieser Bestand selbst.
+
+Der Bestand mit nur dem Zustand falsch ist bereits abgeschlossen. Trotzdem kann man den Zustand wahr hinzufügen und erhält einen größeren abgeschlossenen Bestand. Das widerlegt die Gleichsetzung von abgeschlossen und maximal. Es beweist nicht, dass jede Erweiterung operativ sinnvoll ist.
+
+Die entsprechenden Lean-Sätze sind im Prüfpaket benannt, darunter die Sätze zur Spurverkettung, Extensivität, Monotonie, Viabilität, Idempotenz und echten Erweiterung. Für diese neuen Quellen blieb die Kernelbestätigung im Ausgangsartikel offen.
+
+Vierter Abschnitt. Fortsetzung ist eine eigene Pflicht.
+
+Der Abschlussoperator beantwortet eine Frage über Mengen. Ob ein technischer Prozess weiterlaufen kann, ist eine andere Frage.
+
+Das vorhandene Fortsetzungsmodell beschreibt Verbindungen zwischen Zuständen. Eine viable Verbindung verlangt einen viablen Ausgangszustand, eine bestehende Verbindung und einen viablen Zielzustand.
+
+Fortsetzbarkeit über null Schritte bedeutet nur, dass der Anfangszustand viable ist. Fortsetzbarkeit über einen weiteren Schritt bedeutet: Es gibt einen viablen Nachfolger, von dem aus die verbleibende Zahl von Schritten möglich ist.
+
+Der vierte Satz ist ein bedingter Satz über endliche Fortsetzbarkeit.
+
+Wenn jeder viable Zustand mindestens einen viablen Nachfolger besitzt, dann ist von jedem viablen Anfangszustand aus jede vorgegebene endliche Zahl von Schritten möglich.
+
+Auch dieser Beweis verwendet Induktion. Für null Schritte genügt die Viabilität. Für einen weiteren Schritt liefert die Voraussetzung einen zulässigen Nachfolger. Von dort greift die Induktionsannahme für den Rest.
+
+Das ist kein Satz über die tatsächliche Laufzeit eines realen Rechners. Er garantiert auch nicht, dass eine konkrete Such- oder Auswahlstrategie den vorhandenen Nachfolger findet. Eine unbeschränkte reale Ausführung würde weitere Voraussetzungen zu Ressourcen, Umwelt und gegebenenfalls Fairness benötigen.
+
+Beliebig lange endliche Möglichkeiten sind von einem tatsächlich ausgeführten unendlichen Prozess zu unterscheiden.
+
+Ein Gegenmodell macht die Grenze sichtbar: Es gibt genau einen Zustand. Er ist viable. Es gibt aber keine Verbindung zu einem Nachfolger. Der Zustand ist also gültig, und trotzdem ist nicht einmal ein weiterer Schritt möglich.
+
+Lokale Gültigkeit garantiert keine nächste zulässige Handlung.
+
+Ein an den zuständigen Owner gebundenes HOLD kann praktisch genau das ausdrücken: Der bisherige Nachweis bleibt erhalten, während die nächste Handlung noch nicht zugelassen ist.
+
+Ein positives Beispiel ist ein Zähler über den natürlichen Zahlen. Jeder Zustand ist viable. Auf jede Zahl folgt die um eins größere Zahl. Hier liefert eine konkrete Funktion den Nachfolger. Jede vorgegebene endliche Fortsetzung ist im Modell möglich. Damit ist die Voraussetzung im Beispiel tatsächlich erfüllbar. Ein physischer Zähler oder Chip ist dadurch noch nicht zertifiziert.
+
+Die vorhandenen Simulationssätze zeigen außerdem: Wenn eine Beziehung zwischen zwei Modellen Viabilität und Schritte erhält, lassen sich endliche viable Spuren übertragen. Das verbindet Modelle unter ausdrücklichen Bedingungen. Es beweist nicht, dass beliebige Implementierungen dieselbe Bedeutung haben.
+
+Fünfter Abschnitt. Identität, Evidenz und Wirkung.
+
+Ein Nachweis braucht eine genaue Bindung an seinen Gegenstand.
+
+Der Zusatzcode beschreibt ein Subjekt durch drei Kennungen: Artefakt, Revision und Policy. Ein Receipt enthält dieses Subjekt sowie eine Validierungsbedingung.
+
+Gebunden bedeutet hier: Die Subjektkennung stimmt exakt überein, und die Validierungsbedingung gilt. Diese Validierung bleibt eine Voraussetzung. Das abstrakte Modell prüft keinen realen Sensor, keinen Hashalgorithmus und keine echte Unterschrift.
+
+Ist ein Receipt an ein bestimmtes Subjekt gebunden, kann es nicht zugleich an ein davon verschiedenes Subjekt gebunden sein. Sonst würden beide Kennungen über dasselbe Receipt gleichgesetzt, obwohl sie verschieden sein sollen.
+
+Praktisch soll dies verhindern, dass ein Nachweis für einen bestimmten Repository-Stand allein wegen einer grünen Anzeige auf einen anderen Stand übertragen wird. Die Implementierung muss die Vergleichsdaten tatsächlich prüfen. Ein frei setzbares Feld mit der Aufschrift gültig genügt nicht.
+
+Das bedeutet nicht, dass bei jeder Änderung alle Beweise verworfen werden müssen. Ein zusätzlicher Nachweis kann zeigen, dass der relevante Teil unverändert geblieben ist. Dieser Nachweis kann Wiederverwendung rechtfertigen. Bloße Versionsähnlichkeit reicht dafür nicht.
+
+Als Nächstes die Unterscheidung zwischen Transport und Wirkung.
+
+Die allgemeine Behauptung, aus erfolgreichem Transport folge immer die gewünschte Wirkung, ist falsch. Schon das Beispiel Transport wahr, Wirkung falsch widerlegt sie.
+
+Eine Transportbestätigung ist deshalb keine Wirkungsbestätigung. Dieses einfache Gegenbeispiel markiert eine Architekturgrenze. Es ersetzt noch keine vollständige technische Protokollspezifikation.
+
+Rückbeobachtung ist notwendig, aber allein nicht hinreichend.
+
+Ein Aktor kann einen Befehl empfangen haben, ohne die gewünschte Wirkung zu erzeugen. Umgekehrt kann die gewünschte Wirkung nach dem Befehl eintreten, aber eine andere Ursache haben.
+
+Eine belastbare Wirkungsbehauptung benötigt deshalb den richtigen Gegenstand, ein passendes Zeitfenster, offengelegte Messbedingungen und die Prüfung konkurrierender Erklärungen.
+
+Ein einfaches Messmodell beschreibt einen Messwert als eine Funktion des tatsächlichen Zustands plus Messfehler. Für diesen Fehler kann eine obere Schranke angenommen werden. Die Behauptung, eine Abweichung liege innerhalb dieser Schranke, ist aber nur so belastbar wie die Referenzbindung und die empirische Begründung der Schranke.
+
+Lean kann die bedingte mathematische Folgerung prüfen. Ohne Messdaten kann Lean die angenommene Fehlerschranke nicht für ein konkretes Gerät beglaubigen.
+
+Evidenzgraphen ordnen Begründungen. Eine gespeicherte Kante beweist noch nicht, dass die von ihr bezeichnete physische Kausalbeziehung tatsächlich besteht.
+
+Sechster Abschnitt. Anschluss an Hardware und System-on-Chip.
+
+Hardware und Software lassen sich als Zustandsübergangssysteme beschreiben. Daraus ergibt sich eine mögliche gemeinsame Abstraktionsschnittstelle. Die konkreten Implementierungen werden dadurch nicht identisch.
+
+Ein Prozessorzustand, ein Softwareprozess und ein Messwert besitzen unterschiedliche Beobachtungs- und Fehlergrenzen. Eine tragfähige Zusammensetzung muss diese Grenzen erhalten.
+
+Für eine Realisierung als System-on-Chip muss zunächst eine konkrete, endliche und effektiv auswertbare Instanz des Kontrollkerns festgelegt werden. Ein allgemeiner Lean-Typ für natürliche Zahlen ist nicht automatisch ein begrenztes Register. Ein beliebiges logisches Prädikat ist nicht automatisch eine synthetisierbare Schaltung.
+
+Die Behauptung, ein bestimmter Kern sei realisierbar, benötigt eine konkrete Implementierung und einen Nachweis ihrer Beziehung zur Spezifikation. Diese Beziehung nennt der Artikel Refinement, also Verfeinerung.
+
+Der Artikel unterscheidet fünf Nachweisstufen.
+
+Erstens: der abstrakte Vertrag. Zustände, Bedingungen, Übergänge und Grenzen sind für den begrenzten Artikelumfang ausdrücklich modelliert.
+
+Zweitens: die Lean-Kernelprüfung genau der neuen Quellen. Diese war wegen des Startfehlers der Umgebung noch nicht erbracht.
+
+Drittens: eine konkrete Implementierung mit endlichen Datenpfaden und einer passenden Verfeinerungsrelation. Ein entsprechender Chip wurde im Artikel nicht geliefert.
+
+Viertens: Synthese und Timing. Ressourcen, Takt, Reset, Nebenläufigkeit und Fehlerpfade müssen für ein bestimmtes Ziel geprüft werden. Diese Prüfung wurde hier nicht durchgeführt.
+
+Fünftens: der reale Effekt. Ein frischer, unabhängiger Readback muss die konkrete Hardware oder den konkreten Clientzustand binden. Auch dieser Nachweis ist im Artikel nicht enthalten.
+
+Für eine sicherheitsbezogene Verfeinerung muss jeder relevante mögliche Implementierungsschritt vom abstrakten Modell gedeckt sein. Die Gegenrichtung beantwortet eine andere Frage: Kann die Implementierung jedes geforderte Verhalten der Spezifikation tatsächlich nachbilden? Eine einzelne Simulationsrichtung darf nicht unbemerkt für beide Aussagen verwendet werden.
+
+Ein geeigneter Arbeitsweg wäre: den begrenzten Kontrollkern ausführbar definieren, seine Übergangstabelle gegen die Spezifikation prüfen, den Hardwareentwurf verfeinern und anschließend Synthese und Hardware-Readback binden.
+
+Auch Testanzahlen benötigen eine eindeutige Bedeutung. Gezählt werden können Zustände, Assertions, Testfälle oder Ausführungsläufe. Viele Tests eines Referenzmodells beweisen nicht sämtliche Eigenschaften eines Transputers.
+
+Ein über IP startfähiges Image benötigt zusätzlich ein Manifest, ein festgelegtes Format, eine Zielarchitektur, Integrität, sicheren Empfang, korrektes Startverhalten und einen tatsächlich beobachteten Clientzustand. Der Artikel liefert kein solches Image und keine dafür gültige Downloadadresse.
+
+Siebter Abschnitt. Reproduzierbarkeit und Ausführung.
+
+Das vorbereitete Paket enthält die Datei „Evidence Closure“ mit vierzehn neuen Theoremen, zwei unveränderte Repository-Module, einen Audit mit siebzehn ausgewählten Konstanten und drei absichtlich ungültige Negativkontrollen.
+
+Die drei zusätzlich auditierten vorhandenen Hauptsätze heißen FIT eins, FIT zwei und FIT drei, jeweils in der geprüften Variante. Diese Zahlen beschreiben den vorbereiteten Quellumfang. Sie sind keine Zahl erfolgreich ausgeführter Prüfungen.
+
+Die übernommenen Quellen stammen aus dem Repository Goldkelch, QIK-VRT, von einem exakt im PDF genannten Commit. Die vorgesehene Lean-Version ist vier Punkt neunzehn Punkt null. Lake verwendet nur die mitgelieferte Standardbibliothek.
+
+Eine Provenienzdatei bindet die übernommenen Dateien durch SHA-256-Prüfsummen. Die neuen Sätze sind durch ihre eigenen Dateien gebunden. Der angegebene frühere Repository-Commit enthält diese neuen Sätze nicht. Ältere veröffentlichte Belege ersetzen deshalb keinen Prüflauf des neuen Codes.
+
+Der vorgesehene Prüfweg beginnt mit den Versionsabfragen von Lean und Lake. Danach wird das Python-Prüfprogramm ausgeführt. Es verlangt die festgelegte Lean-Version, bereinigt den Build, baut das Paket und führt den Audit aus.
+
+Für alle siebzehn Konstanten werden vollständige Berichte ohne Axiomenabhängigkeit verlangt. Die drei absichtlich falschen Dateien zu Fortschritt, Übertragung veralteter Evidenz und Wirkung müssen aus dem jeweils sachlich richtigen Grund scheitern.
+
+Nur bei vollständigem Erfolg soll ein neues Kernel-Receipt entstehen. Es bindet Quellen, Binärdateien, Objekte und Protokolle.
+
+Tatsächlich beobachtet wurde am damaligen Stand Folgendes: Schon die Lean-Versionsabfrage endete mit Fehlercode eins und der Meldung, die Anwendung sei nicht auffindbar. Auch der Lake-Build mit angegebenem Lean-Systemverzeichnis endete mit Fehlercode eins. Die Konfiguration der Lake-Installation konnte nicht erkannt werden.
+
+Der Fehler trat damit vor der Prüfung des neuen Quelltexts auf. Es gab keinen erfolgreichen neuen Build, keinen bestätigten Axiomen-Audit und keine ausgeführten Negativkontrollen.
+
+Die offizielle Distribution war lokal entpackt. Ihr beobachteter SHA-256-Wert steht in der Provenienzdatei. Weil die Release-Schnittstelle keinen eigenen Digest lieferte, bindet dieser Hash die vorliegenden Bytes. Er ist kein unabhängiger Authentizitätsnachweis. Zugriffssperren wurden nicht umgangen.
+
+Erst ein erfolgreicher Lauf in einer regulär ausführbaren Umgebung der festgelegten Lean-Version kann diesen offenen Status ändern. Lake organisiert den Build. Den mathematischen Beleg liefern die geprüften Terme mit ihren Voraussetzungen.
+
+Achter Abschnitt. Aussagebilanz und offene Arbeit.
+
+Der Artikel zieht acht getrennte Schlussfolgerungen.
+
+Erstens: Passende endliche Spuren sind verkettbar. Dafür liegt ein Induktionsbeweis im Text vor; die neue Lean-Bestätigung bleibt offen.
+
+Zweitens: Der Abschlussoperator ist auf viablen Anfangsbeständen extensiv, monoton und idempotent. Die Herleitung steht im Artikel; die neue Kernelprüfung steht aus.
+
+Drittens: Ein neuer viabler Zustand außerhalb des bisherigen Abschlusses ermöglicht eine echte Erweiterung. Die Existenz dieses Zustands ist eine Voraussetzung des Satzes.
+
+Viertens: Wenn jeder viable Zustand einen viablen Nachfolger besitzt, ist jeder endliche Fortsetzungshorizont im Modell möglich. Das ist kein Beweis einer tatsächlich unendlichen Ausführung.
+
+Fünftens: Viabilität allein garantiert keine Fortsetzung. Das Einzustands-Gegenmodell zeigt dies ausdrücklich.
+
+Sechstens: Ein exakt gebundenes Receipt überträgt sich nicht automatisch auf einen anderen Gegenstand. Das folgt aus dem Gleichheitsargument und führt keine neue Kryptografie ein.
+
+Siebtens: Eine Transportbestätigung garantiert nicht allgemein den gewünschten Effekt. Das boolesche Gegenbeispiel zeigt die Grenze; die physische Zuordnung bleibt gesondert zu prüfen.
+
+Achtens: Eine vollständig realisierte und geprüfte QIK-VRT-Hardware wird hier nicht behauptet. Ein solcher Nachweis wurde im Artikel weder hergeleitet noch implementiert.
+
+Das Ergebnis lautet: Unter ausdrücklichen Regeln kann ein Bestand abgeschlossen sein. Kommt eine neue zulässige Grundlage hinzu, kann daraus ein echt größerer abgeschlossener Bestand entstehen. Abgeschlossenheit ist relativ und bedeutet keine Allwissenheit.
+
+Die mathematische Aussage ist durch die angegebenen Argumente begründet. Ihre neue maschinelle Bestätigung stand in der damaligen Umgebung aus.
+
+Für weitergehende Aussagen fehlen zunächst der erfolgreiche neue Kernellauf und die fachliche Prüfung, ob Definitionen und Voraussetzungen den beabsichtigten QIK-VRT-Anspruch angemessen abbilden. Für reale Systeme kommen konkrete Implementierungs-, Verfeinerungs- und Messbelege hinzu.
+
+Physikalische Allgemeingültigkeit, unabhängige Reproduktion und wissenschaftlicher Konsens folgen weder aus dem Ausgangstext noch aus einer möglichen erfolgreichen Kernelprüfung.
+
+Auch die Schritte Push, Pull Request, Review, Approval, Merge und Publication sind eigene Vorgänge. PASS, FINAL PASS und EFFECT ACK DONE müssen jeweils für ihren eigenen Umfang geprüft werden. Das lokale Artikelpaket setzt keinen dieser Zustände. Seine Abgabe an den Auftraggeber ist weder eine Zenodo-Veröffentlichung noch ein Peer Review.
+
+Neunter Abschnitt. Quellen und Beitragsprovenienz.
+
+Die erste Quelle ist Ingolf Lohmanns Modul „Operational Continuation“ aus dem Jahr 2026. Es enthält die Definitionen der viablen Verbindung und der endlichen Fortsetzbarkeit sowie FIT eins.
+
+Die zweite Quelle ist das Modul „Connectability Simulation“ desselben Repository-Stands. Es enthält das typisierte Übergangssystem, viable Spuren und die Simulationssätze FIT zwei und FIT drei.
+
+Die dritte Quelle ist die offizielle Lean-Sprachreferenz in Version vier Punkt neunzehn Punkt null, insbesondere der Abschnitt über Buildwerkzeuge und Lake. Sie wurde am 15. September 2026 abgerufen.
+
+Die vierte Quelle ist „Theorem Proving in Lean Four“, der Abschnitt über Axiome und Berechnung. Er erläutert die logischen Grundlagen, zusätzliche Axiome und die Bedeutung von Berechnungen.
+
+Die fünfte Quelle ist Leslie Lamports Arbeit „Time, Clocks, and the Ordering of Events in a Distributed System“ aus dem Jahr 1978, erschienen in den Communications of the ACM, Band einundzwanzig, Heft sieben, Seiten fünfhundertachtundfünfzig bis fünfhundertfünfundsechzig.
+
+Die sechste Quelle ist die offizielle Lean-Distribution der Version vier Punkt neunzehn Punkt null. Ihre Herkunft und die lokal beobachtete Prüfsumme sind im Begleitpaket dokumentiert.
+
+Zum Beitrag: Ingolf Lohmann lieferte das QIK-VRT-Konzept, den Ausgangsartikel und die Fragestellung. OpenAI Codex erzeugte die neue Präzisierung, den Lean-Zusatz, das Prüfprogramm und die Artikelfassung. Diese Trennung dokumentiert Herkunft. Sie beweist keine historische Priorität und nimmt keine fachliche Annahme durch Ingolf Lohmann vorweg.
+
+Die zwei wiederverwendeten Lean-Dateien behalten ihre Hinweise auf die Apache-Lizenz, Version zwei. Der zugehörige Lizenztext liegt dem Paket bei. Der Artikel gewährt keine zusätzlichen Rechte an anderen Repository-Bestandteilen. Eine Änderungsnotiz macht die Präzisierungen gegenüber stärkeren Aussagen der Ausgangsdiskussion sichtbar.
+
+Der vollständige Titel lautet: „Abgeschlossen und anschlussfähig. Eine bedingte Formalisierung evidenzgebundener Zustandsarchitekturen mit einem Lean-Lake-Prüfpaket.“ Arbeitsartikel, Version null Punkt eins, vom 15. September 2026. Konzept: Ingolf Lohmann. KI-assistierte Ausarbeitung: OpenAI Codex. Unbegutachteter Kandidat; neuer Kernelstatus offen.
+
+Ende der Vorlesefassung.
+
+Technische Quellenbindung, nicht Teil des gesprochenen Artikels:
+Quelldatei: QIKVRT_Abgeschlossen_und_anschlussfaehig_2026-09-15.pdf
+SHA-256 des PDFs: d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4
+Umfang der Quelle: 160673 Bytes, 10 Seiten.
+Die am 27.09.2026 erneut eingestellte Datei mit dem Namenszusatz (1) ist bytegleich.
+Historischer Upstream-Commit des im Artikel gebundenen Quellauszugs: a86054139b49c13c5cd344753b248b46b5daf66f
+Lean-Bezeichner zur Nachprüfung: trace_append; closure_extensive; closure_monotone; closure_viable; closure_idempotent; closure_is_closed; closed_but_extendible; no_rules_closure; strict_extension_witness; FIT001_checked; FIT002_checked; FIT003_checked.
+Die Vorlesefassung wurde aus dem bereitgestellten PDF abgeleitet. Sie liefert keinen neuen Lean-Kernelbeleg und ersetzt nicht das ausführbare Begleitpaket.

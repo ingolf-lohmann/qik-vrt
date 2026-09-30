@@ -1,0 +1,145 @@
+{
+  "_license": {
+    "classification": "machine_readable_claim_matrix",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "claim_count": 12,
+  "claims": [
+    {
+      "boundary": "Historische unbegutachtete Arbeitsfassung; Archivdatum ist kein rückdatierter Publikationszeitpunkt.",
+      "claim_id": "A01",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A01"
+      ],
+      "statement": "Das Primär-PDF ist die unveränderte 160673-Byte-Fassung vom 15. September 2026 mit SHA-256 d767a3423099acf70ce6fd509bc332c93835725071d8f57cb4d8e9fd70752ba4.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Belegt Dateiprovenienz, nicht erste Nutzersichtbarkeit, Vorhersage oder Retrokausalität.",
+      "claim_id": "A02",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A02"
+      ],
+      "statement": "Zwei Katalogeinträge derselben Primär-PDF-Bytes sind auf den 15. und 27. September datiert.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Quellengebundene Wiedergabe der handschriftlichen Argumentation und Definitionen; kein neu kernelgeprüfter Satz.",
+      "claim_id": "A03",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A03"
+      ],
+      "statement": "Der historische Text definiert zulässige endliche Spuren und eine Erreichbarkeitsschließung und argumentiert bedingt für Extensivität, Monotonie und Idempotenz.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Existenz dieses neuen Punktes ist Voraussetzung, keine Folge von Abgeschlossenheit; kein weltumfassender Abschluss.",
+      "claim_id": "A04",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A04"
+      ],
+      "statement": "Der historische Text trennt Abgeschlossenheit von Maximalität und echte Erweiterung durch einen neuen zulässigen Ausgangspunkt außerhalb der bisherigen Schließung.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Keine unendliche reale Laufzeit oder unbegrenzte Ressourcen; bedingte Modellargumentation.",
+      "claim_id": "A05",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A05"
+      ],
+      "statement": "Der Text argumentiert endliche Fortsetzbarkeit unter Nachfolgerexistenz und nennt einen zulässigen Zustand ohne Übergang als Gegenmodell.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Anwendungsbezogene Kausalität, Referenz und Messfehler bleiben gesondert zu prüfen.",
+      "claim_id": "A06",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A06"
+      ],
+      "statement": "Der Text bindet Receipts an Artefakt, Revision und Policy und trennt Transportbestätigung von Wirkungsbestätigung.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Dateiinventar; die im Artikel genannten 14 neuen Theoreme und 17 Auditkonstanten sind vorbereiteter Umfang, keine 17 erfolgreichen Prüfungen.",
+      "claim_id": "A07",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A07"
+      ],
+      "statement": "Das originale ZIP enthält EvidenceClosure.lean, Audit.lean, zwei wiederverwendete Module, drei Negativdateien und den Lean-4.19.0-Prüfharness.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Das Paket dokumentiert damalige Laufzeitfehler vor Quellprüfung; kein neuer Lean-Lauf in diesem Archivauftrag.",
+      "claim_id": "A08",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Der neue Lean-Kernelnachweis einschließlich Axiom-Audit und semantischer Negativkontrollen ist für diesen historischen Artikel weiterhin offen.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Fehlende Implementierungs-, Synthese-, Boot- und Wirkungsnachweise bleiben ausdrücklich offen.",
+      "claim_id": "A09",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Hardware-/SoC-Realisierung, physische Korrespondenz und tatsächliche externe Wirkung folgen nicht aus dem historischen Modell.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Keine Behauptung binärer oder visueller Identität der beiden PDF-Varianten; beide Hashes bleiben getrennt.",
+      "claim_id": "A10",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A10"
+      ],
+      "statement": "Das unveränderte ZIP enthält eine andere PDF-Bytefassung (135698 Byte); ihr extrahierter Seitentext stimmt mit dem separat gelieferten Primär-PDF überein.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Redaktionelle Fassung, keine neue formale oder technische Zertifizierung.",
+      "claim_id": "A11",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Die Vorlesefassung ist eine sachliche sprachliche Bearbeitung des historischen Artikels und bewahrt seine Vorbehalte.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Herkunfts- und Lizenzhinweis, kein Nachweis weltweiter Priorität oder Patentanspruchs.",
+      "claim_id": "A12",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "A12"
+      ],
+      "statement": "Die Provenienz weist Ingolf Lohmann die Konzeption und Ausgangsfrage und OpenAI Codex die neue Ausarbeitung zu; wiederverwendete Lean-Dateien behalten Apache-2.0-Hinweise.",
+      "status": "BOUND"
+    }
+  ],
+  "completion_claims": {
+    "effect_ack_done": false,
+    "formal_kernel_verified": false,
+    "ordinary_release": false,
+    "public_zenodo_record_verified": false
+  },
+  "publication_id": "qikvrt-closure-archive-20260915-v1"
+}

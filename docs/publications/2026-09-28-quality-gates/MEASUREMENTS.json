@@ -1,0 +1,270 @@
+{
+  "c90": {
+    "adapter": {
+      "bytes": 26792,
+      "git_blob_sha1": "063a161ed329c6aa32f7eb462fcd2980dc9e77ca",
+      "sha256": "1728904c3b09fa681b931eb8d62fb1418badac30594407b4ff4b519f4b220b81"
+    },
+    "adapter_size_sections": {
+      "bss": 67016,
+      "data": 688,
+      "text": 12808
+    },
+    "all_code_and_rodata_bytes": 7174,
+    "boolean_lut_text_bytes": 86,
+    "command": "make -C next/core test assembly OUT=<external-evidence>/c90 CFLAGS=-Os",
+    "excluded_from_size": [
+      "stack",
+      "shared libraries",
+      "operating system",
+      "network stack",
+      "browser",
+      "physical gates"
+    ],
+    "exit_code": 0,
+    "kernel_code_and_rodata_bytes": 394,
+    "objects": [
+      {
+        "bytes": 2936,
+        "code_and_rodata_bytes": 479,
+        "git_blob_sha1": "9e3b3596f88256d2ea7fac516e4ac56f401a4056",
+        "name": "effect_ack_core.o",
+        "sections": {
+          ".bss": 0,
+          ".comment": 44,
+          ".data": 0,
+          ".eh_frame": 128,
+          ".note.GNU-stack": 0,
+          ".note.gnu.property": 32,
+          ".rodata": 20,
+          ".rodata.str1.1": 109,
+          ".text": 350
+        },
+        "sha256": "36f928e47bce3825cc0682aa6a70d7921af077f050b2c6181ed266a16e82e2a8"
+      },
+      {
+        "bytes": 4416,
+        "code_and_rodata_bytes": 1722,
+        "git_blob_sha1": "8f3df1541de0474cd4e33291cbae4774b31b1dd6",
+        "name": "qikvrt_bus.o",
+        "sections": {
+          ".bss": 0,
+          ".comment": 44,
+          ".data": 0,
+          ".eh_frame": 248,
+          ".note.GNU-stack": 0,
+          ".note.gnu.property": 32,
+          ".rodata.str1.1": 5,
+          ".text": 1717
+        },
+        "sha256": "3ed24404d89f19d5db6716e9e10b169ec369c5bb00b269db019a8edc4104ee08"
+      },
+      {
+        "bytes": 5064,
+        "code_and_rodata_bytes": 1994,
+        "git_blob_sha1": "fdeb0fbcf9bdb0c3558acff7c7fa45a4861124d8",
+        "name": "qikvrt_exchange.o",
+        "sections": {
+          ".bss": 0,
+          ".comment": 44,
+          ".data": 0,
+          ".eh_frame": 384,
+          ".note.GNU-stack": 0,
+          ".note.gnu.property": 32,
+          ".rodata.str1.1": 5,
+          ".text": 1989
+        },
+        "sha256": "63a4bd56ac962c6cdc9bb5ed7c62b8092583b8325005cd7902e5a6f06b17a96f"
+      },
+      {
+        "bytes": 2528,
+        "code_and_rodata_bytes": 394,
+        "git_blob_sha1": "aba88e509dce620b541d0f3b7993950e58aa3aa2",
+        "name": "qikvrt_kernel.o",
+        "sections": {
+          ".bss": 0,
+          ".comment": 44,
+          ".data": 0,
+          ".eh_frame": 168,
+          ".note.GNU-stack": 0,
+          ".note.gnu.property": 32,
+          ".rodata": 10,
+          ".text": 384
+        },
+        "sha256": "3b99f10d0c31cc1d1ae2138089a3396b2a8401cc1f7b621b7b406695bc43632e"
+      },
+      {
+        "bytes": 2832,
+        "code_and_rodata_bytes": 1094,
+        "git_blob_sha1": "0a6110649abff6b3e588a5d58e25aef8149ddf11",
+        "name": "qikvrt_sha256_v1.o",
+        "sections": {
+          ".bss": 0,
+          ".comment": 44,
+          ".data": 0,
+          ".eh_frame": 176,
+          ".note.GNU-stack": 0,
+          ".note.gnu.property": 32,
+          ".rodata": 256,
+          ".text": 838
+        },
+        "sha256": "323b3d36c476e16e2a274c8cd49f8cd5b88739ae384195c19a232755a775d54e"
+      },
+      {
+        "bytes": 4944,
+        "code_and_rodata_bytes": 1491,
+        "git_blob_sha1": "c24abf889ea7d55dcd8c4477f9288d4c7ba8d224",
+        "name": "qikvrt_wire_v1.o",
+        "sections": {
+          ".bss": 0,
+          ".comment": 44,
+          ".data": 0,
+          ".eh_frame": 432,
+          ".note.GNU-stack": 0,
+          ".note.gnu.property": 32,
+          ".rodata.str1.1": 5,
+          ".text": 1486
+        },
+        "sha256": "6083a8465def83f323d3b16bfbab2deb2debcd20cf92df37edf62d387e7bf27e"
+      }
+    ],
+    "test_assembly": "PASS",
+    "test_core": "PASS"
+  },
+  "environment": {
+    "cargo_available": false,
+    "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "docker_available": false,
+    "ghdl_available": false,
+    "machine": "x86_64",
+    "python": "3.12.14",
+    "qemu_available": false
+  },
+  "focused_tests": {
+    "command": "python3 -B -m unittest -v tests.test_qikvrt_distribution_execution tests.test_qikvrt_distribution_readback tests.test_qikvrt_megast_distribution tests.test_qikvrt_cloud_transputer_mesh_runtime tests.test_qikvrt_cloud_transputer_materialization tests.test_qikvrt_cloud_subject tests.test_cloud_carrier_live_sse_runtime tests.test_qikvrt_repository_terminal tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_universal_terminal_network_boundary",
+    "discovered": 104,
+    "elapsed_seconds": 3.822,
+    "passed": 103,
+    "skip_reason": "nginx/runuser required; installed by distribution contract",
+    "skipped": 1
+  },
+  "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+  "hosted_ci": {
+    "artifact_id": 10940821417,
+    "artifact_sha256": "c94cb06d16be00219a058c2bd89bac6b1c6d77df69fd4a5ccc78151ac6819d69",
+    "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+    "job_id": 108697217922,
+    "make_test_exit": 0,
+    "run_id": 36346727864,
+    "url": "https://github.com/Goldkelch/qik-vrt/actions/runs/36346727864"
+  },
+  "mesh": {
+    "authority_mirror_synchronization": false,
+    "command": "python3 -B tools/qikvrt_real_mesh.py demo --source-head f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c --source-tree 956c16b291c05243437b1f018321936e4438949a --workdir <external-evidence>/mesh-runtime --output <external-evidence>/mesh-receipt.json",
+    "exit_code": 0,
+    "general_effect_ack_done": false,
+    "network_scope": "LOOPBACK_TCP_ONLY",
+    "pairs": 2,
+    "physical_hosts": 1,
+    "processes": 4
+  },
+  "observed_at_utc": "2026-09-28T00:05:30.776670+00:00",
+  "ordinary_release": false,
+  "physical_hardware_tested": false,
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt-quality-gates-observation-v1",
+  "search_boundary": "Exact-head push and workflow_dispatch first pages, repository source and local bounded executions; not an exhaustive history of all workflow_run events. Missing evidence is not proof of absent functionality.",
+  "source_files": {
+    ".github/workflows/qikvrt_megast_distribution_v1.yml": {
+      "bytes": 25952,
+      "git_blob_sha1": "ba865b1d9d4662f6f8b70ae70c2f69f986c061d1",
+      "sha256": "0f8e11c842779e7c41f9c44b809c12959365572c84b26e84aa5823bb850545e5"
+    },
+    ".github/workflows/qikvrt_universal_terminal_container.yml": {
+      "bytes": 14668,
+      "git_blob_sha1": "c94cd3315a1a4063280d8c1be7cd13f7231481bd",
+      "sha256": "1da1c65095386b0a943356ccedf84918d8d01c46d9d3d9625d4a95757b442e66"
+    },
+    "deploy/universal-terminal/Dockerfile": {
+      "bytes": 4957,
+      "git_blob_sha1": "b793a5ba0cb966520f681399d8f2a61ceb5fe883",
+      "sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7"
+    },
+    "deploy/universal-terminal/compose.yaml": {
+      "bytes": 5661,
+      "git_blob_sha1": "f807391adabc9046fa37ba847f572acbd1709e46",
+      "sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1"
+    },
+    "deploy/universal-terminal/runtime-health.sh": {
+      "bytes": 1548,
+      "git_blob_sha1": "3bec1909edc484bb15116a0a23c27f5b4e20a3e9",
+      "sha256": "731d9e2adddf83999623424f9a306a6dd1ff2b142ec6a179cfd2c9ae12f13bf3"
+    },
+    "distribution/qikvrt-megast/README.md": {
+      "bytes": 10355,
+      "git_blob_sha1": "f05d67d87a817137dfa0df267d6ba9b0743ce172",
+      "sha256": "db26daacead1440dce3a66680bd24bb14fa87dac81102b957c0e8d617bcf0818"
+    },
+    "distribution/qikvrt-megast/build.sh": {
+      "bytes": 13300,
+      "git_blob_sha1": "f0635251e09745246c9a3a1e4f3977bc8d7c7e8f",
+      "sha256": "2bf19971fc9dc8cbf404a942429705809917159e779ec3ea852c75aba5c6634f"
+    },
+    "distribution/qikvrt-megast/runtime-witness.py": {
+      "bytes": 9238,
+      "git_blob_sha1": "7ee50f2128a1d34c1a218f095eb69eb9390f58fd",
+      "sha256": "179ca25c0c02df4b29b24dc0244752fff29f31945af9d6a1fdc276070d208e9b"
+    },
+    "docs/patent/TEMDD_HARDWARE_MAPPING_AND_PATENT_BOUNDARY_V1.md": {
+      "bytes": 6787,
+      "git_blob_sha1": "01d612893c2a43fd62421e4954ae6049f1967443",
+      "sha256": "a784efd6ba6529899c643975215e9dbd9cfc756a31fc83cca0c1af43358aec72"
+    },
+    "next/README.md": {
+      "bytes": 10742,
+      "git_blob_sha1": "75c9bf7b8263fdd7f4b4de09c583dea0b1d746e6",
+      "sha256": "1c5f2ba3213ce0e09899d160dc586c3cb1074db17fe0e4f420807948c1a3aa36"
+    },
+    "next/core/Makefile": {
+      "bytes": 1538,
+      "git_blob_sha1": "5e0fe9bec80bd165d88ee650b4f73052ad8da8bc",
+      "sha256": "5fcddc08c8771c7bd713232429f2ac70ffa4067dc8bce22a88f46aaf5d7a3f76"
+    },
+    "next/core/src/qikvrt_kernel.c": {
+      "bytes": 2019,
+      "git_blob_sha1": "455a88356cce80184afe6d118d2e915d4584f9d6",
+      "sha256": "6b57865464a9ff9acf0f55daa29516163396b6f156582026ad162f9ac87b46d2"
+    },
+    "next/tools/run_checks.py": {
+      "bytes": 5753,
+      "git_blob_sha1": "3ebd951a294e3a80d73b2e1d053fbe5674ae46bf",
+      "sha256": "a5c898ea1e7124c2d2dd0e62db8b9a0bb7f981542b6c22fa7654aaf32f8e6726"
+    },
+    "policy/QIKVRT_CLOUD_TRANSPUTER_V1.json": {
+      "bytes": 5924,
+      "git_blob_sha1": "f140c351215e1500e3faa6cb3bcca7fd94426e06",
+      "sha256": "fec9337cc0cb76d6de86f5878baaaece4010f06ce8fdf443a1f4d24414bc3ed2"
+    },
+    "policy/QIKVRT_UNIVERSAL_TERMINAL_VIRTUALIZATION_V1.json": {
+      "bytes": 3534,
+      "git_blob_sha1": "f8e3f84f0d67624d2eb5fa4c21e695ceb915ba1d",
+      "sha256": "991f67db5673a4fd3ad1adae80186c88853efa30ab1e5ae51bc38243ce879ba2"
+    },
+    "roundtrip.py": {
+      "bytes": 2193,
+      "git_blob_sha1": "9ac286adabc0187705356c46303e53a68e9a9f21",
+      "sha256": "7e758e34ff29a8beca92c49396cbd2bbc0f1f5ae79523a94678e2a28b781dda2"
+    },
+    "tools/qikvrt_real_mesh.py": {
+      "bytes": 54403,
+      "git_blob_sha1": "a9944096c3583d885b5414c4e30f1404537b9e3e",
+      "sha256": "98332d83431afae4c578fc1a45749f64282f281693956ee8cd6ab750dec3238d"
+    },
+    "tools/qikvrt_requested_review_executor.py": {
+      "bytes": 137540,
+      "git_blob_sha1": "4461ea11760588acf547475982696c1113067e8c",
+      "sha256": "722bd9d72d29bf9ee2cced646e8a1674aaf440a680054fd27bd4ecf1689c19ba"
+    }
+  },
+  "tree": "956c16b291c05243437b1f018321936e4438949a"
+}
