@@ -153,12 +153,30 @@ jobs:
 
       - name: Enforce terminal tested-fixpoint disposition
         if: always()
+        env:
+          FIXPOINT_REQUIRED: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+          FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}
+          FIXPOINT_OUTCOME: ${{ steps.fixpoint.outcome }}
         shell: bash
         run: |
           set -euo pipefail
-          # The pre-materialization full_test result belongs to the predecessor.
-          # Terminal disposition is determined only by the same-writer re-entry
-          # step, which re-tests the freshly read-back successor and exits
-          # successfully only at a verified fixpoint.
-          test "${{ steps.fixpoint.outcome }}" = "success"
-          echo "QIKVRT_TERMINAL_DISPOSITION PASS"
+          case "$FIXPOINT_REQUIRED" in
+            true)
+              # A same-repository PR writer may repair the predecessor. Only
+              # its fully re-tested successor can establish the terminal result.
+              test "$FIXPOINT_OUTCOME" = "success"
+              mode=tested-fixpoint
+              ;;
+            false)
+              # Push, manual and fork-PR runs do not admit the writer. Their
+              # literal checkout must pass; continue-on-error cannot mask it.
+              test "$FIXPOINT_OUTCOME" = "skipped"
+              test "$FULL_TEST_OUTCOME" = "success"
+              mode=full-test
+              ;;
+            *)
+              echo "BLOCK: unknown fixpoint admission" >&2
+              exit 1
+              ;;
+          esac
+          echo "QIKVRT_TERMINAL_DISPOSITION PASS mode=$mode"
