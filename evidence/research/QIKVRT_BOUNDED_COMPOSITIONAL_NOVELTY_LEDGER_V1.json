@@ -1,0 +1,107 @@
+{
+  "schema": "qikvrt_bounded_compositional_novelty_ledger_v1",
+  "status": "BOUNDED_SEARCH_EXECUTED_NO_FULL_EQUIVALENT_LOCATED",
+  "owner_attribution": "Ingolf Lohmann",
+  "exact_subject": "a210631b6dc30eb81125e5a84762aeffa5dbbf28",
+  "claim": "Within the declared search scope, no located prior work was found to implement the complete QIK-VRT evidence-bound collective-cognition composition.",
+  "non_claim": "This is not a proof that no equivalent system exists anywhere, nor a patentability/legal novelty opinion.",
+  "required_feature_vector": [
+    "EXACT_SUBJECT_PROVENANCE",
+    "PREDECESSOR_EVIDENCE_TRANSFER_FALSE",
+    "CONTRADICTION_PRESERVATION",
+    "TRANSPORT_ACK_NE_EFFECT_ACK",
+    "AUTHORITY_SEPARATION",
+    "ERROR_TO_RULE_TO_MANDATORY_GATE",
+    "LOSSLESS_EPISTEMIC_CONSOLIDATION",
+    "RECURSIVE_SELF_APPLICATION",
+    "HUMAN_MACHINE_COLLECTIVE_COGNITION"
+  ],
+  "search_scope": {
+    "families": [
+      "human-AI collaboration",
+      "collective intelligence",
+      "provenance-aware systems",
+      "scientific workflow provenance",
+      "argumentation/evidence systems",
+      "agent governance",
+      "formal verification/self-correction",
+      "multi-agent systems"
+    ],
+    "repositories_and_web": "publicly searchable scholarly/web/GitHub material",
+    "date_cutoff": "2026-09-30",
+    "limitations": [
+      "not exhaustive patent search",
+      "not exhaustive non-English search",
+      "not exhaustive proprietary/closed systems",
+      "finite search cannot establish universal nonexistence"
+    ]
+  },
+  "located_neighbors": [
+    {
+      "id": "VACCaro_2024_HUMAN_AI_META",
+      "overlap": [
+        "HUMAN_MACHINE_COLLECTIVE_COGNITION"
+      ],
+      "full_equivalent": false
+    },
+    {
+      "id": "PROVENANCE_CORRECTION_RETURN_PATH_2026",
+      "overlap": [
+        "HUMAN_MACHINE_COLLECTIVE_COGNITION",
+        "CONTRADICTION_PRESERVATION"
+      ],
+      "full_equivalent": false
+    },
+    {
+      "id": "PROTOCOL_GOVERNED_HUMAN_AI_SE_2026",
+      "overlap": [
+        "AUTHORITY_SEPARATION",
+        "HUMAN_MACHINE_COLLECTIVE_COGNITION"
+      ],
+      "full_equivalent": false
+    },
+    {
+      "id": "SCIENTIFIC_WORKFLOW_PROVENANCE_2026",
+      "overlap": [
+        "EXACT_SUBJECT_PROVENANCE",
+        "LOSSLESS_EPISTEMIC_CONSOLIDATION"
+      ],
+      "full_equivalent": false
+    },
+    {
+      "id": "MULTI_AGENT_DIVERSITY_COLLAPSE_2026",
+      "overlap": [
+        "HUMAN_MACHINE_COLLECTIVE_COGNITION",
+        "CONTRADICTION_PRESERVATION"
+      ],
+      "full_equivalent": false
+    }
+  ],
+  "qikvrt_public_priority_evidence": [
+    {
+      "mechanism": "TRANSPORT_ACK_NE_EFFECT_ACK",
+      "public_date": "2026-06-17",
+      "artifact": "IETF draft-lohmann-qikvrt-effect-ack-00"
+    },
+    {
+      "mechanism": "complete composition",
+      "status": "REPOSITORY_IMPLEMENTATION_AND_CASE_EVIDENCE_REQUIRES_INDEPENDENT_NOVELTY_REVIEW_FOR_PRIORITY_CLAIM"
+    }
+  ],
+  "decision": {
+    "bounded_compositional_novelty": "SUPPORTED_WITHIN_DECLARED_SEARCH_SCOPE",
+    "universal_first_in_literature": "NOT_PROVEN",
+    "patent_novelty": "NOT_ASSESSED",
+    "independent_peer_review": "REQUIRED_FOR_STRONG_PRIORITY_CLAIM"
+  },
+  "liveness": {
+    "rule": "OPEN_PROOF_OBLIGATION + KNOWN_EXECUTABLE_NEXT_TEST -> WORK_NOT_TERMINAL_HOLD",
+    "terminal_only_if": "IRREDUCIBLE_AUTHORITY_CREDENTIAL_SAFETY_EXTERNAL_OR_SCOPE_BOUNDARY",
+    "successor_on_new_prior_art": "REOPEN_LEDGER_COMPARE_FEATURE_VECTOR_AND_BIND_NEW_DECISION"
+  },
+  "mirror_binding": {
+    "role": "DIGITAL_TWIN_NOVELTY_LEDGER",
+    "authority_source_commit": "36cf5b2a286eebc4bc566338702993ef3f4f9f8d",
+    "predecessor_evidence_transfer": false
+  }
+}
