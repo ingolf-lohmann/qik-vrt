@@ -116,6 +116,16 @@
       "original or consolidated ledger mutation",
       "unsupported completion claims"
     ],
-    "general_effect_ack_done": false
+    "general_effect_ack_done": false,
+    "main_reconciliation": {
+      "main_head": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+      "retained_main_changes": [
+        "node_health",
+        "node_registration_renewal"
+      ],
+      "reason": "Native exact-head review reported stale merge-base",
+      "method": "HISTORY_PRESERVING_MERGE_IN_EXISTING_PR410",
+      "source_code_changed_by_merge": false
+    }
   }
 }
