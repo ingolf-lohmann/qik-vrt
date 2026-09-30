@@ -1,11 +1,20 @@
 {
-  "schema": "qikvrt-human-machine-progress-protocol/1.3",
+  "schema": "qikvrt-human-machine-progress-protocol/1.4",
   "authority": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
   "required_files": {
     "machine_state": "AI_PROGRESS.json",
     "human_projection": "AI_STATUS.md"
   },
-  "states": ["IDLE", "RUNNING", "WAITING", "PASS", "BLOCK", "FAIL", "TIMEOUT", "CANCELLED"],
+  "states": [
+    "IDLE",
+    "RUNNING",
+    "WAITING",
+    "PASS",
+    "BLOCK",
+    "FAIL",
+    "TIMEOUT",
+    "CANCELLED"
+  ],
   "step_states": {
     "completed": "✓",
     "running": "⟳",
@@ -13,7 +22,21 @@
     "failed": "✗",
     "blocked": "!"
   },
-  "mandatory_fields": ["schema", "operation_id", "repository", "ref_name", "source_sha", "state", "percent", "current_action", "completed_steps", "pending_steps", "blockers", "next_action", "updated_at"],
+  "mandatory_fields": [
+    "schema",
+    "operation_id",
+    "repository",
+    "ref_name",
+    "source_sha",
+    "state",
+    "percent",
+    "current_action",
+    "completed_steps",
+    "pending_steps",
+    "blockers",
+    "next_action",
+    "updated_at"
+  ],
   "communication_rules": {
     "work_before_explanation": true,
     "compact_updates": true,
@@ -29,7 +52,13 @@
     "include_repository_ref_sha": true,
     "include_progress_bar": true,
     "include_concrete_blocker": true,
-    "complete_persistence_before_response": true
+    "complete_persistence_before_response": true,
+    "observation_with_successor_is_terminal_snapshot": false,
+    "continue_same_roundtrip_when_successor_exists": true,
+    "return_to_user_before_executable_successor_exhausted": false,
+    "observation_frequency": "EVENT_AND_WORKLOAD_SENSITIVE",
+    "deduplicate_unchanged_observations": true,
+    "monitoring_activity_is_progress": false
   },
   "tracked_snapshot": {
     "schema": "qikvrt-ai-progress/3.1",
@@ -58,7 +87,14 @@
   },
   "architecture_rules": {
     "reuse_before_create": true,
-    "required_order": ["REUSE", "EXTEND", "PARAMETERIZE", "GENERALIZE", "REFACTOR", "CREATE_NEW"],
+    "required_order": [
+      "REUSE",
+      "EXTEND",
+      "PARAMETERIZE",
+      "GENERALIZE",
+      "REFACTOR",
+      "CREATE_NEW"
+    ],
     "parallel_component_requires_reuse_evidence": true,
     "repository_is_runtime_authority": true,
     "chat_is_disposable_transport": true,
@@ -70,6 +106,30 @@
     "transport_ack_is_effect_ack": false,
     "exit_zero_is_final_pass": false,
     "pass_is_scope_bound": true,
-    "required_pass_evidence": ["repository", "ref_name", "source_sha", "checks", "evidence"]
+    "required_pass_evidence": [
+      "repository",
+      "ref_name",
+      "source_sha",
+      "checks",
+      "evidence"
+    ]
+  },
+  "continuation_semantics": {
+    "roundtrip": [
+      "OBSERVE",
+      "DIAGNOSE",
+      "ACT",
+      "OBSERVE_EFFECT",
+      "VERIFY_READBACK",
+      "CONTINUE"
+    ],
+    "nonterminal_observation_state": "RUNNING",
+    "waiting_only_when_external_effect_pending_and_no_local_successor": true,
+    "snapshot_allowed_only_when": [
+      "NO_EXECUTABLE_SUCCESSOR",
+      "EXTERNAL_AUTHORITY_OR_INPUT_REQUIRED",
+      "BOUNDED_OBSERVATION_WINDOW_ENDED"
+    ],
+    "causal_failure_becomes_next_work_unit": true
   }
 }

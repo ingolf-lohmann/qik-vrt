@@ -108,9 +108,14 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
             "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 "
             "# v7.0.1\n"
             "        with:\n"
-            "          fetch-depth: 0\n"
         )
         self.assertIn(checkout, workflow)
+        self.assertIn(
+            "          ref: ${{ github.event_name == 'pull_request' && "
+            "github.event.pull_request.head.sha || github.sha }}\n"
+            "          fetch-depth: 0\n",
+            workflow,
+        )
 
     def test_manuscript_workflow_provisions_declared_poppler_before_h5(self) -> None:
         workflow = (

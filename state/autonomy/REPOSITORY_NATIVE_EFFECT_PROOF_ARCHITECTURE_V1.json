@@ -1,0 +1,68 @@
+{
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0"
+  },
+  "schema": "qikvrt_repository_native_effect_proof_architecture_v1",
+  "architecture_id": "REPOSITORY_NATIVE_EFFECT_PROOF_ARCHITECTURE_V1",
+  "title": "Repository-native tested event model driven effect proof architecture",
+  "ordered_states": [
+    "EVENT",
+    "EXACT_SUBJECT",
+    "ADMISSION",
+    "EXECUTION",
+    "TEST",
+    "MUTATION",
+    "SUCCESSOR_HEAD_TREE",
+    "FRESH_READBACK",
+    "SUCCESSOR_BECOMES_NEXT_SUBJECT",
+    "TERMINAL_CONJUNCTION",
+    "EFFECT_ACK_DONE"
+  ],
+  "transition_contract": {
+    "EVENT_to_EXACT_SUBJECT": "bind event to exact commit HEAD and TREE before interpreting progress",
+    "EXACT_SUBJECT_to_ADMISSION": "require repository-native admission evidence for that exact subject",
+    "ADMISSION_to_EXECUTION": "require jobs to have actually executed; zero-job and action_required are not execution",
+    "EXECUTION_to_TEST": "require tests and gates to execute on the exact subject",
+    "TEST_to_MUTATION": "mutation is permitted only by an authorized bounded writer after its required gates",
+    "MUTATION_to_SUCCESSOR_HEAD_TREE": "every mutation creates a successor with a new exact HEAD/TREE identity",
+    "SUCCESSOR_HEAD_TREE_to_FRESH_READBACK": "read the persisted successor independently from the repository",
+    "FRESH_READBACK_to_SUCCESSOR_BECOMES_NEXT_SUBJECT": "only a successfully identity-bound readback advances the active subject",
+    "SUCCESSOR_BECOMES_NEXT_SUBJECT_to_TERMINAL_CONJUNCTION": "repeat the same tested transition semantics until all terminal predicates hold",
+    "TERMINAL_CONJUNCTION_to_EFFECT_ACK_DONE": "EFFECT_ACK_DONE is true only when every required terminal predicate is simultaneously evidenced"
+  },
+  "invariants": {
+    "predecessor_evidence_transfer": false,
+    "event_equals_effect": false,
+    "transport_ack_equals_effect_ack": false,
+    "sequence_equals_causality": false,
+    "observation_equals_authority": false,
+    "mutation_creates_successor": true,
+    "successor_requires_fresh_evidence": true,
+    "zero_job_run_is_execution": false,
+    "action_required_is_test_evidence": false,
+    "synthetic_progress": false,
+    "fail_closed": true,
+    "idempotent_replay_required": true
+  },
+  "terminal_conjunction": [
+    "EXACT_SUBJECT_BINDING",
+    "EXECUTABLE_ENFORCEMENT",
+    "ADMITTED_EXECUTION",
+    "JOBS_ACTUALLY_EXECUTED",
+    "TESTS_ON_EXACT_SUBJECT",
+    "PERSISTED_INTENDED_EFFECT",
+    "FRESH_INDEPENDENT_REPOSITORY_READBACK",
+    "ACCEPTANCE"
+  ],
+  "effect_ack_rule": "EFFECT_ACK_DONE iff all terminal_conjunction predicates are simultaneously true for the active exact subject",
+  "continuation_rule": "after a successful fresh readback, the observed successor becomes the next bound input subject; the predecessor remains historical evidence only",
+  "boundaries": {
+    "workflow_pass_alone_implies_done": false,
+    "commit_alone_implies_effect_ack": false,
+    "push_alone_implies_effect_ack": false,
+    "readback_required": true,
+    "acceptance_required": true
+  }
+}

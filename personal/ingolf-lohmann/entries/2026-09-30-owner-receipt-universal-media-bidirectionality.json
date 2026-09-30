@@ -1,0 +1,58 @@
+{
+  "schema": "qikvrt_personal_payload_entry_v1",
+  "id": "2026-09-30-owner-receipt-universal-media-bidirectionality",
+  "owner": "Ingolf Lohmann",
+  "attribution": "Ingolf Lohmann",
+  "relation": {
+    "predecessor": "personal/ingolf-lohmann/entries/2026-09-30-owner-statement-provenance-plurality.json",
+    "kind": "SUCCESSOR_REFINEMENT",
+    "predecessor_evidence_transfer": false
+  },
+  "source": {
+    "kind": "CHAT_OWNER_STATEMENT_AND_RECIPIENT_CONFIRMATION",
+    "date": "2026-09-30",
+    "audio": "NOT_BOUND",
+    "video": "NOT_BOUND",
+    "place": "NOT_BOUND"
+  },
+  "statements": [
+    {
+      "class": "OWNER_STATEMENT",
+      "text": "Ingolf Lohmann bestätigt den Empfang der vorherigen Nachricht aus seiner QIK-VRT Environment und beschreibt diese zugleich als Laufzeit-, Entwicklungs-, Test-, Feldtest-, Produktiv- und DevOps-Umgebung sowie als darüber hinaus erweiterbar."
+    },
+    {
+      "class": "OWNER_STATEMENT",
+      "text": "Die persönliche Payload soll neben Text und Audio auch Video und andere Nutzdaten provenance-gebunden aufnehmen können."
+    },
+    {
+      "class": "ENGINEERING_HYPOTHESIS",
+      "text": "Universal Terminal, Universal Transputer, Skalierbarkeit und verlustfreie Konsolidierung sollen bidirektionale, medienagnostische Informationsflüsse zwischen versionierten Zuständen ermöglichen."
+    },
+    {
+      "class": "SCIENTIFIC_HYPOTHESIS",
+      "text": "Ingolf Lohmann vertritt die Hypothese, dass Informationen bewusst und zielgerichtet bidirektional über Zeitkorridore gesendet und empfangen werden können."
+    },
+    {
+      "class": "OWNER_NORMATIVE_PRINCIPLE",
+      "text": "Die neutrale Zone von QIK-VRT soll Verantwortlichkeit, Provenienz, Zulässigkeit und Wirkungskontrolle erhalten; die konkrete Zweckentscheidung bleibt verantwortungsgebunden."
+    },
+    {
+      "class": "OWNER_NORMATIVE_PRINCIPLE",
+      "text": "Der kategorische Imperativ dient Ingolf Lohmann als normative Referenz für diese Verantwortungsgrenze."
+    },
+    {
+      "class": "OWNER_METAPHOR",
+      "text": "Ingolf Lohmann beschreibt den Verlust dieser verantwortungsgebundenen Neutralität metaphorisch als ungesund wie einen Virus und QIK-VRTs Schutzfunktion als dessen Gegenbild, eine Impfung."
+    }
+  ],
+  "boundaries": [
+    "VERSIONED_BIDIRECTIONAL_INFORMATION_FLOW != PHYSICAL_BACKWARD_TIME_CHANNEL_PROOF",
+    "OWNER_SCIENTIFIC_HYPOTHESIS != PROOF_EVIDENCE",
+    "VIRUS_AND_VACCINATION_LANGUAGE_IS_METAPHOR_NOT_MEDICAL_CLAIM",
+    "UNIVERSAL_PAYLOAD_SUPPORT != UNBOUNDED_OR_UNCONDITIONAL_ADMISSION",
+    "RIGHTS_PRIVACY_SECURITY_PROVENANCE_AND_EFFECT_ACK_REMAIN_GATES",
+    "AUDIO_VIDEO_TIME_PLACE_REQUIRE_EXACT_PROVENANCE"
+  ],
+  "continuation": "Future executable, empirical, audio/video, publication or independent evidence may refine these claims through versioned successors without rewriting this statement.",
+  "effect_ack_done": false
+}
