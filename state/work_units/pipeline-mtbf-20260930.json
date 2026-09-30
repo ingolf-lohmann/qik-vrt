@@ -1,0 +1,63 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "pipeline-mtbf-20260930",
+  "created_at": "2026-09-30T17:28:36.272Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+  "source_tree": "b48329215641dd59b90dfdc382f6292c881f3cce",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Require each repository node to measure pipeline stall frequency and duration",
+    "Set MTBF as the sole optimization objective"
+  ],
+  "artificial_cognitive_contributions": [
+    "Operational definition and statistical boundaries",
+    "Draft extension of existing stall policy",
+    "Read-only source inspection and review-branch persistence"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "policy/repository-status-stall-detection-v1.md",
+      "blob": "5b94165df5ada61f07df0397202da2e0e633c371"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "policy/repository-status-stall-detection-v1.md",
+      "blob": "d4ac17af73bbfc0a1f9f1347e88c5054b3d85775"
+    }
+  ],
+  "git_history": {
+    "branch": "work/pipeline-mtbf-20260930",
+    "policy_commit": "311316c3692110b65f63fc98b705b3870455b025"
+  },
+  "verification": {
+    "status": "SPECIFICATION_CANDIDATE",
+    "runtime_tests": "NOT_RUN",
+    "integrity_materialization": "PENDING",
+    "instrumentation": "NOT_IMPLEMENTED_BY_THIS_CHANGE",
+    "authority_read": "HTTP_404",
+    "authority_adoption": "UNKNOWN",
+    "other_node_adoption": "UNKNOWN",
+    "required_next_step": "Extend existing repository-native watchdog/ledger with executable measurement and acceptance tests; verify exact-head gates and per-node receipts"
+  },
+  "human_decision": "OWNER_OBJECTIVE_RECEIVED; GENERATED_SPEC_REVIEW_PENDING",
+  "external_effects": [
+    "Created isolated Mirror review branch",
+    "Persisted specification candidate; no main merge, dispatch or deployment"
+  ],
+  "release_claims": {
+    "PASS": false,
+    "DONE": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "PREDECESSOR_EVIDENCE_TRANSFER": false
+}
