@@ -1,0 +1,237 @@
+{
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "identity_and_observation_limits": [
+      "Platform/model declaration is not a cryptographic identity proof",
+      "Measured host only; no external tenant or physical-board readback"
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "80d0d66b2216",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "exec_command",
+      "apply_patch",
+      "GitHub connector",
+      "personal-context",
+      "web search"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Exact-main inventory and integrity diagnosis",
+    "Byte codec, canonical snapshot serializer/deserializer, negative tests and atomic CLI",
+    "Comparable same-profile benchmark and sampling-adversary counterexample",
+    "Restricted sampling to opt-in fast profile after counterexample; conservative balanced default",
+    "Versioned machine contract, documentation and necessary integrity projections"
+  ],
+  "created_at": "2026-10-01T10:39:32Z",
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "authorized_scope": "Persist bounded implementation on personal repository review branch and draft PR",
+    "deployment": false,
+    "merge": false,
+    "physical_actuation": false,
+    "release": false,
+    "remote_head_post_write": "TO_BE_READ_BACK_BEFORE_RETURN",
+    "vendor_tenant": false,
+    "zenodo": false
+  },
+  "git_history": {
+    "branch": "work/qikvrt-codec-v1-20261001",
+    "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
+    "candidate_tree": "BOUND_BY_CONTAINING_COMMIT",
+    "correction_method": "NEW_COMMIT_NO_FORCE_PUSH",
+    "parent_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4"
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "role": "Product Owner and creator"
+  },
+  "human_contributions": [
+    "Authorizes versioned lossless static/stream codec optimization",
+    "Requires identical 400-byte common seed and separate collision-resistant mesh-element identities",
+    "States personal Digital Twin, REST/meta-transistor and Siemens Horizon integration product goals",
+    "Freigabe erteilt for this bounded implementation"
+  ],
+  "human_decision": {
+    "generated_exact_candidate_review": "PENDING",
+    "implementation_authorization": "ACCEPTED",
+    "statement": "Freigabe erteilt"
+  },
+  "inputs": [
+    {
+      "path": "AI",
+      "role": "EXISTING_CONTRACT_REUSED_AS_BOUNDARY",
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe"
+    },
+    {
+      "path": "AGENTS.md",
+      "role": "EXISTING_CONTRACT_REUSED_AS_BOUNDARY",
+      "sha256": "bfc8ef292f4b72eab2923b1fd18de45303bdc81ac1ac66dc6fcb258f918fcc2e"
+    },
+    {
+      "path": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+      "role": "EXISTING_CONTRACT_REUSED_AS_BOUNDARY",
+      "sha256": "4be504f5738199a7a50fdbed18bd5b89e7fc8aa816c16c3256e7eac89d9e9746"
+    },
+    {
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "role": "EXISTING_CONTRACT_REUSED_AS_BOUNDARY",
+      "sha256": "e5815ec00ef0968a8bf390d4fd5a6304d4767fcae3477cfa7a1722c5d660d55f"
+    }
+  ],
+  "joint_components": [
+    {
+      "artificial_cognitive": "Generated implementation and verification evidence",
+      "class": "JOINT_WITH_SEPARABLE_COMPONENTS",
+      "human": "Product purpose, common-seed length and implementation authorization"
+    }
+  ],
+  "next_action": "Run required repository checks, commit candidate, push review branch, create draft PR and verify exact remote head/tree and gate disposition. Preserve PR #422 dependency and require final seed binding before canonical-owner-seed acceptance.",
+  "outputs": [
+    {
+      "bytes": 15744,
+      "path": "src/qikvrt_codec.py",
+      "sha256": "a13ce534f7ca9e9f9738bbfb6b020b88dbe154567a3afd42fcb3249d39391c3d"
+    },
+    {
+      "bytes": 14804,
+      "path": "tests/test_qikvrt_codec.py",
+      "sha256": "7de5259713bb7f60f7825fa4dea083ceb2f279dba1b383367081a7f2f9450ea7"
+    },
+    {
+      "bytes": 6373,
+      "path": "tools/qikvrt_codec_benchmark.py",
+      "sha256": "f71452120b81dafcaf3f97caf4339f51a6be2dd08ed3664bddb3d7fe09c63f89"
+    },
+    {
+      "bytes": 6534,
+      "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+      "sha256": "d754144fec39faf61fb3e3121527ec0ba1758507f458a0408a70efa041ea6b3b"
+    },
+    {
+      "bytes": 8546,
+      "path": "docs/QIKVRT_CODEC_V1.md",
+      "sha256": "bb30c66612a0d5a78cac5c43e6f4783ef47d697271557127eda4d90a36c611b3"
+    },
+    {
+      "bytes": 28237,
+      "path": "evidence/codec/20261001_CODEC_BENCHMARK_V1.json",
+      "sha256": "19a623c7fbb03a75e1e8c23c403cc151c38a1b750a525059dc2bdb87a79771a5"
+    },
+    {
+      "bytes": 10977,
+      "path": "Makefile",
+      "sha256": "160af45c4a8f31dc7f22863fb8cbddb2edd3146b38b04138e2268b931d3e5232"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "all_platforms_verified": false,
+    "owner_standpoint_seed_content_bound": false,
+    "universal_maximum_compression_or_fastest_runtime": false
+  },
+  "schema": "qikvrt_ai_work_unit_provenance_v1",
+  "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+  "unresolved_origin": [
+    "Exact owner-approved standpoint contents of the 400 seed bytes are unavailable; API requires independently supplied seed and fabricates none"
+  ],
+  "verification": {
+    "baseline_definition": "Same V1 framing, seed, block size, zlib level1 and SHA256 gates; probe=False. No historical executable QIKVRT byte-codec baseline exists.",
+    "benchmark": "evidence/codec/20261001_CODEC_BENCHMARK_V1.json",
+    "bootstrap_result": "CONTINUE after exact projection regeneration; optional runtime/audio components remain unavailable",
+    "codec_command": "python3 -B -m unittest -v tests.test_qikvrt_codec",
+    "codec_result": {
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "tests": 21
+    },
+    "comparisons": [
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 6365,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 6365,
+        "encode_speedup": 0.9539132425041861,
+        "roundtrip_verified": true,
+        "workload": "repetitive"
+      },
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 161520,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 161520,
+        "encode_speedup": 0.9274662901741807,
+        "roundtrip_verified": true,
+        "workload": "repository_text"
+      },
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 1049205,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 1049205,
+        "encode_speedup": 9.236341534168613,
+        "roundtrip_verified": true,
+        "workload": "random"
+      },
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 529821,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 529821,
+        "encode_speedup": 0.937995739629725,
+        "roundtrip_verified": true,
+        "workload": "mixed"
+      },
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 1049572,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 1049572,
+        "encode_speedup": 8.361211589754832,
+        "roundtrip_verified": true,
+        "workload": "precompressed"
+      },
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 39937,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 1049205,
+        "encode_speedup": 0.9318695991060661,
+        "roundtrip_verified": true,
+        "workload": "sampling_adversary"
+      }
+    ],
+    "full_repository_command": "make test",
+    "full_repository_result": {
+      "command": "make test",
+      "exit_code": 0,
+      "log_sha256": "eb5d142d40a010b572ef78e13e61783c7c4a35201f0ea2f0416693d10fd03077",
+      "missing_historical_checkout_object_repaired_by": "git fetch --no-tags --depth=1 origin 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "scope_excludes_separately_failing_baseline_tests": [
+        "tests.test_qikvrt_digital_twin_rest",
+        "tests.test_qikvrt_expected_head_promotion_contract"
+      ],
+      "state": "PASS_FOR_DECLARED_MAKE_TEST_TARGETS"
+    },
+    "integrity_command": "python3 -B tools/qikvrt_integrity.py generate && python3 -B tools/qikvrt_integrity.py verify",
+    "related_baseline_result": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_expected_head_promotion_contract",
+      "errors": 1,
+      "existing_repair_pr": 422,
+      "failure": "Expected-head promotion test uses literal formatting instead of semantic guard",
+      "failures": 1,
+      "first_error": "ModuleNotFoundError: src.qikvrt_siemens_reference_integration",
+      "log_sha256": "a6069c255cca87b831e35cf6e5ab72f4cb6356b677f495f4130bad8e432f6281",
+      "tests": 5
+    },
+    "related_baseline_tests": "Digital Twin REST import and fragile expected-head guard tests still fail on observed main; PR #422 owns the existing repair"
+  },
+  "work_unit_id": "QIKVRT_CODEC_V1_20261001"
+}
