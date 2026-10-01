@@ -22,6 +22,7 @@
   },
   "git_history": {
     "history_rewrite": false,
+    "native_integrity_successor": "e84aa2585630add9b5f2baa81ac1a585725a4e6f",
     "parent": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
     "promotion_enabled": false,
     "target_branch": "work/software-independent-promotion-proof-20261001-469a95ac"
@@ -62,6 +63,11 @@
       "bytes": 15169,
       "git_blob_sha1": "b1a4ab1c36286880f0692bdc36c3213aeb1f5532",
       "sha256": "8581ee544f548c81dcf93b3b0c3189c42ec74fb84384933dddd6ff433681ce06"
+    },
+    ".github/workflows/qikvrt_requested_review_contract.yml": {
+      "bytes": 3554,
+      "git_blob_sha1": "0e56dbca0b59ad75afb8da93bf74231227522367",
+      "sha256": "e1e6f8728d82b464a069f1753d2525227e9e3a3aa5754d221c50413985288e57"
     },
     "docs/operations/AUTONOMOUS_PR_CONTINUATION.md": {
       "bytes": 5571,
@@ -106,7 +112,23 @@
         "sha256": "413e5c1944c40a4d1d5df29b3b110cd5bbebc0c84a03cb6ebf19c09a399fc9d3"
       }
     },
-    "native_execution": "NOT_YET_ESTABLISHED_FOR_CANDIDATE",
+    "native_contract_repair": {
+      "cause": "Derived workflow still required synthetic review status after native review predicate replaced it.",
+      "failure_job_id": 110414647338,
+      "local_verification": "Both shell blocks syntax checked; final read-only binding checks executed successfully.",
+      "repair_path": ".github/workflows/qikvrt_requested_review_contract.yml"
+    },
+    "native_execution": {
+      "job_id": 110414646358,
+      "log_source": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36875760675",
+      "ordinary_fresh_head_gate": false,
+      "registered_head": "88d1641ac2c4befa91b99091d6a167fd3fe33447",
+      "remote_readback": true,
+      "run_id": 36875760675,
+      "state": "BOUNDED_NATIVE_FULL_SUITE_AND_INTEGRITY_AT_TESTED_FIXPOINT",
+      "tested_head": "e84aa2585630add9b5f2baa81ac1a585725a4e6f",
+      "tested_tree": "ed9c27bb1e4f3dba1721b23af34170abdab710e0"
+    },
     "negative_control": {
       "diagnosis": "Production evaluator omitted run/job subject binding and independent native review predicates. This controlled counterexample does not establish a historical live promotion incident.",
       "expected_failures": 8,
@@ -132,6 +154,12 @@
     "runtime": {
       "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
       "python": "3.12.14"
+    },
+    "successor_admission": {
+      "head": "e84aa2585630add9b5f2baa81ac1a585725a4e6f",
+      "historical_or_self_reported_gate_transfer": false,
+      "jobs_not_established": true,
+      "state": "ACTION_REQUIRED"
     },
     "tool_cache": "14/14 strategy coverage verified; no software downgrade."
   },
