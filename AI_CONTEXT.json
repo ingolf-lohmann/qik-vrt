@@ -137,7 +137,9 @@
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
     "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
     "policy/GLOBAL_SYSTEM_CLOSURE_V1.json",
-    "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json"
+    "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+    "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md"
   ],
   "session_protocol": {
     "startup": [
@@ -218,5 +220,24 @@
     "command": "python3 -B tools/qikvrt_expected_head_promotion.py evaluate-closure --input <verified-snapshot>",
     "scope": "QIKVRT-RECIPROCAL-LOSSLESS-DEVOPS-CLOSURE-V1",
     "rule": "A pure acceptance evaluation consumes externally authenticated verified observations; it neither executes protected effects nor authenticates facts supplied in JSON."
+  },
+  "full_node_recovery": {
+    "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
+    "authority_transition_adapter": "tools/qikvrt_authority_transition.py",
+    "authority_transition_effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER",
+    "authority_transition_test": "tests/test_qikvrt_authority_transition.py",
+    "full_node_admission_requires_all_policy_predicates": true,
+    "human_contract": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+    "implementation": "tools/qikvrt_mesh_recovery.py",
+    "offline_restore_is_live_authority_promotion": false,
+    "permanent_lineage_root": "Goldkelch/qik-vrt",
+    "policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+  },
+  "reflexive_twin_api": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+    "effect_scope": "BROKER_CREATE_ONLY_REFLEXIVE_TWIN_RECEIPT",
+    "implementation": "src/qikvrt_digital_twin_rest.py",
+    "product_effect_ack_done": false,
+    "writer": "src/qikvrt_github_api_shim.py:GitHubAuthorityProvider"
   }
 }
