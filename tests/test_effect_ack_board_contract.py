@@ -45,19 +45,29 @@ class BoardContractTests(unittest.TestCase):
         self.assertNotIn('plan', result)
         self.flags_false(result)
 
+    def test_flat_external_profile_is_rejected(self):
+        profile = fixture()
+        profile['pins']['current_input_bits[0]'] = dict(package_pin='TEST_OLD_PIN', io_standard='TEST_ONLY_IO')
+        with self.assertRaisesRegex(ValueError, 'complete top-level bit binding'):
+            self.prepare(profile)
+
     def test_complete_profile_emits_all_pins_and_bounded_build_interface(self):
         result = self.prepare(fixture())
         self.assertEqual(result['state'], 'BUILD_INPUTS_READY')
         self.flags_false(result)
         plan = result['plan']; xdc = plan['constraints']['board.xdc']
-        self.assertEqual(xdc.count('set_property PACKAGE_PIN'), 804)
-        self.assertEqual(xdc.count('set_property IOSTANDARD'), 804)
+        self.assertEqual(xdc.count('set_property PACKAGE_PIN'), 10)
+        self.assertEqual(xdc.count('set_property IOSTANDARD'), 10)
         self.assertIn('create_clock -name processor_clock -period 10 [get_ports {clk}]', xdc)
         self.assertIn('set_input_delay -min 0', xdc)
         self.assertIn('set_output_delay -max 2', xdc)
         self.assertNotIn('false_path', xdc)
         self.assertFalse(plan['programming_authorized'])
         self.assertFalse(plan['tool_execution_authorized'])
+        self.assertEqual(plan['interface']['request_bits'], 317)
+        self.assertEqual(plan['interface']['response_bits'], 485)
+        self.assertEqual(set(plan['interface']['physical_ports']), set(clock.ports()))
+        self.assertFalse(plan['interface']['carrier_paused_during_transfer'])
         self.assertEqual(plan['sources']['rtl/effect_ack_board_top.vhd'],
                          hashlib.sha256((clock.ROOT / 'rtl/effect_ack_board_top.vhd').read_bytes()).hexdigest())
         self.assertEqual(result, self.prepare(fixture()))
@@ -67,7 +77,7 @@ class BoardContractTests(unittest.TestCase):
         profile['pins']['clk']['io_standard'] = 'TEST_ONLY_IO WITH SPACE'
         constraints = self.prepare(profile)['plan']['constraints']
         self.assertIn('DEVICE TEST_ONLY_PART', constraints['board.qsf'])
-        self.assertEqual(constraints['board.qsf'].count('set_location_assignment'), 804)
+        self.assertEqual(constraints['board.qsf'].count('set_location_assignment'), 10)
         self.assertIn('set_clock_uncertainty', constraints['board.sdc'])
         self.assertIn('IO_STANDARD {TEST_ONLY_IO WITH SPACE}', constraints['board.qsf'])
 
@@ -112,7 +122,7 @@ class BoardContractTests(unittest.TestCase):
             profile = fixture(); pins = profile['pins']
             if mutation == 'missing': del pins['clk']
             if mutation == 'extra': pins['unknown'] = dict(pins['clk'])
-            if mutation == 'duplicate': pins['admit'] = dict(pins['clk'])
+            if mutation == 'duplicate': pins['frame_latch'] = dict(pins['clk'])
             if mutation == 'injection': pins['clk']['package_pin'] = 'P1;exec_bad'
             if mutation == 'io_missing': del pins['clk']['io_standard']
             with self.subTest(mutation=mutation), self.assertRaises(ValueError): self.prepare(profile)

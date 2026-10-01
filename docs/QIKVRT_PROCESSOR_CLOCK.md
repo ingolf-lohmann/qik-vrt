@@ -122,12 +122,39 @@ reviewter Build-Adapter darf diese Bindung erst nach Prüfung des exakten
 Boardprofils aktivieren. Der Schalter ist eine Integrationsvoraussetzung und
 keine kryptographische Sperre gegen einen privilegierten Build-Veränderer.
 
-Der Top-Level ist eine flache parallele Integrationsgrenze. Sein vollständiges
-Pinprofil benötigt **804 einzelne Pins**. Ein konkretes Board mit weniger
-verfügbaren Anschlüssen benötigt einen eigenen reviewten Transportadapter;
-dieser Schritt erfindet keinen seriellen Transport, CDC oder Pinbelegungen.
+Die frühere, von der KI erzeugte Grenze mit 804 externen Signalbits war ein
+Integrationsfehler. `effect_ack_parallel_core` bewahrt diese Busse als interne
+FPGA-Verbindungen. Der physische Top-Level `effect_ack_board_top` besitzt jetzt
+**10 skalare Signale**: `clk`, `power_reset_n`, `frame_start`, `frame_shift`,
+`frame_latch`, `serial_in`, `response_shift`, `serial_out`, `response_valid` und
+`transport_fault`. Das Pinprofil bindet genau diese Signale. Die Pinanzahl
+beweist weder Platzierung/Routing noch Ressourcen- oder Boardkompatibilität.
 Alle Eingangsbündel sind synchron zu `clk`; asynchrones Assert des Power-Resets
 bleibt zulässig, seine Freigabe muss Recovery/Removal erfüllen.
+
+Ein synchroner Request besteht aus 317 Bits, MSB zuerst. `frame_start` verwirft
+ein unvollständiges Bündel; `frame_shift` übernimmt je Flanke ein Bit.
+`frame_latch` muss auf einer separaten Flanke nach genau 317 Bits erfolgen.
+Trunkierung, Überlänge, nichtbinäre Steuerung/Daten, gleichzeitiges Shift/Latch
+oder Latch bei ungelesener Antwort verriegeln `transport_fault` bis zum
+Power-Reset und sperren weitere Admission. Es gibt keinen zweiten seriellen
+Takt, Taktteiler oder Clock-Enable für den Carrier.
+
+| Request-Bits | Feld |
+| --- | --- |
+| 316 / 315 | Admission / Resetanforderung |
+| 314:251 | Admission-Epoche |
+| 250:65 | `current_input_bits` im folgenden Layout |
+| 64 / 63:0 | Readback-Anforderung / Nonce |
+
+Nur die Latch-Flanke eines vollständigen Requests liefert einen frischen
+Eingangssnapshot. Auf allen anderen Flanken übernimmt der weiterhin laufende
+Carrier seine eigenen, nur lesbaren Epoch-/Zyklustags sowie `present=0` und
+`verified=0`. Deshalb bleiben Transferlücken BLOCK; alte Fakten werden nicht
+fortgeschrieben oder als frisch gekennzeichnet. Ein Request mit falschen
+Epoch-/Zykluswerten verriegelt den unveränderten Carrier-Fence. Dies ist ein
+spärlicher Transport, keine kontinuierlich authentisierte Datenquelle und kein
+Beleg für vollständige produktive Wirkungskontrolle auf jeder Flanke.
 
 | `current_input_bits` | Feld |
 | --- | --- |
@@ -140,8 +167,22 @@ bleibt zulässig, seine Freigabe muss Recovery/Removal erfüllen.
 `readback_bits` packt von oben nach unten Nonce (447:384), Epoche (383:320),
 Auswertungen (319:256), Witness-Zähler (255:192), Fault (191), Witness-Fault
 (190), Reset (189), Zustand (188:186) und Snapshot im obigen Layout (185:0).
-Die bestehenden C-Orakel-/Flanken-/Fault-Kontrollen vergleichen den gebundenen
-Top-Level mit dem Carrier und prüfen parallel die dauerhaft gesperrte Variante.
+Die 485-Bit-Antwort wird auf der Folgeflanke atomar aus dem abgeschlossenen
+Carrier-Ergebnis übernommen: Bit 484 = Readback gültig, 483:36 = `readback_bits`,
+35:33 = Zustand, 32 = Commit-Ereignis, 31:0 = Payload. `response_valid` bleibt
+bis zum letzten Bit gesetzt; `response_shift` verbraucht je Flanke ein Bit,
+beginnend mit Bit 484. Die Übertragung wiederholt keinen Commit. Commit/State
+im Paket beschreiben das vorausgegangene interne Ergebnis; sie erteilen keine
+spätere physische Ausführungserlaubnis. Ein vertrauenswürdiger physischer
+Sink-Adapter bleibt offen. `transport_fault` bezeichnet den Link-Fault; der
+Carrier-Fault steht gesondert im Readback.
+
+Die bestehenden C-Orakel-/Flanken-/Fault-Kontrollen vergleichen den internen
+Parallel-Core mit dem Carrier. Derselbe Testpfad simuliert den seriellen Top
+vor und nach Synthese, prüft kontinuierliche Zähler trotz Transferlücken,
+einmalige Frische, Replay, Fehlframes, Backpressure und die gesperrte Variante.
+Die tatsächlich synthetisierte äußere Schnittstelle wird auf zehn Skalare
+gegen den Profile-Validator geprüft.
 
 Die erreichbare Mirror-Historie wurde über 519 Remote-Refs und historische
 Board-/Constraint-Pfade geprüft. Der historische `hardware`-Tree
@@ -187,6 +228,12 @@ Min-/Max-Delays und Clock-Uncertainty werden explizit gebunden; es entstehen
 keine False-Path-Ausnahmen. Das Interface startet kein Vendorwerkzeug und
 keinen Programmer. Ein tatsächlicher Adapter muss zuerst den bestehenden
 Runtime-Lock-/Cache-Vertrag für seine ausgewählte Toolchain erweitern.
+
+Das aus früherer Gesprächsevidenz berichtete Ziel iCE40UP5K-B-EVN / SG48 ist
+kein wiederhergestelltes aktuelles M1-Profil und keine physische Beobachtung.
+Ein Lattice-Build-/Constraint-/Programmer-Adapter ist hier nicht implementiert;
+ein Lattice-Profil wird vom vorhandenen Vendor-Validator abgewiesen. Die
+behauptete Rekonstruktion von M1-Pins wird ausdrücklich zurückgenommen.
 
 Der Runvertrag bindet Repository/PR/HEAD/TREE, Profil/Build-Digest, Run-ID,
 Challenge, Zeitfenster, Board-Serial und FPGA-IDCODE. Er verlangt getrennte,

@@ -99,7 +99,8 @@
     "effect_interface": "One protected registered 32-bit payload and commit strobe; sink_ready reserves unconditional consumption of the following output interval. This is not an AXI valid/ready queue and has no retry buffer.",
     "reset_boundary": "Power reset erases volatile evidence. Admission controller must retain prior epoch/fault evidence out of band and prohibit epoch reuse; V1 readback cannot attest this yet.",
     "witness_independence": "Independent sequential logic in the same clock domain; not an independent oscillator, power domain, person or physical observation",
-    "physical_completion": "OPEN; simulation and generic synthesis are not placement/routing, STA, programmed bitstream or board evidence"
+    "physical_completion": "OPEN; simulation and generic synthesis are not placement/routing, STA, programmed bitstream or board evidence",
+    "internal_sampling_tags": "Read-only epoch/count outputs for absent-input tags; caller frames never drive or reset the actual counter"
   },
   "board_acceptance": {
     "implementation": "tools/qikvrt_effect_ack_clock_readback.py",
@@ -146,7 +147,7 @@
       "package_pin",
       "io_standard"
     ],
-    "pins": "Every scalar and every bit of every vector of effect_ack_board_top, exactly once; 804 explicit package pins, no defaults. This parallel boundary requires a compatible package/board; narrower board transports require a reviewed adapter.",
+    "pins": "Exactly ten scalar package ports of effect_ack_board_top; wide parallel buses are internal effect_ack_parallel_core connections. No concrete package pins are supplied.",
     "pin_source": "Caller-supplied evidenced board profile; no repository part/pin numbers invented.",
     "timing_fields": [
       "input_min_ns",
@@ -171,7 +172,7 @@
     "build_interface_only": true,
     "vendor_tool_invocation": false,
     "programming_authorized": false,
-    "top_default": "BOARD_BINDING_VALIDATED=false; no admission, no effect commit, zero payload, BLOCK state, no valid readback. Setting the static generic is not physical attestation or authorization.",
+    "top_default": "BOARD_BINDING_VALIDATED=false; no admission or response, serial_out=0, transport_fault=1. The static generic is not physical attestation or authorization.",
     "input_layout": {
       "185:122": "epoch",
       "121:58": "cycle",
@@ -262,6 +263,61 @@
     "physical_clock_verified": false,
     "bitstream_programmed": false,
     "programmer_readback_observed": false,
-    "EFFECT_ACK_DONE": false
+    "EFFECT_ACK_DONE": false,
+    "internal_parallel_entity": "effect_ack_parallel_core in rtl/effect_ack_board_top.vhd; not a physical package top",
+    "request_layout": {
+      "316": "admit",
+      "315": "reset_request",
+      "314:251": "admit_epoch",
+      "250:65": "current_input_bits using input_layout",
+      "64": "readback_request",
+      "63:0": "readback_nonce"
+    },
+    "response_layout": {
+      "484": "readback_valid",
+      "483:36": "readback_bits using readback_layout",
+      "35:33": "result_state of accepted carrier edge",
+      "32": "commit event from accepted carrier edge; not later execution authority",
+      "31:0": "registered effect payload from accepted carrier edge"
+    },
+    "serial_transport": {
+      "protocol": "SYNCHRONOUS_FRAMED_SERIAL_V1",
+      "physical_signal_bits": 10,
+      "request_bits": 317,
+      "response_bits": 485,
+      "bit_order": "MSB_FIRST",
+      "input_signals": [
+        "clk",
+        "power_reset_n",
+        "frame_start",
+        "frame_shift",
+        "frame_latch",
+        "serial_in",
+        "response_shift"
+      ],
+      "output_signals": [
+        "serial_out",
+        "response_valid",
+        "transport_fault"
+      ],
+      "frame_start": "Discard incomplete request and begin a new one; no effect",
+      "frame_shift": "One input bit per clk rising edge; exactly 317 bits required",
+      "frame_latch": "Separate edge with no shift/start; complete frame and empty response slot required",
+      "response_shift": "Consume one of 485 stable outcome bits per rising edge; valid clears after last bit",
+      "malformed": "Sticky link fault until power reset; reset_request latches carrier fault; no later admission",
+      "sample_freshness": "Full frame supplies input facts only on its accepted edge; intervening edges use carrier-owned epoch/cycle tags with present=0 and verified=0; no stale reuse",
+      "carrier_clock": "Always rising_edge(clk) after admission, including every transfer/fault edge; no divider/enable/pause",
+      "sink_boundary": "Serialized commit/payload are an outcome observation. Trusted current physical sink mediation is OPEN."
+    },
+    "reported_target": {
+      "board": "iCE40UP5K-B-EVN",
+      "package": "SG48",
+      "evidence_class": "PRIOR_CONVERSATION_REPORT_ONLY",
+      "current_profile_recovered": false,
+      "pin_mapping_recovered": false,
+      "physical_board_observed": false,
+      "selected_lattice_adapter": "OPEN; unsupported profiles rejected by current vendor validator",
+      "resource_and_place_route_fit": "OPEN"
+    }
   }
 }

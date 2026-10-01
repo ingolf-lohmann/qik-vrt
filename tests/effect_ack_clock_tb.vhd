@@ -30,10 +30,10 @@ architecture test of effect_ack_clock_tb is
 begin
   board_input <= std_logic_vector(s.epoch) & std_logic_vector(s.cycle) & s.present &
     s.verified & s.facts & std_logic_vector(s.decision) & s.effect_request & s.sink_ready & s.payload;
-  bound_top : entity work.effect_ack_board_top generic map (BOARD_BINDING_VALIDATED => true)
+  bound_top : entity work.effect_ack_parallel_core generic map (BOARD_BINDING_VALIDATED => true)
     port map (clk, rst, admit, reset_req, std_logic_vector(admission), board_input,
       rb_req, std_logic_vector(nonce), board_valid, board_readback, board_state, board_commit, board_payload);
-  unbound_top : entity work.effect_ack_board_top
+  unbound_top : entity work.effect_ack_parallel_core
     port map (clk, rst, admit, reset_req, std_logic_vector(admission), board_input,
       rb_req, std_logic_vector(nonce), unbound_valid, open, unbound_state, unbound_commit, unbound_payload);
   dut : entity work.effect_ack_clock_carrier
@@ -187,6 +187,144 @@ begin
     wreported <= to_unsigned(1,64); wedge;
     assert wfault = '1' report "replayed count escaped witness" severity failure;
     report "PASS: 2621440 independent-oracle vectors; carrier atomicity/fencing/coverage controls";
+    stop; wait;
+  end process;
+end architecture;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use std.env.all;
+use work.effect_ack_clock_pkg.all;
+
+entity effect_ack_serial_tb is end entity;
+architecture test of effect_ack_serial_tb is
+  signal clk, rst, start, shift, latch, din, drain : std_logic := '0';
+  signal dout, valid, fault, unbound_out, unbound_valid, unbound_fault : std_logic;
+begin
+  bound_serial : entity work.effect_ack_board_top generic map (BOARD_BINDING_VALIDATED => true)
+    port map (clk, rst, start, shift, latch, din, drain, dout, valid, fault);
+  unbound_serial : entity work.effect_ack_board_top
+    port map (clk, rst, start, shift, latch, din, drain, unbound_out, unbound_valid, unbound_fault);
+  process
+    variable active : boolean := false;
+    variable cycle : natural := 0;
+    variable response : std_logic_vector(484 downto 0);
+    variable frame : std_logic_vector(316 downto 0);
+    variable rb : std_logic_vector(447 downto 0);
+    variable sample : clock_input_t;
+    procedure edge is
+    begin
+      clk <= '0'; wait for 2 ns; clk <= '1'; wait for 2 ns;
+      if active then cycle := cycle + 1; end if;
+      assert unbound_out = '0' and unbound_valid = '0' and unbound_fault = '1'
+        report "unbound serial top exposed a usable response" severity failure;
+    end;
+    procedure boot is
+    begin
+      clk <= '0'; rst <= '0'; start <= '0'; shift <= '0'; latch <= '0'; drain <= '0'; din <= '0';
+      wait for 2 ns; active := false; cycle := 0; rst <= '1'; edge;
+      assert valid = '0' and fault = '0' severity failure;
+    end;
+    function request(admission : std_logic; value : clock_input_t; readback : std_logic := '0')
+      return std_logic_vector is
+    begin
+      return admission & '0' & std_logic_vector(to_unsigned(7, 64)) &
+        std_logic_vector(value.epoch) & std_logic_vector(value.cycle) &
+        value.present & value.verified & value.facts & std_logic_vector(value.decision) &
+        value.effect_request & value.sink_ready & value.payload & readback &
+        std_logic_vector(to_unsigned(99, 64));
+    end;
+    function complete(c : natural) return clock_input_t is
+      variable s : clock_input_t := EMPTY_INPUT;
+    begin
+      s.epoch := to_unsigned(7, 64); s.cycle := to_unsigned(c, 64);
+      s.present := '1'; s.verified := '1'; s.facts := std_logic_vector(to_unsigned(122879, 19));
+      s.decision := DONE_STATE; s.effect_request := '1'; s.sink_ready := '1';
+      s.payload := x"1234abcd"; return s;
+    end;
+    procedure send(value : std_logic_vector(316 downto 0)) is
+    begin
+      start <= '1'; edge; start <= '0'; shift <= '1';
+      for i in value'range loop din <= value(i); edge; end loop;
+      shift <= '0'; latch <= '1'; edge; latch <= '0';
+      if value(316) = '1' then active := true; end if;
+      assert valid = '0' report "response preceded registered carrier outcome" severity failure;
+      edge;
+      assert valid = '1' report "complete frame produced no coherent response" severity failure;
+    end;
+    procedure receive(variable value : out std_logic_vector(484 downto 0)) is
+    begin
+      drain <= '1';
+      for i in value'range loop
+        assert valid = '1' report "response truncated" severity failure;
+        value(i) := dout; edge;
+      end loop;
+      drain <= '0';
+      assert valid = '0' and dout = '0' report "response replayed past its length" severity failure;
+    end;
+  begin
+    boot;
+    send(request('1', EMPTY_INPUT)); receive(response);
+    assert response(35 downto 33) = std_logic_vector(BLOCK_STATE) and response(32) = '0'
+      report "admission released an effect" severity failure;
+    -- Counters run throughout request and response transfer, never at link rate.
+    sample := complete(cycle + 318);
+    send(request('0', sample)); receive(response);
+    assert response(35 downto 33) = std_logic_vector(DONE_STATE) and response(32) = '1' and
+      response(31 downto 0) = x"1234abcd"
+      report "fresh frame lost the carrier's one-cycle result" severity failure;
+    sample := complete(cycle + 318); sample.present := '0'; sample.verified := '0';
+    send(request('0', sample, '1')); receive(response);
+    rb := response(483 downto 36);
+    assert response(484) = '1' and unsigned(rb(447 downto 384)) = 99 and
+      unsigned(rb(383 downto 320)) = 7 and unsigned(rb(319 downto 256)) = sample.cycle and
+      rb(319 downto 256) = rb(255 downto 192) and rb(191 downto 189) = "000" and
+      rb(188 downto 186) = std_logic_vector(BLOCK_STATE) and
+      unsigned(rb(121 downto 58)) = sample.cycle - 1
+      report "serial transfer paused coverage or reused old verified facts" severity failure;
+    assert response(32) = '0' and response(31 downto 0) = x"00000000" severity failure;
+    -- Replaying the formerly valid frame cannot relabel the hardware count.
+    send(request('0', complete(804))); receive(response);
+    assert response(35 downto 33) = std_logic_vector(BLOCK_STATE) and response(32) = '0'
+      report "stale sample released twice" severity failure;
+    sample := complete(cycle + 318);
+    send(request('0', sample)); receive(response);
+    assert response(32) = '0' report "cycle fault was not sticky" severity failure;
+
+    boot;
+    start <= '1'; edge; start <= '0'; shift <= '1'; din <= '1'; edge;
+    shift <= '0'; latch <= '1'; edge; latch <= '0'; edge;
+    assert fault = '1' and valid = '0' report "truncated frame accepted" severity failure;
+    boot;
+    start <= '1'; edge; start <= '0'; shift <= '1'; din <= '0';
+    for i in 1 to 317 loop edge; end loop;
+    edge; shift <= '0'; edge;
+    assert fault = '1' and valid = '0' report "overlength frame accepted" severity failure;
+    boot;
+    start <= '1'; edge; start <= '0'; shift <= '1'; din <= 'X'; edge; shift <= '0'; edge;
+    assert fault = '1' and valid = '0' report "nonbinary input accepted" severity failure;
+    boot;
+    latch <= 'X'; edge; latch <= '0'; edge;
+    assert fault = '1' and valid = '0' report "nonbinary control accepted" severity failure;
+    boot;
+    start <= '1'; edge; start <= '0'; shift <= '1'; din <= '0';
+    for i in 1 to 317 loop edge; end loop;
+    latch <= '1'; edge; shift <= '0'; latch <= '0'; edge;
+    assert fault = '1' and valid = '0' report "simultaneous shift/latch accepted" severity failure;
+    boot;
+    -- Restart discards a partial frame without publishing it.
+    start <= '1'; edge; start <= '0'; shift <= '1'; din <= '1'; edge; shift <= '0';
+    send(request('1', EMPTY_INPUT));
+    assert fault = '0' report "safe frame abort latched a fault" severity failure;
+    frame := request('0', EMPTY_INPUT);
+    start <= '1'; edge; start <= '0'; shift <= '1';
+    for i in frame'range loop din <= frame(i); edge; end loop;
+    shift <= '0'; latch <= '1'; edge; latch <= '0'; edge;
+    assert fault = '1' report "unread response was overwritten" severity failure;
+    receive(response);
+    assert response(32) = '0' report "busy-frame rejection replayed an effect" severity failure;
+    report "PASS: serial framing, one-shot freshness, continuous coverage, replay, malformed and unbound controls";
     stop; wait;
   end process;
 end architecture;

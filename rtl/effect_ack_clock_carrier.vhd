@@ -16,7 +16,8 @@ entity effect_ack_clock_carrier is
         readback : out clock_readback_t;
         result_state : out state_t;
         effect_commit : out std_logic;
-        effect_payload : out std_logic_vector(31 downto 0));
+        effect_payload : out std_logic_vector(31 downto 0);
+        sampling_epoch, sampling_cycle : out word64 := (others => '0'));
 end entity;
 
 architecture rtl of effect_ack_clock_carrier is
@@ -28,6 +29,9 @@ architecture rtl of effect_ack_clock_carrier is
   signal snapshot : clock_input_t := EMPTY_INPUT;
   signal payload : std_logic_vector(31 downto 0) := (others => '0');
 begin
+  -- Read-only internal tags, never caller-controlled counters or clock enables.
+  sampling_epoch <= epoch;
+  sampling_cycle <= resize(count, 64);
   observer : entity work.effect_ack_coverage_witness
     generic map (COUNTER_BITS => COUNTER_BITS)
     port map (clk, power_reset_n, admit, reset_request, admit_epoch,

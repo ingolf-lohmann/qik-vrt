@@ -15,12 +15,11 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ('rtl/effect_ack_clock_pkg.vhd', 'rtl/effect_ack_coverage_witness.vhd',
            'rtl/effect_ack_clock_carrier.vhd', 'rtl/effect_ack_board_top.vhd')
-PORT_WIDTHS = {'clk': 1, 'power_reset_n': 1, 'admit': 1, 'reset_request': 1,
-               'admit_epoch': 64, 'current_input_bits': 186, 'readback_request': 1,
-               'readback_nonce': 64, 'readback_valid': 1, 'readback_bits': 448,
-               'result_state': 3, 'effect_commit': 1, 'effect_payload': 32}
-INPUT_PORTS = frozenset(('clk', 'power_reset_n', 'admit', 'reset_request',
-                        'admit_epoch', 'current_input_bits', 'readback_request', 'readback_nonce'))
+PORT_WIDTHS = dict.fromkeys(('clk', 'power_reset_n', 'frame_start', 'frame_shift',
+                            'frame_latch', 'serial_in', 'response_shift',
+                            'serial_out', 'response_valid', 'transport_fault'), 1)
+INPUT_PORTS = frozenset(('clk', 'power_reset_n', 'frame_start', 'frame_shift',
+                        'frame_latch', 'serial_in', 'response_shift'))
 OPEN_OBLIGATIONS = ('authenticated_inputs', 'cdc', 'epoch_fault_retention',
                     'independent_physical_clock_witness', 'complete_effect_mediation')
 TIMING_FIELDS = ('input_min_ns', 'input_max_ns', 'output_min_ns', 'output_max_ns',
@@ -195,6 +194,9 @@ def prepare_board(profile, *, subject, nonce, now, root=ROOT):
                 profile_sha256=digest(profile), nonce=nonce, board=board, fpga=fpga,
                 toolchain=tool, top='effect_ack_board_top', sources=sources,
                 source_order=list(SOURCES),
+                interface=dict(protocol='SYNCHRONOUS_FRAMED_SERIAL_V1',
+                               physical_ports=list(PORT_WIDTHS), request_bits=317,
+                               response_bits=485, carrier_paused_during_transfer=False),
                 generics={'BOARD_BINDING_VALIDATED': True}, constraints=constraints,
                 constraint_sha256={p: hashlib.sha256(v.encode()).hexdigest() for p, v in constraints.items()},
                 phases=['synthesis', 'placement_route', 'STA', 'bitstream', 'separately_authorized_programming', 'fresh_programmer_readback'],

@@ -2,12 +2,13 @@
 # Copyright 2026 Ingolf Lohmann.
 import os
 import json
+import re
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
 
-from tools.qikvrt_effect_ack_clock_readback import verify_readback
+from tools.qikvrt_effect_ack_clock_readback import ports, verify_readback
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -34,6 +35,8 @@ class ClockCarrierTests(unittest.TestCase):
             run([str(ghdl), '-a', '--std=08', *map(str, sources), str(ROOT / 'tests/effect_ack_clock_tb.vhd')])
             run([str(ghdl), '-e', '--std=08', 'effect_ack_clock_tb'])
             run([str(ghdl), '-r', '--std=08', 'effect_ack_clock_tb', '--assert-level=error'])
+            run([str(ghdl), '-e', '--std=08', 'effect_ack_serial_tb'])
+            run([str(ghdl), '-r', '--std=08', 'effect_ack_serial_tb', '--assert-level=error'])
             result = verify_readback(json.loads((build / 'readback.json').read_text()),
                                      nonce=99, epoch=7, expected_count=2569)
             self.assertTrue(result['telemetry_consistent'])
@@ -46,6 +49,25 @@ class ClockCarrierTests(unittest.TestCase):
                     run([str(ghdl), '--synth', '--std=08', '-gBOARD_BINDING_VALIDATED=' + bound,
                          'effect_ack_board_top'], stdout=output)
                 self.assertGreater((build / ('board_top_' + bound + '.vhd')).stat().st_size, 1000)
+                path = build / ('board_top_' + bound + '.vhd')
+                netlist = path.read_text()
+                top = re.search(r'entity effect_ack_board_top is.*?port\s*\((.*?)\);\s*end entity',
+                                netlist, re.S | re.I)
+                self.assertIsNotNone(top, 'missing synthesized physical top interface')
+                actual = set()
+                for declaration in top.group(1).strip().split(';'):
+                    scalar = re.fullmatch(r'\s*([a-z_,\s]+):\s*(?:in|out)\s+std_logic\s*',
+                                          declaration, re.I)
+                    self.assertIsNotNone(scalar, 'non-scalar physical port reintroduced')
+                    actual.update(n.strip() for n in scalar.group(1).split(','))
+                self.assertEqual(actual, set(ports()))
+                self.assertEqual(len(actual), 10)
+                # Independently synthesized hierarchies share child names.
+                # Rename every generated entity, leaving packages untouched.
+                for name in re.findall(r'^entity\s+(\w+)\s+is', netlist, re.M | re.I):
+                    netlist = re.sub(r'\b' + re.escape(name) + r'\b', name + '_' + bound,
+                                     netlist, flags=re.I)
+                path.write_text(netlist)
             with (build / 'synthesized_small.vhd').open('w') as output:
                 run([str(ghdl), '--synth', '--std=08', '-gCOUNTER_BITS=2',
                      'effect_ack_clock_carrier'], stdout=output)
@@ -63,6 +85,18 @@ class ClockCarrierTests(unittest.TestCase):
                  str(build / 'synthesized.vhd'), str(small), str(sources[3]), str(netlist_tb)])
             run([str(ghdl), '-e', *flags, 'effect_ack_clock_tb'])
             run([str(ghdl), '-r', *flags, 'effect_ack_clock_tb', '--assert-level=error'])
+            serial_tb = build / 'serial_netlist_tb.vhd'
+            serial_tb.write_text((ROOT / 'tests/effect_ack_clock_tb.vhd').read_text().replace(
+                'bound_serial : entity work.effect_ack_board_top generic',
+                'bound_serial : entity work.effect_ack_board_top_true generic').replace(
+                'unbound_serial : entity work.effect_ack_board_top\n',
+                'unbound_serial : entity work.effect_ack_board_top_false\n').replace(
+                'tiny : entity work.effect_ack_clock_carrier ',
+                'tiny : entity work.effect_ack_clock_carrier_small '))
+            run([str(ghdl), '-a', *flags, str(build / 'board_top_true.vhd'),
+                 str(build / 'board_top_false.vhd'), str(serial_tb)])
+            run([str(ghdl), '-e', *flags, 'effect_ack_serial_tb'])
+            run([str(ghdl), '-r', *flags, 'effect_ack_serial_tb', '--assert-level=error'])
 
     def test_bootstrap_rejects_bad_archive_and_symlink_cache(self):
         with tempfile.TemporaryDirectory(prefix='qikvrt-ghdl-negative-') as directory:
