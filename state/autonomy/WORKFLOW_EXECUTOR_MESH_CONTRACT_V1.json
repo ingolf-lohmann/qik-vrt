@@ -68,6 +68,15 @@
   },
   "reflexive_deadlock_prevention": {
     "enabled": true,
+    "observation_failure": {
+      "receipt_schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+      "state": "OBSERVATION_FAILED",
+      "disposition": "HOLD",
+      "workflow_failure_is_preserved": true,
+      "live_pipeline_progress": "UNKNOWN",
+      "retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
+      "historical_evidence_transfer": false
+    },
     "applies_to": [
       "AUTHORITY",
       "MIRROR",

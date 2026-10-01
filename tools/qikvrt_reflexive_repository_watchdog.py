@@ -904,6 +904,68 @@ def analyze(
     return receipt
 
 
+def observation_failure_receipt(
+    *,
+    expected_head: str,
+    observed_head: str,
+    observed_tree: str,
+    repository: str,
+    now: datetime,
+    run_id: int,
+    run_attempt: int,
+    stage: str,
+    exit_code: int,
+) -> dict[str, Any]:
+    """Preserve an observation error without inventing live state or progress."""
+    expected_head = _head_sha(expected_head, "expected head")
+    observed_head = _head_sha(observed_head, "checkout head")
+    observed_tree = _head_sha(observed_tree, "checkout tree")
+    repository = _string(repository, "repository")
+    stage = _string(stage, "failed observation stage")
+    exit_code = _positive_int(exit_code, "failed observation exit code")
+    if exit_code > 255:
+        raise ReflexiveWatchdogBlock("failed observation exit code must be at most 255")
+    receipt = {
+        "schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+        "repository": repository,
+        "head_sha": observed_head,
+        "tree_sha": observed_tree,
+        "expected_head_sha": expected_head,
+        "expected_head_matches_checkout": expected_head == observed_head,
+        "observed_at": _iso(now),
+        "run_id": _positive_int(run_id, "workflow run ID"),
+        "run_attempt": _positive_int(run_attempt, "workflow run attempt"),
+        "state": "OBSERVATION_FAILED",
+        "disposition": "HOLD",
+        "first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+        "failure": {"stage": stage, "exit_code": exit_code},
+        "live_subject_reobserved": False,
+        "pipeline_progress": "UNKNOWN",
+        "productive_edge": False,
+        "safe_continuation": False,
+        "effect_already_occurred": False,
+        "next_action": "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
+        "retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
+        "boundaries": {
+            "observation_failure_is_quiescence": False,
+            "artifact_upload_is_gate_success": False,
+            "historical_receipt_is_fresh_evidence": False,
+            "repository_mutation": False,
+            "external_effect": False,
+        },
+        "completion_claims": {
+            "PASS": False,
+            "FINAL_PASS": False,
+            "EFFECT_ACK_DONE": False,
+            "AUTHORITY_MIRROR_EQUALITY": False,
+        },
+    }
+    receipt["semantic_fingerprint"] = sha256_bytes(
+        canonical_json_bytes({key: value for key, value in receipt.items() if key != "observed_at"})
+    )
+    return receipt
+
+
 def _read_json(path: Path, label: str) -> Mapping[str, Any] | Sequence[Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -931,6 +993,17 @@ def build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument("--json", action="store_true")
     check_parser = subcommands.add_parser("check-contract")
     check_parser.add_argument("--json", action="store_true")
+    failure_parser = subcommands.add_parser("observation-failure")
+    failure_parser.add_argument("--expect-head", required=True)
+    failure_parser.add_argument("--observed-head", required=True)
+    failure_parser.add_argument("--observed-tree", required=True)
+    failure_parser.add_argument("--repository", required=True)
+    failure_parser.add_argument("--now", required=True)
+    failure_parser.add_argument("--run-id", required=True, type=int)
+    failure_parser.add_argument("--run-attempt", required=True, type=int)
+    failure_parser.add_argument("--failed-stage", required=True)
+    failure_parser.add_argument("--exit-code", required=True, type=int)
+    failure_parser.add_argument("--json", action="store_true")
     return parser
 
 
@@ -947,6 +1020,18 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "workflow_path": prevention["workflow_path"],
                 "controller_path": prevention["controller_path"],
             }
+        elif arguments.command == "observation-failure":
+            value = observation_failure_receipt(
+                expected_head=arguments.expect_head,
+                observed_head=arguments.observed_head,
+                observed_tree=arguments.observed_tree,
+                repository=arguments.repository,
+                now=_timestamp(arguments.now, "observation time"),
+                run_id=arguments.run_id,
+                run_attempt=arguments.run_attempt,
+                stage=arguments.failed_stage,
+                exit_code=arguments.exit_code,
+            )
         else:
             runs = _read_json(arguments.runs_file, "workflow runs")
             jobs = {"jobs_by_run": load_jobs_directory(arguments.jobs_dir)}
