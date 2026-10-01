@@ -333,7 +333,7 @@ und [GitHub REST Git commits](https://docs.github.com/en/rest/git/commits?apiVer
 Der bestehende Control-Plane-Adapter besitzt mit `audit-writers` einen
 lesenden Source-Admission-Gate; `make test` führt ihn aus. Es entsteht weder
 ein zweiter Broker noch eine zusätzliche Permit-Ausgabe. Das maschinenlesbare
-Inventar liegt in `state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V2.json`; V1 bleibt historische Evidenz.
+Inventar liegt in `state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V3.json`; V1 bleibt historische Evidenz.
 Jeder relevante Pfad wird mit Bytes, SHA-256, Klassifikation und Workflow-Jobs
 gebunden. Neue untracked oder tracked Kandidatendateien werden mitgeprüft, einschließlich
 Make-/Package-Entrypoints, CommonJS und weiterer ausführbarer Quellsprachen.
@@ -502,7 +502,7 @@ bereits versuchter Effekt wird dagegen als unbekannt ausgewiesen, nicht als
 bewiesene Nichtwirkung.
 
 Der Port ist bewusst auf `refs/heads/work/` und `refs/heads/agent/`, maximal
-128 normale nichtausführbare Dateien und 512 KiB Originalbytes begrenzt.
+128 normale nichtausführbare Dateien und 4 MiB Originalbytes (höchstens 1.400.000 Bytes pro Datei) begrenzt.
 Main-Promotion, Löschungen, Mode-Wechsel, Symlinks, Submodule und beliebige
 Quellcodeänderungen bleiben BLOCK. Der historische Materializer kann einen
 generierten Python-Quellpfad stagen; eine solche Änderung ist außerhalb dieses
@@ -519,3 +519,15 @@ Primärquellen (abgerufen 2026-10-01):
 [GitHub Commit-Mutationen](https://docs.github.com/en/graphql/reference/commits),
 [CreateCommitOnBranchInput](https://docs.github.com/en/graphql/reference/input-objects#createcommitonbranchinput),
 [FileChanges und Base64](https://docs.github.com/en/graphql/reference/git#fileaddition).
+
+
+Die Kapazitätskorrektur bindet die tatsächlich benötigten Integritätsdateien:
+Manifest rund 1,1 MiB und SHA256SUMS rund 0,5 MiB. Der vorherige 512-KiB-
+Kandidat hätte ihre notwendige Fortschreibung unmöglich gemacht; er ist keine
+produktive Funktionsabnahme. Der bestehende native GET-Response-Bound bleibt
+2 MiB. Der Authority-POST-Pfad erhält separat 6 MiB Request-Bound; andere
+Shim-Endpunkte behalten 1 MiB. Größere historische Evidence-Dateien bleiben
+ausdrücklich BLOCK statt ungeprüft neue Provider-Kapazität zu behaupten.
+V1/V2-Inventare und der erste Port-Work-Unit bleiben unverändert historisch;
+V3 bindet die aktuellen Source-Bytes. Ein zusätzliches Fixture verwendet alle
+drei tatsächlichen Integritätsdateien im vorhandenen HTTP/Broker/CAS/Ledger-Pfad.

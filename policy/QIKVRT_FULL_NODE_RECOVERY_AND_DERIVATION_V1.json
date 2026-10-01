@@ -48,8 +48,11 @@
         "materialization_successor": {
           "accepted_target_watermark": "ADDITIVE_PROVIDER_TARGETS_TABLE_IN_SAME_PRIVATE_CONTROL_PLANE",
           "bounds": {
-            "max_decoded_bytes": 524288,
+            "authority_request_bytes": 6291456,
+            "max_decoded_bytes": 4194304,
+            "max_file_bytes": 1400000,
             "max_files": 128,
+            "native_response_bytes": 2097152,
             "over_capacity": "BLOCK_NO_PERMISSION_FALLBACK"
           },
           "client": "tools/qikvrt_authority_transition.py publish-successor",
@@ -125,7 +128,7 @@
           "historical_incoming_documentary_test_and_readonly_paths_are_distinct": true,
           "historical_workflow_runs_and_external_credentials_revoked": false,
           "implementation": "tools/qikvrt_authority_transition.py",
-          "inventory": "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V2.json",
+          "inventory": "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V3.json",
           "legacy_github_git_data_transports": "NON_GET_DENIED_BEFORE_REAL_OR_INJECTED_TRANSPORT",
           "legacy_owner_release_cli": "PRODUCTIVE_BRANCH_REMOVED_DRY_RUN_LOCAL_SELFTEST_RETAINED",
           "live_bound_mirror_provider_effect_verified": false,

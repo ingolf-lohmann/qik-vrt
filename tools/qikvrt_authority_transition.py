@@ -722,7 +722,8 @@ def publish_successor(arguments: list[str]) -> int:
     """
     import base64
     import hashlib
-    from src.qikvrt_github_api_shim import GitHubAuthorityProvider, PROVIDER_REPOSITORY
+    from src.qikvrt_github_api_shim import (GitHubAuthorityProvider, PROVIDER_REPOSITORY,
+        MATERIALIZATION_FILE_BYTES, MATERIALIZATION_BYTES)
     parser = argparse.ArgumentParser(description="Bound native-CAS materialization")
     parser.add_argument("--profile", choices=("ci_integrity", "repository_evidence"), required=True)
     parser.add_argument("--target-ref", required=True)
@@ -764,6 +765,7 @@ def publish_successor(arguments: list[str]) -> int:
             raise TransitionError("materializer checkout is stale")
         staged = recovery.git_command(ROOT, "diff", "--cached", "--name-only", "-z", head).split("\0")
         files = []
+        total_bytes = 0
         for relative in sorted(set(staged) - {""}):
             if not GitHubAuthorityProvider.successor_path_allowed(args.profile, relative):
                 raise TransitionError("staged materialization includes unsupported path")
@@ -771,17 +773,18 @@ def publish_successor(arguments: list[str]) -> int:
             mode, oid, stage_path = entry.split(" ", 2)
             if mode != "100644" or stage_path != "0\t" + relative:
                 raise TransitionError("staged materialization is not a regular single blob")
-            # Git cat-file emits arbitrary binary bytes; use the existing bounded
-            # runner rather than the text-normalizing offline git_command helper.
+            # Check the immutable blob size before capturing arbitrary bytes;
+            # the text-normalizing git_command helper is unsuitable for blobs.
             size = int(recovery.git_command(ROOT, "cat-file", "-s", oid))
-            if size > 512 * 1024:
+            total_bytes += size
+            if size > MATERIALIZATION_FILE_BYTES or total_bytes > MATERIALIZATION_BYTES:
                 raise TransitionError("staged bytes exceed bound")
             read = subprocess.run(["git", "-C", str(ROOT), "cat-file", "blob", oid],
                 capture_output=True, timeout=30, env={"PATH": os.environ.get("PATH", ""),
                     "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
                     "GIT_NO_REPLACE_OBJECTS": "1", "GIT_NO_LAZY_FETCH": "1",
                     "GIT_ALLOW_PROTOCOL": "file", "GIT_TERMINAL_PROMPT": "0"})
-            if read.returncode or len(read.stdout) > 512 * 1024:
+            if read.returncode or len(read.stdout) > MATERIALIZATION_FILE_BYTES:
                 raise TransitionError("staged bytes unavailable or beyond bound")
             raw = read.stdout
             files.append({"path": relative, "contents": base64.b64encode(raw).decode(),

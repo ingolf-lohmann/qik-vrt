@@ -3,6 +3,7 @@
 # Copyright 2026 Ingolf Lohmann.
 """Provider contract tests; real Git CAS/refs and HTTP shim, not live GitHub."""
 import base64
+from contextlib import ExitStack
 from concurrent.futures import ThreadPoolExecutor
 import copy
 import hashlib
@@ -727,7 +728,7 @@ class MaterializeSuccessorTests(unittest.TestCase):
                 adapter.execute(NEW_TOKEN, permit, operation)
         self.assertEqual(self.remote.posts, 1)
 
-    def test_staged_workflow_client_existing_http_shim_provider_and_ledger_end_to_end(self):
+    def client_roundtrip(self, files, *, native_transport=False):
         permit = self.activate()
         self.provider()
         checkout = self.root/'cli-checkout'
@@ -735,9 +736,9 @@ class MaterializeSuccessorTests(unittest.TestCase):
         head = recovery.git_command(checkout, 'rev-parse', 'HEAD')
         ref = 'refs/heads/work/cli-fixture'
         recovery.git_command(self.remote.repository, 'update-ref', ref, head)
-        raw = b'byte-exact\x00\xff\n'
-        (checkout/'REPOSITORY_FILE_MANIFEST.json').write_bytes(raw)
-        recovery.git_command(checkout, 'add', 'REPOSITORY_FILE_MANIFEST.json')
+        for path, raw in files.items():
+            (checkout/path).write_bytes(raw)
+        recovery.git_command(checkout, 'add', *sorted(files))
         private = self.root/'client-private'
         private.mkdir(mode=0o700)
         api_token = 'b64url:' + base64.urlsafe_b64encode(b'a'*32).rstrip(b'=').decode()
@@ -752,8 +753,31 @@ class MaterializeSuccessorTests(unittest.TestCase):
             'QIKVRT_AUTHORITY_API_TOKEN_FILE': str(private/'api'),
             'QIKVRT_AUTHORITY_WRITER_FILE': str(private/'writer'),
             'QIKVRT_AUTHORITY_PERMIT_FILE': str(private/'permit')}
-        with mock.patch.dict(os.environ, env), mock.patch.object(transition, 'ROOT', checkout), \
-                mock.patch.object(shim.GitHubAuthorityProvider, '_request', side_effect=self.remote.request):
+        if native_transport:
+            env.update(QIKVRT_GITHUB_BROKER_TOKEN='provider-test-token-abcdefghijklmnopqrstuvwxyz',
+                       QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC='2099-01-01T00:00:00Z')
+        with ExitStack() as stack:
+            stack.enter_context(mock.patch.dict(os.environ, env))
+            stack.enter_context(mock.patch.object(transition, 'ROOT', checkout))
+            if native_transport:
+                real_opener = urllib.request.build_opener(shim.NoRedirectHandler())
+                def route(request, timeout):
+                    if not request.full_url.startswith('https://api.github.com/'):
+                        self.assertNotIn(env['QIKVRT_GITHUB_BROKER_TOKEN'].encode(), request.data)
+                        return real_opener.open(request, timeout=timeout)
+                    suffix = ('graphql' if request.full_url == 'https://api.github.com/graphql' else
+                        request.full_url.removeprefix('https://api.github.com/repos/'+shim.PROVIDER_REPOSITORY+'/'))
+                    status, body = self.remote.request(request.method, suffix,
+                        json.loads(request.data) if request.data else None)
+                    response = io.BytesIO(json.dumps(body).encode())
+                    response.status = status
+                    response.geturl = lambda: request.full_url
+                    return response
+                opener = mock.Mock()
+                opener.open.side_effect = route
+                stack.enter_context(mock.patch.object(urllib.request, 'build_opener', return_value=opener))
+            else:
+                stack.enter_context(mock.patch.object(shim.GitHubAuthorityProvider, '_request', side_effect=self.remote.request))
             server = ThreadingHTTPServer(('127.0.0.1', 0), shim.QikvrtGitHubApiShim)
             thread = threading.Thread(target=server.serve_forever)
             thread.start()
@@ -769,13 +793,49 @@ class MaterializeSuccessorTests(unittest.TestCase):
                 self.assertTrue(result['durable_ledger_readback'])
                 self.assertFalse(result['effect_ack_done'])
                 self.assertEqual(self.remote.posts, 1)
-                actual = subprocess.check_output(['git', '-C', str(self.remote.repository), 'show',
-                    result['sha']+':REPOSITORY_FILE_MANIFEST.json'])
-                self.assertEqual(actual, raw)
+                for path, raw in files.items():
+                    actual = subprocess.check_output(['git', '-C', str(self.remote.repository), 'show',
+                        result['sha']+':'+path])
+                    self.assertEqual(actual, raw)
             finally:
                 server.shutdown()
                 thread.join(5)
                 server.server_close()
+
+    def test_staged_workflow_client_existing_http_shim_provider_and_ledger_end_to_end(self):
+        self.client_roundtrip({'REPOSITORY_FILE_MANIFEST.json': b'byte-exact\x00\xff\n'})
+
+    def test_actual_three_integrity_files_fit_the_complete_http_cas_byte_ledger_path(self):
+        files = {path: (transition.ROOT/path).read_bytes() for path in shim.GitHubAuthorityProvider.INTEGRITY_PATHS}
+        self.assertGreater(sum(map(len, files.values())), 1024*1024)
+        self.client_roundtrip(files, native_transport=True)
+
+    def test_scoped_large_intent_decoder_stays_bounded_canonical_and_strict(self):
+        adapter = self.provider()
+        raw = canonical_json_bytes({'payload': 'x'*(1024*1024)})
+        self.assertEqual(adapter._decode_materialization_intent(raw)['payload'], 'x'*(1024*1024))
+        for bad in (b'{"x":1,"x":2}', b'{"x":NaN}', b'[]', b'{"x":1}',
+                    b'x'*(shim.AUTHORITY_REQUEST_BYTES+1)):
+            with self.assertRaises(transition.TransitionError):
+                adapter._decode_materialization_intent(bad)
+
+    def test_capacity_and_accidental_shell_terminator_path_fail_before_provider(self):
+        permit = self.activate()
+        operation = self.operation()
+        self.remote.calls.clear()
+        raw = b'x'*(shim.MATERIALIZATION_FILE_BYTES+1)
+        file = {**operation['files'][0], 'contents': base64.b64encode(raw).decode(),
+            'blob': shim.GitHubAuthorityProvider._git_oid('blob', raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+        with self.assertRaises(transition.TransitionError):
+            self.provider().execute(NEW_TOKEN, permit, {**operation, 'files': [file]})
+        self.assertFalse(shim.GitHubAuthorityProvider.successor_path_allowed('repository_evidence', 'fi'))
+        raw = b'x'*shim.MATERIALIZATION_FILE_BYTES
+        files = [{'path': path, 'contents': base64.b64encode(raw).decode(),
+            'blob': shim.GitHubAuthorityProvider._git_oid('blob', raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+            for path in sorted(shim.GitHubAuthorityProvider.INTEGRITY_PATHS)]
+        with self.assertRaises(transition.TransitionError):
+            self.provider().execute(NEW_TOKEN, permit, {**operation, 'files': files})
+        self.assertEqual(self.remote.calls, [])
 
     def test_workflow_cli_missing_provision_returns_hold_without_provider(self):
         with tempfile.TemporaryDirectory() as directory, mock.patch.dict(os.environ, {}, clear=True):

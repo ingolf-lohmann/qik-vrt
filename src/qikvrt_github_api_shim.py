@@ -37,6 +37,11 @@ AUTHORITY_EFFECT_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_C
 # can be inferred from lineage or an environment variable.
 PROVIDER_REPOSITORY = "ingolf-lohmann/qik-vrt"
 MAX_REQUEST_BYTES = 1024 * 1024
+AUTHORITY_REQUEST_BYTES = 6 * 1024 * 1024
+MATERIALIZATION_BYTES = 4 * 1024 * 1024
+# Base64 plus native JSON envelope must stay below the existing 2 MiB response
+# bound. This covers the measured 1.1 MiB manifest without widening GET limits.
+MATERIALIZATION_FILE_BYTES = 1_400_000
 _RATE_LOCK = threading.Lock()
 _RATE_WINDOWS: dict[str, tuple[int, int]] = {}
 
@@ -187,7 +192,10 @@ class GitHubAuthorityProvider:
         if status not in {200, 201}:
             return status, {}
         try:
-            value = parse_json_bytes(raw, "provider response")
+            # The native blob envelope can exceed the seed JSON helper's
+            # 1 MiB input budget. The transport has already enforced 2 MiB.
+            value = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_json_object,
+                               parse_constant=_reject_json_constant)
         except (ValueError, TypeError, SeedError) as exc:
             raise TransitionError("invalid provider JSON") from exc
         if not isinstance(value, dict):
@@ -323,7 +331,7 @@ class GitHubAuthorityProvider:
         "createCommitOnBranch(input:$input){clientMutationId commit{oid tree{oid}}}}")
     INTEGRITY_PATHS = frozenset({"REPOSITORY_FILE_MANIFEST.json",
         "REPOSITORY_FILE_MANIFEST.json.sha256", "SHA256SUMS.txt"})
-    EVIDENCE_PATHS = frozenset(['formalization/QIKVRT_Formalization_v2.0/claims/TEX_ENVIRONMENTS.json', 'formalization/QIKVRT_Formalization_v2.0/claims/APPENDIX_MATRIX.json', 'formalization/QIKVRT_Formalization_v2.0/claims/CLAIM_GRAPH.json', 'formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md', 'formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md', 'formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json', 'release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip', 'release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip.sha256', 'release/formalization-v2/ZENODO_SHA256SUMS-alpha.2', 'release/formalization-v2-alpha2-zenodo.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-2581811b342e505d', 'work-units/EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_172DD9BC2738FA43.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-172dd9bc2738fa43', 'work-units/EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_B4849E1A2D6B2270.json', 'docs/publications/2026-08-04-aphorism-corpus-scientific-assessment', 'docs/publications/index.json', 'docs/publications/index.html', 'work-units/MATERIALIZE_APHORISM_CORPUS_SCIENTIFIC_ASSESSMENT_V2.json', 'AI_PROGRESS.json', 'AI_STATUS.md', 'REPOSITORY_FILE_MANIFEST.json', 'REPOSITORY_FILE_MANIFEST.json.sha256', 'SHA256SUMS.txt', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/CONTENT_DISPOSITION_BATCH_003_RECEIPT.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-b4849e1a2d6b2270', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-7956d8acdc473825', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-ce2390f18618ad0c', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-780b9bf86425cee3', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-7fdb36aa7c07c07d', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/retrospective-proof-corpus', 'work-units/CREATE_VERSIONED_CORRECTED_CANDIDATES_REMAINING_CORPUS_SUBJECTS.json', 'work-units/REQUEST_SEPARATE_ZENODO_MUTATION_AUTHORIZATION_RETROSPECTIVE_PROOF_CORPUS.json', 'fi'])
+    EVIDENCE_PATHS = frozenset(['formalization/QIKVRT_Formalization_v2.0/claims/TEX_ENVIRONMENTS.json', 'formalization/QIKVRT_Formalization_v2.0/claims/APPENDIX_MATRIX.json', 'formalization/QIKVRT_Formalization_v2.0/claims/CLAIM_GRAPH.json', 'formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md', 'formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md', 'formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json', 'release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip', 'release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip.sha256', 'release/formalization-v2/ZENODO_SHA256SUMS-alpha.2', 'release/formalization-v2-alpha2-zenodo.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-2581811b342e505d', 'work-units/EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_172DD9BC2738FA43.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-172dd9bc2738fa43', 'work-units/EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_B4849E1A2D6B2270.json', 'docs/publications/2026-08-04-aphorism-corpus-scientific-assessment', 'docs/publications/index.json', 'docs/publications/index.html', 'work-units/MATERIALIZE_APHORISM_CORPUS_SCIENTIFIC_ASSESSMENT_V2.json', 'AI_PROGRESS.json', 'AI_STATUS.md', 'REPOSITORY_FILE_MANIFEST.json', 'REPOSITORY_FILE_MANIFEST.json.sha256', 'SHA256SUMS.txt', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/CONTENT_DISPOSITION_BATCH_003_RECEIPT.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-b4849e1a2d6b2270', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-7956d8acdc473825', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-ce2390f18618ad0c', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-780b9bf86425cee3', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-7fdb36aa7c07c07d', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/retrospective-proof-corpus', 'work-units/CREATE_VERSIONED_CORRECTED_CANDIDATES_REMAINING_CORPUS_SUBJECTS.json', 'work-units/REQUEST_SEPARATE_ZENODO_MUTATION_AUTHORIZATION_RETROSPECTIVE_PROOF_CORPUS.json'])
 
     @classmethod
     def successor_path_allowed(cls, profile: str, path: str) -> bool:
@@ -360,21 +368,26 @@ class GitHubAuthorityProvider:
         for file in files:
             recovery.exact(file, {"path", "contents", "sha256", "blob"}, "successor bytes")
             path = file["path"]
+            if not isinstance(path, str) or path.count("/") > 32:
+                raise TransitionError("successor path depth outside bound")
             if not cls.successor_path_allowed(operation["profile"], path):
                 raise TransitionError("successor path outside materialization profile")
             try:
-                if not isinstance(file["contents"], str) or len(file["contents"]) > 700000:
+                if not isinstance(file["contents"], str) or len(file["contents"]) > 4 * ((MATERIALIZATION_FILE_BYTES + 2) // 3):
                     raise ValueError("successor bytes exceed bound")
                 raw = base64.b64decode(file["contents"], validate=True)
             except (ValueError, TypeError) as exc:
                 raise TransitionError("invalid successor byte encoding") from exc
-            if (base64.b64encode(raw).decode() != file["contents"]
+            if (len(raw) > MATERIALIZATION_FILE_BYTES
+                    or base64.b64encode(raw).decode() != file["contents"]
                     or hashlib.sha256(raw).hexdigest() != file["sha256"]
                     or cls._git_oid("blob", raw) != file["blob"]):
                 raise TransitionError("successor exact bytes mismatch")
             paths.append(path)
             total += len(raw)
-        if paths != sorted(set(paths)) or total > 512 * 1024:
+            if total > MATERIALIZATION_BYTES:
+                raise TransitionError("successor aggregate bytes exceed bound")
+        if paths != sorted(set(paths)) or total > MATERIALIZATION_BYTES:
             raise TransitionError("successor duplicate/order/capacity boundary")
         if operation["tree"] == operation["expected_tree"]:
             raise TransitionError("empty successor is not an effect")
@@ -506,6 +519,19 @@ class GitHubAuthorityProvider:
             raise TransitionError("successor ref changed during readback")
         return sha
 
+    @staticmethod
+    def _decode_materialization_intent(raw: bytes) -> dict:
+        if len(raw) > AUTHORITY_REQUEST_BYTES:
+            raise TransitionError("durable materialization intent exceeds bound")
+        try:
+            document = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_json_object,
+                                  parse_constant=_reject_json_constant)
+        except (ValueError, TypeError) as exc:
+            raise TransitionError("invalid durable materialization intent") from exc
+        if not isinstance(document, dict) or canonical_json_bytes(document) != raw:
+            raise TransitionError("noncanonical durable materialization intent")
+        return document
+
     def materialize_successor(self, token: str, permit: dict, operation: dict) -> dict:
         self.validate_successor(operation)
         # Both profiles share the original journal, credentials, lock and permit issuer.
@@ -517,7 +543,7 @@ class GitHubAuthorityProvider:
             self._journal(db)
             prior = db.execute("SELECT document, status FROM provider_effects WHERE id=?", (operation["effect_id"],)).fetchone()
             if prior:
-                if decode(prior[0]) != document:
+                if self._decode_materialization_intent(prior[0]) != document:
                     raise TransitionError("successor replay binding conflict")
                 if prior[1] == "REJECTED":
                     raise TransitionError("successor key permanently rejected")
@@ -642,7 +668,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             raise ValueError("invalid Content-Length") from exc
         if n <= 0:
             raise ValueError("JSON request body is required")
-        if n > MAX_REQUEST_BYTES:
+        request_limit = (AUTHORITY_REQUEST_BYTES if AUTHORITY_EFFECT_RE.fullmatch(urlparse(self.path).path)
+                         else MAX_REQUEST_BYTES)
+        if n > request_limit:
             raise ValueError("request too large")
         raw = self.rfile.read(n)
         try:
