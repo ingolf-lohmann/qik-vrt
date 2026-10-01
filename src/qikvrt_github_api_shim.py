@@ -19,7 +19,7 @@ from urllib.parse import urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
-from qikvrt_digital_twin_scheduling import BASE as SCHEDULE_BASE, SchedulingStore, ScheduleConflict
+from qikvrt_digital_twin_scheduling import BASE as SCHEDULE_BASE, SchedulingStore, ScheduleConflict, SchedulingBridge, HttpScheduleExecutor
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
@@ -339,6 +339,15 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                 SCHEDULE_BASE + "/prepare": ({"task_id", "expected_revision", "changes"}, store.prepare),
                 SCHEDULE_BASE + "/plan": ({"at"}, store.due),
             }
+            if method == "POST" and parsed.path == SCHEDULE_BASE + "/bridge":
+                body = self._read_json()
+                if set(body) != {"task_id", "event_id", "expected_revision", "changes"}:
+                    raise ValueError("CLOSED_SCHEDULE_BRIDGE_REQUEST_SCHEMA")
+                names = ("QIKVRT_SCHEDULE_EXECUTOR_URL", "QIKVRT_SCHEDULE_EXECUTOR_TOKEN", "QIKVRT_SCHEDULE_EXECUTOR_TOKEN_EXPIRES_UTC")
+                if not all(os.environ.get(name) for name in names):
+                    raise ScheduleConflict("AUTHENTICATED_EXECUTOR_GATEWAY_NOT_CONFIGURED")
+                executor = HttpScheduleExecutor(*(os.environ[name] for name in names), store.repository, store.principal)
+                return self._send_json(200, SchedulingBridge(store, executor).sync(**body))
             if method != "POST" or parsed.path not in requests:
                 return self._send_json(404, {"status": "BLOCK", "reason": "unknown endpoint"})
             body = self._read_json()

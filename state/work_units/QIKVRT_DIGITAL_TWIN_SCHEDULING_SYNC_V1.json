@@ -20,7 +20,7 @@
   },
   "ai_contribution": {
     "actor": "OpenAI Codex",
-    "scope": "Repository inventory, extension of existing authenticated transport, private durable CAS registry and calendar planner, regressions, one real executor-to-local-registry synchronization transaction, candidate persistence",
+    "scope": "Repository inventory, extension of existing authenticated transport, private durable CAS registry and calendar planner, regressions, one real executor-to-local-registry synchronization transaction, candidate persistence; event-driven existing-executor bridge, authenticated conditional-update gateway adapter, durable attempt journal and restart/reordering/concurrency regressions",
     "independent_review": false
   },
   "reuse_evidence": {
@@ -32,28 +32,28 @@
   },
   "candidate_source_bindings": {
     "src/qikvrt_digital_twin_scheduling.py": {
-      "sha256": "1041e454c3cc044b2d6c7fda141f04a157daa40863ef47a2f62dc49b47e3ddfd",
-      "git_blob": "235222238d3f59fcc215b9d3ca6151a0f8d996cf"
+      "sha256": "497fdadeae6df158bcdb82c3c8df48238b97792b4eea4fabe072d3a797e158ef",
+      "git_blob": "83119d718872f21ee2eef845243bc97dc85b559b"
     },
     "src/qikvrt_github_api_shim.py": {
-      "sha256": "8251c4c875df209b3e3e116b4cd040a4d48c4fff2e19f1b9d825558da567dfcf",
-      "git_blob": "dc0c3220828a8564973120a7b04fa54fa6b2d18c"
+      "sha256": "f0a66f53d0c9cd9a7b20c8f2041b1556c62545b88faecfb19d16f7059d5aa2bc",
+      "git_blob": "846a92c031927d3c8d67a42a8323a27dc5b71e56"
     },
     "tests/test_qikvrt_digital_twin_scheduling.py": {
-      "sha256": "452683a9e35e6b21893511cafa719db5e1e31a86ae2968aa98d1817ba42818eb",
-      "git_blob": "37b25616ce6393c1f700dcbafb0a9f854455b897"
+      "sha256": "57784cd09bb7451c1652de0653cd79101e37dad8c368b6b8aeeb1678e630bd4e",
+      "git_blob": "ff76206e7a426854980cdafe5b638d9f1552c81a"
     },
     "api/qikvrt_github_api.openapi.yaml": {
-      "sha256": "d2b99dec5d0ac927ec7163429ff647993a5e7b0154e58780bd18fd807d75bcee",
-      "git_blob": "4e55273472d027b8af4589c5d1b0895584f70aa2"
+      "sha256": "cb60b052c00a33cff5fb53a2be6d271db1ecb3f7e547dfca15a9b38d8bf0803f",
+      "git_blob": "b1e7bfeb10497fbf37fb0d000d45b905dc8c19ff"
     },
     "policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json": {
-      "sha256": "b24149ce434c63d3ea98700dd1e1ca662221d74c497636eb214442903b6d4870",
-      "git_blob": "2bec778df0285e5be97d910b6e997bb8d586b82b"
+      "sha256": "38245f21517655fdf40fc32f408497901831f12d2b0239f5046fee21dc5517fd",
+      "git_blob": "bd735b36ca1ab60e6c668044846f2feec9602b88"
     },
     "docs/QIKVRT_DIGITAL_TWIN_SCHEDULING.md": {
-      "sha256": "09a8c8d517dbd417dd6f0f078edc4684968ac7e493650fa41f43600a81762f7d",
-      "git_blob": "7867c2e6cee4314cd5c6485f186308305b67e6f3"
+      "sha256": "890151a4e5eae9de7a10cd10c380787d4e473a03a292299127ad1bca6ef8c9a6",
+      "git_blob": "74ba9994287ca142d6940c55e40262539a79ed61"
     }
   },
   "real_transaction": {
@@ -81,8 +81,8 @@
     "targeted_tests": {
       "command": "make digital-twin-scheduling-test",
       "result": "PASS",
-      "count": 19,
-      "scope": "Exact candidate source bindings above: SQLite restart/CAS/concurrency, HTTP authentication, exact source readback and DST/UTC planning"
+      "count": 39,
+      "scope": "Exact current candidate: persistent registry plus bridge restart, reordering, concurrent writers, remote CAS conflicts, ambiguous update, pause/resume, DST, auth and real HTTP test-gateway roundtrip"
     },
     "final_candidate_gate": {
       "command": "make test",
@@ -125,9 +125,9 @@
     "ordinary_release": false,
     "effect_ack_done": false
   },
-  "first_unverified_edge": "Authenticated productive Twin scheduling ingress and an authorized executor adapter connected to the existing Automation",
+  "first_unverified_edge": "Actual authenticated executor gateway with source-domain CAS and event/restart carrier connected to deployed Twin ingress",
   "runtime_evidence": "Railway service configuration observation is persisted in the initial binding record; configuration commit and separately selected runtime HEAD/TREE are not conflated",
-  "smallest_next_action": "Review and integrate the existing transport extension, bind it to the authenticated productive Twin ingress, then perform source read -> Twin readback with exact task and config identity; retain one executor",
+  "smallest_next_action": "Review candidate and bind a real authenticated provider gateway/event carrier; ordinary automations.update alone cannot provide the required atomic CAS. Verify fresh source/local readbacks and restart/drift before productive continuous claim.",
   "predecessor_evidence_transfer": false,
   "claims": {
     "PASS": false,
@@ -135,5 +135,34 @@
     "EFFECT_ACK_DONE": false,
     "AUTHORITY_MIRROR_EQUALITY": false,
     "CONTINUOUS_SCHEDULING_SYNCHRONIZATION": false
+  },
+  "bridge_successor": {
+    "observed_at": "2026-10-01T13:53:59.396665+00:00",
+    "predecessor_head": "1bd9f15c70f62387829f2d24d3b7b3dbc61ceb76",
+    "observed_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+    "human_requirement": "Extend PR #426 with continuous scheduler-to-Twin bridge, one executor, fail closed and fresh external verification boundary",
+    "reuse_inventory": "src/tools/scripts/api searched for automations, adapter, event and bridge. Reused existing shim auth/rate/JSON limits, SchedulingStore, calendar normalization and TCP/IP harness. No existing executor-to-Twin bridge found.",
+    "remote_cas_boundary": "The callable automations.update has no exposed conditional version argument; an actual provider without atomic source-domain CAS cannot authorize mutation.",
+    "tests": "make digital-twin-scheduling-test; 39 tests, including real shim-to-test-gateway CAS and independent SQLite readback",
+    "test_evidence_class": "LOCAL_TEST_GATEWAY_NOT_PRODUCTIVE_EXTERNAL_WITNESS",
+    "executor_create_or_run_route": false,
+    "history_preserving_main_integration": "469a95a carries six lifecycle paths; merged without rewriting predecessor history",
+    "productive_gateway_or_event_delivery_verified": false,
+    "continuous_bridge_verified": false,
+    "predecessor_evidence_transfer": false,
+    "full_gate": {
+      "command": "make test",
+      "exit_code": 0,
+      "python_test_executions": 566,
+      "c90_checks": 7864387,
+      "test_log_sha256": "c1ccc7d795676ffe0b57d2394323e07467733f386d3220abc810a8b7ecb4471f",
+      "scope": "Candidate bytes before this metadata receipt; final exact committed subject must be independently checked",
+      "productive_effect_implied": false
+    },
+    "historical_object_recovery": {
+      "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "operation": "Fetch --update-shallow from existing local source; unchanged historical finalizer suite 8/8 passes",
+      "tracked_code_or_test_bypass": false
+    }
   }
 }

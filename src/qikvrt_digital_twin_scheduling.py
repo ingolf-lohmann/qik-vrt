@@ -3,8 +3,9 @@
 """Durable, version-bound scheduling projection of an existing executor.
 
 The registry never creates another executor or calls an external platform.
-A local change is prepared, applied by the authorized adapter, then confirmed
-by importing its fresh source readback. Unsupported schedules fail closed.
+The event-driven bridge uses a configured authenticated adapter to update only
+an existing executor with remote CAS, then imports its fresh source readback.
+Unsupported schedules and unverified provider capabilities fail closed.
 """
 from __future__ import annotations
 
@@ -192,6 +193,8 @@ class SchedulingStore:
         self.principal = principal
         with self.connect() as db:
             db.execute("CREATE TABLE IF NOT EXISTS schedules (id TEXT PRIMARY KEY, revision INTEGER NOT NULL, task TEXT NOT NULL, observed TEXT NOT NULL, pending TEXT)")
+            db.execute("CREATE TABLE IF NOT EXISTS schedule_bridge (event_id TEXT PRIMARY KEY, task_id TEXT NOT NULL, request TEXT NOT NULL, stage TEXT NOT NULL, source TEXT NOT NULL, desired TEXT NOT NULL, revision INTEGER NOT NULL)")
+            db.execute("CREATE TABLE IF NOT EXISTS schedule_source_versions (id TEXT PRIMARY KEY, version TEXT NOT NULL, binding TEXT NOT NULL)")
 
     @contextmanager
     def connect(self):
@@ -228,7 +231,13 @@ class SchedulingStore:
         if isinstance(expected, bool) or not isinstance(expected, int) or expected != actual:
             raise ScheduleConflict("STALE_EXACT_SCHEDULE_REVISION")
 
-    def reconcile(self, *, expected_revision, observed_at, task):
+    @staticmethod
+    def require_bridge_owner(db, task_id, event_id=None):
+        active = db.execute("SELECT event_id FROM schedule_bridge WHERE task_id=? AND stage!='VERIFIED'", (task_id,)).fetchone()
+        if active and active["event_id"] != event_id:
+            raise ScheduleConflict("SCHEDULE_BRIDGE_WRITER_ACTIVE")
+
+    def reconcile(self, *, expected_revision, observed_at, task, _bridge_event=None):
         task = normalize_task(task)
         observed = utc(observed_at)
         now = datetime.now(timezone.utc)
@@ -236,6 +245,7 @@ class SchedulingStore:
             raise ScheduleConflict("FRESH_SOURCE_OBSERVATION_REQUIRED")
         with self.connect() as db:
             db.execute("BEGIN IMMEDIATE")
+            self.require_bridge_owner(db, task["id"], _bridge_event)
             row = db.execute("SELECT * FROM schedules WHERE id=?", (task["id"],)).fetchone()
             self.require_revision(expected_revision, row["revision"] if row else 0)
             previous = json.loads(row["task"]) if row else None
@@ -253,6 +263,8 @@ class SchedulingStore:
             revision = (row["revision"] if row else 0) + int(changed)
             db.execute("INSERT OR REPLACE INTO schedules VALUES (?,?,?,?,NULL)",
                        (task["id"], revision, canonical(task), stamp(observed)))
+            if _bridge_event:
+                db.execute("UPDATE schedule_bridge SET revision=? WHERE event_id=?", (revision, _bridge_event))
         result = self.read(task["id"])
         if result["task"] != task or result["revision"] != revision:
             raise ScheduleConflict("LOCAL_POST_WRITE_READBACK_CHANGED")
@@ -266,6 +278,7 @@ class SchedulingStore:
             raise ValueError("CLOSED_SCHEDULE_CHANGE_SCHEMA")
         with self.connect() as db:
             db.execute("BEGIN IMMEDIATE")
+            self.require_bridge_owner(db, task_id)
             row = db.execute("SELECT * FROM schedules WHERE id=?", (task_id,)).fetchone()
             if row is None:
                 raise KeyError("SCHEDULE_NOT_FOUND")
@@ -294,6 +307,212 @@ class SchedulingStore:
                           "planned_next_slot_utc": slot, "hosted_next_run_time": task["next_run_time"],
                           "executor": item["executor"], "local_dispatch_authorized": False})
         return {"schema": SCHEMA, "planned_at": stamp(now), "tasks": tasks, "effect_ack_done": False}
+
+
+class SchedulingBridge:
+    """One event/restart transaction; no timer, task creation or job execution.
+
+    Adapter reads are authenticated, fresh source observations. Conditional
+    update must be atomic in the executor's authority domain, not a local
+    read-then-write emulation. ATTEMPTED is durable before the network call;
+    an ambiguous effect can only be recovered by matching source readback.
+    """
+
+    def __init__(self, store, executor):
+        self.store, self.executor = store, executor
+
+    def source_read(self, task_id):
+        self.executor.require_authentication()
+        started = datetime.now(timezone.utc)
+        source = self.executor.read_existing(task_id)
+        if not isinstance(source, dict) or set(source) != {"task", "version", "observed_at", "conditional_update"}:
+            raise ValueError("CLOSED_EXECUTOR_OBSERVATION_SCHEMA")
+        task = normalize_task(source["task"])
+        if task["id"] != task_id:
+            raise ScheduleConflict("EXECUTOR_TASK_ID_MISMATCH")
+        version = source["version"]
+        if not isinstance(version, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,256}", version):
+            raise ValueError("EXACT_EXECUTOR_VERSION_REQUIRED")
+        if type(source["conditional_update"]) is not bool:
+            raise ValueError("EXECUTOR_CAPABILITY_REQUIRED")
+        observed = utc(source["observed_at"])
+        if observed < started or observed > datetime.now(timezone.utc) + timedelta(seconds=5) or utc(task["updated_at"]) > observed:
+            raise ScheduleConflict("FRESH_BRIDGE_SOURCE_READ_REQUIRED")
+        binding = canonical({"configuration": config(task), "updated_at": stamp(utc(task["updated_at"]))})
+        with self.store.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            old = db.execute("SELECT * FROM schedule_source_versions WHERE id=?", (task_id,)).fetchone()
+            if old:
+                previous = json.loads(old["binding"])
+                old_time, new_time = utc(previous["updated_at"]), utc(task["updated_at"])
+                if new_time < old_time:
+                    raise ScheduleConflict("STALE_EXECUTOR_VERSION")
+                if (old["version"] == version and old["binding"] != binding) or (old_time == new_time and old["version"] != version):
+                    raise ScheduleConflict("CONTRADICTORY_EXECUTOR_VERSION")
+            db.execute("INSERT OR REPLACE INTO schedule_source_versions VALUES (?,?,?)", (task_id, version, binding))
+        return dict(source, task=task, observed_at=stamp(observed))
+
+    def sync(self, *, task_id, event_id, expected_revision, changes):
+        if not isinstance(task_id, str) or not re.fullmatch(r"[0-9a-f]{32}", task_id):
+            raise ValueError("INVALID_EXECUTOR_TASK_ID")
+        if not isinstance(event_id, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", event_id):
+            raise ValueError("STABLE_BRIDGE_EVENT_ID_REQUIRED")
+        if type(expected_revision) is not int or expected_revision < 0:
+            raise ScheduleConflict("STALE_EXACT_SCHEDULE_REVISION")
+        if not isinstance(changes, dict) or set(changes) - (set(CONFIG_FIELDS) - {"id", "timing_mode"}):
+            raise ValueError("CLOSED_SCHEDULE_CHANGE_SCHEMA")
+        request = canonical({"task_id": task_id, "expected_revision": expected_revision, "changes": changes})
+        source = self.source_read(task_id)
+        with self.store.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            journal = db.execute("SELECT * FROM schedule_bridge WHERE event_id=?", (event_id,)).fetchone()
+            if journal:
+                if journal["request"] != request:
+                    raise ScheduleConflict("BRIDGE_EVENT_ID_COLLISION")
+            else:
+                self.store.require_bridge_owner(db, task_id)
+                row = db.execute("SELECT * FROM schedules WHERE id=?", (task_id,)).fetchone()
+                self.store.require_revision(expected_revision, row["revision"] if row else 0)
+                if row:
+                    previous = json.loads(row["task"])
+                    if row["pending"]:
+                        raise ScheduleConflict("PREPARED_CHANGE_ALREADY_PENDING")
+                    if utc(source["observed_at"]) < utc(row["observed"]) or utc(source["task"]["updated_at"]) < utc(previous["updated_at"]):
+                        raise ScheduleConflict("STALE_EXECUTOR_READBACK")
+                    if utc(source["task"]["updated_at"]) == utc(previous["updated_at"]) and config(previous) != config(source["task"]):
+                        raise ScheduleConflict("EXECUTOR_VERSION_COLLISION")
+                    if changes and config(previous) != config(source["task"]):
+                        raise ScheduleConflict("EXECUTOR_CONFIGURATION_DRIFT")
+                elif db.execute("SELECT COUNT(*) FROM schedules").fetchone()[0] >= 1000:
+                    raise ValueError("SCHEDULE_CAPACITY_EXCEEDED")
+                desired = config(normalize_task(dict(source["task"], **changes)))
+                mutation = desired != config(source["task"])
+                if mutation and not source["conditional_update"]:
+                    raise ScheduleConflict("ATOMIC_EXECUTOR_CAS_UNAVAILABLE")
+                changed = row is None or config(json.loads(row["task"])) != config(source["task"])
+                revision = expected_revision + int(changed) + int(mutation)
+                db.execute("INSERT OR REPLACE INTO schedules VALUES (?,?,?,?,?)", (task_id, revision, canonical(source["task"]), source["observed_at"], canonical(desired) if mutation else None))
+                db.execute("INSERT INTO schedule_bridge VALUES (?,?,?,?,?,?,?)", (event_id, task_id, request, "PREPARED", canonical(source), canonical(desired), revision))
+                journal = db.execute("SELECT * FROM schedule_bridge WHERE event_id=?", (event_id,)).fetchone()
+        desired, baseline = json.loads(journal["desired"]), json.loads(journal["source"])
+        performed = False
+        if config(source["task"]) != desired:
+            if journal["stage"] != "PREPARED":
+                raise ScheduleConflict("AMBIGUOUS_OR_DRIFTED_EXECUTOR_EFFECT_REQUIRES_READBACK")
+            # A second authoritative read detects drift since preparation.
+            source = self.source_read(task_id)
+            if source["version"] != baseline["version"] or config(source["task"]) != config(baseline["task"]):
+                raise ScheduleConflict("EXECUTOR_CONFIGURATION_DRIFT")
+            if not source["conditional_update"]:
+                raise ScheduleConflict("ATOMIC_EXECUTOR_CAS_UNAVAILABLE")
+            self.executor.require_authentication()
+            with self.store.connect() as db:
+                db.execute("BEGIN IMMEDIATE")
+                active = db.execute("SELECT * FROM schedule_bridge WHERE event_id=?", (event_id,)).fetchone()
+                if active["stage"] != "PREPARED":
+                    raise ScheduleConflict("BRIDGE_EFFECT_ALREADY_CLAIMED")
+                row = db.execute("SELECT * FROM schedules WHERE id=?", (task_id,)).fetchone()
+                self.store.require_revision(journal["revision"], row["revision"])
+                if row["pending"] != canonical(desired):
+                    raise ScheduleConflict("LOCAL_BRIDGE_CONFIGURATION_DRIFT")
+                db.execute("UPDATE schedule_bridge SET stage='ATTEMPTED' WHERE event_id=?", (event_id,))
+            arguments = {key: desired[key] for key in desired if desired[key] != config(baseline["task"])[key]}
+            try:
+                self.executor.update_existing(task_id, expected_version=baseline["version"], changes=arguments, idempotency_key=event_id)
+                performed = True
+            except Exception:
+                # An exception/transport ack cannot decide whether the effect
+                # happened. Never repeat this update; require source readback.
+                pass
+            source = self.source_read(task_id)
+            if config(source["task"]) != desired:
+                raise ScheduleConflict("AMBIGUOUS_EXECUTOR_EFFECT_REQUIRES_READBACK")
+        # Recovery may start after the source effect or after reconcile. The
+        # journal revision advances atomically with reconciliation, so a crash
+        # between reconcile and verification cannot strand the transaction.
+        local = self.store.read(task_id)
+        self.store.require_revision(journal["revision"], local["revision"])
+        if journal["stage"] == "VERIFIED" and (local["configuration_sha256"] != digest(desired) or local["state"] != "SOURCE_SNAPSHOT_STORED"):
+            raise ScheduleConflict("LOCAL_BRIDGE_READBACK_DRIFT")
+        local = self.store.reconcile(expected_revision=local["revision"], observed_at=source["observed_at"], task=source["task"], _bridge_event=event_id)
+        with self.store.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            db.execute("UPDATE schedule_bridge SET stage='VERIFIED',revision=? WHERE event_id=?", (local["revision"], event_id))
+        # A new store/connection reads the persisted bytes independently.
+        independent = self.store.read(task_id)
+        if independent["task"] != source["task"] or independent["observed_at"] != source["observed_at"] or independent["revision"] != local["revision"] or independent["configuration_sha256"] != digest(desired) or independent["state"] != "SOURCE_SNAPSHOT_STORED":
+            raise ScheduleConflict("INDEPENDENT_LOCAL_BRIDGE_READBACK_MISMATCH")
+        return {"schema": "qikvrt_schedule_bridge_receipt_v1", "event_id": event_id,
+                "task_id": task_id, "revision": independent["revision"], "source_version": source["version"],
+                "configuration_sha256": digest(desired), "observed_at": source["observed_at"],
+                "state": "CONFIGURATION_READBACK_VERIFIED", "executor_mutation_acknowledged": performed,
+                "local_dispatch_authorized": False, "continuous_bridge_verified": False,
+                "effect_ack_done": False, "scope": "one_authenticated_bridge_transaction"}
+
+
+class HttpScheduleExecutor:
+    """Configured authenticated gateway to existing tasks, with atomic CAS.
+
+    This is a required provider contract, not a claim that ChatGPT's ordinary
+    automations.update offers CAS. A provider without it is observation-only.
+    No create, run-now, retry loop, redirect or task execution route exists.
+    """
+
+    def __init__(self, url, token, expires_at, repository, principal):
+        from urllib.parse import urlsplit
+        target = urlsplit(url)
+        if target.username or target.password or target.query or target.fragment or not target.hostname or not (target.scheme == "https" or (target.scheme == "http" and target.hostname == "127.0.0.1")):
+            raise ValueError("TRUSTED_EXECUTOR_GATEWAY_REQUIRED")
+        self.url, self.token, self.expires_at = url.rstrip("/"), token, expires_at
+        self.repository, self.principal = repository, principal
+
+    def require_authentication(self):
+        # Reuse the shim's canonical secret format and expiry requirement.
+        if __package__:
+            from .qikvrt_api_handler import decode_secret_material
+        else:
+            from qikvrt_api_handler import decode_secret_material
+        decode_secret_material(self.token, field="QIKVRT_SCHEDULE_EXECUTOR_TOKEN")
+        if utc(self.expires_at) <= datetime.now(timezone.utc):
+            raise ScheduleConflict("EXECUTOR_AUTHENTICATION_EXPIRED")
+
+    def call(self, task_id, body=None, expected_version=None, event_id=None):
+        import urllib.request
+        self.require_authentication()
+        if not re.fullmatch(r"[0-9a-f]{32}", task_id):
+            raise ValueError("INVALID_EXECUTOR_TASK_ID")
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, *args, **kwargs):
+                return None
+        headers = {"Authorization": "Bearer " + self.token, "Accept": "application/json",
+                   "X-QIKVRT-Repository": self.repository, "X-QIKVRT-Principal": self.principal}
+        if body is not None:
+            headers.update({"Content-Type": "application/json", "If-Match": '"' + expected_version + '"', "Idempotency-Key": event_id})
+        request = urllib.request.Request(self.url + "/" + task_id, data=canonical(body).encode() if body is not None else None, headers=headers, method="PATCH" if body is not None else "GET")
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+        with opener.open(request, timeout=10) as response:
+            if response.status != 200 or response.headers.get_content_type() != "application/json" or response.headers.get("Content-Encoding", "identity") != "identity":
+                raise ValueError("INVALID_EXECUTOR_GATEWAY_RESPONSE")
+            raw = response.read(1024 * 1024 + 1)
+            if len(raw) > 1024 * 1024:
+                raise ValueError("EXECUTOR_GATEWAY_RESPONSE_TOO_LARGE")
+        def unique(pairs):
+            value = {}
+            for key, item in pairs:
+                if key in value:
+                    raise ValueError("DUPLICATE_EXECUTOR_FIELD")
+                value[key] = item
+            return value
+        result = json.loads(raw.decode("utf-8"), object_pairs_hook=unique)
+        if not isinstance(result, dict) or set(result) != {"repository", "principal", "executor", "observation"} or result["repository"] != self.repository or result["principal"] != self.principal or result["executor"] != "chatgpt_automations":
+            raise ScheduleConflict("EXECUTOR_GATEWAY_SCOPE_MISMATCH")
+        return result["observation"]
+
+    def read_existing(self, task_id):
+        return self.call(task_id)
+
+    def update_existing(self, task_id, *, expected_version, changes, idempotency_key):
+        return self.call(task_id, {"changes": changes}, expected_version, idempotency_key)
 
 
 def main():

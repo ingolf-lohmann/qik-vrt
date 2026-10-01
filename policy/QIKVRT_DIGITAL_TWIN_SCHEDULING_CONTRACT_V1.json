@@ -23,12 +23,34 @@
     "RECONCILE_EXACT_DESIRED_CONFIGURATION",
     "READ_LOCAL_CONFIGURATION_AGAIN"
   ],
-  "bound_fields": ["id", "title", "prompt", "schedule", "default_timezone", "timing_mode", "is_enabled"],
-  "source_observation_fields": ["updated_at", "last_run_time", "next_run_time"],
+  "bound_fields": [
+    "id",
+    "title",
+    "prompt",
+    "schedule",
+    "default_timezone",
+    "timing_mode",
+    "is_enabled"
+  ],
+  "source_observation_fields": [
+    "updated_at",
+    "last_run_time",
+    "next_run_time"
+  ],
   "supported_calendar_subset": {
-    "required": ["explicit DTSTART timezone", "recurring RRULE"],
-    "frequency": ["HOURLY", "DAILY", "WEEKLY"],
-    "interval": [1, 366],
+    "required": [
+      "explicit DTSTART timezone",
+      "recurring RRULE"
+    ],
+    "frequency": [
+      "HOURLY",
+      "DAILY",
+      "WEEKLY"
+    ],
+    "interval": [
+      1,
+      366
+    ],
     "daily_or_weekly": "single BYHOUR/BYMINUTE/BYSECOND; unnumbered BYDAY only for WEEKLY",
     "hourly": "elapsed UTC intervals anchored by DTSTART; BY filters unsupported",
     "dst_gap": "skip nonexistent local slot",
@@ -58,5 +80,33 @@
     "deployment_implied": false,
     "effect_ack_done": false
   },
-  "regression_entrypoint": "make digital-twin-scheduling-test"
+  "regression_entrypoint": "make digital-twin-scheduling-test",
+  "continuous_bridge_adapter": {
+    "implementation": "src/qikvrt_digital_twin_scheduling.py:SchedulingBridge",
+    "transport": "POST /api/digital-twin/v1/schedules/bridge",
+    "trigger": "Existing source events, resume and restart/redelivery; no timer or second executor",
+    "request_fields": [
+      "task_id",
+      "event_id",
+      "expected_revision",
+      "changes"
+    ],
+    "durable_journal": "Private schedule_bridge SQLite table; event ID binds exact original request",
+    "stages": [
+      "PREPARED",
+      "ATTEMPTED",
+      "VERIFIED"
+    ],
+    "remote_mutation": "Update existing task only, atomic source-domain CAS required",
+    "provider": "Server-configured HttpScheduleExecutor; HTTPS or loopback HTTP; scoped expiring credential",
+    "source_read_contract": "Closed scope envelope and fresh task/version/observed_at/conditional_update observation",
+    "source_version_binding": "Exact configuration and updated_at; rollback and contradictory version bindings reject",
+    "idempotency": "A replay freshly reads source; ATTEMPTED never resubmits an update",
+    "local_recovery": "Journal revision changes atomically with reconcile; independent persisted task read",
+    "ordinary_automations_update_supports_exposed_atomic_cas": false,
+    "provider_without_cas": "Observation only; changed desired configuration holds",
+    "actual_event_carrier_installed_or_verified": false,
+    "productive_continuous_bridge_verified": false,
+    "verification_boundary": "Test gateway proves adapter behavior only; actual provider authentication, CAS and event/restart carrier require fresh deployed-subject witnesses"
+  }
 }

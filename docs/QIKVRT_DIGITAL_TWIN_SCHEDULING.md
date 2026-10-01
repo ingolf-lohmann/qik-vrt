@@ -28,8 +28,9 @@ arrive. Concurrent or stale updates, source timestamp rollback, same-version
 configuration collisions and mismatched prepared readbacks fail closed. A
 failed or ambiguous external update requires source reobservation before any
 retry. There is no background polling loop. Changes made outside this adapter
-are only known after an actual import; V1 does not claim an unimplemented
-platform event hook or uninterrupted bidirectional synchronization.
+are only known after an actual import or authenticated bridge event. Provider
+event delivery and uninterrupted bidirectional synchronization require fresh
+runtime evidence; implementing the ingress does not establish that wiring.
 
 The incoming snapshot's remote authenticity remains the caller/authorized
 connector's responsibility. The server authenticates its caller with the
@@ -48,6 +49,7 @@ Scheduling lives on the local QIKVRT shim, not on GitHub's dispatch API:
 | POST | `/api/digital-twin/v1/schedules/reconcile` | Import fresh source snapshot with CAS |
 | POST | `/api/digital-twin/v1/schedules/prepare` | Prepare a change; no executor mutation |
 | POST | `/api/digital-twin/v1/schedules/plan` | Calculate next slots; no dispatch |
+| POST | `/api/digital-twin/v1/schedules/bridge` | Source read, CAS existing task, fresh source readback, reconcile, independent local read |
 
 All scheduling requests require the existing authenticated principal and
 repository scope. GETs also require authentication. Runtime database files
@@ -81,3 +83,69 @@ or silently substitute that separate model repair.
 Run `make digital-twin-scheduling-test`. It covers restart persistence, exact
 configuration identity, concurrent writers, pause/readback, freshness and
 version conflicts, principal isolation, unsafe paths, DST and real HTTP ingress.
+
+## Event-driven continuous bridge adapter
+
+The existing scheduler remains the sole executor. Its authorized provider sends
+one `/bridge` request on a configuration/source event, resume or process restart.
+The body contains `task_id`, a stable `event_id`, `expected_revision` and
+`changes` (empty for observation). An event ID binds those exact request bytes;
+reordering fails against the current local revision. The same event may be
+replayed with the original request; replay still reads the source freshly and
+checks local state. A changed source requires a new event and current revision.
+No timer, polling thread, job execution, create endpoint or second scheduler is
+introduced. The integration operator must connect the existing source's event
+delivery/restart lifecycle to this ingress, preserving one active binding per
+repository/principal/task. This delivery is not established by the tests.
+
+The shim builds `HttpScheduleExecutor` from private server configuration:
+
+- `QIKVRT_SCHEDULE_EXECUTOR_URL`: trusted HTTPS existing-task collection URL
+  (HTTP on `127.0.0.1` only for local integration).
+- `QIKVRT_SCHEDULE_EXECUTOR_TOKEN`: canonical `b64url:` scoped gateway credential.
+- `QIKVRT_SCHEDULE_EXECUTOR_TOKEN_EXPIRES_UTC`: expiry, checked before every call.
+
+URLs and credentials cannot be supplied in the bridge request. Redirects and
+unbounded/malformed responses are rejected. Each request carries the exact
+`X-QIKVRT-Repository` and `X-QIKVRT-Principal` scope. `GET {URL}/{task_id}` returns
+a closed envelope with `repository`, `principal`, `executor` (exactly
+`chatgpt_automations`) and `observation`. The observation has exactly `task`
+(the existing `ScheduleSourceTask`), `version` (opaque, 1–256 ASCII characters
+from `[A-Za-z0-9_.:-]`), `observed_at` and `conditional_update` (boolean).
+The timestamp must be sampled during the actual read, after the bridge
+initiated it. Configuration and `updated_at` bind the opaque version; rollback
+and contradictory bindings hold. Last/next-run metadata can change
+independently of configuration.
+
+For a change, `PATCH {URL}/{task_id}` sends `{"changes":{...}}`,
+`If-Match: "opaque-version"` and `Idempotency-Key: event_id`. The gateway must
+atomically reject a version mismatch (412) in the executing scheduler's own
+authority domain, update only that existing ID and return the same envelope.
+It must authenticate the provider and enforce scope. A lock held only in the
+Twin or a last-moment read followed by an unconditional update is insufficient.
+The ordinary ChatGPT `automations.update` tool has no exposed conditional
+version parameter; a gateway backed solely by that tool must advertise
+`conditional_update:false`, permitting observation but blocking mutation.
+This contract does not invent an installed provider gateway or platform CAS.
+
+The private SQLite journal persists `PREPARED` before the effect and
+`ATTEMPTED` before the outbound call. Concurrent bridge/manual writers are
+excluded. A restarted `PREPARED` transaction freshly validates its original
+source before claiming the effect. An `ATTEMPTED` transaction never sends
+another update; matching fresh source bytes can complete reconcile. If the
+effect remains ambiguous or drifted, the task holds pending explicit provider
+recovery evidence. A matching configuration establishes observed state, not
+causality of an ambiguous write. Journal revision advances atomically with
+reconcile so a crash before `VERIFIED` can resume safely.
+
+Every success returns `CONFIGURATION_READBACK_VERIFIED` for one authenticated
+transaction, with event, task, source version, local revision and configuration
+digest. `executor_mutation_acknowledged` records only a successful update
+response; it is not the effect witness. An independent connection reads the
+persisted task and observation again. `local_dispatch_authorized`,
+`continuous_bridge_verified` and `effect_ack_done` remain false. Productive
+continuous verification additionally requires the actual authenticated source
+event carrier, restart/redelivery, real executor CAS, source/local readback and
+drift witnesses for the deployed exact subject. The committed test gateway
+proves the adapter flow only; the earlier regulatory-watch roundtrip remains
+historical evidence and is not promoted into productive bridge verification.

@@ -152,6 +152,41 @@ paths:
         '401': { description: Missing, invalid or expired credential or scope. }
         '404': { description: Task not found in this scope. }
         '409': { description: Stale revision or another pending change. }
+  /api/digital-twin/v1/schedules/bridge:
+    servers:
+      - url: http://127.0.0.1:8766
+    post:
+      operationId: synchronizeExistingExecutorSchedule
+      description: One event/restart transaction through a server-configured authenticated executor adapter. No task creation or job dispatch. Writes require atomic remote CAS; ambiguous writes are not retried. Provider wiring and continuous runtime verification remain separate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [task_id, event_id, expected_revision, changes]
+              properties:
+                task_id: { type: string, pattern: '^[0-9a-f]{32}$' }
+                event_id: { type: string, pattern: '^[A-Za-z0-9_.:-]{1,128}$' }
+                expected_revision: { type: integer, minimum: 0 }
+                changes:
+                  type: object
+                  description: Empty for source-event observation; otherwise the ScheduleChanges fields.
+                  additionalProperties: false
+                  properties:
+                    title: { type: string, minLength: 1 }
+                    prompt: { type: string, minLength: 1 }
+                    schedule: { type: string }
+                    default_timezone: { type: string }
+                    is_enabled: { type: boolean }
+      responses:
+        '200': { description: Fresh source configuration reconciled and independently locally read; one transaction only, continuous_bridge_verified and effect_ack_done remain false. }
+        '400': { description: Invalid configuration, provider bytes or closed schema. }
+        '401': { description: Missing, expired or invalid ingress authentication. }
+        '409': { description: Missing authenticated executor adapter, unavailable remote CAS, stale revision/source, drift, event collision, competing writer or ambiguous effect. }
+        '429': { description: Existing shim rate limit exceeded. }
+        '500': { description: Provider transport or storage unavailable; retry requires source reobservation. }
   /api/digital-twin/v1/schedules/plan:
     servers:
       - url: http://127.0.0.1:8766
