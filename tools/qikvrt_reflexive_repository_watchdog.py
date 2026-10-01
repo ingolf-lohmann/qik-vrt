@@ -15,6 +15,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -631,6 +633,71 @@ def _resource_graph(
     }
 
 
+def authority_repository_binding(contract: Mapping[str, Any]) -> str:
+    repository = _mapping(contract.get("authority"), "authority").get("repository")
+    liveness = contract["reflexive_deadlock_prevention"]["gatewatch"]["node_liveness"]
+    if repository != "Goldkelch/qik-vrt" or liveness.get("authority_repository") != repository:
+        raise ReflexiveWatchdogBlock("authority repository binding is invalid")
+    return repository
+
+
+def observe_authority(*, root: Path = ROOT) -> dict[str, Any]:
+    repository = authority_repository_binding(load_contract(root))
+    endpoint = f"repos/{repository}/git/ref/heads/main"
+    command = ["gh", "api", "--method", "GET", "--include", endpoint]
+    result = subprocess.run(command, capture_output=True, text=True, timeout=60)
+    statuses = re.findall(r"^HTTP/[^ ]+ ([0-9]{3})", result.stdout, re.MULTILINE)
+    status = int(statuses[-1]) if statuses else None
+    observation = {
+        "schema": "qikvrt_authority_readback_v1", "repository": repository,
+        "endpoint": endpoint, "method": "GET", "http_status": status,
+        "exit_code": result.returncode, "response_sha256": sha256_bytes(result.stdout.encode()),
+        "diagnostic_sha256": sha256_bytes(result.stderr.encode()),
+        "cause": "UNESTABLISHED", "authority_destroyed": False,
+        "takeover_allowed": False, "writer_admission_allowed": False, "effect_ack_done": False,
+    }
+    if result.returncode != 0 and status in {401, 403, 404, 429, 500, 502, 503, 504}:
+        return {**observation, "state": "AUTHORITY_UNAVAILABLE", "disposition": "HOLD",
+                "capability_blocker": "AUTHORITY_MAIN_READ_CAPABILITY_UNAVAILABLE", "head_sha": None}
+    if result.returncode != 0 or status != 200:
+        raise ReflexiveWatchdogBlock("unclassified authority readback failure")
+    try:
+        body = result.stdout.replace("\r\n", "\n").split("\n\n", 1)[1]
+        value = json.loads(body)
+        if value.get("ref") != "refs/heads/main" or value["object"].get("type") != "commit":
+            raise ReflexiveWatchdogBlock("authority ref binding is invalid")
+        head = _head_sha(value["object"]["sha"], "authority head")
+    except (ValueError, KeyError, IndexError, TypeError) as exc:
+        raise ReflexiveWatchdogBlock("malformed authority readback") from exc
+    return {**observation, "state": "AUTHORITY_OBSERVED", "disposition": "OBSERVE",
+            "capability_blocker": None, "head_sha": head}
+
+
+def validate_authority_observation(value: Mapping[str, Any], contract: Mapping[str, Any]) -> dict[str, Any]:
+    repository = authority_repository_binding(contract)
+    if (value.get("schema") != "qikvrt_authority_readback_v1"
+        or value.get("repository") != repository
+        or value.get("endpoint") != f"repos/{repository}/git/ref/heads/main"
+        or value.get("method") != "GET"
+        or any(value.get(key) is not False for key in
+               ("authority_destroyed", "takeover_allowed", "writer_admission_allowed", "effect_ack_done"))):
+        raise ReflexiveWatchdogBlock("authority observation binding or effect boundary is invalid")
+    if value.get("state") == "AUTHORITY_UNAVAILABLE":
+        if (value.get("http_status") not in {401,403,404,429,500,502,503,504}
+            or type(value.get("exit_code")) is not int or value["exit_code"] <= 0
+            or value.get("head_sha") is not None or value.get("disposition") != "HOLD"
+            or value.get("cause") != "UNESTABLISHED"
+            or value.get("capability_blocker") != "AUTHORITY_MAIN_READ_CAPABILITY_UNAVAILABLE"):
+            raise ReflexiveWatchdogBlock("invalid authority capability HOLD")
+    elif value.get("state") == "AUTHORITY_OBSERVED":
+        if value.get("http_status") != 200 or value.get("exit_code") != 0:
+            raise ReflexiveWatchdogBlock("invalid successful authority observation")
+        _head_sha(value.get("head_sha"), "authority head")
+    else:
+        raise ReflexiveWatchdogBlock("invalid authority observation state")
+    return dict(value)
+
+
 def analyze(
     runs_value: Mapping[str, Any] | Sequence[Any],
     jobs_value: Mapping[str, Any] | None,
@@ -644,8 +711,14 @@ def analyze(
     observation_scope: str = "MAIN",
     node_liveness_dir: Path | None = None,
     authority_head: str | None = None,
+    authority_observation: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     contract = load_contract(root)
+    if authority_observation is not None:
+        authority_observation = validate_authority_observation(authority_observation, contract)
+        if authority_head is not None and authority_head != authority_observation.get("head_sha"):
+            raise ReflexiveWatchdogBlock("conflicting authority head observations")
+        authority_head = authority_observation.get("head_sha")
     if authority_head is not None:
         authority_head = _head_sha(authority_head, "authority head observation")
     prevention = _mapping(contract["reflexive_deadlock_prevention"], "reflexive prevention")
@@ -757,7 +830,13 @@ def analyze(
     productive_edge = "CONTINUE_REFLEXIVE_OBSERVATION"
     safe_continuation = "Preserve one writer, exact-head evidence, and the five-minute observer cadence."
 
-    if len(active_writers) > max_writers:
+    if authority_observation is not None and authority_observation["state"] == "AUTHORITY_UNAVAILABLE":
+        state = "AUTHORITY_UNAVAILABLE"
+        blocker = authority_observation["capability_blocker"]
+        disposition = "HOLD"
+        productive_edge = "RESTORE_AUTHORITY_READ_CAPABILITY_AND_REOBSERVE"
+        safe_continuation = "Continue read-only subject observation; no takeover or writer admission."
+    elif len(active_writers) > max_writers:
         state = "PREEMPTIVE_HOLD_COMPETING_WRITERS"
         blocker = "MORE_THAN_ONE_ACTIVE_REPOSITORY_WRITER"
         disposition = "HOLD"
@@ -841,6 +920,8 @@ def analyze(
         "productive_edge": productive_edge,
         "safe_continuation": safe_continuation,
         "effect_already_occurred": False,
+        "effect_ack_done": False,
+        "authority_observation": authority_observation,
         "progress_fingerprint": progress_fingerprint,
         "baseline": {
             "available": baseline is not None,
@@ -861,6 +942,8 @@ def analyze(
             "waiting_productive_runs": queue_ages,
             "untrusted_terminal_runs": untrusted,
             "runs": normalized,
+            "run_job_evidence": [{"run": dict(run), "jobs": jobs_by_run.get(_run_id(run), [])}
+                                 for run in runs] if authority_observation is not None else [],
         },
         "gatewatch": {
             **gatewatch,
@@ -944,6 +1027,7 @@ def observation_failure_receipt(
         "productive_edge": False,
         "safe_continuation": False,
         "effect_already_occurred": False,
+        "effect_ack_done": False,
         "next_action": "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
         "retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
         "boundaries": {
@@ -990,6 +1074,9 @@ def build_parser() -> argparse.ArgumentParser:
     analyze_parser.add_argument("--observation-scope", choices=sorted(GATEWATCH_SCOPES), default="MAIN")
     analyze_parser.add_argument("--node-liveness-dir", type=Path)
     analyze_parser.add_argument("--authority-head-file", type=Path)
+    analyze_parser.add_argument("--authority-observation-file", type=Path)
+    authority_parser = subcommands.add_parser("observe-authority")
+    authority_parser.add_argument("--json", action="store_true")
     analyze_parser.add_argument("--json", action="store_true")
     check_parser = subcommands.add_parser("check-contract")
     check_parser.add_argument("--json", action="store_true")
@@ -1010,7 +1097,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "check-contract":
+        if arguments.command == "observe-authority":
+            value = observe_authority()
+        elif arguments.command == "check-contract":
             contract = load_contract()
             prevention = _mapping(contract["reflexive_deadlock_prevention"], "reflexive prevention")
             value = {
@@ -1056,6 +1145,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 observation_scope=arguments.observation_scope,
                 node_liveness_dir=arguments.node_liveness_dir,
                 authority_head=authority_head,
+                authority_observation=(_read_json(arguments.authority_observation_file, "authority observation")
+                    if arguments.authority_observation_file else None),
             )
         if arguments.json:
             print(canonical_json_bytes(value).decode("utf-8"), end="")
