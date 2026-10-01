@@ -1,6 +1,46 @@
 {
   "$id": "qikvrt_claim_audit_v1",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verification_checklist": {
+            "properties": {
+              "formal_verified": {
+                "const": true
+              }
+            },
+            "required": [
+              "formal_verified"
+            ]
+          }
+        },
+        "required": [
+          "verification_checklist"
+        ]
+      },
+      "then": {
+        "properties": {
+          "epistemic_domain": {
+            "const": "FORMAL"
+          },
+          "formal_kernel_receipt": {
+            "required": [
+              "claim_id",
+              "execution_id",
+              "execution_subject",
+              "input_sha256",
+              "kernel_receipt_sha256",
+              "compiled_objects",
+              "native_kernel_result"
+            ],
+            "type": "object"
+          }
+        }
+      }
+    }
+  ],
   "properties": {
     "audit_id": {
       "minLength": 1,
@@ -62,6 +102,12 @@
         "null"
       ]
     },
+    "formal_kernel_receipt": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
     "schema": {
       "const": "qikvrt_claim_audit_v1"
     },
@@ -84,6 +130,30 @@
     "timestamp": {
       "format": "date-time",
       "type": "string"
+    },
+    "verification_checklist": {
+      "additionalProperties": false,
+      "properties": {
+        "empirical_verified": {
+          "const": false
+        },
+        "formal_verified": {
+          "type": "boolean"
+        },
+        "peer_reviewed": {
+          "const": false
+        },
+        "reproduced": {
+          "const": false
+        }
+      },
+      "required": [
+        "formal_verified",
+        "empirical_verified",
+        "peer_reviewed",
+        "reproduced"
+      ],
+      "type": "object"
     }
   },
   "required": [

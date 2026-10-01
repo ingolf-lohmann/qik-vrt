@@ -73,6 +73,18 @@
             },
             "type": "array"
           },
+          "required_verifiers": {
+            "items": {
+              "enum": [
+                "FORMAL",
+                "EMPIRICAL",
+                "PEER_REVIEW",
+                "REPRODUCTION"
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
           "sources": {
             "items": {
               "properties": {

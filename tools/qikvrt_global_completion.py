@@ -4,7 +4,7 @@
 """Deterministic global claim inventory, traceability and completion receipts."""
 from __future__ import annotations
 
-import argparse, hashlib, json, re, subprocess, sys
+import argparse, hashlib, json, os, re, shutil, subprocess, sys, tempfile
 from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping
@@ -462,6 +462,185 @@ NON_IMPLICATIONS = (("SIMULATION", "OBSERVATION"), ("PREDICTION", "EFFECT"),
                     ("TRANSPORT_ACK", "EFFECT_ACK"), ("AUTHORITY", "TRUTH"),
                     ("CORRELATION", "CAUSALITY"), ("BELIEF", "EMPIRICAL_PROOF"))
 REALITY_STATEMENT = "Claims about reality require evidence from reality."
+LEAN_VERSION = "4.19.0"
+LEAN_GITHASH = "6caaee842e9495688c1567e78c0e68dbb96942aa"
+LEAN_BINARY_SHA256 = "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023"
+LEAN_KERNEL_SHA256 = "2ab605c74c78f9ba4431a7b5305a4b28a9071d8a826f223eb14fe5530f78e14d"
+LEAN_AXIOMS = ["Classical.choice", "Quot.sound", "propext"]
+LEAN_REPLAY = ROOT / "third_party/lean4checker/Replay.lean"
+LEAN_CHECKER = ROOT / "tools/lean/ClaimKernel.lean"
+
+
+def audit_subject(root: Path) -> dict[str, Any]:
+    try:
+        binding = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD", "HEAD^{tree}"],
+                                          stderr=subprocess.DEVNULL, text=True).splitlines()
+        return {"head_sha":binding[0], "tree_sha":binding[1],
+                "working_copy_dirty":bool(subprocess.check_output(
+                    ["git", "-C", str(root), "status", "--porcelain", "--untracked-files=no"], text=True))}
+    except subprocess.CalledProcessError:
+        return {"state":"GIT_SUBJECT_UNBOUND"}
+
+
+def kernel_plan(value: dict[str, Any], *, root: Path, subject: dict[str, Any]) -> list[dict[str, Any]]:
+    """Resolve only primary, registered formal bindings; never use caller proof metadata."""
+    if root.resolve() != ROOT.resolve(): raise ValueError("kernel adapter must run from the candidate's controller")
+    if subject.get("working_copy_dirty") is not False: raise ValueError("kernel candidate is not a clean Git subject")
+    admission = audit_json((root/"policy/QIKVRT_CLAIM_AUDIT_V1.json").read_text())["verifier_admission"]
+    if not isinstance(admission, dict) or admission.get("formal") != "INDEPENDENT_LEAN_KERNEL_V1" or admission.get("foundational_axiom_allowlist") != LEAN_AXIOMS:
+        raise ValueError("formal verifier is not admitted by the exact candidate policy")
+    inv, byid = build_inventory()
+    if audit_json(INVENTORY.read_text()) != inv: raise ValueError("stale candidate claim inventory")
+    kernel = build_kernel(inv, byid)
+    if audit_json(KERNEL.read_text()) != kernel: raise ValueError("stale or altered kernel receipt")
+    if kernel["verification_policy"]["foundational_axiom_allowlist"] != LEAN_AXIOMS:
+        raise ValueError("kernel axiom policy differs")
+    # Authority and Mirror have different historical commits and the same frozen tree.
+    tag = subprocess.check_output(["git", "rev-parse", f"{TAG}^{{commit}}", f"{TAG}^{{tree}}"], cwd=root, text=True).splitlines()
+    if tag[0] not in {AUTH_TAG, MIRROR_TAG} or tag[1] != TAG_TREE: raise ValueError("stale exact source tag")
+    for path in kernel["tag_protected_paths"]:
+        tagged = subprocess.check_output(["git", "show", f"{TAG}:{path}"], cwd=root)
+        candidate = subprocess.check_output(["git", "show", f"{subject['head_sha']}:{path}"], cwd=root)
+        if tagged != candidate or candidate != (root/path).read_bytes():
+            raise ValueError(f"exact-tag source differs: {path}")
+    registered = {c["claim_id"]:c for c in normalize_audit_input(inv)["claims"]}
+    primary = {r["inventory_id"]:r for r in kernel["primary_receipts"]}
+    plan = []
+    for claim in normalize_audit_input(value)["claims"]:
+        cid = claim.get("claim_id")
+        if claim.get("epistemic_domain") != "FORMAL" or cid not in primary: continue
+        canonical = registered[cid]
+        if any(claim.get(key) != canonical[key] for key in ("claim_statement", "epistemic_domain", "claim_class", "sources")):
+            raise ValueError(f"claim differs from its registered formal binding: {cid}")
+        receipt = primary[cid]
+        constants = sorted(set(receipt["proof_constants"] + [c for c in
+                           (receipt["statement_constant"], receipt["registry_constant"]) if c is not None]))
+        if not constants or any(not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)+", c) for c in constants):
+            raise ValueError(f"invalid proof/registry constant: {cid}")
+        registered_objects = receipt.get("compiled_objects", [receipt.get("compiled_object")])
+        objects = [path for path in registered_objects if path is not None]
+        source = Path(receipt["source"]["path"]).relative_to(rel(FORM)).as_posix()
+        expected_object = ".lake/build/lib/lean/" + str(Path(source).with_suffix(".olean"))
+        # Frozen receipts did not record an object for every strong binding.
+        # The runtime receipt must bind the actual freshly compiled source
+        # module; an absent historical field cannot replace that object.
+        objects = sorted(set(objects + [expected_object]))
+        origins = {c:Path(source).with_suffix("").as_posix().replace("/", ".") for c in
+                   receipt["proof_constants"] + ([receipt["statement_constant"]] if receipt["statement_constant"] else [])}
+        if receipt["registry_source"]:
+            registry = Path(receipt["registry_source"]["path"]).relative_to(rel(FORM)).as_posix()
+            objects = sorted(set(objects + [".lake/build/lib/lean/" + str(Path(registry).with_suffix(".olean"))]))
+            if receipt["registry_constant"]: origins[receipt["registry_constant"]] = Path(registry).with_suffix("").as_posix().replace("/", ".")
+        plan.append({"claim_id":cid, "proof_constants":receipt["proof_constants"], "constants":constants,
+                     "receipt":receipt, "kernel_receipt_sha256":sha(pretty(receipt).encode()), "objects":objects,
+                     "primary_proof_object":expected_object, "constant_modules":origins})
+    return plan
+
+
+def kernel_command(command: list[str], *, cwd: Path, env: dict[str, str]) -> str:
+    result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, text=True, timeout=240)
+    if result.returncode:
+        raise ValueError(f"Lean kernel command failed ({result.returncode}): {(result.stdout+result.stderr)[-4000:]}")
+    return result.stdout.strip()
+
+
+def fresh_lean_kernel(plan: list[dict[str, Any]], *, root: Path, head: str) -> dict[str, Any]:
+    """Compile exact candidate bytes in a new directory, then replay objects in another process."""
+    env = {k:v for k,v in os.environ.items() if k not in {"LEAN_PATH", "LEAN_SRC_PATH"}}
+    if not shutil.which("lake"): raise FileNotFoundError("locked Lean/Lake runtime unavailable")
+    version = kernel_command(["lake", "env", "lean", "--version"], cwd=FORM, env=env)
+    githash = kernel_command(["lake", "env", "lean", "--githash"], cwd=FORM, env=env)
+    if f"version {LEAN_VERSION}," not in version or githash != LEAN_GITHASH:
+        raise ValueError("Lean runtime differs from the admitted toolchain")
+    prefix = Path(kernel_command(["lake", "env", "lean", "--print-prefix"], cwd=FORM, env=env))
+    lean = prefix / "bin/lean"
+    library = prefix / "lib/lean/libleanshared.so"
+    if sha(lean.read_bytes()) != LEAN_BINARY_SHA256 or sha(library.read_bytes()) != LEAN_KERNEL_SHA256:
+        raise ValueError("native Linux x64 Lean kernel bytes differ from the admitted release")
+    runtime = {"version":version, "githash":githash, "binary_sha256":LEAN_BINARY_SHA256,
+               "kernel_library_sha256":LEAN_KERNEL_SHA256}
+    # Never restore compiled project objects, including those in the caller's working copy.
+    with tempfile.TemporaryDirectory(prefix="qikvrt-claim-kernel-") as directory:
+        project = Path(directory)/"project"
+        project.mkdir()
+        paths = subprocess.check_output(["git", "ls-tree", "-r", "--name-only", head, "--", rel(FORM)], cwd=root, text=True).splitlines()
+        sources = []
+        for path in paths:
+            relative = Path(path).relative_to(rel(FORM))
+            if relative.suffix != ".lean" and relative.as_posix() not in {"lakefile.toml", "lake-manifest.json", "lean-toolchain"}: continue
+            raw = subprocess.check_output(["git", "show", f"{head}:{path}"], cwd=root)
+            if raw != (root/path).read_bytes(): raise ValueError(f"candidate bytes changed: {path}")
+            target = project/relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(raw)
+            sources.append({"path":path, "sha256":sha(raw), "git_blob_sha1":blob(raw)})
+        kernel_command(["lake", "build", "QIKVRTFormalization", "QIKVRTEffectAck"], cwd=project, env=env)
+        objects = {}
+        for path in sorted({path for item in plan for path in item["objects"]}):
+            if not isinstance(path, str) or Path(path).is_absolute() or ".." in Path(path).parts:
+                raise ValueError("unsafe compiled object path")
+            raw = (project/path).read_bytes()
+            previous = FORM/path
+            if any(p.is_symlink() for p in (previous, *previous.parents)): raise ValueError("symlink in compiled object path")
+            if previous.exists() and (previous.is_symlink() or previous.read_bytes() != raw):
+                raise ValueError(f"altered compiled proof object: {path}")
+            objects[path] = {"path":path, "bytes":len(raw), "sha256":sha(raw)}
+        engine = Path(directory)/"engine"
+        engine.mkdir()
+        kernel_command([str(lean), "-o", str(engine/"Replay.olean"), str(LEAN_REPLAY)], cwd=LEAN_REPLAY.parent, env=env)
+        request = Path(directory)/"plan.json"
+        request.write_text(pretty({"claims":[{k:item[k] for k in ("claim_id", "proof_constants", "constants", "constant_modules")} for item in plan]}))
+        checker_env = {**env, "LEAN_PATH":os.pathsep.join((str(engine), str(project/".lake/build/lib/lean")))}
+        output = kernel_command([str(lean), "--run", str(LEAN_CHECKER), str(request)], cwd=project, env=checker_env)
+        kernel = audit_json(output)
+        if kernel.get("schema") != "qikvrt_independent_lean_kernel_v1" or kernel.get("trust_level") != 0 or kernel.get("project_declarations_rechecked", 0) < 1:
+            raise ValueError("independent kernel receipt malformed")
+        expected = {item["claim_id"]:item for item in plan}
+        observed = kernel.get("claims", [])
+        if len(observed) != len(expected) or {item["claim_id"] for item in observed} != set(expected):
+            raise ValueError("independent kernel receipt claim coverage differs")
+        for item in observed:
+            observations = item["constants"]
+            if len(observations) != len(expected[item["claim_id"]]["constants"]) or {c["constant"] for c in observations} != set(expected[item["claim_id"]]["constants"]):
+                raise ValueError("kernel proof/registry constant coverage differs")
+            if any(set(c["axioms"]) - set(LEAN_AXIOMS) for c in observations): raise ValueError("kernel receipt contains forbidden axioms")
+        for path, bound in objects.items():
+            if sha((project/path).read_bytes()) != bound["sha256"]: raise ValueError("proof object changed during kernel replay")
+        return {"runtime":runtime, "source_snapshot":sources, "compiled_objects":objects,
+                "kernel":kernel, "kernel_output_sha256":sha(output.encode()), "fresh_build_exit_code":0}
+
+
+def formal_kernel_audit(value: dict[str, Any], *, root: Path, expected_head: str, expected_tree: str,
+                        execution_id: str) -> dict[str, Any]:
+    if not all(isinstance(x, str) and re.fullmatch(r"[0-9a-f]{40}", x) for x in (expected_head, expected_tree)):
+        raise ValueError("Lean verification requires an exact expected HEAD and TREE")
+    if not isinstance(execution_id, str) or not re.fullmatch(r"[A-Za-z0-9_.:/-]{1,240}", execution_id):
+        raise ValueError("Lean verification requires an executor-bound execution ID")
+    subject = audit_subject(root)
+    if subject.get("head_sha") != expected_head or subject.get("tree_sha") != expected_tree:
+        raise ValueError("Lean verification candidate differs from the expected HEAD/TREE")
+    result = {"verifier_id":"INDEPENDENT_LEAN_KERNEL_V1", "execution_id":execution_id,
+              "execution_subject":subject, "input_sha256":sha(pretty(value).encode()),
+              "status":"HOLD", "reason":"NO_ADMITTED_PRIMARY_FORMAL_CLAIM", "claims":[],
+              "scope":"REGISTERED_PRIMARY_FORMAL_MODEL_ONLY", "external_effect":False, "effect_ack_done":False}
+    try:
+        plan = kernel_plan(value, root=root, subject=subject)
+        if not plan: return result
+        evidence = fresh_lean_kernel(plan, root=root, head=expected_head)
+        if audit_subject(root) != subject or kernel_plan(value, root=root, subject=subject) != plan:
+            raise ValueError("candidate, source tag or receipt changed during kernel verification")
+        native = {c["claim_id"]:c for c in evidence["kernel"]["claims"]}
+        result.update(status="PASS", reason="FRESH_NATIVE_KERNEL_REPLAY", evidence=evidence,
+                      claims=[{**item, "execution_id":execution_id, "execution_subject":subject,
+                               "input_sha256":result["input_sha256"], "native_kernel_result":native[item["claim_id"]],
+                               "compiled_objects":[evidence["compiled_objects"][path] for path in item["objects"]]} for item in plan],
+                      kernel_receipts_binding=identity(KERNEL), replay_binding=identity(LEAN_REPLAY), checker_binding=identity(LEAN_CHECKER))
+    except FileNotFoundError as exc:
+        result.update(reason="LEAN_RUNTIME_OR_INPUT_UNAVAILABLE", diagnostic=str(exc))
+    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as exc:
+        result.update(status="FAIL", reason="LEAN_KERNEL_BINDING_OR_REPLAY_FAILED", diagnostic=str(exc))
+    result["receipt_sha256"] = sha(pretty(result).encode())
+    return result
 
 
 def audit_json(raw: str) -> dict[str, Any]:
@@ -518,10 +697,15 @@ def normalize_audit_input(value: dict[str, Any]) -> dict[str, Any]:
     return {"schema":"qikvrt_claim_audit_input_v1", "claims":claims, "invariants":[], "relations":[]}
 
 
-def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> dict[str, Any]:
+def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str,
+                formal_verifier: bool = False, expected_head: str | None = None,
+                expected_tree: str | None = None, execution_id: str | None = None) -> dict[str, Any]:
     from datetime import datetime
     if datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None: raise ValueError("audit timestamp requires timezone")
     data = normalize_audit_input(value)
+    formal = formal_kernel_audit(value, root=root, expected_head=expected_head,
+                                expected_tree=expected_tree, execution_id=execution_id) if formal_verifier else None
+    formal_claims = {c["claim_id"]:c for c in formal["claims"]} if formal and formal["status"] == "PASS" else {}
     claims, invariants, relations = (data.get(key, []) for key in ("claims", "invariants", "relations"))
     if any(not isinstance(arr, list) or any(not isinstance(x, dict) for x in arr) for arr in (claims, invariants, relations)):
         raise ValueError("audit claims, invariants and relations must be arrays of objects")
@@ -556,7 +740,11 @@ def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> 
         if not isinstance(sources,list) or not isinstance(evidence,list): raise ValueError("claim sources/evidence must be arrays")
         refs = [audit_reference(ref, root) for ref in sources]
         erefs = [audit_reference(ref, root) for ref in evidence]
-        required = domain == "EMPIRICAL" or klass == "THEOREM"
+        requested = claim.get("required_verifiers", [])
+        if not isinstance(requested, list) or any(not isinstance(v, str) for v in requested):
+            raise ValueError("required_verifiers must be an array of strings")
+        unadmitted = any(v != "FORMAL" for v in requested)
+        required = domain in {"FORMAL", "EMPIRICAL"} or klass == "THEOREM" or bool(requested)
         hashes_valid = bool(erefs) and all(r["evidence_present"] and r["evidence_hash_valid"] for r in erefs)
         origin_known = bool(erefs) and all(r["evidence_source_known"] for r in erefs)
         bound = hashes_valid and origin_known
@@ -564,6 +752,9 @@ def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> 
         category_error = (domain == "EMPIRICAL" and bool(erefs) and not reality_evidence) or not consistent
         # Digests and declared origins bind bytes, never authenticate truth or a verifier.
         verification = {"formal_verified":False, "empirical_verified":False, "peer_reviewed":False, "reproduced":False}
+        kernel_binding = formal_claims.get(cid) if isinstance(cid, str) and domain == "FORMAL" else None
+        formal_verified = bool(kernel_binding) and all(checklist.values()) and consistent
+        verification["formal_verified"] = formal_verified
         runtime = claim.get("runtime", {})
         if not isinstance(runtime,dict): raise ValueError("claim runtime must be an object")
         runtime_audit = {"rule_present":bool(runtime), "rule_executable":False,
@@ -584,18 +775,20 @@ def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> 
         if not all(checklist.values()): reasons.append("MALFORMED_OR_DUPLICATE_CLAIM")
         if category_error: reasons.append("CATEGORY_ERROR")
         if any(not r["evidence_hash_valid"] for r in refs+erefs+list(reality_bindings.values())): reasons.append("SOURCE_OR_EVIDENCE_BINDING_INVALID")
-        state = "FAIL" if reasons else "HOLD" if required else "PASS"
+        if formal and formal["status"] == "FAIL" and domain == "FORMAL": reasons.append(formal["reason"])
+        state = "FAIL" if reasons else "HOLD" if (required and not formal_verified) or unadmitted else "PASS"
         if not refs and state != "FAIL": state = "HOLD"; reasons.append("CLAIM_SOURCE_NOT_BOUND")
         if any(not r["evidence_source_known"] for r in refs+erefs) and state != "FAIL":
             state = "HOLD"; reasons.append("SOURCE_ORIGIN_UNESTABLISHED")
         if state == "HOLD": reasons.append("INDEPENDENT_VERIFICATION_NOT_ESTABLISHED")
+        if unadmitted: reasons.append("REQUESTED_VERIFIER_NOT_ADMITTED")
         result = {"claim_exists":True, "claim_well_formed":all(checklist.values()), "domain_consistent":consistent,
-                  "evidence_present":bool(erefs), "verification_sufficient":False, "runtime_applicable":False}
+                  "evidence_present":bool(erefs) or formal_verified, "verification_sufficient":formal_verified and state == "PASS", "runtime_applicable":False}
         receipts.append({"schema":"qikvrt_claim_audit_v1", "audit_id":f"AUDIT_{index+1:06d}", "claim_id":cid,
                          "timestamp":timestamp, "epistemic_domain":domain, "claim_class":klass,
                          "claim_statement":claim.get("claim_statement"), "audit_result":result,
                          "claim_checklist":checklist, "evidence_checklist":{"evidence_required":required,
-                         "evidence_present":bool(erefs), "evidence_hash_valid":hashes_valid, "evidence_source_known":origin_known},
+                         "evidence_present":bool(erefs) or formal_verified, "evidence_hash_valid":hashes_valid or formal_verified, "evidence_source_known":origin_known or formal_verified},
                          "verification_checklist":verification, "epistemic_audit":{"category_error":category_error,
                          "mixed_domains":not consistent, "improper_inference":False, "scope":"DECLARED_TYPES_AND_STRUCTURED_EDGES_ONLY"},
                          "source_bindings":refs, "evidence_bindings":erefs, "runtime_audit":runtime_audit,
@@ -603,7 +796,7 @@ def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> 
                          "severity":"ERROR" if state=="FAIL" else "NOTICE" if state=="HOLD" else "INFO",
                          "reasons":reasons, "historical_disposition":claim.get("historical_disposition"),
                          "historical_epistemic_category":claim.get("historical_epistemic_category"),
-                         "domain_mapping_scope":claim.get("domain_mapping_scope")})
+                         "domain_mapping_scope":claim.get("domain_mapping_scope"), "formal_kernel_receipt":kernel_binding})
     invariant_receipts = []
     invariant_ids = [i.get("invariant_id",i.get("id")) for i in invariants]
     for invariant in invariants:
@@ -643,42 +836,50 @@ def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> 
                "invariants_checked":len(invariant_receipts), "invariants_failed":sum(r["status"]=="FAIL" for r in invariant_receipts),
                "invariants_held":sum(r["status"]=="HOLD" for r in invariant_receipts),
                "category_errors":sum(r["epistemic_audit"]["category_error"] for r in receipts), "non_implication_violations":sum(e["violated"] for e in edges)}
-    try:
-        binding = subprocess.check_output(["git","-C",str(root),"rev-parse","HEAD","HEAD^{tree}"],stderr=subprocess.DEVNULL,text=True).splitlines()
-        execution_subject = {"head_sha":binding[0], "tree_sha":binding[1],
-                             "working_copy_dirty":bool(subprocess.check_output(["git","-C",str(root),"status","--porcelain"],text=True))}
-    except subprocess.CalledProcessError:
-        execution_subject = {"state":"GIT_SUBJECT_UNBOUND"}
+    execution_subject = audit_subject(root)
     report = {"schema":"qikvrt_claim_audit_report_v1", "timestamp":timestamp,
               "execution_subject":execution_subject, "auditor_binding":identity(Path(__file__)),
               "policy_binding":identity(ROOT/"policy/QIKVRT_CLAIM_AUDIT_V1.json"),
               "policy_id":"QIKVRT_CLAIM_AUDIT_V1",
               "input_sha256":sha(pretty(value).encode()), "audit_summary":summary,
+              "formal_verifier":formal,
               "claims":receipts, "invariants":invariant_receipts, "non_implication_audit":edges,
               "audit_of_audit":{"sources_traceable":all(bool(r["source_bindings"]) and all(x["evidence_hash_valid"] and x["evidence_source_known"] for x in r["source_bindings"]+r["evidence_bindings"]) for r in receipts) and all(all(x["evidence_hash_valid"] and x["evidence_source_known"] for x in i.get("source_bindings",[])) for i in invariant_receipts),
                                 "epistemic_domain_checked":True, "category_error_checked":True, "non_implication_checked":True, "reality_boundary_checked":True},
-              "boundaries":{"effect_ack_done":False, "audit_pass_is_claim_truth":False, "historical_evidence_transfer":False,
+              "boundaries":{"effect_ack_done":False, "external_effect":False, "audit_pass_is_claim_truth":False, "historical_evidence_transfer":False,
                             "origin_declaration_is_authentication":False, "natural_language_semantics_verified":False}}
     report["report_sha256"] = sha(pretty(report).encode())
     return report
 
 
-def verify_claim_audit(report: dict[str, Any], value: dict[str, Any], *, root: Path = ROOT) -> bool:
+def verify_claim_audit(report: dict[str, Any], value: dict[str, Any], *, root: Path = ROOT,
+                       formal_verifier: bool = False, expected_head: str | None = None,
+                       expected_tree: str | None = None, execution_id: str | None = None) -> bool:
     # One finite recomputation audits this output; no recursive proof inflation.
-    return report == claim_audit(value, root=root, timestamp=report.get("timestamp", ""))
+    if formal_verifier:
+        bound = report.get("formal_verifier")
+        if not isinstance(bound, dict) or bound.get("execution_id") != execution_id or bound.get("execution_subject") != audit_subject(root): return False
+        if report.get("execution_subject", {}).get("head_sha") != expected_head or report.get("execution_subject", {}).get("tree_sha") != expected_tree: return False
+    return report == claim_audit(value, root=root, timestamp=report.get("timestamp", ""),
+                                formal_verifier=formal_verifier, expected_head=expected_head,
+                                expected_tree=expected_tree, execution_id=execution_id)
 
 
 def main(argv:list[str]|None=None)->int:
-    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument("action",nargs="?",choices=("generate","check","verify-tag","audit","verify-audit"),default="generate"); ap.add_argument("--check",action="store_true"); ap.add_argument("--verify-tag",action="store_true"); ap.add_argument("--input",type=Path,default=INVENTORY); ap.add_argument("--report",type=Path); ap.add_argument("--timestamp"); ap.add_argument("--require-verified",action="store_true"); a=ap.parse_args(argv); action="check" if a.check else "verify-tag" if a.verify_tag else a.action
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument("action",nargs="?",choices=("generate","check","verify-tag","audit","verify-audit"),default="generate"); ap.add_argument("--check",action="store_true"); ap.add_argument("--verify-tag",action="store_true"); ap.add_argument("--input",type=Path,default=INVENTORY); ap.add_argument("--report",type=Path); ap.add_argument("--timestamp"); ap.add_argument("--require-verified",action="store_true")
+    ap.add_argument("--formal-verifier", choices=("lean-kernel",)); ap.add_argument("--expected-head"); ap.add_argument("--expected-tree"); ap.add_argument("--execution-id")
+    a=ap.parse_args(argv); action="check" if a.check else "verify-tag" if a.verify_tag else a.action
     try:
         if action in {"audit", "verify-audit"}:
             from datetime import datetime, timezone
             value=audit_json(a.input.read_text(encoding="utf-8"))
+            verifier = {"formal_verifier":a.formal_verifier == "lean-kernel", "expected_head":a.expected_head,
+                        "expected_tree":a.expected_tree, "execution_id":a.execution_id}
             if action=="verify-audit":
                 if a.report is None: raise ValueError("verify-audit requires --report")
-                if not verify_claim_audit(audit_json(a.report.read_text()),value): raise ValueError("audit report differs from independent recomputation")
+                if not verify_claim_audit(audit_json(a.report.read_text()),value, **verifier): raise ValueError("audit report differs from independent recomputation")
                 print("PASS audit receipt recomputation; no truth or effect claim"); return 0
-            report=claim_audit(value,timestamp=a.timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00","Z"))
+            report=claim_audit(value,timestamp=a.timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00","Z"), **verifier)
             print(pretty(report),end="")
             summary=report["audit_summary"]
             if summary["claims_failed"] or summary["invariants_failed"] or summary["non_implication_violations"]: return 2

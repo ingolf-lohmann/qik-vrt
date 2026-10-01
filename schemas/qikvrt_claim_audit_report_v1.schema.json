@@ -9,8 +9,16 @@
         },
         "effect_ack_done": {
           "const": false
+        },
+        "external_effect": {
+          "const": false
         }
       },
+      "required": [
+        "audit_pass_is_claim_truth",
+        "effect_ack_done",
+        "external_effect"
+      ],
       "type": "object"
     },
     "claims": {
@@ -18,6 +26,15 @@
         "$ref": "qikvrt_claim_audit_v1.schema.json"
       },
       "type": "array"
+    },
+    "execution_subject": {
+      "type": "object"
+    },
+    "formal_verifier": {
+      "type": [
+        "object",
+        "null"
+      ]
     },
     "input_sha256": {
       "pattern": "^[0-9a-f]{64}$",
@@ -47,7 +64,9 @@
     "non_implication_audit",
     "audit_of_audit",
     "boundaries",
-    "report_sha256"
+    "report_sha256",
+    "formal_verifier",
+    "execution_subject"
   ],
   "type": "object"
 }

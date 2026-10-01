@@ -41,7 +41,8 @@
     "SET_SUBSET_OVER_BOUND_JSON_SNAPSHOTS",
     "NON_IMPLICATION_STRUCTURED_GRAPH_REACHABILITY",
     "SOURCE_AND_EVIDENCE_SHA256_BINDING",
-    "DECLARED_DOMAIN_CLASS_CONSISTENCY"
+    "DECLARED_DOMAIN_CLASS_CONSISTENCY",
+    "REGISTERED_FORMAL_CLAIM_FRESH_LEAN_KERNEL_REPLAY"
   ],
   "invariant_classes": [
     "FORMAL",
@@ -91,7 +92,10 @@
     "GLOBAL_CLAIM_INVENTORY.json",
     "tools/qikvrt_global_completion.py",
     "formalization/QIKVRT_Formalization_v2.0/scripts/validate_claim_graph.py",
-    "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json"
+    "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json",
+    "GLOBAL_EXACT_TAG_KERNEL_RECEIPTS.json",
+    "formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json",
+    "third_party/lean4checker/PROVENANCE.json"
   ],
   "reused_controller": "tools/qikvrt_global_completion.py",
   "schema": "qikvrt_claim_audit_policy_v1",
@@ -103,5 +107,48 @@
     "CRITICAL"
   ],
   "unknown_semantics": "HOLD_UNLESS_AN_ALLOWLISTED_PREDICATE_IS_EXECUTABLE",
-  "verifier_admission": "Independent formal/empirical/peer-review/reproduction verifiers are not admitted by this first audit adapter; every such boolean remains false."
+  "verifier_admission": {
+    "empirical": false,
+    "executor_identity_is_natural_person_authentication": false,
+    "formal": "INDEPENDENT_LEAN_KERNEL_V1",
+    "foundational_axiom_allowlist": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "independence": "Separate native-kernel replay of project declarations into locked Lean/Std base; no author identity, organizational independence, physical truth or kernel-correctness proof is inferred.",
+    "not_admitted": [
+      "APPENDIX_ALIAS_TRUTH_TRANSFER",
+      "ARBITRARY_UNREGISTERED_FORMAL_CLAIMS",
+      "EMPIRICAL_CONFIRMATION",
+      "PEER_REVIEW",
+      "REPRODUCTION"
+    ],
+    "peer_review": false,
+    "report_replay": "Reject differing expected HEAD, TREE, input or executor execution ID; successful meta-audit always rebuilds and replays. Rechecking the same subject within one execution is not an external effect.",
+    "reproduction": false,
+    "requires": [
+      "EXACT_EXPECTED_CANDIDATE_HEAD_AND_TREE",
+      "CLEAN_TRACKED_CANDIDATE_BYTES",
+      "REGISTERED_CLAIM_STATEMENT_AND_DOMAIN",
+      "FRESHLY_RECOMPUTED_KERNEL_RECEIPT",
+      "FROZEN_TAG_SOURCE_BYTE_EQUALITY",
+      "ISOLATED_FRESH_SOURCE_BUILD",
+      "COMPILED_OBJECT_SHA256",
+      "SEPARATE_NATIVE_KERNEL_REPLAY_AT_TRUST_LEVEL_ZERO",
+      "PROOF_STATEMENT_REGISTRY_CONSTANT_COVERAGE",
+      "EXECUTOR_BOUND_EXECUTION_ID",
+      "FRESH_META_AUDIT_RECOMPUTATION"
+    ],
+    "scope": "REGISTERED_PRIMARY_FORMAL_MODEL_ONLY",
+    "toolchain": {
+      "cache_may_replace_kernel_verification": false,
+      "githash": "6caaee842e9495688c1567e78c0e68dbb96942aa",
+      "native_binary_sha256": "92c3d35b5bfaa5e0fea413a775d504cf46cd95e1345df61c2274f76779e7e023",
+      "native_kernel_library_sha256": "2ab605c74c78f9ba4431a7b5305a4b28a9071d8a826f223eb14fe5530f78e14d",
+      "platform": "x86_64-unknown-linux-gnu",
+      "source": "https://github.com/leanprover/lean4/releases/tag/v4.19.0",
+      "version": "4.19.0"
+    }
+  }
 }
