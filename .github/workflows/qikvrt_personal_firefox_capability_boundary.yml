@@ -8,6 +8,9 @@ on:
       - "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
       - "browser/firefox/qikvrt-terminal/**"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
+      - "tools/qikvrt_firefox_windows_witness.py"
+      - "runtime/toolchains/**"
+      - "src/qikvrt_effect_ack_http_terminal.py"
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
   workflow_dispatch:
@@ -93,5 +96,44 @@ jobs:
         with:
           name: qikvrt-personal-firefox-boundary-${{ github.event.pull_request.head.sha || github.sha }}
           path: /tmp/qikvrt-personal-firefox-boundary
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-witness:
+    # Client Windows 11 ARM64 is a product-scope candidate, not Server equivalence.
+    runs-on: windows-11-arm
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact Windows candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify cache and acceptance contract
+        shell: pwsh
+        run: |
+          python -B tools/qikvrt_tool_cache.py verify
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+          exit $LASTEXITCODE
+      - name: Load Firefox extension and observe a fresh real terminal effect
+        shell: pwsh
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python -B tools/qikvrt_firefox_windows_witness.py --output "$env:RUNNER_TEMP/qikvrt-firefox-windows"
+          exit $LASTEXITCODE
+      - name: Preserve Windows evidence even on functional failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-windows-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-windows/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-windows/screenshot.png
+            ${{ runner.temp }}/qikvrt-firefox-windows/geckodriver.log
+            ${{ runner.temp }}/qikvrt-firefox-windows/standard.xpi
           if-no-files-found: error
           retention-days: 30

@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.0",
+  "version": "1.1",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -43,14 +43,101 @@
       "personal_capability_manifest",
       "authenticated_runtime_boundary",
       "credential_non_persistence",
-      "build_test_observe_readback_accept"
+      "build_test_observe_readback_accept",
+      "windows_acceptance.functional_witness_requires",
+      "windows_acceptance.release_additional_requires"
     ],
     "current_candidate": {
       "boundary_contract_materialized": true,
       "personal_capability_manifest_materialized": false,
       "authenticated_runtime_readback": false,
       "personal_release_effect_ack_done": false,
-      "state": "HOLD"
+      "state": "HOLD",
+      "windows_execution_witness": false,
+      "windows_product_target_verified": false,
+      "hardware_holds_block_browser": false
     }
+  },
+  "windows_acceptance": {
+    "schema": "qikvrt_firefox_windows_acceptance_v1",
+    "owner_scope_source": "https://github.com/ingolf-lohmann/qik-vrt/pull/430#issuecomment-5935054969",
+    "product_target": {
+      "name": "Windows 11 25H2 client",
+      "product_type": 1,
+      "display_version": "25H2",
+      "build": 26200,
+      "editions": [
+        "Enterprise",
+        "Professional",
+        "Core"
+      ],
+      "architectures": [
+        "AMD64",
+        "ARM64"
+      ],
+      "supported_from": "2025-09-30",
+      "support_until": "2027-10-12",
+      "support_source": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+      "architecture_scope_rule": "Evidence accepts only the executed architecture; no x64/ARM64 transfer."
+    },
+    "runner_candidates": {
+      "windows-2025": "SERVER_COMPATIBILITY_ONLY",
+      "windows-2022": "SERVER_COMPATIBILITY_ONLY",
+      "windows-11-arm": "WINDOWS_11_ARM64_CANDIDATE_REQUIRES_NATIVE_IDENTITY_AND_EXECUTION"
+    },
+    "runner_source": "https://github.com/actions/runner-images",
+    "firefox": {
+      "version": "156.0.1",
+      "provider": "GitHub runner image or explicitly installed Mozilla release",
+      "license": "MPL-2.0",
+      "verification": "WebDriver browserVersion plus executable SHA256 in fresh receipt",
+      "recovery": "HOLD on absent or mismatched version; no downgrade or silent substitution"
+    },
+    "geckodriver": {
+      "version": "0.37.1",
+      "license": "MPL-2.0",
+      "authority": "https://github.com/mozilla/geckodriver/releases/tag/v0.37.1",
+      "archives": {
+        "ARM64": {
+          "name": "geckodriver-v0.37.1-win-aarch64.zip",
+          "url": "https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-win-aarch64.zip",
+          "sha256": "30889cca635b794b327a59664ac9657bc338e62e1c66d01e40a8c422ff524057"
+        },
+        "AMD64": {
+          "name": "geckodriver-v0.37.1-win64.zip",
+          "url": "https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-win64.zip",
+          "sha256": "dfed9315abe8d2fbc1b6161a2ee8002452e79cf05ee92fdc653a4e26bc35edd8"
+        }
+      }
+    },
+    "hardware_acceptance": {
+      "path": "SEPARATE_HARDWARE_R_AND_D",
+      "browser_blocking": false,
+      "required_for_browser": [],
+      "hardware_proof_implied": false
+    },
+    "functional_witness_requires": [
+      "exact_head_tree_and_xpi_hash",
+      "native_windows_client_supported_at_observation",
+      "actual_firefox_extension_load",
+      "terminal_ui_prepare_without_effect",
+      "validated_full_prepare_record",
+      "single_use_commit",
+      "fresh_nonce_bound_backend_readback",
+      "replay_refusal"
+    ],
+    "release_additional_requires": [
+      "personal_capability_manifest",
+      "authenticated_runtime_readback",
+      "credential_non_persistence",
+      "release_signed_persistent_installation",
+      "public_url_fresh_readback",
+      "responsible_owner_acceptance"
+    ],
+    "loopback_is_authenticated_personal_runtime": false,
+    "temporary_install_is_release_install": false,
+    "terminal_url": "https://goldkelch.github.io/qik-vrt/",
+    "witness_command": "python tools/qikvrt_firefox_windows_witness.py --output <ephemeral-output>",
+    "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt."
   }
 }

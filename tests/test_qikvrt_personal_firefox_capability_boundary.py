@@ -2,7 +2,13 @@ from __future__ import annotations
 
 import json
 import unittest
+import tempfile
+from unittest.mock import patch
 from pathlib import Path
+
+from tools.qikvrt_firefox_windows_witness import (
+    target_matches, provision_driver, verify_effect_readback,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = ROOT / "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md"
@@ -105,6 +111,67 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             "Runtime secrets MUST come from an OS/browser secret store",
             self.spec,
         )
+
+    def test_windows_target_rejects_server_stale_build_and_expired_support(self) -> None:
+        target = self.policy['windows_acceptance']['product_target']
+        observed = {'product_type': 1, 'build': 26200,
+                    'display_version': '25H2', 'edition': 'Enterprise',
+                    'architecture': 'ARM64'}
+        self.assertTrue(target_matches(observed, target, '2026-10-01'))
+        for change in ({'product_type': 3}, {'product_type': 2},
+                       {'build': 26100}, {'display_version': '24H2'},
+                       {'edition': 'ServerStandard'}, {'architecture': 'x86'}):
+            with self.subTest(change=change):
+                self.assertFalse(target_matches(observed | change, target, '2026-10-01'))
+        self.assertFalse(target_matches(observed, target, target['support_until']))
+        self.assertFalse(target_matches({}, target, '2026-10-01'))
+
+    def test_corrupt_driver_download_never_executes(self) -> None:
+        import io
+        contract = self.policy['windows_acceptance']
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp)
+            with patch('urllib.request.urlopen', return_value=io.BytesIO(b'not a driver')), \
+                    patch('subprocess.check_output') as execute:
+                with self.assertRaisesRegex(RuntimeError, 'DRIVER_ARCHIVE_HASH_MISMATCH'):
+                    provision_driver(contract, cache, 'ARM64')
+                execute.assert_not_called()
+            self.assertFalse((cache / 'geckodriver.exe').exists())
+
+    def test_hardware_holds_are_not_browser_requirements(self) -> None:
+        windows = self.policy['windows_acceptance']
+        self.assertFalse(windows['hardware_acceptance']['browser_blocking'])
+        self.assertEqual(windows['hardware_acceptance']['required_for_browser'], [])
+        self.assertFalse(windows['hardware_acceptance']['hardware_proof_implied'])
+        self.assertFalse(windows['loopback_is_authenticated_personal_runtime'])
+        self.assertFalse(windows['temporary_install_is_release_install'])
+        self.assertIn('authenticated_runtime_readback', windows['release_additional_requires'])
+        self.assertIn('release_signed_persistent_installation', windows['release_additional_requires'])
+
+    def test_fresh_readback_requires_exact_real_record_and_request_hashes(self) -> None:
+        import sys
+        import copy
+        sys.path.insert(0, str(ROOT / 'src'))
+        from qikvrt_effect_ack_http_terminal import State, canonical_json, sha256
+        request = {'schema': 'qikvrt_terminal_input_v1', 'text': 'fresh-witness'}
+        input_hash = sha256(canonical_json(request))
+        state = State()
+        record_hash, record = state.record(state='EFFECT_ACK_DONE', input_hash=input_hash,
+                                           ordinary_release=True, reason='test')
+        prepared = {'full_record': record, 'effect_ack': {'record_hash': record_hash}}
+        before = {'events': 0}
+        subject = {'head': 'a' * 40, 'tree': 'b' * 40}
+        after = {'events': 1, 'repository_head': subject['head'],
+                 'repository_tree': subject['tree'], 'last_event': {
+                     'text': request['text'], 'input_hash': input_hash, 'record_hash': record_hash}}
+        self.assertTrue(verify_effect_readback(before, after, prepared, request, subject))
+        for field in ('text', 'input_hash', 'record_hash'):
+            changed = copy.deepcopy(after)
+            changed['last_event'][field] = 'substitution'
+            self.assertFalse(verify_effect_readback(before, changed, prepared, request, subject))
+        for field in ('repository_head', 'repository_tree'):
+            self.assertFalse(verify_effect_readback(before, after | {field: 'c' * 40}, prepared, request, subject))
+        self.assertFalse(verify_effect_readback(before, after | {'events': 0}, prepared, request, subject))
 
 
 if __name__ == "__main__":

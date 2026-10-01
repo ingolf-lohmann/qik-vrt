@@ -55,3 +55,61 @@ SOURCE_REPOSITORY
 ```
 
 A successor mutation invalidates predecessor release evidence.
+
+## Windows browser MVP acceptance (Owner scope, 2026-10-01)
+
+The Product Owner clarification at
+https://github.com/ingolf-lohmann/qik-vrt/pull/430#issuecomment-5935054969
+requires actual execution on a current supported Windows system. FPGA board,
+physical clock binding, bitstream, programmer readback and oscillator evidence
+belong to separate hardware R&D. Their HOLDs do not block this browser path;
+browser evidence does not prove those hardware effects.
+
+The machine contract is `windows_acceptance` in the existing boundary policy.
+Its first explicit client target is Windows 11 25H2, build 26200, Home/Pro or
+Enterprise, AMD64 or ARM64. Evidence applies only to the executed architecture.
+The conservative support window ends before the Home/Pro support end date;
+other builds/editions need an updated primary-source-bound target contract.
+
+`windows-2025` and `windows-2022` are Server compatibility targets, not client
+acceptance substitutes. GitHub currently documents `windows-11-arm` as Windows
+11 Enterprise ARM64. It is a candidate for the ARM64 client scope only: the
+witness must independently read ProductType, edition, DisplayVersion, build,
+UBR and native architecture at execution time. A label or image README is not
+an execution receipt. Mismatch or an expired support window keeps product
+target acceptance on HOLD, even when functional tests pass.
+
+The existing Boundary workflow now runs the Windows witness on that client
+runner with read-only repository permissions and an exact candidate checkout.
+It binds HEAD/TREE, policy/XPI/binary hashes, browser version, runner image,
+run/attempt/job, UTC observation and OS identity. It temporarily installs the
+unchanged standard XPI in real Firefox, checks terminal content-script loading,
+performs UI Prepare and Commit against the existing real loopback backend,
+reads a fresh nonce-bound backend event, compares its input/record hashes and
+HEAD/TREE, and verifies single-use replay refusal. Prepare must create no event.
+The driver is fetched only from the pinned Mozilla release archive and checked
+against its recorded SHA-256 before extraction and execution, including warm
+cache re-extraction. The declared cache registry covers every new component.
+
+Run on the declared Windows target with Firefox 156.0.1 and Python 3.13.15:
+
+```powershell
+python -B tools/qikvrt_tool_cache.py verify
+python -B tools/qikvrt_firefox_windows_witness.py --output "$env:TEMP/qikvrt-windows-witness"
+```
+
+The default uses an actual headed Firefox session. A separately requested
+`--headless` run is labeled as such. Temporary unsigned addon loading proves
+test loading, not a signed persistent end-user installation. The standard
+package still contains no personal payload. Its bounded local terminal event
+has `external_effect=NONE`; it is not an authenticated Personal/OpenAI runtime,
+repository effect or general product EFFECT_ACK.
+
+`personal_release_effect_ack_done` remains false until the exact candidate also
+has its personal capability manifest, authenticated runtime receipt, credential
+non-persistence proof, release installation, public URL fresh readback and
+responsible Owner acceptance. The witness never changes repository policy or
+claims that release state. If no matching client execution is observed, the
+remaining witness is this same exact candidate on supported Windows 11 client
+with the declared architecture, loaded extension and fresh functional/effect
+readback, followed by the separate authenticated Personal runtime acceptance.

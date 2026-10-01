@@ -1,0 +1,47 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001",
+  "base_head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "base_tree": "68a3f30885a403a7edaa4d2dbb8576ace9cc866e",
+  "scope_source": "https://github.com/ingolf-lohmann/qik-vrt/pull/430#issuecomment-5935054969",
+  "human_contribution": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "contribution": "Browser MVP requires supported Windows execution and fresh functional/effect readback; hardware R&D is separate."
+  },
+  "artificial_cognitive_contribution": {
+    "identifier": "OpenAI Codex",
+    "contribution": "Windows acceptance contract, real WebDriver witness, tests, workflow/cache integration and evidence boundaries."
+  },
+  "reuse": {
+    "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+    "backend": "src/qikvrt_effect_ack_http_terminal.py",
+    "extension": "browser/firefox/qikvrt-terminal",
+    "new_adapter_reason": "Existing boundary path only packages/tests source on Ubuntu; no existing browser automation adapter can install this Firefox extension and witness its Windows UI and real terminal event."
+  },
+  "windows_scope": "Windows 11 25H2 client; architecture-specific; native identity required",
+  "runner_candidate": "windows-11-arm",
+  "runner_documentary_source": "https://github.com/actions/runner-images/blob/main/images/windows/Windows11-Arm64-Readme.md",
+  "support_source": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+  "driver_release_source": "https://github.com/mozilla/geckodriver/releases/tag/v0.37.1",
+  "state": "HOLD",
+  "windows_execution_observed": false,
+  "authenticated_runtime_readback": false,
+  "personal_release_effect_ack_done": false,
+  "hardware_holds_block_browser": false,
+  "predecessor_evidence_transfer": false,
+  "remaining_acceptance": [
+    "Fresh exact-head Windows client run with native OS identity and terminal readback",
+    "Personal capability manifest and authenticated runtime readback",
+    "Signed persistent release installation and public URL readback",
+    "Responsible Owner acceptance"
+  ],
+  "local_validation": {
+    "boundary_and_loopback_tests": 16,
+    "result": "PASS",
+    "tool_cache_components": 17,
+    "coverage_percent": 100,
+    "full_make_test_required_for_candidate": true
+  },
+  "integrity_note": "Regenerated canonical integrity trio also binds existing main lifecycle entries omitted by the previous inventory; no lifecycle payload changed."
+}
