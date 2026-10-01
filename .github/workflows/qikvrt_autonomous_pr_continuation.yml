@@ -6,6 +6,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "37 * * * *"
+  workflow_run:
+    workflows:
+      - "QIKVRT CI"
+      - "QIKVRT repository evidence materialization"
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -70,6 +75,7 @@ jobs:
         id: select
         env:
           GH_TOKEN: ${{ github.token }}
+          SOURCE_HEAD_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || '' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -82,6 +88,10 @@ jobs:
           pages = json.load(open('/tmp/qikvrt-open-pr-pages.json', encoding='utf-8'))
           marker = os.environ['OPT_IN_MARKER']
           repo = os.environ['GITHUB_REPOSITORY']
+          source_head = os.environ.get('SOURCE_HEAD_SHA', '')
+          if source_head and (len(source_head) != 40 or
+                  any(c not in '0123456789abcdef' for c in source_head)):
+              raise SystemExit('BLOCK: malformed completed-workflow subject')
           candidates = []
           for page in pages:
               for pr in page:
@@ -89,6 +99,10 @@ jobs:
                   if pr.get('draft') is not True or head_repo != repo:
                       continue
                   if marker not in (pr.get('body') or ''):
+                      continue
+                  # A stale or unrelated CI completion cannot select a writer.
+                  # Both success and failure are continuation opportunities.
+                  if source_head and pr['head']['sha'] != source_head:
                       continue
                   candidates.append(pr)
           candidates.sort(key=lambda item: int(item['number']))

@@ -264,5 +264,30 @@
     "EFFECT_ACK_DONE": false,
     "FULL_SYNC": false,
     "SYMMETRIC_CANONICALITY": false
+  },
+  "continuous_integration": {
+    "owner_command": {
+      "issuer": "Ingolf Lohmann",
+      "literal": "Never stop CI",
+      "received_at_utc": "2026-10-01T21:44:01Z",
+      "destination": "REPOSITORY"
+    },
+    "scope": "REPOSITORY_NATIVE_CI",
+    "active": true,
+    "first_success_terminal": false,
+    "first_failure_terminal": false,
+    "release_done_stops_ci": false,
+    "blocked_lane_stops_global_ci": false,
+    "bounded_jobs_and_fail_closed_writers": true,
+    "consumer": "tools/qikvrt_autonomous_self_heal.py ci-continuation",
+    "ci_workflow": ".github/workflows/qikvrt_ci.yml",
+    "followup_workflow": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    "completed_workflow_opportunities": [
+      "QIKVRT CI",
+      "QIKVRT repository evidence materialization"
+    ],
+    "completed_event_binding": "CURRENT_OPTED_IN_SAME_REPOSITORY_DRAFT_HEAD_ONLY",
+    "automatic_acceptance": false,
+    "main_activation": "REQUIRES_INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ADMISSION"
   }
 }

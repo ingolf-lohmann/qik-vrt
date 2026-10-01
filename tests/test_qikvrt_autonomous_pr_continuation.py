@@ -23,6 +23,47 @@ VERIFIER = ROOT / ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
 
 
 class AutonomousPRContinuationTests(unittest.TestCase):
+    def test_completed_ci_selects_only_the_current_opted_in_subject(self):
+        source = CONTINUATION.read_text()
+        self.assertIn('  workflow_run:\n    workflows:\n      - "QIKVRT CI"', source)
+        self.assertIn('      - "QIKVRT repository evidence materialization"\n    types: [completed]', source)
+        self.assertNotIn("conclusion == 'success'", source)
+        marker = "      - name: Select one exact opted-in same-repository draft PR\n"
+        block = source.split(marker, 1)[1].split("\n      - name:", 1)[0]
+        script = textwrap.dedent(block.split("        run: |\n", 1)[1])
+        opt_in = "<!-- qikvrt-autonomous-self-heal:enabled -->"
+        def pr(number, head, body=opt_in, repository="owner/repo"):
+            return {"number": number, "draft": True, "body": body,
+                    "head": {"sha": head, "ref": "work/candidate", "repo": {"full_name": repository}},
+                    "base": {"sha": "c" * 40, "ref": "main"}}
+        pages = [[pr(1, "a" * 40), pr(2, "b" * 40),
+                  pr(3, "d" * 40, body=""), pr(4, "e" * 40, repository="other/repo")]]
+        for subject, expected in (("a" * 40, 1), ("b" * 40, 2),
+                                  ("f" * 40, None), ("d" * 40, None),
+                                  ("e" * 40, None), ("", 1), ("invalid", "BLOCK")):
+            with self.subTest(subject=subject), tempfile.TemporaryDirectory() as raw:
+                root = pathlib.Path(raw)
+                binary = root / "bin"
+                binary.mkdir()
+                gh = binary / "gh"
+                gh.write_text("#!" + sys.executable + "\nprint(" + repr(json.dumps(pages)) + ")\n")
+                gh.chmod(0o755)
+                output = root / "output"
+                env = dict(os.environ, PATH=str(binary) + os.pathsep + os.environ["PATH"],
+                           OPT_IN_MARKER=opt_in, GITHUB_REPOSITORY="owner/repo",
+                           SOURCE_HEAD_SHA=subject, GITHUB_OUTPUT=str(output))
+                result = subprocess.run(["bash"], input=script.replace(
+                    "/tmp/qikvrt-open-pr-pages.json", str(root / "pages.json")),
+                    env=env, text=True, capture_output=True, timeout=10)
+                if expected == "BLOCK":
+                    self.assertNotEqual(0, result.returncode)
+                else:
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    values = dict(line.split("=", 1) for line in output.read_text().splitlines())
+                    self.assertEqual("false" if expected is None else "true", values["found"])
+                    if expected is not None:
+                        self.assertEqual(str(expected), values["pr_number"])
+
     def test_contract_is_opt_in_same_repo_draft_and_one_at_a_time(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         value = contract["pull_request_continuation"]

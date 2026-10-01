@@ -47,6 +47,27 @@ bind the changed bytes.
 
 ## Trigger semantics
 
+Ingolf Lohmann's command **Never stop CI** is bound to this repository in
+`state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json.continuous_integration`.
+The existing CI executes `tools/qikvrt_autonomous_self_heal.py ci-continuation`
+after its terminal test disposition, including on failure. The controller reads
+that command, checks its invariants and the actual committed contract/controller
+bytes, and emits `CI_CONTINUATION.json` bound to the current HEAD/TREE and native
+run/attempt. The existing audit upload retains this receipt after either result.
+It does not turn a failed test into success or authorize a writer.
+
+The existing PR worker also accepts completed CI and repository-evidence events,
+without a success-only filter. An event selects only an opted-in same-repository
+draft whose current head equals that completed run's head. Stale and unrelated
+events are strict NOOPs. The existing scheduled fallback remains available.
+Finite jobs and fail-closed writer gates remain; success, failure and scoped
+release acceptance never discharge the overall integration obligation.
+
+The CI consumer can be tested on the exact PR candidate. Activation of the
+upgraded default-branch `workflow_run` worker requires independent native review
+and Main admission. Its trusted-Main pipeline binding remains mandatory; opting
+in a candidate does not allow it to execute an unreviewed pipeline upgrade.
+
 A push performed with the workflow-provided `GITHUB_TOKEN` does not recursively
 start ordinary push or pull-request workflows. The worker therefore emits the
 explicit repository-dispatch event

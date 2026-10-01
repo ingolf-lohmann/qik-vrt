@@ -165,6 +165,59 @@ def continuation_verification_decision(statuses: Any) -> str:
     return "EXISTING_VERIFICATION_REQUIRES_READBACK"
 
 
+def ci_continuation_receipt(repository: pathlib.Path, reference: str | None,
+                            outcome: str | None, repository_name: str | None,
+                            event: str | None, run_id: int | None,
+                            run_attempt: int | None) -> dict[str, Any]:
+    """Consume the repository command; retain a finite run's next obligation.
+
+    This read-only receipt neither dispatches a writer nor accepts the product.
+    A failed test stays failed while the native continuation remains obligated.
+    """
+    if (reference is None or len(reference) != 40
+            or any(c not in "0123456789abcdef" for c in reference)):
+        raise SelfHealBlock("CI continuation requires an exact current HEAD")
+    if (outcome not in {"success", "failure", "cancelled", "skipped"}
+            or event not in {"push", "pull_request", "workflow_dispatch"}
+            or type(run_id) is not int or run_id < 1
+            or type(run_attempt) is not int or run_attempt < 1
+            or not isinstance(repository_name, str) or repository_name.count("/") != 1):
+        raise SelfHealBlock("CI execution witness is incomplete")
+    root = repository.resolve(strict=True)
+    if root != ROOT.resolve():
+        raise SelfHealBlock("CI must consume its own repository-native controller")
+
+    def git(*arguments: str) -> bytes:
+        return subprocess.check_output(["git", *arguments], cwd=root,
+                                       timeout=60, stderr=subprocess.PIPE)
+
+    head, tree = git("rev-parse", "HEAD", "HEAD^{tree}").decode("ascii").splitlines()
+    if head != reference:
+        raise SelfHealBlock("CI continuation subject changed; fresh binding required")
+    contract = load_contract()
+    # Bind actual executed bytes, not the stale commit identity of a dirty tree.
+    for path in (CONTRACT.relative_to(ROOT).as_posix(), "tools/qikvrt_autonomous_self_heal.py"):
+        if git("show", head + ":" + path) != (root / path).read_bytes():
+            raise SelfHealBlock("CI command bytes differ from the bound subject")
+    if git("rev-parse", "HEAD").decode("ascii").strip() != head:
+        raise SelfHealBlock("CI continuation subject changed during readback")
+    return {
+        "schema": "qikvrt_native_ci_continuation_receipt_v1",
+        "owner_command": contract["continuous_integration"]["owner_command"],
+        "contract_sha256": hashlib.sha256(CONTRACT.read_bytes()).hexdigest(),
+        "repository": repository_name, "head": head, "tree": tree,
+        "execution": {"event": event, "run_id": run_id,
+                      "run_attempt": run_attempt, "terminal_test_outcome": outcome},
+        "state": "EFFECT_ACK_CONTINUE", "global_ci_stop": False,
+        "next_required_action": ("REOBSERVE_ADMITTED_NATIVE_CONTINUATION"
+                                 if outcome == "success" else
+                                 "CLASSIFY_FAILURE_AND_EXECUTE_ONLY_ADMITTED_REPAIR"),
+        "continuation_workflow": contract["pull_request_continuation"]["workflow_path"],
+        "predecessor_evidence_transfer": False, "writer_authorization_implied": False,
+        "ordinary_release": False, "effect_ack_done": False,
+    }
+
+
 @dataclass(frozen=True)
 class CommandResult:
     command: tuple[str, ...]
@@ -291,6 +344,16 @@ def load_contract() -> dict[str, Any]:
     value = _load_json(CONTRACT, "autonomous self-healing contract")
     if value.get("schema") != "qikvrt_autonomous_self_healing_contract_v1":
         raise SelfHealBlock("contract schema mismatch")
+    continuous = value.get("continuous_integration", {})
+    owner = continuous.get("owner_command", {})
+    if (owner.get("literal") != "Never stop CI" or owner.get("issuer") != "Ingolf Lohmann"
+            or continuous.get("scope") != "REPOSITORY_NATIVE_CI"
+            or continuous.get("active") is not True
+            or any(continuous.get(key) is not False for key in (
+                "first_success_terminal", "first_failure_terminal",
+                "release_done_stops_ci", "blocked_lane_stops_global_ci"))
+            or continuous.get("bounded_jobs_and_fail_closed_writers") is not True):
+        raise SelfHealBlock("repository-native Never stop CI invariant is absent or weakened")
     execution_model = value.get("execution_model", {})
     if execution_model.get("promotion") != "expected_head_bound_only":
         raise SelfHealBlock("promotion must remain expected-head-bound")
@@ -476,14 +539,23 @@ def execute(apply: bool) -> dict[str, Any]:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision"))
+    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation"))
     parser.add_argument("--repository", type=pathlib.Path, default=ROOT)
     parser.add_argument("--reference")
     parser.add_argument("--binding", type=pathlib.Path)
     parser.add_argument("--statuses", type=pathlib.Path)
+    parser.add_argument("--test-outcome")
+    parser.add_argument("--repository-name")
+    parser.add_argument("--event")
+    parser.add_argument("--run-id", type=int)
+    parser.add_argument("--run-attempt", type=int)
     args = parser.parse_args(argv)
     try:
-        if args.command == "pipeline-bind":
+        if args.command == "ci-continuation":
+            result = ci_continuation_receipt(args.repository, args.reference,
+                args.test_outcome, args.repository_name, args.event,
+                args.run_id, args.run_attempt)
+        elif args.command == "pipeline-bind":
             result = pipeline_binding(args.repository, args.reference)
         elif args.command == "pipeline-verify":
             if args.binding is None:
@@ -510,6 +582,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ValueError,
         json.JSONDecodeError,
         subprocess.TimeoutExpired,
+        subprocess.CalledProcessError,
         SelfHealBlock,
     ) as exc:
         print(

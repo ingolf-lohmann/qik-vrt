@@ -423,6 +423,7 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
 
     def run_terminal(self, required: str, full_test: str, fixpoint: str):
         block = GENERAL_CI.read_text(encoding="utf-8").split(self.STEP, 1)[1]
+        block = block.split("\n      - name:", 1)[0]
         metadata, script = block.split("        run: |\n", 1)
         values = {
             self.SCOPE: required,
@@ -576,6 +577,95 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         self.assertIn("FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}", terminal)
         self.assertIn("FIXPOINT_OUTCOME: ${{ steps.fixpoint.outcome }}", terminal)
         self.assertNotIn(".conclusion", terminal)
+
+    def test_native_command_runs_after_success_and_failure_and_preserves_receipt(self):
+        workflow = GENERAL_CI.read_text(encoding="utf-8")
+        marker = "      - name: Consume repository-native Never stop CI command\n"
+        block = workflow.split(marker, 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("if: always()", block)
+        self.assertLess(workflow.index(self.STEP), workflow.index(marker))
+        self.assertLess(workflow.index(marker), workflow.index("      - name: Upload audit\n"))
+        script = textwrap.dedent(block.split("        run: |\n", 1)[1])
+        paths = (
+            "tools/qikvrt_autonomous_self_heal.py",
+            "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+            "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+        )
+        for outcome in ("success", "failure", "cancelled", "skipped", "unknown"):
+            with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as raw:
+                root = pathlib.Path(raw)
+                for path in paths:
+                    file = root / path
+                    file.parent.mkdir(parents=True, exist_ok=True)
+                    file.write_bytes((ROOT / path).read_bytes())
+                run_git(root, "init")
+                run_git(root, "config", "user.name", "native CI fixture")
+                run_git(root, "config", "user.email", "native-ci@example.invalid")
+                run_git(root, "add", ".")
+                run_git(root, "commit", "-m", "bound native continuation fixture")
+                head = run_git(root, "rev-parse", "HEAD")
+                tree = run_git(root, "rev-parse", "HEAD^{tree}")
+                env = dict(os.environ, CI_TERMINAL_OUTCOME=outcome,
+                           GITHUB_REPOSITORY="owner/fixture", GITHUB_EVENT_NAME="push",
+                           GITHUB_RUN_ID="101", GITHUB_RUN_ATTEMPT="2")
+                result = subprocess.run(["bash", "-c", script], cwd=root, env=env,
+                                        text=True, capture_output=True, timeout=10)
+                receipt = json.loads((root / ".qikvrt/runtime/ci-diagnostics/CI_CONTINUATION.json").read_text())
+                if outcome == "unknown":
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertEqual("BLOCK", receipt["state"])
+                    continue
+                self.assertEqual(0, result.returncode, result.stderr)
+                self.assertEqual("Never stop CI", receipt["owner_command"]["literal"])
+                self.assertEqual((head, tree), (receipt["head"], receipt["tree"]))
+                self.assertEqual(outcome, receipt["execution"]["terminal_test_outcome"])
+                self.assertEqual("EFFECT_ACK_CONTINUE", receipt["state"])
+                self.assertFalse(receipt["global_ci_stop"])
+                self.assertFalse(receipt["ordinary_release"])
+                self.assertFalse(receipt["effect_ack_done"])
+                self.assertFalse(receipt["writer_authorization_implied"])
+                self.assertEqual(head, run_git(root, "rev-parse", "HEAD"))
+
+    def test_rehashed_successor_cannot_remove_or_weaken_native_command(self):
+        paths = (
+            "tools/qikvrt_autonomous_self_heal.py",
+            "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+            "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+        )
+        for change in ("remove", "stop_on_failure", "dirty_bytes", "stale_head"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as raw:
+                root = pathlib.Path(raw)
+                for path in paths:
+                    file = root / path
+                    file.parent.mkdir(parents=True, exist_ok=True)
+                    file.write_bytes((ROOT / path).read_bytes())
+                run_git(root, "init")
+                run_git(root, "config", "user.name", "negative native fixture")
+                run_git(root, "config", "user.email", "negative@example.invalid")
+                run_git(root, "add", ".")
+                run_git(root, "commit", "-m", "original fixture")
+                original = run_git(root, "rev-parse", "HEAD")
+                policy = root / paths[1]
+                value = json.loads(policy.read_text())
+                if change == "remove":
+                    del value["continuous_integration"]
+                elif change == "stop_on_failure":
+                    value["continuous_integration"]["first_failure_terminal"] = True
+                else:
+                    value["contract_id"] += "-successor"
+                policy.write_text(json.dumps(value))
+                if change != "dirty_bytes":
+                    run_git(root, "add", ".")
+                    run_git(root, "commit", "-m", "rebound successor fixture")
+                reference = original if change == "stale_head" else run_git(root, "rev-parse", "HEAD")
+                result = subprocess.run([
+                    "python3", "-B", str(root / paths[0]), "ci-continuation",
+                    "--reference", reference, "--test-outcome", "success",
+                    "--repository-name", "owner/fixture", "--event", "push",
+                    "--run-id", "101", "--run-attempt", "1",
+                ], cwd=root, capture_output=True, text=True, timeout=10)
+                self.assertNotEqual(0, result.returncode)
+                self.assertEqual("BLOCK", json.loads(result.stdout)["state"])
 
 
 if __name__ == "__main__":

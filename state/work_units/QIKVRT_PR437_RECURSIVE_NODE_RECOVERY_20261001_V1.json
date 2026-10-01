@@ -48,6 +48,23 @@
     "RECHECKPOINT_FROM_SURVIVING_RESTORED_NODE",
     "CLONE_LINEAGE_BYTES_SURVIVE_PARENT_PACKAGE_LOSS"
   ],
+  "repository_native_ci_instruction": {
+    "consumer": "tools/qikvrt_autonomous_self_heal.py ci-continuation",
+    "contract": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json#continuous_integration",
+    "execution": ".github/workflows/qikvrt_ci.yml: Consume repository-native Never stop CI command",
+    "first_failure_terminal": false,
+    "first_success_terminal": false,
+    "implementation_base": "cfce41f7f412b0d0037cf064a00327a03cc8e650",
+    "literal": "Never stop CI",
+    "new_pull_request": "FORBIDDEN_FOR_CURRENT_CONTINUATION",
+    "next_event_executor": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    "owner": "Ingolf Lohmann",
+    "predecessor_evidence_transfer": false,
+    "receipt": "qikvrt-ci-audit/.qikvrt/runtime/ci-diagnostics/CI_CONTINUATION.json",
+    "source": "Direct Owner instruction 2026-10-01T21:44:01Z and repository-destination correction 2026-10-01T21:50:32Z",
+    "trusted_main_activation": "INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ADMISSION_REQUIRED",
+    "validation_scope": "ACTUAL_NATIVE_CANDIDATE_CI_JOB_AND_READBACK_REQUIRED_AFTER_PUBLICATION"
+  },
   "resume": "Observe exact current carrier, run mandatory tests and review gates, provision supported live recovery/broker inputs, execute both poles and read back real effects before accepting full node or product Done",
   "reuse": [
     "tools/qikvrt_mesh_recovery.py",
