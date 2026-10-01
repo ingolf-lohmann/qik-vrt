@@ -1,0 +1,79 @@
+{
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_processor_clock_contract_v1",
+  "status": "OWNER_REQUIREMENT_WITH_REFERENCE_IMPLEMENTATION",
+  "owner": "Ingolf Lohmann",
+  "requirement": {
+    "machine_evaluation_cadence": "EVERY_PROCESSOR_CLOCK_EDGE",
+    "cadence_divider": 1,
+    "human_briefing_cadence": "WEEKLY_MONDAY",
+    "human_output_sets_machine_cadence": false,
+    "chat_schedule_proves_processor_clock_coverage": false,
+    "timer_or_polling_substitution": "FORBIDDEN"
+  },
+  "reuse_binding": {
+    "implementation": "src/effect_ack_core.c",
+    "header": "include/qikvrt/effect_ack.h",
+    "tests": "tests/test_effect_ack_core.c",
+    "test_entrypoint": "make effect-ack-core-test",
+    "explanation": "docs/QIKVRT_PROCESSOR_CLOCK.md",
+    "existing_five_state_semantics_preserved": true,
+    "new_executor_or_scheduler": false,
+    "digital_twin_scheduling_mirror_pr": 426,
+    "digital_twin_pr_is_dependency": false
+  },
+  "reference_clock_contract": {
+    "initial_storage": "QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER",
+    "owner_count": 1,
+    "epoch": "NONZERO_DRIVER_ADMITTED_DOMAIN_IDENTIFIER",
+    "first_cycle": "DRIVER_BOUND_UNSIGNED_LONG_BELOW_ULONG_MAX",
+    "tick": "qikvrt_effect_ack_clock_tick",
+    "accepted_cycle": "EXACTLY_NEXT_EXPECTED_CYCLE_IN_BOUND_EPOCH",
+    "evaluation": "RECOMPUTE_EXISTING_GATE_FROM_CURRENT_VERIFIED_SNAPSHOT",
+    "cached_done_carry_forward": false,
+    "missing_snapshot": "CURRENT_CYCLE_BLOCK_WITHOUT_REUSING_PRIOR_INPUT",
+    "gap_replay_epoch_mismatch_counter_exhaustion": "LATCH_CLOCK_BLOCK",
+    "catch_up_as_coverage": false,
+    "reinitialize_existing_context": "LATCH_CLOCK_BLOCK",
+    "reset_faulted_context": "FORBIDDEN",
+    "next_epoch": "NEW_ADMITTED_CONTEXT_WITH_PRIOR_FAULT_EVIDENCE_RETAINED",
+    "release": "qikvrt_effect_ack_clock_ordinary_release",
+    "release_binding": "CALLER_OBSERVED_CURRENT_EPOCH_AND_CYCLE_ONLY",
+    "release_performs_external_effect": false,
+    "legacy_unclocked_api": "COMPATIBLE_BUT_NOT_A_CLOCK_COVERAGE_WITNESS",
+    "readback": [
+      "epoch",
+      "next_cycle",
+      "evaluated_cycles",
+      "state",
+      "initialized",
+      "clock_fault"
+    ]
+  },
+  "integration_obligations": [
+    "ACTUAL_CLOCK_DOMAIN_IDENTITY_ADMISSION_AND_RESET_RULES",
+    "PER_PHYSICAL_EDGE_EXECUTION_AND_TIMING_PROOF",
+    "ATOMIC_CURRENT_AUTHENTICATED_DECISION_SNAPSHOT",
+    "COMPLETE_MEDIATION_OF_EVERY_PROTECTED_EFFECT",
+    "INDEPENDENT_COVERAGE_WITNESS_FOR_MISSING_CALLS_CLOCK_LOSS_AND_RESTARTS",
+    "PRESERVATION_OF_PREVIOUS_EPOCH_FAULT_EVIDENCE"
+  ],
+  "evidence_boundary": {
+    "c_reference_domain": "SYNTHETIC_CONTIGUOUS_CYCLES",
+    "physical_processor_clock_binding": "OPEN",
+    "firefox_mvp_runtime_integration": "OPEN",
+    "independent_live_coverage_witness": "OPEN",
+    "integer_cycle_labels_prove_physical_binding": false,
+    "software_tests_prove_physical_binding": false,
+    "unobserved_missing_call_detectable_by_core_alone": false,
+    "productive_hardware_or_browser_activation": false,
+    "authority_mirror_equivalence": false,
+    "overall_effect_ack_done": false
+  }
+}

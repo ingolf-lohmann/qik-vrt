@@ -3,6 +3,8 @@
 
 #include "qikvrt/effect_ack.h"
 
+#include <limits.h>
+
 static int qikvrt_effect_ack_decision_valid(
     qikvrt_effect_ack_decision decision)
 {
@@ -97,6 +99,67 @@ qikvrt_effect_ack_state qikvrt_effect_ack_evaluate(
 int qikvrt_effect_ack_ordinary_release(qikvrt_effect_ack_state state)
 {
     return state == QIKVRT_EFFECT_ACK_DONE;
+}
+
+int qikvrt_effect_ack_clock_init(
+    qikvrt_effect_ack_clock *clock,
+    unsigned long epoch,
+    unsigned long first_cycle)
+{
+    if (clock == 0) {
+        return 0;
+    }
+    /* Reinitialization cannot erase a missed edge or reopen a prior epoch. */
+    if (clock->initialized != 0 || clock->clock_fault != 0
+            || epoch == 0UL || first_cycle == ULONG_MAX) {
+        clock->clock_fault = 1;
+        clock->state = QIKVRT_EFFECT_ACK_BLOCK;
+        return 0;
+    }
+    clock->epoch = epoch;
+    clock->next_cycle = first_cycle;
+    clock->evaluated_cycles = 0UL;
+    clock->state = QIKVRT_EFFECT_ACK_BLOCK;
+    clock->initialized = 1;
+    return 1;
+}
+
+qikvrt_effect_ack_state qikvrt_effect_ack_clock_tick(
+    qikvrt_effect_ack_clock *clock,
+    unsigned long epoch,
+    unsigned long cycle,
+    const qikvrt_effect_ack_input *current_input)
+{
+    if (clock == 0) {
+        return QIKVRT_EFFECT_ACK_BLOCK;
+    }
+    if (clock->initialized != 1 || clock->clock_fault != 0
+            || epoch != clock->epoch || cycle != clock->next_cycle
+            || cycle == ULONG_MAX || clock->evaluated_cycles == ULONG_MAX) {
+        clock->clock_fault = 1;
+        clock->state = QIKVRT_EFFECT_ACK_BLOCK;
+        return clock->state;
+    }
+    clock->next_cycle += 1UL;
+    clock->evaluated_cycles += 1UL;
+    /* Each edge recomputes from this input; cached DONE is never carried. */
+    clock->state = qikvrt_effect_ack_evaluate(current_input);
+    return clock->state;
+}
+
+int qikvrt_effect_ack_clock_ordinary_release(
+    const qikvrt_effect_ack_clock *clock,
+    unsigned long epoch,
+    unsigned long cycle)
+{
+    return clock != 0
+        && clock->initialized == 1
+        && clock->clock_fault == 0
+        && clock->evaluated_cycles != 0UL
+        && clock->next_cycle != 0UL
+        && epoch == clock->epoch
+        && cycle == clock->next_cycle - 1UL
+        && qikvrt_effect_ack_ordinary_release(clock->state);
 }
 
 const char *qikvrt_effect_ack_state_name(qikvrt_effect_ack_state state)

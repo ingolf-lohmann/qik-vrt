@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
 #include "qikvrt/effect_ack.h"
 
@@ -385,8 +386,11 @@ static void test_exhaustive_state_selection(void)
     unsigned long mask;
     unsigned long limit;
     int decision;
+    qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
 
     limit = 1UL << 19;
+    expect_true(qikvrt_effect_ack_clock_init(&clock, 1UL, 0UL),
+        "start an explicitly admitted test clock window");
     for (mask = 0UL; mask < limit; mask += 1UL) {
         for (decision = 0;
                 decision < QIKVRT_EFFECT_ACK_DECISION_COUNT;
@@ -412,10 +416,134 @@ static void test_exhaustive_state_selection(void)
                 qikvrt_effect_ack_ordinary_release(actual)
                     == (actual == QIKVRT_EFFECT_ACK_DONE),
                 "exhaustive ordinary release is equivalent to DONE");
+            expect_state(
+                qikvrt_effect_ack_clock_tick(&clock, 1UL,
+                    mask * 5UL + (unsigned long)decision, &input),
+                expected,
+                "every clock edge agrees with the independent state oracle");
+            expect_true(
+                qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL,
+                    mask * 5UL + (unsigned long)decision)
+                    == (expected == QIKVRT_EFFECT_ACK_DONE),
+                "clock release requires this edge's independently checked DONE");
             if (failures != 0) {
                 return;
             }
         }
+    }
+    expect_true(clock.evaluated_cycles == limit * 5UL,
+        "every exhaustive test edge was evaluated without a cadence divider");
+    expect_true(clock.next_cycle == limit * 5UL,
+        "clock readback covers the complete contiguous test window");
+}
+
+static void test_clock_freshness_and_coverage(void)
+{
+    qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+    qikvrt_effect_ack_clock missing = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+    qikvrt_effect_ack_clock tail = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+    qikvrt_effect_ack_input input = complete_input();
+
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL, 10UL),
+        "uninitialized clock cannot release");
+    expect_true(!qikvrt_effect_ack_clock_init(0, 1UL, 0UL),
+        "null clock cannot be initialized");
+    expect_state(qikvrt_effect_ack_clock_tick(0, 1UL, 0UL, &input),
+        QIKVRT_EFFECT_ACK_BLOCK, "null clock fails closed");
+    expect_true(qikvrt_effect_ack_clock_init(&clock, 1UL, 10UL),
+        "clock window binds its first cycle");
+    expect_state(qikvrt_effect_ack_clock_tick(&clock, 1UL, 10UL, &input),
+        QIKVRT_EFFECT_ACK_DONE, "fresh complete input allows current-edge DONE");
+    expect_true(qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL, 10UL),
+        "current epoch/cycle readback allows release");
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&clock, 2UL, 10UL),
+        "another epoch cannot borrow DONE");
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL, 9UL),
+        "predecessor edge cannot borrow DONE");
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL, 11UL),
+        "future edge cannot borrow DONE");
+    input.no_open_questions = 0;
+    expect_state(qikvrt_effect_ack_clock_tick(&clock, 1UL, 11UL, &input),
+        QIKVRT_EFFECT_ACK_CONTINUE, "new open question immediately revokes DONE");
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL, 10UL),
+        "old DONE cannot survive new input");
+    input = complete_input();
+    expect_state(qikvrt_effect_ack_clock_tick(&clock, 1UL, 12UL, 0),
+        QIKVRT_EFFECT_ACK_BLOCK, "missing current snapshot does not reuse input");
+    expect_true(clock.clock_fault == 0 && clock.evaluated_cycles == 3UL,
+        "missing input is separate from a missing clock edge");
+    expect_state(qikvrt_effect_ack_clock_tick(&clock, 1UL, 13UL, &input),
+        QIKVRT_EFFECT_ACK_DONE, "fresh evidence can follow an input-level BLOCK");
+    expect_state(qikvrt_effect_ack_clock_tick(&clock, 1UL, 15UL, &input),
+        QIKVRT_EFFECT_ACK_BLOCK, "skipped cycle blocks rather than catching up");
+    expect_true(clock.clock_fault == 1 && clock.next_cycle == 14UL
+        && clock.evaluated_cycles == 4UL,
+        "gap readback preserves the last contiguous window");
+    expect_state(qikvrt_effect_ack_clock_tick(&clock, 1UL, 14UL, &input),
+        QIKVRT_EFFECT_ACK_BLOCK, "late replay cannot heal a missed edge");
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&clock, 1UL, 13UL),
+        "clock fault revokes prior release");
+    expect_true(!qikvrt_effect_ack_clock_init(&clock, 2UL, 0UL),
+        "initialization cannot erase clock fault history");
+    expect_state(qikvrt_effect_ack_clock_tick(&missing, 1UL, 0UL, &input),
+        QIKVRT_EFFECT_ACK_BLOCK, "tick without initialization latches fault");
+    expect_true(!qikvrt_effect_ack_clock_init(&missing, 1UL, 0UL),
+        "faulted uninitialized context cannot be silently reopened");
+    expect_true(qikvrt_effect_ack_clock_init(&tail, 2UL, ULONG_MAX - 1UL),
+        "last representable nonwrapping edge can be bound");
+    expect_state(qikvrt_effect_ack_clock_tick(&tail, 2UL, ULONG_MAX - 1UL,
+        &input), QIKVRT_EFFECT_ACK_DONE, "last nonwrapping edge is evaluated");
+    expect_state(qikvrt_effect_ack_clock_tick(&tail, 2UL, ULONG_MAX, &input),
+        QIKVRT_EFFECT_ACK_BLOCK, "counter exhaustion does not wrap");
+    expect_true(tail.next_cycle == ULONG_MAX && tail.evaluated_cycles == 1UL,
+        "exhausted counter preserves coverage readback");
+    expect_true(!qikvrt_effect_ack_clock_ordinary_release(&tail, 2UL,
+        ULONG_MAX - 1UL), "counter exhaustion revokes prior release");
+}
+
+static void test_clock_invalid_epochs_and_replay(void)
+{
+    qikvrt_effect_ack_input input = complete_input();
+    unsigned long invalid_cycle;
+
+    for (invalid_cycle = 0UL; invalid_cycle <= 2UL; invalid_cycle += 2UL) {
+        qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+        expect_true(qikvrt_effect_ack_clock_init(&clock, 7UL, 0UL),
+            "admit a new test epoch");
+        expect_state(qikvrt_effect_ack_clock_tick(&clock, 7UL, 0UL, &input),
+            QIKVRT_EFFECT_ACK_DONE, "first edge is evaluated");
+        expect_state(qikvrt_effect_ack_clock_tick(&clock, 7UL, invalid_cycle,
+            &input), QIKVRT_EFFECT_ACK_BLOCK, "duplicate or skipped edge blocks");
+        expect_true(clock.evaluated_cycles == 1UL && clock.clock_fault == 1,
+            "replay does not increment the accepted edge count");
+    }
+    {
+        qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+        expect_true(qikvrt_effect_ack_clock_init(&clock, 7UL, 0UL),
+            "admit source epoch before mismatch");
+        expect_state(qikvrt_effect_ack_clock_tick(&clock, 8UL, 0UL, &input),
+            QIKVRT_EFFECT_ACK_BLOCK, "unexpected clock domain epoch blocks");
+        expect_true(clock.evaluated_cycles == 0UL && clock.epoch == 7UL,
+            "epoch mismatch cannot relabel source coverage");
+    }
+    {
+        qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+        expect_true(!qikvrt_effect_ack_clock_init(&clock, 0UL, 0UL),
+            "missing epoch is rejected");
+    }
+    {
+        qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+        expect_true(!qikvrt_effect_ack_clock_init(&clock, 1UL, ULONG_MAX),
+            "an unadvanceable initial cycle is rejected");
+    }
+    {
+        qikvrt_effect_ack_clock clock = QIKVRT_EFFECT_ACK_CLOCK_INITIALIZER;
+        expect_true(qikvrt_effect_ack_clock_init(&clock, 1UL, 0UL),
+            "first initialization succeeds");
+        expect_true(!qikvrt_effect_ack_clock_init(&clock, 1UL, 0UL),
+            "repeated initialization is not idempotent epoch replay");
+        expect_true(clock.clock_fault == 1,
+            "attempted epoch reset must remain observable");
     }
 }
 
@@ -441,6 +569,8 @@ int main(void)
     test_effect_checkable_truth_table();
     test_each_done_conjunct();
     test_priority_order();
+    test_clock_freshness_and_coverage();
+    test_clock_invalid_epochs_and_replay();
     test_exhaustive_state_selection();
     test_done_only_release();
 
