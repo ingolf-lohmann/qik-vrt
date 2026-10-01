@@ -1,0 +1,284 @@
+{
+  "_license": {
+    "classification": "machine_readable_bounded_download_transport_repair",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PR421_ZENODO_DOWNLOAD_COMPLETENESS_REPAIR_20261001",
+  "created_at": "2026-10-01T04:49:04.519479+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "research/temdd-liveness-convergence-v1",
+  "source_pr": 421,
+  "source_commit": "d4439729e5aaefbc40c4890f0269e286f1324468",
+  "source_tree": "b711ae14182e01d8428110e8098fd2ff6f0829e6",
+  "observed_main": "9a0853b9cfc1017ade0bbb627a02274d66c704bd",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Requested fresh read-only Zenodo record/file diagnosis and the smallest evidenced successor with unchanged exact-byte gates and fail-closed unresolved mismatch.",
+    "Supplied the failing exact-head run/job and the expected byte/MD5/SHA-256 triple; independently confirmed against source and full fresh public payload."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "workspace_execution_id": "0ebc96c49f24",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git",
+      "Python standard library",
+      "curl"
+    ],
+    "identity_and_observation_limits": "Platform identities and repository authors do not authenticate a natural person or model identity."
+  },
+  "artificial_cognitive_contributions": [
+    "Read the exact source, failing attempt and successful second attempt; independently downloaded and hashed public metadata and payload.",
+    "Reproduced an HTTP 200 premature EOF as an exact ZIP prefix despite the full Content-Length; a subsequent encoded-endpoint GET recovered the complete bound bytes.",
+    "Extended the existing read-only downloader and existing Makefile-invoked test module; no replacement workflow or new runtime dependency."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "inputs": {
+    "tools/qikvrt_batch003_remaining_archive_probe.py": {
+      "bytes": 13300,
+      "sha256": "68d3d93a1b264ec063adf673863d21036bb95f02ae2adcbb91adb16720032d12",
+      "git_blob_sha1": "b92f1c769aadd14e611c4c5fa9ed9f74a69f45e4"
+    },
+    "tests/test_content_disposition_batch_003_dispatch.py": {
+      "bytes": 9124,
+      "sha256": "01b455420eed8ea8376bd2019ac3b9d487db5ea4dc36f48ead6dcbf485552b71",
+      "git_blob_sha1": "d8cde003e1e438995c70cfdff92faf4046dfc719"
+    }
+  },
+  "outputs": {
+    "tools/qikvrt_batch003_remaining_archive_probe.py": {
+      "bytes": 14051,
+      "sha256": "dd22e07f562c491069ce3ed3bcebb1baf7e6d3514f8b2879c48932015130c5f8",
+      "git_blob_sha1": "577c01f0cf09e72bf0cdfee6e87e2d04d90c81e4"
+    },
+    "tests/test_content_disposition_batch_003_dispatch.py": {
+      "bytes": 16090,
+      "sha256": "e7e4c33c4bf9e2014315e576067e202d2aa5ff1a909db17a4f633d83e7c9b49f",
+      "git_blob_sha1": "4e074e79f2e3791e6261639c1f73a5ed5481d9fb"
+    }
+  },
+  "public_record": {
+    "record_id": 21252649,
+    "api_url": "https://zenodo.org/api/records/21252649",
+    "metadata_observed_at": "2026-10-01T04:39:14Z",
+    "metadata_sha256": "4bc7db9f93362743b770dea1d2964b56f6f4d4c7bb9eace02bb0596c5a414d1c",
+    "record_revision": 3,
+    "record_modified": "2026-07-08T02:15:52.149236+00:00",
+    "public_file_name": "ingolf-lohmann/qik-vrt-v2.13.4-node-r.zip",
+    "metadata_size": 305905,
+    "metadata_checksum": "md5:6c3ad9e502cc56e7dea60a06bd01d3f7",
+    "repository_bound_expected": {
+      "bytes": 305905,
+      "md5": "6c3ad9e502cc56e7dea60a06bd01d3f7",
+      "sha256": "a773c71d99b912769c4b614fa0e430813d70b6d33683936c7b790e5985307df2"
+    }
+  },
+  "public_downloads": [
+    {
+      "endpoint_variant": "raw",
+      "http_status": 200,
+      "declared_content_length": 305905,
+      "actual": {
+        "bytes": 305905,
+        "sha256": "a773c71d99b912769c4b614fa0e430813d70b6d33683936c7b790e5985307df2",
+        "git_blob_sha1": "f93b3ba5dbcba14e03b736b6402a0e12816b7238",
+        "md5": "6c3ad9e502cc56e7dea60a06bd01d3f7"
+      },
+      "response_header_sha256": "704c68197a332b01ae0c4efc6c03cf343385f660fe2eb6d04e70236d2ea1a114"
+    },
+    {
+      "endpoint_variant": "encoded",
+      "http_status": 200,
+      "declared_content_length": 305905,
+      "actual": {
+        "bytes": 69632,
+        "sha256": "e05dae80ed55fe4063758dde1a9594b67328a5ed9f210f356434648253b2ce47",
+        "git_blob_sha1": "84cdafb450f94a8577166a7a1c7f3fd02b467fd4",
+        "md5": "6b4c26a6d769adb0be2485df21519f9c"
+      },
+      "response_header_sha256": "384fc615bf74eb6e4bab9cad2bab8560fd55aa0dba386dde00a00cce5ea81a88"
+    }
+  ],
+  "patched_live_download": {
+    "schema": "qikvrt_pr421_live_download_readback_v1",
+    "attempts": [
+      {
+        "requested_url": "https://zenodo.org/api/records/21252649/files/ingolf-lohmann%2Fqik-vrt-v2.13.4-node-r.zip/content",
+        "final_url": "https://zenodo.org/api/records/21252649/files/ingolf-lohmann%2Fqik-vrt-v2.13.4-node-r.zip/content",
+        "status": 200,
+        "content_length": "305905",
+        "received_bytes": 305905,
+        "observed_at": "2026-10-01T04:46:04.079070+00:00"
+      }
+    ],
+    "actual": {
+      "bytes": 305905,
+      "md5": "6c3ad9e502cc56e7dea60a06bd01d3f7",
+      "sha256": "a773c71d99b912769c4b614fa0e430813d70b6d33683936c7b790e5985307df2",
+      "git_blob_sha1": "f93b3ba5dbcba14e03b736b6402a0e12816b7238"
+    },
+    "expected": {
+      "bytes": 305905,
+      "md5": "6c3ad9e502cc56e7dea60a06bd01d3f7",
+      "sha256": "a773c71d99b912769c4b614fa0e430813d70b6d33683936c7b790e5985307df2"
+    },
+    "exact_match": true,
+    "zenodo_mutation": false
+  },
+  "diagnosis": {
+    "observed_facts": [
+      "The complete metadata-advertised download matches repository bytes, MD5 and SHA-256 exactly.",
+      "The encoded-key download yielded only 69632 of 305905 declared bytes; all received bytes are an exact prefix of the complete matching archive.",
+      "A later encoded-key GET returned all exact bytes; these observations do not establish a permanent endpoint defect.",
+      "The original downloader returned a short body after sized-read EOF, without validating Content-Length.",
+      "GitHub attempt 2 succeeded on the unchanged source head before this repair."
+    ],
+    "truncated_payload_is_exact_prefix": true,
+    "missing_bytes_in_partial_response": 236273,
+    "public_payload_drift_observed": false,
+    "stale_repository_binding_observed": false,
+    "causal_class": "DOWNLOAD_RESPONSE_TRUNCATION_REPRODUCED",
+    "original_failure_explanation": "Consistent with an incomplete transfer, but the first job log did not record actual received bytes/headers. Its exact truncation mechanism and origin cannot be reconstructed.",
+    "server_proxy_or_network_origin": "UNRESOLVED"
+  },
+  "successor": {
+    "reused_downloader": "tools/qikvrt_batch003_remaining_archive_probe.py",
+    "reused_test_gate": "Makefile release-automation -> tests.test_content_disposition_batch_003_dispatch",
+    "checks": [
+      "HTTP 200 without Content-Range",
+      "Declared response length valid and within existing bound",
+      "Sized-read EOF must match declared Content-Length",
+      "IncompleteRead follows the existing maximum five same-URL GET attempts",
+      "Complete payload still must match all frozen bytes/MD5/SHA-256 values before ZIP inspection or cache insertion"
+    ],
+    "metadata_file_set_zip_limits_and_frozen_subject_bindings_unchanged": true,
+    "mismatch_diagnostics_include_expected_and_observed_digests": true,
+    "no_alternate_payload_or_endpoint_substitution": true
+  },
+  "predecessor_run_observations": {
+    "evidence_class": "HISTORICAL_SOURCE_HEAD_WORKFLOW_OBSERVATION",
+    "bound_head": "d4439729e5aaefbc40c4890f0269e286f1324468",
+    "run_id": 36805212965,
+    "failed_attempt": 1,
+    "failed_job_id": 110187913250,
+    "failure_step": 7,
+    "failure": "exact public byte mismatch 21252649:bytes",
+    "successful_attempt": 2,
+    "successful_job_id": 110195222022,
+    "result_transfer_to_successor": false
+  },
+  "verification": {
+    "new_download_regressions": {
+      "tests": 8,
+      "result": "PASS",
+      "evidence_class": "TEST_NOT_KERNEL_PROOF"
+    },
+    "related_archive_dispatch_and_liveness_tests": {
+      "tests": 34,
+      "result": "PASS"
+    },
+    "negative_control": {
+      "frozen_original_downloader": "FAILS_BOTH_TRUNCATION_REGRESSIONS_AS_REQUIRED",
+      "repaired_downloader": "PASSES_BOTH_TRUNCATION_REGRESSIONS"
+    },
+    "required_candidate_checks": [
+      "Original workflow step 7 materialization and status checks with real public payloads",
+      "tools/qikvrt_integrity.py generate and verify",
+      "make test"
+    ],
+    "required_post_update_checks": [
+      "Fresh PR and Git commit/tree/parent readback",
+      "New native Repository Evidence run bound to the successor exact head, including steps 7, 10 and 11",
+      "Fresh successor CI result"
+    ],
+    "candidate_tests_are_not_remote_effect_evidence": true,
+    "local_make_test": {
+      "result": "PASS",
+      "command": "make test",
+      "log_sha256": "c4471ed144dede6acf6522047c5bcf689526ce4c2ef747616e7bde02840f6b17",
+      "completed_at": "2026-10-01T04:54:15.719550+00:00",
+      "suite_test_counts": [
+        5,
+        15,
+        8,
+        4,
+        176,
+        168,
+        41,
+        5,
+        15,
+        48,
+        6,
+        21,
+        5,
+        15,
+        1,
+        5,
+        4
+      ],
+      "candidate_outputs": {
+        "tools/qikvrt_batch003_remaining_archive_probe.py": {
+          "bytes": 14051,
+          "sha256": "dd22e07f562c491069ce3ed3bcebb1baf7e6d3514f8b2879c48932015130c5f8",
+          "git_blob_sha1": "577c01f0cf09e72bf0cdfee6e87e2d04d90c81e4"
+        },
+        "tests/test_content_disposition_batch_003_dispatch.py": {
+          "bytes": 16090,
+          "sha256": "e7e4c33c4bf9e2014315e576067e202d2aa5ff1a909db17a4f633d83e7c9b49f",
+          "git_blob_sha1": "4e074e79f2e3791e6261639c1f73a5ed5481d9fb"
+        }
+      }
+    },
+    "local_history_prerequisite": {
+      "initial_make_test": "BLOCKED_BY_MISSING_HISTORICAL_GIT_OBJECT_IN_DEPTH_1_CLONE",
+      "missing_object": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "recovery": "Fetched only that existing historical commit; its isolated worktree test and then complete make test passed. No source or test gate was changed for this prerequisite."
+    },
+    "original_step_7": {
+      "result": "PASS",
+      "command": "python3 -B -m tools.qikvrt_content_disposition_batch_003_remaining_archives --materialize --json; --check --json; existing dispatch --check-status-projection --json",
+      "materialization_output_sha256": "cc1e5c042eb7cfc563d7c8960563cd7d0a31d4694f28c66f774614606200e683",
+      "public_source_checks": "ALL_9_RECORDS_REOBSERVED_WITH_EXACT_BYTES_MD5_SHA256_AND_RECURSIVE_ZIP_GATES",
+      "existing_dependent_receipts_and_root_projections_changed": false
+    }
+  },
+  "dependent_receipts_and_projections": {
+    "payload_binding_changes_authorized_by_this_diagnosis": false,
+    "rule": "Reexecute existing materializers; persist only an actually observed semantic change. Never rebind the frozen payload to a truncated body or refresh historical timestamps as if they were current observations."
+  },
+  "git_history": {
+    "successor_parent": "d4439729e5aaefbc40c4890f0269e286f1324468",
+    "force_push": false,
+    "history_rewrite": false,
+    "main_mutation": false
+  },
+  "human_decision": {
+    "bounded_repair_and_pr_branch_update": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "acceptance_of_generated_content": "PENDING",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "zenodo_mutation": false,
+    "publication": false,
+    "release": false,
+    "deployment": false,
+    "ruleset_change": false,
+    "protected_main_merge": false
+  },
+  "TEMDD_LIVENESS_CONVERGENCE_THEOREM": "UNPROVED",
+  "EFFECT_ACK_DONE": false,
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}

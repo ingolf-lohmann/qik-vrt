@@ -4,10 +4,16 @@
 from __future__ import annotations
 
 import copy
+import http.client
 import importlib.util
+import io
 import json
 import pathlib
 import unittest
+import zipfile
+from unittest import mock
+
+from tools import qikvrt_batch003_remaining_archive_probe as probe
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 P = ROOT / "tools/qikvrt_content_disposition_batch_003_dispatch.py"
@@ -177,6 +183,133 @@ class T(unittest.TestCase):
                 bad["scopes"]["qikvrt-zenodo-canonical-union-2026-07-28-v1"]["claims"]["PASS"] = True
             with self.assertRaises(error_type):
                 validator(bad)
+
+
+class ArchiveDownloadTests(unittest.TestCase):
+    URL = "https://zenodo.org/api/records/21252649/files/ingolf-lohmann/qik-vrt-v2.13.4-node-r.zip/content"
+
+    class Response(io.BytesIO):
+        def __init__(self, data, *, headers=None, status=200, failure=None):
+            super().__init__(data)
+            self.headers = headers or {}
+            self.status = status
+            self.failure = failure
+
+        def geturl(self):
+            return ArchiveDownloadTests.URL
+
+        def read(self, size=-1):
+            if self.failure is not None:
+                raise self.failure
+            return super().read(size)
+
+    @classmethod
+    def setUpClass(cls):
+        archive = io.BytesIO()
+        with zipfile.ZipFile(archive, "w") as z:
+            z.writestr("README.md", "Frozen test archive; no completion claim.\n")
+        cls.payload = archive.getvalue()
+        cls.headers = {"Content-Length": str(len(cls.payload))}
+
+    def test_complete_download_with_or_without_content_length(self):
+        for headers in (self.headers, {}):
+            with self.subTest(headers=headers), mock.patch.object(
+                probe.urllib.request, "urlopen",
+                return_value=self.Response(self.payload, headers=headers),
+            ), mock.patch.object(probe.time, "sleep") as sleep:
+                self.assertEqual(probe.get(self.URL, "application/octet-stream", 1024), self.payload)
+                sleep.assert_not_called()
+
+    def test_truncated_http_200_retries_same_get_and_recovers(self):
+        responses = [
+            self.Response(self.payload[:17], headers=self.headers),
+            self.Response(self.payload, headers=self.headers),
+        ]
+        with mock.patch.object(probe.urllib.request, "urlopen", side_effect=responses) as opening, mock.patch.object(probe.time, "sleep") as sleep:
+            self.assertEqual(probe.get(self.URL, "application/octet-stream", 1024), self.payload)
+        self.assertEqual(opening.call_count, 2)
+        for call in opening.call_args_list:
+            self.assertEqual(call.args[0].full_url, self.URL)
+            self.assertEqual(call.args[0].get_method(), "GET")
+        sleep.assert_called_once_with(1)
+
+    def test_persistent_truncation_fails_after_five_attempts(self):
+        responses = [self.Response(self.payload[:17], headers=self.headers) for _ in range(5)]
+        with mock.patch.object(probe.urllib.request, "urlopen", side_effect=responses) as opening, mock.patch.object(probe.time, "sleep") as sleep, self.assertRaisesRegex(probe.E, "GET failed.*IncompleteRead\\(17 bytes read"):
+            probe.get(self.URL, "application/octet-stream", 1024)
+        self.assertEqual(opening.call_count, 5)
+        self.assertEqual(sleep.call_args_list, [mock.call(1), mock.call(2), mock.call(4), mock.call(8)])
+
+    def test_raised_incomplete_read_retries(self):
+        responses = [
+            self.Response(b"", failure=http.client.IncompleteRead(b"prefix", 100)),
+            self.Response(self.payload, headers=self.headers),
+        ]
+        with mock.patch.object(probe.urllib.request, "urlopen", side_effect=responses) as opening, mock.patch.object(probe.time, "sleep"):
+            self.assertEqual(probe.get(self.URL, "application/octet-stream", 1024), self.payload)
+        self.assertEqual(opening.call_count, 2)
+
+    def test_partial_and_invalid_length_responses_fail_closed(self):
+        cases = [
+            ({"Content-Length": "invalid"}, 200),
+            ({"Content-Length": "-1"}, 200),
+            ({"Content-Length": "1025"}, 200),
+            ({"Content-Range": "bytes 0-16/305905", "Content-Length": "17"}, 200),
+            ({"Content-Length": "17"}, 206),
+        ]
+        for headers, status in cases:
+            with self.subTest(headers=headers, status=status), mock.patch.object(
+                probe.urllib.request, "urlopen",
+                return_value=self.Response(self.payload[:17], headers=headers, status=status),
+            ) as opening, mock.patch.object(probe.time, "sleep") as sleep, self.assertRaises(probe.E):
+                probe.get(self.URL, "application/octet-stream", 1024)
+            opening.assert_called_once()
+            sleep.assert_not_called()
+
+    def test_body_over_bound_still_fails_without_declared_length(self):
+        with mock.patch.object(probe.urllib.request, "urlopen", return_value=self.Response(b"x" * 1025)), mock.patch.object(probe.time, "sleep") as sleep, self.assertRaisesRegex(probe.E, "download bound exceeded"):
+            probe.get(self.URL, "application/octet-stream", 1024)
+        sleep.assert_not_called()
+
+    def test_exact_byte_mismatches_never_populate_inventory_cache(self):
+        rec = probe.SUBJECTS[2]["records"][0]
+        for field in ("bytes", "md5", "sha256"):
+            expected = probe.dig(self.payload)
+            expected[field] = expected[field] + 1 if field == "bytes" else "0" * len(expected[field])
+            metadata = {"id": rec["id"], "doi": rec["doi"], "files": [{
+                "key": rec["name"], "size": expected["bytes"],
+                "checksum": "md5:" + expected["md5"], "links": {"self": self.URL},
+            }]}
+            cache = {}
+            with self.subTest(field=field), mock.patch.object(
+                probe, "get", side_effect=[json.dumps(metadata).encode(), self.payload],
+            ), mock.patch.object(probe, "inspect_zip") as inspection, self.assertRaisesRegex(
+                probe.E, "exact public byte mismatch 21252649:" + field + "; expected=.*observed=",
+            ):
+                probe.record({"file": expected}, rec, cache)
+            self.assertEqual(cache, {})
+            inspection.assert_not_called()
+
+    def test_record_requires_exact_payload_after_transport_recovery(self):
+        rec = probe.SUBJECTS[2]["records"][0]
+        expected = probe.dig(self.payload)
+        metadata = {"id": rec["id"], "doi": rec["doi"], "files": [{
+            "key": rec["name"], "size": expected["bytes"],
+            "checksum": "md5:" + expected["md5"], "links": {"self": self.URL},
+        }]}
+        body = json.dumps(metadata).encode()
+        responses = [
+            self.Response(body, headers={"Content-Length": str(len(body))}),
+            self.Response(self.payload[:17], headers=self.headers),
+            self.Response(self.payload, headers=self.headers),
+        ]
+        cache = {}
+        with mock.patch.object(probe.urllib.request, "urlopen", side_effect=responses) as opening, mock.patch.object(probe.time, "sleep"):
+            observed = probe.record({"file": expected}, rec, cache)
+        self.assertEqual(opening.call_count, 3)
+        self.assertEqual({k: observed[k] for k in expected}, expected)
+        self.assertEqual(set(cache), {expected["sha256"]})
+        self.assertEqual(cache[expected["sha256"]]["rows"][0]["content_class"], "TEXT")
 
 
 if __name__ == "__main__":
