@@ -123,8 +123,11 @@ Der bestehende Bootstrap-/Cache-Pfad wird um das SHA-256-gebundene GHDL 6.0.0
 für Ubuntu 24.04 x86_64 erweitert. Jede Nutzung vergleicht alle installierten
 Dateien mit dem verifizierten Archiv. Installation erfolgt gestuft und wird
 bei fehlgeschlagener Endprüfung zurückgenommen. Fehlendes GHDL ist im Boot-
-Check CONTINUE, im verpflichtenden Carrier-Test BLOCK. CI provisioniert es
-ausdrücklich vor `make test`; ein fehlender Simulator überspringt keinen Test.
+Check CONTINUE, im verpflichtenden Carrier-Test BLOCK. Im ausdrücklich
+deklarierten GitHub-Actions-Kontext provisioniert der gemeinsame Make-Testpfad
+GHDL mit Lizenzannahme; außerhalb von CI bleibt Installation eine explizite
+Bootstrap-Aktion. Der primäre CI-Job provisioniert zusätzlich vor dem gesamten
+Testlauf. Ein fehlender Simulator überspringt keinen Test.
 GHDL-Synthese liefert eine generische Netzliste; sie ersetzt keinen Board-
 Timing-Nachweis. Primärquelle: https://ghdl.github.io/ghdl/using/Synthesis.html
 

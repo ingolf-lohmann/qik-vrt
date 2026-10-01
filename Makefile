@@ -116,6 +116,11 @@ test: machine-verifiable-science-charter-test
 
 .PHONY: effect-ack-clock-carrier-test
 effect-ack-clock-carrier-test: tool-cache-contract
+	@if [ "$(GITHUB_ACTIONS)" = "true" ]; then \
+		sh tools/bootstrap-runtime.sh --profile clock --install --accept-third-party; \
+	else \
+		sh tools/bootstrap-runtime.sh --profile clock --check-only; \
+	fi
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_clock_carrier
 
 test: effect-ack-clock-carrier-test

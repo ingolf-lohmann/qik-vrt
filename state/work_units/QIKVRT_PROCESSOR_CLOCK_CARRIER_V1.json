@@ -86,8 +86,8 @@
     },
     {
       "path": "Makefile",
-      "bytes": 11066,
-      "sha256": "b35c2a474ddd108e37cf3f8c15614c0efe340fd21c1864a8fbf419de24228c77",
+      "bytes": 11270,
+      "sha256": "125c86d89ad02870e3944e6eeee93a32c7c6989017a8a1299fe0876c26c5ba94",
       "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
     },
     {
@@ -98,8 +98,8 @@
     },
     {
       "path": "docs/QIKVRT_PROCESSOR_CLOCK.md",
-      "bytes": 9868,
-      "sha256": "85c20abb535a66cfd7bffffedb6a7b5f7d245a48226ee4a219bfcb928fff568f",
+      "bytes": 10081,
+      "sha256": "e7d3d432836c4799a8a6a60dbab8bacd17550b69461797990cb7ba9d3df95b30",
       "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
     },
     {
@@ -192,16 +192,21 @@
     "branch": "work/processor-clock-core-20261001",
     "force_push": false,
     "rewrite_existing_history": false,
-    "candidate_commit_binding": "ENCLOSING_GIT_COMMIT; NO SELF_HASH_CYCLE"
+    "candidate_commit_binding": "ENCLOSING_GIT_COMMIT; NO SELF_HASH_CYCLE",
+    "successor_parents": [
+      "13036c4e16c2d0faba11b65c057616e014c3b297",
+      "469a95ac4ef14692dda69673b8a75eb2cf03685d"
+    ],
+    "lossless_main_integration": "Preserve both parent histories; only current Main lifecycle/evidence changes integrated; regenerate canonical projections."
   },
   "verification": {
     "scope": "EXACT_OUTPUT_SOURCE_BYTES_IN_WORKING_TREE; REMOTE_EXACT_HEAD_REVALIDATION_REQUIRED",
     "aggregate_repository_gate": {
-      "command": "make -k test",
+      "command": "GITHUB_ACTIONS=true make -k test",
       "result": "PASS",
       "exit_code": 0,
-      "log_bytes": 104966,
-      "log_sha256": "48e3651c50f183a1057b0a1d29f2efe56b74c585f35ba998ce61e64fd6a5e75d",
+      "log_bytes": 105150,
+      "log_sha256": "5cbdc8a8ae96d0c4d4e0e7d48c59c736800adea5ecd53a2f2a9ab291b60dd43d",
       "unittest_execution_summaries": [
         5,
         15,
@@ -273,7 +278,54 @@
     "physical_board_binding": "OPEN",
     "physical_clock_evidence": false,
     "initial_boot": "CONTINUE; integrity/cache/handoff PASS; optional unrelated profiles missing",
-    "optimization_pass": "HOLD; no current Authority main and no verified exclusive optimization writer; no unrelated mutation"
+    "optimization_pass": "HOLD; no current Authority main and no verified exclusive optimization writer; no unrelated mutation",
+    "successor_revalidation": "PASS_FINAL_SOURCE_BYTES; NEW_REMOTE_HEAD_REVALIDATION_REQUIRED",
+    "ci_regression_diagnosis": {
+      "run": 36880847264,
+      "job": 110431917486,
+      "observed_checkout": "5c32f073df12cd82b3df84d0d91052cd65a4994c",
+      "failure": "Merge-tree integrity differs after newer Main lifecycle/evidence paths",
+      "repair": "Integrate actual Main and regenerate; common Make CI path provisions locked carrier tool so all mandatory suites can run",
+      "evidence_runtime_failure": {
+        "run": 36880846882,
+        "job": 110431915243,
+        "head": "13036c4e16c2d0faba11b65c057616e014c3b297",
+        "failure": "Required GHDL absent in evidence workflow; test failed closed",
+        "repair": "Common Make test path explicitly provisions locked GHDL in declared GitHub Actions context; ordinary local runs remain check-only"
+      }
+    },
+    "main_lifecycle_inputs": [
+      {
+        "path": "evidence/node_health/36866747092-1.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "d6a983f589e97a5563daffa6b893471932697178f2ca0785f47c6603105ec325"
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "d6a983f589e97a5563daffa6b893471932697178f2ca0785f47c6603105ec325"
+      },
+      {
+        "path": "evidence/node_registration_renewal/36866747092-1.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "b5b6d0d1cb56470e363b1fce689c97d26ab0bea1b596ddf21ceef54527269fab"
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "b5b6d0d1cb56470e363b1fce689c97d26ab0bea1b596ddf21ceef54527269fab"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "d868d9f5a72d141aac72af19317e8a05aa0e06b2606e8ff5f87e924c320cdead"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "bae083f9fa692a756c784302b13c7a65eaa5712441d45e21be7eeb1f5ee06b45"
+      }
+    ]
   },
   "human_decision": {
     "implementation_scope": "AUTHORIZED_BY_DIRECT_INSTRUCTION",
