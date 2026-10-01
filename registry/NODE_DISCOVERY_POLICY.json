@@ -24,5 +24,13 @@
     "node_liveness": "EXACT_NODE_RECORDS_OR_NOT_APPLICABLE",
     "admission_policy": "PREEMPTIVE_HOLD_BEFORE_SECOND_WRITER",
     "seed_validation": "EXACT_REFLEXIVE_WATCHDOG_CONTRACT_REQUIRED"
+  },
+  "full_node_admission": {
+    "required_for_authority_and_mirror_full_node_claims": true,
+    "policy_path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+    "offline_verifier": "tools/qikvrt_mesh_recovery.py",
+    "offline_receipt_alone_grants_full_node_status": false,
+    "all_predicates_must_be_independently_verified": true,
+    "missing_data_or_live_recovery_capability": "FULL_NODE_ADMISSION_BLOCKED"
   }
 }

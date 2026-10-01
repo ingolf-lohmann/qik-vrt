@@ -1,0 +1,612 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+"""Create and restore pinned, standalone Mesh checkpoints without network effects.
+
+The owner-reviewed closure plan is a required trust input. Hashing a caller's
+plan does not prove its completeness or authenticate its author. This tool
+verifies the declared offline checkpoint; live full-node admission, fencing and
+GitHub repository creation remain separately observed effects.
+"""
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import hashlib
+import os
+from pathlib import Path, PurePosixPath
+import re
+import secrets
+import stat
+import sys
+import tempfile
+from typing import Any
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from tools.qikvrt_seed_common import canonical_json_bytes, parse_json_bytes
+from tools.qikvrt_subprocess import run_bounded
+
+ROOT_REPOSITORY = "Goldkelch/qik-vrt"
+# Exact V1 image reused unchanged from the standpoint codex candidate. This
+# binding is not a transfer of that candidate's reviews or admission evidence.
+CANONICAL_SIGNATURE_SHA256_V1 = "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+PLAN_SCHEMA = "qikvrt_full_node_closure_plan_v1"
+MANIFEST_SCHEMA = "qikvrt_mesh_checkpoint_v1"
+CATEGORIES = frozenset({
+    "runtime", "mutable_state", "artifacts", "scheduler", "governance",
+    "platform_metadata", "capability_recovery",
+})
+HEX256 = re.compile(r"[0-9a-f]{64}\Z")
+HEX160 = re.compile(r"[0-9a-f]{40}\Z")
+REPOSITORY = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
+MAX_FILE_BYTES = 256 * 1024 * 1024
+MAX_TOTAL_BYTES = 2 * 1024 * 1024 * 1024
+MAX_ASSETS = 10000
+MAX_JSON_BYTES = 1024 * 1024
+PLAN_KEYS = {
+    "schema", "repository", "root_repository", "lineage", "node_id", "role",
+    "checkpoint_utc", "authority_epoch", "signature_sha256", "git", "assets",
+}
+GIT_KEYS = {"head", "tree", "head_ref", "refs", "object_format", "required_objects"}
+ASSET_KEYS = {"path", "category", "bytes", "sha256", "mode", "confidentiality"}
+
+
+class RecoveryError(ValueError):
+    """A checkpoint or effect precondition is missing or inconsistent."""
+
+
+def digest(raw: bytes) -> str:
+    return hashlib.sha256(raw).hexdigest()
+
+
+def exact(value: Any, keys: set[str], label: str) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != keys:
+        raise RecoveryError(f"{label}: missing or unknown fields")
+    return value
+
+
+def require_digest(value: Any) -> str:
+    if not isinstance(value, str) or not HEX256.fullmatch(value):
+        raise RecoveryError("invalid SHA-256 trust binding")
+    return value
+
+
+def safe_path(value: Any) -> str:
+    if (not isinstance(value, str) or not value or "\\" in value
+            or any(ord(c) < 32 or ord(c) == 127 for c in value)):
+        raise RecoveryError("unsafe payload path")
+    path = PurePosixPath(value)
+    if (path.is_absolute() or path.as_posix() != value
+            or any(p in {".", "..", ".git"} or ":" in p for p in path.parts)):
+        raise RecoveryError("noncanonical payload path")
+    return value
+
+
+def regular(path: Path) -> None:
+    for parent in (path, *path.parents):
+        if parent.is_symlink():
+            raise RecoveryError(f"symlink path: {path}")
+    if not path.is_file():
+        raise RecoveryError(f"missing regular file: {path.name}")
+
+
+def read_file(path: Path, limit: int = MAX_JSON_BYTES) -> bytes:
+    regular(path)
+    with path.open("rb") as handle:
+        raw = handle.read(limit + 1)
+    if len(raw) > limit:
+        raise RecoveryError(f"file exceeds bound: {path.name}")
+    return raw
+
+
+def load_json(path: Path, expected_sha256: str) -> dict[str, Any]:
+    raw = read_file(path)
+    if digest(raw) != require_digest(expected_sha256):
+        raise RecoveryError(f"trusted digest mismatch: {path.name}")
+    try:
+        value = parse_json_bytes(raw, path.name)
+    except ValueError as exc:
+        raise RecoveryError(str(exc)) from exc
+    except RuntimeError as exc:
+        raise RecoveryError(str(exc)) from exc
+    if canonical_json_bytes(value) != raw:
+        raise RecoveryError(f"noncanonical JSON: {path.name}")
+    return value
+
+
+def validate_plan(plan: dict[str, Any]) -> None:
+    exact(plan, PLAN_KEYS, "closure plan")
+    if plan["schema"] != PLAN_SCHEMA or plan["root_repository"] != ROOT_REPOSITORY:
+        raise RecoveryError("closure schema or Goldkelch root drift")
+    if not isinstance(plan["repository"], str) or not REPOSITORY.fullmatch(plan["repository"]):
+        raise RecoveryError("invalid repository identity")
+    lineage = plan["lineage"]
+    if (not isinstance(lineage, list) or not 1 <= len(lineage) <= 128
+            or any(not isinstance(p, str) or not REPOSITORY.fullmatch(p) for p in lineage)
+            or lineage[0] != ROOT_REPOSITORY or lineage[-1] != plan["repository"]
+            or len({p.casefold() for p in lineage}) != len(lineage)):
+        raise RecoveryError("lineage must be acyclic and rooted at Goldkelch/qik-vrt")
+    require_digest(plan["node_id"])
+    require_digest(plan["signature_sha256"])
+    if plan["signature_sha256"] != CANONICAL_SIGNATURE_SHA256_V1:
+        raise RecoveryError("foreign or rehashed signature is not the canonical V1 image")
+    if not isinstance(plan["role"], str) or plan["role"] not in {"AUTHORITY", "MIRROR"}:
+        raise RecoveryError("invalid node role")
+    if type(plan["authority_epoch"]) is not int or plan["authority_epoch"] < 0:
+        raise RecoveryError("invalid authority epoch")
+    if (not isinstance(plan["checkpoint_utc"], str)
+            or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", plan["checkpoint_utc"])):
+        raise RecoveryError("invalid checkpoint timestamp")
+    try:
+        dt.datetime.strptime(plan["checkpoint_utc"], "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError as exc:
+        raise RecoveryError("invalid checkpoint timestamp") from exc
+    git = exact(plan["git"], GIT_KEYS, "Git checkpoint")
+    if git["object_format"] != "sha1":
+        raise RecoveryError("unsupported Git object format")
+    for field in ("head", "tree"):
+        if not isinstance(git[field], str) or not HEX160.fullmatch(git[field]):
+            raise RecoveryError("invalid Git checkpoint identity")
+    refs = git["refs"]
+    if not isinstance(refs, dict) or not refs or len(refs) > 10000:
+        raise RecoveryError("invalid ref inventory")
+    for name, oid in refs.items():
+        if (not re.fullmatch(r"refs/[A-Za-z0-9_.\-/]+", name)
+                or any(p in {".", ".."} or p.endswith(".lock") for p in name.split("/"))
+                or ".." in name or "//" in name or name.endswith(("/", "."))
+                or name.startswith("refs/replace/")
+                or not isinstance(oid, str) or not HEX160.fullmatch(oid)):
+            raise RecoveryError("unsafe or unsupported Git ref")
+    if (not isinstance(git["head_ref"], str) or git["head_ref"] not in refs
+            or refs[git["head_ref"]] != git["head"]):
+        raise RecoveryError("HEAD must bind an inventoried ref")
+    required_objects = git["required_objects"]
+    if not isinstance(required_objects, dict) or len(required_objects) > 10000:
+        raise RecoveryError("invalid required Git object inventory")
+    for oid, kind in required_objects.items():
+        if (not HEX160.fullmatch(oid) or not isinstance(kind, str)
+                or kind not in {"commit", "tree", "blob", "tag"}):
+            raise RecoveryError("invalid required Git object binding")
+    assets = plan["assets"]
+    if not isinstance(assets, list) or not 1 <= len(assets) <= MAX_ASSETS:
+        raise RecoveryError("invalid asset inventory")
+    paths: list[str] = []
+    categories: set[str] = set()
+    total = 0
+    for asset in assets:
+        exact(asset, ASSET_KEYS, "asset")
+        paths.append(safe_path(asset["path"]))
+        if asset["path"] == "QIKVRT_SIGNATURE.bin":
+            raise RecoveryError("signature path is reserved")
+        if not isinstance(asset["category"], str) or asset["category"] not in CATEGORIES:
+            raise RecoveryError("unknown asset category")
+        categories.add(asset["category"])
+        if type(asset["bytes"]) is not int or not 0 < asset["bytes"] <= MAX_FILE_BYTES:
+            raise RecoveryError("invalid asset size")
+        if type(asset["mode"]) is not int or asset["mode"] not in {0o600, 0o644, 0o755}:
+            raise RecoveryError("invalid asset mode")
+        require_digest(asset["sha256"])
+        if (not isinstance(asset["confidentiality"], str)
+                or asset["confidentiality"] not in {"PUBLIC", "PRIVATE_ENCRYPTED"}):
+            raise RecoveryError("invalid confidentiality classification")
+        if asset["category"] == "capability_recovery" and (
+                asset["confidentiality"] != "PRIVATE_ENCRYPTED" or asset["mode"] != 0o600):
+            raise RecoveryError("capability recovery must be private encrypted escrow")
+        total += asset["bytes"]
+    if paths != sorted(set(paths)) or len({p.casefold() for p in paths}) != len(paths):
+        raise RecoveryError("asset paths must be unique and sorted")
+    if categories != CATEGORIES:
+        raise RecoveryError("incomplete closure categories: " + ",".join(sorted(CATEGORIES - categories)))
+    if total > MAX_TOTAL_BYTES:
+        raise RecoveryError("checkpoint exceeds aggregate bound")
+
+
+def git_command(repository: Path, *args: str) -> str:
+    # Neither an inherited GIT_DIR nor a lazy fetch, user hook or global config
+    # may turn the offline verifier into a different or credentialed operation.
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    env.update({
+        "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
+        "GIT_TERMINAL_PROMPT": "0", "GIT_NO_LAZY_FETCH": "1",
+        "GIT_NO_REPLACE_OBJECTS": "1", "GIT_ALLOW_PROTOCOL": "file",
+    })
+    result = run_bounded([
+        "git", "-c", "protocol.allow=never", "-c", "protocol.file.allow=always",
+        "-c", f"core.hooksPath={os.devnull}", "-c", "core.fsmonitor=false",
+        "-C", str(repository), *args,
+    ], env=env, timeout=60, max_output_bytes=4 * 1024 * 1024)
+    if result.timed_out or result.output_limit_exceeded or result.returncode:
+        # Never echo arbitrary Git/config output, which might contain secrets.
+        raise RecoveryError(f"offline Git operation failed: {args[0]}")
+    return result.stdout.strip()
+
+
+def git_snapshot(repository: Path, required_objects: dict[str, str] | None = None) -> dict[str, Any]:
+    for parent in (repository, *repository.parents):
+        if parent.is_symlink():
+            raise RecoveryError("symlink repository path")
+    directory = Path(git_command(repository, "rev-parse", "--absolute-git-dir"))
+    if git_command(repository, "rev-parse", "--is-shallow-repository") != "false":
+        raise RecoveryError("SHALLOW_REPOSITORY_CANNOT_BE_A_FULL_NODE")
+    if (directory / "objects/info/alternates").exists() or (directory / "info/grafts").exists():
+        raise RecoveryError("external alternates or grafts are not self-contained")
+    if list((directory / "objects/pack").glob("*.promisor")):
+        raise RecoveryError("partial/promisor repository is not self-contained")
+    if git_command(repository, "rev-parse", "--show-object-format") != "sha1":
+        raise RecoveryError("unsupported Git object format")
+    inventory: dict[str, str] = {}
+    for row in git_command(repository, "for-each-ref", "--format=%(refname) %(objectname) %(symref)").splitlines():
+        parts = row.split()
+        if len(parts) != 2 or parts[0].startswith("refs/replace/"):
+            raise RecoveryError("symbolic non-HEAD or replacement ref is not supported")
+        inventory[parts[0]] = parts[1]
+    required_objects = required_objects or {}
+    for oid, kind in required_objects.items():
+        if git_command(repository, "cat-file", "-t", oid) != kind:
+            raise RecoveryError("required historical Git object type mismatch")
+    return {
+        "head": git_command(repository, "rev-parse", "HEAD"),
+        "tree": git_command(repository, "rev-parse", "HEAD^{tree}"),
+        "head_ref": git_command(repository, "symbolic-ref", "HEAD"),
+        "refs": dict(sorted(inventory.items())), "object_format": "sha1",
+        "required_objects": dict(sorted(required_objects.items())),
+    }
+
+
+def inventory_files(root: Path) -> set[str]:
+    if root.is_symlink() or not root.is_dir():
+        raise RecoveryError("payload root must be a real directory")
+    found: set[str] = set()
+    for directory, subdirs, files in os.walk(root, followlinks=False):
+        if not subdirs and not files:
+            raise RecoveryError("empty or surplus payload directory")
+        for name in (*subdirs, *files):
+            path = Path(directory) / name
+            if path.is_symlink():
+                raise RecoveryError("symlink inside payload")
+            if name in files:
+                if not stat.S_ISREG(path.stat().st_mode):
+                    raise RecoveryError("nonregular payload entry")
+                found.add(path.relative_to(root).as_posix())
+    return found
+
+
+def validate_scheduler(payload_root: Path, plan: dict[str, Any]) -> None:
+    snapshots = [a for a in plan["assets"] if a["category"] == "scheduler"]
+    if len(snapshots) != 1:
+        raise RecoveryError("one complete scheduler snapshot is required")
+    asset = snapshots[0]
+    state = load_json(payload_root / asset["path"], asset["sha256"])
+    exact(state, {"schema", "checkpoint_utc", "schedules"}, "scheduler snapshot")
+    if (state["schema"] != "qikvrt_scheduler_checkpoint_v1"
+            or state["checkpoint_utc"] != plan["checkpoint_utc"]
+            or not isinstance(state["schedules"], list) or len(state["schedules"]) > 10000):
+        raise RecoveryError("scheduler checkpoint binding drift")
+    identifiers: set[str] = set()
+    idempotency_keys: set[str] = set()
+    for schedule in state["schedules"]:
+        exact(schedule, {
+            "schedule_id", "owner_node_id", "target", "definition", "timezone",
+            "enabled", "next_due_utc", "last_completed_cursor", "pending_work",
+            "provider_schedule_id",
+        }, "schedule")
+        identifier = schedule["schedule_id"]
+        if (not isinstance(identifier, str) or not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", identifier)
+                or identifier in identifiers or schedule["owner_node_id"] != plan["node_id"]):
+            raise RecoveryError("duplicate schedule or owner binding drift")
+        identifiers.add(identifier)
+        for key in ("target", "definition", "timezone"):
+            if not isinstance(schedule[key], str) or not schedule[key] or len(schedule[key]) > 4096:
+                raise RecoveryError("invalid schedule definition, target or timezone")
+        try:
+            ZoneInfo(schedule["timezone"])
+        except (ZoneInfoNotFoundError, ValueError) as exc:
+            raise RecoveryError("unknown scheduler timezone") from exc
+        if type(schedule["enabled"]) is not bool:
+            raise RecoveryError("invalid schedule enabled flag")
+        due = schedule["next_due_utc"]
+        if due is not None:
+            try:
+                if (not isinstance(due, str)
+                        or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", due)):
+                    raise ValueError("not a timestamp")
+                dt.datetime.strptime(due, "%Y-%m-%dT%H:%M:%SZ")
+            except ValueError as exc:
+                raise RecoveryError("invalid schedule next_due_utc") from exc
+        if schedule["enabled"] and due is None:
+            raise RecoveryError("enabled schedule is missing next_due_utc")
+        for key in ("last_completed_cursor", "provider_schedule_id"):
+            value = schedule[key]
+            if value is not None and (not isinstance(value, str) or not value or len(value) > 4096):
+                raise RecoveryError("invalid scheduler cursor or provider binding")
+        if not isinstance(schedule["pending_work"], list) or len(schedule["pending_work"]) > 10000:
+            raise RecoveryError("invalid pending work inventory")
+        for work in schedule["pending_work"]:
+            exact(work, {"work_unit_id", "idempotency_key"}, "scheduled work")
+            if any(not isinstance(v, str) or not v or len(v) > 256 for v in work.values()):
+                raise RecoveryError("invalid scheduled work identity")
+            if work["idempotency_key"] in idempotency_keys:
+                raise RecoveryError("duplicate scheduler idempotency key")
+            idempotency_keys.add(work["idempotency_key"])
+
+
+def copy_verified(source: Path, target: Path | None, expected: dict[str, Any]) -> None:
+    regular(source)
+    before = source.stat()
+    if before.st_size != expected["bytes"] or before.st_size > MAX_TOTAL_BYTES:
+        raise RecoveryError("payload byte count mismatch")
+    if "mode" in expected and stat.S_IMODE(before.st_mode) != expected["mode"]:
+        raise RecoveryError("payload mode mismatch")
+    hasher = hashlib.sha256()
+    sink = None
+    try:
+        if target is not None:
+            target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            sink = target.open("xb")
+            os.chmod(target, expected.get("mode", 0o600))
+        descriptor = os.open(source, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        with os.fdopen(descriptor, "rb") as handle:
+            opened = os.fstat(handle.fileno())
+            if (not stat.S_ISREG(opened.st_mode)
+                    or (opened.st_dev, opened.st_ino, opened.st_size)
+                    != (before.st_dev, before.st_ino, before.st_size)):
+                raise RecoveryError("payload replaced before copy")
+            total = 0
+            while chunk := handle.read(1024 * 1024):
+                total += len(chunk)
+                if total > expected["bytes"]:
+                    raise RecoveryError("payload changed during copy")
+                hasher.update(chunk)
+                if sink is not None:
+                    sink.write(chunk)
+        after = source.stat()
+        if (total != expected["bytes"] or hasher.hexdigest() != expected["sha256"]
+                or (before.st_dev, before.st_ino, before.st_mtime_ns, before.st_size)
+                != (after.st_dev, after.st_ino, after.st_mtime_ns, after.st_size)):
+            raise RecoveryError("payload digest mismatch or concurrent mutation")
+    finally:
+        if sink is not None:
+            sink.flush()
+            os.fsync(sink.fileno())
+            sink.close()
+    if target is not None:
+        copy_verified(target, None, expected)
+
+
+def reserve_output(output: Path) -> None:
+    for path in (output, *output.parents):
+        if path.is_symlink():
+            raise RecoveryError("symlink output path")
+    if not output.parent.is_dir():
+        raise RecoveryError("output parent must exist")
+    try:
+        output.mkdir(mode=0o700)
+    except FileExistsError as exc:
+        raise RecoveryError("output already exists; refusing overwrite") from exc
+    (output / "INCOMPLETE").write_bytes(b"Do not accept or reuse an incomplete checkpoint.\n")
+
+
+def restore_git(package: Path, destination: Path, expected: dict[str, Any]) -> None:
+    git_command(destination.parent, "clone", "--mirror", "--no-hardlinks",
+                "--template=", "--", str(package / "repository.bundle"), str(destination))
+    git_command(destination, "symbolic-ref", "HEAD", expected["head_ref"])
+    git_command(destination, "remote", "remove", "origin")
+    git_command(destination, "fsck", "--full", "--strict", "--no-reflogs")
+    if git_snapshot(destination, expected["required_objects"]) != expected:
+        raise RecoveryError("restored Git ref, HEAD or TREE mismatch")
+
+
+def verify_checkpoint(package: Path, expected_manifest_sha256: str) -> dict[str, Any]:
+    manifest = load_json(package / "manifest.json", expected_manifest_sha256)
+    exact(manifest, {"schema", "closure_plan_sha256", "plan", "bundle"}, "manifest")
+    if manifest["schema"] != MANIFEST_SCHEMA:
+        raise RecoveryError("unsupported checkpoint schema")
+    plan = manifest["plan"]
+    validate_plan(plan)
+    if digest(canonical_json_bytes(plan)) != require_digest(manifest["closure_plan_sha256"]):
+        raise RecoveryError("closure plan binding drift")
+    binding = exact(manifest["bundle"], {"bytes", "sha256"}, "bundle binding")
+    require_digest(binding["sha256"])
+    if type(binding["bytes"]) is not int or not 0 < binding["bytes"] <= MAX_TOTAL_BYTES:
+        raise RecoveryError("invalid bundle size")
+    if binding["bytes"] + sum(a["bytes"] for a in plan["assets"]) > MAX_TOTAL_BYTES:
+        raise RecoveryError("checkpoint exceeds aggregate bound")
+    required = {"manifest.json", "repository.bundle", "signature.bin"}
+    required.update("payload/" + a["path"] for a in plan["assets"])
+    if inventory_files(package) != required:
+        raise RecoveryError("checkpoint files missing or surplus; incomplete output is forbidden")
+    signature = read_file(package / "signature.bin", 400)
+    if len(signature) != 400 or digest(signature) != plan["signature_sha256"]:
+        raise RecoveryError("400-byte global signature mismatch")
+    copy_verified(package / "repository.bundle", None, binding)
+    for asset in plan["assets"]:
+        copy_verified(package / "payload" / asset["path"], None, asset)
+    validate_scheduler(package / "payload", plan)
+    # A new empty repository supplies no ancestors or objects to an incremental
+    # bundle. Success here is the standalone-closure proof, not `bundle verify`
+    # in the source repository, where missing ancestors could be masked.
+    with tempfile.TemporaryDirectory(prefix="qikvrt-offline-restore-") as temp:
+        restore_git(package.resolve(), Path(temp) / "repository.git", plan["git"])
+    return manifest
+
+
+def create_checkpoint(repository: Path, payload_root: Path, plan_path: Path,
+                      output: Path, expected_plan_sha256: str) -> dict[str, Any]:
+    repository, payload_root = repository.absolute(), payload_root.absolute()
+    output = Path(os.path.abspath(output))
+    if output.is_relative_to(repository) or output.is_relative_to(payload_root):
+        raise RecoveryError("checkpoint output must be outside its sources")
+    plan = load_json(plan_path, expected_plan_sha256)
+    validate_plan(plan)
+    if git_snapshot(repository, plan["git"]["required_objects"]) != plan["git"]:
+        raise RecoveryError("source HEAD, TREE or ref inventory drift")
+    expected_files = {a["path"] for a in plan["assets"]} | {"QIKVRT_SIGNATURE.bin"}
+    if inventory_files(payload_root) != expected_files:
+        raise RecoveryError("source payload inventory missing or surplus")
+    signature = read_file(payload_root / "QIKVRT_SIGNATURE.bin", 400)
+    if len(signature) != 400 or digest(signature) != plan["signature_sha256"]:
+        raise RecoveryError("400-byte global signature mismatch")
+    for asset in plan["assets"]:
+        copy_verified(payload_root / asset["path"], None, asset)
+    validate_scheduler(payload_root, plan)
+    reserve_output(output)
+    git_command(repository, "bundle", "create", str(output / "repository.bundle"), "--all", "HEAD")
+    size = (output / "repository.bundle").stat().st_size
+    if size > MAX_TOTAL_BYTES:
+        raise RecoveryError("Git bundle exceeds bound")
+    os.chmod(output / "repository.bundle", 0o600)
+    bundle_hash = hashlib.sha256()
+    with (output / "repository.bundle").open("rb") as handle:
+        while chunk := handle.read(1024 * 1024):
+            bundle_hash.update(chunk)
+    (output / "signature.bin").write_bytes(signature)
+    for asset in plan["assets"]:
+        copy_verified(payload_root / asset["path"], output / "payload" / asset["path"], asset)
+    if (git_snapshot(repository, plan["git"]["required_objects"]) != plan["git"]
+            or inventory_files(payload_root) != expected_files):
+        raise RecoveryError("source changed during checkpoint creation")
+    manifest = {
+        "schema": MANIFEST_SCHEMA, "closure_plan_sha256": expected_plan_sha256,
+        "plan": plan, "bundle": {"bytes": size, "sha256": bundle_hash.hexdigest()},
+    }
+    raw = canonical_json_bytes(manifest)
+    (output / "manifest.json").write_bytes(raw)
+    (output / "INCOMPLETE").unlink()
+    try:
+        verify_checkpoint(output, digest(raw))
+    except (RecoveryError, OSError, RuntimeError):
+        (output / "INCOMPLETE").write_bytes(b"Standalone checkpoint verification failed.\n")
+        raise
+    return receipt(manifest, digest(raw))
+
+
+def receipt(manifest: dict[str, Any], manifest_sha256: str) -> dict[str, Any]:
+    return {
+        "schema": "qikvrt_mesh_offline_restore_receipt_v1",
+        "manifest_sha256": manifest_sha256, "node_id": manifest["plan"]["node_id"],
+        "checkpoint_utc": manifest["plan"]["checkpoint_utc"],
+        "root_repository": ROOT_REPOSITORY, "offline_checkpoint_verified": True,
+        "live_runtime_verified": False, "full_node_admitted": False,
+        "authority_changed": False, "remote_repository_created": False,
+        "effect_ack_done": False,
+    }
+
+
+def restore_checkpoint(package: Path, destination: Path, expected_manifest_sha256: str,
+                       *, clone: bool = False) -> dict[str, Any]:
+    package, destination = package.absolute(), destination.absolute()
+    destination = Path(os.path.abspath(destination))
+    if destination != package and destination.is_relative_to(package):
+        raise RecoveryError("restore output must be outside the checkpoint")
+    manifest = verify_checkpoint(package, expected_manifest_sha256)
+    reserve_output(destination)
+    restore_git(package, destination / "repository.git", manifest["plan"]["git"])
+    for asset in manifest["plan"]["assets"]:
+        copy_verified(package / "payload" / asset["path"],
+                      destination / "payload" / asset["path"], asset)
+    copy_verified(package / "signature.bin", destination / "signature.bin", {
+        "bytes": 400, "sha256": manifest["plan"]["signature_sha256"], "mode": 0o644,
+    })
+    # Reobserve the pinned inputs after the copy; no receipt for a moving source.
+    verify_checkpoint(package, expected_manifest_sha256)
+    identity = {
+        "schema": "qikvrt_restored_node_identity_v1", "root_repository": ROOT_REPOSITORY,
+        "node_id": secrets.token_hex(32) if clone else manifest["plan"]["node_id"],
+        "parent_node_id": manifest["plan"]["node_id"] if clone else None,
+        "source_checkpoint_sha256": expected_manifest_sha256,
+        "lineage": manifest["plan"]["lineage"], "mode": "CLONE" if clone else "RESTORE",
+        "runtime_rebinding_required": clone, "writer_enabled": False,
+    }
+    (destination / "node.json").write_bytes(canonical_json_bytes(identity))
+    (destination / "manifest.json").write_bytes(canonical_json_bytes(manifest))
+    (destination / "INCOMPLETE").unlink()
+    result = receipt(manifest, expected_manifest_sha256)
+    result.update(identity)
+    return result
+
+
+def plan_effect(package: Path, expected_manifest_sha256: str,
+                target_repository: str | None = None) -> dict[str, Any]:
+    manifest = verify_checkpoint(package.absolute(), expected_manifest_sha256)
+    plan = manifest["plan"]
+    result = receipt(manifest, expected_manifest_sha256)
+    if target_repository is not None:
+        if (not REPOSITORY.fullmatch(target_repository)
+                or not target_repository.startswith("Goldkelch/")
+                or target_repository.casefold() in {p.casefold() for p in plan["lineage"]}):
+            raise RecoveryError("new project must have a new GitHub identity under Goldkelch")
+        result.update({
+            "operation": "DERIVE_PROJECT", "target_repository": target_repository,
+            "new_node_id": secrets.token_hex(32), "parent_repository": plan["repository"],
+            "parent_node_id": plan["node_id"],
+            "source_checkpoint_sha256": expected_manifest_sha256,
+            "lineage": [*plan["lineage"], target_repository],
+            "required_effects": [
+                "EXACT_TARGET_CREATE_CAPABILITY_AND_ADMISSION",
+                "CREATE_ONLY_PROJECT_REGISTRATION_AT_GOLDKELCH_ROOT",
+                "HISTORY_PRESERVING_REPOSITORY_CREATION_AND_FRESH_READBACK",
+                "NEW_NODE_RUNTIME_REBINDING_AND_SEED_ACCEPTANCE",
+            ],
+        })
+    else:
+        result.update({
+            "operation": "RECOVER_AUTHORITY", "candidate_repository": plan["repository"],
+            "checkpoint_epoch": plan["authority_epoch"],
+            "proposed_successor_epoch": plan["authority_epoch"] + 1,
+            "lineage": plan["lineage"],
+            "required_effects": [
+                "FRESH_CONTROL_PLANE_EPOCH_AND_TARGET_HEAD_READBACK",
+                "EXCLUSIVE_FENCING_OR_OWNER_RECOVERY_GRANT_WITH_SINGLE_WRITER_ENFORCEMENT",
+                "TARGET_SCOPED_CAPABILITY_UNSEAL_AND_SELF_TEST",
+                "COMPARE_AND_SWAP_AUTHORITY_EPOCH_AND_FRESH_READBACK",
+                "ROLE_LOCAL_STATE_REBINDING_AND_SCHEDULER_IDEMPOTENCY_READBACK",
+            ],
+        })
+    result["state"] = "HOLD_EXTERNAL_EFFECT_PRECONDITIONS"
+    return result
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="operation", required=True)
+    create = commands.add_parser("create")
+    for flag in ("repository", "payload-root", "plan", "output"):
+        create.add_argument("--" + flag, type=Path, required=True)
+    create.add_argument("--expect-plan-sha256", required=True)
+    for name in ("verify", "restore", "clone", "plan-authority", "plan-project"):
+        command = commands.add_parser(name)
+        command.add_argument("--checkpoint", type=Path, required=True)
+        command.add_argument("--expect-manifest-sha256", required=True)
+        if name in {"restore", "clone"}:
+            command.add_argument("--output", type=Path, required=True)
+        if name == "plan-project":
+            command.add_argument("--target-repository", required=True)
+    args = parser.parse_args(argv)
+    try:
+        if args.operation == "create":
+            result = create_checkpoint(args.repository, args.payload_root, args.plan,
+                                       args.output, args.expect_plan_sha256)
+        elif args.operation in {"restore", "clone"}:
+            result = restore_checkpoint(args.checkpoint, args.output, args.expect_manifest_sha256,
+                                        clone=args.operation == "clone")
+        elif args.operation.startswith("plan-"):
+            result = plan_effect(args.checkpoint, args.expect_manifest_sha256,
+                                 getattr(args, "target_repository", None))
+        else:
+            manifest = verify_checkpoint(args.checkpoint, args.expect_manifest_sha256)
+            result = receipt(manifest, args.expect_manifest_sha256)
+        sys.stdout.buffer.write(canonical_json_bytes(result))
+        return 0
+    except (RecoveryError, OSError, RuntimeError, ValueError) as exc:
+        sys.stdout.buffer.write(canonical_json_bytes({
+            "state": "BLOCK", "reason": str(exc), "effect_ack_done": False,
+        }))
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
