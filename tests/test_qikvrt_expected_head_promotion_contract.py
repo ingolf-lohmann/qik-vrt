@@ -58,7 +58,7 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn('exit 0', workflow)
         self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
         self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
-        programs = re.findall(r"<<'PY'[^\\n]*\\n(.*?)\\n\\s*PY(?:\\n|$)", workflow, re.DOTALL)
+        programs = re.findall(r"<<'PY'[^\n]*\n(.*?)\n\s*PY(?:\n|$)", workflow, re.DOTALL)
         trees = [ast.parse(textwrap.dedent(program)) for program in programs]
 
         def call_chain(node, names):
