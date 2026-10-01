@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "schema": "qikvrt_processor_clock_contract_v1",
-  "status": "OWNER_REQUIREMENT_WITH_SYNTHESIZABLE_CLOCK_CARRIER",
+  "status": "OWNER_REQUIREMENT_WITH_FAIL_CLOSED_BOARD_ACCEPTANCE_INTERFACE",
   "owner": "Ingolf Lohmann",
   "requirement": {
     "machine_evaluation_cadence": "EVERY_PROCESSOR_CLOCK_EDGE",
@@ -100,5 +100,168 @@
     "reset_boundary": "Power reset erases volatile evidence. Admission controller must retain prior epoch/fault evidence out of band and prohibit epoch reuse; V1 readback cannot attest this yet.",
     "witness_independence": "Independent sequential logic in the same clock domain; not an independent oscillator, power domain, person or physical observation",
     "physical_completion": "OPEN; simulation and generic synthesis are not placement/routing, STA, programmed bitstream or board evidence"
+  },
+  "board_acceptance": {
+    "implementation": "tools/qikvrt_effect_ack_clock_readback.py",
+    "top_level": "rtl/effect_ack_board_top.vhd",
+    "test_entrypoint": "make effect-ack-board-contract-test",
+    "profile_schema": "qikvrt_effect_ack_board_profile_v1",
+    "profile_required_fields": [
+      "schema",
+      "subject",
+      "observed_at",
+      "board",
+      "fpga",
+      "clock",
+      "pins",
+      "timing",
+      "toolchain",
+      "interfaces"
+    ],
+    "subject_fields": [
+      "repository",
+      "pr",
+      "head",
+      "tree"
+    ],
+    "target_repository": "ingolf-lohmann/qik-vrt",
+    "target_pr": 430,
+    "board_fields": [
+      "id",
+      "revision",
+      "serial",
+      "source_sha256"
+    ],
+    "fpga_fields": [
+      "vendor",
+      "part",
+      "idcode"
+    ],
+    "clock_fields": [
+      "port",
+      "period_ns",
+      "source_id"
+    ],
+    "pin_fields": [
+      "package_pin",
+      "io_standard"
+    ],
+    "pins": "Every scalar and every bit of every vector of effect_ack_board_top, exactly once; 804 explicit package pins, no defaults. This parallel boundary requires a compatible package/board; narrower board transports require a reviewed adapter.",
+    "pin_source": "Caller-supplied evidenced board profile; no repository part/pin numbers invented.",
+    "timing_fields": [
+      "input_min_ns",
+      "input_max_ns",
+      "output_min_ns",
+      "output_max_ns",
+      "clock_uncertainty_ns"
+    ],
+    "toolchain_fields": [
+      "name",
+      "version",
+      "executable_sha256",
+      "provenance_sha256"
+    ],
+    "constraint_interfaces": {
+      "AMD_XILINX/vivado": "XDC pins/IO/clock/min-max delays/uncertainty; part and generic carried in build plan",
+      "INTEL/quartus": "QSF part/top/generic/pins/IO plus SDC clock/min-max delays/uncertainty"
+    },
+    "constraint_generation_excludes_false_paths": true,
+    "build_plan_schema": "qikvrt_effect_ack_board_build_plan_v1",
+    "build_binding": "Canonical JSON SHA-256 binds exact repository/PR/HEAD/TREE, profile, challenge, top, ordered source paths and exact source bytes, constraint bytes, target part and tool identity.",
+    "build_interface_only": true,
+    "vendor_tool_invocation": false,
+    "programming_authorized": false,
+    "top_default": "BOARD_BINDING_VALIDATED=false; no admission, no effect commit, zero payload, BLOCK state, no valid readback. Setting the static generic is not physical attestation or authorization.",
+    "input_layout": {
+      "185:122": "epoch",
+      "121:58": "cycle",
+      "57": "present",
+      "56": "verified",
+      "55:37": "facts",
+      "36:34": "decision",
+      "33": "effect_request",
+      "32": "sink_ready",
+      "31:0": "payload"
+    },
+    "readback_layout": {
+      "447:384": "nonce",
+      "383:320": "epoch",
+      "319:256": "evaluated",
+      "255:192": "witnessed",
+      "191": "fault",
+      "190": "witness_fault",
+      "189": "reset_seen",
+      "188:186": "state",
+      "185:0": "snapshot using input layout"
+    },
+    "input_domain": "SYNCHRONOUS_TO_CLK; asynchronous assertion of power_reset_n allowed, deassertion requires proven recovery/removal; no bundled CDC or authentication adapter implemented.",
+    "freshness_seconds": {
+      "profile": 86400,
+      "run_start": 21600,
+      "run_observation": 300
+    },
+    "run_schema": "qikvrt_effect_ack_board_run_v1",
+    "run_required_fields": [
+      "schema",
+      "subject",
+      "profile_sha256",
+      "plan_sha256",
+      "nonce",
+      "run_id",
+      "started_at",
+      "observed_at",
+      "board_serial",
+      "fpga_idcode",
+      "artifacts",
+      "sta",
+      "programmer",
+      "clock_readback"
+    ],
+    "run_artifacts": [
+      "placement_route",
+      "sta",
+      "bitstream",
+      "configuration_image",
+      "programmer_log",
+      "configuration_readback"
+    ],
+    "artifact_binding": "Distinct confined regular file paths, no symlinks, 1..67108864 bytes each, SHA-256 verified from supplied bytes. Configuration image and programmer readback use the same vendor-normalized format and must be byte-identical; vendor adapter must prove normalization/bitstream correspondence.",
+    "sta_required_fields": [
+      "part",
+      "clock_period_ns",
+      "placement_route_completed",
+      "unconstrained_paths",
+      "setup_slack_ns",
+      "hold_slack_ns",
+      "recovery_slack_ns",
+      "removal_slack_ns"
+    ],
+    "sta_requirements": "Exact target/clock, completed placement/route, zero unconstrained paths, nonnegative finite setup/hold/recovery/removal slack; summaries must be independently authenticated against vendor reports before physical acceptance.",
+    "programmer_required_fields": [
+      "programmed",
+      "readback_observed",
+      "tool",
+      "version",
+      "executable_sha256",
+      "configuration_image_sha256",
+      "readback_configuration_sha256"
+    ],
+    "telemetry_reuse": "Existing verify_readback; exact nonzero nonce/epoch/count, coherent snapshot, equal counters and no faults.",
+    "missing_profile_receipt": "BOARD_BINDING_REQUIRED",
+    "invalid_evidence_receipt": "BLOCK_BOARD_EVIDENCE",
+    "consistent_inputs_receipt": "BUILD_INPUTS_READY",
+    "consistent_run_contract_receipt": "HOLD_AUTHENTICATED_BOARD_RUN_REQUIRED",
+    "open_obligations": [
+      "authenticated_inputs",
+      "cdc",
+      "epoch_fault_retention",
+      "independent_physical_clock_witness",
+      "complete_effect_mediation"
+    ],
+    "attestation_boundary": "Caller JSON, claimed programmer flags, artifact hashes, RTL and generic synthesis do not authenticate physical observation. No trusted board adapter is installed; this V1 interface never raises physical completion flags.",
+    "physical_clock_verified": false,
+    "bitstream_programmed": false,
+    "programmer_readback_observed": false,
+    "EFFECT_ACK_DONE": false
   }
 }

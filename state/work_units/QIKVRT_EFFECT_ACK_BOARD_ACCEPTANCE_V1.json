@@ -1,0 +1,189 @@
+{
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_EFFECT_ACK_BOARD_ACCEPTANCE_V1",
+  "created_at": "2026-10-01T16:46:35.587912+00:00",
+  "status": "MIRROR_REVIEW_CANDIDATE",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/processor-clock-core-20261001",
+  "source_commit": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+  "source_tree": "7483d18e880f0b9ceffa60705a628e0a88173944",
+  "observed_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "human_actor": {
+    "classification": "HUMAN",
+    "name": "Ingolf Lohmann",
+    "identity_basis": "EXISTING_SESSION_AND_REPOSITORY_OWNER_BINDING"
+  },
+  "artificial_cognitive_actor": {
+    "classification": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "ffb5824fee97",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "git",
+      "Python standard library",
+      "locked GHDL 6.0.0",
+      "existing Makefile gates"
+    ],
+    "identity_and_observation_limits": "No authenticated physical board/programmer/lab session available; platform identity does not attest a natural person or board."
+  },
+  "human_contributions": [
+    "Authorized continuing existing PR #430 with the smallest fail-closed physical board acceptance interface",
+    "Required explicit board/FPGA/clock/pins, top binding, constraints/build and STA/bitstream/programmer readback contracts",
+    "Required reuse of any evidenced profile and prohibited invented part/pins",
+    "Required missing/stale/conflicting-data controls and all physical completion flags false until actual fresh board readback"
+  ],
+  "artificial_cognitive_contributions": [
+    "Observed exact PR/head/tree/main and inspected all 519 reachable Mirror remote refs for board/FPGA/constraint history",
+    "Reconstructed 13 independently validated portable source-capsule Git objects locally to satisfy existing bootstrap without changing repository bytes",
+    "Reused existing carrier, coverage witness, readback validator, C oracle, GHDL bootstrap/cache and Make test path",
+    "Added default-blocked flat top, explicit profile/constraint/build-manifest interface, consistent-run evidence contract and negative tests",
+    "Kept all physical attestation obligations OPEN; no vendor tool/programmer effect issued"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "reuse_evidence": {
+    "remote_refs": 519,
+    "main_has_hardware_or_fpga_board_paths": false,
+    "historical_hardware_tree": "998129f68277b1025d433099e4fb4bef84a7e632",
+    "historical_hardware_files": [
+      "vhdl/qikvrt_metatransistor.vhd",
+      "vhdl/qikvrt_metatransistor_pkg.vhd",
+      "vhdl/qikvrt_neutron_star_mesh.vhd",
+      "vhdl/tb_qikvrt_metatransistor.vhd"
+    ],
+    "historical_board_profile_found": false,
+    "commands": [
+      "git rev-list --objects --all --filter=blob:none",
+      "git ls-tree -r 998129f68277b1025d433099e4fb4bef84a7e632",
+      "git log --all --format= --name-only -- historical board and xdc/sdc/qsf/ucf pathspecs"
+    ],
+    "limitation": "Reachable Mirror refs/history only; no claim about unreachable Authority-only or external board files."
+  },
+  "inputs": [
+    {
+      "path": "rtl/effect_ack_clock_carrier.vhd",
+      "source_commit": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+      "bytes": 4527,
+      "sha256": "67dff22e9e3c825aa31cf5202e8da3ba4153a57a1ab81dd37e7974f5d336ba86"
+    },
+    {
+      "path": "rtl/effect_ack_clock_pkg.vhd",
+      "source_commit": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+      "bytes": 2647,
+      "sha256": "75f9cb8341457368f829ed48a038b19de6529890d708a359430613494b90a208"
+    },
+    {
+      "path": "rtl/effect_ack_coverage_witness.vhd",
+      "source_commit": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+      "bytes": 1881,
+      "sha256": "2b845753530fff8609eb089097a4741e6ded063863d2d5aa73a3d2eda5ce79ac"
+    },
+    {
+      "path": "tools/qikvrt_effect_ack_clock_readback.py",
+      "source_commit": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+      "bytes": 3183,
+      "sha256": "d4beda1a80180386af0605e720e0555906ec3c0155aa26205a24609ed4527c73"
+    },
+    {
+      "path": "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json",
+      "source_commit": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+      "bytes": 6097,
+      "sha256": "d6561868c31298dee0106a3400d6147ebf99a4e46405f22ed48cfeb552eae63b"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 11521,
+      "sha256": "a05d23df7633d4aea479329c378006d59e1624bd63fc060f88c11e881b382930",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "docs/QIKVRT_PROCESSOR_CLOCK.md",
+      "bytes": 16148,
+      "sha256": "24035ebb755e03e34a3f8a1d923f10cd501024c07b826e98ac73d607dae274ff",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json",
+      "bytes": 11943,
+      "sha256": "78437a3b9fea84c560709473e126bb319089e535cb411f6143cbcf156f6ccec0",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "rtl/effect_ack_board_top.vhd",
+      "bytes": 3371,
+      "sha256": "83f4ea66330f0b3a859d475b82f2952f3e21953eaf29efbaf5a44e46d9118966",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/effect_ack_clock_tb.vhd",
+      "bytes": 11191,
+      "sha256": "2bee8f43d287c14cf729d2e45e925860b572c0d4afcf1b168f59c168d6ad96d5",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/test_effect_ack_board_contract.py",
+      "bytes": 15533,
+      "sha256": "c9490d0714410d85d11f40803533a6f79639b20d8644d8de573ec26b0a9ed45d",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/test_effect_ack_clock_carrier.py",
+      "bytes": 7810,
+      "sha256": "350c136ae6afc52729adaf18652750a10fdb9dfd0fa57b358397593be5bdbc88",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tools/qikvrt_effect_ack_clock_readback.py",
+      "bytes": 21374,
+      "sha256": "73dbd850acccf83479224ecd8270e0a98bbd8689c06bdb4d8056de9c97958642",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    }
+  ],
+  "git_history": {
+    "parent": "e46d0d6534b9cc2b25ee0fc06a1374b74538bd0d",
+    "method": "HISTORY_PRESERVING_SUCCESSOR_ON_EXISTING_PR_BRANCH",
+    "force_push": false
+  },
+  "verification": {
+    "targeted_board_contract": "PASS: 12 tests; synthetic TEST_ONLY fixtures only",
+    "carrier_and_top": "PASS: source and specialized carrier netlist controls; 2621440 independent C-oracle vectors per simulation, bound/default-blocked top assertions and packed readback",
+    "top_synthesis": "PASS: BOARD_BINDING_VALIDATED=false and true, GHDL generic synthesis only",
+    "tool_cache": "PASS: 15/15 (100%)",
+    "bootstrap": "CONTINUE: integrity/handoff/cache passed; optional other runtimes absent",
+    "full_repository_gates": "PASS: make -k test, 544 unittest executions across 19 invocations; strict C90/shell/protocol/RTL/synthesis/integrity gates passed",
+    "full_gate_log_sha256": "97786ffed72ed5ffadaa8b41f6d7d2fdfcf80ac71e4b00a07ef0c6855a9e6729",
+    "integrity": "PASS: 3928 classified entries; 3919 immutable digests; regenerate after final provenance summary",
+    "ci_boundary": "Fresh successor Exact-Head CI required; predecessor runs do not transfer."
+  },
+  "human_decision": "PENDING",
+  "external_effects": {
+    "scope": "REVIEWABLE_PR_BRANCH_SUCCESSOR_ONLY",
+    "vendor_build_executed": false,
+    "board_programming_executed": false,
+    "physical_readback_observed": false,
+    "authority_promotion": false,
+    "merge": false,
+    "release": false
+  },
+  "first_physical_blocker": "BOARD_BINDING_REQUIRED",
+  "next_action": "Supply evidenced exact-subject board/part/clock/full-pin/timing/tool profile; prepare-board emits constraints/build manifest. A later trusted adapter must execute and authenticate actual placement/route/STA/programmer/clock evidence.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "physical_clock_verified": false,
+    "bitstream_programmed": false,
+    "programmer_readback_observed": false
+  }
+}

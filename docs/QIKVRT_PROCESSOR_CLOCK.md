@@ -112,6 +112,109 @@ Power-Reset löscht volatile Register. Vor neuer Admission müssen frühere
 Epochen und Fehler extern erhalten und Epochenwiederholung verhindert werden.
 Eine reine RTL-Testfixture, die Reset setzt, beweist diese Persistenz nicht.
 
+### Fail-closed Board-Abnahmeschnittstelle
+
+`rtl/effect_ack_board_top.vhd` bindet denselben Carrier ohne Taktteiler,
+zweiten Executor oder Änderung seiner fünf Zustände. Die generische statische
+Bindung `BOARD_BINDING_VALIDATED` ist standardmäßig `false`: keine Admission,
+kein Commit, Payload null, BLOCK-Zustand, kein gültiger Readback. Ein externer
+reviewter Build-Adapter darf diese Bindung erst nach Prüfung des exakten
+Boardprofils aktivieren. Der Schalter ist eine Integrationsvoraussetzung und
+keine kryptographische Sperre gegen einen privilegierten Build-Veränderer.
+
+Der Top-Level ist eine flache parallele Integrationsgrenze. Sein vollständiges
+Pinprofil benötigt **804 einzelne Pins**. Ein konkretes Board mit weniger
+verfügbaren Anschlüssen benötigt einen eigenen reviewten Transportadapter;
+dieser Schritt erfindet keinen seriellen Transport, CDC oder Pinbelegungen.
+Alle Eingangsbündel sind synchron zu `clk`; asynchrones Assert des Power-Resets
+bleibt zulässig, seine Freigabe muss Recovery/Removal erfüllen.
+
+| `current_input_bits` | Feld |
+| --- | --- |
+| 185:122 | Epoche |
+| 121:58 | Zyklus |
+| 57 / 56 | present / verified |
+| 55:37 / 36:34 | Fakten / Entscheidung |
+| 33 / 32 / 31:0 | Effektanforderung / Sink-Reservierung / Payload |
+
+`readback_bits` packt von oben nach unten Nonce (447:384), Epoche (383:320),
+Auswertungen (319:256), Witness-Zähler (255:192), Fault (191), Witness-Fault
+(190), Reset (189), Zustand (188:186) und Snapshot im obigen Layout (185:0).
+Die bestehenden C-Orakel-/Flanken-/Fault-Kontrollen vergleichen den gebundenen
+Top-Level mit dem Carrier und prüfen parallel die dauerhaft gesperrte Variante.
+
+Die erreichbare Mirror-Historie wurde über 519 Remote-Refs und historische
+Board-/Constraint-Pfade geprüft. Der historische `hardware`-Tree
+`998129f68277b1025d433099e4fb4bef84a7e632` enthält ausschließlich vier
+`vhdl/`-Dateien des Meta-Transistors/Neutron-Star-Mesh und keinen
+Board-/Part-/Pin-/Timing-Vertrag. Das aktive Main/PR enthält ebenfalls kein
+belegtes Boardprofil. Daher werden keine konkreten Partnummern oder Pins
+eingetragen. Die synthetischen `TEST_ONLY_*`-Daten der Negativtests sind keine
+Boarddaten und kein physischer Nachweis.
+
+Der bestehende Readback-Verifier stellt zwei neue, effektfreie CLI-Aktionen
+bereit. Beide verlangen einen sauberen Checkout des ausdrücklich erwarteten
+HEAD/TREE und eine separat frisch erzeugte, von null verschiedene Challenge:
+
+```sh
+python3 -B tools/qikvrt_effect_ack_clock_readback.py prepare-board \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE"
+
+python3 -B tools/qikvrt_effect_ack_clock_readback.py prepare-board \
+  --profile board-profile.json \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE"
+
+python3 -B tools/qikvrt_effect_ack_clock_readback.py verify-board \
+  --profile board-profile.json --report board-run.json --artifacts-root board-artifacts \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE" \
+  --epoch "$ADMITTED_EPOCH" --expected-count "$OBSERVED_COUNT"
+```
+
+Ohne Profil entsteht Exit 20 / `BOARD_BINDING_REQUIRED`, ohne Buildplan.
+Ein fehlerhaftes Profil oder ein stale/inkonsistenter Nachweis ergibt Exit 1 /
+`BLOCK_BOARD_EVIDENCE`. Das vollständige Schema und die Pflichtfelder liegen
+unter `board_acceptance` im bestehenden Maschinenvertrag. Es verlangt Board-ID,
+Revision, Seriennummer und Quelldigest, FPGA-Vendor/Part/IDCODE, Clockquelle und
+Periode, jeden Portbit-Pin mit IO-Standard, Min-/Max-IO-Timing und Unsicherheit,
+Toolversion/-bytes/-Provenienz sowie die offen bleibenden Integrationspflichten.
+Es gibt keine Defaults für physische Eingaben.
+
+Ein strukturell gültiges Profil liefert Exit 20 / `BUILD_INPUTS_READY` und ein
+kanonisch gehashtes Buildmanifest mit geordneten, exakt gehashten RTL-Quellen,
+Part/Top/Generic-Bindung und Constraintbytes. Für AMD/Xilinx-Vivado wird XDC
+ausgegeben; für Intel-Quartus QSF plus SDC. Alle Pins/IO-Standards, Clock,
+Min-/Max-Delays und Clock-Uncertainty werden explizit gebunden; es entstehen
+keine False-Path-Ausnahmen. Das Interface startet kein Vendorwerkzeug und
+keinen Programmer. Ein tatsächlicher Adapter muss zuerst den bestehenden
+Runtime-Lock-/Cache-Vertrag für seine ausgewählte Toolchain erweitern.
+
+Der Runvertrag bindet Repository/PR/HEAD/TREE, Profil/Build-Digest, Run-ID,
+Challenge, Zeitfenster, Board-Serial und FPGA-IDCODE. Er verlangt getrennte,
+frisch rückgelesene Placement-/Route-, STA-, Bitstream-, Programmer-Log-,
+normalisierte Konfigurationsimage- und Konfigurationsreadback-Artefakte mit
+exakten Bytehashes. Das normalisierte Image und der Programmer-Readback müssen
+bytegleich sein. Der noch fehlende Vendoradapter muss die Normalisierung und
+Zuordnung zum Bitstream selbst beweisen. STA verlangt denselben Part und
+Clock, vollständiges Routing, null unbeschränkte Pfade sowie nichtnegative,
+endliche Setup-/Hold-/Recovery-/Removal-Slacks. Die ursprüngliche kohärente
+Clock-Telemetrieprüfung wird unverändert wiederverwendet.
+
+Frischegrenzen sind 24 Stunden für das exact-subject Boardinventar, sechs
+Stunden für den Runbeginn und fünf Minuten für den beobachteten Runabschluss;
+zukünftige Zeitangaben und widersprüchliche Reihenfolgen blockieren. Ein neuer
+HEAD/TREE, geänderte Quelle/Constraintbytes oder eine andere Challenge verwerfen
+alte Nachweise unabhängig vom Alter.
+
+Selbst ein konsistentes Datenpaket bleibt Exit 20 /
+`HOLD_AUTHENTICATED_BOARD_RUN_REQUIRED`. Freie JSON-Felder und Bytehashes
+authentifizieren keinen Laborlauf. Ein vertrauenswürdiger Board-/Lab-Adapter,
+authentisierte Eingänge, CDC, persistierte Epoch-/Fault-Geschichte,
+systemweite Effektvermittlung und unabhängiger physischer Clock-Witness bleiben
+OPEN. `physical_clock_verified`, `bitstream_programmed`,
+`programmer_readback_observed` und `EFFECT_ACK_DONE` bleiben in diesem Interface
+stets false. Ein tatsächlicher Boardlauf mit frischem authentisiertem Readback
+ist ein eigener, noch ausstehender Abnahmeschritt.
+
 ### Reproduzierbare Prüfung
 
 ```sh

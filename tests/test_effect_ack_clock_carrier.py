@@ -29,7 +29,8 @@ class ClockCarrierTests(unittest.TestCase):
             with (build / 'vectors.txt').open('w') as output:
                 run([str(build / 'vectors')], stdout=output)
             sources = [ROOT / 'rtl' / name for name in (
-                'effect_ack_clock_pkg.vhd', 'effect_ack_coverage_witness.vhd', 'effect_ack_clock_carrier.vhd')]
+                'effect_ack_clock_pkg.vhd', 'effect_ack_coverage_witness.vhd', 'effect_ack_clock_carrier.vhd',
+                'effect_ack_board_top.vhd')]
             run([str(ghdl), '-a', '--std=08', *map(str, sources), str(ROOT / 'tests/effect_ack_clock_tb.vhd')])
             run([str(ghdl), '-e', '--std=08', 'effect_ack_clock_tb'])
             run([str(ghdl), '-r', '--std=08', 'effect_ack_clock_tb', '--assert-level=error'])
@@ -40,6 +41,11 @@ class ClockCarrierTests(unittest.TestCase):
             with (build / 'synthesized.vhd').open('w') as output:
                 run([str(ghdl), '--synth', '--std=08', 'effect_ack_clock_carrier'], stdout=output)
             self.assertGreater((build / 'synthesized.vhd').stat().st_size, 1000)
+            for bound in ('false', 'true'):
+                with (build / ('board_top_' + bound + '.vhd')).open('w') as output:
+                    run([str(ghdl), '--synth', '--std=08', '-gBOARD_BINDING_VALIDATED=' + bound,
+                         'effect_ack_board_top'], stdout=output)
+                self.assertGreater((build / ('board_top_' + bound + '.vhd')).stat().st_size, 1000)
             with (build / 'synthesized_small.vhd').open('w') as output:
                 run([str(ghdl), '--synth', '--std=08', '-gCOUNTER_BITS=2',
                      'effect_ack_clock_carrier'], stdout=output)
@@ -54,7 +60,7 @@ class ClockCarrierTests(unittest.TestCase):
             synth = build / 'netlist'; synth.mkdir()
             flags = ['--std=08', '--workdir=' + str(synth)]
             run([str(ghdl), '-a', *flags, str(sources[0]), str(sources[1]),
-                 str(build / 'synthesized.vhd'), str(small), str(netlist_tb)])
+                 str(build / 'synthesized.vhd'), str(small), str(sources[3]), str(netlist_tb)])
             run([str(ghdl), '-e', *flags, 'effect_ack_clock_tb'])
             run([str(ghdl), '-r', *flags, 'effect_ack_clock_tb', '--assert-level=error'])
 

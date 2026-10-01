@@ -21,7 +21,21 @@ architecture test of effect_ack_clock_tb is
   signal tiny_payload : std_logic_vector(31 downto 0);
   signal wclk, wrst, wadmit, wpulse, wfault : std_logic := '0';
   signal wreported, wcount : word64 := (others => '0');
+  signal board_input : std_logic_vector(185 downto 0);
+  signal board_readback : std_logic_vector(447 downto 0);
+  signal board_state : std_logic_vector(2 downto 0);
+  signal board_commit, board_valid, unbound_commit, unbound_valid : std_logic;
+  signal board_payload, unbound_payload : std_logic_vector(31 downto 0);
+  signal unbound_state : std_logic_vector(2 downto 0);
 begin
+  board_input <= std_logic_vector(s.epoch) & std_logic_vector(s.cycle) & s.present &
+    s.verified & s.facts & std_logic_vector(s.decision) & s.effect_request & s.sink_ready & s.payload;
+  bound_top : entity work.effect_ack_board_top generic map (BOARD_BINDING_VALIDATED => true)
+    port map (clk, rst, admit, reset_req, std_logic_vector(admission), board_input,
+      rb_req, std_logic_vector(nonce), board_valid, board_readback, board_state, board_commit, board_payload);
+  unbound_top : entity work.effect_ack_board_top
+    port map (clk, rst, admit, reset_req, std_logic_vector(admission), board_input,
+      rb_req, std_logic_vector(nonce), unbound_valid, open, unbound_state, unbound_commit, unbound_payload);
   dut : entity work.effect_ack_clock_carrier
     port map (clk, rst, admit, reset_req, admission, s,
               rb_req, nonce, rb_valid, rb, result, commit, payload);
@@ -53,6 +67,11 @@ begin
       s <= value; edge;
       assert result = want report "clocked state mismatch" severity failure;
       assert commit = released report "stale/unsafe effect release" severity failure;
+      assert board_state = std_logic_vector(result) and board_commit = commit and board_payload = payload
+        report "board top changed carrier semantics or bit layout" severity failure;
+      assert unbound_state = std_logic_vector(BLOCK_STATE) and unbound_commit = '0' and
+        unbound_payload = x"00000000" and unbound_valid = '0'
+        report "unbound board top released" severity failure;
       cycle := cycle + 1;
     end;
     function complete(c : natural) return clock_input_t is
@@ -102,6 +121,13 @@ begin
     rb_req <= '1'; nonce <= to_unsigned(99, 64);
     v := complete(cycle); tick(v, DONE_STATE, '1');
     assert rb_valid = '1' and rb.nonce = 99 and rb.epoch = 7 severity failure;
+    assert board_valid = '1' and board_readback =
+      std_logic_vector(rb.nonce) & std_logic_vector(rb.epoch) & std_logic_vector(rb.evaluated) &
+      std_logic_vector(rb.witnessed) & rb.fault & rb.witness_fault & rb.reset_seen &
+      std_logic_vector(rb.state) & std_logic_vector(rb.snapshot.epoch) & std_logic_vector(rb.snapshot.cycle) &
+      rb.snapshot.present & rb.snapshot.verified & rb.snapshot.facts & std_logic_vector(rb.snapshot.decision) &
+      rb.snapshot.effect_request & rb.snapshot.sink_ready & rb.snapshot.payload
+      report "board top tore readback or changed packing" severity failure;
     assert rb.evaluated = cycle-1 and rb.witnessed = rb.evaluated and
            rb.snapshot.cycle = cycle-2 and rb.fault = '0' and rb.witness_fault = '0'
       report "readback is not coherent preceding-edge coverage" severity failure;
