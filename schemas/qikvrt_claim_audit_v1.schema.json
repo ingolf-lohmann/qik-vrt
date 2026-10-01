@@ -1,0 +1,100 @@
+{
+  "$id": "qikvrt_claim_audit_v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "audit_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "audit_result": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_exists": {
+          "type": "boolean"
+        },
+        "claim_well_formed": {
+          "type": "boolean"
+        },
+        "domain_consistent": {
+          "type": "boolean"
+        },
+        "evidence_present": {
+          "type": "boolean"
+        },
+        "runtime_applicable": {
+          "type": "boolean"
+        },
+        "verification_sufficient": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_exists",
+        "claim_well_formed",
+        "domain_consistent",
+        "evidence_present",
+        "verification_sufficient",
+        "runtime_applicable"
+      ],
+      "type": "object"
+    },
+    "claim_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "epistemic_domain": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "qikvrt_claim_audit_v1"
+    },
+    "severity": {
+      "enum": [
+        "INFO",
+        "NOTICE",
+        "WARNING",
+        "ERROR",
+        "CRITICAL"
+      ]
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "HOLD",
+        "FAIL"
+      ]
+    },
+    "timestamp": {
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "audit_id",
+    "claim_id",
+    "timestamp",
+    "epistemic_domain",
+    "claim_class",
+    "claim_statement",
+    "audit_result"
+  ],
+  "type": "object"
+}

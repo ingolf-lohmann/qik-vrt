@@ -13,6 +13,9 @@ on:
       - tools/qikvrt_freeze_alpha2_status.py
       - tools/qikvrt_verify_alpha2_archive.py
       - tests/test_global_completion.py
+      - policy/QIKVRT_CLAIM_AUDIT_V1.json
+      - schemas/qikvrt_claim_audit*.schema.json
+      - schemas/qikvrt_invariant_audit_v1.schema.json
       - .github/workflows/qikvrt_global_completion.yml
       - formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py
       - GLOBAL_COMPLETION_FINALIZATION_INPUT.json
@@ -22,6 +25,9 @@ on:
       - tools/qikvrt_freeze_alpha2_status.py
       - tools/qikvrt_verify_alpha2_archive.py
       - tests/test_global_completion.py
+      - policy/QIKVRT_CLAIM_AUDIT_V1.json
+      - schemas/qikvrt_claim_audit*.schema.json
+      - schemas/qikvrt_invariant_audit_v1.schema.json
       - .github/workflows/qikvrt_global_completion.yml
       - release/formalization-v2/alpha2-frozen/**
       - formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py
@@ -109,6 +115,7 @@ jobs:
       - name: Check out exact candidate with tags
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
@@ -116,6 +123,24 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
+      - name: Audit claim domains, invariants and non-implications without effects
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          mkdir -p .qikvrt/evidence
+          python3 -B tools/qikvrt_global_completion.py audit > .qikvrt/evidence/claim-audit.json
+          python3 -B tools/qikvrt_global_completion.py verify-audit --report .qikvrt/evidence/claim-audit.json
+      - name: Preserve claim and invariant audit receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-claim-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: error
+          path: .qikvrt/evidence/claim-audit.json
       - name: Diagnose frozen inputs and historical Alpha-2 archive
         id: alpha2_archive
         continue-on-error: true

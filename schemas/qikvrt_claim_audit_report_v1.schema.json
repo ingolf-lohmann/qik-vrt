@@ -1,0 +1,53 @@
+{
+  "$id": "qikvrt_claim_audit_report_v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "boundaries": {
+      "properties": {
+        "audit_pass_is_claim_truth": {
+          "const": false
+        },
+        "effect_ack_done": {
+          "const": false
+        }
+      },
+      "type": "object"
+    },
+    "claims": {
+      "items": {
+        "$ref": "qikvrt_claim_audit_v1.schema.json"
+      },
+      "type": "array"
+    },
+    "input_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "invariants": {
+      "items": {
+        "$ref": "qikvrt_invariant_audit_v1.schema.json"
+      },
+      "type": "array"
+    },
+    "report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "qikvrt_claim_audit_report_v1"
+    }
+  },
+  "required": [
+    "schema",
+    "timestamp",
+    "input_sha256",
+    "audit_summary",
+    "claims",
+    "invariants",
+    "non_implication_audit",
+    "audit_of_audit",
+    "boundaries",
+    "report_sha256"
+  ],
+  "type": "object"
+}

@@ -188,5 +188,144 @@ class GlobalCompletionTests(unittest.TestCase):
             generator.validate_terminal_batch_002_receipt(false_terminal)
 
 
+class ClaimAuditTests(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = pathlib.Path(self.directory.name)
+        self.source = self.reference('source.json', {'statement':'declared rule'})
+
+    def reference(self, path, value, kind='DOCUMENTARY'):
+        raw=(json.dumps(value,sort_keys=True)+'\n').encode()
+        (self.root/path).write_bytes(raw)
+        return {'path':path,'sha256':generator.sha(raw),'source':'test fixture; no live effect','kind':kind}
+
+    def input(self, **change):
+        claim={'claim_id':'CLAIM_000001','claim_statement':'Preserve declared nodes.',
+               'epistemic_domain':'NORMATIVE','claim_class':'NORMATIVE_REQUIREMENT',
+               'sources':[self.source],'evidence':[]}
+        claim.update(change)
+        return {'schema':'qikvrt_claim_audit_input_v1','claims':[claim],'invariants':[],'relations':[]}
+
+    def audit(self, value):
+        return generator.claim_audit(value,root=self.root,timestamp='2026-10-01T20:24:10Z')
+
+    def test_bounded_normative_audit_pass_does_not_claim_truth_or_effect(self):
+        value=self.audit(self.input())
+        self.assertEqual(value['claims'][0]['status'],'PASS')
+        self.assertFalse(value['boundaries']['effect_ack_done'])
+        self.assertFalse(value['boundaries']['audit_pass_is_claim_truth'])
+        self.assertIn('INV_REALITY_001',[x['invariant_id'] for x in value['invariants']])
+
+    def test_empirical_hypothesis_retains_verification_hold_and_no_spoofed_ack(self):
+        data=self.input(epistemic_domain='EMPIRICAL',claim_class='HYPOTHESIS',
+                        verification={'empirical_verified':True},effect_ack=True)
+        value=self.audit(data)['claims'][0]
+        self.assertEqual(value['status'],'HOLD')
+        self.assertFalse(value['audit_result']['verification_sufficient'])
+        self.assertFalse(any(value['verification_checklist'].values()))
+        self.assertFalse(value['observed_reality_audit']['effect_ack'])
+
+    def test_simulation_and_authority_do_not_become_observation_evidence(self):
+        for kind in ('SIMULATION','DOCUMENTARY','AUTHORITY','FORMAL_PROOF','PREDICTION','CORRELATION','BELIEF'):
+            evidence={**self.source,'kind':kind}
+            value=self.audit(self.input(epistemic_domain='EMPIRICAL',claim_class='ASSERTION',evidence=[evidence]))
+            self.assertEqual(value['claims'][0]['status'],'FAIL',kind)
+            self.assertEqual(value['audit_summary']['category_errors'],1)
+
+    def test_primary_observation_binding_does_not_authenticate_its_claim(self):
+        value=self.audit(self.input(epistemic_domain='EMPIRICAL',claim_class='ASSERTION',
+                                   evidence=[{**self.source,'kind':'OBSERVATION'}]))
+        self.assertEqual(value['claims'][0]['status'],'HOLD')
+        self.assertTrue(value['claims'][0]['evidence_checklist']['evidence_hash_valid'])
+        self.assertFalse(value['claims'][0]['verification_checklist']['empirical_verified'])
+
+    def test_duplicate_claim_and_cross_domain_theorem_fail(self):
+        data=self.input();data['claims']*=2
+        self.assertEqual(self.audit(data)['audit_summary']['claims_failed'],2)
+        value=self.audit(self.input(epistemic_domain='EMPIRICAL',claim_class='THEOREM'))
+        self.assertTrue(value['claims'][0]['epistemic_audit']['category_error'])
+
+    def test_sources_and_reality_chain_cannot_escape_root_or_hide_drift(self):
+        for path in ('../source.json','/etc/passwd'):
+            value=self.audit(self.input(sources=[{**self.source,'path':path}]))
+            self.assertEqual(value['claims'][0]['status'],'FAIL')
+        (self.root/'link.json').symlink_to(self.root/'source.json')
+        value=self.audit(self.input(sources=[{**self.source,'path':'link.json'}]))
+        self.assertEqual(value['claims'][0]['status'],'FAIL')
+        value=self.audit(self.input(observed_reality={'readback':{**self.source,'sha256':'0'*64}}))
+        self.assertEqual(value['claims'][0]['status'],'FAIL')
+        self.assertIsNone(value['claims'][0]['observed_reality_audit']['readback'])
+
+    def test_indirect_forbidden_inference_is_detected(self):
+        data=self.input();data['relations']=[{'subject':'TRANSPORT_ACK','relation':'IMPLIES','object':'BRIDGE'},
+                                           {'subject':'BRIDGE','relation':'IMPLIES','object':'EFFECT_ACK'}]
+        value=self.audit(data)
+        self.assertEqual(value['audit_summary']['non_implication_violations'],1)
+        self.assertEqual(value['invariants'][-1]['status'],'FAIL')
+
+    def test_bound_subset_runs_and_missing_nodes_fail(self):
+        old=self.reference('old.json',{'nodes':['A','B']})
+        new=self.reference('new.json',{'nodes':['A','B','C']})
+        data=self.input();data['invariants']=[{'invariant_id':'INV_000001','class':'STRUCTURAL',
+            'statement':'OLD_NODES ⊆ NEW_NODES','predicate':{'type':'SET_SUBSET','old':old,'new':new}}]
+        value=self.audit(data)['invariants'][0]
+        self.assertEqual(value['status'],'PASS')
+        self.assertTrue(value['runtime_audit']['rule_executable'])
+        data['invariants'][0]['predicate']['new']=self.reference('new.json',{'nodes':['A']})
+        value=self.audit(data)['invariants'][0]
+        self.assertEqual(value['status'],'FAIL')
+        self.assertTrue(value['runtime_audit']['runtime_violation'])
+
+    def test_unknown_rule_and_source_absence_stay_hold(self):
+        data=self.input(sources=[]);data['invariants']=[{'id':'INV_UNDECIDED','class':'RUNTIME','statement':'Arbitrary prose','status':'PASS'}]
+        value=self.audit(data)
+        self.assertEqual(value['claims'][0]['status'],'HOLD')
+        self.assertEqual(value['invariants'][0]['status'],'HOLD')
+        self.assertFalse(value['audit_of_audit']['sources_traceable'])
+
+    def test_meta_audit_rejects_rehashed_summary_or_stale_source(self):
+        data=self.input();report=self.audit(data)
+        self.assertTrue(generator.verify_claim_audit(report,data,root=self.root))
+        report['audit_summary']['claims_checked']=999
+        report.pop('report_sha256');report['report_sha256']=generator.sha(generator.pretty(report).encode())
+        self.assertFalse(generator.verify_claim_audit(report,data,root=self.root))
+        report=self.audit(data)
+        (self.root/'source.json').write_text('{}')
+        self.assertFalse(generator.verify_claim_audit(report,data,root=self.root))
+
+    def test_json_duplicates_nonfinite_and_override_are_rejected(self):
+        for raw in ('{"claims":[],"claims":[]}','{"x":NaN}','[]'):
+            with self.assertRaises(ValueError):generator.audit_json(raw)
+        data=self.input();data['invariants']=[{'id':'INV_REALITY_001','status':'PASS'}]
+        with self.assertRaises(ValueError):self.audit(data)
+
+    def test_existing_inventory_is_audited_without_predecessor_proof_transfer(self):
+        inventory=load(INVENTORY)
+        raw=INVENTORY.read_bytes()
+        report=generator.claim_audit(inventory,timestamp='2026-10-01T20:24:10Z')
+        self.assertEqual(report['audit_summary']['claims_checked'],92)
+        self.assertEqual(report['audit_summary']['claims_failed'],0)
+        self.assertGreater(report['audit_summary']['claims_held'],0)
+        self.assertEqual(INVENTORY.read_bytes(),raw)
+        self.assertTrue(all(not x['audit_result']['verification_sufficient'] for x in report['claims']))
+
+    def test_runtime_audit_precedes_historical_global_gates(self):
+        text=(ROOT/'.github/workflows/qikvrt_global_completion.yml').read_text()
+        self.assertLess(text.index('      - name: Audit claim domains'),text.index('      - name: Diagnose frozen inputs'))
+        self.assertIn('qikvrt-claim-audit-${{ github.run_id }}-${{ github.run_attempt }}',text)
+
+    def test_policy_and_schemas_match_implemented_classes_and_boundaries(self):
+        policy=load(ROOT/'policy/QIKVRT_CLAIM_AUDIT_V1.json')
+        self.assertEqual(set(policy['invariant_classes']),generator.INVARIANT_CLASSES)
+        self.assertEqual({(x['subject'],x['object']) for x in policy['non_implications']},set(generator.NON_IMPLICATIONS))
+        self.assertEqual(policy['automatically_required_invariant']['statement'],generator.REALITY_STATEMENT)
+        self.assertFalse(policy['boundaries']['effect_ack_done'])
+        schema=load(ROOT/'schemas/qikvrt_claim_audit_v1.schema.json')
+        self.assertEqual(schema['properties']['schema']['const'],'qikvrt_claim_audit_v1')
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

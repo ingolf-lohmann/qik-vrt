@@ -1,0 +1,107 @@
+{
+  "_license": {
+    "classification": "claim_audit_contract_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "automatically_required_invariant": {
+    "class": "EPISTEMIC",
+    "id": "INV_REALITY_001",
+    "statement": "Claims about reality require evidence from reality."
+  },
+  "boundaries": {
+    "audit_pass_is_claim_truth": false,
+    "declared_origin_is_authentication": false,
+    "effect_ack_done": false,
+    "external_effect": false,
+    "historical_disposition_is_current_verification": false,
+    "metadata_is_empirical_evidence": false
+  },
+  "claim_checks": [
+    "EXISTENCE",
+    "SYNTAX",
+    "DECLARED_SEMANTICS",
+    "DOMAIN",
+    "EVIDENCE",
+    "VERIFICATION",
+    "APPLICABILITY"
+  ],
+  "command": "python3 -B tools/qikvrt_global_completion.py audit",
+  "exit_codes": {
+    "0": "AUDIT_EXECUTED_NO_ENCODED_FAILURE_HOLD_MAY_REMAIN",
+    "1": "MALFORMED_INPUT_OR_META_AUDIT_FAILURE",
+    "2": "CLAIM_INVARIANT_OR_NON_IMPLICATION_FAILURE",
+    "3": "STRICT_VERIFICATION_REQUEST_HELD"
+  },
+  "human_requirement_and_authorization": "Ingolf Lohmann",
+  "implementation": "OpenAI Codex",
+  "implemented_predicates": [
+    "SET_SUBSET_OVER_BOUND_JSON_SNAPSHOTS",
+    "NON_IMPLICATION_STRUCTURED_GRAPH_REACHABILITY",
+    "SOURCE_AND_EVIDENCE_SHA256_BINDING",
+    "DECLARED_DOMAIN_CLASS_CONSISTENCY"
+  ],
+  "invariant_classes": [
+    "FORMAL",
+    "STRUCTURAL",
+    "STATE",
+    "TEMPORAL",
+    "SECURITY",
+    "EPISTEMIC",
+    "RUNTIME"
+  ],
+  "meta_audit": "ONE_FINITE_INDEPENDENT_RECOMPUTATION_OF_SOURCE_BOUND_OUTPUT",
+  "meta_audit_command": "python3 -B tools/qikvrt_global_completion.py verify-audit --input <registry> --report <receipt>",
+  "non_implications": [
+    {
+      "object": "OBSERVATION",
+      "relation": "NOT_IMPLIES",
+      "subject": "SIMULATION"
+    },
+    {
+      "object": "EFFECT",
+      "relation": "NOT_IMPLIES",
+      "subject": "PREDICTION"
+    },
+    {
+      "object": "EFFECT_ACK",
+      "relation": "NOT_IMPLIES",
+      "subject": "TRANSPORT_ACK"
+    },
+    {
+      "object": "TRUTH",
+      "relation": "NOT_IMPLIES",
+      "subject": "AUTHORITY"
+    },
+    {
+      "object": "CAUSALITY",
+      "relation": "NOT_IMPLIES",
+      "subject": "CORRELATION"
+    },
+    {
+      "object": "EMPIRICAL_PROOF",
+      "relation": "NOT_IMPLIES",
+      "subject": "BELIEF"
+    }
+  ],
+  "policy_id": "QIKVRT_CLAIM_AUDIT_V1",
+  "reuse_evidence": [
+    "GLOBAL_CLAIM_INVENTORY.json",
+    "tools/qikvrt_global_completion.py",
+    "formalization/QIKVRT_Formalization_v2.0/scripts/validate_claim_graph.py",
+    "policy/QIKVRT_MACHINE_VERIFIABLE_SCIENCE_CHARTER_V1.json"
+  ],
+  "reused_controller": "tools/qikvrt_global_completion.py",
+  "schema": "qikvrt_claim_audit_policy_v1",
+  "severity_levels": [
+    "INFO",
+    "NOTICE",
+    "WARNING",
+    "ERROR",
+    "CRITICAL"
+  ],
+  "unknown_semantics": "HOLD_UNLESS_AN_ALLOWLISTED_PREDICATE_IS_EXECUTABLE",
+  "verifier_admission": "Independent formal/empirical/peer-review/reproduction verifiers are not admitted by this first audit adapter; every such boolean remains false."
+}

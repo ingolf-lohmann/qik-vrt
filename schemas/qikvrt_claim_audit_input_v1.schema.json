@@ -1,0 +1,168 @@
+{
+  "$id": "qikvrt_claim_audit_input_v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "claims": {
+      "items": {
+        "properties": {
+          "claim_class": {
+            "enum": [
+              "HYPOTHESIS",
+              "ASSERTION",
+              "THEOREM",
+              "ASSUMPTION",
+              "DEFINITION",
+              "NORMATIVE_REQUIREMENT",
+              "INTERPRETATION"
+            ]
+          },
+          "claim_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "claim_statement": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "epistemic_domain": {
+            "enum": [
+              "FORMAL",
+              "EMPIRICAL",
+              "NORMATIVE",
+              "INTERPRETIVE",
+              "DOCUMENTARY",
+              "SIMULATION",
+              "RELIGIOUS",
+              "METAPHYSICAL"
+            ]
+          },
+          "evidence": {
+            "items": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "DOCUMENTARY",
+                    "FORMAL_PROOF",
+                    "SIMULATION",
+                    "OBSERVATION",
+                    "AUTHORITY",
+                    "PREDICTION",
+                    "CORRELATION",
+                    "BELIEF"
+                  ]
+                },
+                "path": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "source": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "source"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "sources": {
+            "items": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "DOCUMENTARY",
+                    "FORMAL_PROOF",
+                    "SIMULATION",
+                    "OBSERVATION",
+                    "AUTHORITY",
+                    "PREDICTION",
+                    "CORRELATION",
+                    "BELIEF"
+                  ]
+                },
+                "path": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                "source": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "source"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "claim_id",
+          "claim_statement",
+          "epistemic_domain",
+          "claim_class"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "invariants": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "relations": {
+      "items": {
+        "properties": {
+          "object": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "relation": {
+            "enum": [
+              "IMPLIES",
+              "NOT_IMPLIES"
+            ]
+          },
+          "subject": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject",
+          "relation",
+          "object"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "qikvrt_claim_audit_input_v1"
+    }
+  },
+  "required": [
+    "schema",
+    "claims",
+    "invariants",
+    "relations"
+  ],
+  "type": "object"
+}

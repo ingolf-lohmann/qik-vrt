@@ -454,9 +454,235 @@ def verify_tag()->None:
     remote=subprocess.check_output(["git","ls-remote","--tags","https://github.com/ingolf-lohmann/qik-vrt.git",f"refs/tags/{TAG}^{{}}"],cwd=ROOT,text=True).strip()
     if not remote or remote.split()[0]!=MIRROR_TAG: raise ValueError("Mirror exact annotated tag differs")
 
-def main(argv:list[str]|None=None)->int:
-    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument("action",nargs="?",choices=("generate","check","verify-tag"),default="generate"); ap.add_argument("--check",action="store_true"); ap.add_argument("--verify-tag",action="store_true"); a=ap.parse_args(argv); action="check" if a.check else "verify-tag" if a.verify_tag else a.action
+# Audit is additive: historical completion/disposition is never proof authority here.
+AUDIT_DOMAINS = {"FORMAL", "EMPIRICAL", "NORMATIVE", "INTERPRETIVE", "DOCUMENTARY", "SIMULATION", "RELIGIOUS", "METAPHYSICAL"}
+AUDIT_CLASSES = {"HYPOTHESIS", "ASSERTION", "THEOREM", "ASSUMPTION", "DEFINITION", "NORMATIVE_REQUIREMENT", "INTERPRETATION"}
+INVARIANT_CLASSES = {"FORMAL", "STRUCTURAL", "STATE", "TEMPORAL", "SECURITY", "EPISTEMIC", "RUNTIME"}
+NON_IMPLICATIONS = (("SIMULATION", "OBSERVATION"), ("PREDICTION", "EFFECT"),
+                    ("TRANSPORT_ACK", "EFFECT_ACK"), ("AUTHORITY", "TRUTH"),
+                    ("CORRELATION", "CAUSALITY"), ("BELIEF", "EMPIRICAL_PROOF"))
+REALITY_STATEMENT = "Claims about reality require evidence from reality."
+
+
+def audit_json(raw: str) -> dict[str, Any]:
+    def pairs(items):
+        value = {}
+        for key, item in items:
+            if key in value: raise ValueError(f"duplicate audit JSON key: {key}")
+            value[key] = item
+        return value
+    value = json.loads(raw, object_pairs_hook=pairs,
+                       parse_constant=lambda _: (_ for _ in ()).throw(ValueError("nonfinite audit JSON")))
+    if not isinstance(value, dict): raise ValueError("audit input must be an object")
+    return value
+
+
+def audit_reference(ref: Any, root: Path) -> dict[str, Any]:
+    result = {"evidence_present": False, "evidence_hash_valid": False,
+              "evidence_source_known": False, "kind": None, "binding": ref}
+    if not isinstance(ref, dict): return result
+    path, digest = ref.get("path"), ref.get("sha256")
+    if not isinstance(path, str) or not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest): return result
+    candidate = Path(path)
+    if candidate.is_absolute() or ".." in candidate.parts: return result
+    target = root / candidate
+    if any(part.is_symlink() for part in (target, *target.parents)) or not target.is_file(): return result
+    if not target.resolve().is_relative_to(root.resolve()): return result
+    raw = target.read_bytes()
+    result.update(evidence_present=True, evidence_hash_valid=sha(raw)==digest,
+                  evidence_source_known=isinstance(ref.get("source"), str) and bool(ref["source"].strip()),
+                  kind=ref.get("kind"), actual_sha256=sha(raw), bytes=len(raw), git_blob_sha1=blob(raw))
+    return result
+
+
+def normalize_audit_input(value: dict[str, Any]) -> dict[str, Any]:
+    if value.get("schema") == "qikvrt_claim_audit_input_v1": return value
+    if value.get("schema") != "qikvrt_global_claim_inventory_v1": raise ValueError("unsupported audit input schema")
+    domains = {"MATHEMATICAL":"FORMAL", "CONDITIONAL":"FORMAL", "DEFINITION":"FORMAL",
+               "ASSUMPTION":"FORMAL", "FORMAL_PROTOCOL":"FORMAL", "FORMAL_THEOREM":"FORMAL",
+               "EMPIRICAL":"EMPIRICAL", "EMPIRICAL_PHYSICS":"EMPIRICAL", "SOURCE":"DOCUMENTARY",
+               "BACKGROUND":"DOCUMENTARY", "VALUE_PREMISE":"NORMATIVE", "NORMATIVE_PROTOCOL":"FORMAL",
+               "COUNTEREXAMPLE":"FORMAL", "INFORMATION_THEOREM":"FORMAL", "CONDITIONAL_SOFTWARE_THEOREM":"FORMAL",
+               "CONDITIONAL_CYBERPHYSICAL_THEOREM":"FORMAL", "IMPLEMENTATION_CONFORMANCE":"EMPIRICAL", "TOTALITY_CLAIM":"FORMAL"}
+    claims = []
+    for item in value.get("claims", []):
+        category = item.get("epistemic_category")
+        domain = domains.get(category, category)
+        klass = "THEOREM" if item.get("terminal_disposition") in {"KERNEL_PROVED", "KERNEL_PROVED_CONDITIONAL"} else (
+            "NORMATIVE_REQUIREMENT" if domain == "NORMATIVE" else "INTERPRETATION" if domain == "INTERPRETIVE" else "HYPOTHESIS" if item.get("terminal_disposition") == "OPEN" else "ASSERTION")
+        claims.append({"claim_id":item.get("inventory_id"), "claim_statement":item.get("statement"),
+                       "epistemic_domain":domain, "claim_class":klass,
+                       "sources":[{**ref, "source":ref.get("path"), "kind":"DOCUMENTARY"} for ref in item.get("source_refs", [])],
+                       "evidence":[], "historical_disposition":item.get("terminal_disposition"),
+                       "historical_epistemic_category":category, "domain_mapping_scope":"REGISTERED_FORMAL_MODEL_OR_DECLARED_SOURCE_DOMAIN"})
+    return {"schema":"qikvrt_claim_audit_input_v1", "claims":claims, "invariants":[], "relations":[]}
+
+
+def claim_audit(value: dict[str, Any], *, root: Path = ROOT, timestamp: str) -> dict[str, Any]:
+    from datetime import datetime
+    if datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is None: raise ValueError("audit timestamp requires timezone")
+    data = normalize_audit_input(value)
+    claims, invariants, relations = (data.get(key, []) for key in ("claims", "invariants", "relations"))
+    if any(not isinstance(arr, list) or any(not isinstance(x, dict) for x in arr) for arr in (claims, invariants, relations)):
+        raise ValueError("audit claims, invariants and relations must be arrays of objects")
+    if any(x.get("invariant_id", x.get("id")) == "INV_REALITY_001" for x in invariants):
+        raise ValueError("INV_REALITY_001 is engine-owned and cannot be overridden")
+    ids = [c.get("claim_id") for c in claims]
+    identifiers = Counter(x for x in ids if isinstance(x, str))
+    graph = {}
+    for edge in relations:
+        if edge.get("relation") not in {"IMPLIES", "NOT_IMPLIES"} or not all(isinstance(edge.get(k), str) and edge[k] for k in ("subject", "object")):
+            raise ValueError("malformed non-implication relation")
+        if edge["relation"] == "IMPLIES": graph.setdefault(edge["subject"], set()).add(edge["object"])
+    def reachable(start, end):
+        seen, pending = set(), list(graph.get(start, []))
+        while pending:
+            node = pending.pop()
+            if node == end: return True
+            if node not in seen: seen.add(node); pending.extend(graph.get(node, []))
+        return False
+    denied = set(NON_IMPLICATIONS) | {(e["subject"], e["object"]) for e in relations if e["relation"] == "NOT_IMPLIES"}
+    edges = [{"subject":s, "relation":"NOT_IMPLIES", "object":o, "violated":reachable(s,o)} for s,o in sorted(denied)]
+    receipts = []
+    for index, claim in enumerate(claims):
+        cid, domain, klass = (claim.get(k) for k in ("claim_id", "epistemic_domain", "claim_class"))
+        checklist = {"claim_exists":True, "claim_identifier_unique":isinstance(cid,str) and bool(cid.strip()) and identifiers[cid]==1,
+                     "claim_class_present":klass in AUDIT_CLASSES, "domain_present":domain in AUDIT_DOMAINS,
+                     "statement_present":isinstance(claim.get("claim_statement"),str) and bool(claim["claim_statement"].strip())}
+        consistent = ((klass != "THEOREM" or domain == "FORMAL") and
+                      (klass != "NORMATIVE_REQUIREMENT" or domain == "NORMATIVE") and
+                      (klass != "INTERPRETATION" or domain == "INTERPRETIVE"))
+        sources, evidence = claim.get("sources", []), claim.get("evidence", [])
+        if not isinstance(sources,list) or not isinstance(evidence,list): raise ValueError("claim sources/evidence must be arrays")
+        refs = [audit_reference(ref, root) for ref in sources]
+        erefs = [audit_reference(ref, root) for ref in evidence]
+        required = domain == "EMPIRICAL" or klass == "THEOREM"
+        hashes_valid = bool(erefs) and all(r["evidence_present"] and r["evidence_hash_valid"] for r in erefs)
+        origin_known = bool(erefs) and all(r["evidence_source_known"] for r in erefs)
+        bound = hashes_valid and origin_known
+        reality_evidence = bound and all(r["kind"] == "OBSERVATION" for r in erefs)
+        category_error = (domain == "EMPIRICAL" and bool(erefs) and not reality_evidence) or not consistent
+        # Digests and declared origins bind bytes, never authenticate truth or a verifier.
+        verification = {"formal_verified":False, "empirical_verified":False, "peer_reviewed":False, "reproduced":False}
+        runtime = claim.get("runtime", {})
+        if not isinstance(runtime,dict): raise ValueError("claim runtime must be an object")
+        runtime_audit = {"rule_present":bool(runtime), "rule_executable":False,
+                         "runtime_violation":False, "status":"NOT_OBSERVED"}
+        observed = {"predicted":None, "executed":None, "observed":None, "readback":None, "effect_ack":False}
+        reality_refs = claim.get("observed_reality", {})
+        if not isinstance(reality_refs,dict): raise ValueError("observed_reality must be an object")
+        reality_bindings = {}
+        for key in ("predicted", "executed", "observed", "readback"):
+            if key in reality_refs:
+                binding = audit_reference(reality_refs[key], root)
+                reality_bindings[key] = binding
+                observed[key] = binding if binding["evidence_hash_valid"] else None
+        if reality_bindings:
+            runtime_audit["status"] = "BOUND_ARTIFACTS_ONLY_INDEPENDENT_VERIFICATION_OPEN"
+        # A caller-supplied verification flag or ACK cannot enter the output as proof.
+        reasons = []
+        if not all(checklist.values()): reasons.append("MALFORMED_OR_DUPLICATE_CLAIM")
+        if category_error: reasons.append("CATEGORY_ERROR")
+        if any(not r["evidence_hash_valid"] for r in refs+erefs+list(reality_bindings.values())): reasons.append("SOURCE_OR_EVIDENCE_BINDING_INVALID")
+        state = "FAIL" if reasons else "HOLD" if required else "PASS"
+        if not refs and state != "FAIL": state = "HOLD"; reasons.append("CLAIM_SOURCE_NOT_BOUND")
+        if any(not r["evidence_source_known"] for r in refs+erefs) and state != "FAIL":
+            state = "HOLD"; reasons.append("SOURCE_ORIGIN_UNESTABLISHED")
+        if state == "HOLD": reasons.append("INDEPENDENT_VERIFICATION_NOT_ESTABLISHED")
+        result = {"claim_exists":True, "claim_well_formed":all(checklist.values()), "domain_consistent":consistent,
+                  "evidence_present":bool(erefs), "verification_sufficient":False, "runtime_applicable":False}
+        receipts.append({"schema":"qikvrt_claim_audit_v1", "audit_id":f"AUDIT_{index+1:06d}", "claim_id":cid,
+                         "timestamp":timestamp, "epistemic_domain":domain, "claim_class":klass,
+                         "claim_statement":claim.get("claim_statement"), "audit_result":result,
+                         "claim_checklist":checklist, "evidence_checklist":{"evidence_required":required,
+                         "evidence_present":bool(erefs), "evidence_hash_valid":hashes_valid, "evidence_source_known":origin_known},
+                         "verification_checklist":verification, "epistemic_audit":{"category_error":category_error,
+                         "mixed_domains":not consistent, "improper_inference":False, "scope":"DECLARED_TYPES_AND_STRUCTURED_EDGES_ONLY"},
+                         "source_bindings":refs, "evidence_bindings":erefs, "runtime_audit":runtime_audit,
+                         "observed_reality_audit":observed, "status":state,
+                         "severity":"ERROR" if state=="FAIL" else "NOTICE" if state=="HOLD" else "INFO",
+                         "reasons":reasons, "historical_disposition":claim.get("historical_disposition"),
+                         "historical_epistemic_category":claim.get("historical_epistemic_category"),
+                         "domain_mapping_scope":claim.get("domain_mapping_scope")})
+    invariant_receipts = []
+    invariant_ids = [i.get("invariant_id",i.get("id")) for i in invariants]
+    for invariant in invariants:
+        iid = invariant.get("invariant_id", invariant.get("id"))
+        klass, statement, predicate = invariant.get("class"), invariant.get("statement"), invariant.get("predicate", {})
+        well_formed = isinstance(iid,str) and bool(iid) and invariant_ids.count(iid)==1 and klass in INVARIANT_CLASSES and isinstance(statement,str) and bool(statement)
+        state, reason = ("HOLD","EXECUTABLE_PREDICATE_NOT_ESTABLISHED") if well_formed else ("FAIL","MALFORMED_OR_DUPLICATE_INVARIANT")
+        executable = False
+        invariant_bindings = []
+        if well_formed and isinstance(predicate,dict) and predicate.get("type") == "SET_SUBSET":
+            refs = [audit_reference(predicate.get(k),root) for k in ("old", "new")]
+            invariant_bindings = refs
+            if all(r["evidence_hash_valid"] and r["evidence_source_known"] for r in refs):
+                values = [audit_json((root/predicate[k]["path"]).read_text()).get(predicate.get("field","nodes")) for k in ("old","new")]
+                if all(isinstance(v,list) and all(isinstance(x,str) for x in v) for v in values):
+                    executable = True; state = "PASS" if set(values[0]) <= set(values[1]) else "FAIL"; reason = "BOUND_SET_COMPARISON"
+                else: state, reason = "FAIL", "INVALID_SET_OPERANDS"
+            else: state, reason = "FAIL", "INVARIANT_SOURCE_BINDING_INVALID"
+        elif well_formed and isinstance(predicate,dict) and predicate.get("type") == "NON_IMPLICATION":
+            if not all(isinstance(predicate.get(k),str) and predicate[k] for k in ("subject","object")):
+                raise ValueError("non-implication predicate requires bound subject and object")
+            executable = True
+            state = "FAIL" if reachable(predicate["subject"],predicate["object"]) else "PASS"
+            reason = "STRUCTURED_GRAPH_REACHABILITY_ONLY"
+        invariant_receipts.append({"schema":"qikvrt_invariant_audit_v1", "invariant_id":iid, "class":klass,
+                                   "statement":statement, "status":state, "reason":reason,
+                                   "predicate":predicate, "source_bindings":invariant_bindings,
+                                   "severity":"ERROR" if state=="FAIL" else "NOTICE" if state=="HOLD" else "INFO",
+                                   "runtime_audit":{"rule_present":well_formed, "rule_executable":executable,
+                                                    "runtime_violation":state=="FAIL" and executable}})
+    reality_ok = not any(r["epistemic_audit"]["category_error"] for r in receipts) and not any(e["violated"] for e in edges)
+    invariant_receipts.append({"schema":"qikvrt_invariant_audit_v1", "invariant_id":"INV_REALITY_001", "class":"EPISTEMIC",
+                               "statement":REALITY_STATEMENT, "status":"FAIL" if not reality_ok else "HOLD" if any(r["status"]=="HOLD" for r in receipts) else "PASS",
+                               "reason":"DECLARED_REALITY_EVIDENCE_BOUNDARY_ONLY"})
+    summary = {"claims_checked":len(receipts), "claims_passed":sum(r["status"]=="PASS" for r in receipts),
+               "claims_failed":sum(r["status"]=="FAIL" for r in receipts), "claims_held":sum(r["status"]=="HOLD" for r in receipts),
+               "invariants_checked":len(invariant_receipts), "invariants_failed":sum(r["status"]=="FAIL" for r in invariant_receipts),
+               "invariants_held":sum(r["status"]=="HOLD" for r in invariant_receipts),
+               "category_errors":sum(r["epistemic_audit"]["category_error"] for r in receipts), "non_implication_violations":sum(e["violated"] for e in edges)}
     try:
+        binding = subprocess.check_output(["git","-C",str(root),"rev-parse","HEAD","HEAD^{tree}"],stderr=subprocess.DEVNULL,text=True).splitlines()
+        execution_subject = {"head_sha":binding[0], "tree_sha":binding[1],
+                             "working_copy_dirty":bool(subprocess.check_output(["git","-C",str(root),"status","--porcelain"],text=True))}
+    except subprocess.CalledProcessError:
+        execution_subject = {"state":"GIT_SUBJECT_UNBOUND"}
+    report = {"schema":"qikvrt_claim_audit_report_v1", "timestamp":timestamp,
+              "execution_subject":execution_subject, "auditor_binding":identity(Path(__file__)),
+              "policy_binding":identity(ROOT/"policy/QIKVRT_CLAIM_AUDIT_V1.json"),
+              "policy_id":"QIKVRT_CLAIM_AUDIT_V1",
+              "input_sha256":sha(pretty(value).encode()), "audit_summary":summary,
+              "claims":receipts, "invariants":invariant_receipts, "non_implication_audit":edges,
+              "audit_of_audit":{"sources_traceable":all(bool(r["source_bindings"]) and all(x["evidence_hash_valid"] and x["evidence_source_known"] for x in r["source_bindings"]+r["evidence_bindings"]) for r in receipts) and all(all(x["evidence_hash_valid"] and x["evidence_source_known"] for x in i.get("source_bindings",[])) for i in invariant_receipts),
+                                "epistemic_domain_checked":True, "category_error_checked":True, "non_implication_checked":True, "reality_boundary_checked":True},
+              "boundaries":{"effect_ack_done":False, "audit_pass_is_claim_truth":False, "historical_evidence_transfer":False,
+                            "origin_declaration_is_authentication":False, "natural_language_semantics_verified":False}}
+    report["report_sha256"] = sha(pretty(report).encode())
+    return report
+
+
+def verify_claim_audit(report: dict[str, Any], value: dict[str, Any], *, root: Path = ROOT) -> bool:
+    # One finite recomputation audits this output; no recursive proof inflation.
+    return report == claim_audit(value, root=root, timestamp=report.get("timestamp", ""))
+
+
+def main(argv:list[str]|None=None)->int:
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument("action",nargs="?",choices=("generate","check","verify-tag","audit","verify-audit"),default="generate"); ap.add_argument("--check",action="store_true"); ap.add_argument("--verify-tag",action="store_true"); ap.add_argument("--input",type=Path,default=INVENTORY); ap.add_argument("--report",type=Path); ap.add_argument("--timestamp"); ap.add_argument("--require-verified",action="store_true"); a=ap.parse_args(argv); action="check" if a.check else "verify-tag" if a.verify_tag else a.action
+    try:
+        if action in {"audit", "verify-audit"}:
+            from datetime import datetime, timezone
+            value=audit_json(a.input.read_text(encoding="utf-8"))
+            if action=="verify-audit":
+                if a.report is None: raise ValueError("verify-audit requires --report")
+                if not verify_claim_audit(audit_json(a.report.read_text()),value): raise ValueError("audit report differs from independent recomputation")
+                print("PASS audit receipt recomputation; no truth or effect claim"); return 0
+            report=claim_audit(value,timestamp=a.timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00","Z"))
+            print(pretty(report),end="")
+            summary=report["audit_summary"]
+            if summary["claims_failed"] or summary["invariants_failed"] or summary["non_implication_violations"]: return 2
+            return 3 if a.require_verified and (summary["claims_held"] or summary["invariants_held"]) else 0
         if action=="verify-tag": verify_tag(); print(f"PASS exact-tag kernel source binding: {TAG}, 54 primary receipts"); return 0
         out,final=outputs(); ok=all(write_or_check(p,t,action=="check") for p,t in out.items())
         if not ok: return 1
