@@ -78,6 +78,10 @@ def reobserve(before: TwinState, after: TwinState, effect: dict[str, Any]) -> di
         and effect.get("before_version") == before.version
         and effect.get("after_version") == after.version
         and after.version == before.version + 1
+        and after.twin_id == before.twin_id
+        and after.position_m == before.position_m
+        and after.temperature_c == before.temperature_c
+        and effect.get("target_velocity_mps") == after.velocity_mps
         and after_sha != before_sha
     )
     return {
