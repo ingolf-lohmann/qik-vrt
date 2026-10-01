@@ -194,5 +194,63 @@
     "AUTHORITY_RECOVERED": false,
     "EFFECT_ACK_DONE": false,
     "PREDECESSOR_EVIDENCE_TRANSFER": false
+  },
+  "history_preserving_main_integration": {
+    "candidate_parent": "392e776f6e0811a738cf3cac34ddc98fa336d72c",
+    "main_parent": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+    "previous_pr_base": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "main_delta_bindings": [
+      {
+        "path": "evidence/node_health/36866747092-1.json",
+        "bytes": 241,
+        "sha256": "d6a983f589e97a5563daffa6b893471932697178f2ca0785f47c6603105ec325",
+        "git_blob_sha1": "be969b910f454c0145e4c8d4d4c32a0f70c7069b"
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "bytes": 241,
+        "sha256": "d6a983f589e97a5563daffa6b893471932697178f2ca0785f47c6603105ec325",
+        "git_blob_sha1": "be969b910f454c0145e4c8d4d4c32a0f70c7069b"
+      },
+      {
+        "path": "evidence/node_registration_renewal/36866747092-1.json",
+        "bytes": 262,
+        "sha256": "b5b6d0d1cb56470e363b1fce689c97d26ab0bea1b596ddf21ceef54527269fab",
+        "git_blob_sha1": "673de9d099f0dc7e1d2585303372e2f6f5bf99b6"
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "bytes": 262,
+        "sha256": "b5b6d0d1cb56470e363b1fce689c97d26ab0bea1b596ddf21ceef54527269fab",
+        "git_blob_sha1": "673de9d099f0dc7e1d2585303372e2f6f5bf99b6"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "bytes": 563,
+        "sha256": "d868d9f5a72d141aac72af19317e8a05aa0e06b2606e8ff5f87e924c320cdead",
+        "git_blob_sha1": "e6bd90011258788590678e70ea84921491501d8b"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "bytes": 542,
+        "sha256": "bae083f9fa692a756c784302b13c7a65eaa5712441d45e21be7eeb1f5ee06b45",
+        "git_blob_sha1": "9fef18f0a297878bbf8ff74dfecbcf47fc1ec7d1"
+      }
+    ],
+    "semantic_adapter_changes": false,
+    "cause_observation": {
+      "synthetic_merge_head": "8fe88f7def4c5cb0892f95a53e92aa427433fc0b",
+      "synthetic_merge_tree": "019d992f80af01f5caf724fb67eb48ed4b4c77bb",
+      "integrity_verify_reproduced": "BLOCK repository manifest differs from deterministic regeneration",
+      "failed_jobs": [
+        110405138409,
+        110405140067
+      ],
+      "first_causal_gap": "Two newer lifecycle evidence paths from Main absent from candidate integrity projection; exact-head suite had passed but merge-tree suite failed"
+    },
+    "repair": "Preserve all six Main lifecycle paths unchanged, append this provenance and regenerate canonical integrity trio",
+    "fresh_enclosing_head_full_gate_required": true,
+    "predecessor_evidence_transfer": false,
+    "force_push": false
   }
 }
