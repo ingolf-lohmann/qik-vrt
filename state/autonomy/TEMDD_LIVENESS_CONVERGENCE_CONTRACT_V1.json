@@ -1,0 +1,53 @@
+{
+  "schema": "qikvrt_temdd_liveness_convergence_contract_v1",
+  "status": "THEOREM_OBLIGATION_UNPROVED",
+  "subject_repository": "ingolf-lohmann/qik-vrt",
+  "predecessor_evidence_transfer": false,
+  "axioms_or_assumptions": [
+    "FAIR_EXECUTION",
+    "STABLE_REQUIRED_ENVIRONMENT_ASSUMPTIONS",
+    "FRESH_IDENTITY_AND_PROVENANCE_BINDING"
+  ],
+  "safety": {
+    "required": true,
+    "transport_ack_is_effect_ack": false,
+    "effect_ack_done_is_global_done": false
+  },
+  "liveness": {
+    "required": true,
+    "non_goal_requires": [
+      "PRODUCTIVE_SUCCESSOR_EVENTUALLY",
+      "OR_EXPLICIT_EXTERNAL_HOLD"
+    ]
+  },
+  "progress": {
+    "ranking_function_required": true,
+    "codomain_must_be_well_founded": true,
+    "internal_productive_step_requires_strict_decrease": true,
+    "semantic_noop_is_progress": false,
+    "evidence_churn_is_progress": false
+  },
+  "counterexamples": [
+    "DEADLOCK",
+    "LIVELOCK",
+    "CYCLE",
+    "EVIDENCE_CHURN",
+    "EXTERNAL_DEPENDENCY",
+    "MOVING_ENVIRONMENT",
+    "SUCCESSOR_MUTATION"
+  ],
+  "theorem": {
+    "name": "CONDITIONAL_GOAL_REACHABILITY",
+    "claim": "Safety AND Liveness AND WellFounded(V) AND StrictDecreaseOnEveryInternalProductiveStep(V) AND FairExecution AND StableRequiredEnvironmentAssumptions IMPLIES GoalReachability",
+    "proved": false
+  },
+  "acceptance": {
+    "machine_readable_contract": true,
+    "executable_counterexample_tests": false,
+    "concrete_ranking_function": false,
+    "ranking_transition_checks": false,
+    "environment_assumptions_explicit": true,
+    "independent_fresh_public_readback": false,
+    "effect_ack_done": false
+  }
+}
