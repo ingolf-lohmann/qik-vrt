@@ -88,6 +88,21 @@
       "public_url_accepted": false,
       "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; downloaded archive digest and receipt independently verified; no transfer to successor",
       "personal_release_effect_ack_done": false
+    },
+    {
+      "head": "3d196d4c670d64755d2a24d525851c8f564434d9",
+      "tree": "b0d0247ad95f7c043036a40707f43ba2da6cc247",
+      "run_id": 36940012614,
+      "artifact_id": 11199633289,
+      "artifact_sha256": "f2387995d49df8fe536cd8ee90752df3a73d33002c120f55debd4b5be93ca210",
+      "windows_witness_test": "PASS",
+      "public_http_status": 404,
+      "browser_navigation_response_status": 404,
+      "public_url_fresh_readback": false,
+      "readback_time": "2026-10-01T23:18:31.104603+00:00",
+      "independent_byte_readback": "Archive, receipt, HTTP body, browser screenshot, XPI, policy, observer and candidate docs root hashes verified",
+      "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; no transfer to successor",
+      "personal_release_effect_ack_done": false
     }
   ],
   "public_pages_continuation": {
@@ -202,6 +217,18 @@
       "authenticated_runtime_readback",
       "credential_non_persistence",
       "responsible_owner_acceptance"
-    ]
+    ],
+    "technical_gate_binding_repair": {
+      "observed_candidate": "3d196d4c670d64755d2a24d525851c8f564434d9",
+      "observed_synthetic_merge": "76b18b9c7b42528e8f30bdfe778f5ca233ce7950",
+      "failed_runs": [
+        36940012607,
+        36940012637
+      ],
+      "error": "BLOCK repository manifest differs from deterministic regeneration",
+      "verified_cause": "Both workflows defaulted to refs/pull/438/merge while exact-candidate CI and Windows witness passed. Their mandatory suite observed a different subject.",
+      "repair": "Reuse explicit PR head SHA checkout and verify actual HEAD before existing unchanged gates.",
+      "scope": "Candidate checks only; merge integration acceptance and Authority Pages remain separate."
+    }
   }
 }
