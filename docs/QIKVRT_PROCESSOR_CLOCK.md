@@ -188,9 +188,10 @@ Die erreichbare Mirror-Historie wurde über 519 Remote-Refs und historische
 Board-/Constraint-Pfade geprüft. Der historische `hardware`-Tree
 `998129f68277b1025d433099e4fb4bef84a7e632` enthält ausschließlich vier
 `vhdl/`-Dateien des Meta-Transistors/Neutron-Star-Mesh und keinen
-Board-/Part-/Pin-/Timing-Vertrag. Das aktive Main/PR enthält ebenfalls kein
-belegtes Boardprofil. Daher werden keine konkreten Partnummern oder Pins
-eingetragen. Die synthetischen `TEST_ONLY_*`-Daten der Negativtests sind keine
+Board-/Part-/Pin-/Timing-Vertrag. Am ursprünglichen Vorgänger-HEAD
+`a63bbd6f3c941eb5ca0e0f00afdff1c524b7a025` gab es kein belegtes Profil.
+Die Aussage einer rekonstruierten M1-Pinbelegung bleibt zurückgezogen.
+Der folgende Kandidat verwendet neu gelesene externe Primärdokumente. Die synthetischen `TEST_ONLY_*`-Daten der Negativtests sind keine
 Boarddaten und kein physischer Nachweis.
 
 Der bestehende Readback-Verifier stellt zwei neue, effektfreie CLI-Aktionen
@@ -231,8 +232,9 @@ Runtime-Lock-/Cache-Vertrag für seine ausgewählte Toolchain erweitern.
 
 Das aus früherer Gesprächsevidenz berichtete Ziel iCE40UP5K-B-EVN / SG48 ist
 kein wiederhergestelltes aktuelles M1-Profil und keine physische Beobachtung.
-Ein Lattice-Build-/Constraint-/Programmer-Adapter ist hier nicht implementiert;
-ein Lattice-Profil wird vom vorhandenen Vendor-Validator abgewiesen. Die
+Der physische V1-Vendor-Validator unterstützt weiterhin AMD/Xilinx und Intel.
+Die folgende dokumentarische V2-Erweiterung erzeugt Lattice-Build-Eingaben,
+aber führt keinen Vendor-/Programmerlauf aus und authentisiert kein Board. Die
 behauptete Rekonstruktion von M1-Pins wird ausdrücklich zurückgenommen.
 
 Der Runvertrag bindet Repository/PR/HEAD/TREE, Profil/Build-Digest, Run-ID,
@@ -261,6 +263,129 @@ OPEN. `physical_clock_verified`, `bitstream_programmed`,
 `programmer_readback_observed` und `EFFECT_ACK_DONE` bleiben in diesem Interface
 stets false. Ein tatsächlicher Boardlauf mit frischem authentisiertem Readback
 ist ein eigener, noch ausstehender Abnahmeschritt.
+
+### Dokumentarischer iCE40UP5K-B-EVN-Kandidat (01.10.2026)
+
+`hardware/boards/lattice_ice40up5k_b_evn_rev_a.json` bindet die dokumentierte
+Board-/Schematic-Revision A aus den Titelblöcken des offiziellen
+[FPGA-UG-02001 v1.2](https://www.latticesemi.com/view_document?document_id=51987).
+Abschnitt 2 und Figure A.3 zeigen iCE40UP5K im 48-Pin-QFN; die aktuellen
+[UP5K-Pinout](https://www.latticesemi.com/view_document?document_id=51971)- und
+[SG48-Migrationstabellen](https://www.latticesemi.com/view_document?document_id=51133)
+stimmen bei allen 48 nummerierten Package-Pins überein.
+Das [Datenblatt FPGA-DS-02008 v2.4](https://www.latticesemi.com/view_document?document_id=51968)
+führt in Tabelle 5.4 `iCE40UP5K-SG48I` als 5280-LUT-Buildziel. Dieses gewählte
+Industrial-Ziel belegt keine beobachtete Temperaturklasse oder Chipmarkierung.
+Boardrevision, Seriennummer, IDCODE und bestückte Header sind physisch OPEN.
+
+Die vollständige Tabelle klassifiziert 31 GPIO-Header-Pads, vier gemeinsam
+genutzte Konfigurations-SPI-Pins, den Oscillatoreingang, CRESET/CDONE, drei
+spezielle RGB-Stromsenken und sämtliche Versorgungspins. Der Masse-Paddle ist
+zusätzlich reserviert. Die GPIO-Pads 23/25/34/43 teilen sich Netze mit Tastern;
+SPI, RGB, Clock und Versorgung sind keine frei austauschbaren Datenanschlüsse.
+J2/J3/J52 sowie PMOD sind in der Zeichnung DNI. Die Existenz eines Lötpads ist
+kein Nachweis eines bestückten oder freien Steckkontakts.
+Die dokumentierten IO-Bänke 0/1/2 liegen bei 3,3 V, VCC/VCCPLL bei 1,2 V.
+LVCMOS33 ist nach Abschnitt 3.1.9 / Tabellen 3.9 und 3.10 des Datenblatts für Ein-/Ausgänge passend.
+Die tatsächlichen Spannungen und Lasten müssen noch gemessen werden.
+
+X1 ist laut Figure A.2 ein 12-MHz-SiTime-Oscillator. J51 verbindet dessen
+Netz ICE_CLK mit Pin 35/G0 in Figure A.3. Der Adapter nutzt diese Leitung
+ausschließlich als Eingang und reicht `clk` direkt an den vorhandenen Carrier
+weiter. Kein Transport-Enable, Taktteiler oder PLL steuert dessen Auswertung.
+
+| Adapterport | SG48-Pin | Headerpad | Richtung |
+| --- | --- | --- | --- |
+| clk | 35 | J2.17 / J51 | Eingang |
+| power_reset_n | 4 | J3.1 | Eingang |
+| frame_start | 3 | J3.3 | Eingang |
+| frame_shift | 48 | J3.5 | Eingang |
+| frame_latch | 45 | J3.7 | Eingang |
+| serial_in | 47 | J3.9 | Eingang |
+| response_shift | 2 | J3.11 | Eingang |
+| serial_out | 44 | J3.13 | Ausgang |
+| response_valid | 46 | J3.15 | Ausgang |
+| transport_fault | 6 | J3.20 | Ausgang |
+
+Der neu beobachtete PR-Nachfolger `996831cdfdd3e87b655708ef2b7bc36b287be2ff`
+stellte während dieser Quellenarbeit bereits den oben beschriebenen
+Zehn-Port-Adapter bereit. Dieses Profil verwendet ihn unverändert, statt einen
+zweiten Transport zu erzeugen. Die 804-Bit-Grenze bleibt intern. Seine
+317-Bit-Requests und 485-Bit-Responses sowie Latch-/Busy-/Fault-Semantik gelten
+weiterhin. Jede zugelassene Carrier-Flanke wird genau einmal ausgewertet,
+auch während Idle, serieller Transfers oder eines gelatchten Fehlers.
+Ein vollständiger Request liefert ausschließlich auf seiner Latch-Flanke
+einen neuen Snapshot. Source und unabhängig spezialisierte Netlist werden mit
+denselben bestehenden Flanken-/Freshness-/Fault-Orakeln geprüft.
+
+Ein Controller muss seine sechs Dateneingänge synchron zur Board-Clock
+bereitstellen und deren Setup/Hold einhalten. Der FTDI-Programmierpfad stellt
+diesen Datencontroller nicht bereit. Async-USB/SPI, CDC und Eingangs-
+Authentisierung bleiben OPEN. Die Default-Bindung bleibt gesperrt. Ein
+`true`-Generic im generischen Testbuild authentisiert kein physisches Board.
+Die seriell beobachtete Commit-/Payload-Antwort gehört zur abgeschlossenen
+Latch-Flanke. Sie ist keine spätere aktuelle Aktuatorfreigabe; die vollständige
+physische Effektvermittlung bleibt OPEN.
+
+Der Readback-Verifier verwendet für dieses Profil den bestehenden
+`prepare-board`-Pfad mit zusätzlichem explizitem `--timing interface-budget.json`:
+
+```sh
+python3 -B tools/qikvrt_effect_ack_clock_readback.py prepare-board \
+  --profile hardware/boards/lattice_ice40up5k_b_evn_rev_a.json \
+  --timing interface-budget.json \
+  --expect-head "$EXPECTED_HEAD" --expect-tree "$EXPECTED_TREE" --nonce "$FRESH_NONCE"
+```
+
+Ohne Budget folgt Exit 20 / `HOLD_INTERFACE_TIMING_BUDGET_REQUIRED`. Mit einem
+expliziten Budget entsteht ein gehashter, exact-subject Reviewplan mit Radiant-
+PDC für alle zehn Pins, IO-Standard und Versorgungswerte sowie SDC für 12 MHz,
+Uncertainty und alle Min-/Max-IO-Delays einschließlich Reset. Er setzt keine
+False-/Multicycle-Ausnahmen. Ein angegebenes Budget ist weiterhin ungemessen;
+die synthetischen Testwerte sind keine zulässige Lab-Messung.
+
+Der Buildplan senkt die vier geordneten VHDL-2008-Quellen zunächst mit dem
+bereits gesperrten/verifizierten GHDL 6.0.0 zu `up5k_synth.v` ab. Danach
+verwendet `build_radiant.tcl` die offiziellen Project-Kommandos aus
+[Radiant TCL 2026.1](https://www.latticesemi.com/view_document?document_id=55212),
+[FPGA-AN-02113](https://www.latticesemi.com/view_document?document_id=55284) und dem
+[Radiant User Guide 2026.1](https://www.latticesemi.com/view_document?document_id=55202)
+für `iCE40UP5K-SG48I`, Synthesis/Map/PAR; Fehler stoppen den Plan.
+Er hält vor Bitstream/Programmer an. Radiant ist hier nicht installiert oder
+authentisiert; sein Lock/Cache/Provenienzvertrag muss vor Ausführung ergänzt
+werden. GHDL-Synthese belegt keine UP5K-Ressourcenpassung, kein Routing und
+keine STA. Vollständige Ressourcen- und Setup/Hold/Recovery/Removal-Prüfungen
+gegen gemessene Controller-Timingdaten bleiben erforderlich.
+
+Für den Programmer dokumentiert der Boardguide Abschnitt 8 Diamond Programmer
+ab 3.9 über den FT2232H/USB-Mini-B: iCE40 UltraPlus/iCE40UP5K, Micron
+N25Q032A-Flash, Erase/Program/Verify; alternativ CRAM/Fast Program.
+Flash nutzt J6 1-3/2-4 und J7 shunted; SRAM nutzt J6 1-2/3-4 und entfernt J7.
+Dateigröße/Endadresse und Kabel müssen aus dem tatsächlichen Image/Board
+ermittelt werden. D11 besitzt zwei BOM-Versionen; die dokumentierte
+Versorgungssequenz erlaubt keinen NVCM-Boot. Der Plan sperrt NVCM.
+[FPGA-TN-02001 v3.5](https://www.latticesemi.com/view_document?document_id=46502)
+beschreibt die Konfigurationsmodi. Flash-Byte-Verify authentisiert kein
+aktives FPGA-SRAM-Image; dessen Zuordnung bleibt eine separate Verpflichtung.
+
+Acht gelesene Primärdokumente sind im Profil mit URL, Version, Bytezahl und
+SHA-256 gebunden. Die offiziellen Default-Design-/Layout-/Schematic-Source-ZIPs
+(IDs 51990/51989/51988) lieferten am 01.10.2026 eine Lattice-Anmeldeseite statt
+ZIP-Bytes. Diese HTML-Antwort wurde nicht als Quellarchiv akzeptiert. Der
+Buildplan bleibt deshalb Exit 20 / `HOLD_PRIMARY_ARCHIVE_CROSSCHECK_REQUIRED`.
+Der Abgleich der Originalarchive ist OPEN. `verify-board` weist dieses
+dokumentarische Profil zurück, bis ein authentisierter targetspezifischer
+Adapter vorliegt. `physical_authentication`, `physical_clock_verified`,
+`bitstream_programmed`, `programmer_readback_observed` und `EFFECT_ACK_DONE`
+bleiben false.
+
+`make effect-ack-board-contract-test` erhält die bestehenden 2.621.440
+C-Orakelvektoren je Source-/Carrier-Netlist-Simulation und die Source- sowie
+separat spezialisierten Serial-Top-Kontrollen. Es ergänzt negative Profil-,
+Constraint-, Timing- und Substitutionstests. Die zusätzliche Verilog-Absenkung
+prüft für beide statischen Varianten genau die zehn dokumentierten skalaren
+Ports; ein breiter Package-Top wird verworfen. Keine Oracle- oder physische
+Abnahmebedingung wird abgeschwächt.
 
 ### Reproduzierbare Prüfung
 
@@ -295,7 +420,8 @@ Für eine produktive Bindung sind weiterhin erforderlich:
 1. Identität, Zulassung, Reset- und Epochenregeln der tatsächlichen Taktdomäne.
 2. Ein an jede relevante Hardwareflanke gebundener Prüfpfad mit
    Timing-Nachweis; der RTL-Pfad stellt die Logik bereit, aber noch keine
-   Board-/Pin-Bindung, Platzierung, STA oder Programmer-Rücklesung.
+   physisch authentisierte Board-/Pin-Bindung, Platzierung, STA oder
+   Programmer-Rücklesung. Das UP5K-Profil liefert dokumentarische Build-Eingaben.
 3. Atomar aktuelle, authentifizierte Eingaben und vollständige Vermittlung
    jedes geschützten Effekts durch die aktuelle Freigabe.
 4. Ein unabhängiger Abdeckungsnachweis für das beanspruchte Zyklusfenster,

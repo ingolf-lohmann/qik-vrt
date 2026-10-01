@@ -1,0 +1,265 @@
+{
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_UP5K_DOCUMENTARY_ADAPTER_20261001",
+  "created_at": "2026-10-01T18:16:33.781267+00:00",
+  "status": "MIRROR_REVIEW_CANDIDATE_WITH_EXTERNAL_PRIMARY_SOURCE_HOLD",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/processor-clock-core-20261001",
+  "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+  "source_tree": "4e05da211293513a50bc9c132c0b9fb966edbfe5",
+  "observed_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "human_actor": {
+    "classification": "HUMAN",
+    "name": "Ingolf Lohmann",
+    "identity_basis": "EXISTING_SESSION_AND_REPOSITORY_OWNER_BINDING"
+  },
+  "artificial_cognitive_actor": {
+    "classification": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "a70c64146667",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "git",
+      "Python standard library",
+      "locked GHDL 6.0.0",
+      "Poppler primary PDF inspection",
+      "existing Makefile gates"
+    ],
+    "identity_and_observation_limits": "Documentary primary-source readback only; no authenticated board, vendor installation, programmer or physical clock observation."
+  },
+  "human_contributions": [
+    "Required continuation from exact evidenced BOARD_BINDING_REQUIRED, retract unsupported M1 reconstruction claim, and primary-source reconstruction for iCE40UP5K-B-EVN",
+    "Required exact package/revision/clock/usable pin/voltage/vendor path evidence and small target-compatible adapter instead of 804-bit package top",
+    "Required negative profile/constraint/build tests, renewed source/netlist oracles, and all physical completion flags false until actual fresh observations"
+  ],
+  "artificial_cognitive_contributions": [
+    "Downloaded and byte-hashed eight official Lattice documents; visually inspected Rev A schematic title blocks, clock/header/FPGA and programmer settings",
+    "Rejected official source download authentication HTML as non-archive; recorded all three ZIPs as AUTHENTICATION_REQUIRED without invented hashes",
+    "Reobserved concurrent PR successor 996831c and reused its tested ten-port serial adapter, preserving that history; did not persist the earlier local alternative",
+    "Added 48-pin documentary role/header/IO-standard classification, exact ten-pin source-bound profile and board-specific programmer settings",
+    "Extended existing prepare-board with documentary V2 HOLD receipts and reviewable hash-bound Radiant PDC/SDC/project Tcl plus locked GHDL-to-Verilog inputs",
+    "Added profile/source/pin/physical-flag substitution and timing negative controls plus true/false derived-Verilog scalar port tests; reused complete existing source/netlist oracle suite"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "reuse_evidence": {
+    "initial_requested_head": "a63bbd6f3c941eb5ca0e0f00afdff1c524b7a025",
+    "concurrent_successor_observed": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+    "historical_search_record": "state/work_units/QIKVRT_EFFECT_ACK_BOARD_ACCEPTANCE_V1.json",
+    "historical_refs_searched": 519,
+    "historical_profile_found": false,
+    "existing_transport": "effect_ack_board_top / SYNCHRONOUS_FRAMED_SERIAL_V1 with internal effect_ack_parallel_core",
+    "transport_reused_unchanged": true,
+    "new_executor_or_workflow": false
+  },
+  "primary_source_records": {
+    "datasheet": {
+      "bytes": 1615843,
+      "document": "FPGA-DS-02008",
+      "sha256": "2ef891342e6bc31ebbdf1d3bef1fafaa2299a3a3ec66dab00ffc7f57d8547cc6",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51968",
+      "version": "2.4"
+    },
+    "default_design": {
+      "bytes": null,
+      "sha256": null,
+      "status": "AUTHENTICATION_REQUIRED",
+      "url": "https://www.latticesemi.com/view_document?document_id=51990",
+      "version": "1.0"
+    },
+    "guide": {
+      "bytes": 2107329,
+      "document": "FPGA-UG-02001",
+      "sha256": "2439fd0c7397f43883d13e8d92879904e669461210245906e19e329c806a022c",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51987",
+      "version": "1.2"
+    },
+    "layout": {
+      "bytes": null,
+      "sha256": null,
+      "status": "AUTHENTICATION_REQUIRED",
+      "url": "https://www.latticesemi.com/view_document?document_id=51989",
+      "version": "1.0"
+    },
+    "migration": {
+      "bytes": 15652,
+      "document": null,
+      "sha256": "711ae1e20835d65de9b65c6518994867ea612037d8676975d1d7a4e88b1b46ee",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51133",
+      "version": "2.0"
+    },
+    "pinout": {
+      "bytes": 15999,
+      "document": null,
+      "sha256": "cee14ad47beaf22298246228e913e539c87e33bf078e04d65988d1a24237d938",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51971",
+      "version": "1.1"
+    },
+    "programming": {
+      "bytes": 1302169,
+      "document": "FPGA-TN-02001",
+      "sha256": "c09f115e41891c04af72e05c64fae1c66e379d6effd26b8192f484752e638d55",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=46502",
+      "version": "3.5"
+    },
+    "radiant-flow": {
+      "bytes": 1927969,
+      "sha256": "1a09b4d8d2da487c10527ad88a2ee02b2298c5baf2a6a2978157c3f1375f7f52",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=55284",
+      "version": "1.0"
+    },
+    "radiant-guide": {
+      "bytes": 15655436,
+      "sha256": "61bc3376d515b84d6e53b2ce64a9c9d3a88332646c4fa17f38bbd1bb5efd7e57",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=55202",
+      "version": "2026.1"
+    },
+    "radiant-tcl": {
+      "bytes": 371675,
+      "sha256": "9992437d96f087367ba283b0ac6986c5b71dd4123407af864642cb566bcda9a9",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=55212",
+      "version": "2026.1"
+    },
+    "schematic_source": {
+      "bytes": null,
+      "sha256": null,
+      "status": "AUTHENTICATION_REQUIRED",
+      "url": "https://www.latticesemi.com/view_document?document_id=51988",
+      "version": "1.0"
+    }
+  },
+  "inputs": [
+    {
+      "path": "rtl/effect_ack_clock_pkg.vhd",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 2647,
+      "sha256": "75f9cb8341457368f829ed48a038b19de6529890d708a359430613494b90a208"
+    },
+    {
+      "path": "rtl/effect_ack_coverage_witness.vhd",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 1881,
+      "sha256": "2b845753530fff8609eb089097a4741e6ded063863d2d5aa73a3d2eda5ce79ac"
+    },
+    {
+      "path": "rtl/effect_ack_clock_carrier.vhd",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 4746,
+      "sha256": "35efd6190452d6e87004fc7381ed28007ca45fbc743a740916a71232acb4c832"
+    },
+    {
+      "path": "rtl/effect_ack_board_top.vhd",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 7530,
+      "sha256": "2ca22720cf6a1f7ac222dada244b22846f1c408aed9c6fff76cf9bd24a98640e"
+    },
+    {
+      "path": "tests/test_effect_ack_clock_carrier.py",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 10208,
+      "sha256": "99909c29871a20b8eaac3910c089e73491a66972096fc481586f423194782c5b"
+    },
+    {
+      "path": "tests/effect_ack_clock_tb.vhd",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 18298,
+      "sha256": "3df86a773e2b38ffbcb3b1e64aa3533b10864a07690c758152998f7af2e35632"
+    },
+    {
+      "path": "tools/qikvrt_effect_ack_clock_readback.py",
+      "source_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+      "bytes": 21516,
+      "sha256": "7d0a7219ecc6c90fff75027691aeb4571f25e666a382358b230fddf03af5da61"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 11548,
+      "sha256": "8b34f2cc890803de8234ffa9f368f66cf587d10b82e61048e819018f633d5f10",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "docs/QIKVRT_PROCESSOR_CLOCK.md",
+      "bytes": 26851,
+      "sha256": "b57e993c7ce3537551600738aaa3ec7747bb54ed28a42aa70c36276ae1af6f12",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json",
+      "bytes": 17694,
+      "sha256": "7b663abec77b5fb87e35d7f3794ffa5d34355e4743c70fe355a0a6cedf2b44bb",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "hardware/boards/lattice_ice40up5k_b_evn_rev_a.json",
+      "bytes": 24667,
+      "sha256": "973ae7eb7c41932e55732e949960a4bf513feb181056b6c7eb364be39bd74ce2",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/test_effect_ack_up5k.py",
+      "bytes": 8366,
+      "sha256": "39cb6ea60e4ae33d478d702ba1b1c38bb584fd2fb307d8752795182b38859ab1",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tools/qikvrt_effect_ack_clock_readback.py",
+      "bytes": 28859,
+      "sha256": "8463409e230b1f77d7391416c939024ea21370a76731fa3fb670fb5be0313cee",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    }
+  ],
+  "git_history": {
+    "parent": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+    "method": "HISTORY_PRESERVING_SUCCESSOR_ON_EXISTING_PR_BRANCH",
+    "force_push": false
+  },
+  "verification": {
+    "targeted_profile_and_existing_contract": "PASS: 17 unittest cases; synthetic IO budget is not measured timing",
+    "full_repository_gates": "PASS: make -k test; 549 unittest executions across 19 invocations plus strict C90/shell/protocol/RTL/synthesis gates; final metadata/digests regenerated afterwards",
+    "source_and_netlist_oracles": "PASS: all 2621440 independent C-oracle vectors on source and specialized carrier netlist; same serial framing/one-shot freshness/continuous coverage/replay/malformed/default-blocked controls on source and true/false target netlists",
+    "tool_cache": "PASS: 15/15 (100%)",
+    "integrity": "PASS: 3931 classified entries / 3922 immutable digests; regenerate after final provenance update",
+    "exact_head_ci": "Fresh successor exact-head CI required; no predecessor evidence transfer",
+    "full_gate_log_sha256": "443e3548c0d2285b02280baa0d7a6bf5fe05369efac81b36fc374d221e63e8b9"
+  },
+  "human_decision": "REQUESTED_WORK; NATIVE_CANDIDATE_REVIEW_PENDING",
+  "external_effects": {
+    "scope": "REVIEWABLE_PR_BRANCH_SUCCESSOR_ONLY",
+    "vendor_build_executed": false,
+    "board_programming_executed": false,
+    "physical_readback_observed": false,
+    "authority_promotion": false,
+    "merge": false,
+    "release": false
+  },
+  "first_external_blocker": "HOLD_PRIMARY_ARCHIVE_CROSSCHECK_REQUIRED",
+  "next_action": "Authenticate and byte-crosscheck official Default Design/Layout/Schematic Source ZIPs; extend locked vendor runtime, establish routed resource fit and measured IO/reset timing, then observe actual target/programmer/active image and fresh clock readback.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "physical_authentication": false,
+    "physical_clock_verified": false,
+    "bitstream_programmed": false,
+    "programmer_readback_observed": false
+  }
+}

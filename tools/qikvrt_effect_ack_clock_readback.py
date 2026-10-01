@@ -29,6 +29,7 @@ ARTIFACT_NAMES = ('placement_route', 'sta', 'bitstream', 'configuration_image',
 MAX_AGE_SECONDS = 300
 PROFILE_MAX_AGE_SECONDS = 86400
 MAX_RUN_SECONDS = 21600
+DOCUMENTARY_PROFILE = 'hardware/boards/lattice_ice40up5k_b_evn_rev_a.json'
 
 
 def unique(pairs):
@@ -116,7 +117,101 @@ def board_receipt(state, reason, subject, **fields):
                 effect_ack_done=False, **fields)
 
 
-def prepare_board(profile, *, subject, nonce, now, root=ROOT):
+def prepare_documentary_board(profile, *, subject, nonce, timing=None, root=ROOT):
+    """Source-bound candidate inputs, never a lab identity or a vendor result.
+
+    Documentary data cannot satisfy V1's physical serial/IDCODE requirements.
+    The canonical reference is reviewed repository content; a caller cannot
+    replace its pin, voltage, package, source or physical-status bindings.
+    """
+    reference = load_json(Path(root) / DOCUMENTARY_PROFILE)
+    if profile != reference:
+        raise ValueError('documentary profile differs from source-bound repository profile')
+    if timing is None:
+        return board_receipt('HOLD_INTERFACE_TIMING_BUDGET_REQUIRED',
+                             'Documentary pin binding exists; explicit synchronous interface timing budget required.',
+                             subject, nonce=nonce, physical_authentication=False,
+                             source_archive_crosscheck_complete=False)
+    exact(timing, TIMING_FIELDS, 'timing budget')
+    for key in timing: number(timing[key], key)
+    if (timing['input_min_ns'] > timing['input_max_ns'] or
+        timing['output_min_ns'] > timing['output_max_ns'] or
+        timing['clock_uncertainty_ns'] < 0 or
+        max(timing.values()) >= profile['clock']['period_ns']):
+        raise ValueError('contradictory or out-of-period timing budget')
+    pins = profile['adapter']['ports']
+    top = profile['adapter']['top']
+    pdc = ['# Documentary Rev A voltage assignments; actual rails still unmeasured.']
+    pdc.extend(f'ldc_set_vcc -bank {bank} {volts}'
+               for bank, volts in sorted(profile['electrical']['vccio_volts'].items()))
+    pdc.append(f'ldc_set_vcc -core {profile["electrical"]["vcc_volts"]}')
+    for port, pin in sorted(pins.items()):
+        pdc.extend((f'ldc_set_location -site {{{pin["package_pin"]}}} [get_ports {{{port}}}]',
+                    f'ldc_set_port -iobuf {{IO_TYPE=LVCMOS33 PULLMODE=NONE}} [get_ports {{{port}}}]'))
+    sdc = [f'create_clock -name processor_clock -period {profile["clock"]["period_ns"]} [get_ports {{clk}}]',
+           f'set_clock_uncertainty {timing["clock_uncertainty_ns"]} [get_clocks {{processor_clock}}]']
+    for direction in ('input', 'output'):
+        names = sorted(p for p, b in pins.items() if b['direction'] == direction and p != 'clk')
+        for bound in ('min', 'max'):
+            sdc.append(f'set_{direction}_delay -{bound} {timing[direction + "_" + bound + "_ns"]} '
+                       f'-clock processor_clock [get_ports {{{" ".join(names)}}}]')
+    # Radiant 2026.1 Project-mode Tcl from FPGA-AN-02113 sections 4.1/4.4/4.10
+    # and the TCL Scripting User Guide, "Running a Design Flow".
+    # GHDL lowers VHDL-2008 first. The vendor consumes the derived Verilog,
+    # avoiding an invented vendor HDL-language/generic command.
+    build = [
+        '# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0',
+        '# Candidate only; separately provision/lock/verify Radiant 2026.1 before execution.',
+        'if {![file exists up5k_synth.v]} {error {GHDL-derived netlist required}}',
+        'prj_create -name effect_ack_up5k -impl impl_1 -dev iCE40UP5K-SG48I -synthesis synplify',
+        'prj_add_source up5k_synth.v', 'prj_add_source board.pdc', 'prj_add_source board.sdc',
+        'prj_set_top_module effect_ack_board_top',
+        'if {![prj_run Synthesis -impl impl_1]} {error {Synthesis failed}}',
+        'if {![prj_run Map -impl impl_1]} {error {Map failed}}',
+        'if {![prj_run PAR -impl impl_1]} {error {PAR failed}}',
+        'prj_save',
+        'puts {HOLD: verify routed STA, all IO/reset recovery/removal paths and resource fit before bitstream generation}',
+    ]
+    constraints = {'board.pdc': '\n'.join(pdc) + '\n', 'board.sdc': '\n'.join(sdc) + '\n'}
+    generated = dict(constraints, **{'build_radiant.tcl': '\n'.join(build) + '\n'})
+    sources = {}
+    for path in SOURCES:
+        source = Path(root) / path
+        if any(p.is_symlink() for p in (source, *source.parents)) or not source.is_file():
+            raise ValueError('source must be a regular file without symlinks')
+        sources[path] = hashlib.sha256(source.read_bytes()).hexdigest()
+    plan = dict(schema='qikvrt_effect_ack_documentary_build_plan_v2', subject=subject,
+                profile_sha256=digest(profile), nonce=nonce, top=top,
+                part=profile['fpga']['selected_build_part'], sources=sources, interface=profile['adapter'],
+                source_order=list(SOURCES), external_signal_bits=len(pins),
+                timing_budget=timing, timing_budget_measured=False,
+                constraints=constraints, generated_files=generated,
+                generated_sha256={p: hashlib.sha256(v.encode()).hexdigest() for p, v in generated.items()},
+                pre_synthesis=[['ghdl', '-a', '--std=08', *SOURCES],
+                               ['ghdl', '--synth', '--std=08', '--out=verilog',
+                                '-gBOARD_BINDING_VALIDATED=true', top]],
+                pre_synthesis_output='up5k_synth.v',
+                pre_synthesis_tool='LOCKED_GHDL_6.0.0; hash derived netlist before vendor build',
+                vendor_tool=dict(name='radiant', version='2026.1', executable_sha256=None,
+                                 installation_authenticated=False),
+                vendor_invocation=['radiantc', 'build_radiant.tcl'], vendor_build_executed=False,
+                programmer=profile['vendor_path'],
+                programming_authorized=False, tool_execution_authorized=False,
+                source_archive_crosscheck_complete=False,
+                physical_authentication=False, physical_clock_verified=False,
+                static_generic_is_physical_attestation=False,
+                required_observations=['primary_archive_crosscheck', 'locked_vendor_installation',
+                    'routed_resource_fit_and_STA', 'bitstream', 'board_revision_serial_and_marking',
+                    'programmer_target_and_flash_byte_readback', 'active_image_correspondence',
+                    'fresh_clock_nonce_epoch_count_readback', *OPEN_OBLIGATIONS])
+    return board_receipt('HOLD_PRIMARY_ARCHIVE_CROSSCHECK_REQUIRED',
+                         'Ten-pin documentary build candidate prepared; three primary ZIPs require Lattice authentication. '
+                         'Vendor build, interface timing measurements and authenticated board run remain required.',
+                         subject, nonce=nonce, plan=plan, plan_sha256=digest(plan),
+                         physical_authentication=False, source_archive_crosscheck_complete=False)
+
+
+def prepare_board(profile, *, subject, nonce, now, root=ROOT, timing=None):
     """Validate data and emit build inputs. Never run a vendor tool/programmer."""
     subject_binding(subject)
     if type(nonce) is not int or not 0 < nonce < 2**64:
@@ -124,6 +219,8 @@ def prepare_board(profile, *, subject, nonce, now, root=ROOT):
     if profile is None:
         return board_receipt('BOARD_BINDING_REQUIRED', 'No evidenced board/FPGA/clock/pin profile supplied.', subject,
                              nonce=nonce, required_inputs=['board', 'fpga', 'clock', 'pins', 'timing', 'toolchain'])
+    if isinstance(profile, dict) and profile.get('schema') == 'qikvrt_effect_ack_documentary_board_profile_v2':
+        return prepare_documentary_board(profile, subject=subject, nonce=nonce, timing=timing, root=root)
     exact(profile, ('schema', 'subject', 'observed_at', 'board', 'fpga', 'clock',
                     'pins', 'timing', 'toolchain', 'interfaces'), 'board profile')
     if profile['schema'] != 'qikvrt_effect_ack_board_profile_v1' or profile['subject'] != subject:
@@ -224,6 +321,8 @@ def artifact_bytes(root, item):
 
 
 def verify_board_run(profile, report, *, subject, nonce, epoch, expected_count, now, artifacts_root, root=ROOT):
+    if isinstance(profile, dict) and profile.get('schema') == 'qikvrt_effect_ack_documentary_board_profile_v2':
+        raise ValueError('documentary profile has no authenticated board identity or trusted programmer adapter')
     prepared = prepare_board(profile, subject=subject, nonce=nonce, now=now, root=root)
     if 'plan' not in prepared: return prepared
     exact(report, ('schema', 'subject', 'profile_sha256', 'plan_sha256', 'nonce', 'run_id',
@@ -274,6 +373,7 @@ def board_main(argv):
     parser = argparse.ArgumentParser(description='Fail-closed board build/readback interface; no vendor-tool or programmer effects')
     parser.add_argument('action', choices=('prepare-board', 'verify-board'))
     parser.add_argument('--profile', type=Path)
+    parser.add_argument('--timing', type=Path, help='Explicit synchronous interface timing budget for documentary V2 candidate')
     parser.add_argument('--expect-head', required=True); parser.add_argument('--expect-tree', required=True)
     parser.add_argument('--nonce', type=int, required=True)
     parser.add_argument('--report', type=Path); parser.add_argument('--artifacts-root', type=Path)
@@ -290,7 +390,8 @@ def board_main(argv):
         now = dt.datetime.now(dt.timezone.utc)
         profile = load_json(args.profile) if args.profile else None
         if args.action == 'prepare-board':
-            result = prepare_board(profile, subject=subject, nonce=args.nonce, now=now)
+            result = prepare_board(profile, subject=subject, nonce=args.nonce, now=now,
+                                   timing=load_json(args.timing) if args.timing else None)
         else:
             if any(x is None for x in (args.report, args.artifacts_root, args.epoch, args.expected_count)):
                 raise ValueError('report/artifacts/epoch/count caller bindings required')

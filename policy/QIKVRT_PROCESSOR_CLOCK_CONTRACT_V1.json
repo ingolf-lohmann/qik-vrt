@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "schema": "qikvrt_processor_clock_contract_v1",
-  "status": "OWNER_REQUIREMENT_WITH_FAIL_CLOSED_BOARD_ACCEPTANCE_INTERFACE",
+  "status": "OWNER_REQUIREMENT_WITH_DOCUMENTARY_UP5K_ADAPTER_AND_PHYSICAL_HOLD",
   "owner": "Ingolf Lohmann",
   "requirement": {
     "machine_evaluation_cadence": "EVERY_PROCESSOR_CLOCK_EDGE",
@@ -319,5 +319,38 @@
       "selected_lattice_adapter": "OPEN; unsupported profiles rejected by current vendor validator",
       "resource_and_place_route_fit": "OPEN"
     }
+  },
+  "documentary_target_adapter": {
+    "profile": "hardware/boards/lattice_ice40up5k_b_evn_rev_a.json",
+    "profile_schema": "qikvrt_effect_ack_documentary_board_profile_v2",
+    "profile_evidence": "8_PRIMARY_DOCUMENT_BYTE_HASHES; 3_PRIMARY_SOURCE_ZIPS_AUTHENTICATION_REQUIRED",
+    "documented_target": "iCE40UP5K-B-EVN Rev A; SG48; selected build part iCE40UP5K-SG48I",
+    "physical_target_identity": "OPEN; observed revision/serial/grade/IDCODE unavailable",
+    "implementation": "rtl/effect_ack_board_top.vhd",
+    "external_signal_bits": 10,
+    "clock": "12MHz board oscillator on pin35; direct ungated carrier clk; no PLL/divider/serial-clock substitution",
+    "input_domain": "SYNCHRONOUS_TO_CLK; external controller IO timing budget mandatory; authentication and CDC remain OPEN",
+    "frame_admission": "Existing SYNCHRONOUS_FRAMED_SERIAL_V1: 317 MSB-first request bits, separate latch edge, 485 frozen response bits; clock counts every transfer/idle/fault edge",
+    "carrier_evaluation": "EXACTLY_ONCE_EVERY_ADMITTED_RISING_EDGE; one fresh input on request latch; all other edges use carrier-owned read-only epoch/cycle and absent/unverified input",
+    "protected_effect": "Existing one-shot carrier commit in frozen response; transmitting the response never reruns an effect; sink_ready and payload correspond to accepted edge, not later physical execution authority",
+    "readback": "Existing 485-bit response: coherent 448-bit readback plus state/commit/payload; existing verify_readback retained",
+    "constraints": "Radiant PDC all10 pins/LVCMOS33/core+bank voltages plus SDC clock/uncertainty/all min-max input/output delays including reset; no false/multicycle exemptions",
+    "build_path": "locked GHDL6 VHDL2008 lowering to Verilog, then documentary Radiant2026.1 project Tcl Synthesis/Map/PAR; STOP before bitstream/programming; vendor lock/cache must be extended before execution",
+    "programmer_path": "Diamond Programmer >=3.9 through onboard FT2232H; guide flash/CRAM settings and J6/J7 recorded; no NVCM; external flash readback does not authenticate active SRAM image",
+    "prepare_without_timing": "HOLD_INTERFACE_TIMING_BUDGET_REQUIRED",
+    "prepare_with_assumed_budget": "HOLD_PRIMARY_ARCHIVE_CROSSCHECK_REQUIRED; reviewable hashed plan only, never measured timing",
+    "verify_board": "BLOCK_BOARD_EVIDENCE until separately authenticated target-specific adapter exists",
+    "vendor_resource_fit": "OPEN; generic synthesis is not SG48 placement/route/STA",
+    "physical_authentication": false,
+    "physical_clock_verified": false,
+    "bitstream_programmed": false,
+    "programmer_readback_observed": false,
+    "EFFECT_ACK_DONE": false,
+    "negative_tests": "tests/test_effect_ack_up5k.py; existing tests/effect_ack_clock_tb.vhd source/specialized netlist oracles unchanged",
+    "origin_work_unit": "state/work_units/QIKVRT_UP5K_DOCUMENTARY_ADAPTER_20261001.json",
+    "request_bits": 317,
+    "response_bits": 485,
+    "reuse_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+    "fencing": "Existing carrier epoch/cycle fence; malformed/busy/short/overlong/nonbinary frames and reset latch fault"
   }
 }

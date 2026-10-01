@@ -127,6 +127,6 @@ test: effect-ack-clock-carrier-test
 
 .PHONY: effect-ack-board-contract-test
 effect-ack-board-contract-test: effect-ack-clock-carrier-test
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_board_contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_board_contract tests.test_effect_ack_up5k
 
 test: effect-ack-board-contract-test
