@@ -78,6 +78,15 @@
   "unresolved_origin": [],
   "verification": {
     "final_exact_head_validation": "REQUIRED_AFTER_SUCCESSOR_MATERIALIZATION_NO_PREDECESSOR_TRANSFER",
+    "fresh_ci_receipt_regression_repair": {
+      "historical_receipt_bytes_or_effect_claims_changed": false,
+      "job_id": 110470888836,
+      "observed_head": "5cbd1aba88a6b82727947dad5af42380d36b9341",
+      "reason": "Historical scoped receipt was incorrectly compared against the evolved current append-only index",
+      "repair": "Verify exact historical mirror-main index blob and preserve every historical row plus metadata, with rewrite/deletion/reorder/duplicate negative controls",
+      "required_make_gate_extended": true,
+      "run_id": 36892373156
+    },
     "optional_historical_h3_suite": {
       "failures_or_errors_due_to_object_closure": 6,
       "mirror_git_commit_read": "HTTP_404",

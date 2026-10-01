@@ -5,6 +5,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import copy
+import os
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -37,6 +40,16 @@ def git_blob_sha1(raw: bytes) -> str:
     return hashlib.sha1(
         f"blob {len(raw)}\0".encode("ascii") + raw
     ).hexdigest()
+
+
+def verify_append_only_index(current: dict, historical: dict) -> None:
+    old = historical["equality_receipts"]
+    rows = current["equality_receipts"]
+    if ({k: v for k, v in current.items() if k != "equality_receipts"}
+            != {k: v for k, v in historical.items() if k != "equality_receipts"}
+            or rows[:len(old)] != old or len(rows) < len(old)
+            or len({r["receipt_id"] for r in rows}) != len(rows)):
+        raise ValueError("append-only receipt index was rewritten, truncated or duplicated")
 
 
 class PreSpacetimeOntologyZenodoEffectAckTests(unittest.TestCase):
@@ -115,10 +128,33 @@ class PreSpacetimeOntologyZenodoEffectAckTests(unittest.TestCase):
             ],
             source["reciprocal_receipt"]["binding_payload_sha256"],
         )
+        # The receipt binds August's exact mains. Later appends must preserve
+        # that snapshot, rather than pretend today's index has the old hash.
+        historical_raw = subprocess.check_output(
+            ["git", "-C", str(ROOT), "show",
+             source["mirror"]["reciprocal_receipt_main"] + ":" + source["append_only_receipt_index"]["path"]],
+            env={**os.environ, "GIT_NO_LAZY_FETCH": "1"}, timeout=30,
+        )
         self.assertEqual(
-            git_blob_sha1(index_raw),
+            git_blob_sha1(historical_raw),
             source["append_only_receipt_index"]["git_blob_sha1"],
         )
+        verify_append_only_index(json.loads(index_raw), json.loads(historical_raw))
+
+    def test_append_only_snapshot_rejects_deletion_rewrite_reorder_and_duplicates(self) -> None:
+        historical = {"schema": "fixture", "equality_receipts": [
+            {"receipt_id": "one", "binding": "exact-one"},
+            {"receipt_id": "two", "binding": "exact-two"}]}
+        extended = copy.deepcopy(historical)
+        extended["equality_receipts"].append({"receipt_id": "three", "binding": "new"})
+        verify_append_only_index(extended, historical)
+        for mutation in (lambda rows: rows.pop(0), lambda rows: rows.reverse(),
+                         lambda rows: rows[0].update(binding="changed"),
+                         lambda rows: rows.append(copy.deepcopy(rows[0]))):
+            changed = copy.deepcopy(extended)
+            mutation(changed["equality_receipts"])
+            with self.assertRaises(ValueError):
+                verify_append_only_index(changed, historical)
 
     def test_publication_effect_predicates_are_complete(self) -> None:
         publication = json.loads(PUBLICATION_RECEIPT.read_text(encoding="utf-8"))

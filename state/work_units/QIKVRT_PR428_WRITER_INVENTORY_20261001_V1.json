@@ -5,7 +5,7 @@
   "disabled_workflow_job_count": 38,
   "effect_ack_done": false,
   "historical_main_and_prior_runs_disabled": false,
-  "observed_at_utc": "2026-10-01T16:26:12.882511Z",
+  "observed_at_utc": "2026-10-01T16:33:39.319373Z",
   "predecessor_evidence_transfer": false,
   "production_bypass_capabilities_revoked": false,
   "provider_authority_fencing_verified": false,
@@ -1356,11 +1356,11 @@
       "writer_signal_lines": []
     },
     {
-      "bytes": 11347,
+      "bytes": 11399,
       "classification": "READ_ONLY_OR_LOCAL_NON_PROVIDER",
       "execution_units": [],
       "path": "Makefile",
-      "sha256": "b3edacdc603607153cf0f47f50e2ee42454b832e1889e12067bbaafe1b937634",
+      "sha256": "a63b1406a1e299a3baa9afd3159f6f100de46ac36d0a8178d6b9c0c653234c0a",
       "writer_signal_lines": []
     },
     {
@@ -1909,6 +1909,14 @@
       "execution_units": [],
       "path": "tests/test_observer_relative_retrocausality_zenodo_finalizer.py",
       "sha256": "c65bcb07b2bc505dcfac147c1b62199362acba2b3c477fd0f875b8c40e3edfa9",
+      "writer_signal_lines": []
+    },
+    {
+      "bytes": 7537,
+      "classification": "TEST_FIXTURE_NOT_PRODUCTION",
+      "execution_units": [],
+      "path": "tests/test_pre_spacetime_ontology_zenodo_effect_ack.py",
+      "sha256": "1639c8bc7061cbd916ecc16c17c511c0713209ee65fd116e09779bfca15efe02",
       "writer_signal_lines": []
     },
     {
