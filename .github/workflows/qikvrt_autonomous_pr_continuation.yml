@@ -9,6 +9,7 @@ on:
   workflow_run:
     workflows:
       - "QIKVRT CI"
+      - "QIKVRT reflexive repository watchdog"
       - "QIKVRT repository evidence materialization"
     types: [completed]
   push:
@@ -30,6 +31,7 @@ on:
       - "tests/test_seed_workflows.py"
 
 permissions:
+  actions: read
   contents: write
   pull-requests: write
   statuses: write
@@ -71,7 +73,87 @@ jobs:
               Path('tools/qikvrt_autonomous_self_heal.py').read_bytes())
           PY
 
+      - name: Receive watchdog analysis in the existing repair consumer
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+          SOURCE_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          SOURCE_HEAD: ${{ github.event.workflow_run.head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=/tmp/qikvrt-repair-input
+          mkdir -p "$root/inbox"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > "$root/source-run.json"
+          gh api --paginate --slurp \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/attempts/$SOURCE_ATTEMPT/jobs?per_page=100" \
+            | jq '{jobs: [.[].jobs[]]} | .total_count=(.jobs|length)' > "$root/source-jobs.json"
+          gh api --paginate --slurp \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/artifacts?per_page=100" \
+            | jq '[.[].artifacts[]]' > "$root/artifacts.json"
+          artifact_id="$(python3 -B - <<'PY'
+          import json, os
+          prefix = f"qikvrt-reflexive-repository-watchdog-{os.environ['SOURCE_RUN_ID']}-{os.environ['SOURCE_ATTEMPT']}"
+          matches = [a for a in json.load(open('/tmp/qikvrt-repair-input/artifacts.json'))
+                     if a['name'] == prefix and not a['expired']]
+          if len(matches) != 1:
+              raise SystemExit('BLOCK: exactly one bound watchdog artifact required')
+          print(matches[0]['id'])
+          PY
+          )"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > "$root/source.zip"
+          python3 -B - <<'PY'
+          import hashlib, json, pathlib, zipfile, os
+          root = pathlib.Path('/tmp/qikvrt-repair-input')
+          artifact = next(a for a in json.loads((root/'artifacts.json').read_text())
+                          if a['name'] == f"qikvrt-reflexive-repository-watchdog-{os.environ['SOURCE_RUN_ID']}-{os.environ['SOURCE_ATTEMPT']}")
+          digest = 'sha256:' + hashlib.sha256((root/'source.zip').read_bytes()).hexdigest()
+          if artifact.get('digest') != digest:
+              raise SystemExit('BLOCK: source archive digest mismatch')
+          with zipfile.ZipFile(root/'source.zip') as z:
+              matches = [i for i in z.infolist() if i.filename == 'repair-handoff.json']
+              if len(matches) != 1 or matches[0].file_size > 16*1024*1024:
+                  raise SystemExit('BLOCK: invalid handoff archive member')
+              # Extract only the explicitly named data member, never archive paths/code.
+              (root/'repair-handoff.json').write_bytes(z.read(matches[0]))
+          PY
+          gh api "repos/$GITHUB_REPOSITORY/commits/$SOURCE_HEAD" > "$root/current-subject.json"
+          current_head="$(jq -r .sha "$root/current-subject.json")"
+          current_tree="$(jq -r .commit.tree.sha "$root/current-subject.json")"
+          test "$current_head" = "$SOURCE_HEAD"
+          # Current Main or an actual current open PR must still bind this subject.
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" > "$root/main.json"
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/pulls?state=open&per_page=100" \
+            > "$root/open-prs.json"
+          python3 -B - <<'PY'
+          import json, os
+          root='/tmp/qikvrt-repair-input/'
+          head=os.environ['SOURCE_HEAD']; repo=os.environ['GITHUB_REPOSITORY']
+          main=json.load(open(root+'main.json'))['object']['sha']
+          prs=[p for page in json.load(open(root+'open-prs.json')) for p in page]
+          if head != main and not any(p['head']['sha']==head and
+                  (p['head'].get('repo') or {}).get('full_name')==repo for p in prs):
+              raise SystemExit('BLOCK: stale repair subject')
+          PY
+          python3 -B tools/qikvrt_autonomous_self_heal.py repair-consume \
+            --envelope "$root/repair-handoff.json" --source-run "$root/source-run.json" \
+            --source-jobs "$root/source-jobs.json" --repository-name "$GITHUB_REPOSITORY" \
+            --expected-head "$current_head" --expected-tree "$current_tree" \
+            --inbox "$root/inbox" > "$root/consumer-receipt.json"
+          cat "$root/consumer-receipt.json"
+
+      - name: Preserve admitted repair inbox and consumer readback
+        if: always() && github.event_name == 'workflow_run' && github.event.workflow_run.name == 'QIKVRT reflexive repository watchdog'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-repair-consumer-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 90
+          path: /tmp/qikvrt-repair-input
+
       - name: Select one exact opted-in same-repository draft PR
+        if: github.event_name != 'workflow_run' || github.event.workflow_run.name != 'QIKVRT reflexive repository watchdog'
         id: select
         env:
           GH_TOKEN: ${{ github.token }}

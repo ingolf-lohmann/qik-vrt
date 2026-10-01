@@ -307,5 +307,21 @@
     "external_dependency_after_successful_binding": "REPLACE_WITH_VERIFIED_REPOSITORY_MIRROR",
     "first_success_or_failure_is_terminal": false,
     "effect_ack_done": false
+  },
+  "error_analysis_handoff": {
+    "producer": "tools/qikvrt_reflexive_repository_watchdog.py:repair-handoff",
+    "consumer": "tools/qikvrt_autonomous_self_heal.py:repair-consume",
+    "carrier": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    "manual_owner_relay_required": false,
+    "unknown_cause": "ADMITTED_ANALYSIS_HOLD",
+    "analysis_is_writer_authority": false,
+    "new_executor": false,
+    "maximum_hops": 1,
+    "fresh_source_and_subject_readback": true,
+    "activation": "INDEPENDENT_NATIVE_MAIN_ADMISSION",
+    "durable_delivery": "PRODUCER_ARTIFACT_AND_CONSUMER_INBOX_WITH_BYTE_READBACK",
+    "replay_scope": "IDENTICAL_WORK_UNIT_INBOX_BYTES_NO_WRITER_EFFECT",
+    "repair_permission": "ONLY_EXISTING_ALLOWLIST_AFTER_ESTABLISHED_CAUSE_AND_SEPARATE_ADMISSION",
+    "routing_failure": "OPEN_DEFECT_WITH_PRESERVED_SOURCE_AND_CONSUMER_FAILURE_RECEIPT"
   }
 }

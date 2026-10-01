@@ -9,7 +9,8 @@ on:
   workflow_run:
     workflows:
       - "QIK-VRT autonomous bounded self-heal"
-      - "QIK-VRT autonomous draft-PR continuation"
+      # Continuation consumes this observer. Observe it on schedule instead of
+      # feeding its completion back here and creating an observer/consumer loop.
       - "QIK-VRT expected-head promotion executor"
       - "QIKVRT workflow executor"
       - "QIKVRT live status watch"
@@ -230,6 +231,33 @@ jobs:
             tests.test_qikvrt_reflexive_repository_watchdog \
             tests.test_qikvrt_workflow_executor_mesh_contract \
             tests.test_seed_workflows
+
+      - name: Bind error analysis for the existing repair consumer
+        if: always()
+        env:
+          PRODUCER_EVENT: ${{ github.event_name }}
+          PARENT_WORKFLOW: ${{ github.event.workflow_run.name || '' }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          mkdir -p "$root"
+          if ! test -s "$root/reflexive-watchdog-receipt.json"; then
+            python3 -B tools/qikvrt_reflexive_repository_watchdog.py observation-failure \
+              --expect-head "$EXPECTED_HEAD" \
+              --observed-head "$(git rev-parse --verify HEAD^{commit})" \
+              --observed-tree "$(git rev-parse --verify HEAD^{tree})" \
+              --repository "$GITHUB_REPOSITORY" --now "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+              --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+              --failed-stage ANALYSIS_RECEIPT_UNAVAILABLE --exit-code 1 --json \
+              > "$root/reflexive-watchdog-receipt.json"
+          fi
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py repair-handoff \
+            --analysis-file "$root/reflexive-watchdog-receipt.json" \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --event "$PRODUCER_EVENT" --parent-workflow "$PARENT_WORKFLOW" --json \
+            > "$root/repair-handoff.json"
 
       - name: Preserve the exact-head pre-deadlock receipt
         if: always()

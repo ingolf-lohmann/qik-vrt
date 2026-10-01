@@ -23,6 +23,53 @@ VERIFIER = ROOT / ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
 
 
 class AutonomousPRContinuationTests(unittest.TestCase):
+    def test_actual_artifact_receiver_executes_the_existing_consumer(self):
+        import hashlib, zipfile
+        from tests.test_qikvrt_autonomous_self_heal import RepairInputTests
+        _, raw, envelope, source_run, jobs = RepairInputTests().fixture()
+        source = CONTINUATION.read_text()
+        block=source.split('      - name: Receive watchdog analysis in the existing repair consumer\n',1)[1].split('\n      - name:',1)[0]
+        script=textwrap.dedent(block.split('        run: |\n',1)[1])
+        for corrupt, expected in ((False,0),(True,1)):
+            with self.subTest(corrupt=corrupt), tempfile.TemporaryDirectory() as directory:
+                root=pathlib.Path(directory); binary=root/'bin';binary.mkdir()
+                archive=root/'source.zip'
+                with zipfile.ZipFile(archive,'w') as z:
+                    z.writestr('repair-handoff.json',json.dumps(envelope))
+                    z.writestr('../forbidden.py','raise Exception("never extract")')
+                artifact={'id':9,'name':'qikvrt-reflexive-repository-watchdog-7-2','expired':False,
+                          'digest':'sha256:'+hashlib.sha256(archive.read_bytes()).hexdigest()}
+                if corrupt:artifact['digest']='sha256:'+'0'*64
+                responses={
+                    'repos/ingolf-lohmann/qik-vrt/actions/runs/7':source_run,
+                    'repos/ingolf-lohmann/qik-vrt/actions/runs/7/attempts/2/jobs?per_page=100':[jobs],
+                    'repos/ingolf-lohmann/qik-vrt/actions/runs/7/artifacts?per_page=100':[{'artifacts':[artifact]}],
+                    'repos/ingolf-lohmann/qik-vrt/commits/'+'a'*40:{'sha':'a'*40,'commit':{'tree':{'sha':'b'*40}}},
+                    'repos/ingolf-lohmann/qik-vrt/git/ref/heads/main':{'object':{'sha':'a'*40}},
+                    'repos/ingolf-lohmann/qik-vrt/pulls?state=open&per_page=100':[[]]}
+                (root/'responses.json').write_text(json.dumps(responses))
+                gh=binary/'gh'
+                gh.write_text('#!'+sys.executable+'\n'+textwrap.dedent(f'''
+                    import json,sys,pathlib
+                    endpoint=sys.argv[-1]
+                    if endpoint.endswith('/artifacts/9/zip'):
+                        sys.stdout.buffer.write(pathlib.Path({str(archive)!r}).read_bytes())
+                    else:
+                        print(json.dumps(json.load(open({str(root/'responses.json')!r}))[endpoint]))
+                '''));gh.chmod(0o755)
+                destination=str(root/'receiver')
+                result=subprocess.run(['bash','-c',script.replace('/tmp/qikvrt-repair-input',destination)],
+                    cwd=ROOT,text=True,capture_output=True,env={**os.environ,
+                    'PATH':str(binary)+os.pathsep+os.environ['PATH'], 'GITHUB_REPOSITORY':'ingolf-lohmann/qik-vrt',
+                    'SOURCE_RUN_ID':'7','SOURCE_ATTEMPT':'2','SOURCE_HEAD':'a'*40})
+                self.assertEqual(result.returncode,expected,result.stderr)
+                if not corrupt:
+                    receipt=json.loads((root/'receiver/consumer-receipt.json').read_text())
+                    self.assertEqual(receipt['state'],'ADMITTED_ANALYSIS_HOLD')
+                    saved=json.loads(next((root/'receiver/inbox').glob('*.json')).read_text())
+                    self.assertEqual(saved['analysis_utf8'].encode(),raw)
+                self.assertFalse((root/'forbidden.py').exists())
+
     def test_completed_ci_selects_only_the_current_opted_in_subject(self):
         source = CONTINUATION.read_text()
         self.assertIn('  workflow_run:\n    workflows:\n      - "QIKVRT CI"', source)

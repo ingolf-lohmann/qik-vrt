@@ -104,3 +104,49 @@ the artifact receipt. No takeover, writer admission or EFFECT_ACK is permitted;
 exact-subject observation. Other API failures, malformed successful ref responses,
 changed Authority identity, subject HEAD drift and tracked mutations remain hard
 workflow failures. Historical failure receipts remain historical evidence.
+# Automatic error-analysis handoff
+
+The watchdog's `repair-handoff` command carries the original UTF-8 analysis,
+SHA-256, repository/HEAD/TREE and producer run/attempt into its existing artifact.
+The existing draft-PR continuation workflow receives the watchdog completion,
+fetches the authenticated producer run, attempt jobs and single bound artifact,
+checks the archive digest and extracts only `repair-handoff.json` as data.
+Trusted Main's existing self-heal controller executes `repair-consume`. It checks
+the current subject, producer path, executed handoff step and exact analysis
+bytes, creates the work-unit inbox record and verifies its byte readback. The
+consumer receipt and inbox are preserved as GitHub artifacts for 90 days. This
+is artifact durability, not perpetual storage or Authority/Mirror equality.
+
+Unknown cause or unsupported repair remains `ADMITTED_ANALYSIS_HOLD`, with the
+original analysis available to the existing diagnosis/repair path. The input
+never grants writer permission; it is neither executable text nor self-approval.
+Identical local inbox replay is readback-only; conflict cannot overwrite the
+record. No external writer effect is admitted by this consumer, including on a
+repeated runner delivery. General cross-run exactly-once repair requires the
+existing independently admitted effect ledger and is not inferred from inbox
+deduplication. Stale or foreign subjects, wrong attempts, missing jobs, skipped
+handoff steps and altered analysis block before inbox admission.
+
+To keep the event graph finite, continuation completion no longer immediately
+triggers its own producer. The watchdog continues observing continuation runs
+on its existing schedule and other relevant events. A consumer feedback report
+is a bounded NOOP. No second executor or ChatGPT automation is introduced.
+
+## Cause and prevention scope
+
+The prior source had two disconnected edges: the watchdog stopped at artifact
+upload, and the continuation subscribed only to CI/evidence completion. Neither
+had an executable error-analysis admission/readback contract. This directly
+explains why that inspected path could report a failure but could not deliver
+its analysis to a repair consumer. It does not establish every historical reason
+why the missing integration was introduced. No maintainer motive is inferred.
+
+The regression roundtrip invokes the actual producer and consumer CLIs and
+verifies preserved analysis bytes, admission HOLD, replay and readback. The
+self-heal contract now requires the handoff edge; absent/weakened bindings block.
+These controls address recurrence of this bounded integration gap. The tests
+use authenticated-observation fixtures; they do not establish productive Main
+activation, independent approval, repair of the reported error, or global DONE.
+Productive activation still requires independent native Main admission, then a
+real found-error delivery and fresh consumer artifact readback on the admitted
+subject. A native governance blocker does not turn persistence into repair.

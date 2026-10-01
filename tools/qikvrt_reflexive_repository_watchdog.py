@@ -1060,6 +1060,39 @@ def _read_json(path: Path, label: str) -> Mapping[str, Any] | Sequence[Any]:
     return value
 
 
+def repair_handoff(analysis_bytes: bytes, *, run_id: int, run_attempt: int,
+                   producer_event: str, parent_workflow: str = "") -> dict[str, Any]:
+    """Carry exact observation bytes as data; never turn a diagnosis into permission."""
+    analysis = json.loads(analysis_bytes)
+    _mapping(analysis, "watchdog analysis")
+    if analysis.get("schema") not in {
+        "qikvrt_reflexive_repository_watchdog_receipt_v1",
+        "qikvrt_reflexive_observation_failure_receipt_v1",
+    }:
+        raise ReflexiveWatchdogBlock("unsupported repair source")
+    subject = {"repository": _string(analysis.get("repository"), "repository"),
+               "head": _head_sha(analysis.get("head_sha"), "head"),
+               "tree": _head_sha(analysis.get("tree_sha"), "tree")}
+    # A consumer completion must not recursively manufacture another work ring.
+    feedback = (producer_event == "workflow_run" and
+                parent_workflow == "QIK-VRT autonomous draft-PR continuation")
+    needed = analysis.get("disposition") == "HOLD" and not feedback
+    digest = sha256_bytes(analysis_bytes)
+    origin = {"run_id": _positive_int(run_id, "producer run"),
+              "run_attempt": _positive_int(run_attempt, "producer attempt"),
+              "workflow_path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+              "event": _string(producer_event, "producer event")}
+    identity = sha256_bytes(canonical_json_bytes({"subject": subject,
+                        "origin": origin, "analysis_sha256": digest}))
+    return {"schema": "qikvrt_error_analysis_handoff_v1", "subject": subject,
+            "origin": origin, "work_unit_id": identity,
+            "analysis_sha256": digest, "analysis_utf8": analysis_bytes.decode("utf-8"),
+            "consumer": "tools/qikvrt_autonomous_self_heal.py:repair-consume",
+            "state": "REPAIR_INPUT_REQUIRED" if needed else "NOOP",
+            "causal_status": "OBSERVATION_NOT_ESTABLISHED_CAUSE",
+            "hop_count": 1, "effect_permission": False, "effect_ack_done": False}
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
@@ -1091,13 +1124,24 @@ def build_parser() -> argparse.ArgumentParser:
     failure_parser.add_argument("--failed-stage", required=True)
     failure_parser.add_argument("--exit-code", required=True, type=int)
     failure_parser.add_argument("--json", action="store_true")
+    handoff_parser = subcommands.add_parser("repair-handoff")
+    handoff_parser.add_argument("--analysis-file", type=Path, required=True)
+    handoff_parser.add_argument("--run-id", type=int, required=True)
+    handoff_parser.add_argument("--run-attempt", type=int, required=True)
+    handoff_parser.add_argument("--event", required=True)
+    handoff_parser.add_argument("--parent-workflow", default="")
+    handoff_parser.add_argument("--json", action="store_true")
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "observe-authority":
+        if arguments.command == "repair-handoff":
+            value = repair_handoff(arguments.analysis_file.read_bytes(),
+                run_id=arguments.run_id, run_attempt=arguments.run_attempt,
+                producer_event=arguments.event, parent_workflow=arguments.parent_workflow)
+        elif arguments.command == "observe-authority":
             value = observe_authority()
         elif arguments.command == "check-contract":
             contract = load_contract()

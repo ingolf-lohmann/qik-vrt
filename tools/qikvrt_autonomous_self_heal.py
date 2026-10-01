@@ -11,6 +11,8 @@ import pathlib
 import stat
 import subprocess
 import sys
+import os
+import re
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
@@ -350,6 +352,7 @@ def load_contract() -> dict[str, Any]:
     value = _load_json(CONTRACT, "autonomous self-healing contract")
     if value.get("schema") != "qikvrt_autonomous_self_healing_contract_v1":
         raise SelfHealBlock("contract schema mismatch")
+    validate_repair_handoff_contract(value)
     routing = value.get("execution_routing", {})
     routing_required = {
         "rule_id": "QIKVRT_REPOSITORY_OWNS_EXECUTION_V1",
@@ -568,9 +571,119 @@ def execute(apply: bool) -> dict[str, Any]:
     }
 
 
+def validate_repair_handoff_contract(value: Mapping[str, Any]) -> None:
+    required = {"producer": "tools/qikvrt_reflexive_repository_watchdog.py:repair-handoff",
+                "consumer": "tools/qikvrt_autonomous_self_heal.py:repair-consume",
+                "carrier": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+                "manual_owner_relay_required": False, "unknown_cause": "ADMITTED_ANALYSIS_HOLD",
+                "analysis_is_writer_authority": False, "new_executor": False,
+                "maximum_hops": 1, "fresh_source_and_subject_readback": True,
+                "activation": "INDEPENDENT_NATIVE_MAIN_ADMISSION"}
+    actual = value.get("error_analysis_handoff")
+    if not isinstance(actual, Mapping) or any(
+            type(actual.get(k)) is not type(v) or actual.get(k) != v for k,v in required.items()):
+        raise SelfHealBlock("automatic error-analysis consumer contract absent or weakened")
+
+
+def consume_repair_input(envelope: Mapping[str, Any], source: Mapping[str, Any],
+                         jobs: Mapping[str, Any], *, repository: str, head: str,
+                         tree: str, inbox: pathlib.Path) -> dict[str, Any]:
+    """Admit authenticated source data to the existing consumer, without a writer grant.
+
+    The workflow obtains source/jobs with its own GitHub credential. Payload text
+    is never a command, cause proof or authority. Unknown repair classes stay HOLD.
+    """
+    if envelope.get("schema") != "qikvrt_error_analysis_handoff_v1":
+        raise SelfHealBlock("unsupported repair envelope")
+    subject = {"repository": repository, "head": head, "tree": tree}
+    if envelope.get("subject") != subject or not all(
+            re.fullmatch("[0-9a-f]{40}", x or "") for x in (head, tree)):
+        raise SelfHealBlock("stale or foreign repair subject")
+    origin = envelope.get("origin", {})
+    if not isinstance(origin, Mapping) or not isinstance(source.get("repository"), Mapping):
+        raise SelfHealBlock("malformed producer binding")
+    if (source.get("repository", {}).get("full_name") != repository
+            or source.get("head_sha") != head
+            or source.get("path") != origin.get("workflow_path")
+            or source.get("id") != origin.get("run_id")
+            or source.get("run_attempt") != origin.get("run_attempt")
+            or source.get("event") != origin.get("event")
+            or source.get("status") != "completed"
+            or source.get("conclusion") not in {"success", "failure"}
+            or type(source.get("id")) is not int or source["id"] <= 0
+            or type(source.get("run_attempt")) is not int or source["run_attempt"] <= 0):
+        raise SelfHealBlock("unbound producer run or attempt")
+    if origin.get("workflow_path") != ".github/workflows/qikvrt_reflexive_repository_watchdog.yml":
+        raise SelfHealBlock("producer is outside the admitted observer path")
+    raw_jobs = jobs.get("jobs", [])
+    if (not isinstance(raw_jobs, list) or not raw_jobs
+            or jobs.get("total_count") != len(raw_jobs)):
+        raise SelfHealBlock("incomplete producer job observation")
+    for job in raw_jobs:
+        if (not isinstance(job, Mapping) or type(job.get("id")) is not int or job["id"] <= 0
+                or job.get("run_id") != source["id"] or job.get("head_sha") != head
+                or job.get("run_attempt") != source["run_attempt"]
+                or job.get("status") != "completed" or not isinstance(job.get("steps"), list)
+                or any(not isinstance(s, Mapping) for s in job["steps"])):
+            raise SelfHealBlock("foreign or unfinished producer job")
+    if len({j['id'] for j in raw_jobs}) != len(raw_jobs):
+        raise SelfHealBlock("duplicate producer job evidence")
+    if not any(step.get("name") == "Bind error analysis for the existing repair consumer"
+               and step.get("status") == "completed" and step.get("conclusion") == "success"
+               for job in raw_jobs for step in job.get("steps", [])):
+        raise SelfHealBlock("handoff producer step was not executed")
+    text = envelope.get("analysis_utf8")
+    if not isinstance(text, str) or len(text.encode("utf-8")) > 8 * 1024 * 1024:
+        raise SelfHealBlock("invalid analysis bytes")
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    if digest != envelope.get("analysis_sha256"):
+        raise SelfHealBlock("analysis byte drift")
+    analysis = json.loads(text)
+    if (analysis.get("repository") != repository or analysis.get("head_sha") != head
+            or analysis.get("tree_sha") != tree
+            or analysis.get("schema") not in {"qikvrt_reflexive_repository_watchdog_receipt_v1",
+                                              "qikvrt_reflexive_observation_failure_receipt_v1"}
+            or envelope.get("hop_count") != 1 or envelope.get("effect_permission") is not False
+            or envelope.get("consumer") != "tools/qikvrt_autonomous_self_heal.py:repair-consume"):
+        raise SelfHealBlock("unbound analysis or forbidden effect escalation")
+    canonical = lambda x: (json.dumps(x, ensure_ascii=False, sort_keys=True,
+                                      indent=2, allow_nan=False) + "\n").encode("utf-8")
+    identity = hashlib.sha256(canonical({"subject": subject, "origin": origin,
+                                        "analysis_sha256": digest})).hexdigest()
+    if identity != envelope.get("work_unit_id"):
+        raise SelfHealBlock("work unit binding drift")
+    if envelope.get("state") == "NOOP":
+        return {"state": "NOOP", "work_unit_id": identity, "effect_ack_done": False}
+    if envelope.get("state") != "REPAIR_INPUT_REQUIRED" or analysis.get("disposition") != "HOLD":
+        raise SelfHealBlock("handoff disposition drift")
+    inbox.mkdir(parents=True, exist_ok=True)
+    path = inbox / (identity + ".json")
+    content = canonical(dict(envelope))
+    try:
+        # Never overwrite another receipt; retries must read back identical bytes.
+        with path.open("xb") as stream:
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        state = "ADMITTED_ANALYSIS_HOLD"
+    except FileExistsError:
+        state = "DUPLICATE_READBACK"
+    if path.read_bytes() != content:
+        raise SelfHealBlock("repair inbox readback conflict")
+    return {"schema": "qikvrt_repair_consumer_receipt_v1", "state": state,
+            "work_unit_id": identity, "subject": subject, "origin": dict(origin),
+            "analysis_sha256": digest, "inbox_sha256": hashlib.sha256(content).hexdigest(),
+            "analysis_admitted": True, "consumer": "tools/qikvrt_autonomous_self_heal.py",
+            "inbox_readback_verified": True, "writer_admitted": False,
+            "repair_executed": False, "cause": "UNESTABLISHED",
+            "first_blocker": analysis.get("first_blocker"),
+            "next_action": "ESTABLISH_CAUSE_AND_MATCH_EXISTING_ALLOWLISTED_REPAIR",
+            "effect_ack_done": False}
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation"))
+    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume"))
     parser.add_argument("--repository", type=pathlib.Path, default=ROOT)
     parser.add_argument("--reference")
     parser.add_argument("--binding", type=pathlib.Path)
@@ -580,9 +693,24 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--event")
     parser.add_argument("--run-id", type=int)
     parser.add_argument("--run-attempt", type=int)
+    parser.add_argument("--envelope", type=pathlib.Path)
+    parser.add_argument("--source-run", type=pathlib.Path)
+    parser.add_argument("--source-jobs", type=pathlib.Path)
+    parser.add_argument("--expected-head")
+    parser.add_argument("--expected-tree")
+    parser.add_argument("--inbox", type=pathlib.Path)
     args = parser.parse_args(argv)
     try:
-        if args.command == "ci-continuation":
+        if args.command == "repair-consume":
+            if not all((args.envelope, args.source_run, args.source_jobs, args.inbox,
+                        args.expected_head, args.expected_tree, args.repository_name)):
+                raise SelfHealBlock("repair input, authenticated observations and current subject required")
+            validate_repair_handoff_contract(_load_json(CONTRACT, "repair handoff contract"))
+            result = consume_repair_input(_load_json(args.envelope, "repair envelope"),
+                _load_json(args.source_run, "producer run"),
+                _load_json(args.source_jobs, "producer jobs"), repository=args.repository_name,
+                head=args.expected_head, tree=args.expected_tree, inbox=args.inbox)
+        elif args.command == "ci-continuation":
             result = ci_continuation_receipt(args.repository, args.reference,
                 args.test_outcome, args.repository_name, args.event,
                 args.run_id, args.run_attempt)
