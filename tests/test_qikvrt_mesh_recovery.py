@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zlib
 from unittest import mock
 
 from tools import qikvrt_mesh_recovery as recovery
@@ -87,9 +88,136 @@ class MeshRecoveryTests(unittest.TestCase):
         self.plan["assets"].append({"path": path, "category": "governance",
                                   "bytes": len(raw), "sha256": recovery.digest(raw),
                                   "mode": 0o644, "confidentiality": "PUBLIC"})
+        self.dependency_inventory = {
+            "schema": "qikvrt_repository_dependency_mirrors_v1",
+            "head": self.plan["git"]["head"], "tree": self.plan["git"]["tree"],
+            "coverage": "OWNER_REVIEWED_DECLARED_CLOSURE",
+            "dependencies": [{"dependency_id": "bound-runtime-artifact", "kind": "ARTIFACT",
+                "external_source": "fixture-provider:runtime", "source_sha256": recovery.digest(b"fixture:runtime"),
+                "mirror_path": "runtime.bin", "external_source_required_after_binding": False}],
+        }
+        self.bind_dependency_inventory()
         self.plan["assets"].sort(key=lambda a: a["path"])
         self.plan_path = self.root / "plan.json"
         self.package = self.root / "checkpoint"
+
+    def bind_dependency_inventory(self) -> None:
+        raw = canonical_json_bytes(self.dependency_inventory)
+        path = recovery.DEPENDENCY_MIRRORS_PATH
+        (self.payload / path).write_bytes(raw)
+        asset = next((a for a in self.plan["assets"] if a["path"] == path), None)
+        if asset is None:
+            asset = {"path": path, "category": "governance", "mode": 0o644, "confidentiality": "PUBLIC"}
+            self.plan["assets"].append(asset)
+        asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+        self.plan["assets"].sort(key=lambda a: a["path"])
+
+    def test_cqf_bound_function_runs_after_loss_of_external_provider_and_all_original_sources(self) -> None:
+        for role in ("AUTHORITY", "MIRROR"):
+            with self.subTest(role=role):
+                fixture = MeshRecoveryTests()
+                fixture.setUp()
+                self.addCleanup(fixture.doCleanups)
+                fixture.plan["role"] = role
+                external = fixture.root / "external-provider"
+                external.mkdir()
+                expected = bytes(range(256)) * 17
+                source_files = {
+                    "runtime.bin": b"from pathlib import Path\nimport sys,zlib\nsys.stdout.buffer.write(zlib.decompress(Path(__file__).with_name('artifacts.bin').read_bytes()))\n",
+                    "artifacts.bin": zlib.compress(expected),
+                }
+                entries = []
+                for path, raw in source_files.items():
+                    (external / path).write_bytes(raw)
+                    (fixture.payload / path).write_bytes(raw)
+                    asset = next(a for a in fixture.plan["assets"] if a["path"] == path)
+                    asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+                    entries.append({"dependency_id": path.replace('.', '-'),
+                        "kind": "EXECUTABLE" if path == "runtime.bin" else "ARTIFACT",
+                        "external_source": str(external / path), "source_sha256": recovery.digest(raw),
+                        "mirror_path": path, "external_source_required_after_binding": False})
+                fixture.dependency_inventory["dependencies"] = sorted(entries, key=lambda a: a["dependency_id"])
+                fixture.bind_dependency_inventory()
+                baseline = subprocess.check_output([sys.executable, "-B", str(external / "runtime.bin")], timeout=10)
+                binding = fixture.create()
+                survivor = fixture.root / "survivor"
+                restored = recovery.restore_checkpoint(fixture.package, survivor, binding, clone=True)
+                for lost in (external, fixture.source, fixture.payload, fixture.package):
+                    shutil.rmtree(lost)
+                actual_binding, _ = recovery.verify_restored_node(survivor, binding)
+                observed = subprocess.check_output([sys.executable, "-B", str(survivor / "payload/runtime.bin")], timeout=10)
+                self.assertEqual(expected, baseline)
+                self.assertEqual(baseline, observed)
+                self.assertEqual(actual_binding["head"], fixture.plan["git"]["head"])
+                self.assertEqual(actual_binding["tree"], fixture.plan["git"]["tree"])
+                self.assertFalse(restored["full_node_admitted"])
+                self.assertFalse(restored["effect_ack_done"])
+
+    def test_cqf_rejects_external_fallback_missing_bytes_and_stale_binding_even_after_rehash(self) -> None:
+        original = copy.deepcopy(self.dependency_inventory)
+        cases = []
+        for key, value in (("external_source_required_after_binding", True),
+                           ("mirror_path", "https://external.invalid/runtime"),
+                           ("mirror_path", "missing-runtime.bin"),
+                           ("mirror_path", recovery.INDEPENDENCE_POLICY_PATH),
+                           ("source_sha256", "0" * 64), ("kind", [])):
+            changed = copy.deepcopy(original)
+            changed["dependencies"][0][key] = value
+            cases.append(changed)
+        for field in ("head", "tree"):
+            changed = copy.deepcopy(original)
+            changed[field] = "0" * 40
+            cases.append(changed)
+        duplicate = copy.deepcopy(original)
+        duplicate["dependencies"] *= 2
+        cases.append(duplicate)
+        for changed in cases:
+            with self.subTest(inventory=changed):
+                self.dependency_inventory = changed
+                self.bind_dependency_inventory()
+                with self.assertRaises(recovery.RecoveryError):
+                    self.create()
+                self.assertFalse(self.package.exists())
+
+    def test_cqf_rule_cannot_be_restricted_to_chatgpt_or_removed_for_new_admission(self) -> None:
+        original = json.loads((self.payload / recovery.INDEPENDENCE_POLICY_PATH).read_bytes())
+        cases = []
+        missing = copy.deepcopy(original)
+        del missing["post_binding_repository_mirroring"]
+        cases.append(missing)
+        for key, value in (("chatgpt_only", True), ("external_source_required_after_binding", True),
+                           ("offline_function_or_lossless_reconstruction_witness_required", False),
+                           ("scope", "CHATGPT_ONLY"), ("mirror_bytes_imply_runtime_equivalence", True)):
+            changed = copy.deepcopy(original)
+            changed["post_binding_repository_mirroring"][key] = value
+            cases.append(changed)
+        for changed in cases:
+            with self.subTest(rule=changed.get("post_binding_repository_mirroring")):
+                raw = canonical_json_bytes(changed)
+                (self.payload / recovery.INDEPENDENCE_POLICY_PATH).write_bytes(raw)
+                asset = next(a for a in self.plan["assets"] if a["path"] == recovery.INDEPENDENCE_POLICY_PATH)
+                asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+                with self.assertRaisesRegex(recovery.RecoveryError, "CQF"):
+                    self.create()
+                self.assertFalse(self.package.exists())
+
+    def test_historical_checkpoint_is_readable_but_cannot_inherit_current_cqf_role_admission(self) -> None:
+        binding = self.create()
+        legacy = json.loads((self.package / "payload" / recovery.INDEPENDENCE_POLICY_PATH).read_bytes())
+        del legacy["post_binding_repository_mirroring"]
+        legacy["full_node_predicate"].remove(recovery.DEPENDENCY_MIRROR_PREDICATE)
+        raw = canonical_json_bytes(legacy)
+        (self.package / "payload" / recovery.INDEPENDENCE_POLICY_PATH).write_bytes(raw)
+        def rebind(manifest):
+            asset = next(a for a in manifest["plan"]["assets"] if a["path"] == recovery.INDEPENDENCE_POLICY_PATH)
+            asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+        binding = self.rebind_manifest(rebind)
+        recovery.verify_checkpoint(self.package, binding)
+        historical = self.root / "historical"
+        result = recovery.restore_checkpoint(self.package, historical, binding)
+        self.assertFalse(result["full_node_admitted"])
+        with self.assertRaisesRegex(recovery.RecoveryError, "CQF"):
+            recovery.verify_restored_node(historical, binding)
 
     def write_plan(self, value: dict | None = None) -> str:
         raw = canonical_json_bytes(value if value is not None else self.plan)
@@ -148,7 +276,6 @@ class MeshRecoveryTests(unittest.TestCase):
 
     def test_independence_payload_and_versioned_contract_are_mandatory(self) -> None:
         (self.payload / recovery.INDEPENDENCE_POLICY_PATH).unlink()
-        (self.payload / "governance").rmdir()
         self.plan["assets"] = [a for a in self.plan["assets"] if a["path"] != recovery.INDEPENDENCE_POLICY_PATH]
         with self.assertRaisesRegex(recovery.RecoveryError, "technology independence governance payload missing"):
             self.create()

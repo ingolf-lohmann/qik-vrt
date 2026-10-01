@@ -528,3 +528,36 @@ Delivery-Successor. Frühere ZIP-/Release-Pakete bleiben historische Artefakte;
 ihr Entpacken widerruft die No-Bypass-Anforderung nicht. Noch ausgegebene
 Capabilities und historische Installationen müssen vor produktiver Abnahme
 weiterhin tatsächlich entzogen und rückgelesen werden.
+
+## CQF: repository mirrors after successful dependency binding
+
+Ingolf Lohmann's 2026-10-01 clarification applies to every dependency outside
+the repository, including data, executable functions, toolchains, runtime,
+state, schedules and recovery material. After successful binding, replace the
+external dependency with a verified repository mirror. The purpose is CQF
+fault tolerance: the declared function must keep working, or be reconstructible
+without loss, with its original external source unavailable.
+
+The existing checkpoint exporter, verifier and restored-node admission consume
+the rule `QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1` from the existing full
+node policy. New checkpoint creation and current role admission require it.
+The owner-reviewed closure carries `governance/dependency_mirrors.json`, bound
+to the checkpoint HEAD/TREE, with sorted unique dependency identifiers, original
+source digests, exact local asset paths and no post-binding external fallback.
+Every referenced mirror must be present in the actual asset inventory and pass
+fresh byte verification. Executable dependencies must bind runtime assets.
+URLs, instructions and governance metadata cannot stand in for those bytes.
+
+The behavioral CQF witness in `tests/test_qikvrt_mesh_recovery.py` runs the
+bound lossless codec on its original source, then runs the same mirrored
+function from a restored clone after deleting the original provider, Git
+source, payload and checkpoint package. Both Authority and Mirror checkpoint
+roles are exercised, with exact output and HEAD/TREE readback. The interpreter
+is supplied by the test runner; this witness does not establish complete
+production-runtime closure or live provider independence.
+
+Historical v2 checkpoints remain readable for offline restoration. They cannot
+inherit the current CQF role-admission claim without the new bound inventory
+and rule. Source hashes, copied mirror bytes and a passed isolated test do not
+establish general runtime equivalence, rights, live capability unseal or full
+Mesh closure; those remain separate required observations.

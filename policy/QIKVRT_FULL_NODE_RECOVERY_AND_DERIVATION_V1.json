@@ -228,10 +228,39 @@
     "RESTORED_RUNTIME_AND_CAPABILITY_UNSEAL_SELF_TEST_VERIFIED",
     "EXCLUSIVE_FENCED_AUTHORITY_RECOVERY_AND_FRESH_EFFECT_READBACK_VERIFIED",
     "NEW_MIRROR_AND_PROJECT_CREATION_ROUTE_AND_ROOT_REGISTRATION_VERIFIED",
-    "TECHNOLOGY_INDEPENDENCE_REQUIREMENT_AND_RECOVERY_MATERIAL_PRESERVED"
+    "TECHNOLOGY_INDEPENDENCE_REQUIREMENT_AND_RECOVERY_MATERIAL_PRESERVED",
+    "BOUND_EXTERNAL_DEPENDENCIES_MIRRORED_AND_OFFLINE_FUNCTION_VERIFIED"
   ],
   "human_contract": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
   "implementation": "tools/qikvrt_mesh_recovery.py",
+  "post_binding_repository_mirroring": {
+    "after_successful_binding": "REPLACE_EXTERNAL_DEPENDENCY_WITH_VERIFIED_REPOSITORY_MIRROR",
+    "chatgpt_only": false,
+    "declared_at_utc": "2026-10-01T22:27:14Z",
+    "external_source_required_after_binding": false,
+    "historical_compatibility": "HISTORICAL_V2_CHECKPOINTS_REMAIN_OFFLINE_READABLE; NEW_CHECKPOINT_AND_CURRENT_ROLE_ADMISSION_REQUIRE_CQF_RULE",
+    "inventory_payload_path": "governance/dependency_mirrors.json",
+    "mirror_bytes_imply_runtime_equivalence": false,
+    "missing_required_mirror": "BLOCK_CURRENT_FULL_NODE_ADMISSION",
+    "offline_function_or_lossless_reconstruction_witness_required": true,
+    "owner": "Ingolf Lohmann",
+    "owner_clarification": "Das gilt nicht nur für die Abhängigkeiten zu ChatGPT, sondern auch zu allen anderen externen Abhängigkeiten, die außerhalb eines Repositorys liegen. Das ist Sinn und Zweck von CQF. Fehlertoleranz.",
+    "owner_statement": "Jegliche externe Abhängigkeit ist nach erfolgreicher Bindung durch geeignete Spiegelung in das Repository zu ersetzen.",
+    "purpose": "CQF_FAULT_TOLERANCE",
+    "required_evidence": [
+      "OWNER_REVIEWED_COMPLETE_DECLARED_CLOSURE",
+      "EXACT_SOURCE_BINDING_AND_LOCAL_MIRROR_BYTES",
+      "RIGHTS_SECURITY_PRIVACY_AND_PROVENANCE",
+      "CURRENT_HEAD_TREE_AND_FRESH_READBACK",
+      "FUNCTION_OR_LOSSLESS_RECONSTRUCTION_AFTER_EXTERNAL_SOURCE_LOSS"
+    ],
+    "rights_security_privacy_provenance_and_authority_bypass": false,
+    "rule_id": "QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1",
+    "scope": "ALL_DEPENDENCIES_OUTSIDE_THE_REPOSITORY",
+    "test": "tests/test_qikvrt_mesh_recovery.py",
+    "universal_closure_inferred_from_declared_inventory": false,
+    "url_metadata_or_instruction_is_sufficient_mirror": false
+  },
   "requested_by": "Ingolf Lohmann",
   "requested_date": "2026-10-01",
   "role_independent_requirement": {

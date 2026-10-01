@@ -289,5 +289,23 @@
     "completed_event_binding": "CURRENT_OPTED_IN_SAME_REPOSITORY_DRAFT_HEAD_ONLY",
     "automatic_acceptance": false,
     "main_activation": "REQUIRES_INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ADMISSION"
+  },
+  "execution_routing": {
+    "rule_id": "QIKVRT_REPOSITORY_OWNS_EXECUTION_V1",
+    "repository_tasks_executor": "REPOSITORY_NATIVE_CI_CD_AND_ADMITTED_MESH_EXECUTORS",
+    "external_trigger_owns_repository_execution": false,
+    "external_schedule_required_for_repository_liveness": false,
+    "external_client_roles": [
+      "AUTHORIZED_REQUEST_TRANSPORT",
+      "INTERACTIVE_REVIEWABLE_PREPARATION",
+      "FRESH_EFFECT_READBACK",
+      "PERSONAL_READ_ONLY_REPORTING"
+    ],
+    "dependency_mirroring_policy": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+    "dependency_mirroring_rule_id": "QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1",
+    "all_other_external_dependencies_in_scope": true,
+    "external_dependency_after_successful_binding": "REPLACE_WITH_VERIFIED_REPOSITORY_MIRROR",
+    "first_success_or_failure_is_terminal": false,
+    "effect_ack_done": false
   }
 }

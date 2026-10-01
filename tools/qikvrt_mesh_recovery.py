@@ -38,6 +38,8 @@ PLAN_SCHEMA = "qikvrt_full_node_closure_plan_v2"
 MANIFEST_SCHEMA = "qikvrt_mesh_checkpoint_v2"
 INDEPENDENCE_POLICY_PATH = "governance/full_node_policy.json"
 INDEPENDENCE_PREDICATE = "TECHNOLOGY_INDEPENDENCE_REQUIREMENT_AND_RECOVERY_MATERIAL_PRESERVED"
+DEPENDENCY_MIRRORS_PATH = "governance/dependency_mirrors.json"
+DEPENDENCY_MIRROR_PREDICATE = "BOUND_EXTERNAL_DEPENDENCIES_MIRRORED_AND_OFFLINE_FUNCTION_VERIFIED"
 CATEGORIES = frozenset({
     "runtime", "mutable_state", "artifacts", "scheduler", "governance",
     "platform_metadata", "capability_recovery",
@@ -77,7 +79,34 @@ def require_digest(value: Any) -> str:
     return value
 
 
-def validate_independence_requirement(policy: dict[str, Any]) -> None:
+def validate_dependency_mirroring_requirement(policy: dict[str, Any], *, required: bool = False) -> None:
+    """Retain historical readers; require the current CQF rule for new admission."""
+    rule = policy.get("post_binding_repository_mirroring")
+    if rule is None and not required:
+        return
+    expected = {
+        "rule_id": "QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1",
+        "owner": "Ingolf Lohmann",
+        "purpose": "CQF_FAULT_TOLERANCE",
+        "scope": "ALL_DEPENDENCIES_OUTSIDE_THE_REPOSITORY",
+        "after_successful_binding": "REPLACE_EXTERNAL_DEPENDENCY_WITH_VERIFIED_REPOSITORY_MIRROR",
+        "chatgpt_only": False,
+        "external_source_required_after_binding": False,
+        "inventory_payload_path": DEPENDENCY_MIRRORS_PATH,
+        "offline_function_or_lossless_reconstruction_witness_required": True,
+        "url_metadata_or_instruction_is_sufficient_mirror": False,
+        "mirror_bytes_imply_runtime_equivalence": False,
+        "rights_security_privacy_provenance_and_authority_bypass": False,
+        "universal_closure_inferred_from_declared_inventory": False,
+    }
+    if (not isinstance(rule, dict) or any(type(rule.get(k)) is not type(v)
+            or rule.get(k) != v for k, v in expected.items())
+            or not isinstance(policy.get("full_node_predicate"), list)
+            or DEPENDENCY_MIRROR_PREDICATE not in policy.get("full_node_predicate", [])):
+        raise RecoveryError("CQF dependency mirroring requirement missing or weakened")
+
+
+def validate_independence_requirement(policy: dict[str, Any], *, require_dependency_mirroring: bool = False) -> None:
     """Preserve the owner's requirement; this does not attest universal ability."""
     if not isinstance(policy, dict):
         raise RecoveryError("technology independence policy must be an object")
@@ -107,14 +136,61 @@ def validate_independence_requirement(policy: dict[str, Any]) -> None:
             or not isinstance(policy.get("full_node_predicate"), list)
             or INDEPENDENCE_PREDICATE not in policy["full_node_predicate"]):
         raise RecoveryError("technology independence recovery material requirement missing")
+    validate_dependency_mirroring_requirement(policy, required=require_dependency_mirroring)
 
 
-def validate_independence_payload(payload_root: Path, plan: dict[str, Any]) -> None:
+def validate_dependency_mirrors(payload_root: Path, plan: dict[str, Any]) -> None:
+    """Verify local mirror bytes within the owner-bound closure, without network.
+
+    This checks content preservation and binding, never runtime equivalence or
+    completeness of dependencies outside the separately reviewed closure plan.
+    """
+    assets = {a["path"]: a for a in plan["assets"]}
+    asset = assets.get(DEPENDENCY_MIRRORS_PATH)
+    if asset is None or asset["category"] != "governance":
+        raise RecoveryError("CQF dependency mirror inventory missing")
+    inventory = load_json(payload_root / DEPENDENCY_MIRRORS_PATH, asset["sha256"])
+    exact(inventory, {"schema", "head", "tree", "coverage", "dependencies"}, "dependency mirrors")
+    if (inventory["schema"] != "qikvrt_repository_dependency_mirrors_v1"
+            or inventory["head"] != plan["git"]["head"]
+            or inventory["tree"] != plan["git"]["tree"]
+            or inventory["coverage"] != "OWNER_REVIEWED_DECLARED_CLOSURE"
+            or not isinstance(inventory["dependencies"], list)
+            or len(inventory["dependencies"]) > MAX_ASSETS):
+        raise RecoveryError("CQF dependency mirror inventory binding drift")
+    identifiers: list[str] = []
+    for entry in inventory["dependencies"]:
+        exact(entry, {"dependency_id", "kind", "external_source", "source_sha256",
+                      "mirror_path", "external_source_required_after_binding"}, "dependency mirror")
+        identifier = entry["dependency_id"]
+        if (not isinstance(identifier, str) or not re.fullmatch(r"[A-Za-z0-9_.-]{1,128}", identifier)
+                or not isinstance(entry["kind"], str)
+                or entry["kind"] not in {"ARTIFACT", "EXECUTABLE", "STATE", "CONTRACT"}
+                or not isinstance(entry["external_source"], str)
+                or not 1 <= len(entry["external_source"]) <= 4096
+                or entry["external_source_required_after_binding"] is not False):
+            raise RecoveryError("CQF bound dependency still requires an external source")
+        identifiers.append(identifier)
+        path = safe_path(entry["mirror_path"])
+        mirrored = assets.get(path)
+        if (mirrored is None or path in {INDEPENDENCE_POLICY_PATH, DEPENDENCY_MIRRORS_PATH}
+                or mirrored["sha256"] != require_digest(entry["source_sha256"])
+                or (entry["kind"] == "EXECUTABLE" and mirrored["category"] != "runtime")):
+            raise RecoveryError("CQF dependency lacks its exact repository mirror bytes")
+        copy_verified(payload_root / path, None, mirrored)
+    if identifiers != sorted(set(identifiers)):
+        raise RecoveryError("CQF dependency identifiers must be unique and sorted")
+
+
+def validate_independence_payload(payload_root: Path, plan: dict[str, Any], *,
+                                  require_dependency_mirroring: bool = False) -> None:
     assets = [a for a in plan["assets"] if a["path"] == INDEPENDENCE_POLICY_PATH]
     if len(assets) != 1 or assets[0]["category"] != "governance":
         raise RecoveryError("technology independence governance payload missing")
     policy = load_json(payload_root / INDEPENDENCE_POLICY_PATH, assets[0]["sha256"])
-    validate_independence_requirement(policy)
+    validate_independence_requirement(policy, require_dependency_mirroring=require_dependency_mirroring)
+    if "post_binding_repository_mirroring" in policy:
+        validate_dependency_mirrors(payload_root, plan)
 
 
 def safe_path(value: Any) -> str:
@@ -496,7 +572,7 @@ def create_checkpoint(repository: Path, payload_root: Path, plan_path: Path,
     for asset in plan["assets"]:
         copy_verified(payload_root / asset["path"], None, asset)
     validate_scheduler(payload_root, plan)
-    validate_independence_payload(payload_root, plan)
+    validate_independence_payload(payload_root, plan, require_dependency_mirroring=True)
     reserve_output(output)
     git_command(repository, "bundle", "create", str(output / "repository.bundle"), "--all", "HEAD")
     size = (output / "repository.bundle").stat().st_size
@@ -619,7 +695,7 @@ def verify_restored_node(node: Path, manifest_sha256: str) -> tuple[dict, dict]:
     copy_verified(node / "signature.bin", None, {
         "bytes": 400, "sha256": plan["signature_sha256"], "mode": 0o644})
     validate_scheduler(node / "payload", plan)
-    validate_independence_payload(node / "payload", plan)
+    validate_independence_payload(node / "payload", plan, require_dependency_mirroring=True)
     asset = next(a for a in plan["assets"] if a["category"] == "scheduler")
     scheduler = load_json(node / "payload" / asset["path"], asset["sha256"])
     binding = {"node_id": identity["node_id"], "repository": plan["repository"],

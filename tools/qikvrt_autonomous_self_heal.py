@@ -16,6 +16,7 @@ from typing import Any, Mapping, Sequence
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
+DEPENDENCY_POLICY = ROOT / "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
 DELEGATION = (
     ROOT
     / "state/authorization/delegations/"
@@ -196,7 +197,10 @@ def ci_continuation_receipt(repository: pathlib.Path, reference: str | None,
         raise SelfHealBlock("CI continuation subject changed; fresh binding required")
     contract = load_contract()
     # Bind actual executed bytes, not the stale commit identity of a dirty tree.
-    for path in (CONTRACT.relative_to(ROOT).as_posix(), "tools/qikvrt_autonomous_self_heal.py"):
+    for path in (CONTRACT.relative_to(ROOT).as_posix(), DEPENDENCY_POLICY.relative_to(ROOT).as_posix(),
+                 "tools/qikvrt_autonomous_self_heal.py", "tools/qikvrt_mesh_recovery.py",
+                 "tools/qikvrt_seed_common.py", "tools/qikvrt_subprocess.py",
+                 "tools/qikvrt_workflow_executor.py"):
         if git("show", head + ":" + path) != (root / path).read_bytes():
             raise SelfHealBlock("CI command bytes differ from the bound subject")
     if git("rev-parse", "HEAD").decode("ascii").strip() != head:
@@ -205,6 +209,8 @@ def ci_continuation_receipt(repository: pathlib.Path, reference: str | None,
         "schema": "qikvrt_native_ci_continuation_receipt_v1",
         "owner_command": contract["continuous_integration"]["owner_command"],
         "contract_sha256": hashlib.sha256(CONTRACT.read_bytes()).hexdigest(),
+        "execution_routing": contract["execution_routing"],
+        "dependency_policy_sha256": hashlib.sha256(DEPENDENCY_POLICY.read_bytes()).hexdigest(),
         "repository": repository_name, "head": head, "tree": tree,
         "execution": {"event": event, "run_id": run_id,
                       "run_attempt": run_attempt, "terminal_test_outcome": outcome},
@@ -344,6 +350,31 @@ def load_contract() -> dict[str, Any]:
     value = _load_json(CONTRACT, "autonomous self-healing contract")
     if value.get("schema") != "qikvrt_autonomous_self_healing_contract_v1":
         raise SelfHealBlock("contract schema mismatch")
+    routing = value.get("execution_routing", {})
+    routing_required = {
+        "rule_id": "QIKVRT_REPOSITORY_OWNS_EXECUTION_V1",
+        "repository_tasks_executor": "REPOSITORY_NATIVE_CI_CD_AND_ADMITTED_MESH_EXECUTORS",
+        "external_trigger_owns_repository_execution": False,
+        "external_schedule_required_for_repository_liveness": False,
+        "dependency_mirroring_policy": DEPENDENCY_POLICY.relative_to(ROOT).as_posix(),
+        "dependency_mirroring_rule_id": "QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1",
+        "all_other_external_dependencies_in_scope": True,
+        "external_dependency_after_successful_binding": "REPLACE_WITH_VERIFIED_REPOSITORY_MIRROR",
+    }
+    if (not isinstance(routing, dict) or any(type(routing.get(k)) is not type(v)
+            or routing.get(k) != v for k, v in routing_required.items())):
+        raise SelfHealBlock("repository execution and CQF mirroring invariant is absent or weakened")
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    try:
+        from tools.qikvrt_mesh_recovery import RecoveryError, validate_dependency_mirroring_requirement
+    except ImportError as exc:
+        raise SelfHealBlock("repository dependency verifier closure is missing") from exc
+    try:
+        validate_dependency_mirroring_requirement(
+            _load_json(DEPENDENCY_POLICY, "dependency mirroring policy"), required=True)
+    except RecoveryError as exc:
+        raise SelfHealBlock(str(exc)) from exc
     continuous = value.get("continuous_integration", {})
     owner = continuous.get("owner_command", {})
     if (owner.get("literal") != "Never stop CI" or owner.get("issuer") != "Ingolf Lohmann"

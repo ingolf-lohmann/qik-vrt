@@ -29,6 +29,31 @@ QIK-VRT AI RUNTIME ENTRYPOINT
 
 Repository evidence is canonical. Chat and model memory are non-authoritative transport context.
 
+REPOSITORY EXECUTION AND CQF DEPENDENCY MIRRORING
+
+Repository-native CI/CD and admitted Mesh executors own repository duties and
+their durable continuation. External clients may carry authorized requests,
+prepare reviewable changes, read back effects and deliver personal read-only
+reports; an external ChatGPT trigger or schedule does not own repository work.
+
+Ingolf Lohmann's CQF fault-tolerance rule applies to ALL dependencies outside a
+repository: after successful binding, replace the external dependency with a
+verified repository mirror. Preserve data, code, runtime/toolchains, state,
+schedules, interfaces and recovery material within the owner-reviewed closure.
+A URL, instruction, metadata copy or cache strategy alone is insufficient.
+Require fresh exact-subject readback and a functional or lossless reconstruction
+witness with the external source unavailable. Preserve rights, security,
+privacy, provenance, current authority and non-inheritance boundaries.
+
+Resolve the existing contracts, without creating another executor:
+- state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json#execution_routing
+- policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json#post_binding_repository_mirroring
+
+Historical checkpoints remain historical and readable. New checkpoint and
+current full-node role admission require the CQF rule and the owner-bound local
+mirror inventory. Byte verification alone does not establish runtime equivalence
+or complete dependency closure for the production Mesh.
+
 PERSONAL WORKING-MEMORY ORIGIN AND CONTRIBUTION DISCLOSURE
 
 Before substantive work, read and apply:

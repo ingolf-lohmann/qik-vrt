@@ -218,3 +218,26 @@ receiver's execution, registration or hierarchy. Admitted descendants preserve
 the Goldkelch lineage under the existing explicit registration/capability
 contract. Owner requirements for broader future propagation are attributed
 requirements rather than an observed effect on unrelated systems.
+
+## Repository ownership of execution and external dependencies
+
+The general owner correction is bound in the existing self-healing contract's
+`execution_routing` and the `/AI` entrypoint. Repository-native CI/CD and admitted
+Mesh executors own repository tasks and durable continuation. External clients
+may transport authorized requests, prepare reviewable changes, read back
+effects and deliver personal read-only reports. An external ChatGPT schedule
+or webhook is not the repository executor.
+
+The native `ci-continuation` command rejects a weakened execution route or CQF
+dependency policy. Its receipt binds the executed controller/verifier closure,
+both policy digests and exact native run/attempt/HEAD/TREE. It does not infer
+that every production dependency is already mirrored.
+
+The all-external-dependency mirroring rule is implemented in the existing full
+node recovery policy and verifier; see `docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md`.
+Three reachable external execution tasks were paused without deleting their
+prompts or schedules; an observer's incorrect external-executor reference was
+corrected. The exact-bound work unit preserves the audit digests and visibility
+limits. Those configuration effects do not prove productive replacement of
+the Authority scopes or Main activation. Existing independent native review,
+authority, rights and effect boundaries remain required.

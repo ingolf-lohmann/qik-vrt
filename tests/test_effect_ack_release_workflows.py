@@ -590,6 +590,11 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
             "tools/qikvrt_autonomous_self_heal.py",
             "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
             "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+            "tools/qikvrt_mesh_recovery.py",
+            "tools/qikvrt_seed_common.py",
+            "tools/qikvrt_subprocess.py",
+            "tools/qikvrt_workflow_executor.py",
+            "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
         )
         for outcome in ("success", "failure", "cancelled", "skipped", "unknown"):
             with self.subTest(outcome=outcome), tempfile.TemporaryDirectory() as raw:
@@ -624,6 +629,10 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
                 self.assertFalse(receipt["ordinary_release"])
                 self.assertFalse(receipt["effect_ack_done"])
                 self.assertFalse(receipt["writer_authorization_implied"])
+                self.assertFalse(receipt["execution_routing"]["external_trigger_owns_repository_execution"])
+                self.assertTrue(receipt["execution_routing"]["all_other_external_dependencies_in_scope"])
+                self.assertEqual(hashlib.sha256((root / paths[-1]).read_bytes()).hexdigest(),
+                                 receipt["dependency_policy_sha256"])
                 self.assertEqual(head, run_git(root, "rev-parse", "HEAD"))
 
     def test_rehashed_successor_cannot_remove_or_weaken_native_command(self):
@@ -631,8 +640,14 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
             "tools/qikvrt_autonomous_self_heal.py",
             "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
             "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+            "tools/qikvrt_mesh_recovery.py",
+            "tools/qikvrt_seed_common.py",
+            "tools/qikvrt_subprocess.py",
+            "tools/qikvrt_workflow_executor.py",
+            "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
         )
-        for change in ("remove", "stop_on_failure", "dirty_bytes", "stale_head"):
+        for change in ("remove", "stop_on_failure", "dirty_bytes", "stale_head",
+                       "external_executor", "chatgpt_only", "policy_missing", "dirty_dependency_policy"):
             with self.subTest(change=change), tempfile.TemporaryDirectory() as raw:
                 root = pathlib.Path(raw)
                 for path in paths:
@@ -651,10 +666,22 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
                     del value["continuous_integration"]
                 elif change == "stop_on_failure":
                     value["continuous_integration"]["first_failure_terminal"] = True
+                elif change == "external_executor":
+                    value["execution_routing"]["external_trigger_owns_repository_execution"] = True
+                elif change in {"chatgpt_only", "policy_missing", "dirty_dependency_policy"}:
+                    dep_path = root / paths[-1]
+                    dep_policy = json.loads(dep_path.read_text())
+                    if change == "policy_missing":
+                        del dep_policy["post_binding_repository_mirroring"]
+                    elif change == "chatgpt_only":
+                        dep_policy["post_binding_repository_mirroring"]["chatgpt_only"] = True
+                    else:
+                        dep_policy["post_binding_repository_mirroring"]["owner_statement"] += " changed"
+                    dep_path.write_text(json.dumps(dep_policy))
                 else:
                     value["contract_id"] += "-successor"
                 policy.write_text(json.dumps(value))
-                if change != "dirty_bytes":
+                if change not in {"dirty_bytes", "dirty_dependency_policy"}:
                     run_git(root, "add", ".")
                     run_git(root, "commit", "-m", "rebound successor fixture")
                 reference = original if change == "stale_head" else run_git(root, "rev-parse", "HEAD")
