@@ -170,6 +170,7 @@
       "PREVIOUS_REFLEXIVE_RECEIPT_FINGERPRINT"
     ],
     "prevention_states": [
+      "AUTHORITY_UNAVAILABLE",
       "PREEMPTIVE_HOLD_COMPETING_WRITERS",
       "PREEMPTIVE_HOLD_STALE_WRITER_LEASE",
       "PREEMPTIVE_HOLD_NO_PROGRESS_TRANSITION",
@@ -207,6 +208,17 @@
       "zero_job_is_trusted_execution": false,
       "deadlock_freedom_proved": false,
       "universal_relational_database_superiority_proved": false
+    },
+    "authority_capability_hold": {
+      "state": "AUTHORITY_UNAVAILABLE",
+      "disposition": "HOLD",
+      "capability_blocker": "AUTHORITY_MAIN_READ_CAPABILITY_UNAVAILABLE",
+      "cause": "UNESTABLISHED",
+      "read_only_subject_observation_continues": true,
+      "takeover_allowed": false,
+      "writer_admission_allowed": false,
+      "effect_ack_done": false,
+      "retry_condition": "AUTHORITY_MAIN_READ_CAPABILITY_RESTORED_AND_EXACT_SUBJECT_REOBSERVED"
     }
   },
   "boundaries": {

@@ -90,3 +90,17 @@ Conventional relational database systems already provide transaction deadlock ha
 ## Nonclaims
 
 A successful watchdog run is observation evidence, not gate success. The mechanism does not prove global deadlock freedom, repository completion, Authority–Mirror equality, empirical confirmation, scientific consensus, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
+
+## Authority read capability HOLD
+
+The shared read-only observer classifies a failed Authority Main GET with a
+native HTTP 401/403/404/429/500/502/503/504 response as `AUTHORITY_UNAVAILABLE`.
+The cause remains `UNESTABLISHED`: this is no evidence of destroyed Authority.
+The successful observer workflow materializes a capability HOLD, not a successful
+Authority gate. Subject HEAD/TREE, paginated run/job/step evidence, prior receipt
+comparison and exact endpoint/status/exit-code/response-digest bindings remain in
+the artifact receipt. No takeover, writer admission or EFFECT_ACK is permitted;
+`effect_ack_done=false`. Recovery requires restored read capability and a fresh
+exact-subject observation. Other API failures, malformed successful ref responses,
+changed Authority identity, subject HEAD drift and tracked mutations remain hard
+workflow failures. Historical failure receipts remain historical evidence.
