@@ -34,8 +34,10 @@ ROOT_REPOSITORY = "Goldkelch/qik-vrt"
 # Exact V1 image reused unchanged from the standpoint codex candidate. This
 # binding is not a transfer of that candidate's reviews or admission evidence.
 CANONICAL_SIGNATURE_SHA256_V1 = "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
-PLAN_SCHEMA = "qikvrt_full_node_closure_plan_v1"
-MANIFEST_SCHEMA = "qikvrt_mesh_checkpoint_v1"
+PLAN_SCHEMA = "qikvrt_full_node_closure_plan_v2"
+MANIFEST_SCHEMA = "qikvrt_mesh_checkpoint_v2"
+INDEPENDENCE_POLICY_PATH = "governance/full_node_policy.json"
+INDEPENDENCE_PREDICATE = "TECHNOLOGY_INDEPENDENCE_REQUIREMENT_AND_RECOVERY_MATERIAL_PRESERVED"
 CATEGORIES = frozenset({
     "runtime", "mutable_state", "artifacts", "scheduler", "governance",
     "platform_metadata", "capability_recovery",
@@ -73,6 +75,46 @@ def require_digest(value: Any) -> str:
     if not isinstance(value, str) or not HEX256.fullmatch(value):
         raise RecoveryError("invalid SHA-256 trust binding")
     return value
+
+
+def validate_independence_requirement(policy: dict[str, Any]) -> None:
+    """Preserve the owner's requirement; this does not attest universal ability."""
+    if not isinstance(policy, dict):
+        raise RecoveryError("technology independence policy must be an object")
+    requirement = policy.get("technology_independence", {})
+    required = {
+        "requirement_id": "QIKVRT_NODE_TECHNOLOGY_INDEPENDENCE_V1",
+        "applies_to": "EVERY_FULL_NODE_REGARDLESS_OF_AUTHORITY_OR_MIRROR_ROLE",
+        "owner_universal_reverse_engineering_requirement": True,
+        "autonomous_dependency_reconstruction_and_replacement_required": True,
+        "life_preserving_requirement_must_survive_every_successor": True,
+        "governance_payload_path": INDEPENDENCE_POLICY_PATH,
+        "deletion_or_weakened_successor": "BLOCK_FULL_NODE_ADMISSION",
+        "universal_capability_inferred_from_requirement_or_checkpoint": False,
+        "independence_bypasses_authority_permit_epoch_or_fence": False,
+    }
+    if not isinstance(requirement, dict) or any(
+            type(requirement.get(k)) is not type(v) or requirement.get(k) != v
+            for k, v in required.items()):
+        raise RecoveryError("technology independence requirement missing or weakened")
+    material = {"SOURCE_AND_INTERFACE_MODELS", "TOOLCHAIN_AND_RUNTIME_CLOSURE",
+                "DEPENDENCY_REPLACEMENT_AND_RECONSTRUCTION_PLANS",
+                "BEHAVIORAL_TEST_VECTORS_AND_FRESH_RESULTS",
+                "PHYSICAL_TECHNOLOGY_RECOVERY_INPUTS_WHEN_REQUIRED"}
+    if (not isinstance(requirement.get("required_recovery_material"), list)
+            or any(not isinstance(item, str) for item in requirement["required_recovery_material"])
+            or not material.issubset(requirement["required_recovery_material"])
+            or not isinstance(policy.get("full_node_predicate"), list)
+            or INDEPENDENCE_PREDICATE not in policy["full_node_predicate"]):
+        raise RecoveryError("technology independence recovery material requirement missing")
+
+
+def validate_independence_payload(payload_root: Path, plan: dict[str, Any]) -> None:
+    assets = [a for a in plan["assets"] if a["path"] == INDEPENDENCE_POLICY_PATH]
+    if len(assets) != 1 or assets[0]["category"] != "governance":
+        raise RecoveryError("technology independence governance payload missing")
+    policy = load_json(payload_root / INDEPENDENCE_POLICY_PATH, assets[0]["sha256"])
+    validate_independence_requirement(policy)
 
 
 def safe_path(value: Any) -> str:
@@ -426,6 +468,7 @@ def verify_checkpoint(package: Path, expected_manifest_sha256: str) -> dict[str,
     for asset in plan["assets"]:
         copy_verified(package / "payload" / asset["path"], None, asset)
     validate_scheduler(package / "payload", plan)
+    validate_independence_payload(package / "payload", plan)
     # A new empty repository supplies no ancestors or objects to an incremental
     # bundle. Success here is the standalone-closure proof, not `bundle verify`
     # in the source repository, where missing ancestors could be masked.
@@ -453,6 +496,7 @@ def create_checkpoint(repository: Path, payload_root: Path, plan_path: Path,
     for asset in plan["assets"]:
         copy_verified(payload_root / asset["path"], None, asset)
     validate_scheduler(payload_root, plan)
+    validate_independence_payload(payload_root, plan)
     reserve_output(output)
     git_command(repository, "bundle", "create", str(output / "repository.bundle"), "--all", "HEAD")
     size = (output / "repository.bundle").stat().st_size
@@ -573,6 +617,7 @@ def plan_effect(package: Path, expected_manifest_sha256: str,
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="operation", required=True)
+    commands.add_parser("verify-policy")
     create = commands.add_parser("create")
     for flag in ("repository", "payload-root", "plan", "output"):
         create.add_argument("--" + flag, type=Path, required=True)
@@ -587,7 +632,12 @@ def main(argv: list[str] | None = None) -> int:
             command.add_argument("--target-repository", required=True)
     args = parser.parse_args(argv)
     try:
-        if args.operation == "create":
+        if args.operation == "verify-policy":
+            policy = parse_json_bytes(read_file(ROOT / "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"), "full node policy")
+            validate_independence_requirement(policy)
+            result = {"state": "PASS", "scope": "REQUIREMENT_PRESERVATION_ONLY",
+                      "universal_reverse_engineering_verified": False, "effect_ack_done": False}
+        elif args.operation == "create":
             result = create_checkpoint(args.repository, args.payload_root, args.plan,
                                        args.output, args.expect_plan_sha256)
         elif args.operation in {"restore", "clone"}:

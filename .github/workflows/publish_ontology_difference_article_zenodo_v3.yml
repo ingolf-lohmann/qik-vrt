@@ -6,10 +6,12 @@ on:
     paths: [release/ontology-difference-zenodo-request-v3.json]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   publish:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
@@ -18,6 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          persist-credentials: false
           fetch-depth: 2
       - name: Resolve existing record or publish exact package
         shell: bash

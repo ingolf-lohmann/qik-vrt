@@ -30,8 +30,8 @@ on:
         default: ""
 
 permissions:
-  actions: write
-  contents: write
+  actions: read
+  contents: read
 
 concurrency:
   group: qikvrt-repository-evidence-${{ github.head_ref || github.ref_name }}
@@ -39,18 +39,20 @@ concurrency:
 
 jobs:
   materialize:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     # A completed CI run is an independent repository-native admission carrier
     # for the same exact PR head when GitHub leaves the materializer check
     # pending with zero jobs. Ignore the materializer's own workflow_run events
     # by listening only to QIKVRT CI above.
-    if: >-
-      (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.event == 'pull_request' &&
-       github.event.workflow_run.head_repository.full_name == github.repository) ||
-      (github.event_name != 'workflow_run' &&
-       (github.event_name != 'pull_request' ||
-        (github.event.pull_request.head.repo.full_name == github.repository &&
-         github.actor != 'dependabot[bot]')))
+    # Previous admission: if: >-
+    # Previous admission: (github.event_name == 'workflow_run' &&
+    # Previous admission: github.event.workflow_run.event == 'pull_request' &&
+    # Previous admission: github.event.workflow_run.head_repository.full_name == github.repository) ||
+    # Previous admission: (github.event_name != 'workflow_run' &&
+    # Previous admission: (github.event_name != 'pull_request' ||
+    # Previous admission: (github.event.pull_request.head.repo.full_name == github.repository &&
+    # Previous admission: github.actor != 'dependabot[bot]')))
 
     # Bot-authored synchronize events are legitimate successors when this
     # materializer or another bounded repository writer advances the same PR.
@@ -65,6 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           ref: ${{ env.EXPECTED_HEAD }}
           fetch-depth: 0
       - name: Bind exact target ref and head

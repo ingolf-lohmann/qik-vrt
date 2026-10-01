@@ -78,6 +78,14 @@ class MeshRecoveryTests(unittest.TestCase):
                 "sha256": recovery.digest(raw), "mode": mode,
                 "confidentiality": "PRIVATE_ENCRYPTED" if category == "capability_recovery" else "PUBLIC",
             })
+        raw = canonical_json_bytes(json.loads((recovery.ROOT / "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json").read_bytes()))
+        path = recovery.INDEPENDENCE_POLICY_PATH
+        (self.payload / path).parent.mkdir()
+        (self.payload / path).write_bytes(raw)
+        self.plan["assets"].append({"path": path, "category": "governance",
+                                  "bytes": len(raw), "sha256": recovery.digest(raw),
+                                  "mode": 0o644, "confidentiality": "PUBLIC"})
+        self.plan["assets"].sort(key=lambda a: a["path"])
         self.plan_path = self.root / "plan.json"
         self.package = self.root / "checkpoint"
 
@@ -85,6 +93,66 @@ class MeshRecoveryTests(unittest.TestCase):
         raw = canonical_json_bytes(value if value is not None else self.plan)
         self.plan_path.write_bytes(raw)
         return recovery.digest(raw)
+
+    def test_independence_requirement_cannot_be_deleted_or_weakened_even_with_new_hashes(self) -> None:
+        policy = json.loads((self.payload / recovery.INDEPENDENCE_POLICY_PATH).read_bytes())
+        recovery.validate_independence_requirement(policy)
+        cases = []
+        removed = copy.deepcopy(policy)
+        del removed["technology_independence"]
+        cases.append(removed)
+        for key, value in policy["technology_independence"].items():
+            if key in {"owner_universal_reverse_engineering_requirement",
+                       "life_preserving_requirement_must_survive_every_successor",
+                       "independence_bypasses_authority_permit_epoch_or_fence",
+                       "universal_capability_inferred_from_requirement_or_checkpoint"}:
+                changed = copy.deepcopy(policy)
+                changed["technology_independence"][key] = not value
+                cases.append(changed)
+        weakened = copy.deepcopy(policy)
+        weakened["technology_independence"]["required_recovery_material"] = []
+        cases.append(weakened)
+        dropped = copy.deepcopy(policy)
+        dropped["full_node_predicate"].remove(recovery.INDEPENDENCE_PREDICATE)
+        cases.append(dropped)
+        for changed in cases:
+            with self.subTest(changed=changed.get("technology_independence")):
+                raw = canonical_json_bytes(changed)
+                (self.payload / recovery.INDEPENDENCE_POLICY_PATH).write_bytes(raw)
+                asset = next(a for a in self.plan["assets"] if a["path"] == recovery.INDEPENDENCE_POLICY_PATH)
+                asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+                with self.assertRaisesRegex(recovery.RecoveryError, "technology independence"):
+                    self.create()
+                self.assertFalse(self.package.exists())
+
+    def test_independence_policy_survives_source_loss_and_rehashed_checkpoint_tampering_is_denied(self) -> None:
+        binding = self.create()
+        raw = (self.payload / recovery.INDEPENDENCE_POLICY_PATH).read_bytes()
+        shutil.rmtree(self.source)
+        shutil.rmtree(self.payload)
+        destination = self.root / "clone"
+        recovery.restore_checkpoint(self.package, destination, binding, clone=True)
+        self.assertEqual((destination / "payload" / recovery.INDEPENDENCE_POLICY_PATH).read_bytes(), raw)
+        changed = json.loads(raw)
+        del changed["technology_independence"]
+        raw = canonical_json_bytes(changed)
+        (self.package / "payload" / recovery.INDEPENDENCE_POLICY_PATH).write_bytes(raw)
+        def rebind(manifest):
+            asset = next(a for a in manifest["plan"]["assets"] if a["path"] == recovery.INDEPENDENCE_POLICY_PATH)
+            asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+        rebound = self.rebind_manifest(rebind)
+        with self.assertRaisesRegex(recovery.RecoveryError, "technology independence"):
+            recovery.verify_checkpoint(self.package, rebound)
+
+    def test_independence_payload_and_versioned_contract_are_mandatory(self) -> None:
+        (self.payload / recovery.INDEPENDENCE_POLICY_PATH).unlink()
+        (self.payload / "governance").rmdir()
+        self.plan["assets"] = [a for a in self.plan["assets"] if a["path"] != recovery.INDEPENDENCE_POLICY_PATH]
+        with self.assertRaisesRegex(recovery.RecoveryError, "technology independence governance payload missing"):
+            self.create()
+        self.plan["schema"] = "qikvrt_full_node_closure_plan_v1"
+        with self.assertRaisesRegex(recovery.RecoveryError, "closure schema"):
+            recovery.validate_plan(self.plan)
 
     def create(self) -> str:
         result = recovery.create_checkpoint(self.source, self.payload, self.plan_path,

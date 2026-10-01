@@ -635,6 +635,9 @@ class GitHubAPI:
         accept: tuple[int, ...] = (200,),
         allow_ambiguous_transport: bool = False,
     ) -> tuple[int, dict[str, Any]]:
+        if method != "GET":
+            from tools.qikvrt_authority_transition import deny_unbrokered_provider_write
+            deny_unbrokered_provider_write()
         if self._transport is not None:
             return self._transport(
                 method,

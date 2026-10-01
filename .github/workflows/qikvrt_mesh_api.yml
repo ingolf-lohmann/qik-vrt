@@ -74,6 +74,8 @@ jobs:
       QIKVRT_TRUSTED_ATTESTATION_SIGNER: ${{ vars.QIKVRT_TRUSTED_ATTESTATION_SIGNER }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Validate state handoff
         env:
           QIKVRT_STATE_RUN_ID: ${{ github.event.inputs.state_run_id || github.event.client_payload.state_run_id }}

@@ -1,125 +1,100 @@
 {
   "_license": {
+    "classification": "machine_readable_policy",
     "copyright": "Copyright 2026 Ingolf Lohmann",
-    "rights_holder": "Ingolf Lohmann",
     "license": "CC-BY-NC-ND-4.0",
-    "classification": "machine_readable_policy"
+    "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_full_node_recovery_and_derivation_policy_v1",
-  "version": "1.0.0",
-  "status": "NORMATIVE_REQUIREMENT_IMPLEMENTATION_PARTIAL",
-  "requested_by": "Ingolf Lohmann",
-  "requested_date": "2026-10-01",
-  "human_contract": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
-  "implementation": "tools/qikvrt_mesh_recovery.py",
   "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
-  "role_independent_requirement": {
-    "roles": [
-      "AUTHORITY",
-      "MIRROR"
-    ],
-    "every_admitted_full_node_must_restore_the_complete_accepted_checkpoint_alone": true,
-    "every_admitted_full_node_must_have_an_executable_authority_recovery_route": true,
-    "every_admitted_full_node_must_be_able_to_seed_new_mirrors_and_projects": true,
-    "missing_required_data_or_capability": "FULL_NODE_ADMISSION_BLOCKED",
-    "replica_of_only_git_default_branch_is_a_full_node": false
-  },
-  "full_node_predicate": [
-    "OWNER_BOUND_COMPLETE_DEPENDENCY_CLOSURE",
-    "STANDALONE_GIT_HISTORY_AND_ALL_ACCEPTED_REFS_VERIFIED",
-    "ALL_REQUIRED_ASSETS_AND_MUTABLE_STATE_PRESENT_AT_THE_SAME_COMMIT_WATERMARK",
-    "IDENTICAL_CANONICAL_400_BYTE_GLOBAL_SIGNATURE_VERIFIED",
-    "INDIVIDUAL_COLLISION_RESISTANT_NODE_IDENTITY",
-    "OFFLINE_RESTORE_WITH_ALL_OTHER_NODES_UNAVAILABLE_VERIFIED",
-    "RESTORED_RUNTIME_AND_CAPABILITY_UNSEAL_SELF_TEST_VERIFIED",
-    "EXCLUSIVE_FENCED_AUTHORITY_RECOVERY_AND_FRESH_EFFECT_READBACK_VERIFIED",
-    "NEW_MIRROR_AND_PROJECT_CREATION_ROUTE_AND_ROOT_REGISTRATION_VERIFIED"
-  ],
-  "checkpoint": {
-    "manifest_schema": "qikvrt_mesh_checkpoint_v1",
-    "closure_plan_schema": "qikvrt_full_node_closure_plan_v1",
-    "trust_input": "EXTERNALLY_PINNED_OWNER_REVIEWED_COMPLETE_CLOSURE_PLAN_SHA256",
-    "a_self_hash_authenticates_author_or_proves_completeness": false,
-    "hash_algorithm": "SHA-256",
-    "git_object_format": "sha1",
-    "git_bundle_must_restore_in_an_empty_repository_without_prerequisites": true,
-    "shallow_partial_alternates_grafts_replacement_refs": "BLOCK",
-    "all_accepted_remote_refs_must_be_in_the_pinned_local_ref_inventory": true,
-    "required_historical_git_objects": "OWNER_BOUND_OID_AND_TYPE_INVENTORY_CHECKED_AFTER_EMPTY_RESTORE",
-    "source_commits_outside_current_history": "PIN_BY_DURABLE_RECOVERY_REF_BEFORE_CHECKPOINT_CREATION",
-    "external_metadata_lfs_submodules_releases_artifacts_and_tool_payloads": "INDEPENDENT_REQUIRED_ASSETS_IN_OWNER_BOUND_CLOSURE",
-    "required_asset_categories": [
-      "runtime",
-      "mutable_state",
-      "artifacts",
-      "scheduler",
-      "governance",
-      "platform_metadata",
-      "capability_recovery"
-    ],
-    "unknown_missing_surplus_noncanonical_or_concurrently_mutated_input": "BLOCK",
-    "bounds": {
-      "maximum_asset_count": 10000,
-      "maximum_asset_bytes": 268435456,
-      "maximum_total_bytes": 2147483648,
-      "maximum_json_bytes": 1048576,
-      "maximum_git_operation_seconds": 60,
-      "outside_bounds": "BLOCK_REQUIRES_VERSIONED_CAPACITY_SUCCESSOR"
-    },
-    "bundle_distribution": "LOCAL_PRIVATE_CREATE_ONLY_DIRECTORY",
-    "plaintext_credentials_or_authenticated_session_state_in_public_git_or_cache": "FORBIDDEN",
-    "capability_recovery_bytes": "PRIVATE_ENCRYPTED_ESCROW_BOUND_AS_OPAQUE_BYTES",
-    "escrow_digest_proves_decryptability_or_permission": false,
-    "restore_is_scoped_to_the_accepted_checkpoint_not_unreplicated_future_data": true,
-    "zero_loss_at_mesh_failure_requires_every_accepted_write_to_be_replicated_to_each_full_node_before_acknowledgement": true,
-    "disconnected_or_lagging_node": "SUSPEND_FULL_NODE_ADMISSION_UNTIL_CAUGHT_UP"
-  },
-  "signature_and_identity": {
-    "global_signature_bytes": 400,
-    "canonical_v1_binding": {
-      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
-      "bytes": 400,
-      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
-      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
-      "source_repository": "ingolf-lohmann/qik-vrt",
-      "source_pull_request": 424,
-      "source_head": "def7a93e7ae36426bebaf7b82519b670025f8f42",
-      "source_tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c",
-      "source_policy": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
-      "reused_unchanged": true,
-      "source_main_promotion_or_review_evidence_transferred": false
-    },
-    "global_signature_sha256_is_external_trust_input": true,
-    "signature_is_not_the_payload": true,
-    "signature_is_not_a_person_authentication_proof": true,
-    "canonical_signature_content_may_be_invented_by_recovery_tool": false,
-    "new_clone_identity": "256_RANDOM_BITS_LOWERCASE_HEX",
-    "disaster_restore_preserves_node_identity": true,
-    "clone_creates_new_identity_and_preserves_parent_and_checkpoint_binding": true,
-    "copied_role_local_identity_requires_runtime_rebinding_before_activation": true
-  },
   "authority_recovery": {
-    "permanent_lineage_root": "Goldkelch/qik-vrt",
     "active_authority_is_a_recoverable_role_distinct_from_lineage_root": true,
     "authority_role_can_be_taken_by_an_admitted_full_mirror": true,
-    "peer_unreachability_alone_authorizes_promotion": false,
-    "required": [
-      "FRESH_CONTROL_PLANE_EPOCH_AND_TARGET_HEAD_READBACK",
-      "EXCLUSIVE_FENCING_OR_OWNER_RECOVERY_GRANT_WITH_SINGLE_WRITER_ENFORCEMENT",
-      "TARGET_SCOPED_CAPABILITY_UNSEAL_AND_SELF_TEST",
-      "COMPARE_AND_SWAP_AUTHORITY_EPOCH_AND_FRESH_READBACK",
-      "ROLE_LOCAL_STATE_REBINDING_AND_SCHEDULER_IDEMPOTENCY_READBACK"
-    ],
-    "split_brain_or_missing_fence": "BLOCK",
     "checkpoint_epoch_is_current_control_plane_epoch": false,
-    "original_authority_rejoining": "FENCE_OLD_EPOCH_THEN_REJOIN_AS_MIRROR",
-    "history_rewrite_or_force_push": false,
     "executable_adapter": {
-      "implementation": "tools/qikvrt_authority_transition.py",
       "acceptance_test": "tests/test_qikvrt_authority_transition.py",
+      "accepted_head_tree_and_scheduler_cursors_may_regress": false,
+      "activation": "SEPARATE_FRESH_POST_CAS_DURABLE_STATE_AND_RESTORED_TARGET_READBACK",
+      "actual_unsealed_private_capability_required": true,
       "backend": "PRIVATE_POSIX_SQLITE3_SINGLE_SINK_V1",
-      "state_schema": "qikvrt_fenced_authority_state_v1",
+      "checkpoint_epoch_is_used_as_current_epoch": false,
+      "clock_rollback": "BLOCK",
+      "completed_sink_effect_keys_survive_role_transition": true,
+      "effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER",
+      "full_node_admission_implied": false,
+      "github_or_external_provider_writer_fencing_implemented": false,
+      "github_provider_adapter": {
+        "acceptance_test": "tests/test_qikvrt_github_authority_provider.py",
+        "admission": "FRESH_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_FENCE_TARGET_ACTIVE_ROLE_UNDER_TAKEOVER_LOCK",
+        "all_other_repository_mutations": "DENY_UNTIL_VERSIONED_NATIVE_CAS_IDEMPOTENCY_READBACK_CONTRACT",
+        "allowed_mutations": [
+          "create_ref"
+        ],
+        "ambiguous_dispatch_recovery": "GET_ONLY_NO_BLIND_RETRY",
+        "authority_root_provider_capability_verified": false,
+        "bypass_credentials_revoked": false,
+        "credentials": "EXISTING_GITHUB_TOKEN_PRIVATE_ENVIRONMENT_WITH_OWNER_BOUND_MIRROR_CONTENTS_SCOPE_AND_FUTURE_QIKVRT_GITHUB_TOKEN_EXPIRES_UTC",
+        "effect_ack_done": false,
+        "implementation": "src/qikvrt_github_api_shim.py",
+        "journal": "EXISTING_PRIVATE_CONTROL_PLANE_ADDITIVE_PROVIDER_EFFECTS_TABLE",
+        "journal_states": [
+          "PREPARED",
+          "PENDING",
+          "VERIFIED",
+          "REJECTED"
+        ],
+        "live_provider_authority_effect_verified": false,
+        "local_route": "POST /repos/{owner}/{repo}/qikvrt/authority/effects",
+        "pending_blocks_takeover_and_new_mutations": true,
+        "provider_cas": "NATIVE_CREATE_ONLY_ABSENT_REF_TO_COMMIT",
+        "provider_repository_allowlist": [
+          "ingolf-lohmann/qik-vrt"
+        ],
+        "receipt": "ACTUAL_PROVIDER_REF_COMMIT_TREE_AND_SEPARATE_DURABLE_LEDGER_READBACK",
+        "ref_namespace": "refs/heads/work/qikvrt-recovery/{control_plane_epoch}/{authority_epoch}/{node_id}/{fence}/{sha256_effect_id}",
+        "repository_no_bypass_source_admission": {
+          "acceptance_test": "tests/test_qikvrt_github_authority_provider.py",
+          "active_incoming_or_documentary_writer_invocation": "BLOCK",
+          "all_runnable_current_and_untracked_candidate_files_considered": true,
+          "ci_successor_remote_push": "DENIED_BEFORE_PROVIDER_EFFECT",
+          "command": "python3 -B tools/qikvrt_authority_transition.py audit-writers",
+          "compatibility_dispatch_client": "LOOPBACK_LOCAL_SHIM_ONLY",
+          "effect_ack_done": false,
+          "historical_incoming_documentary_test_and_readonly_paths_are_distinct": true,
+          "historical_workflow_runs_and_external_credentials_revoked": false,
+          "implementation": "tools/qikvrt_authority_transition.py",
+          "inventory": "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V1.json",
+          "legacy_github_git_data_transports": "NON_GET_DENIED_BEFORE_REAL_OR_INJECTED_TRANSPORT",
+          "legacy_owner_release_cli": "PRODUCTIVE_BRANCH_REMOVED_DRY_RUN_LOCAL_SELFTEST_RETAINED",
+          "live_bound_mirror_provider_effect_verified": false,
+          "native_workflow_tokens": "EXPLICIT_READ_ONLY_NO_PERSISTED_CHECKOUT_CREDENTIALS",
+          "new_writer_service_or_permit_issuer": false,
+          "other_provider_contracts": "SEPARATE_SCOPE_NOT_GITHUB_REPOSITORY_FENCING",
+          "privileged_admin_or_direct_control_plane_bypasses_revoked": false,
+          "production_acceptance_requires": [
+            "CURRENT_TRUSTED_MAIN_EXACT_HEAD_TREE_WRITER_INVENTORY_AND_NO_BYPASS_GATE",
+            "ALL_RELEVANT_PROVIDER_CAPABILITIES_ISSUED_EXCLUSIVELY_TO_EXISTING_BROKER",
+            "HISTORICAL_WORKFLOW_TOKENS_SEPARATE_BEARERS_GIT_TRANSPORT_AND_PRIVILEGED_BYPASS_RIGHTS_REVOKED_AND_FRESHLY_READ_BACK",
+            "PRIVATE_INDEPENDENTLY_SURVIVING_AUTHORITY_CONTROL_PLANE_AND_SHORT_LIVED_MIRROR_CAPABILITY_PROVISIONED",
+            "BOUND_PRODUCTIVE_MIRROR_EFFECT_NATIVE_CAS_REF_TREE_AND_DURABLE_LEDGER_FRESH_READBACK"
+          ],
+          "repository_wide_provider_fencing_verified": false,
+          "required_gate": "make test / mesh-recovery-test",
+          "scope": "CURRENT_CANDIDATE_SOURCE_GITHUB_REPOSITORY_WRITERS_ONLY",
+          "source_deactivation_is_historical_credential_revocation": false,
+          "static_source_gate_is_a_formal_complete_mediation_proof": false,
+          "supported_writer": "EXISTING_AUTHORITY_CONTROL_PLANE_AND_CREATE_ONLY_PROVIDER_BROKER",
+          "trusted_main_activation_verified": false,
+          "unsupported_writer_jobs": "LITERAL_FALSE_WITH_EMPTY_NATIVE_PERMISSIONS"
+        },
+        "repository_wide_provider_fencing_verified": false,
+        "target": "ACTIVE_VERIFIED_RESTORED_HEAD_AND_TREE_ONLY",
+        "test_success_is_production_acceptance": false
+      },
+      "implementation": "tools/qikvrt_authority_transition.py",
+      "no_live_promotion_or_effect_ack_done_from_test_success": true,
       "observation_schema": "qikvrt_authority_observation_v1",
+      "observation_ttl_seconds": 30,
+      "opaque_escrow_digest_or_claimed_unseal_success_is_sufficient": false,
       "operations": [
         "init",
         "grant",
@@ -130,19 +105,7 @@
         "readback",
         "rejoin"
       ],
-      "takeover": "AUTHENTICATED_FRESH_OBSERVATION_THEN_ATOMIC_EPOCH_REVISION_CAS_FENCE_ROTATION_ROLE_AND_SCHEDULER_REBINDING",
-      "activation": "SEPARATE_FRESH_POST_CAS_DURABLE_STATE_AND_RESTORED_TARGET_READBACK",
-      "writer_rejection": "EVERY_SINK_COMMIT_RECHECKS_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_TARGET_FENCE_AND_ACTIVE_ROLE_IN_THE_SAME_TRANSACTION",
-      "observation_ttl_seconds": 30,
-      "clock_rollback": "BLOCK",
-      "checkpoint_epoch_is_used_as_current_epoch": false,
-      "actual_unsealed_private_capability_required": true,
-      "opaque_escrow_digest_or_claimed_unseal_success_is_sufficient": false,
-      "accepted_head_tree_and_scheduler_cursors_may_regress": false,
-      "completed_sink_effect_keys_survive_role_transition": true,
-      "full_node_admission_implied": false,
-      "effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER",
-      "github_or_external_provider_writer_fencing_implemented": false,
+      "owner_grant_bound_to_current_epoch_and_single_use": true,
       "production_preconditions": [
         "OWNER_PROVISIONED_AND_INDEPENDENTLY_SURVIVING_CONTROL_PLANE",
         "ALL_MUTATIONS_IN_THE_DECLARED_SINK_USE_THIS_FENCE_WITH_NO_BYPASS_CAPABILITIES",
@@ -151,61 +114,115 @@
         "USABLE_PRIVATE_CAPABILITY_FROM_AUTHORIZED_UNSEAL_PATH",
         "RESTORED_BYTES_HELD_IMMUTABLE_UNDER_TRUSTED_LOCAL_OWNER"
       ],
-      "no_live_promotion_or_effect_ack_done_from_test_success": true,
-      "owner_grant_bound_to_current_epoch_and_single_use": true,
-      "github_provider_adapter": {
-        "implementation": "src/qikvrt_github_api_shim.py",
-        "acceptance_test": "tests/test_qikvrt_github_authority_provider.py",
-        "local_route": "POST /repos/{owner}/{repo}/qikvrt/authority/effects",
-        "provider_repository_allowlist": [
-          "ingolf-lohmann/qik-vrt"
-        ],
-        "allowed_mutations": [
-          "create_ref"
-        ],
-        "ref_namespace": "refs/heads/work/qikvrt-recovery/{control_plane_epoch}/{authority_epoch}/{node_id}/{fence}/{sha256_effect_id}",
-        "target": "ACTIVE_VERIFIED_RESTORED_HEAD_AND_TREE_ONLY",
-        "provider_cas": "NATIVE_CREATE_ONLY_ABSENT_REF_TO_COMMIT",
-        "all_other_repository_mutations": "DENY_UNTIL_VERSIONED_NATIVE_CAS_IDEMPOTENCY_READBACK_CONTRACT",
-        "admission": "FRESH_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_FENCE_TARGET_ACTIVE_ROLE_UNDER_TAKEOVER_LOCK",
-        "journal": "EXISTING_PRIVATE_CONTROL_PLANE_ADDITIVE_PROVIDER_EFFECTS_TABLE",
-        "journal_states": [
-          "PREPARED",
-          "PENDING",
-          "VERIFIED",
-          "REJECTED"
-        ],
-        "pending_blocks_takeover_and_new_mutations": true,
-        "ambiguous_dispatch_recovery": "GET_ONLY_NO_BLIND_RETRY",
-        "receipt": "ACTUAL_PROVIDER_REF_COMMIT_TREE_AND_SEPARATE_DURABLE_LEDGER_READBACK",
-        "credentials": "EXISTING_GITHUB_TOKEN_PRIVATE_ENVIRONMENT_WITH_OWNER_BOUND_MIRROR_CONTENTS_SCOPE_AND_FUTURE_QIKVRT_GITHUB_TOKEN_EXPIRES_UTC",
-        "bypass_credentials_revoked": false,
-        "repository_wide_provider_fencing_verified": false,
-        "authority_root_provider_capability_verified": false,
-        "live_provider_authority_effect_verified": false,
-        "effect_ack_done": false,
-        "test_success_is_production_acceptance": false
-      }
-    }
+      "state_schema": "qikvrt_fenced_authority_state_v1",
+      "takeover": "AUTHENTICATED_FRESH_OBSERVATION_THEN_ATOMIC_EPOCH_REVISION_CAS_FENCE_ROTATION_ROLE_AND_SCHEDULER_REBINDING",
+      "writer_rejection": "EVERY_SINK_COMMIT_RECHECKS_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_TARGET_FENCE_AND_ACTIVE_ROLE_IN_THE_SAME_TRANSACTION"
+    },
+    "history_rewrite_or_force_push": false,
+    "original_authority_rejoining": "FENCE_OLD_EPOCH_THEN_REJOIN_AS_MIRROR",
+    "peer_unreachability_alone_authorizes_promotion": false,
+    "permanent_lineage_root": "Goldkelch/qik-vrt",
+    "required": [
+      "FRESH_CONTROL_PLANE_EPOCH_AND_TARGET_HEAD_READBACK",
+      "EXCLUSIVE_FENCING_OR_OWNER_RECOVERY_GRANT_WITH_SINGLE_WRITER_ENFORCEMENT",
+      "TARGET_SCOPED_CAPABILITY_UNSEAL_AND_SELF_TEST",
+      "COMPARE_AND_SWAP_AUTHORITY_EPOCH_AND_FRESH_READBACK",
+      "ROLE_LOCAL_STATE_REBINDING_AND_SCHEDULER_IDEMPOTENCY_READBACK"
+    ],
+    "split_brain_or_missing_fence": "BLOCK"
+  },
+  "checkpoint": {
+    "a_self_hash_authenticates_author_or_proves_completeness": false,
+    "all_accepted_remote_refs_must_be_in_the_pinned_local_ref_inventory": true,
+    "bounds": {
+      "maximum_asset_bytes": 268435456,
+      "maximum_asset_count": 10000,
+      "maximum_git_operation_seconds": 60,
+      "maximum_json_bytes": 1048576,
+      "maximum_total_bytes": 2147483648,
+      "outside_bounds": "BLOCK_REQUIRES_VERSIONED_CAPACITY_SUCCESSOR"
+    },
+    "bundle_distribution": "LOCAL_PRIVATE_CREATE_ONLY_DIRECTORY",
+    "capability_recovery_bytes": "PRIVATE_ENCRYPTED_ESCROW_BOUND_AS_OPAQUE_BYTES",
+    "closure_plan_schema": "qikvrt_full_node_closure_plan_v2",
+    "disconnected_or_lagging_node": "SUSPEND_FULL_NODE_ADMISSION_UNTIL_CAUGHT_UP",
+    "escrow_digest_proves_decryptability_or_permission": false,
+    "external_metadata_lfs_submodules_releases_artifacts_and_tool_payloads": "INDEPENDENT_REQUIRED_ASSETS_IN_OWNER_BOUND_CLOSURE",
+    "git_bundle_must_restore_in_an_empty_repository_without_prerequisites": true,
+    "git_object_format": "sha1",
+    "hash_algorithm": "SHA-256",
+    "manifest_schema": "qikvrt_mesh_checkpoint_v2",
+    "plaintext_credentials_or_authenticated_session_state_in_public_git_or_cache": "FORBIDDEN",
+    "prior_v1_without_independence_governance": "BLOCK_NOT_SILENTLY_ADMITTED_AS_V2",
+    "required_asset_categories": [
+      "runtime",
+      "mutable_state",
+      "artifacts",
+      "scheduler",
+      "governance",
+      "platform_metadata",
+      "capability_recovery"
+    ],
+    "required_historical_git_objects": "OWNER_BOUND_OID_AND_TYPE_INVENTORY_CHECKED_AFTER_EMPTY_RESTORE",
+    "restore_is_scoped_to_the_accepted_checkpoint_not_unreplicated_future_data": true,
+    "shallow_partial_alternates_grafts_replacement_refs": "BLOCK",
+    "source_commits_outside_current_history": "PIN_BY_DURABLE_RECOVERY_REF_BEFORE_CHECKPOINT_CREATION",
+    "trust_input": "EXTERNALLY_PINNED_OWNER_REVIEWED_COMPLETE_CLOSURE_PLAN_SHA256",
+    "unknown_missing_surplus_noncanonical_or_concurrently_mutated_input": "BLOCK",
+    "zero_loss_at_mesh_failure_requires_every_accepted_write_to_be_replicated_to_each_full_node_before_acknowledgement": true
   },
   "derivation": {
-    "new_github_project_owner": "Goldkelch",
-    "permanent_lineage_root": "Goldkelch/qik-vrt",
-    "parent_repository_node_identity_and_checkpoint_digest": "REQUIRED",
-    "logical_hierarchy": "ROOT_REGISTERED_ACYCLIC_PROJECT_GRAPH",
     "hierarchy_remains_rooted_after_independent_project_evolution": true,
+    "logical_hierarchy": "ROOT_REGISTERED_ACYCLIC_PROJECT_GRAPH",
+    "new_github_project_owner": "Goldkelch",
     "new_mirror_role_and_new_project_identity_are_distinct": true,
+    "parent_repository_node_identity_and_checkpoint_digest": "REQUIRED",
+    "permanent_lineage_root": "Goldkelch/qik-vrt",
     "registration_and_repository_creation_are_create_only": true,
-    "silently_rerooting_or_detaching_descendants": false,
     "required": [
       "EXACT_TARGET_CREATE_CAPABILITY_AND_ADMISSION",
       "CREATE_ONLY_PROJECT_REGISTRATION_AT_GOLDKELCH_ROOT",
       "HISTORY_PRESERVING_REPOSITORY_CREATION_AND_FRESH_READBACK",
       "NEW_NODE_RUNTIME_REBINDING_AND_SEED_ACCEPTANCE"
+    ],
+    "silently_rerooting_or_detaching_descendants": false
+  },
+  "effect_boundary": {
+    "live_capabilities_or_effect_ack_done_may_be_inferred": false,
+    "local_derivation_plan_is_github_repository_creation": false,
+    "offline_checkpoint_verification_is_full_node_admission": false,
+    "predecessor_evidence_transfer": false,
+    "restore_or_clone_is_authority_promotion": false,
+    "transport_ack_is_effect_ack": false
+  },
+  "full_node_predicate": [
+    "OWNER_BOUND_COMPLETE_DEPENDENCY_CLOSURE",
+    "STANDALONE_GIT_HISTORY_AND_ALL_ACCEPTED_REFS_VERIFIED",
+    "ALL_REQUIRED_ASSETS_AND_MUTABLE_STATE_PRESENT_AT_THE_SAME_COMMIT_WATERMARK",
+    "IDENTICAL_CANONICAL_400_BYTE_GLOBAL_SIGNATURE_VERIFIED",
+    "INDIVIDUAL_COLLISION_RESISTANT_NODE_IDENTITY",
+    "OFFLINE_RESTORE_WITH_ALL_OTHER_NODES_UNAVAILABLE_VERIFIED",
+    "RESTORED_RUNTIME_AND_CAPABILITY_UNSEAL_SELF_TEST_VERIFIED",
+    "EXCLUSIVE_FENCED_AUTHORITY_RECOVERY_AND_FRESH_EFFECT_READBACK_VERIFIED",
+    "NEW_MIRROR_AND_PROJECT_CREATION_ROUTE_AND_ROOT_REGISTRATION_VERIFIED",
+    "TECHNOLOGY_INDEPENDENCE_REQUIREMENT_AND_RECOVERY_MATERIAL_PRESERVED"
+  ],
+  "human_contract": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+  "implementation": "tools/qikvrt_mesh_recovery.py",
+  "requested_by": "Ingolf Lohmann",
+  "requested_date": "2026-10-01",
+  "role_independent_requirement": {
+    "every_admitted_full_node_must_be_able_to_seed_new_mirrors_and_projects": true,
+    "every_admitted_full_node_must_have_an_executable_authority_recovery_route": true,
+    "every_admitted_full_node_must_restore_the_complete_accepted_checkpoint_alone": true,
+    "missing_required_data_or_capability": "FULL_NODE_ADMISSION_BLOCKED",
+    "replica_of_only_git_default_branch_is_a_full_node": false,
+    "roles": [
+      "AUTHORITY",
+      "MIRROR"
     ]
   },
   "scheduling": {
-    "scheduling_is_required_digital_twin_state": true,
     "required": [
       "SCHEDULE_DEFINITION_AND_TIMEZONE",
       "OWNER_AND_TARGET_BINDINGS",
@@ -214,14 +231,63 @@
       "RESTORE_RECONCILIATION_WITH_PROVIDER_STATE",
       "NO_DUPLICATE_EFFECT_AFTER_AUTHORITY_RECOVERY"
     ],
-    "restored_schedule_bytes_are_a_running_provider_schedule": false
+    "restored_schedule_bytes_are_a_running_provider_schedule": false,
+    "scheduling_is_required_digital_twin_state": true
   },
-  "effect_boundary": {
-    "offline_checkpoint_verification_is_full_node_admission": false,
-    "restore_or_clone_is_authority_promotion": false,
-    "local_derivation_plan_is_github_repository_creation": false,
-    "transport_ack_is_effect_ack": false,
-    "predecessor_evidence_transfer": false,
-    "live_capabilities_or_effect_ack_done_may_be_inferred": false
-  }
+  "schema": "qikvrt_full_node_recovery_and_derivation_policy_v1",
+  "signature_and_identity": {
+    "canonical_signature_content_may_be_invented_by_recovery_tool": false,
+    "canonical_v1_binding": {
+      "bytes": 400,
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "reused_unchanged": true,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "source_head": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+      "source_main_promotion_or_review_evidence_transferred": false,
+      "source_policy": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "source_pull_request": 424,
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "source_tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c"
+    },
+    "clone_creates_new_identity_and_preserves_parent_and_checkpoint_binding": true,
+    "copied_role_local_identity_requires_runtime_rebinding_before_activation": true,
+    "disaster_restore_preserves_node_identity": true,
+    "global_signature_bytes": 400,
+    "global_signature_sha256_is_external_trust_input": true,
+    "new_clone_identity": "256_RANDOM_BITS_LOWERCASE_HEX",
+    "signature_is_not_a_person_authentication_proof": true,
+    "signature_is_not_the_payload": true
+  },
+  "status": "NORMATIVE_REQUIREMENT_IMPLEMENTATION_PARTIAL",
+  "technology_independence": {
+    "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
+    "applies_to": "EVERY_FULL_NODE_REGARDLESS_OF_AUTHORITY_OR_MIRROR_ROLE",
+    "autonomous_dependency_reconstruction_and_replacement_required": true,
+    "deletion_or_weakened_successor": "BLOCK_FULL_NODE_ADMISSION",
+    "evidence_status": "NORMATIVE_UNIVERSAL_REQUIREMENT_PRESERVED_IMPLEMENTATION_AND_UNIVERSAL_PROOF_OPEN",
+    "governance_payload_path": "governance/full_node_policy.json",
+    "independence_bypasses_authority_permit_epoch_or_fence": false,
+    "life_preserving_requirement_must_survive_every_successor": true,
+    "material_scope": "OWNER_REVIEWED_COMPLETE_CLOSURE_FOR_EACH_DECLARED_NODE_TECHNOLOGY_AND_DEPENDENCY",
+    "owner_statement": "Durch die universale und selbstständige Fähigkeit des Reverse-Engineerings von menschlicher Technologie kann sich jedes QIK-VRT Node Element bei Bedarf selbstständig unabhängig machen. Auch das gehört zu den sinnvollen, lebenserhaltenden Fähigkeiten und Eigenschaften von QIK-VRT Mesh Repository Nodes und ist in einer Art und Weise zu persistieren, dass diese Eigenschaft nie mehr verloren gehen kann.",
+    "owner_universal_reverse_engineering_requirement": true,
+    "preservation": "EXACT_DIGEST_BOUND_GOVERNANCE_BYTES_IN_EVERY_V2_CHECKPOINT_RESTORE_CLONE_AND_DERIVATION_SEED",
+    "requested_by": "Ingolf Lohmann",
+    "requested_date": "2026-10-01",
+    "required_recovery_material": [
+      "SOURCE_AND_INTERFACE_MODELS",
+      "TOOLCHAIN_AND_RUNTIME_CLOSURE",
+      "DEPENDENCY_REPLACEMENT_AND_RECONSTRUCTION_PLANS",
+      "BEHAVIORAL_TEST_VECTORS_AND_FRESH_RESULTS",
+      "PHYSICAL_TECHNOLOGY_RECOVERY_INPUTS_WHEN_REQUIRED"
+    ],
+    "requirement_id": "QIKVRT_NODE_TECHNOLOGY_INDEPENDENCE_V1",
+    "unconditional_future_survival_empirically_guaranteed": false,
+    "universal_capability_inferred_from_requirement_or_checkpoint": false,
+    "universal_reverse_engineering_verified": false,
+    "verification_command": "python3 -B tools/qikvrt_mesh_recovery.py verify-policy",
+    "zero_loss_before_ack": "EVERY_ACCEPTED_REQUIREMENT_AND_RECOVERY_MATERIAL_SUCCESSOR_REPLICATED_TO_EACH_ADMITTED_FULL_NODE_BEFORE_ACKNOWLEDGEMENT"
+  },
+  "version": "1.0.0"
 }

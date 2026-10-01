@@ -21,6 +21,8 @@ permissions:
 
 jobs:
   admit:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     env:
       TARGET_REPOSITORY: ${{ github.event.client_payload.repository || inputs.repository }}

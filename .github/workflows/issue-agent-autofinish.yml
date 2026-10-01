@@ -11,9 +11,9 @@ on:
         type: string
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+  contents: read
+  issues: read
+  pull-requests: read
   checks: read
 
 concurrency:
@@ -22,6 +22,8 @@ concurrency:
 
 jobs:
   finish:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-latest
     env:
       AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
@@ -32,6 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Resume all eligible issue-agent transactions

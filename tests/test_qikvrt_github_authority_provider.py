@@ -13,6 +13,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import threading
+import tempfile
 import unittest
 from unittest import mock
 import urllib.error
@@ -447,6 +448,138 @@ class GitHubAuthorityProviderTests(unittest.TestCase):
             self.assertEqual(len(self.remote.calls), 5)
             self.assertTrue(self.execute(adapter, permit)['replayed'])
             self.assertEqual(self.remote.posts, 1)
+
+
+class RepositoryNoBypassTests(unittest.TestCase):
+    def fixture(self, directory, files):
+        root = Path(directory)
+        subprocess.run(['git', 'init', '-q', str(root)], check=True, timeout=10)
+        for relative, source in files.items():
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(source)
+        return root
+
+    def test_actual_candidate_source_has_no_admitted_raw_writer(self):
+        result = transition.audit_repository_writers()
+        self.assertEqual(result['violations'], [])
+        self.assertEqual(result['state'], 'PASS')
+        self.assertFalse(result['production_bypass_capabilities_revoked'])
+        self.assertFalse(result['provider_authority_fencing_verified'])
+        self.assertFalse(result['effect_ack_done'])
+        paths = {record['path']: record['classification'] for record in result['records']}
+        self.assertEqual(paths['QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd'], 'DISABLED_ENTRYPOINT')
+        self.assertEqual(paths['QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd'], 'DISABLED_ENTRYPOINT')
+        self.assertEqual(paths['scripts/qikvrt_github_api_client.sh'], 'DISABLED_ENTRYPOINT')
+        self.assertEqual(paths['tools/qikvrt_zenodo_publish.py'], 'GET_ONLY_GITHUB_TRANSPORT')
+
+    def test_untracked_and_tracked_new_raw_writers_fail_closed(self):
+        candidates = [
+            'git push origin HEAD:main\n',
+            'git -c http.extraheader="$GITHUB_TOKEN" push origin main\n',
+            'git send-pack origin main\n',
+            'gh api --method POST repos/x/y/git/refs -f ref=refs/heads/x\n',
+            'curl -X PATCH https://api.github.com/repos/x/y/git/refs/heads/main\n',
+            'curl --data @payload https://api.github.com/repos/x/y/releases\n',
+            'import requests\nrequests.post("https://api.github.com/repos/x/y/releases")\n',
+            'import os\ntoken = os.environ["GITHUB_TOKEN"]\n',
+            'gh api repos/x/y/git/refs -f ref=refs/heads/x\n',
+            'github.rest.git.createRef({ref: "refs/heads/x"})\n',
+            'curl https://api.github.com/repos/x/y/releases \\\n  --data @payload\n',
+        ]
+        for candidate in candidates:
+            for path in ('tools/new_writer.sh', 'Makefile', 'tools/new_writer.cjs', 'package.json'):
+                with self.subTest(candidate=candidate, path=path), tempfile.TemporaryDirectory() as directory:
+                    root = self.fixture(directory, {path: candidate})
+                    self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
+                    subprocess.run(['git', '-C', str(root), 'add', '.'], check=True, timeout=10)
+                    self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
+
+    def test_incoming_documentation_and_tests_cannot_launder_active_writer(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.fixture(directory, {'incoming/old.sh': 'git push origin main\n',
+                'docs/example.sh': 'gh release create v1\n', 'tests/fixture.py': 'method="POST"\n'})
+            result = transition.audit_repository_writers(root)
+            self.assertEqual(result['state'], 'PASS')
+            self.assertEqual({r['classification'] for r in result['records']}, {
+                'HISTORICAL_INCOMING_NOT_ADMITTED', 'DOCUMENTARY_NOT_ADMITTED', 'TEST_FIXTURE_NOT_PRODUCTION'})
+            (root/'tools').mkdir()
+            (root/'tools/caller.sh').write_text('sh incoming/old.sh\n# GITHUB_TOKEN\n')
+            self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
+
+    def test_literal_disabled_job_has_no_write_capability_and_cannot_be_reenabled(self):
+        prefix = 'name: writer\non: workflow_dispatch\npermissions:\n  contents: read\njobs:\n'
+        body = '  writer:\n    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled\n    permissions: {}\n    runs-on: ubuntu-latest\n    steps:\n      - run: git push origin main\n'
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.fixture(directory, {'.github/workflows/writer.yml': prefix+body})
+            self.assertEqual(transition.audit_repository_writers(root)['state'], 'PASS')
+            p = root/'.github/workflows/writer.yml'
+            for changed in (body.replace('${{ false }}', '${{ inputs.enabled }}'),
+                    body.replace('permissions: {}', 'permissions:\n      contents: write'),
+                    body.replace('    permissions: {}', '    if: true\n    permissions: {}'),
+                    body.replace('    permissions: {}', '    permissions: {}\n    permissions:\n      contents: write')):
+                p.write_text(prefix+changed)
+                self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
+
+    def test_write_permission_or_checkout_credential_alone_blocks_admission(self):
+        for source in [
+            'name: x\non: push\npermissions:\n  contents: write\njobs:\n  read:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo read\n',
+            'name: x\non: push\npermissions: read-all\njobs:\n  read:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@abcdef\n',
+            'name: x\non: push\npermissions: {contents: write}\njobs:\n  read:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo read\n',
+        ]:
+            with self.subTest(source=source), tempfile.TemporaryDirectory() as directory:
+                root = self.fixture(directory, {'.github/workflows/x.yml': source})
+                self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
+
+    def test_denial_guard_removal_and_motion_after_transport_are_detected(self):
+        source = (transition.ROOT/'tools/qikvrt_vrtcore_h3_e1_recovery.py').read_text()
+        self.assertTrue(transition._guarded_request(source, 'request'))
+        self.assertFalse(transition._guarded_request(source.replace('method != "GET"', 'method == "GET"'), 'request'))
+        self.assertFalse(transition._guarded_request(source.replace('        if method != "GET":',
+            '        self._transport("POST", "/repos/x/y/releases")\n        if method != "GET":'), 'request'))
+
+    def test_legacy_bearers_and_acceptance_flags_never_reenable_rest_after_restart(self):
+        from tools import qikvrt_vrtcore_h3_e1_recovery as h3
+        from tools import qikvrt_zenodo_publish as publication
+        for restart in (False, True):
+            transport = mock.Mock()
+            client = h3.GitHubAPI('x'*30, transport=transport)
+            with mock.patch.dict(os.environ, {'GITHUB_TOKEN': 'x'*30,
+                    'QIKVRT_ENABLE_REAL_GITHUB_EFFECTS': 'YES', 'QIKVRT_EXTERNAL_EFFECTS': 'enabled'}):
+                for method in ('POST', 'PATCH', 'PUT', 'DELETE'):
+                    with self.subTest(restart=restart, method=method), self.assertRaises(transition.TransitionError):
+                        client.request(method, '/repos/Goldkelch/qik-vrt/git/refs', payload={})
+                    with mock.patch.object(publication.urllib.request, 'build_opener') as opener:
+                        with self.assertRaises(transition.TransitionError):
+                            publication._github_api_request(method, '/repos/Goldkelch/qik-vrt/git/refs', 'x'*30)
+                        opener.assert_not_called()
+            transport.assert_not_called()
+            transport.return_value = (200, {})
+            self.assertEqual(client.request('GET', '/repos/Goldkelch/qik-vrt/git/ref/heads/main'), (200, {}))
+
+    def test_publication_execute_and_direct_helper_deny_before_transport(self):
+        from tools import qikvrt_cicd_publish as publication
+        for command, effect in [(['git','push','origin','main'], 'github_push'),
+                (['gh','release','create','v1'], 'github_release')]:
+            with mock.patch.object(publication, 'run_bounded') as runner:
+                self.assertEqual(publication._run(command)['returncode'], 20)
+                code, steps, detail = publication.execute_plan({'actions':[{'effect':effect,'command':command}]})
+                self.assertEqual(code, 20)
+                self.assertEqual(steps, [])
+                self.assertIn('NO_BYPASS', detail)
+                runner.assert_not_called()
+
+    def test_https_github_dry_dispatch_still_cannot_reach_provider(self):
+        from scripts import qikvrt_api_client as client
+        import contextlib, sys
+        with mock.patch.dict(os.environ, {'QIKVRT_API_TOKEN':'x'*30}), \
+                mock.patch.object(sys, 'argv', ['client', '--owner','ingolf-lohmann', '--repo','qik-vrt',
+                    '--base-url','https://api.github.com', '--dry-run','true', '--request-id','dry-dispatch']), \
+                contextlib.redirect_stderr(io.StringIO()), mock.patch.object(client.urllib.request, 'build_opener') as opener:
+            with self.assertRaises(SystemExit) as raised:
+                client.main()
+            self.assertEqual(raised.exception.code, 2)
+            opener.assert_not_called()
 
 
 if __name__ == '__main__':

@@ -291,7 +291,7 @@ class VRTCoreH3E1RecoveryStaticTests(unittest.TestCase):
         )[0]
         self.assertEqual(
             permissions,
-            "  contents: write\n  actions: read\n",
+            "  contents: read\n  actions: read\n",
         )
         self.assertIn("persist-credentials: false", self.workflow)
         self.assertIn(E1, self.workflow)

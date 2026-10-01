@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: qikvrt-proof-persistence-integrity
@@ -15,10 +15,13 @@ concurrency:
 
 jobs:
   materialize:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          persist-credentials: false
           ref: agent/proof-persistence-batch05
           fetch-depth: 0
       - name: Regenerate and verify repository integrity

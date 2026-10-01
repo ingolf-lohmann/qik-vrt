@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -21,6 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
@@ -131,7 +132,8 @@ jobs:
             git commit -m "ci: materialize exact-subject repository integrity"
             successor="$(git rev-parse --verify HEAD^{commit})"
             successor_tree="$(git rev-parse --verify HEAD^{tree})"
-            git push origin "HEAD:$TARGET_REF"
+            echo 'NO_BYPASS: remote CI successor requires current Authority broker' >&2
+            exit 78
 
             remote_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
             test "$remote_after" = "$successor"

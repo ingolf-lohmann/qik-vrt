@@ -28,8 +28,8 @@ on:
 permissions:
   actions: read
   contents: read
-  issues: write
-  pull-requests: write
+  issues: read
+  pull-requests: read
 
 concurrency:
   group: qikvrt-live-status-${{ github.repository }}-${{ inputs.pr || github.event.issue.number || github.event.pull_request.number || github.ref_name }}
@@ -37,12 +37,14 @@ concurrency:
 
 jobs:
   watch:
-    if: >-
-      github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' &&
-       github.event.issue.pull_request &&
-       contains(github.event.comment.body, '/qikvrt-status-watch'))
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
+    # Previous admission: if: >-
+    # Previous admission: github.event_name == 'pull_request' ||
+    # Previous admission: github.event_name == 'workflow_dispatch' ||
+    # Previous admission: (github.event_name == 'issue_comment' &&
+    # Previous admission: github.event.issue.pull_request &&
+    # Previous admission: contains(github.event.comment.body, '/qikvrt-status-watch'))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

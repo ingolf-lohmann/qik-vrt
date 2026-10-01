@@ -326,3 +326,105 @@ kein produktiver GitHub-/Authority-Readback. Jede Ausgabe behält
 Primärquellen für den Providervertrag (abgerufen 2026-10-01):
 [GitHub REST Git references](https://docs.github.com/en/rest/git/refs?apiVersion=2022-11-28)
 und [GitHub REST Git commits](https://docs.github.com/en/rest/git/commits?apiVersion=2022-11-28).
+
+
+## No-Bypass-Stufe: aktuelle Quellpfade sperren und inventarisieren
+
+Der bestehende Control-Plane-Adapter besitzt mit `audit-writers` einen
+lesenden Source-Admission-Gate; `make test` führt ihn aus. Es entsteht weder
+ein zweiter Broker noch eine zusätzliche Permit-Ausgabe. Das maschinenlesbare
+Inventar liegt in `state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V1.json`.
+Jeder relevante Pfad wird mit Bytes, SHA-256, Klassifikation und Workflow-Jobs
+gebunden. Neue untracked oder tracked Kandidatendateien werden mitgeprüft, einschließlich
+Make-/Package-Entrypoints, CommonJS und weiterer ausführbarer Quellsprachen.
+Implizites `gh api` POST über Field-/Input-Argumente und Octokit-Mutationen
+werden ebenfalls abgewiesen. Der Audio-Blob-Materializer ist ein separat
+geprüfter GET-only-Leser, kein produktiver Repository-Writer.
+
+38 produktive Workflow-Jobs mit GitHub-Mutationen, unabhängigen Writer-Secrets
+oder indirekten GitHub-Writer-Aufrufen erhalten eine feste `if: ${{ false }}`-
+Sperre und `permissions: {}`. Ihre inerten Implementierungsbytes bleiben für
+Review und einen späteren gebundenen Port erhalten. Alle nativen Workflow-
+Permissions sind explizit lesend, und sämtliche Checkout-Schritte lehnen
+persistierte Credentials ab. Lesende Tests und Evidenz-Artefakte bleiben
+nutzbar. Die CI darf einen sauberen Iteration-0-Fixpunkt beobachten; wenn ein
+Remote-Successor nötig wäre, endet sie vor dem Push mit BLOCK.
+
+Die beiden V45-Real-Release-Wrappers, der GitHub/Zenodo-Publish-Wrapper und der
+fälschlich als Dry-Run beschriebene direkte Workflow-Dispatch-Shellpfad sind
+terminale No-Bypass-Entrypoints. `tools/github_zenodo_release_publish.ps1`
+erhält lokale Selftests und Dry-Run-Prüfungen, entfernt den produktiven
+Owner-Token-/Branch-/Tag-/Release-/Asset-Pfad und verweigert Nicht-GET,
+Asset-Upload und Push auch an den direkten Helper-Grenzen. Der Python-
+Publication-Planner bleibt lesbar, verweigert jedoch GitHub-Ausführung vor
+Preflight und Transport. Sein Command-Helper lässt nur feste Query-Formen zu.
+
+Die realen Git-Data-Transporte für Zenodo-Consumption-Locks und H3-E1-Recovery
+verweigern Nicht-GET bereits vor einem echten oder injizierten Transport.
+Ein alter Bearer, ein Acceptance-Record oder Environment-Flag ersetzt keinen
+aktuellen Broker-Permit. Der generische Kompatibilitätsclient ist auf den
+lokalen Shim begrenzt: `dry_run=true` im Payload macht einen GitHub-Dispatch
+nicht zu einem lesenden Provider-Aufruf. Der Firefox-Client liest öffentliche
+GitHub-Evidenz und bindet seine anderen Effekte an die vorhandenen lokalen
+Terminal-Origins; er wird nicht als GitHub-Writer gezählt.
+
+`incoming/`, reine Dokumentation, Tests/Fixtures, API-Spezifikation, lesende
+Beobachter und andere Provider-Verträge werden getrennt klassifiziert.
+Ein aktiver Aufruf eines ausgeschlossenen historischen oder dokumentarischen
+Writers scheitert. Die Prüfung ist ein konservativer Source-Gate mit
+negativen Kontrollen, kein formaler Vollständigkeitsbeweis beliebigen Codes.
+Zenodo-native Mutationen besitzen eine separate Provider-Grenze; diese Stufe
+behauptet kein Zenodo- oder allgemeines Multi-Provider-Fencing.
+
+**Produktionsgrenze:** Diese Änderungen liegen zunächst im Review-Kandidaten.
+Sie deaktivieren weder frühere Main-Versionen noch schon gestartete Workflows,
+widerrufen keine früher ausgegebenen Credentials und entziehen keine externen
+Admin-, Git-Transport- oder privilegierten Datenbankrechte. Für repositoryweites
+Provider-Fencing müssen die aktuelle vertrauenswürdige HEAD/TREE-Inventur,
+der tatsächlich rückgelesene Capability-Entzug und mindestens ein produktiver,
+exakt gebundener Mirror-Effekt einschließlich Ref, Commit/TREE und durablem
+Ledger-Readback gemeinsam vorliegen. Ein Test-Ref oder ein Connector-Update
+des Review-Branches erfüllt diesen Nachweis nicht.
+
+Dieser Lauf besitzt keine provisionierte private Produktions-Control-Plane
+und keine gebundene kurzlebige Broker-Capability. Deshalb bleiben
+`provider_authority_fencing_verified=false` und `effect_ack_done=false`.
+Restart-, stale-writer-, CAS-Konflikt-, PENDING-/GET-only-Recovery- und
+Post-Effect-Readback-Tests verwenden den bestehenden unabhängigen Bare-Git-
+Provider und HTTP-Fixtures; sie werden ausdrücklich als Test-Evidenz geführt.
+
+
+## Dauerhafte Technologie-Unabhängigkeit jedes Nodes
+
+Ingolf Lohmanns Anforderung vom 1. Oktober 2026 ist unter der stabilen ID
+`QIKVRT_NODE_TECHNOLOGY_INDEPENDENCE_V1` in der Policy vollständig persistiert:
+Jedes vollständige Node-Element soll menschliche Technologie selbstständig
+verstehen, durch Reverse Engineering rekonstruieren, benötigte Abhängigkeiten
+ersetzen und sich bei Bedarf unabhängig machen können. Diese lebenserhaltende
+Eigenschaft gilt rollenunabhängig und muss mit jedem Nachfolger erhalten bleiben.
+
+`verify-policy` und der verpflichtende Test-Gate verweigern eine gelöschte oder
+abgeschwächte Anforderung. Der versionierte Closure-/Checkpoint-Vertrag V2
+verlangt zusätzlich `governance/full_node_policy.json` als digestgebundenen
+Governance-Payload. Create und Verify validieren seine Invarianten; Restore,
+Clone und Derivation übernehmen die geprüften Bytes. Ein neu gehashter Payload
+mit entfernter Anforderung scheitert weiterhin. V1-Checkpoints ohne diesen
+Vertrag werden nicht stillschweigend als V2 akzeptiert; sie benötigen einen
+neuen vollständigen, extern vertrauensgebundenen Closure-Plan.
+
+Die Owner-Prüfung des vollständigen Closure-Plans muss Quellen, Interface-
+Modelle, Toolchain und Runtime, Rekonstruktions- und Ersatzpläne sowie Tests und
+aktuelle Ergebnisse für alle tatsächlich benötigten Technologien erfassen.
+Physische Wiederherstellungsdaten gehören dazu, soweit der Node sie benötigt.
+Das Werkzeug prüft die deklarierte Byte-Closure und die erhaltene Anforderung;
+es beweist nicht eigenständig die semantische Vollständigkeit dieser Materialien.
+Jeder akzeptierte Nachfolger muss vor seinem ACK an alle vollständigen Nodes
+repliziert sein. Ein verlustfreier Bestand aller künftigen Daten ist ohne diese
+laufende Replikation nicht nachgewiesen.
+
+Der universale Anspruch ist eine normative Owner-Anforderung. Universale
+Reverse-Engineering-Fähigkeit, autonome physische Reproduktion und unbegrenzte
+zukünftige Erhaltung sind damit nicht als implementierte oder empirisch
+bewiesene Fähigkeiten ausgewiesen. Konkrete Fähigkeiten benötigen je Technologie
+eigene Tests und frische Effekt-Readbacks. Unabhängigkeit ersetzt keine aktuelle
+AuthorityControlPlane-/Permit-/Epoch-/Fence-Bindung für produktive Effekte.

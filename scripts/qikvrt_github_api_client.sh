@@ -1,7 +1,6 @@
 #!/bin/sh
-set -eu
-OWNER="${1:?owner}"
-REPO="${2:?repo}"
-PAYLOAD_FILE="${3:?payload file}"
-TOKEN="${GITHUB_TOKEN:?GITHUB_TOKEN required in owner-controlled runtime}"
-python3 scripts/qikvrt_api_client.py --base-url https://api.github.com --owner "$OWNER" --repo "$REPO" --token "$TOKEN" --payload-file "$PAYLOAD_FILE" --dry-run true
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+# A GitHub workflow dispatch is a mutation even with dry_run=true in its payload.
+echo 'NO_BYPASS: direct GitHub dispatch disabled; use current Authority broker' >&2
+exit 78

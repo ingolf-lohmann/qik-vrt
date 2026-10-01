@@ -11,7 +11,7 @@ on:
         type: string
 
 permissions:
-  actions: write
+  actions: read
   contents: read
   issues: read
   pull-requests: read
@@ -22,6 +22,8 @@ concurrency:
 
 jobs:
   resume:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}

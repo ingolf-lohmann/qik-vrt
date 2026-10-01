@@ -349,13 +349,13 @@ jobs:
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 make -C "$source_root" test
 
   tag:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
     name: Create or verify the exact annotated tag
     needs: validate
-    if: needs.validate.outputs.authorized == 'true'
+    # Previous admission: if: needs.validate.outputs.authorized == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    permissions:
-      contents: write
+    permissions: {}
     outputs:
       tag_object_sha: ${{ steps.tag.outputs.tag_object_sha }}
     steps:
@@ -576,17 +576,17 @@ jobs:
           retention-days: 30
 
   zenodo-finalize:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
     name: Verify mirror tag, then finalize Zenodo
     needs:
       - validate
       - tag
-    if: >-
-      needs.validate.outputs.authorized == 'true' &&
-      github.repository == 'Goldkelch/qik-vrt'
+    # Previous admission: if: >-
+    # Previous admission: needs.validate.outputs.authorized == 'true' &&
+    # Previous admission: github.repository == 'Goldkelch/qik-vrt'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    permissions:
-      contents: write
+    permissions: {}
     steps:
       - name: Check out the exact finalize marker without credentials
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

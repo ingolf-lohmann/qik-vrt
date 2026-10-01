@@ -10,13 +10,16 @@ fenced by this adapter. Its epoch must never be restored from an old backup.
 from __future__ import annotations
 
 import argparse
+import ast
 from contextlib import contextmanager
 import hmac
 import os
+import re
 from pathlib import Path
 import secrets
 import sqlite3
 import stat
+import subprocess
 import sys
 import time
 from typing import Any
@@ -34,6 +37,15 @@ BINDING_KEYS = {"node_id", "repository", "head", "tree", "manifest_sha256", "sch
 STATE_KEYS = {"schema", "control_plane_epoch", "authority_epoch", "revision", "phase",
               "binding", "fence", "scheduler", "root_repository"}
 PERMIT_KEYS = {"control_plane_epoch", "authority_epoch", "node_id", "fence"}
+
+
+def deny_unbrokered_provider_write() -> None:
+    """No flag, acceptance record or old bearer can authorize a bypass.
+
+    Unsupported operations require a successor of the existing broker contract.
+    This is a denial boundary, never another permit issuer or writer service.
+    """
+    raise TransitionError("NO_BYPASS: unsupported provider write; use current Authority broker")
 
 
 def decode(raw: bytes | str) -> Any:
@@ -424,7 +436,257 @@ def secret_file(path: Path) -> str:
     return token
 
 
+# Conservative source admission gate. This inventories current runnable bytes;
+# it cannot revoke credentials or disable historical workflow runs at GitHub.
+WRITER_SIGNAL = re.compile(
+    r"(?:\bgit\b[^\n]{0,100}\b(?:push|send-pack)\b|"
+    r"[\"'](?:git|--method)[\"'][\s,]+[\"'](?:push|POST|PATCH|PUT|DELETE)[\"']|"
+    r"\bgh\s+(?:api[^\n]*(?:--method|-X)\s+(?:POST|PATCH|PUT|DELETE)|"
+    r"(?:pr|issue|release)\s+(?:create|merge|edit|comment|review|close|delete|upload)|workflow\s+run)|"
+    r"(?:--request|-X)\s+(?:POST|PATCH|PUT|DELETE)|"
+    r"\bgh\s+api[^\n]*(?:--input\b|--raw-field\b|--field\b|-f\s|-F\s)|"
+    r"--data(?:-binary|-raw)?\s|"
+    r"(?:github|octokit)(?:\.rest)?\.[A-Za-z_.]+\.(?:create|update|delete|merge|upload|dispatch)[A-Za-z_]*\s*\(|"
+    r"(?:method\s*[=:]\s*|Method\s+)[\"']?(?:POST|PATCH|PUT|DELETE)|"
+    r"(?:api|github|transport)\.request\(\s*[\"'](?:POST|PATCH|PUT|DELETE)|"
+    r"requests\.(?:post|put|patch|delete)\s*\(|curl\b[^\n]*(?:--data|--json|-d\s)|"
+    r"\w+:\s*write\b|persist-credentials:\s*true|"
+    r"secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)|create-github-app-token)", re.I)
+PROVIDER_SIGNAL = re.compile(r"GITHUB_TOKEN|GH_TOKEN|github\.token|api\.github\.com|"
+    r"GITHUB_API_BASE|NO_BYPASS:|github_zenodo_release_publish|\bgit\b|\bgh\b|secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)")
+RUNNABLE_SUFFIXES = {'.py', '.sh', '.bash', '.ps1', '.cmd', '.bat', '.js', '.mjs', '.cjs', '.ts',
+                     '.yml', '.yaml', '.c', '.h', '.cpp', '.go', '.rs', '.cs', '.rb', '.pl', '.php'}
+
+
+def runnable_path(path: Path) -> bool:
+    return path.suffix.lower() in RUNNABLE_SUFFIXES or path.name in {
+        'Makefile', 'GNUmakefile', 'makefile', 'package.json', 'Jenkinsfile', 'Dockerfile'}
+
+
+def _workflow_jobs(source: str) -> tuple[str, list[tuple[str, str]]]:
+    if re.search(r'^\s*<<:|^\s*(?:jobs|permissions):.*[&*]|^\s*permissions:.*write', source, re.M):
+        raise TransitionError("unsupported workflow alias or inline write permissions")
+    marker = re.search(r'^jobs:[ \t]*$', source, re.M)
+    if marker is None:
+        raise TransitionError("unsupported workflow layout")
+    prefix = source[:marker.end()]
+    rest = source[marker.end():]
+    starts = list(re.finditer(r'^  ([A-Za-z0-9_-]+):[ \t]*$', rest, re.M))
+    if not starts:
+        raise TransitionError("unsupported workflow jobs")
+    return prefix, [(m.group(1), rest[m.start():starts[i+1].start() if i+1 < len(starts) else len(rest)])
+                    for i, m in enumerate(starts)]
+
+
+def _guarded_request(source: str, name: str, *, plan: bool = False) -> bool:
+    """Check denial dominates the function's transport, including fake transports."""
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return False
+    functions = [node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == name]
+    if len(functions) != 1:
+        return False
+    body = functions[0].body
+    if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Constant):
+        body = body[1:]
+    if not body or not isinstance(body[0], ast.If):
+        return False
+    guard = body[0]
+    if plan:
+        expected = ('any(action.get("effect") in {"github_push", "github_release"} '
+                    'for action in plan.get("actions", []))')
+        return ast.dump(guard.test) == ast.dump(ast.parse(expected, mode='eval').body) and (
+            len(guard.body) == 1 and isinstance(guard.body[0], ast.Return) and
+            ast.literal_eval(guard.body[0].value) == (20, [], "NO_BYPASS: GitHub publication requires current Authority broker"))
+    return (ast.dump(guard.test) == ast.dump(ast.parse('method != "GET"', mode='eval').body)
+            and len(guard.body) == 2 and isinstance(guard.body[0], ast.ImportFrom)
+            and guard.body[0].module == 'tools.qikvrt_authority_transition'
+            and [(x.name, x.asname) for x in guard.body[0].names] == [('deny_unbrokered_provider_write', None)]
+            and ast.dump(guard.body[1]) == ast.dump(ast.parse('deny_unbrokered_provider_write()').body[0]))
+
+
+def audit_repository_writers(root: Path = ROOT) -> dict:
+    """Fail closed on new raw writers; classify history, tests and local paths.
+
+    Every executable file, including untracked candidate files, is considered.
+    Historical/documentary bytes never grant authority. Calling incoming code
+    from an active entrypoint is a violation, even if that archive is excluded.
+    The inventory is evidence for source admission, not production fencing.
+    """
+    root = root.resolve(strict=True)
+    paths = subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z', '--cached',
+        '--others', '--exclude-standard'], timeout=30).decode('utf-8').split('\0')
+    records = []
+    violations = []
+    excluded_runnables = [p for p in paths if p.startswith(('incoming/', 'docs/', 'state/', 'evidence/'))
+                          and runnable_path(Path(p))]
+    for relative in sorted(set(paths) - {''}):
+        path = root / relative
+        if not runnable_path(path):
+            continue
+        if path.is_symlink() or not path.is_file():
+            violations.append({'path': relative, 'reason': 'nonregular runnable file'})
+            continue
+        raw = recovery.read_file(path)
+        try:
+            source = raw.decode('utf-8-sig')
+        except UnicodeDecodeError:
+            violations.append({'path': relative, 'reason': 'non-UTF8 runnable file'})
+            continue
+        lines = [i for i, line in enumerate(source.splitlines(), 1) if WRITER_SIGNAL.search(line)]
+        if not relative.startswith('.github/workflows/') and not lines and not PROVIDER_SIGNAL.search(source):
+            continue
+        category = 'READ_ONLY_OR_LOCAL_NON_PROVIDER'
+        errors = []
+        units = []
+        if relative.startswith('incoming/'):
+            category = 'HISTORICAL_INCOMING_NOT_ADMITTED'
+        elif relative.startswith(('evidence/', 'state/')) or (relative.startswith('docs/')
+                and path.suffix.lower() not in {'.js', '.mjs', '.ts'}):
+            category = 'DOCUMENTARY_NOT_ADMITTED'
+        elif relative.startswith('tests/') or '/tests/' in relative:
+            category = 'TEST_FIXTURE_NOT_PRODUCTION'
+        elif relative == 'api/qikvrt_github_api.openapi.yaml':
+            category = 'INTEROPERABILITY_SPEC_NOT_EXECUTABLE'
+        elif relative.startswith('.github/workflows/'):
+            try:
+                prefix, jobs = _workflow_jobs(source)
+            except TransitionError:
+                violations.append({'path': relative, 'reason': 'unsupported workflow grammar'})
+                continue
+            if WRITER_SIGNAL.search(prefix):
+                errors.append('workflow-level write capability or raw mutation')
+            if not re.search(r'^permissions:', prefix, re.M):
+                errors.append('workflow relies on implicit token permissions')
+            for job, body in jobs:
+                disabled = bool(re.search(r'^    if: \$\{\{ false \}\} # NO_BYPASS: unsupported provider writer disabled$', body, re.M))
+                if disabled:
+                    units.append({'job': job, 'admission': 'LITERAL_FALSE', 'native_permissions': 'EMPTY',
+                                  'provider_effect': 'DENIED_UNTIL_BROKER_SUCCESSOR'})
+                    if len(re.findall(r'^    if:', body, re.M)) != 1 or len(re.findall(r'^    permissions:', body, re.M)) != 1:
+                        errors.append(job + ': ambiguous disabled admission')
+                    if not re.search(r'^    permissions: \{\}$', body, re.M):
+                        errors.append(job + ': disabled job must have empty permissions')
+                    continue
+                active = '\n'.join(line for line in body.splitlines() if not line.lstrip().startswith('#'))
+                units.append({'job': job, 'admission': 'READ_ONLY_OR_LOCAL', 'native_permissions': 'READ_ONLY',
+                              'provider_effect': 'NONE_ADMITTED'})
+                if WRITER_SIGNAL.search(active):
+                    errors.append(job + ': unbrokered active writer/capability')
+                if re.search(r'incoming[/\\]', active):
+                    errors.append(job + ': active entrypoint references incoming archive')
+                for excluded in excluded_runnables:
+                    if excluded in active or excluded.replace('/', '\\') in active:
+                        archived = (root / excluded).read_text(encoding='utf-8-sig')
+                        if excluded.startswith('incoming/') or WRITER_SIGNAL.search(archived):
+                            errors.append(job + ': excluded writer invoked from active job')
+                if 'uses: actions/checkout@' in active:
+                    # All checkout steps require an explicit no-credential binding.
+                    steps = re.split(r'^      - ', active, flags=re.M)
+                    if any('uses: actions/checkout@' in step and 'persist-credentials: false' not in step for step in steps):
+                        errors.append(job + ': checkout retains raw transport credential')
+            category = 'WORKFLOW_EXPLICIT_SOURCE_ADMISSION'
+        elif relative == 'src/qikvrt_github_api_shim.py':
+            category = 'EXISTING_AUTHORITY_BROKER'
+        elif relative == 'tools/qikvrt_authority_transition.py':
+            category = 'EXISTING_CONTROL_PLANE_AND_SOURCE_AUDITOR'
+        elif relative == 'tools/qikvrt_cicd_publish.py':
+            category = 'PLAN_ONLY_GITHUB_EXECUTION_DENIED'
+            if not _guarded_request(source, 'execute_plan', plan=True):
+                errors.append('publication execution denial missing')
+            if 'NO_BYPASS: uncontracted command denied' not in source:
+                errors.append('direct command helper denial missing')
+        elif relative in {'tools/qikvrt_vrtcore_h3_e1_recovery.py', 'tools/qikvrt_zenodo_publish.py'}:
+            category = 'GET_ONLY_GITHUB_TRANSPORT'
+            function = 'request' if relative.endswith('h3_e1_recovery.py') else '_github_api_request'
+            if not _guarded_request(source, function):
+                errors.append('first-statement GitHub write denial missing')
+        elif relative == 'tools/github_zenodo_release_publish.ps1':
+            category = 'DRY_RUN_LOCAL_SELFTEST_ONLY_PRODUCTIVE_BRANCH_REMOVED'
+            if "throw 'NO_BYPASS: productive GitHub publication disabled; use current Authority broker'" not in source:
+                errors.append('productive branch denial missing')
+            if re.search(r"(?:\bpush\b[^\n]*origin|Invoke-GitHubJson -Method Post|Invoke-RestMethod -Method Post)", source, re.I):
+                errors.append('PowerShell productive mutation reintroduced')
+        elif relative == 'scripts/qikvrt_api_client.py':
+            category = 'LOOPBACK_LOCAL_SHIM_ONLY'
+            if 'if parsed_base.hostname not in loopback_hosts:' not in source or 'NO_BYPASS: compatibility dispatch is restricted to the local shim' not in source:
+                errors.append('local shim origin restriction missing')
+        elif relative in {'GITHUB_DRY_RUN_VERIFY_ONLY.cmd', 'GITHUB_AUTH_PREFLIGHT_ONLY.cmd'}:
+            category = 'INDIRECT_DRY_OR_BLOCKED_PREFLIGHT_ENTRYPOINT'
+        elif relative in {'tools/qikvrt_r11_read_only_observation_dispatch_v2.py', 'tools/qikvrt_validate_state_run.py'}:
+            category = 'GET_ONLY_OBSERVER'
+            if 'method="GET"' not in source or lines:
+                errors.append('read-only observer changed into provider writer')
+        elif relative == 'tools/qikvrt_zenodo_metadata_edit.py':
+            category = 'INDIRECT_CALLER_OF_DENIED_GITHUB_CONSUMPTION_LOCK'
+            if lines:
+                errors.append('new direct GitHub mutation in metadata editor')
+        elif relative == 'tools/verify.py':
+            category = 'STATIC_SOURCE_VERIFIER_NOT_EXECUTOR'
+            tree = ast.parse(source)
+            if any(isinstance(n, ast.Import) and any(x.name in {'subprocess', 'requests', 'urllib'} for x in n.names)
+                   or isinstance(n, ast.ImportFrom) and n.module and n.module.split('.')[0] in {'subprocess', 'requests', 'urllib'}
+                   or isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id in {'exec', 'eval', '__import__'}
+                   for n in ast.walk(tree)):
+                errors.append('static verifier gained execution/network capability')
+        elif relative == 'browser/firefox/qikvrt-terminal/background.js':
+            category = 'GET_ONLY_PUBLIC_GITHUB_AND_PINNED_LOCAL_TERMINAL'
+            github = re.search(r'async function github\(path\) \{([\s\S]*?)\n\}', source)
+            if (not github or 'method: "GET"' not in github.group(1)
+                    or WRITER_SIGNAL.search(github.group(1))
+                    or 'const ALLOWED_BACKENDS = new Set(["http://127.0.0.1:8771", "http://localhost:8771"]);' not in source
+                    or 'if (!ALLOWED_BACKENDS.has' not in source
+                    or len(re.findall(r'\bfetch\(', source)) != 2
+                    or source.count('https://api.github.com') != 1):
+                errors.append('browser provider/local origin restriction missing')
+        elif relative == 'tools/offline-audio-transcription/src/materialize-request.cjs':
+            category = 'GET_ONLY_BLOB_MATERIALIZER'
+            if (lines or len(re.findall(r'\bhttps\.get\(', source)) != 1
+                    or re.search(r'\b(?:fetch|https\.request)\(', source)
+                    or 'const apiUrl = `https://api.github.com/repos/' not in source
+                    or '/git/blobs/${validated.source.blobSha}`' not in source):
+                errors.append('blob materializer gained unadmitted provider transport')
+        elif 'NO_BYPASS:' in source and (source.rstrip().endswith('exit 78') or source.rstrip().endswith('exit /b 78')):
+            category = 'DISABLED_ENTRYPOINT'
+            if WRITER_SIGNAL.search('\n'.join(l for l in source.splitlines() if not l.lstrip().lower().startswith(('echo ', '#', 'rem ')))):
+                errors.append('disabled entrypoint contains executable writer')
+        elif lines:
+            # Known non-GitHub providers are not part of GitHub fencing. Their
+            # origins are independently pinned by their own existing contracts.
+            if relative in {'tools/qikvrt_zenodo_actions.py', 'tools/qikvrt_status_zenodo.py',
+                    'tools/qikvrt_formalization_v2_zenodo.py', 'scripts/issue_agent/infer.py'}:
+                category = 'OTHER_PROVIDER_NOT_GITHUB_REPOSITORY_WRITE'
+            else:
+                errors.append('raw writer outside current Authority broker')
+        if category == 'READ_ONLY_OR_LOCAL_NON_PROVIDER' and re.search(r'GITHUB_TOKEN|GH_TOKEN|github\.token', source):
+            errors.append('raw provider capability in unreviewed operational source')
+        if category == 'READ_ONLY_OR_LOCAL_NON_PROVIDER' and re.search(r'(?:GITHUB_TOKEN|GH_TOKEN|api\.github\.com)', source) and (
+                re.search(r'method\s*=\s*(?:method|["\'](?:POST|PATCH|PUT|DELETE))', source)):
+            errors.append('dynamic GitHub transport not admitted')
+        if not category.startswith(('HISTORICAL_', 'DOCUMENTARY_', 'TEST_')) and relative not in {
+                'tools/qikvrt_authority_transition.py', 'tools/qikvrt_integrity.py'} and not relative.startswith('.github/workflows/') and re.search(r'incoming[/\\]', source):
+            errors.append('operational code references incoming archive')
+        records.append({'path': relative, 'sha256': recovery.digest(raw), 'bytes': len(raw),
+            'classification': category, 'writer_signal_lines': lines, 'execution_units': units})
+        violations.extend({'path': relative, 'reason': error} for error in errors)
+    return {'schema': 'qikvrt_repository_writer_inventory_v1', 'state': 'BLOCK' if violations else 'PASS',
+        'scope': 'CURRENT_CANDIDATE_SOURCE_GITHUB_REPOSITORY_WRITERS_ONLY',
+        'records': records, 'violations': violations, 'predecessor_evidence_transfer': False,
+        'production_bypass_capabilities_revoked': False,
+        'provider_authority_fencing_verified': False, 'effect_ack_done': False}
+
+
 def main(argv: list[str] | None = None) -> int:
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if arguments[:1] == ["audit-writers"]:
+        audit_parser = argparse.ArgumentParser(description="Read-only GitHub writer source admission")
+        audit_parser.add_argument("operation", choices=["audit-writers"])
+        audit_parser.add_argument("--root", type=Path, default=ROOT)
+        audit_args = audit_parser.parse_args(arguments)
+        result = audit_repository_writers(audit_args.root)
+        sys.stdout.buffer.write(canonical_json_bytes(result))
+        return 2 if result["violations"] else 0
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("init", "grant", "observe", "takeover", "activate", "write", "readback", "rejoin"))
     parser.add_argument("--control-plane", type=Path, required=True)
