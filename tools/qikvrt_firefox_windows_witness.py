@@ -276,6 +276,15 @@ def witness(output, headless=False):
     except Exception as error:
         receipt['reason'] = type(error).__name__ + ': ' + str(error)
         receipt['windows_witness_test'] = 'FAIL'
+        if driver and driver.session:
+            try:
+                receipt['terminal_diagnostics'] = driver.script(
+                    'return {url:location.href,status:document.querySelector("[data-role=status]")?.textContent,'
+                    'output:document.querySelector("[data-role=output]")?.textContent};')
+                (output / 'screenshot.png').write_bytes(base64.b64decode(
+                    driver.command('/screenshot', method='GET')))
+            except Exception as diagnostic_error:
+                receipt['diagnostics_error'] = type(diagnostic_error).__name__
         return 1
     finally:
         if driver:

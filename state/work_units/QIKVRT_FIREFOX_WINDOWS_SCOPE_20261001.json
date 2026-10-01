@@ -53,6 +53,30 @@
       "observed_error": "cache registry lock_authority does not identify TOOLCHAIN.lock.tsv",
       "causal_fix": "Use repository POSIX paths for lock/coverage identity on Windows; preserve preflight HOLD receipt",
       "windows_browser_execution_observed": false
+    },
+    {
+      "head": "83dfa0abae0ce0415eca071e3aee69f51e2aa66e",
+      "tree": "5404eec01ffa6d4592dd496b1f50f40f482a40b9",
+      "run_id": 36921684489,
+      "job_id": 110569023526,
+      "artifact_id": 11192920257,
+      "artifact_sha256": "60b75357ae85e17dcb8d44e9a4c2fb0cf0aa4d19f2481fe399baf04c60c245f7",
+      "os": {
+        "architecture": "ARM64",
+        "build": 26200,
+        "display_version": "25H2",
+        "edition": "Enterprise",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "product_type": 1,
+        "ubr": 9457
+      },
+      "firefox_version": "156.0.1",
+      "extension_loaded": true,
+      "terminal_functional_readback": true,
+      "local_effect_readback": false,
+      "error": "RuntimeError: BROWSER_FUNCTIONAL_TIMEOUT",
+      "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; no transfer to successor",
+      "next_action": "Capture actual terminal HOLD output and screenshot before causal repair"
     }
   ]
 }
