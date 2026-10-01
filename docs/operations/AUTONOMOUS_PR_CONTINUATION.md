@@ -148,11 +148,17 @@ artifact readback and native review remain distinct obligations.
 ## Invariant pipeline during feedback
 
 The existing self-heal controller now exposes `pipeline-bind` and
-`pipeline-verify`. They bind sorted path/mode/Git-blob records for workflows,
+`pipeline-verify`. They bind sorted path/mode/checkout-byte records for workflows,
 tools, tests, runtime locks, policies, authorization/autonomy, all source code and
 fixed entrypoints. A separately reobserved trusted Main SHA supplies the
 reference. The workflow copies that trusted observer before checking out the
 candidate and invokes it before candidate-controlled commands and after repair.
+Reference bytes use Git's actual checkout conversion, including declared CRLF
+PowerShell files; `.gitattributes` itself is protected. Runner Git configuration
+and non-versioned attributes are part of the separately trusted environment.
+Changing executable source or attributes still fails rather than silently
+normalizing arbitrary candidate bytes. The first hosted candidate's failed
+raw-blob comparison is preserved as predecessor evidence, never transferred.
 New protected paths, deletions, byte changes, executable-mode changes and
 symlinks fail closed. Generated integrity/projection outputs and ordinary data
 are outside this control-plane inventory. The controller also verifies

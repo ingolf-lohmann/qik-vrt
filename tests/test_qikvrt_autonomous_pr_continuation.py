@@ -175,6 +175,29 @@ class AutonomousPRContinuationTests(unittest.TestCase):
                             step = feedback_step(frame, policy)
                     verify_pipeline_binding(expected, pipeline_binding(root))
 
+    def test_reference_binds_actual_crlf_checkout_and_attributes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, git, _ = self.make_pipeline_fixture(directory)
+            attributes = root / ".gitattributes"
+            attributes.write_text("* text=auto eol=lf\n*.ps1 text eol=crlf\n")
+            script = root / "tools/portable.ps1"
+            script.write_bytes(b"Write-Output 'same pipeline'\n")
+            git("add", ".gitattributes", "tools/portable.ps1")
+            git("commit", "-m", "fixed checkout normalization fixture")
+            head = git("rev-parse", "HEAD")
+            script.unlink()
+            git("checkout", "--", "tools/portable.ps1")
+            self.assertIn(b"\r\n", script.read_bytes())
+            expected = pipeline_binding(root, head)
+            verify_pipeline_binding(expected, pipeline_binding(root))
+            script.write_bytes(b"Write-Output 'changed pipeline'\r\n")
+            with self.assertRaises(SelfHealBlock):
+                verify_pipeline_binding(expected, pipeline_binding(root))
+            git("checkout", "--", "tools/portable.ps1")
+            attributes.write_text("* text=auto eol=lf\n*.ps1 text eol=lf\n")
+            with self.assertRaises(SelfHealBlock):
+                verify_pipeline_binding(expected, pipeline_binding(root))
+
     def test_noop_requires_dedicated_verifier_not_ordinary_green_ci(self):
         for statuses in ([], [{"context": "test", "state": "success"}],
                          [{"context": "QIKVRT repository evidence", "state": "success"}]):

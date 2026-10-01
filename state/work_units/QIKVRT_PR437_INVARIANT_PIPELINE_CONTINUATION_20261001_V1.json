@@ -47,5 +47,15 @@
   ],
   "schema": "qikvrt_work_unit_v1",
   "signature_changed": false,
-  "work_unit_id": "QIKVRT_PR437_INVARIANT_PIPELINE_CONTINUATION_20261001_V1"
+  "work_unit_id": "QIKVRT_PR437_INVARIANT_PIPELINE_CONTINUATION_20261001_V1",
+  "hosted_regression": {
+    "head": "ae7baa465467e6659f6e7d24f1a83961acbbe35c",
+    "tree": "4edca52ae252d0248f3ca3e3fe39c71d0ae1dc3d",
+    "run_id": 36909668346,
+    "job_id": 110528886572,
+    "result": "BLOCK",
+    "cause": "Raw Git blobs differed from declared CRLF PowerShell checkout bytes",
+    "repair": "Use trusted checkout conversion for reference; bind .gitattributes and add actual checkout regression test",
+    "predecessor_evidence_transfer": false
+  }
 }

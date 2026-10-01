@@ -94,13 +94,14 @@
         "src/"
       ],
       "protected_files": [
+        ".gitattributes",
         "AGENTS.md",
         "AI",
         "AI_ADAPTERS.json",
         "AI_CONTEXT.json",
         "Makefile"
       ],
-      "binding": "SORTED_PATH_MODE_GIT_BLOB_RECORDS_AND_SHA256",
+      "binding": "SORTED_PATH_MODE_EXACT_CHECKOUT_BYTE_RECORDS_AND_SHA256",
       "new_protected_paths": "INCLUDED_AND_REJECTED_ON_DIFFERENCE",
       "candidate_upgrade": "SEPARATE_INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ACTIVATION",
       "checks": [
@@ -108,7 +109,8 @@
         "AFTER_REPAIR",
         "BEFORE_REMOTE_SUCCESSOR"
       ],
-      "claim_boundary": "LOCAL_SOURCE_INVARIANCE_NOT_COMPLETE_MEDIATION_OR_PHYSICAL_PROOF"
+      "claim_boundary": "LOCAL_SOURCE_INVARIANCE_NOT_COMPLETE_MEDIATION_OR_PHYSICAL_PROOF",
+      "reference_checkout": "TRUSTED_MAIN_GIT_ATTRIBUTES_AND_SEPARATELY_TRUSTED_RUNNER_GIT_CONFIGURATION"
     },
     "candidate_contract_validation": {
       "workflow": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",

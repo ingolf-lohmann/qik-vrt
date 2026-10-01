@@ -42,7 +42,7 @@ PIPELINE_PREFIXES = (
     ".github/workflows/", "tools/", "tests/", "runtime/toolchains/",
     "policy/", "state/autonomy/", "state/authorization/", "src/",
 )
-PIPELINE_FILES = {"AI", "AI_CONTEXT.json", "AGENTS.md", "AI_ADAPTERS.json", "Makefile"}
+PIPELINE_FILES = {".gitattributes", "AI", "AI_CONTEXT.json", "AGENTS.md", "AI_ADAPTERS.json", "Makefile"}
 PIPELINE_REQUIRED = {"Makefile", "AGENTS.md", "tools/qikvrt_autonomous_self_heal.py"}
 PIPELINE_SCHEMA = "qikvrt_pipeline_binding_v1"
 
@@ -52,7 +52,7 @@ def _pipeline_path(path: str) -> bool:
 
 
 def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> dict[str, Any]:
-    """Bounded read-only control-plane inventory, using Git's exact blob identity.
+    """Bounded read-only inventory of exact Git checkout bytes and modes.
 
     A reference is an externally selected trusted full SHA, never candidate data.
     Without a reference, include tracked and untracked protected working files.
@@ -62,7 +62,7 @@ def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> 
     if reference is not None and (len(reference) != 40
             or any(c not in "0123456789abcdef" for c in reference)):
         raise SelfHealBlock("pipeline reference must be a full Git SHA-1")
-    command = (["git", "ls-tree", "-r", "-z", "--full-tree", reference]
+    command = (["git", "ls-tree", "-r", "-l", "-z", "--full-tree", reference]
                if reference else ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
     try:
         raw = subprocess.check_output(command, cwd=root, timeout=60, stderr=subprocess.PIPE)
@@ -77,7 +77,7 @@ def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> 
             continue
         if reference:
             metadata, path_raw = item.split(b"\t", 1)
-            mode, kind, blob = metadata.decode("ascii").split()
+            mode, kind, blob, raw_size = metadata.decode("ascii").split()
             path = path_raw.decode("utf-8")
         else:
             path = item.decode("utf-8")
@@ -86,6 +86,19 @@ def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> 
         if reference:
             if kind != "blob" or mode not in {"100644", "100755"}:
                 raise SelfHealBlock("pipeline requires regular files: " + path)
+            if int(raw_size) > 16 * 1024 * 1024:
+                raise SelfHealBlock("pipeline reference file size rejected: " + path)
+            try:
+                # Reference bytes must use the trusted checkout's Git attributes:
+                # e.g. LF blobs become CRLF PowerShell files on checkout. This
+                # runs before candidate checkout under trusted runner Git config.
+                content = subprocess.check_output(
+                    ["git", "cat-file", "--filters", reference + ":" + path],
+                    cwd=root, timeout=60, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError as exc:
+                raise SelfHealBlock("pipeline reference checkout observation failed") from exc
+            if len(content) > 16 * 1024 * 1024:
+                raise SelfHealBlock("pipeline filtered file size rejected: " + path)
         else:
             file = root / path
             if any(parent.is_symlink() for parent in file.parents if parent != root):
@@ -93,16 +106,16 @@ def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> 
             before = file.lstat()
             if not stat.S_ISREG(before.st_mode) or before.st_size > 16 * 1024 * 1024:
                 raise SelfHealBlock("pipeline file type/size rejected: " + path)
-            total_bytes += before.st_size
-            if total_bytes > 256 * 1024 * 1024:
-                raise SelfHealBlock("pipeline total byte bound exceeded")
             content = file.read_bytes()
             after = file.lstat()
             if (before.st_ino, before.st_size, before.st_mtime_ns, before.st_mode) != (
                     after.st_ino, after.st_size, after.st_mtime_ns, after.st_mode):
                 raise SelfHealBlock("pipeline file changed while reading: " + path)
             mode = "100755" if before.st_mode & 0o111 else "100644"
-            blob = hashlib.sha1(b"blob " + str(len(content)).encode() + b"\0" + content).hexdigest()
+        total_bytes += len(content)
+        if total_bytes > 256 * 1024 * 1024:
+            raise SelfHealBlock("pipeline total byte bound exceeded")
+        blob = hashlib.sha1(b"blob " + str(len(content)).encode() + b"\0" + content).hexdigest()
         entries[path] = {"path": path, "mode": mode, "blob": blob}
     if not PIPELINE_REQUIRED <= set(entries) or len(entries) > 10000:
         raise SelfHealBlock("pipeline inventory incomplete or excessive")
