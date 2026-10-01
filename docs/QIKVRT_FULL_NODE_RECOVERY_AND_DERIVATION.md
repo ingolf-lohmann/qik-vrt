@@ -428,3 +428,25 @@ zukünftige Erhaltung sind damit nicht als implementierte oder empirisch
 bewiesene Fähigkeiten ausgewiesen. Konkrete Fähigkeiten benötigen je Technologie
 eigene Tests und frische Effekt-Readbacks. Unabhängigkeit ersetzt keine aktuelle
 AuthorityControlPlane-/Permit-/Epoch-/Fence-Bindung für produktive Effekte.
+
+
+## Gepackte und endungslose Writer
+
+Der Gate prüft zusätzlich Shebang-/Executable-Entrypoints und die originalen
+Quelltypen im historischen `PAYLOAD_FILENAME_MAP_V36.json`. 57 unter `.bin`
+verpackte Push-/REST-Publisher sind an ihren bisherigen Payload-Pfaden terminal
+mit Exit 78 gesperrt. Die Originalbytes und Apache-2.0-Hinweise bleiben exakt
+unter `incoming/no_bypass_20261001_monthly_writers/` erhalten; der typed
+Quarantäne-Record bindet Ursprungspfad, Bytes, Git-Blob und SHA-256. Diese Bytes
+werden nicht als produktiv zugelassen. Ein Aufruf ihrer Archivpfade aus aktivem
+Code scheitert am Source-Gate. Auch ein endungsloses neues Writer-Skript wird
+erfasst.
+
+Die alte Filename-Map bleibt eine unveränderte historische Byte-Bindung. Ihre
+alten Writer-Checksummen passen absichtlich nicht zu den neuen Sperr-Stubs;
+sie ist kein aktueller ausführbarer Delivery-/Admission-Vertrag. Ein späterer
+Port benötigt einen neuen geprüften Broker-Vertrag und einen versionierten
+Delivery-Successor. Frühere ZIP-/Release-Pakete bleiben historische Artefakte;
+ihr Entpacken widerruft die No-Bypass-Anforderung nicht. Noch ausgegebene
+Capabilities und historische Installationen müssen vor produktiver Abnahme
+weiterhin tatsächlich entzogen und rückgelesen werden.

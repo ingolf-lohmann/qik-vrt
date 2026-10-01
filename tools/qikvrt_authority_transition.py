@@ -453,14 +453,29 @@ WRITER_SIGNAL = re.compile(
     r"\w+:\s*write\b|persist-credentials:\s*true|"
     r"secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)|create-github-app-token)", re.I)
 PROVIDER_SIGNAL = re.compile(r"GITHUB_TOKEN|GH_TOKEN|github\.token|api\.github\.com|"
-    r"GITHUB_API_BASE|NO_BYPASS:|github_zenodo_release_publish|\bgit\b|\bgh\b|secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)")
+    r"GITHUB_API_BASE|NO_BYPASS:|github_zenodo_release_publish|incoming[/\\]|\bgit\b|\bgh\b|secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)")
 RUNNABLE_SUFFIXES = {'.py', '.sh', '.bash', '.ps1', '.cmd', '.bat', '.js', '.mjs', '.cjs', '.ts',
                      '.yml', '.yaml', '.c', '.h', '.cpp', '.go', '.rs', '.cs', '.rb', '.pl', '.php'}
 
 
 def runnable_path(path: Path) -> bool:
-    return path.suffix.lower() in RUNNABLE_SUFFIXES or path.name in {
-        'Makefile', 'GNUmakefile', 'makefile', 'package.json', 'Jenkinsfile', 'Dockerfile'}
+    if path.suffix.lower() in RUNNABLE_SUFFIXES or path.name in {
+            'Makefile', 'GNUmakefile', 'makefile', 'package.json', 'Jenkinsfile', 'Dockerfile'}:
+        return True
+    if path.is_symlink():
+        return True
+    if path.is_file():
+        if path.stat().st_mode & 0o111:
+            return True
+        with path.open('rb') as handle:
+            return handle.read(2) == b'#!'
+    return False
+
+
+PACKAGED_WRITER_STUB = ('#!/usr/bin/env python3\n'
+    '# SPDX-License-Identifier: Apache-2.0\n# Copyright 2026 Ingolf Lohmann.\n'
+    'import sys\nprint("NO_BYPASS: packaged writer disabled; use current Authority broker", file=sys.stderr)\n'
+    'raise SystemExit(78)\n')
 
 
 def _workflow_jobs(source: str) -> tuple[str, list[tuple[str, str]]]:
@@ -519,11 +534,19 @@ def audit_repository_writers(root: Path = ROOT) -> dict:
         '--others', '--exclude-standard'], timeout=30).decode('utf-8').split('\0')
     records = []
     violations = []
+    packaged = set()
+    filename_map = root / 'payload/monthly_content/PAYLOAD_FILENAME_MAP_V36.json'
+    if filename_map.exists():
+        mapping = recovery.parse_json_bytes(recovery.read_file(filename_map), 'payload filename map')
+        for item in mapping['items']:
+            name = recovery.safe_path(item['new_name'])
+            if runnable_path(Path(item['old_name'])):
+                packaged.add('payload/monthly_content/' + name)
     excluded_runnables = [p for p in paths if p.startswith(('incoming/', 'docs/', 'state/', 'evidence/'))
-                          and runnable_path(Path(p))]
+                          and runnable_path(root / p)]
     for relative in sorted(set(paths) - {''}):
         path = root / relative
-        if not runnable_path(path):
+        if not runnable_path(path) and relative not in packaged:
             continue
         if path.is_symlink() or not path.is_file():
             violations.append({'path': relative, 'reason': 'nonregular runnable file'})
@@ -542,6 +565,8 @@ def audit_repository_writers(root: Path = ROOT) -> dict:
         units = []
         if relative.startswith('incoming/'):
             category = 'HISTORICAL_INCOMING_NOT_ADMITTED'
+        elif relative in packaged and source == PACKAGED_WRITER_STUB:
+            category = 'DISABLED_PACKAGED_WRITER_ENTRYPOINT'
         elif relative.startswith(('evidence/', 'state/')) or (relative.startswith('docs/')
                 and path.suffix.lower() not in {'.js', '.mjs', '.ts'}):
             category = 'DOCUMENTARY_NOT_ADMITTED'

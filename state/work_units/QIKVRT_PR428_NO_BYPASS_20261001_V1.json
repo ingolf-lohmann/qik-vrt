@@ -16,7 +16,8 @@
     "Fail-closed unsupported entrypoints, transports and workflow admissions",
     "Negative controls and full suite",
     "Typed inventory, policy, documentation and successor preparation",
-    "Versioned V2 digest-bound governance checkpoint preservation, invariant validation, tamper and destructive restore controls; universal capability proof remains open"
+    "Versioned V2 digest-bound governance checkpoint preservation, invariant validation, tamper and destructive restore controls; universal capability proof remains open",
+    "Detected and quarantined 57 filename-mapped packaged writer variants, preserved original bytes as historical incoming artifacts, and covered shebang/extensionless entrypoints"
   ],
   "base_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
   "created_at": "2026-10-01T16:03:11.744009Z",
@@ -95,6 +96,7 @@
       "state": "BLOCK_EXTERNAL_GIT_OBJECT_CLOSURE",
       "unrelated_to_new_transport_denial": "YES"
     },
+    "packaged_writer_quarantine": "state/work_units/QIKVRT_PR428_PACKAGED_WRITER_QUARANTINE_20261001_V1.json",
     "required_commands": [
       "python3 -B tools/qikvrt_mesh_recovery.py verify-policy",
       "python3 -B tools/qikvrt_authority_transition.py audit-writers",

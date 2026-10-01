@@ -5,6 +5,7 @@
 import base64
 from concurrent.futures import ThreadPoolExecutor
 import copy
+import hashlib
 from http.server import ThreadingHTTPServer
 import io
 import json
@@ -12,6 +13,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import threading
 import tempfile
 import unittest
@@ -488,9 +490,9 @@ class RepositoryNoBypassTests(unittest.TestCase):
             'curl https://api.github.com/repos/x/y/releases \\\n  --data @payload\n',
         ]
         for candidate in candidates:
-            for path in ('tools/new_writer.sh', 'Makefile', 'tools/new_writer.cjs', 'package.json'):
+            for path in ('tools/new_writer.sh', 'Makefile', 'tools/new_writer.cjs', 'package.json', 'tools/new-writer'):
                 with self.subTest(candidate=candidate, path=path), tempfile.TemporaryDirectory() as directory:
-                    root = self.fixture(directory, {path: candidate})
+                    root = self.fixture(directory, {path: '#!/bin/sh\n' + candidate})
                     self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
                     subprocess.run(['git', '-C', str(root), 'add', '.'], check=True, timeout=10)
                     self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
@@ -506,6 +508,31 @@ class RepositoryNoBypassTests(unittest.TestCase):
             (root/'tools').mkdir()
             (root/'tools/caller.sh').write_text('sh incoming/old.sh\n# GITHUB_TOKEN\n')
             self.assertEqual(transition.audit_repository_writers(root)['state'], 'BLOCK')
+
+    def test_packaged_writers_preserve_original_bytes_but_cannot_execute_or_reenter(self):
+        root = transition.ROOT
+        record = json.loads((root/'state/work_units/QIKVRT_PR428_PACKAGED_WRITER_QUARANTINE_20261001_V1.json').read_bytes())
+        self.assertEqual(len(record['records']), 57)
+        for item in record['records']:
+            raw = (root/item['historical_path']).read_bytes()
+            self.assertEqual(len(raw), item['original_bytes'])
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), item['original_sha256'])
+            self.assertEqual(hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest(), item['original_git_blob'])
+            self.assertEqual((root/item['active_path']).read_text(), transition.PACKAGED_WRITER_STUB)
+            result = subprocess.run([sys.executable, str(root/item['active_path']), '--remote', 'https://invalid.example/repo'], capture_output=True, timeout=5)
+            self.assertEqual(result.returncode, 78)
+            self.assertIn(b'NO_BYPASS', result.stderr)
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self.fixture(directory, {'payload/monthly_content/PAYLOAD_FILENAME_MAP_V36.json': json.dumps({'items': [{'new_name': 'writer.bin', 'old_name': 'writer.py'}]}),
+                'payload/monthly_content/writer.bin': 'import subprocess\nsubprocess.run(["git", "push", "origin", "main"])\n'})
+            self.assertEqual(transition.audit_repository_writers(fixture)['state'], 'BLOCK')
+            (fixture/'payload/monthly_content/writer.bin').write_text(transition.PACKAGED_WRITER_STUB)
+            self.assertEqual(transition.audit_repository_writers(fixture)['state'], 'PASS')
+            (fixture/'incoming').mkdir()
+            (fixture/'incoming/writer.py').write_text('import subprocess\nsubprocess.run(["git", "push", "origin", "main"])\n')
+            (fixture/'active').mkdir()
+            (fixture/'active/reenter').write_text('#!/bin/sh\npython3 incoming/writer.py\n')
+            self.assertEqual(transition.audit_repository_writers(fixture)['state'], 'BLOCK')
 
     def test_literal_disabled_job_has_no_write_capability_and_cannot_be_reenabled(self):
         prefix = 'name: writer\non: workflow_dispatch\npermissions:\n  contents: read\njobs:\n'

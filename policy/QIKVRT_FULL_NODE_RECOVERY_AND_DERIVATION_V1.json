@@ -69,6 +69,9 @@
           "native_workflow_tokens": "EXPLICIT_READ_ONLY_NO_PERSISTED_CHECKOUT_CREDENTIALS",
           "new_writer_service_or_permit_issuer": false,
           "other_provider_contracts": "SEPARATE_SCOPE_NOT_GITHUB_REPOSITORY_FENCING",
+          "packaged_and_extensionless_source_types_inventoried": true,
+          "packaged_legacy_publishers": "57_TERMINAL_STUBS_ORIGINAL_BYTES_HISTORICAL_INCOMING_ONLY",
+          "packaged_quarantine_record": "state/work_units/QIKVRT_PR428_PACKAGED_WRITER_QUARANTINE_20261001_V1.json",
           "privileged_admin_or_direct_control_plane_bypasses_revoked": false,
           "production_acceptance_requires": [
             "CURRENT_TRUSTED_MAIN_EXACT_HEAD_TREE_WRITER_INVENTORY_AND_NO_BYPASS_GATE",
