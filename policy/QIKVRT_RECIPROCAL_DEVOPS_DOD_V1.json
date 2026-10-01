@@ -1,0 +1,54 @@
+{
+  "scope_id": "QIKVRT-RECIPROCAL-LOSSLESS-DEVOPS-CLOSURE-V1",
+  "declared_by": "Ingolf Lohmann, Product Owner",
+  "declared_at": "2026-10-01T15:09:50+02:00",
+  "status": "NORMATIVE_ACCEPTANCE_TARGET",
+  "repositories": {
+    "Goldkelch/qik-vrt": "AUTHORITY",
+    "ingolf-lohmann/qik-vrt": "MIRROR"
+  },
+  "public_protocol": {
+    "document": "draft-lohmann-qikvrt-effect-ack-03",
+    "wire_version": 1,
+    "url": "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03"
+  },
+  "decision_core": "tools/qikvrt_expected_head_promotion.py evaluate-closure",
+  "reuse": {
+    "promotion_core": "tools/qikvrt_expected_head_promotion.py",
+    "effect_gate": "src/qikvrt_effect_ack.py",
+    "queue_executor_candidate": "ingolf-lohmann/qik-vrt#396",
+    "queue_executor_candidate_head": "1819da9bf08478a7052312d24819a8c25c1533a3"
+  },
+  "acceptance_predicates": [
+    "COMPLETE_STABLE_FRESH_INVENTORY_BOTH_NODES",
+    "ALL_BOUND_PRS_NATIVE_MERGED_AND_HEADS_REACHABLE",
+    "ALL_BOUND_BRANCH_TIPS_REACHABLE_FROM_ROLE_LOCAL_MAIN",
+    "NO_OPEN_PRS_OR_UNINTEGRATED_BRANCH_TIPS_AT_FINAL_RECENSUS",
+    "ALL_APPLICABLE_EXACT_HEAD_QUALITY_GATES_AND_NATIVE_INDEPENDENT_REVIEW",
+    "AUTHORITY_TO_MIRROR_AND_MIRROR_TO_AUTHORITY_EXECUTION_READBACK",
+    "PUBLIC_FROZEN_BYTE_VERIFIED_REPOSITORY_IETF_ZENODO_EVIDENCE"
+  ],
+  "quality_profile": "All applicable current repository gates, provenance/rights/security review, native independent Code Owner approval, defect dispositions, deterministic lossless history checks and fresh exact-head readback. A versioned profile must enumerate them; no unmeasured universal quality maximum is asserted.",
+  "inventory_rule": "Bind every initial PR/head/ref and the complete final census. Pagination or ref-list truncation, concurrent inventory drift, or omitted refs prevents acceptance. Reobserve the whole collection after every selected effect.",
+  "lossless_rule": "Every bound original head/tip and its Git object closure must remain reachable from the resulting role-local Main. A squash, equal tree, branch deletion, closed-unmerged PR or self-reported retained flag is insufficient.",
+  "reciprocal_rule": "Bind source and target repository, authenticated actual executor, exact source head, target before/after, accepted EFFECT_ACK chain and post-effect readback for each direction. One-way execution is insufficient.",
+  "proof_rule": "Freeze the closed software heads before publishing an evidence bundle. Receipts bind those immutable inputs and subsequent observations; never claim an in-file hash of its own containing commit. Fresh gates do not transfer across later head changes.",
+  "publication_rule": "Repository, current public IETF specification and Zenodo artifacts require public byte-exact readback. Any new publication uses existing candidate-bound single-use proof-bearing publication contracts; the target declaration is not proof of its achievement.",
+  "controller_rule": "One smallest admitted effect per step, fresh observation afterwards, idempotent replay or forward repair after ambiguous effects. No force, self-approval, permission widening or gate bypass.",
+  "completion_claims": {
+    "TARGET_REACHED": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  },
+  "schema": "qikvrt_reciprocal_devops_dod_v1",
+  "version": 1,
+  "base_closure_policy": "policy/GLOBAL_SYSTEM_CLOSURE_V1.json",
+  "human_contract": "docs/architecture/GLOBAL_SYSTEM_CLOSURE_V1.md",
+  "_license": {
+    "classification": "machine_readable_policy",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  }
+}
