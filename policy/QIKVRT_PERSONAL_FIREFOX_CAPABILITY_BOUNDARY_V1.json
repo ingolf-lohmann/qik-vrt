@@ -1,0 +1,56 @@
+{
+  "schema": "qikvrt_personal_firefox_capability_boundary_v1",
+  "version": "1.0",
+  "source_subject": {
+    "standard_repository": "Goldkelch/qik-vrt",
+    "personal_repository": "ingolf-lohmann/qik-vrt",
+    "predecessor_evidence_transfer": false
+  },
+  "transitions": {
+    "standard_to_personal": "ALLOW_WITH_FRESH_BINDING",
+    "personal_to_standard": "DENY_BY_DEFAULT"
+  },
+  "invariants": {
+    "personal_capability_leak_to_standard": "DENY",
+    "personal_state_leak_to_standard": "DENY",
+    "personal_credential_leak_to_repository": "DENY",
+    "personal_evidence_transfer_to_standard": "DENY",
+    "chatgpt_runtime_integration": "AUTHENTICATED_EXTERNAL_SERVICE",
+    "chatgpt_proprietary_runtime_redistribution": "DENY"
+  },
+  "standard_firefox_package": {
+    "root": "browser/firefox/qikvrt-terminal",
+    "files": [
+      "manifest.json",
+      "background.js",
+      "content.js",
+      "terminal.css",
+      "options.html",
+      "options.js",
+      "README.md"
+    ],
+    "forbidden_personal_markers": [
+      "ingolf-lohmann/qik-vrt",
+      "QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1",
+      "QIKVRT_PERSONAL_FIREFOX",
+      "OPENAI_API_KEY",
+      "CHATGPT_ACCESS_TOKEN"
+    ]
+  },
+  "personal_release_acceptance": {
+    "requires": [
+      "exact_subject_binding",
+      "personal_capability_manifest",
+      "authenticated_runtime_boundary",
+      "credential_non_persistence",
+      "build_test_observe_readback_accept"
+    ],
+    "current_candidate": {
+      "boundary_contract_materialized": true,
+      "personal_capability_manifest_materialized": false,
+      "authenticated_runtime_readback": false,
+      "personal_release_effect_ack_done": false,
+      "state": "HOLD"
+    }
+  }
+}

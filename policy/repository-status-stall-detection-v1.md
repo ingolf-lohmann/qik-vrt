@@ -48,6 +48,26 @@ A stall report must state:
 
 Routine bot noise, repeated comments, identical workflow reruns, unchanged `action_required`, unchanged failures, unchanged branch heads and metadata-only updates do not constitute progress.
 
+## Reflexive handling of a delivery failure
+
+While an authorized delivery obligation remains open, a broken transition that
+prevents its required evidence or effect from being delivered is an error and
+must be fed back into the existing diagnosis/repair/readback path. The error
+record binds the expected output, exact subject, first evidenced failing edge,
+available receipts, owner authorization, retry condition and next work unit.
+Producing another status message or repeating the same failed observer does
+not discharge the delivery obligation.
+
+An observer that cannot read its subject records `OBSERVATION_FAILED` with
+`HOLD` and unknown live progress. It does not infer a whole-pipeline stall from
+inaccessible data. Likewise, no active runner alone does not prove a delivery
+failure: compare the open obligation with the preceding bound observation.
+Historical persistence remains valid historical evidence, without being
+transferred into fresh-head acceptance.
+
+This operational clarification was authorized by Product Owner Ingolf Lohmann
+on 2026-09-30. Verification of the repair and delivery remains mandatory.
+
 ## Progress rule
 
 A report may classify `Arbeit begonnen` or `Teilfortschritt` only when new evidence changes the technical, scientific, verification or synchronization state. The report must identify the exact object, SHA, run, receipt or artifact that changed.

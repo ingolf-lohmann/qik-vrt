@@ -107,26 +107,61 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
             ):
                 MODULE._canonical_source_remote()
 
-    def test_remote_main_revision_queries_resolved_upstream(self) -> None:
+    def test_remote_main_revision_queries_policy_bound_local_origin(self) -> None:
         expected = "17bf684b08363bdb8ae95775ea5a4ae22ce4f0a9"
 
         def fake_run(command, timeout=900):
             del timeout
             command = tuple(command)
-            if command == ("git", "remote"):
-                return self.command_result(command, "origin\nupstream\n")
-            if command == ("git", "remote", "get-url", "upstream"):
+            if command == ("git", "remote", "get-url", "--all", "origin"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             if command == (
-                "git", "ls-remote", "--heads", "upstream", "refs/heads/main"
+                "git", "ls-remote", "--heads", "origin", "refs/heads/main"
             ):
                 return self.command_result(command, f"{expected}\trefs/heads/main\n")
             raise AssertionError(command)
 
         with mock.patch.object(MODULE.self_heal, "run", side_effect=fake_run):
             self.assertEqual(MODULE._remote_main_revision(), expected)
+
+    def test_execution_origin_accepts_only_policy_bound_repository_urls(self) -> None:
+        for repository in ("Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt"):
+            for suffix in ("", ".git"):
+                with self.subTest(repository=repository, suffix=suffix):
+                    result = self.command_result((), f"https://github.com/{repository}{suffix}\n")
+                    with mock.patch.object(MODULE.self_heal, "run", return_value=result):
+                        self.assertEqual(MODULE._execution_source_remote(), "origin")
+
+    def test_unknown_missing_or_ambiguous_execution_origin_fails_closed(self) -> None:
+        for urls, returncode in (
+            ("https://github.com/example/qik-vrt.git\n", 0),
+            ("https://github.com/ingolf-lohmann/qik-vrt.git.evil\n", 0),
+            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/Goldkelch/qik-vrt.git\n", 0),
+            ("", 1),
+        ):
+            with self.subTest(urls=urls, returncode=returncode):
+                result = self.command_result((), urls, returncode)
+                with mock.patch.object(MODULE.self_heal, "run", return_value=result):
+                    with self.assertRaisesRegex(MODULE.PreEffectBlock, "repository-local origin URL mismatch"):
+                        MODULE._execution_source_remote()
+
+    def test_execution_origin_rejects_missing_or_malformed_role_policy(self) -> None:
+        for payload in ("[]", "{}", "invalid"):
+            with self.subTest(payload=payload):
+                with mock.patch.object(pathlib.Path, "read_text", return_value=payload):
+                    with self.assertRaises(MODULE.PreEffectBlock):
+                        MODULE._execution_source_remote()
+
+    def test_local_main_drift_still_holds(self) -> None:
+        with mock.patch.object(MODULE.self_heal, "observed_base_revision", return_value="a" * 40), \
+             mock.patch.object(MODULE, "_remote_main_revision", return_value="b" * 40), \
+             mock.patch.object(MODULE, "load_policy"):
+            observed = MODULE.observe_preconditions()
+        self.assertFalse(observed["CURRENT_MAIN_REOBSERVED"])
+        self.assertFalse(observed["NO_COMPETING_WRITER"])
+        self.assertEqual(MODULE.classify(observed, None), "HOLD")
 
 
 if __name__ == "__main__":
