@@ -6,6 +6,7 @@ import ast
 import json
 import pathlib
 import re
+import textwrap
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -58,7 +59,7 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
         self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
         programs = re.findall(r"<<'PY'[^\\n]*\\n(.*?)\\n\\s*PY(?:\\n|$)", workflow, re.DOTALL)
-        trees = [ast.parse(program) for program in programs]
+        trees = [ast.parse(textwrap.dedent(program)) for program in programs]
 
         def call_chain(node, names):
             current = node
