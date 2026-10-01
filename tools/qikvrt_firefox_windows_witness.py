@@ -257,7 +257,7 @@ def witness(output, headless=False):
             permission_script = (
                 'const e=WebExtensionPolicy.getByID(arguments[0]).extension;'
                 'return {active:e.activePermissions,loopback_allowed:'
-                'e.allowedOrigins.matches("http://127.0.0.1:8771/.well-known/effect-ack")};')
+                'e.activePermissions.origins.includes("http://127.0.0.1:8771/*")};')
             receipt['permissions_before'] = driver.script(permission_script, [addon])
             receipt['test_host_permission_granted'] = False
             if not receipt['permissions_before']['loopback_allowed']:
