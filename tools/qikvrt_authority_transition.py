@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
-"""Executable single-sink Authority recovery; no GitHub or provider effects.
+"""Executable Authority recovery and serialized, scoped provider admission.
 
 The private, independently surviving SQLite control plane is the fencing sink.
 All admitted writes must use commit_write; bypass-capable writers cannot be
@@ -274,6 +274,12 @@ class AuthorityControlPlane:
             if not observation["issued_ns"] <= now <= observation["expires_ns"]:
                 raise TransitionError("stale observation or clock rollback")
             state = self.state(db)
+            # A provider timeout/process death can leave a request in flight.
+            # Never rotate the fence while that effect is unresolved. The
+            # provider adapter may reconcile it by GET only, including restart.
+            if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='provider_effects'").fetchone():
+                if db.execute("SELECT 1 FROM provider_effects WHERE status IN ('PREPARED','PENDING') LIMIT 1").fetchone():
+                    raise TransitionError("unresolved provider effect blocks Authority takeover")
             granted_epoch = db.execute("SELECT recovery_epoch FROM grants WHERE token_hash=?",
                                       (token_hash(token),)).fetchone()[0]
             if granted_epoch != state["authority_epoch"]:
@@ -316,8 +322,24 @@ class AuthorityControlPlane:
     @staticmethod
     def check_permit(state: dict, grant: dict, permit: dict) -> None:
         recovery.exact(permit, PERMIT_KEYS, "writer permit")
-        if permit != AuthorityControlPlane.permit(state) or grant != state["binding"]:
+        if (type(permit["authority_epoch"]) is not int
+                or permit != AuthorityControlPlane.permit(state) or grant != state["binding"]):
             raise TransitionError("old writer rejected: epoch/fence/target mismatch")
+
+    def provider_admission(self, db, token: str, permit: dict, repository: str) -> dict:
+        """Fresh check while the caller holds the same lock as takeover.
+
+        Only the scoped API shim owns the provider bearer credential. A client
+        with its own bypass credential is explicitly outside this boundary.
+        """
+        grant, role = self.grant(db, token)
+        state = self.state(db)
+        self.check_permit(state, grant, permit)
+        if state["phase"] != "ACTIVE" or role != "AUTHORITY":
+            raise TransitionError("provider writer fenced until fresh activation")
+        if repository != grant["repository"]:
+            raise TransitionError("provider repository outside active node capability")
+        return state
 
     def activate(self, node: Path, manifest_sha256: str, token: str, permit: dict) -> dict:
         binding, scheduler = verify_restored(node, manifest_sha256)

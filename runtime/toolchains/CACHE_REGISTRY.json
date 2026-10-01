@@ -305,7 +305,27 @@
             "bounded SQLite busy timeout and fail-closed errors"
           ],
           "failure_recovery": "BLOCK missing/invalid/busy control plane; preserve pending fenced successor; reopen and freshly activate; never restore stale epochs",
-          "mutable_database_and_credentials_are_cache_payloads": false
+          "mutable_database_and_credentials_are_cache_payloads": false,
+          "provider_extension": {
+            "implementation": "src/qikvrt_github_api_shim.py",
+            "existing_transport": "scripts/qikvrt_api_client.py NoRedirectHandler/MAX_RESPONSE_BYTES",
+            "modules": [
+              "urllib.request",
+              "urllib.error",
+              "datetime",
+              "http.server"
+            ],
+            "new_tools_or_packages_required": false,
+            "verification": "python3 -B -m unittest tests.test_qikvrt_github_authority_provider -v",
+            "required_behavior": [
+              "durable intent before outbound request",
+              "takeover lock spans permit check and native provider CAS",
+              "ambiguous dispatch resumes with GET only",
+              "real provider ref/commit/tree and durable receipt readback",
+              "pinned mirror origin, no redirects and redacted bounded responses"
+            ],
+            "failure_recovery": "Preserve PREPARED/PENDING; reconcile read-only; block takeover until uncertainty resolved; never cache control-plane data or credentials"
+          }
         }
       }
     },

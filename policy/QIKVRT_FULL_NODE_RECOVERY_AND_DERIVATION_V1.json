@@ -152,7 +152,40 @@
         "RESTORED_BYTES_HELD_IMMUTABLE_UNDER_TRUSTED_LOCAL_OWNER"
       ],
       "no_live_promotion_or_effect_ack_done_from_test_success": true,
-      "owner_grant_bound_to_current_epoch_and_single_use": true
+      "owner_grant_bound_to_current_epoch_and_single_use": true,
+      "github_provider_adapter": {
+        "implementation": "src/qikvrt_github_api_shim.py",
+        "acceptance_test": "tests/test_qikvrt_github_authority_provider.py",
+        "local_route": "POST /repos/{owner}/{repo}/qikvrt/authority/effects",
+        "provider_repository_allowlist": [
+          "ingolf-lohmann/qik-vrt"
+        ],
+        "allowed_mutations": [
+          "create_ref"
+        ],
+        "ref_namespace": "refs/heads/work/qikvrt-recovery/{control_plane_epoch}/{authority_epoch}/{node_id}/{fence}/{sha256_effect_id}",
+        "target": "ACTIVE_VERIFIED_RESTORED_HEAD_AND_TREE_ONLY",
+        "provider_cas": "NATIVE_CREATE_ONLY_ABSENT_REF_TO_COMMIT",
+        "all_other_repository_mutations": "DENY_UNTIL_VERSIONED_NATIVE_CAS_IDEMPOTENCY_READBACK_CONTRACT",
+        "admission": "FRESH_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_FENCE_TARGET_ACTIVE_ROLE_UNDER_TAKEOVER_LOCK",
+        "journal": "EXISTING_PRIVATE_CONTROL_PLANE_ADDITIVE_PROVIDER_EFFECTS_TABLE",
+        "journal_states": [
+          "PREPARED",
+          "PENDING",
+          "VERIFIED",
+          "REJECTED"
+        ],
+        "pending_blocks_takeover_and_new_mutations": true,
+        "ambiguous_dispatch_recovery": "GET_ONLY_NO_BLIND_RETRY",
+        "receipt": "ACTUAL_PROVIDER_REF_COMMIT_TREE_AND_SEPARATE_DURABLE_LEDGER_READBACK",
+        "credentials": "EXISTING_GITHUB_TOKEN_PRIVATE_ENVIRONMENT_WITH_OWNER_BOUND_MIRROR_CONTENTS_SCOPE_AND_FUTURE_QIKVRT_GITHUB_TOKEN_EXPIRES_UTC",
+        "bypass_credentials_revoked": false,
+        "repository_wide_provider_fencing_verified": false,
+        "authority_root_provider_capability_verified": false,
+        "live_provider_authority_effect_verified": false,
+        "effect_ack_done": false,
+        "test_success_is_production_acceptance": false
+      }
     }
   },
   "derivation": {

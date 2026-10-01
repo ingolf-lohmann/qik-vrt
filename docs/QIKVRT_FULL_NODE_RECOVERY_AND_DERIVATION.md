@@ -242,3 +242,87 @@ Remote-GitHub-Fencing, Runtime-/Provider-Unseal, globale Replikation/Vollnode-
 Zulassung und Root-Projekterzeugung bleiben separat zu integrieren und frisch
 zu beweisen. Alle Resultate führen `effect_ack_done=false`; Test-/CI-Erfolg
 und lokaler Sink-Erfolg ergeben kein globales `EFFECT_ACK_DONE`.
+
+## GitHub-Provider-Stufe: vorhandener API-Shim als Capability-Broker
+
+Der Successor erweitert `src/qikvrt_github_api_shim.py` und dieselbe private
+`AuthorityControlPlane`. Es gibt keinen zweiten Executor, Credential-Cache oder
+neuen Schreibdienst. Der bestehende Shim prüft zuerst seinen zeitlich begrenzten
+Bearer, Repository-Scope, Rate-Limit und strikten JSON-Vertrag. Der neue lokale
+Pfad ist `POST /repos/ingolf-lohmann/qik-vrt/qikvrt/authority/effects`.
+Dieser Pfad ist eine Shim-Erweiterung, kein nativer GitHub-Endpunkt.
+
+V1 lässt ausschließlich `{"operation":"create_ref","effect_id":"<stabiler Schlüssel>"}`
+zu. Ein zusätzlicher SHA, Branchname, API-Pfad oder unbekanntes Operationsfeld
+wird zurückgewiesen. Die Branch-Ref wird deterministisch erzeugt:
+
+`refs/heads/work/qikvrt-recovery/<control_plane_epoch>/<authority_epoch>/<node_id>/<fence>/<SHA256(effect_id)>`
+
+Ihr Commit ist ausschließlich der akzeptierte restaurierte HEAD. Sein TREE
+wird gegen den tatsächlichen GitHub-Git-Data-Readback geprüft. Der Provider-CAS
+ist die native create-only Transition **Ref fehlt → Ref entsteht**. Weder
+Force-Push noch Ref-Update, Löschung, PR-Erzeugung/-Merge, Workflow-Dispatch oder
+Ruleset-Änderung ist über diesen Pfad erlaubt. Sie benötigen eigene belastbare
+CAS-/Idempotenz-/Readback-Verträge; ein GET vor einem unbedingten PATCH wäre
+kein atomarer expected-old-HEAD-CAS.
+
+Die private Writer-Capability authentifiziert den konkreten Node gegen die
+Control Plane. Vor jeder zugelassenen Mutation werden Capability, aktuelle
+Control-Plane-Epoch, Authority-Epoch, Node, vollständige Target-Bindung, Fence
+und aktive Rolle frisch geprüft. Die Prüfung und der Provider-Schreibaufruf
+halten dieselbe SQLite-Transaktionssperre wie `takeover`. Auch der private
+HTTP-Transport verlangt eine aktuelle gesperrte Admission und exakt die
+persistierte Intent-Bindung; er bietet keinen ungebundenen POST-Pfad.
+
+Die additive Tabelle `provider_effects` im vorhandenen Sink enthält keine
+Capabilities, sondern Intent und begrenzten Receipt:
+
+| Zustand | Bedeutung und Recovery |
+| --- | --- |
+| `PREPARED` | Dauerhafter Intent vor jedem Provider-Aufruf; noch kein POST zugelassen. Neustart darf nur denselben Preflight wieder aufnehmen. |
+| `PENDING` | Dauerhafte einmalige Dispatch-Zulassung, vor dem POST committet. Neustart/Replays führen ausschließlich GET-Readbacks aus. |
+| `VERIFIED` | Tatsächlicher Ref-Readback, Commit-/TREE-Readback und separat rückgelesener dauerhafter Receipt. Replay prüft den Provider erneut. |
+| `REJECTED` | Vorbestehende Ref, Target-Drift oder definitive native CAS-Ablehnung. Derselbe Schlüssel bleibt konsumiert; eine passende konkurrierende Ref wird nicht als eigener Erfolg übernommen. |
+
+`PREPARED`/`PENDING` sperren neue Mutationen und Authority-Takeover. Insbesondere
+ist ein Timeout kein Beweis, dass kein Schreibauftrag mehr unterwegs ist.
+Bei `PENDING` plus fehlendem Readback wird weder erneut geschrieben noch der
+Fence freigegeben. Der kleinste nächste Schritt ist GET-Reconciliation nach
+nachweislichem Abschluss des ursprünglichen Provider-Auftrags. Wenn dieser
+Nachweis nicht gelingt, ist unabhängige Owner-/Provider-Recovery erforderlich;
+eine automatische Löschung des Journals wäre ein Exactly-once-Bypass.
+Ein alter Writer wird nach Takeover auch mit kopiertem aktuellem öffentlichem
+Permit zurückgewiesen. Rejoin gibt ihm keine Provider-Schreibrechte.
+
+Der Broker verwendet den vorhandenen `GITHUB_TOKEN`-Umgebungspfad und den
+No-Redirect-/Response-Limit-Vertrag aus `scripts/qikvrt_api_client.py`.
+`QIKVRT_GITHUB_TOKEN_EXPIRES_UTC` muss eine zukünftige UTC-Zeit sein; Provider-
+und Shim-Bearer müssen verschieden sein. Die UTC-Angabe ist eine vertrauenswürdige
+Broker-Konfiguration, keine unabhängig attestierte Token-Metadatenprüfung.
+Provider-Fehlertexte und Credentials werden nicht ausgegeben/persistiert.
+`QIKVRT_AUTHORITY_CONTROL_PLANE` bezeichnet die vorhandene absolute private
+SQLite-Datei. Produktionsbetrieb benötigt eine owner-provisionierte, für den
+Mirror und Contents-Schreibrecht begrenzte kurzlebige GitHub-Capability, HTTPS
+und den bisherigen nicht umgehbaren, unabhängig erhaltenen Control-Plane-Sink.
+
+**Nachweisgrenze:** Der Adapter implementiert Broker-Fencing für diese eine
+Operation. GitHub interpretiert selbst keine QIKVRT-Epochs. Historische Workflow-
+Tokens, direkte Git-Pushes, unabhängig ausgegebene Credentials, privilegierte
+DB-Owner und nicht durch den Broker geführte Writer werden dadurch nicht
+widerrufen. Eine produktive, repositoryweite Fencing-Behauptung benötigt
+zusätzlich die nachgewiesene Umleitung aller relevanten Schreibpfade und
+providerseitigen Entzug ihrer Bypass-Capabilities. Diese Stufe installiert oder
+behauptet das nicht. `Goldkelch/qik-vrt` wird unabhängig von Lineage und
+Environment-Variablen vor jedem Providerzugriff abgewiesen; dafür besteht hier
+keine separat nachgewiesene Capability.
+
+Die Tests verwenden eine separate dauerhafte Bare-Git-Provider-Fixture mit
+realem `git update-ref <ref> <sha> <zero-oid>`-CAS, tatsächlichen Ref-/TREE-Reads
+und dem bestehenden TCP/IP-Shim. Zusätzlich prüfen sie den produktiven
+HTTPS-Transport mit gebundenen Response-Fixtures. Das ist Test-Evidenz,
+kein produktiver GitHub-/Authority-Readback. Jede Ausgabe behält
+`effect_ack_done=false` und `provider_authority_fencing_verified=false`.
+
+Primärquellen für den Providervertrag (abgerufen 2026-10-01):
+[GitHub REST Git references](https://docs.github.com/en/rest/git/refs?apiVersion=2022-11-28)
+und [GitHub REST Git commits](https://docs.github.com/en/rest/git/commits?apiVersion=2022-11-28).
