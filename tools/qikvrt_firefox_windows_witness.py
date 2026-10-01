@@ -231,7 +231,16 @@ def witness(output, headless=False):
         from http.server import ThreadingHTTPServer
         terminal.STATE = terminal.State()
         requests = []
+        http_paths = []
         class ObservedHandler(terminal.Handler):
+            def do_GET(self):
+                http_paths.append({"method": "GET", "path": self.path})
+                super().do_GET()
+
+            def do_POST(self):
+                http_paths.append({"method": "POST", "path": self.path})
+                super().do_POST()
+
             def _prepare(self, body):
                 requests.append(body)
                 super()._prepare(body)
@@ -328,6 +337,13 @@ def witness(output, headless=False):
                     driver.command('/screenshot', method='GET')))
             except Exception as diagnostic_error:
                 receipt['diagnostics_error'] = type(diagnostic_error).__name__
+            try:
+                driver.command('/moz/context', {'context': 'chrome'})
+                receipt['firefox_security_diagnostics'] = driver.script(
+                    'return Services.console.getMessageArray().map(m=>m.message)'
+                    '.filter(m=>/loopback|localhost|127\\.0\\.0\\.1|network access|Content Security|CSP|mixed content/i.test(m)).slice(-20);')
+            except Exception as diagnostic_error:
+                receipt['security_diagnostics_error'] = type(diagnostic_error).__name__
         return 1
     finally:
         if driver:
@@ -336,6 +352,7 @@ def witness(output, headless=False):
             except Exception as error:
                 receipt['cleanup_error'] = type(error).__name__
         if server:
+            receipt['observed_http_paths'] = http_paths
             server.shutdown()
             server.server_close()
         (output / 'RECEIPT.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
