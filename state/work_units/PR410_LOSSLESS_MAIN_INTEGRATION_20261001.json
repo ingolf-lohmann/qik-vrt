@@ -1,0 +1,139 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "repository_internal_integration_work_unit_json"
+  },
+  "schema": "qikvrt_provenance_bound_work_unit_v1",
+  "work_unit_id": "PR410_LOSSLESS_MAIN_INTEGRATION_20261001",
+  "created_at": "2026-10-01T04:44:33.166393+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 410,
+  "source_ref": "repair/scaling-lossless-worker-v1",
+  "source_commit": "106d0421b9257ff61e7f597dee905df91ffb6ae1",
+  "source_tree": "8ed85f1b6f43bb243040e80fc55e908d02bae86b",
+  "main_commit": "9a0853b9cfc1017ade0bbb627a02274d66c704bd",
+  "main_tree": "22dc82dba1a8d037b4eaaa55e00197e267ed60bb",
+  "merge_base": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner"
+  },
+  "human_contributions": [
+    "Authorize lossless current-Main integration into PR #410 without force-push.",
+    "Require isolation of the remaining Mesh/system-verification scope and fresh tests and gates.",
+    "Require Authority HTTP 404 to remain a separate unresolved external blocker."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "88f0580cdc9d",
+    "identity_limit": "Platform authentication is not independent human review or proof of a natural person's identity."
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserve exact PR head, current Main, merge-base and Authority read failure.",
+    "Merge both histories with ordered parents; regenerate only conflicting integrity projections.",
+    "Preserve Main's isolated watchdog liveness fixtures and all remaining lossless worker and Mesh/system-verification bytes.",
+    "Retain the original watchdog work unit as historical provenance, without transferring its tests or acceptance.",
+    "Freeze the merged tree, run fresh verification and reobserve the non-force branch update."
+  ],
+  "joint_components": [
+    {
+      "human": "Integration goal, constraints and authorization",
+      "artificial_cognitive": "Merge resolution, scope isolation and bounded technical verification"
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": {
+    "preintegration_compare": {
+      "ahead": 9,
+      "behind": 16,
+      "mergeable": false
+    },
+    "generated_conflicts": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "main_activation_record": "state/work_units/ACTIVATE_EXISTING_OBSERVATION_HOLD_20261001.json"
+  },
+  "outputs": {
+    "head_tree_binding": "Containing commit and its tree, freshly read back after the non-force ref update",
+    "functional_scope": [
+      "Lossless GitHub observation transport and role-local counterpart worker",
+      "Preserved native Mirror requested-review execution",
+      "Four-process, two-pair loopback TCP Mesh",
+      "Repository multitasking, restart and original-ledger corpus qualification",
+      "Transient Mesh/evidence artifact integrity classification and existing Makefile integration"
+    ],
+    "scope_projection": "The reduced diff against main_commit is authoritative; no unrelated Main paths are reverted."
+  },
+  "watchdog_scope_resolution": {
+    "implementation_already_in_main_via_pr": 420,
+    "resolution": "NO_REMAINING_WATCHDOG_IMPLEMENTATION_OR_TEST_DIFF",
+    "main_identical_paths": [
+      ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "tools/qikvrt_reflexive_repository_watchdog.py",
+      "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+      "policy/repository-status-stall-detection-v1.md"
+    ],
+    "test_resolution": "Preserve Main's per-test temporary liveness fixtures rather than reverting to tracked live-node state.",
+    "historical_work_unit": {
+      "path": "state/work_units/REFLEXIVE_PIPELINE_DELIVERY_ERROR_20260930.json",
+      "blob": "cd301ccf1a2f74609b7c769e567ee6192d6a6338",
+      "retention": "BYTE_IDENTICAL_HISTORICAL_PROVENANCE",
+      "current_interpretation": "Its repair_paths and verification fields describe its original subject; the watchdog implementation is already incorporated in Main. This record is not a second active implementation or current-head acceptance.",
+      "predecessor_evidence_transfer": false
+    }
+  },
+  "git_history": {
+    "strategy": "MERGE_CURRENT_MAIN_INTO_EXISTING_PR_BRANCH",
+    "ordered_parents": [
+      "106d0421b9257ff61e7f597dee905df91ffb6ae1",
+      "9a0853b9cfc1017ade0bbb627a02274d66c704bd"
+    ],
+    "force_push": false,
+    "history_rewrite": false
+  },
+  "verification": {
+    "subject": "The containing merged HEAD/TREE must be freshly verified; parent results are historical only.",
+    "required": [
+      "Fresh repository-integrity regeneration and verification",
+      "Fresh full Makefile test target and targeted worker, Mesh, system, watchdog, Seed and integrity tests",
+      "Fresh exact-head native CI, repository evidence, Mesh/system and review-gate observations",
+      "Fresh non-force remote HEAD/TREE and reduced-diff readback"
+    ],
+    "fresh_results": "SEPARATE_EXACT_HEAD_RECEIPTS_REQUIRED",
+    "predecessor_evidence_transfer": false,
+    "native_exact_head_code_owner_approval": "NOT_INFERRED"
+  },
+  "human_decision": {
+    "integration_commit_and_non_force_branch_update": "AUTHORIZED",
+    "protected_merge": "OUTSIDE_THIS_INTEGRATION_TASK",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "ruleset_change": false,
+    "credential_provisioning": false
+  },
+  "retained_blockers": {
+    "authority_current_readback": "HTTP 404 from GET /repos/Goldkelch/qik-vrt/git/ref/heads/main; ultimate cause not established",
+    "authority_scope": "Live counterpart reference and distributed/corpus acceptance remain unresolved. Local or loopback results cannot repair or replace this readback.",
+    "native_review_and_required_gates": "Require fresh observation on the containing successor head."
+  },
+  "predecessor_evidence_transfer": false,
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}

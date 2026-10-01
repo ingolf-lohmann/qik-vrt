@@ -72,6 +72,12 @@ def jobs(*run_ids: int) -> dict[str, object]:
 
 
 class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.fixture_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.fixture_directory.cleanup)
+        self.default_liveness_dir = pathlib.Path(self.fixture_directory.name) / "liveness"
+        self.write_liveness(self.default_liveness_dir)
+
     def analyze(
         self,
         runs: list[dict[str, object]],
@@ -93,7 +99,9 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
             baseline=baseline,
             root=ROOT,
             observation_scope=scope,
-            node_liveness_dir=liveness_dir,
+            node_liveness_dir=(
+                liveness_dir if liveness_dir is not None else self.default_liveness_dir
+            ),
             authority_head=authority_head,
         )
 
