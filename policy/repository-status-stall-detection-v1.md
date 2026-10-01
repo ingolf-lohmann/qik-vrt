@@ -272,3 +272,42 @@ service measurement is required; do not average node MTBFs or percentiles.
 
 This change defines 7 branches and 37 indicators. It is a specification candidate;
 it does not install collectors, validate runtime performance or establish adoption.
+
+### Bounded executable successor: telemetry freshness
+
+The existing read-only watchdog now exposes `telemetry-freshness`. It reads
+`evidence/node_health/LATEST.json` from the explicitly supplied commit/tree and
+requires its bytes to match `evidence/node_health/<run_id>.json` in that same
+subject. `--run-id` selects one historical run receipt directly. Working-tree
+receipts are never substituted. No other KPI or node adoption is measured.
+
+```sh
+python3 -B tools/qikvrt_reflexive_repository_watchdog.py telemetry-freshness \
+  --expect-head "$(git rev-parse HEAD)" \
+  --expect-tree "$(git rev-parse HEAD^{tree})" \
+  --repository ingolf-lohmann/qik-vrt \
+  --now "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+```
+
+`--now` is the explicit readback clock input; its independent accuracy is not
+certified by this collector. Repeating the same subject, evaluator bytes and
+clock produces identical canonical JSON. Capture a new clock for a new observation.
+The record binds source and policy bytes, evaluator bytes and committed identity
+(or explicitly labels an uncommitted evaluator), node identity and measurement time.
+
+Age is readback time minus `heartbeat_utc`. FRESH requires
+`heartbeat_utc <= readback_time < expires_utc`; equality at expiry is STALE.
+Expiry describes the source's existing lease, not a newly invented SLO.
+Missing evidence/timestamps remain UNKNOWN; malformed, contradictory or future
+clocks produce INVALID measurement status and UNKNOWN freshness. Raw receipt
+fields and any independently computable age remain visible; neither file mtime
+nor a zero value repairs missing timestamps. `value=null` on unknown/invalid data.
+`target=null`, `UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT` and SLO verdict UNKNOWN
+remain unchanged. General instrumentation, rollout and the other 36 KPIs remain
+unverified. Regression acceptance is wired into the existing Makefile and watchdog
+test paths; the collector itself performs no dispatch, write, push or network access.
+The existing `PIPELINE_KPI_TREE_V1.json.record_contract` is checked on every
+regression observation. FRESH, STALE, UNKNOWN and INVALID outputs must survive
+JSON serialization/deserialization with identical canonical bytes. Invalid UTF-8,
+duplicate keys, non-finite numbers, unencodable strings and excessive nesting
+remain unmeasured with the exact input blob identity retained.

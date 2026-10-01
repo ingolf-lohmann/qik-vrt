@@ -35,6 +35,7 @@ on:
       - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
       - "qikvrt/runtime/onboarding/NODE_HEALTH.json"
       - "tests/test_qikvrt_reflexive_repository_watchdog.py"
+      - "tests/test_qikvrt_telemetry_freshness.py"
       - "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
       - "state/work_units/CONTINUOUS_GATEWATCH_NODE_LIVENESS_V1.json"
   pull_request:
@@ -48,6 +49,7 @@ on:
       - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
       - "qikvrt/runtime/onboarding/NODE_HEALTH.json"
       - "tests/test_qikvrt_reflexive_repository_watchdog.py"
+      - "tests/test_qikvrt_telemetry_freshness.py"
       - "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
       - "state/work_units/REFLEXIVE_REPOSITORY_WATCHDOG_V1.json"
       - "state/work_units/CONTINUOUS_GATEWATCH_NODE_LIVENESS_V1.json"
@@ -228,6 +230,7 @@ jobs:
           trap restore_liveness EXIT
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
             tests.test_qikvrt_reflexive_repository_watchdog \
+            tests.test_qikvrt_telemetry_freshness \
             tests.test_qikvrt_workflow_executor_mesh_contract \
             tests.test_seed_workflows
 

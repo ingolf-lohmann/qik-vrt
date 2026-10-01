@@ -15,6 +15,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
+import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +25,9 @@ from typing import Any, Mapping, Sequence
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 CONTRACT_RELATIVE_PATH = "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
 ACTIVE_STATUSES = frozenset({"queued", "in_progress", "waiting", "requested", "pending"})
 WAITING_STATUSES = frozenset({"queued", "waiting", "requested", "pending"})
@@ -110,6 +116,205 @@ def _timestamp(value: Any, label: str) -> datetime:
 
 def _iso(value: datetime) -> str:
     return value.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def _telemetry_time(value: Any, label: str) -> datetime:
+    """Accept explicit RFC3339 clocks, never a naive/local-time substitute."""
+    if not isinstance(value, str) or not re.fullmatch(
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})",
+        value,
+    ):
+        raise ReflexiveWatchdogBlock(f"{label} must be an explicit RFC3339 timestamp")
+    if not value.endswith("Z"):
+        offset = value[-6:]
+        if offset == "-00:00" or int(offset[1:3]) > 23 or int(offset[4:]) > 59:
+            raise ReflexiveWatchdogBlock(f"{label} has an unknown or invalid UTC offset")
+    try:
+        return _timestamp(value, label)
+    except OverflowError as exc:
+        raise ReflexiveWatchdogBlock(f"{label} overflows the UTC clock") from exc
+
+
+def _telemetry_git(root: Path, *arguments: str) -> bytes:
+    environment = dict(os.environ)
+    environment.update(GIT_NO_LAZY_FETCH="1", GIT_NO_REPLACE_OBJECTS="1", GIT_TERMINAL_PROMPT="0")
+    try:
+        # Existing standalone watchdog commands do not require the Git reader.
+        from tools.qikvrt_subprocess import run_bounded
+
+        result = run_bounded(
+            ["git", "--no-optional-locks", "-C", str(root), *arguments],
+            env=environment, timeout=30, max_output_bytes=262144,
+        )
+    except (ImportError, OSError, RuntimeError, ValueError) as exc:
+        raise ReflexiveWatchdogBlock("cannot invoke local Git telemetry reader") from exc
+    if result.returncode or result.timed_out or result.output_limit_exceeded:
+        raise ReflexiveWatchdogBlock("cannot read bounded local Git telemetry subject")
+    return result.stdout.encode("utf-8", errors="surrogateescape")
+
+
+def _telemetry_blob(root: Path, head: str, path: str) -> tuple[bytes | None, dict[str, Any]]:
+    entry = _telemetry_git(root, "ls-tree", "-z", head, "--", path)
+    source: dict[str, Any] = {"path": path, "git_blob_sha1": None, "sha256": None, "bytes": None}
+    if not entry:
+        source["read_status"] = "MISSING"
+        return None, source
+    metadata, name = entry.rstrip(b"\0").split(b"\t", 1)
+    mode, kind, blob = metadata.decode("ascii").split()
+    if name.decode("utf-8") != path or kind != "blob" or mode not in {"100644", "100755"}:
+        source["read_status"] = "INVALID_FILE_TYPE"
+        return None, source
+    source["git_blob_sha1"] = blob
+    source["bytes"] = int(_telemetry_git(root, "cat-file", "-s", blob))
+    if source["bytes"] > 262144:
+        source["read_status"] = "OVERSIZED"
+        return None, source
+    raw = _telemetry_git(root, "cat-file", "blob", blob)
+    actual_blob = hashlib.sha1(f"blob {len(raw)}\0".encode("ascii") + raw).hexdigest()
+    if actual_blob != blob or len(raw) != source["bytes"]:
+        raise ReflexiveWatchdogBlock("Git telemetry blob identity mismatch")
+    source.update(read_status="READ", sha256=sha256_bytes(raw))
+    return raw, source
+
+
+def _telemetry_json(raw: bytes) -> Mapping[str, Any]:
+    def pairs(items: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError("duplicate JSON key")
+            result[key] = value
+        return result
+
+    def reject_constant(value: str) -> Any:
+        raise ValueError(f"invalid JSON constant: {value}")
+
+    def finite_float(value: str) -> float:
+        number = float(value)
+        if not math.isfinite(number):
+            raise ValueError("non-finite JSON number")
+        return number
+
+    return _mapping(
+        json.loads(raw.decode("utf-8"), object_pairs_hook=pairs,
+                   parse_constant=reject_constant, parse_float=finite_float),
+        "telemetry JSON",
+    )
+
+
+def collect_telemetry_freshness(
+    *, root: Path, expected_head: str, expected_tree: str, repository: str,
+    now: str, run_id: str | None = None,
+) -> dict[str, Any]:
+    """Measure one committed receipt; expiry is a source lease, not an SLO."""
+    head = _head_sha(expected_head, "telemetry subject head")
+    tree = _head_sha(expected_tree, "telemetry subject tree")
+    if _telemetry_git(root, "rev-parse", "--verify", f"{head}^{{commit}}").decode().strip() != head:
+        raise ReflexiveWatchdogBlock("telemetry subject is not the exact commit")
+    if _telemetry_git(root, "rev-parse", f"{head}^{{tree}}").decode().strip() != tree:
+        raise ReflexiveWatchdogBlock("telemetry subject tree mismatch")
+    measured = _telemetry_time(now, "readback time")
+    repository = _string(repository, "telemetry repository")
+    if run_id is not None and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", run_id):
+        raise ReflexiveWatchdogBlock("unsafe telemetry run ID")
+    policy_raw, policy_ref = _telemetry_blob(root, head, "policy/PIPELINE_KPI_TREE_V1.json")
+    if policy_raw is None:
+        raise ReflexiveWatchdogBlock("telemetry KPI policy is missing or invalid")
+    try:
+        policy = _telemetry_json(policy_raw)
+        metrics = [item for item in policy["metrics"] if item["id"] == "telemetry_freshness"]
+        if len(metrics) != 1 or metrics[0]["unit"] != "seconds" or metrics[0]["target"] is not None or metrics[0]["threshold_status"] != "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT":
+            raise ValueError("telemetry target contract changed")
+    except (KeyError, TypeError, ValueError, UnicodeError) as exc:
+        raise ReflexiveWatchdogBlock("invalid telemetry KPI policy") from exc
+
+    evaluator_head = _telemetry_git(ROOT, "rev-parse", "HEAD").decode().strip()
+    evaluator_tree = _telemetry_git(ROOT, "rev-parse", f"{evaluator_head}^{{tree}}").decode().strip()
+    evaluator_refs = []
+    evaluator_exact = True
+    for path in ("tools/qikvrt_reflexive_repository_watchdog.py", "tools/qikvrt_subprocess.py"):
+        committed, ref = _telemetry_blob(ROOT, evaluator_head, path)
+        try:
+            executed = (ROOT / path).read_bytes()
+        except OSError as exc:
+            raise ReflexiveWatchdogBlock("cannot bind executed telemetry evaluator bytes") from exc
+        evaluator_refs.append({"path": path, "sha256": sha256_bytes(executed), "bytes": len(executed)})
+        evaluator_exact = evaluator_exact and executed == committed
+
+    path = f"evidence/node_health/{run_id or 'LATEST'}.json"
+    raw, source = _telemetry_blob(root, head, path)
+    record: dict[str, Any] = {
+        "schema": "qikvrt_telemetry_freshness_v1", "metric_id": "telemetry_freshness",
+        "repository": repository, "subject_head": head, "subject_tree": tree,
+        "evaluator_commit": evaluator_head if evaluator_exact else None,
+        "evaluator_tree": evaluator_tree if evaluator_exact else None,
+        "evaluator_state": "COMMITTED_EXACT_BYTES" if evaluator_exact else "UNCOMMITTED_CANDIDATE",
+        "evaluator_source_refs": evaluator_refs, "node_id": None,
+        "scope": "EXACT_SUBJECT_NODE_HEALTH_RECEIPT_ONLY", "workload_id": "NODE_HEALTH_HEARTBEAT",
+        "policy_hash": policy_ref["sha256"], "policy_ref": policy_ref,
+        "window_start_utc": now, "window_end_utc": now, "observed_at_utc": now,
+        "raw_numerator": None, "raw_denominator_or_sample_count": 0,
+        "value": None, "age_seconds": None, "unit": "seconds",
+        "status": "UNKNOWN", "freshness": "UNKNOWN", "source_refs": [source],
+        "source_receipt": None, "coverage": None, "censored_count": 0,
+        "measurement_method": "caller readback time minus committed heartbeat; fresh iff heartbeat <= readback < source expiry",
+        "clock_accuracy_verified": False, "target": None,
+        "threshold_status": "UNSET_REQUIRES_VERSIONED_SERVICE_CONTRACT", "slo_verdict": "UNKNOWN",
+        "PREDECESSOR_EVIDENCE_TRANSFER": False,
+    }
+    if raw is None:
+        record["reason"] = "MISSING_RECEIPT" if source["read_status"] == "MISSING" else source["read_status"]
+        if source["read_status"] != "MISSING":
+            record["status"] = "INVALID"
+        return record
+    try:
+        receipt = _telemetry_json(raw)
+        # Reject decoded strings or nesting that cannot survive UTF-8 output.
+        # The exact raw blob remains bound even when no receipt can be emitted.
+        canonical_json_bytes(receipt)
+    except (ValueError, UnicodeError, RecursionError, ReflexiveWatchdogBlock):
+        record.update(status="INVALID", reason="MALFORMED_RECEIPT")
+        return record
+    record["source_receipt"] = dict(receipt)  # Keep raw fields, including invalid timestamps.
+    record["node_id"] = receipt.get("guid") if isinstance(receipt.get("guid"), str) else None
+    for field in ("heartbeat_utc", "expires_utc"):
+        if field not in receipt or receipt[field] is None:
+            record["reason"] = f"MISSING_{field.upper()}"
+            return record
+        try:
+            parsed = _telemetry_time(receipt[field], field)
+        except ReflexiveWatchdogBlock:
+            record.update(status="INVALID", reason=f"MALFORMED_{field.upper()}")
+            return record
+        if field == "heartbeat_utc":
+            heartbeat = parsed
+            record["age_seconds"] = (measured - heartbeat).total_seconds()
+            record["raw_numerator"] = record["age_seconds"]
+            record["raw_denominator_or_sample_count"] = 1
+        else:
+            expires = parsed
+    if receipt.get("qikvrt_event") != "NODE_HEALTH_EVIDENCE" or receipt.get("repository") != repository or not isinstance(receipt.get("guid"), str) or not receipt["guid"]:
+        record.update(status="INVALID", reason="RECEIPT_IDENTITY_MISMATCH")
+        return record
+    receipt_run = receipt.get("run_id")
+    if not isinstance(receipt_run, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", receipt_run) or (run_id is not None and run_id != receipt_run):
+        record.update(status="INVALID", reason="RECEIPT_RUN_ID_MISMATCH")
+        return record
+    if run_id is None:
+        run_raw, run_ref = _telemetry_blob(root, head, f"evidence/node_health/{receipt_run}.json")
+        record["source_refs"].append(run_ref)
+        if run_raw != raw:
+            record.update(status="UNKNOWN" if run_raw is None else "INVALID", reason="LATEST_RUN_RECEIPT_MISMATCH")
+            return record
+    if heartbeat > measured or expires <= heartbeat:
+        record.update(status="INVALID", reason="CONTRADICTORY_CLOCKS")
+        return record
+    record.update(
+        status="MEASURED", value=record["age_seconds"],
+        freshness="FRESH" if measured < expires else "STALE",
+        reason="SOURCE_LEASE_CURRENT" if measured < expires else "SOURCE_LEASE_EXPIRED",
+    )
+    return record
 
 
 def load_contract(root: Path = ROOT) -> dict[str, Any]:
@@ -979,6 +1184,14 @@ def _read_json(path: Path, label: str) -> Mapping[str, Any] | Sequence[Any]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    telemetry_parser = subcommands.add_parser("telemetry-freshness")
+    telemetry_parser.add_argument("--root", type=Path, default=ROOT)
+    telemetry_parser.add_argument("--expect-head", required=True)
+    telemetry_parser.add_argument("--expect-tree", required=True)
+    telemetry_parser.add_argument("--repository", required=True)
+    telemetry_parser.add_argument("--now", required=True)
+    telemetry_parser.add_argument("--run-id")
+    telemetry_parser.add_argument("--json", action="store_true")
     analyze_parser = subcommands.add_parser("analyze")
     analyze_parser.add_argument("--runs-file", type=Path, required=True)
     analyze_parser.add_argument("--jobs-dir", type=Path, required=True)
@@ -1010,7 +1223,13 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command == "check-contract":
+        if arguments.command == "telemetry-freshness":
+            value = collect_telemetry_freshness(
+                root=arguments.root, expected_head=arguments.expect_head,
+                expected_tree=arguments.expect_tree, repository=arguments.repository,
+                now=arguments.now, run_id=arguments.run_id,
+            )
+        elif arguments.command == "check-contract":
             contract = load_contract()
             prevention = _mapping(contract["reflexive_deadlock_prevention"], "reflexive prevention")
             value = {
@@ -1057,7 +1276,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 node_liveness_dir=arguments.node_liveness_dir,
                 authority_head=authority_head,
             )
-        if arguments.json:
+        if arguments.json or arguments.command == "telemetry-freshness":
             print(canonical_json_bytes(value).decode("utf-8"), end="")
         else:
             print(f"{value['state']} first_blocker={value.get('first_blocker')}")
