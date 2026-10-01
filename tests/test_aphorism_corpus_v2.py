@@ -114,19 +114,18 @@ class AphorismCorpusV2Tests(unittest.TestCase):
             'source_head="$(git rev-parse --verify HEAD^{commit})"',
             'git ls-remote --heads origin "refs/heads/$TARGET_REF"',
             "BLOCK: target ref advanced before repository evidence persistence",
-            "remote_head_after_commit",
-            "BLOCK: target ref advanced while repository evidence was materialized",
-            'git push origin "HEAD:$TARGET_REF"',
+            "tools/qikvrt_authority_transition.py publish-successor",
+            "--profile repository_evidence",
+            '--expected-head "$source_head"',
         ):
             self.assertIn(token, block)
         self.assertLess(
             block.index("BLOCK: target ref advanced before repository evidence persistence"),
-            block.index("git commit -m \"ci: materialize repository evidence\""),
+            block.index("tools/qikvrt_authority_transition.py publish-successor"),
         )
-        self.assertLess(
-            block.index("remote_head_after_commit"),
-            block.index('git push origin "HEAD:$TARGET_REF"'),
-        )
+        self.assertNotIn('git push', block)
+        self.assertNotIn('gh api', block)
+        self.assertNotIn('GITHUB_TOKEN', block)
 
     def test_materialized_bundle_when_present(self) -> None:
         if not DEST.is_dir():

@@ -252,7 +252,7 @@ Bearer, Repository-Scope, Rate-Limit und strikten JSON-Vertrag. Der neue lokale
 Pfad ist `POST /repos/ingolf-lohmann/qik-vrt/qikvrt/authority/effects`.
 Dieser Pfad ist eine Shim-Erweiterung, kein nativer GitHub-Endpunkt.
 
-V1 lässt ausschließlich `{"operation":"create_ref","effect_id":"<stabiler Schlüssel>"}`
+Der unveränderte V1-Teil lässt ausschließlich `{"operation":"create_ref","effect_id":"<stabiler Schlüssel>"}`
 zu. Ein zusätzlicher SHA, Branchname, API-Pfad oder unbekanntes Operationsfeld
 wird zurückgewiesen. Die Branch-Ref wird deterministisch erzeugt:
 
@@ -261,7 +261,7 @@ wird zurückgewiesen. Die Branch-Ref wird deterministisch erzeugt:
 Ihr Commit ist ausschließlich der akzeptierte restaurierte HEAD. Sein TREE
 wird gegen den tatsächlichen GitHub-Git-Data-Readback geprüft. Der Provider-CAS
 ist die native create-only Transition **Ref fehlt → Ref entsteht**. Weder
-Force-Push noch Ref-Update, Löschung, PR-Erzeugung/-Merge, Workflow-Dispatch oder
+Force-Push noch unbedingtes Ref-Update, Löschung, PR-Erzeugung/-Merge, Workflow-Dispatch oder
 Ruleset-Änderung ist über diesen Pfad erlaubt. Sie benötigen eigene belastbare
 CAS-/Idempotenz-/Readback-Verträge; ein GET vor einem unbedingten PATCH wäre
 kein atomarer expected-old-HEAD-CAS.
@@ -294,9 +294,9 @@ eine automatische Löschung des Journals wäre ein Exactly-once-Bypass.
 Ein alter Writer wird nach Takeover auch mit kopiertem aktuellem öffentlichem
 Permit zurückgewiesen. Rejoin gibt ihm keine Provider-Schreibrechte.
 
-Der Broker verwendet den vorhandenen `GITHUB_TOKEN`-Umgebungspfad und den
+Der Broker verwendet ausschließlich den privaten `QIKVRT_GITHUB_BROKER_TOKEN`-Umgebungspfad und den
 No-Redirect-/Response-Limit-Vertrag aus `scripts/qikvrt_api_client.py`.
-`QIKVRT_GITHUB_TOKEN_EXPIRES_UTC` muss eine zukünftige UTC-Zeit sein; Provider-
+`QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC` muss eine zukünftige UTC-Zeit sein; Provider-
 und Shim-Bearer müssen verschieden sein. Die UTC-Angabe ist eine vertrauenswürdige
 Broker-Konfiguration, keine unabhängig attestierte Token-Metadatenprüfung.
 Provider-Fehlertexte und Credentials werden nicht ausgegeben/persistiert.
@@ -305,8 +305,8 @@ SQLite-Datei. Produktionsbetrieb benötigt eine owner-provisionierte, für den
 Mirror und Contents-Schreibrecht begrenzte kurzlebige GitHub-Capability, HTTPS
 und den bisherigen nicht umgehbaren, unabhängig erhaltenen Control-Plane-Sink.
 
-**Nachweisgrenze:** Der Adapter implementiert Broker-Fencing für diese eine
-Operation. GitHub interpretiert selbst keine QIKVRT-Epochs. Historische Workflow-
+**Nachweisgrenze:** Der Adapter implementiert Broker-Fencing für die ausdrücklich zugelassenen
+Operationen. GitHub interpretiert selbst keine QIKVRT-Epochs. Historische Workflow-
 Tokens, direkte Git-Pushes, unabhängig ausgegebene Credentials, privilegierte
 DB-Owner und nicht durch den Broker geführte Writer werden dadurch nicht
 widerrufen. Eine produktive, repositoryweite Fencing-Behauptung benötigt
@@ -333,7 +333,7 @@ und [GitHub REST Git commits](https://docs.github.com/en/rest/git/commits?apiVer
 Der bestehende Control-Plane-Adapter besitzt mit `audit-writers` einen
 lesenden Source-Admission-Gate; `make test` führt ihn aus. Es entsteht weder
 ein zweiter Broker noch eine zusätzliche Permit-Ausgabe. Das maschinenlesbare
-Inventar liegt in `state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V1.json`.
+Inventar liegt in `state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V2.json`; V1 bleibt historische Evidenz.
 Jeder relevante Pfad wird mit Bytes, SHA-256, Klassifikation und Workflow-Jobs
 gebunden. Neue untracked oder tracked Kandidatendateien werden mitgeprüft, einschließlich
 Make-/Package-Entrypoints, CommonJS und weiterer ausführbarer Quellsprachen.
@@ -341,14 +341,13 @@ Implizites `gh api` POST über Field-/Input-Argumente und Octokit-Mutationen
 werden ebenfalls abgewiesen. Der Audio-Blob-Materializer ist ein separat
 geprüfter GET-only-Leser, kein produktiver Repository-Writer.
 
-38 produktive Workflow-Jobs mit GitHub-Mutationen, unabhängigen Writer-Secrets
+37 noch nicht portierte produktive Workflow-Jobs mit GitHub-Mutationen, unabhängigen Writer-Secrets
 oder indirekten GitHub-Writer-Aufrufen erhalten eine feste `if: ${{ false }}`-
 Sperre und `permissions: {}`. Ihre inerten Implementierungsbytes bleiben für
 Review und einen späteren gebundenen Port erhalten. Alle nativen Workflow-
 Permissions sind explizit lesend, und sämtliche Checkout-Schritte lehnen
 persistierte Credentials ab. Lesende Tests und Evidenz-Artefakte bleiben
-nutzbar. Die CI darf einen sauberen Iteration-0-Fixpunkt beobachten; wenn ein
-Remote-Successor nötig wäre, endet sie vor dem Push mit BLOCK.
+nutzbar. Die CI darf einen sauberen Iteration-0-Fixpunkt beobachten. Notwendige Integritäts-Successors und der Evidence-Materializer verwenden ausschließlich den unten beschriebenen Broker-Port; fehlende Konfiguration liefert HOLD statt SKIPPED oder Schreibrechte-Fallback.
 
 Die beiden V45-Real-Release-Wrappers, der GitHub/Zenodo-Publish-Wrapper und der
 fälschlich als Dry-Run beschriebene direkte Workflow-Dispatch-Shellpfad sind
@@ -450,3 +449,73 @@ Delivery-Successor. Frühere ZIP-/Release-Pakete bleiben historische Artefakte;
 ihr Entpacken widerruft die No-Bypass-Anforderung nicht. Noch ausgegebene
 Capabilities und historische Installationen müssen vor produktiver Abnahme
 weiterhin tatsächlich entzogen und rückgelesen werden.
+
+
+## Kleinster Funktionsport unter demselben No-Bypass-Fence
+
+Die Profile `ci_integrity` und `repository_evidence` erweitern ausschließlich
+`GitHubAuthorityProvider` und dieselbe `AuthorityControlPlane`. Der lokale Client
+`tools/qikvrt_authority_transition.py publish-successor` liest den bereits
+staged Index bytegenau und sendet ihn an den vorhandenen authentisierten Shim.
+Die private Datenbank und der kurzlebige Provider-Bearer verbleiben beim Shim;
+Workflow-Clients erhalten weder Provider-Credentials noch eine Permit-Ausgabe.
+Der Client benötigt owner-private, außerhalb des Checkouts liegende Dateien
+`QIKVRT_AUTHORITY_API_TOKEN_FILE`, `QIKVRT_AUTHORITY_WRITER_FILE` und
+`QIKVRT_AUTHORITY_PERMIT_FILE`. `QIKVRT_AUTHORITY_BROKER_URL` darf ausschließlich
+die vorhandene Loopback-Shim-Instanz adressieren; Standard ist Port 8766.
+Die GitHub-hosted Runner dieses Kandidaten sind nicht damit provisioniert.
+
+GitHub GraphQL `createCommitOnBranch` erstellt Commit und Branch-Fortschreibung
+atomar mit `expectedHeadOid`. Kein rohes Git-Push, REST-PATCH, Force-Update,
+Workflow-Rerun oder `contents: write` wird wieder eingeführt. Der Evidence-Job
+ist jetzt ein explizit lesender Client; 37 sonstige Writer-Jobs bleiben deaktiviert.
+Native Workflow-Tokens werden dem Broker nicht übergeben, Checkout-Credentials
+bleiben ausgeschaltet. Es gibt weiterhin genau einen Broker und einen
+Control-Plane-/Permit-Pfad.
+
+Vor irgendeinem Provider-Aufruf wird der Intent in `provider_effects` dauerhaft
+persistiert. Er bindet Permit, beide Epochs, Node, Fence, Repository, Review-Ref,
+Vorgänger-HEAD/TREE, Effect-ID, Profil, gewünschten TREE und alle Datei-Bytes mit
+SHA-256/Git-Blob. Vor Mutation gelten dieselbe Takeover-Sperre und frische
+Capability-Prüfung. Die additive Tabelle `provider_targets` desselben Sinks
+bewahrt den akzeptierten Ref-HEAD/TREE-Wasserstand; eine erste Registrierung
+muss beim akzeptierten restaurierten Ziel beginnen. Replays können ihn nicht
+zurücksetzen. Die Recovery-Bindung selbst wird dadurch nicht zu einem neuen
+Checkpoint umgeschrieben.
+
+Native Tree-Readbacks werden aus ihren binären Git-Einträgen erneut gehasht.
+Die zulässigen Dateiänderungen müssen aus dem Vorgänger genau den gewünschten
+TREE erzeugen; unveränderte Pfade bleiben so gebunden. Nach dem Effekt werden
+Ref, tatsächlicher Commit, alleiniger Vorgänger, eindeutiger Intent-Marker,
+TREE, native Pfade/Git-Blobs und redownloadete Originalbytes geprüft. Ein
+abschließender Ref-Readback erkennt Drift; ein weiterer separater
+SQLite-Readback prüft Receipt, Intent und Ziel-Wasserstand. Transporterfolg
+allein genügt nicht.
+
+`PENDING` nach unklarem Transportausgang erlaubt ausschließlich GET-Reconciliation
+zum gleichen Intent. Keine Mutation wird blind wiederholt. Konflikte oder
+abweichende Readbacks ergeben BLOCK; weitere Writer und Takeover bleiben bei
+offenem Intent gesperrt. Ohne private Client-Konfiguration lautet der reale
+Disposition-Receipt `HOLD / BROKER_CAPABILITY_NOT_PROVISIONED`, Exit 78,
+`productive_provider_effect=false`, `effect_ack_done=false`. Ein unklarer
+bereits versuchter Effekt wird dagegen als unbekannt ausgewiesen, nicht als
+bewiesene Nichtwirkung.
+
+Der Port ist bewusst auf `refs/heads/work/` und `refs/heads/agent/`, maximal
+128 normale nichtausführbare Dateien und 512 KiB Originalbytes begrenzt.
+Main-Promotion, Löschungen, Mode-Wechsel, Symlinks, Submodule und beliebige
+Quellcodeänderungen bleiben BLOCK. Der historische Materializer kann einen
+generierten Python-Quellpfad stagen; eine solche Änderung ist außerhalb dieses
+kleinsten Evidence-Profils und benötigt einen separaten versionierten Vertrag.
+Auch Kapazitätsüberschreitungen erhalten keine Permission-Ausnahme.
+
+Tests verbinden staged Workflow-Client, echten lokalen HTTP-Shim, persistenten
+Bare-Git-Provider-CAS und dauerhaften Ledger. Diese Test-Fixture ist keine
+produktive GitHub-Wirkung. Produktive Broker-Provisionierung, Main-Aktivierung
+und Entzug historischer Bypass-Capabilities bleiben unbewiesen;
+`provider_authority_fencing_verified=false` und `effect_ack_done=false`.
+
+Primärquellen (abgerufen 2026-10-01):
+[GitHub Commit-Mutationen](https://docs.github.com/en/graphql/reference/commits),
+[CreateCommitOnBranchInput](https://docs.github.com/en/graphql/reference/input-objects#createcommitonbranchinput),
+[FileChanges und Base64](https://docs.github.com/en/graphql/reference/git#fileaddition).

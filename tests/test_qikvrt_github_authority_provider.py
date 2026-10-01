@@ -46,6 +46,45 @@ class GitProviderFixture:
 
     def request(self, method, suffix, payload=None, *, admission=None):
         self.calls.append((method, suffix))
+        if suffix.startswith('git/trees/'):
+            oid = suffix.removeprefix('git/trees/')
+            raw = subprocess.check_output(['git', '-C', str(self.repository), 'ls-tree', '-z', oid])
+            entries = []
+            for line in raw.split(b'\0'):
+                if line:
+                    metadata, name = line.split(b'\t', 1)
+                    mode, kind, sha = metadata.decode().split()
+                    entries.append({'path': name.decode(), 'mode': mode, 'type': kind, 'sha': sha})
+            return 200, {'sha': oid, 'truncated': False, 'tree': entries}
+        if suffix.startswith('git/blobs/'):
+            oid = suffix.removeprefix('git/blobs/')
+            raw = subprocess.check_output(['git', '-C', str(self.repository), 'cat-file', 'blob', oid])
+            return 200, {'sha': oid, 'encoding': 'base64', 'content': base64.b64encode(raw).decode(), 'size': len(raw)}
+        if suffix == 'graphql':
+            self.posts += 1
+            value = payload['variables']['input']
+            ref = 'refs/heads/' + value['branch']['branchName']
+            if self.before_post:
+                self.before_post({'ref': ref, 'sha': value['expectedHeadOid']})
+            with tempfile.TemporaryDirectory() as directory:
+                env = {**os.environ, 'GIT_INDEX_FILE': str(Path(directory)/'index'),
+                    'GIT_AUTHOR_NAME': 'Provider fixture', 'GIT_AUTHOR_EMAIL': 'fixture@example.invalid',
+                    'GIT_COMMITTER_NAME': 'Provider fixture', 'GIT_COMMITTER_EMAIL': 'fixture@example.invalid'}
+                git = ['git', '-C', str(self.repository)]
+                subprocess.run(git+['read-tree', value['expectedHeadOid']], env=env, check=True, capture_output=True)
+                for addition in value['fileChanges']['additions']:
+                    blob = subprocess.check_output(git+['hash-object', '-w', '--stdin'], input=base64.b64decode(addition['contents']), env=env).decode().strip()
+                    subprocess.run(git+['update-index', '--add', '--cacheinfo', '100644', blob, addition['path']], env=env, check=True, capture_output=True)
+                tree = subprocess.check_output(git+['write-tree'], env=env).decode().strip()
+                sha = subprocess.check_output(git+['commit-tree', tree, '-p', value['expectedHeadOid']],
+                    input=(value['message']['headline']+'\n').encode(), env=env).decode().strip()
+                result = subprocess.run(git+['update-ref', ref, sha, value['expectedHeadOid']], capture_output=True)
+                if result.returncode:
+                    return 422, {}
+            if self.after_post:
+                self.after_post()
+            return 200, {'data': {'createCommitOnBranch': {'clientMutationId': value['clientMutationId'],
+                'commit': {'oid': sha, 'tree': {'oid': tree}}}}}
         if method == 'POST':
             self.posts += 1
             if self.before_post:
@@ -67,7 +106,10 @@ class GitProviderFixture:
         if suffix.startswith('git/commits/'):
             sha = suffix.removeprefix('git/commits/')
             tree = recovery.git_command(self.repository, 'rev-parse', sha + '^{tree}').strip()
-            return 200, {'sha': sha, 'tree': {'sha': '0' * 40 if self.wrong_tree else tree}}
+            parents = recovery.git_command(self.repository, 'show', '-s', '--format=%P', sha).split()
+            message = recovery.git_command(self.repository, 'show', '-s', '--format=%B', sha)
+            return 200, {'sha': sha, 'tree': {'sha': '0' * 40 if self.wrong_tree else tree},
+                'parents': [{'sha': p} for p in parents], 'message': message}
         raise AssertionError((method, suffix))
 
 
@@ -396,8 +438,8 @@ class GitHubAuthorityProviderTests(unittest.TestCase):
 
     def test_transport_pins_origin_token_expiry_no_redirect_and_bounded_json(self):
         adapter = shim.GitHubAuthorityProvider(self.cp, shim.PROVIDER_REPOSITORY)
-        env = {'GITHUB_TOKEN': 'github-test-token-abcdefghijklmnopqrstuvwxyz',
-               'QIKVRT_GITHUB_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z'}
+        env = {'QIKVRT_GITHUB_BROKER_TOKEN': 'github-test-token-abcdefghijklmnopqrstuvwxyz',
+               'QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z'}
         def response(raw=b'{"sha":"test"}', status=200, url=None):
             r = io.BytesIO(raw)
             r.status = status
@@ -411,13 +453,13 @@ class GitHubAuthorityProviderTests(unittest.TestCase):
             self.assertIsInstance(opener.call_args.args[0], shim.NoRedirectHandler)
             request = opener.return_value.open.call_args.args[0]
             self.assertEqual(request.full_url, f'https://api.github.com/repos/{shim.PROVIDER_REPOSITORY}/git/refs')
-            for raw, url in ((env['GITHUB_TOKEN'].encode(), None), (b'{}', 'https://other.invalid/'),
+            for raw, url in ((env['QIKVRT_GITHUB_BROKER_TOKEN'].encode(), None), (b'{}', 'https://other.invalid/'),
                              (b'{"duplicate":1,"duplicate":2}', None), (b'[]', None),
                              (b'x' * (shim.MAX_RESPONSE_BYTES + 1), None)):
                 opener.return_value.open.return_value = response(raw, url=url)
                 with self.assertRaises(transition.TransitionError):
                     adapter._request('GET', 'git/refs')
-            with mock.patch.dict(os.environ, {'QIKVRT_GITHUB_TOKEN_EXPIRES_UTC': '2000-01-01T00:00:00Z'}):
+            with mock.patch.dict(os.environ, {'QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC': '2000-01-01T00:00:00Z'}):
                 with self.assertRaises(transition.TransitionError):
                     adapter._request('POST', 'git/refs', {})
             for method, suffix in (('DELETE', 'git/refs'), ('PATCH', 'git/refs'),
@@ -430,8 +472,8 @@ class GitHubAuthorityProviderTests(unittest.TestCase):
         self.provider()
         adapter = shim.GitHubAuthorityProvider(self.cp, shim.PROVIDER_REPOSITORY)
         prefix = f'https://api.github.com/repos/{shim.PROVIDER_REPOSITORY}/'
-        env = {'GITHUB_TOKEN': 'github-test-token-abcdefghijklmnopqrstuvwxyz',
-               'QIKVRT_GITHUB_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z'}
+        env = {'QIKVRT_GITHUB_BROKER_TOKEN': 'github-test-token-abcdefghijklmnopqrstuvwxyz',
+               'QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z'}
         def open_request(request, timeout):
             self.assertEqual(timeout, 10)
             self.assertTrue(request.full_url.startswith(prefix))
@@ -450,6 +492,302 @@ class GitHubAuthorityProviderTests(unittest.TestCase):
             self.assertEqual(len(self.remote.calls), 5)
             self.assertTrue(self.execute(adapter, permit)['replayed'])
             self.assertEqual(self.remote.posts, 1)
+
+
+class MaterializeSuccessorTests(unittest.TestCase):
+    setUp = GitHubAuthorityProviderTests.setUp
+    activate = GitHubAuthorityProviderTests.activate
+    take = GitHubAuthorityProviderTests.take
+    provider = GitHubAuthorityProviderTests.provider
+    journal = GitHubAuthorityProviderTests.journal
+    """Both necessary effects use the SAME fixture, sink, native CAS and journal."""
+    def operation(self, profile="ci_integrity", key="ci-successor", head=None, tree=None):
+        adapter = self.provider()
+        state = self.cp.readback(NEW_TOKEN)["state"]
+        head = head or state["binding"]["head"]
+        tree = tree or state["binding"]["tree"]
+        ref = "refs/heads/work/materializer-fixture"
+        if not hasattr(self, 'successor_ref_initialized'):
+            recovery.git_command(self.remote.repository, "update-ref", ref, head)
+            self.successor_ref_initialized = True
+        raw = b'{"materialized":true}\n'
+        path = "REPOSITORY_FILE_MANIFEST.json" if profile == "ci_integrity" else "AI_STATUS.md"
+        file = {"path": path, "contents": base64.b64encode(raw).decode(),
+            "sha256": hashlib.sha256(raw).hexdigest(), "blob": adapter._git_oid("blob", raw)}
+        desired = adapter._patched_tree(tree, [file])
+        self.remote.calls.clear()
+        return {"operation": "materialize_successor", "effect_id": key, "profile": profile,
+            "ref": ref, "expected_head": head, "expected_tree": tree, "tree": desired, "files": [file]}
+
+    def test_both_profiles_native_cas_bytes_durable_readback_and_replay(self):
+        permit = self.activate()
+        for profile in ("ci_integrity", "repository_evidence"):
+            operation = self.operation(profile, key=profile)
+            if profile == "repository_evidence":
+                previous = self.result
+                operation = self.operation(profile, key=profile, head=previous["sha"], tree=previous["tree"])
+            self.result = self.provider().execute(NEW_TOKEN, permit, operation)
+            self.assertTrue(self.result["native_ref_commit_tree_bytes_verified"])
+            self.assertTrue(self.result["durable_ledger_readback"])
+            self.assertFalse(self.result["effect_ack_done"])
+            replay = self.provider(restart=True).execute(NEW_TOKEN, permit, operation)
+            self.assertTrue(replay["replayed"])
+            with self.cp.transaction() as db:
+                self.assertEqual(db.execute("SELECT status FROM provider_effects WHERE id=?", (profile,)).fetchone(), ("VERIFIED",))
+        self.assertEqual(self.remote.posts, 2)
+        self.assertNotIn(NEW_TOKEN.encode(), self.cp.path.read_bytes())
+
+    def test_missing_capability_and_each_stale_permit_never_reach_provider(self):
+        permit = self.activate()
+        operation = self.operation()
+        for token, candidate in [("x" * 32, permit)] + [(NEW_TOKEN, {**permit, field:
+            permit[field] - 1 if field == "authority_epoch" else "0" * 64}) for field in permit]:
+            with self.assertRaises(transition.TransitionError):
+                self.provider().execute(token, candidate, operation)
+        self.assertEqual(self.remote.calls, [])
+
+    def test_missing_private_provider_capability_persists_prepared_intent_no_transport(self):
+        permit = self.activate()
+        operation = self.operation()
+        adapter = shim.GitHubAuthorityProvider(self.cp, shim.PROVIDER_REPOSITORY)
+        with mock.patch.dict(os.environ, {}, clear=True), mock.patch.object(shim.urllib.request, "build_opener") as opener:
+            with self.assertRaises(transition.TransitionError):
+                adapter.execute(NEW_TOKEN, permit, operation)
+            opener.assert_not_called()
+        self.assertEqual(self.journal("ci-successor")[0], "PREPARED")
+
+    def test_preexisting_advanced_ref_and_atomic_competing_writer_are_rejected(self):
+        permit = self.activate()
+        operation = self.operation()
+        adapter = self.provider()
+        other = recovery.git_command(self.remote.repository, "rev-parse", "HEAD^").strip()
+        self.remote.before_post = lambda p: recovery.git_command(self.remote.repository, "update-ref", p["ref"], other)
+        with self.assertRaises(transition.TransitionError):
+            adapter.execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.journal("ci-successor")[0], "REJECTED")
+        with self.assertRaises(transition.TransitionError):
+            self.provider(restart=True).execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.remote.posts, 1)
+        self.assertEqual(recovery.git_command(self.remote.repository, "rev-parse", operation["ref"]), other)
+
+    def test_crash_after_effect_get_only_recovery_no_duplicate(self):
+        permit = self.activate()
+        operation = self.operation()
+        self.remote.after_post = lambda: (_ for _ in ()).throw(SystemExit("lost response"))
+        with self.assertRaises(SystemExit):
+            self.provider().execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.journal("ci-successor")[0], "PENDING")
+        recovered = self.provider(restart=True).execute(NEW_TOKEN, permit, operation)
+        self.assertTrue(recovered["native_ref_commit_tree_bytes_verified"])
+        self.assertEqual(self.remote.posts, 1)
+
+    def test_ambiguous_transport_before_effect_stays_pending_and_blocks_other_writer(self):
+        permit = self.activate()
+        operation = self.operation()
+        def lost_before_write(payload):
+            raise transition.TransitionError("transport unknown")
+        self.remote.before_post = lost_before_write
+        with self.assertRaises(transition.TransitionError):
+            self.provider().execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.journal("ci-successor")[0], "PENDING")
+        for candidate in (operation, {**operation, "effect_id": "other"}):
+            with self.assertRaises(transition.TransitionError):
+                self.provider(restart=True).execute(NEW_TOKEN, permit, candidate)
+        self.assertEqual(self.remote.posts, 1)
+
+    def test_replay_with_different_binding_is_rejected_before_transport(self):
+        permit = self.activate()
+        operation = self.operation()
+        self.provider().execute(NEW_TOKEN, permit, operation)
+        self.remote.calls.clear()
+        for changed in ({**operation, "ref": "refs/heads/work/other"},
+                        {**operation, "expected_head": "0" * 40}):
+            with self.assertRaises(transition.TransitionError):
+                self.provider(restart=True).execute(NEW_TOKEN, permit, changed)
+        self.assertEqual(self.remote.calls, [])
+
+    def test_wrong_native_bytes_after_effect_stays_pending(self):
+        permit = self.activate()
+        operation = self.operation()
+        adapter = self.provider()
+        original = adapter._request
+        def wrong_bytes(method, suffix, payload=None, **kwargs):
+            status, body = original(method, suffix, payload, **kwargs)
+            if suffix.startswith("git/blobs/"):
+                body["content"] = base64.b64encode(b"wrong").decode()
+            return status, body
+        adapter._request = wrong_bytes
+        with self.assertRaises(transition.TransitionError):
+            adapter.execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.journal("ci-successor")[0], "PENDING")
+        self.assertEqual(self.remote.posts, 1)
+
+    def test_wrong_post_effect_commit_tree_and_ref_drift_never_verify(self):
+        permit = self.activate()
+        operation = self.operation()
+        self.remote.after_post = lambda: setattr(self.remote, "wrong_tree", True)
+        with self.assertRaises(transition.TransitionError):
+            self.provider().execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.journal("ci-successor")[0], "PENDING")
+        self.assertEqual(self.remote.posts, 1)
+
+    def test_source_path_tree_and_byte_tampering_cannot_expand_effect(self):
+        permit = self.activate()
+        operation = self.operation()
+        for bad in ({**operation, "tree": "0" * 40},
+            {**operation, "files": [{**operation["files"][0], "path": ".github/workflows/writer.yml"}]},
+            {**operation, "files": [{**operation["files"][0], "contents": "eA=="}]},
+            {**operation, "ref": "refs/heads/main"}):
+            with self.assertRaises(transition.TransitionError):
+                self.provider().execute(NEW_TOKEN, permit, bad)
+        self.assertEqual(self.remote.posts, 0)
+
+    def test_real_http_transport_uses_only_fixed_graphql_and_native_gets(self):
+        permit = self.activate()
+        operation = self.operation()
+        adapter = shim.GitHubAuthorityProvider(self.cp, shim.PROVIDER_REPOSITORY)
+        env = {'QIKVRT_GITHUB_BROKER_TOKEN': 'github-test-token-abcdefghijklmnopqrstuvwxyz',
+            'QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z'}
+        def transport(request, timeout):
+            suffix = 'graphql' if request.full_url == 'https://api.github.com/graphql' else request.full_url.removeprefix(
+                'https://api.github.com/repos/' + shim.PROVIDER_REPOSITORY + '/')
+            payload = json.loads(request.data) if request.data else None
+            if suffix == 'graphql':
+                self.assertEqual(payload['query'], adapter.SUCCESSOR_QUERY)
+                self.assertEqual(payload['variables']['input']['expectedHeadOid'], operation['expected_head'])
+            status, body = self.remote.request(request.method, suffix, payload)
+            response = io.BytesIO(json.dumps(body).encode())
+            response.status = status
+            response.geturl = lambda: request.full_url
+            return response
+        with mock.patch.dict(os.environ, env), mock.patch.object(shim.urllib.request, 'build_opener') as opener:
+            opener.return_value.open.side_effect = transport
+            result = adapter.execute(NEW_TOKEN, permit, operation)
+        self.assertTrue(result['durable_ledger_readback'])
+        self.assertEqual(self.remote.posts, 1)
+
+    def test_ambient_native_workflow_token_is_not_a_broker_capability(self):
+        adapter = shim.GitHubAuthorityProvider(self.cp, shim.PROVIDER_REPOSITORY)
+        with mock.patch.dict(os.environ, {'GITHUB_TOKEN': 'x'*40,
+                'QIKVRT_GITHUB_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z'}, clear=True), \
+                mock.patch.object(shim.urllib.request, 'build_opener') as opener:
+            with self.assertRaises(transition.TransitionError):
+                adapter._request('GET', 'git/refs')
+            opener.assert_not_called()
+
+    def test_concurrent_same_key_has_one_native_effect(self):
+        permit = self.activate()
+        operation = self.operation()
+        barrier = threading.Barrier(2)
+        def request(_):
+            barrier.wait(timeout=10)
+            try:
+                return self.provider(restart=True).execute(NEW_TOKEN, permit, operation)
+            except transition.TransitionError:
+                return None
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(request, (1, 2)))
+        self.assertTrue(any(result is not None for result in results))
+        self.assertEqual(self.remote.posts, 1)
+        self.assertEqual(self.journal('ci-successor')[0], 'VERIFIED')
+
+    def test_native_commit_parent_and_intent_message_are_required(self):
+        permit = self.activate()
+        operation = self.operation()
+        adapter = self.provider()
+        original = adapter._request
+        def altered(method, suffix, payload=None, **kwargs):
+            status, body = original(method, suffix, payload, **kwargs)
+            if suffix.startswith('git/commits/') and self.remote.posts:
+                body['parents'] = [{'sha': '0'*40}]
+                body['message'] = 'unrelated writer'
+            return status, body
+        adapter._request = altered
+        with self.assertRaises(transition.TransitionError):
+            adapter.execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.journal('ci-successor')[0], 'PENDING')
+
+    def test_separate_durable_ledger_readback_is_required(self):
+        from contextlib import contextmanager
+        permit = self.activate()
+        operation = self.operation()
+        adapter = self.provider()
+        original = self.cp.transaction
+        count = 0
+        @contextmanager
+        def corrupt_durable_read():
+            nonlocal count
+            count += 1
+            with original() as db:
+                if count == 4:
+                    db.execute("UPDATE provider_effects SET receipt=? WHERE id=?", (b'{}', operation['effect_id']))
+                yield db
+        with mock.patch.object(self.cp, 'transaction', corrupt_durable_read):
+            with self.assertRaisesRegex(transition.TransitionError, 'ledger readback'):
+                adapter.execute(NEW_TOKEN, permit, operation)
+        self.assertEqual(self.remote.posts, 1)
+
+    def test_staged_workflow_client_existing_http_shim_provider_and_ledger_end_to_end(self):
+        permit = self.activate()
+        self.provider()
+        checkout = self.root/'cli-checkout'
+        subprocess.run(['git', 'clone', '-q', str(self.node/'repository.git'), str(checkout)], check=True)
+        head = recovery.git_command(checkout, 'rev-parse', 'HEAD')
+        ref = 'refs/heads/work/cli-fixture'
+        recovery.git_command(self.remote.repository, 'update-ref', ref, head)
+        raw = b'byte-exact\x00\xff\n'
+        (checkout/'REPOSITORY_FILE_MANIFEST.json').write_bytes(raw)
+        recovery.git_command(checkout, 'add', 'REPOSITORY_FILE_MANIFEST.json')
+        private = self.root/'client-private'
+        private.mkdir(mode=0o700)
+        api_token = 'b64url:' + base64.urlsafe_b64encode(b'a'*32).rstrip(b'=').decode()
+        for name, content in [('api', api_token.encode()), ('writer', NEW_TOKEN.encode()),
+                              ('permit', canonical_json_bytes(permit))]:
+            path = private/name
+            path.write_bytes(content)
+            path.chmod(0o600)
+        env = {'QIKVRT_API_TOKEN': api_token, 'QIKVRT_API_TOKEN_EXPIRES_UTC': '2099-01-01T00:00:00Z',
+            'QIKVRT_API_PRINCIPAL': 'fixture-broker', 'QIKVRT_ALLOWED_REPOSITORY': shim.PROVIDER_REPOSITORY,
+            'QIKVRT_AUTHORITY_CONTROL_PLANE': str(self.cp.path),
+            'QIKVRT_AUTHORITY_API_TOKEN_FILE': str(private/'api'),
+            'QIKVRT_AUTHORITY_WRITER_FILE': str(private/'writer'),
+            'QIKVRT_AUTHORITY_PERMIT_FILE': str(private/'permit')}
+        with mock.patch.dict(os.environ, env), mock.patch.object(transition, 'ROOT', checkout), \
+                mock.patch.object(shim.GitHubAuthorityProvider, '_request', side_effect=self.remote.request):
+            server = ThreadingHTTPServer(('127.0.0.1', 0), shim.QikvrtGitHubApiShim)
+            thread = threading.Thread(target=server.serve_forever)
+            thread.start()
+            try:
+                receipt = checkout/'.qikvrt/receipt.json'
+                args = ['--profile', 'ci_integrity', '--target-ref', 'work/cli-fixture',
+                    '--expected-head', head, '--receipt', str(receipt)]
+                with mock.patch.dict(os.environ, {'QIKVRT_AUTHORITY_BROKER_URL': f'http://127.0.0.1:{server.server_port}'}):
+                    self.assertEqual(transition.publish_successor(args), 0)
+                    self.assertEqual(transition.publish_successor(args), 0)
+                result = json.loads(receipt.read_bytes())
+                self.assertTrue(result['replayed'])
+                self.assertTrue(result['durable_ledger_readback'])
+                self.assertFalse(result['effect_ack_done'])
+                self.assertEqual(self.remote.posts, 1)
+                actual = subprocess.check_output(['git', '-C', str(self.remote.repository), 'show',
+                    result['sha']+':REPOSITORY_FILE_MANIFEST.json'])
+                self.assertEqual(actual, raw)
+            finally:
+                server.shutdown()
+                thread.join(5)
+                server.server_close()
+
+    def test_workflow_cli_missing_provision_returns_hold_without_provider(self):
+        with tempfile.TemporaryDirectory() as directory, mock.patch.dict(os.environ, {}, clear=True):
+            receipt = Path(directory)/"receipt.json"
+            with mock.patch.object(shim.GitHubAuthorityProvider, "execute") as execute:
+                self.assertEqual(transition.publish_successor(["--profile", "ci_integrity",
+                    "--target-ref", "work/x", "--expected-head", "0"*40, "--receipt", str(receipt)]), 78)
+                execute.assert_not_called()
+            result = json.loads(receipt.read_bytes())
+            self.assertEqual(result['state'], 'HOLD')
+            self.assertFalse(result['productive_provider_effect'])
+            self.assertFalse(result['effect_ack_done'])
 
 
 class RepositoryNoBypassTests(unittest.TestCase):
@@ -485,6 +823,7 @@ class RepositoryNoBypassTests(unittest.TestCase):
             'curl --data @payload https://api.github.com/repos/x/y/releases\n',
             'import requests\nrequests.post("https://api.github.com/repos/x/y/releases")\n',
             'import os\ntoken = os.environ["GITHUB_TOKEN"]\n',
+            'import os\ntoken = os.environ["QIKVRT_GITHUB_BROKER_TOKEN"]\n',
             'gh api repos/x/y/git/refs -f ref=refs/heads/x\n',
             'github.rest.git.createRef({ref: "refs/heads/x"})\n',
             'curl https://api.github.com/repos/x/y/releases \\\n  --data @payload\n',

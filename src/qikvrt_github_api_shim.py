@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import base64
+import hashlib
 import hmac
 import os
 import re
@@ -114,10 +116,10 @@ def _security_configuration_valid() -> bool:
 class GitHubAuthorityProvider:
     """Extend the existing authenticated shim; no second executor or token cache.
 
-    V1 admits exactly one native CAS: absent -> create-only ref at the verified
-    restored HEAD/TREE. GitHub REST ref PATCH has no expected-old-SHA field;
-    ref update/delete, PR and other mutations are denied, not emulated by GET
-    then an unconditional write. Independent bearer writers remain unfenced.
+    The original create-only ref CAS is retained. Two bounded materialization
+    profiles use createCommitOnBranch with native expectedHeadOid CAS. REST ref
+    PATCH, force updates, main promotion, arbitrary source edits and all other
+    mutations remain denied. Independent bearer writers remain unfenced.
     """
 
     def __init__(self, control_plane: AuthorityControlPlane, repository: str):
@@ -129,16 +131,17 @@ class GitHubAuthorityProvider:
     def _request(self, method: str, suffix: str, payload: dict | None = None,
                  *, admission: tuple | None = None) -> tuple[int, dict]:
         """Reuse the client no-redirect/bounded-response contract and token path."""
-        token = os.environ.get("GITHUB_TOKEN", "")
-        expiry = _parse_expiry(os.environ.get("QIKVRT_GITHUB_TOKEN_EXPIRES_UTC", ""))
+        token = os.environ.get("QIKVRT_GITHUB_BROKER_TOKEN", "")
+        expiry = _parse_expiry(os.environ.get("QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC", ""))
         if (len(token) < 20 or any(c.isspace() for c in token) or expiry is None
                 or expiry <= datetime.now(timezone.utc)
                 or hmac.compare_digest(token, os.environ.get("QIKVRT_API_TOKEN", ""))):
             raise TransitionError("usable distinct short-lived provider capability required")
-        if method not in {"GET", "POST"} or not re.fullmatch(r"git/(?:refs|ref/heads/[A-Za-z0-9/_-]+|commits/[0-9a-f]{40})", suffix):
+        if method not in {"GET", "POST"} or not re.fullmatch(
+                r"(?:graphql|git/(?:refs|ref/heads/[A-Za-z0-9/_.-]+|(?:commits|trees|blobs)/[0-9a-f]{40}))", suffix):
             raise TransitionError("unsupported provider endpoint")
-        if method == "POST" and suffix != "git/refs":
-            raise TransitionError("provider mutation outside create-only ref contract")
+        if suffix == "graphql" and method != "POST":
+            raise TransitionError("fixed mutation only")
         if method == "POST":
             if admission is None or len(admission) != 4:
                 raise TransitionError("provider mutation requires locked fresh admission")
@@ -148,11 +151,18 @@ class GitHubAuthorityProvider:
                              (document["effect_id"],)).fetchone()
             if (row != ("PENDING", canonical_json_bytes(document))
                     or document["binding"] != state["binding"] or document["permit"] != permit
-                    or document["repository"] != self.repository
+                    or document["repository"] != self.repository):
+                raise TransitionError("provider mutation escaped bound durable intent")
+            if document["operation"] == "materialize_successor":
+                self._target_admission(db, document, state)
+                if suffix != "graphql" or payload != self._successor_payload(document):
+                    raise TransitionError("provider mutation escaped fixed successor CAS")
+            elif (suffix != "git/refs" or document["operation"] != "create_ref"
                     or document["ref"] != self.ref_name(permit, document["effect_id"])
                     or payload != {"ref": document["ref"], "sha": state["binding"]["head"]}):
-                raise TransitionError("provider mutation escaped bound durable intent")
-        url = f"https://api.github.com/repos/{self.repository}/{suffix}"
+                raise TransitionError("provider mutation outside create-only contract")
+        url = ("https://api.github.com/graphql" if suffix == "graphql" else
+               f"https://api.github.com/repos/{self.repository}/{suffix}")
         request = urllib.request.Request(url, method=method,
             data=None if payload is None else canonical_json_bytes(payload), headers={
                 "Accept": "application/vnd.github+json", "Authorization": "Bearer " + token,
@@ -216,6 +226,8 @@ class GitHubAuthorityProvider:
         return True
 
     def execute(self, token: str, permit: dict, operation: dict) -> dict:
+        if isinstance(operation, dict) and operation.get("operation") == "materialize_successor":
+            return self.materialize_successor(token, permit, operation)
         recovery.exact(operation, {"operation", "effect_id"}, "provider operation")
         if operation["operation"] != "create_ref":
             raise TransitionError("provider operation lacks a native CAS/readback contract")
@@ -305,6 +317,291 @@ class GitHubAuthorityProvider:
             observed = db.execute("SELECT status, receipt FROM provider_effects WHERE id=?", (effect_id,)).fetchone()
             if observed != ("VERIFIED", canonical_json_bytes(receipt)):
                 raise TransitionError("provider ledger readback mismatch")
+        return receipt
+
+    SUCCESSOR_QUERY = ("mutation($input:CreateCommitOnBranchInput!){"
+        "createCommitOnBranch(input:$input){clientMutationId commit{oid tree{oid}}}}")
+    INTEGRITY_PATHS = frozenset({"REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256", "SHA256SUMS.txt"})
+    EVIDENCE_PATHS = frozenset(['formalization/QIKVRT_Formalization_v2.0/claims/TEX_ENVIRONMENTS.json', 'formalization/QIKVRT_Formalization_v2.0/claims/APPENDIX_MATRIX.json', 'formalization/QIKVRT_Formalization_v2.0/claims/CLAIM_GRAPH.json', 'formalization/QIKVRT_Formalization_v2.0/MANUSCRIPT_PROOF_MAP.md', 'formalization/QIKVRT_Formalization_v2.0/VERIFICATION_REPORT.md', 'formalization/QIKVRT_Formalization_v2.0/proofs/PROOF_OBJECT_MANIFEST.json', 'release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip', 'release/formalization-v2/QIKVRT_Formalization_v2.0-alpha.2.zip.sha256', 'release/formalization-v2/ZENODO_SHA256SUMS-alpha.2', 'release/formalization-v2-alpha2-zenodo.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-2581811b342e505d', 'work-units/EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_172DD9BC2738FA43.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-172dd9bc2738fa43', 'work-units/EXTRACT_ARCHIVE_CONTENT_THEN_DISPOSITION_CLAIMS_BATCH_003_SUBJECT_B4849E1A2D6B2270.json', 'docs/publications/2026-08-04-aphorism-corpus-scientific-assessment', 'docs/publications/index.json', 'docs/publications/index.html', 'work-units/MATERIALIZE_APHORISM_CORPUS_SCIENTIFIC_ASSESSMENT_V2.json', 'AI_PROGRESS.json', 'AI_STATUS.md', 'REPOSITORY_FILE_MANIFEST.json', 'REPOSITORY_FILE_MANIFEST.json.sha256', 'SHA256SUMS.txt', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/CONTENT_DISPOSITION_BATCH_003_RECEIPT.json', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-b4849e1a2d6b2270', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-7956d8acdc473825', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-ce2390f18618ad0c', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-780b9bf86425cee3', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/content-disposition-batch-003/subject-dispositions/SUBJECT-7fdb36aa7c07c07d', 'release/zenodo-corpus-proof-2026-07-28/canonical-union/retrospective-proof-corpus', 'work-units/CREATE_VERSIONED_CORRECTED_CANDIDATES_REMAINING_CORPUS_SUBJECTS.json', 'work-units/REQUEST_SEPARATE_ZENODO_MUTATION_AUTHORIZATION_RETROSPECTIVE_PROOF_CORPUS.json', 'fi'])
+
+    @classmethod
+    def successor_path_allowed(cls, profile: str, path: str) -> bool:
+        recovery.safe_path(path)
+        if profile == "ci_integrity":
+            return path in cls.INTEGRITY_PATHS
+        if profile == "repository_evidence":
+            return path in cls.EVIDENCE_PATHS or any(
+                path.startswith(prefix + "/") for prefix in cls.EVIDENCE_PATHS
+                if prefix.startswith(("release/", "docs/publications/")))
+        return False
+
+    @classmethod
+    def validate_successor(cls, operation: dict) -> None:
+        recovery.exact(operation, {"operation", "effect_id", "profile", "ref",
+            "expected_head", "expected_tree", "tree", "files"}, "successor operation")
+        if operation["operation"] != "materialize_successor":
+            raise TransitionError("unsupported successor operation")
+        if not isinstance(operation["effect_id"], str) or not re.fullmatch(
+                r"[A-Za-z0-9_.:-]{1,128}", operation["effect_id"]):
+            raise TransitionError("invalid successor key")
+        ref = operation["ref"]
+        if (not isinstance(ref, str) or len(ref) > 240 or not re.fullmatch(
+                r"refs/heads/(?:work|agent)/[A-Za-z0-9/_.-]+", ref)
+                or ".." in ref or "//" in ref or ref.endswith(("/", ".", ".lock"))):
+            raise TransitionError("successor target is not an admitted review branch")
+        for field in ("expected_head", "expected_tree", "tree"):
+            if not isinstance(operation[field], str) or not re.fullmatch(r"[0-9a-f]{40}", operation[field]):
+                raise TransitionError("invalid successor Git identity")
+        files = operation["files"]
+        if not isinstance(files, list) or not 1 <= len(files) <= 128:
+            raise TransitionError("successor file count outside contract")
+        paths, total = [], 0
+        for file in files:
+            recovery.exact(file, {"path", "contents", "sha256", "blob"}, "successor bytes")
+            path = file["path"]
+            if not cls.successor_path_allowed(operation["profile"], path):
+                raise TransitionError("successor path outside materialization profile")
+            try:
+                if not isinstance(file["contents"], str) or len(file["contents"]) > 700000:
+                    raise ValueError("successor bytes exceed bound")
+                raw = base64.b64decode(file["contents"], validate=True)
+            except (ValueError, TypeError) as exc:
+                raise TransitionError("invalid successor byte encoding") from exc
+            if (base64.b64encode(raw).decode() != file["contents"]
+                    or hashlib.sha256(raw).hexdigest() != file["sha256"]
+                    or cls._git_oid("blob", raw) != file["blob"]):
+                raise TransitionError("successor exact bytes mismatch")
+            paths.append(path)
+            total += len(raw)
+        if paths != sorted(set(paths)) or total > 512 * 1024:
+            raise TransitionError("successor duplicate/order/capacity boundary")
+        if operation["tree"] == operation["expected_tree"]:
+            raise TransitionError("empty successor is not an effect")
+
+    @staticmethod
+    def _git_oid(kind: str, raw: bytes) -> str:
+        return hashlib.sha1(kind.encode() + b" " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+
+    @classmethod
+    def _successor_payload(cls, document: dict) -> dict:
+        return {"query": cls.SUCCESSOR_QUERY, "variables": {"input": {
+            "branch": {"repositoryNameWithOwner": document["repository"],
+                       "branchName": document["ref"].removeprefix("refs/heads/")},
+            "expectedHeadOid": document["expected_head"],
+            "clientMutationId": document["effect_id"],
+            "message": {"headline": document["message"]},
+            "fileChanges": {"additions": [
+                {"path": f["path"], "contents": f["contents"]} for f in document["files"]]}}}}
+
+    @staticmethod
+    def _target_admission(db, document: dict, state: dict) -> None:
+        db.execute("""CREATE TABLE IF NOT EXISTS provider_targets (
+            repository TEXT NOT NULL, ref TEXT NOT NULL, head TEXT NOT NULL, tree TEXT NOT NULL,
+            PRIMARY KEY(repository, ref))""")
+        row = db.execute("SELECT head, tree FROM provider_targets WHERE repository=? AND ref=?",
+                         (document["repository"], document["ref"])).fetchone()
+        # First registration may only start at the owner's active exact target.
+        expected = row or (state["binding"]["head"], state["binding"]["tree"])
+        if expected != (document["expected_head"], document["expected_tree"]):
+            raise TransitionError("successor predecessor outside current durable target")
+
+    def _tree_entries(self, oid: str) -> list[dict]:
+        status, tree = self._request("GET", "git/trees/" + oid)
+        if status != 200 or tree.get("sha") != oid or tree.get("truncated") is not False:
+            raise TransitionError("native TREE readback missing or truncated")
+        entries = tree.get("tree")
+        if not isinstance(entries, list):
+            raise TransitionError("invalid native TREE")
+        names = set()
+        raw_entries = []
+        for entry in entries:
+            if not isinstance(entry, dict):
+                raise TransitionError("invalid native TREE entry object")
+            name, mode, sha, kind = (entry.get(k) for k in ("path", "mode", "sha", "type"))
+            if (not isinstance(name, str) or not name or "/" in name or "\0" in name
+                    or name in {".", ".."} or name in names or mode not in {"040000", "100644", "100755", "120000", "160000"}
+                    or not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha)
+                    or kind != ("tree" if mode == "040000" else "commit" if mode == "160000" else "blob")):
+                raise TransitionError("invalid native TREE entry")
+            names.add(name)
+            raw_entries.append({"path": name, "mode": mode, "sha": sha, "type": kind})
+        if self._tree_oid(raw_entries) != oid:
+            raise TransitionError("native TREE exact bytes mismatch")
+        return raw_entries
+
+    @classmethod
+    def _tree_oid(cls, entries: list[dict]) -> str:
+        ordered = sorted(entries, key=lambda e: e["path"].encode() + (b"/" if e["type"] == "tree" else b""))
+        raw = b"".join(e["mode"].lstrip("0").encode() + b" " + e["path"].encode() + b"\0" +
+                       bytes.fromhex(e["sha"]) for e in ordered)
+        return cls._git_oid("tree", raw)
+
+    def _patched_tree(self, oid: str | None, files: list[dict], prefix: str = "") -> str:
+        entries = {e["path"]: e for e in self._tree_entries(oid)} if oid else {}
+        grouped = {}
+        for file in files:
+            tail = file["path"][len(prefix):]
+            first = tail.split("/", 1)[0]
+            grouped.setdefault(first, []).append(file)
+        for name, group in grouped.items():
+            old = entries.get(name)
+            if group[0]["path"] == prefix + name:
+                if len(group) != 1 or old and old["mode"] != "100644":
+                    raise TransitionError("successor may only replace regular nonexecutable blobs")
+                entries[name] = {"path": name, "mode": "100644", "type": "blob", "sha": group[0]["blob"]}
+            else:
+                if old and old["type"] != "tree":
+                    raise TransitionError("successor directory conflict")
+                child = self._patched_tree(old["sha"] if old else None, group, prefix + name + "/")
+                entries[name] = {"path": name, "mode": "040000", "type": "tree", "sha": child}
+        return self._tree_oid(list(entries.values()))
+
+    def _successor_readback(self, document: dict) -> str:
+        status, ref = self._request("GET", "git/ref/" + document["ref"].removeprefix("refs/"))
+        if not isinstance(ref.get("object"), dict):
+            raise TransitionError("successor native ref object missing")
+        sha = ref["object"].get("sha")
+        if (status != 200 or ref.get("ref") != document["ref"]
+                or ref.get("object", {}).get("type") != "commit"
+                or not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha)
+                or sha == document["expected_head"]):
+            raise TransitionError("successor ref readback absent or unchanged; no retry")
+        status, commit = self._request("GET", "git/commits/" + sha)
+        if (not isinstance(commit.get("tree"), dict) or not isinstance(commit.get("parents"), list)
+                or not all(isinstance(parent, dict) for parent in commit["parents"])
+                or status != 200 or commit.get("sha") != sha or commit.get("tree", {}).get("sha") != document["tree"]
+                or [p.get("sha") for p in commit.get("parents", [])] != [document["expected_head"]]
+                or commit.get("message") != document["message"]):
+            raise TransitionError("successor commit/parent/TREE/intent readback mismatch")
+        if self._patched_tree(document["expected_tree"], document["files"]) != document["tree"]:
+            raise TransitionError("successor delta violates native TREE scope")
+        # Traverse the actual successor TREE, then redownload every exact changed blob.
+        for file in document["files"]:
+            current = document["tree"]
+            components = file["path"].split("/")
+            for index, component in enumerate(components):
+                match = [e for e in self._tree_entries(current) if e["path"] == component]
+                if len(match) != 1:
+                    raise TransitionError("successor native path missing")
+                entry = match[0]
+                if index < len(components) - 1:
+                    if entry["type"] != "tree":
+                        raise TransitionError("successor path TREE mismatch")
+                    current = entry["sha"]
+                elif entry["sha"] != file["blob"] or entry["mode"] != "100644":
+                    raise TransitionError("successor native blob binding mismatch")
+            status, blob = self._request("GET", "git/blobs/" + file["blob"])
+            try:
+                raw = base64.b64decode("".join(blob["content"].splitlines()), validate=True)
+            except (KeyError, ValueError, TypeError) as exc:
+                raise TransitionError("successor byte readback missing") from exc
+            if (status != 200 or blob.get("encoding") != "base64" or blob.get("sha") != file["blob"]
+                    or blob.get("size") != len(raw) or base64.b64encode(raw).decode() != file["contents"]
+                    or self._git_oid("blob", raw) != file["blob"]
+                    or hashlib.sha256(raw).hexdigest() != file["sha256"]):
+                raise TransitionError("successor native byte readback mismatch")
+        status, final = self._request("GET", "git/ref/" + document["ref"].removeprefix("refs/"))
+        if status != 200 or final != ref:
+            raise TransitionError("successor ref changed during readback")
+        return sha
+
+    def materialize_successor(self, token: str, permit: dict, operation: dict) -> dict:
+        self.validate_successor(operation)
+        # Both profiles share the original journal, credentials, lock and permit issuer.
+        with self.cp.transaction() as db:
+            state = self.cp.provider_admission(db, token, permit, self.repository)
+            document = {"schema": "qikvrt_github_materialize_intent_v1", **operation,
+                "repository": self.repository, "permit": permit, "binding": state["binding"]}
+            document["message"] = "qikvrt " + operation["profile"] + " intent " + recovery.digest(canonical_json_bytes(document))
+            self._journal(db)
+            prior = db.execute("SELECT document, status FROM provider_effects WHERE id=?", (operation["effect_id"],)).fetchone()
+            if prior:
+                if decode(prior[0]) != document:
+                    raise TransitionError("successor replay binding conflict")
+                if prior[1] == "REJECTED":
+                    raise TransitionError("successor key permanently rejected")
+            else:
+                self._target_admission(db, document, state)
+                if db.execute("SELECT 1 FROM provider_effects WHERE status IN ('PREPARED','PENDING') LIMIT 1").fetchone():
+                    raise TransitionError("unresolved provider effect blocks new mutations")
+                db.execute("INSERT INTO provider_effects VALUES (?, ?, 'PREPARED', NULL)",
+                           (operation["effect_id"], canonical_json_bytes(document)))
+                state["revision"] += 1
+                self.cp.store(db, state)
+        dispatch = False
+        rejected = False
+        with self.cp.transaction() as db:
+            state = self.cp.provider_admission(db, token, permit, self.repository)
+            phase = db.execute("SELECT status FROM provider_effects WHERE id=?", (operation["effect_id"],)).fetchone()[0]
+            if phase == "REJECTED":
+                raise TransitionError("successor key permanently rejected")
+            if phase == "PREPARED":
+                self._target_admission(db, document, state)
+                status, ref = self._request("GET", "git/ref/" + document["ref"].removeprefix("refs/"))
+                status_c, commit = self._request("GET", "git/commits/" + document["expected_head"])
+                rejected = (status != 200 or ref.get("ref") != document["ref"]
+                    or not isinstance(ref.get("object"), dict)
+                    or ref.get("object", {}).get("type") != "commit"
+                    or ref.get("object", {}).get("sha") != document["expected_head"]
+                    or not isinstance(commit.get("tree"), dict)
+                    or status_c != 200 or commit.get("sha") != document["expected_head"]
+                    or commit.get("tree", {}).get("sha") != document["expected_tree"])
+                if not rejected and self._patched_tree(document["expected_tree"], document["files"]) != document["tree"]:
+                    rejected = True
+                db.execute("UPDATE provider_effects SET status=? WHERE id=?",
+                    ("REJECTED" if rejected else "PENDING", operation["effect_id"]))
+                dispatch = not rejected
+        if rejected:
+            raise TransitionError("successor predecessor/TREE conflict")
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            if dispatch:
+                status, body = self._request("POST", "graphql", self._successor_payload(document),
+                    admission=(db, token, permit, document))
+                if status in {409, 422}:
+                    rejected = True
+                    db.execute("UPDATE provider_effects SET status='REJECTED' WHERE id=?", (operation["effect_id"],))
+                elif status != 200 or body.get("errors") or not isinstance(body.get("data"), dict):
+                    raise TransitionError("successor transport outcome ambiguous; GET-only reconciliation")
+                else:
+                    result = body["data"].get("createCommitOnBranch")
+                    if (not isinstance(result, dict) or not isinstance(result.get("commit"), dict)
+                            or not isinstance(result["commit"].get("tree"), dict)
+                            or result.get("clientMutationId") != document["effect_id"]
+                            or not re.fullmatch(r"[0-9a-f]{40}", str(result.get("commit", {}).get("oid")))
+                            or result.get("commit", {}).get("tree", {}).get("oid") != document["tree"]):
+                        raise TransitionError("successor mutation result unbound; GET-only reconciliation")
+            if not rejected:
+                sha = self._successor_readback(document)
+                if dispatch and sha != result["commit"]["oid"]:
+                    raise TransitionError("successor mutation/ref identity mismatch")
+                receipt = {"schema": "qikvrt_github_materialize_readback_v1",
+                    **{k: document[k] for k in ("repository", "permit", "binding", "profile", "effect_id", "ref", "expected_head", "expected_tree", "tree")},
+                    "sha": sha, "intent_sha256": recovery.digest(canonical_json_bytes(document)),
+                    "files": [{k: f[k] for k in ("path", "sha256", "blob")} for f in document["files"]],
+                    "replayed": prior is not None, "fresh_provider_readback": True,
+                    "native_ref_commit_tree_bytes_verified": True, "durable_ledger_readback": True,
+                    "observed_utc": datetime.now(timezone.utc).isoformat(),
+                    "provider_authority_fencing_verified": False, "effect_ack_done": False,
+                    "effect_scope": "BROKER_NATIVE_EXPECTED_HEAD_MATERIALIZATION"}
+                # A replay cannot regress a later accepted target watermark.
+                row = db.execute("SELECT head, tree FROM provider_targets WHERE repository=? AND ref=?",
+                    (self.repository, document["ref"])).fetchone()
+                if row and row not in {(document["expected_head"], document["expected_tree"]), (sha, document["tree"])}:
+                    raise TransitionError("durable successor target advanced")
+                db.execute("INSERT OR REPLACE INTO provider_targets VALUES (?, ?, ?, ?)",
+                    (self.repository, document["ref"], sha, document["tree"]))
+                db.execute("UPDATE provider_effects SET status='VERIFIED', receipt=? WHERE id=?",
+                    (canonical_json_bytes(receipt), operation["effect_id"]))
+        if rejected:
+            raise TransitionError("native successor CAS rejected; no mutation retry")
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            row = db.execute("SELECT status, document, receipt FROM provider_effects WHERE id=?", (operation["effect_id"],)).fetchone()
+            target = db.execute("SELECT head, tree FROM provider_targets WHERE repository=? AND ref=?", (self.repository, document["ref"])).fetchone()
+            if row != ("VERIFIED", canonical_json_bytes(document), canonical_json_bytes(receipt)) or target != (sha, document["tree"]):
+                raise TransitionError("durable successor ledger readback mismatch")
         return receipt
 
 

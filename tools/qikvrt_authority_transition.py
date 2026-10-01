@@ -439,6 +439,7 @@ def secret_file(path: Path) -> str:
 # Conservative source admission gate. This inventories current runnable bytes;
 # it cannot revoke credentials or disable historical workflow runs at GitHub.
 WRITER_SIGNAL = re.compile(
+    r"QIKVRT_GITHUB_BROKER_TOKEN|"
     r"(?:\bgit\b[^\n]{0,100}\b(?:push|send-pack)\b|"
     r"[\"'](?:git|--method)[\"'][\s,]+[\"'](?:push|POST|PATCH|PUT|DELETE)[\"']|"
     r"\bgh\s+(?:api[^\n]*(?:--method|-X)\s+(?:POST|PATCH|PUT|DELETE)|"
@@ -452,7 +453,7 @@ WRITER_SIGNAL = re.compile(
     r"requests\.(?:post|put|patch|delete)\s*\(|curl\b[^\n]*(?:--data|--json|-d\s)|"
     r"\w+:\s*write\b|persist-credentials:\s*true|"
     r"secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)|create-github-app-token)", re.I)
-PROVIDER_SIGNAL = re.compile(r"GITHUB_TOKEN|GH_TOKEN|github\.token|api\.github\.com|"
+PROVIDER_SIGNAL = re.compile(r"GITHUB_TOKEN|QIKVRT_GITHUB_BROKER_TOKEN|GH_TOKEN|github\.token|api\.github\.com|"
     r"GITHUB_API_BASE|NO_BYPASS:|github_zenodo_release_publish|incoming[/\\]|\bgit\b|\bgh\b|secrets\.(?:QIKVRT_)?(?:GITHUB|MESH|RULESET)")
 RUNNABLE_SUFFIXES = {'.py', '.sh', '.bash', '.ps1', '.cmd', '.bat', '.js', '.mjs', '.cjs', '.ts',
                      '.yml', '.yaml', '.c', '.h', '.cpp', '.go', '.rs', '.cs', '.rb', '.pl', '.php'}
@@ -595,8 +596,17 @@ def audit_repository_writers(root: Path = ROOT) -> dict:
                         errors.append(job + ': disabled job must have empty permissions')
                     continue
                 active = '\n'.join(line for line in body.splitlines() if not line.lstrip().startswith('#'))
-                units.append({'job': job, 'admission': 'READ_ONLY_OR_LOCAL', 'native_permissions': 'READ_ONLY',
-                              'provider_effect': 'NONE_ADMITTED'})
+                broker_profile = {('.github/workflows/qikvrt_ci.yml', 'test'): 'ci_integrity',
+                    ('.github/workflows/qikvrt_batch04_integrity.yml', 'materialize'): 'repository_evidence'}.get((relative, job))
+                mediated = 'tools/qikvrt_authority_transition.py publish-successor' in active
+                if mediated and (broker_profile is None or active.count('publish-successor') != 1
+                        or active.count('--profile ' + broker_profile) != 1
+                        or '--target-ref "$TARGET_REF"' not in active
+                        or '--expected-head "$' not in active):
+                    errors.append(job + ': unbound broker materialization entrypoint')
+                units.append({'job': job, 'admission': 'EXISTING_AUTHORITY_BROKER_REQUIRED' if mediated else 'READ_ONLY_OR_LOCAL',
+                              'native_permissions': 'READ_ONLY', 'profile': broker_profile if mediated else None,
+                              'provider_effect': 'NATIVE_EXPECTED_HEAD_CAS_AND_DURABLE_READBACK' if mediated else 'NONE_ADMITTED'})
                 if WRITER_SIGNAL.search(active):
                     errors.append(job + ': unbrokered active writer/capability')
                 if re.search(r'incoming[/\\]', active):
@@ -684,7 +694,7 @@ def audit_repository_writers(root: Path = ROOT) -> dict:
                 category = 'OTHER_PROVIDER_NOT_GITHUB_REPOSITORY_WRITE'
             else:
                 errors.append('raw writer outside current Authority broker')
-        if category == 'READ_ONLY_OR_LOCAL_NON_PROVIDER' and re.search(r'GITHUB_TOKEN|GH_TOKEN|github\.token', source):
+        if category == 'READ_ONLY_OR_LOCAL_NON_PROVIDER' and re.search(r'GITHUB_TOKEN|QIKVRT_GITHUB_BROKER_TOKEN|GH_TOKEN|github\.token', source):
             errors.append('raw provider capability in unreviewed operational source')
         if category == 'READ_ONLY_OR_LOCAL_NON_PROVIDER' and re.search(r'(?:GITHUB_TOKEN|GH_TOKEN|api\.github\.com)', source) and (
                 re.search(r'method\s*=\s*(?:method|["\'](?:POST|PATCH|PUT|DELETE))', source)):
@@ -702,8 +712,133 @@ def audit_repository_writers(root: Path = ROOT) -> dict:
         'provider_authority_fencing_verified': False, 'effect_ack_done': False}
 
 
+def publish_successor(arguments: list[str]) -> int:
+    """Existing Authority CLI -> same provider; no separate writer/issuer.
+
+    The existing authenticated local shim retains the database and provider
+    credential. This client only receives private API/writer capability and
+    permit files. Hosted runners without them return HOLD. No private database,
+    provider bearer or permit issuer is added to the workflow client.
+    """
+    import base64
+    import hashlib
+    from src.qikvrt_github_api_shim import GitHubAuthorityProvider, PROVIDER_REPOSITORY
+    parser = argparse.ArgumentParser(description="Bound native-CAS materialization")
+    parser.add_argument("--profile", choices=("ci_integrity", "repository_evidence"), required=True)
+    parser.add_argument("--target-ref", required=True)
+    parser.add_argument("--expected-head", required=True)
+    parser.add_argument("--receipt", type=Path, required=True)
+    args = parser.parse_args(arguments)
+    try:
+        configuration = [os.environ.get(key, "") for key in (
+            "QIKVRT_AUTHORITY_API_TOKEN_FILE", "QIKVRT_AUTHORITY_WRITER_FILE", "QIKVRT_AUTHORITY_PERMIT_FILE")]
+        if not all(configuration):
+            result = {"state": "HOLD", "reason": "BROKER_CAPABILITY_NOT_PROVISIONED",
+                      "productive_provider_effect": False, "effect_ack_done": False}
+            args.receipt.parent.mkdir(parents=True, exist_ok=True)
+            args.receipt.write_bytes(canonical_json_bytes(result))
+            sys.stdout.buffer.write(canonical_json_bytes(result))
+            return 78
+        paths = [Path(value) for value in configuration]
+        for path in paths:
+            if not path.is_absolute() or path.resolve().is_relative_to(ROOT.resolve()):
+                raise TransitionError("private broker state must be outside source checkout")
+            private_path(path, existing=True)
+        from scripts.qikvrt_api_client import NoRedirectHandler, read_response, read_regular_file
+        from src.qikvrt_api_handler import decode_secret_material
+        import urllib.request
+        import urllib.error
+        from urllib.parse import urlparse
+        api_token = read_regular_file(paths[0], max_bytes=256).decode("ascii").strip()
+        decode_secret_material(api_token, field="QIKVRT_API_TOKEN")
+        writer = secret_file(paths[1])
+        permit = decode(recovery.read_file(paths[2]))
+        base = os.environ.get("QIKVRT_AUTHORITY_BROKER_URL", "http://127.0.0.1:8766")
+        parsed = urlparse(base)
+        if (parsed.scheme not in {"http", "https"} or parsed.hostname not in {"127.0.0.1", "localhost", "::1"}
+                or parsed.username or parsed.password or parsed.path not in {"", "/"}
+                or parsed.query or parsed.fragment):
+            raise TransitionError("only the existing local authenticated shim is admitted")
+        head = recovery.git_command(ROOT, "rev-parse", "HEAD^{commit}")
+        if head != args.expected_head:
+            raise TransitionError("materializer checkout is stale")
+        staged = recovery.git_command(ROOT, "diff", "--cached", "--name-only", "-z", head).split("\0")
+        files = []
+        for relative in sorted(set(staged) - {""}):
+            if not GitHubAuthorityProvider.successor_path_allowed(args.profile, relative):
+                raise TransitionError("staged materialization includes unsupported path")
+            entry = recovery.git_command(ROOT, "ls-files", "--stage", "--", relative)
+            mode, oid, stage_path = entry.split(" ", 2)
+            if mode != "100644" or stage_path != "0\t" + relative:
+                raise TransitionError("staged materialization is not a regular single blob")
+            # Git cat-file emits arbitrary binary bytes; use the existing bounded
+            # runner rather than the text-normalizing offline git_command helper.
+            size = int(recovery.git_command(ROOT, "cat-file", "-s", oid))
+            if size > 512 * 1024:
+                raise TransitionError("staged bytes exceed bound")
+            read = subprocess.run(["git", "-C", str(ROOT), "cat-file", "blob", oid],
+                capture_output=True, timeout=30, env={"PATH": os.environ.get("PATH", ""),
+                    "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
+                    "GIT_NO_REPLACE_OBJECTS": "1", "GIT_NO_LAZY_FETCH": "1",
+                    "GIT_ALLOW_PROTOCOL": "file", "GIT_TERMINAL_PROMPT": "0"})
+            if read.returncode or len(read.stdout) > 512 * 1024:
+                raise TransitionError("staged bytes unavailable or beyond bound")
+            raw = read.stdout
+            files.append({"path": relative, "contents": base64.b64encode(raw).decode(),
+                "sha256": hashlib.sha256(raw).hexdigest(), "blob": oid})
+        operation = {"operation": "materialize_successor", "profile": args.profile,
+            "ref": "refs/heads/" + args.target_ref, "expected_head": head,
+            "expected_tree": recovery.git_command(ROOT, "rev-parse", head + "^{tree}"),
+            "tree": recovery.git_command(ROOT, "write-tree"), "files": files}
+        operation["effect_id"] = "materialize:" + recovery.digest(canonical_json_bytes(operation))
+        GitHubAuthorityProvider.validate_successor(operation)
+        url = base.rstrip("/") + "/repos/" + PROVIDER_REPOSITORY + "/qikvrt/authority/effects"
+        request = urllib.request.Request(url, method="POST", data=canonical_json_bytes({
+            "writer_capability": writer, "permit": permit, "operation": operation}), headers={
+                "Content-Type": "application/json", "Authorization": "Bearer " + api_token})
+        try:
+            response = urllib.request.build_opener(NoRedirectHandler()).open(request, timeout=30)
+        except urllib.error.HTTPError as exc:
+            response = exc
+        with response:
+            if response.status != 200 or response.geturl() != url:
+                raise TransitionError("existing broker did not verify materialization")
+            raw_result = read_response(response)
+        if writer in raw_result or api_token in raw_result:
+            raise TransitionError("broker returned private capability material")
+        reply = parse_json_bytes(raw_result.encode(), "authority broker response")
+        if not isinstance(reply, dict):
+            raise TransitionError("invalid broker response object")
+        result = reply.get("provider_result")
+        if (reply.get("status") != "CONTINUE" or not isinstance(result, dict)
+                or result.get("permit") != permit or result.get("repository") != PROVIDER_REPOSITORY
+                or any(result.get(field) != operation[field] for field in (
+                    "effect_id", "profile", "ref", "expected_head", "expected_tree", "tree"))
+                or result.get("files") != [{k: f[k] for k in ("path", "sha256", "blob")} for f in files]
+                or not re.fullmatch(r"[0-9a-f]{40}", str(result.get("sha")))
+                or result.get("native_ref_commit_tree_bytes_verified") is not True
+                or result.get("durable_ledger_readback") is not True
+                or result.get("effect_ack_done") is not False):
+            raise TransitionError("broker materialization readback does not bind this request")
+        result = {"state": "CONTINUE", "productive_provider_effect": True, **result}
+        args.receipt.parent.mkdir(parents=True, exist_ok=True)
+        args.receipt.write_bytes(canonical_json_bytes(result))
+        sys.stdout.buffer.write(canonical_json_bytes(result))
+        return 0
+    except (TransitionError, OSError, RuntimeError, ValueError, TypeError):
+        result = {"state": "BLOCK", "reason": "BROKER_MATERIALIZATION_NOT_VERIFIED",
+                  "productive_provider_effect": None, "productive_provider_effect_verified": False,
+                  "transport_outcome": "UNVERIFIED_RECONCILE_EXISTING_INTENT", "effect_ack_done": False}
+        args.receipt.parent.mkdir(parents=True, exist_ok=True)
+        args.receipt.write_bytes(canonical_json_bytes(result))
+        sys.stdout.buffer.write(canonical_json_bytes(result))
+        return 78
+
+
 def main(argv: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if argv is None else argv)
+    if arguments[:1] == ["publish-successor"]:
+        return publish_successor(arguments[1:])
     if arguments[:1] == ["audit-writers"]:
         audit_parser = argparse.ArgumentParser(description="Read-only GitHub writer source admission")
         audit_parser.add_argument("operation", choices=["audit-writers"])

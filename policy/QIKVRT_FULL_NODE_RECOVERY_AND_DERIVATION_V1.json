@@ -27,12 +27,13 @@
         "admission": "FRESH_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_FENCE_TARGET_ACTIVE_ROLE_UNDER_TAKEOVER_LOCK",
         "all_other_repository_mutations": "DENY_UNTIL_VERSIONED_NATIVE_CAS_IDEMPOTENCY_READBACK_CONTRACT",
         "allowed_mutations": [
-          "create_ref"
+          "create_ref",
+          "materialize_successor"
         ],
         "ambiguous_dispatch_recovery": "GET_ONLY_NO_BLIND_RETRY",
         "authority_root_provider_capability_verified": false,
         "bypass_credentials_revoked": false,
-        "credentials": "EXISTING_GITHUB_TOKEN_PRIVATE_ENVIRONMENT_WITH_OWNER_BOUND_MIRROR_CONTENTS_SCOPE_AND_FUTURE_QIKVRT_GITHUB_TOKEN_EXPIRES_UTC",
+        "credentials": "PRIVATE_SHIM_ONLY_QIKVRT_GITHUB_BROKER_TOKEN_WITH_FUTURE_QIKVRT_GITHUB_BROKER_TOKEN_EXPIRES_UTC_NO_AMBIENT_WORKFLOW_TOKEN",
         "effect_ack_done": false,
         "implementation": "src/qikvrt_github_api_shim.py",
         "journal": "EXISTING_PRIVATE_CONTROL_PLANE_ADDITIVE_PROVIDER_EFFECTS_TABLE",
@@ -44,6 +45,68 @@
         ],
         "live_provider_authority_effect_verified": false,
         "local_route": "POST /repos/{owner}/{repo}/qikvrt/authority/effects",
+        "materialization_successor": {
+          "accepted_target_watermark": "ADDITIVE_PROVIDER_TARGETS_TABLE_IN_SAME_PRIVATE_CONTROL_PLANE",
+          "bounds": {
+            "max_decoded_bytes": 524288,
+            "max_files": 128,
+            "over_capacity": "BLOCK_NO_PERMISSION_FALLBACK"
+          },
+          "client": "tools/qikvrt_authority_transition.py publish-successor",
+          "deletions_executable_symlink_and_submodule_changes": "BLOCK_REQUIRES_VERSIONED_CONTRACT",
+          "effect_ack_done": false,
+          "intent": "SAME_PROVIDER_EFFECTS_PREPARED_PENDING_VERIFIED_REJECTED_DURABLE_BEFORE_TRANSPORT",
+          "main_promotion_or_arbitrary_source_edits": false,
+          "missing_configuration": "HOLD_BROKER_CAPABILITY_NOT_PROVISIONED_EXIT_78",
+          "native_cas": "GraphQL createCommitOnBranch expectedHeadOid; one atomic commit-and-ref effect",
+          "permit_and_intent_bindings": [
+            "control_plane_epoch",
+            "authority_epoch",
+            "node_id",
+            "fence",
+            "repository",
+            "ref",
+            "expected_head",
+            "expected_tree",
+            "effect_id",
+            "profile",
+            "tree",
+            "exact_file_bytes_sha256_git_blob"
+          ],
+          "private_client_inputs": [
+            "QIKVRT_AUTHORITY_API_TOKEN_FILE",
+            "QIKVRT_AUTHORITY_WRITER_FILE",
+            "QIKVRT_AUTHORITY_PERMIT_FILE"
+          ],
+          "private_database_or_provider_bearer_required_in_workflow": false,
+          "productive_provider_effect_verified": false,
+          "profiles": [
+            "ci_integrity",
+            "repository_evidence"
+          ],
+          "provider_capability_exposed_to_client": false,
+          "provider_documentation": [
+            "https://docs.github.com/en/graphql/reference/commits",
+            "https://docs.github.com/en/graphql/reference/input-objects#createcommitonbranchinput"
+          ],
+          "readbacks": [
+            "native_ref",
+            "native_commit",
+            "single_parent",
+            "intent_message",
+            "exact_tree_encoding",
+            "native_path_blob",
+            "exact_blob_bytes",
+            "final_ref",
+            "separate_durable_ledger_and_target"
+          ],
+          "review_refs_only": [
+            "refs/heads/work/",
+            "refs/heads/agent/"
+          ],
+          "transport": "EXISTING_AUTHENTICATED_LOOPBACK_API_SHIM_ONLY",
+          "unknown_transport": "PENDING_GET_ONLY_NO_BLIND_RETRY_NO_NEW_WRITER_OR_TAKEOVER"
+        },
         "pending_blocks_takeover_and_new_mutations": true,
         "provider_cas": "NATIVE_CREATE_ONLY_ABSENT_REF_TO_COMMIT",
         "provider_repository_allowlist": [
@@ -55,14 +118,14 @@
           "acceptance_test": "tests/test_qikvrt_github_authority_provider.py",
           "active_incoming_or_documentary_writer_invocation": "BLOCK",
           "all_runnable_current_and_untracked_candidate_files_considered": true,
-          "ci_successor_remote_push": "DENIED_BEFORE_PROVIDER_EFFECT",
+          "ci_successor_remote_push": "REMOVED_REPLACED_BY_EXISTING_SHIM_NATIVE_EXPECTED_HEAD_CAS",
           "command": "python3 -B tools/qikvrt_authority_transition.py audit-writers",
           "compatibility_dispatch_client": "LOOPBACK_LOCAL_SHIM_ONLY",
           "effect_ack_done": false,
           "historical_incoming_documentary_test_and_readonly_paths_are_distinct": true,
           "historical_workflow_runs_and_external_credentials_revoked": false,
           "implementation": "tools/qikvrt_authority_transition.py",
-          "inventory": "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V1.json",
+          "inventory": "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V2.json",
           "legacy_github_git_data_transports": "NON_GET_DENIED_BEFORE_REAL_OR_INJECTED_TRANSPORT",
           "legacy_owner_release_cli": "PRODUCTIVE_BRANCH_REMOVED_DRY_RUN_LOCAL_SELFTEST_RETAINED",
           "live_bound_mirror_provider_effect_verified": false,
@@ -85,12 +148,12 @@
           "scope": "CURRENT_CANDIDATE_SOURCE_GITHUB_REPOSITORY_WRITERS_ONLY",
           "source_deactivation_is_historical_credential_revocation": false,
           "static_source_gate_is_a_formal_complete_mediation_proof": false,
-          "supported_writer": "EXISTING_AUTHORITY_CONTROL_PLANE_AND_CREATE_ONLY_PROVIDER_BROKER",
+          "supported_writer": "EXISTING_AUTHORITY_CONTROL_PLANE_GITHUB_AUTHORITY_PROVIDER_ONLY",
           "trusted_main_activation_verified": false,
-          "unsupported_writer_jobs": "LITERAL_FALSE_WITH_EMPTY_NATIVE_PERMISSIONS"
+          "unsupported_writer_jobs": "37_LITERAL_FALSE_WITH_EMPTY_NATIVE_PERMISSIONS; evidence materialize is read-only broker client"
         },
         "repository_wide_provider_fencing_verified": false,
-        "target": "ACTIVE_VERIFIED_RESTORED_HEAD_AND_TREE_ONLY",
+        "target": "ACTIVE_VERIFIED_RESTORED_HEAD_TREE_OR_DURABLE_PROVIDER_TARGET_SUCCESSOR_REVIEW_BRANCH_ONLY",
         "test_success_is_production_acceptance": false
       },
       "implementation": "tools/qikvrt_authority_transition.py",
