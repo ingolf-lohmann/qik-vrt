@@ -127,6 +127,38 @@ class TcpIpEndToEndTests(unittest.TestCase):
     def workflow(inputs: dict[str, object]) -> dict[str, object]:
         return {"ref": "main", "inputs": inputs}
 
+    def test_selected_meta_transistor_feedback_uses_existing_ingest_route(self) -> None:
+        # Actual TCP/IP and filesystem effect in the isolated local fixture;
+        # neither owner/repo nor the generated fixture bearer is a Mesh node.
+        from src.qikvrt_codec import BitFrame, FeedbackPolicy, encode, feedback_step
+
+        payload = bytes(range(256)) * 256
+        step = feedback_step(BitFrame("right-to-left", 0, 1, encode(payload)),
+                             FeedbackPolicy(operation="decode", routes=((3, 0, -1),)))
+        selected = step.ports[0][1]
+        inputs = {
+            "operation": "ingest", "artifact_id": "meta-feedback",
+            "payload_b64": base64.b64encode(selected).decode("ascii"),
+            "expected_sha256": hashlib.sha256(selected).hexdigest(),
+            "dry_run": "false", "request_id": "meta-feedback-" + step.frame.sha256,
+            "effect_accepted": "true",
+            "responsibility_owner": "e2e-responsible-operator",
+        }
+        path = "/repos/owner/repo/actions/workflows/qikvrt_mesh_api.yml/dispatches"
+        status, first = self.request("POST", path, self.workflow(inputs))
+        self.assertEqual(202, status)
+        self.assertEqual(EffectState.EFFECT_ACK_DONE.value,
+                         first["handler_result"]["effect_state"])
+        stored = self.state / ".qikvrt" / "api" / "inbox" / "meta-feedback.bin"
+        self.assertEqual(payload, stored.read_bytes())
+        status, replay = self.request("POST", path, self.workflow(inputs))
+        self.assertEqual(202, status)
+        self.assertTrue(replay["handler_result"]["replayed"])
+        self.assertEqual(payload, stored.read_bytes())
+        self.assertEqual(first["handler_result"]["effect_state"],
+                         replay["handler_result"]["effect_state"])
+        self.assertFalse(step.effect_ack.ordinary_release)
+
     def test_complete_api_flow_and_all_five_effect_states(self) -> None:
         workflow = (REPOSITORY_ROOT / ".github/workflows/qikvrt_mesh_api.yml").read_text(
             encoding="utf-8"

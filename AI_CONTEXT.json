@@ -137,7 +137,9 @@
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
-    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
+    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "policy/GLOBAL_SYSTEM_CLOSURE_V1.json",
+    "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json"
   ],
   "session_protocol": {
     "startup": [
@@ -222,5 +224,11 @@
     "signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
     "external_model_required": false,
     "historical_provenance_rewritten": false
+  },
+  "reciprocal_devops_definition_of_done": {
+    "policy": "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
+    "command": "python3 -B tools/qikvrt_expected_head_promotion.py evaluate-closure --input <verified-snapshot>",
+    "scope": "QIKVRT-RECIPROCAL-LOSSLESS-DEVOPS-CLOSURE-V1",
+    "rule": "A pure acceptance evaluation consumes externally authenticated verified observations; it neither executes protected effects nor authenticates facts supplied in JSON."
   }
 }

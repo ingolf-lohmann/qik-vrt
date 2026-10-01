@@ -164,7 +164,8 @@ Existing REST state/receipt bytes can be transported losslessly, without grantin
 execution authority over their contents. Related contract:
 `policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json`. Its absent Siemens reference
 module and the separate formatting-sensitive promotion test remain owned by
-PR #422; this compression successor does not duplicate that repair.
+PR #422. The feedback successor preserves the consolidated repair PR #436
+alongside the exact codec PR #425 history; it does not overwrite their branches.
 
 Ingolf Lohmann asserts that QIKAVRT/QIKVRT was developed, tested and used as a
 personal Digital Twin for fully autonomous complex workflows, and asserts its
@@ -175,3 +176,71 @@ tenant integration, a personal-browser release, scientific consensus or perpetua
 future compatibility. Existing capability, rights, provenance and effect
 boundaries remain in force. Encoding, compression, tests and transport alone
 never establish `EFFECT_ACK_DONE` or authorize release/deployment/publication.
+
+## Meta-transistor by bounded local feedback
+
+Ingolf Lohmann's instruction of 2026-10-01 adds feedback to the bidirectional
+transputer. The following diagram corrects both external arrow directions.
+The four selected ports exist at each boundary; frame direction identifies
+which boundary receives the next local input.
+
+```mermaid
+flowchart TB
+    L["Left boundary · ports 0–3"] <--> T["Bidirectional 0/1 conduit"]
+    T <--> R["Right boundary · ports 0–3"]
+    T --> Z["0 lane · positions retained"]
+    T --> O["1 lane · positions retained"]
+    Z --> P["Fixed processing and selection"]
+    O --> P
+    P -->|"Selected local feedback"| L
+    P -->|"Selected local feedback"| R
+```
+
+The implementation extends `src/qikvrt_codec.py`, with no second codec,
+container format, workflow, repository writer or permit issuer. `BitFrame`
+binds version, direction, boundary port, sequence, logical tick, hop, parent
+digest and exact payload. It accepts byte-aligned finite frames; arbitrary
+sub-byte lengths and physical clock measurements are outside this adapter.
+`split_bit_lanes` routes zeros upward and ones downward as complementary packed
+position masks, MSB first. `join_bit_lanes` requires complete disjoint masks.
+It reconstructs exact input order; zero/one counts alone cannot do so.
+
+An immutable `FeedbackPolicy` fixes one chain: identity, existing codec encode,
+or existing codec decode. Four disjoint byte ranges select boundary ports.
+Empty selection gives no feedback, a proper subset gives partial feedback,
+and a partition gives complete feedback. Original input remains available.
+Decode verifies the entire archive before returning any feedback selection.
+Input/output budgets, closed operation names and a finite hop budget bound
+local work. Encode uses a conservative worst-case bound before allocating its
+container; a potentially fitting compressed result can consequently be refused.
+
+`feedback_step` is a pure trigger. `local_refeed` verifies the step against the
+same policy, binds its parent and selected port, and requires an advancing
+sequence and logical tick before constructing the next frame. The caller
+explicitly triggers each subsequent step. There is no automatic recursive loop.
+Multiple independent frames, both directions and long streams require caller-
+owned scheduling, durable replay/ordering journals and backpressure. This
+adapter does not implement those services or authenticate incoming frames.
+
+Every step invokes the existing Effect Acknowledgement evaluator with its exact
+frame/policy/output/port binding. Its receipt has `ordinary_release=false` and
+cannot self-authorize a repository effect. The 400-byte standpoint remains
+byte-identical; it describes the existing serialization identity, and does not
+contain arbitrary payloads, the CI/CD pipeline or this entire feedback policy.
+The policy has a separate SHA-256 binding in the versioned codec contract.
+
+```python
+from src.qikvrt_codec import BitFrame, FeedbackPolicy, feedback_step, local_refeed
+
+policy = FeedbackPolicy(routes=((0, 0, -1),), max_hops=2)
+step = feedback_step(BitFrame("left-to-right", 0, 1, b"payload"), policy)
+next_frame = local_refeed(step, policy, port=0, sequence=1, tick=2)
+assert feedback_step(next_frame, policy).processed == b"payload"
+assert step.effect_ack.ordinary_release is False
+```
+
+`make codec-test` includes the local feedback tests. A productive API-to-
+repository feedback effect still requires admission by the existing Authority
+executor and fresh native effect readback. These local tests do not establish
+that effect, complete Mesh equality, CI/CD deployment, physical realization or
+universal autonomous operation.

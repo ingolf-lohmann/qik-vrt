@@ -21,6 +21,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import BinaryIO, Iterable
 
+from src.qikvrt_effect_ack import (
+    EffectAckEngine, EffectAckRequest, EffectAckResult, canonical_json,
+)
+
 from src.qikvrt_standpoint_codex import (
     DEFAULT_LIMITS, QIKVRT_SIGNATURE, SIGNATURE_BYTES, CodexError, Element,
     Limits, deserialize, serialize, validate_signature,
@@ -289,6 +293,208 @@ def decode_snapshot(data: bytes, *, limits: Limits = DEFAULT_LIMITS) -> tuple[El
     snapshot = decode(data, signature=QIKVRT_SIGNATURE,
                       max_output_bytes=limits.max_snapshot_bytes)
     return deserialize(snapshot, limits=limits)
+
+
+# Local feedback adapter. The existing container and 400-byte standpoint remain
+# unchanged. No provider transport, repository writer or permit issuer is added.
+_INVERT_BITS = bytes(255 - n for n in range(256))
+_DIRECTIONS = ("left-to-right", "right-to-left")
+
+
+@dataclass(frozen=True)
+class BitFrame:
+    """One finite, byte-aligned clock trigger; bit order is MSB first."""
+
+    direction: str
+    sequence: int
+    tick: int
+    payload: bytes
+    hop: int = 0
+    parent_sha256: str = ""
+    version: int = 1
+    port: int = 0
+
+    def __post_init__(self) -> None:
+        if type(self.version) is not int or self.version != 1:
+            raise CodecError("UNSUPPORTED_FEEDBACK_VERSION")
+        if type(self.direction) is not str or self.direction not in _DIRECTIONS:
+            raise CodecError("INVALID_DIRECTION")
+        for name in ("sequence", "tick", "hop"):
+            _integer(getattr(self, name), 0, 2**64 - 1, "INVALID_" + name.upper())
+        _integer(self.port, 0, 3, "INVALID_PORT")
+        if type(self.payload) is not bytes:
+            raise CodecError("BYTES_REQUIRED")
+        if (type(self.parent_sha256) is not str
+                or (self.hop == 0 and self.parent_sha256 != "")
+                or (self.hop > 0 and (len(self.parent_sha256) != 64
+                    or any(c not in "0123456789abcdef" for c in self.parent_sha256)))):
+            raise CodecError("INVALID_PARENT_BINDING")
+
+    @property
+    def sha256(self) -> str:
+        metadata = canonical_json({
+            "schema": "qikvrt_bit_frame_v1", "direction": self.direction,
+            "sequence": self.sequence, "tick": self.tick, "hop": self.hop,
+            "parent_sha256": self.parent_sha256, "payload_bytes": len(self.payload),
+            "port": self.port,
+        }).encode("utf-8")
+        return hashlib.sha256(b"QIKVRT-FEEDBACK-FRAME-V1\0" + metadata
+                              + b"\0" + self.payload).hexdigest()
+
+
+def split_bit_lanes(payload: bytes) -> tuple[bytes, bytes]:
+    """Return zero/one position masks, preserving every original bit position.
+
+    A set bit in either mask marks a bit routed to that lane. Lane values are
+    implicit (zero above, one below); counts alone cannot reconstruct order.
+    Native byte translation avoids allocating a Python object per bit.
+    """
+    if type(payload) is not bytes:
+        raise CodecError("BYTES_REQUIRED")
+    return payload.translate(_INVERT_BITS), payload
+
+
+def join_bit_lanes(zeros: bytes, ones: bytes) -> bytes:
+    if type(zeros) is not bytes or type(ones) is not bytes:
+        raise CodecError("BYTES_REQUIRED")
+    if zeros != ones.translate(_INVERT_BITS):
+        raise CodecError("BIT_LANES_NOT_COMPLETE_AND_DISJOINT")
+    return ones
+
+
+@dataclass(frozen=True)
+class FeedbackPolicy:
+    """Fixed local chain and four-port selection, separate from CI admission.
+
+    Each route is (port, start_byte, stop_byte); -1 means the output end.
+    Empty routes select no feedback. Disjoint ranges covering the output select
+    complete feedback; other valid ranges select partial feedback.
+    """
+
+    operation: str = "identity"
+    routes: tuple[tuple[int, int, int], ...] = ()
+    max_input_bytes: int = MAX_BLOCK_BYTES
+    max_output_bytes: int = MAX_BLOCK_BYTES
+    max_hops: int = 1
+
+    def __post_init__(self) -> None:
+        if type(self.operation) is not str or self.operation not in ("identity", "encode", "decode"):
+            raise CodecError("UNKNOWN_FEEDBACK_OPERATION")
+        for name in ("max_input_bytes", "max_output_bytes"):
+            _integer(getattr(self, name), 0, MAX_BLOCK_BYTES, "INVALID_" + name.upper())
+        _integer(self.max_hops, 0, 1024, "INVALID_HOP_LIMIT")
+        if type(self.routes) is not tuple or len(self.routes) > 4:
+            raise CodecError("FOUR_PORT_ROUTES_REQUIRED")
+        ports = set()
+        for route in self.routes:
+            if type(route) is not tuple or len(route) != 3:
+                raise CodecError("INVALID_ROUTE")
+            port, start, stop = route
+            _integer(port, 0, 3, "INVALID_PORT")
+            _integer(start, 0, self.max_output_bytes, "INVALID_ROUTE_START")
+            _integer(stop, -1, self.max_output_bytes, "INVALID_ROUTE_STOP")
+            if port in ports or (stop != -1 and stop < start):
+                raise CodecError("DUPLICATE_PORT_OR_REVERSED_RANGE")
+            ports.add(port)
+
+    @property
+    def sha256(self) -> str:
+        return hashlib.sha256(canonical_json({
+            "schema": "qikvrt_feedback_policy_v1", "operation": self.operation,
+            "routes": self.routes, "max_input_bytes": self.max_input_bytes,
+            "max_output_bytes": self.max_output_bytes, "max_hops": self.max_hops,
+        }).encode("utf-8")).hexdigest()
+
+
+@dataclass(frozen=True)
+class FeedbackStep:
+    frame: BitFrame
+    policy_sha256: str
+    zeros: bytes
+    ones: bytes
+    processed: bytes
+    ports: tuple[tuple[int, bytes], ...]
+    effect_ack: EffectAckResult
+
+
+def feedback_step(frame: BitFrame, policy: FeedbackPolicy) -> FeedbackStep:
+    """One pure local trigger. Produces feedback data, never repository effects.
+
+    Caller owns duplex sequencing, durable replay journal and external admission.
+    Full decoding finishes before any selected bytes become visible to callers.
+    No clock sleeps, recursive execution, arbitrary callbacks or auto-release.
+    """
+    if type(frame) is not BitFrame or type(policy) is not FeedbackPolicy:
+        raise CodecError("FRAME_AND_POLICY_REQUIRED")
+    if len(frame.payload) > policy.max_input_bytes:
+        raise CodecError("FEEDBACK_INPUT_LIMIT_EXCEEDED")
+    if frame.hop > policy.max_hops:
+        raise CodecError("FEEDBACK_HOP_LIMIT_EXCEEDED")
+    zeros, ones = split_bit_lanes(frame.payload)
+    restored = join_bit_lanes(zeros, ones)
+    if policy.operation == "decode":
+        processed = decode(restored, max_output_bytes=policy.max_output_bytes)
+    elif policy.operation == "encode":
+        # Refuse before allocating encoded output beyond the configured limit.
+        worst_case = HEADER_BYTES + FOOTER.size + len(restored) + (
+            (len(restored) + DEFAULT_BLOCK_BYTES - 1) // DEFAULT_BLOCK_BYTES) * BLOCK.size
+        if worst_case > policy.max_output_bytes:
+            raise CodecError("FEEDBACK_ENCODE_BOUND_EXCEEDED")
+        processed = encode(restored)
+    else:
+        processed = restored
+    if len(processed) > policy.max_output_bytes:
+        raise CodecError("FEEDBACK_OUTPUT_LIMIT_EXCEEDED")
+    ports = []
+    ranges = []
+    for port, start, stop in policy.routes:
+        end = len(processed) if stop == -1 else stop
+        if not start <= end <= len(processed):
+            raise CodecError("FEEDBACK_RANGE_OUTSIDE_OUTPUT")
+        if any(start < b and a < end for a, b in ranges):
+            raise CodecError("OVERLAPPING_FEEDBACK_RANGES")
+        ranges.append((start, end))
+        ports.append((port, processed[start:end]))
+    binding = canonical_json({
+        "frame_sha256": frame.sha256, "policy_sha256": policy.sha256,
+        "processed_sha256": hashlib.sha256(processed).hexdigest(),
+        "ports": [{"port": p, "bytes": len(data),
+                   "sha256": hashlib.sha256(data).hexdigest()} for p, data in ports],
+    }).encode("utf-8")
+    ack = EffectAckEngine().evaluate(EffectAckRequest(
+        protocol_root_id="qikvrt:local-feedback:" + frame.sha256,
+        input_id="LOCAL_FEEDBACK_PROPOSAL", payload=binding, transport_ack=True,
+        context_checked=True, semantics_reconstructed=True, effect_anticipated=True,
+        policy_allows_release=False,
+        reasons=("LOCAL_FEEDBACK_ONLY_NO_AUTHENTICATED_PROVIDER_EFFECT",),
+        next_required_checks=("EXISTING_EXECUTOR_ADMISSION_AND_NATIVE_EFFECT_READBACK",),
+    ))
+    return FeedbackStep(frame, policy.sha256, zeros, ones, processed, tuple(ports), ack)
+
+
+def local_refeed(step: FeedbackStep, policy: FeedbackPolicy, *, port: int,
+                 sequence: int, tick: int) -> BitFrame:
+    """Create a next local frame only; no automatic execution or external ACK."""
+    if type(step) is not FeedbackStep or type(policy) is not FeedbackPolicy:
+        raise CodecError("STEP_AND_POLICY_REQUIRED")
+    _integer(port, 0, 3, "INVALID_PORT")
+    _integer(sequence, 0, 2**64 - 1, "INVALID_SEQUENCE")
+    _integer(tick, 0, 2**64 - 1, "INVALID_TICK")
+    if step.policy_sha256 != policy.sha256:
+        raise CodecError("FEEDBACK_POLICY_CHANGED")
+    observed = feedback_step(step.frame, policy)
+    if (step.zeros, step.ones, step.processed, step.ports) != (
+            observed.zeros, observed.ones, observed.processed, observed.ports):
+        raise CodecError("FEEDBACK_STEP_TAMPERED")
+    if step.frame.hop >= policy.max_hops:
+        raise CodecError("FEEDBACK_HOP_LIMIT_EXCEEDED")
+    if sequence <= step.frame.sequence or tick <= step.frame.tick:
+        raise CodecError("NONADVANCING_SEQUENCE_OR_TICK")
+    for selected_port, data in step.ports:
+        if selected_port == port:
+            return BitFrame(step.frame.direction, sequence, tick, data,
+                            step.frame.hop + 1, step.frame.sha256, port=port)
+    raise CodecError("PORT_HAS_NO_FEEDBACK")
 
 
 def main(argv: list[str] | None = None) -> int:

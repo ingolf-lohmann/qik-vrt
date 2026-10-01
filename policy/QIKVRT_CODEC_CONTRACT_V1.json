@@ -21,6 +21,106 @@
     "verified_by_tests": "Declared byte codec and snapshot implementation cases"
   },
   "compatibility_projection": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+  "feedback": {
+    "acceptance_command": "make codec-test",
+    "effect_ack": {
+      "engine": "src/qikvrt_effect_ack.py",
+      "input_binding": [
+        "frame_sha256",
+        "policy_sha256",
+        "processed_sha256",
+        "port_payload_hashes_and_sizes"
+      ],
+      "next_required": "EXISTING_EXECUTOR_ADMISSION_AND_NATIVE_EFFECT_READBACK",
+      "ordinary_release": false,
+      "policy_allows_release": false,
+      "productive_repository_effect_verified": false
+    },
+    "evidence_scope": "LOCAL_SOFTWARE_TESTS_NOT_PHYSICAL_OR_PRODUCTIVE_MESH_ACCEPTANCE",
+    "frame": {
+      "binding": [
+        "direction",
+        "port",
+        "sequence",
+        "tick",
+        "hop",
+        "parent_sha256",
+        "payload_bytes",
+        "payload"
+      ],
+      "bit_order": "MSB_FIRST",
+      "boundary_ports": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "clock": "LOGICAL_CALLER_SUPPLIED_TICK_NOT_PHYSICAL_MEASUREMENT",
+      "directions": [
+        "left-to-right",
+        "right-to-left"
+      ],
+      "payload": "FINITE_BYTE_ALIGNED_OPAQUE_BYTES",
+      "version": 1
+    },
+    "implementation": "src/qikvrt_codec.py",
+    "lanes": {
+      "counts_only_sufficient": false,
+      "one": "PACKED_POSITION_MASK_EQUAL_TO_PAYLOAD",
+      "reconstruct": "REQUIRE_COMPLETE_DISJOINT_MASKS_AND_RETURN_EXACT_ORDER",
+      "zero": "COMPLEMENTARY_PACKED_POSITION_MASK"
+    },
+    "limits": {
+      "backpressure": "CALLER_OWNED",
+      "durable_replay_and_duplex_ordering": "NOT_IMPLEMENTED_BY_THIS_ADAPTER",
+      "max_input_and_output_bytes": 16777216,
+      "stream_scheduling": "CALLER_OWNED"
+    },
+    "local_refeed": {
+      "automatic_recursion": false,
+      "default_max_hops": 1,
+      "maximum_max_hops": 1024,
+      "parent_binding": "PREDECESSOR_FRAME_SHA256",
+      "requires": [
+        "UNCHANGED_POLICY",
+        "RECOMPUTED_STEP_MATCH",
+        "STRICTLY_ADVANCING_SEQUENCE_AND_TICK",
+        "HOP_BUDGET",
+        "SELECTED_PORT"
+      ]
+    },
+    "owner_instruction": "Ingolf Lohmann, 2026-10-01, universal meta-transistor by feedback; Freigabe erteilt",
+    "pipeline": {
+      "arbitrary_callbacks": false,
+      "closed_operations": [
+        "identity",
+        "encode",
+        "decode"
+      ],
+      "decode": "EXISTING_FULL_CONTAINER_VERIFICATION_BEFORE_RETURN",
+      "encode": "CONSERVATIVE_PREALLOCATION_WORST_CASE_BOUND",
+      "new_workflow": false,
+      "policy_binding": "SHA256_CANONICAL_JSON_SEPARATE_FROM_STANDPOINT"
+    },
+    "schema": "qikvrt_feedback_adapter_v1",
+    "selection": {
+      "complete_feedback": "DISJOINT_PARTITION_OF_PROCESSED_OUTPUT",
+      "duplicate_ports": "REJECT",
+      "max_routes": 4,
+      "no_feedback": "EMPTY_ROUTES",
+      "overlapping_nonempty_ranges": "REJECT",
+      "partial_feedback": "PROPER_SUBSET",
+      "route": "TUPLE_PORT_START_STOP_EXCLUSIVE_BYTES_MINUS_ONE_MEANS_END"
+    },
+    "signature": {
+      "bytes": 400,
+      "changed": false,
+      "contains_entire_pipeline_or_arbitrary_payloads": false,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    },
+    "status": "BOUNDED_LOCAL_REVIEW_CANDIDATE",
+    "tests": "tests/test_qikvrt_feedback.py"
+  },
   "human_contract": "docs/QIKVRT_CODEC_V1.md",
   "identity": {
     "absolute_uniqueness_or_person_authentication_claim": false,
@@ -94,7 +194,7 @@
       "tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c"
     }
   },
-  "revision": 2,
+  "revision": 3,
   "schema": "qikvrt_codec_contract_v1",
   "seed": {
     "authority": "FIXED_CANONICAL_QIKVRT_STANDPOINT_V1",
