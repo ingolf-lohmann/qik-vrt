@@ -1,0 +1,139 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_DIGITAL_TWIN_SCHEDULING_SYNC_V1",
+  "created_at": "2026-10-01T11:46:08.281686+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base_ref": "main",
+  "base_head": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "base_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+  "candidate_branch": "feature/digital-twin-scheduling-sync-20261001",
+  "human_contribution": {
+    "owner": "Ingolf Lohmann",
+    "instruction": "Scheduling muss natürlich im Digital Twin genauso existieren und synchron gehalten werden. Alles andere war, ist und bleibt inakzeptabel.",
+    "scope": "Digital Twin scheduling and synchronization of the already authorized EU regulatory watch",
+    "approval_for_main_or_deployment_inferred": false
+  },
+  "ai_contribution": {
+    "actor": "OpenAI Codex",
+    "scope": "Repository inventory, extension of existing authenticated transport, private durable CAS registry and calendar planner, regressions, one real executor-to-local-registry synchronization transaction, candidate persistence",
+    "independent_review": false
+  },
+  "reuse_evidence": {
+    "inventory": "Current Main recursive tree: 4369 entries, not truncated; rg of src/tools/scripts/runtime/state/.github for scheduling and scheduler paths",
+    "reused_transport": "src/qikvrt_github_api_shim.py",
+    "reused_http_test_harness": "tests/test_tcpip_e2e.py",
+    "new_model_reason": "No executable scheduling registry, calendar or executor synchronization model found on the exact inventoried Main",
+    "separate_existing_rest_model_repair": "PR #422 owns the absent src/qikvrt_siemens_reference_integration import; no duplicate model introduced"
+  },
+  "candidate_source_bindings": {
+    "src/qikvrt_digital_twin_scheduling.py": {
+      "sha256": "1041e454c3cc044b2d6c7fda141f04a157daa40863ef47a2f62dc49b47e3ddfd",
+      "git_blob": "235222238d3f59fcc215b9d3ca6151a0f8d996cf"
+    },
+    "src/qikvrt_github_api_shim.py": {
+      "sha256": "8251c4c875df209b3e3e116b4cd040a4d48c4fff2e19f1b9d825558da567dfcf",
+      "git_blob": "dc0c3220828a8564973120a7b04fa54fa6b2d18c"
+    },
+    "tests/test_qikvrt_digital_twin_scheduling.py": {
+      "sha256": "452683a9e35e6b21893511cafa719db5e1e31a86ae2968aa98d1817ba42818eb",
+      "git_blob": "37b25616ce6393c1f700dcbafb0a9f854455b897"
+    },
+    "api/qikvrt_github_api.openapi.yaml": {
+      "sha256": "d2b99dec5d0ac927ec7163429ff647993a5e7b0154e58780bd18fd807d75bcee",
+      "git_blob": "4e55273472d027b8af4589c5d1b0895584f70aa2"
+    },
+    "policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json": {
+      "sha256": "b24149ce434c63d3ea98700dd1e1ca662221d74c497636eb214442903b6d4870",
+      "git_blob": "2bec778df0285e5be97d910b6e997bb8d586b82b"
+    },
+    "docs/QIKVRT_DIGITAL_TWIN_SCHEDULING.md": {
+      "sha256": "09a8c8d517dbd417dd6f0f078edc4684968ac7e493650fa41f43600a81762f7d",
+      "git_blob": "7867c2e6cee4314cd5c6485f186308305b67e6f3"
+    }
+  },
+  "real_transaction": {
+    "executor": "chatgpt_automations",
+    "task_id": "6abe3d7a68c88191aee2117043e08cde",
+    "source_observation_before": "2026-10-01T11:01:35.960984+00:00",
+    "source_observation_after": "2026-10-01T11:27:10.831076+00:00",
+    "sequence": [
+      "authenticated source peek",
+      "local revision 0 to 1 reconcile",
+      "revision 1 to 2 prepare of task prompt scheduling clause",
+      "exact returned automations.update arguments, once",
+      "fresh source peek",
+      "revision 2 to 3 matching reconcile",
+      "independent local readback"
+    ],
+    "configuration_sha256": "fe5674b0521361e44da4e284ccf3e2c7d3a95db22f5d9778630f6ea7c50b995c",
+    "schedule_and_enabled_state_preserved": true,
+    "full_prompt_or_credentials_committed": false,
+    "native_state_scope": "private local node, not productive public carrier",
+    "binding_record": "state/digital_twin/QIKVRT_EU_REGULATORY_WATCH_SCHEDULE_BINDING_V1.json"
+  },
+  "verification": {
+    "tool_cache": "14/14, 100 percent, existing cache verifier",
+    "targeted_tests": {
+      "command": "make digital-twin-scheduling-test",
+      "result": "PASS",
+      "count": 19,
+      "scope": "Exact candidate source bindings above: SQLite restart/CAS/concurrency, HTTP authentication, exact source readback and DST/UTC planning"
+    },
+    "final_candidate_gate": {
+      "command": "make test",
+      "receipt": "Final commit HEAD/TREE, exit status and log SHA256 recorded in the candidate pull request verification section after commit",
+      "hosted_ci_or_live_effect_implied": false
+    },
+    "known_unchanged_baseline_boundaries": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_expected_head_promotion_contract",
+      "missing_model_import": "src/qikvrt_siemens_reference_integration",
+      "text_assertion": "Whitespace-sensitive expected-head promotion contract assertion",
+      "existing_owner": "PR #422",
+      "suppressed_or_skipped": false
+    },
+    "local_historical_git_object_recovery": {
+      "missing_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "repair": "Fetch exact historical commit from existing local source with --update-shallow; verify worktree checkout and original finalizer test; no tracked code change or test bypass"
+    }
+  },
+  "integrity_materialization": {
+    "paths": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "operation": "Regenerate using existing deterministic tools/qikvrt_integrity.py; retain and include existing Main lifecycle/workflow/test entries observed stale at session start"
+  },
+  "git_effects": {
+    "history_rewrite": false,
+    "force_push": false,
+    "main_mutation": false,
+    "candidate_only": true
+  },
+  "external_effect_boundary": {
+    "public_twin_ingress_verified": false,
+    "continuous_bridge_verified": false,
+    "independent_code_owner_approval_observed": false,
+    "main_integration_verified": false,
+    "mesh_execution_established": false,
+    "deployment": false,
+    "ordinary_release": false,
+    "effect_ack_done": false
+  },
+  "first_unverified_edge": "Authenticated productive Twin scheduling ingress and an authorized executor adapter connected to the existing Automation",
+  "runtime_evidence": "Railway service configuration observation is persisted in the initial binding record; configuration commit and separately selected runtime HEAD/TREE are not conflated",
+  "smallest_next_action": "Review and integrate the existing transport extension, bind it to the authenticated productive Twin ingress, then perform source read -> Twin readback with exact task and config identity; retain one executor",
+  "predecessor_evidence_transfer": false,
+  "claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "CONTINUOUS_SCHEDULING_SYNCHRONIZATION": false
+  }
+}
