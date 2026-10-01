@@ -153,3 +153,25 @@ class ReciprocalClosureTests(unittest.TestCase):
             input='{"metadata":NaN}', text=True, capture_output=True)
         self.assertEqual(p.returncode, 2)
         self.assertIn("non-finite snapshot number", json.loads(p.stdout)["detail"])
+
+    def test_all_three_commands_keep_strict_json_loading_after_consolidation(self):
+        core = str(Path(__file__).parents[1] / "tools/qikvrt_expected_head_promotion.py")
+        for command in ("evaluate", "evaluate-closure", "verify-readback"):
+            for payload, reason in (( '{"metadata":{"x":1,"x":2}}', "duplicate snapshot member"),
+                                    ('{"metadata":Infinity}', "non-finite snapshot number")):
+                with self.subTest(command=command, payload=payload):
+                    p = subprocess.run([sys.executable, core, command], input=payload,
+                                       text=True, capture_output=True)
+                    self.assertEqual(p.returncode, 2)
+                    self.assertEqual(json.loads(p.stdout)["state"], "BLOCK")
+                    self.assertIn(reason, json.loads(p.stdout)["detail"])
+
+    def test_consolidated_closure_cli_retains_acceptance_only_positive_control(self):
+        p = subprocess.run([sys.executable, str(Path(__file__).parents[1] /
+            "tools/qikvrt_expected_head_promotion.py"), "evaluate-closure"],
+            input=json.dumps(self.snapshot()), text=True, capture_output=True)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        value = json.loads(p.stdout)
+        self.assertEqual(value["state"], "CLOSURE_READY_FOR_ACCEPTANCE")
+        self.assertEqual(value["external_effect"], "NONE")
+        self.assertFalse(value["ordinary_release"])

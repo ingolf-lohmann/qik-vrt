@@ -11,6 +11,8 @@ from urllib.parse import urlsplit, parse_qs
 from tools import qikvrt_pr_closure_engine as M
 from src.qikvrt_effect_ack import ResponsibilityProtocol, verify_protocol_chain
 from tests import test_qikvrt_pr_closure_engine as fixtures
+from tests import test_qikvrt_expected_head_promotion as promotion_fixtures
+from tests import test_reciprocal_devops_closure as closure_fixtures
 
 
 REPO = "example/qik-vrt"
@@ -38,6 +40,12 @@ class FakeAPI(M.GitHubAPI):
         self.lose_tip = False
         self.bad_readback = False
         self.missing_repo = False
+        bound = promotion_fixtures.ExpectedHeadPromotionTests().snapshot()
+        self.rules = bound["review_observation"]["rules"]
+        self.workflow_runs = bound["workflow_runs"][:len(M.PROMOTION_GATES)]
+        for index, run in enumerate(self.workflow_runs):
+            run.update(name=M.PROMOTION_GATES[index], repository={"full_name": REPO},
+                       pull_requests=[{"number": 7}])
 
     def request(self, method, path, payload=None):
         self.calls.append((method, path, payload))
@@ -60,6 +68,9 @@ class FakeAPI(M.GitHubAPI):
             elif parsed.path.endswith("update-branch") and not self.discard_effect:
                 self.pr["head"]["sha"] = "d" * 40
                 self.branches[1]["commit"]["sha"] = "d" * 40
+            elif parsed.path.endswith("merge") and not self.discard_effect:
+                self.pr.update(state="closed", merged=True, merge_commit_sha="d" * 40)
+                self.branches[0]["commit"]["sha"] = "d" * 40
             if self.lose_tip:
                 self.branches[1]["commit"]["sha"] = "e" * 40
             if self.bad_readback:
@@ -76,9 +87,10 @@ class FakeAPI(M.GitHubAPI):
         if parsed.path == "/branches":
             return copy.deepcopy(self.branches[(page - 1) * 100:page * 100])
         if parsed.path.startswith("/git/commits/"):
-            return {"tree": {"sha": TREE}}
+            return {"sha": parsed.path.rsplit("/", 1)[-1], "tree": {"sha": TREE},
+                    "parents": [{"sha": BASE}, {"sha": HEAD}]}
         if parsed.path == "/pulls":
-            return [copy.deepcopy(self.pr)] if page == 1 else []
+            return [copy.deepcopy(self.pr)] if page == 1 and self.pr["state"] == "open" else []
         if parsed.path == "/pulls/7":
             return copy.deepcopy(self.pr)
         if parsed.path.startswith("/compare/"):
@@ -93,6 +105,24 @@ class FakeAPI(M.GitHubAPI):
             return copy.deepcopy(self.observed["statuses"]) if page == 1 else []
         if parsed.path.endswith("reviews"):
             return copy.deepcopy(self.observed["reviews"]) if page == 1 else []
+        if parsed.path == "/actions/runs":
+            rows = self.workflow_runs
+            return {"total_count": len(rows), "workflow_runs": copy.deepcopy(rows)}
+        if parsed.path.endswith("/jobs"):
+            run_id, attempt = int(parsed.path.split("/")[3]), int(parsed.path.split("/")[5])
+            row = next(r for r in self.workflow_runs if r["id"] == run_id and r["run_attempt"] == attempt)
+            return {"total_count": len(row["jobs"]), "jobs": copy.deepcopy(row["jobs"])}
+        if parsed.path.endswith("/files"):
+            return [{"filename": "tools/fixture.py"}]
+        if parsed.path == "/rules/branches/main":
+            return copy.deepcopy(self.rules)
+        if parsed.path == "/rulesets/19344903":
+            return {"enforcement": "active", "bypass_actors": [],
+                    "conditions": {"ref_name": {"include": ["refs/heads/main"], "exclude": []}},
+                    "rules": self.rules + [{"type": "non_fast_forward"},
+                        {"type": "required_status_checks", "parameters": {
+                            "strict_required_status_checks_policy": True,
+                            "required_status_checks": [{"context": "test", "integration_id": 15368}]}}]}
         raise AssertionError((method, path, payload))
 
 
@@ -102,6 +132,73 @@ class ReciprocalStepTests(unittest.TestCase):
 
     def run_step(self, api, path, **kw):
         return M.execute(api, self.policy(), apply=True, journal_dir=Path(path), **kw)
+
+    def approved_api(self):
+        api = FakeAPI()
+        api.observed["reviews"] = fixtures.ClosureEngineTests().obs()["reviews"]
+        return api
+
+    def test_hardened_native_merge_is_one_effect_and_preserves_closure_boundary(self):
+        api = self.approved_api()
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d, closure_snapshot=closure_fixtures.ReciprocalClosureTests().snapshot())
+        self.assertEqual(r["closure_evaluation"]["state"], "CLOSURE_READY_FOR_ACCEPTANCE")
+        self.assertEqual(r["state"], "STEP_EFFECT_VERIFIED_CONTINUE", r["first_blocker"])
+        self.assertEqual(len(api.mutations), 1)
+        self.assertEqual(api.mutations[0][2], {"sha": HEAD, "merge_method": "merge"})
+        self.assertEqual(r["selected_action"]["tree_sha"], TREE)
+        self.assertFalse(any(r["completion_claims"].values()))
+        self.assertFalse(r["closure_evaluation"]["completion_claims"]["EFFECT_ACK_DONE"])
+
+    def test_eight_false_acceptance_classes_cannot_reach_closure_merge(self):
+        # The original eight #434 counterexamples, now through the real step
+        # controller. REQUEST_REVIEW is excluded by this capability fixture so
+        # self/stale approval cannot mask a MERGE by performing a lesser effect.
+        cases = ("FOREIGN_REPOSITORY", "FOREIGN_PR", "FOREIGN_HEAD", "ZERO_JOBS",
+                 "SELF_APPROVAL", "UNENFORCED_RULE", "STALE_REVIEW", "LEGACY_UNBOUND")
+        for case in cases:
+            with self.subTest(case=case):
+                api = self.approved_api()
+                run = api.workflow_runs[0]
+                if case == "FOREIGN_REPOSITORY": run["repository"]["full_name"] = "foreign/repo"
+                if case == "FOREIGN_PR": run["pull_requests"] = [{"number": 8}]
+                if case == "FOREIGN_HEAD": run["head_sha"] = BASE
+                if case == "ZERO_JOBS": run["jobs"] = []
+                if case == "SELF_APPROVAL": api.pr["user"]["login"] = "Goldkelch"
+                if case == "UNENFORCED_RULE": api.rules = []
+                if case == "STALE_REVIEW": api.observed["reviews"][0]["commit_id"] = BASE
+                if case == "LEGACY_UNBOUND": run.pop("repository")
+                probe = api.probe
+                api.probe = lambda: {**probe(), "operations": ["MERGE"]}
+                with tempfile.TemporaryDirectory() as d:
+                    r = self.run_step(api, d, closure_snapshot=closure_fixtures.ReciprocalClosureTests().snapshot())
+                self.assertEqual(r["closure_evaluation"]["state"], "CLOSURE_READY_FOR_ACCEPTANCE")
+                self.assertEqual(r["state"], "BLOCK")
+                self.assertEqual(api.mutations, [])
+                self.assertFalse(r["mutation_attempted"])
+
+    def test_closure_merge_cannot_borrow_jobs_attempt_or_steps(self):
+        for field, invalid in (("run_id", 999), ("run_attempt", 2), ("head_sha", BASE), ("steps", [])):
+            with self.subTest(field=field):
+                api = self.approved_api(); api.workflow_runs[0]["jobs"][0][field] = invalid
+                with tempfile.TemporaryDirectory() as d:
+                    r = self.run_step(api, d)
+                self.assertEqual(r["state"], "BLOCK")
+                self.assertEqual(api.mutations, [])
+
+    def test_second_observation_revoked_review_blocks_before_effect(self):
+        api = self.approved_api(); original = api.promotion_snapshot; captures = []
+        def observe(pr, inventory, observed):
+            value = original(pr, inventory, observed); captures.append(value)
+            if len(captures) == 2:
+                value["review_observation"]["reviews"] = []
+            return value
+        api.promotion_snapshot = observe
+        with tempfile.TemporaryDirectory() as d:
+            r = self.run_step(api, d)
+        self.assertEqual(len(captures), 2)
+        self.assertIn("PRE_EFFECT_GATE_DRIFT", r["first_blocker"])
+        self.assertEqual(api.mutations, [])
 
     def test_one_authenticated_effect_full_recensus_bound_continue_protocol(self):
         with tempfile.TemporaryDirectory() as d:

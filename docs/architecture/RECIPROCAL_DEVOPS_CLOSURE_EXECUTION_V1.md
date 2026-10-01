@@ -8,6 +8,17 @@ Mirror PR #396 at `1819da9bf08478a7052312d24819a8c25c1533a3`. Its stricter
 execution boundary composes the pure `evaluate-closure` acceptance evaluator
 from PR #433. Acceptance readiness never grants execution permission.
 
+The #433/#434 consolidation also composes `evaluate` and `verify-readback` in
+the same strict-JSON core. The closure controller's merge admission calls that
+shared promotion evaluator after its existing check/status and native protection
+checks. It observes repository/PR/HEAD/TREE, the native independent review, the
+latest workflow run and attempt, and the actual jobs and executed steps. The four
+required promotion workflows match the trusted-main promotion workflow; all
+observed applicable executions and current checks/statuses remain mandatory.
+Other open PR file overlaps block merge admission. The final fence repeats the
+complete observation; acceptance-ready closure JSON cannot override a blocker
+or create a second executor. Positive single-step fixtures remain CONTINUE.
+
 The authenticated host supplies the same repository-scoped transport interface
 for either role: read, fresh capability probe, and one attempted mutation. The
 GitHub transport reads its actual principal and repository permission; a host

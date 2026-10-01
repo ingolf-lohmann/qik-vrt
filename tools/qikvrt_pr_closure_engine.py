@@ -26,7 +26,9 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Mapping, Sequence
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
-from tools.qikvrt_expected_head_promotion import evaluate_closure
+from tools.qikvrt_expected_head_promotion import (
+    PromotionBlock, collapse_latest_runs, evaluate_closure, evaluate_promotion,
+)
 from src.qikvrt_effect_ack import (
     ConnectionDecision, EffectAckEngine, EffectAckRequest, RiskLevel,
     ResponsibilityProtocol, verify_protocol_chain,
@@ -34,6 +36,8 @@ from src.qikvrt_effect_ack import (
 
 AUTO_READY_MARKER = "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
 TECHNICAL_REVIEW_CONTEXT = "QIKVRT requested review execution"
+PROMOTION_GATES = ("QIKVRT CI", "QIKVRT repository evidence materialization",
+                   "QIKVRT Collective Proposal Review", "QIK-VRT global claim completion")
 
 
 class ClosureBlock(ValueError):
@@ -355,6 +359,48 @@ class GitHubAPI:
         result = self.request("GET", self.repo_path(f"/compare/{old}...{new}"))
         return result.get("status") in {"ahead", "identical"} and result.get("merge_base_commit", {}).get("sha") == old
 
+    def promotion_snapshot(self, pr: Mapping[str, Any], inventory: Mapping[str, Any],
+                           observed: Mapping[str, Any]) -> dict[str, Any]:
+        """Reobserve raw executions and native review for the shared merge gate.
+
+        This is admission evidence, not an executor or an effect permission.
+        Fetch jobs from the exact latest attempt; never synthesize a workflow
+        from a green commit-status label.
+        """
+        head, number = pr["head"]["sha"], pr["number"]
+        tree = self.request("GET", self.repo_path("/git/commits/" + head))["tree"]["sha"]
+        runs = self.collection(f"/actions/runs?head_sha={head}&event=pull_request", "workflow_runs")
+        latest = collapse_latest_runs(r for r in runs if r.get("name") != "QIKVRT requested review executor")
+        executions = []
+        for run in latest.values():
+            run = dict(run)
+            run_id, attempt = run.get("id"), run.get("run_attempt")
+            if type(run_id) is not int or run_id < 1 or type(attempt) is not int or attempt < 1:
+                raise ClosureBlock("WORKFLOW_EXECUTION_ID_MISSING")
+            run["jobs"] = self.collection(
+                f"/actions/runs/{run_id}/attempts/{attempt}/jobs?", "jobs")
+            executions.append(run)
+        files = {f["filename"] for f in self.collection(f"/pulls/{number}/files?")}
+        overlaps = []
+        for other in inventory["pull_requests"]:
+            if other["number"] == number or other["head_sha"] == head:
+                continue
+            common = sorted(files & {f["filename"] for f in
+                            self.collection(f"/pulls/{other['number']}/files?")})
+            if common:
+                overlaps.append({"pr_number": other["number"], "paths": common})
+        return {
+            "repository": self.repository, "pr_number": number,
+            "current_main_sha": inventory["main_sha"], "base_sha": pr["base"]["sha"],
+            "expected_head_sha": head, "current_head_sha": head,
+            "expected_tree_sha": tree, "current_tree_sha": tree,
+            "mergeable": pr.get("mergeable"), "external_effect": "NONE",
+            "competing_writer_overlaps": overlaps, "required_gates": list(PROMOTION_GATES),
+            "workflow_runs": executions,
+            "review_observation": {"pr": pr, "reviews": observed["reviews"],
+                "rules": self.collection("/rules/branches/main?")},
+        }
+
     def reviewer_capability(self, reviewer: str) -> None:
         identity = urllib.parse.quote(reviewer, safe="")
         try:
@@ -444,7 +490,14 @@ def select_step(api: GitHubAPI, inventory: Mapping[str, Any], config: Mapping[st
                         for r in latest_runs.values()) or
                         any(s.get("state") != "success" for s in latest_statuses(observed["statuses"]))):
                     raise ClosureBlock("APPLICABLE_EXACT_HEAD_GATE_NOT_GREEN")
-            except ClosureBlock as exc:
+                snapshot = api.promotion_snapshot(pr, inventory, observed)
+                promotion = evaluate_promotion(snapshot)
+                if promotion["state"] != "PROMOTABLE":
+                    raise ClosureBlock(str(promotion["first_blocker"]))
+                observed = {**observed, "promotion_snapshot": snapshot,
+                            "promotion_decision": promotion}
+                decision["tree_sha"] = promotion["expected_tree_sha"]
+            except (ClosureBlock, PromotionBlock) as exc:
                 decision = {**decision, "action": "BLOCK_MERGE_GATE", "detail": str(exc)}
         if decision["action"] in {"REQUEST_REVIEW", "UPDATE_BRANCH", "MERGE"}:
             if decision["action"] not in capability.get("operations", []):
