@@ -113,3 +113,9 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: effect-ack-clock-carrier-test
+effect-ack-clock-carrier-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_clock_carrier
+
+test: effect-ack-clock-carrier-test

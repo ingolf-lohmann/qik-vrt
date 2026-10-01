@@ -7,7 +7,7 @@
     "rights_holder": "Ingolf Lohmann"
   },
   "schema": "qikvrt_processor_clock_contract_v1",
-  "status": "OWNER_REQUIREMENT_WITH_REFERENCE_IMPLEMENTATION",
+  "status": "OWNER_REQUIREMENT_WITH_SYNTHESIZABLE_CLOCK_CARRIER",
   "owner": "Ingolf Lohmann",
   "requirement": {
     "machine_evaluation_cadence": "EVERY_PROCESSOR_CLOCK_EDGE",
@@ -74,6 +74,31 @@
     "unobserved_missing_call_detectable_by_core_alone": false,
     "productive_hardware_or_browser_activation": false,
     "authority_mirror_equivalence": false,
-    "overall_effect_ack_done": false
+    "overall_effect_ack_done": false,
+    "atomic_snapshot_rtl": "IMPLEMENTED_SYNCHRONOUS_DOMAIN; AUTHENTICATION_AND_CDC_BINDING_OPEN",
+    "protected_output_mediation_rtl": "IMPLEMENTED_ONE_OUTPUT; SYSTEM_WIDE_EFFECT_MEDIATION_OPEN",
+    "coverage_witness_rtl": "IMPLEMENTED_SEPARATE_EDGE_COUNTER; PHYSICAL_CLOCK_LOSS_WITNESS_OPEN"
+  },
+  "hardware_carrier": {
+    "implementation": "rtl/effect_ack_clock_carrier.vhd",
+    "interface": "rtl/effect_ack_clock_pkg.vhd",
+    "independent_logic_witness": "rtl/effect_ack_coverage_witness.vhd",
+    "readback_verifier": "tools/qikvrt_effect_ack_clock_readback.py",
+    "test_entrypoint": "make effect-ack-clock-carrier-test",
+    "testbench": "tests/effect_ack_clock_tb.vhd",
+    "tool_profile": "clock",
+    "counter_bits": 64,
+    "edge_binding": "rising_edge(clk); no divider or enable; admission edge excluded; every subsequent edge evaluated even after a fault",
+    "atomic_snapshot": "All decision facts, epoch, cycle, authenticated-verifier result, effect request, sink reservation and payload sampled together in the admitted clock domain",
+    "input_clock_domain": "SYNCHRONOUS_TO_CLK; setup/hold and upstream authentication are integration obligations; asynchronous inputs forbidden without a separately verified bundled CDC adapter",
+    "epoch_admission": "External authorized controller; nonzero epoch; one admission until power reset; soft reset and repeat admission latch fault",
+    "cycle_origin": "Hardware count starts at zero after admission; snapshot cycle must equal hardware count; caller labels never drive the count",
+    "coverage": "Separate observer counts admitted clk edges and compares previous evaluator count/pulse; counters saturate and latch BLOCK on exhaustion",
+    "faulted_cycles": "Evaluation and independent edge counters continue, but no protected output can release",
+    "readback": "Synchronous request with nonzero challenge nonce copies preceding completed-edge epoch/counters/fault/state/snapshot into one stable register bank; no live multiword torn reads",
+    "effect_interface": "One protected registered 32-bit payload and commit strobe; sink_ready reserves unconditional consumption of the following output interval. This is not an AXI valid/ready queue and has no retry buffer.",
+    "reset_boundary": "Power reset erases volatile evidence. Admission controller must retain prior epoch/fault evidence out of band and prohibit epoch reuse; V1 readback cannot attest this yet.",
+    "witness_independence": "Independent sequential logic in the same clock domain; not an independent oscillator, power domain, person or physical observation",
+    "physical_completion": "OPEN; simulation and generic synthesis are not placement/routing, STA, programmed bitstream or board evidence"
   }
 }
