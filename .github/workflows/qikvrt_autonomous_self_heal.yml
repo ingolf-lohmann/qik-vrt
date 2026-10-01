@@ -17,6 +17,9 @@ on:
     paths:
       - ".github/workflows/qikvrt_autonomous_self_heal.yml"
       - "tests/test_qikvrt_continuous_auto_repair.py"
+      - "tools/qikvrt_autonomous_pre_effect_controller.py"
+      - "tests/test_qikvrt_autonomous_pre_effect_controller.py"
+      - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 
 permissions:
   contents: read
@@ -50,7 +53,8 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_autonomous_pre_effect_controller
 
   observe-repair-propose:
     if: >-

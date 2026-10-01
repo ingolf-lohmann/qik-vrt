@@ -1,0 +1,110 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "ACTIVATE_EXISTING_OBSERVATION_HOLD_20261001",
+  "created_at": "2026-10-01T00:44:11.453267+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 410,
+  "source_commit": "106d0421b9257ff61e7f597dee905df91ffb6ae1",
+  "source_tree": "8ed85f1b6f43bb243040e80fc55e908d02bae86b",
+  "source_blobs": {
+    ".github/workflows/qikvrt_reflexive_repository_watchdog.yml": "c3e51de650574e6a67127bedddb533ecf7bed298",
+    "tools/qikvrt_reflexive_repository_watchdog.py": "ed24a82df3a3c08d947d38b23d4543e44d912f47",
+    "tests/test_qikvrt_reflexive_repository_watchdog.py": "6ce8a6aae2e2380e9c818185cd082a0a53a0c445",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+    "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md": "a762f79a4491faa61e55002a76605b3616348665",
+    "policy/repository-status-stall-detection-v1.md": "c79751a8ac13403913ed1c58fe83f1ede6fb6224"
+  },
+  "base_commit": "b427618e8b1eb3b8e3e3b0dcdb5261477d0e38e0",
+  "base_tree": "99d0e463bc80e8b5ad8eaeb7fdb550581fd955b6",
+  "scope": "Activate the existing reflexive observation-failure receipt producer on current Mirror Main; preserve failed read and unknown progress",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Standing and current repair/commit/push/merge authorization; Outrun continuation"
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "Reuse six existing PR #410 files without changing the receipt producer",
+    "Isolate watchdog unit tests from tracked real-node liveness state",
+    "Add the watchdog tests to the existing full Makefile gate",
+    "Freshly validate original HTTP-404 error path and retain exact bound provenance"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "observed_failure": {
+      "run": 36796801865,
+      "attempt": 1,
+      "job": 110162136147,
+      "head": "b427618e8b1eb3b8e3e3b0dcdb5261477d0e38e0",
+      "tree": "99d0e463bc80e8b5ad8eaeb7fdb550581fd955b6",
+      "event_time": "2026-10-01T00:34:40.2993751Z",
+      "stage": "AUTHORITY_READBACK",
+      "error": "HTTP 404",
+      "artifact": 11133604123,
+      "artifact_sha256": "77159ad7285d79c3ec2055bd566eff03f218ef3bba41346e40eb886642fb3e47",
+      "receipt_absence_verified": true
+    }
+  },
+  "outputs": [
+    ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+    "tools/qikvrt_reflexive_repository_watchdog.py",
+    "tests/test_qikvrt_reflexive_repository_watchdog.py",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+    "policy/repository-status-stall-detection-v1.md",
+    "Makefile",
+    "state/work_units/ACTIVATE_EXISTING_OBSERVATION_HOLD_20261001.json"
+  ],
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "strategy": "Single bounded activation successor of current Main; PR #410 remains open for its separate system obligations"
+  },
+  "verification": {
+    "targeted_tests": {
+      "count": 41,
+      "result": "PASS",
+      "scope": "Watchdog, Mesh-executor contract and Seed contracts"
+    },
+    "full_make_test": {
+      "result": "PASS",
+      "includes_failure_path_regression": true
+    },
+    "baseline_fixture_defect": {
+      "baseline_head": "b427618e8b1eb3b8e3e3b0dcdb5261477d0e38e0",
+      "baseline_watchdog_tests": 16,
+      "baseline_failures": 6,
+      "cause": "Synthetic expected Authority identity compared against tracked real-node Seed acceptance; fixture isolation only"
+    },
+    "hosted_current_subject_failure_receipt": "PENDING",
+    "authority_access_recovery": "NOT_ESTABLISHED"
+  },
+  "human_decision": {
+    "repair_commit_push_merge": "AUTHORIZED",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "ruleset_change": false,
+    "credential_provisioning": false
+  },
+  "predecessor_evidence_transfer": false,
+  "retained_frontiers": [
+    "Restore authorized live Goldkelch/qik-vrt read path",
+    "Restore native Mirror Code-Owner enforcement/approval under independently verified administration authority",
+    "Validate remaining PR #410 distributed/corpus obligations after Authority recovery"
+  ],
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}
