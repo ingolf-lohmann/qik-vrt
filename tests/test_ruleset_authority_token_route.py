@@ -40,8 +40,8 @@ class AuthorityTokenRouteTests(unittest.TestCase):
 
     def test_target_and_conditional_guards_are_retained(self):
         source = WORKFLOW.read_text()
-        for guard in ['TARGET_REPOSITORY: Goldkelch/qik-vrt', 'headers["If-Match"] = etag',
-                      'if pre_hash != expected_pre:', 'if post_hash != expected_post:',
+        for guard in ['TARGET_REPOSITORY: ${{ github.repository }}', 'headers["If-Match"] = etag',
+                      'if reobserved_hash != pre_hash:', 'if post_hash != expected_post:',
                       'RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}']:
             self.assertIn(guard, source)
         self.assertLess(source.index('os.environ.get("RULESET_ADMIN_TOKEN"'), source.index('os.environ.get("ADMIN_TOKEN"'))
