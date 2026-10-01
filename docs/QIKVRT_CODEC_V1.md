@@ -1,20 +1,21 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
 <!-- Copyright 2026 Ingolf Lohmann. -->
 
-# QIK-VRT Compression Transport V1
+# QIK-VRT Canonical Codec V1
 
 Ingolf Lohmann authorizes a versioned lossless codec for static data and streams
 as part of the QIK-VRT personal Digital Twin architecture. This implementation
-adds compression transport around arbitrary bytes and the existing canonical
-standpoint codec. Normative transport contract:
+combines the fixed standpoint, canonical snapshot and compression transport
+around arbitrary bytes. The single normative machine contract is
 `policy/QIKVRT_CODEC_CONTRACT_V1.json`; implementation: `src/qikvrt_codec.py`.
 
 During implementation, PR #424 materialized the previously absent 400-byte
 standpoint and canonical set serializer. This successor binds exactly that
 candidate, `def7a93e7ae36426bebaf7b82519b670025f8f42`, and delegates snapshots
-and element identities to `src/qikvrt_standpoint_codex.py`. PR #425 is stacked
-on #424. Its review diff contains the compression work; Main adoption retains
-both candidates' checks and review requirements.
+and element identities to `src/qikvrt_standpoint_codex.py`. PR #425 carries the
+combined change against Main, preserving both drafts' ancestry and provenance.
+Exact-head checks and responsible review apply to the consolidated candidate;
+predecessor checks do not transfer.
 
 ## Standpoint and identity reuse
 
@@ -22,9 +23,11 @@ The exact 400-byte V1 image is
 `canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin`, SHA-256
 `27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792`.
 Its field semantics, descriptor hash, zero padding, stable labels,
-content identities and canonical snapshot layout remain authoritative in
-`policy/QIKVRT_STANDPOINT_CODEX_V1.json` and
-`spec/QIKVRT_STANDPOINT_CODEX_V1.md`. These bytes are a first materialized review
+content identities and canonical snapshot layout are authoritative in
+`policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint`.
+`policy/QIKVRT_STANDPOINT_CODEX_V1.json` is an exact, nonnormative compatibility
+projection of that fragment; tests reject drift. The human standpoint chapter
+is `spec/QIKVRT_STANDPOINT_CODEX_V1.md`. These bytes are a first materialized review
 candidate, not a recovered historical signature or an already reviewed release.
 
 Every canonical element carries the exact same signature, a caller-assigned
@@ -40,16 +43,26 @@ transport with that signature, then calls the existing `deserialize`. Its
 output limit is the existing `Limits.max_snapshot_bytes`. A valid transport
 hash does not legitimize a foreign standpoint or noncanonical snapshot.
 
-The general byte API retains its explicit, independently expected exact
-400-byte seed; previously emitted generic V1 transport remains decodable.
-Canonical mesh adapters always use the codex's bound V1 image. This separates
-transport versioning from standpoint/snapshot versioning. No marker or unkeyed
+Every new container, including arbitrary byte transport, uses the same fixed
+standpoint. Python and CLI defaults select it; an explicitly supplied signature
+must match it byte-for-byte. A foreign or correctly rehashed alternative fails
+before encoding writes output. No codec-generated random nonce enters element
+identity or snapshots; stable IDs are assigned and persisted by the caller.
+
+Earlier generic-seed V1 transport remains readable only with explicit
+`allow_legacy_seed=True` and an externally expected exact 400-byte seed.
+The decoder never treats the input header as its own seed authority. The stream
+receipt marks a foreign seed with `canonical_standpoint=False`; legacy decoding
+retains all hash, framing and resource guards. This compatibility mode has no
+encoder, snapshot adapter or implicit migration. `decode_snapshot` always
+requires the canonical standpoint. Transport versioning remains separate from
+standpoint/snapshot versioning. No marker or unkeyed
 hash authenticates a natural person, authorizes execution or attests a physical
 effect. SHA-256 bindings rely on its usual collision-resistance assumptions.
 
 ## Compression container
 
-A 416-byte big-endian header binds magic, version, block size and common seed.
+A 416-byte big-endian header binds magic, version, block size and fixed standpoint.
 Bounded independent blocks bind method, raw/stored lengths and raw SHA-256.
 A 49-byte END footer binds all exact wire bytes, block count and total raw bytes.
 Raw fallback prevents compression-induced payload expansion. Complete framing
@@ -59,7 +72,7 @@ Unknown versions, flags, methods, malformed lengths, unfinished/concatenated
 zlib streams, corruption, exceeded budgets and trailing bytes fail closed.
 
 For every successfully encoded finite byte string x,
-`decode(encode(x, expected_seed), expected_seed) == x`, within the explicit
+`decode(encode(x)) == x`, within the explicit
 consumer budget. There is no normalization, text conversion or platform-specific
 representation of arbitrary input bytes. For every canonical element set E,
 `serialize(decode_snapshot(encode_snapshot(E))) == serialize(E)` byte-for-byte.
@@ -115,8 +128,8 @@ stages beside the destination and replaces it only after complete validation.
 from src.qikvrt_standpoint_codex import Element, QIKVRT_SIGNATURE, serialize
 from src.qikvrt_codec import encode, decode, encode_snapshot, decode_snapshot
 
-wire = encode(payload, signature=QIKVRT_SIGNATURE, profile="balanced")
-assert decode(wire, signature=QIKVRT_SIGNATURE) == payload
+wire = encode(payload, profile="balanced")
+assert decode(wire) == payload
 # Caller assigns and persists a distinct 32-byte label for each logical element.
 elements = [Element(stable_id=stable_label, payload=payload)]
 compressed = encode_snapshot(elements, profile="compact")
@@ -124,11 +137,21 @@ assert serialize(decode_snapshot(compressed)) == serialize(elements)
 ```
 
 ```sh
-python3 -B -m src.qikvrt_codec encode input.bin output.qikvrt --signature-file canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin
-python3 -B -m src.qikvrt_codec decode output.qikvrt restored.bin --signature-file canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin
+python3 -B -m src.qikvrt_codec encode input.bin output.qikvrt
+python3 -B -m src.qikvrt_codec decode output.qikvrt restored.bin
 make codec-test standpoint-codex-test
 python3 -B tools/qikvrt_codec_benchmark.py --repeats 7 --output /tmp/codec-benchmark.json
 ```
+
+For an earlier generic-seed transport only:
+
+```sh
+python3 -B -m src.qikvrt_codec decode historical.qikvrt restored.bin --allow-legacy-seed --signature-file externally-preserved-seed.bin
+```
+
+`--allow-legacy-seed` is decode-only and requires the explicit signature file.
+It is rejected for encoding. Existing generic fixtures and benchmarks remain
+historical evidence; they are not rewritten as canonical standpoint evidence.
 
 The wire format has no operating-system or CPU layout dependency. Its reference
 runtime uses Python's standard-library byte I/O, SHA-256 and RFC 1950/RFC 1951

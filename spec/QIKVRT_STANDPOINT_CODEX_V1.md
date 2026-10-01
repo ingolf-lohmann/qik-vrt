@@ -3,8 +3,12 @@
 
 # QIKVRT Standpunkt- und Serialisierungskodex V1
 
-Status: normativer, ausführbarer Review-Kandidat. Maschinenvertrag:
-`policy/QIKVRT_STANDPOINT_CODEX_V1.json`; Implementierung:
+Status: Standpunktkapitel des konsolidierten, ausführbaren V1-Review-Kandidaten.
+Einziger normativer Maschinenvertrag:
+`policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint`.
+`policy/QIKVRT_STANDPOINT_CODEX_V1.json` ist dessen bytewertgleiche,
+nichtnormative Kompatibilitätsprojektion; Tests weisen Abweichungen ab.
+Implementierung:
 `src/qikvrt_standpoint_codex.py`; Prüfeinstieg: `make standpoint-codex-test`.
 
 Die Festlegung von Ingolf Lohmann wird hier erstmals in kanonische Bytes
@@ -97,6 +101,13 @@ Inhaltsbytes hat exakt `428 + 472*n + p` Bytes. Es gibt keine Trailer,
 ignorierten Zusatzfelder, alternative Textkodierung oder implizite Kompression.
 Payloads dürfen beliebige Bytes enthalten, einschließlich Nullbytes und
 ungültigem UTF-8. Unicode-Normalisierung betrifft nur den festen Deskriptor.
+
+Die Kompressionsschicht in `src/qikvrt_codec.py` transportiert genau diese
+Snapshotbytes. Sie führt keine zweite Elementstruktur, Zufallsnonce oder
+Snapshotserialisierung ein. Neue Container verwenden dieselbe feste Signatur.
+Ausdrückliches Legacy-Decoding früherer generischer Transportcontainer bleibt
+auf deren externe Seed-Bindung beschränkt und begründet keine Konformität
+eines fremden Standpunkts; `decode_snapshot` akzeptiert diesen Modus nicht.
 
 Für jede zulässige Menge E gilt:
 `deserialize(serialize(E)) = sort_by_stable_id(E)` mit identischen Feldbytes.

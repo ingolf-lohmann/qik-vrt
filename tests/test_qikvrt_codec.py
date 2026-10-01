@@ -13,6 +13,7 @@ import tempfile
 import unittest
 import zlib
 from pathlib import Path
+from unittest.mock import patch
 
 from src import qikvrt_codec as codec
 from src import qikvrt_standpoint_codex as codex
@@ -20,6 +21,15 @@ from src import qikvrt_standpoint_codex as codex
 ROOT = Path(__file__).resolve().parents[1]
 # Exact review-candidate seed reused from PR #424, not a historical recovered image.
 SEED = codex.QIKVRT_SIGNATURE
+
+
+def historical_transport(raw: bytes, seed: bytes) -> bytes:
+    """Independent RAW fixture for the earlier generic-seed V1 transport."""
+    header = b"QIKVRTC\0" + bytes.fromhex("010001a000040000") + seed
+    records = (struct.pack(">BII32s", 0, len(raw), len(raw), hashlib.sha256(raw).digest())
+               + raw) if raw else b""
+    footer = struct.pack(">BQQ", 255, len(raw), int(bool(raw)))
+    return header + records + footer + hashlib.sha256(header + records + footer).digest()
 
 
 class FragmentedReader(io.BytesIO):
@@ -33,6 +43,86 @@ class ShortWriter(io.BytesIO):
 
 
 class ByteCodecTests(unittest.TestCase):
+    def test_default_static_and_stream_paths_use_the_fixed_standpoint(self):
+        raw = bytes(range(256)) * 40
+        for profile in codec.PROFILES:
+            wire = codec.encode(raw, profile=profile, block_bytes=4096)
+            self.assertEqual(wire, codec.encode(raw, signature=SEED,
+                                               profile=profile, block_bytes=4096))
+            self.assertEqual(codec.decode(wire), raw)
+            sink = io.BytesIO()
+            encoded = codec.encode_stream(FragmentedReader(raw), sink,
+                                          profile=profile, block_bytes=4096)
+            target = io.BytesIO()
+            decoded = codec.decode_stream(FragmentedReader(sink.getvalue()), target)
+            self.assertEqual(encoded, decoded)
+            self.assertTrue(decoded.canonical_standpoint)
+            self.assertEqual(decoded.signature_sha256, codex.SIGNATURE_SHA256)
+            self.assertEqual(target.getvalue(), raw)
+
+    def test_new_containers_reject_foreign_and_rehashed_standpoints_before_writing(self):
+        foreign = bytearray(SEED)
+        foreign[48:329] = foreign[48:329].replace(b"QIKVRT", b"QIKvRT")
+        foreign[16:48] = hashlib.sha256(codex.SIGNATURE_DOMAIN + foreign[:16]
+                                      + foreign[48:329]).digest()
+        for seed in (b"x" * 400, bytes(foreign)):
+            for profile in codec.PROFILES:
+                sink = io.BytesIO()
+                with self.assertRaisesRegex(codec.CodecError, "SIGNATURE_MISMATCH"):
+                    codec.encode_stream(io.BytesIO(b"data"), sink, signature=seed, profile=profile)
+                self.assertEqual(sink.getvalue(), b"")
+
+    def test_legacy_decoding_is_explicit_externally_bound_and_resource_limited(self):
+        seed = bytes(range(200)) * 2
+        raw = b"historical\0payload\xff"
+        wire = historical_transport(raw, seed)
+        for options in ({}, {"signature": seed}, {"allow_legacy_seed": True}):
+            with self.assertRaises(codec.CodecError):
+                codec.decode(wire, **options)
+        self.assertEqual(codec.decode(wire, signature=seed, allow_legacy_seed=True), raw)
+        target = io.BytesIO()
+        info = codec.decode_stream(FragmentedReader(wire), target, signature=seed,
+                                   allow_legacy_seed=True)
+        self.assertFalse(info.canonical_standpoint)
+        self.assertEqual(info.signature_sha256, hashlib.sha256(seed).hexdigest())
+        self.assertEqual(target.getvalue(), raw)
+        for options in ({"signature": b"z" * 400}, {"max_output_bytes": len(raw) - 1}):
+            options = {"signature": seed, "allow_legacy_seed": True, **options}
+            target = io.BytesIO()
+            with self.assertRaises(codec.CodecError):
+                codec.decode_stream(io.BytesIO(wire), target, **options)
+            self.assertEqual(target.getvalue(), b"")
+        for invalid in (1, None, "true"):
+            with self.assertRaisesRegex(codec.CodecError, "INVALID_LEGACY_FLAG"):
+                codec.decode(wire, signature=seed, allow_legacy_seed=invalid)
+        for invalid_wire in (wire[:-1], wire + b"\0", wire[:-1] + bytes([wire[-1] ^ 1])):
+            with self.assertRaises(codec.CodecError):
+                codec.decode(invalid_wire, signature=seed, allow_legacy_seed=True)
+
+    def test_cli_defaults_to_standpoint_and_legacy_mode_is_decode_only(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source, wire, output, seed = (root / n for n in ("source", "wire", "output", "seed"))
+            source.write_bytes(b"static\0data")
+            cli = [sys.executable, "-B", "-m", "src.qikvrt_codec"]
+            def run(operation, input_path, output_path, *options):
+                return subprocess.run(cli + [operation, str(input_path), str(output_path), *options],
+                                      cwd=ROOT, capture_output=True, timeout=10)
+            self.assertEqual(run("encode", source, wire).returncode, 0)
+            self.assertEqual(run("decode", wire, output).returncode, 0)
+            self.assertEqual(output.read_bytes(), source.read_bytes())
+            seed.write_bytes(bytes(range(200)) * 2)
+            for options in (("--signature-file", str(seed)),
+                            ("--signature-file", str(seed), "--allow-legacy-seed")):
+                self.assertEqual(run("encode", source, wire, *options).returncode, 2)
+            wire.write_bytes(historical_transport(source.read_bytes(), seed.read_bytes()))
+            self.assertEqual(run("decode", wire, output, "--signature-file", str(seed)).returncode, 2)
+            self.assertEqual(run("decode", wire, output, "--allow-legacy-seed").returncode, 2)
+            self.assertEqual(run("decode", wire, output, "--signature-file", str(seed),
+                                 "--allow-legacy-seed").returncode, 0)
+            self.assertEqual(output.read_bytes(), source.read_bytes())
+            self.assertFalse(list(root.glob(".qikvrt-codec-*")))
+
     def test_roundtrip_all_profiles_and_arbitrary_bytes(self):
         rng = random.Random(4102026)
         inputs = [b"", b"\0", bytes(range(256)), b"\xff" * 8192,
@@ -56,7 +146,10 @@ class ByteCodecTests(unittest.TestCase):
         header = b"QIKVRTC\0" + bytes.fromhex("010001a000040000") + legacy_seed
         prefix = b"\xff" + b"\0" * 16
         legacy_wire = header + prefix + hashlib.sha256(header + prefix).digest()
-        self.assertEqual(codec.decode(legacy_wire, signature=legacy_seed), b"")
+        with self.assertRaises(codec.CodecError):
+            codec.decode(legacy_wire, signature=legacy_seed)
+        self.assertEqual(codec.decode(legacy_wire, signature=legacy_seed,
+                                      allow_legacy_seed=True), b"")
 
     def test_same_profile_is_deterministic_and_short_reads_do_not_change_wire(self):
         raw = bytes(range(256)) * 50
@@ -247,8 +340,38 @@ class StandpointIntegrationTests(unittest.TestCase):
         self.assertEqual(codec.decode(wire, signature=SEED), bytes(raw))
         with self.assertRaises(codex.CodexError):
             codec.decode_snapshot(wire)
+        legacy = historical_transport(codex.serialize([self.a]), b"x" * 400)
+        self.assertEqual(codec.decode(legacy, signature=b"x" * 400, allow_legacy_seed=True),
+                         codex.serialize([self.a]))
         with self.assertRaises(codec.CodecError):
-            codec.decode_snapshot(codec.encode(codex.serialize([self.a]), signature=b"x" * 400))
+            codec.decode_snapshot(legacy)
+
+    def test_fixed_snapshot_vector_is_unchanged_through_every_profile(self):
+        elements = (codex.Element(bytes(range(32)), b"\0\xffQIKVRT\0"),
+                    codex.Element(bytes(range(32, 64)), b""))
+        for profile in codec.PROFILES:
+            with patch("os.urandom", side_effect=AssertionError("no codec-assigned nonce")):
+                first = codec.encode_snapshot(elements, profile=profile)
+                second = codec.encode_snapshot(reversed(elements), profile=profile)
+            self.assertEqual(first, second)
+            snapshot = codex.serialize(codec.decode_snapshot(first))
+            self.assertEqual(hashlib.sha256(snapshot).hexdigest(),
+                             "ef8b7d6bf629a8cdfd4e537de213917ae48a407d76179e2c8cb62dc865a680b5")
+
+    def test_standpoint_policy_is_an_exact_nonnormative_contract_projection(self):
+        path = "policy/QIKVRT_CODEC_CONTRACT_V1.json"
+        canonical = json.loads((ROOT / path).read_text())
+        projection = json.loads((ROOT / "policy/QIKVRT_STANDPOINT_CODEX_V1.json").read_text())
+        self.assertEqual(projection.pop("canonical_contract"), path + "#/standpoint")
+        self.assertEqual(projection["status"], "NONNORMATIVE_COMPATIBILITY_PROJECTION")
+        projection["status"] = canonical["standpoint"]["status"]
+        self.assertEqual(projection, canonical["standpoint"])
+        self.assertEqual(canonical["seed"]["authority"], "FIXED_CANONICAL_QIKVRT_STANDPOINT_V1")
+        self.assertEqual(canonical["snapshot"]["authority"], path + "#/standpoint/snapshot")
+        self.assertEqual(canonical["identity"]["authority"], path + "#/standpoint/element")
+        self.assertTrue(canonical["legacy_generic_transport"]["decode_only"])
+        order = json.loads((ROOT / "AI_CONTEXT.json").read_text())["required_read_order"]
+        self.assertLess(order.index(path), order.index("policy/QIKVRT_STANDPOINT_CODEX_V1.json"))
 
     def test_resource_limits_apply_to_transport_and_snapshot(self):
         wire = codec.encode_snapshot([self.a])

@@ -2,9 +2,10 @@
 # Copyright 2026 Ingolf Lohmann.
 """Versioned, lossless byte transport and canonical QIK-VRT mesh snapshots.
 
-The byte transport requires an externally expected 400-byte seed. Snapshot
-adapters reuse the existing standpoint codex and its exact canonical seed. SHA-256 bindings detect corruption, not
-authenticate a person. See policy/QIKVRT_CODEC_CONTRACT_V1.json.
+New containers and snapshots share the fixed 400-byte V1 standpoint. Historical
+generic-seed containers require explicit legacy decoding and never establish
+standpoint conformance. SHA-256 detects corruption; it does not authenticate a
+person. See policy/QIKVRT_CODEC_CONTRACT_V1.json.
 """
 from __future__ import annotations
 
@@ -21,10 +22,10 @@ from pathlib import Path
 from typing import BinaryIO, Iterable
 
 from src.qikvrt_standpoint_codex import (
-    DEFAULT_LIMITS, QIKVRT_SIGNATURE, Element, Limits, deserialize, serialize,
+    DEFAULT_LIMITS, QIKVRT_SIGNATURE, SIGNATURE_BYTES, CodexError, Element,
+    Limits, deserialize, serialize, validate_signature,
 )
 
-SIGNATURE_BYTES = 400
 DEFAULT_BLOCK_BYTES = 256 * 1024
 MAX_BLOCK_BYTES = 16 * 1024 * 1024
 DEFAULT_DECODE_LIMIT = 256 * 1024 * 1024
@@ -46,6 +47,20 @@ def _seed(value: bytes) -> bytes:
     if type(value) is not bytes or len(value) != SIGNATURE_BYTES:
         raise CodecError("SIGNATURE_MUST_BE_EXACTLY_400_BYTES")
     return value
+
+
+def _standpoint(value: bytes) -> bytes:
+    try:
+        validate_signature(value)
+    except CodexError as exc:
+        raise CodecError("SIGNATURE_MISMATCH: fixed QIKVRT V1 standpoint required") from exc
+    return value
+
+
+def _expected_signature(value: bytes, allow_legacy_seed: bool) -> bytes:
+    if type(allow_legacy_seed) is not bool:
+        raise CodecError("INVALID_LEGACY_FLAG")
+    return _seed(value) if allow_legacy_seed else _standpoint(value)
 
 
 def _integer(value: int, lower: int, upper: int, name: str) -> int:
@@ -103,10 +118,11 @@ class StreamInfo:
     blocks: int
     payload_sha256: str
     signature_sha256: str
+    canonical_standpoint: bool
 
 
 def encode_stream(
-    source: BinaryIO, sink: BinaryIO, *, signature: bytes,
+    source: BinaryIO, sink: BinaryIO, *, signature: bytes = QIKVRT_SIGNATURE,
     profile: str = "balanced", block_bytes: int = DEFAULT_BLOCK_BYTES,
     probe: bool = True,
 ) -> StreamInfo:
@@ -115,7 +131,7 @@ def encode_stream(
     probe=False provides the same framed baseline with full compression trials.
     Source/sink errors propagate; the caller owns transactional persistence.
     """
-    signature = _seed(signature)
+    signature = _standpoint(signature)
     _integer(block_bytes, 4096, MAX_BLOCK_BYTES, "INVALID_BLOCK_BYTES")
     if type(profile) is not str or profile not in PROFILES:
         raise CodecError("UNKNOWN_PROFILE")
@@ -154,7 +170,7 @@ def encode_stream(
     footer = footer_prefix + wire_hash.digest()
     _write(sink, footer)
     return StreamInfo(total, wire_bytes + len(footer), blocks,
-                      raw_hash.hexdigest(), hashlib.sha256(signature).hexdigest())
+                      raw_hash.hexdigest(), hashlib.sha256(signature).hexdigest(), True)
 
 
 def _inflate(payload: bytes, raw_bytes: int) -> bytes:
@@ -170,15 +186,18 @@ def _inflate(payload: bytes, raw_bytes: int) -> bytes:
 
 
 def decode_stream(
-    source: BinaryIO, sink: BinaryIO, *, signature: bytes,
+    source: BinaryIO, sink: BinaryIO, *, signature: bytes = QIKVRT_SIGNATURE,
     max_output_bytes: int | None = None, max_block_bytes: int = MAX_BLOCK_BYTES,
+    allow_legacy_seed: bool = False,
 ) -> StreamInfo:
     """Verify each block before writing; accept the container only on return.
 
     A bad late footer can follow already-written, individually verified blocks.
     Use a temporary sink for atomic acceptance; the CLI does this automatically.
+    Legacy decoding still requires the caller's exact external expected seed;
+    it never extracts or trusts a seed from the container itself.
     """
-    signature = _seed(signature)
+    signature = _expected_signature(signature, allow_legacy_seed)
     _integer(max_block_bytes, 4096, MAX_BLOCK_BYTES, "INVALID_BLOCK_LIMIT")
     if max_output_bytes is not None:
         _integer(max_output_bytes, 0, 2**64 - 1, "INVALID_OUTPUT_LIMIT")
@@ -206,7 +225,8 @@ def decode_stream(
             if _read_up_to(source, 1):
                 raise CodecError("TRAILING_INPUT")
             return StreamInfo(total, wire_bytes + len(footer), blocks,
-                              raw_hash.hexdigest(), hashlib.sha256(signature).hexdigest())
+                              raw_hash.hexdigest(), hashlib.sha256(signature).hexdigest(),
+                              hmac.compare_digest(signature, QIKVRT_SIGNATURE))
         if method not in (RAW, ZLIB) or short_block:
             raise CodecError("UNKNOWN_METHOD_OR_NONCANONICAL_BLOCK_ORDER")
         frame = bytes([method]) + _read_exact(source, BLOCK.size - 1)
@@ -232,7 +252,7 @@ def decode_stream(
         short_block = raw_bytes < block_bytes
 
 
-def encode(data: bytes, *, signature: bytes, profile: str = "balanced",
+def encode(data: bytes, *, signature: bytes = QIKVRT_SIGNATURE, profile: str = "balanced",
            block_bytes: int = DEFAULT_BLOCK_BYTES, probe: bool = True) -> bytes:
     if type(data) is not bytes:
         raise CodecError("BYTES_REQUIRED")
@@ -242,12 +262,14 @@ def encode(data: bytes, *, signature: bytes, profile: str = "balanced",
     return out.getvalue()
 
 
-def decode(data: bytes, *, signature: bytes,
-           max_output_bytes: int | None = DEFAULT_DECODE_LIMIT) -> bytes:
+def decode(data: bytes, *, signature: bytes = QIKVRT_SIGNATURE,
+           max_output_bytes: int | None = DEFAULT_DECODE_LIMIT,
+           allow_legacy_seed: bool = False) -> bytes:
     if type(data) is not bytes:
         raise CodecError("BYTES_REQUIRED")
     out = io.BytesIO()
-    decode_stream(io.BytesIO(data), out, signature=signature, max_output_bytes=max_output_bytes)
+    decode_stream(io.BytesIO(data), out, signature=signature,
+                  max_output_bytes=max_output_bytes, allow_legacy_seed=allow_legacy_seed)
     return out.getvalue()
 
 
@@ -274,15 +296,24 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("operation", choices=("encode", "decode"))
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--signature-file", required=True, type=Path)
+    parser.add_argument("--signature-file", type=Path,
+                        help="Verify an explicit expected signature; default is the fixed V1 standpoint")
+    parser.add_argument("--allow-legacy-seed", action="store_true",
+                        help="Decode historical generic-seed transport with an explicit signature file")
     parser.add_argument("--profile", choices=tuple(PROFILES), default="balanced")
     parser.add_argument("--block-bytes", type=int, default=DEFAULT_BLOCK_BYTES)
     parser.add_argument("--max-output-bytes", type=int, default=None)
     args = parser.parse_args(argv)
     temporary = None
     try:
-        signature = _seed(args.signature_file.read_bytes())
-        if args.output.resolve() in (args.input.resolve(), args.signature_file.resolve()):
+        signature = QIKVRT_SIGNATURE if args.signature_file is None else args.signature_file.read_bytes()
+        if args.allow_legacy_seed and (args.operation != "decode" or args.signature_file is None):
+            raise CodecError("LEGACY_DECODE_REQUIRES_EXPLICIT_SIGNATURE_FILE")
+        _expected_signature(signature, args.allow_legacy_seed)
+        protected = [args.input.resolve()]
+        if args.signature_file is not None:
+            protected.append(args.signature_file.resolve())
+        if args.output.resolve() in protected:
             raise CodecError("OUTPUT_MUST_BE_DISTINCT_FROM_INPUT_AND_SEED")
         with args.input.open("rb") as source, tempfile.NamedTemporaryFile(
             mode="wb", dir=args.output.parent, prefix=".qikvrt-codec-", delete=False
@@ -293,7 +324,8 @@ def main(argv: list[str] | None = None) -> int:
                               block_bytes=args.block_bytes)
             else:
                 decode_stream(source, sink, signature=signature,
-                              max_output_bytes=args.max_output_bytes)
+                              max_output_bytes=args.max_output_bytes,
+                              allow_legacy_seed=args.allow_legacy_seed)
             sink.flush()
             os.fsync(sink.fileno())
         os.replace(temporary, args.output)

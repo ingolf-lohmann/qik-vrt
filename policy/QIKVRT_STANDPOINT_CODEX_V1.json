@@ -7,7 +7,7 @@
   },
   "schema": "qikvrt_standpoint_codex_v1",
   "version": 1,
-  "status": "NORMATIVE_REVIEW_CANDIDATE",
+  "status": "NONNORMATIVE_COMPATIBILITY_PROJECTION",
   "specification": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
   "implementation": "src/qikvrt_standpoint_codex.py",
   "regression_tests": "tests/test_qikvrt_standpoint_codex.py",
@@ -269,5 +269,6 @@
     ],
     "snapshot_bytes": 1381,
     "snapshot_sha256": "ef8b7d6bf629a8cdfd4e537de213917ae48a407d76179e2c8cb62dc865a680b5"
-  }
+  },
+  "canonical_contract": "policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint"
 }

@@ -20,10 +20,11 @@
     "vendor_siemens_tenant_integration_verified": false,
     "verified_by_tests": "Declared byte codec and snapshot implementation cases"
   },
+  "compatibility_projection": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
   "human_contract": "docs/QIKVRT_CODEC_V1.md",
   "identity": {
     "absolute_uniqueness_or_person_authentication_claim": false,
-    "authority": "policy/QIKVRT_STANDPOINT_CODEX_V1.json#/element",
+    "authority": "policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint/element",
     "content_change": "Preserve stable_id and recompute domain-separated content identity through existing Element",
     "content_identity_bytes": 32,
     "duplicate_identities_and_labels_rejected": true,
@@ -31,6 +32,20 @@
     "stable_id_bytes": 32
   },
   "implementation": "src/qikvrt_codec.py",
+  "legacy_generic_transport": {
+    "canonical_snapshot_adapter_acceptance": false,
+    "cli_option": "--allow-legacy-seed --signature-file <explicit-expected-seed>",
+    "conformance_receipt": "StreamInfo.canonical_standpoint is false for foreign seeds",
+    "decode_only": true,
+    "expected_seed": "Externally supplied exact 400 bytes; never extracted as authority from input",
+    "explicit_option": "allow_legacy_seed=True",
+    "implicit_seed_replacement_or_identity_migration": false,
+    "same_integrity_and_resource_validation": true,
+    "source_head": "64d026cc79e27c366fa8b5c1971841f7ec0a7214",
+    "status": "HISTORICAL_GENERIC_TRANSPORT_NOT_CANONICAL_STANDPOINT",
+    "wire_format": "Same compression transport V1; no second snapshot format"
+  },
+  "normative_authority": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
   "optimization": {
     "balanced": "Always trial zlib level6; store compressed only when strictly smaller; no sampling shortcut",
     "compact": "Always trial zlib level9; store compressed only when strictly smaller",
@@ -74,29 +89,31 @@
       "head": "def7a93e7ae36426bebaf7b82519b670025f8f42",
       "implementation": "src/qikvrt_standpoint_codex.py",
       "policy": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "policy_role": "Historical source of the canonical standpoint fragment; current path is a compatibility projection",
       "pr": 424,
       "tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c"
     }
   },
+  "revision": 2,
   "schema": "qikvrt_codec_contract_v1",
   "seed": {
-    "authority": "EXPLICIT_CALLER_SUPPLIED_TRUSTED_SEED",
-    "byte_transport_expected_seed": "Explicit caller-supplied 400-byte expected binding; legacy generic V1 transport remains decodable",
+    "authority": "FIXED_CANONICAL_QIKVRT_STANDPOINT_V1",
+    "byte_transport_expected_seed": "Exact fixed V1 standpoint for every new transport container and canonical snapshot",
     "bytes": 400,
     "canonical_owner_standpoint_content_status": "MATERIALIZED_REVIEW_CANDIDATE_FROM_PR424_NOT_HISTORICAL_RECOVERY",
     "common_for_all_elements_in_one_snapshot": true,
     "content_authentication_or_person_identity_proof": false,
-    "decode_requires_external_expected_seed": true,
-    "default": null,
+    "decode_requires_external_expected_seed": false,
+    "default": "src.qikvrt_standpoint_codex.QIKVRT_SIGNATURE",
     "physically_present_on_every_snapshot_element": true,
-    "snapshot_authority": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "snapshot_authority": "policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint",
     "snapshot_expected_seed": "Existing codex QIKVRT_SIGNATURE exactly, including header, descriptor digest and zero padding",
     "snapshot_signature_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
     "snapshot_signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
-    "type": "OPAQUE_EXACT_BYTES"
+    "type": "FIXED_CANONICAL_STANDPOINT_BYTES"
   },
   "snapshot": {
-    "authority": "policy/QIKVRT_STANDPOINT_CODEX_V1.json#/snapshot",
+    "authority": "policy/QIKVRT_CODEC_CONTRACT_V1.json#/standpoint/snapshot",
     "canonical_byte_roundtrip": "serialize(deserialize(decode(encode(serialize(E))))) == serialize(E)",
     "deserializer": "deserialize",
     "expected_seed": "QIKVRT_SIGNATURE from existing codex; foreign signature rejected even when transport hashes are valid",
@@ -109,10 +126,284 @@
       "src.qikvrt_codec.decode_snapshot"
     ]
   },
+  "standpoint": {
+    "_license": {
+      "classification": "normative_standpoint_serialization_codex",
+      "copyright": "Copyright 2026 Ingolf Lohmann",
+      "license": "CC-BY-NC-ND-4.0",
+      "rights_holder": "Ingolf Lohmann"
+    },
+    "acceptance_command": "make standpoint-codex-test",
+    "claim_boundary": {
+      "digest_is_authentication_claimed": false,
+      "lossless_within_declared_finite_byte_format": true,
+      "mc68000_execution_claimed": false,
+      "merge_release_or_effect_ack_done_implied": false,
+      "scientific_universality_claimed": false,
+      "sha256_is_collision_free_claimed": false,
+      "signature_contains_snapshot_payloads": false,
+      "universal_compression_to_400_bytes_claimed": false
+    },
+    "default_limits": {
+      "configurable_without_format_change": true,
+      "max_elements": 100000,
+      "max_payload_bytes": 16777216,
+      "max_snapshot_bytes": 67108864,
+      "wire_uint64_max": 18446744073709551615
+    },
+    "element": {
+      "content_change": "PRESERVE_STABLE_ID_AND_RECOMPUTE_IDENTITY",
+      "fields": [
+        {
+          "bytes": 400,
+          "name": "signature",
+          "offset": 0,
+          "semantics": "exact shared V1 signature"
+        },
+        {
+          "bytes": 32,
+          "name": "stable_id",
+          "offset": 400,
+          "semantics": "caller-assigned stable label"
+        },
+        {
+          "bytes": 32,
+          "name": "identity",
+          "offset": 432,
+          "semantics": "content-bound digest"
+        },
+        {
+          "bytes": 8,
+          "name": "payload_bytes",
+          "offset": 464,
+          "semantics": "uint64; exact byte count"
+        },
+        {
+          "bytes": "payload_bytes",
+          "name": "payload",
+          "offset": 472,
+          "semantics": "preserved exact input bytes"
+        }
+      ],
+      "identity_algorithm": "SHA-256",
+      "identity_bytes": 32,
+      "identity_domain_hex": "51494b5652542d454c454d454e542d563100",
+      "identity_input": [
+        "domain",
+        "uint16(version)",
+        "signature[400]",
+        "stable_id[32]",
+        "uint64(payload_bytes)",
+        "payload"
+      ],
+      "minimum_record_bytes": 472,
+      "payload": "OPAQUE_IMMUTABLE_BYTES",
+      "stable_id_assignment": "CALLER_ASSIGNED_DISTINCT_PERSISTENT_32_BYTES",
+      "stable_id_bytes": 32
+    },
+    "fail_closed": {
+      "assert_independent_validation": true,
+      "no_partial_decoding_result": true,
+      "reject_duplicate_identities": true,
+      "reject_duplicate_stable_ids": true,
+      "reject_inconsistent_or_truncated_lengths": true,
+      "reject_modified_or_rehashed_foreign_signature": true,
+      "reject_mutable_or_text_inputs": true,
+      "reject_nonzero_padding": true,
+      "reject_trailing_bytes": true,
+      "reject_unknown_version": true,
+      "reject_unsorted_records": true
+    },
+    "fixed_vector": {
+      "identity_hex": [
+        "edd507903074e055f4033d4b44597cb4f574f1f34e11ce6e6629d1017a4f4468",
+        "037c3220c2851a2c5491e3c03f5787de9756e3d3cc96218e21eeedc415cabb48"
+      ],
+      "payloads_hex": [
+        "00ff51494b56525400",
+        ""
+      ],
+      "snapshot_bytes": 1381,
+      "snapshot_sha256": "ef8b7d6bf629a8cdfd4e537de213917ae48a407d76179e2c8cb62dc865a680b5",
+      "stable_ids_hex": [
+        "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+        "202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      ]
+    },
+    "implementation": "src/qikvrt_standpoint_codex.py",
+    "normative_process": {
+      "chatgpt_required": false,
+      "external_model_required": false,
+      "historical_provenance": "PRESERVE_EXACT_BYTES",
+      "network_required": false,
+      "predecessor_evidence_transfer": false,
+      "provider_adapter": "OPTIONAL_EXPLICITLY_AUTHORIZED",
+      "steps": [
+        "BIND",
+        "SERIALIZE",
+        "DESERIALIZE",
+        "BYTE_COMPARE",
+        "TEST",
+        "READBACK"
+      ]
+    },
+    "regression_tests": "tests/test_qikvrt_standpoint_codex.py",
+    "schema": "qikvrt_standpoint_codex_v1",
+    "semantic_source": {
+      "binding": "FIRST_CANONICAL_BYTE_MATERIALIZATION_OF_DECLARED_INVARIANTS",
+      "human": "Ingolf Lohmann",
+      "instruction_date": "2026-10-01",
+      "recovered_historical_400_byte_image": false
+    },
+    "signature": {
+      "bytes": 400,
+      "descriptor": {
+        "codec": "QIKVRT",
+        "element_binding": [
+          "signature",
+          "stable_id",
+          "payload"
+        ],
+        "element_identity": "SHA-256",
+        "external_service_required": false,
+        "format": 1,
+        "order": "stable_id_bytes",
+        "payload": "opaque_bytes",
+        "serialization": "canonical_binary",
+        "signature_bytes": 400,
+        "validation": "fail_closed"
+      },
+      "descriptor_bytes": 281,
+      "descriptor_digest_domain_hex": "51494b5652542d5354414e44504f494e542d563100",
+      "descriptor_digest_input": [
+        "domain",
+        "signature[0:16]",
+        "descriptor"
+      ],
+      "descriptor_encoding": "src.qikvrt_effect_ack.canonical_json then UTF-8",
+      "fields": [
+        {
+          "bytes": 8,
+          "name": "magic",
+          "offset": 0,
+          "semantics": "QIKVRTSP"
+        },
+        {
+          "bytes": 2,
+          "name": "version",
+          "offset": 8,
+          "semantics": "uint16=1"
+        },
+        {
+          "bytes": 2,
+          "name": "total_bytes",
+          "offset": 10,
+          "semantics": "uint16=400"
+        },
+        {
+          "bytes": 2,
+          "name": "descriptor_bytes",
+          "offset": 12,
+          "semantics": "uint16; exact bound UTF-8 byte count"
+        },
+        {
+          "bytes": 2,
+          "name": "flags",
+          "offset": 14,
+          "semantics": "uint16=0"
+        },
+        {
+          "bytes": 32,
+          "name": "descriptor_digest",
+          "offset": 16,
+          "semantics": "SHA-256(domain || prefix || descriptor)"
+        },
+        {
+          "bytes": 281,
+          "name": "descriptor",
+          "offset": 48,
+          "semantics": "fixed canonical JSON bytes"
+        },
+        {
+          "bytes": 71,
+          "name": "padding",
+          "offset": 329,
+          "semantics": "zero bytes only"
+        }
+      ],
+      "hex": "51494b56525453500001019001190000ce63feb4a49911570f5f95316711a44b90937614e8509552fad198ac3748847b7b22636f646563223a2251494b565254222c22656c656d656e745f62696e64696e67223a5b227369676e6174757265222c22737461626c655f6964222c227061796c6f6164225d2c22656c656d656e745f6964656e74697479223a225348412d323536222c2265787465726e616c5f736572766963655f7265717569726564223a66616c73652c22666f726d6174223a312c226f72646572223a22737461626c655f69645f6279746573222c227061796c6f6164223a226f70617175655f6279746573222c2273657269616c697a6174696f6e223a2263616e6f6e6963616c5f62696e617279222c227369676e61747572655f6279746573223a3430302c2276616c69646174696f6e223a226661696c5f636c6f736564227d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "magic_hex": "51494b5652545350",
+      "padding_bytes": 71,
+      "padding_value": 0,
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "version": 1
+    },
+    "snapshot": {
+      "fields": [
+        {
+          "bytes": 8,
+          "name": "magic",
+          "offset": 0,
+          "semantics": "QIKVRTSS"
+        },
+        {
+          "bytes": 2,
+          "name": "version",
+          "offset": 8,
+          "semantics": "uint16=1"
+        },
+        {
+          "bytes": 2,
+          "name": "signature_bytes",
+          "offset": 10,
+          "semantics": "uint16=400"
+        },
+        {
+          "bytes": 8,
+          "name": "element_count",
+          "offset": 12,
+          "semantics": "uint64; complete records only"
+        },
+        {
+          "bytes": 8,
+          "name": "body_bytes",
+          "offset": 20,
+          "semantics": "uint64; exact length of concatenated records"
+        },
+        {
+          "bytes": 400,
+          "name": "signature",
+          "offset": 28,
+          "semantics": "exact shared V1 signature, also for empty set"
+        },
+        {
+          "bytes": "body_bytes",
+          "name": "elements",
+          "offset": 428,
+          "semantics": "canonical ordered concatenation"
+        }
+      ],
+      "header_bytes": 28,
+      "integer_encoding": "UNSIGNED_BIG_ENDIAN_FIXED_WIDTH",
+      "magic_hex": "51494b5652545353",
+      "minimum_bytes": 428,
+      "order": "STRICTLY_INCREASING_STABLE_ID_RAW_BYTES",
+      "set_input_order": "IGNORED_BY_SERIALIZER",
+      "size_formula": "428 + 472 * element_count + sum(payload_bytes)",
+      "snapshot_dump_serialization": "ONE_IDENTICAL_BINARY_FORMAT",
+      "trailer_bytes": 0,
+      "version": 1
+    },
+    "specification": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+    "status": "NORMATIVE_REVIEW_CANDIDATE",
+    "version": 1
+  },
+  "status": "NORMATIVE_REVIEW_CANDIDATE",
   "tests": "tests/test_qikvrt_codec.py",
   "version": "1.0.0",
   "wire": {
-    "backward_readability": "V1 remains documented; future decoders must explicitly retain V1 support; unknown versions never guessed",
+    "backward_readability": "V1 transport bytes remain decodable; foreign-seed drafts require explicit externally bound legacy mode. Unknown versions are rejected.",
     "block_fields": [
       "method_u8",
       "raw_bytes_u32",
@@ -168,7 +459,7 @@
       },
       {
         "bytes": 400,
-        "name": "common_seed",
+        "name": "standpoint_signature",
         "offset": 16
       }
     ],
