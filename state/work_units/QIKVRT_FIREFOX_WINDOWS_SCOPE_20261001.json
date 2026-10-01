@@ -43,5 +43,16 @@
     "coverage_percent": 100,
     "full_make_test_required_for_candidate": true
   },
-  "integrity_note": "Regenerated canonical integrity trio also binds existing main lifecycle entries omitted by the previous inventory; no lifecycle payload changed."
+  "integrity_note": "Regenerated canonical integrity trio also binds existing main lifecycle entries omitted by the previous inventory; no lifecycle payload changed.",
+  "observations": [
+    {
+      "head": "d85a4b731c76e0f69bd5bc33a65b1c656074b8ef",
+      "run_id": 36921147157,
+      "job_id": 110567221506,
+      "state": "FAIL_PREFLIGHT",
+      "observed_error": "cache registry lock_authority does not identify TOOLCHAIN.lock.tsv",
+      "causal_fix": "Use repository POSIX paths for lock/coverage identity on Windows; preserve preflight HOLD receipt",
+      "windows_browser_execution_observed": false
+    }
+  ]
 }

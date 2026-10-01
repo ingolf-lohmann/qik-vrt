@@ -9,6 +9,7 @@ on:
       - "browser/firefox/qikvrt-terminal/**"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
       - "tools/qikvrt_firefox_windows_witness.py"
+      - "tools/qikvrt_tool_cache.py"
       - "runtime/toolchains/**"
       - "src/qikvrt_effect_ack_http_terminal.py"
       - "Makefile"
@@ -114,6 +115,17 @@ jobs:
       - name: Verify cache and acceptance contract
         shell: pwsh
         run: |
+          $output = "$env:RUNNER_TEMP/qikvrt-firefox-windows"
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          @{
+            schema = 'qikvrt_firefox_windows_preflight_v1'
+            head = (git rev-parse HEAD)
+            tree = (git rev-parse 'HEAD^{tree}')
+            state = 'HOLD'
+            stage = 'CACHE_AND_CONTRACT_PREFLIGHT'
+            observed_at = [DateTime]::UtcNow.ToString('o')
+            personal_release_effect_ack_done = $false
+          } | ConvertTo-Json | Set-Content -Encoding utf8 "$output/RECEIPT.json"
           python -B tools/qikvrt_tool_cache.py verify
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary

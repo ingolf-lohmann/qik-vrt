@@ -5,6 +5,7 @@ import unittest
 import tempfile
 from unittest.mock import patch
 from pathlib import Path
+from pathlib import PureWindowsPath
 
 from tools.qikvrt_firefox_windows_witness import (
     target_matches, provision_driver, verify_effect_readback,
@@ -125,6 +126,15 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
                 self.assertFalse(target_matches(observed | change, target, '2026-10-01'))
         self.assertFalse(target_matches(observed, target, target['support_until']))
         self.assertFalse(target_matches({}, target, '2026-10-01'))
+
+    def test_cache_authority_uses_repository_paths_on_windows(self) -> None:
+        from tools import qikvrt_tool_cache as cache
+        root = PureWindowsPath('C:/qik-vrt')
+        with patch.object(cache, 'ROOT', root), \
+                patch.object(cache, 'LOCK_PATH', root / 'runtime/toolchains/TOOLCHAIN.lock.tsv'), \
+                patch.object(cache, 'COVERAGE_PATH', root / 'runtime/toolchains/CACHE_COVERAGE.json'):
+            self.assertEqual(cache.read_registry()['lock_authority'],
+                             'runtime/toolchains/TOOLCHAIN.lock.tsv')
 
     def test_corrupt_driver_download_never_executes(self) -> None:
         import io
