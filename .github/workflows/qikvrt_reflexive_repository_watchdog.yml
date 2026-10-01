@@ -79,6 +79,7 @@ jobs:
           python-version: "3.12"
 
       - name: Reobserve exact head, tree, runs, jobs, and previous reflexive receipt
+        id: reobserve
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
@@ -88,11 +89,14 @@ jobs:
           CURRENT_RUN_ID: ${{ github.run_id }}
         shell: bash
         run: |
-          set -euo pipefail
+          set -eEuo pipefail
           root=.qikvrt/reflexive-repository-watchdog
           mkdir -p "$root/jobs"
+          observation_stage=CHECKOUT_BINDING
+          trap 'observation_rc=$?; printf "%s\n" "$observation_stage" > "$root/failed-stage.txt"; printf "%s\n" "$observation_rc" > "$root/failed-exit-code.txt"' ERR
           local_head="$(git rev-parse --verify HEAD^{commit})"
           test "$local_head" = "$EXPECTED_HEAD"
+          observation_stage=SUBJECT_READBACK
           if test "$EVENT_NAME" = pull_request; then
             live_head="$(gh api "repos/$REPOSITORY/pulls/$EVENT_PR" --jq '.head.sha')"
           else
@@ -112,8 +116,10 @@ jobs:
           fi
           authority_repository="$(jq -r '.authority.repository' state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json)"
           test "$authority_repository" != null
+          observation_stage=AUTHORITY_READBACK
           gh api "repos/$authority_repository/git/ref/heads/main" --jq '.object.sha' \
             > "$root/observed-authority-main-head.txt"
+          observation_stage=RUNS_READBACK
           gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \
             > "$root/current-runs.json"
 
@@ -124,11 +130,13 @@ jobs:
             jq -r '.workflow_runs[].id' "$root/current-runs.json"
           )
           for run_id in "${run_ids[@]}"; do
+            observation_stage=JOBS_READBACK
             gh api "repos/$REPOSITORY/actions/runs/$run_id/jobs?per_page=100" \
               > "$root/jobs/$run_id.json"
           done
 
           if test "$EVENT_NAME" != pull_request; then
+            observation_stage=BASELINE_READBACK
             previous_run="$(
               gh api "repos/$REPOSITORY/actions/workflows/qikvrt_reflexive_repository_watchdog.yml/runs?branch=main&status=completed&per_page=20" \
                 | jq -r --argjson current "$CURRENT_RUN_ID" \
@@ -147,6 +155,31 @@ jobs:
               fi
             fi
           fi
+
+      - name: Preserve failed observation as machine-readable HOLD
+        if: failure() && steps.reobserve.outcome == 'failure'
+        env:
+          REPOSITORY: ${{ github.repository }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          CURRENT_RUN_ATTEMPT: ${{ github.run_attempt }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=.qikvrt/reflexive-repository-watchdog
+          stage="$(cat "$root/failed-stage.txt")"
+          exit_code="$(cat "$root/failed-exit-code.txt")"
+          python3 -B tools/qikvrt_reflexive_repository_watchdog.py observation-failure \
+            --expect-head "$EXPECTED_HEAD" \
+            --observed-head "$(git rev-parse --verify HEAD^{commit})" \
+            --observed-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --repository "$REPOSITORY" \
+            --now "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --run-id "$CURRENT_RUN_ID" \
+            --run-attempt "$CURRENT_RUN_ATTEMPT" \
+            --failed-stage "$stage" --exit-code "$exit_code" --json \
+            > "$root/reflexive-watchdog-receipt.json"
+          cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
 
       - name: Analyze the pre-deadlock state without mutation
         env:

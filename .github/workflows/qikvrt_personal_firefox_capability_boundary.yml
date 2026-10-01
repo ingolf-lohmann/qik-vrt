@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+name: QIKVRT Personal Firefox capability boundary
+
+on:
+  pull_request:
+    paths:
+      - "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md"
+      - "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
+      - "browser/firefox/qikvrt-terminal/**"
+      - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
+      - "Makefile"
+      - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Bind exact subject
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha || github.sha }}'
+          echo "HEAD=$(git rev-parse HEAD)"
+          echo "TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Validate machine-readable boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m json.tool policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json >/dev/null
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1             python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+
+      - name: Build Standard package twice and prove byte identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/qikvrt-personal-firefox-boundary
+          mapfile -t files < <(python3 - <<'PY'
+          import json
+          p=json.load(open('policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json',encoding='utf-8'))
+          for value in p['standard_firefox_package']['files']:
+              print(value)
+          PY
+          )
+          for n in 1 2; do
+            (
+              cd browser/firefox/qikvrt-terminal
+              zip -X -9 "/tmp/qikvrt-personal-firefox-boundary/standard-$n.xpi" "${files[@]}"
+            )
+          done
+          cmp /tmp/qikvrt-personal-firefox-boundary/standard-1.xpi               /tmp/qikvrt-personal-firefox-boundary/standard-2.xpi
+          sha256sum /tmp/qikvrt-personal-firefox-boundary/standard-1.xpi             > /tmp/qikvrt-personal-firefox-boundary/standard.xpi.sha256
+
+      - name: Emit bounded readback receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          artifact=pathlib.Path('/tmp/qikvrt-personal-firefox-boundary/standard-1.xpi')
+          policy=json.load(open('policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json',encoding='utf-8'))
+          receipt={
+            'schema':'qikvrt_personal_firefox_capability_boundary_receipt_v1',
+            'head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+            'standard_package_sha256':hashlib.sha256(artifact.read_bytes()).hexdigest(),
+            'standard_package_byte_reproducible':True,
+            'standard_personal_payload_leak':False,
+            'predecessor_evidence_transfer':False,
+            'personal_release_state':policy['personal_release_acceptance']['current_candidate']['state'],
+            'personal_release_effect_ack_done':False,
+            'boundary_test':'PASS',
+          }
+          pathlib.Path('/tmp/qikvrt-personal-firefox-boundary/RECEIPT.json').write_text(
+              json.dumps(receipt,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+
+      - name: Preserve exact-head boundary evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-personal-firefox-boundary-${{ github.event.pull_request.head.sha || github.sha }}
+          path: /tmp/qikvrt-personal-firefox-boundary
+          if-no-files-found: error
+          retention-days: 30

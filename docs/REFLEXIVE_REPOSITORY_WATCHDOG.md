@@ -65,6 +65,22 @@ workflow, or treats its own terminality as gate success.
 
 ## Reflexivity
 
+### Failure of the observer itself
+
+An API/readback failure before analysis is an observation error. It must leave
+a `qikvrt_reflexive_observation_failure_receipt_v1` in both receipt paths,
+bound to the actual checkout head/tree, expected head, run, attempt, failing
+stage and nonzero exit code. The receipt records `OBSERVATION_FAILED` and
+`HOLD`; live state and pipeline progress remain unknown. The failed workflow
+remains failed even when artifact upload succeeds. This distinct receipt is
+never substituted for a successful observation or a trusted gate.
+
+Recovery requires restoring the failed authorized read path, freshly reading
+the exact subject, and continuing the existing work unit. A prior receipt,
+owner authorization, repeating observer, or missing active runner does not
+establish recovery or productive delivery. No new controller, credential,
+permission expansion or automatic productive-writer cancellation is involved.
+
 The watchdog observes the workflows that create and verify repository state, while its own executions are classified as observers rather than productive writers. Observer executions use a coalescing concurrency group so newer observations replace obsolete observations without consuming the repository write lease. A scheduled observation prevents unchanged heads from becoming permanently invisible merely because no new event occurs.
 
 ## Database comparison boundary
