@@ -24,8 +24,8 @@ from src import qikvrt_codec as codec
 def benchmark(*, size=1024 * 1024, repeats=7):
     if size < 65536 or repeats < 3:
         raise ValueError("size >= 65536 and repeats >= 3 required")
-    # Synthetic fixture only. No owner's unbound standpoint bytes are invented.
-    seed = bytes(range(200)) * 2
+    # Reuse the exact canonical review-candidate seed from PR #424.
+    seed = codec.QIKVRT_SIGNATURE
     rng = random.Random(4102026)
     random_data = rng.randbytes(size)
     text = (ROOT / "README.md").read_bytes()
@@ -40,6 +40,10 @@ def benchmark(*, size=1024 * 1024, repeats=7):
     workloads = {"repetitive": b"QIKVRT\0\xff" * (size // 8), "repository_text": text,
                  "random": random_data, "mixed": mixed[:size],
                  "precompressed": zlib.compress(random_data), "sampling_adversary": bytes(trap)}
+    element_count = min(128, size // 8192)
+    mesh_elements = [codec.Element((i + 1).to_bytes(32, "big"), text[:8192])
+                     for i in range(element_count)]
+    workloads["canonical_mesh_snapshot"] = codec.serialize(mesh_elements)
     variants = [("baseline_fast_full_trial", "fast", False),
                 ("optimized_fast", "fast", True), ("balanced", "balanced", True),
                 ("compact", "compact", True), ("raw", "raw", True)]
@@ -68,6 +72,8 @@ def benchmark(*, size=1024 * 1024, repeats=7):
                 decode_times.append(time.perf_counter_ns() - start)
                 if decoded != raw:
                     raise AssertionError("ROUNDTRIP_FAILED")
+                if name == "canonical_mesh_snapshot" and codec.serialize(codec.deserialize(decoded)) != raw:
+                    raise AssertionError("CANONICAL_SNAPSHOT_ROUNDTRIP_FAILED")
         for label, (profile, probe, encoded, encode_times, decode_times) in cases.items():
             enc, dec = statistics.median(encode_times), statistics.median(decode_times)
             rows.append({"workload": name, "variant": label, "input_bytes": len(raw),
@@ -79,16 +85,20 @@ def benchmark(*, size=1024 * 1024, repeats=7):
                          "encode_mib_s": len(raw) / (1024**2) / (enc / 1e9),
                          "decode_mib_s": len(raw) / (1024**2) / (dec / 1e9),
                          "roundtrip_verified_each_trial": True})
+            rows[-1]["canonical_snapshot_roundtrip_verified_each_trial"] = name == "canonical_mesh_snapshot"
     source = (ROOT / "src/qikvrt_codec.py").read_bytes()
     return {"schema": "qikvrt_codec_benchmark_v1", "observed_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "repository": "ingolf-lohmann/qik-vrt",
             "base_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
             "candidate_source_sha256": hashlib.sha256(source).hexdigest(),
+            "candidate_dependencies_sha256": {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+                for path in ("src/qikvrt_standpoint_codex.py", "src/qikvrt_effect_ack.py",
+                             "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin")},
             "benchmark_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             "environment": {"python": platform.python_version(), "platform": platform.platform(),
                             "machine": platform.machine(), "zlib_build": zlib.ZLIB_VERSION,
                             "zlib_runtime": zlib.ZLIB_RUNTIME_VERSION},
-            "seed": {"status": "SYNTHETIC_TEST_FIXTURE_NOT_CANONICAL_OWNER_SEED", "bytes": 400,
+            "seed": {"status": "CANONICAL_V1_REVIEW_CANDIDATE_REUSED_FROM_PR424", "bytes": 400,
                      "sha256": hashlib.sha256(seed).hexdigest()},
             "conditions": {"size": size, "repeats": repeats, "block_bytes": codec.DEFAULT_BLOCK_BYTES,
                            "order": "INTERLEAVED_DETERMINISTIC_SHUFFLE", "timing": "perf_counter_ns_wall",

@@ -119,3 +119,14 @@ codec-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_codec
 
 test: codec-test
+.PHONY: standpoint-codex-test standpoint-codex-compile
+standpoint-codex-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_standpoint_codex
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -O -m unittest -v tests.test_qikvrt_standpoint_codex
+
+standpoint-codex-compile:
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile src/qikvrt_standpoint_codex.py tests/test_qikvrt_standpoint_codex.py scripts/issue_agent/finalize.py
+
+compile: standpoint-codex-compile
+
+test: standpoint-codex-test

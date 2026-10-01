@@ -1,119 +1,188 @@
 {
   "_license": {
     "copyright": "Copyright 2026 Ingolf Lohmann",
-    "rights_holder": "Ingolf Lohmann",
-    "license": "CC-BY-NC-ND-4.0"
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_codec_contract_v1",
-  "version": "1.0.0",
-  "owner": "Ingolf Lohmann",
-  "implementation": "src/qikvrt_codec.py",
-  "tests": "tests/test_qikvrt_codec.py",
   "benchmark": "tools/qikvrt_codec_benchmark.py",
+  "claims": {
+    "all_runtime_environments_verified": false,
+    "formal_kernel_proof_of_this_implementation": false,
+    "general_autonomy_independently_verified": false,
+    "owner_asserted_fully_autonomous_complex_workflows": true,
+    "owner_asserted_personal_digital_twin_goal": true,
+    "owner_asserted_personal_digital_twin_implemented_tested_and_used": true,
+    "owner_asserted_reality_correspondence": true,
+    "perpetual_future_compatibility": false,
+    "personal_release_effect_ack_done": false,
+    "physical_effect_ack_done": false,
+    "universal_compression_or_global_optimality": false,
+    "vendor_siemens_tenant_integration_verified": false,
+    "verified_by_tests": "Declared byte codec and snapshot implementation cases"
+  },
   "human_contract": "docs/QIKVRT_CODEC_V1.md",
-  "reuse_evidence": {
-    "base_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
-    "existing_arbitrary_byte_codec_found": false,
-    "existing_400_byte_layout_found": false,
-    "existing_formal_codec": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
-    "formal_codec_scope": "MODEL_BOUND_BITSTREAM_AST_NOT_EXECUTABLE_ARBITRARY_BYTE_COMPRESSION",
-    "reused_compression": "Python standard library zlib; RFC 1950 / RFC 1951",
-    "reused_integrity": "tools/qikvrt_integrity.py",
-    "related_api": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
-    "related_personal_boundary": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
-  },
-  "seed": {
-    "bytes": 400,
-    "type": "OPAQUE_EXACT_BYTES",
-    "authority": "EXPLICIT_CALLER_SUPPLIED_TRUSTED_SEED",
-    "default": null,
-    "canonical_owner_standpoint_content_status": "NOT_BOUND_BY_AVAILABLE_EVIDENCE",
-    "common_for_all_elements_in_one_snapshot": true,
-    "physically_present_on_every_snapshot_element": true,
-    "decode_requires_external_expected_seed": true,
-    "content_authentication_or_person_identity_proof": false
-  },
   "identity": {
-    "bytes": 32,
-    "creation": "SHA256(ASCII('QIKVRT-ELEMENT-V1') || 0x00 || seed400 || CSPRNG_nonce32)",
-    "separate_from_common_seed_and_mutable_payload": true,
-    "duplicate_identities_rejected": true,
-    "absolute_uniqueness_or_person_authentication_claim": false
+    "absolute_uniqueness_or_person_authentication_claim": false,
+    "authority": "policy/QIKVRT_STANDPOINT_CODEX_V1.json#/element",
+    "content_change": "Preserve stable_id and recompute domain-separated content identity through existing Element",
+    "content_identity_bytes": 32,
+    "duplicate_identities_and_labels_rejected": true,
+    "implementation": "src/qikvrt_standpoint_codex.py",
+    "stable_id_bytes": 32
   },
-  "wire": {
-    "byte_order": "BIG_ENDIAN",
-    "version": 1,
-    "magic_hex": "51494b5652544300",
-    "header_struct": ">8sBBHI",
-    "header_bytes": 416,
-    "header_fields": [
-      {"offset": 0, "bytes": 8, "name": "magic"},
-      {"offset": 8, "bytes": 1, "name": "version", "value": 1},
-      {"offset": 9, "bytes": 1, "name": "reserved_flags", "value": 0},
-      {"offset": 10, "bytes": 2, "name": "header_bytes", "value": 416},
-      {"offset": 12, "bytes": 4, "name": "block_bytes", "min": 4096, "max": 16777216},
-      {"offset": 16, "bytes": 400, "name": "common_seed"}
-    ],
-    "block_struct": ">BII32s",
-    "block_header_bytes": 41,
-    "block_fields": ["method_u8", "raw_bytes_u32", "stored_bytes_u32", "raw_sha256_32"],
-    "methods": {"0": "RAW", "1": "RFC1950_ZLIB_DEFLATE", "255": "END"},
-    "block_payload": "Exactly stored_bytes octets immediately after the 41-byte block header",
-    "normal_form": "Every nonlast data block is block_bytes long; positive raw and stored lengths; RAW has equal lengths; ZLIB stored length is strictly smaller; no dictionary or concatenated zlib stream",
-    "footer_struct": ">BQQ32s",
-    "footer_bytes": 49,
-    "footer_fields": ["END_u8_255", "total_raw_bytes_u64", "block_count_u64", "sha256_32"],
-    "footer_digest": "SHA256(header416 || all_exact_block_headers_and_stored_payloads || footer_first17_bytes)",
-    "counters_max": 18446744073709551615,
-    "trailing_input": "REJECT",
-    "unknown_version_flags_or_method": "REJECT",
-    "compressed_bitstream_unique_across_zlib_versions": false,
-    "same_runtime_same_profile_same_input_deterministic": true,
-    "backward_readability": "V1 remains documented; future decoders must explicitly retain V1 support; unknown versions never guessed"
-  },
-  "snapshot": {
-    "magic_hex": "51494b5652545300",
-    "header_struct": ">8sBBHQ",
-    "header_fields": ["magic8", "version_u8_1", "flags_u8_0", "seed_bytes_u16_400", "element_count_u64"],
-    "common_seed_after_header": "400 exact bytes, including for the empty set",
-    "element_layout": "identity32 || seed400 || payload_bytes_u64 || exact_payload_octets",
-    "element_order": "STRICTLY_INCREASING_BYTEWISE_IDENTITY",
-    "trailer": "SHA256(all_preceding_snapshot_bytes), exactly 32 bytes",
-    "canonical_byte_roundtrip": "dump_snapshot(load_snapshot(S)) == S for every accepted S and expected seed",
-    "raw_roundtrip": "load_snapshot(dump_snapshot(E)) == E sorted by identity for valid finite sets",
-    "unknown_flags_version_bad_lengths_duplicate_identity_mixed_seed_trailing_input": "REJECT"
-  },
-  "profiles": {"raw": 0, "fast": 1, "balanced": 6, "compact": 9},
+  "implementation": "src/qikvrt_codec.py",
   "optimization": {
-    "fast": "For blocks >=65536 bytes, trial zlib level1 on four distributed 2048-byte samples; if sample ratio >=0.98, store RAW without full compression trial",
     "balanced": "Always trial zlib level6; store compressed only when strictly smaller; no sampling shortcut",
     "compact": "Always trial zlib level9; store compressed only when strictly smaller",
-    "probe_false_baseline": "Same profile, block size, hashes and wire contract; always trial full-block zlib",
+    "fast": "For blocks >=65536 bytes, trial zlib level1 on four distributed 2048-byte samples; if sample ratio >=0.98, store RAW without full compression trial",
+    "maximum_efficiency_claim": "MEASURED_WORKLOAD_AND_PROFILE_ONLY",
     "maximum_framing_expansion_bytes": "465 + 41 * ceil(raw_bytes / block_bytes)",
     "mixed_data_sampling_can_miss_compressibility": true,
-    "maximum_efficiency_claim": "MEASURED_WORKLOAD_AND_PROFILE_ONLY"
+    "probe_false_baseline": "Same profile, block size, hashes and wire contract; always trial full-block zlib"
+  },
+  "owner": "Ingolf Lohmann",
+  "profiles": {
+    "balanced": 6,
+    "compact": 9,
+    "fast": 1,
+    "raw": 0
   },
   "resources": {
-    "stream_auxiliary_space": "O(block_bytes); zlib output capped at declared raw_bytes+1 before verification",
-    "stream_total_size_limit": "u64 counters; optional consumer max_output_bytes",
     "finite_container_requires_verified_END_footer": true,
-    "nonterminating_source_container_acceptance": false,
-    "static_decode_default_limit_bytes": 268435456,
-    "snapshot_default_element_limit": 1000000,
-    "snapshot_default_payload_limit_bytes": 268435456,
     "io_contract": "Blocking binary source and sink; positive short reads/writes handled; None and zero-progress writes rejected",
-    "stream_sink_transaction": "Caller stages output until decode_stream returns; CLI atomically replaces destination only after complete validation"
+    "nonterminating_source_container_acceptance": false,
+    "snapshot_default_bytes": 67108864,
+    "snapshot_default_element_limit": 100000,
+    "snapshot_default_payload_limit_bytes": 16777216,
+    "static_decode_default_limit_bytes": 268435456,
+    "stream_auxiliary_space": "O(block_bytes); zlib output capped at declared raw_bytes+1 before verification",
+    "stream_sink_transaction": "Caller stages output until decode_stream returns; CLI atomically replaces destination only after complete validation",
+    "stream_total_size_limit": "u64 counters; optional consumer max_output_bytes"
   },
-  "claims": {
-    "owner_asserted_personal_digital_twin_goal": true,
-    "owner_asserted_reality_correspondence": true,
-    "verified_by_tests": "Declared byte codec and snapshot implementation cases",
-    "formal_kernel_proof_of_this_implementation": false,
-    "universal_compression_or_global_optimality": false,
-    "perpetual_future_compatibility": false,
-    "all_runtime_environments_verified": false,
-    "vendor_siemens_tenant_integration_verified": false,
-    "physical_effect_ack_done": false,
-    "personal_release_effect_ack_done": false
+  "reuse_evidence": {
+    "base_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "existing_400_byte_layout_found": false,
+    "existing_arbitrary_byte_codec_found": false,
+    "existing_formal_codec": "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/VRTCore_VirtualSphere.lean",
+    "formal_codec_scope": "MODEL_BOUND_BITSTREAM_AST_NOT_EXECUTABLE_ARBITRARY_BYTE_COMPRESSION",
+    "initial_parallel_snapshot_prototype": "REPLACED_BY_EXISTING_PR424_CODEC_IN_THIS_SUCCESSOR",
+    "related_api": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+    "related_personal_boundary": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+    "reused_compression": "Python standard library zlib; RFC 1950 / RFC 1951",
+    "reused_integrity": "tools/qikvrt_integrity.py",
+    "standpoint_candidate": {
+      "head": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+      "implementation": "src/qikvrt_standpoint_codex.py",
+      "policy": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "pr": 424,
+      "tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c"
+    }
+  },
+  "schema": "qikvrt_codec_contract_v1",
+  "seed": {
+    "authority": "EXPLICIT_CALLER_SUPPLIED_TRUSTED_SEED",
+    "byte_transport_expected_seed": "Explicit caller-supplied 400-byte expected binding; legacy generic V1 transport remains decodable",
+    "bytes": 400,
+    "canonical_owner_standpoint_content_status": "MATERIALIZED_REVIEW_CANDIDATE_FROM_PR424_NOT_HISTORICAL_RECOVERY",
+    "common_for_all_elements_in_one_snapshot": true,
+    "content_authentication_or_person_identity_proof": false,
+    "decode_requires_external_expected_seed": true,
+    "default": null,
+    "physically_present_on_every_snapshot_element": true,
+    "snapshot_authority": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "snapshot_expected_seed": "Existing codex QIKVRT_SIGNATURE exactly, including header, descriptor digest and zero padding",
+    "snapshot_signature_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "snapshot_signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "type": "OPAQUE_EXACT_BYTES"
+  },
+  "snapshot": {
+    "authority": "policy/QIKVRT_STANDPOINT_CODEX_V1.json#/snapshot",
+    "canonical_byte_roundtrip": "serialize(deserialize(decode(encode(serialize(E))))) == serialize(E)",
+    "deserializer": "deserialize",
+    "expected_seed": "QIKVRT_SIGNATURE from existing codex; foreign signature rejected even when transport hashes are valid",
+    "implementation": "src/qikvrt_standpoint_codex.py",
+    "limits": "Existing Limits; transport output capped at max_snapshot_bytes before canonical deserialization",
+    "no_second_snapshot_byte_format": true,
+    "serializer": "serialize",
+    "transport_adapters": [
+      "src.qikvrt_codec.encode_snapshot",
+      "src.qikvrt_codec.decode_snapshot"
+    ]
+  },
+  "tests": "tests/test_qikvrt_codec.py",
+  "version": "1.0.0",
+  "wire": {
+    "backward_readability": "V1 remains documented; future decoders must explicitly retain V1 support; unknown versions never guessed",
+    "block_fields": [
+      "method_u8",
+      "raw_bytes_u32",
+      "stored_bytes_u32",
+      "raw_sha256_32"
+    ],
+    "block_header_bytes": 41,
+    "block_payload": "Exactly stored_bytes octets immediately after the 41-byte block header",
+    "block_struct": ">BII32s",
+    "byte_order": "BIG_ENDIAN",
+    "compressed_bitstream_unique_across_zlib_versions": false,
+    "counters_max": 18446744073709551615,
+    "footer_bytes": 49,
+    "footer_digest": "SHA256(header416 || all_exact_block_headers_and_stored_payloads || footer_first17_bytes)",
+    "footer_fields": [
+      "END_u8_255",
+      "total_raw_bytes_u64",
+      "block_count_u64",
+      "sha256_32"
+    ],
+    "footer_struct": ">BQQ32s",
+    "header_bytes": 416,
+    "header_fields": [
+      {
+        "bytes": 8,
+        "name": "magic",
+        "offset": 0
+      },
+      {
+        "bytes": 1,
+        "name": "version",
+        "offset": 8,
+        "value": 1
+      },
+      {
+        "bytes": 1,
+        "name": "reserved_flags",
+        "offset": 9,
+        "value": 0
+      },
+      {
+        "bytes": 2,
+        "name": "header_bytes",
+        "offset": 10,
+        "value": 416
+      },
+      {
+        "bytes": 4,
+        "max": 16777216,
+        "min": 4096,
+        "name": "block_bytes",
+        "offset": 12
+      },
+      {
+        "bytes": 400,
+        "name": "common_seed",
+        "offset": 16
+      }
+    ],
+    "header_struct": ">8sBBHI",
+    "magic_hex": "51494b5652544300",
+    "methods": {
+      "0": "RAW",
+      "1": "RFC1950_ZLIB_DEFLATE",
+      "255": "END"
+    },
+    "normal_form": "Every nonlast data block is block_bytes long; positive raw and stored lengths; RAW has equal lengths; ZLIB stored length is strictly smaller; no dictionary or concatenated zlib stream",
+    "same_runtime_same_profile_same_input_deterministic": true,
+    "trailing_input": "REJECT",
+    "unknown_version_flags_or_method": "REJECT",
+    "version": 1
   }
 }

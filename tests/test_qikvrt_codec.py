@@ -15,10 +15,11 @@ import zlib
 from pathlib import Path
 
 from src import qikvrt_codec as codec
+from src import qikvrt_standpoint_codex as codex
 
 ROOT = Path(__file__).resolve().parents[1]
-# Synthetic test fixture, not an owner-approved canonical standpoint seed.
-SEED = bytes(range(200)) * 2
+# Exact review-candidate seed reused from PR #424, not a historical recovered image.
+SEED = codex.QIKVRT_SIGNATURE
 
 
 class FragmentedReader(io.BytesIO):
@@ -29,10 +30,6 @@ class FragmentedReader(io.BytesIO):
 class ShortWriter(io.BytesIO):
     def write(self, value):
         return super().write(value[:13])
-
-
-def signed_snapshot(body):
-    return body + hashlib.sha256(body).digest()
 
 
 class ByteCodecTests(unittest.TestCase):
@@ -53,6 +50,13 @@ class ByteCodecTests(unittest.TestCase):
         expected = header + footer_prefix + hashlib.sha256(header + footer_prefix).digest()
         self.assertEqual(codec.encode(b"", signature=SEED), expected)
         self.assertEqual(codec.decode(expected, signature=SEED), b"")
+
+    def test_legacy_v1_byte_transport_remains_readable_after_standpoint_adoption(self):
+        legacy_seed = bytes(range(200)) * 2
+        header = b"QIKVRTC\0" + bytes.fromhex("010001a000040000") + legacy_seed
+        prefix = b"\xff" + b"\0" * 16
+        legacy_wire = header + prefix + hashlib.sha256(header + prefix).digest()
+        self.assertEqual(codec.decode(legacy_wire, signature=legacy_seed), b"")
 
     def test_same_profile_is_deterministic_and_short_reads_do_not_change_wire(self):
         raw = bytes(range(256)) * 50
@@ -202,73 +206,70 @@ class ByteCodecTests(unittest.TestCase):
             self.assertEqual(seed.read_bytes(), SEED)
 
 
-class SnapshotTests(unittest.TestCase):
+class StandpointIntegrationTests(unittest.TestCase):
     def setUp(self):
-        self.a = codec.MeshElement(b"\x01" * 32, SEED, b"a\0\xff")
-        self.b = codec.MeshElement(b"\x02" * 32, SEED, b"b")
+        self.a = codex.Element(b"\x01" * 32, b"a\0\xff")
+        self.b = codex.Element(b"\x02" * 32, b"b")
 
-    def test_snapshot_roundtrip_byte_identity_and_set_order(self):
+    def test_canonical_snapshot_bytes_are_preserved_without_a_second_format(self):
         for elements in ([], [self.a], [self.b, self.a]):
-            encoded = codec.dump_snapshot(elements, signature=SEED)
-            decoded = codec.load_snapshot(encoded, signature=SEED)
-            self.assertEqual(codec.dump_snapshot(decoded, signature=SEED), encoded)
-            self.assertEqual(codec.dump_snapshot(reversed(elements), signature=SEED), encoded)
-            self.assertTrue(all(item.signature == SEED for item in decoded))
-            transport = codec.encode(encoded, signature=SEED)
-            self.assertEqual(codec.load_snapshot(codec.decode(transport, signature=SEED),
-                                                 signature=SEED), decoded)
+            expected = codex.serialize(elements)
+            for profile in codec.PROFILES:
+                wire = codec.encode_snapshot(elements, profile=profile)
+                self.assertEqual(codec.decode(wire, signature=SEED), expected)
+                decoded = codec.decode_snapshot(wire)
+                self.assertEqual(codex.serialize(decoded), expected)
+                self.assertEqual(decoded, codex.deserialize(expected))
 
-    def test_identical_payloads_can_have_distinct_stable_element_identities(self):
-        a = codec.new_element(b"same", signature=SEED)
-        b = codec.new_element(b"same", signature=SEED)
-        self.assertNotEqual(a.identity, b.identity)
-        decoded = codec.load_snapshot(codec.dump_snapshot([a, b], signature=SEED), signature=SEED)
-        self.assertEqual({item.identity for item in decoded}, {a.identity, b.identity})
+    def test_stable_labels_and_content_identities_survive_transport(self):
+        changed = codex.Element(self.a.stable_id, b"changed")
+        same_payload_other_element = codex.Element(self.b.stable_id, self.a.payload)
+        self.assertEqual(changed.stable_id, self.a.stable_id)
+        self.assertNotEqual(changed.identity, self.a.identity)
+        self.assertNotEqual(same_payload_other_element.identity, self.a.identity)
+        self.assertEqual(codec.decode_snapshot(codec.encode_snapshot([changed])), (changed,))
 
-    def test_duplicate_id_and_mixed_seed_rejected(self):
-        with self.assertRaisesRegex(codec.CodecError, "DUPLICATE_ELEMENT_IDENTITY"):
-            codec.dump_snapshot([self.a, codec.MeshElement(self.a.identity, SEED, b"other")],
-                                signature=SEED)
-        with self.assertRaisesRegex(codec.CodecError, "SIGNATURE_MISMATCH"):
-            codec.dump_snapshot([codec.MeshElement(b"x" * 32, b"x" * 400, b"")], signature=SEED)
+    def test_existing_duplicate_and_order_guards_are_reused(self):
+        with self.assertRaises(codex.CodexError):
+            codec.encode_snapshot([self.a, codex.Element(self.a.stable_id, b"other")])
+        raw = codex.serialize([self.a, self.b])
+        start = codex.MIN_SNAPSHOT_BYTES
+        record_a = raw[start:start + codex.MIN_ELEMENT_BYTES + len(self.a.payload)]
+        record_b = raw[start + len(record_a):]
+        noncanonical = raw[:start] + record_b + record_a
+        with self.assertRaises(codex.CodexError):
+            codec.decode_snapshot(codec.encode(noncanonical, signature=SEED))
 
-    def test_noncanonical_wire_duplicates_order_and_seed_are_rejected_even_with_new_hash(self):
-        data = codec.dump_snapshot([self.a, self.b], signature=SEED)
-        offset = 420
-        record_a = data[offset:offset + 443]
-        record_b = data[offset + 443:-32]
-        for records in (record_b + record_a, record_a + record_a):
-            with self.assertRaisesRegex(codec.CodecError, "DUPLICATE_OR_NONCANONICAL"):
-                codec.load_snapshot(signed_snapshot(data[:offset] + records), signature=SEED)
-        body = bytearray(data[:-32])
-        body[offset + 32] ^= 1
-        with self.assertRaisesRegex(codec.CodecError, "SIGNATURE_MISMATCH"):
-            codec.load_snapshot(signed_snapshot(bytes(body)), signature=SEED)
-
-    def test_limits_unknown_version_count_lengths_and_trailing_bytes(self):
-        data = codec.dump_snapshot([self.a], signature=SEED)
-        for options in ({"max_elements": 0}, {"max_payload_bytes": 2}):
-            with self.assertRaises(codec.CodecError):
-                codec.load_snapshot(data, signature=SEED, **options)
-        for offset in (8, 9, 10, 19, 852):
-            body = bytearray(data[:-32])
-            body[offset] ^= 0x80
-            with self.subTest(offset=offset), self.assertRaises(codec.CodecError):
-                codec.load_snapshot(signed_snapshot(bytes(body)), signature=SEED)
+    def test_valid_transport_does_not_authorize_a_foreign_standpoint(self):
+        raw = bytearray(codex.serialize([self.a]))
+        raw[codex.MIN_SNAPSHOT_BYTES] ^= 1
+        wire = codec.encode(bytes(raw), signature=SEED)
+        self.assertEqual(codec.decode(wire, signature=SEED), bytes(raw))
+        with self.assertRaises(codex.CodexError):
+            codec.decode_snapshot(wire)
         with self.assertRaises(codec.CodecError):
-            codec.load_snapshot(signed_snapshot(data[:-32] + b"extra"), signature=SEED)
-        with self.assertRaises(codec.CodecError):
-            codec.load_snapshot(data[:-1], signature=SEED)
-        with self.assertRaises(codec.CodecError):
-            codec.load_snapshot(data, signature=b"x" * 400)
+            codec.decode_snapshot(codec.encode(codex.serialize([self.a]), signature=b"x" * 400))
 
-    def test_contract_matches_wire_and_keeps_claim_boundaries(self):
+    def test_resource_limits_apply_to_transport_and_snapshot(self):
+        wire = codec.encode_snapshot([self.a])
+        with self.assertRaises(codec.CodecError):
+            codec.decode_snapshot(wire, limits=codex.Limits(max_snapshot_bytes=428))
+        with self.assertRaises(codex.CodexError):
+            codec.decode_snapshot(wire, limits=codex.Limits(max_payload_bytes=2))
+        with self.assertRaises(codec.CodecError):
+            codec.decode_snapshot(wire, limits={})
+
+    def test_contract_binds_existing_codec_and_exact_signature_file(self):
         contract = json.loads((ROOT / "policy/QIKVRT_CODEC_CONTRACT_V1.json").read_text())
         self.assertEqual(contract["wire"]["header_bytes"], 416)
         self.assertEqual(contract["wire"]["block_header_bytes"], 41)
         self.assertEqual(contract["wire"]["footer_bytes"], 49)
-        self.assertEqual(contract["seed"]["bytes"], codec.SIGNATURE_BYTES)
+        self.assertEqual(contract["seed"]["bytes"], len(SEED))
         self.assertEqual(contract["profiles"], codec.PROFILES)
+        self.assertEqual(contract["snapshot"]["implementation"], "src/qikvrt_standpoint_codex.py")
+        self.assertEqual(contract["seed"]["snapshot_signature_sha256"],
+                         "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792")
+        self.assertEqual((ROOT / contract["seed"]["snapshot_signature_path"]).read_bytes(), SEED)
         self.assertFalse(contract["claims"]["universal_compression_or_global_optimality"])
         self.assertFalse(contract["claims"]["all_runtime_environments_verified"])
         self.assertFalse(contract["claims"]["physical_effect_ack_done"])

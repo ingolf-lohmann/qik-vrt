@@ -18,11 +18,12 @@
     ]
   },
   "artificial_cognitive_contributions": [
-    "Exact-main inventory and integrity diagnosis",
-    "Byte codec, canonical snapshot serializer/deserializer, negative tests and atomic CLI",
-    "Comparable same-profile benchmark and sampling-adversary counterexample",
-    "Restricted sampling to opt-in fast profile after counterexample; conservative balanced default",
-    "Versioned machine contract, documentation and necessary integrity projections"
+    "Exact-main inventory, integrity diagnosis and bounded compression transport",
+    "Reuse of newly materialized PR #424 standpoint signature, stable labels, content identities, canonical serializer/deserializer and Limits",
+    "Compression adapters preserve exact canonical snapshot bytes without a second snapshot format",
+    "Negative I/O, corruption, budgets, atomic CLI and canonical integration tests",
+    "Same-profile benchmark includes actual canonical mesh snapshots and sampling-adversary counterexample; only opt-in fast samples",
+    "Forward two-parent successor, minimal stacked review diff and regenerated existing integrity trio"
   ],
   "created_at": "2026-10-01T10:39:32Z",
   "evidence_retention": "METADATA_ONLY",
@@ -41,7 +42,15 @@
     "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
     "candidate_tree": "BOUND_BY_CONTAINING_COMMIT",
     "correction_method": "NEW_COMMIT_NO_FORCE_PUSH",
-    "parent_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4"
+    "depends_on_pull_request": 424,
+    "parent_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "parent_commits": [
+      "64d026cc79e27c366fa8b5c1971841f7ec0a7214",
+      "def7a93e7ae36426bebaf7b82519b670025f8f42"
+    ],
+    "pull_request": 425,
+    "review_base_branch": "work/qikvrt-standpoint-codex-v1-20261001",
+    "review_base_head": "def7a93e7ae36426bebaf7b82519b670025f8f42"
   },
   "human_actor": {
     "attribution_id": "Ingolf Lohmann",
@@ -79,6 +88,24 @@
       "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
       "role": "EXISTING_CONTRACT_REUSED_AS_BOUNDARY",
       "sha256": "e5815ec00ef0968a8bf390d4fd5a6304d4767fcae3477cfa7a1722c5d660d55f"
+    },
+    {
+      "path": "src/qikvrt_standpoint_codex.py",
+      "role": "REUSED_CANONICAL_PEER_CONTRACT",
+      "sha256": "aedf27f794c3c3092d1bdeddbf4b9e18e6f9d359574af9c3b68a7364cde7a2a2",
+      "source_head": "def7a93e7ae36426bebaf7b82519b670025f8f42"
+    },
+    {
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "role": "REUSED_CANONICAL_PEER_CONTRACT",
+      "sha256": "f1d5ad65ccebbe131919ab349fb2a8493e0ac0b7c0881e6132ef4850aa12368a",
+      "source_head": "def7a93e7ae36426bebaf7b82519b670025f8f42"
+    },
+    {
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "role": "REUSED_CANONICAL_PEER_CONTRACT",
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "source_head": "def7a93e7ae36426bebaf7b82519b670025f8f42"
     }
   ],
   "joint_components": [
@@ -88,49 +115,65 @@
       "human": "Product purpose, common-seed length and implementation authorization"
     }
   ],
-  "next_action": "Run required repository checks, commit candidate, push review branch, create draft PR and verify exact remote head/tree and gate disposition. Preserve PR #422 dependency and require final seed binding before canonical-owner-seed acceptance.",
+  "next_action": "Verify joint successor, update PR #425 as a compression transport stacked on exact PR #424, read back final head/tree, await independent exact-head review and required gates. Main integration follows canonical codex acceptance; no release or physical effect is implied.",
   "outputs": [
     {
-      "bytes": 15744,
+      "bytes": 12522,
       "path": "src/qikvrt_codec.py",
-      "sha256": "a13ce534f7ca9e9f9738bbfb6b020b88dbe154567a3afd42fcb3249d39391c3d"
+      "sha256": "4bba55c3736bbfc542d45510f31bc4e9c0bf693f6e0f6d8f61e3106c31281e27"
     },
     {
-      "bytes": 14804,
+      "bytes": 14928,
       "path": "tests/test_qikvrt_codec.py",
-      "sha256": "7de5259713bb7f60f7825fa4dea083ceb2f279dba1b383367081a7f2f9450ea7"
+      "sha256": "5d6ef4a4ed520070a80b8197a6b758c760fe602ed26cf0f51555b793ce7fa088"
     },
     {
-      "bytes": 6373,
+      "bytes": 7183,
       "path": "tools/qikvrt_codec_benchmark.py",
-      "sha256": "f71452120b81dafcaf3f97caf4339f51a6be2dd08ed3664bddb3d7fe09c63f89"
+      "sha256": "7a526c0e2639a4b927ac7bcb25907233f3c5708c265a27c185e9543026aefeb2"
     },
     {
-      "bytes": 6534,
+      "bytes": 8081,
       "path": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
-      "sha256": "d754144fec39faf61fb3e3121527ec0ba1758507f458a0408a70efa041ea6b3b"
+      "sha256": "697708c8a17467968f0bb3d894d0a1fa90658dea56ff3bc07391ab19f131fa3e"
     },
     {
-      "bytes": 8546,
+      "bytes": 8932,
       "path": "docs/QIKVRT_CODEC_V1.md",
-      "sha256": "bb30c66612a0d5a78cac5c43e6f4783ef47d697271557127eda4d90a36c611b3"
+      "sha256": "e72b9d5a6deb89d0a36f49980a3185c2ebec50b739bdabe0919a41e6f9f6bbfc"
     },
     {
-      "bytes": 28237,
-      "path": "evidence/codec/20261001_CODEC_BENCHMARK_V1.json",
-      "sha256": "19a623c7fbb03a75e1e8c23c403cc151c38a1b750a525059dc2bdb87a79771a5"
+      "bytes": 35378,
+      "path": "evidence/codec/20261001_STANDPOINT_TRANSPORT_BENCHMARK_V1.json",
+      "sha256": "27d87a7ae172e8286460ead21241e5de373e0ddd39c92bf1231b650fe564ec2e"
     },
     {
-      "bytes": 10977,
+      "bytes": 11519,
       "path": "Makefile",
-      "sha256": "160af45c4a8f31dc7f22863fb8cbddb2edd3146b38b04138e2268b931d3e5232"
+      "sha256": "d4fccf5a5569f8cd0647c3cd2556e8fc4449f76c0b921f74c93c899ee6788c87"
     }
   ],
+  "peer_canonical_binding": {
+    "head": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+    "pr": 424,
+    "recovered_historical_signature": false,
+    "signature_bytes": 400,
+    "signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "source_code_unchanged": true,
+    "tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c"
+  },
+  "prototype_disposition": {
+    "general_v1_byte_transport_backward_decoding": "PRESERVED",
+    "head": "64d026cc79e27c366fa8b5c1971841f7ec0a7214",
+    "historical_benchmark_preserved": "evidence/codec/20261001_CODEC_BENCHMARK_V1.json",
+    "snapshot_prototype": "REPLACED_BY_EXISTING_STANDPOINT_CODEX"
+  },
   "release_claims": {
     "EFFECT_ACK_DONE": false,
     "FINAL_PASS": false,
     "all_platforms_verified": false,
-    "owner_standpoint_seed_content_bound": false,
+    "owner_standpoint_seed_content_bound": true,
+    "owner_standpoint_seed_final_acceptance": false,
     "universal_maximum_compression_or_fastest_runtime": false
   },
   "schema": "qikvrt_ai_work_unit_provenance_v1",
@@ -139,18 +182,19 @@
   "source_repository": "ingolf-lohmann/qik-vrt",
   "source_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
   "unresolved_origin": [
-    "Exact owner-approved standpoint contents of the 400 seed bytes are unavailable; API requires independently supplied seed and fabricates none"
+    "The exact V1 standpoint bytes are materialized by PR #424 as a generated normative review candidate; exact-byte human acceptance remains pending independent review."
   ],
+  "updated_at": "2026-10-01T11:17:41Z",
   "verification": {
     "baseline_definition": "Same V1 framing, seed, block size, zlib level1 and SHA256 gates; probe=False. No historical executable QIKVRT byte-codec baseline exists.",
-    "benchmark": "evidence/codec/20261001_CODEC_BENCHMARK_V1.json",
-    "bootstrap_result": "CONTINUE after exact projection regeneration; optional runtime/audio components remain unavailable",
+    "benchmark": "evidence/codec/20261001_STANDPOINT_TRANSPORT_BENCHMARK_V1.json",
+    "bootstrap_result": "CONTINUE on joint candidate after canonical signature discovery and integrity verification",
     "codec_command": "python3 -B -m unittest -v tests.test_qikvrt_codec",
     "codec_result": {
       "errors": 0,
       "failures": 0,
       "skips": 0,
-      "tests": 21
+      "tests": 22
     },
     "comparisons": [
       {
@@ -158,7 +202,7 @@
         "baseline_wire_bytes": 6365,
         "candidate": "optimized_fast",
         "candidate_wire_bytes": 6365,
-        "encode_speedup": 0.9539132425041861,
+        "encode_speedup": 0.9178836541625164,
         "roundtrip_verified": true,
         "workload": "repetitive"
       },
@@ -167,7 +211,7 @@
         "baseline_wire_bytes": 161520,
         "candidate": "optimized_fast",
         "candidate_wire_bytes": 161520,
-        "encode_speedup": 0.9274662901741807,
+        "encode_speedup": 0.9364540266328472,
         "roundtrip_verified": true,
         "workload": "repository_text"
       },
@@ -176,7 +220,7 @@
         "baseline_wire_bytes": 1049205,
         "candidate": "optimized_fast",
         "candidate_wire_bytes": 1049205,
-        "encode_speedup": 9.236341534168613,
+        "encode_speedup": 9.469209448386016,
         "roundtrip_verified": true,
         "workload": "random"
       },
@@ -185,7 +229,7 @@
         "baseline_wire_bytes": 529821,
         "candidate": "optimized_fast",
         "candidate_wire_bytes": 529821,
-        "encode_speedup": 0.937995739629725,
+        "encode_speedup": 1.0441003522652599,
         "roundtrip_verified": true,
         "workload": "mixed"
       },
@@ -194,7 +238,7 @@
         "baseline_wire_bytes": 1049572,
         "candidate": "optimized_fast",
         "candidate_wire_bytes": 1049572,
-        "encode_speedup": 8.361211589754832,
+        "encode_speedup": 8.94012114122014,
         "roundtrip_verified": true,
         "workload": "precompressed"
       },
@@ -203,24 +247,36 @@
         "baseline_wire_bytes": 39937,
         "candidate": "optimized_fast",
         "candidate_wire_bytes": 1049205,
-        "encode_speedup": 0.9318695991060661,
+        "encode_speedup": 0.8988520311467776,
         "roundtrip_verified": true,
         "workload": "sampling_adversary"
+      },
+      {
+        "baseline": "baseline_fast_full_trial",
+        "baseline_wire_bytes": 75266,
+        "candidate": "optimized_fast",
+        "candidate_wire_bytes": 75266,
+        "encode_speedup": 1.0055850422956636,
+        "roundtrip_verified": true,
+        "workload": "canonical_mesh_snapshot"
       }
     ],
     "full_repository_command": "make test",
     "full_repository_result": {
       "command": "make test",
+      "exact_final_head_revalidation": "REQUIRED_AFTER_COMMIT",
       "exit_code": 0,
-      "log_sha256": "eb5d142d40a010b572ef78e13e61783c7c4a35201f0ea2f0416693d10fd03077",
-      "missing_historical_checkout_object_repaired_by": "git fetch --no-tags --depth=1 origin 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
-      "scope_excludes_separately_failing_baseline_tests": [
-        "tests.test_qikvrt_digital_twin_rest",
-        "tests.test_qikvrt_expected_head_promotion_contract"
-      ],
-      "state": "PASS_FOR_DECLARED_MAKE_TEST_TARGETS"
+      "log_sha256": "d98d841dca3982aeaf099d54e000f805e118fddd3166b7deef71dd4ad521bc53",
+      "state": "PRECOMMIT_JOINT_WORKTREE_PASS"
     },
     "integrity_command": "python3 -B tools/qikvrt_integrity.py generate && python3 -B tools/qikvrt_integrity.py verify",
+    "joint_tests": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_codec tests.test_qikvrt_standpoint_codex",
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "tests": 51
+    },
     "related_baseline_result": {
       "command": "python3 -B -m unittest -v tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_expected_head_promotion_contract",
       "errors": 1,

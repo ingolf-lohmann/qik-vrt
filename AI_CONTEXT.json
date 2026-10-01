@@ -131,6 +131,7 @@
     "runtime/toolchains/TOOLCHAIN.lock.tsv",
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
+    "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
     "README.md",
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
@@ -210,5 +211,15 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "standpoint_codex": {
+    "machine_contract": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "specification": "spec/QIKVRT_STANDPOINT_CODEX_V1.md",
+    "implementation": "src/qikvrt_standpoint_codex.py",
+    "acceptance_command": "make standpoint-codex-test",
+    "signature_bytes": 400,
+    "signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "external_model_required": false,
+    "historical_provenance_rewritten": false
   }
 }

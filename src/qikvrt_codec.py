@@ -2,8 +2,8 @@
 # Copyright 2026 Ingolf Lohmann.
 """Versioned, lossless byte transport and canonical QIK-VRT mesh snapshots.
 
-The common 400-byte seed is supplied by the caller, never invented or trusted
-merely because it occurs in an input. SHA-256 bindings detect corruption, not
+The byte transport requires an externally expected 400-byte seed. Snapshot
+adapters reuse the existing standpoint codex and its exact canonical seed. SHA-256 bindings detect corruption, not
 authenticate a person. See policy/QIKVRT_CODEC_CONTRACT_V1.json.
 """
 from __future__ import annotations
@@ -13,7 +13,6 @@ import hashlib
 import hmac
 import io
 import os
-import secrets
 import struct
 import tempfile
 import zlib
@@ -21,19 +20,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import BinaryIO, Iterable
 
+from src.qikvrt_standpoint_codex import (
+    DEFAULT_LIMITS, QIKVRT_SIGNATURE, Element, Limits, deserialize, serialize,
+)
+
 SIGNATURE_BYTES = 400
-IDENTITY_BYTES = 32
 DEFAULT_BLOCK_BYTES = 256 * 1024
 MAX_BLOCK_BYTES = 16 * 1024 * 1024
 DEFAULT_DECODE_LIMIT = 256 * 1024 * 1024
 MAGIC = b"QIKVRTC\0"
-SNAPSHOT_MAGIC = b"QIKVRTS\0"
 VERSION = 1
 HEADER = struct.Struct(">8sBBHI")
 BLOCK = struct.Struct(">BII32s")
 FOOTER = struct.Struct(">BQQ32s")
-SNAPSHOT_HEADER = struct.Struct(">8sBBHQ")
-U64 = struct.Struct(">Q")
 HEADER_BYTES = HEADER.size + SIGNATURE_BYTES
 RAW, ZLIB, END = 0, 1, 255
 PROFILES = {"raw": 0, "fast": 1, "balanced": 6, "compact": 9}
@@ -252,94 +251,22 @@ def decode(data: bytes, *, signature: bytes,
     return out.getvalue()
 
 
-@dataclass(frozen=True)
-class MeshElement:
-    identity: bytes
-    signature: bytes
-    payload: bytes
-
-    def __post_init__(self) -> None:
-        _seed(self.signature)
-        if type(self.identity) is not bytes or len(self.identity) != IDENTITY_BYTES:
-            raise CodecError("IDENTITY_MUST_BE_32_BYTES")
-        if type(self.payload) is not bytes:
-            raise CodecError("BYTES_REQUIRED")
+def encode_snapshot(
+    elements: Iterable[Element], *, limits: Limits = DEFAULT_LIMITS,
+    profile: str = "balanced", block_bytes: int = DEFAULT_BLOCK_BYTES,
+) -> bytes:
+    """Compress the existing canonical standpoint codec's exact snapshot bytes."""
+    snapshot = serialize(elements, limits=limits)
+    return encode(snapshot, signature=QIKVRT_SIGNATURE, profile=profile, block_bytes=block_bytes)
 
 
-def new_element(payload: bytes, *, signature: bytes) -> MeshElement:
-    signature = _seed(signature)
-    identity = hashlib.sha256(b"QIKVRT-ELEMENT-V1\0" + signature + secrets.token_bytes(32)).digest()
-    return MeshElement(identity, signature, payload)
-
-
-def dump_snapshot(elements: Iterable[MeshElement], *, signature: bytes) -> bytes:
-    """Canonical finite set: bytewise identity order, exact seed on every element."""
-    signature = _seed(signature)
-    items = list(elements)
-    if any(type(item) is not MeshElement for item in items):
-        raise CodecError("MESH_ELEMENTS_REQUIRED")
-    items.sort(key=lambda item: item.identity)
-    _integer(len(items), 0, 2**64 - 1, "V1_COUNTER_EXHAUSTED")
-    out = io.BytesIO()
-    out.write(SNAPSHOT_HEADER.pack(SNAPSHOT_MAGIC, VERSION, 0, SIGNATURE_BYTES, len(items)))
-    # An empty set still binds the same seed. Each element carries it separately.
-    out.write(signature)
-    previous = None
-    for item in items:
-        if item.identity == previous:
-            raise CodecError("DUPLICATE_ELEMENT_IDENTITY")
-        if not hmac.compare_digest(item.signature, signature):
-            raise CodecError("SIGNATURE_MISMATCH")
-        _integer(len(item.payload), 0, 2**64 - 1, "V1_COUNTER_EXHAUSTED")
-        out.write(item.identity)
-        out.write(item.signature)
-        out.write(U64.pack(len(item.payload)))
-        out.write(item.payload)
-        previous = item.identity
-    body = out.getvalue()
-    return body + hashlib.sha256(body).digest()
-
-
-def load_snapshot(data: bytes, *, signature: bytes, max_elements: int = 1_000_000,
-                  max_payload_bytes: int = DEFAULT_DECODE_LIMIT) -> tuple[MeshElement, ...]:
-    signature = _seed(signature)
-    if type(data) is not bytes:
-        raise CodecError("BYTES_REQUIRED")
-    _integer(max_elements, 0, 2**64 - 1, "INVALID_ELEMENT_LIMIT")
-    _integer(max_payload_bytes, 0, 2**64 - 1, "INVALID_PAYLOAD_LIMIT")
-    if len(data) < SNAPSHOT_HEADER.size + SIGNATURE_BYTES + 32:
-        raise CodecError("TRUNCATED_SNAPSHOT")
-    view = memoryview(data)
-    if not hmac.compare_digest(hashlib.sha256(view[:-32]).digest(), data[-32:]):
-        raise CodecError("SNAPSHOT_HASH_MISMATCH")
-    source = io.BytesIO(data)
-    magic, version, flags, seed_bytes, count = SNAPSHOT_HEADER.unpack(
-        _read_exact(source, SNAPSHOT_HEADER.size))
-    if (magic, version, flags, seed_bytes) != (SNAPSHOT_MAGIC, VERSION, 0, SIGNATURE_BYTES):
-        raise CodecError("UNSUPPORTED_OR_NONCANONICAL_SNAPSHOT")
-    if not hmac.compare_digest(_read_exact(source, SIGNATURE_BYTES), signature):
-        raise CodecError("SIGNATURE_MISMATCH")
-    if count > max_elements or count > (len(data) - source.tell() - 32) // 440:
-        raise CodecError("ELEMENT_LIMIT_OR_COUNT_MISMATCH")
-    result = []
-    previous = None
-    total = 0
-    for _ in range(count):
-        identity = _read_exact(source, IDENTITY_BYTES)
-        if previous is not None and identity <= previous:
-            raise CodecError("DUPLICATE_OR_NONCANONICAL_ELEMENT_ORDER")
-        element_seed = _read_exact(source, SIGNATURE_BYTES)
-        if not hmac.compare_digest(element_seed, signature):
-            raise CodecError("SIGNATURE_MISMATCH")
-        size = U64.unpack(_read_exact(source, U64.size))[0]
-        if total + size > max_payload_bytes or size > len(data) - 32 - source.tell():
-            raise CodecError("PAYLOAD_LIMIT_OR_LENGTH_MISMATCH")
-        result.append(MeshElement(identity, element_seed, _read_exact(source, size)))
-        total += size
-        previous = identity
-    if source.tell() != len(data) - 32:
-        raise CodecError("TRAILING_SNAPSHOT_INPUT")
-    return tuple(result)
+def decode_snapshot(data: bytes, *, limits: Limits = DEFAULT_LIMITS) -> tuple[Element, ...]:
+    """Validate complete transport, then the existing canonical snapshot contract."""
+    if type(limits) is not Limits:
+        raise CodecError("SNAPSHOT_LIMITS_REQUIRED")
+    snapshot = decode(data, signature=QIKVRT_SIGNATURE,
+                      max_output_bytes=limits.max_snapshot_bytes)
+    return deserialize(snapshot, limits=limits)
 
 
 def main(argv: list[str] | None = None) -> int:
