@@ -284,7 +284,30 @@
         "pip dependency-lock digest",
         "runtime execution"
       ],
-      "version": "3.12.13"
+      "version": "3.12.13",
+      "behavioral_contracts": {
+        "fenced_authority_sink_v1": {
+          "platform": "POSIX_LOCAL_PRIVATE_CONTROL_PLANE",
+          "modules": [
+            "sqlite3",
+            "os",
+            "secrets",
+            "time",
+            "hmac"
+          ],
+          "no_sqlite_cli_or_third_party_package_required": true,
+          "verification": "python3 -B -m unittest tests.test_qikvrt_authority_transition -v",
+          "required_behavior": [
+            "BEGIN IMMEDIATE serializes CAS and sink writes",
+            "synchronous FULL durable commit",
+            "mode=rw refuses absent database",
+            "private POSIX ownership and no symlinks",
+            "bounded SQLite busy timeout and fail-closed errors"
+          ],
+          "failure_recovery": "BLOCK missing/invalid/busy control plane; preserve pending fenced successor; reopen and freshly activate; never restore stale epochs",
+          "mutable_database_and_credentials_are_cache_payloads": false
+        }
+      }
     },
     "sherpa-onnx-node": {
       "authority_files": [

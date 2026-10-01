@@ -1,0 +1,198 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "provenance_bound_work_unit"
+  },
+  "schema": "qikvrt_authority_transition_work_unit_v1",
+  "work_unit_id": "QIKVRT-PR428-FENCED-AUTHORITY-TRANSITION-20261001-V1",
+  "created_at": "2026-10-01T13:57:15Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/work/full-node-recovery-20261001-c621b863",
+  "source_commit": "3b61720a4223ae2d7eb32ddbd5190aefcadce951",
+  "source_tree": "95af51237bc2a04ec0d39e158550ea7375a44f38",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner",
+      "Creator"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact runtime build UNAVAILABLE",
+    "session_or_run_id": "scratch-session-eed6995bf9a7",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git CLI",
+      "Python standard library"
+    ],
+    "identity_and_observation_limits": [
+      "No natural-person proof from platform principal",
+      "No production Authority or GitHub fencing proof"
+    ]
+  },
+  "human_contributions": [
+    {
+      "class": "HUMAN",
+      "contribution": "Continue PR 428 with an executable fail-closed fenced Authority takeover, current epoch CAS/readback, old-writer rejection and permanent Goldkelch lineage, without force push or predecessor evidence transfer."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Reuse inventory, private persistent transactional control-plane adapter, exact target/capability/epoch binding, tests, policy/documentation/cache bindings and integrity materialization."
+    }
+  ],
+  "joint_components": [
+    {
+      "class": "JOINT_WITH_SEPARABLE_COMPONENTS",
+      "human_part": "Product scope and invariants",
+      "artificial_part": "Implementation and typed test evidence"
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "kind": "OWNER_TASK",
+      "classification": "NORMATIVE_NOT_FORMAL_PROOF",
+      "source": "current interaction",
+      "source_pull_request": 428
+    }
+  ],
+  "reuse_inventory": [
+    {
+      "path": "tools/qikvrt_mesh_recovery.py",
+      "reused": "Strict pinned manifest/plan, restored Git closure/HEAD/TREE/ref, signature, payload and scheduler verifiers",
+      "insufficiency": "No executable atomic epoch/role transition or write-sink fencing; plan only"
+    },
+    {
+      "path": "tools/qikvrt_seed_common.py",
+      "reused": "Canonical JSON and strict duplicate-key parser"
+    },
+    {
+      "path": "tools/qikvrt_workflow_executor.py",
+      "insufficiency": "Read-only repository/workflow observation; no atomic takeover or sink-commit fencing"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "reused": "Existing Python runtime and standard-library provisioning; added behavioral contract, no new third-party dependency"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12558,
+      "sha256": "66be64bb1d0a258bd884e9b713889539bb93f205fe4944d790b0ee19399bd30c",
+      "git_blob_sha1": "488872f60ea604c012f3a58ac09d46769dd5b0ed"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11068,
+      "sha256": "67d0e779a0a1c37751f5e95a8b8cef0334cd210a988bc90ac538e519c3a060d6",
+      "git_blob_sha1": "14105fd6e7e79c4df47cdb24324a9c4269e83941"
+    },
+    {
+      "path": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+      "bytes": 15657,
+      "sha256": "53745810777e42e23a1d0c9494a32bc356c53501f5fe8d0383e654e0a3689957",
+      "git_blob_sha1": "d54a726613ad5c4db4f3565080e8524b92b9e6e4"
+    },
+    {
+      "path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+      "bytes": 9654,
+      "sha256": "b036fe212c453888a82d900f43b8194d0e7267dc09340ba3b3760a86ee83b312",
+      "git_blob_sha1": "ad40c0a0264ae251ec964510743a34f755616f3c"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3269,
+      "sha256": "2f37af9eabcc572713a92e7deae9aa58d309068f6620c88aad9bffe1efb5aa0e",
+      "git_blob_sha1": "41c0e67538c86a4b043f39ae951fa341c674780b"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 12570,
+      "sha256": "282fce8772e8a47f0a1b03fcfa76b8210ed48f9a1d8b172a4cb6c1bdc8f44e3e",
+      "git_blob_sha1": "c8a516518b817e61b9d76c28785a58bde30c9287"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2744,
+      "sha256": "36af40e50b073d45b28ed116fdcd0fb8e42cb362de5a8bcaa6a2412735b3678d",
+      "git_blob_sha1": "6864f31afd1a9fc982ea53b64446ea06909e90ad"
+    },
+    {
+      "path": "tests/test_qikvrt_authority_transition.py",
+      "bytes": 19059,
+      "sha256": "bd15fd2ce1717ad66df0e181671ccf3fdc014a95cde5d1245900e5a1bcd75e48",
+      "git_blob_sha1": "57842f127b80179ba837cf5cc7333def41b2d19a"
+    },
+    {
+      "path": "tools/qikvrt_authority_transition.py",
+      "bytes": 26050,
+      "sha256": "eb2bd2c9f5730150c7ffb3ded18dbf6b6bd6ab8213642e67f0813dd110e904d8",
+      "git_blob_sha1": "1d668314450bce5ab3502831348cdf317a0e6f86"
+    }
+  ],
+  "integrity_projections": [
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "git_history": {
+    "review_branch": "work/full-node-recovery-20261001-c621b863",
+    "parent": "3b61720a4223ae2d7eb32ddbd5190aefcadce951",
+    "force_push": false,
+    "enclosing_commit_and_tree_are_final_subject_binding": true
+  },
+  "verification": {
+    "state": "LOCAL_FOCUSED_TESTS_PASS_FULL_GATE_REQUIRED_FOR_ENCLOSING_COMMIT",
+    "command": "python3 -B -m unittest tests.test_qikvrt_authority_transition -v",
+    "tests": 19,
+    "exit_code": 0,
+    "local_log_bytes": 4007,
+    "local_log_sha256": "f02586c96e35f9d5f88978c361e25b51fc434f4e397903391d83545ba8f37d9a",
+    "full_gate": "make test must be freshly reexecuted on enclosing exact HEAD; results persisted in PR readback",
+    "runtime_observed": {
+      "python": "Python 3.12.14",
+      "sqlite": "3.53.1",
+      "git": "git version 2.51.1",
+      "platform": "POSIX/Linux"
+    },
+    "scope": "Real local SQLite control-plane and effect-ledger mutations in destructive-source fixtures, not a production takeover",
+    "bootstrap_dependency_recovery": "Materialized exact reachable Git objects and fetched existing historical 56127a6fd7dadea331fea98ed6cba19b4b96c6b2; no historical evidence bytes rewritten",
+    "bounded_optimization_check": "HOLD: no independently verified no-competing-writer predicate; no unrelated controller apply"
+  },
+  "human_decision": {
+    "implementation_scope": "AUTHORIZED_BY_CURRENT_TASK",
+    "generated_candidate_review": "PENDING",
+    "acceptance_changes_origin_classification": false
+  },
+  "external_effects": {
+    "source_main_changed": false,
+    "live_authority_promotion": false,
+    "github_or_provider_fencing": false,
+    "new_project_created": false,
+    "merge_release_publication": false
+  },
+  "production_preconditions": [
+    "Independent surviving nonrollbackable private control plane",
+    "All mutations in declared sink gated with no bypass capabilities",
+    "Owner recovery grant and actually usable target-scoped private capability",
+    "Restored target immutable under trusted local owner",
+    "Separate integration/readback of GitHub and provider effects; full-node admission and replication remain open"
+  ],
+  "next_action": "Review enclosing exact-head adapter; provision production sink and non-bypass writer path before any authorized real Authority transition.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "FULL_NODE_ADMITTED": false,
+    "AUTHORITY_RECOVERED": false,
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  }
+}

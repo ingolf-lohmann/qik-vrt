@@ -159,3 +159,86 @@ den Offline-Vertrag innerhalb dieser Fixtures. Der reale Produktionsnode wird
 damit nicht automatisch als Vollnode zugelassen. Seine gesamte Closure,
 kanonische Signatur, Runtime, Recovery-Capabilities, Authority-Übernahme,
 Scheduler-Wirkungen und GitHub-Projekterzeugung brauchen eigene frische Evidenz.
+
+## Ausführbarer, gefenceter Rollenwechsel (PR #428 Successor)
+
+`tools/qikvrt_authority_transition.py` ergänzt den Offline-Pfad mit einer
+persistenten lokalen Control Plane und einem tatsächlich schreibenden Effekt-Sink.
+Die Wiederverwendungssuche fand im bisherigen Recovery-, Seed- und Workflow-Pfad
+keinen atomaren Authority-Epoch-/Writer-Fence-Sink. Der Adapter verwendet deshalb
+die bestehenden Recovery-Prüfer, den strikten kanonischen Seed-JSON-Vertrag und
+Python `sqlite3`; ein zusätzliches CLI oder Drittanbieterpaket ist nicht nötig.
+
+Die aktive Rolle steht ausschließlich in der Control Plane. `node.json` bleibt
+ein unveränderter Offline-Restore-Nachweis mit `writer_enabled=false`. Der Adapter
+ändert weder die permanente Wurzel noch historische Policies und Receipts.
+
+| Operation | Tatsächlicher Effekt / Sperre |
+| --- | --- |
+| `init` | Separates create-only Owner-Bootstrap eines privaten Sinks mit explizitem Anfangsepoch; keine automatische Recovery fehlender Control Planes |
+| `grant` | Authentifizierter Owner-Grant für tatsächlich geprüfte Node-Identität, Manifest, Repository, HEAD/TREE und Scheduler; aktuelles Epoch, noch kein Writer |
+| `observe` | Authentifizierte, 30 Sekunden gültige, einmalig konsumierbare aktuelle Epoch-/Revision-/Target-Beobachtung; Backup-Epoch ist kein Ersatz |
+| `takeover` | Atomarer CAS des vollständigen beobachteten Zustands; Epoch + 1, neuer Fence, bisherige Authority als Mirror gesperrt, Successor `PENDING_READBACK` |
+| `activate` | Frische Prüfung der restaurierten Bytes und dauerhaften Post-CAS-Rolle samt Scheduler; erst dann aktive Authority am angegebenen Sink |
+| `write` | Persistiert tatsächliche Nutzbytes mit Idempotenzschlüssel; Capability, Epoch, Fence und aktive Rolle werden im selben Commit-Lock geprüft; anschließender frischer Byte-Readback |
+| `rejoin` | Alte Authority bleibt Mirror, Writer gesperrt; Catch-up erforderlich, keine implizite Vollnode-Zulassung |
+| `readback` | Authentifizierter aktueller Rollen-/Epoch-/Target-Zustand |
+
+Der Sink muss unabhängig von der bisherigen Authority erhalten bleiben. Seine
+SQLite-Datei liegt in einem owner-exklusiven POSIX-Verzeichnis (0700), die Datei
+ist 0600 und darf keine Symlinks/Hardlinks haben. Alle Mutationen dieses Sinks
+müssen die Adapterprüfung durchlaufen. Datenbank-Owner/Admin-Zugriff ist die
+Vertrauensgrenze. Ein Rollback, eine Kopie des Sinks oder eine Wiederherstellung
+des Control-Plane-Epochs aus einem Backup ist unzulässig. Ohne diese
+Voraussetzungen gibt es keinen Split-Brain-Schutz; ein fehlender Sink wird
+gesperrt und nicht selbstständig neu initialisiert. Das Werkzeug behauptet
+keinen Schutz vor einem privilegierten Administrator oder einem externen
+Writer mit unabhängigen GitHub-/Provider-Rechten.
+
+Der Owner provisioniert den Sink und den separaten Recovery-Grant vor dem
+Ausfall oder aus einer erhaltenen unabhängigen Administrationsroute. Eingabe
+ist eine tatsächlich nutzbare, targetgebundene, privat entschlüsselte Capability
+als 0600-Datei. Der Adapter verifiziert deren Verwendung gegen den tatsächlichen
+Sink. Er implementiert keine allgemeine Escrow-Entschlüsselung und akzeptiert
+keinen behaupteten Unseal-Erfolg. Ein Grant gilt ausschließlich für das beim Owner-Grant frisch gelesene Epoch;
+ein konkurrierender Verlierer benötigt für einen späteren Wechsel einen neuen
+Owner-Grant. Tokens werden weder ausgegeben noch in Git
+geschrieben. Im Sink stehen nur ihre SHA-256-Bindungen.
+
+Beispiel nach Provisionierung/Grant; `$NODE` bezeichnet den verifizierten
+Restore, `$CP` den erhaltenen privaten Sink, `$CAP` dessen private Capability:
+
+```sh
+python3 -B tools/qikvrt_authority_transition.py observe \
+  --control-plane "$CP" --token-file "$CAP" --node "$NODE" \
+  --expect-manifest-sha256 "$MANIFEST_SHA256" > observation.json
+python3 -B tools/qikvrt_authority_transition.py takeover \
+  --control-plane "$CP" --token-file "$CAP" --node "$NODE" \
+  --expect-manifest-sha256 "$MANIFEST_SHA256" --observation observation.json > takeover.json
+```
+
+`activate` konsumiert das `permit`-Objekt aus dem Takeover-Resultat als
+kanonische JSON-Datei zusammen mit demselben Node/Manifest/Capability-Target.
+Ein Prozessabbruch zwischen CAS und Aktivierung lässt beide Writer gesperrt.
+Nach Neustart wird derselbe dauerhafte Successor frisch gelesen und aktiviert;
+bei konkurrierendem Successor wird das alte Permit zurückgewiesen. Ein Write,
+der vor dem CAS committen konnte, verändert die Revision und macht die alte
+CAS-Beobachtung ungültig. Nach dem CAS kann kein alter Writer committen.
+
+HEAD/TREE und Scheduler-Cursor dürfen gegenüber dem akzeptierten Sink-Zustand
+nicht zurückfallen. Der Rollenwechsel bindet Scheduler-Owner neu, erhält
+Cursor, offene Work Units und Idempotenzschlüssel und bewahrt alle bereits
+committeten Sink-Effekte. Derselbe Schlüssel mit anderen Bytes wird gesperrt.
+Dies ist lokale Scheduler-/Ledger-Reconciliation, kein behaupteter Kalender-
+oder Provider-Schedule-Erfolg. Restore-Dateien müssen unter dem vertrauenswürdigen
+lokalen Owner während der Abnahme unveränderlich gehalten werden.
+
+Der neue Test zerstört frühere Authority, Quelle, Payload und Checkpoint-Pakete
+vor dem Takeover. Er prüft konkurrierende Takeovers und Writes, stale Epochs,
+Observation-Replay/Timeout/Clock-Rollback, Capability- und Target-Drift, Rejoin,
+Old-Writer-Rejection, Scheduler-Rebinding, Prozessneustart und tatsächliche
+CLI-Sink-Effekte. Das ist ausführbare Evidenz für den lokalen POSIX-Sink.
+Remote-GitHub-Fencing, Runtime-/Provider-Unseal, globale Replikation/Vollnode-
+Zulassung und Root-Projekterzeugung bleiben separat zu integrieren und frisch
+zu beweisen. Alle Resultate führen `effect_ack_done=false`; Test-/CI-Erfolg
+und lokaler Sink-Erfolg ergeben kein globales `EFFECT_ACK_DONE`.

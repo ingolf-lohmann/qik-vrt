@@ -116,6 +116,6 @@ test: machine-verifiable-science-charter-test
 
 .PHONY: mesh-recovery-test
 mesh-recovery-test: tool-cache-contract
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_mesh_recovery
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition
 
 test: mesh-recovery-test

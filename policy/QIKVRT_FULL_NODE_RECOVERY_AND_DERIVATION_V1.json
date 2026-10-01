@@ -14,7 +14,10 @@
   "implementation": "tools/qikvrt_mesh_recovery.py",
   "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
   "role_independent_requirement": {
-    "roles": ["AUTHORITY", "MIRROR"],
+    "roles": [
+      "AUTHORITY",
+      "MIRROR"
+    ],
     "every_admitted_full_node_must_restore_the_complete_accepted_checkpoint_alone": true,
     "every_admitted_full_node_must_have_an_executable_authority_recovery_route": true,
     "every_admitted_full_node_must_be_able_to_seed_new_mirrors_and_projects": true,
@@ -46,8 +49,13 @@
     "source_commits_outside_current_history": "PIN_BY_DURABLE_RECOVERY_REF_BEFORE_CHECKPOINT_CREATION",
     "external_metadata_lfs_submodules_releases_artifacts_and_tool_payloads": "INDEPENDENT_REQUIRED_ASSETS_IN_OWNER_BOUND_CLOSURE",
     "required_asset_categories": [
-      "runtime", "mutable_state", "artifacts", "scheduler", "governance",
-      "platform_metadata", "capability_recovery"
+      "runtime",
+      "mutable_state",
+      "artifacts",
+      "scheduler",
+      "governance",
+      "platform_metadata",
+      "capability_recovery"
     ],
     "unknown_missing_surplus_noncanonical_or_concurrently_mutated_input": "BLOCK",
     "bounds": {
@@ -105,7 +113,47 @@
     "split_brain_or_missing_fence": "BLOCK",
     "checkpoint_epoch_is_current_control_plane_epoch": false,
     "original_authority_rejoining": "FENCE_OLD_EPOCH_THEN_REJOIN_AS_MIRROR",
-    "history_rewrite_or_force_push": false
+    "history_rewrite_or_force_push": false,
+    "executable_adapter": {
+      "implementation": "tools/qikvrt_authority_transition.py",
+      "acceptance_test": "tests/test_qikvrt_authority_transition.py",
+      "backend": "PRIVATE_POSIX_SQLITE3_SINGLE_SINK_V1",
+      "state_schema": "qikvrt_fenced_authority_state_v1",
+      "observation_schema": "qikvrt_authority_observation_v1",
+      "operations": [
+        "init",
+        "grant",
+        "observe",
+        "takeover",
+        "activate",
+        "write",
+        "readback",
+        "rejoin"
+      ],
+      "takeover": "AUTHENTICATED_FRESH_OBSERVATION_THEN_ATOMIC_EPOCH_REVISION_CAS_FENCE_ROTATION_ROLE_AND_SCHEDULER_REBINDING",
+      "activation": "SEPARATE_FRESH_POST_CAS_DURABLE_STATE_AND_RESTORED_TARGET_READBACK",
+      "writer_rejection": "EVERY_SINK_COMMIT_RECHECKS_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_TARGET_FENCE_AND_ACTIVE_ROLE_IN_THE_SAME_TRANSACTION",
+      "observation_ttl_seconds": 30,
+      "clock_rollback": "BLOCK",
+      "checkpoint_epoch_is_used_as_current_epoch": false,
+      "actual_unsealed_private_capability_required": true,
+      "opaque_escrow_digest_or_claimed_unseal_success_is_sufficient": false,
+      "accepted_head_tree_and_scheduler_cursors_may_regress": false,
+      "completed_sink_effect_keys_survive_role_transition": true,
+      "full_node_admission_implied": false,
+      "effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER",
+      "github_or_external_provider_writer_fencing_implemented": false,
+      "production_preconditions": [
+        "OWNER_PROVISIONED_AND_INDEPENDENTLY_SURVIVING_CONTROL_PLANE",
+        "ALL_MUTATIONS_IN_THE_DECLARED_SINK_USE_THIS_FENCE_WITH_NO_BYPASS_CAPABILITIES",
+        "CONTROL_PLANE_DATABASE_NEVER_ROLLED_BACK_COPIED_OR_RECREATED_FROM_A_CHECKPOINT",
+        "PRIVATE_OWNER_RECOVERY_GRANT_BOUND_TO_THE_VERIFIED_RESTORED_NODE_AND_EXACT_TARGET",
+        "USABLE_PRIVATE_CAPABILITY_FROM_AUTHORIZED_UNSEAL_PATH",
+        "RESTORED_BYTES_HELD_IMMUTABLE_UNDER_TRUSTED_LOCAL_OWNER"
+      ],
+      "no_live_promotion_or_effect_ack_done_from_test_success": true,
+      "owner_grant_bound_to_current_epoch_and_single_use": true
+    }
   },
   "derivation": {
     "new_github_project_owner": "Goldkelch",

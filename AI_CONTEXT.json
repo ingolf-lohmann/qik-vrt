@@ -219,6 +219,9 @@
     "acceptance_test": "tests/test_qikvrt_mesh_recovery.py",
     "permanent_lineage_root": "Goldkelch/qik-vrt",
     "full_node_admission_requires_all_policy_predicates": true,
-    "offline_restore_is_live_authority_promotion": false
+    "offline_restore_is_live_authority_promotion": false,
+    "authority_transition_adapter": "tools/qikvrt_authority_transition.py",
+    "authority_transition_test": "tests/test_qikvrt_authority_transition.py",
+    "authority_transition_effect_scope": "LOCAL_CONTROL_PLANE_AND_GATED_EFFECT_LEDGER"
   }
 }
