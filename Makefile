@@ -110,7 +110,7 @@ test: personal-firefox-boundary-test
 
 .PHONY: reciprocal-devops-closure-test
 reciprocal-devops-closure-test:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_expected_head_promotion tests.test_reciprocal_devops_closure
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_expected_head_promotion tests.test_reciprocal_devops_closure tests.test_qikvrt_pr_closure_engine tests.test_reciprocal_closure_step
 
 test: reciprocal-devops-closure-test
 

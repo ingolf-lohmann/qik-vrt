@@ -50,5 +50,30 @@
     "license": "CC-BY-NC-ND-4.0",
     "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
     "rights_holder": "Ingolf Lohmann"
+  },
+  "execution_successor": {
+    "command": "python3 -B tools/qikvrt_pr_closure_engine.py run --repository <role-local-repository> --apply --journal-dir <durable-private-host-journal>",
+    "policy": "state/autonomy/AUTONOMOUS_PR_CLOSURE_POLICY_V1.json",
+    "capability_interface": [
+      "request(GET, role-scoped-path)",
+      "probe(authenticated-principal, role-local-repository-permission, callable-operations)",
+      "mutate(one-attempt-only)"
+    ],
+    "allowed_effects": [
+      "REQUEST_REVIEW",
+      "UPDATE_BRANCH",
+      "NATIVE_PR_MERGE"
+    ],
+    "legacy_promotion_mode_override": "FAST_FORWARD_CAS does not enable ref mutation; both roles require native merge and enforced native review/check/no-force protection.",
+    "inventory": "Every page of open PRs and branches, repeated unchanged census, main/head/tree bindings; refreshed before and after the one attempted effect.",
+    "recovery": "Create-only durable intent journal; unresolved intent fences later effects; recover is readback-only and never retries a mutation.",
+    "no_second_executor": true,
+    "authority_access": "Same interface; missing role-scoped access or token blocks without aliasing to the Mirror.",
+    "receipt_schema": "qikvrt_reciprocal_closure_step_receipt_v1",
+    "protocol_state": "EFFECT_ACK_CONTINUE",
+    "acceptance_evaluator_is_execution_permission": false,
+    "closure_reciprocity_and_public_bytes_verified": false,
+    "version": 1,
+    "reviewer_capability": "Fresh positive membership and exact-handle permission reads; conflicting operation eligibility is HOLD, never inferred from push=true."
   }
 }
