@@ -140,7 +140,7 @@
     "witness_command": "python tools/qikvrt_firefox_windows_witness.py --output <ephemeral-output>",
     "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt.",
     "test_host_permission_setup": {
-      "origin": "http://127.0.0.1:8771/*",
+      "origin": "http://127.0.0.1/*",
       "must_already_be_declared": true,
       "observe_before_and_after": true,
       "temporary_profile_only": true,

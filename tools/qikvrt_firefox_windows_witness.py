@@ -266,11 +266,11 @@ def witness(output, headless=False):
             permission_script = (
                 'const e=WebExtensionPolicy.getByID(arguments[0]).extension;'
                 'return {active:e.activePermissions,loopback_allowed:'
-                'e.activePermissions.origins.includes("http://127.0.0.1:8771/*")};')
+                'e.activePermissions.origins.includes("http://127.0.0.1/*")};')
             receipt['permissions_before'] = driver.script(permission_script, [addon])
             receipt['test_host_permission_granted'] = False
             if not receipt['permissions_before']['loopback_allowed']:
-                origin = 'http://127.0.0.1:8771/*'
+                origin = 'http://127.0.0.1/*'
                 manifest = json.loads((ROOT / package['root'] / 'manifest.json').read_text())
                 if origin not in manifest['host_permissions']:
                     raise RuntimeError('TEST_ORIGIN_NOT_DECLARED')

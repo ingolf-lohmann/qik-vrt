@@ -115,3 +115,5 @@ with the declared architecture, loaded extension and fresh functional/effect
 readback, followed by the separate authenticated Personal runtime acceptance.
 
 The standard extension explicitly permits backend connections only to its declared loopback origins and the GitHub API in its extension-page CSP. The MV3 default `upgrade-insecure-requests` is omitted so the existing local HTTP Effect-ACK backend remains reachable; script and object sources remain self-only. The Windows witness observes Firefox's active host-permission origins in its temporary profile. Any test-only grant is limited to the already-declared loopback origin and does not prove production installation consent. Native browser architecture is read from the actual PE binary, independently of user-agent text.
+
+Firefox host match patterns omit ports: Mozilla bug 2052000 (duplicate of 1362809) documents that port-qualified grants are reported active but do not match requests. The backend allowlist and `connect-src` still enforce port 8771. This corrects matching semantics; it does not permit connecting to arbitrary loopback services. Source: https://bugzilla.mozilla.org/show_bug.cgi?id=2052000
