@@ -138,6 +138,14 @@
     "temporary_install_is_release_install": false,
     "terminal_url": "https://goldkelch.github.io/qik-vrt/",
     "witness_command": "python tools/qikvrt_firefox_windows_witness.py --output <ephemeral-output>",
-    "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt."
+    "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt.",
+    "test_host_permission_setup": {
+      "origin": "http://127.0.0.1:8771/*",
+      "must_already_be_declared": true,
+      "observe_before_and_after": true,
+      "temporary_profile_only": true,
+      "production_permission_consent_verified": false,
+      "source": "https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/"
+    }
   }
 }

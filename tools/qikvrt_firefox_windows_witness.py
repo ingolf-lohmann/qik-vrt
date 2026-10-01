@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import platform
 import socket
+import struct
 import subprocess
 import sys
 import threading
@@ -25,6 +26,17 @@ POLICY = ROOT / 'policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json'
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def pe_architecture(path):
+    with Path(path).open('rb') as binary:
+        binary.seek(0x3c)
+        offset = struct.unpack('<I', binary.read(4))[0]
+        binary.seek(offset)
+        if binary.read(4) != b'PE\0\0':
+            raise RuntimeError('INVALID_WINDOWS_EXECUTABLE')
+        machine = struct.unpack('<H', binary.read(2))[0]
+    return {0x8664: 'AMD64', 0xaa64: 'ARM64', 0x14c: 'X86'}.get(machine, hex(machine))
 
 
 def target_matches(os_info, target, today=None):
@@ -200,6 +212,9 @@ def witness(output, headless=False):
         firefox = Path(os.environ.get('QIKVRT_FIREFOX_BINARY',
                                      r'C:\Program Files\Mozilla Firefox\firefox.exe'))
         receipt['firefox_binary_sha256'] = digest(firefox)
+        receipt['firefox_binary_architecture'] = pe_architecture(firefox)
+        receipt['browser_execution_mode'] = ('NATIVE' if receipt['firefox_binary_architecture'] ==
+                                             receipt['os']['architecture'] else 'WINDOWS_EMULATION')
         xpi = output / 'standard.xpi'
         package = policy['standard_firefox_package']
         with zipfile.ZipFile(xpi, 'w', compression=zipfile.ZIP_DEFLATED) as bundle:
@@ -235,6 +250,34 @@ def witness(output, headless=False):
             if addon != 'qikvrt-ai-terminal@goldkelch.local':
                 raise RuntimeError('ADDON_ID_MISMATCH')
             receipt['extension_loaded'] = True
+            # Temporary installation omits the normal install-time consent UI.
+            # Observe and grant only the already-declared loopback test origin,
+            # through Firefox's own permission store, in the throwaway profile.
+            driver.command('/moz/context', {'context': 'chrome'})
+            permission_script = (
+                'const e=WebExtensionPolicy.getByID(arguments[0]).extension;'
+                'return {active:e.activePermissions,loopback_allowed:'
+                'e.allowedOrigins.matches("http://127.0.0.1:8771/.well-known/effect-ack")};')
+            receipt['permissions_before'] = driver.script(permission_script, [addon])
+            receipt['test_host_permission_granted'] = False
+            if not receipt['permissions_before']['loopback_allowed']:
+                origin = 'http://127.0.0.1:8771/*'
+                manifest = json.loads((ROOT / package['root'] / 'manifest.json').read_text())
+                if origin not in manifest['host_permissions']:
+                    raise RuntimeError('TEST_ORIGIN_NOT_DECLARED')
+                driver.command('/execute/async', {'script':
+                    'const done=arguments[arguments.length-1];'
+                    'const {ExtensionPermissions}=ChromeUtils.importESModule('
+                    '"resource://gre/modules/ExtensionPermissions.sys.mjs");'
+                    'ExtensionPermissions.add(arguments[0],{permissions:[],origins:[arguments[1]]},'
+                    'WebExtensionPolicy.getByID(arguments[0]).extension).then(()=>done(true),'
+                    'error=>done({error:String(error)}));', 'args': [addon, origin]})
+                receipt['test_host_permission_granted'] = True
+            receipt['permissions_after'] = driver.script(permission_script, [addon])
+            if not receipt['permissions_after']['loopback_allowed']:
+                raise RuntimeError('DECLARED_LOOPBACK_HOST_PERMISSION_REQUIRED')
+            receipt['production_permission_consent_verified'] = False
+            driver.command('/moz/context', {'context': 'content'})
             driver.command('/url', {'url': contract['terminal_url']})
             wait_script(driver, 'return !!document.querySelector("#qikvrt-ai-terminal-host");')
             receipt['terminal_functional_readback'] = True
