@@ -1,0 +1,139 @@
+{
+  "artificial_cognitive_actor": {
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Fetched and verified exact Git blob bytes.",
+    "Reproduced false PROMOTABLE decisions with foreign runs, zero jobs and self/stale/unenforced approval.",
+    "Extended existing promotion evaluator, workflow and tests; reused native independent review gate and watchdog."
+  ],
+  "created_at": "2026-10-01T14:18:52.322466+00:00",
+  "external_effects": {
+    "deployment": false,
+    "merge": false,
+    "prepared": "REVIEWABLE_CANDIDATE_ONLY",
+    "publication": false,
+    "release": false,
+    "ruleset_mutation": false,
+    "workflow_dispatch_count": 0
+  },
+  "git_history": {
+    "history_rewrite": false,
+    "parent": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+    "promotion_enabled": false,
+    "target_branch": "work/software-independent-promotion-proof-20261001-469a95ac"
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Authorized software evidence for independent approval, mutation boundaries, trusted-main recovery, D0=2 reobservation, separate writer, CAS and fresh validation."
+  ],
+  "human_decision": {
+    "candidate_native_review": "PENDING",
+    "task_authorization": "GRANTED"
+  },
+  "inputs": {
+    ".github/workflows/qikvrt_expected_head_promotion.yml": {
+      "git_blob_sha1": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6"
+    },
+    "tests/test_qikvrt_expected_head_promotion.py": {
+      "git_blob_sha1": "3f8901ed5d5cb4415d7d264cc12e6042488a521f"
+    },
+    "tools/qikvrt_expected_head_promotion.py": {
+      "git_blob_sha1": "78feaaf5dc9777f6df6611af9dc310e3f80940f2"
+    }
+  },
+  "joint_components": [],
+  "next_action": "Read back candidate and integrity successor; inspect native exact-head tests. Restore authorized Authority access and native review enforcement before any separately admitted trusted-main effect.",
+  "open_boundaries": {
+    "authority_access": "Goldkelch/qik-vrt GET returned HTTP404; cause not established.",
+    "fresh_promoted_main_validation": "Mandatory; merge and candidate tests do not establish it.",
+    "mirror_native_governance": "main protected=false; rulesets=[] at main 469a95ac4ef14692dda69673b8a75eb2cf03685d.",
+    "repo_and_mesh_proof": "Current independent reviews, Authority access and protected integration remain open.",
+    "trusted_main_recovery": "Existing continuation must be independently admitted and exact-bound; preparation or tests are not execution.",
+    "universal_self_write_claim": "Not proved; candidate editing and independent self-approval are distinct. Current CI admits a same-writer candidate-integrity successor."
+  },
+  "outputs": {
+    ".github/workflows/qikvrt_expected_head_promotion.yml": {
+      "bytes": 15169,
+      "git_blob_sha1": "b1a4ab1c36286880f0692bdc36c3213aeb1f5532",
+      "sha256": "8581ee544f548c81dcf93b3b0c3189c42ec74fb84384933dddd6ff433681ce06"
+    },
+    "docs/operations/AUTONOMOUS_PR_CONTINUATION.md": {
+      "bytes": 5571,
+      "git_blob_sha1": "e7740fdbb2e9ff3a748eae911acf45428bae7f41",
+      "sha256": "43463484ad4e93ed76809ac9ef59ecf0b33e662d692bcc0fd0ccaec2a7f6a788"
+    },
+    "tests/test_qikvrt_expected_head_promotion.py": {
+      "bytes": 17536,
+      "git_blob_sha1": "a583fe8495216c4461e3e1ab8b1cad93ca9e89b9",
+      "sha256": "6395bdd51d223f03ab5da8ade9090190f39c214f09e2aff099b8b1a96bc2eeb4"
+    },
+    "tools/qikvrt_expected_head_promotion.py": {
+      "bytes": 16515,
+      "git_blob_sha1": "5ab2a2ff4b1ee09583c4390ee18b8beb659b080d",
+      "sha256": "703d6f17ce8c4defa4a17516cf8985d8014dfe8cec9332ad2bbc1d483d5a6ae5"
+    }
+  },
+  "release_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "68a3f30885a403a7edaa4d2dbb8576ace9cc866e",
+  "unresolved_origin": [],
+  "verification": {
+    "evidence_class": "BOUNDED_EXECUTABLE_TESTS_NOT_KERNEL_THEOREM",
+    "local_scope": "Partial snapshot of verified source blobs; not a full Git checkout, boot PASS or full repository-suite result.",
+    "logs": {
+      "software-proof-negative-control.log": {
+        "bytes": 7071,
+        "git_blob_sha1": "b17d0f4e42a456529cdd643c27193779cc1b9e02",
+        "sha256": "dd8bc5104d0bd1477af348d1858a7f74036b160b7a7167f94a2b40d789385b97"
+      },
+      "software-proof-verification.log": {
+        "bytes": 9822,
+        "git_blob_sha1": "9b843e069b9146fd209457e9e8e2cb6a9c01920f",
+        "sha256": "413e5c1944c40a4d1d5df29b3b110cd5bbebc0c84a03cb6ebf19c09a399fc9d3"
+      }
+    },
+    "native_execution": "NOT_YET_ESTABLISHED_FOR_CANDIDATE",
+    "negative_control": {
+      "diagnosis": "Production evaluator omitted run/job subject binding and independent native review predicates. This controlled counterexample does not establish a historical live promotion incident.",
+      "expected_failures": 8,
+      "source_core_git_blob_sha1": "78feaaf5dc9777f6df6611af9dc310e3f80940f2",
+      "test_cases": 6,
+      "unexpected_errors": 0
+    },
+    "positive_tests": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_qikvrt_required_review_gate tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_requested_review_executor plus four named watchdog controls",
+      "errors": 0,
+      "failures": 0,
+      "finite_boundary_combinations": 1024,
+      "skips": 0,
+      "test_count": 56,
+      "valid_positive_controls_retained": true,
+      "watchdog_controls": [
+        "test_action_required_and_zero_job_terminal_runs_are_untrusted",
+        "test_terminal_exact_head_gate_failure_is_held_with_job_evidence",
+        "test_second_active_writer_is_held_before_a_cycle_exists",
+        "test_stale_baseline_from_a_different_head_is_discarded"
+      ]
+    },
+    "runtime": {
+      "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "python": "3.12.14"
+    },
+    "tool_cache": "14/14 strategy coverage verified; no software downgrade."
+  },
+  "work_unit_id": "SOFTWARE_INDEPENDENT_PROMOTION_PROOF_20261001_V1"
+}
