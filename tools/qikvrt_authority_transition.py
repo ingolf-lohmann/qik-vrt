@@ -57,54 +57,8 @@ def decode(raw: bytes | str) -> Any:
 
 
 def verify_restored(node: Path, manifest_sha256: str) -> tuple[dict, dict]:
-    """Recheck actual restored bytes, not an inherited restore receipt."""
-    if (node / "INCOMPLETE").exists():
-        raise TransitionError("incomplete restored node")
-    manifest = recovery.load_json(node / "manifest.json", manifest_sha256)
-    recovery.exact(manifest, {"schema", "closure_plan_sha256", "plan", "bundle"}, "manifest")
-    if manifest["schema"] != recovery.MANIFEST_SCHEMA:
-        raise TransitionError("unsupported checkpoint")
-    plan = manifest["plan"]
-    recovery.validate_plan(plan)
-    if recovery.digest(canonical_json_bytes(plan)) != manifest["closure_plan_sha256"]:
-        raise TransitionError("closure plan drift")
-    identity = decode(recovery.read_file(node / "node.json"))
-    recovery.exact(identity, {"schema", "root_repository", "node_id", "parent_node_id",
-        "source_checkpoint_sha256", "lineage", "mode", "runtime_rebinding_required",
-        "writer_enabled"}, "restored identity")
-    recovery.require_digest(identity["node_id"])
-    if (identity["schema"] != "qikvrt_restored_node_identity_v1"
-            or identity["root_repository"] != recovery.ROOT_REPOSITORY
-            or identity["source_checkpoint_sha256"] != manifest_sha256
-            or identity["lineage"] != plan["lineage"] or identity["writer_enabled"] is not False):
-        raise TransitionError("restored identity drift or unfenced writer")
-    if identity["mode"] == "RESTORE":
-        if (identity["node_id"] != plan["node_id"] or identity["parent_node_id"] is not None
-                or identity["runtime_rebinding_required"] is not False):
-            raise TransitionError("restore identity drift")
-    elif identity["mode"] == "CLONE":
-        if (identity["node_id"] == plan["node_id"] or identity["parent_node_id"] != plan["node_id"]
-                or identity["runtime_rebinding_required"] is not True):
-            raise TransitionError("clone identity drift")
-    else:
-        raise TransitionError("unknown restored mode")
-    repository = node / "repository.git"
-    recovery.git_command(repository, "fsck", "--full", "--strict", "--no-reflogs")
-    if recovery.git_snapshot(repository, plan["git"]["required_objects"]) != plan["git"]:
-        raise TransitionError("restored target HEAD/TREE/ref drift")
-    if recovery.inventory_files(node / "payload") != {a["path"] for a in plan["assets"]}:
-        raise TransitionError("restored payload inventory drift")
-    for asset in plan["assets"]:
-        recovery.copy_verified(node / "payload" / asset["path"], None, asset)
-    recovery.copy_verified(node / "signature.bin", None, {
-        "bytes": 400, "sha256": plan["signature_sha256"], "mode": 0o644})
-    recovery.validate_scheduler(node / "payload", plan)
-    asset = next(a for a in plan["assets"] if a["category"] == "scheduler")
-    scheduler = recovery.load_json(node / "payload" / asset["path"], asset["sha256"])
-    binding = {"node_id": identity["node_id"], "repository": plan["repository"],
-        "head": plan["git"]["head"], "tree": plan["git"]["tree"],
-        "manifest_sha256": manifest_sha256, "scheduler_sha256": asset["sha256"]}
-    return binding, scheduler
+    """Use the same fresh restored-node validator as recursive checkpointing."""
+    return recovery.verify_restored_node(node, manifest_sha256)
 
 
 def token_hash(token: str) -> str:

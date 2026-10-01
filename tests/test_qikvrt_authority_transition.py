@@ -95,6 +95,70 @@ class AuthorityTransitionTests(unittest.TestCase):
         self.assertEqual(state['root_repository'], 'Goldkelch/qik-vrt')
         self.assert_old_rejected()
 
+    def test_rehashed_restored_successor_cannot_remove_independence_before_owner_grant(self):
+        policy_path = self.node / 'payload' / recovery.INDEPENDENCE_POLICY_PATH
+        policy = transition.decode(policy_path.read_bytes())
+        del policy['technology_independence']
+        raw = canonical_json_bytes(policy)
+        policy_path.write_bytes(raw)
+        manifest = transition.decode((self.node / 'manifest.json').read_bytes())
+        asset = next(a for a in manifest['plan']['assets'] if a['path'] == recovery.INDEPENDENCE_POLICY_PATH)
+        asset.update(bytes=len(raw), sha256=recovery.digest(raw))
+        manifest['closure_plan_sha256'] = recovery.digest(canonical_json_bytes(manifest['plan']))
+        raw = canonical_json_bytes(manifest)
+        (self.node / 'manifest.json').write_bytes(raw)
+        binding = recovery.digest(raw)
+        identity = transition.decode((self.node / 'node.json').read_bytes())
+        identity['source_checkpoint_sha256'] = binding
+        (self.node / 'node.json').write_bytes(canonical_json_bytes(identity))
+        with self.assertRaisesRegex(transition.TransitionError, 'technology independence'):
+            self.cp.authorize_recovery(self.node, binding, ADMIN, '5' * 64)
+        with self.assertRaisesRegex(recovery.RecoveryError, 'technology independence'):
+            recovery.recheckpoint_plan(self.node, binding)
+        self.assertEqual(self.cp.readback(OLD_TOKEN)['state']['authority_epoch'], 7)
+
+    def test_recovered_authority_seeds_a_surviving_clone_and_fences_both_predecessors(self):
+        for path in (self.old_node, self.fixture.source, self.fixture.payload,
+                     self.root / 'checkpoint', self.root / 'old-checkpoint'):
+            shutil.rmtree(path)
+        first_permit = self.activate()
+        payload = b'completed once before the next role transition'
+        self.cp.commit_write(NEW_TOKEN, first_permit, 'effect:43', payload)
+        def export(node, manifest, label):
+            proposal = recovery.recheckpoint_plan(node, manifest)
+            raw = canonical_json_bytes(proposal)
+            path = self.root / (label + '-plan.json')
+            path.write_bytes(raw)
+            output = self.root / (label + '-checkpoint')
+            result = recovery.recheckpoint(node, manifest, path, recovery.digest(raw), output)
+            return output, result['manifest_sha256']
+        package, binding = export(self.node, self.manifest, 'parent')
+        clone_node = self.root / 'new-mirror'
+        clone = recovery.restore_checkpoint(package, clone_node, binding, clone=True)
+        package2, binding2 = export(clone_node, binding, 'clone')
+        child = self.root / 'surviving-child'
+        recovery.restore_checkpoint(package2, child, binding2)
+        for path in (self.node, self.competitor, clone_node, package, package2):
+            shutil.rmtree(path)
+        token = '5' * 64
+        self.cp.authorize_recovery(child, binding2, ADMIN, token)
+        observation = self.cp.observe(child, binding2, token)
+        permit = self.cp.takeover(child, binding2, token, observation)['permit']
+        restarted = transition.AuthorityControlPlane(self.cp.path)
+        result = restarted.activate(child, binding2, token, permit)
+        self.assertEqual(result['state']['authority_epoch'], 9)
+        self.assertEqual(result['state']['binding']['node_id'], clone['node_id'])
+        self.assertEqual(result['state']['root_repository'], recovery.ROOT_REPOSITORY)
+        replay = restarted.commit_write(token, permit, 'effect:43', payload)
+        self.assertTrue(replay['replayed'])
+        self.assertTrue(replay['fresh_sink_readback'])
+        with restarted.transaction() as db:
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM effects WHERE id='effect:43'").fetchone()[0], 1)
+        for old_token, old_permit in ((OLD_TOKEN, self.old_permit), (NEW_TOKEN, first_permit)):
+            with self.assertRaisesRegex(transition.TransitionError, 'old writer rejected'):
+                restarted.commit_write(old_token, old_permit, 'stale-attempt', b'forbidden')
+        self.assertFalse(result['effect_ack_done'])
+
     def test_pending_cas_fences_both_writers_until_separate_fresh_readback(self):
         permit = self.take()
         self.assert_old_rejected()

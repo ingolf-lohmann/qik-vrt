@@ -82,6 +82,8 @@ Das neue Werkzeug unterstützt:
 | `verify` | Bytebindungen, kanonisches JSON, Kategorien, Abstammung und tatsächlicher Git-Restore in einer leeren temporären Umgebung |
 | `restore` | Bare-Repository mit identischem HEAD/TREE und Refs, identische Assets und Signatur, erhaltene Node-Identität; Writer deaktiviert |
 | `clone` | Derselbe geprüfte Datenstand, neue Identität aus 256 Zufallsbits, gebundener Parent und Quellcheckpoint; Runtime-Rebinding erforderlich |
+| `plan-recheckpoint` | Frische Prüfung eines restaurierten Nodes und Vorschlag eines erneut vom Owner zu prüfenden Closure-Plans; keine Freigabe oder Vollnode-Zulassung |
+| `recheckpoint` | Neuer eigenständig geprüfter Checkpoint aus dem erhaltenen Node ohne ursprüngliche Quelle, Payload oder Backup-Paket; externer Plan-Digest erforderlich |
 | `plan-authority` | Gebundener Recovery-Plan samt noch zu erfüllenden Fencing-, Capability-, CAS- und Readback-Anforderungen |
 | `plan-project` | Neue `Goldkelch/<Projekt>`-Identität mit erhaltener Wurzel, Parent und Checkpointbindung; noch zu erfüllende Erzeugungs- und Registrierungsanforderungen |
 
@@ -121,6 +123,69 @@ versionierten Kapazitäts-Successor; die Grenzen dürfen nicht durch eine falsch
 Vollnode-Erklärung umgangen werden. Geschützte Secret-Backups werden lediglich
 als opake Bytefolgen transportiert. Der Restore erzeugt ein Bare-Repository;
 Bootstrap, Runtime-Start und Secret-Unseal sind separate, noch zu prüfende Schritte.
+
+## Rekursive Wiederherstellung aus dem erhaltenen Node
+
+Der restaurierte Node enthält selbst seine vollständige deklarierte Git- und
+Asset-Closure, Signatur, Manifest und Identität. `recheckpoint` verwendet diese
+Bytes über denselben `create_checkpoint`-Pfad erneut. Das ursprüngliche Bundle,
+die Quell-Working-Copy und andere Mesh-Nodes werden nicht benötigt. Vor und nach
+der Erzeugung werden die erhaltenen Bytes frisch geprüft; eine Änderung während
+der Erzeugung hinterlässt eine gesperrte `INCOMPLETE`-Ausgabe. Bestehende Ziele
+werden nicht überschrieben und das Ausgabeziel muss außerhalb des Nodes liegen.
+
+```sh
+python3 -B tools/qikvrt_mesh_recovery.py plan-recheckpoint \
+  --node /recovery/survivor --expect-manifest-sha256 "$MANIFEST_SHA256" \
+  > /recovery/proposed-closure.json
+# Owner-Prüfung des Vorschlags und externes Pinnen seiner exakten Bytes.
+python3 -B tools/qikvrt_mesh_recovery.py recheckpoint \
+  --node /recovery/survivor --expect-manifest-sha256 "$MANIFEST_SHA256" \
+  --plan /recovery/accepted-closure.json --expect-plan-sha256 "$PLAN_SHA256" \
+  --output /recovery/successor-checkpoint
+```
+
+Für `RESTORE` bleiben Identität, Rolle im historischen Checkpoint, Watermark,
+Assets, Historie und Refs unverändert. Für `CLONE` bindet der neue Plan die bereits
+erzeugte eigene Identität und setzt die Offline-Rolle auf `MIRROR`. Nur die
+Owner-Identität im Scheduler wird neu gebunden. Definitionen, Cursor, offene
+Arbeit und Idempotenzschlüssel bleiben erhalten. Zusätzlich archiviert der neue
+Governance-Asset `governance/clone_lineage/<node_id>.json` das tatsächliche
+Quellmanifest und die tatsächliche Clone-Identität, sodass die Parent-Bindung
+auch nach Verlust des Elternnodes und seines Pakets auflösbar bleibt. Vorhandene
+Abstammungs-Assets bleiben byteidentisch. Die Goldkelch-Wurzel bleibt erhalten.
+
+Der gepinnte neue Closure-Plan muss genau diesem Vorschlag entsprechen. Ein
+anderer Digest erlaubt keine Änderung von Daten, Epoch, Wurzel, Rolle oder
+Identität außerhalb dieser Clone-Bindung. Ein Plan-Digest authentifiziert den
+Owner nicht. Die separate Owner-Prüfung ist eine Vertrauensvoraussetzung.
+Die ursprünglichen und neuen Pakete bleiben verschiedene Evidenzsubjekte;
+`predecessor_evidence_transfer=false`. Der Checkpoint-Vertrag V2 bleibt lesbar,
+die Policy-Version 1.1.0 ergänzt den lokalen Exportpfad.
+
+Auch der Rollenwechsel verwendet jetzt `verify_restored_node` aus demselben
+Recovery-Modul. Er prüft die Technologie-Unabhängigkeitsregel zusätzlich zu
+den Digests. Ein neu gehashter Nachfolger mit gelöschter Regel wird vor Grant,
+Takeover und Aktivierung abgewiesen. Zuvor konnte der Rollenwechselprüfer diesen
+Fall akzeptieren, obwohl Create/Verify ihn bereits sperrten.
+
+Die Tests führen zwei Generationen nach Quellenverlust sowohl für Authority-
+als auch Mirror-Checkpoints aus, exportieren einen eigenständigen Clone,
+restaurieren ihn nach Parent-Verlust und prüfen Git-, Asset-, Modus-, Signatur-
+und Abstammungsbytes. Ein weiterer Test übernimmt die aktive Rolle erneut,
+startet den vorhandenen lokalen Sink neu, weist beide Vorgänger-Writer zurück
+und liest dieselbe abgeschlossene Wirkung genau einmal aus dem dauerhaften
+Ledger zurück. Der private Control-Plane-Sink überlebt dabei unabhängig; sein
+Verlust wird nicht durch Kopieren eines alten Epochs repariert.
+
+Diese Tests gelten für die deklarierten lokalen Fixtures. Sie führen keinen
+Produktions-Runtime-Unseal, produktiven GitHub-Rollenwechsel, vollständigen
+Provider-Scheduler oder Create-only-Root-Registrierung aus. `recheckpoint`
+erfasst den angenommenen historischen Checkpoint, keine danach entstandenen
+Writes oder neuen Control-Plane-Zustände. Diese brauchen eine neue vollständige
+ownergeprüfte Closure und Replikation vor ACK. Ein Projektplan bleibt ein Plan,
+bis Root-Register und neues GitHub-Repository tatsächlich erzeugt und frisch
+rückgelesen wurden. Alle globalen Done-/Release-Claims bleiben false.
 
 ## Authority-Rolle und bleibende Wurzel
 

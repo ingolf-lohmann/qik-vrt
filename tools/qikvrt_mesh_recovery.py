@@ -573,6 +573,153 @@ def restore_checkpoint(package: Path, destination: Path, expected_manifest_sha25
     return result
 
 
+def verify_restored_node(node: Path, manifest_sha256: str) -> tuple[dict, dict]:
+    """Recheck actual restored bytes, not an inherited restore receipt."""
+    if (node / "INCOMPLETE").exists():
+        raise RecoveryError("incomplete restored node")
+    manifest = load_json(node / "manifest.json", manifest_sha256)
+    exact(manifest, {"schema", "closure_plan_sha256", "plan", "bundle"}, "manifest")
+    if manifest["schema"] != MANIFEST_SCHEMA:
+        raise RecoveryError("unsupported checkpoint")
+    plan = manifest["plan"]
+    validate_plan(plan)
+    if digest(canonical_json_bytes(plan)) != manifest["closure_plan_sha256"]:
+        raise RecoveryError("closure plan drift")
+    identity_raw = read_file(node / "node.json")
+    identity = parse_json_bytes(identity_raw, "restored identity")
+    if canonical_json_bytes(identity) != identity_raw:
+        raise RecoveryError("noncanonical restored identity")
+    exact(identity, {"schema", "root_repository", "node_id", "parent_node_id",
+        "source_checkpoint_sha256", "lineage", "mode", "runtime_rebinding_required",
+        "writer_enabled"}, "restored identity")
+    require_digest(identity["node_id"])
+    if (identity["schema"] != "qikvrt_restored_node_identity_v1"
+            or identity["root_repository"] != ROOT_REPOSITORY
+            or identity["source_checkpoint_sha256"] != manifest_sha256
+            or identity["lineage"] != plan["lineage"] or identity["writer_enabled"] is not False):
+        raise RecoveryError("restored identity drift or unfenced writer")
+    if identity["mode"] == "RESTORE":
+        if (identity["node_id"] != plan["node_id"] or identity["parent_node_id"] is not None
+                or identity["runtime_rebinding_required"] is not False):
+            raise RecoveryError("restore identity drift")
+    elif identity["mode"] == "CLONE":
+        if (identity["node_id"] == plan["node_id"] or identity["parent_node_id"] != plan["node_id"]
+                or identity["runtime_rebinding_required"] is not True):
+            raise RecoveryError("clone identity drift")
+    else:
+        raise RecoveryError("unknown restored mode")
+    repository = node / "repository.git"
+    git_command(repository, "fsck", "--full", "--strict", "--no-reflogs")
+    if git_snapshot(repository, plan["git"]["required_objects"]) != plan["git"]:
+        raise RecoveryError("restored target HEAD/TREE/ref drift")
+    if inventory_files(node / "payload") != {a["path"] for a in plan["assets"]}:
+        raise RecoveryError("restored payload inventory drift")
+    for asset in plan["assets"]:
+        copy_verified(node / "payload" / asset["path"], None, asset)
+    copy_verified(node / "signature.bin", None, {
+        "bytes": 400, "sha256": plan["signature_sha256"], "mode": 0o644})
+    validate_scheduler(node / "payload", plan)
+    validate_independence_payload(node / "payload", plan)
+    asset = next(a for a in plan["assets"] if a["category"] == "scheduler")
+    scheduler = load_json(node / "payload" / asset["path"], asset["sha256"])
+    binding = {"node_id": identity["node_id"], "repository": plan["repository"],
+        "head": plan["git"]["head"], "tree": plan["git"]["tree"],
+        "manifest_sha256": manifest_sha256, "scheduler_sha256": asset["sha256"]}
+    return binding, scheduler
+
+
+def _recheckpoint_closure(node: Path, manifest_sha256: str) -> tuple[dict[str, Any], dict[str, bytes]]:
+    """Propose a closure from retained bytes, never attest owner acceptance.
+
+    RESTORE retains its original identity and accepted checkpoint. CLONE has a
+    new identity: only scheduler ownership is rebound, and its offline role is
+    MIRROR. No live control-plane state, capability or writer permit is copied.
+    """
+    binding, scheduler = verify_restored_node(node, manifest_sha256)
+    manifest = load_json(node / "manifest.json", manifest_sha256)
+    plan = parse_json_bytes(canonical_json_bytes(manifest["plan"]), "retained closure")
+    updates: dict[str, bytes] = {}
+    if binding["node_id"] != plan["node_id"]:
+        plan["node_id"] = binding["node_id"]
+        plan["role"] = "MIRROR"
+        for schedule in scheduler["schedules"]:
+            schedule["owner_node_id"] = binding["node_id"]
+        raw = canonical_json_bytes(scheduler)
+        asset = next(a for a in plan["assets"] if a["category"] == "scheduler")
+        asset.update(bytes=len(raw), sha256=digest(raw))
+        updates[asset["path"]] = raw
+        # Retain the predecessor manifest and clone identity themselves, not
+        # just a digest that would become unresolvable after parent/source loss.
+        path = "governance/clone_lineage/" + binding["node_id"] + ".json"
+        if any(a["path"].casefold() == path.casefold() for a in plan["assets"]):
+            raise RecoveryError("clone lineage asset already exists")
+        raw = canonical_json_bytes({
+            "schema": "qikvrt_clone_lineage_snapshot_v1",
+            "source_checkpoint_sha256": manifest_sha256,
+            "source_manifest": manifest,
+            "source_node_identity": load_json(node / "node.json", digest(read_file(node / "node.json"))),
+            "predecessor_evidence_transfer": False,
+        })
+        plan["assets"].append({"path": path, "category": "governance",
+                               "bytes": len(raw), "sha256": digest(raw),
+                               "mode": 0o644, "confidentiality": "PUBLIC"})
+        plan["assets"].sort(key=lambda a: a["path"])
+        updates[path] = raw
+    validate_plan(plan)
+    return plan, updates
+
+
+def recheckpoint_plan(node: Path, manifest_sha256: str) -> dict[str, Any]:
+    """Return a proposal for separate owner review, never an authorization."""
+    return _recheckpoint_closure(node, manifest_sha256)[0]
+
+
+def recheckpoint(node: Path, manifest_sha256: str, plan_path: Path,
+                 expected_plan_sha256: str, output: Path) -> dict[str, Any]:
+    """Reuse create_checkpoint after a fresh read of an isolated restored node.
+
+    The proposed closure must be separately owner-reviewed and pinned. A new
+    hash cannot admit changed data, lineage, epoch or authority. Source and
+    predecessor evidence remain historical; the new package is verified afresh.
+    """
+    node = node.absolute()
+    output = Path(os.path.abspath(output))
+    if output == node or output.is_relative_to(node):
+        raise RecoveryError("checkpoint output must be outside the restored node")
+    proposed, updates = _recheckpoint_closure(node, manifest_sha256)
+    plan = load_json(plan_path, expected_plan_sha256)
+    validate_plan(plan)
+    if plan != proposed:
+        raise RecoveryError("recheckpoint closure differs from the retained node and permitted identity rebinding")
+    # Materialize only the signature layout and, for CLONE, scheduler owner
+    # change needed by the existing creator. Everything else is an exact copy.
+    with tempfile.TemporaryDirectory(prefix="qikvrt-recheckpoint-") as temp:
+        payload = Path(temp) / "payload"
+        payload.mkdir(mode=0o700)
+        source_manifest = load_json(node / "manifest.json", manifest_sha256)
+        for asset in source_manifest["plan"]["assets"]:
+            copy_verified(node / "payload" / asset["path"], payload / asset["path"], asset)
+        copy_verified(node / "signature.bin", payload / "QIKVRT_SIGNATURE.bin", {
+            "bytes": 400, "sha256": plan["signature_sha256"], "mode": 0o644})
+        for path, raw in updates.items():
+            target = payload / path
+            target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            target.write_bytes(raw)
+            target.chmod(next(a["mode"] for a in plan["assets"] if a["path"] == path))
+        result = create_checkpoint(node / "repository.git", payload, plan_path,
+                                   output, expected_plan_sha256)
+    try:
+        if recheckpoint_plan(node, manifest_sha256) != plan:
+            raise RecoveryError("retained node changed during recheckpoint")
+    except (RecoveryError, OSError, RuntimeError, ValueError):
+        (output / "INCOMPLETE").write_bytes(b"Retained node changed during recheckpoint.\n")
+        raise
+    return {**result, "source_checkpoint_sha256": manifest_sha256,
+            "source_restored_node_verified": True,
+            "predecessor_evidence_transfer": False,
+            "runtime_rebinding_required": plan["node_id"] != source_manifest["plan"]["node_id"]}
+
+
 def plan_effect(package: Path, expected_manifest_sha256: str,
                 target_repository: str | None = None) -> dict[str, Any]:
     manifest = verify_checkpoint(package.absolute(), expected_manifest_sha256)
@@ -622,6 +769,14 @@ def main(argv: list[str] | None = None) -> int:
     for flag in ("repository", "payload-root", "plan", "output"):
         create.add_argument("--" + flag, type=Path, required=True)
     create.add_argument("--expect-plan-sha256", required=True)
+    for name in ("plan-recheckpoint", "recheckpoint"):
+        command = commands.add_parser(name)
+        command.add_argument("--node", type=Path, required=True)
+        command.add_argument("--expect-manifest-sha256", required=True)
+        if name == "recheckpoint":
+            command.add_argument("--plan", type=Path, required=True)
+            command.add_argument("--expect-plan-sha256", required=True)
+            command.add_argument("--output", type=Path, required=True)
     for name in ("verify", "restore", "clone", "plan-authority", "plan-project"):
         command = commands.add_parser(name)
         command.add_argument("--checkpoint", type=Path, required=True)
@@ -640,6 +795,11 @@ def main(argv: list[str] | None = None) -> int:
         elif args.operation == "create":
             result = create_checkpoint(args.repository, args.payload_root, args.plan,
                                        args.output, args.expect_plan_sha256)
+        elif args.operation == "plan-recheckpoint":
+            result = recheckpoint_plan(args.node, args.expect_manifest_sha256)
+        elif args.operation == "recheckpoint":
+            result = recheckpoint(args.node, args.expect_manifest_sha256, args.plan,
+                                  args.expect_plan_sha256, args.output)
         elif args.operation in {"restore", "clone"}:
             result = restore_checkpoint(args.checkpoint, args.output, args.expect_manifest_sha256,
                                         clone=args.operation == "clone")

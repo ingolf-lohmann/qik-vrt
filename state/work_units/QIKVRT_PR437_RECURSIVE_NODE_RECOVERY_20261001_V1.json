@@ -1,0 +1,65 @@
+{
+  "acceptance_scope": [
+    "Both declared checkpoint roles, two destructive-source offline generations",
+    "Clone export and restore after parent/package loss with fresh byte readback",
+    "Existing private POSIX sink, two fenced role transitions and completed effect deduplication",
+    "Project plan rooted at Goldkelch; no remote repository existence asserted"
+  ],
+  "artificial_cognitive_contribution": {
+    "author": "OpenAI Codex",
+    "scope": "Fresh API observation, reproduced omitted governance check in restored-node admission, shared validator repair, reuse of existing checkpoint exporter for isolated recursive restore/clone, destructive tests and exact-head verification"
+  },
+  "effect_ack_done": false,
+  "full_node_admitted": false,
+  "history_rewritten": false,
+  "human_contribution": {
+    "author": "Ingolf Lohmann",
+    "scope": "Each full Authority/Mirror recovers from retained data, seeds mirrors/projects, preserves Goldkelch root; standing authorization; no new PR or bypass",
+    "source": "Owner supplied universal transputer recovery requirement and qikvrt_dual_pole_recursive_versioned_continuation_v1"
+  },
+  "live_authority_promotion_verified": false,
+  "main_activation_verified": false,
+  "new_pull_request_created": false,
+  "observed_authority": {
+    "cause_established": false,
+    "last_known_is_current": false,
+    "operation": "GET branches/main",
+    "repository": "Goldkelch/qik-vrt",
+    "response": "HTTP_404_NOT_FOUND"
+  },
+  "observed_predecessor": {
+    "base": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+    "head": "371fd0949d47815385c8eb4357c16cc0db6534bd",
+    "predecessor_evidence_transfer": false,
+    "pull_request": 437,
+    "repository": "ingolf-lohmann/qik-vrt"
+  },
+  "ordinary_release": false,
+  "remaining": [
+    "Production full-node closure and runtime/capability self-test",
+    "Independently surviving private control plane and no-bypass provider capability provisioning",
+    "Native independent review and Main activation",
+    "Fresh actual Authority/Mirror pair execution/readback",
+    "Root registration and GitHub project creation provider effect"
+  ],
+  "remote_project_creation_verified": false,
+  "repairs": [
+    "REREAD_GOVERNANCE_SEMANTICS_BEFORE_ROLE_ADMISSION",
+    "RECHECKPOINT_FROM_SURVIVING_RESTORED_NODE",
+    "CLONE_LINEAGE_BYTES_SURVIVE_PARENT_PACKAGE_LOSS"
+  ],
+  "resume": "Observe exact current carrier, run mandatory tests and review gates, provision supported live recovery/broker inputs, execute both poles and read back real effects before accepting full node or product Done",
+  "reuse": [
+    "tools/qikvrt_mesh_recovery.py",
+    "tools/qikvrt_authority_transition.py",
+    "tests/test_qikvrt_mesh_recovery.py",
+    "tests/test_qikvrt_authority_transition.py",
+    "existing make test / mesh-recovery-test",
+    "existing PR #437"
+  ],
+  "schema": "qikvrt_work_unit_v1",
+  "signature_changed": false,
+  "universality_or_biological_equivalence_proved": false,
+  "validation": "FRESH_SUCCESSOR_LOCAL_AND_HOSTED_TESTS_REQUIRED_NO_PREDECESSOR_PASS_TRANSFER",
+  "work_unit_id": "QIKVRT_PR437_RECURSIVE_NODE_RECOVERY_20261001_V1"
+}

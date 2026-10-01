@@ -117,6 +117,8 @@
         "USABLE_PRIVATE_CAPABILITY_FROM_AUTHORIZED_UNSEAL_PATH",
         "RESTORED_BYTES_HELD_IMMUTABLE_UNDER_TRUSTED_LOCAL_OWNER"
       ],
+      "restored_governance_semantics_rechecked_before_grant_takeover_activation": true,
+      "restored_node_validator": "tools/qikvrt_mesh_recovery.py:verify_restored_node",
       "state_schema": "qikvrt_fenced_authority_state_v1",
       "takeover": "AUTHENTICATED_FRESH_OBSERVATION_THEN_ATOMIC_EPOCH_REVISION_CAS_FENCE_ROTATION_ROLE_AND_SCHEDULER_REBINDING",
       "writer_rejection": "EVERY_SINK_COMMIT_RECHECKS_CAPABILITY_CONTROL_PLANE_EPOCH_AUTHORITY_EPOCH_NODE_TARGET_FENCE_AND_ACTIVE_ROLE_IN_THE_SAME_TRANSACTION"
@@ -168,6 +170,24 @@
     ],
     "required_historical_git_objects": "OWNER_BOUND_OID_AND_TYPE_INVENTORY_CHECKED_AFTER_EMPTY_RESTORE",
     "restore_is_scoped_to_the_accepted_checkpoint_not_unreplicated_future_data": true,
+    "self_recheckpoint": {
+      "clone": "NEW_OWN_IDENTITY_MIRROR_OFFLINE_ROLE_SCHEDULER_OWNER_REBINDING_ONLY",
+      "clone_lineage": "RETAIN_ACTUAL_SOURCE_MANIFEST_AND_SOURCE_NODE_IDENTITY_IN_IMMUTABLE_GOVERNANCE_ASSET",
+      "concurrent_source_mutation": "BLOCK_INCOMPLETE_OUTPUT",
+      "effect_ack_done": false,
+      "full_node_admission_implied": false,
+      "implementation": "tools/qikvrt_mesh_recovery.py",
+      "live_writer_enabled": false,
+      "new_data_or_control_plane_state_admitted": false,
+      "operations": [
+        "plan-recheckpoint",
+        "recheckpoint"
+      ],
+      "predecessor_evidence_transfer": false,
+      "restore": "PRESERVE_ACCEPTED_CHECKPOINT_IDENTITY_REFS_ASSETS_ROLE_AND_WATERMARK",
+      "source": "FRESHLY_VERIFIED_RESTORED_NODE_ONLY_ORIGINAL_SOURCES_AND_PACKAGE_NOT_REQUIRED",
+      "trust_input": "SEPARATELY_OWNER_REVIEWED_EXTERNALLY_PINNED_EXACT_SUCCESSOR_CLOSURE_PLAN_SHA256"
+    },
     "shallow_partial_alternates_grafts_replacement_refs": "BLOCK",
     "source_commits_outside_current_history": "PIN_BY_DURABLE_RECOVERY_REF_BEFORE_CHECKPOINT_CREATION",
     "trust_input": "EXTERNALLY_PINNED_OWNER_REVIEWED_COMPLETE_CLOSURE_PLAN_SHA256",
@@ -292,5 +312,5 @@
     "verification_command": "python3 -B tools/qikvrt_mesh_recovery.py verify-policy",
     "zero_loss_before_ack": "EVERY_ACCEPTED_REQUIREMENT_AND_RECOVERY_MATERIAL_SUCCESSOR_REPLICATED_TO_EACH_ADMITTED_FULL_NODE_BEFORE_ACKNOWLEDGEMENT"
   },
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

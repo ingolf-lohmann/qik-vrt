@@ -9,6 +9,8 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -211,6 +213,166 @@ class MeshRecoveryTests(unittest.TestCase):
         self.plan["lineage"] = [recovery.ROOT_REPOSITORY]
         binding = self.create()
         self.assertEqual(recovery.verify_checkpoint(self.package, binding)["plan"]["role"], "AUTHORITY")
+
+    def test_both_roles_recheckpoint_and_seed_recursive_clones_after_all_sources_are_lost(self) -> None:
+        for role in ("AUTHORITY", "MIRROR"):
+            with self.subTest(role=role):
+                fixture = MeshRecoveryTests()
+                fixture.setUp()
+                self.addCleanup(fixture.doCleanups)
+                fixture.plan["role"] = role
+                if role == "AUTHORITY":
+                    fixture.plan.update(repository=recovery.ROOT_REPOSITORY,
+                                        lineage=[recovery.ROOT_REPOSITORY])
+                binding = fixture.create()
+                expected = copy.deepcopy(fixture.plan)
+                original_assets = {a["path"]: (fixture.payload / a["path"]).read_bytes()
+                                   for a in expected["assets"]}
+                current = fixture.root / "survivor"
+                recovery.restore_checkpoint(fixture.package, current, binding)
+                for path in (fixture.source, fixture.payload, fixture.package):
+                    shutil.rmtree(path)
+                # No original bundle, source node or remote is used by either
+                # generation. Fixture digests stand for owner-pinned plans;
+                # they do not authenticate a human or admit a productive node.
+                for generation in range(2):
+                    plan = recovery.recheckpoint_plan(current, binding)
+                    self.assertEqual(plan, expected)
+                    plan_path = fixture.root / f"closure-{generation}.json"
+                    raw = canonical_json_bytes(plan)
+                    plan_path.write_bytes(raw)
+                    package = fixture.root / f"generation-{generation}"
+                    with mock.patch("socket.create_connection", side_effect=AssertionError("offline test")):
+                        result = recovery.recheckpoint(current, binding, plan_path,
+                                                       recovery.digest(raw), package)
+                        next_node = fixture.root / f"node-{generation}"
+                        binding = result["manifest_sha256"]
+                        recovery.restore_checkpoint(package, next_node, binding)
+                    shutil.rmtree(current)
+                    shutil.rmtree(package)
+                    current = next_node
+                    recovery.verify_restored_node(current, binding)
+                    self.assertFalse(result["predecessor_evidence_transfer"])
+                    self.assertFalse(result["effect_ack_done"])
+                    self.assertEqual(recovery.git_snapshot(current / "repository.git"), expected["git"])
+                    for asset in expected["assets"]:
+                        target = current / "payload" / asset["path"]
+                        self.assertEqual(target.read_bytes(), original_assets[asset["path"]])
+                        self.assertEqual(target.stat().st_mode & 0o777, asset["mode"])
+                # The survivor can produce another mirror with a distinct ID.
+                plan_path = fixture.root / "parent-closure.json"
+                raw = canonical_json_bytes(recovery.recheckpoint_plan(current, binding))
+                plan_path.write_bytes(raw)
+                parent_package = fixture.root / "parent-package"
+                parent_binding = recovery.recheckpoint(current, binding, plan_path,
+                                                        recovery.digest(raw), parent_package)["manifest_sha256"]
+                child = fixture.root / "child"
+                clone = recovery.restore_checkpoint(parent_package, child, parent_binding, clone=True)
+                clone_identity = (child / "node.json").read_bytes()
+                clone_source = (child / "manifest.json").read_bytes()
+                self.assertNotEqual(clone["node_id"], expected["node_id"])
+                self.assertEqual(clone["parent_node_id"], expected["node_id"])
+                self.assertFalse(clone["writer_enabled"])
+                shutil.rmtree(current)
+                shutil.rmtree(parent_package)
+                proposal = recovery.recheckpoint_plan(child, parent_binding)
+                self.assertEqual(proposal["role"], "MIRROR")
+                self.assertEqual(proposal["node_id"], clone["node_id"])
+                self.assertEqual(proposal["lineage"], expected["lineage"])
+                plan_path = fixture.root / "child-closure.json"
+                raw = canonical_json_bytes(proposal)
+                plan_path.write_bytes(raw)
+                child_package = fixture.root / "child-package"
+                result = recovery.recheckpoint(child, parent_binding, plan_path,
+                                               recovery.digest(raw), child_package)
+                restored_child = fixture.root / "restored-child"
+                recovery.restore_checkpoint(child_package, restored_child, result["manifest_sha256"])
+                shutil.rmtree(child)
+                recovery.verify_restored_node(restored_child, result["manifest_sha256"])
+                identity = json.loads((restored_child / "node.json").read_bytes())
+                self.assertEqual(identity["node_id"], clone["node_id"])
+                history = restored_child / "payload/governance/clone_lineage" / (clone["node_id"] + ".json")
+                snapshot = json.loads(history.read_bytes())
+                self.assertEqual(canonical_json_bytes(snapshot["source_manifest"]), clone_source)
+                self.assertEqual(canonical_json_bytes(snapshot["source_node_identity"]), clone_identity)
+                self.assertFalse(snapshot["predecessor_evidence_transfer"])
+                schedule = json.loads((restored_child / "payload/scheduler.bin").read_bytes())
+                self.assertEqual(schedule["schedules"][0]["owner_node_id"], clone["node_id"])
+                for field in ("last_completed_cursor", "pending_work", "provider_schedule_id"):
+                    self.assertEqual(schedule["schedules"][0][field], fixture.scheduler["schedules"][0][field])
+                for path, raw in original_assets.items():
+                    if path != "scheduler.bin":
+                        self.assertEqual((restored_child / "payload" / path).read_bytes(), raw)
+                project = recovery.plan_effect(child_package, result["manifest_sha256"], "Goldkelch/derived-fixture")
+                self.assertEqual(project["lineage"], expected["lineage"] + ["Goldkelch/derived-fixture"])
+                self.assertEqual(project["parent_node_id"], clone["node_id"])
+                self.assertFalse(project["remote_repository_created"])
+
+    def test_recheckpoint_rejects_owner_pinned_drift_and_never_overwrites_a_survivor(self) -> None:
+        binding = self.create()
+        node = self.root / "node"
+        recovery.restore_checkpoint(self.package, node, binding)
+        proposal = recovery.recheckpoint_plan(node, binding)
+        for field, value in (("node_id", "c" * 64), ("authority_epoch", 8), ("role", "AUTHORITY")):
+            with self.subTest(field=field):
+                changed = {**proposal, field: value}
+                raw = canonical_json_bytes(changed)
+                self.plan_path.write_bytes(raw)
+                with self.assertRaisesRegex(recovery.RecoveryError, "differs from the retained node"):
+                    recovery.recheckpoint(node, binding, self.plan_path, recovery.digest(raw), self.root / "rejected")
+                self.assertFalse((self.root / "rejected").exists())
+        raw = canonical_json_bytes(proposal)
+        self.plan_path.write_bytes(raw)
+        for output in (node, node / "nested"):
+            with self.assertRaisesRegex(recovery.RecoveryError, "outside the restored node"):
+                recovery.recheckpoint(node, binding, self.plan_path, recovery.digest(raw), output)
+        output = self.root / "existing"
+        output.mkdir()
+        with self.assertRaisesRegex(recovery.RecoveryError, "refusing overwrite"):
+            recovery.recheckpoint(node, binding, self.plan_path, recovery.digest(raw), output)
+
+    def test_recheckpoint_marks_output_incomplete_when_survivor_changes_after_capture(self) -> None:
+        binding = self.create()
+        node = self.root / "node"
+        recovery.restore_checkpoint(self.package, node, binding)
+        raw = canonical_json_bytes(recovery.recheckpoint_plan(node, binding))
+        self.plan_path.write_bytes(raw)
+        creator = recovery.create_checkpoint
+        def drift(*args, **kwargs):
+            result = creator(*args, **kwargs)
+            (node / "payload/runtime.bin").write_bytes(b"changed")
+            return result
+        output = self.root / "changed-output"
+        with mock.patch.object(recovery, "create_checkpoint", side_effect=drift):
+            with self.assertRaises(recovery.RecoveryError):
+                recovery.recheckpoint(node, binding, self.plan_path, recovery.digest(raw), output)
+        self.assertTrue((output / "INCOMPLETE").exists())
+        manifest_sha = recovery.digest((output / "manifest.json").read_bytes())
+        with self.assertRaisesRegex(recovery.RecoveryError, "incomplete output"):
+            recovery.verify_checkpoint(output, manifest_sha)
+
+    def test_cli_recheckpoint_from_survivor_and_project_plan_keep_effects_closed(self) -> None:
+        binding = self.create()
+        node = self.root / "node"
+        recovery.restore_checkpoint(self.package, node, binding)
+        for path in (self.source, self.payload, self.package):
+            shutil.rmtree(path)
+        base = [sys.executable, "-B", str(recovery.ROOT / "tools/qikvrt_mesh_recovery.py")]
+        target = ["--node", str(node), "--expect-manifest-sha256", binding]
+        result = subprocess.run(base + ["plan-recheckpoint"] + target, capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.plan_path.write_bytes(result.stdout)
+        output = self.root / "self-package"
+        result = subprocess.run(base + ["recheckpoint"] + target + [
+            "--plan", str(self.plan_path), "--expect-plan-sha256", recovery.digest(result.stdout),
+            "--output", str(output)], capture_output=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        receipt = json.loads(result.stdout)
+        self.assertFalse(receipt["effect_ack_done"])
+        self.assertFalse(receipt["full_node_admitted"])
+        project = recovery.plan_effect(output, receipt["manifest_sha256"], "Goldkelch/new-fixture")
+        self.assertFalse(project["remote_repository_created"])
+        self.assertEqual(project["state"], "HOLD_EXTERNAL_EFFECT_PRECONDITIONS")
 
     def test_signature_manipulation_or_wrong_size_is_blocked(self) -> None:
         binding = self.create()
