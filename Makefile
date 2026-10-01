@@ -101,6 +101,13 @@ run-api:
 clean:
 	rm -rf unit_state e2e_state .qikvrt/runtime .qikvrt/evidence .qikvrt/api .qikvrt/cache .qikvrt/release .qikvrt/interactions logs __pycache__ src/__pycache__ scripts/__pycache__ tests/__pycache__ tools/__pycache__
 
+
+.PHONY: personal-firefox-boundary-test
+personal-firefox-boundary-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+
+test: personal-firefox-boundary-test
+
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
