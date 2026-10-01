@@ -182,6 +182,10 @@ The existing exact-head verifier additionally runs a read-only PR contract job
 on pipeline candidates. That job has only contents-read permission and executes
 the complete repository suite. It neither activates the new Main workflow nor
 performs a repository-dispatch, native review, merge or productive Mesh effect.
+The actual-shell, checkout and invariance regression tests are mandatory through
+the existing `make test` entrypoint's `autonomous-continuation-test` prerequisite.
+The dedicated contract job uses that same entrypoint rather than running those
+tests twice or maintaining a parallel suite.
 The scheduled continuation still executes the current Main version until its
 independent integration succeeds. Its owner-requested opt-in is therefore held
 pending activation of the invariant observer; placing a marker on a candidate

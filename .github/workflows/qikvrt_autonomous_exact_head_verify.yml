@@ -7,6 +7,8 @@ on:
     types: [qikvrt_autonomous_exact_head_verify]
   pull_request:
     paths:
+      - "Makefile"
+      - ".gitattributes"
       - ".github/workflows/qikvrt_autonomous_pr_continuation.yml"
       - ".github/workflows/qikvrt_autonomous_exact_head_verify.yml"
       - "tools/qikvrt_autonomous_self_heal.py"
@@ -55,9 +57,6 @@ jobs:
             --reference "$EXPECTED_CANDIDATE" > /tmp/qikvrt-candidate-pipeline.json
           python3 -B tools/qikvrt_autonomous_self_heal.py pipeline-verify \
             --binding /tmp/qikvrt-candidate-pipeline.json
-          python3 -B -m unittest -v \
-            tests.test_qikvrt_autonomous_pr_continuation \
-            tests.test_qikvrt_autonomous_self_heal
           make test
           test -z "$(git status --porcelain=v1 --untracked-files=all)"
           echo 'READ_ONLY_CONTRACT_VERIFIED; Main activation, autonomous dispatch and product acceptance remain separate.'
