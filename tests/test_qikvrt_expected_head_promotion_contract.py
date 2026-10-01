@@ -2,8 +2,10 @@
 # Copyright 2026 Ingolf Lohmann.
 from __future__ import annotations
 
+import ast
 import json
 import pathlib
+import re
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -55,8 +57,39 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn('exit 0', workflow)
         self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
         self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
-        self.assertIn("if other.get('base', {}).get('sha') != current_main", workflow)
-        self.assertIn("if other.get('head', {}).get('sha') == head", workflow)
+        programs = re.findall(r"<<'PY'[^\\n]*\\n(.*?)\\n\\s*PY(?:\\n|$)", workflow, re.DOTALL)
+        trees = [ast.parse(program) for program in programs]
+
+        def call_chain(node, names):
+            current = node
+            for name in reversed(names):
+                if not (
+                    isinstance(current, ast.Call)
+                    and isinstance(current.func, ast.Attribute)
+                    and current.func.attr == "get"
+                    and current.args
+                    and isinstance(current.args[0], ast.Constant)
+                    and current.args[0].value == name
+                ):
+                    return False
+                current = current.func.value
+            return isinstance(current, ast.Name) and current.id == "other"
+
+        def has_guard(names, operator, rhs):
+            return any(
+                isinstance(node, ast.Compare)
+                and len(node.ops) == 1
+                and isinstance(node.ops[0], operator)
+                and call_chain(node.left, names)
+                and len(node.comparators) == 1
+                and isinstance(node.comparators[0], ast.Name)
+                and node.comparators[0].id == rhs
+                for tree in trees
+                for node in ast.walk(tree)
+            )
+
+        self.assertTrue(has_guard(("base", "sha"), ast.NotEq, "current_main"))
+        self.assertTrue(has_guard(("head", "sha"), ast.Eq, "head"))
 
     def test_external_effect_claims_remain_fail_closed(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
