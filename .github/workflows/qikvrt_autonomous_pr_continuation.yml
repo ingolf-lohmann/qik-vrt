@@ -52,6 +52,20 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Bind invariant pipeline from trusted current Main
+        shell: bash
+        run: |
+          set -euo pipefail
+          trusted_main="$(git rev-parse --verify HEAD^{commit})"
+          python3 -B tools/qikvrt_autonomous_self_heal.py pipeline-bind \
+            --repository "$GITHUB_WORKSPACE" --reference "$trusted_main" \
+            > /tmp/qikvrt-trusted-pipeline-binding.json
+          python3 -B - <<'PY'
+          from pathlib import Path
+          Path('/tmp/qikvrt-trusted-pipeline-controller.py').write_bytes(
+              Path('tools/qikvrt_autonomous_self_heal.py').read_bytes())
+          PY
+
       - name: Select one exact opted-in same-repository draft PR
         id: select
         env:
@@ -150,6 +164,12 @@ jobs:
             fi
           fi
 
+          # Check before any candidate-controlled command gets the writer token.
+          # A pipeline upgrade needs separate native review/Main activation.
+          python3 -B /tmp/qikvrt-trusted-pipeline-controller.py pipeline-verify \
+            --repository "$GITHUB_WORKSPACE" \
+            --binding /tmp/qikvrt-trusted-pipeline-binding.json
+
           python3 -B tools/qikvrt_autonomous_self_heal.py apply > /tmp/qikvrt-pr-self-heal.json
           cat /tmp/qikvrt-pr-self-heal.json
           python3 -B - <<'PY' > /tmp/qikvrt-pr-self-heal-paths
@@ -177,14 +197,34 @@ jobs:
 
           if test "$merge_created" = false && ! test -s /tmp/qikvrt-pr-self-heal-paths; then
             test -z "$(git status --porcelain=v1 --untracked-files=all)"
-            exit 0
+            echo 'Repository NOOP; dedicated exact-head verification remains required.'
+          else
+            make test
+            python3 -B /tmp/qikvrt-trusted-pipeline-controller.py pipeline-verify \
+              --repository "$GITHUB_WORKSPACE" \
+              --binding /tmp/qikvrt-trusted-pipeline-binding.json
+            live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
+            test "$live_head_before_push" = "$EXPECTED_HEAD"
+            git push origin "HEAD:refs/heads/${HEAD_REF}"
           fi
 
-          make test
           candidate_head="$(git rev-parse --verify HEAD^{commit})"
-          live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
-          test "$live_head_before_push" = "$EXPECTED_HEAD"
-          git push origin "HEAD:refs/heads/${HEAD_REF}"
+          live_head_before_dispatch="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
+          test "$live_head_before_dispatch" = "$candidate_head"
+          live_main_before_dispatch="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$live_main_before_dispatch" = "$checked_main"
+          gh api "repos/${GITHUB_REPOSITORY}/commits/${candidate_head}/status?per_page=100" \
+            > /tmp/qikvrt-exact-head-statuses.json
+          python3 -B /tmp/qikvrt-trusted-pipeline-controller.py verification-decision \
+            --statuses /tmp/qikvrt-exact-head-statuses.json \
+            > /tmp/qikvrt-verification-decision.json
+          decision="$(python3 -B -c "import json; print(json.load(open('/tmp/qikvrt-verification-decision.json'))['state'])")"
+          if test "$decision" = EXISTING_VERIFICATION_REQUIRES_READBACK; then
+            cat /tmp/qikvrt-verification-decision.json
+            echo 'CONTINUE_REQUIRED: observe existing exact-head verifier; no duplicate dispatch or acceptance claim.'
+            exit 0
+          fi
+          test "$decision" = DISPATCH_REQUIRED
 
           gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${candidate_head}" \
             -f state=pending \
@@ -215,13 +255,13 @@ jobs:
           fi
           cat > /tmp/qikvrt-autonomous-pr-comment.md <<EOF
           <!-- qikvrt-autonomous-pr-continuation -->
-          Autonomous deterministic continuation materialized a history-preserving successor.
+          Autonomous continuation handed the exact candidate to its dedicated verifier.
 
           - previous exact head: \`${EXPECTED_HEAD}\`
           - current candidate head: \`${candidate_head}\`
           - current main merged: \`${live_main}\`
           - deterministic generated-output conflicts reset before regeneration: \`${conflict_summary}\`
-          - external effects: none
+          - repository transport: one verifier repository-dispatch; no merge/publication
           - next state: exact-head repository-dispatch verification
 
           Human scientific review and any separately authorized publication effect remain independent downstream gates. No repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.

@@ -127,3 +127,63 @@ not prove a self-writing cause. Current Authority/Mirror access, native rules,
 reviews, execution admission and fresh successor validation require their own
 live evidence. Existing scientific and documentary artifacts retain their
 declared evidence classes.
+
+
+## NOOP is not the system Definition of Done
+
+The 2026-10-01 successor fixes a real early halt: an unchanged, opted-in
+candidate used to exit before reaching the dedicated exact-head verifier.
+The existing workflow now continues to verification even when its repository
+mutation is NOOP. Ordinary green CI or evidence materialization does not replace
+this verifier. An existing dedicated status consumes that submission slot:
+pending, failure and success each require readback of the existing execution;
+none causes blind redispatch or establishes product acceptance.
+
+Before a verifier dispatch, the workflow reobserves current Main and the actual
+candidate head. A failed/ambiguous dispatch after its pending status requires
+reconciliation of that existing attempt, not another trigger. One repository-
+dispatch is emitted when no dedicated status exists. Its subsequent execution,
+artifact readback and native review remain distinct obligations.
+
+## Invariant pipeline during feedback
+
+The existing self-heal controller now exposes `pipeline-bind` and
+`pipeline-verify`. They bind sorted path/mode/Git-blob records for workflows,
+tools, tests, runtime locks, policies, authorization/autonomy, all source code and
+fixed entrypoints. A separately reobserved trusted Main SHA supplies the
+reference. The workflow copies that trusted observer before checking out the
+candidate and invokes it before candidate-controlled commands and after repair.
+New protected paths, deletions, byte changes, executable-mode changes and
+symlinks fail closed. Generated integrity/projection outputs and ordinary data
+are outside this control-plane inventory. The controller also verifies
+invariance across each bounded local repair pass.
+
+An intentional pipeline upgrade requires independent native review and Main
+activation; a candidate cannot make its own new pipeline the trusted baseline.
+This protects the declared source inventory. It is not a complete mediation
+proof for arbitrary programs, a provider capability revocation, a physical
+clock witness or a guarantee for every future environment.
+
+Tests execute the actual workflow shell in a private Git/HTTP-command fixture,
+observe exactly one dispatch on a clean NOOP, and observe zero duplicate
+submissions when a dedicated status already exists or the combined status
+inventory is incomplete. A separate source-invariance
+experiment runs both data directions, absent/partial/full selection and up to
+16 feedback generations. Altered Makefile bytes, executable modes, added test
+paths, missing protected files and tampered bindings are negative controls.
+
+The existing exact-head verifier additionally runs a read-only PR contract job
+on pipeline candidates. That job has only contents-read permission and executes
+the complete repository suite. It neither activates the new Main workflow nor
+performs a repository-dispatch, native review, merge or productive Mesh effect.
+The scheduled continuation still executes the current Main version until its
+independent integration succeeds. Its owner-requested opt-in is therefore held
+pending activation of the invariant observer; placing a marker on a candidate
+cannot repair an older trusted-Main workflow.
+
+The 400-byte standpoint stays byte-identical. A seed carried in text or graphics
+is data; it neither authenticates a receiving operator nor authorizes that
+receiver's execution, registration or hierarchy. Admitted descendants preserve
+the Goldkelch lineage under the existing explicit registration/capability
+contract. Owner requirements for broader future propagation are attributed
+requirements rather than an observed effect on unrelated systems.

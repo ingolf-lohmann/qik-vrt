@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import base64
+import hashlib
 import hmac
 import os
 import re
@@ -11,18 +13,29 @@ import ssl
 import sys
 import threading
 import time
+import urllib.error
+import urllib.request
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
+from scripts.qikvrt_api_client import NoRedirectHandler, MAX_RESPONSE_BYTES
+from tools.qikvrt_authority_transition import AuthorityControlPlane, TransitionError, decode
+from tools import qikvrt_mesh_recovery as recovery
+from tools.qikvrt_seed_common import canonical_json_bytes, parse_json_bytes, SeedError
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
 REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/dispatches$")
+AUTHORITY_EFFECT_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/authority/effects$")
+# Current independently established connection scope. No authority-root access
+# can be inferred from lineage or an environment variable.
+PROVIDER_REPOSITORY = "ingolf-lohmann/qik-vrt"
 MAX_REQUEST_BYTES = 1024 * 1024
 _RATE_LOCK = threading.Lock()
 _RATE_WINDOWS: dict[str, tuple[int, int]] = {}
@@ -100,8 +113,489 @@ def _security_configuration_valid() -> bool:
     )
 
 
+class GitHubAuthorityProvider:
+    """Extend the existing authenticated shim; no second executor or token cache.
+
+    Native CAS remains absent -> create-only ref. The reflexive Twin extension
+    writes an immutable receipt commit through this same admission/journal.
+    GitHub REST ref PATCH has no expected-old-SHA field;
+    ref update/delete, PR and other mutations are denied, not emulated by GET
+    then an unconditional write. Independent bearer writers remain unfenced.
+    """
+
+    def __init__(self, control_plane: AuthorityControlPlane, repository: str):
+        if repository != PROVIDER_REPOSITORY:
+            raise TransitionError("no separately established provider capability")
+        self.cp = control_plane
+        self.repository = repository
+
+    def _request(self, method: str, suffix: str, payload: dict | None = None,
+                 *, admission: tuple | None = None) -> tuple[int, dict]:
+        """Reuse the client no-redirect/bounded-response contract and token path."""
+        token = os.environ.get("GITHUB_TOKEN", "")
+        expiry = _parse_expiry(os.environ.get("QIKVRT_GITHUB_TOKEN_EXPIRES_UTC", ""))
+        if (len(token) < 20 or any(c.isspace() for c in token) or expiry is None
+                or expiry <= datetime.now(timezone.utc)
+                or hmac.compare_digest(token, os.environ.get("QIKVRT_API_TOKEN", ""))):
+            raise TransitionError("usable distinct short-lived provider capability required")
+        if method not in {"GET", "POST"} or not re.fullmatch(
+                r"(?:git/(?:refs|blobs|trees|commits|ref/heads/[A-Za-z0-9/_-]+|(?:commits|blobs|trees)/[0-9a-f]{40})|pulls/[1-9][0-9]*)", suffix):
+            raise TransitionError("unsupported provider endpoint")
+        if method == "POST" and suffix not in {"git/refs", "git/blobs", "git/trees", "git/commits"}:
+            raise TransitionError("provider mutation outside create-only object/ref contract")
+        if method == "POST":
+            if admission is None or len(admission) != 4:
+                raise TransitionError("provider mutation requires locked fresh admission")
+            db, writer, permit, document = admission
+            state = self.cp.provider_admission(db, writer, permit, self.repository)
+            row = db.execute("SELECT status, document FROM provider_effects WHERE id=?",
+                             (document["effect_id"],)).fetchone()
+            if (row != ("PENDING", canonical_json_bytes(document))
+                    or document["binding"] != state["binding"] or document["permit"] != permit
+                    or document["repository"] != self.repository):
+                raise TransitionError("provider mutation escaped bound durable intent")
+            if document["operation"] == "persist_twin_transition":
+                self._validate_twin_document(document)
+                if (suffix, payload) not in [(o["endpoint"], o["payload"]) for o in document["objects"]]:
+                    raise TransitionError("provider mutation escaped exact twin object intent")
+            elif (document["operation"] != "create_ref" or suffix != "git/refs"
+                    or document["ref"] != self.ref_name(permit, document["effect_id"])
+                    or payload != {"ref": document["ref"], "sha": state["binding"]["head"]}):
+                raise TransitionError("provider mutation outside original create-ref intent")
+        url = f"https://api.github.com/repos/{self.repository}/{suffix}"
+        request = urllib.request.Request(url, method=method,
+            data=None if payload is None else canonical_json_bytes(payload), headers={
+                "Accept": "application/vnd.github+json", "Authorization": "Bearer " + token,
+                "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json",
+                "User-Agent": "qikvrt-authority-api-shim"})
+        try:
+            response = urllib.request.build_opener(NoRedirectHandler()).open(request, timeout=10)
+        except urllib.error.HTTPError as exc:
+            response = exc
+        except (OSError, urllib.error.URLError) as exc:
+            raise TransitionError("provider transport outcome requires readback") from exc
+        try:
+            status = response.status
+            if response.geturl() != url:
+                raise TransitionError("provider origin changed")
+            raw = response.read(MAX_RESPONSE_BYTES + 1)
+        finally:
+            response.close()
+        if len(raw) > MAX_RESPONSE_BYTES or token.encode() in raw:
+            raise TransitionError("invalid provider response boundary")
+        # Error bodies are neither reflected nor persisted.
+        if status not in {200, 201}:
+            return status, {}
+        try:
+            value = parse_json_bytes(raw, "provider response")
+        except (ValueError, TypeError, SeedError) as exc:
+            raise TransitionError("invalid provider JSON") from exc
+        if not isinstance(value, dict):
+            raise TransitionError("invalid provider object")
+        return status, value
+
+    @staticmethod
+    def ref_name(permit: dict, effect_id: str) -> str:
+        return (f"refs/heads/work/qikvrt-recovery/{permit['control_plane_epoch']}/"
+                f"{permit['authority_epoch']}/{permit['node_id']}/{permit['fence']}/"
+                + recovery.digest(effect_id.encode()))
+
+    @staticmethod
+    def _journal(db) -> None:
+        # Additive migration of the existing private control plane. Ordinary
+        # operations still never recreate a missing database/state/epoch.
+        db.execute("""CREATE TABLE IF NOT EXISTS provider_effects (
+            id TEXT PRIMARY KEY, document BLOB NOT NULL,
+            status TEXT NOT NULL CHECK(status IN ('PREPARED','PENDING','VERIFIED','REJECTED')),
+            receipt BLOB)""")
+
+    def _read_effect(self, document: dict) -> bool:
+        status, observed = self._request("GET", "git/ref/" + document["ref"].removeprefix("refs/"))
+        if status == 404:
+            return False
+        if (status != 200 or not isinstance(observed.get("object"), dict)
+                or observed.get("ref") != document["ref"]
+                or observed.get("object", {}).get("type") != "commit"
+                or observed.get("object", {}).get("sha") != document["sha"]):
+            raise TransitionError("provider CAS conflict or ref readback mismatch")
+        status, commit = self._request("GET", "git/commits/" + document["sha"])
+        if (status != 200 or not isinstance(commit.get("tree"), dict)
+                or commit.get("sha") != document["sha"]
+                or commit.get("tree", {}).get("sha") != document["binding"]["tree"]):
+            raise TransitionError("provider HEAD/TREE readback mismatch")
+        return True
+
+    def execute(self, token: str, permit: dict, operation: dict) -> dict:
+        if operation.get("operation") == "persist_twin_transition":
+            recovery.exact(operation, {"operation", "effect_id", "api_result"}, "twin provider operation")
+            return self.persist_twin_transition(token, permit, operation["effect_id"], operation["api_result"])
+        recovery.exact(operation, {"operation", "effect_id"}, "provider operation")
+        if operation["operation"] != "create_ref":
+            raise TransitionError("provider operation lacks a native CAS/readback contract")
+        effect_id = operation["effect_id"]
+        if (not isinstance(effect_id, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", effect_id)):
+            raise TransitionError("invalid provider idempotency key")
+        # Persist intent BEFORE any outbound request. Crash or ambiguity then
+        # leaves an explicit PENDING fence, rather than losing an effect record.
+        with self.cp.transaction() as db:
+            state = self.cp.provider_admission(db, token, permit, self.repository)
+            document = {"schema": "qikvrt_github_fenced_ref_intent_v1",
+                "repository": self.repository, "permit": permit, "binding": state["binding"],
+                "operation": "create_ref", "effect_id": effect_id,
+                "ref": self.ref_name(permit, effect_id), "sha": state["binding"]["head"]}
+            self._journal(db)
+            prior = db.execute("SELECT document FROM provider_effects WHERE id=?", (effect_id,)).fetchone()
+            if prior is not None:
+                if decode(prior[0]) != document:
+                    raise TransitionError("provider idempotency key binding conflict")
+            else:
+                if db.execute("SELECT 1 FROM provider_effects WHERE status IN ('PREPARED','PENDING') LIMIT 1").fetchone():
+                    raise TransitionError("unresolved provider effect blocks new mutations")
+                db.execute("INSERT INTO provider_effects VALUES (?, ?, 'PREPARED', NULL)",
+                           (effect_id, canonical_json_bytes(document)))
+                state["revision"] += 1
+                self.cp.store(db, state)
+        # Separate durable dispatch admission. PREPARED cannot be mistaken for
+        # an attempted effect after restart. PENDING means GET-only recovery.
+        dispatch = False
+        rejected = False
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            journal_status = db.execute("SELECT status FROM provider_effects WHERE id=?", (effect_id,)).fetchone()[0]
+            if journal_status == "REJECTED":
+                raise TransitionError("provider effect was rejected; key remains consumed")
+            if journal_status == "PREPARED":
+                status, _ = self._request("GET", "git/ref/" + document["ref"].removeprefix("refs/"))
+                if status == 200:
+                    rejected = True
+                elif status != 404:
+                    raise TransitionError("provider preflight could not establish absent ref")
+                else:
+                    status, commit = self._request("GET", "git/commits/" + document["sha"])
+                    if (status != 200 or not isinstance(commit.get("tree"), dict)
+                            or commit.get("sha") != document["sha"]
+                            or commit.get("tree", {}).get("sha") != document["binding"]["tree"]):
+                        rejected = True
+                db.execute("UPDATE provider_effects SET status=? WHERE id=?",
+                           ("REJECTED" if rejected else "PENDING", effect_id))
+                dispatch = not rejected
+        if rejected:
+            raise TransitionError("provider CAS conflict or accepted HEAD/TREE mismatch")
+        # Hold the SAME takeover lock for fresh permit, CAS and real readback.
+        # No observation -> unlocked POST window and no in-process-only mutex.
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            if dispatch:
+                # Last fresh admission immediately before the ONLY mutation.
+                self.cp.provider_admission(db, token, permit, self.repository)
+                status, _ = self._request("POST", "git/refs",
+                    {"ref": document["ref"], "sha": document["sha"]},
+                    admission=(db, token, permit, document))
+                if status in {409, 422}:
+                    # A definite native CAS rejection is never laundered into
+                    # our receipt by a matching competing writer's later GET.
+                    rejected = True
+                    db.execute("UPDATE provider_effects SET status='REJECTED' WHERE id=?", (effect_id,))
+                elif status != 201:
+                    raise TransitionError("provider create outcome requires GET reconciliation")
+            if not rejected and not self._read_effect(document):
+                raise TransitionError("provider effect not freshly observed; mutation not retried")
+            if not rejected:
+                receipt = {"schema": "qikvrt_github_fenced_ref_readback_v1",
+                    **{k: document[k] for k in ("repository", "permit", "binding", "effect_id", "ref", "sha")},
+                    "fresh_provider_readback": True, "replayed": prior is not None,
+                    "observed_utc": datetime.now(timezone.utc).isoformat(),
+                    "provider_authority_fencing_verified": False,
+                    "effect_scope": "BROKER_MEDIATED_CREATE_ONLY_GITHUB_REF",
+                    "effect_ack_done": False}
+                db.execute("UPDATE provider_effects SET status='VERIFIED', receipt=? WHERE id=?",
+                           (canonical_json_bytes(receipt), effect_id))
+        if rejected:
+            raise TransitionError("provider CAS conflict: native create was rejected")
+        # Durable receipt is read separately; never infer it from POST success.
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            observed = db.execute("SELECT status, receipt FROM provider_effects WHERE id=?", (effect_id,)).fetchone()
+            if observed != ("VERIFIED", canonical_json_bytes(receipt)):
+                raise TransitionError("provider ledger readback mismatch")
+        return receipt
+
+
+    @staticmethod
+    def _twin_result(result: dict) -> tuple[dict, dict, dict]:
+        """Reconstruct the bounded effect; client booleans are not proof."""
+        from dataclasses import asdict
+        from src.qikvrt_siemens_reference_integration import TwinState, prepare, commit_simulated, reobserve, digest
+        recovery.exact(result, {"schema", "binding", "request", "before_state", "response", "effect_ack_done"}, "API result")
+        if result["schema"] != "qikvrt_reflexive_twin_effect_v1" or result["effect_ack_done"] is not False:
+            raise TransitionError("invalid API effect scope")
+        binding = result["binding"]
+        recovery.exact(binding, {"repository", "pr", "head", "tree", "effect_id", "expected_predecessor_effect_id", "expected_state_sha256"}, "API binding")
+        if (binding["repository"] != PROVIDER_REPOSITORY or type(binding["pr"]) is not int or binding["pr"] < 1
+                or not all(isinstance(binding[k], str) and re.fullmatch(r"[0-9a-f]{40}", binding[k]) for k in ("head", "tree"))
+                or not isinstance(binding["effect_id"], str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", binding["effect_id"])
+                or (binding["expected_predecessor_effect_id"] is not None and
+                    (not isinstance(binding["expected_predecessor_effect_id"], str) or
+                     not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", binding["expected_predecessor_effect_id"])))):
+            raise TransitionError("invalid exact API subject")
+        request = result["request"]
+        recovery.exact(request, {"expected_version", "target_velocity_mps", "binding"}, "API request")
+        if request["binding"] != binding or type(request["expected_version"]) is not int:
+            raise TransitionError("request/result binding mismatch")
+        before = result["before_state"]
+        recovery.exact(before, {"twin_id", "version", "position_m", "velocity_mps", "temperature_c"}, "before twin")
+        if (not isinstance(before["twin_id"], str) or not 1 <= len(before["twin_id"]) <= 128
+                or type(before["version"]) is not int or before["version"] < 0
+                or any(type(before[k]) not in (int, float) for k in ("position_m", "velocity_mps", "temperature_c"))
+                or type(request["target_velocity_mps"]) not in (int, float)):
+            raise TransitionError("invalid twin state")
+        canonical_json_bytes(before)  # Reject non-finite values.
+        state = TwinState.from_dict(before)
+        if request["expected_version"] != state.version or binding["expected_state_sha256"] != digest(before):
+            raise TransitionError("STALE_EXACT_TWIN_STATE")
+        prepared = prepare(state, target_velocity_mps=request["target_velocity_mps"])
+        after, effect = commit_simulated(state, prepared)
+        response = {"prepared": prepared, "effect": effect, "receipt": reobserve(state, after, effect), "state": asdict(after)}
+        if canonical_json_bytes(result["response"]) != canonical_json_bytes(response) or response["receipt"]["effect_ack"] is not True:
+            raise TransitionError("API response/receipt reconstruction mismatch")
+        return binding, before, response["state"]
+
+    def _twin_source(self, binding: dict) -> None:
+        status, pr = self._request("GET", "pulls/" + str(binding["pr"]))
+        if (status != 200 or not isinstance(pr.get("head"), dict)
+                or not isinstance(pr["head"].get("repo"), dict)
+                or pr.get("number") != binding["pr"] or pr.get("state") != "open"
+                or pr.get("head", {}).get("sha") != binding["head"]
+                or pr.get("head", {}).get("repo", {}).get("full_name") != self.repository):
+            raise TransitionError("STALE_REPOSITORY_PR_HEAD")
+        status, commit = self._request("GET", "git/commits/" + binding["head"])
+        if (status != 200 or not isinstance(commit.get("tree"), dict)
+                or commit.get("sha") != binding["head"] or commit["tree"].get("sha") != binding["tree"]):
+            raise TransitionError("STALE_REPOSITORY_TREE")
+
+    @staticmethod
+    def _git_object(kind: str, raw: bytes) -> str:
+        return hashlib.sha1(kind.encode() + b" " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+
+    @classmethod
+    def _twin_objects(cls, result: dict, predecessor_commit: str | None, stamp: str) -> tuple[str, list[dict]]:
+        """Immutable content-addressed objects; only the final ref is a CAS."""
+        binding, before, after = cls._twin_result(result)
+        raw = canonical_json_bytes(result)
+        blob = cls._git_object("blob", raw)
+        filename = "QIKVRT_API_EFFECT.json"
+        tree_raw = b"100644 " + filename.encode() + b"\0" + bytes.fromhex(blob)
+        tree = cls._git_object("tree", tree_raw)
+        parents = [binding["head"]]
+        if predecessor_commit and predecessor_commit not in parents:
+            parents.append(predecessor_commit)
+        seconds = int(datetime.fromisoformat(stamp.replace("Z", "+00:00")).timestamp())
+        identity = {"name": "QIK-VRT API broker", "email": "qikvrt-api@example.invalid", "date": stamp}
+        message = "qikvrt: reflexive twin effect " + recovery.digest(raw) + "\n"
+        commit_raw = ("tree " + tree + "\n" + "".join("parent " + p + "\n" for p in parents)
+                      + f"author {identity['name']} <{identity['email']}> {seconds} +0000\n"
+                      + f"committer {identity['name']} <{identity['email']}> {seconds} +0000\n\n" + message).encode()
+        commit = cls._git_object("commit", commit_raw)
+        twin_key = recovery.digest((binding["repository"] + "\0" + before["twin_id"]).encode())
+        ref = f"refs/heads/work/qikvrt-twin-effects/{twin_key}/{after['version']}"
+        objects = [
+            {"endpoint": "git/blobs", "sha": blob, "payload": {"content": base64.b64encode(raw).decode(), "encoding": "base64"}},
+            {"endpoint": "git/trees", "sha": tree, "payload": {"tree": [{"path": filename, "mode": "100644", "type": "blob", "sha": blob}]}},
+            {"endpoint": "git/commits", "sha": commit, "payload": {"message": message, "tree": tree, "parents": parents, "author": identity, "committer": identity}},
+            {"endpoint": "git/refs", "sha": commit, "payload": {"ref": ref, "sha": commit}},
+        ]
+        return ref, objects
+
+    @classmethod
+    def _validate_twin_document(cls, doc: dict) -> None:
+        recovery.exact(doc, {"schema", "repository", "permit", "binding", "operation", "effect_id", "api_result", "predecessor_commit", "created_utc", "ref", "objects"}, "twin intent")
+        binding, _, _ = cls._twin_result(doc["api_result"])
+        ref, objects = cls._twin_objects(doc["api_result"], doc["predecessor_commit"], doc["created_utc"])
+        if (doc["schema"] != "qikvrt_github_fenced_twin_intent_v1" or doc["operation"] != "persist_twin_transition"
+                or doc["repository"] != binding["repository"] or doc["effect_id"] != "twin:" + binding["effect_id"]
+                or doc["binding"]["head"] != binding["head"] or doc["binding"]["tree"] != binding["tree"]
+                or doc["ref"] != ref or doc["objects"] != objects):
+            raise TransitionError("twin durable intent binding mismatch")
+
+    @staticmethod
+    def _twin_journal(db) -> None:
+        GitHubAuthorityProvider._journal(db)
+        db.execute("""CREATE TABLE IF NOT EXISTS twin_effect_heads (
+            twin_id TEXT PRIMARY KEY, version INTEGER NOT NULL, state_sha256 TEXT NOT NULL,
+            effect_id TEXT, commit_sha TEXT)""")
+
+    @staticmethod
+    def _twin_predecessor(db, binding: dict, before: dict) -> str | None:
+        row = db.execute("SELECT version, state_sha256, effect_id, commit_sha FROM twin_effect_heads WHERE twin_id=?", (before["twin_id"],)).fetchone()
+        expected = (before["version"], binding["expected_state_sha256"], binding["expected_predecessor_effect_id"])
+        if row is None:
+            if binding["expected_predecessor_effect_id"] is not None:
+                raise TransitionError("EXPECTED_PREDECESSOR_MISSING")
+            return None
+        if row[:3] != expected:
+            raise TransitionError("STALE_TWIN_PREDECESSOR_CAS")
+        return row[3]
+
+    def persist_twin_transition(self, token: str, permit: dict, effect_id: str, result: dict) -> dict:
+        binding, before, _ = self._twin_result(result)
+        if effect_id != binding["effect_id"]:
+            raise TransitionError("effect ID/result mismatch")
+        key = "twin:" + effect_id
+        # Reuse the same durable journal, takeover lock and capability issuer.
+        with self.cp.transaction() as db:
+            state = self.cp.provider_admission(db, token, permit, self.repository)
+            if state["binding"]["head"] != binding["head"] or state["binding"]["tree"] != binding["tree"]:
+                raise TransitionError("STALE_AUTHORITY_HEAD_TREE")
+            self._twin_journal(db)
+            if db.execute("SELECT 1 FROM provider_effects WHERE id=?", (key,)).fetchone():
+                raise TransitionError("EFFECT_ID_ALREADY_CONSUMED_READBACK_ONLY")
+            if db.execute("SELECT 1 FROM provider_effects WHERE status IN ('PREPARED','PENDING') LIMIT 1").fetchone():
+                raise TransitionError("UNRESOLVED_INTENT_READBACK_ONLY")
+            predecessor = self._twin_predecessor(db, binding, before)
+            self._twin_source(binding)
+            if predecessor:
+                self._read_twin_predecessor(db, before["twin_id"], binding)
+            stamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+            ref, objects = self._twin_objects(result, predecessor, stamp)
+            doc = {"schema": "qikvrt_github_fenced_twin_intent_v1", "repository": self.repository,
+                   "permit": permit, "binding": state["binding"], "operation": "persist_twin_transition",
+                   "effect_id": key, "api_result": result, "predecessor_commit": predecessor,
+                   "created_utc": stamp, "ref": ref, "objects": objects}
+            status, _ = self._request("GET", "git/ref/" + ref.removeprefix("refs/"))
+            if status != 404:
+                raise TransitionError("NATIVE_TWIN_REF_CAS_NOT_ABSENT")
+            db.execute("INSERT INTO provider_effects VALUES (?, ?, 'PREPARED', NULL)", (key, canonical_json_bytes(doc)))
+            state["revision"] += 1
+            self.cp.store(db, state)
+        # Commit PENDING before any POST. All uncertain outcomes are GET-only.
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            row = db.execute("SELECT status FROM provider_effects WHERE id=?", (key,)).fetchone()
+            if row != ("PREPARED",):
+                raise TransitionError("TWIN_INTENT_NOT_PREPARED")
+            self._twin_predecessor(db, binding, before)
+            db.execute("UPDATE provider_effects SET status='PENDING' WHERE id=?", (key,))
+        rejected = False
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            self._twin_source(binding)
+            for obj in objects:
+                self.cp.provider_admission(db, token, permit, self.repository)
+                if obj["endpoint"] == "git/refs":
+                    self._twin_source(binding)
+                status, observed = self._request("POST", obj["endpoint"], obj["payload"], admission=(db, token, permit, doc))
+                if obj["endpoint"] == "git/refs" and status in {409, 422}:
+                    db.execute("UPDATE provider_effects SET status='REJECTED' WHERE id=?", (key,))
+                    rejected = True
+                    break
+                if status != 201 or (obj["endpoint"] != "git/refs" and observed.get("sha") != obj["sha"]):
+                    raise TransitionError("TWIN_TRANSPORT_OUTCOME_READBACK_ONLY")
+        if rejected:
+            raise TransitionError("NATIVE_TWIN_REF_CAS_REJECTED")
+        return self.recover_twin_transition(token, permit, effect_id)
+
+    def _read_twin_document(self, doc: dict) -> bytes:
+        self._validate_twin_document(doc)
+        binding, _, _ = self._twin_result(doc["api_result"])
+        self._twin_source(binding)
+        blob, tree, commit, _ = doc["objects"]
+        status, observed = self._request("GET", "git/ref/" + doc["ref"].removeprefix("refs/"))
+        if (status != 200 or observed.get("ref") != doc["ref"] or observed.get("object", {}).get("type") != "commit"
+                or observed.get("object", {}).get("sha") != commit["sha"]):
+            raise TransitionError("REPOSITORY_REF_READBACK_MISMATCH")
+        status, observed = self._request("GET", "git/commits/" + commit["sha"])
+        if (status != 200 or observed.get("sha") != commit["sha"] or observed.get("tree", {}).get("sha") != tree["sha"]
+                or [p.get("sha") for p in observed.get("parents", [])] != commit["payload"]["parents"]):
+            raise TransitionError("REPOSITORY_COMMIT_READBACK_MISMATCH")
+        status, observed = self._request("GET", "git/trees/" + tree["sha"])
+        entries = [{k: e.get(k) for k in ("path", "mode", "type", "sha")} for e in observed.get("tree", [])]
+        if status != 200 or observed.get("sha") != tree["sha"] or observed.get("truncated") is not False or entries != tree["payload"]["tree"]:
+            raise TransitionError("REPOSITORY_TREE_READBACK_MISMATCH")
+        status, observed = self._request("GET", "git/blobs/" + blob["sha"])
+        try:
+            raw = base64.b64decode("".join(observed.get("content", "").split()), validate=True)
+        except (ValueError, TypeError):
+            raise TransitionError("REPOSITORY_BYTE_READBACK_MISMATCH") from None
+        if (status != 200 or observed.get("encoding") != "base64" or observed.get("sha") != blob["sha"]
+                or observed.get("size") != len(raw) or raw != canonical_json_bytes(doc["api_result"])
+                or self._git_object("blob", raw) != blob["sha"]):
+            raise TransitionError("REPOSITORY_BYTE_READBACK_MISMATCH")
+        self._twin_source(binding)
+        return raw
+
+    def _read_twin_predecessor(self, db, twin_id: str, binding: dict) -> None:
+        key = "twin:" + binding["expected_predecessor_effect_id"]
+        row = db.execute("SELECT status, document FROM provider_effects WHERE id=?", (key,)).fetchone()
+        if row is None or row[0] != "VERIFIED":
+            raise TransitionError("PREDECESSOR_NOT_VERIFIED")
+        doc = decode(row[1])
+        _, _, after = self._twin_result(doc["api_result"])
+        if after["twin_id"] != twin_id or doc["api_result"]["response"]["receipt"]["after_state_sha256"] != binding["expected_state_sha256"]:
+            raise TransitionError("PREDECESSOR_STATE_BINDING_MISMATCH")
+        self._read_twin_document(doc)  # Reobserve bytes; no inherited proof.
+
+    def recover_twin_transition(self, token: str, permit: dict, effect_id: str) -> dict:
+        if not isinstance(effect_id, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", effect_id):
+            raise TransitionError("invalid effect ID")
+        key = "twin:" + effect_id
+        with self.cp.transaction() as db:
+            state = self.cp.provider_admission(db, token, permit, self.repository)
+            self._twin_journal(db)
+            row = db.execute("SELECT status, document FROM provider_effects WHERE id=?", (key,)).fetchone()
+            if row is None or row[0] not in {"PENDING", "VERIFIED"}:
+                raise TransitionError("TWIN_EFFECT_MISSING_OR_REJECTED")
+            doc = decode(row[1])
+            if doc.get("permit") != permit or doc.get("binding") != state["binding"]:
+                raise TransitionError("RECOVERY_PERMIT_SUBJECT_MISMATCH")
+            raw = self._read_twin_document(doc)
+            binding, before, after = self._twin_result(doc["api_result"])
+            if row[0] != "VERIFIED":
+                self._twin_predecessor(db, binding, before)
+                db.execute("INSERT INTO twin_effect_heads VALUES (?, ?, ?, ?, ?) ON CONFLICT(twin_id) DO UPDATE SET version=excluded.version, state_sha256=excluded.state_sha256, effect_id=excluded.effect_id, commit_sha=excluded.commit_sha",
+                           (before["twin_id"], after["version"], doc["api_result"]["response"]["receipt"]["after_state_sha256"], effect_id, doc["objects"][2]["sha"]))
+                state["revision"] += 1
+                self.cp.store(db, state)
+            receipt = {"schema": "qikvrt_github_reflexive_twin_readback_v1", "binding": binding,
+                       "ref": doc["ref"], "commit": doc["objects"][2]["sha"], "tree": doc["objects"][1]["sha"],
+                       "blob": doc["objects"][0]["sha"], "api_result_sha256": recovery.digest(raw),
+                       "fresh_provider_readback": True, "fresh_byte_readback": True,
+                       "effect_scope": "BROKER_CREATE_ONLY_REFLEXIVE_TWIN_RECEIPT",
+                       "effect_ack_done": False, "provider_authority_fencing_verified": False}
+            if row[0] == "VERIFIED":
+                prior = db.execute("SELECT receipt FROM provider_effects WHERE id=?", (key,)).fetchone()[0]
+                if prior != canonical_json_bytes(receipt):
+                    raise TransitionError("TWIN_LEDGER_RECEIPT_MISMATCH")
+            else:
+                db.execute("UPDATE provider_effects SET status='VERIFIED', receipt=? WHERE id=?", (canonical_json_bytes(receipt), key))
+        # Separate durable ledger byte-readback after the final commit.
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            observed = db.execute("SELECT status, document, receipt FROM provider_effects WHERE id=?", (key,)).fetchone()
+            if observed != ("VERIFIED", canonical_json_bytes(doc), canonical_json_bytes(receipt)):
+                raise TransitionError("TWIN_LEDGER_READBACK_MISMATCH")
+        return {"api_result": doc["api_result"], "api_result_bytes_b64": base64.b64encode(raw).decode(), "repository_receipt": receipt,
+                "repository_effect_verified": True, "effect_ack_done": False, "effect_state": "EFFECT_ACK_CONTINUE"}
+
+    def twin_intent_status(self, token: str, permit: dict, effect_id: str) -> str | None:
+        """Authenticated durable admission observation, never a retry issuer."""
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            self._twin_journal(db)
+            row = db.execute("SELECT status FROM provider_effects WHERE id=?", ("twin:" + effect_id,)).fetchone()
+            return row[0] if row else None
+
+    def latest_twin_effect(self, token: str, permit: dict, twin_id: str) -> str | None:
+        """Select a durable cursor; the caller must freshly recover its bytes."""
+        with self.cp.transaction() as db:
+            self.cp.provider_admission(db, token, permit, self.repository)
+            self._twin_journal(db)
+            row = db.execute("SELECT effect_id FROM twin_effect_heads WHERE twin_id=?", (twin_id,)).fetchone()
+            return row[0] if row else None
+
+
+
 class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
-    server_version = "QIKVRTGitHubApiShim/2.0"
+    server_version = "QIKVRTGitHubApiShim/2.1"
 
     def setup(self) -> None:
         super().setup()
@@ -223,6 +717,24 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             return
         m = DISPATCH_RE.match(parsed.path)
         mr = REPO_DISPATCH_RE.match(parsed.path)
+        ma = AUTHORITY_EFFECT_RE.match(parsed.path)
+        if ma:
+            try:
+                body = self._read_json()
+                recovery.exact(body, {"writer_capability", "permit", "operation"}, "provider request")
+                repository = f"{ma.group(1)}/{ma.group(2)}"
+                if repository != os.environ.get("QIKVRT_ALLOWED_REPOSITORY", ""):
+                    raise TransitionError("repository outside authenticated shim scope")
+                path = os.environ.get("QIKVRT_AUTHORITY_CONTROL_PLANE", "")
+                if not path or not Path(path).is_absolute():
+                    raise TransitionError("existing absolute private control-plane path required")
+                adapter = GitHubAuthorityProvider(AuthorityControlPlane(Path(path)), repository)
+                result = adapter.execute(body["writer_capability"], body["permit"], body["operation"])
+                self._send_json(200, {"status": "CONTINUE", "provider_result": result})
+            except (ValueError, TypeError, OSError, RuntimeError):
+                # Capabilities and provider error bodies must never be echoed.
+                self._send_json(409, {"status": "BLOCK", "effect_ack_done": False})
+            return
         if not (m or mr):
             self._send_json(404, {"status": "BLOCK", "reason": "unknown endpoint"})
             return

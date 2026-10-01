@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import pathlib
+import stat
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -32,6 +33,123 @@ PROMOTION_CONDITIONS = (
 
 class SelfHealBlock(RuntimeError):
     pass
+
+
+# A trusted workflow copies this controller before checking out a candidate.
+# Generated projections/data are outside the control plane. New workflow/test/
+# policy/tool paths are included automatically, so additions cannot evade it.
+PIPELINE_PREFIXES = (
+    ".github/workflows/", "tools/", "tests/", "runtime/toolchains/",
+    "policy/", "state/autonomy/", "state/authorization/", "src/",
+)
+PIPELINE_FILES = {"AI", "AI_CONTEXT.json", "AGENTS.md", "AI_ADAPTERS.json", "Makefile"}
+PIPELINE_REQUIRED = {"Makefile", "AGENTS.md", "tools/qikvrt_autonomous_self_heal.py"}
+PIPELINE_SCHEMA = "qikvrt_pipeline_binding_v1"
+
+
+def _pipeline_path(path: str) -> bool:
+    return path in PIPELINE_FILES or path.startswith(PIPELINE_PREFIXES)
+
+
+def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> dict[str, Any]:
+    """Bounded read-only control-plane inventory, using Git's exact blob identity.
+
+    A reference is an externally selected trusted full SHA, never candidate data.
+    Without a reference, include tracked and untracked protected working files.
+    This local filesystem/Git observation does not authenticate an external node.
+    """
+    root = repository.resolve(strict=True)
+    if reference is not None and (len(reference) != 40
+            or any(c not in "0123456789abcdef" for c in reference)):
+        raise SelfHealBlock("pipeline reference must be a full Git SHA-1")
+    command = (["git", "ls-tree", "-r", "-z", "--full-tree", reference]
+               if reference else ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
+    try:
+        raw = subprocess.check_output(command, cwd=root, timeout=60, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as exc:
+        raise SelfHealBlock("pipeline Git observation failed") from exc
+    if len(raw) > 4 * 1024 * 1024:
+        raise SelfHealBlock("pipeline inventory bound exceeded")
+    entries = {}
+    total_bytes = 0
+    for item in raw.split(b"\0"):
+        if not item:
+            continue
+        if reference:
+            metadata, path_raw = item.split(b"\t", 1)
+            mode, kind, blob = metadata.decode("ascii").split()
+            path = path_raw.decode("utf-8")
+        else:
+            path = item.decode("utf-8")
+        if not _pipeline_path(path):
+            continue
+        if reference:
+            if kind != "blob" or mode not in {"100644", "100755"}:
+                raise SelfHealBlock("pipeline requires regular files: " + path)
+        else:
+            file = root / path
+            if any(parent.is_symlink() for parent in file.parents if parent != root):
+                raise SelfHealBlock("pipeline parent symlink: " + path)
+            before = file.lstat()
+            if not stat.S_ISREG(before.st_mode) or before.st_size > 16 * 1024 * 1024:
+                raise SelfHealBlock("pipeline file type/size rejected: " + path)
+            total_bytes += before.st_size
+            if total_bytes > 256 * 1024 * 1024:
+                raise SelfHealBlock("pipeline total byte bound exceeded")
+            content = file.read_bytes()
+            after = file.lstat()
+            if (before.st_ino, before.st_size, before.st_mtime_ns, before.st_mode) != (
+                    after.st_ino, after.st_size, after.st_mtime_ns, after.st_mode):
+                raise SelfHealBlock("pipeline file changed while reading: " + path)
+            mode = "100755" if before.st_mode & 0o111 else "100644"
+            blob = hashlib.sha1(b"blob " + str(len(content)).encode() + b"\0" + content).hexdigest()
+        entries[path] = {"path": path, "mode": mode, "blob": blob}
+    if not PIPELINE_REQUIRED <= set(entries) or len(entries) > 10000:
+        raise SelfHealBlock("pipeline inventory incomplete or excessive")
+    records = [entries[path] for path in sorted(entries)]
+    digest = hashlib.sha256(json.dumps(records, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return {"schema": PIPELINE_SCHEMA, "records": records, "sha256": digest}
+
+
+def verify_pipeline_binding(expected: Any, observed: Any) -> None:
+    for binding in (expected, observed):
+        if (not isinstance(binding, dict) or set(binding) != {"schema", "records", "sha256"}
+                or binding["schema"] != PIPELINE_SCHEMA or not isinstance(binding["records"], list)):
+            raise SelfHealBlock("malformed pipeline binding")
+        records = binding["records"]
+        if len(records) > 10000 or any(not isinstance(r, dict)
+                or set(r) != {"path", "mode", "blob"} or not isinstance(r["path"], str)
+                or r["mode"] not in {"100644", "100755"} or not isinstance(r["blob"], str)
+                or len(r["blob"]) != 40 or any(c not in "0123456789abcdef" for c in r["blob"])
+                for r in records):
+            raise SelfHealBlock("malformed pipeline records")
+        paths = [r["path"] for r in records]
+        if (paths != sorted(set(paths)) or not PIPELINE_REQUIRED <= set(paths)
+                or any(not _pipeline_path(p) for p in paths)):
+            raise SelfHealBlock("pipeline record coverage/order differs")
+        digest = hashlib.sha256(json.dumps(records, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        if binding["sha256"] != digest:
+            raise SelfHealBlock("pipeline binding digest mismatch")
+    if expected != observed:
+        raise SelfHealBlock("PIPELINE_INVARIANT_MISMATCH_REQUIRES_SEPARATE_REVIEW")
+
+
+def continuation_verification_decision(statuses: Any) -> str:
+    """A clean NOOP still needs its dedicated verifier. Never blind redispatch.
+
+    Statuses must come from the authenticated exact-commit status GET. Existing
+    status is only a readback obligation, never acceptance or independent review.
+    """
+    if not isinstance(statuses, list) or any(not isinstance(s, dict) for s in statuses):
+        raise SelfHealBlock("malformed exact-head status response")
+    existing = [s for s in statuses if s.get("context") == "QIKVRT autonomous exact-head verification"]
+    if len(existing) > 1:
+        raise SelfHealBlock("ambiguous dedicated verifier status")
+    if not existing:
+        return "DISPATCH_REQUIRED"
+    if existing[0].get("state") not in {"pending", "success", "failure", "error"}:
+        raise SelfHealBlock("unknown dedicated verifier state")
+    return "EXISTING_VERIFICATION_REQUIRES_READBACK"
 
 
 @dataclass(frozen=True)
@@ -288,6 +406,7 @@ def execute(apply: bool) -> dict[str, Any]:
     if initial.returncode or initial.stdout.strip():
         raise SelfHealBlock("controller requires a clean repository")
     base_revision = observed_base_revision()
+    before_pipeline = pipeline_binding(ROOT)
     boot = run(
         (
             "python3",
@@ -308,6 +427,7 @@ def execute(apply: bool) -> dict[str, Any]:
     unexpected = sorted(set(paths) - allowed_paths(contract))
     if unexpected:
         raise SelfHealBlock(f"non-allowlisted mutation: {unexpected}")
+    verify_pipeline_binding(before_pipeline, pipeline_binding(ROOT))
     fingerprint = semantic_fingerprint(paths) if paths else None
     candidate_id = (
         candidate_identity(base_revision, fingerprint)
@@ -323,6 +443,8 @@ def execute(apply: bool) -> dict[str, Any]:
         "candidate_identity": candidate_id,
         "changed_paths": paths,
         "actions": actions,
+        "pipeline_binding_sha256": before_pipeline["sha256"],
+        "pipeline_invariant_verified": True,
         "external_effect": "NONE",
         "promotion_policy": {
             "unconditional_automatic_merge": "FORBIDDEN",
@@ -341,10 +463,35 @@ def execute(apply: bool) -> dict[str, Any]:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("check", "apply"))
+    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision"))
+    parser.add_argument("--repository", type=pathlib.Path, default=ROOT)
+    parser.add_argument("--reference")
+    parser.add_argument("--binding", type=pathlib.Path)
+    parser.add_argument("--statuses", type=pathlib.Path)
     args = parser.parse_args(argv)
     try:
-        result = execute(args.command == "apply")
+        if args.command == "pipeline-bind":
+            result = pipeline_binding(args.repository, args.reference)
+        elif args.command == "pipeline-verify":
+            if args.binding is None:
+                raise SelfHealBlock("trusted pipeline binding required")
+            expected = _load_json(args.binding, "trusted pipeline binding")
+            verify_pipeline_binding(expected, pipeline_binding(args.repository))
+            result = {"state": "PIPELINE_INVARIANT_VERIFIED", "sha256": expected["sha256"],
+                      "effect_ack_done": False}
+        elif args.command == "verification-decision":
+            if args.statuses is None:
+                raise SelfHealBlock("authenticated exact-head statuses required")
+            value = _load_json(args.statuses, "exact-head statuses")
+            count = value.get("total_count")
+            statuses = value.get("statuses")
+            if (type(count) is not int or count < 0 or not isinstance(statuses, list)
+                    or count != len(statuses)):
+                raise SelfHealBlock("incomplete exact-head status inventory; readback required")
+            result = {"state": continuation_verification_decision(statuses),
+                      "effect_ack_done": False}
+        else:
+            result = execute(args.command == "apply")
     except (
         OSError,
         ValueError,
