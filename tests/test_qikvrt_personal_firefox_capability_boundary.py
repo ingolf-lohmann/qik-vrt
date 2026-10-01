@@ -3,12 +3,18 @@ from __future__ import annotations
 import json
 import unittest
 import tempfile
+import hashlib
+import io
+import urllib.error
+from email.message import Message
 from unittest.mock import patch
 from pathlib import Path
 from pathlib import PureWindowsPath
 
 from tools.qikvrt_firefox_windows_witness import (
     target_matches, provision_driver, verify_effect_readback,
+    public_http_readback, evaluate_public_url_readback, NoPublicRedirect,
+    CANONICAL_PRODUCT_URL, PUBLIC_BODY_LIMIT,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -182,6 +188,89 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         for field in ('repository_head', 'repository_tree'):
             self.assertFalse(verify_effect_readback(before, after | {field: 'c' * 40}, prepared, request, subject))
         self.assertFalse(verify_effect_readback(before, after | {'events': 0}, prepared, request, subject))
+
+    def test_public_url_contract_preserves_authority_and_separate_release_gates(self) -> None:
+        windows = self.policy['windows_acceptance']
+        public = windows['public_url_acceptance']
+        self.assertEqual(public['canonical_url'], CANONICAL_PRODUCT_URL)
+        self.assertEqual(windows['terminal_url'], CANONICAL_PRODUCT_URL)
+        self.assertEqual(public['authority_repository'], 'Goldkelch/qik-vrt')
+        self.assertEqual(public['documented_publishing_source']['branch'], 'main')
+        self.assertEqual(public['documented_publishing_source']['path'], '/docs')
+        self.assertEqual(public['http_body_limit_bytes'], PUBLIC_BODY_LIMIT)
+        self.assertFalse(public['public_root_readback_proves_full_candidate_deployment'])
+        self.assertFalse(public['public_root_readback_accepts_personal_release'])
+        self.assertIn('public_url_fresh_readback', windows['release_additional_requires'])
+        hold = json.loads((ROOT / 'state/work_units/QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001.json')
+                          .read_text())['public_pages_continuation']
+        self.assertEqual(hold['state'], 'HOLD_AUTHORITY_PAGES_CAPABILITY_UNAVAILABLE')
+        self.assertIsNone(hold['actual_publishing_source'])
+        self.assertFalse(hold['authority_pages_mutated'])
+
+    def test_public_url_rejects_error_page_substitution_redirect_and_stale_bytes(self) -> None:
+        public = self.policy['windows_acceptance']['public_url_acceptance']
+        expected = hashlib.sha256(b'candidate root bytes').hexdigest()
+        http = {'status': 200, 'final_url': CANONICAL_PRODUCT_URL,
+                'body_sha256': expected, 'body_truncated': False, 'response_observed': True}
+        browser = {'url': CANONICAL_PRODUCT_URL, 'title': public['expected_document_title'],
+                   'product_main_present': True, 'github_pages_404': False,
+                   'navigation_response_status': 200, 'extension_installed': False}
+        result = evaluate_public_url_readback(http, browser, expected, public)
+        self.assertTrue(result['public_url_fresh_readback'])
+        self.assertFalse(result['personal_release_effect_ack_done'])
+        self.assertFalse(result['deployed_candidate_head_tree_verified'])
+        for change in ({'status': 404}, {'status': None}, {'body_truncated': True},
+                       {'body_sha256': '0' * 64}, {'response_observed': False},
+                       {'error': 'HTTP transport incomplete'},
+                       {'final_url': 'https://ingolf-lohmann.github.io/qik-vrt/'},
+                       {'final_url': CANONICAL_PRODUCT_URL + '?substitute=1'}):
+            with self.subTest(http=change):
+                self.assertFalse(evaluate_public_url_readback(
+                    http | change, browser, expected, public)['public_url_fresh_readback'])
+        for change in ({'title': 'Site not found · GitHub Pages'},
+                       {'github_pages_404': True}, {'product_main_present': False},
+                       {'navigation_response_status': 404}, {'url': 'about:blank'},
+                       {'extension_installed': True}, {'error': 'Browser incomplete'},
+                       {'url': 'https://ingolf-lohmann.github.io/qik-vrt/'}):
+            with self.subTest(browser=change):
+                self.assertFalse(evaluate_public_url_readback(
+                    http, browser | change, expected, public)['public_url_fresh_readback'])
+
+    def test_http_404_retains_fresh_exact_response_body_and_status(self) -> None:
+        body = b'There is no GitHub Pages site here.'
+        headers = Message()
+        headers['Content-Type'] = 'text/html'
+        error = urllib.error.HTTPError(CANONICAL_PRODUCT_URL, 404, 'Not Found',
+                                       headers, io.BytesIO(body))
+        with tempfile.TemporaryDirectory() as temp, \
+                patch('urllib.request.build_opener') as build:
+            build.return_value.open.side_effect = error
+            output = Path(temp)
+            result = public_http_readback(CANONICAL_PRODUCT_URL, output)
+            self.assertEqual(result['status'], 404)
+            self.assertEqual(result['final_url'], CANONICAL_PRODUCT_URL)
+            self.assertEqual(result['body_sha256'], hashlib.sha256(body).hexdigest())
+            self.assertEqual((output / result['body_artifact']).read_bytes(), body)
+            self.assertTrue(result['response_observed'])
+            self.assertFalse(result['redirects_followed'])
+            self.assertLessEqual(result['started_at'], result['finished_at'])
+            request = build.return_value.open.call_args.args[0]
+            self.assertEqual(request.get_header('Cache-control'), 'no-cache')
+
+    def test_public_http_forbids_host_substitution_and_bounds_response_size(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaisesRegex(RuntimeError, 'CANONICAL_PRODUCT_URL_MISMATCH'):
+                public_http_readback('https://ingolf-lohmann.github.io/qik-vrt/', Path(temp))
+            body = b'x' * (PUBLIC_BODY_LIMIT + 2)
+            error = urllib.error.HTTPError(CANONICAL_PRODUCT_URL, 200, 'OK',
+                                           Message(), io.BytesIO(body))
+            with patch('urllib.request.build_opener') as build:
+                build.return_value.open.side_effect = error
+                result = public_http_readback(CANONICAL_PRODUCT_URL, Path(temp))
+            self.assertTrue(result['body_truncated'])
+            self.assertEqual(result['body_bytes'], PUBLIC_BODY_LIMIT + 1)
+        self.assertIsNone(NoPublicRedirect().redirect_request(
+            None, None, 302, 'Found', {}, 'https://example.com/'))
 
 
 if __name__ == "__main__":

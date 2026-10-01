@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.1",
+  "version": "1.2",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -55,6 +55,7 @@
       "state": "HOLD",
       "windows_execution_witness": false,
       "windows_product_target_verified": false,
+      "public_url_fresh_readback": false,
       "hardware_holds_block_browser": false
     }
   },
@@ -137,6 +138,33 @@
     "loopback_is_authenticated_personal_runtime": false,
     "temporary_install_is_release_install": false,
     "terminal_url": "https://goldkelch.github.io/qik-vrt/",
+    "public_url_acceptance": {
+      "schema": "qikvrt_public_url_acceptance_v1",
+      "canonical_url": "https://goldkelch.github.io/qik-vrt/",
+      "authority_repository": "Goldkelch/qik-vrt",
+      "documented_publishing_source": {
+        "branch": "main",
+        "path": "/docs",
+        "source": "docs/README_DEPLOY_GITHUB_PAGES_DE.md"
+      },
+      "source_file": "docs/index.html",
+      "expected_document_title": "QIK-VRT Trust Mesh — Repository-Evidenz, Audit und künstliche Kognition",
+      "requires": [
+        "same_candidate_head_tree_run_attempt_job",
+        "fresh_unauthenticated_canonical_http_get",
+        "http_200_without_redirect_or_truncation",
+        "exact_candidate_docs_index_bytes",
+        "canonical_firefox_url_and_product_dom_before_extension_injection"
+      ],
+      "redirect_or_alternate_host_acceptance": "DENY",
+      "http_body_limit_bytes": 2097152,
+      "authority_configuration_current_state": "UNKNOWN",
+      "authority_capability_hold_ref": "state/work_units/QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001.json#/public_pages_continuation",
+      "receipt": "PUBLIC_URL_READBACK.json",
+      "evidence_scope": "CANONICAL_ROOT_DOCS_INDEX_BYTES_AND_BROWSER_DOM_ONLY",
+      "public_root_readback_proves_full_candidate_deployment": false,
+      "public_root_readback_accepts_personal_release": false
+    },
     "witness_command": "python tools/qikvrt_firefox_windows_witness.py --output <ephemeral-output>",
     "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt.",
     "test_host_permission_setup": {

@@ -130,7 +130,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
           exit $LASTEXITCODE
-      - name: Load Firefox extension and observe a fresh real terminal effect
+      - name: Read canonical public URL, then load extension and observe terminal effect
         shell: pwsh
         env:
           QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -144,6 +144,9 @@ jobs:
           name: qikvrt-firefox-windows-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/qikvrt-firefox-windows/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-windows/PUBLIC_URL_READBACK.json
+            ${{ runner.temp }}/qikvrt-firefox-windows/PUBLIC_URL_HTTP.html
+            ${{ runner.temp }}/qikvrt-firefox-windows/PUBLIC_URL_BROWSER.png
             ${{ runner.temp }}/qikvrt-firefox-windows/screenshot.png
             ${{ runner.temp }}/qikvrt-firefox-windows/geckodriver.log
             ${{ runner.temp }}/qikvrt-firefox-windows/standard.xpi

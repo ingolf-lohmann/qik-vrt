@@ -117,3 +117,45 @@ readback, followed by the separate authenticated Personal runtime acceptance.
 The standard extension explicitly permits backend connections only to its declared loopback origins and the GitHub API in its extension-page CSP. The MV3 default `upgrade-insecure-requests` is omitted so the existing local HTTP Effect-ACK backend remains reachable; script and object sources remain self-only. The Windows witness observes Firefox's active host-permission origins in its temporary profile. Any test-only grant is limited to the already-declared loopback origin and does not prove production installation consent. Native browser architecture is read from the actual PE binary, independently of user-agent text.
 
 Firefox host match patterns omit ports: Mozilla bug 2052000 (duplicate of 1362809) documents that port-qualified grants are reported active but do not match requests. The backend allowlist and `connect-src` still enforce port 8771. This corrects matching semantics; it does not permit connecting to arbitrary loopback services. Source: https://bugzilla.mozilla.org/show_bug.cgi?id=2052000
+
+## Canonical public URL readback and Authority capability boundary
+
+The canonical product URL remains `https://goldkelch.github.io/qik-vrt/`.
+`docs/README_DEPLOY_GITHUB_PAGES_DE.md` declares Authority repository
+`Goldkelch/qik-vrt`, branch `main`, folder `/docs`, entry `docs/index.html`.
+The Personal repository contains that entry and its assets. Its Seed Dashboard
+workflow builds and preserves local artifacts; it is not a Pages deployment.
+The Personal candidate contains no `actions/deploy-pages` publishing workflow.
+These facts do not establish the inaccessible Authority's actual configuration.
+
+The existing Windows witness now observes the canonical URL before installing
+the extension. It emits `PUBLIC_URL_READBACK.json`, the bounded exact HTTP body
+and an uninjected Firefox screenshot. The receipt binds the current candidate
+HEAD/TREE, run/attempt/job, observer/policy hashes and UTC observation times.
+The anonymous GET requests cache revalidation, retains status/headers/body
+SHA-256 even for HTTP 404, refuses redirects, and compares a successful response
+with this candidate's exact `docs/index.html` bytes. The browser independently
+records final URL, title, product DOM, visible text and navigation response
+status when available. An injected terminal on a 404 page cannot satisfy this
+gate. HTTP 200 with an error page, different bytes, a redirect or another host
+also remains HOLD. A complete failed observation is evidence, not URL acceptance.
+
+This readback proves only the declared root bytes and browser DOM. It does not
+prove deployment of the whole candidate tree or authenticated Personal runtime,
+and it never accepts a Personal release. The functional Windows witness can
+still pass while its distinct `public_url_fresh_readback` remains false.
+
+The exact external capability HOLD and diagnostic observations are persisted in
+`state/work_units/QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001.json` under
+`public_pages_continuation`. Authenticated Authority repository read returned
+404; the available GitHub connector rejects the Pages endpoint and exposes no
+Pages mutation operation. Anonymous Pages API read also returned 404. None of
+these responses alone proves that Pages is disabled, that its source is wrong,
+or that the repository does not exist. No Authority settings were changed.
+
+Continuation requires an authenticated Authority Pages reader/writer to inspect
+the actual source and latest build/deployment against the existing `main:/docs`
+site, repair the first established configuration/publishing defect, then rerun
+the same candidate's public readback. No Mirror URL or other host substitutes
+for the canonical product URL. Signed persistent installation, Personal
+capability manifest and authenticated runtime readback remain separate gates.

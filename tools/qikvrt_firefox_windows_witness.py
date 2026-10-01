@@ -17,11 +17,129 @@ import subprocess
 import sys
 import threading
 import time
+import urllib.error
 import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / 'policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json'
+CANONICAL_PRODUCT_URL = 'https://goldkelch.github.io/qik-vrt/'
+PUBLIC_BODY_LIMIT = 2 * 1024 * 1024
+
+
+class NoPublicRedirect(urllib.request.HTTPRedirectHandler):
+    """A different URL must never stand in for the canonical product URL."""
+    def redirect_request(self, request, response, code, message, headers, new_url):
+        return None
+
+
+def public_http_readback(url, output):
+    if url != CANONICAL_PRODUCT_URL:
+        raise RuntimeError('CANONICAL_PRODUCT_URL_MISMATCH')
+    result = {'requested_url': url, 'method': 'GET', 'redirects_followed': False,
+              'started_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+              'status': None, 'final_url': None, 'body_sha256': None,
+              'body_truncated': False, 'response_observed': False,
+              'request_cache_control': 'no-cache', 'authenticated_request': False}
+    request = urllib.request.Request(url, headers={
+        'Cache-Control': 'no-cache', 'Pragma': 'no-cache',
+        'User-Agent': 'QIKVRT-public-url-readback/1'})
+    opener = urllib.request.build_opener(NoPublicRedirect())
+    try:
+        try:
+            response = opener.open(request, timeout=30)
+        except urllib.error.HTTPError as error:
+            # 404 is evidence to retain, not a transport success or a test crash.
+            response = error
+        with response:
+            body = response.read(PUBLIC_BODY_LIMIT + 1)
+            result.update(status=response.code, final_url=response.geturl(),
+                          response_observed=True, body_truncated=len(body) > PUBLIC_BODY_LIMIT,
+                          body_bytes=len(body), body_sha256=hashlib.sha256(body).hexdigest(),
+                          headers={name: response.headers.get(name) for name in (
+                              'Date', 'Content-Type', 'ETag', 'Last-Modified', 'Server',
+                              'Age', 'X-Cache', 'X-GitHub-Request-Id', 'Location')})
+            artifact = output / 'PUBLIC_URL_HTTP.html'
+            artifact.write_bytes(body)
+            result['body_artifact'] = artifact.name
+    except (OSError, urllib.error.URLError, ValueError) as error:
+        result['error'] = type(error).__name__ + ': ' + str(error)
+    result['finished_at'] = dt.datetime.now(dt.timezone.utc).isoformat()
+    return result
+
+
+def evaluate_public_url_readback(http, browser, expected_body_sha256, contract):
+    """Accept only fresh canonical root bytes and DOM, never a full release."""
+    reasons = []
+    if http.get('error') or http.get('response_observed') is not True:
+        reasons.append('HTTP_OBSERVATION_INCOMPLETE')
+    if http.get('status') != 200:
+        reasons.append('PUBLIC_HTTP_' + str(http.get('status') or 'UNOBSERVED'))
+    if http.get('final_url') != contract['canonical_url']:
+        reasons.append('CANONICAL_HTTP_URL_NOT_VERIFIED')
+    if http.get('body_truncated') or http.get('body_sha256') != expected_body_sha256:
+        reasons.append('CANDIDATE_DOCS_INDEX_BYTES_NOT_VERIFIED')
+    if browser.get('url') != contract['canonical_url']:
+        reasons.append('CANONICAL_BROWSER_URL_NOT_VERIFIED')
+    if browser.get('github_pages_404'):
+        reasons.append('GITHUB_PAGES_SITE_NOT_FOUND')
+    if browser.get('error') or browser.get('extension_installed') is not False:
+        reasons.append('UNINJECTED_BROWSER_OBSERVATION_NOT_VERIFIED')
+    if (browser.get('title') != contract['expected_document_title']
+            or browser.get('product_main_present') is not True):
+        reasons.append('PRODUCT_BROWSER_DOM_NOT_VERIFIED')
+    if browser.get('navigation_response_status') not in (None, 200):
+        reasons.append('BROWSER_HTTP_STATUS_NOT_SUCCESSFUL')
+    return {'state': 'HOLD' if reasons else 'PASS', 'unmet_conditions': reasons,
+            'public_url_fresh_readback': not reasons,
+            'evidence_scope': 'CANONICAL_ROOT_DOCS_INDEX_BYTES_AND_BROWSER_DOM_ONLY',
+            'deployed_candidate_head_tree_verified': False,
+            'personal_release_effect_ack_done': False}
+
+
+def observe_public_url(driver, contract, subject, output):
+    acceptance = contract['public_url_acceptance']
+    url = contract['terminal_url']
+    if url != CANONICAL_PRODUCT_URL or acceptance['canonical_url'] != url:
+        raise RuntimeError('CANONICAL_PRODUCT_URL_MISMATCH')
+    expected = digest(ROOT / acceptance['source_file'])
+    http = public_http_readback(url, output)
+    browser = {'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+               'url': None, 'title': None, 'product_main_present': False,
+               'navigation_response_status': None, 'extension_installed': False}
+    try:
+        # Observe the actual public page before the extension can inject a UI.
+        driver.command('/url', {'url': url})
+        browser.update(driver.script(
+            'const n=performance.getEntriesByType("navigation")[0];'
+            'const text=document.body?.innerText||"";'
+            'return {url:location.href,title:document.title,'
+            'navigation_response_status:n?.responseStatus||null,'
+            'product_main_present:!!document.querySelector("main#main"),'
+            'github_pages_404:document.title==="Site not found · GitHub Pages"||'
+            'text.includes("There isn\\\'t a GitHub Pages site here."),'
+            'body_text:text.slice(0,131072),body_text_truncated:text.length>131072};'))
+        screenshot = output / 'PUBLIC_URL_BROWSER.png'
+        screenshot.write_bytes(base64.b64decode(driver.command('/screenshot', method='GET')))
+        browser.update(screenshot_artifact=screenshot.name, screenshot_sha256=digest(screenshot))
+    except (OSError, RuntimeError) as error:
+        browser['error'] = type(error).__name__ + ': ' + str(error)
+    browser['finished_at'] = dt.datetime.now(dt.timezone.utc).isoformat()
+    result = {'schema': 'qikvrt_public_url_fresh_readback_v1',
+              'repository': os.environ.get('GITHUB_REPOSITORY', 'ingolf-lohmann/qik-vrt'),
+              'head': subject['head'], 'tree': subject['tree'],
+              'run_id': subject['run_id'], 'run_attempt': subject['run_attempt'],
+              'job': subject['job'], 'policy_sha256': subject['policy_sha256'],
+              'observer_sha256': digest(__file__), 'observed_at': http['started_at'],
+              'canonical_url': url, 'candidate_source_file': acceptance['source_file'],
+              'candidate_source_sha256': expected, 'http': http, 'browser': browser,
+              'predecessor_evidence_transfer': False, 'external_effect': 'NONE',
+              'authority_configuration_verified': False,
+              'authority_capability_hold_ref': acceptance['authority_capability_hold_ref']}
+    result.update(evaluate_public_url_readback(http, browser, expected, acceptance))
+    path = output / 'PUBLIC_URL_READBACK.json'
+    path.write_text(json.dumps(result, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+    return result, {'path': path.name, 'sha256': digest(path)}
 
 
 def digest(path):
@@ -193,6 +311,7 @@ def witness(output, headless=False):
                'hardware_required': False, 'extension_loaded': False,
                'terminal_functional_readback': False, 'local_effect_readback': False,
                'product_target_verified': False, 'authenticated_runtime_readback': False,
+               'public_url_fresh_readback': False,
                'personal_release_effect_ack_done': False, 'state': 'HOLD'}
     driver = None
     server = None
@@ -255,6 +374,10 @@ def witness(output, headless=False):
             receipt['browser_capabilities'] = session['capabilities']
             if session['capabilities']['browserVersion'] != contract['firefox']['version']:
                 raise RuntimeError('FIREFOX_VERSION_MISMATCH')
+            public, public_artifact = observe_public_url(driver, contract, receipt, output)
+            receipt['public_url_readback'] = public
+            receipt['public_url_readback_artifact'] = public_artifact
+            receipt['public_url_fresh_readback'] = public['public_url_fresh_readback']
             addon = driver.command('/moz/addon/install', {'path': str(xpi.resolve()), 'temporary': True})
             if addon != 'qikvrt-ai-terminal@goldkelch.local':
                 raise RuntimeError('ADDON_ID_MISMATCH')
@@ -322,6 +445,8 @@ def witness(output, headless=False):
                            effect_scope='LOCAL_LOOPBACK_TERMINAL_EVENT_ONLY',
                            external_effect='NONE', windows_witness_test='PASS',
                            reason='HOLD_PERSONAL_CAPABILITY_AUTHENTICATED_RUNTIME_AND_RELEASE_INSTALL_REQUIRED')
+            if not receipt['public_url_fresh_readback']:
+                receipt['reason'] = 'HOLD_PUBLIC_URL_AND_SEPARATE_PERSONAL_RELEASE_GATES'
             if not receipt['product_target_verified']:
                 receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_CLIENT_WITNESS_REQUIRED'
         return 0
