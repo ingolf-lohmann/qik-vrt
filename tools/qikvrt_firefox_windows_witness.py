@@ -7,6 +7,7 @@ import argparse
 import base64
 import datetime as dt
 import hashlib
+import http.client
 import json
 import os
 from pathlib import Path
@@ -389,6 +390,236 @@ def durable_restart_controls(terminal, state_root, seed, *, expected_snapshot=No
             second.close()
 
 
+def interrupted_http_response(process, snapshot_path, path, body=None, field=None, *, mode):
+    """One real loopback proxy cut; only an observed client transport error qualifies.
+
+    The upstream is the unchanged durable CLI. Read its complete response and
+    the persisted snapshot before cutting the downstream socket. No response
+    exception is synthesized, and neither peer is killed or patched.
+    """
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    if mode not in ('TCP_RST_BEFORE_RESPONSE', 'TRUNCATED_HTTP_BODY'):
+        raise ValueError('unsupported transport cut')
+    observation = {'path': path, 'method': 'GET' if body is None else 'POST',
+                   'mode': mode, 'network_loss_injected': False}
+
+    class CutHandler(BaseHTTPRequestHandler):
+        def cut(self):
+            try:
+                self.connection.settimeout(15)
+                length = int(self.headers.get('Content-Length', '0'))
+                if (self.path != path or self.command != observation['method']
+                        or not 0 <= length <= PUBLIC_BODY_LIMIT):
+                    raise RuntimeError('TRANSPORT_PROXY_REQUEST_MISMATCH')
+                data = self.rfile.read(length) if length else None
+                if data is not None and len(data) != length:
+                    raise RuntimeError('TRANSPORT_PROXY_REQUEST_TRUNCATED')
+                headers = {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
+                if self.headers.get('Effect-Ack-Request'):
+                    headers['Effect-Ack-Request'] = self.headers['Effect-Ack-Request']
+                upstream = http.client.HTTPConnection('127.0.0.1', process.port, timeout=15)
+                try:
+                    upstream.request(self.command, self.path, body=data, headers=headers)
+                    response = upstream.getresponse()
+                    payload = response.read(PUBLIC_BODY_LIMIT + 1)
+                    if response.status != 200 or not 1 < len(payload) <= PUBLIC_BODY_LIMIT:
+                        raise RuntimeError('TRANSPORT_PROXY_UPSTREAM_NOT_COMPLETE_200')
+                    observation.update(upstream_http_status=response.status,
+                        upstream_body_bytes=len(payload),
+                        upstream_body_sha256=hashlib.sha256(payload).hexdigest(),
+                        persisted_snapshot_sha256_before_cut=digest(snapshot_path),
+                        upstream_response_observed_at=dt.datetime.now(dt.timezone.utc).isoformat())
+                finally:
+                    upstream.close()
+                self.close_connection = True
+                if mode == 'TCP_RST_BEFORE_RESPONSE':
+                    # Abortive close sends RST, rather than discarding a reply
+                    # that the client has already received successfully.
+                    self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,
+                                               struct.pack('ii', 1, 0))
+                    observation['downstream_body_bytes_sent'] = 0
+                    self.connection.close()
+                else:
+                    prefix = payload[:len(payload) // 2]
+                    self.send_response(200)
+                    self.send_header('Content-Length', str(len(payload)))
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(prefix)
+                    self.wfile.flush()
+                    observation['downstream_body_bytes_sent'] = len(prefix)
+                    self.connection.shutdown(socket.SHUT_WR)
+            except Exception as error:
+                # A proxy/setup/upstream failure cannot be promoted to the
+                # intended post-persistence transport fault.
+                observation['proxy_error'] = type(error).__name__ + ': ' + str(error)
+                self.close_connection = True
+
+        do_POST = do_GET = cut
+
+        def log_message(self, *_):
+            return
+
+    with HTTPServer(('127.0.0.1', 0), CutHandler) as proxy:
+        proxy.timeout = 15
+        worker = threading.Thread(target=proxy.handle_request, daemon=True)
+        worker.start()
+        client = http.client.HTTPConnection('127.0.0.1', proxy.server_port, timeout=15)
+        try:
+            data = None if body is None else json.dumps(body, sort_keys=True,
+                separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf-8')
+            client.request(observation['method'], path, body=data,
+                headers={'Content-Type': 'application/json',
+                         **({'Effect-Ack-Request': field} if field else {})})
+            response = client.getresponse()
+            observation['client_http_status'] = response.status
+            response.read()  # Read to Content-Length; short bodies must fail.
+            observation['client_complete_response'] = True
+        except (ConnectionResetError, http.client.RemoteDisconnected, http.client.IncompleteRead) as error:
+            observation.update(client_error=type(error).__name__, client_errno=getattr(error, 'errno', None),
+                               client_complete_response=False)
+            if isinstance(error, http.client.IncompleteRead):
+                observation.update(client_partial_bytes=len(error.partial),
+                                   client_missing_bytes=error.expected)
+        finally:
+            client.close()
+            worker.join(timeout=20)
+        if worker.is_alive():
+            raise RuntimeError('TRANSPORT_PROXY_DID_NOT_TERMINATE')
+    if observation.get('proxy_error'):
+        raise RuntimeError(observation['proxy_error'])
+    expected_errors = (('ConnectionResetError', 'RemoteDisconnected') if mode == 'TCP_RST_BEFORE_RESPONSE'
+                       else ('IncompleteRead',))
+    if (observation.get('client_error') not in expected_errors
+            or observation.get('upstream_http_status') != 200
+            or observation.get('client_complete_response') is not False):
+        raise RuntimeError('ACTUAL_CLIENT_TRANSPORT_FAULT_NOT_OBSERVED')
+    observation.update(network_loss_injected=True,
+                       observed_at=dt.datetime.now(dt.timezone.utc).isoformat())
+    return observation
+
+
+def network_loss_controls(terminal, state_root, seed, *, expected_snapshot=None, retry_clients=4):
+    """Persist one effect, cut real sockets, refuse bounded retries and read back."""
+    if not 1 <= retry_clients <= 8:
+        raise ValueError('bounded retry requires 1..8 clients')
+    import qikvrt_api_handler as persistence
+    snapshot_path = persistence.dirs(state_root)['state'] / 'terminal.json'
+    first = second = None
+    try:
+        first = TerminalProcess(state_root, seed)
+        status, original = first.request('/terminal/events')
+        if status != 200 or (expected_snapshot is not None and original != expected_snapshot):
+            raise RuntimeError('NETWORK_PROBE_PRIOR_SNAPSHOT_MISMATCH')
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'network-loss-' + os.urandom(16).hex()}
+        status, prepared = first.request('/terminal/prepare', payload, 'v=1, mode=prepare')
+        if status != 200:
+            raise RuntimeError('NETWORK_PROBE_PREPARE_FAILED')
+        field = ('v=1, mode=commit, token=' + terminal.sf_bytes(prepared['commit_token'].encode('ascii'))
+                 + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['record_hash'])))
+        commit_fault = interrupted_http_response(first, snapshot_path, '/terminal/commit', payload, field,
+                                                 mode='TCP_RST_BEFORE_RESPONSE')
+        persisted = snapshot_path.read_bytes()  # Private comparison only; never export keys/tokens.
+        persisted_sha256 = hashlib.sha256(persisted).hexdigest()
+        status, after_fault = first.request('/terminal/events')
+        input_hash = terminal.sha256(terminal.canonical_json(payload))
+        token_hash = terminal.sha256(prepared['commit_token'].encode('ascii'))
+        matches = [event for event in after_fault['events'] if event['input_hash'] == input_hash
+                   and event['text'] == payload['text'] and event['commit_token_sha256'] == token_hash]
+        if (status != 200 or after_fault['event_count'] != original['event_count'] + 1
+                or after_fault['events'][:-1] != original['events'] or len(matches) != 1
+                or after_fault['persistence_scope'] != 'FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE'
+                or after_fault['events_sha256'] != terminal.sha256(terminal.canonical_json(after_fault['events']))
+                or commit_fault['persisted_snapshot_sha256_before_cut'] != persisted_sha256):
+            raise RuntimeError('NETWORK_FAULT_NOT_BOUND_TO_ONE_PERSISTED_EFFECT')
+        paths = sorted({'/effect-ack/records/' + value for event in after_fault['events']
+                        for value in (event['record_hash'], event['effect_record_hash'])})
+
+        def records(process):
+            result = {}
+            for path in paths:
+                code, record = process.request(path)
+                projection = {key: value for key, value in record.items() if key != 'record_hash'}
+                if (code != 200 or record.get('record_hash') != 'sha256:' + path.rsplit('/', 1)[-1]
+                        or record['record_hash'] != 'sha256:' + terminal.sha256(terminal.canonical_json(projection))
+                        or record.get('seed_binding') != after_fault['seed_binding']):
+                    raise RuntimeError('NETWORK_FAULT_EFFECT_RECORD_BINDING_MISMATCH')
+                result[path] = record
+            return result
+
+        records_after_fault = records(first)
+        effect_path = '/effect-ack/records/' + matches[0]['effect_record_hash']
+        effect = records_after_fault[effect_path]
+        if (matches[0]['record_hash'] != prepared['record_hash']
+                or effect['input_hash'] != 'sha256:' + input_hash
+                or effect['ordinary_release'] is not True or effect['state'] != 'EFFECT_ACK_DONE'
+                or sum(record['input_hash'] == 'sha256:' + input_hash
+                       and record['reason'] == 'single-use exact-bound loopback commit executed'
+                       for record in records_after_fault.values()) != 1):
+            raise RuntimeError('NETWORK_FAULT_EFFECT_NOT_EXACTLY_ONCE')
+        readback_faults = [interrupted_http_response(first, snapshot_path, path,
+                            mode='TRUNCATED_HTTP_BODY') for path in ('/terminal/events', effect_path)]
+        first_pid = first.process.pid
+        if first.process.poll() is not None:
+            raise RuntimeError('NETWORK_PROBE_SERVER_CRASHED')
+        replay_status, replay = first.request('/terminal/commit', payload, field)
+        barrier = threading.Barrier(retry_clients)
+
+        def retry(_):
+            barrier.wait(timeout=15)
+            return first.request('/terminal/commit', payload, field)
+
+        with ThreadPoolExecutor(max_workers=retry_clients) as pool:
+            retries = list(pool.map(retry, range(retry_clients)))
+        if (replay_status != 409 or replay.get('ordinary_release') is not False
+                or any(code != 409 or result.get('ordinary_release') is not False for code, result in retries)):
+            raise RuntimeError('NETWORK_RETRY_NOT_REFUSED')
+        status, after_retry = first.request('/terminal/events')
+        records_after_retry = records(first)
+        if (status != 200 or after_retry != after_fault or records_after_retry != records_after_fault
+                or snapshot_path.read_bytes() != persisted or first.process.poll() is not None
+                or any(fault['persisted_snapshot_sha256_before_cut'] != persisted_sha256 for fault in readback_faults)):
+            raise RuntimeError('NETWORK_RETRY_CHANGED_PERSISTED_EFFECT')
+        first.close()
+        first = None
+        second = TerminalProcess(state_root, seed)
+        restarted_status, restarted_replay = second.request('/terminal/commit', payload, field)
+        status, after_restart = second.request('/terminal/events')
+        records_after_restart = records(second)
+        if (status != 200 or after_restart != after_fault or records_after_restart != records_after_fault
+                or snapshot_path.read_bytes() != persisted or restarted_status != 409
+                or restarted_replay.get('ordinary_release') is not False):
+            raise RuntimeError('NETWORK_RETRY_RESTART_CHANGED_PERSISTED_EFFECT')
+        return {'schema': 'qikvrt_terminal_network_loss_readback_v1',
+                'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+                'transport_faults': [commit_fault, *readback_faults],
+                'network_loss_injected': all(fault['network_loss_injected'] for fault in (commit_fault, *readback_faults)),
+                'fault_scope': 'BOUNDED_LOOPBACK_TCP_COMMIT_RESPONSE_AND_READBACK_INTERRUPTION',
+                'server_alive_after_faults': True, 'first_process_pid': first_pid,
+                'restarted_process_pid': second.process.pid, 'actual_process_restart': True,
+                'prior_event_count': original['event_count'], 'probe_input_hash': input_hash,
+                'probe_commit_token_sha256': token_hash, 'probe_effect_record_path': effect_path,
+                'probe_effects': len(matches), 'replay_http_status': replay_status,
+                'concurrent_retry': {'clients': retry_clients, 'http_statuses': [code for code, _ in retries],
+                                     'refusals': len(retries), 'second_effects': 0},
+                'restart_replay_http_status': restarted_status,
+                'event_snapshot_after_fault': after_fault, 'event_snapshot_after_retry': after_retry,
+                'event_snapshot_after_restart': after_restart,
+                'effect_records_after_fault': records_after_fault, 'effect_records_after_retry': records_after_retry,
+                'effect_records_after_restart': records_after_restart,
+                'persisted_snapshot_sha256': persisted_sha256, 'persisted_snapshot_bytes': len(persisted),
+                'persisted_snapshot_unchanged': True, 'private_state_uploaded': False,
+                'replay_second_effects': 0, 'persistence_scope': after_fault['persistence_scope'],
+                'authority_mirror_live_nodes_tested': False, 'unbounded_scalability_proved': False,
+                'predecessor_evidence_transfer': False, 'personal_release_effect_ack_done': False,
+                'external_effect': 'NONE'}
+    finally:
+        if first is not None:
+            first.close()
+        if second is not None:
+            second.close()
+
+
 def bounded_ring_controls(terminal):
     """Real HTTP effects; finite fanout is not general Mesh/runtime equivalence."""
     def request(path, body=None, field=None):
@@ -487,12 +718,16 @@ def witness(output, headless=False, linux=False):
                'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
                'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], cwd=ROOT, text=True).strip(),
                'policy_sha256': digest(POLICY),
+               'observer_sha256': digest(__file__),
+               'terminal_source_sha256': digest(ROOT / 'src/qikvrt_effect_ack_http_terminal.py'),
                'run_id': os.environ.get('GITHUB_RUN_ID'),
                'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
                'job': os.environ.get('GITHUB_JOB'),
                'runner_image': os.environ.get('ImageOS'),
                'runner_image_version': os.environ.get('ImageVersion'),
                'headless': headless, 'predecessor_evidence_transfer': False,
+               'network_loss_injected': False, 'authority_mirror_live_nodes_tested': False,
+               'unbounded_scalability_proved': False,
                'hardware_required': False, 'extension_loaded': False,
                'terminal_functional_readback': False, 'local_effect_readback': False,
                'product_target_verified': False, 'authenticated_runtime_readback': False,
@@ -690,6 +925,10 @@ def witness(output, headless=False, linux=False):
                     terminal, state_root, seed,
                     expected_snapshot=receipt['ring_controls']['event_snapshot'],
                     replay_probes=[(requests[-1], firefox_field)])
+                receipt['network_loss_controls'] = network_loss_controls(
+                    terminal, state_root, seed,
+                    expected_snapshot=receipt['restart_controls']['replay_event_snapshot'])
+                receipt['network_loss_injected'] = receipt['network_loss_controls']['network_loss_injected']
                 receipt['persistent_state_sha256'] = digest(terminal.STATE.store)
                 receipt['linux_ring_test'] = 'PASS'
             receipt.update(local_effect_readback=True, replay_rejected=True,

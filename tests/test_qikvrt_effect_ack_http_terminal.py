@@ -744,6 +744,71 @@ class DurableTerminalE2ETests(LoopbackTerminalE2ETests):
 
 
 class DurableTerminalProcessTests(unittest.TestCase):
+    def test_real_transport_reset_truncated_readback_and_concurrent_retries(self):
+        from tools.qikvrt_firefox_windows_witness import network_loss_controls
+        with tempfile.TemporaryDirectory() as directory:
+            result = network_loss_controls(terminal, Path(directory),
+                ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+        self.assertTrue(result['network_loss_injected'])
+        self.assertTrue(result['server_alive_after_faults'])
+        self.assertEqual(result['probe_effects'], 1)
+        faults = result['transport_faults']
+        self.assertIn(faults[0]['client_error'], ('ConnectionResetError', 'RemoteDisconnected'))
+        self.assertEqual(faults[0]['downstream_body_bytes_sent'], 0)
+        self.assertEqual([fault['client_error'] for fault in faults[1:]], ['IncompleteRead'] * 2)
+        for fault in faults:
+            self.assertTrue(fault['network_loss_injected'])
+            self.assertFalse(fault['client_complete_response'])
+            self.assertEqual(fault['upstream_http_status'], 200)
+            self.assertEqual(fault['persisted_snapshot_sha256_before_cut'], result['persisted_snapshot_sha256'])
+        for fault in faults[1:]:
+            self.assertGreater(fault['client_partial_bytes'], 0)
+            self.assertGreater(fault['client_missing_bytes'], 0)
+            self.assertEqual(fault['client_partial_bytes'] + fault['client_missing_bytes'], fault['upstream_body_bytes'])
+        self.assertEqual(result['concurrent_retry'],
+                         {'clients': 4, 'http_statuses': [409] * 4, 'refusals': 4, 'second_effects': 0})
+        self.assertEqual(result['replay_http_status'], 409)
+        self.assertEqual(result['restart_replay_http_status'], 409)
+        self.assertNotEqual(result['first_process_pid'], result['restarted_process_pid'])
+        self.assertTrue(result['persisted_snapshot_unchanged'])
+        self.assertEqual(result['event_snapshot_after_fault']['event_count'], 1)
+        self.assertEqual(result['event_snapshot_after_fault'], result['event_snapshot_after_retry'])
+        self.assertEqual(result['event_snapshot_after_fault'], result['event_snapshot_after_restart'])
+        self.assertEqual(result['effect_records_after_fault'], result['effect_records_after_retry'])
+        self.assertEqual(result['effect_records_after_fault'], result['effect_records_after_restart'])
+        self.assertEqual(len(result['effect_records_after_fault']), 2)
+        self.assertEqual(result['replay_second_effects'], 0)
+        for flag in ('authority_mirror_live_nodes_tested', 'unbounded_scalability_proved',
+                     'predecessor_evidence_transfer', 'personal_release_effect_ack_done', 'private_state_uploaded'):
+            self.assertFalse(result[flag])
+        exported = json.dumps(result)
+        self.assertNotIn('"secret"', exported)
+        self.assertNotIn('"commit_token"', exported)
+
+    def test_transport_cut_of_refused_replay_is_not_post_commit_loss_evidence(self):
+        from tools.qikvrt_firefox_windows_witness import TerminalProcess, interrupted_http_response
+        import qikvrt_api_handler as persistence
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            first = TerminalProcess(root, ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+            try:
+                payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'refusal-is-not-lost-commit'}
+                status, prepared = first.request('/terminal/prepare', payload, 'v=1, mode=prepare')
+                self.assertEqual(status, 200)
+                field = commit_field(prepared['commit_token'], prepared['record_hash'])
+                self.assertEqual(first.request('/terminal/commit', payload, field)[0], 200)
+                snapshot = first.request('/terminal/events')[1]
+                store = persistence.dirs(root)['state'] / 'terminal.json'
+                persisted = store.read_bytes()
+                with self.assertRaisesRegex(RuntimeError, 'TRANSPORT_PROXY_UPSTREAM_NOT_COMPLETE_200'):
+                    interrupted_http_response(first, store, '/terminal/commit', payload, field,
+                                              mode='TCP_RST_BEFORE_RESPONSE')
+                self.assertIsNone(first.process.poll())
+                self.assertEqual(first.request('/terminal/events')[1], snapshot)
+                self.assertEqual(store.read_bytes(), persisted)
+            finally:
+                first.close()
+
     def test_real_sigkill_restart_and_fresh_record_readback(self):
         from tools.qikvrt_firefox_windows_witness import durable_restart_controls
         with tempfile.TemporaryDirectory() as directory:

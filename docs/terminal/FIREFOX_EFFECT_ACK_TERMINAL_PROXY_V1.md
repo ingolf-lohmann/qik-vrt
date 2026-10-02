@@ -79,10 +79,29 @@ token cannot create another event.
 
 The existing Linux Firefox witness retains its real browser effect, adds
 bounded HTTP concurrency, then kills and restarts actual terminal processes
-and compares every retained event and referenced record. This establishes only
-the bounded local snapshot on a filesystem honoring atomic rename and fsync.
-It does not test power removal, media destruction, network loss, productive
-Authority/Mirror nodes or unbounded scalability. The unseeded Windows/in-memory
+and compares every retained event and referenced record. Its separate network
+control forwards a real commit to that unchanged durable process, observes the
+complete upstream response and persisted snapshot, then aborts the downstream
+TCP socket before the client receives the response. It also cuts event and
+Effect-Record readbacks midway through their declared Content-Length. Only
+observed client reset/disconnection or incomplete-body errors qualify;
+discarding a successfully received reply, an upstream refusal, a timeout or a
+proxy failure cannot set `network_loss_injected=true`.
+
+A fresh direct `/terminal/events` and record readback binds the lost response
+to exactly one event and one executed Effect-Record. One same-token retry and
+four barrier-started concurrent retries must all return 409 without an ordinary
+release. Complete event and referenced-record readbacks and the private
+snapshot bytes must stay identical after retries and another actual process
+restart. Only snapshot hashes/size and token-free readbacks are exported; the
+private snapshot itself is never uploaded.
+
+These are bounded loopback TCP response/readback fault controls using HTTP
+clients in the native Firefox witness job, not browser fanout or live Mesh
+fault injection. They establish the local snapshot on a filesystem honoring
+atomic rename and fsync. Power removal, media destruction, productive
+Authority/Mirror nodes and unbounded scalability remain untested. Governance
+and release acceptance remain separate gates. The unseeded Windows/in-memory
 reference profile continues to declare `PROCESS_LIFETIME_ONLY`.
 
 ## HTTP / HTML integration
