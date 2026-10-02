@@ -1,0 +1,84 @@
+{
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "fd120af6bff3b837f26446276674d688daad20db",
+  "source_tree": "240ac8513063abbfc663d11518007ef4a17f63c5",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "authority_readback": {
+    "repository_http_status": 404,
+    "AI_http_status": 404
+  },
+  "zenodo_capability": {
+    "connected_publish_operation": false,
+    "plugin_search_matches": 0,
+    "local_credential_environment_present": false,
+    "native_writers_inspected": [
+      ".github/workflows/qikvrt_round_trip_zenodo_publish.yml",
+      ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml"
+    ],
+    "native_writers_repository_guard": "Goldkelch/qik-vrt",
+    "new_candidates_supported_by_these_exact_writers": false,
+    "production_mutation_count": 0
+  },
+  "author": "Ingolf Lohmann",
+  "documentation_set": "QIK-VRT-Originale-20261002",
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "authorization": {
+    "repository_archival_requested": true,
+    "zenodo_publication_requested": true,
+    "ietf_conditional": true,
+    "wikipedia_and_arxiv_later": true,
+    "exact_production_contract_statement_present": false
+  },
+  "schema": "qikvrt_original_sketch_publication_status_v1",
+  "observed_at": "2026-10-02T09:48:48.826444+00:00",
+  "human_origin": {
+    "author": "Ingolf Lohmann",
+    "origin_class": "HUMAN",
+    "attribution_basis": "Explicit user statement: Original handschriftliche Skizzen meinerseits"
+  },
+  "artificial_cognitive_origin": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "contributions": [
+      "archive descriptions",
+      "hash verification",
+      "gallery",
+      "publication metadata",
+      "repository candidate"
+    ]
+  },
+  "repository_effect": {
+    "candidate_prepared": true,
+    "main_promoted": false,
+    "authority_persisted": false,
+    "mirror_candidate_readback": false
+  },
+  "zenodo_effect": {
+    "state": "BLOCK_UNVERIFIED_PUBLICATION_ROUTE",
+    "uploaded": false,
+    "published": false,
+    "record_id": null,
+    "doi": null,
+    "mutation_count": 0,
+    "contract_boundary": "Production v2 proof, return receipt, canonical hash-bound owner statement and Authority-global consumption ref remain required by the existing publisher."
+  },
+  "ietf_effect": {
+    "submitted": false,
+    "plan": "Informative provenance reference after DOI publication; no protocol change established by the sketches."
+  },
+  "arxiv_effect": {
+    "submitted": false,
+    "plan": "Ancillary original-image archive attached to a suitable explanatory manuscript later."
+  },
+  "wikipedia_effect": {
+    "published": false,
+    "plan": "Later neutral encyclopedic treatment with suitable independent secondary sources; existing NC/ND license is not changed."
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

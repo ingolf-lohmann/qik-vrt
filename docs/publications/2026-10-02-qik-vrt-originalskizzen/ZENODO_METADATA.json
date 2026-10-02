@@ -1,0 +1,36 @@
+{
+  "title": "QIK-VRT: handschriftliche Originalskizzen von Ingolf Lohmann – Funktionsweise und Entstehungsdokumentation",
+  "upload_type": "image",
+  "image_type": "drawing",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "description": "<p>Sechs zusammengehörige handschriftliche Originalskizzen von Ingolf Lohmann zur universal anschlussfähigen Erläuterung der Wirkungsweise von QIK VRT. Die Originaldateien IMG_1096.jpeg bis IMG_1101.jpeg werden in stabiler Reihenfolge und unveränderten Bildbytes archiviert.</p><p>Der Begleittext beschreibt Herkunft und dokumentierten Entstehungsweg. Archivmanifest und Prüfsummen binden die Originalquellen. Die redaktionelle Katalogisierung, Galerie und Begleitmetadaten wurden mit OpenAI Codex erstellt. Die Zeichnungen sind dokumentarische Primärquellen mit zugeordneten begrifflichen und interpretativen Aussagen.</p>",
+  "access_right": "open",
+  "license": "cc-by-nc-nd-4.0",
+  "language": "deu",
+  "keywords": [
+    "QIK-VRT",
+    "Ingolf Lohmann",
+    "Originalskizzen",
+    "Universal Terminal",
+    "Universal Transputer",
+    "Information",
+    "Provenienz"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Goldkelch/qik-vrt",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/ingolf-lohmann/qik-vrt",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Archivdatum: 2026-10-02. Anfertigungs- und Aufnahmezeitpunkte sind nicht separat nachgewiesen. Keine zusätzliche Lizenzfreigabe für kommerzielle Nutzung oder Bearbeitung."
+}
