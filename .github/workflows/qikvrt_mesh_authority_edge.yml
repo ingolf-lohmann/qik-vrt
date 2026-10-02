@@ -96,6 +96,8 @@ jobs:
     # Fixed inline GET-only observer: no checkout, dispatch payload or candidate code.
     env:
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+      RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+      MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
       OBSERVER_TOKEN: ${{ github.token }}
       CANDIDATE_HEAD: ${{ github.sha }}
       OBSERVER_RUN_ID: ${{ github.run_id }}
@@ -138,16 +140,28 @@ jobs:
           candidate = get('https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/' + head,
                           os.environ['OBSERVER_TOKEN'])
           tree = candidate.get('json', {}).get('tree', {}).get('sha')
-          token = os.environ.get('ADMIN_TOKEN', '')
+          token = ''
+          route = None
+          probes = {}
+          for name in ('RULESET_ADMIN_TOKEN', 'ADMIN_TOKEN', 'MESH_TOKEN'):
+              credential = os.environ.get(name, '')
+              probes[name] = {'credential_present': bool(credential)}
+              if credential:
+                  probes[name]['pages'] = get('https://api.github.com/repos/Goldkelch/qik-vrt/pages', credential)
+                  if route is None and probes[name]['pages'].get('status') == 200:
+                      route, token = name, credential
           authority = {}
           if token:
-              for path in ('pages', 'pages/builds/latest', 'branches/main'):
+              authority['pages'] = probes[route]['pages']
+              for path in ('pages/builds/latest', 'branches/main'):
                   authority[path] = get('https://api.github.com/repos/Goldkelch/qik-vrt/' + path, token)
           receipt = {'schema': 'qikvrt_authority_pages_rest_probe_v1',
                      'observed_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                      'candidate_repository': 'ingolf-lohmann/qik-vrt', 'candidate_head': head, 'candidate_tree': tree,
                      'run_id': os.environ['OBSERVER_RUN_ID'], 'run_attempt': os.environ['OBSERVER_RUN_ATTEMPT'],
-                     'credential_present': bool(token), 'authority_repository': 'Goldkelch/qik-vrt',
+                     'credential_present': any(x['credential_present'] for x in probes.values()),
+                     'credential_route': route, 'credential_route_probes': probes,
+                     'authority_repository': 'Goldkelch/qik-vrt',
                      'authority_reads': authority,
                      'public_reads': [get('https://goldkelch.github.io/qik-vrt/' + path) for path in ('', 'mesh/live/')],
                      'state': ('OBSERVED_AUTHORITY_PAGES' if tree and authority.get('pages', {}).get('status') == 200
