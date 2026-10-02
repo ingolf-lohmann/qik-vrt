@@ -37,7 +37,8 @@ class OriginalSketchPublicationTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.root = pathlib.Path(self.tmp.name)
         request = json.loads((ROOT / REQUEST).read_text())
-        paths = [entry['path'] for entry in request['files']] + [REQUEST, request['owner_authorization']['path']]
+        draft_path = REL + '/OWNER_ZENODO_AUTHORIZATION_DRAFT.json'
+        paths = [entry['path'] for entry in request['files']] + [REQUEST, request['owner_authorization']['path'], draft_path]
         paths += [proof.POLICY_PATH, proof.BUNDLE_SCHEMA_PATH, proof.RETURN_SCHEMA_PATH,
                   proof.LEGACY_POLICY_PATH, proof.LEGACY_BUNDLE_SCHEMA_PATH, proof.LEGACY_RETURN_SCHEMA_PATH]
         for path in paths:
@@ -47,6 +48,11 @@ class OriginalSketchPublicationTests(unittest.TestCase):
         self.bundle = self.root / REL / 'MACHINE_PROOF_BUNDLE.json'
         self.request = self.root / REQUEST
         self.uploads = [entry['path'] for entry in request['files']]
+        # Keep rejection and synthetic-decision cases bound to the archived draft.
+        # The production manifest may now reference a real recorded owner event.
+        draft = self.root / draft_path
+        request['owner_authorization'] = publish._identity(draft_path, draft.read_bytes())
+        write_json(self.request, request)
 
     def validate(self) -> dict[str, object]:
         return proof.validate_bundle(self.root, self.bundle, upload_paths=self.uploads)
@@ -92,6 +98,23 @@ class OriginalSketchPublicationTests(unittest.TestCase):
         self.assertEqual(manifest['metadata']['upload_type'], 'image')
         self.assertEqual(manifest['metadata']['image_type'], 'drawing')
         self.assertEqual(manifest['repository'], 'Goldkelch/qik-vrt')
+
+    def test_recorded_owner_authorization_validates_without_consuming_or_publishing(self) -> None:
+        with mock.patch.dict(os.environ, {'GITHUB_REPOSITORY': publish.PRODUCTION_REPOSITORY}, clear=True), \
+             mock.patch.object(publish, '_validated_network_secrets') as credentials, \
+             mock.patch.object(publish, '_acquire_remote_consumption_lock') as lock, \
+             mock.patch.object(zenodo, 'ZenodoClient') as client:
+            manifest = publish.load_manifest(ROOT / REQUEST, ROOT)
+            files = publish.verify_files(manifest, ROOT, 'OFFLINE_FIXTURE_NO_CREDENTIAL')
+            authorization = manifest['owner_authorization']
+            self.assertEqual(authorization['authorization_event']['decision'], 'AUTHORIZE_EXACT_UPLOAD')
+            self.assertEqual(authorization['authorization_event']['authorized_at'], '2026-10-02T14:49:37Z')
+            self.assertTrue(authorization['single_use'])
+            self.assertEqual(authorization['publication_id'], 'qikvrt-original-sketches-20261002-v1')
+            self.assertEqual(len(files), 18)
+            credentials.assert_not_called()
+            lock.assert_not_called()
+            client.assert_not_called()
 
     def test_actual_owner_draft_stops_before_credentials_lock_and_client(self) -> None:
         with mock.patch.dict(os.environ, {'GITHUB_REPOSITORY': publish.PRODUCTION_REPOSITORY}, clear=True), \

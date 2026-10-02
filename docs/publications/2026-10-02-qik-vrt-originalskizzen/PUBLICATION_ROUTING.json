@@ -62,14 +62,16 @@
       "disposition": "LATER_INDEPENDENT_SECONDARY_SOURCE_REVIEW"
     },
     "zenodo": {
-      "effect_gate": "EXPLICIT_HASH_BOUND_PUBLICATION_REQUEST_REQUIRED",
+      "effect_gate": "AUTHORITY_ROUTE_AND_CREDENTIALED_EXECUTOR_REQUIRED",
       "machine_proof_bundle": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+      "owner_authorization": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION.json",
       "owner_authorization_draft": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION_DRAFT.json",
+      "owner_authorized_at": "2026-10-02T14:49:37Z",
       "production_gate_status": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PRODUCTION_GATE_STATUS.json",
       "production_repository": "Goldkelch/qik-vrt",
       "publication_manifest": "docs/publications/2026-10-02-qik-vrt-originalskizzen/publish-request.json",
-      "state": "V2_PROOF_COMPLETE_EXACT_AUTHORIZATION_PENDING",
-      "upload_authorized": false
+      "state": "V2_EXACT_OWNER_AUTHORIZED_PRODUCTION_CAPABILITY_HOLD",
+      "upload_authorized": true
     }
   },
   "schema": "qikvrt_publication_routing_manifest_v1",
