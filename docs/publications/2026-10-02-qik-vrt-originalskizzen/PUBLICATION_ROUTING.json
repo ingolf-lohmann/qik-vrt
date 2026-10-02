@@ -33,7 +33,9 @@
   ],
   "author": "Ingolf Lohmann",
   "automation": {
+    "existing_actions_carrier_reuse_candidate": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
     "new_publisher_created": false,
+    "parallel_publisher_or_workflow_created": false,
     "reuse": "tools/qikvrt_zenodo_publish.py after its exact production preconditions are met"
   },
   "bundle_id": "qikvrt-original-sketches-20261002-v1",
@@ -62,8 +64,14 @@
       "disposition": "LATER_INDEPENDENT_SECONDARY_SOURCE_REVIEW"
     },
     "zenodo": {
+      "authority_preflight_verified": false,
+      "carrier_comparison": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PRODUCTION_GATE_STATUS.json#credentialed_actions_carrier",
+      "carrier_reuse_candidate": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "carrier_state": "HOLD_AUTHORITY_PREFLIGHT_AND_CALLABLE_ACTIONS_PATH",
       "effect_gate": "AUTHORITY_ROUTE_AND_CREDENTIALED_EXECUTOR_REQUIRED",
+      "initial_actions_dispatch_callable": false,
       "machine_proof_bundle": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+      "new_owner_decision_required_while_bound_hashes_unchanged": false,
       "owner_authorization": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION.json",
       "owner_authorization_draft": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION_DRAFT.json",
       "owner_authorized_at": "2026-10-02T14:49:37Z",

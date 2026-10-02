@@ -24,11 +24,14 @@
       "repository_id": 1271407206
     },
     "zenodo_executor": {
+      "authority_bound_actions_dispatch_callable": false,
       "dedicated_callable_connector": false,
       "executable_credential_path_established": false,
+      "existing_actions_carrier_candidates_found": 3,
       "local_github_token_present": false,
       "local_zenodo_token_present": false,
-      "repository_secret_executability_inferred": false
+      "repository_secret_executability_inferred": false,
+      "selected_reuse_candidate": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml"
     }
   },
   "authority_mirror_equality": false,
@@ -51,7 +54,283 @@
     "sha256": "4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5"
   },
   "canonical_metadata_sha256": "6672ea5da380192fe191a4ddc1d8107c705e22ac840f96aa29c2ee08afd03ad6",
-  "capability_observed_at": "2026-10-02T14:59:53.762185Z",
+  "capability_observed_at": "2026-10-02T17:54:13.710902Z",
+  "credentialed_actions_carrier": {
+    "authority_absence_or_global_unreachability_inferred": false,
+    "authority_preflight": {
+      "competing_publication_runs_and_writers": "UNVERIFIED_ON_AUTHORITY",
+      "complete_refs": "UNVERIFIED_ON_AUTHORITY",
+      "consumption_key": {
+        "algorithm": "SHA-256",
+        "schema": "qikvrt_zenodo_authorization_consumption_key_v2",
+        "value": "f7c678fa38a33845ca639af33bb479736bf84fa9b6a15dbe87f8edf2e39b82f8"
+      },
+      "consumption_ref": "refs/tags/qikvrt-zenodo-auth/f7c678fa38a33845ca639af33bb479736bf84fa9b6a15dbe87f8edf2e39b82f8",
+      "consumption_ref_read": "HTTP_404_NOT_FOUND_ROUTING_AMBIGUOUS_NOT_PROOF_OF_ABSENCE",
+      "current_main_head_and_tree": "UNVERIFIED",
+      "endpoint_observations": [
+        {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "http_status": "404",
+          "isError": true,
+          "key": "final_authority_repo",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt"
+        },
+        {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "http_status": "404",
+          "isError": true,
+          "key": "final_authority_main",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main"
+        },
+        {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "http_status": "404",
+          "isError": true,
+          "key": "final_authority_source",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/commits/c31a479c51e71bcf06fd62e1ea909d400e345bfe"
+        },
+        {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "http_status": "404",
+          "isError": true,
+          "key": "final_authority_refs",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/refs?per_page=100"
+        },
+        {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "http_status": "404",
+          "isError": true,
+          "key": "final_authority_runs",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/actions/runs?per_page=100"
+        },
+        {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "http_status": "404",
+          "isError": true,
+          "key": "final_authority_consumption",
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/tags/qikvrt-zenodo-auth/f7c678fa38a33845ca639af33bb479736bf84fa9b6a15dbe87f8edf2e39b82f8"
+        }
+      ],
+      "global_single_use_consumption": "UNVERIFIED_ON_AUTHORITY",
+      "installation_id": 147849532,
+      "listed_permissions": {
+        "admin": false,
+        "pull": true,
+        "push": true
+      },
+      "listed_repository_id": 1271407206,
+      "mirror_evidence_may_replace_authority_preflight": false,
+      "pagination_completed": false,
+      "source_ancestry_and_closure": "UNVERIFIED_ON_AUTHORITY",
+      "source_head": "c31a479c51e71bcf06fd62e1ea909d400e345bfe"
+    },
+    "carrier_available_in_mirror_source": true,
+    "carrier_verified_on_authority": false,
+    "carriers": [
+      {
+        "authority_workflow_bytes_verified": false,
+        "bytes": 8294,
+        "cancel_in_progress": false,
+        "contents_permission": "write",
+        "current_fixed_manifest_schema": "qikvrt_zenodo_publication_manifest_v2",
+        "current_fixed_manifest_source_head": "488c1c0e0c3228f4c3bed47f04b1110906c59b2f",
+        "currently_callable_for_originals": false,
+        "disposition": "FIXED_OTHER_PUBLICATION_AND_MISSING_EXPLICIT_GITHUB_TOKEN",
+        "environment": null,
+        "fixed_manifest": "release/survival-anschlussfaehigsten-2026-07-31/publish-request.json",
+        "fixed_ref": "refs/heads/publication/survival-anschlussfaehig-v1",
+        "fixed_source_or_parent": "2bc0d73614c1bff47ffb6e4f43b75c0b7d42e9c8",
+        "fixed_upload_count": 31,
+        "git_blob_sha1": "ecd668bea4522ebd40aff589b341651fec0d448d",
+        "github_token_explicitly_passed_to_publisher": false,
+        "label": "survival connectability",
+        "observation_commit": "97bf3cbb6c273f1cf88444fbe99ff533518c175c",
+        "observation_repository": "ingolf-lohmann/qik-vrt",
+        "path": ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+        "production_repository_guard": "Goldkelch/qik-vrt",
+        "publisher": "tools/qikvrt_zenodo_publish.py",
+        "sha256": "4c245ea026df631105c6eec83868c68a597d539acaf70ee8a5a4753b8b762bd5",
+        "trigger": "push of the workflow path on its fixed branch",
+        "zenodo_token_expression": "${{ secrets.ZENODO_ACCESS_TOKEN }}"
+      },
+      {
+        "authority_workflow_bytes_verified": false,
+        "bytes": 8380,
+        "cancel_in_progress": false,
+        "contents_permission": "write",
+        "current_fixed_manifest_schema": "qikvrt_zenodo_publication_manifest_v2",
+        "current_fixed_manifest_source_head": "f9d092d473da316e1f9b6026bfd8f4a27b36bedd",
+        "currently_callable_for_originals": false,
+        "disposition": "FIXED_OTHER_PUBLICATION_AND_MISSING_EXPLICIT_GITHUB_TOKEN",
+        "environment": null,
+        "fixed_manifest": "release/canonical-temporal-memory-effect-ack-2026-07-31/publish-request.json",
+        "fixed_ref": "refs/heads/publication/canonical-temporal-memory-effect-ack-v1",
+        "fixed_source_or_parent": "93d3f250b277318b79e02438bf557056bb978614",
+        "fixed_upload_count": 21,
+        "git_blob_sha1": "e4c66aa0d71c09873c0e902aba10783edf967c5b",
+        "github_token_explicitly_passed_to_publisher": false,
+        "label": "canonical temporal memory",
+        "observation_commit": "97bf3cbb6c273f1cf88444fbe99ff533518c175c",
+        "observation_repository": "ingolf-lohmann/qik-vrt",
+        "path": ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+        "production_repository_guard": "Goldkelch/qik-vrt",
+        "publisher": "tools/qikvrt_zenodo_publish.py",
+        "sha256": "a32ce95f4e6b252fb59399e547b1a476ddca037dae46b76731c3199c98200ffb",
+        "trigger": "push of the workflow path on its fixed branch",
+        "zenodo_token_expression": "${{ secrets.ZENODO_ACCESS_TOKEN }}"
+      },
+      {
+        "authority_workflow_bytes_verified": false,
+        "bytes": 10959,
+        "cancel_in_progress": false,
+        "checkout_persist_credentials": false,
+        "contents_permission": "write",
+        "current_fixed_manifest_schema": "qikvrt_zenodo_publication_manifest_v2",
+        "current_fixed_manifest_source_head": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "currently_callable_for_originals": false,
+        "disposition": "SMALLEST_EXISTING_V2_CARRIER_REQUIRES_IN_PLACE_PARAMETERIZATION_AND_AUTHORITY_ROUTE",
+        "environment": "zenodo-production",
+        "fixed_confirmation": "PUBLISH_OBSERVER_RELATIVE_RETROCAUSALITY_ZENODO_V2",
+        "fixed_execution_head": "a7cd4011b8cdf06e650e22dc3e8dda6df22a5bf0",
+        "fixed_manifest": "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/publish-request.json",
+        "fixed_ref": "refs/heads/main",
+        "fixed_source_or_parent": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "fixed_upload_count": 21,
+        "git_blob_sha1": "7eb73d96035101810e2f78cabd02cf99dad04773",
+        "github_token_explicitly_passed_to_publisher": true,
+        "label": "observer-relative retrocausality",
+        "observation_commit": "97bf3cbb6c273f1cf88444fbe99ff533518c175c",
+        "observation_repository": "ingolf-lohmann/qik-vrt",
+        "path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+        "production_repository_guard": "Goldkelch/qik-vrt",
+        "publisher": "tools/qikvrt_zenodo_publish.py",
+        "receipt_persistence": "separate receipt branch and pull request; validates existing generic recovery evidence",
+        "required_actor": "Goldkelch",
+        "required_triggering_actor": "Goldkelch",
+        "sha256": "eef2d427d5bcc7b194ad35bde26dbbc69927a8ded79fa12ef7c4ba915e0bfd3a",
+        "trigger": "workflow_dispatch",
+        "zenodo_token_expression": "${{ secrets.ZENODO_ACCESS_TOKEN }}"
+      }
+    ],
+    "connector_github_fetch_capability": "GET_ONLY_ALLOWLISTED_REPOSITORY_ENDPOINTS",
+    "connector_has_initial_workflow_dispatch_operation": false,
+    "connector_principal": {
+      "existing_actor_gate_satisfied_by_observed_principal": false,
+      "id": 294949349,
+      "login": "ingolf-lohmann",
+      "required_carrier_actor": "Goldkelch"
+    },
+    "credential_delivery_on_authority_verified": false,
+    "effects_in_this_continuation": {
+      "consumption_ref_creations": 0,
+      "doi": null,
+      "production_publisher_invocations": 0,
+      "public_byte_readback": false,
+      "workflow_dispatches": 0,
+      "zenodo_mutations": 0
+    },
+    "explicit_installation_bound_source_or_dispatch_operation_available": false,
+    "first_causal_blocker": "AUTHORITY_INSTALLATION_ROUTING_BOUNDARY",
+    "fresh_scope_validation": {
+      "errors": 0,
+      "failures": 0,
+      "fresh_successor_full_repository_actions_required": true,
+      "local_bootloader": {
+        "boundary": "Partial API-native readback is not a complete local Git checkout with origin and history. No local full-repository boot or make test success is claimed.",
+        "exit_code": 2,
+        "state": "BLOCK"
+      },
+      "predecessor_evidence_transfer": false,
+      "production_publisher_invocations": 0,
+      "scope": "Offline package, authorization, transport, single-use/recovery and claim-boundary controls; no production capability inferred.",
+      "skips": 0,
+      "test_modules": {
+        "test_original_sketches_zenodo_v2.py": 11,
+        "test_zenodo_actions.py": 17,
+        "test_zenodo_machine_proof_policy.py": 70
+      },
+      "tests": 98,
+      "tool_cache_contract": "PASS_14_OF_14_100_PERCENT",
+      "workflow_dispatches": 0
+    },
+    "local_network_tokens_present": {
+      "GITHUB_TOKEN": false,
+      "ZENODO_ACCESS_TOKEN": false
+    },
+    "minimal_in_place_reuse_contract": {
+      "ambiguous_or_consumed_state": "Observe authoritative run/ref/receipt state and use only the existing fail-closed recovery contract; no blind rerun or new publication.",
+      "authority_dispatch_main_head": null,
+      "authority_execution_head": null,
+      "authorized_source_head": "c31a479c51e71bcf06fd62e1ea909d400e345bfe",
+      "dispatch_retry_after_ambiguous_response": false,
+      "evidence_path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/zenodo-publication.json",
+      "existing_publisher_path": "tools/qikvrt_zenodo_publish.py",
+      "existing_workflow_path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+      "implementation_state": "PREPARED_CONTRACT_NOT_ACTIVATED",
+      "known_preparation_execution_head": "97bf3cbb6c273f1cf88444fbe99ff533518c175c",
+      "manifest": "docs/publications/2026-10-02-qik-vrt-originalskizzen/publish-request.json",
+      "manifest_git_blob_sha1": "6231f3093b232fa7d4655c9a37a0eb467d66fcbc",
+      "manifest_sha256": "65aa6ade8221a6d6cb9bf9e0ff2dcdda6bfc3b6de03bf352666a787d0aadca2a",
+      "new_publisher_required": false,
+      "parallel_publication_logic_required": false,
+      "post_effect_acceptance": [
+        "fresh DOI and public record readback",
+        "all 18 public file bytes independently redownloaded and verified by the existing publisher",
+        "durable exact publication or recovery receipt on Authority",
+        "Mirror persistence and fresh exact-scope comparison before pair equality"
+      ],
+      "preserve_actor_repository_environment_and_manual_trigger_boundaries": true,
+      "publisher_argv": [
+        "python3",
+        "-B",
+        "tools/qikvrt_zenodo_publish.py",
+        "--manifest",
+        "docs/publications/2026-10-02-qik-vrt-originalskizzen/publish-request.json"
+      ],
+      "publisher_invocation_limit": 1,
+      "required_wrapper_adaptations": [
+        "Parameterize the existing manual V2 wrapper with an allowlisted originals publication mode and a distinct explicit dispatch selector. The old paper confirmation must never publish originals.",
+        "Bind manifest, source, actual authorized Authority execution commit, exact delta, evidence path and 18 upload files after a fresh Authority read. Do not fabricate an Authority commit from a Mirror observation.",
+        "Retain the old-paper finalizer only in its existing mode; for originals reuse the generic load_manifest, verify_files and _validate_repository_source_head validation. Its source is an ancestor across several control successors, not the direct parent asserted by the old paper mode.",
+        "Reuse both existing network-token environment bindings and the separate generic recovery-receipt branch/PR path, with publication-specific receipt and artifact names.",
+        "Before the sole publisher invocation, freshly authenticate Authority source/head/tree, full paginated refs, competing writers/runs and unconsumed global authorization. Keep the generic publisher as the sole create-only consumption-lock and Zenodo effect implementation."
+      ],
+      "upload_count": 18
+    },
+    "mirror_preparation": {
+      "competing_active_runs_on_exact_publication_branch_observed": [],
+      "scope": "Mirror preparation only; no Authority source/ref/run/consumption proof is transferred.",
+      "source_ancestry": {
+        "merge_base": "c31a479c51e71bcf06fd62e1ea909d400e345bfe",
+        "status": "ahead",
+        "total_commits": 4
+      },
+      "upload_and_authorization_bytes_verified_against_current_git_blobs": true
+    },
+    "observation_scope": {
+      "commit": "97bf3cbb6c273f1cf88444fbe99ff533518c175c",
+      "ref": "refs/heads/publication/original-sketches-20261002-v1",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "c9450912b2bb0dcb454ee0213682828bb198f048"
+    },
+    "observed_at": "2026-10-02T17:54:13.710902Z",
+    "registered_default_branch_workflow_verified": false,
+    "rerun_is_not_an_initial_dispatch": true,
+    "retry_condition": "An actually authorized Goldkelch/qik-vrt route can freshly read the complete production preflight and initially dispatch the in-place adapted existing V2 carrier as its permitted principal. Every bound owner hash remains identical.",
+    "secret_expression_is_not_proof_of_secret_value_or_executability": true,
+    "selected_reuse_candidate": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+    "selection_basis": "This is the only compared carrier that passes both network tokens explicitly, retains a manual V2 execution boundary, disables checkout credential persistence, validates the generic recovery receipt, and persists it separately. Reuse its existing wrapper in place; do not create another publisher or parallel publication workflow.",
+    "smallest_next_action": "Restore or expose the installation-bound Authority repository read/execution route for installation 147849532; then freshly bind the in-place manual V2 carrier before one initial dispatch. No renewed exact owner decision is needed for unchanged hashes.",
+    "state": "HOLD_AUTHORITY_PREFLIGHT_AND_CALLABLE_ACTIONS_PATH",
+    "workflow_dispatch_callable_from_this_execution": false
+  },
   "doi": null,
   "effect_boundary": "Machine-proof schema admission does not grant natural-person upload authorization. No production record, DOI, public bytes or pair equality is claimed.",
   "first_causal_blocker": "AUTHORITY_INSTALLATION_ROUTING_BOUNDARY",
@@ -64,7 +343,7 @@
     "sha256": "99693d3c9407a5f755b6316aa543f99f53d32c655d2a38b5cfba1cf678bfeaaa"
   },
   "machine_proof_gate": "PASS_SCOPED_V2_CONTRACT",
-  "next_action": "Reuse this exact recorded authorization. Reobserve the Authority execution route, source ancestry, exact files, credentials, competing writers and global single-use consumption state before one generic publisher execution. If a prior consumption or ambiguous execution is found, use only the existing fail-closed recovery contract. No new owner decision is needed while every authorized hash is unchanged.",
+  "next_action": "Restore or expose the installation-bound Authority repository read/execution route for installation 147849532; then freshly bind the in-place manual V2 carrier before one initial dispatch. No renewed exact owner decision is needed for unchanged hashes. Reobserve Source, full refs, competing writers and consumption immediately before any Zenodo effect. An ambiguous 404 does not prove consumption freedom.",
   "owner_authorization": {
     "bytes": 8501,
     "git_blob_sha": "0205682d243683472aadad038115c3f8a216289d",
