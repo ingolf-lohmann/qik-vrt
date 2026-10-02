@@ -8,7 +8,8 @@
     "candidate-specific return receipt",
     "ungranted hash-bound authorization draft",
     "offline positive negative and boundary tests",
-    "history-preserving GitHub REST persistence"
+    "history-preserving GitHub REST persistence",
+    "history-preserving integration of the live main node lifecycle evidence and deterministic union inventory"
   ],
   "external_effects": {
     "authority_mirror_equality": false,
@@ -60,6 +61,61 @@
       "sha256": "2dd63928168c16ed64029a2827926f2118516deab17169fe5a928a17f797ddd2"
     }
   ],
+  "integration": {
+    "conflicting_source_paths": [],
+    "diagnosis": "Collective Review and Global Claim Completion checked synthetic merge e834765648b3584f8b9a79006c240c39d0664a84, which contained two live-main lifecycle receipts absent from the prior candidate inventory. Exact first-parent CI and Repository Evidence succeeded; those results are historical and are not assigned to the integrated successor.",
+    "first_parent": "414c60229594940b7c53d9669693c358c77b71c0",
+    "fresh_successor_checks_required": true,
+    "integrated_files": [
+      {
+        "bytes": 241,
+        "git_blob_sha1": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "immutable": true,
+        "path": "evidence/node_health/37007190339-1.json",
+        "sha256": "57232117db75b66ba8916366411e7d057f9ba5d89e2a79baec729d58b4658096"
+      },
+      {
+        "bytes": 241,
+        "git_blob_sha1": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "immutable": true,
+        "path": "evidence/node_health/LATEST.json",
+        "sha256": "57232117db75b66ba8916366411e7d057f9ba5d89e2a79baec729d58b4658096"
+      },
+      {
+        "bytes": 262,
+        "git_blob_sha1": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "immutable": true,
+        "path": "evidence/node_registration_renewal/37007190339-1.json",
+        "sha256": "fdeb4bdc65265705c8a5f63888ebed3238eb45c29c83e7c80b739b5ed8d14e30"
+      },
+      {
+        "bytes": 262,
+        "git_blob_sha1": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "immutable": true,
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "sha256": "fdeb4bdc65265705c8a5f63888ebed3238eb45c29c83e7c80b739b5ed8d14e30"
+      },
+      {
+        "bytes": 563,
+        "git_blob_sha1": "ef9c9cfdda552a8d561001a8045f010e7963cdd9",
+        "immutable": true,
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "sha256": "d47fa88fc45219539c6e90927f894c039dab718a7ce8a8cb931895c893388912"
+      },
+      {
+        "bytes": 542,
+        "git_blob_sha1": "3e834011ccdac7e349cf37b0293711ff57062150",
+        "immutable": true,
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "sha256": "4599048f30a76965709d236d5c0ae9b42acddda8d2bfcaea968eed9705197e4b"
+      }
+    ],
+    "merge_base": "fd120af6bff3b837f26446276674d688daad20db",
+    "owner_authorization_draft_bytes_changed": false,
+    "predecessor_evidence_transfer": false,
+    "second_parent": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "upload_file_bytes_changed": false
+  },
   "joint_components": [],
   "outputs": [
     {
