@@ -81,14 +81,15 @@
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
-        "github-hosted-runner-image:windows-11-arm"
+        "github-hosted-runner-image:windows-11-arm",
+        "github-hosted-runner-image:windows-2025"
       ],
       "failure_recovery": "Emit HOLD; discard mismatched archive; do not cache profiles or authentication state; no silent version fallback.",
       "license": "MPL-2.0",
       "profiles": [
         "firefox-windows"
       ],
-      "provider": "Mozilla Firefox through GitHub windows-11-arm runner image",
+      "provider": "Mozilla Firefox through declared GitHub windows-11-arm or windows-2025 runner image; independent native PE architecture and actual WebDriver receipt",
       "trusted_save": false,
       "verification": [
         "exact WebDriver browserVersion",
@@ -349,19 +350,21 @@
         "tools/qikvrt_firefox_windows_witness.py",
         ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
       ],
-      "cache_class": "runner-image-layer",
+      "cache_class": "hosted-toolcache",
       "cache_locations": [
-        "github-hosted-runner-image:windows-11-arm"
+        "github-hosted-toolcache:windows-11-arm:arm64:python-3.13.15",
+        "github-hosted-toolcache:windows-2025:x64:python-3.13.15"
       ],
       "failure_recovery": "Emit HOLD; discard mismatched archive; do not cache profiles or authentication state; no silent version fallback.",
       "license": "PSF-2.0",
       "profiles": [
         "firefox-windows"
       ],
-      "provider": "GitHub windows-11-arm runner-image Python",
+      "provider": "actions/setup-python with exact 3.13.15 and per-job native architecture; GitHub hosted toolcache",
       "trusted_save": false,
       "verification": [
         "exact interpreter version",
+        "independent native Python PE architecture and executable SHA256",
         "stdlib unittest and witness execution"
       ],
       "version": "3.13.15"

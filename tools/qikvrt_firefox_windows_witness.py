@@ -172,6 +172,16 @@ def target_matches(os_info, target, today=None):
             and target['supported_from'] <= today < target['support_until'])
 
 
+def native_windows_architectures_match(os_info, binaries, expected=None):
+    """OS and every executed PE must agree; runner labels cannot grant evidence."""
+    native = os_info.get('architecture')
+    return (native in ('ARM64', 'AMD64')
+            and (expected is None or native == expected)
+            and os_info.get('process_architecture') == native
+            and set(binaries) == {'python', 'firefox', 'geckodriver'}
+            and all(value == native for value in binaries.values()))
+
+
 def windows_identity():
     if sys.platform != 'win32':
         raise RuntimeError('WINDOWS_EXECUTION_REQUIRED')
@@ -811,7 +821,7 @@ def wait_script(driver, script):
     raise RuntimeError('BROWSER_FUNCTIONAL_TIMEOUT')
 
 
-def witness(output, headless=False, linux=False):
+def witness(output, headless=False, linux=False, expected_architecture=None):
     output.mkdir(parents=True, exist_ok=True)
     policy = json.loads(POLICY.read_text(encoding='utf-8'))
     contract = policy['linux_ring_acceptance'] if linux else policy['windows_acceptance']
@@ -825,6 +835,9 @@ def witness(output, headless=False, linux=False):
                'run_id': os.environ.get('GITHUB_RUN_ID'),
                'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
                'job': os.environ.get('GITHUB_JOB'),
+               'runner_label': os.environ.get('QIKVRT_RUNNER_LABEL'),
+               'runner_os': os.environ.get('RUNNER_OS'),
+               'runner_architecture': os.environ.get('RUNNER_ARCH'),
                'runner_image': os.environ.get('ImageOS'),
                'runner_image_version': os.environ.get('ImageVersion'),
                'headless': headless, 'predecessor_evidence_transfer': False,
@@ -838,6 +851,10 @@ def witness(output, headless=False, linux=False):
     if linux:
         receipt.update(schema='qikvrt_firefox_linux_seed_ring_witness_v1',
                        operating_system_built_from_seed=False, productive_mesh_runtime_verified=False)
+    else:
+        receipt.update(expected_architecture=expected_architecture,
+                       windows_native_architecture_witness_test='HOLD',
+                       windows_amd64_execution_observed=False)
     driver = None
     server = None
     terminal = None
@@ -856,7 +873,10 @@ def witness(output, headless=False, linux=False):
             receipt['os'] = windows_identity()
             receipt['architecture_evidence_scope'] = receipt['os']['architecture']
             receipt['architecture_evidence_transfer'] = False
+            if expected_architecture and receipt['os']['architecture'] != expected_architecture:
+                raise RuntimeError('EXPECTED_NATIVE_WINDOWS_ARCHITECTURE_MISMATCH')
             receipt['python_binary_architecture'] = pe_architecture(sys.executable)
+            receipt['python_binary_sha256'] = digest(sys.executable)
             if receipt['python_binary_architecture'] != receipt['os']['architecture']:
                 raise RuntimeError('NATIVE_WINDOWS_INTERPRETER_ARCHITECTURE_REQUIRED')
         if not linux and sys.version_info[:3] != (3, 13, 15):
@@ -1050,6 +1070,18 @@ def witness(output, headless=False, linux=False):
                 receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_CLIENT_WITNESS_REQUIRED'
                 if not linux:
                     receipt['windows_witness_test'] = 'HOLD'
+            if not linux:
+                native = native_windows_architectures_match(receipt['os'], {
+                    'python': receipt['python_binary_architecture'],
+                    'firefox': receipt['firefox_binary_architecture'],
+                    'geckodriver': receipt['driver_binary_architecture'],
+                }, expected_architecture)
+                receipt['windows_native_architecture_witness_test'] = 'PASS' if native else 'HOLD'
+                receipt['windows_amd64_execution_observed'] = native and receipt['os']['architecture'] == 'AMD64'
+                receipt['windows_os_evidence_scope'] = (
+                    'SUPPORTED_WINDOWS_11_CLIENT' if receipt['product_target_verified'] else
+                    'SERVER_COMPATIBILITY_ONLY' if receipt['os']['product_type'] in (2, 3) else
+                    'OTHER_WINDOWS_COMPATIBILITY_ONLY')
             if not linux and receipt['browser_execution_mode'] != 'NATIVE':
                 receipt['windows_witness_test'] = 'HOLD'
                 receipt['reason'] = 'HOLD_NATIVE_WINDOWS_ARCHITECTURE_EXECUTION_REQUIRED'
@@ -1063,6 +1095,7 @@ def witness(output, headless=False, linux=False):
             receipt['linux_ring_test'] = 'FAIL'
         else:
             receipt['windows_witness_test'] = 'FAIL'
+            receipt['windows_native_architecture_witness_test'] = 'FAIL'
         if driver and driver.session:
             try:
                 receipt['terminal_diagnostics'] = driver.script(
@@ -1101,5 +1134,9 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--linux-ring', action='store_true', help='Use declared Linux runner tools and require canonical seed')
+    parser.add_argument('--expected-architecture', choices=('ARM64', 'AMD64'),
+                        help='Require this independently observed native Windows architecture')
     args = parser.parse_args()
-    sys.exit(witness(args.output.resolve(), args.headless, args.linux_ring))
+    if args.linux_ring and args.expected_architecture:
+        parser.error('--expected-architecture applies only to Windows')
+    sys.exit(witness(args.output.resolve(), args.headless, args.linux_ring, args.expected_architecture))

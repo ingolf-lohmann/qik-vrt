@@ -22,5 +22,5 @@ poppler	reported-version	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY
 firefox	156.0.1	windows-amd64-arm64	NO_BUNDLED_ARCHIVE	VERSION_AND_BINARY_RECEIPT_CONTRACT	MPL-2.0	personal_firefox_windows_witness
 geckodriver	0.37.1	windows-amd64	geckodriver-v0.37.1-win64.zip	dfed9315abe8d2fbc1b6161a2ee8002452e79cf05ee92fdc653a4e26bc35edd8	MPL-2.0	personal_firefox_windows_witness
 geckodriver	0.37.1	windows-arm64	geckodriver-v0.37.1-win-aarch64.zip	30889cca635b794b327a59664ac9657bc338e62e1c66d01e40a8c422ff524057	MPL-2.0	personal_firefox_windows_witness
-python-windows-witness	3.13.15	windows-arm64	NO_BUNDLED_ARCHIVE	VERSION_CONTRACT_ONLY	PSF-2.0	personal_firefox_windows_witness
+python-windows-witness	3.13.15	windows-amd64-arm64	NO_BUNDLED_ARCHIVE	VERSION_CONTRACT_ONLY	PSF-2.0	personal_firefox_windows_witness
 firefox-linux	156.x	linux-amd64	NO_BUNDLED_ARCHIVE	VERSION_AND_RUNTIME_BINARY_RECEIPT_CONTRACT	MPL-2.0	linux_seed_ring_witness

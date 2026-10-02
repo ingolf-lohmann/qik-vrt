@@ -14,7 +14,7 @@ from pathlib import Path
 from pathlib import PureWindowsPath
 
 from tools.qikvrt_firefox_windows_witness import (
-    target_matches, provision_driver, verify_effect_readback,
+    target_matches, native_windows_architectures_match, provision_driver, verify_effect_readback,
     public_http_readback, evaluate_public_url_readback, NoPublicRedirect,
     CANONICAL_PRODUCT_URL, PUBLIC_BODY_LIMIT,
 )
@@ -258,6 +258,34 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         self.assertEqual(windows['durable_state']['architecture_evidence_transfer'], 'DENY')
         self.assertFalse(windows['durable_state']['power_loss_tested'])
         self.assertFalse(self.policy['personal_release_acceptance']['current_candidate']['personal_release_effect_ack_done'])
+
+    def test_native_architecture_cannot_transfer_from_other_binary_or_runner_label(self):
+        for architecture in ('ARM64', 'AMD64'):
+            observed = {'architecture': architecture, 'process_architecture': architecture,
+                        'runner_label': 'windows-2025'}
+            binaries = dict.fromkeys(('python', 'firefox', 'geckodriver'), architecture)
+            self.assertTrue(native_windows_architectures_match(observed, binaries, architecture))
+            other = 'AMD64' if architecture == 'ARM64' else 'ARM64'
+            self.assertFalse(native_windows_architectures_match(observed, binaries, other))
+            self.assertFalse(native_windows_architectures_match(
+                observed | {'process_architecture': other}, binaries, architecture))
+            for binary in binaries:
+                with self.subTest(architecture=architecture, binary=binary):
+                    self.assertFalse(native_windows_architectures_match(
+                        observed, binaries | {binary: other}, architecture))
+                    self.assertFalse(native_windows_architectures_match(
+                        observed, {key: value for key, value in binaries.items() if key != binary},
+                        architecture))
+        self.assertFalse(native_windows_architectures_match({}, {}))
+
+    def test_native_server_amd64_execution_does_not_accept_windows_11_client(self):
+        observed = {'product_type': 3, 'build': 26100, 'display_version': '24H2',
+                    'edition': 'ServerDatacenter', 'architecture': 'AMD64',
+                    'process_architecture': 'AMD64'}
+        binaries = dict.fromkeys(('python', 'firefox', 'geckodriver'), 'AMD64')
+        self.assertTrue(native_windows_architectures_match(observed, binaries, 'AMD64'))
+        self.assertFalse(target_matches(observed, self.policy['windows_acceptance']['product_target'],
+                                        '2026-10-02'))
 
     def test_cache_authority_uses_repository_paths_on_windows(self) -> None:
         from tools import qikvrt_tool_cache as cache

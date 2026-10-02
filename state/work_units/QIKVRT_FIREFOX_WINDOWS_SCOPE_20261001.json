@@ -1340,5 +1340,94 @@
         "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; successor requires fresh native execution"
       }
     ]
+  },
+  "windows_amd64_native_continuation": {
+    "schema": "qikvrt_windows_amd64_native_continuation_v1",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 438,
+    "source_ref": "work/firefox-windows-witness-20261001",
+    "source_head": "5258c00c049a62898ee5f783f50987ac65b78d3d",
+    "source_tree": "673e26f0918e718d909f79990be0d972c038ac2d",
+    "observed_main_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "source_semantics": "REPAIR_INPUT_ONLY; no predecessor or architecture evidence transfer",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authorized PR438 continuation with the smallest second native hosted Windows x64 witness, identical seed/persistent-state/terminate-restart/record/replay-409/negative controls and fresh provenance; release and architecture boundaries preserved.",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Parameterized the existing Windows job into two architecture-bound lanes, selected the documented current windows-2025 x64 carrier, extended existing witness receipts and cache contract and tested cross-architecture/emulation/client-scope refusal.",
+    "reuse": {
+      "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "observer": "tools/qikvrt_firefox_windows_witness.py",
+      "state": "src/qikvrt_effect_ack_http_terminal.py",
+      "new_parallel_workflow": false,
+      "native_controls_implementation_changed": false
+    },
+    "runner_source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "runner_image_source": "https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md",
+    "runner_lanes": {
+      "ARM64": "windows-11-arm",
+      "AMD64": "windows-2025"
+    },
+    "os_scope": "AMD64 Server compatibility; Windows 11 AMD64 client acceptance remains independent and unverified",
+    "state": "HOLD_FRESH_NATIVE_SUCCESSOR_EXECUTION_REQUIRED",
+    "windows_amd64_execution_observed": false,
+    "windows_11_amd64_client_execution_observed": false,
+    "predecessor_evidence_transfer": false,
+    "architecture_evidence_transfer": false,
+    "personal_release_effect_ack_done": false,
+    "private_state_uploaded": false,
+    "power_loss_proved": false,
+    "governance_gate_independent": true,
+    "next_action": "Publish the history-preserving successor, observe actual native jobs, download each architecture-qualified artifact and verify its exact-subject/source/runtime/controls binding. A green job alone does not accept the witness or release.",
+    "local_validation": {
+      "focused_tests": 62,
+      "result": "PASS",
+      "full_make_test": "PASS",
+      "full_make_test_runtime": "CPython 3.12.13 on Linux; candidate-tree verification, not Windows execution",
+      "cache_coverage_percent": 100,
+      "controls_source_changed": false,
+      "historical_fixture_recovery": "Existing local Git bundle supplies 56127a6f historical worktree fixture; exact missing parent trees reconstructed by verified REST tree-object hashes. No test/source substitution."
+    },
+    "changed_inputs": [
+      {
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "bytes": 10660,
+        "sha256": "fbd756b34e50e931ecbeb54ee2aa38c46f77921d73e6178ea5e153a55685b888"
+      },
+      {
+        "path": "tools/qikvrt_firefox_windows_witness.py",
+        "bytes": 66614,
+        "sha256": "5248998d33fff8bbdad196e1c7932cb67692e0faef3f4707af184b5826b3aa24"
+      },
+      {
+        "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "bytes": 12063,
+        "sha256": "1e857bd56bc2b4f325fb1f5e081593effdc33b5e397594e9c262cc392c15bd57"
+      },
+      {
+        "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "bytes": 3335,
+        "sha256": "b0622c56e8fe7ff42e92a854a64422920fd1821bec54486ab5797d648b67a7c8"
+      },
+      {
+        "path": "runtime/toolchains/CACHE_REGISTRY.json",
+        "bytes": 15167,
+        "sha256": "d1b12bbcc96fd5fc4874218790b340e83c87c9663edbdabe86b0492e728ffe9b"
+      },
+      {
+        "path": "runtime/toolchains/CACHE_COVERAGE.json",
+        "bytes": 4114,
+        "sha256": "4259f001b4cb4e030533b36b2a58784077e48077a4fdc991276fca73c87b1a72"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+        "bytes": 25128,
+        "sha256": "9a697f948270b2cef3f0c89a1d5a78690243fb05ebef92e355e3b6e2fd46f0a3"
+      },
+      {
+        "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+        "bytes": 16213,
+        "sha256": "a3b592efa9a61535e8de4a7ecf0f94100ed8bfc5142cec27711a68b205034ed9"
+      }
+    ]
   }
 }

@@ -79,9 +79,26 @@ UBR and native architecture at execution time. A label or image README is not
 an execution receipt. Mismatch or an expired support window keeps product
 target acceptance on HOLD, even when functional tests pass.
 
-The existing Boundary workflow now runs the Windows witness on that client
-runner with read-only repository permissions and an exact candidate checkout.
-It binds HEAD/TREE, policy/XPI/binary hashes, browser version, runner image,
+The existing Boundary workflow runs the same Windows witness in two matrix
+jobs: `windows-11-arm` requires ARM64 and `windows-2025` requires AMD64.
+Both use CPython 3.13.15 with the explicitly selected native architecture,
+read-only repository permissions and an exact candidate checkout. Separate
+architecture-qualified output directories and artifacts prevent collisions;
+matrix fail-fast is disabled so one architecture cannot cancel the other's
+evidence. Neither job borrows predecessor or sibling evidence.
+
+`windows_native_architecture_witness_test=PASS` requires the actual browser
+effect, canonical seed, persistent State, forced termination/restart, every
+retained event/record readback, both replay-409 probes and all negative startup
+controls, plus matching native OS, interpreter, Firefox and Geckodriver
+architectures. `windows_amd64_execution_observed` is true only after these
+controls execute natively on AMD64. A green job alone cannot set that result.
+Server execution remains `SERVER_COMPATIBILITY_ONLY`; its Windows 11 product
+target and `windows_witness_test` remain HOLD. It does not establish a Windows
+11 AMD64 client run. Both architectures retain overall release HOLD and
+`personal_release_effect_ack_done=false`.
+
+The shared witness binds HEAD/TREE, policy/XPI/binary hashes, browser version, runner image,
 run/attempt/job, UTC observation and OS identity. It temporarily installs the
 unchanged standard XPI in real Firefox, checks terminal content-script loading,
 performs UI Prepare and Commit against the existing real loopback backend,
