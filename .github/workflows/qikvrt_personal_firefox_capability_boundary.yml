@@ -146,6 +146,41 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  linux-comparable-scale:
+    # Independent measurements; the Firefox/correctness witness is unchanged.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact benchmark candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Use declared interpreter
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify tool-cache contract
+        run: python3 -B tools/qikvrt_tool_cache.py verify
+      - name: Measure identical preload and workload on 1 2 4 processes
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_firefox_windows_witness.py --comparable-scale-benchmark --repetitions 6 --workload 64 --preload-per-origin 4 --output "$RUNNER_TEMP/qikvrt-linux-comparable-scale"
+      - name: Preserve comparable measurements without private state
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-linux-comparable-scale-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-linux-comparable-scale/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-linux-comparable-scale/measurements/*.json
+          if-no-files-found: error
+          retention-days: 30
+
   windows-witness:
     # Extensions execute only after the primary Linux reference succeeds.
     needs: [linux-seed-ring]

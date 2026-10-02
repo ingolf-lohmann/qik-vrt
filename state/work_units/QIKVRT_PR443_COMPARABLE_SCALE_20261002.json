@@ -1,0 +1,491 @@
+{
+  "_license": {
+    "classification": "provenance_bound_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": [
+      "API source fixture is not a complete local checkout.",
+      "Platform account is not natural-person or model attestation."
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "8d73f8ff50e8",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "Python standard-library Linux process/HTTP measurement"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Extend the existing witness driver and reuse TerminalProcess, State, RingHandler and durable I/O.",
+    "Build closed byte-identical per-origin templates and redistribute four distinct origins onto actual 1/2/4 processes.",
+    "Run balanced repetitions with four clients; measure actual process CPU clocks, wall time and every effect latency.",
+    "Verify every referenced record, retained event, consolidation and consumed-token replay after every measurement.",
+    "Add focused fairness/replay and speedup-claim controls, a Make target and separate exact-head Linux artifact job."
+  ],
+  "continuation": {
+    "next_action": "Fresh exact-successor native benchmark and full applicable CI; retain independent CODE_OWNER_RULE_NOT_ENFORCED governance failure."
+  },
+  "created_at": "2026-10-02T12:10:17.918979+00:00",
+  "external_effects": {
+    "authority_write": false,
+    "authorized": [
+      "History-preserving PR443 branch continuation and metadata readback"
+    ],
+    "deployment": false,
+    "main_promotion": false,
+    "publication": false,
+    "release": false
+  },
+  "git_history": {
+    "branch": "work/linux-ring-scale-consolidation-20261002",
+    "force_push": false,
+    "history_preserving": true,
+    "parent": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb"
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorize a separate 1/2/4-process comparison using fresh roots, identical preload, payload and client count.",
+    "Require repeated wall/CPU/throughput/latency measurements with dispersion and per-run effect/record/replay invariants.",
+    "Preserve the correctness witness and keep unbounded_scalability_proved=false."
+  ],
+  "human_decision": {
+    "implementation_acceptance": "PENDING_INDEPENDENT_REVIEW",
+    "task_scope": "AUTHORIZED_BY_ACTIVE_REQUEST"
+  },
+  "inputs": {
+    "owner_instruction": "Active PR443 continuation request, 2026-10-02; metadata retention only",
+    "starting_head": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
+    "starting_pr": 443,
+    "starting_tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+  },
+  "joint_components": [],
+  "outputs": [
+    "tools/qikvrt_firefox_windows_witness.py",
+    "tests/test_qikvrt_effect_ack_http_terminal.py",
+    "Makefile",
+    ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+    "docs/terminal/QIKVRT_LINUX_COMPARABLE_SCALE_BENCHMARK_V1.md"
+  ],
+  "release_claims": {
+    "global_done": false,
+    "personal_release_effect_ack_done": false,
+    "predecessor_evidence_transfer": false,
+    "unbounded_scalability_proved": false
+  },
+  "schema": "qikvrt_provenance_bound_work_unit_v1",
+  "source_commit": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
+  "source_ref": "work/linux-ring-scale-consolidation-20261002",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "bc2232edd71ae7567a91d145202688ac9edef880",
+  "unresolved_origin": [],
+  "verification": {
+    "correctness_function_bytes_unchanged": [
+      "lossless_scale_consolidation_controls",
+      "durable_restart_controls",
+      "network_loss_controls",
+      "witness"
+    ],
+    "exact_head_ci": "REQUIRED_FRESH_ON_SUCCESSOR; no predecessor transfer",
+    "integrity": "Incremental materialization from fresh exact-parent API manifest and complete Git tree inventory; fresh complete-checkout validation required.",
+    "local_focused_tests": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_firefox_capability_boundary",
+      "count": 66,
+      "skips": 0,
+      "state": "PASS"
+    },
+    "local_measurement": {
+      "comparisons_to_one_process": {
+        "2": {
+          "all_repetitions_faster": true,
+          "bootstrap_percentile_interval_97_5": [
+            1.947317300468708,
+            2.3894240080874027
+          ],
+          "bootstrap_resamples": 5000,
+          "bootstrap_seed": 443,
+          "geometric_mean_ratio": 2.1188766430532384,
+          "inference_limit": "Small paired sample; percentile bootstrap is approximate, not independent replication.",
+          "minimum_repetitions_for_speedup_claim": 6,
+          "paired_wall_time_ratios": [
+            1.9219986655829004,
+            2.070036663445303,
+            1.8857886633783367,
+            2.1189220759297442,
+            2.730144911642822,
+            2.0850151597807325
+          ],
+          "ratio_distribution": {
+            "coefficient_of_variation": 0.1433761062564028,
+            "max": 2.730144911642822,
+            "mean": 2.1353176899599733,
+            "min": 1.8857886633783367,
+            "n": 6,
+            "p25": 1.9590081650485012,
+            "p50": 2.0775259116130176,
+            "p75": 2.110445346892491,
+            "p95": 2.5773392027145525,
+            "p99": 2.699583769857168,
+            "sample_stdev": 0.30615353600687767
+          },
+          "scope": "THIS_HOST_IDENTICAL_PRELOAD_WORKLOAD_AND_FOUR_CLIENTS_ONLY",
+          "speedup_supported": true
+        },
+        "4": {
+          "all_repetitions_faster": true,
+          "bootstrap_percentile_interval_97_5": [
+            2.931317090112513,
+            3.48265798239562
+          ],
+          "bootstrap_resamples": 5000,
+          "bootstrap_seed": 443,
+          "geometric_mean_ratio": 3.147238487722972,
+          "inference_limit": "Small paired sample; percentile bootstrap is approximate, not independent replication.",
+          "minimum_repetitions_for_speedup_claim": 6,
+          "paired_wall_time_ratios": [
+            3.2012278564536727,
+            3.0282406306882113,
+            2.856491473714682,
+            3.0409807037570196,
+            3.9207908906088917,
+            2.9434094180621275
+          ],
+          "ratio_distribution": {
+            "coefficient_of_variation": 0.12243485254419861,
+            "max": 3.9207908906088917,
+            "mean": 3.1651901622141008,
+            "min": 2.856491473714682,
+            "n": 6,
+            "p25": 2.9646172212186483,
+            "p50": 3.0346106672226156,
+            "p75": 3.1611660682795093,
+            "p95": 3.740900132070087,
+            "p99": 3.8848127389011307,
+            "sample_stdev": 0.3875295907850315
+          },
+          "scope": "THIS_HOST_IDENTICAL_PRELOAD_WORKLOAD_AND_FOUR_CLIENTS_ONLY",
+          "speedup_supported": true
+        }
+      },
+      "concurrent_retries_after_each_run": 4,
+      "confirmed_effects_after_each_run": 80,
+      "consumed_replays_after_each_run": 80,
+      "environment": {
+        "cpu_accounting": "clock_getcpuclockid(PID) + clock_gettime_ns; process CPU includes server threads",
+        "cpu_affinity_count": 9,
+        "cpu_count": 9,
+        "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+        "cpu_quota": "800000 100000",
+        "driver_cpu_clock_resolution_seconds": 1e-09,
+        "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "server_cpu_resolution_seconds": 1e-09,
+        "wall_clock_resolution_seconds": 1e-09
+      },
+      "head": null,
+      "parallel_clients": 4,
+      "preloaded_effects": 16,
+      "receipt_sha256": "443b1dd3b2db38ac8920fa0e743b0dfa4d541425bf33ac509f32d53ed2f2049d",
+      "referenced_records_after_each_run": 160,
+      "repetitions_per_process_count": 6,
+      "replay_second_effects": 0,
+      "runs": 18,
+      "scope": "SOURCE_BYTE_FIXTURE_ONLY_NOT_REMOTE_EXACT_HEAD_CI",
+      "source_sha256": {
+        "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+        "src/qikvrt_api_handler.py": "b31038728504dd8278c1111367fe051a1f6258606bd5a1e1b36019f909ae5b8a",
+        "src/qikvrt_effect_ack.py": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+        "src/qikvrt_effect_ack_http_terminal.py": "60ff7bdeabedb81e05f653e59846aa21480293179630f70ba0d43984cf946d51",
+        "tools/qikvrt_firefox_windows_witness.py": "08c086f0faccfbe765ffa28b0e3f0aba2a7fe73cbaf6c41a2f0504a6bae775e8"
+      },
+      "summary": {
+        "1": {
+          "confirmed_effects_per_second": {
+            "coefficient_of_variation": 0.09112191728683143,
+            "max": 280.54405417474015,
+            "mean": 256.747531586651,
+            "min": 217.34474059959547,
+            "n": 6,
+            "p25": 247.22611173340673,
+            "p50": 262.2751396009029,
+            "p75": 272.4460447248682,
+            "p95": 279.2893558088695,
+            "p99": 280.29311450156604,
+            "sample_stdev": 23.395327336836953
+          },
+          "driver_cpu_seconds": {
+            "coefficient_of_variation": 0.11142748591533967,
+            "max": 0.067362664,
+            "mean": 0.05578271333333333,
+            "min": 0.049719852,
+            "n": 6,
+            "p25": 0.0522181475,
+            "p50": 0.054554617,
+            "p75": 0.0564375585,
+            "p95": 0.06475239375,
+            "p99": 0.06684060995,
+            "sample_stdev": 0.00621572750426943
+          },
+          "per_run_p95_latency_seconds": {
+            "coefficient_of_variation": 0.11833537186098071,
+            "max": 0.0246787441,
+            "mean": 0.020917219558333332,
+            "min": 0.0181824814,
+            "n": 6,
+            "p25": 0.019138249624999996,
+            "p50": 0.020442770574999995,
+            "p75": 0.0224005486875,
+            "p95": 0.024206922925,
+            "p99": 0.024584379865000002,
+            "sample_stdev": 0.0024752469547331536
+          },
+          "pooled_effect_latency_seconds": {
+            "coefficient_of_variation": 0.23305436017514133,
+            "max": 0.026803252,
+            "mean": 0.015394705057291666,
+            "min": 0.003699084,
+            "n": 384,
+            "p25": 0.01299627925,
+            "p50": 0.0150196155,
+            "p75": 0.01748909375,
+            "p95": 0.022132816699999995,
+            "p99": 0.025286195970000005,
+            "sample_stdev": 0.003587803137212122
+          },
+          "server_cpu_seconds": {
+            "coefficient_of_variation": 0.09298179639079483,
+            "max": 0.326877488,
+            "mean": 0.277598733,
+            "min": 0.253041161,
+            "n": 6,
+            "p25": 0.26538309725,
+            "p50": 0.2702179625,
+            "p75": 0.278654252,
+            "p95": 0.31533326975,
+            "p99": 0.32456864435,
+            "sample_stdev": 0.025811628870148616
+          },
+          "total_cpu_seconds": {
+            "coefficient_of_variation": 0.09599026043048044,
+            "max": 0.394240152,
+            "mean": 0.33338144633333333,
+            "min": 0.302761013,
+            "n": 6,
+            "p25": 0.31760124475,
+            "p50": 0.32477257950000005,
+            "p75": 0.3350918105,
+            "p95": 0.3800856635,
+            "p99": 0.3914092543,
+            "sample_stdev": 0.0320013718562269
+          },
+          "wall_seconds": {
+            "coefficient_of_variation": 0.09798312930690349,
+            "max": 0.294463072,
+            "mean": 0.2511354923333333,
+            "min": 0.228128164,
+            "n": 6,
+            "p25": 0.23500103575,
+            "p50": 0.2440216425,
+            "p75": 0.25914361025,
+            "p95": 0.28682101174999997,
+            "p99": 0.29293465995,
+            "sample_stdev": 0.024607041418849868
+          }
+        },
+        "2": {
+          "confirmed_effects_per_second": {
+            "coefficient_of_variation": 0.09675350566805094,
+            "max": 593.3826376203147,
+            "mean": 544.2768308378966,
+            "min": 457.3430786759652,
+            "n": 6,
+            "p25": 517.8554115301428,
+            "p50": 562.0552377182644,
+            "p75": 581.2908022999175,
+            "p95": 591.271629700406,
+            "p99": 592.9604360363329,
+            "sample_stdev": 52.66069143746323
+          },
+          "driver_cpu_seconds": {
+            "coefficient_of_variation": 0.11662419513057538,
+            "max": 0.065370265,
+            "mean": 0.05678685666666666,
+            "min": 0.050434265,
+            "n": 6,
+            "p25": 0.0521066395,
+            "p50": 0.054228158,
+            "p75": 0.062352660000000004,
+            "p95": 0.06523431974999999,
+            "p99": 0.06534307595,
+            "sample_stdev": 0.006622721452745349
+          },
+          "per_run_p95_latency_seconds": {
+            "coefficient_of_variation": 0.31045652984061856,
+            "max": 0.016489440099999975,
+            "mean": 0.010352879891666661,
+            "min": 0.008316688749999999,
+            "n": 6,
+            "p25": 0.0083681075875,
+            "p50": 0.00883258675,
+            "p75": 0.010782668537499998,
+            "p95": 0.01518688931249998,
+            "p99": 0.016228929942499977,
+            "sample_stdev": 0.0032141191650235505
+          },
+          "pooled_effect_latency_seconds": {
+            "coefficient_of_variation": 0.25828204231665025,
+            "max": 0.017989306,
+            "mean": 0.007159636596354167,
+            "min": 0.003560234,
+            "n": 384,
+            "p25": 0.006104433,
+            "p50": 0.0068406795,
+            "p75": 0.00763821775,
+            "p95": 0.010169778049999998,
+            "p99": 0.01549618458000003,
+            "sample_stdev": 0.0018492055623513847
+          },
+          "server_cpu_seconds": {
+            "coefficient_of_variation": 0.06906957278245573,
+            "max": 0.21965361300000003,
+            "mean": 0.20079187383333333,
+            "min": 0.184052411,
+            "n": 6,
+            "p25": 0.18954263799999999,
+            "p50": 0.2021631505,
+            "p75": 0.20907812575,
+            "p95": 0.21738305625,
+            "p99": 0.21919950165000002,
+            "sample_stdev": 0.013868608943857086
+          },
+          "total_cpu_seconds": {
+            "coefficient_of_variation": 0.07519653868627377,
+            "max": 0.28448009700000004,
+            "mean": 0.2575787305,
+            "min": 0.235686221,
+            "n": 6,
+            "p25": 0.24341928100000002,
+            "p50": 0.254845877,
+            "p75": 0.27071439075000003,
+            "p95": 0.28234548550000005,
+            "p99": 0.2840531747,
+            "sample_stdev": 0.019369028972804535
+          },
+          "wall_seconds": {
+            "coefficient_of_variation": 0.10449308553797275,
+            "max": 0.139938709,
+            "mean": 0.1185839965,
+            "min": 0.107856206,
+            "n": 6,
+            "p25": 0.11011297225,
+            "p50": 0.1138926015,
+            "p75": 0.12377622425,
+            "p95": 0.136581699,
+            "p99": 0.139267307,
+            "sample_stdev": 0.012391207689709161
+          }
+        },
+        "4": {
+          "confirmed_effects_per_second": {
+            "coefficient_of_variation": 0.07352995161189538,
+            "max": 852.1632790646464,
+            "mean": 807.0600844913927,
+            "min": 692.7587540270526,
+            "n": 6,
+            "p25": 802.4907189886148,
+            "p50": 830.0564002530272,
+            "p75": 840.5317361508507,
+            "p95": 849.7699722432023,
+            "p99": 851.6846177003576,
+            "sample_stdev": 59.3430889605443
+          },
+          "driver_cpu_seconds": {
+            "coefficient_of_variation": 0.052071214493396634,
+            "max": 0.062791237,
+            "mean": 0.05683842433333333,
+            "min": 0.055020262,
+            "n": 6,
+            "p25": 0.055389666000000004,
+            "p50": 0.055705255999999995,
+            "p75": 0.05631936325,
+            "p95": 0.061221563,
+            "p99": 0.0624773022,
+            "sample_stdev": 0.0029596457849276944
+          },
+          "per_run_p95_latency_seconds": {
+            "coefficient_of_variation": 0.10516135883994814,
+            "max": 0.007681177349999997,
+            "mean": 0.006402224658333332,
+            "min": 0.005718337849999999,
+            "n": 6,
+            "p25": 0.0061124581,
+            "p50": 0.0062336174,
+            "p75": 0.006414299062499998,
+            "p95": 0.007374799474999997,
+            "p99": 0.007619901774999997,
+            "sample_stdev": 0.0006732666446689559
+          },
+          "pooled_effect_latency_seconds": {
+            "coefficient_of_variation": 0.19750481753292784,
+            "max": 0.008467678,
+            "mean": 0.004774415981770834,
+            "min": 0.002953829,
+            "n": 384,
+            "p25": 0.00406872325,
+            "p50": 0.004635543000000001,
+            "p75": 0.00524235125,
+            "p95": 0.006500038999999997,
+            "p99": 0.007535546520000005,
+            "sample_stdev": 0.000942970157305943
+          },
+          "server_cpu_seconds": {
+            "coefficient_of_variation": 0.13754118867710408,
+            "max": 0.16832837299999998,
+            "mean": 0.137974414,
+            "min": 0.11735847300000002,
+            "n": 6,
+            "p25": 0.12398549375000001,
+            "p50": 0.13574486400000002,
+            "p75": 0.14688937074999997,
+            "p95": 0.16333240999999998,
+            "p99": 0.16732918039999997,
+            "sample_stdev": 0.01897716490858687
+          },
+          "total_cpu_seconds": {
+            "coefficient_of_variation": 0.1087864126204362,
+            "max": 0.23111960999999998,
+            "mean": 0.19481283833333332,
+            "min": 0.17302915500000002,
+            "n": 6,
+            "p25": 0.1799185015,
+            "p50": 0.19151126550000003,
+            "p75": 0.20211643175,
+            "p95": 0.22424983624999997,
+            "p99": 0.22974565524999999,
+            "sample_stdev": 0.02119298981468833
+          },
+          "wall_seconds": {
+            "coefficient_of_variation": 0.08141590114208272,
+            "max": 0.092384253,
+            "mean": 0.07969732616666667,
+            "min": 0.075102978,
+            "n": 6,
+            "p25": 0.07614365325,
+            "p50": 0.077105264,
+            "p75": 0.07977362725,
+            "p95": 0.08942067100000001,
+            "p99": 0.0917915366,
+            "sample_stdev": 0.006488629628473655
+          }
+        }
+      },
+      "tree": null,
+      "workload": 64
+    },
+    "speedup_rule_refinement_test": "PASS; at least six pairs required; equal or mixed results refuse claim"
+  },
+  "work_unit_id": "QIKVRT_PR443_COMPARABLE_SCALE_20261002"
+}

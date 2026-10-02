@@ -926,6 +926,51 @@ terminal.main()
                 second.close()
 
 
+@unittest.skipUnless(sys.platform == 'linux', 'comparable CPU accounting requires Linux process CPU clocks')
+class LinuxComparableScaleBenchmarkTests(unittest.TestCase):
+    def test_identical_preload_workload_and_clients_survive_every_run_and_replay(self):
+        from tools.qikvrt_firefox_windows_witness import comparable_scale_benchmark, digest
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'benchmark'
+            receipt = comparable_scale_benchmark(terminal, root,
+                ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin',
+                repetitions=3, workload=4, preload_per_origin=1)
+            self.assertEqual(receipt['state'], 'PASS')
+            self.assertEqual(len(receipt['measurements']), 9)
+            for row in receipt['measurements']:
+                self.assertEqual(row['initial_snapshot_sha256'], receipt['initial_snapshot_sha256'])
+                self.assertEqual(row['workload_sha256'], receipt['workload_sha256'])
+                self.assertEqual((row['requests'], row['parallel_clients']), (4, 4))
+                self.assertEqual((row['effects'], row['referenced_records']), (8, 16))
+                self.assertEqual(len(set(row['process_ids'])), row['processes'])
+                self.assertGreater(row['wall_seconds'], 0)
+                self.assertGreater(row['total_cpu_seconds'], 0)
+                self.assertEqual(len(row['effect_latency_seconds']), 4)
+                self.assertEqual(row['invariants']['replay_refusals'], 8)
+                self.assertEqual(row['invariants']['concurrent_replay_statuses'], [409] * 4)
+                evidence = root / row['evidence']['path']
+                self.assertEqual(digest(evidence), row['evidence']['sha256'])
+                detail = json.loads(evidence.read_text())
+                self.assertEqual(detail['readback_after'], detail['readback_after_restart_and_replay'])
+            self.assertFalse(receipt['unbounded_scalability_proved'])
+            self.assertFalse(receipt['private_state_exported'])
+            before = (root / 'private-rings/template/node-0/.qikvrt/api/terminal.json').read_bytes()
+            with self.assertRaisesRegex(RuntimeError, 'NEW_BENCHMARK_ROOT_REQUIRED'):
+                comparable_scale_benchmark(terminal, root, ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+            self.assertEqual((root / 'private-rings/template/node-0/.qikvrt/api/terminal.json').read_bytes(), before)
+
+    def test_speedup_claim_requires_comparable_repeated_advantage(self):
+        from tools.qikvrt_firefox_windows_witness import benchmark_speedup, benchmark_distribution
+        self.assertTrue(benchmark_speedup([2.] * 6, [1.] * 6)['speedup_supported'])
+        self.assertFalse(benchmark_speedup([2.] * 3, [1.] * 3)['speedup_supported'])
+        self.assertFalse(benchmark_speedup([1., 3., 1.], [2., 1., 2.])['speedup_supported'])
+        self.assertFalse(benchmark_speedup([1., 1., 1.], [1., 1., 1.])['speedup_supported'])
+        with self.assertRaises(ValueError):
+            benchmark_speedup([1., 1., 1.], [0., 1., 1.])
+        with self.assertRaises(ValueError):
+            benchmark_distribution([float('nan')])
+
+
 @unittest.skipUnless(os.name == 'posix', 'POSIX durable ownership contract')
 class LinuxRingScaleConsolidationTests(unittest.TestCase):
     seed = ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin'

@@ -9,14 +9,17 @@ import datetime as dt
 import hashlib
 import http.client
 import json
+import math
 import os
 from pathlib import Path
 import platform
 import queue
+import random
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 import socket
 import struct
+import statistics
 import subprocess
 import sys
 import threading
@@ -505,6 +508,344 @@ def lossless_scale_consolidation_controls(terminal, ring_root, seed, *, workload
             client.close()
         if consolidated is not None:
             consolidated.close()
+
+
+def benchmark_distribution(values):
+    """Sample dispersion and linearly interpolated empirical percentiles."""
+    ordered = sorted(values)
+    if not ordered or any(not math.isfinite(value) or value < 0 for value in ordered):
+        raise ValueError('finite nonnegative measurements required')
+    def percentile(fraction):
+        position = fraction * (len(ordered) - 1)
+        lower = int(position)
+        upper = min(lower + 1, len(ordered) - 1)
+        return ordered[lower] + (ordered[upper] - ordered[lower]) * (position - lower)
+    mean = statistics.mean(ordered)
+    deviation = statistics.stdev(ordered) if len(ordered) > 1 else 0.0
+    return {'n': len(ordered), 'mean': mean, 'sample_stdev': deviation,
+            'coefficient_of_variation': deviation / mean if mean else None,
+            'min': ordered[0], 'max': ordered[-1],
+            'p25': percentile(.25), 'p50': percentile(.5), 'p75': percentile(.75),
+            'p95': percentile(.95), 'p99': percentile(.99)}
+
+
+def benchmark_speedup(baseline, candidate):
+    """Conservative paired, bounded observation; never a scalability theorem."""
+    if len(baseline) != len(candidate) or len(baseline) < 3:
+        raise ValueError('at least three paired repetitions required')
+    if any(not math.isfinite(value) or value <= 0 for value in baseline + candidate):
+        raise ValueError('positive finite wall times required')
+    ratios = [left / right for left, right in zip(baseline, candidate)]
+    logs = [math.log(value) for value in ratios]
+    generator = random.Random(443)
+    samples = sorted(math.exp(statistics.mean(generator.choices(logs, k=len(logs))))
+                     for _ in range(5000))
+    # Two declared comparisons: Bonferroni-adjusted 97.5% percentile intervals.
+    interval = [samples[int(.0125 * (len(samples) - 1))],
+                samples[int(.9875 * (len(samples) - 1))]]
+    return {'paired_wall_time_ratios': ratios, 'ratio_distribution': benchmark_distribution(ratios),
+            'geometric_mean_ratio': math.exp(statistics.mean(logs)),
+            'bootstrap_percentile_interval_97_5': interval,
+            'bootstrap_resamples': 5000, 'bootstrap_seed': 443,
+            'all_repetitions_faster': min(ratios) > 1,
+            'minimum_repetitions_for_speedup_claim': 6,
+            'speedup_supported': len(ratios) >= 6 and min(ratios) > 1 and interval[0] > 1,
+            'scope': 'THIS_HOST_IDENTICAL_PRELOAD_WORKLOAD_AND_FOUR_CLIENTS_ONLY',
+            'inference_limit': 'Small paired sample; percentile bootstrap is approximate, not independent replication.'}
+
+
+def benchmark_process_cpu(processes):
+    """POSIX per-process CPU clocks include server threads, excluding startup."""
+    import ctypes
+    library = ctypes.CDLL(None)
+    clock_for_process = library.clock_getcpuclockid
+    clock_for_process.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_int)]
+    clock_for_process.restype = ctypes.c_int
+    values = []
+    for client in processes:
+        clock = ctypes.c_int()
+        if clock_for_process(client.process.pid, ctypes.byref(clock)) != 0:
+            raise RuntimeError('BENCHMARK_SERVER_CPU_CLOCK_UNAVAILABLE')
+        values.append(time.clock_gettime_ns(clock.value) / 1e9)
+    return values
+
+
+def benchmark_read_origin(terminal, client, origin, prefix=''):
+    status, snapshot = client.request(prefix + '/terminal/events')
+    if (status != 200 or snapshot['event_count'] != len(snapshot['events'])
+            or snapshot['events_sha256'] != terminal.sha256(terminal.canonical_json(snapshot['events']))
+            or snapshot['persistence_scope'] != 'FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE'):
+        raise RuntimeError('BENCHMARK_EVENT_READBACK_INVALID')
+    records = {}
+    for index, event in enumerate(snapshot['events'], 1):
+        if event['event_id'] != index or event['seed_binding'] != snapshot['seed_binding']:
+            raise RuntimeError('BENCHMARK_EVENT_ID_OR_SEED_INVALID')
+        for field in ('record_hash', 'effect_record_hash'):
+            digest_value = event[field]
+            status, record = client.request(prefix + '/effect-ack/records/' + digest_value)
+            projection = {key: value for key, value in record.items() if key != 'record_hash'}
+            if (status != 200 or record.get('record_hash') != 'sha256:' + digest_value
+                    or digest_value != terminal.sha256(terminal.canonical_json(projection))
+                    or record.get('input_hash') != 'sha256:' + event['input_hash']
+                    or record.get('seed_binding') != snapshot['seed_binding']
+                    or record.get('state') != 'EFFECT_ACK_DONE'):
+                raise RuntimeError('BENCHMARK_EFFECT_RECORD_INVALID')
+            records[digest_value] = record
+    if len(records) != 2 * len(snapshot['events']):
+        raise RuntimeError('BENCHMARK_EFFECT_RECORD_CARDINALITY_INVALID')
+    return {'origin': origin, 'snapshot': snapshot, 'records': records}
+
+
+def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workload=64,
+                               preload_per_origin=4, clients=4):
+    """Measure a fixed four-origin ring on 1/2/4 actual processes, separately.
+
+    Templates are populated through real HTTP then closed. Every isolated run
+    copies those exact private bytes, including four DISTINCT origin keys.
+    Only prepare+commit is timed; admission, readback, restart/consolidation and
+    every consumed-token replay are mandatory untimed controls for EVERY run.
+    """
+    if sys.platform != 'linux':
+        raise RuntimeError('COMPARABLE_SCALE_BENCHMARK_REQUIRES_LINUX_PROCESS_CPU_CLOCKS')
+    if type(repetitions) is not int or repetitions not in (3, 6, 9, 12):
+        raise ValueError('repetitions must be 3, 6, 9 or 12 for balanced order')
+    if type(workload) is not int or not 4 <= workload <= 256 or workload % 4:
+        raise ValueError('workload must be 4..256 and divisible by four')
+    if type(preload_per_origin) is not int or not 1 <= preload_per_origin <= 16 or clients != 4:
+        raise ValueError('preload must be 1..16 per origin; exactly four clients required')
+    if output.exists():
+        raise RuntimeError('NEW_BENCHMARK_ROOT_REQUIRED_NO_STATE_RESET')
+    output.mkdir(parents=True)
+    private = output / 'private-rings'
+    template = private / 'template'
+    evidence = output / 'measurements'
+    evidence.mkdir()
+    processes = []
+    initial = []
+    retained = []
+    measurements = []
+    paths = ('src/qikvrt_effect_ack_http_terminal.py', 'src/qikvrt_api_handler.py',
+             'src/qikvrt_effect_ack.py', 'tools/qikvrt_firefox_windows_witness.py',
+             'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+    sources = {path: digest(ROOT / path) for path in paths}
+    subject = {'head': terminal.git_read('rev-parse', 'HEAD'),
+               'tree': terminal.git_read('rev-parse', 'HEAD^{tree}')}
+    expected_head = os.environ.get('QIKVRT_EXPECTED_HEAD')
+    if expected_head and subject['head'] != expected_head:
+        raise RuntimeError('BENCHMARK_EXACT_HEAD_MISMATCH')
+    workload_bytes = [terminal.canonical_json({'schema': 'qikvrt_terminal_input_v1',
+                      'text': 'comparable-scale-request-' + str(index).zfill(4)})
+                      for index in range(workload)]
+    workload_hash = terminal.sha256(terminal.canonical_json([value.decode('utf-8') for value in workload_bytes]))
+
+    def execute(client, payload, prefix=''):
+        status, prepared = client.request(prefix + '/terminal/prepare', payload, 'v=1, mode=prepare')
+        if status != 200 or prepared.get('ordinary_release') is not False:
+            raise RuntimeError('BENCHMARK_PREPARE_FAILED')
+        field = ('v=1, mode=commit, token=' + terminal.sf_bytes(prepared['commit_token'].encode('ascii'))
+                 + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['record_hash'])))
+        status, response = client.request(prefix + '/terminal/commit', payload, field)
+        if (status != 200 or response.get('ordinary_release') is not True
+                or response['post_effect']['input_hash'] != terminal.sha256(terminal.canonical_json(payload))
+                or response['post_effect']['record_hash'] != prepared['record_hash']):
+            raise RuntimeError('BENCHMARK_COMMIT_NOT_EXACT')
+        return payload, field, response['post_effect']
+
+    def views(routes):
+        return [benchmark_read_origin(terminal, client, origin, prefix)
+                for origin, (client, prefix) in enumerate(routes)]
+
+    def raw_stores(stores):
+        return [path.read_bytes() for path in stores]
+
+    def close_all():
+        for client in processes:
+            client.close()
+        processes.clear()
+
+    try:
+        for origin in range(4):
+            client = TerminalProcess(template / ('node-' + str(origin)), seed)
+            processes.append(client)
+            for index in range(preload_per_origin):
+                payload = {'schema': 'qikvrt_terminal_input_v1',
+                           'text': 'identical-preload-' + str(origin) + '-' + str(index)}
+                retained.append((origin, *execute(client, payload)))
+            initial.append(benchmark_read_origin(terminal, client, origin))
+        close_all()
+        template_stores = [template / ('node-' + str(origin)) / '.qikvrt/api/terminal.json' for origin in range(4)]
+        initial_bytes = raw_stores(template_stores)
+        initial_hashes = [terminal.sha256(value) for value in initial_bytes]
+        for repetition in range(repetitions):
+            order = (1, 2, 4)[repetition % 3:] + (1, 2, 4)[:repetition % 3]
+            for workers in order:
+                run_id = 'repeat-' + str(repetition + 1).zfill(2) + '-process-' + str(workers)
+                run_root = private / run_id
+                run_root.mkdir()
+                routes, origins = [], []
+                per_process = 4 // workers
+                for group in range(workers):
+                    shard = run_root / ('shard-' + str(group))
+                    for local in range(per_process):
+                        origin = group * per_process + local
+                        destination = shard / ('node-' + str(local))
+                        shutil.copytree(template / ('node-' + str(origin)), destination)
+                        origins.append(destination)
+                    command = [sys.executable, '-B', str(ROOT / 'src/qikvrt_effect_ack_http_terminal.py'),
+                               '--ring-nodes', str(per_process)]
+                    client = TerminalProcess(shard, seed, ring=True, command=command)
+                    processes.append(client)
+                    routes.extend((client, '/nodes/node-' + str(local)) for local in range(per_process))
+                stores = [origin / '.qikvrt/api/terminal.json' for origin in origins]
+                if raw_stores(stores) != initial_bytes or views(routes) != initial:
+                    raise RuntimeError('BENCHMARK_STARTING_STATE_NOT_BYTE_IDENTICAL')
+                process_ids = [client.process.pid for client in processes]
+                barrier = threading.Barrier(clients + 1, timeout=15)
+                def client_work(client_number):
+                    client, prefix = routes[client_number]
+                    barrier.wait()
+                    completed = []
+                    for index in range(client_number, workload, clients):
+                        started = time.perf_counter_ns()
+                        payload, field, event = execute(client, json.loads(workload_bytes[index]), prefix)
+                        completed.append((client_number, payload, field, event,
+                                          (time.perf_counter_ns() - started) / 1e9))
+                    return completed
+                with ThreadPoolExecutor(max_workers=clients) as pool:
+                    futures = [pool.submit(client_work, number) for number in range(clients)]
+                    cpu_before = benchmark_process_cpu(processes)
+                    driver_before = time.process_time_ns()
+                    wall_start = time.perf_counter_ns()
+                    barrier.wait()
+                    completed = [item for future in futures for item in future.result()]
+                    wall = (time.perf_counter_ns() - wall_start) / 1e9
+                    driver_cpu = (time.process_time_ns() - driver_before) / 1e9
+                    cpu_after = benchmark_process_cpu(processes)
+                server_cpu = [after - before for before, after in zip(cpu_before, cpu_after)]
+                after = views(routes)
+                for origin, current in enumerate(after):
+                    old = initial[origin]
+                    expected = {item[3]['commit_token_sha256']: item[3] for item in completed if item[0] == origin}
+                    events = current['snapshot']['events']
+                    if (events[:preload_per_origin] != old['snapshot']['events']
+                            or len(events) != preload_per_origin + workload // 4
+                            or {event['commit_token_sha256']: event for event in events[preload_per_origin:]} != expected
+                            or any(current['records'].get(key) != value for key, value in old['records'].items())):
+                        raise RuntimeError('BENCHMARK_EFFECT_LOST_DUPLICATED_OR_RECORD_CHANGED')
+                before_transfer = raw_stores(stores)
+                close_all()
+                consolidated_root = run_root / 'consolidated'
+                consolidated_root.mkdir()
+                for origin, source in enumerate(origins):
+                    source.rename(consolidated_root / ('node-' + str(origin)))
+                consolidated = TerminalProcess(consolidated_root, seed, ring=True)
+                processes.append(consolidated)
+                consolidated_routes = [(consolidated, '/nodes/node-' + str(origin)) for origin in range(4)]
+                new_stores = [consolidated_root / ('node-' + str(origin)) / '.qikvrt/api/terminal.json'
+                              for origin in range(4)]
+                if raw_stores(new_stores) != before_transfer or views(consolidated_routes) != after:
+                    raise RuntimeError('BENCHMARK_RESTART_OR_CONSOLIDATION_CHANGED_STATE')
+                probes = retained + [item[:4] for item in completed]
+                statuses = []
+                for origin, payload, field, event in probes:
+                    status, response = consolidated.request('/nodes/node-' + str(origin) + '/terminal/commit', payload, field)
+                    if status != 409 or response.get('ordinary_release') is not False:
+                        raise RuntimeError('BENCHMARK_REPLAY_CREATED_SECOND_EFFECT')
+                    statuses.append(status)
+                probe = probes[-1]
+                with ThreadPoolExecutor(max_workers=clients) as pool:
+                    races = list(pool.map(lambda _: consolidated.request('/nodes/node-' + str(probe[0])
+                        + '/terminal/commit', probe[1], probe[2])[0], range(clients)))
+                final = views(consolidated_routes)
+                if races != [409] * clients or final != after or raw_stores(new_stores) != before_transfer:
+                    raise RuntimeError('BENCHMARK_REPLAY_CHANGED_EVENT_RECORD_OR_PRIVATE_STATE')
+                status, aggregate = consolidated.request('/terminal/events')
+                expected_events = [{'node_id': 'node-' + str(origin), 'event': event}
+                                   for origin, view in enumerate(after) for event in view['snapshot']['events']]
+                if (status != 200 or aggregate['events'] != expected_events
+                        or aggregate['events_sha256'] != terminal.sha256(terminal.canonical_json(expected_events))):
+                    raise RuntimeError('BENCHMARK_AGGREGATE_READBACK_NOT_LOSSLESS')
+                latencies = [item[4] for item in completed]
+                measurement = {'run_id': run_id, 'repetition': repetition + 1, 'processes': workers,
+                    'process_order': list(order), 'process_ids': process_ids, 'parallel_clients': clients,
+                    'requests': workload, 'http_requests_in_measurement': workload * 2,
+                    'initial_snapshot_sha256': initial_hashes, 'workload_sha256': workload_hash,
+                    'wall_seconds': wall, 'server_cpu_seconds_by_process': server_cpu,
+                    'server_cpu_seconds': sum(server_cpu), 'driver_cpu_seconds': driver_cpu,
+                    'total_cpu_seconds': sum(server_cpu) + driver_cpu,
+                    'confirmed_effects_per_second': workload / wall,
+                    'effect_latency_seconds': latencies, 'latency_distribution_seconds': benchmark_distribution(latencies),
+                    'effects': len(expected_events), 'referenced_records': sum(len(v['records']) for v in final),
+                    'invariants': {'identical_initial_bytes': True, 'retained_effects_and_records_unchanged': True,
+                        'lossless_restart_and_consolidation': True, 'replay_second_effects': 0,
+                        'replay_refusals': len(statuses), 'concurrent_replay_statuses': races,
+                        'post_replay_readback_and_snapshot_bytes_unchanged': True},
+                    'readback_sha256': terminal.sha256(terminal.canonical_json(final))}
+                run_receipt = measurement | {'readback_before': initial, 'readback_after': after,
+                                              'readback_after_restart_and_replay': final,
+                                              'replay_statuses': statuses, 'aggregate_readback': aggregate}
+                path = evidence / (run_id + '.json')
+                path.write_text(json.dumps(run_receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+                measurement['evidence'] = {'path': path.relative_to(output).as_posix(),
+                    'bytes': path.stat().st_size, 'sha256': digest(path)}
+                measurements.append(measurement)
+                close_all()
+                print(json.dumps({'benchmark_run': run_id, 'state': 'PASS', 'wall_seconds': wall,
+                                  'effects': len(expected_events)}), flush=True)
+        if sources != {path: digest(ROOT / path) for path in paths} or subject != {
+                'head': terminal.git_read('rev-parse', 'HEAD'), 'tree': terminal.git_read('rev-parse', 'HEAD^{tree}')}:
+            raise RuntimeError('BENCHMARK_SOURCE_OR_SUBJECT_CHANGED_DURING_MEASUREMENT')
+        summary = {}
+        for workers in (1, 2, 4):
+            rows = [row for row in measurements if row['processes'] == workers]
+            summary[str(workers)] = {metric: benchmark_distribution([row[metric] for row in rows])
+                for metric in ('wall_seconds', 'server_cpu_seconds', 'driver_cpu_seconds', 'total_cpu_seconds',
+                               'confirmed_effects_per_second')}
+            summary[str(workers)]['pooled_effect_latency_seconds'] = benchmark_distribution(
+                [value for row in rows for value in row['effect_latency_seconds']])
+            summary[str(workers)]['per_run_p95_latency_seconds'] = benchmark_distribution(
+                [row['latency_distribution_seconds']['p95'] for row in rows])
+        comparisons = {str(workers): benchmark_speedup(
+            [row['wall_seconds'] for row in measurements if row['processes'] == 1],
+            [row['wall_seconds'] for row in measurements if row['processes'] == workers]) for workers in (2, 4)}
+        environment = {'os': platform.platform(), 'python': sys.version, 'cpu_count': os.cpu_count(),
+            'cpu_affinity_count': len(os.sched_getaffinity(0)),
+            'cpu_accounting': 'clock_getcpuclockid(PID) + clock_gettime_ns; process CPU includes server threads',
+            'server_cpu_resolution_seconds': time.get_clock_info('process_time').resolution,
+            'driver_cpu_clock_resolution_seconds': time.get_clock_info('process_time').resolution,
+            'wall_clock_resolution_seconds': time.get_clock_info('perf_counter').resolution}
+        for name, path in (('cpu_quota', '/sys/fs/cgroup/cpu.max'), ('cpu_model', '/proc/cpuinfo')):
+            try:
+                value = Path(path).read_text()
+                environment[name] = (next(line.split(':', 1)[1].strip() for line in value.splitlines()
+                    if line.startswith('model name')) if name == 'cpu_model' else value.strip())
+            except (OSError, StopIteration):
+                environment[name] = 'UNAVAILABLE'
+        return {'schema': 'qikvrt_linux_comparable_scale_benchmark_v1', 'state': 'PASS', **subject,
+            'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'source_sha256': sources,
+            'ci_provenance': {key: os.environ.get(key) for key in
+                ('GITHUB_REPOSITORY', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_JOB')},
+            'environment': environment, 'process_scale': [1, 2, 4], 'origins_in_every_run': 4,
+            'repetitions_per_process_count': repetitions, 'workload': workload, 'parallel_clients': clients,
+            'preloaded_effects': preload_per_origin * 4, 'initial_snapshot_sha256': initial_hashes,
+            'workload_sha256': workload_hash, 'measurements': measurements, 'summary': summary,
+            'comparisons_to_one_process': comparisons,
+            'measurement_scope': 'BARRIER_RELEASE_TO_LAST_CONFIRMED_PREPARE_COMMIT_RESPONSE',
+            'excluded_from_timing': ['startup', 'preload', 'readback', 'consolidation', 'replay_controls'],
+            'client_schedule': 'four barrier-synchronized clients; one fixed origin per client; equal requests',
+            'order_control': 'cyclic balanced 1/2/4, 2/4/1, 4/1/2; every run included, no outlier removal',
+            'private_state_exported': False, 'external_service_requests': 0,
+            'predecessor_evidence_transfer': False, 'unbounded_scalability_proved': False,
+            'comparative_speedup_proved': any(value['speedup_supported'] for value in comparisons.values()),
+            'personal_release_effect_ack_done': False,
+            'limitations': ['Finite local Linux host and fixed workload only; no cross-host or unbounded claim.',
+                'Per-process CPU deltas include tiny untimed accounting boundaries around barrier release and completion.',
+                'Native prepare generates fresh random tokens and timestamps; input payload bytes stay identical.',
+                'Initial snapshots are byte-identical per origin, with distinct keys between the four origins.',
+                'Ambient cache and host load are not isolated; balanced order reduces but does not remove drift.',
+                'No warmup exclusion; pooled request percentiles are descriptive, runs are paired inference units.']}
+    finally:
+        close_all()
 
 
 def initialize_seeded_terminal(terminal, contract, output):
@@ -1266,6 +1607,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--headless', action='store_true')
+    parser.add_argument('--repetitions', type=int, default=6,
+                        help='Comparable benchmark repetitions per process count (3/6/9/12)')
+    parser.add_argument('--workload', type=int, default=64,
+                        help='Identical comparable benchmark effect count (4..256, divisible by 4)')
+    parser.add_argument('--preload-per-origin', type=int, default=4,
+                        help='Identical preloaded effects per origin in the separate benchmark')
     profiles = parser.add_mutually_exclusive_group()
     profiles.add_argument('--linux-ring', dest='profile', action='store_const', const='linux',
                           help='Primary Linux Firefox reference with canonical seed')
@@ -1273,8 +1620,30 @@ if __name__ == '__main__':
                           help='Independent Windows extension acceptance')
     profiles.add_argument('--local-ring-only', dest='profile', action='store_const', const='local',
                           help='Actual Linux process scale/consolidation without an external service')
+    profiles.add_argument('--comparable-scale-benchmark', dest='profile', action='store_const', const='benchmark',
+                          help='Separate repeated 1/2/4-process comparison with identical preloaded stores')
     parser.set_defaults(profile='linux' if sys.platform == 'linux' else 'windows')
     args = parser.parse_args()
+    if args.profile == 'benchmark':
+        output = args.output.absolute()
+        if output.exists():
+            parser.error('new benchmark output required; existing state is never reset or overwritten')
+        sys.path.insert(0, str(ROOT / 'src'))
+        import qikvrt_effect_ack_http_terminal as terminal
+        try:
+            receipt = comparable_scale_benchmark(terminal, output,
+                ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin', repetitions=args.repetitions,
+                workload=args.workload, preload_per_origin=args.preload_per_origin)
+        except Exception as error:
+            receipt = {'schema': 'qikvrt_linux_comparable_scale_benchmark_v1', 'state': 'HOLD',
+                'head': terminal.git_read('rev-parse', 'HEAD'), 'tree': terminal.git_read('rev-parse', 'HEAD^{tree}'),
+                'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'reason': str(error),
+                'comparative_speedup_proved': False, 'unbounded_scalability_proved': False,
+                'personal_release_effect_ack_done': False}
+            output.mkdir(parents=True, exist_ok=True)
+        (output / 'RECEIPT.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+        print(json.dumps({key: value for key, value in receipt.items() if key != 'measurements'}, sort_keys=True))
+        sys.exit(0 if receipt['state'] == 'PASS' else 2)
     if args.profile == 'local':
         output = args.output.absolute()
         output.mkdir(parents=True, exist_ok=False)
