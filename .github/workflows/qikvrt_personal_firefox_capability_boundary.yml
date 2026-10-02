@@ -12,6 +12,8 @@ on:
       - "tools/qikvrt_tool_cache.py"
       - "runtime/toolchains/**"
       - "src/qikvrt_effect_ack_http_terminal.py"
+      - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
   workflow_dispatch:
@@ -97,6 +99,47 @@ jobs:
         with:
           name: qikvrt-personal-firefox-boundary-${{ github.event.pull_request.head.sha || github.sha }}
           path: /tmp/qikvrt-personal-firefox-boundary
+          if-no-files-found: error
+          retention-days: 30
+
+  linux-seed-ring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact Linux ring candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Use declared interpreter
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify cache, seed controls and real HTTP concurrency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+      - name: Run actual Firefox seed-bound ring on Linux
+        shell: bash
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_firefox_windows_witness.py --linux-ring --headless --output "$RUNNER_TEMP/qikvrt-firefox-linux-ring"
+      - name: Preserve Linux ring readback even on failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-linux-ring-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/geckodriver.log
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/screenshot.png
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/standard.xpi
           if-no-files-found: error
           retention-days: 30
 

@@ -25,9 +25,15 @@
       "version": "156.0.1"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "firefox-linux",
+      "provider": "Mozilla Firefox through declared GitHub ubuntu-24.04 runner image; fresh ImageVersion and actual runtime binary digest",
+      "version": "156.x"
+    },
+    {
       "cache_class": "repo-managed-archive",
       "component": "geckodriver",
-      "provider": "Mozilla content-digest-bound official release archives",
+      "provider": "Mozilla content-digest-bound official release archives; Linux uses declared native runner-image driver, exact version and binary receipt",
       "version": "0.37.1"
     },
     {
@@ -105,10 +111,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 17,
-  "declared_components": 17,
-  "lock_sha256": "81688c294dd44efb0766b0080fdd9f703186103dcd2c31a56f59f5d0e82af652",
-  "registry_sha256": "bfdd5acd041788d9a8710b0baf1fb0276cfe55fd3adce644fbe4cf8c6c668903",
+  "covered_components": 18,
+  "declared_components": 18,
+  "lock_sha256": "0f5f393c624c1f65ef6bbcea48062afc49a7296d4878ee6b0ef2388f8381f2d4",
+  "registry_sha256": "e7f375bd4dcfa4026c844fe0e93305a0b0e3aa6344533985c287cfc02a65baa8",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

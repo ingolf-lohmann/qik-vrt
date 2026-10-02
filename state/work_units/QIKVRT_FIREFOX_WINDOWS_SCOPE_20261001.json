@@ -418,5 +418,44 @@
       },
       "next_action": "Execute the updated existing fixed GET-only observer on its exact successor. If a productive route exists, inspect Pages configuration and current live/version publisher and source HEAD/TREE before any conditional repair. If no route exists, retain its exact credential/App-binding HOLD and keep public release flags false."
     }
+  },
+  "linux_seed_ring": {
+    "schema": "qikvrt_linux_seed_ring_work_unit_v1",
+    "parent_head": "dfdab89cacf6261364c8aec59c4e83be89368a9b",
+    "parent_tree": "4106cb04e8d36904f9c16d42bb6dbfe6cb114ede",
+    "human_contribution": "Ingolf Lohmann authorized Linux HTTP Firefox Effect-Acknowledgement seed ring and measured scaling, 2026-10-02",
+    "artificial_cognitive_contribution": "OpenAI Codex reused and generalized the existing Firefox witness; implemented seed gate, controls, cache profile and native Linux job",
+    "local_validation": {
+      "tests": 33,
+      "result": "PASS",
+      "actual_http_fanout": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "shared_token_race": {
+        "clients": 8,
+        "accepted_effects": 1,
+        "rejected": 7
+      },
+      "unique_control_events": 17,
+      "tool_cache_coverage_percent": 100,
+      "local_firefox_available": false
+    },
+    "observed_gap": "Linux HTTP test never started Firefox; the HTTP bridge never checked the canonical seed",
+    "established_cause_scope": "Absence of seed validation and real Linux Firefox invocation in the inspected exact source; origin of that design remains unestablished",
+    "repair": "Seed checks before admission and commit; seed fields in hashed records/events/readback; native Firefox job with compatible declared host tools",
+    "current_acceptance": "CANDIDATE_PREPARED_NATIVE_EXECUTION_PENDING",
+    "open_scopes": [
+      "Actual exact-head Linux Firefox receipt",
+      "Complete retained Linux runtime closure and actual Authority-on-Mirror OS construction",
+      "Live Authority/Mirror role transitions and ring replication",
+      "Restart persistence and lossless node consolidation",
+      "General scaling outside the finite measured HTTP levels",
+      "Independent native Main admission and any public release"
+    ],
+    "software_downgrade": "FORBIDDEN",
+    "effect_ack_done": false
   }
 }

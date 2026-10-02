@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-"""Real Firefox/Windows witness; local bridge evidence never accepts a release."""
+"""Real Firefox witness on Windows or seed-bound Linux; local evidence never accepts a release."""
 from __future__ import annotations
 
 import argparse
@@ -11,6 +11,8 @@ import json
 import os
 from pathlib import Path
 import platform
+import shutil
+from concurrent.futures import ThreadPoolExecutor
 import socket
 import struct
 import subprocess
@@ -283,6 +285,83 @@ def verify_effect_readback(before, after, prepared, request, subject):
             and after['repository_tree'] == subject['tree'])
 
 
+def bounded_ring_controls(terminal):
+    """Real HTTP effects; finite fanout is not general Mesh/runtime equivalence."""
+    def request(path, body=None, field=None):
+        req = urllib.request.Request('http://127.0.0.1:8771' + path,
+            data=None if body is None else terminal.canonical_json(body),
+            headers={'Content-Type': 'application/json',
+                     **({'Effect-Ack-Request': field} if field else {})})
+        try:
+            response = urllib.request.urlopen(req, timeout=15)
+        except urllib.error.HTTPError as error:
+            response = error
+        with response:
+            return response.code, json.load(response)
+
+    def prepare(payload):
+        status, result = request('/terminal/prepare', payload, 'v=1, mode=prepare')
+        if status != 200:
+            raise RuntimeError('CONTROL_PREPARE_FAILED')
+        status, record = request(result['record_url'])
+        claimed = record.pop('record_hash')
+        if (status != 200 or claimed != 'sha256:' + terminal.sha256(terminal.canonical_json(record))
+                or record['seed_binding'] != terminal.STATE.seed_binding
+                or record['input_hash'] != 'sha256:' + terminal.sha256(terminal.canonical_json(payload))):
+            raise RuntimeError('CONTROL_FULL_RECORD_BINDING_FAILED')
+        field = ('v=1, mode=commit, token=' + terminal.sf_bytes(result['commit_token'].encode('ascii'))
+                 + ', hash=' + terminal.sf_bytes(bytes.fromhex(result['record_hash'])))
+        return field
+
+    def new_payload():
+        return {'schema': 'qikvrt_terminal_input_v1', 'text': 'linux-ring-' + os.urandom(16).hex()}
+
+    expected = {}
+    measurements = []
+    for count in (1, 2, 4, 8):
+        payloads = [new_payload() for _ in range(count)]
+        fields = [prepare(payload) for payload in payloads]
+        before = readback()['events']
+        started = time.monotonic()
+        with ThreadPoolExecutor(max_workers=count) as pool:
+            results = list(pool.map(lambda pair: request('/terminal/commit', *pair), zip(payloads, fields)))
+        elapsed = time.monotonic() - started
+        if any(status != 200 for status, _ in results) or readback()['events'] != before + count:
+            raise RuntimeError('FANOUT_EFFECT_COUNT_MISMATCH')
+        for payload in payloads:
+            expected[payload['text']] = terminal.sha256(terminal.canonical_json(payload))
+        measurements.append({'parallel_clients': count, 'accepted_events': count,
+                             'elapsed_seconds': elapsed, 'transport': 'HTTP_CLIENTS_NOT_FIREFOX_FANOUT'})
+    payload = new_payload()
+    field = prepare(payload)
+    before = readback()['events']
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        races = list(pool.map(lambda _: request('/terminal/commit', payload, field), range(8)))
+    if sorted(status for status, _ in races) != [200] + [409] * 7 or readback()['events'] != before + 1:
+        raise RuntimeError('SHARED_TOKEN_RACE_NOT_SINGLE_USE')
+    expected[payload['text']] = terminal.sha256(terminal.canonical_json(payload))
+    # Discard the commit reply at the client; recover only by readback, never dispatch again.
+    payload = new_payload()
+    field = prepare(payload)
+    request('/terminal/commit', payload, field)
+    expected[payload['text']] = terminal.sha256(terminal.canonical_json(payload))
+    status, snapshot = request('/terminal/events')
+    events = snapshot['events']
+    if (status != 200 or len(events) != readback()['events']
+            or snapshot['events_sha256'] != terminal.sha256(terminal.canonical_json(events))
+            or [event['event_id'] for event in events] != list(range(1, len(events) + 1))):
+        raise RuntimeError('EVENT_SNAPSHOT_NOT_LOSSLESS')
+    for text, digest in expected.items():
+        matches = [event for event in events if event['text'] == text and event['input_hash'] == digest
+                   and event['seed_binding'] == terminal.STATE.seed_binding]
+        if len(matches) != 1:
+            raise RuntimeError('NONCE_BOUND_EVENT_MISSING_OR_DUPLICATED')
+    return {'fanout': measurements, 'shared_token_race': {'clients': 8, 'effects': 1, 'refusals': 7},
+            'discarded_reply_readback': True, 'network_loss_injected': False,
+            'event_snapshot': snapshot, 'lossless_scope': 'PROCESS_LIFETIME_EVENT_SNAPSHOT_ONLY',
+            'authority_mirror_live_nodes_tested': False, 'unbounded_scalability_proved': False}
+
+
 def wait_script(driver, script):
     deadline = time.monotonic() + 30
     while time.monotonic() < deadline:
@@ -293,10 +372,10 @@ def wait_script(driver, script):
     raise RuntimeError('BROWSER_FUNCTIONAL_TIMEOUT')
 
 
-def witness(output, headless=False):
+def witness(output, headless=False, linux=False):
     output.mkdir(parents=True, exist_ok=True)
     policy = json.loads(POLICY.read_text(encoding='utf-8'))
-    contract = policy['windows_acceptance']
+    contract = policy['linux_ring_acceptance'] if linux else policy['windows_acceptance']
     receipt = {'schema': 'qikvrt_firefox_windows_witness_v1',
                'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
                'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -313,6 +392,9 @@ def witness(output, headless=False):
                'product_target_verified': False, 'authenticated_runtime_readback': False,
                'public_url_fresh_readback': False,
                'personal_release_effect_ack_done': False, 'state': 'HOLD'}
+    if linux:
+        receipt.update(schema='qikvrt_firefox_linux_seed_ring_witness_v1',
+                       operating_system_built_from_seed=False, productive_mesh_runtime_verified=False)
     driver = None
     server = None
     try:
@@ -321,19 +403,42 @@ def witness(output, headless=False):
             raise RuntimeError('EXACT_HEAD_MISMATCH')
         if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
             raise RuntimeError('DIRTY_CANDIDATE')
-        receipt['os'] = windows_identity()
-        if sys.version_info[:3] != (3, 13, 15):
+        if linux:
+            if sys.platform != 'linux':
+                raise RuntimeError('LINUX_EXECUTION_REQUIRED')
+            receipt['os'] = {'platform': platform.platform(), 'architecture': platform.machine(),
+                             'distribution': platform.freedesktop_os_release()}
+        else:
+            receipt['os'] = windows_identity()
+        if not linux and sys.version_info[:3] != (3, 13, 15):
             raise RuntimeError('WINDOWS_WITNESS_INTERPRETER_VERSION_MISMATCH')
         receipt['python_version'] = platform.python_version()
-        receipt['product_target_verified'] = target_matches(receipt['os'], contract['product_target'])
-        gecko = provision_driver(contract, output / 'driver-cache', receipt['os']['architecture'])
+        receipt['product_target_verified'] = False if linux else target_matches(receipt['os'], contract['product_target'])
+        if linux:
+            gecko_path = shutil.which('geckodriver')
+            if not gecko_path and os.environ.get('GECKOWEBDRIVER'):
+                candidate = Path(os.environ['GECKOWEBDRIVER']) / 'geckodriver'
+                if candidate.is_file():
+                    gecko_path = str(candidate)
+            firefox_path = shutil.which('firefox')
+            if not gecko_path or not firefox_path:
+                raise RuntimeError('DECLARED_LINUX_RUNNER_FIREFOX_OR_GECKODRIVER_UNAVAILABLE')
+            gecko = Path(gecko_path).resolve()
+            firefox = Path(firefox_path).resolve()
+            receipt['driver_version'] = subprocess.check_output([str(gecko), '--version'], text=True, timeout=20)
+            if not receipt['driver_version'].startswith('geckodriver ' + contract['geckodriver_version'] + ' '):
+                raise RuntimeError('GECKODRIVER_COMMAND_CONTRACT_FAILED')
+        else:
+            gecko = provision_driver(contract, output / 'driver-cache', receipt['os']['architecture'])
         receipt['driver_sha256'] = digest(gecko)
-        firefox = Path(os.environ.get('QIKVRT_FIREFOX_BINARY',
-                                     r'C:\Program Files\Mozilla Firefox\firefox.exe'))
+        if not linux:
+            firefox = Path(os.environ.get('QIKVRT_FIREFOX_BINARY',
+                                         r'C:\Program Files\Mozilla Firefox\firefox.exe'))
         receipt['firefox_binary_sha256'] = digest(firefox)
-        receipt['firefox_binary_architecture'] = pe_architecture(firefox)
-        receipt['browser_execution_mode'] = ('NATIVE' if receipt['firefox_binary_architecture'] ==
-                                             receipt['os']['architecture'] else 'WINDOWS_EMULATION')
+        if not linux:
+            receipt['firefox_binary_architecture'] = pe_architecture(firefox)
+            receipt['browser_execution_mode'] = ('NATIVE' if receipt['firefox_binary_architecture'] ==
+                                                 receipt['os']['architecture'] else 'WINDOWS_EMULATION')
         xpi = output / 'standard.xpi'
         package = policy['standard_firefox_package']
         with zipfile.ZipFile(xpi, 'w', compression=zipfile.ZIP_DEFLATED) as bundle:
@@ -348,7 +453,19 @@ def witness(output, headless=False):
         sys.path.insert(0, str(ROOT / 'src'))
         import qikvrt_effect_ack_http_terminal as terminal
         from http.server import ThreadingHTTPServer
-        terminal.STATE = terminal.State()
+        seed = ROOT / contract['seed_path'] if linux else None
+        terminal.STATE = terminal.State(seed)
+        if linux:
+            receipt['seed_binding'] = terminal.STATE.seed_binding
+            original = seed.read_bytes()
+            bad_seed = output / 'altered-seed.bin'
+            bad_seed.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+            try:
+                terminal.State(bad_seed)
+            except ValueError:
+                receipt['altered_seed_start_refused'] = True
+            else:
+                raise RuntimeError('ALTERED_SEED_NOT_REFUSED')
         requests = []
         http_paths = []
         class ObservedHandler(terminal.Handler):
@@ -372,12 +489,20 @@ def witness(output, headless=False):
                     'binary': str(firefox), 'args': ['-headless'] if headless else []}}}})
             driver.session = session['sessionId']
             receipt['browser_capabilities'] = session['capabilities']
-            if session['capabilities']['browserVersion'] != contract['firefox']['version']:
+            if linux:
+                if not session['capabilities']['browserVersion'].startswith(contract['firefox_version_prefix']):
+                    raise RuntimeError('DECLARED_LINUX_FIREFOX_VERSION_MISMATCH')
+                pid = int(session['capabilities']['moz:processID'])
+                executable = Path('/proc') / str(pid) / 'exe'
+                receipt['firefox_runtime_executable_sha256'] = digest(executable)
+                receipt['firefox_runtime_executable'] = str(executable.resolve())
+            if not linux and session['capabilities']['browserVersion'] != contract['firefox']['version']:
                 raise RuntimeError('FIREFOX_VERSION_MISMATCH')
-            public, public_artifact = observe_public_url(driver, contract, receipt, output)
-            receipt['public_url_readback'] = public
-            receipt['public_url_readback_artifact'] = public_artifact
-            receipt['public_url_fresh_readback'] = public['public_url_fresh_readback']
+            if not linux:
+                public, public_artifact = observe_public_url(driver, contract, receipt, output)
+                receipt['public_url_readback'] = public
+                receipt['public_url_readback_artifact'] = public_artifact
+                receipt['public_url_fresh_readback'] = public['public_url_fresh_readback']
             addon = driver.command('/moz/addon/install', {'path': str(xpi.resolve()), 'temporary': True})
             if addon != 'qikvrt-ai-terminal@goldkelch.local':
                 raise RuntimeError('ADDON_ID_MISMATCH')
@@ -421,6 +546,8 @@ def witness(output, headless=False):
             prepared = driver.script('return JSON.parse(document.querySelector("[data-role=output]").textContent);')
             if prepared.get('record_validated') is not True or readback()['events'] != before['events']:
                 raise RuntimeError('PREPARE_BINDING_OR_NO_EFFECT_FAILED')
+            if linux and prepared['full_record'].get('seed_binding') != receipt['seed_binding']:
+                raise RuntimeError('FIREFOX_SEED_RECORD_BINDING_FAILED')
             driver.script('document.querySelector("[data-act=commit]").click();')
             deadline = time.monotonic() + 30
             after = readback()
@@ -440,6 +567,9 @@ def witness(output, headless=False):
                 'args': [{'confirmed': True, 'prepared': prepared, 'request': requests[-1]}]})
             if replay.get('ordinary_release') is not False or replay.get('http_status') != 409 or readback()['events'] != after['events']:
                 raise RuntimeError('REPLAY_NOT_REJECTED')
+            if linux:
+                receipt['ring_controls'] = bounded_ring_controls(terminal)
+                receipt['linux_ring_test'] = 'PASS'
             receipt.update(local_effect_readback=True, replay_rejected=True,
                            readback_before=before, readback_after=after,
                            effect_scope='LOCAL_LOOPBACK_TERMINAL_EVENT_ONLY',
@@ -453,6 +583,8 @@ def witness(output, headless=False):
     except Exception as error:
         receipt['reason'] = type(error).__name__ + ': ' + str(error)
         receipt['windows_witness_test'] = 'FAIL'
+        if linux:
+            receipt['linux_ring_test'] = 'FAIL'
         if driver and driver.session:
             try:
                 receipt['terminal_diagnostics'] = driver.script(
@@ -488,5 +620,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--headless', action='store_true')
+    parser.add_argument('--linux-ring', action='store_true', help='Use declared Linux runner tools and require canonical seed')
     args = parser.parse_args()
-    sys.exit(witness(args.output.resolve(), args.headless))
+    sys.exit(witness(args.output.resolve(), args.headless, args.linux_ring))

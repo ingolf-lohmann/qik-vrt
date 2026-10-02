@@ -6,6 +6,8 @@ import json
 import sys
 import threading
 import time
+import tempfile
+from concurrent.futures import ThreadPoolExecutor
 import unittest
 import urllib.error
 import urllib.request
@@ -225,6 +227,83 @@ class LoopbackTerminalE2ETests(unittest.TestCase):
         )
         self.assertEqual(status, 400)
         self.assertFalse(body["ordinary_release"])
+
+
+class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
+    def setUp(self):
+        super().setUp()
+        self.seed = ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin'
+        terminal.STATE = terminal.State(self.seed)
+
+    def test_altered_truncated_absent_seed_cannot_admit(self):
+        original = self.seed.read_bytes()
+        self.assertEqual(len(original), 400)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'seed.bin'
+            for data in (bytes([original[0] ^ 1]) + original[1:], original[:-1], original + b'x'):
+                path.write_bytes(data)
+                with self.assertRaises(ValueError):
+                    terminal.State(path)
+            path.unlink()
+            with self.assertRaisesRegex(ValueError, 'SEED_UNAVAILABLE'):
+                terminal.State(path)
+
+    def test_changed_seed_between_prepare_and_commit_has_no_effect(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'seed.bin'
+            original = self.seed.read_bytes()
+            path.write_bytes(original)
+            terminal.STATE = terminal.State(path)
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'stale-seed'}
+            prepared = self.prepare(payload)
+            path.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+            status, _, _ = self.request('/terminal/commit', method='POST', body=payload,
+                                        headers=self.commit_headers(prepared))
+            self.assertEqual(status, 400)
+            self.assertEqual(self.request('/terminal/state')[2]['events'], 0)
+
+    def test_seed_binds_full_record_and_event_and_export(self):
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'bound-seed'}
+        prepared = self.prepare(payload)
+        record = self.request(prepared['record_url'])[2]
+        claimed = record.pop('record_hash')
+        self.assertEqual(claimed, 'sha256:' + terminal.sha256(terminal.canonical_json(record)))
+        self.assertEqual(record['seed_binding'], terminal.STATE.seed_binding)
+        status, _, _ = self.request('/terminal/commit', method='POST', body=payload,
+                                    headers=self.commit_headers(prepared))
+        self.assertEqual(status, 200)
+        snapshot = self.request('/terminal/events')[2]
+        self.assertEqual(snapshot['events'][0]['seed_binding'], record['seed_binding'])
+        self.assertEqual(snapshot['events_sha256'], terminal.sha256(terminal.canonical_json(snapshot['events'])))
+        self.assertEqual(snapshot['persistence_scope'], 'PROCESS_LIFETIME_ONLY')
+
+    def test_shared_token_concurrent_commit_has_exactly_one_effect(self):
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'same-token-race'}
+        prepared = self.prepare(payload)
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            results = list(pool.map(lambda _: self.request('/terminal/commit', method='POST',
+                body=payload, headers=self.commit_headers(prepared))[0], range(8)))
+        self.assertEqual(sorted(results), [200] + [409] * 7)
+        self.assertEqual(self.request('/terminal/state')[2]['events'], 1)
+
+
+class BoundedSeedRingControlsTests(unittest.TestCase):
+    def test_real_http_fanout_race_and_lossless_snapshot(self):
+        from tools.qikvrt_firefox_windows_witness import bounded_ring_controls
+        terminal.STATE = terminal.State(ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+        server = ThreadingHTTPServer(('127.0.0.1', 8771), terminal.Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            result = bounded_ring_controls(terminal)
+            self.assertEqual([x['parallel_clients'] for x in result['fanout']], [1, 2, 4, 8])
+            self.assertEqual(result['event_snapshot']['event_count'], 17)
+            self.assertFalse(result['authority_mirror_live_nodes_tested'])
+            self.assertFalse(result['unbounded_scalability_proved'])
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=2)
 
 
 if __name__ == "__main__":

@@ -21,12 +21,15 @@ import threading
 import time
 from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from typing import Any
 
 MAX_BODY = 2 * 1024 * 1024
 TOKEN_TTL_SECONDS = 120
 HOST = "127.0.0.1"
 DEFAULT_PORT = 8771
+CANONICAL_SEED_SHA256 = "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+MAX_EVENTS = 4096
 SF_KEY = re.compile(r"^[a-z*][a-z0-9_.*-]*$")
 
 
@@ -109,12 +112,27 @@ class Prepared:
 
 
 class State:
-    def __init__(self) -> None:
+    def __init__(self, seed_path: Path | None = None) -> None:
+        self.seed_path = seed_path
+        self.seed_binding = self.validate_seed()
         self.secret = secrets.token_bytes(32)
         self.lock = threading.Lock()
         self.prepared: dict[str, Prepared] = {}
         self.records: dict[str, dict[str, Any]] = {}
         self.events: list[dict[str, Any]] = []
+
+    def validate_seed(self) -> dict[str, Any] | None:
+        if self.seed_path is None:
+            return None  # Backward-compatible unseeded HTTP profile; no seed proof.
+        try:
+            data = self.seed_path.read_bytes()
+        except OSError as exc:
+            raise ValueError("SEED_UNAVAILABLE") from exc
+        if len(data) != 400 or not hmac.compare_digest(sha256(data), CANONICAL_SEED_SHA256):
+            raise ValueError("CANONICAL_400_BYTE_SEED_MISMATCH")
+        return {"bytes": 400, "sha256": CANONICAL_SEED_SHA256,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": False}
 
     def record(self, *, state: str, input_hash: str, ordinary_release: bool, reason: str) -> tuple[str, dict[str, Any]]:
         body = {
@@ -132,6 +150,8 @@ class State:
             "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "external_effect": "NONE",
         }
+        if self.seed_binding is not None:
+            body["seed_binding"] = self.seed_binding
         digest = sha256(canonical_json(body))
         body["record_hash"] = "sha256:" + digest
         self.records[digest] = body
@@ -219,6 +239,7 @@ class Handler(BaseHTTPRequestHandler):
                 "protected_effects": ["terminal_input"],
                 "external_effects": "NONE",
                 "record_template": "/effect-ack/records/{sha256}",
+                "seed_binding": STATE.seed_binding,
             })
             return
         if self.path == "/terminal/state":
@@ -232,8 +253,18 @@ class Handler(BaseHTTPRequestHandler):
                     "repository_head": head,
                     "repository_tree": tree,
                     "external_effects": "NONE",
+                    "seed_binding": STATE.seed_binding,
                 }
             self._json(200, body)
+            return
+        if self.path == "/terminal/events":
+            with STATE.lock:
+                events = [dict(event) for event in STATE.events]
+            self._json(200, {"schema": "qikvrt_terminal_event_snapshot_v1",
+                             "events": events, "event_count": len(events),
+                             "events_sha256": sha256(canonical_json(events)),
+                             "seed_binding": STATE.seed_binding,
+                             "persistence_scope": "PROCESS_LIFETIME_ONLY"})
             return
         prefix = "/effect-ack/records/"
         if self.path.startswith(prefix):
@@ -249,6 +280,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         try:
+            STATE.validate_seed()
             request_binding = parse_effect_ack_request(self.headers.get("Effect-Ack-Request"))
             body = self._read_body()
             if self.path == "/terminal/prepare":
@@ -300,12 +332,17 @@ class Handler(BaseHTTPRequestHandler):
         record_hash = binding["hash"]
         commit_input_hash = sha256(canonical_json(body))
         with STATE.lock:
+            STATE.validate_seed()
             prepared = STATE.prepared.get(token)
             if prepared is None or prepared.used or prepared.expires_at < time.time() or not hmac.compare_digest(prepared.record_hash, record_hash):
                 self._json(409, {"state": "HOLD", "ordinary_release": False, "reason": "invalid stale used or mismatched token"})
                 return
             if not hmac.compare_digest(prepared.input_hash, commit_input_hash):
                 self._json(409, {"state": "HOLD", "ordinary_release": False, "reason": "commit payload differs from exact prepared payload"})
+                return
+            if len(STATE.events) >= MAX_EVENTS:
+                self._json(409, {"state": "HOLD", "ordinary_release": False,
+                                 "reason": "bounded terminal event capacity reached"})
                 return
             prepared.used = True
             event = {
@@ -318,6 +355,7 @@ class Handler(BaseHTTPRequestHandler):
                 "video_present": body.get("video") is not None,
                 "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "external_effect": "NONE",
+                "seed_binding": STATE.seed_binding,
             }
             STATE.events.append(event)
             digest, record = STATE.record(
@@ -341,9 +379,13 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--seed", type=Path,
+                        help="Require the unchanged canonical 400-byte seed before local admission")
     args = parser.parse_args()
     if args.host not in {"127.0.0.1", "localhost"}:
         raise SystemExit("BLOCK: reference terminal bridge is loopback-only")
+    global STATE
+    STATE = State(args.seed)
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     print(json.dumps({"state": "READY", "host": args.host, "port": args.port, "external_effects": "NONE"}, sort_keys=True), flush=True)
     server.serve_forever()

@@ -159,3 +159,38 @@ site, repair the first established configuration/publishing defect, then rerun
 the same candidate's public readback. No Mirror URL or other host substitutes
 for the canonical product URL. Signed persistent installation, Personal
 capability manifest and authenticated runtime readback remain separate gates.
+
+
+
+## Seed-bound Linux ring witness
+
+The existing Windows witness also accepts `--linux-ring --headless` on the
+explicitly declared Ubuntu runner. Its real Firefox process loads the same
+Standard extension, validates the full prepare record, commits one local
+terminal event and independently reads the nonce, hashes, HEAD and TREE back.
+The Linux bridge requires the unchanged canonical 400-byte signature copied
+byte-for-byte from PR437 HEAD 6a1098699d096806958b9c3b50a97d205b8110e9,
+blob 9b06a2b407fb99d99d2bda5a3decc80ab68a092b. Altered, absent or
+wrong-length bytes refuse admission; the original signature is never rewritten.
+
+The cause of the previous missing seed-to-effect evidence is the absence of
+any seed check in the HTTP bridge. The successor makes the seed a local
+admission prerequisite and binds it into hashed records, events and readback.
+This proves that admission rule when its positive and negative controls run;
+it does not prove that 400 bytes contain Linux or construct a whole operating
+system. The host kernel, Firefox, driver and interpreter remain explicit
+runner-image/toolcache dependencies, with native versions and binary digests.
+
+The real HTTP controls execute fanout 1, 2, 4 and 8, an eight-client race on one
+token, and client-discarded-response recovery through fresh readback. Only one
+race effect may occur. A complete, hash-bound process-lifetime event snapshot
+must retain every unique nonce exactly once. No network failure is injected.
+The single actual Firefox roundtrip and the HTTP-client fanout are distinct
+measurements. These finite measurements do not establish Firefox fanout,
+unbounded scalability, restart persistence, live Authority/Mirror replication,
+lossless node consolidation, or productive Linux reconstruction from a retained
+full-node closure. Those acceptance scopes remain open. Native Main admission,
+public product release and personal runtime acceptance remain separate gates.
+
+Ingolf Lohmann supplied and authorized the ring scope; OpenAI Codex generalized
+the existing witness, implemented the seed gate and executed the controls.

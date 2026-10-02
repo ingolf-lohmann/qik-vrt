@@ -175,5 +175,35 @@
       "production_permission_consent_verified": false,
       "source": "https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/"
     }
+  },
+  "linux_ring_acceptance": {
+    "schema": "qikvrt_firefox_linux_seed_ring_acceptance_v1",
+    "owner_order": "Ingolf Lohmann, 2026-10-02: execute Linux HTTP Firefox seed effect ring and bounded scaling",
+    "seed_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "seed_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "6a1098699d096806958b9c3b50a97d205b8110e9",
+      "blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b"
+    },
+    "terminal_url": "https://goldkelch.github.io/qik-vrt/",
+    "firefox_version_prefix": "156.",
+    "geckodriver_version": "0.37.1",
+    "runner_source": "https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md",
+    "runner_candidate": "ubuntu-24.04",
+    "execution_scope": "EXISTING_HOST_LINUX_LOCAL_HTTP_EFFECT_ONLY",
+    "fanout": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "shared_token_race_clients": 8,
+    "seed_alone_builds_operating_system": false,
+    "productive_authority_mirror_node_build_verified": false,
+    "persistent_consolidation_verified": false,
+    "unbounded_scalability_proved": false,
+    "recovery": "HOLD on absent or incompatible tools; no downgrade, download fallback or credential widening",
+    "receipt": "RECEIPT.json"
   }
 }
