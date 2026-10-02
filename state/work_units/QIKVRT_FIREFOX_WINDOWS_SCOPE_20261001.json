@@ -446,7 +446,7 @@
     "observed_gap": "Linux HTTP test never started Firefox; the HTTP bridge never checked the canonical seed",
     "established_cause_scope": "Absence of seed validation and real Linux Firefox invocation in the inspected exact source; origin of that design remains unestablished",
     "repair": "Seed checks before admission and commit; seed fields in hashed records/events/readback; native Firefox job with compatible declared host tools",
-    "current_acceptance": "UI_RACE_REPAIR_REQUIRES_FRESH_NATIVE_HEAD_RUN",
+    "current_acceptance": "LOCAL_DURABLE_RESTART_VERIFIED_NATIVE_SUCCESSOR_WITNESS_REQUIRED",
     "open_scopes": [
       "Actual exact-head Linux Firefox receipt",
       "Complete retained Linux runtime closure and actual Authority-on-Mirror OS construction",
@@ -516,6 +516,309 @@
       "repair": "Separate read-only observer display from effect state; latest observation revision prevents stale observer readback; observer exceptions remain in observer channel",
       "design_origin": "UNESTABLISHED",
       "native_successor_validation": "REQUIRED"
+    },
+    "durable_persistence": {
+      "ack_boundary": "atomic replace + file fsync + parent directory fsync before positive response",
+      "artificial_cognitive_contribution": "OpenAI Codex implemented and tested the atomic terminal snapshot using existing API persistence, bounded process supervision and exact readback",
+      "atomic_unit": [
+        "records",
+        "events",
+        "prepared tokens and consumed flags",
+        "token MAC key",
+        "unchanged seed binding"
+      ],
+      "authority_mirror_live_nodes_tested": false,
+      "boundary": "Bounded local POSIX filesystem honoring atomic rename and fsync; no productive Mesh replication or release claim",
+      "capacity": {
+        "MAX_EVENTS": 4096,
+        "event_eviction": false,
+        "maximum_state_bytes": 67108864
+      },
+      "durable_state": ".qikvrt/api/terminal.json",
+      "human_contribution": "Ingolf Lohmann authorized crash/restart-safe Record/Event persistence and negative controls on PR #438, 2026-10-02",
+      "local_focused_tests": {
+        "command": "make test: terminal, handler-security and Personal boundary components",
+        "result": "PASS",
+        "scope": "focused candidate bytes; final full suite and native exact-head readback remain separate",
+        "tests": 71
+      },
+      "local_fresh_process_restart": {
+        "schema": "qikvrt_terminal_durable_restart_readback_v1",
+        "observed_at": "2026-10-02T08:03:30.810859+00:00",
+        "first_process_pid": 40,
+        "restarted_process_pid": 48,
+        "termination": "SIGKILL_WITHOUT_SHUTDOWN_HOOK",
+        "actual_process_restart": true,
+        "event_snapshot_before": {
+          "event_count": 1,
+          "events": [
+            {
+              "audio_present": false,
+              "commit_token_sha256": "338600eb6f88bab3a0d5355850e295db2f09cc6a3e3a56345824eafc03bbab4e",
+              "effect_record_hash": "0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+              "event_id": 1,
+              "external_effect": "NONE",
+              "input_hash": "b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+              "kind": "TERMINAL_INPUT_ACCEPTED",
+              "observed_at": "2026-10-02T08:03:30Z",
+              "record_hash": "e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "text": "restart-a90e1cdb201075d5e14035b3105e9323",
+              "video_present": false
+            }
+          ],
+          "events_sha256": "512c635e5236df246b5b62029662f94aa95697f1fb60c054edd0c8282ebeb2f2",
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "schema": "qikvrt_terminal_event_snapshot_v1",
+          "seed_binding": {
+            "bytes": 400,
+            "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+            "seed_alone_builds_operating_system": false,
+            "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+          }
+        },
+        "event_snapshot_after": {
+          "event_count": 1,
+          "events": [
+            {
+              "audio_present": false,
+              "commit_token_sha256": "338600eb6f88bab3a0d5355850e295db2f09cc6a3e3a56345824eafc03bbab4e",
+              "effect_record_hash": "0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+              "event_id": 1,
+              "external_effect": "NONE",
+              "input_hash": "b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+              "kind": "TERMINAL_INPUT_ACCEPTED",
+              "observed_at": "2026-10-02T08:03:30Z",
+              "record_hash": "e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "text": "restart-a90e1cdb201075d5e14035b3105e9323",
+              "video_present": false
+            }
+          ],
+          "events_sha256": "512c635e5236df246b5b62029662f94aa95697f1fb60c054edd0c8282ebeb2f2",
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "schema": "qikvrt_terminal_event_snapshot_v1",
+          "seed_binding": {
+            "bytes": 400,
+            "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+            "seed_alone_builds_operating_system": false,
+            "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+          }
+        },
+        "effect_records_before": {
+          "/effect-ack/records/0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "single-use exact-bound loopback commit executed",
+            "record_hash": "sha256:0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          },
+          "/effect-ack/records/e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "loopback terminal input satisfies bounded local policy",
+            "record_hash": "sha256:e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          }
+        },
+        "effect_records_after": {
+          "/effect-ack/records/0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "single-use exact-bound loopback commit executed",
+            "record_hash": "sha256:0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          },
+          "/effect-ack/records/e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c": {
+            "created_utc": "2026-10-02T08:03:30Z",
+            "external_effect": "NONE",
+            "input_hash": "sha256:b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+            "message_type": "effect-ack-record",
+            "ordinary_release": true,
+            "policy_allows_release": true,
+            "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+            "policy_version": 1,
+            "reason": "loopback terminal input satisfies bounded local policy",
+            "record_hash": "sha256:e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+            "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+            "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+            "seed_binding": {
+              "bytes": 400,
+              "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+              "seed_alone_builds_operating_system": false,
+              "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+            },
+            "state": "EFFECT_ACK_DONE",
+            "wire_version": 1
+          }
+        },
+        "prior_ring_event_count": 0,
+        "replay_http_status": 409,
+        "replay_http_statuses": [
+          409
+        ],
+        "replay_event_snapshot": {
+          "event_count": 1,
+          "events": [
+            {
+              "audio_present": false,
+              "commit_token_sha256": "338600eb6f88bab3a0d5355850e295db2f09cc6a3e3a56345824eafc03bbab4e",
+              "effect_record_hash": "0a99398ae2ca363e7e6fe51f6040fccce34174de3c24c8252172492e1d7f8b35",
+              "event_id": 1,
+              "external_effect": "NONE",
+              "input_hash": "b1038ab8b835185c1ccdec89471226040636d68546180356d17b6f397eb1ac11",
+              "kind": "TERMINAL_INPUT_ACCEPTED",
+              "observed_at": "2026-10-02T08:03:30Z",
+              "record_hash": "e84bfc585671990c92c23c497ab08323063c88a88d7ee15f8232f0e28c52186c",
+              "seed_binding": {
+                "bytes": 400,
+                "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+                "seed_alone_builds_operating_system": false,
+                "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+              },
+              "text": "restart-a90e1cdb201075d5e14035b3105e9323",
+              "video_present": false
+            }
+          ],
+          "events_sha256": "512c635e5236df246b5b62029662f94aa95697f1fb60c054edd0c8282ebeb2f2",
+          "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+          "schema": "qikvrt_terminal_event_snapshot_v1",
+          "seed_binding": {
+            "bytes": 400,
+            "effect_scope": "LOCAL_TERMINAL_ADMISSION_GATE_ONLY",
+            "seed_alone_builds_operating_system": false,
+            "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+          }
+        },
+        "confirmed_events_and_records_unchanged": true,
+        "replay_second_effects": 0,
+        "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+        "lossless_scope": "BOUNDED_LOCAL_FSYNCED_SNAPSHOT_ACROSS_PROCESS_RESTART",
+        "authority_mirror_live_nodes_tested": false,
+        "network_loss_injected": false,
+        "unbounded_scalability_proved": false,
+        "external_effect": "NONE"
+      },
+      "local_readback_subject": "candidate source SHA-256 bindings above; local checkout still names the parent HEAD. No predecessor check transfer.",
+      "local_regressions": [
+        "corrupt/empty/truncated/duplicate/reordered snapshot",
+        "missing initialized snapshot",
+        "restart seed mismatch and unseeded substitution",
+        "crash after fsync before response",
+        "parallel commits and eight-client single-token race",
+        "prepare/expiry/payload binding across restart",
+        "capacity across restart",
+        "competing real process and symlink refusal",
+        "failed or ambiguous persistence poisons admission and readback"
+      ],
+      "media_failure_tested": false,
+      "native_successor_validation": "REQUIRED via existing linux-seed-ring job; artifact readback must bind the new HEAD/TREE",
+      "network_loss_injected": false,
+      "observed_cause": "State.records, State.events and single-use token consumption existed only in process memory on the bound parent source",
+      "parent_head": "fbf72251784c72addac2493781b0d330a7d7089b",
+      "parent_tree": "c07b0be0d15cbac87fbf8b7fb1e1b57e6779f2f5",
+      "personal_release_effect_ack_done": false,
+      "power_removal_tested": false,
+      "predecessor_evidence_transfer": false,
+      "productive_node_consolidation_verified": false,
+      "reuse": [
+        "qikvrt_api_handler.dirs",
+        "qikvrt_api_handler.process_lock",
+        "qikvrt_api_handler.atomic_write_bytes",
+        "qikvrt_api_handler.secure_read_bytes",
+        "qikvrt_api_handler._strict_json_loads",
+        "qikvrt_firefox_windows_witness"
+      ],
+      "schema": "qikvrt_terminal_durable_persistence_work_unit_v1",
+      "source_sha256": {
+        "src/qikvrt_api_handler.py": "b31038728504dd8278c1111367fe051a1f6258606bd5a1e1b36019f909ae5b8a",
+        "src/qikvrt_effect_ack_http_terminal.py": "8d60d0dda20a2442bd101ed327f5e2ed94bc838ccb94c34d2f7d379a779ab16c",
+        "tests/test_qikvrt_effect_ack_http_terminal.py": "ed18723a8045aaaa20afdf2628ec54e392de86e4f969b531ad399f6857768463",
+        "tools/qikvrt_firefox_windows_witness.py": "fe2d0dbb29a0722d1c35c3c56d5a09f81204aeefe39d2b7d82c466ff58a24c8a"
+      },
+      "unbounded_scalability_proved": false,
+      "local_full_repository_validation": {
+        "command": "make test",
+        "result": "PASS",
+        "integrity_before_and_after": "PASS",
+        "local_python": "3.12.14",
+        "terminal_tests": 36,
+        "historical_object_recovery": {
+          "source_head": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+          "action": "fetched exact object required by existing real-worktree regression; no test or source substitution"
+        },
+        "native_exact_head_workflows": "SEPARATE_REQUIRED_READBACK"
+      },
+      "original_requested_subject": {
+        "head": "924d66b3cb087adcbbe5da65b9fd282663a71909",
+        "tree": "ab96e2f3009f25323900171bd6fbbf9320eb7bde"
+      },
+      "concurrent_work_preserved": {
+        "implementation_subject": "21ffecc7e85c828277cb40810953b1affedadd33",
+        "integrity_subject": "fbf72251784c72addac2493781b0d330a7d7089b",
+        "regressions_preserved": 6,
+        "explicit_state_file_interface_preserved": true
+      },
+      "local_terminal_tests": {
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+        "tests": 36,
+        "result": "PASS"
+      }
     }
   }
 }

@@ -12,6 +12,7 @@ on:
       - "tools/qikvrt_tool_cache.py"
       - "runtime/toolchains/**"
       - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_api_handler.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
       - "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
       - "Makefile"
@@ -140,7 +141,8 @@ jobs:
             ${{ runner.temp }}/qikvrt-firefox-linux-ring/geckodriver.log
             ${{ runner.temp }}/qikvrt-firefox-linux-ring/screenshot.png
             ${{ runner.temp }}/qikvrt-firefox-linux-ring/standard.xpi
-            ${{ runner.temp }}/qikvrt-firefox-linux-ring/effect-ack-state.json
+          # The private state file contains token material. Preserve readbacks,
+          # never the .qikvrt/api store itself.
           if-no-files-found: error
           retention-days: 30
 

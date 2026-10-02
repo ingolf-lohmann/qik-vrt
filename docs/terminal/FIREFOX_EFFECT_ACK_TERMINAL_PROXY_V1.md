@@ -50,6 +50,41 @@ A proxy may display NACK, CONTINUE, ISOLATE or BLOCK. It may never translate tho
 
 It is not a replacement for `src/qikvrt_effect_ack.py`, and it must not be represented as proof of complete wire or deployment conformance. A write-capable repository, publication, deployment or actuator backend needs a separately authorized adapter and must preserve the same EFFECT_ACK gate.
 
+### Durable local Linux state
+
+On POSIX, the CLI defaults to the current directory as `--state-root` and
+stores one private snapshot at `.qikvrt/api/terminal.json`. An explicit root
+selects an isolated local instance. The implementation reuses
+`qikvrt_api_handler.atomic_write_bytes`, its strict no-follow reader and its
+process lock; it does not introduce an additional ledger or remote store.
+The separate `terminal.lock` is held for the server lifetime, so a competing
+process fails admission. HTTP commits remain serialized by the existing lock.
+
+The snapshot contains records, ordered events, prepared tokens and their
+consumption state together. Prepare and Commit replace it atomically and fsync
+both file and directory before a positive HTTP reply. Tokens and key material
+remain in the mode-0600 local file and must never enter uploaded evidence.
+The 4096-event limit remains fail-closed without event eviction.
+
+Restart validates canonical complete JSON, the snapshot digest, each record
+digest, unchanged 400-byte seed binding, token MAC/payload/expiry binding,
+contiguous event order and the one-to-one consumed-token/event relation.
+Malformed, truncated, missing initialized or mismatched state blocks startup
+without reset or partial salvage. An ambiguous write/fsync failure blocks all
+further reads and admission until a validated restart; it never rolls back a
+possibly persisted effect to permit a retry. A crash after persistence but
+before the response is resolved through fresh event and Effect-Record readback.
+An unused unexpired preparation can still commit after restart; a consumed
+token cannot create another event.
+
+The existing Linux Firefox witness retains its real browser effect, adds
+bounded HTTP concurrency, then kills and restarts actual terminal processes
+and compares every retained event and referenced record. This establishes only
+the bounded local snapshot on a filesystem honoring atomic rename and fsync.
+It does not test power removal, media destruction, network loss, productive
+Authority/Mirror nodes or unbounded scalability. The unseeded Windows/in-memory
+reference profile continues to declare `PROCESS_LIFETIME_ONLY`.
+
 ## HTTP / HTML integration
 
 The companion Internet-Draft candidate is `external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml`. It defines:

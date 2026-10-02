@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import importlib.util
+import http.client
 import json
 import sys
 import subprocess
@@ -11,6 +12,7 @@ import time
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
 import unittest
+from unittest import mock
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -19,6 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / "src" / "qikvrt_effect_ack_http_terminal.py"
+sys.path.insert(0, str(ROOT / 'src'))
 _spec = importlib.util.spec_from_file_location("qikvrt_effect_ack_http_terminal", MODULE_PATH)
 assert _spec and _spec.loader
 terminal = importlib.util.module_from_spec(_spec)
@@ -156,6 +159,7 @@ class LoopbackTerminalE2ETests(unittest.TestCase):
         self.server.shutdown()
         self.server.server_close()
         self.thread.join(timeout=2)
+        terminal.STATE.close()
 
     def request(self, path: str, *, method: str = "GET", body: dict | None = None, headers: dict | None = None):
         data = None if body is None else json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -327,9 +331,11 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
         self.assertEqual(sorted(results), [200] + [409] * 7)
         self.assertEqual(self.request('/terminal/state')[2]['events'], 1)
 
+
     def test_durable_records_events_survive_restart_and_replay_stays_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
             payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'durable-restart'}
             prepared = self.prepare(payload)
@@ -339,9 +345,10 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
             self.assertEqual(status, 200)
             record_url = prepared['record_url']
             before = self.request('/terminal/events')[2]
-            self.assertEqual(before['persistence_scope'], 'DURABLE_ATOMIC_FILE')
+            self.assertEqual(before['persistence_scope'], 'FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE')
             self.assertTrue(state_path.is_file())
 
+            terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
             after = self.request('/terminal/events')[2]
             self.assertEqual(after, before)
@@ -355,9 +362,11 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
             self.assertEqual(self.request('/terminal/events')[2], before)
             self.assertEqual(committed['post_effect']['event_id'], 1)
 
+
     def test_durable_state_tampering_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
             payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'tamper-check'}
             prepared = self.prepare(payload)
@@ -367,12 +376,15 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
             value = json.loads(state_path.read_text())
             value['events'][0]['text'] = 'tampered'
             state_path.write_text(json.dumps(value))
-            with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_BINDING_MISMATCH'):
+            terminal.STATE.close()
+            with self.assertRaises(terminal.PersistenceError):
                 terminal.State(self.seed, state_path)
+
 
     def test_durable_state_truncation_and_restart_seed_mismatch_fail_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
             payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'restart-binding'}
             prepared = self.prepare(payload)
@@ -380,11 +392,13 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
                 '/terminal/commit', method='POST', body=payload,
                 headers=self.commit_headers(prepared))[0], 200)
             durable = state_path.read_bytes()
-            with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_BINDING_MISMATCH'):
+            terminal.STATE.close()
+            with self.assertRaises(terminal.PersistenceError):
                 terminal.State(None, state_path)
             state_path.write_bytes(durable[: max(1, len(durable) // 2)])
-            with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_UNREADABLE'):
+            with self.assertRaises(terminal.PersistenceError):
                 terminal.State(self.seed, state_path)
+
 
     def test_real_process_restart_preserves_events_records_and_consumed_token(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -428,11 +442,13 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
                 self.assertEqual(request(
                     '/terminal/commit', method='POST', body=payload, field=field)[0], 200)
                 before = request('/terminal/events')[1]
-                self.assertEqual(before['persistence_scope'], 'DURABLE_ATOMIC_FILE')
+                self.assertEqual(before['persistence_scope'], 'FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE')
                 self.assertEqual(request(prepared['record_url'])[0], 200)
             finally:
                 first.terminate()
                 first.wait(timeout=5)
+                first.stdout.close()
+                first.stderr.close()
 
             second = start()
             try:
@@ -447,6 +463,9 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
             finally:
                 second.terminate()
                 second.wait(timeout=5)
+                second.stdout.close()
+                second.stderr.close()
+
 
     def test_persisted_effect_survives_response_path_crash_without_duplicate(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -490,9 +509,11 @@ server.serve_forever()
             commit = urllib.request.Request(
                 base + '/terminal/commit', data=data,
                 headers={'Content-Type': 'application/json', 'Effect-Ack-Request': field})
-            with self.assertRaises(Exception):
+            with self.assertRaises((OSError, http.client.RemoteDisconnected)):
                 urllib.request.urlopen(commit, timeout=5).read()
             process.wait(timeout=5)
+            process.stdout.close()
+            process.stderr.close()
             self.assertEqual(process.returncode, 73)
 
             restored = terminal.State(self.seed, state_path)
@@ -507,9 +528,11 @@ server.serve_forever()
             self.assertIn('invalid', replay['reason'])
             self.assertEqual(len(terminal.STATE.events), 1)
 
+
     def test_parallel_unique_commits_remain_lossless_after_durable_reload(self):
         with tempfile.TemporaryDirectory() as directory:
             state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
             payloads = [
                 {'schema': 'qikvrt_terminal_input_v1', 'text': f'durable-parallel-{index}'}
@@ -524,6 +547,7 @@ server.serve_forever()
                     zip(payloads, prepared)))
             self.assertEqual(statuses, [200] * 8)
             before = self.request('/terminal/events')[2]
+            terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
             after = self.request('/terminal/events')[2]
             self.assertEqual(after, before)
@@ -547,6 +571,234 @@ class BoundedSeedRingControlsTests(unittest.TestCase):
             server.shutdown()
             server.server_close()
             thread.join(timeout=2)
+
+
+class DurableTerminalE2ETests(LoopbackTerminalE2ETests):
+    def setUp(self):
+        super().setUp()
+        self.directory = tempfile.TemporaryDirectory()
+        self.root = Path(self.directory.name)
+        self.seed = ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin'
+        terminal.STATE = terminal.State(self.seed, state_root=self.root)
+
+    def tearDown(self):
+        super().tearDown()
+        terminal.STATE.close()
+        self.directory.cleanup()
+
+    def restart(self):
+        terminal.STATE.close()
+        terminal.STATE = terminal.State(self.seed, state_root=self.root)
+
+    def commit(self, payload, prepared):
+        return self.request('/terminal/commit', method='POST', body=payload,
+                            headers=self.commit_headers(prepared))
+
+    def test_prepare_survives_restart_but_payload_substitution_does_not(self):
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'prepared-before-restart'}
+        prepared = self.prepare(payload)
+        record = self.request(prepared['record_url'])[2]
+        self.restart()
+        self.assertEqual(self.request(prepared['record_url'])[2], record)
+        self.assertEqual(self.commit(dict(payload, text='substitution'), prepared)[0], 409)
+        self.assertEqual(self.commit(payload, prepared)[0], 200)
+        snapshot = self.request('/terminal/events')[2]
+        self.restart()
+        self.assertEqual(self.request('/terminal/events')[2], snapshot)
+        self.assertEqual(self.commit(payload, prepared)[0], 409)
+        self.assertEqual(self.request('/terminal/events')[2], snapshot)
+
+    def test_expiry_remains_enforced_after_restart(self):
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'expires'}
+        with mock.patch.object(terminal, 'TOKEN_TTL_SECONDS', -1):
+            prepared = self.prepare(payload)
+        self.restart()
+        self.assertEqual(self.commit(payload, prepared)[0], 409)
+        self.assertEqual(self.request('/terminal/events')[2]['event_count'], 0)
+
+    def test_parallel_durable_commits_keep_order_and_single_use_after_restart(self):
+        payloads = [{'schema': 'qikvrt_terminal_input_v1', 'text': 'parallel-' + str(n)} for n in range(8)]
+        prepared = [self.prepare(payload) for payload in payloads]
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            results = list(pool.map(lambda pair: self.commit(*pair), zip(payloads, prepared)))
+        self.assertEqual([status for status, _, _ in results], [200] * 8)
+        shared = self.prepare(payloads[0])
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            results = list(pool.map(lambda _: self.commit(payloads[0], shared)[0], range(8)))
+        self.assertEqual(sorted(results), [200] + [409] * 7)
+        before = self.request('/terminal/events')[2]
+        self.assertEqual([e['event_id'] for e in before['events']], list(range(1, 10)))
+        self.restart()
+        self.assertEqual(self.request('/terminal/events')[2], before)
+        for payload, value in zip(payloads + [payloads[0]], prepared + [shared]):
+            self.assertEqual(self.commit(payload, value)[0], 409)
+        self.assertEqual(self.request('/terminal/events')[2], before)
+
+    def test_capacity_is_preserved_across_restart_without_eviction(self):
+        with mock.patch.object(terminal, 'MAX_EVENTS', 2):
+            for n in range(2):
+                payload = {'schema': 'qikvrt_terminal_input_v1', 'text': str(n)}
+                self.assertEqual(self.commit(payload, self.prepare(payload))[0], 200)
+            before = self.request('/terminal/events')[2]
+            self.restart()
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'over-capacity'}
+            self.assertEqual(self.commit(payload, self.prepare(payload))[0], 409)
+            self.assertEqual(self.request('/terminal/events')[2], before)
+            self.restart()
+            self.assertEqual(self.request('/terminal/events')[2], before)
+
+    def test_corrupt_truncated_duplicate_and_reordered_state_fail_closed(self):
+        for n in range(2):
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': str(n)}
+            self.assertEqual(self.commit(payload, self.prepare(payload))[0], 200)
+        path = terminal.STATE.store
+        valid = path.read_bytes()
+        terminal.STATE.close()
+        reordered = json.loads(valid)
+        reordered['events'].reverse()
+        reordered.pop('state_sha256')
+        reordered['state_sha256'] = terminal.sha256(terminal.canonical_json(reordered))
+        corruptions = [b'', valid[:-1], valid[:len(valid)//2], valid.replace(b'TERMINAL_INPUT_ACCEPTED', b'TERMINAL_INPUT_ALTERED_'),
+                       valid.replace(b'{', b'{"schema":"duplicate",', 1),
+                       terminal.canonical_json(reordered) + b'\n']
+        for raw in corruptions:
+            with self.subTest(bytes=len(raw)):
+                path.write_bytes(raw)
+                with self.assertRaises(terminal.PersistenceError):
+                    terminal.State(self.seed, state_root=self.root)
+                self.assertEqual(path.read_bytes(), raw)  # No auto-reset or partial salvage.
+        path.write_bytes(valid)
+        terminal.STATE = terminal.State(self.seed, state_root=self.root)
+        self.assertEqual(len(terminal.STATE.events), 2)
+
+    def test_restart_seed_mismatch_and_unseeded_downgrade_do_not_rewrite_state(self):
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'seed-bound'}
+        self.assertEqual(self.commit(payload, self.prepare(payload))[0], 200)
+        path = terminal.STATE.store
+        valid = path.read_bytes()
+        terminal.STATE.close()
+        bad = self.root / 'bad-seed.bin'
+        bad.write_bytes(self.seed.read_bytes()[:-1])
+        with self.assertRaises(ValueError):
+            terminal.State(bad, state_root=self.root)
+        with self.assertRaises(terminal.PersistenceError):
+            terminal.State(None, state_root=self.root)
+        self.assertEqual(path.read_bytes(), valid)
+        terminal.STATE = terminal.State(self.seed, state_root=self.root)
+
+    def test_competing_process_store_owner_and_symlink_are_refused(self):
+        with self.assertRaises(BlockingIOError):
+            terminal.State(self.seed, state_root=self.root)
+        result = subprocess.run([sys.executable, '-B', str(MODULE_PATH), '--state-root', str(self.root),
+                                 '--seed', str(self.seed), '--port', '0'],
+                                capture_output=True, text=True, timeout=10)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('READY', result.stdout)
+        path = terminal.STATE.store
+        terminal.STATE.close()
+        outside = self.root / 'outside.json'
+        path.rename(outside)
+        path.symlink_to(outside)
+        valid = outside.read_bytes()
+        with self.assertRaises(terminal.PersistenceError):
+            terminal.State(self.seed, state_root=self.root)
+        self.assertEqual(outside.read_bytes(), valid)
+        path.unlink()
+        outside.rename(path)
+        terminal.STATE = terminal.State(self.seed, state_root=self.root)
+
+    def test_missing_initialized_snapshot_cannot_silently_reset_confirmed_effects(self):
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'must-not-disappear'}
+        self.assertEqual(self.commit(payload, self.prepare(payload))[0], 200)
+        path = terminal.STATE.store
+        self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+        valid = path.read_bytes()
+        terminal.STATE.close()
+        path.unlink()
+        with self.assertRaisesRegex(terminal.PersistenceError, 'MISSING_NO_AUTOMATIC_RESET'):
+            terminal.State(self.seed, state_root=self.root)
+        self.assertFalse(path.exists())
+        path.write_bytes(valid)
+        terminal.STATE = terminal.State(self.seed, state_root=self.root)
+
+    def test_write_or_directory_fsync_failure_never_acknowledges_or_retries(self):
+        import qikvrt_api_handler as persistence
+        for fail_after_replace in (False, True):
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': str(fail_after_replace)}
+            prepared = self.prepare(payload)
+            original = persistence.atomic_write_bytes
+            def fail(path, data):
+                if fail_after_replace:
+                    original(path, data)
+                raise OSError('injected persistence failure')
+            with mock.patch.object(persistence, 'atomic_write_bytes', side_effect=fail):
+                self.assertEqual(self.commit(payload, prepared)[0], 503)
+            self.assertEqual(self.commit(payload, prepared)[0], 503)
+            self.assertEqual(self.request('/terminal/events')[0], 503)
+            self.restart()
+            if fail_after_replace:
+                self.assertEqual(self.commit(payload, prepared)[0], 409)
+            else:
+                self.assertEqual(self.request('/terminal/events')[2]['event_count'], 0)
+                self.assertEqual(self.commit(payload, prepared)[0], 200)
+
+
+class DurableTerminalProcessTests(unittest.TestCase):
+    def test_real_sigkill_restart_and_fresh_record_readback(self):
+        from tools.qikvrt_firefox_windows_witness import durable_restart_controls
+        with tempfile.TemporaryDirectory() as directory:
+            result = durable_restart_controls(terminal, Path(directory),
+                ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+        self.assertTrue(result['actual_process_restart'])
+        self.assertNotEqual(result['first_process_pid'], result['restarted_process_pid'])
+        self.assertEqual(result['event_snapshot_before'], result['event_snapshot_after'])
+        self.assertEqual(result['effect_records_before'], result['effect_records_after'])
+        self.assertEqual(result['replay_second_effects'], 0)
+        for flag in ('authority_mirror_live_nodes_tested', 'network_loss_injected', 'unbounded_scalability_proved'):
+            self.assertFalse(result[flag])
+
+    def test_crash_after_fsync_before_response_cannot_duplicate_effect(self):
+        from tools.qikvrt_firefox_windows_witness import TerminalProcess
+        script = '''
+import os,sys
+sys.path.insert(0,'src')
+import qikvrt_effect_ack_http_terminal as terminal
+persist=terminal.State.persist
+def crash(self):
+    persist(self)
+    if self.events:
+        os._exit(86)
+terminal.State.persist=crash
+terminal.main()
+'''
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            seed = ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin'
+            first = TerminalProcess(root, seed, command=[sys.executable, '-B', '-c', script])
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'fsync-before-reply'}
+            try:
+                status, prepared = first.request('/terminal/prepare', payload, 'v=1, mode=prepare')
+                self.assertEqual(status, 200)
+                field = commit_field(prepared['commit_token'], prepared['record_hash'])
+                with self.assertRaises((OSError, http.client.RemoteDisconnected)):
+                    first.request('/terminal/commit', payload, field)
+                self.assertEqual(first.process.wait(timeout=15), 86)
+            finally:
+                first.close()
+            second = TerminalProcess(root, seed)
+            try:
+                status, snapshot = second.request('/terminal/events')
+                self.assertEqual(status, 200)
+                self.assertEqual(snapshot['event_count'], 1)
+                self.assertEqual(snapshot['events'][0]['text'], payload['text'])
+                effect = snapshot['events'][0]['effect_record_hash']
+                status, record = second.request('/effect-ack/records/' + effect)
+                self.assertEqual(status, 200)
+                self.assertEqual(record['input_hash'], 'sha256:' + terminal.sha256(terminal.canonical_json(payload)))
+                self.assertEqual(second.request('/terminal/commit', payload, field)[0], 409)
+                self.assertEqual(second.request('/terminal/events')[1], snapshot)
+            finally:
+                second.close()
 
 
 if __name__ == "__main__":

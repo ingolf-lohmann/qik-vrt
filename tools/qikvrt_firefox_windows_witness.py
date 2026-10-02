@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import queue
 import shutil
 from concurrent.futures import ThreadPoolExecutor
 import socket
@@ -285,6 +286,109 @@ def verify_effect_readback(before, after, prepared, request, subject):
             and after['repository_tree'] == subject['tree'])
 
 
+class TerminalProcess:
+    """Bounded supervision of the actual durable CLI, also reused by regressions."""
+    def __init__(self, state_root, seed, *, port=0, command=None):
+        arguments = ['--state-root', str(state_root), '--seed', str(seed), '--port', str(port)]
+        self.process = subprocess.Popen(
+            (command or [sys.executable, '-B', str(ROOT / 'src/qikvrt_effect_ack_http_terminal.py')]) + arguments,
+            cwd=ROOT, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        ready = queue.Queue()
+        threading.Thread(target=lambda: ready.put(self.process.stdout.readline()), daemon=True).start()
+        try:
+            line = ready.get(timeout=15)
+            if not line:
+                raise RuntimeError('TERMINAL_PROCESS_START_FAILED: ' + self.process.stderr.read(4096))
+            self.ready = json.loads(line)
+            if self.ready.get('persistence_scope') != 'FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE':
+                raise RuntimeError('TERMINAL_PROCESS_NOT_DURABLE')
+            self.port = self.ready['port']
+        except BaseException:
+            self.close()
+            raise
+
+    def request(self, path, body=None, field=None):
+        data = None if body is None else json.dumps(body, ensure_ascii=False, sort_keys=True,
+                                                  separators=(',', ':'), allow_nan=False).encode('utf-8')
+        request = urllib.request.Request('http://127.0.0.1:' + str(self.port) + path, data=data,
+            headers={'Content-Type': 'application/json', 'Cache-Control': 'no-cache',
+                     **({'Effect-Ack-Request': field} if field else {})})
+        try:
+            response = urllib.request.urlopen(request, timeout=15)
+        except urllib.error.HTTPError as error:
+            response = error
+        with response:
+            return response.code, json.load(response)
+
+    def close(self):
+        if self.process.poll() is None:
+            self.process.kill()
+        self.process.wait(timeout=15)
+        self.process.stdout.close()
+        self.process.stderr.close()
+
+
+def durable_restart_controls(terminal, state_root, seed, *, expected_snapshot=None, replay_probes=()):
+    """SIGKILL a real process, reconstruct exact events/records, refuse replay."""
+    first = second = None
+    try:
+        first = TerminalProcess(state_root, seed)
+        status, original = first.request('/terminal/events')
+        if status != 200 or (expected_snapshot is not None and original != expected_snapshot):
+            raise RuntimeError('PRIOR_RING_SNAPSHOT_NOT_RESTORED')
+        payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'restart-' + os.urandom(16).hex()}
+        status, prepared = first.request('/terminal/prepare', payload, 'v=1, mode=prepare')
+        field = ('v=1, mode=commit, token=' + terminal.sf_bytes(prepared['commit_token'].encode('ascii'))
+                 + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['record_hash'])))
+        if status != 200 or first.request('/terminal/commit', payload, field)[0] != 200:
+            raise RuntimeError('RESTART_PROBE_COMMIT_NOT_CONFIRMED')
+        status, before = first.request('/terminal/events')
+        if status != 200 or before['events'][:-1] != original['events']:
+            raise RuntimeError('PRIOR_RING_EVENTS_CHANGED')
+        paths = sorted({'/effect-ack/records/' + digest for event in before['events']
+                        for digest in (event['record_hash'], event['effect_record_hash'])})
+        records_before = {path: first.request(path)[1] for path in paths}
+        first_pid = first.process.pid
+        first.close()  # SIGKILL, no shutdown/save hook.
+        first = None
+        second = TerminalProcess(state_root, seed)
+        status, after = second.request('/terminal/events')
+        records_after = {path: second.request(path)[1] for path in paths}
+        if (status != 200 or after != before or records_after != records_before
+                or after['events_sha256'] != terminal.sha256(terminal.canonical_json(after['events']))):
+            raise RuntimeError('DURABLE_EVENTS_OR_EFFECT_RECORD_READBACK_CHANGED')
+        for record in records_after.values():
+            projection = {key: value for key, value in record.items() if key != 'record_hash'}
+            if record['record_hash'] != 'sha256:' + terminal.sha256(terminal.canonical_json(projection)):
+                raise RuntimeError('RESTART_RECORD_DIGEST_MISMATCH')
+        replay_statuses = []
+        for replay_payload, replay_field in [(payload, field), *replay_probes]:
+            replay_status, replay = second.request('/terminal/commit', replay_payload, replay_field)
+            status, final = second.request('/terminal/events')
+            if status != 200 or replay_status != 409 or replay.get('ordinary_release') is not False or final != before:
+                raise RuntimeError('RESTART_REPLAY_CREATED_SECOND_EFFECT')
+            replay_statuses.append(replay_status)
+        return {'schema': 'qikvrt_terminal_durable_restart_readback_v1',
+                'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+                'first_process_pid': first_pid, 'restarted_process_pid': second.process.pid,
+                'termination': 'SIGKILL_WITHOUT_SHUTDOWN_HOOK', 'actual_process_restart': True,
+                'event_snapshot_before': before, 'event_snapshot_after': after,
+                'effect_records_before': records_before, 'effect_records_after': records_after,
+                'prior_ring_event_count': original['event_count'],
+                'replay_http_status': replay_status, 'replay_http_statuses': replay_statuses,
+                'replay_event_snapshot': final,
+                'confirmed_events_and_records_unchanged': True, 'replay_second_effects': 0,
+                'persistence_scope': after['persistence_scope'],
+                'lossless_scope': 'BOUNDED_LOCAL_FSYNCED_SNAPSHOT_ACROSS_PROCESS_RESTART',
+                'authority_mirror_live_nodes_tested': False, 'network_loss_injected': False,
+                'unbounded_scalability_proved': False, 'external_effect': 'NONE'}
+    finally:
+        if first is not None:
+            first.close()
+        if second is not None:
+            second.close()
+
+
 def bounded_ring_controls(terminal):
     """Real HTTP effects; finite fanout is not general Mesh/runtime equivalence."""
     def request(path, body=None, field=None):
@@ -358,7 +462,9 @@ def bounded_ring_controls(terminal):
             raise RuntimeError('NONCE_BOUND_EVENT_MISSING_OR_DUPLICATED')
     return {'fanout': measurements, 'shared_token_race': {'clients': 8, 'effects': 1, 'refusals': 7},
             'discarded_reply_readback': True, 'network_loss_injected': False,
-            'event_snapshot': snapshot, 'lossless_scope': 'PROCESS_LIFETIME_EVENT_SNAPSHOT_ONLY',
+            'event_snapshot': snapshot, 'lossless_scope': (
+                'FSYNCED_LOCAL_EVENT_SNAPSHOT_ONLY' if terminal.STATE.store is not None
+                else 'PROCESS_LIFETIME_EVENT_SNAPSHOT_ONLY'),
             'authority_mirror_live_nodes_tested': False, 'unbounded_scalability_proved': False}
 
 
@@ -397,6 +503,7 @@ def witness(output, headless=False, linux=False):
                        operating_system_built_from_seed=False, productive_mesh_runtime_verified=False)
     driver = None
     server = None
+    terminal = None
     try:
         expected = os.environ.get('QIKVRT_EXPECTED_HEAD')
         if expected and expected != receipt['head']:
@@ -454,8 +561,8 @@ def witness(output, headless=False, linux=False):
         import qikvrt_effect_ack_http_terminal as terminal
         from http.server import ThreadingHTTPServer
         seed = ROOT / contract['seed_path'] if linux else None
-        state_path = output / 'effect-ack-state.json' if linux else None
-        terminal.STATE = terminal.State(seed, state_path)
+        state_root = output / 'terminal-state' if linux else None
+        terminal.STATE = terminal.State(seed, state_root=state_root)
         if linux:
             receipt['seed_binding'] = terminal.STATE.seed_binding
             original = seed.read_bytes()
@@ -572,27 +679,18 @@ def witness(output, headless=False, linux=False):
                 raise RuntimeError('REPLAY_NOT_REJECTED')
             if linux:
                 receipt['ring_controls'] = bounded_ring_controls(terminal)
-                before_restart = receipt['ring_controls']['event_snapshot']
-                terminal.STATE = terminal.State(seed, state_path)
-                with urllib.request.urlopen(
-                    'http://127.0.0.1:8771/terminal/events', timeout=10
-                ) as response:
-                    after_restart = json.load(response)
-                if (
-                    after_restart['events_sha256'] != before_restart['events_sha256']
-                    or after_restart['events'] != before_restart['events']
-                    or after_restart['persistence_scope'] != 'DURABLE_ATOMIC_FILE'
-                ):
-                    raise RuntimeError('DURABLE_EVENT_RESTART_READBACK_MISMATCH')
-                receipt['ring_controls']['restart_readback'] = {
-                    'event_count': after_restart['event_count'],
-                    'events_sha256': after_restart['events_sha256'],
-                    'persistence_scope': after_restart['persistence_scope'],
-                }
-                receipt['ring_controls']['lossless_scope'] = (
-                    'DURABLE_ATOMIC_FILE_RESTART_READBACK'
-                )
-                receipt['persistent_state_sha256'] = digest(state_path)
+                server.shutdown()
+                server.server_close()
+                server = None
+                terminal.STATE.close()
+                firefox_field = ('v=1, mode=commit, token='
+                    + terminal.sf_bytes(prepared['effect_ack']['commit_token'].encode('ascii'))
+                    + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['effect_ack']['record_hash'])))
+                receipt['restart_controls'] = durable_restart_controls(
+                    terminal, state_root, seed,
+                    expected_snapshot=receipt['ring_controls']['event_snapshot'],
+                    replay_probes=[(requests[-1], firefox_field)])
+                receipt['persistent_state_sha256'] = digest(terminal.STATE.store)
                 receipt['linux_ring_test'] = 'PASS'
             receipt.update(local_effect_readback=True, replay_rejected=True,
                            readback_before=before, readback_after=after,
@@ -640,6 +738,8 @@ def witness(output, headless=False, linux=False):
             receipt['observed_http_paths'] = http_paths
             server.shutdown()
             server.server_close()
+        if terminal is not None:
+            terminal.STATE.close()
         (output / 'RECEIPT.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
         print(json.dumps(receipt, sort_keys=True))
 
