@@ -87,6 +87,42 @@ unchanged standard XPI in real Firefox, checks terminal content-script loading,
 performs UI Prepare and Commit against the existing real loopback backend,
 reads a fresh nonce-bound backend event, compares its input/record hashes and
 HEAD/TREE, and verifies single-use replay refusal. Prepare must create no event.
+Both Windows and Linux require the unchanged canonical 400-byte seed at
+`canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin`, SHA-256
+`27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792`.
+The seed is a local admission prerequisite and is bound into the hashed
+prepare/effect records and events; it does not build the host operating system.
+
+The witness uses `<ephemeral-output>/terminal-state` across actual terminal
+process lifetimes, with one snapshot at `.qikvrt/api/terminal.json`.
+The existing State snapshot/validation/commit logic is shared. Windows replaces
+only POSIX-specific I/O with native exclusive handles, held ancestor-directory
+handles, reparse-point refusal, a protected owner/LocalSystem DACL, file fsync
+and same-volume `MoveFileExW(REPLACE_EXISTING | WRITE_THROUGH)` replacement.
+It never imports the POSIX-only API handler on Windows. Failure or ambiguity
+poisons admission until validated restart; initialized state is never reset.
+
+After the browser effect, the witness closes the browser-facing backend,
+reopens its exact retained state in the actual CLI, adds a nonce-bound restart
+probe, forcibly kills that process without a shutdown hook and starts a new
+process. Windows records `WINDOWS_TERMINATE_PROCESS_WITHOUT_SHUTDOWN_HOOK`;
+POSIX records `SIGKILL_WITHOUT_SHUTDOWN_HOOK`. Windows does not claim a POSIX
+signal was delivered. All retained events and both referenced record classes
+must remain byte-equivalent under canonical JSON, with unchanged on-disk
+snapshot SHA-256. Both the browser token and restart token must receive HTTP
+409 with no second event and no record/snapshot change.
+
+Real CLI negative starts must refuse empty, truncated, missing-newline,
+digest-corrupt, duplicate-key and seed-binding-mismatched state, plus altered,
+truncated and absent seed bytes and an unseeded restart. Refusal must leave the
+invalid bytes unchanged; restoring the valid snapshot must permit a fresh
+readback. Only readbacks/digests enter workflow artifacts, never the secret
+state file. Native regressions run before the Windows Firefox witness.
+These tests cover bounded local process crashes, not power removal, network
+loss, live-node replication or unbounded scalability. ARM64 and AMD64 require
+their own executions, and emulated browser execution cannot grant a native
+architecture PASS. `CODE_OWNER_RULE_NOT_ENFORCED` remains an independent
+governance gate; technical results cannot weaken it.
 The driver is fetched only from the pinned Mozilla release archive and checked
 against its recorded SHA-256 before extraction and execution, including warm
 cache re-extraction. The declared cache registry covers every new component.
@@ -183,11 +219,13 @@ runner-image/toolcache dependencies, with native versions and binary digests.
 
 The real HTTP controls execute fanout 1, 2, 4 and 8, an eight-client race on one
 token, and client-discarded-response recovery through fresh readback. Only one
-race effect may occur. A complete, hash-bound process-lifetime event snapshot
+race effect may occur. A complete, hash-bound fsynced event snapshot
 must retain every unique nonce exactly once. No network failure is injected.
 The single actual Firefox roundtrip and the HTTP-client fanout are distinct
-measurements. These finite measurements do not establish Firefox fanout,
-unbounded scalability, restart persistence, live Authority/Mirror replication,
+measurements. The shared restart and invalid-state controls also run on Linux;
+restart persistence requires their fresh actual readback on the current head.
+These finite measurements do not establish Firefox fanout,
+unbounded scalability, live Authority/Mirror replication,
 lossless node consolidation, or productive Linux reconstruction from a retained
 full-node closure. Those acceptance scopes remain open. Native Main admission,
 public product release and personal runtime acceptance remain separate gates.

@@ -244,6 +244,21 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         self.assertFalse(target_matches(observed, target, target['support_until']))
         self.assertFalse(target_matches({}, target, '2026-10-01'))
 
+    def test_windows_acceptance_requires_seed_and_durable_restart_without_release_promotion(self):
+        windows = self.policy['windows_acceptance']
+        linux = self.policy['linux_ring_acceptance']
+        data = (ROOT / windows['seed_path']).read_bytes()
+        self.assertEqual(len(data), 400)
+        self.assertEqual(hashlib.sha256(data).hexdigest(), windows['seed_sha256'])
+        self.assertEqual(windows['seed_sha256'], linux['seed_sha256'])
+        required = windows['functional_witness_requires']
+        self.assertIn('canonical_400_byte_seed_admission_and_full_record_binding', required)
+        self.assertIn('durable_state.single_use_replay_after_restart', required)
+        self.assertIn('durable_state.seed_mismatch_and_corrupt_or_truncated_state_refusal', required)
+        self.assertEqual(windows['durable_state']['architecture_evidence_transfer'], 'DENY')
+        self.assertFalse(windows['durable_state']['power_loss_tested'])
+        self.assertFalse(self.policy['personal_release_acceptance']['current_candidate']['personal_release_effect_ack_done'])
+
     def test_cache_authority_uses_repository_paths_on_windows(self) -> None:
         from tools import qikvrt_tool_cache as cache
         root = PureWindowsPath('C:/qik-vrt')

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-"""Real Firefox witness on Windows or seed-bound Linux; local evidence never accepts a release."""
+"""Seed-bound durable Firefox witness on Windows/Linux; no product release acceptance."""
 from __future__ import annotations
 
 import argparse
@@ -185,9 +185,23 @@ def windows_identity():
     product = subprocess.check_output(
         ['powershell', '-NoProfile', '-Command',
          '(Get-CimInstance Win32_OperatingSystem).ProductType'], text=True, timeout=30)
+    # Read the native machine, including when Python itself is emulated.
+    import ctypes
+    from ctypes import wintypes
+    native = wintypes.USHORT()
+    process = wintypes.USHORT()
+    api = ctypes.WinDLL('kernel32', use_last_error=True)
+    api.GetCurrentProcess.restype = wintypes.HANDLE
+    api.IsWow64Process2.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.USHORT),
+                                   ctypes.POINTER(wintypes.USHORT)]
+    api.IsWow64Process2.restype = wintypes.BOOL
+    if not api.IsWow64Process2(api.GetCurrentProcess(), ctypes.byref(process), ctypes.byref(native)):
+        raise ctypes.WinError(ctypes.get_last_error())
+    names = {0x8664: 'AMD64', 0xaa64: 'ARM64', 0x14c: 'X86'}
     values.update(product_type=int(product.strip()), build=int(values['build']),
-                  architecture=os.environ.get('PROCESSOR_ARCHITEW6432') or
-                  os.environ.get('PROCESSOR_ARCHITECTURE'), platform=platform.platform())
+                  architecture=names.get(native.value, hex(native.value)),
+                  process_architecture=names.get(process.value or native.value, hex(process.value)),
+                  architecture_method='IsWow64Process2_NATIVE_MACHINE', platform=platform.platform())
     return values
 
 
@@ -329,8 +343,80 @@ class TerminalProcess:
         self.process.stderr.close()
 
 
+def initialize_seeded_terminal(terminal, contract, output):
+    """Both native witnesses require the canonical seed and the same durable root."""
+    seed = ROOT / contract['seed_path']
+    if len(seed.read_bytes()) != 400 or digest(seed) != contract['seed_sha256']:
+        raise RuntimeError('WITNESS_CANONICAL_SEED_BINDING_MISMATCH')
+    state_root = output / 'terminal-state'
+    terminal.STATE = terminal.State(seed, state_root=state_root)
+    return seed, state_root
+
+
+def durable_state_rejection_controls(terminal, state_root, seed, store):
+    """Real CLI startups refuse invalid state without rewriting retained bytes."""
+    valid = store.read_bytes()
+    value = json.loads(valid)
+    changed_seed_binding = dict(value, seed_binding=None)
+    changed_seed_binding.pop('state_sha256')
+    changed_seed_binding['state_sha256'] = terminal.sha256(terminal.canonical_json(changed_seed_binding))
+    corruptions = {
+        'empty_state': b'',
+        'truncated_state': valid[:len(valid)//2],
+        'missing_final_newline': valid[:-1],
+        'corrupt_digest': valid.replace(b'TERMINAL_INPUT_ACCEPTED', b'TERMINAL_INPUT_ALTERED_'),
+        'duplicate_json_key': valid.replace(b'{', b'{"schema":"duplicate",', 1),
+        'state_seed_binding_mismatch': terminal.canonical_json(changed_seed_binding) + b'\n',
+    }
+    observations = {}
+    def refused(name, seed_argument):
+        command = [sys.executable, '-B', str(ROOT / 'src/qikvrt_effect_ack_http_terminal.py'),
+                   '--state-root', str(state_root), '--port', '0']
+        if seed_argument is not None:
+            command += ['--seed', str(seed_argument)]
+        result = subprocess.run(command, cwd=ROOT, stdin=subprocess.DEVNULL,
+                                capture_output=True, text=True, timeout=15)
+        if result.returncode == 0 or '"state": "READY"' in result.stdout:
+            raise RuntimeError('INVALID_STATE_START_NOT_REFUSED_' + name)
+        observations[name] = {'startup_refused': True, 'returncode': result.returncode,
+                              'ready_observed': False, 'state_sha256': digest(store)}
+    bad = state_root / 'altered-seed.bin'
+    try:
+        for name, raw in corruptions.items():
+            store.write_bytes(raw)
+            refused(name, seed)
+            if store.read_bytes() != raw:
+                raise RuntimeError('INVALID_STATE_SILENTLY_REWRITTEN_' + name)
+        store.write_bytes(valid)
+        original = seed.read_bytes()
+        bad.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+        refused('altered_seed', bad)
+        bad.write_bytes(original[:-1])
+        refused('truncated_seed', bad)
+        bad.unlink()
+        refused('missing_seed', bad)
+        refused('unseeded_restart', None)
+        if store.read_bytes() != valid:
+            raise RuntimeError('SEED_REJECTION_REWROTE_DURABLE_STATE')
+    finally:
+        store.write_bytes(valid)
+        bad.unlink(missing_ok=True)
+    # Confirm normal startup is still possible and a fresh readback is intact.
+    process = TerminalProcess(state_root, seed)
+    try:
+        status, snapshot = process.request('/terminal/events')
+        if status != 200 or snapshot['events'] != value['events'] or store.read_bytes() != valid:
+            raise RuntimeError('VALID_STATE_NOT_RESTORED_AFTER_NEGATIVE_CONTROLS')
+    finally:
+        process.close()
+    return {'schema': 'qikvrt_terminal_state_rejection_controls_v1',
+            'native_platform': sys.platform, 'controls': observations,
+            'valid_state_sha256': digest(store), 'retained_state_unchanged': True,
+            'automatic_reset_or_partial_salvage': False, 'external_effect': 'NONE'}
+
+
 def durable_restart_controls(terminal, state_root, seed, *, expected_snapshot=None, replay_probes=()):
-    """SIGKILL a real process, reconstruct exact events/records, refuse replay."""
+    """Kill a real process without shutdown hooks; retain events/records and refuse replay."""
     first = second = None
     try:
         first = TerminalProcess(state_root, seed)
@@ -348,14 +434,25 @@ def durable_restart_controls(terminal, state_root, seed, *, expected_snapshot=No
             raise RuntimeError('PRIOR_RING_EVENTS_CHANGED')
         paths = sorted({'/effect-ack/records/' + digest for event in before['events']
                         for digest in (event['record_hash'], event['effect_record_hash'])})
-        records_before = {path: first.request(path)[1] for path in paths}
+        def records(process):
+            result = {}
+            for path in paths:
+                status, record = process.request(path)
+                if status != 200:
+                    raise RuntimeError('RESTART_REFERENCED_RECORD_UNAVAILABLE')
+                result[path] = record
+            return result
+        records_before = records(first)
+        store = state_root / '.qikvrt/api/terminal.json'
+        state_before = digest(store)
         first_pid = first.process.pid
-        first.close()  # SIGKILL, no shutdown/save hook.
+        first.close()  # POSIX SIGKILL / Windows TerminateProcess; no shutdown/save hook.
         first = None
         second = TerminalProcess(state_root, seed)
         status, after = second.request('/terminal/events')
-        records_after = {path: second.request(path)[1] for path in paths}
+        records_after = records(second)
         if (status != 200 or after != before or records_after != records_before
+                or digest(store) != state_before
                 or after['events_sha256'] != terminal.sha256(terminal.canonical_json(after['events']))):
             raise RuntimeError('DURABLE_EVENTS_OR_EFFECT_RECORD_READBACK_CHANGED')
         for record in records_after.values():
@@ -366,19 +463,25 @@ def durable_restart_controls(terminal, state_root, seed, *, expected_snapshot=No
         for replay_payload, replay_field in [(payload, field), *replay_probes]:
             replay_status, replay = second.request('/terminal/commit', replay_payload, replay_field)
             status, final = second.request('/terminal/events')
-            if status != 200 or replay_status != 409 or replay.get('ordinary_release') is not False or final != before:
+            if (status != 200 or replay_status != 409 or replay.get('ordinary_release') is not False
+                    or final != before or digest(store) != state_before or records(second) != records_before):
                 raise RuntimeError('RESTART_REPLAY_CREATED_SECOND_EFFECT')
             replay_statuses.append(replay_status)
         return {'schema': 'qikvrt_terminal_durable_restart_readback_v1',
                 'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
                 'first_process_pid': first_pid, 'restarted_process_pid': second.process.pid,
-                'termination': 'SIGKILL_WITHOUT_SHUTDOWN_HOOK', 'actual_process_restart': True,
+                'termination': ('WINDOWS_TERMINATE_PROCESS_WITHOUT_SHUTDOWN_HOOK' if sys.platform == 'win32'
+                                else 'SIGKILL_WITHOUT_SHUTDOWN_HOOK'),
+                'native_platform': sys.platform, 'actual_process_restart': True,
                 'event_snapshot_before': before, 'event_snapshot_after': after,
                 'effect_records_before': records_before, 'effect_records_after': records_after,
                 'prior_ring_event_count': original['event_count'],
                 'replay_http_status': replay_status, 'replay_http_statuses': replay_statuses,
                 'replay_event_snapshot': final,
                 'confirmed_events_and_records_unchanged': True, 'replay_second_effects': 0,
+                'persistent_state_sha256_before': state_before,
+                'persistent_state_sha256_after': digest(store),
+                'canonical_record_bytes_sha256': terminal.sha256(terminal.canonical_json(records_after)),
                 'persistence_scope': after['persistence_scope'],
                 'lossless_scope': 'BOUNDED_LOCAL_FSYNCED_SNAPSHOT_ACROSS_PROCESS_RESTART',
                 'authority_mirror_live_nodes_tested': False, 'network_loss_injected': False,
@@ -436,7 +539,7 @@ def interrupted_http_response(process, snapshot_path, path, body=None, field=Non
                     # Abortive close sends RST, rather than discarding a reply
                     # that the client has already received successfully.
                     self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,
-                                               struct.pack('ii', 1, 0))
+                                               struct.pack('HH' if sys.platform == 'win32' else 'ii', 1, 0))
                     observation['downstream_body_bytes_sent'] = 0
                     self.connection.close()
                 else:
@@ -503,8 +606,7 @@ def network_loss_controls(terminal, state_root, seed, *, expected_snapshot=None,
     """Persist one effect, cut real sockets, refuse bounded retries and read back."""
     if not 1 <= retry_clients <= 8:
         raise ValueError('bounded retry requires 1..8 clients')
-    import qikvrt_api_handler as persistence
-    snapshot_path = persistence.dirs(state_root)['state'] / 'terminal.json'
+    snapshot_path = state_root / '.qikvrt/api/terminal.json'
     first = second = None
     try:
         first = TerminalProcess(state_root, seed)
@@ -752,6 +854,11 @@ def witness(output, headless=False, linux=False):
                              'distribution': platform.freedesktop_os_release()}
         else:
             receipt['os'] = windows_identity()
+            receipt['architecture_evidence_scope'] = receipt['os']['architecture']
+            receipt['architecture_evidence_transfer'] = False
+            receipt['python_binary_architecture'] = pe_architecture(sys.executable)
+            if receipt['python_binary_architecture'] != receipt['os']['architecture']:
+                raise RuntimeError('NATIVE_WINDOWS_INTERPRETER_ARCHITECTURE_REQUIRED')
         if not linux and sys.version_info[:3] != (3, 13, 15):
             raise RuntimeError('WINDOWS_WITNESS_INTERPRETER_VERSION_MISMATCH')
         receipt['python_version'] = platform.python_version()
@@ -772,6 +879,9 @@ def witness(output, headless=False, linux=False):
                 raise RuntimeError('GECKODRIVER_COMMAND_CONTRACT_FAILED')
         else:
             gecko = provision_driver(contract, output / 'driver-cache', receipt['os']['architecture'])
+            receipt['driver_binary_architecture'] = pe_architecture(gecko)
+            if receipt['driver_binary_architecture'] != receipt['os']['architecture']:
+                raise RuntimeError('NATIVE_WINDOWS_DRIVER_ARCHITECTURE_REQUIRED')
         receipt['driver_sha256'] = digest(gecko)
         if not linux:
             firefox = Path(os.environ.get('QIKVRT_FIREFOX_BINARY',
@@ -795,20 +905,9 @@ def witness(output, headless=False, linux=False):
         sys.path.insert(0, str(ROOT / 'src'))
         import qikvrt_effect_ack_http_terminal as terminal
         from http.server import ThreadingHTTPServer
-        seed = ROOT / contract['seed_path'] if linux else None
-        state_root = output / 'terminal-state' if linux else None
-        terminal.STATE = terminal.State(seed, state_root=state_root)
-        if linux:
-            receipt['seed_binding'] = terminal.STATE.seed_binding
-            original = seed.read_bytes()
-            bad_seed = output / 'altered-seed.bin'
-            bad_seed.write_bytes(bytes([original[0] ^ 1]) + original[1:])
-            try:
-                terminal.State(bad_seed)
-            except ValueError:
-                receipt['altered_seed_start_refused'] = True
-            else:
-                raise RuntimeError('ALTERED_SEED_NOT_REFUSED')
+        seed, state_root = initialize_seeded_terminal(terminal, contract, output)
+        receipt['seed_binding'] = terminal.STATE.seed_binding
+        receipt['persistence_scope'] = terminal.STATE.persistence_scope
         requests = []
         http_paths = []
         class ObservedHandler(terminal.Handler):
@@ -889,7 +988,7 @@ def witness(output, headless=False, linux=False):
             prepared = driver.script('return JSON.parse(document.querySelector("[data-role=output]").textContent);')
             if prepared.get('record_validated') is not True or readback()['events'] != before['events']:
                 raise RuntimeError('PREPARE_BINDING_OR_NO_EFFECT_FAILED')
-            if linux and prepared['full_record'].get('seed_binding') != receipt['seed_binding']:
+            if prepared['full_record'].get('seed_binding') != receipt['seed_binding']:
                 raise RuntimeError('FIREFOX_SEED_RECORD_BINDING_FAILED')
             receipt['prepared_record'] = prepared['full_record']
             receipt['prepared_request'] = requests[-1]
@@ -914,22 +1013,31 @@ def witness(output, headless=False, linux=False):
                 raise RuntimeError('REPLAY_NOT_REJECTED')
             if linux:
                 receipt['ring_controls'] = bounded_ring_controls(terminal)
-                server.shutdown()
-                server.server_close()
-                server = None
-                terminal.STATE.close()
-                firefox_field = ('v=1, mode=commit, token='
-                    + terminal.sf_bytes(prepared['effect_ack']['commit_token'].encode('ascii'))
-                    + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['effect_ack']['record_hash'])))
-                receipt['restart_controls'] = durable_restart_controls(
-                    terminal, state_root, seed,
-                    expected_snapshot=receipt['ring_controls']['event_snapshot'],
-                    replay_probes=[(requests[-1], firefox_field)])
+            expected_snapshot = receipt['ring_controls']['event_snapshot'] if linux else None
+            if not linux:
+                with urllib.request.urlopen('http://127.0.0.1:8771/terminal/events', timeout=10) as response:
+                    expected_snapshot = json.load(response)
+            receipt['observed_http_paths'] = http_paths
+            server.shutdown()
+            server.server_close()
+            server = None
+            terminal.STATE.close()
+            firefox_field = ('v=1, mode=commit, token='
+                + terminal.sf_bytes(prepared['effect_ack']['commit_token'].encode('ascii'))
+                + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['effect_ack']['record_hash'])))
+            receipt['restart_controls'] = durable_restart_controls(
+                terminal, state_root, seed, expected_snapshot=expected_snapshot,
+                replay_probes=[(requests[-1], firefox_field)])
+            if linux:
                 receipt['network_loss_controls'] = network_loss_controls(
                     terminal, state_root, seed,
                     expected_snapshot=receipt['restart_controls']['replay_event_snapshot'])
                 receipt['network_loss_injected'] = receipt['network_loss_controls']['network_loss_injected']
-                receipt['persistent_state_sha256'] = digest(terminal.STATE.store)
+            receipt['state_rejection_controls'] = durable_state_rejection_controls(
+                terminal, state_root, seed, terminal.STATE.store)
+            receipt['altered_seed_start_refused'] = True
+            receipt['persistent_state_sha256'] = digest(terminal.STATE.store)
+            if linux:
                 receipt['linux_ring_test'] = 'PASS'
             receipt.update(local_effect_readback=True, replay_rejected=True,
                            readback_before=before, readback_after=after,
@@ -940,6 +1048,11 @@ def witness(output, headless=False, linux=False):
                 receipt['reason'] = 'HOLD_PUBLIC_URL_AND_SEPARATE_PERSONAL_RELEASE_GATES'
             if not receipt['product_target_verified']:
                 receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_CLIENT_WITNESS_REQUIRED'
+                if not linux:
+                    receipt['windows_witness_test'] = 'HOLD'
+            if not linux and receipt['browser_execution_mode'] != 'NATIVE':
+                receipt['windows_witness_test'] = 'HOLD'
+                receipt['reason'] = 'HOLD_NATIVE_WINDOWS_ARCHITECTURE_EXECUTION_REQUIRED'
             if linux:
                 receipt.pop('windows_witness_test', None)
                 receipt['reason'] = 'HOLD_COMPLETE_MESH_LINUX_CLOSURE_LIVE_NODES_AND_RELEASE_GATES'

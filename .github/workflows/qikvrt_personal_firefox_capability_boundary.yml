@@ -175,8 +175,11 @@ jobs:
           python -B tools/qikvrt_tool_cache.py verify
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Run the same State validation and real CLI restart controls natively.
+          python -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
           exit $LASTEXITCODE
-      - name: Read canonical public URL, then load extension and observe terminal effect
+      - name: Read canonical public URL and verify seed-bound durable Firefox effect
         shell: pwsh
         env:
           QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -196,5 +199,6 @@ jobs:
             ${{ runner.temp }}/qikvrt-firefox-windows/screenshot.png
             ${{ runner.temp }}/qikvrt-firefox-windows/geckodriver.log
             ${{ runner.temp }}/qikvrt-firefox-windows/standard.xpi
+          # Persist only readbacks. The state root holds token/key material.
           if-no-files-found: error
           retention-days: 30

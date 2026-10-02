@@ -11,12 +11,15 @@ from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
+import errno
 import hashlib
 import hmac
 import json
 import os
 import re
 import secrets
+import stat
 import subprocess
 import threading
 import time
@@ -118,6 +121,174 @@ class PersistenceError(RuntimeError):
     """Durability is unavailable or ambiguous; no further admission is safe."""
 
 
+class WindowsTerminalPersistence:
+    """Native Windows I/O adapter for the existing bounded State snapshot.
+
+    The POSIX API adapter cannot load on Windows (fcntl, directory fsync).
+    Keep the snapshot, validators and admission logic shared; replace only I/O.
+    Process-crash evidence does not establish power-loss durability.
+    """
+    IntegrityIsolationError = PersistenceError
+
+    def __init__(self):
+        import ctypes
+        from ctypes import wintypes
+        self.ctypes = ctypes
+        self.api = ctypes.WinDLL("kernel32", use_last_error=True)
+        self.security = ctypes.WinDLL("advapi32", use_last_error=True)
+        signatures = {
+            "CreateFileW": ([wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                             wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD,
+                             wintypes.HANDLE], wintypes.HANDLE),
+            "CloseHandle": ([wintypes.HANDLE], wintypes.BOOL),
+            "GetFileInformationByHandleEx": ([wintypes.HANDLE, ctypes.c_int,
+                                              wintypes.LPVOID, wintypes.DWORD], wintypes.BOOL),
+            "MoveFileExW": ([wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD], wintypes.BOOL),
+            "GetDriveTypeW": ([wintypes.LPCWSTR], wintypes.UINT),
+            "LocalFree": ([wintypes.HLOCAL], wintypes.HLOCAL),
+        }
+        for name, (arguments, result) in signatures.items():
+            function = getattr(self.api, name)
+            function.argtypes, function.restype = arguments, result
+        self.security.ConvertStringSecurityDescriptorToSecurityDescriptorW.argtypes = [
+            wintypes.LPCWSTR, wintypes.DWORD, ctypes.POINTER(wintypes.LPVOID), wintypes.LPVOID]
+        self.security.ConvertStringSecurityDescriptorToSecurityDescriptorW.restype = wintypes.BOOL
+        self.security.SetFileSecurityW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.LPVOID]
+        self.security.SetFileSecurityW.restype = wintypes.BOOL
+
+    def _open(self, path, *, directory=False, create=False, write=False):
+        # No share-delete: a held directory/lock cannot be renamed or replaced.
+        # OPEN_REPARSE_POINT also rejects a junction/symlink at the final path.
+        access = 0x80 if directory else (0xc0000000 if write else 0x80000000)
+        handle = self.api.CreateFileW(str(path), access, 3 if directory else 0, None,
+                                     4 if create else 3,
+                                     0x00200000 | (0x02000000 if directory else 0), None)
+        if handle == self.ctypes.c_void_p(-1).value:
+            error = self.ctypes.get_last_error()
+            if create and error == 32:
+                raise BlockingIOError(errno.EWOULDBLOCK, "terminal state already owned")
+            raise self.ctypes.WinError(error)
+        try:
+            attributes = (self.ctypes.c_ulong * 2)()  # FILE_ATTRIBUTE_TAG_INFO
+            if not self.api.GetFileInformationByHandleEx(handle, 9, attributes, self.ctypes.sizeof(attributes)):
+                raise self.ctypes.WinError(self.ctypes.get_last_error())
+            if attributes[0] & 0x400 or bool(attributes[0] & 0x10) != directory:
+                raise PersistenceError("WINDOWS_STATE_REPARSE_OR_FILE_TYPE_REFUSED")
+            return handle
+        except BaseException:
+            self.api.CloseHandle(handle)
+            raise
+
+    @contextlib.contextmanager
+    def _directories(self, path):
+        handles = []
+        try:
+            for parent in reversed((path, *path.parents)):
+                handles.append(self._open(parent, directory=True))
+            yield
+        finally:
+            for handle in reversed(handles):
+                self.api.CloseHandle(handle)
+
+    def _private(self, path):
+        # A protected inheritable DACL: only the object owner and LocalSystem.
+        descriptor = self.ctypes.c_void_p()
+        if not self.security.ConvertStringSecurityDescriptorToSecurityDescriptorW(
+                "D:P(A;OICI;FA;;;OW)(A;OICI;FA;;;SY)", 1, self.ctypes.byref(descriptor), None):
+            raise self.ctypes.WinError(self.ctypes.get_last_error())
+        try:
+            if not self.security.SetFileSecurityW(str(path), 0x80000004, descriptor):
+                raise self.ctypes.WinError(self.ctypes.get_last_error())
+        finally:
+            self.api.LocalFree(descriptor)
+
+    def dirs(self, root):
+        root = root.absolute()
+        if self.api.GetDriveTypeW(root.anchor) != 3:
+            raise PersistenceError("WINDOWS_STATE_REQUIRES_LOCAL_FIXED_VOLUME")
+        # Pin existing ancestors before creating each successive directory.
+        for path in reversed((root, *root.parents)):
+            if path == path.parent:
+                continue
+            with self._directories(path.parent):
+                path.mkdir(exist_ok=True)
+                handle = self._open(path, directory=True)
+                self.api.CloseHandle(handle)
+        state = root / ".qikvrt" / "api"
+        for path in (state.parent, state):
+            with self._directories(path.parent):
+                path.mkdir(exist_ok=True)
+                handle = self._open(path, directory=True)
+                self.api.CloseHandle(handle)
+        with self._directories(state):
+            self._private(state)
+        return {"state": state}
+
+    @contextlib.contextmanager
+    def process_lock(self, root, *, name, blocking=False):
+        if blocking:
+            raise PersistenceError("WINDOWS_TERMINAL_LOCK_MUST_BE_NONBLOCKING")
+        state = self.dirs(root)["state"]
+        with self._directories(state):
+            handle = self._open(state / name, create=True, write=True)
+            try:
+                yield
+            finally:
+                self.api.CloseHandle(handle)
+
+    def secure_read_bytes(self, path, *, max_bytes):
+        import msvcrt
+        with self._directories(path.parent):
+            handle = self._open(path)
+            try:
+                fd = msvcrt.open_osfhandle(handle, os.O_RDONLY | os.O_BINARY)
+            except BaseException:
+                self.api.CloseHandle(handle)
+                raise
+            with os.fdopen(fd, "rb") as stream:
+                before = os.fstat(stream.fileno())
+                if not stat.S_ISREG(before.st_mode) or before.st_size > max_bytes:
+                    raise PersistenceError("WINDOWS_STATE_FILE_SIZE_OR_TYPE_REFUSED")
+                data = stream.read(max_bytes + 1)
+                after = os.fstat(stream.fileno())
+                if (len(data) > max_bytes or (before.st_ino, before.st_size, before.st_mtime_ns) !=
+                        (after.st_ino, after.st_size, after.st_mtime_ns)):
+                    raise PersistenceError("WINDOWS_STATE_CHANGED_DURING_READ")
+                return data
+
+    def atomic_write_bytes(self, path, data):
+        import tempfile
+        with self._directories(path.parent):
+            if path.exists() or path.is_symlink():
+                handle = self._open(path)
+                self.api.CloseHandle(handle)
+            fd, name = tempfile.mkstemp(prefix=".terminal-", suffix=".tmp", dir=path.parent)
+            temporary = Path(name)
+            try:
+                with os.fdopen(fd, "wb") as stream:
+                    self._private(temporary)
+                    stream.write(data)
+                    stream.flush()
+                    os.fsync(stream.fileno())  # Windows CRT _commit / FlushFileBuffers.
+                if not self.api.MoveFileExW(str(temporary), str(path), 0x1 | 0x8):
+                    raise self.ctypes.WinError(self.ctypes.get_last_error())
+            finally:
+                temporary.unlink(missing_ok=True)
+
+    @staticmethod
+    def _strict_json_loads(data):
+        def unique(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError("duplicate JSON key")
+                result[key] = value
+            return result
+        def reject(value):
+            raise ValueError("nonfinite JSON number")
+        return json.loads(data.decode("utf-8"), object_pairs_hook=unique, parse_constant=reject)
+
+
 class State:
     def __init__(self, seed_path: Path | None = None, state_path: Path | None = None,
                  *, state_root: Path | None = None) -> None:
@@ -135,11 +306,14 @@ class State:
         self.store_lock = None
         self.persistence_scope = "PROCESS_LIFETIME_ONLY"
         if state_root is not None or state_path is not None:
-            if os.name != "posix":
-                raise PersistenceError("DURABLE_TERMINAL_REQUIRES_POSIX_API_PERSISTENCE")
             # Reuse the API handler's sole durable-state root, strict reader,
-            # atomic file+directory fsync writer and interprocess lock.
-            import qikvrt_api_handler as persistence
+            # snapshot validator and POSIX I/O; Windows uses native I/O only.
+            if os.name == "nt":
+                persistence = WindowsTerminalPersistence()
+            elif os.name == "posix":
+                import qikvrt_api_handler as persistence
+            else:
+                raise PersistenceError("DURABLE_TERMINAL_PLATFORM_UNSUPPORTED")
             self.persistence = persistence
             # Retain the existing explicit --state file interface. Both forms
             # use the same writer/validator and a lock in the API state root.
@@ -536,8 +710,8 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--seed", type=Path,
                         help="Require the unchanged canonical 400-byte seed before local admission")
-    parser.add_argument("--state-root", type=Path, default=Path.cwd() if os.name == "posix" else None,
-                        help="POSIX durable API state root; uses .qikvrt/api/terminal.json")
+    parser.add_argument("--state-root", type=Path, default=Path.cwd(),
+                        help="Durable local state root; uses .qikvrt/api/terminal.json")
     parser.add_argument("--state", type=Path,
                         help="Explicit durable state file; uses the same API persistence path")
     args = parser.parse_args()

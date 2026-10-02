@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.2",
+  "version": "1.3",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -125,7 +125,13 @@
       "validated_full_prepare_record",
       "single_use_commit",
       "fresh_nonce_bound_backend_readback",
-      "replay_refusal"
+      "replay_refusal",
+      "canonical_400_byte_seed_admission_and_full_record_binding",
+      "durable_state.actual_process_restart_after_forced_termination",
+      "durable_state.all_retained_events_and_referenced_records_byte_unchanged",
+      "durable_state.single_use_replay_after_restart",
+      "durable_state.seed_mismatch_and_corrupt_or_truncated_state_refusal",
+      "native_browser_and_os_architecture_match"
     ],
     "release_additional_requires": [
       "personal_capability_manifest",
@@ -148,7 +154,7 @@
         "source": "docs/README_DEPLOY_GITHUB_PAGES_DE.md"
       },
       "source_file": "docs/index.html",
-      "expected_document_title": "QIK-VRT Trust Mesh — Repository-Evidenz, Audit und künstliche Kognition",
+      "expected_document_title": "QIK-VRT Trust Mesh \u2014 Repository-Evidenz, Audit und k\u00fcnstliche Kognition",
       "requires": [
         "same_candidate_head_tree_run_attempt_job",
         "fresh_unauthenticated_canonical_http_get",
@@ -174,6 +180,30 @@
       "temporary_profile_only": true,
       "production_permission_consent_verified": false,
       "source": "https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/"
+    },
+    "seed_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "durable_state": {
+      "schema": "qikvrt_firefox_durable_state_acceptance_v1",
+      "state_root": "<ephemeral-output>/terminal-state",
+      "snapshot": ".qikvrt/api/terminal.json",
+      "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+      "windows_io": "EXCLUSIVE_NATIVE_HANDLE_LOCK_REPARSE_REFUSAL_PRIVATE_DACL_FILE_FSYNC_WRITE_THROUGH_RENAME",
+      "termination": "WINDOWS_TERMINATE_PROCESS_WITHOUT_SHUTDOWN_HOOK",
+      "posix_termination": "SIGKILL_WITHOUT_SHUTDOWN_HOOK",
+      "power_loss_tested": false,
+      "state_or_token_material_in_artifacts": "DENY",
+      "architecture_evidence_transfer": "DENY",
+      "required_readback": [
+        "same_candidate_head_tree_run_attempt_job_and_native_architecture",
+        "canonical_400_byte_seed_bound_to_prepare_records_and_events",
+        "actual_process_restart_after_forced_termination",
+        "all_retained_events_and_referenced_records_byte_unchanged",
+        "persistent_snapshot_digest_unchanged_after_restart_and_replay",
+        "browser_and_restart_tokens_replay_http_409_without_second_effect",
+        "altered_truncated_missing_seed_and_unseeded_restart_refused",
+        "corrupt_truncated_duplicate_and_seed_mismatched_state_start_refused_without_reset"
+      ]
     }
   },
   "linux_ring_acceptance": {

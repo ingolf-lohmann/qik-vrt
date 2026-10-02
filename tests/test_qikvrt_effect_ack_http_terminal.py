@@ -4,6 +4,7 @@ import base64
 import importlib.util
 import http.client
 import json
+import os
 import sys
 import subprocess
 import socket
@@ -694,6 +695,19 @@ class DurableTerminalE2ETests(LoopbackTerminalE2ETests):
                                 capture_output=True, text=True, timeout=10)
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn('READY', result.stdout)
+        if os.name == 'nt':
+            # Junction creation needs no symbolic-link privilege on Windows.
+            # Exercise a native reparse root rather than claiming a POSIX symlink test.
+            junction = self.root / 'junction'
+            result = subprocess.run(['cmd', '/c', 'mklink', '/J', str(junction), str(self.root / '.qikvrt')],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            try:
+                with self.assertRaises(terminal.PersistenceError):
+                    terminal.State(self.seed, state_root=junction)
+            finally:
+                junction.rmdir()
+            return
         path = terminal.STATE.store
         terminal.STATE.close()
         outside = self.root / 'outside.json'
@@ -711,7 +725,8 @@ class DurableTerminalE2ETests(LoopbackTerminalE2ETests):
         payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'must-not-disappear'}
         self.assertEqual(self.commit(payload, self.prepare(payload))[0], 200)
         path = terminal.STATE.store
-        self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+        if os.name == 'posix':
+            self.assertEqual(path.stat().st_mode & 0o777, 0o600)
         valid = path.read_bytes()
         terminal.STATE.close()
         path.unlink()
@@ -722,8 +737,8 @@ class DurableTerminalE2ETests(LoopbackTerminalE2ETests):
         terminal.STATE = terminal.State(self.seed, state_root=self.root)
 
     def test_write_or_directory_fsync_failure_never_acknowledges_or_retries(self):
-        import qikvrt_api_handler as persistence
         for fail_after_replace in (False, True):
+            persistence = terminal.STATE.persistence
             payload = {'schema': 'qikvrt_terminal_input_v1', 'text': str(fail_after_replace)}
             prepared = self.prepare(payload)
             original = persistence.atomic_write_bytes
@@ -744,6 +759,45 @@ class DurableTerminalE2ETests(LoopbackTerminalE2ETests):
 
 
 class DurableTerminalProcessTests(unittest.TestCase):
+    def test_witness_seed_policy_substitution_is_refused_before_state_creation(self):
+        from tools.qikvrt_firefox_windows_witness import initialize_seeded_terminal
+        policy = json.loads((ROOT / 'policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json').read_text())
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            contract = dict(policy['windows_acceptance'], seed_sha256='0' * 64)
+            with self.assertRaisesRegex(RuntimeError, 'WITNESS_CANONICAL_SEED_BINDING_MISMATCH'):
+                initialize_seeded_terminal(terminal, contract, output)
+            self.assertFalse((output / 'terminal-state').exists())
+
+    def test_both_witnesses_bind_canonical_seed_and_real_persistent_root(self):
+        from tools.qikvrt_firefox_windows_witness import initialize_seeded_terminal
+        policy = json.loads((ROOT / 'policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json').read_text())
+        for profile in ('linux_ring_acceptance', 'windows_acceptance'):
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as directory:
+                terminal.STATE.close()
+                seed, root = initialize_seeded_terminal(terminal, policy[profile], Path(directory))
+                try:
+                    self.assertEqual(seed.read_bytes(), (ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin').read_bytes())
+                    self.assertEqual(terminal.STATE.seed_binding['bytes'], 400)
+                    self.assertEqual(terminal.STATE.persistence_scope, 'FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE')
+                    self.assertEqual(terminal.STATE.store, root / '.qikvrt/api/terminal.json')
+                finally:
+                    terminal.STATE.close()
+
+    def test_real_cli_negative_starts_preserve_durable_bytes(self):
+        from tools.qikvrt_firefox_windows_witness import durable_restart_controls, durable_state_rejection_controls
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            seed = ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin'
+            result = durable_restart_controls(terminal, root, seed)
+            store = root / '.qikvrt/api/terminal.json'
+            before = store.read_bytes()
+            rejected = durable_state_rejection_controls(terminal, root, seed, store)
+            self.assertEqual(store.read_bytes(), before)
+            self.assertEqual(len(rejected['controls']), 10)
+            self.assertTrue(all(control['startup_refused'] for control in rejected['controls'].values()))
+            self.assertEqual(result['persistent_state_sha256_before'], rejected['valid_state_sha256'])
+
     def test_real_transport_reset_truncated_readback_and_concurrent_retries(self):
         from tools.qikvrt_firefox_windows_witness import network_loss_controls
         with tempfile.TemporaryDirectory() as directory:
@@ -787,7 +841,6 @@ class DurableTerminalProcessTests(unittest.TestCase):
 
     def test_transport_cut_of_refused_replay_is_not_post_commit_loss_evidence(self):
         from tools.qikvrt_firefox_windows_witness import TerminalProcess, interrupted_http_response
-        import qikvrt_api_handler as persistence
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             first = TerminalProcess(root, ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
@@ -798,7 +851,7 @@ class DurableTerminalProcessTests(unittest.TestCase):
                 field = commit_field(prepared['commit_token'], prepared['record_hash'])
                 self.assertEqual(first.request('/terminal/commit', payload, field)[0], 200)
                 snapshot = first.request('/terminal/events')[1]
-                store = persistence.dirs(root)['state'] / 'terminal.json'
+                store = root / '.qikvrt/api/terminal.json'
                 persisted = store.read_bytes()
                 with self.assertRaisesRegex(RuntimeError, 'TRANSPORT_PROXY_UPSTREAM_NOT_COMPLETE_200'):
                     interrupted_http_response(first, store, '/terminal/commit', payload, field,
@@ -819,6 +872,9 @@ class DurableTerminalProcessTests(unittest.TestCase):
         self.assertEqual(result['event_snapshot_before'], result['event_snapshot_after'])
         self.assertEqual(result['effect_records_before'], result['effect_records_after'])
         self.assertEqual(result['replay_second_effects'], 0)
+        self.assertEqual(result['persistent_state_sha256_before'], result['persistent_state_sha256_after'])
+        self.assertEqual(result['termination'], 'WINDOWS_TERMINATE_PROCESS_WITHOUT_SHUTDOWN_HOOK'
+                         if sys.platform == 'win32' else 'SIGKILL_WITHOUT_SHUTDOWN_HOOK')
         for flag in ('authority_mirror_live_nodes_tested', 'network_loss_injected', 'unbounded_scalability_proved'):
             self.assertFalse(result[flag])
 

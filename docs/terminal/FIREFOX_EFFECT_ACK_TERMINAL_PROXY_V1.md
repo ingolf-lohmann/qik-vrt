@@ -50,20 +50,30 @@ A proxy may display NACK, CONTINUE, ISOLATE or BLOCK. It may never translate tho
 
 It is not a replacement for `src/qikvrt_effect_ack.py`, and it must not be represented as proof of complete wire or deployment conformance. A write-capable repository, publication, deployment or actuator backend needs a separately authorized adapter and must preserve the same EFFECT_ACK gate.
 
-### Durable local Linux state
+### Durable local Windows and Linux state
 
-On POSIX, the CLI defaults to the current directory as `--state-root` and
+The CLI defaults to the current directory as `--state-root` and
 stores one private snapshot at `.qikvrt/api/terminal.json`. An explicit root
 selects an isolated local instance. The implementation reuses
 `qikvrt_api_handler.atomic_write_bytes`, its strict no-follow reader and its
 process lock; it does not introduce an additional ledger or remote store.
 The separate `terminal.lock` is held for the server lifetime, so a competing
 process fails admission. HTTP commits remain serialized by the existing lock.
+On Windows, the same snapshot and validation use the existing State class with
+a native I/O adapter: exclusive lock handles, pinned ancestor directories,
+reparse-point refusal, owner/LocalSystem-only protected DACL, file fsync and
+same-volume write-through replacement. POSIX still uses the API handler;
+Windows never imports its POSIX-only `fcntl` dependency. A local fixed drive
+with the required security and filesystem operations is mandatory; unavailable
+operations fail closed. This is a process-restart contract, not a power-loss
+certification.
 
 The snapshot contains records, ordered events, prepared tokens and their
 consumption state together. Prepare and Commit replace it atomically and fsync
-both file and directory before a positive HTTP reply. Tokens and key material
-remain in the mode-0600 local file and must never enter uploaded evidence.
+both file and directory on POSIX, or fsync the file and use write-through native
+replacement on Windows, before a positive HTTP reply. Tokens and key material
+remain in the private local file (mode 0600 on POSIX, protected DACL on Windows)
+and must never enter uploaded evidence.
 The 4096-event limit remains fail-closed without event eviction.
 
 Restart validates canonical complete JSON, the snapshot digest, each record
@@ -77,9 +87,27 @@ before the response is resolved through fresh event and Effect-Record readback.
 An unused unexpired preparation can still commit after restart; a consumed
 token cannot create another event.
 
-The existing Linux Firefox witness retains its real browser effect, adds
-bounded HTTP concurrency, then kills and restarts actual terminal processes
-and compares every retained event and referenced record. Its separate network
+Both Firefox witnesses require the canonical unchanged 400-byte seed, bind it
+into records/events and retain the real browser effect across process lifetimes.
+The Linux witness additionally executes bounded HTTP concurrency.
+Both kill and restart actual terminal processes
+and compare every retained event and referenced record. This establishes only
+the bounded local snapshot on a filesystem honoring atomic rename and fsync.
+Windows uses `TerminateProcess`, while POSIX uses `SIGKILL`; the native method
+is disclosed in each receipt. The file digest and every retained event/record
+must remain unchanged, and both consumed probe tokens must receive HTTP 409
+after restart. Actual CLI starts also refuse mismatched/missing seed and
+corrupt/truncated state without auto-reset or partial salvage.
+The shared restart controls do not test power removal, media destruction,
+network loss or productive
+Authority/Mirror nodes or unbounded scalability. In-memory State objects remain
+a separately declared `PROCESS_LIFETIME_ONLY` test profile. Windows product
+acceptance requires a fresh supported Windows 11 witness for the executed
+native architecture; Linux, ARM64 or predecessor receipts cannot prove AMD64.
+Technical results leave the separate native code-owner governance gate and
+all Personal release/`EFFECT_ACK_DONE` requirements intact.
+
+The Linux lane's separate network
 control forwards a real commit to that unchanged durable process, observes the
 complete upstream response and persisted snapshot, then aborts the downstream
 TCP socket before the client receives the response. It also cuts event and
@@ -100,9 +128,7 @@ These are bounded loopback TCP response/readback fault controls using HTTP
 clients in the native Firefox witness job, not browser fanout or live Mesh
 fault injection. They establish the local snapshot on a filesystem honoring
 atomic rename and fsync. Power removal, media destruction, productive
-Authority/Mirror nodes and unbounded scalability remain untested. Governance
-and release acceptance remain separate gates. The unseeded Windows/in-memory
-reference profile continues to declare `PROCESS_LIFETIME_ONLY`.
+Authority/Mirror nodes and unbounded scalability remain untested.
 
 ## HTTP / HTML integration
 
