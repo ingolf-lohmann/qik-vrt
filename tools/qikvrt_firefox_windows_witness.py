@@ -554,6 +554,58 @@ def benchmark_speedup(baseline, candidate):
             'inference_limit': 'Small paired sample; percentile bootstrap is approximate, not independent replication.'}
 
 
+def benchmark_persistence_union(intervals, start_ns, end_ns):
+    """Union of actual persist intervals; concurrent writes count once in wall time."""
+    spans = sorted((max(start_ns, row['start_ns']), min(end_ns, row['end_ns']))
+                   for row in intervals if row['end_ns'] > start_ns and row['start_ns'] < end_ns)
+    total, right = 0, start_ns
+    for left, end in spans:
+        total += max(0, end - max(left, right))
+        right = max(right, end)
+    return total / 1e9
+
+
+def benchmark_terminal_worker(terminal):
+    """Instrument only this benchmark process; keep production handlers/persist intact."""
+    import resource
+    intervals, lock = [], threading.Lock()
+    original = terminal.State.persist
+
+    def measured_persist(state):
+        start, cpu = time.perf_counter_ns(), time.thread_time_ns()
+        try:
+            return original(state)
+        finally:
+            end, cpu_end = time.perf_counter_ns(), time.thread_time_ns()
+            with lock:
+                intervals.append({'pid': os.getpid(), 'start_ns': start, 'end_ns': end,
+                                  'thread_cpu_seconds': (cpu_end - cpu) / 1e9})
+
+    class MeasuredHandler(terminal.RingHandler):
+        def do_GET(self):
+            if self.path != '/benchmark/metrics':
+                return super().do_GET()
+            with lock:
+                rows = list(intervals)
+            usage = resource.getrusage(resource.RUSAGE_CHILDREN)
+            self._json(200, {'pid': os.getpid(), 'persist_intervals': rows,
+                            'children_cpu_seconds': usage.ru_utime + usage.ru_stime})
+
+    terminal.State.persist = measured_persist
+    terminal.RingHandler = MeasuredHandler
+    return terminal.main()
+
+
+def benchmark_worker_metrics(processes):
+    result = []
+    for client in processes:
+        status, value = client.request('/benchmark/metrics')
+        if status != 200 or value.get('pid') != client.process.pid:
+            raise RuntimeError('BENCHMARK_WORKER_METRICS_UNAVAILABLE')
+        result.append(value)
+    return result
+
+
 def benchmark_process_cpu(processes):
     """POSIX per-process CPU clocks include server threads, excluding startup."""
     import ctypes
@@ -602,8 +654,8 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
 
     Templates are populated through real HTTP then closed. Every isolated run
     copies those exact private bytes, including four DISTINCT origin keys.
-    Only prepare+commit is timed; admission, readback, restart/consolidation and
-    every consumed-token replay are mandatory untimed controls for EVERY run.
+    Prepare+commit includes measured fsynced persistence. Setup, verification,
+    restart/consolidation and replay have separate timing for EVERY run.
     """
     if sys.platform != 'linux':
         raise RuntimeError('COMPARABLE_SCALE_BENCHMARK_REQUIRES_LINUX_PROCESS_CPU_CLOCKS')
@@ -664,6 +716,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
         processes.clear()
 
     try:
+        template_started = time.perf_counter()
         for origin in range(4):
             client = TerminalProcess(template / ('node-' + str(origin)), seed)
             processes.append(client)
@@ -676,10 +729,13 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
         template_stores = [template / ('node-' + str(origin)) / '.qikvrt/api/terminal.json' for origin in range(4)]
         initial_bytes = raw_stores(template_stores)
         initial_hashes = [terminal.sha256(value) for value in initial_bytes]
+        template_setup_seconds = time.perf_counter() - template_started
         for repetition in range(repetitions):
             order = (1, 2, 4)[repetition % 3:] + (1, 2, 4)[:repetition % 3]
             for workers in order:
                 run_id = 'repeat-' + str(repetition + 1).zfill(2) + '-process-' + str(workers)
+                setup_started = time.perf_counter()
+                copy_seconds = launch_seconds = 0.0
                 run_root = private / run_id
                 run_root.mkdir()
                 routes, origins = [], []
@@ -689,16 +745,23 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     for local in range(per_process):
                         origin = group * per_process + local
                         destination = shard / ('node-' + str(local))
+                        copy_started = time.perf_counter()
                         shutil.copytree(template / ('node-' + str(origin)), destination)
+                        copy_seconds += time.perf_counter() - copy_started
                         origins.append(destination)
-                    command = [sys.executable, '-B', str(ROOT / 'src/qikvrt_effect_ack_http_terminal.py'),
+                    command = [sys.executable, '-B', str(ROOT / 'tools/qikvrt_firefox_windows_witness.py'),
+                               '--benchmark-terminal-worker',
                                '--ring-nodes', str(per_process)]
+                    launch_started = time.perf_counter()
                     client = TerminalProcess(shard, seed, ring=True, command=command)
+                    launch_seconds += time.perf_counter() - launch_started
                     processes.append(client)
                     routes.extend((client, '/nodes/node-' + str(local)) for local in range(per_process))
                 stores = [origin / '.qikvrt/api/terminal.json' for origin in origins]
+                admission_started = time.perf_counter()
                 if raw_stores(stores) != initial_bytes or views(routes) != initial:
                     raise RuntimeError('BENCHMARK_STARTING_STATE_NOT_BYTE_IDENTICAL')
+                admission_seconds = time.perf_counter() - admission_started
                 process_ids = [client.process.pid for client in processes]
                 barrier = threading.Barrier(clients + 1, timeout=15)
                 def client_work(client_number):
@@ -713,15 +776,28 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     return completed
                 with ThreadPoolExecutor(max_workers=clients) as pool:
                     futures = [pool.submit(client_work, number) for number in range(clients)]
+                    metrics_before = benchmark_worker_metrics(processes)
                     cpu_before = benchmark_process_cpu(processes)
+                    setup_seconds = time.perf_counter() - setup_started
                     driver_before = time.process_time_ns()
                     wall_start = time.perf_counter_ns()
                     barrier.wait()
                     completed = [item for future in futures for item in future.result()]
-                    wall = (time.perf_counter_ns() - wall_start) / 1e9
+                    wall_end = time.perf_counter_ns()
+                    wall = (wall_end - wall_start) / 1e9
                     driver_cpu = (time.process_time_ns() - driver_before) / 1e9
                     cpu_after = benchmark_process_cpu(processes)
+                    metrics_after = benchmark_worker_metrics(processes)
                 server_cpu = [after - before for before, after in zip(cpu_before, cpu_after)]
+                persist_intervals = [row for before, after in zip(metrics_before, metrics_after)
+                                     for row in after['persist_intervals'][len(before['persist_intervals']):]]
+                if (len(persist_intervals) != workload * 2
+                        or any(row['start_ns'] < wall_start or row['end_ns'] > wall_end for row in persist_intervals)):
+                    raise RuntimeError('BENCHMARK_PERSIST_MEASUREMENT_INCOMPLETE')
+                persistence_union = benchmark_persistence_union(persist_intervals, wall_start, wall_end)
+                children_cpu = [after['children_cpu_seconds'] - before['children_cpu_seconds']
+                                for before, after in zip(metrics_before, metrics_after)]
+                verification_started = time.perf_counter()
                 after = views(routes)
                 for origin, current in enumerate(after):
                     old = initial[origin]
@@ -733,6 +809,8 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                             or any(current['records'].get(key) != value for key, value in old['records'].items())):
                         raise RuntimeError('BENCHMARK_EFFECT_LOST_DUPLICATED_OR_RECORD_CHANGED')
                 before_transfer = raw_stores(stores)
+                verification_seconds = time.perf_counter() - verification_started
+                consolidation_started = time.perf_counter()
                 close_all()
                 consolidated_root = run_root / 'consolidated'
                 consolidated_root.mkdir()
@@ -745,6 +823,9 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                               for origin in range(4)]
                 if raw_stores(new_stores) != before_transfer or views(consolidated_routes) != after:
                     raise RuntimeError('BENCHMARK_RESTART_OR_CONSOLIDATION_CHANGED_STATE')
+                consolidation_seconds = time.perf_counter() - consolidation_started
+                consolidation_cpu = benchmark_process_cpu([consolidated])[0]
+                replay_started = time.perf_counter()
                 probes = retained + [item[:4] for item in completed]
                 statuses = []
                 for origin, payload, field, event in probes:
@@ -765,6 +846,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                 if (status != 200 or aggregate['events'] != expected_events
                         or aggregate['events_sha256'] != terminal.sha256(terminal.canonical_json(expected_events))):
                     raise RuntimeError('BENCHMARK_AGGREGATE_READBACK_NOT_LOSSLESS')
+                replay_seconds = time.perf_counter() - replay_started
                 latencies = [item[4] for item in completed]
                 measurement = {'run_id': run_id, 'repetition': repetition + 1, 'processes': workers,
                     'process_order': list(order), 'process_ids': process_ids, 'parallel_clients': clients,
@@ -773,6 +855,17 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     'wall_seconds': wall, 'server_cpu_seconds_by_process': server_cpu,
                     'server_cpu_seconds': sum(server_cpu), 'driver_cpu_seconds': driver_cpu,
                     'total_cpu_seconds': sum(server_cpu) + driver_cpu,
+                    'server_children_cpu_seconds_by_process': children_cpu,
+                    'server_process_tree_cpu_seconds': sum(server_cpu) + sum(children_cpu),
+                    'phase_timing_seconds': {'setup': setup_seconds, 'snapshot_copy': copy_seconds,
+                        'launch_restore': launch_seconds, 'admission_readback': admission_seconds,
+                        'execution_including_persistence': wall, 'persistence_wall_union': persistence_union,
+                        'persistence_wall_sum': sum((row['end_ns'] - row['start_ns']) / 1e9 for row in persist_intervals),
+                        'persistence_thread_cpu': sum(row['thread_cpu_seconds'] for row in persist_intervals),
+                        'execution_without_any_persist_active': wall - persistence_union,
+                        'verification': verification_seconds, 'consolidation': consolidation_seconds,
+                        'consolidation_server_cpu': consolidation_cpu, 'replay_controls': replay_seconds},
+                    'persistence_calls': len(persist_intervals),
                     'confirmed_effects_per_second': workload / wall,
                     'effect_latency_seconds': latencies, 'latency_distribution_seconds': benchmark_distribution(latencies),
                     'effects': len(expected_events), 'referenced_records': sum(len(v['records']) for v in final),
@@ -783,7 +876,9 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     'readback_sha256': terminal.sha256(terminal.canonical_json(final))}
                 run_receipt = measurement | {'readback_before': initial, 'readback_after': after,
                                               'readback_after_restart_and_replay': final,
-                                              'replay_statuses': statuses, 'aggregate_readback': aggregate}
+                                              'replay_statuses': statuses, 'aggregate_readback': aggregate,
+                                              'execution_start_ns': wall_start, 'execution_end_ns': wall_end,
+                                              'worker_metrics_before': metrics_before, 'worker_metrics_after': metrics_after}
                 path = evidence / (run_id + '.json')
                 path.write_text(json.dumps(run_receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
                 measurement['evidence'] = {'path': path.relative_to(output).as_posix(),
@@ -800,7 +895,9 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
             rows = [row for row in measurements if row['processes'] == workers]
             summary[str(workers)] = {metric: benchmark_distribution([row[metric] for row in rows])
                 for metric in ('wall_seconds', 'server_cpu_seconds', 'driver_cpu_seconds', 'total_cpu_seconds',
-                               'confirmed_effects_per_second')}
+                               'server_process_tree_cpu_seconds', 'confirmed_effects_per_second')}
+            summary[str(workers)]['phase_timing_seconds'] = {phase: benchmark_distribution(
+                [row['phase_timing_seconds'][phase] for row in rows]) for phase in rows[0]['phase_timing_seconds']}
             summary[str(workers)]['pooled_effect_latency_seconds'] = benchmark_distribution(
                 [value for row in rows for value in row['effect_latency_seconds']])
             summary[str(workers)]['per_run_p95_latency_seconds'] = benchmark_distribution(
@@ -808,7 +905,8 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
         comparisons = {str(workers): benchmark_speedup(
             [row['wall_seconds'] for row in measurements if row['processes'] == 1],
             [row['wall_seconds'] for row in measurements if row['processes'] == workers]) for workers in (2, 4)}
-        environment = {'os': platform.platform(), 'python': sys.version, 'cpu_count': os.cpu_count(),
+        environment = {'host': platform.node(), 'machine': platform.machine(),
+            'os': platform.platform(), 'python': sys.version, 'cpu_count': os.cpu_count(),
             'cpu_affinity_count': len(os.sched_getaffinity(0)),
             'cpu_accounting': 'clock_getcpuclockid(PID) + clock_gettime_ns; process CPU includes server threads',
             'server_cpu_resolution_seconds': time.get_clock_info('process_time').resolution,
@@ -821,11 +919,28 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     if line.startswith('model name')) if name == 'cpu_model' else value.strip())
             except (OSError, StopIteration):
                 environment[name] = 'UNAVAILABLE'
+        environment['interpreter_binary_sha256'] = digest(sys.executable)
+        firefox_path = shutil.which('firefox')
+        firefox_identity = {'state': 'UNOBSERVED', 'execution_benchmarked': False}
+        if firefox_path:
+            firefox_identity.update(state='INSTALLED_BINARY_IDENTITY_OBSERVED', path=firefox_path,
+                binary_sha256=digest(firefox_path),
+                version=subprocess.check_output([firefox_path, '--version'], text=True, timeout=20).strip())
         return {'schema': 'qikvrt_linux_comparable_scale_benchmark_v1', 'state': 'PASS', **subject,
             'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'source_sha256': sources,
             'ci_provenance': {key: os.environ.get(key) for key in
                 ('GITHUB_REPOSITORY', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_JOB')},
-            'environment': environment, 'process_scale': [1, 2, 4], 'origins_in_every_run': 4,
+            'environment': environment, 'firefox': firefox_identity,
+            'template_setup_seconds': template_setup_seconds,
+            'timing_semantics': {
+                'execution': 'Barrier release to last positive prepare/commit response, including fsynced persistence.',
+                'persistence': 'Monotonic interval union counts overlapping State.persist calls once in wall time; thread CPU is additive.',
+                'execution_without_any_persist_active': 'Wall intervals with no persist active, not a counterfactual run with persistence disabled.',
+                'setup': 'Snapshot copy, actual process launch/restore, admission readback and precreated clients; excluded from execution.',
+                'consolidation': 'Drained process termination, origin relocation, one-process reacquisition and complete unchanged readback.',
+                'server_process_tree_cpu': 'Existing server-thread CPU clock plus reaped git child CPU, excluding observer/client CPU.',
+                'firefox': 'Installed binary identity only; Firefox transport performance is not measured.'},
+            'process_scale': [1, 2, 4], 'origins_in_every_run': 4,
             'repetitions_per_process_count': repetitions, 'workload': workload, 'parallel_clients': clients,
             'preloaded_effects': preload_per_origin * 4, 'initial_snapshot_sha256': initial_hashes,
             'workload_sha256': workload_hash, 'measurements': measurements, 'summary': summary,
@@ -839,6 +954,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
             'comparative_speedup_proved': any(value['speedup_supported'] for value in comparisons.values()),
             'personal_release_effect_ack_done': False,
             'limitations': ['Finite local Linux host and fixed workload only; no cross-host or unbounded claim.',
+                'Process-local observation hooks add timing overhead; compare this instrumented mode only.',
                 'Per-process CPU deltas include tiny untimed accounting boundaries around barrier release and completion.',
                 'Native prepare generates fresh random tokens and timestamps; input payload bytes stay identical.',
                 'Initial snapshots are byte-identical per origin, with distinct keys between the four origins.',
@@ -1604,6 +1720,11 @@ def witness(output, headless=False, linux=False):
 
 
 if __name__ == '__main__':
+    if '--benchmark-terminal-worker' in sys.argv:
+        sys.argv.remove('--benchmark-terminal-worker')
+        sys.path.insert(0, str(ROOT / 'src'))
+        import qikvrt_effect_ack_http_terminal as terminal
+        sys.exit(benchmark_terminal_worker(terminal))
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--headless', action='store_true')

@@ -42,6 +42,23 @@ Wall time uses `perf_counter_ns`; each actual server's process CPU time uses
 accounting boundaries around the measured interval. No CPU metric silently
 substitutes wall time. An unavailable server CPU clock fails the experiment.
 
+The successor measures every excluded phase as well: template setup/preload,
+per-trial snapshot copy, actual launch/restore, admission readback, full effect
+verification, drained process termination and single-process consolidation,
+and replay controls. `phase_timing_seconds` keeps these costs separate from the
+inclusive effect-execution wall. Each benchmark worker calls the unchanged
+`State.persist` through a process-local timing hook; the ordinary terminal CLI
+and Firefox/correctness paths keep their original runtime behavior.
+
+Every fsynced persist supplies monotonic start/end timestamps and calling-thread
+CPU. The receipt exports all intervals and requires exactly two writes per new
+effect. Their wall **union** counts overlapping writes once; their wall sum is
+also reported. The execution residual measures elapsed intervals with no persist
+active. It is not a counterfactual run without persistence and must not be used
+to claim such a speedup. The hooks add small observed-mode overhead.
+Reaped git child CPU is reported separately and added to server CPU in
+`server_process_tree_cpu_seconds`; observer/client CPU remains separate.
+
 Six repetitions use balanced cyclic orders 1/2/4, 2/4/1 and 4/1/2 twice.
 Every repetition is retained. There is no outlier removal or discarded warmup.
 The result reports each wall time, server and driver CPU time, confirmed-effect
@@ -51,6 +68,11 @@ latencies describe requests; pairing units are complete repetitions.
 Independence between repetitions on the same host is not established.
 Host, interpreter, CPU affinity, quota and available CPU model are disclosed.
 Ambient cache and host load are not isolated.
+Host/machine identity and interpreter binary SHA-256 are included. The benchmark
+receipt also observes the installed Firefox version and binary digest when
+available. A missing browser is explicitly `UNOBSERVED`. Installed identity does
+not prove browser execution or Firefox transport performance; those remain in
+the separate fresh native Firefox witness.
 
 After **every** run, fresh HTTP reads verify all event identities, prepared and
 executed record hashes, exact input and seed bindings, retained records, and

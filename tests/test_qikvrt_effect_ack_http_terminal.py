@@ -946,12 +946,28 @@ class LinuxComparableScaleBenchmarkTests(unittest.TestCase):
                 self.assertGreater(row['wall_seconds'], 0)
                 self.assertGreater(row['total_cpu_seconds'], 0)
                 self.assertEqual(len(row['effect_latency_seconds']), 4)
+                self.assertEqual(row['persistence_calls'], 8)
+                phases = row['phase_timing_seconds']
+                self.assertGreater(phases['setup'], 0)
+                self.assertGreater(phases['consolidation'], 0)
+                self.assertGreater(phases['persistence_thread_cpu'], 0)
+                self.assertGreaterEqual(phases['persistence_wall_sum'], phases['persistence_wall_union'])
+                self.assertLessEqual(phases['persistence_wall_union'], row['wall_seconds'])
+                self.assertAlmostEqual(phases['execution_without_any_persist_active']
+                    + phases['persistence_wall_union'], row['wall_seconds'], places=9)
+                self.assertGreaterEqual(row['server_process_tree_cpu_seconds'], row['server_cpu_seconds'])
                 self.assertEqual(row['invariants']['replay_refusals'], 8)
                 self.assertEqual(row['invariants']['concurrent_replay_statuses'], [409] * 4)
                 evidence = root / row['evidence']['path']
                 self.assertEqual(digest(evidence), row['evidence']['sha256'])
                 detail = json.loads(evidence.read_text())
                 self.assertEqual(detail['readback_after'], detail['readback_after_restart_and_replay'])
+                intervals = [r for metrics in detail['worker_metrics_after'] for r in metrics['persist_intervals']]
+                self.assertEqual(len(intervals), 8)
+                self.assertTrue(all(detail['execution_start_ns'] <= r['start_ns'] < r['end_ns']
+                                    <= detail['execution_end_ns'] for r in intervals))
+                self.assertNotIn('"commit_token"', evidence.read_text())
+                self.assertNotIn('"secret"', evidence.read_text())
             self.assertFalse(receipt['unbounded_scalability_proved'])
             self.assertFalse(receipt['private_state_exported'])
             before = (root / 'private-rings/template/node-0/.qikvrt/api/terminal.json').read_bytes()
@@ -969,6 +985,12 @@ class LinuxComparableScaleBenchmarkTests(unittest.TestCase):
             benchmark_speedup([1., 1., 1.], [0., 1., 1.])
         with self.assertRaises(ValueError):
             benchmark_distribution([float('nan')])
+
+    def test_parallel_persist_intervals_are_clipped_and_not_double_counted(self):
+        from tools.qikvrt_firefox_windows_witness import benchmark_persistence_union
+        intervals = [{'start_ns': -10, 'end_ns': 20}, {'start_ns': 10, 'end_ns': 30},
+                     {'start_ns': 50, 'end_ns': 200}, {'start_ns': 300, 'end_ns': 400}]
+        self.assertAlmostEqual(benchmark_persistence_union(intervals, 0, 100), 80e-9)
 
 
 @unittest.skipUnless(os.name == 'posix', 'POSIX durable ownership contract')
