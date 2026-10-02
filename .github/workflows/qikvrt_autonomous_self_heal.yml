@@ -18,6 +18,9 @@ on:
       - ".github/workflows/qikvrt_autonomous_self_heal.yml"
       - "tests/test_qikvrt_continuous_auto_repair.py"
       - "tools/qikvrt_autonomous_pre_effect_controller.py"
+      - "tools/qikvrt_recursive_haltpoint.py"
+      - "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json"
+      - "tests/test_qikvrt_recursive_haltpoint.py"
       - "tests/test_qikvrt_autonomous_pre_effect_controller.py"
       - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 
