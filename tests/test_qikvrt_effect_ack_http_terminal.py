@@ -5,6 +5,7 @@ import importlib.util
 import json
 import sys
 import subprocess
+import socket
 import threading
 import time
 import tempfile
@@ -368,6 +369,165 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
             state_path.write_text(json.dumps(value))
             with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_BINDING_MISMATCH'):
                 terminal.State(self.seed, state_path)
+
+    def test_durable_state_truncation_and_restart_seed_mismatch_fail_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE = terminal.State(self.seed, state_path)
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'restart-binding'}
+            prepared = self.prepare(payload)
+            self.assertEqual(self.request(
+                '/terminal/commit', method='POST', body=payload,
+                headers=self.commit_headers(prepared))[0], 200)
+            durable = state_path.read_bytes()
+            with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_BINDING_MISMATCH'):
+                terminal.State(None, state_path)
+            state_path.write_bytes(durable[: max(1, len(durable) // 2)])
+            with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_UNREADABLE'):
+                terminal.State(self.seed, state_path)
+
+    def test_real_process_restart_preserves_events_records_and_consumed_token(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / 'effect-ack-state.json'
+            with socket.socket() as probe:
+                probe.bind(('127.0.0.1', 0))
+                port = probe.getsockname()[1]
+            base = f'http://127.0.0.1:{port}'
+
+            def start():
+                process = subprocess.Popen(
+                    [sys.executable, '-B', str(MODULE_PATH), '--host', '127.0.0.1',
+                     '--port', str(port), '--seed', str(self.seed), '--state', str(state_path)],
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                self.assertIsNotNone(process.stdout)
+                ready = process.stdout.readline()
+                self.assertIn('"state": "READY"', ready)
+                return process
+
+            def request(path, *, method='GET', body=None, field=None):
+                data = None if body is None else json.dumps(
+                    body, sort_keys=True, separators=(',', ':')).encode()
+                headers = {'Content-Type': 'application/json'}
+                if field is not None:
+                    headers['Effect-Ack-Request'] = field
+                req = urllib.request.Request(base + path, method=method, data=data, headers=headers)
+                try:
+                    response = urllib.request.urlopen(req, timeout=5)
+                except urllib.error.HTTPError as error:
+                    response = error
+                with response:
+                    return response.code, json.load(response)
+
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'real-process-restart'}
+            first = start()
+            try:
+                status, prepared = request(
+                    '/terminal/prepare', method='POST', body=payload, field='v=1, mode=prepare')
+                self.assertEqual(status, 200)
+                field = commit_field(prepared['commit_token'], prepared['record_hash'])
+                self.assertEqual(request(
+                    '/terminal/commit', method='POST', body=payload, field=field)[0], 200)
+                before = request('/terminal/events')[1]
+                self.assertEqual(before['persistence_scope'], 'DURABLE_ATOMIC_FILE')
+                self.assertEqual(request(prepared['record_url'])[0], 200)
+            finally:
+                first.terminate()
+                first.wait(timeout=5)
+
+            second = start()
+            try:
+                after = request('/terminal/events')[1]
+                self.assertEqual(after, before)
+                self.assertEqual(request(prepared['record_url'])[0], 200)
+                status, replay = request(
+                    '/terminal/commit', method='POST', body=payload, field=field)
+                self.assertEqual(status, 409)
+                self.assertIn('invalid', replay['reason'])
+                self.assertEqual(request('/terminal/events')[1], before)
+            finally:
+                second.terminate()
+                second.wait(timeout=5)
+
+    def test_persisted_effect_survives_response_path_crash_without_duplicate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / 'effect-ack-state.json'
+            with socket.socket() as probe:
+                probe.bind(('127.0.0.1', 0))
+                port = probe.getsockname()[1]
+            wrapper = """
+import os
+import sys
+sys.path.insert(0, sys.argv[1])
+import qikvrt_effect_ack_http_terminal as m
+from http.server import ThreadingHTTPServer
+from pathlib import Path
+original = m.State.persist
+def crash_after_persist(self):
+    original(self)
+    if self.events:
+        os._exit(73)
+m.State.persist = crash_after_persist
+m.STATE = m.State(Path(sys.argv[2]), Path(sys.argv[3]))
+server = ThreadingHTTPServer(('127.0.0.1', int(sys.argv[4])), m.Handler)
+print('READY', flush=True)
+server.serve_forever()
+"""
+            process = subprocess.Popen(
+                [sys.executable, '-B', '-c', wrapper, str(ROOT / 'src'),
+                 str(self.seed), str(state_path), str(port)],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            self.assertEqual(process.stdout.readline().strip(), 'READY')
+            base = f'http://127.0.0.1:{port}'
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'persist-before-response'}
+            data = json.dumps(payload, sort_keys=True, separators=(',', ':')).encode()
+            prepare = urllib.request.Request(
+                base + '/terminal/prepare', data=data,
+                headers={'Content-Type': 'application/json',
+                         'Effect-Ack-Request': 'v=1, mode=prepare'})
+            with urllib.request.urlopen(prepare, timeout=5) as response:
+                prepared = json.load(response)
+            field = commit_field(prepared['commit_token'], prepared['record_hash'])
+            commit = urllib.request.Request(
+                base + '/terminal/commit', data=data,
+                headers={'Content-Type': 'application/json', 'Effect-Ack-Request': field})
+            with self.assertRaises(Exception):
+                urllib.request.urlopen(commit, timeout=5).read()
+            process.wait(timeout=5)
+            self.assertEqual(process.returncode, 73)
+
+            restored = terminal.State(self.seed, state_path)
+            self.assertEqual(len(restored.events), 1)
+            self.assertEqual(restored.events[0]['text'], payload['text'])
+            self.assertIn(prepared['record_hash'], restored.records)
+            terminal.STATE = restored
+            status, _, replay = self.request(
+                '/terminal/commit', method='POST', body=payload,
+                headers={'Effect-Ack-Request': field})
+            self.assertEqual(status, 409)
+            self.assertIn('invalid', replay['reason'])
+            self.assertEqual(len(terminal.STATE.events), 1)
+
+    def test_parallel_unique_commits_remain_lossless_after_durable_reload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE = terminal.State(self.seed, state_path)
+            payloads = [
+                {'schema': 'qikvrt_terminal_input_v1', 'text': f'durable-parallel-{index}'}
+                for index in range(8)
+            ]
+            prepared = [self.prepare(payload) for payload in payloads]
+            with ThreadPoolExecutor(max_workers=8) as pool:
+                statuses = list(pool.map(
+                    lambda pair: self.request(
+                        '/terminal/commit', method='POST', body=pair[0],
+                        headers=self.commit_headers(pair[1]))[0],
+                    zip(payloads, prepared)))
+            self.assertEqual(statuses, [200] * 8)
+            before = self.request('/terminal/events')[2]
+            terminal.STATE = terminal.State(self.seed, state_path)
+            after = self.request('/terminal/events')[2]
+            self.assertEqual(after, before)
+            self.assertEqual([event['event_id'] for event in after['events']], list(range(1, 9)))
 
 
 class BoundedSeedRingControlsTests(unittest.TestCase):
