@@ -12,7 +12,11 @@
     "CONTINUE",
     "REPEAT"
   ],
-  "classifications": ["WORK", "IDLE", "BLOCKADE"],
+  "classifications": [
+    "WORK",
+    "IDLE",
+    "BLOCKADE"
+  ],
   "halt_allowed_only_if": [
     "FINAL_IDLE",
     "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
@@ -31,7 +35,11 @@
   ],
   "exact_subject": {
     "required": true,
-    "bind": ["REPOSITORY", "HEAD", "TREE"],
+    "bind": [
+      "REPOSITORY",
+      "HEAD",
+      "TREE"
+    ],
     "rebind_after_drift": true,
     "predecessor_evidence_transfer": false
   },
@@ -49,11 +57,52 @@
     "chat_or_external_scheduler_required": false
   },
   "current_reference_case": {
-    "first_blocker": "AUTHORITY_NODE_CONNECTION_SCOPE_UNAVAILABLE",
-    "productive_edge": "RESTORE_AUTHORITY_NODE_CONNECTION_SCOPE",
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "productive_edge": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
     "classification": "BLOCKADE",
     "halt": true,
     "reason": "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "authority_capability_evidence": {
+      "classification": "INSTALLATION_LISTED_AUTHORITY_WITH_CONTENT_ROUTING_CARRIER_BOUNDARY",
+      "source": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "pr_number": 444,
+        "head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+        "tree": "6724c1efeb6242b37aab48c9e6e836f849c773df",
+        "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+        "git_blob_sha1": "5ed3569c24a1171cc8988bfd3e7f006b05e06a2b",
+        "sha256": "962328c1c3726840332ea5f016e0172652b6307e7255ca217f73e56c400b2705",
+        "observed_at": "2026-10-02T14:21:02.950217+00:00",
+        "scope": "CAPABILITY_DIAGNOSIS_ONLY_NOT_PR441_GATE_EVIDENCE"
+      },
+      "installation": {
+        "installation_id": 147849532,
+        "account_login": "Goldkelch",
+        "repository_selection": "all",
+        "repository": "Goldkelch/qik-vrt",
+        "repository_id": 1271407206,
+        "listed": true,
+        "permissions_as_reported": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        }
+      },
+      "generic_read_http_status": {
+        "repository": 404,
+        "main_ref": 404,
+        "required_refs": 404,
+        "content": 404
+      },
+      "installation_bound_content_read_exposed": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false,
+      "routing_root_cause_established": false,
+      "diagnostic_scope": "Installation-aware listing succeeds while generic name, stable-ID, Main-ref, ref-inventory and content reads fail in this execution. No cause inside the connector, credential router or remote platform is established.",
+      "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence."
+    }
   }
 }

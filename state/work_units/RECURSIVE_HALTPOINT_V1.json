@@ -17,15 +17,233 @@
     "QIKVRT reflexive repository watchdog"
   ],
   "reference_blocker": {
-    "first_blocker": "AUTHORITY_NODE_CONNECTION_SCOPE_UNAVAILABLE",
-    "productive_edge": "RESTORE_AUTHORITY_NODE_CONNECTION_SCOPE",
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "productive_edge": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
     "classification": "BLOCKADE",
     "halt": true,
-    "reason": "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE"
+    "reason": "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
+    "effect_ack_done": false,
+    "authority_capability_evidence": {
+      "classification": "INSTALLATION_LISTED_AUTHORITY_WITH_CONTENT_ROUTING_CARRIER_BOUNDARY",
+      "source": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "pr_number": 444,
+        "head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+        "tree": "6724c1efeb6242b37aab48c9e6e836f849c773df",
+        "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+        "git_blob_sha1": "5ed3569c24a1171cc8988bfd3e7f006b05e06a2b",
+        "sha256": "962328c1c3726840332ea5f016e0172652b6307e7255ca217f73e56c400b2705",
+        "observed_at": "2026-10-02T14:21:02.950217+00:00",
+        "scope": "CAPABILITY_DIAGNOSIS_ONLY_NOT_PR441_GATE_EVIDENCE"
+      },
+      "installation": {
+        "installation_id": 147849532,
+        "account_login": "Goldkelch",
+        "repository_selection": "all",
+        "repository": "Goldkelch/qik-vrt",
+        "repository_id": 1271407206,
+        "listed": true,
+        "permissions_as_reported": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        }
+      },
+      "generic_read_http_status": {
+        "repository": 404,
+        "main_ref": 404,
+        "required_refs": 404,
+        "content": 404
+      },
+      "installation_bound_content_read_exposed": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false,
+      "routing_root_cause_established": false,
+      "diagnostic_scope": "Installation-aware listing succeeds while generic name, stable-ID, Main-ref, ref-inventory and content reads fail in this execution. No cause inside the connector, credential router or remote platform is established.",
+      "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence."
+    }
   },
   "boundaries": {
     "predecessor_evidence_transfer": false,
     "transport_ack_is_effect_ack": false,
     "effect_ack_done": false
+  },
+  "capability_synchronization": {
+    "observed_at": "2026-10-02T20:50:10.559Z",
+    "input_subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr_number": 441,
+      "ref": "agent/recursive-haltpoint-v1",
+      "head": "2ec9c4816666f285eac5ecf45ad126952aacb3bb",
+      "tree": "dd9f0cd2c628a7002f05de0ab2705847161f0ec6",
+      "scope": "INPUT_PREDECESSOR_NOT_CONTAINING_SUCCESSOR"
+    },
+    "source_pr_gates_transferred": false,
+    "successor_gates": "REQUIRE_FRESH_CONTAINING_HEAD_TREE_VALIDATION",
+    "fresh_observations": {
+      "installation": {
+        "operation": "list_installations",
+        "request_started_at": "2026-10-02T20:47:46.073Z",
+        "installation_id": 147849532,
+        "repository_selection": "all"
+      },
+      "repository_inventory": {
+        "operation": "list_repositories_by_installation",
+        "request_started_at": "2026-10-02T20:47:46.073Z",
+        "arguments": {
+          "installation_id": 147849532,
+          "page_offset": 0,
+          "page_size": 100
+        },
+        "repository": "Goldkelch/qik-vrt",
+        "repository_id": 1271407206,
+        "permissions_as_reported": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        }
+      },
+      "generic_reads": [
+        {
+          "operation": "get_repo",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "repository_full_name": "Goldkelch/qik-vrt"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        },
+        {
+          "operation": "fetch",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        },
+        {
+          "operation": "fetch",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/matching-refs/"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        },
+        {
+          "operation": "fetch_file",
+          "request_started_at": "2026-10-02T20:47:46.073Z",
+          "arguments": {
+            "repository_full_name": "Goldkelch/qik-vrt",
+            "path": "AI",
+            "ref": "main"
+          },
+          "error_code": "NOT_FOUND",
+          "response": {
+            "message": "Not Found",
+            "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+            "status": "404"
+          },
+          "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY"
+        }
+      ],
+      "installation_bound_content_read_exposed": false,
+      "installation_bound_content_read_attempted": false,
+      "unavailable_carrier_scope": "CURRENT_EXECUTION_EXPOSED_API_OPERATIONS",
+      "local_authenticated_rest_carrier_established": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false
+    },
+    "live_haltpoint_comment_correction": {
+      "comment_id": 5943971095,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/441#issuecomment-5943971095",
+      "content_carrier_boundary_is_not_workflow_approval_evidence": true,
+      "workflow_admission_requires_its_own_exact_run_and_callable_approval_carrier_readback": true,
+      "action_required_or_zero_jobs_alone_imply_halt": false,
+      "global_connection_scope_unavailability_inferred": false
+    }
+  },
+  "contribution_provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contributions": [
+      "Requested synchronization with PR 444 capability evidence",
+      "Required a history-preserving successor and fresh HEAD/TREE binding",
+      "Required PREDECESSOR_EVIDENCE_TRANSFER=false"
+    ],
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6",
+      "session_or_run_id": "UNAVAILABLE",
+      "identity_limits": "System identity is not independent attestation of model build or natural-person identity."
+    },
+    "artificial_cognitive_contributions": [
+      "Fresh API readbacks",
+      "Bound capability-diagnosis correction",
+      "Policy and work-unit synchronization",
+      "Regression tests and reviewable successor preparation"
+    ],
+    "human_acceptance_of_generated_content": "PENDING"
+  },
+  "verification": {
+    "scope": "MODIFIED_CANDIDATE_EXACT_BLOB_API_FIXTURE_NOT_COMPLETE_CHECKOUT_OR_SUCCESSOR_GATE",
+    "tests": [
+      {
+        "module": "tests/test_qikvrt_recursive_haltpoint.py",
+        "count": 15,
+        "result": "PASS"
+      },
+      {
+        "module": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+        "count": 16,
+        "result": "PASS"
+      },
+      {
+        "module": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+        "count": 19,
+        "result": "PASS"
+      },
+      {
+        "module": "tests/test_qikvrt_workflow_executor_mesh_contract.py",
+        "count": 7,
+        "result": "PASS"
+      }
+    ],
+    "candidate_paths": [
+      {
+        "path": "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
+        "bytes": 4448,
+        "sha256": "9dddda795ad0d665d7853c103eee7b5749212e2e449628c3cf0748aa1b1aa67c"
+      },
+      {
+        "path": "tests/test_qikvrt_recursive_haltpoint.py",
+        "bytes": 8843,
+        "sha256": "5d016c1e012b3eb8de61408af3829adcab59b6ee83f5277a518823dfef72aa23"
+      }
+    ],
+    "full_checkout_successor_validation_required": true,
+    "predecessor_evidence_transfer": false,
+    "source_pr_gates_transferred": false,
+    "boot_scope": "Local partial API fixture has no complete worktree; full bootstrap/integrity must be evaluated by a native full-checkout successor carrier."
   }
 }
