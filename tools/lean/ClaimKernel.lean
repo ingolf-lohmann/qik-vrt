@@ -7,6 +7,23 @@ import Lean.Util.CollectAxioms
 
 open Lean
 
+-- This semantic admission is deliberately narrower than native replay coverage.
+-- The source and registry modules are independently byte-bound by the adapter.
+def admittedSemantics (cid statement domain : String) (proofs constants : Array String) : Bool :=
+  let entry := if cid == "MANUSCRIPT::SET-001" then
+    some ("The relative class and its relative complement form a complete disjoint partition.", "SET001")
+  else if cid == "MANUSCRIPT::SET-003" then
+    some ("The complement partition is independent of ambient dimension.", "SET003")
+  else none
+  match entry with
+  | none => false
+  | some (text, name) =>
+    let proof := s!"QIKVRT.V2.Class.{name}_checked"
+    domain == "FORMAL" && statement == text && proofs == #[proof] &&
+      constants.size == 3 && constants.contains proof &&
+      constants.contains s!"QIKVRT.V2.Class.{name}Statement" &&
+      constants.contains s!"QIKVRT.V2.Claims.{name}"
+
 /- The producer's imported environment is data. Project declarations are
    replayed into a separately loaded Std environment at trust level zero.
    No project initializer or environment extension is loaded by this process. -/
@@ -14,6 +31,7 @@ def main (args : List String) : IO UInt32 := do
   let [input] := args | throw <| IO.userError "expected one kernel plan"
   initSearchPath (← findSysroot)
   let plan ← IO.ofExcept <| Json.parse (← IO.FS.readFile input)
+  let context ← IO.ofExcept <| plan.getObjVal? "context"
   let claims ← IO.ofExcept <| plan.getObjValAs? (Array Json) "claims"
   let producer ← importModules #[{module := `QIKVRTFormalization}, {module := `QIKVRTEffectAck}]
     {} 0 (loadExts := false)
@@ -57,10 +75,15 @@ def main (args : List String) : IO UInt32 := do
       observations := observations.push <| Json.mkObj [
         ("constant", toJson constant), ("module", toJson actualModule), ("axioms", toJson axioms),
         ("type", toJson (toString info.type))]
+    let statement ← IO.ofExcept <| claim.getObjValAs? String "claim_statement"
+    let domain ← IO.ofExcept <| claim.getObjValAs? String "epistemic_domain"
+    if !admittedSemantics cid statement domain proofs constants then
+      throw <| IO.userError s!"unsupported formal semantics: {cid}"
     results := results.push <| Json.mkObj [
       ("claim_id", toJson cid), ("constants", toJson observations)]
   IO.println <| (Json.mkObj [
     ("schema", toJson "qikvrt_independent_lean_kernel_v1"),
+    ("context", context),
     ("trust_level", toJson (0 : Nat)),
     ("project_declarations_rechecked", toJson project.size),
     ("claims", toJson results)]).compress

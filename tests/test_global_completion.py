@@ -353,7 +353,8 @@ class LeanKernelAuditTests(unittest.TestCase):
         spec = importlib.util.spec_from_file_location('kernel_fixture', self.root/'tools/qikvrt_global_completion.py')
         self.engine = importlib.util.module_from_spec(spec); spec.loader.exec_module(self.engine)
         registered = self.engine.normalize_audit_input(load(self.root/'GLOBAL_CLAIM_INVENTORY.json'))['claims']
-        self.claim = next(c for c in registered if c['claim_id'] == 'MANUSCRIPT::DEF-001')
+        self.registered = {c['claim_id']:c for c in registered}
+        self.claim = next(c for c in registered if c['claim_id'] == 'MANUSCRIPT::SET-001')
         self.data = {'schema':'qikvrt_claim_audit_input_v1', 'claims':[self.claim], 'invariants':[], 'relations':[]}
 
     def git(self, *args):
@@ -367,7 +368,8 @@ class LeanKernelAuditTests(unittest.TestCase):
     def parameters(self, execution_id='fixture/run-1/attempt-1'):
         subject = self.engine.audit_subject(self.root)
         return {'root':self.root, 'formal_verifier':True, 'expected_head':subject['head_sha'],
-                'expected_tree':subject['tree_sha'], 'execution_id':execution_id}
+                'expected_tree':subject['tree_sha'], 'execution_id':execution_id,
+                'input_bytes':self.engine.pretty(self.data).encode('utf-8')}
 
     def audit(self):
         return self.engine.claim_audit(self.data, timestamp='2026-10-02T00:00:00Z', **self.parameters())
@@ -407,6 +409,37 @@ class LeanKernelAuditTests(unittest.TestCase):
     def test_wrong_registry_constant_is_rejected(self):
         self.corrupt_receipt(lambda v: v['primary_receipts'][12].update(registry_constant='QIKVRT.V2.Claims.DEF002'))
 
+    def test_wrong_admitted_verifier_code_hash_is_rejected(self):
+        path = self.root/'policy/QIKVRT_CLAIM_AUDIT_V1.json'
+        policy = load(path); policy['verifier_admission']['implementation']['sha256'] = '0'*64
+        path.write_text(self.engine.pretty(policy)); self.freeze(); self.assert_denied()
+
+    def test_wrong_source_hash_and_claim_domain_cannot_grant_formal_verification(self):
+        self.claim['sources'][0]['sha256'] = '0'*64
+        self.assert_denied()
+        self.claim['sources'] = copy.deepcopy(self.registered['MANUSCRIPT::SET-003']['sources'])
+        self.claim.update(epistemic_domain='EMPIRICAL', claim_class='HYPOTHESIS')
+        report = self.audit()
+        self.assertEqual(report['claims'][0]['status'], 'HOLD')
+        self.assertFalse(report['claims'][0]['verification_checklist']['formal_verified'])
+
+    def test_replayable_theorem_with_unsupported_claim_semantics_remains_hold(self):
+        self.data['claims'] = [copy.deepcopy(self.registered[cid]) for cid in
+            ('MANUSCRIPT::ESC-004', 'MANUSCRIPT::QUA-004', 'MANUSCRIPT::DEF-001', 'EFFECT_ACK::EA-LEAN-009')]
+        for claim in self.data['claims']: claim.update(verified=True, verification={'formal_verified':True})
+        report = self.audit()
+        self.assertEqual(report['formal_verifier']['status'], 'HOLD')
+        for claim in report['claims']:
+            self.assertEqual(claim['status'], 'HOLD')
+            self.assertFalse(claim['verification_checklist']['formal_verified'])
+            self.assertIn('UNSUPPORTED_FORMAL_SEMANTICS', claim['reasons'])
+
+    def test_raw_input_bytes_are_required_and_must_match_parsed_value(self):
+        for raw in (None, b'{}', self.engine.pretty({**self.data, 'claims':[]}).encode()):
+            with self.assertRaisesRegex(ValueError, 'exact input bytes'):
+                self.engine.claim_audit(self.data, timestamp='2026-10-02T00:00:00Z',
+                                       **{**self.parameters(), 'input_bytes':raw})
+
     def test_expected_head_tree_and_execution_id_cannot_be_inferred_from_report(self):
         for changes in ({'expected_head':'0'*40}, {'expected_tree':'0'*40}, {'execution_id':None}):
             with self.assertRaises(ValueError):
@@ -431,12 +464,24 @@ class LeanKernelAuditTests(unittest.TestCase):
         self.assertTrue(claim['verification_checklist']['formal_verified'])
         self.assertTrue(claim['formal_kernel_receipt']['compiled_objects'])
         self.assertEqual(claim['formal_kernel_receipt']['native_kernel_result']['claim_id'], self.claim['claim_id'])
+        raw = self.parameters()['input_bytes']
+        self.assertEqual(report['input_sha256'], self.engine.sha(raw))
+        self.assertEqual(report['input_binding']['bytes'], len(raw))
+        self.assertEqual(report['input_binding']['representation'], 'EXACT_INPUT_BYTES')
+        self.assertEqual(report['formal_verifier']['evidence']['kernel']['context']['input_binding'], report['input_binding'])
         self.assertTrue(self.engine.verify_claim_audit(report, self.data, **self.parameters()))
         for boundary in ('audit_pass_is_claim_truth', 'external_effect', 'effect_ack_done'):
             self.assertFalse(report['boundaries'][boundary])
         for flag in ('empirical_verified', 'peer_reviewed', 'reproduced'):
             self.assertFalse(claim['verification_checklist'][flag])
         self.assertFalse(self.engine.verify_claim_audit(report, self.data, **self.parameters('fixture/run-2/attempt-1')))
+        self.assertFalse(self.engine.verify_claim_audit(report, self.data,
+            **{**self.parameters(), 'input_bytes':raw.replace(b'\n', b'\r\n')}))
+        changed = copy.deepcopy(report)
+        changed['formal_verifier']['evidence']['kernel']['claims'][0]['constants'][0]['type'] = 'True'
+        changed['claims'][0]['formal_kernel_receipt']['native_kernel_result']['constants'][0]['type'] = 'True'
+        changed.pop('report_sha256'); changed['report_sha256'] = self.engine.sha(self.engine.pretty(changed).encode())
+        self.assertFalse(self.engine.verify_claim_audit(changed, self.data, **self.parameters()))
         changed = copy.deepcopy(report); changed['claims'][0]['formal_kernel_receipt']['compiled_objects'][0]['sha256'] = '0'*64
         changed.pop('report_sha256'); changed['report_sha256'] = self.engine.sha(self.engine.pretty(changed).encode())
         self.assertFalse(self.engine.verify_claim_audit(changed, self.data, **self.parameters()))
@@ -465,25 +510,28 @@ class LeanKernelAuditTests(unittest.TestCase):
 
     def test_native_replay_rejects_nonallowlisted_axiom_and_missing_proof(self):
         self.require_runtime()
-        env = {k:v for k,v in os.environ.items() if k not in {'LEAN_PATH', 'LEAN_SRC_PATH'}}
+        env = {k:v for k,v in os.environ.items() if k not in {'LEAN_PATH', 'LEAN_SRC_PATH', 'LEAN_SYSROOT'}}
         prefix = pathlib.Path(self.engine.kernel_command(['lake','env','lean','--print-prefix'], cwd=self.engine.FORM, env=env))
         lean = str(prefix/'bin/lean')
         with tempfile.TemporaryDirectory(prefix='qikvrt-kernel-negative-') as directory:
             work = pathlib.Path(directory)
             self.engine.kernel_command([lean,'-o',str(work/'Replay.olean'),str(self.engine.LEAN_REPLAY)], cwd=self.engine.LEAN_REPLAY.parent, env=env)
-            (work/'QIKVRTFormalization.lean').write_text('import Std\nnamespace Fixture\naxiom forbidden : False\ntheorem proof : False := forbidden\nend Fixture\n')
+            (work/'QIKVRTFormalization.lean').write_text('import Std\nnamespace Fixture\naxiom forbidden : False\ntheorem proof : False := forbidden\ntheorem harmless : True := True.intro\nend Fixture\n')
             (work/'QIKVRTEffectAck.lean').write_text('import Std\n')
             for module in ('QIKVRTFormalization', 'QIKVRTEffectAck'):
                 self.engine.kernel_command([lean,'-o',str(work/(module+'.olean')),str(work/(module+'.lean'))], cwd=work, env=env)
             for constant, origin, message in (('Fixture.proof','QIKVRTFormalization','forbidden axiom'),
                 ('Fixture.missing','QIKVRTFormalization','missing constant'),
                 ('Fixture.forbidden','QIKVRTFormalization','proof is not a theorem'),
-                ('Fixture.proof','QIKVRTEffectAck','wrong constant source module')):
+                ('Fixture.proof','QIKVRTEffectAck','wrong constant source module'),
+                ('Fixture.harmless','QIKVRTFormalization','unsupported formal semantics')):
                 request = work/'plan.json'
-                request.write_text(self.engine.pretty({'claims':[{'claim_id':'FIXTURE','proof_constants':[constant],
+                request.write_text(self.engine.pretty({'context':{}, 'claims':[{'claim_id':'FIXTURE',
+                    'claim_statement':'Arbitrary claim', 'epistemic_domain':'FORMAL', 'proof_constants':[constant],
                     'constants':[constant], 'constant_modules':{constant:origin}}]}))
                 with self.assertRaisesRegex(ValueError, message):
-                    self.engine.kernel_command([lean,'--run',str(self.engine.LEAN_CHECKER),str(request)], cwd=work, env={**env,'LEAN_PATH':str(work)})
+                    self.engine.kernel_command([lean,'--run',str(self.engine.LEAN_CHECKER),str(request)], cwd=work,
+                        env={**env,'LEAN_SYSROOT':str(prefix),'LEAN_PATH':str(work)})
 
 
 if __name__ == "__main__":

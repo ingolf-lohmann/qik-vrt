@@ -26,6 +26,41 @@
             "const": "FORMAL"
           },
           "formal_kernel_receipt": {
+            "properties": {
+              "input_binding": {
+                "additionalProperties": false,
+                "properties": {
+                  "bytes": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "git_blob_sha1": {
+                    "pattern": "^[0-9a-f]{40}$",
+                    "type": "string"
+                  },
+                  "representation": {
+                    "const": "EXACT_INPUT_BYTES"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sha256",
+                  "bytes",
+                  "git_blob_sha1",
+                  "representation"
+                ],
+                "type": "object"
+              },
+              "verifier_id": {
+                "const": "INDEPENDENT_LEAN_KERNEL_V1"
+              },
+              "verifier_version": {
+                "const": "1.1.0"
+              }
+            },
             "required": [
               "claim_id",
               "execution_id",
@@ -33,11 +68,18 @@
               "input_sha256",
               "kernel_receipt_sha256",
               "compiled_objects",
-              "native_kernel_result"
+              "native_kernel_result",
+              "verifier_id",
+              "verifier_version",
+              "checker_binding",
+              "input_binding"
             ],
             "type": "object"
           }
-        }
+        },
+        "required": [
+          "formal_kernel_receipt"
+        ]
       }
     }
   ],

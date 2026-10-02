@@ -116,13 +116,21 @@
       "Quot.sound",
       "propext"
     ],
+    "implementation": {
+      "bytes": 4929,
+      "git_blob_sha1": "986b1441397aa04f5b4d77a6dd9be4566290fbc4",
+      "path": "tools/lean/ClaimKernel.lean",
+      "sha256": "f683258b6a708b0fc5524091b5fe79172a6c90381896c9112861bc5d66e2ce19"
+    },
     "independence": "Separate native-kernel replay of project declarations into locked Lean/Std base; no author identity, organizational independence, physical truth or kernel-correctness proof is inferred.",
     "not_admitted": [
       "APPENDIX_ALIAS_TRUTH_TRANSFER",
       "ARBITRARY_UNREGISTERED_FORMAL_CLAIMS",
       "EMPIRICAL_CONFIRMATION",
       "PEER_REVIEW",
-      "REPRODUCTION"
+      "REPRODUCTION",
+      "OTHER_REGISTERED_PRIMARY_FORMAL_SEMANTICS",
+      "PHYSICAL_BRIDGE_OR_ANALYTIC_WITNESS_AS_UNCONDITIONAL_CLAIM"
     ],
     "peer_review": false,
     "report_replay": "Reject differing expected HEAD, TREE, input or executor execution ID; successful meta-audit always rebuilds and replays. Rechecking the same subject within one execution is not an external effect.",
@@ -138,9 +146,16 @@
       "SEPARATE_NATIVE_KERNEL_REPLAY_AT_TRUST_LEVEL_ZERO",
       "PROOF_STATEMENT_REGISTRY_CONSTANT_COVERAGE",
       "EXECUTOR_BOUND_EXECUTION_ID",
-      "FRESH_META_AUDIT_RECOMPUTATION"
+      "FRESH_META_AUDIT_RECOMPUTATION",
+      "EXACT_INPUT_BYTES_SHA256_SIZE_AND_GIT_BLOB",
+      "EXECUTABLE_SEMANTIC_ADMISSION",
+      "ADMITTED_VERIFIER_CODE_SHA256"
     ],
-    "scope": "REGISTERED_PRIMARY_FORMAL_MODEL_ONLY",
+    "scope": "RELATIVE_COMPLEMENT_PARTITION_ONLY",
+    "supported_claims": {
+      "MANUSCRIPT::SET-001": "The relative class and its relative complement form a complete disjoint partition.",
+      "MANUSCRIPT::SET-003": "The complement partition is independent of ambient dimension."
+    },
     "toolchain": {
       "cache_may_replace_kernel_verification": false,
       "githash": "6caaee842e9495688c1567e78c0e68dbb96942aa",
@@ -149,6 +164,7 @@
       "platform": "x86_64-unknown-linux-gnu",
       "source": "https://github.com/leanprover/lean4/releases/tag/v4.19.0",
       "version": "4.19.0"
-    }
+    },
+    "version": "1.1.0"
   }
 }

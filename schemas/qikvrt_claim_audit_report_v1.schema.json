@@ -31,10 +31,84 @@
       "type": "object"
     },
     "formal_verifier": {
+      "properties": {
+        "input_binding": {
+          "additionalProperties": false,
+          "properties": {
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "git_blob_sha1": {
+              "pattern": "^[0-9a-f]{40}$",
+              "type": "string"
+            },
+            "representation": {
+              "const": "EXACT_INPUT_BYTES"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "sha256",
+            "bytes",
+            "git_blob_sha1",
+            "representation"
+          ],
+          "type": "object"
+        },
+        "verifier_id": {
+          "const": "INDEPENDENT_LEAN_KERNEL_V1"
+        },
+        "verifier_version": {
+          "const": "1.1.0"
+        }
+      },
+      "required": [
+        "verifier_id",
+        "verifier_version",
+        "execution_id",
+        "execution_subject",
+        "input_binding",
+        "checker_binding",
+        "replay_binding"
+      ],
       "type": [
         "object",
         "null"
       ]
+    },
+    "input_binding": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "git_blob_sha1": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "EXACT_INPUT_BYTES",
+            "GENERATED_CANONICAL_JSON"
+          ]
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "bytes",
+        "git_blob_sha1",
+        "representation"
+      ],
+      "type": "object"
     },
     "input_sha256": {
       "pattern": "^[0-9a-f]{64}$",
@@ -66,7 +140,8 @@
     "boundaries",
     "report_sha256",
     "formal_verifier",
-    "execution_subject"
+    "execution_subject",
+    "input_binding"
   ],
   "type": "object"
 }

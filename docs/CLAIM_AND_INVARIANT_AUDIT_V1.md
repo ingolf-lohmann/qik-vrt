@@ -45,13 +45,30 @@ records whether one of the admitted predicates actually executed. Bound
 `observed_reality` references for `predicted`, `executed`, `observed` and `readback`
 can be displayed, but missing stages remain null and `effect_ack` stays false.
 No input-provided PASS, verification flag, peer-review label or ACK grants trust.
-The first admitted independent verifier is `INDEPENDENT_LEAN_KERNEL_V1`, limited
-to primary registered FORMAL model claims. Empirical, peer-review and reproduction
+The first admitted independent verifier is `INDEPENDENT_LEAN_KERNEL_V1` version
+`1.1.0`, limited to the two source-bound relative-complement partition claims
+`MANUSCRIPT::SET-001` and `MANUSCRIPT::SET-003`. Empirical, peer-review and reproduction
 adapters remain unadmitted and their verification flags remain false. Requests
 for those verifiers (`required_verifiers`) retain HOLD even if a formal model
 proof is independently checked. Appendix aliases and unregistered assertions
 cannot inherit primary proof verification.
 Existing historical verified dispositions are preserved independently.
+
+| Admitted claim | Exact formal scope |
+| --- | --- |
+| `MANUSCRIPT::SET-001` | For arbitrary predicate classes, `(A ∩ X)` and its relative complement partition `X` completely and disjointly. |
+| `MANUSCRIPT::SET-003` | If `A ⊆ X`, `A` and `X \\ A` partition `X`; the theorem is polymorphic in its carrier and requires no dimension, topology or metric. |
+
+The admission is executable in the separate Lean verifier as well as the
+adapter; neither a registry flag nor successful replay of another theorem can
+extend it. The 54 historical primary receipts are replay coverage, not 54
+semantic admissions. For example, `ESC-004` proves unboundedness of a natural
+radius sequence under an explicit persistent-growth witness, rather than the
+stated complex quadratic escape-radius claim. `QUA-004` constructs a quantizer
+given grid and error witnesses, rather than deriving those witnesses from
+boundedness in Euclidean space. These and all other unsupported claim semantics
+remain HOLD. Definition carriers, conditional physical models and appendix
+aliases require their own separately reviewed semantic admission.
 
 PASS means the stated audit checks passed in their declared scope. It does not
 mean empirical truth, generic semantic validity, scientific consensus, product
@@ -117,7 +134,12 @@ downgrade. Other platforms remain outside this initial admission.
 
 The audit report binds each admitted claim to its source, proof/statement/registry
 constants, compiled objects, transitive axiom observations, recomputed registered
-receipt, native kernel result, expected candidate and invocation. `verify-audit`
+receipt, verifier ID/version/code SHA-256, native kernel result, expected candidate
+and invocation. The CLI reads the input as bytes before parsing. Reports and
+native results bind its exact SHA-256, byte count and Git blob identity, including
+whitespace and line endings. The formal Python API requires those exact bytes
+and rejects a parsed-value mismatch; it cannot silently bind reserialized JSON.
+`verify-audit`
 rejects changed candidate, input or invocation and repeats the build/replay.
 Rehashing a modified report does not restore acceptance. Caller-supplied
 `verified` and other verification flags never enter this decision.
@@ -133,7 +155,9 @@ remain outside its proof. `audit_pass_is_claim_truth`, `external_effect` and
 The existing global-completion workflow stores the report as an Action artifact.
 The mandatory existing global-completion test block includes real-kernel positive
 and negative controls for modified Lean source (even with resealed metadata),
-stale tags/receipts, wrong proof/registry constants, changed objects, nonallowed
-axioms, missing native proof constants and report replay. This workflow requires
+stale tags/receipts, wrong code/source hashes or claim domains, wrong proof/registry
+constants, changed objects, nonallowed axioms, missing native proof constants,
+unsupported semantics, manipulated native results and report replay (including
+changed input bytes with the same parsed JSON). This workflow requires
 the locked Lean runtime; its native tests cannot skip. No new workflow, writer, provider credential or publication path
 is introduced. The policy and schema files define the durable contract.

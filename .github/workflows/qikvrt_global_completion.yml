@@ -165,8 +165,9 @@ jobs:
           report = json.loads(Path('.qikvrt/evidence/claim-audit.json').read_text())
           verifier = report['formal_verifier']
           assert verifier['status'] == 'PASS', verifier
-          assert len(verifier['claims']) == 54
-          assert sum(c['verification_checklist']['formal_verified'] for c in report['claims']) == 54
+          admitted = {'MANUSCRIPT::SET-001', 'MANUSCRIPT::SET-003'}
+          assert {c['claim_id'] for c in verifier['claims']} == admitted
+          assert {c['claim_id'] for c in report['claims'] if c['verification_checklist']['formal_verified']} == admitted
           assert all(c['epistemic_domain'] == 'FORMAL' for c in report['claims'] if c['verification_checklist']['formal_verified'])
           assert all(not c['verification_checklist'][k] for c in report['claims'] for k in ('empirical_verified', 'peer_reviewed', 'reproduced'))
           assert all(report['boundaries'][k] is False for k in ('audit_pass_is_claim_truth', 'external_effect', 'effect_ack_done'))

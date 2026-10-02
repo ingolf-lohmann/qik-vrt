@@ -1,0 +1,241 @@
+{
+  "admission_delta_contract": {
+    "admitted_original_holds": [
+      "MANUSCRIPT::SET-001",
+      "MANUSCRIPT::SET-003"
+    ],
+    "baseline_head": "240388c0533a77aa105fb8b0cb49d6386515f7a6",
+    "baseline_summary": {
+      "claims": 92,
+      "independent_verification_hold": 76,
+      "scoped_pass": 16
+    },
+    "expected_current_summary": {
+      "fail": 0,
+      "hold": 77,
+      "scoped_pass": 15
+    },
+    "original_holds_retained": [
+      "APPENDIX::MATRIX-001",
+      "APPENDIX::MATRIX-002",
+      "APPENDIX::MATRIX-003",
+      "APPENDIX::MATRIX-004",
+      "APPENDIX::MATRIX-005",
+      "APPENDIX::MATRIX-007",
+      "APPENDIX::MATRIX-010",
+      "APPENDIX::MATRIX-014",
+      "APPENDIX::MATRIX-015",
+      "APPENDIX::MATRIX-016",
+      "APPENDIX::MATRIX-017",
+      "APPENDIX::MATRIX-018",
+      "APPENDIX::MATRIX-019",
+      "APPENDIX::MATRIX-020",
+      "APPENDIX::MATRIX-021",
+      "APPENDIX::MATRIX-024",
+      "APPENDIX::MATRIX-026",
+      "APPENDIX::MATRIX-027",
+      "APPENDIX::MATRIX-029",
+      "APPENDIX::MATRIX-031",
+      "EFFECT_ACK::EA-LEAN-001",
+      "EFFECT_ACK::EA-LEAN-002",
+      "EFFECT_ACK::EA-LEAN-003",
+      "EFFECT_ACK::EA-LEAN-004",
+      "EFFECT_ACK::EA-LEAN-005",
+      "EFFECT_ACK::EA-LEAN-006",
+      "EFFECT_ACK::EA-LEAN-007",
+      "EFFECT_ACK::EA-LEAN-008",
+      "EFFECT_ACK::EA-LEAN-009",
+      "EFFECT_ACK::EA-LEAN-010",
+      "EFFECT_ACK::EA-LEAN-011",
+      "EFFECT_ACK::EA-LEAN-012",
+      "EFFECT_ACK::EA-OPEN-001",
+      "EFFECT_ACK::EA-OPEN-002",
+      "MANUSCRIPT::DEF-001",
+      "MANUSCRIPT::DEF-002",
+      "MANUSCRIPT::DEF-003",
+      "MANUSCRIPT::DEF-004",
+      "MANUSCRIPT::DEF-005",
+      "MANUSCRIPT::DEF-006",
+      "MANUSCRIPT::DEF-007",
+      "MANUSCRIPT::DEF-008",
+      "MANUSCRIPT::DEF-009",
+      "MANUSCRIPT::DEF-010",
+      "MANUSCRIPT::DEF-011",
+      "MANUSCRIPT::DEF-012",
+      "MANUSCRIPT::DEF-013",
+      "MANUSCRIPT::DEF-014",
+      "MANUSCRIPT::DEF-015",
+      "MANUSCRIPT::DEF-016",
+      "MANUSCRIPT::DEF-017",
+      "MANUSCRIPT::DEF-018",
+      "MANUSCRIPT::DEF-019",
+      "MANUSCRIPT::DEF-020",
+      "MANUSCRIPT::DIM-006",
+      "MANUSCRIPT::DIM-006A",
+      "MANUSCRIPT::DIM-007",
+      "MANUSCRIPT::DIM-007A",
+      "MANUSCRIPT::ESC-003",
+      "MANUSCRIPT::ESC-004",
+      "MANUSCRIPT::ESC-005",
+      "MANUSCRIPT::GAT-002",
+      "MANUSCRIPT::GAT-003",
+      "MANUSCRIPT::GAT-004",
+      "MANUSCRIPT::GAT-005",
+      "MANUSCRIPT::GAT-006",
+      "MANUSCRIPT::GAT-007",
+      "MANUSCRIPT::MAP-001",
+      "MANUSCRIPT::MAP-003",
+      "MANUSCRIPT::QUA-003",
+      "MANUSCRIPT::QUA-003A",
+      "MANUSCRIPT::QUA-004",
+      "MANUSCRIPT::QUA-005",
+      "MANUSCRIPT::RET-011"
+    ],
+    "previous_scoped_pass_now_unverified_formal_hold": [
+      "APPENDIX::MATRIX-006",
+      "APPENDIX::MATRIX-013",
+      "EFFECT_ACK::EA-OPEN-003"
+    ],
+    "scope": "Admission contract and exact original-HOLD IDs; this record is not itself a native verification receipt. The executable candidate audit and fresh CI artifacts establish outcomes.",
+    "why_not_54": "A native proof checks its exact Lean type and premises. ESC-004 omits the complex quadratic iteration; QUA-004 assumes the grid/error witnesses. Only the two relative-complement statements have an admitted direct semantic mapping."
+  },
+  "artificial_cognitive_actor": {
+    "identity_limit": "Platform disclosure; no natural-person or cryptographic model authentication is inferred.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "5ffc2f07c0aa",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Reused the already published separate native Lean-kernel replay implementation after a fresh remote readback.",
+    "Restricted semantic admission to SET-001 and SET-003: replaying other historical formalizations cannot prove a broader source claim.",
+    "Bound raw JSON bytes, verifier ID/version/code, candidate and invocation to each native result; added negative controls.",
+    "Repaired the observed exact-head Collective integrity checkout and pinned the native negative fixture sysroot."
+  ],
+  "created_at": "2026-10-02T00:07:12.872816Z",
+  "external_effects": {
+    "external_publication": false,
+    "runtime_network_effect": false,
+    "scope": "AUTHORIZED_PR_BRANCH_SUCCESSOR_ONLY"
+  },
+  "git_history": {
+    "candidate_head_and_tree": "Resolve the Git commit containing this record; fresh local/CI receipts must bind its exact HEAD/TREE.",
+    "method": "FAST_FORWARD_SUCCESSOR_OF_SOURCE_COMMIT",
+    "review_pr": 439
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized the first narrow source-bound independent FORMAL verifier on PR #439.",
+    "Required exact input bytes, verifier identity/code binding, negative controls, semantic fit, no empirical promotion and an exact original-HOLD delta."
+  ],
+  "human_decision": {
+    "candidate_acceptance": "PENDING",
+    "implementation_request": "AUTHORIZED",
+    "merge_release_publication": "NOT_GRANTED_BY_THIS_WORK_UNIT"
+  },
+  "inputs": [
+    {
+      "bytes": 147339,
+      "git_blob_sha1": "fb2b5f3235211d7d51294440dc1986089d0aaec7",
+      "path": "GLOBAL_CLAIM_INVENTORY.json",
+      "sha256": "6539355b6f5644662197d36f1f7cb24704a88f163afa65b91e9a5d06a805cee5"
+    },
+    {
+      "bytes": 74860,
+      "git_blob_sha1": "0d09b6c3b0b1c79d7cc61abdbaeb6accbeaf1dd3",
+      "path": "GLOBAL_EXACT_TAG_KERNEL_RECEIPTS.json",
+      "sha256": "ca5cca53dcb7810757501db0ac2c0553f916b37df5b34201a0eb48ec01c7261e"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    {
+      "bytes": 79111,
+      "git_blob_sha1": "8d59dbac124a2de12a67607d2c9b2b1e71934a05",
+      "path": "tools/qikvrt_global_completion.py",
+      "sha256": "6d1e1697c790a1917828b07e8e4a2433b8b540ba9c999d027a007fca80defbe0"
+    },
+    {
+      "bytes": 4929,
+      "git_blob_sha1": "986b1441397aa04f5b4d77a6dd9be4566290fbc4",
+      "path": "tools/lean/ClaimKernel.lean",
+      "sha256": "f683258b6a708b0fc5524091b5fe79172a6c90381896c9112861bc5d66e2ce19"
+    },
+    {
+      "bytes": 30142,
+      "git_blob_sha1": "3ca155fb4afe3842d840771d7ded4070a1fbd362",
+      "path": "tests/test_global_completion.py",
+      "sha256": "793f4135ec110b1a69079e64b28f5ea039dafe11917aca4ca6611e48fc15f5d7"
+    },
+    {
+      "bytes": 5999,
+      "git_blob_sha1": "eea8769b1dcef652a42216d84085155c199d1c17",
+      "path": "policy/QIKVRT_CLAIM_AUDIT_V1.json",
+      "sha256": "9fd768ba761d1cd4a38d66eaa84c10a9c0cbe2d9ac7793913f226b18bfaec473"
+    },
+    {
+      "bytes": 9909,
+      "git_blob_sha1": "439f02b8da4202233599030903c3917963c3062a",
+      "path": "docs/CLAIM_AND_INVARIANT_AUDIT_V1.md",
+      "sha256": "2845594d48dfc72d12342e5e63671831fba61e27a0abbc8764e256f76bc58c97"
+    },
+    {
+      "bytes": 3233,
+      "git_blob_sha1": "2e9fca842daa20e9e8fe679f86d063fd2d892961",
+      "path": "schemas/qikvrt_claim_audit_report_v1.schema.json",
+      "sha256": "57175f4d81c20e181acfbccea4a6a8994056715d5bab56880a0acc056e26ca80"
+    },
+    {
+      "bytes": 4628,
+      "git_blob_sha1": "0938a3cf97eb35f6d3ef79cbdc96b7b27a85ff45",
+      "path": "schemas/qikvrt_claim_audit_v1.schema.json",
+      "sha256": "bced381e9dd0fc0babde888c654e12d0881cb7648c9422df3d125f4bff2c8637"
+    },
+    {
+      "bytes": 12092,
+      "git_blob_sha1": "3229780a0ee42b07c5e343b3f53155855fb178ef",
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "f2fc8b258348562669237df355b7a493ed92762cecfe3f3049fd9f9f91fb0d67"
+    },
+    {
+      "bytes": 10648,
+      "git_blob_sha1": "fe9efbbc7bdac4bc22507a37f696f2045a1a774f",
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "sha256": "222d299bda28fe3fae024d80e77ee5353da53cd94cb5058e5591187fb5e82954"
+    }
+  ],
+  "release_claims": {
+    "audit_pass_is_claim_truth": false,
+    "effect_ack_done": false,
+    "external_effect": false,
+    "peer_reviewed": false,
+    "reproduced": false
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "9a326ee849892c18abfc31fb97d78fd5ecea2213",
+  "source_ref": "work/claim-audit-20261001-469a95ac",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "b1c06080603c6c5659958ed451e1e31a52125317",
+  "unresolved_origin": [],
+  "verification": {
+    "candidate_gate_commands": [
+      "python3 -B tools/qikvrt_tool_cache.py verify",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "make test",
+      "python3 -B tools/qikvrt_global_completion.py audit --formal-verifier lean-kernel --expected-head <candidate-head> --expected-tree <candidate-tree> --execution-id <executor-invocation>",
+      "python3 -B tools/qikvrt_global_completion.py verify-audit --formal-verifier lean-kernel --expected-head <candidate-head> --expected-tree <candidate-tree> --execution-id <executor-invocation> --report <audit-report>"
+    ],
+    "candidate_results": "Require exact-candidate evidence; predecessor local or CI success is not transferred.",
+    "executed_fixture_gate": "All 37 global-completion tests passed with locked native Lean required and no skips.",
+    "native_runtime": "Locked Linux x64 Lean 4.19.0; existing workspace selfexe compatibility preload used locally.",
+    "negative_controls": [
+      "Wrong source/verifier code hash",
+      "Wrong claim domain",
+      "Manipulated native result even after report rehash",
+      "Unsupported registered claim semantics and independent native unsupported semantics",
+      "Replay across input byte formatting, candidate or executor invocation",
+      "Stale tag/receipt, wrong constants/modules, changed objects, forbidden axioms and missing proof"
+    ]
+  },
+  "work_unit_id": "pr439-relative-complement-admission-20261002"
+}
