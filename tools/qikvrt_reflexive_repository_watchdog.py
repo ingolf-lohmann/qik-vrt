@@ -20,6 +20,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+from tools import qikvrt_recursive_haltpoint as haltpoint
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_RELATIVE_PATH = "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
@@ -631,6 +633,34 @@ def _resource_graph(
     }
 
 
+def _recursive_haltpoint_for_watchdog(
+    blocker: str | None,
+    productive_edge: str | None,
+    *,
+    exact_subject_bound: bool = True,
+) -> dict[str, Any]:
+    # A watchdog HOLD is an observation/admission state, never a HALT by itself.
+    # Only a separately observed unavailable external capability or unavailable
+    # exact human authorization may convert a blocker into a haltpoint.
+    has_blocker = blocker is not None
+    observation = {
+        "exact_subject_bound": exact_subject_bound,
+        "final_idle": False,
+        "effect_ack_done": False,
+        "first_blocker": blocker,
+        "productive_edge": productive_edge if has_blocker else None,
+        "edge_authorized": False,
+        "edge_callable": False,
+        "requires_external_capability": False,
+        "external_capability_available": True,
+        "requires_exact_human_authorization": False,
+        "exact_human_authorization_available": True,
+        "transport_ack": False,
+        "predecessor_evidence_transfer": False,
+    }
+    return haltpoint.classify(observation)
+
+
 def analyze(
     runs_value: Mapping[str, Any] | Sequence[Any],
     jobs_value: Mapping[str, Any] | None,
@@ -892,6 +922,9 @@ def analyze(
             "DEADLOCK_FREEDOM_PROVED": False,
         },
     }
+    receipt["recursive_haltpoint"] = _recursive_haltpoint_for_watchdog(
+        blocker, productive_edge
+    )
     receipt["semantic_fingerprint"] = sha256_bytes(
         canonical_json_bytes(
             {
@@ -960,6 +993,11 @@ def observation_failure_receipt(
             "AUTHORITY_MIRROR_EQUALITY": False,
         },
     }
+    receipt["recursive_haltpoint"] = _recursive_haltpoint_for_watchdog(
+        "REPOSITORY_REOBSERVATION_FAILED",
+        "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
+        exact_subject_bound=False,
+    )
     receipt["semantic_fingerprint"] = sha256_bytes(
         canonical_json_bytes({key: value for key, value in receipt.items() if key != "observed_at"})
     )
