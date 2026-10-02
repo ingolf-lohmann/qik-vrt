@@ -146,7 +146,7 @@
       "observed_at": "2026-10-01T23:01:18.858Z",
       "observer": "ChatGPT cloud Chrome via cua_repl",
       "url": "https://goldkelch.github.io/qik-vrt/",
-      "title": "Site not found \u00b7 GitHub Pages",
+      "title": "Site not found · GitHub Pages",
       "heading": "404",
       "visible_text": "There isn't a GitHub Pages site here.",
       "scope": "DIAGNOSTIC_ONLY; not Windows successor evidence"
@@ -1251,8 +1251,8 @@
       },
       {
         "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
-        "bytes": 49182,
-        "sha256": "d0eaad3081edae169ef7021f0e202f11b0d5d88c476beabb0960edc5cf500537"
+        "bytes": 49488,
+        "sha256": "64fd8427b4232343fd3ccc908ff01bb081eb3b068e8fd9ef4041302b1fc93d8d"
       },
       {
         "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
@@ -1321,6 +1321,24 @@
     },
     "requested_start_head": "77c5270a48910a0423937e2cb9e7da48a85df363",
     "requested_start_tree": "d5afe14f10818f21bde84244da13a8c89118be19",
-    "concurrent_work_preserved": "All post-commit socket-fault/retry controls and both regressions from e0fcea2a are retained; Windows native I/O path and linger layout also permit the shared regressions on Windows."
+    "concurrent_work_preserved": "All post-commit socket-fault/retry controls and both regressions from e0fcea2a are retained; Windows native I/O path and linger layout also permit the shared regressions on Windows.",
+    "native_preflight_observations": [
+      {
+        "head": "0ee7376a998b70e9bc6fb5722cffc9500540fb63",
+        "tree": "074873d2c292cb4f6e7aad1de71c30e66cf8ebd3",
+        "run_id": 36991181879,
+        "job_id": 110787517601,
+        "os": "Windows 11 25H2 Enterprise build 26200",
+        "architecture": "ARM64",
+        "state": "FAIL_PREFLIGHT",
+        "windows_browser_execution_observed": false,
+        "tests": 41,
+        "errors": 3,
+        "observed_error": "WinError 32 during TemporaryDirectory cleanup: three tests retained exclusive native State lock handles until later unittest tearDown",
+        "causal_fix": "Register State.close with an inner ExitStack so every success/failure path releases the native lock before temporary-directory deletion",
+        "functional_assertions_weakened": false,
+        "evidence_scope": "HISTORICAL_EXACT_SUBJECT_ONLY; successor requires fresh native execution"
+      }
+    ]
   }
 }

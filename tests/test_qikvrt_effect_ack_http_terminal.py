@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import importlib.util
 import http.client
 import json
@@ -334,7 +335,8 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
 
 
     def test_durable_records_events_survive_restart_and_replay_stays_closed(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory() as directory, contextlib.ExitStack() as cleanup:
+            cleanup.callback(lambda: terminal.STATE.close())
             state_path = Path(directory) / 'effect-ack-state.json'
             terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
@@ -469,7 +471,8 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
 
 
     def test_persisted_effect_survives_response_path_crash_without_duplicate(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory() as directory, contextlib.ExitStack() as cleanup:
+            cleanup.callback(lambda: terminal.STATE.close())
             state_path = Path(directory) / 'effect-ack-state.json'
             with socket.socket() as probe:
                 probe.bind(('127.0.0.1', 0))
@@ -531,7 +534,8 @@ server.serve_forever()
 
 
     def test_parallel_unique_commits_remain_lossless_after_durable_reload(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory() as directory, contextlib.ExitStack() as cleanup:
+            cleanup.callback(lambda: terminal.STATE.close())
             state_path = Path(directory) / 'effect-ack-state.json'
             terminal.STATE.close()
             terminal.STATE = terminal.State(self.seed, state_path)
