@@ -13,6 +13,169 @@
     "fresh_authority_state_inferred": false,
     "root_tree": "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149"
   },
+  "authority_capability_classification": {
+    "authority_global_failure_inferred": false,
+    "classification": "INSTALLATION_LISTED_AUTHORITY_WITH_CONTENT_ROUTING_CARRIER_BOUNDARY",
+    "diagnostic_scope": "Installation-aware listing succeeds while generic name, stable-ID, Main-ref, ref-inventory and content reads fail in this execution. No cause inside the connector, credential router or remote platform is established.",
+    "execution_carrier": {
+      "content_read_operations": [
+        "mcp__codex_apps__github_fetch",
+        "mcp__codex_apps__github_fetch_blob",
+        "mcp__codex_apps__github_fetch_commit",
+        "mcp__codex_apps__github_fetch_file",
+        "mcp__codex_apps__github_get_repo"
+      ],
+      "existing_repository_native_probe": {
+        "dispatch_callable_in_execution": false,
+        "invoked": false,
+        "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+        "scope": "Fixed Authority Pages observer on a different exact branch/path or separately admitted dispatch; it is not an exposed installation-147849532 content executor for PR 444."
+      },
+      "installation_bound_content_read_attempted": false,
+      "installation_bound_content_read_exposed": false,
+      "installation_bound_metadata_operations": [
+        "mcp__codex_apps__github_list_repositories_by_installation",
+        "mcp__codex_apps__github_search_installed_repositories_v2"
+      ],
+      "local_authenticated_rest_carrier_established": false,
+      "local_gh_cli_available": false,
+      "not_attempted_reason": "No exposed content/commit/tree/ref read accepts an installation ID or an explicitly selected installation credential.",
+      "reported_push_permission_is_not_effect_observation": true,
+      "repository_creation_callable_in_execution": false,
+      "repository_creation_permission_inferred_from_push": false
+    },
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "generic_content_connection_probes": [
+      {
+        "arguments": {
+          "repository_full_name": "Goldkelch/qik-vrt"
+        },
+        "authority_global_unreachability_inferred": false,
+        "connector_error_code": "NOT_FOUND",
+        "operation": "get_repo",
+        "repository_global_absence_inferred": false,
+        "request_started_at": "2026-10-02T14:03:13.356Z",
+        "response": {
+          "documentation_url": "https://docs.github.com/rest",
+          "message": "Not Found",
+          "status": "404"
+        },
+        "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY",
+        "transport_http_status": 404
+      },
+      {
+        "arguments": {
+          "repository_id": 1271407206
+        },
+        "authority_global_unreachability_inferred": false,
+        "connector_error_code": "NOT_FOUND",
+        "operation": "get_repo",
+        "repository_global_absence_inferred": false,
+        "request_started_at": "2026-10-02T14:01:50.072Z",
+        "response": {
+          "documentation_url": "https://docs.github.com/rest",
+          "message": "Not Found",
+          "status": "404"
+        },
+        "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY",
+        "transport_http_status": 404
+      },
+      {
+        "arguments": {
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main"
+        },
+        "authority_global_unreachability_inferred": false,
+        "connector_error_code": "NOT_FOUND",
+        "operation": "fetch",
+        "repository_global_absence_inferred": false,
+        "request_started_at": "2026-10-02T14:19:05.318Z",
+        "response": {
+          "documentation_url": "https://docs.github.com/rest",
+          "message": "Not Found",
+          "status": "404"
+        },
+        "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY",
+        "transport_http_status": 404
+      },
+      {
+        "arguments": {
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/matching-refs/"
+        },
+        "authority_global_unreachability_inferred": false,
+        "connector_error_code": "NOT_FOUND",
+        "operation": "fetch",
+        "repository_global_absence_inferred": false,
+        "request_started_at": "2026-10-02T14:03:13.356Z",
+        "response": {
+          "documentation_url": "https://docs.github.com/rest",
+          "message": "Not Found",
+          "status": "404"
+        },
+        "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY",
+        "transport_http_status": 404
+      },
+      {
+        "arguments": {
+          "path": "AI",
+          "ref": "main",
+          "repository_full_name": "Goldkelch/qik-vrt"
+        },
+        "authority_global_unreachability_inferred": false,
+        "connector_error_code": "NOT_FOUND",
+        "operation": "fetch_file",
+        "repository_global_absence_inferred": false,
+        "request_started_at": "2026-10-02T14:19:05.318Z",
+        "response": {
+          "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+          "message": "Not Found",
+          "status": "404"
+        },
+        "semantic_classification": "CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY",
+        "transport_http_status": 404
+      }
+    ],
+    "installation_observation": {
+      "account_login": "Goldkelch",
+      "installation_id": 147849532,
+      "operation": "list_installations",
+      "repository_selection": "all",
+      "request_started_at": "2026-10-02T14:19:05.318Z"
+    },
+    "installed_repository_listing_verified": true,
+    "latest_authority_subject": {
+      "branch": "main",
+      "complete_source_closure_verified": false,
+      "head": null,
+      "latest_tree_compared_to_historical_or_mirror": false,
+      "required_referenced_objects_read": false,
+      "required_refs_read": false,
+      "tree": null
+    },
+    "observed_at": "2026-10-02T14:21:02.950217+00:00",
+    "predecessor_evidence_transfer": false,
+    "repository_global_absence_inferred": false,
+    "repository_inventory_observation": {
+      "arguments": {
+        "installation_id": 147849532,
+        "page_offset": 0,
+        "page_size": 100
+      },
+      "default_branch": "main",
+      "operation": "list_repositories_by_installation",
+      "permissions_as_reported": {
+        "admin": false,
+        "maintain": false,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "repository": "Goldkelch/qik-vrt",
+      "repository_id": 1271407206,
+      "request_started_at": "2026-10-02T14:19:05.318Z"
+    },
+    "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence.",
+    "routing_root_cause_established": false
+  },
   "authority_latest_complete_closure_verified": false,
   "authorization": {
     "authorization_account_context": "ingolf-lohmann",
@@ -169,7 +332,514 @@
     }
   },
   "effect_ack_done": false,
-  "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
+  "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+  "fresh_source_reobservation": {
+    "authority_latest_complete_closure_verified": false,
+    "authority_main_head_tree_refs_and_closure": "UNAVAILABLE_THROUGH_CURRENT_CONTENT_CARRIER",
+    "containing_successor_binding": "The containing Git commit and tree bind this record. Input-head tests and checks are not evidence for the containing successor.",
+    "fresh_complete_checkout_successor_validation_required": true,
+    "input_subject": {
+      "head": "6cce2d2f4910356d21c031b013df2c7a79f7590b",
+      "pull_request": 444,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "fae6a54ed8fb01c69c12dc2d958b2a8e91e51888"
+    },
+    "mirror_main": {
+      "head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "inventory_verification": {
+        "blob_count": 3924,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4377,
+        "fresh_authority_state_inferred": false,
+        "historical_comparison": {
+          "added_path_count": 143,
+          "changed_path_count": 36,
+          "changed_paths": [
+            {
+              "current_sha": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+              "historical_sha": "5f515c5bdd60b3b46a84abf27d71e442e2d8b57f",
+              "path": ".github/workflows/qikvrt_autonomous_self_heal.yml"
+            },
+            {
+              "current_sha": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4",
+              "historical_sha": "62d4dea9e02827bf6241287a54647f28924a9cd1",
+              "path": ".github/workflows/qikvrt_batch04_integrity.yml"
+            },
+            {
+              "current_sha": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+              "historical_sha": "f4047a29942719ca99663398de5e5d83f592c021",
+              "path": ".github/workflows/qikvrt_ci.yml"
+            },
+            {
+              "current_sha": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6",
+              "historical_sha": "fef8c7ca626a9b8168a30cac2cea31d54e855b2c",
+              "path": ".github/workflows/qikvrt_expected_head_promotion.yml"
+            },
+            {
+              "current_sha": "c3e51de650574e6a67127bedddb533ecf7bed298",
+              "historical_sha": "bd28c51d30c1238a74167990485745be5e44b1bb",
+              "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml"
+            },
+            {
+              "current_sha": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6",
+              "historical_sha": "a84f94cee96c2565f97091a5d4829c8ad25d5413",
+              "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
+            },
+            {
+              "current_sha": "702a1e006a1aeed035b504d3a19416d6740844c2",
+              "historical_sha": "4568ace744168d3ea780ed83e420c361534ea267",
+              "path": "AI"
+            },
+            {
+              "current_sha": "c69587b566beeb13a4302ee9950962a3cc227583",
+              "historical_sha": "778d1889160575e2d65784bf99a54e197ed336bc",
+              "path": "AI_CONTEXT.json"
+            },
+            {
+              "current_sha": "e7966150eae0e42c8e6c3cc0dde0a91e6568ab2c",
+              "historical_sha": "511f7653bd041841fc0fafd0b39ac33c6b76c906",
+              "path": "Makefile"
+            },
+            {
+              "current_sha": "899b952917acd86cf1c405c6d15d94f078c8d7e4",
+              "historical_sha": "0cbb6622ee8f166953d636d9865d7ef0046d62df",
+              "path": "README.md"
+            },
+            {
+              "current_sha": "5d7b45ec8f95918c5ebc49dc2542cba2d4216942",
+              "historical_sha": "419d3ed00576bad67db86e2899b61336be08a2c6",
+              "path": "REPOSITORY_FILE_MANIFEST.json"
+            },
+            {
+              "current_sha": "8324618819f1d175a9c2bf2816b15c72ef93db1c",
+              "historical_sha": "7a089a3a686c397165ce9bac312335f1d5e5d90a",
+              "path": "REPOSITORY_FILE_MANIFEST.json.sha256"
+            },
+            {
+              "current_sha": "964750dd8d606ad90b7e8e696bd328b511541419",
+              "historical_sha": "99fc860758084d46266b97e8019847c830716d0a",
+              "path": "SHA256SUMS.txt"
+            },
+            {
+              "current_sha": "41b738e19b63562dfa205bd465a0cdafdfa3db63",
+              "historical_sha": "f5bba7003abeaa0fcebb92575dd2face16c2cde8",
+              "path": "anticipation/INPUT.json"
+            },
+            {
+              "current_sha": "74c703270bad5ae512b39a6da0fa745adb7ad897",
+              "historical_sha": "e2b4dcf2271659e1ec4fed3b1de25fe756849a71",
+              "path": "anticipation/current.json"
+            },
+            {
+              "current_sha": "61b58c5b6dff543a94e3a964ad6b340ea59ca389",
+              "historical_sha": "ba06fd352af8aa22f297a70da25dd4fdc1b4e086",
+              "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md"
+            },
+            {
+              "current_sha": "a762f79a4491faa61e55002a76605b3616348665",
+              "historical_sha": "eff0bb8408f04584a821fca7b6ce85167a3e2065",
+              "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
+            },
+            {
+              "current_sha": "95d6f5f9149deb4bb22eb9455bb3de69838f9f9d",
+              "historical_sha": "eb01f4f76ccc4c3ba2563ed11294782e15c70592",
+              "path": "docs/index.html"
+            },
+            {
+              "current_sha": "166039c9e75e99dd02f09fff1040a337cfc94b0d",
+              "historical_sha": "02fb1e7a770d2e51c7f3e5a2bedaf3157ab90675",
+              "path": "docs/publications/index.html"
+            },
+            {
+              "current_sha": "944c67be108b4aa657d5a3a1bae236efafd30e51",
+              "historical_sha": "a26036feb35dbc97e1fa014cb3b2ab04eb7830ec",
+              "path": "docs/publications/index.json"
+            },
+            {
+              "current_sha": "9d16797314fe8f096190ef1adb08042371c6ca28",
+              "historical_sha": "aa53f911849e2b41b301953e0a57ee842a90065b",
+              "path": "docs/sitemap.xml"
+            },
+            {
+              "current_sha": "3bade853befd7a74bfccffb3872ef6ad2c36d5d4",
+              "historical_sha": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+              "path": "evidence/receipts/index.json"
+            },
+            {
+              "current_sha": "100526fb97435406145751e99efe93b352ab47f0",
+              "historical_sha": "badc3ce39df6b18122f8f5776b86a65595272ef4",
+              "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+            },
+            {
+              "current_sha": "b1c7bc4285131e2bd8f880330b45f078c1bb65a1",
+              "historical_sha": "d3fb4e10781ae0fb8afb4572e596e35789244d4d",
+              "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+            },
+            {
+              "current_sha": "c79751a8ac13403913ed1c58fe83f1ede6fb6224",
+              "historical_sha": "5b94165df5ada61f07df0397202da2e0e633c371",
+              "path": "policy/repository-status-stall-detection-v1.md"
+            },
+            {
+              "current_sha": "ed984f6c88d46aab3232d287740d7055b11a694c",
+              "historical_sha": "5ea29ff9ddb313407ac0e802a576622e2d3931eb",
+              "path": "receipts/anticipation/0001-contract-bound.json"
+            },
+            {
+              "current_sha": "1491f5b61ba1b7746f8bb83c15937316dae22fd9",
+              "historical_sha": "f8e84ba38fbd602cc43538fbb983b48eee151a35",
+              "path": "receipts/anticipation/0002-anticipation-materialized.json"
+            },
+            {
+              "current_sha": "f4d357556bbf8c44d632a4b4463f0ce027a9fac9",
+              "historical_sha": "c037bf2ba9a93d14b25913d5d575e940644014a5",
+              "path": "state/authorization/delegations/OWNER_AI_ENTRYPOINT_CONTINUOUS_OPTIMIZATION_V1.json"
+            },
+            {
+              "current_sha": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+              "historical_sha": "4d850c8fc4cacc4c7acaf6b9505a42cd3cf722d6",
+              "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+            },
+            {
+              "current_sha": "3437908b7450477566ef6f79195b881bb1b4e5ff",
+              "historical_sha": "58b5b84a22336d0395572e40176526caf2ff2f74",
+              "path": "tests/test_ai_runtime_bootloader.py"
+            },
+            {
+              "current_sha": "f1804591e427050600daf2f0da8aeb7e46ef85be",
+              "historical_sha": "9a0fecedf48ed3e28843f5855f4b5a1a4a956e2e",
+              "path": "tests/test_effect_ack_release_workflows.py"
+            },
+            {
+              "current_sha": "f661dd2522ee8bae66f7b019ca03afe188058ade",
+              "historical_sha": "1aa9ec82572842fef42554dc16e3e5a847f7f9f6",
+              "path": "tests/test_license_transition.py"
+            },
+            {
+              "current_sha": "b4852aeb616e7fa573cc95b7dd10dc5994f2fc92",
+              "historical_sha": "e90b84970939965a03bbf7e635c8ff3c661f0984",
+              "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py"
+            },
+            {
+              "current_sha": "25b529764eb3a799fc4e5b3ff4792141d78d4f72",
+              "historical_sha": "cc200925806734b40b46d9aca9b506f1ea17f08d",
+              "path": "tests/test_qikvrt_reflexive_repository_watchdog.py"
+            },
+            {
+              "current_sha": "8335de65a4a2b6cdcff90e58226d550c7948fb0c",
+              "historical_sha": "9b4562c7f1e05249c1f27f32e371cdf76aad2a83",
+              "path": "tools/qikvrt_autonomous_pre_effect_controller.py"
+            },
+            {
+              "current_sha": "ed24a82df3a3c08d947d38b23d4543e44d912f47",
+              "historical_sha": "6ff58310c16d1b74b2897df6e7a199b6c3dc40ec",
+              "path": "tools/qikvrt_reflexive_repository_watchdog.py"
+            }
+          ],
+          "missing_paths": []
+        },
+        "root_tree": "007ceaef554f275ff6f53383f8572505b4ec52be"
+      },
+      "request_started_at": "2026-10-02T14:01:50.072Z",
+      "tree": "007ceaef554f275ff6f53383f8572505b4ec52be"
+    },
+    "mirror_pr_input": {
+      "head": "6cce2d2f4910356d21c031b013df2c7a79f7590b",
+      "inventory_verification": {
+        "blob_count": 3931,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4387,
+        "fresh_authority_state_inferred": false,
+        "historical_comparison": {
+          "added_path_count": 150,
+          "changed_path_count": 48,
+          "changed_paths": [
+            {
+              "current_sha": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+              "historical_sha": "5f515c5bdd60b3b46a84abf27d71e442e2d8b57f",
+              "path": ".github/workflows/qikvrt_autonomous_self_heal.yml"
+            },
+            {
+              "current_sha": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4",
+              "historical_sha": "62d4dea9e02827bf6241287a54647f28924a9cd1",
+              "path": ".github/workflows/qikvrt_batch04_integrity.yml"
+            },
+            {
+              "current_sha": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+              "historical_sha": "f4047a29942719ca99663398de5e5d83f592c021",
+              "path": ".github/workflows/qikvrt_ci.yml"
+            },
+            {
+              "current_sha": "4de3604eb91fefe3fb45dafcacf2d0899b881173",
+              "historical_sha": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+              "path": ".github/workflows/qikvrt_collective_review.yml"
+            },
+            {
+              "current_sha": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6",
+              "historical_sha": "fef8c7ca626a9b8168a30cac2cea31d54e855b2c",
+              "path": ".github/workflows/qikvrt_expected_head_promotion.yml"
+            },
+            {
+              "current_sha": "9bfaebea499866893da199ef1bc9094485c10fb3",
+              "historical_sha": "a8a03ba7ac496a51fb17004a5103103a1e78ac34",
+              "path": ".github/workflows/qikvrt_global_completion.yml"
+            },
+            {
+              "current_sha": "c3e51de650574e6a67127bedddb533ecf7bed298",
+              "historical_sha": "bd28c51d30c1238a74167990485745be5e44b1bb",
+              "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml"
+            },
+            {
+              "current_sha": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6",
+              "historical_sha": "a84f94cee96c2565f97091a5d4829c8ad25d5413",
+              "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
+            },
+            {
+              "current_sha": "702a1e006a1aeed035b504d3a19416d6740844c2",
+              "historical_sha": "4568ace744168d3ea780ed83e420c361534ea267",
+              "path": "AI"
+            },
+            {
+              "current_sha": "c69587b566beeb13a4302ee9950962a3cc227583",
+              "historical_sha": "778d1889160575e2d65784bf99a54e197ed336bc",
+              "path": "AI_CONTEXT.json"
+            },
+            {
+              "current_sha": "1a21f8d801a5190623b1fda43baf80adfa87a9ca",
+              "historical_sha": "511f7653bd041841fc0fafd0b39ac33c6b76c906",
+              "path": "Makefile"
+            },
+            {
+              "current_sha": "899b952917acd86cf1c405c6d15d94f078c8d7e4",
+              "historical_sha": "0cbb6622ee8f166953d636d9865d7ef0046d62df",
+              "path": "README.md"
+            },
+            {
+              "current_sha": "d3ecbb3922e7cc2755bd1857d17a5dbc90918858",
+              "historical_sha": "419d3ed00576bad67db86e2899b61336be08a2c6",
+              "path": "REPOSITORY_FILE_MANIFEST.json"
+            },
+            {
+              "current_sha": "fd6bf955938a929b813dfb179f2d8a755a349e32",
+              "historical_sha": "7a089a3a686c397165ce9bac312335f1d5e5d90a",
+              "path": "REPOSITORY_FILE_MANIFEST.json.sha256"
+            },
+            {
+              "current_sha": "d55a1e947eed4e704307d116cd2c35c69e102967",
+              "historical_sha": "99fc860758084d46266b97e8019847c830716d0a",
+              "path": "SHA256SUMS.txt"
+            },
+            {
+              "current_sha": "41b738e19b63562dfa205bd465a0cdafdfa3db63",
+              "historical_sha": "f5bba7003abeaa0fcebb92575dd2face16c2cde8",
+              "path": "anticipation/INPUT.json"
+            },
+            {
+              "current_sha": "74c703270bad5ae512b39a6da0fa745adb7ad897",
+              "historical_sha": "e2b4dcf2271659e1ec4fed3b1de25fe756849a71",
+              "path": "anticipation/current.json"
+            },
+            {
+              "current_sha": "9c6e07385c4bd5a6a382aa61c169aeea0fc2c1c3",
+              "historical_sha": "679ffcb397334c219f19cb58eb6d27ce3f1aac54",
+              "path": "docs/CURRENT_AUTHORITY.md"
+            },
+            {
+              "current_sha": "61b58c5b6dff543a94e3a964ad6b340ea59ca389",
+              "historical_sha": "ba06fd352af8aa22f297a70da25dd4fdc1b4e086",
+              "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md"
+            },
+            {
+              "current_sha": "19c232e631c3a0249344c5b6e084c011bb00e56e",
+              "historical_sha": "d697565ce2347e1206d589b799b2c7415255b5b1",
+              "path": "docs/README_DEPLOY_GITHUB_PAGES_DE.md"
+            },
+            {
+              "current_sha": "a762f79a4491faa61e55002a76605b3616348665",
+              "historical_sha": "eff0bb8408f04584a821fca7b6ce85167a3e2065",
+              "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md"
+            },
+            {
+              "current_sha": "95d6f5f9149deb4bb22eb9455bb3de69838f9f9d",
+              "historical_sha": "eb01f4f76ccc4c3ba2563ed11294782e15c70592",
+              "path": "docs/index.html"
+            },
+            {
+              "current_sha": "166039c9e75e99dd02f09fff1040a337cfc94b0d",
+              "historical_sha": "02fb1e7a770d2e51c7f3e5a2bedaf3157ab90675",
+              "path": "docs/publications/index.html"
+            },
+            {
+              "current_sha": "944c67be108b4aa657d5a3a1bae236efafd30e51",
+              "historical_sha": "a26036feb35dbc97e1fa014cb3b2ab04eb7830ec",
+              "path": "docs/publications/index.json"
+            },
+            {
+              "current_sha": "9d16797314fe8f096190ef1adb08042371c6ca28",
+              "historical_sha": "aa53f911849e2b41b301953e0a57ee842a90065b",
+              "path": "docs/sitemap.xml"
+            },
+            {
+              "current_sha": "3bade853befd7a74bfccffb3872ef6ad2c36d5d4",
+              "historical_sha": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+              "path": "evidence/receipts/index.json"
+            },
+            {
+              "current_sha": "100526fb97435406145751e99efe93b352ab47f0",
+              "historical_sha": "badc3ce39df6b18122f8f5776b86a65595272ef4",
+              "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json"
+            },
+            {
+              "current_sha": "b1c7bc4285131e2bd8f880330b45f078c1bb65a1",
+              "historical_sha": "d3fb4e10781ae0fb8afb4572e596e35789244d4d",
+              "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+            },
+            {
+              "current_sha": "c79751a8ac13403913ed1c58fe83f1ede6fb6224",
+              "historical_sha": "5b94165df5ada61f07df0397202da2e0e633c371",
+              "path": "policy/repository-status-stall-detection-v1.md"
+            },
+            {
+              "current_sha": "ed984f6c88d46aab3232d287740d7055b11a694c",
+              "historical_sha": "5ea29ff9ddb313407ac0e802a576622e2d3931eb",
+              "path": "receipts/anticipation/0001-contract-bound.json"
+            },
+            {
+              "current_sha": "1491f5b61ba1b7746f8bb83c15937316dae22fd9",
+              "historical_sha": "f8e84ba38fbd602cc43538fbb983b48eee151a35",
+              "path": "receipts/anticipation/0002-anticipation-materialized.json"
+            },
+            {
+              "current_sha": "35f7b1ce76216370fa59c53a6acc93a7eb0b1f42",
+              "historical_sha": "c59b080a31a0cbdd9ce53dbc842505f75949fd7a",
+              "path": "runtime/toolchains/CACHE_COVERAGE.json"
+            },
+            {
+              "current_sha": "ad89e1ccd2ec598bba8c8b02b93da542885b222d",
+              "historical_sha": "aa8af4fde94b9151804e5bf9feef1e7afee3cf7b",
+              "path": "runtime/toolchains/CACHE_REGISTRY.json"
+            },
+            {
+              "current_sha": "0ec1c1f5950b15069a075ef8dd2ca2044601e2ba",
+              "historical_sha": "89b2c4425da04b015d6c534729eaf67aebab06e5",
+              "path": "runtime/toolchains/TOOLCHAIN.lock.tsv"
+            },
+            {
+              "current_sha": "8d526c2a89796b60e6503caf73efd47b4a4aa83a",
+              "historical_sha": "5b9f5e142040cdb14c2db1d57e6e15196087efcf",
+              "path": "src/qikvrt_api_handler.py"
+            },
+            {
+              "current_sha": "f4d357556bbf8c44d632a4b4463f0ce027a9fac9",
+              "historical_sha": "c037bf2ba9a93d14b25913d5d575e940644014a5",
+              "path": "state/authorization/delegations/OWNER_AI_ENTRYPOINT_CONTINUOUS_OPTIMIZATION_V1.json"
+            },
+            {
+              "current_sha": "5111fcbeb2c1100087b6b61d096a4427e88ca981",
+              "historical_sha": "4d850c8fc4cacc4c7acaf6b9505a42cd3cf722d6",
+              "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+            },
+            {
+              "current_sha": "42ca8dd51ea775b4b0f7d6a072b31a8e0c07cdd3",
+              "historical_sha": "44cba78c8b003d43c9aa57a2e32ab422ffd17c36",
+              "path": "state/work_units/AUTHORITY_MIRROR_WHOLE_TREE_CONVERGENCE_V1.json"
+            },
+            {
+              "current_sha": "3437908b7450477566ef6f79195b881bb1b4e5ff",
+              "historical_sha": "58b5b84a22336d0395572e40176526caf2ff2f74",
+              "path": "tests/test_ai_runtime_bootloader.py"
+            },
+            {
+              "current_sha": "f1804591e427050600daf2f0da8aeb7e46ef85be",
+              "historical_sha": "9a0fecedf48ed3e28843f5855f4b5a1a4a956e2e",
+              "path": "tests/test_effect_ack_release_workflows.py"
+            },
+            {
+              "current_sha": "e4208ddaab58c456b7165c624ec5491a9ae51a55",
+              "historical_sha": "75f4a36719cb2246b4978913f26fe28df43de88b",
+              "path": "tests/test_integrity.py"
+            },
+            {
+              "current_sha": "f661dd2522ee8bae66f7b019ca03afe188058ade",
+              "historical_sha": "1aa9ec82572842fef42554dc16e3e5a847f7f9f6",
+              "path": "tests/test_license_transition.py"
+            },
+            {
+              "current_sha": "b4852aeb616e7fa573cc95b7dd10dc5994f2fc92",
+              "historical_sha": "e90b84970939965a03bbf7e635c8ff3c661f0984",
+              "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py"
+            },
+            {
+              "current_sha": "25b529764eb3a799fc4e5b3ff4792141d78d4f72",
+              "historical_sha": "cc200925806734b40b46d9aca9b506f1ea17f08d",
+              "path": "tests/test_qikvrt_reflexive_repository_watchdog.py"
+            },
+            {
+              "current_sha": "8335de65a4a2b6cdcff90e58226d550c7948fb0c",
+              "historical_sha": "9b4562c7f1e05249c1f27f32e371cdf76aad2a83",
+              "path": "tools/qikvrt_autonomous_pre_effect_controller.py"
+            },
+            {
+              "current_sha": "a977d5e5660cdf4aaea472cec710775b788b8842",
+              "historical_sha": "bd69412866bc8bed020246ef60e3ece6a8222b07",
+              "path": "tools/qikvrt_integrity.py"
+            },
+            {
+              "current_sha": "ed24a82df3a3c08d947d38b23d4543e44d912f47",
+              "historical_sha": "6ff58310c16d1b74b2897df6e7a199b6c3dc40ec",
+              "path": "tools/qikvrt_reflexive_repository_watchdog.py"
+            },
+            {
+              "current_sha": "8d74aea3860dab5f6f953229c672ba53908a20d3",
+              "historical_sha": "934481c745cb08957c613da2382819b83a032e42",
+              "path": "tools/qikvrt_tool_cache.py"
+            }
+          ],
+          "missing_paths": []
+        },
+        "root_tree": "fae6a54ed8fb01c69c12dc2d958b2a8e91e51888"
+      },
+      "request_started_at": "2026-10-02T14:19:05.318Z",
+      "tree": "fae6a54ed8fb01c69c12dc2d958b2a8e91e51888"
+    },
+    "mirror_ref_response_count": 1047,
+    "needed_mirror_refs": [
+      {
+        "ref": "refs/heads/main",
+        "sha": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+        "type": "commit"
+      },
+      {
+        "ref": "refs/heads/qikvrt/retained-authority/20260816-d18af01d",
+        "sha": "029f805ceb00bc20f217089877761db2263889c5",
+        "type": "commit"
+      },
+      {
+        "ref": "refs/heads/work/authority-recovery-acceptance-20261002",
+        "sha": "6cce2d2f4910356d21c031b013df2c7a79f7590b",
+        "type": "commit"
+      }
+    ],
+    "predecessor_evidence_transfer": false,
+    "retained_source": {
+      "head": "029f805ceb00bc20f217089877761db2263889c5",
+      "inventory_verification": {
+        "blob_count": 3781,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4213,
+        "fresh_authority_state_inferred": false,
+        "root_tree": "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149"
+      },
+      "ref": "refs/heads/qikvrt/retained-authority/20260816-d18af01d",
+      "request_started_at": "2026-10-02T14:01:50.072Z",
+      "scope": "EXACT_HISTORICAL_CONTENT_ONLY_NOT_LATEST_AUTHORITY",
+      "tree": "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149"
+    },
+    "same_tree_or_live_role_equivalence_inferred": false
+  },
   "functional_acceptance_order": [
     "BIND_COMPLETE_AUTHORITY_SOURCE_AND_RECOVERY_POINT",
     "RETAIN_ALL_OLD_BYTES_AND_COLLISION_VERSIONS",
@@ -192,7 +862,14 @@
     "platform metadata and configured governance needed for live control"
   ],
   "live_observations": {
-    "authority_repository_rest": "HTTP_404_IN_CURRENT_CONNECTOR",
+    "authority_installation_id": 147849532,
+    "authority_pull_permission_reported": true,
+    "authority_push_permission_reported": true,
+    "authority_repository_absence_inferred": false,
+    "authority_repository_id": 1271407206,
+    "authority_repository_installation_listed": true,
+    "authority_repository_rest": "HTTP_404_IN_GENERIC_CURRENT_CONNECTION_ROUTING_OR_CARRIER_BOUNDARY",
+    "authority_repository_selection": "all",
     "create_repository_callable_tool_available": false,
     "existing_mesh_api_operations": [
       "ingest",
@@ -202,8 +879,10 @@
     ],
     "existing_mirror_lifecycle_creates_repositories": false,
     "global_authority_failure_inferred": false,
+    "installation_bound_content_read_callable_tool_available": false,
     "mirror_repository_id": 1273784147,
     "mirror_repository_rest": "HTTP_200",
+    "repository_creation_capability_inferred_from_push": false,
     "repository_scoped_contents_write_available": true,
     "workflow_dispatch_callable_tool_available": false
   },
@@ -213,7 +892,8 @@
     "effect_ack_done": false,
     "entry_count": 4378,
     "fresh_authority_state_inferred": false,
-    "root_tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+    "root_tree": "bc2232edd71ae7567a91d145202688ac9edef880",
+    "scope": "FROZEN_ORIGINAL_WORKING_PARENT_39d59a0b_NOT_CURRENT_MIRROR_MAIN"
   },
   "missing_historical_paths": [],
   "neutral_mirror_preparation": {
@@ -241,15 +921,19 @@
   },
   "neutral_repository_creation_observed": false,
   "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
-  "next_smallest_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
+  "next_smallest_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
   "not_implications": [
     "HISTORICAL_WHOLE_TREE_IDENTITY_NOT_LATEST_AUTHORITY_CLOSURE",
     "REPO_READ_PERMISSION_NOT_CREATE_REPOSITORY_CAPABILITY",
     "RETENTION_REF_READBACK_NOT_AUTHORITY_ROLE_PROMOTION",
     "LOCAL_TEST_NOT_GLOBAL_DONE",
-    "OWNER_TASK_AUTHORIZATION_NOT_OBSERVED_REPOSITORY_EFFECT"
+    "OWNER_TASK_AUTHORIZATION_NOT_OBSERVED_REPOSITORY_EFFECT",
+    "INSTALLATION_ALL_AND_LISTED_REPOSITORY_NOT_BOUND_CONTENT_ROUTING",
+    "GENERIC_HTTP_404_NOT_PROOF_OF_AUTHORITY_ABSENCE_OR_GLOBAL_UNREACHABILITY",
+    "REPO_PUSH_PERMISSION_NOT_CREATE_REPOSITORY_CAPABILITY",
+    "INPUT_SUBJECT_GREEN_CHECKS_NOT_CONTAINING_SUCCESSOR_EVIDENCE"
   ],
-  "observed_at": "2026-10-02T12:14:37.145343+00:00",
+  "observed_at": "2026-10-02T14:21:02.950217+00:00",
   "predecessor_evidence_transfer": false,
   "retention_effect": {
     "complete_tree_reconstructed_and_root_verified": true,
@@ -263,7 +947,7 @@
     "validity": "EXACT_HISTORICAL_CONTENT_ONLY",
     "write_and_ref_readback_verified": true
   },
-  "retry_condition": "Provide an exact-bound complete final Authority closure through an authorized readable carrier, then expose an authenticated repository-creation writer for the neutral node.",
+  "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence.",
   "same_path_changed_blob_count": 44,
   "same_path_changed_blobs": [
     {

@@ -6,119 +6,128 @@
     "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
     "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_authority_mirror_whole_tree_convergence_work_unit_v1",
-  "work_unit_id": "AUTHORITY_MIRROR_WHOLE_TREE_CONVERGENCE_V1",
-  "title": "History-preserving Authority to Mirror whole-tree convergence and reciprocal receipt preparation",
-  "created_at": "2026-08-16T10:02:00+02:00",
-  "human_actor": {
-    "actor_class": "HUMAN",
-    "attribution_id": "Ingolf Lohmann",
-    "role": "Product Owner",
-    "identity_proof_boundary": "The interactive account context and repository records attribute the directive to the named principal; they are not biometric or universal identity proof."
-  },
   "artificial_cognitive_actor": {
     "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
-    "provider": "OpenAI",
-    "system_family": "Codex",
+    "identity_and_observation_limits": "Runtime-supplied tool and model-family information is recorded without a claim about hidden implementation internals, legal personhood, or independent intent.",
     "model_or_build": "GPT-5 family; exact build UNAVAILABLE",
+    "provider": "OpenAI",
     "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex",
     "tools_and_adapters": [
       "GitHub connector",
       "local Git",
       "QIK-VRT /AI runtime bootloader",
       "QIK-VRT repository-native integrity generator"
-    ],
-    "identity_and_observation_limits": "Runtime-supplied tool and model-family information is recorded without a claim about hidden implementation internals, legal personhood, or independent intent."
+    ]
   },
-  "human_contributions": [
-    {
-      "type": "ORDERING_AND_ACCEPTANCE_CRITERION",
-      "description": "Directed that the divergent Authority and Mirror trees first converge and are then bound by a new reciprocal exact-head Whole-tree Receipt."
-    },
-    {
-      "type": "EFFECT_AUTHORIZATION",
-      "description": "Explicitly authorized the repository-internal convergence and reciprocal-receipt work. No tag, release, deployment, Zenodo, IETF, or other external publication effect was authorized."
-    }
-  ],
   "artificial_cognitive_contributions": [
     {
-      "type": "BOOT_AND_LIVE_REOBSERVATION",
-      "description": "Read both mandatory /AI contexts, verified integrity and tool-cache state, froze the live main heads and trees, and treated stale status projections as non-authoritative."
+      "description": "Read both mandatory /AI contexts, verified integrity and tool-cache state, froze the live main heads and trees, and treated stale status projections as non-authoritative.",
+      "type": "BOOT_AND_LIVE_REOBSERVATION"
     },
     {
-      "type": "HISTORY_PRESERVING_CONSTRUCTION",
-      "description": "Transferred changed Authority blobs content-addressedly, constructed the exact Authority tree over the frozen Mirror tree, and created a candidate with the frozen Mirror main as its sole parent and without a force update or history rewrite."
+      "description": "Transferred changed Authority blobs content-addressedly, constructed the exact Authority tree over the frozen Mirror tree, and created a candidate with the frozen Mirror main as its sole parent and without a force update or history rewrite.",
+      "type": "HISTORY_PRESERVING_CONSTRUCTION"
     },
     {
-      "type": "FAIL_CLOSED_GATE_DIAGNOSIS",
-      "description": "Stopped promotion after exact-head Mirror gates exposed repository-environment leakage in a test fixture, an Authority-ancestry assumption in the universal-ontology verifier, and an invalid empty pip-cache configuration in the manuscript workflow."
+      "description": "Stopped promotion after exact-head Mirror gates exposed repository-environment leakage in a test fixture, an Authority-ancestry assumption in the universal-ontology verifier, and an invalid empty pip-cache configuration in the manuscript workflow.",
+      "type": "FAIL_CLOSED_GATE_DIAGNOSIS"
     },
     {
-      "type": "PORTABILITY_CORRECTION_DESIGN",
-      "description": "Preserved the production repository mismatch gate, isolated the historical publication test environments, replaced shared-history dependence with exact canonical-source commit/tree/blob verification, and removed the invalid unused pip cache."
+      "description": "Preserved the production repository mismatch gate, isolated the historical publication test environments, replaced shared-history dependence with exact canonical-source commit/tree/blob verification, and removed the invalid unused pip cache.",
+      "type": "PORTABILITY_CORRECTION_DESIGN"
     }
   ],
+  "blocking_gate_evidence": [
+    {
+      "blocker": "TEST_FIXTURE_INHERITED_MIRROR_GITHUB_REPOSITORY",
+      "job_id": 95135623000,
+      "run_id": 31935088791,
+      "workflow": "QIKVRT CI"
+    },
+    {
+      "blocker": "AUTHORITY_SOURCE_COMMIT_NOT_IN_MIRROR_ANCESTRY",
+      "job_id": 95135623006,
+      "run_id": 31935088762,
+      "workflow": "QIK-VRT universal ontology finite-model verification"
+    },
+    {
+      "blocker": "SETUP_PYTHON_EMPTY_PIP_CACHE_POST_STEP",
+      "job_id": 95135622854,
+      "run_id": 31935088737,
+      "workflow": "QIK-VRT manuscript proof coverage"
+    }
+  ],
+  "candidate_state": "PORTABILITY_CORRECTION_LOCAL_CANDIDATE_PENDING_INTEGRITY_EXACT_HEAD_REVIEW_AND_PROMOTION",
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "full_sync": false,
+    "mirror_tree_converged": false,
+    "portable_authority_tree_promoted": false,
+    "reciprocal_whole_tree_receipt_materialized": false,
+    "symmetric_canonicality": false
+  },
+  "created_at": "2026-08-16T10:02:00+02:00",
+  "effect_boundary": {
+    "deployment": false,
+    "force_push": false,
+    "history_rewrite": false,
+    "ietf_submission": false,
+    "other_external_publication": false,
+    "release": false,
+    "tag": false,
+    "zenodo_mutation": false
+  },
+  "first_convergence_candidate": {
+    "authority_to_candidate_recursive_diff_empty": true,
+    "candidate": "59e93dd15009320a3b1df68aa049a8bf896544d9",
+    "disposition": "CLOSED_UNMERGED_AFTER_FAIL_CLOSED_PORTABILITY_GATES",
+    "history_preserved": true,
+    "pull_request": 343,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "root_tree": "2c650151a0937c85fedf70195f63a7d7e69b1118",
+    "sole_parent": "c8bb2dfaad51e2e3eb61a1f679db541f75cc4b81"
+  },
   "frozen_inputs": {
     "authority": {
-      "repository": "Goldkelch/qik-vrt",
       "main": "2071b2946ef569d050a99e0c974dd063706c9d7f",
+      "repository": "Goldkelch/qik-vrt",
       "root_tree": "2c650151a0937c85fedf70195f63a7d7e69b1118"
     },
     "mirror": {
-      "repository": "ingolf-lohmann/qik-vrt",
       "main": "c8bb2dfaad51e2e3eb61a1f679db541f75cc4b81",
+      "repository": "ingolf-lohmann/qik-vrt",
       "root_tree": "3eba534e04c80937d9e04595ef7c65108eb8e585"
     },
     "pre_receipt_index": {
-      "path": "evidence/receipts/index.json",
+      "entry_count": 19,
       "git_blob_sha1": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
-      "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545",
-      "entry_count": 19
+      "path": "evidence/receipts/index.json",
+      "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545"
     },
     "transport_input": {
-      "retention_mode": "METADATA_ONLY",
       "channel": "CURRENT_INTERACTIVE_SESSION",
       "raw_transcript_persisted": false,
+      "retention_mode": "METADATA_ONLY",
       "transport_input_digest": "UNAVAILABLE"
     }
   },
-  "superseded_writers": [
-    {
-      "repository": "ingolf-lohmann/qik-vrt",
-      "pull_request": 342,
-      "head": "2b4664a364a5cd782806ff12db9739d63436bf6e",
-      "disposition": "CLOSED_UNMERGED_SUPERSEDED_BY_EXACT_WHOLE_TREE_CONVERGENCE",
-      "history_preserved": true
-    }
-  ],
-  "first_convergence_candidate": {
-    "repository": "ingolf-lohmann/qik-vrt",
-    "candidate": "59e93dd15009320a3b1df68aa049a8bf896544d9",
-    "sole_parent": "c8bb2dfaad51e2e3eb61a1f679db541f75cc4b81",
-    "root_tree": "2c650151a0937c85fedf70195f63a7d7e69b1118",
-    "authority_to_candidate_recursive_diff_empty": true,
-    "pull_request": 343,
-    "disposition": "CLOSED_UNMERGED_AFTER_FAIL_CLOSED_PORTABILITY_GATES",
-    "history_preserved": true
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "identity_proof_boundary": "The interactive account context and repository records attribute the directive to the named principal; they are not biometric or universal identity proof.",
+    "role": "Product Owner"
   },
-  "blocking_gate_evidence": [
+  "human_contributions": [
     {
-      "workflow": "QIKVRT CI",
-      "run_id": 31935088791,
-      "job_id": 95135623000,
-      "blocker": "TEST_FIXTURE_INHERITED_MIRROR_GITHUB_REPOSITORY"
+      "description": "Directed that the divergent Authority and Mirror trees first converge and are then bound by a new reciprocal exact-head Whole-tree Receipt.",
+      "type": "ORDERING_AND_ACCEPTANCE_CRITERION"
     },
     {
-      "workflow": "QIK-VRT universal ontology finite-model verification",
-      "run_id": 31935088762,
-      "job_id": 95135623006,
-      "blocker": "AUTHORITY_SOURCE_COMMIT_NOT_IN_MIRROR_ANCESTRY"
-    },
-    {
-      "workflow": "QIK-VRT manuscript proof coverage",
-      "run_id": 31935088737,
-      "job_id": 95135622854,
-      "blocker": "SETUP_PYTHON_EMPTY_PIP_CACHE_POST_STEP"
+      "description": "Explicitly authorized the repository-internal convergence and reciprocal-receipt work. No tag, release, deployment, Zenodo, IETF, or other external publication effect was authorized.",
+      "type": "EFFECT_AUTHORIZATION"
     }
   ],
   "portability_correction_paths": [
@@ -134,156 +143,188 @@
     "SHA256SUMS.txt"
   ],
   "reciprocal_receipt_contract": {
-    "sequence": [
-      "PROMOTE_PORTABLE_AUTHORITY_TREE",
-      "CONSTRUCT_AND_PROMOTE_ONE_PARENT_EXACT_TREE_MIRROR_CANDIDATE",
-      "REOBSERVE_EMPTY_WHOLE_TREE_DIFF",
-      "MATERIALIZE_IDENTICAL_RECEIPT_INDEX_AND_INTEGRITY_BYTES_ON_BOTH_REPOSITORIES",
-      "REOBSERVE_FINAL_EXACT_HEADS_AND_EMPTY_WHOLE_TREE_DIFF"
-    ],
     "in_tree_receipt_binds": "THE_EXACT_CONVERGED_PRE_RECEIPT_HEAD_PAIR_AND_ITS_SHARED_ROOT_TREE",
-    "self_binding_excluded": "A receipt cannot non-circularly bind its own containing commit or root tree.",
     "phase_two_exact_paths": [
       "NEW_WHOLE_TREE_RECEIPT",
       "evidence/receipts/index.json",
       "REPOSITORY_FILE_MANIFEST.json",
       "REPOSITORY_FILE_MANIFEST.json.sha256",
       "SHA256SUMS.txt"
+    ],
+    "self_binding_excluded": "A receipt cannot non-circularly bind its own containing commit or root tree.",
+    "sequence": [
+      "PROMOTE_PORTABLE_AUTHORITY_TREE",
+      "CONSTRUCT_AND_PROMOTE_ONE_PARENT_EXACT_TREE_MIRROR_CANDIDATE",
+      "REOBSERVE_EMPTY_WHOLE_TREE_DIFF",
+      "MATERIALIZE_IDENTICAL_RECEIPT_INDEX_AND_INTEGRITY_BYTES_ON_BOTH_REPOSITORIES",
+      "REOBSERVE_FINAL_EXACT_HEADS_AND_EMPTY_WHOLE_TREE_DIFF"
     ]
   },
-  "effect_boundary": {
-    "force_push": false,
-    "history_rewrite": false,
-    "tag": false,
-    "release": false,
-    "deployment": false,
-    "zenodo_mutation": false,
-    "ietf_submission": false,
-    "other_external_publication": false
-  },
-  "completion_claims": {
-    "portable_authority_tree_promoted": false,
-    "mirror_tree_converged": false,
-    "reciprocal_whole_tree_receipt_materialized": false,
-    "full_sync": false,
-    "symmetric_canonicality": false,
-    "PASS": false,
-    "FINAL_PASS": false,
-    "EFFECT_ACK_DONE": false
-  },
-  "candidate_state": "PORTABILITY_CORRECTION_LOCAL_CANDIDATE_PENDING_INTEGRITY_EXACT_HEAD_REVIEW_AND_PROMOTION",
+  "schema": "qikvrt_authority_mirror_whole_tree_convergence_work_unit_v1",
   "self_binding_rule": "The future Git commit and tree containing this work-unit file bind its exact bytes; no impossible in-file self-hash or future-head claim is made.",
   "stand_in_authority_acceptance_20261002": {
-    "owner_authorization": {
-      "provided_in_session": true,
-      "supplied_name": "Ingo Flomann",
-      "repository_attribution": "Ingolf Lohmann",
-      "authorization_account_context": "ingolf-lohmann",
-      "scope": [
-        "lossless Authority source inclusion",
-        "functional stand-in Authority acceptance",
-        "one neutral Mesh repository mirror creation"
-      ],
-      "identity_attestation_inferred": false,
-      "exact_future_head_codeowner_review_inferred": false
-    },
-    "source_repository": "ingolf-lohmann/qik-vrt",
-    "source_head": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
-    "source_tree": "bc2232edd71ae7567a91d145202688ac9edef880",
-    "review_branch": "work/authority-recovery-acceptance-20261002",
+    "acceptance_path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+    "acceptance_sha256": "962328c1c3726840332ea5f016e0172652b6307e7255ca217f73e56c400b2705",
     "artificial_cognitive_actor": {
-      "provider": "OpenAI",
-      "system_family": "Codex",
       "model_or_build": "GPT-6",
-      "session": "d2a712c488fa"
+      "provider": "OpenAI",
+      "session": "UNAVAILABLE",
+      "system_family": "Codex"
+    },
+    "authority_capability_routing_correction": {
+      "artificial_cognitive_contribution": "Fresh API capability inventory, routing probes, historical/current-Mirror tree reconstruction and evidence correction.",
+      "authority_exists_in_installation_listing": true,
+      "classification": "INSTALLATION_LISTED_AUTHORITY_WITH_CONTENT_ROUTING_CARRIER_BOUNDARY",
+      "effect_ack_done": false,
+      "human_contribution": "Owner supplied the installation/routing classification correction and authorized exact-head continuation of PR 444.",
+      "input_subject": {
+        "head": "6cce2d2f4910356d21c031b013df2c7a79f7590b",
+        "tree": "fae6a54ed8fb01c69c12dc2d958b2a8e91e51888"
+      },
+      "installation_id": 147849532,
+      "latest_complete_authority_closure_verified": false,
+      "repository_creation_inferred_from_push": false,
+      "repository_id": 1271407206
+    },
+    "authority_promoted": false,
+    "continuation_20261002_run": {
+      "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
+      "fresh_native_successor_checks_required": true,
+      "integrated_main_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "lifecycle_observation": {
+        "current_heartbeat": "2026-10-02T12:31:42Z",
+        "current_heartbeat_expires": "2026-10-03T13:31:42Z",
+        "current_registration_next_due": "2026-10-03T12:31:42Z",
+        "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "observed_at": "2026-10-02T14:11:04.845Z",
+        "prior_heartbeat_expired": true,
+        "prior_heartbeat_expires": "2026-10-02T14:10:37Z",
+        "prior_next_due": "2026-10-02T13:10:37Z",
+        "prior_registration_overdue": true,
+        "prior_renewed": "2026-10-01T13:10:37Z",
+        "producer_run_id": "37007190339-1"
+      },
+      "merge_base_head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+      "method": "THREE_WAY_HISTORY_PRESERVING_MERGE_OF_ROLE_LOCAL_LIFECYCLE",
+      "next_smallest_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
+      "owner_instruction": "RUN",
+      "predecessor_evidence_transfer": false,
+      "previous_candidate_head": "52e367db378462cf6f63fe410f7f50098bd6a52f",
+      "reused_component": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "reused_role_local_policy": "state/work_units/RESTORE_ROLE_LOCAL_MIRROR_NODE_STATE_AFTER_TREE_CONVERGENCE_V1.json",
+      "state": "BLOCK"
     },
     "contributions": [
       "Inspect actual existing Seed and Mesh API routes",
       "Retain the complete historical Authority tree through a create-only Git ref and fresh readback",
       "Extend existing integrity verification to reconstruct every recursive REST Git tree object",
       "Verify complete historical and working-mirror inventories and reject partial or altered trees",
-      "Prepare a distinct neutral-node identity through existing template/Seed conventions without claiming creation"
+      "Prepare a distinct neutral-node identity through existing template/Seed conventions without claiming creation",
+      "Reobserve installation-scoped repository listing and generic reads; classify the precise content routing/carrier boundary without inferring Authority absence or repository creation from push permission."
     ],
-    "acceptance_path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
-    "acceptance_sha256": "829cbfe4d16c67c052728c3ca15605ff4ceba595bd053c4cbe2f925c8a58affb",
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "fresh_review_and_protection_required": true,
+    "full_native_candidate_checks_required": true,
+    "historical_verification_as_recorded_on_parent": {
+      "existing_local_integrity_suite": "8 tests pass; one portable-capsule cross-check requires the absent full local Git checkout. Native full-checkout execution is mandatory.",
+      "failures": 0,
+      "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_EXACT_PARENT; FRESH_NATIVE_FULL_GENERATION_AND_TESTS_REQUIRED",
+      "local_bootstrap": "BLOCK absent local origin/full checkout; API source fixture only",
+      "new_recovery_tests": 4,
+      "skips": 0,
+      "tool_cache": "PASS 18/18"
+    },
+    "historical_working_source": {
+      "head": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
+      "tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+    },
+    "history_not_rewritten": true,
     "inventory_path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
     "inventory_sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
-    "state": "BLOCK",
-    "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
-    "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
-    "history_not_rewritten": true,
-    "original_historical_work_unit_fields_unchanged": true,
-    "authority_promoted": false,
-    "neutral_repository_created": false,
     "main_changed": false,
-    "source_claims_bound_to_historical_scope": true,
-    "full_native_candidate_checks_required": true,
-    "fresh_review_and_protection_required": true,
-    "predecessor_evidence_transfer": false,
-    "next_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
-    "observed_at": "2026-10-02T12:14:37.145343+00:00",
-    "verification": {
-      "new_recovery_tests": 4,
-      "failures": 0,
-      "skips": 0,
-      "existing_local_integrity_suite": "8 tests pass; one portable-capsule cross-check requires the absent full local Git checkout. Native full-checkout execution is mandatory.",
-      "tool_cache": "PASS 18/18",
-      "local_bootstrap": "BLOCK absent local origin/full checkout; API source fixture only",
-      "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_EXACT_PARENT; FRESH_NATIVE_FULL_GENERATION_AND_TESTS_REQUIRED"
-    },
+    "neutral_repository_created": false,
+    "next_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
+    "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
+    "observed_at": "2026-10-02T14:21:02.950217+00:00",
+    "original_historical_work_unit_fields_unchanged": true,
     "output_fingerprints": [
       {
+        "git_blob_sha1": "a977d5e5660cdf4aaea472cec710775b788b8842",
         "path": "tools/qikvrt_integrity.py",
-        "sha256": "52e23c36c70eacd743532c258e985d9dada99fa5d20b5b07de74d21688686b9e",
-        "git_blob_sha1": "a977d5e5660cdf4aaea472cec710775b788b8842"
+        "sha256": "52e23c36c70eacd743532c258e985d9dada99fa5d20b5b07de74d21688686b9e"
       },
       {
+        "git_blob_sha1": "e4208ddaab58c456b7165c624ec5491a9ae51a55",
         "path": "tests/test_integrity.py",
-        "sha256": "eb0c8d6ad2ddc129cb16d5d0f8b07c3f6fa43de5fd580c58619a2c1b6f8fcf60",
-        "git_blob_sha1": "e4208ddaab58c456b7165c624ec5491a9ae51a55"
+        "sha256": "eb0c8d6ad2ddc129cb16d5d0f8b07c3f6fa43de5fd580c58619a2c1b6f8fcf60"
       },
       {
+        "bytes": 6377,
+        "git_blob_sha1": "cbb252fefb4e19c52fa345a19b591a4d93d24695",
         "path": "docs/CURRENT_AUTHORITY.md",
-        "sha256": "101f44f72519279695765c5c9c6840f041047bceeceb4e7ac25cd5cc0e260d2c",
-        "git_blob_sha1": "9c6e07385c4bd5a6a382aa61c169aeea0fc2c1c3"
+        "sha256": "45a645251abf87159758535534aba93439158c9f7f800e8cb49496115e203c8e"
       },
       {
+        "git_blob_sha1": "98fe4c0e96286eaa9e640ec7090f8bbfecf2caf8",
         "path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
-        "sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
-        "git_blob_sha1": "98fe4c0e96286eaa9e640ec7090f8bbfecf2caf8"
+        "sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106"
       },
       {
+        "bytes": 52304,
+        "git_blob_sha1": "5ed3569c24a1171cc8988bfd3e7f006b05e06a2b",
         "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
-        "sha256": "829cbfe4d16c67c052728c3ca15605ff4ceba595bd053c4cbe2f925c8a58affb",
-        "git_blob_sha1": "ee29294cceb427498e8c907d4f48b669b4babbbf"
+        "sha256": "962328c1c3726840332ea5f016e0172652b6307e7255ca217f73e56c400b2705"
       }
     ],
-    "continuation_20261002_run": {
-      "owner_instruction": "RUN",
-      "previous_candidate_head": "52e367db378462cf6f63fe410f7f50098bd6a52f",
-      "integrated_main_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
-      "merge_base_head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
-      "method": "THREE_WAY_HISTORY_PRESERVING_MERGE_OF_ROLE_LOCAL_LIFECYCLE",
-      "lifecycle_observation": {
-        "observed_at": "2026-10-02T14:11:04.845Z",
-        "prior_renewed": "2026-10-01T13:10:37Z",
-        "prior_next_due": "2026-10-02T13:10:37Z",
-        "prior_registration_overdue": true,
-        "prior_heartbeat_expires": "2026-10-02T14:10:37Z",
-        "prior_heartbeat_expired": true,
-        "current_heartbeat": "2026-10-02T12:31:42Z",
-        "current_heartbeat_expires": "2026-10-03T13:31:42Z",
-        "current_registration_next_due": "2026-10-03T12:31:42Z",
-        "producer_run_id": "37007190339-1",
-        "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe"
+    "owner_authorization": {
+      "authorization_account_context": "ingolf-lohmann",
+      "exact_future_head_codeowner_review_inferred": false,
+      "identity_attestation_inferred": false,
+      "provided_in_session": true,
+      "repository_attribution": "Ingolf Lohmann",
+      "scope": [
+        "lossless Authority source inclusion",
+        "functional stand-in Authority acceptance",
+        "one neutral Mesh repository mirror creation"
+      ],
+      "supplied_name": "Ingo Flomann"
+    },
+    "predecessor_evidence_transfer": false,
+    "review_branch": "work/authority-recovery-acceptance-20261002",
+    "source_claims_bound_to_historical_scope": true,
+    "source_head": "6cce2d2f4910356d21c031b013df2c7a79f7590b",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_tree": "fae6a54ed8fb01c69c12dc2d958b2a8e91e51888",
+    "state": "BLOCK",
+    "verification": {
+      "exact_downloaded_blobs_verified": 69,
+      "existing_retained_tree_tests": {
+        "executed": 4,
+        "failures": 0,
+        "skips": 0
       },
-      "reused_component": "tools/qikvrt_mirror_node_lifecycle.sh",
-      "reused_role_local_policy": "state/work_units/RESTORE_ROLE_LOCAL_MIRROR_NODE_STATE_AFTER_TREE_CONVERGENCE_V1.json",
-      "fresh_native_successor_checks_required": true,
+      "fresh_git_tree_reconstructions": 3,
+      "fresh_native_complete_checkout_checks": "REQUIRED_FOR_CONTAINING_SUCCESSOR",
+      "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_AUTHENTICATED_EXACT_PARENT; FRESH_NATIVE_REGENERATION_REQUIRED",
+      "local_bootstrap": {
+        "blocker": "git config --get remote.origin.url: exit 1: no diagnostic",
+        "scope": "API source fixture has no complete authenticated local Git checkout; native complete-checkout verification is required.",
+        "state": "BLOCK"
+      },
       "predecessor_evidence_transfer": false,
-      "state": "BLOCK",
-      "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
-      "next_smallest_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE"
+      "source_read_mode": "EXACT_BLOB_AUTHENTICATED_API_SOURCE_FIXTURE",
+      "tool_cache": "PASS 18/18"
     }
-  }
+  },
+  "superseded_writers": [
+    {
+      "disposition": "CLOSED_UNMERGED_SUPERSEDED_BY_EXACT_WHOLE_TREE_CONVERGENCE",
+      "head": "2b4664a364a5cd782806ff12db9739d63436bf6e",
+      "history_preserved": true,
+      "pull_request": 342,
+      "repository": "ingolf-lohmann/qik-vrt"
+    }
+  ],
+  "title": "History-preserving Authority to Mirror whole-tree convergence and reciprocal receipt preparation",
+  "work_unit_id": "AUTHORITY_MIRROR_WHOLE_TREE_CONVERGENCE_V1"
 }

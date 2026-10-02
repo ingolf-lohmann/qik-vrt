@@ -76,12 +76,30 @@ The complete 2026-08-16 Authority content tree is retained under
 3,781 blobs and exact tree identity are verified against the historical
 reciprocal receipt. All paths still exist in the working Mirror; 44 changed
 versions remain available in the retained source. This establishes historical
-content retention. It does not establish the inaccessible Authority's final
-complete recovery point or live role takeover.
+content retention. It does not establish the latest complete Authority recovery point or live
+role takeover. The frozen working-parent comparison is historical; it must not
+be substituted for the current Mirror Main or current PR subject.
 
-The first acceptance gate remains BLOCK until the complete final Authority
-source closure is bound. The next external boundary is an authenticated writer
-that can create and populate a new repository: the currently callable GitHub
+The fresh 2026-10-02 API reobservation confirms that installation `147849532`
+for `Goldkelch` selects all repositories and lists `Goldkelch/qik-vrt` with
+repository ID `1271407206`, `pull=true` and `push=true`. Generic name, stable-ID,
+Main-ref, ref-inventory and content reads still return HTTP 404. This is an
+installation/content-routing or carrier boundary in the current execution; it
+is not evidence that the Authority repository does not exist or is globally
+unreachable. The root cause inside the router or platform is not established.
+
+The exposed connector has installation-bound listing/search, but no content,
+commit, tree or ref read accepts an installation ID or selected installation
+credential. No unsupported installation parameter is substituted into a
+generic read. The first causal acceptance blocker is therefore
+`AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE`. The next action
+is to expose and use an authorized content carrier explicitly bound to this
+installation and repository, freshly read Main/HEAD/TREE and all required
+refs/objects/source closure, and compare that exact Authority subject with the
+retained historical tree and the reobserved Mirror. The first source-acceptance
+gate remains BLOCK until this closure is verified. The next external boundary is an authenticated writer
+that can create and populate a new repository. Reported `push=true` does not
+establish repository-creation capability. The currently callable GitHub
 connector has no repository-creation or dispatch operation, and the existing
 Mesh API supports ingest/verify/stage/release_status only.
 
@@ -91,3 +109,8 @@ acknowledgement and heartbeat. Role-local personal runtime state and credentials
 are not inherited. A prepared target/GUID is not an existing repository.
 Native full builds, independent current-head review/protection, role-epoch
 fencing and actual effect readbacks remain mandatory before live acceptance.
+
+All predecessor checks remain bound to their original subjects. The direct
+PR #444 successor requires fresh complete-checkout validation. Historical
+retention, generic transport responses and successful tests do not themselves
+accept live stand-in Authority takeover or neutral-Mirror creation.
