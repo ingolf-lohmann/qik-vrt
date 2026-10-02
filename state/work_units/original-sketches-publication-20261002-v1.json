@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_work_unit_v1",
   "work_unit_id": "original-sketches-publication-20261002-v1",
-  "created_at": "2026-10-02T09:48:48.826444+00:00",
+  "created_at": "2026-10-02T09:58:33.835985+00:00",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "source_ref": "main",
   "source_commit": "fd120af6bff3b837f26446276674d688daad20db",
@@ -22,7 +22,7 @@
       "ChatGPT Library",
       "Python standard library"
     ],
-    "observed_at": "2026-10-02T09:48:48.826444+00:00",
+    "observed_at": "2026-10-02T09:58:33.835985+00:00",
     "identity_and_observation_limits": "Platform attribution does not establish natural-person or biometric identity."
   },
   "human_contributions": [
@@ -102,8 +102,8 @@
     {
       "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ORIGIN_AND_PUBLICATION_STATUS.json",
       "bytes": 2934,
-      "sha256": "a626953f394f14b709d7928ffecd3065b4eed84597c31baf103bce802eaefca5",
-      "git_blob_sha1": "6d012b9db4c267f3575219db4f0fa018fa263a35"
+      "sha256": "90974089852b2b810244e8acd9f2e4bacd02eaf62f88729e87e1557170c86b10",
+      "git_blob_sha1": "7ceb083429e5e5cbd72aba0711e3547c050cf036"
     },
     {
       "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PUBLICATION_ROUTING.json",
@@ -120,8 +120,8 @@
     {
       "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/SHA256SUMS",
       "bytes": 1242,
-      "sha256": "ee5696b573209c1c6bdf6745a69dd0892e851fbe9991dd78ac4f1627e6a0357a",
-      "git_blob_sha1": "4555094dce6d2234cee24092da8bc9e246dfe729"
+      "sha256": "d11228225436d69c17c253215c476cf8ed416876b2ec286d738fd7f96044223b",
+      "git_blob_sha1": "ebe038824e98b241950731bda0b6b7206d479ee6"
     },
     {
       "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ZENODO_METADATA.json",
@@ -194,9 +194,20 @@
       "evidence/node_registration_renewal/36821646859-1.json",
       "evidence/node_registration_renewal/36866747092-1.json",
       "evidence/node_registration_renewal/36936407695-1.json",
-      "evidence/node_registration_renewal/36969534310-1.json"
+      "evidence/node_registration_renewal/36969534310-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
     ],
-    "git_attributes_crlf_entries_verified": 34
+    "git_attributes_crlf_entries_verified": 34,
+    "central_publication_index": "MATERIALIZED_AND_CURRENT",
+    "predecessor_gate_repair": {
+      "predecessor": "47a0e35e4f188740b2cb707f5cdbe41acef23ffb",
+      "publication_index_coverage": "REPAIRED",
+      "four_equal_size_base_hash_drifts": "REPAIRED_FROM_EXACT_BASE_BLOBS",
+      "predecessor_ci_result_transfer": false
+    }
   },
   "human_decision": {
     "repository_and_zenodo_intent": "AUTHORIZED_BY_USER_REQUEST",
