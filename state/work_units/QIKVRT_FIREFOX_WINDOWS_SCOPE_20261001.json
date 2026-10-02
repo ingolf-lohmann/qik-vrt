@@ -426,7 +426,7 @@
     "human_contribution": "Ingolf Lohmann authorized Linux HTTP Firefox Effect-Acknowledgement seed ring and measured scaling, 2026-10-02",
     "artificial_cognitive_contribution": "OpenAI Codex reused and generalized the existing Firefox witness; implemented seed gate, controls, cache profile and native Linux job",
     "local_validation": {
-      "tests": 33,
+      "tests": 34,
       "result": "PASS",
       "actual_http_fanout": [
         1,
@@ -446,7 +446,7 @@
     "observed_gap": "Linux HTTP test never started Firefox; the HTTP bridge never checked the canonical seed",
     "established_cause_scope": "Absence of seed validation and real Linux Firefox invocation in the inspected exact source; origin of that design remains unestablished",
     "repair": "Seed checks before admission and commit; seed fields in hashed records/events/readback; native Firefox job with compatible declared host tools",
-    "current_acceptance": "RECEIPT_REFINEMENT_REQUIRES_FRESH_NATIVE_HEAD_RUN",
+    "current_acceptance": "UI_RACE_REPAIR_REQUIRES_FRESH_NATIVE_HEAD_RUN",
     "open_scopes": [
       "Actual exact-head Linux Firefox receipt",
       "Complete retained Linux runtime closure and actual Authority-on-Mirror OS construction",
@@ -501,6 +501,21 @@
       "full_mesh_os_construction": false,
       "predecessor_checks_transfer": false
     },
-    "receipt_refinement": "Retain actual prepared request and full record for independent Firefox event digest verification; use Linux-specific receipt and HOLD labels"
+    "receipt_refinement": "Retain actual prepared request and full record for independent Firefox event digest verification; use Linux-specific receipt and HOLD labels",
+    "ui_observer_race": {
+      "failed_head": "3ce155a545ea72d49fb6443231b41d8c42bf7d5a",
+      "failed_tree": "41226fd6a263ec98363d66b1a58fed5e12c66202",
+      "run": 36958928279,
+      "job": 110688041789,
+      "artifact": 11207277538,
+      "archive_sha256": "a2d4a74ad266ed7742d2c744a8f5a98ae5c711ccf656c35265efb573b9f26527",
+      "observed_error": "PREPARE_BINDING_OR_NO_EFFECT_FAILED; Commit enabled but output replaced by late github 404 observation",
+      "exact_predecessor_content_blob": "61658f2fd7ceb62b25a13ef8486ba3a7b8a5c563",
+      "established_cause": "Initial async observe and prepare wrote the same output/status without ordering or channel separation",
+      "causal_regression": "Execute actual content.js in Node with observation deferred until after Prepare; predecessor fails exactly by replacing prepared tag, repaired successor preserves PREPARED_DONE and full prepared record",
+      "repair": "Separate read-only observer display from effect state; latest observation revision prevents stale observer readback; observer exceptions remain in observer channel",
+      "design_origin": "UNESTABLISHED",
+      "native_successor_validation": "REQUIRED"
+    }
   }
 }

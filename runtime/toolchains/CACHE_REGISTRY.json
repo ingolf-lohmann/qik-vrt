@@ -210,7 +210,9 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "browser/firefox/qikvrt-terminal/content.js",
+        "tests/test_qikvrt_effect_ack_http_terminal.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -220,7 +222,8 @@
       "profiles": [
         "formal",
         "audio",
-        "all"
+        "all",
+        "firefox-linux-ring"
       ],
       "provider": "actions/setup-node",
       "trusted_save": false,
@@ -228,7 +231,8 @@
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution"
+        "test execution",
+        "actual terminal source with deferred observation/prepare regression"
       ],
       "version": "24.x"
     },

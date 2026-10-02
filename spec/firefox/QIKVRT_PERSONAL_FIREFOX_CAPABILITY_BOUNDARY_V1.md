@@ -194,3 +194,9 @@ public product release and personal runtime acceptance remain separate gates.
 
 Ingolf Lohmann supplied and authorized the ring scope; OpenAI Codex generalized
 the existing witness, implemented the seed gate and executed the controls.
+
+The source-bound successor also separates repository-observation output from the
+prepared/committed effect output. A late read-only Authority response must never
+replace the displayed prepared record or change its effect state. The actual
+content-script regression controls that ordering; both success and read errors
+remain in the observation channel. Fresh native Firefox execution is required.

@@ -4,6 +4,7 @@ import base64
 import importlib.util
 import json
 import sys
+import subprocess
 import threading
 import time
 import tempfile
@@ -86,6 +87,45 @@ class EffectAckHttpTerminalContractTests(unittest.TestCase):
         ):
             self.assertIn(value, text)
         self.assertIn("MUST NOT execute the protected effect", text)
+
+    def test_late_repository_observation_cannot_replace_prepared_effect(self):
+        # Execute the actual content script with deferred browser responses.
+        # This controls the native failing ordering, not a second implementation.
+        script = r'''
+        const fs = require('fs'), vm = require('vm'), assert = require('assert');
+        const elements = new Map();
+        function element() { return {textContent:'', value:'nonce', disabled:true,
+            dataset:{}, style:{setProperty(){}}, setAttribute(){},
+            classList:{toggle(){}}, querySelector(selector) {
+                if (!elements.has(selector)) elements.set(selector, element());
+                return elements.get(selector);
+            }, addEventListener(name, handler){this.handler=handler;}}; }
+        const host=element(); let finishObservation;
+        const prepared={effect_ack:{state:'EFFECT_ACK_DONE'},record_validated:true,tag:'exact-prepared'};
+        const context={document:{getElementById(){return null;},createElement(){return host;},
+              body:{appendChild(){}}},location:{href:'https://goldkelch.github.io/qik-vrt/'},
+              browser:{storage:{local:{get:async()=>({})}},runtime:{sendMessage(message){
+                if(message.kind==='OBSERVE_AUTHORITY') return new Promise(resolve=>finishObservation=resolve);
+                if(message.kind==='PREPARE_EFFECT') return Promise.resolve(prepared);
+                throw new Error('unexpected message');}}}};
+        vm.runInNewContext(fs.readFileSync(process.argv[1],'utf8'),context);
+        setImmediate(async()=>{try {
+            assert.equal(typeof finishObservation,'function');
+            await host.handler({target:{closest(){return {dataset:{act:'prepare'}};}}});
+            const output=host.querySelector('[data-role=output]');
+            assert.equal(JSON.parse(output.textContent).tag,'exact-prepared');
+            assert.equal(host.querySelector('[data-act=commit]').disabled,false);
+            finishObservation({ok:false,state:'HOLD',reason:'github 404'});
+            await new Promise(resolve=>setImmediate(resolve));
+            assert.equal(JSON.parse(output.textContent).tag,'exact-prepared',
+                'late read-only observer overwrote exact prepared effect');
+            assert.equal(host.querySelector('[data-role=status]').dataset.state,'PREPARED_DONE');
+        } catch(error) { console.error(error);process.exitCode=1;}});
+        '''
+        result = subprocess.run(['node', '-e', script,
+                                 str(ROOT / 'browser/firefox/qikvrt-terminal/content.js')],
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_structured_request_parser_is_closed_and_exact(self) -> None:
         parsed = terminal.parse_effect_ack_request("v=1, mode=prepare")
