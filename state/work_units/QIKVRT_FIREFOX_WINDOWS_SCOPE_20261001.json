@@ -229,6 +229,194 @@
       "verified_cause": "Both workflows defaulted to refs/pull/438/merge while exact-candidate CI and Windows witness passed. Their mandatory suite observed a different subject.",
       "repair": "Reuse explicit PR head SHA checkout and verify actual HEAD before existing unchanged gates.",
       "scope": "Candidate checks only; merge integration acceptance and Authority Pages remain separate."
+    },
+    "continuation_20261002": {
+      "schema": "qikvrt_authority_pages_route_continuation_v1",
+      "observed_at": "2026-10-02T01:50:20.120796+00:00",
+      "observed_candidate": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "ref": "work/firefox-windows-witness-20261001",
+        "head": "091448318a4f9543ab3ca4fdd9b8632cb7692f72",
+        "tree": "6d031db4aabe2268e8b74a408243e9d7b26b726d"
+      },
+      "human_contribution": {
+        "identifier": "Ingolf Lohmann",
+        "contribution": "Continue PR #438; use existing Authority credential or narrowly scoped executor, read actual Pages and live/version publisher first, repair only verified mismatch; otherwise persist exact capability HOLD. Canonical target remains Goldkelch/qik-vrt main:/docs."
+      },
+      "artificial_cognitive_contribution": {
+        "identifier": "OpenAI Codex",
+        "contribution": "Independently verify original REST/Windows archives, inspect current routes, extend the existing inline GET-only observer with the already-declared App binding, source commit/tree and public version reads, add bounded negative controls."
+      },
+      "evidence_retention": "METADATA_ONLY",
+      "verified_original_receipts": [
+        {
+          "run_id": 36943828109,
+          "artifact_id": 11201063415,
+          "archive_sha256": "7ce2229ce03e6516768f8a67f822b362497bb0ce35b96d983b992f7e8553b618",
+          "receipt_sha256": "b0af6f42edd48b1656495a3bd8f4e7a5ae4c630efa26909dcda6ebca2fa0e95c",
+          "state": "HOLD_AUTHORITY_PAGES_READ_UNAVAILABLE",
+          "direct_credential_binding_present": {
+            "QIKVRT_RULESET_ADMIN_TOKEN": false,
+            "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+            "QIKVRT_MESH_TOKEN": false
+          },
+          "scope": "Exact observed candidate and run only; no successor evidence transfer"
+        },
+        {
+          "run_id": 36943833720,
+          "artifact_id": 11200534597,
+          "archive_sha256": "fefe0aa819dc867d14099dddb19d4619d708c581ac5f113e3b8b94831e3e7fe3",
+          "public_readback_receipt_sha256": "b839ee2c6c0a57cf17befa7285e15853eb0992f45660befb9571c18d1b42fe7a",
+          "observed_at": "2026-10-02T00:02:03.332457+00:00",
+          "http_status": 404,
+          "browser_navigation_status": 404,
+          "windows_functional_witness": "PASS_LOCAL_LOOPBACK_ONLY",
+          "scope": "Exact observed candidate and run only; no successor evidence transfer"
+        }
+      ],
+      "native_runtime_binding_presence": {
+        "QIKVRT_RULESET_ADMIN_TOKEN": false,
+        "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+        "QIKVRT_MESH_TOKEN": false
+      },
+      "authenticated_connector_authority_repository_read": "404; inaccessible and absent are not distinguished",
+      "fresh_native_reads": [
+        {
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/pages",
+          "observed_at": "2026-10-02T01:49:16.897606+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 89,
+          "body_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:25 GMT",
+            "X-GitHub-Request-Id": "4277:2FD95D:26D0714:7FCD153:6ABF0DA4",
+            "Location": null,
+            "ETag": null,
+            "Last-Modified": null,
+            "X-Cache": null
+          }
+        },
+        {
+          "url": "https://api.github.com/repos/Goldkelch/qik-vrt/branches/main",
+          "observed_at": "2026-10-02T01:49:25.104733+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 89,
+          "body_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:30 GMT",
+            "X-GitHub-Request-Id": "432E:302839:26BC821:7FCA5B3:6ABF0DAA",
+            "Location": null,
+            "ETag": null,
+            "Last-Modified": null,
+            "X-Cache": null
+          }
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/",
+          "observed_at": "2026-10-02T01:49:30.875254+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 9115,
+          "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:36 GMT",
+            "X-GitHub-Request-Id": "9070:8C2D3:100343:11299D:6ABF0DB0",
+            "Location": null,
+            "ETag": "\"6abcf5c5-239b\"",
+            "Last-Modified": null,
+            "X-Cache": "MISS"
+          }
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/mesh/live/",
+          "observed_at": "2026-10-02T01:49:36.986923+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 9115,
+          "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:45 GMT",
+            "X-GitHub-Request-Id": "21A4:23275E:F1952:1040D3:6ABF0DB7",
+            "Location": null,
+            "ETag": "\"6abcf5c5-239b\"",
+            "Last-Modified": null,
+            "X-Cache": "MISS"
+          }
+        },
+        {
+          "url": "https://goldkelch.github.io/qik-vrt/mesh/live/version.json",
+          "observed_at": "2026-10-02T01:49:45.272560+00:00",
+          "authenticated": false,
+          "redirects_followed": false,
+          "status": 404,
+          "body_bytes": 9115,
+          "body_sha256": "70d613e3acfba24fd2876fcbacaf639e1e111ef4d54baf70761c47673f37d6a3",
+          "headers": {
+            "Date": "Fri, 02 Oct 2026 01:49:52 GMT",
+            "X-GitHub-Request-Id": "1D00:FDD01:8AD62:9D0FA:6ABF0DBE",
+            "Location": null,
+            "ETag": "\"6abcf5c5-239b\"",
+            "Last-Modified": null,
+            "X-Cache": "MISS"
+          }
+        }
+      ],
+      "existing_app_route": {
+        "declared_by": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "app_id_binding": "vars.QIKVRT_RULESET_APP_ID",
+        "private_key_binding": "secrets.QIKVRT_RULESET_APP_PRIVATE_KEY",
+        "executor": ".github/workflows/qikvrt_mesh_authority_edge.yml#jobs.pages-readback",
+        "target_repository": "Goldkelch/qik-vrt",
+        "requested_permissions": {
+          "pages": "read",
+          "contents": "read"
+        },
+        "binding_presence": "UNOBSERVED_UNTIL_EXACT_SUCCESSOR_RUN",
+        "token_mint_result": "UNOBSERVED_UNTIL_EXACT_SUCCESSOR_RUN",
+        "secret_values_persisted": false
+      },
+      "blocking_predicate": "PRODUCTIVE_AUTHORITY_PAGES_CAPABILITY_NOT_ESTABLISHED",
+      "missing_binding": "One accessible direct Authority token, or the complete existing App ID/private-key binding plus an installed target-scoped token with Authority Pages/source access",
+      "required_exact_successor_readback": {
+        "workflow": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+        "artifact": "qikvrt-authority-pages-rest-readback",
+        "receipt": "PAGES_REST_READBACK.json",
+        "binding_fields": [
+          "candidate_repository",
+          "candidate_head",
+          "candidate_tree",
+          "run_id",
+          "run_attempt",
+          "credential_route_probes"
+        ],
+        "retention": "Exact execution artifact and PR #438 acceptance receipt; do not promote this preparation to execution"
+      },
+      "actual_authority_pages_configuration": null,
+      "authority_source_head": null,
+      "authority_source_tree": null,
+      "live_version_publisher": null,
+      "published_head": null,
+      "published_tree": null,
+      "published_at": null,
+      "publishing_deviation_established": false,
+      "authority_publication_mutated": false,
+      "public_url_fresh_readback": false,
+      "persistent_signed_installation_verified": false,
+      "authenticated_runtime_readback": false,
+      "personal_release_effect_ack_done": false,
+      "predecessor_evidence_transfer": false,
+      "validation": {
+        "bounded_observer_and_personal_boundary_tests": 18,
+        "result": "PASS",
+        "full_exact_successor_repository_gates": "REQUIRED"
+      },
+      "next_action": "Execute the updated existing fixed GET-only observer on its exact successor. If a productive route exists, inspect Pages configuration and current live/version publisher and source HEAD/TREE before any conditional repair. If no route exists, retain its exact credential/App-binding HOLD and keep public release flags false."
     }
   }
 }

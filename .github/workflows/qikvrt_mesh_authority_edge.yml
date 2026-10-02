@@ -94,6 +94,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     # Fixed inline GET-only observer: no checkout, dispatch payload or candidate code.
+    # Reuse the existing App binding with read permissions and one fixed target.
     env:
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
       RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
@@ -103,11 +104,45 @@ jobs:
       OBSERVER_RUN_ID: ${{ github.run_id }}
       OBSERVER_RUN_ATTEMPT: ${{ github.run_attempt }}
     steps:
-      - name: Read fixed Authority Pages contract without publishing
+      - name: Observe existing Authority App binding without retaining secrets
+        id: pages-app-binding
+        env:
+          RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
         shell: bash
         run: |
           python3 - <<'PY'
-          import datetime, hashlib, json, os, pathlib, urllib.error, urllib.request
+          import json, os, pathlib
+          binding = {'app_id_present': bool(os.environ.get('RULESET_APP_ID')),
+                     'private_key_present': bool(os.environ.get('RULESET_APP_PRIVATE_KEY')),
+                     'target_repository': 'Goldkelch/qik-vrt',
+                     'requested_permissions': {'pages': 'read', 'contents': 'read'}}
+          available = binding['app_id_present'] and binding['private_key_present']
+          pathlib.Path('PAGES_APP_BINDING.json').write_text(json.dumps(binding, sort_keys=True) + '\n')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('available=' + str(available).lower() + '\n')
+          PY
+      - name: Mint read-only token for the fixed Authority repository
+        id: pages-app-token
+        if: steps.pages-app-binding.outputs.available == 'true'
+        continue-on-error: true
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-pages: read
+          permission-contents: read
+      - name: Read fixed Authority Pages contract without publishing
+        if: always()
+        env:
+          APP_TOKEN: ${{ steps.pages-app-token.outputs.token }}
+          APP_TOKEN_OUTCOME: ${{ steps.pages-app-token.outcome }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import datetime, hashlib, json, os, pathlib, re, urllib.error, urllib.request
           class NoRedirect(urllib.request.HTTPRedirectHandler):
               def redirect_request(self, *args, **kwargs):
                   return None
@@ -143,18 +178,32 @@ jobs:
           token = ''
           route = None
           probes = {}
-          for name in ('RULESET_ADMIN_TOKEN', 'ADMIN_TOKEN', 'MESH_TOKEN'):
+          for name in ('RULESET_ADMIN_TOKEN', 'ADMIN_TOKEN', 'MESH_TOKEN', 'APP_TOKEN'):
               credential = os.environ.get(name, '')
               probes[name] = {'credential_present': bool(credential)}
               if credential:
                   probes[name]['pages'] = get('https://api.github.com/repos/Goldkelch/qik-vrt/pages', credential)
                   if route is None and probes[name]['pages'].get('status') == 200:
                       route, token = name, credential
+          binding_file = pathlib.Path('PAGES_APP_BINDING.json')
+          probes['APP_TOKEN']['binding'] = (json.loads(binding_file.read_text()) if binding_file.is_file()
+                                           else {'state': 'HOLD_BINDING_OBSERVATION_FAILED'})
+          probes['APP_TOKEN']['mint_outcome'] = os.environ.get('APP_TOKEN_OUTCOME', 'unknown')
           authority = {}
           if token:
               authority['pages'] = probes[route]['pages']
               for path in ('pages/builds/latest', 'branches/main'):
                   authority[path] = get('https://api.github.com/repos/Goldkelch/qik-vrt/' + path, token)
+              authority_head = authority['branches/main'].get('json', {}).get('commit', {}).get('sha', '')
+              if isinstance(authority_head, str) and re.fullmatch(r'[0-9a-f]{40}', authority_head):
+                  base = 'https://api.github.com/repos/Goldkelch/qik-vrt/'
+                  authority['source_commit'] = get(base + 'git/commits/' + authority_head, token)
+                  authority_tree = authority['source_commit'].get('json', {}).get('tree', {}).get('sha', '')
+                  if isinstance(authority_tree, str) and re.fullmatch(r'[0-9a-f]{40}', authority_tree):
+                      authority['source_inventory'] = get(base + 'git/trees/' + authority_tree + '?recursive=1', token)
+                  for path in ('docs/index.html', 'docs/mesh/live/version.json', 'docs/mesh/live/index.html',
+                               '.github/workflows/qikvrt_seed_dashboard_publish.yml'):
+                      authority[path] = get(base + 'contents/' + path + '?ref=' + authority_head, token)
           receipt = {'schema': 'qikvrt_authority_pages_rest_probe_v1',
                      'observed_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                      'candidate_repository': 'ingolf-lohmann/qik-vrt', 'candidate_head': head, 'candidate_tree': tree,
@@ -163,7 +212,8 @@ jobs:
                      'credential_route': route, 'credential_route_probes': probes,
                      'authority_repository': 'Goldkelch/qik-vrt',
                      'authority_reads': authority,
-                     'public_reads': [get('https://goldkelch.github.io/qik-vrt/' + path) for path in ('', 'mesh/live/')],
+                     'public_reads': [get('https://goldkelch.github.io/qik-vrt/' + path)
+                                      for path in ('', 'mesh/live/', 'mesh/live/version.json')],
                      'state': ('OBSERVED_AUTHORITY_PAGES' if tree and authority.get('pages', {}).get('status') == 200
                                else 'HOLD_AUTHORITY_PAGES_READ_UNAVAILABLE'),
                      'publication_mutated': False, 'deployed_candidate_head_tree_verified': False,
