@@ -49,12 +49,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add qikvrt/runtime/onboarding/NODE_HEALTH.json \
                   qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json \
                   evidence/node_health \
-                  evidence/node_registration_renewal
+                  evidence/node_registration_renewal \
+                  REPOSITORY_FILE_MANIFEST.json \
+                  REPOSITORY_FILE_MANIFEST.json.sha256 \
+                  SHA256SUMS.txt
           git diff --cached --quiet && { echo "BLOCK no lifecycle delta"; exit 3; }
           git commit -m "chore(mesh): renew mirror node lifecycle"
           git push origin HEAD:main

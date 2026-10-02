@@ -5,11 +5,52 @@
     "Existing private POSIX sink, two fenced role transitions and completed effect deduplication",
     "Project plan rooted at Goldkelch; no remote repository existence asserted",
     "Bound codec executable and compressed artifact run losslessly from the surviving node after all original provider/source/payload/checkpoint files are removed; both checkpoint roles",
-    "Historical checkpoint read compatibility retained; current role admission rejects missing CQF rule"
+    "Historical checkpoint read compatibility retained; current role admission rejects missing CQF rule",
+    "Actual lifecycle persistence shell writes only to a local Git fixture; fresh clone integrity rejects omitted generation/projection staging, and generator failure leaves remote HEAD unchanged"
   ],
   "artificial_cognitive_contribution": {
     "author": "OpenAI Codex",
     "scope": "Fresh API observation, reproduced omitted governance check in restored-node admission, shared validator repair, reuse of existing checkpoint exporter for isolated recursive restore/clone, destructive tests and exact-head verification; reachable automation audit and verified corrections; generic dependency-mirror closure validation; destructive-source executable CQF witness and historical compatibility"
+  },
+  "ci_integrity_root_cause": {
+    "candidate_head": "5ff9375933a2318cecac694e1dea0ac475943f24",
+    "candidate_tree": "5442923a71258e81a51cf636391137f4059a06a4",
+    "cause": "Existing lifecycle writer publishes six immutable node-state/evidence paths without regenerating and staging the three integrity projections",
+    "classification": "OBSERVED_MERGE_TREE_FAILURE_AND_LOCAL_CAUSAL_CONTROLS",
+    "github_merge_subject": "2a9d394767586ff55d23bce547d259c9fdac7ddc",
+    "local_fixture_effect_is_live_main_effect": false,
+    "main_activation_verified": false,
+    "main_head": "6e085ab1e2b68e0cdf8e014c8400824f0502f11c",
+    "main_tree": "17c3e92098e773721d302983b90fca709a8a83eb",
+    "observed_failed_runs": [
+      36940933658,
+      36940933736
+    ],
+    "permissions_or_review_bypass_added": false,
+    "predecessor_evidence_transfer": false,
+    "regression": "tests/test_integrity.py::IntegrityGenerationTests::test_lifecycle_writer_preserves_remote_integrity_and_fails_before_push",
+    "workflow": ".github/workflows/qikvrt_mirror_node_lifecycle.yml"
+  },
+  "complete_owner_attachment_readback": {
+    "bytes": 22666,
+    "characters": 22245,
+    "coverage": "ALL_CHARACTERS_READ",
+    "current_mirror_observation": {
+      "seed_dashboard_upload_contains_LATEST": true,
+      "terminal_workflow_path_present": false,
+      "upload_always_is_not_itself_the_cause": "Mixing historical output with current-run output without status binding is the gap"
+    },
+    "effect_ack_done": false,
+    "historical_claims_are_not_current_pass": true,
+    "remaining_obligations": [
+      "Canonical provenance-preserving recovery and Goldkelch project manifestation through existing admitted provider",
+      "Terminal GH013 cause: inspect current authority writer; artifact preservation is not Main effect",
+      "Seed liveness: actual authorized exact-node execution and fresh health readback; no timestamp or TTL fabrication",
+      "Dashboard/audit: current NOT_EXECUTED receipt and isolation of historical PASS when revalidation continues",
+      "Hardware stub defect: transport_ack AND provenance_valid does not establish observed effect; no hardware DONE claim"
+    ],
+    "sha256": "906260a5b660d765b5c6f4ed5c87c2e1fbc535c7bf4f694ba50357a5e68ae484",
+    "source": "Siemens, SIPORT, T\u00fcrme und T\u00fcren von Ingolf Lohmann(1).txt"
   },
   "effect_ack_done": false,
   "external_automation_correction": {
@@ -106,6 +147,17 @@
     "scope": "Each full Authority/Mirror recovers from retained data, seeds mirrors/projects, preserves Goldkelch root; standing authorization; no new PR or bypass; repository execution ownership; all external dependencies after successful binding mirrored for CQF fault tolerance",
     "source": "Owner supplied universal transputer recovery requirement and qikvrt_dual_pole_recursive_versioned_continuation_v1"
   },
+  "immediate_error_and_cause_correction": {
+    "application": "Existing lifecycle writer regenerates, verifies and stages integrity before its existing persistence step",
+    "declared_at_local": "2026-10-02T01:58:43+02:00",
+    "independent_native_main_admission_required": true,
+    "main_activation_verified": false,
+    "owner": "Ingolf Lohmann",
+    "predecessor_evidence_transfer": false,
+    "reuse": "Existing source-bound watchdog analysis and repair consumer",
+    "root_entrypoint": "AI#IMMEDIATE ERROR AND ROOT-CAUSE CORRECTION",
+    "statement": "Derartige Fehler und ihre Ursachen sind ab sofort unmittelbar zu beheben und die Korrektur anzuwenden."
+  },
   "live_authority_promotion_verified": false,
   "main_activation_verified": false,
   "new_pull_request_created": false,
@@ -193,7 +245,8 @@
     "REPOSITORY_OWNS_EXECUTION_AND_DURABLE_CONTINUATION",
     "CQF_ALL_EXTERNAL_DEPENDENCIES_MIRRORED_AFTER_SUCCESSFUL_BINDING",
     "LOCAL_MIRROR_BYTES_CHECKED_WITH_ORIGINAL_SOURCES_UNAVAILABLE",
-    "VERSIONED_FENCED_PROJECT_MANIFESTATION_WITH_CREATE_ONLY_SAGA_AND_FRESH_READBACK"
+    "VERSIONED_FENCED_PROJECT_MANIFESTATION_WITH_CREATE_ONLY_SAGA_AND_FRESH_READBACK",
+    "LIFECYCLE_WRITER_REGENERATES_AND_STAGES_INTEGRITY_BEFORE_PUBLICATION"
   ],
   "repository_native_ci_instruction": {
     "consumer": "tools/qikvrt_autonomous_self_heal.py ci-continuation",
