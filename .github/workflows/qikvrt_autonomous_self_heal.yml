@@ -88,7 +88,9 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_autonomous_pre_effect_controller \
+            tests.test_qikvrt_recursive_haltpoint
 
       - name: Execute bounded repository-native repairs before external effects
         id: repair
