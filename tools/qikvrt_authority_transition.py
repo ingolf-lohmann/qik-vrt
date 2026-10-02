@@ -37,6 +37,12 @@ BINDING_KEYS = {"node_id", "repository", "head", "tree", "manifest_sha256", "sch
 STATE_KEYS = {"schema", "control_plane_epoch", "authority_epoch", "revision", "phase",
               "binding", "fence", "scheduler", "root_repository"}
 PERMIT_KEYS = {"control_plane_epoch", "authority_epoch", "node_id", "fence"}
+PROJECT_CAPABILITY_OPERATIONS = ["GOLDKELCH_ROOT_REGISTER_CREATE", "GOLDKELCH_ORGANIZATION_REPOSITORY_CREATE",
+                                 "EXACT_NEW_REPOSITORY_ATOMIC_SEED_CREATE"]
+
+
+class ProjectCapabilityRequired(TransitionError):
+    """No productive project mutation is admitted by the current sink."""
 
 
 def deny_unbrokered_provider_write() -> None:
@@ -305,6 +311,74 @@ class AuthorityControlPlane:
             raise TransitionError("provider writer fenced until fresh activation")
         if repository != grant["repository"]:
             raise TransitionError("provider repository outside active node capability")
+        return state
+
+    @staticmethod
+    def project_grants(db) -> None:
+        db.execute("""CREATE TABLE IF NOT EXISTS provider_project_grants (
+            target TEXT PRIMARY KEY, document BLOB NOT NULL, consumed_effect_id TEXT)""")
+
+    def authorize_project(self, admin_token: str, token: str, permit: dict,
+                          project: dict, plan_sha256: str, credential_sha256: str,
+                          expires_ns: int, operations: list[str]) -> dict:
+        """Same sink/admin trust boundary; no new writer token or permit issuer.
+
+        The owner must independently provision organization-create and root/seed
+        Contents capabilities for this existing broker credential. The grant is
+        target/plan/epoch bound; it is not proof of GitHub permissions or effects.
+        """
+        recovery.require_digest(credential_sha256)
+        recovery.require_digest(plan_sha256)
+        target = project.get("target_repository", "")
+        if (recovery.digest(canonical_json_bytes(project)) != plan_sha256
+                or not isinstance(target, str) or not re.fullmatch(r"Goldkelch/[A-Za-z0-9][A-Za-z0-9_.-]{0,99}", target)
+                or target.casefold() == recovery.ROOT_REPOSITORY.casefold()
+                or operations != PROJECT_CAPABILITY_OPERATIONS):
+            raise ProjectCapabilityRequired("EXACT_ORGANIZATION_ROOT_SEED_CAPABILITY_REQUIRED")
+        now = time.time_ns()
+        if type(expires_ns) is not int or not now < expires_ns <= now + 3_600_000_000_000:
+            raise ProjectCapabilityRequired("SHORT_LIVED_PROJECT_CAPABILITY_REQUIRED")
+        with self.transaction() as db:
+            if db.execute("SELECT 1 FROM admin WHERE token_hash=?", (token_hash(admin_token),)).fetchone() is None:
+                raise TransitionError("project grant requires existing control-plane admin capability")
+            state = self.provider_admission(db, token, permit, project.get("parent_repository"))
+            if (project.get("parent_node_id") != state["binding"]["node_id"]
+                    or project.get("source_checkpoint_sha256") != state["binding"]["manifest_sha256"]):
+                raise TransitionError("project grant parent/checkpoint mismatch")
+            self.project_grants(db)
+            document = {"schema": "qikvrt_exact_project_create_capability_v1", "permit": permit,
+                        "binding": state["binding"], "project_plan_sha256": plan_sha256,
+                        "target_repository": target, "root_repository": recovery.ROOT_REPOSITORY,
+                        "credential_sha256": credential_sha256, "operations": operations,
+                        "issued_ns": now, "expires_ns": expires_ns}
+            db.execute("INSERT INTO provider_project_grants VALUES (?, ?, NULL)",
+                       (target.casefold(), canonical_json_bytes(document)))
+        return {"schema": document["schema"], "target_repository": target,
+                "project_plan_sha256": plan_sha256, "effect_ack_done": False,
+                "provider_permissions_verified": False}
+
+    def project_admission(self, db, token: str, permit: dict, project: dict,
+                          plan_sha256: str, credential_sha256: str, effect_id: str) -> dict:
+        state = self.provider_admission(db, token, permit, project.get("parent_repository"))
+        self.project_grants(db)
+        row = db.execute("SELECT document, consumed_effect_id FROM provider_project_grants WHERE target=?",
+                         (project.get("target_repository", "").casefold(),)).fetchone()
+        if row is None:
+            raise ProjectCapabilityRequired("GOLDKELCH_CREATE_CAPABILITY_REQUIRED")
+        doc = decode(row[0])
+        now = time.time_ns()
+        if (doc.get("schema") != "qikvrt_exact_project_create_capability_v1"
+                or doc.get("permit") != permit or doc.get("binding") != state["binding"]
+                or doc.get("project_plan_sha256") != plan_sha256
+                or recovery.digest(canonical_json_bytes(project)) != plan_sha256
+                or doc.get("target_repository") != project.get("target_repository")
+                or doc.get("root_repository") != recovery.ROOT_REPOSITORY
+                or doc.get("credential_sha256") != credential_sha256
+                or doc.get("operations") != PROJECT_CAPABILITY_OPERATIONS
+                or not doc.get("issued_ns", now + 1) <= now < doc.get("expires_ns", 0)):
+            raise ProjectCapabilityRequired("PROJECT_CAPABILITY_SCOPE_EPOCH_OR_EXPIRY_MISMATCH")
+        if row[1] not in {None, effect_id}:
+            raise TransitionError("PROJECT_CAPABILITY_ALREADY_CONSUMED")
         return state
 
     def activate(self, node: Path, manifest_sha256: str, token: str, permit: dict) -> dict:
@@ -667,7 +741,7 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.buffer.write(canonical_json_bytes(result))
         return 2 if result["violations"] else 0
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("init", "grant", "observe", "takeover", "activate", "write", "readback", "rejoin"))
+    parser.add_argument("operation", choices=("init", "grant", "grant-project", "observe", "takeover", "activate", "write", "readback", "rejoin"))
     parser.add_argument("--control-plane", type=Path, required=True)
     parser.add_argument("--token-file", type=Path, required=True)
     parser.add_argument("--admin-token-file", type=Path)
@@ -678,6 +752,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--permit", type=Path)
     parser.add_argument("--effect-id")
     parser.add_argument("--payload", type=Path)
+    parser.add_argument("--checkpoint", type=Path)
+    parser.add_argument("--project-plan", type=Path)
+    parser.add_argument("--expect-project-plan-sha256")
     args = parser.parse_args(argv)
     try:
         cp = AuthorityControlPlane(args.control_plane)
@@ -685,15 +762,28 @@ def main(argv: list[str] | None = None) -> int:
         if args.operation in {"init", "grant", "observe", "takeover", "activate"}:
             if args.node is None or args.expect_manifest_sha256 is None:
                 raise TransitionError("node and externally pinned manifest digest required")
-        if args.operation in {"init", "grant"}:
+        if args.operation in {"init", "grant", "grant-project"}:
             if args.admin_token_file is None:
                 raise TransitionError("separate owner/admin capability required")
             admin = secret_file(args.admin_token_file)
-        if args.operation in {"activate", "write", "rejoin"}:
+        if args.operation in {"activate", "write", "rejoin", "grant-project"}:
             if args.permit is None:
                 raise TransitionError("exact writer permit required")
             permit = decode(recovery.read_file(args.permit))
-        if args.operation == "init":
+        if args.operation == "grant-project":
+            if any(value is None for value in (args.checkpoint, args.project_plan, args.expect_project_plan_sha256, args.expect_manifest_sha256, args.payload)):
+                raise TransitionError("exact checkpoint, project plan and separately provisioned capability scope required")
+            project = recovery.load_json(args.project_plan, args.expect_project_plan_sha256)
+            recovery.verify_project_plan(args.checkpoint, args.expect_manifest_sha256, project, args.expect_project_plan_sha256)
+            scope = decode(recovery.read_file(args.payload))
+            recovery.exact(scope, {"schema", "operations", "expires_ns"}, "project capability scope")
+            if scope["schema"] != "qikvrt_owner_provisioned_project_capability_scope_v1":
+                raise TransitionError("versioned project capability scope required")
+            from src.qikvrt_github_api_shim import GitHubAuthorityProvider
+            result = cp.authorize_project(admin, token, permit, project, args.expect_project_plan_sha256,
+                                          recovery.digest(GitHubAuthorityProvider._credential().encode()),
+                                          scope["expires_ns"], scope["operations"])
+        elif args.operation == "init":
             result = cp.initialize(args.node, args.expect_manifest_sha256, args.authority_epoch, admin, token)
         elif args.operation == "grant":
             result = cp.authorize_recovery(args.node, args.expect_manifest_sha256, admin, token)

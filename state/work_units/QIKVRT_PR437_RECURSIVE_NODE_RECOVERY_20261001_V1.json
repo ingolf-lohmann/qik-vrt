@@ -88,15 +88,15 @@
     "source_statements": [
       {
         "at_utc": "2026-10-01T22:21:37Z",
-        "text": "Das gilt natürlich grundsätzlich und das war nicht die einzige Stelle, wo das falsch gemacht wurde."
+        "text": "Das gilt nat\u00fcrlich grunds\u00e4tzlich und das war nicht die einzige Stelle, wo das falsch gemacht wurde."
       },
       {
         "at_utc": "2026-10-01T22:24:55Z",
-        "text": "Jegliche externe Abhängigkeit ist nach erfolgreicher Bindung durch geeignete Spiegelung in das Repository zu ersetzen."
+        "text": "Jegliche externe Abh\u00e4ngigkeit ist nach erfolgreicher Bindung durch geeignete Spiegelung in das Repository zu ersetzen."
       },
       {
         "at_utc": "2026-10-01T22:27:14Z",
-        "text": "Das gilt nicht nur für die Abhängigkeiten zu ChatGPT, sondern auch zu allen anderen externen Abhängigkeiten, die außerhalb eines Repositorys liegen. Das ist Sinn und Zweck von CQF. Fehlertoleranz."
+        "text": "Das gilt nicht nur f\u00fcr die Abh\u00e4ngigkeiten zu ChatGPT, sondern auch zu allen anderen externen Abh\u00e4ngigkeiten, die au\u00dferhalb eines Repositorys liegen. Das ist Sinn und Zweck von CQF. Fehlertoleranz."
       }
     ]
   },
@@ -124,6 +124,58 @@
     "repository": "ingolf-lohmann/qik-vrt"
   },
   "ordinary_release": false,
+  "project_manifestation_v1": {
+    "artificial_cognitive_contribution": "OpenAI Codex: extend existing AuthorityControlPlane and GitHubAuthorityProvider; versioned plan/intent/grant/receipt; finite create-only root/repository/seed steps; exact Git history/checkpoint readback; 27 negative/positive fixture/CLI/HTTP controls",
+    "credential_path": "EXISTING_GITHUB_TOKEN_ONLY",
+    "effect_ack_done": false,
+    "goldkelch_root_readback": {
+      "cause_established": false,
+      "observation_recorded_utc": "2026-10-01T23:23:05.815144+00:00",
+      "operation": "GET branches/main",
+      "response": "HTTP_404_NOT_FOUND"
+    },
+    "human_contribution": "Ingolf Lohmann: exact bounded implementation request, required negative cases, permanent Goldkelch root and no second writer or unverified Owner-token path; no productive capability inferred",
+    "implementation_base": "78097d880e672a4135a2e1ff77def571e9cf2012",
+    "implementation_base_tree": "0a20fdfaad10161be62a8ed680e89bc6aee9a475",
+    "integration_base": "280b3cde1c3cf72f346f213c7da9048e09448a33",
+    "integration_base_tree": "3ee890f50f3c9d3958db454a65a6aa9b9e112b29",
+    "local_fixture_validation": {
+      "final_successor_revalidation_required": false,
+      "focused_recovery_authority_provider_and_twin_tests": 121,
+      "fresh_hosted_exact_head_validation_required": true,
+      "full_make_test_groups": 23,
+      "full_make_test_python_executions": 876,
+      "full_make_test_state": "PASS_LOCAL_CANDIDATE_ONLY",
+      "missing_org_capability_cli_witness": {
+        "exit_code": 20,
+        "fixture_scope_only": true,
+        "provider_calls": 0,
+        "reason": "GOLDKELCH_CREATE_CAPABILITY_REQUIRED",
+        "state": "HOLD"
+      },
+      "pre_integration_full_make_test_python_executions": 864,
+      "project_test_cases": 27,
+      "repository_wide_fencing_verified": false,
+      "source_audit_baseline_head": "78097d880e672a4135a2e1ff77def571e9cf2012",
+      "source_audit_baseline_violations": 157,
+      "source_audit_candidate_violations": 157,
+      "source_audit_introduced_violations": 0
+    },
+    "new_permit_issuer": false,
+    "new_writer": false,
+    "predecessor_evidence_transfer": false,
+    "productive_admission_observed_utc": "2026-10-02T00:01:37.154673+00:00",
+    "productive_control_plane_available": false,
+    "productive_create_capability_verified": false,
+    "productive_credential_available": false,
+    "productive_state": "HOLD",
+    "provider": "EXISTING_GITHUB_AUTHORITY_PROVIDER",
+    "remote_repository_created": false,
+    "requested_by": "Ingolf Lohmann",
+    "resume": "Provision existing private control plane and separately verified exact Goldkelch org/root/seed capability for this broker; admit exact plan; execute once; on ambiguity read back only; retain runtime HOLD",
+    "scope": "CREATE_ONLY_ROOT_REGISTRATION_REPOSITORY_PROVISIONING_HISTORY_PRESERVING_SEED_AND_FRESH_READBACK",
+    "user_supplied_predecessor": "cfce41f7f412b0d0037cf064a00327a03cc8e650"
+  },
   "remaining": [
     "Production full-node closure and runtime/capability self-test",
     "Independently surviving private control plane and no-bypass provider capability provisioning",
@@ -140,7 +192,8 @@
     "CLONE_LINEAGE_BYTES_SURVIVE_PARENT_PACKAGE_LOSS",
     "REPOSITORY_OWNS_EXECUTION_AND_DURABLE_CONTINUATION",
     "CQF_ALL_EXTERNAL_DEPENDENCIES_MIRRORED_AFTER_SUCCESSFUL_BINDING",
-    "LOCAL_MIRROR_BYTES_CHECKED_WITH_ORIGINAL_SOURCES_UNAVAILABLE"
+    "LOCAL_MIRROR_BYTES_CHECKED_WITH_ORIGINAL_SOURCES_UNAVAILABLE",
+    "VERSIONED_FENCED_PROJECT_MANIFESTATION_WITH_CREATE_ONLY_SAGA_AND_FRESH_READBACK"
   ],
   "repository_native_ci_instruction": {
     "consumer": "tools/qikvrt_autonomous_self_heal.py ci-continuation",
@@ -166,7 +219,8 @@
     "tests/test_qikvrt_mesh_recovery.py",
     "tests/test_qikvrt_authority_transition.py",
     "existing make test / mesh-recovery-test",
-    "existing PR #437"
+    "existing PR #437",
+    "src/qikvrt_github_api_shim.py:GitHubAuthorityProvider"
   ],
   "schema": "qikvrt_work_unit_v1",
   "signature_changed": false,

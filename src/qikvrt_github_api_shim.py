@@ -11,8 +11,11 @@ import os
 import re
 import ssl
 import sys
+import tempfile
+import tarfile
 import threading
 import time
+import zlib
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -25,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
 from scripts.qikvrt_api_client import NoRedirectHandler, MAX_RESPONSE_BYTES
-from tools.qikvrt_authority_transition import AuthorityControlPlane, TransitionError, decode
+from tools.qikvrt_authority_transition import AuthorityControlPlane, TransitionError, ProjectCapabilityRequired, decode
 from tools import qikvrt_mesh_recovery as recovery
 from tools.qikvrt_seed_common import canonical_json_bytes, parse_json_bytes, SeedError
 
@@ -37,6 +40,7 @@ AUTHORITY_EFFECT_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_C
 # can be inferred from lineage or an environment variable.
 PROVIDER_REPOSITORY = "ingolf-lohmann/qik-vrt"
 MAX_REQUEST_BYTES = 1024 * 1024
+PROJECT_PACK_MAX_BYTES = 64 * 1024 * 1024
 _RATE_LOCK = threading.Lock()
 _RATE_WINDOWS: dict[str, tuple[int, int]] = {}
 
@@ -116,34 +120,42 @@ def _security_configuration_valid() -> bool:
 class GitHubAuthorityProvider:
     """Extend the existing authenticated shim; no second executor or token cache.
 
-    Native CAS remains absent -> create-only ref. The reflexive Twin extension
-    writes an immutable receipt commit through this same admission/journal.
+    Native CAS remains absent -> create-only ref. Twin receipts and explicitly
+    admitted project creation use this same control plane and durable journal.
     GitHub REST ref PATCH has no expected-old-SHA field;
     ref update/delete, PR and other mutations are denied, not emulated by GET
     then an unconditional write. Independent bearer writers remain unfenced.
     """
 
-    def __init__(self, control_plane: AuthorityControlPlane, repository: str):
+    def __init__(self, control_plane: AuthorityControlPlane, repository: str, *, project_fixture: bool = False):
         if repository != PROVIDER_REPOSITORY:
             raise TransitionError("no separately established provider capability")
         self.cp = control_plane
         self.repository = repository
+        self._project_fixture = project_fixture
 
-    def _request(self, method: str, suffix: str, payload: dict | None = None,
-                 *, admission: tuple | None = None) -> tuple[int, dict]:
-        """Reuse the client no-redirect/bounded-response contract and token path."""
+    @staticmethod
+    def _credential() -> str:
         token = os.environ.get("GITHUB_TOKEN", "")
         expiry = _parse_expiry(os.environ.get("QIKVRT_GITHUB_TOKEN_EXPIRES_UTC", ""))
         if (len(token) < 20 or any(c.isspace() for c in token) or expiry is None
                 or expiry <= datetime.now(timezone.utc)
                 or hmac.compare_digest(token, os.environ.get("QIKVRT_API_TOKEN", ""))):
             raise TransitionError("usable distinct short-lived provider capability required")
-        if method not in {"GET", "POST"} or not re.fullmatch(
+        return token
+
+    def _request(self, method: str, suffix: str, payload: dict | None = None,
+                 *, admission: tuple | None = None, project_path: str | None = None) -> tuple[int, dict]:
+        """Reuse the client no-redirect/bounded-response contract and token path."""
+        token = self._credential()
+        if project_path is not None:
+            self._project_transport_guard(method, project_path, payload, admission)
+        elif method not in {"GET", "POST"} or not re.fullmatch(
                 r"(?:git/(?:refs|blobs|trees|commits|ref/heads/[A-Za-z0-9/_-]+|(?:commits|blobs|trees)/[0-9a-f]{40})|pulls/[1-9][0-9]*)", suffix):
             raise TransitionError("unsupported provider endpoint")
-        if method == "POST" and suffix not in {"git/refs", "git/blobs", "git/trees", "git/commits"}:
+        if project_path is None and method == "POST" and suffix not in {"git/refs", "git/blobs", "git/trees", "git/commits"}:
             raise TransitionError("provider mutation outside create-only object/ref contract")
-        if method == "POST":
+        if project_path is None and method == "POST":
             if admission is None or len(admission) != 4:
                 raise TransitionError("provider mutation requires locked fresh admission")
             db, writer, permit, document = admission
@@ -162,11 +174,55 @@ class GitHubAuthorityProvider:
                     or document["ref"] != self.ref_name(permit, document["effect_id"])
                     or payload != {"ref": document["ref"], "sha": state["binding"]["head"]}):
                 raise TransitionError("provider mutation outside original create-ref intent")
-        url = f"https://api.github.com/repos/{self.repository}/{suffix}"
-        request = urllib.request.Request(url, method=method,
-            data=None if payload is None else canonical_json_bytes(payload), headers={
-                "Accept": "application/vnd.github+json", "Authorization": "Bearer " + token,
-                "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json",
+        url = "https://api.github.com/" + (project_path if project_path is not None else f"repos/{self.repository}/{suffix}")
+        status, raw = self._raw_provider_request(url, method,
+            None if payload is None else canonical_json_bytes(payload), "application/json", "application/vnd.github+json",
+            admission=admission, project_path=project_path, native_suffix=suffix)
+        if status not in {200, 201}:
+            return status, {}
+        try:
+            value = parse_json_bytes(raw, "provider response")
+        except (ValueError, TypeError, SeedError) as exc:
+            raise TransitionError("invalid provider JSON") from exc
+        if not isinstance(value, dict):
+            raise TransitionError("invalid provider object")
+        return status, value
+
+    def _raw_provider_request(self, url: str, method: str, data: bytes | None,
+                              content_type: str, accept: str, *, git_auth: bool = False,
+                              maximum: int = MAX_RESPONSE_BYTES, admission: tuple | None = None,
+                              project_path: str | None = None, native_suffix: str = "") -> tuple[int, bytes]:
+        """Enforce admission again at the actual wire boundary, including direct calls."""
+        if project_path is not None:
+            payload = parse_json_bytes(data, "project payload") if data is not None and not git_auth else data
+            self._project_transport_guard(method, project_path, payload, admission)
+            expected_url = ("https://github.com/" if git_auth else "https://api.github.com/") + project_path
+        else:
+            expected_url = f"https://api.github.com/repos/{self.repository}/{native_suffix}"
+            if git_auth or not re.fullmatch(r"(?:git/(?:refs|blobs|trees|commits|ref/heads/[A-Za-z0-9/_-]+|(?:commits|blobs|trees)/[0-9a-f]{40})|pulls/[1-9][0-9]*)", native_suffix):
+                raise TransitionError("unbound provider wire endpoint")
+            if method == "POST":
+                if admission is None or len(admission) != 4:
+                    raise TransitionError("provider wire mutation requires admission")
+                db, writer, permit, doc = admission
+                state = self.cp.provider_admission(db, writer, permit, self.repository)
+                row = db.execute("SELECT status, document FROM provider_effects WHERE id=?", (doc["effect_id"],)).fetchone()
+                if row != ("PENDING", canonical_json_bytes(doc)) or doc["permit"] != permit or doc["binding"] != state["binding"] or doc["repository"] != self.repository:
+                    raise TransitionError("provider wire intent mismatch")
+                payload = parse_json_bytes(data, "wire payload")
+                if doc["operation"] == "persist_twin_transition":
+                    self._validate_twin_document(doc)
+                    if (native_suffix, payload) not in [(o["endpoint"], o["payload"]) for o in doc["objects"]]:
+                        raise TransitionError("provider wire object mismatch")
+                elif doc["operation"] != "create_ref" or native_suffix != "git/refs" or doc["ref"] != self.ref_name(permit, doc["effect_id"]) or payload != {"ref": doc["ref"], "sha": state["binding"]["head"]}:
+                    raise TransitionError("provider wire CAS mismatch")
+        if method not in {"GET", "POST"} or url != expected_url or maximum > PROJECT_PACK_MAX_BYTES:
+            raise TransitionError("provider wire origin/method/capacity mismatch")
+        token = self._credential()
+        authorization = ("Basic " + base64.b64encode(("x-access-token:" + token).encode()).decode()) if git_auth else "Bearer " + token
+        request = urllib.request.Request(url, method=method, data=data, headers={
+                "Accept": accept, "Authorization": authorization,
+                "X-GitHub-Api-Version": "2022-11-28", "Content-Type": content_type,
                 "User-Agent": "qikvrt-authority-api-shim"})
         try:
             response = urllib.request.build_opener(NoRedirectHandler()).open(request, timeout=10)
@@ -178,21 +234,15 @@ class GitHubAuthorityProvider:
             status = response.status
             if response.geturl() != url:
                 raise TransitionError("provider origin changed")
-            raw = response.read(MAX_RESPONSE_BYTES + 1)
+            raw = response.read(maximum + 1)
         finally:
             response.close()
-        if len(raw) > MAX_RESPONSE_BYTES or token.encode() in raw:
+        if len(raw) > maximum or token.encode() in raw or authorization.encode() in raw:
             raise TransitionError("invalid provider response boundary")
         # Error bodies are neither reflected nor persisted.
         if status not in {200, 201}:
-            return status, {}
-        try:
-            value = parse_json_bytes(raw, "provider response")
-        except (ValueError, TypeError, SeedError) as exc:
-            raise TransitionError("invalid provider JSON") from exc
-        if not isinstance(value, dict):
-            raise TransitionError("invalid provider object")
-        return status, value
+            return status, b""
+        return status, raw
 
     @staticmethod
     def ref_name(permit: dict, effect_id: str) -> str:
@@ -226,6 +276,9 @@ class GitHubAuthorityProvider:
         return True
 
     def execute(self, token: str, permit: dict, operation: dict) -> dict:
+        if operation.get("operation") in {"manifest_project", "readback_project"}:
+            recovery.exact(operation, {"operation", "effect_id", "project_plan", "project_plan_sha256", "checkpoint"}, "project operation")
+            return self.manifest_project(token, permit, operation)
         if operation.get("operation") == "persist_twin_transition":
             recovery.exact(operation, {"operation", "effect_id", "api_result"}, "twin provider operation")
             return self.persist_twin_transition(token, permit, operation["effect_id"], operation["api_result"])
@@ -320,6 +373,544 @@ class GitHubAuthorityProvider:
                 raise TransitionError("provider ledger readback mismatch")
         return receipt
 
+
+    @staticmethod
+    def _packet(raw: bytes) -> bytes:
+        if len(raw) > 65516:
+            raise TransitionError("project Git packet capacity exceeded")
+        return f"{len(raw) + 4:04x}".encode() + raw
+
+    @staticmethod
+    def _packets(raw: bytes) -> tuple[list[bytes], bytes]:
+        lines = []
+        while raw:
+            if len(raw) < 4 or not re.fullmatch(b"[0-9a-f]{4}", raw[:4]):
+                raise TransitionError("invalid project Git packet framing")
+            size = int(raw[:4], 16)
+            if size == 0:
+                return lines, raw[4:]
+            if not 4 <= size <= len(raw):
+                raise TransitionError("truncated project Git packet")
+            lines.append(raw[4:size])
+            raw = raw[size:]
+        raise TransitionError("missing project Git flush packet")
+
+    @classmethod
+    def _advertised_refs(cls, raw: bytes, service: str) -> tuple[dict, set]:
+        header, rest = cls._packets(raw)
+        if header != [("# service=" + service + "\n").encode()]:
+            raise TransitionError("project Git service origin mismatch")
+        lines, tail = cls._packets(rest)
+        if tail or not lines:
+            raise TransitionError("invalid project Git advertisement")
+        first, separator, capabilities = lines[0].rstrip(b"\n").partition(b"\0")
+        if not separator:
+            raise TransitionError("project Git capabilities missing")
+        lines[0] = first
+        refs = {}
+        try:
+            for line in lines:
+                oid, name = line.rstrip(b"\n").decode("ascii").split(" ")
+                if not recovery.HEX160.fullmatch(oid):
+                    raise ValueError()
+                if name == "capabilities^{}" and oid == "0" * 40:
+                    continue
+                if name == "HEAD" or name.endswith("^{}"):
+                    continue
+                if not name.startswith(("refs/heads/", "refs/tags/")) or name in refs:
+                    raise ValueError()
+                refs[name] = oid
+            return refs, set(capabilities.decode("ascii").split())
+        except (ValueError, UnicodeError) as exc:
+            raise TransitionError("invalid or unsupported project ref inventory") from exc
+
+    @classmethod
+    def _seed_wire(cls, refs: dict, pack: bytes) -> bytes:
+        commands = []
+        for index, (ref, oid) in enumerate(sorted(refs.items())):
+            capabilities = b"\0report-status atomic" if index == 0 else b""
+            commands.append(cls._packet(("0" * 40 + " " + oid + " " + ref).encode() + capabilities + b"\n"))
+        return b"".join(commands) + b"0000" + pack
+
+    @classmethod
+    def _fetch_wire(cls, refs: dict) -> bytes:
+        return b"".join(cls._packet(("want " + oid + "\n").encode()) for oid in sorted(set(refs.values()))) + b"0000" + cls._packet(b"done\n")
+
+    @classmethod
+    def _write_object(cls, repository: Path, kind: str, raw: bytes) -> str:
+        oid = cls._git_object(kind, raw)
+        destination = repository / "objects" / oid[:2] / oid[2:]
+        destination.parent.mkdir(exist_ok=True)
+        data = zlib.compress(kind.encode() + b" " + str(len(raw)).encode() + b"\0" + raw)
+        if not destination.exists():
+            destination.write_bytes(data)
+        return oid
+
+    @classmethod
+    def _write_tree(cls, repository: Path, files: dict[str, tuple[bytes, str]]) -> str:
+        tree = {}
+        for path, (raw, mode) in files.items():
+            parts = recovery.safe_path(path).split("/")
+            branch = tree
+            for part in parts[:-1]:
+                branch = branch.setdefault(part, {})
+            branch[parts[-1]] = (cls._write_object(repository, "blob", raw), mode)
+        def write(branch):
+            raw = b""
+            for name, item in sorted(branch.items(), key=lambda pair: pair[0] + ("/" if isinstance(pair[1], dict) else "")):
+                oid, mode = (write(item), "40000") if isinstance(item, dict) else item
+                raw += mode.encode() + b" " + name.encode() + b"\0" + bytes.fromhex(oid)
+            return cls._write_object(repository, "tree", raw)
+        return write(tree)
+
+    @staticmethod
+    def _project_identity(plan: dict) -> dict:
+        return {"schema": "qikvrt_project_seed_identity_v1", "root_repository": recovery.ROOT_REPOSITORY,
+                "repository": plan["target_repository"], "node_id": plan["new_node_id"],
+                "parent_repository": plan["parent_repository"], "parent_node_id": plan["parent_node_id"],
+                "source_checkpoint_sha256": plan["source_checkpoint_sha256"], "lineage": plan["lineage"],
+                "role": "MIRROR", "writer_enabled": False, "runtime_rebinding_required": True,
+                "live_runtime_verified": False, "full_node_admitted": False, "effect_ack_done": False}
+
+    @classmethod
+    def _project_seed(cls, package: Path, plan: dict, plan_sha: str, manifest: dict) -> dict:
+        """Offline preparation only. Preserve source refs and add one seed commit."""
+        git = manifest["plan"]["git"]
+        seed_ref = "refs/heads/work/qikvrt-project-seed/" + plan["new_node_id"]
+        if (git["head_ref"] != "refs/heads/main" or seed_ref in git["refs"]
+                or len(git["refs"]) > 1024
+                or any(not ref.startswith(("refs/heads/", "refs/tags/")) for ref in git["refs"])):
+            raise TransitionError("PROJECT_V1_REF_CAPACITY_OR_NAMESPACE_UNSUPPORTED")
+        recovery.validate_scheduler(package / "payload", manifest["plan"])
+        asset = next(a for a in manifest["plan"]["assets"] if a["category"] == "scheduler")
+        scheduler = recovery.load_json(package / "payload" / asset["path"], asset["sha256"])
+        for schedule in scheduler["schedules"]:
+            schedule["owner_node_id"] = plan["new_node_id"]
+        descriptor = {"schema": "qikvrt_project_seed_descriptor_v1", "project_plan_sha256": plan_sha,
+                      "identity": cls._project_identity(plan), "scheduler": scheduler,
+                      "scheduler_provider_reconciliation_required": True}
+        files = {"QIKVRT_PROJECT_SEED.json": (canonical_json_bytes(descriptor), "100644")}
+        for path in sorted(recovery.inventory_files(package)):
+            mode = next((a["mode"] for a in manifest["plan"]["assets"] if path == "payload/" + a["path"]), 0o644)
+            files["checkpoint/" + path] = (recovery.read_file(package / path, PROJECT_PACK_MAX_BYTES), "100755" if mode == 0o755 else "100644")
+        if sum(len(raw) for raw, _ in files.values()) > PROJECT_PACK_MAX_BYTES:
+            raise TransitionError("PROJECT_V1_SEED_CAPACITY_EXCEEDED")
+        with tempfile.TemporaryDirectory(prefix="qikvrt-project-seed-") as directory:
+            repository = Path(directory) / "seed.git"
+            recovery.restore_git(package.resolve(), repository, git)
+            tree = cls._write_tree(repository, files)
+            stamp = manifest["plan"]["checkpoint_utc"]
+            seconds = int(datetime.fromisoformat(stamp.replace("Z", "+00:00")).timestamp())
+            identity = f"QIK-VRT project broker <qikvrt-project@example.invalid> {seconds} +0000"
+            commit_raw = f"tree {tree}\nparent {git['head']}\nauthor {identity}\ncommitter {identity}\n\nqikvrt: project seed {plan_sha}\n".encode()
+            commit = cls._write_object(repository, "commit", commit_raw)
+            recovery.git_command(repository, "update-ref", seed_ref, commit, "0" * 40)
+            prefix = Path(directory) / "seed-pack"
+            name = recovery.git_command(repository, "pack-objects", "--threads=1", "--window=0", "--all", str(prefix))
+            pack = recovery.read_file(Path(str(prefix) + "-" + name + ".pack"), PROJECT_PACK_MAX_BYTES)
+        refs = {**git["refs"], seed_ref: commit}
+        wire = cls._seed_wire(refs, pack)
+        if len(wire) > PROJECT_PACK_MAX_BYTES:
+            raise TransitionError("PROJECT_V1_SEED_CAPACITY_EXCEEDED")
+        return {"ref": seed_ref, "commit": commit, "tree": tree, "refs": refs,
+                "descriptor": descriptor, "wire": wire, "wire_sha256": recovery.digest(wire), "wire_bytes": len(wire)}
+
+    @classmethod
+    def _registration_objects(cls, registration: dict) -> list[dict]:
+        raw = canonical_json_bytes(registration)
+        blob = cls._git_object("blob", raw)
+        filename = "QIKVRT_PROJECT_REGISTRATION.json"
+        tree = cls._git_object("tree", b"100644 " + filename.encode() + b"\0" + bytes.fromhex(blob))
+        stamp = registration["project_plan"]["checkpoint_utc"]
+        seconds = int(datetime.fromisoformat(stamp.replace("Z", "+00:00")).timestamp())
+        identity = {"name": "QIK-VRT project broker", "email": "qikvrt-project@example.invalid", "date": stamp}
+        message = "qikvrt: root project registration " + registration["project_plan_sha256"] + "\n"
+        commit_raw = f"tree {tree}\nauthor {identity['name']} <{identity['email']}> {seconds} +0000\ncommitter {identity['name']} <{identity['email']}> {seconds} +0000\n\n{message}".encode()
+        commit = cls._git_object("commit", commit_raw)
+        return [
+            {"endpoint": "git/blobs", "sha": blob, "payload": {"content": base64.b64encode(raw).decode(), "encoding": "base64"}},
+            {"endpoint": "git/trees", "sha": tree, "payload": {"tree": [{"path": filename, "mode": "100644", "type": "blob", "sha": blob}]}},
+            {"endpoint": "git/commits", "sha": commit, "payload": {"message": message, "tree": tree, "parents": [], "author": identity, "committer": identity}},
+            {"endpoint": "git/refs", "sha": commit, "payload": {"ref": registration["root_ref"], "sha": commit}},
+        ]
+
+    def _project_admit(self, db, token: str, permit: dict, doc: dict) -> dict:
+        self._validate_project_document(doc)
+        return self.cp.project_admission(db, token, permit, doc["project_plan"], doc["project_plan_sha256"],
+                                         recovery.digest(self._credential().encode()), doc["effect_id"])
+
+    @classmethod
+    def _validate_project_document(cls, doc: dict) -> None:
+        recovery.exact(doc, {"schema", "operation", "effect_id", "repository", "permit", "binding", "project_plan",
+            "project_plan_sha256", "registration", "root_ref", "root_objects", "repository_payload", "seed_refs",
+            "seed_descriptor", "seed_wire_sha256", "seed_wire_bytes", "steps"}, "project durable intent")
+        plan = doc["project_plan"]
+        root_ref = "refs/heads/work/qikvrt-project-register/" + recovery.digest(plan["target_repository"].casefold().encode())
+        seed_ref = "refs/heads/work/qikvrt-project-seed/" + plan["new_node_id"]
+        registration = doc["registration"]
+        recovery.exact(registration, {"schema", "root_repository", "root_ref", "project_plan", "project_plan_sha256",
+            "permit", "source_binding", "seed_ref", "seed_commit", "seed_tree", "runtime_rebinding_required", "effect_ack_done"}, "root registration")
+        expected = {"schema": "qikvrt_root_project_registration_v1", "root_repository": recovery.ROOT_REPOSITORY,
+                    "root_ref": root_ref, "project_plan": plan, "project_plan_sha256": doc["project_plan_sha256"],
+                    "permit": doc["permit"], "source_binding": doc["binding"], "seed_ref": seed_ref,
+                    "seed_commit": registration["seed_commit"], "seed_tree": registration["seed_tree"],
+                    "runtime_rebinding_required": True, "effect_ack_done": False}
+        for field in ("seed_commit", "seed_tree"):
+            if not isinstance(registration[field], str) or not recovery.HEX160.fullmatch(registration[field]):
+                raise TransitionError("invalid project seed object identity")
+        objects = cls._registration_objects(expected)
+        payload = {"name": plan["target_repository"].split("/")[1], "private": True, "auto_init": False,
+                   "description": "QIKVRT project intent " + recovery.digest((doc["effect_id"] + "\0" + doc["project_plan_sha256"]).encode()),
+                   "has_issues": False, "has_projects": False, "has_wiki": False}
+        steps = [{"kind": "root", "path": "repos/" + recovery.ROOT_REPOSITORY + "/" + obj["endpoint"], "payload": obj["payload"], "sha": obj["sha"]} for obj in objects]
+        steps += [{"kind": "repository", "path": "orgs/Goldkelch/repos", "payload": payload},
+                  {"kind": "seed", "path": plan["target_repository"] + ".git/git-receive-pack"}]
+        if (doc["schema"] != "qikvrt_fenced_project_intent_v1" or doc["operation"] != "manifest_project"
+                or doc["repository"] != PROVIDER_REPOSITORY or not doc["effect_id"].startswith("project:")
+                or recovery.digest(canonical_json_bytes(plan)) != doc["project_plan_sha256"]
+                or registration != expected or doc["root_ref"] != root_ref or doc["root_objects"] != objects
+                or doc["repository_payload"] != payload or doc["steps"] != steps
+                or doc["seed_refs"] != {**plan["source_git"]["refs"], seed_ref: registration["seed_commit"]}
+                or doc["seed_descriptor"].get("identity") != cls._project_identity(plan)
+                or type(doc["seed_wire_bytes"]) is not int or not 0 < doc["seed_wire_bytes"] <= PROJECT_PACK_MAX_BYTES):
+            raise TransitionError("PROJECT_DURABLE_INTENT_CONTRACT_MISMATCH")
+        recovery.require_digest(doc["seed_wire_sha256"])
+
+    def _project_transport_guard(self, method: str, path: str, payload, admission: tuple | None) -> None:
+        if admission is None or len(admission) != 4:
+            raise TransitionError("project transport requires locked admission")
+        db, token, permit, doc = admission
+        state = self._project_admit(db, token, permit, doc)
+        row = db.execute("SELECT status, document FROM provider_effects WHERE id=?", (doc["effect_id"],)).fetchone()
+        if (row is None or row[0] not in {"PREPARED", "PENDING", "VERIFIED"}
+                or row[1] != canonical_json_bytes(doc) or doc["permit"] != permit
+                or doc["binding"] != state["binding"] or doc["operation"] != "manifest_project"):
+            raise TransitionError("project transport escaped durable intent")
+        root, target = recovery.ROOT_REPOSITORY, doc["project_plan"]["target_repository"]
+        gets = {"repos/" + root, "repos/" + target,
+                f"repos/{self.repository}/git/commits/{state['binding']['head']}",
+                f"repos/{root}/git/ref/{doc['root_ref'].removeprefix('refs/')}",
+                *(f"repos/{root}/{o['endpoint']}/{o['sha']}" for o in doc["root_objects"][:3]),
+                target + ".git/info/refs?service=git-receive-pack", target + ".git/info/refs?service=git-upload-pack"}
+        if method == "GET" and payload is None and path in gets:
+            return
+        if method == "POST" and path == target + ".git/git-upload-pack" and payload == self._fetch_wire(doc["seed_refs"]):
+            return  # Native read-only fetch, never a repository mutation.
+        if row[0] != "PENDING":
+            raise TransitionError("project mutation lacks durable PENDING admission")
+        for index, step in enumerate(doc["steps"]):
+            if path != step["path"] or method != "POST":
+                continue
+            pending = db.execute("SELECT status FROM provider_project_steps WHERE effect_id=? AND step=?",
+                                 (doc["effect_id"], index)).fetchone()
+            if pending != ("PENDING",):
+                break
+            if step["kind"] == "seed":
+                if isinstance(payload, bytes) and len(payload) == doc["seed_wire_bytes"] and recovery.digest(payload) == doc["seed_wire_sha256"]:
+                    return
+            elif payload == step["payload"]:
+                return
+        raise TransitionError("project mutation outside exact create-only step")
+
+    def _git_request(self, method: str, service: str, data: bytes | None, *, admission: tuple) -> bytes:
+        target = admission[3]["project_plan"]["target_repository"]
+        path = target + ".git/" + ("info/refs?service=" + service if method == "GET" else service)
+        self._project_transport_guard(method, path, data, admission)
+        status, raw = self._raw_provider_request("https://github.com/" + path, method, data,
+            "application/x-" + service + "-request", "application/x-" + service + ("-advertisement" if method == "GET" else "-result"),
+            git_auth=True, maximum=PROJECT_PACK_MAX_BYTES, admission=admission, project_path=path)
+        if status != 200:
+            raise TransitionError("PROJECT_GIT_OUTCOME_READBACK_ONLY")
+        return raw
+
+    @staticmethod
+    def _project_hold(reason: str) -> dict:
+        return {"schema": "qikvrt_project_manifestation_result_v1", "state": "HOLD", "reason": reason,
+                "remote_repository_created": False, "remote_repository_creation_verified": False,
+                "external_effect_observation": "NOT_ESTABLISHED_NO_COMPLETION_CLAIM",
+                "root_registration_verified": False,
+                "full_node_admitted": False, "effect_ack_done": False}
+
+    def _project_request(self, db, token, permit, doc, method, path, payload=None):
+        return self._request(method, "", payload, project_path=path, admission=(db, token, permit, doc))
+
+    def _read_registration(self, db, token, permit, doc) -> None:
+        prefix = "repos/" + recovery.ROOT_REPOSITORY + "/"
+        objects = doc["root_objects"]
+        status, ref = self._project_request(db, token, permit, doc, "GET", prefix + "git/ref/" + doc["root_ref"].removeprefix("refs/"))
+        if (status != 200 or ref.get("ref") != doc["root_ref"] or not isinstance(ref.get("object"), dict)
+                or ref["object"].get("type") != "commit" or ref["object"].get("sha") != objects[2]["sha"]):
+            raise TransitionError("ROOT_REGISTER_REF_READBACK_MISMATCH")
+        for obj in objects[:3]:
+            status, observed = self._project_request(db, token, permit, doc, "GET", prefix + obj["endpoint"] + "/" + obj["sha"])
+            if status != 200 or observed.get("sha") != obj["sha"]:
+                raise TransitionError("ROOT_REGISTER_OBJECT_READBACK_MISMATCH")
+            if obj["endpoint"] == "git/commits":
+                if observed.get("tree", {}).get("sha") != objects[1]["sha"] or observed.get("parents") != []:
+                    raise TransitionError("ROOT_REGISTER_COMMIT_READBACK_MISMATCH")
+            elif obj["endpoint"] == "git/trees":
+                entries = [{k: entry.get(k) for k in ("path", "mode", "type", "sha")} for entry in observed.get("tree", [])]
+                if observed.get("truncated") is not False or entries != obj["payload"]["tree"]:
+                    raise TransitionError("ROOT_REGISTER_TREE_READBACK_MISMATCH")
+            else:
+                try:
+                    raw = base64.b64decode("".join(observed.get("content", "").split()), validate=True)
+                except (ValueError, TypeError) as exc:
+                    raise TransitionError("ROOT_REGISTER_BYTE_READBACK_MISMATCH") from exc
+                if observed.get("encoding") != "base64" or observed.get("size") != len(raw) or raw != canonical_json_bytes(doc["registration"]):
+                    raise TransitionError("ROOT_REGISTER_BYTE_READBACK_MISMATCH")
+
+    def _project_repository(self, db, token, permit, doc, *, seeded=False) -> dict:
+        target = doc["project_plan"]["target_repository"]
+        status, repository = self._project_request(db, token, permit, doc, "GET", "repos/" + target)
+        if (status != 200 or repository.get("full_name") != target or repository.get("private") is not True
+                or repository.get("owner", {}).get("login") != "Goldkelch"
+                or repository.get("owner", {}).get("type") != "Organization"
+                or type(repository.get("id")) is not int or repository["id"] <= 0
+                or repository.get("description") != doc["repository_payload"]["description"]
+                or (seeded and repository.get("default_branch") != "main")):
+            raise TransitionError("PROJECT_REPOSITORY_READBACK_MISMATCH")
+        return repository
+
+    def manifest_project(self, token: str, permit: dict, operation: dict) -> dict:
+        """Finite create-only saga in the existing broker. Replay is readback-only."""
+        effect_id = operation["effect_id"]
+        if not isinstance(effect_id, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", effect_id):
+            raise TransitionError("invalid project effect ID")
+        key = "project:" + effect_id
+        plan, plan_sha = operation["project_plan"], operation["project_plan_sha256"]
+        if not isinstance(plan, dict):
+            raise TransitionError("project plan must be an object")
+        try:
+            with self.cp.transaction() as db:
+                state = self.cp.provider_admission(db, token, permit, self.repository)
+                try:
+                    credential_sha = recovery.digest(self._credential().encode())
+                except TransitionError as exc:
+                    raise ProjectCapabilityRequired("GOLDKELCH_CREATE_CAPABILITY_REQUIRED") from exc
+                self.cp.project_admission(db, token, permit, plan, plan_sha, credential_sha, key)
+                self._journal(db)
+                prior = db.execute("SELECT document FROM provider_effects WHERE id=?", (key,)).fetchone()
+                if prior and (decode(prior[0]).get("project_plan_sha256") != plan_sha or decode(prior[0]).get("permit") != permit):
+                    raise TransitionError("PROJECT_REPLAY_SUBJECT_MISMATCH")
+                if prior and operation["operation"] != "readback_project":
+                    return self._project_hold("PROJECT_REPLAY_READBACK_ONLY")
+                if operation["operation"] == "readback_project":
+                    if not prior:
+                        return self._project_hold("PROJECT_INTENT_MISSING")
+                elif db.execute("SELECT 1 FROM provider_effects WHERE status IN ('PREPARED','PENDING') LIMIT 1").fetchone():
+                    return self._project_hold("UNRESOLVED_INTENT_READBACK_ONLY")
+            package = Path(operation["checkpoint"])
+            if not package.is_absolute():
+                raise TransitionError("absolute private checkpoint path required")
+            manifest = recovery.verify_project_plan(package, plan["source_checkpoint_sha256"], plan, plan_sha)
+            binding = state["binding"]
+            if (plan["parent_repository"] != self.repository or plan["parent_node_id"] != binding["node_id"]
+                    or plan["source_checkpoint_sha256"] != binding["manifest_sha256"]
+                    or any(manifest["plan"]["git"][k] != binding[k] for k in ("head", "tree"))):
+                raise TransitionError("PROJECT_PARENT_CHECKPOINT_LINEAGE_MISMATCH")
+            if operation["operation"] == "readback_project":
+                return self._recover_project(token, permit, key, plan, plan_sha, manifest)
+            seed = self._project_seed(package, plan, plan_sha, manifest)
+            root_ref = "refs/heads/work/qikvrt-project-register/" + recovery.digest(plan["target_repository"].casefold().encode())
+            registration = {"schema": "qikvrt_root_project_registration_v1", "root_repository": recovery.ROOT_REPOSITORY,
+                            "root_ref": root_ref, "project_plan": plan, "project_plan_sha256": plan_sha,
+                            "permit": permit, "source_binding": binding,
+                            "seed_ref": seed["ref"], "seed_commit": seed["commit"], "seed_tree": seed["tree"],
+                            "runtime_rebinding_required": True, "effect_ack_done": False}
+            objects = self._registration_objects(registration)
+            repository_payload = {"name": plan["target_repository"].split("/")[1], "private": True, "auto_init": False,
+                                  "description": "QIKVRT project intent " + recovery.digest((key + "\0" + plan_sha).encode()),
+                                  "has_issues": False, "has_projects": False, "has_wiki": False}
+            steps = [{"kind": "root", "path": "repos/" + recovery.ROOT_REPOSITORY + "/" + o["endpoint"], "payload": o["payload"], "sha": o["sha"]} for o in objects]
+            steps += [{"kind": "repository", "path": "orgs/Goldkelch/repos", "payload": repository_payload},
+                      {"kind": "seed", "path": plan["target_repository"] + ".git/git-receive-pack"}]
+            doc = {"schema": "qikvrt_fenced_project_intent_v1", "operation": "manifest_project", "effect_id": key,
+                   "repository": self.repository, "permit": permit, "binding": binding,
+                   "project_plan": plan, "project_plan_sha256": plan_sha, "registration": registration,
+                   "root_ref": root_ref, "root_objects": objects, "repository_payload": repository_payload,
+                   "seed_refs": seed["refs"], "seed_descriptor": seed["descriptor"],
+                   "seed_wire_sha256": seed["wire_sha256"], "seed_wire_bytes": seed["wire_bytes"], "steps": steps}
+            with self.cp.transaction() as db:
+                self._project_admit(db, token, permit, doc)
+                if db.execute("SELECT 1 FROM provider_effects WHERE id=? OR status IN ('PREPARED','PENDING') LIMIT 1", (key,)).fetchone():
+                    return self._project_hold("CONCURRENT_PROJECT_INTENT_READBACK_ONLY")
+                db.execute("CREATE TABLE IF NOT EXISTS provider_project_steps (effect_id TEXT NOT NULL, step INTEGER NOT NULL, status TEXT NOT NULL, PRIMARY KEY(effect_id, step))")
+                db.execute("INSERT INTO provider_effects VALUES (?, ?, 'PREPARED', NULL)", (key, canonical_json_bytes(doc)))
+                db.executemany("INSERT INTO provider_project_steps VALUES (?, ?, 'PREPARED')", [(key, i) for i in range(len(steps))])
+                db.execute("UPDATE provider_project_grants SET consumed_effect_id=? WHERE target=? AND consumed_effect_id IS NULL", (key, plan["target_repository"].casefold()))
+                state = self.cp.state(db)
+                state["revision"] += 1
+                self.cp.store(db, state)
+            with self.cp.transaction() as db:
+                self._project_admit(db, token, permit, doc)
+                status, root = self._project_request(db, token, permit, doc, "GET", "repos/" + recovery.ROOT_REPOSITORY)
+                if status != 200 or root.get("full_name") != recovery.ROOT_REPOSITORY or root.get("permissions", {}).get("push") is not True:
+                    return self._project_hold("GOLDKELCH_ROOT_CONTENTS_ADMISSION_REQUIRED")
+                for path in ("repos/" + plan["target_repository"], "repos/" + recovery.ROOT_REPOSITORY + "/git/ref/" + root_ref.removeprefix("refs/")):
+                    status, _ = self._project_request(db, token, permit, doc, "GET", path)
+                    if status == 200:
+                        db.execute("UPDATE provider_effects SET status='REJECTED' WHERE id=?", (key,))
+                        return self._project_hold("PROJECT_NAME_OR_ROOT_REGISTRATION_COLLISION")
+                    if status != 404:
+                        return self._project_hold("PROJECT_ABSENCE_NOT_ESTABLISHED")
+                status, source = self._project_request(db, token, permit, doc, "GET", f"repos/{self.repository}/git/commits/{binding['head']}")
+                if status != 200 or source.get("sha") != binding["head"] or source.get("tree", {}).get("sha") != binding["tree"]:
+                    return self._project_hold("PROJECT_SOURCE_HEAD_TREE_READBACK_MISMATCH")
+                db.execute("UPDATE provider_effects SET status='PENDING' WHERE id=?", (key,))
+            for index, step in enumerate(steps):
+                with self.cp.transaction() as db:
+                    self._project_admit(db, token, permit, doc)
+                    if db.execute("SELECT status FROM provider_project_steps WHERE effect_id=? AND step=?", (key, index)).fetchone() != ("PREPARED",):
+                        raise TransitionError("PROJECT_STEP_ALREADY_DISPATCHED")
+                    db.execute("UPDATE provider_project_steps SET status='PENDING' WHERE effect_id=? AND step=?", (key, index))
+                with self.cp.transaction() as db:
+                    self._project_admit(db, token, permit, doc)
+                    if step["kind"] == "seed":
+                        self._read_registration(db, token, permit, doc)
+                        self._project_repository(db, token, permit, doc)
+                        advertised = self._git_request("GET", "git-receive-pack", None, admission=(db, token, permit, doc))
+                        refs, capabilities = self._advertised_refs(advertised, "git-receive-pack")
+                        if refs or not {"atomic", "report-status"}.issubset(capabilities):
+                            raise TransitionError("PROJECT_SEED_NOT_EMPTY_OR_ATOMIC_CREATE_UNAVAILABLE")
+                        raw = self._git_request("POST", "git-receive-pack", seed["wire"], admission=(db, token, permit, doc))
+                        lines, tail = self._packets(raw)
+                        if tail or lines != [b"unpack ok\n", *[("ok " + ref + "\n").encode() for ref in sorted(seed["refs"])]]:
+                            raise TransitionError("PROJECT_ATOMIC_SEED_OUTCOME_READBACK_ONLY")
+                    else:
+                        if step["kind"] == "repository":
+                            self._read_registration(db, token, permit, doc)
+                        status, observed = self._project_request(db, token, permit, doc, "POST", step["path"], step["payload"])
+                        if status in {401, 403, 409, 422}:
+                            db.execute("UPDATE provider_effects SET status='REJECTED' WHERE id=?", (key,))
+                            db.execute("UPDATE provider_project_steps SET status='REJECTED' WHERE effect_id=? AND step=?", (key, index))
+                            return self._project_hold("PROJECT_NATIVE_CREATE_REJECTED_READBACK_ONLY")
+                        if status != 201 or (step["kind"] == "root" and step["path"].endswith(("/blobs", "/trees", "/commits")) and observed.get("sha") != step["sha"]):
+                            raise TransitionError("PROJECT_CREATE_OUTCOME_READBACK_ONLY")
+                        if step["kind"] == "repository":
+                            fresh = self._project_repository(db, token, permit, doc)
+                            if observed.get("id") != fresh["id"]:
+                                raise TransitionError("PROJECT_CREATED_REPOSITORY_ID_MISMATCH")
+                    db.execute("UPDATE provider_project_steps SET status='VERIFIED' WHERE effect_id=? AND step=?", (key, index))
+            return self._recover_project(token, permit, key, plan, plan_sha, manifest)
+        except ProjectCapabilityRequired as exc:
+            return self._project_hold(str(exc))
+
+    def _read_project_seed(self, db, token, permit, doc, manifest) -> None:
+        advertised = self._git_request("GET", "git-upload-pack", None, admission=(db, token, permit, doc))
+        refs, _ = self._advertised_refs(advertised, "git-upload-pack")
+        if refs != doc["seed_refs"]:
+            raise TransitionError("PROJECT_SEED_REF_READBACK_MISMATCH")
+        raw = self._git_request("POST", "git-upload-pack", self._fetch_wire(refs), admission=(db, token, permit, doc))
+        nak = self._packet(b"NAK\n")
+        if not raw.startswith(nak + b"PACK"):
+            raise TransitionError("PROJECT_SEED_PACK_READBACK_MISMATCH")
+        with tempfile.TemporaryDirectory(prefix="qikvrt-project-readback-") as directory:
+            base = Path(directory)
+            repository = base / "readback.git"
+            recovery.git_command(base, "init", "--bare", "--object-format=sha1", str(repository))
+            pack = base / "readback.pack"
+            pack.write_bytes(raw[len(nak):])
+            recovery.git_command(repository, "index-pack", str(pack))
+            # Install the independently fetched pack, never reuse seed/source objects.
+            (repository / "objects" / "pack").mkdir(exist_ok=True)
+            for file in (pack, pack.with_suffix(".idx")):
+                file.rename(repository / "objects" / "pack" / file.name)
+            for ref, oid in refs.items():
+                recovery.git_command(repository, "update-ref", ref, oid, "0" * 40)
+            recovery.git_command(repository, "symbolic-ref", "HEAD", manifest["plan"]["git"]["head_ref"])
+            recovery.git_command(repository, "fsck", "--full", "--strict")
+            actual = recovery.git_snapshot(repository, manifest["plan"]["git"]["required_objects"])
+            expected = {**manifest["plan"]["git"], "refs": dict(sorted(refs.items()))}
+            if actual != expected:
+                raise TransitionError("PROJECT_HISTORY_HEAD_TREE_READBACK_MISMATCH")
+            seed = doc["registration"]
+            parents = recovery.git_command(repository, "rev-list", "--parents", "-n", "1", seed["seed_commit"]).split()
+            if parents != [seed["seed_commit"], doc["binding"]["head"]] or recovery.git_command(repository, "rev-parse", seed["seed_commit"] + "^{tree}") != seed["seed_tree"]:
+                raise TransitionError("PROJECT_SEED_PARENT_TREE_READBACK_MISMATCH")
+            archive = base / "seed.tar"
+            recovery.git_command(repository, "archive", "--format=tar", "--output=" + str(archive), seed["seed_commit"])
+            if archive.stat().st_size > PROJECT_PACK_MAX_BYTES:
+                raise TransitionError("PROJECT_READBACK_CAPACITY_EXCEEDED")
+            received = {}
+            with tarfile.open(archive) as tar:
+                for member in tar.getmembers():
+                    if member.isdir():
+                        continue
+                    if not member.isfile() or member.size > PROJECT_PACK_MAX_BYTES:
+                        raise TransitionError("PROJECT_SEED_UNSAFE_READBACK")
+                    name = recovery.safe_path(member.name)
+                    if name in received:
+                        raise TransitionError("PROJECT_SEED_DUPLICATE_READBACK")
+                    received[name] = tar.extractfile(member).read(PROJECT_PACK_MAX_BYTES + 1)
+            checkpoint = base / "checkpoint"
+            checkpoint.mkdir(mode=0o700)
+            expected_paths = {"checkpoint/manifest.json", "checkpoint/signature.bin", "checkpoint/repository.bundle", "QIKVRT_PROJECT_SEED.json"}
+            modes = {"manifest.json": 0o644, "signature.bin": 0o644, "repository.bundle": 0o600}
+            for asset in manifest["plan"]["assets"]:
+                name = "payload/" + asset["path"]
+                modes[name] = asset["mode"]
+                expected_paths.add("checkpoint/" + name)
+            if set(received) != expected_paths or received["QIKVRT_PROJECT_SEED.json"] != canonical_json_bytes(doc["seed_descriptor"]):
+                raise TransitionError("PROJECT_SEED_BYTES_OR_IDENTITY_READBACK_MISMATCH")
+            for name, mode in modes.items():
+                destination = checkpoint / name
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(received["checkpoint/" + name])
+                destination.chmod(mode)
+            recovery.verify_checkpoint(checkpoint, doc["project_plan"]["source_checkpoint_sha256"])
+
+    def _recover_project(self, token, permit, key, plan, plan_sha, manifest) -> dict:
+        with self.cp.transaction() as db:
+            row = db.execute("SELECT status, document, receipt FROM provider_effects WHERE id=?", (key,)).fetchone()
+            if row is None or row[0] not in {"PENDING", "VERIFIED"}:
+                return self._project_hold("PROJECT_INTENT_NOT_DISPATCHED_OR_REJECTED")
+            doc = decode(row[1])
+            self._project_admit(db, token, permit, doc)
+            if doc["project_plan"] != plan or doc["project_plan_sha256"] != plan_sha or doc["permit"] != permit:
+                raise TransitionError("PROJECT_READBACK_SUBJECT_MISMATCH")
+            steps = db.execute("SELECT step, status FROM provider_project_steps WHERE effect_id=? ORDER BY step", (key,)).fetchall()
+            if len(steps) != len(doc["steps"]) or any(i != index or status not in {"PENDING", "VERIFIED"} for index, (i, status) in enumerate(steps)):
+                return self._project_hold("PARTIAL_PROJECT_INTENT_READBACK_ONLY")
+            self._read_registration(db, token, permit, doc)
+            repository = self._project_repository(db, token, permit, doc, seeded=True)
+            self._read_project_seed(db, token, permit, doc, manifest)
+            self._read_registration(db, token, permit, doc)
+            fresh = self._project_repository(db, token, permit, doc, seeded=True)
+            if repository["id"] != fresh["id"]:
+                raise TransitionError("PROJECT_REPOSITORY_ID_READBACK_DRIFT")
+            final_refs, _ = self._advertised_refs(self._git_request("GET", "git-upload-pack", None,
+                admission=(db, token, permit, doc)), "git-upload-pack")
+            if final_refs != doc["seed_refs"]:
+                raise TransitionError("PROJECT_FINAL_REF_READBACK_DRIFT")
+            live = (not self._project_fixture and getattr(self._request, "__func__", None) is _LIVE_PROVIDER_REQUEST
+                    and getattr(self._git_request, "__func__", None) is _LIVE_PROJECT_GIT_REQUEST
+                    and getattr(self._raw_provider_request, "__func__", None) is _LIVE_RAW_PROVIDER_REQUEST
+                    and urllib.request.build_opener is _LIVE_HTTP_OPENER)
+            receipt = {"schema": "qikvrt_project_manifestation_readback_v1", "effect_id": key, "permit": permit,
+                       "project_plan_sha256": plan_sha, "target_repository": plan["target_repository"],
+                       "root_ref": doc["root_ref"], "root_commit": doc["root_objects"][2]["sha"],
+                       "seed_ref": doc["registration"]["seed_ref"], "seed_commit": doc["registration"]["seed_commit"],
+                       "repository_id": repository["id"], "source_checkpoint_sha256": plan["source_checkpoint_sha256"],
+                       "observed_utc": datetime.now(timezone.utc).isoformat(),
+                       "evidence_class": "LIVE_PROVIDER_READBACK" if live else "LOCAL_PROVIDER_FIXTURE_READBACK",
+                       "remote_repository_created": live, "root_registration_verified": live,
+                       "fresh_provider_readback": live, "fresh_fixture_readback": not live,
+                       "history_and_checkpoint_bytes_verified": True, "runtime_rebinding_required": True,
+                       "live_runtime_verified": False, "full_node_admitted": False, "effect_ack_done": False,
+                       "state": "HOLD_NEW_NODE_RUNTIME_REBINDING_AND_SEED_ACCEPTANCE" if live else "HOLD_PRODUCTIVE_PROJECT_ACCEPTANCE"}
+            if row[0] == "VERIFIED":
+                previous = decode(row[2])
+                if (not isinstance(previous, dict) or set(previous) != set(receipt)
+                        or {k: v for k, v in previous.items() if k != "observed_utc"} != {k: v for k, v in receipt.items() if k != "observed_utc"}):
+                    raise TransitionError("PROJECT_DURABLE_RECEIPT_MISMATCH")
+            db.execute("UPDATE provider_effects SET status='VERIFIED', receipt=? WHERE id=?", (canonical_json_bytes(receipt), key))
+        with self.cp.transaction() as db:
+            self._project_admit(db, token, permit, doc)
+            observed = db.execute("SELECT status, document, receipt FROM provider_effects WHERE id=?", (key,)).fetchone()
+            if observed != ("VERIFIED", canonical_json_bytes(doc), canonical_json_bytes(receipt)):
+                raise TransitionError("PROJECT_DURABLE_LEDGER_READBACK_MISMATCH")
+        return receipt
 
     @staticmethod
     def _twin_result(result: dict) -> tuple[dict, dict, dict]:
@@ -594,6 +1185,12 @@ class GitHubAuthorityProvider:
 
 
 
+_LIVE_PROVIDER_REQUEST = GitHubAuthorityProvider._request
+_LIVE_PROJECT_GIT_REQUEST = GitHubAuthorityProvider._git_request
+_LIVE_RAW_PROVIDER_REQUEST = GitHubAuthorityProvider._raw_provider_request
+_LIVE_HTTP_OPENER = urllib.request.build_opener
+
+
 class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
     server_version = "QIKVRTGitHubApiShim/2.1"
 
@@ -730,7 +1327,7 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                     raise TransitionError("existing absolute private control-plane path required")
                 adapter = GitHubAuthorityProvider(AuthorityControlPlane(Path(path)), repository)
                 result = adapter.execute(body["writer_capability"], body["permit"], body["operation"])
-                self._send_json(200, {"status": "CONTINUE", "provider_result": result})
+                self._send_json(200, {"status": "HOLD" if result.get("state", "").startswith("HOLD") else "CONTINUE", "provider_result": result})
             except (ValueError, TypeError, OSError, RuntimeError):
                 # Capabilities and provider error bodies must never be echoed.
                 self._send_json(409, {"status": "BLOCK", "effect_ack_done": False})

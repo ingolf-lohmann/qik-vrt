@@ -807,10 +807,12 @@ def plan_effect(package: Path, expected_manifest_sha256: str,
                 or target_repository.casefold() in {p.casefold() for p in plan["lineage"]}):
             raise RecoveryError("new project must have a new GitHub identity under Goldkelch")
         result.update({
+            "project_plan_schema": "qikvrt_project_manifestation_plan_v1",
             "operation": "DERIVE_PROJECT", "target_repository": target_repository,
             "new_node_id": secrets.token_hex(32), "parent_repository": plan["repository"],
             "parent_node_id": plan["node_id"],
             "source_checkpoint_sha256": expected_manifest_sha256,
+            "source_git": plan["git"], "repository_visibility": "private",
             "lineage": [*plan["lineage"], target_repository],
             "required_effects": [
                 "EXACT_TARGET_CREATE_CAPABILITY_AND_ADMISSION",
@@ -837,10 +839,38 @@ def plan_effect(package: Path, expected_manifest_sha256: str,
     return result
 
 
+def verify_project_plan(package: Path, expected_manifest_sha256: str,
+                        project: dict[str, Any], expected_plan_sha256: str) -> dict[str, Any]:
+    """A project plan is an exact, separately admitted trust input, not a grant."""
+    require_digest(expected_plan_sha256)
+    if digest(canonical_json_bytes(project)) != expected_plan_sha256:
+        raise RecoveryError("project plan digest mismatch")
+    if not isinstance(project, dict):
+        raise RecoveryError("invalid project plan")
+    require_digest(project.get("new_node_id"))
+    expected = plan_effect(package, expected_manifest_sha256, project.get("target_repository"))
+    expected["new_node_id"] = project["new_node_id"]
+    if (project != expected or project["new_node_id"] == project["parent_node_id"]
+            or len(project["target_repository"].split("/")[1]) > 100):
+        raise RecoveryError("project parent/checkpoint/lineage or seed binding mismatch")
+    manifest = verify_checkpoint(package.absolute(), expected_manifest_sha256)
+    # Historical offline readability does not grant current project admission.
+    validate_independence_payload(package.absolute() / "payload", manifest["plan"],
+                                  require_dependency_mirroring=True)
+    return manifest
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="operation", required=True)
     commands.add_parser("verify-policy")
+    execute_project = commands.add_parser("execute-project")
+    for flag in ("checkpoint", "project-plan", "control-plane", "token-file", "permit"):
+        execute_project.add_argument("--" + flag, type=Path, required=True)
+    execute_project.add_argument("--expect-manifest-sha256", required=True)
+    execute_project.add_argument("--expect-project-plan-sha256", required=True)
+    execute_project.add_argument("--effect-id", required=True)
+    execute_project.add_argument("--readback-only", action="store_true")
     create = commands.add_parser("create")
     for flag in ("repository", "payload-root", "plan", "output"):
         create.add_argument("--" + flag, type=Path, required=True)
@@ -863,7 +893,21 @@ def main(argv: list[str] | None = None) -> int:
             command.add_argument("--target-repository", required=True)
     args = parser.parse_args(argv)
     try:
-        if args.operation == "verify-policy":
+        if args.operation == "execute-project":
+            from tools.qikvrt_authority_transition import AuthorityControlPlane, secret_file, decode
+            from src.qikvrt_github_api_shim import GitHubAuthorityProvider, PROVIDER_REPOSITORY
+            cp = AuthorityControlPlane(args.control_plane)
+            provider = GitHubAuthorityProvider(cp, PROVIDER_REPOSITORY)
+            token, permit = secret_file(args.token_file), decode(read_file(args.permit))
+            project = load_json(args.project_plan, args.expect_project_plan_sha256)
+            operation = {"operation": "readback_project" if args.readback_only else "manifest_project",
+                         "effect_id": args.effect_id, "project_plan": project,
+                         "project_plan_sha256": args.expect_project_plan_sha256,
+                         "checkpoint": str(args.checkpoint.absolute())}
+            result = provider.execute(token, permit, operation)
+            sys.stdout.buffer.write(canonical_json_bytes(result))
+            return 20 if result["state"].startswith("HOLD") else 0
+        elif args.operation == "verify-policy":
             policy = parse_json_bytes(read_file(ROOT / "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"), "full node policy")
             validate_independence_requirement(policy)
             result = {"state": "PASS", "scope": "REQUIREMENT_PRESERVATION_ONLY",

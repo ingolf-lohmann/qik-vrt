@@ -561,3 +561,115 @@ inherit the current CQF role-admission claim without the new bound inventory
 and rule. Source hashes, copied mirror bytes and a passed isolated test do not
 establish general runtime equivalence, rights, live capability unseal or full
 Mesh closure; those remain separate required observations.
+
+## Versionierte Projektmanifestation V1
+
+`qikvrt_project_manifestation_plan_v1` bindet den bisherigen `plan-project` an
+Checkpoint, Parent, neue Node-ID, vollständige Ref-/Objektinventur und Goldkelch-
+Lineage. Der Plan bleibt lokal. Neue Manifestationen verlangen zusätzlich
+die aktuelle CQF-Regel und gebundene Dependency-Mirrors; historische Offline-
+Lesbarkeit genügt dafür nicht. Erst ein separat provisionierter,
+create-only `qikvrt_exact_project_create_capability_v1`-Grant im vorhandenen
+privaten `AuthorityControlPlane` erlaubt `manifest_project` im selben
+`GitHubAuthorityProvider`. Es gibt keinen neuen Writer, Credential-Pfad oder
+Permit-Issuer. Der Broker benutzt ausschließlich seinen bisherigen kurzlebigen
+`GITHUB_TOKEN`; eine Mirror-Contents-Capability wird nicht zu einer
+Goldkelch-Organisations-Capability hochgestuft.
+
+Der vorhandene Control-Plane-Admin kann mit `grant-project` einen höchstens
+eine Stunde gültigen Grant provisionieren. Eingaben sind der extern geprüfte
+Plan-Digest, der vollständige Checkpoint, das aktuelle Writer-Permit und ein
+separat provisionierter Capability-Scope mit Schema
+`qikvrt_owner_provisioned_project_capability_scope_v1`, `expires_ns` und genau:
+
+- `GOLDKELCH_ROOT_REGISTER_CREATE`
+- `GOLDKELCH_ORGANIZATION_REPOSITORY_CREATE`
+- `EXACT_NEW_REPOSITORY_ATOMIC_SEED_CREATE`
+
+Der private Grant speichert nur den Credential-Digest; er bleibt an Node,
+Repository, HEAD/TREE, Checkpoint, Control-Plane-Epoch, Authority-Epoch und Fence
+gebunden. Er ist eine Owner-/Broker-Vertrauensgrenze, kein unabhängig
+attestierter GitHub-Permissions-Nachweis. Vorbestehende unabhängige Writer und
+privilegierte Provider-/Datenbankadministratoren bleiben außerhalb dieser
+Fencing-Behauptung. Ein frischer Root-Readback muss Contents-Schreibrecht
+zeigen; Organisations- oder Ziel-Create-Ablehnung ergibt keinen Erfolg.
+
+Der endliche Ablauf führt ausschließlich diese Effekte aus:
+
+1. Native create-only Root-Registrierung in `Goldkelch/qik-vrt` unter
+   `refs/heads/work/qikvrt-project-register/<SHA256(casefold(target))>`.
+   Ein isolierter Commit trägt `QIKVRT_PROJECT_REGISTRATION.json`; Root-Main
+   wird nicht verändert. Namensslot, vollständige Lineage, Parent/Checkpoint,
+   Plan-Digest, Permit und erwarteter Seed sind gebunden.
+2. `POST /orgs/Goldkelch/repos` mit dem exakten neuen Namen, `private=true`,
+   `auto_init=false` und einem intentgebundenen Marker. Eine bereits existente
+   Repository-Identität oder Root-Registrierung wird nie übernommen.
+3. Ein einziger Smart-HTTP-`git-receive-pack` im bestehenden Broker mit
+   `report-status atomic` und ausschließlich Null-OID → neue Ref. Alle
+   akzeptierten Source-Refs bleiben bytegenau an ihren alten OIDs. Ein neuer
+   Seed-Commit hat genau den akzeptierten Source-HEAD als Parent. Er trägt den
+   vollständigen unveränderten Checkpoint einschließlich Bundle, 400-Byte-
+   Signatur, Assets und Governance sowie einen neuen Mirror-Identitäts- und
+   Scheduler-Owner-Descriptor mit gesperrtem Writer. Kein Shell-Push oder
+   zweiter authentisierter Git-Client wird gestartet.
+4. Frischer Root-Ref-/Commit-/TREE-/Byte-Readback, Repository-Metadaten- und
+   ID-Readback sowie unabhängiger `git-upload-pack` in einen leeren lokalen
+   Objektspeicher. Ref-Inventur, Historie/required objects, HEAD/TREE,
+   Seed-Parent, Checkpoint-Bytes, Governance und Scheduler-Descriptor werden
+   geprüft. Anschließend werden Root und Repository nochmals rückgelesen und
+   der Receipt separat aus dem dauerhaften Sink gelesen.
+
+GitHub REST erlaubt die erste Ref in einem leeren Repository auch bei vorhandenem
+Commit-Objekt nicht. Daher gehört der gebundene native Git-Transport ausdrücklich
+zu diesem Provider-Successor. V1 akzeptiert SHA-1, `refs/heads/main` als Source-
+HEAD, höchstens 1024 Source-Refs unter `refs/heads/` oder `refs/tags/` und
+64 MiB Seed-/Readback-Transport. Fehlendes `atomic`, andere Namespaces oder
+überschrittene Kapazität benötigen einen versionierten Successor; es gibt
+keinen verlustbehafteten Fallback.
+
+`provider_effects` bleibt das gemeinsame Intent-/Receipt-Journal. Die additive
+Tabelle `provider_project_steps` speichert jeden Einzeldispatch dauerhaft als
+`PREPARED` → `PENDING` → `VERIFIED` beziehungsweise `REJECTED`. `PENDING`
+wird vor dem Provider-Aufruf committet. Frische Admission, Provider-Aufruf und
+Readbacks halten denselben Takeover-Lock. Jeder erneute `manifest_project`
+ergibt `PROJECT_REPLAY_READBACK_ONLY`. `readback_project` oder
+`execute-project --readback-only` senden ausschließlich Provider-Reads, auch
+nach Prozessneustart oder verlorenem ACK. Unversuchte Folgeschritte werden nicht
+nachgeholt. Teilweise registrierte/erzeugte Projekte bleiben HOLD/PENDING und
+sperren Takeover sowie neue Provider-Mutationen; es gibt weder Cleanup noch automatische
+Löschung, Wiederanlage oder neue Namenswahl.
+
+Der lokale Shim verwendet seinen vorhandenen
+`POST /repos/ingolf-lohmann/qik-vrt/qikvrt/authority/effects`-Pfad mit derselben
+Writer-Capability und demselben Permit. Die Operation enthält `effect_id`,
+`project_plan`, `project_plan_sha256` und den absoluten privaten `checkpoint`-
+Pfad. Die CLI ruft denselben Provider auf:
+
+```sh
+python3 -B tools/qikvrt_mesh_recovery.py execute-project \
+  --checkpoint "$CHECKPOINT" --expect-manifest-sha256 "$MANIFEST_SHA256" \
+  --project-plan "$PROJECT_PLAN" --expect-project-plan-sha256 "$PROJECT_PLAN_SHA256" \
+  --control-plane "$CP" --token-file "$CAP" --permit "$PERMIT" \
+  --effect-id "$EFFECT_ID"
+```
+
+Fehlt die produktive Create-Capability, lautet der Receipt exakt `state=HOLD`,
+`reason=GOLDKELCH_CREATE_CAPABILITY_REQUIRED`; vor diesem HOLD findet kein
+Provider-Aufruf statt. Die Regressionstests führen echtes Receive-/Upload-Pack
+in getrennten dauerhaften Bare-Git-Fixtures durch und verwenden die originale
+Provider-HTTP-/Admission-Implementierung. Ihre Receipts führen
+`evidence_class=LOCAL_PROVIDER_FIXTURE_READBACK`,
+`remote_repository_created=false` und `effect_ack_done=false`.
+
+Auch ein tatsächlicher produktiver Manifestations-Readback lässt
+`NEW_NODE_RUNTIME_REBINDING_AND_SEED_ACCEPTANCE` offen. Die vorbereitete
+Node-/Scheduler-Rebindung startet keinen neuen Runtime- oder Provider-Schedule;
+sie gewährt keine Vollnode-Zulassung. Produktive Goldkelch-Capability, private
+Control Plane, Trusted-Main-Aktivierung und neue Node-Runtime-Abnahme sind in
+diesem Arbeitslauf nicht vorhanden beziehungsweise nicht nachgewiesen.
+
+Primärquellen, gelesen 2026-10-01 UTC:
+[GitHub Organisations-Repositories](https://docs.github.com/en/rest/repos/repos#create-an-organization-repository),
+[GitHub Git-Referenzen](https://docs.github.com/en/rest/git/refs#create-a-reference),
+[Git Smart HTTP](https://git-scm.com/docs/http-protocol) und
+[Git Pack-Protokoll](https://git-scm.com/docs/pack-protocol).
