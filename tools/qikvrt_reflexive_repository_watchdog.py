@@ -189,6 +189,7 @@ def load_contract(root: Path = ROOT) -> dict[str, Any]:
         raise ReflexiveWatchdogBlock("node liveness authority-head-mismatch disposition must be HOLD")
     if liveness.get("artifact_only_materialization") is not True:
         raise ReflexiveWatchdogBlock("node liveness materialization must remain artifact-only")
+    haltpoint.load_policy()
     return contract
 
 
