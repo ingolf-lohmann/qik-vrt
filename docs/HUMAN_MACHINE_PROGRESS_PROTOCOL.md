@@ -109,3 +109,43 @@ and MUST NOT be projected as a terminal snapshot.
 ## Communication boundary
 
 The client MUST not answer with long explanations when it can perform the next executable action. Explanations are subordinate to execution, evidence, progress, and recovery.
+
+
+## Interactive questions and client interruption
+
+A question, explanation request, or status request during authorized work is
+steering within the existing work unit. The client MUST answer it and continue
+the remaining authorized work. It MUST NOT treat that message, an intermediate
+answer, or the end of a chat turn as cancellation or completion. Replacement
+requires an explicit cancellation or a user request incompatible with the
+existing objective. Existing task authorization is retained.
+
+The productive executor's lifetime MUST be independent of the interactive
+client. Before a client interruption, continuation requires the existing
+durable work-unit identity, purpose, authorization scope, exact repository /
+ref / HEAD / TREE, next bounded action, admitted executor/run identity,
+writer/fence binding where applicable, and retrievable effect journal and
+readback. A committed intention or request receipt does not establish an
+admitted productive executor. Missing handoff support is an open defect, not
+an owner obligation to repeat the original request.
+
+On resumption, the executor MUST reobserve the current subject, competing
+writer and operation/effect journal before choosing the next action. Changed
+HEAD/TREE invalidates predecessor gates. An ambiguous transport response MUST
+be resolved by authoritative readback before a retry. Previously consumed
+publication authorization remains consumed; resumption grants no new external
+effect, admission, review or writer authority. One blocked scope MUST NOT stop
+independent eligible scopes without a declared causal/policy edge.
+
+Acceptance requires a real authorized task and independent execution evidence:
+ask and answer an intermediate question, disconnect the interactive client,
+observe the admitted executor perform the remaining bounded task without an
+owner restart, and freshly read back the effect under the same work-unit
+identity. Check explicit cancellation, subject drift, competing writers and
+ambiguous/replayed effect requests separately. Protocol presence, passing
+contract tests or a green observer cannot stand in for that execution witness.
+
+The diagnostic and pending acceptance work unit is
+`state/work_units/QIKVRT_CHAT_INTERRUPTION_CONTINUITY_20261002_V1.json`.
+It records a user-reported symptom and observed carrier scope, not a proven
+internal cause of the ChatGPT client or an already completed product repair.
