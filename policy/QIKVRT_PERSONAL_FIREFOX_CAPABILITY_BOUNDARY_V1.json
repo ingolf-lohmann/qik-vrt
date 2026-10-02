@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.3",
+  "version": "1.4",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -154,7 +154,7 @@
         "source": "docs/README_DEPLOY_GITHUB_PAGES_DE.md"
       },
       "source_file": "docs/index.html",
-      "expected_document_title": "QIK-VRT Trust Mesh \u2014 Repository-Evidenz, Audit und k\u00fcnstliche Kognition",
+      "expected_document_title": "QIK-VRT Trust Mesh — Repository-Evidenz, Audit und künstliche Kognition",
       "requires": [
         "same_candidate_head_tree_run_attempt_job",
         "fresh_unauthenticated_canonical_http_get",
@@ -171,7 +171,7 @@
       "public_root_readback_proves_full_candidate_deployment": false,
       "public_root_readback_accepts_personal_release": false
     },
-    "witness_command": "python tools/qikvrt_firefox_windows_witness.py --output <ephemeral-output>",
+    "witness_command": "python tools/qikvrt_firefox_windows_witness.py --windows-witness --output <ephemeral-output>",
     "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt.",
     "test_host_permission_setup": {
       "origin": "http://127.0.0.1/*",
@@ -234,6 +234,47 @@
     "persistent_consolidation_verified": false,
     "unbounded_scalability_proved": false,
     "recovery": "HOLD on absent or incompatible tools; no downgrade, download fallback or credential widening",
-    "receipt": "RECEIPT.json"
+    "receipt": "RECEIPT.json",
+    "runtime_role": "PRIMARY_TEST_AND_RUNTIME_REFERENCE",
+    "reference_runtime": {
+      "owner_decision_date": "2026-10-02",
+      "primary_platform": "Linux",
+      "existing_path_reused": [
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "tools/qikvrt_firefox_windows_witness.py"
+      ],
+      "extension_platforms_require_fresh_own_witness": true,
+      "local_witness_command": "python3 -B tools/qikvrt_firefox_windows_witness.py --local-ring-only --output <new-private-output>",
+      "native_firefox_witness_command": "python3 -B tools/qikvrt_firefox_windows_witness.py --linux-ring --headless --output <new-private-output>",
+      "process_scale": [
+        1,
+        2,
+        4
+      ],
+      "consolidated_process_count": 1,
+      "consolidation_mode": "QUIESCENT_EXCLUSIVE_OWNERSHIP_TRANSFER_OF_ALL_ORIGIN_STORES",
+      "origin_identity": "STABLE_NODE_ID_AND_ORIGINAL_EVENT_ID",
+      "token_secret_or_event_rewriting": "DENY",
+      "aggregate_readback": "/terminal/events",
+      "origin_route": "/nodes/{node_id}",
+      "missing_corrupt_aliased_or_owned_origin": "BLOCK_COMPLETE_CONSOLIDATION",
+      "network_service_dependency_for_local_work": false,
+      "external_api_quota_bypass": false,
+      "external_adapter_rule": "INTERFACE_CONTRACT_AND_FRESH_BEHAVIORAL_CONFORMANCE_BEFORE_ACCEPTANCE",
+      "superior_performance_requires_equivalent_workload_measurement": true,
+      "cross_host_replication_or_live_migration_implied": false,
+      "unbounded_scalability_implied": false,
+      "quantum_connectivity": {
+        "owner_asserted": true,
+        "author": "Ingolf Lohmann",
+        "classification": "ATTRIBUTED_OWNER_ARCHITECTURE_AND_PHYSICAL_CORRESPONDENCE_CLAIM",
+        "established_by_this_software_witness": false,
+        "ring_to_sphere": "OWNER_GEOMETRIC_EXTENSION_MODEL",
+        "reference": "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json"
+      },
+      "extension_strategy": "CASCADE_FOUR_ORIGIN_RINGS_WITH_FRESH_PER_LEVEL_ACCEPTANCE",
+      "implemented_cascade_depth": 1,
+      "unbounded_cascade_is_owner_goal_not_completed_acceptance": true
+    }
   }
 }

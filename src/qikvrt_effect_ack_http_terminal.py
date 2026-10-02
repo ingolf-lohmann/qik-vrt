@@ -23,6 +23,7 @@ import stat
 import subprocess
 import threading
 import time
+from contextlib import ExitStack
 from dataclasses import asdict, dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -479,6 +480,14 @@ STATE = State()
 class Handler(BaseHTTPRequestHandler):
     server_version = "QIKVRTEffectAckTerminal/1.0"
 
+    @property
+    def state(self) -> State:
+        return getattr(self, "node_state", getattr(self.server, "state", STATE))
+
+    @property
+    def path_prefix(self) -> str:
+        return getattr(self, "node_prefix", "")
+
     def _json(
         self,
         code: int,
@@ -496,7 +505,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Access-Control-Allow-Origin", "https://github.com")
         self.send_header("Access-Control-Expose-Headers", "Effect-Ack, Link")
-        self.send_header("Link", "</.well-known/effect-ack>; rel=\"effect-ack\"; type=\"application/json\"")
+        self.send_header("Link", f'<{self.path_prefix}/.well-known/effect-ack>; rel="effect-ack"; type="application/json"')
         if state and record_hash:
             state_token = {
                 "EFFECT_NACK": "nack",
@@ -539,11 +548,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         # Check poison and select the readback in the same critical section:
         # a concurrent failed fsync must not expose unconfirmed cached events.
-        with STATE.lock:
+        with self.state.lock:
             self._get()
 
     def _get(self) -> None:
-        if STATE.persistence_failed:
+        if self.state.persistence_failed:
             self._json(503, {"state": "HOLD", "ordinary_release": False,
                              "reason": "DURABLE_TERMINAL_STATE_UNAVAILABLE_RESTART_REQUIRED"})
             return
@@ -554,40 +563,40 @@ class Handler(BaseHTTPRequestHandler):
                 "modes": ["prepare", "commit"],
                 "protected_effects": ["terminal_input"],
                 "external_effects": "NONE",
-                "record_template": "/effect-ack/records/{sha256}",
-                "seed_binding": STATE.seed_binding,
+                "record_template": self.path_prefix + "/effect-ack/records/{sha256}",
+                "seed_binding": self.state.seed_binding,
             })
             return
         if self.path == "/terminal/state":
             head = git_read("rev-parse", "HEAD")
             tree = git_read("rev-parse", "HEAD^{tree}")
-            with STATE.lock:
+            with self.state.lock:
                 body = {
                     "schema": "qikvrt_terminal_backend_state_v1",
-                    "events": len(STATE.events),
-                    "last_event": STATE.events[-1] if STATE.events else None,
+                    "events": len(self.state.events),
+                    "last_event": self.state.events[-1] if self.state.events else None,
                     "repository_head": head,
                     "repository_tree": tree,
                     "external_effects": "NONE",
-                    "seed_binding": STATE.seed_binding,
-                    "persistence_scope": STATE.persistence_scope,
+                    "seed_binding": self.state.seed_binding,
+                    "persistence_scope": self.state.persistence_scope,
                 }
             self._json(200, body)
             return
         if self.path == "/terminal/events":
-            with STATE.lock:
-                events = [dict(event) for event in STATE.events]
+            with self.state.lock:
+                events = [dict(event) for event in self.state.events]
             self._json(200, {"schema": "qikvrt_terminal_event_snapshot_v1",
                              "events": events, "event_count": len(events),
                              "events_sha256": sha256(canonical_json(events)),
-                             "seed_binding": STATE.seed_binding,
-                             "persistence_scope": STATE.persistence_scope})
+                             "seed_binding": self.state.seed_binding,
+                             "persistence_scope": self.state.persistence_scope})
             return
         prefix = "/effect-ack/records/"
         if self.path.startswith(prefix):
             digest = self.path[len(prefix):]
-            with STATE.lock:
-                body = STATE.records.get(digest)
+            with self.state.lock:
+                body = self.state.records.get(digest)
             if body is None:
                 self._json(404, {"state": "HOLD", "reason": "record not found"})
             else:
@@ -597,9 +606,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         try:
-            if STATE.persistence_failed:
+            if self.state.persistence_failed:
                 raise PersistenceError("DURABLE_TERMINAL_STATE_UNAVAILABLE_RESTART_REQUIRED")
-            STATE.validate_seed()
+            self.state.validate_seed()
             request_binding = parse_effect_ack_request(self.headers.get("Effect-Ack-Request"))
             body = self._read_body()
             if self.path == "/terminal/prepare":
@@ -620,32 +629,32 @@ class Handler(BaseHTTPRequestHandler):
 
     def _prepare(self, body: dict[str, Any]) -> None:
         if body.get("schema") != "qikvrt_terminal_input_v1":
-            with STATE.lock:
-                digest, record = STATE.record(
+            with self.state.lock:
+                digest, record = self.state.record(
                     state="EFFECT_ACK_BLOCK",
                     input_hash=sha256(canonical_json(body)),
                     ordinary_release=False,
                     reason="unsupported terminal schema",
                 )
-                STATE.persist()
+                self.state.persist()
             self._json(422, {"record": record, "record_hash": digest}, state=record["state"], record_hash=digest)
             return
         input_hash = sha256(canonical_json(body))
-        with STATE.lock:
-            digest, record = STATE.record(
+        with self.state.lock:
+            digest, record = self.state.record(
                 state="EFFECT_ACK_DONE",
                 input_hash=input_hash,
                 ordinary_release=True,
                 reason="loopback terminal input satisfies bounded local policy",
             )
-            token = STATE.make_token(input_hash, digest)
-            STATE.persist()
+            token = self.state.make_token(input_hash, digest)
+            self.state.persist()
         response = {
             "state": "EFFECT_ACK_DONE",
             "ordinary_release": False,
             "commit_token": token,
             "record_hash": digest,
-            "record_url": f"/effect-ack/records/{digest}",
+            "record_url": f"{self.path_prefix}/effect-ack/records/{digest}",
             "expires_in_seconds": TOKEN_TTL_SECONDS,
             "external_effect": "NONE",
         }
@@ -655,30 +664,30 @@ class Handler(BaseHTTPRequestHandler):
         token = binding["token"]
         record_hash = binding["hash"]
         commit_input_hash = sha256(canonical_json(body))
-        with STATE.lock:
-            if STATE.persistence_failed:
+        with self.state.lock:
+            if self.state.persistence_failed:
                 raise PersistenceError("DURABLE_TERMINAL_STATE_UNAVAILABLE_RESTART_REQUIRED")
-            STATE.validate_seed()
-            prepared = STATE.prepared.get(token)
+            self.state.validate_seed()
+            prepared = self.state.prepared.get(token)
             if prepared is None or prepared.used or prepared.expires_at < time.time() or not hmac.compare_digest(prepared.record_hash, record_hash):
                 self._json(409, {"state": "HOLD", "ordinary_release": False, "reason": "invalid stale used or mismatched token"})
                 return
             if not hmac.compare_digest(prepared.input_hash, commit_input_hash):
                 self._json(409, {"state": "HOLD", "ordinary_release": False, "reason": "commit payload differs from exact prepared payload"})
                 return
-            if len(STATE.events) >= MAX_EVENTS:
+            if len(self.state.events) >= MAX_EVENTS:
                 self._json(409, {"state": "HOLD", "ordinary_release": False,
                                  "reason": "bounded terminal event capacity reached"})
                 return
             prepared.used = True
-            digest, record = STATE.record(
+            digest, record = self.state.record(
                 state="EFFECT_ACK_DONE",
                 input_hash=prepared.input_hash,
                 ordinary_release=True,
                 reason="single-use exact-bound loopback commit executed",
             )
             event = {
-                "event_id": len(STATE.events) + 1,
+                "event_id": len(self.state.events) + 1,
                 "kind": "TERMINAL_INPUT_ACCEPTED",
                 "record_hash": record_hash,
                 "input_hash": commit_input_hash,
@@ -687,12 +696,12 @@ class Handler(BaseHTTPRequestHandler):
                 "video_present": body.get("video") is not None,
                 "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "external_effect": "NONE",
-                "seed_binding": STATE.seed_binding,
+                "seed_binding": self.state.seed_binding,
                 "commit_token_sha256": sha256(token.encode("ascii")),
                 "effect_record_hash": digest,
             }
-            STATE.events.append(event)
-            STATE.persist()
+            self.state.events.append(event)
+            self.state.persist()
         self._json(
             200,
             {"state": "EFFECT_ACK_DONE", "ordinary_release": True, "post_effect": event, "successor_record": record},
@@ -702,6 +711,97 @@ class Handler(BaseHTTPRequestHandler):
 
     def log_message(self, fmt: str, *args: Any) -> None:
         return
+
+
+def load_ring_states(root: Path, seed: Path | None, *, expected_nodes: int = 4) -> dict[str, State]:
+    """Take exclusive ownership of every retained origin; never merge token keys.
+
+    Process consolidation changes execution placement, not origin identity or
+    snapshot bytes. Missing, extra, corrupt or concurrently owned origins block
+    the complete admission surface before any HTTP server is started.
+    """
+    if os.name != "posix" or seed is None or type(expected_nodes) is not int or expected_nodes not in (1, 2, 4):
+        raise PersistenceError("LINUX_RING_REQUIRES_POSIX_AND_CANONICAL_SEED")
+    states: dict[str, State] = {}
+    try:
+        root = root.absolute()
+        if any(path.is_symlink() for path in (root, *root.parents)) or not root.is_dir():
+            raise ValueError("ring root must be an existing no-follow directory")
+        children = sorted(root.iterdir())
+        if [p.name for p in children] != ["node-" + str(i) for i in range(expected_nodes)]:
+            raise ValueError("ring inventory differs from the complete expected origin set")
+        identities = {}
+        for child in children:
+            if child.is_symlink() or not child.is_dir():
+                raise ValueError("origin must be a no-follow directory")
+            info = child.stat()
+            identities[child.name] = (info.st_dev, info.st_ino)
+            store = child / ".qikvrt/api/terminal.json"
+            if not store.is_file() or store.is_symlink():
+                raise ValueError("retained origin snapshot is missing")
+        if len(set(identities.values())) != len(children):
+            raise ValueError("origin directories alias")
+        for child in children:
+            states[child.name] = State(seed, state_root=child)
+        if len({state.secret for state in states.values()}) != expected_nodes:
+            raise ValueError("origin stores share a token key")
+        if sorted(p.name for p in root.iterdir()) != list(states) or any(
+                child.is_symlink() or (child.stat().st_dev, child.stat().st_ino) != identities[child.name]
+                for child in children):
+            raise ValueError("ring inventory changed during ownership transfer")
+        return states
+    except BaseException as exc:
+        for state in states.values():
+            state.close()
+        if isinstance(exc, (OSError, ValueError, PersistenceError)):
+            raise PersistenceError("LINUX_RING_ORIGIN_UNAVAILABLE_NO_AUTOMATIC_RESET") from exc
+        raise
+
+
+class RingHandler(Handler):
+    """One process serves unchanged origin stores through explicit node routes."""
+
+    def _select_node(self) -> bool:
+        match = re.fullmatch(r"/nodes/(node-[0-3])(/.*)", self.path)
+        if match is None or match[1] not in self.server.ring_states:
+            self._json(404, {"state": "HOLD", "ordinary_release": False,
+                             "reason": "EXPLICIT_RETAINED_ORIGIN_NODE_REQUIRED"})
+            return False
+        self.node_state = self.server.ring_states[match[1]]
+        self.node_prefix = "/nodes/" + match[1]
+        self.path = match[2]
+        return True
+
+    def do_POST(self) -> None:
+        if self._select_node():
+            super().do_POST()
+
+    def do_GET(self) -> None:
+        if self.path == "/terminal/events":
+            with ExitStack() as locks:
+                for state in self.server.ring_states.values():
+                    locks.enter_context(state.lock)
+                if any(state.persistence_failed for state in self.server.ring_states.values()):
+                    self._json(503, {"state": "HOLD", "ordinary_release": False,
+                                     "reason": "DURABLE_TERMINAL_STATE_UNAVAILABLE_RESTART_REQUIRED"})
+                    return
+                events = [{"node_id": node, "event": dict(event)}
+                          for node, state in self.server.ring_states.items()
+                          for event in state.events]
+                self._json(200, {"schema": "qikvrt_terminal_ring_snapshot_v1",
+                    "origin_nodes": list(self.server.ring_states),
+                    "events": events, "event_count": len(events),
+                    "events_sha256": sha256(canonical_json(events)),
+                    "event_identity": "ORIGIN_NODE_AND_ORIGINAL_EVENT_ID",
+                    "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+                    "external_effects": "NONE"})
+        elif self.path == "/.well-known/effect-ack":
+            self._json(200, {"schema": "qikvrt_linux_ring_capability_v1",
+                "origin_nodes": list(self.server.ring_states),
+                "node_prefix": "/nodes/{node_id}", "modes": ["prepare", "commit"],
+                "aggregate_readback": "/terminal/events", "external_effects": "NONE"})
+        elif self._select_node():
+            super().do_GET()
 
 
 def main() -> int:
@@ -714,18 +814,32 @@ def main() -> int:
                         help="Durable local state root; uses .qikvrt/api/terminal.json")
     parser.add_argument("--state", type=Path,
                         help="Explicit durable state file; uses the same API persistence path")
+    parser.add_argument("--ring-root", type=Path,
+                        help="Consolidate all retained node-0..node-3 stores into one Linux process")
+    parser.add_argument("--ring-nodes", type=int, choices=(1, 2, 4), default=4,
+                        help="Complete expected origin count; missing origins must never disappear silently")
     args = parser.parse_args()
     if args.host not in {"127.0.0.1", "localhost"}:
         raise SystemExit("BLOCK: reference terminal bridge is loopback-only")
     global STATE
-    STATE = State(args.seed, args.state) if args.state is not None else State(args.seed, state_root=args.state_root)
+    if args.ring_root is not None and args.state is not None:
+        parser.error("choose --ring-root or --state")
+    states = load_ring_states(args.ring_root, args.seed, expected_nodes=args.ring_nodes) if args.ring_root is not None else None
+    if states is None:
+        STATE = State(args.seed, args.state) if args.state is not None else State(args.seed, state_root=args.state_root)
     try:
-        with ThreadingHTTPServer((args.host, args.port), Handler) as server:
+        with ThreadingHTTPServer((args.host, args.port), RingHandler if states else Handler) as server:
+            if states is not None:
+                server.ring_states = states
             print(json.dumps({"state": "READY", "host": args.host, "port": server.server_port,
-                              "persistence_scope": STATE.persistence_scope, "external_effects": "NONE"}, sort_keys=True), flush=True)
+                              "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE" if states else STATE.persistence_scope,
+                              "origin_nodes": list(states) if states else [],
+                              "runtime_profile": "LINUX_RING_CONSOLIDATED" if states else "SINGLE_TERMINAL",
+                              "external_effects": "NONE"}, sort_keys=True), flush=True)
             server.serve_forever()
     finally:
-        STATE.close()
+        for state in states.values() if states else [STATE]:
+            state.close()
     return 0
 
 

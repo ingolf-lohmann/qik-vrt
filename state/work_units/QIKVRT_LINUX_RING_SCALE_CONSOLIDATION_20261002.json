@@ -1,0 +1,282 @@
+{
+  "_license": {
+    "classification": "provenance_bound_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": [
+      "Platform identity is not natural-person or model attestation.",
+      "Selected API blobs are not a complete local repository checkout."
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "d2a712c488fa",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "Python POSIX subprocess/HTTP runtime"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Reuse existing durable State, Handler, TerminalProcess and native witness.",
+    "Implement exclusive quiescent ownership transfer, explicit origin routing and aggregate readback.",
+    "Keep original token keys, records, event identities and pending preparations.",
+    "Run positive and negative real-process/HTTP regression controls and complete readbacks.",
+    "Integrate concurrent real-socket-fault and native Windows durable-start/restart successors without dropping their code or tests.",
+    "Incrementally regenerate integrity metadata from fresh content-addressed API inputs.",
+    "Preserve the native Windows lock-cleanup repair from the fresh PR438 successor."
+  ],
+  "claim_audit": {
+    "continuation": {
+      "accepted_scope_here": "FINITE_LOCAL_PROCESS_SCALE_1_2_4_AND_QUIESCENT_CONSOLIDATION_TO_1",
+      "infinite_observed_work_proved": false,
+      "meaning": "INTENDED_RECURSIVE_EXTENSION_WITH_NEW_PER_ITERATION_ACCEPTANCE"
+    },
+    "interpretations": [
+      {
+        "claim_class": "INTERPRETATION",
+        "epistemic_domain": "EPISTEMOLOGY",
+        "id": "META_CLAIM_WHICH_WITCH_WISH",
+        "statement": "Die korrekte Selektion erfolgt nicht über Authority, sondern über die Fähigkeit, den Gap korrekt zu klassifizieren und durch beobachtete Wirkung zu schließen."
+      },
+      {
+        "class": "CLASSIFICATION_PROBLEM",
+        "empirical_proof_implied": false,
+        "id": "CLAIM_CLASSIFY_GAP",
+        "statement": "Zwischen zwei Authority-Pole existiert ein Gap, das korrekt klassifiziert werden muss."
+      },
+      {
+        "class": "PURPOSE_BINDING",
+        "id": "CLAIM_PRIMARY_PURPOSE",
+        "statement": "Handlungen müssen zweckgebunden, evidenzgebunden und autorisiert sein."
+      },
+      {
+        "class": "EPISTEMIC_INVARIANT",
+        "epistemic_domain": "EPISTEMOLOGY",
+        "id": "META_TEMDD_001",
+        "operational_privileges_granted": false,
+        "statement": "Die richtige Authority ist diejenige, die Purpose, Beobachtung und Wirkung durch frischen Readback koppelt."
+      }
+    ],
+    "not_implications": [
+      {
+        "object": "GLOBAL_DONE",
+        "relation": "NOT_IMPLIES",
+        "subject": "LOCAL_SUCCESS"
+      },
+      {
+        "object": "EFFECT_ACK",
+        "relation": "NOT_IMPLIES",
+        "subject": "TRANSPORT_ACK"
+      },
+      {
+        "object": "OBSERVED_EFFECT",
+        "relation": "NOT_IMPLIES",
+        "subject": "AUTHORITY"
+      },
+      {
+        "object": "OBSERVED_EFFECT",
+        "relation": "NOT_IMPLIES",
+        "subject": "PROMOTION"
+      },
+      {
+        "object": "EFFECT_ACK_DONE",
+        "relation": "NOT_IMPLIES",
+        "subject": "OBSERVE_EFFECT_AND_FRESH_READBACK_ALONE"
+      }
+    ],
+    "runtime_requirement": {
+      "acceptance_additionally_requires": [
+        "AUTHORIZED_PURPOSE",
+        "EXACT_SUBJECT_BINDING",
+        "APPLICABLE_EFFECT_COMPARISON_MATCH",
+        "SCOPE_ACCEPTED"
+      ],
+      "class": "RUNTIME_INVARIANT",
+      "id": "INV_TEMDD_LOOP",
+      "statement": "Jede akzeptierte Iteration benötigt einen beobachteten Effekt und einen frischen Readback."
+    },
+    "source": "Owner message in active session, 2026-10-02"
+  },
+  "continuation": {
+    "cascade_depth_implemented": 1,
+    "comparative_speedup_proved": false,
+    "cross_host_replication_verified": false,
+    "live_migration_verified": false,
+    "next_depth_rule": "Explicit origin-path composition and fresh finite acceptance for each added level.",
+    "process_scale": [
+      1,
+      2,
+      4
+    ],
+    "unbounded_scalability_proved": false
+  },
+  "created_at": "2026-10-02T09:44:17.036447+00:00",
+  "external_effects": {
+    "authority_write": false,
+    "authorized": [
+      "GitHub review branch and draft pull request"
+    ],
+    "deployment": false,
+    "external_api_quotas_bypassed": false,
+    "local_runtime_service_requests": 0,
+    "main_promotion": false,
+    "publication": false,
+    "release": false
+  },
+  "git_history": {
+    "branch": "work/linux-ring-scale-consolidation-20261002",
+    "history_preserving": true,
+    "isolation_reason": "Preserve concurrent PR438 transport and native Windows successors; separate draft prevents overwriting their active branch.",
+    "parent": "5258c00c049a62898ee5f783f50987ac65b78d3d",
+    "protected_main_write": false
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Designate Linux ring as primary test/runtime environment.",
+    "Authorize lossless process scale and subsequent lossless consolidation.",
+    "Use external API contracts as integration boundaries toward service independence.",
+    "Authorize first 1-to-4 step and retain cascaded extension as the owner goal.",
+    "Supply ring-to-sphere/quantum-correspondence interpretation, retained as attributed claim.",
+    "Supply the epistemological which/witch/wish audit classification and purpose-bound continuation interpretation."
+  ],
+  "human_decision": {
+    "actor": "Ingolf Lohmann",
+    "exact_head_codeowner_approval_inferred": false,
+    "state": "AUTHORIZED_FOR_IMPLEMENTATION"
+  },
+  "inputs": [
+    {
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "source_commit": "5258c00c049a62898ee5f783f50987ac65b78d3d"
+    },
+    {
+      "retention": "METADATA_ONLY",
+      "source": "Owner instructions in active session"
+    }
+  ],
+  "joint_components": {
+    "artificial_cognitive": "Implementation, tests, source bindings and evidence preparation",
+    "human": "Purpose, scope, authorizations and extension principle"
+  },
+  "next_action": "EXECUTE_CURRENT_CANDIDATE_NATIVE_LINUX_FIREFOX_AND_FULL_REPOSITORY_GATES_THEN_INDEPENDENT_CODEOWNER_REVIEW",
+  "outputs": [
+    {
+      "bytes": 9500,
+      "git_blob_sha1": "4fea75815dfa80c62c3c72150b7c8b2bdde63939",
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "9f72d157d9d79f15ca6c6030340ccfebaf2d084f72b44afd0f157310d0281579"
+    },
+    {
+      "bytes": 11968,
+      "git_blob_sha1": "1a21f8d801a5190623b1fda43baf80adfa87a9ca",
+      "path": "Makefile",
+      "sha256": "1abd7de82fc730e2a7fe0b28bc16323ba853c1df4b8e65d038ff9075bc9cc192"
+    },
+    {
+      "bytes": 12518,
+      "git_blob_sha1": "e0f866f136ed8a93d1d9193f6dd072dc62f877ed",
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "sha256": "6667668699b4e1552cf02ba28db575c351d06b53158a2f0790248d3f7bef9d82"
+    },
+    {
+      "bytes": 15878,
+      "git_blob_sha1": "33580548a2b216c3beae7523779b56e9612a00bc",
+      "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "sha256": "51814357059f2b22f99dd7f069934bd97ade2e8ce7db9dc8253f2767c52605a9"
+    },
+    {
+      "bytes": 13438,
+      "git_blob_sha1": "fba94c94dc982d4547ec62c66eeddf25dc642b50",
+      "path": "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md",
+      "sha256": "39e9d1bf74f849bec9c763d97f020bb47c68ca6963d300f7bee32566d274b7a9"
+    },
+    {
+      "bytes": 41599,
+      "git_blob_sha1": "3c371de79c0c435e247df8ce6b6034db70592130",
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "60ff7bdeabedb81e05f653e59846aa21480293179630f70ba0d43984cf946d51"
+    },
+    {
+      "bytes": 77356,
+      "git_blob_sha1": "5933fcd83b327151d4732c24a0d198d7b9e1ef1d",
+      "path": "tools/qikvrt_firefox_windows_witness.py",
+      "sha256": "e1713d2ae38bc71a490f4e41543b6ddb6b2daac9091b62e0fae7e44ff7fc4d4a"
+    },
+    {
+      "bytes": 55274,
+      "git_blob_sha1": "bc7a21992a2a7cd9797b3e9b56dd2d767abc6b84",
+      "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "sha256": "5da461c22fad34e5b344ffd2352a201e7508334c9f31d0dec0ba3b9e2d7e6678"
+    },
+    {
+      "bytes": 581119,
+      "git_blob_sha1": "9869108e1a29b71d64d366b6f80ea43a1b18e4d5",
+      "path": "evidence/linux-ring/20261002/LOCAL_PROCESS_SCALE_CONSOLIDATION.json",
+      "sha256": "95aa1a4ef90bdb1a7696a1a2888dee272ac413239ec679cef0c3ebf05ba94cdb"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "personal_release_effect_ack_done": false
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "source_commit": "5258c00c049a62898ee5f783f50987ac65b78d3d",
+  "source_ref": "work/firefox-windows-witness-20261001",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "673e26f0918e718d909f79990be0d972c038ac2d",
+  "unresolved_origin": [],
+  "updated_at": "2026-10-02T09:58:36.758390+00:00",
+  "verification": {
+    "additional_retained_preparations_committed_once": 4,
+    "cache_contract": {
+      "command": "python3 -B tools/qikvrt_tool_cache.py verify",
+      "coverage_percent": 100,
+      "covered": 18,
+      "declared": 18
+    },
+    "complete_local_bootstrap": {
+      "reason": "Selected API source fixture lacks a full Git checkout; complete repository gates remain required in native CI.",
+      "state": "BLOCK"
+    },
+    "concurrent_retries": [
+      409,
+      409,
+      409,
+      409,
+      409,
+      409,
+      409,
+      409
+    ],
+    "consolidated_processes": 1,
+    "effects_preserved_before_after_consolidation": 49,
+    "final_effects": 53,
+    "fresh_native_linux_firefox_witness_required": true,
+    "full_repository_checks_required": true,
+    "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_REGENERATION_FROM_FRESH_API_TREE_AND_MANIFEST_RECOMPUTE_CHANGED_BYTES_NATIVE_CI_MUST_RECOMPUTE_FULL_TREE",
+    "local_runtime_receipt": {
+      "bytes": 581119,
+      "path": "evidence/linux-ring/20261002/LOCAL_PROCESS_SCALE_CONSOLIDATION.json",
+      "python_version": "3.12.14",
+      "sha256": "95aa1a4ef90bdb1a7696a1a2888dee272ac413239ec679cef0c3ebf05ba94cdb",
+      "source_binding": "EXPLICIT_SOURCE_SHA256_IN_RECEIPT_HEAD_AND_TREE_UNAVAILABLE_IN_SELECTED_API_WORKTREE"
+    },
+    "origin_nodes_retained": 4,
+    "predecessor_evidence_transfer": false,
+    "replay_second_effects": 0,
+    "source_code_unchanged_from_tested_bytes_required": true,
+    "targeted_tests": {
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_firefox_capability_boundary",
+      "count": 64,
+      "failures": 0,
+      "scope": "LOCAL_MODIFIED_SOURCE_FIXTURE_NOT_A_REMOTE_EXACT_HEAD_GATE",
+      "skips": 0
+    }
+  },
+  "work_unit_id": "QIKVRT_LINUX_RING_SCALE_CONSOLIDATION_20261002"
+}

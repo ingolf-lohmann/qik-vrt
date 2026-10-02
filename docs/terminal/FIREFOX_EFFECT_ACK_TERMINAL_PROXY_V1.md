@@ -130,6 +130,76 @@ fault injection. They establish the local snapshot on a filesystem honoring
 atomic rename and fsync. Power removal, media destruction, productive
 Authority/Mirror nodes and unbounded scalability remain untested.
 
+### Primary Linux ring: process scale and consolidation
+
+Product Owner Ingolf Lohmann designated Linux as the primary test and runtime
+reference on 2026-10-02. Other platforms and external API adapters extend the
+ring through their own current-subject acceptance. Windows/Personal acceptance,
+native Main protection and public release retain their separate requirements.
+
+The existing durable terminal and witness now support a bounded local POSIX
+execution path that requires no remote service for its work:
+
+```sh
+make linux-ring-local-witness QIKVRT_LINUX_RING_OUTPUT=/private/new-ring-witness
+make linux-ring-firefox-witness QIKVRT_LINUX_RING_OUTPUT=/private/new-firefox-witness
+```
+
+The local witness grows actual terminal processes from 1 to 2 to 4. Each new
+origin has its own exclusive durable store. Scaling preserves all prior origin
+snapshots. After the bounded workload drains, the workers release ownership;
+one new process acquires every original store without rewriting its bytes,
+records, event IDs, token keys or consumption state. This is a quiescent local
+process consolidation. The four origins remain explicit namespaces; it does
+not claim live migration, cross-host replication or a single merged token key.
+
+To resume the consolidated runtime after the witness:
+
+```sh
+python3 -B src/qikvrt_effect_ack_http_terminal.py \
+  --seed canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin \
+  --ring-root /private/new-ring-witness/scaled-ring --port 8771
+```
+
+`/nodes/node-0/terminal/prepare` and `/nodes/node-0/terminal/commit` retain the
+original protocol and token owner. Node-specific event and Effect-Record GETs
+remain byte-comparable to the distributed readbacks. `/terminal/events` returns
+a deterministic aggregate using `(node_id, original_event_id)` identities. A
+missing, corrupt, aliased or still-owned origin blocks the complete consolidated
+server without resetting state. One poisoned origin blocks aggregate readback.
+
+Acceptance compares every event, every referenced preparation and Effect-Record,
+and private-store byte digests before/after consolidation. All used-token retries
+must fail, including eight concurrent retries. Four still-valid preparations
+must survive the ownership transfer and each admit exactly one effect under an
+eight-client race. No key/token material is exported into uploaded receipts.
+
+The measured 1/2/4 request phases disclose timing and retained event counts.
+They do not assert a speedup under identical initial state. The local path has
+zero external service requests; remaining external APIs keep their service
+quotas. Adapter completeness and superior performance require independent
+behavioral and equivalent-workload evidence. There is no quota bypass.
+
+The owner's ring-to-sphere extension model and asserted inward connectivity to
+quantum causality are retained as attributed architecture/physical-correspondence
+claims in the existing acceptance policy. This software witness establishes
+the declared local execution and persistence scope.
+
+### Purpose-bound continuation and claim audit
+
+The owner supplies `META_CLAIM_WHICH_WITCH_WISH` and `META_TEMDD_001` as
+an epistemological interpretation. Authority-pole/gap metaphors do not grant
+technical privileges or establish an observed effect. `INV_TEMDD_LOOP` requires
+an observed effect and a fresh readback in each accepted iteration. Acceptance
+also binds the authorized purpose, exact subject and applicable comparison
+criteria; observation plus readback alone cannot create `EFFECT_ACK_DONE`.
+`LOCAL_SUCCESS` does not imply `GLOBAL_DONE`, and `TRANSPORT_ACK` does not imply
+`EFFECT_ACK`. The first cascade level has finite acceptance; each later level
+requires its own new execution, observation, comparison and readback. The
+continuation mechanism expresses intended extensibility, not infinite observed
+work. The attributed classifications and their scope are recorded in
+`state/work_units/QIKVRT_LINUX_RING_SCALE_CONSOLIDATION_20261002.json`.
+
 ## HTTP / HTML integration
 
 The companion Internet-Draft candidate is `external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml`. It defines:

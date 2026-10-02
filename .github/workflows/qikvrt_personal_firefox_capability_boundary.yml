@@ -147,6 +147,8 @@ jobs:
           retention-days: 30
 
   windows-witness:
+    # Extensions execute only after the primary Linux reference succeeds.
+    needs: [linux-seed-ring]
     # Client Windows 11 ARM64 is a product-scope candidate, not Server equivalence.
     runs-on: windows-11-arm
     timeout-minutes: 15
@@ -184,7 +186,7 @@ jobs:
         env:
           QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
-          python -B tools/qikvrt_firefox_windows_witness.py --output "$env:RUNNER_TEMP/qikvrt-firefox-windows"
+          python -B tools/qikvrt_firefox_windows_witness.py --windows-witness --output "$env:RUNNER_TEMP/qikvrt-firefox-windows"
           exit $LASTEXITCODE
       - name: Preserve Windows evidence even on functional failure
         if: ${{ always() }}

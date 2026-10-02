@@ -303,8 +303,9 @@ def verify_effect_readback(before, after, prepared, request, subject):
 
 class TerminalProcess:
     """Bounded supervision of the actual durable CLI, also reused by regressions."""
-    def __init__(self, state_root, seed, *, port=0, command=None):
-        arguments = ['--state-root', str(state_root), '--seed', str(seed), '--port', str(port)]
+    def __init__(self, state_root, seed, *, port=0, command=None, ring=False):
+        arguments = ['--ring-root' if ring else '--state-root', str(state_root),
+                     '--seed', str(seed), '--port', str(port)]
         self.process = subprocess.Popen(
             (command or [sys.executable, '-B', str(ROOT / 'src/qikvrt_effect_ack_http_terminal.py')]) + arguments,
             cwd=ROOT, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -341,6 +342,169 @@ class TerminalProcess:
         self.process.wait(timeout=15)
         self.process.stdout.close()
         self.process.stderr.close()
+
+
+def lossless_scale_consolidation_controls(terminal, ring_root, seed, *, workload=16):
+    """Expand actual POSIX processes 1/2/4; consolidate unchanged stores in one.
+
+    Every preparation retains its origin. No token, key, record or event is
+    rewritten; concurrent retries and wrong-origin commits must be refused.
+    Measurements include equivalent request counts but differing retained state,
+    and therefore do not by themselves claim a speedup.
+    """
+    if type(workload) is not int or not 4 <= workload <= 64 or workload % 4:
+        raise ValueError('workload must be 4..64 and divisible by four')
+    if ring_root.exists():
+        raise RuntimeError('NEW_RING_ROOT_REQUIRED_NO_STATE_RESET')
+    ring_root.mkdir(parents=True)
+    processes = []
+    consolidated = None
+    consumed = []
+    pending = []
+    timings = []
+
+    def prepare(client, payload, prefix=''):
+        status, prepared = client.request(prefix + '/terminal/prepare', payload, 'v=1, mode=prepare')
+        if status != 200 or prepared.get('ordinary_release') is not False:
+            raise RuntimeError('RING_PREPARE_NOT_CONFIRMED')
+        field = ('v=1, mode=commit, token=' + terminal.sf_bytes(prepared['commit_token'].encode('ascii'))
+                 + ', hash=' + terminal.sf_bytes(bytes.fromhex(prepared['record_hash'])))
+        return field
+
+    def read(client, node, prefix=''):
+        status, snapshot = client.request(prefix + '/terminal/events')
+        if status != 200 or snapshot['events_sha256'] != terminal.sha256(terminal.canonical_json(snapshot['events'])):
+            raise RuntimeError('RING_EVENT_SNAPSHOT_INVALID')
+        records = {}
+        for event in snapshot['events']:
+            for digest in (event['record_hash'], event['effect_record_hash']):
+                path = '/effect-ack/records/' + digest
+                status, record = client.request(prefix + path)
+                projection = {key: value for key, value in record.items() if key != 'record_hash'}
+                if status != 200 or record.get('record_hash') != 'sha256:' + terminal.sha256(terminal.canonical_json(projection)):
+                    raise RuntimeError('RING_EFFECT_RECORD_INVALID')
+                records[path] = record
+        return {'node_id': node, 'snapshot': snapshot, 'records': records}
+
+    def transfer_unchanged(before, after):
+        if before != after:
+            raise RuntimeError('RING_ORIGIN_EVENTS_OR_EFFECT_RECORDS_CHANGED')
+
+    try:
+        for workers in (1, 2, 4):
+            retained = [read(p, 'node-' + str(i)) for i, p in enumerate(processes)]
+            old_bytes = [(ring_root / ('node-' + str(i)) / '.qikvrt/api/terminal.json').read_bytes()
+                         for i in range(len(processes))]
+            for i in range(len(processes), workers):
+                processes.append(TerminalProcess(ring_root / ('node-' + str(i)), seed))
+            transfer_unchanged(retained, [read(p, 'node-' + str(i))
+                                         for i, p in enumerate(processes[:len(retained)])])
+            if old_bytes != [(ring_root / ('node-' + str(i)) / '.qikvrt/api/terminal.json').read_bytes()
+                             for i in range(len(retained))]:
+                raise RuntimeError('SCALE_REWROTE_RETAINED_STORE')
+            tasks = [(index % workers, {'schema': 'qikvrt_terminal_input_v1',
+                      'text': 'scale-' + str(workers) + '-' + str(index) + '-' + os.urandom(12).hex()})
+                     for index in range(workload)]
+            def commit(task):
+                node, payload = task
+                field = prepare(processes[node], payload)
+                status, result = processes[node].request('/terminal/commit', payload, field)
+                if status != 200 or result.get('ordinary_release') is not True:
+                    raise RuntimeError('RING_COMMIT_NOT_CONFIRMED')
+                return node, payload, field
+            started = time.perf_counter()
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                consumed.extend(pool.map(commit, tasks))
+            elapsed = time.perf_counter() - started
+            views = [read(p, 'node-' + str(i)) for i, p in enumerate(processes)]
+            texts = [event['text'] for view in views for event in view['snapshot']['events']]
+            expected = [payload['text'] for _, payload, _ in consumed]
+            if len(texts) != len(expected) or sorted(texts) != sorted(expected):
+                raise RuntimeError('SCALE_LOST_OR_DUPLICATED_EVENT')
+            timings.append({'processes': workers, 'process_ids': [p.process.pid for p in processes],
+                            'requests': workload, 'parallel_clients': 4,
+                            'elapsed_seconds': elapsed, 'confirmed_effects_per_second': workload / elapsed,
+                            'retained_events': len(texts)})
+
+        race_payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'scale-race-' + os.urandom(12).hex()}
+        race_field = prepare(processes[0], race_payload)
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            statuses = list(pool.map(lambda _: processes[0].request('/terminal/commit', race_payload, race_field)[0], range(8)))
+        if sorted(statuses) != [200] + [409] * 7:
+            raise RuntimeError('SCALED_RING_TOKEN_RACE_NOT_EXACTLY_ONCE')
+        consumed.append((0, race_payload, race_field))
+        for node, client in enumerate(processes):
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'pending-' + os.urandom(12).hex()}
+            field = prepare(client, payload)
+            if processes[(node + 1) % 4].request('/terminal/commit', payload, field)[0] != 409:
+                raise RuntimeError('TOKEN_ACCEPTED_BY_WRONG_ORIGIN')
+            pending.append((node, payload, field))
+        before = [read(p, 'node-' + str(i)) for i, p in enumerate(processes)]
+        raw_before = {('node-' + str(i)): (ring_root / ('node-' + str(i)) / '.qikvrt/api/terminal.json').read_bytes()
+                      for i in range(4)}
+        source_pids = [p.process.pid for p in processes]
+        # All bounded requests have drained. Releasing locks then reacquiring
+        # every original store is the explicit quiescent ownership transfer.
+        for client in processes:
+            client.close()
+        processes = []
+        consolidated = TerminalProcess(ring_root, seed, ring=True)
+        after = [read(consolidated, 'node-' + str(i), '/nodes/node-' + str(i)) for i in range(4)]
+        transfer_unchanged(before, after)
+        if raw_before != {node: (ring_root / node / '.qikvrt/api/terminal.json').read_bytes() for node in raw_before}:
+            raise RuntimeError('CONSOLIDATION_REWROTE_ORIGIN_STORE')
+        if consolidated.ready['origin_nodes'] != list(raw_before) or consolidated.process.pid in source_pids:
+            raise RuntimeError('ACTUAL_SINGLE_PROCESS_CONSOLIDATION_NOT_OBSERVED')
+        for node, payload, field in consumed:
+            status, response = consolidated.request('/nodes/node-' + str(node) + '/terminal/commit', payload, field)
+            if status != 409 or response.get('ordinary_release') is not False:
+                raise RuntimeError('CONSOLIDATION_REPLAY_CREATED_SECOND_EFFECT')
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            concurrent_retries = list(pool.map(lambda _: consolidated.request(
+                '/nodes/node-0/terminal/commit', race_payload, race_field)[0], range(8)))
+        if concurrent_retries != [409] * 8:
+            raise RuntimeError('CONCURRENT_CONSOLIDATED_REPLAY_NOT_REFUSED')
+        transfer_unchanged(before, [read(consolidated, 'node-' + str(i), '/nodes/node-' + str(i)) for i in range(4)])
+        if raw_before != {node: (ring_root / node / '.qikvrt/api/terminal.json').read_bytes() for node in raw_before}:
+            raise RuntimeError('REPLAY_CHANGED_CONSOLIDATED_SNAPSHOT')
+        status, aggregate = consolidated.request('/terminal/events')
+        expected_aggregate = [{'node_id': view['node_id'], 'event': event}
+                              for view in before for event in view['snapshot']['events']]
+        if status != 200 or aggregate['events'] != expected_aggregate or aggregate['events_sha256'] != terminal.sha256(terminal.canonical_json(expected_aggregate)):
+            raise RuntimeError('CONSOLIDATED_GLOBAL_READBACK_NOT_LOSSLESS')
+        for node, payload, field in pending:
+            prefix = '/nodes/node-' + str(node)
+            with ThreadPoolExecutor(max_workers=8) as pool:
+                statuses = list(pool.map(lambda _: consolidated.request(prefix + '/terminal/commit', payload, field)[0], range(8)))
+            if sorted(statuses) != [200] + [409] * 7:
+                raise RuntimeError('RETAINED_PREPARATION_LOST_OR_REPLAYED')
+        final = [read(consolidated, 'node-' + str(i), '/nodes/node-' + str(i)) for i in range(4)]
+        for original, current in zip(before, final):
+            if (current['snapshot']['events'][:-1] != original['snapshot']['events']
+                    or any(current['records'].get(path) != record for path, record in original['records'].items())):
+                raise RuntimeError('OLD_EVENT_OR_RECORD_CHANGED_AFTER_NEW_CONSOLIDATED_EFFECT')
+        return {'schema': 'qikvrt_linux_scale_consolidation_readback_v1',
+                'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(),
+                'process_scale': [1, 2, 4], 'measurements': timings,
+                'quiescent_transfer': True, 'source_process_ids': source_pids,
+                'consolidated_process_id': consolidated.process.pid, 'consolidated_process_count': 1,
+                'origin_nodes_retained': 4, 'origin_snapshot_sha256': {node: terminal.sha256(raw) for node, raw in raw_before.items()},
+                'readback_before': before, 'readback_after': after, 'aggregate_readback': aggregate,
+                'final_readback': final, 'retained_preparations_committed_once': 4,
+                'confirmed_events_before': len(expected_aggregate),
+                'confirmed_events_after_new_work': sum(v['snapshot']['event_count'] for v in final),
+                'scaled_token_race': {'clients': 8, 'effects': 1, 'refusals': 7},
+                'concurrent_retry_statuses': concurrent_retries, 'replay_second_effects': 0,
+                'lossless_scope': 'BOUNDED_LOCAL_POSIX_ORIGIN_STORES_PROCESS_SCALE_AND_CONSOLIDATION',
+                'external_service_requests': 0, 'external_api_quotas_bypassed': False,
+                'cross_host_replication_verified': False, 'live_migration_verified': False,
+                'network_loss_injected': False, 'unbounded_scalability_proved': False,
+                'comparative_speedup_proved': False, 'private_state_exported': False, 'external_effect': 'NONE'}
+    finally:
+        for client in processes:
+            client.close()
+        if consolidated is not None:
+            consolidated.close()
 
 
 def initialize_seeded_terminal(terminal, contract, output):
@@ -1038,6 +1202,8 @@ def witness(output, headless=False, linux=False):
             receipt['altered_seed_start_refused'] = True
             receipt['persistent_state_sha256'] = digest(terminal.STATE.store)
             if linux:
+                receipt['scale_consolidation_controls'] = lossless_scale_consolidation_controls(
+                    terminal, output / 'scaled-ring', seed)
                 receipt['linux_ring_test'] = 'PASS'
             receipt.update(local_effect_readback=True, replay_rejected=True,
                            readback_before=before, readback_after=after,
@@ -1100,6 +1266,36 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--headless', action='store_true')
-    parser.add_argument('--linux-ring', action='store_true', help='Use declared Linux runner tools and require canonical seed')
+    profiles = parser.add_mutually_exclusive_group()
+    profiles.add_argument('--linux-ring', dest='profile', action='store_const', const='linux',
+                          help='Primary Linux Firefox reference with canonical seed')
+    profiles.add_argument('--windows-witness', dest='profile', action='store_const', const='windows',
+                          help='Independent Windows extension acceptance')
+    profiles.add_argument('--local-ring-only', dest='profile', action='store_const', const='local',
+                          help='Actual Linux process scale/consolidation without an external service')
+    parser.set_defaults(profile='linux' if sys.platform == 'linux' else 'windows')
     args = parser.parse_args()
-    sys.exit(witness(args.output.resolve(), args.headless, args.linux_ring))
+    if args.profile == 'local':
+        output = args.output.absolute()
+        output.mkdir(parents=True, exist_ok=False)
+        sys.path.insert(0, str(ROOT / 'src'))
+        import qikvrt_effect_ack_http_terminal as terminal
+        receipt = {'schema': 'qikvrt_linux_local_runtime_witness_v1',
+                   'head': terminal.git_read('rev-parse', 'HEAD'),
+                   'tree': terminal.git_read('rev-parse', 'HEAD^{tree}'),
+                   'runtime_profile': 'LINUX_RING_PRIMARY_REFERENCE',
+                   'predecessor_evidence_transfer': False,
+                   'personal_release_effect_ack_done': False,
+                   'source_sha256': {path: digest(ROOT / path) for path in (
+                       'src/qikvrt_effect_ack_http_terminal.py', 'tools/qikvrt_firefox_windows_witness.py',
+                       'policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json')}}
+        try:
+            receipt['scale_consolidation_controls'] = lossless_scale_consolidation_controls(
+                terminal, output / 'scaled-ring', ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
+            receipt['state'] = 'PASS'
+        except Exception as error:
+            receipt.update(state='HOLD', reason=str(error))
+        (output / 'RECEIPT.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+        print(json.dumps(receipt, sort_keys=True))
+        sys.exit(0 if receipt['state'] == 'PASS' else 2)
+    sys.exit(witness(args.output.resolve(), args.headless, args.profile == 'linux'))

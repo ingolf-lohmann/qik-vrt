@@ -217,16 +217,27 @@ it does not prove that 400 bytes contain Linux or construct a whole operating
 system. The host kernel, Firefox, driver and interpreter remain explicit
 runner-image/toolcache dependencies, with native versions and binary digests.
 
+Linux is the primary test and runtime reference under the Product Owner's
+2026-10-02 authorization. The existing witness is the default Linux profile on
+a Linux host; `--windows-witness` selects independent Windows acceptance.
+`--local-ring-only` executes actual process scaling 1/2/4 and quiescent
+consolidation into one process without a remote service. Complete original
+origin snapshots, records and token consumption survive unchanged; open
+preparations remain single-use. The existing terminal contract describes its
+explicit node routes and all-origin fail-closed ownership transfer.
+
 The real HTTP controls execute fanout 1, 2, 4 and 8, an eight-client race on one
 token, and client-discarded-response recovery through fresh readback. Only one
 race effect may occur. A complete, hash-bound fsynced event snapshot
-must retain every unique nonce exactly once. No network failure is injected.
+must retain every unique nonce exactly once. Separate real socket-fault controls
+interrupt post-commit transport and readback, then verify replay refusal.
 The single actual Firefox roundtrip and the HTTP-client fanout are distinct
 measurements. The shared restart and invalid-state controls also run on Linux;
 restart persistence requires their fresh actual readback on the current head.
-These finite measurements do not establish Firefox fanout,
+The successor adds bounded local process scale/consolidation with original
+origin state retained. These finite measurements do not establish Firefox fanout,
 unbounded scalability, live Authority/Mirror replication,
-lossless node consolidation, or productive Linux reconstruction from a retained
+live full-node consolidation, or productive Linux reconstruction from a retained
 full-node closure. Those acceptance scopes remain open. Native Main admission,
 public product release and personal runtime acceptance remain separate gates.
 

@@ -114,6 +114,18 @@ effect-ack-http-terminal-test:
 
 test: effect-ack-http-terminal-test
 
+.PHONY: linux-ring-test linux-ring-local-witness linux-ring-firefox-witness
+linux-ring-test: tool-cache-contract effect-ack-http-terminal-test
+
+# New private output directories retain evidence and never reset origin stores.
+linux-ring-local-witness: linux-ring-test
+	@test -n "$(QIKVRT_LINUX_RING_OUTPUT)" || (echo "BLOCK: set QIKVRT_LINUX_RING_OUTPUT to a new private directory" >&2; exit 2)
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_firefox_windows_witness.py --local-ring-only --output "$(QIKVRT_LINUX_RING_OUTPUT)"
+
+linux-ring-firefox-witness: linux-ring-test personal-firefox-boundary-test
+	@test -n "$(QIKVRT_LINUX_RING_OUTPUT)" || (echo "BLOCK: set QIKVRT_LINUX_RING_OUTPUT to a new private directory" >&2; exit 2)
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_firefox_windows_witness.py --linux-ring --headless --output "$(QIKVRT_LINUX_RING_OUTPUT)"
+
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py

@@ -926,5 +926,106 @@ terminal.main()
                 second.close()
 
 
+@unittest.skipUnless(os.name == 'posix', 'POSIX durable ownership contract')
+class LinuxRingScaleConsolidationTests(unittest.TestCase):
+    seed = ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin'
+
+    def initialize_origins(self, root):
+        for node in ('node-0', 'node-1'):
+            state = terminal.State(self.seed, state_root=root / node)
+            state.close()
+
+    def test_real_process_scale_and_consolidation_preserve_every_effect_and_token(self):
+        from tools.qikvrt_firefox_windows_witness import lossless_scale_consolidation_controls
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = lossless_scale_consolidation_controls(terminal, Path(directory) / 'ring', self.seed, workload=4)
+        self.assertEqual(receipt['process_scale'], [1, 2, 4])
+        self.assertEqual(len(set(receipt['source_process_ids'])), 4)
+        self.assertEqual(receipt['consolidated_process_count'], 1)
+        self.assertNotIn(receipt['consolidated_process_id'], receipt['source_process_ids'])
+        self.assertEqual(receipt['confirmed_events_before'], 13)
+        self.assertEqual(receipt['confirmed_events_after_new_work'], 17)
+        self.assertEqual(receipt['readback_before'], receipt['readback_after'])
+        self.assertEqual(receipt['retained_preparations_committed_once'], 4)
+        self.assertEqual(receipt['concurrent_retry_statuses'], [409] * 8)
+        self.assertEqual(receipt['external_service_requests'], 0)
+        self.assertEqual(receipt['replay_second_effects'], 0)
+        self.assertFalse(receipt['comparative_speedup_proved'])
+
+    def test_missing_corrupt_and_symlinked_origin_block_without_reset(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'ring'
+            self.initialize_origins(root)
+            store = root / 'node-1/.qikvrt/api/terminal.json'
+            original = store.read_bytes()
+            for raw in (b'', original[:-1], b'{'):
+                with self.subTest(raw=raw[:10]):
+                    store.write_bytes(raw)
+                    with self.assertRaises(terminal.PersistenceError):
+                        terminal.load_ring_states(root, self.seed, expected_nodes=2)
+                    self.assertEqual(store.read_bytes(), raw)
+                    # The earlier origin's ownership was released on failure.
+                    state = terminal.State(self.seed, state_root=root / 'node-0')
+                    state.close()
+            store.unlink()
+            with self.assertRaises(terminal.PersistenceError):
+                terminal.load_ring_states(root, self.seed, expected_nodes=2)
+            self.assertFalse(store.exists())
+            store.write_bytes(original)
+            saved = (root / 'node-0/.qikvrt/api/terminal.json').read_bytes()
+            store.write_bytes(saved)
+            with self.assertRaises(terminal.PersistenceError):
+                terminal.load_ring_states(root, self.seed, expected_nodes=2)
+            store.write_bytes(original)
+            (root / 'node-1').rename(Path(directory) / 'saved-origin')
+            with self.assertRaises(terminal.PersistenceError):
+                terminal.load_ring_states(root, self.seed, expected_nodes=2)
+            (root / 'node-1').symlink_to(root / 'node-0', target_is_directory=True)
+            with self.assertRaises(terminal.PersistenceError):
+                terminal.load_ring_states(root, self.seed, expected_nodes=2)
+
+    def test_live_origin_owner_and_wrong_seed_block_consolidation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'ring'
+            self.initialize_origins(root)
+            state = terminal.State(self.seed, state_root=root / 'node-1')
+            try:
+                with self.assertRaises(terminal.PersistenceError):
+                    terminal.load_ring_states(root, self.seed, expected_nodes=2)
+            finally:
+                state.close()
+            with self.assertRaises(terminal.PersistenceError):
+                terminal.load_ring_states(root, None, expected_nodes=2)
+            bad_seed = Path(directory) / 'seed.bin'
+            bad_seed.write_bytes(self.seed.read_bytes()[:-1])
+            before = [(root / node / '.qikvrt/api/terminal.json').read_bytes() for node in ('node-0', 'node-1')]
+            with self.assertRaises(terminal.PersistenceError):
+                terminal.load_ring_states(root, bad_seed, expected_nodes=2)
+            self.assertEqual(before, [(root / node / '.qikvrt/api/terminal.json').read_bytes() for node in ('node-0', 'node-1')])
+
+    def test_aggregate_readback_fails_closed_if_one_origin_is_poisoned(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / 'ring'
+            self.initialize_origins(root)
+            states = terminal.load_ring_states(root, self.seed, expected_nodes=2)
+            server = ThreadingHTTPServer(('127.0.0.1', 0), terminal.RingHandler)
+            server.ring_states = states
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            try:
+                states['node-1'].persistence_failed = True
+                with self.assertRaises(urllib.error.HTTPError) as error:
+                    urllib.request.urlopen('http://127.0.0.1:' + str(server.server_port) + '/terminal/events', timeout=5)
+                self.assertEqual(error.exception.code, 503)
+                with error.exception as response:
+                    self.assertNotIn('events', json.load(response))
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join(timeout=5)
+                for state in states.values():
+                    state.close()
+
+
 if __name__ == "__main__":
     unittest.main()
