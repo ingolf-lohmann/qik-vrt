@@ -1,0 +1,31 @@
+{
+  "schema": "qikvrt_recursive_haltpoint_work_unit_v1",
+  "work_unit_id": "RECURSIVE-HALTPOINT-V1",
+  "state": "IMPLEMENTED_PENDING_EXACT_HEAD_GATES",
+  "rule": "A blocker recursively remains work until FINAL_IDLE or the first productive edge provably requires a currently unavailable external capability or unavailable exact human authorization.",
+  "cycle": [
+    "OBSERVE",
+    "CLASSIFY",
+    "DERIVE_FIRST_PRODUCTIVE_EDGE",
+    "REPAIR_OR_EXECUTE_EDGE_WHEN_AUTHORIZED_AND_CALLABLE",
+    "REOBSERVE_EXACT_SUBJECT",
+    "CONTINUE",
+    "REPEAT"
+  ],
+  "continuous_carriers": [
+    "QIK-VRT autonomous bounded self-heal",
+    "QIKVRT reflexive repository watchdog"
+  ],
+  "reference_blocker": {
+    "first_blocker": "AUTHORITY_NODE_CONNECTION_SCOPE_UNAVAILABLE",
+    "productive_edge": "RESTORE_AUTHORITY_NODE_CONNECTION_SCOPE",
+    "classification": "BLOCKADE",
+    "halt": true,
+    "reason": "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE"
+  },
+  "boundaries": {
+    "predecessor_evidence_transfer": false,
+    "transport_ack_is_effect_ack": false,
+    "effect_ack_done": false
+  }
+}
