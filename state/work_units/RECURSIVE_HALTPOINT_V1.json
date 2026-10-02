@@ -245,5 +245,61 @@
     "predecessor_evidence_transfer": false,
     "source_pr_gates_transferred": false,
     "boot_scope": "Local partial API fixture has no complete worktree; full bootstrap/integrity must be evaluated by a native full-checkout successor carrier."
+  },
+  "exact_subject_observer_repair": {
+    "diagnostic_subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "43386d81bc8adf9ce1281e9d6ccac9224a247542",
+      "tree": "0cad4b657f28561a2366a8a910c7a77032fe6c7b",
+      "scope": "PREDECESSOR_DIAGNOSTIC_ONLY_NOT_SUCCESSOR_GATE"
+    },
+    "observed_merge_checkout": "ddf6716dbfe155850590b3f2560da89f8d039bfe",
+    "failures": [
+      {
+        "run_id": 37064054978,
+        "job_id": 111027359500,
+        "workflow": ".github/workflows/qikvrt_collective_review.yml",
+        "observed_failure": "Repository manifest differs from deterministic regeneration after checkout of the synthetic merge subject"
+      },
+      {
+        "run_id": 37064054962,
+        "job_id": 111027359698,
+        "workflow": ".github/workflows/qikvrt_global_completion.yml",
+        "observed_failure": "Repository manifest differs from deterministic regeneration after checkout of the synthetic merge subject"
+      }
+    ],
+    "repair": "Reuse the exact-candidate checkout and HEAD/TREE guard already present in PR 444; keep every integrity and mandatory-suite gate.",
+    "reused_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+      "tree": "6724c1efeb6242b37aab48c9e6e836f849c773df"
+    },
+    "candidate_workflow_blobs": [
+      {
+        "path": ".github/workflows/qikvrt_collective_review.yml",
+        "sha256": "08e01023b979e70f8475d628ef720f74b2be3df24981c304466a1de710a8cdc3",
+        "git_blob_sha1": "4de3604eb91fefe3fb45dafcacf2d0899b881173"
+      },
+      {
+        "path": ".github/workflows/qikvrt_global_completion.yml",
+        "sha256": "4d59f33413603afa4bbe2908d4d1faee32d4de76c3889dc9b281c1bc7daf453f",
+        "git_blob_sha1": "9bfaebea499866893da199ef1bc9094485c10fb3"
+      }
+    ],
+    "same_repository_api_readback_failure": {
+      "run_id": 37064055034,
+      "job_id": 111027361160,
+      "scope": "NATIVE_JOB_CURRENT_MIRROR_PR_READBACK_NOT_AUTHORITY_CONTENT_ROUTING",
+      "stage": "SUBJECT_READBACK",
+      "transport_http_status": 404,
+      "local_connector_pr_readback_available": true,
+      "routing_root_cause_established": false,
+      "authority_global_failure_inferred": false,
+      "next_action": "REOBSERVE_EXACT_SUCCESSOR_AND_NATIVE_JOB_READBACK_THROUGH_AVAILABLE_AUTHORIZED_CARRIERS",
+      "failure_inferred_as_global_connection_scope_unavailability": false
+    },
+    "predecessor_evidence_transfer": false,
+    "source_pr_gates_transferred": false,
+    "full_checkout_successor_validation_required": true
   }
 }
