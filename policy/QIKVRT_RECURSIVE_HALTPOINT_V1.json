@@ -1,0 +1,59 @@
+{
+  "schema": "qikvrt_recursive_haltpoint_v1",
+  "policy_id": "QIKVRT-RECURSIVE-HALTPOINT-V1",
+  "state": "ACTIVE",
+  "source_instruction": "Every blocker is recursively treated as work. Continue observe-classify-repair-or-execute-edge-reobserve-repeat until FINAL_IDLE or the first productive edge provably requires a currently unavailable external capability or unavailable exact human authorization.",
+  "loop": [
+    "OBSERVE",
+    "CLASSIFY",
+    "DERIVE_FIRST_PRODUCTIVE_EDGE",
+    "REPAIR_OR_EXECUTE_EDGE_WHEN_AUTHORIZED_AND_CALLABLE",
+    "REOBSERVE_EXACT_SUBJECT",
+    "CONTINUE",
+    "REPEAT"
+  ],
+  "classifications": ["WORK", "IDLE", "BLOCKADE"],
+  "halt_allowed_only_if": [
+    "FINAL_IDLE",
+    "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
+    "REQUIRED_EXACT_HUMAN_AUTHORIZATION_UNAVAILABLE"
+  ],
+  "halt_forbidden_when": [
+    "FIRST_BLOCKER_HAS_AUTHORIZED_CALLABLE_PRODUCTIVE_EDGE",
+    "PRODUCTIVE_EDGE_CAN_BE_DERIVED_REPOSITORY_NATIVELY",
+    "EXACT_SUBJECT_REOBSERVATION_IS_AVAILABLE",
+    "GATE_IS_ACTIVE_OR_NOT_YET_TERMINAL",
+    "HEAD_OR_TREE_DRIFT_REQUIRES_REBIND",
+    "ACTION_REQUIRED_OR_ZERO_JOB_REQUIRES_ADMISSION_OR_REOBSERVATION",
+    "TRANSPORT_ACK_WITHOUT_EFFECT_ACK",
+    "BLOCKED_WITH_NEXT_ACTION",
+    "ORDINARY_HOLD_OR_BLOCKADE_WITH_LOCAL_NEXT_EDGE"
+  ],
+  "exact_subject": {
+    "required": true,
+    "bind": ["REPOSITORY", "HEAD", "TREE"],
+    "rebind_after_drift": true,
+    "predecessor_evidence_transfer": false
+  },
+  "effect_boundary": {
+    "transport_ack_is_effect_ack": false,
+    "effect_ack_done_requires_fresh_effect_readback": true,
+    "effect_ack_done_implies_final_idle": false
+  },
+  "continuous_application": {
+    "repository_native": true,
+    "apply_on_every_observation": true,
+    "apply_on_every_blocker_transition": true,
+    "apply_after_every_repair_or_effect_attempt": true,
+    "scheduled_observation_reuses_existing_repository_cadence": true,
+    "chat_or_external_scheduler_required": false
+  },
+  "current_reference_case": {
+    "first_blocker": "AUTHORITY_NODE_CONNECTION_SCOPE_UNAVAILABLE",
+    "productive_edge": "RESTORE_AUTHORITY_NODE_CONNECTION_SCOPE",
+    "classification": "BLOCKADE",
+    "halt": true,
+    "reason": "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
+    "effect_ack_done": false
+  }
+}
