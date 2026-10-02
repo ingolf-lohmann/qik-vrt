@@ -188,7 +188,9 @@
     "human_contributions": [
       "Requested synchronization with PR 444 capability evidence",
       "Required a history-preserving successor and fresh HEAD/TREE binding",
-      "Required PREDECESSOR_EVIDENCE_TRANSFER=false"
+      "Required PREDECESSOR_EVIDENCE_TRANSFER=false",
+      "Requested fresh Main readback and history-preserving integration into PR 441",
+      "Required only the resulting new Exact Head as gate/admission subject; no stale-head approval, predecessor evidence transfer or bypass"
     ],
     "artificial_cognitive_actor": {
       "provider": "OpenAI",
@@ -201,12 +203,15 @@
       "Fresh API readbacks",
       "Bound capability-diagnosis correction",
       "Policy and work-unit synchronization",
-      "Regression tests and reviewable successor preparation"
+      "Regression tests and reviewable successor preparation",
+      "Fresh current PR/Main/merge-base/tree readback; preserved intervening PR 444 capability correction",
+      "Conflict-free Main lifecycle integration with ordered merge parents and canonical integrity projection regeneration",
+      "Fresh scoped fixture controls; native new-head admission capability and gate readback"
     ],
     "human_acceptance_of_generated_content": "PENDING"
   },
   "verification": {
-    "scope": "MODIFIED_CANDIDATE_EXACT_BLOB_API_FIXTURE_NOT_COMPLETE_CHECKOUT_OR_SUCCESSOR_GATE",
+    "scope": "FRESH_MERGE_CANDIDATE_API_BLOB_FIXTURE_NOT_COMPLETE_CHECKOUT_OR_NATIVE_GATE",
     "tests": [
       {
         "module": "tests/test_qikvrt_recursive_haltpoint.py",
@@ -229,22 +234,18 @@
         "result": "PASS"
       }
     ],
-    "candidate_paths": [
-      {
-        "path": "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
-        "bytes": 4448,
-        "sha256": "9dddda795ad0d665d7853c103eee7b5749212e2e449628c3cf0748aa1b1aa67c"
-      },
-      {
-        "path": "tests/test_qikvrt_recursive_haltpoint.py",
-        "bytes": 8843,
-        "sha256": "5d016c1e012b3eb8de61408af3829adcab59b6ee83f5277a518823dfef72aa23"
-      }
-    ],
+    "fixture_git_subject": {
+      "head": "098ec35d8c67c41473acb2e04fa613d2ee755801",
+      "tree": "c1ec71510245d22b66634aa6a3125ecb687e3ddc",
+      "exact_commit_and_tree_objects_recomputed": true,
+      "complete_blob_or_parent_history_closure": false
+    },
+    "fixture_scope": "Changed candidate bytes and fetched exact blobs; API-reconstructed exact workflow tree. These controls are not native containing-successor gates.",
     "full_checkout_successor_validation_required": true,
     "predecessor_evidence_transfer": false,
     "source_pr_gates_transferred": false,
-    "boot_scope": "Local partial API fixture has no complete worktree; full bootstrap/integrity must be evaluated by a native full-checkout successor carrier."
+    "native_successor_gates": [],
+    "boot_scope": "Partial API worktree; full bootstrap/integrity and mandatory repository suite require fresh native full-checkout successor execution."
   },
   "exact_subject_observer_repair": {
     "diagnostic_subject": {
@@ -332,5 +333,115 @@
       "next_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
       "predecessor_evidence_transfer": false
     }
+  },
+  "main_integration": {
+    "requested_scope": "PR441_CURRENT_MAIN_HISTORY_PRESERVING_INTEGRATION_THEN_NEW_EXACT_HEAD_ADMISSION_AND_GATES",
+    "state": "PREPARED_PENDING_NON_FORCE_REF_UPDATE_AND_FRESH_CONTAINING_SUCCESSOR_READBACK",
+    "observed_at": "2026-10-02T21:33:12.839Z",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr_number": 441,
+    "branch": "agent/recursive-haltpoint-v1",
+    "requested_historical_head": "2ec9c4816666f285eac5ecf45ad126952aacb3bb",
+    "actual_pre_integration_head": "098ec35d8c67c41473acb2e04fa613d2ee755801",
+    "actual_pre_integration_tree": "c1ec71510245d22b66634aa6a3125ecb687e3ddc",
+    "freshly_read_main": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "main_tree": "007ceaef554f275ff6f53383f8572505b4ec52be",
+    "merge_base": "6e085ab1e2b68e0cdf8e014c8400824f0502f11c",
+    "ordered_merge_parents": [
+      "098ec35d8c67c41473acb2e04fa613d2ee755801",
+      "ba3509a49d2e1b99af325b9cd77aab65a2975497"
+    ],
+    "observed_divergence": {
+      "main_unique_commits": 2,
+      "pr_unique_commits": 21
+    },
+    "main_changed_paths": [
+      {
+        "path": "evidence/node_health/36969534310-1.json",
+        "before": null,
+        "after": "fad45df78662afefc848cc4eb8fc332a78fefd41",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_health/37007190339-1.json",
+        "before": null,
+        "after": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "before": "d26500d7384c462526ad735c175f1abb160a1c27",
+        "after": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_registration_renewal/36969534310-1.json",
+        "before": null,
+        "after": "9fcc7df51adfab1584a613282eb2b566bc71c87d",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_registration_renewal/37007190339-1.json",
+        "before": null,
+        "after": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "mode": "100644"
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "before": "75d7d2be072addf441eb9a8a672b5ea82ffeebcc",
+        "after": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "mode": "100644"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "before": "258ed7cbf2402c8a884aeb7756436064fadfe6fb",
+        "after": "ef9c9cfdda552a8d561001a8045f010e7963cdd9",
+        "mode": "100644"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "before": "afa194152aa04edca1cfd119f4d98458686227a1",
+        "after": "3e834011ccdac7e349cf37b0293711ff57062150",
+        "mode": "100644"
+      }
+    ],
+    "pr_semantic_paths_preserved_without_change": [
+      "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
+      "tools/qikvrt_recursive_haltpoint.py",
+      "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "tools/qikvrt_reflexive_repository_watchdog.py",
+      "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "tests/test_qikvrt_recursive_haltpoint.py",
+      "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "tests/test_qikvrt_workflow_executor_mesh_contract.py"
+    ],
+    "conflict_resolution": "NO_OVERLAP_BETWEEN_MAIN_LIFECYCLE_DELTA_AND_PR_SEMANTIC_DELTA",
+    "integrity_projection": {
+      "method": "CONTENT_ADDRESSED_INCREMENTAL_CANONICAL_GENERATOR_PROJECTION",
+      "generator": "tools/qikvrt_integrity.py",
+      "generator_git_blob_sha1": "bd69412866bc8bed020246ef60e3ece6a8222b07",
+      "unchanged_digest_records_are_build_inputs_only": true,
+      "changed_paths_rehashed_from_exact_api_blob_bytes": true,
+      "existing_gitattributes_checkout_byte_semantics_preserved": true,
+      "full_native_deterministic_regeneration_and_verification_required": true
+    },
+    "admission": {
+      "order": "ONLY_AFTER_NEW_HEAD_AND_TREE_FRESHLY_READ_BACK",
+      "stale_head_admission_or_approval_performed": false,
+      "exposed_native_workflow_approve_operation": false,
+      "exposed_native_workflow_dispatch_operation": false,
+      "native_event_execution_must_be_observed_separately": true,
+      "rerun_as_admission_substitute_allowed": false,
+      "browser_dependency_allowed": false,
+      "next_action": "REOBSERVE_NEW_EXACT_HEAD_RUNS_AND_JOB_EVIDENCE_THEN_USE_A_NATIVE_ADMISSION_CARRIER_ONLY_IF_REQUIRED_AND_CALLABLE"
+    },
+    "predecessor_evidence_transfer": false,
+    "old_head_gate_success_transferred": false,
+    "main_promotion_authorized_by_this_integration": false,
+    "bypass": false,
+    "effect_ack_done": false,
+    "gate_subject": "ONLY_CONTAINING_SUCCESSOR_EXACT_HEAD_AND_TREE_FRESHLY_REBOUND_FROM_GITHUB",
+    "next_action": "VERIFY_NON_FORCE_REF_READBACK_THEN_FRESH_NATIVE_SUCCESSOR_GATES"
   }
 }
