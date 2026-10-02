@@ -54,7 +54,8 @@ jobs:
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
             tests.test_qikvrt_continuous_auto_repair \
-            tests.test_qikvrt_autonomous_pre_effect_controller
+            tests.test_qikvrt_autonomous_pre_effect_controller \
+            tests.test_qikvrt_recursive_haltpoint
 
   observe-repair-propose:
     if: >-
@@ -133,7 +134,8 @@ jobs:
             tests.test_qikvrt_autonomous_self_heal \
             tests.test_qikvrt_autonomous_pre_effect_controller \
             tests.test_qikvrt_expected_head_promotion \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_recursive_haltpoint
           python3 -B - <<'PY'
           import base64
           import os
