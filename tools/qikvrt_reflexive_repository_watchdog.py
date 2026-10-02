@@ -20,7 +20,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from tools import qikvrt_recursive_haltpoint as haltpoint
+try:
+    from tools import qikvrt_recursive_haltpoint as haltpoint
+except ModuleNotFoundError:  # direct script execution from tools/
+    import qikvrt_recursive_haltpoint as haltpoint
 
 
 ROOT = Path(__file__).resolve().parents[1]
