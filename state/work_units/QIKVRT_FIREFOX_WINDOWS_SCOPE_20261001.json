@@ -446,7 +446,7 @@
     "observed_gap": "Linux HTTP test never started Firefox; the HTTP bridge never checked the canonical seed",
     "established_cause_scope": "Absence of seed validation and real Linux Firefox invocation in the inspected exact source; origin of that design remains unestablished",
     "repair": "Seed checks before admission and commit; seed fields in hashed records/events/readback; native Firefox job with compatible declared host tools",
-    "current_acceptance": "CANDIDATE_PREPARED_NATIVE_EXECUTION_PENDING",
+    "current_acceptance": "RECEIPT_REFINEMENT_REQUIRES_FRESH_NATIVE_HEAD_RUN",
     "open_scopes": [
       "Actual exact-head Linux Firefox receipt",
       "Complete retained Linux runtime closure and actual Authority-on-Mirror OS construction",
@@ -456,6 +456,51 @@
       "Independent native Main admission and any public release"
     ],
     "software_downgrade": "FORBIDDEN",
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "historical_native_execution": {
+      "archive_sha256": "aa3ade4aac16ce6925a0ee6475fa8efaa72a1a6e5c10dcc347c0a053e0581a4b",
+      "receipt_sha256": "872a5567224dfe86621ffc898b8aa9ef0accb93b7dec03fbeec503c0de003172",
+      "xpi_sha256": "def194c9408919ce389d76f67ff262557889f0a4fdbd8247458a99c3944f6ec0",
+      "seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "events": 18,
+      "snapshot_sha256": "5cc36929391edc72aab785cd9e0f3e2100e4cecdf28003cd3889fa4379cb126f",
+      "os": "Ubuntu 24.04.5 LTS",
+      "browser": "156.0",
+      "head": "08e8d89b3c89332986dae8b3bc354128f910fee8",
+      "tree": "695ca3c632cc90e3561b2409b16d0c26aa2512b7",
+      "run": 36958364700,
+      "job": 110686315889,
+      "artifact": 11206488920,
+      "fanout": [
+        {
+          "accepted_events": 1,
+          "elapsed_seconds": 0.0015136889999922687,
+          "parallel_clients": 1,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        },
+        {
+          "accepted_events": 2,
+          "elapsed_seconds": 0.0031830310000060535,
+          "parallel_clients": 2,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        },
+        {
+          "accepted_events": 4,
+          "elapsed_seconds": 0.005930784000000244,
+          "parallel_clients": 4,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        },
+        {
+          "accepted_events": 8,
+          "elapsed_seconds": 0.01065581000000293,
+          "parallel_clients": 8,
+          "transport": "HTTP_CLIENTS_NOT_FIREFOX_FANOUT"
+        }
+      ],
+      "scope": "REAL_FIREFOX_AND_LOCAL_SEED_GATED_HTTP_TERMINAL_ON_EXISTING_LINUX",
+      "full_mesh_os_construction": false,
+      "predecessor_checks_transfer": false
+    },
+    "receipt_refinement": "Retain actual prepared request and full record for independent Firefox event digest verification; use Linux-specific receipt and HOLD labels"
   }
 }

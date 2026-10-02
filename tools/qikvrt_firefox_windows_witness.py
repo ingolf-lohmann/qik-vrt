@@ -539,7 +539,7 @@ def witness(output, headless=False, linux=False):
             wait_script(driver, 'return !!document.querySelector("#qikvrt-ai-terminal-host");')
             receipt['terminal_functional_readback'] = True
             before = readback()
-            nonce = 'windows-witness-' + os.urandom(16).hex()
+            nonce = ('linux-witness-' if linux else 'windows-witness-') + os.urandom(16).hex()
             driver.script('document.querySelector("#qv-command").value=arguments[0];'
                           'document.querySelector("[data-act=prepare]").click();', [nonce])
             wait_script(driver, 'return !document.querySelector("[data-act=commit]").disabled;')
@@ -548,6 +548,8 @@ def witness(output, headless=False, linux=False):
                 raise RuntimeError('PREPARE_BINDING_OR_NO_EFFECT_FAILED')
             if linux and prepared['full_record'].get('seed_binding') != receipt['seed_binding']:
                 raise RuntimeError('FIREFOX_SEED_RECORD_BINDING_FAILED')
+            receipt['prepared_record'] = prepared['full_record']
+            receipt['prepared_request'] = requests[-1]
             driver.script('document.querySelector("[data-act=commit]").click();')
             deadline = time.monotonic() + 30
             after = readback()
@@ -579,12 +581,16 @@ def witness(output, headless=False, linux=False):
                 receipt['reason'] = 'HOLD_PUBLIC_URL_AND_SEPARATE_PERSONAL_RELEASE_GATES'
             if not receipt['product_target_verified']:
                 receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_CLIENT_WITNESS_REQUIRED'
+            if linux:
+                receipt.pop('windows_witness_test', None)
+                receipt['reason'] = 'HOLD_COMPLETE_MESH_LINUX_CLOSURE_LIVE_NODES_AND_RELEASE_GATES'
         return 0
     except Exception as error:
         receipt['reason'] = type(error).__name__ + ': ' + str(error)
-        receipt['windows_witness_test'] = 'FAIL'
         if linux:
             receipt['linux_ring_test'] = 'FAIL'
+        else:
+            receipt['windows_witness_test'] = 'FAIL'
         if driver and driver.session:
             try:
                 receipt['terminal_diagnostics'] = driver.script(
