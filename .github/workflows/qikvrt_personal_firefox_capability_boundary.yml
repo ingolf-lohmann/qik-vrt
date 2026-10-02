@@ -140,6 +140,7 @@ jobs:
             ${{ runner.temp }}/qikvrt-firefox-linux-ring/geckodriver.log
             ${{ runner.temp }}/qikvrt-firefox-linux-ring/screenshot.png
             ${{ runner.temp }}/qikvrt-firefox-linux-ring/standard.xpi
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/effect-ack-state.json
           if-no-files-found: error
           retention-days: 30
 

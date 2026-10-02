@@ -454,7 +454,8 @@ def witness(output, headless=False, linux=False):
         import qikvrt_effect_ack_http_terminal as terminal
         from http.server import ThreadingHTTPServer
         seed = ROOT / contract['seed_path'] if linux else None
-        terminal.STATE = terminal.State(seed)
+        state_path = output / 'effect-ack-state.json' if linux else None
+        terminal.STATE = terminal.State(seed, state_path)
         if linux:
             receipt['seed_binding'] = terminal.STATE.seed_binding
             original = seed.read_bytes()
@@ -571,6 +572,27 @@ def witness(output, headless=False, linux=False):
                 raise RuntimeError('REPLAY_NOT_REJECTED')
             if linux:
                 receipt['ring_controls'] = bounded_ring_controls(terminal)
+                before_restart = receipt['ring_controls']['event_snapshot']
+                terminal.STATE = terminal.State(seed, state_path)
+                with urllib.request.urlopen(
+                    'http://127.0.0.1:8771/terminal/events', timeout=10
+                ) as response:
+                    after_restart = json.load(response)
+                if (
+                    after_restart['events_sha256'] != before_restart['events_sha256']
+                    or after_restart['events'] != before_restart['events']
+                    or after_restart['persistence_scope'] != 'DURABLE_ATOMIC_FILE'
+                ):
+                    raise RuntimeError('DURABLE_EVENT_RESTART_READBACK_MISMATCH')
+                receipt['ring_controls']['restart_readback'] = {
+                    'event_count': after_restart['event_count'],
+                    'events_sha256': after_restart['events_sha256'],
+                    'persistence_scope': after_restart['persistence_scope'],
+                }
+                receipt['ring_controls']['lossless_scope'] = (
+                    'DURABLE_ATOMIC_FILE_RESTART_READBACK'
+                )
+                receipt['persistent_state_sha256'] = digest(state_path)
                 receipt['linux_ring_test'] = 'PASS'
             receipt.update(local_effect_readback=True, replay_rejected=True,
                            readback_before=before, readback_after=after,

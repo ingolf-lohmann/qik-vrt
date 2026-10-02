@@ -326,6 +326,49 @@ class SeedBoundTerminalE2ETests(LoopbackTerminalE2ETests):
         self.assertEqual(sorted(results), [200] + [409] * 7)
         self.assertEqual(self.request('/terminal/state')[2]['events'], 1)
 
+    def test_durable_records_events_survive_restart_and_replay_stays_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE = terminal.State(self.seed, state_path)
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'durable-restart'}
+            prepared = self.prepare(payload)
+            status, _, committed = self.request(
+                '/terminal/commit', method='POST', body=payload,
+                headers=self.commit_headers(prepared))
+            self.assertEqual(status, 200)
+            record_url = prepared['record_url']
+            before = self.request('/terminal/events')[2]
+            self.assertEqual(before['persistence_scope'], 'DURABLE_ATOMIC_FILE')
+            self.assertTrue(state_path.is_file())
+
+            terminal.STATE = terminal.State(self.seed, state_path)
+            after = self.request('/terminal/events')[2]
+            self.assertEqual(after, before)
+            self.assertEqual(self.request(record_url)[0], 200)
+            self.assertEqual(self.request('/terminal/state')[2]['events'], 1)
+            status, _, replay = self.request(
+                '/terminal/commit', method='POST', body=payload,
+                headers=self.commit_headers(prepared))
+            self.assertEqual(status, 409)
+            self.assertIn('invalid', replay['reason'])
+            self.assertEqual(self.request('/terminal/events')[2], before)
+            self.assertEqual(committed['post_effect']['event_id'], 1)
+
+    def test_durable_state_tampering_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_path = Path(directory) / 'effect-ack-state.json'
+            terminal.STATE = terminal.State(self.seed, state_path)
+            payload = {'schema': 'qikvrt_terminal_input_v1', 'text': 'tamper-check'}
+            prepared = self.prepare(payload)
+            self.assertEqual(self.request(
+                '/terminal/commit', method='POST', body=payload,
+                headers=self.commit_headers(prepared))[0], 200)
+            value = json.loads(state_path.read_text())
+            value['events'][0]['text'] = 'tampered'
+            state_path.write_text(json.dumps(value))
+            with self.assertRaisesRegex(ValueError, 'PERSISTENT_STATE_BINDING_MISMATCH'):
+                terminal.State(self.seed, state_path)
+
 
 class BoundedSeedRingControlsTests(unittest.TestCase):
     def test_real_http_fanout_race_and_lossless_snapshot(self):

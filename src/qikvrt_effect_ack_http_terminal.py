@@ -14,6 +14,7 @@ import base64
 import hashlib
 import hmac
 import json
+import os
 import re
 import secrets
 import subprocess
@@ -30,6 +31,7 @@ HOST = "127.0.0.1"
 DEFAULT_PORT = 8771
 CANONICAL_SEED_SHA256 = "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
 MAX_EVENTS = 4096
+STATE_SCHEMA = "qikvrt_effect_ack_http_terminal_state_v1"
 SF_KEY = re.compile(r"^[a-z*][a-z0-9_.*-]*$")
 
 
@@ -112,14 +114,122 @@ class Prepared:
 
 
 class State:
-    def __init__(self, seed_path: Path | None = None) -> None:
+    def __init__(self, seed_path: Path | None = None, state_path: Path | None = None) -> None:
         self.seed_path = seed_path
         self.seed_binding = self.validate_seed()
+        self.state_path = state_path.resolve() if state_path is not None else None
         self.secret = secrets.token_bytes(32)
         self.lock = threading.Lock()
         self.prepared: dict[str, Prepared] = {}
         self.records: dict[str, dict[str, Any]] = {}
         self.events: list[dict[str, Any]] = []
+        self._load_persistent_state()
+
+    @property
+    def persistence_scope(self) -> str:
+        return "DURABLE_ATOMIC_FILE" if self.state_path is not None else "PROCESS_LIFETIME_ONLY"
+
+    def _state_core(self) -> dict[str, Any]:
+        return {
+            "schema": STATE_SCHEMA,
+            "seed_binding": self.seed_binding,
+            "records": self.records,
+            "events": self.events,
+        }
+
+    def _load_persistent_state(self) -> None:
+        if self.state_path is None or not self.state_path.exists():
+            return
+        if self.state_path.is_symlink() or not self.state_path.is_file():
+            raise ValueError("PERSISTENT_STATE_UNSAFE_PATH")
+        try:
+            value = json.loads(self.state_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+            raise ValueError("PERSISTENT_STATE_UNREADABLE") from exc
+        if not isinstance(value, dict) or set(value) != {
+            "schema", "seed_binding", "records", "events", "state_sha256"
+        }:
+            raise ValueError("PERSISTENT_STATE_SCHEMA_MISMATCH")
+        claimed = value.pop("state_sha256")
+        if (
+            value.get("schema") != STATE_SCHEMA
+            or not isinstance(claimed, str)
+            or not hmac.compare_digest(claimed, sha256(canonical_json(value)))
+            or value.get("seed_binding") != self.seed_binding
+        ):
+            raise ValueError("PERSISTENT_STATE_BINDING_MISMATCH")
+        records = value.get("records")
+        events = value.get("events")
+        if not isinstance(records, dict) or not isinstance(events, list) or len(events) > MAX_EVENTS:
+            raise ValueError("PERSISTENT_STATE_CONTENT_INVALID")
+        for digest, record in records.items():
+            if (
+                not isinstance(digest, str)
+                or not re.fullmatch(r"[0-9a-f]{64}", digest)
+                or not isinstance(record, dict)
+            ):
+                raise ValueError("PERSISTENT_RECORD_INVALID")
+            body = dict(record)
+            claimed_record = body.pop("record_hash", None)
+            if (
+                claimed_record != "sha256:" + digest
+                or not hmac.compare_digest(digest, sha256(canonical_json(body)))
+            ):
+                raise ValueError("PERSISTENT_RECORD_HASH_MISMATCH")
+        if (
+            [event.get("event_id") for event in events if isinstance(event, dict)]
+            != list(range(1, len(events) + 1))
+        ):
+            raise ValueError("PERSISTENT_EVENT_SEQUENCE_INVALID")
+        if any(
+            not isinstance(event, dict) or event.get("seed_binding") != self.seed_binding
+            for event in events
+        ):
+            raise ValueError("PERSISTENT_EVENT_BINDING_MISMATCH")
+        self.records = records
+        self.events = events
+
+    def persist(self) -> None:
+        if self.state_path is None:
+            return
+        core = self._state_core()
+        payload = {**core, "state_sha256": sha256(canonical_json(core))}
+        data = (
+            json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+        ).encode("utf-8")
+        self.state_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = self.state_path.with_name(
+            f".{self.state_path.name}.{os.getpid()}.{threading.get_ident()}.tmp"
+        )
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        descriptor = None
+        try:
+            descriptor = os.open(temporary, flags, 0o600)
+            view = memoryview(data)
+            while view:
+                written = os.write(descriptor, view)
+                if written <= 0:
+                    raise OSError("persistent state write made no forward progress")
+                view = view[written:]
+            os.fsync(descriptor)
+            os.close(descriptor)
+            descriptor = None
+            os.replace(temporary, self.state_path)
+            directory = os.open(
+                self.state_path.parent,
+                os.O_RDONLY | getattr(os, "O_DIRECTORY", 0),
+            )
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
+        finally:
+            if descriptor is not None:
+                os.close(descriptor)
+            try:
+                temporary.unlink()
+            except FileNotFoundError:
+                pass
 
     def validate_seed(self) -> dict[str, Any] | None:
         if self.seed_path is None:
@@ -155,6 +265,7 @@ class State:
         digest = sha256(canonical_json(body))
         body["record_hash"] = "sha256:" + digest
         self.records[digest] = body
+        self.persist()
         return digest, body
 
     def make_token(self, input_hash: str, record_hash: str) -> str:
@@ -254,6 +365,7 @@ class Handler(BaseHTTPRequestHandler):
                     "repository_tree": tree,
                     "external_effects": "NONE",
                     "seed_binding": STATE.seed_binding,
+                    "persistence_scope": STATE.persistence_scope,
                 }
             self._json(200, body)
             return
@@ -264,7 +376,7 @@ class Handler(BaseHTTPRequestHandler):
                              "events": events, "event_count": len(events),
                              "events_sha256": sha256(canonical_json(events)),
                              "seed_binding": STATE.seed_binding,
-                             "persistence_scope": "PROCESS_LIFETIME_ONLY"})
+                             "persistence_scope": STATE.persistence_scope})
             return
         prefix = "/effect-ack/records/"
         if self.path.startswith(prefix):
@@ -381,11 +493,13 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--seed", type=Path,
                         help="Require the unchanged canonical 400-byte seed before local admission")
+    parser.add_argument("--state", type=Path,
+                        help="Durable atomic records/events state file")
     args = parser.parse_args()
     if args.host not in {"127.0.0.1", "localhost"}:
         raise SystemExit("BLOCK: reference terminal bridge is loopback-only")
     global STATE
-    STATE = State(args.seed)
+    STATE = State(args.seed, args.state)
     server = ThreadingHTTPServer((args.host, args.port), Handler)
     print(json.dumps({"state": "READY", "host": args.host, "port": args.port, "external_effects": "NONE"}, sort_keys=True), flush=True)
     server.serve_forever()
