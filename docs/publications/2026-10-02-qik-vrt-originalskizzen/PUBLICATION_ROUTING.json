@@ -1,71 +1,77 @@
 {
-  "schema": "qikvrt_publication_routing_manifest_v1",
-  "bundle_id": "qikvrt-original-sketches-20261002-v1",
-  "title": "QIK-VRT: handschriftliche Originalskizzen von Ingolf Lohmann – Funktionsweise und Entstehungsdokumentation",
-  "author": "Ingolf Lohmann",
-  "repository_scope": [
-    "Goldkelch/qik-vrt",
-    "ingolf-lohmann/qik-vrt"
-  ],
   "artifacts": [
     {
-      "path": "originals/IMG_1096.jpeg",
       "bytes": 537515,
+      "path": "originals/IMG_1096.jpeg",
       "sha256": "fb8e50dddbdcb44fff569060c6942b03ab5a8a329fc836c18b9951e6c2cd6f02"
     },
     {
-      "path": "originals/IMG_1097.jpeg",
       "bytes": 415168,
+      "path": "originals/IMG_1097.jpeg",
       "sha256": "156c7029b7a4e2388f47a3cf1707dbbc7c79a98041eb224b8374ae35f7cb25fb"
     },
     {
-      "path": "originals/IMG_1098.jpeg",
       "bytes": 347424,
+      "path": "originals/IMG_1098.jpeg",
       "sha256": "a060f5895f3c2cfd2170c0f9d23d45267ee865fcfc93de828adaa42f4300345c"
     },
     {
-      "path": "originals/IMG_1099.jpeg",
       "bytes": 387781,
+      "path": "originals/IMG_1099.jpeg",
       "sha256": "c59575a5f55bf6113e8e1139615c7c734e69de661f8e57d9b5eb6c1586ee12d1"
     },
     {
-      "path": "originals/IMG_1100.jpeg",
       "bytes": 412525,
+      "path": "originals/IMG_1100.jpeg",
       "sha256": "a7e9dd934e5e94c543899cfec90c0b357c10e2ac2f9a1f99731e902ceb9d7609"
     },
     {
-      "path": "originals/IMG_1101.jpeg",
       "bytes": 388429,
+      "path": "originals/IMG_1101.jpeg",
       "sha256": "1bf3df251bbdb14218dcfb1cabec6c77d87ea771b195e9c75ac64e0ea2a2e8a9"
     }
   ],
-  "routes": {
-    "repository": {
-      "disposition": "CANDIDATE_REQUIRED",
-      "prominent_entrypoint": "README.md"
-    },
-    "zenodo": {
-      "effect_gate": "EXPLICIT_HASH_BOUND_PUBLICATION_REQUEST_REQUIRED",
-      "state": "PREPARED_NOT_UPLOADED"
-    },
-    "ietf": {
-      "protocol_change_required": false,
-      "disposition": "REFERENCE_AFTER_ZENODO_DOI"
-    },
-    "arxiv": {
-      "disposition": "LATER_MANUSCRIPT_ANCILLARY_FILES"
-    },
-    "wikipedia": {
-      "disposition": "LATER_INDEPENDENT_SECONDARY_SOURCE_REVIEW"
-    }
-  },
+  "author": "Ingolf Lohmann",
   "automation": {
     "new_publisher_created": false,
     "reuse": "tools/qikvrt_zenodo_publish.py after its exact production preconditions are met"
   },
+  "bundle_id": "qikvrt-original-sketches-20261002-v1",
   "release_claims": {
-    "PASS": false,
+    "EFFECT_ACK_DONE": false,
     "FINAL_PASS": false,
-    "EFFECT_ACK_DONE": false
-  }
+    "PASS": false
+  },
+  "repository_scope": [
+    "Goldkelch/qik-vrt",
+    "ingolf-lohmann/qik-vrt"
+  ],
+  "routes": {
+    "arxiv": {
+      "disposition": "LATER_MANUSCRIPT_ANCILLARY_FILES"
+    },
+    "ietf": {
+      "disposition": "REFERENCE_AFTER_ZENODO_DOI",
+      "protocol_change_required": false
+    },
+    "repository": {
+      "disposition": "CANDIDATE_REQUIRED",
+      "prominent_entrypoint": "README.md"
+    },
+    "wikipedia": {
+      "disposition": "LATER_INDEPENDENT_SECONDARY_SOURCE_REVIEW"
+    },
+    "zenodo": {
+      "effect_gate": "EXPLICIT_HASH_BOUND_PUBLICATION_REQUEST_REQUIRED",
+      "machine_proof_bundle": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+      "owner_authorization_draft": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION_DRAFT.json",
+      "production_gate_status": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PRODUCTION_GATE_STATUS.json",
+      "production_repository": "Goldkelch/qik-vrt",
+      "publication_manifest": "docs/publications/2026-10-02-qik-vrt-originalskizzen/publish-request.json",
+      "state": "V2_PROOF_COMPLETE_EXACT_AUTHORIZATION_PENDING",
+      "upload_authorized": false
+    }
+  },
+  "schema": "qikvrt_publication_routing_manifest_v1",
+  "title": "QIK-VRT: handschriftliche Originalskizzen von Ingolf Lohmann – Funktionsweise und Entstehungsdokumentation"
 }

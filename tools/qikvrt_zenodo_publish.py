@@ -472,6 +472,11 @@ def _validate_owner_authorization(
     authorization, raw = zenodo._load_json_file(path)
     observed = _identity(raw_path, raw)
     _validate_identity(value, observed, "manifest.owner_authorization")
+    if authorization.get("schema") == "qikvrt_zenodo_owner_authorization_draft_v1":
+        _fail(
+            "AUTHORIZE_EXACT_UPLOAD_REQUIRED: owner authorization remains "
+            "an ungranted draft"
+        )
     zenodo._check_exact_keys(
         authorization,
         {

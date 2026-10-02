@@ -1,0 +1,147 @@
+{
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "evidence_path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/zenodo-publication.json",
+  "files": [
+    {
+      "git_blob_sha": "49e2748ba0aee1cbf58220cdf1fc85c04de25a67",
+      "name": "README.md",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md"
+    },
+    {
+      "git_blob_sha": "516996dbfc79375f8a7f0954d99a6b462156cfdc",
+      "name": "IMG_1096.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1096.jpeg"
+    },
+    {
+      "git_blob_sha": "49e32ac369cfab3194bcafe6e65b50c217cbaf69",
+      "name": "IMG_1097.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1097.jpeg"
+    },
+    {
+      "git_blob_sha": "a20622e70b8574f1ebdd5826f2184605931c2703",
+      "name": "IMG_1098.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1098.jpeg"
+    },
+    {
+      "git_blob_sha": "10464666e58aebcbc26df9f386bea9fc802b3696",
+      "name": "IMG_1099.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1099.jpeg"
+    },
+    {
+      "git_blob_sha": "feebe67861403377caf3148f1914c18ebc43c5d3",
+      "name": "IMG_1100.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1100.jpeg"
+    },
+    {
+      "git_blob_sha": "7d3c351cd302316706110d6bb98a79d90ec3f0fd",
+      "name": "IMG_1101.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1101.jpeg"
+    },
+    {
+      "git_blob_sha": "692343116070ccbcbd09c5055d99727474c6b45e",
+      "name": "ZENODO_METADATA_V2.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ZENODO_METADATA_V2.json"
+    },
+    {
+      "git_blob_sha": "0331573a007acdceeac87134ab8eab523ab6fd57",
+      "name": "ARCHIVE_MANIFEST.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ARCHIVE_MANIFEST.json"
+    },
+    {
+      "git_blob_sha": "8e829703a0939b037a44ebd0784a944263df649b",
+      "name": "CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX.json"
+    },
+    {
+      "git_blob_sha": "228ab9c84f33ed3af528b09eba65ed4845598c2c",
+      "name": "CLAIM_MATRIX_V2.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX_V2.json"
+    },
+    {
+      "git_blob_sha": "302fa52150b29a2e562200986f5a10e9bee82255",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json"
+    },
+    {
+      "git_blob_sha": "7ceb083429e5e5cbd72aba0711e3547c050cf036",
+      "name": "ORIGIN_AND_PUBLICATION_STATUS.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ORIGIN_AND_PUBLICATION_STATUS.json"
+    },
+    {
+      "git_blob_sha": "b2673a73053333eba99606f376ab772af9bbd3f2",
+      "name": "FROZEN_UPLOAD_CANDIDATE.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/FROZEN_UPLOAD_CANDIDATE.json"
+    },
+    {
+      "git_blob_sha": "5c087314f31c16a537af8e1a1d24f0adb3b94cad",
+      "name": "RETURN_TO_OWNER.md",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/RETURN_TO_OWNER.md"
+    },
+    {
+      "git_blob_sha": "c37c491043d6784683f7b925071b30f970fc6aa0",
+      "name": "BOUNDARY_TEST_REPORT.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/BOUNDARY_TEST_REPORT.json"
+    },
+    {
+      "git_blob_sha": "02f4a1f89eaa4f4203c1727b6d2ad6507fb7a1f5",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PREPUBLICATION_RETURN_RECEIPT.json"
+    },
+    {
+      "git_blob_sha": "2f24b91c386aa5b73b5a9223ff4c8fb965206f52",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json"
+    }
+  ],
+  "machine_proof": {
+    "git_blob_sha": "2f24b91c386aa5b73b5a9223ff4c8fb965206f52",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "description": "<p>Sechs zusammengehörige handschriftliche Originalskizzen von Ingolf Lohmann zur universal anschlussfähigen Erläuterung der Wirkungsweise von QIK VRT. Die Originaldateien IMG_1096.jpeg bis IMG_1101.jpeg werden in stabiler Reihenfolge und unveränderten Bildbytes archiviert.</p><p>Der Begleittext beschreibt Herkunft und dokumentierten Entstehungsweg. Archivmanifest und Prüfsummen binden die Originalquellen. Die redaktionelle Katalogisierung, Galerie und Begleitmetadaten wurden mit OpenAI Codex erstellt. Die Zeichnungen sind dokumentarische Primärquellen mit zugeordneten begrifflichen und interpretativen Aussagen.</p>",
+    "image_type": "drawing",
+    "keywords": [
+      "QIK-VRT",
+      "Ingolf Lohmann",
+      "Originalskizzen",
+      "Universal Terminal",
+      "Universal Transputer",
+      "Information",
+      "Provenienz"
+    ],
+    "language": "deu",
+    "license": "cc-by-nc-nd-4.0",
+    "notes": "Archivdatum: 2026-10-02. Anfertigungs- und Aufnahmezeitpunkte sind nicht separat nachgewiesen. Keine zusätzliche Lizenzfreigabe für kommerzielle Nutzung oder Bearbeitung.",
+    "prereserve_doi": true,
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/Goldkelch/qik-vrt",
+        "relation": "isSupplementTo"
+      },
+      {
+        "identifier": "https://github.com/ingolf-lohmann/qik-vrt",
+        "relation": "isSupplementTo"
+      }
+    ],
+    "title": "QIK-VRT: handschriftliche Originalskizzen von Ingolf Lohmann – Funktionsweise und Entstehungsdokumentation",
+    "upload_type": "image",
+    "version": "2026-10-02-original-sketches-v1"
+  },
+  "owner_authorization": {
+    "bytes": 10883,
+    "git_blob_sha": "bffb937e892d8b28c87f928c8429b9024b9f004c",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION_DRAFT.json",
+    "sha256": "ab11252730def72a4bbaec01551f585a225dffdf4d692674b888cc76ac6877fb"
+  },
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "source_head": "c31a479c51e71bcf06fd62e1ea909d400e345bfe",
+  "state": "publish"
+}

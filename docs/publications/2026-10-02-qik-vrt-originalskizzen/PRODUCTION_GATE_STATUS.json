@@ -1,0 +1,77 @@
+{
+  "_license": {
+    "classification": "publication_production_gate_status",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "additional_capability_gates": {
+    "authority_repository": {
+      "access_established": false,
+      "connector_readback": "HTTP_404_NOT_FOUND",
+      "repository": "Goldkelch/qik-vrt"
+    },
+    "zenodo_executor": {
+      "dedicated_callable_connector": false,
+      "local_github_token_present": false,
+      "local_zenodo_token_present": false,
+      "repository_secret_executability_inferred": false
+    }
+  },
+  "authority_mirror_equality": false,
+  "candidate_return_receipt": {
+    "bytes": 3271,
+    "git_blob_sha": "02f4a1f89eaa4f4203c1727b6d2ad6507fb7a1f5",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PREPUBLICATION_RETURN_RECEIPT.json",
+    "sha256": "4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5"
+  },
+  "canonical_metadata_sha256": "6672ea5da380192fe191a4ddc1d8107c705e22ac840f96aa29c2ee08afd03ad6",
+  "doi": null,
+  "effect_boundary": "Machine-proof schema admission does not grant natural-person upload authorization. No production record, DOI, public bytes or pair equality is claimed.",
+  "first_publisher_gate": "EXACT_OWNER_AUTHORIZATION_MISSING",
+  "machine_proof": {
+    "bytes": 14043,
+    "git_blob_sha": "2f24b91c386aa5b73b5a9223ff4c8fb965206f52",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "99693d3c9407a5f755b6316aa543f99f53d32c655d2a38b5cfba1cf678bfeaaa"
+  },
+  "machine_proof_gate": "PASS_SCOPED_V2_CONTRACT",
+  "next_action": "Obtain the actual new canonical exact statement from Ingolf Lohmann for these frozen hashes; materialize its real event on a descendant control commit. Separately establish Authority repository access and a callable credentialed Zenodo executor before one bound execution.",
+  "owner_draft": {
+    "bytes": 10883,
+    "git_blob_sha": "bffb937e892d8b28c87f928c8429b9024b9f004c",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/OWNER_ZENODO_AUTHORIZATION_DRAFT.json",
+    "sha256": "ab11252730def72a4bbaec01551f585a225dffdf4d692674b888cc76ac6877fb"
+  },
+  "owner_exact_upload_authorized": false,
+  "pre_authorization_source_head": "c31a479c51e71bcf06fd62e1ea909d400e345bfe",
+  "prepared_in_repository": "ingolf-lohmann/qik-vrt",
+  "production_command": [
+    "python3",
+    "-B",
+    "tools/qikvrt_zenodo_publish.py",
+    "--manifest",
+    "docs/publications/2026-10-02-qik-vrt-originalskizzen/publish-request.json"
+  ],
+  "production_repository": "Goldkelch/qik-vrt",
+  "public_readback": false,
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "publication_manifest": {
+    "bytes": 6423,
+    "git_blob_sha": "80e7426585a196047ff079e5e45eb3c7c98328f9",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/publish-request.json",
+    "sha256": "fcd726e56f9070757ca0887a128350eeb92075fbf05c019ba62f154e2e480eb2"
+  },
+  "record_id": null,
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_original_sketch_production_gate_status_v1",
+  "single_use_ref_created": false,
+  "state": "HOLD_EXACT_OWNER_AUTHORIZATION_MISSING",
+  "upload_count": 18,
+  "zenodo_mutation_count": 0
+}
