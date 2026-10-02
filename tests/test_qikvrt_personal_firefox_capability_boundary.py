@@ -18,6 +18,7 @@ from tools.qikvrt_firefox_windows_witness import (
     public_http_readback, evaluate_public_url_readback, NoPublicRedirect,
     CANONICAL_PRODUCT_URL, PUBLIC_BODY_LIMIT,
 )
+from tools import qikvrt_firefox_windows_witness as windows_witness
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = ROOT / "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md"
@@ -286,6 +287,77 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         self.assertTrue(native_windows_architectures_match(observed, binaries, 'AMD64'))
         self.assertFalse(target_matches(observed, self.policy['windows_acceptance']['product_target'],
                                         '2026-10-02'))
+
+    def strict_client_preflight(self, observed, *, expected_tree='b' * 40,
+                                expected_architecture='AMD64', expected_provision=False):
+        with tempfile.TemporaryDirectory() as temp, \
+                patch.dict(os.environ, {'QIKVRT_EXPECTED_HEAD': 'a' * 40,
+                                        'QIKVRT_EXPECTED_TREE': expected_tree}, clear=True), \
+                patch.object(windows_witness.subprocess, 'check_output',
+                             side_effect=['a' * 40, 'b' * 40, b'']), \
+                patch.object(windows_witness, 'windows_identity', return_value=observed), \
+                patch.object(windows_witness, 'pe_architecture', return_value='AMD64'), \
+                patch.object(windows_witness.sys, 'version_info', (3, 13, 15)), \
+                patch.object(windows_witness, 'provision_driver') as provision, \
+                patch.object(windows_witness, 'WebDriver') as browser, \
+                patch.object(windows_witness, 'initialize_seeded_terminal') as terminal, \
+                patch('builtins.print'):
+            output = Path(temp)
+            provision.side_effect = RuntimeError('PROVISIONING_BOUNDARY_TEST_ONLY')
+            code = windows_witness.witness(output, expected_architecture=expected_architecture,
+                                          require_product_target=True)
+            receipt = json.loads((output / 'RECEIPT.json').read_text())
+            if expected_provision:
+                provision.assert_called_once_with(self.policy['windows_acceptance'],
+                                                  output / 'driver-cache', 'AMD64')
+            else:
+                provision.assert_not_called()
+            browser.assert_not_called()
+            terminal.assert_not_called()
+            self.assertFalse(receipt['windows_11_amd64_client_execution_observed'])
+            self.assertFalse(receipt['windows_amd64_execution_observed'])
+            self.assertFalse(receipt['local_effect_readback'])
+            self.assertFalse(receipt['personal_release_effect_ack_done'])
+            return code, receipt
+
+    def test_strict_client_refuses_server_and_unsupported_client_before_effect(self):
+        for observed in (
+                {'product_type': 3, 'build': 26100, 'display_version': '24H2',
+                 'edition': 'ServerDatacenter', 'architecture': 'AMD64',
+                 'process_architecture': 'AMD64'},
+                {'product_type': 1, 'build': 26100, 'display_version': '24H2',
+                 'edition': 'Enterprise', 'architecture': 'AMD64',
+                 'process_architecture': 'AMD64'}):
+            with self.subTest(observed=observed):
+                code, receipt = self.strict_client_preflight(observed)
+                self.assertEqual(code, 2)
+                self.assertFalse(receipt['product_target_verified'])
+                self.assertEqual(receipt['windows_witness_test'], 'HOLD')
+                self.assertEqual(receipt['reason'], 'HOLD_SUPPORTED_WINDOWS_11_PRODUCT_TARGET_REQUIRED')
+
+    def test_strict_client_refuses_arm64_carrier_for_amd64_before_effect(self):
+        code, receipt = self.strict_client_preflight(
+            {'product_type': 1, 'build': 26200, 'display_version': '25H2',
+             'edition': 'Enterprise', 'architecture': 'ARM64', 'process_architecture': 'ARM64'})
+        self.assertEqual(code, 1)
+        self.assertIn('EXPECTED_NATIVE_WINDOWS_ARCHITECTURE_MISMATCH', receipt['reason'])
+
+    def test_strict_client_admits_supported_native_amd64_to_provisioning_only(self):
+        code, receipt = self.strict_client_preflight(
+            {'product_type': 1, 'build': 26200, 'display_version': '25H2',
+             'edition': 'Enterprise', 'architecture': 'AMD64', 'process_architecture': 'AMD64'},
+            expected_provision=True)
+        self.assertEqual(code, 1)
+        self.assertTrue(receipt['product_target_verified'])
+        self.assertIn('PROVISIONING_BOUNDARY_TEST_ONLY', receipt['reason'])
+
+    def test_strict_client_requires_independently_bound_tree_before_effect(self):
+        for expected_tree, reason in (('', 'PRODUCT_TARGET_EXACT_SUBJECT'),
+                                      ('c' * 40, 'EXACT_TREE_MISMATCH')):
+            with self.subTest(expected_tree=expected_tree):
+                code, receipt = self.strict_client_preflight({}, expected_tree=expected_tree)
+                self.assertEqual(code, 1)
+                self.assertIn(reason, receipt['reason'])
 
     def test_cache_authority_uses_repository_paths_on_windows(self) -> None:
         from tools import qikvrt_tool_cache as cache

@@ -821,7 +821,8 @@ def wait_script(driver, script):
     raise RuntimeError('BROWSER_FUNCTIONAL_TIMEOUT')
 
 
-def witness(output, headless=False, linux=False, expected_architecture=None):
+def witness(output, headless=False, linux=False, expected_architecture=None,
+            require_product_target=False):
     output.mkdir(parents=True, exist_ok=True)
     policy = json.loads(POLICY.read_text(encoding='utf-8'))
     contract = policy['linux_ring_acceptance'] if linux else policy['windows_acceptance']
@@ -853,15 +854,24 @@ def witness(output, headless=False, linux=False, expected_architecture=None):
                        operating_system_built_from_seed=False, productive_mesh_runtime_verified=False)
     else:
         receipt.update(expected_architecture=expected_architecture,
+                       product_target_required=require_product_target,
+                       windows_witness_test='HOLD',
                        windows_native_architecture_witness_test='HOLD',
-                       windows_amd64_execution_observed=False)
+                       windows_amd64_execution_observed=False,
+                       windows_11_amd64_client_execution_observed=False)
     driver = None
     server = None
     terminal = None
     try:
         expected = os.environ.get('QIKVRT_EXPECTED_HEAD')
+        expected_tree = os.environ.get('QIKVRT_EXPECTED_TREE')
+        if require_product_target and (linux or headless or not expected_architecture
+                                       or not expected or not expected_tree):
+            raise RuntimeError('PRODUCT_TARGET_EXACT_SUBJECT_AND_HEADED_WINDOWS_ARCHITECTURE_REQUIRED')
         if expected and expected != receipt['head']:
             raise RuntimeError('EXACT_HEAD_MISMATCH')
+        if expected_tree and expected_tree != receipt['tree']:
+            raise RuntimeError('EXACT_TREE_MISMATCH')
         if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
             raise RuntimeError('DIRTY_CANDIDATE')
         if linux:
@@ -883,6 +893,11 @@ def witness(output, headless=False, linux=False, expected_architecture=None):
             raise RuntimeError('WINDOWS_WITNESS_INTERPRETER_VERSION_MISMATCH')
         receipt['python_version'] = platform.python_version()
         receipt['product_target_verified'] = False if linux else target_matches(receipt['os'], contract['product_target'])
+        if require_product_target and not receipt['product_target_verified']:
+            # An unsuitable carrier is not a failed browser execution. Refuse
+            # before any driver provisioning, browser or terminal effect.
+            receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_PRODUCT_TARGET_REQUIRED'
+            return 2
         if linux:
             gecko_path = shutil.which('geckodriver')
             if not gecko_path and os.environ.get('GECKOWEBDRIVER'):
@@ -1085,6 +1100,11 @@ def witness(output, headless=False, linux=False, expected_architecture=None):
             if not linux and receipt['browser_execution_mode'] != 'NATIVE':
                 receipt['windows_witness_test'] = 'HOLD'
                 receipt['reason'] = 'HOLD_NATIVE_WINDOWS_ARCHITECTURE_EXECUTION_REQUIRED'
+            if not linux:
+                receipt['windows_11_amd64_client_execution_observed'] = (
+                    receipt['windows_amd64_execution_observed']
+                    and receipt['product_target_verified']
+                    and receipt['windows_witness_test'] == 'PASS')
             if linux:
                 receipt.pop('windows_witness_test', None)
                 receipt['reason'] = 'HOLD_COMPLETE_MESH_LINUX_CLOSURE_LIVE_NODES_AND_RELEASE_GATES'
@@ -1136,7 +1156,12 @@ if __name__ == '__main__':
     parser.add_argument('--linux-ring', action='store_true', help='Use declared Linux runner tools and require canonical seed')
     parser.add_argument('--expected-architecture', choices=('ARM64', 'AMD64'),
                         help='Require this independently observed native Windows architecture')
+    parser.add_argument('--require-product-target', action='store_true',
+                        help='Refuse unsupported Windows clients and Server before execution; require independent expected HEAD/TREE and headed native architecture')
     args = parser.parse_args()
     if args.linux_ring and args.expected_architecture:
         parser.error('--expected-architecture applies only to Windows')
-    sys.exit(witness(args.output.resolve(), args.headless, args.linux_ring, args.expected_architecture))
+    if args.require_product_target and (args.linux_ring or args.headless or not args.expected_architecture):
+        parser.error('--require-product-target requires --expected-architecture and headed Windows mode')
+    sys.exit(witness(args.output.resolve(), args.headless, args.linux_ring,
+                     args.expected_architecture, args.require_product_target))

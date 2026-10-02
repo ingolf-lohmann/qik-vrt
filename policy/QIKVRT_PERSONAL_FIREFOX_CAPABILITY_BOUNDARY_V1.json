@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.4",
+  "version": "1.5",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -239,6 +239,78 @@
         "altered_truncated_missing_seed_and_unseeded_restart_refused",
         "corrupt_truncated_duplicate_and_seed_mismatched_state_start_refused_without_reset"
       ]
+    },
+    "windows11_amd64_client_measurement": {
+      "schema": "qikvrt_windows11_amd64_client_measurement_contract_v1",
+      "target_ref": "#/windows_acceptance/product_target",
+      "expected_architecture": "AMD64",
+      "state": "HOLD_NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+      "first_blocker": "NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+      "discovery_receipt_ref": "state/work_units/QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001.json#/windows11_amd64_carrier_continuation",
+      "observer": "tools/qikvrt_firefox_windows_witness.py",
+      "measurement_command": "python -B tools/qikvrt_firefox_windows_witness.py --expected-architecture AMD64 --require-product-target --output <new-ephemeral-output>",
+      "expected_subject_environment": [
+        "QIKVRT_EXPECTED_HEAD",
+        "QIKVRT_EXPECTED_TREE"
+      ],
+      "carrier_admission_requires": [
+        "fresh_authorized_callable_operation_and_runner_selector_for_this_repository",
+        "current_runner_or_private_carrier_identity_availability_and_repository_scope",
+        "independent_expected_head_tree_and_clean_exact_candidate_checkout",
+        "headed_native_windows_product_type_1_supported_target_build_edition_and_display_version",
+        "IsWow64Process2_native_OS_and_process_AMD64",
+        "native_PE_AMD64_Python_3.13.15_Firefox_156.0.1_Geckodriver_0.37.1_with_binary_hashes",
+        "existing_tool_cache_and_acceptance_regressions"
+      ],
+      "execution_requires": [
+        "functional_witness_requires",
+        "durable_state.required_readback"
+      ],
+      "negative_startup_controls": [
+        "empty_state",
+        "truncated_state",
+        "missing_final_newline",
+        "corrupt_digest",
+        "duplicate_json_key",
+        "state_seed_binding_mismatch",
+        "altered_seed",
+        "truncated_seed",
+        "missing_seed",
+        "unseeded_restart"
+      ],
+      "independent_readback_requires": [
+        "same_head_tree_run_attempt_numeric_job_and_artifact",
+        "actual_runner_OS_build_edition_native_architecture_and_observation_within_job_interval",
+        "policy_observer_backend_XPI_and_actual_executable_byte_bindings",
+        "all_retained_events_and_every_referenced_record_hash_and_bytes",
+        "real_TerminateProcess_distinct_restart_snapshot_unchanged_and_two_replay_409_probes",
+        "all_ten_actual_CLI_startup_refusals_and_unchanged_restored_state",
+        "archive_digest_receipt_and_job_log_agreement"
+      ],
+      "client_execution_receipt_field": "windows_11_amd64_client_execution_observed",
+      "requires_windows_witness_test": "PASS",
+      "unsuitable_product_carrier_exit_code": 2,
+      "missing_subject_or_architecture_binding_fails_closed": true,
+      "server_compatibility_fallback": false,
+      "architecture_evidence_transfer": false,
+      "predecessor_evidence_transfer": false,
+      "private_state_or_tokens_in_artifacts": false,
+      "native_client_controls_accept_personal_release": false,
+      "documented_unprovisioned_candidate": {
+        "kind": "GITHUB_LARGER_RUNNER_BASE_WINDOWS_11_DESKTOP",
+        "minimum_documented_windows_resources": {
+          "vcpus": 4,
+          "memory_gb": 16,
+          "ssd_gb": 150,
+          "architecture": "x64"
+        },
+        "source": "https://docs.github.com/en/actions/reference/runners/larger-runners",
+        "available_for_this_repository_verified": false,
+        "authorized_callable_carrier_verified": false,
+        "provisioning_or_billing_authorized_by_this_contract": false,
+        "runner_label": null
+      },
+      "retry_condition": "A supported Windows 11 AMD64 carrier is freshly exposed with authorization, repository scope and an actually callable execution operation; reobserve exact candidate before execution."
     }
   },
   "linux_ring_acceptance": {

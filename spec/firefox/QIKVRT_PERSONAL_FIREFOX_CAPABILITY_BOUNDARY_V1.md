@@ -171,6 +171,82 @@ The standard extension explicitly permits backend connections only to its declar
 
 Firefox host match patterns omit ports: Mozilla bug 2052000 (duplicate of 1362809) documents that port-qualified grants are reported active but do not match requests. The backend allowlist and `connect-src` still enforce port 8771. This corrects matching semantics; it does not permit connecting to arbitrary loopback services. Source: https://bugzilla.mozilla.org/show_bug.cgi?id=2052000
 
+## Windows 11 AMD64 carrier boundary and reproducible measurement
+
+The fresh discovery receipt is the existing work unit's
+`windows11_amd64_carrier_continuation`. Its input subject is PR438 HEAD
+`2d1176f5790d7c345799f2232ac317a1d306d93a`, TREE
+`e5bf9a11a2f58c5f09c8bbd29a689d4137fb174d`; that subject's Server AMD64 and
+Windows 11 ARM64 executions remain historical evidence of those exact scopes.
+They do not prove a successor or the Windows 11 AMD64 client.
+
+The observed Main `6fb101b2815744b353f67e3fe88ba8458d3c36d5`, TREE
+`0aa53d2bb775cbf9534d5a6b9a47e4b6f8637d75`, exposes 77 workflow blobs and
+no Windows 11 AMD64 or self-hosted selector. The installed connector lists two
+public QIK-VRT repositories and no private carrier. Its repository runner
+inventory GET is rejected by the connector endpoint allowlist; no initial
+workflow-dispatch tool is exposed. The generic Authority content route returns
+404. These are access/exposure observations, not proof that no private host or
+runner exists. The first task blocker is
+`NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED`.
+
+GitHub's standard runner reference lists Windows 11 ARM64 and Server x64.
+Its larger-runner reference documents a Base Windows 11 Desktop image and a
+4-vCPU Windows size with 16 GB memory and 150 GB SSD. This is a documented
+candidate, not an available, authorized or invoked carrier here. No runner
+label is invented, no private host is registered, and no provisioning/billing
+effect is authorized by this measurement contract. Sources:
+https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+and https://docs.github.com/en/actions/reference/runners/larger-runners.
+
+`windows_acceptance.windows11_amd64_client_measurement` preserves a runnable
+contract using the existing observer and controls. Before execution, an actual
+runner/private carrier must be freshly exposed with its identity, current
+availability, repository scope, authorized operation and callable selector.
+Reobserve the PR's current HEAD/TREE independently through REST and check out
+those exact bytes. Do not fill an expected binding from the checkout itself.
+The existing tool-cache contract and both native regression modules must pass
+on that carrier with the declared native tools. Then use a new ephemeral output
+directory in a headed native Windows session:
+
+```powershell
+$env:QIKVRT_EXPECTED_HEAD = '<fresh exact HEAD from independent REST readback>'
+$env:QIKVRT_EXPECTED_TREE = '<fresh exact TREE from independent REST readback>'
+python -B tools/qikvrt_tool_cache.py verify
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary tests.test_qikvrt_effect_ack_http_terminal
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+python -B tools/qikvrt_firefox_windows_witness.py --expected-architecture AMD64 --require-product-target --output '<new ephemeral output directory>'
+exit $LASTEXITCODE
+```
+
+The strict option requires independent expected HEAD/TREE, clean source,
+headed Windows and explicit architecture. Native ProductType/edition/build/
+DisplayVersion/support-window mismatch returns exit 2 and `HOLD` before driver
+provisioning, Firefox or any terminal effect. Architecture, subject and binary
+mismatches fail closed. Server compatibility and ARM64 cannot satisfy this
+path. Missing or mismatched tools require repair or a separately reviewed
+compatible contract update, never downgrade or silent substitution.
+
+The observer reuses the canonical 400-byte seed, persistent State, real
+TerminateProcess and distinct restart, every retained event and both referenced
+record classes, unchanged snapshot digest, browser-token and restart-token
+HTTP 409 with zero second effects, and all ten actual negative CLI startups.
+The required native OS, CPython 3.13.15, Firefox 156.0.1 and Geckodriver 0.37.1
+must independently read AMD64 and bind their actual executable hashes.
+
+`windows_11_amd64_client_execution_observed=true` can only follow all those
+controls on the supported native AMD64 client with `windows_witness_test=PASS`.
+Independent readback must bind numeric run/attempt/job/artifact, actual runner
+and OS, observation within the job interval, archive digest, policy/observer/
+backend/XPI/binary bytes, complete records and receipt/job-log agreement.
+Local simulated admission tests, an exit code or a self-reported receipt alone
+cannot establish execution. Upload only the existing allowlisted readbacks;
+private State/token bytes stay off artifacts. `PREDECESSOR_EVIDENCE_TRANSFER=false`
+and architecture transfer remains false. Personal release, authenticated
+runtime, public URL, signed installation, governance and power-loss acceptance
+keep their separate evidence boundaries.
+
 ## Canonical public URL readback and Authority capability boundary
 
 The canonical product URL remains `https://goldkelch.github.io/qik-vrt/`.

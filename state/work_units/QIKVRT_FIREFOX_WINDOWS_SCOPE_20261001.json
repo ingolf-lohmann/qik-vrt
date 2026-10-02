@@ -1429,5 +1429,253 @@
         "sha256": "a3b592efa9a61535e8de4a7ecf0f94100ed8bfc5142cec27711a68b205034ed9"
       }
     ]
+  },
+  "windows11_amd64_carrier_continuation": {
+    "schema": "qikvrt_windows11_amd64_carrier_continuation_v1",
+    "observed_at": "2026-10-02T23:51:01.961092+00:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 438,
+    "source_ref": "work/firefox-windows-witness-20261001",
+    "source_head": "2d1176f5790d7c345799f2232ac317a1d306d93a",
+    "source_tree": "e5bf9a11a2f58c5f09c8bbd29a689d4137fb174d",
+    "source_semantics": "DISCOVERY_AND_REPAIR_INPUT_ONLY; predecessor and architecture execution evidence is not accepted for a successor",
+    "observed_main_head": "6fb101b2815744b353f67e3fe88ba8458d3c36d5",
+    "observed_main_tree": "0aa53d2bb775cbf9534d5a6b9a47e4b6f8637d75",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authorized smallest available native Windows 11 AMD64 carrier discovery and same-controls execution; if unavailable, precise capability boundary and reproducible measurement contract. No architecture or predecessor evidence transfer.",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Fresh REST subject, source tree, installed repository and job reads; exact-blob workflow inventory; documented runner capability comparison; existing witness strict product-target admission and contract extension; local regression verification.",
+    "discovery": {
+      "repository_inventory_scope": "Currently exposed GitHub connector repositories only; not a global private or runner inventory",
+      "repositories": [
+        {
+          "name": "ingolf-lohmann/qik-vrt",
+          "visibility": "public"
+        },
+        {
+          "name": "Goldkelch/qik-vrt",
+          "visibility": "public"
+        }
+      ],
+      "private_repository_carrier_exposed": false,
+      "default_branch_searches": {
+        "self-hosted": "NO_MATCHES",
+        "windows-11": "NO_MATCHES",
+        "scope": "Default branch only; supplemented by exact main workflow blob inventory"
+      },
+      "main_workflow_inventory": {
+        "count": 77,
+        "recursive_tree_truncated": false,
+        "workflows": {
+          ".github/workflows/issue-agent-autofinish.yml": "2f99e47c1bc2e6bf77720c27a5185b142bb73afc",
+          ".github/workflows/issue-agent-backlog-resume.yml": "42401bdbe53c5fee13f75beced87c7e56196966e",
+          ".github/workflows/issue-autonomous-processing.yml": "0bc763dc2ededa7eb7a37ebb46ad8b29f76b524b",
+          ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml": "1afe5856639ed62c7f174013a614997229ab67fc",
+          ".github/workflows/qikvrt_adaptive_runtime.yml": "c3fce059f331c2987ada61b505992aef39dde4bd",
+          ".github/workflows/qikvrt_audio_request.yml": "e1ec4b7a757f6ece42c379909ee5cc56b58a3d66",
+          ".github/workflows/qikvrt_autonomous_exact_head_verify.yml": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",
+          ".github/workflows/qikvrt_autonomous_pr_continuation.yml": "b138d57fb249f8352c8d4e856e9fc7634a5b81c4",
+          ".github/workflows/qikvrt_autonomous_self_heal.yml": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3",
+          ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml": "0a2cc7322fdcb5220a9ce05987d695d006a4a7d3",
+          ".github/workflows/qikvrt_batch003_remaining_disposition.yml": "701a8d2800ac2773a4b159bee76b07f1ae64864d",
+          ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml": "3ee1ff79348e62cf860ef6b649090485fbd8198a",
+          ".github/workflows/qikvrt_batch04_integrity.yml": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4",
+          ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml": "e4c66aa0d71c09873c0e902aba10783edf967c5b",
+          ".github/workflows/qikvrt_ci.yml": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+          ".github/workflows/qikvrt_code_owner_review_observer.yml": "5e9c283fb44d6adff58c4f252627482e83252c8d",
+          ".github/workflows/qikvrt_collective_review.yml": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+          ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml": "350403b2d0190a6761e3d5946d0b77c089f6973f",
+          ".github/workflows/qikvrt_corpus_closure_overlay.yml": "c7ebf0b00920115f80450a7338dd7d4d537848a8",
+          ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml": "b254b7fd4378298e15751b38ed3c46e434bdbd34",
+          ".github/workflows/qikvrt_effect_ack_finalize.yml": "3ebd8a512ecc85c662cb7e33fa1371efb1afc1f3",
+          ".github/workflows/qikvrt_effect_ack_http_terminal.yml": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+          ".github/workflows/qikvrt_escape_stages_integrity.yml": "c8fd85d4c59085e9c09161c3f71e7c240c58207a",
+          ".github/workflows/qikvrt_expected_head_promotion.yml": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6",
+          ".github/workflows/qikvrt_formalization_and_audio.yml": "96f07c5b784561fadae29b0a502872cc15f130be",
+          ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml": "61559dd8b9e0f82967fd2e36f58f0344ce26e157",
+          ".github/workflows/qikvrt_formalization_v2_inspect.yml": "442f9ef19a346ba2a00ff818c1e3c41914eb1652",
+          ".github/workflows/qikvrt_formalization_v2_inventory.yml": "a1a30e1b00c7858d4d3870e5b828e437d78c618c",
+          ".github/workflows/qikvrt_formalization_v2_zenodo.yml": "778dcfc8faf63c7b1a62fa9a26ae318a0c2934c2",
+          ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml": "8f43ecbe25c33fc5e3aed4630c5b16f2fbdddd0c",
+          ".github/workflows/qikvrt_global_completion.yml": "a8a03ba7ac496a51fb17004a5103103a1e78ac34",
+          ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+          ".github/workflows/qikvrt_live_status_watch.yml": "81406e0165f391634c0d28bfb3ab60e2a310e779",
+          ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml": "644b613b5069635384c05c06849d84a34580d073",
+          ".github/workflows/qikvrt_manuscript_proof.yml": "b74eecbc791318685286758d01df0c16803c4dcc",
+          ".github/workflows/qikvrt_measurement_derived_dimensions.yml": "9f19bbb609ce9275496e30eea8700e5437664de0",
+          ".github/workflows/qikvrt_measurement_independence_formalization.yml": "37eddbe54fe8e3fd8604bbdacc34d7d14dc8f1a1",
+          ".github/workflows/qikvrt_mesh_api.yml": "7b38260082e98046b0f8da5009104b25ce255e31",
+          ".github/workflows/qikvrt_mesh_authority_edge.yml": "406f4204e0402acaed16af3ce235ff7837ca5eae",
+          ".github/workflows/qikvrt_mirror_node_lifecycle.yml": "e1a9e3865d7136080cbc1212be011fd0bd2c71ad",
+          ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml": "7eb73d96035101810e2f78cabd02cf99dad04773",
+          ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml": "efcee53cf1b2ff59ca8b06f924f5be806d4b75c0",
+          ".github/workflows/qikvrt_physics_bridge_integrity.yml": "776f821cfbb182aebb46415b4d89557a9ffe9004",
+          ".github/workflows/qikvrt_pr18_integrity_repair.yml": "ef191995ff628bbfa86e5074f9948ca27bac3912",
+          ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml": "024d6dd0f0d827b5c686b1f567045c569c4983ac",
+          ".github/workflows/qikvrt_proof_persistence_integrity.yml": "4052c2acd95cdb032a2ccd109e3143665520887f",
+          ".github/workflows/qikvrt_publication_router.yml": "7c8d6ee6d1f9fe8c7826fe4d177e9c051c64c25e",
+          ".github/workflows/qikvrt_qce_c_measurement_binding.yml": "4038f005fdc842efda149a3118fbfcc4ede4ffea",
+          ".github/workflows/qikvrt_qce_candidate.yml": "cc6698a105b726db7b0b58ccb3b98abb24e4024b",
+          ".github/workflows/qikvrt_qce_causal_axis_bridge.yml": "984fd6d0af66f07a840cd3cc025ea3ec4b61e21a",
+          ".github/workflows/qikvrt_qce_causal_axis_selection.yml": "f4f4aa859ed619465c305ad6334164c9ac3964ba",
+          ".github/workflows/qikvrt_qce_now_serialization.yml": "b5d7a72f01ef94b38e5c07bb9f1ffc9c810eb2de",
+          ".github/workflows/qikvrt_qce_null_calibration_ratio.yml": "7fe9feef36535e1a2c85749145b4ef9c2d3c6ebf",
+          ".github/workflows/qikvrt_reflexive_repository_watchdog.yml": "c3e51de650574e6a67127bedddb533ecf7bed298",
+          ".github/workflows/qikvrt_repository_mesh_sync_tag.yml": "0cf466f8c461aa0293b9ba4c98231fe2f2357ef9",
+          ".github/workflows/qikvrt_requested_review_contract.yml": "7cb6844c19f1eb38be82f475a25acce46ee039d2",
+          ".github/workflows/qikvrt_requested_review_executor.yml": "484fe5c98f333f3fd921789a456571d281e06353",
+          ".github/workflows/qikvrt_required_review_gate.yml": "6882d8071f319749e4eeec9d467cf7bcb6c9ed75",
+          ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml": "ea49531e4e413f5b7314206e93e0153c77f3669c",
+          ".github/workflows/qikvrt_round_trip_prepublication_return.yml": "d5d6a352cfd72a53f2ccb59132012e75bbcdc1db",
+          ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml": "527dd8a8514452409d777a985abf68ff897088ad",
+          ".github/workflows/qikvrt_round_trip_zenodo_publish.yml": "42388fda524f56286cb145c295ba5d5aa48d441a",
+          ".github/workflows/qikvrt_seed_dashboard_publish.yml": "0121c8eba6470f77c04ded990d147d81b4ee8009",
+          ".github/workflows/qikvrt_seed_mesh_audit_export.yml": "5cb837e66086a8af12a88d930438f84bf1c06be6",
+          ".github/workflows/qikvrt_seed_mesh_maintenance.yml": "10e77c142c0f457c979f01089263aa5af87de9ba",
+          ".github/workflows/qikvrt_seed_node_revalidation.yml": "9fa0fa652d8bc67887e6df0f2733860a3af91573",
+          ".github/workflows/qikvrt_seed_registry_acceptance.yml": "1d98f87c715d4c1e570ab30b961f243428821d60",
+          ".github/workflows/qikvrt_status_report_finalize.yml": "6d92901ac442878d6b02cce7dbe77eaa9c00861b",
+          ".github/workflows/qikvrt_status_report_reserve.yml": "9696b17d1b83345d89e1f534c7812a70df2281a3",
+          ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml": "ecd668bea4522ebd40aff589b341651fec0d448d",
+          ".github/workflows/qikvrt_universal_ontology_formalization.yml": "3d114676ad85994308a416534ffa67cab74e1dcb",
+          ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml": "1906dd22d7b0a5c11f476dd6befedac26e900454",
+          ".github/workflows/qikvrt_versioned_corrected_candidates.yml": "eddcb4931aaf57818eb02508d2da0e694b4835d6",
+          ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml": "9b318e1f0c0949f39d7dc82aaa9e4857e9678c86",
+          ".github/workflows/qikvrt_workflow_executor.yml": "db7c43f50f862300348d4e12dff1fbac531b3be9",
+          ".github/workflows/qikvrt_workflow_executor_watchdog.yml": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6",
+          ".github/workflows/qikvrt_zenodo_reserve.yml": "3e0827ea9bd2c0276ade7af2502d687552cfb9c1"
+        },
+        "selector_match_counts": {
+          "self_hosted": 0,
+          "windows11_amd64": 0
+        },
+        "method": "Fresh recursive REST main tree; every workflow payload read from its Git-hash-verified blob, including matrix selectors. No selector discovery grants carrier availability."
+      },
+      "candidate_workflow_blob": "baae360ad6a73e61874e9319fa6302e2956a9f2e",
+      "fresh_existing_run_readback": {
+        "head": "2d1176f5790d7c345799f2232ac317a1d306d93a",
+        "run_id": 37067987420,
+        "native_windows_jobs": [
+          {
+            "job_id": 111040448529,
+            "labels": [
+              "windows-2025"
+            ],
+            "conclusion": "success",
+            "scope": "SERVER_COMPATIBILITY_ONLY"
+          },
+          {
+            "job_id": 111040448584,
+            "labels": [
+              "windows-11-arm"
+            ],
+            "conclusion": "success",
+            "scope": "WINDOWS_11_ARM64_ONLY"
+          }
+        ],
+        "accepted_as_successor_or_AMD64_client_evidence": false
+      },
+      "runner_inventory_request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/runners?per_page=100",
+        "outcome": "CONNECTOR_ENDPOINT_NOT_ALLOWED",
+        "observed_error": {
+          "error": "HTTPError: 400: GitHub Fetch URL is not an allowed public GitHub repository or search endpoint. (Response: None)",
+          "error_code": "INVALID_ARGUMENT"
+        },
+        "empty_runner_inventory_proved": false
+      },
+      "callable_tool_surface": {
+        "runner_inventory": [],
+        "workflow_dispatch": []
+      },
+      "authority_content_request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main",
+        "http_status": 404,
+        "scope": "GENERIC_CONTENT_ROUTE; not proof of Authority absence or an unlisted private runner"
+      },
+      "hosted_runner_documentation": {
+        "standard_source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+        "standard_windows11_amd64_label_documented": false,
+        "larger_source": "https://docs.github.com/en/actions/reference/runners/larger-runners",
+        "base_windows11_desktop_candidate_documented": true,
+        "candidate_provisioned_or_callable_here_verified": false
+      }
+    },
+    "first_blocker": "NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+    "state": "HOLD_NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+    "runner_inventory_complete": false,
+    "carrier_existence_globally_disproved": false,
+    "native_windows11_amd64_dispatch_count": 0,
+    "windows_11_amd64_client_execution_observed": false,
+    "product_target_verified": false,
+    "windows_witness_test": "HOLD",
+    "predecessor_evidence_transfer": false,
+    "architecture_evidence_transfer": false,
+    "personal_release_effect_ack_done": false,
+    "private_state_uploaded": false,
+    "power_loss_proved": false,
+    "governance_gate_independent": true,
+    "reuse": {
+      "observer": "tools/qikvrt_firefox_windows_witness.py",
+      "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "backend": "src/qikvrt_effect_ack_http_terminal.py",
+      "new_parallel_workflow": false,
+      "seed_state_restart_record_replay_negative_implementation_changed": false
+    },
+    "next_action": "Expose an already authorized supported Windows 11 AMD64 runner/private carrier and callable operation with fresh repository binding; execute the strict existing observer on freshly read exact HEAD/TREE, then independently read job/artifact and every control. No invented label or blind queued job.",
+    "local_validation": {
+      "focused_tests": 66,
+      "focused_result": "PASS",
+      "full_make_test": "PASS",
+      "scope": "CPython 3.12.13 on Linux; candidate-tree and mocked OS admission tests only, not Windows execution",
+      "cache_coverage_percent": 100,
+      "controls_source_changed": false,
+      "historical_fixture_recovery": {
+        "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "tree": "10bceed0af444e5704e4c2946402355c0c957e0d",
+        "verification": "Exact REST commit/tree matches locally restored Git objects; tests and source contracts unchanged",
+        "scope": "Local historical fixture only; not current Windows/product evidence"
+      },
+      "full_make_test_exit_code": 0,
+      "full_make_test_log_sha256": "56e9ecce78807140d712df1571c17641059b0b262d0a7c9c3bf853b9ead2ffda",
+      "integrity_before_and_after_full_tests": "PASS",
+      "strict_admission_controls": "Server, unsupported client, ARM64 carrier, missing/mismatched TREE refuse before provisioning or effects; supported AMD64 target reaches only the deliberately stopped provisioning boundary in local simulations",
+      "independent_governance_source_observation": {
+        "head": "2d1176f5790d7c345799f2232ac317a1d306d93a",
+        "context": "QIKVRT requested review execution",
+        "state": "failure",
+        "description": "CODE_OWNER_RULE_NOT_ENFORCED",
+        "run_id": 37077448082,
+        "accepted_as_successor_gate": false
+      }
+    },
+    "modified_payloads": [
+      {
+        "path": "tools/qikvrt_firefox_windows_witness.py",
+        "bytes": 68429,
+        "sha256": "d7d2a76401951dd124b0d0f7375dca271f9be5c6f1ad9e6dc16db889c7c95e0d",
+        "git_blob": "1c9d2f7e65f121138bb9c0a996d752befc4f509d"
+      },
+      {
+        "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "bytes": 15835,
+        "sha256": "4a84d4f751638e8861c751a6df75d0104f12e632a17adb97796caabddf7aff52",
+        "git_blob": "b591907bc37f6b9b0a21c6ffd56a0329c655c72a"
+      },
+      {
+        "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+        "bytes": 20953,
+        "sha256": "c263fe147f8a9d610987ba7460e5d40dd4c8d16aa72de84afe8aea52de7c5071",
+        "git_blob": "50a565644c891bec65f8f02bb869c628cfebb42b"
+      },
+      {
+        "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+        "bytes": 29673,
+        "sha256": "41ab5d783e176d962c81194cb78e0ba575c0d7963fdc02ee653db00c439dc392",
+        "git_blob": "eeb4e8aae53b7cd5fee515d13c2751428f0301e3"
+      }
+    ]
   }
 }
