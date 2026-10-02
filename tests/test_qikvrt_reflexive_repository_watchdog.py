@@ -481,9 +481,18 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
             binary = root / "bin"
             binary.mkdir()
             (root / "tools").mkdir()
+            (root / "policy").mkdir()
             shutil.copyfile(
                 ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
                 root / "tools/qikvrt_reflexive_repository_watchdog.py",
+            )
+            shutil.copyfile(
+                ROOT / "tools/qikvrt_recursive_haltpoint.py",
+                root / "tools/qikvrt_recursive_haltpoint.py",
+            )
+            shutil.copyfile(
+                ROOT / "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
+                root / "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
             )
             stubs = {
                 "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
