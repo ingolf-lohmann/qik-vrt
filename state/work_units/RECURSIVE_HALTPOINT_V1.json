@@ -286,20 +286,51 @@
         "git_blob_sha1": "9bfaebea499866893da199ef1bc9094485c10fb3"
       }
     ],
-    "same_repository_api_readback_failure": {
-      "run_id": 37064055034,
-      "job_id": 111027361160,
-      "scope": "NATIVE_JOB_CURRENT_MIRROR_PR_READBACK_NOT_AUTHORITY_CONTENT_ROUTING",
-      "stage": "SUBJECT_READBACK",
-      "transport_http_status": 404,
-      "local_connector_pr_readback_available": true,
-      "routing_root_cause_established": false,
-      "authority_global_failure_inferred": false,
-      "next_action": "REOBSERVE_EXACT_SUCCESSOR_AND_NATIVE_JOB_READBACK_THROUGH_AVAILABLE_AUTHORIZED_CARRIERS",
-      "failure_inferred_as_global_connection_scope_unavailability": false
-    },
     "predecessor_evidence_transfer": false,
     "source_pr_gates_transferred": false,
-    "full_checkout_successor_validation_required": true
+    "full_checkout_successor_validation_required": true,
+    "native_authority_api_readback_failure": {
+      "diagnostic_subject": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "head": "c11e35bef25f7e8e7e433b59e89ea58bc2602ba3",
+        "tree": "63c2a4df16720a0925b56212a41fdfa5e7964b00",
+        "scope": "PREDECESSOR_DIAGNOSTIC_ONLY_NOT_CONTAINING_SUCCESSOR_GATE"
+      },
+      "run_id": 37064690772,
+      "job_id": 111029443058,
+      "artifact_id": 11251921757,
+      "artifact_bytes": 3051,
+      "artifact_sha256": "68c84f9fad34150ba9b411bf8490e753c87a9ef94918f4a0a7d84913381c2304",
+      "receipt_path": "reflexive-watchdog-receipt.json",
+      "receipt_schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+      "scope": "NATIVE_JOB_AUTHORITY_MAIN_REST_READBACK_WITH_MIRROR_GITHUB_TOKEN",
+      "failed_request": "repos/Goldkelch/qik-vrt/git/ref/heads/main",
+      "stage": "AUTHORITY_READBACK",
+      "exit_code": 1,
+      "transport_http_status": 404,
+      "expected_head_matches_checkout": true,
+      "live_subject_reobserved": false,
+      "receipt_first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+      "receipt_retry_condition": "FAILED_READ_PATH_RECOVERED_AND_EXACT_SUBJECT_REOBSERVED",
+      "receipt_recursive_haltpoint": {
+        "classification": "WORK",
+        "first_blocker": "REPOSITORY_REOBSERVATION_FAILED",
+        "halt": false,
+        "next_action": "REBIND_EXACT_HEAD_TREE",
+        "predecessor_evidence_transfer": false,
+        "productive_edge": "RESTORE_FAILED_READ_PATH_THEN_REOBSERVE_EXISTING_WORK_UNIT",
+        "reason": "EXACT_SUBJECT_REBIND_REQUIRED",
+        "recursive_continuation": true,
+        "schema": "qikvrt_recursive_haltpoint_result_v1",
+        "transport_ack_is_effect_ack": false
+      },
+      "local_connector_mirror_pr_readback_available": true,
+      "mirror_pr_readback_failure_inferred": false,
+      "routing_root_cause_established": false,
+      "authority_global_failure_inferred": false,
+      "repository_global_absence_inferred": false,
+      "next_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
+      "predecessor_evidence_transfer": false
+    }
   }
 }
