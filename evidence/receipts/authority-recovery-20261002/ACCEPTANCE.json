@@ -27,6 +27,147 @@
     ],
     "supplied_name": "Ingo Flomann"
   },
+  "continuation_20261002_run": {
+    "all_current_main_paths_retained": true,
+    "all_previous_candidate_paths_retained": true,
+    "both_commit_histories_retained": true,
+    "effect_ack_done": false,
+    "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
+    "fresh_native_successor_checks_required": true,
+    "global_done": false,
+    "integrated_main_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "integrated_main_tree": "007ceaef554f275ff6f53383f8572505b4ec52be",
+    "integrated_role_local_paths": [
+      {
+        "main_blob": "d26500d7384c462526ad735c175f1abb160a1c27",
+        "path": "evidence/node_health/36936407695-1.json",
+        "previous_candidate_blob": null
+      },
+      {
+        "main_blob": "fad45df78662afefc848cc4eb8fc332a78fefd41",
+        "path": "evidence/node_health/36969534310-1.json",
+        "previous_candidate_blob": null
+      },
+      {
+        "main_blob": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "path": "evidence/node_health/37007190339-1.json",
+        "previous_candidate_blob": null
+      },
+      {
+        "main_blob": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7",
+        "path": "evidence/node_health/LATEST.json",
+        "previous_candidate_blob": "be969b910f454c0145e4c8d4d4c32a0f70c7069b"
+      },
+      {
+        "main_blob": "75d7d2be072addf441eb9a8a672b5ea82ffeebcc",
+        "path": "evidence/node_registration_renewal/36936407695-1.json",
+        "previous_candidate_blob": null
+      },
+      {
+        "main_blob": "9fcc7df51adfab1584a613282eb2b566bc71c87d",
+        "path": "evidence/node_registration_renewal/36969534310-1.json",
+        "previous_candidate_blob": null
+      },
+      {
+        "main_blob": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "path": "evidence/node_registration_renewal/37007190339-1.json",
+        "previous_candidate_blob": null
+      },
+      {
+        "main_blob": "bbacb5e6ecb73188a7125b4a18189066f8a08a86",
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "previous_candidate_blob": "673de9d099f0dc7e1d2585303372e2f6f5bf99b6"
+      },
+      {
+        "main_blob": "ef9c9cfdda552a8d561001a8045f010e7963cdd9",
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "previous_candidate_blob": "e6bd90011258788590678e70ea84921491501d8b"
+      },
+      {
+        "main_blob": "3e834011ccdac7e349cf37b0293711ff57062150",
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "previous_candidate_blob": "9fef18f0a297878bbf8ff74dfecbcf47fc1ec7d1"
+      }
+    ],
+    "lifecycle_observation": {
+      "current_heartbeat": "2026-10-02T12:31:42Z",
+      "current_heartbeat_expires": "2026-10-03T13:31:42Z",
+      "current_registration_next_due": "2026-10-03T12:31:42Z",
+      "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+      "observed_at": "2026-10-02T14:11:04.845Z",
+      "prior_heartbeat_expired": true,
+      "prior_heartbeat_expires": "2026-10-02T14:10:37Z",
+      "prior_next_due": "2026-10-02T13:10:37Z",
+      "prior_registration_overdue": true,
+      "prior_renewed": "2026-10-01T13:10:37Z",
+      "producer_run_id": "37007190339-1"
+    },
+    "lifecycle_producer": {
+      "conclusion": "success",
+      "event": "schedule",
+      "head_sha": "fd120af6bff3b837f26446276674d688daad20db",
+      "id": 37007190339,
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "status": "completed"
+    },
+    "merge_base_head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+    "merge_base_tree": "68a3f30885a403a7edaa4d2dbb8576ace9cc866e",
+    "method": "THREE_WAY_HISTORY_PRESERVING_MERGE_OF_ROLE_LOCAL_LIFECYCLE",
+    "neutral_repository_creation_observed": false,
+    "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
+    "next_smallest_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
+    "node_identity_changed": false,
+    "owner_continuation_instruction": "RUN",
+    "predecessor_evidence_transfer": false,
+    "previous_candidate_head": "52e367db378462cf6f63fe410f7f50098bd6a52f",
+    "previous_candidate_tree": "955d33f5b227a9cb8ae64aa675af5e956b088acb",
+    "role_change_claimed": false,
+    "schema": "qikvrt_authority_recovery_lifecycle_integration_v1",
+    "source_readback": {
+      "authority_complete": false,
+      "authority_http_status": 404,
+      "code_owner_gate": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "native_main_protected": false,
+      "repository_creation_operation_exposed": false,
+      "rulesets": []
+    },
+    "stand_in_authority_effect_observed": false,
+    "state": "BLOCK",
+    "tree_object_reconstruction": {
+      "candidate": {
+        "blob_count": 3925,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4381,
+        "fresh_authority_state_inferred": false,
+        "root_tree": "955d33f5b227a9cb8ae64aa675af5e956b088acb"
+      },
+      "main": {
+        "blob_count": 3924,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4377,
+        "fresh_authority_state_inferred": false,
+        "root_tree": "007ceaef554f275ff6f53383f8572505b4ec52be"
+      },
+      "merge_base": {
+        "blob_count": 3918,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4371,
+        "fresh_authority_state_inferred": false,
+        "root_tree": "68a3f30885a403a7edaa4d2dbb8576ace9cc866e"
+      },
+      "source": {
+        "blob_count": 3923,
+        "complete_content_addressed_inventory": true,
+        "effect_ack_done": false,
+        "entry_count": 4378,
+        "fresh_authority_state_inferred": false,
+        "root_tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+      }
+    }
+  },
   "effect_ack_done": false,
   "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
   "functional_acceptance_order": [
