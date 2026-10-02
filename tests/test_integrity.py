@@ -371,5 +371,78 @@ class IntegrityGenerationTests(unittest.TestCase):
                 )
 
 
+class RetainedAuthorityTreeTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        root = pathlib.Path(self.directory.name)
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        (root / "a").mkdir()
+        (root / "a/code.c").write_text("int retained(void) { return 1; }\n")
+        (root / "a.c").write_text("/* file sorts before directory */\n")
+        (root / "unicode-ä.txt").write_text("retained exact bytes\n", encoding="utf-8")
+        subprocess.run(["git", "-C", str(root), "add", "."], check=True)
+        self.tree = subprocess.check_output(["git", "-C", str(root), "write-tree"], text=True).strip()
+        raw = subprocess.check_output(["git", "-C", str(root), "ls-tree", "-r", "-t", "-z", self.tree])
+        entries = []
+        for row in raw.split(b"\0"):
+            if row:
+                meta, path = row.split(b"\t", 1)
+                mode, kind, sha = meta.decode("ascii").split()
+                entries.append({"path": path.decode("utf-8"), "mode": mode, "type": kind, "sha": sha})
+        self.inventory = {"sha": self.tree, "truncated": False, "tree": entries}
+
+    def test_actual_git_objects_verify_complete_retained_inventory(self) -> None:
+        result = integrity.verify_recursive_git_tree(self.inventory, self.tree)
+        self.assertEqual(result["blob_count"], 3)
+        self.assertTrue(result["complete_content_addressed_inventory"])
+        self.assertFalse(result["fresh_authority_state_inferred"])
+        self.assertFalse(result["effect_ack_done"])
+
+    def test_retained_authority_and_working_mirror_rest_objects_are_complete(self) -> None:
+        path = REPOSITORY_ROOT / "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json"
+        document = json.loads(path.read_text(encoding="utf-8"))
+        archive = document["historical_authority_tree"]
+        working = document["working_mirror_base_tree"]
+        self.assertEqual(integrity.verify_recursive_git_tree(
+            archive, "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149")["blob_count"], 3781)
+        self.assertEqual(integrity.verify_recursive_git_tree(
+            working, "bc2232edd71ae7567a91d145202688ac9edef880")["blob_count"], 3923)
+        old_files = {e["path"]: e["sha"] for e in archive["tree"] if e["type"] == "blob"}
+        new_files = {e["path"]: e["sha"] for e in working["tree"] if e["type"] == "blob"}
+        self.assertFalse(set(old_files) - set(new_files))
+        self.assertEqual(sum(new_files[p] != sha for p, sha in old_files.items()), 44)
+
+    def test_missing_or_changed_content_cannot_keep_the_bound_root(self) -> None:
+        for mutation in ("missing", "changed"):
+            value = copy.deepcopy(self.inventory)
+            if mutation == "missing":
+                value["tree"].pop()
+            else:
+                next(e for e in value["tree"] if e["type"] == "blob")["sha"] = "0" * 40
+            with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, "content mismatch"):
+                integrity.verify_recursive_git_tree(value, self.tree)
+
+    def test_partial_duplicate_unsafe_or_unclosed_source_is_rejected(self) -> None:
+        for mutation in ("truncated", "duplicate", "unsafe", "parent", "gitlink", "symlink", "foreign_root"):
+            value = copy.deepcopy(self.inventory)
+            if mutation == "truncated":
+                value["truncated"] = True
+            elif mutation == "duplicate":
+                value["tree"].append(value["tree"][0].copy())
+            elif mutation == "unsafe":
+                value["tree"][0]["path"] = "../escape"
+            elif mutation == "parent":
+                value["tree"] = [e for e in value["tree"] if e["type"] != "tree"]
+            elif mutation == "gitlink":
+                value["tree"][0].update(mode="160000", type="commit")
+            elif mutation == "symlink":
+                value["tree"][0].update(mode="120000", type="blob")
+            else:
+                value["sha"] = "0" * 40
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                integrity.verify_recursive_git_tree(value, self.tree)
+
+
 if __name__ == "__main__":
     unittest.main()

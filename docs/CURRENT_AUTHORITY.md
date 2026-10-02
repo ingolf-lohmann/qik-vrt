@@ -61,3 +61,33 @@ commit, tree and tag-object identities are retained on the public
 
 Historical files remain evidence of their own time and content. They do not
 override a current failure or expand the supported runtime scope.
+
+## Owner-requested stand-in Authority recovery acceptance
+
+The 2026-10-02 owner request authorizes lossless recovery into the adjacent
+Mirror, functional stand-in acceptance, then one neutral Mesh repository mirror.
+The recovery acceptance record is
+`evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json`; its exact tree
+inventories are reconstructed with `tools/qikvrt_integrity.py` rather than
+trusting a truncated API list or transferring historical PASS claims.
+
+The complete 2026-08-16 Authority content tree is retained under
+`qikvrt/retained-authority/20260816-d18af01d` in `ingolf-lohmann/qik-vrt`. Its
+3,781 blobs and exact tree identity are verified against the historical
+reciprocal receipt. All paths still exist in the working Mirror; 44 changed
+versions remain available in the retained source. This establishes historical
+content retention. It does not establish the inaccessible Authority's final
+complete recovery point or live role takeover.
+
+The first acceptance gate remains BLOCK until the complete final Authority
+source closure is bound. The next external boundary is an authenticated writer
+that can create and populate a new repository: the currently callable GitHub
+connector has no repository-creation or dispatch operation, and the existing
+Mesh API supports ingest/verify/stage/release_status only.
+
+A neutral child must receive a distinct GUID, its own target and state, retained
+licenses and historical provenance, a fresh continuity receipt, actual Seed
+acknowledgement and heartbeat. Role-local personal runtime state and credentials
+are not inherited. A prepared target/GUID is not an existing repository.
+Native full builds, independent current-head review/protection, role-epoch
+fencing and actual effect readbacks remain mandatory before live acceptance.

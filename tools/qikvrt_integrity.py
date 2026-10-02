@@ -245,6 +245,62 @@ def _parse_git_tree(payload: bytes, object_id: str) -> dict[bytes, tuple[str, st
     return entries
 
 
+def verify_recursive_git_tree(
+    inventory: Mapping[str, Any], expected_tree: str,
+) -> dict[str, Any]:
+    """Verify a complete REST tree inventory against an independently bound root.
+
+    Reconstruct every Git tree object, including canonical entry ordering.
+    A retained historical tree establishes exact content identity, not source
+    freshness, repository authority, build success or authorization to fail over.
+    Gitlinks need their own source closure; symlink checkout is outside this
+    regular-file recovery profile.
+    """
+    expected_tree = _require_sha1(expected_tree, "expected retained root tree")
+    if (not isinstance(inventory, Mapping) or inventory.get("sha") != expected_tree
+            or inventory.get("truncated") is not False
+            or not isinstance(inventory.get("tree"), list)
+            or len(inventory["tree"]) > 100_000):
+        raise ValueError("complete exact-bound recursive Git tree required")
+    entries: dict[str, Mapping[str, Any]] = {}
+    children: dict[str, list[tuple[bytes, str, str, str]]] = {"": []}
+    allowed = {"040000": "tree", "100644": "blob", "100755": "blob"}
+    for entry in inventory["tree"]:
+        if not isinstance(entry, Mapping) or not isinstance(entry.get("path"), str):
+            raise ValueError("invalid retained Git tree entry")
+        path = entry["path"]
+        if (path != _safe_path(path) or ".git" in pathlib.PurePosixPath(path).parts
+                or path in entries):
+            raise ValueError("unsafe or duplicate retained Git tree path")
+        mode, kind = entry.get("mode"), entry.get("type")
+        if mode not in allowed or allowed[mode] != kind:
+            raise ValueError("regular-file retained Git source closure required")
+        target = _require_sha1(entry.get("sha"), "retained Git object")
+        parent, _, name = path.rpartition("/")
+        children.setdefault(parent, []).append((name.encode("utf-8"), mode, kind, target))
+        if kind == "tree":
+            children.setdefault(path, [])
+        entries[path] = entry
+    for parent, values in children.items():
+        if parent and (parent not in entries or entries[parent]["type"] != "tree"):
+            raise ValueError("retained Git tree parent is missing")
+        payload = b"".join(
+            mode.lstrip("0").encode("ascii") + b" " + name + b"\0" + bytes.fromhex(target)
+            for name, mode, kind, target in sorted(
+                values, key=lambda item: item[0] + (b"/" if item[2] == "tree" else b"")
+            )
+        )
+        wanted = entries[parent]["sha"] if parent else expected_tree
+        if _git_object_sha1("tree", payload) != wanted:
+            raise ValueError("retained Git tree content mismatch: " + (parent or "/"))
+        _parse_git_tree(payload, wanted)
+    return {"root_tree": expected_tree, "entry_count": len(entries),
+            "blob_count": sum(entry["type"] == "blob" for entry in entries.values()),
+            "complete_content_addressed_inventory": True,
+            "fresh_authority_state_inferred": False,
+            "effect_ack_done": False}
+
+
 def _portable_capsule_binding(
     relative_path: str,
     raw: bytes,

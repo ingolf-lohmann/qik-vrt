@@ -172,5 +172,91 @@
     "EFFECT_ACK_DONE": false
   },
   "candidate_state": "PORTABILITY_CORRECTION_LOCAL_CANDIDATE_PENDING_INTEGRITY_EXACT_HEAD_REVIEW_AND_PROMOTION",
-  "self_binding_rule": "The future Git commit and tree containing this work-unit file bind its exact bytes; no impossible in-file self-hash or future-head claim is made."
+  "self_binding_rule": "The future Git commit and tree containing this work-unit file bind its exact bytes; no impossible in-file self-hash or future-head claim is made.",
+  "stand_in_authority_acceptance_20261002": {
+    "owner_authorization": {
+      "provided_in_session": true,
+      "supplied_name": "Ingo Flomann",
+      "repository_attribution": "Ingolf Lohmann",
+      "authorization_account_context": "ingolf-lohmann",
+      "scope": [
+        "lossless Authority source inclusion",
+        "functional stand-in Authority acceptance",
+        "one neutral Mesh repository mirror creation"
+      ],
+      "identity_attestation_inferred": false,
+      "exact_future_head_codeowner_review_inferred": false
+    },
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_head": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
+    "source_tree": "bc2232edd71ae7567a91d145202688ac9edef880",
+    "review_branch": "work/authority-recovery-acceptance-20261002",
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6",
+      "session": "d2a712c488fa"
+    },
+    "contributions": [
+      "Inspect actual existing Seed and Mesh API routes",
+      "Retain the complete historical Authority tree through a create-only Git ref and fresh readback",
+      "Extend existing integrity verification to reconstruct every recursive REST Git tree object",
+      "Verify complete historical and working-mirror inventories and reject partial or altered trees",
+      "Prepare a distinct neutral-node identity through existing template/Seed conventions without claiming creation"
+    ],
+    "acceptance_path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+    "acceptance_sha256": "87df4acaa9ae13f72d4fcb84d825ee1eed6a46a73841723af8f51107f9b3e4cf",
+    "inventory_path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
+    "inventory_sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
+    "state": "BLOCK",
+    "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
+    "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
+    "history_not_rewritten": true,
+    "original_historical_work_unit_fields_unchanged": true,
+    "authority_promoted": false,
+    "neutral_repository_created": false,
+    "main_changed": false,
+    "source_claims_bound_to_historical_scope": true,
+    "full_native_candidate_checks_required": true,
+    "fresh_review_and_protection_required": true,
+    "predecessor_evidence_transfer": false,
+    "next_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
+    "observed_at": "2026-10-02T12:14:37.145343+00:00",
+    "verification": {
+      "new_recovery_tests": 4,
+      "failures": 0,
+      "skips": 0,
+      "existing_local_integrity_suite": "8 tests pass; one portable-capsule cross-check requires the absent full local Git checkout. Native full-checkout execution is mandatory.",
+      "tool_cache": "PASS 18/18",
+      "local_bootstrap": "BLOCK absent local origin/full checkout; API source fixture only",
+      "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_EXACT_PARENT; FRESH_NATIVE_FULL_GENERATION_AND_TESTS_REQUIRED"
+    },
+    "output_fingerprints": [
+      {
+        "path": "tools/qikvrt_integrity.py",
+        "sha256": "52e23c36c70eacd743532c258e985d9dada99fa5d20b5b07de74d21688686b9e",
+        "git_blob_sha1": "a977d5e5660cdf4aaea472cec710775b788b8842"
+      },
+      {
+        "path": "tests/test_integrity.py",
+        "sha256": "eb0c8d6ad2ddc129cb16d5d0f8b07c3f6fa43de5fd580c58619a2c1b6f8fcf60",
+        "git_blob_sha1": "e4208ddaab58c456b7165c624ec5491a9ae51a55"
+      },
+      {
+        "path": "docs/CURRENT_AUTHORITY.md",
+        "sha256": "101f44f72519279695765c5c9c6840f041047bceeceb4e7ac25cd5cc0e260d2c",
+        "git_blob_sha1": "9c6e07385c4bd5a6a382aa61c169aeea0fc2c1c3"
+      },
+      {
+        "path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
+        "sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
+        "git_blob_sha1": "98fe4c0e96286eaa9e640ec7090f8bbfecf2caf8"
+      },
+      {
+        "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+        "sha256": "87df4acaa9ae13f72d4fcb84d825ee1eed6a46a73841723af8f51107f9b3e4cf",
+        "git_blob_sha1": "115606196613fa8db883605a729669cf122ba48b"
+      }
+    ]
+  }
 }

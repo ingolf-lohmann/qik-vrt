@@ -1,0 +1,356 @@
+{
+  "_license": {
+    "classification": "authority_recovery_acceptance_evidence",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "archive": {
+    "blob_count": 3781,
+    "complete_content_addressed_inventory": true,
+    "effect_ack_done": false,
+    "entry_count": 4213,
+    "fresh_authority_state_inferred": false,
+    "root_tree": "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149"
+  },
+  "authority_latest_complete_closure_verified": false,
+  "authorization": {
+    "authorization_account_context": "ingolf-lohmann",
+    "exact_future_head_codeowner_review_inferred": false,
+    "identity_attestation_inferred": false,
+    "provided_in_session": true,
+    "repository_attribution": "Ingolf Lohmann",
+    "scope": [
+      "lossless Authority source inclusion",
+      "functional stand-in Authority acceptance",
+      "one neutral Mesh repository mirror creation"
+    ],
+    "supplied_name": "Ingo Flomann"
+  },
+  "effect_ack_done": false,
+  "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
+  "functional_acceptance_order": [
+    "BIND_COMPLETE_AUTHORITY_SOURCE_AND_RECOVERY_POINT",
+    "RETAIN_ALL_OLD_BYTES_AND_COLLISION_VERSIONS",
+    "BUILD_TEST_FULL_STAND_IN_CANDIDATE",
+    "FRESH_NATIVE_PROTECTION_AND_INDEPENDENT_EXACT_HEAD_REVIEW",
+    "FENCE_AND_BIND_ROLE_EPOCH_WITH_NO_SPLIT_BRAIN",
+    "OBSERVE_STAND_IN_ROLE_AND_REAL_END_USER_EFFECT",
+    "CREATE_NEUTRAL_REPOSITORY_WITH_DISTINCT_IDENTITY",
+    "TRANSFER_BOUND_SOURCE_KEEP_HISTORICAL_PROVENANCE_CLEAR_ACTIVE_PERSONAL_STATE",
+    "BUILD_TEST_NEW_REPOSITORY_AND_VALIDATE_SEED_CONTINUITY_RECEIPT",
+    "FRESH_REGISTER_ACK_HEARTBEAT_AND_PUBLIC_EFFECT_READBACK"
+  ],
+  "global_done": false,
+  "inventory_sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
+  "latest_authority_closure_missing_scope": [
+    "Authority changes after bound 2026-08-16 tree",
+    "complete refs and required referenced objects at the chosen final recovery point",
+    "LFS/submodule closure where applicable",
+    "role-local runtime state needed for actual recovery",
+    "platform metadata and configured governance needed for live control"
+  ],
+  "live_observations": {
+    "authority_repository_rest": "HTTP_404_IN_CURRENT_CONNECTOR",
+    "create_repository_callable_tool_available": false,
+    "existing_mesh_api_operations": [
+      "ingest",
+      "verify",
+      "stage",
+      "release_status"
+    ],
+    "existing_mirror_lifecycle_creates_repositories": false,
+    "global_authority_failure_inferred": false,
+    "mirror_repository_id": 1273784147,
+    "mirror_repository_rest": "HTTP_200",
+    "repository_scoped_contents_write_available": true,
+    "workflow_dispatch_callable_tool_available": false
+  },
+  "mirror_base": {
+    "blob_count": 3923,
+    "complete_content_addressed_inventory": true,
+    "effect_ack_done": false,
+    "entry_count": 4378,
+    "fresh_authority_state_inferred": false,
+    "root_tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+  },
+  "missing_historical_paths": [],
+  "neutral_mirror_preparation": {
+    "active_personal_runtime_state_copied": false,
+    "branch": "main",
+    "credentials_copied": false,
+    "historical_attribution_and_license_retained": true,
+    "legacy_mirror_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+    "new_distinct_guid": "ea4b7dbf-fb6f-5552-99f2-ff37d6e93f16",
+    "parent_role_requirement": "FRESH_ACCEPTED_STAND_IN_AUTHORITY",
+    "registration_received": false,
+    "repository_candidate": "ingolf-lohmann/qik-vrt-mesh-mirror",
+    "repository_created": false,
+    "required_writer": "AUTHENTICATED_CREATE_REPOSITORY_AND_CONTENT_TRANSFER_WITH_FRESH_REPO_HEAD_TREE_READBACK",
+    "reuse_components": [
+      "TEMPLATE.json",
+      "TEMPLATE.md",
+      "tools/qikvrt_workflow_executor.py node-receipt-template",
+      "tools/qikvrt_seed_common.py",
+      "registry/node_request_queue/*.tsv"
+    ],
+    "seed_acceptance_observed": false,
+    "seed_repository_candidate": "ingolf-lohmann/qik-vrt",
+    "state": "PREPARED_NOT_EXECUTED"
+  },
+  "neutral_repository_creation_observed": false,
+  "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
+  "next_smallest_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
+  "not_implications": [
+    "HISTORICAL_WHOLE_TREE_IDENTITY_NOT_LATEST_AUTHORITY_CLOSURE",
+    "REPO_READ_PERMISSION_NOT_CREATE_REPOSITORY_CAPABILITY",
+    "RETENTION_REF_READBACK_NOT_AUTHORITY_ROLE_PROMOTION",
+    "LOCAL_TEST_NOT_GLOBAL_DONE",
+    "OWNER_TASK_AUTHORIZATION_NOT_OBSERVED_REPOSITORY_EFFECT"
+  ],
+  "observed_at": "2026-10-02T12:14:37.145343+00:00",
+  "predecessor_evidence_transfer": false,
+  "retention_effect": {
+    "complete_tree_reconstructed_and_root_verified": true,
+    "head": "029f805ceb00bc20f217089877761db2263889c5",
+    "historical_authority_head_attributed_by_receipt": "d18af01d2b56897407dc42827312ae3a3966b3bc",
+    "latest_authority_content_completeness_inferred": false,
+    "receipt_path": "evidence/receipts/authority-mirror-equality-2026-08-16-whole-tree-pr634-pr344.json",
+    "ref": "refs/heads/qikvrt/retained-authority/20260816-d18af01d",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149",
+    "validity": "EXACT_HISTORICAL_CONTENT_ONLY",
+    "write_and_ref_readback_verified": true
+  },
+  "retry_condition": "Provide an exact-bound complete final Authority closure through an authorized readable carrier, then expose an authenticated repository-creation writer for the neutral node.",
+  "same_path_changed_blob_count": 44,
+  "same_path_changed_blobs": [
+    {
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "retained_sha": "5f515c5bdd60b3b46a84abf27d71e442e2d8b57f",
+      "working_mirror_sha": "3bc666cd2164cf24828d195eed89c1d6e1fefcd3"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "retained_sha": "62d4dea9e02827bf6241287a54647f28924a9cd1",
+      "working_mirror_sha": "1d7cf69a661e17bf41a51d110770dbe9cee5cab4"
+    },
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "retained_sha": "f4047a29942719ca99663398de5e5d83f592c021",
+      "working_mirror_sha": "61d990bf550bb659cc8165e72ac14e2090db89a0"
+    },
+    {
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "retained_sha": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+      "working_mirror_sha": "4de3604eb91fefe3fb45dafcacf2d0899b881173"
+    },
+    {
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "retained_sha": "fef8c7ca626a9b8168a30cac2cea31d54e855b2c",
+      "working_mirror_sha": "5e3110e18d08bbb503d41bc0a6746127efc0e5e6"
+    },
+    {
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "retained_sha": "a8a03ba7ac496a51fb17004a5103103a1e78ac34",
+      "working_mirror_sha": "9bfaebea499866893da199ef1bc9094485c10fb3"
+    },
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "retained_sha": "bd28c51d30c1238a74167990485745be5e44b1bb",
+      "working_mirror_sha": "c3e51de650574e6a67127bedddb533ecf7bed298"
+    },
+    {
+      "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "retained_sha": "a84f94cee96c2565f97091a5d4829c8ad25d5413",
+      "working_mirror_sha": "f42391f3acbe3f3276df2f2cccd47ddc88fcb6b6"
+    },
+    {
+      "path": "AI",
+      "retained_sha": "4568ace744168d3ea780ed83e420c361534ea267",
+      "working_mirror_sha": "702a1e006a1aeed035b504d3a19416d6740844c2"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "retained_sha": "778d1889160575e2d65784bf99a54e197ed336bc",
+      "working_mirror_sha": "c69587b566beeb13a4302ee9950962a3cc227583"
+    },
+    {
+      "path": "Makefile",
+      "retained_sha": "511f7653bd041841fc0fafd0b39ac33c6b76c906",
+      "working_mirror_sha": "1a21f8d801a5190623b1fda43baf80adfa87a9ca"
+    },
+    {
+      "path": "README.md",
+      "retained_sha": "0cbb6622ee8f166953d636d9865d7ef0046d62df",
+      "working_mirror_sha": "899b952917acd86cf1c405c6d15d94f078c8d7e4"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "retained_sha": "419d3ed00576bad67db86e2899b61336be08a2c6",
+      "working_mirror_sha": "5e804da97c70a8e1b46692f37bd5b6596628666e"
+    },
+    {
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "retained_sha": "7a089a3a686c397165ce9bac312335f1d5e5d90a",
+      "working_mirror_sha": "1d18aa5ee99429433519bb5d77e71b05ef6a26eb"
+    },
+    {
+      "path": "SHA256SUMS.txt",
+      "retained_sha": "99fc860758084d46266b97e8019847c830716d0a",
+      "working_mirror_sha": "1c886c1a1ecb3ba1a525640f302f7ed4f3b7dafa"
+    },
+    {
+      "path": "anticipation/INPUT.json",
+      "retained_sha": "f5bba7003abeaa0fcebb92575dd2face16c2cde8",
+      "working_mirror_sha": "41b738e19b63562dfa205bd465a0cdafdfa3db63"
+    },
+    {
+      "path": "anticipation/current.json",
+      "retained_sha": "e2b4dcf2271659e1ec4fed3b1de25fe756849a71",
+      "working_mirror_sha": "74c703270bad5ae512b39a6da0fa745adb7ad897"
+    },
+    {
+      "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "retained_sha": "ba06fd352af8aa22f297a70da25dd4fdc1b4e086",
+      "working_mirror_sha": "61b58c5b6dff543a94e3a964ad6b340ea59ca389"
+    },
+    {
+      "path": "docs/README_DEPLOY_GITHUB_PAGES_DE.md",
+      "retained_sha": "d697565ce2347e1206d589b799b2c7415255b5b1",
+      "working_mirror_sha": "19c232e631c3a0249344c5b6e084c011bb00e56e"
+    },
+    {
+      "path": "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+      "retained_sha": "eff0bb8408f04584a821fca7b6ce85167a3e2065",
+      "working_mirror_sha": "a762f79a4491faa61e55002a76605b3616348665"
+    },
+    {
+      "path": "docs/index.html",
+      "retained_sha": "eb01f4f76ccc4c3ba2563ed11294782e15c70592",
+      "working_mirror_sha": "95d6f5f9149deb4bb22eb9455bb3de69838f9f9d"
+    },
+    {
+      "path": "docs/publications/index.html",
+      "retained_sha": "02fb1e7a770d2e51c7f3e5a2bedaf3157ab90675",
+      "working_mirror_sha": "166039c9e75e99dd02f09fff1040a337cfc94b0d"
+    },
+    {
+      "path": "docs/publications/index.json",
+      "retained_sha": "a26036feb35dbc97e1fa014cb3b2ab04eb7830ec",
+      "working_mirror_sha": "944c67be108b4aa657d5a3a1bae236efafd30e51"
+    },
+    {
+      "path": "docs/sitemap.xml",
+      "retained_sha": "aa53f911849e2b41b301953e0a57ee842a90065b",
+      "working_mirror_sha": "9d16797314fe8f096190ef1adb08042371c6ca28"
+    },
+    {
+      "path": "evidence/receipts/index.json",
+      "retained_sha": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+      "working_mirror_sha": "3bade853befd7a74bfccffb3872ef6ad2c36d5d4"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "retained_sha": "badc3ce39df6b18122f8f5776b86a65595272ef4",
+      "working_mirror_sha": "100526fb97435406145751e99efe93b352ab47f0"
+    },
+    {
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "retained_sha": "d3fb4e10781ae0fb8afb4572e596e35789244d4d",
+      "working_mirror_sha": "b1c7bc4285131e2bd8f880330b45f078c1bb65a1"
+    },
+    {
+      "path": "policy/repository-status-stall-detection-v1.md",
+      "retained_sha": "5b94165df5ada61f07df0397202da2e0e633c371",
+      "working_mirror_sha": "c79751a8ac13403913ed1c58fe83f1ede6fb6224"
+    },
+    {
+      "path": "receipts/anticipation/0001-contract-bound.json",
+      "retained_sha": "5ea29ff9ddb313407ac0e802a576622e2d3931eb",
+      "working_mirror_sha": "ed984f6c88d46aab3232d287740d7055b11a694c"
+    },
+    {
+      "path": "receipts/anticipation/0002-anticipation-materialized.json",
+      "retained_sha": "f8e84ba38fbd602cc43538fbb983b48eee151a35",
+      "working_mirror_sha": "1491f5b61ba1b7746f8bb83c15937316dae22fd9"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "retained_sha": "c59b080a31a0cbdd9ce53dbc842505f75949fd7a",
+      "working_mirror_sha": "35f7b1ce76216370fa59c53a6acc93a7eb0b1f42"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "retained_sha": "aa8af4fde94b9151804e5bf9feef1e7afee3cf7b",
+      "working_mirror_sha": "ad89e1ccd2ec598bba8c8b02b93da542885b222d"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "retained_sha": "89b2c4425da04b015d6c534729eaf67aebab06e5",
+      "working_mirror_sha": "0ec1c1f5950b15069a075ef8dd2ca2044601e2ba"
+    },
+    {
+      "path": "src/qikvrt_api_handler.py",
+      "retained_sha": "5b9f5e142040cdb14c2db1d57e6e15196087efcf",
+      "working_mirror_sha": "8d526c2a89796b60e6503caf73efd47b4a4aa83a"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_AI_ENTRYPOINT_CONTINUOUS_OPTIMIZATION_V1.json",
+      "retained_sha": "c037bf2ba9a93d14b25913d5d575e940644014a5",
+      "working_mirror_sha": "f4d357556bbf8c44d632a4b4463f0ce027a9fac9"
+    },
+    {
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "retained_sha": "4d850c8fc4cacc4c7acaf6b9505a42cd3cf722d6",
+      "working_mirror_sha": "5111fcbeb2c1100087b6b61d096a4427e88ca981"
+    },
+    {
+      "path": "tests/test_ai_runtime_bootloader.py",
+      "retained_sha": "58b5b84a22336d0395572e40176526caf2ff2f74",
+      "working_mirror_sha": "3437908b7450477566ef6f79195b881bb1b4e5ff"
+    },
+    {
+      "path": "tests/test_effect_ack_release_workflows.py",
+      "retained_sha": "9a0fecedf48ed3e28843f5855f4b5a1a4a956e2e",
+      "working_mirror_sha": "f1804591e427050600daf2f0da8aeb7e46ef85be"
+    },
+    {
+      "path": "tests/test_license_transition.py",
+      "retained_sha": "1aa9ec82572842fef42554dc16e3e5a847f7f9f6",
+      "working_mirror_sha": "f661dd2522ee8bae66f7b019ca03afe188058ade"
+    },
+    {
+      "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "retained_sha": "e90b84970939965a03bbf7e635c8ff3c661f0984",
+      "working_mirror_sha": "b4852aeb616e7fa573cc95b7dd10dc5994f2fc92"
+    },
+    {
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "retained_sha": "cc200925806734b40b46d9aca9b506f1ea17f08d",
+      "working_mirror_sha": "25b529764eb3a799fc4e5b3ff4792141d78d4f72"
+    },
+    {
+      "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "retained_sha": "9b4562c7f1e05249c1f27f32e371cdf76aad2a83",
+      "working_mirror_sha": "8335de65a4a2b6cdcff90e58226d550c7948fb0c"
+    },
+    {
+      "path": "tools/qikvrt_reflexive_repository_watchdog.py",
+      "retained_sha": "6ff58310c16d1b74b2897df6e7a199b6c3dc40ec",
+      "working_mirror_sha": "ed24a82df3a3c08d947d38b23d4543e44d912f47"
+    },
+    {
+      "path": "tools/qikvrt_tool_cache.py",
+      "retained_sha": "934481c745cb08957c613da2382819b83a032e42",
+      "working_mirror_sha": "8d74aea3860dab5f6f953229c672ba53908a20d3"
+    }
+  ],
+  "schema": "qikvrt_retained_authority_tree_verification_v1",
+  "source_scope": "HISTORICAL_COMPLETE_GIT_TREE_20260816_NOT_LATEST_AUTHORITY_STATE",
+  "source_verifier_sha256": "52e23c36c70eacd743532c258e985d9dada99fa5d20b5b07de74d21688686b9e",
+  "stand_in_authority_effect_observed": false,
+  "state": "BLOCK",
+  "working_source_head": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
+  "working_source_tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+}
