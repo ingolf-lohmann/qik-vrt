@@ -622,6 +622,9 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
                     continue
                 self.assertEqual(0, result.returncode, result.stderr)
                 self.assertEqual("Never stop CI", receipt["owner_command"]["literal"])
+                self.assertEqual("OWNER_HIGHEST", receipt["gap_and_cause_priority"]["gap_priority"])
+                self.assertEqual("OWNER_HIGHEST", receipt["gap_and_cause_priority"]["cause_priority"])
+                self.assertFalse(receipt["gap_and_cause_priority"]["symptom_resolution_is_cause_closure"])
                 self.assertEqual((head, tree), (receipt["head"], receipt["tree"]))
                 self.assertEqual(outcome, receipt["execution"]["terminal_test_outcome"])
                 self.assertEqual("EFFECT_ACK_CONTINUE", receipt["state"])
@@ -647,7 +650,8 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
             "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
         )
         for change in ("remove", "stop_on_failure", "dirty_bytes", "stale_head",
-                       "external_executor", "chatgpt_only", "policy_missing", "dirty_dependency_policy"):
+                       "external_executor", "chatgpt_only", "policy_missing", "dirty_dependency_policy",
+                       "gap_rule_removed", "cause_priority_lowered", "symptom_closes_cause"):
             with self.subTest(change=change), tempfile.TemporaryDirectory() as raw:
                 root = pathlib.Path(raw)
                 for path in paths:
@@ -668,6 +672,12 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
                     value["continuous_integration"]["first_failure_terminal"] = True
                 elif change == "external_executor":
                     value["execution_routing"]["external_trigger_owns_repository_execution"] = True
+                elif change == "gap_rule_removed":
+                    del value["gap_and_cause_priority"]
+                elif change == "cause_priority_lowered":
+                    value["gap_and_cause_priority"]["cause_priority"] = "LOW"
+                elif change == "symptom_closes_cause":
+                    value["gap_and_cause_priority"]["symptom_resolution_is_cause_closure"] = True
                 elif change in {"chatgpt_only", "policy_missing", "dirty_dependency_policy"}:
                     dep_path = root / paths[-1]
                     dep_policy = json.loads(dep_path.read_text())

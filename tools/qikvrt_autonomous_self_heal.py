@@ -210,6 +210,7 @@ def ci_continuation_receipt(repository: pathlib.Path, reference: str | None,
     return {
         "schema": "qikvrt_native_ci_continuation_receipt_v1",
         "owner_command": contract["continuous_integration"]["owner_command"],
+        "gap_and_cause_priority": contract["gap_and_cause_priority"],
         "contract_sha256": hashlib.sha256(CONTRACT.read_bytes()).hexdigest(),
         "execution_routing": contract["execution_routing"],
         "dependency_policy_sha256": hashlib.sha256(DEPENDENCY_POLICY.read_bytes()).hexdigest(),
@@ -353,6 +354,7 @@ def load_contract() -> dict[str, Any]:
     if value.get("schema") != "qikvrt_autonomous_self_healing_contract_v1":
         raise SelfHealBlock("contract schema mismatch")
     validate_repair_handoff_contract(value)
+    validate_gap_cause_priority(value)
     routing = value.get("execution_routing", {})
     routing_required = {
         "rule_id": "QIKVRT_REPOSITORY_OWNS_EXECUTION_V1",
@@ -504,7 +506,28 @@ def repair_handler(handler: dict[str, Any]) -> dict[str, Any]:
             f"repair failed for {handler['failure_class']}: "
             f"{repair.stderr.strip() or repair.stdout.strip()}"
         )
-    return {"failure_class": handler["failure_class"], "state": "REPAIRED"}
+    # Successful execution is not proof that the original operation works.
+    # Repeat the identical probe before granting even a scoped symptom result.
+    readback = run(tuple(handler["probe"]))
+    if readback.returncode:
+        raise SelfHealBlock(
+            f"original operation still fails after repair for {handler['failure_class']}; "
+            "gap and cause remain OWNER_HIGHEST open obligations"
+        )
+
+    def observation(result: CommandResult) -> dict[str, Any]:
+        return {"command": list(result.command), "returncode": result.returncode,
+                "stdout_sha256": hashlib.sha256(result.stdout.encode("utf-8")).hexdigest(),
+                "stderr_sha256": hashlib.sha256(result.stderr.encode("utf-8")).hexdigest()}
+
+    return {"failure_class": handler["failure_class"],
+            "state": "SYMPTOM_VERIFIED_CAUSE_OPEN", "priority": "OWNER_HIGHEST",
+            "original_operation_verified": True,
+            "probe_before": observation(probe), "repair_command": observation(repair),
+            "probe_after": observation(readback),
+            "cause": "UNESTABLISHED", "cause_closed": False,
+            "repair_complete": False, "effect_ack_done": False,
+            "next_required_action": "ESTABLISH_AND_REPAIR_CAUSE_WITH_REGRESSION_AND_FRESH_READBACK"}
 
 
 def execute(apply: bool) -> dict[str, Any]:
@@ -553,6 +576,7 @@ def execute(apply: bool) -> dict[str, Any]:
         "candidate_identity": candidate_id,
         "changed_paths": paths,
         "actions": actions,
+        "gap_and_cause_priority": contract["gap_and_cause_priority"],
         "pipeline_binding_sha256": before_pipeline["sha256"],
         "pipeline_invariant_verified": True,
         "external_effect": "NONE",
@@ -569,6 +593,37 @@ def execute(apply: bool) -> dict[str, Any]:
             "SYMMETRIC_CANONICALITY": False,
         },
     }
+
+
+def validate_gap_cause_priority(value: Mapping[str, Any]) -> Mapping[str, Any]:
+    required = {
+        "rule_id": "QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_V1",
+        "normative_status": "REQUIRED",
+        "scope": "EVERY_IDENTIFIED_GAP_IN_EVERY_QIKVRT_LAYER",
+        "gap_priority": "OWNER_HIGHEST", "cause_priority": "OWNER_HIGHEST",
+        "repair_authorized": True,
+        "unknown_cause": "OPEN_HIGHEST_PRIORITY_CAUSAL_DIAGNOSIS",
+        "repair_command_success_is_gap_closure": False,
+        "symptom_resolution_is_cause_closure": False,
+        "noop_discharges_open_causes": False,
+        "closure_requires": ["ORIGINAL_FAILING_OPERATION_FRESHLY_VERIFIED",
+                             "SOURCE_BOUND_CAUSE_ESTABLISHED",
+                             "CAUSE_REPAIR_REGRESSION_VERIFIED",
+                             "FRESH_EXACT_SUBJECT_EFFECT_READBACK"],
+        "regression_policy": "canonical/SHIFT_LEFT_ROOT_CAUSE_REGRESSION_POLICY_V25.json",
+        "writer_admission": "EXISTING_ALLOWLIST_AND_INDEPENDENT_NATIVE_EFFECT_BOUNDARIES",
+    }
+    actual = value.get("gap_and_cause_priority")
+    if not isinstance(actual, Mapping) or any(
+            type(actual.get(key)) is not type(expected) or actual.get(key) != expected
+            for key, expected in required.items()):
+        raise SelfHealBlock("highest-priority gap-and-cause CI rule absent or weakened")
+    owner = actual.get("owner_command", {})
+    if (not isinstance(owner, Mapping) or owner.get("issuer") != "Ingolf Lohmann"
+            or owner.get("literal") != "Lücken sind höchstprior zu schließen und die Ursache für das Entstehen jeglicher Lücke ebenso!"
+            or owner.get("authorization") != "Freigabe erteilt."):
+        raise SelfHealBlock("gap-and-cause Product Owner instruction binding differs")
+    return actual
 
 
 def validate_repair_handoff_contract(value: Mapping[str, Any]) -> None:
@@ -593,6 +648,7 @@ def consume_repair_input(envelope: Mapping[str, Any], source: Mapping[str, Any],
     The workflow obtains source/jobs with its own GitHub credential. Payload text
     is never a command, cause proof or authority. Unknown repair classes stay HOLD.
     """
+    priority_rule = validate_gap_cause_priority(_load_json(CONTRACT, "gap-and-cause contract"))
     if envelope.get("schema") != "qikvrt_error_analysis_handoff_v1":
         raise SelfHealBlock("unsupported repair envelope")
     subject = {"repository": repository, "head": head, "tree": tree}
@@ -676,6 +732,9 @@ def consume_repair_input(envelope: Mapping[str, Any], source: Mapping[str, Any],
             "analysis_admitted": True, "consumer": "tools/qikvrt_autonomous_self_heal.py",
             "inbox_readback_verified": True, "writer_admitted": False,
             "repair_executed": False, "cause": "UNESTABLISHED",
+            "gap_priority": priority_rule["gap_priority"],
+            "cause_priority": priority_rule["cause_priority"],
+            "gap_closed": False, "cause_closed": False, "repair_complete": False,
             "first_blocker": analysis.get("first_blocker"),
             "next_action": "ESTABLISH_CAUSE_AND_MATCH_EXISTING_ALLOWLISTED_REPAIR",
             "effect_ack_done": False}

@@ -47,6 +47,38 @@ bind the changed bytes.
 
 ## Trigger semantics
 
+### Highest-priority gap and cause repair
+
+Ingolf Lohmann authorized the following general CI rule on 2026-10-02:
+"Lücken sind höchstprior zu schließen und die Ursache für das Entstehen jeglicher
+Lücke ebenso!" Both obligations are `OWNER_HIGHEST` in the existing contract's
+`gap_and_cause_priority`. Contract loading rejects omission, weaker priorities,
+integer substitutes for booleans, or a claim that symptom resolution closes the
+cause. The existing `ci-continuation` receipt carries the complete bound rule;
+the existing error-analysis consumer carries separate open gap/cause flags.
+
+The existing repair handler used to report `REPAIRED` after a zero-exit repair
+command, even when the original operation still failed. The controlled real
+subprocess counterexample reproduces this on source HEAD
+`2a4d587ea799d57ae569a011551a61123850fb1b`. The source-bound cause is the absent
+post-repair probe and unconditional success return. Historical development
+motives are unestablished.
+
+The handler now repeats the identical original probe before returning any
+verified symptom result. A failed recheck blocks the candidate. A successful
+recheck returns `SYMPTOM_VERIFIED_CAUSE_OPEN`, with command, exit-code and output
+digest observations; it leaves `cause_closed=false` and `repair_complete=false`.
+These observations prove only the scoped operation. They do not prove why the
+original drift arose. Establish and repair that cause, automatically catch its
+regression, and freshly read back the exact-subject effect before closing the
+repair. The existing V25 Shift-Left policy supplies the regression obligation.
+A subsequent NOOP cannot discharge a previously open cause.
+
+The authorization covers diagnosis and repair. Existing allowlists, trusted-Main
+pipeline invariance and independent native effect admission still govern writer
+execution. The upgraded producer/consumer is a review candidate until Main
+admission and an actual native run establish productive activation.
+
 Ingolf Lohmann's command **Never stop CI** is bound to this repository in
 `state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json.continuous_integration`.
 The existing CI executes `tools/qikvrt_autonomous_self_heal.py ci-continuation`

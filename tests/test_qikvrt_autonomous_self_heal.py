@@ -174,11 +174,72 @@ class AutonomousSelfHealTests(unittest.TestCase):
                 ("probe",), 2, "publication overview drift: missing", ""
             ),
             MODULE.CommandResult(("repair",), 0, "MATERIALIZED", ""),
+            MODULE.CommandResult(("probe",), 0, "VERIFIED", ""),
         ]
         with mock.patch.object(MODULE, "run", side_effect=results) as mocked:
             value = MODULE.repair_handler(handler)
-        self.assertEqual(value["state"], "REPAIRED")
-        self.assertEqual(mocked.call_count, 2)
+        self.assertEqual(value["state"], "SYMPTOM_VERIFIED_CAUSE_OPEN")
+        self.assertTrue(value["original_operation_verified"])
+        self.assertFalse(value["cause_closed"])
+        self.assertFalse(value["repair_complete"])
+        self.assertEqual(mocked.call_count, 3)
+
+    def test_successful_repair_process_cannot_hide_actual_failing_operation(self):
+        handler = {
+            "failure_class": "PUBLICATION_OVERVIEW_DRIFT",
+            "failure_signature": "publication overview drift:",
+            "probe": [sys.executable, "-c", "print('publication overview drift: missing'); raise SystemExit(2)"],
+            "repair": [sys.executable, "-c", "raise SystemExit(0)"],
+        }
+        # Real subprocesses: a zero-exit repair leaves the actual probe broken.
+        with self.assertRaisesRegex(MODULE.SelfHealBlock, "original operation still fails"):
+            MODULE.repair_handler(handler)
+
+    def test_actual_symptom_repair_retains_the_highest_priority_cause_obligation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            fixed = pathlib.Path(directory) / "fixed"
+            probe = [sys.executable, "-c",
+                     "import pathlib,sys; p=pathlib.Path(sys.argv[1]); "
+                     "print('publication overview drift: missing' if not p.exists() else 'verified'); "
+                     "raise SystemExit(0 if p.exists() else 2)", str(fixed)]
+            handler = {"failure_class": "PUBLICATION_OVERVIEW_DRIFT",
+                       "failure_signature": "publication overview drift:", "probe": probe,
+                       "repair": [sys.executable, "-c",
+                                  "import pathlib,sys; pathlib.Path(sys.argv[1]).write_text('fixed')", str(fixed)]}
+            result = MODULE.repair_handler(handler)
+            self.assertEqual(result["state"], "SYMPTOM_VERIFIED_CAUSE_OPEN")
+            self.assertEqual(result["priority"], "OWNER_HIGHEST")
+            self.assertEqual(result["probe_before"]["returncode"], 2)
+            self.assertEqual(result["probe_after"]["returncode"], 0)
+            self.assertEqual(result["probe_before"]["command"], result["probe_after"]["command"])
+            self.assertEqual(result["cause"], "UNESTABLISHED")
+            self.assertFalse(result["repair_complete"])
+            self.assertFalse(result["cause_closed"])
+            self.assertFalse(result["effect_ack_done"])
+            # A later NOOP cannot erase the prior cause record.
+            self.assertEqual(MODULE.repair_handler(handler)["state"], "NOOP")
+            self.assertFalse(result["cause_closed"])
+
+    def test_missing_weakened_or_mistyped_gap_and_cause_rule_blocks_contract_loading(self):
+        import copy, json
+        contract = json.loads(MODULE.CONTRACT.read_text())
+        rule = MODULE.validate_gap_cause_priority(contract)
+        self.assertEqual(rule["gap_priority"], rule["cause_priority"])
+        changes = [(field, lambda value, key=field: value["gap_and_cause_priority"].pop(key))
+                   for field in rule]
+        changes += [
+            ("false closure", lambda v: v["gap_and_cause_priority"].update(symptom_resolution_is_cause_closure=True)),
+            ("lower cause priority", lambda v: v["gap_and_cause_priority"].update(cause_priority="LOW")),
+            ("boolean as integer", lambda v: v["gap_and_cause_priority"].update(repair_authorized=1)),
+            ("issuer", lambda v: v["gap_and_cause_priority"]["owner_command"].update(issuer="unknown")),
+        ]
+        for label, change in changes:
+            with self.subTest(label=label):
+                candidate = copy.deepcopy(contract)
+                change(candidate)
+                with mock.patch.object(MODULE, "_load_json", return_value=candidate):
+                    with self.assertRaises(MODULE.SelfHealBlock):
+                        MODULE.load_contract()
 
 
 class RepairInputTests(unittest.TestCase):
@@ -229,6 +290,11 @@ class RepairInputTests(unittest.TestCase):
                 self.assertTrue(receipt['inbox_readback_verified'])
                 self.assertFalse(receipt['writer_admitted'])
                 self.assertFalse(receipt['effect_ack_done'])
+                self.assertEqual(receipt['gap_priority'], 'OWNER_HIGHEST')
+                self.assertEqual(receipt['cause_priority'], 'OWNER_HIGHEST')
+                self.assertFalse(receipt['gap_closed'])
+                self.assertFalse(receipt['cause_closed'])
+                self.assertFalse(receipt['repair_complete'])
                 second = self.consume(env, source, jobs, inbox)
                 self.assertEqual(second['state'], 'DUPLICATE_READBACK')
                 self.assertEqual(len(list(pathlib.Path(inbox).glob('*.json'))), 1)

@@ -248,6 +248,20 @@ A mutation is not an improvement merely because it is new. A green workflow is n
 
 Quality loop: real user-visible failure -> causal diagnosis -> bounded repair -> regression proof -> fresh real-user-path validation.
 
+Ingolf Lohmann's authorized CI rule of 2026-10-02 is binding for every identified
+gap in every QIK-VRT layer: "Lücken sind höchstprior zu schließen und die Ursache
+für das Entstehen jeglicher Lücke ebenso!" The existing repository-native
+controller consumes `gap_and_cause_priority` in
+`state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json`.
+The gap and its causal repair both have `OWNER_HIGHEST` priority. A successful
+repair command is not gap closure; a corrected symptom is not cause closure.
+Unknown causes retain a highest-priority diagnosis obligation. Repeat the
+original failing operation, establish the source-bound cause, verify its
+regression repair, and read back the exact-subject effect before closure.
+Reuse `canonical/SHIFT_LEFT_ROOT_CAUSE_REGRESSION_POLICY_V25.json` and the
+existing analysis consumer; existing writer admission and independent native
+effect boundaries remain required. A later NOOP does not erase an open cause.
+
 Performance loop: baseline_n -> measurement -> optimization -> baseline_n+1 -> objectively measured delta under equivalent conditions.
 
 Competitiveness loop: identical reproducible workload and conditions -> QIK-VRT versus relevant alternatives -> measured comparison -> weakest material dimension becomes an optimization target. Never assert superiority without reproducible comparative evidence.

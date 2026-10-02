@@ -323,5 +323,32 @@
     "replay_scope": "IDENTICAL_WORK_UNIT_INBOX_BYTES_NO_WRITER_EFFECT",
     "repair_permission": "ONLY_EXISTING_ALLOWLIST_AFTER_ESTABLISHED_CAUSE_AND_SEPARATE_ADMISSION",
     "routing_failure": "OPEN_DEFECT_WITH_PRESERVED_SOURCE_AND_CONSUMER_FAILURE_RECEIPT"
+  },
+  "gap_and_cause_priority": {
+    "rule_id": "QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_V1",
+    "normative_status": "REQUIRED",
+    "owner_command": {
+      "issuer": "Ingolf Lohmann",
+      "literal": "Lücken sind höchstprior zu schließen und die Ursache für das Entstehen jeglicher Lücke ebenso!",
+      "authorization": "Freigabe erteilt.",
+      "received_at_utc": "2026-10-02T00:07:15Z",
+      "destination": "REPOSITORY"
+    },
+    "scope": "EVERY_IDENTIFIED_GAP_IN_EVERY_QIKVRT_LAYER",
+    "gap_priority": "OWNER_HIGHEST",
+    "cause_priority": "OWNER_HIGHEST",
+    "repair_authorized": true,
+    "unknown_cause": "OPEN_HIGHEST_PRIORITY_CAUSAL_DIAGNOSIS",
+    "repair_command_success_is_gap_closure": false,
+    "symptom_resolution_is_cause_closure": false,
+    "noop_discharges_open_causes": false,
+    "closure_requires": [
+      "ORIGINAL_FAILING_OPERATION_FRESHLY_VERIFIED",
+      "SOURCE_BOUND_CAUSE_ESTABLISHED",
+      "CAUSE_REPAIR_REGRESSION_VERIFIED",
+      "FRESH_EXACT_SUBJECT_EFFECT_READBACK"
+    ],
+    "regression_policy": "canonical/SHIFT_LEFT_ROOT_CAUSE_REGRESSION_POLICY_V25.json",
+    "writer_admission": "EXISTING_ALLOWLIST_AND_INDEPENDENT_NATIVE_EFFECT_BOUNDARIES"
   }
 }
