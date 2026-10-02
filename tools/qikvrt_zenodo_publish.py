@@ -90,7 +90,7 @@ OWNER_AUTHORIZED_EFFECTS = (
 )
 ALLOWED_METADATA = frozenset(
     {
-        "title", "upload_type", "publication_type", "description", "creators",
+        "title", "upload_type", "publication_type", "image_type", "description", "creators",
         "version", "publication_date", "access_right", "license", "language",
         "keywords", "related_identifiers", "notes", "prereserve_doi",
     }
@@ -212,6 +212,14 @@ def _validate_metadata(value: Any) -> dict[str, Any]:
             details.append("unknown=" + ",".join(sorted(unknown)))
         _fail("invalid manifest.metadata keys (" + "; ".join(details) + ")")
     zenodo._metadata_identity(value, "manifest")
+    if value.get("upload_type") == "image":
+        image_type = value.get("image_type")
+        if not isinstance(image_type, str) or image_type not in {
+            "figure", "plot", "drawing", "diagram", "photo", "other",
+        } or "publication_type" in value:
+            _fail("image metadata requires a valid image_type and no publication_type")
+    elif "image_type" in value:
+        _fail("image_type requires upload_type=image")
     if value.get("prereserve_doi") is not True:
         _fail("manifest.metadata.prereserve_doi must equal true")
     if value["access_right"] != "open":

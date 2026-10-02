@@ -666,7 +666,7 @@ def _published_metadata_matches(
 ) -> bool:
     """Compare legacy deposit metadata to its public-record representation.
 
-    Zenodo's public records API normalizes three legacy write fields and omits
+    Zenodo's public records API normalizes legacy type/license fields and omits
     the DOI-reservation instruction.  All other client-controlled fields remain
     subject to the recursive exact-value comparison (server-added object keys
     are tolerated).
@@ -690,7 +690,7 @@ def _published_metadata_matches(
                 if isinstance(resource_type, dict)
                 else None
             )
-        elif key == "publication_type":
+        elif key in {"publication_type", "image_type"}:
             actual_value = (
                 resource_type.get("subtype")
                 if isinstance(resource_type, dict)

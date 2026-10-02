@@ -4287,5 +4287,53 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 proof.validate_bundle(root, bundle_path)
 
 
+class ImagePublicationMetadataTests(unittest.TestCase):
+    def metadata(self) -> dict[str, object]:
+        return {
+            "title": "Drawing archive fixture",
+            "upload_type": "image",
+            "image_type": "drawing",
+            "description": "Six source-bound drawings",
+            "creators": [{"name": "Lohmann, Ingolf"}],
+            "version": "1.0.0",
+            "access_right": "open",
+            "license": "cc-by-nc-nd-4.0",
+            "prereserve_doi": True,
+        }
+
+    def test_drawing_metadata_and_public_subtype_are_verified_exactly(self) -> None:
+        metadata = self.metadata()
+        self.assertEqual(publish._validate_metadata(metadata), metadata)
+        public = dict(metadata)
+        public.pop("prereserve_doi")
+        public.pop("upload_type")
+        public.pop("image_type")
+        public["resource_type"] = {"type": "image", "subtype": "drawing"}
+        public["license"] = {"id": "cc-by-nc-nd-4.0"}
+        self.assertTrue(zenodo._published_metadata_matches(public, metadata))
+        public["resource_type"] = {"type": "image", "subtype": "photo"}
+        self.assertFalse(zenodo._published_metadata_matches(public, metadata))
+        public["resource_type"] = {"type": "publication", "subtype": "drawing"}
+        self.assertFalse(zenodo._published_metadata_matches(public, metadata))
+
+    def test_invalid_or_cross_type_image_metadata_fails_before_effects(self) -> None:
+        mutations = [
+            {"image_type": "invalid"},
+            {"image_type": ["drawing"]},
+            {"upload_type": "publication"},
+            {"publication_type": "technicalnote"},
+        ]
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                metadata = self.metadata()
+                metadata.update(mutation)
+                with self.assertRaises(zenodo.ZenodoError):
+                    publish._validate_metadata(metadata)
+        metadata = self.metadata()
+        metadata.pop("image_type")
+        with self.assertRaises(zenodo.ZenodoError):
+            publish._validate_metadata(metadata)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

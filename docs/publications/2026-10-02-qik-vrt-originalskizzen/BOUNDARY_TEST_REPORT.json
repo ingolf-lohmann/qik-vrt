@@ -1,0 +1,131 @@
+{
+  "_license": {
+    "classification": "publication_boundary_test_evidence",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_zenodo_machine_proof_policy.py"
+      ],
+      "exit_code": 0,
+      "tests": 70
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_zenodo_actions.py"
+      ],
+      "exit_code": 0,
+      "tests": 17
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_original_sketches_zenodo_v2.py"
+      ],
+      "exit_code": 0,
+      "tests": 10
+    }
+  ],
+  "doi_or_public_files_readback_claimed": false,
+  "errors": 0,
+  "execution_scope": "materialized exact-source publisher and tests, isolated offline fixtures; complete original repository tree reconstructed by Git SHA-1 but unrelated source blobs not materialized",
+  "failures": 0,
+  "full_repository_boot_or_ci_pass_claimed": false,
+  "metadata_contract_source": "https://developers.zenodo.org/#deposit-metadata",
+  "production_network_calls": 0,
+  "production_records_created": 0,
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "publisher_source_bindings": [
+    {
+      "bytes": 92432,
+      "git_blob_sha1": "5454b265a5b53d55f05d5d835ab64eddd80cccb9",
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "sha256": "52b094160ed961b9530397c9ba34ba3b72edfa96e2661a0a5f01cb3d6cab0886"
+    },
+    {
+      "bytes": 64840,
+      "git_blob_sha1": "eb84499b8a06834c87ef31777894e0e34d42610f",
+      "path": "tools/qikvrt_zenodo_actions.py",
+      "sha256": "496a7a2db808ef36727a4cfae18578d1fc88b8e8c36c05aee9e4b3951e949597"
+    },
+    {
+      "bytes": 98062,
+      "git_blob_sha1": "15c13591eb5e881a9b63a3b4596357194e27341b",
+      "path": "tools/qikvrt_zenodo_machine_proof.py",
+      "sha256": "c91b46edf68aeaa384c644c0fb2738de48abb943b14615380f8b17d6645aecb8"
+    }
+  ],
+  "schema": "qikvrt_original_sketch_publisher_boundary_tests_v1",
+  "skips": 0,
+  "state": "PASS_SCOPED_OFFLINE_TESTS",
+  "test_count": 97,
+  "test_source_bindings": [
+    {
+      "bytes": 169942,
+      "git_blob_sha1": "95cf02dbd8325b0acd09499321fe8461f2364cf0",
+      "path": "tests/test_zenodo_machine_proof_policy.py",
+      "sha256": "ca6baa402100bba5ceb07c8e56eb908098b25da2d871690362994de564c272de"
+    },
+    {
+      "bytes": 34187,
+      "git_blob_sha1": "02bf5529586bd232263511a6ed246234d2a8c631",
+      "path": "tests/test_zenodo_actions.py",
+      "sha256": "e816abba2c406218193160036ab7799859aeb18ac11cf1deaeb2c89ec17f5446"
+    },
+    {
+      "bytes": 8870,
+      "git_blob_sha1": "457b0e377df0903b46c8169697c501b70990b883",
+      "path": "tests/test_original_sketches_zenodo_v2.py",
+      "sha256": "10ec1e4daed6990d9ab0c9e12aedc1bf0e58fe53dfb3621d3ee7996608b62e3b"
+    }
+  ],
+  "tested_boundaries": [
+    "legacy v1 cannot authorize new production mutation",
+    "exact active and byte-frozen historical schemas",
+    "bidirectional claim matrix completeness",
+    "exact source/evidence fragments",
+    "no unproved formal or open-as-fact claims",
+    "candidate return byte identity",
+    "exact upload set with proof bundle",
+    "owner decision follows candidate return and matches canonical hashes",
+    "natural-person principal bound to active policy",
+    "owner authorization excluded from public upload",
+    "source commit ancestry and execution Git blobs",
+    "production repository and origin identity",
+    "no secret in any public or control bytes",
+    "global create-only authority consumption ref shared by concurrent publishers",
+    "decision-bound consumption key not nonce-selected",
+    "no retry creates a second record after ambiguous create",
+    "stable bounded complete inventory recovery",
+    "public metadata and every file byte verification",
+    "image/drawing accepted; missing invalid cross-type subtype rejected",
+    "public resource_type drift rejected"
+  ]
+}
