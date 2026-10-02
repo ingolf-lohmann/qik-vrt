@@ -25,7 +25,8 @@
     "Run balanced repetitions with four clients; measure actual process CPU clocks, wall time and every effect latency.",
     "Verify every referenced record, retained event, consolidation and consumed-token replay after every measurement.",
     "Add focused fairness/replay and speedup-claim controls, a Make target and separate exact-head Linux artifact job.",
-    "Extend the already implemented comparable benchmark with setup, persist-interval union/thread CPU, execution, verification, consolidation and replay timing; retain existing controls and report installed Firefox identity separately from browser execution."
+    "Extend the already implemented comparable benchmark with setup, persist-interval union/thread CPU, execution, verification, consolidation and replay timing; retain existing controls and report installed Firefox identity separately from browser execution.",
+    "Extend the existing benchmark-only original writer/syscall hooks and per-trial storage/process/cgroup/host boundary telemetry; preserve all workload/effect/replay conditions and materialize the causal isolation boundary and next measurement contract."
   ],
   "claim_matrix": [
     {
@@ -66,7 +67,7 @@
     }
   ],
   "continuation": {
-    "next_action": "Fresh successor native phase benchmark/Firefox/CI/integrity artifact readback, then separate exact-head governance observation."
+    "next_action": "Fresh native successor bounded diagnostic and exact-head artifact/CI readback. Causal identification remains HOLD until the embedded next contract is admitted on a controlled host; no further unmodified hosted trials."
   },
   "created_at": "2026-10-02T12:10:17.918979+00:00",
   "external_effects": {
@@ -90,7 +91,8 @@
     "Authorize a separate 1/2/4-process comparison using fresh roots, identical preload, payload and client count.",
     "Require repeated wall/CPU/throughput/latency measurements with dispersion and per-run effect/record/replay invariants.",
     "Preserve the correctness witness and keep unbounded_scalability_proved=false.",
-    "Require separated setup/persistence/execution/consolidation time and host/interpreter/Firefox/current-subject/raw-measurement bindings."
+    "Require separated setup/persistence/execution/consolidation time and host/interpreter/Firefox/current-subject/raw-measurement bindings.",
+    "Authorize targeted variance diagnosis from exact e998f89c/81c0931f and require telemetry/isolation limits instead of uninterpretably extending hosted repetitions."
   ],
   "human_decision": {
     "implementation_acceptance": "PENDING_INDEPENDENT_REVIEW",
@@ -120,6 +122,21 @@
       "git_blob_sha1": "d7ea77d0bc2db17c5cb012203d90d989aca47a3f",
       "path": "evidence/linux-ring/20261002/LOCAL_COMPARABLE_PHASE_TIMINGS_RAW.zip",
       "sha256": "e25e8ed94e013629f650bfaf24c27189763bbbaa09d6b94b5c4b3487d769596d"
+    },
+    {
+      "bytes": 7143,
+      "path": "evidence/linux-ring/20261002/VARIANCE_BASELINE_READBACK.json",
+      "sha256": "cd116d3aa047b1e0fd6f426f29a2a29c06dd0789ee1edfe84b7e75b36c14779a"
+    },
+    {
+      "bytes": 3592,
+      "path": "evidence/linux-ring/20261002/LOCAL_VARIANCE_VERIFICATION.json",
+      "sha256": "99855ae7b953410ac1238587c27d275f16598945696c0b2ba626021fd6cdd21e"
+    },
+    {
+      "bytes": 15847,
+      "path": "evidence/linux-ring/20261002/LOCAL_VARIANCE_TESTS.log",
+      "sha256": "6e4c8d0385c9e260c1368b3d73db13e68102899ae8a52190913f2f5a2fe78471"
     }
   ],
   "phase_timing_extension": {
@@ -1073,6 +1090,65 @@
   "source_tree": "bc2232edd71ae7567a91d145202688ac9edef880",
   "unresolved_origin": [],
   "updated_at": "2026-10-02T12:48:35.630574+00:00",
+  "variance_diagnosis_extension": {
+    "artificial_cognitive_actor": {
+      "model_or_build": "GPT-6",
+      "provider": "OpenAI",
+      "session_or_run_id": "c312083b2aca",
+      "system_family": "Codex"
+    },
+    "baseline_readback": "evidence/linux-ring/20261002/VARIANCE_BASELINE_READBACK.json",
+    "causal_identification": "HOLD_CAUSAL_ISOLATION_UNVERIFIED",
+    "causal_runner_io_stall_proved": false,
+    "comparative_speedup_proved": false,
+    "external_effects": {
+      "deployment": false,
+      "force_push": false,
+      "history_preserving_pr_branch_continuation": true,
+      "main_promotion": false,
+      "publication": false,
+      "release": false
+    },
+    "human_actor": "Ingolf Lohmann",
+    "integrity": "Incremental exact-parent manifest plus complete fresh Git tree path/object inventory; inherited checkout line endings retained. Full-checkout native regeneration/verification still required.",
+    "local_source_verification": "evidence/linux-ring/20261002/LOCAL_VARIANCE_VERIFICATION.json",
+    "next_measurement_contract": {
+      "admission": [
+        "Dedicated host and durable local block volume with recorded storage/queue/filesystem identity and no competing I/O producers.",
+        "Fixed four usable CPU slots/affinity for every placement; visible cgroup membership and all effective ancestor quotas; driver placement disclosed.",
+        "Bind exact workload, snapshots, source/interpreter, kernel, mount, CPU governor and storage cache policy before measurement.",
+        "Collect available PSI totals, host disk/CPU counters, actual cgroup CPU/IO counters and persist operation intervals; unavailable means HOLD, never zero.",
+        "Record an external isolation attestation and collector overhead; a self-reported dedicated runner label is insufficient."
+      ],
+      "cache_policy": "Declare warm/cold policy before trials; no unrecorded cache reset, tmpfs substitution or disabling fsync.",
+      "command": "python3 -B tools/qikvrt_firefox_windows_witness.py --comparable-scale-benchmark --repetitions 6 --workload 64 --preload-per-origin 4 --output <new-private-directory>",
+      "discriminating_control": "On the isolated host, run one predeclared matched comparison without competing I/O and one with a bounded calibrated I/O interferer on the same volume. Keep payload/clients/origin bytes and durability invariant; record interferer parameters, measured I/O and CPU costs. No such interferer runs in the hosted diagnostic.",
+      "invariants": "Four closed byte-identical origins, canonical seed, same 64 requests/four clients; 80 effects/160 records, full restart/consolidation and 80+4 replay refusals.",
+      "maximum_additional_unmodified_hosted_trials": 0,
+      "order_and_budget": "Exactly six cyclic interleaved repetitions per predeclared condition; all samples retained. A new measurement contract is required before extending the budget.",
+      "return_boundary": "If isolation/telemetry admission fails, preserve the exact capability boundary and stop repetitions. Causal scaling remains unproved.",
+      "schema": "qikvrt_linux_scale_variance_next_measurement_v1",
+      "speedup_admission": "Existing six-pair/all-pairs-faster/97.5%-interval-above-one rule unchanged. Do not pool environments or transfer predecessor evidence.",
+      "state": "PREPARED_NOT_EXECUTED",
+      "subject": "Exact successor HEAD/TREE, source/interpreter digests and raw receipt digests required."
+    },
+    "owner_acceptance": "PENDING_INDEPENDENT_EXACT_SUCCESSOR_REVIEW; no predecessor approval transfer",
+    "predecessor_evidence_transfer": false,
+    "request_date": "2026-10-02",
+    "runner_independent_scaling_proved": false,
+    "source_head": "e998f89cfcee647773acd2d91a7cf0d3a4f00a74",
+    "source_tree": "81c0931f2a98b057d6d422655c9871fc50a24395",
+    "state": "PREPARED_NATIVE_SUCCESSOR_READBACK_REQUIRED",
+    "subject_binding": "History-preserving successor of source_head; fresh native receipt must bind its exact HEAD/TREE.",
+    "task_scope": "AUTHORIZED_BY_ACTIVE_REQUEST",
+    "unchanged_correctness_and_speedup_functions": {
+      "benchmark_speedup": "eb339bb293aee26f2619bb2bf437aa63ecbf52df0dc845bdbd07ce37bce73ece",
+      "durable_restart_controls": "a843e844b8f3be04662f8b645d4609cb9a8d2d00aa5147f6ec9de3fddb2e7903",
+      "lossless_scale_consolidation_controls": "62c39adc2d95c70661870c135071b252b727ab1e8421e7e07f9e247ac471f7fe",
+      "network_loss_controls": "3562a301903f6ecacc613cf23147dedcb02f6a7a29776c73c5eb5da556442272",
+      "witness": "dcd67fc1aeaa450815961f7986fb7f5213a6e39bf8dd2c5c7d12bee499efc354"
+    }
+  },
   "verification": {
     "correctness_function_bytes_unchanged": [
       "lossless_scale_consolidation_controls",

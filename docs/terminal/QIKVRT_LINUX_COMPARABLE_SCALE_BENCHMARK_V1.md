@@ -102,3 +102,80 @@ measurements leave `speedup_supported=false`.
 `unbounded_scalability_proved=false`, `predecessor_evidence_transfer=false`,
 and `personal_release_effect_ack_done=false` remain explicit. Native Main
 protection and independent Code-Owner review remain separate governance gates.
+
+## Bounded variance diagnosis
+
+Native run `37009544042`, job `110845708035`, artifact `11226239403` is historical
+evidence for HEAD `e998f89cfcee647773acd2d91a7cf0d3a4f00a74`, TREE
+`81c0931f2a98b057d6d422655c9871fc50a24395`. Its six paired repetitions fail both
+speedup admission tests. Execution and persistence-union outliers coincide;
+this supports an I/O-stall hypothesis but does not identify their cause.
+The successor does not transfer those gates, observations or Owner acceptance.
+
+The existing benchmark worker now observes the following for every trial:
+
+| Observation | Binding and limitation |
+| --- | --- |
+| Entire persist | Monotonic interval, calling-thread CPU, native thread ID, context switches, faults and block-I/O counts. Elapsed minus CPU includes all waiting and clock-boundary error; it is not exclusive I/O-wait time. Signed residuals are retained. |
+| Original atomic writer | Inclusive operation interval and serialized byte count. Payload, snapshots, tokens and keys are never exported. |
+| File fsync, replace, directory fsync | Separate intervals and thread CPU around the original syscalls, including error outcomes. Failure still poisons the original State. |
+| Persist/atomic residuals | Persist outside atomic includes serialization, seed/hash work and instrumentation. Atomic other includes creation, write, flush, opens, cleanup and instrumentation. It is not a pure write-latency estimate. |
+| Storage | Actual snapshot device, filesystem/mount/options, visible block-device sysfs/slaves and available capacity. Overlay/virtual backing devices remain explicitly unresolved. Visible device identity does not attest physical isolation. |
+| Process/CPU | Actual server/driver PIDs and affinity, per-process I/O counters, main-thread context switches; per-persist resource counters cover the actual calling threads. |
+| cgroup/quotas | Resolve `/proc/PID/cgroup` against actual mount roots; observe visible leaf and ancestor CPU quota/stat, effective cpuset, I/O limits/stat and PSI. Shared ancestors are read once; never add parent and child counters. v1 configuration is preserved with its native units. Outside-namespace/hidden ancestors remain unobserved. |
+| Host I/O/load | Before/after CPU jiffies including steal/iowait, diskstats, PSI totals for CPU/I/O/memory, vmstat, meminfo and load average. Host and shared-cgroup counters include other tasks. |
+
+`worker_metrics_after.persist_intervals` preserves every raw storage interval.
+Each successful persist must contain exactly one atomic write, file fsync,
+replace and directory fsync. Outer atomic/persist intervals overlap their nested
+operations; **do not sum them as independent costs**. Each operation reports its
+wall distribution, sum and union; per-process summaries retain per-trial maxima.
+
+`telemetry_targets`, `observability_before` and `observability_after` are in each
+hashed trial receipt. Sequential before/after reads bracket the measured
+execution, with their own monotonic boundaries and observer process CPU; they
+are not simultaneous snapshots. They are outside the execution timer. The
+operation hooks run inside execution and their overhead has not been separately
+calibrated. All comparisons use the same observation mode. No host poller,
+tracer, privileged collector, cache reset, quota write, filesystem substitution
+or durability change is added.
+
+Missing, inaccessible or malformed telemetry is `UNAVAILABLE` with source and
+error identity. Counter decreases/resets retain before/after values and a null
+delta. Missing fields never become zero throttling or zero I/O wait. PSI average
+windows and queue-in-flight gauges are retained in the snapshots but are not
+subtracted as cumulative counters. Diskstats and cgroup accounting do not
+establish exclusive physical device ownership or causal attribution.
+
+Correctness can be `PASS` while `variance_observability.state` and every trial's
+`variance_diagnosis.state` are `HOLD_CAUSAL_ISOLATION_UNVERIFIED`.
+`causal_runner_io_stall_proved=false` and
+`runner_independent_scaling_proved=false` remain explicit. The existing
+`benchmark_speedup` function and its six-pair/all-pairs-faster/interval-above-one
+rule are unchanged; its outcome is scoped to this host and observation mode.
+No claim is inferred from lower medians or a successful diagnostic job.
+
+The existing native job performs **one** bounded six-repetition diagnostic.
+There is no automatic retry, added warmup, outlier removal or sample-budget
+extension. On an admission gap, the receipt materializes
+`next_measurement_contract` with
+`maximum_additional_unmodified_hosted_trials=0`.
+
+The next contract requires a separately verified dedicated host and durable
+block volume; fixed CPU/affinity and fully visible effective quotas; disclosed
+filesystem, device/queue, governor and cache policy; exact source/interpreter,
+seed, origin/workload and receipt digests; and collector overhead. It prescribes
+one predeclared matched isolated comparison and one with a calibrated, bounded
+I/O interferer on the same volume, while preserving the original workload,
+clients, snapshot bytes, durability, effects/records and replay controls. The
+interferer is not executed by this hosted diagnostic. Each condition has six
+cyclic interleaved repetitions and retains every sample. Missing admission
+evidence stops repetitions and preserves HOLD; it is not filled from runner
+labels or declarations. The full machine contract is generated by
+`benchmark_next_measurement_contract()` and persisted in the work unit.
+
+Counter semantics follow the primary Linux documentation:
+[cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html),
+[PSI](https://docs.kernel.org/accounting/psi.html),
+[proc I/O accounting](https://docs.kernel.org/filesystems/proc.html), and
+[diskstats](https://docs.kernel.org/admin-guide/iostats.html).

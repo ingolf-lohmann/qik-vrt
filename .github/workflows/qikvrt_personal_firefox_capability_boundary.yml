@@ -164,11 +164,14 @@ jobs:
           python-version: '3.12.13'
       - name: Verify tool-cache contract
         run: python3 -B tools/qikvrt_tool_cache.py verify
-      - name: Measure identical preload and workload on 1 2 4 processes
+      - name: Diagnose variance with identical preload and workload on 1 2 4 processes
         env:
           QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
+          # One bounded diagnostic with operation/boundary telemetry; all trials
+          # retained. Missing isolation/telemetry produces the next contract in
+          # RECEIPT.json, never an automatic rerun or a larger repetition budget.
           python3 -B tools/qikvrt_firefox_windows_witness.py --comparable-scale-benchmark --repetitions 6 --workload 64 --preload-per-origin 4 --output "$RUNNER_TEMP/qikvrt-linux-comparable-scale"
       - name: Preserve comparable measurements without private state
         if: ${{ always() }}

@@ -966,10 +966,28 @@ class LinuxComparableScaleBenchmarkTests(unittest.TestCase):
                 self.assertEqual(len(intervals), 8)
                 self.assertTrue(all(detail['execution_start_ns'] <= r['start_ns'] < r['end_ns']
                                     <= detail['execution_end_ns'] for r in intervals))
+                diagnosis = row['variance_diagnosis']
+                self.assertEqual(diagnosis['state'], 'HOLD_CAUSAL_ISOLATION_UNVERIFIED')
+                self.assertFalse(diagnosis['causal_identification_established'])
+                for operation in ('atomic_write', 'file_fsync', 'replace', 'directory_fsync'):
+                    self.assertEqual(diagnosis['storage_operations'][operation]['calls'], 8)
+                self.assertGreater(diagnosis['serialized_snapshot_bytes']['min'], 0)
+                self.assertLessEqual(detail['observability_before']['end_ns'], detail['execution_start_ns'])
+                self.assertGreaterEqual(detail['observability_after']['start_ns'], detail['execution_end_ns'])
+                self.assertEqual(len(detail['telemetry_targets']), row['processes'] + 1)
+                for persist in intervals:
+                    self.assertEqual(sorted(s['operation'] for s in persist['storage_operations']),
+                                     ['atomic_write', 'directory_fsync', 'file_fsync', 'replace'])
+                    self.assertTrue(all(s['success'] for s in persist['storage_operations']))
+                    self.assertTrue(all(persist['start_ns'] <= s['start_ns'] < s['end_ns'] <= persist['end_ns']
+                                        for s in persist['storage_operations']))
                 self.assertNotIn('"commit_token"', evidence.read_text())
                 self.assertNotIn('"secret"', evidence.read_text())
             self.assertFalse(receipt['unbounded_scalability_proved'])
             self.assertFalse(receipt['private_state_exported'])
+            self.assertFalse(receipt['variance_observability']['causal_runner_io_stall_proved'])
+            self.assertEqual(receipt['variance_observability']['next_measurement_contract']
+                             ['maximum_additional_unmodified_hosted_trials'], 0)
             before = (root / 'private-rings/template/node-0/.qikvrt/api/terminal.json').read_bytes()
             with self.assertRaisesRegex(RuntimeError, 'NEW_BENCHMARK_ROOT_REQUIRED'):
                 comparable_scale_benchmark(terminal, root, ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin')
@@ -991,6 +1009,85 @@ class LinuxComparableScaleBenchmarkTests(unittest.TestCase):
         intervals = [{'start_ns': -10, 'end_ns': 20}, {'start_ns': 10, 'end_ns': 30},
                      {'start_ns': 50, 'end_ns': 200}, {'start_ns': 300, 'end_ns': 400}]
         self.assertAlmostEqual(benchmark_persistence_union(intervals, 0, 100), 80e-9)
+
+    def test_real_writer_stall_is_attributed_to_file_fsync_and_preserves_exact_bytes(self):
+        import stat
+        from tools.qikvrt_firefox_windows_witness import benchmark_persistence_observer
+        with tempfile.TemporaryDirectory() as directory:
+            state = terminal.State(ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin', state_root=Path(directory))
+            before = state.store.read_bytes()
+            original_fsync = os.fsync
+            def delayed(fd):
+                original_fsync(fd)
+                if stat.S_ISREG(os.fstat(fd).st_mode):
+                    time.sleep(.012)  # Controlled telemetry fixture only; never benchmark workload.
+            try:
+                with mock.patch.object(os, 'fsync', side_effect=delayed):
+                    intervals, _, restore = benchmark_persistence_observer(terminal)
+                    try:
+                        state.persist()
+                    finally:
+                        restore()
+                self.assertEqual(state.store.read_bytes(), before)
+                self.assertEqual(len(intervals), 1)
+                row = intervals[0]
+                operations = {s['operation']: s for s in row['storage_operations']}
+                fsync = operations['file_fsync']
+                self.assertGreaterEqual((fsync['end_ns'] - fsync['start_ns']) / 1e9, .012)
+                self.assertEqual(row['snapshot_bytes'], len(before))
+                self.assertEqual(set(operations), {'atomic_write', 'file_fsync', 'replace', 'directory_fsync'})
+                self.assertTrue(all(s['success'] for s in operations.values()))
+                self.assertGreaterEqual(row['thread_resource_delta']['ru_nvcsw'], 1)
+            finally:
+                state.close()
+
+    def test_observed_storage_failure_still_poisons_original_state(self):
+        from tools.qikvrt_firefox_windows_witness import benchmark_persistence_observer
+        with tempfile.TemporaryDirectory() as directory:
+            state = terminal.State(ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin', state_root=Path(directory))
+            try:
+                with mock.patch.object(os, 'fsync', side_effect=OSError('controlled fsync failure')):
+                    intervals, _, restore = benchmark_persistence_observer(terminal)
+                    try:
+                        with self.assertRaises(terminal.PersistenceError):
+                            state.persist()
+                    finally:
+                        restore()
+                self.assertTrue(state.persistence_failed)
+                self.assertEqual(len(intervals), 1)
+                self.assertFalse(next(s for s in intervals[0]['storage_operations']
+                                      if s['operation'] == 'file_fsync')['success'])
+            finally:
+                state.close()
+
+    def test_nested_cgroup_quota_resolution_retains_ancestors_and_rejects_hidden_paths(self):
+        from tools.qikvrt_firefox_windows_witness import benchmark_mountinfo, benchmark_cgroup_locations
+        mounts = benchmark_mountinfo('30 20 0:28 / /sys/fs/cgroup rw - cgroup2 cgroup rw\n')
+        group = benchmark_cgroup_locations('0::/actions/job\n', mounts)[0]
+        self.assertEqual(group['leaf'], '/sys/fs/cgroup/actions/job')
+        self.assertEqual(group['visible_ancestors'], ['/sys/fs/cgroup/actions/job',
+                         '/sys/fs/cgroup/actions', '/sys/fs/cgroup'])
+        self.assertFalse(group['host_ancestors_outside_mount_observed'])
+        hidden = benchmark_mountinfo('30 20 0:28 /hidden /sys/fs/cgroup rw - cgroup2 cgroup rw\n')
+        self.assertEqual(benchmark_cgroup_locations('0::/actions/job\n', hidden)[0]['state'], 'UNAVAILABLE')
+        self.assertEqual(benchmark_cgroup_locations('0::/../job\n', mounts)[0]['state'], 'UNAVAILABLE')
+        v1 = benchmark_mountinfo('31 20 0:29 / /sys/fs/cgroup/cpu rw - cgroup cgroup rw,cpu,cpuacct\n')
+        self.assertEqual(benchmark_cgroup_locations('2:cpu,cpuacct:/job\n', v1)[0]['version'], 'v1')
+
+    def test_missing_counters_resets_and_pressure_totals_never_become_fake_zero_wait(self):
+        from tools.qikvrt_firefox_windows_witness import benchmark_counter_delta, benchmark_observation, benchmark_pressure, benchmark_distribution
+        missing = benchmark_observation('/nonexistent-qikvrt-kernel-telemetry')
+        self.assertEqual(missing['state'], 'UNAVAILABLE')
+        self.assertEqual(benchmark_counter_delta(missing, missing)['state'], 'UNAVAILABLE')
+        before = {'state': 'OBSERVED', 'value': benchmark_pressure('some avg10=0.00 total=400\n')}
+        after = {'state': 'OBSERVED', 'value': benchmark_pressure('some avg10=0.50 total=470\n')}
+        delta = benchmark_counter_delta(before, after)
+        self.assertEqual(delta['some']['total']['delta'], 70)
+        self.assertNotIn('avg10', delta['some'])
+        reset = benchmark_counter_delta({'nr_throttled': 20}, {'nr_throttled': 2})
+        self.assertEqual(reset['nr_throttled']['state'], 'COUNTER_RESET_OR_DECREASE')
+        self.assertIsNone(reset['nr_throttled']['delta'])
+        self.assertLess(benchmark_distribution([-1e-6, 0, 1e-6], allow_negative=True)['min'], 0)
 
 
 @unittest.skipUnless(os.name == 'posix', 'POSIX durable ownership contract')

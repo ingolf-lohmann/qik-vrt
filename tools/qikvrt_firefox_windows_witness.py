@@ -20,6 +20,7 @@ from concurrent.futures import ThreadPoolExecutor
 import socket
 import struct
 import statistics
+import stat
 import subprocess
 import sys
 import threading
@@ -510,10 +511,10 @@ def lossless_scale_consolidation_controls(terminal, ring_root, seed, *, workload
             consolidated.close()
 
 
-def benchmark_distribution(values):
+def benchmark_distribution(values, *, allow_negative=False):
     """Sample dispersion and linearly interpolated empirical percentiles."""
     ordered = sorted(values)
-    if not ordered or any(not math.isfinite(value) or value < 0 for value in ordered):
+    if not ordered or any(not math.isfinite(value) or (value < 0 and not allow_negative) for value in ordered):
         raise ValueError('finite nonnegative measurements required')
     def percentile(fraction):
         position = fraction * (len(ordered) - 1)
@@ -565,21 +566,349 @@ def benchmark_persistence_union(intervals, start_ns, end_ns):
     return total / 1e9
 
 
-def benchmark_terminal_worker(terminal):
-    """Instrument only this benchmark process; keep production handlers/persist intact."""
+def benchmark_observation(path, parser=lambda value: value.strip()):
+    """Unavailable/malformed kernel telemetry is never replaced by a zero."""
+    try:
+        return {'source': str(path), 'state': 'OBSERVED', 'value': parser(Path(path).read_text())}
+    except (OSError, ValueError, IndexError) as error:
+        return {'source': str(path), 'state': 'UNAVAILABLE', 'reason': type(error).__name__,
+                'errno': getattr(error, 'errno', None)}
+
+
+def benchmark_keyed_counters(text):
+    return {parts[0].rstrip(':'): int(parts[1]) for line in text.splitlines()
+            if len(parts := line.split()) == 2}
+
+
+def benchmark_pressure(text):
+    return {parts[0]: {key: (int(value) if key == 'total' else float(value))
+            for key, value in (field.split('=', 1) for field in parts[1:])}
+            for line in text.splitlines() if (parts := line.split())}
+
+
+def benchmark_io_stat(text):
+    return {parts[0]: {key: int(value) for key, value in
+            (field.split('=', 1) for field in parts[1:])}
+            for line in text.splitlines() if (parts := line.split())}
+
+
+def benchmark_mountinfo(text):
+    def unescape(value):
+        for code, char in (('040', ' '), ('011', '\t'), ('012', '\n'), ('134', '\\')):
+            value = value.replace('\\' + code, char)
+        return value
+    mounts = []
+    for line in text.splitlines():
+        left, right = line.split(' - ', 1)
+        a, b = left.split(), right.split()
+        mounts.append({'mount_id': a[0], 'device': a[2], 'root': unescape(a[3]),
+                       'mount_point': unescape(a[4]), 'mount_options': a[5],
+                       'filesystem': b[0], 'source': unescape(b[1]), 'super_options': b[2]})
+    return mounts
+
+
+def benchmark_cgroup_locations(membership, mounts):
+    """Resolve actual membership against mount roots, never assume cgroup root."""
+    groups = []
+    for line in membership.splitlines():
+        _, controllers, member = line.split(':', 2)
+        kind = 'v1' if controllers else 'v2'
+        selected = [m for m in mounts if m['filesystem'] == ('cgroup' if controllers else 'cgroup2')
+                    and (not controllers or set(controllers.split(',')) <= set(m['super_options'].split(',')))]
+        for mount in selected:
+            try:
+                relative = Path(member).relative_to(mount['root'])
+            except ValueError:
+                groups.append({'version': kind, 'controllers': controllers, 'membership': member,
+                               'state': 'UNAVAILABLE', 'reason': 'MEMBERSHIP_OUTSIDE_VISIBLE_MOUNT_ROOT'})
+                continue
+            leaf = Path(mount['mount_point']) / relative
+            if '..' in relative.parts:
+                groups.append({'version': kind, 'controllers': controllers, 'membership': member,
+                               'state': 'UNAVAILABLE', 'reason': 'MEMBERSHIP_OUTSIDE_VISIBLE_MOUNT_ROOT'})
+                continue
+            paths, path = [], leaf
+            for _ in range(64):
+                paths.append(str(path))
+                if path == Path(mount['mount_point']):
+                    break
+                path = path.parent
+            else:
+                raise ValueError('cgroup ancestry exceeds bounded observability')
+            groups.append({'version': kind, 'controllers': controllers, 'membership': member,
+                           'mount': mount, 'leaf': str(leaf), 'visible_ancestors': paths,
+                           'state': 'OBSERVED', 'host_ancestors_outside_mount_observed': False})
+    return groups
+
+
+def benchmark_telemetry_targets(pids):
+    mount_observation = benchmark_observation('/proc/self/mountinfo', benchmark_mountinfo)
+    mounts = mount_observation.get('value', [])
+    processes = {}
+    for pid in [os.getpid(), *pids]:
+        membership = benchmark_observation('/proc/' + str(pid) + '/cgroup')
+        try:
+            groups = benchmark_cgroup_locations(membership['value'], mounts) if membership['state'] == 'OBSERVED' else []
+        except (ValueError, IndexError):
+            groups = []
+        processes[str(pid)] = {'role': 'DRIVER' if pid == os.getpid() else 'SERVER',
+                              'membership': membership, 'groups': groups,
+                              'cgroup_resolution_state': 'OBSERVED' if any(g['state'] == 'OBSERVED' for g in groups) else 'UNAVAILABLE'}
+    return processes
+
+
+def benchmark_storage_identity(path):
+    observation = benchmark_observation('/proc/self/mountinfo', benchmark_mountinfo)
+    try:
+        device = os.stat(path).st_dev
+        number = str(os.major(device)) + ':' + str(os.minor(device))
+        candidates = [m for m in observation.get('value', []) if m['device'] == number
+                      and Path(path).absolute().is_relative_to(m['mount_point'])]
+        mount = max(candidates, key=lambda m: len(m['mount_point'])) if candidates else None
+        info = os.statvfs(path)
+        sysdev = Path('/sys/dev/block') / number
+        return {'state': 'OBSERVED', 'device': number, 'mount': mount,
+                'block_device_sysfs': str(sysdev.resolve()) if sysdev.exists() else None,
+                'visible_backing_slaves': sorted(p.name for p in (sysdev / 'slaves').iterdir())
+                    if (sysdev / 'slaves').is_dir() else [],
+                'backing_device_attribution': 'VISIBLE_BLOCK_DEVICE' if sysdev.exists() else 'UNRESOLVED_VIRTUAL_FILESYSTEM',
+                'block_size': info.f_bsize, 'fragment_size': info.f_frsize,
+                'available_bytes': info.f_bavail * info.f_frsize,
+                'physical_storage_isolation_verified': False}
+    except OSError as error:
+        return {'state': 'UNAVAILABLE', 'reason': type(error).__name__, 'errno': error.errno}
+
+
+def benchmark_diskstats(text):
+    names = ('reads_completed', 'reads_merged', 'sectors_read', 'read_milliseconds',
+             'writes_completed', 'writes_merged', 'sectors_written', 'write_milliseconds',
+             'in_flight', 'io_milliseconds', 'weighted_io_milliseconds', 'discards_completed',
+             'discards_merged', 'sectors_discarded', 'discard_milliseconds',
+             'flushes_completed', 'flush_milliseconds')
+    return {parts[0] + ':' + parts[1]: {'name': parts[2],
+            **dict(zip(names, map(int, parts[3:])))}
+            for line in text.splitlines() if len(parts := line.split()) >= 14}
+
+
+def benchmark_host_cpu(text):
+    names = ('user', 'nice', 'system', 'idle', 'iowait', 'irq', 'softirq', 'steal', 'guest', 'guest_nice')
+    return dict(zip(names, map(int, text.splitlines()[0].split()[1:])))
+
+
+def benchmark_process_status(text):
+    return {key: int(value.strip()) for line in text.splitlines()
+            for key, value in [line.split(':', 1)]
+            if key in ('voluntary_ctxt_switches', 'nonvoluntary_ctxt_switches')}
+
+
+def benchmark_host_snapshot(targets):
+    """One before/after boundary read; no poller/tracer or writes to host controls."""
+    started, cpu = time.perf_counter_ns(), time.process_time_ns()
+    groups, processes = {}, {}
+    for pid, target in targets.items():
+        processes[pid] = {'role': target['role'],
+            'cgroup_membership': benchmark_observation('/proc/' + pid + '/cgroup'),
+            'io': benchmark_observation('/proc/' + pid + '/io', benchmark_keyed_counters),
+            'main_thread_context_switches': benchmark_observation('/proc/' + pid + '/status', benchmark_process_status)}
+        try:
+            processes[pid]['affinity_cpus'] = {'state': 'OBSERVED', 'value': sorted(os.sched_getaffinity(int(pid)))}
+        except OSError as error:
+            processes[pid]['affinity_cpus'] = {'state': 'UNAVAILABLE', 'errno': error.errno}
+        for group in target['groups']:
+            if group['state'] != 'OBSERVED':
+                continue
+            for path in group['visible_ancestors']:
+                if path in groups:
+                    continue  # Shared ancestor is read once, never summed per PID.
+                if group['version'] == 'v2':
+                    files = {'cpu.max': None, 'cpu.stat': benchmark_keyed_counters,
+                             'cpu.stat.local': benchmark_keyed_counters, 'cpu.weight': None,
+                             'cpuset.cpus.effective': None, 'io.stat': benchmark_io_stat, 'io.max': None,
+                             'cpu.pressure': benchmark_pressure, 'io.pressure': benchmark_pressure,
+                             'memory.pressure': benchmark_pressure}
+                else:
+                    files = {'cpu.cfs_quota_us': None, 'cpu.cfs_period_us': None,
+                             'cpu.stat': benchmark_keyed_counters, 'cpu.shares': None,
+                             'cpuset.effective_cpus': None, 'blkio.throttle.io_service_bytes': None}
+                groups[path] = {name: benchmark_observation(Path(path) / name, parser or (lambda v: v.strip()))
+                                for name, parser in files.items()}
+    return {'start_ns': started, 'end_ns': time.perf_counter_ns(),
+            'observer_cpu_seconds': (time.process_time_ns() - cpu) / 1e9,
+            'processes': processes, 'cgroups': groups,
+            'host': {'cpu_jiffies': benchmark_observation('/proc/stat', benchmark_host_cpu),
+                     'diskstats': benchmark_observation('/proc/diskstats', benchmark_diskstats),
+                     'vmstat': benchmark_observation('/proc/vmstat', benchmark_keyed_counters),
+                     'loadavg': benchmark_observation('/proc/loadavg'),
+                     'meminfo': benchmark_observation('/proc/meminfo'),
+                     'pressure': {name: benchmark_observation('/proc/pressure/' + name, benchmark_pressure)
+                                  for name in ('cpu', 'io', 'memory')}},
+            'scope': 'VISIBLE_HOST_AND_SHARED_CGROUP_COUNTERS_NOT_EXCLUSIVE_BENCHMARK_ACCOUNTING'}
+
+
+def benchmark_counter_delta(before, after):
+    """Keep missing fields and resets explicit, including decreasing iowait."""
+    if not isinstance(before, dict) or not isinstance(after, dict):
+        return {'state': 'UNAVAILABLE'}
+    if 'state' in before or 'state' in after:
+        if before.get('state') != 'OBSERVED' or after.get('state') != 'OBSERVED':
+            return {'state': 'UNAVAILABLE', 'before_state': before.get('state'), 'after_state': after.get('state')}
+        return benchmark_counter_delta(before.get('value'), after.get('value'))
+    result = {}
+    for key in sorted(before.keys() | after.keys()):
+        if key.startswith('avg') or key in ('in_flight', 'nr_dirty', 'nr_writeback', 'nr_writeback_temp'):
+            continue  # Gauge/trend, not a cumulative counter. Raw snapshots retained.
+        left, right = before.get(key), after.get(key)
+        if isinstance(left, dict) or isinstance(right, dict):
+            result[key] = benchmark_counter_delta(left, right)
+        elif type(left) is int and type(right) is int:
+            result[key] = {'state': 'OBSERVED', 'delta': right - left} if right >= left else {
+                'state': 'COUNTER_RESET_OR_DECREASE', 'before': left, 'after': right, 'delta': None}
+        elif key not in before or key not in after:
+            result[key] = {'state': 'UNAVAILABLE_FIELD', 'delta': None}
+    return result
+
+
+def benchmark_trial_diagnosis(before, after, intervals, storage):
+    stages = [stage for row in intervals for stage in row['storage_operations']]
+    stage_summary = {}
+    for name in ('atomic_write', 'file_fsync', 'replace', 'directory_fsync'):
+        rows = [row for row in stages if row['operation'] == name]
+        stage_summary[name] = {'calls': len(rows),
+            'wall_seconds': benchmark_distribution([(r['end_ns'] - r['start_ns']) / 1e9 for r in rows]) if rows else None,
+            'wall_sum_seconds': sum((r['end_ns'] - r['start_ns']) / 1e9 for r in rows),
+            'wall_union_seconds': benchmark_persistence_union(rows, min(r['start_ns'] for r in intervals),
+                                                              max(r['end_ns'] for r in intervals)),
+            'thread_cpu_sum_seconds': sum(r['thread_cpu_seconds'] for r in rows)}
+    process_delta = {pid: {name: benchmark_counter_delta(value[name], after['processes'][pid][name])
+                          for name in ('io', 'main_thread_context_switches')}
+                     for pid, value in before['processes'].items()}
+    cgroup_delta = {path: {name: benchmark_counter_delta(value[name], after['cgroups'].get(path, {}).get(name))
+                          for name in value if name.endswith(('.stat', '.local', '.pressure'))}
+                    for path, value in before['cgroups'].items()}
+    return {'state': 'HOLD_CAUSAL_ISOLATION_UNVERIFIED', 'causal_identification_established': False,
+            'telemetry_coverage': {
+                'server_process_io': all(p['io']['state'] == 'OBSERVED' for p in before['processes'].values()
+                                         if p['role'] == 'SERVER') and all(p['io']['state'] == 'OBSERVED'
+                                         for p in after['processes'].values() if p['role'] == 'SERVER'),
+                'host_diskstats': before['host']['diskstats']['state'] == after['host']['diskstats']['state'] == 'OBSERVED',
+                'host_io_pressure': before['host']['pressure']['io']['state'] == after['host']['pressure']['io']['state'] == 'OBSERVED',
+                'visible_cgroup_cpu_stat': bool(before['cgroups']) and any(g.get('cpu.stat', {}).get('state') == 'OBSERVED'
+                                                                          for g in before['cgroups'].values())},
+            'storage': storage, 'storage_operations': stage_summary,
+            'serialized_snapshot_bytes': benchmark_distribution([row['snapshot_bytes'] for row in intervals]),
+            'persist_outside_atomic_seconds': benchmark_distribution([
+                ((row['end_ns'] - row['start_ns']) - sum(s['end_ns'] - s['start_ns']
+                  for s in row['storage_operations'] if s['operation'] == 'atomic_write')) / 1e9 for row in intervals]),
+            'atomic_other_seconds': benchmark_distribution([
+                (sum(s['end_ns'] - s['start_ns'] for s in row['storage_operations'] if s['operation'] == 'atomic_write')
+                 - sum(s['end_ns'] - s['start_ns'] for s in row['storage_operations'] if s['operation'] != 'atomic_write'))
+                / 1e9 for row in intervals]),
+            'persist_elapsed_minus_thread_cpu_seconds': benchmark_distribution([
+                (row['end_ns'] - row['start_ns']) / 1e9 - row['thread_cpu_seconds'] for row in intervals], allow_negative=True),
+            'persist_thread_resource_deltas': {key: sum(row['thread_resource_delta'][key] for row in intervals)
+                for key in intervals[0]['thread_resource_delta']},
+            'process_counter_deltas': process_delta, 'cgroup_counter_deltas': cgroup_delta,
+            'host_counter_deltas': {name: benchmark_counter_delta(before['host'][name], after['host'][name])
+                                   for name in ('cpu_jiffies', 'diskstats', 'vmstat', 'pressure')},
+            'cgroup_membership_unchanged': all(value['cgroup_membership'] == after['processes'][pid]['cgroup_membership']
+                                               for pid, value in before['processes'].items()),
+            'limits': ['Boundary reads bracket execution but are sequential, not atomic.',
+                      'Host/cgroup counters include driver, observers and other tasks; they are not additive across shared ancestors.',
+                      'Elapsed minus thread CPU includes scheduler and other waits; it does not identify I/O wait.',
+                      'Separate wall/thread clock boundaries can produce tiny signed elapsed-minus-CPU residuals; negatives are retained.',
+                      'Storage/CPU stalls are diagnostic associations; causal runner attribution needs an isolated controlled intervention.',
+                      'Cache policy, physical storage co-tenancy and hypervisor limits remain unverified.']}
+
+
+def benchmark_next_measurement_contract():
+    return {'schema': 'qikvrt_linux_scale_variance_next_measurement_v1',
+            'state': 'PREPARED_NOT_EXECUTED', 'maximum_additional_unmodified_hosted_trials': 0,
+            'subject': 'Exact successor HEAD/TREE, source/interpreter digests and raw receipt digests required.',
+            'command': 'python3 -B tools/qikvrt_firefox_windows_witness.py --comparable-scale-benchmark --repetitions 6 --workload 64 --preload-per-origin 4 --output <new-private-directory>',
+            'invariants': 'Four closed byte-identical origins, canonical seed, same 64 requests/four clients; 80 effects/160 records, full restart/consolidation and 80+4 replay refusals.',
+            'admission': ['Dedicated host and durable local block volume with recorded storage/queue/filesystem identity and no competing I/O producers.',
+                          'Fixed four usable CPU slots/affinity for every placement; visible cgroup membership and all effective ancestor quotas; driver placement disclosed.',
+                          'Bind exact workload, snapshots, source/interpreter, kernel, mount, CPU governor and storage cache policy before measurement.',
+                          'Collect available PSI totals, host disk/CPU counters, actual cgroup CPU/IO counters and persist operation intervals; unavailable means HOLD, never zero.',
+                          'Record an external isolation attestation and collector overhead; a self-reported dedicated runner label is insufficient.'],
+            'discriminating_control': 'On the isolated host, run one predeclared matched comparison without competing I/O and one with a bounded calibrated I/O interferer on the same volume. Keep payload/clients/origin bytes and durability invariant; record interferer parameters, measured I/O and CPU costs. No such interferer runs in the hosted diagnostic.',
+            'cache_policy': 'Declare warm/cold policy before trials; no unrecorded cache reset, tmpfs substitution or disabling fsync.',
+            'order_and_budget': 'Exactly six cyclic interleaved repetitions per predeclared condition; all samples retained. A new measurement contract is required before extending the budget.',
+            'speedup_admission': 'Existing six-pair/all-pairs-faster/97.5%-interval-above-one rule unchanged. Do not pool environments or transfer predecessor evidence.',
+            'return_boundary': 'If isolation/telemetry admission fails, preserve the exact capability boundary and stop repetitions. Causal scaling remains unproved.'}
+
+
+def benchmark_persistence_observer(terminal):
+    """Process-local hooks call the original writer/syscalls and propagate errors."""
     import resource
     intervals, lock = [], threading.Lock()
+    context = threading.local()
     original = terminal.State.persist
+    import qikvrt_api_handler as persistence
+    atomic, fsync, replace = persistence.atomic_write_bytes, os.fsync, os.replace
+
+    def measured_operation(name, function, *args, **kwargs):
+        row = getattr(context, 'row', None)
+        if row is None:
+            return function(*args, **kwargs)
+        start, cpu = time.perf_counter_ns(), time.thread_time_ns()
+        success = False
+        try:
+            value = function(*args, **kwargs)
+            success = True
+            return value
+        finally:
+            row['storage_operations'].append({'operation': name, 'start_ns': start,
+                'end_ns': time.perf_counter_ns(), 'thread_cpu_seconds': (time.thread_time_ns() - cpu) / 1e9,
+                'success': success})
+
+    def measured_atomic(path, data, **kwargs):
+        row = getattr(context, 'row', None)
+        if row is not None:
+            row['snapshot_bytes'] = len(data)  # Never retain data, token/key material or file descriptors.
+        return measured_operation('atomic_write', atomic, path, data, **kwargs)
+
+    def measured_fsync(fd):
+        if getattr(context, 'row', None) is None:
+            return fsync(fd)
+        name = 'directory_fsync' if stat.S_ISDIR(os.fstat(fd).st_mode) else 'file_fsync'
+        return measured_operation(name, fsync, fd)
+
+    def measured_replace(*args, **kwargs):
+        return measured_operation('replace', replace, *args, **kwargs)
 
     def measured_persist(state):
+        usage = resource.getrusage(resource.RUSAGE_THREAD)
         start, cpu = time.perf_counter_ns(), time.thread_time_ns()
+        row = {'pid': os.getpid(), 'thread_id': threading.get_native_id(), 'start_ns': start,
+               'snapshot_bytes': 0, 'storage_operations': []}
+        context.row = row
         try:
             return original(state)
         finally:
             end, cpu_end = time.perf_counter_ns(), time.thread_time_ns()
+            context.row = None
+            after = resource.getrusage(resource.RUSAGE_THREAD)
+            row.update(end_ns=end, thread_cpu_seconds=(cpu_end - cpu) / 1e9,
+                       thread_resource_delta={name: getattr(after, name) - getattr(usage, name)
+                           for name in ('ru_nvcsw', 'ru_nivcsw', 'ru_minflt', 'ru_majflt', 'ru_inblock', 'ru_oublock')})
             with lock:
-                intervals.append({'pid': os.getpid(), 'start_ns': start, 'end_ns': end,
-                                  'thread_cpu_seconds': (cpu_end - cpu) / 1e9})
+                intervals.append(row)
+
+    terminal.State.persist = measured_persist
+    persistence.atomic_write_bytes = measured_atomic
+    os.fsync, os.replace = measured_fsync, measured_replace
+    def restore():
+        terminal.State.persist = original
+        persistence.atomic_write_bytes = atomic
+        os.fsync, os.replace = fsync, replace
+    return intervals, lock, restore
+
+
+def benchmark_terminal_worker(terminal):
+    """Instrument only this benchmark process; keep production handlers/persist intact."""
+    import resource
+    intervals, lock, _ = benchmark_persistence_observer(terminal)
 
     class MeasuredHandler(terminal.RingHandler):
         def do_GET(self):
@@ -591,7 +920,6 @@ def benchmark_terminal_worker(terminal):
             self._json(200, {'pid': os.getpid(), 'persist_intervals': rows,
                             'children_cpu_seconds': usage.ru_utime + usage.ru_stime})
 
-    terminal.State.persist = measured_persist
     terminal.RingHandler = MeasuredHandler
     return terminal.main()
 
@@ -763,6 +1091,8 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     raise RuntimeError('BENCHMARK_STARTING_STATE_NOT_BYTE_IDENTICAL')
                 admission_seconds = time.perf_counter() - admission_started
                 process_ids = [client.process.pid for client in processes]
+                telemetry_targets = benchmark_telemetry_targets(process_ids)
+                storage_identities = [benchmark_storage_identity(store.parent) for store in stores]
                 barrier = threading.Barrier(clients + 1, timeout=15)
                 def client_work(client_number):
                     client, prefix = routes[client_number]
@@ -776,6 +1106,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     return completed
                 with ThreadPoolExecutor(max_workers=clients) as pool:
                     futures = [pool.submit(client_work, number) for number in range(clients)]
+                    observability_before = benchmark_host_snapshot(telemetry_targets)
                     metrics_before = benchmark_worker_metrics(processes)
                     cpu_before = benchmark_process_cpu(processes)
                     setup_seconds = time.perf_counter() - setup_started
@@ -787,6 +1118,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                     wall = (wall_end - wall_start) / 1e9
                     driver_cpu = (time.process_time_ns() - driver_before) / 1e9
                     cpu_after = benchmark_process_cpu(processes)
+                    observability_after = benchmark_host_snapshot(telemetry_targets)
                     metrics_after = benchmark_worker_metrics(processes)
                 server_cpu = [after - before for before, after in zip(cpu_before, cpu_after)]
                 persist_intervals = [row for before, after in zip(metrics_before, metrics_after)
@@ -794,7 +1126,16 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                 if (len(persist_intervals) != workload * 2
                         or any(row['start_ns'] < wall_start or row['end_ns'] > wall_end for row in persist_intervals)):
                     raise RuntimeError('BENCHMARK_PERSIST_MEASUREMENT_INCOMPLETE')
+                for row in persist_intervals:
+                    stages = row['storage_operations']
+                    if (row['snapshot_bytes'] <= 0 or sorted(stage['operation'] for stage in stages) !=
+                            ['atomic_write', 'directory_fsync', 'file_fsync', 'replace']
+                            or any(not stage['success'] or not row['start_ns'] <= stage['start_ns']
+                                   < stage['end_ns'] <= row['end_ns'] for stage in stages)):
+                        raise RuntimeError('BENCHMARK_STORAGE_OPERATION_MEASUREMENT_INCOMPLETE')
                 persistence_union = benchmark_persistence_union(persist_intervals, wall_start, wall_end)
+                variance_diagnosis = benchmark_trial_diagnosis(observability_before, observability_after,
+                                                               persist_intervals, storage_identities)
                 children_cpu = [after['children_cpu_seconds'] - before['children_cpu_seconds']
                                 for before, after in zip(metrics_before, metrics_after)]
                 verification_started = time.perf_counter()
@@ -866,6 +1207,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                         'verification': verification_seconds, 'consolidation': consolidation_seconds,
                         'consolidation_server_cpu': consolidation_cpu, 'replay_controls': replay_seconds},
                     'persistence_calls': len(persist_intervals),
+                    'variance_diagnosis': variance_diagnosis,
                     'confirmed_effects_per_second': workload / wall,
                     'effect_latency_seconds': latencies, 'latency_distribution_seconds': benchmark_distribution(latencies),
                     'effects': len(expected_events), 'referenced_records': sum(len(v['records']) for v in final),
@@ -875,6 +1217,9 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                         'post_replay_readback_and_snapshot_bytes_unchanged': True},
                     'readback_sha256': terminal.sha256(terminal.canonical_json(final))}
                 run_receipt = measurement | {'readback_before': initial, 'readback_after': after,
+                                              'telemetry_targets': telemetry_targets,
+                                              'observability_before': observability_before,
+                                              'observability_after': observability_after,
                                               'readback_after_restart_and_replay': final,
                                               'replay_statuses': statuses, 'aggregate_readback': aggregate,
                                               'execution_start_ns': wall_start, 'execution_end_ns': wall_end,
@@ -902,6 +1247,9 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                 [value for row in rows for value in row['effect_latency_seconds']])
             summary[str(workers)]['per_run_p95_latency_seconds'] = benchmark_distribution(
                 [row['latency_distribution_seconds']['p95'] for row in rows])
+            summary[str(workers)]['storage_operation_max_seconds'] = {name: benchmark_distribution([
+                row['variance_diagnosis']['storage_operations'][name]['wall_seconds']['max'] for row in rows])
+                for name in ('atomic_write', 'file_fsync', 'replace', 'directory_fsync')}
         comparisons = {str(workers): benchmark_speedup(
             [row['wall_seconds'] for row in measurements if row['processes'] == 1],
             [row['wall_seconds'] for row in measurements if row['processes'] == workers]) for workers in (2, 4)}
@@ -912,7 +1260,7 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
             'server_cpu_resolution_seconds': time.get_clock_info('process_time').resolution,
             'driver_cpu_clock_resolution_seconds': time.get_clock_info('process_time').resolution,
             'wall_clock_resolution_seconds': time.get_clock_info('perf_counter').resolution}
-        for name, path in (('cpu_quota', '/sys/fs/cgroup/cpu.max'), ('cpu_model', '/proc/cpuinfo')):
+        for name, path in (('cpu_model', '/proc/cpuinfo'),):
             try:
                 value = Path(path).read_text()
                 environment[name] = (next(line.split(':', 1)[1].strip() for line in value.splitlines()
@@ -920,6 +1268,8 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
             except (OSError, StopIteration):
                 environment[name] = 'UNAVAILABLE'
         environment['interpreter_binary_sha256'] = digest(sys.executable)
+        environment['cpu_quota'] = {'source': 'Per-trial actual membership and visible ancestor files',
+                                    'root_only_probe_used': False, 'outside_namespace_limits': 'UNOBSERVED'}
         firefox_path = shutil.which('firefox')
         firefox_identity = {'state': 'UNOBSERVED', 'execution_benchmarked': False}
         if firefox_path:
@@ -932,6 +1282,14 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                 ('GITHUB_REPOSITORY', 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_JOB')},
             'environment': environment, 'firefox': firefox_identity,
             'template_setup_seconds': template_setup_seconds,
+            'variance_observability': {
+                'schema': 'qikvrt_linux_scale_variance_observability_v1',
+                'state': 'HOLD_CAUSAL_ISOLATION_UNVERIFIED',
+                'causal_runner_io_stall_proved': False, 'runner_independent_scaling_proved': False,
+                'host_reads': 'Before/after only, outside execution; raw per-trial boundaries retained. No sampling poller.',
+                'storage_operations': 'Original atomic writer and original file/directory fsync and replace syscalls, process-local hooks; serialization/write/flush/cleanup remain in inclusive persist/atomic residuals.',
+                'observer_overhead': 'Boundary read wall/driver process CPU observed; syscall hook overhead is included in execution and not independently calibrated.',
+                'next_measurement_contract': benchmark_next_measurement_contract()},
             'timing_semantics': {
                 'execution': 'Barrier release to last positive prepare/commit response, including fsynced persistence.',
                 'persistence': 'Monotonic interval union counts overlapping State.persist calls once in wall time; thread CPU is additive.',
