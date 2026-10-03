@@ -18,6 +18,22 @@ on:
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
   workflow_dispatch:
+    inputs:
+      windows11_amd64_runner:
+        description: 'Existing authorized repository-accessible Windows 11 x64 runner label; empty keeps Server compatibility only. No provisioning authorization.'
+        type: string
+        default: ''
+        required: false
+      expected_head:
+        description: 'Independently read exact commit SHA, required with a Windows 11 AMD64 runner'
+        type: string
+        default: ''
+        required: false
+      expected_tree:
+        description: 'Independently read exact tree SHA, required with a Windows 11 AMD64 runner'
+        type: string
+        default: ''
+        required: false
 
 permissions:
   contents: read
@@ -41,6 +57,30 @@ jobs:
           test "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha || github.sha }}'
           echo "HEAD=$(git rev-parse HEAD)"
           echo "TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Admit optional Windows 11 AMD64 carrier binding
+        shell: bash
+        env:
+          CLIENT_RUNNER: ${{ inputs.windows11_amd64_runner }}
+          CLIENT_HEAD: ${{ inputs.expected_head }}
+          CLIENT_TREE: ${{ inputs.expected_tree }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_HEAD: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import os,re,subprocess
+          runner,head,tree=(os.environ.get(k,'') for k in ('CLIENT_RUNNER','CLIENT_HEAD','CLIENT_TREE'))
+          if runner:
+              assert os.environ['EVENT_NAME']=='workflow_dispatch', 'EXPLICIT_DISPATCH_REQUIRED'
+              assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,127}',runner), 'INVALID_RUNNER_LABEL'
+              assert runner not in ('windows-2025','windows-2022','windows-latest','windows-11-arm','self-hosted','Windows','X64'), 'DEDICATED_WINDOWS11_AMD64_LABEL_REQUIRED'
+              assert re.fullmatch(r'[0-9a-f]{40}',head) and re.fullmatch(r'[0-9a-f]{40}',tree), 'INDEPENDENT_HEAD_TREE_REQUIRED'
+              assert head==os.environ['EVENT_HEAD']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), 'EXACT_HEAD_MISMATCH'
+              assert tree==subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(), 'EXACT_TREE_MISMATCH'
+          else:
+              assert not head and not tree, 'RUNNER_BINDING_REQUIRED'
+          print('WINDOWS11_AMD64_BINDING_VALIDATED' if runner else 'SERVER_COMPATIBILITY_ONLY')
+          PY
 
       - name: Validate machine-readable boundary
         shell: bash
@@ -147,6 +187,8 @@ jobs:
           retention-days: 30
 
   windows-witness:
+    # Validate dispatch bindings on Linux before allocating an optional carrier.
+    needs: boundary
     name: Native Windows ${{ matrix.architecture }} (${{ matrix.runner }})
     # Server AMD64 controls do not establish Windows 11 AMD64 client acceptance.
     strategy:
@@ -156,7 +198,7 @@ jobs:
           - runner: windows-11-arm
             architecture: ARM64
             python_architecture: arm64
-          - runner: windows-2025
+          - runner: ${{ inputs.windows11_amd64_runner || 'windows-2025' }}
             architecture: AMD64
             python_architecture: x64
     runs-on: ${{ matrix.runner }}
@@ -166,6 +208,7 @@ jobs:
     env:
       QIKVRT_RUNNER_LABEL: ${{ matrix.runner }}
       QIKVRT_EXPECTED_ARCHITECTURE: ${{ matrix.architecture }}
+      QIKVRT_REQUIRE_PRODUCT_TARGET: ${{ matrix.architecture == 'AMD64' && inputs.windows11_amd64_runner != '' }}
     steps:
       - name: Check out exact Windows candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -205,9 +248,12 @@ jobs:
       - name: Read canonical public URL and verify seed-bound durable Firefox effect
         shell: pwsh
         env:
-          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          QIKVRT_EXPECTED_HEAD: ${{ matrix.architecture == 'AMD64' && inputs.windows11_amd64_runner != '' && inputs.expected_head || github.event.pull_request.head.sha || github.sha }}
+          QIKVRT_EXPECTED_TREE: ${{ matrix.architecture == 'AMD64' && inputs.windows11_amd64_runner != '' && inputs.expected_tree || '' }}
         run: |
-          python -B tools/qikvrt_firefox_windows_witness.py --expected-architecture "$env:QIKVRT_EXPECTED_ARCHITECTURE" --output "$env:RUNNER_TEMP/qikvrt-firefox-windows-$env:QIKVRT_EXPECTED_ARCHITECTURE"
+          $targetArguments = @()
+          if ($env:QIKVRT_REQUIRE_PRODUCT_TARGET -eq 'true') { $targetArguments += '--require-product-target' }
+          python -B tools/qikvrt_firefox_windows_witness.py --expected-architecture "$env:QIKVRT_EXPECTED_ARCHITECTURE" @targetArguments --output "$env:RUNNER_TEMP/qikvrt-firefox-windows-$env:QIKVRT_EXPECTED_ARCHITECTURE"
           exit $LASTEXITCODE
       - name: Preserve Windows evidence even on functional failure
         if: ${{ always() }}

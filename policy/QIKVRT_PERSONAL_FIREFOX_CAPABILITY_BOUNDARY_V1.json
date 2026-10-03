@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.5",
+  "version": "1.6",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -310,7 +310,75 @@
         "provisioning_or_billing_authorized_by_this_contract": false,
         "runner_label": null
       },
-      "retry_condition": "A supported Windows 11 AMD64 carrier is freshly exposed with authorization, repository scope and an actually callable execution operation; reobserve exact candidate before execution."
+      "retry_condition": "A supported Windows 11 AMD64 carrier is freshly exposed with authorization, repository scope and an actually callable execution operation; reobserve exact candidate before execution.",
+      "workflow_binding": {
+        "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "event": "workflow_dispatch",
+        "inputs": {
+          "windows11_amd64_runner": "EXISTING_AUTHORIZED_DEDICATED_RUNNER_LABEL",
+          "expected_head": "FRESH_INDEPENDENT_40_HEX_HEAD",
+          "expected_tree": "FRESH_INDEPENDENT_40_HEX_TREE"
+        },
+        "job": "windows-witness / AMD64",
+        "admission_job": "boundary",
+        "requires_product_target": true,
+        "automatic_pull_request_client_dispatch": false,
+        "empty_runner_behavior": "SERVER_COMPATIBILITY_ONLY",
+        "provisioning_or_billing_authorized": false
+      },
+      "provisioning_requirements": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "observed_repository_owner_type": "User",
+        "larger_runner_repository_eligibility_verified": false,
+        "larger_runner_owner_requirement": "Organization or enterprise using GitHub Team or GitHub Enterprise Cloud; personal User repository does not establish an eligible scope. No repository transfer authorized.",
+        "larger_runner_platform": "Windows x64",
+        "larger_runner_image": "Partner / Base Windows 11 Desktop",
+        "minimum_resources": {
+          "vcpus": 4,
+          "memory_gb": 16,
+          "ssd_gb": 150
+        },
+        "image_name_alone_accepts_product_target": false,
+        "actual_product_target_required": {
+          "name": "Windows 11 25H2 client",
+          "product_type": 1,
+          "display_version": "25H2",
+          "build": 26200,
+          "editions": [
+            "Enterprise",
+            "Professional",
+            "Core"
+          ],
+          "architectures": [
+            "AMD64",
+            "ARM64"
+          ],
+          "supported_from": "2025-09-30",
+          "support_until": "2027-10-12",
+          "support_source": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+          "architecture_scope_rule": "Evidence accepts only the executed architecture; no x64/ARM64 transfer."
+        },
+        "alternative": "Already authorized repository-level self-hosted Windows 11 AMD64 runner with a dedicated unique label, interactive headed desktop and ephemeral/clean isolated work directory; never execute untrusted PRs on a privileged persistent host.",
+        "runtime_required": {
+          "python": "3.13.15 native x64",
+          "firefox": "156.0.1 native AMD64",
+          "geckodriver": "0.37.1 native AMD64",
+          "cache_coverage_percent": 100
+        },
+        "before_dispatch": [
+          "Fresh runner availability, dedicated selector, identity and this repository access readback",
+          "Existing owner authorization for use and any incurred billing; this preparation grants neither",
+          "Fresh exact PR HEAD/TREE, clean checkout, no competing writer, distinct run/attempt/job/artifact",
+          "No blind dispatch, provisioning, permission expansion or Server fallback"
+        ],
+        "network": "Existing checkout/actions, Mozilla driver release when absent, canonical public URL and local loopback controls",
+        "retention": "Upload only allowlisted receipts/readbacks; no terminal State, keys or tokens",
+        "sources": [
+          "https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/manage-larger-runners",
+          "https://docs.github.com/en/actions/reference/runners/larger-runners",
+          "https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-larger-runners"
+        ]
+      }
     }
   },
   "linux_ring_acceptance": {

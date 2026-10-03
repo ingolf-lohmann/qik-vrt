@@ -139,6 +139,27 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         self.spec = SPEC.read_text(encoding="utf-8")
         self.policy = json.loads(POLICY.read_text(encoding="utf-8"))
 
+    def test_optional_client_dispatch_admission_rejects_unbound_or_substituted_subject(self):
+        workflow = (ROOT / '.github/workflows/qikvrt_personal_firefox_capability_boundary.yml').read_text()
+        block = workflow.split('      - name: Admit optional Windows 11 AMD64 carrier binding', 1)[1]
+        block = block.split("          python3 - <<'PY'\n", 1)[1].split('\n          PY', 1)[0]
+        source = '\n'.join(line[10:] for line in block.splitlines())
+        valid = {'CLIENT_RUNNER': 'existing-authorized-win11-x64', 'CLIENT_HEAD': 'a'*40,
+                 'CLIENT_TREE': 'b'*40, 'EVENT_NAME': 'workflow_dispatch', 'EVENT_HEAD': 'a'*40}
+        for change in ({}, {'CLIENT_RUNNER': '', 'CLIENT_HEAD': '', 'CLIENT_TREE': ''}):
+            with patch.dict(os.environ, valid | change, clear=True), patch('builtins.print'), \
+                    patch('subprocess.check_output', side_effect=['a'*40, 'b'*40]):
+                exec(compile(source, '<workflow-dispatch-admission>', 'exec'), {})
+        for change in ({'CLIENT_HEAD': ''}, {'CLIENT_TREE': ''}, {'CLIENT_TREE': 'c'*40},
+                       {'CLIENT_HEAD': 'c'*40}, {'EVENT_HEAD': 'c'*40},
+                       {'EVENT_NAME': 'pull_request'}, {'CLIENT_RUNNER': 'windows-2025'},
+                       {'CLIENT_RUNNER': 'windows-11-arm'}, {'CLIENT_RUNNER': 'self-hosted'},
+                       {'CLIENT_RUNNER': 'label\nsubstitution'}, {'CLIENT_RUNNER': ''}):
+            with self.subTest(change=change), patch.dict(os.environ, valid | change, clear=True), \
+                    patch('subprocess.check_output', side_effect=['a'*40, 'b'*40]), \
+                    self.assertRaises(AssertionError):
+                exec(compile(source, '<workflow-dispatch-admission>', 'exec'), {})
+
     def test_normative_boundary_matches_machine_contract(self) -> None:
         self.assertEqual(
             self.policy["schema"],

@@ -331,3 +331,48 @@ prepared/committed effect output. A late read-only Authority response must never
 replace the displayed prepared record or change its effect state. The actual
 content-script regression controls that ordering; both success and read errors
 remain in the observation channel. Fresh native Firefox execution is required.
+
+
+### Explicit Windows 11 AMD64 workflow attachment (2026-10-03)
+
+Reuse `.github/workflows/qikvrt_personal_firefox_capability_boundary.yml`.
+Ordinary pull-request runs retain the independent ARM64 and Server AMD64
+lanes. Only an explicit `workflow_dispatch` with `windows11_amd64_runner`,
+`expected_head` and `expected_tree` attaches an existing authorized dedicated
+Windows 11 AMD64 label to the AMD64 lane. All three values are mandatory together;
+the Linux boundary job refuses malformed labels, generic/known incompatible
+labels, absent or substituted subjects before the optional Windows job is allocated.
+The dispatch commit and checkout must match the independently read HEAD/TREE.
+The AMD64 observer then uses `--expected-architecture AMD64 --require-product-target`
+in headed mode; it refuses Server or unsupported client identity before browser
+provisioning/effects. A custom label is routing data, never OS or authorization proof.
+
+Before dispatch, independently verify the runner exists, is available, has a unique
+label and access to this repository, and its use/billing is already authorized.
+This change does not provision a runner, grant billing authority, or dispatch one.
+The connector exposes neither runner inventory nor workflow dispatch; therefore
+no complete inventory or global absence is claimed.
+
+GitHub documents Base Windows 11 Desktop under Partner images for Windows x64,
+with a minimum 4 vCPU / 16 GB RAM / 150 GB SSD configuration. Larger runners require
+an organization or enterprise on GitHub Team or Enterprise Cloud. Fresh repository
+metadata identifies `ingolf-lohmann` as User: eligibility and repository access for
+that candidate are not established. Do not silently transfer the repository or
+execute the witness elsewhere. An already authorized repository-level self-hosted
+Windows 11 AMD64 desktop is an alternative. Use an isolated clean working directory,
+a headed interactive desktop and dedicated unique label; do not expose a privileged
+persistent host to automatic untrusted PR execution.
+
+Actual client identity must satisfy the existing product policy: ProductType 1,
+25H2 build 26200, supported Enterprise/Professional/Core edition and AMD64;
+Python 3.13.15, Firefox 156.0.1 and Geckodriver 0.37.1 must be native AMD64 and
+byte-bound. Image branding alone cannot establish this. The existing seed, State,
+TerminateProcess/restart, event/record, two replay-409 and ten negative-startup
+controls are reused unchanged. Fresh numeric job/artifact and independent byte
+readback remain required. Architecture and predecessor evidence transfer remain
+false; Personal release acceptance remains separate.
+
+Provisioning sources:
+- https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/manage-larger-runners
+- https://docs.github.com/en/actions/reference/runners/larger-runners
+- https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-larger-runners
