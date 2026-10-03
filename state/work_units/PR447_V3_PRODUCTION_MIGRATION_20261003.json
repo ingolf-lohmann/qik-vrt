@@ -63,8 +63,8 @@
   },
   "verification": {
     "local_publication_contract_tests": {
-      "command": "python3 -B -m unittest discover -s tests -p test_zenodo_machine_proof_policy.py",
-      "test_count": 87,
+      "command": "GITHUB_ACTIONS=true GITHUB_REPOSITORY=ingolf-lohmann/qik-vrt GITHUB_SHA=1c9141983e061ee17cb059c5b13637d3c2695635 GITHUB_REF=refs/heads/work/collective-functional-consciousness-20261003 python3 -B -m unittest -v tests.test_zenodo_machine_proof_policy",
+      "test_count": 88,
       "result": "PASS",
       "scope": "Current prepared bytes including v3 publisher/regressions and PR447 candidate; native execution HEAD/TREE must be bound separately after commit."
     },
@@ -76,7 +76,18 @@
     "native_exact_head_ci": "REQUIRED_AFTER_PERSISTENCE_NO_PREDECESSOR_TRANSFER",
     "full_repository_integrity": "REQUIRES_NATIVE_SUCCESSOR_VERIFICATION",
     "actual_detached_owner_decision_hash_stability": "NOT_OBSERVED_NO_DECISION_CREATED",
-    "synthetic_detached_decision_hash_stability": "PASS_TEMPORARY_REGRESSION_ONLY"
+    "synthetic_detached_decision_hash_stability": "PASS_TEMPORARY_REGRESSION_ONLY",
+    "successor_regression_repair": {
+      "failed_exact_head": "1c9141983e061ee17cb059c5b13637d3c2695635",
+      "failed_exact_tree": "a9813870e2340390da30b3f229a47ec4f42bc113",
+      "native_failed_run": 37133220205,
+      "native_failed_job": 111232350665,
+      "diagnosis": "Nine new production tests inherited the Mirror GITHUB_REPOSITORY while using temporary synthetic Authority manifests; the unchanged production repository gate rejected them before the intended probes.",
+      "repair": "Scope the nine test environments explicitly to the synthetic Authority fixture and add a separate Mirror-execution test proving rejection before any GitHub or Zenodo transport.",
+      "production_repository_gate_changed": false,
+      "candidate_bytes_changed": false,
+      "native_successor_ci": "REQUIRED_AFTER_PERSISTENCE_NO_PREDECESSOR_TRANSFER"
+    }
   },
   "effects": {
     "branch_successor_commit": "AUTHORIZED",

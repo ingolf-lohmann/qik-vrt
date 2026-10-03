@@ -1609,6 +1609,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
         write_v3_activation(root, manifest_path, SOURCE_HEAD, "c" * 40)
         return bundle_path, manifest_path
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_versioned_manifest_validates_detached_controls_without_granting_proof_authority(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = pathlib.Path(temporary)
@@ -1623,6 +1624,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             self.assertEqual(bundle_path.read_bytes(), frozen)
             self.assertEqual(len(manifest["contract_activation"]["contracts"]), 11)
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_missing_activation_or_owner_decision_blocks_before_any_network(self):
         for missing in ("contract_activation", "owner_authorization"):
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temporary:
@@ -1638,6 +1640,19 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                     github.assert_not_called()
                     client.assert_not_called()
 
+    def test_v3_mirror_execution_is_rejected_before_any_network(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            _, manifest_path = self.fixture_v3_production(root)
+            with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt"}), \
+                    mock.patch.object(publish, "_github_api_request") as github, \
+                    mock.patch.object(zenodo, "ZenodoClient") as client:
+                with self.assertRaisesRegex(zenodo.ZenodoError, "executing repository"):
+                    publish.publish(manifest_path, root)
+                github.assert_not_called()
+                client.assert_not_called()
+
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_has_no_version_fallback(self):
         for wrong in ("manifest", "bundle", "policy"):
             with self.subTest(wrong=wrong), tempfile.TemporaryDirectory() as temporary:
@@ -1659,6 +1674,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 with self.assertRaises(zenodo.ZenodoError):
                     publish.load_manifest(manifest_path, root)
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_activation_rejects_changed_contracts_decision_and_control_overlap(self):
         for defect in ("decision", "statement", "contracts", "principal", "repository",
                        "proof_upload", "manifest", "code_bytes"):
@@ -1692,6 +1708,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 with self.assertRaises(zenodo.ZenodoError):
                     publish.load_manifest(manifest_path, root)
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_detached_upload_decision_still_binds_return_metadata_proof_and_exact_files(self):
         mutations = (
             lambda a: a["machine_proof"].update(sha256="0" * 64),
@@ -1709,6 +1726,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 with self.assertRaises(zenodo.ZenodoError):
                     publish.load_manifest(manifest_path, root)
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_exact_execution_requires_reviewed_head_tree_and_all_committed_controls(self):
         for defect in ("none", "tree", "reviewed_code", "activation_dirty"):
             with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary:
@@ -1731,6 +1749,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                         with self.assertRaises(zenodo.ZenodoError):
                             publish._validate_repository_source_head(root, manifest_path, manifest)
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_live_review_and_ruleset_fail_closed_before_consumption(self):
         defects = ("none", "unmerged", "review_head", "dismissed", "self_review",
                    "unenforced", "no_code_owner", "no_last_push", "bypass", "wrong_owner",
@@ -1753,6 +1772,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 self.assertFalse(github.refs)
                 self.assertTrue(all(method == "GET" for method, _ in github.calls))
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_complete_simulated_publication_and_recovery_preserve_immutable_proof(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = pathlib.Path(temporary)
@@ -1797,6 +1817,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             with self.assertRaises(zenodo.ZenodoError):
                 publish._validate_recovery_evidence(changed, manifest_path, root, manifest, execution)
 
+    @mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY})
     def test_v3_consumption_key_and_replay_scope_are_shared_with_v2(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = pathlib.Path(temporary)
