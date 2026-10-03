@@ -1,4 +1,5 @@
 {
+  "candidate_contract_migration_input_head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
   "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
   "schema": "qikvrt_source_evidence_bindings_v1",
   "source_head": "c8683e2cf499c2382ee950cc59f1c034ff14a3cb",
@@ -74,6 +75,22 @@
       "relation_and_limit": "Normativer System-, Provenienz- und Effect-Vertrag.",
       "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe",
       "source_id": "SRC-AI"
+    },
+    {
+      "bytes": 5608,
+      "git_blob_sha1": "35ecc7887e486491278f63e0a61102d1be06e5ef",
+      "path": "policy/zenodo-machine-proof-policy-v3.json",
+      "relation_and_limit": "Unveränderte v3-Review-Policy: REVIEW_REQUIRED, keine Aktivierung oder Upload-Freigabe.",
+      "sha256": "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78",
+      "source_id": "SRC-POLICY-V3"
+    },
+    {
+      "bytes": 8118,
+      "git_blob_sha1": "85f0fe61b9e565241a56f27f4a96cb3944ab6388",
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+      "relation_and_limit": "v3-Schema enthält nur machine_proof_complete in completion_claims; Upload-Autorisierung ist verboten.",
+      "sha256": "59ea0d0df65a5a6861493a2b999f2e5ceca22391e62f506a59f9ae2363728912",
+      "source_id": "SRC-SCHEMA-V3"
     }
   ]
 }

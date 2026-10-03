@@ -8,63 +8,63 @@
   },
   "candidate_files": [
     {
-      "bytes": 52555,
-      "git_blob_sha1": "f635e3b5f574cd4283405aff0c0c2585f36ff2e9",
+      "bytes": 52913,
+      "git_blob_sha1": "f9d17b76f2f2fc758b13ae3fcb6f45480d086638",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
-      "sha256": "a1dd8d153a29ff3ba0c8e65b9c415279f60d7cb72efcdc5aec7908e64b1865ee"
+      "sha256": "7132552a69813d34448c41c58100ebd30572a17a505b4405303e5601c14171a6"
     },
     {
-      "bytes": 5933,
-      "git_blob_sha1": "75071d23645a66aac04f89ab1ecc4bd12fe55fb6",
+      "bytes": 6137,
+      "git_blob_sha1": "29e4079b741f154b87abeac7826ff460cdc7ffb8",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
-      "sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b"
+      "sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1"
     },
     {
-      "bytes": 5939,
-      "git_blob_sha1": "9a4a75334fa5577fec921d55e05b1af2940a03df",
+      "bytes": 6143,
+      "git_blob_sha1": "1a1bc71c7b5907faaaf0889221d2bf238b4b912e",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_RENDER_SOURCE.md",
-      "sha256": "0b587b4cecd3ec972118d630948b962deb806a46d53a6ccb6eb7dff814ced078"
+      "sha256": "b10ce2301f1dad3624c56c486db8a1883ca78965153378824ecc18228cf87a5a"
     },
     {
-      "bytes": 9307,
-      "git_blob_sha1": "b256100f79dd279c3b279eeb1d9faa0e758595e3",
+      "bytes": 9513,
+      "git_blob_sha1": "ee2dbfda286c2160646bc9085ceff6de108f0234",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.tex",
-      "sha256": "6b762a5d1ef84aa688343eeb54f2af82c86a33bdf0d2dfe7489408e300bbabf6"
+      "sha256": "4ee1d96dbbcabc854a3eab0bd714287ebdd87f4b26f5375569319f1ee86c5a52"
     }
   ],
   "change_notice_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/CHANGE_NOTICE.md",
   "change_reasons": [
     {
       "claim_id": "CFC-09",
-      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "corrected_sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1",
       "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
       "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
       "reason": "Persistierte Main-Beobachtung zeitlich begrenzt und exakt quellengebunden."
     },
     {
       "claim_id": "CFC-10",
-      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "corrected_sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1",
       "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
       "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
       "reason": "Historische Fan-Out-Werte als SOURCE_BOUND präzisiert, weil Rohmessungen im Kandidaten fehlen."
     },
     {
       "claim_id": "CFC-15",
-      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "corrected_sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1",
       "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
       "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
       "reason": "Ungebundene deklarative PDF-Identität durch tatsächlich erzeugte PDF-Bytes ersetzt; Selbsthash-Zirkel vermieden."
     },
     {
       "claim_id": "CFC-16",
-      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "corrected_sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1",
       "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
       "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
-      "reason": "Aktuelle v2-Schema-Blockade ohne fingierte Upload-Autorisierung offengelegt."
+      "reason": "Explizite v3-Migration mit unveränderlicher Proof-Readiness und detached Review-, Aktivierungs- und Upload-Grenzen."
     },
     {
       "claim_id": "CFC-17",
-      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "corrected_sha256": "28ba98f760aec28acdb85531cd964c8e97c34bccc2963186f644f31ed284d8d1",
       "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
       "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
       "reason": "Redaktionelle Provenienz, Geltungsgrenzen, Quellen, Prüfvermerk und Glossar ergänzt."
@@ -91,8 +91,8 @@
     "candidate_returned_to_owner": true,
     "owner_name": "Ingolf Lohmann",
     "owner_type": "NATURAL_PERSON",
-    "return_channel": "GitHub draft PR #447 successor artifact delivery; exact candidate, metadata, change notice and receipt identities are returned together. Owner acceptance and upload authorization remain pending.",
-    "returned_at": "2026-10-03T12:29:15.676389Z",
+    "return_channel": "GitHub draft PR #447 v3 successor artifact delivery; exact article/PDF, visible migration notice, metadata, frozen proof and return identities are returned together. Human acceptance and both detached decisions remain pending.",
+    "returned_at": "2026-10-03T15:09:31.878105Z",
     "visible_change_notice_returned": true
   },
   "schema": "qikvrt_prepublication_return_receipt_v2"

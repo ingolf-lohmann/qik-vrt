@@ -2199,6 +2199,45 @@ def validate_prepublication_bundle(
     )
 
 
+def validate_publication_bundle_v3(
+    root: pathlib.Path,
+    bundle_path: pathlib.Path,
+    *,
+    upload_paths: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    """Validate immutable v3 bytes for the versioned publisher, without authority.
+
+    Production support is distinct from activation and exact-upload authority.
+    The publisher must validate both detached decisions before any effect.
+    The default validate_bundle entry point retains its frozen v2 semantics.
+    """
+    return validate_prepublication_bundle(root, bundle_path, upload_paths=upload_paths)
+
+
+def publication_contract_blobs(root: pathlib.Path, *, v3: bool) -> dict[str, str]:
+    """Return verified exact control identities for the selected production path."""
+    v2 = validate_active_policy(root, {
+        "id": POLICY_ID, "path": POLICY_PATH, "version": POLICY_VERSION,
+        "sha256": POLICY_SHA256, "git_blob_sha1": POLICY_GIT_BLOB_SHA1,
+    })
+    legacy = validate_legacy_contract_freeze(root)
+    controls = {POLICY_PATH: v2["git_blob_sha1"],
+                LEGACY_POLICY_PATH: legacy["policy"]["git_blob_sha1"]}
+    for contract in (*v2["schema_contracts"].values(),
+                     *legacy["schema_contracts"].values()):
+        controls[contract["path"]] = contract["git_blob_sha1"]
+    if v3:
+        proposed = validate_proposed_policy(root, {
+            "id": PROPOSED_POLICY_ID, "path": PROPOSED_POLICY_PATH,
+            "version": PROPOSED_POLICY_VERSION, "sha256": PROPOSED_POLICY_SHA256,
+            "git_blob_sha1": PROPOSED_POLICY_GIT_BLOB_SHA1,
+        })
+        controls[PROPOSED_POLICY_PATH] = proposed["git_blob_sha1"]
+        for contract in proposed["schema_contracts"].values():
+            controls[contract["path"]] = contract["git_blob_sha1"]
+    return controls
+
+
 def _validate_bundle(
     root: pathlib.Path,
     bundle_path: pathlib.Path,

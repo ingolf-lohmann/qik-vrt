@@ -1,38 +1,44 @@
 {
-  "actual": false,
   "authorization_consumed": false,
   "authorization_created": false,
-  "authorization_hash_transition": {
-    "changing_flag_changes_approved_bundle_hash": true,
-    "current_upload_flag": false,
-    "hypothetical_authorized_bundle_materialized": false,
-    "owner_decision_binds": "SHA-256 of the exact MACHINE_PROOF_BUNDLE.json bytes",
-    "production_required_upload_flag": true
-  },
-  "authorization_statement_returned": false,
   "canonical_metadata_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ZENODO_METADATA.json",
+  "contract_activation_present": false,
   "external_publication_effect": "NONE",
-  "first_blocker": "V2_AUTHORIZATION_FLAG_CHANGES_THE_EXACT_BUNDLE_HASH",
+  "first_production_gate": "NO_REVIEWED_V3_ACTIVATION_NO_V3_PRODUCTION_MUTATION",
+  "hash_stability": {
+    "embedded_upload_authorization_field": "FORBIDDEN",
+    "immutable_completion_claims": {
+      "machine_proof_complete": true
+    },
+    "owner_decision_is_detached": true,
+    "owner_decision_must_bind_final_bundle_sha256": true
+  },
   "machine_proof_dispositions_complete": true,
+  "migration_input_head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
   "non_claims": [
     "Zenodo publication",
-    "arXiv submission",
-    "Wikipedia edit",
-    "IETF submission",
-    "human acceptance",
-    "kernel proof",
+    "Owner acceptance",
+    "Code-Owner approval",
+    "contract activation",
+    "formal kernel proof",
     "Authority/Mirror equality",
     "repository-wide DONE"
   ],
-  "observed_expected": true,
+  "open_predicates": [
+    "EXACT_HEAD_INDEPENDENT_CODE_OWNER_REVIEW",
+    "CODE_OWNER_RULE_ENFORCEMENT",
+    "DETACHED_REVIEWED_V3_CONTRACT_ACTIVATION",
+    "FINAL_EXACT_PACKAGE_RETURN_THEN_AUTHORIZE_EXACT_UPLOAD",
+    "AUTHORIZED_AUTHORITY_EXECUTION_CAPABILITY"
+  ],
   "owner_upload_authorization_present": false,
-  "policy_or_schema_modified": false,
-  "production_v2_schema_valid": false,
+  "policy_v3_review_state": "REVIEW_REQUIRED",
+  "proof_schema_version": 3,
   "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
-  "retry_condition": "A separately reviewed production contract must allow immutable proof-readiness bytes to be bound by a later canonical owner decision without changing the approved bundle hash. Then return the final exact package before requesting its single-use authorization.",
+  "retry_condition": "Review and activate the exact v3 contract separately, then authorize the returned final package by its exact proof/return/metadata/fileset hashes. Revalidate the actual execution subject and Authority capability before any effect.",
   "schema": "qikvrt_prepublication_status_v1",
-  "schema_pointer": "/properties/completion_claims/properties/zenodo_upload_authorized/const",
-  "state": "PREPARED_HOLD_V2_AUTHORIZATION_HASH_TRANSITION",
-  "technical_preparation_checks": "Native candidate/source/return/claim checks plus exact fileset closure and canonical metadata; strict v2 production validity remains false.",
-  "upload_executed": false
+  "state": "PREPARED_V3_HOLD_REVIEW_ACTIVATION_AND_EXACT_UPLOAD_AUTHORIZATION",
+  "technical_v3_proof_contract_valid": true,
+  "upload_executed": false,
+  "v1_v2_policy_and_schema_bytes_unchanged": true
 }

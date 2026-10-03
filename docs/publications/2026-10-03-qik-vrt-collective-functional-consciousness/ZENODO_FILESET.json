@@ -1,5 +1,5 @@
 {
-  "boundaries": "No upload occurred. Bundle self-binding excluded; later exact authorization must bind bundle and receipt identities.",
+  "boundaries": "Exact v3 proof-bearing set. Detached activation, Owner decision, manifest and fileset self-binding excluded. No upload or authorization consumption occurred.",
   "paths": [
     "AI",
     "LICENSES/CC-BY-NC-ND-4.0.txt",
@@ -24,10 +24,14 @@
     "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json",
     "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/VERIFY_PREPUBLICATION.py",
     "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ZENODO_METADATA.json",
+    "policy/ZENODO_MACHINE_PROOF_V3_PRODUCTION.md",
     "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
     "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
-    "policy/zenodo-machine-proof-policy-v2.json"
+    "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json",
+    "policy/zenodo-machine-proof-policy-v2.json",
+    "policy/zenodo-machine-proof-policy-v3.json"
   ],
+  "proof_schema_version": 3,
   "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
   "schema": "qikvrt_prepublication_fileset_v1",
   "state": "PLANNED_ONLY_NOT_AUTHORIZED"

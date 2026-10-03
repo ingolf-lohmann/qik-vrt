@@ -50,7 +50,7 @@ PDF-Datei: QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf
 
 Der reale PDF-Byte-Hash steht in ARTICLE.md und PREPUBLICATION_RETURN_RECEIPT.json.
 
-Die Produktionspublikation unterliegt policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md v2. Vor Zenodo-Effekt sind Claim-Matrix, Machine-Proof-Bundle, Prepublication Return Receipt und kandidatenspezifische AUTHORIZE_EXACT_UPLOAD-Freigabe erforderlich.
+Dieser Kandidat ist ausdrücklich auf den versionierten v3-Proof-Vertrag migriert. Vor einem Zenodo-Effekt sind unabhängiger Code-Owner-Review, detached Vertragsaktivierung und die spätere kandidatenspezifische AUTHORIZE_EXACT_UPLOAD-Entscheidung erforderlich. Der Proof selbst enthält keine Upload-Autorisierung.
 
 ## Quellen, Provenienz und Prüfvermerk
 
@@ -58,13 +58,13 @@ Urheber und Verantwortungsträger: Ingolf Lohmann. Redaktionelle Präzisierung, 
 
 Die Architektur- und Governanceaussagen sind normative bzw. interpretative Aussagen innerhalb des beschriebenen QIK-VRT-Vertrags. Sie belegen weder phänomenales Erleben noch eine unabhängige empirische Bestätigung kollektiven Bewusstseins.
 
-Quellen: ARTICLE_ORIGINAL.md (bytegenau erhaltene Ausgangsfassung), ROADMAP_RECALCULATION.md (historischer Messbericht), MAIN_SOURCE_SNAPSHOT.json (REST-Beobachtung), PR446_SOURCE_SNAPSHOT.json (dokumentarischer PR-Readback), policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md und policy/zenodo-machine-proof-policy-v2.json (normativer Publikationsvertrag).
+Quellen: ARTICLE_ORIGINAL.md (bytegenau erhaltene Ausgangsfassung), ROADMAP_RECALCULATION.md (historischer Messbericht), MAIN_SOURCE_SNAPSHOT.json (REST-Beobachtung), PR446_SOURCE_SNAPSHOT.json (dokumentarischer PR-Readback), policy/zenodo-machine-proof-policy-v2.json (unveränderter v2-Vorgänger), policy/zenodo-machine-proof-policy-v3.json und policy/ZENODO_MACHINE_PROOF_V3_PRODUCTION.md (versionierter v3-Vertrag und Wirkungsgrenzen).
 
 CLAIM_MATRIX.json erfasst die Aussagen und ihre Geltungsgrenzen. SOURCE_EVIDENCE_BINDINGS.json bindet die Quellenbytes. BOUNDARY_TEST_REPORT.json dokumentiert die tatsächlich ausgeführten Kontrollen. Es gibt keinen FORMAL_PROVED-Claim; ein Kernel-Beweis wird nicht behauptet.
 
 Die PDF enthält den wissenschaftlichen Text und verweist für ihren eigenen Hash auf die getrennten Begleitartefakte. Das vermeidet eine zirkuläre Selbst-Hash-Bindung. ARTICLE_RENDER_SOURCE.md dokumentiert exakt den gesetzten Text.
 
-Vorbereitungsstatus: Keine kandidatenspezifische Upload-Freigabe und kein Publikationseffekt. Das aktive v2-Proof-Schema verlangt gleichwohl zenodo_upload_authorized=true. MACHINE_PROOF_BUNDLE.json hält den tatsächlichen Wert false fest; die resultierende Produktionsschema-Blockade ist in PREPUBLICATION_STATUS.json offen dokumentiert. Der Vertrag wird nicht stillschweigend geändert.
+Vorbereitungsstatus: machine_proof_complete=true im unveränderlichen v3-Proof; Review, Vertragsaktivierung und Upload-Freigabe bleiben offen. Der v2-Vorgänger verlangt zenodo_upload_authorized=true und bildet damit den dokumentierten Hash-Zirkel. v3 bindet die spätere Entscheidung detached an den eingefrorenen Proof-Hash. PREPUBLICATION_STATUS.json hält die tatsächlichen offenen Prädikate fest. Kein Publikationseffekt ist ausgeführt.
 
 ## Glossar
 

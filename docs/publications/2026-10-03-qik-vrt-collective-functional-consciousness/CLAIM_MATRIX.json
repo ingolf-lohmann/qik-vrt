@@ -273,20 +273,24 @@
     },
     {
       "article_section": "Claim-Grenze / Entwicklungssprung / Technischer Kern / Quellen und Glossar",
-      "boundary": "Schema- und Validatorgrenze; dieses Paket hält false fest, da keine Upload-Freigabe vorliegt.",
+      "boundary": "Versionierter Publikationsvertrag; Review, Vertragsaktivierung und spätere Exact-Upload-Freigabe bleiben offene, getrennte Prädikate. Technische Validierung ist keine Owner- oder Code-Owner-Freigabe und kein Zenodo-Effekt.",
       "claim_id": "CFC-16",
       "classification": "SOURCE_BOUND",
       "evidence_refs": [],
       "proof_refs": [],
       "publication_wording": "SOURCE_ATTRIBUTED",
-      "scope": "Schema- und Validatorgrenze; dieses Paket hält false fest, da keine Upload-Freigabe vorliegt.",
+      "scope": "Versionierter Publikationsvertrag; Review, Vertragsaktivierung und spätere Exact-Upload-Freigabe bleiben offene, getrennte Prädikate. Technische Validierung ist keine Owner- oder Code-Owner-Freigabe und kein Zenodo-Effekt.",
       "source_refs": [
-        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-SCHEMA"
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-SCHEMA",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-SCHEMA-V3",
+        "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/SOURCE_EVIDENCE_BINDINGS.json#SRC-POLICY-V3"
       ],
       "sources": [
-        "SRC-SCHEMA"
+        "SRC-SCHEMA",
+        "SRC-SCHEMA-V3",
+        "SRC-POLICY-V3"
       ],
-      "statement": "Das aktive v2-Proof-Schema erzwingt zenodo_upload_authorized=true.",
+      "statement": "Der unveränderte v2-Vorgänger erzwingt zenodo_upload_authorized=true; der explizite v3-Nachfolger trennt unveränderliche Proof-Readiness und detached Autorisierung.",
       "status": "BOUND"
     },
     {

@@ -6,6 +6,7 @@ from __future__ import annotations
 import concurrent.futures
 import copy
 import hashlib
+import importlib.util
 import json
 import os
 import pathlib
@@ -891,8 +892,14 @@ def materialize_git_history(
     run_git(root, "config", "user.email", "fixture@example.invalid")
     run_git(root, "commit", "--quiet", "--allow-empty", "-m", "fixture root")
     run_git(root, "add", "--", "policy", "docs", "proof")
+    v3 = json.loads(manifest_path.read_text())["schema"] == publish.SCHEMA_V3
+    if v3:
+        run_git(root, "add", "--", "tools", ".github")
     run_git(root, "commit", "--quiet", "-m", "freeze returned candidate")
     source_head = run_git(root, "rev-parse", "HEAD")
+    if v3:
+        write_v3_activation(root, manifest_path, source_head,
+                            run_git(root, "rev-parse", "HEAD^{tree}"))
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     authorization_relative = manifest["owner_authorization"]["path"]
@@ -929,6 +936,67 @@ def materialize_git_history(
         "https://github.com/Goldkelch/qik-vrt.git",
     )
     return source_head, execution_head
+
+
+def write_v3_activation(root, manifest_path, head_sha, tree_sha):
+    """Synthetic test-only activation; never a repository Owner decision."""
+    manifest = json.loads(manifest_path.read_text())
+    review = {"repository": publish.PRODUCTION_REPOSITORY, "pr_number": 123,
+              "head_sha": head_sha, "tree_sha": tree_sha, "review_id": 456,
+              "reviewer_login": "Goldkelch", "ruleset_id": 789}
+    contracts = publish._v3_contract_identities(root)
+    statement = publish._v3_activation_statement(contracts, review)
+    value = {"schema": publish.V3_ACTIVATION_SCHEMA,
+             "decision": "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT",
+             "principal": {"name": "Ingolf Lohmann", "type": "NATURAL_PERSON"},
+             "contracts": contracts, "review": review,
+             "authorized_at": "2026-07-28T09:30:40Z", "exact_statement": statement,
+             "statement_sha256": hashlib.sha256(statement.encode()).hexdigest()}
+    relative = "release/fixture/V3_CONTRACT_ACTIVATION.json"
+    write(root, relative, (json.dumps(value, sort_keys=True, indent=2) + "\n").encode())
+    manifest["contract_activation"] = identity(root, relative)
+    manifest_path.write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
+
+
+class FakeV3GitHub(FakeGitHubGitData):
+    def __init__(self, manifest, defect="none"):
+        super().__init__()
+        self.manifest = manifest
+        self.defect = defect
+
+    def __call__(self, method, path, token, **kwargs):
+        review = self.manifest["contract_activation"]["review"]
+        prefix = "/repos/" + publish.PRODUCTION_REPOSITORY
+        pr = {"number": 123, "merged": True, "state": "closed",
+              "merged_at": "2026-07-28T09:30:30Z",
+              "merge_commit_sha": self.manifest["source_head"],
+              "user": {"login": "fixture-author"},
+              "head": {"sha": review["head_sha"], "repo": {"full_name": publish.PRODUCTION_REPOSITORY}},
+              "base": {"ref": "main", "repo": {"full_name": publish.PRODUCTION_REPOSITORY}}}
+        native = {"id": 456, "state": "APPROVED", "commit_id": review["head_sha"],
+                  "user": {"login": "Goldkelch"}, "submitted_at": "2026-07-28T09:30:20Z"}
+        ruleset = {"id": 789, "target": "branch", "enforcement": "active", "bypass_actors": [],
+                   "conditions": {"ref_name": {"include": ["refs/heads/main"], "exclude": []}},
+                   "rules": [{"type": "pull_request", "parameters": {
+                       "required_approving_review_count": 1, "require_code_owner_review": True,
+                       "require_last_push_approval": True, "dismiss_stale_reviews_on_push": True}}]}
+        params = ruleset["rules"][0]["parameters"]
+        if self.defect == "unmerged": pr["merged"] = False
+        if self.defect == "review_head": native["commit_id"] = "0" * 40
+        if self.defect == "dismissed": native["state"] = "DISMISSED"
+        if self.defect == "self_review": pr["user"]["login"] = "Goldkelch"
+        if self.defect == "unenforced": ruleset["enforcement"] = "disabled"
+        if self.defect == "no_code_owner": params["require_code_owner_review"] = False
+        if self.defect == "no_last_push": params["require_last_push_approval"] = False
+        if self.defect == "bypass": ruleset["bypass_actors"] = [{"actor_id": 1, "bypass_mode": "always"}]
+        if self.defect == "early_activation": pr["merged_at"] = "2026-07-28T10:00:00Z"
+        if self.defect == "foreign_merge": pr["merge_commit_sha"] = "0" * 40
+        responses = {f"{prefix}/pulls/123": pr, f"{prefix}/pulls/123/reviews/456": native,
+                     f"{prefix}/rulesets/789": ruleset}
+        if method == "GET" and path in responses:
+            self.calls.append((method, path))
+            return 200, copy.deepcopy(responses[path])
+        return super().__call__(method, path, token, **kwargs)
 
 
 class MachineProofBeforeZenodoTests(unittest.TestCase):
@@ -1529,6 +1597,238 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             self.assertIn("ZENODO_MACHINE_PROOF_STATE=prepublication_ready_review_required", completed.stdout)
             self.assertIn("ZENODO_UPLOAD_AUTHORIZED=false", completed.stdout)
             self.assertIn("ZENODO_PRODUCTION_MUTATION_AUTHORIZED=false", completed.stdout)
+
+    def fixture_v3_production(self, root: pathlib.Path) -> tuple[pathlib.Path, pathlib.Path]:
+        bundle_path, manifest_path = self.fixture_v3(root)
+        for relative in publish.V3_CONTRACT_CODE_PATHS:
+            write(root, relative, (ROOT / relative).read_bytes())
+        manifest = json.loads(manifest_path.read_text())
+        manifest["schema"] = publish.SCHEMA_V3
+        manifest["contract_activation"] = None
+        manifest_path.write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
+        write_v3_activation(root, manifest_path, SOURCE_HEAD, "c" * 40)
+        return bundle_path, manifest_path
+
+    def test_v3_versioned_manifest_validates_detached_controls_without_granting_proof_authority(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            bundle_path, manifest_path = self.fixture_v3_production(root)
+            frozen = bundle_path.read_bytes()
+            manifest = publish.load_manifest(manifest_path, root)
+            self.assertEqual(manifest["schema"], publish.SCHEMA_V3)
+            self.assertFalse(manifest["machine_proof"]["zenodo_upload_authorized"])
+            self.assertEqual(manifest["machine_proof"]["sha256"], hashlib.sha256(frozen).hexdigest())
+            self.assertEqual(manifest["owner_authorization"]["machine_proof"]["sha256"],
+                             manifest["machine_proof"]["sha256"])
+            self.assertEqual(bundle_path.read_bytes(), frozen)
+            self.assertEqual(len(manifest["contract_activation"]["contracts"]), 11)
+
+    def test_v3_missing_activation_or_owner_decision_blocks_before_any_network(self):
+        for missing in ("contract_activation", "owner_authorization"):
+            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                _, manifest_path = self.fixture_v3_production(root)
+                value = json.loads(manifest_path.read_text())
+                value[missing] = None
+                manifest_path.write_text(json.dumps(value))
+                with mock.patch.object(publish, "_github_api_request") as github, \
+                        mock.patch.object(zenodo, "ZenodoClient") as client:
+                    with self.assertRaises(zenodo.ZenodoError):
+                        publish.publish(manifest_path, root)
+                    github.assert_not_called()
+                    client.assert_not_called()
+
+    def test_v3_has_no_version_fallback(self):
+        for wrong in ("manifest", "bundle", "policy"):
+            with self.subTest(wrong=wrong), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                bundle_path, manifest_path = self.fixture_v3_production(root)
+                value = json.loads(manifest_path.read_text())
+                if wrong == "manifest":
+                    value["schema"] = publish.SCHEMA_V2
+                    del value["contract_activation"]
+                elif wrong == "policy":
+                    value["machine_proof"]["policy_id"] = proof.POLICY_ID
+                else:
+                    bundle = json.loads(bundle_path.read_text())
+                    bundle["schema"] = proof.BUNDLE_SCHEMA
+                    bundle_path.write_text(json.dumps(bundle))
+                    rebind_fixture(root, manifest_path)
+                    value = json.loads(manifest_path.read_text())
+                manifest_path.write_text(json.dumps(value))
+                with self.assertRaises(zenodo.ZenodoError):
+                    publish.load_manifest(manifest_path, root)
+
+    def test_v3_activation_rejects_changed_contracts_decision_and_control_overlap(self):
+        for defect in ("decision", "statement", "contracts", "principal", "repository",
+                       "proof_upload", "manifest", "code_bytes"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                _, manifest_path = self.fixture_v3_production(root)
+                manifest = json.loads(manifest_path.read_text())
+                activation_path = root / manifest["contract_activation"]["path"]
+                activation = json.loads(activation_path.read_text())
+                if defect == "decision":
+                    activation["decision"] = "REVIEW_REQUIRED"
+                elif defect == "statement":
+                    activation["exact_statement"] += " altered"
+                elif defect == "contracts":
+                    activation["contracts"][0]["sha256"] = "0" * 64
+                elif defect == "principal":
+                    activation["principal"]["name"] = "Fixture Owner"
+                elif defect == "repository":
+                    activation["review"]["repository"] = "ingolf-lohmann/qik-vrt"
+                elif defect == "proof_upload":
+                    manifest["contract_activation"] = identity(root, manifest["machine_proof"]["path"])
+                elif defect == "manifest":
+                    manifest["contract_activation"] = identity(root, manifest_path.relative_to(root).as_posix())
+                else:
+                    path = root / publish.V3_CONTRACT_CODE_PATHS[0]
+                    path.write_bytes(path.read_bytes() + b"\n")
+                if defect not in {"proof_upload", "manifest"}:
+                    activation_path.write_text(json.dumps(activation))
+                    manifest["contract_activation"] = identity(root, activation_path.relative_to(root).as_posix())
+                manifest_path.write_text(json.dumps(manifest))
+                with self.assertRaises(zenodo.ZenodoError):
+                    publish.load_manifest(manifest_path, root)
+
+    def test_v3_detached_upload_decision_still_binds_return_metadata_proof_and_exact_files(self):
+        mutations = (
+            lambda a: a["machine_proof"].update(sha256="0" * 64),
+            lambda a: a["candidate_return_receipt"].update(sha256="0" * 64),
+            lambda a: a.update(canonical_metadata_sha256="0" * 64),
+            lambda a: a["uploads"].pop(),
+            lambda a: a["authorization_event"].update(exact_statement="AUTHORIZE_EXACT_UPLOAD"),
+            lambda a: a["authorization_event"].update(authorized_at="2026-07-28T09:29:00Z"),
+        )
+        for index, mutation in enumerate(mutations):
+            with self.subTest(defect=index), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                _, manifest_path = self.fixture_v3_production(root)
+                mutate_authorization(root, manifest_path, mutation)
+                with self.assertRaises(zenodo.ZenodoError):
+                    publish.load_manifest(manifest_path, root)
+
+    def test_v3_exact_execution_requires_reviewed_head_tree_and_all_committed_controls(self):
+        for defect in ("none", "tree", "reviewed_code", "activation_dirty"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                _, manifest_path = self.fixture_v3_production(root)
+                source, execution = materialize_git_history(root, manifest_path)
+                manifest = publish.load_manifest(manifest_path, root)
+                if defect == "tree":
+                    manifest["contract_activation"]["review"]["tree_sha"] = "0" * 40
+                elif defect == "reviewed_code":
+                    manifest["contract_activation"]["contracts"][0]["git_blob_sha"] = "0" * 40
+                elif defect == "activation_dirty":
+                    path = root / manifest["contract_activation"]["path"]
+                    path.write_bytes(path.read_bytes() + b" ")
+                with mock.patch.dict(os.environ, {"GITHUB_SHA": execution}, clear=True):
+                    if defect == "none":
+                        self.assertEqual(publish._validate_repository_source_head(
+                            root, manifest_path, manifest), execution)
+                    else:
+                        with self.assertRaises(zenodo.ZenodoError):
+                            publish._validate_repository_source_head(root, manifest_path, manifest)
+
+    def test_v3_live_review_and_ruleset_fail_closed_before_consumption(self):
+        defects = ("none", "unmerged", "review_head", "dismissed", "self_review",
+                   "unenforced", "no_code_owner", "no_last_push", "bypass", "wrong_owner",
+                   "early_activation", "foreign_merge")
+        for defect in defects:
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                _, manifest_path = self.fixture_v3_production(root)
+                source, execution = materialize_git_history(root, manifest_path)
+                manifest = publish.load_manifest(manifest_path, root)
+                github = FakeV3GitHub(manifest, defect)
+                with mock.patch.object(publish, "_github_api_request", side_effect=github):
+                    if defect == "none":
+                        publish._verify_v3_contract_review(root, manifest, TEST_GITHUB_TOKEN)
+                    else:
+                        if defect == "wrong_owner":
+                            (root / ".github/CODEOWNERS").write_text("* @someone-else\n")
+                        with self.assertRaises(zenodo.ZenodoError):
+                            publish._verify_v3_contract_review(root, manifest, TEST_GITHUB_TOKEN)
+                self.assertFalse(github.refs)
+                self.assertTrue(all(method == "GET" for method, _ in github.calls))
+
+    def test_v3_complete_simulated_publication_and_recovery_preserve_immutable_proof(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            bundle_path, manifest_path = self.fixture_v3_production(root)
+            _, execution = materialize_git_history(root, manifest_path)
+            frozen = bundle_path.read_bytes()
+            manifest = publish.load_manifest(manifest_path, root)
+            github = FakeV3GitHub(manifest)
+            draft = {"id": 123, "metadata": {"prereserve_doi": {"doi": "10.5281/zenodo.123"}}}
+            published = {"id": 123, "doi": "10.5281/zenodo.123",
+                         "conceptdoi": "10.5281/zenodo.122",
+                         "links": {"html": "https://zenodo.org/records/123"}, "metadata": {}}
+            environment = {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY,
+                           "GITHUB_SHA": execution,
+                           publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
+                           zenodo.TOKEN_ENVIRONMENT_VARIABLE: "z" * 32}
+            with mock.patch.dict(os.environ, environment, clear=True), \
+                    mock.patch.object(publish, "_github_api_request", side_effect=github), \
+                    mock.patch.object(publish, "_list_all_owned_depositions", return_value=[]), \
+                    mock.patch.object(zenodo, "ZenodoClient") as client_type:
+                client = client_type.return_value
+                client.create_paper.return_value = draft
+                client.prepare_draft.return_value = "draft"
+                client.publish_and_poll.return_value = published
+                client.wait_for_gated_record.return_value = published
+                evidence = publish.publish(manifest_path, root)
+                self.assertEqual(evidence["schema"], publish.EVIDENCE_SCHEMA_V3)
+                self.assertEqual(evidence["phase"], "public_verified")
+                self.assertIn("contract_activation", evidence)
+                self.assertEqual(len(github.refs), 1)
+                self.assertFalse(evidence["machine_proof"]["zenodo_upload_authorized"])
+                resumed = publish.publish(manifest_path, root)
+                self.assertEqual(resumed, evidence)
+                client.create_paper.assert_called_once()
+            self.assertEqual(bundle_path.read_bytes(), frozen)
+            changed = copy.deepcopy(evidence)
+            changed["schema"] = publish.EVIDENCE_SCHEMA_V2
+            with self.assertRaises(zenodo.ZenodoError):
+                publish._validate_recovery_evidence(changed, manifest_path, root, manifest, execution)
+            changed = copy.deepcopy(evidence)
+            changed["contract_activation"]["statement_sha256"] = "0" * 64
+            with self.assertRaises(zenodo.ZenodoError):
+                publish._validate_recovery_evidence(changed, manifest_path, root, manifest, execution)
+
+    def test_v3_consumption_key_and_replay_scope_are_shared_with_v2(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            _, manifest_path = self.fixture_v3_production(root)
+            manifest = publish.load_manifest(manifest_path, root)
+            owner = manifest["owner_authorization"]
+            for schema in (publish.EVIDENCE_SCHEMA_V2, publish.EVIDENCE_SCHEMA_V3):
+                path = write(root, "release/other/zenodo-publication.json",
+                             json.dumps({"schema": schema, "owner_authorization": owner}).encode())
+                with self.assertRaisesRegex(zenodo.ZenodoError, "already been consumed"):
+                    publish._reject_owner_authorization_replay(root, owner, {})
+                path.unlink()
+            self.assertEqual(owner["consumption_key"], publish._authorization_consumption_key(
+                owner["repository"], owner["authorization_id"], owner["publication_id"],
+                owner["authorization_event"]["statement_sha256"]))
+
+    def test_pr447_migrated_v3_candidate_has_exact_proof_fileset_and_return_bindings(self):
+        candidate = ROOT / "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness"
+        spec = importlib.util.spec_from_file_location("pr447_candidate_verifier",
+                                                     candidate / "VERIFY_PREPUBLICATION.py")
+        verifier = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(verifier)
+        result = verifier.verify()
+        self.assertEqual(result, json.loads((candidate / "BOUNDARY_TEST_REPORT.json").read_text()))
+        manifest = json.loads((candidate / "PREPUBLICATION_MANIFEST.json").read_text())
+        for item in manifest["files"]:
+            observed = proof.identity(ROOT / item["path"])
+            self.assertEqual({k: item[k] for k in observed}, observed, item["path"])
+        self.assertEqual(result["technical_v3_proof_contract"], "PASS")
+        self.assertEqual(result["production_gate"], "HOLD")
+        self.assertFalse(manifest["upload_authorization_present"])
+        self.assertFalse(manifest["contract_activation_present"])
 
     def test_complete_proof_bundle_and_v2_manifest_pass(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

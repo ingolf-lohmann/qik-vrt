@@ -1,19 +1,18 @@
 {
-  "authorization_transition": {
-    "authorization_consumed": false,
-    "authorization_created": false,
-    "bundle_hash_changes_when_flag_changes": true,
-    "prospective_bytes_materialized": false,
-    "state": "HOLD_AUTHORIZATION_FLAG_CHANGES_APPROVED_BUNDLE_HASH"
-  },
   "candidate_byte_bindings": "PASS",
   "canonical_metadata_sha256": "3d185dd3a8b7b54b85eade7ecdf3e6822aeab530fcab56e0ee0d28f680022757",
   "changed_content_return_chain": "PASS",
   "claim_matrix_bidirectional_projection": "PASS",
+  "contract_activation_present": false,
   "external_publication_effect": "NONE",
   "fileset_closure": "PASS",
-  "input_source_head": "d983872c27093bc7e114fd40284a8ae8ed462303",
-  "integration_main_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+  "hash_stability": {
+    "actual_owner_decision_created": false,
+    "authorization_consumed": false,
+    "detached_decision_hash_stability_regressions": "tests/test_zenodo_machine_proof_policy.py",
+    "embedded_authorization_field": "FORBIDDEN",
+    "proof_unchanged_by_readiness_and_denied_effect_probes": true
+  },
   "negative_controls": [
     {
       "observed_error": "SHA-256 mismatch for docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
@@ -34,21 +33,44 @@
       "observed_error": "CFC-03 has a disposition inconsistent with OPEN",
       "result": "REJECTED_AS_EXPECTED",
       "test_id": "OPEN_CLAIM_PROMOTION"
+    },
+    {
+      "observed_error": "invalid completion_claims keys (unknown=zenodo_upload_authorized)",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "EMBEDDED_UPLOAD_FALSE"
+    },
+    {
+      "observed_error": "invalid completion_claims keys (unknown=zenodo_upload_authorized)",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "EMBEDDED_UPLOAD_TRUE"
+    },
+    {
+      "observed_error": "Zenodo upload fileset differs from the exact proof-bearing set: missing=docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MACHINE_PROOF_BUNDLE.json",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "OMITTED_PROOF_UPLOAD"
+    },
+    {
+      "observed_error": "Zenodo upload fileset differs from the exact proof-bearing set: extra=docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ZENODO_FILESET.json",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "EXTRA_UPLOAD"
+    },
+    {
+      "observed_error": "Zenodo upload fileset contains duplicate repository paths",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "DUPLICATE_UPLOAD"
     }
   ],
-  "production_error": "proof bundle does not authorize the exact Zenodo upload",
+  "owner_decision_error": "manifest.owner_authorization must be an object",
+  "production_error": "NO_REVIEWED_V3_ACTIVATION_NO_V3_PRODUCTION_MUTATION: detached activation missing",
   "production_gate": "HOLD",
-  "production_schema_const_mismatch": {
-    "actual": false,
-    "expected": true,
-    "path": "/completion_claims/zenodo_upload_authorized"
-  },
+  "proof_schema_version": 3,
   "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
-  "return_receipt_v2_semantic_contract": "PASS via repository-native validator; no general JSON Schema engine invoked",
-  "schema": "qikvrt_prepublication_verification_result_v1",
+  "return_receipt_v2_semantic_contract": "PASS via repository-native validator",
+  "schema": "qikvrt_prepublication_verification_result_v2",
   "source_references": "PASS",
-  "subject_binding": "Current working candidate bytes, to be validated again on the committed exact successor head; no predecessor execution transferred.",
+  "subject_binding": "Current candidate bytes; execution HEAD/TREE are external to this hash-bound report and must be validated afresh. Predecessor executions do not transfer.",
+  "technical_v3_proof_contract": "PASS",
   "unique_upload_filenames": "PASS",
   "upload_authorized": false,
-  "verification_scope": "Repository-native validator validates byte identities, claim/source disposition and return chain before rejecting the unauthorized flag. Exact fileset closure, unique public filenames and canonical metadata are checked independently. The hash transition is a digest-only negative control; no live or predecessor gates transferred."
+  "verification_scope": "Repository-native exact policy/schema, claim, source, return and upload-closure validation. No general JSON Schema engine invoked. Missing activation and Owner decision block before any transport; no synthetic activation or upload decision is persisted in this candidate."
 }
