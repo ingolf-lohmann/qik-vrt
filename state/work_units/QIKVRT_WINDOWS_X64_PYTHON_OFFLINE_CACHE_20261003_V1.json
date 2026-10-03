@@ -108,7 +108,19 @@
     "repository_native_integrity": "PASS_DETERMINISTIC_REGENERATION_AND_FRESH_CHECKOUT; REGENERATE_AFTER_THIS_METADATA_UPDATE",
     "native_windows_offline_start": "PENDING_EXACT_HEAD_NATIVE_WORKFLOW",
     "independent_candidate_review": "NOT_CLAIMED",
-    "first_current_blocker": "NATIVE_WINDOWS_OFFLINE_START_RECEIPT_NOT_YET_OBSERVED"
+    "first_current_blocker": "NATIVE_WINDOWS_OFFLINE_START_RECEIPT_NOT_YET_OBSERVED",
+    "native_attempts": [
+      {
+        "source_head": "d5aec74536b9c7c22589ceb01e06759f4ad8d7e5",
+        "source_tree": "df029d71c34c6dae51a0bc9a2dae7fcde7df392d",
+        "run_id": 37125885821,
+        "job_id": 111210962636,
+        "runtime_materialization_and_self_test": "PASS_NATIVE_WINDOWS_X64",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "Test adapter joined multiple Get-Command git Source values into one command path. Select exactly one application before isolation.",
+        "dependency_closed": false
+      }
+    ]
   },
   "human_decision": {
     "directive": "RECEIVED",

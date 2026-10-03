@@ -21,7 +21,7 @@ if (-not [Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([Runtime.Int
     [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne 'X64') { throw 'Native Windows x64 is required' }
 
 New-Item -ItemType Directory -Path $EvidenceDir -Force | Out-Null
-$git = (Get-Command git -CommandType Application).Source
+$git = (Get-Command git -CommandType Application | Select-Object -First 1).Source
 $head = (& $git -C $repo rev-parse HEAD).Trim()
 $tree = (& $git -C $repo rev-parse 'HEAD^{tree}').Trim()
 if ($LASTEXITCODE -ne 0) { throw 'Cannot bind the native source tree' }
