@@ -130,6 +130,19 @@
       "EXTERNAL_AUTHORITY_OR_INPUT_REQUIRED",
       "BOUNDED_OBSERVATION_WINDOW_ENDED"
     ],
-    "causal_failure_becomes_next_work_unit": true
+    "causal_failure_becomes_next_work_unit": true,
+    "interactive_client_continuity": {
+      "question_or_status_request": "ANSWER_AND_CONTINUE_EXISTING_AUTHORIZED_WORK_UNIT",
+      "task_replacement_or_cancellation": "ONLY_EXPLICIT_USER_CANCELLATION_OR_INCOMPATIBLE_REPLACEMENT",
+      "chat_turn_end_is_task_completion": false,
+      "chat_session_is_executor_lifetime": false,
+      "preserve_existing_authorization": true,
+      "reask_already_granted_task_authorization": false,
+      "durable_handoff": "EXACT_SUBJECT_BOUND_EXISTING_WORK_UNIT_AND_ADMITTED_EXECUTOR_RECEIPT",
+      "resume": "REOBSERVE_CURRENT_HEAD_TREE_WRITER_AND_EFFECT_JOURNAL_BEFORE_NEXT_ACTION",
+      "ambiguous_effect_response": "RECONCILE_AUTHORITATIVE_EFFECT_READBACK_BEFORE_ANY_RETRY",
+      "blocked_scope_stops_independent_scopes": false,
+      "productive_continuity_claim_requires": "ACTUAL_TASK_CONTINUES_AFTER_CLIENT_INTERRUPTION_WITH_FRESH_INDEPENDENT_EFFECT_READBACK"
+    }
   }
 }
