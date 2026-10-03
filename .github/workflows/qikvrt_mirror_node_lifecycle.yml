@@ -8,7 +8,7 @@ on:
     - cron: "17 */6 * * *"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: qikvrt-mirror-node-lifecycle
@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   renew:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -23,6 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          persist-credentials: false
           ref: main
           fetch-depth: 0
       - name: Verify canonical TEMDD effect-proof architecture

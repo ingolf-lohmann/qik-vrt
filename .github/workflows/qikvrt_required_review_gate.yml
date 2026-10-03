@@ -20,7 +20,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
-  statuses: write
+  statuses: read
 
 concurrency:
   group: qikvrt-required-code-owner-review-${{ github.repository }}
@@ -28,7 +28,9 @@ concurrency:
 
 jobs:
   publish:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
+    # Previous admission: if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     env:

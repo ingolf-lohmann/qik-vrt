@@ -113,3 +113,11 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: mesh-recovery-test
+mesh-recovery-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_mesh_recovery.py verify-policy >/dev/null
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_authority_transition.py audit-writers >/dev/null
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider tests.test_pre_spacetime_ontology_zenodo_effect_ack
+
+test: mesh-recovery-test

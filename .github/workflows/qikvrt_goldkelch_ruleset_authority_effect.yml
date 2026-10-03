@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   reconcile:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -58,7 +60,7 @@ jobs:
           private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: ${{ github.event.repository.name }}
-          permission-administration: write
+          permission-administration: read
 
       - name: Conditional canonical projection with exact readback
         env:

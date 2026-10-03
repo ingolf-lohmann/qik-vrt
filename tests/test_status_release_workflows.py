@@ -192,7 +192,9 @@ class StatusReleaseWorkflowTests(unittest.TestCase):
         self.assertIn("github.repository == 'ingolf-lohmann/qik-vrt'", self.finalize)
         self.assertEqual(self.reserve.count("secrets.ZENODO_ACCESS_TOKEN"), 2)
         self.assertEqual(self.finalize.count("secrets.ZENODO_ACCESS_TOKEN"), 2)
-        self.assertIn("permissions:\n      contents: write", self.finalize)
+        self.assertNotIn("contents: write", self.finalize)
+        self.assertIn("    permissions: {}", self.finalize)
+        self.assertIn("if: ${{ false }} # NO_BYPASS:", self.finalize)
         self.assertIn('"object": source', self.finalize)
         self.assertNotIn('"object": os.environ["GITHUB_SHA"]', self.finalize)
 

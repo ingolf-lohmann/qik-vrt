@@ -11,7 +11,7 @@ on:
       - .github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml
 
 permissions:
-  contents: write
+  contents: read
   actions: read
 
 concurrency:
@@ -20,10 +20,9 @@ concurrency:
 
 jobs:
   recover:
-    if: >-
-      github.repository == 'Goldkelch/qik-vrt' &&
-      github.event_name == 'push' &&
-      github.event.forced == false
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
+    # Previous admission: exact Goldkelch E1 recovery push only
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:

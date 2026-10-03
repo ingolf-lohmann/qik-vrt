@@ -49,8 +49,10 @@ class ContinuousAutoRepairContractTests(unittest.TestCase):
             workflow,
         )
         self.assertIn("cancel-in-progress: false", workflow)
-        self.assertIn("contents: write", workflow)
-        self.assertIn("pull-requests: write", workflow)
+        self.assertNotIn("contents: write", workflow)
+        self.assertNotIn("pull-requests: write", workflow)
+        self.assertIn("if: ${{ false }} # NO_BYPASS:", workflow)
+        self.assertIn("    permissions: {}", workflow)
         self.assertNotIn("Goldkelch/qik-vrt", workflow)
         self.assertNotIn("ingolf-lohmann/qik-vrt", workflow)
 

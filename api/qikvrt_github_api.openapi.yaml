@@ -3,7 +3,7 @@
 openapi: 3.0.3
 info:
   title: QIKVRT GitHub Dispatch Adapter API
-  version: 2.0.0
+  version: 2.1.0
   description: >
     The local adapter exposes GitHub-shaped dispatch paths but evaluates the
     request synchronously and returns a QIK-VRT EFFECT_ACK body. GitHub's real
@@ -84,6 +84,52 @@ paths:
         '423': { description: EFFECT_ACK_ISOLATE due to integrity or replay conflict. }
         '429': { description: Rate limit exceeded. }
         '500': { description: Internal adapter failure; no effect permission is implied. }
+  /repos/{owner}/{repo}/qikvrt/authority/effects:
+    post:
+      operationId: fencedAuthorityProviderEffect
+      summary: Broker-mediated create-only GitHub branch at the restored HEAD/TREE.
+      description: >
+        Local shim extension only; this path does not exist on api.github.com.
+        Requires the existing bearer authentication, a private writer capability,
+        the active permit and an independently surviving control plane. Only
+        ingolf-lohmann/qik-vrt is admitted. All other provider mutations fail closed.
+        Returned evidence is not production Authority fencing or EFFECT_ACK_DONE.
+      parameters:
+        - { $ref: '#/components/parameters/Owner' }
+        - { $ref: '#/components/parameters/Repo' }
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [writer_capability, permit, operation]
+              properties:
+                writer_capability: { type: string, pattern: '^[0-9a-f]{64}$', writeOnly: true }
+                permit:
+                  type: object
+                  additionalProperties: false
+                  required: [control_plane_epoch, authority_epoch, node_id, fence]
+                  properties:
+                    control_plane_epoch: { type: string, pattern: '^[0-9a-f]{64}$' }
+                    authority_epoch: { type: integer, minimum: 0 }
+                    node_id: { type: string, pattern: '^[0-9a-f]{64}$' }
+                    fence: { type: string, pattern: '^[0-9a-f]{64}$' }
+                operation:
+                  type: object
+                  additionalProperties: false
+                  required: [operation, effect_id]
+                  properties:
+                    operation: { type: string, enum: [create_ref] }
+                    effect_id: { type: string, pattern: '^[A-Za-z0-9_.:-]{1,128}$' }
+      responses:
+        '200': { description: Fresh ref and commit TREE plus durable ledger readback; effect_ack_done remains false. }
+        '401': { description: Existing shim bearer authentication failed. }
+        '409': { description: Fence, capability, native CAS, journal or readback blocks the operation. }
+        '429': { description: Existing shim rate limit exceeded. }
 components:
   parameters:
     Owner:
