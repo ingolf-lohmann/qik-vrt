@@ -2,29 +2,116 @@ name: QIKVRT Mesh authority edge
 
 on:
   push:
-    branches: [work/firefox-windows-witness-20261001]
-    paths: [.github/workflows/qikvrt_mesh_authority_edge.yml]
+    branches: [work/authority-recovery-acceptance-20261002, work/firefox-windows-witness-20261001]
+    paths:
+      - .github/workflows/qikvrt_mesh_authority_edge.yml
+      - tools/qikvrt_authority_url_probe.py
+      - tests/test_qikvrt_authority_url_probe.py
+      - evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json
   repository_dispatch:
     types: [qikvrt-authority-admit]
   workflow_dispatch:
     inputs:
+      operation:
+        description: Bound authority operation
+        type: choice
+        options: [admit, authority_url_probe, authority_pages_readback]
+        required: true
+        default: admit
       repository:
         description: Exact target repository
         required: true
         default: Goldkelch/qik-vrt
       run_id:
         description: Exact ACTION_REQUIRED workflow run id
-        required: true
+        required: false
       head_sha:
         description: Exact target head SHA
-        required: true
+        required: false
 
 permissions:
   contents: read
 
 jobs:
+  authority-url-probe:
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      ((github.event_name == 'push' &&
+        (github.ref == 'refs/heads/work/authority-recovery-acceptance-20261002' ||
+         (github.ref == 'refs/heads/work/firefox-windows-witness-20261001' && github.actor == 'ingolf-lohmann'))) ||
+       (github.event_name == 'workflow_dispatch' &&
+        (inputs.operation == 'authority_url_probe' || inputs.operation == 'authority_pages_readback')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      QIKVRT_AUTHORITY_OPERATION: ${{ inputs.operation || (github.ref == 'refs/heads/work/firefox-windows-witness-20261001' && 'authority_pages_readback') || 'authority_url_probe' }}
+    steps:
+      - name: Checkout exact native event head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Setup locked Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify probe boundaries before credential consumption
+        id: probe-boundaries
+        env:
+          QIKVRT_PROBE_TARGET: ${{ inputs.repository || 'Goldkelch/qik-vrt' }}
+        run: |
+          python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe
+          python3 -B tools/qikvrt_authority_url_probe.py --preflight
+      - name: Observe existing inputs and bind the single App route
+        id: probe-credential-route
+        env:
+          QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+          QIKVRT_GITHUB_ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+          QIKVRT_MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          QIKVRT_RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          QIKVRT_RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          names = ("QIKVRT_RULESET_ADMIN_TOKEN", "QIKVRT_GITHUB_ADMIN_TOKEN", "QIKVRT_MESH_TOKEN")
+          present = {name: bool(os.environ.get(name)) for name in names}
+          app = bool(os.environ.get("QIKVRT_RULESET_APP_ID")) and bool(os.environ.get("QIKVRT_RULESET_APP_PRIVATE_KEY"))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("presence=" + json.dumps(present, sort_keys=True) + "\n")
+              output.write("app=" + str(app).lower() + "\n")
+          PY
+      - name: Mint existing App credential for fixed Authority read scope
+        id: authority-app-token
+        continue-on-error: true
+        if: steps.probe-credential-route.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-contents: read
+          permission-pages: ${{ env.QIKVRT_AUTHORITY_OPERATION == 'authority_pages_readback' && 'read' || '' }}
+      - name: Resume fixed installation-bound Authority source closure
+        if: always() && steps.probe-boundaries.outcome == 'success'
+        env:
+          QIKVRT_CREDENTIAL_PRESENCE: ${{ steps.probe-credential-route.outputs.presence }}
+          QIKVRT_AUTHORITY_APP_INSTALLATION_ID: ${{ steps.authority-app-token.outputs.installation-id }}
+          QIKVRT_APP_INPUTS_PRESENT: ${{ steps.probe-credential-route.outputs.app }}
+          QIKVRT_AUTHORITY_APP_TOKEN: ${{ steps.authority-app-token.outputs.token }}
+          QIKVRT_APP_TOKEN_ISSUANCE_OUTCOME: ${{ steps.authority-app-token.outcome }}
+        run: python3 -B tools/qikvrt_authority_url_probe.py --output .qikvrt/evidence/authority-url-probe/readback.json
+      - name: Persist metadata-only diagnostic readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: authority-url-probe-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/evidence/authority-url-probe/readback.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
   admit:
-    if: github.event_name != 'push'
+    if: github.event_name != 'push' && (github.event_name != 'workflow_dispatch' || inputs.operation == 'admit')
     runs-on: ubuntu-24.04
     env:
       TARGET_REPOSITORY: ${{ github.event.client_payload.repository || inputs.repository }}
@@ -88,145 +175,3 @@ jobs:
           assert value.get('conclusion') != 'action_required', value
           print(json.dumps({'run_id': value['id'], 'head_sha': value['head_sha'], 'status': value['status'], 'conclusion': value.get('conclusion')}, sort_keys=True))
           PY
-
-  pages-readback:
-    if: github.event_name == 'push' && github.repository == 'ingolf-lohmann/qik-vrt' && github.actor == 'ingolf-lohmann'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    # Fixed inline GET-only observer: no checkout, dispatch payload or candidate code.
-    # Reuse the existing App binding with read permissions and one fixed target.
-    env:
-      ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
-      RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
-      MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
-      OBSERVER_TOKEN: ${{ github.token }}
-      CANDIDATE_HEAD: ${{ github.sha }}
-      OBSERVER_RUN_ID: ${{ github.run_id }}
-      OBSERVER_RUN_ATTEMPT: ${{ github.run_attempt }}
-    steps:
-      - name: Observe existing Authority App binding without retaining secrets
-        id: pages-app-binding
-        env:
-          RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
-          RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import json, os, pathlib
-          binding = {'app_id_present': bool(os.environ.get('RULESET_APP_ID')),
-                     'private_key_present': bool(os.environ.get('RULESET_APP_PRIVATE_KEY')),
-                     'target_repository': 'Goldkelch/qik-vrt',
-                     'requested_permissions': {'pages': 'read', 'contents': 'read'}}
-          available = binding['app_id_present'] and binding['private_key_present']
-          pathlib.Path('PAGES_APP_BINDING.json').write_text(json.dumps(binding, sort_keys=True) + '\n')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('available=' + str(available).lower() + '\n')
-          PY
-      - name: Mint read-only token for the fixed Authority repository
-        id: pages-app-token
-        if: steps.pages-app-binding.outputs.available == 'true'
-        continue-on-error: true
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
-        with:
-          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
-          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
-          owner: Goldkelch
-          repositories: qik-vrt
-          permission-pages: read
-          permission-contents: read
-      - name: Read fixed Authority Pages contract without publishing
-        if: always()
-        env:
-          APP_TOKEN: ${{ steps.pages-app-token.outputs.token }}
-          APP_TOKEN_OUTCOME: ${{ steps.pages-app-token.outcome }}
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import datetime, hashlib, json, os, pathlib, re, urllib.error, urllib.request
-          class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self, *args, **kwargs):
-                  return None
-          opener = urllib.request.build_opener(NoRedirect())
-          def get(url, token=''):
-              headers = {'Accept': 'application/vnd.github+json', 'Cache-Control': 'no-cache'}
-              if token:
-                  assert url.startswith('https://api.github.com/repos/')
-                  headers.update({'Authorization': 'Bearer ' + token, 'X-GitHub-Api-Version': '2022-11-28'})
-              request = urllib.request.Request(url, headers=headers)
-              try:
-                  response = opener.open(request, timeout=30)
-              except urllib.error.HTTPError as error:
-                  response = error
-              except (OSError, urllib.error.URLError):
-                  return {'url': url, 'state': 'HOLD_TRANSPORT', 'status': None}
-              with response:
-                  body = response.read(2097153)
-                  if len(body) > 2097152:
-                      return {'url': url, 'state': 'HOLD_BODY_BOUND', 'status': response.code}
-                  result = {'url': url, 'status': response.code, 'body_sha256': hashlib.sha256(body).hexdigest(),
-                            'body_bytes': len(body), 'date': response.headers.get('Date'),
-                            'request_id': response.headers.get('X-GitHub-Request-Id')}
-                  try:
-                      result['json'] = json.loads(body)
-                  except (ValueError, UnicodeDecodeError):
-                      pass
-                  return result
-          head = os.environ['CANDIDATE_HEAD']
-          candidate = get('https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/' + head,
-                          os.environ['OBSERVER_TOKEN'])
-          tree = candidate.get('json', {}).get('tree', {}).get('sha')
-          token = ''
-          route = None
-          probes = {}
-          for name in ('RULESET_ADMIN_TOKEN', 'ADMIN_TOKEN', 'MESH_TOKEN', 'APP_TOKEN'):
-              credential = os.environ.get(name, '')
-              probes[name] = {'credential_present': bool(credential)}
-              if credential:
-                  probes[name]['pages'] = get('https://api.github.com/repos/Goldkelch/qik-vrt/pages', credential)
-                  if route is None and probes[name]['pages'].get('status') == 200:
-                      route, token = name, credential
-          binding_file = pathlib.Path('PAGES_APP_BINDING.json')
-          probes['APP_TOKEN']['binding'] = (json.loads(binding_file.read_text()) if binding_file.is_file()
-                                           else {'state': 'HOLD_BINDING_OBSERVATION_FAILED'})
-          probes['APP_TOKEN']['mint_outcome'] = os.environ.get('APP_TOKEN_OUTCOME', 'unknown')
-          authority = {}
-          if token:
-              authority['pages'] = probes[route]['pages']
-              for path in ('pages/builds/latest', 'branches/main'):
-                  authority[path] = get('https://api.github.com/repos/Goldkelch/qik-vrt/' + path, token)
-              authority_head = authority['branches/main'].get('json', {}).get('commit', {}).get('sha', '')
-              if isinstance(authority_head, str) and re.fullmatch(r'[0-9a-f]{40}', authority_head):
-                  base = 'https://api.github.com/repos/Goldkelch/qik-vrt/'
-                  authority['source_commit'] = get(base + 'git/commits/' + authority_head, token)
-                  authority_tree = authority['source_commit'].get('json', {}).get('tree', {}).get('sha', '')
-                  if isinstance(authority_tree, str) and re.fullmatch(r'[0-9a-f]{40}', authority_tree):
-                      authority['source_inventory'] = get(base + 'git/trees/' + authority_tree + '?recursive=1', token)
-                  for path in ('docs/index.html', 'docs/mesh/live/version.json', 'docs/mesh/live/index.html',
-                               '.github/workflows/qikvrt_seed_dashboard_publish.yml'):
-                      authority[path] = get(base + 'contents/' + path + '?ref=' + authority_head, token)
-          receipt = {'schema': 'qikvrt_authority_pages_rest_probe_v1',
-                     'observed_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                     'candidate_repository': 'ingolf-lohmann/qik-vrt', 'candidate_head': head, 'candidate_tree': tree,
-                     'run_id': os.environ['OBSERVER_RUN_ID'], 'run_attempt': os.environ['OBSERVER_RUN_ATTEMPT'],
-                     'credential_present': any(x['credential_present'] for x in probes.values()),
-                     'credential_route': route, 'credential_route_probes': probes,
-                     'authority_repository': 'Goldkelch/qik-vrt',
-                     'authority_reads': authority,
-                     'public_reads': [get('https://goldkelch.github.io/qik-vrt/' + path)
-                                      for path in ('', 'mesh/live/', 'mesh/live/version.json')],
-                     'state': ('OBSERVED_AUTHORITY_PAGES' if tree and authority.get('pages', {}).get('status') == 200
-                               else 'HOLD_AUTHORITY_PAGES_READ_UNAVAILABLE'),
-                     'publication_mutated': False, 'deployed_candidate_head_tree_verified': False,
-                     'persistent_signed_installation_verified': False, 'authenticated_runtime_readback': False,
-                     'personal_release_effect_ack_done': False}
-          pathlib.Path('PAGES_REST_READBACK.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n')
-          print(receipt['state'])
-          PY
-      - name: Retain exact run Pages REST receipt
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: qikvrt-authority-pages-rest-readback
-          path: PAGES_REST_READBACK.json
-          if-no-files-found: error
-          retention-days: 30

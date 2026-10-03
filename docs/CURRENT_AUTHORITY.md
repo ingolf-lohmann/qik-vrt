@@ -134,9 +134,38 @@ and App inputs were absent in that exact runner, while the Mirror control
 read succeeded. This does not establish global credential absence or the
 cause of the Authority's 404. It supplies no gate for PR #444.
 
-The smallest source-closure continuation remains an authorized Authority
-content carrier, or delivery of an existing Authority-read credential into
-that fixed probe followed by a new initial exact-ref invocation. This client
-has no secret-binding, initial-dispatch or repository-creation operation.
+The canonical source-closure resume point is now
+`evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json#/source_closure_resume`.
+It reuses `authority_url_probe` in `.github/workflows/qikvrt_mesh_authority_edge.yml`
+and the R11 GET-only transport from PR #446, with one fixed target and one existing
+App issuance route. The native App action must supply its actual installation ID;
+its scoped installation repository list must identify only Authority repository
+1271407206 and owner 293941403. The connection listing installation 147849532
+is not silently equated with another App installation. Source closure requests
+only Contents read; the existing Pages observer requests its existing Pages read
+permission only in its separate operation through this same carrier.
+
+The three direct token inputs remain presence-only candidates because no
+installation-attested direct route is established in this client. They cannot
+shadow the App route, and the Mirror workflow token is never an Authority
+fallback. Missing delivery produces a metadata-only BLOCK before any Authority
+request. No replacement key, new secret, credentialed redirect, automatic retry
+or wider permission is created.
+
+Once the existing App inputs are delivered, one initial invocation on a freshly
+bound ref can verify target identity, Main HEAD/TREE, listed refs and their
+reachable commit/tag/tree/blob objects using byte-safe blob decoding and the
+existing Git-tree reconstruction. Unsupported LFS/gitlink/symlink closure,
+partial collections, bounds and moved refs fail closed. Git commit/tag identity
+is authenticated API readback; it is not an independent raw-object hash proof.
+Runtime/platform closure, retained-source/Mirror comparison and role acceptance
+remain explicit later gates. This client has no secret-binding, initial-dispatch
+or repository-creation operation.
 Fresh candidate CI, native protection and independent exact-head review
 remain separate from complete Authority source and observed role effects.
+
+Fresh input Main 6105892b1c6992f6be19e0f29fe0530e319eaaf1 adds only the six role-local Mirror
+lifecycle paths from producer 37136228467-1. This candidate preserves
+that Main history and both prior PR histories. Heartbeat 2026-10-03T16:16:21Z
+expires 2026-10-04T17:16:21Z; renewal is due 2026-10-04T16:16:21Z.
+These are bound lifecycle records, not live Authority acceptance.

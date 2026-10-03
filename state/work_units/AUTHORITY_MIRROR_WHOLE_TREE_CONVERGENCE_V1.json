@@ -452,6 +452,179 @@
         "tool_cache": "PASS 18/18"
       }
     },
+    "continuation_authority_source_carrier_20261003": {
+      "artificial_cognitive_actor": {
+        "model_or_build": "GPT-6",
+        "provider": "OpenAI",
+        "session": "eb10aff34f59",
+        "system_family": "Codex"
+      },
+      "artificial_cognitive_contribution": "Reuse PR 446 probe and existing R11 transport on PR 444; collapse duplicate credential selection; bind actual App installation output and target scope; verify binary Git blobs, tree modes, referenced objects and fail-closed bounds; retain the Pages observer through this shared carrier.",
+      "canonical_resume_pointer": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json#/source_closure_resume",
+      "capability_observation": {
+        "connection_installation": 147849532,
+        "global_credential_absence_inferred": false,
+        "initial_workflow_dispatch_exposed": false,
+        "installation_selectable_content_read_exposed": false,
+        "listed_authority_pull": true,
+        "listed_repository_id": 1271407206,
+        "local_credential_names_present": {
+          "GH_TOKEN": false,
+          "GITHUB_TOKEN": false,
+          "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+          "QIKVRT_MESH_TOKEN": false,
+          "QIKVRT_RULESET_ADMIN_TOKEN": false,
+          "QIKVRT_RULESET_APP_ID": false,
+          "QIKVRT_RULESET_APP_PRIVATE_KEY": false
+        },
+        "secret_binding_exposed": false
+      },
+      "containing_successor_native_gates": "REQUIRED",
+      "credential_delivery_verified": false,
+      "effect_ack_done": false,
+      "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+      "historical_pr446_run_id": 37086743407,
+      "historical_run_is_current_gate": false,
+      "history_preserved_by_ordered_parents": [
+        "257b88eadcf44b36fa4b5d5723c1fc27a01a4127",
+        "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+        "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a"
+      ],
+      "human_contribution": "Ingolf Lohmann authorizes one existing target/installation-bound Authority carrier and a machine-readable resume point; no new secrets, replacement keys or permission expansion.",
+      "input_subjects": {
+        "donor_pr446_head": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+        "donor_pr446_tree": "3aeb41df3f9d9d47c6875ea5b09e0bec06e796c2",
+        "fresh_main_head": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+        "fresh_main_tree": "3369a9cdd1e1913175466156b7a4b96e24699d02",
+        "main": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+        "pr444_head": "257b88eadcf44b36fa4b5d5723c1fc27a01a4127",
+        "pr444_tree": "748bcf445bbce4ea507128515cc5fd7627627e3c"
+      },
+      "latest_complete_authority_closure_verified": false,
+      "local_verification": {
+        "bootstrap": "BLOCK: API fixture has no full Git checkout/origin. Fresh native full-checkout CI is required.",
+        "pages_regression_tests": {
+          "failures": 0,
+          "run": 4
+        },
+        "probe_tests": {
+          "failures": 0,
+          "run": 24
+        },
+        "python": "3.12.14",
+        "r11_tests": {
+          "failures": 0,
+          "run": 9
+        },
+        "scope": "AUTHENTICATED_EXACT_SOURCE_API_FIXTURE; NOT A FULL GIT CHECKOUT",
+        "tool_cache": "PASS 18/18"
+      },
+      "main_activation_verified": false,
+      "mirror_lifecycle_integration": {
+        "authority_role_acceptance": false,
+        "expires_utc": "2026-10-04T17:16:21Z",
+        "heartbeat_utc": "2026-10-03T16:16:21Z",
+        "history_preserving": true,
+        "integrated_main_head": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+        "integrated_main_tree": "3369a9cdd1e1913175466156b7a4b96e24699d02",
+        "next_renewal_due_utc": "2026-10-04T16:16:21Z",
+        "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "paths": [
+          "evidence/node_health/37136228467-1.json",
+          "evidence/node_health/LATEST.json",
+          "evidence/node_registration_renewal/37136228467-1.json",
+          "evidence/node_registration_renewal/LATEST.json",
+          "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+        ],
+        "role_local_scope_only": true,
+        "run_id": "37136228467-1"
+      },
+      "observed_at": "2026-10-03T16:38:29.276055+00:00",
+      "outputs": [
+        {
+          "bytes": 8446,
+          "git_blob_sha1": "639d4a0e3f2aba71a9196dd108bf27c4c21c1860",
+          "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+          "sha256": "bf5b304e5b03ae49a6fa831b2cc3b416c60033d1d8aeea72879fc5a0a06f15c6"
+        },
+        {
+          "bytes": 25233,
+          "git_blob_sha1": "61a9cf6258532d3cfb0bdcc593bf4ee6b3f01ae2",
+          "path": "tools/qikvrt_authority_url_probe.py",
+          "sha256": "b4f93ba55d88393657ccd67e0fcdb0f50911b4db322710eee20feaf0166e1d7c"
+        },
+        {
+          "bytes": 18027,
+          "git_blob_sha1": "1ff698a56456525d3b2b30906b2376450a53acbf",
+          "path": "tests/test_qikvrt_authority_url_probe.py",
+          "sha256": "4ddc518e816fb3e06abbaa459f77aeb56b0665c9ed0ddd0551aaf23a28490788"
+        },
+        {
+          "bytes": 20344,
+          "git_blob_sha1": "542cf7565583ccf67860c223309638546698f568",
+          "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+          "sha256": "77727b4fa146034a4aed3bcfa7ee176a27dd8e468d66a8ddf7c05b0673d3ce39"
+        },
+        {
+          "bytes": 12249,
+          "git_blob_sha1": "f9cf549b40f254d102c9e8504141bea19521f3b2",
+          "path": "Makefile",
+          "sha256": "6a7afb47c2ed0bd91c27c3e232ec9e41f76f050b798bd8ac50607d9522d8f4a7"
+        },
+        {
+          "bytes": 9845,
+          "git_blob_sha1": "24f7fa2a643a6aa755357b36ca13c802084860ea",
+          "path": "docs/CURRENT_AUTHORITY.md",
+          "sha256": "be5094c793982d4e0ea69a035eb30215ba5bf15865b4c5210a5302517c4d971b"
+        },
+        {
+          "bytes": 69466,
+          "git_blob_sha1": "e2e90941b8e9af6aa7fb35697ffff3e6b8df4629",
+          "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+          "sha256": "cb6976a130b4babb78e674e865498d2f01fa2ecd309d4fd8299224bc597469af"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "141ccdf9d6e233c0dc27ffa462e2237cba32619a",
+          "path": "evidence/node_health/37136228467-1.json",
+          "sha256": "6113ebf0ca3621d1ecf3ea989a5bc8e8344e12474f190b2a42355fb5a526f896"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "141ccdf9d6e233c0dc27ffa462e2237cba32619a",
+          "path": "evidence/node_health/LATEST.json",
+          "sha256": "6113ebf0ca3621d1ecf3ea989a5bc8e8344e12474f190b2a42355fb5a526f896"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "6f9bc1d44f9e897219be00ff824b1e6d96c8b48d",
+          "path": "evidence/node_registration_renewal/37136228467-1.json",
+          "sha256": "a7fa1b0a930faa0a14de3679285ad0da7ddc45aadbeb33442a451b4d9653a126"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "6f9bc1d44f9e897219be00ff824b1e6d96c8b48d",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "sha256": "a7fa1b0a930faa0a14de3679285ad0da7ddc45aadbeb33442a451b4d9653a126"
+        },
+        {
+          "bytes": 563,
+          "git_blob_sha1": "763ce3f12a36126a27152f0f729c3fe36ea94fde",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "sha256": "03fa7e949baa7fc59af7846ef1c48d75fef2988b8954fd987eb36e5caa9e7288"
+        },
+        {
+          "bytes": 542,
+          "git_blob_sha1": "1073b2be9a97c83a11fd92fb21c0e44b731e39e7",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "sha256": "3e46b542daa6af4ba806e8baf52a1f1610fdfd6126333055c82a63667558fb9c"
+        }
+      ],
+      "predecessor_evidence_transfer": false,
+      "schema": "qikvrt_authority_source_carrier_continuation_v1",
+      "state": "BLOCK"
+    },
     "contributions": [
       "Inspect actual existing Seed and Mesh API routes",
       "Retain the complete historical Authority tree through a create-only Git ref and fresh readback",

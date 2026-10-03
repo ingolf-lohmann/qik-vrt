@@ -25,112 +25,68 @@ POLICY = ROOT / "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
 
 
 class AuthorityPagesObserverTests(unittest.TestCase):
-    workflow = ROOT / '.github/workflows/qikvrt_mesh_authority_edge.yml'
-
-    def inline_python(self, step):
-        block = self.workflow.read_text().split('      - name: ' + step, 1)[1]
-        block = block.split("          python3 - <<'PY'\n", 1)[1].split('\n          PY', 1)[0]
-        return '\n'.join(line[10:] for line in block.splitlines())
-
-    def run_observer(self, *, token='', app_outcome='skipped', authority_head=None):
-        candidate_head, candidate_tree = 'a' * 40, 'b' * 40
-        authority_head = authority_head if authority_head is not None else 'c' * 40
-        requests = []
-
-        def open_request(request, timeout):
-            requests.append(request)
-            url = request.full_url
-            status, value = 404, {'message': 'Not Found'}
-            if url.endswith('/git/commits/' + candidate_head):
-                status, value = 200, {'tree': {'sha': candidate_tree}}
-            elif url.startswith('https://api.github.com/repos/Goldkelch/qik-vrt/') and token:
-                status, value = 200, {'source': {'branch': 'main', 'path': '/docs'}}
-                if url.endswith('/branches/main'):
-                    value = {'commit': {'sha': authority_head}}
-                elif '/git/commits/' in url:
-                    value = {'tree': {'sha': 'd' * 40}}
-                elif '/git/trees/' in url:
-                    value = {'tree': [], 'truncated': False}
-            return urllib.error.HTTPError(url, status, 'fixture', Message(),
-                                          io.BytesIO(json.dumps(value).encode()))
-
-        env = {'CANDIDATE_HEAD': candidate_head, 'OBSERVER_TOKEN': 'fixture-observer',
-               'OBSERVER_RUN_ID': 'fixture-run', 'OBSERVER_RUN_ATTEMPT': '1',
-               'APP_TOKEN': token, 'APP_TOKEN_OUTCOME': app_outcome}
-        with tempfile.TemporaryDirectory() as temp, chdir(temp), patch.dict(os.environ, env, clear=True), \
-                patch('urllib.request.build_opener') as build:
-            Path('PAGES_APP_BINDING.json').write_text(json.dumps({
-                'app_id_present': bool(token) or app_outcome == 'failure',
-                'private_key_present': bool(token) or app_outcome == 'failure'}))
-            build.return_value.open.side_effect = open_request
-            exec(compile(self.inline_python('Read fixed Authority Pages contract without publishing'),
-                         str(self.workflow), 'exec'), {})
-            receipt = json.loads(Path('PAGES_REST_READBACK.json').read_text())
-        return receipt, requests
+    """Pages observation reuses the same target/installation-bound source carrier."""
+    def run_observer(self, *, token='', outcome='skipped', head=None):
+        from tools import qikvrt_authority_url_probe as p
+        from tests.test_qikvrt_authority_url_probe import AuthorityURLProbeTests, BINDING, HEAD
+        fixture = AuthorityURLProbeTests()
+        values = {
+            f"/repos/{p.AUTHORITY}/pages": (200, {"source": {"branch": "main", "path": "/docs"}}),
+            f"/repos/{p.AUTHORITY}/pages/builds/latest": (200, {"commit": HEAD}),
+        }
+        if head is not None:
+            values[f"/repos/{p.AUTHORITY}/git/ref/heads/main"] = (200, {
+                "ref": "refs/heads/main", "object": {"type": "commit", "sha": head}})
+        binding = dict(BINDING, requested_permissions={"contents": "read", "pages": "read"})
+        result = p.probe(token, "QIKVRT_AUTHORITY_APP_TOKEN" if token else None,
+                         {"repository": p.MIRROR, "head": "c" * 40, "tree": "d" * 40},
+                         binding=binding if outcome == "success" else None,
+                         transport=fixture.transport(values),
+                         public_reader=lambda url: (200, b"public Pages fixture"), pages=True)
+        return result, fixture.paths
 
     def test_empty_bindings_and_failed_mint_remain_hold_without_authority_requests(self):
-        for outcome in ('skipped', 'failure'):
-            with self.subTest(outcome=outcome):
-                receipt, requests = self.run_observer(app_outcome=outcome)
-                self.assertEqual(receipt['state'], 'HOLD_AUTHORITY_PAGES_READ_UNAVAILABLE')
-                self.assertEqual(receipt['authority_reads'], {})
-                self.assertIsNone(receipt['credential_route'])
-                self.assertFalse(receipt['credential_present'])
-                self.assertEqual(receipt['credential_route_probes']['APP_TOKEN']['mint_outcome'], outcome)
-                self.assertFalse(any('/repos/Goldkelch/' in req.full_url for req in requests))
+        for outcome in ("skipped", "failure"):
+            result, requests = self.run_observer(outcome=outcome)
+            self.assertEqual(result["authority_pages_state"], "HOLD_AUTHORITY_PAGES_READ_UNAVAILABLE")
+            self.assertEqual(result["authority_reads"], {})
+            self.assertEqual(requests, [])
+            self.assertFalse(result["git_object_closure_verified"])
 
     def test_app_route_reads_exact_authority_source_without_credential_transfer(self):
-        receipt, requests = self.run_observer(token='fixture-app-secret', app_outcome='success')
-        self.assertEqual(receipt['candidate_head'], 'a' * 40)
-        self.assertEqual(receipt['candidate_tree'], 'b' * 40)
-        self.assertEqual(receipt['credential_route'], 'APP_TOKEN')
-        self.assertEqual(receipt['state'], 'OBSERVED_AUTHORITY_PAGES')
-        self.assertIn('source_commit', receipt['authority_reads'])
-        self.assertIn('source_inventory', receipt['authority_reads'])
-        for req in requests:
-            authorization = req.get_header('Authorization')
-            if req.full_url.startswith('https://goldkelch.github.io/'):
-                self.assertIsNone(authorization)
-            elif '/repos/Goldkelch/' in req.full_url:
-                self.assertEqual(authorization, 'Bearer fixture-app-secret')
-                if '/contents/' in req.full_url:
-                    self.assertTrue(req.full_url.endswith('?ref=' + 'c' * 40))
-        self.assertNotIn('fixture-app-secret', json.dumps(receipt))
-        self.assertNotIn('fixture-observer', json.dumps(receipt))
-        for field in ('publication_mutated', 'deployed_candidate_head_tree_verified',
-                      'persistent_signed_installation_verified', 'authenticated_runtime_readback',
-                      'personal_release_effect_ack_done'):
-            self.assertFalse(receipt[field])
+        from tools import qikvrt_authority_url_probe as p
+        result, requests = self.run_observer(token="fixture-pages-secret-123456", outcome="success")
+        self.assertEqual(result["state"], "OBSERVED_AUTHORITY_PAGES")
+        self.assertIn("source_commit", result["authority_reads"])
+        self.assertIn("source_inventory", result["authority_reads"])
+        self.assertIn(f"/repos/{p.AUTHORITY}/pages", requests)
+        self.assertTrue(all(item["authentication"] == "anonymous" for item in result["public_readbacks"]))
+        self.assertNotIn("fixture-pages-secret-123456", json.dumps(result))
+        for field in ("publication_mutated", "deployed_candidate_head_tree_verified",
+                      "persistent_signed_installation_verified", "authenticated_runtime_readback",
+                      "personal_release_effect_ack_done", "git_object_closure_verified"):
+            self.assertFalse(result[field])
 
     def test_substituted_authority_head_is_not_used_as_source_path(self):
-        receipt, _ = self.run_observer(token='fixture-app-secret', app_outcome='success',
-                                      authority_head='../substitution')
-        self.assertNotIn('source_commit', receipt['authority_reads'])
-        self.assertNotIn('source_inventory', receipt['authority_reads'])
+        result, requests = self.run_observer(token="fixture-pages-secret-123456", outcome="success",
+                                            head="../substitution")
+        self.assertEqual(result["first_blocker"], "AUTHORITY_MAIN_SUBJECT_NOT_VERIFIED")
+        self.assertNotIn("source_commit", result["authority_reads"])
+        self.assertFalse(any("/git/commits/" in path for path in requests))
 
-    def test_app_requires_both_existing_bindings_and_requests_only_read_permissions(self):
-        for values, available in (({}, False), ({'RULESET_APP_ID': 'fixture-id'}, False),
-                                  ({'RULESET_APP_PRIVATE_KEY': 'fixture-key'}, False),
-                                  ({'RULESET_APP_ID': 'fixture-id',
-                                    'RULESET_APP_PRIVATE_KEY': 'fixture-key'}, True)):
-            with self.subTest(values=list(values)), tempfile.TemporaryDirectory() as temp, chdir(temp), \
-                    patch.dict(os.environ, values | {'GITHUB_OUTPUT': str(Path(temp) / 'output')}, clear=True):
-                exec(compile(self.inline_python('Observe existing Authority App binding without retaining secrets'),
-                             str(self.workflow), 'exec'), {})
-                output = Path('output').read_text()
-                binding = json.loads(Path('PAGES_APP_BINDING.json').read_text())
-                self.assertEqual(output, 'available=' + str(available).lower() + '\n')
-                self.assertEqual(binding['target_repository'], 'Goldkelch/qik-vrt')
-                self.assertEqual(binding['requested_permissions'], {'pages': 'read', 'contents': 'read'})
-                self.assertNotIn('fixture-key', json.dumps(binding))
-        app_step = self.workflow.read_text().split('      - name: Mint read-only token', 1)[1]
-        app_step = app_step.split('      - name:', 1)[0]
-        self.assertIn('owner: Goldkelch', app_step)
-        self.assertIn('repositories: qik-vrt', app_step)
-        self.assertIn('permission-pages: read', app_step)
-        self.assertIn('permission-contents: read', app_step)
-        self.assertNotIn('permission-administration:', app_step)
-        self.assertNotIn(': write', app_step)
+    def test_app_requires_existing_binding_and_pages_permissions_stay_in_pages_mode(self):
+        from tools import qikvrt_authority_url_probe as p
+        from tests.test_qikvrt_authority_url_probe import BINDING
+        self.assertFalse(p.valid_binding(BINDING, pages=True))
+        self.assertTrue(p.valid_binding(dict(BINDING,
+            requested_permissions={"contents": "read", "pages": "read"}), pages=True))
+        source = (ROOT / p.WORKFLOW).read_text()
+        self.assertEqual(source.count("uses: " + p.APP_ACTION), 1)
+        self.assertIn("permission-pages: \u0024{{ env.QIKVRT_AUTHORITY_OPERATION == 'authority_pages_readback'", source)
+        self.assertIn("owner: Goldkelch", source)
+        self.assertIn("repositories: qik-vrt", source)
+        self.assertNotIn("permission-administration:", source)
+        self.assertNotIn("pages-readback:", source)
 
 
 class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):

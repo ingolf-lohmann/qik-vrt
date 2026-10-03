@@ -1159,7 +1159,7 @@
   },
   "neutral_repository_creation_observed": false,
   "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
-  "next_smallest_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
+  "next_smallest_action": "RESUME_SINGLE_EXISTING_INSTALLATION_BOUND_AUTHORITY_PROBE",
   "not_implications": [
     "HISTORICAL_WHOLE_TREE_IDENTITY_NOT_LATEST_AUTHORITY_CLOSURE",
     "REPO_READ_PERMISSION_NOT_CREATE_REPOSITORY_CAPABILITY",
@@ -1185,7 +1185,7 @@
     "validity": "EXACT_HISTORICAL_CONTENT_ONLY",
     "write_and_ref_readback_verified": true
   },
-  "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence.",
+  "retry_condition": "The existing App ID/private-key inputs are delivered to this existing runner, scoped issuance succeeds, and the native App action supplies its actual installation ID. Initial invocation requires a freshly bound ref; no replacement key, new secret, wider permission, redirect, automatic retry or credential fallback.",
   "same_path_changed_blob_count": 44,
   "same_path_changed_blobs": [
     {
@@ -1410,6 +1410,132 @@
     }
   ],
   "schema": "qikvrt_retained_authority_tree_verification_v1",
+  "source_closure_resume": {
+    "bounds": {
+      "automatic_retries": 0,
+      "credentialed_redirects": 0,
+      "max_object_reads": 20000,
+      "max_refs": 1000,
+      "max_response_bytes": 2097152
+    },
+    "carrier": {
+      "candidate_default_activation_verified": false,
+      "exact_binding": "Freshly resolve containing ref HEAD/TREE and workflow/source/test blobs before one initial invocation. The containing commit binds this resume receipt; no self-commit is embedded.",
+      "operation": "authority_url_probe",
+      "ref": "work/authority-recovery-acceptance-20261002",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "source_path": "tools/qikvrt_authority_url_probe.py",
+      "test_path": "tests/test_qikvrt_authority_url_probe.py",
+      "trigger": "workflow_dispatch on exact reobserved ref; initial candidate push invokes only the updated source subject once",
+      "workflow_path": ".github/workflows/qikvrt_mesh_authority_edge.yml"
+    },
+    "carrier_id": "qikvrt-mesh-authority-edge/authority_url_probe",
+    "command": "python3 -B tools/qikvrt_authority_url_probe.py --output .qikvrt/evidence/authority-url-probe/readback.json",
+    "completion": {
+      "effect_ack_done": false,
+      "git_object_closure_verified": false,
+      "latest_complete_authority_closure_verified": false,
+      "main_activation_verified": false,
+      "neutral_repository_created": false,
+      "stand_in_authority_effect_observed": false
+    },
+    "connection_listing": {
+      "installation_id": 147849532,
+      "permission_pull": true,
+      "repository_id": 1271407206,
+      "scope": "Current connection installation listing; not execution credential delivery or App installation identity."
+    },
+    "credential_route": {
+      "action": "actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349",
+      "app_id_input": "vars.QIKVRT_RULESET_APP_ID",
+      "connection_and_executor_installation_ids_equated": false,
+      "direct_input_candidates": [
+        "QIKVRT_RULESET_ADMIN_TOKEN",
+        "QIKVRT_GITHUB_ADMIN_TOKEN",
+        "QIKVRT_MESH_TOKEN"
+      ],
+      "direct_input_disposition": "Presence metadata only. No available attested target/installation binding; never select an arbitrary broad or Mirror credential.",
+      "fallback": "NONE",
+      "installation_id_source": "steps.authority-app-token.outputs.installation-id",
+      "installation_scope_verification": "Fresh token-authenticated /installation/repositories must contain exactly Authority repository 1271407206 and owner 293941403.",
+      "kind": "EXISTING_APP_INSTALLATION_TOKEN",
+      "owner": "Goldkelch",
+      "private_key_input": "secrets.QIKVRT_RULESET_APP_PRIVATE_KEY",
+      "repositories": [
+        "qik-vrt"
+      ],
+      "requested_permissions": {
+        "contents": "read"
+      }
+    },
+    "existing_pages_observer": {
+      "operation": "authority_pages_readback",
+      "permission_expansion": false,
+      "permissions": {
+        "contents": "read",
+        "pages": "read"
+      },
+      "source_closure_claim": false,
+      "source_closure_operation_permissions": {
+        "contents": "read"
+      },
+      "uses_same_carrier": true
+    },
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "mirror_lifecycle_integration": {
+      "authority_role_acceptance": false,
+      "expires_utc": "2026-10-04T17:16:21Z",
+      "heartbeat_utc": "2026-10-03T16:16:21Z",
+      "history_preserving": true,
+      "integrated_main_head": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+      "integrated_main_tree": "3369a9cdd1e1913175466156b7a4b96e24699d02",
+      "next_renewal_due_utc": "2026-10-04T16:16:21Z",
+      "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+      "paths": [
+        "evidence/node_health/37136228467-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/37136228467-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+      ],
+      "role_local_scope_only": true,
+      "run_id": "37136228467-1"
+    },
+    "predecessor_evidence_transfer": false,
+    "retry_condition": "The existing App ID/private-key inputs are delivered to this existing runner, scoped issuance succeeds, and the native App action supplies its actual installation ID. Initial invocation requires a freshly bound ref; no replacement key, new secret, wider permission, redirect, automatic retry or credential fallback.",
+    "schema": "qikvrt_authority_source_closure_resume_v1",
+    "source_donor": {
+      "head": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+      "previous_executed_head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+      "previous_run_id": 37086743407,
+      "previous_run_is_current_gate": false,
+      "pull_request": 446,
+      "tree": "3aeb41df3f9d9d47c6875ea5b09e0bec06e796c2"
+    },
+    "state": "BLOCK",
+    "target": {
+      "owner_id": 293941403,
+      "ref": "refs/heads/main",
+      "repository": "Goldkelch/qik-vrt",
+      "repository_id": 1271407206
+    },
+    "verification_limit": "Blob bytes and tree objects are independently hashed. Commit/tag identities and parent relationships use the authenticated GitHub Git-object JSON readback, not independently reconstructed raw commit/tag payloads.",
+    "verification_order": [
+      "EXACT_NATIVE_EXECUTOR_HEAD_TREE_AND_RESUME_CONTRACT",
+      "EXISTING_APP_ISSUANCE_AND_ACTUAL_INSTALLATION_ID",
+      "EXACT_INSTALLATION_TARGET_SCOPE",
+      "REPOSITORY_ID_NAME_OWNER",
+      "MAIN_REF_AND_COMPLETE_LISTED_REF_INVENTORY",
+      "REFERENCED_COMMITS_TAGS_AND_PARENTS",
+      "RECONSTRUCT_RECURSIVE_GIT_TREES",
+      "BYTE_SAFE_BASE64_GIT_BLOB_READBACK_SHA1_AND_SHA256",
+      "LFS_SUBMODULE_SYMLINK_AND_BOUNDED_READ_FAIL_CLOSED",
+      "FRESH_MAIN_AND_REF_INVENTORY_REOBSERVATION",
+      "COMPARE_RETAINED_SOURCE_AND_FRESH_MIRROR",
+      "ROLE_LOCAL_RUNTIME_PLATFORM_GOVERNANCE_REVIEW_AND_ROLE_EPOCH_ACCEPTANCE"
+    ]
+  },
   "source_scope": "HISTORICAL_COMPLETE_GIT_TREE_20260816_NOT_LATEST_AUTHORITY_STATE",
   "source_verifier_sha256": "52e23c36c70eacd743532c258e985d9dada99fa5d20b5b07de74d21688686b9e",
   "stand_in_authority_effect_observed": false,
