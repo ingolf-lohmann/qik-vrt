@@ -11,6 +11,7 @@ files. Runtime installation and task effects remain separate, explicit actions.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -159,6 +160,66 @@ def load_interface_adaptation() -> tuple[dict[str, Any], dict[str, Any]]:
     return policy, matrix
 
 
+def load_requested_review_authority(context: dict[str, Any], repository: str) -> dict[str, Any]:
+    """Resolve scoped standing authority; neither contact nor approve a reviewer."""
+    binding = context.get("human_machine_interface_adaptation", {}).get("requested_review_authority", {})
+    delegation_path = "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+    policy_path = "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+    if (binding.get("delegation"), binding.get("policy")) != (delegation_path, policy_path):
+        raise BootBlock("requested-review authority binding missing or changed")
+    if not {delegation_path, policy_path}.issubset(context.get("required_read_order", [])):
+        raise BootBlock("requested-review authority absent from required read order")
+    delegation = load_json_object(ROOT / delegation_path, delegation_path)
+    policy = load_json_object(ROOT / policy_path, policy_path)
+    if (delegation.get("schema") != "qikvrt_owner_requested_review_and_issue_lifecycle_v1"
+            or policy.get("schema") != "qikvrt_requested_review_and_issue_lifecycle_policy_v1"
+            or policy.get("owner_delegation") != delegation_path
+            or delegation.get("policy") != policy_path):
+        raise BootBlock("requested-review delegation/policy binding drift")
+    owner = delegation.get("owner", {})
+    scopes = delegation.get("authorization_scope", {})
+    if not isinstance(owner, dict) or not isinstance(scopes, dict):
+        raise BootBlock("requested-review owner/scope malformed")
+    established = (delegation.get("state") == "ACTIVE" and policy.get("status") == "ACTIVE"
+                   and owner.get("role") == "Product Owner" and owner.get("type") == "NATURAL_PERSON"
+                   and repository in delegation.get("repositories", [])
+                   and repository in policy.get("repositories", [])
+                   and scopes.get("perform_requested_substantive_reviews_without_reinteraction") is True
+                   and policy.get("standing_internal_authority", {}).get("substantive_review_execution") is True)
+    return {"repository": repository, "delegation_id": delegation.get("delegation_id"),
+            "delegation_path": delegation_path, "policy_path": policy_path,
+            "delegation_sha256": hashlib.sha256((ROOT / delegation_path).read_bytes()).hexdigest(),
+            "policy_sha256": hashlib.sha256((ROOT / policy_path).read_bytes()).hexdigest(),
+            "authorization_established": established,
+            "scope": "REQUESTED_SUBSTANTIVE_REVIEW_ONLY",
+            "independent_account_approval": False, "merge_authorized": False,
+            "route": classify_review_route(established)}
+
+
+def classify_review_route(authorized: bool, admission: str = "UNVERIFIED",
+                          permission: str = "UNVERIFIED") -> dict[str, Any]:
+    """Classify supplied observations, without inferring an executed effect.
+
+    A task executor must independently bind fresh observations to its exact
+    repository/head/principal. This read-only classifier does not attest them.
+    """
+    if (type(authorized) is not bool or admission not in {"UNVERIFIED", "REJECTED", "RECORDED"}
+            or permission not in {"UNVERIFIED", "WRITE", "NONE"}):
+        raise BootBlock("invalid requested-review route observation")
+    if not authorized:
+        state, action = "AUTHORIZATION_NOT_ESTABLISHED", "RESOLVE_SCOPED_OWNER_AUTHORITY"
+    elif admission == "REJECTED":
+        state = "CONFLICTING_PLATFORM_EVIDENCE" if permission == "WRITE" else "PLATFORM_ADMISSION_REJECTED"
+        action = "VERIFY_PRINCIPAL_TARGET_AND_ADMISSION_ROUTE_PRESERVE_OWNER_AUTHORITY"
+    elif admission == "RECORDED":
+        state, action = "REQUEST_RECORDED_REVIEW_NOT_ESTABLISHED", "VERIFY_EXACT_HEAD_REVIEW_AND_REQUIRED_GATES"
+    else:
+        state, action = "CAPABILITY_AND_ADMISSION_UNVERIFIED", "VERIFY_CALLABLE_ROUTE_WITHOUT_REASKING_ESTABLISHED_AUTHORITY"
+    return {"state": state, "next_action": action, "authorization_established": authorized,
+            "admission_observation": admission, "permission_observation": permission,
+            "review_accepted": False, "effect_ack_done": False}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true", help="emit one JSON document")
@@ -219,6 +280,10 @@ def main() -> int:
             "minimum_observations_before_preference": adaptation_policy.get("evaluation_matrix", {}).get("minimum_observations_before_preference"),
         }
         report["repository"] = git_value("config", "--get", "remote.origin.url")
+        origin = report["repository"]
+        match = re.fullmatch(r"(?:https://github\.com/|git@github\.com:)([^/]+/[^/]+?)(?:\.git)?", origin)
+        repository = match.group(1) if match else "UNRESOLVED"
+        report["requested_review_authority"] = load_requested_review_authority(context, repository)
         report["git_ref"] = git_value("rev-parse", "--abbrev-ref", "HEAD")
         report["git_commit"] = git_value("rev-parse", "HEAD")
 
@@ -303,6 +368,10 @@ def main() -> int:
             print(f"INTERFACE_ADAPTATION_MODE={adaptation_report.get('mode', 'unavailable')}")
             print(f"INTERFACE_ADAPTATION_MATRIX_ROWS={adaptation_report.get('matrix_rows', 0)}")
             print(f"INTERFACE_ADAPTATION_ROUTING={adaptation_report.get('routing', 'unavailable')}")
+        authority = report.get("requested_review_authority", {})
+        if authority:
+            print(f"REQUESTED_REVIEW_AUTHORIZATION={authority['authorization_established']}")
+            print(f"REQUESTED_REVIEW_ROUTE={authority['route']['state']}")
         for gate in report["gates"]:
             print(f"GATE_{gate['name'].upper().replace(' ', '_')}={gate['state']}")
         if "blocker" in report:
