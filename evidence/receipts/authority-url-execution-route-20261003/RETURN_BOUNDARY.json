@@ -1,0 +1,69 @@
+{
+  "code_subject": {
+    "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+    "tree": "507870ae80f0a07906198c94aba0f06119f08f13"
+  },
+  "credential_delivery": {
+    "app_token_issuance_outcome": "skipped",
+    "authority_name_status": 404,
+    "authority_numeric_id_status": 404,
+    "existing_app_id_present": false,
+    "existing_app_private_key_present": false,
+    "fallback": "GITHUB_TOKEN",
+    "mirror_control_status": 200,
+    "scope": "Current native runner input delivery only; not a claim about all GitHub secret stores or the existence of any token.",
+    "source_read_verified": false,
+    "three_existing_direct_token_names_present": false
+  },
+  "human_authorization": "Product Owner Ingolf Lohmann authorized the execution-route repair in the current session.",
+  "native_execution": {
+    "admission_job": "SKIPPED",
+    "artifact_id": 11260896259,
+    "attempt": 1,
+    "execution_route_demonstrated": true,
+    "job_id": 111098520251,
+    "metadata_artifact_verified": true,
+    "protected_mutation_count": 0,
+    "run_id": 37086743407
+  },
+  "next_action": {
+    "callable_secret_binding_tool_available": false,
+    "effect": "Bind an existing authorized credential with Goldkelch/qik-vrt contents read access into this native runner through an existing direct-token name, or bind the existing App ID/private-key pair and use the fixed contents:read token route. Then perform a new initial authority_url_probe invocation on an exact observed ref; do not use rerun as initial dispatch.",
+    "existing_app_names": [
+      "QIKVRT_RULESET_APP_ID",
+      "QIKVRT_RULESET_APP_PRIVATE_KEY"
+    ],
+    "existing_direct_names": [
+      "QIKVRT_RULESET_ADMIN_TOKEN",
+      "QIKVRT_GITHUB_ADMIN_TOKEN",
+      "QIKVRT_MESH_TOKEN"
+    ],
+    "permission_expansion_required_by_probe": false,
+    "preserve_original_qr_url": true,
+    "secret_values_available_to_current_executor": false
+  },
+  "original_url": {
+    "http_status": 301,
+    "https_status": 404,
+    "raw_status": 404,
+    "readback_path": "evidence/receipts/authority-url-execution-route-20261003/ORIGINAL_URL_READBACK.json",
+    "restored": false,
+    "root_cause": "NOT_ESTABLISHED"
+  },
+  "receipt_successor": {
+    "code_and_workflow_unchanged": true,
+    "native_ci_to_be_observed_for_successor": true,
+    "new_probe_trigger_required": false,
+    "no_gate_transfer": true,
+    "probe_push_paths_unchanged": true
+  },
+  "release_claims": {
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "original_url_restored": false
+  },
+  "schema": "qikvrt_authority_url_return_boundary_v1",
+  "state": "EXTERNAL_CREDENTIAL_BINDING_REQUIRED"
+}

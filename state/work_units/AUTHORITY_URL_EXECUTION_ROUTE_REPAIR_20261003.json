@@ -53,7 +53,12 @@
     "SHA256SUMS.txt",
     "REPOSITORY_FILE_MANIFEST.json.sha256",
     "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_READBACK.json",
-    "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_ARTIFACT_RECEIPT.json"
+    "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_ARTIFACT_RECEIPT.json",
+    "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_READBACK.json",
+    "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_ARTIFACT_RECEIPT.json",
+    "evidence/receipts/authority-url-execution-route-20261003/ORIGINAL_URL_READBACK.json",
+    "evidence/receipts/authority-url-execution-route-20261003/CI_7ed957_RECEIPT.json",
+    "evidence/receipts/authority-url-execution-route-20261003/RETURN_BOUNDARY.json"
   ],
   "git_history": {
     "branch": "work/authority-url-probe-20261003-6fb101b",
@@ -61,7 +66,7 @@
     "force_push": false,
     "history_rewrite": false,
     "candidate_sha_bound_by_native_run": true,
-    "successor_parent": "1603acf44336dc2a44a9a9caea3fc0e386ae722c"
+    "successor_parent": "7ed957669a8f6f0e03c62cff7787a45cfaceab12"
   },
   "reuse_evidence": {
     "workflow": ".github/workflows/qikvrt_mesh_authority_edge.yml",
@@ -98,23 +103,30 @@
     }
   },
   "verification": {
-    "state": "FIRST_NATIVE_EXECUTION_AND_ARTIFACT_VERIFIED",
+    "state": "EXACT_CODE_SUBJECT_NATIVE_TESTS_PASS_AND_DELIVERY_BLOCK_VERIFIED",
     "targeted_commands": [
       "python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe tests.test_r11_read_only_observation_dispatch_contract_v2",
       "python3 -B tools/qikvrt_integrity.py verify",
       "make test"
     ],
     "exact_head_native_execution": {
-      "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
-      "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
-      "run_id": 37085715307,
-      "job_id": 111095461008,
-      "artifact_id": 11259683002,
-      "artifact_zip_sha256": "5a508ec98db536fe0c5e9355a8314c688a24ecf88121451ca388d8ef43255683",
+      "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+      "tree": "507870ae80f0a07906198c94aba0f06119f08f13",
+      "run_id": 37086743407,
+      "job_id": 111098520251,
+      "artifact_id": 11260896259,
+      "artifact_zip_sha256": "ceca9dbe4aab5ca429f3d4a160911f9015c1780b1a6f9a4294da1f99c646cc53",
       "job_result": "BLOCK_AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
       "admission_job": "SKIPPED"
     },
-    "public_QR_url": "PENDING",
+    "public_QR_url": {
+      "http_status": 301,
+      "https_status": 404,
+      "raw_status": 404,
+      "restored": false,
+      "root_cause": "NOT_ESTABLISHED",
+      "evidence_path": "evidence/receipts/authority-url-execution-route-20261003/ORIGINAL_URL_READBACK.json"
+    },
     "predecessor_evidence_transfer": false,
     "baseline_limit": "An extra unchanged Main ruleset-token structural test expects a superseded symbol 'if pre_hash != expected_pre:' and fails against the current writer; no protected writer change or weakening is made in this task.",
     "base_integrity_limit": "Current Main's integrity trio omits twelve newer receipts and has stale workflow/token-test and lifecycle digests. The existing generator refreshes the trio only on this isolated candidate.",
@@ -139,14 +151,36 @@
       "optional_runtime_components": "Not installed and not needed by this GET-only task."
     },
     "native_full_suite": {
-      "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
-      "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
-      "run_id": 37085715319,
-      "job_id": 111095461158,
+      "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+      "tree": "507870ae80f0a07906198c94aba0f06119f08f13",
+      "run_id": 37086743364,
+      "job_id": 111098519974,
       "MAKE_TEST_EXIT": 0,
-      "scope": "Exact first candidate; not a successor gate."
+      "scope": "Exact executed code subject; not a successor gate."
     },
-    "current_successor_native_gate": "PENDING"
+    "current_successor_native_gate": "Receipt-only successor CI/integrity must be observed separately through native API after this receipt materialization.",
+    "historical_native_executions": [
+      {
+        "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
+        "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
+        "run_id": 37085715307,
+        "job_id": 111095461008,
+        "artifact_id": 11259683002,
+        "artifact_zip_sha256": "5a508ec98db536fe0c5e9355a8314c688a24ecf88121451ca388d8ef43255683",
+        "job_result": "BLOCK_AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+        "admission_job": "SKIPPED"
+      }
+    ],
+    "historical_native_full_suites": [
+      {
+        "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
+        "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
+        "run_id": 37085715319,
+        "job_id": 111095461158,
+        "MAKE_TEST_EXIT": 0,
+        "scope": "Exact first candidate; not a successor gate."
+      }
+    ]
   },
   "human_decision": {
     "state": "AUTHORIZED",
@@ -171,7 +205,7 @@
   "acceptance": {
     "execution_route_scope": "Native run on the exact candidate with a bound diagnostic artifact and protected-write count zero.",
     "original_URL_scope": "Anonymous original QR URL HTTP 200 plus exact Authority HEAD/TREE, AI Git blob and public raw-byte readback under stable Main.",
-    "first_unverified_edge": "Current credential delivery and target read access in the native executor."
+    "first_unverified_edge": "Authorized credential delivery to this native runner, then exact Authority identity/content read and original public URL effect."
   },
   "release_claims": {
     "PASS": false,
@@ -210,7 +244,39 @@
       "path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_ARTIFACT_RECEIPT.json",
       "bytes": 745,
       "sha256": "d2c9b937e4e65e3ebc0b624afac32dd81d5a5542dcbfde78d2bc005e72951169"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_READBACK.json",
+      "bytes": 2725,
+      "sha256": "ac00d3ec9e3d04faf79b559ae47963e388494d9d43879257bf9b5f9695060fc4"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_ARTIFACT_RECEIPT.json",
+      "bytes": 764,
+      "sha256": "92d0950004c7acd60aa274b0a8a0257d6a5f2a88db8c383954ef860095f4c4f6"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/ORIGINAL_URL_READBACK.json",
+      "bytes": 1334,
+      "sha256": "6cc76069fa430267f58483f3b789ef44113fbc36474341cfd64b7940e053fc6b"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/CI_7ed957_RECEIPT.json",
+      "bytes": 876,
+      "sha256": "bce783ebffcf41e6f38367d7899900710c0db55ecbf04305880cd1d395f7a092"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/RETURN_BOUNDARY.json",
+      "bytes": 2684,
+      "sha256": "94037349d2d7fd4b5a59e2e56665232880f84d741519b032fe6768abeaefc8b8"
     }
   ],
-  "next_action": "Inventory the existing App ID/private-key pair and, only if configured and no direct credential is delivered, mint a contents:read token for fixed Goldkelch/qik-vrt; native successor readback remains pending."
+  "next_action": "Bind an existing authorized credential with Goldkelch/qik-vrt contents read access into this native runner through an existing direct-token name, or bind the existing App ID/private-key pair and use the fixed contents:read token route. Then perform a new initial authority_url_probe invocation on an exact observed ref; do not use rerun as initial dispatch.",
+  "return_boundary": {
+    "state": "EXTERNAL_CREDENTIAL_BINDING_REQUIRED",
+    "evidence_path": "evidence/receipts/authority-url-execution-route-20261003/RETURN_BOUNDARY.json",
+    "execution_route_repaired": true,
+    "original_url_restored": false,
+    "next_action_preserved": true
+  }
 }
