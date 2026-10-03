@@ -76,8 +76,12 @@ function Invoke-TestProcess([string]$Name, [string]$Exe, [string]$Arguments, [in
 }
 
 function Invoke-BootstrapTest([string]$Name, [string[]]$Parameters, [int]$Expected) {
-    $command = "& '" + $bootstrap.Replace("'", "''") + "' "
-    foreach ($value in $Parameters) { $command += "'" + $value.Replace("'", "''") + "' " }
+    $command = "`$ErrorActionPreference = 'Stop'; & '" + $bootstrap.Replace("'", "''") + "' "
+    foreach ($value in $Parameters) {
+        if ($value -match '^-(CheckOnly|Install|AcceptThirdParty|Profile|CacheDir|RuntimeReceiptFile|ReconstructUpstream)$') {
+            $command += $value + ' '
+        } else { $command += "'" + $value.Replace("'", "''") + "' " }
+    }
     $command += '; exit $LASTEXITCODE'
     $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
     Invoke-TestProcess $Name $hostExe ('-NoProfile -NonInteractive -ExecutionPolicy Bypass -EncodedCommand ' + $encoded) $Expected
