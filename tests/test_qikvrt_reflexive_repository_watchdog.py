@@ -179,6 +179,8 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertEqual(value["first_blocker"], "MORE_THAN_ONE_ACTIVE_REPOSITORY_WRITER")
         self.assertFalse(value["resource_graph"]["cycle_detected"])
         self.assertTrue(value["resource_graph"]["pre_cycle_conflict_detected"])
+        self.assertEqual(value["recursive_haltpoint"]["classification"], "WORK")
+        self.assertFalse(value["recursive_haltpoint"]["halt"])
 
     def test_stale_writer_lease_is_blocked_before_a_replacement_writer(self) -> None:
         value = self.analyze(
@@ -243,6 +245,8 @@ class ReflexiveRepositoryWatchdogTests(unittest.TestCase):
         self.assertEqual(coalesced["observations"]["active_productive_runs"], [])
         self.assertEqual(coalesced["observations"]["waiting_productive_runs"], [])
         self.assertEqual(coalesced["observations"]["untrusted_terminal_runs"], [])
+        self.assertEqual(coalesced["recursive_haltpoint"]["classification"], "IDLE")
+        self.assertFalse(coalesced["recursive_haltpoint"]["halt"])
 
         starved = self.analyze(
             runs,
@@ -477,9 +481,18 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
             binary = root / "bin"
             binary.mkdir()
             (root / "tools").mkdir()
+            (root / "policy").mkdir()
             shutil.copyfile(
                 ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
                 root / "tools/qikvrt_reflexive_repository_watchdog.py",
+            )
+            shutil.copyfile(
+                ROOT / "tools/qikvrt_recursive_haltpoint.py",
+                root / "tools/qikvrt_recursive_haltpoint.py",
+            )
+            shutil.copyfile(
+                ROOT / "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
+                root / "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
             )
             stubs = {
                 "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
@@ -525,6 +538,11 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
             self.assertFalse(receipt["live_subject_reobserved"])
             self.assertFalse(receipt["productive_edge"])
             self.assertFalse(any(receipt["completion_claims"].values()))
+            self.assertEqual(receipt["recursive_haltpoint"]["classification"], "WORK")
+            self.assertFalse(receipt["recursive_haltpoint"]["halt"])
+            self.assertEqual(
+                receipt["recursive_haltpoint"]["next_action"], "REBIND_EXACT_HEAD_TREE"
+            )
             self.assertEqual(
                 receipt_path.read_bytes(),
                 (receipt_path.parent / "gatewatch-receipt.json").read_bytes(),
