@@ -37,7 +37,9 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             "PERSONAL_STATE_LEAK_TO_STANDARD": "DENY",
             "PERSONAL_CREDENTIAL_LEAK_TO_REPOSITORY": "DENY",
             "PERSONAL_EVIDENCE_TRANSFER_TO_STANDARD": "DENY",
-            "CHATGPT_RUNTIME_INTEGRATION": "AUTHENTICATED_EXTERNAL_SERVICE",
+            "QIKVRT_CODEX_RUNTIME": "LOCAL_DETERMINISTIC",
+            "CHATGPT_RUNTIME_INTEGRATION": "OPTIONAL_AUTHENTICATED_ADAPTER",
+            "EXTERNAL_SERVICE_REQUIRED_FOR_CODEX": "FALSE",
             "CHATGPT_PROPRIETARY_RUNTIME_REDISTRIBUTION": "DENY",
             "PREDECESSOR_EVIDENCE_TRANSFER": "FALSE",
         }
@@ -45,6 +47,19 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             with self.subTest(key=key):
                 self.assertIn(f"{key}", self.spec)
                 self.assertIn(f"= {value}", self.spec)
+
+    def test_codex_needs_no_external_service_and_adapter_is_optional(self) -> None:
+        invariants = self.policy["invariants"]
+        self.assertEqual(invariants["chatgpt_runtime_integration"], "OPTIONAL_AUTHENTICATED_ADAPTER")
+        self.assertEqual(invariants["qikvrt_codex_runtime"], "LOCAL_DETERMINISTIC")
+        self.assertFalse(invariants["external_service_required_for_codex"])
+        codex_policy = json.loads((ROOT / self.policy["standpoint_codex"]).read_text())
+        self.assertFalse(codex_policy["normative_process"]["external_model_required"])
+        acceptance = self.policy["personal_release_acceptance"]
+        self.assertIn("local_codex_roundtrip_readback", acceptance["requires"])
+        self.assertIn("optional_adapter_authentication_when_enabled", acceptance["requires"])
+        self.assertNotIn("authenticated_runtime_boundary", acceptance["requires"])
+        self.assertIn("historical provenance", self.spec)
 
     def test_standard_package_has_no_ingolf_specific_payload(self) -> None:
         package = self.policy["standard_firefox_package"]
