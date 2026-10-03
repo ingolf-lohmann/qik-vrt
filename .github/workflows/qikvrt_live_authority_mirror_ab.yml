@@ -5,6 +5,7 @@ on:
       - 'tools/qikvrt_live_authority_mirror_ab.py'
       - 'tools/qikvrt_authority_credentials.py'
       - 'tests/test_qikvrt_live_authority_mirror_ab.py'
+      - 'Makefile'
       - '.github/workflows/qikvrt_live_authority_mirror_ab.yml'
       - 'docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/**'
   workflow_dispatch:
@@ -20,7 +21,7 @@ jobs:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
-      - name: Verify credential and benchmark boundaries
+      - name: Verify credentials, byte identities and complete cycle boundaries
         id: benchmark-boundaries
         run: python3 -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
       - name: Resolve existing direct or App credential route
@@ -48,7 +49,7 @@ jobs:
           owner: Goldkelch
           repositories: qik-vrt
           permission-contents: read
-      - name: Run exact live A/B measurement
+      - name: Measure local comparison and isolated end-to-end cycle separately
         if: always() && steps.benchmark-boundaries.outcome == 'success'
         env:
           QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}

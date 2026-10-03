@@ -1,0 +1,168 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann",
+    "classification": "benchmark_method_repair_work_unit"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PR447_BYTE_SAFE_AND_END_TO_END_BENCHMARK_20261003",
+  "created_at": "2026-10-03T16:05:13.235954+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/collective-functional-consciousness-20261003",
+  "source_commit": "80e34e4d9347d51091a71edcb74d895bc835a23a",
+  "source_tree": "ace1e64a7dff02314e1e3e0875c02b79d4b931de",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "identity_boundary": "Attribution from the task; platform identity is not natural-person proof."
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "88263cd8666d",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "local Python standard library and Git"
+    ],
+    "observed_at": "2026-10-03T16:05:13.235954+00:00",
+    "identity_and_observation_limits": "API-bound partial source snapshot; full current-head repository validation is required on the native runner."
+  },
+  "human_contributions": [
+    "Requested repair of PR447 local timing, binary object handling, mode/object semantics and complete end-to-end measurement boundaries.",
+    "Supplied the existing exact review-comment URL and required no distributed speedup without delivered Authority credentials and observed complete cycle."
+  ],
+  "artificial_cognitive_contributions": [
+    "Reused the existing benchmark, credential resolver, fixed read-only workflow and Makefile.",
+    "Implemented raw bytes and NUL paths, Git-object SHA verification, mode/type/object/content signatures, and equivalent full/delta comparison.",
+    "Implemented separately timed fixed-subject/FETCH/comparison/sandbox reconciliation/independent remote-refetch readback cycles with alternating method order, fresh per-cycle stores and drift rejection.",
+    "Added 20 regression and cycle-boundary controls to the existing six credential tests; integrated all 26 into make test.",
+    "Prepared incrementally materialized repository integrity using unchanged source-bound manifest entries and hashes; requires fresh native full regeneration/readback."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "tools/qikvrt_live_authority_mirror_ab.py",
+      "git_blob_sha1": "acafd1ae37dcb9ffcab371fa79e3e874cfe83b91",
+      "source_commit": "80e34e4d9347d51091a71edcb74d895bc835a23a"
+    },
+    {
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/447#issuecomment-5970142969",
+      "kind": "DOCUMENTARY_REVIEW_SOURCE"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "tools/qikvrt_live_authority_mirror_ab.py",
+      "bytes": 19018,
+      "sha256": "6fa49a45967590f3bbf1c2a3b78a592b91480800b535a35f5e371f966854ba19",
+      "git_blob_sha1": "0d8e10d419e453a832453343b8a82b330193c330"
+    },
+    {
+      "path": "tests/test_qikvrt_live_authority_mirror_ab.py",
+      "bytes": 18347,
+      "sha256": "1598e12fb6fc1715c0356120ce98c05147262cc32be392a69c2493a7c1d4f488",
+      "git_blob_sha1": "f02216453894a29a3ec35ffac1b967927d0b488d"
+    },
+    {
+      "path": ".github/workflows/qikvrt_live_authority_mirror_ab.yml",
+      "bytes": 3385,
+      "sha256": "f416a100a8bb0acf92056d6d3ee138ae183687455ba0585dcc3063197af36e33",
+      "git_blob_sha1": "b5ba9c1374c220e573e922f8c7819e713d27b369"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11065,
+      "sha256": "25cdc8aeed5fd7b2b3284c81416ceffec1580d3d2fa84ed5cd0df981f0bfe3ca",
+      "git_blob_sha1": "7ea805570571d17f9b449827aa28fa499772d59b"
+    }
+  ],
+  "git_history": {
+    "parent": "80e34e4d9347d51091a71edcb74d895bc835a23a",
+    "target_branch": "work/collective-functional-consciousness-20261003",
+    "history_preserving": true,
+    "force_push": false,
+    "result_head_and_tree": "Bound by containing commit and fresh post-write API readback; no self-referential commit ID is embedded."
+  },
+  "methodology": {
+    "schema": "qikvrt_live_authority_mirror_ab_v2",
+    "entry_identity": [
+      "Git tree path bytes",
+      "file mode",
+      "Git object type",
+      "Git object ID",
+      "SHA-256 of raw blob bytes; Git object header and ID independently verified"
+    ],
+    "missing_paths": "Absent entry differs from an empty blob; an unreadable/corrupt object fails closed.",
+    "gitlinks": "Mode/type/commit object ID are compared without requiring local submodule objects.",
+    "commit_metadata": "Different commit IDs may identify different subjects with equal trees; both comparisons correctly return no file delta in that case. Reconciliation readback still requires the exact target commit.",
+    "local_scope": "LOCAL_GIT_OBJECT_COMPARISON_ONLY",
+    "local_clock_excludes": [
+      "remote subject binding",
+      "remote FETCH",
+      "reconciliation",
+      "fresh readback"
+    ],
+    "end_to_end_scope": "REMOTE_FETCH_TO_ISOLATED_REPLICA_AND_FRESH_READBACK",
+    "clock_start": "Before reobserving/binding the expected immutable Authority subject and Mirror base.",
+    "phases": [
+      "bind_fixed_subjects",
+      "transport_fetch",
+      "comparison",
+      "reconciliation",
+      "fresh_readback"
+    ],
+    "clock_end": "After scratch-replica HEAD/TREE and all blob/mode/object verification against an independently refetched Authority store and fresh unchanged remote-head readback.",
+    "subject_route": "Fixed new subject relative to the Mirror base; identical heads are HOLD_NEW_SUBJECT_NOT_ESTABLISHED.",
+    "shallow_import": "Local transport of shallow source stores explicitly permits update-shallow and verifies FETCH_HEAD; a zero exit code with rejected shallow roots is not accepted.",
+    "transport_scope": "Only fixed Authority/Mirror remote reads. Reconciliation CAS changes an isolated local replica; the production Mirror is never pushed or mutated.",
+    "distributed_cycle_status": "HOLD_PRODUCTION_REMOTE_RECONCILIATION_NOT_OBSERVED",
+    "ratio_semantics": "Local and sandbox end-to-end median ratios are separate nested observations. No unscoped wall_speedup_x or distributed speedup assertion is emitted.",
+    "failure_boundaries": [
+      "No Authority credential: HOLD before any remote network action and no timings/ratios.",
+      "Remote subject drift or no new subject: incomplete end-to-end trial, no end-to-end ratio.",
+      "Skipped reconciliation, bad FETCH identity, unreadable/corrupt object or result mismatch: fail closed."
+    ]
+  },
+  "verification": {
+    "cache_contract": {
+      "command": "python3 -B tools/qikvrt_tool_cache.py verify",
+      "result": "PASS",
+      "covered_components": 14,
+      "coverage_percent": 100
+    },
+    "regression_tests": {
+      "command": "make live-authority-mirror-ab-contract",
+      "result": "PASS",
+      "test_count": 26,
+      "scope": "Current prepared file bytes; real isolated local Git remotes and deterministic clock controls. Not a live network Authority/Mirror measurement."
+    },
+    "full_repository_integrity": "NATIVE_EXACT_SUCCESSOR_REGENERATION_AND_VERIFICATION_REQUIRED",
+    "native_exact_head_runs": "REQUIRED_AFTER_COMMIT_NO_PREDECESSOR_EVIDENCE_TRANSFER",
+    "live_authority_credential_delivery": "NOT_ESTABLISHED_BY_LOCAL_TESTS",
+    "live_sandbox_end_to_end_cycle": "NOT_OBSERVED_BY_LOCAL_TESTS",
+    "production_distributed_cycle": "NOT_OBSERVED",
+    "predecessor_evidence_transfer": false
+  },
+  "human_decision": {
+    "task_authorized": true,
+    "generated_candidate_acceptance": "PENDING",
+    "code_owner_review": "PENDING"
+  },
+  "external_effects": {
+    "existing_pr_branch_successor": "AUTHORIZED_BY_REPAIR_REQUEST_PENDING_FRESH_READBACK",
+    "remote_benchmark_writes": false,
+    "publication": false,
+    "merge": false,
+    "release": false,
+    "deployment": false,
+    "secret_persistence": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "DISTRIBUTED_SPEEDUP": false
+  }
+}
