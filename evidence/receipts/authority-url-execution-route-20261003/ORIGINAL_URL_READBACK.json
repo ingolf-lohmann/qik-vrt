@@ -1,0 +1,41 @@
+{
+  "authority_head_tree_verified": false,
+  "effect_ack_done": false,
+  "observations": [
+    {
+      "anonymous": true,
+      "bytes": 0,
+      "location": "https://github.com/Goldkelch/qik-vrt/blob/main/AI",
+      "method": "GET",
+      "observed_at": "2026-10-03T01:38:43.549722+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": 301,
+      "url": "http://github.com/Goldkelch/qik-vrt/blob/main/AI"
+    },
+    {
+      "anonymous": true,
+      "bytes": 268731,
+      "location": null,
+      "method": "GET",
+      "observed_at": "2026-10-03T01:38:49.514979+00:00",
+      "sha256": "faa4d1b6aec4dc3887593d4ccc1d4881a701bcb6bfcfd845bbaf76d93c577753",
+      "status": 404,
+      "url": "https://github.com/Goldkelch/qik-vrt/blob/main/AI"
+    },
+    {
+      "anonymous": true,
+      "bytes": 14,
+      "location": null,
+      "method": "GET",
+      "observed_at": "2026-10-03T01:38:55.281832+00:00",
+      "sha256": "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+      "status": 404,
+      "url": "https://raw.githubusercontent.com/Goldkelch/qik-vrt/main/AI"
+    }
+  ],
+  "original_url_restored": false,
+  "protected_mutation_count": 0,
+  "public_raw_blob_verified": false,
+  "root_cause": "NOT_ESTABLISHED",
+  "schema": "qikvrt_original_url_readback_v1"
+}
