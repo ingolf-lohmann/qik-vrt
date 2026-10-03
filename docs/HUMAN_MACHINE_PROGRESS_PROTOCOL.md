@@ -108,4 +108,27 @@ and MUST NOT be projected as a terminal snapshot.
 
 ## Communication boundary
 
+### Owner-declared answer-search roadmap
+
+Ingolf Lohmann declared the 15/30/60-second roadmap on 2026-09-28 as guidance
+for finding and communicating answers. Its machine-readable authority is
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json.answer_search_roadmap`.
+
+Announce this orientation briefly at the start of answer search. Near 15 seconds,
+assess whether a relevant, sufficiently supported answer or explicitly bounded
+partial result exists. Use the remaining target window to formulate it and aim
+to start useful output by 30 seconds. If no useful result is available in the
+first window, use one further 30-second window. If the search remains
+unproductive near 60 seconds, stop that search and return the precise missing
+evidence, a suggested refinement of the question, and one concrete answerable
+variant or next input.
+
+The 30-second reference is owner-set, not a measured performance baseline.
+These are orientation points, not a hard wall-clock guarantee. Do not wait
+artificially, invent a result to meet a target, or omit mandatory evidence and
+authorization checks. A useful finding may begin the output while implementation,
+verification or persistence continues under the existing progress contract.
+Stopping an unproductive search does not certify completion or cancel an already
+productive, authorized work ring. This policy installs no runtime timer.
+
 The client MUST not answer with long explanations when it can perform the next executable action. Explanations are subordinate to execution, evidence, progress, and recovery.
