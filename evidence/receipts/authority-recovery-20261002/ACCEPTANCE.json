@@ -1443,7 +1443,11 @@
       "installation_id": 147849532,
       "permission_pull": true,
       "repository_id": 1271407206,
-      "scope": "Current connection installation listing; not execution credential delivery or App installation identity."
+      "scope": "Normalized repository-permission projection from enumeration; not native App metadata, installation-token effective permissions, a scoped grant, or an observed write",
+      "account_login": "Goldkelch",
+      "account_id": 293941403,
+      "repository_selection": "all",
+      "observed_at": "2026-10-03T17:49:01.375Z"
     },
     "credential_route": {
       "action": "actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349",
@@ -1559,6 +1563,64 @@
         "scope": "EXACT_HEAD_24b951dc_ONLY_NOT_A_SUCCESSOR_GATE",
         "source_requests_observed": 0,
         "zip_sha256": "8eeef6e52484d60ea83a82031752897f76a1752c72ed538df09094ed4dc0dfb5"
+      },
+      {
+        "run_id": 37138950461,
+        "attempt": 1,
+        "artifact_id": 11279228281,
+        "credential_global_absence_inferred": false,
+        "download_and_digest_verified": true,
+        "zip_sha256": "fac9b14f1b24c2a891afbedd5919a390426a9ca55c08b98243756cbac8124d12",
+        "entry_sha256": "1c85af091bf9783731191df874ed927d4039fe20378afe50222e5564d7b84ad9",
+        "source_requests_observed": 0,
+        "scope": "EXACT_HEAD_dab64478_ONLY_NOT_A_SUCCESSOR_GATE",
+        "revalidated_at": "2026-10-03T17:55:42.272Z",
+        "readback": {
+          "app_token_issuance_outcome": "skipped",
+          "carrier_id": "qikvrt-mesh-authority-edge/authority_url_probe",
+          "credential_binding": null,
+          "credential_names_present": {
+            "GITHUB_TOKEN": false,
+            "QIKVRT_AUTHORITY_APP_TOKEN": false,
+            "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+            "QIKVRT_MESH_TOKEN": false,
+            "QIKVRT_RULESET_ADMIN_TOKEN": false
+          },
+          "credential_source": null,
+          "effect_ack_done": false,
+          "executor": {
+            "actor": "ingolf-lohmann",
+            "attempt": "1",
+            "event": "push",
+            "head": "dab64478e37f9d75e76b1565b38f61281eeea2e5",
+            "ref": "refs/heads/work/authority-recovery-acceptance-20261002",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "resume_receipt_sha256": "2c42872d50c790c69e5df8e60e024ee0f2fff49e4e822b35ffcc4971fdb19ffa",
+            "run_id": "37138950461",
+            "tree": "31dbe5b3292b301a3ecfa1d7c3bcbd08a8b89270",
+            "workflow_path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+            "workflow_sha256": "bf5b304e5b03ae49a6fa831b2cc3b416c60033d1d8aeea72879fc5a0a06f15c6"
+          },
+          "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+          "git_object_closure_verified": false,
+          "latest_complete_authority_closure_verified": false,
+          "mutation_count": 0,
+          "observations": [],
+          "observed_at": "2026-10-03T17:01:01.600039+00:00",
+          "predecessor_evidence_transfer": false,
+          "public_url_effect_verified": false,
+          "resume_pointer": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json#/source_closure_resume",
+          "schema": "qikvrt_authority_url_probe_v2",
+          "source_read_verified": false,
+          "state": "BLOCK",
+          "target": {
+            "owner_id": 293941403,
+            "qr_url": "https://github.com/Goldkelch/qik-vrt/blob/main/AI",
+            "ref": "refs/heads/main",
+            "repository": "Goldkelch/qik-vrt",
+            "repository_id": 1271407206
+          }
+        }
       }
     ],
     "predecessor_evidence_transfer": false,
@@ -1593,6 +1655,374 @@
       "FRESH_MAIN_AND_REF_INVENTORY_REOBSERVATION",
       "COMPARE_RETAINED_SOURCE_AND_FRESH_MIRROR",
       "ROLE_LOCAL_RUNTIME_PLATFORM_GOVERNANCE_REVIEW_AND_ROLE_EPOCH_ACCEPTANCE"
+    ],
+    "connector_read_partition_observations": [
+      {
+        "schema": "qikvrt_authority_connector_read_partition_observation_v1",
+        "observed_at": "2026-10-03T17:54:41.996Z",
+        "source_subject": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "pull_request": 444,
+          "head": "dab64478e37f9d75e76b1565b38f61281eeea2e5",
+          "tree": "31dbe5b3292b301a3ecfa1d7c3bcbd08a8b89270",
+          "resume_blob": "428e8c649204b5ab9c297f67ca45d2adc07e3062"
+        },
+        "provenance": {
+          "human_task_origin": "Ingolf Lohmann; current task instruction",
+          "machine_observer": "OpenAI Codex via connected GitHub REST tools",
+          "human_assertions_used_as_live_evidence": false,
+          "independent_person_or_app_identity_inferred": false
+        },
+        "installation_identity": {
+          "operation": "mcp__codex_apps__github_list_installations",
+          "request_started_at": "2026-10-03T17:49:00.954Z",
+          "response_observed_at": "2026-10-03T17:49:01.316Z",
+          "installation_id": 147849532,
+          "account_login": "Goldkelch",
+          "account_id": 293941403,
+          "account_type": "User",
+          "repository_selection": "all",
+          "app_id_in_response": false,
+          "app_slug_in_response": false,
+          "app_permissions_in_response": false,
+          "suspended_at_in_response": false
+        },
+        "repository_enumeration": {
+          "operation": "mcp__codex_apps__github_list_repositories_by_installation",
+          "arguments": {
+            "installation_id": 147849532,
+            "page_offset": 0,
+            "page_size": 100
+          },
+          "request_started_at": "2026-10-03T17:49:00.954Z",
+          "response_observed_at": "2026-10-03T17:49:01.375Z",
+          "repository": "Goldkelch/qik-vrt",
+          "repository_id": 1271407206,
+          "owner_login": "Goldkelch",
+          "owner_id": 293941403,
+          "default_branch": "main",
+          "permissions_as_reported": {
+            "admin": false,
+            "maintain": false,
+            "pull": true,
+            "push": true,
+            "triage": true
+          },
+          "permission_evidence_scope": "Normalized repository-permission projection from enumeration; not native App metadata, installation-token effective permissions, a scoped grant, or an observed write",
+          "repository_selection_all_is_not_a_permission_grant": true,
+          "expected_target_identity_matches": true,
+          "enumeration_success_implies_content_access": false
+        },
+        "app_carrier_equivalence": {
+          "state": "NOT_ESTABLISHED",
+          "connection_listing_installation_id": 147849532,
+          "pinned_carrier_app_id": null,
+          "pinned_carrier_actual_installation_id": null,
+          "actual_app_id_equality_verified": false,
+          "actual_installation_id_equality_verified": false,
+          "evidence_carriers_equated": false,
+          "different_actual_app_or_installation_ids_proven": false,
+          "non_equivalence_disposition": "Treat connector enumeration/content probes and pinned native App execution as separate, non-substitutable evidence carriers until actual App and installation identity are attested.",
+          "missing_attestation": [
+            "delivery attestation for the complete existing App input pair in the runner",
+            "successful existing App issuance and actual installation-id output",
+            "App metadata/effective installation-token permissions for that issued route"
+          ],
+          "connector_content_tools_accept_installation_id": false,
+          "connector_selected_credential_identity_exposed": false
+        },
+        "permission_verification": {
+          "native_workflow_requested_permissions": {
+            "contents": "read"
+          },
+          "native_app_permissions_granted": null,
+          "native_scoped_token_effective_permissions": null,
+          "accepted_github_permissions_headers_exposed": false,
+          "missing_permission_is_established_cause": false,
+          "new_secrets_created": false,
+          "permissions_expanded": false,
+          "authentication_fallback_used": false
+        },
+        "read_probes": [
+          {
+            "label": "repository_by_name",
+            "tool": "mcp__codex_apps__github_get_repo",
+            "arguments": {
+              "repository_full_name": "Goldkelch/qik-vrt"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:17.131Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "repository_by_stable_id",
+            "tool": "mcp__codex_apps__github_get_repo",
+            "arguments": {
+              "repository_id": 1271407206
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.953Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "main_ref",
+            "tool": "mcp__codex_apps__github_fetch",
+            "arguments": {
+              "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/ref/heads/main"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.946Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "ref_inventory",
+            "tool": "mcp__codex_apps__github_fetch",
+            "arguments": {
+              "url": "https://api.github.com/repos/Goldkelch/qik-vrt/git/matching-refs/"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.946Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "commit_list_main",
+            "tool": "mcp__codex_apps__github_fetch",
+            "arguments": {
+              "url": "https://api.github.com/repos/Goldkelch/qik-vrt/commits?sha=main&per_page=1"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.917Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "commit_main_resolution",
+            "tool": "mcp__codex_apps__github_fetch",
+            "arguments": {
+              "url": "https://api.github.com/repos/Goldkelch/qik-vrt/commits/main"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.942Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "contents_AI_main",
+            "tool": "mcp__codex_apps__github_fetch_file",
+            "arguments": {
+              "repository_full_name": "Goldkelch/qik-vrt",
+              "path": "AI",
+              "ref": "main"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.895Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          },
+          {
+            "label": "contents_AI_default",
+            "tool": "mcp__codex_apps__github_fetch_file",
+            "arguments": {
+              "repository_full_name": "Goldkelch/qik-vrt",
+              "path": "AI"
+            },
+            "method": "GET",
+            "request_started_at": "2026-10-03T17:47:16.633Z",
+            "response_observed_at": "2026-10-03T17:47:16.902Z",
+            "transport_http_status": 404,
+            "connector_error_code": "NOT_FOUND",
+            "response": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            },
+            "installation_parameter_exposed": false,
+            "execution_installation_attested": false,
+            "semantic_classification": "CURRENT_CONNECTION_READ_REJECTED_CAUSE_UNDETERMINED",
+            "repository_global_absence_inferred": false,
+            "authority_global_unreachability_inferred": false
+          }
+        ],
+        "mirror_positive_controls": [
+          {
+            "label": "mirror_repo_control",
+            "request_started_at": "2026-10-03T17:48:04.400Z",
+            "response_observed_at": "2026-10-03T17:48:05.054Z",
+            "operation_result": "SUCCESS_RETURNED_WITHOUT_HTTP_HEADERS",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "subject": {
+              "repository": "ingolf-lohmann/qik-vrt",
+              "repository_id": 1273784147,
+              "owner_id": 294949349
+            },
+            "authority_success_inferred": false
+          },
+          {
+            "label": "mirror_main_ref_control",
+            "request_started_at": "2026-10-03T17:48:04.400Z",
+            "response_observed_at": "2026-10-03T17:48:04.787Z",
+            "operation_result": "SUCCESS_RETURNED_WITHOUT_HTTP_HEADERS",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "subject": {
+              "ref": "refs/heads/main",
+              "head": "6105892b1c6992f6be19e0f29fe0530e319eaaf1"
+            },
+            "authority_success_inferred": false
+          },
+          {
+            "label": "mirror_commit_control",
+            "request_started_at": "2026-10-03T17:48:04.400Z",
+            "response_observed_at": "2026-10-03T17:48:04.775Z",
+            "operation_result": "SUCCESS_RETURNED_WITHOUT_HTTP_HEADERS",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "subject": {
+              "head": "dab64478e37f9d75e76b1565b38f61281eeea2e5",
+              "tree": "31dbe5b3292b301a3ecfa1d7c3bcbd08a8b89270"
+            },
+            "authority_success_inferred": false
+          },
+          {
+            "label": "mirror_contents_control",
+            "request_started_at": "2026-10-03T17:48:04.400Z",
+            "response_observed_at": "2026-10-03T17:48:04.739Z",
+            "operation_result": "SUCCESS_RETURNED_WITHOUT_HTTP_HEADERS",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "subject": {
+              "path": "AI",
+              "ref": "dab64478e37f9d75e76b1565b38f61281eeea2e5"
+            },
+            "authority_success_inferred": false
+          }
+        ],
+        "native_probe_revalidation": {
+          "run_id": 37138950461,
+          "attempt": 1,
+          "head": "dab64478e37f9d75e76b1565b38f61281eeea2e5",
+          "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+          "status": "completed",
+          "conclusion": "failure",
+          "artifact_id": 11279228281,
+          "artifact_metadata_sha256": "fac9b14f1b24c2a891afbedd5919a390426a9ca55c08b98243756cbac8124d12",
+          "zip_sha256": "fac9b14f1b24c2a891afbedd5919a390426a9ca55c08b98243756cbac8124d12",
+          "entry_sha256": "1c85af091bf9783731191df874ed927d4039fe20378afe50222e5564d7b84ad9",
+          "download_and_digest_verified": true,
+          "executor_head_tree_workflow_and_resume_bytes_verified": true,
+          "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+          "app_issuance_outcome": "skipped",
+          "actual_app_installation_attestation": null,
+          "source_requests_observed": 0,
+          "mutation_count": 0,
+          "scope": "RECORDED_EXACT_HEAD_dab64478_ONLY_NOT_A_SUCCESSOR_GATE",
+          "not_a_fresh_reexecution": true
+        },
+        "latest_authority_subject": {
+          "head": null,
+          "tree": null,
+          "main_ref_verified": false,
+          "complete_ref_inventory_verified": false,
+          "exact_commit_verified": false,
+          "contents_AI_verified": false
+        },
+        "conclusion": {
+          "classification": "ENUMERATION_SUCCESS_AND_CURRENT_CONNECTION_REPOSITORY_REF_COMMIT_CONTENTS_READ_404",
+          "installation_account_repository_enumeration_identity_verified": true,
+          "app_carrier_equivalence_verified": false,
+          "routing_root_cause_established": false,
+          "authority_global_failure_inferred": false,
+          "complete_source_closure_verified": false
+        },
+        "next_action": {
+          "carrier_id": "qikvrt-mesh-authority-edge/authority_url_probe",
+          "operation": "authority_url_probe",
+          "retry_condition": "The existing App ID/private-key inputs are delivered to this existing runner, scoped issuance succeeds, and the native App action supplies its actual installation ID. Initial invocation requires a freshly bound ref; no replacement key, new secret, wider permission, redirect, automatic retry or credential fallback.",
+          "permission_expansion_allowed": false,
+          "new_secret_allowed": false,
+          "blind_rerun_without_new_delivery_evidence_allowed": false
+        },
+        "predecessor_evidence_transfer": false,
+        "effect_ack_done": false
+      }
     ]
   },
   "source_scope": "HISTORICAL_COMPLETE_GIT_TREE_20260816_NOT_LATEST_AUTHORITY_STATE",
