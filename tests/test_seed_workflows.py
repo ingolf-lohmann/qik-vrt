@@ -7,7 +7,10 @@ import datetime as dt
 import hashlib
 import json
 import os
+import shutil
+import subprocess
 import tempfile
+import textwrap
 import unittest
 from pathlib import Path
 
@@ -367,6 +370,220 @@ class SeedWorkflowTests(unittest.TestCase):
             self.assertIn("persist-credentials: false", text, workflow.name)
             self.assertNotRegex(text, r"actions/(?:checkout|upload-artifact)@v\d")
             self.assertNotRegex(text, r"\bgit (?:push|pull|commit)\b")
+
+
+class MirrorLifecycleGovernanceTests(unittest.TestCase):
+    """Execute the actual persistence shell against local Git and a bounded API fixture."""
+
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.container = Path(self.temporary.name)
+        self.root = self.container / "node"
+        self.root.mkdir()
+        self.repository = Path(__file__).resolve().parents[1]
+        self.remote = self.container / "remote.git"
+        self.receipts = self.container / "receipts"
+        self.bin = self.container / "bin"
+        self.bin.mkdir()
+        for path in (
+            "tools/qikvrt_autonomous_self_heal.py",
+            "tools/qikvrt_required_review_gate.py",
+            "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+        ):
+            target = self.root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(self.repository / path, target)
+        # Only transport is simulated here; these fixture projections are not
+        # evidence that the complete repository integrity generator executed.
+        (self.root / "tools/qikvrt_integrity.py").write_text(
+            "import pathlib,sys\n"
+            "if sys.argv[1] == 'generate':\n"
+            " for p in ('REPOSITORY_FILE_MANIFEST.json','REPOSITORY_FILE_MANIFEST.json.sha256','SHA256SUMS.txt'):\n"
+            "  pathlib.Path(p).write_text('fixture successor\\n')\n",
+            encoding="utf-8",
+        )
+        self.env = {
+            **os.environ,
+            "PATH": str(self.bin) + os.pathsep + os.environ["PATH"],
+            "GH_TOKEN": "fixture-token",
+            "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
+            "QIKVRT_RUN_ID": "governance-case-1",
+            "LIFECYCLE_RECEIPT_DIR": str(self.receipts),
+            "MOCK_ORIGIN": str(self.remote),
+            "MOCK_LOG": str(self.container / "api-calls.jsonl"),
+            "MOCK_MODE": "success",
+        }
+        self.git("init", "-b", "main")
+        self.git("config", "user.name", "fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("config", "commit.gpgsign", "false")
+        self.materialize("initial-1")
+        for path in ("REPOSITORY_FILE_MANIFEST.json", "REPOSITORY_FILE_MANIFEST.json.sha256", "SHA256SUMS.txt"):
+            (self.root / path).write_text("fixture base\n", encoding="utf-8")
+        self.git("add", ".")
+        self.git("commit", "-m", "fixture base")
+        subprocess.run(["git", "init", "--bare", str(self.remote)], check=True, capture_output=True)
+        self.git("remote", "add", "origin", str(self.remote))
+        self.git("push", "origin", "refs/heads/main:refs/heads/main")
+        self.base = self.git("rev-parse", "HEAD")
+        self.materialize(self.env["QIKVRT_RUN_ID"])
+        mock = self.bin / "gh"
+        mock.write_text(textwrap.dedent('''\
+            #!/usr/bin/env python3
+            import json,os,pathlib,subprocess,sys
+            args=sys.argv[1:]
+            mode=os.environ['MOCK_MODE']
+            log=pathlib.Path(os.environ['MOCK_LOG'])
+            with log.open('a') as f: f.write(json.dumps(args)+'\\n')
+            path=next(a for a in args if a.startswith('repos/'))
+            def rev(ref):
+                return subprocess.check_output(['git','--git-dir',os.environ['MOCK_ORIGIN'],'rev-parse',ref],text=True).strip()
+            if path.endswith('/rules/branches/main'):
+                out=[] if mode=='native_missing' else [{'type':'pull_request','parameters':{
+                    'required_approving_review_count':1,'require_code_owner_review':True,
+                    'dismiss_stale_reviews_on_push':True,'require_last_push_approval':True}}]
+            elif '/git/ref/heads/' in path:
+                ref=path.split('/git/ref/heads/',1)[1]
+                out=rev('refs/heads/'+ref)
+                calls=[json.loads(s) for s in log.read_text().splitlines()]
+                count=sum(path in c for c in calls)
+                if (mode=='base_drift' and ref=='main' and count==2) or (mode=='branch_drift' and ref!='main'): out='a'*40
+            elif '/git/commits/' in path:
+                out=rev(path.rsplit('/',1)[1]+'^{tree}')
+            elif path.endswith('/pulls'):
+                if mode=='pr_denied':
+                    print('GitHub Actions is not permitted to create pull requests',file=sys.stderr)
+                    sys.exit(1)
+                payload=json.loads(pathlib.Path(args[args.index('--input')+1]).read_text())
+                pr={'number':7,'state':'open','draft':payload['draft'],
+                    'base':{'ref':payload['base'],'sha':rev('refs/heads/main')},
+                    'head':{'ref':payload['head'],'sha':rev('refs/heads/'+payload['head']),
+                            'repo':{'full_name':os.environ['GITHUB_REPOSITORY']}}}
+                pathlib.Path(os.environ['LIFECYCLE_RECEIPT_DIR'],'fixture-pr.json').write_text(json.dumps(pr))
+                if mode=='ambiguous': sys.exit(1)
+                out={'number':7}
+            elif path.endswith('/pulls/7'):
+                out=json.loads(pathlib.Path(os.environ['LIFECYCLE_RECEIPT_DIR'],'fixture-pr.json').read_text())
+                if mode=='pr_drift': out['head']['sha']='b'*40
+            else:
+                raise SystemExit('unsupported fixture API: '+path)
+            print(out if isinstance(out,str) else json.dumps(out))
+            '''), encoding="utf-8")
+        mock.chmod(0o755)
+
+    def git(self, *args: str) -> str:
+        return subprocess.check_output(["git", *args], cwd=self.root, env=self.env, text=True, stderr=subprocess.DEVNULL).strip()
+
+    def materialize(self, run_id: str) -> None:
+        subprocess.run(
+            ["sh", str(self.repository / "tools/qikvrt_mirror_node_lifecycle.sh")],
+            cwd=self.root, env={**self.env, "QIKVRT_RUN_ID": run_id}, check=True, capture_output=True,
+        )
+
+    def execute(self, mode: str = "success") -> tuple[subprocess.CompletedProcess[str], dict[str, object]]:
+        workflow = (self.repository / ".github/workflows/qikvrt_mirror_node_lifecycle.yml").read_text()
+        section = workflow.split("      - name: Propose lifecycle successor through existing expected-head governance\n", 1)[1]
+        script = textwrap.dedent(section.split("        run: |\n", 1)[1].split("      - name:", 1)[0])
+        result = subprocess.run(["bash", "-c", script], cwd=self.root, env={**self.env, "MOCK_MODE": mode}, text=True, capture_output=True, timeout=30)
+        receipt = json.loads((self.receipts / "PERSISTENCE.json").read_text())
+        remote_main = subprocess.check_output(["git", "--git-dir", str(self.remote), "rev-parse", "refs/heads/main"], text=True).strip()
+        self.assertEqual(self.base, remote_main, result.stdout + result.stderr)
+        self.assertFalse(receipt["main_persisted"])
+        self.assertFalse(receipt["effect_ack_done"])
+        return result, receipt
+
+    def api_calls(self) -> list[list[str]]:
+        path = self.container / "api-calls.jsonl"
+        return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+    def assert_no_pr_write(self) -> None:
+        self.assertFalse(any("POST" in c for c in self.api_calls()))
+
+    def test_success_is_a_readback_bound_draft_and_never_main_persistence(self) -> None:
+        result, receipt = self.execute()
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertEqual("PR_PENDING_EXPECTED_HEAD_GOVERNANCE", receipt["state"])
+        self.assertIsNone(receipt["first_blocker"])
+        self.assertEqual(self.base, receipt["base_head"])
+        self.assertEqual(self.git("rev-parse", "HEAD^{tree}"), receipt["candidate_tree"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), receipt["candidate_head"])
+        request = json.loads((self.receipts / "pr-request.json").read_text())
+        self.assertTrue(request["draft"])
+        self.assertIn("qikvrt-expected-head-promotion:enabled external_effect=NONE", request["body"])
+        self.assertEqual(1, sum("POST" in c for c in self.api_calls()))
+
+    def test_missing_native_governance_blocks_before_any_branch_or_pr(self) -> None:
+        result, receipt = self.execute("native_missing")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("CODE_OWNER_RULE_NOT_ENFORCED", receipt["first_blocker"])
+        self.assertEqual("", receipt["candidate_head"])
+        self.assert_no_pr_write()
+
+    def test_base_drift_blocks_before_branch_write(self) -> None:
+        result, receipt = self.execute("base_drift")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_BASE_DRIFT", receipt["first_blocker"])
+        self.assert_no_pr_write()
+        remote_refs = subprocess.check_output(["git", "--git-dir", str(self.remote), "for-each-ref", "--format=%(refname)"], text=True).splitlines()
+        self.assertEqual(["refs/heads/main"], remote_refs)
+
+    def test_wrong_branch_readback_blocks_before_pr(self) -> None:
+        result, receipt = self.execute("branch_drift")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_BRANCH_READBACK_MISMATCH", receipt["first_blocker"])
+        self.assert_no_pr_write()
+
+    def test_workflow_token_pr_denial_preserves_branch_and_capability_receipt(self) -> None:
+        result, receipt = self.execute("pr_denied")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_WORKFLOW_TOKEN_PR_CREATE_UNAVAILABLE_OR_AMBIGUOUS", receipt["first_blocker"])
+        self.assertEqual(1, sum("POST" in c for c in self.api_calls()))
+        self.assertEqual(receipt["candidate_head"], self.git("rev-parse", "refs/remotes/origin/" + str(receipt["candidate_branch"])))
+
+    def test_ambiguous_pr_response_is_not_retried(self) -> None:
+        result, receipt = self.execute("ambiguous")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_WORKFLOW_TOKEN_PR_CREATE_UNAVAILABLE_OR_AMBIGUOUS", receipt["first_blocker"])
+        self.assertEqual(1, sum("POST" in c for c in self.api_calls()))
+
+    def test_pr_subject_drift_is_not_accepted(self) -> None:
+        result, receipt = self.execute("pr_drift")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_PR_SUBJECT_READBACK_MISMATCH", receipt["first_blocker"])
+
+    def test_non_allowlisted_staged_path_blocks_before_branch_write(self) -> None:
+        (self.root / "unexpected.py").write_text("forbidden fixture delta\n")
+        self.git("add", "unexpected.py")
+        result, receipt = self.execute()
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_NON_ALLOWLISTED_DELTA", receipt["first_blocker"])
+        self.assert_no_pr_write()
+
+    def test_missing_token_blocks_without_an_api_effect(self) -> None:
+        self.env["GH_TOKEN"] = ""
+        result, receipt = self.execute()
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_TOKEN_UNAVAILABLE", receipt["first_blocker"])
+        self.assertEqual([], self.api_calls())
+
+    def test_scheduler_concurrency_ttl_and_renewal_semantics_are_preserved(self) -> None:
+        workflow = (self.repository / ".github/workflows/qikvrt_mirror_node_lifecycle.yml").read_text()
+        self.assertEqual(1, workflow.count("cron:"))
+        self.assertIn('cron: "17 */6 * * *"', workflow)
+        self.assertIn("group: qikvrt-mirror-node-lifecycle", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertNotRegex(workflow, r"\bgit\s+push[^\n]*(?:HEAD:|refs/heads/)main\b")
+        self.assertNotIn("--force", workflow)
+        self.assertNotIn("/merge", workflow)
+        health = json.loads((self.root / "qikvrt/runtime/onboarding/NODE_HEALTH.json").read_text())
+        renewal = json.loads((self.root / "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json").read_text())
+        timestamp = lambda value: dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        # The preserved materializer uses separate wall-clock reads.
+        self.assertAlmostEqual(60 * health["heartbeat_ttl_minutes"], (timestamp(health["expires_utc"]) - timestamp(health["heartbeat_utc"])).total_seconds(), delta=2)
+        self.assertAlmostEqual(24 * 3600, (timestamp(renewal["next_renewal_due_utc"]) - timestamp(renewal["renewed_utc"])).total_seconds(), delta=2)
+        for directory in ("node_health", "node_registration_renewal"):
+            self.assertEqual((self.root / f"evidence/{directory}/LATEST.json").read_bytes(), (self.root / f"evidence/{directory}/{self.env['QIKVRT_RUN_ID']}.json").read_bytes())
 
 
 if __name__ == "__main__":
