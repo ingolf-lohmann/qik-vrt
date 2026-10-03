@@ -1370,6 +1370,166 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             "",
         )
 
+    def fixture_v3(self, root: pathlib.Path) -> tuple[pathlib.Path, pathlib.Path]:
+        bundle_path, manifest_path = self.fixture(root)
+        for relative in (proof.PROPOSED_POLICY_PATH, proof.PROPOSED_BUNDLE_SCHEMA_PATH):
+            write(root, relative, (ROOT / relative).read_bytes())
+        value = json.loads(bundle_path.read_text(encoding="utf-8"))
+        value["schema"] = proof.PROPOSED_BUNDLE_SCHEMA
+        value["policy"] = {
+            "id": proof.PROPOSED_POLICY_ID,
+            "path": proof.PROPOSED_POLICY_PATH,
+            "version": proof.PROPOSED_POLICY_VERSION,
+            "sha256": proof.PROPOSED_POLICY_SHA256,
+            "git_blob_sha1": proof.PROPOSED_POLICY_GIT_BLOB_SHA1,
+        }
+        value["completion_claims"] = {"machine_proof_complete": True}
+        bundle_path.write_text(json.dumps(value, sort_keys=True, indent=2) + "\n")
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["machine_proof"]["policy_id"] = proof.PROPOSED_POLICY_ID
+        manifest_path.write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
+        rebind_fixture(root, manifest_path)
+        return bundle_path, manifest_path
+
+    def test_v3_readiness_does_not_authorize_production_or_replace_v2(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            bundle_path, manifest_path = self.fixture_v3(root)
+            upload_paths = [
+                item["path"] for item in json.loads(manifest_path.read_text())["files"]
+            ]
+            receipt = proof.validate_prepublication_bundle(
+                root, bundle_path, upload_paths=upload_paths
+            )
+            self.assertTrue(receipt["machine_proof_complete"])
+            self.assertFalse(receipt["zenodo_upload_authorized"])
+            self.assertFalse(receipt["production_mutation_authorized"])
+            self.assertEqual(receipt["review_state"], "REVIEW_REQUIRED")
+            self.assertEqual(receipt["claim_count"], 6)
+            with self.assertRaisesRegex(proof.ProofGateError, "unsupported.*schema"):
+                proof.validate_bundle(root, bundle_path, upload_paths=upload_paths)
+
+    def test_v3_detached_decision_preserves_the_frozen_bundle_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            bundle_path, manifest_path = self.fixture_v3(root)
+            authorization_path = root / "release/fixture/OWNER_ZENODO_AUTHORIZATION.json"
+            synthetic_authorization = authorization_path.read_bytes()
+            authorization_path.unlink()
+            frozen = bundle_path.read_bytes()
+            before = proof.validate_prepublication_bundle(root, bundle_path)
+            authorization_path.write_bytes(synthetic_authorization)
+            rebind_fixture(root, manifest_path)
+            after = proof.validate_prepublication_bundle(root, bundle_path)
+            self.assertEqual(bundle_path.read_bytes(), frozen)
+            self.assertEqual(before["sha256"], after["sha256"])
+            authorization = json.loads(authorization_path.read_text())
+            self.assertEqual(authorization["machine_proof"]["sha256"], before["sha256"])
+            statement = authorization["authorization_event"]["exact_statement"]
+            self.assertIn("machine_proof_sha256=" + before["sha256"], statement)
+            self.assertFalse(after["zenodo_upload_authorized"])
+
+    def test_v3_bundle_forbids_both_true_and_false_embedded_upload_flags(self) -> None:
+        for flag in (False, True):
+            with self.subTest(flag=flag), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                bundle_path, _ = self.fixture_v3(root)
+                value = json.loads(bundle_path.read_text())
+                value["completion_claims"]["zenodo_upload_authorized"] = flag
+                bundle_path.write_text(json.dumps(value) + "\n")
+                with self.assertRaisesRegex(proof.ProofGateError, "unknown=zenodo_upload_authorized"):
+                    proof.validate_prepublication_bundle(root, bundle_path)
+
+    def test_v2_false_upload_flag_remains_a_production_blocker(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            bundle_path, _ = self.fixture(root)
+            value = json.loads(bundle_path.read_text())
+            value["completion_claims"]["zenodo_upload_authorized"] = False
+            bundle_path.write_text(json.dumps(value) + "\n")
+            with self.assertRaisesRegex(proof.ProofGateError, "does not authorize"):
+                proof.validate_bundle(root, bundle_path)
+
+    def test_v3_review_candidate_cannot_reach_remote_lock_or_zenodo(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            _, manifest_path = self.fixture_v3(root)
+            with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"}):
+                with mock.patch.object(publish, "_github_api_request") as github:
+                    with mock.patch.object(zenodo, "ZenodoClient") as client:
+                        with self.assertRaisesRegex(zenodo.ZenodoError, "policy_id"):
+                            publish.publish(manifest_path, root)
+                        github.assert_not_called()
+                        client.assert_not_called()
+            self.assertFalse((root / "release/fixture/zenodo-publication.json").exists())
+
+    def test_v3_schema_retains_every_other_v2_proof_constraint(self) -> None:
+        old = json.loads((ROOT / proof.BUNDLE_SCHEMA_PATH).read_text())
+        new = json.loads((ROOT / proof.PROPOSED_BUNDLE_SCHEMA_PATH).read_text())
+        new["$id"] = old["$id"]
+        new["properties"]["schema"] = old["properties"]["schema"]
+        new["properties"]["policy"] = old["properties"]["policy"]
+        new["properties"]["completion_claims"] = old["properties"]["completion_claims"]
+        self.assertEqual(new, old)
+
+    def test_v3_readiness_requires_exact_new_and_frozen_old_contract_bytes(self) -> None:
+        for relative in (
+            proof.PROPOSED_POLICY_PATH,
+            proof.PROPOSED_BUNDLE_SCHEMA_PATH,
+            proof.POLICY_PATH,
+            proof.BUNDLE_SCHEMA_PATH,
+            proof.RETURN_SCHEMA_PATH,
+            proof.LEGACY_POLICY_PATH,
+            proof.LEGACY_BUNDLE_SCHEMA_PATH,
+            proof.LEGACY_RETURN_SCHEMA_PATH,
+        ):
+            with self.subTest(path=relative), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                bundle_path, _ = self.fixture_v3(root)
+                path = root / relative
+                path.write_bytes(path.read_bytes() + b" ")
+                with self.assertRaises(proof.ProofGateError):
+                    proof.validate_prepublication_bundle(root, bundle_path)
+
+    def test_v3_readiness_still_checks_gates_evidence_return_and_upload_closure(self) -> None:
+        for defect in ("gate", "kernel_receipt", "returned_candidate", "extra_upload"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                bundle_path, manifest_path = self.fixture_v3(root)
+                upload_paths = [
+                    item["path"] for item in json.loads(manifest_path.read_text())["files"]
+                ]
+                if defect == "gate":
+                    value = json.loads(bundle_path.read_text())
+                    value["gates"]["formal_claims_have_kernel_receipts"] = False
+                    bundle_path.write_text(json.dumps(value) + "\n")
+                elif defect == "kernel_receipt":
+                    path = root / "proof/KERNEL_RECEIPT.json"
+                    path.write_bytes(path.read_bytes() + b" ")
+                elif defect == "returned_candidate":
+                    path = root / "proof/PREPUBLICATION_RETURN_RECEIPT.json"
+                    path.write_bytes(path.read_bytes() + b" ")
+                else:
+                    write(root, "proof/extra.txt", b"unbound upload\n")
+                    upload_paths.append("proof/extra.txt")
+                with self.assertRaises(proof.ProofGateError):
+                    proof.validate_prepublication_bundle(root, bundle_path, upload_paths=upload_paths)
+
+    def test_v3_cli_reports_readiness_and_explicitly_denies_upload_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            bundle_path, _ = self.fixture_v3(root)
+            completed = subprocess.run(
+                [sys.executable, str(ROOT / "tools/qikvrt_zenodo_machine_proof.py"),
+                 "--proof-bundle", bundle_path.relative_to(root).as_posix(),
+                 "--prepublication-v3"],
+                cwd=root, text=True, capture_output=True, check=False, timeout=10,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertIn("ZENODO_MACHINE_PROOF_STATE=prepublication_ready_review_required", completed.stdout)
+            self.assertIn("ZENODO_UPLOAD_AUTHORIZED=false", completed.stdout)
+            self.assertIn("ZENODO_PRODUCTION_MUTATION_AUTHORIZED=false", completed.stdout)
+
     def test_complete_proof_bundle_and_v2_manifest_pass(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = pathlib.Path(temporary)
