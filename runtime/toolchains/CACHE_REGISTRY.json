@@ -295,7 +295,9 @@
         "qikvrt.cmd",
         "qikvrt.ps1",
         "tests/test_runtime_bootstrap.ps1",
-        ".github/workflows/qikvrt_adaptive_runtime.yml"
+        ".github/workflows/qikvrt_adaptive_runtime.yml",
+        "qikvrt.py",
+        "tools/qikvrt_runtime_logger.py"
       ],
       "cache_class": "repo-managed-archive",
       "cache_locations": [

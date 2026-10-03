@@ -44,6 +44,12 @@ or downloading. Invalid existing material blocks and is never silently replaced.
 Installation stages and verifies files, atomically promotes only the new runtime,
 rechecks its final path, and removes that new runtime if final verification fails.
 
+The existing runtime logger uses native Windows file handles, protected
+owner-rights DACLs, bounded CRT byte-range locks and write-through pointer
+replacement on Windows. POSIX permission and locking checks remain active.
+Native concurrent-writer, alias-rejection and DACL-readback controls exercise
+this platform contract. A filesystem that cannot enforce it blocks logging.
+
 The existing adaptive-runtime workflow restores an exact cache key, performs
 explicit preparation outside the offline interval, then executes
 `tests/test_runtime_bootstrap.ps1` on native Windows x64. The test denies outbound

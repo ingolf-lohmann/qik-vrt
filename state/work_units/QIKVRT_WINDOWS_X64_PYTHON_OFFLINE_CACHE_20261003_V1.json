@@ -119,6 +119,17 @@
         "offline_start": "NOT_REACHED",
         "first_causal_failure": "Test adapter joined multiple Get-Command git Source values into one command path. Select exactly one application before isolation.",
         "dependency_closed": false
+      },
+      {
+        "source_head": "316179be14dbc7322f778264aed5a40aa04e47b5",
+        "source_tree": "a07fd1be54f1ef0e7570b986babe33067499bfd7",
+        "run_id": 37126642850,
+        "job_id": 111213161591,
+        "runtime_materialization_and_self_test": "PASS_NATIVE_WINDOWS_X64",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "The OS egress denial raised a WebException with an inner socket exception; GetBaseException lost the expected outer type. Preserve the exception chain.",
+        "additional_static_start_blocker": "The existing logger unconditionally imported Unix-only fcntl and used Unix-only permissions/directory fsync. Extend its native platform branch without bypassing private permissions, locking or atomic receipt replacement.",
+        "dependency_closed": false
       }
     ]
   },

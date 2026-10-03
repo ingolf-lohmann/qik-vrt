@@ -122,7 +122,10 @@ try {
     $networkDenied = $false
     try { $response = $request.GetResponse(); $response.Close() }
     catch {
-        $probeException = $_.Exception.GetBaseException()
+        $probeException = $_.Exception
+        while ($null -ne $probeException -and $probeException -isnot [Net.WebException]) {
+            $probeException = $probeException.InnerException
+        }
         if ($probeException -is [Net.WebException] -and $null -eq $probeException.Response) { $networkDenied = $true }
         else { throw }
     }
@@ -140,6 +143,44 @@ try {
     Invoke-LauncherTest 'cold-offline-launcher-help' '--help' 0
     Invoke-LauncherTest 'warm-offline-launcher-help' '--help' 0
     Invoke-LauncherTest 'effect-acceptance-retained' 'master-gate' 20
+    $logTest = @'
+import hashlib, json, pathlib, subprocess, sys, tempfile
+sys.path.insert(0, sys.argv[1])
+from tools import qikvrt_runtime_logger as qlog
+with tempfile.TemporaryDirectory(prefix='qikvrt-native-log-') as directory:
+    root = pathlib.Path(directory)
+    qlog.LOG_DIR = root
+    qlog.LOG_FILE = root / 'shared.jsonl'
+    qlog.reset_log('native-concurrent-log-contract')
+    code = "import pathlib,sys; sys.path.insert(0,sys.argv[1]); from tools import qikvrt_runtime_logger as q; q.LOG_DIR=pathlib.Path(sys.argv[2]); q.LOG_FILE=q.LOG_DIR/'shared.jsonl'; [q.write_event('concurrent_writer',index=i) for i in range(8)]"
+    children = [subprocess.Popen([sys.executable, '-I', '-B', '-c', code, sys.argv[1], directory],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE) for _ in range(2)]
+    for child in children:
+        output, error = child.communicate(timeout=20)
+        assert child.returncode == 0, (output, error)
+    records = [json.loads(line) for line in qlog.LOG_FILE.read_text().splitlines()]
+    assert sum(record['event'] == 'concurrent_writer' for record in records) == 16
+    qlog.finish(0)
+    pointer = json.loads((root / 'qikvrt_last_run.json').read_text())
+    assert pointer['sha256'] == hashlib.sha256(qlog.LOG_FILE.read_bytes()).hexdigest()
+    outside = root / 'outside.txt'
+    outside.write_bytes(b'unchanged')
+    alias = root / 'hardlink.jsonl'
+    alias.hardlink_to(outside)
+    qlog.LOG_FILE = alias
+    try:
+        qlog.write_event('untrusted_alias')
+    except OSError:
+        pass
+    else:
+        raise AssertionError('logger accepted a hardlink alias')
+    assert outside.read_bytes() == b'unchanged'
+print('PASS native Windows concurrent log locking, atomic pointer and alias rejection')
+'@
+    $logCode = "exec(__import__('base64').b64decode('" +
+        [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($logTest)) + "'))"
+    Invoke-TestProcess 'native-log-contract' $pythonPath ('-I -B -c "' + $logCode + '" "' + $repo + '"') 0
+    $controls['native-log-contract'] = @{ result = 'PASS'; concurrent_writers = 2; complete_records = 16; alias_rejected = $true }
     $receiptPath = Join-Path $EvidenceDir 'CACHE_SELF_TEST.json'
     Invoke-BootstrapTest 'offline-cache-readback' @('-CheckOnly', '-Profile', 'windows-start',
         '-CacheDir', $carrierCache, '-RuntimeReceiptFile', $receiptPath) 0
@@ -218,6 +259,14 @@ try {
     if ((Get-FileHash -Algorithm SHA256 -LiteralPath $pointer.logfile).Hash.ToLowerInvariant() -ne $pointer.sha256) {
         throw 'Fresh Python launcher log readback digest mismatch'
     }
+    $logAcl = Get-Acl -LiteralPath $pointer.logfile
+    $access = @($logAcl.Access)
+    if (-not $logAcl.AreAccessRulesProtected -or $access.Count -ne 1 -or
+        $access[0].IdentityReference.Translate([Security.Principal.SecurityIdentifier]).Value -ne 'S-1-3-4' -or
+        $access[0].AccessControlType -ne 'Allow' -or $access[0].IsInherited -or
+        ($access[0].FileSystemRights -band [Security.AccessControl.FileSystemRights]::FullControl) -ne
+            [Security.AccessControl.FileSystemRights]::FullControl) { throw 'Runtime log owner-only DACL did not read back' }
+    $controls['native-log-owner-dacl'] = @{ result = 'PASS'; protected = $true; owner_rights_sid = 'S-1-3-4' }
     $os = Get-CimInstance Win32_OperatingSystem
     $receipt = [ordered]@{
         schema = 'qikvrt-windows-python-offline-start-receipt/1.0'
