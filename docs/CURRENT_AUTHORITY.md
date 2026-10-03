@@ -114,3 +114,29 @@ All predecessor checks remain bound to their original subjects. The direct
 PR #444 successor requires fresh complete-checkout validation. Historical
 retention, generic transport responses and successful tests do not themselves
 accept live stand-in Authority takeover or neutral-Mirror creation.
+
+## 2026-10-03 recovery continuation
+
+PR #444 integrates Mirror Main `8153c4e69a6245aadf67f0741fb50d9707c19e34`
+over input `380fb965a184ee6137bc98ea58868eb8b59ecbce`, preserving both
+histories and every parent path. Ten role-local paths include all three new
+heartbeat/registration event pairs. The same Mirror GUID remains unchanged;
+the previously expired heartbeat now uses Main's scheduled producer
+`37120239456-1`, with recorded expiry `2026-10-04T12:37:33Z`.
+These timestamps establish the stored lifecycle at observation time, not
+end-to-end runtime availability or Authority-role acceptance.
+
+The existing fixed Authority probe in PR #446 ran as `37086743407` on
+`7ed957669a8f6f0e03c62cff7787a45cfaceab12`. Its native artifact was downloaded
+and its ZIP and readback digests verified. It records
+`AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED`: the existing direct-token
+and App inputs were absent in that exact runner, while the Mirror control
+read succeeded. This does not establish global credential absence or the
+cause of the Authority's 404. It supplies no gate for PR #444.
+
+The smallest source-closure continuation remains an authorized Authority
+content carrier, or delivery of an existing Authority-read credential into
+that fixed probe followed by a new initial exact-ref invocation. This client
+has no secret-binding, initial-dispatch or repository-creation operation.
+Fresh candidate CI, native protection and independent exact-head review
+remain separate from complete Authority source and observed role effects.
