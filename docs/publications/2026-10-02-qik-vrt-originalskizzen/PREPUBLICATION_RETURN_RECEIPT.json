@@ -1,0 +1,74 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "candidate_files": [
+    {
+      "bytes": 5030,
+      "git_blob_sha1": "49e2748ba0aee1cbf58220cdf1fc85c04de25a67",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md",
+      "sha256": "e984d34ec6509c78016988349e5ea82b92eab99786f3583113fe1a4980619b2e"
+    },
+    {
+      "bytes": 537515,
+      "git_blob_sha1": "516996dbfc79375f8a7f0954d99a6b462156cfdc",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1096.jpeg",
+      "sha256": "fb8e50dddbdcb44fff569060c6942b03ab5a8a329fc836c18b9951e6c2cd6f02"
+    },
+    {
+      "bytes": 415168,
+      "git_blob_sha1": "49e32ac369cfab3194bcafe6e65b50c217cbaf69",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1097.jpeg",
+      "sha256": "156c7029b7a4e2388f47a3cf1707dbbc7c79a98041eb224b8374ae35f7cb25fb"
+    },
+    {
+      "bytes": 347424,
+      "git_blob_sha1": "a20622e70b8574f1ebdd5826f2184605931c2703",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1098.jpeg",
+      "sha256": "a060f5895f3c2cfd2170c0f9d23d45267ee865fcfc93de828adaa42f4300345c"
+    },
+    {
+      "bytes": 387781,
+      "git_blob_sha1": "10464666e58aebcbc26df9f386bea9fc802b3696",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1099.jpeg",
+      "sha256": "c59575a5f55bf6113e8e1139615c7c734e69de661f8e57d9b5eb6c1586ee12d1"
+    },
+    {
+      "bytes": 412525,
+      "git_blob_sha1": "feebe67861403377caf3148f1914c18ebc43c5d3",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1100.jpeg",
+      "sha256": "a7e9dd934e5e94c543899cfec90c0b357c10e2ac2f9a1f99731e902ceb9d7609"
+    },
+    {
+      "bytes": 388429,
+      "git_blob_sha1": "7d3c351cd302316706110d6bb98a79d90ec3f0fd",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1101.jpeg",
+      "sha256": "1bf3df251bbdb14218dcfb1cabec6c77d87ea771b195e9c75ac64e0ea2a2e8a9"
+    },
+    {
+      "bytes": 1657,
+      "git_blob_sha1": "692343116070ccbcbd09c5055d99727474c6b45e",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ZENODO_METADATA_V2.json",
+      "sha256": "e2379c87bb8fde78a1fa239a53a50eb916a052f3413f9bcf33a947cfa54e2819"
+    }
+  ],
+  "change_notice_path": null,
+  "change_reasons": [],
+  "changed_claim_ids": [],
+  "content_changed": false,
+  "original_files": [],
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "ChatGPT Work PR #442 task: sandbox links to FROZEN_UPLOAD_CANDIDATE.json, original gallery README, ZENODO_METADATA_V2.json and RETURN_TO_OWNER.md delivered in commentary; original JPEGs linked at source HEAD 45da5a045499e3ad01555d1094e8f10c6f1cb5b3",
+    "returned_at": "2026-10-02T12:26:33.192144Z",
+    "visible_change_notice_returned": false
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2"
+}

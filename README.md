@@ -1,5 +1,17 @@
 # QIK-VRT
 
+<!-- qikvrt-original-sketches:20261002-v1 -->
+## Handschriftliche Originalskizzen · Ingolf Lohmann
+
+**Sechs zusammengehörige Originale zur universal anschlussfähigen Erläuterung der Wirkungsweise von QIK VRT.**
+
+[Originale, Herkunft und Entstehungsweg](docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md) · [Galerie](docs/publications/2026-10-02-qik-vrt-originalskizzen/index.html) · [Archivmanifest](docs/publications/2026-10-02-qik-vrt-originalskizzen/ARCHIVE_MANIFEST.json)
+
+<a href="docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md"><img src="docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1098.jpeg" alt="Handschriftliche Originalskizze von Ingolf Lohmann: binäre Anschlussverbindung" width="160"></a>
+
+Handschriftliche Quellen: Ingolf Lohmann. Originaldateien unverändert. Redaktionelle Katalogisierung: OpenAI Codex. Der getrennte [Veröffentlichungsstand](docs/publications/2026-10-02-qik-vrt-originalskizzen/ORIGIN_AND_PUBLICATION_STATUS.json) führt die DOI-Archivierung und späteren externen Kanäle.
+<!-- /qikvrt-original-sketches:20261002-v1 -->
+
 <!-- qikvrt-machine-verifiable-science-charter-binding:v1 -->
 ## Charta einer maschinenprüfbaren Wissenschaft
 
@@ -384,3 +396,4 @@ merge. See [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md),
 for the current reporting, support, decision, and participation boundaries.
 
 Copyright 2026 Ingolf Lohmann.
+
