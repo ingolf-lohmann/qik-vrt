@@ -12,6 +12,11 @@ import pathlib
 import re
 import secrets
 import sys
+import shutil
+import tempfile
+import urllib.request
+import zipfile
+import time
 from typing import Any
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -22,6 +27,7 @@ if ROOT_STR not in sys.path:
 from tools import qikvrt_initial_acceptance_gate as effect_authorization
 from tools import qikvrt_integrity
 from tools import qikvrt_runtime_logger as qlog
+from tools import qikvrt_tool_cache as tool_cache
 from tools.qikvrt_subprocess import run_bounded
 
 CONFIRMATION = "PUBLISH_QIKVRT"
@@ -48,6 +54,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zenodo-enable", action="store_true")
     parser.add_argument("--allow-publish", action="store_true")
     parser.add_argument("--confirm-publish", default="")
+    parser.add_argument("--runtime-carrier", choices=("prepare", "readback"))
+    parser.add_argument("--carrier-archive", default="")
+    parser.add_argument("--carrier-reviewed-head", default="")
     return parser
 
 
@@ -334,8 +343,169 @@ def _release_assets_match(
     for item in remote:
         if not isinstance(item, dict) or not isinstance(item.get("name"), str):
             return False
+        if item["name"] in actual:
+            return False
         actual[item["name"]] = (item.get("size"), item.get("digest"))
     return actual == expected
+
+
+def _verify_runtime_archive(path: pathlib.Path, candidate: dict[str, Any]) -> None:
+    descriptor = candidate['archive']
+    data = qikvrt_integrity._regular_file_bytes(path.parent, path.name)
+    if len(data) != descriptor['bytes'] or hashlib.sha256(data).hexdigest() != descriptor['sha256']:
+        raise ValueError('runtime carrier archive size/SHA-256 mismatch')
+    spec = json.loads(qikvrt_integrity._regular_file_bytes(
+        ROOT, 'runtime/toolchains/python-3.12.10-embed-amd64.payload.json'))
+    with zipfile.ZipFile(path) as archive:
+        if len(archive.namelist()) != len(spec['files']) or set(archive.namelist()) != set(spec['files']):
+            raise ValueError('runtime carrier payload member set mismatch')
+        for name, binding in spec['files'].items():
+            if archive.getinfo(name).file_size != binding['bytes']:
+                raise ValueError(f'runtime carrier payload size mismatch: {name}')
+            value = archive.read(name)
+            if hashlib.sha256(value).hexdigest() != binding['sha256']:
+                raise ValueError(f'runtime carrier payload hash mismatch: {name}')
+
+
+def _runtime_assets(candidate: dict[str, Any]) -> list[dict[str, Any]]:
+    raw = qikvrt_integrity._regular_file_bytes(ROOT, tool_cache.WINDOWS_RELEASE_PATH)
+    digest = hashlib.sha256(raw).hexdigest()
+    return [
+        {'path': candidate['archive']['asset_name'], 'bytes': candidate['archive']['bytes'],
+         'sha256': candidate['archive']['sha256']},
+        {'path': f'qikvrt-runtime-carrier-sha256-{digest}.json', 'bytes': len(raw), 'sha256': digest},
+    ]
+
+
+def prepare_runtime_carrier(archive: pathlib.Path, directory: pathlib.Path) -> dict[str, Any]:
+    """Prepare only local assets and a review plan; never create tags/releases/assets."""
+    candidate = tool_cache.windows_release_candidate()
+    _verify_runtime_archive(archive, candidate)
+    assets = _runtime_assets(candidate)
+    directory = _inside_root(str(directory))
+    directory.mkdir(parents=True, exist_ok=False)  # existing output is never replaced
+    try:
+        values = [qikvrt_integrity._regular_file_bytes(archive.parent, archive.name),
+                  qikvrt_integrity._regular_file_bytes(ROOT, tool_cache.WINDOWS_RELEASE_PATH)]
+        for descriptor, value in zip(assets, values):
+            if len(value) != descriptor['bytes'] or hashlib.sha256(value).hexdigest() != descriptor['sha256']:
+                raise ValueError('runtime carrier changed during preparation')
+            with (directory / descriptor['path']).open('xb') as handle:
+                handle.write(value)
+            # Read the staged file again, independently of the input buffer.
+            if _asset_descriptor(str(directory / descriptor['path']))['sha256'] != descriptor['sha256']:
+                raise ValueError('runtime carrier staged byte readback mismatch')
+        repository, tag = candidate['repository'], candidate['tag']
+        subject = {}
+        for label, command in [('head', ['git', 'rev-parse', 'HEAD']),
+                               ('tree', ['git', 'rev-parse', 'HEAD^{tree}']),
+                               ('worktree', ['git', 'status', '--porcelain'])]:
+            result = _run(command)
+            if result['returncode'] != 0:
+                raise ValueError('runtime carrier source subject cannot be resolved')
+            subject[label] = result['stdout'].strip()
+        plan = {
+            'schema': 'qikvrt-runtime-carrier-review-plan/1.0',
+            'state': 'PREPARED_NOT_PUBLISHED', 'assets': assets,
+            'candidate_sha256': assets[1]['sha256'],
+            'repository': repository, 'tag': tag, 'actions': [],
+            'external_effects_authorized': False, 'external_effects_executed': False,
+            'no_clobber': True, 'durable_public_readback_verified': False,
+            'main_activation_verified': False, 'effect_ack_done': False,
+            'required_before_effect': candidate['required_before_effect'],
+            'preparation_subject': {'head': subject['head'], 'tree': subject['tree'],
+                                    'worktree_clean': not subject['worktree']},
+            'proposed_tag_effect': {'method': 'POST', 'endpoint': f'repos/{repository}/git/refs',
+                                   'body': {'ref': f'refs/tags/{tag}', 'sha': subject['head']},
+                                   'create_only': True, 'force': False,
+                                   'rule': 'Reobserve and separately authorize the exact reviewed publish subject before creating this tag; an existing ref blocks.'},
+            'proposed_commands': [
+                ['gh', 'release', 'create', tag, '--repo', repository, '--verify-tag', '--draft',
+                 '--title', 'QIK-VRT locked CPython Windows x64 runtime'],
+                ['gh', 'release', 'upload', tag, '--repo', repository,
+                 *[str(directory / a['path']) for a in assets]],
+                ['gh', 'release', 'edit', tag, '--repo', repository, '--draft=false'],
+            ],
+            'publication_rule': 'Data only. Reuse the gated publisher after exact governance, review and separate effect authorization; no tag creation, clobber, delete or blind retry.',
+            'post_effect_rule': 'Require immutable public release, expected reviewed tag HEAD, and separate anonymous readback before availability is accepted.',
+        }
+        with (directory / 'PUBLICATION_PLAN.json').open('x', encoding='utf-8', newline='\n') as handle:
+            handle.write(tool_cache.canonical_json(plan))
+        return plan
+    except BaseException:
+        shutil.rmtree(directory)  # only this invocation's newly created directory
+        raise
+
+
+def _download_runtime_asset(url: str, path: pathlib.Path, descriptor: dict[str, Any]) -> None:
+    """Anonymous independent GET into a new file; never reuse uploader or cache bytes."""
+    request = urllib.request.Request(url, headers={'Accept': 'application/octet-stream'})
+    deadline = time.monotonic() + 60
+    with urllib.request.urlopen(request, timeout=15) as response, path.open('xb') as output:
+        remaining = descriptor['bytes']
+        while remaining:
+            if time.monotonic() > deadline:
+                raise ValueError('runtime release download exceeded its 60-second bound')
+            block = response.read(min(1024 * 1024, remaining))
+            if not block:
+                raise ValueError('runtime release asset is truncated')
+            output.write(block)
+            remaining -= len(block)
+        if response.read(1):
+            raise ValueError('runtime release asset exceeds the bound size')
+    value = qikvrt_integrity._regular_file_bytes(path.parent, path.name)
+    if hashlib.sha256(value).hexdigest() != descriptor['sha256']:
+        raise ValueError('runtime release download SHA-256 mismatch')
+
+
+def readback_runtime_carrier(expected_head: str) -> dict[str, Any]:
+    """Read a future public carrier without any authenticated write or reconstruction."""
+    if not re.fullmatch(r'[0-9a-f]{40}', expected_head):
+        raise ValueError('readback requires the separately reviewed exact tag HEAD')
+    candidate = tool_cache.windows_release_candidate()
+    repository, tag = candidate['repository'], candidate['tag']
+    request = urllib.request.Request(
+        f'https://api.github.com/repos/{repository}/releases/tags/{tag}',
+        headers={'Accept': 'application/vnd.github+json'})
+    with urllib.request.urlopen(request, timeout=15) as response:
+        raw = response.read(1024 * 1024 + 1)
+    if len(raw) > 1024 * 1024:
+        raise ValueError('runtime release metadata exceeds its bound')
+    release = json.loads(raw)
+    assets = _runtime_assets(candidate)
+    if (release.get('tag_name') != tag or release.get('draft') is not False
+            or release.get('immutable') is not True or not _release_assets_match(release, assets)
+            or any(a.get('state') != 'uploaded' for a in release['assets'])
+            or type(release.get('id')) is not int):
+        raise ValueError('runtime release missing, mutable or asset metadata differs')
+    def public_json(url: str) -> dict[str, Any]:
+        request = urllib.request.Request(url, headers={'Accept': 'application/vnd.github+json'})
+        with urllib.request.urlopen(request, timeout=15) as response:
+            raw = response.read(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise ValueError('runtime tag readback exceeds its bound')
+        return json.loads(raw)
+    ref = public_json(f'https://api.github.com/repos/{repository}/git/ref/tags/{tag}')
+    obj = ref['object']
+    if obj['type'] == 'tag':
+        obj = public_json(f'https://api.github.com/repos/{repository}/git/tags/{obj["sha"]}')['object']
+    if obj['type'] != 'commit' or obj['sha'] != expected_head:
+        raise ValueError('runtime release tag HEAD differs from reviewed subject')
+    with tempfile.TemporaryDirectory(prefix='qikvrt-runtime-release-readback-') as temporary:
+        root = pathlib.Path(temporary)
+        for descriptor in assets:
+            url = f'https://github.com/{repository}/releases/download/{tag}/{descriptor["path"]}'
+            _download_runtime_asset(url, root / descriptor['path'], descriptor)
+        _verify_runtime_archive(root / assets[0]['path'], candidate)
+    return {
+        'schema': 'qikvrt-runtime-carrier-readback/1.0', 'observed_utc': qlog.utc_now(),
+        'repository': repository, 'tag': tag, 'reviewed_head': expected_head,
+        'release_id': release['id'], 'assets': assets,
+        'method': 'independent anonymous GET into new temporary files; exact archive and all payload member bytes',
+        'historical_offline_witness_is_current_proof': False,
+        'durable_public_readback_verified': True, 'main_activation_verified': False,
+        'ordinary_release': False, 'effect_ack_done': False,
+    }
 
 
 class PublicationJournal:
@@ -695,6 +865,27 @@ def _finish(
 
 def _run_main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.runtime_carrier:
+        if (args.mode == 'execute' or args.github_enable or args.github_push or args.github_release
+                or args.allow_publish or args.confirm_publish or args.asset or args.zenodo_enable):
+            raise ValueError('runtime carrier preparation/readback cannot perform publication effects')
+        directory = _inside_root(args.evidence_dir)
+        if args.runtime_carrier == 'prepare':
+            if not args.carrier_archive:
+                raise ValueError('runtime carrier preparation requires --carrier-archive')
+            prepare_runtime_carrier(pathlib.Path(args.carrier_archive).absolute(), directory)
+        else:
+            receipt = readback_runtime_carrier(args.carrier_reviewed_head)
+            directory.mkdir(parents=True, exist_ok=True)
+            # Public delivery evidence is create-only on POSIX and Windows.
+            # Do not replace a prior receipt or require POSIX-only fchmod/fsync-dir.
+            path = directory / 'RELEASE_DOWNLOAD_READBACK.json'
+            with path.open('x', encoding='utf-8', newline='\n') as handle:
+                handle.write(tool_cache.canonical_json(receipt))
+                handle.flush()
+                os.fsync(handle.fileno())
+        print(f'PASS runtime carrier {args.runtime_carrier}; no publication effect: {directory}')
+        return 0
     errors = validate_args(args)
     if errors:
         print("BLOCK " + "; ".join(errors), file=sys.stderr)

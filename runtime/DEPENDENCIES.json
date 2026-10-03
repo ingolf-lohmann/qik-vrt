@@ -1,19 +1,34 @@
 {
-  "stub_state": true,
   "_license": {
+    "classification": "runtime_volatile_state_json",
     "copyright": "Copyright 2026 Ingolf Lohmann",
-    "rights_holder": "Ingolf Lohmann",
     "license": "CC-BY-NC-ND-4.0",
     "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
-    "classification": "runtime_volatile_state_json"
+    "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_runtime_state_pre_required_files_bootstrap_v44",
-  "path": "runtime/DEPENDENCIES.json",
   "classification": "VOLATILE_RUNTIME_STATE",
-  "immutable_release_constant": false,
+  "dependencies": [
+    {
+      "continue_path": "MATERIALIZE_LOCKED_CACHE_THEN_FRESH_NATIVE_OFFLINE_WITNESS",
+      "dependency_id": "python_runtime",
+      "fallback_discovery_commands": [
+        "python3",
+        "python"
+      ],
+      "license_area": "third_party_python_runtime",
+      "license_or_rights_context": "runtime/toolchains/python-3.12.10-embed-amd64-LICENSE.txt",
+      "platform_scope": "Windows x64 managed startup; POSIX legacy system discovery",
+      "preferred_embedded_paths": [],
+      "repair_hint": "Restore the version/hash-bound Windows archive through tools/bootstrap-runtime.ps1 -Profile windows-start; upstream reconstruction is explicit."
+    }
+  ],
   "excluded_from_sha256sums": true,
-  "must_exist_before_required_files_check": true,
+  "immutable_release_constant": false,
   "last_bootstrap_utc": "2026-06-20T14:48:09Z",
+  "materialized_or_verified_utc": "2026-06-20T14:47:15Z",
+  "must_exist_before_required_files_check": true,
   "must_exist_in_delivery_zip": true,
-  "materialized_or_verified_utc": "2026-06-20T14:47:15Z"
+  "path": "runtime/DEPENDENCIES.json",
+  "schema": "qikvrt_runtime_state_pre_required_files_bootstrap_v44",
+  "stub_state": false
 }

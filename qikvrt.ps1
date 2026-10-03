@@ -2,54 +2,55 @@
 Copyright 2026 Ingolf Lohmann.
 Licensed under the Apache License, Version 2.0 (the "License");
 See LICENSES/Apache-2.0.txt.
-required-token: DEFAULT_COMMAND=master-gate
-required-token: download_python_runtime.ps1
+The repository launcher remains the authorization-before-effect authority.
+Upstream reconstruction is an explicit runtime/download_python_runtime.ps1 operation.
 #>
-$ErrorActionPreference = "Continue"
+$ErrorActionPreference = 'Stop'
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$DefaultCommand = "master-gate"
-if ($args.Count -eq 0) { $EffectiveArgs = @($DefaultCommand) } else { $EffectiveArgs = $args }
-$LogDir = Join-Path $ScriptDir "logs"
-$LogFile = Join-Path $LogDir "qikvrt_last_run.jsonl"
-$LogJsonPath = $LogFile.Replace("\", "/")
-if (!(Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir | Out-Null }
-Set-Content -Path $LogFile -Value ("{""event"":""run_start"",""launcher"":""qikvrt.ps1"",""logfile"":""" + $LogJsonPath + """,""default_command"":""master-gate"",""dependency_contract"":""GENERAL_DEPENDENCY_RESOLUTION_CONSENT_AND_CONTINUE_PATH_GATE""}") -Encoding UTF8
-Write-Host "QIK-VRT V22 PowerShell Launcher"
-Write-Host "Command: $($EffectiveArgs -join ' ')"
-Write-Host "Logfile: $LogFile"
+$DefaultCommand = 'master-gate'
+[string[]]$EffectiveArgs = if ($args.Count -eq 0) { @($DefaultCommand) } else { @($args) }
+$powerShellExe = (Get-Process -Id $PID).Path
+$bootstrap = Join-Path $ScriptDir 'tools/bootstrap-runtime.ps1'
 
-$Candidate1 = Join-Path $ScriptDir "runtime\python\windows\python.exe"
-$Candidate2 = Join-Path $ScriptDir "python\python.exe"
-$PythonCommand = $null
-if (Test-Path $Candidate1) { $PythonCommand = $Candidate1 }
-elseif (Test-Path $Candidate2) { $PythonCommand = $Candidate2 }
-elseif (Get-Command py -ErrorAction SilentlyContinue) { $PythonCommand = "py" }
-elseif (Get-Command python -ErrorAction SilentlyContinue) { $PythonCommand = "python" }
-elseif (Get-Command python3 -ErrorAction SilentlyContinue) { $PythonCommand = "python3" }
-
-if ($null -eq $PythonCommand) {
-  Add-Content -Path $LogFile -Value '{"event":"runtime_missing","status":"CONTINUE","continue_path":"DOWNLOAD_ACCEPTED_PYTHON_RUNTIME","dependency_contract":"GENERAL_DEPENDENCY_RESOLUTION_CONSENT_AND_CONTINUE_PATH_GATE","license_area":"third_party_python_runtime"}'
-  & powershell -ExecutionPolicy Bypass -NoProfile -File (Join-Path $ScriptDir "runtime\download_python_runtime.ps1")
-  if (Test-Path $Candidate1) { $PythonCommand = $Candidate1 }
+function Invoke-LockedRuntime([switch]$PrintPath) {
+    # Windows PowerShell must not turn successful native stderr telemetry into
+    # a terminating NativeCommandError. Bind the child exit code and streams.
+    $start = [Diagnostics.ProcessStartInfo]::new()
+    $start.FileName = $powerShellExe
+    $start.Arguments = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' +
+        $bootstrap + '" -Install -AcceptThirdParty -Profile windows-start'
+    if ($PrintPath) { $start.Arguments += ' -PrintPath' }
+    $start.UseShellExecute = $false
+    $start.RedirectStandardOutput = $true
+    $start.RedirectStandardError = $true
+    $process = [Diagnostics.Process]::new()
+    $process.StartInfo = $start
+    try {
+        if (-not $process.Start()) { throw 'Windows runtime bootstrap could not start' }
+        $stdout = $process.StandardOutput.ReadToEndAsync()
+        $stderr = $process.StandardError.ReadToEndAsync()
+        if (-not $process.WaitForExit(60000)) {
+            $process.Kill()
+            [void]$process.WaitForExit(2000)
+            throw 'Windows runtime bootstrap exceeded its 60-second bound'
+        }
+        [Console]::Error.Write($stderr.Result)
+        return [pscustomobject]@{ ExitCode = $process.ExitCode; Output = $stdout.Result }
+    } finally { $process.Dispose() }
 }
 
-if ($null -eq $PythonCommand) {
-  $ExitCode = 20
-  Add-Content -Path $LogFile -Value '{"event":"run_end","status":"CONTINUE","exit_code":20,"error_class":"PYTHON_RUNTIME_DOWNLOAD_NOT_COMPLETED","continue_path":"CHECK_NETWORK_OR_MANUAL_RUNTIME_INSTALL"}'
-} else {
-  if ($PythonCommand -eq "py") { & py -3 (Join-Path $ScriptDir "qikvrt.py") @EffectiveArgs } else { & $PythonCommand (Join-Path $ScriptDir "qikvrt.py") @EffectiveArgs }
-  $ExitCode = $LASTEXITCODE
-  if ($ExitCode -ne 0) {
-    Add-Content -Path $LogFile -Value ('{"event":"ps1_wrapper_end","status":"FAIL","exit_code":' + $ExitCode + ',"error_class":"PYTHON_LAUNCHER_TARGET_FAILED","continue_path":"INSPECT_LOG_AND_REPAIR_NEXT_ERROR","repair_hint":"Inspect logs/qikvrt_last_run.jsonl."}')
-    Add-Content -Path $LogFile -Value ('{"event":"run_end","status":"FAIL","exit_code":' + $ExitCode + ',"error_class":"PYTHON_LAUNCHER_TARGET_FAILED","continue_path":"INSPECT_LOG_AND_REPAIR_NEXT_ERROR","repair_hint":"Inspect logs/qikvrt_last_run.jsonl.","logfile":"' + $LogJsonPath + '"}')
-  } else {
-    Add-Content -Path $LogFile -Value ('{"event":"ps1_wrapper_end","status":"PASS","exit_code":0}')
-    Add-Content -Path $LogFile -Value ('{"event":"run_end","status":"PASS","exit_code":0,"error_class":"NONE","continue_path":"NONE","repair_hint":"NONE","logfile":"' + $LogJsonPath + '"}')
-  }
+if ($EffectiveArgs.Count -eq 1 -and $EffectiveArgs[0] -eq '--runtime-self-test') {
+    $result = Invoke-LockedRuntime
+    [Console]::Out.Write($result.Output)
+    exit $result.ExitCode
 }
-Write-Host ""
-Write-Host "QIK-VRT finished."
-Write-Host "Exit-Code: $ExitCode"
-Write-Host "Logfile: $LogFile"
-Read-Host "Press Enter to close this window"
-exit $ExitCode
+
+# Restoration of an already materialized, license-bound cache is local only.
+# No launcher argument enables ReconstructUpstream or an unverified fallback.
+$result = Invoke-LockedRuntime -PrintPath
+if ($result.ExitCode -ne 0) { exit $result.ExitCode }
+$pathOutput = @($result.Output.TrimEnd([char[]]"`r`n") -split '[\r\n]+')
+if ($pathOutput.Count -ne 1) { throw 'Windows runtime bootstrap returned an ambiguous path' }
+$PythonCommand = [string]$pathOutput[0]
+& $PythonCommand -I -B (Join-Path $ScriptDir 'qikvrt.py') @EffectiveArgs
+exit $LASTEXITCODE
