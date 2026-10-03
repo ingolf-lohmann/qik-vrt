@@ -51,3 +51,25 @@ Report only material changes: a new disposition, a resolved or newly evidenced b
 ## Machine authority
 
 The normative machine-readable policy is `policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`. The natural-person delegation is `state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`.
+
+
+## Lossless counterpart worker (2026-09-26)
+
+The existing local Mirror review remains active. The same workflow now accepts
+an exact read-only `mesh-worker` dispatch. It authenticates the source run and
+current source Main, checks out that exact evaluator in a separate directory,
+verifies the work and code digests, and returns a byte-bound result with its own
+HEAD/TREE and run/attempt. It has no repository write permission.
+The source reobserves its live state before any effect. Native approval is
+never implied. The worker and transport implementations are shared exact bytes
+with Authority; the role-local review cores and histories remain distinct.
+
+The Mirror's existing REST observations use conditional authenticated reads.
+A server-validated 304 may reuse only exact retained bytes. Rate and permission
+errors never reuse stale data or rotate credentials. Local observation receipts
+are preserved as Actions artifacts. This Mirror adapter does not claim the
+Authority's append-only ledger implementation is present here.
+
+Owner request: Ingolf Lohmann. Implementation: Codex AI assistance.
+Activation requires both candidate integrations, suitable Mesh credentials and
+actual source/worker result readback; file presence is not that effect.

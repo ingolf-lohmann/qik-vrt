@@ -1,0 +1,120 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
+
+name: QIKVRT real mesh system verification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qikvrt-real-mesh-system-verification-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  system-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact candidate head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Bind exact head and clean worktree
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          test -z "$(git status --porcelain)"
+
+      - name: Run reflexive system verification tests
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 \
+            python3 -B -m unittest -v \
+            tests.test_qikvrt_real_mesh tests.test_qikvrt_real_mesh_system_verification
+
+      - name: Verify declared tool-cache contract
+        run: python3 -B tools/qikvrt_tool_cache.py verify
+
+      - name: Execute bounded repository multitasking and lossless corpus
+        shell: bash
+        env:
+          REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          MULTITASKING_DIR: ${{ runner.temp }}/qikvrt-real-mesh-multitasking
+        run: |
+          set -euo pipefail
+          mkdir -p "$MULTITASKING_DIR"
+          python3 - <<'PY'
+          import json, os, subprocess, urllib.request
+          from pathlib import Path
+          repository = os.environ['REPOSITORY']
+          counterpart = {'Goldkelch/qik-vrt':'ingolf-lohmann/qik-vrt',
+                         'ingolf-lohmann/qik-vrt':'Goldkelch/qik-vrt'}[repository]
+          request = urllib.request.Request('https://api.github.com/repos/'+counterpart+'/commits/main',
+              headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'], 'Accept':'application/vnd.github+json'})
+          with urllib.request.urlopen(request, timeout=30) as response:
+              observed = json.load(response)
+          # This is counterpart reference observation, never remote execution.
+          scratch = Path(os.environ['MULTITASKING_DIR'])
+          (scratch / 'counterpart-reference.json').write_text(json.dumps(observed, sort_keys=True)+'\n')
+          subprocess.run(['python3','-B','tools/qikvrt_real_mesh_system_verification.py','multitasking',
+              '--repository',repository,
+              '--source-head',subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              '--source-tree',subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+              '--counterpart-head',observed['sha'],'--counterpart-tree',observed['commit']['tree']['sha'],
+              '--workdir',str(scratch / 'runtime'),
+              '--output',str(scratch / 'report.json')], check=True)
+          subprocess.run(['python3','-B','tools/qikvrt_real_mesh_system_verification.py','verify-multitasking',
+              '--repository',repository,
+              '--source-head',subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              '--source-tree',subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+              '--report',str(scratch / 'report.json'), '--workdir',str(scratch / 'runtime'),
+              '--output',str(scratch / 'qualification.json')], check=True)
+          PY
+
+      - name: Execute real mesh and produce audit receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/real-mesh-sysverify
+          python3 -B tools/qikvrt_real_mesh_system_verification.py run \
+            --source-head "$(git rev-parse --verify HEAD^{commit})" \
+            --source-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --output .qikvrt/real-mesh-sysverify/AUDIT_RECEIPT.json \
+            > .qikvrt/real-mesh-sysverify/stdout.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          audit = json.loads(Path('.qikvrt/real-mesh-sysverify/AUDIT_RECEIPT.json').read_text())
+          assert audit['status'] == 'PASS', f"Audit status: {audit['status']}, findings: {audit['findings']}"
+          assert audit['finding_count'] == 0, f"Unexpected findings: {audit['findings']}"
+          assert audit['general_effect_ack_done'] is False, "general_effect_ack_done must be False"
+          assert audit['external_effect'] == 'NONE', "external_effect must be NONE"
+          assert audit['transport_ack_is_effect_ack'] is False, "transport_ack_is_effect_ack must be False"
+          assert audit['bounded_loopback_effect_ack_scope_confirmed'] is True
+          print("PASS: all audit receipt assertions satisfied")
+          PY
+
+      - name: Preserve exact implementation report and original node ledger corpus
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-repository-multitasking-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-real-mesh-multitasking
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
