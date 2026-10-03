@@ -297,7 +297,9 @@
         "tests/test_runtime_bootstrap.ps1",
         ".github/workflows/qikvrt_adaptive_runtime.yml",
         "qikvrt.py",
-        "tools/qikvrt_runtime_logger.py"
+        "tools/qikvrt_runtime_logger.py",
+        "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+        "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json"
       ],
       "cache_class": "repo-managed-archive",
       "cache_locations": [
@@ -319,7 +321,22 @@
         "isolated CPython 3.12.10 AMD64 stdlib/SQLite/hash self-test",
         "OS-denied egress fresh qikvrt.cmd start and missing/tamper controls"
       ],
-      "version": "3.12.10"
+      "version": "3.12.10",
+      "native_offline_witness": {
+        "receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+        "receipt_sha256": "02739f64452c3dfb619033fb4d9cb1fb5671b40624229d615c72f9fadb0d7a94",
+        "cache_receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json",
+        "cache_receipt_sha256": "685586904628b82b31897d17381de99dc01cd73153f98e81607b5cefa290b8d2",
+        "source_head": "1f2441dd443bd9ad58574ed1626e66e18172e66a",
+        "source_tree": "e4fe8bb0471c1ce1f1f9308a8d874e22953304ac",
+        "run_id": 37128130457,
+        "job_id": 111217559829,
+        "artifact_id": 11275860977,
+        "artifact_sha256": "7799e99632e65358e7597caa51d0252c205241cd03df27c67f9aeeec2bc23c78",
+        "artifact_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128130457/artifacts/11275860977",
+        "scope": "Observed materialized cache carrier on native Windows Server 2022 x64; not Main activation, durable release delivery or an effect acknowledgment.",
+        "current_head_rule": "This immutable source snapshot does not replace required fresh checks on a successor HEAD."
+      }
     },
     "sherpa-onnx-node": {
       "authority_files": [

@@ -43,10 +43,12 @@ class WindowsRuntimeAuthorityTests(unittest.TestCase):
         registry = tool_cache.read_registry()
         spec_path = registry['components']['python-embed-windows']['payload_manifest']
         spec = json.loads((REPOSITORY_ROOT / spec_path).read_text())
+        witness = registry['components']['python-embed-windows'].get('native_offline_witness', {})
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
             for relative in [spec_path, 'runtime/toolchains/TOOLCHAIN.lock.tsv',
-                             spec['license_file'], spec['upstream_sbom_file'], spec['upstream_sigstore_file']]:
+                             spec['license_file'], spec['upstream_sbom_file'], spec['upstream_sigstore_file'],
+                             *[witness[key] for key in ('receipt_path', 'cache_receipt_path') if key in witness]]:
                 destination = root / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 destination.write_bytes((REPOSITORY_ROOT / relative).read_bytes())
@@ -57,6 +59,29 @@ class WindowsRuntimeAuthorityTests(unittest.TestCase):
                 with self.assertRaisesRegex(tool_cache.ContractError, 'provenance hash mismatch'):
                     tool_cache.validate_windows_python_payload(registry)
                 (root / spec['license_file']).unlink()
+                with self.assertRaises(tool_cache.ContractError):
+                    tool_cache.validate_windows_python_payload(registry)
+
+    def test_native_offline_witness_tamper_and_missing_fail_closed(self) -> None:
+        registry = tool_cache.read_registry()
+        component = registry['components']['python-embed-windows']
+        witness = component['native_offline_witness']
+        spec = json.loads((REPOSITORY_ROOT / component['payload_manifest']).read_text())
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            for relative in [component['payload_manifest'], 'runtime/toolchains/TOOLCHAIN.lock.tsv',
+                             spec['license_file'], spec['upstream_sbom_file'], spec['upstream_sigstore_file'],
+                             witness['receipt_path'], witness['cache_receipt_path']]:
+                destination = root / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes((REPOSITORY_ROOT / relative).read_bytes())
+            with mock.patch.object(tool_cache, 'ROOT', root), mock.patch.object(
+                    tool_cache, 'LOCK_PATH', root / 'runtime/toolchains/TOOLCHAIN.lock.tsv'):
+                tool_cache.validate_windows_python_payload(registry)
+                (root / witness['receipt_path']).write_bytes(b'altered native receipt')
+                with self.assertRaisesRegex(tool_cache.ContractError, 'offline witness hash mismatch'):
+                    tool_cache.validate_windows_python_payload(registry)
+                (root / witness['receipt_path']).unlink()
                 with self.assertRaises(tool_cache.ContractError):
                     tool_cache.validate_windows_python_payload(registry)
 

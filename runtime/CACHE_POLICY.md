@@ -67,6 +67,17 @@ dependency. Closure for a materialized carrier requires a freshly read native
 `OFFLINE_START_RECEIPT.json` for the exact candidate HEAD/TREE. Main activation,
 reviewed durable release delivery and overall `EFFECT_ACK_DONE` remain separate.
 
+The immutable `python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json` and
+`python-3.12.10-embed-amd64.CACHE_SELF_TEST.json` in the existing toolchain
+directory bind the observed carrier at source HEAD
+`1f2441dd443bd9ad58574ed1626e66e18172e66a`, tree
+`e4fe8bb0471c1ce1f1f9308a8d874e22953304ac`. Their artifact bytes and nested
+archive were redownloaded and verified. The registry binds both receipt hashes
+and checks source identity, offline scope and all 11 negative/logger controls.
+These records establish that observed materialized carrier's closure. A
+successor HEAD still requires its own fresh native check; the archived snapshot
+does not activate Main or authorize a release or ordinary effect.
+
 The starter's CPython 3.12.10 binding preserves the previously selected embeddable
 artifact. The independent IETF renderer remains bound to CPython 3.12.13; this
 change does not select an older interpreter for that profile.

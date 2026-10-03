@@ -17,10 +17,13 @@ Required executable:
 .qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/runtime/python.exe
 ```
 
-Fresh native offline startup is required before declaring closure:
+The freshly observed Windows Server 2022 x64 carrier passed cold/warm offline
+startup and all 11 negative/logger controls. The exact-source receipts and
+digests are bound in the existing toolchain registry. Closure is scoped to
+the verified materialized cache carrier; Main activation requires review.
 
 ```text
-CONTINUE_NATIVE_OFFLINE_START_WITNESS_REQUIRED
+PASS_MATERIALIZED_CARRIER_NATIVE_OFFLINE_START_VERIFIED
 ```
 
 No false DONE is claimed.

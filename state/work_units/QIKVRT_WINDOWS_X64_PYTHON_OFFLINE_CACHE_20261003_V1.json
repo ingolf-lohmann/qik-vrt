@@ -86,7 +86,11 @@
     "receipt_path": "qikvrt-windows-offline-start-<exact-head>/OFFLINE_START_RECEIPT.json",
     "carrier_path": "existing workflow artifact/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/archive/",
     "durable_release_delivery": "NOT_CLAIMED; candidate artifacts have finite retention",
-    "self_binding_rule": "The containing Git commit/tree and repository native integrity trio bind the exact files; no impossible in-file self-hash is asserted."
+    "self_binding_rule": "The containing Git commit/tree and repository native integrity trio bind the exact files; no impossible in-file self-hash is asserted.",
+    "committed_receipt_paths": [
+      "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+      "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json"
+    ]
   },
   "verification": {
     "official_zip_hash_size_and_35_members": "PASS_LOCAL_FRESH_BYTES",
@@ -106,9 +110,24 @@
       "scope": "Fresh local checkout; not native Windows runtime evidence."
     },
     "repository_native_integrity": "PASS_DETERMINISTIC_REGENERATION_AND_FRESH_CHECKOUT; REGENERATE_AFTER_THIS_METADATA_UPDATE",
-    "native_windows_offline_start": "PENDING_EXACT_HEAD_NATIVE_WORKFLOW",
+    "native_windows_offline_start": {
+      "result": "PASS_NATIVE_OFFLINE_START_READBACK",
+      "receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+      "receipt_sha256": "02739f64452c3dfb619033fb4d9cb1fb5671b40624229d615c72f9fadb0d7a94",
+      "cache_receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json",
+      "cache_receipt_sha256": "685586904628b82b31897d17381de99dc01cd73153f98e81607b5cefa290b8d2",
+      "source_head": "1f2441dd443bd9ad58574ed1626e66e18172e66a",
+      "source_tree": "e4fe8bb0471c1ce1f1f9308a8d874e22953304ac",
+      "run_id": 37128130457,
+      "job_id": 111217559829,
+      "artifact_id": 11275860977,
+      "artifact_sha256": "7799e99632e65358e7597caa51d0252c205241cd03df27c67f9aeeec2bc23c78",
+      "artifact_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128130457/artifacts/11275860977",
+      "scope": "Observed materialized cache carrier on native Windows Server 2022 x64; not Main activation, durable release delivery or an effect acknowledgment.",
+      "current_head_rule": "This immutable source snapshot does not replace required fresh checks on a successor HEAD."
+    },
     "independent_candidate_review": "NOT_CLAIMED",
-    "first_current_blocker": "NATIVE_WINDOWS_OFFLINE_START_RECEIPT_NOT_YET_OBSERVED",
+    "first_current_blocker": "LATEST_HEAD_REOBSERVATION_THEN_AUTHENTICATED_CODE_OWNER_REVIEW_FOR_MAIN_ACTIVATION",
     "native_attempts": [
       {
         "source_head": "d5aec74536b9c7c22589ceb01e06759f4ad8d7e5",
@@ -153,7 +172,8 @@
         "first_causal_failure": "The encoded PowerShell command quoted parameter names as positional strings. Preserve named parameter tokens and quote only values; terminate on binding errors.",
         "dependency_closed": false
       }
-    ]
+    ],
+    "tool_cache_native_receipt_binding": "HASH_AND_IDENTITY_VALIDATED_WITH_TAMPER_AND_MISSING_RECEIPT_NEGATIVE_TEST"
   },
   "human_decision": {
     "directive": "RECEIVED",
@@ -178,11 +198,12 @@
     "release": "NOT_EXECUTED",
     "deployment": "NOT_EXECUTED"
   },
-  "candidate_state": "MATERIALIZED_LOCAL_CHECKS_PASSED_NATIVE_OFFLINE_WITNESS_PENDING",
+  "candidate_state": "NATIVE_MATERIALIZED_CARRIER_PROVEN_RECEIPTS_PERSISTED_PENDING_LATEST_HEAD_GATES_AND_MAIN_REVIEW",
   "release_claims": {
-    "DEPENDENCY_CLOSED": false,
+    "DEPENDENCY_CLOSED": true,
     "FINAL_PASS": false,
     "MAIN_ACTIVATION_VERIFIED": false,
-    "EFFECT_ACK_DONE": false
+    "EFFECT_ACK_DONE": false,
+    "DEPENDENCY_CLOSED_SCOPE": "EXACT_OBSERVED_MATERIALIZED_CARRIER"
   }
 }

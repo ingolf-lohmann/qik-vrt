@@ -151,6 +151,45 @@ def validate_windows_python_payload(registry: dict[str, Any]) -> None:
                     or record['bytes'] <= 0 or len(record['sha256']) != 64
                     or any(c not in '0123456789abcdef' for c in record['sha256'])):
                 raise ContractError('Windows Python member identity/hash/size mismatch')
+        witness = component.get('native_offline_witness')
+        if witness is not None:
+            receipts = []
+            for path_key, hash_key in [('receipt_path', 'receipt_sha256'),
+                                       ('cache_receipt_path', 'cache_receipt_sha256')]:
+                raw = (ROOT / witness[path_key]).read_bytes()
+                if sha256_bytes(raw) != witness[hash_key]:
+                    raise ContractError('Windows Python native offline witness hash mismatch')
+                receipts.append(json.loads(raw))
+            offline, cached = receipts
+            if (offline['schema'] != 'qikvrt-windows-python-offline-start-receipt/1.0'
+                    or offline['source_head'] != witness['source_head']
+                    or offline['source_tree'] != witness['source_tree']
+                    or str(offline['run_id']) != str(witness['run_id'])
+                    or offline['archive_sha256'] != spec['archive_sha256']
+                    or offline['license_sha256'] != spec['license_sha256']
+                    or offline['payload_manifest_sha256'] != sha256_bytes((ROOT / relative).read_bytes())
+                    or not offline['native_windows_x64'] or not offline['os_egress_denied']
+                    or offline['system_python_candidates_exposed']
+                    or offline['upstream_download_during_offline_start']
+                    or not offline['dependency_closed_for_materialized_carrier']
+                    or offline['cold_offline_restore'] != 'PASS'
+                    or offline['fresh_qikvrt_cmd_start'] != 'PASS'
+                    or offline['warm_offline_start'] != 'PASS'
+                    or not offline['effect_acceptance_retained']
+                    or offline['main_activation_verified'] or offline['effect_ack_done']
+                    or cached['archive_sha256'] != spec['archive_sha256']
+                    or cached['upstream_download_performed']
+                    or cached['self_test'] != offline['runtime_self_test']
+                    or cached['version'] != spec['version']
+                    or cached['self_test']['pointer_bits'] != 64):
+                raise ContractError('Windows Python native offline witness identity/scope mismatch')
+            expected_controls = {'native-log-contract', 'native-log-owner-dacl', 'missing-cache',
+                'tampered-archive', 'missing-archive', 'tampered-executable', 'missing-stdlib',
+                'unexpected-module', 'reparse-cache', 'reconstruction-consent-required',
+                'final-verification-rollback'}
+            controls = offline['negative_controls']
+            if set(controls) != expected_controls or any(v['result'] != 'PASS' for v in controls.values()):
+                raise ContractError('Windows Python native offline negative controls are incomplete')
     except (OSError, KeyError, TypeError, ValueError) as exc:
         raise ContractError(f'invalid Windows Python payload authority: {exc}') from exc
 
