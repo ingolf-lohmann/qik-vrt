@@ -1,0 +1,50 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_digital_twin_executor_schedule_binding_v1",
+  "binding_id": "eu-regulatory-watch-firefox-ai-20261001-v1",
+  "task_id": "6abe3d7a68c88191aee2117043e08cde",
+  "title": "EU-Regulierungswache KI-Assistent",
+  "executor": "chatgpt_automations",
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Paris:20261002T080000\nRRULE:FREQ=DAILY;BYHOUR=8;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "default_timezone": "Europe/Paris",
+  "timing_mode": "condition_watch",
+  "is_enabled": true,
+  "source_updated_at": "2026-10-01T11:27:10.831076+00:00",
+  "observed_at": "2026-10-01T11:27:24.876000Z",
+  "local_revision": 3,
+  "configuration_sha256": "fe5674b0521361e44da4e284ccf3e2c7d3a95db22f5d9778630f6ea7c50b995c",
+  "source_observation_method": "authenticated automations.peek after successful automations.update of the prepared prompt correction",
+  "native_observation_method": "actual SchedulingStore CLI import and independent local readback, private runtime state",
+  "local_configuration_matches_executor_readback": true,
+  "prepared_configuration_sha256": "fe5674b0521361e44da4e284ccf3e2c7d3a95db22f5d9778630f6ea7c50b995c",
+  "full_prompt_committed": false,
+  "native_state_persisted_in_private_local_node": true,
+  "source_run_observed": false,
+  "source_last_run_time": null,
+  "source_next_run_time": null,
+  "planned_next_slot_utc": "2026-10-02T06:00:00Z",
+  "planned_time_is_not_hosted_run_receipt": true,
+  "acceptance": {
+    "source_configuration_readback_verified": true,
+    "local_registry_readback_verified": true,
+    "public_twin_ingress_verified": false,
+    "continuous_bridge_verified": false,
+    "main_integration_verified": false,
+    "independent_code_owner_approval_observed": false,
+    "effect_ack_done": false
+  },
+  "live_carrier": {
+    "service": "universal-terminal",
+    "repository": "Goldkelch/qik-vrt",
+    "observed_source_branch": "feature/cloud-transputer-materialization-v1-b4b0038",
+    "observed_config_source_commit": "2fdcf8d233b1495732ef38e3406ebfc095fd0ef3",
+    "observation_scope": "Railway service configuration only; runtime exact head may be selected separately by startup variables",
+    "variable_name_observation": "QIKVRT_API_TOKEN, QIKVRT_API_PRINCIPAL and QIKVRT_ALLOWED_REPOSITORY were absent from the service variable names returned by get_service_config; this alone is not a full runtime environment proof",
+    "first_unverified_edge": "authenticated productive scheduling ingress and bridge"
+  },
+  "next_action": "Review and integrate the executable adapter, then bind and verify its authenticated productive Twin ingress; preserve one executor for this task."
+}

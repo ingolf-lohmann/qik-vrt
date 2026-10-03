@@ -134,6 +134,7 @@
     "README.md",
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
+    "policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
     "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
   ],
@@ -210,5 +211,12 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "digital_twin_scheduling": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json",
+    "implementation": "src/qikvrt_digital_twin_scheduling.py",
+    "transport": "src/qikvrt_github_api_shim.py",
+    "base_path": "/api/digital-twin/v1/schedules",
+    "rule": "Keep the exact task identity, configuration and source readback synchronized through the existing authorized adapter; a registry import is not public runtime or continuous bridge verification."
   }
 }
