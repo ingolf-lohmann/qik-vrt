@@ -8,9 +8,37 @@ on:
       - "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
       - "browser/firefox/qikvrt-terminal/**"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
+      - "tools/qikvrt_firefox_windows_witness.py"
+      - "tools/qikvrt_linux_scale_isolation.py"
+      - "policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json"
+      - "tests/test_qikvrt_linux_scale_isolation.py"
+      - "tools/qikvrt_tool_cache.py"
+      - "runtime/toolchains/**"
+      - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_api_handler.py"
+      - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
   workflow_dispatch:
+    inputs:
+      run_isolated_control:
+        description: 'Execute the fixed 36-trial control on an externally admitted dedicated runner'
+        type: boolean
+        required: true
+        default: false
+      expected_head:
+        description: 'Reviewed exact dispatch-ref HEAD (40 lowercase hex digits)'
+        type: string
+        required: false
+      expected_tree:
+        description: 'Reviewed exact dispatch-ref TREE (40 lowercase hex digits)'
+        type: string
+        required: false
+      isolation_attestation_sha256:
+        description: 'Externally verified /etc/qikvrt/scale-isolation.json SHA-256'
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -93,5 +121,179 @@ jobs:
         with:
           name: qikvrt-personal-firefox-boundary-${{ github.event.pull_request.head.sha || github.sha }}
           path: /tmp/qikvrt-personal-firefox-boundary
+          if-no-files-found: error
+          retention-days: 30
+
+  linux-seed-ring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact Linux ring candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Use declared interpreter
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify cache, seed controls and real HTTP concurrency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+      - name: Run actual Firefox seed-bound ring on Linux
+        shell: bash
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_firefox_windows_witness.py --linux-ring --headless --output "$RUNNER_TEMP/qikvrt-firefox-linux-ring"
+      - name: Preserve Linux ring readback even on failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-linux-ring-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/geckodriver.log
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/screenshot.png
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/standard.xpi
+          # The private state file contains token material. Preserve readbacks,
+          # never the .qikvrt/api store itself.
+          if-no-files-found: error
+          retention-days: 30
+
+  linux-comparable-scale:
+    # Contract/negative controls only. The unmodified hosted trial budget is zero.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact benchmark candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Use declared interpreter
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify tool-cache contract
+        run: python3 -B tools/qikvrt_tool_cache.py verify
+      - name: Validate isolated measurement contract without hosted performance trials
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest -v tests.test_qikvrt_linux_scale_isolation
+
+  linux-isolated-control:
+    # PR events cannot reach a dedicated machine. Dispatch uses its own reviewed
+    # exact ref, never a user-selected arbitrary checkout or a hosted fallback.
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_isolated_control == true }}
+    runs-on: [self-hosted, linux, x64, qikvrt-isolated-scale]
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      QIKVRT_EXPECTED_HEAD: ${{ inputs.expected_head }}
+      QIKVRT_EXPECTED_TREE: ${{ inputs.expected_tree }}
+      QIKVRT_ATTESTATION_SHA256: ${{ inputs.isolation_attestation_sha256 }}
+      QIKVRT_ISOLATED_OUTPUT: /var/lib/qikvrt-scale/runs/${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Check out the reviewed exact dispatch ref
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify exact subject and declared offline interpreter
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$QIKVRT_EXPECTED_HEAD"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$QIKVRT_EXPECTED_TREE"
+          test "$(python3 -c 'import platform; print(platform.python_version())')" = 3.12.13
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_qikvrt_linux_scale_isolation
+      - name: Execute exactly the admitted isolated and interference conditions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_firefox_windows_witness.py --isolated-scale-benchmark \
+            --expected-head "$QIKVRT_EXPECTED_HEAD" --expected-tree "$QIKVRT_EXPECTED_TREE" \
+            --isolation-attestation-sha256 "$QIKVRT_ATTESTATION_SHA256" \
+            --output "$QIKVRT_ISOLATED_OUTPUT"
+      - name: Preserve every admitted or failed trial and control without private stores
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-linux-isolated-control-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ env.QIKVRT_ISOLATED_OUTPUT }}/RECEIPT.json
+            ${{ env.QIKVRT_ISOLATED_OUTPUT }}/ISOLATION_ADMISSION.json
+            ${{ env.QIKVRT_ISOLATED_OUTPUT }}/measurements/*.json
+            ${{ env.QIKVRT_ISOLATED_OUTPUT }}/controls/*.json
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-witness:
+    # Extensions execute only after the primary Linux reference succeeds.
+    needs: [linux-seed-ring]
+    # Client Windows 11 ARM64 is a product-scope candidate, not Server equivalence.
+    runs-on: windows-11-arm
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact Windows candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify cache and acceptance contract
+        shell: pwsh
+        run: |
+          $output = "$env:RUNNER_TEMP/qikvrt-firefox-windows"
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          @{
+            schema = 'qikvrt_firefox_windows_preflight_v1'
+            head = (git rev-parse HEAD)
+            tree = (git rev-parse 'HEAD^{tree}')
+            state = 'HOLD'
+            stage = 'CACHE_AND_CONTRACT_PREFLIGHT'
+            observed_at = [DateTime]::UtcNow.ToString('o')
+            personal_release_effect_ack_done = $false
+          } | ConvertTo-Json | Set-Content -Encoding utf8 "$output/RECEIPT.json"
+          python -B tools/qikvrt_tool_cache.py verify
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Run the same State validation and real CLI restart controls natively.
+          python -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+          exit $LASTEXITCODE
+      - name: Read canonical public URL and verify seed-bound durable Firefox effect
+        shell: pwsh
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python -B tools/qikvrt_firefox_windows_witness.py --windows-witness --output "$env:RUNNER_TEMP/qikvrt-firefox-windows"
+          exit $LASTEXITCODE
+      - name: Preserve Windows evidence even on functional failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-windows-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-windows/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-windows/PUBLIC_URL_READBACK.json
+            ${{ runner.temp }}/qikvrt-firefox-windows/PUBLIC_URL_HTTP.html
+            ${{ runner.temp }}/qikvrt-firefox-windows/PUBLIC_URL_BROWSER.png
+            ${{ runner.temp }}/qikvrt-firefox-windows/screenshot.png
+            ${{ runner.temp }}/qikvrt-firefox-windows/geckodriver.log
+            ${{ runner.temp }}/qikvrt-firefox-windows/standard.xpi
+          # Persist only readbacks. The state root holds token/key material.
           if-no-files-found: error
           retention-days: 30
