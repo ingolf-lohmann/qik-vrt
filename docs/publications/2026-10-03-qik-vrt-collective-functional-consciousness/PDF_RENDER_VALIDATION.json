@@ -1,0 +1,24 @@
+{
+  "all_pages_visually_inspected": true,
+  "clipped_text_observed": false,
+  "command": "xelatex -no-shell-escape -interaction=nonstopmode -halt-on-error ARTICLE.tex",
+  "font": "DejaVu Serif / DejaVu Sans Mono",
+  "hash_cycle_avoidance": "PDF hash declaration replaced by detached-hash reference only in rendering source; scientific text unchanged.",
+  "overfull_hboxes": 0,
+  "pages": 3,
+  "pdf": {
+    "bytes": 52555,
+    "git_blob_sha1": "f635e3b5f574cd4283405aff0c0c2585f36ff2e9",
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+    "sha256": "a1dd8d153a29ff3ba0c8e65b9c415279f60d7cb72efcdc5aec7908e64b1865ee"
+  },
+  "render_input": {
+    "bytes": 5939,
+    "git_blob_sha1": "9a4a75334fa5577fec921d55e05b1af2940a03df",
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_RENDER_SOURCE.md",
+    "sha256": "0b587b4cecd3ec972118d630948b962deb806a46d53a6ccb6eb7dff814ced078"
+  },
+  "schema": "qikvrt_pdf_render_validation_v1",
+  "style_reused_from": "docs/publications/2026-08-02-vrtcore-smg-h5/QIK-VRT_SMG_Fachartikel_DE_2026-08-02.tex",
+  "tool": "XeTeX 0.999995 / TeX Live 2023 Debian; Poppler pdftoppm"
+}

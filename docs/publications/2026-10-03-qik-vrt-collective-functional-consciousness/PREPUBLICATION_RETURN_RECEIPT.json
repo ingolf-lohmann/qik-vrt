@@ -1,0 +1,99 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "candidate_files": [
+    {
+      "bytes": 52555,
+      "git_blob_sha1": "f635e3b5f574cd4283405aff0c0c2585f36ff2e9",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+      "sha256": "a1dd8d153a29ff3ba0c8e65b9c415279f60d7cb72efcdc5aec7908e64b1865ee"
+    },
+    {
+      "bytes": 5933,
+      "git_blob_sha1": "75071d23645a66aac04f89ab1ecc4bd12fe55fb6",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+      "sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b"
+    },
+    {
+      "bytes": 5939,
+      "git_blob_sha1": "9a4a75334fa5577fec921d55e05b1af2940a03df",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_RENDER_SOURCE.md",
+      "sha256": "0b587b4cecd3ec972118d630948b962deb806a46d53a6ccb6eb7dff814ced078"
+    },
+    {
+      "bytes": 9307,
+      "git_blob_sha1": "b256100f79dd279c3b279eeb1d9faa0e758595e3",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.tex",
+      "sha256": "6b762a5d1ef84aa688343eeb54f2af82c86a33bdf0d2dfe7489408e300bbabf6"
+    }
+  ],
+  "change_notice_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/CHANGE_NOTICE.md",
+  "change_reasons": [
+    {
+      "claim_id": "CFC-09",
+      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+      "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
+      "reason": "Persistierte Main-Beobachtung zeitlich begrenzt und exakt quellengebunden."
+    },
+    {
+      "claim_id": "CFC-10",
+      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+      "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
+      "reason": "Historische Fan-Out-Werte als SOURCE_BOUND präzisiert, weil Rohmessungen im Kandidaten fehlen."
+    },
+    {
+      "claim_id": "CFC-15",
+      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+      "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
+      "reason": "Ungebundene deklarative PDF-Identität durch tatsächlich erzeugte PDF-Bytes ersetzt; Selbsthash-Zirkel vermieden."
+    },
+    {
+      "claim_id": "CFC-16",
+      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+      "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
+      "reason": "Aktuelle v2-Schema-Blockade ohne fingierte Upload-Autorisierung offengelegt."
+    },
+    {
+      "claim_id": "CFC-17",
+      "corrected_sha256": "483640d61afda7375cbbff2ed52e400f74d222edb79f13927b9d2f40a3cabc8b",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE.md",
+      "original_sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
+      "reason": "Redaktionelle Provenienz, Geltungsgrenzen, Quellen, Prüfvermerk und Glossar ergänzt."
+    }
+  ],
+  "changed_claim_ids": [
+    "CFC-09",
+    "CFC-10",
+    "CFC-15",
+    "CFC-16",
+    "CFC-17"
+  ],
+  "content_changed": true,
+  "original_files": [
+    {
+      "bytes": 3368,
+      "git_blob_sha1": "b19ad652f170888f51450598c08ca67a5f70ccc0",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_ORIGINAL.md",
+      "sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413"
+    }
+  ],
+  "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "GitHub draft PR #447 artifact delivery, bound by candidate SHA-256 and Git blob identities; not owner acceptance",
+    "returned_at": "2026-10-03T11:23:03.869122Z",
+    "visible_change_notice_returned": true
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2"
+}

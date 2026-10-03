@@ -1,0 +1,43 @@
+{
+  "candidate_byte_bindings": "PASS",
+  "changed_content_return_chain": "PASS",
+  "claim_matrix_bidirectional_projection": "PASS",
+  "external_publication_effect": "NONE",
+  "fileset_closure": "PASS",
+  "input_source_head": "c8683e2cf499c2382ee950cc59f1c034ff14a3cb",
+  "negative_controls": [
+    {
+      "observed_error": "SHA-256 mismatch for docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "PDF_HASH_TAMPER"
+    },
+    {
+      "observed_error": "bundle claims differ bidirectionally from the bound CLAIM_MATRIX: missing_from_bundle=CFC-18",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "CLAIM_OMISSION"
+    },
+    {
+      "observed_error": "SHA-256 mismatch for AI",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "SOURCE_HASH_TAMPER"
+    },
+    {
+      "observed_error": "CFC-03 has a disposition inconsistent with OPEN",
+      "result": "REJECTED_AS_EXPECTED",
+      "test_id": "OPEN_CLAIM_PROMOTION"
+    }
+  ],
+  "production_error": "proof bundle does not authorize the exact Zenodo upload",
+  "production_gate": "HOLD",
+  "production_schema_const_mismatch": {
+    "actual": false,
+    "expected": true,
+    "path": "/completion_claims/zenodo_upload_authorized"
+  },
+  "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+  "return_receipt_v2_semantic_contract": "PASS via repository-native validator; no general JSON Schema engine invoked",
+  "schema": "qikvrt_prepublication_verification_result_v1",
+  "source_references": "PASS",
+  "upload_authorized": false,
+  "verification_scope": "Repository-native validator reached only its final authorization flag after validating byte identities, claim/source disposition and return chain; no live or predecessor gates transferred."
+}

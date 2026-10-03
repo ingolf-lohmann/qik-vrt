@@ -1,0 +1,79 @@
+{
+  "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+  "schema": "qikvrt_source_evidence_bindings_v1",
+  "source_head": "c8683e2cf499c2382ee950cc59f1c034ff14a3cb",
+  "sources": [
+    {
+      "bytes": 5019,
+      "git_blob_sha1": "0d539921dddb2f05efd8155f69742014baedd938",
+      "path": "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
+      "relation_and_limit": "Normativer Architekturvertrag; kein empirischer Bewusstseinsnachweis.",
+      "sha256": "3ad7db021c2a9be4f419018ad1a56d5a532fce925c7ca48d751607f9f29153e3",
+      "source_id": "SRC-ARCH"
+    },
+    {
+      "bytes": 4992,
+      "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+      "path": "policy/zenodo-machine-proof-policy-v2.json",
+      "relation_and_limit": "Normative v2 Policy.",
+      "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+      "source_id": "SRC-POLICY"
+    },
+    {
+      "bytes": 3368,
+      "git_blob_sha1": "b19ad652f170888f51450598c08ca67a5f70ccc0",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ARTICLE_ORIGINAL.md",
+      "relation_and_limit": "Ausgangsinterpretation, keine Mess- oder Kernel-Evidenz.",
+      "sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413",
+      "source_id": "SRC-ORIGINAL"
+    },
+    {
+      "bytes": 1444,
+      "git_blob_sha1": "63a952d9a1f512b64191a2f9ab4500ac9265913c",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ROADMAP_RECALCULATION.md",
+      "relation_and_limit": "Historisch berichtete Fan-Out-Zahlen, keine gebundenen Rohmessungen.",
+      "sha256": "3ca7354b7f539691e802e8ccb540d8ffafc268d7b26682580c7e61e92e30eeca",
+      "source_id": "SRC-ROADMAP"
+    },
+    {
+      "bytes": 1570,
+      "git_blob_sha1": "7eac3158d91bd9e2bdcd04702207804b53436f67",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MAIN_SOURCE_SNAPSHOT.json",
+      "relation_and_limit": "REST-beobachtete Git-Commit-/Tree-Metadaten.",
+      "sha256": "9222b9c2c24580a9d11feefd8d3ee9f6847c7101c0843f2e840bae3e87efe677",
+      "source_id": "SRC-MAIN"
+    },
+    {
+      "bytes": 5124,
+      "git_blob_sha1": "20f17ab50132388569d91f7080e1cc7d83e9cdd9",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PR446_SOURCE_SNAPSHOT.json",
+      "relation_and_limit": "Dokumentarischer PR-Readback, kein neuer Lauf und keine Gate-Übertragung.",
+      "sha256": "85cccc7708a2350668b20f76892648ff550655bbf8bc0994534df49fb0e50afd",
+      "source_id": "SRC-PR446"
+    },
+    {
+      "bytes": 6311,
+      "git_blob_sha1": "22cc6f4008b4823e8a7cf5e3057d058df6c0961a",
+      "path": "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json",
+      "relation_and_limit": "Aktiver Produktionsschemavertrag verlangt Upload-Flag true.",
+      "sha256": "f9ad097a797c5fbe1b794f75930de4fdefc0356bac407012010b30eef87ae73e",
+      "source_id": "SRC-SCHEMA"
+    },
+    {
+      "bytes": 3806,
+      "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4",
+      "path": "policy/qikvrt-prepublication-return-receipt-v2.schema.json",
+      "relation_and_limit": "V2-Rücklieferungsschema.",
+      "sha256": "6390285529eb91f8d52a032d957a5457ebb1419e56c091f961f8d0695d2923c9",
+      "source_id": "SRC-RETURN-SCHEMA"
+    },
+    {
+      "bytes": 18241,
+      "git_blob_sha1": "702a1e006a1aeed035b504d3a19416d6740844c2",
+      "path": "AI",
+      "relation_and_limit": "Normativer System-, Provenienz- und Effect-Vertrag.",
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe",
+      "source_id": "SRC-AI"
+    }
+  ]
+}

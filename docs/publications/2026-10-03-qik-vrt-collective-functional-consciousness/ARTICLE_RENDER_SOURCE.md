@@ -48,8 +48,7 @@ PR #446 dokumentiert weiterhin eine Authority-Credential-Delivery-Grenze; der ge
 
 PDF-Datei: QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf
 
-PDF SHA-256:
-a1dd8d153a29ff3ba0c8e65b9c415279f60d7cb72efcdc5aec7908e64b1865ee
+Der reale PDF-Byte-Hash steht in ARTICLE.md und PREPUBLICATION_RETURN_RECEIPT.json.
 
 Die Produktionspublikation unterliegt policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md v2. Vor Zenodo-Effekt sind Claim-Matrix, Machine-Proof-Bundle, Prepublication Return Receipt und kandidatenspezifische AUTHORIZE_EXACT_UPLOAD-Freigabe erforderlich.
 
