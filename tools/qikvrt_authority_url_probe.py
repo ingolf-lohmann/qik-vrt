@@ -34,7 +34,7 @@ SHA = r"[0-9a-f]{40}"
 WORKFLOW = ".github/workflows/qikvrt_mesh_authority_edge.yml"
 CREDENTIALS = (
     "QIKVRT_RULESET_ADMIN_TOKEN", "QIKVRT_GITHUB_ADMIN_TOKEN",
-    "QIKVRT_MESH_TOKEN", "GITHUB_TOKEN",
+    "QIKVRT_MESH_TOKEN", "QIKVRT_AUTHORITY_APP_TOKEN", "GITHUB_TOKEN",
 )
 
 
@@ -213,6 +213,14 @@ def main():
                   "observed_at": utc(), "state": "BLOCK", "first_blocker": "PROBE_TRANSPORT_OR_RESPONSE_VALIDATION_FAILED",
                   "credential_source": source, "mutation_count": 0, "effect_ack_done": False}
     report["credential_names_present"] = present
+    app_inputs = {
+        name: bool(os.environ.get(name)) for name in
+        ("QIKVRT_RULESET_APP_ID", "QIKVRT_RULESET_APP_PRIVATE_KEY")
+    }
+    report["app_credential_names_present"] = app_inputs
+    report["app_token_issuance_outcome"] = os.environ.get("QIKVRT_APP_TOKEN_ISSUANCE_OUTCOME", "skipped")
+    if report.get("first_blocker") == "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED" and all(app_inputs.values()) and report["app_token_issuance_outcome"] != "success":
+        report["first_blocker"] = "AUTHORITY_APP_TOKEN_ISSUANCE_NOT_VERIFIED"
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")

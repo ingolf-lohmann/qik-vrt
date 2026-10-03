@@ -51,14 +51,17 @@
     "Makefile",
     "REPOSITORY_FILE_MANIFEST.json",
     "SHA256SUMS.txt",
-    "REPOSITORY_FILE_MANIFEST.json.sha256"
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_READBACK.json",
+    "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_ARTIFACT_RECEIPT.json"
   ],
   "git_history": {
     "branch": "work/authority-url-probe-20261003-6fb101b",
     "parent": "6fb101b2815744b353f67e3fe88ba8458d3c36d5",
     "force_push": false,
     "history_rewrite": false,
-    "candidate_sha_bound_by_native_run": true
+    "candidate_sha_bound_by_native_run": true,
+    "successor_parent": "1603acf44336dc2a44a9a9caea3fc0e386ae722c"
   },
   "reuse_evidence": {
     "workflow": ".github/workflows/qikvrt_mesh_authority_edge.yml",
@@ -72,7 +75,7 @@
     "target_repository": "Goldkelch/qik-vrt",
     "target_repository_id": 1271407206,
     "target_owner_id": 293941403,
-    "trigger": "Single API-created push on the dedicated branch; explicit future workflow_dispatch mode.",
+    "trigger": "Each changed contract revision has one non-force API branch update; no rerun endpoint or duplicate initial trigger.",
     "methods": [
       "GET"
     ],
@@ -80,22 +83,43 @@
     "follow_credentialed_redirects": false,
     "automatic_retry": false,
     "admission_job_runs_for_probe": false,
-    "repository_or_ruleset_mutation": false
+    "repository_or_ruleset_mutation": false,
+    "app_route": {
+      "source": "Existing ruleset-authority App route",
+      "owner": "Goldkelch",
+      "repositories": [
+        "qik-vrt"
+      ],
+      "permissions": {
+        "contents": "read"
+      },
+      "administration_write": false,
+      "credential_values_persisted": false
+    }
   },
   "verification": {
-    "state": "CANDIDATE_PREPARED",
+    "state": "FIRST_NATIVE_EXECUTION_AND_ARTIFACT_VERIFIED",
     "targeted_commands": [
       "python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe tests.test_r11_read_only_observation_dispatch_contract_v2",
       "python3 -B tools/qikvrt_integrity.py verify",
       "make test"
     ],
-    "exact_head_native_execution": "PENDING",
+    "exact_head_native_execution": {
+      "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
+      "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
+      "run_id": 37085715307,
+      "job_id": 111095461008,
+      "artifact_id": 11259683002,
+      "artifact_zip_sha256": "5a508ec98db536fe0c5e9355a8314c688a24ecf88121451ca388d8ef43255683",
+      "job_result": "BLOCK_AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+      "admission_job": "SKIPPED"
+    },
     "public_QR_url": "PENDING",
     "predecessor_evidence_transfer": false,
     "baseline_limit": "An extra unchanged Main ruleset-token structural test expects a superseded symbol 'if pre_hash != expected_pre:' and fails against the current writer; no protected writer change or weakening is made in this task.",
     "base_integrity_limit": "Current Main's integrity trio omits twelve newer receipts and has stale workflow/token-test and lifecycle digests. The existing generator refreshes the trio only on this isolated candidate.",
     "targeted_tests": {
-      "count": 21,
+      "count": 22,
       "result": "PASS",
       "scope": "Authority URL probe and unchanged R11 V2 transport contract"
     },
@@ -113,7 +137,16 @@
       "state": "CONTINUE",
       "integrity": "PASS after candidate materialization",
       "optional_runtime_components": "Not installed and not needed by this GET-only task."
-    }
+    },
+    "native_full_suite": {
+      "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
+      "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
+      "run_id": 37085715319,
+      "job_id": 111095461158,
+      "MAKE_TEST_EXIT": 0,
+      "scope": "Exact first candidate; not a successor gate."
+    },
+    "current_successor_native_gate": "PENDING"
   },
   "human_decision": {
     "state": "AUTHORIZED",
@@ -150,23 +183,34 @@
   "outputs_metadata": [
     {
       "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
-      "bytes": 5758,
-      "sha256": "54b595e5fce1c1c0d46854451f0e7ffe935a8c1f46cacc356d1930e1aa3387cd"
+      "bytes": 7525,
+      "sha256": "a27c46c5108519d64eb55464528aef9c91153b3792b380de2d11b7a248391729"
     },
     {
       "path": "tools/qikvrt_authority_url_probe.py",
-      "bytes": 10111,
-      "sha256": "7c019a17ca3a91e72a6d72c400a9ee9c657fe4d8473007416af68aa3b6c8c263"
+      "bytes": 10697,
+      "sha256": "87f513787d51461c97aa0cb352af2415e20464fc55f6afbf9751ccbe2bae9193"
     },
     {
       "path": "tests/test_qikvrt_authority_url_probe.py",
-      "bytes": 7190,
-      "sha256": "9faed99910c16bab28048cf70c12ae93fa46986db87c6b7114bfaba2fe4e9c28"
+      "bytes": 7665,
+      "sha256": "beb4b99f1f7bc2f0589f4d73c098e739ebd1765b3723a45254c497041d9b542e"
     },
     {
       "path": "Makefile",
       "bytes": 11033,
       "sha256": "53010305b27c4599d95687bb1d7ba0735e29dc5db419fb65045cb54e968fd5d2"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_READBACK.json",
+      "bytes": 2520,
+      "sha256": "ed1a30ee9a86deccbb4b9150d93d135821ab7df222e0e2747a6786da5dfcf821"
+    },
+    {
+      "path": "evidence/receipts/authority-url-execution-route-20261003/PROBE_1603acf_ARTIFACT_RECEIPT.json",
+      "bytes": 745,
+      "sha256": "d2c9b937e4e65e3ebc0b624afac32dd81d5a5542dcbfde78d2bc005e72951169"
     }
-  ]
+  ],
+  "next_action": "Inventory the existing App ID/private-key pair and, only if configured and no direct credential is delivered, mint a contents:read token for fixed Goldkelch/qik-vrt; native successor readback remains pending."
 }

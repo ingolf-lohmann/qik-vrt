@@ -50,12 +50,43 @@ jobs:
         with:
           python-version: '3.12.13'
       - name: Verify probe boundaries before credential consumption
+        id: probe-boundaries
         run: python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe
+      - name: Resolve existing direct or App credential route
+        id: probe-credential-route
+        env:
+          RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+          ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+          MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+        run: |
+          direct=false
+          app=false
+          if [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then direct=true; fi
+          if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then app=true; fi
+          echo "direct=$direct" >> "$GITHUB_OUTPUT"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+      - name: Mint existing App credential for fixed Authority read scope
+        id: authority-app-token
+        if: steps.probe-credential-route.outputs.direct != 'true' && steps.probe-credential-route.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-contents: read
       - name: Read fixed Authority subject and original QR URL
+        if: always() && steps.probe-boundaries.outcome == 'success'
         env:
           QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
           QIKVRT_GITHUB_ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
           QIKVRT_MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          QIKVRT_AUTHORITY_APP_TOKEN: ${{ steps.authority-app-token.outputs.token }}
+          QIKVRT_RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          QIKVRT_RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          QIKVRT_APP_TOKEN_ISSUANCE_OUTCOME: ${{ steps.authority-app-token.outcome }}
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 -B tools/qikvrt_authority_url_probe.py --output .qikvrt/evidence/authority-url-probe/readback.json
       - name: Persist metadata-only diagnostic readback

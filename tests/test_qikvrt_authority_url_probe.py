@@ -59,6 +59,11 @@ class AuthorityURLProbeTests(unittest.TestCase):
         result = p.probe("", None, {}, transport=forbidden)
         self.assertEqual(result["first_blocker"], "AUTHORITY_CREDENTIAL_NOT_DELIVERED")
 
+    def test_existing_app_output_precedes_mirror_workflow_token(self):
+        token, source, present = p.credential({"QIKVRT_AUTHORITY_APP_TOKEN": TOKEN, "GITHUB_TOKEN": "mirror-fixture"})
+        self.assertEqual((token, source), (TOKEN, "QIKVRT_AUTHORITY_APP_TOKEN"))
+        self.assertTrue(present["GITHUB_TOKEN"])
+
     def test_only_mirror_token_does_not_prove_authority_delivery(self):
         read = self.transport({f"/repos/{p.AUTHORITY}": (404, {}),
                               f"/repositories/{p.AUTHORITY_ID}": (404, {})})
@@ -133,7 +138,10 @@ class AuthorityURLProbeTests(unittest.TestCase):
         self.assertIn("inputs.operation == 'admit'", admit)
         self.assertNotIn("/approve", probe)
         self.assertNotIn("permission-administration", probe)
-        self.assertLess(probe.index("Verify probe boundaries"), probe.index("QIKVRT_RULESET_ADMIN_TOKEN:"))
+        self.assertIn("owner: Goldkelch", probe)
+        self.assertIn("repositories: qik-vrt", probe)
+        self.assertIn("permission-contents: read", probe)
+        self.assertLess(probe.index("Verify probe boundaries"), probe.index("RULESET_ADMIN_TOKEN:"))
 
 
 if __name__ == "__main__":
