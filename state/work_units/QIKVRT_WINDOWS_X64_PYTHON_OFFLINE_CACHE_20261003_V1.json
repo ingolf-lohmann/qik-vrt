@@ -130,6 +130,17 @@
         "first_causal_failure": "The OS egress denial raised a WebException with an inner socket exception; GetBaseException lost the expected outer type. Preserve the exception chain.",
         "additional_static_start_blocker": "The existing logger unconditionally imported Unix-only fcntl and used Unix-only permissions/directory fsync. Extend its native platform branch without bypassing private permissions, locking or atomic receipt replacement.",
         "dependency_closed": false
+      },
+      {
+        "source_head": "dbdde1eadecac386a18e8646d73a5dff3fd11ff1",
+        "source_tree": "328e0009285362dbb27d81c64cbedfbb54b01b79",
+        "run_id": 37127400997,
+        "job_id": 111215403559,
+        "runtime_materialization_and_self_test": "PASS_NATIVE_WINDOWS_X64",
+        "os_egress_negative_control": "PASS",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "An ambient Python application remained discoverable when SystemRoot was retained in PATH. The witness already binds all executable paths absolutely; use a fresh empty PATH directory instead.",
+        "dependency_closed": false
       }
     ]
   },

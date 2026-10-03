@@ -131,7 +131,11 @@ try {
     }
     if (-not $networkDenied) { throw 'OS egress control allowed a live upstream connection' }
 
-    $env:PATH = (Join-Path $env:SystemRoot 'System32') + ';' + $env:SystemRoot
+    # py.exe may be installed directly in SystemRoot. Every executable on the
+    # witness path is already absolute, so expose only a fresh empty directory.
+    $emptyPath = Join-Path $scratch 'empty-path'
+    New-Item -ItemType Directory -Path $emptyPath | Out-Null
+    $env:PATH = $emptyPath
     $env:QIKVRT_TOOLCHAIN_CACHE = $carrierCache
     Remove-Item Env:QIKVRT_TEST_FAIL_WINDOWS_PYTHON_FINAL_VERIFY -ErrorAction SilentlyContinue
     if (@(Get-Command py, python, python3 -CommandType Application -ErrorAction SilentlyContinue).Count -ne 0) {
