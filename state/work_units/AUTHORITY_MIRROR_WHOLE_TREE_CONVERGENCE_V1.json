@@ -483,6 +483,17 @@
       "credential_delivery_verified": false,
       "effect_ack_done": false,
       "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+      "first_native_probe_readback": {
+        "artifact_id": 11279380928,
+        "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+        "head": "24b951dc06222c6759c8104ce92532af6dec7f2a",
+        "observations": [],
+        "run_id": 37138139901,
+        "scope": "PREDECESSOR_EXACT_RUN_ONLY_NOT_CURRENT_GATE",
+        "source_requests": 0,
+        "tree": "f2dd680be12bcda7f953031e06ef751fb02e2cd5",
+        "zip_digest_verified": true
+      },
       "historical_pr446_run_id": 37086743407,
       "historical_run_is_current_gate": false,
       "history_preserved_by_ordered_parents": [
@@ -509,12 +520,16 @@
         },
         "probe_tests": {
           "failures": 0,
-          "run": 24
+          "run": 25
         },
         "python": "3.12.14",
         "r11_tests": {
           "failures": 0,
           "run": 9
+        },
+        "retained_tree_tests": {
+          "failures": 0,
+          "run": 4
         },
         "scope": "AUTHENTICATED_EXACT_SOURCE_API_FIXTURE; NOT A FULL GIT CHECKOUT",
         "tool_cache": "PASS 18/18"
@@ -541,6 +556,7 @@
         "run_id": "37136228467-1"
       },
       "observed_at": "2026-10-03T16:38:29.276055+00:00",
+      "ordered_successor_parent": "24b951dc06222c6759c8104ce92532af6dec7f2a",
       "outputs": [
         {
           "bytes": 8446,
@@ -555,10 +571,10 @@
           "sha256": "b4f93ba55d88393657ccd67e0fcdb0f50911b4db322710eee20feaf0166e1d7c"
         },
         {
-          "bytes": 18027,
-          "git_blob_sha1": "1ff698a56456525d3b2b30906b2376450a53acbf",
+          "bytes": 19326,
+          "git_blob_sha1": "4e4752b5a2c06bc5c3bf628088ada7a8c5417d62",
           "path": "tests/test_qikvrt_authority_url_probe.py",
-          "sha256": "4ddc518e816fb3e06abbaa459f77aeb56b0665c9ed0ddd0551aaf23a28490788"
+          "sha256": "039d570dad018e67c97359a745e142835fbfd2ed102baee3003d9e30eeaadfac"
         },
         {
           "bytes": 20344,
@@ -579,10 +595,10 @@
           "sha256": "be5094c793982d4e0ea69a035eb30215ba5bf15865b4c5210a5302517c4d971b"
         },
         {
-          "bytes": 69466,
-          "git_blob_sha1": "e2e90941b8e9af6aa7fb35697ffff3e6b8df4629",
+          "bytes": 72164,
+          "git_blob_sha1": "428e8c649204b5ab9c297f67ca45d2adc07e3062",
           "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
-          "sha256": "cb6976a130b4babb78e674e865498d2f01fa2ecd309d4fd8299224bc597469af"
+          "sha256": "2c42872d50c790c69e5df8e60e024ee0f2fff49e4e822b35ffcc4971fdb19ffa"
         },
         {
           "bytes": 241,
@@ -619,8 +635,32 @@
           "git_blob_sha1": "1073b2be9a97c83a11fd92fb21c0e44b731e39e7",
           "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
           "sha256": "3e46b542daa6af4ba806e8baf52a1f1610fdfd6126333055c82a63667558fb9c"
+        },
+        {
+          "bytes": 47504,
+          "git_blob_sha1": "b8b9f20e1cae8d64d34fa15ca7ddc96c276a0ec1",
+          "path": "tools/qikvrt_integrity.py",
+          "sha256": "cc3b875be6d09d510799f52eb55a7fc0999cf0675f013916942398b051071a81"
         }
       ],
+      "post_native_repair": {
+        "first_regression": "ModuleNotFoundError: fcntl while the shared Pages tests import the reused pure Git-tree verifier",
+        "input_head": "24b951dc06222c6759c8104ce92532af6dec7f2a",
+        "input_tree": "f2dd680be12bcda7f953031e06ef751fb02e2cd5",
+        "native_environment": {
+          "architecture": "ARM64",
+          "build": "10.0.26200",
+          "image_version": "20260924.168.1",
+          "os": "Windows 11 Enterprise",
+          "runner_image": "windows-11-vs2026-arm64"
+        },
+        "native_job_id": 111247004950,
+        "native_run_id": 37138142511,
+        "native_successor_verification": "REQUIRED",
+        "predecessor_evidence_transfer": false,
+        "regression_test": "tests.test_qikvrt_authority_url_probe.AuthorityURLProbeTests.test_pure_tree_reader_imports_without_Unix_lock_and_mutation_fails_closed",
+        "repair": "Make the existing integrity module importable for pure Git-object checks when fcntl is unavailable. Snapshot mutation still requires its existing native lock and fails closed before any lock file is created."
+      },
       "predecessor_evidence_transfer": false,
       "schema": "qikvrt_authority_source_carrier_continuation_v1",
       "state": "BLOCK"

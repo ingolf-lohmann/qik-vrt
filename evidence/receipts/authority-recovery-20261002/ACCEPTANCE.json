@@ -1502,6 +1502,65 @@
       "role_local_scope_only": true,
       "run_id": "37136228467-1"
     },
+    "native_probe_observations": [
+      {
+        "artifact_id": 11279380928,
+        "attempt": 1,
+        "credential_global_absence_inferred": false,
+        "download_and_digest_verified": true,
+        "entry_sha256": "4d15979c473768e2cebf4588fb75fd0dbba3654120c1699e4e353f60b9fe8506",
+        "readback": {
+          "app_token_issuance_outcome": "skipped",
+          "carrier_id": "qikvrt-mesh-authority-edge/authority_url_probe",
+          "credential_binding": null,
+          "credential_names_present": {
+            "GITHUB_TOKEN": false,
+            "QIKVRT_AUTHORITY_APP_TOKEN": false,
+            "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+            "QIKVRT_MESH_TOKEN": false,
+            "QIKVRT_RULESET_ADMIN_TOKEN": false
+          },
+          "credential_source": null,
+          "effect_ack_done": false,
+          "executor": {
+            "actor": "ingolf-lohmann",
+            "attempt": "1",
+            "event": "push",
+            "head": "24b951dc06222c6759c8104ce92532af6dec7f2a",
+            "ref": "refs/heads/work/authority-recovery-acceptance-20261002",
+            "repository": "ingolf-lohmann/qik-vrt",
+            "resume_receipt_sha256": "cb6976a130b4babb78e674e865498d2f01fa2ecd309d4fd8299224bc597469af",
+            "run_id": "37138139901",
+            "tree": "f2dd680be12bcda7f953031e06ef751fb02e2cd5",
+            "workflow_path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+            "workflow_sha256": "bf5b304e5b03ae49a6fa831b2cc3b416c60033d1d8aeea72879fc5a0a06f15c6"
+          },
+          "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+          "git_object_closure_verified": false,
+          "latest_complete_authority_closure_verified": false,
+          "mutation_count": 0,
+          "observations": [],
+          "observed_at": "2026-10-03T16:47:43.391458+00:00",
+          "predecessor_evidence_transfer": false,
+          "public_url_effect_verified": false,
+          "resume_pointer": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json#/source_closure_resume",
+          "schema": "qikvrt_authority_url_probe_v2",
+          "source_read_verified": false,
+          "state": "BLOCK",
+          "target": {
+            "owner_id": 293941403,
+            "qr_url": "https://github.com/Goldkelch/qik-vrt/blob/main/AI",
+            "ref": "refs/heads/main",
+            "repository": "Goldkelch/qik-vrt",
+            "repository_id": 1271407206
+          }
+        },
+        "run_id": 37138139901,
+        "scope": "EXACT_HEAD_24b951dc_ONLY_NOT_A_SUCCESSOR_GATE",
+        "source_requests_observed": 0,
+        "zip_sha256": "8eeef6e52484d60ea83a82031752897f76a1752c72ed538df09094ed4dc0dfb5"
+      }
+    ],
     "predecessor_evidence_transfer": false,
     "retry_condition": "The existing App ID/private-key inputs are delivered to this existing runner, scoped issuance succeeds, and the native App action supplies its actual installation ID. Initial invocation requires a freshly bound ref; no replacement key, new secret, wider permission, redirect, automatic retry or credential fallback.",
     "schema": "qikvrt_authority_source_closure_resume_v1",

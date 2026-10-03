@@ -8,6 +8,8 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import subprocess
+import sys
 
 from tools import qikvrt_authority_url_probe as p
 
@@ -301,6 +303,34 @@ class AuthorityURLProbeTests(unittest.TestCase):
     def test_response_byte_bound_covers_injected_transport(self):
         result = self.run_probe(transport=lambda _: (200, {}, b"x" * (p.MAX_RESPONSE + 1)))
         self.assertEqual(result["first_blocker"], "AUTHORITY_RESPONSE_BYTE_BOUND_EXCEEDED")
+
+    def test_pure_tree_reader_imports_without_Unix_lock_and_mutation_fails_closed(self):
+        code = """
+import builtins, json, pathlib, sys, tempfile
+original = builtins.__import__
+def without_fcntl(name, *args, **kwargs):
+    if name == "fcntl":
+        raise ModuleNotFoundError("fixture: fcntl unavailable")
+    return original(name, *args, **kwargs)
+builtins.__import__ = without_fcntl
+from tools import qikvrt_integrity as integrity
+inventory = json.loads(sys.stdin.read())
+assert integrity.fcntl is None
+assert integrity.verify_recursive_git_tree(inventory, inventory["sha"])["complete_content_addressed_inventory"]
+with tempfile.TemporaryDirectory() as directory:
+    root = pathlib.Path(directory)
+    try:
+        with integrity._exclusive_integrity_lock(root):
+            raise AssertionError("unlocked snapshot accepted")
+    except RuntimeError as error:
+        assert "lock is unavailable" in str(error)
+    else:
+        raise AssertionError("missing lock did not block snapshot mutation")
+    assert not (root / integrity.LOCK_NAME).exists()
+"""
+        subprocess.run([sys.executable, "-B", "-c", code], cwd=p.ROOT,
+                       input=json.dumps(INVENTORY), text=True, check=True,
+                       capture_output=True, timeout=15)
 
     def test_resume_target_drift_is_rejected_without_consuming_credentials(self):
         value = json.loads((p.ROOT / p.RESUME_PATH).read_bytes())

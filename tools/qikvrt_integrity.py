@@ -8,7 +8,6 @@ import argparse
 import base64
 import binascii
 import contextlib
-import fcntl
 import hashlib
 import json
 import os
@@ -18,6 +17,13 @@ import stat
 import sys
 from dataclasses import dataclass
 from typing import Any, Mapping
+
+try:
+    import fcntl
+except ModuleNotFoundError:
+    # Pure Git-object verification is portable. Snapshot mutation still
+    # requires the established native lock and fails closed without it.
+    fcntl = None
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ROOT_STR = str(ROOT)
@@ -1014,6 +1020,8 @@ def _fsync_directory(path: pathlib.Path) -> None:
 @contextlib.contextmanager
 def _exclusive_integrity_lock(root: pathlib.Path):
     """Serialize generation and verification of the integrity snapshot."""
+    if fcntl is None:
+        raise RuntimeError("native integrity snapshot lock is unavailable")
     if root.is_symlink() or not root.is_dir():
         raise RuntimeError(f"repository root must be a real directory: {root}")
     lock = root / LOCK_NAME
