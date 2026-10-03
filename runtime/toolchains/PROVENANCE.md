@@ -5,6 +5,32 @@ Copyright 2026 Ingolf Lohmann.
 
 # Runtime toolchain provenance
 
+## CPython Windows x64 startup payload
+
+The separately scoped `python-embed-windows` component uses the previously
+selected CPython 3.12.10 Windows x64 embeddable archive, 11,133,606 bytes,
+SHA-256 `4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3`.
+The downloaded bytes match the CPython package entry in the exact upstream SPDX
+SBOM retained in this directory. The payload manifest binds all 35 members.
+`third_party/python/THIRD_PARTY_PYTHON_RUNTIME_PROVENANCE.json` retains source,
+version, platform, license and observation limits. The upstream Sigstore bundle
+is byte-bound for subsequent verification; cryptographic signature verification
+is not asserted by this change.
+
+The complete `LICENSE.txt` extracted from that exact archive is retained as
+`python-3.12.10-embed-amd64-LICENSE.txt`, 36,874 bytes, SHA-256
+`e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419`.
+Git attributes preserve its original CRLF bytes. It includes Python's license
+history and bundled third-party notices; the SBOM's PSF-2.0 entry does not
+relicense all bundled dependencies. Runtime payloads retain that same file.
+
+The existing PowerShell bootstrap, cache layout, cache registry, deterministic
+coverage generator and adaptive-runtime workflow own restoration and verification.
+PowerShell's Windows inbox 5.1-or-7.x behavioral platform contract is explicitly
+declared; each native receipt records the actual host version and Windows build.
+The test host and renderer version do not satisfy the separate starter predicate.
+Full native offline startup remains pending until its exact-subject receipt is read.
+
 No executable or authentication token is stored in this directory. The files
 here define independently checkable versions, upstream locations, checksums,
 and license boundaries for an optional local cache.

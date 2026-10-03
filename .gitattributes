@@ -1,6 +1,9 @@
 * text=auto eol=lf
 *.cmd text eol=crlf
 qikvrt.cmd text eol=lf
+runtime/toolchains/python-3.12.10-embed-amd64-LICENSE.txt -text
+runtime/toolchains/python-3.12.10-embed-amd64.spdx.json -text
+runtime/toolchains/python-3.12.10-embed-amd64.sigstore.json -text
 *.ps1 text eol=crlf
 LICENSES/CC-BY-NC-ND-4.0.txt text eol=lf whitespace=-blank-at-eof
 # Byte-identical Zenodo snapshot: preserve its published whitespace and hashes.

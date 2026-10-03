@@ -16,6 +16,12 @@ on:
       - "tests/test_ietf_revision_02.py"
       - "tests/test_ietf_revision_03.py"
       - "tests/test_runtime_bootstrap.sh"
+      - "tests/test_runtime_bootstrap.ps1"
+      - "tests/test_launcher_runtime.py"
+      - "qikvrt.cmd"
+      - "qikvrt.ps1"
+      - "runtime/download_python_runtime.ps1"
+      - "third_party/python/**"
       - "external/ietf/draft-lohmann-qikvrt-effect-ack-02.*"
       - "external/ietf/draft-lohmann-qikvrt-effect-ack-03.*"
       - "docs/publications/2026-07-22-effect-ack-universal-effect-control/IETF_RENDER_VALIDATION.json"
@@ -36,6 +42,12 @@ on:
       - "tests/test_ietf_revision_02.py"
       - "tests/test_ietf_revision_03.py"
       - "tests/test_runtime_bootstrap.sh"
+      - "tests/test_runtime_bootstrap.ps1"
+      - "tests/test_launcher_runtime.py"
+      - "qikvrt.cmd"
+      - "qikvrt.ps1"
+      - "runtime/download_python_runtime.ps1"
+      - "third_party/python/**"
       - "external/ietf/draft-lohmann-qikvrt-effect-ack-02.*"
       - "external/ietf/draft-lohmann-qikvrt-effect-ack-03.*"
       - "docs/publications/2026-07-22-effect-ack-universal-effect-control/IETF_RENDER_VALIDATION.json"
@@ -56,6 +68,74 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  windows-offline-start:
+    name: Native Windows x64 offline start
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - name: Bind exact candidate without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Read back exact source identity and parse the existing bootstrap
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $expected = '${{ github.event.pull_request.head.sha || github.sha }}'
+          if ((git rev-parse HEAD).Trim() -ne $expected) { throw 'Exact candidate HEAD mismatch' }
+          Write-Output "HEAD=$expected TREE=$((git rev-parse 'HEAD^{tree}').Trim())"
+          foreach ($path in @('tools/bootstrap-runtime.ps1', 'tests/test_runtime_bootstrap.ps1',
+              'qikvrt.ps1', 'runtime/download_python_runtime.ps1')) {
+            $tokens = $null; $errors = $null
+            [void][Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $path), [ref]$tokens, [ref]$errors)
+            if ($errors.Count -ne 0) { throw "Parser rejected ${path}: $($errors -join '; ')" }
+          }
+
+      - name: Restore existing exact-key Windows Python archive cache
+        id: windows-python-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: .qikvrt/toolchains/python-embed
+          key: qikvrt-runtime-windows-start-v1-native-${{ runner.os }}-${{ runner.arch }}-py-3.12.10-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-runtime.ps1', 'qikvrt.cmd', 'qikvrt.ps1', 'runtime/download_python_runtime.ps1') }}
+          enableCrossOsArchive: false
+
+      - name: Reconstruct or verify the pinned carrier before the offline interval
+        shell: powershell
+        run: |
+          & tools/bootstrap-runtime.ps1 `
+            -Install -AcceptThirdParty -ReconstructUpstream -Profile windows-start
+          if ($LASTEXITCODE -ne 0) { throw 'Locked Windows carrier preparation failed' }
+
+      - name: Prove fresh offline startup with OS-denied egress and negative controls
+        shell: powershell
+        run: |
+          $evidence = Join-Path $env:RUNNER_TEMP 'qikvrt-windows-offline-start'
+          & tests/test_runtime_bootstrap.ps1 -SourceCache (Join-Path $PWD '.qikvrt/toolchains') -EvidenceDir $evidence
+          if (-not (Test-Path -LiteralPath (Join-Path $evidence 'OFFLINE_START_RECEIPT.json'))) {
+            throw 'Fresh native offline-start receipt missing'
+          }
+
+      - name: Save verified archive through the existing trusted cache path
+        if: success() && steps.windows-python-cache.outputs.cache-hit != 'true' && (github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: .qikvrt/toolchains/python-embed
+          key: qikvrt-runtime-windows-start-v1-native-${{ runner.os }}-${{ runner.arch }}-py-3.12.10-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-runtime.ps1', 'qikvrt.cmd', 'qikvrt.ps1', 'runtime/download_python_runtime.ps1') }}
+
+      - name: Preserve exact-subject carrier and offline readback evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-windows-offline-start-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-windows-offline-start
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
+
   contract:
     name: Contract (${{ matrix.os }})
     strategy:

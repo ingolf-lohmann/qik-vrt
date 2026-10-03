@@ -7,18 +7,20 @@ See LICENSES/CC-BY-NC-ND-4.0.txt.
 
 # Runtime Required
 
-This directory must contain a real Windows Python embeddable runtime before the self-contained runtime gate can pass.
+The active Windows starter consumes the verified content-addressed cache defined
+in `runtime/toolchains/CACHE_REGISTRY.json` through the existing
+`tools/bootstrap-runtime.ps1 -Profile windows-start` path.
 
 Required executable:
 
 ```text
-runtime/python/windows/python.exe
+.qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/runtime/python.exe
 ```
 
-Current V18 status is intentionally:
+Fresh native offline startup is required before declaring closure:
 
 ```text
-BLOCKED_UNTIL_REAL_RUNTIME_BINARY_INCLUDED
+CONTINUE_NATIVE_OFFLINE_START_WITNESS_REQUIRED
 ```
 
 No false DONE is claimed.

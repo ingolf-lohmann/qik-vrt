@@ -5,6 +5,17 @@ Copyright 2026 Ingolf Lohmann.
 
 # Third-party runtime notices
 
+## CPython 3.12.10 Windows x64 embeddable runtime
+
+Python Software Foundation and the upstream contributors retain their rights.
+The exact archive's complete, unmodified notice file is
+`python-3.12.10-embed-amd64-LICENSE.txt` in this directory, SHA-256
+`e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419`.
+It includes Python's license history and notices for bundled components. The
+upstream SPDX CPython entry declares PSF-2.0; that entry does not replace the
+complete notice file or assign that license to every bundled component. Every
+restored carrier retains the upstream `LICENSE.txt` unchanged.
+
 The following license texts apply to downloaded third-party runtime material.
 They do not relicense QIK-VRT.
 

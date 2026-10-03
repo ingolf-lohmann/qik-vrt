@@ -179,6 +179,30 @@
       ],
       "version": "reported-version"
     },
+    "powershell": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/bootstrap-runtime.ps1",
+        "tests/test_runtime_bootstrap.ps1",
+        ".github/workflows/qikvrt_adaptive_runtime.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "windows-system-layer:WindowsPowerShell/v1.0",
+        "github-hosted-runner-image:windows-2022"
+      ],
+      "profiles": [
+        "windows-start"
+      ],
+      "provider": "Windows inbox PowerShell or PowerShell 7 on the declared Windows carrier",
+      "trusted_save": false,
+      "verification": [
+        "PowerShell >= 5.1 command/JSON/ZIP/SHA-256 behavioral contract",
+        "record actual PowerShell version and Windows OS/architecture",
+        "native script parser and offline lifecycle tests"
+      ],
+      "version": "windows-inbox-5.1-or-7.x"
+    },
     "pypdf": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -258,6 +282,42 @@
         "runtime execution"
       ],
       "version": "3.12.13"
+    },
+    "python-embed-windows": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/python-3.12.10-embed-amd64.payload.json",
+        "runtime/toolchains/python-3.12.10-embed-amd64-LICENSE.txt",
+        "runtime/toolchains/python-3.12.10-embed-amd64.spdx.json",
+        "runtime/toolchains/python-3.12.10-embed-amd64.sigstore.json",
+        "third_party/python/THIRD_PARTY_PYTHON_RUNTIME_PROVENANCE.json",
+        "tools/bootstrap-runtime.ps1",
+        "qikvrt.cmd",
+        "qikvrt.ps1",
+        "tests/test_runtime_bootstrap.ps1",
+        ".github/workflows/qikvrt_adaptive_runtime.yml"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        ".qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3"
+      ],
+      "payload_manifest": "runtime/toolchains/python-3.12.10-embed-amd64.payload.json",
+      "profiles": [
+        "windows-start"
+      ],
+      "provider": "tools/bootstrap-runtime.ps1 -Profile windows-start",
+      "reconstruction": "explicit -Install -AcceptThirdParty -ReconstructUpstream only",
+      "rollback": "discard only newly staged/promoted managed runtime; never replace an invalid existing cache silently",
+      "telemetry": "windows_python_* events and exact-subject offline-start Action receipt",
+      "trusted_save": true,
+      "verification": [
+        "exact locked archive SHA-256 and bytes",
+        "ZIP members and complete extracted payload byte comparison before execution",
+        "license and upstream SBOM bindings",
+        "isolated CPython 3.12.10 AMD64 stdlib/SQLite/hash self-test",
+        "OS-denied egress fresh qikvrt.cmd start and missing/tamper controls"
+      ],
+      "version": "3.12.10"
     },
     "sherpa-onnx-node": {
       "authority_files": [

@@ -112,6 +112,49 @@ def read_registry() -> dict[str, Any]:
     return registry
 
 
+def validate_windows_python_payload(registry: dict[str, Any]) -> None:
+    """Cross-check the Windows starter against the existing lock and upstream bytes."""
+    component = registry['components'].get('python-embed-windows')
+    if component is None:
+        return
+    relative = component.get('payload_manifest')
+    if relative != 'runtime/toolchains/python-3.12.10-embed-amd64.payload.json':
+        raise ContractError('Windows Python payload authority path mismatch')
+    try:
+        spec = json.loads((ROOT / relative).read_text(encoding='utf-8'))
+        rows = [line.split('\t') for line in LOCK_PATH.read_text(encoding='utf-8').splitlines()
+                if line.startswith('python-embed-windows\t')]
+        if len(rows) != 1 or rows[0][1:6] != [spec['version'], spec['platform'], spec['archive'],
+                                               spec['archive_sha256'], spec['license']]:
+            raise ContractError('Windows Python payload differs from toolchain lock')
+        if (spec['schema'] != 'qikvrt-windows-python-payload/1.0' or spec['version'] != '3.12.10'
+                or spec['platform'] != 'windows-amd64' or spec['network_default'] != 'DENY'):
+            raise ContractError('Windows Python payload identity/network policy mismatch')
+        for path_key, hash_key in [('license_file', 'license_sha256'),
+                                   ('upstream_sbom_file', 'upstream_sbom_sha256'),
+                                   ('upstream_sigstore_file', 'upstream_sigstore_sha256')]:
+            if sha256_bytes((ROOT / spec[path_key]).read_bytes()) != spec[hash_key]:
+                raise ContractError(f'Windows Python provenance hash mismatch: {path_key}')
+        sbom = json.loads((ROOT / spec['upstream_sbom_file']).read_text(encoding='utf-8'))
+        upstream = [p for p in sbom['packages'] if p['SPDXID'] == 'SPDXRef-PACKAGE-cpython']
+        if (len(upstream) != 1 or upstream[0]['versionInfo'] != spec['version']
+                or upstream[0]['downloadLocation'] != spec['upstream_url']
+                or upstream[0]['licenseConcluded'] != spec['license']
+                or {'algorithm': 'SHA256', 'checksumValue': spec['archive_sha256']}
+                   not in upstream[0]['checksums']):
+            raise ContractError('Windows Python upstream SPDX binding mismatch')
+        files = spec['files']
+        if len(files) != 35 or files['LICENSE.txt']['sha256'] != spec['license_sha256']:
+            raise ContractError('Windows Python complete payload/license binding mismatch')
+        for name, record in files.items():
+            if (not name or Path(name).name != name or '/' in name or '\\' in name
+                    or record['bytes'] <= 0 or len(record['sha256']) != 64
+                    or any(c not in '0123456789abcdef' for c in record['sha256'])):
+                raise ContractError('Windows Python member identity/hash/size mismatch')
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        raise ContractError(f'invalid Windows Python payload authority: {exc}') from exc
+
+
 def validate_registry(
     locked: dict[str, dict[str, list[str]]],
     registry: dict[str, Any],
@@ -197,6 +240,7 @@ def validate_registry(
                 "version": expected_version,
             }
         )
+    validate_windows_python_payload(registry)
     return coverage
 
 

@@ -5,6 +5,66 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Runtime cache policy
 
+## Windows x64 startup carrier
+
+The existing `windows-start` profile in `tools/bootstrap-runtime.ps1` binds
+`python-embed-windows` in `TOOLCHAIN.lock.tsv` and `CACHE_REGISTRY.json` to the
+exact CPython 3.12.10 embeddable ZIP. Its payload manifest binds the archive,
+all 35 extracted members, complete upstream license text, SPDX SBOM and recorded
+Sigstore bundle. Recording the bundle does not claim signature verification.
+
+The managed location is
+`.qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/`;
+`QIKVRT_TOOLCHAIN_CACHE` may select the same layout on an external carrier.
+`archive/` retains the exact ZIP and `runtime/` is derived locally. Both Windows
+frontends reuse this profile. A materialized archive starts without a live
+python.org request, ambient Python, pip or package-index access. Every start
+rehashes the ZIP, checks its complete member set against repository bindings,
+compares every extracted file, rejects reparse points and extra/missing files,
+and executes the isolated exact-version x64 self-test before the QIK-VRT launcher.
+
+Offline materialization from an existing archive:
+
+```powershell
+tools/bootstrap-runtime.ps1 -Profile windows-start -Install -AcceptThirdParty -ArchiveFile X:\verified\python-3.12.10-embed-amd64.zip
+qikvrt.cmd --runtime-self-test
+qikvrt.cmd --help
+```
+
+The first command requires a previously obtained, hash-bound ZIP. Download is
+available only as explicit controlled reconstruction:
+
+```powershell
+runtime/download_python_runtime.ps1 -AcceptThirdParty -ReconstructUpstream
+```
+
+Normal startup never calls that adapter or enables its network flag. A missing
+mandatory cache blocks startup; check-only reports `CONTINUE` without installing
+or downloading. Invalid existing material blocks and is never silently replaced.
+Installation stages and verifies files, atomically promotes only the new runtime,
+rechecks its final path, and removes that new runtime if final verification fails.
+
+The existing adaptive-runtime workflow restores an exact cache key, performs
+explicit preparation outside the offline interval, then executes
+`tests/test_runtime_bootstrap.ps1` on native Windows x64. The test denies outbound
+traffic for every executable on the start path through read-back OS firewall
+rules, removes ambient Python commands, restores from the already materialized
+archive, starts the real `qikvrt.cmd`, checks its runtime and launcher log, and
+executes tamper/missing/reparse/consent/rollback controls. Firewall state is restored
+in `finally`. Its artifact carries the exact-subject receipt and materialized
+archive; it is a candidate carrier with finite retention, not a reviewed release.
+Only reviewed Main may save the protected shared cache. No broad restore prefix
+or cross-OS restore is allowed.
+
+Materialization, coverage, local Linux tests and syntax checks do not close this
+dependency. Closure for a materialized carrier requires a freshly read native
+`OFFLINE_START_RECEIPT.json` for the exact candidate HEAD/TREE. Main activation,
+reviewed durable release delivery and overall `EFFECT_ACK_DONE` remain separate.
+
+The starter's CPython 3.12.10 binding preserves the previously selected embeddable
+artifact. The independent IETF renderer remains bound to CPython 3.12.13; this
+change does not select an older interpreter for that profile.
+
 ## Purpose
 
 The repository is the durable runtime authority. Runtime caches are reusable

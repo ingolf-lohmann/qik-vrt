@@ -11,6 +11,7 @@ import os
 import sys
 import tempfile
 import unittest
+import zipfile
 from unittest import mock
 
 REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -24,10 +25,56 @@ from tools import qikvrt_integrity as integrity
 from tools import qikvrt_master_acceptance_gate as master
 from tools import qikvrt_runtime_logger as qlog
 from tools.qikvrt_subprocess import run_bounded
+from tools import qikvrt_tool_cache as tool_cache
 
 
 def sha256(path: pathlib.Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+class WindowsRuntimeAuthorityTests(unittest.TestCase):
+    def test_exact_upstream_lock_license_and_payload_binding(self) -> None:
+        tool_cache.validate_windows_python_payload(tool_cache.read_registry())
+        spec = json.loads((REPOSITORY_ROOT / 'runtime/toolchains/python-3.12.10-embed-amd64.payload.json').read_text())
+        self.assertFalse(spec['sigstore_signature_verified'])
+        self.assertEqual(spec['reconstruction_requires'], ['Install', 'AcceptThirdParty', 'ReconstructUpstream'])
+
+    def test_license_tamper_and_missing_license_fail_closed(self) -> None:
+        registry = tool_cache.read_registry()
+        spec_path = registry['components']['python-embed-windows']['payload_manifest']
+        spec = json.loads((REPOSITORY_ROOT / spec_path).read_text())
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            for relative in [spec_path, 'runtime/toolchains/TOOLCHAIN.lock.tsv',
+                             spec['license_file'], spec['upstream_sbom_file'], spec['upstream_sigstore_file']]:
+                destination = root / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes((REPOSITORY_ROOT / relative).read_bytes())
+            with mock.patch.object(tool_cache, 'ROOT', root), mock.patch.object(
+                    tool_cache, 'LOCK_PATH', root / 'runtime/toolchains/TOOLCHAIN.lock.tsv'):
+                tool_cache.validate_windows_python_payload(registry)
+                (root / spec['license_file']).write_bytes(b'tampered notice')
+                with self.assertRaisesRegex(tool_cache.ContractError, 'provenance hash mismatch'):
+                    tool_cache.validate_windows_python_payload(registry)
+                (root / spec['license_file']).unlink()
+                with self.assertRaises(tool_cache.ContractError):
+                    tool_cache.validate_windows_python_payload(registry)
+
+    def test_official_payload_bytes_when_materialized(self) -> None:
+        archive = os.environ.get('QIKVRT_TEST_WINDOWS_PYTHON_ARCHIVE')
+        if not archive:
+            self.skipTest('Binary preparation is a separate native workflow step; this skip proves no closure')
+        spec = json.loads((REPOSITORY_ROOT / 'runtime/toolchains/python-3.12.10-embed-amd64.payload.json').read_text())
+        path = pathlib.Path(archive)
+        self.assertEqual(path.stat().st_size, spec['archive_bytes'])
+        self.assertEqual(sha256(path), spec['archive_sha256'])
+        with zipfile.ZipFile(path) as payload:
+            self.assertEqual(set(payload.namelist()), set(spec['files']))
+            self.assertEqual(len(payload.namelist()), len(spec['files']))
+            for name, record in spec['files'].items():
+                value = payload.read(name)
+                self.assertEqual(len(value), record['bytes'])
+                self.assertEqual(hashlib.sha256(value).hexdigest(), record['sha256'])
 
 
 class LoggerTests(unittest.TestCase):
@@ -205,8 +252,9 @@ class LauncherTests(unittest.TestCase):
             events = [json.loads(line) for line in log_file.read_text(encoding="utf-8").splitlines()]
             self.assertEqual([event["event"] for event in events], ["run_start", "run_end"])
             windows_launcher = (REPOSITORY_ROOT / "qikvrt.cmd").read_text(encoding="utf-8")
-            self.assertIn('"%PY_EXE%" %PY_ARGS% "%SCRIPT_DIR%qikvrt.py"', windows_launcher)
-            self.assertNotIn('set "PY_EXE=py -3"', windows_launcher)
+            self.assertIn('powershell.exe" -NoLogo -NoProfile -NonInteractive', windows_launcher)
+            self.assertIn('qikvrt.ps1" %*', windows_launcher)
+            self.assertNotIn('PY_EXE=py', windows_launcher)
 
     def test_passthrough_accept_word_cannot_persist_acceptance(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

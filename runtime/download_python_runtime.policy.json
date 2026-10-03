@@ -1,20 +1,28 @@
 {
   "_license": {
+    "classification": "runtime_helper_policy_json",
     "copyright": "Copyright 2026 Ingolf Lohmann",
-    "rights_holder": "Ingolf Lohmann",
     "license": "CC-BY-NC-ND-4.0",
     "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
-    "classification": "runtime_helper_policy_json"
+    "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_runtime_helper_policy_v44",
-  "path": "runtime/download_python_runtime.ps1",
-  "policy_path": "runtime/download_python_runtime.policy.json",
-  "classification": "VOLATILE_FIELD_NORMALIZED_RUNTIME_HELPER",
-  "immutable_release_constant": false,
-  "excluded_from_sha256sums": true,
+  "bootstrap_authority": "tools/bootstrap-runtime.ps1",
+  "cache_authority": "runtime/toolchains/CACHE_REGISTRY.json",
+  "classification": "LOCKED_RECONSTRUCTION_ADAPTER",
+  "created_or_verified_utc": "2026-06-20T14:47:15Z",
+  "current_helper_sha256": "8a0a055cedc185040cecc935f1ca591cc967c02a5834dfaa87eb6808655ccc47",
+  "excluded_from_sha256sums": false,
+  "immutable_release_constant": true,
+  "last_bootstrap_utc": "2026-06-20T14:48:09Z",
   "must_exist_before_required_files_check": true,
   "must_exist_in_delivery_zip": true,
-  "current_helper_sha256": "d328dc11de94d87808959a55e427d43d22a9fbbc4e1fd4914705acd8499454ab",
-  "last_bootstrap_utc": "2026-06-20T14:48:09Z",
-  "created_or_verified_utc": "2026-06-20T14:47:15Z"
+  "network_default": "DENY",
+  "normal_launcher_calls_helper": false,
+  "path": "runtime/download_python_runtime.ps1",
+  "policy_path": "runtime/download_python_runtime.policy.json",
+  "required_for_upstream_download": [
+    "AcceptThirdParty",
+    "ReconstructUpstream"
+  ],
+  "schema": "qikvrt_runtime_helper_policy_v45"
 }

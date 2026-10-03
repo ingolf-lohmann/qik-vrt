@@ -1,0 +1,143 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_windows_x64_python_offline_cache_work_unit_v1",
+  "work_unit_id": "WINDOWS-X64-PYTHON-OFFLINE-CACHE-20261003-V1",
+  "created_at": "2026-10-03T13:02:00Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+  "source_tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "identity_proof_boundary": "Attribution follows the authorized task and repository context; it is not biometric identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "qikvrt-windows-python-cache-20261003",
+    "tools_and_adapters": [
+      "GitHub native REST connector",
+      "local Git object reconstruction",
+      "Python 3.12",
+      "PowerShell 7.6.6 Linux syntax and byte-contract checks"
+    ],
+    "identity_and_observation_limits": "Linux verification is not a native Windows start witness. Hidden implementation internals and legal personhood are not claimed."
+  },
+  "human_contributions": [
+    {
+      "type": "SCOPE_AUTHORIZATION",
+      "description": "Close the existing Windows x64 Python startup dependency through the repository runtime/cache authority, bind exact bytes and provenance, preserve controlled reconstruction, and require fresh offline startup evidence before claiming closure."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "REPAIR_AND_VERIFICATION",
+      "description": "Extended the existing bootstrap, toolchain lock, cache registry, launchers, provenance and adaptive-runtime workflow; checked official payload bytes and added native offline/tamper/missing-cache controls."
+    }
+  ],
+  "joint_components": [
+    {
+      "component": "Materialized Windows Python startup carrier",
+      "human_part": "scope and acceptance condition",
+      "artificial_cognitive_part": "exact payload binding, existing-path implementation, tests and evidence preparation",
+      "separable": true
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "raw_transcript_persisted": false,
+    "archive": "python-3.12.10-embed-amd64.zip",
+    "archive_sha256": "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+    "archive_bytes": 11133606,
+    "upstream_authority": "https://www.python.org/ftp/python/3.12.10/",
+    "license": "PSF-2.0 and the complete upstream LICENSE.txt notices",
+    "license_sha256": "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419",
+    "sigstore_signature_verified": false,
+    "predecessor_evidence_transferred": false
+  },
+  "reuse_before_create": {
+    "reused": [
+      "tools/bootstrap-runtime.ps1",
+      "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "runtime/toolchains/CACHE_REGISTRY.json",
+      "tools/qikvrt_tool_cache.py",
+      "qikvrt.ps1",
+      "qikvrt.cmd",
+      "runtime/download_python_runtime.ps1",
+      ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "existing GitHub Actions cache and artifact actions"
+    ],
+    "new_authority_files": "Exact upstream payload manifest, SPDX SBOM, Sigstore record and complete license bytes supplement the existing toolchain directory.",
+    "new_test_adapter_basis": "The existing POSIX runtime test cannot exercise Windows executable loading, cmd forwarding, native PowerShell or Windows firewall controls; tests/test_runtime_bootstrap.ps1 is the Windows adapter in the same test path and existing workflow."
+  },
+  "outputs": {
+    "payload_location": ".qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3/",
+    "large_binary_in_git": false,
+    "receipt_path": "qikvrt-windows-offline-start-<exact-head>/OFFLINE_START_RECEIPT.json",
+    "carrier_path": "existing workflow artifact/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/archive/",
+    "durable_release_delivery": "NOT_CLAIMED; candidate artifacts have finite retention",
+    "self_binding_rule": "The containing Git commit/tree and repository native integrity trio bind the exact files; no impossible in-file self-hash is asserted."
+  },
+  "verification": {
+    "official_zip_hash_size_and_35_members": "PASS_LOCAL_FRESH_BYTES",
+    "upstream_sbom_and_complete_license_binding": "PASS_LOCAL_FRESH_BYTES",
+    "tool_cache_coverage": "PASS_16_OF_16",
+    "launcher_and_license_tests": "PASS_LOCAL",
+    "powershell_syntax": "PASS_POWERSHELL_7_LINUX_ONLY",
+    "actual_payload_hash_tamper_missing_extra_controls": "PASS_POWERSHELL_7_LINUX_BYTE_CONTRACT_ONLY",
+    "complete_repository_test": {
+      "result": "PASS",
+      "command": "make test",
+      "unittest_executions": 530,
+      "fresh_checkout_source_tree": "f6b5a0eb12bd8159ae223536fdcaeb89bef587eb",
+      "log_sha256": "476746bc8afa68b06117612b1cc3dabc6a876518c4406db1a1e7959e9cbfae04",
+      "log_bytes": 103178,
+      "observed_utc": "2026-10-03T13:12:04.208416+00:00",
+      "scope": "Fresh local checkout; not native Windows runtime evidence."
+    },
+    "repository_native_integrity": "PASS_DETERMINISTIC_REGENERATION_AND_FRESH_CHECKOUT; REGENERATE_AFTER_THIS_METADATA_UPDATE",
+    "native_windows_offline_start": "PENDING_EXACT_HEAD_NATIVE_WORKFLOW",
+    "independent_candidate_review": "NOT_CLAIMED",
+    "first_current_blocker": "NATIVE_WINDOWS_OFFLINE_START_RECEIPT_NOT_YET_OBSERVED"
+  },
+  "human_decision": {
+    "directive": "RECEIVED",
+    "candidate_review": "REQUIRED_FOR_PROMOTION",
+    "acceptance": "SCOPE_AUTHORIZATION_RECORDED",
+    "rejection": "NOT_RECORDED",
+    "manual_modification": "NOT_RECORDED"
+  },
+  "git_history": {
+    "branch": "repair/windows-python-offline-cache-20261003",
+    "base_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
+    "force_push": false,
+    "history_rewrite": false,
+    "merge": "NOT_EXECUTED"
+  },
+  "external_effects": {
+    "review_branch_creation": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "repository_file_commits": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "pull_request": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "main_activation": "NOT_EXECUTED",
+    "release": "NOT_EXECUTED",
+    "deployment": "NOT_EXECUTED"
+  },
+  "candidate_state": "MATERIALIZED_LOCAL_CHECKS_PASSED_NATIVE_OFFLINE_WITNESS_PENDING",
+  "release_claims": {
+    "DEPENDENCY_CLOSED": false,
+    "FINAL_PASS": false,
+    "MAIN_ACTIVATION_VERIFIED": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
