@@ -8,7 +8,6 @@ import argparse
 import base64
 import binascii
 import contextlib
-import fcntl
 import hashlib
 import json
 import os
@@ -18,6 +17,9 @@ import stat
 import sys
 from dataclasses import dataclass
 from typing import Any, Mapping
+
+if os.name != 'nt':
+    import fcntl
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ROOT_STR = str(ROOT)
@@ -127,19 +129,30 @@ def _regular_file_bytes(
     parts = pathlib.PurePosixPath(safe_relative).parts
     nofollow = getattr(os, "O_NOFOLLOW", 0)
     directory_flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | nofollow
-    directory_descriptor = os.open(root, directory_flags)
-    try:
-        for part in parts[:-1]:
-            next_descriptor = os.open(part, directory_flags, dir_fd=directory_descriptor)
+    parent_identities = []
+    if os.name == 'nt':
+        from tools.qikvrt_runtime_logger import _windows_private_open
+        path = root.joinpath(*parts)
+        for parent in path.parents:
+            metadata = parent.lstat()
+            if not stat.S_ISDIR(metadata.st_mode) or metadata.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+                raise RuntimeError(f'immutable path contains an unsafe Windows directory: {parent}')
+            parent_identities.append((parent, metadata.st_dev, metadata.st_ino))
+        descriptor = _windows_private_open(path, os.O_RDONLY, protect_owner_dacl=False)
+    else:
+        directory_descriptor = os.open(root, directory_flags)
+        try:
+            for part in parts[:-1]:
+                next_descriptor = os.open(part, directory_flags, dir_fd=directory_descriptor)
+                os.close(directory_descriptor)
+                directory_descriptor = next_descriptor
+            descriptor = os.open(parts[-1], os.O_RDONLY | nofollow, dir_fd=directory_descriptor)
+        except OSError as exc:
+            raise RuntimeError(
+                f"immutable repository path must not be a symlink or unsafe component: {safe_relative}"
+            ) from exc
+        finally:
             os.close(directory_descriptor)
-            directory_descriptor = next_descriptor
-        descriptor = os.open(parts[-1], os.O_RDONLY | nofollow, dir_fd=directory_descriptor)
-    except OSError as exc:
-        raise RuntimeError(
-            f"immutable repository path must not be a symlink or unsafe component: {safe_relative}"
-        ) from exc
-    finally:
-        os.close(directory_descriptor)
     try:
         before = os.fstat(descriptor)
         if not stat.S_ISREG(before.st_mode):
@@ -167,6 +180,16 @@ def _regular_file_bytes(
             after.st_mtime_ns,
         ):
             raise RuntimeError(f"repository path changed while hashing: {safe_relative}")
+        if os.name == 'nt':
+            current = path.lstat()
+            if ((current.st_dev, current.st_ino) != (after.st_dev, after.st_ino)
+                    or current.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT):
+                raise RuntimeError(f'Windows immutable file was substituted while hashing: {safe_relative}')
+            for parent, device, inode in parent_identities:
+                current = parent.lstat()
+                if ((current.st_dev, current.st_ino) != (device, inode)
+                        or current.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT):
+                    raise RuntimeError(f'Windows immutable directory was substituted: {parent}')
         return data
     finally:
         os.close(descriptor)

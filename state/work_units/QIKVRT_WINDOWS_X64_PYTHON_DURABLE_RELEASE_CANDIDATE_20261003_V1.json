@@ -41,8 +41,10 @@
     "retry_condition": "Fresh enforced governance, exact publish-head review and separately bound tag/release/asset effect authority"
   },
   "git_history": {
+    "initial_candidate_commit": "0760a16fd7b6217142cb358831f1881bd872166c",
     "method": "History-preserving successor on existing PR #450 branch; no force update",
-    "parent_commit": "f74313ad2bd534ab14aa6b1466963ff45956b15b"
+    "parent_commit": "8ea51b53f4d5fdcd082f1dd34aae59bdb6be6cc3",
+    "retained_automation_commit": "8ea51b53f4d5fdcd082f1dd34aae59bdb6be6cc3"
   },
   "human_actor": {
     "actor_class": "HUMAN",
@@ -153,6 +155,20 @@
       "git_blob_sha1": "8c3b6b1d22274d13206a1ca0fe69e9775df721f9",
       "path": "tools/qikvrt_tool_cache.py",
       "sha256": "043424b7eaa3ab6bb4427a6bcf5625aa84b47c917d1131bac1a9076d815f2a7d"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 45528,
+      "git_blob_sha1": "c89a245a2cd7ba72a200377bebfc4809c3b8cd48",
+      "path": "tools/qikvrt_integrity.py",
+      "sha256": "9b4c507c84f881fe4cc61b3371280423ddf0e69026054e5837f9c9e17a0258a6"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 16571,
+      "git_blob_sha1": "e793edc154f56f46e869d324712cc11faf9f6fc3",
+      "path": "tools/qikvrt_runtime_logger.py",
+      "sha256": "06cf8d299c102edda6ddecdc5e60b36787a16815091cbac2e9dc97ef1cd4a905"
     }
   ],
   "prepared_local_fileset": [
@@ -188,16 +204,25 @@
   "source_tree": "3cc87e1d43999cfcea683fac19fc018e091ec267",
   "unresolved_origin": [],
   "verification": {
+    "checkout_integrity_repair": "Remove and freshly materialize the two PowerShell paths from the index with their existing eol=crlf attributes; generate integrity over actual checkout bytes.",
     "environment_repair": "Restored the existing historical shallow Git boundaries for isolated-worktree tests; no test or source downgrade.",
     "fresh_successor_native_windows_ci": "Required; predecessor receipt is historical input only",
     "full_make_test": {
-      "log_sha256": "06e3ae978b07d4e1258e9b87a18650b691cd7643d6610d1596e9401b278d5039",
+      "log_sha256": "a65034bb707350caa27fed585ec0c39411d73deb6f1bee4f574c44b3e6eb43e7",
       "python_test_executions": 537,
       "result": "PASS",
-      "scope": "Linux final implementation plus candidate authorities; metadata handoff is reverified through integrity. No fresh successor native result is inferred."
+      "scope": "Fresh full local suite after Windows portability repair; controlled transport checks are not public release evidence."
     },
     "powershell_parser": "PASS PowerShell 7.6.6 Linux",
     "powershell_production_restore_fixture": "5 PASS: restore, No-Clobber, missing, tamper, rollback; public_download_observed=false",
+    "successor_0760a16f_observation": {
+      "head": "0760a16fd7b6217142cb358831f1881bd872166c",
+      "integrity_failure": "PowerShell checkout CRLF bytes differ from locally edited LF/mixed bytes",
+      "native_failure": "ModuleNotFoundError: fcntl imported by reused integrity reader",
+      "native_job": 111241403069,
+      "repair": "Reuse native Windows handle reader without source DACL mutation; materialize integrity from actual fresh-checkout PowerShell bytes. Current successor requires fresh checks.",
+      "tree": "c6d5d63c5f63df7ee046b7fa43a13ad06a51534d"
+    },
     "targeted_python_tests": "6 PASS including actual locked archive and controlled HTTP readback",
     "tool_cache": "16/16; 100 percent"
   },

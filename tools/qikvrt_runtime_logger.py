@@ -35,7 +35,7 @@ _WRITE_LOCK = threading.Lock()
 _T = TypeVar("_T")
 
 
-def _windows_private_open(path: pathlib.Path, flags: int) -> int:
+def _windows_private_open(path: pathlib.Path, flags: int, *, protect_owner_dacl: bool = True) -> int:
     """Open the actual file, reject reparse points and protect its owner DACL."""
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
     security = ctypes.WinDLL("advapi32", use_last_error=True)
@@ -57,10 +57,13 @@ def _windows_private_open(path: pathlib.Path, flags: int) -> int:
     security.SetSecurityInfo.argtypes = [wintypes.HANDLE, ctypes.c_int, wintypes.DWORD,
         wintypes.LPVOID, wintypes.LPVOID, wintypes.LPVOID, wintypes.LPVOID]
     security.SetSecurityInfo.restype = wintypes.DWORD
-    access = 0x00040000  # WRITE_DAC: apply permissions to this handle, never a substituted path.
+    access = 0x00040000 if protect_owner_dacl else 0
     access |= 0x40000000 if flags & os.O_WRONLY else 0x80000000
     disposition = 1 if flags & os.O_EXCL else 4 if flags & os.O_CREAT else 3
-    handle = kernel.CreateFileW(str(path), access, 7, None, disposition, 0x00200080, None)
+    # Public immutable input reads deny concurrent write/delete and do not
+    # mutate source permissions. Runtime logs retain their private DACL contract.
+    share = 7 if protect_owner_dacl else 1
+    handle = kernel.CreateFileW(str(path), access, share, None, disposition, 0x00200080, None)
     if handle == ctypes.c_void_p(-1).value:
         raise ctypes.WinError(ctypes.get_last_error())
     descriptor = None
@@ -75,6 +78,8 @@ def _windows_private_open(path: pathlib.Path, flags: int) -> int:
         metadata = os.fstat(descriptor)
         if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
             raise OSError(f"runtime file is not a regular unaliased file: {path}")
+        if not protect_owner_dacl:
+            return descriptor
         security_descriptor = wintypes.LPVOID()
         if not security.ConvertStringSecurityDescriptorToSecurityDescriptorW(
                 "D:P(A;;FA;;;OW)", 1, ctypes.byref(security_descriptor), None):
