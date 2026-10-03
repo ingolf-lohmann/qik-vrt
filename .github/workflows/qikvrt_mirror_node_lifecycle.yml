@@ -23,7 +23,6 @@ jobs:
     timeout-minutes: 10
     env:
       QIKVRT_RUN_ID: ${{ format('{0}-{1}', github.run_id, github.run_attempt) }}
-      LIFECYCLE_RECEIPT_DIR: ${{ runner.temp }}/qikvrt-mirror-lifecycle
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -52,6 +51,7 @@ jobs:
       - name: Propose lifecycle successor through existing expected-head governance
         env:
           GH_TOKEN: ${{ github.token }}
+          LIFECYCLE_RECEIPT_DIR: ${{ runner.temp }}/qikvrt-mirror-lifecycle
         shell: bash
         run: |
           set -euo pipefail

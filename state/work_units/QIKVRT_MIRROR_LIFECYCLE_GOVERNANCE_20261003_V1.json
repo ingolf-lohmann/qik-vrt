@@ -17,10 +17,10 @@
   },
   "candidate_outputs": [
     {
-      "bytes": 11174,
-      "git_blob_sha1": "e97d7e1c8ae201a125e3eef361636c1426900d55",
+      "bytes": 11178,
+      "git_blob_sha1": "ad7e1912055c2bce54243a007d4ca75fd3f11840",
       "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
-      "sha256": "4a18bec7547c2ee0c4a0b7eddb6225a3e7ce5eb534f49f537cd426ee25cdd9fe"
+      "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
     },
     {
       "bytes": 29049,
@@ -85,6 +85,69 @@
     "sparse_boundary_control": "All 35 tests were re-executed with the productive NODE_HANDSHAKE_CONFIG.tsv absent; fixture configuration is explicit and isolated.",
     "tests": 35,
     "yaml_parse": "PASS"
+  },
+  "maintenance_context_repair": {
+    "contribution": {
+      "artificial_cognitive": "OpenAI Codex: context diagnosis, minimal source correction, verification and persistence",
+      "human": "Ingolf Lohmann: existing task authorization and maintain instruction"
+    },
+    "diagnosis": {
+      "documentary_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts",
+      "documented_invalid_expression": "runner.temp in jobs.renew.env",
+      "job_env_runner_context_allowed": false,
+      "provider_compiler_annotation_readback": "NOT_EXPOSED_BY_CONNECTOR",
+      "step_env_runner_context_allowed": true,
+      "zero_job_failure_is_consistent_with_expression_error": true
+    },
+    "effect_ack_done": false,
+    "local_validation": {
+      "bash_syntax": "PASS",
+      "command": "python3 -B -m unittest -v tests.test_seed_workflows tests.test_qikvrt_expected_head_promotion",
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "full_make_test_executed_locally": false,
+      "log_sha256": "b0288de47bc122bd7e215b0c335c8dfc465d6e50715e916273205e646ed72fed",
+      "python_version": "3.12.14",
+      "scope": "Exact fetched source blobs and reconstructed verified base commit/tree metadata in a partial API materialization. Lifecycle transport controls use isolated local Git and simulated GitHub API; unavailable full repository payloads and a live lifecycle run are not represented as verified.",
+      "tests": 35,
+      "tool_cache": "PASS 14/14 (100%)",
+      "yaml_parse": "PASS"
+    },
+    "main_promoted": false,
+    "mandatory_successor_readback": [
+      "Fresh native complete repository suite on the successor",
+      "Fresh exact HEAD/TREE/ref/parent/diff readback",
+      "Native governance and independent review before Main promotion",
+      "Actual post-adoption scheduled lifecycle effect/readback"
+    ],
+    "native_lifecycle_execution_observed": false,
+    "observed_native_failures": [
+      {
+        "conclusion": "failure",
+        "head": "2ef03f7b8cf31252f02fd26eafd18c08a54730a8",
+        "jobs": 0,
+        "run_id": 37123711830
+      },
+      {
+        "conclusion": "failure",
+        "head": "bb955918323081a6411ca63033191e25b4e9f861",
+        "jobs": 0,
+        "run_id": 37124141699
+      }
+    ],
+    "parent_subject": {
+      "base": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "head": "bb955918323081a6411ca63033191e25b4e9f861",
+      "pull_request": 449,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "bf7dd2458e10ef2cc402c6a25301b8af1bd8b100"
+    },
+    "predecessor_evidence_transfer": false,
+    "prepared_utc": "2026-10-03T13:07:40.880748+00:00",
+    "received_utc": "2026-10-03T12:43:07Z",
+    "repair": "Move LIFECYCLE_RECEIPT_DIR unchanged into the existing persistence step env. No execution trigger, permission, schedule, concurrency, source materializer or governance boundary changes.",
+    "task_input": "maintain"
   },
   "native_counterexample_and_repair": {
     "causal_scope": "New test setUp unnecessarily copied productive node configuration; it is absent in the watchdog sparse checkout.",
