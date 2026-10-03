@@ -1,0 +1,172 @@
+{
+  "schema": "qikvrt_personal_origin_work_unit_v1",
+  "work_unit_id": "AUTHORITY-URL-EXECUTION-ROUTE-REPAIR-20261003",
+  "created_at": "2026-10-03T00:55:35Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "6fb101b2815744b353f67e3fe88ba8458d3c36d5",
+  "source_tree": "0aa53d2bb775cbf9534d5a6b9a47e4b6f8637d75",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "class": "HUMAN"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM"
+  },
+  "human_contributions": [
+    "Restore the unchanged original QIK-VRT QR URL.",
+    "Treat the missing execution route as the next repair task.",
+    "Product Owner authorization renewed at the recorded event time."
+  ],
+  "artificial_cognitive_contributions": [
+    "Separate client allowlist, credential delivery, native execution, target access and public URL effect.",
+    "Extend the existing Mesh authority-edge workflow with a fixed-target read-only probe.",
+    "Reuse the existing R11 GET-only transport; add task-specific validation and negative controls.",
+    "Materialize and verify an isolated API-written successor."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "personal_origin": {
+    "mode": "PUBLIC_ORIGIN",
+    "origin": "https://github.com/ingolf-lohmann/qik-vrt",
+    "upstream": "https://github.com/Goldkelch/qik-vrt",
+    "evidence_retention": "METADATA_ONLY"
+  },
+  "inputs": [
+    "AI",
+    "AI_CONTEXT.json",
+    "AGENTS.md",
+    ".github/workflows/qikvrt_mesh_authority_edge.yml",
+    "tools/qikvrt_r11_read_only_observation_dispatch_v2.py",
+    "Existing authority workflow run 36847427445 attempt 3: credentials empty before API execution (historical only)."
+  ],
+  "outputs": [
+    ".github/workflows/qikvrt_mesh_authority_edge.yml",
+    "tools/qikvrt_authority_url_probe.py",
+    "tests/test_qikvrt_authority_url_probe.py",
+    "Makefile",
+    "REPOSITORY_FILE_MANIFEST.json",
+    "SHA256SUMS.txt",
+    "REPOSITORY_FILE_MANIFEST.json.sha256"
+  ],
+  "git_history": {
+    "branch": "work/authority-url-probe-20261003-6fb101b",
+    "parent": "6fb101b2815744b353f67e3fe88ba8458d3c36d5",
+    "force_push": false,
+    "history_rewrite": false,
+    "candidate_sha_bound_by_native_run": true
+  },
+  "reuse_evidence": {
+    "workflow": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+    "transport": "tools/qikvrt_r11_read_only_observation_dispatch_v2.py:RetryingGitHubAPI",
+    "reason_for_task_projection": "R11's existing publication-specific command cannot diagnose repository identity and the public AI URL. Its transport is reused without changing the historical R11 contract.",
+    "parallel_writer_created": false,
+    "new_runtime_dependency": false
+  },
+  "operation_contract": {
+    "operation": "authority_url_probe",
+    "target_repository": "Goldkelch/qik-vrt",
+    "target_repository_id": 1271407206,
+    "target_owner_id": 293941403,
+    "trigger": "Single API-created push on the dedicated branch; explicit future workflow_dispatch mode.",
+    "methods": [
+      "GET"
+    ],
+    "credential_values_persisted": false,
+    "follow_credentialed_redirects": false,
+    "automatic_retry": false,
+    "admission_job_runs_for_probe": false,
+    "repository_or_ruleset_mutation": false
+  },
+  "verification": {
+    "state": "CANDIDATE_PREPARED",
+    "targeted_commands": [
+      "python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe tests.test_r11_read_only_observation_dispatch_contract_v2",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "make test"
+    ],
+    "exact_head_native_execution": "PENDING",
+    "public_QR_url": "PENDING",
+    "predecessor_evidence_transfer": false,
+    "baseline_limit": "An extra unchanged Main ruleset-token structural test expects a superseded symbol 'if pre_hash != expected_pre:' and fails against the current writer; no protected writer change or weakening is made in this task.",
+    "base_integrity_limit": "Current Main's integrity trio omits twelve newer receipts and has stale workflow/token-test and lifecycle digests. The existing generator refreshes the trio only on this isolated candidate.",
+    "targeted_tests": {
+      "count": 21,
+      "result": "PASS",
+      "scope": "Authority URL probe and unchanged R11 V2 transport contract"
+    },
+    "local_full_suite": {
+      "command": "make test",
+      "result": "BLOCK_LOCAL_HISTORY_CLOSURE",
+      "detail": "Suite reached evidence-contract-test; a historical finalizer fixture needs commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2, absent from the exact-main API materialization. Native complete-checkout validation remains separate."
+    },
+    "tool_cache": {
+      "result": "PASS",
+      "coverage": "14/14, 100%",
+      "new_dependency": false
+    },
+    "bootstrap": {
+      "state": "CONTINUE",
+      "integrity": "PASS after candidate materialization",
+      "optional_runtime_components": "Not installed and not needed by this GET-only task."
+    }
+  },
+  "human_decision": {
+    "state": "AUTHORIZED",
+    "source": "Current direct Product Owner instruction",
+    "natural_person_cryptographic_authentication": false
+  },
+  "external_effects": {
+    "authorized": [
+      "Isolated candidate branch and draft PR via native GitHub REST tools.",
+      "Read-only native Authority diagnostics and metadata-only Action artifact."
+    ],
+    "not_performed": [
+      "Secrets mutation",
+      "Permission expansion",
+      "Ruleset write",
+      "Workflow admission approval",
+      "Repository transfer",
+      "Main promotion",
+      "Deployment"
+    ]
+  },
+  "acceptance": {
+    "execution_route_scope": "Native run on the exact candidate with a bound diagnostic artifact and protected-write count zero.",
+    "original_URL_scope": "Anonymous original QR URL HTTP 200 plus exact Authority HEAD/TREE, AI Git blob and public raw-byte readback under stable Main.",
+    "first_unverified_edge": "Current credential delivery and target read access in the native executor."
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "original_url_restored": false
+  },
+  "outputs_metadata": [
+    {
+      "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+      "bytes": 5758,
+      "sha256": "54b595e5fce1c1c0d46854451f0e7ffe935a8c1f46cacc356d1930e1aa3387cd"
+    },
+    {
+      "path": "tools/qikvrt_authority_url_probe.py",
+      "bytes": 10111,
+      "sha256": "7c019a17ca3a91e72a6d72c400a9ee9c657fe4d8473007416af68aa3b6c8c263"
+    },
+    {
+      "path": "tests/test_qikvrt_authority_url_probe.py",
+      "bytes": 7190,
+      "sha256": "9faed99910c16bab28048cf70c12ae93fa46986db87c6b7114bfaba2fe4e9c28"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11033,
+      "sha256": "53010305b27c4599d95687bb1d7ba0735e29dc5db419fb65045cb54e968fd5d2"
+    }
+  ]
+}

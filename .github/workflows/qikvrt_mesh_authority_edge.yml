@@ -1,26 +1,74 @@
 name: QIKVRT Mesh authority edge
 
 on:
+  push:
+    branches: [work/authority-url-probe-20261003-6fb101b]
+    paths:
+      - .github/workflows/qikvrt_mesh_authority_edge.yml
+      - tools/qikvrt_authority_url_probe.py
+      - tests/test_qikvrt_authority_url_probe.py
   repository_dispatch:
     types: [qikvrt-authority-admit]
   workflow_dispatch:
     inputs:
+      operation:
+        description: Bound authority operation
+        type: choice
+        options: [admit, authority_url_probe]
+        required: true
+        default: admit
       repository:
         description: Exact target repository
         required: true
         default: Goldkelch/qik-vrt
       run_id:
         description: Exact ACTION_REQUIRED workflow run id
-        required: true
+        required: false
       head_sha:
         description: Exact target head SHA
-        required: true
+        required: false
 
 permissions:
   contents: read
 
 jobs:
+  authority-url-probe:
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      ((github.event_name == 'push' && github.ref == 'refs/heads/work/authority-url-probe-20261003-6fb101b') ||
+       (github.event_name == 'workflow_dispatch' && inputs.operation == 'authority_url_probe'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact native event head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Setup locked Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify probe boundaries before credential consumption
+        run: python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe
+      - name: Read fixed Authority subject and original QR URL
+        env:
+          QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+          QIKVRT_GITHUB_ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+          QIKVRT_MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 -B tools/qikvrt_authority_url_probe.py --output .qikvrt/evidence/authority-url-probe/readback.json
+      - name: Persist metadata-only diagnostic readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: authority-url-probe-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/evidence/authority-url-probe/readback.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
   admit:
+    if: github.event_name != 'push' && (github.event_name != 'workflow_dispatch' || inputs.operation == 'admit')
     runs-on: ubuntu-24.04
     env:
       TARGET_REPOSITORY: ${{ github.event.client_payload.repository || inputs.repository }}
