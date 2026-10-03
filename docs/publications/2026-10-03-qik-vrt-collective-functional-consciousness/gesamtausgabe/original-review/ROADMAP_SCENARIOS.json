@@ -1,0 +1,109 @@
+{
+  "all_prerequisites_observed_ready": false,
+  "capacity_assumptions": [
+    "Available executing contributor",
+    "Available independent reviewer",
+    "Required runners/devices and productive handoff available",
+    "No new major defects",
+    "At most one ordinary correction round per package"
+  ],
+  "classification": "INTERPRETATIVE_ENGINEERING_ESTIMATE",
+  "date": "2026-10-03",
+  "illustrative_t0": "2026-10-04",
+  "milestones": [
+    {
+      "id": "authority_read",
+      "illustrative_dates": [
+        "2026-10-04",
+        "2026-10-05"
+      ],
+      "range_days": [
+        0.5,
+        1
+      ],
+      "requires": "Existing authorized credential delivered to correct runner and exact HEAD/TREE readback"
+    },
+    {
+      "id": "corrected_distributed_ab",
+      "illustrative_dates": [
+        "2026-10-05",
+        "2026-10-07"
+      ],
+      "range_days": [
+        1,
+        3
+      ],
+      "requires": "Actual access; byte/mode equivalence; controlled mutation; full time boundary; paired ordering; effect readback"
+    },
+    {
+      "id": "runtime_bundle",
+      "illustrative_dates": [
+        "2026-10-05",
+        "2026-10-06"
+      ],
+      "range_days": [
+        1,
+        2
+      ],
+      "requires": "Approved payload and reuse/cache path; version/hash/license/provenance; restore/start test"
+    },
+    {
+      "id": "native_windows11_amd64",
+      "illustrative_dates": [
+        "2026-10-05",
+        "2026-10-07"
+      ],
+      "range_days": [
+        1,
+        3
+      ],
+      "requires": "Real authorized Windows11 AMD64 client, product witness, public readback"
+    },
+    {
+      "id": "client_continuity",
+      "illustrative_dates": [
+        "2026-10-06",
+        "2026-10-09"
+      ],
+      "range_days": [
+        2,
+        5
+      ],
+      "requires": "Productive authorized handoff; crash and intermediate-question tests; no duplicate effect"
+    },
+    {
+      "id": "limited_personal_pilot",
+      "illustrative_dates": [
+        "2026-10-07",
+        "2026-10-11"
+      ],
+      "range_days": [
+        3,
+        7
+      ],
+      "requires": "All prerequisites of explicitly limited pilot scope ready; not complete system acceptance"
+    },
+    {
+      "id": "zenodo",
+      "illustrative_dates": [
+        "2026-10-05",
+        "2026-10-07"
+      ],
+      "range_days": [
+        1,
+        3
+      ],
+      "requires": "All production policy/fileset/authorization/carrier prerequisites ready; no actual upload authorized by this estimate"
+    },
+    {
+      "id": "complete_system_sso_biometrics_all_nodes_fpga",
+      "illustrative_dates": null,
+      "range_days": null,
+      "requires": "Missing implementation/integration/physical and external evidence; no supported overall date"
+    }
+  ],
+  "not_empirical_delivery_distribution": true,
+  "rule": "No multiplication of unrelated speedup factors; no shrinking external waits from local CPU gains.",
+  "schema": "qikvrt_editorial_conditional_forecast_v1",
+  "t0_definition": "Actual observed availability of the prerequisites named for each milestone; not consent alone."
+}

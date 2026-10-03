@@ -999,6 +999,130 @@ class FakeV3GitHub(FakeGitHubGitData):
         return super().__call__(method, path, token, **kwargs)
 
 
+def verify_pr447_gesamtausgabe_candidate():
+    """Verify the actual separate edition with existing proof/publisher gates."""
+    import zipfile
+    candidate = ROOT / "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe"
+    relative = candidate.relative_to(ROOT).as_posix() + "/"
+    bundle_path = candidate / "MACHINE_PROOF_BUNDLE.json"
+    frozen = bundle_path.read_bytes()
+    bundle = json.loads(frozen)
+    planned = json.loads((candidate / "ZENODO_FILESET.json").read_text())["paths"]
+    receipt = proof.validate_publication_bundle_v3(ROOT, bundle_path, upload_paths=planned)
+    assert receipt["claim_count"] == 30
+    assert receipt["review_state"] == "REVIEW_REQUIRED"
+    assert not receipt["zenodo_upload_authorized"]
+    assert not receipt["production_mutation_authorized"]
+    assert bundle["completion_claims"] == {"machine_proof_complete": True}
+    assert all(c["classification"] != "FORMAL_PROVED" for c in bundle["claims"])
+    assert len({pathlib.Path(p).name for p in planned}) == len(planned)
+    carrier = json.loads((candidate / "ARTIFACT_CARRIER_RECEIPT.json").read_text())
+    expected_pdf = "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
+    expected_zip = "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4"
+    assert proof.identity(ROOT / carrier["pdf"]["path"])["sha256"] == expected_pdf
+    archive_path = ROOT / carrier["source_archive"]["path"]
+    assert proof.identity(archive_path)["sha256"] == expected_zip
+    with zipfile.ZipFile(archive_path) as archive:
+        assert archive.testzip() is None
+        archived = archive.namelist()
+        assert len(archived) == len(set(archived)) == len(carrier["archive_files"]) == 36
+        for item in carrier["archive_files"]:
+            original_path = candidate / "original-review" / item["archive_path"]
+            raw = archive.read("QIK-VRT_Gesamtausgabe_20261003/" + item["archive_path"])
+            assert original_path.read_bytes() == raw
+            observed = {"bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+                        "git_blob_sha1": proof.git_blob_sha1(raw)}
+            assert observed == {key: item[key] for key in observed}
+    # The existing three-page package remains a separate frozen candidate.
+    assert proof.identity(candidate.parent / "MACHINE_PROOF_BUNDLE.json")["sha256"] == "23f87519cf6e905b8978884f1384ebdcc94408316a9f6af45f93aa55629f7ebb"
+    assert proof.identity(candidate.parent / "PREPUBLICATION_RETURN_RECEIPT.json")["sha256"] == "bab9a631789d3b6ccfd4e3a64fa16af50ad90ce2236d799235c92e0a4dd9b5dc"
+    assert proof.identity(candidate.parent / "QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf")["sha256"] == "7132552a69813d34448c41c58100ebd30572a17a505b4405303e5601c14171a6"
+    metadata = json.loads((candidate / "ZENODO_METADATA.json").read_text())
+    assert publish._validate_metadata(metadata) == metadata
+    files = [{"path":p, "name":pathlib.Path(p).name,
+              "git_blob_sha":proof.identity(ROOT / p)["git_blob_sha1"]} for p in planned]
+    value = {"schema":publish.SCHEMA_V3, "state":"publish",
+             "confirm":"PUBLISH_TO_PRODUCTION_ZENODO", "repository":publish.PRODUCTION_REPOSITORY,
+             "source_head":"80e34e4d9347d51091a71edcb74d895bc835a23a", "metadata":metadata,
+             "files":files, "machine_proof":{"path":relative+"MACHINE_PROOF_BUNDLE.json",
+                 "git_blob_sha":receipt["git_blob_sha1"], "policy_id":proof.PROPOSED_POLICY_ID},
+             "contract_activation":None, "owner_authorization":None,
+             "evidence_path":relative+"zenodo-publication.json"}
+    scratch = ROOT / ".qikvrt" / "evidence"
+    scratch.mkdir(parents=True, exist_ok=True)
+    cases = []
+    for name, mutate, expected in (
+        ("CLAIM_OMISSION", lambda b:b["claims"].pop(), "bidirectionally"),
+        ("PDF_TAMPER", lambda b:b["candidate"]["files"][0].update(sha256="0"*64), "SHA-256 mismatch"),
+        ("OPEN_PROMOTION", lambda b:next(c for c in b["claims"] if c["claim_id"]=="C21").update(publication_wording="ESTABLISHED_WITHIN_SCOPE"), "disposition inconsistent"),
+        ("EMBEDDED_UPLOAD_FALSE", lambda b:b["completion_claims"].update(zenodo_upload_authorized=False), "unknown=zenodo_upload_authorized"),
+        ("EMBEDDED_UPLOAD_TRUE", lambda b:b["completion_claims"].update(zenodo_upload_authorized=True), "unknown=zenodo_upload_authorized"),
+    ):
+        changed = copy.deepcopy(bundle)
+        mutate(changed)
+        with tempfile.NamedTemporaryFile(mode="w", dir=scratch, suffix=".json") as stream:
+            json.dump(changed, stream, ensure_ascii=False); stream.flush()
+            try:
+                proof.validate_publication_bundle_v3(ROOT, pathlib.Path(stream.name))
+            except proof.ProofGateError as exc:
+                error = str(exc)
+                assert expected in error, (name, error)
+            else:
+                raise AssertionError(name + " was accepted")
+        cases.append({"test_id":name, "result":"REJECTED_AS_EXPECTED", "error":error})
+    for name, paths in (("OMITTED_PROOF", [p for p in planned if p != relative+"MACHINE_PROOF_BUNDLE.json"]),
+                        ("EXTRA_UPLOAD", planned+[relative+"ZENODO_FILESET.json"]),
+                        ("DUPLICATE_UPLOAD", planned+[planned[0]])):
+        try:
+            proof.validate_publication_bundle_v3(ROOT, bundle_path, upload_paths=paths)
+        except proof.ProofGateError as exc:
+            cases.append({"test_id":name,"result":"REJECTED_AS_EXPECTED","error":str(exc)})
+        else:
+            raise AssertionError(name + " was accepted")
+    with tempfile.NamedTemporaryFile(mode="w", dir=scratch, suffix=".json") as stream:
+        json.dump(value, stream, ensure_ascii=False); stream.flush()
+        with mock.patch.dict(os.environ, {"GITHUB_REPOSITORY":publish.PRODUCTION_REPOSITORY}), \
+                mock.patch.object(publish, "_github_api_request") as github, \
+                mock.patch.object(publish.zenodo, "ZenodoClient") as client:
+            try:
+                publish.publish(pathlib.Path(stream.name), ROOT)
+            except zenodo.ZenodoError as exc:
+                activation_error = str(exc)
+                assert activation_error == "NO_REVIEWED_V3_ACTIVATION_NO_V3_PRODUCTION_MUTATION: detached activation missing"
+            else:
+                raise AssertionError("Missing activation accepted")
+            github.assert_not_called(); client.assert_not_called()
+    materialized = [publish._materialize_file(item, ROOT, "candidate files") for item in files]
+    normalized = publish._validate_machine_proof(value["machine_proof"], ROOT, materialized, v3=True)
+    try:
+        publish._validate_owner_authorization(None, ROOT, publish.PRODUCTION_REPOSITORY,
+            metadata, materialized, normalized, candidate / "zenodo-publication.json", value["source_head"])
+    except zenodo.ZenodoError as exc:
+        owner_error = str(exc)
+    else:
+        raise AssertionError("Missing Owner decision accepted")
+    try:
+        proof.validate_bundle(ROOT, bundle_path, upload_paths=planned)
+    except proof.ProofGateError as exc:
+        default_v2_error = str(exc)
+    else:
+        raise AssertionError("v2 default silently accepted v3")
+    for forbidden in ("OWNER_ZENODO_AUTHORIZATION.json", "V3_CONTRACT_ACTIVATION.json", "publish-request.json", "zenodo-publication.json"):
+        assert not (candidate / forbidden).exists()
+    assert bundle_path.read_bytes() == frozen
+    return {"schema":"qikvrt_gesamtausgabe_boundary_test_report_v1", "publication_id":bundle["publication_id"],
+            "technical_v3_proof_contract":"PASS", "return_receipt_v2_semantic_contract":"PASS",
+            "fileset_closure":"PASS", "claim_matrix_bidirectional_projection":"PASS", "claim_count":30,
+            "original_review_archive_files_verified":36, "pdf_sha256":expected_pdf, "original_zip_sha256":expected_zip,
+            "original_three_page_proof_return_pdf_unchanged":"PASS", "negative_controls":cases,
+            "production_gate":"HOLD", "activation_error":activation_error, "owner_decision_error":owner_error,
+            "v2_default_rejects_v3":default_v2_error, "contract_activation_present":False,
+            "upload_authorized":False, "authorization_consumed":False, "zenodo_calls":0, "github_effect_calls":0,
+            "external_publication_effect":"NONE", "proof_hash_stable_across_all_denied_probes":True,
+            "proof_sha256":receipt["sha256"], "canonical_metadata_sha256":hashlib.sha256(zenodo._json_bytes(metadata)).hexdigest(),
+            "validation_scope":"Repository-native frozen schema/policy and semantic validation; no general JSON Schema interpreter executed. Major claim groups are dispositioned, not all natural-language semantics certified. Execution HEAD/TREE are separately validated outside this immutable report; predecessor gates do not transfer."}
+
+
 class MachineProofBeforeZenodoTests(unittest.TestCase):
     maxDiff = None
 
@@ -1833,6 +1957,20 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             self.assertEqual(owner["consumption_key"], publish._authorization_consumption_key(
                 owner["repository"], owner["authorization_id"], owner["publication_id"],
                 owner["authorization_event"]["statement_sha256"]))
+
+    def test_pr447_gesamtausgabe_actual_bytes_and_denied_effect_boundaries(self):
+        result = verify_pr447_gesamtausgabe_candidate()
+        candidate = ROOT / "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe"
+        self.assertEqual(result, json.loads((candidate / "BOUNDARY_TEST_REPORT.json").read_text()))
+        self.assertEqual(result["technical_v3_proof_contract"], "PASS")
+        self.assertEqual(result["production_gate"], "HOLD")
+        self.assertEqual(len(result["negative_controls"]), 8)
+        manifest = json.loads((candidate / "PREPUBLICATION_MANIFEST.json").read_text())
+        for item in manifest["files"]:
+            observed = proof.identity(ROOT / item["path"])
+            self.assertEqual({key:item[key] for key in observed}, observed, item["path"])
+        self.assertFalse(manifest["upload_authorization_present"])
+        self.assertFalse(manifest["contract_activation_present"])
 
     def test_pr447_migrated_v3_candidate_has_exact_proof_fileset_and_return_bindings(self):
         candidate = ROOT / "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness"
