@@ -1,0 +1,208 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_NODE_GENESIS_RECOVERY_V1",
+  "created_at": "2026-10-01T12:26:49.346986+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "source_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner and creator"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "881347919e91",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "bounded local Git/Python execution"
+    ],
+    "identity_and_observation_limits": "Platform commit identity is not proof of the natural person or model build."
+  },
+  "human_contributions": [
+    "Role-neutral complete-node reconstruction requirement, controlled Authority recovery and Goldkelch-rooted Mirror/Child genesis.",
+    "Authorization to materialize the smallest machine-checkable successor in ingolf-lohmann/qik-vrt.",
+    "Adverse-test requirements and prohibition on fabricating secrets or GitHub namespace rights."
+  ],
+  "artificial_cognitive_contributions": [
+    "Repository reuse inventory and source-bound diagnosis of existing integrity-projection drift.",
+    "New full-node bundle/recovery/genesis controller, machine contract, human contract and adverse tests.",
+    "Reuse of existing integrity and bounded subprocess paths; isolated-genesis guard in existing pre-effect controller.",
+    "Runtime Git behavioral contract registered through existing tool-cache authorities.",
+    "Candidate-tree tests and runtime fixture recovery."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "inputs": [
+    {
+      "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "bytes": 2355,
+      "sha256": "f699e84dce0d5d4a429d1dfeda7aefe9752054d00de7cc0e93ed21cae0edbc68",
+      "git_blob_sha1": "5cc8c5b433f84a028ec5c1dca1fe7824a8e03f69"
+    },
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "bytes": 44118,
+      "sha256": "6c091c90a993e85356b2f663a40230fdea2ec3546ca3712a77f8c83dd9cc416e",
+      "git_blob_sha1": "bd69412866bc8bed020246ef60e3ece6a8222b07"
+    },
+    {
+      "path": "tools/qikvrt_subprocess.py",
+      "bytes": 5715,
+      "sha256": "8344349b8e5c1827764e595b3ae56b8bdd720acb7feaaaee4abb1ca5656d5807",
+      "git_blob_sha1": "830cbfd69264ddc39f1ce16922c91048bb954d67"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_QIKVRT_EVOLUTIONARY_AUTOMATION_STANDING_DELEGATION_V1.json",
+      "bytes": 5760,
+      "sha256": "e25737f3f1971a41323dfb1e0124a522d191470c96624d3c0c19872430823421",
+      "git_blob_sha1": "87b8c45a3683e21e1e989768821f8709dc9d589f"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 11005,
+      "sha256": "5af015e17b6b2807abe20e5dcbed04c6222e361562bbe6a90aa71e7148de3427",
+      "git_blob_sha1": "64219774f8b9594d0eb210acc57fa541f735f625"
+    },
+    {
+      "path": "docs/QIKVRT_NODE_GENESIS_RECOVERY_V1.md",
+      "bytes": 5004,
+      "sha256": "8aaac93d8a5b44492d6d2be981ba825809e7c8fcc76c5aa6f44e52e46316f311",
+      "git_blob_sha1": "fac73b793f5750e5a22c3a83233bd5bb5e1fcb6f"
+    },
+    {
+      "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "bytes": 2763,
+      "sha256": "fada3183cd8c5b1a390dcd6286d55b489093a6352a9eb201d3c5765dec80aad0",
+      "git_blob_sha1": "9822e763b2dd229a1098410f12246f6d227f5750"
+    },
+    {
+      "path": "policy/QIKVRT_NODE_GENESIS_RECOVERY_V1.json",
+      "bytes": 7888,
+      "sha256": "f05d36680bdf49b64f2df48bb830b4db9f328de1347512333271a4e72285e547",
+      "git_blob_sha1": "27a85ea6143cc3257d6cd08bfc2a6a4709ba3254"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3252,
+      "sha256": "5ff2631e9cf12dc40c474bf986d589cb6dbc50eb67328bce976bf867111d4c4c",
+      "git_blob_sha1": "3be48254a41c8e0d4900051f3656789c5eef5c68"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 11564,
+      "sha256": "39dd69e5325a2b14f00bc939bd6eb27fea2054a39591372002c42fd2159e2450",
+      "git_blob_sha1": "73896c5080d375dd1777ccac209620dd9d30645c"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2716,
+      "sha256": "e0c1153a5829de473d211c6e810b94a8017e485daa74013dcc02fdb5debd78f5",
+      "git_blob_sha1": "10e266a9aec256f937bb946172fe3b7a24a04410"
+    },
+    {
+      "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "bytes": 10130,
+      "sha256": "a24144ca82e05a7c5a312e48672506b540fe7d0c3a4bb5f57252738e731416db",
+      "git_blob_sha1": "7b54a668182363391eb55c059cd5de7dc71fd9c5"
+    },
+    {
+      "path": "tools/qikvrt_node_genesis.py",
+      "bytes": 27115,
+      "sha256": "0535b1c632c0393e2395792e913f67e782b7be234edc82e492dfef0e9a8721cd",
+      "git_blob_sha1": "8f47b84d10e8a36f3e9302b612aa7fefb6683620"
+    },
+    {
+      "path": "tests/test_qikvrt_node_genesis.py",
+      "bytes": 20848,
+      "sha256": "30b7e8f899603afa11f779b0fe5c0be7e03199aa883c3341263d0d4ad4c708fc",
+      "git_blob_sha1": "7e6916d61ea4e8ddff35b2dd89feccb331ffaba4"
+    }
+  ],
+  "output_boundary": "This record and the cyclic integrity projections are bound by the successor Git tree and fresh readback, not by a self-referential digest in this record.",
+  "git_history": {
+    "branch": "work/node-genesis-recovery-c621b863-20261001",
+    "required_parent": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "method": "one history-preserving successor commit; no force push or rewrite",
+    "candidate_head": "bind by fresh Git readback/PR description after commit"
+  },
+  "verification": {
+    "scope": "CANDIDATE_TREE_ONLY; exact committed-head checks require a fresh readback",
+    "checks": [
+      {
+        "command": "make node-genesis-test",
+        "result": "PASS",
+        "tests": 24
+      },
+      {
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_autonomous_pre_effect_controller tests.test_integrity",
+        "result": "PASS",
+        "tests": 19
+      },
+      {
+        "command": "make test",
+        "result": "PASS_AFTER_EXACT_HISTORICAL_FIXTURE_FETCH"
+      },
+      {
+        "command": "python3 -B tools/qikvrt_tool_cache.py verify",
+        "result": "PASS",
+        "coverage": "15/15 (100%)"
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS"
+      }
+    ],
+    "runtime_fixture": {
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "initial_failure": "historical publication test required an object not present in the single-branch local clone",
+      "repair": "exact commit fetched from the same Mirror; retained in a local create-only ref; no test weakening or fixture substitution"
+    },
+    "main_projection_drift_before_changes": {
+      "added": [
+        "evidence/node_health/36821646859-1.json",
+        "evidence/node_registration_renewal/36821646859-1.json"
+      ],
+      "changed": [
+        ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "tests/test_ruleset_authority_token_route.py"
+      ]
+    },
+    "exact_successor_full_node_smoke": "execute after commit; bind the actual HEAD/TREE and result in PR readback"
+  },
+  "human_decision": {
+    "implementation_task": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "candidate_review": "PENDING; no review or acceptance fabricated"
+  },
+  "external_effects": {
+    "new_github_repository_created": false,
+    "new_live_authority_admitted": false,
+    "secrets_consumed_or_exported": false,
+    "planned_existing_repository_effects": [
+      "new branch and draft successor PR"
+    ]
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  },
+  "next_action": "Commit candidate, fresh exact-head validation and full-node restore, then create and reobserve successor PR. External authority admission remains separately capability-bound."
+}

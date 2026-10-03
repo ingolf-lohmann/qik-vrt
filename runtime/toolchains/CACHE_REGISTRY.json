@@ -101,6 +101,34 @@
       ],
       "version": "2.96.0"
     },
+    "git": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "policy/QIKVRT_NODE_GENESIS_RECOVERY_V1.json",
+        "tools/qikvrt_node_genesis.py",
+        "tests/test_qikvrt_node_genesis.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "license": "GPL-2.0-only",
+      "profiles": [
+        "core",
+        "all"
+      ],
+      "provenance": "https://git-scm.com/docs/git-bundle",
+      "provider": "system Git or pinned GitHub-hosted runner image",
+      "recovery": "use a provider with the same behavioural contract; incomplete recovery is BLOCK and staged output is removed",
+      "telemetry": "bounded Git subprocess result plus observation-bound recovery/genesis receipts",
+      "trusted_save": false,
+      "verification": [
+        "git --version recorded in execution evidence",
+        "bundle-v2 empty-database recovery; strict full fsck; exact HEAD/tree/refs",
+        "make node-genesis-test (offline positive and adverse self-test)"
+      ],
+      "version": "bundle-v2-sha1-full-closure"
+    },
     "lean": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
