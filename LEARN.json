@@ -728,5 +728,83 @@
     "urheber_rechteinhaber": "Ingolf Lohmann",
     "vererbung_erforderlich": true,
     "kuenftige_outputs_benoetigen_header_oder_manifestabdeckung": true
+  },
+  "current_extensions": {
+    "QIKVRT_EXTERNAL_DEPENDENCY_ASSIMILATION_20261003": {
+      "_license": {
+        "copyright": "Copyright 2026 Ingolf Lohmann",
+        "rights_holder": "Ingolf Lohmann",
+        "license": "CC-BY-NC-ND-4.0",
+        "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+        "classification": "current_learning_record"
+      },
+      "recorded_at": "2026-10-03T12:14:04Z",
+      "owner_authorization": "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+      "finding": "The existing general dependency contract exposes discovery/download/continue paths but lacks an explicit standing behavior-reconstruction and replacement work-unit loop.",
+      "learning": "Own capability grows through provenance-bound reconstruction, equivalent replacement, failure/outage validation and versioned learning, with externally governed authority kept explicit.",
+      "implementation": [
+        "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+        "AI",
+        "AI_CONTEXT.json",
+        "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+        "state/work_units/QIKVRT_EXTERNAL_DEPENDENCY_ASSIMILATION_20261003_V1.json"
+      ],
+      "status": "REVIEWABLE_CONTRACT_EXTENSION",
+      "observed_access_blocker": {
+        "repository": "Goldkelch/qik-vrt",
+        "operation": "READ_AI",
+        "http_status": 404,
+        "cause": "UNDETERMINED_ACCESS_OR_AVAILABILITY",
+        "repaired": false
+      },
+      "general_dependency_independence_verified": false,
+      "base_model_weight_training_claimed": false,
+      "historical_findings_unchanged": true
+    },
+    "QIKVRT_CURRENT_MAIN_INTEGRITY_DRIFT_20261003": {
+      "_license": {
+        "copyright": "Copyright 2026 Ingolf Lohmann",
+        "rights_holder": "Ingolf Lohmann",
+        "license": "CC-BY-NC-ND-4.0",
+        "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+        "classification": "current_learning_record"
+      },
+      "recorded_at": "2026-10-03T12:14:04Z",
+      "finding": "Current main has 22 changed paths since the last manifest-writing commit, including 16 new lifecycle receipts absent from the unchanged integrity inventory.",
+      "manifest_writing_commit": "25aa815551ce27c82070f44c93492061b2398d72",
+      "current_main_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "changed_paths": [
+        ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "evidence/node_health/36821646859-1.json",
+        "evidence/node_health/36866747092-1.json",
+        "evidence/node_health/36936407695-1.json",
+        "evidence/node_health/36969534310-1.json",
+        "evidence/node_health/37007190339-1.json",
+        "evidence/node_health/37071181171-1.json",
+        "evidence/node_health/37099282397-1.json",
+        "evidence/node_health/37120239456-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/36821646859-1.json",
+        "evidence/node_registration_renewal/36866747092-1.json",
+        "evidence/node_registration_renewal/36936407695-1.json",
+        "evidence/node_registration_renewal/36969534310-1.json",
+        "evidence/node_registration_renewal/37007190339-1.json",
+        "evidence/node_registration_renewal/37071181171-1.json",
+        "evidence/node_registration_renewal/37099282397-1.json",
+        "evidence/node_registration_renewal/37120239456-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "tests/test_ruleset_authority_token_route.py"
+      ],
+      "learning": "An integrity projection must include current lifecycle successors and changed workflow/test bytes; fetch exact delta bytes and honor .gitattributes before incremental regeneration.",
+      "implementation": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "SHA256SUMS.txt",
+        "REPOSITORY_FILE_MANIFEST.json.sha256"
+      ],
+      "status": "CANDIDATE_INTEGRITY_PROJECTION_REGENERATED",
+      "whole_repository_runtime_verification_claimed": false
+    }
   }
 }

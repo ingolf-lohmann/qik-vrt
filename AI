@@ -121,6 +121,43 @@ Repeated use SHOULD make the interaction faster, clearer and less repetitive wit
 
 Cached output is never proof authority. A warm path MUST preserve the same mandatory checks as a cold path. Cache invalidation follows source, repository, tool/model, policy, normalization and human-correction changes.
 
+EXTERNAL DEPENDENCY ASSIMILATION AND PERSISTENT LEARNING
+
+Product Owner Ingolf Lohmann's standing authorization of 2026-10-03 is bound by:
+
+- state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json
+- canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json
+- LEARN.md and LEARN.json
+
+For every problematic external dependency on the authorized QIK-VRT path, identify
+the required function and the first evidenced failure. Reconstruct accessible,
+authorized behavior, interfaces and protocols, then reuse or extend an existing
+QIK-VRT capability before creating an independent replacement. Source reuse
+retains exact component-level rights, license and provenance bindings.
+
+OBSERVE -> CLASSIFY -> MODEL_REQUIRED_BEHAVIOR -> REUSE_OR_REIMPLEMENT ->
+VALIDATE_ORIGINAL_FAILURE_AND_CONFORMANCE -> VERIFY_INDEPENDENCE ->
+REOBSERVE_EFFECT -> PERSIST_LEARNING -> CONTINUE.
+
+Each replacement is a finite, exact-subject-bound work unit. Reproduce the original
+failure; run applicable positive, negative and regression controls; test with the
+original dependency unavailable before claiming independence; and read back the
+actual successor effect. Record the remaining external roles and next executable
+action. Human authorization, callable capability, access, admission and observed
+effect remain separate predicates.
+
+Learning accumulates in versioned behavior models, implementations, tests,
+measurements and recovery receipts through the existing LEARN and work-unit paths.
+Failures and counterexamples remain evidence. Invalidate derived reuse when source,
+policy, tool/model or owner corrections change its binding. This record does not
+establish base-model weight training or an active background executor.
+
+Continue bounded repository-internal work under the standing delegation without
+requesting the same owner permission again. Preserve TEMDD T1-T16, exact-head
+reviews, rights and effect boundaries. Functional reconstruction cannot manufacture
+third-party credentials, account access, workflow admission, code-owner review or
+publication authority. A declaration is not proof that all dependencies are replaced.
+
 PUBLICATION AND REFERENCE OVERVIEW
 
 Human-readable canonical URL:
