@@ -84,6 +84,181 @@ paths:
         '423': { description: EFFECT_ACK_ISOLATE due to integrity or replay conflict. }
         '429': { description: Rate limit exceeded. }
         '500': { description: Internal adapter failure; no effect permission is implied. }
+  /api/digital-twin/v1/schedules:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: QIKVRT adapter only; this resource does not exist on api.github.com.
+    get:
+      operationId: listTwinSchedules
+      responses:
+        '200': { description: Authenticated private registry readback; no execution claim. }
+        '401': { description: Missing, invalid or expired credential or scope. }
+  /api/digital-twin/v1/schedules/{task_id}:
+    servers:
+      - url: http://127.0.0.1:8766
+    get:
+      operationId: readTwinSchedule
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema: { type: string, pattern: '^[0-9a-f]{32}$' }
+      responses:
+        '200': { description: Exact task configuration and local revision. }
+        '401': { description: Missing, invalid or expired credential or scope. }
+        '404': { description: Task not present in this repository/principal scope. }
+  /api/digital-twin/v1/schedules/reconcile:
+    servers:
+      - url: http://127.0.0.1:8766
+    post:
+      operationId: reconcileTwinSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [expected_revision, observed_at, task]
+              properties:
+                expected_revision: { type: integer, minimum: 0 }
+                observed_at: { type: string, format: date-time }
+                task: { $ref: '#/components/schemas/ScheduleSourceTask' }
+      responses:
+        '200': { description: Supplied source configuration persisted and locally reread; remote authenticity remains the authorized caller's responsibility. }
+        '400': { description: Closed schema or unsupported calendar violated. }
+        '401': { description: Missing, invalid or expired credential or scope. }
+        '409': { description: Stale revision/source, version collision or prepared configuration mismatch. }
+  /api/digital-twin/v1/schedules/prepare:
+    servers:
+      - url: http://127.0.0.1:8766
+    post:
+      operationId: prepareTwinScheduleChange
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [task_id, expected_revision, changes]
+              properties:
+                task_id: { type: string, pattern: '^[0-9a-f]{32}$' }
+                expected_revision: { type: integer, minimum: 1 }
+                changes: { $ref: '#/components/schemas/ScheduleChanges' }
+      responses:
+        '200': { description: Prepared update arguments for the existing executor; no external mutation performed. }
+        '400': { description: Invalid or unsupported configuration change. }
+        '401': { description: Missing, invalid or expired credential or scope. }
+        '404': { description: Task not found in this scope. }
+        '409': { description: Stale revision or another pending change. }
+  /api/digital-twin/v1/schedules/plan:
+    servers:
+      - url: http://127.0.0.1:8766
+    post:
+      operationId: planTwinScheduleSlots
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [at]
+              properties:
+                at: { type: string, format: date-time }
+      responses:
+        '200': { description: Planned next slots; local duplicate dispatch is forbidden. }
+        '400': { description: Invalid planning time. }
+        '401': { description: Missing, invalid or expired credential or scope. }
+  /api/digital-twin/v1/schedule-events:
+    servers: [{ url: 'http://127.0.0.1:8766', description: 'QIKVRT local adapter only.' }]
+    get:
+      operationId: listNativeTwinScheduleEvents
+      responses:
+        '200': { description: 'Private role-bound events and tombstones; current-subject receipts only.' }
+        '401': { description: 'Authentication required.' }
+  /api/digital-twin/v1/schedule-events/{event_id}:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    get:
+      operationId: readNativeTwinScheduleEvent
+      parameters:
+        - { name: event_id, in: path, required: true, schema: { type: string, pattern: '^[0-9a-f]{64}$' } }
+      responses:
+        '200': { description: 'Exact event or durable tombstone.' }
+        '404': { description: 'No such event in this authenticated scope.' }
+  /api/digital-twin/v1/schedule-events/contract:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    get:
+      operationId: readNativeTwinScheduleContract
+      responses:
+        '200': { description: 'QIKVRT_DIGITAL_TWIN_SCHEDULE_EVENTS_CONTRACT_V1.json.' }
+  /api/digital-twin/v1/schedule-events/operations:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    post:
+      operationId: applyNativeTwinScheduleOperation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, description: 'Closed qikvrt_schedule_operation_v1; normative JSON Schema 2020-12 contract is supplied separately.' }
+            x-qikvrt-json-schema: '../schemas/qikvrt_schedule_events_v1.schema.json#/$defs/operation'
+      responses:
+        '200': { description: 'CAS successor and independent local readback, or explicitly historical idempotent retry.' }
+        '400': { description: 'Closed contract, time or capacity violation.' }
+        '401': { description: 'Authentication required.' }
+        '409': { description: 'CAS, ID collision, tombstone or post-commit readback conflict.' }
+  /api/digital-twin/v1/schedule-events/sync-receipts:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    post:
+      operationId: importNativeTwinScheduleSyncReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, description: 'Closed qikvrt_schedule_sync_receipt_v1; normative JSON Schema 2020-12 contract is supplied separately.' }
+            x-qikvrt-json-schema: '../schemas/qikvrt_schedule_events_v1.schema.json#/$defs/receipt'
+      responses:
+        '200': { description: 'Caller-provided readback consistency only; no external effect or calendar-success attestation.' }
+        '400': { description: 'Closed contract violated.' }
+        '409': { description: 'Stale, mismatched or contradictory evidence.' }
+  /api/digital-twin/v1/schedule-events/snapshot:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    get:
+      operationId: exportNativeTwinScheduleSnapshot
+      responses:
+        '200': { description: 'Byte-canonical snapshot string; bounded complete native history.' }
+  /api/digital-twin/v1/schedule-events/replay:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    post:
+      operationId: replayNativeTwinScheduleSnapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [snapshot]
+              properties: { snapshot: { type: string, description: 'Canonical UTF-8 snapshot; additionally bounded by HTTP request size.' } }
+      responses:
+        '200': { description: 'Local history reconstructed and byte-exactly reread; no job replay or external effect.' }
+        '409': { description: 'Subject, history or nonempty destination conflict.' }
+  /api/digital-twin/v1/schedule-events/plan:
+    servers: [{ url: 'http://127.0.0.1:8766' }]
+    post:
+      operationId: planNativeTwinScheduleEvents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [after_utc]
+              properties: { after_utc: { type: string, pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$' } }
+      responses:
+        '200': { description: 'Deterministically ordered future slots; dispatch_performed=false.' }
 components:
   parameters:
     Owner:
@@ -97,6 +272,31 @@ components:
       required: true
       schema: { type: string, pattern: '^[A-Za-z0-9_.-]{1,100}$' }
   schemas:
+    ScheduleSourceTask:
+      type: object
+      additionalProperties: false
+      required: [id, title, prompt, schedule, default_timezone, timing_mode, is_enabled, updated_at]
+      properties:
+        id: { type: string, pattern: '^[0-9a-f]{32}$' }
+        title: { type: string, minLength: 1, description: At most 256 UTF-8 bytes. }
+        prompt: { type: string, minLength: 1, description: Private runtime data; at most 131072 UTF-8 bytes. }
+        schedule: { type: string, description: Explicit DTSTART and supported recurring RRULE; at most 4096 UTF-8 bytes. }
+        default_timezone: { type: string, description: Valid IANA timezone. }
+        timing_mode: { type: string, enum: [exact_schedule, flexible_schedule, condition_watch] }
+        is_enabled: { type: boolean }
+        updated_at: { type: string, format: date-time }
+        last_run_time: { type: string, nullable: true, format: date-time }
+        next_run_time: { type: string, nullable: true, format: date-time }
+    ScheduleChanges:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        title: { type: string, minLength: 1 }
+        prompt: { type: string, minLength: 1 }
+        schedule: { type: string }
+        default_timezone: { type: string }
+        is_enabled: { type: boolean }
     Health:
       type: object
       additionalProperties: false

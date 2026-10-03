@@ -7,6 +7,7 @@ import json
 import hmac
 import os
 import re
+import sqlite3
 import ssl
 import sys
 import threading
@@ -19,6 +20,8 @@ from urllib.parse import urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
+from qikvrt_digital_twin_scheduling import BASE as SCHEDULE_BASE, SchedulingStore, ScheduleConflict
+from qikvrt_digital_twin_schedule_events import BASE as EVENT_BASE, MAX_SNAPSHOT_BYTES, ScheduleEventStore, closed
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
@@ -122,7 +125,7 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
-    def _read_json(self) -> dict:
+    def _read_json(self, maximum=MAX_REQUEST_BYTES) -> dict:
         if self.headers.get("Transfer-Encoding") is not None:
             raise ValueError("Transfer-Encoding is not supported")
         lengths = self.headers.get_all("Content-Length", failobj=[])
@@ -137,7 +140,7 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             raise ValueError("invalid Content-Length") from exc
         if n <= 0:
             raise ValueError("JSON request body is required")
-        if n > MAX_REQUEST_BYTES:
+        if n > maximum:
             raise ValueError("request too large")
         raw = self.rfile.read(n)
         try:
@@ -208,6 +211,10 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                 },
             )
             return
+        if self.path.startswith(EVENT_BASE):
+            return self._event_schedule_request("GET")
+        if self.path.startswith(SCHEDULE_BASE):
+            return self._schedule_request("GET")
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
@@ -221,6 +228,10 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         if parsed.query or parsed.params or parsed.fragment:
             self._send_json(404, {"status": "BLOCK", "reason": "unknown endpoint"})
             return
+        if parsed.path.startswith(EVENT_BASE):
+            return self._event_schedule_request("POST", already_authorized=True)
+        if parsed.path.startswith(SCHEDULE_BASE):
+            return self._schedule_request("POST", already_authorized=True)
         m = DISPATCH_RE.match(parsed.path)
         mr = REPO_DISPATCH_RE.match(parsed.path)
         if not (m or mr):
@@ -312,6 +323,93 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             if os.environ.get("QIKVRT_API_LOG", "0") == "1":
                 print(f"QIK-VRT adapter internal error: {type(exc).__name__}: {exc}", file=sys.stderr)
             self._send_json(500, {"status": "BLOCK", "reason": "internal adapter error"})
+
+    def _event_schedule_request(self, method, already_authorized=False):
+        if not already_authorized:
+            if not self._rate_allowed():
+                return self._send_json(429, {"state": "HOLD", "reason": "RATE_LIMIT", "effect_ack_done": False})
+            if not self._authorized():
+                return self._send_json(401, {"state": "HOLD", "reason": "UNAUTHORIZED", "effect_ack_done": False})
+        parsed = urlparse(self.path)
+        if parsed.query or parsed.params or parsed.fragment:
+            return self._send_json(404, {"state": "HOLD", "reason": "NOT_FOUND", "effect_ack_done": False})
+        path = parsed.path
+        if method == "GET" and path == EVENT_BASE + "/contract":
+            contract = Path(__file__).resolve().parents[1] / "policy/QIKVRT_DIGITAL_TWIN_SCHEDULE_EVENTS_CONTRACT_V1.json"
+            return self._send_json(200, json.loads(contract.read_text(encoding="utf-8")))
+        valid_get = path in (EVENT_BASE, EVENT_BASE + "/snapshot") or re.fullmatch(re.escape(EVENT_BASE) + r"/[0-9a-f]{64}", path)
+        valid_post = path in (EVENT_BASE + "/operations", EVENT_BASE + "/sync-receipts", EVENT_BASE + "/plan", EVENT_BASE + "/replay")
+        if not (valid_get if method == "GET" else valid_post):
+            return self._send_json(404, {"state": "HOLD", "reason": "NOT_FOUND", "effect_ack_done": False})
+        try:
+            source = {"repository": os.environ.get("QIKVRT_ALLOWED_REPOSITORY", ""),
+                      "role": os.environ.get("QIKVRT_SCHEDULE_ROLE", ""),
+                      "head": os.environ.get("QIKVRT_SCHEDULE_HEAD", ""),
+                      "tree": os.environ.get("QIKVRT_SCHEDULE_TREE", "")}
+            store = ScheduleEventStore(Path(os.environ.get("QIKVRT_REPO_ROOT", os.getcwd())), source,
+                                       os.environ.get("QIKVRT_API_PRINCIPAL", ""))
+            if method == "GET":
+                result = {"snapshot": store.export().decode("utf-8"), "effect_ack_done": False} if path.endswith("/snapshot") else store.read(None if path == EVENT_BASE else path.rsplit("/", 1)[1])
+            else:
+                body = self._read_json(maximum=4 * MAX_SNAPSHOT_BYTES + 1024) if path.endswith("/replay") else self._read_json()
+                if path.endswith("/operations"):
+                    result = store.apply(body)
+                elif path.endswith("/sync-receipts"):
+                    result = store.record_sync(body)
+                elif path.endswith("/plan"):
+                    closed(body, {"after_utc"}, "PLAN_REQUEST")
+                    result = store.plan(body["after_utc"])
+                else:
+                    closed(body, {"snapshot"}, "REPLAY_REQUEST")
+                    if not isinstance(body["snapshot"], str):
+                        raise ValueError("CANONICAL_SNAPSHOT_STRING_REQUIRED")
+                    result = store.restore(body["snapshot"].encode("utf-8"))
+            return self._send_json(200, result)
+        except ScheduleConflict as exc:
+            return self._send_json(409, {"state": "HOLD", "reason": str(exc), "effect_ack_done": False})
+        except KeyError as exc:
+            return self._send_json(404, {"state": "HOLD", "reason": str(exc), "effect_ack_done": False})
+        except (ValueError, TypeError, UnicodeError, RecursionError, OverflowError) as exc:
+            return self._send_json(400, {"state": "HOLD", "reason": str(exc), "effect_ack_done": False})
+        except (OSError, sqlite3.Error):
+            return self._send_json(503, {"state": "HOLD", "reason": "SCHEDULE_STORAGE_UNAVAILABLE", "effect_ack_done": False})
+
+    def _schedule_request(self, method, already_authorized=False):
+        if not already_authorized and not self._rate_allowed():
+            return self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+        if not _security_configuration_valid() or not self._authorized():
+            return self._send_json(401, {"status": "BLOCK", "reason": "unauthorized"})
+        parsed = urlparse(self.path)
+        if parsed.query or parsed.params or parsed.fragment:
+            return self._send_json(404, {"status": "BLOCK", "reason": "unknown endpoint"})
+        try:
+            store = SchedulingStore(Path(os.environ.get("QIKVRT_REPO_ROOT", os.getcwd())),
+                                    os.environ["QIKVRT_ALLOWED_REPOSITORY"], os.environ["QIKVRT_API_PRINCIPAL"])
+            item = re.fullmatch(re.escape(SCHEDULE_BASE) + r"/([0-9a-f]{32})", parsed.path)
+            if method == "GET" and parsed.path == SCHEDULE_BASE:
+                return self._send_json(200, store.read())
+            if method == "GET" and item:
+                return self._send_json(200, store.read(item.group(1)))
+            requests = {
+                SCHEDULE_BASE + "/reconcile": ({"expected_revision", "observed_at", "task"}, store.reconcile),
+                SCHEDULE_BASE + "/prepare": ({"task_id", "expected_revision", "changes"}, store.prepare),
+                SCHEDULE_BASE + "/plan": ({"at"}, store.due),
+            }
+            if method != "POST" or parsed.path not in requests:
+                return self._send_json(404, {"status": "BLOCK", "reason": "unknown endpoint"})
+            body = self._read_json()
+            fields, operation = requests[parsed.path]
+            if set(body) != fields:
+                raise ValueError("CLOSED_SCHEDULE_REQUEST_SCHEMA")
+            return self._send_json(200, operation(**body))
+        except ScheduleConflict as exc:
+            return self._send_json(409, {"status": "HOLD", "reason": str(exc), "effect_ack_done": False})
+        except KeyError:
+            return self._send_json(404, {"status": "HOLD", "reason": "SCHEDULE_NOT_FOUND", "effect_ack_done": False})
+        except (ValueError, UnicodeError, TypeError) as exc:
+            return self._send_json(400, {"status": "HOLD", "reason": str(exc), "effect_ack_done": False})
+        except Exception:
+            return self._send_json(500, {"status": "HOLD", "reason": "schedule storage error", "effect_ack_done": False})
 
     def log_message(self, fmt, *args):
         if os.environ.get("QIKVRT_API_LOG", "0") == "1":
