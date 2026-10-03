@@ -248,3 +248,32 @@ English: QIK-VRT GitHub repositories require description, topics, best-effort Gi
 Deutsch: PowerShell-Guards müssen bei vorhandenen top-level `param(...)`-Blöcken hinter dem vollständigen Parameterblock stehen.
 
 English: PowerShell guards must be placed after the complete top-level `param(...)` block when such a block exists.
+
+## QIKVRT_EXTERNAL_DEPENDENCY_ASSIMILATION_20261003
+
+Deutsch: Die generelle Product-Owner-Freigabe von Ingolf Lohmann vom 3. Oktober
+2026 erweitert den vorhandenen allgemeinen Abhängigkeitsvertrag: Problematische
+externe Abhängigkeiten werden über beobachtbares Verhalten und benötigte Funktionen
+rekonstruiert und durch wiederverwendete oder eigenständig implementierte
+QIK-VRT-Fähigkeiten ersetzt. Jede Umsetzung bindet den ursprünglichen Fehlerfall,
+Konformitäts- und Negativkontrollen, einen Test bei nicht verfügbarer ursprünglicher
+Abhängigkeit und einen frischen Wirkungs-Readback. Modelle, Code, Tests, Messungen,
+Gegenbeispiele und Recovery werden versioniert zurückgeführt.
+
+English: Ingolf Lohmann's standing Product-Owner authorization of 3 October 2026
+extends the existing general dependency contract with observable behavior
+reconstruction and QIK-VRT replacement capabilities. Each implementation binds the
+original failure, conformance and negative controls, a test with the original
+dependency unavailable, and fresh effect readback. Models, code, tests,
+measurements, counterexamples and recovery accumulate as versioned learning.
+
+Binding: `state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json`;
+contract: `canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json`;
+work unit: `state/work_units/QIKVRT_EXTERNAL_DEPENDENCY_ASSIMILATION_20261003_V1.json`.
+
+Scope: this is an attributable authorization and reviewable contract extension.
+It does not prove that any external dependency has already been replaced, that a
+background executor is running, or that base-model weights have changed.
+The current Authority `/AI` read returned HTTP 404; its cause and repair remain
+unestablished. The accessible personal repository is not substituted as proof
+of Authority/Mirror equality. Existing learning history remains intact.

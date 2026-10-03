@@ -117,6 +117,10 @@
     "AGENTS.md",
     "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
     "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+    "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+    "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+    "LEARN.md",
+    "LEARN.json",
     "docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md",
     "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json",
     "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
@@ -210,5 +214,24 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "external_dependency_assimilation": {
+    "owner_authorization": "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+    "general_contract": "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+    "human_learning_ledger": "LEARN.md",
+    "machine_learning_ledger": "LEARN.json",
+    "loop": [
+      "OBSERVE",
+      "CLASSIFY",
+      "MODEL_REQUIRED_BEHAVIOR",
+      "REUSE_OR_REIMPLEMENT",
+      "VALIDATE_ORIGINAL_FAILURE_AND_CONFORMANCE",
+      "VERIFY_INDEPENDENCE",
+      "REOBSERVE_EFFECT",
+      "PERSIST_LEARNING",
+      "CONTINUE"
+    ],
+    "reuse_before_create": true,
+    "rule": "Under the standing Product-Owner authorization, reconstruct the required behavior of problematic external dependencies, develop bounded QIK-VRT replacements, revalidate the original failure and dependency-unavailable path, and persist verifiable learning without inferring externally governed authority or completion."
   }
 }

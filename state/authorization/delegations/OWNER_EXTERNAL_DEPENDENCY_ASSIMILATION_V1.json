@@ -1,0 +1,103 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "owner_authorization_record"
+  },
+  "schema": "qikvrt_owner_external_dependency_assimilation_v1",
+  "delegation_id": "OWNER-EXTERNAL-DEPENDENCY-ASSIMILATION-V1",
+  "owner": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "type": "NATURAL_PERSON"
+  },
+  "effective_at": "2026-10-03T13:57:55+02:00",
+  "source_instruction_de": "Hiermit erteile ich die generelle Product Owner Freigabe, um QIK-VRT zu veranlassen, sämtliche problematischen externen Abhängigkeiten durch geeignetes Reverse-Engineeren und Assimilieren der externen Abhängigkeit und damit zugleich der Lösung eines Problems, sich seiner eigenen Fähigkeiten zu bedienen und dabei ebenso permanent dazuzulernen.",
+  "source_instruction_bytes": 349,
+  "source_instruction_sha256": "cb0523d51e6b3de8204735a6287eecf14a921514e68a86f14064a478ef4b97c4",
+  "source_kind": "EXPLICIT_USER_INSTRUCTION_IN_CURRENT_CONVERSATION",
+  "identity_boundary": "The record preserves the attributed authorization event; it does not provide cryptographic or biometric proof of the natural person.",
+  "authorization_scope": {
+    "state": "ACTIVE",
+    "standing_authorization": true,
+    "scope": "All problematic external dependencies on the QIK-VRT user and execution paths, considered through a bounded dependency-specific work unit.",
+    "authorized_actions": [
+      "authorized_behavior_observation_and_causal_diagnosis",
+      "reverse_engineering_of_required_behavior_interfaces_and_protocols",
+      "reuse_or_extension_of_existing_qikvrt_capabilities",
+      "rights_bound_source_reuse_or_independent_reimplementation",
+      "bounded_repository_internal_repair_and_reviewable_replacement_candidates",
+      "conformance_failure_regression_and_outage_testing",
+      "versioned_persistence_of_models_code_tests_and_learning_receipts"
+    ],
+    "repeated_owner_confirmation_for_same_authorized_internal_scope_required": false
+  },
+  "execution_binding": {
+    "general_contract": "canonical/GENERAL_DEPENDENCY_RESOLUTION_CONTRACT.json",
+    "continuation_delegation": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "optimization_delegation": "state/authorization/delegations/OWNER_AI_ENTRYPOINT_CONTINUOUS_OPTIMIZATION_V1.json",
+    "reuse_before_create": true,
+    "smallest_evidenced_user_path_blocker_first": true,
+    "repository_activity_route": "SUPPORTED_REST_API_OR_API_NATIVE_CONNECTOR",
+    "bounded_work_units_required": true,
+    "no_change_action": "NOOP"
+  },
+  "mandatory_evidence": [
+    "exact_dependency_version_or_behavior_and_subject_head_tree",
+    "observed_failure_and_required_function",
+    "cause_hypothesis_distinguished_from_verified_cause",
+    "authorization_capability_access_admission_and_effect_separately_observed",
+    "source_and_rights_provenance",
+    "replacement_inputs_outputs_and_content_digests",
+    "original_failure_reproduction_and_fresh_successor_readback",
+    "positive_negative_replay_restart_and_regression_controls_where_applicable",
+    "independence_test_with_original_dependency_unavailable",
+    "finite_acceptance_scope_and_explicit_remaining_external_roles"
+  ],
+  "learning": {
+    "mode": "PERSISTENT_VERSIONED_QIKVRT_ARTIFACTS",
+    "existing_human_ledger": "LEARN.md",
+    "existing_machine_ledger": "LEARN.json",
+    "work_units": "state/work_units/<WORK_UNIT_ID>.json",
+    "learning_artifacts": [
+      "behavior_model",
+      "implementation_or_adapter",
+      "conformance_and_failure_controls",
+      "measurements",
+      "provenance_and_recovery_recipe"
+    ],
+    "failed_candidates_and_counterexamples_retained": true,
+    "invalidate_reuse_on": [
+      "source_or_dependency_drift",
+      "policy_or_rights_change",
+      "tool_or_model_change",
+      "failed_verification",
+      "owner_correction"
+    ],
+    "base_model_weight_training_claimed": false,
+    "unattended_executor_activation_inferred_from_record_presence": false
+  },
+  "boundaries": {
+    "scope_of_external_roles": "A replacement can supply a function. It cannot create a third-party identity, credential, admission, code-owner review, DOI or other externally governed effect.",
+    "existing_license_security_evidence_review_and_effect_gates_preserved": true,
+    "access_control_or_account_suspension_bypass_authorized": false,
+    "third_party_code_relicensing_authorized": false,
+    "software_downgrade_as_repair": false,
+    "predecessor_evidence_transfer": false,
+    "external_release_deployment_publication_or_irreversible_effect_requires_its_existing_exact_subject_authority": true,
+    "unconditional_merge_or_self_approval_authorized": false
+  },
+  "revocation": {
+    "revocable": true,
+    "method": "Append a later owner decision identifying this delegation_id; preserve historical records."
+  },
+  "completion_claims": {
+    "ALL_DEPENDENCIES_REPLACED": false,
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}
