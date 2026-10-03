@@ -13,6 +13,12 @@ on:
       - tools/qikvrt_freeze_alpha2_status.py
       - tools/qikvrt_verify_alpha2_archive.py
       - tests/test_global_completion.py
+      - policy/QIKVRT_CLAIM_AUDIT_V1.json
+      - tools/lean/**
+      - third_party/lean4checker/**
+      - runtime/toolchains/**
+      - schemas/qikvrt_claim_audit*.schema.json
+      - schemas/qikvrt_invariant_audit_v1.schema.json
       - .github/workflows/qikvrt_global_completion.yml
       - formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py
       - GLOBAL_COMPLETION_FINALIZATION_INPUT.json
@@ -22,6 +28,12 @@ on:
       - tools/qikvrt_freeze_alpha2_status.py
       - tools/qikvrt_verify_alpha2_archive.py
       - tests/test_global_completion.py
+      - policy/QIKVRT_CLAIM_AUDIT_V1.json
+      - tools/lean/**
+      - third_party/lean4checker/**
+      - runtime/toolchains/**
+      - schemas/qikvrt_claim_audit*.schema.json
+      - schemas/qikvrt_invariant_audit_v1.schema.json
       - .github/workflows/qikvrt_global_completion.yml
       - release/formalization-v2/alpha2-frozen/**
       - formalization/QIKVRT_Formalization_v2.0/scripts/package_release.py
@@ -105,10 +117,13 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+    env:
+      QIKVRT_REQUIRE_LEAN_AUDIT_TESTS: '1'
     steps:
       - name: Check out exact candidate with tags
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           fetch-tags: true
           persist-credentials: false
@@ -116,6 +131,55 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
+      - name: Provision locked Lean runtime without restoring project proof objects
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
+          auto-config: 'false'
+          build: 'false'
+          test: 'false'
+          lint: 'false'
+          use-mathlib-cache: 'false'
+          use-github-cache: 'false'
+      - name: Audit claim domains, invariants and non-implications without effects
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          AUDIT_EXECUTION_ID: ${{ github.repository }}:run-${{ github.run_id }}:attempt-${{ github.run_attempt }}:verify-global-completion
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
+          expected_tree="$(git rev-parse --verify "$EXPECTED_HEAD^{tree}")"
+          mkdir -p .qikvrt/evidence
+          python3 -B tools/qikvrt_global_completion.py audit \
+            --formal-verifier lean-kernel --expected-head "$EXPECTED_HEAD" \
+            --expected-tree "$expected_tree" --execution-id "$AUDIT_EXECUTION_ID" \
+            > .qikvrt/evidence/claim-audit.json
+          python3 -B tools/qikvrt_global_completion.py verify-audit \
+            --formal-verifier lean-kernel --expected-head "$EXPECTED_HEAD" \
+            --expected-tree "$expected_tree" --execution-id "$AUDIT_EXECUTION_ID" \
+            --report .qikvrt/evidence/claim-audit.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('.qikvrt/evidence/claim-audit.json').read_text())
+          verifier = report['formal_verifier']
+          assert verifier['status'] == 'PASS', verifier
+          admitted = {'MANUSCRIPT::SET-001', 'MANUSCRIPT::SET-003'}
+          assert {c['claim_id'] for c in verifier['claims']} == admitted
+          assert {c['claim_id'] for c in report['claims'] if c['verification_checklist']['formal_verified']} == admitted
+          assert all(c['epistemic_domain'] == 'FORMAL' for c in report['claims'] if c['verification_checklist']['formal_verified'])
+          assert all(not c['verification_checklist'][k] for c in report['claims'] for k in ('empirical_verified', 'peer_reviewed', 'reproduced'))
+          assert all(report['boundaries'][k] is False for k in ('audit_pass_is_claim_truth', 'external_effect', 'effect_ack_done'))
+          PY
+      - name: Preserve claim and invariant audit receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-claim-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: error
+          path: .qikvrt/evidence/claim-audit.json
       - name: Diagnose frozen inputs and historical Alpha-2 archive
         id: alpha2_archive
         continue-on-error: true

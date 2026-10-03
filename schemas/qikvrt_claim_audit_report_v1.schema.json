@@ -1,0 +1,147 @@
+{
+  "$id": "qikvrt_claim_audit_report_v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "boundaries": {
+      "properties": {
+        "audit_pass_is_claim_truth": {
+          "const": false
+        },
+        "effect_ack_done": {
+          "const": false
+        },
+        "external_effect": {
+          "const": false
+        }
+      },
+      "required": [
+        "audit_pass_is_claim_truth",
+        "effect_ack_done",
+        "external_effect"
+      ],
+      "type": "object"
+    },
+    "claims": {
+      "items": {
+        "$ref": "qikvrt_claim_audit_v1.schema.json"
+      },
+      "type": "array"
+    },
+    "execution_subject": {
+      "type": "object"
+    },
+    "formal_verifier": {
+      "properties": {
+        "input_binding": {
+          "additionalProperties": false,
+          "properties": {
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "git_blob_sha1": {
+              "pattern": "^[0-9a-f]{40}$",
+              "type": "string"
+            },
+            "representation": {
+              "const": "EXACT_INPUT_BYTES"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "sha256",
+            "bytes",
+            "git_blob_sha1",
+            "representation"
+          ],
+          "type": "object"
+        },
+        "verifier_id": {
+          "const": "INDEPENDENT_LEAN_KERNEL_V1"
+        },
+        "verifier_version": {
+          "const": "1.1.0"
+        }
+      },
+      "required": [
+        "verifier_id",
+        "verifier_version",
+        "execution_id",
+        "execution_subject",
+        "input_binding",
+        "checker_binding",
+        "replay_binding"
+      ],
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "input_binding": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "git_blob_sha1": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "representation": {
+          "enum": [
+            "EXACT_INPUT_BYTES",
+            "GENERATED_CANONICAL_JSON"
+          ]
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "bytes",
+        "git_blob_sha1",
+        "representation"
+      ],
+      "type": "object"
+    },
+    "input_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "invariants": {
+      "items": {
+        "$ref": "qikvrt_invariant_audit_v1.schema.json"
+      },
+      "type": "array"
+    },
+    "report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "qikvrt_claim_audit_report_v1"
+    }
+  },
+  "required": [
+    "schema",
+    "timestamp",
+    "input_sha256",
+    "audit_summary",
+    "claims",
+    "invariants",
+    "non_implication_audit",
+    "audit_of_audit",
+    "boundaries",
+    "report_sha256",
+    "formal_verifier",
+    "execution_subject",
+    "input_binding"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,212 @@
+{
+  "$id": "qikvrt_claim_audit_v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verification_checklist": {
+            "properties": {
+              "formal_verified": {
+                "const": true
+              }
+            },
+            "required": [
+              "formal_verified"
+            ]
+          }
+        },
+        "required": [
+          "verification_checklist"
+        ]
+      },
+      "then": {
+        "properties": {
+          "epistemic_domain": {
+            "const": "FORMAL"
+          },
+          "formal_kernel_receipt": {
+            "properties": {
+              "input_binding": {
+                "additionalProperties": false,
+                "properties": {
+                  "bytes": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "git_blob_sha1": {
+                    "pattern": "^[0-9a-f]{40}$",
+                    "type": "string"
+                  },
+                  "representation": {
+                    "const": "EXACT_INPUT_BYTES"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sha256",
+                  "bytes",
+                  "git_blob_sha1",
+                  "representation"
+                ],
+                "type": "object"
+              },
+              "verifier_id": {
+                "const": "INDEPENDENT_LEAN_KERNEL_V1"
+              },
+              "verifier_version": {
+                "const": "1.1.0"
+              }
+            },
+            "required": [
+              "claim_id",
+              "execution_id",
+              "execution_subject",
+              "input_sha256",
+              "kernel_receipt_sha256",
+              "compiled_objects",
+              "native_kernel_result",
+              "verifier_id",
+              "verifier_version",
+              "checker_binding",
+              "input_binding"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "formal_kernel_receipt"
+        ]
+      }
+    }
+  ],
+  "properties": {
+    "audit_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "audit_result": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_exists": {
+          "type": "boolean"
+        },
+        "claim_well_formed": {
+          "type": "boolean"
+        },
+        "domain_consistent": {
+          "type": "boolean"
+        },
+        "evidence_present": {
+          "type": "boolean"
+        },
+        "runtime_applicable": {
+          "type": "boolean"
+        },
+        "verification_sufficient": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_exists",
+        "claim_well_formed",
+        "domain_consistent",
+        "evidence_present",
+        "verification_sufficient",
+        "runtime_applicable"
+      ],
+      "type": "object"
+    },
+    "claim_class": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "epistemic_domain": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "formal_kernel_receipt": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "qikvrt_claim_audit_v1"
+    },
+    "severity": {
+      "enum": [
+        "INFO",
+        "NOTICE",
+        "WARNING",
+        "ERROR",
+        "CRITICAL"
+      ]
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "HOLD",
+        "FAIL"
+      ]
+    },
+    "timestamp": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "verification_checklist": {
+      "additionalProperties": false,
+      "properties": {
+        "empirical_verified": {
+          "const": false
+        },
+        "formal_verified": {
+          "type": "boolean"
+        },
+        "peer_reviewed": {
+          "const": false
+        },
+        "reproduced": {
+          "const": false
+        }
+      },
+      "required": [
+        "formal_verified",
+        "empirical_verified",
+        "peer_reviewed",
+        "reproduced"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "audit_id",
+    "claim_id",
+    "timestamp",
+    "epistemic_domain",
+    "claim_class",
+    "claim_statement",
+    "audit_result"
+  ],
+  "type": "object"
+}
