@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'tools/qikvrt_live_authority_mirror_ab.py'
+      - 'tools/qikvrt_authority_credentials.py'
+      - 'tests/test_qikvrt_live_authority_mirror_ab.py'
       - '.github/workflows/qikvrt_live_authority_mirror_ab.yml'
       - 'docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/**'
   workflow_dispatch:
@@ -16,14 +18,50 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Verify credential and benchmark boundaries
+        id: benchmark-boundaries
+        run: python3 -B -m unittest -v tests.test_qikvrt_live_authority_mirror_ab
+      - name: Resolve existing direct or App credential route
+        id: probe-credential-route
+        env:
+          RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+          ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+          MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+        run: |
+          direct=false
+          app=false
+          if [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then direct=true; fi
+          if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then app=true; fi
+          echo "direct=$direct" >> "$GITHUB_OUTPUT"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+      - name: Mint existing App credential for fixed Authority read scope
+        id: authority-app-token
+        if: steps.probe-credential-route.outputs.direct != 'true' && steps.probe-credential-route.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-contents: read
       - name: Run exact live A/B measurement
+        if: always() && steps.benchmark-boundaries.outcome == 'success'
+        env:
+          QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+          QIKVRT_GITHUB_ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+          QIKVRT_MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          QIKVRT_AUTHORITY_APP_TOKEN: ${{ steps.authority-app-token.outputs.token }}
         shell: bash
         run: |
           set -euo pipefail
           python3 -B tools/qikvrt_live_authority_mirror_ab.py | tee /tmp/qikvrt-live-ab.json
           python3 -B -m json.tool /tmp/qikvrt-live-ab.json >/dev/null
       - name: Upload measurement
+        if: always() && steps.benchmark-boundaries.outcome == 'success'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: qikvrt-live-authority-mirror-ab-${{ github.run_id }}-${{ github.run_attempt }}
