@@ -110,6 +110,23 @@ jobs:
             -Install -AcceptThirdParty -ReconstructUpstream -Profile windows-start
           if ($LASTEXITCODE -ne 0) { throw 'Locked Windows carrier preparation failed' }
 
+      - name: Prepare content-addressed release candidate without publication effects
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $carrier = Join-Path $env:RUNNER_TEMP 'qikvrt-windows-offline-start/release-candidate'
+          $spec = Get-Content runtime/toolchains/python-3.12.10-embed-amd64.payload.json -Raw | ConvertFrom-Json
+          $root = Join-Path $PWD ('.qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/' + $spec.archive_sha256)
+          $env:QIKVRT_TEST_WINDOWS_PYTHON_ARCHIVE = Join-Path $root ('archive/' + $spec.archive)
+          $python = Join-Path $root 'runtime/python.exe'
+          & $python -I -B tools/qikvrt_cicd_publish.py --runtime-carrier prepare `
+            --carrier-archive $env:QIKVRT_TEST_WINDOWS_PYTHON_ARCHIVE --evidence-dir .qikvrt/evidence/runtime-release-candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime release candidate preparation failed' }
+          New-Item -ItemType Directory -Path $carrier -Force | Out-Null
+          Copy-Item -Path .qikvrt/evidence/runtime-release-candidate/* -Destination $carrier
+          & $python -I -B tests/test_launcher_runtime.py RuntimeReleaseCarrierTests
+          if ($LASTEXITCODE -ne 0) { throw 'Carrier restore/missing/tamper/No-Clobber/rollback tests failed' }
+
       - name: Prove fresh offline startup with OS-denied egress and negative controls
         shell: powershell
         run: |

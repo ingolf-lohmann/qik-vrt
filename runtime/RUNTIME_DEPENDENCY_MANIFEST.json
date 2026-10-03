@@ -60,5 +60,12 @@
     "current_head_rule": "This immutable source snapshot does not replace required fresh checks on a successor HEAD."
   },
   "main_activation_verified": false,
-  "last_native_offline_observed_utc": "2026-10-03T14:01:42.8663454Z"
+  "last_native_offline_observed_utc": "2026-10-03T14:01:42.8663454Z",
+  "durable_release_candidate": {
+    "path": "runtime/toolchains/python-3.12.10-embed-amd64.release.json",
+    "sha256": "5faec1ad5cb9c71a474f9f219c53da40f52646925b7376718d988051af0d9bc3",
+    "state": "PREPARED_NOT_PUBLISHED"
+  },
+  "durable_release_verified": false,
+  "release_download_readback_observed": false
 }

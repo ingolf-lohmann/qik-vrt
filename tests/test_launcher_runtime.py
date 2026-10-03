@@ -12,6 +12,11 @@ import sys
 import tempfile
 import unittest
 import zipfile
+import copy
+import io
+import threading
+import http.server
+import urllib.error
 from unittest import mock
 
 REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -100,6 +105,147 @@ class WindowsRuntimeAuthorityTests(unittest.TestCase):
                 value = payload.read(name)
                 self.assertEqual(len(value), record['bytes'])
                 self.assertEqual(hashlib.sha256(value).hexdigest(), record['sha256'])
+
+
+class RuntimeReleaseCarrierTests(unittest.TestCase):
+    def test_registry_and_candidate_reject_missing_or_tampered_manifest(self) -> None:
+        registry = tool_cache.read_registry()
+        candidate = tool_cache.windows_release_candidate(registry)
+        self.assertFalse(candidate['durable_public_readback_verified'])
+        self.assertTrue(candidate['immutable_release_required'])
+        altered = copy.deepcopy(registry)
+        altered['components']['python-embed-windows']['durable_release_candidate']['sha256'] = '0' * 64
+        with self.assertRaisesRegex(tool_cache.ContractError, 'registry hash mismatch'):
+            tool_cache.windows_release_candidate(altered)
+        with mock.patch.object(tool_cache, 'ROOT', pathlib.Path('/missing-qikvrt-candidate')):
+            with self.assertRaises(tool_cache.ContractError):
+                tool_cache.windows_release_candidate(registry)
+
+    def test_remote_metadata_duplicate_missing_and_tamper_fail_closed(self) -> None:
+        candidate = tool_cache.windows_release_candidate()
+        assets = cicd._runtime_assets(candidate)
+        remote = [{'name': a['path'], 'size': a['bytes'], 'digest': 'sha256:' + a['sha256'],
+                   'state': 'uploaded'} for a in assets]
+        self.assertTrue(cicd._release_assets_match({'assets': remote}, assets))
+        for changed in [remote[:-1], remote + [remote[0]],
+                        [dict(remote[0], digest='sha256:' + '0' * 64), remote[1]]]:
+            self.assertFalse(cicd._release_assets_match({'assets': changed}, assets))
+
+    def test_no_publication_from_runtime_carrier_modes(self) -> None:
+        with mock.patch.object(cicd, 'execute_plan') as effect, mock.patch.object(cicd, '_run') as run:
+            for flags in [['--mode', 'execute'], ['--github-release'], ['--allow-publish']]:
+                with self.assertRaisesRegex(ValueError, 'cannot perform publication effects'):
+                    cicd._run_main(['--runtime-carrier', 'prepare', *flags])
+            effect.assert_not_called()
+            run.assert_not_called()
+
+    def test_missing_mutable_or_wrong_tag_release_never_downloads(self) -> None:
+        candidate = tool_cache.windows_release_candidate()
+        assets = cicd._runtime_assets(candidate)
+        remote = {'id': 450, 'tag_name': candidate['tag'], 'draft': False, 'immutable': True,
+                  'assets': [{'name': a['path'], 'size': a['bytes'],
+                              'digest': 'sha256:' + a['sha256'], 'state': 'uploaded'} for a in assets]}
+        for data in [dict(remote, immutable=False), dict(remote, assets=remote['assets'][:-1]),
+                     dict(remote, tag_name='other')]:
+            with mock.patch.object(cicd.urllib.request, 'urlopen', return_value=io.BytesIO(json.dumps(data).encode())), mock.patch.object(
+                    cicd, '_download_runtime_asset') as download:
+                with self.assertRaisesRegex(ValueError, 'missing, mutable'):
+                    cicd.readback_runtime_carrier('a' * 40)
+                download.assert_not_called()
+        with mock.patch.object(cicd.urllib.request, 'urlopen', side_effect=urllib.error.HTTPError(
+                candidate['download_url'], 404, 'missing', {}, None)), mock.patch.object(
+                cicd, '_download_runtime_asset') as download:
+            with self.assertRaises(urllib.error.HTTPError):
+                cicd.readback_runtime_carrier('a' * 40)
+            download.assert_not_called()
+        wrong_ref = {'object': {'type': 'commit', 'sha': 'b' * 40}}
+        with mock.patch.object(cicd.urllib.request, 'urlopen', side_effect=[
+                io.BytesIO(json.dumps(remote).encode()), io.BytesIO(json.dumps(wrong_ref).encode())]), mock.patch.object(
+                cicd, '_download_runtime_asset') as download:
+            with self.assertRaisesRegex(ValueError, 'tag HEAD differs'):
+                cicd.readback_runtime_carrier('a' * 40)
+            download.assert_not_called()
+
+    def test_independent_http_download_bytes_missing_and_tamper(self) -> None:
+        # Real fresh HTTP transfers in a controlled fixture, not evidence of public release availability.
+        value = b'QIK-VRT independent carrier readback'
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                if self.path == '/missing':
+                    self.send_error(404)
+                    return
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'X' * len(value) if self.path == '/tamper' else value)
+            def log_message(self, *_args):
+                pass
+        server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        descriptor = {'bytes': len(value), 'sha256': hashlib.sha256(value).hexdigest()}
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                root = pathlib.Path(directory)
+                url = 'http://127.0.0.1:' + str(server.server_port)
+                cicd._download_runtime_asset(url + '/good', root / 'fresh', descriptor)
+                self.assertEqual((root / 'fresh').read_bytes(), value)
+                with self.assertRaises(FileExistsError):
+                    cicd._download_runtime_asset(url + '/good', root / 'fresh', descriptor)
+                with self.assertRaises(urllib.error.HTTPError):
+                    cicd._download_runtime_asset(url + '/missing', root / 'absent', descriptor)
+                self.assertFalse((root / 'absent').exists())
+                with self.assertRaisesRegex(ValueError, 'SHA-256 mismatch'):
+                    cicd._download_runtime_asset(url + '/tamper', root / 'altered', descriptor)
+                with self.assertRaisesRegex(ValueError, 'truncated'):
+                    cicd._download_runtime_asset(url + '/good', root / 'truncated', dict(descriptor, bytes=len(value) + 1))
+        finally:
+            server.shutdown(); server.server_close(); thread.join(timeout=2)
+
+    def test_real_locked_carrier_restore_no_clobber_and_rollback(self) -> None:
+        archive = os.environ.get('QIKVRT_TEST_WINDOWS_PYTHON_ARCHIVE')
+        if not archive:
+            self.skipTest('Preparation requires separately materialized exact bytes; no availability is inferred')
+        with tempfile.TemporaryDirectory(dir=REPOSITORY_ROOT / '.qikvrt') as directory:
+            root = pathlib.Path(directory)
+            output = root / 'candidate'
+            plan = cicd.prepare_runtime_carrier(pathlib.Path(archive), output)
+            self.assertEqual(plan['actions'], [])
+            self.assertFalse(plan['external_effects_executed'])
+            self.assertFalse(plan['durable_public_readback_verified'])
+            self.assertNotIn('--clobber', str(plan['proposed_commands']))
+            spec = tool_cache.windows_release_candidate()
+            restored = output / plan['assets'][0]['path']
+            cicd._verify_runtime_archive(restored, spec)
+            original = restored.read_bytes()
+            with self.assertRaises(FileExistsError):
+                cicd.prepare_runtime_carrier(pathlib.Path(archive), output)
+            self.assertEqual(restored.read_bytes(), original)
+            # Failure after creating the first staged asset discards only the new output.
+            with mock.patch.object(cicd, '_asset_descriptor', side_effect=ValueError('injected final verification failure')):
+                with self.assertRaisesRegex(ValueError, 'injected'):
+                    cicd.prepare_runtime_carrier(pathlib.Path(archive), root / 'failed')
+            self.assertFalse((root / 'failed').exists())
+            self.assertEqual(restored.read_bytes(), original)
+            tampered = root / 'tampered.zip'
+            tampered.write_bytes(b'X' + original[1:])
+            with self.assertRaisesRegex(ValueError, 'SHA-256 mismatch'):
+                cicd.prepare_runtime_carrier(tampered, root / 'tampered-stage')
+            self.assertFalse((root / 'tampered-stage').exists())
+            assets = cicd._runtime_assets(spec)
+            metadata = {'id': 450, 'tag_name': spec['tag'], 'draft': False, 'immutable': True,
+                        'assets': [{'name': a['path'], 'size': a['bytes'],
+                                    'digest': 'sha256:' + a['sha256'], 'state': 'uploaded'} for a in assets]}
+            # Full readback with controlled transport; this is no public availability witness.
+            tag = {'object': {'type': 'commit', 'sha': 'a' * 40}}
+            manifest = (REPOSITORY_ROOT / tool_cache.WINDOWS_RELEASE_PATH).read_bytes()
+            with mock.patch.object(cicd.urllib.request, 'urlopen', side_effect=[
+                    io.BytesIO(json.dumps(metadata).encode()), io.BytesIO(json.dumps(tag).encode()),
+                    io.BytesIO(original), io.BytesIO(manifest)]):
+                readback = cicd.readback_runtime_carrier('a' * 40)
+            self.assertEqual(readback['reviewed_head'], 'a' * 40)
+            self.assertEqual(readback['assets'], assets)
+            self.assertFalse(readback['effect_ack_done'])
+            self.assertFalse(readback['main_activation_verified'])
 
 
 class LoggerTests(unittest.TestCase):

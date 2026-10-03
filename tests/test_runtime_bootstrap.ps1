@@ -46,6 +46,73 @@ $rules = @()
 $profiles = @()
 $controls = [ordered]@{}
 $firewallEnabled = $false
+$releaseControls = [ordered]@{}
+
+function Test-ReleaseAssetRestore {
+    # Execute the existing production restore functions with an explicitly local
+    # transport fixture. No public release, live network or publication is proved.
+    $RepoRoot = $repo
+    $tokens = $null; $errors = $null
+    $ast = [Management.Automation.Language.Parser]::ParseFile($bootstrap, [ref]$tokens, [ref]$errors)
+    if ($errors.Count -ne 0) { throw 'Cannot parse release restore functions' }
+    $names = @('Assert-NoReparseChain', 'Write-WindowsPythonStep', 'Assert-WindowsPythonArchive',
+        'Get-WindowsPythonReleaseBinding', 'Restore-WindowsPythonReleaseAsset')
+    foreach ($function in $ast.FindAll({ param($node)
+            $node -is [Management.Automation.Language.FunctionDefinitionAst] }, $true)) {
+        if ($names -contains $function.Name) { . ([scriptblock]::Create($function.Extent.Text)) }
+    }
+    $binding = [pscustomobject]@{ Spec = $spec }
+    $bound = Get-WindowsPythonReleaseBinding $binding
+    $release = $bound.Candidate
+    $script:releaseFixtureMode = 'valid'
+    $script:releaseFixtureRequests = @()
+    function Invoke-RestMethod {
+        param($Uri, $TimeoutSec)
+        $script:releaseFixtureRequests += $Uri
+        if ($script:releaseFixtureMode -eq 'missing') { throw 'fixture HTTP 404: missing release asset' }
+        return [pscustomobject]@{ draft = $false; immutable = $true; tag_name = $release.tag; assets = @(
+            [pscustomobject]@{ name = $release.archive.asset_name; state = 'uploaded';
+                size = $spec.archive_bytes; digest = 'sha256:' + $spec.archive_sha256 },
+            [pscustomobject]@{ name = 'qikvrt-runtime-carrier-sha256-' + $bound.Hash + '.json';
+                state = 'uploaded'; size = (Get-Item $bound.Path).Length; digest = 'sha256:' + $bound.Hash }) }
+    }
+    function Invoke-WebRequest {
+        param($Uri, $OutFile, [switch]$UseBasicParsing, $TimeoutSec)
+        $script:releaseFixtureRequests += $Uri
+        if ($Uri -eq $release.download_url) {
+            Copy-Item -LiteralPath $sourceArchive -Destination $OutFile
+            if ($script:releaseFixtureMode -eq 'tamper') {
+                $bytes = [IO.File]::ReadAllBytes($OutFile); $bytes[0] = $bytes[0] -bxor 1
+                [IO.File]::WriteAllBytes($OutFile, $bytes)
+            }
+        } else { Copy-Item -LiteralPath $bound.Path -Destination $OutFile }
+    }
+    $destination = Join-Path $scratch 'release-restore.zip'
+    Restore-WindowsPythonReleaseAsset $binding $destination
+    Assert-WindowsPythonArchive $binding $destination
+    $releaseControls['restore'] = @{ result = 'PASS'; transport = 'LOCAL_FIXTURE'; public_download_observed = $false }
+    $rejected = $false
+    try { Restore-WindowsPythonReleaseAsset $binding $destination } catch { $rejected = $true }
+    if (-not $rejected) { throw 'Release restore replaced an existing file' }
+    Assert-WindowsPythonArchive $binding $destination
+    $releaseControls['no-clobber'] = @{ result = 'PASS'; existing_bytes_preserved = $true }
+    foreach ($mode in @('missing', 'tamper')) {
+        $script:releaseFixtureMode = $mode
+        $target = Join-Path $scratch ($mode + '-release.zip')
+        $rejected = $false
+        try { Restore-WindowsPythonReleaseAsset $binding $target } catch { $rejected = $true }
+        if (-not $rejected) { throw "Release restore accepted $mode material" }
+        if ($mode -eq 'missing' -and (Test-Path $target)) { throw 'Missing asset created payload' }
+        if (Test-Path $target) { Remove-Item -LiteralPath $target -Force }
+        if (Test-Path ($target + '.metadata')) { throw 'Failed release restore retained companion staging' }
+        $releaseControls[$mode] = @{ result = 'PASS'; upstream_fallback = $false }
+    }
+    if (@($script:releaseFixtureRequests | Where-Object { $_ -match 'python.org' }).Count -ne 0) {
+        throw 'Release failure reached the upstream reconstruction path'
+    }
+    Assert-WindowsPythonArchive $binding $destination
+    $releaseControls['rollback'] = @{ result = 'PASS'; prior_verified_archive_preserved = $true }
+}
 
 function Invoke-TestProcess([string]$Name, [string]$Exe, [string]$Arguments, [int]$Expected) {
     $info = [Diagnostics.ProcessStartInfo]::new()
@@ -100,6 +167,7 @@ function Assert-NoLauncherEffect([string]$Name, [scriptblock]$Test) {
 }
 
 try {
+    Test-ReleaseAssetRestore
     # All executable processes on the start path are denied outbound traffic at
     # the OS level. Source/Action transport runs outside this proof interval.
     $profiles = @(Get-NetFirewallProfile | Select-Object Name, Enabled)
@@ -298,6 +366,8 @@ print('PASS native Windows concurrent log locking, atomic pointer and alias reje
         runtime_self_test = $cacheReceipt.self_test; negative_controls = $controls
         launcher_log_readback_sha256 = $pointer.sha256
         effect_acceptance_retained = $true; dependency_closed_for_materialized_carrier = $true
+        release_carrier_controls = $releaseControls
+        release_asset_download_observed = $false; durable_public_readback_verified = $false
         ordinary_release = $false; main_activation_verified = $false
         predecessor_evidence_transfer = $false; effect_ack_done = $false
     }

@@ -1,0 +1,205 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "identity_and_observation_limits": "Platform attribution is not natural-person proof. Linux/controlled transport tests are not public release or fresh native Windows availability evidence.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "qikvrt-pr450-durable-carrier-20261003",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "local Git object reconstruction",
+      "Python 3.12",
+      "PowerShell 7.6.6 Linux"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    {
+      "description": "Extended the existing cache validator, publication planner, Windows bootstrap, native tests and adaptive-runtime job; prepared exact assets locally and retained delivery/startup/governance distinctions.",
+      "type": "IMPLEMENTATION_AND_VERIFICATION"
+    }
+  ],
+  "created_at": "2026-10-03T16:07:18.029005+00:00",
+  "external_effects": {
+    "asset_upload": false,
+    "candidate_branch_update": "Authorized review preparation only",
+    "main_activation": false,
+    "merge": false,
+    "publication_authorized": false,
+    "release_creation_or_publication": false,
+    "tag_creation": false
+  },
+  "first_external_boundary": {
+    "next_action": "Review the successor and its freshly generated candidate artifact; only then separately authorize the exact fileset and publication subject",
+    "observed_at_source_head": "CODE_OWNER_RULE_NOT_ENFORCED; repository rulesets=[], PR reviews=[]",
+    "retry_condition": "Fresh enforced governance, exact publish-head review and separately bound tag/release/asset effect authority"
+  },
+  "git_history": {
+    "method": "History-preserving successor on existing PR #450 branch; no force update",
+    "parent_commit": "f74313ad2bd534ab14aa6b1466963ff45956b15b"
+  },
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product and Code Owner"
+  },
+  "human_contributions": [
+    {
+      "description": "Prepare the durable Windows x64 Python carrier through the existing release/asset path, bind complete bytes/license/provenance/receipts, require No-Clobber and fresh download readback; no external tag/release/asset publication until governance, exact review and separate effect authority exist.",
+      "type": "SCOPE_AND_EFFECT_BOUNDARY"
+    }
+  ],
+  "human_decision": "REVIEW_PENDING",
+  "inputs": {
+    "predecessor_evidence_transfer": false,
+    "raw_transcript_persisted": false,
+    "retention_mode": "METADATA_ONLY"
+  },
+  "joint_components": [
+    {
+      "artificial_cognitive_part": "implementation, tests and byte bindings",
+      "component": "Durable release carrier review candidate",
+      "human_part": "scope, constraints and authorization boundary",
+      "separable": true
+    }
+  ],
+  "outputs": [
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 838,
+      "git_blob_sha1": "c74c21465150ed912b168f70ea7873220c738c0f",
+      "path": ".gitattributes",
+      "sha256": "2443aca85a998fec81ab0c968d26ebf6030083510a3f491a653b8449dafe7889"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 30729,
+      "git_blob_sha1": "1b5903b41063b6d0cbf4e93f333f58c95d6f8ce2",
+      "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "sha256": "d96ce37981aa1f0b5159acf04a0986ac9bfb818b9512c32151035cbf22c87617"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 15538,
+      "git_blob_sha1": "3ea2cf66be39df7e060b882fd285e278e01c23f7",
+      "path": "runtime/CACHE_POLICY.md",
+      "sha256": "e8854943e5c0b74c1e3cfc8d1e2522285c4cca08370aeb6b6da0a8a247b3e9f2"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 4161,
+      "git_blob_sha1": "4f49e4343cd56d2b6df8b8188a952b4990d3f8d0",
+      "path": "runtime/RUNTIME_DEPENDENCY_MANIFEST.json",
+      "sha256": "5e07c39bf4a591fb5c66ba47ed540a69c52f88d038c3f99d8d70513b82993c91"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 15515,
+      "git_blob_sha1": "1b4771386ef0f79422488e7dfaf2320bd07eb7c3",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "c1af800b844267ea72447feabf7d78575a4d4fe94fe9e13e2e2d269689c88193"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 3481,
+      "git_blob_sha1": "8d3e9c3d39a2f786a91d5d32fe95989a7eae6b11",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "0f7fc351bd3d73e4bc3b7496cdf41611b93d197f697118e117aed8abf71f9801"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 6003,
+      "git_blob_sha1": "90ecc2bd64e7d24257efe7880e47874c46c95bfc",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64.release.json",
+      "sha256": "5faec1ad5cb9c71a474f9f219c53da40f52646925b7376718d988051af0d9bc3"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 36403,
+      "git_blob_sha1": "51c7d83a31463b90119a43dbcd48703b3be67800",
+      "path": "tests/test_launcher_runtime.py",
+      "sha256": "8f0eb0bc0d61b8bdcf54f4a08ff50d83332ee9b37e4748cfdea17b79866913ec"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 23391,
+      "git_blob_sha1": "6ba57d5efe2a3666a386aa1ef5477c8f619adda9",
+      "path": "tests/test_runtime_bootstrap.ps1",
+      "sha256": "99fa43becdd474bb7c6490a7c10189566e3848a6d8043187506ec149efc905cb"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 41416,
+      "git_blob_sha1": "d197400cf325a925aafc74cce6faab4f127ff7f1",
+      "path": "tools/bootstrap-runtime.ps1",
+      "sha256": "c9997c76dd82e0177746bee4f1db29478e800985fc34de8ceab566a81727e27a"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 44265,
+      "git_blob_sha1": "829db91e4cb615b703461c67f1d22a04613b2c67",
+      "path": "tools/qikvrt_cicd_publish.py",
+      "sha256": "0935c415ec2cfb59d45f20fcccfa21586f820b3ce02a5e4ed1b98e5ddee5ead1"
+    },
+    {
+      "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
+      "bytes": 19987,
+      "git_blob_sha1": "8c3b6b1d22274d13206a1ca0fe69e9775df721f9",
+      "path": "tools/qikvrt_tool_cache.py",
+      "sha256": "043424b7eaa3ab6bb4427a6bcf5625aa84b47c917d1131bac1a9076d815f2a7d"
+    }
+  ],
+  "prepared_local_fileset": [
+    {
+      "bytes": 3737,
+      "filename": "PUBLICATION_PLAN.json",
+      "scope": "LOCAL_PREPARATION_ONLY_NOT_PUBLISHED",
+      "sha256": "b9c5f5f0c3bcbad6083e50883b520b1a7d6be96590638a5b5be9729bdf7c603b"
+    },
+    {
+      "bytes": 6003,
+      "filename": "qikvrt-runtime-carrier-sha256-5faec1ad5cb9c71a474f9f219c53da40f52646925b7376718d988051af0d9bc3.json",
+      "scope": "LOCAL_PREPARATION_ONLY_NOT_PUBLISHED",
+      "sha256": "5faec1ad5cb9c71a474f9f219c53da40f52646925b7376718d988051af0d9bc3"
+    },
+    {
+      "bytes": 11133606,
+      "filename": "qikvrt-cpython-3.12.10-windows-amd64-sha256-4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3.zip",
+      "scope": "LOCAL_PREPARATION_ONLY_NOT_PUBLISHED",
+      "sha256": "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3"
+    }
+  ],
+  "release_claims": {
+    "durable_public_readback_verified": false,
+    "effect_ack_done": false,
+    "main_activation_verified": false,
+    "ordinary_release": false
+  },
+  "schema": "qikvrt_runtime_release_carrier_work_unit_v1",
+  "source_commit": "f74313ad2bd534ab14aa6b1466963ff45956b15b",
+  "source_ref": "refs/heads/repair/windows-python-offline-cache-20261003",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "3cc87e1d43999cfcea683fac19fc018e091ec267",
+  "unresolved_origin": [],
+  "verification": {
+    "environment_repair": "Restored the existing historical shallow Git boundaries for isolated-worktree tests; no test or source downgrade.",
+    "fresh_successor_native_windows_ci": "Required; predecessor receipt is historical input only",
+    "full_make_test": {
+      "log_sha256": "06e3ae978b07d4e1258e9b87a18650b691cd7643d6610d1596e9401b278d5039",
+      "python_test_executions": 537,
+      "result": "PASS",
+      "scope": "Linux final implementation plus candidate authorities; metadata handoff is reverified through integrity. No fresh successor native result is inferred."
+    },
+    "powershell_parser": "PASS PowerShell 7.6.6 Linux",
+    "powershell_production_restore_fixture": "5 PASS: restore, No-Clobber, missing, tamper, rollback; public_download_observed=false",
+    "targeted_python_tests": "6 PASS including actual locked archive and controlled HTTP readback",
+    "tool_cache": "16/16; 100 percent"
+  },
+  "work_unit_id": "WINDOWS-X64-PYTHON-DURABLE-RELEASE-CANDIDATE-20261003-V1"
+}
