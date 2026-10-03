@@ -23,10 +23,10 @@
       "sha256": "4a18bec7547c2ee0c4a0b7eddb6225a3e7ce5eb534f49f537cd426ee25cdd9fe"
     },
     {
-      "bytes": 28673,
-      "git_blob_sha1": "d556bcf1ec8136e881bbd293b46e8d4eceaa0bf3",
+      "bytes": 29049,
+      "git_blob_sha1": "289d5ad169fae3d88e497d0868ca9adacaa2ac9e",
       "path": "tests/test_seed_workflows.py",
-      "sha256": "eeff66b95c8a0251ea9d7c08ec3872be5b786c5b29fafe0e182781f84f37d8cb"
+      "sha256": "97f004a6a6a3f9b2bd372a22a2184129a546f8036045880ec122ffad9b1042e5"
     }
   ],
   "completion": {
@@ -79,11 +79,24 @@
     "direct_main_push_present": false,
     "exit_code": 0,
     "full_make_test_executed": false,
-    "log_sha256": "65d3d002f71aeab4dfc258c6e68e9176cc5106daa464aaed6635d371b6031761",
+    "log_sha256": "303ae357ff3303ccfea70eb8d2eeb73e652b6e56ab876fdd2a5a0c3431492b44",
     "scope": "Exact fetched sources and original commit/tree inventory in partial API materialization; ten controls execute the actual candidate persistence shell against local Git and simulated GitHub API. Fixture integrity outputs do not prove full payload generation or live GitHub persistence.",
     "shell_syntax": "PASS",
+    "sparse_boundary_control": "All 35 tests were re-executed with the productive NODE_HANDSHAKE_CONFIG.tsv absent; fixture configuration is explicit and isolated.",
     "tests": 35,
     "yaml_parse": "PASS"
+  },
+  "native_counterexample_and_repair": {
+    "causal_scope": "New test setUp unnecessarily copied productive node configuration; it is absent in the watchdog sparse checkout.",
+    "failed_step": "Execute executor, reflexive prevention, and future-node acceptance tests",
+    "job": 111204846274,
+    "local_original_failure_boundary_verified": true,
+    "observed_error": "FileNotFoundError: productive qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv is absent in the existing sparse checkout",
+    "predecessor_candidate_head": "2ef03f7b8cf31252f02fd26eafd18c08a54730a8",
+    "predecessor_gate_transfer": false,
+    "repair": "Use an explicit isolated seven-column node fixture, retain all controls and sparse checkout. Productive configuration/materializer bytes are unchanged.",
+    "successor_native_reobservation_required": true,
+    "workflow_run": 37123757890
   },
   "native_governance_observation": {
     "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",

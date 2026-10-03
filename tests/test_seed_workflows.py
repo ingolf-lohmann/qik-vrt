@@ -389,11 +389,18 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
         for path in (
             "tools/qikvrt_autonomous_self_heal.py",
             "tools/qikvrt_required_review_gate.py",
-            "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
         ):
             target = self.root / path
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(self.repository / path, target)
+        # The existing watchdog deliberately has a sparse checkout. Use a
+        # declared fixture configuration, without requiring productive node state.
+        config = self.root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+        config.parent.mkdir(parents=True, exist_ok=True)
+        config.write_text(
+            f"{GUID}\t{SOURCE}\t{SEED}\t{REQUEST_URL}\tfixture\tmain\t1500\n",
+            encoding="utf-8",
+        )
         # Only transport is simulated here; these fixture projections are not
         # evidence that the complete repository integrity generator executed.
         (self.root / "tools/qikvrt_integrity.py").write_text(
