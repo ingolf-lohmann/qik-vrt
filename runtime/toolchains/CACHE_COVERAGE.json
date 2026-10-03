@@ -19,6 +19,24 @@
       "version": "same-as-ffmpeg"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "firefox",
+      "provider": "Mozilla Firefox through declared GitHub windows-11-arm or windows-2025 runner image; independent native PE architecture and actual WebDriver receipt",
+      "version": "156.0.1"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "firefox-linux",
+      "provider": "Mozilla Firefox through declared GitHub ubuntu-24.04 runner image; fresh ImageVersion and actual runtime binary digest",
+      "version": "156.x"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "geckodriver",
+      "provider": "Mozilla content-digest-bound official release archives; Linux uses declared native runner-image driver, exact version and binary receipt",
+      "version": "0.37.1"
+    },
+    {
       "cache_class": "repo-managed-archive",
       "component": "gh",
       "provider": "tools/bootstrap-gh.sh|tools/bootstrap-gh.ps1",
@@ -61,6 +79,12 @@
       "version": "3.12.13"
     },
     {
+      "cache_class": "hosted-toolcache",
+      "component": "python-windows-witness",
+      "provider": "actions/setup-python with exact 3.13.15 and per-job native architecture; GitHub hosted toolcache",
+      "version": "3.13.15"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "sherpa-onnx-node",
       "provider": "actions/setup-node:npm",
@@ -87,10 +111,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 14,
-  "declared_components": 14,
-  "lock_sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69",
-  "registry_sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6",
+  "covered_components": 18,
+  "declared_components": 18,
+  "lock_sha256": "b0622c56e8fe7ff42e92a854a64422920fd1821bec54486ab5797d648b67a7c8",
+  "registry_sha256": "d1b12bbcc96fd5fc4874218790b340e83c87c9663edbdabe86b0492e728ffe9b",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

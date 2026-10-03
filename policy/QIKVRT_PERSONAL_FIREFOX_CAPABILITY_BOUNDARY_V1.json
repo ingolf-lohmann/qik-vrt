@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
-  "version": "1.0",
+  "version": "1.6",
   "source_subject": {
     "standard_repository": "Goldkelch/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
@@ -43,14 +43,372 @@
       "personal_capability_manifest",
       "authenticated_runtime_boundary",
       "credential_non_persistence",
-      "build_test_observe_readback_accept"
+      "build_test_observe_readback_accept",
+      "windows_acceptance.functional_witness_requires",
+      "windows_acceptance.release_additional_requires"
     ],
     "current_candidate": {
       "boundary_contract_materialized": true,
       "personal_capability_manifest_materialized": false,
       "authenticated_runtime_readback": false,
       "personal_release_effect_ack_done": false,
-      "state": "HOLD"
+      "state": "HOLD",
+      "windows_execution_witness": false,
+      "windows_product_target_verified": false,
+      "public_url_fresh_readback": false,
+      "hardware_holds_block_browser": false
     }
+  },
+  "windows_acceptance": {
+    "schema": "qikvrt_firefox_windows_acceptance_v1",
+    "owner_scope_source": "https://github.com/ingolf-lohmann/qik-vrt/pull/430#issuecomment-5935054969",
+    "product_target": {
+      "name": "Windows 11 25H2 client",
+      "product_type": 1,
+      "display_version": "25H2",
+      "build": 26200,
+      "editions": [
+        "Enterprise",
+        "Professional",
+        "Core"
+      ],
+      "architectures": [
+        "AMD64",
+        "ARM64"
+      ],
+      "supported_from": "2025-09-30",
+      "support_until": "2027-10-12",
+      "support_source": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+      "architecture_scope_rule": "Evidence accepts only the executed architecture; no x64/ARM64 transfer."
+    },
+    "runner_candidates": {
+      "windows-2025": "SERVER_COMPATIBILITY_ONLY",
+      "windows-2022": "SERVER_COMPATIBILITY_ONLY",
+      "windows-11-arm": "WINDOWS_11_ARM64_CANDIDATE_REQUIRES_NATIVE_IDENTITY_AND_EXECUTION"
+    },
+    "runner_source": "https://github.com/actions/runner-images",
+    "native_architecture_witness": {
+      "schema": "qikvrt_windows_native_architecture_witness_v1",
+      "runner_matrix": [
+        {
+          "runner": "windows-11-arm",
+          "expected_architecture": "ARM64",
+          "python_architecture": "arm64",
+          "os_scope": "WINDOWS_11_ARM64_CLIENT_CANDIDATE"
+        },
+        {
+          "runner": "windows-2025",
+          "expected_architecture": "AMD64",
+          "python_architecture": "x64",
+          "os_scope": "SERVER_COMPATIBILITY_ONLY"
+        }
+      ],
+      "python_version": "3.13.15",
+      "runner_availability_source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+      "runner_image_source": "https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md",
+      "requires": [
+        "same_exact_head_tree_run_attempt_and_independently_bound_numeric_job_and_artifact",
+        "expected_architecture_matches_IsWow64Process2_native_os",
+        "native_python_firefox_and_geckodriver_PE_architectures_match",
+        "actual_firefox_extension_load_and_seed_bound_effect_readback",
+        "durable_state.required_readback"
+      ],
+      "receipt_result": "windows_native_architecture_witness_test",
+      "amd64_execution_observed_field": "windows_amd64_execution_observed",
+      "runner_label_or_job_success_alone_is_execution_evidence": false,
+      "architecture_evidence_transfer": false,
+      "predecessor_evidence_transfer": false,
+      "server_execution_accepts_windows_11_client": false,
+      "native_execution_accepts_personal_release": false,
+      "private_state_or_token_material_in_artifacts": false
+    },
+    "firefox": {
+      "version": "156.0.1",
+      "provider": "GitHub runner image or explicitly installed Mozilla release",
+      "license": "MPL-2.0",
+      "verification": "WebDriver browserVersion plus executable SHA256 in fresh receipt",
+      "recovery": "HOLD on absent or mismatched version; no downgrade or silent substitution"
+    },
+    "geckodriver": {
+      "version": "0.37.1",
+      "license": "MPL-2.0",
+      "authority": "https://github.com/mozilla/geckodriver/releases/tag/v0.37.1",
+      "archives": {
+        "ARM64": {
+          "name": "geckodriver-v0.37.1-win-aarch64.zip",
+          "url": "https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-win-aarch64.zip",
+          "sha256": "30889cca635b794b327a59664ac9657bc338e62e1c66d01e40a8c422ff524057"
+        },
+        "AMD64": {
+          "name": "geckodriver-v0.37.1-win64.zip",
+          "url": "https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-win64.zip",
+          "sha256": "dfed9315abe8d2fbc1b6161a2ee8002452e79cf05ee92fdc653a4e26bc35edd8"
+        }
+      }
+    },
+    "hardware_acceptance": {
+      "path": "SEPARATE_HARDWARE_R_AND_D",
+      "browser_blocking": false,
+      "required_for_browser": [],
+      "hardware_proof_implied": false
+    },
+    "functional_witness_requires": [
+      "exact_head_tree_and_xpi_hash",
+      "native_windows_client_supported_at_observation",
+      "actual_firefox_extension_load",
+      "terminal_ui_prepare_without_effect",
+      "validated_full_prepare_record",
+      "single_use_commit",
+      "fresh_nonce_bound_backend_readback",
+      "replay_refusal",
+      "canonical_400_byte_seed_admission_and_full_record_binding",
+      "durable_state.actual_process_restart_after_forced_termination",
+      "durable_state.all_retained_events_and_referenced_records_byte_unchanged",
+      "durable_state.single_use_replay_after_restart",
+      "durable_state.seed_mismatch_and_corrupt_or_truncated_state_refusal",
+      "native_browser_and_os_architecture_match"
+    ],
+    "release_additional_requires": [
+      "personal_capability_manifest",
+      "authenticated_runtime_readback",
+      "credential_non_persistence",
+      "release_signed_persistent_installation",
+      "public_url_fresh_readback",
+      "responsible_owner_acceptance"
+    ],
+    "loopback_is_authenticated_personal_runtime": false,
+    "temporary_install_is_release_install": false,
+    "terminal_url": "https://goldkelch.github.io/qik-vrt/",
+    "public_url_acceptance": {
+      "schema": "qikvrt_public_url_acceptance_v1",
+      "canonical_url": "https://goldkelch.github.io/qik-vrt/",
+      "authority_repository": "Goldkelch/qik-vrt",
+      "documented_publishing_source": {
+        "branch": "main",
+        "path": "/docs",
+        "source": "docs/README_DEPLOY_GITHUB_PAGES_DE.md"
+      },
+      "source_file": "docs/index.html",
+      "expected_document_title": "QIK-VRT Trust Mesh \u2014 Repository-Evidenz, Audit und k\u00fcnstliche Kognition",
+      "requires": [
+        "same_candidate_head_tree_run_attempt_job",
+        "fresh_unauthenticated_canonical_http_get",
+        "http_200_without_redirect_or_truncation",
+        "exact_candidate_docs_index_bytes",
+        "canonical_firefox_url_and_product_dom_before_extension_injection"
+      ],
+      "redirect_or_alternate_host_acceptance": "DENY",
+      "http_body_limit_bytes": 2097152,
+      "authority_configuration_current_state": "UNKNOWN",
+      "authority_capability_hold_ref": "state/work_units/QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001.json#/public_pages_continuation",
+      "receipt": "PUBLIC_URL_READBACK.json",
+      "evidence_scope": "CANONICAL_ROOT_DOCS_INDEX_BYTES_AND_BROWSER_DOM_ONLY",
+      "public_root_readback_proves_full_candidate_deployment": false,
+      "public_root_readback_accepts_personal_release": false
+    },
+    "witness_command": "python tools/qikvrt_firefox_windows_witness.py --output <ephemeral-output>",
+    "missing_target_witness": "Same exact candidate on supported Windows 11 client and declared architecture with Firefox extension loaded, real terminal effect readback and separate authenticated Personal runtime receipt.",
+    "test_host_permission_setup": {
+      "origin": "http://127.0.0.1/*",
+      "must_already_be_declared": true,
+      "observe_before_and_after": true,
+      "temporary_profile_only": true,
+      "production_permission_consent_verified": false,
+      "source": "https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/"
+    },
+    "seed_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "durable_state": {
+      "schema": "qikvrt_firefox_durable_state_acceptance_v1",
+      "state_root": "<ephemeral-output>/terminal-state",
+      "snapshot": ".qikvrt/api/terminal.json",
+      "persistence_scope": "FSYNCED_ATOMIC_SNAPSHOT_RESTART_SAFE",
+      "windows_io": "EXCLUSIVE_NATIVE_HANDLE_LOCK_REPARSE_REFUSAL_PRIVATE_DACL_FILE_FSYNC_WRITE_THROUGH_RENAME",
+      "termination": "WINDOWS_TERMINATE_PROCESS_WITHOUT_SHUTDOWN_HOOK",
+      "posix_termination": "SIGKILL_WITHOUT_SHUTDOWN_HOOK",
+      "power_loss_tested": false,
+      "state_or_token_material_in_artifacts": "DENY",
+      "architecture_evidence_transfer": "DENY",
+      "required_readback": [
+        "same_candidate_head_tree_run_attempt_job_and_native_architecture",
+        "canonical_400_byte_seed_bound_to_prepare_records_and_events",
+        "actual_process_restart_after_forced_termination",
+        "all_retained_events_and_referenced_records_byte_unchanged",
+        "persistent_snapshot_digest_unchanged_after_restart_and_replay",
+        "browser_and_restart_tokens_replay_http_409_without_second_effect",
+        "altered_truncated_missing_seed_and_unseeded_restart_refused",
+        "corrupt_truncated_duplicate_and_seed_mismatched_state_start_refused_without_reset"
+      ]
+    },
+    "windows11_amd64_client_measurement": {
+      "schema": "qikvrt_windows11_amd64_client_measurement_contract_v1",
+      "target_ref": "#/windows_acceptance/product_target",
+      "expected_architecture": "AMD64",
+      "state": "HOLD_NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+      "first_blocker": "NATIVE_WINDOWS_11_AMD64_CARRIER_NOT_EXPOSED",
+      "discovery_receipt_ref": "state/work_units/QIKVRT_FIREFOX_WINDOWS_SCOPE_20261001.json#/windows11_amd64_carrier_continuation",
+      "observer": "tools/qikvrt_firefox_windows_witness.py",
+      "measurement_command": "python -B tools/qikvrt_firefox_windows_witness.py --expected-architecture AMD64 --require-product-target --output <new-ephemeral-output>",
+      "expected_subject_environment": [
+        "QIKVRT_EXPECTED_HEAD",
+        "QIKVRT_EXPECTED_TREE"
+      ],
+      "carrier_admission_requires": [
+        "fresh_authorized_callable_operation_and_runner_selector_for_this_repository",
+        "current_runner_or_private_carrier_identity_availability_and_repository_scope",
+        "independent_expected_head_tree_and_clean_exact_candidate_checkout",
+        "headed_native_windows_product_type_1_supported_target_build_edition_and_display_version",
+        "IsWow64Process2_native_OS_and_process_AMD64",
+        "native_PE_AMD64_Python_3.13.15_Firefox_156.0.1_Geckodriver_0.37.1_with_binary_hashes",
+        "existing_tool_cache_and_acceptance_regressions"
+      ],
+      "execution_requires": [
+        "functional_witness_requires",
+        "durable_state.required_readback"
+      ],
+      "negative_startup_controls": [
+        "empty_state",
+        "truncated_state",
+        "missing_final_newline",
+        "corrupt_digest",
+        "duplicate_json_key",
+        "state_seed_binding_mismatch",
+        "altered_seed",
+        "truncated_seed",
+        "missing_seed",
+        "unseeded_restart"
+      ],
+      "independent_readback_requires": [
+        "same_head_tree_run_attempt_numeric_job_and_artifact",
+        "actual_runner_OS_build_edition_native_architecture_and_observation_within_job_interval",
+        "policy_observer_backend_XPI_and_actual_executable_byte_bindings",
+        "all_retained_events_and_every_referenced_record_hash_and_bytes",
+        "real_TerminateProcess_distinct_restart_snapshot_unchanged_and_two_replay_409_probes",
+        "all_ten_actual_CLI_startup_refusals_and_unchanged_restored_state",
+        "archive_digest_receipt_and_job_log_agreement"
+      ],
+      "client_execution_receipt_field": "windows_11_amd64_client_execution_observed",
+      "requires_windows_witness_test": "PASS",
+      "unsuitable_product_carrier_exit_code": 2,
+      "missing_subject_or_architecture_binding_fails_closed": true,
+      "server_compatibility_fallback": false,
+      "architecture_evidence_transfer": false,
+      "predecessor_evidence_transfer": false,
+      "private_state_or_tokens_in_artifacts": false,
+      "native_client_controls_accept_personal_release": false,
+      "documented_unprovisioned_candidate": {
+        "kind": "GITHUB_LARGER_RUNNER_BASE_WINDOWS_11_DESKTOP",
+        "minimum_documented_windows_resources": {
+          "vcpus": 4,
+          "memory_gb": 16,
+          "ssd_gb": 150,
+          "architecture": "x64"
+        },
+        "source": "https://docs.github.com/en/actions/reference/runners/larger-runners",
+        "available_for_this_repository_verified": false,
+        "authorized_callable_carrier_verified": false,
+        "provisioning_or_billing_authorized_by_this_contract": false,
+        "runner_label": null
+      },
+      "retry_condition": "A supported Windows 11 AMD64 carrier is freshly exposed with authorization, repository scope and an actually callable execution operation; reobserve exact candidate before execution.",
+      "workflow_binding": {
+        "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "event": "workflow_dispatch",
+        "inputs": {
+          "windows11_amd64_runner": "EXISTING_AUTHORIZED_DEDICATED_RUNNER_LABEL",
+          "expected_head": "FRESH_INDEPENDENT_40_HEX_HEAD",
+          "expected_tree": "FRESH_INDEPENDENT_40_HEX_TREE"
+        },
+        "job": "windows-witness / AMD64",
+        "admission_job": "boundary",
+        "requires_product_target": true,
+        "automatic_pull_request_client_dispatch": false,
+        "empty_runner_behavior": "SERVER_COMPATIBILITY_ONLY",
+        "provisioning_or_billing_authorized": false
+      },
+      "provisioning_requirements": {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "observed_repository_owner_type": "User",
+        "larger_runner_repository_eligibility_verified": false,
+        "larger_runner_owner_requirement": "Organization or enterprise using GitHub Team or GitHub Enterprise Cloud; personal User repository does not establish an eligible scope. No repository transfer authorized.",
+        "larger_runner_platform": "Windows x64",
+        "larger_runner_image": "Partner / Base Windows 11 Desktop",
+        "minimum_resources": {
+          "vcpus": 4,
+          "memory_gb": 16,
+          "ssd_gb": 150
+        },
+        "image_name_alone_accepts_product_target": false,
+        "actual_product_target_required": {
+          "name": "Windows 11 25H2 client",
+          "product_type": 1,
+          "display_version": "25H2",
+          "build": 26200,
+          "editions": [
+            "Enterprise",
+            "Professional",
+            "Core"
+          ],
+          "architectures": [
+            "AMD64",
+            "ARM64"
+          ],
+          "supported_from": "2025-09-30",
+          "support_until": "2027-10-12",
+          "support_source": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+          "architecture_scope_rule": "Evidence accepts only the executed architecture; no x64/ARM64 transfer."
+        },
+        "alternative": "Already authorized repository-level self-hosted Windows 11 AMD64 runner with a dedicated unique label, interactive headed desktop and ephemeral/clean isolated work directory; never execute untrusted PRs on a privileged persistent host.",
+        "runtime_required": {
+          "python": "3.13.15 native x64",
+          "firefox": "156.0.1 native AMD64",
+          "geckodriver": "0.37.1 native AMD64",
+          "cache_coverage_percent": 100
+        },
+        "before_dispatch": [
+          "Fresh runner availability, dedicated selector, identity and this repository access readback",
+          "Existing owner authorization for use and any incurred billing; this preparation grants neither",
+          "Fresh exact PR HEAD/TREE, clean checkout, no competing writer, distinct run/attempt/job/artifact",
+          "No blind dispatch, provisioning, permission expansion or Server fallback"
+        ],
+        "network": "Existing checkout/actions, Mozilla driver release when absent, canonical public URL and local loopback controls",
+        "retention": "Upload only allowlisted receipts/readbacks; no terminal State, keys or tokens",
+        "sources": [
+          "https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/manage-larger-runners",
+          "https://docs.github.com/en/actions/reference/runners/larger-runners",
+          "https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-larger-runners"
+        ]
+      }
+    }
+  },
+  "linux_ring_acceptance": {
+    "schema": "qikvrt_firefox_linux_seed_ring_acceptance_v1",
+    "owner_order": "Ingolf Lohmann, 2026-10-02: execute Linux HTTP Firefox seed effect ring and bounded scaling",
+    "seed_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "seed_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "seed_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "6a1098699d096806958b9c3b50a97d205b8110e9",
+      "blob": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b"
+    },
+    "terminal_url": "https://goldkelch.github.io/qik-vrt/",
+    "firefox_version_prefix": "156.",
+    "geckodriver_version": "0.37.1",
+    "runner_source": "https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md",
+    "runner_candidate": "ubuntu-24.04",
+    "execution_scope": "EXISTING_HOST_LINUX_LOCAL_HTTP_EFFECT_ONLY",
+    "fanout": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "shared_token_race_clients": 8,
+    "seed_alone_builds_operating_system": false,
+    "productive_authority_mirror_node_build_verified": false,
+    "persistent_consolidation_verified": false,
+    "unbounded_scalability_proved": false,
+    "recovery": "HOLD on absent or incompatible tools; no downgrade, download fallback or credential widening",
+    "receipt": "RECEIPT.json"
   }
 }

@@ -108,6 +108,12 @@ personal-firefox-boundary-test:
 
 test: personal-firefox-boundary-test
 
+.PHONY: effect-ack-http-terminal-test
+effect-ack-http-terminal-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+
+test: effect-ack-http-terminal-test
+
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
