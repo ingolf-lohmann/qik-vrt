@@ -1,0 +1,32 @@
+name: QIKVRT live Authority Mirror A-B benchmark
+on:
+  pull_request:
+    paths:
+      - 'tools/qikvrt_live_authority_mirror_ab.py'
+      - '.github/workflows/qikvrt_live_authority_mirror_ab.yml'
+      - 'docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Run exact live A/B measurement
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_live_authority_mirror_ab.py | tee /tmp/qikvrt-live-ab.json
+          python3 -B -m json.tool /tmp/qikvrt-live-ab.json >/dev/null
+      - name: Upload measurement
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-live-authority-mirror-ab-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/qikvrt-live-ab.json
+          if-no-files-found: error
+          retention-days: 90
