@@ -66,6 +66,29 @@ existing repair consumer. Preserve independent review, security, rights and
 fresh evidence; a concrete authority boundary requires a durable ERROR/HOLD
 with its exact blocker and next authorized action.
 
+400-BYTE STANDPOINT DISCOVERY
+
+Resolve the current byte-bound standpoint through `AI_CONTEXT.json.standpoint_codex`:
+
+- Artifact: `canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin`, exactly 400 bytes.
+- SHA-256: `27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792`.
+- Git blob: `9b06a2b407fb99d99d2bda5a3decc80ab68a092b`.
+- Normative candidate: `policy/QIKVRT_CODEC_CONTRACT_V1.json` (`standpoint` fragment).
+- Format and boundaries: `spec/QIKVRT_STANDPOINT_CODEX_V1.md`.
+- Read-only byte/format check: the existing runtime bootloader reports the path, size, SHA-256 and provenance and blocks on missing, changed or incompatible bytes.
+
+This is the first canonical materialization introduced by PR #424, commit
+`def7a93e7ae36426bebaf7b82519b670025f8f42`, and consolidated in review carrier
+PR #425. The current recovery carrier is PR #437, which retains that history. It is not a recovered historical owner seed. The archived installer
+handshake at `incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/roles/seed/tools/qikvrt_handshake_core.c`
+has 417 bytes and SHA-256 `ffd3612c95ce7a70c432bab5a032a0a771dcd210faa5cc68ad503d0757ae5190`.
+Do not truncate it, pad it or substitute it for the canonical standpoint.
+
+The signature is protocol data. It grants no GitHub authentication, permission,
+account reinstatement, Main adoption or downstream effect. Resolve repository
+access and exact authority state independently. Do not infer Goldkelch/Mirror
+equality from the reachable mirror or from historical receipts.
+
 PERSONAL WORKING-MEMORY ORIGIN AND CONTRIBUTION DISCLOSURE
 
 Before substantive work, read and apply:

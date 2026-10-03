@@ -36,7 +36,8 @@
       "tools/ai_handoff.py",
       "tools/qikvrt_integrity.py",
       "tools/qikvrt_tool_cache.py",
-      "tools/bootstrap-runtime.sh"
+      "tools/bootstrap-runtime.sh",
+      "src/qikvrt_standpoint_codex.py"
     ],
     "lifecycle": [
       "Read AI and AI_CONTEXT.json.",
@@ -45,6 +46,7 @@
       "Load and validate the supplied bootstrap knowledge corpus and its epistemic boundaries.",
       "Load and validate the adaptive human-machine interface policy and evaluation matrix.",
       "Resolve and verify repository identity and Git ref.",
+      "Resolve and verify the exact 400-byte standpoint, canonical codec contract and historical-provenance boundary.",
       "Validate required repository evidence and adapters.",
       "Verify repository integrity authorities.",
       "Verify declared tool-cache coverage.",
@@ -141,7 +143,8 @@
     "policy/GLOBAL_SYSTEM_CLOSURE_V1.json",
     "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
     "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
-    "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md"
+    "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+    "spec/QIKVRT_STANDPOINT_CODEX_V1.md"
   ],
   "session_protocol": {
     "startup": [
@@ -225,7 +228,16 @@
     "signature_bytes": 400,
     "signature_sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
     "external_model_required": false,
-    "historical_provenance_rewritten": false
+    "historical_provenance_rewritten": false,
+    "signature_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "signature_git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+    "codec_contract": "policy/QIKVRT_CODEC_CONTRACT_V1.json",
+    "provenance_state": "FIRST_CANONICAL_MATERIALIZATION_NOT_RECOVERED_OWNER_SEED",
+    "source_commit": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+    "source_pull_request": 424,
+    "review_carrier": 437,
+    "github_account_recovery_capability": false,
+    "historical_owner_seed_recovery": "OPEN_UNBOUND"
   },
   "reciprocal_devops_definition_of_done": {
     "policy": "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
