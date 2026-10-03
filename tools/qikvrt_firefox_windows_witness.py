@@ -154,6 +154,17 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def terminal_subject():
+    """Exact Git subject, or explicit absence in a source-only test fixture."""
+    def read(value):
+        try:
+            return subprocess.check_output(['git', 'rev-parse', value], cwd=ROOT,
+                                           stderr=subprocess.DEVNULL, text=True, timeout=15).strip()
+        except (OSError, subprocess.SubprocessError):
+            return None
+    return {'head': read('HEAD'), 'tree': read('HEAD^{tree}')}
+
+
 def pe_architecture(path):
     with Path(path).open('rb') as binary:
         binary.seek(0x3c)
@@ -824,7 +835,9 @@ def benchmark_next_measurement_contract():
     return {'schema': 'qikvrt_linux_scale_variance_next_measurement_v1',
             'state': 'PREPARED_NOT_EXECUTED', 'maximum_additional_unmodified_hosted_trials': 0,
             'subject': 'Exact successor HEAD/TREE, source/interpreter digests and raw receipt digests required.',
-            'command': 'python3 -B tools/qikvrt_firefox_windows_witness.py --comparable-scale-benchmark --repetitions 6 --workload 64 --preload-per-origin 4 --output <new-private-directory>',
+            'command': 'python3 -B tools/qikvrt_firefox_windows_witness.py --isolated-scale-benchmark --expected-head <exact-head> --expected-tree <exact-tree> --isolation-attestation-sha256 <external-sha256> --output <new-dedicated-volume-directory>',
+            'measurement_contract': 'policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json',
+            'attestation_schema': 'schemas/qikvrt-linux-scale-isolation-attestation-v1.schema.json',
             'invariants': 'Four closed byte-identical origins, canonical seed, same 64 requests/four clients; 80 effects/160 records, full restart/consolidation and 80+4 replay refusals.',
             'admission': ['Dedicated host and durable local block volume with recorded storage/queue/filesystem identity and no competing I/O producers.',
                           'Fixed four usable CPU slots/affinity for every placement; visible cgroup membership and all effective ancestor quotas; driver placement disclosed.',
@@ -977,7 +990,7 @@ def benchmark_read_origin(terminal, client, origin, prefix=''):
 
 
 def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workload=64,
-                               preload_per_origin=4, clients=4):
+                               preload_per_origin=4, clients=4, control=None):
     """Measure a fixed four-origin ring on 1/2/4 actual processes, separately.
 
     Templates are populated through real HTTP then closed. Every isolated run
@@ -995,7 +1008,11 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
         raise ValueError('preload must be 1..16 per origin; exactly four clients required')
     if output.exists():
         raise RuntimeError('NEW_BENCHMARK_ROOT_REQUIRED_NO_STATE_RESET')
-    output.mkdir(parents=True)
+    plan = (control.plan(repetitions, workload, preload_per_origin, clients) if control else
+            [(repeat, (1, 2, 4)[repeat % 3:] + (1, 2, 4)[:repeat % 3], workers, None)
+             for repeat in range(repetitions)
+             for workers in (1, 2, 4)[repeat % 3:] + (1, 2, 4)[:repeat % 3]])
+    output.mkdir(mode=0o700, parents=True)
     private = output / 'private-rings'
     template = private / 'template'
     evidence = output / 'measurements'
@@ -1058,201 +1075,231 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
         initial_bytes = raw_stores(template_stores)
         initial_hashes = [terminal.sha256(value) for value in initial_bytes]
         template_setup_seconds = time.perf_counter() - template_started
-        for repetition in range(repetitions):
-            order = (1, 2, 4)[repetition % 3:] + (1, 2, 4)[:repetition % 3]
-            for workers in order:
-                run_id = 'repeat-' + str(repetition + 1).zfill(2) + '-process-' + str(workers)
-                setup_started = time.perf_counter()
-                copy_seconds = launch_seconds = 0.0
-                run_root = private / run_id
-                run_root.mkdir()
-                routes, origins = [], []
-                per_process = 4 // workers
-                for group in range(workers):
-                    shard = run_root / ('shard-' + str(group))
-                    for local in range(per_process):
-                        origin = group * per_process + local
-                        destination = shard / ('node-' + str(local))
-                        copy_started = time.perf_counter()
-                        shutil.copytree(template / ('node-' + str(origin)), destination)
-                        copy_seconds += time.perf_counter() - copy_started
-                        origins.append(destination)
-                    command = [sys.executable, '-B', str(ROOT / 'tools/qikvrt_firefox_windows_witness.py'),
-                               '--benchmark-terminal-worker',
-                               '--ring-nodes', str(per_process)]
-                    launch_started = time.perf_counter()
-                    client = TerminalProcess(shard, seed, ring=True, command=command)
-                    launch_seconds += time.perf_counter() - launch_started
-                    processes.append(client)
-                    routes.extend((client, '/nodes/node-' + str(local)) for local in range(per_process))
-                stores = [origin / '.qikvrt/api/terminal.json' for origin in origins]
-                admission_started = time.perf_counter()
-                if raw_stores(stores) != initial_bytes or views(routes) != initial:
-                    raise RuntimeError('BENCHMARK_STARTING_STATE_NOT_BYTE_IDENTICAL')
-                admission_seconds = time.perf_counter() - admission_started
-                process_ids = [client.process.pid for client in processes]
-                telemetry_targets = benchmark_telemetry_targets(process_ids)
-                storage_identities = [benchmark_storage_identity(store.parent) for store in stores]
-                barrier = threading.Barrier(clients + 1, timeout=15)
-                def client_work(client_number):
-                    client, prefix = routes[client_number]
-                    barrier.wait()
-                    completed = []
-                    for index in range(client_number, workload, clients):
-                        started = time.perf_counter_ns()
-                        payload, field, event = execute(client, json.loads(workload_bytes[index]), prefix)
-                        completed.append((client_number, payload, field, event,
-                                          (time.perf_counter_ns() - started) / 1e9))
-                    return completed
-                with ThreadPoolExecutor(max_workers=clients) as pool:
-                    futures = [pool.submit(client_work, number) for number in range(clients)]
-                    observability_before = benchmark_host_snapshot(telemetry_targets)
-                    metrics_before = benchmark_worker_metrics(processes)
-                    cpu_before = benchmark_process_cpu(processes)
-                    setup_seconds = time.perf_counter() - setup_started
-                    driver_before = time.process_time_ns()
-                    wall_start = time.perf_counter_ns()
-                    barrier.wait()
-                    completed = [item for future in futures for item in future.result()]
-                    wall_end = time.perf_counter_ns()
-                    wall = (wall_end - wall_start) / 1e9
-                    driver_cpu = (time.process_time_ns() - driver_before) / 1e9
-                    cpu_after = benchmark_process_cpu(processes)
-                    observability_after = benchmark_host_snapshot(telemetry_targets)
-                    metrics_after = benchmark_worker_metrics(processes)
-                server_cpu = [after - before for before, after in zip(cpu_before, cpu_after)]
-                persist_intervals = [row for before, after in zip(metrics_before, metrics_after)
-                                     for row in after['persist_intervals'][len(before['persist_intervals']):]]
-                if (len(persist_intervals) != workload * 2
-                        or any(row['start_ns'] < wall_start or row['end_ns'] > wall_end for row in persist_intervals)):
-                    raise RuntimeError('BENCHMARK_PERSIST_MEASUREMENT_INCOMPLETE')
-                for row in persist_intervals:
-                    stages = row['storage_operations']
-                    if (row['snapshot_bytes'] <= 0 or sorted(stage['operation'] for stage in stages) !=
-                            ['atomic_write', 'directory_fsync', 'file_fsync', 'replace']
-                            or any(not stage['success'] or not row['start_ns'] <= stage['start_ns']
-                                   < stage['end_ns'] <= row['end_ns'] for stage in stages)):
-                        raise RuntimeError('BENCHMARK_STORAGE_OPERATION_MEASUREMENT_INCOMPLETE')
-                persistence_union = benchmark_persistence_union(persist_intervals, wall_start, wall_end)
-                variance_diagnosis = benchmark_trial_diagnosis(observability_before, observability_after,
-                                                               persist_intervals, storage_identities)
-                children_cpu = [after['children_cpu_seconds'] - before['children_cpu_seconds']
-                                for before, after in zip(metrics_before, metrics_after)]
-                verification_started = time.perf_counter()
-                after = views(routes)
-                for origin, current in enumerate(after):
-                    old = initial[origin]
-                    expected = {item[3]['commit_token_sha256']: item[3] for item in completed if item[0] == origin}
-                    events = current['snapshot']['events']
-                    if (events[:preload_per_origin] != old['snapshot']['events']
-                            or len(events) != preload_per_origin + workload // 4
-                            or {event['commit_token_sha256']: event for event in events[preload_per_origin:]} != expected
-                            or any(current['records'].get(key) != value for key, value in old['records'].items())):
-                        raise RuntimeError('BENCHMARK_EFFECT_LOST_DUPLICATED_OR_RECORD_CHANGED')
-                before_transfer = raw_stores(stores)
-                verification_seconds = time.perf_counter() - verification_started
-                consolidation_started = time.perf_counter()
-                close_all()
-                consolidated_root = run_root / 'consolidated'
-                consolidated_root.mkdir()
-                for origin, source in enumerate(origins):
-                    source.rename(consolidated_root / ('node-' + str(origin)))
-                consolidated = TerminalProcess(consolidated_root, seed, ring=True)
-                processes.append(consolidated)
-                consolidated_routes = [(consolidated, '/nodes/node-' + str(origin)) for origin in range(4)]
-                new_stores = [consolidated_root / ('node-' + str(origin)) / '.qikvrt/api/terminal.json'
-                              for origin in range(4)]
-                if raw_stores(new_stores) != before_transfer or views(consolidated_routes) != after:
-                    raise RuntimeError('BENCHMARK_RESTART_OR_CONSOLIDATION_CHANGED_STATE')
-                consolidation_seconds = time.perf_counter() - consolidation_started
-                consolidation_cpu = benchmark_process_cpu([consolidated])[0]
-                replay_started = time.perf_counter()
-                probes = retained + [item[:4] for item in completed]
-                statuses = []
-                for origin, payload, field, event in probes:
-                    status, response = consolidated.request('/nodes/node-' + str(origin) + '/terminal/commit', payload, field)
-                    if status != 409 or response.get('ordinary_release') is not False:
-                        raise RuntimeError('BENCHMARK_REPLAY_CREATED_SECOND_EFFECT')
-                    statuses.append(status)
-                probe = probes[-1]
-                with ThreadPoolExecutor(max_workers=clients) as pool:
-                    races = list(pool.map(lambda _: consolidated.request('/nodes/node-' + str(probe[0])
-                        + '/terminal/commit', probe[1], probe[2])[0], range(clients)))
-                final = views(consolidated_routes)
-                if races != [409] * clients or final != after or raw_stores(new_stores) != before_transfer:
-                    raise RuntimeError('BENCHMARK_REPLAY_CHANGED_EVENT_RECORD_OR_PRIVATE_STATE')
-                status, aggregate = consolidated.request('/terminal/events')
-                expected_events = [{'node_id': 'node-' + str(origin), 'event': event}
-                                   for origin, view in enumerate(after) for event in view['snapshot']['events']]
-                if (status != 200 or aggregate['events'] != expected_events
-                        or aggregate['events_sha256'] != terminal.sha256(terminal.canonical_json(expected_events))):
-                    raise RuntimeError('BENCHMARK_AGGREGATE_READBACK_NOT_LOSSLESS')
-                replay_seconds = time.perf_counter() - replay_started
-                latencies = [item[4] for item in completed]
-                measurement = {'run_id': run_id, 'repetition': repetition + 1, 'processes': workers,
-                    'process_order': list(order), 'process_ids': process_ids, 'parallel_clients': clients,
-                    'requests': workload, 'http_requests_in_measurement': workload * 2,
-                    'initial_snapshot_sha256': initial_hashes, 'workload_sha256': workload_hash,
-                    'wall_seconds': wall, 'server_cpu_seconds_by_process': server_cpu,
-                    'server_cpu_seconds': sum(server_cpu), 'driver_cpu_seconds': driver_cpu,
-                    'total_cpu_seconds': sum(server_cpu) + driver_cpu,
-                    'server_children_cpu_seconds_by_process': children_cpu,
-                    'server_process_tree_cpu_seconds': sum(server_cpu) + sum(children_cpu),
-                    'phase_timing_seconds': {'setup': setup_seconds, 'snapshot_copy': copy_seconds,
-                        'launch_restore': launch_seconds, 'admission_readback': admission_seconds,
-                        'execution_including_persistence': wall, 'persistence_wall_union': persistence_union,
-                        'persistence_wall_sum': sum((row['end_ns'] - row['start_ns']) / 1e9 for row in persist_intervals),
-                        'persistence_thread_cpu': sum(row['thread_cpu_seconds'] for row in persist_intervals),
-                        'execution_without_any_persist_active': wall - persistence_union,
-                        'verification': verification_seconds, 'consolidation': consolidation_seconds,
-                        'consolidation_server_cpu': consolidation_cpu, 'replay_controls': replay_seconds},
-                    'persistence_calls': len(persist_intervals),
-                    'variance_diagnosis': variance_diagnosis,
-                    'confirmed_effects_per_second': workload / wall,
-                    'effect_latency_seconds': latencies, 'latency_distribution_seconds': benchmark_distribution(latencies),
-                    'effects': len(expected_events), 'referenced_records': sum(len(v['records']) for v in final),
-                    'invariants': {'identical_initial_bytes': True, 'retained_effects_and_records_unchanged': True,
-                        'lossless_restart_and_consolidation': True, 'replay_second_effects': 0,
-                        'replay_refusals': len(statuses), 'concurrent_replay_statuses': races,
-                        'post_replay_readback_and_snapshot_bytes_unchanged': True},
-                    'readback_sha256': terminal.sha256(terminal.canonical_json(final))}
-                run_receipt = measurement | {'readback_before': initial, 'readback_after': after,
-                                              'telemetry_targets': telemetry_targets,
-                                              'observability_before': observability_before,
-                                              'observability_after': observability_after,
-                                              'readback_after_restart_and_replay': final,
-                                              'replay_statuses': statuses, 'aggregate_readback': aggregate,
-                                              'execution_start_ns': wall_start, 'execution_end_ns': wall_end,
-                                              'worker_metrics_before': metrics_before, 'worker_metrics_after': metrics_after}
-                path = evidence / (run_id + '.json')
+        for repetition, order, workers, condition in plan:
+            run_id = ('repeat-' + str(repetition + 1).zfill(2) +
+                      ('-' + condition if condition else '') + '-process-' + str(workers))
+            if control:
+                control.before_trial(run_id, condition)
+            setup_started = time.perf_counter()
+            copy_seconds = launch_seconds = 0.0
+            run_root = private / run_id
+            run_root.mkdir()
+            routes, origins = [], []
+            per_process = 4 // workers
+            for group in range(workers):
+                shard = run_root / ('shard-' + str(group))
+                for local in range(per_process):
+                    origin = group * per_process + local
+                    destination = shard / ('node-' + str(local))
+                    copy_started = time.perf_counter()
+                    shutil.copytree(template / ('node-' + str(origin)), destination)
+                    copy_seconds += time.perf_counter() - copy_started
+                    origins.append(destination)
+                command = [sys.executable, '-B', str(ROOT / 'tools/qikvrt_firefox_windows_witness.py'),
+                           '--benchmark-terminal-worker',
+                           '--ring-nodes', str(per_process)]
+                launch_started = time.perf_counter()
+                client = TerminalProcess(shard, seed, ring=True, command=command)
+                launch_seconds += time.perf_counter() - launch_started
+                processes.append(client)
+                routes.extend((client, '/nodes/node-' + str(local)) for local in range(per_process))
+            stores = [origin / '.qikvrt/api/terminal.json' for origin in origins]
+            admission_started = time.perf_counter()
+            if raw_stores(stores) != initial_bytes or views(routes) != initial:
+                raise RuntimeError('BENCHMARK_STARTING_STATE_NOT_BYTE_IDENTICAL')
+            admission_seconds = time.perf_counter() - admission_started
+            process_ids = [client.process.pid for client in processes]
+            telemetry_targets = benchmark_telemetry_targets(process_ids)
+            storage_identities = [benchmark_storage_identity(store.parent) for store in stores]
+            if control:
+                telemetry_targets = control.before_execution(telemetry_targets, storage_identities)
+            barrier = threading.Barrier(clients + 1, timeout=15)
+            def client_work(client_number):
+                client, prefix = routes[client_number]
+                barrier.wait()
+                completed = []
+                for index in range(client_number, workload, clients):
+                    started = time.perf_counter_ns()
+                    payload, field, event = execute(client, json.loads(workload_bytes[index]), prefix)
+                    completed.append((client_number, payload, field, event,
+                                      (time.perf_counter_ns() - started) / 1e9))
+                return completed
+            with ThreadPoolExecutor(max_workers=clients) as pool:
+                futures = [pool.submit(client_work, number) for number in range(clients)]
+                observability_before = benchmark_host_snapshot(telemetry_targets)
+                if control:
+                    control.record('BEFORE_EXECUTION', telemetry_targets=telemetry_targets,
+                                   observability_before=observability_before, storage=storage_identities)
+                    control_before = control.boundary(observability_before)
+                metrics_before = benchmark_worker_metrics(processes)
+                cpu_before = benchmark_process_cpu(processes)
+                setup_seconds = time.perf_counter() - setup_started
+                driver_before = time.process_time_ns()
+                wall_start = time.perf_counter_ns()
+                barrier.wait()
+                completed = [item for future in futures for item in future.result()]
+                wall_end = time.perf_counter_ns()
+                wall = (wall_end - wall_start) / 1e9
+                driver_cpu = (time.process_time_ns() - driver_before) / 1e9
+                cpu_after = benchmark_process_cpu(processes)
+                observability_after = benchmark_host_snapshot(telemetry_targets)
+                metrics_after = benchmark_worker_metrics(processes)
+                if control:
+                    control.record('AFTER_EXECUTION', observability_after=observability_after,
+                        worker_metrics_before=metrics_before, worker_metrics_after=metrics_after,
+                        execution_start_ns=wall_start, execution_end_ns=wall_end)
+                    control_after = control.boundary(observability_after)
+                    control_result = control.after_execution(observability_before, observability_after, wall_start, wall_end)
+                    control_result.update(boundary_before=control_before, boundary_after=control_after)
+            server_cpu = [after - before for before, after in zip(cpu_before, cpu_after)]
+            persist_intervals = [row for before, after in zip(metrics_before, metrics_after)
+                                 for row in after['persist_intervals'][len(before['persist_intervals']):]]
+            if (len(persist_intervals) != workload * 2
+                    or any(row['start_ns'] < wall_start or row['end_ns'] > wall_end for row in persist_intervals)):
+                raise RuntimeError('BENCHMARK_PERSIST_MEASUREMENT_INCOMPLETE')
+            for row in persist_intervals:
+                stages = row['storage_operations']
+                if (row['snapshot_bytes'] <= 0 or sorted(stage['operation'] for stage in stages) !=
+                        ['atomic_write', 'directory_fsync', 'file_fsync', 'replace']
+                        or any(not stage['success'] or not row['start_ns'] <= stage['start_ns']
+                               < stage['end_ns'] <= row['end_ns'] for stage in stages)):
+                    raise RuntimeError('BENCHMARK_STORAGE_OPERATION_MEASUREMENT_INCOMPLETE')
+            persistence_union = benchmark_persistence_union(persist_intervals, wall_start, wall_end)
+            variance_diagnosis = benchmark_trial_diagnosis(observability_before, observability_after,
+                                                           persist_intervals, storage_identities)
+            children_cpu = [after['children_cpu_seconds'] - before['children_cpu_seconds']
+                            for before, after in zip(metrics_before, metrics_after)]
+            verification_started = time.perf_counter()
+            after = views(routes)
+            for origin, current in enumerate(after):
+                old = initial[origin]
+                expected = {item[3]['commit_token_sha256']: item[3] for item in completed if item[0] == origin}
+                events = current['snapshot']['events']
+                if (events[:preload_per_origin] != old['snapshot']['events']
+                        or len(events) != preload_per_origin + workload // 4
+                        or {event['commit_token_sha256']: event for event in events[preload_per_origin:]} != expected
+                        or any(current['records'].get(key) != value for key, value in old['records'].items())):
+                    raise RuntimeError('BENCHMARK_EFFECT_LOST_DUPLICATED_OR_RECORD_CHANGED')
+            before_transfer = raw_stores(stores)
+            verification_seconds = time.perf_counter() - verification_started
+            consolidation_started = time.perf_counter()
+            close_all()
+            consolidated_root = run_root / 'consolidated'
+            consolidated_root.mkdir()
+            for origin, source in enumerate(origins):
+                source.rename(consolidated_root / ('node-' + str(origin)))
+            consolidated = TerminalProcess(consolidated_root, seed, ring=True)
+            processes.append(consolidated)
+            consolidated_routes = [(consolidated, '/nodes/node-' + str(origin)) for origin in range(4)]
+            new_stores = [consolidated_root / ('node-' + str(origin)) / '.qikvrt/api/terminal.json'
+                          for origin in range(4)]
+            if raw_stores(new_stores) != before_transfer or views(consolidated_routes) != after:
+                raise RuntimeError('BENCHMARK_RESTART_OR_CONSOLIDATION_CHANGED_STATE')
+            consolidation_seconds = time.perf_counter() - consolidation_started
+            consolidation_cpu = benchmark_process_cpu([consolidated])[0]
+            replay_started = time.perf_counter()
+            probes = retained + [item[:4] for item in completed]
+            statuses = []
+            for origin, payload, field, event in probes:
+                status, response = consolidated.request('/nodes/node-' + str(origin) + '/terminal/commit', payload, field)
+                if status != 409 or response.get('ordinary_release') is not False:
+                    raise RuntimeError('BENCHMARK_REPLAY_CREATED_SECOND_EFFECT')
+                statuses.append(status)
+            probe = probes[-1]
+            with ThreadPoolExecutor(max_workers=clients) as pool:
+                races = list(pool.map(lambda _: consolidated.request('/nodes/node-' + str(probe[0])
+                    + '/terminal/commit', probe[1], probe[2])[0], range(clients)))
+            final = views(consolidated_routes)
+            if races != [409] * clients or final != after or raw_stores(new_stores) != before_transfer:
+                raise RuntimeError('BENCHMARK_REPLAY_CHANGED_EVENT_RECORD_OR_PRIVATE_STATE')
+            status, aggregate = consolidated.request('/terminal/events')
+            expected_events = [{'node_id': 'node-' + str(origin), 'event': event}
+                               for origin, view in enumerate(after) for event in view['snapshot']['events']]
+            if (status != 200 or aggregate['events'] != expected_events
+                    or aggregate['events_sha256'] != terminal.sha256(terminal.canonical_json(expected_events))):
+                raise RuntimeError('BENCHMARK_AGGREGATE_READBACK_NOT_LOSSLESS')
+            replay_seconds = time.perf_counter() - replay_started
+            latencies = [item[4] for item in completed]
+            measurement = {'run_id': run_id, 'repetition': repetition + 1, 'processes': workers,
+                'process_order': list(order), 'process_ids': process_ids, 'parallel_clients': clients,
+                'requests': workload, 'http_requests_in_measurement': workload * 2,
+                'initial_snapshot_sha256': initial_hashes, 'workload_sha256': workload_hash,
+                'wall_seconds': wall, 'server_cpu_seconds_by_process': server_cpu,
+                'server_cpu_seconds': sum(server_cpu), 'driver_cpu_seconds': driver_cpu,
+                'total_cpu_seconds': sum(server_cpu) + driver_cpu,
+                'server_children_cpu_seconds_by_process': children_cpu,
+                'server_process_tree_cpu_seconds': sum(server_cpu) + sum(children_cpu),
+                'phase_timing_seconds': {'setup': setup_seconds, 'snapshot_copy': copy_seconds,
+                    'launch_restore': launch_seconds, 'admission_readback': admission_seconds,
+                    'execution_including_persistence': wall, 'persistence_wall_union': persistence_union,
+                    'persistence_wall_sum': sum((row['end_ns'] - row['start_ns']) / 1e9 for row in persist_intervals),
+                    'persistence_thread_cpu': sum(row['thread_cpu_seconds'] for row in persist_intervals),
+                    'execution_without_any_persist_active': wall - persistence_union,
+                    'verification': verification_seconds, 'consolidation': consolidation_seconds,
+                    'consolidation_server_cpu': consolidation_cpu, 'replay_controls': replay_seconds},
+                'persistence_calls': len(persist_intervals),
+                'variance_diagnosis': variance_diagnosis,
+                'confirmed_effects_per_second': workload / wall,
+                'effect_latency_seconds': latencies, 'latency_distribution_seconds': benchmark_distribution(latencies),
+                'effects': len(expected_events), 'referenced_records': sum(len(v['records']) for v in final),
+                'invariants': {'identical_initial_bytes': True, 'retained_effects_and_records_unchanged': True,
+                    'lossless_restart_and_consolidation': True, 'replay_second_effects': 0,
+                    'replay_refusals': len(statuses), 'concurrent_replay_statuses': races,
+                    'post_replay_readback_and_snapshot_bytes_unchanged': True},
+                'readback_sha256': terminal.sha256(terminal.canonical_json(final))}
+            if control:
+                measurement.update(condition=condition, isolated_control=control_result)
+            run_receipt = measurement | {'readback_before': initial, 'readback_after': after,
+                                          'telemetry_targets': telemetry_targets,
+                                          'observability_before': observability_before,
+                                          'observability_after': observability_after,
+                                          'readback_after_restart_and_replay': final,
+                                          'replay_statuses': statuses, 'aggregate_readback': aggregate,
+                                          'execution_start_ns': wall_start, 'execution_end_ns': wall_end,
+                                          'worker_metrics_before': metrics_before, 'worker_metrics_after': metrics_after}
+            path = evidence / (run_id + '.json')
+            if control:
+                control.write_receipt(path, run_receipt)
+            else:
                 path.write_text(json.dumps(run_receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
-                measurement['evidence'] = {'path': path.relative_to(output).as_posix(),
-                    'bytes': path.stat().st_size, 'sha256': digest(path)}
-                measurements.append(measurement)
-                close_all()
-                print(json.dumps({'benchmark_run': run_id, 'state': 'PASS', 'wall_seconds': wall,
-                                  'effects': len(expected_events)}), flush=True)
+            measurement['evidence'] = {'path': path.relative_to(output).as_posix(),
+                'bytes': path.stat().st_size, 'sha256': digest(path)}
+            measurements.append(measurement)
+            close_all()
+            print(json.dumps({'benchmark_run': run_id, 'state': 'PASS', 'wall_seconds': wall,
+                              'effects': len(expected_events)}), flush=True)
         if sources != {path: digest(ROOT / path) for path in paths} or subject != {
                 'head': terminal.git_read('rev-parse', 'HEAD'), 'tree': terminal.git_read('rev-parse', 'HEAD^{tree}')}:
             raise RuntimeError('BENCHMARK_SOURCE_OR_SUBJECT_CHANGED_DURING_MEASUREMENT')
-        summary = {}
-        for workers in (1, 2, 4):
-            rows = [row for row in measurements if row['processes'] == workers]
-            summary[str(workers)] = {metric: benchmark_distribution([row[metric] for row in rows])
-                for metric in ('wall_seconds', 'server_cpu_seconds', 'driver_cpu_seconds', 'total_cpu_seconds',
-                               'server_process_tree_cpu_seconds', 'confirmed_effects_per_second')}
-            summary[str(workers)]['phase_timing_seconds'] = {phase: benchmark_distribution(
-                [row['phase_timing_seconds'][phase] for row in rows]) for phase in rows[0]['phase_timing_seconds']}
-            summary[str(workers)]['pooled_effect_latency_seconds'] = benchmark_distribution(
-                [value for row in rows for value in row['effect_latency_seconds']])
-            summary[str(workers)]['per_run_p95_latency_seconds'] = benchmark_distribution(
-                [row['latency_distribution_seconds']['p95'] for row in rows])
-            summary[str(workers)]['storage_operation_max_seconds'] = {name: benchmark_distribution([
-                row['variance_diagnosis']['storage_operations'][name]['wall_seconds']['max'] for row in rows])
-                for name in ('atomic_write', 'file_fsync', 'replace', 'directory_fsync')}
-        comparisons = {str(workers): benchmark_speedup(
-            [row['wall_seconds'] for row in measurements if row['processes'] == 1],
-            [row['wall_seconds'] for row in measurements if row['processes'] == workers]) for workers in (2, 4)}
+        def summarize(rows):
+            summary = {}
+            for workers in (1, 2, 4):
+                selected = [row for row in rows if row['processes'] == workers]
+                summary[str(workers)] = {metric: benchmark_distribution([row[metric] for row in selected])
+                    for metric in ('wall_seconds', 'server_cpu_seconds', 'driver_cpu_seconds', 'total_cpu_seconds',
+                                   'server_process_tree_cpu_seconds', 'confirmed_effects_per_second')}
+                summary[str(workers)]['phase_timing_seconds'] = {phase: benchmark_distribution(
+                    [row['phase_timing_seconds'][phase] for row in selected]) for phase in selected[0]['phase_timing_seconds']}
+                summary[str(workers)]['pooled_effect_latency_seconds'] = benchmark_distribution(
+                    [value for row in selected for value in row['effect_latency_seconds']])
+                summary[str(workers)]['per_run_p95_latency_seconds'] = benchmark_distribution(
+                    [row['latency_distribution_seconds']['p95'] for row in selected])
+                summary[str(workers)]['storage_operation_max_seconds'] = {name: benchmark_distribution([
+                    row['variance_diagnosis']['storage_operations'][name]['wall_seconds']['max'] for row in selected])
+                    for name in ('atomic_write', 'file_fsync', 'replace', 'directory_fsync')}
+            comparisons = {str(workers): benchmark_speedup(
+                [row['wall_seconds'] for row in rows if row['processes'] == 1],
+                [row['wall_seconds'] for row in rows if row['processes'] == workers]) for workers in (2, 4)}
+            return summary, comparisons
+        if control:
+            per_condition = {condition: summarize([row for row in measurements if row['condition'] == condition])
+                             for condition in ('isolated', 'io_interference')}
+            summary = {condition: value[0] for condition, value in per_condition.items()}
+            comparisons = {condition: value[1] for condition, value in per_condition.items()}
+            comparative_speedup = any(value['speedup_supported'] for group in comparisons.values() for value in group.values())
+        else:
+            summary, comparisons = summarize(measurements)
+            comparative_speedup = any(value['speedup_supported'] for value in comparisons.values())
         environment = {'host': platform.node(), 'machine': platform.machine(),
             'os': platform.platform(), 'python': sys.version, 'cpu_count': os.cpu_count(),
             'cpu_affinity_count': len(os.sched_getaffinity(0)),
@@ -1299,27 +1346,33 @@ def comparable_scale_benchmark(terminal, output, seed, *, repetitions=6, workloa
                 'server_process_tree_cpu': 'Existing server-thread CPU clock plus reaped git child CPU, excluding observer/client CPU.',
                 'firefox': 'Installed binary identity only; Firefox transport performance is not measured.'},
             'process_scale': [1, 2, 4], 'origins_in_every_run': 4,
-            'repetitions_per_process_count': repetitions, 'workload': workload, 'parallel_clients': clients,
+            'repetitions_per_process_count': repetitions * (2 if control else 1),
+            'repetitions_per_condition_and_process_count': repetitions if control else None,
+            'workload': workload, 'parallel_clients': clients,
             'preloaded_effects': preload_per_origin * 4, 'initial_snapshot_sha256': initial_hashes,
             'workload_sha256': workload_hash, 'measurements': measurements, 'summary': summary,
             'comparisons_to_one_process': comparisons,
             'measurement_scope': 'BARRIER_RELEASE_TO_LAST_CONFIRMED_PREPARE_COMMIT_RESPONSE',
             'excluded_from_timing': ['startup', 'preload', 'readback', 'consolidation', 'replay_controls'],
             'client_schedule': 'four barrier-synchronized clients; one fixed origin per client; equal requests',
-            'order_control': 'cyclic balanced 1/2/4, 2/4/1, 4/1/2; every run included, no outlier removal',
+            'order_control': ('repetition then cyclic 1/2/4 then alternating isolated/interference; all samples retained'
+                              if control else 'cyclic balanced 1/2/4, 2/4/1, 4/1/2; every run included, no outlier removal'),
             'private_state_exported': False, 'external_service_requests': 0,
             'predecessor_evidence_transfer': False, 'unbounded_scalability_proved': False,
-            'comparative_speedup_proved': any(value['speedup_supported'] for value in comparisons.values()),
+            'comparative_speedup_proved': comparative_speedup,
             'personal_release_effect_ack_done': False,
             'limitations': ['Finite local Linux host and fixed workload only; no cross-host or unbounded claim.',
                 'Process-local observation hooks add timing overhead; compare this instrumented mode only.',
                 'Per-process CPU deltas include tiny untimed accounting boundaries around barrier release and completion.',
                 'Native prepare generates fresh random tokens and timestamps; input payload bytes stay identical.',
                 'Initial snapshots are byte-identical per origin, with distinct keys between the four origins.',
-                'Ambient cache and host load are not isolated; balanced order reduces but does not remove drift.',
+                ('External isolation attestation plus local policy/telemetry gates; independent physical attribution remains open.'
+                 if control else 'Ambient cache and host load are not isolated; balanced order reduces but does not remove drift.'),
                 'No warmup exclusion; pooled request percentiles are descriptive, runs are paired inference units.']}
     finally:
         close_all()
+        if control:
+            control.close()
 
 
 def initialize_seeded_terminal(terminal, contract, output):
@@ -2078,6 +2131,10 @@ def witness(output, headless=False, linux=False):
 
 
 if __name__ == '__main__':
+    if '--isolated-io-child' in sys.argv:
+        from qikvrt_linux_scale_isolation import io_child
+        _, path, output, cpu, mode = sys.argv[1:]
+        sys.exit(io_child(path, output, int(cpu), mode == 'calibration'))
     if '--benchmark-terminal-worker' in sys.argv:
         sys.argv.remove('--benchmark-terminal-worker')
         sys.path.insert(0, str(ROOT / 'src'))
@@ -2092,6 +2149,10 @@ if __name__ == '__main__':
                         help='Identical comparable benchmark effect count (4..256, divisible by 4)')
     parser.add_argument('--preload-per-origin', type=int, default=4,
                         help='Identical preloaded effects per origin in the separate benchmark')
+    parser.add_argument('--isolation-attestation', type=Path, default=Path('/etc/qikvrt/scale-isolation.json'))
+    parser.add_argument('--isolation-attestation-sha256')
+    parser.add_argument('--expected-head')
+    parser.add_argument('--expected-tree')
     profiles = parser.add_mutually_exclusive_group()
     profiles.add_argument('--linux-ring', dest='profile', action='store_const', const='linux',
                           help='Primary Linux Firefox reference with canonical seed')
@@ -2101,28 +2162,30 @@ if __name__ == '__main__':
                           help='Actual Linux process scale/consolidation without an external service')
     profiles.add_argument('--comparable-scale-benchmark', dest='profile', action='store_const', const='benchmark',
                           help='Separate repeated 1/2/4-process comparison with identical preloaded stores')
+    profiles.add_argument('--isolated-scale-benchmark', dest='profile', action='store_const', const='isolated',
+                          help='Externally admitted fixed 36-trial isolated/interference control')
+    profiles.add_argument('--isolation-inventory', dest='profile', action='store_const', const='inventory',
+                          help='Read-only host inventory for external attestation; zero benchmark trials')
     parser.set_defaults(profile='linux' if sys.platform == 'linux' else 'windows')
     args = parser.parse_args()
-    if args.profile == 'benchmark':
-        output = args.output.absolute()
-        if output.exists():
-            parser.error('new benchmark output required; existing state is never reset or overwritten')
+    if args.profile in ('isolated', 'inventory'):
+        from qikvrt_linux_scale_isolation import collect_static, load_contract, run_isolated
+        import qikvrt_firefox_windows_witness as benchmark_module
+        if args.profile == 'inventory':
+            if args.output.exists():
+                parser.error('new inventory output required')
+            inventory = collect_static(benchmark_module, args.output.absolute().parent, load_contract())
+            args.output.mkdir(mode=0o700)
+            (args.output / 'HOST_INVENTORY.json').write_text(json.dumps(inventory, sort_keys=True, indent=2) + '\n')
+            print(json.dumps({'state': 'INVENTORY_ONLY_EXTERNAL_ATTESTATION_REQUIRED', 'trials': 0}))
+            sys.exit(0)
         sys.path.insert(0, str(ROOT / 'src'))
         import qikvrt_effect_ack_http_terminal as terminal
-        try:
-            receipt = comparable_scale_benchmark(terminal, output,
-                ROOT / 'canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin', repetitions=args.repetitions,
-                workload=args.workload, preload_per_origin=args.preload_per_origin)
-        except Exception as error:
-            receipt = {'schema': 'qikvrt_linux_comparable_scale_benchmark_v1', 'state': 'HOLD',
-                'head': terminal.git_read('rev-parse', 'HEAD'), 'tree': terminal.git_read('rev-parse', 'HEAD^{tree}'),
-                'observed_at': dt.datetime.now(dt.timezone.utc).isoformat(), 'reason': str(error),
-                'comparative_speedup_proved': False, 'unbounded_scalability_proved': False,
-                'personal_release_effect_ack_done': False}
-            output.mkdir(parents=True, exist_ok=True)
-        (output / 'RECEIPT.json').write_text(json.dumps(receipt, sort_keys=True, indent=2) + '\n', encoding='utf-8')
-        print(json.dumps({key: value for key, value in receipt.items() if key != 'measurements'}, sort_keys=True))
-        sys.exit(0 if receipt['state'] == 'PASS' else 2)
+        if (args.repetitions, args.workload, args.preload_per_origin) != (6, 64, 4):
+            parser.error('isolated control fixes repetitions/workload/preload to 6/64/4')
+        sys.exit(run_isolated(benchmark_module, terminal, args))
+    if args.profile == 'benchmark':
+        parser.error('UNMODIFIED_HOSTED_TRIAL_BUDGET_CLOSED; use --isolated-scale-benchmark with external attestation')
     if args.profile == 'local':
         output = args.output.absolute()
         output.mkdir(parents=True, exist_ok=False)

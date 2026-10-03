@@ -115,7 +115,7 @@ effect-ack-http-terminal-test:
 test: effect-ack-http-terminal-test
 
 .PHONY: linux-ring-test linux-ring-local-witness linux-ring-firefox-witness linux-ring-benchmark
-linux-ring-test: tool-cache-contract effect-ack-http-terminal-test
+linux-ring-test: tool-cache-contract effect-ack-http-terminal-test linux-scale-isolation-contract-test
 
 # New private output directories retain evidence and never reset origin stores.
 linux-ring-local-witness: linux-ring-test
@@ -128,7 +128,13 @@ linux-ring-firefox-witness: linux-ring-test personal-firefox-boundary-test
 
 linux-ring-benchmark: linux-ring-test
 	@test -n "$(QIKVRT_LINUX_BENCHMARK_OUTPUT)" || { echo "BLOCK: set QIKVRT_LINUX_BENCHMARK_OUTPUT to a new private directory" >&2; exit 2; }
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_firefox_windows_witness.py --comparable-scale-benchmark --output "$(QIKVRT_LINUX_BENCHMARK_OUTPUT)"
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_firefox_windows_witness.py --isolated-scale-benchmark --expected-head "$(QIKVRT_EXPECTED_HEAD)" --expected-tree "$(QIKVRT_EXPECTED_TREE)" --isolation-attestation-sha256 "$(QIKVRT_ATTESTATION_SHA256)" --output "$(QIKVRT_LINUX_BENCHMARK_OUTPUT)"
+
+.PHONY: linux-scale-isolation-contract-test
+linux-scale-isolation-contract-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_linux_scale_isolation
+
+test: linux-scale-isolation-contract-test
 
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:

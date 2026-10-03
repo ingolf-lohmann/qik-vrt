@@ -319,26 +319,32 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
         ".github/workflows/qikvrt_adaptive_runtime.yml",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "tools/qikvrt_linux_scale_isolation.py",
+        "policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json",
+        "tests/test_qikvrt_linux_scale_isolation.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
         "github-hosted-toolcache:Python/3.12.13",
-        "github-actions-cache:pip"
+        "github-actions-cache:pip",
+        "dedicated-runner:externally-attested-offline-CPython/3.12.13"
       ],
       "profiles": [
         "ietf",
         "formal",
         "publication",
         "all",
-        "firefox-linux-ring"
+        "firefox-linux-ring",
+        "linux-scale-isolation"
       ],
-      "provider": "actions/setup-python",
+      "provider": "actions/setup-python for hosted checks; externally provisioned exact offline interpreter for admitted dedicated control",
       "trusted_save": false,
       "verification": [
         "exact interpreter version where required",
         "pip dependency-lock digest",
-        "runtime execution"
+        "runtime execution",
+        "dedicated control pins exact interpreter version/binary SHA-256; no setup download, hosted fallback or automatic retry"
       ],
       "version": "3.12.13"
     },

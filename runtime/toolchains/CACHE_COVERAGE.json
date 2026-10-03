@@ -75,7 +75,7 @@
     {
       "cache_class": "hosted-toolcache",
       "component": "python",
-      "provider": "actions/setup-python",
+      "provider": "actions/setup-python for hosted checks; externally provisioned exact offline interpreter for admitted dedicated control",
       "version": "3.12.13"
     },
     {
@@ -114,7 +114,7 @@
   "covered_components": 18,
   "declared_components": 18,
   "lock_sha256": "0f5f393c624c1f65ef6bbcea48062afc49a7296d4878ee6b0ef2388f8381f2d4",
-  "registry_sha256": "bfb135b8efc1eda0d944c403354977c5c6098fc66c82ba61ebb4f0e8b9937079",
+  "registry_sha256": "d6d5b53ee0a4e4a649319d9ee39457de4ea02307521d3283d8087cf2c956cbfb",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

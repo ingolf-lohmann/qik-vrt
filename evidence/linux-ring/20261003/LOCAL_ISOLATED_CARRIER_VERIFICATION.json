@@ -1,0 +1,110 @@
+{
+  "additional_unmodified_hosted_trials": 0,
+  "causal_runner_io_stall_proved": false,
+  "coverage": {
+    "components": 18,
+    "covered": 18,
+    "percent": 100
+  },
+  "effect_ack_done": false,
+  "executed_git_head": null,
+  "executed_git_tree": null,
+  "failures": 0,
+  "fixture_limits": [
+    "Small workload HTTP/condition plumbing tests use four requests/one preload per origin and simulated admission; they do not attest a dedicated host or provide admitted performance evidence.",
+    "Native 32-operation calibration and bounded child lifecycle test validate primitives only on the source-test filesystem.",
+    "Bootloader cannot establish full-checkout readiness in the partial API source fixture: remote.origin.url/ref and complete integrity authority are unavailable locally. Fresh native exact-head CI must verify complete checkout integrity/gates."
+  ],
+  "isolated_measurement_observed": false,
+  "observed_at": "2026-10-03T17:00:58.932415+00:00",
+  "predecessor_evidence_transfer": false,
+  "protected_function_bytes_unchanged": {
+    "benchmark_persistence_observer": "88a6ce4a45d85533b5b274fd7f745320e2938b2fce3a542740db5786f9d9ed2c",
+    "benchmark_speedup": "e878e9bb3f5783376a91f14d01f09dbce88343367f1a2061f1fa45cd77e36e70",
+    "durable_restart_controls": "841c5134804474c221d070a319986efb6540a3f3cb935d41e01394fa3af4f4d4",
+    "lossless_scale_consolidation_controls": "9dd8e72b778397283e0a781e51d91135cd02ede87737082adc344e6c6ae958cc",
+    "network_loss_controls": "e331ceb75de9f247b10d92b29d517ca7582f3b2156b5261f4d034efe1a4ede89",
+    "witness": "1e12d50132566b6a0b4a86ec0507eaf67518a3d6965423692473a4718d946f69"
+  },
+  "python": "3.12.14",
+  "runner_independent_scaling_proved": false,
+  "schema": "qikvrt_pr443_isolated_carrier_source_verification_v1",
+  "scope": "API_MATERIALIZED_SOURCE_FIXTURE_ONLY",
+  "skips": 0,
+  "source_bindings": [
+    {
+      "bytes": 137745,
+      "git_blob_sha1": "102467d97f70f76e4475148c9bb4fd92c6edb364",
+      "path": "tools/qikvrt_firefox_windows_witness.py",
+      "sha256": "e2930d1c89ae28295aea1e31b7cf4bc35fb07a0ece72cf044612ea42ef47643c"
+    },
+    {
+      "bytes": 38252,
+      "git_blob_sha1": "bb2ccf8da5f4f1c18f0a0e554f5071cf33874fe5",
+      "path": "tools/qikvrt_linux_scale_isolation.py",
+      "sha256": "38c2feae27aa664e8225847f10a2409229663823bef8f6bc102d55a914006078"
+    },
+    {
+      "bytes": 3325,
+      "git_blob_sha1": "276650ca542f367728194910b55adcd88f826136",
+      "path": "policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json",
+      "sha256": "c46534fe508ed784cb1b4f4f6ee7a5c5df998b747c9f87b9fa4e15fc5d31c1e6"
+    },
+    {
+      "bytes": 3626,
+      "git_blob_sha1": "bfebcb97ecf11390560a77676724436ef6538b5f",
+      "path": "schemas/qikvrt-linux-scale-isolation-attestation-v1.schema.json",
+      "sha256": "b2165153ab5a464aa0e808acf3fbfbec525b8d182545d6f469530d927f01cdbe"
+    },
+    {
+      "bytes": 23569,
+      "git_blob_sha1": "bc88f2602944ea0528e9a7aae0dfdb56d285b313",
+      "path": "tests/test_qikvrt_linux_scale_isolation.py",
+      "sha256": "311f3f35a686db8eb6a5feeede5c29aac7ef7d160527d5f5c1cc980f0166113f"
+    },
+    {
+      "bytes": 13779,
+      "git_blob_sha1": "a8f04f33116ca5c24ee4d6f51cf06a3fb497d75e",
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "046ab701040d449fb2964da9471f7bbd10ec4dfd75867209a170190fecd3e5c7"
+    },
+    {
+      "bytes": 12759,
+      "git_blob_sha1": "89962afaf97f899d7a9c813f4253c205cefecdde",
+      "path": "Makefile",
+      "sha256": "3bae5f1a7a57cf0aee3198c2c2172b0e3b2c3289fe1da0038d9d3a27304f3660"
+    },
+    {
+      "bytes": 12839,
+      "git_blob_sha1": "5b5ef6aca06466e15b1776bc8d9a09f0862c61d1",
+      "path": "docs/terminal/QIKVRT_LINUX_COMPARABLE_SCALE_BENCHMARK_V1.md",
+      "sha256": "df7d16c165027473d9495588f6463cbc41573fe095743158bd1dd0ab434e900c"
+    },
+    {
+      "bytes": 10143,
+      "git_blob_sha1": "48ea560bf4a02e609ae48685a2246f973b95e545",
+      "path": "docs/terminal/QIKVRT_LINUX_ISOLATED_SCALE_CONTROL_V1.md",
+      "sha256": "cff9f7717d040f316567d7238403233e0e7718b5dd96e6544c6d362a155002a2"
+    },
+    {
+      "bytes": 15305,
+      "git_blob_sha1": "ec6b1aedb68654cc30c37c0637803e842e07aa69",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "d6d5b53ee0a4e4a649319d9ee39457de4ea02307521d3283d8087cf2c956cbfb"
+    },
+    {
+      "bytes": 4070,
+      "git_blob_sha1": "c512896e23555d8e88795a4e1ade79a5425ce319",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "385577ae0448d7317a3ba52645b9780f64bcfb3506565361909dcb4c68e9177f"
+    }
+  ],
+  "source_parent_head": "ab15b69dca2264dda5466921ece12f6a05e523e3",
+  "source_parent_tree": "403a8073ee6eb0c080c578d64654f28e1d69f4aa",
+  "test_counts": {
+    "firefox": 19,
+    "isolation": 16,
+    "terminal": 52
+  },
+  "total_tests": 87
+}
