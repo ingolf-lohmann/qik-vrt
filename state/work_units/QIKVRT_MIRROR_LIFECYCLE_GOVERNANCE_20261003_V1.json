@@ -86,6 +86,93 @@
     "tests": 35,
     "yaml_parse": "PASS"
   },
+  "main_integrations": [
+    {
+      "actual_main_delta": [
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/37154289864-1.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/LATEST.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/37154289864-1.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 563,
+          "git_blob_sha1": "b4de5744585498f43ec6d02a50222eb4a3950bd5",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "sha256": "db7c1a20ae34dcc9d7549938a190e050d37657d42019079c7689e92a8f5bdfdd"
+        },
+        {
+          "bytes": 542,
+          "git_blob_sha1": "7709951570d8ba930e789b8c40582b9fe7dc7d9f",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "sha256": "a33cd9d21ff29a800b169537db8164600090b3d0eafb20dcb45dc4cf6e323ac6"
+        }
+      ],
+      "artificial_cognitive_contribution": {
+        "actor": "OpenAI Codex / GPT-6",
+        "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+        "model_build": "UNAVAILABLE",
+        "scope": [
+          "Fresh REST observation",
+          "Exact six-file Main delta integration",
+          "Existing work-unit extension",
+          "Canonical source-bound integrity projection",
+          "Successor exact-head validation and readback"
+        ]
+      },
+      "branch": "work/mirror-lifecycle-governance-20261003-8153c4e6",
+      "effect_boundary": {
+        "effect_ack_done": false,
+        "force_push": false,
+        "live_lifecycle_run": false,
+        "main_write": false,
+        "predecessor_evidence_transfer": false,
+        "promotion": false,
+        "pull_request_merge": false
+      },
+      "first_parent_candidate": "c639acafcc8e58af5637f736d968e175855e944d",
+      "first_parent_tree": "148630e0f9d24102d95cf61923bdd78c5a553e17",
+      "human_acceptance_of_generated_candidate": "PENDING",
+      "human_contribution": {
+        "actor": "Ingolf Lohmann",
+        "class": "HUMAN",
+        "scope": "Integrate the actual current Main delta into existing PR #449 preserving history and the verified removal of the direct Main writer; regenerate only necessary integrity and work-unit bindings; fully validate the successor exact head; no promotion, PR merge or direct Main test write."
+      },
+      "integrity_method": "Reuse original generator classification and immutable content-tree functions, complete exact Git inventory and unchanged baseline commitments. Recompute all changed bytes. Full payload verification and the complete repository test suite must execute on the native successor checkout.",
+      "merge_base": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+      "native_successor_validation": "REQUIRED_ON_NEW_EXACT_HEAD; predecessor results are historical only",
+      "operation": "MAIN_HISTORY_PRESERVING_INTEGRATION_AND_EXACT_HEAD_VALIDATION_ONLY",
+      "prepared_utc": "2026-10-03T23:45:35.585811+00:00",
+      "pull_request": 449,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "second_parent_main": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+      "second_parent_tree": "19009f21ecbd59fa13def19e96e6b6374bae0276",
+      "unchanged_lifecycle_workflow": {
+        "bytes": 11178,
+        "git_blob_sha1": "ad7e1912055c2bce54243a007d4ca75fd3f11840",
+        "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+        "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
+      }
+    }
+  ],
   "maintenance_context_repair": {
     "contribution": {
       "artificial_cognitive": "OpenAI Codex: context diagnosis, minimal source correction, verification and persistence",
