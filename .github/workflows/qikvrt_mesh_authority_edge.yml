@@ -1,26 +1,117 @@
 name: QIKVRT Mesh authority edge
 
 on:
+  push:
+    branches: [work/authority-recovery-acceptance-20261002, work/firefox-windows-witness-20261001]
+    paths:
+      - .github/workflows/qikvrt_mesh_authority_edge.yml
+      - tools/qikvrt_authority_url_probe.py
+      - tests/test_qikvrt_authority_url_probe.py
+      - evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json
   repository_dispatch:
     types: [qikvrt-authority-admit]
   workflow_dispatch:
     inputs:
+      operation:
+        description: Bound authority operation
+        type: choice
+        options: [admit, authority_url_probe, authority_pages_readback]
+        required: true
+        default: admit
       repository:
         description: Exact target repository
         required: true
         default: Goldkelch/qik-vrt
       run_id:
         description: Exact ACTION_REQUIRED workflow run id
-        required: true
+        required: false
       head_sha:
         description: Exact target head SHA
-        required: true
+        required: false
 
 permissions:
   contents: read
 
 jobs:
+  authority-url-probe:
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      ((github.event_name == 'push' &&
+        (github.ref == 'refs/heads/work/authority-recovery-acceptance-20261002' ||
+         (github.ref == 'refs/heads/work/firefox-windows-witness-20261001' && github.actor == 'ingolf-lohmann'))) ||
+       (github.event_name == 'workflow_dispatch' &&
+        (inputs.operation == 'authority_url_probe' || inputs.operation == 'authority_pages_readback')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      QIKVRT_AUTHORITY_OPERATION: ${{ inputs.operation || (github.ref == 'refs/heads/work/firefox-windows-witness-20261001' && 'authority_pages_readback') || 'authority_url_probe' }}
+    steps:
+      - name: Checkout exact native event head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Setup locked Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify probe boundaries before credential consumption
+        id: probe-boundaries
+        env:
+          QIKVRT_PROBE_TARGET: ${{ inputs.repository || 'Goldkelch/qik-vrt' }}
+        run: |
+          python3 -B -m unittest -v tests.test_qikvrt_authority_url_probe
+          python3 -B tools/qikvrt_authority_url_probe.py --preflight
+      - name: Observe existing inputs and bind the single App route
+        id: probe-credential-route
+        env:
+          QIKVRT_RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
+          QIKVRT_GITHUB_ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
+          QIKVRT_MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
+          QIKVRT_RULESET_APP_ID: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          QIKVRT_RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          names = ("QIKVRT_RULESET_ADMIN_TOKEN", "QIKVRT_GITHUB_ADMIN_TOKEN", "QIKVRT_MESH_TOKEN")
+          present = {name: bool(os.environ.get(name)) for name in names}
+          app = bool(os.environ.get("QIKVRT_RULESET_APP_ID")) and bool(os.environ.get("QIKVRT_RULESET_APP_PRIVATE_KEY"))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("presence=" + json.dumps(present, sort_keys=True) + "\n")
+              output.write("app=" + str(app).lower() + "\n")
+          PY
+      - name: Mint existing App credential for fixed Authority read scope
+        id: authority-app-token
+        continue-on-error: true
+        if: steps.probe-credential-route.outputs.app == 'true'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.QIKVRT_RULESET_APP_ID }}
+          private-key: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
+          owner: Goldkelch
+          repositories: qik-vrt
+          permission-contents: read
+          permission-pages: ${{ env.QIKVRT_AUTHORITY_OPERATION == 'authority_pages_readback' && 'read' || '' }}
+      - name: Resume fixed installation-bound Authority source closure
+        if: always() && steps.probe-boundaries.outcome == 'success'
+        env:
+          QIKVRT_CREDENTIAL_PRESENCE: ${{ steps.probe-credential-route.outputs.presence }}
+          QIKVRT_AUTHORITY_APP_INSTALLATION_ID: ${{ steps.authority-app-token.outputs.installation-id }}
+          QIKVRT_APP_INPUTS_PRESENT: ${{ steps.probe-credential-route.outputs.app }}
+          QIKVRT_AUTHORITY_APP_TOKEN: ${{ steps.authority-app-token.outputs.token }}
+          QIKVRT_APP_TOKEN_ISSUANCE_OUTCOME: ${{ steps.authority-app-token.outcome }}
+        run: python3 -B tools/qikvrt_authority_url_probe.py --output .qikvrt/evidence/authority-url-probe/readback.json
+      - name: Persist metadata-only diagnostic readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: authority-url-probe-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .qikvrt/evidence/authority-url-probe/readback.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
   admit:
+    if: github.event_name != 'push' && (github.event_name != 'workflow_dispatch' || inputs.operation == 'admit')
     runs-on: ubuntu-24.04
     env:
       TARGET_REPOSITORY: ${{ github.event.client_payload.repository || inputs.repository }}

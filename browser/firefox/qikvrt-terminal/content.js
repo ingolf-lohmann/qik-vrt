@@ -12,6 +12,10 @@
     <div class="qv-body">
       <div class="qv-status" data-role="status">OBSERVE</div>
       <pre class="qv-output" data-role="output" aria-live="polite">Terminal initialized. No effect authorized.</pre>
+      <details>
+        <summary data-role="observation-status">Repository observation</summary>
+        <pre class="qv-output" data-role="observation-output" aria-live="polite">No repository readback yet.</pre>
+      </details>
       <label class="qv-label" for="qv-command">Input</label>
       <textarea id="qv-command" data-role="command" rows="3" placeholder="Text input to the repository-side terminal counterpart"></textarea>
       <div class="qv-media-row">
@@ -32,6 +36,8 @@
   const $ = selector => host.querySelector(selector);
   const output = $("[data-role=output]");
   const status = $("[data-role=status]");
+  const observationStatus = $("[data-role=observation-status]");
+  const observationOutput = $("[data-role=observation-output]");
   const command = $("[data-role=command]");
   const video = $("[data-role=video]");
   const mediaState = $("[data-role=media-state]");
@@ -46,6 +52,7 @@
   let snapshotBlob = null;
   let prepared = null;
   let preparedRequest = null;
+  let observationRevision = 0;
 
   function render(value) {
     output.textContent = typeof value === "string" ? value : JSON.stringify(value, null, 2);
@@ -70,10 +77,17 @@
   }
 
   async function observe() {
-    setState("OBSERVE", "reobserving main/head/tree");
-    const result = await send("OBSERVE_AUTHORITY");
-    render(result);
-    setState(result.ok ? "OBSERVE" : "HOLD", result.ok ? "fresh repository frame" : result.reason);
+    const revision = ++observationRevision;
+    observationStatus.textContent = "Repository · OBSERVE · reobserving main/head/tree";
+    let result;
+    try {
+      result = await send("OBSERVE_AUTHORITY");
+    } catch (error) {
+      result = {ok: false, state: "HOLD", reason: error.message};
+    }
+    if (revision !== observationRevision) return;
+    observationOutput.textContent = JSON.stringify(result, null, 2);
+    observationStatus.textContent = result.ok ? "Repository · OBSERVE · fresh frame" : `Repository · HOLD · ${result.reason}`;
   }
 
   async function blobPayload(blob, mediaType) {
@@ -201,7 +215,7 @@
   });
 
   applyPreferences().then(observe).catch(error => {
-    setState("HOLD", error.message);
-    render({state: "HOLD", reason: error.message});
+    observationStatus.textContent = `Repository · HOLD · ${error.message}`;
+    observationOutput.textContent = JSON.stringify({state: "HOLD", reason: error.message});
   });
 })();

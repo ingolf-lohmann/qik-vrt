@@ -245,17 +245,17 @@ def secure_read_bytes(path: Path, *, max_bytes: int | None = None) -> bytes:
 
 
 @contextlib.contextmanager
-def process_lock(root: Path):
+def process_lock(root: Path, *, name: str = "handler.lock", blocking: bool = True):
     """Serialize handler effects across processes sharing the same root."""
 
-    lock_path = dirs(root)["state"] / "handler.lock"
+    lock_path = dirs(root)["state"] / safe_id(name, field="lock name")
     _assert_safe_target(lock_path)
     flags = os.O_CREAT | os.O_RDWR
     if hasattr(os, "O_NOFOLLOW"):
         flags |= os.O_NOFOLLOW
     fd = os.open(lock_path, flags, 0o600)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
+        fcntl.flock(fd, fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB))
         yield
     finally:
         fcntl.flock(fd, fcntl.LOCK_UN)

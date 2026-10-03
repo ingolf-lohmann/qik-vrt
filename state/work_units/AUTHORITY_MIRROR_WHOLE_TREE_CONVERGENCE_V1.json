@@ -6,119 +6,128 @@
     "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
     "rights_holder": "Ingolf Lohmann"
   },
-  "schema": "qikvrt_authority_mirror_whole_tree_convergence_work_unit_v1",
-  "work_unit_id": "AUTHORITY_MIRROR_WHOLE_TREE_CONVERGENCE_V1",
-  "title": "History-preserving Authority to Mirror whole-tree convergence and reciprocal receipt preparation",
-  "created_at": "2026-08-16T10:02:00+02:00",
-  "human_actor": {
-    "actor_class": "HUMAN",
-    "attribution_id": "Ingolf Lohmann",
-    "role": "Product Owner",
-    "identity_proof_boundary": "The interactive account context and repository records attribute the directive to the named principal; they are not biometric or universal identity proof."
-  },
   "artificial_cognitive_actor": {
     "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
-    "provider": "OpenAI",
-    "system_family": "Codex",
+    "identity_and_observation_limits": "Runtime-supplied tool and model-family information is recorded without a claim about hidden implementation internals, legal personhood, or independent intent.",
     "model_or_build": "GPT-5 family; exact build UNAVAILABLE",
+    "provider": "OpenAI",
     "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex",
     "tools_and_adapters": [
       "GitHub connector",
       "local Git",
       "QIK-VRT /AI runtime bootloader",
       "QIK-VRT repository-native integrity generator"
-    ],
-    "identity_and_observation_limits": "Runtime-supplied tool and model-family information is recorded without a claim about hidden implementation internals, legal personhood, or independent intent."
+    ]
   },
-  "human_contributions": [
-    {
-      "type": "ORDERING_AND_ACCEPTANCE_CRITERION",
-      "description": "Directed that the divergent Authority and Mirror trees first converge and are then bound by a new reciprocal exact-head Whole-tree Receipt."
-    },
-    {
-      "type": "EFFECT_AUTHORIZATION",
-      "description": "Explicitly authorized the repository-internal convergence and reciprocal-receipt work. No tag, release, deployment, Zenodo, IETF, or other external publication effect was authorized."
-    }
-  ],
   "artificial_cognitive_contributions": [
     {
-      "type": "BOOT_AND_LIVE_REOBSERVATION",
-      "description": "Read both mandatory /AI contexts, verified integrity and tool-cache state, froze the live main heads and trees, and treated stale status projections as non-authoritative."
+      "description": "Read both mandatory /AI contexts, verified integrity and tool-cache state, froze the live main heads and trees, and treated stale status projections as non-authoritative.",
+      "type": "BOOT_AND_LIVE_REOBSERVATION"
     },
     {
-      "type": "HISTORY_PRESERVING_CONSTRUCTION",
-      "description": "Transferred changed Authority blobs content-addressedly, constructed the exact Authority tree over the frozen Mirror tree, and created a candidate with the frozen Mirror main as its sole parent and without a force update or history rewrite."
+      "description": "Transferred changed Authority blobs content-addressedly, constructed the exact Authority tree over the frozen Mirror tree, and created a candidate with the frozen Mirror main as its sole parent and without a force update or history rewrite.",
+      "type": "HISTORY_PRESERVING_CONSTRUCTION"
     },
     {
-      "type": "FAIL_CLOSED_GATE_DIAGNOSIS",
-      "description": "Stopped promotion after exact-head Mirror gates exposed repository-environment leakage in a test fixture, an Authority-ancestry assumption in the universal-ontology verifier, and an invalid empty pip-cache configuration in the manuscript workflow."
+      "description": "Stopped promotion after exact-head Mirror gates exposed repository-environment leakage in a test fixture, an Authority-ancestry assumption in the universal-ontology verifier, and an invalid empty pip-cache configuration in the manuscript workflow.",
+      "type": "FAIL_CLOSED_GATE_DIAGNOSIS"
     },
     {
-      "type": "PORTABILITY_CORRECTION_DESIGN",
-      "description": "Preserved the production repository mismatch gate, isolated the historical publication test environments, replaced shared-history dependence with exact canonical-source commit/tree/blob verification, and removed the invalid unused pip cache."
+      "description": "Preserved the production repository mismatch gate, isolated the historical publication test environments, replaced shared-history dependence with exact canonical-source commit/tree/blob verification, and removed the invalid unused pip cache.",
+      "type": "PORTABILITY_CORRECTION_DESIGN"
     }
   ],
+  "blocking_gate_evidence": [
+    {
+      "blocker": "TEST_FIXTURE_INHERITED_MIRROR_GITHUB_REPOSITORY",
+      "job_id": 95135623000,
+      "run_id": 31935088791,
+      "workflow": "QIKVRT CI"
+    },
+    {
+      "blocker": "AUTHORITY_SOURCE_COMMIT_NOT_IN_MIRROR_ANCESTRY",
+      "job_id": 95135623006,
+      "run_id": 31935088762,
+      "workflow": "QIK-VRT universal ontology finite-model verification"
+    },
+    {
+      "blocker": "SETUP_PYTHON_EMPTY_PIP_CACHE_POST_STEP",
+      "job_id": 95135622854,
+      "run_id": 31935088737,
+      "workflow": "QIK-VRT manuscript proof coverage"
+    }
+  ],
+  "candidate_state": "PORTABILITY_CORRECTION_LOCAL_CANDIDATE_PENDING_INTEGRITY_EXACT_HEAD_REVIEW_AND_PROMOTION",
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "full_sync": false,
+    "mirror_tree_converged": false,
+    "portable_authority_tree_promoted": false,
+    "reciprocal_whole_tree_receipt_materialized": false,
+    "symmetric_canonicality": false
+  },
+  "created_at": "2026-08-16T10:02:00+02:00",
+  "effect_boundary": {
+    "deployment": false,
+    "force_push": false,
+    "history_rewrite": false,
+    "ietf_submission": false,
+    "other_external_publication": false,
+    "release": false,
+    "tag": false,
+    "zenodo_mutation": false
+  },
+  "first_convergence_candidate": {
+    "authority_to_candidate_recursive_diff_empty": true,
+    "candidate": "59e93dd15009320a3b1df68aa049a8bf896544d9",
+    "disposition": "CLOSED_UNMERGED_AFTER_FAIL_CLOSED_PORTABILITY_GATES",
+    "history_preserved": true,
+    "pull_request": 343,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "root_tree": "2c650151a0937c85fedf70195f63a7d7e69b1118",
+    "sole_parent": "c8bb2dfaad51e2e3eb61a1f679db541f75cc4b81"
+  },
   "frozen_inputs": {
     "authority": {
-      "repository": "Goldkelch/qik-vrt",
       "main": "2071b2946ef569d050a99e0c974dd063706c9d7f",
+      "repository": "Goldkelch/qik-vrt",
       "root_tree": "2c650151a0937c85fedf70195f63a7d7e69b1118"
     },
     "mirror": {
-      "repository": "ingolf-lohmann/qik-vrt",
       "main": "c8bb2dfaad51e2e3eb61a1f679db541f75cc4b81",
+      "repository": "ingolf-lohmann/qik-vrt",
       "root_tree": "3eba534e04c80937d9e04595ef7c65108eb8e585"
     },
     "pre_receipt_index": {
-      "path": "evidence/receipts/index.json",
+      "entry_count": 19,
       "git_blob_sha1": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
-      "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545",
-      "entry_count": 19
+      "path": "evidence/receipts/index.json",
+      "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545"
     },
     "transport_input": {
-      "retention_mode": "METADATA_ONLY",
       "channel": "CURRENT_INTERACTIVE_SESSION",
       "raw_transcript_persisted": false,
+      "retention_mode": "METADATA_ONLY",
       "transport_input_digest": "UNAVAILABLE"
     }
   },
-  "superseded_writers": [
-    {
-      "repository": "ingolf-lohmann/qik-vrt",
-      "pull_request": 342,
-      "head": "2b4664a364a5cd782806ff12db9739d63436bf6e",
-      "disposition": "CLOSED_UNMERGED_SUPERSEDED_BY_EXACT_WHOLE_TREE_CONVERGENCE",
-      "history_preserved": true
-    }
-  ],
-  "first_convergence_candidate": {
-    "repository": "ingolf-lohmann/qik-vrt",
-    "candidate": "59e93dd15009320a3b1df68aa049a8bf896544d9",
-    "sole_parent": "c8bb2dfaad51e2e3eb61a1f679db541f75cc4b81",
-    "root_tree": "2c650151a0937c85fedf70195f63a7d7e69b1118",
-    "authority_to_candidate_recursive_diff_empty": true,
-    "pull_request": 343,
-    "disposition": "CLOSED_UNMERGED_AFTER_FAIL_CLOSED_PORTABILITY_GATES",
-    "history_preserved": true
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "identity_proof_boundary": "The interactive account context and repository records attribute the directive to the named principal; they are not biometric or universal identity proof.",
+    "role": "Product Owner"
   },
-  "blocking_gate_evidence": [
+  "human_contributions": [
     {
-      "workflow": "QIKVRT CI",
-      "run_id": 31935088791,
-      "job_id": 95135623000,
-      "blocker": "TEST_FIXTURE_INHERITED_MIRROR_GITHUB_REPOSITORY"
+      "description": "Directed that the divergent Authority and Mirror trees first converge and are then bound by a new reciprocal exact-head Whole-tree Receipt.",
+      "type": "ORDERING_AND_ACCEPTANCE_CRITERION"
     },
     {
-      "workflow": "QIK-VRT universal ontology finite-model verification",
-      "run_id": 31935088762,
-      "job_id": 95135623006,
-      "blocker": "AUTHORITY_SOURCE_COMMIT_NOT_IN_MIRROR_ANCESTRY"
-    },
-    {
-      "workflow": "QIK-VRT manuscript proof coverage",
-      "run_id": 31935088737,
-      "job_id": 95135622854,
-      "blocker": "SETUP_PYTHON_EMPTY_PIP_CACHE_POST_STEP"
+      "description": "Explicitly authorized the repository-internal convergence and reciprocal-receipt work. No tag, release, deployment, Zenodo, IETF, or other external publication effect was authorized.",
+      "type": "EFFECT_AUTHORIZATION"
     }
   ],
   "portability_correction_paths": [
@@ -134,43 +143,639 @@
     "SHA256SUMS.txt"
   ],
   "reciprocal_receipt_contract": {
-    "sequence": [
-      "PROMOTE_PORTABLE_AUTHORITY_TREE",
-      "CONSTRUCT_AND_PROMOTE_ONE_PARENT_EXACT_TREE_MIRROR_CANDIDATE",
-      "REOBSERVE_EMPTY_WHOLE_TREE_DIFF",
-      "MATERIALIZE_IDENTICAL_RECEIPT_INDEX_AND_INTEGRITY_BYTES_ON_BOTH_REPOSITORIES",
-      "REOBSERVE_FINAL_EXACT_HEADS_AND_EMPTY_WHOLE_TREE_DIFF"
-    ],
     "in_tree_receipt_binds": "THE_EXACT_CONVERGED_PRE_RECEIPT_HEAD_PAIR_AND_ITS_SHARED_ROOT_TREE",
-    "self_binding_excluded": "A receipt cannot non-circularly bind its own containing commit or root tree.",
     "phase_two_exact_paths": [
       "NEW_WHOLE_TREE_RECEIPT",
       "evidence/receipts/index.json",
       "REPOSITORY_FILE_MANIFEST.json",
       "REPOSITORY_FILE_MANIFEST.json.sha256",
       "SHA256SUMS.txt"
+    ],
+    "self_binding_excluded": "A receipt cannot non-circularly bind its own containing commit or root tree.",
+    "sequence": [
+      "PROMOTE_PORTABLE_AUTHORITY_TREE",
+      "CONSTRUCT_AND_PROMOTE_ONE_PARENT_EXACT_TREE_MIRROR_CANDIDATE",
+      "REOBSERVE_EMPTY_WHOLE_TREE_DIFF",
+      "MATERIALIZE_IDENTICAL_RECEIPT_INDEX_AND_INTEGRITY_BYTES_ON_BOTH_REPOSITORIES",
+      "REOBSERVE_FINAL_EXACT_HEADS_AND_EMPTY_WHOLE_TREE_DIFF"
     ]
   },
-  "effect_boundary": {
-    "force_push": false,
-    "history_rewrite": false,
-    "tag": false,
-    "release": false,
-    "deployment": false,
-    "zenodo_mutation": false,
-    "ietf_submission": false,
-    "other_external_publication": false
+  "schema": "qikvrt_authority_mirror_whole_tree_convergence_work_unit_v1",
+  "self_binding_rule": "The future Git commit and tree containing this work-unit file bind its exact bytes; no impossible in-file self-hash or future-head claim is made.",
+  "stand_in_authority_acceptance_20261002": {
+    "acceptance_path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+    "acceptance_sha256": "11188fd785368ca822f67eb3ddd279a469dae19942dacde422ca613041c75d06",
+    "artificial_cognitive_actor": {
+      "model_or_build": "GPT-6",
+      "provider": "OpenAI",
+      "session": "UNAVAILABLE",
+      "system_family": "Codex"
+    },
+    "authority_capability_routing_correction": {
+      "artificial_cognitive_contribution": "Fresh API capability inventory, routing probes, historical/current-Mirror tree reconstruction and evidence correction.",
+      "authority_exists_in_installation_listing": true,
+      "classification": "INSTALLATION_LISTED_AUTHORITY_WITH_CONTENT_ROUTING_CARRIER_BOUNDARY",
+      "effect_ack_done": false,
+      "human_contribution": "Owner supplied the installation/routing classification correction and authorized exact-head continuation of PR 444.",
+      "input_subject": {
+        "head": "6cce2d2f4910356d21c031b013df2c7a79f7590b",
+        "tree": "fae6a54ed8fb01c69c12dc2d958b2a8e91e51888"
+      },
+      "installation_id": 147849532,
+      "latest_complete_authority_closure_verified": false,
+      "repository_creation_inferred_from_push": false,
+      "repository_id": 1271407206
+    },
+    "authority_promoted": false,
+    "continuation_20261002_run": {
+      "first_blocker": "LATEST_AUTHORITY_COMPLETE_SOURCE_CLOSURE_UNAVAILABLE",
+      "fresh_native_successor_checks_required": true,
+      "integrated_main_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "lifecycle_observation": {
+        "current_heartbeat": "2026-10-02T12:31:42Z",
+        "current_heartbeat_expires": "2026-10-03T13:31:42Z",
+        "current_registration_next_due": "2026-10-03T12:31:42Z",
+        "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "observed_at": "2026-10-02T14:11:04.845Z",
+        "prior_heartbeat_expired": true,
+        "prior_heartbeat_expires": "2026-10-02T14:10:37Z",
+        "prior_next_due": "2026-10-02T13:10:37Z",
+        "prior_registration_overdue": true,
+        "prior_renewed": "2026-10-01T13:10:37Z",
+        "producer_run_id": "37007190339-1"
+      },
+      "merge_base_head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+      "method": "THREE_WAY_HISTORY_PRESERVING_MERGE_OF_ROLE_LOCAL_LIFECYCLE",
+      "next_smallest_action": "BIND_VERIFIABLE_COMPLETE_FINAL_AUTHORITY_SOURCE_CLOSURE",
+      "owner_instruction": "RUN",
+      "predecessor_evidence_transfer": false,
+      "previous_candidate_head": "52e367db378462cf6f63fe410f7f50098bd6a52f",
+      "reused_component": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "reused_role_local_policy": "state/work_units/RESTORE_ROLE_LOCAL_MIRROR_NODE_STATE_AFTER_TREE_CONVERGENCE_V1.json",
+      "state": "BLOCK"
+    },
+    "continuation_20261003_run": {
+      "all_current_main_paths_retained": true,
+      "all_previous_candidate_paths_retained": true,
+      "artificial_cognitive_actor": {
+        "model_or_build": "GPT-6",
+        "provider": "OpenAI",
+        "session": "d2a712c488fa",
+        "system_family": "Codex"
+      },
+      "artificial_cognitive_contribution": "Reconstruct exact Git inventories; compare all three parents; integrate the current role-local lifecycle; verify native probe artifact; persist current acceptance boundaries and canonical integrity.",
+      "authority_route_reobservation": {
+        "generic_main_ref_read": {
+          "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+          "error_code": "NOT_FOUND",
+          "error_data": {
+            "documentation_url": "https://docs.github.com/rest",
+            "message": "Not Found",
+            "status": "404"
+          }
+        },
+        "installation_bound_content_read_exposed": false,
+        "installation_id": 147849532,
+        "installation_repository_selection": "all",
+        "installed_repository_listing_verified": true,
+        "latest_authority_closure_verified": false,
+        "reported_permissions": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        },
+        "reported_push_permission_is_not_repository_creation_authority": true,
+        "repository_creation_operation_exposed": false,
+        "repository_global_absence_inferred": false,
+        "repository_id": 1271407206
+      },
+      "both_commit_histories_retained": true,
+      "containing_successor_binding": "The containing commit/tree binds these output bytes. No self-commit identity is embedded and no input or other-branch gate transfers to this successor.",
+      "effect_ack_done": false,
+      "existing_native_authority_probe": {
+        "app_credential_names_present": {
+          "QIKVRT_RULESET_APP_ID": false,
+          "QIKVRT_RULESET_APP_PRIVATE_KEY": false
+        },
+        "artifact_id": 11260896259,
+        "authority_repository_global_absence_inferred": false,
+        "credential_names_present": {
+          "GITHUB_TOKEN": true,
+          "QIKVRT_AUTHORITY_APP_TOKEN": false,
+          "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+          "QIKVRT_MESH_TOKEN": false,
+          "QIKVRT_RULESET_ADMIN_TOKEN": false
+        },
+        "credential_source": "GITHUB_TOKEN",
+        "effect_ack_done": false,
+        "entry_sha256": "ac00d3ec9e3d04faf79b559ae47963e388494d9d43879257bf9b5f9695060fc4",
+        "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+        "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+        "native_artifact_download_verified_at": "2026-10-03T13:48:20.795Z",
+        "observed_at": "2026-10-03T01:36:52.645918+00:00",
+        "pull_request": 446,
+        "receipt_ref": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "repository_receipt": "evidence/receipts/authority-url-execution-route-20261003/PROBE_7ed957_READBACK.json",
+        "run_attempt": 1,
+        "run_id": 37086743407,
+        "scope": "This executed probe establishes credential non-delivery in that exact runner only. It supplies no current PR-444 gate, current credential inventory, full Authority closure or repaired public URL.",
+        "secret_global_absence_inferred": false,
+        "source_read_verified": false,
+        "tree": "507870ae80f0a07906198c94aba0f06119f08f13",
+        "zip_sha256": "ceca9dbe4aab5ca429f3d4a160911f9015c1780b1a6f9a4294da1f99c646cc53"
+      },
+      "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+      "fresh_native_successor_checks_required": true,
+      "global_done": false,
+      "governance_reobservation": {
+        "independent_submitted_review_count": 0,
+        "native_main_protected": false,
+        "rulesets": [],
+        "scope": "Input subject and Main observation only; successor governance must be freshly reobserved."
+      },
+      "human_contribution": "Ingolf Lohmann supplied the recovery acceptance objective, authorization and continuation instruction.",
+      "integrated_main_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "integrated_main_tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5",
+      "integrated_role_local_paths": [
+        {
+          "main_blob": "7f87efac69655d735c076a260f83a6054f2b3a9b",
+          "path": "evidence/node_health/37071181171-1.json",
+          "previous_candidate_blob": null
+        },
+        {
+          "main_blob": "d0fd6f992b8b455c3967ae3691d5c8a641f163d2",
+          "path": "evidence/node_health/37099282397-1.json",
+          "previous_candidate_blob": null
+        },
+        {
+          "main_blob": "dc66e2c48a70f952167f50ed4475982442e75a64",
+          "path": "evidence/node_health/37120239456-1.json",
+          "previous_candidate_blob": null
+        },
+        {
+          "main_blob": "dc66e2c48a70f952167f50ed4475982442e75a64",
+          "path": "evidence/node_health/LATEST.json",
+          "previous_candidate_blob": "bd72ccfa14afbb427f71f9d3acf2d21584e81cd7"
+        },
+        {
+          "main_blob": "e6ee870758d0f755adc3e6e854007a8a84c81db3",
+          "path": "evidence/node_registration_renewal/37071181171-1.json",
+          "previous_candidate_blob": null
+        },
+        {
+          "main_blob": "3664b8a2a6f1aef6895f28da2484443177804b26",
+          "path": "evidence/node_registration_renewal/37099282397-1.json",
+          "previous_candidate_blob": null
+        },
+        {
+          "main_blob": "a3a3cc16510e1bb96938b149570bbcdbf48dd103",
+          "path": "evidence/node_registration_renewal/37120239456-1.json",
+          "previous_candidate_blob": null
+        },
+        {
+          "main_blob": "a3a3cc16510e1bb96938b149570bbcdbf48dd103",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "previous_candidate_blob": "bbacb5e6ecb73188a7125b4a18189066f8a08a86"
+        },
+        {
+          "main_blob": "3cb75551391ca9bcd05115c949ea58c19bd55f57",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "previous_candidate_blob": "ef9c9cfdda552a8d561001a8045f010e7963cdd9"
+        },
+        {
+          "main_blob": "788a2948129b916dfb53ee071bb95cdcbe90f184",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "previous_candidate_blob": "3e834011ccdac7e349cf37b0293711ff57062150"
+        }
+      ],
+      "lifecycle_observation": {
+        "current_heartbeat": "2026-10-03T11:37:33Z",
+        "current_heartbeat_expires": "2026-10-04T12:37:33Z",
+        "current_registration_next_due": "2026-10-04T11:37:33Z",
+        "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "node_identity_changed": false,
+        "observed_at": "2026-10-03T13:48:20.795Z",
+        "prior_heartbeat_expired": true,
+        "prior_heartbeat_expires": "2026-10-03T13:31:42Z",
+        "prior_registration_next_due": "2026-10-03T12:31:42Z",
+        "prior_registration_overdue": true,
+        "producer_run_id": "37120239456-1",
+        "scope": "ROLE_LOCAL_MIRROR_LIFECYCLE; NOT AUTHORITY TAKEOVER OR SOURCE CLOSURE"
+      },
+      "lifecycle_producer": {
+        "conclusion": "success",
+        "event": "schedule",
+        "head_sha": "8704969da54ed9c0ad08d4540ea89aee15d85ae2",
+        "id": 37120239456,
+        "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+        "status": "completed"
+      },
+      "merge_base_head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "merge_base_tree": "007ceaef554f275ff6f53383f8572505b4ec52be",
+      "method": "THREE_WAY_HISTORY_PRESERVING_MERGE_OF_ROLE_LOCAL_LIFECYCLE",
+      "neutral_repository_creation_observed": false,
+      "new_historical_event_files": [
+        "evidence/node_health/37071181171-1.json",
+        "evidence/node_health/37099282397-1.json",
+        "evidence/node_health/37120239456-1.json",
+        "evidence/node_registration_renewal/37071181171-1.json",
+        "evidence/node_registration_renewal/37099282397-1.json",
+        "evidence/node_registration_renewal/37120239456-1.json"
+      ],
+      "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
+      "next_smallest_action": "BIND_AUTHORIZED_AUTHORITY_CONTENT_CARRIER_AND_FRESHLY_READ_COMPLETE_SOURCE",
+      "observed_at": "2026-10-03T13:48:20.795Z",
+      "owner_continuation_instruction": "RUN/CR/CC/CI/CD/DevOps/RUN",
+      "predecessor_evidence_transfer": false,
+      "previous_candidate_head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+      "previous_candidate_tree": "6724c1efeb6242b37aab48c9e6e836f849c773df",
+      "retry_condition": "Expose an authenticated content carrier bound to installation 147849532 and Goldkelch/qik-vrt, or deliver an existing authorized Authority-read credential into the fixed native probe and perform a new initial exact-ref invocation. Then freshly read Main/HEAD/TREE, required refs and referenced source objects and compare with the retained tree and reobserved Mirror. This client has no secret-binding or initial-dispatch operation; no credentials or wider permissions are manufactured.",
+      "role_change_claimed": false,
+      "schema": "qikvrt_authority_recovery_lifecycle_integration_v1",
+      "stand_in_authority_effect_observed": false,
+      "state": "BLOCK",
+      "tree_object_reconstruction": {
+        "base": {
+          "blob_count": 3924,
+          "complete_content_addressed_inventory": true,
+          "effect_ack_done": false,
+          "entry_count": 4377,
+          "fresh_authority_state_inferred": false,
+          "root_tree": "007ceaef554f275ff6f53383f8572505b4ec52be"
+        },
+        "head": {
+          "blob_count": 3931,
+          "complete_content_addressed_inventory": true,
+          "effect_ack_done": false,
+          "entry_count": 4387,
+          "fresh_authority_state_inferred": false,
+          "root_tree": "6724c1efeb6242b37aab48c9e6e836f849c773df"
+        },
+        "historical_authority_tree": {
+          "blob_count": 3781,
+          "complete_content_addressed_inventory": true,
+          "effect_ack_done": false,
+          "entry_count": 4213,
+          "fresh_authority_state_inferred": false,
+          "root_tree": "57fbf5b7c4fbe5ad71db44a09f6cace3a9b62149"
+        },
+        "main": {
+          "blob_count": 3930,
+          "complete_content_addressed_inventory": true,
+          "effect_ack_done": false,
+          "entry_count": 4383,
+          "fresh_authority_state_inferred": false,
+          "root_tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5"
+        },
+        "working_mirror_base_tree": {
+          "blob_count": 3923,
+          "complete_content_addressed_inventory": true,
+          "effect_ack_done": false,
+          "entry_count": 4378,
+          "fresh_authority_state_inferred": false,
+          "root_tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+        }
+      },
+      "verification": {
+        "existing_retained_tree_tests": {
+          "executed": 4,
+          "failures": 0,
+          "skips": 0
+        },
+        "fresh_native_complete_checkout_successor_checks": "REQUIRED",
+        "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_AUTHENTICATED_EXACT_PARENT; FRESH_NATIVE_FULL_REGENERATION_REQUIRED",
+        "local_full_checkout_bootstrap": "NOT_ESTABLISHED: API fixture is not a full Git checkout",
+        "source_read_mode": "EXACT_BLOB_AUTHENTICATED_API_SOURCE_FIXTURE",
+        "tool_cache": "PASS 18/18"
+      }
+    },
+    "continuation_authority_source_carrier_20261003": {
+      "artificial_cognitive_actor": {
+        "model_or_build": "GPT-6",
+        "provider": "OpenAI",
+        "session": "eb10aff34f59",
+        "system_family": "Codex"
+      },
+      "artificial_cognitive_contribution": "Reuse PR 446 probe and existing R11 transport on PR 444; collapse duplicate credential selection; bind actual App installation output and target scope; verify binary Git blobs, tree modes, referenced objects and fail-closed bounds; retain the Pages observer through this shared carrier.",
+      "canonical_resume_pointer": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json#/source_closure_resume",
+      "capability_observation": {
+        "connection_installation": 147849532,
+        "global_credential_absence_inferred": false,
+        "initial_workflow_dispatch_exposed": false,
+        "installation_selectable_content_read_exposed": false,
+        "listed_authority_pull": true,
+        "listed_repository_id": 1271407206,
+        "local_credential_names_present": {
+          "GH_TOKEN": false,
+          "GITHUB_TOKEN": false,
+          "QIKVRT_GITHUB_ADMIN_TOKEN": false,
+          "QIKVRT_MESH_TOKEN": false,
+          "QIKVRT_RULESET_ADMIN_TOKEN": false,
+          "QIKVRT_RULESET_APP_ID": false,
+          "QIKVRT_RULESET_APP_PRIVATE_KEY": false
+        },
+        "secret_binding_exposed": false
+      },
+      "containing_successor_native_gates": "REQUIRED",
+      "credential_delivery_verified": false,
+      "effect_ack_done": false,
+      "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+      "first_native_probe_readback": {
+        "artifact_id": 11279380928,
+        "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+        "head": "24b951dc06222c6759c8104ce92532af6dec7f2a",
+        "observations": [],
+        "run_id": 37138139901,
+        "scope": "PREDECESSOR_EXACT_RUN_ONLY_NOT_CURRENT_GATE",
+        "source_requests": 0,
+        "tree": "f2dd680be12bcda7f953031e06ef751fb02e2cd5",
+        "zip_digest_verified": true
+      },
+      "historical_pr446_run_id": 37086743407,
+      "historical_run_is_current_gate": false,
+      "history_preserved_by_ordered_parents": [
+        "257b88eadcf44b36fa4b5d5723c1fc27a01a4127",
+        "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+        "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a"
+      ],
+      "human_contribution": "Ingolf Lohmann authorizes one existing target/installation-bound Authority carrier and a machine-readable resume point; no new secrets, replacement keys or permission expansion.",
+      "input_subjects": {
+        "donor_pr446_head": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+        "donor_pr446_tree": "3aeb41df3f9d9d47c6875ea5b09e0bec06e796c2",
+        "fresh_main_head": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+        "fresh_main_tree": "3369a9cdd1e1913175466156b7a4b96e24699d02",
+        "main": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+        "pr444_head": "257b88eadcf44b36fa4b5d5723c1fc27a01a4127",
+        "pr444_tree": "748bcf445bbce4ea507128515cc5fd7627627e3c"
+      },
+      "latest_complete_authority_closure_verified": false,
+      "local_verification": {
+        "bootstrap": "BLOCK: API fixture has no full Git checkout/origin. Fresh native full-checkout CI is required.",
+        "pages_regression_tests": {
+          "failures": 0,
+          "run": 4
+        },
+        "probe_tests": {
+          "failures": 0,
+          "run": 25
+        },
+        "python": "3.12.14",
+        "r11_tests": {
+          "failures": 0,
+          "run": 9
+        },
+        "retained_tree_tests": {
+          "failures": 0,
+          "run": 4
+        },
+        "scope": "AUTHENTICATED_EXACT_SOURCE_API_FIXTURE; NOT A FULL GIT CHECKOUT",
+        "tool_cache": "PASS 18/18"
+      },
+      "main_activation_verified": false,
+      "mirror_lifecycle_integration": {
+        "authority_role_acceptance": false,
+        "expires_utc": "2026-10-04T17:16:21Z",
+        "heartbeat_utc": "2026-10-03T16:16:21Z",
+        "history_preserving": true,
+        "integrated_main_head": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+        "integrated_main_tree": "3369a9cdd1e1913175466156b7a4b96e24699d02",
+        "next_renewal_due_utc": "2026-10-04T16:16:21Z",
+        "node_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+        "paths": [
+          "evidence/node_health/37136228467-1.json",
+          "evidence/node_health/LATEST.json",
+          "evidence/node_registration_renewal/37136228467-1.json",
+          "evidence/node_registration_renewal/LATEST.json",
+          "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+        ],
+        "role_local_scope_only": true,
+        "run_id": "37136228467-1"
+      },
+      "observed_at": "2026-10-03T16:38:29.276055+00:00",
+      "ordered_successor_parent": "24b951dc06222c6759c8104ce92532af6dec7f2a",
+      "outputs": [
+        {
+          "bytes": 8446,
+          "git_blob_sha1": "639d4a0e3f2aba71a9196dd108bf27c4c21c1860",
+          "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+          "sha256": "bf5b304e5b03ae49a6fa831b2cc3b416c60033d1d8aeea72879fc5a0a06f15c6"
+        },
+        {
+          "bytes": 25233,
+          "git_blob_sha1": "61a9cf6258532d3cfb0bdcc593bf4ee6b3f01ae2",
+          "path": "tools/qikvrt_authority_url_probe.py",
+          "sha256": "b4f93ba55d88393657ccd67e0fcdb0f50911b4db322710eee20feaf0166e1d7c"
+        },
+        {
+          "bytes": 19326,
+          "git_blob_sha1": "4e4752b5a2c06bc5c3bf628088ada7a8c5417d62",
+          "path": "tests/test_qikvrt_authority_url_probe.py",
+          "sha256": "039d570dad018e67c97359a745e142835fbfd2ed102baee3003d9e30eeaadfac"
+        },
+        {
+          "bytes": 20344,
+          "git_blob_sha1": "542cf7565583ccf67860c223309638546698f568",
+          "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+          "sha256": "77727b4fa146034a4aed3bcfa7ee176a27dd8e468d66a8ddf7c05b0673d3ce39"
+        },
+        {
+          "bytes": 12249,
+          "git_blob_sha1": "f9cf549b40f254d102c9e8504141bea19521f3b2",
+          "path": "Makefile",
+          "sha256": "6a7afb47c2ed0bd91c27c3e232ec9e41f76f050b798bd8ac50607d9522d8f4a7"
+        },
+        {
+          "bytes": 9845,
+          "git_blob_sha1": "24f7fa2a643a6aa755357b36ca13c802084860ea",
+          "path": "docs/CURRENT_AUTHORITY.md",
+          "sha256": "be5094c793982d4e0ea69a035eb30215ba5bf15865b4c5210a5302517c4d971b"
+        },
+        {
+          "bytes": 72164,
+          "git_blob_sha1": "428e8c649204b5ab9c297f67ca45d2adc07e3062",
+          "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+          "sha256": "2c42872d50c790c69e5df8e60e024ee0f2fff49e4e822b35ffcc4971fdb19ffa"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "141ccdf9d6e233c0dc27ffa462e2237cba32619a",
+          "path": "evidence/node_health/37136228467-1.json",
+          "sha256": "6113ebf0ca3621d1ecf3ea989a5bc8e8344e12474f190b2a42355fb5a526f896"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "141ccdf9d6e233c0dc27ffa462e2237cba32619a",
+          "path": "evidence/node_health/LATEST.json",
+          "sha256": "6113ebf0ca3621d1ecf3ea989a5bc8e8344e12474f190b2a42355fb5a526f896"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "6f9bc1d44f9e897219be00ff824b1e6d96c8b48d",
+          "path": "evidence/node_registration_renewal/37136228467-1.json",
+          "sha256": "a7fa1b0a930faa0a14de3679285ad0da7ddc45aadbeb33442a451b4d9653a126"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "6f9bc1d44f9e897219be00ff824b1e6d96c8b48d",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "sha256": "a7fa1b0a930faa0a14de3679285ad0da7ddc45aadbeb33442a451b4d9653a126"
+        },
+        {
+          "bytes": 563,
+          "git_blob_sha1": "763ce3f12a36126a27152f0f729c3fe36ea94fde",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "sha256": "03fa7e949baa7fc59af7846ef1c48d75fef2988b8954fd987eb36e5caa9e7288"
+        },
+        {
+          "bytes": 542,
+          "git_blob_sha1": "1073b2be9a97c83a11fd92fb21c0e44b731e39e7",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "sha256": "3e46b542daa6af4ba806e8baf52a1f1610fdfd6126333055c82a63667558fb9c"
+        },
+        {
+          "bytes": 47504,
+          "git_blob_sha1": "b8b9f20e1cae8d64d34fa15ca7ddc96c276a0ec1",
+          "path": "tools/qikvrt_integrity.py",
+          "sha256": "cc3b875be6d09d510799f52eb55a7fc0999cf0675f013916942398b051071a81"
+        }
+      ],
+      "post_native_repair": {
+        "first_regression": "ModuleNotFoundError: fcntl while the shared Pages tests import the reused pure Git-tree verifier",
+        "input_head": "24b951dc06222c6759c8104ce92532af6dec7f2a",
+        "input_tree": "f2dd680be12bcda7f953031e06ef751fb02e2cd5",
+        "native_environment": {
+          "architecture": "ARM64",
+          "build": "10.0.26200",
+          "image_version": "20260924.168.1",
+          "os": "Windows 11 Enterprise",
+          "runner_image": "windows-11-vs2026-arm64"
+        },
+        "native_job_id": 111247004950,
+        "native_run_id": 37138142511,
+        "native_successor_verification": "REQUIRED",
+        "predecessor_evidence_transfer": false,
+        "regression_test": "tests.test_qikvrt_authority_url_probe.AuthorityURLProbeTests.test_pure_tree_reader_imports_without_Unix_lock_and_mutation_fails_closed",
+        "repair": "Make the existing integrity module importable for pure Git-object checks when fcntl is unavailable. Snapshot mutation still requires its existing native lock and fails closed before any lock file is created."
+      },
+      "predecessor_evidence_transfer": false,
+      "schema": "qikvrt_authority_source_carrier_continuation_v1",
+      "state": "BLOCK"
+    },
+    "contributions": [
+      "Inspect actual existing Seed and Mesh API routes",
+      "Retain the complete historical Authority tree through a create-only Git ref and fresh readback",
+      "Extend existing integrity verification to reconstruct every recursive REST Git tree object",
+      "Verify complete historical and working-mirror inventories and reject partial or altered trees",
+      "Prepare a distinct neutral-node identity through existing template/Seed conventions without claiming creation",
+      "Reobserve installation-scoped repository listing and generic reads; classify the precise content routing/carrier boundary without inferring Authority absence or repository creation from push permission."
+    ],
+    "first_blocker": "AUTHORITY_INSTALLATION_CONTENT_ROUTING_CARRIER_UNAVAILABLE",
+    "fresh_review_and_protection_required": true,
+    "full_native_candidate_checks_required": true,
+    "historical_verification_as_recorded_on_parent": {
+      "existing_local_integrity_suite": "8 tests pass; one portable-capsule cross-check requires the absent full local Git checkout. Native full-checkout execution is mandatory.",
+      "failures": 0,
+      "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_EXACT_PARENT; FRESH_NATIVE_FULL_GENERATION_AND_TESTS_REQUIRED",
+      "local_bootstrap": "BLOCK absent local origin/full checkout; API source fixture only",
+      "new_recovery_tests": 4,
+      "skips": 0,
+      "tool_cache": "PASS 18/18"
+    },
+    "historical_working_source": {
+      "head": "39d59a0bb85b4c9a17244db0b3c391dd5c5567fb",
+      "tree": "bc2232edd71ae7567a91d145202688ac9edef880"
+    },
+    "history_not_rewritten": true,
+    "inventory_path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
+    "inventory_sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106",
+    "main_changed": false,
+    "neutral_repository_created": false,
+    "next_action": "EXPOSE_AND_USE_INSTALLATION_147849532_BOUND_AUTHORITY_CONTENT_READ",
+    "next_external_blocker": "CREATE_REPOSITORY_WRITER_NOT_EXPOSED",
+    "observed_at": "2026-10-03T13:48:20.795Z",
+    "original_historical_work_unit_fields_unchanged": true,
+    "output_fingerprints": [
+      {
+        "git_blob_sha1": "a977d5e5660cdf4aaea472cec710775b788b8842",
+        "path": "tools/qikvrt_integrity.py",
+        "sha256": "52e23c36c70eacd743532c258e985d9dada99fa5d20b5b07de74d21688686b9e"
+      },
+      {
+        "git_blob_sha1": "e4208ddaab58c456b7165c624ec5491a9ae51a55",
+        "path": "tests/test_integrity.py",
+        "sha256": "eb0c8d6ad2ddc129cb16d5d0f8b07c3f6fa43de5fd580c58619a2c1b6f8fcf60"
+      },
+      {
+        "bytes": 7912,
+        "git_blob_sha1": "a3e5b4deb4266ed292f289f8b63c11fe7948f2ec",
+        "path": "docs/CURRENT_AUTHORITY.md",
+        "sha256": "3b347a3489f5e793b7c7e1780a23dfae58c3d8831cf7cf3fd6ee85c12c6c27f5"
+      },
+      {
+        "git_blob_sha1": "98fe4c0e96286eaa9e640ec7090f8bbfecf2caf8",
+        "path": "evidence/receipts/authority-recovery-20261002/RETAINED_GIT_TREES.json",
+        "sha256": "ba30332b5c63d67d3d0b68f2df6e5b06f8bd7c604d69238f2db62efb33ee9106"
+      },
+      {
+        "bytes": 63430,
+        "git_blob_sha1": "e4d4748122be2ee0d32e1f0a4966b820efa8fb36",
+        "path": "evidence/receipts/authority-recovery-20261002/ACCEPTANCE.json",
+        "sha256": "11188fd785368ca822f67eb3ddd279a469dae19942dacde422ca613041c75d06"
+      }
+    ],
+    "owner_authorization": {
+      "authorization_account_context": "ingolf-lohmann",
+      "exact_future_head_codeowner_review_inferred": false,
+      "identity_attestation_inferred": false,
+      "provided_in_session": true,
+      "repository_attribution": "Ingolf Lohmann",
+      "scope": [
+        "lossless Authority source inclusion",
+        "functional stand-in Authority acceptance",
+        "one neutral Mesh repository mirror creation"
+      ],
+      "supplied_name": "Ingo Flomann"
+    },
+    "predecessor_evidence_transfer": false,
+    "review_branch": "work/authority-recovery-acceptance-20261002",
+    "source_claims_bound_to_historical_scope": true,
+    "source_head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_tree": "6724c1efeb6242b37aab48c9e6e836f849c773df",
+    "state": "BLOCK",
+    "verification": {
+      "exact_downloaded_blobs_verified": 69,
+      "existing_retained_tree_tests": {
+        "executed": 4,
+        "failures": 0,
+        "skips": 0
+      },
+      "fresh_git_tree_reconstructions": 3,
+      "fresh_native_complete_checkout_checks": "REQUIRED_FOR_CONTAINING_SUCCESSOR",
+      "integrity_method": "CONTENT_ADDRESSED_INCREMENTAL_FROM_AUTHENTICATED_EXACT_PARENT; FRESH_NATIVE_REGENERATION_REQUIRED",
+      "local_bootstrap": {
+        "blocker": "git config --get remote.origin.url: exit 1: no diagnostic",
+        "scope": "API source fixture has no complete authenticated local Git checkout; native complete-checkout verification is required.",
+        "state": "BLOCK"
+      },
+      "predecessor_evidence_transfer": false,
+      "source_read_mode": "EXACT_BLOB_AUTHENTICATED_API_SOURCE_FIXTURE",
+      "tool_cache": "PASS 18/18"
+    }
   },
-  "completion_claims": {
-    "portable_authority_tree_promoted": false,
-    "mirror_tree_converged": false,
-    "reciprocal_whole_tree_receipt_materialized": false,
-    "full_sync": false,
-    "symmetric_canonicality": false,
-    "PASS": false,
-    "FINAL_PASS": false,
-    "EFFECT_ACK_DONE": false
-  },
-  "candidate_state": "PORTABILITY_CORRECTION_LOCAL_CANDIDATE_PENDING_INTEGRITY_EXACT_HEAD_REVIEW_AND_PROMOTION",
-  "self_binding_rule": "The future Git commit and tree containing this work-unit file bind its exact bytes; no impossible in-file self-hash or future-head claim is made."
+  "superseded_writers": [
+    {
+      "disposition": "CLOSED_UNMERGED_SUPERSEDED_BY_EXACT_WHOLE_TREE_CONVERGENCE",
+      "head": "2b4664a364a5cd782806ff12db9739d63436bf6e",
+      "history_preserved": true,
+      "pull_request": 342,
+      "repository": "ingolf-lohmann/qik-vrt"
+    }
+  ],
+  "title": "History-preserving Authority to Mirror whole-tree convergence and reciprocal receipt preparation",
+  "work_unit_id": "AUTHORITY_MIRROR_WHOLE_TREE_CONVERGENCE_V1"
 }
