@@ -1,0 +1,122 @@
+{
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "Provider and system identity from session context; GitHub account identity is not proof of the natural person.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "bd863909c947",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "local Git objects",
+      "repository-native Python validators"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh REST observations, byte selection, metadata preparation, binding regeneration and digest-only authorization-transition diagnosis."
+  ],
+  "created_at": "2026-10-03T12:29:15.676389Z",
+  "external_effects": {
+    "authorization_consumed": false,
+    "authorization_created": false,
+    "publication": "NONE",
+    "requested_repository_effect": "Draft PR branch update only"
+  },
+  "git_history": {
+    "force_push": false,
+    "required_parent_order": [
+      "d983872c27093bc7e114fd40284a8ae8ed462303",
+      "8153c4e69a6245aadf67f0741fb50d9707c19e34"
+    ]
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized history-preserving Main integration, exact lifecycle-byte selection and package regeneration/validation; prohibited publication and authorization consumption."
+  ],
+  "human_decision": {
+    "owner_upload_decision": "PENDING",
+    "task_scope": "AUTHORIZED"
+  },
+  "inputs": [
+    {
+      "bytes": 2827,
+      "git_blob_sha1": "05f1b99f59ea41ff685f3f970097da6c9fa510d8",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MAIN_INTEGRATION_INPUTS.json",
+      "sha256": "7943a9f38714ef0fe818387f1c83fa0b9870f68ac42d004e60c90e4cb09eee08"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_MANIFEST.json",
+    "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_STATUS.json",
+    "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MACHINE_PROOF_BUNDLE.json"
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_provenance_bound_work_unit_v1",
+  "source_commit": "d983872c27093bc7e114fd40284a8ae8ed462303",
+  "source_ref": "work/collective-functional-consciousness-20261003",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "e6a44679cb9e7798215c8890abd8059642ea7dc3",
+  "unresolved_origin": [],
+  "verification": {
+    "preparatory_checks": {
+      "authorization_transition": {
+        "authorization_consumed": false,
+        "authorization_created": false,
+        "bundle_hash_changes_when_flag_changes": true,
+        "prospective_bytes_materialized": false,
+        "state": "HOLD_AUTHORIZATION_FLAG_CHANGES_APPROVED_BUNDLE_HASH"
+      },
+      "candidate_byte_bindings": "PASS",
+      "canonical_metadata_sha256": "3d185dd3a8b7b54b85eade7ecdf3e6822aeab530fcab56e0ee0d28f680022757",
+      "changed_content_return_chain": "PASS",
+      "claim_matrix_bidirectional_projection": "PASS",
+      "external_publication_effect": "NONE",
+      "fileset_closure": "PASS",
+      "input_source_head": "d983872c27093bc7e114fd40284a8ae8ed462303",
+      "integration_main_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "negative_controls": [
+        {
+          "observed_error": "SHA-256 mismatch for docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+          "result": "REJECTED_AS_EXPECTED",
+          "test_id": "PDF_HASH_TAMPER"
+        },
+        {
+          "observed_error": "bundle claims differ bidirectionally from the bound CLAIM_MATRIX: missing_from_bundle=CFC-18",
+          "result": "REJECTED_AS_EXPECTED",
+          "test_id": "CLAIM_OMISSION"
+        },
+        {
+          "observed_error": "SHA-256 mismatch for AI",
+          "result": "REJECTED_AS_EXPECTED",
+          "test_id": "SOURCE_HASH_TAMPER"
+        },
+        {
+          "observed_error": "CFC-03 has a disposition inconsistent with OPEN",
+          "result": "REJECTED_AS_EXPECTED",
+          "test_id": "OPEN_CLAIM_PROMOTION"
+        }
+      ],
+      "production_error": "proof bundle does not authorize the exact Zenodo upload",
+      "production_gate": "HOLD",
+      "production_schema_const_mismatch": {
+        "actual": false,
+        "expected": true,
+        "path": "/completion_claims/zenodo_upload_authorized"
+      },
+      "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+      "return_receipt_v2_semantic_contract": "PASS via repository-native validator; no general JSON Schema engine invoked",
+      "schema": "qikvrt_prepublication_verification_result_v1",
+      "source_references": "PASS",
+      "subject_binding": "Current working candidate bytes, to be validated again on the committed exact successor head; no predecessor execution transferred.",
+      "unique_upload_filenames": "PASS",
+      "upload_authorized": false,
+      "verification_scope": "Repository-native validator validates byte identities, claim/source disposition and return chain before rejecting the unauthorized flag. Exact fileset closure, unique public filenames and canonical metadata are checked independently. The hash transition is a digest-only negative control; no live or predecessor gates transferred."
+    },
+    "successor_exact_head_checks": "Pending initial commit; results must be observed on the final exact head and not inferred from this preparation."
+  },
+  "work_unit_id": "pr447-main-prepublication-20261003-v2"
+}

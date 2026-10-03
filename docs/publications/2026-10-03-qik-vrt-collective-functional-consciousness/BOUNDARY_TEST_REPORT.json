@@ -1,10 +1,19 @@
 {
+  "authorization_transition": {
+    "authorization_consumed": false,
+    "authorization_created": false,
+    "bundle_hash_changes_when_flag_changes": true,
+    "prospective_bytes_materialized": false,
+    "state": "HOLD_AUTHORIZATION_FLAG_CHANGES_APPROVED_BUNDLE_HASH"
+  },
   "candidate_byte_bindings": "PASS",
+  "canonical_metadata_sha256": "3d185dd3a8b7b54b85eade7ecdf3e6822aeab530fcab56e0ee0d28f680022757",
   "changed_content_return_chain": "PASS",
   "claim_matrix_bidirectional_projection": "PASS",
   "external_publication_effect": "NONE",
   "fileset_closure": "PASS",
-  "input_source_head": "c8683e2cf499c2382ee950cc59f1c034ff14a3cb",
+  "input_source_head": "d983872c27093bc7e114fd40284a8ae8ed462303",
+  "integration_main_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
   "negative_controls": [
     {
       "observed_error": "SHA-256 mismatch for docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
@@ -38,6 +47,8 @@
   "return_receipt_v2_semantic_contract": "PASS via repository-native validator; no general JSON Schema engine invoked",
   "schema": "qikvrt_prepublication_verification_result_v1",
   "source_references": "PASS",
+  "subject_binding": "Current working candidate bytes, to be validated again on the committed exact successor head; no predecessor execution transferred.",
+  "unique_upload_filenames": "PASS",
   "upload_authorized": false,
-  "verification_scope": "Repository-native validator reached only its final authorization flag after validating byte identities, claim/source disposition and return chain; no live or predecessor gates transferred."
+  "verification_scope": "Repository-native validator validates byte identities, claim/source disposition and return chain before rejecting the unauthorized flag. Exact fileset closure, unique public filenames and canonical metadata are checked independently. The hash transition is a digest-only negative control; no live or predecessor gates transferred."
 }

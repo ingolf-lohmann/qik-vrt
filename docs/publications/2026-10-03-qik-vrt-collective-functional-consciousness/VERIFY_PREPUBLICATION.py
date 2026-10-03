@@ -3,11 +3,12 @@
 # Copyright 2026 Ingolf Lohmann.
 """Verify exact candidate bytes and the deliberately closed production boundary."""
 from pathlib import Path
-import copy, json, sys, tempfile
+import copy, hashlib, json, sys, tempfile
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 from tools.qikvrt_zenodo_machine_proof import ProofGateError, identity, validate_bundle
+from tools import qikvrt_zenodo_publish as publisher
 
 HERE = Path(__file__).resolve().parent
 REL = HERE.relative_to(ROOT).as_posix() + '/'
@@ -37,6 +38,12 @@ def verify():
     planned = json.loads((HERE / 'ZENODO_FILESET.json').read_text())['paths']
     assert set(planned) == {c['path'] for c in bundle['candidate']['files']} | {a['path'] for a in bundle['artifacts']} | {REL+'MACHINE_PROOF_BUNDLE.json'}
     assert len(planned) == len(set(planned))
+    names = [Path(p).name for p in planned]
+    assert len(names) == len(set(names)), 'Duplicate public upload filenames'
+    metadata = json.loads((HERE / 'ZENODO_METADATA.json').read_text())
+    assert publisher._validate_metadata(metadata) == metadata
+    canonical_metadata = json.dumps(metadata, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+    metadata_sha256 = hashlib.sha256(canonical_metadata).hexdigest()
     for item in bundle['candidate']['files'] + bundle['artifacts']:
         observed_id = identity(ROOT/item['path'])
         for key in ('sha256','git_blob_sha1'):
@@ -59,7 +66,16 @@ def verify():
         error = inspect_production(changed)
         assert expected in error, (name,error)
         cases.append({'test_id':name,'result':'REJECTED_AS_EXPECTED','observed_error':error})
-    return {'schema':'qikvrt_prepublication_verification_result_v1','candidate_byte_bindings':'PASS','claim_matrix_bidirectional_projection':'PASS','source_references':'PASS','changed_content_return_chain':'PASS','fileset_closure':'PASS','negative_controls':cases,'production_gate':'HOLD','production_error':observed,'upload_authorized':False,'external_publication_effect':'NONE','verification_scope':'Repository-native validator reached only its final authorization flag after validating byte identities, claim/source disposition and return chain; no live or predecessor gates transferred.'}
+    # A prospective authorization cannot authorize today's false-valued bundle
+    # and remain bound to the bytes of a later true-valued bundle. This probe
+    # computes digests only; it creates no authorization or alternate bundle.
+    prospective = copy.deepcopy(bundle)
+    prospective['completion_claims']['zenodo_upload_authorized'] = True
+    prospective_raw = (json.dumps(prospective, ensure_ascii=False, indent=2, sort_keys=True) + '\n').encode('utf-8')
+    bundle_sha256 = identity(BUNDLE)['sha256']
+    prospective_sha256 = hashlib.sha256(prospective_raw).hexdigest()
+    assert bundle_sha256 != prospective_sha256
+    return {'schema':'qikvrt_prepublication_verification_result_v1','candidate_byte_bindings':'PASS','claim_matrix_bidirectional_projection':'PASS','source_references':'PASS','changed_content_return_chain':'PASS','fileset_closure':'PASS','unique_upload_filenames':'PASS','canonical_metadata_sha256':metadata_sha256,'negative_controls':cases,'production_gate':'HOLD','production_error':observed,'upload_authorized':False,'external_publication_effect':'NONE','authorization_transition':{'state':'HOLD_AUTHORIZATION_FLAG_CHANGES_APPROVED_BUNDLE_HASH','bundle_hash_changes_when_flag_changes':True,'prospective_bytes_materialized':False,'authorization_created':False,'authorization_consumed':False},'verification_scope':'Repository-native validator validates byte identities, claim/source disposition and return chain before rejecting the unauthorized flag. Exact fileset closure, unique public filenames and canonical metadata are checked independently. The hash transition is a digest-only negative control; no live or predecessor gates transferred.'}
 
 if __name__ == '__main__':
     print(json.dumps(verify(),ensure_ascii=False,indent=2,sort_keys=True))

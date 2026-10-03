@@ -38,10 +38,10 @@
       "sha256": "5dd9a89ca6180e519495b6c65b78a5d6097c6fb7225ae2b2b462ef257d18f413"
     },
     {
-      "git_blob_sha1": "9dd2cf6984807222a634e488370866d77cee3f52",
+      "git_blob_sha1": "256c75809f9d722d6a9bc97da13f39e19eeaa129",
       "kind": "BOUNDARY_TEST",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/BOUNDARY_TEST_REPORT.json",
-      "sha256": "4b5a257286585aaf2b3dd1b323223903bb6557f04fa9591e6fbc8dcec60603b5"
+      "sha256": "33b857d99b04178ead9da1ffcc6caebe995461ecde223e3670fbd10f247094e9"
     },
     {
       "git_blob_sha1": "f0452c647cbac5c44436e6f1236805895b84fbdf",
@@ -54,6 +54,12 @@
       "kind": "CLAIM_MATRIX",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/CLAIM_MATRIX.json",
       "sha256": "d80fb87fe56ffb0055a73c77adeb05208c657ccad18b0c72fb884b34a5d74e5f"
+    },
+    {
+      "git_blob_sha1": "05f1b99f59ea41ff685f3f970097da6c9fa510d8",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MAIN_INTEGRATION_INPUTS.json",
+      "sha256": "7943a9f38714ef0fe818387f1c83fa0b9870f68ac42d004e60c90e4cb09eee08"
     },
     {
       "git_blob_sha1": "7eac3158d91bd9e2bdcd04702207804b53436f67",
@@ -74,16 +80,16 @@
       "sha256": "85cccc7708a2350668b20f76892648ff550655bbf8bc0994534df49fb0e50afd"
     },
     {
-      "git_blob_sha1": "b778f59f9da11f218a40028604ca47cf0f8d9fb9",
+      "git_blob_sha1": "5a7d238da58e7fa9133fa4b451fb8ab573770400",
       "kind": "RETURN_RECEIPT",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_RETURN_RECEIPT.json",
-      "sha256": "89a415c0820f57abd94d7702b566922581e8448b53953a71c0fb81b07e8baf34"
+      "sha256": "2f2a722eb1a35215a1ec3360d692bcc15dd1b80c23369d7a6f365baa2502e002"
     },
     {
-      "git_blob_sha1": "9c665424d4725b2e616a550cedb23da743187144",
+      "git_blob_sha1": "cfe38f840dc136c2dbf3706763b615b2b64bdce6",
       "kind": "OTHER",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_STATUS.json",
-      "sha256": "6374f468864b8c42578e02beeaafbf239d4323a17ba8c45bb655fd9ae6f2407d"
+      "sha256": "15a688caeaf2d9d77a81c9093f8615006c67ac223417abc419535db295d99015"
     },
     {
       "git_blob_sha1": "63a952d9a1f512b64191a2f9ab4500ac9265913c",
@@ -98,10 +104,16 @@
       "sha256": "6533c5ff166341fc4d03641987a65b77e9e5e1dec28998531dc4966a97c432dc"
     },
     {
-      "git_blob_sha1": "6330e5b3c68d2766e20976046f371022a8ff4668",
+      "git_blob_sha1": "c4c1a6d072c77097ee61d154667133e23be2fb4c",
       "kind": "OTHER",
       "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/VERIFY_PREPUBLICATION.py",
-      "sha256": "a18ac3e0a71753ae4e199c45b7d411d179d15dc61841eb3a2ea6eb5c70937f5b"
+      "sha256": "eb39012ca738b214ae65f3654a06acbb1ccaa7d87e22b2464c01db34d348c8cf"
+    },
+    {
+      "git_blob_sha1": "331b066dd83b3750103d56e31090db2e58efbb16",
+      "kind": "OTHER",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/ZENODO_METADATA.json",
+      "sha256": "1b33ef8b553d2b1033eb1ae35e479134ab176a2bbbca35dfe5d3057703080321"
     },
     {
       "git_blob_sha1": "ddf7e306940d256b51971ea153c33b6e493ffde4",
