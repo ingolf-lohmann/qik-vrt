@@ -1,0 +1,353 @@
+{
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PROCESSOR_CLOCK_CARRIER_V1",
+  "created_at": "2026-10-01T14:51:43.929430+00:00",
+  "status": "MIRROR_REVIEW_CANDIDATE",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/processor-clock-core-20261001",
+  "source_commit": "f530530e9864e324681c88444332a84628fd3592",
+  "source_tree": "52b5c385141664d53fcba15a8582f6818b3c3eed",
+  "observed_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "human_actor": {
+    "class": "HUMAN",
+    "name": "Ingolf Lohmann",
+    "identity_basis": "EXISTING_SESSION_AND_REPOSITORY_OWNER_BINDING"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "ea34acb36b4e",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "git",
+      "Python standard library",
+      "ANSI-C90 compiler",
+      "GHDL 6.0.0"
+    ],
+    "identity_and_observation_limits": "Platform identity does not attest a natural person or physical board"
+  },
+  "human_contributions": [
+    "Authorized extending PR #430 with the smallest real per-cycle clock carrier",
+    "Required atomic inputs, epoch/cycle fencing and independent readable coverage",
+    "Permitted RTL/testbench/readback fallback if actual board binding is unavailable; prohibited synthetic cycle numbers as physical proof",
+    "Required separation from scheduling PR #426 and fresh exact-head gates"
+  ],
+  "artificial_cognitive_contributions": [
+    "Verified current PR/head/main and absence of reusable hardware carrier in Mirror head/main",
+    "Implemented synchronous VHDL carrier, separate sequential witness and coherent challenged readback",
+    "Reused existing independently restated C oracle for all 2621440 binary state/decision combinations",
+    "Implemented fail-closed telemetry verifier and tests for RTL/synthesized netlists and readback boundary",
+    "Extended existing bootstrap/cache/CI/Makefile paths with archive-hash-locked GHDL and retained gate requirements"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "include/qikvrt/effect_ack.h",
+      "source_commit": "f530530e9864e324681c88444332a84628fd3592",
+      "sha256": "35c41aa805669c58eaf03ab016b5c5ddaf94e019b3bd88eb61cf906021baff1f"
+    },
+    {
+      "path": "src/effect_ack_core.c",
+      "source_commit": "f530530e9864e324681c88444332a84628fd3592",
+      "sha256": "9504ebd853580dc499c669d7527aaa2bb4f3c66afd8726420ad6b3eb3f061747"
+    },
+    {
+      "path": "tests/test_effect_ack_core.c",
+      "source_commit": "f530530e9864e324681c88444332a84628fd3592",
+      "sha256": "03decc2c56c1cd6781f66c4fc64fe02f85d449cb7d260749375bca21bba45140"
+    },
+    {
+      "path": "tools/bootstrap-runtime.sh",
+      "source_commit": "f530530e9864e324681c88444332a84628fd3592",
+      "sha256": "7a90c64fc773b51c3bc431e9b55f662476f429ecbe42fec084951cca5803406d"
+    },
+    {
+      "path": "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json",
+      "source_commit": "f530530e9864e324681c88444332a84628fd3592",
+      "sha256": "ec0e535a9c47e9e821c087e042bce119ff8d32f9cc6293524c80fab13cfb4916"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "bytes": 7949,
+      "sha256": "a6120f218dbd3868658be93e68d2eb0ca30fd418cc48b4885260bb096ad5c898",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11270,
+      "sha256": "125c86d89ad02870e3944e6eeee93a32c7c6989017a8a1299fe0876c26c5ba94",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "docs/CURRENT_AUTHORITY.md",
+      "bytes": 3266,
+      "sha256": "9fb233e15c97e2f913c499596e503e367d6e770d636ccfb1a8768f5fdb364e2b",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "docs/QIKVRT_PROCESSOR_CLOCK.md",
+      "bytes": 10081,
+      "sha256": "e7d3d432836c4799a8a6a60dbab8bacd17550b69461797990cb7ba9d3df95b30",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json",
+      "bytes": 6097,
+      "sha256": "d6561868c31298dee0106a3400d6147ebf99a4e46405f22ed48cfeb552eae63b",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "rtl/effect_ack_clock_carrier.vhd",
+      "bytes": 4527,
+      "sha256": "67dff22e9e3c825aa31cf5202e8da3ba4153a57a1ab81dd37e7974f5d336ba86",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "rtl/effect_ack_clock_pkg.vhd",
+      "bytes": 2647,
+      "sha256": "75f9cb8341457368f829ed48a038b19de6529890d708a359430613494b90a208",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "rtl/effect_ack_coverage_witness.vhd",
+      "bytes": 1881,
+      "sha256": "2b845753530fff8609eb089097a4741e6ded063863d2d5aa73a3d2eda5ce79ac",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3234,
+      "sha256": "a670af7134759ac9cd59aa84f3b8e1b6bc5a63ada77542cda8b062d92c57c564",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 11475,
+      "sha256": "a2bdda85d4b91ad2bbf48d7b994fd1477ef335aca40eba59f7eb8606630d937d",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2793,
+      "sha256": "60a478511bb55d82289ebe419a4b048c7fafc13d72153b33d909c73504fad0f3",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/effect_ack_clock_tb.vhd",
+      "bytes": 9086,
+      "sha256": "f00d063d5b4b5a1b4e75e6ced026d5e069a66cf2bbc7f88c8c5f3dc18bb9c990",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/test_effect_ack_clock_carrier.py",
+      "bytes": 7360,
+      "sha256": "26f2e24ca604990f1546d3fb53f8979a78620c701297ac8361832fee5cdf4554",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/test_effect_ack_clock_vectors.c",
+      "bytes": 693,
+      "sha256": "fac0efe2463040d5f778956b6a8261de9d3207c15cb4dbc8fab10f665e1508a6",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tools/ai_runtime_bootloader.py",
+      "bytes": 14865,
+      "sha256": "54616721d6ef5eb21f0c334c51dfe2b3c38bb5a63878ba6437b9e2aa7fc866fb",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tools/bootstrap-runtime.sh",
+      "bytes": 20897,
+      "sha256": "725741707c6865720ad00b67178d5d856104ee5b42d84dc62e96c4cd7192438f",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tools/qikvrt_effect_ack_clock_readback.py",
+      "bytes": 3183,
+      "sha256": "d4beda1a80180386af0605e720e0555906ec3c0155aa26205a24609ed4527c73",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    }
+  ],
+  "reuse_diagnostic": {
+    "mirror_head_and_main_no_rtl_carrier": true,
+    "c_core_is_multiple_cpu_instructions_not_per_physical_edge": true,
+    "existing_gate_oracle_bootstrap_cache_makefile_ci_reused": true,
+    "mesh_executor_dispatch": "NOT_USED; NO CALLABLE INITIAL WORKFLOW_DISPATCH IN THIS CLIENT"
+  },
+  "git_history": {
+    "parent_commit": "f530530e9864e324681c88444332a84628fd3592",
+    "branch": "work/processor-clock-core-20261001",
+    "force_push": false,
+    "rewrite_existing_history": false,
+    "candidate_commit_binding": "ENCLOSING_GIT_COMMIT; NO SELF_HASH_CYCLE",
+    "successor_parents": [
+      "13036c4e16c2d0faba11b65c057616e014c3b297",
+      "469a95ac4ef14692dda69673b8a75eb2cf03685d"
+    ],
+    "lossless_main_integration": "Preserve both parent histories; only current Main lifecycle/evidence changes integrated; regenerate canonical projections."
+  },
+  "verification": {
+    "scope": "EXACT_OUTPUT_SOURCE_BYTES_IN_WORKING_TREE; REMOTE_EXACT_HEAD_REVALIDATION_REQUIRED",
+    "aggregate_repository_gate": {
+      "command": "GITHUB_ACTIONS=true make -k test",
+      "result": "PASS",
+      "exit_code": 0,
+      "log_bytes": 105150,
+      "log_sha256": "5cbdc8a8ae96d0c4d4e0e7d48c59c736800adea5ecd53a2f2a9ab291b60dd43d",
+      "unittest_execution_summaries": [
+        5,
+        15,
+        8,
+        4,
+        168,
+        168,
+        41,
+        5,
+        15,
+        41,
+        6,
+        21,
+        5,
+        15,
+        1,
+        5,
+        4,
+        5
+      ],
+      "summed_unittest_executions_including_repeated_modules": 532
+    },
+    "clock_carrier": {
+      "result": "PASS",
+      "binary_oracle_vectors_per_simulation": 2621440,
+      "simulations": [
+        "source RTL",
+        "64-bit and 2-bit specialized synthesized netlists"
+      ],
+      "carrier_readback": {
+        "nonce": 99,
+        "epoch": 7,
+        "evaluated": 2569,
+        "witnessed": 2569,
+        "snapshot_cycle": 2568,
+        "fault": 0,
+        "witness_fault": 0,
+        "reset_seen": 0,
+        "physical_clock_verified": false
+      },
+      "controls": [
+        "all five states and 19 boolean inputs against existing independent C oracle",
+        "exactly one evaluation per admitted edge",
+        "atomic snapshot and stable challenged register readback",
+        "missing/unverified snapshot blocks without stale DONE",
+        "sink reservation and payload mediation",
+        "invalid decision and unknown input values",
+        "epoch mismatch, gap, replay, readmission, soft reset",
+        "counter saturation and retained fault",
+        "independent witness omitted, duplicate, pre-window and stale evaluation injection",
+        "CLI duplicate keys, noncanonical fields and forged board flag rejection",
+        "GHDL archive hash rejection and cache symlink rejection/rollback"
+      ]
+    },
+    "tool_cache": {
+      "result": "PASS",
+      "declared_components": 15,
+      "coverage_percent": 100,
+      "ghdl_version": "6.0.0",
+      "archive_sha256": "30d6a977b8456d140bbafecbbe64b1947a3d92eeae8f5e6d9f528a174f9566e7",
+      "source": "https://github.com/ghdl/ghdl/releases/tag/v6.0.0"
+    },
+    "local_environment_repair": {
+      "historical_commit_required": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "action": "Fetched exact existing commit required by unchanged historical finalizer regression",
+      "test_weakened": false,
+      "result": "PASS"
+    },
+    "physical_board_binding": "OPEN",
+    "physical_clock_evidence": false,
+    "initial_boot": "CONTINUE; integrity/cache/handoff PASS; optional unrelated profiles missing",
+    "optimization_pass": "HOLD; no current Authority main and no verified exclusive optimization writer; no unrelated mutation",
+    "successor_revalidation": "PASS_FINAL_SOURCE_BYTES; NEW_REMOTE_HEAD_REVALIDATION_REQUIRED",
+    "ci_regression_diagnosis": {
+      "run": 36880847264,
+      "job": 110431917486,
+      "observed_checkout": "5c32f073df12cd82b3df84d0d91052cd65a4994c",
+      "failure": "Merge-tree integrity differs after newer Main lifecycle/evidence paths",
+      "repair": "Integrate actual Main and regenerate; common Make CI path provisions locked carrier tool so all mandatory suites can run",
+      "evidence_runtime_failure": {
+        "run": 36880846882,
+        "job": 110431915243,
+        "head": "13036c4e16c2d0faba11b65c057616e014c3b297",
+        "failure": "Required GHDL absent in evidence workflow; test failed closed",
+        "repair": "Common Make test path explicitly provisions locked GHDL in declared GitHub Actions context; ordinary local runs remain check-only"
+      }
+    },
+    "main_lifecycle_inputs": [
+      {
+        "path": "evidence/node_health/36866747092-1.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "d6a983f589e97a5563daffa6b893471932697178f2ca0785f47c6603105ec325"
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "d6a983f589e97a5563daffa6b893471932697178f2ca0785f47c6603105ec325"
+      },
+      {
+        "path": "evidence/node_registration_renewal/36866747092-1.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "b5b6d0d1cb56470e363b1fce689c97d26ab0bea1b596ddf21ceef54527269fab"
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "b5b6d0d1cb56470e363b1fce689c97d26ab0bea1b596ddf21ceef54527269fab"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "d868d9f5a72d141aac72af19317e8a05aa0e06b2606e8ff5f87e924c320cdead"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "source_commit": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+        "sha256": "bae083f9fa692a756c784302b13c7a65eaa5712441d45e21be7eeb1f5ee06b45"
+      }
+    ]
+  },
+  "human_decision": {
+    "implementation_scope": "AUTHORIZED_BY_DIRECT_INSTRUCTION",
+    "candidate_acceptance": "PENDING",
+    "promotion_merge_deployment": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "authorized_target": "existing PR #430 branch and metadata",
+    "main_mutation": false,
+    "merge": false,
+    "deployment": false,
+    "board_programming": false,
+    "digital_twin_scheduling_mutation": false
+  },
+  "release_claims": {
+    "generic_rtl_synthesis_is_board_timing_proof": false,
+    "physical_per_clock_execution": false,
+    "independent_clock_loss_witness": false,
+    "authentication_and_cdc_integration": false,
+    "system_wide_effect_mediation": false,
+    "power_loss_epoch_persistence": false,
+    "overall_effect_ack_done": false
+  },
+  "next_physical_step": "Bind actual FPGA board/clock/pins, authenticated source and sink reservation, retained epoch/fault ledger, timing/bitstream/programmer readback and independent oscillator window; V1 cannot attest those from numeric telemetry."
+}

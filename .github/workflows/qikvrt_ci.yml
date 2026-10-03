@@ -16,13 +16,15 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+      - name: Provision locked GHDL for physical-clock RTL simulation and synthesis
+        run: sh tools/bootstrap-runtime.sh --profile clock --install --accept-third-party
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
         continue-on-error: true

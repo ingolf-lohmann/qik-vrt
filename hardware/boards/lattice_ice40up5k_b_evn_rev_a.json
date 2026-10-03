@@ -1,0 +1,793 @@
+{
+  "EFFECT_ACK_DONE": false,
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+    "rights_holder": "Ingolf Lohmann",
+    "third_party_boundary": "Lattice primary documents retain their own rights; factual extraction and source identifiers do not relicense those documents."
+  },
+  "adapter": {
+    "carrier_clock_divided": false,
+    "carrier_evaluation": "EVERY_ADMITTED_RISING_EDGE",
+    "fresh_input": "ONE_EVALUATION_ON_COMPLETE_REQUEST_LATCH; NO_STALE_REUSE",
+    "input_domain": "SYNCHRONOUS_TO_CLK",
+    "internal_parallel_entity": "effect_ack_parallel_core",
+    "ports": {
+      "clk": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "35"
+      },
+      "frame_latch": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "45"
+      },
+      "frame_shift": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "48"
+      },
+      "frame_start": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "3"
+      },
+      "power_reset_n": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "4"
+      },
+      "response_shift": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "2"
+      },
+      "response_valid": {
+        "direction": "output",
+        "io_standard": "LVCMOS33",
+        "package_pin": "46"
+      },
+      "serial_in": {
+        "direction": "input",
+        "io_standard": "LVCMOS33",
+        "package_pin": "47"
+      },
+      "serial_out": {
+        "direction": "output",
+        "io_standard": "LVCMOS33",
+        "package_pin": "44"
+      },
+      "transport_fault": {
+        "direction": "output",
+        "io_standard": "LVCMOS33",
+        "package_pin": "6"
+      }
+    },
+    "protected_response": "ONE_FROZEN_OUTCOME; BUSY_RESPONSE_BLOCKS_NEXT_LATCH; TRANSMISSION_NEVER_REPEATS_COMMIT; NOT_CURRENT_ACTUATOR_AUTHORITY",
+    "protocol": "SYNCHRONOUS_FRAMED_SERIAL_V1",
+    "request_bits": 317,
+    "response_bits": 485,
+    "reuse_commit": "996831cdfdd3e87b655708ef2b7bc36b287be2ff",
+    "rtl": "rtl/effect_ack_board_top.vhd",
+    "top": "effect_ack_board_top"
+  },
+  "bitstream_programmed": false,
+  "board": {
+    "bom_variants": [
+      "D11=CDBU0520",
+      "D11=CDSU4148"
+    ],
+    "documented_revision": "A",
+    "header_population": "J2/J3/J52 and PMOD marked DNI in schematic; physical population unobserved",
+    "id": "iCE40UP5K-B-EVN",
+    "observed_revision": null,
+    "revision_source": "guide:Figures A.1-A.6 title blocks",
+    "schematic_revision": "A",
+    "serial": null
+  },
+  "clock": {
+    "frequency_hz": 12000000,
+    "jitter_measured": false,
+    "net": "ICE_CLK",
+    "package_pin": "35",
+    "period_ns": 83.33333333333333,
+    "port": "clk",
+    "source": "SiTime SiT1602AC-12-33E-12.000 X1; J51 shunted",
+    "source_binding": "guide:Figure A.2 X1 and Figure A.3 J51/ICE_CLK; pinout and migration GBIN G0"
+  },
+  "electrical": {
+    "io_source": "datasheet:section 3.1.9, Tables 3.9/3.10 LVCMOS33 input/output; guide:Figure A.3 supplies",
+    "rgb_gpio_interchangeable": false,
+    "selected_io_standard": "LVCMOS33",
+    "standards_at_documented_rails": {
+      "differential_comparators": "Device feature on paired DPIO pads; not part of this single-ended adapter profile",
+      "input": [
+        "LVCMOS33"
+      ],
+      "lower_voltage_standards": "LVCMOS25/18 and output-only LVCMOS12 require different VCCIO; not assigned on this documentary 3.3V board",
+      "output": [
+        "LVCMOS33"
+      ],
+      "pull_options": [
+        "NONE",
+        "WEAK_PULLUP"
+      ],
+      "selected_pull": "NONE"
+    },
+    "vcc_volts": 1.2,
+    "vccio_volts": {
+      "0": 3.3,
+      "1": 3.3,
+      "2": 3.3
+    }
+  },
+  "evidence_class": "DOCUMENTARY_PRIMARY_SOURCES",
+  "fpga": {
+    "build_part_source": "datasheet:Table 5.4; industrial selection is a build target, not observed device marking",
+    "device": "iCE40UP5K",
+    "ground_paddle": "GND; not a GPIO",
+    "idcode": null,
+    "package": "SG48",
+    "package_description": "48-pin QFN; exposed ground paddle",
+    "selected_build_part": "iCE40UP5K-SG48I",
+    "temperature_grade": null,
+    "vendor": "LATTICE"
+  },
+  "observed_at": "2026-10-01T17:43:38Z",
+  "observed_at_scope": "DOCUMENT_DOWNLOAD_AND_VISUAL_READ_ONLY; NOT_BOARD_OBSERVATION",
+  "package_pins": [
+    {
+      "bank": "2",
+      "function": "IOB_0a",
+      "header_pad": "J3.15",
+      "io_standard": "LVCMOS33",
+      "package_pin": "46",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_2a",
+      "header_pad": "J3.9",
+      "io_standard": "LVCMOS33",
+      "package_pin": "47",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_3b_G6",
+      "header_pad": "J3.13",
+      "io_standard": "LVCMOS33",
+      "package_pin": "44",
+      "pin_type": "DPIO/GBIN",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_4a",
+      "header_pad": "J3.5",
+      "io_standard": "LVCMOS33",
+      "package_pin": "48",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_5b",
+      "header_pad": "J3.7",
+      "io_standard": "LVCMOS33",
+      "package_pin": "45",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_6a",
+      "header_pad": "J3.11",
+      "io_standard": "LVCMOS33",
+      "package_pin": "2",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_8a",
+      "header_pad": "J3.1",
+      "io_standard": "LVCMOS33",
+      "package_pin": "4",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "IOB_9b",
+      "header_pad": "J3.3",
+      "io_standard": "LVCMOS33",
+      "package_pin": "3",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "creset_b",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "8",
+      "pin_type": "CONFIG",
+      "role": "DEDICATED_CONFIGURATION_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "CDONE",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "7",
+      "pin_type": "CONFIG",
+      "role": "DEDICATED_CONFIGURATION_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_13b",
+      "header_pad": "J3.20",
+      "io_standard": "LVCMOS33",
+      "package_pin": "6",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_16a",
+      "header_pad": "J3.18",
+      "io_standard": "LVCMOS33",
+      "package_pin": "9",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_18a",
+      "header_pad": "J3.16",
+      "io_standard": "LVCMOS33",
+      "package_pin": "10",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_20a",
+      "header_pad": "J3.14",
+      "io_standard": "LVCMOS33",
+      "package_pin": "11",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_22a",
+      "header_pad": "J3.2",
+      "io_standard": "LVCMOS33",
+      "package_pin": "12",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_23b",
+      "header_pad": "J3.4",
+      "io_standard": "LVCMOS33",
+      "package_pin": "21",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_24a",
+      "header_pad": "J3.6",
+      "io_standard": "LVCMOS33",
+      "package_pin": "13",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_25b_G3",
+      "header_pad": "J3.8",
+      "io_standard": "LVCMOS33",
+      "package_pin": "20",
+      "pin_type": "DPIO/GBIN",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_29b",
+      "header_pad": "J3.10",
+      "io_standard": "LVCMOS33",
+      "package_pin": "19",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_31b",
+      "header_pad": "J3.12",
+      "io_standard": "LVCMOS33",
+      "package_pin": "18",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_32a_SPI_SO",
+      "header_pad": "J52.6",
+      "io_standard": "LVCMOS33",
+      "package_pin": "14",
+      "pin_type": "DPIO/CONFIG_SPI",
+      "role": "CONFIGURATION_SPI_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_33b_SPI_SI",
+      "header_pad": "J52.4",
+      "io_standard": "LVCMOS33",
+      "package_pin": "17",
+      "pin_type": "DPIO/CONFIG_SPI",
+      "role": "CONFIGURATION_SPI_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_34a_SPI_SCK",
+      "header_pad": "J52.8",
+      "io_standard": "LVCMOS33",
+      "package_pin": "15",
+      "pin_type": "DPIO/CONFIG_SPI",
+      "role": "CONFIGURATION_SPI_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "IOB_35b_SPI_SS",
+      "header_pad": "J52.10",
+      "io_standard": "LVCMOS33",
+      "package_pin": "16",
+      "pin_type": "DPIO/CONFIG_SPI",
+      "role": "CONFIGURATION_SPI_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": null,
+      "function": "VCCPLL",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "29",
+      "pin_type": "VCCPLL",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_36b",
+      "header_pad": "J2.5",
+      "io_standard": "LVCMOS33",
+      "package_pin": "25",
+      "pin_type": "DPIO/I3C",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": true,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_37a",
+      "header_pad": "J2.3",
+      "io_standard": "LVCMOS33",
+      "package_pin": "23",
+      "pin_type": "DPIO/I3C",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": true,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_38b",
+      "header_pad": "J2.9",
+      "io_standard": "LVCMOS33",
+      "package_pin": "27",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_39a",
+      "header_pad": "J2.7",
+      "io_standard": "LVCMOS33",
+      "package_pin": "26",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_41a",
+      "header_pad": "J2.14",
+      "io_standard": "LVCMOS33",
+      "package_pin": "28",
+      "pin_type": "PIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_42b",
+      "header_pad": "J2.12",
+      "io_standard": "LVCMOS33",
+      "package_pin": "31",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_43a",
+      "header_pad": "J2.11",
+      "io_standard": "LVCMOS33",
+      "package_pin": "32",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_44b",
+      "header_pad": "J2.19",
+      "io_standard": "LVCMOS33",
+      "package_pin": "34",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": true,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_45a_G1",
+      "header_pad": "J2.15",
+      "io_standard": "LVCMOS33",
+      "package_pin": "37",
+      "pin_type": "DPIO/GBIN",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_46b_G0",
+      "header_pad": "J2.17",
+      "io_standard": "LVCMOS33",
+      "package_pin": "35",
+      "pin_type": "DPIO/GBIN",
+      "role": "OSCILLATOR_INPUT_ONLY",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_48b",
+      "header_pad": "J2.8",
+      "io_standard": "LVCMOS33",
+      "package_pin": "36",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_49a",
+      "header_pad": "J2.20",
+      "io_standard": "LVCMOS33",
+      "package_pin": "43",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": true,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_50b",
+      "header_pad": "J2.10",
+      "io_standard": "LVCMOS33",
+      "package_pin": "38",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "IOT_51a",
+      "header_pad": "J2.16",
+      "io_standard": "LVCMOS33",
+      "package_pin": "42",
+      "pin_type": "DPIO",
+      "role": "GPIO_HEADER_PAD",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "RGB2",
+      "header_pad": "J52.9",
+      "io_standard": null,
+      "package_pin": "41",
+      "pin_type": "LED",
+      "role": "DEDICATED_RGB_CURRENT_SINK",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "RGB1",
+      "header_pad": "J52.5",
+      "io_standard": null,
+      "package_pin": "40",
+      "pin_type": "LED",
+      "role": "DEDICATED_RGB_CURRENT_SINK",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "RGB0",
+      "header_pad": "J52.3",
+      "io_standard": null,
+      "package_pin": "39",
+      "pin_type": "LED",
+      "role": "DEDICATED_RGB_CURRENT_SINK",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "VCC",
+      "function": "VCC",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "5",
+      "pin_type": "VCC",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "VCC",
+      "function": "VCC",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "30",
+      "pin_type": "VCC",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "0",
+      "function": "VCCIO_0",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "33",
+      "pin_type": "VCCIO",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "1",
+      "function": "SPI_Vccio1",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "22",
+      "pin_type": "VCCIO",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "2",
+      "function": "VCCIO_2",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "1",
+      "pin_type": "VCCIO",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    },
+    {
+      "bank": "VPP",
+      "function": "VPP_2V5",
+      "header_pad": null,
+      "io_standard": null,
+      "package_pin": "24",
+      "pin_type": "VPP",
+      "role": "POWER_RESERVED",
+      "shared_with_switch": false,
+      "source": "pinout:Sheet1/F; migration:Sheet1/H; guide:Figures A.3/A.4"
+    }
+  ],
+  "physical_authentication": false,
+  "physical_clock_verified": false,
+  "profile_id": "LATTICE_ICE40UP5K_B_EVN_REV_A_SG48",
+  "programmer_readback_observed": false,
+  "schema": "qikvrt_effect_ack_documentary_board_profile_v2",
+  "source_archive_crosscheck_complete": false,
+  "sources": {
+    "datasheet": {
+      "bytes": 1615843,
+      "document": "FPGA-DS-02008",
+      "sha256": "2ef891342e6bc31ebbdf1d3bef1fafaa2299a3a3ec66dab00ffc7f57d8547cc6",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51968",
+      "version": "2.4"
+    },
+    "default_design": {
+      "bytes": null,
+      "sha256": null,
+      "status": "AUTHENTICATION_REQUIRED",
+      "url": "https://www.latticesemi.com/view_document?document_id=51990",
+      "version": "1.0"
+    },
+    "guide": {
+      "bytes": 2107329,
+      "document": "FPGA-UG-02001",
+      "sha256": "2439fd0c7397f43883d13e8d92879904e669461210245906e19e329c806a022c",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51987",
+      "version": "1.2"
+    },
+    "layout": {
+      "bytes": null,
+      "sha256": null,
+      "status": "AUTHENTICATION_REQUIRED",
+      "url": "https://www.latticesemi.com/view_document?document_id=51989",
+      "version": "1.0"
+    },
+    "migration": {
+      "bytes": 15652,
+      "document": null,
+      "sha256": "711ae1e20835d65de9b65c6518994867ea612037d8676975d1d7a4e88b1b46ee",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51133",
+      "version": "2.0"
+    },
+    "pinout": {
+      "bytes": 15999,
+      "document": null,
+      "sha256": "cee14ad47beaf22298246228e913e539c87e33bf078e04d65988d1a24237d938",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=51971",
+      "version": "1.1"
+    },
+    "programming": {
+      "bytes": 1302169,
+      "document": "FPGA-TN-02001",
+      "sha256": "c09f115e41891c04af72e05c64fae1c66e379d6effd26b8192f484752e638d55",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=46502",
+      "version": "3.5"
+    },
+    "radiant-flow": {
+      "bytes": 1927969,
+      "sha256": "1a09b4d8d2da487c10527ad88a2ee02b2298c5baf2a6a2978157c3f1375f7f52",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=55284",
+      "version": "1.0"
+    },
+    "radiant-guide": {
+      "bytes": 15655436,
+      "sha256": "61bc3376d515b84d6e53b2ce64a9c9d3a88332646c4fa17f38bbd1bb5efd7e57",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=55202",
+      "version": "2026.1"
+    },
+    "radiant-tcl": {
+      "bytes": 371675,
+      "sha256": "9992437d96f087367ba283b0ac6986c5b71dd4123407af864642cb566bcda9a9",
+      "status": "PRIMARY_BYTES_READ",
+      "url": "https://www.latticesemi.com/view_document?document_id=55212",
+      "version": "2026.1"
+    },
+    "schematic_source": {
+      "bytes": null,
+      "sha256": null,
+      "status": "AUTHENTICATION_REQUIRED",
+      "url": "https://www.latticesemi.com/view_document?document_id=51988",
+      "version": "1.0"
+    }
+  },
+  "vendor_path": {
+    "build": "Lattice Radiant; official board page also supports iCEcube2",
+    "configuration": "SPI_FLASH_N25Q032A13ESC40F",
+    "j6_flash_shunts": [
+      "1-3",
+      "2-4"
+    ],
+    "j6_sram_shunts": [
+      "1-2",
+      "3-4"
+    ],
+    "j7": "shunted for flash programming/normal operation",
+    "j7_sram": "remove; restore for flash/normal operation",
+    "nvcm_allowed": false,
+    "programmer": "Lattice Diamond Programmer through onboard FT2232H over USB Mini-B",
+    "programmer_documented_settings": {
+      "cable_and_port": "DETECT_ACTUAL_FTDI_DEVICE; no observed cable/port bound",
+      "cram_access_mode": "CRAM Programming",
+      "cram_operation": "Fast Program",
+      "device": "iCE40UP5K",
+      "device_family": "iCE40 UltraPlus",
+      "file_size_and_end_address": "LOAD_FROM_ACTUAL_FILE; never reuse guide demo values",
+      "flash_access_mode": "SPI Flash Programming",
+      "flash_device": "SPI-N25Q032A",
+      "flash_operation": "SPI Flash Erase,Program,Verify",
+      "flash_package": "8-pin VDFPN8",
+      "flash_vendor": "Micron",
+      "source": "guide:section 8, Figures 8.2-8.4"
+    },
+    "programmer_minimum_documented_version": "3.9",
+    "readback_scope": "External SPI flash bytes are not active FPGA SRAM configuration readback"
+  }
+}

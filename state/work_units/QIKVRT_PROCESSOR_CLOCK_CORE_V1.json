@@ -1,0 +1,310 @@
+{
+  "_license": {
+    "classification": "machine_readable_repository_control",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "license_text_ref": "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_PROCESSOR_CLOCK_CORE_V1",
+  "title": "Repository-native contiguous per-cycle EFFECT_ACK reference and processor-clock requirement",
+  "created_at": "2026-10-01T12:37:34.230738Z",
+  "status": "MIRROR_REVIEW_CANDIDATE",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "source_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+  "canonical_authority": {
+    "repository": "Goldkelch/qik-vrt",
+    "current_head": null,
+    "current_tree": null,
+    "readback": "BLOCKED_BY_CONNECTION_ACCESS",
+    "observations": [
+      "GitHub connector Authority main read returned HTTP 404",
+      "Git HTTPS Authority lookup lacked credentials"
+    ],
+    "promotion_claimed": false
+  },
+  "human_actor": {
+    "class": "HUMAN",
+    "name": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "identity_basis": "EXISTING_REPOSITORY_OWNER_BINDING_AND_SESSION_INSTRUCTION"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system": "Codex",
+    "model_family": "GPT-6",
+    "exact_model_build": "NOT_EXPOSED",
+    "session_identifier": "NOT_EXPOSED"
+  },
+  "human_contributions": [
+    "Machine evaluation required on every processor clock; weekly cadence allowed for human briefing output",
+    "Directed implementation and persistence in repository"
+  ],
+  "artificial_cognitive_contributions": [
+    "Inspected existing synchronous C90 core, bootstrap and current scheduling candidate",
+    "Extended the existing core with explicit epoch/cycle binding, per-cycle reevaluation and latched coverage faults",
+    "Added independent-oracle exhaustive clock-window checks and boundary tests",
+    "Drafted processor-clock integration contract and precise evidence boundaries",
+    "Executed tests and refreshed canonical integrity projections"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "include/qikvrt/effect_ack.h",
+      "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+      "sha256": "bbd62bd4044e0feb7561770cb11cbbb866fdf3c9b5124c0d520637cdd0172580"
+    },
+    {
+      "path": "src/effect_ack_core.c",
+      "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+      "sha256": "e55b34fb65d479e48a10123a0c022f9c7849805f6ce08b8d5a9aa684461ce5ac"
+    },
+    {
+      "path": "tests/test_effect_ack_core.c",
+      "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+      "sha256": "66f1d39a5e086e72f361eba1634f85d32946d2fe094d2a1b7e2deedf4a078163"
+    },
+    {
+      "path": "docs/CURRENT_AUTHORITY.md",
+      "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+      "sha256": "236136e383bc504ed59a96c7656aa782e2c2da8046593446c458e86de80cf5d7"
+    },
+    {
+      "kind": "OWNER_REQUIREMENT",
+      "language": "de",
+      "retention": "METADATA_ONLY",
+      "utf8_sha256": "97a954785a5c7f458047a7612d528c3bf4d1016856683f55efa4ff1a5216a4ba"
+    },
+    {
+      "kind": "OWNER_REPOSITORY_IMPLEMENTATION_INSTRUCTION",
+      "language": "de",
+      "retention": "METADATA_ONLY",
+      "utf8_sha256": "a1891a118736237b6372ebef07c4d87a6c5ef043b678c5923630039d5f097c2b"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "include/qikvrt/effect_ack.h",
+      "bytes": 3309,
+      "sha256": "35c41aa805669c58eaf03ab016b5c5ddaf94e019b3bd88eb61cf906021baff1f",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "src/effect_ack_core.c",
+      "bytes": 5337,
+      "sha256": "9504ebd853580dc499c669d7527aaa2bb4f3c66afd8726420ad6b3eb3f061747",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "tests/test_effect_ack_core.c",
+      "bytes": 22041,
+      "sha256": "03decc2c56c1cd6781f66c4fc64fe02f85d449cb7d260749375bca21bba45140",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "docs/CURRENT_AUTHORITY.md",
+      "bytes": 3043,
+      "sha256": "b06f2d2f2b2aff3b0f279fac9d5adc13914fdbef9cf792407234d8733ff94cd9",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "docs/QIKVRT_PROCESSOR_CLOCK.md",
+      "bytes": 5180,
+      "sha256": "c2a5a8d2306e9bc9993bec6e0dfd6236006dd7e05a0f12c2e30068a67ad42a19",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    },
+    {
+      "path": "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json",
+      "bytes": 3350,
+      "sha256": "ec0e535a9c47e9e821c087e042bce119ff8d32f9cc6293524c80fab13cfb4916",
+      "origin": "ARTIFICIAL_COGNITIVE_SYSTEM"
+    }
+  ],
+  "reuse_before_create": {
+    "searched": [
+      "src",
+      "include",
+      "tests",
+      "tools",
+      "policy",
+      "docs",
+      "hardware source extensions in accessible Mirror tree"
+    ],
+    "reused": [
+      "src/effect_ack_core.c",
+      "include/qikvrt/effect_ack.h",
+      "tests/test_effect_ack_core.c",
+      "tests/test_effect_ack_core.sh",
+      "Makefile effect-ack-core-test",
+      "tools/qikvrt_integrity.py"
+    ],
+    "new_parallel_executor": false,
+    "new_documentation_reason": "No processor-edge coverage contract was found in the accessible source tree; the new contract documents the existing core extension and its remaining physical integration obligations",
+    "authority_tree_inventory": "NOT_AVAILABLE"
+  },
+  "git_history": {
+    "candidate_branch": "work/processor-clock-core-20261001",
+    "parent": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "rewrite_existing_history": false,
+    "force_push": false,
+    "candidate_commit_binding": "ENCLOSING_GIT_COMMIT; NO SELF_HASH_CYCLE"
+  },
+  "verification": {
+    "effect_ack_c90": {
+      "command": "make effect-ack-core-test",
+      "result": "PASS",
+      "assertions": 13107312,
+      "synthetic_contiguous_cycles": 2621440,
+      "compiler_contract": "-std=c90 -pedantic -Wall -Wextra -Werror",
+      "physical_clock_evidence": false
+    },
+    "effect_ack_python_conformance": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest -v tests.test_effect_ack_conformance",
+      "result": "PASS",
+      "tests": 41
+    },
+    "aggregate_repository_gate": {
+      "command": "make -k test",
+      "result": "PASS",
+      "exit_code": 0,
+      "log_sha256": "768264f1596b4be7cb117a8fdccd25b3f5d822db98b30b198ceccc9011ff15ab",
+      "log_bytes": 103164,
+      "unittest_execution_summaries": [
+        5,
+        15,
+        8,
+        4,
+        168,
+        168,
+        41,
+        5,
+        15,
+        41,
+        6,
+        21,
+        5,
+        15,
+        1,
+        5,
+        4
+      ],
+      "summed_unittest_executions_including_repeated_modules": 527,
+      "scope": "ALL_TARGETS_DECLARED_BY_MAKEFILE_TEST; NOT ALL POSSIBLE REPOSITORY TEST MODULES"
+    },
+    "tool_cache": {
+      "command": "python3 -B tools/qikvrt_tool_cache.py verify",
+      "result": "PASS",
+      "declared_tools": 14,
+      "coverage_percent": 100
+    },
+    "base_integrity_diagnostic": {
+      "working_tree_was_clean": true,
+      "stale_projection_entries": 9,
+      "repair": "Regenerated existing canonical integrity trio; no source downgrade",
+      "repaired_source_inputs": false
+    },
+    "final_integrity": {
+      "command": "python3 -B tools/qikvrt_integrity.py verify",
+      "result": "PASS",
+      "classified_entries": 3915,
+      "immutable_digests": 3906,
+      "scope": "OBSERVED_WORKING_TREE; FINAL_COMMIT_REOBSERVATION_REQUIRED"
+    },
+    "bootloader": {
+      "command": "python3 -B tools/ai_runtime_bootloader.py --profile all --json",
+      "result": "CONTINUE",
+      "previous_boot_after_projection_repair": "EFFECT_ACK_CONTINUE",
+      "gates": [
+        {
+          "name": "bootstrap knowledge corpus",
+          "state": "PASS",
+          "exit_code": 0
+        },
+        {
+          "name": "human machine interface adaptation",
+          "state": "PASS",
+          "exit_code": 0
+        },
+        {
+          "name": "AI handoff",
+          "state": "PASS",
+          "exit_code": 0
+        },
+        {
+          "name": "repository integrity",
+          "state": "PASS",
+          "exit_code": 0
+        },
+        {
+          "name": "tool cache coverage",
+          "state": "PASS",
+          "exit_code": 0
+        },
+        {
+          "name": "runtime profile",
+          "state": "CONTINUE",
+          "exit_code": 20
+        }
+      ],
+      "missing_optional_profiles": [
+        "GitHub CLI 2.96.0",
+        "xml2rfc 3.34.0",
+        "pytest 9.1.1",
+        "Zod 4.4.3",
+        "Lean/Lake 4.19.0",
+        "sherpa-onnx-node 1.13.4"
+      ],
+      "core_compiler_contract": "PASS",
+      "hidden_installation": false,
+      "scope": "OBSERVED_CANDIDATE_SOURCE_BYTES; NO_GLOBAL_RUNTIME_DONE"
+    },
+    "physical_processor_clock_binding": "OPEN",
+    "firefox_runtime_driver": "OPEN",
+    "live_independent_clock_coverage": "OPEN",
+    "observation_binding": {
+      "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+      "candidate_source_sha256": {
+        "include/qikvrt/effect_ack.h": "35c41aa805669c58eaf03ab016b5c5ddaf94e019b3bd88eb61cf906021baff1f",
+        "src/effect_ack_core.c": "9504ebd853580dc499c669d7527aaa2bb4f3c66afd8726420ad6b3eb3f061747",
+        "tests/test_effect_ack_core.c": "03decc2c56c1cd6781f66c4fc64fe02f85d449cb7d260749375bca21bba45140",
+        "docs/CURRENT_AUTHORITY.md": "b06f2d2f2b2aff3b0f279fac9d5adc13914fdbef9cf792407234d8733ff94cd9",
+        "docs/QIKVRT_PROCESSOR_CLOCK.md": "c2a5a8d2306e9bc9993bec6e0dfd6236006dd7e05a0f12c2e30068a67ad42a19",
+        "policy/QIKVRT_PROCESSOR_CLOCK_CONTRACT_V1.json": "ec0e535a9c47e9e821c087e042bce119ff8d32f9cc6293524c80fab13cfb4916"
+      },
+      "kind": "EXACT_OUTPUT_BYTES_IN_WORKING_TREE",
+      "remote_commit_ci_receipt": "NOT_CREATED_BY_THIS_RECORD"
+    }
+  },
+  "human_decision": {
+    "implementation_scope": "AUTHORIZED_BY_DIRECT_REPOSITORY_INSTRUCTION",
+    "candidate_acceptance": "PENDING",
+    "promotion_merge_deployment": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "intended": [
+      "Persist isolated review candidate in existing personal repository",
+      "Create reviewable pull request"
+    ],
+    "authority_main": "NONE",
+    "mirror_main": "NONE",
+    "merge": "NONE",
+    "deployment": "NONE",
+    "release": "NONE",
+    "zenodo": "NONE",
+    "ietf": "NONE",
+    "digital_twin_scheduling_changes": "NONE"
+  },
+  "release_claims": {
+    "core_semantics_reference_tests": "PASS",
+    "physical_per_clock_execution": false,
+    "full_repository_gate": "PASS_MAKEFILE_TEST_TARGETS",
+    "authority_promotion": false,
+    "authority_mirror_equality": false,
+    "overall_effect_ack_done": false
+  }
+}
