@@ -86,7 +86,7 @@ seed:
 	@for script in tools/qikvrt_seed_*.sh; do sh -n "$$script"; done
 
 e2e:
-	$(PYTHON) tests/test_tcpip_e2e.py
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_tcpip_e2e tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_effect_ack_http_terminal
 
 test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify
@@ -108,8 +108,20 @@ personal-firefox-boundary-test:
 
 test: personal-firefox-boundary-test
 
+.PHONY: reciprocal-devops-closure-test
+reciprocal-devops-closure-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_expected_head_promotion tests.test_reciprocal_devops_closure tests.test_qikvrt_pr_closure_engine tests.test_reciprocal_closure_step tests.test_qikvrt_expected_head_promotion_contract tests.test_ruleset_authority_token_route
+
+test: reciprocal-devops-closure-test
+
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: mesh-recovery-test
+mesh-recovery-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_mesh_recovery tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider
+
+test: mesh-recovery-test
