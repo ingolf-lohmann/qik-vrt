@@ -1,0 +1,66 @@
+{
+  "api_observation": {
+    "authority_main": {
+      "interpretation": "RESOURCE_READ_UNAVAILABLE_CAUSE_UNESTABLISHED",
+      "repository": "Goldkelch/qik-vrt",
+      "status": 404
+    },
+    "connector_workflow_dispatch_callable": false,
+    "mirror_main": {
+      "head": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+      "protected": false
+    },
+    "productive_execution": "NOT_ESTABLISHED"
+  },
+  "artificial_cognitive_contribution": {
+    "author": "OpenAI Codex",
+    "scope": "Existing-code diagnosis, bounded local feedback implementation, tests, contract and diagram"
+  },
+  "external_effect_ack_done": false,
+  "gap_observed": "Existing codec has no bidirectional bit-lane feedback adapter; Digital Twin REST Store applies only local simulated state",
+  "human_contribution": {
+    "author": "Ingolf Lohmann",
+    "authorization": "Freigabe erteilt",
+    "scope": "Universal transputer to meta-transistor by feedback; bidirectional ports, bit routing, fixed processing chain and optional partial feedback"
+  },
+  "implemented_scope": "FINITE_BYTE_ALIGNED_LOCAL_FEEDBACK",
+  "local_tcpip_test": {
+    "payload_bytes": 65536,
+    "pipeline": "ENCODE_THEN_SPLIT_RECONSTRUCT_DECODE_SELECT_THEN_EXISTING_AUTHENTICATED_INGEST",
+    "readback": "EXACT_BYTES_AND_IDEMPOTENT_REPLAY",
+    "scope": "ISOLATED_LOCAL_OWNER_REPO_FIXTURE_NOT_PRODUCTIVE_MESH_EFFECT",
+    "test": "tests.test_tcpip_e2e.TcpIpEndToEndTests.test_selected_meta_transistor_feedback_uses_existing_ingest_route"
+  },
+  "new_executor": false,
+  "next_action": "Review exact candidate; connect this pure adapter through the existing admitted executor only when its capability and native effect readback are established",
+  "open": [
+    "Productive API/repository feedback admission and native readback",
+    "Native independent review and Main enforcement",
+    "Authority resource access",
+    "Durable duplex replay scheduling/backpressure",
+    "Physical clock/hardware acceptance"
+  ],
+  "ordinary_release": false,
+  "preserved_parents": [
+    "be2ce383af1b884ce86b891ac0208990f0e474ad",
+    "6a7ee719e054d40d3825366997524130b592c0b6"
+  ],
+  "quality_requirements": [
+    "make test",
+    "git diff --check",
+    "exact remote HEAD/TREE readback",
+    "fresh candidate workflow observations"
+  ],
+  "reuse": [
+    "src/qikvrt_codec.py",
+    "src/qikvrt_standpoint_codex.py",
+    "src/qikvrt_effect_ack.py",
+    "Makefile codec-test",
+    "tools/qikvrt_integrity.py",
+    "PR425 canonical codec",
+    "PR436 lossless REST repair"
+  ],
+  "schema": "qikvrt_work_unit_v1",
+  "signature_changed": false,
+  "work_unit_id": "META_TRANSISTOR_LOCAL_FEEDBACK_20261001_V1"
+}

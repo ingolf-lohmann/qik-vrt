@@ -8,13 +8,17 @@ import argparse
 import hashlib
 import json
 import pathlib
+import stat
 import subprocess
 import sys
+import os
+import re
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
+DEPENDENCY_POLICY = ROOT / "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
 DELEGATION = (
     ROOT
     / "state/authorization/delegations/"
@@ -32,6 +36,195 @@ PROMOTION_CONDITIONS = (
 
 class SelfHealBlock(RuntimeError):
     pass
+
+
+# A trusted workflow copies this controller before checking out a candidate.
+# Generated projections/data are outside the control plane. New workflow/test/
+# policy/tool paths are included automatically, so additions cannot evade it.
+PIPELINE_PREFIXES = (
+    ".github/workflows/", "tools/", "tests/", "runtime/toolchains/",
+    "policy/", "state/autonomy/", "state/authorization/", "src/",
+)
+PIPELINE_FILES = {".gitattributes", "AI", "AI_CONTEXT.json", "AGENTS.md", "AI_ADAPTERS.json", "Makefile"}
+PIPELINE_REQUIRED = {"Makefile", "AGENTS.md", "tools/qikvrt_autonomous_self_heal.py"}
+PIPELINE_SCHEMA = "qikvrt_pipeline_binding_v1"
+
+
+def _pipeline_path(path: str) -> bool:
+    return path in PIPELINE_FILES or path.startswith(PIPELINE_PREFIXES)
+
+
+def pipeline_binding(repository: pathlib.Path, reference: str | None = None) -> dict[str, Any]:
+    """Bounded read-only inventory of exact Git checkout bytes and modes.
+
+    A reference is an externally selected trusted full SHA, never candidate data.
+    Without a reference, include tracked and untracked protected working files.
+    This local filesystem/Git observation does not authenticate an external node.
+    """
+    root = repository.resolve(strict=True)
+    if reference is not None and (len(reference) != 40
+            or any(c not in "0123456789abcdef" for c in reference)):
+        raise SelfHealBlock("pipeline reference must be a full Git SHA-1")
+    command = (["git", "ls-tree", "-r", "-l", "-z", "--full-tree", reference]
+               if reference else ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
+    try:
+        raw = subprocess.check_output(command, cwd=root, timeout=60, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as exc:
+        raise SelfHealBlock("pipeline Git observation failed") from exc
+    if len(raw) > 4 * 1024 * 1024:
+        raise SelfHealBlock("pipeline inventory bound exceeded")
+    entries = {}
+    total_bytes = 0
+    for item in raw.split(b"\0"):
+        if not item:
+            continue
+        if reference:
+            metadata, path_raw = item.split(b"\t", 1)
+            mode, kind, blob, raw_size = metadata.decode("ascii").split()
+            path = path_raw.decode("utf-8")
+        else:
+            path = item.decode("utf-8")
+        if not _pipeline_path(path):
+            continue
+        if reference:
+            if kind != "blob" or mode not in {"100644", "100755"}:
+                raise SelfHealBlock("pipeline requires regular files: " + path)
+            if int(raw_size) > 16 * 1024 * 1024:
+                raise SelfHealBlock("pipeline reference file size rejected: " + path)
+            try:
+                # Reference bytes must use the trusted checkout's Git attributes:
+                # e.g. LF blobs become CRLF PowerShell files on checkout. This
+                # runs before candidate checkout under trusted runner Git config.
+                content = subprocess.check_output(
+                    ["git", "cat-file", "--filters", reference + ":" + path],
+                    cwd=root, timeout=60, stderr=subprocess.PIPE)
+            except subprocess.CalledProcessError as exc:
+                raise SelfHealBlock("pipeline reference checkout observation failed") from exc
+            if len(content) > 16 * 1024 * 1024:
+                raise SelfHealBlock("pipeline filtered file size rejected: " + path)
+        else:
+            file = root / path
+            if any(parent.is_symlink() for parent in file.parents if parent != root):
+                raise SelfHealBlock("pipeline parent symlink: " + path)
+            before = file.lstat()
+            if not stat.S_ISREG(before.st_mode) or before.st_size > 16 * 1024 * 1024:
+                raise SelfHealBlock("pipeline file type/size rejected: " + path)
+            content = file.read_bytes()
+            after = file.lstat()
+            if (before.st_ino, before.st_size, before.st_mtime_ns, before.st_mode) != (
+                    after.st_ino, after.st_size, after.st_mtime_ns, after.st_mode):
+                raise SelfHealBlock("pipeline file changed while reading: " + path)
+            mode = "100755" if before.st_mode & 0o111 else "100644"
+        total_bytes += len(content)
+        if total_bytes > 256 * 1024 * 1024:
+            raise SelfHealBlock("pipeline total byte bound exceeded")
+        blob = hashlib.sha1(b"blob " + str(len(content)).encode() + b"\0" + content).hexdigest()
+        entries[path] = {"path": path, "mode": mode, "blob": blob}
+    if not PIPELINE_REQUIRED <= set(entries) or len(entries) > 10000:
+        raise SelfHealBlock("pipeline inventory incomplete or excessive")
+    records = [entries[path] for path in sorted(entries)]
+    digest = hashlib.sha256(json.dumps(records, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return {"schema": PIPELINE_SCHEMA, "records": records, "sha256": digest}
+
+
+def verify_pipeline_binding(expected: Any, observed: Any) -> None:
+    for binding in (expected, observed):
+        if (not isinstance(binding, dict) or set(binding) != {"schema", "records", "sha256"}
+                or binding["schema"] != PIPELINE_SCHEMA or not isinstance(binding["records"], list)):
+            raise SelfHealBlock("malformed pipeline binding")
+        records = binding["records"]
+        if len(records) > 10000 or any(not isinstance(r, dict)
+                or set(r) != {"path", "mode", "blob"} or not isinstance(r["path"], str)
+                or r["mode"] not in {"100644", "100755"} or not isinstance(r["blob"], str)
+                or len(r["blob"]) != 40 or any(c not in "0123456789abcdef" for c in r["blob"])
+                for r in records):
+            raise SelfHealBlock("malformed pipeline records")
+        paths = [r["path"] for r in records]
+        if (paths != sorted(set(paths)) or not PIPELINE_REQUIRED <= set(paths)
+                or any(not _pipeline_path(p) for p in paths)):
+            raise SelfHealBlock("pipeline record coverage/order differs")
+        digest = hashlib.sha256(json.dumps(records, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        if binding["sha256"] != digest:
+            raise SelfHealBlock("pipeline binding digest mismatch")
+    if expected != observed:
+        raise SelfHealBlock("PIPELINE_INVARIANT_MISMATCH_REQUIRES_SEPARATE_REVIEW")
+
+
+def continuation_verification_decision(statuses: Any) -> str:
+    """A clean NOOP still needs its dedicated verifier. Never blind redispatch.
+
+    Statuses must come from the authenticated exact-commit status GET. Existing
+    status is only a readback obligation, never acceptance or independent review.
+    """
+    if not isinstance(statuses, list) or any(not isinstance(s, dict) for s in statuses):
+        raise SelfHealBlock("malformed exact-head status response")
+    existing = [s for s in statuses if s.get("context") == "QIKVRT autonomous exact-head verification"]
+    if len(existing) > 1:
+        raise SelfHealBlock("ambiguous dedicated verifier status")
+    if not existing:
+        return "DISPATCH_REQUIRED"
+    if existing[0].get("state") not in {"pending", "success", "failure", "error"}:
+        raise SelfHealBlock("unknown dedicated verifier state")
+    return "EXISTING_VERIFICATION_REQUIRES_READBACK"
+
+
+def ci_continuation_receipt(repository: pathlib.Path, reference: str | None,
+                            outcome: str | None, repository_name: str | None,
+                            event: str | None, run_id: int | None,
+                            run_attempt: int | None) -> dict[str, Any]:
+    """Consume the repository command; retain a finite run's next obligation.
+
+    This read-only receipt neither dispatches a writer nor accepts the product.
+    A failed test stays failed while the native continuation remains obligated.
+    """
+    if (reference is None or len(reference) != 40
+            or any(c not in "0123456789abcdef" for c in reference)):
+        raise SelfHealBlock("CI continuation requires an exact current HEAD")
+    if (outcome not in {"success", "failure", "cancelled", "skipped"}
+            or event not in {"push", "pull_request", "workflow_dispatch"}
+            or type(run_id) is not int or run_id < 1
+            or type(run_attempt) is not int or run_attempt < 1
+            or not isinstance(repository_name, str) or repository_name.count("/") != 1):
+        raise SelfHealBlock("CI execution witness is incomplete")
+    root = repository.resolve(strict=True)
+    if root != ROOT.resolve():
+        raise SelfHealBlock("CI must consume its own repository-native controller")
+
+    def git(*arguments: str) -> bytes:
+        return subprocess.check_output(["git", *arguments], cwd=root,
+                                       timeout=60, stderr=subprocess.PIPE)
+
+    head, tree = git("rev-parse", "HEAD", "HEAD^{tree}").decode("ascii").splitlines()
+    if head != reference:
+        raise SelfHealBlock("CI continuation subject changed; fresh binding required")
+    contract = load_contract()
+    # Bind actual executed bytes, not the stale commit identity of a dirty tree.
+    for path in (CONTRACT.relative_to(ROOT).as_posix(), DEPENDENCY_POLICY.relative_to(ROOT).as_posix(),
+                 "tools/qikvrt_autonomous_self_heal.py", "tools/qikvrt_mesh_recovery.py",
+                 "tools/qikvrt_seed_common.py", "tools/qikvrt_subprocess.py",
+                 "tools/qikvrt_workflow_executor.py"):
+        if git("show", head + ":" + path) != (root / path).read_bytes():
+            raise SelfHealBlock("CI command bytes differ from the bound subject")
+    if git("rev-parse", "HEAD").decode("ascii").strip() != head:
+        raise SelfHealBlock("CI continuation subject changed during readback")
+    return {
+        "schema": "qikvrt_native_ci_continuation_receipt_v1",
+        "owner_command": contract["continuous_integration"]["owner_command"],
+        "gap_and_cause_priority": contract["gap_and_cause_priority"],
+        "contract_sha256": hashlib.sha256(CONTRACT.read_bytes()).hexdigest(),
+        "execution_routing": contract["execution_routing"],
+        "dependency_policy_sha256": hashlib.sha256(DEPENDENCY_POLICY.read_bytes()).hexdigest(),
+        "repository": repository_name, "head": head, "tree": tree,
+        "execution": {"event": event, "run_id": run_id,
+                      "run_attempt": run_attempt, "terminal_test_outcome": outcome},
+        "state": "EFFECT_ACK_CONTINUE", "global_ci_stop": False,
+        "next_required_action": ("REOBSERVE_ADMITTED_NATIVE_CONTINUATION"
+                                 if outcome == "success" else
+                                 "CLASSIFY_FAILURE_AND_EXECUTE_ONLY_ADMITTED_REPAIR"),
+        "continuation_workflow": contract["pull_request_continuation"]["workflow_path"],
+        "predecessor_evidence_transfer": False, "writer_authorization_implied": False,
+        "ordinary_release": False, "effect_ack_done": False,
+    }
 
 
 @dataclass(frozen=True)
@@ -160,6 +353,43 @@ def load_contract() -> dict[str, Any]:
     value = _load_json(CONTRACT, "autonomous self-healing contract")
     if value.get("schema") != "qikvrt_autonomous_self_healing_contract_v1":
         raise SelfHealBlock("contract schema mismatch")
+    validate_repair_handoff_contract(value)
+    validate_gap_cause_priority(value)
+    routing = value.get("execution_routing", {})
+    routing_required = {
+        "rule_id": "QIKVRT_REPOSITORY_OWNS_EXECUTION_V1",
+        "repository_tasks_executor": "REPOSITORY_NATIVE_CI_CD_AND_ADMITTED_MESH_EXECUTORS",
+        "external_trigger_owns_repository_execution": False,
+        "external_schedule_required_for_repository_liveness": False,
+        "dependency_mirroring_policy": DEPENDENCY_POLICY.relative_to(ROOT).as_posix(),
+        "dependency_mirroring_rule_id": "QIKVRT_CQF_POST_BINDING_REPOSITORY_MIRRORING_V1",
+        "all_other_external_dependencies_in_scope": True,
+        "external_dependency_after_successful_binding": "REPLACE_WITH_VERIFIED_REPOSITORY_MIRROR",
+    }
+    if (not isinstance(routing, dict) or any(type(routing.get(k)) is not type(v)
+            or routing.get(k) != v for k, v in routing_required.items())):
+        raise SelfHealBlock("repository execution and CQF mirroring invariant is absent or weakened")
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    try:
+        from tools.qikvrt_mesh_recovery import RecoveryError, validate_dependency_mirroring_requirement
+    except ImportError as exc:
+        raise SelfHealBlock("repository dependency verifier closure is missing") from exc
+    try:
+        validate_dependency_mirroring_requirement(
+            _load_json(DEPENDENCY_POLICY, "dependency mirroring policy"), required=True)
+    except RecoveryError as exc:
+        raise SelfHealBlock(str(exc)) from exc
+    continuous = value.get("continuous_integration", {})
+    owner = continuous.get("owner_command", {})
+    if (owner.get("literal") != "Never stop CI" or owner.get("issuer") != "Ingolf Lohmann"
+            or continuous.get("scope") != "REPOSITORY_NATIVE_CI"
+            or continuous.get("active") is not True
+            or any(continuous.get(key) is not False for key in (
+                "first_success_terminal", "first_failure_terminal",
+                "release_done_stops_ci", "blocked_lane_stops_global_ci"))
+            or continuous.get("bounded_jobs_and_fail_closed_writers") is not True):
+        raise SelfHealBlock("repository-native Never stop CI invariant is absent or weakened")
     execution_model = value.get("execution_model", {})
     if execution_model.get("promotion") != "expected_head_bound_only":
         raise SelfHealBlock("promotion must remain expected-head-bound")
@@ -276,7 +506,28 @@ def repair_handler(handler: dict[str, Any]) -> dict[str, Any]:
             f"repair failed for {handler['failure_class']}: "
             f"{repair.stderr.strip() or repair.stdout.strip()}"
         )
-    return {"failure_class": handler["failure_class"], "state": "REPAIRED"}
+    # Successful execution is not proof that the original operation works.
+    # Repeat the identical probe before granting even a scoped symptom result.
+    readback = run(tuple(handler["probe"]))
+    if readback.returncode:
+        raise SelfHealBlock(
+            f"original operation still fails after repair for {handler['failure_class']}; "
+            "gap and cause remain OWNER_HIGHEST open obligations"
+        )
+
+    def observation(result: CommandResult) -> dict[str, Any]:
+        return {"command": list(result.command), "returncode": result.returncode,
+                "stdout_sha256": hashlib.sha256(result.stdout.encode("utf-8")).hexdigest(),
+                "stderr_sha256": hashlib.sha256(result.stderr.encode("utf-8")).hexdigest()}
+
+    return {"failure_class": handler["failure_class"],
+            "state": "SYMPTOM_VERIFIED_CAUSE_OPEN", "priority": "OWNER_HIGHEST",
+            "original_operation_verified": True,
+            "probe_before": observation(probe), "repair_command": observation(repair),
+            "probe_after": observation(readback),
+            "cause": "UNESTABLISHED", "cause_closed": False,
+            "repair_complete": False, "effect_ack_done": False,
+            "next_required_action": "ESTABLISH_AND_REPAIR_CAUSE_WITH_REGRESSION_AND_FRESH_READBACK"}
 
 
 def execute(apply: bool) -> dict[str, Any]:
@@ -288,6 +539,7 @@ def execute(apply: bool) -> dict[str, Any]:
     if initial.returncode or initial.stdout.strip():
         raise SelfHealBlock("controller requires a clean repository")
     base_revision = observed_base_revision()
+    before_pipeline = pipeline_binding(ROOT)
     boot = run(
         (
             "python3",
@@ -308,6 +560,7 @@ def execute(apply: bool) -> dict[str, Any]:
     unexpected = sorted(set(paths) - allowed_paths(contract))
     if unexpected:
         raise SelfHealBlock(f"non-allowlisted mutation: {unexpected}")
+    verify_pipeline_binding(before_pipeline, pipeline_binding(ROOT))
     fingerprint = semantic_fingerprint(paths) if paths else None
     candidate_id = (
         candidate_identity(base_revision, fingerprint)
@@ -323,6 +576,9 @@ def execute(apply: bool) -> dict[str, Any]:
         "candidate_identity": candidate_id,
         "changed_paths": paths,
         "actions": actions,
+        "gap_and_cause_priority": contract["gap_and_cause_priority"],
+        "pipeline_binding_sha256": before_pipeline["sha256"],
+        "pipeline_invariant_verified": True,
         "external_effect": "NONE",
         "promotion_policy": {
             "unconditional_automatic_merge": "FORBIDDEN",
@@ -339,17 +595,212 @@ def execute(apply: bool) -> dict[str, Any]:
     }
 
 
+def validate_gap_cause_priority(value: Mapping[str, Any]) -> Mapping[str, Any]:
+    required = {
+        "rule_id": "QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_V1",
+        "normative_status": "REQUIRED",
+        "scope": "EVERY_IDENTIFIED_GAP_IN_EVERY_QIKVRT_LAYER",
+        "gap_priority": "OWNER_HIGHEST", "cause_priority": "OWNER_HIGHEST",
+        "repair_authorized": True,
+        "unknown_cause": "OPEN_HIGHEST_PRIORITY_CAUSAL_DIAGNOSIS",
+        "repair_command_success_is_gap_closure": False,
+        "symptom_resolution_is_cause_closure": False,
+        "noop_discharges_open_causes": False,
+        "closure_requires": ["ORIGINAL_FAILING_OPERATION_FRESHLY_VERIFIED",
+                             "SOURCE_BOUND_CAUSE_ESTABLISHED",
+                             "CAUSE_REPAIR_REGRESSION_VERIFIED",
+                             "FRESH_EXACT_SUBJECT_EFFECT_READBACK"],
+        "regression_policy": "canonical/SHIFT_LEFT_ROOT_CAUSE_REGRESSION_POLICY_V25.json",
+        "writer_admission": "EXISTING_ALLOWLIST_AND_INDEPENDENT_NATIVE_EFFECT_BOUNDARIES",
+    }
+    actual = value.get("gap_and_cause_priority")
+    if not isinstance(actual, Mapping) or any(
+            type(actual.get(key)) is not type(expected) or actual.get(key) != expected
+            for key, expected in required.items()):
+        raise SelfHealBlock("highest-priority gap-and-cause CI rule absent or weakened")
+    owner = actual.get("owner_command", {})
+    if (not isinstance(owner, Mapping) or owner.get("issuer") != "Ingolf Lohmann"
+            or owner.get("literal") != "Lücken sind höchstprior zu schließen und die Ursache für das Entstehen jeglicher Lücke ebenso!"
+            or owner.get("authorization") != "Freigabe erteilt."):
+        raise SelfHealBlock("gap-and-cause Product Owner instruction binding differs")
+    return actual
+
+
+def validate_repair_handoff_contract(value: Mapping[str, Any]) -> None:
+    required = {"producer": "tools/qikvrt_reflexive_repository_watchdog.py:repair-handoff",
+                "consumer": "tools/qikvrt_autonomous_self_heal.py:repair-consume",
+                "carrier": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+                "manual_owner_relay_required": False, "unknown_cause": "ADMITTED_ANALYSIS_HOLD",
+                "analysis_is_writer_authority": False, "new_executor": False,
+                "maximum_hops": 1, "fresh_source_and_subject_readback": True,
+                "activation": "INDEPENDENT_NATIVE_MAIN_ADMISSION"}
+    actual = value.get("error_analysis_handoff")
+    if not isinstance(actual, Mapping) or any(
+            type(actual.get(k)) is not type(v) or actual.get(k) != v for k,v in required.items()):
+        raise SelfHealBlock("automatic error-analysis consumer contract absent or weakened")
+
+
+def consume_repair_input(envelope: Mapping[str, Any], source: Mapping[str, Any],
+                         jobs: Mapping[str, Any], *, repository: str, head: str,
+                         tree: str, inbox: pathlib.Path) -> dict[str, Any]:
+    """Admit authenticated source data to the existing consumer, without a writer grant.
+
+    The workflow obtains source/jobs with its own GitHub credential. Payload text
+    is never a command, cause proof or authority. Unknown repair classes stay HOLD.
+    """
+    priority_rule = validate_gap_cause_priority(_load_json(CONTRACT, "gap-and-cause contract"))
+    if envelope.get("schema") != "qikvrt_error_analysis_handoff_v1":
+        raise SelfHealBlock("unsupported repair envelope")
+    subject = {"repository": repository, "head": head, "tree": tree}
+    if envelope.get("subject") != subject or not all(
+            re.fullmatch("[0-9a-f]{40}", x or "") for x in (head, tree)):
+        raise SelfHealBlock("stale or foreign repair subject")
+    origin = envelope.get("origin", {})
+    if not isinstance(origin, Mapping) or not isinstance(source.get("repository"), Mapping):
+        raise SelfHealBlock("malformed producer binding")
+    if (source.get("repository", {}).get("full_name") != repository
+            or source.get("head_sha") != head
+            or source.get("path") != origin.get("workflow_path")
+            or source.get("id") != origin.get("run_id")
+            or source.get("run_attempt") != origin.get("run_attempt")
+            or source.get("event") != origin.get("event")
+            or source.get("status") != "completed"
+            or source.get("conclusion") not in {"success", "failure"}
+            or type(source.get("id")) is not int or source["id"] <= 0
+            or type(source.get("run_attempt")) is not int or source["run_attempt"] <= 0):
+        raise SelfHealBlock("unbound producer run or attempt")
+    if origin.get("workflow_path") != ".github/workflows/qikvrt_reflexive_repository_watchdog.yml":
+        raise SelfHealBlock("producer is outside the admitted observer path")
+    raw_jobs = jobs.get("jobs", [])
+    if (not isinstance(raw_jobs, list) or not raw_jobs
+            or jobs.get("total_count") != len(raw_jobs)):
+        raise SelfHealBlock("incomplete producer job observation")
+    for job in raw_jobs:
+        if (not isinstance(job, Mapping) or type(job.get("id")) is not int or job["id"] <= 0
+                or job.get("run_id") != source["id"] or job.get("head_sha") != head
+                or job.get("run_attempt") != source["run_attempt"]
+                or job.get("status") != "completed" or not isinstance(job.get("steps"), list)
+                or any(not isinstance(s, Mapping) for s in job["steps"])):
+            raise SelfHealBlock("foreign or unfinished producer job")
+    if len({j['id'] for j in raw_jobs}) != len(raw_jobs):
+        raise SelfHealBlock("duplicate producer job evidence")
+    if not any(step.get("name") == "Bind error analysis for the existing repair consumer"
+               and step.get("status") == "completed" and step.get("conclusion") == "success"
+               for job in raw_jobs for step in job.get("steps", [])):
+        raise SelfHealBlock("handoff producer step was not executed")
+    text = envelope.get("analysis_utf8")
+    if not isinstance(text, str) or len(text.encode("utf-8")) > 8 * 1024 * 1024:
+        raise SelfHealBlock("invalid analysis bytes")
+    digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    if digest != envelope.get("analysis_sha256"):
+        raise SelfHealBlock("analysis byte drift")
+    analysis = json.loads(text)
+    if (analysis.get("repository") != repository or analysis.get("head_sha") != head
+            or analysis.get("tree_sha") != tree
+            or analysis.get("schema") not in {"qikvrt_reflexive_repository_watchdog_receipt_v1",
+                                              "qikvrt_reflexive_observation_failure_receipt_v1"}
+            or envelope.get("hop_count") != 1 or envelope.get("effect_permission") is not False
+            or envelope.get("consumer") != "tools/qikvrt_autonomous_self_heal.py:repair-consume"):
+        raise SelfHealBlock("unbound analysis or forbidden effect escalation")
+    canonical = lambda x: (json.dumps(x, ensure_ascii=False, sort_keys=True,
+                                      indent=2, allow_nan=False) + "\n").encode("utf-8")
+    identity = hashlib.sha256(canonical({"subject": subject, "origin": origin,
+                                        "analysis_sha256": digest})).hexdigest()
+    if identity != envelope.get("work_unit_id"):
+        raise SelfHealBlock("work unit binding drift")
+    if envelope.get("state") == "NOOP":
+        return {"state": "NOOP", "work_unit_id": identity, "effect_ack_done": False}
+    if envelope.get("state") != "REPAIR_INPUT_REQUIRED" or analysis.get("disposition") != "HOLD":
+        raise SelfHealBlock("handoff disposition drift")
+    inbox.mkdir(parents=True, exist_ok=True)
+    path = inbox / (identity + ".json")
+    content = canonical(dict(envelope))
+    try:
+        # Never overwrite another receipt; retries must read back identical bytes.
+        with path.open("xb") as stream:
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        state = "ADMITTED_ANALYSIS_HOLD"
+    except FileExistsError:
+        state = "DUPLICATE_READBACK"
+    if path.read_bytes() != content:
+        raise SelfHealBlock("repair inbox readback conflict")
+    return {"schema": "qikvrt_repair_consumer_receipt_v1", "state": state,
+            "work_unit_id": identity, "subject": subject, "origin": dict(origin),
+            "analysis_sha256": digest, "inbox_sha256": hashlib.sha256(content).hexdigest(),
+            "analysis_admitted": True, "consumer": "tools/qikvrt_autonomous_self_heal.py",
+            "inbox_readback_verified": True, "writer_admitted": False,
+            "repair_executed": False, "cause": "UNESTABLISHED",
+            "gap_priority": priority_rule["gap_priority"],
+            "cause_priority": priority_rule["cause_priority"],
+            "gap_closed": False, "cause_closed": False, "repair_complete": False,
+            "first_blocker": analysis.get("first_blocker"),
+            "next_action": "ESTABLISH_CAUSE_AND_MATCH_EXISTING_ALLOWLISTED_REPAIR",
+            "effect_ack_done": False}
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("check", "apply"))
+    parser.add_argument("command", choices=("check", "apply", "pipeline-bind", "pipeline-verify", "verification-decision", "ci-continuation", "repair-consume"))
+    parser.add_argument("--repository", type=pathlib.Path, default=ROOT)
+    parser.add_argument("--reference")
+    parser.add_argument("--binding", type=pathlib.Path)
+    parser.add_argument("--statuses", type=pathlib.Path)
+    parser.add_argument("--test-outcome")
+    parser.add_argument("--repository-name")
+    parser.add_argument("--event")
+    parser.add_argument("--run-id", type=int)
+    parser.add_argument("--run-attempt", type=int)
+    parser.add_argument("--envelope", type=pathlib.Path)
+    parser.add_argument("--source-run", type=pathlib.Path)
+    parser.add_argument("--source-jobs", type=pathlib.Path)
+    parser.add_argument("--expected-head")
+    parser.add_argument("--expected-tree")
+    parser.add_argument("--inbox", type=pathlib.Path)
     args = parser.parse_args(argv)
     try:
-        result = execute(args.command == "apply")
+        if args.command == "repair-consume":
+            if not all((args.envelope, args.source_run, args.source_jobs, args.inbox,
+                        args.expected_head, args.expected_tree, args.repository_name)):
+                raise SelfHealBlock("repair input, authenticated observations and current subject required")
+            validate_repair_handoff_contract(_load_json(CONTRACT, "repair handoff contract"))
+            result = consume_repair_input(_load_json(args.envelope, "repair envelope"),
+                _load_json(args.source_run, "producer run"),
+                _load_json(args.source_jobs, "producer jobs"), repository=args.repository_name,
+                head=args.expected_head, tree=args.expected_tree, inbox=args.inbox)
+        elif args.command == "ci-continuation":
+            result = ci_continuation_receipt(args.repository, args.reference,
+                args.test_outcome, args.repository_name, args.event,
+                args.run_id, args.run_attempt)
+        elif args.command == "pipeline-bind":
+            result = pipeline_binding(args.repository, args.reference)
+        elif args.command == "pipeline-verify":
+            if args.binding is None:
+                raise SelfHealBlock("trusted pipeline binding required")
+            expected = _load_json(args.binding, "trusted pipeline binding")
+            verify_pipeline_binding(expected, pipeline_binding(args.repository))
+            result = {"state": "PIPELINE_INVARIANT_VERIFIED", "sha256": expected["sha256"],
+                      "effect_ack_done": False}
+        elif args.command == "verification-decision":
+            if args.statuses is None:
+                raise SelfHealBlock("authenticated exact-head statuses required")
+            value = _load_json(args.statuses, "exact-head statuses")
+            count = value.get("total_count")
+            statuses = value.get("statuses")
+            if (type(count) is not int or count < 0 or not isinstance(statuses, list)
+                    or count != len(statuses)):
+                raise SelfHealBlock("incomplete exact-head status inventory; readback required")
+            result = {"state": continuation_verification_decision(statuses),
+                      "effect_ack_done": False}
+        else:
+            result = execute(args.command == "apply")
     except (
         OSError,
         ValueError,
         json.JSONDecodeError,
         subprocess.TimeoutExpired,
+        subprocess.CalledProcessError,
         SelfHealBlock,
     ) as exc:
         print(
