@@ -108,6 +108,15 @@ class WindowsRuntimeAuthorityTests(unittest.TestCase):
 
 
 class RuntimeReleaseCarrierTests(unittest.TestCase):
+    def test_registry_authority_paths_survive_native_windows_path_semantics(self) -> None:
+        root = pathlib.PureWindowsPath('C:/qikvrt')
+        with mock.patch.object(tool_cache, 'ROOT', root), mock.patch.object(
+                tool_cache, 'LOCK_PATH', root / 'runtime/toolchains/TOOLCHAIN.lock.tsv'), mock.patch.object(
+                tool_cache, 'COVERAGE_PATH', root / 'runtime/toolchains/CACHE_COVERAGE.json'):
+            registry = tool_cache.read_registry()
+        self.assertEqual(registry['lock_authority'], 'runtime/toolchains/TOOLCHAIN.lock.tsv')
+        self.assertEqual(registry['coverage_authority'], 'runtime/toolchains/CACHE_COVERAGE.json')
+
     def test_registry_and_candidate_reject_missing_or_tampered_manifest(self) -> None:
         registry = tool_cache.read_registry()
         candidate = tool_cache.windows_release_candidate(registry)
@@ -205,7 +214,9 @@ class RuntimeReleaseCarrierTests(unittest.TestCase):
         archive = os.environ.get('QIKVRT_TEST_WINDOWS_PYTHON_ARCHIVE')
         if not archive:
             self.skipTest('Preparation requires separately materialized exact bytes; no availability is inferred')
-        with tempfile.TemporaryDirectory(dir=REPOSITORY_ROOT / '.qikvrt') as directory:
+        fixture_root = REPOSITORY_ROOT / '.qikvrt/evidence'
+        fixture_root.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=fixture_root) as directory:
             root = pathlib.Path(directory)
             output = root / 'candidate'
             plan = cicd.prepare_runtime_carrier(pathlib.Path(archive), output)

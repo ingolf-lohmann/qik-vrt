@@ -100,11 +100,11 @@ def read_registry() -> dict[str, Any]:
         raise ContractError(f"invalid cache registry JSON: {exc}") from exc
     if registry.get("schema") != "qikvrt-tool-cache-registry/1.0":
         raise ContractError("unsupported cache registry schema")
-    if registry.get("lock_authority") != str(LOCK_PATH.relative_to(ROOT)):
+    if registry.get("lock_authority") != LOCK_PATH.relative_to(ROOT).as_posix():
         raise ContractError(
             "cache registry lock_authority does not identify TOOLCHAIN.lock.tsv"
         )
-    if registry.get("coverage_authority") != str(COVERAGE_PATH.relative_to(ROOT)):
+    if registry.get("coverage_authority") != COVERAGE_PATH.relative_to(ROOT).as_posix():
         raise ContractError(
             "cache registry coverage_authority does not identify CACHE_COVERAGE.json"
         )

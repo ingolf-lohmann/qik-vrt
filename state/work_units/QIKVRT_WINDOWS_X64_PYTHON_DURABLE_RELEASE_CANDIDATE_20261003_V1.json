@@ -41,9 +41,13 @@
     "retry_condition": "Fresh enforced governance, exact publish-head review and separately bound tag/release/asset effect authority"
   },
   "git_history": {
+    "additional_parent_commits": [
+      "6105892b1c6992f6be19e0f29fe0530e319eaaf1"
+    ],
+    "base_integration": "Merge the six unchanged base-only mirror-heartbeat paths into the candidate branch to verify the current PR merge tree; Main is not changed.",
     "initial_candidate_commit": "0760a16fd7b6217142cb358831f1881bd872166c",
     "method": "History-preserving successor on existing PR #450 branch; no force update",
-    "parent_commit": "8ea51b53f4d5fdcd082f1dd34aae59bdb6be6cc3",
+    "parent_commit": "fd5487bd17644b2c3682815e7ccb051cb1a50d13",
     "retained_automation_commit": "8ea51b53f4d5fdcd082f1dd34aae59bdb6be6cc3"
   },
   "human_actor": {
@@ -123,10 +127,10 @@
     },
     {
       "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
-      "bytes": 36403,
-      "git_blob_sha1": "51c7d83a31463b90119a43dbcd48703b3be67800",
+      "bytes": 37172,
+      "git_blob_sha1": "6f0a17c20e1485b423ac2fc05b593c2c57930179",
       "path": "tests/test_launcher_runtime.py",
-      "sha256": "8f0eb0bc0d61b8bdcf54f4a08ff50d83332ee9b37e4748cfdea17b79866913ec"
+      "sha256": "7e9cb20d34b0bba27de8774806ff6b09344e515255965519f4453a4932318474"
     },
     {
       "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
@@ -151,10 +155,10 @@
     },
     {
       "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
-      "bytes": 19987,
-      "git_blob_sha1": "8c3b6b1d22274d13206a1ca0fe69e9775df721f9",
+      "bytes": 19999,
+      "git_blob_sha1": "adbcb9432c92048f6f5c5945eff719d368c00711",
       "path": "tools/qikvrt_tool_cache.py",
-      "sha256": "043424b7eaa3ab6bb4427a6bcf5625aa84b47c917d1131bac1a9076d815f2a7d"
+      "sha256": "3d11b25c95ec651e1ae27ace0cbd6ae712cc5de72ffe2b66663516dfb76aa37a"
     },
     {
       "boundary": "Exact proposed Git bytes; platform checkout normalization is not a new artifact identity.",
@@ -208,10 +212,10 @@
     "environment_repair": "Restored the existing historical shallow Git boundaries for isolated-worktree tests; no test or source downgrade.",
     "fresh_successor_native_windows_ci": "Required; predecessor receipt is historical input only",
     "full_make_test": {
-      "log_sha256": "a65034bb707350caa27fed585ec0c39411d73deb6f1bee4f574c44b3e6eb43e7",
-      "python_test_executions": 537,
+      "log_sha256": "479bcd0d9fc7d78932008c1476f9de67e3d8aa11a81291a0cf72218fcd84d5f4",
+      "python_test_executions": 538,
       "result": "PASS",
-      "scope": "Fresh full local suite after Windows portability repair; controlled transport checks are not public release evidence."
+      "scope": "Fresh full local suite on the path-serialization repair and current-base integrated candidate bytes; controlled transport is not public release evidence."
     },
     "powershell_parser": "PASS PowerShell 7.6.6 Linux",
     "powershell_production_restore_fixture": "5 PASS: restore, No-Clobber, missing, tamper, rollback; public_download_observed=false",
@@ -223,7 +227,16 @@
       "repair": "Reuse native Windows handle reader without source DACL mutation; materialize integrity from actual fresh-checkout PowerShell bytes. Current successor requires fresh checks.",
       "tree": "c6d5d63c5f63df7ee046b7fa43a13ad06a51534d"
     },
-    "targeted_python_tests": "6 PASS including actual locked archive and controlled HTTP readback",
+    "successor_fd5487bd_observation": {
+      "head": "fd5487bd17644b2c3682815e7ccb051cb1a50d13",
+      "native_failure": "Existing cache authority path comparison uses native Windows backslashes instead of repository POSIX serialization.",
+      "native_job": 111244970615,
+      "pr_merge_integrity_failure": "Main advanced to 6105892b1c6992f6be19e0f29fe0530e319eaaf1; the merge checkout adds two heartbeat evidence files and changes four prior files. Regenerate over the integrated candidate tree.",
+      "repair": "Compare both relative authority paths with as_posix; test actual PureWindowsPath semantics.",
+      "tree": "5fd28a7a859ce39a02f1161537685adf940eeab0"
+    },
+    "targeted_fixture_storage": "Transient runtime carrier fixtures use the existing .qikvrt/evidence exclusion, so test assets cannot become immutable repository inputs.",
+    "targeted_python_tests": "7 PASS including native Windows path semantics, actual locked archive and controlled HTTP readback",
     "tool_cache": "16/16; 100 percent"
   },
   "work_unit_id": "WINDOWS-X64-PYTHON-DURABLE-RELEASE-CANDIDATE-20261003-V1"
