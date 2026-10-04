@@ -1,0 +1,132 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "exact_build": "UNAVAILABLE",
+    "model_family": "GPT-6",
+    "provider": "OpenAI",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Read exact candidate and current carrier contract",
+    "Extended existing terminal module with owner-local hash-bound prepare/commit/readback",
+    "Added independent native Unix/SQLite contract fixture and negative controls",
+    "Recorded public GET readback, deployment blocker and evidence scope"
+  ],
+  "created_at": "2026-10-04T07:35:40.767908+00:00",
+  "external_effects": {
+    "governance_changes": false,
+    "merge": false,
+    "production_deployment": false,
+    "production_event_submitted": false,
+    "repository_successor": "AUTHORIZED_CANDIDATE",
+    "zenodo_publication": false
+  },
+  "git_history": {
+    "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
+    "method": "Single-parent history-preserving successor of source_commit; non-force branch update",
+    "predecessor_evidence_transfer": false
+  },
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Authorized smallest existing owner-only ingress repair, tests and repository successor",
+    "Prescribed no unauthenticated network writer, no merge/publication/governance bypass",
+    "Required EFFECT_ACK_DONE=false if exact deployment unavailable"
+  ],
+  "human_decision": {
+    "implementation_directive": "RECEIVED",
+    "new_candidate_acceptance": "PENDING"
+  },
+  "inputs": {
+    "carrier_contract": {
+      "discarded_invalid_agent_hash": true,
+      "full_source_byte_binding_verified": false,
+      "limitations": "Agent-reported excerpt contract, not direct complete source or verified deployed integration",
+      "method": "Railway Agent read-only source excerpts",
+      "runtime_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "runtime_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "thread_id": "865ddb5f-d791-40c5-a45f-6cb4269624b5"
+    },
+    "public_get_readback": {
+      "bytes": 2891,
+      "path": "state/work_units/labyrinth-durable-terminal-20261004/PUBLIC_READBACK.json",
+      "scope": "At 07:33 UTC, volatile terminal event 1 is present, external_effect NONE; durable subject still Goldkelch PR1236 f2fa5a5e with dod=false. No new productive event submitted.",
+      "sha256": "b1631e0a4085b4308f08a70294e49d5c736afcfe7e1a7fb8fc537802557a9d1a"
+    },
+    "retention_mode": "METADATA_ONLY",
+    "source_paths": [
+      {
+        "bytes": 1135,
+        "git_blob_sha1": "30f689d5062c8a2fc93cb2ab9c7352b44b924de1",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/DURABLE_ROUTE_OBSERVATION.json",
+        "sha256": "dbf3b9e16810dc7baf3e28993191eebf4fa952b22895d2d7695e749c8b51c4d2"
+      },
+      {
+        "bytes": 1247,
+        "git_blob_sha1": "4758f18ca312f6d3245ea3d229913768f034ee8a",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/TERMINAL_INPUT.json",
+        "sha256": "d47ff84211cd269f468c529d8b38d047667436d90a729ccf093ef17baed8a58c"
+      }
+    ]
+  },
+  "joint_components": [],
+  "outputs": {
+    "files": [
+      {
+        "bytes": 29093,
+        "git_blob_sha1": "7bcfb2fc1ad2f76939b0e17062085224484bd935",
+        "path": "src/qikvrt_effect_ack_http_terminal.py",
+        "sha256": "5bc6188f9608ceb5f0d1dccda1b79eb1c21a7831efd2987134a86354c64f2c4d"
+      },
+      {
+        "bytes": 26069,
+        "git_blob_sha1": "f8005277249e6b131835aabf1452cdc5b3e11a3e",
+        "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+        "sha256": "67856c45dfa7d6f52ef550d9c1b796dcc048b4448b6aada59deac6be21dc2bfd"
+      },
+      {
+        "bytes": 6745,
+        "git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
+        "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+        "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+      }
+    ]
+  },
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "authority_mirror_equality": false,
+    "public_durable_readback": false
+  },
+  "remaining_blocker": {
+    "first_causal_blocker": "Exact-byte production carrier writer unavailable: current startup fetches Goldkelch/qik-vrt, whose connector and Git reads return unavailable; Railway exposes no container source write/exec/Unix submit",
+    "next_action": "Validate hosted exact-head Unix/SQLite tests; later deploy verified successor through existing carrier and replay same native event on public durable SSE",
+    "retry_condition": "Supported authorized carrier source/deployment path for tested successor plus owner-local invocation"
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "e3e270052d8f8a3ed37085bfe7a0ab59246fd117",
+  "source_ref": "agent/labyrinth-closure-proof-20261004-v1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "281ff6bbe8d95004ab6e47fe173bed1964511f5a",
+  "unresolved_origin": [],
+  "verification": {
+    "autonomous_optimization": "HOLD on non-main candidate; no unrelated apply performed",
+    "boot": "CONTINUE; historical portable capsule objects validated and materialized locally; optional GH CLI missing",
+    "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+    "fixture_scope": "Independent contract fixture using real Unix sockets and SQLite WAL/FULL; deployed daemon is absent from Mirror tree",
+    "hosted_exact_head_tests": "PENDING",
+    "local_full_module": "BLOCK: AF_UNIX socket creation PermissionError EPERM; 19 cases affected before further cases were added",
+    "local_http_tests": "8 PASS",
+    "tool_cache_coverage": "14/14 PASS"
+  },
+  "work_unit_id": "LABYRINTH_DURABLE_TERMINAL_20261004_V1"
+}
