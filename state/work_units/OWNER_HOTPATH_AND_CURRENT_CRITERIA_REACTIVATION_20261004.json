@@ -16,7 +16,8 @@
       "Goal: rank frequently traversed problem-solving paths for efficient caching and native compilation/linking",
       "Constraint: only QIK-VRT-native reactivation and feedback",
       "Correction: resume under latest quality/procedure rules; restart when required",
-      "Authorization: strategy and bounded preparation approved 2026-10-04"
+      "Authorization: strategy and bounded preparation approved 2026-10-04",
+      "Owner explicitly authorizes Effect Acknowledgement for his own inputs and Digital-Twin role, transparent prioritization and support for his declared goals/principles; 2026-10-04."
     ],
     "generated_candidate_acceptance": "PENDING"
   },
@@ -29,13 +30,14 @@
       "Exact-source repository inspection",
       "Proposal grounded in existing cache, HMI, handoff, backlog and workflow executor contracts",
       "Explicit restart, evidence invalidation and delivery semantics",
-      "No invented native execution or compilation result"
+      "No invented native execution or compilation result",
+      "Inspected current main Digital-Twin REST/transport and PR429 scheduling plus PR414 goal-pursuit contracts; added a source-bound human-input, prioritization, conflict and feedback extension."
     ]
   },
   "artifacts": [
     {
       "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
-      "sha256": "b5a94f9eab8e24b5a053507d189a76c64ea5a97944ad29936c7e5369ce003c31"
+      "sha256": "698b6d40e7354f2c93a8bd8a82eec8aca0b2c187ff107c00b066f68360d79bc9"
     }
   ],
   "retention": "METADATA_ONLY",
@@ -54,11 +56,18 @@
     "proposal": "NORMATIVE_AND_DESIGN_CANDIDATE",
     "performance": "NOT_MEASURED",
     "implementation": "NOT_IMPLEMENTED",
-    "live_delivery": "NOT_ESTABLISHED"
+    "live_delivery": "NOT_ESTABLISHED",
+    "human_twin_application": "OWNER_DIRECTIVE_CAPTURED; LIVE_PRIVATE_REST_EFFECT_NOT_ESTABLISHED"
   },
   "completion_claims": {
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
+  },
+  "successor_source_binding": {
+    "main_head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+    "main_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+    "parent_candidate_head": "0f3e702d11636e96709f7ac1eda357aac0c9ee83",
+    "privacy": "No private user input transcripts or personal goal contents in this public candidate."
   }
 }

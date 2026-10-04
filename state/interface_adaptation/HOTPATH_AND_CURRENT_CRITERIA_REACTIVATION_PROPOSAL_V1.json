@@ -166,6 +166,128 @@
     "scheduled_delivery_established": false,
     "first_blocker": "No callable initial workflow_dispatch or admitted Mesh task execution operation is exposed in this client's connector set; the existing executor contract only allowlists a no-effect watchdog dispatch.",
     "retry_condition": "Admitted QIK-VRT execution path supports this exact task and current subject is reobserved; review/admission of this successor policy and notification channel are established.",
-    "next_safe_action": "Review and integrate with existing cache/HMI/backlog contracts through a protected, exact-subject-bound successor; then run acceptance checks and bind native execution/delivery receipts."
+    "next_safe_action": "Review and integrate existing cache/HMI/backlog and owner Digital-Twin input/goal contracts; preserve current mandatory checks and bind actual execution/private write/readback/feedback receipts."
+  },
+  "human_effect_acknowledgement": {
+    "owner": "Ingolf Lohmann",
+    "declared_at": "2026-10-04",
+    "authorization": "Owner explicitly requests Effect Acknowledgement for his own inputs, role-bound REST Digital Twin use and support for his stated goals and principles.",
+    "state": "OWNER_DIRECTIVE_CAPTURED_RUNTIME_EXTENSION_PENDING",
+    "role_binding": {
+      "declared_role": "HUMAN_OWNER_AND_PERSONAL_DIGITAL_TWIN_PRINCIPAL",
+      "responsibility_owner": "MUST_MATCH_ACTUALLY_AUTHENTICATED_QIKVRT_API_PRINCIPAL",
+      "authentication": "Must be bound to the actually authenticated API principal; a typed name or actor claim is not authentication.",
+      "latest_human_correction_precedence": true,
+      "immutable_historical_decisions": true,
+      "human_attribution_id": "Ingolf Lohmann",
+      "github_connector_identity_context": "ingolf-lohmann observed historically; this does not establish a QIK-VRT runtime principal",
+      "digital_twin_definition": "QIK-VRT is the persistent, versioned, auditable digital representation of an explicitly defined subset of Ingolf; the human and the Twin remain distinct, and the model client is a component."
+    },
+    "input_work_ring": [
+      "RECEIVE_AND_BIND_INPUT",
+      "CLASSIFY_GOAL_REQUEST_CORRECTION_OR_AUTHORIZATION",
+      "RESOLVE_EXPLICIT_GOALS_PRINCIPLES_AND_SCOPE",
+      "OBSERVE_CURRENT_TASKS_CRITERIA_DEPENDENCIES_AND_DEADLINES",
+      "PRIORITIZE_ADMISSIBLE_WORK_WITH_VISIBLE_REASON",
+      "FLAG_MATERIAL_GOAL_OR_PRINCIPLE_CONFLICT",
+      "EXECUTE_ONLY_WITHIN_ACTUAL_AUTHORIZATION",
+      "OBSERVE_AND_FRESH_READBACK",
+      "REPORT_GOAL_PROGRESS_REMAINDER_AND_EVIDENCE",
+      "PRESERVE_NEXT_BOUND_ACTION_OR_RESTART_CONDITION"
+    ],
+    "per_input_record": [
+      "stable_input_id",
+      "origin_and_observation_time",
+      "human_identifier_and_actual_authentication_scope",
+      "intent_class",
+      "goal_and_principle_ids",
+      "current_revision_and_supersedes_links",
+      "authorization_scope",
+      "priority_and_its_basis",
+      "dependencies_and_deadlines_when_declared",
+      "current_quality_procedure_fingerprint",
+      "expected_observable_effect",
+      "actual_effect_and_readback",
+      "remaining_goal_gap",
+      "human_feedback_when_required"
+    ],
+    "priority_order": [
+      "current explicit owner correction or reprioritization",
+      "mandatory authorization/security/privacy/provenance/quality admissibility",
+      "declared imminent deadlines and material consequences",
+      "remove a causal blocker for a higher-priority goal",
+      "finish an already bound admissible task",
+      "highest-priority unmet declared goal",
+      "measured cost/resource savings among equivalent admissible paths"
+    ],
+    "goal_support": {
+      "basis": "Only goals and principles explicitly expressed by Ingolf or traceably confirmed by him; interpretations remain labelled and revisable.",
+      "conflicts": "Explain which declared goal/principle conflicts, the concrete consequence, evidence and feasible options. Preserve the owner's power to revise his goals or priorities.",
+      "no_hidden_personality_inference": true,
+      "no_covert_manipulation": true,
+      "no_coercive_control": true,
+      "no_inferred_psychological_or_medical_profile": true,
+      "owner_retains_final_decision": true,
+      "new_input_is_not_automatic_cancellation": true,
+      "whole_person_goal_fidelity_is_not_a_boolean_machine_verdict": true
+    },
+    "effect_semantics": {
+      "RECEIVED": "Input captured; no execution or benefit claim.",
+      "CONTINUE": "Bound interpretation, accepted plan or intermediate progress; remaining predicates explicit.",
+      "DONE": "Only for a task-specific observable effect supported by fresh subject-bound readback. Personal usefulness/alignment requiring human judgment remains pending until actual feedback.",
+      "human_consent_is_not_task_effect_ack": true,
+      "technical_write_is_not_human_goal_fulfilment": true,
+      "notification_metadata_is_not_observed_delivery": true,
+      "cross_task_or_predecessor_evidence_transfer": false
+    },
+    "private_state": {
+      "raw_inputs_goals_and_personal_task_content_in_public_git": false,
+      "storage": "Existing authenticated repository/principal-isolated private Digital Twin registry or admitted personal QIK-VRT state store.",
+      "personal_payload_in_standard_distribution": false,
+      "credential_persistence": false,
+      "least_required_evidence": true
+    },
+    "rest_reuse": {
+      "main_observed_head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+      "main_observed_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+      "authenticated_transport": "src/qikvrt_github_api_shim.py",
+      "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+      "reference_api_scope": "Technical reference-model state/transition/receipt; transition accepts only expected_version and target_velocity_mps.",
+      "scheduling_candidate": {
+        "pr": 429,
+        "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+        "contract": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULE_EVENTS_CONTRACT_V1.json",
+        "not_main_or_deployed": true
+      },
+      "goal_pursuit_candidate": {
+        "pr": 414,
+        "contract": "state/autonomy/AUTONOMOUS_OPTIMAL_GOAL_CONTRACT_V1.json",
+        "not_main_or_deployed": true
+      },
+      "personal_runtime_endpoints_or_identity_not_invented": true,
+      "existing_closed_schema_not_bypassed": true,
+      "no_duplicate_scheduler_or_parallel_twin": true,
+      "no_new_controller_or_parallel_pr": true
+    },
+    "live_readback": {
+      "personal_authenticated_api_connection": "NOT_ESTABLISHED_IN_THIS_CLIENT",
+      "personal_goal_transition_endpoint": "NOT_ESTABLISHED_FROM_READ_MAIN_CONTRACT",
+      "personal_principal_binding": "DECLARED_OWNER; AUTHENTICATED_RUNTIME_BINDING_NOT_OBSERVED",
+      "private_twin_write": false,
+      "private_twin_readback": false,
+      "human_goal_effect_ack_done": false
+    },
+    "acceptance": [
+      "Goal correction supersedes current preference without erasing history",
+      "Priority reason tied to declared goals, deadlines and dependencies",
+      "Conflicts reported with evidence and revisable owner choice",
+      "Private inputs/values excluded from public repository and standard build",
+      "Closed REST schema rejects unadmitted human-goal fields",
+      "Actual principal, source and current version are authenticated and CAS-bound before private write",
+      "Duplicate input/request does not duplicate consequential execution",
+      "Stored/read-back record does not falsely establish benefit, consent or human goal fulfilment",
+      "Restart uses current criteria; old receipts remain historical"
+    ],
+    "next_safe_step": "Integrate a reviewed personal-goal/input adapter with the existing authenticated Twin/goal-pursuit contracts, obtain actual admitted private runtime connectivity, and verify principal-bound write/readback and a QIK-VRT feedback receipt."
   }
 }
