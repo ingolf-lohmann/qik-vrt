@@ -1,0 +1,173 @@
+{
+  "schema": "qikvrt_publication_staging_return_receipt_v1",
+  "candidate_id": "ietf-epistemic-status-00-corrected-20261004-v2",
+  "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "source_tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+  "returned_artifacts": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+    },
+    {
+      "path": "CHANGE_NOTICE.md",
+      "bytes": 1000,
+      "sha256": "64c866a1db1ab3f7b87b891f2b065894c5c123ece083474615b9b972d6e49ad2",
+      "git_blob_sha1": "94165fc47c042fc371b8548575729ce7e91e6412"
+    },
+    {
+      "path": "CONTENT_VALIDATION.json",
+      "bytes": 5309,
+      "sha256": "d12fcb10d2925ff63cd78f767a768546b8e15bc959733626c979f4c1afde7b4f",
+      "git_blob_sha1": "ecd980c79ca5073833d98ffcaf88dac6db81f8fd"
+    },
+    {
+      "path": "DERIVATION_MAP.json",
+      "bytes": 6567,
+      "sha256": "e6ff6efd454b6156903275e0e0a3b385dcc5b0209762199e7eb46a8cbbef0c35",
+      "git_blob_sha1": "e1e32aa810d349bdfe8f84afc3b2e85a4ab314ea"
+    },
+    {
+      "path": "RENDER_VALIDATION.json",
+      "bytes": 4190,
+      "sha256": "7a4175b724d91edc78d2d3b51d86c73d63a8383bb2407c8cf9ce24d28538b06c",
+      "git_blob_sha1": "0d84ef7743e971b8166e62bf41bd8680ebf2e568"
+    },
+    {
+      "path": "SOURCE_GIT_CAPSULE.json",
+      "bytes": 63964,
+      "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+      "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1"
+    },
+    {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 6539,
+      "sha256": "fa99e18d015d149bbe0364cf52987857a6f3d53c261b009254232b02e0d22082",
+      "git_blob_sha1": "a9c19d837dd54593bf951d2d0e3434f3a3cea02e"
+    },
+    {
+      "path": "STAGING_README.md",
+      "bytes": 1055,
+      "sha256": "f1b585cc4b54fa1322cbb9aeda2e417048f6ce864d72689104ccfdde80e9775d",
+      "git_blob_sha1": "5bf0e9375b8e15e44acfecbf48c3ebc3fb8d410c"
+    },
+    {
+      "path": "SUBMISSION_MANIFEST.json",
+      "bytes": 11084,
+      "sha256": "af4ac7715a8bca2d9d95538a38a550e381751efd1d3f88ed780877099430b63b",
+      "git_blob_sha1": "748e46da3376d818741ee79549b43b041c353948"
+    },
+    {
+      "path": "XML2RFC_HTML_LOG.txt",
+      "bytes": 556,
+      "sha256": "dfcf91ca62d6bde5775205ee3a0698535d8305b9faef51383c991dd1a93a6a94",
+      "git_blob_sha1": "e5a7bfbdf45cbf82ee20b9e17cf04131a6313d90"
+    },
+    {
+      "path": "XML2RFC_TEXT_LOG.txt",
+      "bytes": 555,
+      "sha256": "358e6293da944493166c31186e550c31b411253afae3030e7edba4fa4e57b40b",
+      "git_blob_sha1": "e1dff31721a4014b87f4a35c4210a9886e82532e"
+    },
+    {
+      "path": "bibxml/reference.RFC.2119.xml",
+      "bytes": 910,
+      "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+      "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111"
+    },
+    {
+      "path": "bibxml/reference.RFC.8174.xml",
+      "bytes": 751,
+      "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+      "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b"
+    },
+    {
+      "path": "build.py",
+      "bytes": 8741,
+      "sha256": "ad0ead2de34c6dc9abaa6b44675a37bd10a32b48a5d3a11579baf89bc30a18dd",
+      "git_blob_sha1": "3cb27ff69baf397ccf4f650dd5ce9b70ac1d96b8"
+    },
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "bytes": 53126,
+      "sha256": "7dcfd998a33e3afdf94a403036cd19e5e002ecac54c56bb3c4f2b4c6c388c517",
+      "git_blob_sha1": "4b311887203c62d5de49de7f41d6ab3c0adce03d"
+    },
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 12452,
+      "sha256": "ea181a3beef6f2913db5d82236b0677b109d96aa221b26430d300845c819f3f5",
+      "git_blob_sha1": "964f3447db6f0fe9fb3279e1fc3bfa127957dc23"
+    },
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 10692,
+      "sha256": "dd200d495f46f85ddd43810718998d414ce328201fdaba8d0e6577e0b00dcf6c",
+      "git_blob_sha1": "66d09958de567ab13a9922b3a909b15c3b355950"
+    },
+    {
+      "path": "verify_staging.py",
+      "bytes": 14591,
+      "sha256": "81161989cf3408c519f751c30cca2f6b95b7faad92a9e69ee85a1b085569f471",
+      "git_blob_sha1": "05e7458a82be6c19ed3aa19685797aa87022e482"
+    }
+  ],
+  "source_capsule_verification": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 63964,
+    "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+    "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 3,
+    "objects": 10,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  },
+  "protected_original_artifacts": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "bytes": 189440,
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "bytes": 1416550,
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62"
+    }
+  ],
+  "human_review_status": "PENDING_FOR_NEW_CANDIDATE",
+  "publication": "NOT_SUBMITTED",
+  "owner_authorization_for_original_pdf_zip_transferred": false,
+  "action_time_upload_authorization": "ABSENT",
+  "zenodo_authorization_consumed": false,
+  "effect_ack_done": false,
+  "scope": "New publication-correction review return only; no destination submission, PR merge or production activation.",
+  "prepared_utc": "2026-10-04T05:44:21.669508+00:00",
+  "predecessor": {
+    "head": "e30df3e8bb5c7757bc126000c51d2e9d23b64dae",
+    "tree": "5fd2209a02f969fd262f0997c547cef161055bc4",
+    "package": "publication-staging/ietf-epistemic-status-00-a2dbd3ac-v1",
+    "manifest": {
+      "path": "SUBMISSION_MANIFEST.json",
+      "bytes": 8981,
+      "sha256": "e34a43800aa0e4727a2d31a7c4a1908ea24a3097a7d52ff73215a56191cdd530",
+      "git_blob_sha1": "b7a23960933c28034a8843fedacf84b7d0bf9725"
+    }
+  },
+  "predecessor_evidence_transfer": false,
+  "content_validation": {
+    "path": "CONTENT_VALIDATION.json",
+    "bytes": 5309,
+    "sha256": "d12fcb10d2925ff63cd78f767a768546b8e15bc959733626c979f4c1afde7b4f",
+    "git_blob_sha1": "ecd980c79ca5073833d98ffcaf88dac6db81f8fd"
+  },
+  "submission_manifest": {
+    "path": "SUBMISSION_MANIFEST.json",
+    "bytes": 11084,
+    "sha256": "af4ac7715a8bca2d9d95538a38a550e381751efd1d3f88ed780877099430b63b",
+    "git_blob_sha1": "748e46da3376d818741ee79549b43b041c353948"
+  },
+  "upload_authorization_created": false
+}
