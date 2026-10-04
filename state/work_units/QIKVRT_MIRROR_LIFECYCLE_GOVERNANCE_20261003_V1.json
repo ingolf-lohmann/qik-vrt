@@ -171,6 +171,43 @@
         "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
         "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
       }
+    },
+    {
+      "date": "2026-10-04",
+      "retained_candidate": "9a714f44d87e5754068b99eef423ac533b7a3864",
+      "integrated_main": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+      "main_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+      "method": "history-preserving two-parent successor; six non-overlapping current Main lifecycle blobs reused exactly",
+      "paths": [
+        {
+          "path": "evidence/node_health/37180998634-1.json",
+          "git_blob_sha": "7296d8c386b1389cee3d970c1fc5d54d484bc7b1"
+        },
+        {
+          "path": "evidence/node_health/LATEST.json",
+          "git_blob_sha": "7296d8c386b1389cee3d970c1fc5d54d484bc7b1"
+        },
+        {
+          "path": "evidence/node_registration_renewal/37180998634-1.json",
+          "git_blob_sha": "db4ea7ecd4b26c2025be6cb6dc3a3dba47c859bd"
+        },
+        {
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "git_blob_sha": "db4ea7ecd4b26c2025be6cb6dc3a3dba47c859bd"
+        },
+        {
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "git_blob_sha": "5d3687bdbb86aced0d185e7588d0f8e040271d4d"
+        },
+        {
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "git_blob_sha": "93586c23f15716a25c1ca8dcad1e6af25f6bfa92"
+        }
+      ],
+      "previous_checks_are_historical": true,
+      "successor_validation": "PENDING_FRESH_NATIVE_GATES",
+      "promotion": false,
+      "scope": "integration and exact-head validation only"
     }
   ],
   "maintenance_context_repair": {
