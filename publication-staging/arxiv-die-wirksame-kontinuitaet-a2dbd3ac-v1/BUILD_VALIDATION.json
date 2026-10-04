@@ -1,0 +1,203 @@
+{
+  "schema": "qikvrt_arxiv_local_compatibility_validation_v1",
+  "status": "LOCAL_BUILD_VERIFIED_SERVER_BUILD_NOT_OBSERVED",
+  "observed_utc": "2026-10-04T00:03:30.501386+00:00",
+  "scope": "deterministic archive, source closure, repeat extraction/build and local PDF; not scientific replication or destination acceptance",
+  "source_archive": {
+    "path": "arxiv-source.tar.gz",
+    "bytes": 34338,
+    "sha256": "52a6f8418c4e08d1139ae064f85c51ceae2bf2d96d21fe7209a1faf1a6fea562",
+    "members": [
+      "main.tex",
+      "orientation.tex",
+      "theory.tex",
+      "measurements.tex",
+      "delivery.tex",
+      "appendix.tex",
+      "claim-scope.tex"
+    ],
+    "gzip_mtime": 1790985600,
+    "tar_format": "USTAR",
+    "deterministic_repeat": true
+  },
+  "build": {
+    "engine": "XeLaTeX",
+    "version": "XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/Debian)",
+    "command": "SOURCE_DATE_EPOCH=1790985600 FORCE_SOURCE_DATE=1 TZ=UTC LC_ALL=C.UTF-8 xelatex -no-shell-escape -interaction=nonstopmode -halt-on-error -output-driver=\"xdvipdfmx -z0\" main.tex",
+    "passes": 3,
+    "independent_builds": 2,
+    "pdf_byte_identical": true,
+    "warnings_after_final_pass": [
+      "Package polyglossia Warning: No hyphenation patterns were loaded for `german'",
+      "Package polyglossia Warning: No hyphenation patterns were loaded for `ngerman'"
+    ],
+    "network_access": false,
+    "shell_escape": false
+  },
+  "output_pdf": {
+    "path": "main.pdf",
+    "bytes": 596934,
+    "sha256": "7e386094ffee003edc095ab6fb4258690fbb60813cb2e05dcdc60961a468613c",
+    "page_count": 25
+  },
+  "bibliography": {
+    "embedded_source": "appendix.tex",
+    "reused_unchanged": true
+  },
+  "font_policy": {
+    "filename_lookup": true,
+    "font_binaries_in_archive": false,
+    "absolute_font_paths": false,
+    "fonts": [
+      "Latin Modern Roman",
+      "Latin Modern Sans",
+      "Latin Modern Mono",
+      "Latin Modern Math"
+    ]
+  },
+  "poppler_pdfinfo": "Title:           QIK-VRT: Die wirksame Kontinuität\nSubject:         Gesamtsynthese, Invarianten, Meta-Integration, Messgrenzen und Auslieferungsplan\nKeywords:        QIK-VRT, TEMDD, Provenienz, Readback, Meta-Integration, Roadmap\nAuthor:          Ingolf Lohmann (Konzept und Product Ownership); QIK-VRT (analytische Redaktion)\nCreator:         LaTeX with hyperref\nProducer:        xdvipdfmx (20220710)\nCreationDate:    Fri Oct  2 17:00:00 2026 PDT\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           25\nEncrypted:       no\nPage size:       595.28 x 841.89 pts (A4)\nPage rot:        0\nFile size:       596934 bytes\nOptimized:       no\nPDF version:     1.5\n",
+  "poppler_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nADOODM+LMSans10-Regular-Identity-H   CID Type 0C       Identity-H       yes yes yes      5  0\nDOFXKQ+LMRoman10-Regular-Identity-H  CID Type 0C       Identity-H       yes yes yes      7  0\nIKLOZF+LMSans10-Bold-Identity-H      CID Type 0C       Identity-H       yes yes yes      9  0\nFZEVWR+LMMono10-Regular-Identity-H   CID Type 0C       Identity-H       yes yes yes     11  0\nLSFJNY+LMRoman10-Bold-Identity-H     CID Type 0C       Identity-H       yes yes yes     32  0\nJMQKAM+LMRoman10-Italic-Identity-H   CID Type 0C       Identity-H       yes yes yes     39  0\nIPUHXN+LatinModernMath-Regular-Identity-H CID Type 0C       Identity-H       yes yes yes     41  0\nZNCQCU+LMSans10-Oblique-Identity-H   CID Type 0C       Identity-H       yes yes yes     83  0\n",
+  "visual_render": {
+    "renderer": "Poppler pdftoppm",
+    "dpi": 90,
+    "pages_rendered": 25,
+    "temporary_page_identities": [
+      {
+        "path": "page-01.png",
+        "bytes": 76290,
+        "sha256": "f6aa4f542c2ac39171c5d82a19c4bfd97315ac4f756a6c9a397e8acc3a08ee7e"
+      },
+      {
+        "path": "page-02.png",
+        "bytes": 249569,
+        "sha256": "9a8dfa904e3bb8d4fc0e54efc2c8deb26f29aaadeab8f2f30cf1c9444ede218a"
+      },
+      {
+        "path": "page-03.png",
+        "bytes": 256378,
+        "sha256": "81f056b5ea4f75162bb335b41c7275c5ccfb5a9cb366a26247b3e08ab69837f7"
+      },
+      {
+        "path": "page-04.png",
+        "bytes": 251879,
+        "sha256": "06317557b79c654b9a166f1b29e4b3e845ccb0ac18619ac415010cc92e036235"
+      },
+      {
+        "path": "page-05.png",
+        "bytes": 260036,
+        "sha256": "723a1f9667b59a6612e15b48573bb72cffddc359565bb54b717cc23434887190"
+      },
+      {
+        "path": "page-06.png",
+        "bytes": 197037,
+        "sha256": "5a27a9fbe68b10615837394bb19ddfd2a6a7771595f00940a3ccf2a5817b8251"
+      },
+      {
+        "path": "page-07.png",
+        "bytes": 267894,
+        "sha256": "e99ff941dc10b75cbf2143bcc6971fe2437760b3fd2f63a11addad6183b3e427"
+      },
+      {
+        "path": "page-08.png",
+        "bytes": 251750,
+        "sha256": "f3ff3724c83a6e9eedc615e08b1521f7f7b9548f1799ac074ea9e2ec8a0694c1"
+      },
+      {
+        "path": "page-09.png",
+        "bytes": 234929,
+        "sha256": "d004963fe01b3c15512adfa59874adea72a713c6d0a059b76316790922b4552c"
+      },
+      {
+        "path": "page-10.png",
+        "bytes": 214115,
+        "sha256": "e76342a4176521ef3c9acce1bd07cbf2d0c1e9c11135d635387b9e7dd9f2be2f"
+      },
+      {
+        "path": "page-11.png",
+        "bytes": 260888,
+        "sha256": "0132a8205696728a946af4e5ece559448c51a6dee6f6f303e8e638f1e71c9ae0"
+      },
+      {
+        "path": "page-12.png",
+        "bytes": 213634,
+        "sha256": "02215cfa1a523e33138d68b5a940b94e0dee21e9e833770368b88e4a09e878f7"
+      },
+      {
+        "path": "page-13.png",
+        "bytes": 263881,
+        "sha256": "d0a648fbff66f22f92c6cf2e2a56e5bd5fc671e311b20d8d930bba0d22629fd0"
+      },
+      {
+        "path": "page-14.png",
+        "bytes": 260839,
+        "sha256": "00f1b0cc19f6e06b3c370eedefdd6a3563d7c38e366db7cbcc8894764f9958a7"
+      },
+      {
+        "path": "page-15.png",
+        "bytes": 145997,
+        "sha256": "e8a56985f357e4f281769c5dfa84db71a9a79fbcba1d472d4512d7ca766753b3"
+      },
+      {
+        "path": "page-16.png",
+        "bytes": 158155,
+        "sha256": "1fa3abbe320ca8ac19d1fd81f577ab337791072da1427dbf5c6eff107135dab4"
+      },
+      {
+        "path": "page-17.png",
+        "bytes": 262929,
+        "sha256": "e539de0a89745343a31ca93ab89980dccb8ec83b146337b1438cfb6dd10d8fd7"
+      },
+      {
+        "path": "page-18.png",
+        "bytes": 177457,
+        "sha256": "5f1000e9a35e5880cab0c7ea356852f9b4608ce95261dbb555e1e7a149316e4c"
+      },
+      {
+        "path": "page-19.png",
+        "bytes": 202226,
+        "sha256": "294469c5d6d630c593db3a81864af70e798983792aec73a3523e6e6c89db5312"
+      },
+      {
+        "path": "page-20.png",
+        "bytes": 181021,
+        "sha256": "a3fece66d560eda74386edbe92ece77bd64bfbff37eb5599f7c342488d614733"
+      },
+      {
+        "path": "page-21.png",
+        "bytes": 285072,
+        "sha256": "b323617955b6de3df8847a7ddf5c9884862f6a013ea78820db79f4612c61c47d"
+      },
+      {
+        "path": "page-22.png",
+        "bytes": 227840,
+        "sha256": "a6e9b2dfd4cbc20afe2928001d05636b0cc94a532dcda4a63205ec91012f2bd0"
+      },
+      {
+        "path": "page-23.png",
+        "bytes": 206589,
+        "sha256": "69ca98aec3da73880b4421f3066ad97380dff6a5fb11b28d3be662022429a156"
+      },
+      {
+        "path": "page-24.png",
+        "bytes": 185050,
+        "sha256": "b1bc390d5e07f111bff3dac6dbb328c15b48af28b516a54bc2db9559bbc2a1e5"
+      },
+      {
+        "path": "page-25.png",
+        "bytes": 140729,
+        "sha256": "998ca14d4e572221337922592e6deedff01310de2439c52d935553a5b31f0eb7"
+      }
+    ],
+    "human_or_ai_visual_review": "RECORDED_SEPARATELY_IN_PDF_RENDER_VALIDATION.json"
+  },
+  "claim_boundaries_embedded": true,
+  "formal_proved_claim_count": 0,
+  "arxiv_server_build_verified": false,
+  "submission_performed": false,
+  "authorization_consumed": false,
+  "reused_identity_primitive": {
+    "path": "tools/materialize_arxiv_current_synthesis_v2.py",
+    "bytes": 25197,
+    "sha256": "4000688c2aed63d8a39a81b39f78b57b7c70db662d1f4b5c3680d98cb1a6326f"
+  }
+}

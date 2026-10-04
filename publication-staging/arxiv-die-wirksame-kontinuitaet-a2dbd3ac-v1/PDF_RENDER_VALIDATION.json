@@ -1,0 +1,63 @@
+{
+  "schema": "qikvrt_pdf_render_validation_v1",
+  "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "pdf": {
+    "path": "main.pdf",
+    "bytes": 596934,
+    "sha256": "7e386094ffee003edc095ab6fb4258690fbb60813cb2e05dcdc60961a468613c"
+  },
+  "page_count": 25,
+  "renderer": "/usr/bin/pdftoppm",
+  "renderer_version": "pdftoppm version 24.02.0",
+  "dpi": 115,
+  "page_images_decoded": 25,
+  "visual_review": {
+    "observer": "OpenAI Codex GPT-6",
+    "reviewed_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25
+    ],
+    "result": "PASS_LOCAL_LAYOUT_REVIEW",
+    "checked": [
+      "page completeness",
+      "column separation",
+      "tables and formulas",
+      "no clipped or overlapping text",
+      "legible bibliography and identifiers",
+      "cover staging label",
+      "embedded 30-claim scope and method limits"
+    ],
+    "boundary": "AI visual review of the new local PDF; no human author acceptance or arXiv server rendering observed"
+  },
+  "warnings": {
+    "local_German_hyphenation_patterns_unavailable": true,
+    "overfull_boxes_after_final_build": 0,
+    "missing_glyph_diagnostics": 0,
+    "note": "Two polyglossia environment warnings remain recorded; the portable filename fonts build and the rendered pages are legible. Server typography may differ."
+  },
+  "submission_performed": false,
+  "upload_authorization_consumed": false
+}

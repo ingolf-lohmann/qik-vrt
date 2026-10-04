@@ -1,0 +1,78 @@
+\chapterpage{measure}{06 / DIE MESSLAGE}{Vier Fragen. Vier verschiedene Nachweise.}{Die Ergebnisse werden nicht zu einem einzigen Beschleunigungsfaktor zusammengerechnet. Ein lokaler Algorithmusvergleich, die Größe eines Git-Deltas, ein Mehrprozessversuch und ein verteilter Ende-zu-Ende-Lauf untersuchen unterschiedliche Gegenstände.}
+\par
+{\tighttable
+\begin{tabularx}{\textwidth}{@{}rrr r r X@{}}\toprule
+Zustände & Drift & Vollscan, ms & Delta, ms & Faktor & Gegenstand\\\midrule
+1.000 & 1\% & 1,597 & 0,613 & 2,60 & Lokaler synthetischer Vergleich\\
+1.000 & 5\% & 1,546 & 0,761 & 2,03 & Gleiches Modell\\
+1.000 & 20\% & 2,062 & 1,627 & 1,27 & Gleiches Modell\\
+10.000 & 1\% & 16,502 & 6,428 & 2,57 & Gleiches Modell\\
+10.000 & 5\% & 17,196 & 8,312 & 2,07 & Gleiches Modell\\
+10.000 & 20\% & 22,284 & 16,954 & 1,31 & Gleiches Modell\\
+100.000 & 1\% & 182,423 & 72,056 & 2,53 & Gleiches Modell\\
+100.000 & 5\% & 213,311 & 105,561 & 2,02 & Gleiches Modell\\
+100.000 & 20\% & 340,156 & 254,999 & 1,33 & Gleiches Modell\\\bottomrule
+\end{tabularx}}
+\vspace{2mm}{\sffamily\footnotesize Tabelle 1. Mediane der gelieferten Rohwerte; zwölf Mutationsrunden, sieben Wiederholungen je Arm und Konfiguration. Alle Zahlen wurden aus der unveränderten JSON-Datei erneut ausgerechnet. Kein neuer Lauf dieser ursprünglichen Messung. \src{L3,C1}}
+\begin{cols}
+\subsection*{1. Lokaler Mikrobenchmark}
+Der bereitgestellte Datensatz ist tatsächlich vorhanden. Sein SHA-256 stimmt mit der zuvor genannten Identität überein. Die neun Medianpaare und Faktoren lassen sich aus den Einzelwerten reproduzieren. Das bestätigt die arithmetische Auswertung und Dateibindung; es ist keine unabhängige Wiederholung der ursprünglichen Zeitmessung. \src{L3,C1}
+
+Der damalige Code vergleicht zwei In-Memory-Dictionaries: vollständiger Vergleich nach jeder Mutation gegen gezieltes Vergleichen einer bekannten Menge geänderter Schlüssel. Beide Arme starten mit der Initialisierung von $N$ Zuständen. Der Delta-Arm sortiert außerdem seine geänderten Schlüssel. Für $r$ Runden und $k$ Änderungen ist deshalb die Beschreibung
+\[
+ T_A=O(N+rN),\qquad T_B=O(N+rk\log k)
+\]
+präziser als „der ganze Vorgang ist $O(k)$“. Die eigentliche Vergleichszahl fällt bei einem Prozent Drift um 99\%; andere Kosten bleiben bestehen.
+
+Die Reihenfolge war stets A, dann B. Cache- und Reihenfolgeeffekte sind daher nicht ausgeschlossen. Die Konfliktregel wählt den lexikographisch größeren 128-Bit-Hash, nicht notwendigerweise den zeitlich jüngsten oder sachlich richtigen Inhalt. Das Modell trägt einen synthetischen Effizienzvergleich, keinen Beweis echter Provenienzprüfung oder maschinellen Bewusstseins. Der im JSON eingetragene Zeitpunkt ist eine deklarierte Metadatenangabe, keine unabhängig verifizierte Uhr.
+
+\subsection*{2. Historische Repository-Struktur}
+Für den früher gebundenen Main wurden 3.928 Dateien und für die elf ausgewählten PRs \#437–\#447 Deltas von 3 bis 91 Dateien berichtet. Der Median von 20 Dateien entspricht rechnerisch 0,509\%; das Verhältnis ist 196,4:1. Diese Rechnung ist korrekt für diese historischen Eingaben. \src{L4,C1}
+
+Sie misst jedoch keine reale Abarbeitungszeit. Die Deltas enthalten zum Teil gemeinsame Änderungen und Metadaten, ihre Bedeutung ist nicht gleich verteilt und globale Abhängigkeiten können weit über geänderte Dateien hinausreichen. Vor allem belegt der Wert nicht, dass ein bestehender Algorithmus tatsächlich 99,49\% seiner Gesamtarbeit einspart. Die aktuelle PR-Menge und Main-Historie sind weitergelaufen; die Zahlen bleiben am damaligen Gegenstand gebunden.
+
+\subsection*{3. Native 1/2/4-Prozess-Messung}
+PR \#443 dokumentiert inzwischen einen separaten erfolgreichen Versuch auf einem AMD-EPYC-7763-Host mit vier CPU-/Affinity-Slots. Je Konfiguration werden sechs gepaarte Wiederholungen, gleiche Ausgangssnapshots, 80 Effekte und 160 Records angegeben. Die Mediane lauten 0,349138 s, 0,214989 s und 0,163044 s. Die Verhältnisse der Mediane betragen damit 1,624× und 2,141×; die entsprechende Zeitreduktion 38,42\% und 53,30\%. \src{R4,C1}
+
+Die dokumentierten Intervalle liegen bei [1,369494; 1,696822] beziehungsweise [2,084345; 2,240735]. Beide bestehen die im PR angegebene, unveränderte Zulassungsregel. Diese Ausgabe hat die PR-Dokumentation frisch gelesen und ihre Medianrechnung nachvollzogen; sie hat nicht sämtliche 18 ursprünglichen Trial-Archive erneut heruntergeladen. Die Werte werden deshalb ausdrücklich quellengebunden berichtet.
+
+\begin{boundary}{Ein echter Fortschritt, kein universelles Ergebnis}
+Für diesen konkreten Lauf ist eine begrenzte Mehrprozess-Beschleunigung dokumentiert. Offen bleiben Ursachen früherer Ausreißer, physische Isolation und runnerunabhängige Skalierung. Die frühere pauschale Aussage „noch kein Skalierungsnachweis“ wird für diesen Versuch korrigiert. \src{R4}
+\end{boundary}
+
+\subsection*{4. Aktueller Authority/Mirror-Versuch}
+Der frische Job \texttt{111218106133} des Runs \texttt{37128318275} bindet Executor-Head \texttt{a31ebb7e…}, Tree \texttt{8d9e02da…}, sechs erfolgreiche Credential-Grenztests und das Ergebnis \texttt{HOLD\_AUTHORITY\_CREDENTIAL\_DELIVERY\_NOT\_ESTABLISHED}. Die Authority-Zugangsdaten sind in diesem Prozess nicht zugestellt; beide Remote-Heads bleiben im Ergebnis null. \src{R3}
+
+\texttt{speedup\_claim=false} und \texttt{effect\_ack\_done=false} sind korrekt. Das erfolgreiche Workflow-Ende bestätigt die Diagnose, nicht eine Beschleunigung. Die zwölf geplanten Wiederholungen wurden nicht als Zeitversuch durchlaufen. Auch die Existenz historisch abrufbarer Authority-Objekte ersetzt keine aktuelle Main-Lesefähigkeit.
+\end{cols}
+
+\chapterpage{audit}{07 / METHODENAUDIT}{Der Zugang ist nicht die einzige noch offene Voraussetzung.}{Eine Messung soll die gestellte Frage beantworten. Deshalb wurde der derzeitige A/B-Code vor einer Verallgemeinerung geprüft. Der Befund verändert den nächsten Arbeitsschritt und den Forecast.}
+\begin{cols}
+Der auf \texttt{a31ebb7e…} gelesene Code lädt zunächst zwei Repositories herunter. Erst danach werden die Timer um lokale Voll- und Delta-Vergleiche gesetzt. Netzwerkübertragung, Initialabruf und echte wechselseitige Korrektur liegen außerhalb dieser gemessenen Abschnitte. Es wird kein kontrollierter Mutations-/Reconcile-Zyklus auf zwei ausführenden Remote-Nodes mit Ende-zu-Ende-Readback gemessen. \src{R11}
+
+Eine erfolgreiche Ausführung dieses Codes nach Bereitstellung der Credentials wäre deshalb zunächst ein lokaler Vergleich frisch geladener Repository-Zustände. Sie könnte nicht ohne weitere Instrumentierung die angekündigte Aussage „das vollständige verteilte QIK-VRT-System wird schneller“ tragen.
+
+\subsection*{Zwei konkrete Korrektheitsgrenzen}
+Die Funktion \texttt{hash\_path} verwendet einen Subprozess mit \texttt{text=True} und kodiert dessen Ausgabe anschließend zurück. Beliebige Git-Blobs sind jedoch Binärbytes. Ungültiges UTF-8 kann bereits beim Dekodieren scheitern; universelle Zeilenumwandlung kann Bytes verändern. Für bytegenauen Vergleich ist binärer Transport erforderlich. \src{R11}
+
+Zweitens vergleicht der Vollarm ausschließlich Inhaltshashes, der Delta-Arm dagegen Git-Pfaddifferenzen. Eine reine Änderung des Ausführungsbits kann von \texttt{git diff} gemeldet werden, obwohl die Blob-Bytes gleich sind. Die Arme definieren in diesem Fall unterschiedliche Gleichheit. Dateimodus, Typ, Löschung, Umbenennung und gegebenenfalls Submodule müssen in beiden Armen identisch behandelt werden.
+
+Beide Grenzen wurden in isolierten lokalen Kontrollen reproduziert: Ein nicht UTF-8-dekodierbarer Bytestrom wird vom Textpfad abgewiesen; eine reine Modusänderung liefert bei gleichen Dateibytes einen nichtleeren Git-Diff. Diese Kontrollen sind Methoden-Gegenbeispiele, keine Veränderung des Produktionscodes und kein verteilter Benchmark. Die Skripte und Resultate liegen im Begleitpaket. \src{C1}
+
+\subsection*{Was ein aussagekräftiger Versuch braucht}
+Der nächste Versuch muss seine Messgröße vorab festlegen. Für eine reine lokale Delta-Optimierung werden Bytes, Modi und Ergebnisäquivalenz geprüft; Reihenfolge und Warm-/Kaltzustände müssen vergleichbar sein. Für den stärkeren verteilten Claim beginnt die Zeit dagegen vor dem kontrollierten Eingriff und endet erst mit akzeptiertem beidseitigem Readback.
+
+Beide Arme benötigen denselben eingefrorenen Ausgangszustand, dieselbe Folge autorisierter Änderungen und dieselbe Bedeutung von Konvergenz. AB/BA-Reihenfolgen oder ein vorab festgelegter Zufallsplan begrenzen zeitliche Verzerrung. Ein getrenntes Test-Repository beziehungsweise ein ausreichend isolierter, autorisierter Versuchsbereich verhindert Nebenwirkungen auf produktive Main-Zweige.
+
+Zu erfassen sind Gesamtzeit, CPU, I/O, API-Aufrufe, Bytes, Retry-Zahl, Queue-Wartezeit, Gate-Dauer, Konflikte und verbleibende Inkonsistenzen. Fehlversuche werden erhalten und nicht aus der Stichprobe entfernt. Cache-Hits sind offenzulegen. Energieaussagen benötigen einen passenden Zähler; CPU-Zeit ist kein Ersatz für Joule.
+
+\subsection*{Kein abgekürzter Wahrheitsbeweis}
+Auch ein methodisch korrekter Leistungsversuch beweist nur seinen Leistungsclaim. Er beweist weder allgemeine Wahrhaftigkeit noch Bewusstsein. Derselbe Abstand zwischen Gegenstand und Schluss gilt für negative Resultate: Ein fehlender Token widerlegt die Architekturidee nicht. Er verhindert aber die konkrete Messung und Lieferung.
+
+\begin{boundary}{Korrektur der früheren Kurzform}
+„One carrier away“ war für den vollständigen verteilten Versuch zu eng. Korrekt ist: Zugang bereitstellen \emph{und} Messsemantik vervollständigen, dann vergleichbar ausführen und unabhängig auswerten. Keine Proxy-Zahl wird zum fehlenden Ende-zu-Ende-Ergebnis erklärt.
+\end{boundary}
+
+\subsection*{Anwendung auf das Projekt}
+Der erste unmittelbare Nutzen dieser Einsicht ist keine erfundene neue Beschleunigungszahl, sondern eine bessere Arbeitsteilung: Das Zugangsteam schließt die Credential-Zustellung; die Messarbeit korrigiert Byte-/Modussemantik und Zeitgrenzen; die Publikation benennt den zulässigen Claim. So werden echte Blocker nicht durch wohlklingende Gesamtbegriffe verdeckt.
+\end{cols}
