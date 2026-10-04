@@ -1,0 +1,48 @@
+{
+  "schema": "qikvrt_pipeline_contract_repair_work_unit_v1",
+  "work_unit_id": "QIKVRT-PIPELINE-CONTRACT-REPAIR-20261004-V1",
+  "owner": "Ingolf Lohmann",
+  "authorization": "Explicit owner request in this conversation to implement the 2026-10-04 audit corrections and earlier failure detection.",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "carrier_pr": 455,
+  "construction_base": {
+    "head": "299ac2bdbc165d4b3833c8434c0b2b83065c7f8b",
+    "tree": "b42fe71c0216387149972d0a6d3235945c78fd7f",
+    "main": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58"
+  },
+  "audit_archive_sha256": "3d6ec7d31ae1d4d98b51ba55e249ec5bcfdce65f4a011465d7b8fc6003c4e9d1",
+  "human_contribution": [
+    "Acceptance of audit and direction to repair the five diagnosed contract defects and improve early detection"
+  ],
+  "artificial_cognitive_contribution": [
+    "Implementation, executable tests, causal analysis and candidate documentation"
+  ],
+  "joint_contribution": "Owner-directed, AI-implemented maintenance candidate; human direction is not authorship of generated implementation bytes.",
+  "state": "IMPLEMENTED_CANDIDATE_REQUIRES_FRESH_NATIVE_GATES_AND_REVIEW",
+  "requirements_manifest": "state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json",
+  "local_validation": {
+    "new_unique_test_cases": 40,
+    "normal": "40_NEW_AND_4_UNCHANGED_TESTS_SUCCESS",
+    "optimized": "SAME_44_UNIQUE_TESTS_SUCCESS",
+    "method": "Real local Git fixtures and deterministic API fault doubles; not live capability proof",
+    "shell_blocks_syntax_valid": 13,
+    "logs_sha256": {
+      "normal": "c0959fa2ae8c5238cc454548a65263100297272b1a9adfbcaeff790cc4c5bd78",
+      "optimized": "61a22ecbdc270a2e33c26b57dfc280beadb08588c3a5a133044ea59f9b8bd6ae"
+    },
+    "not_executed_locally": "Full repository make test and the remaining manifest modules require the repository-native checkout; no result is inferred."
+  },
+  "native_validation": "UNVERIFIED_AT_CANDIDATE_CONSTRUCTION",
+  "independent_review": "REQUIRED_NOT_CLAIMED",
+  "main_integration": "NOT_CLAIMED",
+  "live_permission_recovery": "NOT_CLAIMED",
+  "out_of_scope": [
+    "Authority readback HTTP 404",
+    "Native Actions admission or ruleset administration",
+    "Physical board/runtime acceptance",
+    "Publications and external release"
+  ],
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false,
+  "transport_ack_is_effect_ack": false
+}

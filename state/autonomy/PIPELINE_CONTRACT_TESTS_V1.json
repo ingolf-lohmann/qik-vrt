@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt_pipeline_contract_test_manifest_v1",
+  "scope": "AUDIT_A_TO_E_AND_SELF_HEAL_PR_POSTCONDITION",
+  "runner": "tools/qikvrt_contract_test_runner.py",
+  "required_make_target": "pipeline-contract-test",
+  "execution_modes": [
+    "normal",
+    "optimized"
+  ],
+  "modules": [
+    "tests.test_qikvrt_pipeline_contracts",
+    "tests.test_qikvrt_self_heal_pr_materializer",
+    "tests.test_qikvrt_continuous_auto_repair",
+    "tests.test_qikvrt_autonomous_pr_continuation"
+  ],
+  "source_paths": [
+    "Makefile",
+    "tools/qikvrt_pipeline_contracts.py",
+    "tools/qikvrt_contract_test_runner.py",
+    "tools/qikvrt_self_heal_pr_materializer.py",
+    "tests/test_qikvrt_pipeline_contracts.py",
+    "tests/test_qikvrt_self_heal_pr_materializer.py",
+    "tests/test_qikvrt_continuous_auto_repair.py",
+    "tests/test_qikvrt_autonomous_pr_continuation.py",
+    "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+    ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+    ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+    ".github/workflows/qikvrt_ci.yml",
+    ".github/workflows/qikvrt_autonomous_self_heal.yml"
+  ],
+  "requirements": {
+    "A_RESUME_PENDING_OPERATION": [
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_resume_no_byte_change",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_denied_dispatch_recovers_same_head",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_lost_dispatch_response_does_not_duplicate",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_terminal_failure_is_not_retried"
+    ],
+    "B_ELIGIBILITY_AND_BOUNDED_FAIRNESS": [
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_round_robin_stable_set",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_staging_foreign_closed_and_ready_candidates_excluded"
+    ],
+    "C_FINAL_CURRENT_SUBJECT": [
+      "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_final_ci_rejects_remote_advanced_during_tests",
+      "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_real_fixed_fixpoint_guard_rejects_race",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_successful_steps_with_wrong_final_checkout_never_publish_success"
+    ],
+    "D_TYPED_CAUSAL_OUTCOMES": [
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_comment_failure_cannot_overwrite_technical_success",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_status_denied_is_not_a_technical_failure",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_actual_technical_failure_is_preserved"
+    ],
+    "E_FINAL_FRESH_EXECUTION_EVIDENCE": [
+      "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_final_receipt_has_exact_current_head_tree_and_no_effect_ack",
+      "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_final_ci_rejects_missing_execution_not_substituted_by_historical_pass",
+      "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_final_ci_rejects_forged_coverage_flag_or_omitted_source"
+    ],
+    "META_ACTUAL_TESTS_NOT_PRESENCE": [
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_runner_rejects_skipped_missing_duplicate_and_incomplete_requirements",
+      "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_runner_records_failed_subtests_and_expected_failures",
+      "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_real_runner_executes_and_binds_exact_source_in_both_modes"
+    ],
+    "SELF_HEAL_PARTIAL_TRANSACTION": [
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_branch_creation_then_permission_failure_then_resume_same_head"
+    ]
+  },
+  "contracts": {
+    "byte_noop_is_transaction_complete": false,
+    "selection": "SAME_REPOSITORY_OPEN_DRAFT_MAIN_OPT_IN_THEN_RUN_NUMBER_ROUND_ROBIN",
+    "fairness_scope": "N_CONSECUTIVE_EXECUTED_OPPORTUNITIES_ON_A_STABLE_N_CANDIDATE_INVENTORY",
+    "verification_identity": "REPOSITORY_PR_HEAD_BASE_WORKFLOW_PATH_AND_NATIVE_RUN_TITLE",
+    "dispatch_postcondition": "FRESH_NATIVE_RUN_OBSERVATION_NOT_HTTP_204",
+    "dispatch_bound": "AT_MOST_ONE_POST_PER_INVOCATION_WITH_PRE_AND_POST_READBACK",
+    "terminal_failure_retry": "FORBIDDEN_WITHOUT_A_NEW_SUBJECT_OR_SEPARATE_AUTHORIZED_RECOVERY",
+    "test_inventory": "REQUIREMENT_TO_TEST_ID_TO_REQUIRED_RUNNER_TO_ACTUAL_OUTCOME_ON_HEAD_TREE",
+    "final_evidence": "AFTER_TEST_EXECUTION_AND_FRESH_REMOTE_HEAD_TREE_READBACK",
+    "comment_failure_changes_technical_result": false,
+    "historical_artifacts_prove_current_execution": false,
+    "automatic_permission_change": false,
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  }
+}

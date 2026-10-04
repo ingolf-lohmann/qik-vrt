@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
 name: QIK-VRT autonomous exact-head verification
+run-name: qikvrt-exact-pr-${{ github.event.client_payload.pull_request }}-${{ github.event.client_payload.head_sha }}-${{ github.event.client_payload.base_sha }}
 
 on:
   repository_dispatch:
@@ -26,19 +27,34 @@ jobs:
       TARGET_SHA: ${{ github.event.client_payload.head_sha }}
       TARGET_BASE_SHA: ${{ github.event.client_payload.base_sha }}
     steps:
+      - name: Check out trusted workflow implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Preserve trusted phase reporter before candidate checkout
+        run: cp tools/qikvrt_pipeline_contracts.py "$RUNNER_TEMP/qikvrt-verifier-reporter.py"
       - name: Validate dispatch envelope
+        id: envelope
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           test "$TARGET_REPOSITORY" = "$GITHUB_REPOSITORY"
-          test "${#TARGET_SHA}" -eq 40
-          test "${#TARGET_BASE_SHA}" -eq 40
-          current="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}" --jq '.head.sha')"
-          test "$current" = "$TARGET_SHA"
+          [[ "$TARGET_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$TARGET_BASE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$TARGET_PR" =~ ^[1-9][0-9]*$ ]]
+          git check-ref-format --branch "$TARGET_REF"
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}" > "$RUNNER_TEMP/qikvrt-verifier-pr.json"
+          jq -e --arg repo "$GITHUB_REPOSITORY" --arg head "$TARGET_SHA" \
+            --arg base "$TARGET_BASE_SHA" --arg ref "$TARGET_REF" \
+            '.state == "open" and .head.repo.full_name == $repo and .base.repo.full_name == $repo and .head.ref == $ref and .base.ref == "main" and .head.sha == $head and .base.sha == $base' \
+            "$RUNNER_TEMP/qikvrt-verifier-pr.json"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')" = "$TARGET_BASE_SHA"
 
       - name: Check out exact candidate head
+        id: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.event.client_payload.head_sha }}
@@ -51,6 +67,7 @@ jobs:
           python-version: "3.12"
 
       - name: Verify exact checkout and repository-native contracts
+        id: contracts
         shell: bash
         run: |
           set -euo pipefail
@@ -64,6 +81,7 @@ jobs:
           make test
 
       - name: Set up Lean for QCE when present
+        id: qce_setup
         if: ${{ hashFiles('docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/lean-toolchain') != '' }}
         uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
         with:
@@ -71,10 +89,12 @@ jobs:
           test: false
 
       - name: Install QCE document inspection tools
+        id: qce_tools
         if: ${{ hashFiles('docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/lean-toolchain') != '' }}
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
 
       - name: Re-execute QCE finite formal model when present
+        id: qce
         if: ${{ hashFiles('docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/lean-toolchain') != '' }}
         working-directory: docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence
         shell: bash
@@ -83,38 +103,30 @@ jobs:
           lake build
           python3 -B verify_qce_package.py \
             --lean "$(command -v lean)" \
-            --axiom-output qce-autonomous-axiom-output.txt \
-            > qce-autonomous-verification.json
+            --axiom-output "$RUNNER_TEMP/qce-autonomous-axiom-output.txt" \
+            > "$RUNNER_TEMP/qce-autonomous-verification.json"
 
-      - name: Publish exact-head success status
-        if: success()
+      - name: Publish independently typed verification and delivery outcomes
+        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          VERIFICATION_CONTEXT: QIKVRT autonomous exact-head verification
+          STEPS_JSON: ${{ toJSON(steps) }}
+          QCE_REQUIRED: ${{ hashFiles('docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/lean-toolchain') != '' }}
         shell: bash
         run: |
           set -euo pipefail
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${TARGET_SHA}" \
-            -f state=success \
-            -f context='QIKVRT autonomous exact-head verification' \
-            -f description='Deterministic repair, full suite and candidate-specific gates succeeded' \
-            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          cat > /tmp/qikvrt-autonomous-verified.md <<EOF
-          <!-- qikvrt-autonomous-exact-head-verification -->
-          Exact-head autonomous verification completed successfully for \`${TARGET_SHA}\`.
+          python3 -B "$RUNNER_TEMP/qikvrt-verifier-reporter.py" deliver \
+            --output "$RUNNER_TEMP/qikvrt-verifier-final/PHASE_RESULTS.json"
 
-          Repository-internal deterministic gates are green for this verification scope. Any declared independent human review, Mirror promotion, or separately authorized publication remains a distinct downstream gate. No repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.
-          EOF
-          gh pr comment "$TARGET_PR" --body-file /tmp/qikvrt-autonomous-verified.md
-
-      - name: Publish exact-head failure status
-        if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${TARGET_SHA}" \
-            -f state=failure \
-            -f context='QIKVRT autonomous exact-head verification' \
-            -f description='Fail-closed exact-head verification found a blocker' \
-            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+      - name: Preserve final verification and reporting evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-verifier-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-verifier-final/
+            ${{ runner.temp }}/qce-autonomous-axiom-output.txt
+            ${{ runner.temp }}/qce-autonomous-verification.json
+          if-no-files-found: error
+          retention-days: 30
