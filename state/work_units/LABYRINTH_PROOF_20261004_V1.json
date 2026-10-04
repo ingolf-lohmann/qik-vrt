@@ -57,10 +57,34 @@
         "sha256": "7db459590a83099ec6c8781c732393e866e6b7de67248f3d9ae8d208808ae0ae"
       },
       {
-        "bytes": 8095,
-        "git_blob_sha1": "f8824ff9e11c24e91fa42d734663d2b4b07fdeb8",
+        "bytes": 8905,
+        "git_blob_sha1": "f8cc68317f140bd16ea745f4f678505428cb09dc",
         "path": "docs/publications/2026-10-04-labyrinth-closure/CLAIM_MATRIX.json",
-        "sha256": "9efa8978326d70afcf0f3de51cea76ae0120a3f7a44ea5944f4231840867aa63"
+        "sha256": "6cfdad7218705027b17c5aa6cc4e3b5238140eed6718d1f801d37f7111fbba1b"
+      },
+      {
+        "bytes": 1135,
+        "git_blob_sha1": "30f689d5062c8a2fc93cb2ab9c7352b44b924de1",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/DURABLE_ROUTE_OBSERVATION.json",
+        "sha256": "dbf3b9e16810dc7baf3e28993191eebf4fa952b22895d2d7695e749c8b51c4d2"
+      },
+      {
+        "bytes": 39557,
+        "git_blob_sha1": "834a7db7df2a73cbc5d2b7e6fe49f563755f8404",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_ARTIFACT_37183487075.zip",
+        "sha256": "8343dfa9242b1df1febe065b3ec74df3c8deac7a4cb7a855c3674c647bed9134"
+      },
+      {
+        "bytes": 711,
+        "git_blob_sha1": "81c45cfcff77362f4e0f5db2ae4844d178162722",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_ARTIFACT_BINDING.json",
+        "sha256": "48d3d4a8b95094f2f20511f58d4d26bd47502d1cf0527943f8e9e74efda9f4f8"
+      },
+      {
+        "bytes": 768,
+        "git_blob_sha1": "675be709d4da736d8d4b19622f5580e02fbc6e17",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_AXIOM_AUDIT.txt",
+        "sha256": "e31fba4cc722702786b4dbc2bc1e96013fa9b7b8308ac9e2f1e2d8357212ea90"
       },
       {
         "bytes": 727,
@@ -69,10 +93,16 @@
         "sha256": "9dd40d5c12526aa0d551556b6ae49585839472842eaecd0f0bb8d05f53fbeeaf"
       },
       {
-        "bytes": 1531,
-        "git_blob_sha1": "edd6103bd22fec0d6e680c03de9f268b3943861e",
+        "bytes": 1569,
+        "git_blob_sha1": "a3b27b43ded55a6d09ee3a54bc9dc5582751e3c8",
         "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_PROOF_PLAN.json",
-        "sha256": "ed8d29a0cc69f02561c0bdd148b058887f3fededda39c187eea8c0ffb82eacc1"
+        "sha256": "cc014578fa93ca41e775747de6c43335e8892218c87ef4b786ef443655f7110e"
+      },
+      {
+        "bytes": 2727,
+        "git_blob_sha1": "5c6843a7f0343e5f4b9d25543de2faf80ebc1404",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_RECEIPT.json",
+        "sha256": "dca8bac70196d2f634920af2021350fe8599dde4fe54661b613a1060507df712"
       },
       {
         "bytes": 4295,
@@ -81,28 +111,52 @@
         "sha256": "e2db44a40e1c43c2a1e13b6b7a5078b42eaaf53f8fe91499671883ccb76f31b0"
       },
       {
-        "bytes": 3892,
-        "git_blob_sha1": "354a4a685c014841e0861ab55433d384ff7b2faf",
+        "bytes": 6371,
+        "git_blob_sha1": "f06f7a4f8b2b9f513930d6b6e1a417f1f8d22351",
         "path": "docs/publications/2026-10-04-labyrinth-closure/PACKAGE_MANIFEST.json",
-        "sha256": "5e567224db1f3da4b1af44f73874ddddbab350800900cdab7f98b4c6412b50b7"
+        "sha256": "c03b54cac4e788da7096d569d856f63e4d190ab0186f438e59fda42e5a167031"
       },
       {
-        "bytes": 16060,
-        "git_blob_sha1": "0e1df1237cfd7084be5c7d85279a6e5e4e9e66c8",
+        "bytes": 16726,
+        "git_blob_sha1": "04893c9de35e199500467e28e41730d4a467ac81",
         "path": "docs/publications/2026-10-04-labyrinth-closure/PROOF.md",
-        "sha256": "6830c35c83117a93c9579a404a4b0d7043058566b4995448b42b304f09948780"
+        "sha256": "444c357aa444a03002c461fdb1aa50a735e94b7c5af34f7b290939c9262f1132"
       },
       {
-        "bytes": 2218,
-        "git_blob_sha1": "71bc59dfb2aa20d41b41e081b741290c1bd00e43",
+        "bytes": 2264,
+        "git_blob_sha1": "1cb68c519e3b68735e57bfb86f830a66a145ade3",
         "path": "docs/publications/2026-10-04-labyrinth-closure/README.md",
-        "sha256": "7537fc296319777be5d8b3a9857022498ada96f4097c8a649bc9788c71adbe7e"
+        "sha256": "161f3d87f11ebc74ce508d446a4f32fa86a24cdffa413ff11862ce5befa51de4"
+      },
+      {
+        "bytes": 517,
+        "git_blob_sha1": "eb08ceacbfc5569041f051d30c5597d30fd0aa79",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/RETURNED_REPORT_BINDING.json",
+        "sha256": "aaaf791a2627f9a36b060e78b415f9eb42ebcf6ef76740b9ea5966991f525e34"
       },
       {
         "bytes": 1281,
         "git_blob_sha1": "d8c021fedc30137cb8a42504f804dbb8f82e44b7",
         "path": "docs/publications/2026-10-04-labyrinth-closure/SOURCE_BINDINGS.json",
         "sha256": "95fb941a3d1480f89c3099e52a62c646f0bf7229606b0b0d3fb38d97b3dfe2f0"
+      },
+      {
+        "bytes": 4447,
+        "git_blob_sha1": "77eb1d6d46a97909af02be0c2c1026a3e19b197f",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/TERMINAL_FIRST_ATTEMPT_HOLD.json",
+        "sha256": "f45e417ee6197f0444b49f8554e75b8710e62ffed70ae135add8d0df86380e50"
+      },
+      {
+        "bytes": 1247,
+        "git_blob_sha1": "4758f18ca312f6d3245ea3d229913768f034ee8a",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/TERMINAL_INPUT.json",
+        "sha256": "d47ff84211cd269f468c529d8b38d047667436d90a729ccf093ef17baed8a58c"
+      },
+      {
+        "bytes": 9481,
+        "git_blob_sha1": "b4c5aec1719e19a6d6deaf62dec416b04b93fe53",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/TERMINAL_ROUNDTRIP_RECEIPT.json",
+        "sha256": "5cae6ce58d4674a6e565d9263f70378b623072371a6f66cedc6feefa96ffe650"
       },
       {
         "bytes": 1242,
@@ -131,19 +185,19 @@
     ],
     "self_binding_rule": "No containing-head self-reference; containing Git tree/commit binds this workunit.",
     "workflow": {
-      "bytes": 21642,
-      "git_blob_sha1": "af365e79c743ce09eb059fa69f87824e129b3f71",
+      "bytes": 21713,
+      "git_blob_sha1": "044f1df03a20852b1d1b0d52d9b27fe757f83221",
       "path": ".github/workflows/qikvrt_manuscript_proof.yml",
-      "sha256": "637e3794f0df0e08fd767937d7d1ca627354b52d3037e2f3bfbd4f13087efbb4"
+      "sha256": "59803fb57b513de3a5553c858c91e9604aa0a74fae38fe7c8dfefe5ca52b3dec"
     }
   },
   "persistence_scope": {
     "authority": "BLOCK_CONNECTOR_HTTP_404",
-    "durable_runtime_volume": "NO_WRITER_CAPABILITY_OBSERVED",
-    "pdf": "TO_BE_RETURNED_AS_SEPARATE_REPORT",
-    "personal_repository_review_branch": "TO_BE_WRITTEN_AND_READ_BACK",
-    "terminal_input": "TO_BE_QUITTED_SCOPE_EXTERNAL_EFFECTS_NONE",
-    "zenodo": "NOT_EXECUTED_EXACT_CANDIDATE_GATE"
+    "durable_runtime_volume": "BLOCK_NO_SUPPORTED_AVAILABLE_WRITER_OWNER_UNIX_SOCKET_ONLY",
+    "pdf": "RENDERED_AND_VISUALLY_VERIFIED_HASH_BOUND_REPORT_FOR_RETURN",
+    "personal_repository_review_branch": "PR_454_INITIAL_CANDIDATE_WRITTEN_SUCCESSOR_QUITTANCE_UPDATE_PENDING_READBACK",
+    "terminal_input": "EFFECT_ACK_DONE_EVENT_1_ACCEPTED_AND_REOBSERVED",
+    "zenodo": "NOT_EXECUTED_NO_PUBLISHER_CAPABILITY_AND_EXACT_CANDIDATE_OWNER_GATE"
   },
   "release_claims": {
     "EFFECT_ACK_DONE": false,
@@ -157,12 +211,23 @@
   "source_ref": "main",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "source_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+  "terminal_event": {
+    "event_id": 1,
+    "external_effect": "NONE",
+    "input_hash": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+    "readback": "TERMINAL_ROUNDTRIP_RECEIPT.json"
+  },
+  "updated_at": "2026-10-04T06:53:01.852329+00:00",
   "verification": {
     "bootloader": "CONTINUE_AFTER_EXISTING_INTEGRITY_REGENERATION",
     "cache_coverage": "PASS_14_OF_14",
     "finite_tests": "PASS_168146_CASES_PLUS_19_BOUNDARIES",
-    "kernel": "PENDING_EXTERNAL_RECEIPT_LOCAL_STARTUP_BLOCKED",
-    "repository_integrity": "TO_BE_REGENERATED_WITH_THIS_PACKAGE"
+    "historical_candidate_head": "ab3d12bca016b9303caa69595edba891445ed21a",
+    "historical_candidate_workflow_runs": "All ten observed PR workflow runs completed, seven success and three skipped",
+    "kernel": "VERIFIED_TEN_LEMMAS_EXACT_SOURCE_BYTES_LEAN_4_19_0",
+    "kernel_evidence": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_RECEIPT.json",
+    "repository_integrity": "DETERMINISTIC_REGENERATION_AND_VERIFICATION_REQUIRED_BEFORE_REMOTE_WRITE",
+    "successor_exact_head_checks": "REQUIRE_FRESH_SUCCESSOR_READBACK"
   },
   "work_unit_id": "LABYRINTH_PROOF_20261004_V1"
 }

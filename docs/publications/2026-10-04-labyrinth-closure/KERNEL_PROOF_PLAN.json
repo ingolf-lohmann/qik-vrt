@@ -17,7 +17,8 @@
   ],
   "lean_version": "4.19.0",
   "negative_statement": "example : False := by decide",
-  "receipt_status": "PENDING_EXTERNAL_KERNEL_READBACK",
+  "receipt": "KERNEL_RECEIPT.json",
+  "receipt_status": "KERNEL_VERIFIED_EXACT_SOURCE_BYTES",
   "schema": "qikvrt_labyrinth_kernel_plan_v1",
   "scope": "Abstract model lemmas only; neither stochastic proof nor Python/production refinement.",
   "source": {

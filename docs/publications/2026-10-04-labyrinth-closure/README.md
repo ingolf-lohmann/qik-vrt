@@ -3,14 +3,14 @@
 ## Modellbeweis, Gegenbeispiele und nachprüfbare Grenzen
 
 Publication ID: `qikvrt-labyrinth-closure-20261004-v1`
-Publication Index State: `repository_candidate_kernel_and_owner_review_pending`
+Publication Index State: `repository_candidate_kernel_verified_owner_review_pending`
 
 Idee, Zweck und Auftrag: Ingolf Lohmann. Ausarbeitung und Code: OpenAI Codex,
 künstliche Kognition. Die Bestätigung der früheren Zusammenfassung ist keine
 Annahmeentscheidung über die neuen Kandidatenbytes.
 
 [Vollständiger Beweis](PROOF.md) · [Aussagenregister](CLAIM_MATRIX.json) ·
-[Finite Prüfquittung](TEST_RECEIPT.json) · [Kernelplan](KERNEL_PROOF_PLAN.json)
+[Finite Prüfquittung](TEST_RECEIPT.json) · [Kernelplan](KERNEL_PROOF_PLAN.json) · [Kernelquittung](KERNEL_RECEIPT.json)
 
 Reproduktion: `python3 -B check_labyrinth.py --output TEST_RECEIPT.json`.
 Kernelprüfung: dieselbe Referenzprüfung mit `--lean /absoluter/pfad/lean`

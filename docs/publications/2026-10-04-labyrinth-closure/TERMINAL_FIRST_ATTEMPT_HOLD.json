@@ -1,0 +1,105 @@
+{
+  "after": {
+    "body": {
+      "events": 0,
+      "external_effects": "NONE",
+      "last_event": null,
+      "repository_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "repository_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "schema": "qikvrt_terminal_backend_state_v1"
+    },
+    "bytes_sha256": "5eacc1e259ae08a184e771de1e18d2e6e5298521f3209cc1debee14013df2392",
+    "status": 200,
+    "time": "2026-10-04T06:46:00.342034+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/state"
+  },
+  "authorization": "Current human proof/persistence directive and explicit instruction to use existing Universal Terminal",
+  "before": {
+    "body": {
+      "events": 0,
+      "external_effects": "NONE",
+      "last_event": null,
+      "repository_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "repository_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "schema": "qikvrt_terminal_backend_state_v1"
+    },
+    "bytes_sha256": "5eacc1e259ae08a184e771de1e18d2e6e5298521f3209cc1debee14013df2392",
+    "status": 200,
+    "time": "2026-10-04T06:45:42.889888+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/state"
+  },
+  "capability": {
+    "body": {
+      "external_effects": "NONE",
+      "modes": [
+        "prepare",
+        "commit"
+      ],
+      "protected_effects": [
+        "terminal_input"
+      ],
+      "record_template": "/effect-ack/records/{sha256}",
+      "schema": "qikvrt_effect_ack_http_capability_v1",
+      "versions": [
+        1
+      ]
+    },
+    "bytes_sha256": "af478d612f094b973df9899a3f51c45de42179d19be984ba421e5398b77ae587",
+    "status": 200,
+    "time": "2026-10-04T06:45:36.813946+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/.well-known/effect-ack"
+  },
+  "commit": {
+    "body": {
+      "ordinary_release": false,
+      "reason": "malformed Structured Field Byte Sequence",
+      "state": "HOLD"
+    },
+    "bytes_sha256": "fa46d485e6115774768f7b18e3b849d74ce4e9ab0670c3712c930c517458c54b",
+    "status": 400,
+    "time": "2026-10-04T06:45:53.909766+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/commit"
+  },
+  "input_bytes": 1246,
+  "input_sha256": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+  "prepare": {
+    "body": {
+      "expires_in_seconds": 120,
+      "external_effect": "NONE",
+      "ordinary_release": false,
+      "record_hash": "5f595270b36b98e304b0cf11629321c6f4a4e4acbb54e9b6ebbd99a1c15e669c",
+      "record_url": "/effect-ack/records/5f595270b36b98e304b0cf11629321c6f4a4e4acbb54e9b6ebbd99a1c15e669c",
+      "state": "EFFECT_ACK_DONE"
+    },
+    "bytes_sha256": "410bd4b001db78c221cf4a51ef0729fb22cef3f56bf5274ba5674ca606c72e92",
+    "status": 200,
+    "time": "2026-10-04T06:45:48.438526+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/prepare"
+  },
+  "record": {
+    "body": {
+      "created_utc": "2026-10-04T06:45:48Z",
+      "external_effect": "NONE",
+      "input_hash": "sha256:b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+      "message_type": "effect-ack-record",
+      "ordinary_release": true,
+      "policy_allows_release": true,
+      "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+      "policy_version": 1,
+      "reason": "loopback terminal input satisfies bounded local policy",
+      "record_hash": "sha256:5f595270b36b98e304b0cf11629321c6f4a4e4acbb54e9b6ebbd99a1c15e669c",
+      "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+      "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+      "state": "EFFECT_ACK_DONE",
+      "wire_version": 1
+    },
+    "bytes_sha256": "7628f6d6172fc3fe6cfa74d49b649ea806858d0b7250a71848f281b7bea561ef",
+    "status": 200,
+    "time": "2026-10-04T06:46:05.819564+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/effect-ack/records/5f595270b36b98e304b0cf11629321c6f4a4e4acbb54e9b6ebbd99a1c15e669c"
+  },
+  "record_hash": "sha256:5f595270b36b98e304b0cf11629321c6f4a4e4acbb54e9b6ebbd99a1c15e669c",
+  "schema": "qikvrt_labyrinth_terminal_roundtrip_v1",
+  "scope": "Terminal input acceptance; no shell execution, durable runtime write, deployment or repository effect inferred.",
+  "status": "COMMIT_RESPONSE_OBSERVED"
+}

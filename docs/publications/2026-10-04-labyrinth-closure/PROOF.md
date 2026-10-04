@@ -218,10 +218,19 @@ zum Null-Schluss aus einem leeren Teilgedächtnis. Die lokale Lean-Ausführung
 ist beim Start blockiert: Der Compiler benötigt `/proc/<pid>/exe`; dieser
 Zugriff wird in der Ausführungsumgebung verweigert. Daraus wird keine
 Kernelbestätigung abgeleitet. Die vorhandene Repository-Kernel-Pipeline ist
-um die Prüfung dieses exakten Pakets ergänzt; ihre frische Quittung ist bis
-zum erfolgreichen Rücklesen offen. Der Zufallslaufsatz bleibt eine schriftliche
-mathematische Ableitung. Auch eine erfolgreiche Prüfung dieser zehn Lemmas
-wäre noch kein Refinementbeweis des Python-Codes oder der produktiven Laufzeit.
+um die Prüfung dieses exakten Pakets ergänzt. Ihr Lauf 37183487075 hat alle
+zehn Lemmas mit Lean 4.19.0 erfolgreich geprüft. Das zurückgeladene Artifact
+wurde gegen seine veröffentlichte SHA-256-Prüfsumme geprüft; Quellbytes,
+kompiliertes Objekt und Axiomenprotokoll stimmen mit der Quittung überein.
+Neun Lemmas benötigen keine Axiome; der Rangabstieg verwendet ausschließlich
+die Lean-Standardaxiome `propext` und `Quot.sound`. Es gibt kein `sorryAx`.
+Die falsche Kontrolle `example : False := by decide` wurde zurückgewiesen.
+Der Lauf prüfte den temporären PR-Merge bbe8d194740b2d9c5cdf136965a2de1e8d3273c8;
+die Lean-Quellbytes sind exakt an den Kandidaten ab3d12bca016b9303caa69595edba891445ed21a
+gebunden. Die nachfolgende Pipeline prüft zusätzlich direkt den jeweiligen
+Kandidaten-HEAD. Der Zufallslaufsatz bleibt eine schriftliche mathematische
+Ableitung. Die zehn Kernelbeweise ersetzen keinen Refinementbeweis des
+Python-Codes oder der produktiven Laufzeit.
 
 ## 9. Übertragung auf QIK-VRT
 

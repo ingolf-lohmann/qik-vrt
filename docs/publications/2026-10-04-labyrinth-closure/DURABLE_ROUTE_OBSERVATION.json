@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt_labyrinth_durable_route_observation_v1",
+  "method": "Railway agent read-only container source inspection",
+  "runtime_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+  "runtime_tree": "956c16b291c05243437b1f018321936e4438949a",
+  "public_terminal_scope": "In-memory STATE.events; external_effect NONE",
+  "durable_ledger_path": "/var/lib/qikvrt/state/temdd/events.sqlite3",
+  "existing_durable_ingress": "Owner-only Unix socket /var/lib/qikvrt/state/temdd/ingress.sock, mode 0600",
+  "novnc_scope": "Xvfb/x11vnc framebuffer of Firefox; no host shell exposed by this route",
+  "available_writer_capability": "No supported durable writer or Goldkelch Git staging operation exposed by available interfaces",
+  "source_paths": [
+    "/opt/qikvrt/src/qikvrt_effect_ack_http_terminal.py",
+    "/opt/qikvrt/src/qikvrt_temdd_event_ledger.py",
+    "/opt/qikvrt/deploy/universal-terminal/entrypoint.sh"
+  ],
+  "limitations": "Agent-reported source excerpts; public terminal event independently measured. No claim of a new event in durable TEMDD SSE. No permission boundary bypass and no new network execution route."
+}
