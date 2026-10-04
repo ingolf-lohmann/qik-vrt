@@ -9,7 +9,8 @@
     "observation": "scheduled_or_manual",
     "mutation": "review_branch_only",
     "promotion": "expected_head_bound_only",
-    "unchanged_semantic_fingerprint": "NOOP"
+    "unchanged_semantic_fingerprint": "NOOP",
+    "unchanged_semantic_fingerprint_scope": "CANDIDATE_BYTES_ONLY_NOT_PENDING_MATERIALIZATION"
   },
   "promotion_policy": {
     "unconditional_automatic_merge": "FORBIDDEN",
@@ -209,7 +210,26 @@
     "no_diff": "NOOP",
     "all_paths_must_be_allowlisted": true,
     "proposal_workflow_may_merge": false,
-    "promotion_executor_may_merge": "ONLY_AFTER_TWO_PHASE_EXACT_HEAD_REOBSERVATION"
+    "promotion_executor_may_merge": "ONLY_AFTER_TWO_PHASE_EXACT_HEAD_REOBSERVATION",
+    "materialization": {
+      "implementation": "tools/qikvrt_self_heal_pr_materializer.py",
+      "test": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "completion_predicate": "EXACT_CURRENT_BASE_HEAD_TREE_PR_READBACK",
+      "existing_branch_without_pr": "RESUME_MISSING_POSTCONDITION",
+      "existing_exact_open_pr": "READ_ONLY_NOOP",
+      "closed_duplicate_or_mismatched_pr": "HOLD_WITHOUT_REOPEN_OR_REPLACEMENT",
+      "ref_creation": "REST_CREATE_ONLY",
+      "ambiguous_write": "REOBSERVE_WITHOUT_BLIND_RETRY",
+      "maximum_pr_create_attempts_per_run": 1,
+      "credential_route": "EXISTING_QIKVRT_MESH_TOKEN_OR_GITHUB_TOKEN",
+      "automatic_permission_change": false,
+      "self_approval": false,
+      "unchanged_blocker_notification": "SUPPRESS_BY_TRANSITION_FINGERPRINT",
+      "completion_claims": {
+        "PREDECESSOR_EVIDENCE_TRANSFER": false,
+        "EFFECT_ACK_DONE": false
+      }
+    }
   },
   "completion_claims": {
     "PASS": false,

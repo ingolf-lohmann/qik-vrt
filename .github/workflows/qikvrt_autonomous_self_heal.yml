@@ -19,6 +19,9 @@ on:
       - "tests/test_qikvrt_continuous_auto_repair.py"
       - "tools/qikvrt_autonomous_pre_effect_controller.py"
       - "tests/test_qikvrt_autonomous_pre_effect_controller.py"
+      - "tools/qikvrt_self_heal_pr_materializer.py"
+      - "tests/test_qikvrt_self_heal_pr_materializer.py"
+      - "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
       - "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 
 permissions:
@@ -54,7 +57,8 @@ jobs:
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
             tests.test_qikvrt_continuous_auto_repair \
-            tests.test_qikvrt_autonomous_pre_effect_controller
+            tests.test_qikvrt_autonomous_pre_effect_controller \
+            tests.test_qikvrt_self_heal_pr_materializer
 
   observe-repair-propose:
     if: >-
@@ -84,7 +88,8 @@ jobs:
         run: |
           set -euo pipefail
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_self_heal_pr_materializer
 
       - name: Execute bounded repository-native repairs before external effects
         id: repair
@@ -133,7 +138,8 @@ jobs:
             tests.test_qikvrt_autonomous_self_heal \
             tests.test_qikvrt_autonomous_pre_effect_controller \
             tests.test_qikvrt_expected_head_promotion \
-            tests.test_qikvrt_continuous_auto_repair
+            tests.test_qikvrt_continuous_auto_repair \
+            tests.test_qikvrt_self_heal_pr_materializer
           python3 -B - <<'PY'
           import base64
           import os
@@ -151,77 +157,28 @@ jobs:
               raise SystemExit(f'BLOCK: controller/worktree path mismatch: expected={expected}, actual={actual}')
           PY
 
-      - name: Create one base-and-fingerprint-bound draft repair PR
+      - name: Resume base-and-fingerprint-bound draft repair PR
         if: steps.repair.outputs.state == 'CANDIDATE_READY'
         env:
-          GH_TOKEN: ${{ github.token }}
-          BASE_SHA: ${{ steps.repair.outputs.base_sha }}
-          FINGERPRINT: ${{ steps.repair.outputs.fingerprint }}
-          CANDIDATE_ID: ${{ steps.repair.outputs.candidate_id }}
-          CHANGED_PATHS_B64: ${{ steps.repair.outputs.changed_paths_b64 }}
+          # Reuse the existing repository PR-writer route; never alter permissions
+          # or use an administration credential as an automatic fallback.
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+          QIKVRT_PR_WRITER_ROUTE: ${{ secrets.QIKVRT_MESH_TOKEN != '' && 'QIKVRT_MESH_TOKEN' || 'GITHUB_TOKEN' }}
         shell: bash
         run: |
           set -euo pipefail
-          test -n "$BASE_SHA"
-          test -n "$FINGERPRINT"
-          test -n "$CANDIDATE_ID"
-          test "$(git rev-parse --verify HEAD^{commit})" = "$BASE_SHA"
-          branch="automation/self-heal-${CANDIDATE_ID:0:24}"
-          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/${branch}" >/dev/null 2>&1; then
-            exit 0
-          fi
-          git config user.name "qik-vrt-autonomous-self-heal"
-          git config user.email "qik-vrt-autonomous-self-heal@users.noreply.github.com"
-          git switch -c "$branch"
-          python3 -B - <<'PY'
-          import base64
-          import os
-          import subprocess
-          paths = [
-              path for path in base64.b64decode(os.environ['CHANGED_PATHS_B64']).decode('utf-8').split('\0')
-              if path
-          ]
-          if not paths:
-              raise SystemExit('BLOCK: candidate has no declared changed paths')
-          subprocess.check_call(['git', 'add', '--', *paths])
-          PY
-          test -z "$(git status --porcelain=v1 | grep '^??' || true)"
-          git commit -m "fix(autonomy): apply bounded deterministic self-heal ${CANDIDATE_ID:0:16}"
-          candidate_head="$(git rev-parse --verify HEAD^{commit})"
-          git push origin "HEAD:refs/heads/$branch"
-          python3 -B - <<'PY' > /tmp/qikvrt-self-heal-paths.txt
-          import base64
-          import os
-          for path in base64.b64decode(os.environ['CHANGED_PATHS_B64']).decode('utf-8').split('\0'):
-              if path:
-                  print(f'- `{path}`')
-          PY
-          cat > /tmp/qikvrt-self-heal-pr.md <<EOF
-          <!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->
+          python3 -B -m tools.qikvrt_self_heal_pr_materializer \
+            --controller-receipt /tmp/qikvrt-self-heal.json \
+            --output /tmp/qikvrt-self-heal-materialization.json
 
-          Repository-native opportunistic pre-effect repair candidate.
-
-          Exact bindings:
-          - observed current-main base: \`$BASE_SHA\`
-          - candidate head: \`$candidate_head\`
-          - semantic fingerprint: \`$FINGERPRINT\`
-          - base-and-fingerprint candidate identity: \`$CANDIDATE_ID\`
-
-          Exact allowlisted paths:
-          $(cat /tmp/qikvrt-self-heal-paths.txt)
-
-          Unconditional automatic merge is forbidden. Expected-head-bound promotion is allowed only after current-base reobservation, unchanged-head verification, allowlisted-diff verification, confirmation of no external effect, terminal green completion of every applicable exact-head gate, and confirmation that no competing writer exists. This proposal workflow never merges; the separate expected-head promotion executor may merge only the exact reobserved head after independently rechecking those conditions.
-
-          Execution stops before Zenodo publication, IETF submission, DOI creation, public release, external credential consumption, or any other irreversible external effect and requires the separately persisted exact external-effect authorization contract.
-
-          No force push, release, deployment, Zenodo or IETF mutation, credentialed external write, scientific confirmation, physical correspondence, repository-wide PASS, FINAL_PASS, EFFECT_ACK_DONE, full synchronization, or symmetric canonicality is claimed.
-          EOF
-          gh pr create \
-            --draft \
-            --base main \
-            --head "$branch" \
-            --title "fix(autonomy): bounded deterministic self-heal ${CANDIDATE_ID:0:16}" \
-            --body-file /tmp/qikvrt-self-heal-pr.md
+      - name: Preserve materialization postcondition or causal blockade
+        if: always() && steps.repair.outputs.state == 'CANDIDATE_READY'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-self-heal-materialization-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/qikvrt-self-heal-materialization.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Assert unchanged state is a repository NOOP
         if: steps.repair.outputs.state == 'NOOP'
