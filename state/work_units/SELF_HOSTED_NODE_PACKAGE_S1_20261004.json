@@ -209,6 +209,12 @@
   },
   "implementation_files": [
     {
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "bytes": 5388,
+      "sha256": "8b587bf2d5f0b69dbe057bdd3b383bf12e2378ddac15e393b121914831fb919a",
+      "git_blob_sha1": "b8af272b498918fbc5337a663193c55e48d0779e"
+    },
+    {
       "path": ".github/workflows/qikvrt_batch04_integrity.yml",
       "bytes": 18139,
       "sha256": "6a476402efacd778a81f2620ef20ebda3074a8d457b7b3ec51d727362e8cb6fd",
@@ -348,9 +354,9 @@
     },
     {
       "path": "runtime/self-host/README.md",
-      "bytes": 7966,
-      "sha256": "3106eb1f16595caf9c81eb9a0cfcb6a9271528d4402f1170abf2b22173cfaa1a",
-      "git_blob_sha1": "e85a64ddc2b39af075fa3995efc0de11b3d8add7"
+      "bytes": 8007,
+      "sha256": "149470e0e2c877c809a7c4dd495d6d484fe7d1e840c443c187d083bec32f8db2",
+      "git_blob_sha1": "c81a0389ad849a1577d9305b9f11ede880b7f7ac"
     },
     {
       "path": "runtime/toolchains/CACHE_COVERAGE.json",
@@ -396,9 +402,9 @@
     },
     {
       "path": "tests/test_self_host.py",
-      "bytes": 17398,
-      "sha256": "9cdf286607f374242852f7d03339b2583bee1a915fe86a027b9b6a24d4099891",
-      "git_blob_sha1": "60e81d6cadda94fb2cfe66c1761a562194a04843"
+      "bytes": 20714,
+      "sha256": "c53181aaa2991014314f993e7c23eb55a9990c323271aaa58ea4dbe242427987",
+      "git_blob_sha1": "d9c363ee4ac2afecd17ab42b95fbac46355960b8"
     },
     {
       "path": "tools/ai_runtime_bootloader.py",
@@ -410,7 +416,7 @@
       "path": "tools/bootstrap-runtime.ps1",
       "bytes": 22974,
       "sha256": "7ce2c465d76f4def824cd0ed4c5f392fa93121beec9e48f4cf302c1bd9cb9ae6",
-      "git_blob_sha1": "f48e2837b310158548c7450248ab48bbebbce442"
+      "git_blob_sha1": "1acada0ff620ffb7683dc43b7938e102e702ebe9"
     },
     {
       "path": "tools/bootstrap-runtime.sh",
@@ -444,9 +450,10 @@
       "QIKVRT repository evidence materialization",
       "QIK-VRT global claim completion",
       "QIKVRT Collective Proposal Review",
-      "QIKVRT EFFECT_ACK HTTP Firefox terminal"
+      "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+      "QIKVRT Batch-003 remaining subject disposition"
     ],
-    "terminal_module_requirement": "31 unmodified native Unix/HTTP controls plus 13 standalone cases; no fixture daemon admitted as productive runtime",
+    "terminal_module_requirement": "31 unmodified native Unix/HTTP controls plus 14 standalone cases and one Batch-003 runtime/gate wiring regression; no fixture daemon admitted as productive runtime",
     "package_artifact": "Existing EFFECT_ACK HTTP Firefox workflow freezes exact checkout HEAD/tree and uploads deterministic archive, manifest and build receipt",
     "final_run_binding_location": "PR457 metadata and native workflow artifacts/checks; work unit does not self-reference its containing commit",
     "test_command": "make test repository-monitor-test self-host-test"
@@ -511,5 +518,48 @@
     "workflow_or_test_removed": false,
     "exact_head_gates": "REQUIRED_FRESH_ON_SUCCESSOR",
     "kernel_lock_lifetime": "Pass the same flock file description to the existing Node monitor; isolated launcher SIGKILL cannot admit a second writer while the original monitor survives. An executable 13th case verifies exclusion, termination and unchanged acknowledged bytes after restart."
+  },
+  "runtime_gate_repair": {
+    "parent_head": "e040698ea0b092367f35103bfb825889e99769ac",
+    "parent_tree": "3f8ce83d74ac6737af50e37b2a10538d2aefa5f0",
+    "instruction_source": "CURRENT_OWNER_ACTION_20261004",
+    "state": "IMPLEMENTED_REQUIRES_FRESH_COMMITTED_SUCCESSOR_GATES",
+    "original_failure": {
+      "run_id": 37222399657,
+      "job_id": 111495221925,
+      "head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+      "tree": "510666384f4a0b6b92c8d0a8285b3fff09fc1958",
+      "step": "Run complete repository gates",
+      "error": "LINUX_NODE24_PYTHON312_REQUIRED",
+      "self_host_tests_executed": 0
+    },
+    "concurrent_successor_observation": {
+      "head": "e040698ea0b092367f35103bfb825889e99769ac",
+      "batch_run_id": 37223855259,
+      "conclusion": "success",
+      "scope": "Portable make test only; explicit S1 targets not called by that Batch-003 workflow; not S1 runtime/test evidence"
+    },
+    "repair": "Reuse pinned setup-node action with node-version 24 after Python 3.12 setup. Check actual PATH through the existing self-host bootstrap and actual python3 Linux/3.12 check; run make test repository-monitor-test self-host-test before persistence on the immutable event head.",
+    "regression": {
+      "negative_node_version_fixtures": [
+        "v20.19.0",
+        "v22.19.0",
+        "v25.0.0",
+        "v240.0.0"
+      ],
+      "method": "Synthetic executable version fixtures on child PATH, not installed alternate runtimes; existing bootstrap must return CONTINUE 20, pack CLI must reject with LINUX_NODE24_PYTHON312_REQUIRED and leave no export/archive",
+      "workflow_control": "Batch-003 requires immutable event-head checkout, Node 24/Python 3.12 setup and runtime preflight before all three required Make targets and before persistence"
+    },
+    "s1_runtime_requirement_weakened": false,
+    "self_host_tests_skipped": false,
+    "local_self_host_module_tests": {
+      "command": "python3 -B -m unittest -v tests.test_self_host",
+      "count": 15,
+      "exit_code": 0,
+      "scope": "WORKTREE_AND_LOCAL_FIXTURE; FRESH_COMMITTED_GATE_EVIDENCE_REQUIRED"
+    },
+    "exact_head_run_binding_location": "Native successor GitHub Actions/checks and PR457 metadata; no self-referential source commit or inherited run success",
+    "predecessor_evidence_transfer": false,
+    "effect_ack_done": false
   }
 }

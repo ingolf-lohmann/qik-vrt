@@ -113,7 +113,8 @@ needed in the readback process. A local URL proves only local HTTP readback.
 On the declared Linux runtime run `make test repository-monitor-test self-host-test`.
 The existing full repository suite stays intact; the two explicit S1 targets add
 the original monitor controls and standalone package controls. CI, repository
-evidence, global completion and collective review require all three targets
+evidence, global completion, collective review and Batch-003 remaining subject
+disposition require all three targets
 after provisioning the S1 runtime. The existing terminal workflow additionally
 requires all 31 HTTP/owner-Unix controls and freezes the actual source package.
 A profile-specific Linux test is not imposed on unrelated portable callers.

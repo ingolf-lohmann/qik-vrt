@@ -24,6 +24,26 @@ host = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(host)
 
 
+class WorkflowRuntimeTests(unittest.TestCase):
+    def test_batch003_requires_s1_runtime_and_tests_before_persistence(self):
+        workflow = (ROOT / ".github/workflows/qikvrt_batch003_remaining_disposition.yml").read_text()
+        gates = workflow.index("- name: Run complete repository gates")
+        prefix = workflow[:gates]
+        self.assertIn("ref: ${{ github.event.pull_request.head.sha || github.sha }}", prefix)
+        self.assertIn("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", prefix)
+        self.assertIn("python-version: '3.12'", prefix)
+        self.assertIn("actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020", prefix)
+        self.assertIn("node-version: '24'", prefix)
+        preflight = prefix.index("- name: Verify standalone runtime for complete repository gates")
+        self.assertLess(prefix.index("node-version: '24'"), preflight)
+        self.assertIn("sh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none", prefix[preflight:])
+        self.assertIn('sys.platform == "linux" and sys.version_info[:2] == (3, 12)', prefix[preflight:])
+        complete = workflow[gates:workflow.index("- name: Persist exact evidence head")]
+        self.assertIn("make test repository-monitor-test self-host-test", complete)
+        self.assertNotIn("continue-on-error", complete)
+        self.assertNotIn("|| true", complete)
+
+
 class StandaloneTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -160,6 +180,36 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
             path.write_bytes(original+b"\nchanged\n")
             with self.assertRaises(subprocess.CalledProcessError): host.freeze(self.source,self.work/"bad",self.head,self.tree)
         finally: path.write_bytes(original)
+
+    def test_wrong_node_versions_fail_preflight_and_export_without_artifacts(self):
+        binpath = self.work / "wrong-node"
+        binpath.mkdir()
+        node = binpath / "node"
+        env = dict(os.environ, PATH=str(binpath) + os.pathsep + os.environ["PATH"])
+        for version in ("v20.19.0", "v22.19.0", "v25.0.0", "v240.0.0"):
+            with self.subTest(version=version):
+                # A deterministic executable version fixture, not an installed
+                # alternate runtime. The real pack CLI must reject it.
+                node.write_text("#!/bin/sh\nprintf '%s\\n' '" + version + "'\n")
+                node.chmod(0o755)
+                preflight = subprocess.run(
+                    ["sh", str(ROOT / "tools/bootstrap-runtime.sh"), "--check-only",
+                     "--profile", "self-host", "--adapter", "none"],
+                    env=env, capture_output=True, text=True, timeout=8)
+                self.assertEqual(preflight.returncode, 20, preflight.stdout + preflight.stderr)
+                self.assertIn("Node 24.x is absent", preflight.stderr)
+                output = self.work / ("rejected-" + version)
+                packed = subprocess.run(
+                    [sys.executable, "-B", str(ROOT / "tools/qikvrt_self_host.py"), "pack",
+                     "--root", str(self.source), "--expected-head", self.head,
+                     "--expected-tree", self.tree, "--output", str(output)],
+                    env=env, capture_output=True, text=True, timeout=8)
+                self.assertEqual(packed.returncode, 2, packed.stdout + packed.stderr)
+                receipt = json.loads(packed.stdout)
+                self.assertEqual(receipt["cause"], "LINUX_NODE24_PYTHON312_REQUIRED")
+                self.assertFalse(receipt["effect_ack_done"])
+                self.assertFalse(output.exists())
+                self.assertFalse(Path(str(output) + ".tar").exists())
 
     def test_missing_gh_is_optional_only_for_the_standalone_none_adapter(self):
         binpath=self.work/"bin"; binpath.mkdir()
