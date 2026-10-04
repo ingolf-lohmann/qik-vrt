@@ -1,0 +1,115 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "candidate_files": [
+    {
+      "bytes": 189440,
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
+    },
+    {
+      "bytes": 1416550,
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4"
+    },
+    {
+      "bytes": 18839,
+      "git_blob_sha1": "447d63681c7a9c180bc76e062d40be655e64dccd",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PROSA_DE.md",
+      "sha256": "df9295c3c7a80b2a08a3661c78c37d881ce47739e0b466e914c2f73cf13ad501"
+    },
+    {
+      "bytes": 4775,
+      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb"
+    }
+  ],
+  "change_notice_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/CHANGE_NOTICE.md",
+  "change_reasons": [
+    {
+      "claim_id": "C18",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Historischen Credential-HOLD an sein ursprüngliches Run-/HEAD-/TREE-Subjekt gebunden."
+    },
+    {
+      "claim_id": "C19",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Timergrenze, Binärpfad und Git-Modusgrenze auf den konkret geprüften Quellcode begrenzt."
+    },
+    {
+      "claim_id": "C21",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Offenen verteilten Speedup ausdrücklich als nicht nachgewiesen formuliert."
+    },
+    {
+      "claim_id": "C24",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Runtime-Zustand als historische Dateibeobachtung statt beweglichem aktuellem Zustand gebunden."
+    },
+    {
+      "claim_id": "C27",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Zwischenzeitliche v3-Implementierung von Produktionsaktivierung und späterer Einzelautorisierung getrennt."
+    },
+    {
+      "claim_id": "C28",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Repository-Übernahme von Zenodo-Publikation und Replikationsabnahme getrennt."
+    },
+    {
+      "claim_id": "C30",
+      "corrected_sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "exact_candidate_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/METHOD_CLAIM_BOUNDARIES.md",
+      "original_sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06",
+      "reason": "Absolute Verlustfreiheit als offene Garantie abgegrenzt."
+    }
+  ],
+  "changed_claim_ids": [
+    "C18",
+    "C19",
+    "C21",
+    "C24",
+    "C27",
+    "C28",
+    "C30"
+  ],
+  "content_changed": true,
+  "original_files": [
+    {
+      "bytes": 11706,
+      "git_blob_sha1": "51cb14a2663445e8c07f0e222bf06916889e5814",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/CLAIM_DISPOSITION_DRAFT.json",
+      "sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06"
+    }
+  ],
+  "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+  "return": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "Current authorized QIK-VRT task conversation: exact local PDF, ZIP, prose and method/claim-boundary artifact links delivered before proof/return binding; repository successor and final proof identities are returned in the same task. Acceptance, activation and upload authority remain absent.",
+    "returned_at": "2026-10-03T16:13:35.030120Z",
+    "visible_change_notice_returned": true
+  },
+  "schema": "qikvrt_prepublication_return_receipt_v2"
+}

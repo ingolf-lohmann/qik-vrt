@@ -1,0 +1,49 @@
+{
+  "schema":"qikvrt_universal_meta_integration_claim_matrix_v1",
+  "date":"2026-10-03",
+  "publication_id":"qikvrt-universal-meta-integration-20261003-v1",
+  "claims":[
+    {
+      "id":"UMI-001",
+      "class":"FORMAL_PROVED",
+      "statement":"For every computable system satisfying sufficient observability, authorized actuation, algorithmically treatable acceptance, and effect/action binding, a QIK-VRT wrapper exists.",
+      "scope":"abstract systems model S=(X,U,Y,delta,lambda)",
+      "proof":"constructive wrapper W_S=(O_S,A_S,C_S,provenance,readback)"
+    },
+    {
+      "id":"UMI-002",
+      "class":"SOURCE_BOUND",
+      "statement":"QIK-VRT distinguishes execution from accepted effect.",
+      "bindings":["EXECUTE != DONE","TRANSPORT_ACK != EFFECT_ACK"]
+    },
+    {
+      "id":"UMI-003",
+      "class":"INTERPRETATIVE",
+      "statement":"The phrase 'systems under QIK-VRT' is interpreted as universal meta-integration, not domination or unauthorized control."
+    },
+    {
+      "id":"UMI-004",
+      "class":"OPEN",
+      "statement":"QIK-VRT is empirically faster than all alternative integration architectures.",
+      "reason":"No universal comparative benchmark exists."
+    },
+    {
+      "id":"UMI-005",
+      "class":"REJECTED_AS_CONSEQUENCE",
+      "statement":"Universal integrability implies universal enforceability or bypass of access controls.",
+      "reason":"Authorization is an explicit theorem premise."
+    },
+    {
+      "id":"UMI-006",
+      "class":"REJECTED_AS_CONSEQUENCE",
+      "statement":"Universal integration implies universal prediction of arbitrary programs.",
+      "reason":"Halting/Rice limits remain."
+    },
+    {
+      "id":"UMI-007",
+      "class":"OPEN",
+      "statement":"The theorem establishes phenomenal consciousness.",
+      "reason":"No bridge from functional architecture to phenomenal experience is proved."
+    }
+  ]
+}

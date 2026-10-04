@@ -99,13 +99,21 @@ sizes, SHA-256 digests and Git blob identities. The bytes later uploaded to
 Zenodo MUST be identical to the returned candidate bytes.
 
 Legacy publication manifests remain readable only for historical verification.
-They MUST NOT create a new production record. Every new upload MUST use the
-proof-bearing v2 manifest, include its `MACHINE_PROOF_BUNDLE.json` in the public
+They MUST NOT create a new production record. Every new upload MUST use an
+explicitly selected proof-bearing v2 or separately reviewed/activated v3 manifest,
+include its `MACHINE_PROOF_BUNDLE.json` in the public
 Zenodo fileset, pass public byte-exact redownload verification, and persist the
 result on Authority and Mirror before pair equality can be claimed.
 
-Every new upload MUST use the v2 proof bundle and return-receipt schemas. The
-published v1 policy and schemas remain byte-frozen and readable only for
+Every new upload MUST explicitly select a versioned proof-bearing contract.
+The default v2 validator and the v2 proof/return schemas remain unchanged.
+The v3 publisher requires an immutable v3 proof bundle, the frozen v2 return
+schema, a separate reviewed-contract activation and the later detached exact
+upload decision. Implementation or a technical PASS cannot activate v3.
+The v3 review policy remains REVIEW_REQUIRED until the separate activation is
+validated and its exact native review and Code-Owner governance are reobserved.
+The contract is documented in policy/ZENODO_MACHINE_PROOF_V3_PRODUCTION.md.
+The published v1 policy and schemas remain byte-frozen and readable only for
 historical verification; they MUST NOT authorize a new production mutation.
 The exact upload authorization MUST use the canonical candidate-bound decision
 statement. Before any Zenodo effect, a cooperating publisher MUST acquire a
@@ -120,6 +128,9 @@ The normative production policy is
 `policy/zenodo-machine-proof-policy-v2.json`; its human contract is
 `policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md`. The superseded v1 policy
 remains an immutable historical contract.
+The explicit v3 route binds policy/zenodo-machine-proof-policy-v3.json without
+rewriting or weakening either historical contract; its REVIEW_REQUIRED proposal
+does not itself authorize a production mutation.
 
 ## Bounded collective adaptation
 

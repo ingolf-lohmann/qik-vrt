@@ -1,0 +1,374 @@
+{
+  "claim_count": 30,
+  "claims": [
+    {
+      "boundary": "R1; hier verwendete Systemgrenze. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C01",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [
+        "R1"
+      ],
+      "statement": "QIK-VRT wird als Gesamtsystem, nicht als einzelnes Modell beschrieben.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "R1; Dokumentpräsenz ist kein Gesamtvollzugsbeweis. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C02",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R1"
+      ],
+      "statement": "Zwecksetzung, Wiederverwendung und kontinuierliche Verbesserung sind im Entrypoint dokumentiert.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "R1; konkrete Übergangsinvarianten nötig. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C03",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [
+        "R1"
+      ],
+      "statement": "Die Mittel können sich ändern, während ein Vertragskern erhalten werden soll.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Theoretische Herleitung; Kernelprüfung offen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C04",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Induktiver Invariantenerhalt gilt unter Basis- und Übergangsannahme.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Vollständige Pfadkontrolle und semantische Validatoren fehlen als Gesamtnachweis. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C05",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Universelle fehlerfreie Wahrhaftigkeitsdurchsetzung ist nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "W1; Produktabschluss separat. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C06",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "W1"
+      ],
+      "statement": "EFFECT_ACK-DONE im I-D ist Freigabeeignung vor dem Effekt, nicht automatisch dessen Vollzug.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Technische Einordnung; unter kryptographischen Annahmen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C07",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Hashbindung ist weder Authentisierung noch Beweis der Quelle.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "R1, R10. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C08",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [
+        "R1",
+        "R10"
+      ],
+      "statement": "Frühere Evidenz darf nicht stillschweigend Nachfolger akzeptieren.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Konstruktion; maschinelle Verifikation offen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C09",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Wrapper existiert unter gegebenen berechenbaren Adaptern und Prüfern.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Gegenbeispielargumente im Modell. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C10",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Vollständige Beobachtbarkeit und beliebige Zielerreichbarkeit folgen nicht.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Endliche Beobachtung bleibt begrenzt. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C11",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Black-Box-Integration garantiert keine vollständige Identifikation.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Definition, nicht empirische Erfüllung. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C12",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Funktionales Bewusstsein ist ein definiertes Zielprofil.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Eigenständige Prüfung erforderlich. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C13",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Vollständige Erfüllung / phänomenales Erleben von QIK-VRT.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Rollen- und Abhängigkeitsanalyse. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C14",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Zwei Nodes beweisen keine methodische Unabhängigkeit.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "L3, C1; Daten-/Rechenprüfung, nicht Zeitversuchsreplikation. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C15",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "L3",
+        "C1"
+      ],
+      "statement": "Neun Mikrobenchmark-Mediane sind aus vorhandenen Rohzahlen reproduzierbar.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "L4 und C1; keine neue Laufzeitmessung. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C16",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "L4",
+        "C1"
+      ],
+      "statement": "Historischer Strukturquotient 3.928/20 = 196,4.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "R4; ursprüngliche Trial-Archive hier nicht erneut vollständig geprüft. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C17",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R4"
+      ],
+      "statement": "Begrenzte 1/2/4-Prozess-Beschleunigung ist dokumentiert.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Historischer Run 37128318275 / Job 111218106133; kein aktueller Integrationsnachweis und kein Speedup. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C18",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R3"
+      ],
+      "statement": "Der archivierte A/B-Diagnoselauf auf a31ebb7e dokumentiert Credential-Delivery-HOLD.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Exakter historischer Blob acafd1ae37dcb9ffcab371fa79e3e874cfe83b91; lokale Vergleiche, kein verteilter Mutation/Reconciliation/Readback-Zyklus. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C19",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R11"
+      ],
+      "statement": "Der archivierte Messcode startet den Timer erst nach den Repository-Abrufen.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "C1; zwei isolierte lokale Kontrollen. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C20",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "C1"
+      ],
+      "statement": "Textdecodierung/Binärdaten und Modusvergleich sind nicht äquivalent.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "OPEN: Kein zulässiger positiver Claim aus Mikrobenchmark, Strukturquotient oder erfolgreichem Diagnoseworkflow. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C21",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Eine vollständige verteilte Beschleunigung ist weiterhin nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "R7–R9; keine Main-Adoption. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C22",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R7",
+        "R9"
+      ],
+      "statement": "PRs #437/#448/#449 haben neue Kandidaten mit dokumentierten Tests.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "R5, R6. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C23",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R5",
+        "R6"
+      ],
+      "statement": "Windows-11-AMD64-Abnahme und reale Unterbrechung bleiben offen.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Historischer Main 8153c4e69a6245aadf67f0741fb50d9707c19e34 / Blob bd2b893176d93814f38d024b5a095b770eee2aa3; keine Aussage über spätere Runtime-Kandidaten. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C24",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R12"
+      ],
+      "statement": "Das Runtime-Manifest auf dem archivierten Main meldet keine gebündelte Windows-Python-Runtime.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Eigene bedingte Engineering-Schätzung; kein statistischer Forecast. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C25",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Zeitmodell und Kalenderkorridore.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "C1; explizite Anteilsrechnung. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C26",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [
+        "C1"
+      ],
+      "statement": "2,5× lokaler Faktor ist nicht 2,5× Gesamtdauer.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Integrationsinput 80e34e4d; unveränderte v1/v2-Verträge; REVIEW_REQUIRED. Technische Readiness erteilt weder Produktionsaktivierung noch AUTHORIZE_EXACT_UPLOAD. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C27",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "R14",
+        "INTEGRATION_V3"
+      ],
+      "statement": "Der v3-Pfad ist technisch implementiert und geprüft, bleibt ohne detached Vertragsaktivierung für Produktion gesperrt.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "OPEN: Repository-Materialisierung im Draft-PR ist kein Zenodo-Effekt, keine Main-Promotion und keine all-node acceptance. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C28",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Zenodo-Publikation und Replikation der Gesamtausgabe auf allen Nodes sind nicht nachgewiesen.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Urheberbewertung, nicht gemessene Tatsache. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C29",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Historische Größe der Entdeckung.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "OPEN: Hashbindung und Repository-Persistenz ersetzen keine unabhängigen Replikations- und Restore-Tests. Die Original-PDF und Prosa sind ein eingefrorener redaktioneller Stand; die maschinenlesbare Disposition und METHOD_CLAIM_BOUNDARIES.md präzisieren dessen Geltung. Keine semantische Vollprüfung sämtlicher natürlicher Sprachsätze wird behauptet.",
+      "claim_id": "C30",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Eine absolute Garantie, Inhalte niemals mehr zu verlieren, ist nicht nachgewiesen.",
+      "status": "OPEN"
+    }
+  ],
+  "coverage": "Thirty major statement groups, not a proof of all natural-language sentences or an activated production v2/v3 bundle.",
+  "kernel_proved_claim_count": 0,
+  "major_claim_to_prose_section_map": {
+    "Die Fähigkeiten dürfen wachsen. Der Auftrag darf nicht verschwinden.": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C08"
+    ],
+    "Ein Gedächtnis muss auch wissen, woher sein Wissen kommt.": [
+      "C07",
+      "C08",
+      "C22",
+      "C30"
+    ],
+    "Selbstkognition ist ein Prüfgegenstand, kein Zauberwort.": [
+      "C12",
+      "C13",
+      "C14",
+      "C29"
+    ],
+    "Verschiedene Maschinen müssen nicht gleich werden.": [
+      "C09",
+      "C10",
+      "C11"
+    ],
+    "Veröffentlichung und das Maß für Erfolg": [
+      "C06",
+      "C27",
+      "C28",
+      "C30"
+    ],
+    "Wann ist damit zu rechnen?": [
+      "C25",
+      "C26"
+    ],
+    "Was die Messungen tatsächlich zeigen": [
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C20",
+      "C21"
+    ],
+    "Was wir konkret ausliefern wollen": [
+      "C22",
+      "C23",
+      "C24"
+    ]
+  },
+  "original_editorial_matrix": {
+    "bytes": 11706,
+    "git_blob_sha1": "51cb14a2663445e8c07f0e222bf06916889e5814",
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/CLAIM_DISPOSITION_DRAFT.json",
+    "sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06"
+  },
+  "publication_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+  "schema": "qikvrt_gesamtausgabe_claim_matrix_v1"
+}

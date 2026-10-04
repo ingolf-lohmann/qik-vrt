@@ -45,8 +45,17 @@ except ModuleNotFoundError:
 
 SCHEMA = "qikvrt_zenodo_publication_manifest_v1"
 SCHEMA_V2 = "qikvrt_zenodo_publication_manifest_v2"
+SCHEMA_V3 = "qikvrt_zenodo_publication_manifest_v3"
+PROOF_MANIFEST_SCHEMAS = frozenset({SCHEMA_V2, SCHEMA_V3})
 EVIDENCE_SCHEMA = "qikvrt_zenodo_publication_evidence_v1"
 EVIDENCE_SCHEMA_V2 = "qikvrt_zenodo_publication_evidence_v2"
+EVIDENCE_SCHEMA_V3 = "qikvrt_zenodo_publication_evidence_v3"
+V3_ACTIVATION_SCHEMA = "qikvrt_zenodo_v3_contract_activation_v1"
+V3_CONTRACT_CODE_PATHS = (
+    "tools/qikvrt_zenodo_publish.py",
+    "tools/qikvrt_zenodo_machine_proof.py",
+    ".github/CODEOWNERS",
+)
 OWNER_AUTHORIZATION_SCHEMA = "qikvrt_zenodo_owner_authorization_v1"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -317,6 +326,8 @@ def _validate_machine_proof(
     value: Any,
     root: pathlib.Path,
     files: list[dict[str, Any]],
+    *,
+    v3: bool = False,
 ) -> dict[str, Any]:
     if not isinstance(value, dict):
         _fail("manifest.machine_proof must be an object")
@@ -325,8 +336,9 @@ def _validate_machine_proof(
         {"path", "git_blob_sha", "policy_id"},
         "manifest.machine_proof",
     )
-    if value["policy_id"] != machine_proof.POLICY_ID:
-        _fail("manifest.machine_proof.policy_id differs from the active policy")
+    policy_id = machine_proof.PROPOSED_POLICY_ID if v3 else machine_proof.POLICY_ID
+    if value["policy_id"] != policy_id:
+        _fail("manifest.machine_proof.policy_id differs from the selected version")
     path = _safe_relative(
         root,
         value["path"],
@@ -342,7 +354,9 @@ def _validate_machine_proof(
         _fail("machine-proof bundle Git blob mismatch")
     upload_paths = [entry["path"] for entry in files]
     try:
-        receipt = machine_proof.validate_bundle(
+        validator = (machine_proof.validate_publication_bundle_v3
+                     if v3 else machine_proof.validate_bundle)
+        receipt = validator(
             root,
             path,
             upload_paths=upload_paths,
@@ -374,7 +388,7 @@ def _validate_machine_proof(
         for item in return_value["candidate_files"]
     ]
     return {
-        "policy_id": machine_proof.POLICY_ID,
+        "policy_id": policy_id,
         "publication_id": receipt["publication_id"],
         "path": receipt["path"],
         "bytes": receipt["bytes"],
@@ -385,7 +399,7 @@ def _validate_machine_proof(
         "returned_candidate_files": returned_candidate_files,
         "claim_count": receipt["claim_count"],
         "machine_proof_complete": True,
-        "zenodo_upload_authorized": True,
+        "zenodo_upload_authorized": not v3,
     }
 
 
@@ -761,7 +775,7 @@ def _validate_owner_authorization(
 
 
 def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
-    """Load v1 for history or v2 for a proof-bearing new publication."""
+    """Load v1 for history or explicitly selected proof-bearing v2/v3."""
     path = _manifest_path(root, path)
     value, raw = zenodo._load_json_file(path)
     schema = value.get("schema")
@@ -776,10 +790,11 @@ def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
     }
     if schema == SCHEMA:
         zenodo._check_exact_keys(value, common_keys, "manifest")
-    elif schema == SCHEMA_V2:
+    elif schema in PROOF_MANIFEST_SCHEMAS:
         zenodo._check_exact_keys(
             value,
-            common_keys | {"source_head", "machine_proof", "owner_authorization"},
+            common_keys | {"source_head", "machine_proof", "owner_authorization"}
+            | ({"contract_activation"} if schema == SCHEMA_V3 else set()),
             "manifest",
         )
     else:
@@ -810,7 +825,8 @@ def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
     proof = None
     owner_authorization = None
     source_head = None
-    if schema == SCHEMA_V2:
+    contract_activation = None
+    if schema in PROOF_MANIFEST_SCHEMAS:
         if evidence_path == path:
             _fail("v2 publication evidence must not overwrite its manifest")
         # This is the frozen pre-authorization source head. Comparing it to the
@@ -818,7 +834,14 @@ def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
         source_head = value["source_head"]
         if not isinstance(source_head, str) or HEX40.fullmatch(source_head) is None:
             _fail("manifest.source_head must be a lowercase Git commit SHA-1")
-        proof = _validate_machine_proof(value["machine_proof"], root, files)
+        proof = _validate_machine_proof(
+            value["machine_proof"], root, files, v3=schema == SCHEMA_V3
+        )
+        if schema == SCHEMA_V3:
+            contract_activation = _validate_v3_contract_activation(
+                value["contract_activation"], root, files, path,
+                value["owner_authorization"], evidence_path,
+            )
         owner_authorization = _validate_owner_authorization(
             value["owner_authorization"],
             root,
@@ -829,6 +852,15 @@ def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
             evidence_path,
             source_head,
         )
+        if schema == SCHEMA_V3:
+            activation_time = datetime.datetime.fromisoformat(
+                contract_activation["authorized_at"].replace("Z", "+00:00")
+            )
+            upload_time = datetime.datetime.fromisoformat(
+                owner_authorization["authorization_event"]["authorized_at"].replace("Z", "+00:00")
+            )
+            if upload_time < activation_time:
+                _fail("v3 exact-upload decision predates detached contract activation")
     result = {
         "schema": schema,
         "repository": repository,
@@ -838,10 +870,98 @@ def load_manifest(path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
         "evidence_path": evidence_path,
         "manifest_sha256": hashlib.sha256(raw).hexdigest(),
     }
-    if schema == SCHEMA_V2:
+    if schema in PROOF_MANIFEST_SCHEMAS:
         result["source_head"] = source_head
         result["owner_authorization"] = owner_authorization
+    if schema == SCHEMA_V3:
+        result["contract_activation"] = contract_activation
     return result
+
+
+def _v3_contract_identities(root: pathlib.Path) -> list[dict[str, Any]]:
+    try:
+        controls = machine_proof.publication_contract_blobs(root, v3=True)
+    except machine_proof.ProofGateError as exc:
+        _fail("v3 contract controls rejected: " + str(exc))
+    for relative in V3_CONTRACT_CODE_PATHS:
+        control = _safe_relative(root, relative, "v3 contract code", must_exist=True)
+        controls[relative] = _git_blob_sha(
+            zenodo.read_regular_file(control, zenodo.MAX_JSON_BYTES)
+        )
+    return [
+        _identity(relative, zenodo.read_regular_file(
+            _safe_relative(root, relative, "v3 reviewed contract", must_exist=True),
+            zenodo.MAX_JSON_BYTES,
+        ))
+        for relative in sorted(controls)
+    ]
+
+
+def _v3_activation_statement(contracts: list[dict[str, Any]], review: Mapping[str, Any]) -> str:
+    return (
+        "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT "
+        f"contracts_sha256={hashlib.sha256(zenodo._json_bytes(contracts)).hexdigest()} "
+        f"repository={review['repository']} pr_number={review['pr_number']} "
+        f"head_sha={review['head_sha']} review_id={review['review_id']}"
+    )
+
+
+def _validate_v3_contract_activation(
+    value: Any, root: pathlib.Path, files: list[dict[str, Any]],
+    manifest_path: pathlib.Path, owner_binding: Any, evidence_path: pathlib.Path,
+) -> dict[str, Any]:
+    """Validate a detached decision; never mint or infer contract activation."""
+    if not isinstance(value, dict):
+        _fail("NO_REVIEWED_V3_ACTIVATION_NO_V3_PRODUCTION_MUTATION: detached activation missing")
+    relative = value.get("path")
+    path = _safe_relative(root, relative, "v3 contract activation", must_exist=True)
+    record, raw = zenodo._load_json_file(path)
+    observed = _identity(path.relative_to(root).as_posix(), raw)
+    _validate_identity(value, observed, "manifest.contract_activation")
+    control_only = {manifest_path.relative_to(root).as_posix(),
+                    evidence_path.relative_to(root).as_posix()}
+    if isinstance(owner_binding, dict):
+        control_only.add(owner_binding.get("path"))
+    contracts = _v3_contract_identities(root)
+    if (relative in control_only
+            or relative in {item["path"] for item in files}
+            or relative in {item["path"] for item in contracts}):
+        _fail("v3 contract activation must be detached and control-only")
+    zenodo._check_exact_keys(record, {
+        "schema", "decision", "principal", "contracts", "review", "authorized_at",
+        "exact_statement", "statement_sha256",
+    }, "v3 contract activation")
+    if (record["schema"] != V3_ACTIVATION_SCHEMA
+            or record["decision"] != "ACTIVATE_REVIEWED_V3_PRODUCTION_CONTRACT"
+            or record["principal"] != {"name": "Ingolf Lohmann", "type": "NATURAL_PERSON"}
+            or record["contracts"] != contracts):
+        _fail("v3 contract activation decision or exact contract bindings differ")
+    review = record["review"]
+    if not isinstance(review, dict):
+        _fail("v3 contract activation review must be an object")
+    zenodo._check_exact_keys(review, {
+        "repository", "pr_number", "head_sha", "tree_sha", "review_id",
+        "reviewer_login", "ruleset_id",
+    }, "v3 contract activation review")
+    if (review["repository"] != PRODUCTION_REPOSITORY
+            or any(isinstance(review[k], bool) or not isinstance(review[k], int)
+                   or review[k] <= 0 for k in ("pr_number", "review_id", "ruleset_id"))
+            or any(not isinstance(review[k], str) or HEX40.fullmatch(review[k]) is None
+                   for k in ("head_sha", "tree_sha"))
+            or not isinstance(review["reviewer_login"], str)
+            or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}", review["reviewer_login"]) is None):
+        _fail("v3 contract activation review identity is invalid")
+    authorized_at = _validate_rfc3339(record["authorized_at"], "v3 activation authorized_at")
+    statement = _v3_activation_statement(contracts, review)
+    if (record["exact_statement"] != statement
+            or record["statement_sha256"] != hashlib.sha256(statement.encode()).hexdigest()):
+        _fail("v3 contract activation canonical decision statement differs")
+    return {**observed, "review": dict(review), "contracts": contracts,
+            "authorized_at": authorized_at, "statement_sha256": record["statement_sha256"]}
+
+
+def _v3_evidence_schema(manifest: Mapping[str, Any]) -> str:
+    return EVIDENCE_SCHEMA_V3 if manifest["schema"] == SCHEMA_V3 else EVIDENCE_SCHEMA_V2
 
 
 def verify_files(
@@ -944,6 +1064,12 @@ def _execution_scope_blobs(
     execution_blobs[authorization_path] = manifest["owner_authorization"][
         "git_blob_sha"
     ]
+    if manifest.get("schema") == SCHEMA_V3:
+        activation = manifest["contract_activation"]
+        activation_path = activation["path"]
+        if activation_path in execution_blobs or activation_path in control_blobs:
+            _fail("v3 contract activation overlaps another execution role")
+        execution_blobs[activation_path] = activation["git_blob_sha"]
     for path, control_blob in control_blobs.items():
         existing_blob = execution_blobs.get(path)
         if existing_blob is not None:
@@ -1088,6 +1214,24 @@ def _validate_repository_source_head(
         control_blobs[relative] = observed_blob
     if len(control_blobs) != 6:
         _fail("machine-proof execution controls must contain six distinct paths")
+    if manifest["schema"] == SCHEMA_V3:
+        activation = manifest["contract_activation"]
+        review = activation["review"]
+        _status, review_tree = _git(root, "rev-parse", "--verify",
+                                   f"{review['head_sha']}^{{tree}}")
+        if review_tree != review["tree_sha"]:
+            _fail("v3 reviewed contract TREE differs")
+        status, _ = _git(root, "merge-base", "--is-ancestor", review["head_sha"],
+                        source_head, accepted=frozenset({0, 1}))
+        if status != 0:
+            _fail("v3 reviewed contract HEAD is not an ancestor of the frozen source")
+        for contract in activation["contracts"]:
+            relative = contract["path"]
+            _status, reviewed_blob = _git(root, "rev-parse", "--verify",
+                                         f"{review['head_sha']}:{relative}")
+            if reviewed_blob != contract["git_blob_sha"]:
+                _fail("v3 reviewed contract bytes differ at its exact HEAD for " + relative)
+            control_blobs[relative] = contract["git_blob_sha"]
 
     execution_blobs = _execution_scope_blobs(
         manifest_relative,
@@ -1173,6 +1317,10 @@ def _reject_tokens_in_publication_bytes(
         (where, zenodo.read_regular_file(path, maximum))
         for where, path, maximum in control_paths
     )
+    if manifest["schema"] == SCHEMA_V3:
+        byte_sets.append(("v3 contract activation", zenodo.read_regular_file(
+            root / manifest["contract_activation"]["path"], zenodo.MAX_JSON_BYTES
+        )))
     byte_sets.extend(
         (f"upload {name}", data)
         for (_kind, name), data in verified.items()
@@ -1344,6 +1492,86 @@ def _github_api_request(
     if token.encode("utf-8") in serialized:
         _fail("GitHub Git-Data API response contained its bearer credential")
     return status, value
+
+
+def _verify_v3_contract_review(
+    root: pathlib.Path, manifest: Mapping[str, Any], token: str,
+) -> None:
+    """Reobserve actual independent review and governance before any effect.
+
+    An activation file is an attestation, not a substitute for GitHub state.
+    Restricted CODEOWNERS syntax is intentional: unsupported ownership patterns
+    fail closed rather than guessing who may approve the publication contract.
+    """
+    activation = manifest["contract_activation"]
+    review = activation["review"]
+    prefix = "/repos/" + PRODUCTION_REPOSITORY
+    _status, pr = _github_api_request("GET", f"{prefix}/pulls/{review['pr_number']}", token)
+    if (pr.get("number") != review["pr_number"] or pr.get("merged") is not True
+            or pr.get("state") != "closed"
+            or pr.get("head", {}).get("sha") != review["head_sha"]
+            or pr.get("head", {}).get("repo", {}).get("full_name") != PRODUCTION_REPOSITORY
+            or pr.get("base", {}).get("ref") != "main"
+            or pr.get("base", {}).get("repo", {}).get("full_name") != PRODUCTION_REPOSITORY
+            or pr.get("user", {}).get("login") == review["reviewer_login"]):
+        _fail("v3 contract lacks its exact merged, independently reviewed Authority PR")
+    _status, native = _github_api_request(
+        "GET", f"{prefix}/pulls/{review['pr_number']}/reviews/{review['review_id']}", token
+    )
+    if (native.get("id") != review["review_id"]
+            or native.get("state") != "APPROVED"
+            or native.get("commit_id") != review["head_sha"]
+            or native.get("user", {}).get("login") != review["reviewer_login"]):
+        _fail("v3 contract native exact-head approval is missing, dismissed or divergent")
+    reviewed_at = _validate_rfc3339(native.get("submitted_at"), "v3 native review submitted_at")
+    merged_at = _validate_rfc3339(pr.get("merged_at"), "v3 native PR merged_at")
+    parse_time = lambda value: datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if not parse_time(reviewed_at) <= parse_time(merged_at) <= parse_time(activation["authorized_at"]):
+        _fail("v3 contract activation predates its completed independent review")
+    merge_sha = pr.get("merge_commit_sha")
+    if not isinstance(merge_sha, str) or HEX40.fullmatch(merge_sha) is None:
+        _fail("v3 contract native merge identity is missing")
+    status, _ = _git(root, "merge-base", "--is-ancestor", merge_sha,
+                    manifest["source_head"], accepted=frozenset({0, 1}))
+    if status != 0:
+        _fail("v3 reviewed merge is not preserved in the frozen source ancestry")
+
+    _status, ruleset = _github_api_request(
+        "GET", f"{prefix}/rulesets/{review['ruleset_id']}", token
+    )
+    ref_names = ruleset.get("conditions", {}).get("ref_name", {})
+    rule = next((item for item in ruleset.get("rules", [])
+                 if isinstance(item, dict) and item.get("type") == "pull_request"), {})
+    params = rule.get("parameters", {})
+    count = params.get("required_approving_review_count")
+    if (ruleset.get("id") != review["ruleset_id"]
+            or ruleset.get("target") != "branch" or ruleset.get("enforcement") != "active"
+            or ruleset.get("bypass_actors") != []
+            or not set(ref_names.get("include", [])) & {"refs/heads/main", "~DEFAULT_BRANCH", "~ALL"}
+            or ref_names.get("exclude") != []
+            or params.get("require_code_owner_review") is not True
+            or params.get("require_last_push_approval") is not True
+            or params.get("dismiss_stale_reviews_on_push") is not True
+            or isinstance(count, bool) or not isinstance(count, int) or count < 1):
+        _fail("v3 contract CODE_OWNER_RULE_NOT_ENFORCED")
+
+    owners_path = root / ".github/CODEOWNERS"
+    owners = owners_path.read_text(encoding="utf-8").splitlines()
+    for contract in activation["contracts"]:
+        matched = None
+        for line in owners:
+            tokens = line.split("#", 1)[0].split()
+            if not tokens:
+                continue
+            pattern, *principals = tokens
+            normalized = pattern.removeprefix("/")
+            if normalized != "*" and any(c in normalized for c in ("*", "?", "[", "\\", "!")):
+                _fail("v3 contract CODEOWNERS pattern is unsupported; explicit contract ownership required")
+            if (normalized in {"*", contract["path"]}
+                    or normalized.endswith("/") and contract["path"].startswith(normalized)):
+                matched = principals
+        if not matched or "@" + review["reviewer_login"] not in matched:
+            _fail("v3 contract reviewer is not its recorded Code Owner")
 
 
 def _github_ref_path(ref: str) -> str:
@@ -1686,7 +1914,7 @@ def _reject_owner_authorization_replay(
             evidence_path,
             secrets_by_name,
         )
-        if evidence.get("schema") not in {EVIDENCE_SCHEMA, EVIDENCE_SCHEMA_V2}:
+        if evidence.get("schema") not in {EVIDENCE_SCHEMA, EVIDENCE_SCHEMA_V2, EVIDENCE_SCHEMA_V3}:
             continue
         consumed = evidence.get("owner_authorization")
         if not isinstance(consumed, dict):
@@ -1800,7 +2028,7 @@ def _phase_evidence(
 ) -> dict[str, Any]:
     flags = _recovery_flags(phase)
     evidence: dict[str, Any] = {
-        "schema": EVIDENCE_SCHEMA_V2,
+        "schema": _v3_evidence_schema(manifest),
         "state": "published" if phase == "public_verified" else CONSUMPTION_STATE,
         "phase": phase,
         "manifest_path": manifest_path.relative_to(root).as_posix(),
@@ -1815,6 +2043,8 @@ def _phase_evidence(
         "governance_boundaries": list(GOVERNANCE_BOUNDARIES),
         "recovery": flags,
     }
+    if manifest["schema"] == SCHEMA_V3:
+        evidence["contract_activation"] = manifest["contract_activation"]
     has_record = RECOVERY_PHASES.index(phase) >= RECOVERY_PHASES.index(
         "record_created"
     )
@@ -1865,7 +2095,7 @@ def _validate_recovery_evidence(
             "legacy v1 publication evidence is immutable and requires manual "
             "reconciliation"
         )
-    if value.get("schema") != EVIDENCE_SCHEMA_V2:
+    if value.get("schema") != _v3_evidence_schema(manifest):
         _fail("publication recovery evidence schema is unsupported")
     phase = value.get("phase")
     if not isinstance(phase, str) or phase not in RECOVERY_PHASES:
@@ -1889,6 +2119,8 @@ def _validate_recovery_evidence(
         "governance_boundaries",
         "recovery",
     }
+    if manifest["schema"] == SCHEMA_V3:
+        expected_keys.add("contract_activation")
     if RECOVERY_PHASES.index(phase) >= RECOVERY_PHASES.index("record_created"):
         expected_keys |= {"record_id", "doi", "title", "version", "files"}
     if phase == "public_verified":
@@ -1910,6 +2142,8 @@ def _validate_recovery_evidence(
         "source_head": manifest["source_head"],
         "recovery": _recovery_flags(phase),
     }
+    if manifest["schema"] == SCHEMA_V3:
+        exact_common["contract_activation"] = manifest["contract_activation"]
     for key, expected in exact_common.items():
         if value.get(key) != expected:
             _fail(f"publication recovery evidence {key} binding differs")
@@ -2460,7 +2694,7 @@ def publish(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
     manifest_path = _manifest_path(root, manifest_path)
     manifest = load_manifest(manifest_path, root)
     if (
-        manifest["schema"] != SCHEMA_V2
+        manifest["schema"] not in PROOF_MANIFEST_SCHEMAS
         or manifest["machine_proof"] is None
         or manifest.get("owner_authorization") is None
     ):
@@ -2496,6 +2730,8 @@ def publish(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
         verified,
         secrets_by_name,
     )
+    if manifest["schema"] == SCHEMA_V3:
+        _verify_v3_contract_review(root, manifest, github_token)
     if evidence_path.exists():
         evidence_value, _raw = _load_evidence_without_secrets(
             evidence_path,

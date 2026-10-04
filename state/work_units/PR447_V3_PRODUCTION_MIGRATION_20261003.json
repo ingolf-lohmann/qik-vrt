@@ -1,0 +1,109 @@
+{
+  "_license": {
+    "classification": "work_unit_provenance_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PR447_V3_PRODUCTION_MIGRATION_20261003",
+  "input": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "branch": "work/collective-functional-consciousness-20261003",
+    "head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+    "tree": "8d9e02da17284a9a9bca95e373cee5a513570295",
+    "main": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "predecessor_evidence_transfer": false
+  },
+  "contributions": {
+    "human": {
+      "actor": "Ingolf Lohmann",
+      "class": "HUMAN",
+      "authorized_scope": "Inspect exact v3 contract chain, implement versioned publisher support without self-activation, migrate candidate and regenerate exact bindings, validate successor. No Zenodo effect and no invented Owner or Code-Owner approval.",
+      "acceptance_of_implementation_or_candidate": "PENDING",
+      "contract_activation": "NOT_GRANTED",
+      "exact_upload_decision": "NOT_GRANTED"
+    },
+    "artificial_cognitive_system": {
+      "actor": "OpenAI Codex",
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "exact_model_build": "UNAVAILABLE",
+      "contribution": "Contract diagnosis, versioned implementation, temporary synthetic regression fixtures, article/status/source/matrix migration, PDF typesetting and three-page visual verification, proof/fileset/return regeneration, API-native successor persistence and fresh verification."
+    }
+  },
+  "implementation": {
+    "manifest_schema": "qikvrt_zenodo_publication_manifest_v3",
+    "evidence_schema": "qikvrt_zenodo_publication_evidence_v3",
+    "bundle_schema": "qikvrt_zenodo_machine_proof_bundle_v3",
+    "return_schema": "qikvrt_prepublication_return_receipt_v2",
+    "v1_v2_policy_and_schema_bytes_unchanged": true,
+    "v2_default_validator_semantics_unchanged": true,
+    "v3_policy_state": "REVIEW_REQUIRED",
+    "automatic_v3_activation": false,
+    "embedded_upload_authorization": "FORBIDDEN",
+    "detached_contract_activation_required": true,
+    "native_independent_review_and_ruleset_readback_required": true,
+    "detached_exact_upload_authorization_required": true,
+    "repository_global_consumption_scope_shared_across_versions": true
+  },
+  "candidate": {
+    "publication_id": "qikvrt-collective-functional-consciousness-20261003-v1",
+    "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness",
+    "claim_count": 18,
+    "upload_file_count": 29,
+    "pdf_pages": 3,
+    "pdf_sha256": "7132552a69813d34448c41c58100ebd30572a17a505b4405303e5601c14171a6",
+    "proof_sha256": "23f87519cf6e905b8978884f1384ebdcc94408316a9f6af45f93aa55629f7ebb",
+    "return_sha256": "bab9a631789d3b6ccfd4e3a64fa16af50ad90ce2236d799235c92e0a4dd9b5dc",
+    "state": "PREPARED_V3_HOLD_REVIEW_ACTIVATION_AND_EXACT_UPLOAD_AUTHORIZATION",
+    "human_acceptance": false,
+    "contract_activation_present": false,
+    "owner_upload_authorization_present": false
+  },
+  "verification": {
+    "local_publication_contract_tests": {
+      "command": "GITHUB_ACTIONS=true GITHUB_REPOSITORY=ingolf-lohmann/qik-vrt GITHUB_SHA=1c9141983e061ee17cb059c5b13637d3c2695635 GITHUB_REF=refs/heads/work/collective-functional-consciousness-20261003 python3 -B -m unittest -v tests.test_zenodo_machine_proof_policy",
+      "test_count": 88,
+      "result": "PASS",
+      "scope": "Current prepared bytes including v3 publisher/regressions and PR447 candidate; native execution HEAD/TREE must be bound separately after commit."
+    },
+    "local_zenodo_client_regressions": {
+      "test_count": 17,
+      "result": "PASS"
+    },
+    "candidate_negative_controls": 9,
+    "native_exact_head_ci": "REQUIRED_AFTER_PERSISTENCE_NO_PREDECESSOR_TRANSFER",
+    "full_repository_integrity": "REQUIRES_NATIVE_SUCCESSOR_VERIFICATION",
+    "actual_detached_owner_decision_hash_stability": "NOT_OBSERVED_NO_DECISION_CREATED",
+    "synthetic_detached_decision_hash_stability": "PASS_TEMPORARY_REGRESSION_ONLY",
+    "successor_regression_repair": {
+      "failed_exact_head": "1c9141983e061ee17cb059c5b13637d3c2695635",
+      "failed_exact_tree": "a9813870e2340390da30b3f229a47ec4f42bc113",
+      "native_failed_run": 37133220205,
+      "native_failed_job": 111232350665,
+      "diagnosis": "Nine new production tests inherited the Mirror GITHUB_REPOSITORY while using temporary synthetic Authority manifests; the unchanged production repository gate rejected them before the intended probes.",
+      "repair": "Scope the nine test environments explicitly to the synthetic Authority fixture and add a separate Mirror-execution test proving rejection before any GitHub or Zenodo transport.",
+      "production_repository_gate_changed": false,
+      "candidate_bytes_changed": false,
+      "native_successor_ci": "REQUIRED_AFTER_PERSISTENCE_NO_PREDECESSOR_TRANSFER"
+    }
+  },
+  "effects": {
+    "branch_successor_commit": "AUTHORIZED",
+    "main_write": false,
+    "force_push": false,
+    "review_submitted": false,
+    "contract_activation_created": false,
+    "owner_authorization_created": false,
+    "authorization_consumed": false,
+    "zenodo_transport": false,
+    "zenodo_publication": false,
+    "effect_ack_done": false
+  },
+  "continuation": {
+    "technical": "Persist the bounded branch successor with regenerated integrity, read its exact HEAD/TREE and validate native full CI and all current gates.",
+    "governance": "Independent exact-head Code-Owner review and enforced repository rules must be established separately; empty mirror rulesets remain an observed input blocker.",
+    "publication": "Separately activate the reviewed exact v3 contract, return the final frozen package, obtain its later AUTHORIZE_EXACT_UPLOAD decision and establish an authorized Authority carrier before any separately requested effect."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "all_node_replication_performed": false,
+  "boundary": "Draft return preparation only. The final message delivers these links; no fabricated prior receipt, biometric identity or irreversible effect.",
+  "candidate_files": [
+    {
+      "bytes": 189440,
+      "git_blob_sha1_computed_locally": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "path": "QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
+    },
+    {
+      "bytes": 18839,
+      "git_blob_sha1_computed_locally": "447d63681c7a9c180bc76e062d40be655e64dccd",
+      "path": "PROSA_DE.md",
+      "sha256": "df9295c3c7a80b2a08a3661c78c37d881ce47739e0b466e914c2f73cf13ad501"
+    },
+    {
+      "bytes": 1910,
+      "git_blob_sha1_computed_locally": "446d5730525a880547ee272323e76ce6bd2cbb9b",
+      "path": "MACHINE_PROOF_BUNDLE_DRAFT.json",
+      "sha256": "d539e812df8ee7da4758534675d88555db99486d4aa247fdd8374b18369c96d6"
+    }
+  ],
+  "delivery_date": "2026-10-03",
+  "exact_upload_authorization_received": false,
+  "owner_acceptance_of_these_new_bytes_observed": false,
+  "production_policy_validation_pass": false,
+  "publication_candidate_id": "qikvrt-effective-continuity-synthesis-20261003-review-v1",
+  "return_channel": "current QIK-VRT user conversation artifact links",
+  "schema": "qikvrt_editorial_return_preparation_v1",
+  "status": "FILES_FROZEN_FOR_CURRENT_CHAT_RETURN",
+  "zenodo_mutation_performed": false
+}
