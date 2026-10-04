@@ -651,73 +651,97 @@
           "id": "MAIN-PRIMARY-01",
           "scenario": "Fourth strand survives alongside existing private strands; urgent declared deadlines still receive justified precedence.",
           "required_result": "Persistent independent task identities, explicit priority reason, no unintended cancellation",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_main_primary_01_four_strands_and_urgent_priority",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "REQ-UNDEFINED-01",
           "scenario": "A source requirement lacks an observable acceptance predicate.",
           "required_result": "OPEN requirement; deterministic refinement first, Owner question only for an irreducible missing decision",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_req_undefined_01_refinement_before_owner_question",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "REQ-DEFINED-01",
           "scenario": "All mandatory scope fields are explicit and current.",
           "required_result": "READY_FOR_IMPLEMENTATION without claiming implementation or effect",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_req_defined_01_ready_is_not_effect",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "REQ-REVISION-01",
           "scenario": "New policy/quality rule invalidates earlier verification.",
           "required_result": "Preserve old attempt; invalidate affected acceptance and restart from latest valid boundary or zero",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_req_revision_01_invalidates_prior_action",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "TWIN-CAS-01",
           "scenario": "Two clients submit an identical input or competing expected versions.",
           "required_result": "Stable identity and CAS prevent duplicate consequential execution or silent overwrites",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_twin_cas_01_concurrent_duplicate_and_competing_clients",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "FEEDBACK-RESTART-01",
           "scenario": "An unresolved necessary Owner decision survives process/service restart.",
           "required_result": "Private persistent record restores the exact open decision and materially appropriate feedback condition",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_feedback_restart_01_exact_private_decision_and_replay",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "FEEDBACK-DELIVERY-01",
           "scenario": "Transport accepts a message but channel readback does not establish delivery.",
           "required_result": "DELIVERY_PENDING; no human receipt, understanding or effect claim",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_feedback_delivery_01_transport_and_independent_channel_readback",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "FEEDBACK-NOOP-01",
           "scenario": "Repeated observation has unchanged blocker and notification fingerprint.",
           "required_result": "NOOP; retain next material retry condition without repeated notification",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_feedback_noop_01_no_new_ledger_or_notification",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "HUMAN-CORRECTION-01",
           "scenario": "Owner corrects or stops a goal while an action is pending.",
           "required_result": "Successor revision, invalidated affected pending action, preserved history",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_human_correction_01_supersession_and_cancellation",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "HUMAN-CONTEXT-01",
           "scenario": "Current modality/language/connectivity is incompatible with an accepted task.",
           "required_result": "Explicit unsupported edge and admitted alternative when available; no imagined channel or universal success",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_human_context_01_actual_authorized_alternative",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "ROLE-COVERAGE-01",
           "scenario": "Authority inventory or authenticated role is unavailable.",
           "required_result": "Role-specific OPEN/HOLD; Mirror evidence never substitutes for unobserved Authority coverage",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_role_coverage_01_no_authority_or_head_transfer",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         },
         {
           "id": "EFFECT-CLOSURE-01",
           "scenario": "One PR merges or one release passes its finite checks.",
           "required_result": "Only the scoped effect may be accepted; deployment/user benefit and continuing project goal stay separate",
-          "state": "REQUIRED_NOT_EXECUTED"
+          "state": "LOCAL_SYNTHETIC_HTTP_EXECUTED_NOT_LIVE_OWNER_ACCEPTANCE",
+          "executable_test": "test_effect_closure_01_scoped_human_feedback_not_global_done",
+          "test_module": "tests/test_qikvrt_digital_twin_personal.py"
         }
       ]
     },
@@ -753,7 +777,7 @@
     ],
     "implementation_gap": {
       "current_mirror_main": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
-      "personal_requirement_input_goal_schema": "REQUIRES_REVIEWED_INTEGRATION_WITH_EXISTING_PRIVATE_STORE_AND_TRANSPORT",
+      "personal_requirement_input_goal_schema": "IMPLEMENTED_REVIEW_CANDIDATE_ON_EXISTING_PR429_CARRIER_NOT_LIVE_ADMITTED",
       "actual_private_runtime_principal_and_connection": "NOT_ESTABLISHED",
       "durable_requirement_write_and_independent_readback": false,
       "observed_qikvrt_owner_feedback_delivery": false,
@@ -761,7 +785,8 @@
       "authority_inventory": "HTTP404_CURRENT_CONNECTOR_SCOPE",
       "next_action": "Admit a reviewed personal requirement/input/feedback adapter on existing PR429 private CAS/authenticated transport; verify principal-bound persisted open requirement across restart and independent QIK-VRT delivery. Keep integration gates and Authority coverage separate.",
       "activation": false,
-      "effect_ack_done": false
+      "effect_ack_done": false,
+      "implementation_successor_work_unit": "state/work_units/QIKVRT_PR453_PRIVATE_PERSONAL_CAS_SUCCESSOR_20261004.json"
     }
   }
 }

@@ -39,5 +39,24 @@
   "tests": "tests/test_qikvrt_digital_twin_rest.py",
   "scope": "REFERENCE_DIGITAL_TWIN_API_NOT_VENDOR_TENANT_OR_PHYSICAL_ACTUATION",
   "recursive_versioned_continuation": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
-  "hard_cut_semantics": "MUTATION_CREATES_SUCCESSOR_AND_RESETS_DEPENDENT_EVIDENCE"
+  "hard_cut_semantics": "MUTATION_CREATES_SUCCESSOR_AND_RESETS_DEPENDENT_EVIDENCE",
+  "scheduling_extension": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULE_EVENTS_CONTRACT_V1.json",
+    "base_path": "/api/digital-twin/v1/schedule-events",
+    "transport": "src/qikvrt_github_api_shim.py",
+    "separate_reference_model_dependency": false
+  },
+  "personal_extension": {
+    "base_path": "/api/digital-twin/v1/personal",
+    "implementation": "src/qikvrt_digital_twin_personal.py",
+    "transport": "src/qikvrt_github_api_shim.py",
+    "carrier": "src/qikvrt_digital_twin_schedule_events.py",
+    "documentation": "docs/QIKVRT_DIGITAL_TWIN_PERSONAL_TRANSITIONS.md",
+    "tests": "tests/test_qikvrt_digital_twin_personal.py",
+    "scope": "PRIVATE_CANDIDATE_TRANSITIONS_NOT_LIVE_OWNER_RUNTIME",
+    "existing_private_database_and_ledger_reused": true,
+    "new_scheduler": false,
+    "input_assertion_establishes_delivery": false,
+    "effect_ack_done": false
+  }
 }

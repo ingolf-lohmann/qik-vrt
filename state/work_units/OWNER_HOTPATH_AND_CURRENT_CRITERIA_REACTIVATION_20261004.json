@@ -35,13 +35,16 @@
       "No invented native execution or compilation result",
       "Inspected current main Digital-Twin REST/transport and PR429 scheduling plus PR414 goal-pursuit contracts; added a source-bound human-input, prioritization, conflict and feedback extension.",
       "Inspected actual Railway terminal configuration/volume/variable names, historical deployed-subject log, current Mirror transport and existing PR429 private CAS store; recorded an exact capability-bound continuation.",
-      "Defined main-strand requirement readiness, minimal necessary Owner-decision feedback and 12 declared unexecuted end-to-end acceptance scenarios. Reused PR429/436 private CAS/broker and PR454 runtime-route observation; no second controller or live personal REST activation."
+      "Defined main-strand requirement readiness, minimal necessary Owner-decision feedback and 12 declared unexecuted end-to-end acceptance scenarios. Reused PR429/436 private CAS/broker and PR454 runtime-route observation; no second controller or live personal REST activation.",
+      "History-preserving PR429 carrier integration and private personal CAS semantic adapter; all 12 scenarios plus 9 controls executed locally, not on the actual Owner runtime."
     ]
   },
   "artifacts": [
     {
       "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
-      "sha256": "667914bacc9fc3ce2c28a176daa872a6eb228a10971e2bcf648ab1866bcfa138"
+      "bytes": 46514,
+      "sha256": "caee9b509ffdcb38aef48dfd77a901faaa6209346b41b15a76b0fac1f12990c9",
+      "git_blob_sha1": "7824a9ba638614967ae2a18dcd270308a0d0d8b3"
     }
   ],
   "retention": "METADATA_ONLY",
@@ -60,7 +63,7 @@
   "evidence_classes": {
     "proposal": "NORMATIVE_AND_DESIGN_CANDIDATE",
     "performance": "NOT_MEASURED",
-    "implementation": "NOT_IMPLEMENTED",
+    "implementation": "PRIVATE_PERSONAL_SCHEMA_IMPLEMENTED_LOCAL_SYNTHETIC_TESTS_NOT_ACTIVATED; OTHER_PROPOSAL_OBJECTIVES_UNIMPLEMENTED",
     "live_delivery": "NOT_ESTABLISHED",
     "human_twin_application": "OWNER_DIRECTIVE_CAPTURED; LIVE_PRIVATE_REST_EFFECT_NOT_ESTABLISHED"
   },
@@ -6225,7 +6228,7 @@
     },
     "requirement_acceptance_matrix": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json#/main_development_thread/human_context_coverage/scenarios",
     "acceptance_scenarios_count": 12,
-    "acceptance_scenarios_executed": 0,
+    "acceptance_scenarios_executed": 12,
     "private_strands_preserved": "Three existing private strands retain identity/content in admitted private profile; no counterpart content published.",
     "implementation_reuse": [
       {
@@ -6270,6 +6273,29 @@
       "existing_core_source_unchanged": true,
       "new_core_paths_count": 2,
       "no_other_client_changes_overwritten": true
-    }
+    },
+    "acceptance_scenarios_execution_scope": "LOCAL_SYNTHETIC_HTTP_ONLY",
+    "live_owner_scenarios_executed": 0,
+    "implementation_successor_work_unit": "state/work_units/QIKVRT_PR453_PRIVATE_PERSONAL_CAS_SUCCESSOR_20261004.json"
+  },
+  "historical_proposal_binding_at_predecessor": {
+    "head": "dc0d3aaf747b636c0a66f54c0ffeff0a1d301fc7",
+    "artifacts": [
+      {
+        "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
+        "sha256": "667914bacc9fc3ce2c28a176daa872a6eb228a10971e2bcf648ab1866bcfa138"
+      }
+    ]
+  },
+  "personal_cas_implementation_successor": {
+    "work_unit": "state/work_units/QIKVRT_PR453_PRIVATE_PERSONAL_CAS_SUCCESSOR_20261004.json",
+    "proposal_current_bytes": {
+      "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
+      "bytes": 46514,
+      "sha256": "caee9b509ffdcb38aef48dfd77a901faaa6209346b41b15a76b0fac1f12990c9",
+      "git_blob_sha1": "7824a9ba638614967ae2a18dcd270308a0d0d8b3"
+    },
+    "live_runtime_state": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED",
+    "effect_ack_done": false
   }
 }

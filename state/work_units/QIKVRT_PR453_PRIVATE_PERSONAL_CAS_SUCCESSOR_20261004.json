@@ -1,0 +1,284 @@
+{
+  "_license": {
+    "classification": "work_unit_provenance_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_work_unit_personal_cas_successor_v1",
+  "work_unit_id": "QIKVRT-PR453-PRIVATE-PERSONAL-CAS-SUCCESSOR-20261004",
+  "created_at": "2026-10-04T11:05:13.143502Z",
+  "state": "REVIEW_CANDIDATE_NOT_ACTIVE",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/owner-hotpath-current-criteria-20261004-8658b113",
+  "source_commit": "dc0d3aaf747b636c0a66f54c0ffeff0a1d301fc7",
+  "source_tree": "354c0b2f219373e2690ba3548e82440692141a2b",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "contribution_class": "HUMAN"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex / GPT-6",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "UNAVAILABLE",
+    "tools_and_adapters": [
+      "GitHub REST-native connector",
+      "Python standard library",
+      "Git",
+      "existing Make/runtime/integrity tools"
+    ],
+    "identity_limits": "Git account attribution does not authenticate a natural person or exact model."
+  },
+  "human_contributions": [
+    "Requested smallest history-preserving PR453 successor on existing PR429 CAS/authentication transport",
+    "Defined Input/Goal/Priority/Feedback scenarios and live restart/delivery acceptance boundary",
+    "Prohibited private data publication, second scheduler/Twin, merge and deployment"
+  ],
+  "artificial_cognitive_contributions": [
+    "Integrated exact PR429 as second historical parent; resolved generated integrity conflicts by regeneration",
+    "Implemented private personal semantic adapter, shared authenticated HTTP routes, and principal-bound offline replay safeguard",
+    "Implemented all 12 synthetic authenticated HTTP scenarios and 9 negative/concurrency/readback controls",
+    "Recorded inactive candidate/live-runtime HOLD and regenerated existing integrity projections"
+  ],
+  "joint_components": [
+    {
+      "class": "JOINT_WITH_SEPARABLE_COMPONENTS",
+      "human": "Requirements and scope",
+      "artificial_cognitive_system": "Implementation, tests and candidate verification"
+    }
+  ],
+  "unresolved_origin": [
+    "Inherited PR429 attribution and model identity beyond its existing Work Unit remain unchanged; no reclassification as human contribution"
+  ],
+  "inputs": [
+    {
+      "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
+      "source_commit": "dc0d3aaf747b636c0a66f54c0ffeff0a1d301fc7",
+      "git_blob_sha1": "396a35a0244d9977b093dcd07fb4a2f0c243983b"
+    },
+    {
+      "pr": 429,
+      "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+      "tree": "493a0999da217865e179a642c1fc6efb9df3654e",
+      "existing_work_unit": "state/work_units/QIKVRT_DIGITAL_TWIN_NATIVE_SCHEDULING_V1_20261001.json"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12485,
+      "sha256": "41274947057fb6ba16cb59e74d8f0110fafec13f6847bde2ae5edf962be0b313",
+      "git_blob_sha1": "b8797750db63fd4dc15cdf6f54dd9bd52e9a3596"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11955,
+      "sha256": "e8b7b16c704c227cb806a55ecdb0d91ccd626bd86bd4041fd6eb256317a19e9d",
+      "git_blob_sha1": "210b47f69599264760b60277050b52ec9ff32c6a"
+    },
+    {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 19780,
+      "sha256": "b60f7fb39b6e6bbe9bd60cdf57a9f061ed9da012bef97499f269ecf1f35e9f35",
+      "git_blob_sha1": "7e205a8e05475782da9efae24becf7703b211b33"
+    },
+    {
+      "path": "docs/QIKVRT_DIGITAL_TWIN_PERSONAL_TRANSITIONS.md",
+      "bytes": 6670,
+      "sha256": "272880665dbf0c8375208b841c5c646382083ecffcdcb4c7c0309569f3f4347f",
+      "git_blob_sha1": "32cc28678e50fec0377f2f8f6aa5c5025e08088a"
+    },
+    {
+      "path": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+      "bytes": 2315,
+      "sha256": "632545e9faf8bf3f98c7ab8ee4b37aaf3cfd236b00a8c6eb95630abaf6bf5da1",
+      "git_blob_sha1": "2decc997f2548d7a46944fab86c112c76142966b"
+    },
+    {
+      "path": "src/qikvrt_digital_twin_personal.py",
+      "bytes": 24287,
+      "sha256": "1848a226d695c1c751bdaad580fdd7a42d87daf503fbf687b0187bd12c72f8e0",
+      "git_blob_sha1": "bf5154c37fc80360ce21242e77ffc698c9c70878"
+    },
+    {
+      "path": "src/qikvrt_digital_twin_schedule_events.py",
+      "bytes": 28145,
+      "sha256": "8884bd1b4e2dd055cc90f7437dd8ebc11f2be54f7be28033ca95b00ab671e96f",
+      "git_blob_sha1": "4fc8b1c45bdb0f8803add2a1b152529a2bd4bbc8"
+    },
+    {
+      "path": "src/qikvrt_digital_twin_scheduling.py",
+      "bytes": 17336,
+      "sha256": "dd0a0baf0777b32795ca8e819394543d2e4ca52c90ecdc565b1052a373fa2596",
+      "git_blob_sha1": "d3576c1dd42a098540dcea4e44e44d87c04fdd4e"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 29876,
+      "sha256": "b9114b1116cdc2fc2fbe4b4b1918e583d0fe9d482e5961b3549e7011c6489938",
+      "git_blob_sha1": "a91ab505ef7fc0a80c45be698d53e05f4dc779e7"
+    },
+    {
+      "path": "tests/test_qikvrt_digital_twin_personal.py",
+      "bytes": 29602,
+      "sha256": "ff2ad34200afce5cccfff40a03da746624f6f86b07efb012ecb91402449cc720",
+      "git_blob_sha1": "14f83a7889714b45c8062fe09a5040eb6dd90ac7"
+    },
+    {
+      "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
+      "bytes": 46514,
+      "sha256": "caee9b509ffdcb38aef48dfd77a901faaa6209346b41b15a76b0fac1f12990c9",
+      "git_blob_sha1": "7824a9ba638614967ae2a18dcd270308a0d0d8b3"
+    },
+    {
+      "path": "state/work_units/OWNER_HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_20261004.json",
+      "bytes": 258257,
+      "sha256": "0eaa26c07ea89b03f99e94749be4594c93ff616f62bb9195923ed133f2b0c8c7",
+      "git_blob_sha1": "5083a87cc98185eef7529a6d5e9f043d872725ad"
+    }
+  ],
+  "git_history": {
+    "first_parent": "dc0d3aaf747b636c0a66f54c0ffeff0a1d301fc7",
+    "additional_parent": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+    "method": "NON_FORCE_HISTORY_PRESERVING_SUCCESSOR",
+    "predecessor_evidence_transfer": false,
+    "generated_conflict_resolution": "Regenerate current candidate manifest, SHA256SUMS and detached manifest digest; preserve both source histories"
+  },
+  "reuse_assessment": {
+    "carrier": "Existing ScheduleEventStore instance, private repository/principal/role SQLite file and append-only CAS ledger",
+    "technical_gap": "Native opaque event payloads lacked closed personal requirements, Owner correction, priority and delivery transitions",
+    "extension": "One semantic adapter; existing store, ledger, scoped auth, rate limiter and HTTP service",
+    "new_database": false,
+    "new_scheduler": false,
+    "new_twin": false,
+    "background_loop": false,
+    "outbound_delivery_performed": false
+  },
+  "verification": {
+    "scope": "LOCAL_SYNTHETIC_AUTHENTICATED_HTTP_CANDIDATE_TESTS_NOT_OWNER_RUNTIME",
+    "personal_tests": {
+      "command": "make digital-twin-personal-test",
+      "exit_code": 0,
+      "tests": 21,
+      "log_bytes": 4091,
+      "log_sha256": "be8446c0729e9e790763cc6e7d65a4a30ef8c28396b59d997893b49b23e1e858",
+      "test_source": {
+        "path": "tests/test_qikvrt_digital_twin_personal.py",
+        "bytes": 29602,
+        "sha256": "ff2ad34200afce5cccfff40a03da746624f6f86b07efb012ecb91402449cc720",
+        "git_blob_sha1": "14f83a7889714b45c8062fe09a5040eb6dd90ac7"
+      }
+    },
+    "scenarios": [
+      {
+        "id": "MAIN-PRIMARY-01",
+        "test": "test_main_primary_01_four_strands_and_urgent_priority",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "REQ-UNDEFINED-01",
+        "test": "test_req_undefined_01_refinement_before_owner_question",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "REQ-DEFINED-01",
+        "test": "test_req_defined_01_ready_is_not_effect",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "REQ-REVISION-01",
+        "test": "test_req_revision_01_invalidates_prior_action",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "TWIN-CAS-01",
+        "test": "test_twin_cas_01_concurrent_duplicate_and_competing_clients",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "FEEDBACK-RESTART-01",
+        "test": "test_feedback_restart_01_exact_private_decision_and_replay",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "FEEDBACK-DELIVERY-01",
+        "test": "test_feedback_delivery_01_transport_and_independent_channel_readback",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "FEEDBACK-NOOP-01",
+        "test": "test_feedback_noop_01_no_new_ledger_or_notification",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "HUMAN-CORRECTION-01",
+        "test": "test_human_correction_01_supersession_and_cancellation",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "HUMAN-CONTEXT-01",
+        "test": "test_human_context_01_actual_authorized_alternative",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "ROLE-COVERAGE-01",
+        "test": "test_role_coverage_01_no_authority_or_head_transfer",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      },
+      {
+        "id": "EFFECT-CLOSURE-01",
+        "test": "test_effect_closure_01_scoped_human_feedback_not_global_done",
+        "state": "LOCAL_SYNTHETIC_EXECUTED",
+        "live_owner_execution_verified": false
+      }
+    ],
+    "full_repository_gate": {
+      "command": "make test",
+      "required_on_exact_final_candidate": true,
+      "readback_location": "PR453 current exact-subject verification description"
+    },
+    "process_restart": "Actual isolated service process stop/restart with same private fixture store",
+    "delivery": "Separate local HTTP channel fixture: HTTP202 stays pending, independent matching readback confirms fixture delivery only",
+    "historical_git_fixture_recovery": {
+      "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "missing_blob_objects_recovered_from_existing_verified_local_history": 11,
+      "source_tests_unchanged": true
+    },
+    "boot": "Core/integrity/cache passed; optional profiles CONTINUE",
+    "pre_effect_optimization": "HOLD: current-Main and no-competing-writer predicates missing; no apply"
+  },
+  "human_decision": "PENDING_GENERATED_CODE_REVIEW",
+  "external_effects": {
+    "authorized_scope": "Update existing Draft PR453 through exact-subject history-preserving ref write/readback",
+    "private_owner_write_or_connection": false,
+    "real_human_channel_delivery": false,
+    "merge": false,
+    "deployment": false,
+    "private_payloads_published": false
+  },
+  "first_live_blocker": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED",
+  "next_action": "After separate integration/runtime admission, authenticate the actual Owner principal and configured authorized QIK-VRT channel reader; observe private requirement persistence over actual service restart and independent actual delivery readback.",
+  "retry_condition": "Materially new private runtime admission/connection and delivery evidence; unchanged blocker is NOOP.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "LIVE_PERSONAL_TWIN_ACTIVE": false,
+    "OWNER_RESTART_VERIFIED": false,
+    "OWNER_FEEDBACK_DELIVERY_VERIFIED": false,
+    "MERGED": false,
+    "DEPLOYED": false
+  }
+}
