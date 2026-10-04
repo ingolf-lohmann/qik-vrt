@@ -7,8 +7,12 @@ import base64
 import copy
 import hashlib
 import json
+import os
 import pathlib
+import subprocess
 import sys
+import tempfile
+import textwrap
 import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -426,6 +430,79 @@ class ReviewerAdmissionRegressionTests(unittest.TestCase):
         self.assertNotIn('persisted as COMMENT', workflow)
         self.assertNotIn('if not people and not teams: continue', workflow)
         self.assertIn("steps.decision.outputs.effect_allowed == 'true'", workflow)
+
+
+class TrustedMainAdmissionActivationTests(unittest.TestCase):
+    @staticmethod
+    def script(step):
+        workflow = (ROOT / '.github/workflows/qikvrt_requested_review_executor.yml').read_text()
+        section = workflow.split('      - name: ' + step + '\n', 1)[1].split('\n      - name:', 1)[0]
+        return textwrap.dedent(section.split('        run: |\n', 1)[1])
+
+    def activation(self, source):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            if source is not None:
+                (root / 'tools').mkdir()
+                (root / 'tools/qikvrt_requested_review_executor.py').write_text(source)
+            output = root / 'output'
+            result = subprocess.run(['bash', '-c', self.script('Detect trusted-main activation')], cwd=root,
+                                    env={**os.environ, 'GITHUB_OUTPUT': str(output)}, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertNotIn('ImportError', result.stderr)
+            return output.read_text()
+
+    def test_candidate_native_admission_api_is_detected(self):
+        self.assertEqual(self.activation((ROOT / 'tools/qikvrt_requested_review_executor.py').read_text()), 'active=true\n')
+
+    def test_existing_legacy_main_file_is_not_sufficient_for_activation(self):
+        # Historical negative control: the old Main API exists but has no native admission/write guard.
+        legacy = 'def evaluate(snapshot):\n    return {"state": "NOOP"}\n'
+        self.assertEqual(self.activation(legacy), 'active=false\n')
+
+    def test_missing_or_invalid_main_api_fails_closed(self):
+        for source in (None, 'def broken(', 'class GitHubRest: pass\ndef collect_reviewer_admission(): pass\n'):
+            with self.subTest(source=source):
+                self.assertEqual(self.activation(source), 'active=false\n')
+
+    def test_inactive_guard_materializes_exact_hold_without_review_effect(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory); binaries = root / 'bin'; binaries.mkdir()
+            gh = binaries / 'gh'
+            gh.write_text(textwrap.dedent('''\
+                #!/usr/bin/env python3
+                import json,os,pathlib,sys
+                args=sys.argv[1:]; path=args[1]; method='POST' if '--method' in args else 'GET'
+                with open(os.environ['CALLS'],'a') as file: file.write(json.dumps({'method':method,'path':path})+'\\n')
+                head='b'*40; tree='c'*40; stored=pathlib.Path(os.environ['STATUS_FILE'])
+                if path.endswith('/pulls/349'): result={'state':'open','head':{'sha':head}}
+                elif '/git/commits/' in path: result={'tree':{'sha':tree}}
+                elif path.endswith('/status'): result={'sha':head,'statuses':[json.loads(stored.read_text())] if stored.exists() else []}
+                elif '/statuses/' in path and method=='POST':
+                    result=json.load(sys.stdin); stored.write_text(json.dumps(result))
+                else: raise SystemExit('unexpected endpoint')
+                print(json.dumps(result))
+                '''))
+            gh.chmod(0o700)
+            git = binaries / 'git'; git.write_text('#!/bin/sh\nprintf "%s\\n" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n'); git.chmod(0o700)
+            script = self.script('Record inactive trusted-main admission guard').replace('/tmp/qikvrt-', str(root / 'qikvrt-'))
+            calls = root / 'calls'
+            env = {**os.environ, 'PATH': str(binaries) + os.pathsep + os.environ['PATH'], 'CALLS': str(calls),
+                   'STATUS_FILE': str(root / 'status'), 'REPOSITORY': 'example/qik-vrt', 'PR_NUMBER': '349',
+                   'STATUS_CONTEXT': 'QIKVRT requested review execution', 'GITHUB_SERVER_URL': 'https://github.com', 'GITHUB_RUN_ID': '17'}
+            result = subprocess.run(['bash', '-c', script], cwd=root, env=env, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('HOLD: TRUSTED_MAIN_REVIEWER_ADMISSION_API_UNAVAILABLE', result.stderr)
+            receipt = json.loads((root / 'qikvrt-review-decision.json').read_text())
+            self.assertEqual((receipt['state'], receipt['head_sha'], receipt['tree_sha'], receipt['trusted_main_sha']), ('HOLD', 'b'*40, 'c'*40, 'a'*40))
+            self.assertFalse(receipt['review_effect_allowed'])
+            self.assertEqual(receipt['review_post_count'], 0)
+            recorded = [json.loads(line) for line in calls.read_text().splitlines()]
+            posts = [call for call in recorded if call['method'] == 'POST']
+            self.assertEqual(posts, [{'method':'POST', 'path':'repos/example/qik-vrt/statuses/' + 'b'*40}])
+            readback = json.loads((root / 'qikvrt-review-status-readback.json').read_text())
+            self.assertEqual(readback['state'], 'failure')
+            self.assertFalse(readback['independent_review_implied'])
 
 
 if __name__ == "__main__":

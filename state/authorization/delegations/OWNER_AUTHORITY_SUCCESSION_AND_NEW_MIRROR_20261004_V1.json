@@ -23,7 +23,9 @@
     "connected_repository_permission": "admin",
     "previous_authority_repository_read_http_status": 404,
     "previous_authority_user_resolution_http_status": 404,
-    "account_deletion_or_suspension_cause": "UNESTABLISHED"
+    "account_deletion_or_suspension_cause": "UNESTABLISHED",
+    "previous_authority_retained_installation_account_id": 293941403,
+    "previous_authority_stable_user_id_resolution_http_status": 404
   },
   "implementation_boundaries": {
     "declaration_is_not_operational_cutover": true,

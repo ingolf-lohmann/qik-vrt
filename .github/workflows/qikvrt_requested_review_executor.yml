@@ -55,12 +55,18 @@ jobs:
         id: active
         shell: bash
         run: |
-          if test -f tools/qikvrt_requested_review_executor.py; then
-            echo 'active=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'active=false' >> "$GITHUB_OUTPUT"
-            echo 'BOOTSTRAP_NOOP: executor is not yet promoted to trusted main.'
-          fi
+          python3 -B - <<'PY'
+          import ast, os, pathlib
+          required={'GitHubRest','collect_reviewer_admission','persist_review'}
+          try:
+              parsed=ast.parse(pathlib.Path('tools/qikvrt_requested_review_executor.py').read_text())
+              available={node.name for node in parsed.body if isinstance(node,(ast.FunctionDef,ast.ClassDef))}
+          except (OSError,SyntaxError):
+              available=set()
+          active=required.issubset(available)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as file: file.write(f'active={str(active).lower()}\n')
+          print('Trusted-main reviewer admission API: '+('AVAILABLE' if active else 'UNAVAILABLE'))
+          PY
 
       - name: Set up Python
         if: steps.active.outputs.active == 'true'
@@ -69,7 +75,6 @@ jobs:
           python-version: "3.12"
 
       - name: Select one requested review
-        if: steps.active.outputs.active == 'true'
         id: select
         env:
           REQUESTED_PR: ${{ inputs.pr || '' }}
@@ -105,6 +110,40 @@ jobs:
           python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           v=json.load(open('/tmp/qikvrt-review-selection.json')); print(f"state={v['state']}"); print(f"pr={v.get('pr_number') or ''}")
+          PY
+
+      - name: Record inactive trusted-main admission guard
+        if: steps.active.outputs.active != 'true' && steps.select.outputs.state == 'CANDIDATE'
+        env:
+          PR_NUMBER: ${{ steps.select.outputs.pr }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          repo=os.environ['REPOSITORY']; n=int(os.environ['PR_NUMBER'])
+          def api(path,payload=None):
+              args=['gh','api',path]
+              if payload is not None: args+=['--method','POST','--input','-']
+              return json.loads(subprocess.check_output(args,input=json.dumps(payload) if payload is not None else None,text=True,stderr=subprocess.DEVNULL,timeout=30))
+          pr=api(f'repos/{repo}/pulls/{n}'); head=pr['head']['sha']; tree=api(f'repos/{repo}/git/commits/{head}')['tree']['sha']
+          trusted=subprocess.check_output(['git','rev-parse','HEAD'],text=True,timeout=30).strip()
+          blocker='TRUSTED_MAIN_REVIEWER_ADMISSION_API_UNAVAILABLE'
+          receipt={'schema':'qikvrt_requested_review_guard_activation_v1','state':'HOLD','first_blocker':blocker,'repository':repo,'pr_number':n,'head_sha':head,'tree_sha':tree,'trusted_main_sha':trusted,'review_effect_allowed':False,'review_post_count':0,'independent_code_owner_approval':False,'EFFECT_ACK_DONE':False,'retry_condition':'Promote the admission guard through the existing independently reviewed Main path; candidate code must not execute review writes.'}
+          receipt['transition_fingerprint']=hashlib.sha256(json.dumps(receipt,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+          with open('/tmp/qikvrt-review-decision.json','w') as file: json.dump(receipt,file,sort_keys=True)
+          print(json.dumps(receipt,sort_keys=True))
+          current=api(f'repos/{repo}/pulls/{n}')
+          if current['state']!='open' or current['head']['sha']!=head or api(f'repos/{repo}/git/commits/{head}')['tree']['sha']!=tree: raise SystemExit('HOLD: guard activation subject drift before status')
+          description='reviewer admission: '+blocker; context=os.environ['STATUS_CONTEXT']
+          def confirmed(value):
+              return value.get('sha')==head and any(s.get('context')==context and s.get('state')=='failure' and s.get('description')==description for s in value.get('statuses',[]))
+          if not confirmed(api(f'repos/{repo}/commits/{head}/status')):
+              api(f'repos/{repo}/statuses/{head}',{'state':'failure','context':context,'description':description,'target_url':f"{os.environ['GITHUB_SERVER_URL']}/{repo}/actions/runs/{os.environ['GITHUB_RUN_ID']}"})
+          if not confirmed(api(f'repos/{repo}/commits/{head}/status')): raise SystemExit('HOLD: guard activation status readback unverified')
+          if api(f'repos/{repo}/pulls/{n}')['head']['sha']!=head: raise SystemExit('HOLD: guard activation head drift after status')
+          with open('/tmp/qikvrt-review-status-readback.json','w') as file: json.dump({'head_sha':head,'tree_sha':tree,'context':context,'state':'failure','description':description,'independent_review_implied':False},file,sort_keys=True)
+          raise SystemExit('HOLD: '+blocker)
           PY
 
       - name: Materialize exact-head review snapshot
@@ -228,7 +267,7 @@ jobs:
           PY
 
       - name: Preserve native reviewer admission and effect receipts
-        if: always() && steps.active.outputs.active == 'true' && steps.select.outputs.state == 'CANDIDATE'
+        if: always() && steps.select.outputs.state == 'CANDIDATE'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: qikvrt-reviewer-admission-${{ github.run_id }}-${{ github.run_attempt }}
@@ -241,9 +280,5 @@ jobs:
           if-no-files-found: error
 
       - name: Strict NOOP when no review candidate exists
-        if: steps.active.outputs.active == 'true' && steps.select.outputs.state != 'CANDIDATE'
+        if: steps.select.outputs.state != 'CANDIDATE'
         run: echo 'No unexecuted requested review is currently actionable.'
-
-      - name: Bootstrap NOOP before trusted-main promotion
-        if: steps.active.outputs.active != 'true'
-        run: echo 'Executor definition is under review; trusted main remains the only executable source.'

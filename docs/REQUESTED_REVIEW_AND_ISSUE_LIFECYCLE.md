@@ -59,6 +59,12 @@ status reports the established result. Unchanged blocker statuses are deduplicat
 Neither a technical workflow review nor a distinct account ID proves independent
 natural-person review or satisfies the separate Code Owner governance gate.
 
+During reviewed rollout, the workflow must verify that trusted Main exposes the
+admission and guarded-write API; mere file existence is insufficient. An older
+Main implementation yields an exact-head `HOLD` receipt and failing native status
+`TRUSTED_MAIN_REVIEWER_ADMISSION_API_UNAVAILABLE`. It must not import missing APIs,
+report a successful bootstrap NOOP, or execute candidate code for review writes.
+
 Review completion does not itself authorize merge, promotion, release, deployment, Zenodo, DOI, IETF, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
 
 ## Issues
