@@ -4,7 +4,7 @@ const PAGE=readFileSync(new URL('./index.html',import.meta.url),'utf8');
 // Reuses the GitHub REST observation contract of docs/monitor/index.html,
 // source ingolf-lohmann/qik-vrt @ 93be182a277f29fcb1ffb5d4ace0483f6c29dc58.
 // Observer is read-only; status success is never promoted to EFFECT_ACK_DONE.
-const VERSION='2026-10-04.7';
+const VERSION='2026-10-04.8';
 const CACHE_ORIGIN='https://qikvrt-monitor.invalid';
 let REPOS=[
  {name:'ingolf-lohmann/qik-vrt',role:'Persönlicher Knoten',branch:'main'},

@@ -54,12 +54,14 @@
         if (replica.epoch === binding.epoch && binding.sequence === replica.sequence && replica.digest !== digest) return reject('SEQUENCE_CONTENT_MISMATCH');
         replica.observe({node_id: binding.node_id, version: envelope.version, sequence: binding.sequence, epoch: binding.epoch, event_sequence: replica.node_event_sequence});
         if (replica.epoch === binding.epoch && binding.sequence === replica.sequence && replica.digest === digest) {
-          replica.error = null; return {accepted: false, duplicate: true};
+          if (!/^(EVENT_|INVALID_EVENT)/.test(replica.error || '')) replica.error = null;
+          return {accepted: false, duplicate: true};
         }
         replica.node_id = binding.node_id; replica.node_version = envelope.version;
         replica.epoch = binding.epoch; replica.sequence = binding.sequence;
         replica.digest = digest; replica.source_head = binding.source_head;
-        replica.snapshot = snapshot; replica.applied_at = new Date().toISOString(); replica.error = null;
+        replica.snapshot = snapshot; replica.applied_at = new Date().toISOString();
+        if (!/^(EVENT_|INVALID_EVENT)/.test(replica.error || '')) replica.error = null;
         return {accepted: true, snapshot: snapshot};
       });
       tail = task.catch(function () {});
@@ -83,7 +85,7 @@
         if (recordDigest !== event.record_digest) return reject('EVENT_DIGEST_MISMATCH');
         replica.events.push(event); replica.event_sequence = event.event_sequence;
         replica.event_digest = event.record_digest;
-        if (replica.error === 'EVENT_SEQUENCE_GAP') replica.error = null;
+        if (/^(EVENT_|INVALID_EVENT)/.test(replica.error || '')) replica.error = null;
         return {accepted: true};
       });
       tail = task.catch(function(){}); return task;

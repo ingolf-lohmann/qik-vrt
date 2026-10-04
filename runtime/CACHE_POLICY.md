@@ -137,6 +137,25 @@ equivalent storage. Bootstrap scripts do not perform broad recursive deletion.
 
 ## Bounded adaptation
 
+The owner's 4 October 2026 native-runtime instruction authorizes local derivation
+of reviewed C90 recipes in `runtime/toolchains/NATIVE_RECIPES.json`. The existing
+`qikvrt_tool_cache.py` path compiles a core recipe at first use, statically links
+it, verifies ELF linkage and runs its current self-test before adoption. Exact
+source/header bytes, compiler bytes/version, target, flags, system headers and
+static link inputs bind the artifact key. A warm hit runs the self-test again;
+an update creates a different key. A corrupt artifact blocks and is not silently
+recompiled. A failed new version never activates an older version as current.
+
+Registered higher layers use source-bound call counts and measured baseline/native
+timings. The planner selects amortizing work first, or one bounded trial for a
+frequently used layer without native timings. It limits each compilation turn
+by time and recipe count. Predicted future frequency is an explicit assumption,
+not evidence. Derived artifacts and timing hints cannot change repository source,
+Effect-Ack predicates, authorization, scientific claims or acceptance gates.
+The current production recipe covers the available Effect-Ack conformance
+executable. Complete Universal Transputer/terminal integration and non-Linux
+backends remain unverified until their actual carriers execute the same contract.
+
 Automatic adaptation may reuse exact-key caches and collect non-authoritative
 timing/diagnostic evidence. Optimization of ordering, parallelism, or cache
 composition occurs through reviewed repository changes. It may never alter

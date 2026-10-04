@@ -6,8 +6,9 @@ import {readFileSync, mkdirSync, openSync, closeSync, writeFileSync, renameSync,
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import observer, {snapshot, configureRepositories, invalidateRepository, SECURITY} from './observer.mjs';
+import './health-projection.js';
 
-export const VERSION = '2026-10-04.7';
+export const VERSION = '2026-10-04.8';
 const MAX_BODY = 2 * 1024 * 1024;
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const iso = () => new Date().toISOString();
@@ -88,12 +89,22 @@ export function createMonitor(options = {}) {
   const nodeId = env.QIKVRT_MONITOR_NODE_ID || 'mirror:ingolf-lohmann/qik-vrt';
   const sourceHead = /^[a-f0-9]{40}$/.test(env.RAILWAY_GIT_COMMIT_SHA || env.QIKVRT_MONITOR_SOURCE_HEAD || '') ? (env.RAILWAY_GIT_COMMIT_SHA || env.QIKVRT_MONITOR_SOURCE_HEAD) : null;
   const sourceTree = /^[a-f0-9]{40}$/.test(env.QIKVRT_MONITOR_SOURCE_TREE || '') ? env.QIKVRT_MONITOR_SOURCE_TREE : null;
-  const artifacts = Object.fromEntries(['server.mjs','observer.mjs','index.html','client-replica.js','package.json'].map(name=>[name,sha256(readFileSync(new URL('./'+name,import.meta.url)))]));
+  const artifacts = Object.fromEntries(['server.mjs','observer.mjs','index.html','client-replica.js','health-projection.js','package.json'].map(name=>[name,sha256(readFileSync(new URL('./'+name,import.meta.url)))]));
   const statePath = options.statePath || resolve(env.QIKVRT_MONITOR_STATE_DIR || '/var/lib/qikvrt/monitor', 'node.json');
   const store = new MonitorStore(statePath, nodeId);
   const clients = new Set();
-  let observation = null;
-  const metadata = () => ({schema: 'qikvrt-monitor-binding/v1', node_id: nodeId, epoch: store.state.epoch,
+  let observation = null, operationError = null;
+  function nativeStatus() {
+    if (!env.QIKVRT_NATIVE_STATE_FILE) return {state:'UNKNOWN', cause:'Native Laufzeit noch nicht an diese Monitor-Instanz gebunden.', whole_transputer_verified:false};
+    try {
+      const status = JSON.parse(readFileSync(env.QIKVRT_NATIVE_STATE_FILE,'utf8'));
+      if (status.schema !== 'qikvrt-native-runtime/v1') throw new Error('NATIVE_RUNTIME_SCHEMA_MISMATCH');
+      // Cache receipts describe compiled artifacts; they never prove the whole live terminal.
+      return {...status, whole_transputer_verified:false};
+    } catch (error) { return {state:'BLOCK', cause:error.message, whole_transputer_verified:false}; }
+  }
+  const metadata = () => {
+    const binding = {schema: 'qikvrt-monitor-binding/v1', node_id: nodeId, epoch: store.state.epoch,
     version: VERSION, sequence: store.state.sequence, digest: store.state.digest, source_head: sourceHead, source_tree: sourceTree, artifact_files_sha256: artifacts,
     source_repository: env.QIKVRT_MONITOR_SOURCE_REPOSITORY || 'ingolf-lohmann/qik-vrt', observed_at: iso(),
     webhook_secret_configured: !!env.QIKVRT_GITHUB_WEBHOOK_SECRET,
@@ -103,7 +114,12 @@ export function createMonitor(options = {}) {
     journal_head_digest: store.state.deliveries.at(-1)?.record_digest || '0'.repeat(64),
     losslessness_scope: 'Accepted public webhook bytes: fsync before acknowledgment, full ordered replay, no truncation. Provider registration and multi-node replication remain separate gates.',
     snapshot_durable: !!store.state.snapshot, connected_clients: clients.size,
-    workflow_success_is_effect_ack_done: false});
+    operation_error: operationError,
+    runtime_health: options.runtimeHealth?.() || {state:'UNKNOWN', cause:'SYSTEM_RUNTIME_HEALTH_NOT_BOUND'},
+    native_runtime: nativeStatus(), workflow_success_is_effect_ack_done: false};
+    binding.health = globalThis.QikvrtHealth.project(store.state.snapshot,binding,null,Date.now());
+    return binding;
+  };
   function frame(response, name, value, id = null) {
     if (response.destroyed || response.writableLength > MAX_BODY * 2) { response.destroy(); clients.delete(response); return; }
     response.write((id ? 'id: ' + id + '\n' : '') + 'event: ' + name + '\ndata: ' + JSON.stringify(value) + '\n\n');
@@ -122,6 +138,7 @@ export function createMonitor(options = {}) {
         last_verified_delivery_at: delivery?.observed_at || store.state.last_delivery?.observed_at || null};
       value.node_observation = {reason, node_id: nodeId, source_repository: env.QIKVRT_MONITOR_SOURCE_REPOSITORY || 'ingolf-lohmann/qik-vrt'};
       const changed = store.update(value, delivery);
+      operationError = null;
       if (changed && delivery) for (const client of clients) frame(client, 'delivery', {...store.state.deliveries.at(-1), epoch: store.state.epoch}, store.state.epoch + ':' + store.state.deliveries.length);
       publish();
       return store.envelope(sourceHead,sourceTree);
@@ -185,15 +202,17 @@ export function createMonitor(options = {}) {
         heartbeat.unref(); request.on('close', () => {clearInterval(heartbeat); clients.delete(response);});
         return;
       }
-      if (url.pathname === '/client-replica.js') {
+      if (['/client-replica.js','/health-projection.js'].includes(url.pathname)) {
         response.writeHead(200, {...SECURITY, 'content-type':'text/javascript; charset=utf-8', 'cache-control':'no-cache'});
-        response.end(request.method === 'HEAD' ? undefined : readFileSync(new URL('./client-replica.js', import.meta.url))); return;
+        response.end(request.method === 'HEAD' ? undefined : readFileSync(new URL('.'+url.pathname, import.meta.url))); return;
       }
       const page = ['/', '/mesh', '/node', '/client'].includes(url.pathname) ? '/' : url.pathname;
       const reply = await observer.fetch(new Request('http://monitor.invalid' + page + url.search, {method: request.method}), env);
       response.writeHead(reply.status, Object.fromEntries(reply.headers));
       response.end(request.method === 'HEAD' ? undefined : Buffer.from(await reply.arrayBuffer()));
     } catch (error) {
+      operationError = error.message;
+      for (const client of clients) frame(client,'node',metadata());
       if (!response.headersSent) json(response, error.message === 'DUPLICATE_DELIVERY_CONTENT_MISMATCH' ? 409 : 500, {error: 'MONITOR_OPERATION_FAILED', cause: error.message});
       else response.destroy();
       console.error(JSON.stringify({at: iso(), stage: 'MONITOR_REQUEST', cause: error.message}));

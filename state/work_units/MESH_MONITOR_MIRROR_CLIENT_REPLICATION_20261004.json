@@ -5,12 +5,70 @@
   "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
   "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
   "state": "TESTED_PUBLIC_DEPLOYMENT_CANDIDATE",
-  "human_principal": {"name": "Ingolf Lohmann", "roles": ["creator", "product_owner", "code_owner"], "input": "Move the monitor to the Mirror, approval granted; own instance per client; detect and eliminate discrepancies; publish URL coverage; no-data-loss proof is an acceptance criterion."},
-  "artificial_contributor": {"identity": "OpenAI Codex", "model_or_build_identity": "UNAVAILABLE", "role": "implementation and verification", "retention": "METADATA_ONLY_EXCEPT_EXPLICITLY_REQUIRED_PUBLIC_WEBHOOK_BYTES"},
-  "reuse_evidence": ["Existing docs/monitor carrier", "Existing Railway mesh-monitor service dc3773e0-d057-4779-b9c1-9ca0f2074f69", "Tested repository observation and UI from qikvrt-activity source 3f01475bd19e2efedd7bfaa9a10898480b22befd with the current local-clock correction"],
+  "human_principal": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "creator",
+      "product_owner",
+      "code_owner"
+    ],
+    "input": "Move the monitor to the Mirror, approval granted; own instance per client; detect and eliminate discrepancies; publish URL coverage; no-data-loss proof is an acceptance criterion. Immediate per-instance system health; compile core once per exact source/compiler/target with static linkage; bounded hot-layer translation; full C90/Universal Terminal/Digital Twin/Docker/Atari/Mega ST/Siemens scope and continuous operation; renewed owner implementation and deployment approval."
+  },
+  "artificial_contributor": {
+    "identity": "OpenAI Codex",
+    "model_or_build_identity": "UNAVAILABLE",
+    "role": "implementation and verification",
+    "retention": "METADATA_ONLY_EXCEPT_EXPLICITLY_REQUIRED_PUBLIC_WEBHOOK_BYTES"
+  },
+  "reuse_evidence": [
+    "Existing docs/monitor carrier",
+    "Existing Railway mesh-monitor service dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+    "Tested repository observation and UI from qikvrt-activity source 3f01475bd19e2efedd7bfaa9a10898480b22befd with the current local-clock correction",
+    "Existing qikvrt_tool_cache.py/CACHE_POLICY for native artifact derivation",
+    "Existing Digital Twin REST contract and Firefox HTTP Effect-Ack reference",
+    "Native readback of missing Digital Twin reference model from Mirror commit 04e5ee0f06ae33965b4041a7f4175ac3764e688b, blob 816d55781e53e0801390a96e8032c9fa2b327ae2"
+  ],
   "reuse_insufficiency": "Existing monitor is a static polling page with no server ingress, durable public-event journal or client replica protocol. Existing Universal Terminal TEMDD ledger is retained; the isolated read-only monitor does not replace or write it.",
-  "authorization": {"mirror_public_deployment": "OWNER_EXPLICIT_2026_10_04", "main_merge": "NOT_PERFORMED_SELF_APPROVAL_FORBIDDEN", "private_data_publication": false},
-  "validation": {"monitor_clock_source_and_ui_regressions": "PASS", "signed_http_durable_replication_acceptance_tests": "PASS_6_TESTS", "accepted_events": 32, "simultaneous_clients": 4, "byte_exact_fanout": true, "restart_and_replay": true, "duplicate_and_conflicting_delivery": true, "signature_rejection": true, "storage_failure_no_positive_ack": true, "make_test": "PASS", "tool_cache_coverage_percent": 100, "boot_profile": "CONTINUE_WITH_EXISTING_RUNTIME_PROFILE_AVAILABILITY_BOUNDARIES"},
-  "open_acceptance_gates": ["Native GitHub hook registration and fresh provider delivery", "Independent client readback on the public deployed candidate", "Authority node carrier readback", "Cross-node durable journal replication and failover", "Every required native client and product runtime"],
-  "boundaries": {"bounded_test_evidence_only": true, "physical_hardware_proof": false, "all_mesh_data_loss_eliminated": false, "predecessor_evidence_transfer": false, "workflow_success_is_effect_ack_done": false, "effect_ack_done": false}
+  "authorization": {
+    "mirror_public_deployment": "OWNER_EXPLICIT_2026_10_04",
+    "main_merge": "NOT_PERFORMED_SELF_APPROVAL_FORBIDDEN",
+    "private_data_publication": false
+  },
+  "validation": {
+    "monitor_clock_source_and_ui_regressions": "PASS",
+    "signed_http_durable_replication_acceptance_tests": "PASS_9_TESTS_INCLUDING_HEALTH",
+    "accepted_events": 32,
+    "simultaneous_clients": 4,
+    "byte_exact_fanout": true,
+    "restart_and_replay": true,
+    "duplicate_and_conflicting_delivery": true,
+    "signature_rejection": true,
+    "storage_failure_no_positive_ack": true,
+    "make_test": "PASS",
+    "tool_cache_coverage_percent": 100,
+    "boot_profile": "CONTINUE_WITH_EXISTING_RUNTIME_PROFILE_AVAILABILITY_BOUNDARIES",
+    "native_cache_tests": "PASS_6_TESTS",
+    "native_core_conformance_checks": 7864387,
+    "native_static_linkage": "ELF_NO_DYNAMIC_SEGMENT_OR_INTERPRETER",
+    "digital_twin_rest_reference_tests": "PASS_3_INDEPENDENT_TESTS"
+  },
+  "open_acceptance_gates": [
+    "Native GitHub hook registration and fresh provider delivery",
+    "Independent client readback on the public deployed candidate",
+    "Authority node carrier readback",
+    "Cross-node durable journal replication and failover",
+    "Every required native client and product runtime",
+    "Complete C90 Universal Transputer/transceiver/REST carrier and human Digital Twin",
+    "Exact owner Linux image, Docker build/publication and live operation",
+    "Actual Atari/Mega ST carrier and execution",
+    "Exact Siemens Horizon/Twin contract and authorized live tenant connection"
+  ],
+  "boundaries": {
+    "bounded_test_evidence_only": true,
+    "physical_hardware_proof": false,
+    "all_mesh_data_loss_eliminated": false,
+    "predecessor_evidence_transfer": false,
+    "workflow_success_is_effect_ack_done": false,
+    "effect_ack_done": false
+  }
 }

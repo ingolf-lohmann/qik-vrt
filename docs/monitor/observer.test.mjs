@@ -72,13 +72,13 @@ try{
  const html=await root.text(),script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
  const elements=new Map(),buttons=[],relativeNodes=[],clockTimers=[],visibilityListeners=[];let networkTimers=0,clientReads=0;
  function element(id){if(!elements.has(id))elements.set(id,{value:'',textContent:'',innerHTML:'',hidden:false,disabled:false,
- addEventListener(){},setAttribute(){},scrollIntoView(){},classList:{contains(){return false}}});return elements.get(id)}
+ addEventListener(){},setAttribute(){},scrollIntoView(){},classList:{contains(){return false},toggle(){}}});return elements.get(id)}
  for(const s of ['all','live','waiting','attention','success'])buttons.push({...element(s),dataset:{filter:s}});
  const context={document:{getElementById:element,querySelectorAll(selector){return selector==='[data-relative-at]'?relativeNodes:selector==='details'||selector==='details[open]'?[]:buttons},addEventListener(name,callback){if(name==='visibilitychange')visibilityListeners.push(callback)},hidden:false},
  location:{origin:'https://test'},URL,Intl,Date,AbortSignal,Set,
  setTimeout(){networkTimers++;return 1},clearTimeout(){},setInterval(callback,delay){clockTimers.push({callback,delay})},matchMedia(){return{matches:true}},
  fetch:async()=>{clientReads++;throw new Error('Deliberate API outage')}};
- context.QikvrtReplica={create(){return {id:'test-instance',sequence:0,node_sequence:0,transport:'disconnected',status(){return {label:'test',detail:'test'}}}}};context.EventSource=class {addEventListener(){} close(){}};vm.createContext(context);vm.runInContext(script,context);
+ context.QikvrtReplica={create(){return {id:'test-instance',sequence:0,node_sequence:0,transport:'disconnected',status(){return {label:'test',detail:'test'}}}}};context.EventSource=class {addEventListener(){} close(){}};vm.createContext(context);vm.runInContext(await readFile(new URL('./health-projection.js',import.meta.url),'utf8'),context);vm.runInContext(script,context);
  await new Promise(resolve=>setImmediate(resolve));
  assert.match(element('global-error').innerHTML,/keine Aktivitäten/);
  assert.equal(element('count-running').textContent,'—');

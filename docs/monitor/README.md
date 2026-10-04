@@ -70,3 +70,40 @@ The existing Universal Terminal `/AI/` and Firefox/noVNC carrier remain the
 integration path. Its shared operator session is not declared a per-user
 isolated browser. This monitor does not change that session or its durable
 TEMDD ledger.
+
+## Immediate system health
+
+Every instance displays the shared `health-projection.js` result above activity.
+The same projection appears in `/api/node.health`: repository read failures,
+stale observations, suspicious workflows, missing provider delivery, actual
+runtime health, native compilation and client phase remain distinct checks.
+Causes precede details. Failed checks produce `DEGRADED`; missing or expired
+evidence produces `UNKNOWN`. Successful CI alone can never produce whole-system
+`HEALTHY`. A received heartbeat updates transport evidence only. An event gap
+cannot be cleared by receiving a newer snapshot.
+
+`QIKVRT_NATIVE_STATE_FILE` can bind the existing local native-cache status to a
+monitor. A missing/broken configured receipt is visible. A valid core cache is
+not asserted to prove the complete live Transputer. Actual terminal runtime
+health requires that carrier's current authenticated self-observation; until
+that integration is present, the runtime check stays unknown.
+
+## Native runtime and remaining carriers
+
+The existing `tools/qikvrt_tool_cache.py native-prepare` path now compiles and
+statically links the available C90 Effect-Ack conformance executable once for
+each exact source/compiler/target binding. Root tests reuse this artifact and
+rerun its 7,864,387 checks. `native-record`, `native-plan` and `native-optimize`
+provide source-bound usage, measured amortization and bounded compilation of
+registered hot layers. No higher terminal layer is reported compiled merely
+because its planner or the JavaScript engine exists.
+
+The missing Digital Twin Python reference model was restored byte-for-byte from
+Mirror commit `04e5ee0f06ae33965b4041a7f4175ac3764e688b` (blob
+`816d55781e53e0801390a96e8032c9fa2b327ae2`). Its REST tests now start from
+independent states and are part of `make test`. This closes a concrete missing
+dependency; it is still the existing reference simulation, not a Siemens tenant
+connection, human Digital Twin, physical actuation or full C90 REST port.
+
+`policy/QIKVRT_UNIVERSAL_TERMINAL_IMPLEMENTATION_GAPS_20261004.json` records the
+owner's expanded scope and the actual unclosed carrier/acceptance dependencies.

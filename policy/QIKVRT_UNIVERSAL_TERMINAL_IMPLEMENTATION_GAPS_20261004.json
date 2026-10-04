@@ -1,0 +1,21 @@
+{
+  "schema": "qikvrt-universal-terminal-implementation-gaps/v1",
+  "principal": "Ingolf Lohmann, Product Owner and Code Owner",
+  "authorization": "Explicit implementation and operation approval on 2026-10-04; including fresh approval after native deployment confirmation was cancelled",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "requirements": [
+    {"component":"per-node, Mesh and per-client monitor","state":"TESTED_DEPLOYMENT_CANDIDATE","carrier":"docs/monitor","remaining":"Public deployment and every required node/client/product readback"},
+    {"component":"immediate system health","state":"SHARED_PROJECTION_TESTED","carrier":"docs/monitor/health-projection.js","remaining":"Authenticated live runtime observations from actual terminal carriers"},
+    {"component":"compile once, statically bound local machine code","state":"AVAILABLE_C90_CORE_TESTED","carrier":"tools/qikvrt_tool_cache.py","remaining":"Complete universal Transputer source and carrier integration; each required CPU/OS backend"},
+    {"component":"hot higher-layer translation","state":"BOUNDED_MEASURED_PLANNER_TESTED","carrier":"runtime/toolchains/NATIVE_RECIPES.json","remaining":"Reviewed actual higher-layer recipes and live usage/timing observations"},
+    {"component":"Digital Twin REST dependency","state":"MISSING_REFERENCE_MODEL_RESTORED_AND_TESTED","carrier":"src/qikvrt_siemens_reference_integration.py","remaining":"Full C90 REST port and human Digital Twin implementation"},
+    {"component":"full universal transceiver and Effect Acknowledgement Protocol","state":"EXISTING_CORE_AND_FIREFOX_HTTP_REFERENCE","carrier":"src/effect_ack_core.c; src/qikvrt_effect_ack_http_terminal.py; browser/firefox/qikvrt-terminal","remaining":"Full verified C90 port and actual protected-effect mediation on the terminal carrier"},
+    {"component":"Docker image with owner's Linux distribution","state":"SOURCE_IMAGE_UNRESOLVED","carrier":null,"remaining":"Exact distribution source/image and build contract; published image digest and live startup proof"},
+    {"component":"Atari transceiver and Mega ST virtual machine","state":"NO_EXECUTABLE_CARRIER_IN_CURRENT_MIRROR","carrier":null,"remaining":"Actual transceiver/emulator source, image/ROM contract, integration and execution proof"},
+    {"component":"Siemens Horizon and Digital Twin","state":"TARGET_CONTRACT_UNRESOLVED","carrier":"Existing reference Digital Twin REST contract","remaining":"Exact Siemens product/API/SDK and authorized tenant connection; no inferred compatibility"},
+    {"component":"continuous operation while powered","state":"MONITOR_SERVER_IMPLEMENTED_DEPLOYMENT_PENDING","carrier":"docs/monitor/server.mjs","remaining":"Verified service start, restart policy, failover and durable recovery on all required carriers"},
+    {"component":"lossless hardware-like wiring","state":"BOUNDED_SOFTWARE_TESTS_ONLY","carrier":"docs/monitor/monitor.test.mjs","remaining":"Provider ingress, cross-node replication, deployed fault injection and complete required target inventory"}
+  ],
+  "acceptance": {"all_terminals_verified":false,"all_mesh_data_loss_eliminated":false,"siemens_connected":false,"docker_distribution_verified":false,"mega_st_verified":false,"human_digital_twin_verified":false,"predecessor_evidence_transfer":false,"effect_ack_done":false}
+}

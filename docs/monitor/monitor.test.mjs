@@ -6,6 +6,47 @@ import {join} from 'node:path';
 import {createHmac, createHash, webcrypto} from 'node:crypto';
 import vm from 'node:vm';
 import {MonitorStore, createMonitor, verifyWebhook, VERSION} from './server.mjs';
+import './health-projection.js';
+
+test('health separates failures, stale evidence, live runtime and client phase',()=>{
+  const now=Date.now(), source={observed_at:new Date(now).toISOString(),interval_seconds:240};
+  const observed={repositories:[{name:'mirror',sources:Object.fromEntries(['branch','recent','active','queued'].map(name=>[name,{...source}])),runs:[{state:'success'}]}]};
+  const node={webhook_registration:'VERIFIED',last_verified_delivery:{id:'verified'},runtime_health:{state:'HEALTHY',cause:'Runtime self-test',observed_at:source.observed_at,ttl_seconds:60},native_runtime:{state:'READY',whole_transputer_verified:true,cause:'Exact native binding'}};
+  const client={snapshot:observed,transport:'connected',last_node_at:now,sequence:1,node_sequence:1,event_sequence:3,node_event_sequence:3};
+  const project=globalThis.QikvrtHealth.project;
+  assert.equal(project(observed,node,client,now).state,'HEALTHY');
+  assert.equal(project(observed,node,client,now+300000).state,'UNKNOWN');
+  node.native_runtime={state:'BLOCK',cause:'NATIVE_BINARY_DIGEST_MISMATCH'};
+  assert.equal(project(observed,node,client,now).state,'DEGRADED');
+  assert.ok(project(observed,node,client,now).checks.some(check=>check.cause==='NATIVE_BINARY_DIGEST_MISMATCH'));
+  node.native_runtime={state:'READY',whole_transputer_verified:false};
+  assert.equal(project(observed,node,client,now).state,'UNKNOWN');
+  observed.repositories[0].sources.branch.error={status:404,message:'Not Found'};
+  assert.equal(project(observed,node,client,now).state,'DEGRADED');
+  assert.match(project(observed,node,client,now).cause,/Rechte/);
+  assert.equal(project(observed,node,client,now,'other').checks[0].id,'repositories');
+});
+
+test('a snapshot does not hide a detected event gap or corrupted event',async()=>{
+  const copy=replica(),dir=mkdtempSync(join(tmpdir(),'qikvrt-health-event-'));
+  try {
+    const store=new MonitorStore(join(dir,'node.json'),'mirror');store.update(base());
+    await copy.accept(store.envelope());
+    assert.equal((await copy.acceptEvent({epoch:store.state.epoch,event_sequence:2})).reason,'EVENT_SEQUENCE_GAP');
+    await copy.accept(store.envelope());
+    assert.equal(copy.error,'EVENT_SEQUENCE_GAP');
+  } finally {rmSync(dir,{recursive:true,force:true});}
+});
+
+test('node health reports missing carrier and native-cache failure without green CI masking it',async t=>{
+  const monitor=await start(t);
+  await monitor.observeLatest();
+  const binding=await (await fetch(monitor.url+'/api/node')).json();
+  assert.equal(binding.health.state,'DEGRADED');
+  assert.equal(binding.health.checks.find(c=>c.id==='runtime').state,'UNKNOWN');
+  assert.equal(binding.health.checks.find(c=>c.id==='native').state,'UNKNOWN');
+  assert.equal(binding.periodic_polling,false);
+});
 
 const base = () => ({schema:'qikvrt-public-activity/v1',version:VERSION,generated_at:new Date().toISOString(),repositories:[],delivery:{periodic_polling:false}});
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');

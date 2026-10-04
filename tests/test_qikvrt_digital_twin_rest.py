@@ -4,6 +4,10 @@ from http.server import ThreadingHTTPServer
 from src.qikvrt_digital_twin_rest import Store,handler
 from src.qikvrt_siemens_reference_integration import TwinState
 class T(unittest.TestCase):
+ def setUp(self):
+  with self.store.lock:
+   self.store.state=TwinState("reference-train-001",7,1200.0,22.0,41.5)
+   self.store.last_receipt=None
  @classmethod
  def setUpClass(c):
   c.store=Store(TwinState("reference-train-001",7,1200.0,22.0,41.5),"a"*40,"b"*40)
@@ -25,6 +29,7 @@ class T(unittest.TestCase):
   self.assertEqual(code,200); self.assertTrue(v["receipt"]["effect_ack"]); self.assertFalse(v["receipt"]["physical_effect_ack"])
   self.assertEqual(v["state"]["version"],8)
  def test_stale_write_holds(self):
+  self.req("/api/digital-twin/v1/transitions",{"expected_version":7,"target_velocity_mps":23})
   code,v=self.req("/api/digital-twin/v1/transitions",{"expected_version":7,"target_velocity_mps":24})
   self.assertEqual(code,409); self.assertEqual(v["state"],"HOLD")
 if __name__=="__main__": unittest.main(verbosity=2)

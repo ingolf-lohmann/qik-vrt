@@ -13,7 +13,7 @@ main{scroll-margin-top:94px}@media(max-width:800px){main{scroll-margin-top:78px}
 <div class="layout"><aside class="side" aria-label="Navigation"><div class="navlabel">Repository-Monitor</div><nav class="nav"><a href="#main" class="current"><span class="navicon" aria-hidden="true">▦</span>Überblick</a><a href="#workflows"><span class="navicon" aria-hidden="true">▷</span>Workflow-Läufe</a><a href="#events"><span class="navicon" aria-hidden="true">↗</span>Ereignisse</a><a href="#sources"><span class="navicon" aria-hidden="true">◎</span>Datenquellen</a></nav><div class="side-bottom"><strong>Bewusstsein ist Wechselwirkung.</strong>Beobachtung mit Herkunft,<br>Zeit und überprüfbarer Quelle.</div></aside>
 <main id="main"><div class="heading"><div><div class="eyebrow">QIK-VRT · Repository-Monitor</div><h1>Was passiert gerade?</h1><p class="intro">Aktivitäten im Repository — mit Status, Auslöser und verantwortlichem Account.</p></div><button id="refresh" class="refresh" type="button">↻ Aktualisieren</button></div>
 <div class="observation"><span id="connection"><span class="dot warn"></span>Beobachtung wird geladen</span><span aria-hidden="true">·</span><span id="observed">GitHub REST</span><span aria-hidden="true">·</span><span id="refresh-mode">Momentaufnahme wird geladen</span></div><div id="global-error" role="status"></div>
-<section class="panel" id="client-instance" style="margin-bottom:20px;padding:20px"><div class="eyebrow">Eigene Client-Instanz</div><h2 id="replica-status" style="margin:6px 0">Node-Verbindung wird geprüft …</h2><p id="replica-summary" class="muted"></p><details><summary>Instanz, Node und Synchronisierung</summary><div id="replica-detail"></div><p><button id="reload-client" type="button">Client-Version neu laden</button> <a href="/api/node" target="_blank" rel="noopener">Node-Nachweis ↗</a></p></details></section><section id="expectation-status" class="expectations" aria-label="Erwartung und Wirklichkeit"><article class="expectation"><h2>Erwartung &amp; Wirklichkeit</h2><p>Ausführungsnachweise werden geprüft.</p></article></section><section class="stats" aria-label="Aktivitätsübersicht">
+<section id="system-health" class="activity-summary warn" aria-label="Systemzustand"><div class="eyebrow">Systemzustand</div><h2 id="health-state">Zustand noch unbekannt</h2><p id="health-cause">Gesundheitsnachweise werden geprüft.</p><div id="health-overview"></div><details><summary>Ursachen und Gesundheitsnachweise</summary><div id="health-detail"></div></details></section><section class="panel" id="client-instance" style="margin-bottom:20px;padding:20px"><div class="eyebrow">Eigene Client-Instanz</div><h2 id="replica-status" style="margin:6px 0">Node-Verbindung wird geprüft …</h2><p id="replica-summary" class="muted"></p><details><summary>Instanz, Node und Synchronisierung</summary><div id="replica-detail"></div><p><button id="reload-client" type="button">Client-Version neu laden</button> <a href="/api/node" target="_blank" rel="noopener">Node-Nachweis ↗</a></p></details></section><section id="expectation-status" class="expectations" aria-label="Erwartung und Wirklichkeit"><article class="expectation"><h2>Erwartung &amp; Wirklichkeit</h2><p>Ausführungsnachweise werden geprüft.</p></article></section><section class="stats" aria-label="Aktivitätsübersicht">
 <button class="stat running" type="button" data-filter="live"><span class="stat-label">● In Ausführung</span><span class="stat-value" id="count-running">—</span><span class="stat-note" id="note-running">GitHub-Status wird abgefragt</span></button>
 <button class="stat waiting" type="button" data-filter="waiting"><span class="stat-label">◷ Wartend</span><span class="stat-value" id="count-waiting">—</span><span class="stat-note" id="note-waiting">Queue und Zulassung</span></button>
 <button class="stat attention" type="button" data-filter="attention"><span class="stat-label">! Aufmerksamkeit</span><span class="stat-value" id="count-attention">—</span><span class="stat-note">Unter den letzten 100 Läufen</span></button>
@@ -25,7 +25,7 @@ main{scroll-margin-top:94px}@media(max-width:800px){main{scroll-margin-top:78px}
 <details class="panel" id="events"><summary class="panel-heading"><div><h2>Änderungen &amp; Interaktionen</h2><div class="sub">Pushes, Pull Requests, Kommentare und Reviews</div></div><span class="section-link">Repository-Ereignisse</span></summary><div class="notice">GitHub liefert diesen Ereignisstrom verzögert: laut API-Dokumentation 30 Sekunden bis 6 Stunden. Aktuelle Laufzustände stehen oben.</div><div class="events" id="event-list"><div class="loading">Ereignisse werden geladen …</div></div></details>
 <details class="panel" id="sources"><summary class="panel-heading"><div><h2>Datenfrische &amp; Nachvollziehbarkeit</h2><div class="sub">Jede Anzeige bleibt an ihre tatsächliche Quelle gebunden. Bei einem Hosting-Limit erfolgt der REST-Abruf automatisch direkt im Dashboard.</div></div><a class="section-link" href="/api/activity" target="_blank" rel="noopener noreferrer">Server-JSON ↗</a></summary><div class="sources"><div class="source-grid" id="source-list"><div class="loading">Datenquellen werden geprüft …</div></div><p class="scope">Ein Workflow-Erfolg bestätigt den technischen Lauf. Merge, Produktabnahme und EFFECT_ACK_DONE benötigen eigene Nachweise. Account-Namen belegen keine natürliche Person oder Modellidentität. Bei Folgeworkflows werden Vorgänger nicht aus zeitlicher Nähe geraten.</p></div></details>
 <footer class="footer"><span>QIK-VRT · Ingolf Lohmann · Öffentliche Repository-Beobachtung</span><span><a href="https://docs.github.com/en/rest/actions/workflow-runs" target="_blank" rel="noopener noreferrer">GitHub-API ↗</a> · <a href="/health" target="_blank" rel="noopener noreferrer">Version ↗</a></span></footer>
-</main></div><noscript><p style="padding:24px">Für die aktualisierte Ansicht bitte JavaScript aktivieren. Die maschinenlesbaren Daten sind über <a href="/api/activity">/api/activity</a> erreichbar.</p></noscript><script src="/client-replica.js"></script><script>'use strict';
+</main></div><noscript><p style="padding:24px">Für die aktualisierte Ansicht bitte JavaScript aktivieren. Die maschinenlesbaren Daten sind über <a href="/api/activity">/api/activity</a> erreichbar.</p></noscript><script src="/health-projection.js"></script><script src="/client-replica.js"></script><script>'use strict';
 var data=null,filter='all',limit=25,timer=null,loading=false,jobDetails={},observationFailed=false;
 var labels={in_progress:'In Ausführung',queued:'In der Queue',waiting:'Wartet auf Zulassung',pending:'Ausstehend',requested:'Angefordert',success:'Erfolgreich',failure:'Fehlgeschlagen',timed_out:'Zeitlimit',action_required:'Freigabe nötig',cancelled:'Abgebrochen',skipped:'Übersprungen',neutral:'Neutral',stale:'Veraltet',unknown:'Unbekannt'};
 var running=['in_progress'],waiting=['queued','waiting','pending','requested','action_required'],attention=['failure','timed_out','action_required'],active=['in_progress','queued','waiting','pending','requested'];
@@ -194,8 +194,21 @@ async function refresh(){
  }finally{loading=false;el('refresh').disabled=false}
 }
 
-var replica=QikvrtReplica.create({version:'2026-10-04.7'}),stream=null,streamRecovery=false;
+var replica=QikvrtReplica.create({version:'2026-10-04.8'}),stream=null,streamRecovery=false,lastNodeMetadata=null;
+function renderHealth(){
+ var node=lastNodeMetadata;
+ var scope=location.pathname==='/node'&&node?node.source_repository:null;
+ var health=QikvrtHealth.project(replica.snapshot||data,node,replica,Date.now(),scope);
+ var labels={HEALTHY:'Gesund',DEGRADED:'Beeinträchtigt',UNKNOWN:'Unbekannt'};
+ el('health-state').textContent=labels[health.state];
+ el('health-cause').textContent=health.cause;
+ el('system-health').classList.toggle('warn',health.state!=='HEALTHY');
+ el('health-overview').innerHTML=health.checks.map(function(c){return '<span class="badge '+(c.state==='HEALTHY'?'success':c.state==='DEGRADED'?'attention':'waiting')+'" style="margin:4px 6px 4px 0">'+esc(c.label)+' · '+labels[c.state]+'</span>'}).join('');
+ el('health-detail').innerHTML=health.checks.map(function(c){return '<p><strong>'+esc(c.label)+' · '+labels[c.state]+'</strong><br>'+esc(c.cause)+'</p>'}).join('');
+}
+
 function renderReplica(){
+ renderHealth();
  var status=replica.status();
  el('replica-status').textContent=status.label;
  el('replica-summary').textContent='Client '+replica.id.slice(0,8)+' · '+(replica.node_id||'Node noch unbekannt')+' · Stand '+replica.sequence+' · Ereignisse '+replica.event_sequence+' / '+replica.node_event_sequence+' · '+(replica.transport==='connected'?'Stream verbunden':'Stream unterbrochen');
@@ -218,7 +231,7 @@ function connectStream(){
  stream.onerror=function(){replica.transport='disconnected';renderReplica()};
  stream.addEventListener('snapshot',function(event){applyReplica(JSON.parse(event.data)).catch(function(e){el('global-error').innerHTML='<div class="error">Synchronisierung: '+esc(e.message)+'</div>'})});
  stream.addEventListener('delivery',function(event){replica.acceptEvent(JSON.parse(event.data)).then(function(result){renderReplica();if(result.reason==='EVENT_SEQUENCE_GAP'&&!streamRecovery){streamRecovery=true;connectStream()}}).catch(function(e){el('global-error').innerHTML='<div class="error">Ereignisprüfung: '+esc(e.message)+'</div>'})});
- stream.addEventListener('node',function(event){replica.observe(JSON.parse(event.data));renderReplica()});
+ stream.addEventListener('node',function(event){lastNodeMetadata=JSON.parse(event.data);replica.observe(lastNodeMetadata);renderReplica()});
 }
 el('reload-client').addEventListener('click',function(){location.reload()});
 el('refresh').addEventListener('click',refresh);
