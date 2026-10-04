@@ -1,0 +1,216 @@
+{
+  "schema": "qikvrt_arxiv_local_compatibility_validation_v1",
+  "status": "LOCAL_BUILD_VERIFIED_SERVER_BUILD_NOT_OBSERVED",
+  "observed_utc": "2026-10-04T05:40:08.541435+00:00",
+  "scope": "deterministic archive, source closure, repeat extraction/build and local PDF; not scientific replication or destination acceptance",
+  "source_archive": {
+    "path": "arxiv-source.tar.gz",
+    "bytes": 31557,
+    "sha256": "551d7a720851bb35d73c5854e3b7d68da3ed36fe1caa2062ae79a0595eb05266",
+    "git_blob_sha1": "9e7bf3d16450d962f3e094e998f57db10b05afa5",
+    "members": [
+      "main.tex",
+      "orientation.tex",
+      "theory.tex",
+      "measurements.tex",
+      "delivery.tex",
+      "appendix.tex",
+      "claim-scope.tex"
+    ],
+    "gzip_mtime": 1791072000,
+    "tar_format": "USTAR",
+    "deterministic_repeat": true
+  },
+  "build": {
+    "engine": "XeLaTeX",
+    "version": "XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/Debian)",
+    "command": "SOURCE_DATE_EPOCH=1791072000 FORCE_SOURCE_DATE=1 TZ=UTC LC_ALL=C.UTF-8 xelatex -no-shell-escape -interaction=nonstopmode -halt-on-error -output-driver=\"xdvipdfmx -z0\" main.tex",
+    "passes": 3,
+    "independent_builds": 2,
+    "pdf_byte_identical": true,
+    "warnings_after_final_pass": [],
+    "network_access": false,
+    "shell_escape": false
+  },
+  "output_pdf": {
+    "path": "main.pdf",
+    "bytes": 578695,
+    "sha256": "6151ac53206b965258b16c4986ca108f138837d31505c47d6e5bbdf0b9c5c310",
+    "git_blob_sha1": "30bc34a785f041a4dde271aac9450ecf9f6e3fe6",
+    "page_count": 23
+  },
+  "bibliography": {
+    "embedded_source": "appendix.tex",
+    "translated_with_original_reference_identities_preserved": true
+  },
+  "font_policy": {
+    "filename_lookup": true,
+    "font_binaries_in_archive": false,
+    "absolute_font_paths": false,
+    "fonts": [
+      "Latin Modern Roman",
+      "Latin Modern Sans",
+      "Latin Modern Mono",
+      "Latin Modern Math"
+    ]
+  },
+  "poppler_pdfinfo": "Title:           Effective Continuity: What QIK-VRT Can Do, What It May Do, and What Should Be Delivered Next\nSubject:         English successor of a frozen German synthesis: invariants, meta-integration, measurement limits and delivery scenarios\nKeywords:        QIK-VRT, TEMDD, provenance, readback, meta-integration, persistent cognition\nAuthor:          Ingolf Lohmann\nCreator:         LaTeX with hyperref\nProducer:        xdvipdfmx (20220710)\nCreationDate:    Sat Oct  3 17:00:00 2026 PDT\nCustom Metadata: no\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           23\nEncrypted:       no\nPage size:       595.28 x 841.89 pts (A4)\nPage rot:        0\nFile size:       578695 bytes\nOptimized:       no\nPDF version:     1.5\n",
+  "poppler_fonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nRXFGPU+LMSans10-Regular-Identity-H   CID Type 0C       Identity-H       yes yes yes      5  0\nCWLLMQ+LMRoman10-Regular-Identity-H  CID Type 0C       Identity-H       yes yes yes      7  0\nYJAANK+LMSans10-Bold-Identity-H      CID Type 0C       Identity-H       yes yes yes      9  0\nDFGBTJ+LMMono10-Regular-Identity-H   CID Type 0C       Identity-H       yes yes yes     11  0\nZHEBQN+LMRoman10-Bold-Identity-H     CID Type 0C       Identity-H       yes yes yes     32  0\nDHPLQH+LMRoman10-Italic-Identity-H   CID Type 0C       Identity-H       yes yes yes     39  0\nTMTLXS+LatinModernMath-Regular-Identity-H CID Type 0C       Identity-H       yes yes yes     41  0\nILHNJP+LMSans10-Oblique-Identity-H   CID Type 0C       Identity-H       yes yes yes     78  0\n",
+  "visual_render": {
+    "renderer": "Poppler pdftoppm",
+    "dpi": 90,
+    "pages_rendered": 23,
+    "temporary_page_identities": [
+      {
+        "path": "page-01.png",
+        "bytes": 77519,
+        "sha256": "cdf471847ffdeccee0cb68f8526e93ce2f656b8ae6c228dee22057e5a5b5294e",
+        "git_blob_sha1": "f519f0fd7b848f59d3f06f5da8db39a94409a48b"
+      },
+      {
+        "path": "page-02.png",
+        "bytes": 238002,
+        "sha256": "4e2ebf8faa103405fffda090840e31383376cdf06daa5a7381a73f318cc65e6f",
+        "git_blob_sha1": "1a1f7a087fc7db2f3f05954ee3f0ceab1916a32a"
+      },
+      {
+        "path": "page-03.png",
+        "bytes": 245466,
+        "sha256": "ad1c7bab7240910b5efb4b0c0fa7502a1147e6ca47e88860b812a33baf64a165",
+        "git_blob_sha1": "bd22a8153fe0e95ce028abc7d041f820efcf3aed"
+      },
+      {
+        "path": "page-04.png",
+        "bytes": 254052,
+        "sha256": "6541f43a328166e9b8ac001d4d6f0fef3ca33d6cf02d79e83f81ce4babee7d3d",
+        "git_blob_sha1": "79ab8d811d1abf66ca8078d49a280597b38932cb"
+      },
+      {
+        "path": "page-05.png",
+        "bytes": 237796,
+        "sha256": "7ff982667fd5020285f443000dff1fcec76720b764adf823ead1629b911d31b7",
+        "git_blob_sha1": "791f7d7b441f949dfcb2f1568c0dc46477db909e"
+      },
+      {
+        "path": "page-06.png",
+        "bytes": 235952,
+        "sha256": "c6d399904d447e68dd6f39da9fdc00ccc53754c4a97d273e0b3ec0c519759ab9",
+        "git_blob_sha1": "5d687bffea8e9faa1bc38eecf1cf13f1256556d8"
+      },
+      {
+        "path": "page-07.png",
+        "bytes": 240841,
+        "sha256": "e2fe6682081551832fca610887ed0c417200de00eba56aee76ba351a7d89a52d",
+        "git_blob_sha1": "c7ccf9996172ec4661ff17c6f655d64823b88ec9"
+      },
+      {
+        "path": "page-08.png",
+        "bytes": 210021,
+        "sha256": "01ea95ed76c294f08511f49b67473119ae786dcf5664afa603c8bdebc78f06e9",
+        "git_blob_sha1": "f243c1f2c2dcfb4ccc9a17b5d8284cf274b174a2"
+      },
+      {
+        "path": "page-09.png",
+        "bytes": 253715,
+        "sha256": "3bad9e28628e06675df6ea34bb67c18f2bd2ce6dff69cdb13f26689967e86a2c",
+        "git_blob_sha1": "dc3681b359b659d0da5704b0ab5725e3b08cac05"
+      },
+      {
+        "path": "page-10.png",
+        "bytes": 185064,
+        "sha256": "83ff086940a3e3cad1f3cc970cf160e4b7c32e7308324e785b7e2f184426ab15",
+        "git_blob_sha1": "e7a2d304dde36fb2ce46696b0b87a8096fcd24ff"
+      },
+      {
+        "path": "page-11.png",
+        "bytes": 222950,
+        "sha256": "4b6de0174cb3c898d5a5e0aa928decd4e65ea1853e4ee310ff52271fbd755737",
+        "git_blob_sha1": "18b48b832800597cd6a0f7ed9e9aba60e7e65506"
+      },
+      {
+        "path": "page-12.png",
+        "bytes": 252677,
+        "sha256": "5309f9b5561c257304fec46959e089634e700347f8148b456c1fdb427e128862",
+        "git_blob_sha1": "1d6309dd9bc920ec3559f9b8980bc9616d970e77"
+      },
+      {
+        "path": "page-13.png",
+        "bytes": 210951,
+        "sha256": "4fb12e28f507c56b263a567de1bd3eb64b108332e69dbffcb79073cf91758ca8",
+        "git_blob_sha1": "afdae2d4e798fecb4ed50e1d3e5e89b1f19f783c"
+      },
+      {
+        "path": "page-14.png",
+        "bytes": 144024,
+        "sha256": "adda496d4bd1286c9685b49db31f0957aba2f2e7d5ea5a25f688abff68908c51",
+        "git_blob_sha1": "e05b3ff7159882641fad6dc951b57c75077973a4"
+      },
+      {
+        "path": "page-15.png",
+        "bytes": 249722,
+        "sha256": "75c1292fb425e25f2715110d8c35cdaa3c14a7162b91e20e13b0ded2ea53ee84",
+        "git_blob_sha1": "bcd54533eb0c344037d734cc90a35a5c74aef3d0"
+      },
+      {
+        "path": "page-16.png",
+        "bytes": 170425,
+        "sha256": "86b7ec6d89fb18953d16730994afffcc182ce2e0ee72b6d311947e103934a4bb",
+        "git_blob_sha1": "85ab4caceefe9aa5801b43c89c897aaab3862b72"
+      },
+      {
+        "path": "page-17.png",
+        "bytes": 199558,
+        "sha256": "074ba5a6e12fd497c7d8e525d92be3ce4c8e04421960730d35a877870c301286",
+        "git_blob_sha1": "92da5537741961705f87b8a7a81ae051f0f44667"
+      },
+      {
+        "path": "page-18.png",
+        "bytes": 242961,
+        "sha256": "ca496e288a608b06fae8126d9c4cb51d534c95c773e09d8e481d90bf5a56e0aa",
+        "git_blob_sha1": "7eff9ab7df92b195d0a20bfae1e8e205509e1956"
+      },
+      {
+        "path": "page-19.png",
+        "bytes": 316993,
+        "sha256": "4d9f923af3a8ca69bedbbc9c8a4482f3c51ad36c39925544da3d01426bd50201",
+        "git_blob_sha1": "b16cd7635ba0d5caaec8dd7475c13939777b9b49"
+      },
+      {
+        "path": "page-20.png",
+        "bytes": 43658,
+        "sha256": "56df80f4a5cb978f13c8b4a2577ce2acb99d0d01a503efc94cd0b501b89e21ba",
+        "git_blob_sha1": "d35b01842bf7709445bdec2b4dc6b1cd0b8421a8"
+      },
+      {
+        "path": "page-21.png",
+        "bytes": 183118,
+        "sha256": "114e034401d58c32b7175f068da99e5dcb7d142f5599cc31354029039bba450e",
+        "git_blob_sha1": "b0f500076cd9c42e1fcbfd4e92b6db853ad5687c"
+      },
+      {
+        "path": "page-22.png",
+        "bytes": 184123,
+        "sha256": "424ad29d81557363ce9c9e551e488fcbac72adbef9027db7b483d4fca03e4349",
+        "git_blob_sha1": "6fc7aee3ae71cea460f623f468b93fa7da2f1983"
+      },
+      {
+        "path": "page-23.png",
+        "bytes": 236874,
+        "sha256": "9080a978c02d7fc106c908bbe3a896e617ab2fe722f7a4b0c314b7d6a093f92a",
+        "git_blob_sha1": "d3a6c1cdb8f516d67764dea9676af75ddb1065a2"
+      }
+    ],
+    "human_or_ai_visual_review": "RECORDED_SEPARATELY_IN_PDF_RENDER_VALIDATION.json"
+  },
+  "claim_boundaries_embedded": true,
+  "formal_proved_claim_count": 0,
+  "arxiv_server_build_verified": false,
+  "submission_performed": false,
+  "authorization_consumed": false,
+  "reused_identity_primitive": {
+    "path": "tools/materialize_arxiv_current_synthesis_v2.py",
+    "bytes": 25197,
+    "sha256": "4000688c2aed63d8a39a81b39f78b57b7c70db662d1f4b5c3680d98cb1a6326f",
+    "git_blob_sha1": "ee7696f97e4286e8adecd222675f3536a0a80f25"
+  }
+}

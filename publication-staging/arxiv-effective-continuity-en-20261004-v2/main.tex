@@ -1,0 +1,79 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[left=18mm,right=18mm,top=21mm,bottom=20mm,headheight=14pt,headsep=6mm]{geometry}
+\usepackage{fontspec,polyglossia}
+\setdefaultlanguage{english}
+\setmainfont{lmroman10-regular.otf}[BoldFont=lmroman10-bold.otf,ItalicFont=lmroman10-italic.otf,BoldItalicFont=lmroman10-bolditalic.otf]
+\setsansfont{lmsans10-regular.otf}[BoldFont=lmsans10-bold.otf,ItalicFont=lmsans10-oblique.otf,BoldItalicFont=lmsans10-boldoblique.otf]
+\setmonofont[Scale=0.79]{lmmono10-regular.otf}
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}
+\usepackage{microtype,multicol,amsmath,amsthm,booktabs,tabularx,longtable,array,xcolor,graphicx,tikz,tcolorbox,fancyhdr,lastpage,enumitem,titlesec,hyperref,xurl,needspace}
+\tcbuselibrary{breakable}
+\definecolor{Teal}{HTML}{143F45}
+\definecolor{Accent}{HTML}{007C87}
+\definecolor{Ink}{HTML}{263B43}
+\definecolor{Muted}{HTML}{506C78}
+\definecolor{Gold}{HTML}{E5D4AA}
+\definecolor{Pale}{HTML}{ECF2F0}
+\definecolor{Rule}{HTML}{CEDAD8}
+\definecolor{Ochre}{HTML}{AE652F}
+\definecolor{Violet}{HTML}{815778}
+\definecolor{Paper}{HTML}{FFFEFA}
+\pagecolor{Paper}\color{Ink}
+\hypersetup{colorlinks=true,linkcolor=Accent,urlcolor=Accent,citecolor=Accent,pdftitle={Effective Continuity: What QIK-VRT Can Do, What It May Do, and What Should Be Delivered Next},pdfauthor={Ingolf Lohmann},pdfsubject={English successor of a frozen German synthesis: invariants, meta-integration, measurement limits and delivery scenarios},pdfkeywords={QIK-VRT, TEMDD, provenance, readback, meta-integration, persistent cognition}}
+\setlength{\columnsep}{8.5mm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4.4pt}
+\setlength{\emergencystretch}{1.5em}
+\setlist{nosep,leftmargin=1.3em}
+\frenchspacing
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\fontsize{7.4}{9}\selectfont\color{Muted}QIK-VRT / EFFECTIVE CONTINUITY}
+\fancyhead[R]{\sffamily\fontsize{7.4}{9}\selectfont\color{Muted}English successor / frozen source 2026-10-03}
+\fancyfoot[L]{\sffamily\fontsize{7}{9}\selectfont\color{Muted}Ingolf Lohmann / English staging / 2026-10-04}
+\fancyfoot[R]{\sffamily\fontsize{8}{10}\selectfont\color{Muted}\thepage\,/\,\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}\renewcommand{\footrulewidth}{0.3pt}
+\titleformat{\subsection}{\raggedright\sffamily\bfseries\fontsize{10.7}{13}\selectfont\color{Ink}}{}{0em}{}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+\newcommand{\src}[1]{{\sffamily\fontsize{7.4}{9}\selectfont\color{Accent}[#1]}}
+\newcommand{\code}[1]{{\ttfamily\small\nolinkurl{#1}}}
+\newcommand{\chapterpage}[4]{\par\addvspace{6mm}\Needspace{95mm}\markboth{#2}{}\phantomsection\label{#1}\vspace*{-2mm}{\sffamily\small\color{Accent}#2}\par\vspace{5mm}{\raggedright\hyphenpenalty=10000\fontsize{25}{29}\selectfont #3\par}\vspace{4mm}{\raggedright\fontsize{11.1}{16}\selectfont #4\par}\vspace{4mm}}
+\newtcolorbox{boundary}[1]{breakable,colback=Pale,colframe=Accent,boxrule=0pt,leftrule=1pt,arc=0pt,left=3mm,right=3mm,top=2mm,bottom=2mm,title={#1},coltitle=Ink,colbacktitle=Pale,fonttitle=\sffamily\bfseries\small,fontupper=\sffamily\fontsize{8.8}{12}\selectfont}
+\newenvironment{cols}{\begin{multicols}{2}\fontsize{9.5}{13.3}\selectfont\raggedright}{\end{multicols}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\tighttable}{\sffamily\fontsize{8.3}{11.3}\selectfont\renewcommand{\arraystretch}{1.2}}
+\begin{document}
+\begin{titlepage}\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\fill[Teal] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+\color{white}
+{\sffamily\fontsize{9}{12}\selectfont Q I K - V R T\quad/\quad S Y S T E M S\hfill R E S E A R C H\; /\; 2 0 2 6}
+\vspace{8mm}\par{\color{Muted}\rule{\textwidth}{0.6pt}}
+\vspace{12mm}\par{\sffamily\small\color{Rule}ENGLISH ARXIV STAGING / TRANSLATED SUCCESSOR / NOT SUBMITTED}
+\vspace{16mm}\par
+{\fontsize{54}{62}\selectfont Effective\par continuity}\par
+\vspace{13mm}
+{\fontsize{22}{29}\selectfont\color{Gold}What QIK-VRT can do.\par What it may do.\par What should be delivered next.}\par
+\vspace{12mm}
+{\sffamily\fontsize{10.8}{16}\selectfont\color{Rule}Artificial cognition with memory, universal authorized integration, an invariant task, and the path from verifiable knowledge to a usable product.}\par
+\vspace{11mm}
+{\sffamily\bfseries\large Ingolf Lohmann}\par
+{\sffamily\fontsize{8}{12}\selectfont\color{Rule}Concept, purpose and Product Ownership\par Analytical editing, source review and typesetting: QIK-VRT with an OpenAI component\par English translation and successor preparation: OpenAI Codex; author acceptance pending}
+\vfill
+{\sffamily\fontsize{8}{11}\selectfont\color{Gold}
+\begin{tabularx}{\textwidth}{@{}XXXXX@{}}\toprule
+01 & 02 & 03 & 04 & 05\\
+System and\newline task & Invariants and\newline proof limits & Memory and\newline integration & Measurements\newline and pipeline & Delivery and\newline forecast
+\end{tabularx}}
+\vspace{8mm}\par{\color{Muted}\rule{\textwidth}{0.4pt}}
+{\sffamily\fontsize{7.8}{11.5}\selectfont\color{Rule}English successor: 4 October 2026 / source report: afternoon readback, 3 October 2026\par Historical Main baseline: \texttt{8153c4e69a6245aadf67f0741fb50d9707c19e34}\par This edition performs no upload and establishes no general system acceptance.}
+\end{titlepage}
+\setcounter{page}{2}
+\input{orientation.tex}
+\input{theory.tex}
+\input{measurements.tex}
+\input{delivery.tex}
+\input{appendix.tex}
+\clearpage
+\input{claim-scope.tex}
+\end{document}

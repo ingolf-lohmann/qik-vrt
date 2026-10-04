@@ -1,0 +1,78 @@
+\chapterpage{measure}{06 / THE MEASUREMENT EVIDENCE}{Four questions. Four different forms of evidence.}{The results are not combined into a single speedup factor. A local algorithm comparison, the size of a Git delta, a multiprocess trial and a distributed end-to-end run examine different subjects.}
+\par
+{\tighttable
+\begin{tabularx}{\textwidth}{@{}rrr r r X@{}}\toprule
+States & Drift & Full scan, ms & Delta, ms & Factor & Subject\\\midrule
+1,000 & 1\% & 1.597 & 0.613 & 2.60 & Local synthetic comparison\\
+1,000 & 5\% & 1.546 & 0.761 & 2.03 & Same model\\
+1,000 & 20\% & 2.062 & 1.627 & 1.27 & Same model\\
+10,000 & 1\% & 16.502 & 6.428 & 2.57 & Same model\\
+10,000 & 5\% & 17.196 & 8.312 & 2.07 & Same model\\
+10,000 & 20\% & 22.284 & 16.954 & 1.31 & Same model\\
+100,000 & 1\% & 182.423 & 72.056 & 2.53 & Same model\\
+100,000 & 5\% & 213.311 & 105.561 & 2.02 & Same model\\
+100,000 & 20\% & 340.156 & 254.999 & 1.33 & Same model\\\bottomrule
+\end{tabularx}}
+\vspace{2mm}{\sffamily\footnotesize Table 1. Medians of the supplied raw values; twelve mutation rounds and seven repetitions per arm and configuration. All numbers were recalculated in the source report from the unchanged JSON file. This translation performs no new run of the original measurement. \src{L3,C1}}
+\begin{cols}
+\subsection*{1. Local microbenchmark}
+The supplied dataset is present. Its SHA-256 matches the previously stated identity. The nine median pairs and factors can be reproduced from individual values. This confirms arithmetic evaluation and file binding; it is not an independent repetition of the original timing experiment. \src{L3,C1}
+
+The historical code compares two in-memory dictionaries: a full comparison after every mutation versus targeted comparison of a known set of changed keys. Both arms start by initializing $N$ states. The delta arm also sorts changed keys. For $r$ rounds and $k$ changes,
+\[
+ T_A=O(N+rN),\qquad T_B=O(N+rk\log k)
+\]
+is more precise than ``the whole procedure is $O(k)$''. At one percent drift, the actual number of comparisons falls by 99\%; other costs remain.
+
+The order was always A followed by B. Cache and ordering effects are thus not excluded. The conflict rule selects the lexicographically greater 128-bit hash, not necessarily the most recent or substantively correct content. The model supports a synthetic efficiency comparison, not proof of actual provenance checking or machine consciousness. The time entered in the JSON is declared metadata, not an independently verified clock.
+
+\subsection*{2. Historical repository structure}
+The previously bound Main was reported to have 3,928 files, with deltas of 3 to 91 files for eleven selected PRs \#437--\#447. The median of 20 files corresponds to 0.509\%; the ratio is 196.4:1. This calculation is correct for those historical inputs. \src{L4,C1}
+
+It does not measure actual processing time. The deltas partly contain shared changes and metadata; their significance is uneven, and global dependencies can extend far beyond changed files. In particular, the value does not demonstrate that an existing algorithm actually saves 99.49\% of its total work. The PR set and Main history subsequently advanced; the numbers remain bound to the original subject.
+
+\subsection*{3. Native 1/2/4-process measurement}
+PR \#443 documents a separate successful trial on an AMD EPYC 7763 host with four CPU/affinity slots. It states six paired repetitions per configuration, identical initial snapshots, 80 effects and 160 records. The medians are 0.349138 s, 0.214989 s and 0.163044 s. Ratios of medians are thus 1.624 times and 2.141 times; corresponding time reductions are 38.42\% and 53.30\%. \src{R4,C1}
+
+The documented intervals are [1.369494; 1.696822] and [2.084345; 2.240735]. Both satisfy the unchanged admission rule stated in the PR. The source report freshly read the PR documentation and checked its median arithmetic; it did not redownload all 18 original trial archives. The values are therefore expressly source-bound reports.
+
+\begin{boundary}{A real advance, not a universal result}
+A bounded multiprocess speedup is documented for this particular trial. The causes of earlier outliers, physical isolation and runner-independent scaling remain open. The earlier blanket statement ``no scaling evidence yet'' is corrected for this trial. \src{R4}
+\end{boundary}
+
+\subsection*{4. Authority/Mirror attempt in the source report}
+Job \texttt{111218106133} of run \texttt{37128318275} binds executor head \texttt{a31ebb7e...}, tree \texttt{8d9e02da...}, six successful credential-boundary tests and result \code{HOLD_AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED}. Authority credentials are not delivered to that process; both remote heads remain null in the result. \src{R3}
+
+\texttt{speedup\_claim=false} and \texttt{effect\_ack\_done=false} are correct. Successful workflow termination confirms the diagnostic finding, not a speedup. The twelve planned repetitions were not executed as a timing experiment. Availability of historical Authority objects also does not replace the ability to read current Main.
+\end{cols}
+
+\chapterpage{audit}{07 / METHODOLOGICAL AUDIT}{Access is one of several still-open prerequisites.}{A measurement should answer the stated question. The A/B code described by the source was therefore examined before generalization. The finding changes the next work step and forecast.}
+\begin{cols}
+The code read at \texttt{a31ebb7e...} first downloads two repositories. Timers are placed around local full and delta comparisons only afterwards. Network transfer, initial retrieval and actual reciprocal correction lie outside these measured intervals. The code does not measure a controlled mutation/reconciliation cycle on two executing remote nodes with end-to-end readback. \src{R11}
+
+Successful execution after credential delivery would therefore initially compare freshly loaded repository states locally. Without further instrumentation, it could not support the announced assertion ``the complete distributed QIK-VRT system becomes faster''.
+
+\subsection*{Two concrete correctness boundaries}
+The function \texttt{hash\_path} uses a subprocess with \texttt{text=True} and then encodes its output again. Arbitrary Git blobs are binary bytes. Invalid UTF-8 may already fail during decoding; universal newline conversion may change bytes. Byte-exact comparison requires binary transport. \src{R11}
+
+Second, the full arm compares only content hashes, whereas the delta arm compares Git path differences. A change solely to the executable bit can be reported by \texttt{git diff} although blob bytes are identical. In that case the arms define different equalities. Both must handle file mode, type, deletion, renaming and, if applicable, submodules identically.
+
+Both boundaries were reproduced in isolated local controls in the source report: a non-UTF-8 byte stream is rejected by the text path; a mode-only change yields a nonempty Git diff for identical file bytes. These controls are methodological counterexamples, not production-code changes or a distributed benchmark. Scripts and results are in the companion package. \src{C1}
+
+\subsection*{What an informative trial requires}
+The next trial must define its measurement quantity in advance. A purely local delta optimization checks bytes, modes and result equivalence; ordering and warm/cold states must be comparable. For the stronger distributed claim, timing instead starts before the controlled intervention and ends only with accepted bilateral readback.
+
+Both arms need the same frozen initial state, the same authorized change sequence and the same meaning of convergence. AB/BA ordering or a predetermined randomization plan limits temporal bias. A separate test repository or sufficiently isolated authorized test scope prevents side effects on productive Main branches.
+
+Record total time, CPU, I/O, API calls, bytes, retries, queue waiting, gate duration, conflicts and remaining inconsistencies. Failed trials are preserved rather than removed from the sample. Cache hits must be disclosed. Energy claims require a suitable meter; CPU time does not replace joules.
+
+\subsection*{No shortcut to a truth proof}
+Even a methodologically correct performance trial proves only its performance claim. It proves neither general epistemic truthfulness nor consciousness. The same distance between subject and inference applies to negative results: a missing token does not refute the architecture idea. It does prevent the particular measurement and delivery.
+
+\begin{boundary}{Correction of the earlier shorthand}
+``One carrier away'' was too narrow for the complete distributed trial. The correct sequence is: establish access \emph{and} complete measurement semantics, then execute comparably and evaluate independently. No proxy number is declared to be the missing end-to-end result.
+\end{boundary}
+
+\subsection*{Application to the project}
+The immediate benefit is not an invented speedup number but better separation of work: access work establishes credential delivery; measurement work corrects byte/mode semantics and time boundaries; publication states the admissible claim. Real blockers are not concealed by attractive aggregate terms.
+\end{cols}

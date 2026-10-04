@@ -1,0 +1,308 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "publication_staging_manifest"
+  },
+  "schema": "qikvrt_arxiv_submission_manifest_v1",
+  "candidate_id": "arxiv-effective-continuity-en-20261004-v2",
+  "status": "PREPARED_REVIEW_REQUIRED_NOT_SUBMITTED",
+  "title": "Effective Continuity: What QIK-VRT Can Do, What It May Do, and What Should Be Delivered Next",
+  "author": {
+    "name": "Ingolf Lohmann",
+    "affiliation": "Independent Researcher, QIK-VRT"
+  },
+  "abstract_scope": "Complete English successor; frozen historical systems synthesis with unchanged 30-claim boundaries.",
+  "arxiv_metadata_candidate": {
+    "language": "en",
+    "primary_category": "cs.AI",
+    "cross_list_categories": [
+      "cs.DC",
+      "cs.SE"
+    ],
+    "metadata_status": "PROPOSED_FOR_AUTHOR_REVIEW",
+    "processor": "xelatex",
+    "texlive_target": "2025",
+    "server_build_verified": false,
+    "license_choice": "PENDING_AUTHOR_SELECTION",
+    "journal_reference": null,
+    "doi": null,
+    "comments": "23 pages, complete English translation of a frozen German synthesis. Source state 3 October 2026; successor 4 October 2026. No new empirical trials or kernel proof.",
+    "title": "Effective Continuity: What QIK-VRT Can Do, What It May Do, and What Should Be Delivered Next",
+    "abstract": "QIK-VRT combines semantic problem solving with persistent, source-bound working memory, authorized action paths, and verifiable effect readback. Its design objective is to improve capabilities while preserving evidence, provenance, authorization, and completion boundaries. A conditional wrapper construction describes integration of heterogeneous systems under computable observation and action adapters and terminating acceptance checks; it guarantees neither arbitrary target reachability nor universal speedup. The paper distinguishes formal derivation, empirical evidence, documentary attribution, interpretation, normative requirements, and open claims. It preserves a frozen 3 October 2026 source report, including nine recalculated microbenchmark median pairs, a source-bound 1/2/4-process comparison, two isolated methodological controls, and an Authority/Mirror credential-delivery HOLD. These subjects do not establish distributed production speedup or new replication of historical timing trials. Self-continuity is a testable functional profile, while phenomenal experience, universal truthfulness enforcement, all-node product acceptance, and physical FPGA execution remain unestablished. Delivery windows are conditional engineering scenarios rather than promises. This complete English successor preserves all 30 claim dispositions and explicitly separates prior effect authorization from subsequent task acceptance. No claim is promoted to FORMAL_PROVED, and no destination submission or scientific consensus is claimed."
+  },
+  "artifact_bindings": {
+    ".gitattributes": {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+    },
+    "BUILD_VALIDATION.json": {
+      "path": "BUILD_VALIDATION.json",
+      "bytes": 9656,
+      "sha256": "c933b6dc88da900e01b9efb21909df85f78e0a143f850d062026bf4ec9e43850",
+      "git_blob_sha1": "00fc27697143667c18c154afdca0689a28ca1f40"
+    },
+    "CHANGE_NOTICE.md": {
+      "path": "CHANGE_NOTICE.md",
+      "bytes": 1371,
+      "sha256": "d8283d98f002f28ffa169f64c909249aeac97a6400b935cb205deb4edb49d453",
+      "git_blob_sha1": "a04ba4fd13d52d331ee5d9297c73418f446e6068"
+    },
+    "CLAIM_CORRESPONDENCE_EN.json": {
+      "path": "CLAIM_CORRESPONDENCE_EN.json",
+      "bytes": 39812,
+      "sha256": "8e177fe98f54e8eb642e1ccdc9927bbf0ba96182fd333754d2e0be5c43ad1601",
+      "git_blob_sha1": "1e39940113c12ece394ff441eb2195de884619fc"
+    },
+    "CLAIM_MATRIX.json": {
+      "path": "CLAIM_MATRIX.json",
+      "bytes": 19350,
+      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f",
+      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e"
+    },
+    "CONTENT_VALIDATION.json": {
+      "path": "CONTENT_VALIDATION.json",
+      "bytes": 6236,
+      "sha256": "97192844f246e7342f8d743eeaf2d97a75d7144b1634f5acb9c84a2007df15fb",
+      "git_blob_sha1": "480a67c387e3692133ed72d0c01d8aae0c5b08ed"
+    },
+    "METHOD_CLAIM_BOUNDARIES.md": {
+      "path": "METHOD_CLAIM_BOUNDARIES.md",
+      "bytes": 4775,
+      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
+      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5"
+    },
+    "PDF_RENDER_VALIDATION.json": {
+      "path": "PDF_RENDER_VALIDATION.json",
+      "bytes": 6709,
+      "sha256": "032205f2624c9d0598cd5d2f2070ebba43044caffb94bc942d3aa6d597d236a2",
+      "git_blob_sha1": "5f1fd650a8a454581b982bf65b4494a0d2c894e6"
+    },
+    "SOURCE_GIT_CAPSULE.json": {
+      "path": "SOURCE_GIT_CAPSULE.json",
+      "bytes": 219179,
+      "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65",
+      "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07"
+    },
+    "SOURCE_PROVENANCE.json": {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 9619,
+      "sha256": "d4514a76c6baf23d8b4952f1a0d7475f5fd060296a4e1f1c0858a1adffb2a5fd",
+      "git_blob_sha1": "87c9a6d610fb5b1ec09509288a67fee8045e9cfa"
+    },
+    "STAGING_README.md": {
+      "path": "STAGING_README.md",
+      "bytes": 1421,
+      "sha256": "fe32e1b83b7f25136609a31bb09c6912ffe8911e8d07f0c85646fc783fe88a6c",
+      "git_blob_sha1": "d5c96c7ed3fddfaf057d30d3d77f09e03d8423e0"
+    },
+    "TRANSLATION_MAP.json": {
+      "path": "TRANSLATION_MAP.json",
+      "bytes": 38140,
+      "sha256": "de9cdd4fc9ccab69e44360dfece84452e32169358ebdffe47368b656e918fde4",
+      "git_blob_sha1": "3aaffa247e8588aef92048dc9c4924102815e480"
+    },
+    "XELATEX_BUILD_LOG.txt": {
+      "path": "XELATEX_BUILD_LOG.txt",
+      "bytes": 51283,
+      "sha256": "0975b327c4aaa7ae1815f0bd931b9eafc63b36d5b977d95be7c2122d51057f07",
+      "git_blob_sha1": "845c8a84049400014363bd923a97a4deba00cf2e"
+    },
+    "appendix.tex": {
+      "path": "appendix.tex",
+      "bytes": 17762,
+      "sha256": "ce5fa76a98614fabdce9b9c8349520c5220261f99cb1677ebbe0742e22693ab4",
+      "git_blob_sha1": "b3e5c956a05049132ea48baf7c5356dc90f9a167"
+    },
+    "arxiv-source.tar.gz": {
+      "path": "arxiv-source.tar.gz",
+      "bytes": 31557,
+      "sha256": "551d7a720851bb35d73c5854e3b7d68da3ed36fe1caa2062ae79a0595eb05266",
+      "git_blob_sha1": "9e7bf3d16450d962f3e094e998f57db10b05afa5"
+    },
+    "build.py": {
+      "path": "build.py",
+      "bytes": 11325,
+      "sha256": "190b9d34cec15ab191ea0111d322463af465023c82a7ebb15c10c8ef3e9387f6",
+      "git_blob_sha1": "36e8ccaad61d446828c514ed440f3259484af6a5"
+    },
+    "claim-scope.tex": {
+      "path": "claim-scope.tex",
+      "bytes": 11626,
+      "sha256": "93becd2a499a0aedf376c8ecafbceaab04371e118f01496c818ec11b0d41518e",
+      "git_blob_sha1": "f23978626af1e83b8e26698e820db829ba896827"
+    },
+    "delivery.tex": {
+      "path": "delivery.tex",
+      "bytes": 19436,
+      "sha256": "5a11a96203c6fd2616fec4dbffa7b73c2b0e8d5daa784e9b406f524b659a0061",
+      "git_blob_sha1": "a441da59ba5957cba80e811e4766aaffd71485bb"
+    },
+    "main.pdf": {
+      "path": "main.pdf",
+      "bytes": 578695,
+      "sha256": "6151ac53206b965258b16c4986ca108f138837d31505c47d6e5bbdf0b9c5c310",
+      "git_blob_sha1": "30bc34a785f041a4dde271aac9450ecf9f6e3fe6"
+    },
+    "main.tex": {
+      "path": "main.tex",
+      "bytes": 5490,
+      "sha256": "c141be12709714022fc3e0001ec4b5df04c37b42dd8d4c50517571e1547e57db",
+      "git_blob_sha1": "e2d096f3dedd6104f746a130ad4f29f523a618fe"
+    },
+    "measurements.tex": {
+      "path": "measurements.tex",
+      "bytes": 9235,
+      "sha256": "b155f04f0ad51456e298663217e6b384eafe5e7fefec9eca5f864b821878f0d9",
+      "git_blob_sha1": "d235014fe68325f6613e986475ba3fa6741b2749"
+    },
+    "orientation.tex": {
+      "path": "orientation.tex",
+      "bytes": 5264,
+      "sha256": "a2a1bddcd6d4cddae020d3a3eb2299e21aaffabd7dfe842ee0f3f72da1496727",
+      "git_blob_sha1": "3f813d69cf2bab69226590548ef91cb18bdbfd4e"
+    },
+    "theory.tex": {
+      "path": "theory.tex",
+      "bytes": 20464,
+      "sha256": "22608089253b29a5dd42e57d552f624d3921493f46483915aba9502b4c741260",
+      "git_blob_sha1": "f4c3aea18052c3d0de2aa1df433ea329b15e786d"
+    },
+    "verify_staging.py": {
+      "path": "verify_staging.py",
+      "bytes": 11796,
+      "sha256": "a09bf9eb95a25e38f6d5eb14ec9e610f0b3955a1a502dd9c4a397a73538f9a62",
+      "git_blob_sha1": "08dca4021da49f612c3bfd404589089202077a7d"
+    }
+  },
+  "build": {
+    "engine": "XeLaTeX",
+    "version": "XeTeX 3.141592653-2.6-0.999995 (TeX Live 2023/Debian)",
+    "command": "SOURCE_DATE_EPOCH=1791072000 FORCE_SOURCE_DATE=1 TZ=UTC LC_ALL=C.UTF-8 xelatex -no-shell-escape -interaction=nonstopmode -halt-on-error -output-driver=\"xdvipdfmx -z0\" main.tex",
+    "passes": 3,
+    "independent_builds": 2,
+    "pdf_byte_identical": true,
+    "warnings_after_final_pass": [],
+    "network_access": false,
+    "shell_escape": false,
+    "result": "SUCCESS_LOCAL",
+    "page_count": 23
+  },
+  "claim_boundaries": {
+    "claim_matrix": "CLAIM_MATRIX.json",
+    "method_limits": "METHOD_CLAIM_BOUNDARIES.md",
+    "embedded_addendum": "claim-scope.tex",
+    "formal_proved_claim_count": 0,
+    "historical_status_is_not_current_status": true,
+    "not_claimed": [
+      "phenomenal consciousness",
+      "universal truth enforcement",
+      "full distributed speedup",
+      "independent scientific consensus",
+      "physical FPGA execution",
+      "global product acceptance",
+      "current-main or all-node equality",
+      "arXiv moderation or acceptance"
+    ]
+  },
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 447,
+    "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+    "ref": "work/collective-functional-consciousness-20261003",
+    "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "scope": "frozen source only; not a current-main or Authority/Mirror equality claim"
+  },
+  "provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contributions": [
+      "research programme and frozen source authorship as attributed in the source",
+      "selected staging task, exact source, preservation and no-submission constraints",
+      "explicit 4 October 2026 author-review correction mandate; no destination submission or upload authorization"
+    ],
+    "artificial_cognitive_actor": "OpenAI Codex / GPT-6 family",
+    "artificial_cognitive_contributions": [
+      "fresh exact-ref, actual byte and source closure verification",
+      "complete English manuscript and 30-claim translation correspondence",
+      "English target title and abstract",
+      "reused deterministic archive and independent XeLaTeX build pattern",
+      "fresh PDF render/layout validation",
+      "new manifests, provenance and return bindings"
+    ],
+    "human_acceptance_of_new_artifacts": "PENDING",
+    "evidence_retention": "METADATA_ONLY",
+    "exact_model_build": "UNAVAILABLE",
+    "exact_session_or_run_id": "UNAVAILABLE"
+  },
+  "effects": {
+    "arxiv_submission": false,
+    "datatracker_submission": false,
+    "zenodo_mutation": false,
+    "upload_authorization_consumed": false,
+    "production_contract_activation": false,
+    "pr447_head_changed": false,
+    "ordinary_release": false,
+    "effect_ack_done": false,
+    "pr_merge": false,
+    "main_merge": false,
+    "upload_authorization_created": false,
+    "force_push": false
+  },
+  "authorization_boundary": {
+    "current_authorization_state": "STAGING_ONLY_NOT_AN_UPLOAD_DECISION",
+    "owner_authorization_for_original_pr447_artifacts": "NOT_TRANSFERABLE",
+    "zenodo_single_use_authorization": "NOT_TOUCHED",
+    "required_before_submission": [
+      "review this new exact archive and PDF",
+      "freeze destination metadata and license selection",
+      "obtain new candidate-bound author decision",
+      "reobserve destination account fields and obtain action-time upload confirmation"
+    ]
+  },
+  "official_compatibility_reference": {
+    "url": "https://info.arxiv.org/help/faq/texlive.html",
+    "observed_utc_date": "2026-10-03",
+    "scope": "XeLaTeX support and filename-based fonts only; no destination submission performed"
+  },
+  "portable_source_binding": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 219179,
+    "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65",
+    "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 9,
+    "objects": 18,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  },
+  "abstract": "QIK-VRT combines semantic problem solving with persistent, source-bound working memory, authorized action paths, and verifiable effect readback. Its design objective is to improve capabilities while preserving evidence, provenance, authorization, and completion boundaries. A conditional wrapper construction describes integration of heterogeneous systems under computable observation and action adapters and terminating acceptance checks; it guarantees neither arbitrary target reachability nor universal speedup. The paper distinguishes formal derivation, empirical evidence, documentary attribution, interpretation, normative requirements, and open claims. It preserves a frozen 3 October 2026 source report, including nine recalculated microbenchmark median pairs, a source-bound 1/2/4-process comparison, two isolated methodological controls, and an Authority/Mirror credential-delivery HOLD. These subjects do not establish distributed production speedup or new replication of historical timing trials. Self-continuity is a testable functional profile, while phenomenal experience, universal truthfulness enforcement, all-node product acceptance, and physical FPGA execution remain unestablished. Delivery windows are conditional engineering scenarios rather than promises. This complete English successor preserves all 30 claim dispositions and explicitly separates prior effect authorization from subsequent task acceptance. No claim is promoted to FORMAL_PROVED, and no destination submission or scientific consensus is claimed.",
+  "predecessor": {
+    "head": "63cd570956d6b55ce30186f4d1824209a4a0e236",
+    "tree": "9902359e49bf07d3e00b4593a1d61a9fa2321f0e",
+    "package": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1",
+    "manifest": {
+      "path": "arxiv_submission_manifest.json",
+      "bytes": 10423,
+      "sha256": "b5d16052e64a983c0d070b796312ea1dff13801e4d40fc11b399f0b1a18e65dd",
+      "git_blob_sha1": "d256ba4e871455a89c3c8aa7d799d701a97f615f"
+    }
+  },
+  "translation_map": {
+    "path": "TRANSLATION_MAP.json",
+    "bytes": 38140,
+    "sha256": "de9cdd4fc9ccab69e44360dfece84452e32169358ebdffe47368b656e918fde4",
+    "git_blob_sha1": "3aaffa247e8588aef92048dc9c4924102815e480"
+  },
+  "claim_correspondence": {
+    "path": "CLAIM_CORRESPONDENCE_EN.json",
+    "bytes": 39812,
+    "sha256": "8e177fe98f54e8eb642e1ccdc9927bbf0ba96182fd333754d2e0be5c43ad1601",
+    "git_blob_sha1": "1e39940113c12ece394ff441eb2195de884619fc"
+  },
+  "predecessor_evidence_transfer": false,
+  "successor_prepared_utc": "2026-10-04T05:44:21.669508+00:00",
+  "human_author_acceptance": "PENDING_FOR_NEW_BYTES"
+}

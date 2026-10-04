@@ -1,0 +1,764 @@
+{
+  "schema": "qikvrt_complete_manuscript_translation_v1",
+  "source_language": "de",
+  "target_language": "en",
+  "complete_english_version": true,
+  "method": "OpenAI Codex editorial translation, complete ordered source-block partition, preserved chapter/source-reference structure, separately bound claim correspondence",
+  "files": [
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.tex",
+      "source": {
+        "path": "main.tex",
+        "bytes": 5383,
+        "sha256": "0fc02baf62c8b657780325ee2f0dcb5ef285bcb0b0960ba06a077bfea79609c3",
+        "git_blob_sha1": "cd41a3687cf3db39497e97bc75a145a8780007d9"
+      },
+      "english": {
+        "path": "main.tex",
+        "bytes": 5490,
+        "sha256": "c141be12709714022fc3e0001ec4b5df04c37b42dd8d4c50517571e1547e57db",
+        "git_blob_sha1": "e2d096f3dedd6104f746a130ad4f29f523a618fe"
+      },
+      "chapter_anchors": [],
+      "source_block_count": 1,
+      "english_block_count": 1,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "0fc02baf62c8b657780325ee2f0dcb5ef285bcb0b0960ba06a077bfea79609c3",
+          "english_text_sha256": "c141be12709714022fc3e0001ec4b5df04c37b42dd8d4c50517571e1547e57db",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    },
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/orientation.tex",
+      "source": {
+        "path": "orientation.tex",
+        "bytes": 5032,
+        "sha256": "18b21bbddcd1d3ab08d822183f9725ac8a44f9cc90ddcf592d381372920cc085",
+        "git_blob_sha1": "79b568e4f6157f7e92357e389586552ecc90c744"
+      },
+      "english": {
+        "path": "orientation.tex",
+        "bytes": 5264,
+        "sha256": "a2a1bddcd6d4cddae020d3a3eb2299e21aaffabd7dfe842ee0f3f72da1496727",
+        "git_blob_sha1": "3f813d69cf2bab69226590548ef91cb18bdbfd4e"
+      },
+      "chapter_anchors": [
+        "orientation"
+      ],
+      "source_block_count": 5,
+      "english_block_count": 5,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "f768ae60746116e160e8b93b339cdccb84c86451849faed18c79ab6bfd8a62db",
+          "english_text_sha256": "5b73d584a3ca5c43061c88251e5fad6db0d5c42ec56cea6da0a56ff4791c18e4",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 1,
+          "source_text_sha256": "646ab2abcee2bc2c1de85661d69d6371fc158abdd0591730cc713a71d36e7e10",
+          "english_text_sha256": "2a714f8af1b1fcc9f446a6dbe6c23b127b0afba5e2664d658538f82abd3965e5",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 2,
+          "source_text_sha256": "9d588969b2ca666af9ee1e4f115132791cd8e711e9b16352b3217472f7e4f4b1",
+          "english_text_sha256": "4bf6a63caa4ace0e5a22719b0483c8af9b8c707e4e8d233ae0efc48b06a9a3b7",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 3,
+          "source_text_sha256": "ccfa88c9ac8cf7e09027ac7e2e5d818eb93f965e58349326c10aa288676a1f32",
+          "english_text_sha256": "539ef81da6ad7aa103debf812419192a0c57131e4b8c2acdc79927d671c6faa7",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 4,
+          "source_text_sha256": "8de0a1bd50a4681e1ca13ae1c514a06bc7f8599d590f57500b44614bb9a2c3bb",
+          "english_text_sha256": "8e890a4bc67e5fcd80baad0cc977089253e0293724313712977570bac1ad6fb0",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    },
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/theory.tex",
+      "source": {
+        "path": "theory.tex",
+        "bytes": 23473,
+        "sha256": "70915330b7ffeab6ea534b02bb368f8c34bd96773e666edb4e20c38dbfb1f861",
+        "git_blob_sha1": "8f68433c6a63faa0578a61528f05e45ac1c5ca23"
+      },
+      "english": {
+        "path": "theory.tex",
+        "bytes": 20464,
+        "sha256": "22608089253b29a5dd42e57d552f624d3921493f46483915aba9502b4c741260",
+        "git_blob_sha1": "f4c3aea18052c3d0de2aa1df433ea329b15e786d"
+      },
+      "chapter_anchors": [
+        "system",
+        "invariants",
+        "memory",
+        "integration",
+        "consciousness"
+      ],
+      "source_block_count": 28,
+      "english_block_count": 28,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "666e13181115f641d5b454a22d703745e5e84dd3eb2cabb8545e445be6d80511",
+          "english_text_sha256": "2a0322dfc22e294bb24f5c9759b3fe900c341d91bcc53b6f83d4b4aabd796550",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 1,
+          "source_text_sha256": "3eb7331df1d65133b1edb2816609f16198b4e85ce355cbd8a9c826db1eccd602",
+          "english_text_sha256": "71da5b4cf14afe082d8ec726d36445a4611506f4b24fb188ddba2acf46996abb",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 2,
+          "source_text_sha256": "e58681bab45aad287b113cb21e7a5d29c5c13a95952d0b7de088c56925f87dde",
+          "english_text_sha256": "d85308d1397533d29d241b8a75cebd55abbfa19b298f0d1f762bd3221393a81e",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 3,
+          "source_text_sha256": "e88a4dafcca237716b1c474b914fd88ad9767517d507072c07396a8e62c2ba95",
+          "english_text_sha256": "702cca8be484e1e2df8abeeba1cf42eb04fc22ae8ffe8537085d3345d6bd2c58",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 4,
+          "source_text_sha256": "dce3714df999bbd3141a13427273874cafcfaf63b40739c9eb217097d31c3355",
+          "english_text_sha256": "100dde25ee4b4407f583ebb6a874bb92e2d7e493c8bb3bdb692e7c638e8a9117",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 5,
+          "source_text_sha256": "81e65cc8dfd0dafafe46ece572ccf29a6a45805582c04413f4dc6ba34baa13c9",
+          "english_text_sha256": "431a117952287525670f724c611dd3b1ce3e7b266f8410c549734e46ad8fc099",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 6,
+          "source_text_sha256": "e07bdb0d840185c89e031866d69da1f3d52b6d945cc3a56fb1b3981f067fb723",
+          "english_text_sha256": "b8bd0a8b6771e10d4455ce751d18b384793e81a4049800a8263850e0f628e9c1",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 7,
+          "source_text_sha256": "37c8ee6ff3ca2feac20c8f06673d53ac224420cb98abc9e6a362c9968b7abf32",
+          "english_text_sha256": "18f245e99927fee7f9985c7ad448c5beef36a7970773e0ea04e5c2adf7ca35a2",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 8,
+          "source_text_sha256": "38ab7951ed9f3f19608d57af0165dbf90c12263c550ce1fe8c194a071d1f2bbe",
+          "english_text_sha256": "97de3b257af8e2a243b6dfbb36e6f59dcbb7b9d386bf38351d066ba9fe00b52d",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 9,
+          "source_text_sha256": "98200d0265253a0421cc78981afde181a79395694cf56ce96ea0031228e73df7",
+          "english_text_sha256": "f3020da03e7db1d34ac6069c47500f0f207d03845e8f2994dd5e56de78b24a8a",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 10,
+          "source_text_sha256": "8656491939ba1e74e29aadebebdc0b0729c8b6234cf5c1b347b36fa0b324c126",
+          "english_text_sha256": "7ff39c284f14ba84017cedc8073b1ca87d822dcc982a8a8ef306aadaefbb6b05",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 11,
+          "source_text_sha256": "54576e75bad55f25babcd5a724d028e148a8a5868fc3ab3e284d5c9e3a9dae0d",
+          "english_text_sha256": "75ff56d681f2eaa5d46aefa9ffaf4baa57863ccb143246f70d128b4761033634",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 12,
+          "source_text_sha256": "7ff4c9dffb16ca5aaac1dd9f309f180206d73fca15e95e578f0dbd0badc81a93",
+          "english_text_sha256": "0a00ee1ee830b3151b5c2af1861a3ed806e53170fb5346b2e6c39d6592b1bd56",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 13,
+          "source_text_sha256": "76372e95569b499aa882ae206e59bcd6b7c45a954a104f7176406a12ab74dd19",
+          "english_text_sha256": "8c8ebbcaf58c11c3f4a82acc030dec7907154a0528f20043f5014674dfca836a",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 14,
+          "source_text_sha256": "efb9ac437825edb404078ba6e9489c600420675f77987a39bd200c8bd3dc9e2a",
+          "english_text_sha256": "6d02ce0b529a9d09313a5923a6ffca076bd628bc117474cb7d267716f6fcbd43",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 15,
+          "source_text_sha256": "aab0954538080bd79466ac9807abef670c155d57d440fce156e4bd57cd956ead",
+          "english_text_sha256": "7c8bf75b08fcf0f761570e873fbb0bb46d4aec7368492858c3f27f146e7e5283",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 16,
+          "source_text_sha256": "f2624c8c2114c091d54cfa69c6f34b8323f7e41e79c2f227e2d2375d94e36a27",
+          "english_text_sha256": "25487e6e6a74fca1a65ed67907dfe1b9a9acb8e0e3bef29c843fa859389bba51",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 17,
+          "source_text_sha256": "83749d97aa0d86c67a9e9060dd225f7e4a91f50276d38383c10618c6833c1137",
+          "english_text_sha256": "e3487c4139bfa86b2a768efa50fd066fffb54225e8ee00a4c3931ed4729463fa",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 18,
+          "source_text_sha256": "800cdade6ebe1d6348afe818550e53e0bb703309229fa7176ba4c5cec53a7cd4",
+          "english_text_sha256": "7c05e1cef943536878c743bb490c5cb989ea9a7ed136b4da191f550731262827",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 19,
+          "source_text_sha256": "a717b888ee2aaced1da64d2e7ebf14b8509a7cbadb9b0d827d2812a0e61f8bb6",
+          "english_text_sha256": "4ba66f590035d81bff2af08f12ff0655a68a57ecccb46ee5c70593b2f6d75c49",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 20,
+          "source_text_sha256": "af3b89fdb5ee5ba5b04568a5d026ab42678b11c35e6634356d8f3df87cee1ee3",
+          "english_text_sha256": "942838405b51a439d91b3ded219313ff64c93e1059cb081a2a49094873ae663f",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 21,
+          "source_text_sha256": "4f89546a5393e46506448eb8699e5ead7709c1f09b2a14b6d441cac9604eef6a",
+          "english_text_sha256": "4c3b75d7e2f13c33d1e44a332cc008d36dd1f9e9b20cdcad80a00ad4a721264e",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 22,
+          "source_text_sha256": "9de539e73759bea295c2783af4043d361995d4e61b0c5fed4c17ace61865bc88",
+          "english_text_sha256": "da1a0b798e7e8e0fda2e31d9e9c471ae1d6f26bf0228f79e35322b25aa355ed8",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 23,
+          "source_text_sha256": "7e863a4fad06e8acc22c28c12f083ceddc82d25e48f6408942c15a6bfd8076d8",
+          "english_text_sha256": "ea42e8d64c482a2626faf186b9d61be18b8865f2ce5274209b90ff2c47a2b1e5",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 24,
+          "source_text_sha256": "237c8fde2b568d43e5de789beec385fd2d2373d32d144add7fc7034faa23f6c6",
+          "english_text_sha256": "bf91b7ae09bcdd3a8ab867152fb381c765248c5bede4ea6cf9cf409daa6e9ed7",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 25,
+          "source_text_sha256": "dd7e6869c1cd3b22150bc7d6822c1e58eeb7c19da3df33ac69bcd0d0c51c8a13",
+          "english_text_sha256": "3e57946b690cf7c7de3ce30d0ca3cca8628c70e5e4a833551d949cfb6d29ad57",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 26,
+          "source_text_sha256": "8979a1a7024f896be0b88f7cab569f96ace5a272f1de3a5dd3eecb0e78766e68",
+          "english_text_sha256": "14d99fb209005882e49192f84c43b7372c8d1b822e051894d73b8f79affcd5ad",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 27,
+          "source_text_sha256": "80b1e4fadba16aef035ec0597a5f526343b7462a4f8305d6a3bbf4cfad2a54d8",
+          "english_text_sha256": "a44c1426c09287df459d1dd8c1df680a6d18827b1d97331a7dd0247e93780562",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    },
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/measurements.tex",
+      "source": {
+        "path": "measurements.tex",
+        "bytes": 10258,
+        "sha256": "268091f9667059b71d6dea6c96d8f7cd15e154324dafc5a4c3d3c40d3bad6529",
+        "git_blob_sha1": "a6cef01487e903f3a8cb0a7a712779082f867703"
+      },
+      "english": {
+        "path": "measurements.tex",
+        "bytes": 9235,
+        "sha256": "b155f04f0ad51456e298663217e6b384eafe5e7fefec9eca5f864b821878f0d9",
+        "git_blob_sha1": "d235014fe68325f6613e986475ba3fa6741b2749"
+      },
+      "chapter_anchors": [
+        "measure",
+        "audit"
+      ],
+      "source_block_count": 10,
+      "english_block_count": 10,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "ee3a0c79c9236f5f8b222e5b6008c4f44e2408326cd4bee46bb89b3915d1314e",
+          "english_text_sha256": "d1e7e00b66027858a5aeb87371d898ce1ab10e968976046f57f494e8a1d496fe",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 1,
+          "source_text_sha256": "48b103334220e713f0448b7054ad4c9e94f49c07a8d2c58866c7aad77ebdf4df",
+          "english_text_sha256": "39b682ffa5b8d761844f74405f4d33b425f1a15bec97fe88aed6602ef6911117",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 2,
+          "source_text_sha256": "3bbeb3bcd7a82b251fb8cf41f34a27ec7b38d88f3fcaa55e87673c3715ceb50e",
+          "english_text_sha256": "75811e028333cd61466f602ea491e4fb5469996850f058cc1d9c4a1610b94e35",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 3,
+          "source_text_sha256": "bf7678d8aac6fc4ab381b9dab611deee8f35ce0d1faf6756d764ce999d5aaec2",
+          "english_text_sha256": "1f7d90a20c7836f8756d656f640e7466c8c7d56272de13a0714e24cf64527e3b",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 4,
+          "source_text_sha256": "6a2583c5092f7ccba4e70def1fdd74c839499cf78a1821d9a5cc0f3fd9271e18",
+          "english_text_sha256": "2a81ead9528dedb72f3cc51005e74b2eb9c3e451184ea787a29ad35d4f914d87",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 5,
+          "source_text_sha256": "37baf4f59cf474d20b690950fcaff07352a3c69684512a8d5377169863a8cd12",
+          "english_text_sha256": "8e2b4e46323b6bd13e048e834ac782809a45eb1d5fd9407375c680328f5754b0",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 6,
+          "source_text_sha256": "e38e8b7d8a0efecfab57c641e6b950c5b59407737c3773bfb7e1b17c678f9c14",
+          "english_text_sha256": "3151ccecfe128eb50e15d22a5ad956b44db37bdf15770759310f6fc85df95f7f",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 7,
+          "source_text_sha256": "a9f8fb5afe6969cf8c5605fe5805155331e79019645d869f9c14bd1999c4d5ea",
+          "english_text_sha256": "23c4a5d63df1d683d9ad94f7201d56bef93d76bc5762e9613d75c603143618b1",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 8,
+          "source_text_sha256": "e586a504eb177aa89da7b55c80ad6553af67656fc85a50c06d69db647a71b761",
+          "english_text_sha256": "5e4290c1809689a44074328ce85fee8ce05a405882599a5e67afef3fa8a1a516",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 9,
+          "source_text_sha256": "054d872b92d28a7e72410f1ecac1911713a4c5582e06d57eb28b448daa589bf7",
+          "english_text_sha256": "72b88d37f5c132e7cefb6424f4ff44afdbc0f24b15560d334462268eabddb518",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    },
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/delivery.tex",
+      "source": {
+        "path": "delivery.tex",
+        "bytes": 21214,
+        "sha256": "e6116879d193b65490e2a2d667b7c05ab1d42dec321277c7d0660eb2ffb7a7a3",
+        "git_blob_sha1": "a38d67c8985f3f45800a9468da45870705b28c95"
+      },
+      "english": {
+        "path": "delivery.tex",
+        "bytes": 19436,
+        "sha256": "5a11a96203c6fd2616fec4dbffa7b73c2b0e8d5daa784e9b406f524b659a0061",
+        "git_blob_sha1": "a441da59ba5957cba80e811e4766aaffd71485bb"
+      },
+      "chapter_anchors": [
+        "pipeline",
+        "execution",
+        "forecast",
+        "publication"
+      ],
+      "source_block_count": 22,
+      "english_block_count": 22,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "6c43a5a47aae8a7fc5e65f5d6c8f11840a744594967f6f26bfa530584886edbf",
+          "english_text_sha256": "aac3e867c0564336e9522cf34c8a878fd956a63e3ec971e18111b42e856e62d4",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 1,
+          "source_text_sha256": "1bd2787f2e6ebe939a9ac71abee16ddef393235dd5653f0a092d7ba0fa059098",
+          "english_text_sha256": "4c5b6f30a48e9c186bd9331feea611adf53185f25bcd51df61c134caee334020",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 2,
+          "source_text_sha256": "43800e8c94007a774b26a1a89a44e53eaf884afffcd5034df264649a067a8c7f",
+          "english_text_sha256": "0be72e2cdfa57966880b7fcf6dbaf27a2a034a9d7a789a3832fbabc966fc534c",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 3,
+          "source_text_sha256": "32767fd6c63639f7f3c8582a2347029bae00da4d508c304e385fe4f92a4db676",
+          "english_text_sha256": "8c4a240b28ccd6e78b746940afd13be0ac7bad3daae6927810a543c33ffb82e5",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 4,
+          "source_text_sha256": "1efa9c7a8295c02befe888b75ca9f089719f69707cae0fd8ff3ecdb7517ce50a",
+          "english_text_sha256": "09f214fe6b225fe90480771c6c841ebeebfb5e8d8422b43ba96a65e916f7fb20",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 5,
+          "source_text_sha256": "f3336bd39091159e9fe59bf6ef3fd58ca72195ad2f6b4b1f66acc08877dba29c",
+          "english_text_sha256": "f8dd4e55fe29dfe0046d4534be9f6acfb2406896245ae6e720651925a077ffd8",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 6,
+          "source_text_sha256": "e60f221536cc81bcf06ee4165936e3910efdeb178161974816c26d5553dbed40",
+          "english_text_sha256": "15362833ef791c06f9f1ea0c9c4defc0b53b7df7688d7c7764fa0eefeb3c2f0f",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 7,
+          "source_text_sha256": "a5befb1430e582d288b46272c6a0d1323acadb1bd8c8af8bf0cb1472ac098624",
+          "english_text_sha256": "d82a933d95aeeafdc74188a5a52a32c86f2732c0a6b37849bc607f563309b691",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 8,
+          "source_text_sha256": "d3b0ed8f2ace612ec1dccc41f2a3b881aa5a2b9aaa8093feffe795992474557b",
+          "english_text_sha256": "48c6e734c61bbd60e066818acff92276727805eccfa438b406e1535384589db4",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 9,
+          "source_text_sha256": "26af0b2460ceae7066602c057857a2384c377422acd5c97f11ade7362ba2c91d",
+          "english_text_sha256": "a731e8b2aca98b045f07792099b1f589ad2f45512e30a87ee46c79c844de1a19",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 10,
+          "source_text_sha256": "960651b7a074864b05cee9cdc2d6bb4f6d495a4f127847bbac73a4062da8e2b7",
+          "english_text_sha256": "98ae9523ac2c0d5d3ca5527db8a09842ad4860d2dbafbd04cf89b1182e4c0dde",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 11,
+          "source_text_sha256": "eeffaccdfa912c6d7dd6e6ea461ab660c40e4aa4526e5b2511023f19dbddab32",
+          "english_text_sha256": "a3ef40a421e24a9f2eaa812f2247f492aa4ca9f85d711eeb850b432f61cfc5f2",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 12,
+          "source_text_sha256": "0229646d1bb4fdc01fe5eae59078a20ca75dafd3a3aae76f6a3d8d464113cc27",
+          "english_text_sha256": "d19feb6b3f8c682bfcae7b7b4325d3eb0f7da15117be806664bf149f701722e5",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 13,
+          "source_text_sha256": "c9e9da2b7c3889a8c3eddd0e1b40973de746dbd303d831e69d8e604c5aab1b40",
+          "english_text_sha256": "7382e1b0a685c716a2518b6d17bc8e5df57c487904a506cd2ff0605bc171a8ed",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 14,
+          "source_text_sha256": "b1d77f8adfa10d26ab7eac2b22f9d960077e79754c4fdb026d77c64713902e6c",
+          "english_text_sha256": "1d1fdd4b527ab0bad2dae8ab7c32ff9475ea98aa106ffbecf975e254952a3d8b",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 15,
+          "source_text_sha256": "7ebbfeb30b6a0eb121eb37d5559bbfbec145c323e9a1a4fa1ddb72f1e4c653ff",
+          "english_text_sha256": "02af91741dcab6b841b241c674ac2d66c19e8a1f73732c94c72e382a1df09fd8",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 16,
+          "source_text_sha256": "7826d8bde217b8f2ca63cc0c156185dedcfa00e08a27a42cd685318fb8e0af4a",
+          "english_text_sha256": "1b2e7a1545d27fe34b34f32125a8ae6c28ec80d9eb92e6ca0842c41e0f39878a",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 17,
+          "source_text_sha256": "ff95e59ebc428b3a1313b0d500e8ccc90eaa92d82c61c4ff7eb294c09d82f8cf",
+          "english_text_sha256": "0c7dbab9c9b6f3f33f1634987903c0834cc6c1d3a2ecad14220314c546e57d3b",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 18,
+          "source_text_sha256": "dc50ba99d9386d8ee17162d44f78dac27ef242e34151a6695b2e8bfe4312a20e",
+          "english_text_sha256": "5cce15b04b156d85f8677773f94612ff1c84e51b8ca09befc1a714ac80b99049",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 19,
+          "source_text_sha256": "d591c1e9db3c2f368459f5cfbb25ae4873391eeb47c172ff90628c80016cee95",
+          "english_text_sha256": "26fbd55d06cb7cfe3d6ab325773beb903815c3a5b9bf79caa8645f8a24195c4a",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 20,
+          "source_text_sha256": "91f13406003a037965b55f69d4940398c3be4085e5ad04e237d76eed38324ba1",
+          "english_text_sha256": "3a61d12b148a3c66a95944f959029f655aa13e0bff9564fcd3ee6d3711cb5b3d",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 21,
+          "source_text_sha256": "bacf97639c804fcd052e9a7410dfae89b9e049d9a16126fe04fe023300a0f7e8",
+          "english_text_sha256": "f5e85c3535792e7be5f5ecba7b2d393842819e416869397ecdb00c7edce09b38",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    },
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/appendix.tex",
+      "source": {
+        "path": "appendix.tex",
+        "bytes": 18024,
+        "sha256": "ef2a9c3228e261695f997df0d0ce934d11a0470efebba4c740acc127aca8ab75",
+        "git_blob_sha1": "72bf011c6b0150a9a8c46969d9cc7ad218a74b6b"
+      },
+      "english": {
+        "path": "appendix.tex",
+        "bytes": 17762,
+        "sha256": "ce5fa76a98614fabdce9b9c8349520c5220261f99cb1677ebbe0742e22693ab4",
+        "git_blob_sha1": "b3e5c956a05049132ea48baf7c5356dc90f9a167"
+      },
+      "chapter_anchors": [
+        "claims",
+        "changes",
+        "sources"
+      ],
+      "source_block_count": 17,
+      "english_block_count": 17,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "0ef8f25f68c6db1d0b88d7e8c7547f3d5c8a66cda421dcdf95468872ca075144",
+          "english_text_sha256": "17e6cbf411373c709408d1a4fc6fa6b5b50fe3932816aab23b5c364ed2b3695d",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 1,
+          "source_text_sha256": "b7aea68f15779069c30cd6668a6d5b34eb332f7b159d9847064a3b872cce18a5",
+          "english_text_sha256": "4d37a52fd5748533c1b50b1684d5008a71462fb9ae170c16d9d45359fa7b07cf",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 2,
+          "source_text_sha256": "62317ecce04561d00f757e7e3db107096e0d22ec2fae03873bb6c8dcb092e4d9",
+          "english_text_sha256": "12b4602c8e6996e331481a227e09e22a8df5c23410c37b5c031cc68e06d903a7",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 3,
+          "source_text_sha256": "8cbc776413261bba83731971f7e478759cf5095c88e56e4bbafde8b0694a9131",
+          "english_text_sha256": "e4c59ca62f0ed3458e30c45a1b2b60aabb81f503844b14b83c5b1d8d1f9af8ae",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 4,
+          "source_text_sha256": "e32ee83ba03265bd3748fbf9021f0591caa07aa9018c767e101be2cfecc8914e",
+          "english_text_sha256": "f5096ffff62be231b6b9dea7e54c3e220c68671e2c0bb07f6ceaaae67e99848d",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 5,
+          "source_text_sha256": "b972c8c1d16a177b42868f89dac5bc08284599e6bb1ed985d8a7367b247d1226",
+          "english_text_sha256": "33f3ece60b7f6a75b6afac0981dddf93f37321a5bcc1f14e84b92ae6bb87b0d9",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 6,
+          "source_text_sha256": "12312b2c27e1f90e440be0950f5b28f032802939bf876e584c28966eb747fa28",
+          "english_text_sha256": "af065f86505d3c243733ae9fe01380df2531081f7d815d0a032d5a9a2f016901",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 7,
+          "source_text_sha256": "8700a3a0c742b520ba790efe1b7e16fee598203ccb33bccc4bfe102978e63065",
+          "english_text_sha256": "79a0c11d260c1bf244b05ee44b3287fd333941ac21cff4e5984a597fe536f2f2",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 8,
+          "source_text_sha256": "1560df3c19bf1e3c5d57253b75aecf3fe88b2fb0e2517076430b2e3a50d411e4",
+          "english_text_sha256": "a75ef632d886ece29ceaeb329f5b2b391b29c3029edde6c387b79c21bb3ff955",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 9,
+          "source_text_sha256": "7bf2189fd0255a55be23d5921a68e542480dde840ebd3076a8fb6caf0155dc61",
+          "english_text_sha256": "94519990fb2e9b81c541164532f3f1a793426fcd2370aab2550d9c5f9b0f654d",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 10,
+          "source_text_sha256": "462db3cdee178ac79169e4e2fb80393d3e0b282e6f9702a3dec23a0fe376a7a3",
+          "english_text_sha256": "94c7e7df5a2bb68a96f0c47df76374b80196a8078eac104d20a3330a363726f4",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 11,
+          "source_text_sha256": "a95a6d1a11c61decdf42ed927a3439774152028a3e74ff2d1b97c12183954307",
+          "english_text_sha256": "ad6e0522f649608da0b38ace1008b2d5c613883516b6656ede93dffe29aa8016",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 12,
+          "source_text_sha256": "0af34c1a684df47f48c4b88dcfafa85dbcf2e9c4926969fa7ef75200e7ffb240",
+          "english_text_sha256": "50dad69d904c905fec3162887c180c8ca509d0c0fba1aa41259db5e2cdaa007f",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 13,
+          "source_text_sha256": "2ec138cec82246633a1acb090817d6a1930602e57a24a0c3bacd0f46f56a908f",
+          "english_text_sha256": "8bc72dafd0c073f042c0d41b1e8e93d6449e67427780727fead773fc2f16911c",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 14,
+          "source_text_sha256": "71cb60a8e0de7fced160f3b24ea5e21e4ae33fe8045d8aee943a2234a1fe182a",
+          "english_text_sha256": "9f03d9f5e82c6feb9130a4d587f47c2d0520699acbbadf7da37613d8f8699e38",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 15,
+          "source_text_sha256": "95623140b9da5b419b4fafa24ab697f8cd00dfdc28b00b1b1435cbe861344788",
+          "english_text_sha256": "282f1d600f526a8263ca0507b81cbf0c7051a71bd06b422c725dbf8e43eaaf68",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 16,
+          "source_text_sha256": "cbe09dd9e637354dbb20d6475306546070d8e5ebe0b06119433f3eba36f4864b",
+          "english_text_sha256": "77bcdc210c3aaf894c005524e6610eed3b0631b46af3a113ff49d936b4d160b3",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    },
+    {
+      "source_repository_path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/claim-scope.tex",
+      "source": {
+        "path": "claim-scope.tex",
+        "bytes": 8989,
+        "sha256": "c261339c14798727c4ebaedce71fcbadedf496484d2788ca5bfeb0aab293ac53",
+        "git_blob_sha1": "08e44a584d8b0972ca1d891030c9191644cc3aa0"
+      },
+      "english": {
+        "path": "claim-scope.tex",
+        "bytes": 11626,
+        "sha256": "93becd2a499a0aedf376c8ecafbceaab04371e118f01496c818ec11b0d41518e",
+        "git_blob_sha1": "f23978626af1e83b8e26698e820db829ba896827"
+      },
+      "chapter_anchors": [
+        "arxiv-scope"
+      ],
+      "source_block_count": 11,
+      "english_block_count": 11,
+      "complete_partition": true,
+      "ordered_blocks": [
+        {
+          "index": 0,
+          "source_text_sha256": "4013b0a006adc82bd22331d1ead3625ae980a4bd36368184237a4b084849c236",
+          "english_text_sha256": "4013b0a006adc82bd22331d1ead3625ae980a4bd36368184237a4b084849c236",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 1,
+          "source_text_sha256": "7177312052ac3cce3acfca1d0e3d43a744d74af1e73bec4400eaca5fcbf39492",
+          "english_text_sha256": "0999264d32ac76bc1c8b6693af6a7117d429452d2a33106aa69e5c7cc28c9801",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 2,
+          "source_text_sha256": "3bec2e0dba67f18912f9786fe22fd1c1f6400c9139ba0855ee6052ca13665186",
+          "english_text_sha256": "003f6982af9773d0b6bcb1a183ba97b6c2bdca9aea8c82081be848ab99ef4bd3",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 3,
+          "source_text_sha256": "1b66e485e2f067ea88cb700e92399413c792a0c9237eaa9fb8e14cbb9c703b5e",
+          "english_text_sha256": "2dbd7ab37ce7636da407219a2a9d4dabfa768f9911013c78415a7648bbe56b1d",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 4,
+          "source_text_sha256": "e957c7d4654b9c326bf43168ca7bd30380869b7f0fe5e43544905ebdb485e238",
+          "english_text_sha256": "40e862e1f062b194d8d825d851cc64290b95f85de391021f60df20f3e444dffc",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 5,
+          "source_text_sha256": "c8c7694edad81ad6132fd278e94f8c38dc1fc79fe1c3bfaf5efd65b53c6baa5e",
+          "english_text_sha256": "d430c18bfff9721a1077d3878307b392c2c7dbc78fa0634020597ffe592b8523",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 6,
+          "source_text_sha256": "635d79b2976486a9fa79cf4c4f0ab6f017cdf8f36cacb787cf2f908dc3dcbc65",
+          "english_text_sha256": "54a9149be9156cf40e7c9bdc4a6b07a6a93aa59f2106c73e85a04eb83f830e6c",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 7,
+          "source_text_sha256": "d41799e54d5478c24cca97d7d789942a6a8b549966ab39b3539e948baec79471",
+          "english_text_sha256": "d7ec0b1c31a533e3f3c867d2aaa8c42dceed4d5984c40f2cfefdc7c00f24c115",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 8,
+          "source_text_sha256": "f883ecde4de36f9bf749d586937bc07fb02496fac123eeaa546f03d8b4f71a6d",
+          "english_text_sha256": "1066d9e39524924b23891b30e980bcabd119bab3804c7a710fc60453cc1bfe9c",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 9,
+          "source_text_sha256": "1cc3cb465a9befec5687bf00ca2b5c96c3a57883cdaad76a2df9a6963ec53a2e",
+          "english_text_sha256": "30fd52c60556d72456a18dad595adb04b034637b608f4c04df9f5742fa880793",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        },
+        {
+          "index": 10,
+          "source_text_sha256": "f3e02dda13b9406dbd442350d4ccaabdc0cd73f734b7d1ee1d057448c56b9d38",
+          "english_text_sha256": "9815fab35fbbc4f6806f34ac9e17c7f5be71803f366f24f3c1745783b6f38c15",
+          "relation": "editorial translation; no new empirical or formal evidence"
+        }
+      ]
+    }
+  ],
+  "claim_correspondence": {
+    "path": "CLAIM_CORRESPONDENCE_EN.json",
+    "bytes": 39812,
+    "sha256": "8e177fe98f54e8eb642e1ccdc9927bbf0ba96182fd333754d2e0be5c43ad1601",
+    "git_blob_sha1": "1e39940113c12ece394ff441eb2195de884619fc"
+  },
+  "historical_state_preserved": true,
+  "historical_wording_rule": "current/now/Draft in the source body retains its respective 2026-10-03 source time; prominent opening and final scope notices prevent present-state promotion",
+  "declared_editorial_changes": [
+    "full English translation of all seven TeX inputs including source glossary and scope addendum",
+    "English title, abstract and metadata",
+    "visible artificial-cognitive translation contribution and pending human acceptance",
+    "prominent historical source-state notice; historical register distinguished from binding final disposition",
+    "locale conversion of numeric punctuation without changing numeric values",
+    "ASCII hyphen source-reference typography and portable filename-based Latin Modern font policy",
+    "equation prose translated; symbol S_gesamt retained and explained as overall speedup"
+  ],
+  "human_acceptance": "PENDING",
+  "exact_model_build": "UNAVAILABLE",
+  "exact_session_or_run_id": "UNAVAILABLE",
+  "new_trials_or_kernel_proofs": false,
+  "predecessor_evidence_transfer": false
+}
