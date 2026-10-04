@@ -1,0 +1,206 @@
+{
+  "schema": "qikvrt_pdf_render_validation_v1",
+  "candidate_id": "arxiv-effective-continuity-en-20261004-v2",
+  "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "pdf": {
+    "path": "main.pdf",
+    "bytes": 578695,
+    "sha256": "6151ac53206b965258b16c4986ca108f138837d31505c47d6e5bbdf0b9c5c310",
+    "git_blob_sha1": "30bc34a785f041a4dde271aac9450ecf9f6e3fe6"
+  },
+  "page_count": 23,
+  "renderer": "Poppler pdftoppm",
+  "renderer_version": "pdftoppm version 26.05.0",
+  "dpi": 100,
+  "page_images_decoded": 23,
+  "page_images": [
+    {
+      "path": "page-01.png",
+      "bytes": 89052,
+      "sha256": "3712bfcfd49e8d7ac743f0eb9502946af03d0641e17a0e77c88946804c082b33",
+      "git_blob_sha1": "5462c0c290f8e227eea0304185647c738fc2d482"
+    },
+    {
+      "path": "page-02.png",
+      "bytes": 272318,
+      "sha256": "e7b9d377219eb449b12262a9101d25285dac6d7135c9dcb3e0f36f4840f916d8",
+      "git_blob_sha1": "ee7c4ca741d195a8493d5169e878b7d5142abcb4"
+    },
+    {
+      "path": "page-03.png",
+      "bytes": 274060,
+      "sha256": "7044511845fc527bb3faaffa627fc1abfa3a6453832e0cc353b03f835382cf95",
+      "git_blob_sha1": "6e83a13c4230ce4bc94eac7b3dd02e750e9e5017"
+    },
+    {
+      "path": "page-04.png",
+      "bytes": 287078,
+      "sha256": "af5fc2f4cbb7190083031b3af821c3494d4a11ec75b9397bb92eefcf5d73991a",
+      "git_blob_sha1": "96d5cd728fa1ee65331bd5eb1b17f24f31c9e734"
+    },
+    {
+      "path": "page-05.png",
+      "bytes": 267235,
+      "sha256": "e0c116fa4222dd8843f0e22bfe449575283080274eb6427748191c3534076dac",
+      "git_blob_sha1": "e058ac8a89552f1811a8fb779f3e1d0a1ecf3934"
+    },
+    {
+      "path": "page-06.png",
+      "bytes": 265750,
+      "sha256": "eb1fd5b0a16d3ebe30841ebd633782ef37152c34c3aee4b2eabe36b4680829f6",
+      "git_blob_sha1": "9c8fabfe76af37c86af5b45ca476ea516ff7290f"
+    },
+    {
+      "path": "page-07.png",
+      "bytes": 274220,
+      "sha256": "82d252967d995b66502a2de54cd11b4accb3dcdbe6e2c0e331e342a673476dfc",
+      "git_blob_sha1": "55ef00b61eb6f261538ea47f540a169ebc09822c"
+    },
+    {
+      "path": "page-08.png",
+      "bytes": 231365,
+      "sha256": "8eae9a0f840dedc0319d548d1ec614ac578695ecca0b163f6724e48abe2e77ee",
+      "git_blob_sha1": "184ffdbbe1df557f1d48e108a333ca8882666f8e"
+    },
+    {
+      "path": "page-09.png",
+      "bytes": 285744,
+      "sha256": "9e8ab12b9af5f438797dc69747866b7433d43138450401d2684ee60d748dfe25",
+      "git_blob_sha1": "c01abc0d9a7a1870fb21225ee402e3a24d476fec"
+    },
+    {
+      "path": "page-10.png",
+      "bytes": 210200,
+      "sha256": "51833eab4f8726866306686f1a4e13366bdd485951c06eae2ebec816beec3f46",
+      "git_blob_sha1": "e7c4ca405882df3b839beb2ed76d6a9fd6d7bb98"
+    },
+    {
+      "path": "page-11.png",
+      "bytes": 263407,
+      "sha256": "3995c1bfa2950d08375383b90510added1b03b36f81d139b1e34a43e5570e20f",
+      "git_blob_sha1": "098ac96769448c9756d79c9e02073f20cc6c3623"
+    },
+    {
+      "path": "page-12.png",
+      "bytes": 287246,
+      "sha256": "f6bcab148e0bed6182f3536f52b1a5db509bed563d3879374dc7de50dcb4936b",
+      "git_blob_sha1": "1321d820303eecd38cdb42fff640b0a98f276fb3"
+    },
+    {
+      "path": "page-13.png",
+      "bytes": 235500,
+      "sha256": "cd70fb63dd3d13cdce471dc75ac06f1d422a26ee5f0d3e3a4d1ba5b8ae362bb5",
+      "git_blob_sha1": "62dd811b9d946e73199ccc81e11419f6b9ef96fb"
+    },
+    {
+      "path": "page-14.png",
+      "bytes": 179342,
+      "sha256": "6474222eb71c9540e857d1a8a6962fdf47a07b434f25a4c2818de67e337a40c8",
+      "git_blob_sha1": "b98de006be719ff1303bbb74d9aa609409c6da73"
+    },
+    {
+      "path": "page-15.png",
+      "bytes": 280518,
+      "sha256": "ffc86cc08364001ee297ef776b66632182ebacf3d3e308b25acb4f9bf47af507",
+      "git_blob_sha1": "68783edb9965294288b5878bbeecf3c63e848b51"
+    },
+    {
+      "path": "page-16.png",
+      "bytes": 198111,
+      "sha256": "d9456cecd02778504f0aaabcd0bd5275877293da556b12364cba7761248b0546",
+      "git_blob_sha1": "c181048c7db8b304c09e3960a8538c8da52a9701"
+    },
+    {
+      "path": "page-17.png",
+      "bytes": 224911,
+      "sha256": "aebfe07c7a244840685678f8e78bbd6aa021d3dd61bf7636f003ac2bae52c048",
+      "git_blob_sha1": "496cb1bbbe43e10a3ada31a6883334641d0d7b34"
+    },
+    {
+      "path": "page-18.png",
+      "bytes": 270791,
+      "sha256": "18cbcc069437a40e24957cc732fda7ec4144128761ab463fac65a6504975ea96",
+      "git_blob_sha1": "ac8f65d86d8124ae76cf3f924f92084aa3757702"
+    },
+    {
+      "path": "page-19.png",
+      "bytes": 357483,
+      "sha256": "42604806f35f4b7222bff07c7d1c33fb9319cfe8d4822e7c02d7f167fe0a675f",
+      "git_blob_sha1": "0268b0a4a6ea3206ddeb55f84fd548bce9759f0f"
+    },
+    {
+      "path": "page-20.png",
+      "bytes": 49495,
+      "sha256": "01babd351d507f5bd3ad99392cd3edbaf9252c1b435f1ff42b8ab4a98f11471d",
+      "git_blob_sha1": "f00d998bde943fc818142c2b5ce974a5ea062758"
+    },
+    {
+      "path": "page-21.png",
+      "bytes": 222182,
+      "sha256": "a2ecb1750d237eeb4a77355becd5fa366ba510ee51f5d3587f9e8fe4eccbe68c",
+      "git_blob_sha1": "205bae9c173807cfe27d25e05490621d8b4e8952"
+    },
+    {
+      "path": "page-22.png",
+      "bytes": 223295,
+      "sha256": "9e864636f4300232633427fadfc7a605281d10ded352fc2df831362e2b58670e",
+      "git_blob_sha1": "e555436c16c3af018e78cf4d465f2e0c92d83b0f"
+    },
+    {
+      "path": "page-23.png",
+      "bytes": 274896,
+      "sha256": "81409149c84e29d407558623e7eb41634a38052a82841df2109b900d08b8b8bd",
+      "git_blob_sha1": "51fda3e138962aac7e904e8a14d7738d41d089bf"
+    }
+  ],
+  "visual_review": {
+    "observer": "OpenAI Codex / GPT-6 family",
+    "exact_model_build": "UNAVAILABLE",
+    "reviewed_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "result": "PASS_LOCAL_LAYOUT_REVIEW",
+    "observed_utc": "2026-10-04T05:44:21.669508+00:00",
+    "checked": [
+      "complete cover and English staging label",
+      "all columns and page continuations",
+      "table values and formulas",
+      "no clipped or overlapping text",
+      "readable source bibliography and identifiers",
+      "all 30 English claim statements and individual scopes",
+      "preserved historical state and no-submission boundaries"
+    ],
+    "boundary": "AI visual review of final local output; human acceptance and arXiv server rendering are not observed."
+  },
+  "diagnostics": {
+    "warnings_after_final_build": 0,
+    "overfull_boxes": 0,
+    "missing_glyphs": 0,
+    "undefined_references": 0
+  },
+  "submission_performed": false,
+  "upload_authorization_consumed": false,
+  "predecessor_review_transferred": false
+}
