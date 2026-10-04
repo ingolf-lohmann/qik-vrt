@@ -18,7 +18,8 @@
       "Correction: resume under latest quality/procedure rules; restart when required",
       "Authorization: strategy and bounded preparation approved 2026-10-04",
       "Owner explicitly authorizes Effect Acknowledgement for his own inputs and Digital-Twin role, transparent prioritization and support for his declared goals/principles; 2026-10-04.",
-      "Owner explicitly authorizes closing the personal Digital-Twin REST gap on 2026-10-04; authorization remains valid despite missing runtime capability."
+      "Owner explicitly authorizes closing the personal Digital-Twin REST gap on 2026-10-04; authorization remains valid despite missing runtime capability.",
+      "Owner declares the fourth strand QIK-VRT Authority/Mirror full development as durable main goal; unresolved requirements refined until well-defined, with suitable QIK-VRT Digital-Twin REST Effect-Acknowledgement feedback. 2026-10-04."
     ],
     "generated_candidate_acceptance": "PENDING"
   },
@@ -33,7 +34,8 @@
       "Explicit restart, evidence invalidation and delivery semantics",
       "No invented native execution or compilation result",
       "Inspected current main Digital-Twin REST/transport and PR429 scheduling plus PR414 goal-pursuit contracts; added a source-bound human-input, prioritization, conflict and feedback extension.",
-      "Inspected actual Railway terminal configuration/volume/variable names, historical deployed-subject log, current Mirror transport and existing PR429 private CAS store; recorded an exact capability-bound continuation."
+      "Inspected actual Railway terminal configuration/volume/variable names, historical deployed-subject log, current Mirror transport and existing PR429 private CAS store; recorded an exact capability-bound continuation.",
+      "Defined main-strand requirement readiness, minimal necessary Owner-decision feedback and 12 declared unexecuted end-to-end acceptance scenarios. Reused PR429/436 private CAS/broker and PR454 runtime-route observation; no second controller or live personal REST activation."
     ]
   },
   "artifacts": [
@@ -6201,5 +6203,73 @@
     "existing_external_admission_gap": "Current native runs require GitHub admission and actual enforced Code Owner review; no callable admission/admin route observed; renewed Owner instruction is not execution admission.",
     "measurement": "No matched baseline, human handling-time telemetry or live autonomous task-outcome proof established.",
     "effect_ack_done": false
+  },
+  "main_thread_continuation": {
+    "schema": "qikvrt_owner_main_thread_continuation_v1",
+    "thread_id": "QIKVRT-MAIN-DEVELOPMENT",
+    "owner_directive_at": "2026-10-04T09:21:03+02:00",
+    "designation": "FOURTH_AND_MAIN_STRAND",
+    "state": "MAIN_GOAL_AND_REQUIREMENTS_CAPTURED_REVIEW_CANDIDATE; LIVE_PERSONAL_ADAPTER_PENDING",
+    "source_subject": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "base_head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+      "base_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+      "predecessor_pr": 453,
+      "predecessor_head": "d07d87fe6640632f0b309a55e634ce162c9346b3"
+    },
+    "coverage": {
+      "authority_observation": "HTTP404_CURRENT_CONNECTOR_SCOPE",
+      "authority_coverage_complete": false,
+      "mirror_backlog": "universal_backlog_continuation/mirror",
+      "mirror_full_implementation_acceptance": false
+    },
+    "requirement_acceptance_matrix": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json#/main_development_thread/human_context_coverage/scenarios",
+    "acceptance_scenarios_count": 12,
+    "acceptance_scenarios_executed": 0,
+    "private_strands_preserved": "Three existing private strands retain identity/content in admitted private profile; no counterpart content published.",
+    "implementation_reuse": [
+      {
+        "kind": "private_native_CAS_and_schedule_store",
+        "pr": 429,
+        "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+        "paths": [
+          "src/qikvrt_digital_twin_schedule_events.py",
+          "src/qikvrt_digital_twin_scheduling.py",
+          "src/qikvrt_github_api_shim.py"
+        ],
+        "state": "OPEN_CANDIDATE_NOT_DEPLOYED"
+      },
+      {
+        "kind": "fenced_reflexive_broker_write_readback",
+        "pr": 436,
+        "head": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+        "paths": [
+          "src/qikvrt_digital_twin_rest.py",
+          "state/work_units/QIKVRT_PR436_REFLEXIVE_API_REPOSITORY_V1.json"
+        ],
+        "state": "OPEN_CANDIDATE_NOT_LIVE_PERSONAL_GOALS"
+      },
+      {
+        "kind": "existing_durable_runtime_route_observation",
+        "pr": 454,
+        "head": "e3e270052d8f8a3ed37085bfe7a0ab59246fd117",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/DURABLE_ROUTE_OBSERVATION.json",
+        "state": "RECORDED_OBSERVATION; NOT_PERSONAL_TASK_WRITE_OR_EXECUTOR"
+      }
+    ],
+    "client_application": "Treat QIK-VRT main goal as persistent; refine routine details autonomously, preserve open requirements under current criteria, report material progress or genuinely necessary smallest Owner decision, and do not re-request standing task authorization.",
+    "next_safe_action": "Integrate/admit closed personal requirement/input/feedback schema on existing private CAS/authenticated transport; verify restart persistence, exact-principal readback and observed QIK-VRT human delivery.",
+    "retry_condition": "Materially new private adapter/runtime or source/criteria/admission evidence; unchanged failure is NOOP.",
+    "live_reminder_or_delivery_created": false,
+    "public_repository_persistence_is_private_twin_write": false,
+    "global_effect_ack_done": false,
+    "concurrent_carrier_integration": {
+      "predecessor_head": "d07d87fe6640632f0b309a55e634ce162c9346b3",
+      "predecessor_tree": "a50b89e52e7b50086a5da1edb45d330022459278",
+      "additional_path_preserved": "state/authorization/delegations/OWNER_CONTINUOUS_USABILITY_THREAD_05_20261004.json",
+      "existing_core_source_unchanged": true,
+      "new_core_paths_count": 2,
+      "no_other_client_changes_overwritten": true
+    }
   }
 }

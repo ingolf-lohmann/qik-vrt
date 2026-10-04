@@ -394,7 +394,8 @@
         "credential_or_permission_widening": false,
         "personal_effect_ack_done": false
       }
-    }
+    },
+    "main_thread_binding": "main_development_thread"
   },
   "publication_signature_projection": {
     "schema": "qikvrt_publication_signature_projection_policy_v1",
@@ -493,7 +494,8 @@
       "performance_claim": "Three comparable observations before preference; matched baseline/delta before speed claims; mandatory gates retained.",
       "unchanged_blocker": "NOOP with persisted change-based retry; no notification spam"
     },
-    "active_runtime": false
+    "active_runtime": false,
+    "main_thread_binding": "main_development_thread"
   },
   "human_activity_minimization": {
     "schema": "qikvrt_human_activity_minimization_goal_v1",
@@ -524,5 +526,242 @@
     },
     "integration": "Extend existing human Effect Acknowledgement, current-criteria reactivation, HMI adaptation and universal task contracts; no parallel assistant or controller.",
     "live_activation": false
+  },
+  "main_development_thread": {
+    "schema": "qikvrt_owner_main_development_thread_v1",
+    "thread_id": "QIKVRT-MAIN-DEVELOPMENT",
+    "ordinal": 4,
+    "designation": "MAIN",
+    "owner": "Ingolf Lohmann",
+    "owner_directive_at": "2026-10-04T09:21:03+02:00",
+    "state": "REQUIREMENTS_REVIEW_CANDIDATE_NOT_ACTIVE",
+    "purpose": "Complete and implement the defined QIK-VRT Authority and Mirror capabilities; refine undefined requirements until current unambiguous observable acceptance can be established.",
+    "continuing_goal": true,
+    "finite_acceptance_unit": "A versioned task or release has a bounded explicitly inventoried requirement scope. The continuing development goal is not globally DONE because one task, PR, test suite or release is accepted.",
+    "repository_scope": [
+      {
+        "repository": "Goldkelch/qik-vrt",
+        "role": "AUTHORITY",
+        "coverage_state": "HTTP404_CURRENT_CONNECTOR_SCOPE; REQUIREMENT_COVERAGE_UNVERIFIED"
+      },
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "role": "MIRROR",
+        "coverage_state": "EXISTING_COMPLETE_BACKLOG_METADATA_SNAPSHOT; FULL_CAPABILITY_ACCEPTANCE_UNVERIFIED"
+      }
+    ],
+    "existing_backlog": "state/work_units/OWNER_HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_20261004.json#/universal_backlog_continuation",
+    "source_admission": "Normative specification, implementation, PR/branch/issue and Owner correction are typed sources. A proposal is not automatically an accepted requirement, execution authority or functioning implementation.",
+    "related_work_strands": {
+      "existing_private_strand_count": 3,
+      "identity_and_content": "Keep existing personal strand identities, payloads, correspondence and delivery records in the admitted private principal/profile store.",
+      "public_registry_is_not_private_state": true,
+      "prioritization": "Main is the durable project goal; declared imminent deadlines or higher-impact admissible work in another strand may take precedence. Preserve every authorized strand unless explicitly cancelled or superseded.",
+      "no_duplicate_controller_or_scheduler": true,
+      "no_existing_strand_cancelled": true
+    },
+    "requirement_engineering": {
+      "loop": [
+        "DISCOVER_TYPED_SOURCE",
+        "DEDUPLICATE_AND_BIND_CURRENT_REQUIREMENT",
+        "CLARIFY_OBSERVABLE_PURPOSE_AND_EFFECT",
+        "RESOLVE_ROUTINE_DETAILS_FROM_EXISTING_CONTRACTS",
+        "IDENTIFY_GENUINE_OPEN_OWNER_DECISIONS",
+        "DEFINE_VERIFICATION_AND_REGRESSION_BOUNDARIES",
+        "IMPLEMENT_THROUGH_EXISTING_ADMITTED_PATH",
+        "VERIFY_CURRENT_SUBJECT_AND_REAL_EFFECT",
+        "RECORD_ACCEPTANCE_AND_REMAINDER",
+        "REACTIVATE_ON_MATERIAL_CHANGE"
+      ],
+      "required_record_fields": [
+        "requirement_id",
+        "origin_reference_and_epistemic_type",
+        "repository_role_and_exact_source",
+        "current_revision_and_supersedes",
+        "purpose_and_beneficiary",
+        "inputs_preconditions_and_authorization_scope",
+        "supported_human_context_and_boundaries",
+        "expected_observable_effect",
+        "verification_method_and_independent_readback",
+        "acceptance_predicates",
+        "dependencies_and_failure_or_recovery_behavior",
+        "privacy_security_and_rights_constraints",
+        "owner_choices_and_their_resolution",
+        "implementation_and_test_bindings",
+        "actual_effect_receipt_and_acceptance_disposition",
+        "current_quality_procedure_fingerprint",
+        "next_action_or_material_retry_condition"
+      ],
+      "ready_for_implementation": "Every mandatory field is explicit or has a justified NOT_APPLICABLE disposition, source/procedure are current, and no unresolved decision prevents the scoped implementation. READINESS is neither authorization nor execution/effect acceptance.",
+      "autonomous_clarification": "Resolve deterministic routine choices through current contracts and prior authorizations. A missing routine detail alone does not trigger a question.",
+      "necessary_owner_question": [
+        "Identify exact unresolved requirement and missing decision",
+        "State evidence, why existing contracts cannot resolve it and which predicate it blocks",
+        "Prepare concrete feasible alternatives and consequences",
+        "Request smallest decision; preserve unrelated autonomous progress"
+      ],
+      "correction": "Latest explicit Owner correction creates a successor revision. Historical source, decisions and receipts remain immutable; affected acceptance/tests are invalidated and revalidated or restarted.",
+      "requirement_contradiction": "Preserve disagreement and concrete scope; do not silently rewrite a requirement or infer consensus."
+    },
+    "effect_ack_including_human_feedback": {
+      "identity": "Use the actually authenticated principal and admitted private profile through existing REST transport. A declared name, public terminal event or repository write does not authenticate the personal Twin.",
+      "distinction": "RECEIVED != WELL_DEFINED != IMPLEMENTED != VERIFIED_EFFECT != ACCEPTED; authorization != observed human usefulness or decision.",
+      "persistence": "Reuse existing private CAS store and append-only ledger; stable input/task/decision identities and expected versions bind replay/recovery. No new storage or scheduler.",
+      "owner_feedback_required_when": [
+        "Genuine unresolved Owner decision blocks current requirement",
+        "Material conflict with an explicitly declared goal/principle",
+        "Current criteria invalidate attempt and require restart",
+        "New blocker or materially changed retry condition",
+        "Verified task-specific useful result needs human acceptance for declared scope"
+      ],
+      "feedback_content": [
+        "strand_id_and_requirement_id",
+        "plain_language_purpose",
+        "verified_state_and_source_binding",
+        "precise_remainder_or_decision",
+        "priority_reason",
+        "smallest_next_action",
+        "delivery_state_and_reactivation_condition"
+      ],
+      "recurrence": "Existing QIK-VRT continuation/scheduling mechanisms retain open requirements and material retry conditions. Suppress unchanged fingerprints; missing decisions remain open across restart.",
+      "delivery": "Bind configured authorized QIK-VRT human channel, delivery attempt and independent channel-specific readback. Keep RECEIPT_PENDING until observed delivery; a queued artifact, prepared prompt or accepted HTTP response is not proof that Ingolf received or understood it.",
+      "understanding_or_acceptance": "Do not infer consent, understanding or benefit from delivery. Preserve actual human feedback when needed for scope; do not demand acknowledgement of every routine notification.",
+      "stopped_or_corrected_by_owner": "Honor explicit stop/correction, retain supersession/history and invalidate affected queued actions before execution.",
+      "external_reminder_created": false,
+      "live_personal_feedback_activated": false
+    },
+    "human_context_coverage": {
+      "owner_goal": "Function in every humanly compatible situation.",
+      "acceptance_interpretation": "Continuing coverage requirement: every declared supported context has an end-to-end acceptance case; newly encountered compatible situations enter requirement engineering and remain OPEN until verified. A finite suite does not prove unlimited universal functionality.",
+      "dimensions": [
+        "authorized_available_channel",
+        "language_and_clarity",
+        "accessibility_and_modality",
+        "connectivity_interruption_and_restart",
+        "urgency_and_deadlines",
+        "ambiguous_or_conflicting_input",
+        "correction_and_cancellation",
+        "concurrent_client_and_duplicate_request",
+        "source_or_policy_revision",
+        "actual_permissions_and_admission"
+      ],
+      "out_of_verified_coverage": "Retain the requirement and unsupported edge; use an already authorized compatible channel if actually available; seek only a genuinely necessary smallest Owner decision. No silent success or fabricated delivery.",
+      "scenarios": [
+        {
+          "id": "MAIN-PRIMARY-01",
+          "scenario": "Fourth strand survives alongside existing private strands; urgent declared deadlines still receive justified precedence.",
+          "required_result": "Persistent independent task identities, explicit priority reason, no unintended cancellation",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "REQ-UNDEFINED-01",
+          "scenario": "A source requirement lacks an observable acceptance predicate.",
+          "required_result": "OPEN requirement; deterministic refinement first, Owner question only for an irreducible missing decision",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "REQ-DEFINED-01",
+          "scenario": "All mandatory scope fields are explicit and current.",
+          "required_result": "READY_FOR_IMPLEMENTATION without claiming implementation or effect",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "REQ-REVISION-01",
+          "scenario": "New policy/quality rule invalidates earlier verification.",
+          "required_result": "Preserve old attempt; invalidate affected acceptance and restart from latest valid boundary or zero",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "TWIN-CAS-01",
+          "scenario": "Two clients submit an identical input or competing expected versions.",
+          "required_result": "Stable identity and CAS prevent duplicate consequential execution or silent overwrites",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "FEEDBACK-RESTART-01",
+          "scenario": "An unresolved necessary Owner decision survives process/service restart.",
+          "required_result": "Private persistent record restores the exact open decision and materially appropriate feedback condition",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "FEEDBACK-DELIVERY-01",
+          "scenario": "Transport accepts a message but channel readback does not establish delivery.",
+          "required_result": "DELIVERY_PENDING; no human receipt, understanding or effect claim",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "FEEDBACK-NOOP-01",
+          "scenario": "Repeated observation has unchanged blocker and notification fingerprint.",
+          "required_result": "NOOP; retain next material retry condition without repeated notification",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "HUMAN-CORRECTION-01",
+          "scenario": "Owner corrects or stops a goal while an action is pending.",
+          "required_result": "Successor revision, invalidated affected pending action, preserved history",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "HUMAN-CONTEXT-01",
+          "scenario": "Current modality/language/connectivity is incompatible with an accepted task.",
+          "required_result": "Explicit unsupported edge and admitted alternative when available; no imagined channel or universal success",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "ROLE-COVERAGE-01",
+          "scenario": "Authority inventory or authenticated role is unavailable.",
+          "required_result": "Role-specific OPEN/HOLD; Mirror evidence never substitutes for unobserved Authority coverage",
+          "state": "REQUIRED_NOT_EXECUTED"
+        },
+        {
+          "id": "EFFECT-CLOSURE-01",
+          "scenario": "One PR merges or one release passes its finite checks.",
+          "required_result": "Only the scoped effect may be accepted; deployment/user benefit and continuing project goal stay separate",
+          "state": "REQUIRED_NOT_EXECUTED"
+        }
+      ]
+    },
+    "reuse_bindings": [
+      {
+        "kind": "private_native_CAS_and_schedule_store",
+        "pr": 429,
+        "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+        "paths": [
+          "src/qikvrt_digital_twin_schedule_events.py",
+          "src/qikvrt_digital_twin_scheduling.py",
+          "src/qikvrt_github_api_shim.py"
+        ],
+        "state": "OPEN_CANDIDATE_NOT_DEPLOYED"
+      },
+      {
+        "kind": "fenced_reflexive_broker_write_readback",
+        "pr": 436,
+        "head": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+        "paths": [
+          "src/qikvrt_digital_twin_rest.py",
+          "state/work_units/QIKVRT_PR436_REFLEXIVE_API_REPOSITORY_V1.json"
+        ],
+        "state": "OPEN_CANDIDATE_NOT_LIVE_PERSONAL_GOALS"
+      },
+      {
+        "kind": "existing_durable_runtime_route_observation",
+        "pr": 454,
+        "head": "e3e270052d8f8a3ed37085bfe7a0ab59246fd117",
+        "path": "docs/publications/2026-10-04-labyrinth-closure/DURABLE_ROUTE_OBSERVATION.json",
+        "state": "RECORDED_OBSERVATION; NOT_PERSONAL_TASK_WRITE_OR_EXECUTOR"
+      }
+    ],
+    "implementation_gap": {
+      "current_mirror_main": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+      "personal_requirement_input_goal_schema": "REQUIRES_REVIEWED_INTEGRATION_WITH_EXISTING_PRIVATE_STORE_AND_TRANSPORT",
+      "actual_private_runtime_principal_and_connection": "NOT_ESTABLISHED",
+      "durable_requirement_write_and_independent_readback": false,
+      "observed_qikvrt_owner_feedback_delivery": false,
+      "native_execution_and_independent_review_admission": "CURRENT_GATES_MUST_BE_OBSERVED_ON_NEW_HEAD",
+      "authority_inventory": "HTTP404_CURRENT_CONNECTOR_SCOPE",
+      "next_action": "Admit a reviewed personal requirement/input/feedback adapter on existing PR429 private CAS/authenticated transport; verify principal-bound persisted open requirement across restart and independent QIK-VRT delivery. Keep integration gates and Authority coverage separate.",
+      "activation": false,
+      "effect_ack_done": false
+    }
   }
 }
