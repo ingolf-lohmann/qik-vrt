@@ -1,0 +1,202 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "claims": [
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F01",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.reverse_is_same_portal"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "reverse_is_same_portal",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F02",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.grow_preserves_soundness"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "grow_preserves_soundness",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F03",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.grow_is_monotone"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "grow_is_monotone",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F04",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.two_witnesses_are_sound"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "two_witnesses_are_sound",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F05",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.closed_set_covers_reachable"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "closed_set_covers_reachable",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F06",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.connected_closed_set_covers_all"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "connected_closed_set_covers_all",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F07",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.no_infinite_strict_rank_descent"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "no_infinite_strict_rank_descent",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F08",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.complete_empty_is_zero"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "complete_empty_is_zero",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F09",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.complete_singleton_is_unique"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "complete_singleton_is_unique",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No stochastic theorem, Python refinement, or production conformance is inferred.",
+      "claim_id": "LCL-F10",
+      "classification": "FORMAL_PENDING_KERNEL",
+      "proof_refs": [
+        "QIKVRT.Labyrinth.partial_empty_does_not_imply_zero"
+      ],
+      "scope": "Exact abstract predicate/reachability lemma in LabyrinthClosure.lean",
+      "statement": "partial_empty_does_not_imply_zero",
+      "status": "OPEN_KERNEL_RECEIPT"
+    },
+    {
+      "boundary": "No deterministic stopping-time bound; arbitrary random rules are excluded.",
+      "claim_id": "LCL-C02",
+      "classification": "MATHEMATICAL_DERIVATION",
+      "proof_refs": [
+        "PROOF.md section 3"
+      ],
+      "statement": "Finite connected simple undirected graph and uniform neighbor choice imply almost-sure edge cover from every start.",
+      "status": "PAPER_DERIVATION_NOT_KERNEL_PROMOTED"
+    },
+    {
+      "boundary": "Observation model matters; exhaustive local oracle removes the stated ambiguity.",
+      "claim_id": "LCL-C03",
+      "classification": "MATHEMATICAL_DERIVATION",
+      "proof_refs": [
+        "PROOF.md section 4"
+      ],
+      "statement": "Finite bounded search and memory alone do not yield a universally sound finite zero/exact-one decision.",
+      "status": "COUNTEREXAMPLES_DERIVED"
+    },
+    {
+      "boundary": "Finite static graph, correct side/identity and complete oracle assumed; no device navigation proof.",
+      "claim_id": "LCL-C04",
+      "classification": "MATHEMATICAL_DERIVATION",
+      "proof_refs": [
+        "PROOF.md section 5"
+      ],
+      "statement": "Exhaustive local oracle plus unique pending work terminates and computes exactly the reachable cut.",
+      "status": "PAPER_DERIVATION_NOT_KERNEL_PROMOTED"
+    },
+    {
+      "boundary": "Finite enumeration is not an unbounded implementation theorem.",
+      "claim_id": "LCL-E01",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [
+        "TEST_RECEIPT.json"
+      ],
+      "statement": "168146 graph/partition/start cases on all 1099 labelled simple undirected graphs up to five vertices and 19 boundary checks pass.",
+      "status": "PASS_FINITE_SCOPE"
+    },
+    {
+      "boundary": "New proof bytes, algorithmic correctness and whole-product acceptance do not follow.",
+      "claim_id": "LCL-I01",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [
+        "PROOF.md section 7"
+      ],
+      "statement": "Ingolf Lohmann accepted the earlier interpretation with Richtig.",
+      "status": "USER_DECLARED_SEMANTIC_ACCEPTANCE"
+    },
+    {
+      "boundary": "Model-transfer requirement, not observed implementation conformance.",
+      "claim_id": "LCL-N01",
+      "classification": "NORMATIVE",
+      "proof_refs": [
+        "PROOF.md section 9"
+      ],
+      "statement": "QIK-VRT closure should retain source identities, open work, exhaustive scope and fresh effect readback.",
+      "status": "DECLARED_MODEL_TRANSFER"
+    },
+    {
+      "boundary": "Concrete state mapping and implementation/effect evidence required.",
+      "claim_id": "LCL-O01",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "statement": "Entire live QIK-VRT runtime refines the reference model.",
+      "status": "UNCLAIMED"
+    },
+    {
+      "boundary": "Distinct source head/tree; Authority connector unresolved; no equality receipt.",
+      "claim_id": "LCL-O02",
+      "classification": "OPEN",
+      "proof_refs": [
+        "terminal_public_observation.json"
+      ],
+      "statement": "Authority and Mirror and runtime contain equal exact proof bytes.",
+      "status": "UNCLAIMED"
+    }
+  ],
+  "publication_id": "qikvrt-labyrinth-closure-20261004-v1",
+  "schema": "qikvrt_labyrinth_claim_matrix_v1",
+  "system_wide_completion": "UNCLAIMED",
+  "zenodo_published": false
+}

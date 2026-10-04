@@ -1,0 +1,41 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "allowed_standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "existing_workflow": ".github/workflows/qikvrt_manuscript_proof.yml",
+  "expected_negative_exit": "NONZERO",
+  "forbidden_axioms": [
+    "sorryAx"
+  ],
+  "lean_version": "4.19.0",
+  "negative_statement": "example : False := by decide",
+  "receipt_status": "PENDING_EXTERNAL_KERNEL_READBACK",
+  "schema": "qikvrt_labyrinth_kernel_plan_v1",
+  "scope": "Abstract model lemmas only; neither stochastic proof nor Python/production refinement.",
+  "source": {
+    "bytes": 4295,
+    "git_blob_sha1": "f836be6b17838b0d7b4020c04d6d46d91fa1c139",
+    "path": "docs/publications/2026-10-04-labyrinth-closure/LabyrinthClosure.lean",
+    "sha256": "e2db44a40e1c43c2a1e13b6b7a5078b42eaaf53f8fe91499671883ccb76f31b0"
+  },
+  "theorems": [
+    "QIKVRT.Labyrinth.reverse_is_same_portal",
+    "QIKVRT.Labyrinth.grow_preserves_soundness",
+    "QIKVRT.Labyrinth.grow_is_monotone",
+    "QIKVRT.Labyrinth.two_witnesses_are_sound",
+    "QIKVRT.Labyrinth.closed_set_covers_reachable",
+    "QIKVRT.Labyrinth.connected_closed_set_covers_all",
+    "QIKVRT.Labyrinth.no_infinite_strict_rank_descent",
+    "QIKVRT.Labyrinth.complete_empty_is_zero",
+    "QIKVRT.Labyrinth.complete_singleton_is_unique",
+    "QIKVRT.Labyrinth.partial_empty_does_not_imply_zero"
+  ]
+}

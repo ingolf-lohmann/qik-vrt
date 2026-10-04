@@ -1,0 +1,90 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "files": [
+    {
+      "bytes": 5420,
+      "git_blob_sha1": "b9c348dc83903c9d02fcac3508658072aeed8612",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/BOOT_RECEIPT.json",
+      "sha256": "e6bd7c8b5711af1246757f2f281d2857164a39771d5c27dc366f57d7d022f224"
+    },
+    {
+      "bytes": 6497,
+      "git_blob_sha1": "4bff2b56053502e8a0dfca45a76fd8e87ae46ca7",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/BOOT_REPAIRED_RECEIPT.json",
+      "sha256": "7db459590a83099ec6c8781c732393e866e6b7de67248f3d9ae8d208808ae0ae"
+    },
+    {
+      "bytes": 8095,
+      "git_blob_sha1": "f8824ff9e11c24e91fa42d734663d2b4b07fdeb8",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/CLAIM_MATRIX.json",
+      "sha256": "9efa8978326d70afcf0f3de51cea76ae0120a3f7a44ea5944f4231840867aa63"
+    },
+    {
+      "bytes": 727,
+      "git_blob_sha1": "c4b0bcc506e51d825c748f8cbb36ff8a521eb258",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_LOCAL_RECEIPT.json",
+      "sha256": "9dd40d5c12526aa0d551556b6ae49585839472842eaecd0f0bb8d05f53fbeeaf"
+    },
+    {
+      "bytes": 1531,
+      "git_blob_sha1": "edd6103bd22fec0d6e680c03de9f268b3943861e",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/KERNEL_PROOF_PLAN.json",
+      "sha256": "ed8d29a0cc69f02561c0bdd148b058887f3fededda39c187eea8c0ffb82eacc1"
+    },
+    {
+      "bytes": 4295,
+      "git_blob_sha1": "f836be6b17838b0d7b4020c04d6d46d91fa1c139",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/LabyrinthClosure.lean",
+      "sha256": "e2db44a40e1c43c2a1e13b6b7a5078b42eaaf53f8fe91499671883ccb76f31b0"
+    },
+    {
+      "bytes": 16060,
+      "git_blob_sha1": "0e1df1237cfd7084be5c7d85279a6e5e4e9e66c8",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/PROOF.md",
+      "sha256": "6830c35c83117a93c9579a404a4b0d7043058566b4995448b42b304f09948780"
+    },
+    {
+      "bytes": 2218,
+      "git_blob_sha1": "71bc59dfb2aa20d41b41e081b741290c1bd00e43",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/README.md",
+      "sha256": "7537fc296319777be5d8b3a9857022498ada96f4097c8a649bc9788c71adbe7e"
+    },
+    {
+      "bytes": 1281,
+      "git_blob_sha1": "d8c021fedc30137cb8a42504f804dbb8f82e44b7",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/SOURCE_BINDINGS.json",
+      "sha256": "95fb941a3d1480f89c3099e52a62c646f0bf7229606b0b0d3fb38d97b3dfe2f0"
+    },
+    {
+      "bytes": 1242,
+      "git_blob_sha1": "61ef561858b18d0584ece434df11cf5c2544af3d",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/TEST_RECEIPT.json",
+      "sha256": "7091d38114e4ca77cf939d38d94aea12c7cddd4ea3566a7764bfefa0f1f1054b"
+    },
+    {
+      "bytes": 11009,
+      "git_blob_sha1": "7de5c276ce8cd6fd93e01d1d70f11174421c2d2d",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/check_labyrinth.py",
+      "sha256": "4c83438840504f0a9358ab45c72987037f956ea20ffea37d2cec0a1efc19f3c1"
+    },
+    {
+      "bytes": 5842,
+      "git_blob_sha1": "02dfc516e786922da37b01b3982586ddb4c5cfcf",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/labyrinth.py",
+      "sha256": "a1a279c5be29aaa42466c1a038bb1ffea66781185338186f8e5bd38996e9c72f"
+    },
+    {
+      "bytes": 15205,
+      "git_blob_sha1": "ad53c1bb6985bdac018a08265a23efb98bdc0e56",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/terminal_public_observation.json",
+      "sha256": "8a922f5ceca98d0ffce01ecc0eea72b6d7f25cf67003a18393ca894f868c9e48"
+    }
+  ],
+  "schema": "qikvrt_labyrinth_package_manifest_v1",
+  "self_binding": "Manifest excludes itself. Its exact bytes are bound by the containing Git blob/commit and detached readback receipt."
+}
