@@ -210,21 +210,21 @@
   "implementation_files": [
     {
       "path": ".github/workflows/qikvrt_batch04_integrity.yml",
-      "bytes": 18100,
-      "sha256": "d8c4613e52dea356ea199e9a807721f45246d0f799b8632a5c2fa85ca7009b0b",
-      "git_blob_sha1": "77530218966b02ad6eab6d2ccf317d2688fd7494"
+      "bytes": 18139,
+      "sha256": "6a476402efacd778a81f2620ef20ebda3074a8d457b7b3ec51d727362e8cb6fd",
+      "git_blob_sha1": "0c821263b5cc34a75ad609988d7d2f3cbf8e57bd"
     },
     {
       "path": ".github/workflows/qikvrt_ci.yml",
-      "bytes": 8108,
-      "sha256": "533e62d01c21b5295caddcca9cea30006d674f0f3f59dfa788c9cafdd909349c",
-      "git_blob_sha1": "b7659fd84fb74d4bd3bf3d30d672beafae2c7c8a"
+      "bytes": 8225,
+      "sha256": "4d83b511016a533aaafa8aa1afa3dce50fcf6e859b90ad02ccd9c67fb0bed807",
+      "git_blob_sha1": "4f19b83776f44cb42122f49525e822ec7707d2e5"
     },
     {
       "path": ".github/workflows/qikvrt_collective_review.yml",
-      "bytes": 11019,
-      "sha256": "6c8aec78082bd7d1858ca48ce0635ebaee8fef655b019f5f386a461227b12ec7",
-      "git_blob_sha1": "fa7eaafa5f370345e9eee8b531e129dd2cf8691e"
+      "bytes": 11058,
+      "sha256": "4f9da69d9f79dcddf348e85ea4b6fb2498a53632e16949652526cf0453068e16",
+      "git_blob_sha1": "7bbfc4d74009bb1b787101fcfdbfb969b9a96df1"
     },
     {
       "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
@@ -234,15 +234,15 @@
     },
     {
       "path": ".github/workflows/qikvrt_global_completion.yml",
-      "bytes": 8901,
-      "sha256": "b9a62dc5a84806b81a8bc94e1587b2b9e221a6a655518cb7584e9f2d2b033096",
-      "git_blob_sha1": "50f414da7ba683f6e9845edb651cca51c8d0fb06"
+      "bytes": 8940,
+      "sha256": "09cfe53cd2aa94caff88dd59e0bf1bc2d458fe903014bda4f37f887657d63e2c",
+      "git_blob_sha1": "027412fd92bbe058d5bddf8fbe74796b3de8ecf1"
     },
     {
       "path": "Makefile",
-      "bytes": 11254,
-      "sha256": "6f57289efc92855c238dbee225ca9a4ab28d8b0b79c4b7f975896dcc64125399",
-      "git_blob_sha1": "941ce6e910e0bd0e7be9ea638cc53c7707ea5d8b"
+      "bytes": 11208,
+      "sha256": "d24d98664b2f03f68c664622ea6787cffa8183dcb8374cd9fb71ff57dbec0069",
+      "git_blob_sha1": "ba248a75310c7af00595ca265ea8567142f77165"
     },
     {
       "path": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
@@ -348,9 +348,9 @@
     },
     {
       "path": "runtime/self-host/README.md",
-      "bytes": 7242,
-      "sha256": "b816f3c11cdbdae4fee82a27bda68c32e51ab77755dbc9e4757d76c29991b54f",
-      "git_blob_sha1": "f59266620b5946168fdefefb1e606a9fbbe828f2"
+      "bytes": 7966,
+      "sha256": "3106eb1f16595caf9c81eb9a0cfcb6a9271528d4402f1170abf2b22173cfaa1a",
+      "git_blob_sha1": "e85a64ddc2b39af075fa3995efc0de11b3d8add7"
     },
     {
       "path": "runtime/toolchains/CACHE_COVERAGE.json",
@@ -396,9 +396,9 @@
     },
     {
       "path": "tests/test_self_host.py",
-      "bytes": 16670,
-      "sha256": "9919d9581efb6f998f4c46358c9f049f59e97428f20d42c3ddadecba059cb501",
-      "git_blob_sha1": "7d4b5b67f09e5c47905d90d8a80533bf0e635b1e"
+      "bytes": 17398,
+      "sha256": "9cdf286607f374242852f7d03339b2583bee1a915fe86a027b9b6a24d4099891",
+      "git_blob_sha1": "60e81d6cadda94fb2cfe66c1761a562194a04843"
     },
     {
       "path": "tools/ai_runtime_bootloader.py",
@@ -426,16 +426,16 @@
     },
     {
       "path": "tools/qikvrt_self_host.py",
-      "bytes": 13322,
-      "sha256": "738a82aeee0c1651fbaf62d39ae4d1dd54b6413c9e2ec2c7ae09c3f2fb69f7e7",
-      "git_blob_sha1": "076678a7ab8b426287e97bbee9671169497e5cbe"
+      "bytes": 13615,
+      "sha256": "bdc4be4fad8a7faa6c595eb1342a035290291237aa34aceb9dddaa615e3bb2d0",
+      "git_blob_sha1": "9c59f349d4013085bde6dc82e91706d2a2da619a"
     }
   ],
   "local_validation": {
     "path": "evidence/self_host/SELF_HOST_LOCAL_20261004.json",
-    "bytes": 3156,
-    "sha256": "087bb418423c9852c9efdb634c24718b20a88038efb6cb00a834050911f120cd",
-    "git_blob_sha1": "aa5d7e23cf11329756d0f868bc7bee988f51a841"
+    "bytes": 3233,
+    "sha256": "8280077ded3ecbbdc5257505beb731218a249d5445431c7561b5f74d8883cbed",
+    "git_blob_sha1": "7bc2f8f204f7dd4c400e733702f06b7949d586c2"
   },
   "exact_head_gates": {
     "state": "REQUIRED_FRESH_ON_COMMITTED_SUCCESSOR; NOT_INHERITED_FROM_ROADMAP_OR_DONORS",
@@ -446,9 +446,10 @@
       "QIKVRT Collective Proposal Review",
       "QIKVRT EFFECT_ACK HTTP Firefox terminal"
     ],
-    "terminal_module_requirement": "31 unmodified native Unix/HTTP controls plus 12 standalone cases; no fixture daemon admitted as productive runtime",
+    "terminal_module_requirement": "31 unmodified native Unix/HTTP controls plus 13 standalone cases; no fixture daemon admitted as productive runtime",
     "package_artifact": "Existing EFFECT_ACK HTTP Firefox workflow freezes exact checkout HEAD/tree and uploads deterministic archive, manifest and build receipt",
-    "final_run_binding_location": "PR457 metadata and native workflow artifacts/checks; work unit does not self-reference its containing commit"
+    "final_run_binding_location": "PR457 metadata and native workflow artifacts/checks; work unit does not self-reference its containing commit",
+    "test_command": "make test repository-monitor-test self-host-test"
   },
   "deployment_hold": {
     "code": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
@@ -494,5 +495,21 @@
     "ordinary_release": false,
     "authority_effect": false,
     "effect_ack_done": false
+  },
+  "history_continuation": {
+    "parent_head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+    "parent_tree": "510666384f4a0b6b92c8d0a8285b3fff09fc1958",
+    "cause": "Batch-003 remaining subject workflow exposed new Linux-only tests globally coupled to make test without S1 runtime provisioning",
+    "repair": "Keep the original portable make test suite intact and explicitly require original full suite plus repository-monitor-test and self-host-test in every S1 exact-head gate",
+    "failed_observation": {
+      "run_id": 37222399657,
+      "job_id": 111495221925,
+      "head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+      "error": "LINUX_NODE24_PYTHON312_REQUIRED",
+      "inherited_success": false
+    },
+    "workflow_or_test_removed": false,
+    "exact_head_gates": "REQUIRED_FRESH_ON_SUCCESSOR",
+    "kernel_lock_lifetime": "Pass the same flock file description to the existing Node monitor; isolated launcher SIGKILL cannot admit a second writer while the original monitor survives. An executable 13th case verifies exclusion, termination and unchanged acknowledged bytes after restart."
   }
 }

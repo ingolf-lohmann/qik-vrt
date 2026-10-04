@@ -209,7 +209,11 @@ def start(package, pin, config_path):
                 process.terminate()
         old_handlers = {s: signal.signal(s, stop) for s in (signal.SIGINT, signal.SIGTERM)}
         try:
-            process = subprocess.Popen([shutil.which("node"), str(package / "docs/monitor/self-host.mjs")], cwd=package, env=env)
+            # flock belongs to the shared open-file description. Keep it in
+            # the monitor too, so an isolated launcher SIGKILL cannot admit a
+            # second writer while the original monitor is still running.
+            process = subprocess.Popen([shutil.which("node"), str(package / "docs/monitor/self-host.mjs")],
+                                       cwd=package, env=env, pass_fds=(lock.fileno(),))
             return process.wait()
         finally:
             if process is not None and process.poll() is None:

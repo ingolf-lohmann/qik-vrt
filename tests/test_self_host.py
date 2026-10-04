@@ -98,9 +98,10 @@ class StandaloneTests(unittest.TestCase):
 
     def stop(self, abrupt=False):
         if self.process is None: return
-        if self.process.poll() is None:
-            if abrupt: os.killpg(self.process.pid,signal.SIGKILL)
-            else: self.process.terminate()
+        if abrupt:
+            try: os.killpg(self.process.pid,signal.SIGKILL)
+            except ProcessLookupError: pass
+        elif self.process.poll() is None: self.process.terminate()
         try: self.process.communicate(timeout=5)
         except subprocess.TimeoutExpired:
             os.killpg(self.process.pid,signal.SIGKILL); self.process.communicate(timeout=2)
@@ -281,6 +282,22 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
         self.start()
         self.assertIn('unavailable',self.denied())
         self.assertEqual(self.get('/api/runtime')[0],200)
+
+    def test_surviving_monitor_retains_lock_after_launcher_only_sigkill(self):
+        expected=self.seed_acknowledged_event()
+        self.start()
+        before=self.get('/api/events?after=0')[1]
+        os.kill(self.process.pid,signal.SIGKILL)
+        self.process.wait(timeout=3)
+        try:
+            self.assertEqual(self.get('/api/runtime')[0],200)
+            self.assertIn('unavailable',self.denied())
+            self.assertEqual(self.get('/api/events?after=0')[1],before)
+        finally: self.stop(abrupt=True)
+        self.start()
+        after=self.get('/api/events?after=0')[1]
+        self.assertEqual(after,before)
+        self.assertEqual(after['events'],expected)
 
     def test_private_config_and_secret_symlink_fail_before_listener(self):
         self.config_path.chmod(0o644)

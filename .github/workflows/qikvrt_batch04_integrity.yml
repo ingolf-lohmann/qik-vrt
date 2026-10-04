@@ -276,7 +276,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          make test
+          make test repository-monitor-test self-host-test
           python3 tools/qikvrt_integrity.py verify
       - name: Commit materialized repository evidence
         shell: bash

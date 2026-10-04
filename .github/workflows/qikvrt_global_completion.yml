@@ -184,7 +184,7 @@ jobs:
       - name: Verify canonical repository integrity before full suite
         run: PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
       - name: Run complete mandatory repository suite
-        run: make test
+        run: make test repository-monitor-test self-host-test
       - name: Reverify canonical repository integrity after full suite
         run: PYTHONDONTWRITEBYTECODE=1 python3 -B tools/qikvrt_integrity.py verify
       - name: Upload global completion evidence

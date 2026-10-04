@@ -45,7 +45,7 @@ jobs:
         run: bash tests/test_adaptive_runtime.sh
 
       - name: Run mandatory repository test suite
-        run: make test
+        run: make test repository-monitor-test self-host-test
 
       - name: Create two attributable deterministic observations
         shell: bash

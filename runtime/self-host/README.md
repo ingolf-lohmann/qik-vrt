@@ -49,12 +49,14 @@ python3 -B tools/qikvrt_self_host.py run --root <package-directory> \
   --manifest-sha256 <same-pin> --config <absolute-private-config>
 ```
 
-The foreground launcher holds an OS file lock for the entire service lifetime,
+The launcher and monitor share an OS file lock for the entire service lifetime,
 starts the existing HTTP reference terminal on loopback and the existing Node
 monitor, and shuts both down on termination. A failed bind never becomes a
 ready receipt. Configure restart in the host's existing supervisor, using this
 exact command and unchanged private config. No second supervision/execution
-system or platform service is created. Kernel lock release permits crash restart.
+system or platform service is created. An isolated launcher crash leaves the
+surviving monitor holding the lock; restart is refused until it also stops.
+Kernel lock release after all holders exit permits crash restart.
 
 The separately mounted volume layout is:
 
@@ -105,6 +107,16 @@ It uses the exported original client bytes, with no Git or provider dependency.
 The original Railway plan path remains compatible when its existing contract
 is installed; self-host selects an explicit separate plan. No credentials are
 needed in the readback process. A local URL proves only local HTTP readback.
+
+## Executable S1 validation
+
+On the declared Linux runtime run `make test repository-monitor-test self-host-test`.
+The existing full repository suite stays intact; the two explicit S1 targets add
+the original monitor controls and standalone package controls. CI, repository
+evidence, global completion and collective review require all three targets
+after provisioning the S1 runtime. The existing terminal workflow additionally
+requires all 31 HTTP/owner-Unix controls and freezes the actual source package.
+A profile-specific Linux test is not imposed on unrelated portable callers.
 
 ## Precise remaining acceptance
 
