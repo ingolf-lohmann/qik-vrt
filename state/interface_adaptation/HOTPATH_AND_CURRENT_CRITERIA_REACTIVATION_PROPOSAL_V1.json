@@ -395,5 +395,49 @@
         "personal_effect_ack_done": false
       }
     }
+  },
+  "publication_signature_projection": {
+    "schema": "qikvrt_publication_signature_projection_policy_v1",
+    "state": "REVIEW_CANDIDATE_NOT_ACTIVE",
+    "owner_instruction_date": "2026-10-04",
+    "authorization": "Owner authorizes dynamic publication signatures, OneDrive audit and appropriate Zenodo publication; this does not invent independent review or consume exact-upload decisions.",
+    "sources": {
+      "internal_archive": "OneDrive Lehren gegen Leere; orientation, provenance and unpublished source bytes only; never a public email-signature link",
+      "official_publications": "Zenodo version record DOI; verify publication state and artifact identity",
+      "implementation": "existing docs/publications/index.json and tools/qikvrt_publication_overview.py; reuse existing publisher tools/qikvrt_zenodo_publish.py",
+      "protocol": "IETF Datatracker official document URL; Internet-Draft status remains explicit"
+    },
+    "update_rule": {
+      "trigger": [
+        "verified publication receipt",
+        "verified successor version",
+        "withdrawal or correction",
+        "before rendering an unsent draft or sending an authorized message"
+      ],
+      "promotion_requires": [
+        "actual published record",
+        "fresh public artifact readback matching exact authorized SHA256",
+        "metadata and provenance verification"
+      ],
+      "reserved_doi_is_publication": false,
+      "unknown_or_stale": "HOLD link promotion; preserve last verified publication with its explicit version or omit slot",
+      "sent_messages": "immutable; no retroactive edits or duplicate sends",
+      "review": "changed final message requires applicable end-artifact review; authorization follows final bytes"
+    },
+    "order": [
+      "Sinn und Zweck: verified accessible publication and preferred polished PDF",
+      "Charta einer maschinenprüfbaren Wissenschaft",
+      "Survival of the Anschlussfähigsten",
+      "Die wirksame Kontinuität: official Zenodo DOI after verified publication",
+      "Horizont: exact interactive HTML package official Zenodo DOI after verified publication",
+      "EFFECT_ACK: official IETF document",
+      "source repository"
+    ],
+    "contacts": {
+      "business": "ingolf.lohmann@live.com and +49 1514 6579642 only",
+      "private": "ingolf.lohmann@web.de; business DE mobile and private FR +33 6 87 04 22 93; WhatsApp FR only",
+      "owner_copy": "include Ingolf in BCC using address appropriate to private/business context and verify actual sent BCC recipients; absent copy repair self-only, never duplicate original recipient delivery"
+    },
+    "activation": "No live watcher or mailbox integration has been established by this policy change."
   }
 }

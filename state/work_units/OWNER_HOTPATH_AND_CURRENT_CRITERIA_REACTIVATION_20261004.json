@@ -39,7 +39,7 @@
   "artifacts": [
     {
       "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
-      "sha256": "c0f7a6532d5f8803cf0b6cdf244ee450ed79a7aad8fc8e9afda421b81f6c6233"
+      "sha256": "dc924ceac622ba8356c5a71e7b4fe54919351c1d310858b5ec56574d5b77ba68"
     }
   ],
   "retention": "METADATA_ONLY",
@@ -73,5 +73,47 @@
     "parent_candidate_head": "b77a98e5e07ce217fe5a3756038c54da437056f4",
     "privacy": "No private user input transcripts or personal goal contents in this public candidate."
   },
-  "connection_assessment_state": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED"
+  "connection_assessment_state": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED",
+  "publication_continuation": {
+    "state": "HOLD_EXTERNAL_PUBLICATION_CAPABILITY_AND_REVIEW",
+    "owner_goal": "Publish Die wirksame Kontinuität and appropriate OneDrive-only artifacts on Zenodo; derive future email signatures from verified publication state.",
+    "inventory": {
+      "files": 696,
+      "folders": 78,
+      "entries": 774,
+      "folder_lists": 79,
+      "truncated_lists": 0,
+      "source": "Fresh complete recursive metadata listing 2026-10-04; file bytes and nested ZIP/ISO contents not yet fully read."
+    },
+    "priority": [
+      "original PR447 22-page German candidate",
+      "identify exact Horizont interactive HTML bytes including archive contents",
+      "reconcile Sinn und Zweck existing official Zenodo record",
+      "all remaining appropriate OneDrive publication candidates grouped by provenance and release version"
+    ],
+    "article": {
+      "pr": 447,
+      "head": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
+      "pdf_sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "owner_declaration": "https://github.com/ingolf-lohmann/qik-vrt/pull/447#issuecomment-5972557883",
+      "first_gate": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "required_sequence": [
+        "enforced Authority ruleset",
+        "independent native exact-head Code Owner approval",
+        "merge and detached reviewed-v3 activation",
+        "later canonical single-use AUTHORIZE_EXACT_UPLOAD",
+        "existing publisher execution",
+        "public byte-identical readback",
+        "index and signatures update"
+      ],
+      "published": false
+    },
+    "external_blockers": [
+      "OneDrive raw content fetch returned HTTP403 serviceReadOnly / Database Is Read Only for all four listed HTML files; metadata listing succeeds",
+      "Zenodo API lookup inaccessible via available web reader; no callable Zenodo publishing capability found",
+      "No initial GitHub workflow_dispatch or ruleset administration write action exposed in this execution scope"
+    ],
+    "resume_when": "fresh content-read capability, official Zenodo inventory access, Authority governance effect capability or approved native publisher execution becomes available; revalidate current head and criteria first",
+    "effect_ack_done": false
+  }
 }
