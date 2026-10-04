@@ -86,7 +86,7 @@
     "artificial_contribution": "OpenAI Codex / GPT-6: extended existing MonitorStore/server/client validation and health projection, generated regression code, ran verification and materialized successor.",
     "git_history": {
       "method": "new commit with current reobserved PR head as parent; no history rewrite",
-      "parent": "674aa35ec0659119a19cda66b88f32050e34f105"
+      "parent": "14c8b76878d03e0dd1e2453613ace8b0700be119"
     },
     "protocol": "qikvrt-monitor-replication/v1",
     "controller": "existing docs/monitor/server.mjs only",
@@ -109,12 +109,12 @@
       "accepted_events": 32,
       "independent_clients": 4,
       "byte_exact_failover_replay": true,
-      "complete_make_test": "PASS_IMPLEMENTATION_BYTES_BOUND_BELOW",
+      "complete_make_test": "PASS_CORRECTED_TEST_AND_BOUND_IMPLEMENTATION_BYTES",
       "integrity": "PASS_REGENERATED_AND_VERIFIED",
       "exact_head_gates": "REQUIRE_FRESH_SUCCESSOR_RUNS",
       "verification_scope": "Exact listed implementation/documentation bytes; successor commit requires fresh native gates. No predecessor check is transferred.",
-      "make_test_log_sha256": "4c2544343ccc0119fb5f96a390c832eaae25b9b1acc7353c036581aaf87321f1",
-      "make_test_log_bytes": 111724,
+      "make_test_log_sha256": "94dbbbe34e6e687f5e30372771cd8ae99c9bd057b34c437f830382e49bbce799",
+      "make_test_log_bytes": 111730,
       "commands": [
         "cd docs/monitor && npm test",
         "make test",
@@ -130,8 +130,8 @@
       },
       {
         "path": "docs/monitor/monitor.test.mjs",
-        "bytes": 32567,
-        "sha256": "47e3d81605626d88dfcfb16d28d5ed633c6c4b20c293197d3e8ba4e0a5d74bf5"
+        "bytes": 33125,
+        "sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76"
       },
       {
         "path": "docs/monitor/client-replica.js",
@@ -169,6 +169,15 @@
       "deployment": "NOT_PERFORMED",
       "candidate_ref_update": "AUTHORIZED_AFTER_CURRENT_TREE_TESTS"
     },
-    "first_remaining_acceptance_gap": "Actually separated deployed nodes and fault-injected failover readback; excluded from this task."
+    "first_remaining_acceptance_gap": "Actually separated deployed nodes and fault-injected failover readback; excluded from this task.",
+    "ci_correction": {
+      "parent": "14c8b76878d03e0dd1e2453613ace8b0700be119",
+      "parent_tree": "2bc9e7a083e6523ee43114eb35c30c1f2fce0614",
+      "observed_run": 37213143623,
+      "artifact": 11306793631,
+      "artifact_sha256": "2f0df4f46c0c2b3605c26f06ba57b37f214e66e79b39458e5d6cd12dd2e36050",
+      "observed_failure": "Initial CI make test: 23/24 monitor tests passed; healthy reconnect exceeded the injected 20 ms timeout. Later reentry succeeded but does not erase that failure.",
+      "repair": "Timeout fault waits for the request AbortSignal; healthy restart uses production default timeout. No deadline weakening in production code."
+    }
   }
 }

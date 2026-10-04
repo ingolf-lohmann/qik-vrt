@@ -395,15 +395,22 @@ test('contradictory duplicate client record is rejected even if it repeats the c
 });
 
 test('peer timeout withholds the positive receipt and reconnect recovers the original pending event',async t=>{
-  let delayed=true;
-  const {writer,follower}=await pair(t,{writer:{replicationTimeoutMs:20,replicationFetch:async(...args)=>{
-    if(delayed)await new Promise(resolve=>setTimeout(resolve,40));return fetch(...args);
-  }}});
+  // The injected peer never responds: the negative phase waits for the actual
+  // request AbortSignal, rather than racing a sleep against a healthy request.
+  const {writer,follower}=await pair(t,{writer:{replicationTimeoutMs:20,replicationFetch:async(_url,init)=>
+    new Promise((resolve,reject)=>{
+      if(init.signal.aborted)reject(init.signal.reason);
+      else init.signal.addEventListener('abort',()=>reject(init.signal.reason),{once:true});
+    })}});
   const failed=await send(writer.url,'cross-timeout-event',1);assert.equal(failed.response.status,503);assert.notEqual(failed.value.durable,true);
   assert.equal(writer.store.visible().deliveries.length,0);assert.equal(follower.store.state.deliveries.length,0);
-  const original=JSON.stringify(writer.store.state.deliveries[0]);delayed=false;
-  const retry=await send(writer.url,'cross-timeout-event',1);assert.equal(retry.response.status,200);
-  assert.equal(JSON.stringify(writer.store.state.deliveries[0]),original);assertEqualJournals(writer,follower);
+  const original=JSON.stringify(writer.store.state.deliveries[0]);
+  writer.server.closeAllConnections();await new Promise(resolve=>writer.server.close(resolve));
+  // Healthy recovery has the production default timeout, not the injected
+  // fault's 20 ms budget; exact original bytes survive this writer restart.
+  const restored=await start(t,{dir:writer.dir,env:writerEnv(follower.url)});
+  const retry=await send(restored.url,'cross-timeout-event',1);assert.equal(retry.response.status,200);
+  assert.equal(JSON.stringify(restored.store.state.deliveries[0]),original);assertEqualJournals(restored,follower);
 });
 
 test('lost peer response after durable append is recovered by exact readback without duplicate events',async t=>{
