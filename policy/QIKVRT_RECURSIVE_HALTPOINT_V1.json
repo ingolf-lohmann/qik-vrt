@@ -104,5 +104,29 @@
       "diagnostic_scope": "Installation-aware listing succeeds while generic name, stable-ID, Main-ref, ref-inventory and content reads fail in this execution. No cause inside the connector, credential router or remote platform is established.",
       "retry_condition": "An authorized content-read carrier explicitly bound to installation 147849532 and Goldkelch/qik-vrt must be callable. Freshly bind Main, HEAD, TREE, all required refs/referenced objects and source closure, then compare with the retained historical tree and reobserved Mirror. Do not transfer predecessor evidence."
     }
+  },
+  "capability_path_learning": {
+    "contract": "docs/operations/CAPABILITY_PATH_LESSONS_20261004.md",
+    "owner_record": "state/authorization/delegations/OWNER_CAPABILITY_PATH_LEARNING_20261004_V1.json",
+    "work_unit": "state/work_units/CAPABILITY_PATH_LEARNING_20261004_V1.json",
+    "implementation": "tools/qikvrt_recursive_haltpoint.py",
+    "tests": "tests/test_qikvrt_recursive_haltpoint.py",
+    "reuse_before_create": true,
+    "component_presence_is_end_to_end_readiness": false,
+    "owner_admin_is_integration_permission": false,
+    "unobserved_is_unavailable": false,
+    "max_routes": 32,
+    "max_steps": 16,
+    "observation_max_age_seconds": 60,
+    "negative_cache_is_execution_authority": false,
+    "each_step_requires_fresh_reobservation": true,
+    "global_failure_from_single_route_denial": false,
+    "unknown_effect_requires_readback_not_replay": true,
+    "performance_state": "TARGET_NOT_PROVEN",
+    "route_selection_target_seconds": 1,
+    "application_failover_budget": "PER_APPLICATION_REQUIRED",
+    "runtime_failover_verified": false,
+    "application_invisibility_verified": false,
+    "propagation": "REVIEWED_EXACT_SUBJECT_ADOPTION_NOT_AUTOMATIC_AUTHORITY_TRANSFER"
   }
 }

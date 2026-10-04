@@ -47,6 +47,25 @@ repository contains explicit evidence that reuse is technically insufficient.
 Optimization and perfection of an existing path take precedence over duplicate
 implementation.
 
+## Capability-path learning and failure compensation
+
+Before diagnosing a blocked operation, read
+`docs/operations/CAPABILITY_PATH_LESSONS_20261004.md` and
+`policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json#/capability_path_learning`.
+The Owner's permanent application instruction is recorded at
+`state/authorization/delegations/OWNER_CAPABILITY_PATH_LEARNING_20261004_V1.json`.
+Use the existing capability-bound controller, route inventory and native ledger;
+do not create another executor merely because a connection is unavailable.
+Component presence is not composability, a callable method is not permission,
+and user admin is not integration permission or runner credential delivery.
+Cache non-secret, exact-context observations, not authority. An unchanged denial
+must not restart a consent/search/rerun loop. Unknown effects require readback,
+not replay. Rebind after every effect or identity/source/configuration change.
+A failed node does not stop independent valid paths or authorize role takeover.
+Seconds-scale recovery and application invisibility require timed end-to-end
+fault-injection acceptance; a local planner test is not that acceptance.
+Propagate this contract only through reviewed, exact-subject node adoption.
+
 ## Cumulative repository runtime and complete tool caching
 
 The repository is the durable runtime authority; chat sessions are disposable

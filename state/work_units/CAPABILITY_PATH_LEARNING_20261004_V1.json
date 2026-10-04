@@ -1,0 +1,132 @@
+{
+  "schema": "qikvrt_capability_path_learning_work_unit_v1",
+  "work_unit_id": "CAPABILITY_PATH_LEARNING_20261004_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "pr_number": 441,
+  "branch": "agent/recursive-haltpoint-v1",
+  "state": "REVIEW_CANDIDATE_NOT_GLOBAL_RUNTIME_ACTIVATION",
+  "source_parent": "6d7cc0781e3bed1a19e8d7a4b962e5064f50bd68",
+  "source_parent_tree": "b688895e276c23e150134d4a90e3c15a3e1e7209",
+  "observed_main": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "main_integrated_by_this_change": false,
+  "owner_record": "state/authorization/delegations/OWNER_CAPABILITY_PATH_LEARNING_20261004_V1.json",
+  "historical_incident_refs": {
+    "administration": "PR447#issuecomment-5981620880",
+    "learning": "PR441#issuecomment-5981768732",
+    "corrected_continuation": "PR435#issuecomment-5981417380"
+  },
+  "reuse_assessment": "Existing PR441 classifier/policy/tests and AGENTS are extended. New files are the incident-specific durable contract and provenance/authorization records, not parallel execution machinery. Source discovery remains bounded; no global absence inferred.",
+  "known_path_index": [
+    {
+      "operation": "MIRROR_RULESET_RECONCILE",
+      "component": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "source_ref": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+      "historical_state": "RUN_EXECUTED_CREDENTIAL_DELIVERY_HOLD",
+      "readiness": "REOBSERVE_REQUIRED"
+    },
+    {
+      "operation": "AUTHORITY_RULESET_BRIDGE",
+      "component": "tools/qikvrt_ruleset_admin_bridge.py",
+      "pr": 381,
+      "readiness": "TARGET_SPECIFIC_REOBSERVE_REQUIRED"
+    },
+    {
+      "operation": "AUTHORITY_CONTENT_RECOVERY",
+      "pr": 444,
+      "readiness": "CREDENTIAL_ATTESTED_SOURCE_READ_REQUIRED"
+    },
+    {
+      "operation": "MIRROR_PROMOTION",
+      "pr": 435,
+      "readiness": "CURRENT_SUBJECT_GOVERNANCE_AND_INDEPENDENT_REVIEW_REQUIRED"
+    }
+  ],
+  "local_adapter_candidate": {
+    "filename": "QIKVRT_Admin_REST_Adapter_Kandidat.zip",
+    "bytes": 14046,
+    "sha256": "e2afd2aab47e732bd897e7fa4814de56e17bc8eecde8df4174388f8339445b0b",
+    "registered_live_connector": false,
+    "credential_delivery_verified": false
+  },
+  "validation": {
+    "local_scope": "API_RECONSTRUCTED_EXACT_SOURCE_FIXTURE_NOT_FULL_CHECKOUT",
+    "new_regression_tests": 21,
+    "all_executed_tests": 35,
+    "failures": 0,
+    "errors": 0,
+    "original_test_not_locally_run": "test_work_unit_and_policy_share_the_same_bound_reference: original work-unit file not fetched; retained unchanged for native CI",
+    "test_log_sha256": "1ce4004d87124fd903cf26a274ba6802ba2ec5307e5466d8a4dafbf97c57c164",
+    "benchmark": {
+      "scope": "LOCAL_SYNTHETIC_PLANNER_ONLY_NOT_LIVE_FAILOVER",
+      "iterations": 50,
+      "routes": 32,
+      "steps_per_route": 16,
+      "median_ms": 4.385159,
+      "p95_ms": 6.23926,
+      "max_ms": 6.525391,
+      "python": "3.13.5",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "target_ms": 1000,
+      "target_met_in_this_fixture": true
+    },
+    "native_successor_tests": "PENDING",
+    "test_log_path": "evidence/receipts/capability-path-learning-20261004/local-tests.log",
+    "test_command": "python3 -B -m unittest -v tests.test_qikvrt_recursive_haltpoint.CapabilityPathLearningTests; plus 14 unchanged legacy cases excluding the unfetched-work-unit case"
+  },
+  "live_acceptance": {
+    "ruleset_effect": false,
+    "main_merge": false,
+    "independent_review": false,
+    "durable_route_cache_integration": false,
+    "automatic_role_failover": false,
+    "application_invisibility": false,
+    "publication": false,
+    "effect_ack_done": false
+  },
+  "next_steps": [
+    "Native integrity materialization and exact-successor validation",
+    "Independent review and legitimate integration",
+    "Trusted readers feed exact route receipts into existing controller and persist observation cache/intent via existing ledger",
+    "Fault-injection acceptance per application budget",
+    "Reviewed exact-subject propagation to other nodes"
+  ],
+  "contribution_provenance": {
+    "human": "Ingolf Lohmann: lesson, requirements and permanent application authorization",
+    "artificial": "OpenAI ChatGPT / GPT-6 Astra Pro: source extension, tests and persistence",
+    "statement_is_independent_review": false
+  },
+  "predecessor_evidence_transfer": false,
+  "content_bindings": {
+    "AGENTS.md": {
+      "bytes": 9428,
+      "sha256": "689033421e3fc35f098734066a3caa84a728059cf6c968d64d1321a27fa45c51",
+      "git_blob_sha1": "567cb29f6c210596da422e33a47b050b51a8cf70"
+    },
+    "tools/qikvrt_recursive_haltpoint.py": {
+      "bytes": 15621,
+      "sha256": "196071091f1cbac69afb957ceaadee67e6ae543d7c11b6b3703c442a7b3f6379",
+      "git_blob_sha1": "9204b3b2ff8d59f46a8deeac219618e4f58648b2"
+    },
+    "tests/test_qikvrt_recursive_haltpoint.py": {
+      "bytes": 19198,
+      "sha256": "d975b8c37e449b1f5aefd67e0265868019ad1e1dc54da888fb20deeb73be1e22",
+      "git_blob_sha1": "20c07de065d78808b017049ab3ca542477f9388c"
+    },
+    "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json": {
+      "bytes": 5659,
+      "sha256": "d796a7bc2cc7e48cc5d5c413a620c0282ebccaff65a1d6d809d05f89ecae7203",
+      "git_blob_sha1": "712dae6dd0bee9fe166f52b6e6544bad9ad31b70"
+    },
+    "docs/operations/CAPABILITY_PATH_LESSONS_20261004.md": {
+      "bytes": 8966,
+      "sha256": "117472c21a65448dd9c5e832031fc0c89fd733253cb7ea702189b69d7a569169",
+      "git_blob_sha1": "da60a5a54b697a8ff4efae7779a28868823115a3"
+    },
+    "state/authorization/delegations/OWNER_CAPABILITY_PATH_LEARNING_20261004_V1.json": {
+      "bytes": 1239,
+      "sha256": "2fc9a9a7f18870672adc97c635cf1f7a7fc23e7ecb4168d82cfa455ac7bfb16b",
+      "git_blob_sha1": "762854c05f0684c78b50fd49ebb5c2b1a01a3ebd"
+    }
+  }
+}
