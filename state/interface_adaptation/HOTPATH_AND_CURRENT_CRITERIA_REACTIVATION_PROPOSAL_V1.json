@@ -439,5 +439,60 @@
       "owner_copy": "include Ingolf in BCC using address appropriate to private/business context and verify actual sent BCC recipients; absent copy repair self-only, never duplicate original recipient delivery"
     },
     "activation": "No live watcher or mailbox integration has been established by this policy change."
+  },
+  "universal_task_and_requirements_effect_ack": {
+    "schema": "qikvrt_universal_task_requirement_effect_ack_v1",
+    "state": "REVIEW_CANDIDATE_NOT_ACTIVE",
+    "owner": "Ingolf Lohmann",
+    "owner_term": "Qota 4.0; continuous speed and quality goal; no unverified product identity or performance superiority inferred",
+    "scope": [
+      "To-Dos",
+      "requirements engineering and traceability",
+      "all open PRs",
+      "all branches",
+      "all open issues",
+      "Authority and Mirror with distinct observed roles"
+    ],
+    "per_item_contract": [
+      "stable item ID and source",
+      "purpose, current requirement revision and responsible role",
+      "authorization and actual capability",
+      "dependencies and admissibility gates",
+      "measurable effect and acceptance criteria",
+      "execution ID and exact head/tree or target version",
+      "observed effect and independent fresh readback",
+      "acceptance disposition and remainder",
+      "current-criteria restart and change-based retry"
+    ],
+    "requirements_traceability": "requirement -> work unit -> implementation -> verification case -> observed effect -> acceptance -> regression/version history",
+    "completion": "Actual task-specific acceptance required. Merge is not deployment, publication or requirement fulfilment; branch/issue closure is not effect success. Inventory and isolated green checks are not global DONE.",
+    "reuse": [
+      "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "policy/GLOBAL_SYSTEM_CLOSURE_V1.json",
+      "tools/qikvrt_requested_review_executor.py",
+      "PR396 closure engine: open candidate, not active Main",
+      "PR435/434 promotion hardening; no parallel engine"
+    ],
+    "continuous_improvement": {
+      "loop": "OBSERVE -> MEASURE -> DIAGNOSE -> ADAPT -> VALIDATE -> COMPARE -> LEARN",
+      "objectives": [
+        "accepted task effects per unit time",
+        "end-to-end latency",
+        "defect and correction rate",
+        "resource cost",
+        "human interventions"
+      ],
+      "cache_key": [
+        "repository role",
+        "head/tree or artifact hash",
+        "requirement/policy revision",
+        "tool/model contract",
+        "input fingerprint",
+        "verification scope"
+      ],
+      "performance_claim": "Three comparable observations before preference; matched baseline/delta before speed claims; mandatory gates retained.",
+      "unchanged_blocker": "NOOP with persisted change-based retry; no notification spam"
+    },
+    "active_runtime": false
   }
 }
