@@ -73,7 +73,7 @@
         if (replica.epoch && event.epoch !== replica.epoch) return reject('NODE_EPOCH_CHANGED');
         if (!Number.isSafeInteger(event.event_sequence) || event.event_sequence < 1) return reject('INVALID_EVENT_SEQUENCE');
         var old = replica.events[event.event_sequence - 1];
-        if (old) return old.record_digest === event.record_digest ? {accepted: false, duplicate: true} : reject('EVENT_CONTENT_MISMATCH');
+        if (old) return old.record_digest === event.record_digest && JSON.stringify(old) === JSON.stringify(event) ? {accepted: false, duplicate: true} : reject('EVENT_CONTENT_MISMATCH');
         if (event.event_sequence !== replica.event_sequence + 1) return reject('EVENT_SEQUENCE_GAP');
         var bytes = Uint8Array.from(atob(event.payload_base64), function(c){return c.charCodeAt(0)});
         var digest = await crypto.subtle.digest('SHA-256', bytes);

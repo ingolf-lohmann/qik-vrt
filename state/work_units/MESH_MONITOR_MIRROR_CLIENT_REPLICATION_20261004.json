@@ -4,7 +4,7 @@
   "source_repository": "ingolf-lohmann/qik-vrt",
   "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
   "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
-  "state": "TESTED_PUBLIC_DEPLOYMENT_CANDIDATE",
+  "state": "TESTED_CROSS_NODE_READ_FAILOVER_CANDIDATE_NOT_DEPLOYED",
   "human_principal": {
     "name": "Ingolf Lohmann",
     "roles": [
@@ -32,11 +32,17 @@
   "authorization": {
     "mirror_public_deployment": "OWNER_EXPLICIT_2026_10_04",
     "main_merge": "NOT_PERFORMED_SELF_APPROVAL_FORBIDDEN",
-    "private_data_publication": false
+    "private_data_publication": false,
+    "current_task": {
+      "implementation": "OWNER_EXPLICIT_ACTION_2026_10_04",
+      "history_preserving_successor": true,
+      "merge": false,
+      "deployment": false
+    }
   },
   "validation": {
     "monitor_clock_source_and_ui_regressions": "PASS",
-    "signed_http_durable_replication_acceptance_tests": "PASS_9_TESTS_INCLUDING_HEALTH",
+    "signed_http_durable_replication_acceptance_tests": "PASS_24_TESTS_INCLUDING_LOCAL_CROSS_NODE_NEGATIVE_AND_RESTART_CASES",
     "accepted_events": 32,
     "simultaneous_clients": 4,
     "byte_exact_fanout": true,
@@ -44,7 +50,7 @@
     "duplicate_and_conflicting_delivery": true,
     "signature_rejection": true,
     "storage_failure_no_positive_ack": true,
-    "make_test": "PASS",
+    "make_test": "PASS_CURRENT_IMPLEMENTATION",
     "tool_cache_coverage_percent": 100,
     "boot_profile": "CONTINUE_WITH_EXISTING_RUNTIME_PROFILE_AVAILABILITY_BOUNDARIES",
     "native_cache_tests": "PASS_6_TESTS",
@@ -56,7 +62,7 @@
     "Native GitHub hook registration and fresh provider delivery",
     "Independent client readback on the public deployed candidate",
     "Authority node carrier readback",
-    "Cross-node durable journal replication and failover",
+    "Independent deployed-node durable replication and failover readback; local read/replay path tested",
     "Every required native client and product runtime",
     "Complete C90 Universal Transputer/transceiver/REST carrier and human Digital Twin",
     "Exact owner Linux image, Docker build/publication and live operation",
@@ -70,5 +76,99 @@
     "predecessor_evidence_transfer": false,
     "workflow_success_is_effect_ack_done": false,
     "effect_ack_done": false
+  },
+  "cross_node_successor": {
+    "source_commit": "674aa35ec0659119a19cda66b88f32050e34f105",
+    "source_tree": "5100b66a299ded9ecb64622d2d36a5a77ef1f85d",
+    "source_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+    "requested_predecessor": "49482306615a9bc14428112905bf287bdf1171a2",
+    "human_contribution": "Ingolf Lohmann: authorized the smallest deterministic cross-node replication/read-failover extension, executable negative and recovery tests, history-preserving successor and fresh exact-head gates; excluded merge/deployment and unsupported losslessness/EFFECT_ACK_DONE claims.",
+    "artificial_contribution": "OpenAI Codex / GPT-6: extended existing MonitorStore/server/client validation and health projection, generated regression code, ran verification and materialized successor.",
+    "git_history": {
+      "method": "new commit with current reobserved PR head as parent; no history rewrite",
+      "parent": "674aa35ec0659119a19cda66b88f32050e34f105"
+    },
+    "protocol": "qikvrt-monitor-replication/v1",
+    "controller": "existing docs/monitor/server.mjs only",
+    "scope": "one writer, one configured required durable read-only replica; failover serves verified journal checkpoint without writer promotion",
+    "invariants": [
+      "ORIGINAL_PAYLOAD_BYTES",
+      "ORIGINAL_RECORD_ORDER_AND_BYTES",
+      "CONSECUTIVE_SEQUENCE",
+      "UNCHANGED_DIGEST_CHAIN",
+      "FSYNC_BEFORE_PEER_RECEIPT",
+      "VERIFIED_PEER_READBACK_BEFORE_SOURCE_ACK",
+      "NO_POSITIVE_ACK_ON_UNCONFIRMED_REPLICATION",
+      "NO_SECOND_OBSERVATION_CONTROLLER",
+      "NO_WRITE_FAILOVER_WITHOUT_FENCING"
+    ],
+    "local_validation": {
+      "monitor_tests": 24,
+      "result": "PASS",
+      "separate_local_processes": 2,
+      "accepted_events": 32,
+      "independent_clients": 4,
+      "byte_exact_failover_replay": true,
+      "complete_make_test": "PASS_IMPLEMENTATION_BYTES_BOUND_BELOW",
+      "integrity": "PASS_REGENERATED_AND_VERIFIED",
+      "exact_head_gates": "REQUIRE_FRESH_SUCCESSOR_RUNS",
+      "verification_scope": "Exact listed implementation/documentation bytes; successor commit requires fresh native gates. No predecessor check is transferred.",
+      "make_test_log_sha256": "4c2544343ccc0119fb5f96a390c832eaae25b9b1acc7353c036581aaf87321f1",
+      "make_test_log_bytes": 111724,
+      "commands": [
+        "cd docs/monitor && npm test",
+        "make test",
+        "python3 -B tools/qikvrt_integrity.py verify",
+        "python3 -B tools/qikvrt_tool_cache.py verify"
+      ]
+    },
+    "outputs": [
+      {
+        "path": "docs/monitor/server.mjs",
+        "bytes": 33634,
+        "sha256": "bd5dcc12ae6589275d9ff4e317001ccffafc689fadb5c16bef1f8f81a11a9a05"
+      },
+      {
+        "path": "docs/monitor/monitor.test.mjs",
+        "bytes": 32567,
+        "sha256": "47e3d81605626d88dfcfb16d28d5ed633c6c4b20c293197d3e8ba4e0a5d74bf5"
+      },
+      {
+        "path": "docs/monitor/client-replica.js",
+        "bytes": 8342,
+        "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+      },
+      {
+        "path": "docs/monitor/health-projection.js",
+        "bytes": 5299,
+        "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee"
+      },
+      {
+        "path": "docs/monitor/observer.mjs",
+        "bytes": 16128,
+        "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596"
+      },
+      {
+        "path": "docs/monitor/index.html",
+        "bytes": 47320,
+        "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231"
+      },
+      {
+        "path": "docs/monitor/README.md",
+        "bytes": 11867,
+        "sha256": "b8167c45068c7b33efbd57c1945bfe6d23479d79b08752e310ff034b85d0b4af"
+      }
+    ],
+    "deployed_nodes_observed": false,
+    "deployed_failover_readback": false,
+    "mesh_wide_losslessness": false,
+    "effect_ack_done": false,
+    "predecessor_evidence_transfer": false,
+    "external_effects": {
+      "merge": "NOT_PERFORMED",
+      "deployment": "NOT_PERFORMED",
+      "candidate_ref_update": "AUTHORIZED_AFTER_CURRENT_TREE_TESTS"
+    },
+    "first_remaining_acceptance_gap": "Actually separated deployed nodes and fault-injected failover readback; excluded from this task."
   }
 }

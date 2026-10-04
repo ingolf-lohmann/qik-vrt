@@ -30,6 +30,11 @@
     });
     add('monitor', node && node.operation_error ? 'DEGRADED' : node ? 'HEALTHY' : 'UNKNOWN', 'Monitor',
       node && node.operation_error || (node ? 'Node antwortet; dauerhafter Zustand wird geprüft.' : 'Node-Bindung noch nicht beobachtet.'));
+    var replication = node && node.journal_replication;
+    if (replication) add('replication', replication.pending_events ? 'DEGRADED' : 'UNKNOWN', 'Node-Replikation',
+      replication.pending_events ? 'Lokal gespeicherte Ereignisse warten auf den dauerhaften Replica-Readback.' :
+      replication.checkpoint_confirmed ? 'Journal-Checkpoint bestätigt; Failover auf getrennt deployten Nodes noch nicht beobachtet.' :
+      'Kein bestätigter Cross-Node-Checkpoint; globale Verlustfreiheit bleibt ungeprüft.');
     add('webhooks', node && node.webhook_registration === 'VERIFIED' && node.last_verified_delivery ? 'HEALTHY' : 'DEGRADED', 'Ereigniszufuhr',
       node && node.webhook_registration === 'VERIFIED' && node.last_verified_delivery ? 'Provider-Registrierung und signierte Zustellung bestätigt.' : 'GitHub-Webhook-Zustellung ist noch nicht unabhängig nachgewiesen.');
     var runtime = node && node.runtime_health;

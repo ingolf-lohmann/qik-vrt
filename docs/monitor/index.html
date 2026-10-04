@@ -194,7 +194,7 @@ async function refresh(){
  }finally{loading=false;el('refresh').disabled=false}
 }
 
-var replica=QikvrtReplica.create({version:'2026-10-04.8'}),stream=null,streamRecovery=false,lastNodeMetadata=null;
+var replica=QikvrtReplica.create({version:'2026-10-04.9'}),stream=null,streamRecovery=false,lastNodeMetadata=null;
 function renderHealth(){
  var node=lastNodeMetadata;
  var scope=location.pathname==='/node'&&node?node.source_repository:null;
