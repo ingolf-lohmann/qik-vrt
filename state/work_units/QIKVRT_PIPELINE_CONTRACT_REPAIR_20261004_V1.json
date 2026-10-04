@@ -44,5 +44,21 @@
   ],
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
   "EFFECT_ACK_DONE": false,
-  "transport_ack_is_effect_ack": false
+  "transport_ack_is_effect_ack": false,
+  "validation_continuation": {
+    "first_candidate_head": "83f3fcb9f14b9208556d85925b55e3079b4c1db5",
+    "native_plan_run_id": 37196739109,
+    "native_observation": "FAILURE_WITH_ZERO_JOBS",
+    "correction": "Move runner.temp expressions from job env to step env; require a context negative control. Preserve explicit exit failures as well as command failures.",
+    "new_unique_test_cases": 41,
+    "local_modes": {
+      "normal": "45_TESTS_SUCCESS",
+      "optimized": "SAME_45_TESTS_SUCCESS"
+    },
+    "logs_sha256": {
+      "normal": "2c517b5d0eea2436227125d9b0a784c4362b7c654b025f9adb249a6ab73da508",
+      "optimized": "69c3d1e87612ba33fff4e910badbf7454f79c22a1656c6cd6e78d76947274a36"
+    },
+    "native_successor_validation": "REQUIRED_NOT_INFERRED"
+  }
 }

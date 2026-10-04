@@ -303,13 +303,14 @@ class PipelineContracts(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             directory = Path(raw) / "qikvrt-continuation"
             directory.mkdir()
-            result = subprocess.run(["bash", "-ec", "phase=VERIFY_SUCCESSOR\n" + trap + "\nfalse\n"],
-                                    env=dict(os.environ, RUNNER_TEMP=raw), capture_output=True)
-            self.assertNotEqual(result.returncode, 0)
-            value = json.loads((directory / "early-failure.json").read_text())
-            self.assertEqual(value["first_blocker"], "VERIFY_SUCCESSOR")
-            self.assertEqual(value["exit_code"], 1)
-            self.assertFalse(value["EFFECT_ACK_DONE"])
+            for failure, code in (("false", 1), ("exit 2", 2)):
+                result = subprocess.run(["bash", "-ec", "phase=VERIFY_SUCCESSOR\n" + trap + "\n" + failure + "\n"],
+                                        env=dict(os.environ, RUNNER_TEMP=raw), capture_output=True)
+                self.assertEqual(result.returncode, code)
+                value = json.loads((directory / "early-failure.json").read_text())
+                self.assertEqual(value["first_blocker"], "VERIFY_SUCCESSOR")
+                self.assertEqual(value["exit_code"], code)
+                self.assertFalse(value["EFFECT_ACK_DONE"])
 
     def test_api_handles_empty_204_and_never_leaks_error_stderr(self):
         with mock.patch.object(c.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
@@ -347,6 +348,26 @@ class PipelineContracts(unittest.TestCase):
         self.assertIn('qikvrt-pipeline-contracts.py" resume', block)
         self.assertIn('qikvrt-pipeline-contracts.py" select', source)
         self.assertIn('git push origin "HEAD:refs/heads/${HEAD_REF}"', source)
+
+    def test_runner_context_is_not_used_before_steps(self):
+        # GitHub contexts reference: runner is unavailable in jobs.<id>.env.
+        # Validate this specific contract before a workflow can be admitted.
+        def valid(source):
+            jobs = source.split("\njobs:\n", 1)[1]
+            in_steps = False
+            for line in jobs.splitlines():
+                if line.startswith("  ") and not line.startswith("   ") and line.rstrip().endswith(":"):
+                    in_steps = False
+                if line == "    steps:":
+                    in_steps = True
+                if not in_steps and "${{" in line and "runner." in line:
+                    return False
+            return True
+        for name in ("qikvrt_ci.yml", "qikvrt_autonomous_pr_continuation.yml", "qikvrt_autonomous_exact_head_verify.yml"):
+            source = (ROOT / ".github/workflows" / name).read_text()
+            self.assertTrue(valid(source), name)
+            broken = source.replace("    steps:", "    env:\n      BAD: ${{ runner.temp }}\n    steps:", 1)
+            self.assertFalse(valid(broken), name)
 
     def test_final_export_follows_checks_and_readback_and_excludes_history(self):
         source = (ROOT / ".github/workflows/qikvrt_ci.yml").read_text()

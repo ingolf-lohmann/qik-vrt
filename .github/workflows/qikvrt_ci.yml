@@ -18,8 +18,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      QIKVRT_CONTRACT_EVIDENCE_DIR: ${{ runner.temp }}/qikvrt-ci-final/tests
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -27,6 +25,8 @@ jobs:
           fetch-depth: 0
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
+        env:
+          QIKVRT_CONTRACT_EVIDENCE_DIR: ${{ runner.temp }}/qikvrt-ci-final/tests
         continue-on-error: true
         shell: bash
         run: |
@@ -87,6 +87,7 @@ jobs:
         id: fixpoint
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
+          QIKVRT_CONTRACT_EVIDENCE_DIR: ${{ runner.temp }}/qikvrt-ci-final/tests
           TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
           MAX_SUCCESSORS: "4"
