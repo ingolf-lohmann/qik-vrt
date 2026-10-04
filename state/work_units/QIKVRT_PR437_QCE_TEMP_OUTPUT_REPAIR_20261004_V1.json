@@ -14,7 +14,8 @@
     "Reconstructed and independently rehashed missing local Git blobs",
     "Moved both existing output paths to quoted RUNNER_TEMP paths",
     "Executed original and corrected workflow shell blocks with hash-verified official Lean/Lake 4.19.0 and the existing local executable-path compatibility source",
-    "Verified unchanged package bytes and recorded bounded evidence; regenerate existing repository integrity trio"
+    "Verified unchanged package bytes and recorded bounded evidence; regenerate existing repository integrity trio",
+    "Disclosed and recorded the erroneous inclusion of two local Lake cache outputs in the first global inventory and independently verified the existing native CI correction"
   ],
   "created_at": "2026-10-04T10:44:39.504900+00:00",
   "evidence_retention": "METADATA_ONLY",
@@ -38,8 +39,12 @@
       "REPOSITORY_FILE_MANIFEST.json.sha256",
       "SHA256SUMS.txt"
     ],
-    "correction_method": "SINGLE_PARENT_FORWARD_COMMIT_NO_FORCE",
-    "parent_commit": "bc11dd92bef0564e92a527b9ae753873840b4fdf",
+    "correction_method": "FORWARD_HISTORY_PRESERVING_COMMITS_NO_FORCE",
+    "intermediate_commits": [
+      "d2c6d054733f1c59bd9d030bbfe069086d49df55",
+      "31de9f4463d64b3e0194ff02bac9fd14466f8809"
+    ],
+    "parent_commit": "31de9f4463d64b3e0194ff02bac9fd14466f8809",
     "pull_request": 437
   },
   "human_actor": {
@@ -103,6 +108,7 @@
   "source_repository": "ingolf-lohmann/qik-vrt",
   "source_tree": "27aaa02ba050ad91329cc6ee8c267adde3a3b410",
   "unresolved_origin": [],
+  "updated_at": "2026-10-04T11:01:15.400712+00:00",
   "verification": {
     "causal_control": {
       "added_files": [
@@ -140,6 +146,32 @@
     "fresh_accepted_theorems": 36,
     "fresh_axiom_audit_directives": 36,
     "fresh_lean_version": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+    "initial_global_inventory_correction": {
+      "cause": "The local first materialization incorrectly inventoried two untracked Lake cache outputs; they were absent from the committed tree",
+      "classified_entries_after_correction": 3980,
+      "fresh_subject_test_exit_status": 0,
+      "immutable_digests_after_correction": 3971,
+      "independently_calculated_tree_matches": true,
+      "native_changed_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "native_corrected_head": "31de9f4463d64b3e0194ff02bac9fd14466f8809",
+      "native_corrected_tree": "63403dad9a0acce8dcd261e7611170946a99b533",
+      "native_reentry_iteration": 1,
+      "native_reentry_terminal_result": "PASS_MODE_TESTED_FIXPOINT",
+      "native_repair_job_id": 111420473719,
+      "native_repair_run_id": 37196870374,
+      "native_terminal_at_utc": "2026-10-04T11:00:52Z",
+      "rejected_head": "d2c6d054733f1c59bd9d030bbfe069086d49df55",
+      "removed_paths": [
+        "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/.lake/lakefile.olean",
+        "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/.lake/lakefile.olean.trace"
+      ],
+      "responsible_contribution": "OpenAI Codex local materialization",
+      "scope": "Global integrity materialization only; original QCE verifier and package manifest unchanged"
+    },
     "original_qce_package_tree": "0bf608170ceb39b62daf404284d943eb953476b0",
     "original_verifier_mutated": false,
     "predecessor_evidence_transfer": false,
