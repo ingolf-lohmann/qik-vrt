@@ -476,11 +476,11 @@
     "continuous_improvement": {
       "loop": "OBSERVE -> MEASURE -> DIAGNOSE -> ADAPT -> VALIDATE -> COMPARE -> LEARN",
       "objectives": [
+        "minimize necessary human interventions and human handling time per accepted useful outcome",
         "accepted task effects per unit time",
         "end-to-end latency",
         "defect and correction rate",
-        "resource cost",
-        "human interventions"
+        "resource cost"
       ],
       "cache_key": [
         "repository role",
@@ -494,5 +494,35 @@
       "unchanged_blocker": "NOOP with persisted change-based retry; no notification spam"
     },
     "active_runtime": false
+  },
+  "human_activity_minimization": {
+    "schema": "qikvrt_human_activity_minimization_goal_v1",
+    "owner": "Ingolf Lohmann",
+    "declared_date": "2026-10-04",
+    "status": "OWNER_GOAL_CAPTURED; EXISTING_RUNTIME_INTEGRATION_PENDING",
+    "scope": "Every admitted task, requirements workflow, repository work unit and role-bound personal-assistant flow; prioritize reducing Ingolf's necessary activity.",
+    "objective": "Minimize necessary human interventions and human handling time for comparable verified useful task outcomes. Routine reversible and already-authorized work proceeds autonomously.",
+    "rules": [
+      "Reuse existing explicit authorizations and stable corrections; do not ask for the same authorization again.",
+      "Resolve routine deterministic implementation choices from current evidence and scope.",
+      "Continue safe independent authorized work while one dependent route is blocked.",
+      "Ask only for a genuinely missing non-deterministic decision, authentication/admission or mandatory authority predicate that has no admitted autonomous route.",
+      "Prepare and verify the concrete reviewable result before any necessary final human approval.",
+      "Group related decisions when doing so preserves clear effect scope and minimizes human effort.",
+      "Notify for material changed evidence, an actionable required human step or verified completion; unchanged blocker is NOOP.",
+      "Every necessary human intervention names the precise missing predicate, its evidence, why the available execution route cannot satisfy it and the smallest concrete action.",
+      "Retain owner's ability to correct, reprioritize or stop; never fabricate consent, independent review or effect acceptance."
+    ],
+    "metrics": {
+      "verified_useful_outcomes": "task-specific accepted effects with fresh evidence; input capture, CI or transport alone do not count",
+      "human_interventions": "count actual questions, approvals, manual dispatch/admission and correction steps; distinguish necessary from avoidable repeats",
+      "human_handling_time": "observed duration when supplied by actual telemetry; unknown is unknown",
+      "primary_comparison": "necessary human interventions per comparable accepted useful outcome; zero-outcome denominator remains undefined/HOLD",
+      "secondary_comparison": "accepted useful outcomes per human handling time; report uncertainty and matched conditions",
+      "required_repeated_authorization_count_target": 0,
+      "actual_baseline": "NOT_MEASURED; NO_AUTONOMY_OR_EFFICIENCY_ADVANTAGE_CLAIM"
+    },
+    "integration": "Extend existing human Effect Acknowledgement, current-criteria reactivation, HMI adaptation and universal task contracts; no parallel assistant or controller.",
+    "live_activation": false
   }
 }

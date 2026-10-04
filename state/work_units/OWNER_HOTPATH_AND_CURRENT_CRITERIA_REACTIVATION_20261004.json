@@ -39,7 +39,7 @@
   "artifacts": [
     {
       "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
-      "sha256": "cd0430a78eedbbf70c119a150545fa0d49867b6308b5abc22213ef69dde4df56"
+      "sha256": "87a0979433fa1a1f251277282d340a15910d291050b61d830e21d53ca4b5f34b"
     }
   ],
   "retention": "METADATA_ONLY",
@@ -6190,6 +6190,16 @@
       "verify task-specific effect acceptance and measurable deltas"
     ],
     "no_merge_or_branch_deletion": true,
+    "effect_ack_done": false
+  },
+  "human_activity_minimization_continuation": {
+    "owner_directive_date": "2026-10-04",
+    "goal": "Minimize human activity, especially Ingolf Lohmann's; autonomously finish admitted work and reuse prior authorizations.",
+    "state": "DIRECTIVE_PERSISTED_REVIEW_CANDIDATE_RUNTIME_PENDING",
+    "reuse": "Existing PR453 human Effect Acknowledgement/hotpath/current-criteria/requirements carrier",
+    "current_client_application": "Avoid repeated task authorizations and unchanged-status requests; continue safe independent work; expose only genuinely required smallest human action.",
+    "existing_external_admission_gap": "Current native runs require GitHub admission and actual enforced Code Owner review; no callable admission/admin route observed; renewed Owner instruction is not execution admission.",
+    "measurement": "No matched baseline, human handling-time telemetry or live autonomous task-outcome proof established.",
     "effect_ack_done": false
   }
 }
