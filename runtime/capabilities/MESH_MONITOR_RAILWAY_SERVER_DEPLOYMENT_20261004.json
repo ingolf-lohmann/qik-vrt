@@ -19,7 +19,7 @@
   "connector_route": {
     "read_capability": "OBSERVED",
     "deployment_route": "INTERACTIVE_CLIENT_ADMISSION; NOT_A_SERVER_CREDENTIAL",
-    "prior_accept_deploy_result": "Cancelled — the user did not approve this action. No changes were made.",
+    "prior_accept_deploy_result": "Cancelled \u2014 the user did not approve this action. No changes were made.",
     "prior_result_source": "Fresh PR456 body at parent exact head; this session did not repeat accept-deploy."
   },
   "remaining_effects": {
@@ -53,5 +53,16 @@
   "merge_performed": false,
   "governance_weakened": false,
   "PREDECESSOR_EVIDENCE_TRANSFER": false,
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "native_runner_observation": {
+    "state": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE",
+    "executor_head": "af44ec730bbc533b8fc4141251c604a71312a08b",
+    "source_head": "674aa35ec0659119a19cda66b88f32050e34f105",
+    "run_id": 37214947185,
+    "artifact_id": 11307639385,
+    "mutation_count": 0,
+    "receipt_record": "evidence/monitor_deploy/NATIVE_DEPLOY_HOLD_37214947185.json",
+    "scope": "Neither named Railway credential is available to this exact GitHub execution; future secret availability is not inferred."
+  },
+  "recorded_native_readback_at": "2026-10-04T16:03:24.577124+00:00"
 }

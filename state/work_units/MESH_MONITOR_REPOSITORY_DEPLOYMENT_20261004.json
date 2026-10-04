@@ -38,7 +38,8 @@
     "Repository and Railway exact-state diagnosis",
     "Generated narrow deployment controller, push/status workflow and separate existing-client readback adapter",
     "Fail-closed, drift, one-shot recovery and public byte-validation tests",
-    "Capability, source and provenance evidence"
+    "Capability, source and provenance evidence",
+    "Bounded server-side observation after one admitted dispatch; no dependency on a later platform status event and no mutation retry."
   ],
   "joint_components": [],
   "unresolved_origin": [],
@@ -65,8 +66,8 @@
   "outputs": [
     {
       "path": ".github/workflows/qikvrt_mesh_monitor_deploy.yml",
-      "bytes": 5434,
-      "sha256": "f0de07b872bef296bdef7182ecb9b8fb48580c9466f187028a2be1b41f01d950"
+      "bytes": 5451,
+      "sha256": "f74638b507e956a60df93c034c08288c5fd720397aa21d6106475942f3b467ff"
     },
     {
       "path": "Makefile",
@@ -75,13 +76,13 @@
     },
     {
       "path": "docs/monitor/README.md",
-      "bytes": 16986,
-      "sha256": "a736f8300b067fb63549f29f2a8289cd1a32e62122a15382219a6babb06ce4da"
+      "bytes": 17506,
+      "sha256": "c88c528fe9e9267b74634defecfdf590e7dc66546fcd0043e765e4423007b38e"
     },
     {
       "path": "tools/qikvrt_mesh_monitor_deploy.py",
-      "bytes": 18495,
-      "sha256": "4d9fb09cd8c65519e4f5e0e5f1cd274a865c2016e934a73b2f40af62547fb753"
+      "bytes": 20735,
+      "sha256": "bc37d7d6ef08061856d483f9fcf1f2f16caa0b4121026d6b14fb62a092a0f692"
     },
     {
       "path": "tools/qikvrt_mesh_monitor_readback.mjs",
@@ -90,8 +91,8 @@
     },
     {
       "path": "tests/test_mesh_monitor_deploy.py",
-      "bytes": 9991,
-      "sha256": "6b7be1f687bfeac025b1db5336a3b691d353373fff4cd0d13b62326a03686343"
+      "bytes": 13281,
+      "sha256": "6808a259400ddc8519335c6c9d4ef13a676f55a72d5326386a81f1672c40abdc"
     },
     {
       "path": "tests/mesh_monitor_readback.test.mjs",
@@ -105,8 +106,8 @@
     },
     {
       "path": "runtime/capabilities/MESH_MONITOR_RAILWAY_SERVER_DEPLOYMENT_20261004.json",
-      "bytes": 3018,
-      "sha256": "1fb5a556f3ec5d68a3030be3862c28e9436635008558108b8e2d19404781fd0b"
+      "bytes": 3621,
+      "sha256": "29cb8247f8e97dd24ceb545f961cb4017780e38a4f219018677c7c3ff1b49c2a"
     },
     {
       "path": "evidence/monitor_deploy/RAILWAY_TARGET_OBSERVATION_20261004.json",
@@ -115,12 +116,22 @@
     },
     {
       "path": "evidence/monitor_deploy/LOCAL_SUCCESSOR_TESTS_20261004.log",
-      "bytes": 115581,
-      "sha256": "fb36f8efbf11630be8d032b29726d9c4b9aa4d022120e34fb9504ba9e56a84de"
+      "bytes": 116524,
+      "sha256": "34d5f02275f54a3e9e81c21133745fef7b6eda54a32239732fc76999a4f83aa3"
+    },
+    {
+      "path": "evidence/monitor_deploy/NATIVE_DEPLOY_HOLD_37214947185.json",
+      "bytes": 3512,
+      "sha256": "6cd6d91f2548a21d0ac214c14c741ab76681378a4bb8f743bf33b4907eb858d1"
+    },
+    {
+      "path": "evidence/monitor_deploy/NATIVE_DEPLOY_HOLD_37214947185.zip",
+      "bytes": 1671,
+      "sha256": "2da290b112b0fde289ffa399ae2bec8b554818677251253fe52e13910426c439"
     }
   ],
   "git_history": {
-    "parent": "e2a8e1a647bfd085a3977aef5f72730257dedd93",
+    "parent": "af44ec730bbc533b8fc4141251c604a71312a08b",
     "successor_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
     "commit_binding": "Resolve the successor from the commit containing this exact work unit; no cyclic self-SHA field.",
     "force_push": false,
@@ -129,12 +140,15 @@
       "head": "e2a8e1a647bfd085a3977aef5f72730257dedd93",
       "tree": "46abcfc2d2172317f661703bf6d4ba338443cad1",
       "scope": "Existing two-node replication and timeout-recovery successor retained byte-for-byte; explicit deployment subject remains 674aa35."
-    }
+    },
+    "implementation_parent": "e2a8e1a647bfd085a3977aef5f72730257dedd93",
+    "pre_observation_implementation_commit": "af44ec730bbc533b8fc4141251c604a71312a08b",
+    "pre_observation_implementation_tree": "49c69c60c3fa4c74e1dea587dfce202ae3629701"
   },
   "verification": {
     "deployment_regressions": {
       "state": "PASS",
-      "tests": 16
+      "tests": 21
     },
     "independent_client_regressions": {
       "state": "PASS",
@@ -143,7 +157,8 @@
     "actual_local_controller": {
       "state": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE",
       "network_requests": 0,
-      "railway_mutations": 0
+      "railway_mutations": 0,
+      "mode": "--apply --wait-readback; missing credential still stops before any observation or mutation"
     },
     "workflow_yaml_embedded_python_and_progress_frame": {
       "state": "PASS"
@@ -152,9 +167,9 @@
       "state": "PASS",
       "exit_code": 0,
       "log": "evidence/monitor_deploy/LOCAL_SUCCESSOR_TESTS_20261004.log",
-      "bytes": 115581,
-      "sha256": "fb36f8efbf11630be8d032b29726d9c4b9aa4d022120e34fb9504ba9e56a84de",
-      "scope": "Local full suite on preserved e2a8e1a successor plus the implementation bytes listed in outputs; final provenance/log/integrity metadata materialized afterward. This is not inherited or native exact-head CI evidence."
+      "bytes": 116524,
+      "sha256": "34d5f02275f54a3e9e81c21133745fef7b6eda54a32239732fc76999a4f83aa3",
+      "scope": "Fresh local full suite on all final implementation bytes including the 21 controller and 8 independent-client regressions. Final test-log/provenance/integrity metadata materialized afterward. Native successor checks require their own head/tree readback."
     },
     "integrity": {
       "state": "PASS",
@@ -163,7 +178,39 @@
     "boot": "CONTINUE; optional unrelated runtime profiles absent; tool-cache 14/14 at 100%.",
     "pre_effect_controller": "HOLD; no competing-writer/current-main evidence for unrelated optimization, no autonomous optimization applied.",
     "historical_test_dependency": "Fetched exact 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 for existing publication worktree regression; 8/8 tests pass. No release action or software downgrade.",
-    "native_successor_ci": "REQUIRES_FRESH_EXACT_HEAD_OBSERVATION_AFTER_PUBLICATION"
+    "native_successor_ci": "REQUIRES_FRESH_METADATA_SUCCESSOR_EXACT_HEAD_OBSERVATION_AFTER_PUBLICATION",
+    "native_implementation_head": {
+      "head": "af44ec730bbc533b8fc4141251c604a71312a08b",
+      "tree": "49c69c60c3fa4c74e1dea587dfce202ae3629701",
+      "deployment_validation_run": 37214947185,
+      "deployment_validation": "PASS",
+      "deployment_effect": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE",
+      "deployment_mutations": 0,
+      "repository_evidence_run": 37214949720,
+      "repository_evidence": "PASS",
+      "pr_ci_run": 37214949645,
+      "pr_ci": "PASS",
+      "push_ci_run": 37214947130,
+      "push_ci": "PASS",
+      "global_completion_run": 37214949700,
+      "global_completion": "PASS",
+      "collective_review_run": 37214949690,
+      "collective_review": "PASS",
+      "scope": "Exact implementation-head evidence; it is not transferred to the metadata successor or interpreted as native review-governance approval."
+    },
+    "full_make_test_predecessor": {
+      "state": "PASS",
+      "exit_code": 0,
+      "log": "evidence/monitor_deploy/LOCAL_SUCCESSOR_TESTS_20261004.log",
+      "bytes": 115581,
+      "sha256": "fb36f8efbf11630be8d032b29726d9c4b9aa4d022120e34fb9504ba9e56a84de",
+      "scope": "Local full suite on preserved e2a8e1a successor plus the implementation bytes listed in outputs; final provenance/log/integrity metadata materialized afterward. This is not inherited or native exact-head CI evidence.",
+      "subject_head": "af44ec730bbc533b8fc4141251c604a71312a08b"
+    },
+    "post_dispatch_readback": {
+      "state": "PASS",
+      "scope": "APPLYING/BUILDING to independently verified client, bounded timeout, immediate 403/configuration drift and delayed public client response; all preserve exactly one admitted mutation."
+    }
   },
   "human_decision": {
     "task_and_conditional_deployment": "AUTHORIZED_BY_CURRENT_REQUEST",
@@ -189,5 +236,6 @@
     "EFFECT_ACK_DONE": false,
     "predecessor_evidence_transfer": false
   },
-  "finalized_at": "2026-10-04T15:53:13.146037+00:00"
+  "finalized_at": "2026-10-04T16:13:22.269774+00:00",
+  "finalized_native_observation_at": "2026-10-04T16:03:24.577124+00:00"
 }

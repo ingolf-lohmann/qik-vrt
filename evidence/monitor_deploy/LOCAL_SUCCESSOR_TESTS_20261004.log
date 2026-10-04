@@ -5,51 +5,51 @@ npm warn Unknown env config "http-proxy". This will stop working in the next maj
 > node observer.test.mjs && node --test monitor.test.mjs
 
 PASS: ticking ages and stale-status expiry preserve details without source reads; exact causal evidence, source-bound counters, queues, no polling, safe job steps, attribution, rate/cache recovery, read-only routes.
-✔ health separates failures, stale evidence, live runtime and client phase (1.913725ms)
-✔ a snapshot does not hide a detected event gap or corrupted event (8.839995ms)
-✔ node health reports missing carrier and native-cache failure without green CI masking it (28.258766ms)
-✔ snapshot integrity, distinct client instances, versions, order and epoch fail closed (6.34184ms)
-✔ durable acknowledgment, byte-exact journal, duplicates and signature rejection (15.257158ms)
-✔ four concurrent clients receive all 32 accepted events and agree on original bytes (100.253068ms)
-✔ disconnect and node restart replay every missing event from the durable cursor (26.072421ms)
-{"at":"2026-10-04T15:47:02.070Z","stage":"MONITOR_REQUEST","cause":"SIMULATED_STORAGE_FULL"}
-✔ storage failure never acknowledges or broadcasts an event as durable (4.127151ms)
-✔ client event gaps and journal corruption are detected rather than promoted to synchrony (6.714201ms)
-✔ separate local processes: writer crash leaves four clients byte-exact replay on replica (464.760188ms)
-{"at":"2026-10-04T15:47:02.556Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
-✔ interruption with local pending tail withholds ACK and stream until reconnect and duplicate retry (21.024982ms)
-{"at":"2026-10-04T15:47:02.570Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
-✔ writer restart preserves the unacknowledged tail and reconnects without regenerating records (13.236542ms)
-{"at":"2026-10-04T15:47:02.588Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_GAP"}
-{"at":"2026-10-04T15:47:02.590Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
-{"at":"2026-10-04T15:47:02.593Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
-{"at":"2026-10-04T15:47:02.595Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
-{"at":"2026-10-04T15:47:02.597Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
-{"at":"2026-10-04T15:47:02.599Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EPOCH_CONFLICT"}
-{"at":"2026-10-04T15:47:02.601Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICATION_BINDING"}
-✔ signed append rejects missing events, reversed order, conflicting bytes and invalid checkpoints atomically (27.897252ms)
-{"at":"2026-10-04T15:47:02.614Z","stage":"MONITOR_REQUEST","cause":"REPLICA_PREFIX_CONFLICT"}
-✔ a valid conflicting replica prefix blocks the writer rather than overwriting the replica (7.745775ms)
-{"at":"2026-10-04T15:47:02.622Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICA_READBACK_SIGNATURE"}
-✔ peer request and readback authentication failures never produce cross-node ACK (8.024607ms)
-{"at":"2026-10-04T15:47:02.633Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-4SgLVn/occupied.tmp-63afbfbb-eefd-4b81-964c-e8cd996126cc' -> '/tmp/qikvrt-monitor-test-4SgLVn/occupied'"}
-{"at":"2026-10-04T15:47:02.634Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-4SgLVn/occupied.tmp-63afbfbb-eefd-4b81-964c-e8cd996126cc' -> '/tmp/qikvrt-monitor-test-4SgLVn/occupied'"}
-{"at":"2026-10-04T15:47:02.638Z","stage":"MONITOR_REQUEST","cause":"STORAGE_RESTART_REQUIRED"}
-✔ replica storage failure freezes receipts, then restart restores the prefix and permits recovery (22.415638ms)
-{"at":"2026-10-04T15:47:02.659Z","stage":"MONITOR_REQUEST","cause":"SOURCE_RECEIPT_DISK_FULL"}
-✔ source receipt storage failure after peer durability requires fresh confirmation on restart (23.12673ms)
-✔ interrupted bounded suffix batches restart at the durable prefix and expose only a complete checkpoint (630.654373ms)
-✔ replicas remain read-only, do not observe GitHub, and cannot be promoted by changing role (13.667544ms)
-✔ contradictory duplicate client record is rejected even if it repeats the claimed digest (6.706299ms)
-{"at":"2026-10-04T15:47:03.342Z","stage":"MONITOR_REQUEST","cause":"The operation was aborted due to timeout"}
-✔ peer timeout withholds the positive receipt and reconnect recovers the original pending event (28.784933ms)
-{"at":"2026-10-04T15:47:03.353Z","stage":"MONITOR_REQUEST","cause":"REPLICA_RESPONSE_LOST"}
-✔ lost peer response after durable append is recovered by exact readback without duplicate events (11.003478ms)
-{"at":"2026-10-04T15:47:03.367Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_CONFLICT"}
-{"at":"2026-10-04T15:47:03.369Z","stage":"MONITOR_REQUEST","cause":"PUBLIC_REPOSITORY_SCOPE_REQUIRED"}
-{"at":"2026-10-04T15:47:03.372Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
-✔ valid conflicting overlap and private payload are rejected before any replica mutation (13.030954ms)
-✔ restart rejects a corrupt durable replica confirmation instead of serving a fabricated prefix (6.645398ms)
+✔ health separates failures, stale evidence, live runtime and client phase (1.916479ms)
+✔ a snapshot does not hide a detected event gap or corrupted event (9.523605ms)
+✔ node health reports missing carrier and native-cache failure without green CI masking it (30.009623ms)
+✔ snapshot integrity, distinct client instances, versions, order and epoch fail closed (7.01292ms)
+✔ durable acknowledgment, byte-exact journal, duplicates and signature rejection (16.319609ms)
+✔ four concurrent clients receive all 32 accepted events and agree on original bytes (110.83433ms)
+✔ disconnect and node restart replay every missing event from the durable cursor (20.169741ms)
+{"at":"2026-10-04T16:11:41.179Z","stage":"MONITOR_REQUEST","cause":"SIMULATED_STORAGE_FULL"}
+✔ storage failure never acknowledges or broadcasts an event as durable (4.257798ms)
+✔ client event gaps and journal corruption are detected rather than promoted to synchrony (6.558075ms)
+✔ separate local processes: writer crash leaves four clients byte-exact replay on replica (421.922697ms)
+{"at":"2026-10-04T16:11:41.620Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ interruption with local pending tail withholds ACK and stream until reconnect and duplicate retry (21.874782ms)
+{"at":"2026-10-04T16:11:41.638Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ writer restart preserves the unacknowledged tail and reconnects without regenerating records (18.771244ms)
+{"at":"2026-10-04T16:11:41.658Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_GAP"}
+{"at":"2026-10-04T16:11:41.660Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-04T16:11:41.662Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-04T16:11:41.663Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-04T16:11:41.665Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-04T16:11:41.668Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EPOCH_CONFLICT"}
+{"at":"2026-10-04T16:11:41.670Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICATION_BINDING"}
+✔ signed append rejects missing events, reversed order, conflicting bytes and invalid checkpoints atomically (27.04836ms)
+{"at":"2026-10-04T16:11:41.684Z","stage":"MONITOR_REQUEST","cause":"REPLICA_PREFIX_CONFLICT"}
+✔ a valid conflicting replica prefix blocks the writer rather than overwriting the replica (9.410175ms)
+{"at":"2026-10-04T16:11:41.692Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICA_READBACK_SIGNATURE"}
+✔ peer request and readback authentication failures never produce cross-node ACK (7.881249ms)
+{"at":"2026-10-04T16:11:41.706Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-fnP444/occupied.tmp-294ef2ca-a04f-41c6-b33b-bd33be99dbf3' -> '/tmp/qikvrt-monitor-test-fnP444/occupied'"}
+{"at":"2026-10-04T16:11:41.706Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-fnP444/occupied.tmp-294ef2ca-a04f-41c6-b33b-bd33be99dbf3' -> '/tmp/qikvrt-monitor-test-fnP444/occupied'"}
+{"at":"2026-10-04T16:11:41.710Z","stage":"MONITOR_REQUEST","cause":"STORAGE_RESTART_REQUIRED"}
+✔ replica storage failure freezes receipts, then restart restores the prefix and permits recovery (25.014384ms)
+{"at":"2026-10-04T16:11:41.735Z","stage":"MONITOR_REQUEST","cause":"SOURCE_RECEIPT_DISK_FULL"}
+✔ source receipt storage failure after peer durability requires fresh confirmation on restart (21.772537ms)
+✔ interrupted bounded suffix batches restart at the durable prefix and expose only a complete checkpoint (658.763496ms)
+✔ replicas remain read-only, do not observe GitHub, and cannot be promoted by changing role (14.743112ms)
+✔ contradictory duplicate client record is rejected even if it repeats the claimed digest (7.469529ms)
+{"at":"2026-10-04T16:11:42.445Z","stage":"MONITOR_REQUEST","cause":"The operation was aborted due to timeout"}
+✔ peer timeout withholds the positive receipt and reconnect recovers the original pending event (29.456009ms)
+{"at":"2026-10-04T16:11:42.457Z","stage":"MONITOR_REQUEST","cause":"REPLICA_RESPONSE_LOST"}
+✔ lost peer response after durable append is recovered by exact readback without duplicate events (12.095622ms)
+{"at":"2026-10-04T16:11:42.470Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_CONFLICT"}
+{"at":"2026-10-04T16:11:42.472Z","stage":"MONITOR_REQUEST","cause":"PUBLIC_REPOSITORY_SCOPE_REQUIRED"}
+{"at":"2026-10-04T16:11:42.474Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+✔ valid conflicting overlap and private payload are rejected before any replica mutation (12.02777ms)
+✔ restart rejects a corrupt durable replica confirmation instead of serving a fabricated prefix (5.954595ms)
 ℹ tests 24
 ℹ suites 0
 ℹ pass 24
@@ -57,9 +57,10 @@ PASS: ticking ages and stale-status expiry preserve details without source reads
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1599.55868
+ℹ duration_ms 1592.705983
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_mesh_monitor_deploy
 test_active_platform_deployment_stops_before_claim (tests.test_mesh_monitor_deploy.DeploymentTests.test_active_platform_deployment_stops_before_claim) ... ok
+test_admitted_attempt_reaches_public_readback_without_second_mutation (tests.test_mesh_monitor_deploy.DeploymentTests.test_admitted_attempt_reaches_public_readback_without_second_mutation) ... ok
 test_cli_missing_credential_returns_hold_receipt_without_secrets (tests.test_mesh_monitor_deploy.DeploymentTests.test_cli_missing_credential_returns_hold_receipt_without_secrets) ... ok
 test_current_success_is_readback_only_without_lock_or_mutation (tests.test_mesh_monitor_deploy.DeploymentTests.test_current_success_is_readback_only_without_lock_or_mutation) ... ok
 test_drift_and_unrelated_changes_fail_before_claim (tests.test_mesh_monitor_deploy.DeploymentTests.test_drift_and_unrelated_changes_fail_before_claim) ... ok
@@ -70,26 +71,30 @@ test_live_bound_config_uses_explicit_commit_deploy_without_new_service (tests.te
 test_live_volume_is_required (tests.test_mesh_monitor_deploy.DeploymentTests.test_live_volume_is_required) ... ok
 test_lost_mutation_response_survives_as_claim_and_never_retries (tests.test_mesh_monitor_deploy.DeploymentTests.test_lost_mutation_response_survives_as_claim_and_never_retries) ... ok
 test_missing_credential_fails_before_network (tests.test_mesh_monitor_deploy.DeploymentTests.test_missing_credential_fails_before_network) ... ok
+test_platform_success_then_delayed_client_readback_never_redeploys (tests.test_mesh_monitor_deploy.DeploymentTests.test_platform_success_then_delayed_client_readback_never_redeploys) ... ok
 test_project_and_account_tokens_use_correct_distinct_headers (tests.test_mesh_monitor_deploy.DeploymentTests.test_project_and_account_tokens_use_correct_distinct_headers) ... ok
 test_raw_api_errors_and_credentials_are_never_reflected (tests.test_mesh_monitor_deploy.DeploymentTests.test_raw_api_errors_and_credentials_are_never_reflected) ... {"repository": "ingolf-lohmann/qik-vrt", "source_head": "674aa35ec0659119a19cda66b88f32050e34f105", "operation": "query fixture {}", "stage": "BEGIN"}
 ok
+test_readback_configuration_drift_stops_without_sleep_or_mutation (tests.test_mesh_monitor_deploy.DeploymentTests.test_readback_configuration_drift_stops_without_sleep_or_mutation) ... ok
+test_readback_permission_error_stops_immediately_without_retry (tests.test_mesh_monitor_deploy.DeploymentTests.test_readback_permission_error_stops_immediately_without_retry) ... ok
+test_readback_timeout_is_bounded_and_preserves_admitted_mutation (tests.test_mesh_monitor_deploy.DeploymentTests.test_readback_timeout_is_bounded_and_preserves_admitted_mutation) ... ok
 test_second_observation_drift_consumes_claim_but_not_railway_mutation (tests.test_mesh_monitor_deploy.DeploymentTests.test_second_observation_drift_consumes_claim_but_not_railway_mutation) ... ok
 test_successful_platform_status_cannot_replace_public_readback (tests.test_mesh_monitor_deploy.DeploymentTests.test_successful_platform_status_cannot_replace_public_readback) ... ok
 test_verify_mode_has_no_dispatch_path (tests.test_mesh_monitor_deploy.DeploymentTests.test_verify_mode_has_no_dispatch_path) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 0.038s
+Ran 21 tests in 0.045s
 
 OK
 node --test tests/mesh_monitor_readback.test.mjs
-✔ fresh HTTP source/health and independent replica are accepted with unknown global health (50.864196ms)
-✔ old public carrier source fails before snapshot acceptance (7.451743ms)
-✔ a stale binding cannot pass as a fresh public readback (7.457132ms)
-✔ remote client byte tampering cannot inherit advertised server hashes (7.524021ms)
-✔ snapshot byte tampering is rejected by the reused replica implementation (15.264741ms)
-✔ accepted durable event is replayed through an independent byte validator (24.271704ms)
-✔ altered original event payload is rejected even if sequence count matches (20.720575ms)
-✔ a concurrent journal change leaves readback unverified (17.873745ms)
+✔ fresh HTTP source/health and independent replica are accepted with unknown global health (52.877021ms)
+✔ old public carrier source fails before snapshot acceptance (8.797591ms)
+✔ a stale binding cannot pass as a fresh public readback (6.937928ms)
+✔ remote client byte tampering cannot inherit advertised server hashes (7.836091ms)
+✔ snapshot byte tampering is rejected by the reused replica implementation (15.267322ms)
+✔ accepted durable event is replayed through an independent byte validator (22.205711ms)
+✔ altered original event payload is rejected even if sequence count matches (19.495966ms)
+✔ a concurrent journal change leaves readback unverified (19.784931ms)
 ℹ tests 8
 ℹ suites 0
 ℹ pass 8
@@ -97,7 +102,7 @@ node --test tests/mesh_monitor_readback.test.mjs
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 255.544098
+ℹ duration_ms 255.988273
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_digital_twin_rest
 test_contract_and_distinct_poles (tests.test_qikvrt_digital_twin_rest.T.test_contract_and_distinct_poles) ... ok
 test_stale_write_holds (tests.test_qikvrt_digital_twin_rest.T.test_stale_write_holds) ... ok
@@ -112,17 +117,17 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile qikvrt.py tools/qikvrt_runtime_l
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_integrity.py
 .....
 ----------------------------------------------------------------------
-Ran 5 tests in 0.087s
+Ran 5 tests in 0.090s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
-PASS verified 3957 classified entries and 3948 immutable digests
+PASS verified 3960 classified entries and 3951 immutable digests
 CC="cc" PYTHON="python3" sh tests/test_effect_ack_core.sh
-{"timestamp": "2026-10-04T15:47:05Z", "event": "native_runtime_step", "stage": "LOOKUP", "recipe": "effect-ack-core-conformance", "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603"}
-{"timestamp": "2026-10-04T15:47:05Z", "event": "native_runtime_step", "stage": "SELF_TEST", "recipe": "effect-ack-core-conformance", "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603"}
-{"timestamp": "2026-10-04T15:47:05Z", "event": "native_runtime_step", "stage": "EXACT_CACHE_HIT", "recipe": "effect-ack-core-conformance", "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603", "elapsed_ns": 95303977}
+{"timestamp": "2026-10-04T16:11:44Z", "event": "native_runtime_step", "stage": "LOOKUP", "recipe": "effect-ack-core-conformance", "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603"}
+{"timestamp": "2026-10-04T16:11:44Z", "event": "native_runtime_step", "stage": "SELF_TEST", "recipe": "effect-ack-core-conformance", "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603"}
+{"timestamp": "2026-10-04T16:11:44Z", "event": "native_runtime_step", "stage": "EXACT_CACHE_HIT", "recipe": "effect-ack-core-conformance", "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603", "elapsed_ns": 121542710}
 PASS: 14/14 declared tools have cache strategies (100%)
-{"binary": "/workspace/scratch/59a6b6077bdc/qik-vrt/.qikvrt/toolchains/native/v1/1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603/native", "binary_sha256": "b8ab5b84efe0023b633dc2016bceab0933685a389217fdee9cf5142752527825", "cause": "Exact source/compiler/target binding and current native self-test passed.", "compile_ns": 125589650, "compiled": false, "decision": "EXACT_CACHE_HIT", "effect_ack_done": false, "elapsed_ns": 95303977, "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603", "observed_at": "2026-10-04T15:47:05Z", "recipe": "effect-ack-core-conformance", "schema": "qikvrt-native-runtime/v1", "self_test_output": "EFFECT_ACK C90 core: PASS (7864387 checks)", "state": "READY", "static_linkage_verified": true, "whole_transputer_verified": false}
+{"binary": "/workspace/scratch/59a6b6077bdc/qik-vrt/.qikvrt/toolchains/native/v1/1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603/native", "binary_sha256": "b8ab5b84efe0023b633dc2016bceab0933685a389217fdee9cf5142752527825", "cause": "Exact source/compiler/target binding and current native self-test passed.", "compile_ns": 125589650, "compiled": false, "decision": "EXACT_CACHE_HIT", "effect_ack_done": false, "elapsed_ns": 121542710, "key": "1ed7d925d0a7277afacaf39db05df1a01fd2f35cdfae76c20ac8019546d18603", "observed_at": "2026-10-04T16:11:44Z", "recipe": "effect-ack-core-conformance", "schema": "qikvrt-native-runtime/v1", "self_test_output": "EFFECT_ACK C90 core: PASS (7864387 checks)", "state": "READY", "static_linkage_verified": true, "whole_transputer_verified": false}
 PYTHON="python3" sh tests/test_effect_ack_scientific_bundle.sh
 PASS: EFFECT_ACK scientific proof, optimized-mode guard and bundle SHA-256 index
 bash -n tools/qikvrt_adaptive_runtime.sh tests/test_adaptive_runtime.sh
@@ -146,7 +151,7 @@ test_monotonic_improvement_is_measured_and_non_regressing (tests.test_anticipati
 test_repository_contract_is_bounded_and_valid (tests.test_anticipation.GlobalSystemClosureContractTests.test_repository_contract_is_bounded_and_valid) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 0.021s
+Ran 15 tests in 0.020s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_anticipation.py check >/dev/null
@@ -161,7 +166,7 @@ test_hot_layers_are_bounded_and_measured_savings_prioritized (tests.test_native_
 test_platform_compiler_and_flags_change_keys (tests.test_native_runtime_cache.NativeCacheTests.test_platform_compiler_and_flags_change_keys) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 2.424s
+Ran 6 tests in 2.463s
 
 OK
 sh -n tools/bootstrap-gh.sh tools/bootstrap-runtime.sh
@@ -182,7 +187,7 @@ test_manuscript_workflow_provisions_declared_poppler_before_h5 (tests.test_ai_ru
 test_root_entrypoint_names_executable_bootloader (tests.test_ai_runtime_bootloader.AIRuntimeBootloaderContractTests.test_root_entrypoint_names_executable_bootloader) ... ok
 
 ----------------------------------------------------------------------
-Ran 8 tests in 1.526s
+Ran 8 tests in 1.560s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/ai_runtime_bootloader.py --help >/dev/null
@@ -193,7 +198,7 @@ test_tamper_breaks_verification (tests.test_interaction_archive.InteractionArchi
 test_tombstone_is_append_only (tests.test_interaction_archive.InteractionArchiveTests.test_tombstone_is_append_only) ... ok
 
 ----------------------------------------------------------------------
-Ran 4 tests in 0.158s
+Ran 4 tests in 0.152s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_interaction_archive.py --help >/dev/null
@@ -380,7 +385,7 @@ test_missing_required_file_blocks (tests.test_transactional_workflow_trigger.Tra
 test_unexpected_changed_path_blocks (tests.test_transactional_workflow_trigger.TransactionalWorkflowTriggerTests.test_unexpected_changed_path_blocks) ... ok
 
 ----------------------------------------------------------------------
-Ran 168 tests in 3.365s
+Ran 168 tests in 3.105s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_content_disposition_batch_001.py
@@ -568,7 +573,7 @@ test_visible_change_notice_must_expose_bound_reason (tests.test_zenodo_machine_p
 test_wrong_github_sha_is_blocked_before_remote_lock (tests.test_zenodo_machine_proof_policy.MachineProofBeforeZenodoTests.test_wrong_github_sha_is_blocked_before_remote_lock) ... ok
 
 ----------------------------------------------------------------------
-Ran 168 tests in 7.850s
+Ran 168 tests in 6.821s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_workflow_executor_mesh_contract tests.test_seed_workflows tests.test_qikvrt_reflexive_repository_watchdog
@@ -615,7 +620,7 @@ test_unchanged_active_topology_crosses_the_progress_lease (tests.test_qikvrt_ref
 test_workflow_is_five_minute_reflexive_and_read_only (tests.test_qikvrt_reflexive_repository_watchdog.ReflexiveRepositoryWatchdogTests.test_workflow_is_five_minute_reflexive_and_read_only) ... ok
 
 ----------------------------------------------------------------------
-Ran 41 tests in 0.300s
+Ran 41 tests in 0.235s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_workflow_executor.py snapshot --expect-head "$(git rev-parse --verify HEAD^{commit})" --json >/dev/null
@@ -631,17 +636,17 @@ Ran 5 tests in 0.001s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tests/test_launcher_runtime.py
-.....CONTINUE_EXPLICIT_CONFIRMATION_REQUIRED execute requires --allow-publish and --confirm-publish PUBLISH_QIKVRT. Evidence: /tmp/tmpf_gcimkr/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
+.....CONTINUE_EXPLICIT_CONFIRMATION_REQUIRED execute requires --allow-publish and --confirm-publish PUBLISH_QIKVRT. Evidence: /tmp/tmpdk6554r2/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
 ..CONTINUE bound launcher effect authorization for cicd-publish is required; no CI/CD evidence or external effect was written.
 master authorization requiredCONTINUE bound launcher effect authorization is required; no CI/CD evidence or external effect was written.
 ...BLOCK launcher effect authorization could not be persisted: invalid content tree
 .....
 ----------------------------------------------------------------------
-Ran 15 tests in 0.079s
+Ran 15 tests in 0.072s
 
 OK
-PASS_DRY_RUN plan validated; no external effect executed. Evidence: /tmp/tmp1qfyohh4/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
-PASS_PUBLISH_PLAN publish plan materialized; no external effect executed. Evidence: /tmp/tmp1qfyohh4/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
+PASS_DRY_RUN plan validated; no external effect executed. Evidence: /tmp/tmpyesliiqo/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
+PASS_PUBLISH_PLAN publish plan materialized; no external effect executed. Evidence: /tmp/tmpyesliiqo/.qikvrt/evidence/QIKVRT_CICD_EVIDENCE_LEDGER.json
 usage: test_launcher_runtime.py [-h] [--test-timeout SECONDS]
 
 QIK-VRT non-recursive master acceptance gate
@@ -703,7 +708,7 @@ test_reevaluation_against_different_protocol_root_fails_closed (tests.test_effec
 test_reevaluation_cannot_rebind_same_input_id_to_new_payload (tests.test_effect_ack_conformance.VersioningAndChainConformanceTests.test_reevaluation_cannot_rebind_same_input_id_to_new_payload) ... ok
 
 ----------------------------------------------------------------------
-Ran 41 tests in 0.015s
+Ran 41 tests in 0.013s
 
 OK
 python3 tests/test_handler_unit.py
@@ -715,7 +720,7 @@ test_release_status_is_continue_until_remote_hash_is_confirmed (__main__.Handler
 test_release_status_reaches_done_only_with_verified_remote_attestation (__main__.HandlerUnitTests.test_release_status_reaches_done_only_with_verified_remote_attestation) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 0.125s
+Ran 6 tests in 0.052s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest -v tests.test_handler_security tests.test_api_client
@@ -742,7 +747,7 @@ test_redirects_are_never_followed (tests.test_api_client.ApiClientTests.test_red
 test_transport_failure_returns_blocking_exit_without_traceback (tests.test_api_client.ApiClientTests.test_transport_failure_returns_blocking_exit_without_traceback) ... ok
 
 ----------------------------------------------------------------------
-Ran 21 tests in 2.815s
+Ran 21 tests in 2.794s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_license_transition
@@ -753,7 +758,7 @@ test_machine_readable_sources_and_transition_match (tests.test_license_transitio
 test_polyform_text_is_byte_exact (tests.test_license_transition.LicenseTransitionTests.test_polyform_text_is_byte_exact) ... ok
 
 ----------------------------------------------------------------------
-Ran 5 tests in 0.003s
+Ran 5 tests in 0.004s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_seed_workflows
@@ -774,14 +779,14 @@ test_seed_workflows_are_pinned_read_only_and_do_not_push (tests.test_seed_workfl
 test_tsv_requires_exact_columns_explicit_policy_and_unique_guid (tests.test_seed_workflows.SeedWorkflowTests.test_tsv_requires_exact_columns_explicit_policy_and_unique_guid) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 0.159s
+Ran 15 tests in 0.135s
 
 OK
 python3 tests/test_tcpip_e2e.py
 test_complete_api_flow_and_all_five_effect_states (__main__.TcpIpEndToEndTests.test_complete_api_flow_and_all_five_effect_states) ... ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.171s
+Ran 1 test in 0.163s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
@@ -802,4 +807,4 @@ Ran 4 tests in 0.001s
 
 OK
 PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B tools/qikvrt_integrity.py verify
-PASS verified 3957 classified entries and 3948 immutable digests
+PASS verified 3960 classified entries and 3951 immutable digests

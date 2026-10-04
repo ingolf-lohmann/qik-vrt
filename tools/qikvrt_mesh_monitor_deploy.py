@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -40,6 +41,12 @@ LOCK = "tags/qikvrt-monitor-deploy/" + SOURCE_HEAD
 API = "https://backboard.railway.com/graphql/v2"
 MAX_BYTES = 8 * 1024 * 1024
 ACTIVE = {"INITIALIZING", "QUEUED", "WAITING", "BUILDING", "DEPLOYING"}
+READBACK_SECONDS = 180
+READBACK_INTERVAL = 5
+READBACK_ATTEMPTS = 36
+WAITABLE = {"HOLD_RAILWAY_PATCH_NOT_SETTLED", "HOLD_RAILWAY_DEPLOYMENT_IN_PROGRESS",
+            "HOLD_PUBLIC_EXACT_DEPLOYMENT_NOT_OBSERVED", "HOLD_RAILWAY_PERSISTENT_VOLUME_NOT_PROVISIONED",
+            "HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK"}
 EXPECTED_VARIABLES = {
     "QIKVRT_MONITOR_NODE_ID": "mirror:ingolf-lohmann/qik-vrt",
     "QIKVRT_MONITOR_SOURCE_HEAD": SOURCE_HEAD,
@@ -280,9 +287,38 @@ def execute(api: Api, contract: dict, *, apply: bool, executor_head: str, ref: s
             "lock_ref": "refs/" + LOCK, "effect_ack_done": False}
 
 
+def observe_after_dispatch(api: Api, contract: dict, dispatch: dict, *, executor_head: str, ref: str,
+                           readback=verify_public, clock=time.monotonic, sleep=time.sleep) -> dict:
+    """Bounded observation of this admitted attempt; never another mutation."""
+    require(dispatch.get("state") == "HOLD_DEPLOYMENT_DISPATCHED_READBACK_PENDING" and
+            dispatch.get("mutation_count") == 1, "HOLD_READBACK_DISPATCH_BINDING_INVALID")
+    deadline = clock() + READBACK_SECONDS
+    last_state = dispatch["state"]
+    attempts = 0
+    for _ in range(READBACK_ATTEMPTS):
+        if clock() >= deadline:
+            break
+        attempts += 1
+        try:
+            observed = execute(api, contract, apply=False, executor_head=executor_head, ref=ref, readback=readback)
+            return {**dispatch, **observed, "mutation_count": 1, "dispatch_receipt": dict(dispatch),
+                    "observation_attempts": attempts}
+        except Hold as error:
+            last_state = str(error)
+            if last_state not in WAITABLE:
+                return {**dispatch, "state": last_state, "observation_attempts": attempts}
+        remaining = deadline - clock()
+        if remaining <= 0 or attempts == READBACK_ATTEMPTS:
+            break
+        sleep(min(READBACK_INTERVAL, remaining))
+    return {**dispatch, "state": "HOLD_DEPLOYMENT_DISPATCHED_READBACK_TIMEOUT",
+            "last_observed_state": last_state, "observation_attempts": attempts}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = SafeArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--wait-readback", action="store_true", help="Start read-only observations in a 180-second window; no redeploy")
     parser.add_argument("--output", type=Path, default=ROOT / ".qikvrt/evidence/monitor-deploy/receipt.json")
     args = parser.parse_args(argv)
     result = {"schema": "qikvrt-monitor-deployment-receipt/v1", "source_repository": REPOSITORY,
@@ -296,6 +332,9 @@ def main(argv: list[str] | None = None) -> int:
         contract = source_contract()
         result.update(execute(api, contract, apply=args.apply, executor_head=os.environ.get("QIKVRT_EXECUTOR_HEAD", ""),
                               ref=os.environ.get("QIKVRT_EXECUTOR_REF", "")))
+        if args.wait_readback and result["state"] == "HOLD_DEPLOYMENT_DISPATCHED_READBACK_PENDING":
+            result.update(observe_after_dispatch(api, contract, dict(result), executor_head=result["executor_head"],
+                                                 ref=result["executor_ref"]))
         if result["state"] == "PUBLIC_RUNTIME_READBACK_VERIFIED":
             code = 0
     except Hold as error:

@@ -249,8 +249,15 @@ digest and journal head. Drift, altered bytes, missing health structure or the
 old public carrier fail closed. Application health `UNKNOWN`/`DEGRADED` is
 retained rather than becoming whole-system `HEALTHY` through deployment success.
 
-There is no status polling or blind retry. A `deployment_status` success event
-is readback-only; bounded pending deployment is an explicit HOLD. The workflow
+After one admitted dispatch the workflow uses `--wait-readback`: up to 36
+read-only observations started within a 180-second window, with at most five
+seconds between them. The final request/client check keeps its existing 30/90
+second bounds and may finish after that window; the job has a ten-minute bound.
+It verifies the public runtime and independent client in the same server-side
+execution, without depending on another platform event. Permission, target and
+configuration drift stop observation immediately; timeout retains the dispatch
+receipt and claim as HOLD. There is no mutation retry. A later
+`deployment_status` success event is also readback-only. The workflow
 persists a safe receipt, `AI_PROGRESS.json` and `AI_STATUS.md` as Action artifacts
 and a human step summary. `PUBLIC_RUNTIME_READBACK_VERIFIED` is bounded to this
 carrier/client check; provider webhook registration/delivery, live restart fault

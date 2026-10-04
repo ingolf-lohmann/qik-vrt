@@ -62,6 +62,19 @@ def run(api, **kwargs):
         ref=deploy.EXPECTED_SETTINGS['source.branch'],readback=lambda _:{'verified':True},**kwargs)
 
 
+class FakeClock:
+    def __init__(self, api, states=()):self.now=0;self.api=api;self.states=iter(states);self.sleeps=[]
+    def __call__(self):return self.now
+    def sleep(self, seconds):
+        self.sleeps.append(seconds);self.now+=seconds
+        self.api.data=next(self.states,self.api.data)
+
+
+def wait(api, dispatch, timer, readback=lambda _:{'verified':True}):
+    return deploy.observe_after_dispatch(api,{},dispatch,executor_head=deploy.SOURCE_HEAD,
+        ref='main',readback=readback,clock=timer,sleep=timer.sleep)
+
+
 class DeploymentTests(unittest.TestCase):
     def test_missing_credential_fails_before_network(self):
         with patch('urllib.request.build_opener') as opener:
@@ -92,6 +105,48 @@ class DeploymentTests(unittest.TestCase):
         result=run(api)
         self.assertEqual(result['state'],'PUBLIC_RUNTIME_READBACK_VERIFIED')
         self.assertEqual(result['mutation_count'],0);self.assertIsNone(api.lock)
+
+    def test_admitted_attempt_reaches_public_readback_without_second_mutation(self):
+        api=FakeApi();dispatch=run(api)
+        applying=observation();applying['environmentStagedChanges']['status']='APPLYING'
+        api.data=applying
+        timer=FakeClock(api,[observation(pending=False,exact=True,status='BUILDING'),observation(pending=False,exact=True)])
+        result=wait(api,dispatch,timer)
+        self.assertEqual(result['state'],'PUBLIC_RUNTIME_READBACK_VERIFIED')
+        self.assertEqual(result['mutation_count'],1);self.assertEqual(result['dispatch_receipt'],dispatch)
+        self.assertEqual(len(api.mutations),1);self.assertEqual(timer.sleeps,[5,5])
+
+    def test_readback_timeout_is_bounded_and_preserves_admitted_mutation(self):
+        api=FakeApi();dispatch=run(api);timer=FakeClock(api)
+        result=wait(api,dispatch,timer)
+        self.assertEqual(result['state'],'HOLD_DEPLOYMENT_DISPATCHED_READBACK_TIMEOUT')
+        self.assertLessEqual(result['observation_attempts'],36);self.assertLessEqual(timer.now,180)
+        self.assertEqual(result['mutation_count'],1);self.assertEqual(result['lock_ref'],dispatch['lock_ref'])
+        self.assertEqual(len(api.mutations),1);self.assertFalse(result['effect_ack_done'])
+
+    def test_readback_permission_error_stops_immediately_without_retry(self):
+        api=FakeApi();dispatch=run(api)
+        api.observe=lambda:(_ for _ in ()).throw(deploy.Hold('HOLD_API_HTTP_403'))
+        timer=FakeClock(api);result=wait(api,dispatch,timer)
+        self.assertEqual(result['state'],'HOLD_API_HTTP_403');self.assertEqual(result['mutation_count'],1)
+        self.assertEqual(timer.sleeps,[]);self.assertEqual(len(api.mutations),1)
+
+    def test_readback_configuration_drift_stops_without_sleep_or_mutation(self):
+        api=FakeApi();dispatch=run(api)
+        api.data['environmentStagedChanges']['patch']['services'][deploy.SERVICE]['source']['commitSha']='f'*40
+        timer=FakeClock(api);result=wait(api,dispatch,timer)
+        self.assertEqual(result['state'],'HOLD_RAILWAY_CONFIGURATION_DRIFT')
+        self.assertEqual(timer.sleeps,[]);self.assertEqual(len(api.mutations),1)
+
+    def test_platform_success_then_delayed_client_readback_never_redeploys(self):
+        api=FakeApi();dispatch=run(api);api.data=observation(pending=False,exact=True);timer=FakeClock(api)
+        answers=iter([False,True])
+        def readback(_):
+            if not next(answers):raise deploy.Hold('HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK')
+            return {'verified':True}
+        result=wait(api,dispatch,timer,readback)
+        self.assertEqual(result['state'],'PUBLIC_RUNTIME_READBACK_VERIFIED')
+        self.assertEqual(timer.sleeps,[5]);self.assertEqual(len(api.mutations),1)
 
     def test_successful_platform_status_cannot_replace_public_readback(self):
         api=FakeApi(observation(pending=False,exact=True))
@@ -154,7 +209,7 @@ class DeploymentTests(unittest.TestCase):
     def test_cli_missing_credential_returns_hold_receipt_without_secrets(self):
         with tempfile.TemporaryDirectory() as tmp,patch.dict('os.environ',{},clear=True),patch('sys.stdout',new_callable=io.StringIO) as out:
             target=Path(tmp)/'receipt.json'
-            self.assertEqual(deploy.main(['--apply','--output',str(target)]),20)
+            self.assertEqual(deploy.main(['--apply','--wait-readback','--output',str(target)]),20)
             value=json.loads(target.read_text());self.assertEqual(value['state'],'HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE')
             self.assertFalse(value['effect_ack_done']);self.assertEqual(json.loads(out.getvalue()),value)
 

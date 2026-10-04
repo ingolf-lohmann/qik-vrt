@@ -50,7 +50,7 @@ jobs:
   existing-service:
     needs: validate
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 10
     # Git-Data create-only ref is the only repository write this job performs.
     permissions:
       contents: write
@@ -81,7 +81,7 @@ jobs:
           if [ "$EVENT_NAME" = deployment_status ]; then
             python3 -B tools/qikvrt_mesh_monitor_deploy.py
           else
-            python3 -B tools/qikvrt_mesh_monitor_deploy.py --apply
+            python3 -B tools/qikvrt_mesh_monitor_deploy.py --apply --wait-readback
           fi
       - name: Persist exact result and human progress projection
         if: always()
