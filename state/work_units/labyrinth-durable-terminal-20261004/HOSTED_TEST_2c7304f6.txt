@@ -1,0 +1,38 @@
+# Exact-head hosted terminal test log excerpt
+# Source: GitHub run 37186422009, job 111389188524, attempt 1
+# Candidate: 2c7304f67e79fae1f233fb53c3c5700842e04b94
+# Bounded native Unix/SQLite fixture, not the deployed carrier
+2026-10-04T07:38:59.4850251Z   ref: 2c7304f67e79fae1f233fb53c3c5700842e04b94
+2026-10-04T07:39:04.8787632Z HEAD is now at 2c7304f terminal: bind owner-only Unix input to durable TEMDD readback
+2026-10-04T07:39:11.8733705Z test_ack_without_sqlite_effect_cannot_succeed (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_ack_without_sqlite_effect_cannot_succeed) ... ok
+2026-10-04T07:39:13.0743951Z test_ambiguous_commit_recovers_by_readback_without_resubmission (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_ambiguous_commit_recovers_by_readback_without_resubmission) ... ok
+2026-10-04T07:39:13.5952578Z test_changed_head_or_tree_cannot_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_changed_head_or_tree_cannot_write) ... ok
+2026-10-04T07:39:14.1358288Z test_changed_payload_cannot_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_changed_payload_cannot_write) ... ok
+2026-10-04T07:39:14.6403594Z test_changed_preparation_cannot_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_changed_preparation_cannot_write) ... ok
+2026-10-04T07:39:15.2771651Z test_cli_roundtrip_and_dirty_checkout_rejection (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_cli_roundtrip_and_dirty_checkout_rejection) ... ok
+2026-10-04T07:39:16.2839303Z test_commit_and_restart_have_fresh_durable_readback (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_commit_and_restart_have_fresh_durable_readback) ... ok
+2026-10-04T07:39:16.7912336Z test_concurrent_commits_share_one_native_effect (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_concurrent_commits_share_one_native_effect) ... ok
+2026-10-04T07:39:17.2969676Z test_corrupt_ledger_readback_fails_closed (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_corrupt_ledger_readback_fails_closed) ... ok
+2026-10-04T07:39:17.8013406Z test_expired_preparation_cannot_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_expired_preparation_cannot_write) ... ok
+2026-10-04T07:39:17.8073640Z test_foreign_peer_uid_cannot_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_foreign_peer_uid_cannot_write) ... ok
+2026-10-04T07:39:18.3124803Z test_ingress_subject_mismatch_not_success (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_ingress_subject_mismatch_not_success) ... ok
+2026-10-04T07:39:18.9000885Z test_ledger_epoch_change_blocks_commit (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_ledger_epoch_change_blocks_commit) ... ok
+2026-10-04T07:39:19.6336528Z test_media_and_unbounded_input_not_admitted (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_media_and_unbounded_input_not_admitted) ... ok
+2026-10-04T07:39:20.7137482Z test_parent_symlink_and_non_owner_directory_rejected (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_parent_symlink_and_non_owner_directory_rejected) ... ok
+2026-10-04T07:39:21.8036010Z test_prepare_has_no_ledger_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_prepare_has_no_ledger_write) ... ok
+2026-10-04T07:39:22.7067202Z test_repeat_commit_is_readback_only_and_single_effect (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_repeat_commit_is_readback_only_and_single_effect) ... ok
+2026-10-04T07:39:23.2108049Z test_socket_permissions_never_widened (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_socket_permissions_never_widened) ... ok
+2026-10-04T07:39:23.7151124Z test_socket_symlink_rejected (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_socket_symlink_rejected) ... ok
+2026-10-04T07:39:24.2209236Z test_spoofed_ack_cannot_replace_exact_readback (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_spoofed_ack_cannot_replace_exact_readback) ... ok
+2026-10-04T07:39:24.7252791Z test_wrong_prepare_hash_cannot_write (tests.test_qikvrt_effect_ack_http_terminal.DurableOwnerTerminalTests.test_wrong_prepare_hash_cannot_write) ... ok
+2026-10-04T07:39:24.7254929Z test_firefox_source_preserves_terminal_boundaries (tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests.test_firefox_source_preserves_terminal_boundaries) ... ok
+2026-10-04T07:39:24.7255725Z test_http_draft_defines_backward_compatible_two_phase_profile (tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests.test_http_draft_defines_backward_compatible_two_phase_profile) ... ok
+2026-10-04T07:39:24.7273339Z test_repository_contract_files_parse (tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests.test_repository_contract_files_parse) ... ok
+2026-10-04T07:39:24.7274405Z test_structured_request_parser_is_closed_and_exact (tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests.test_structured_request_parser_is_closed_and_exact) ... ok
+2026-10-04T07:39:25.2441726Z test_discovery_prepare_commit_reobserve_and_replay_block (tests.test_qikvrt_effect_ack_http_terminal.LoopbackTerminalE2ETests.test_discovery_prepare_commit_reobserve_and_replay_block) ... ok
+2026-10-04T07:39:25.7462960Z test_durable_writer_is_not_exposed_over_http (tests.test_qikvrt_effect_ack_http_terminal.LoopbackTerminalE2ETests.test_durable_writer_is_not_exposed_over_http) ... ok
+2026-10-04T07:39:26.2480628Z test_expired_token_fails_closed (tests.test_qikvrt_effect_ack_http_terminal.LoopbackTerminalE2ETests.test_expired_token_fails_closed) ... ok
+2026-10-04T07:39:26.7497972Z test_missing_or_malformed_effect_ack_request_fails_closed (tests.test_qikvrt_effect_ack_http_terminal.LoopbackTerminalE2ETests.test_missing_or_malformed_effect_ack_request_fails_closed) ... ok
+2026-10-04T07:39:26.7498666Z Ran 29 tests in 15.740s
+2026-10-04T07:39:26.7498787Z OK
+

@@ -185,6 +185,8 @@ def _durable_read(state_dir: str, event: dict[str, Any] | None = None) -> tuple[
             return epoch, None
         seq, binding, native_digest, text, body_digest = row
         body = json.loads(text)
+        if not isinstance(body, dict):
+            raise DurableHold("DURABLE_BODY_OBJECT_REQUIRED")
         expected = dict(event, schema="qikvrt_temdd_event_v1", recorded_at=body.get("recorded_at"),
                         payload_digest=sha256(canonical_json(event["payload"])), evidence_transfer="DENY", dod=False)
         if (type(seq) is not int or seq < 1 or binding != sha256(canonical_json(event["subject"]))
@@ -296,6 +298,8 @@ def durable_commit(prepared: dict[str, Any], expected_hash: str, body: dict[str,
         if len(raw) > MAX_NATIVE_EVENT * 2 + 1 or not raw.endswith(b"\n"):
             raise DurableHold("AMBIGUOUS_COMMIT_USE_READBACK_DO_NOT_RESUBMIT")
         reply = json.loads(raw)
+    if not isinstance(reply, dict):
+        raise DurableHold("INGRESS_REPLY_OBJECT_REQUIRED_USE_READBACK")
     if reply.get("state") != "PERSISTED" or reply.get("dod") is not False or reply.get("authority_effect") is not False:
         raise DurableHold("INGRESS_DID_NOT_QUIT_DURABLE_EFFECT")
     receipt = durable_readback(prepared, expected_hash, body, subject, state_dir)

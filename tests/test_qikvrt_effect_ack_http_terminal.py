@@ -295,6 +295,9 @@ class DurableOwnerTerminalTests(unittest.TestCase):
                     event = dict(body, id="c" * 32 + ":" + str(seq), ledger_digest=digest)
                 if fixture.reply_mode == "drop_after_persistence":
                     return
+                if fixture.reply_mode == "non_object_reply":
+                    self.wfile.write(b"[]\n")
+                    return
                 if fixture.reply_mode == "wrong_reply":
                     event["ledger_digest"] = "0" * 64
                 self.wfile.write(terminal.canonical_json({"state": "PERSISTED", "event": event, "authority_effect": False, "dod": False}) + b"\n")
@@ -477,6 +480,14 @@ class DurableOwnerTerminalTests(unittest.TestCase):
             self.commit(prepared)
         self.assertEqual((self.calls, self.count()), (1, 1))
 
+    def test_non_object_reply_is_hold_then_readback_only(self):
+        self.reply_mode = "non_object_reply"
+        prepared = self.prepare()
+        with self.assertRaisesRegex(terminal.DurableHold, "REPLY_OBJECT_REQUIRED"):
+            self.commit(prepared)
+        self.assertTrue(self.readback(prepared)["durable_persisted"])
+        self.assertEqual((self.calls, self.count()), (1, 1))
+
     def test_ambiguous_commit_recovers_by_readback_without_resubmission(self):
         self.reply_mode = "drop_after_persistence"
         prepared = self.prepare()
@@ -493,6 +504,14 @@ class DurableOwnerTerminalTests(unittest.TestCase):
         with self.db:
             self.db.execute("UPDATE events SET body_digest=?", ("0" * 64,))
         with self.assertRaisesRegex(terminal.DurableHold, "READBACK_MISMATCH"):
+            self.readback(prepared)
+
+    def test_non_object_ledger_body_is_a_hold(self):
+        prepared = self.prepare()
+        self.commit(prepared)
+        with self.db:
+            self.db.execute("UPDATE events SET body='[]',body_digest=?", (terminal.sha256(b"[]"),))
+        with self.assertRaisesRegex(terminal.DurableHold, "BODY_OBJECT_REQUIRED"):
             self.readback(prepared)
 
     def test_cli_roundtrip_and_dirty_checkout_rejection(self):

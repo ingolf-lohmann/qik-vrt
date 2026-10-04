@@ -29,6 +29,7 @@
   },
   "git_history": {
     "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
+    "continuation_parent": "2c7304f67e79fae1f233fb53c3c5700842e04b94",
     "method": "Single-parent history-preserving successor of source_commit; non-force branch update",
     "predecessor_evidence_transfer": false
   },
@@ -81,22 +82,34 @@
   "outputs": {
     "files": [
       {
-        "bytes": 29093,
-        "git_blob_sha1": "7bcfb2fc1ad2f76939b0e17062085224484bd935",
+        "bytes": 29302,
+        "git_blob_sha1": "2668959d315f39f0d686350960282dd30218ca59",
         "path": "src/qikvrt_effect_ack_http_terminal.py",
-        "sha256": "5bc6188f9608ceb5f0d1dccda1b79eb1c21a7831efd2987134a86354c64f2c4d"
+        "sha256": "ae5c7dbeca725f2c925b53f7d8c1f4e5f04aaa27a29d7d347d2f9c0bf4134179"
       },
       {
-        "bytes": 26069,
-        "git_blob_sha1": "f8005277249e6b131835aabf1452cdc5b3e11a3e",
+        "bytes": 26955,
+        "git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
         "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
-        "sha256": "67856c45dfa7d6f52ef550d9c1b796dcc048b4448b6aada59deac6be21dc2bfd"
+        "sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143"
       },
       {
         "bytes": 6745,
         "git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
         "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
         "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+      },
+      {
+        "bytes": 6222,
+        "git_blob_sha1": "71775a1fcb342141629cf8b36f4245c7d005f5fc",
+        "path": "state/work_units/labyrinth-durable-terminal-20261004/HOSTED_TEST_2c7304f6.txt",
+        "sha256": "1ecf79dde5b0b7bbc3d38bc9292ab799d9652507213d6cc41bdae53819239843"
+      },
+      {
+        "bytes": 1711,
+        "git_blob_sha1": "d1e1882d0e169835bae3038719cae3e09ccca53b",
+        "path": "state/work_units/labyrinth-durable-terminal-20261004/HOSTED_TEST_BINDING_2c7304f6.json",
+        "sha256": "ba0ea7a805a4fe106069ae7cc4ab7bc1c673155fff5e19b4fb18e7c8b9acee36"
       }
     ]
   },
@@ -109,7 +122,8 @@
   },
   "remaining_blocker": {
     "first_causal_blocker": "Exact-byte production carrier writer unavailable: current startup fetches Goldkelch/qik-vrt, whose connector and Git reads return unavailable; Railway exposes no container source write/exec/Unix submit",
-    "next_action": "Validate hosted exact-head Unix/SQLite tests; later deploy verified successor through existing carrier and replay same native event on public durable SSE",
+    "governance_status": "Separate requested review execution: CODE_OWNER_RULE_NOT_ENFORCED; unchanged and not repaired by this work unit",
+    "next_action": "Read all applicable fresh exact-head gates on the containing successor. Productive closure then requires existing authorized carrier deployment, owner-local commit, durable stream and public replay of the same event.",
     "retry_condition": "Supported authorized carrier source/deployment path for tested successor plus owner-local invocation"
   },
   "schema": "qikvrt_personal_work_unit_v1",
@@ -123,9 +137,33 @@
     "boot": "CONTINUE; historical portable capsule objects validated and materialized locally; optional GH CLI missing",
     "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
     "fixture_scope": "Independent contract fixture using real Unix sockets and SQLite WAL/FULL; deployed daemon is absent from Mirror tree",
-    "hosted_exact_head_tests": "PENDING",
+    "hosted_exact_head_tests": {
+      "job_id": 111389188524,
+      "log_excerpt_path": "state/work_units/labyrinth-durable-terminal-20261004/HOSTED_TEST_2c7304f6.txt",
+      "receipt_path": "state/work_units/labyrinth-durable-terminal-20261004/HOSTED_TEST_BINDING_2c7304f6.json",
+      "run_id": 37186422009,
+      "scope": "Exactly the tested predecessor and its bound code bytes; not transferred to the containing successor",
+      "state": "SUCCESS",
+      "subject_head": "2c7304f67e79fae1f233fb53c3c5700842e04b94",
+      "tests": 29
+    },
     "local_full_module": "BLOCK: AF_UNIX socket creation PermissionError EPERM; 19 cases affected before further cases were added",
     "local_http_tests": "8 PASS",
+    "source_input_profile_check": {
+      "bounded_text_profile": "PASS",
+      "canonical_input_sha256": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+      "path": "docs/publications/2026-10-04-labyrinth-closure/TERMINAL_INPUT.json",
+      "production_submission": false
+    },
+    "successor_test_contract": {
+      "additional_controls": [
+        "Non-object ingress response must return HOLD and recover only by durable readback",
+        "Non-object persisted body must fail as HOLD"
+      ],
+      "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+      "reference": "Read PR454 workflow results on the containing exact commit; fresh execution required",
+      "tests": 31
+    },
     "tool_cache_coverage": "14/14 PASS"
   },
   "work_unit_id": "LABYRINTH_DURABLE_TERMINAL_20261004_V1"
