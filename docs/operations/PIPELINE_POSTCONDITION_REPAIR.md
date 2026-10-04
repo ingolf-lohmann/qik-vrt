@@ -96,6 +96,18 @@ receipts cannot establish final success. Historical PASS records are not
 imported as current execution. The unchanged general make gates remain in
 force; no test count is inferred merely from command/source presence.
 
+## F. Issue autofinish requires observed postconditions
+
+An empty check rollup, or a rollup containing no successful check, no longer
+authorizes either the authority merge or the mirror merge. Authority and mirror
+rollups are evaluated independently. Neutral or skipped checks may coexist with
+a success, but they cannot establish readiness by themselves.
+
+After both merges and tag readbacks, the issue close operation now precedes the
+effect acknowledgement. The workflow reads the issue state back and emits
+`EFFECT_ACK_DONE` only after observing `CLOSED`. A transport acknowledgement of
+the close request is not substituted for that state observation.
+
 ## Earlier detection is an executable gate
 
 `state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json` maps each audit requirement to

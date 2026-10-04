@@ -106,7 +106,13 @@
       "next_action",
       "disposition_reason",
       "no_false_pass"
-    ]
+    ],
+    "autofinish_postconditions": {
+      "empty_check_rollup_is_success": false,
+      "minimum_successful_check_before_merge": 1,
+      "authority_and_mirror_checks_are_independent": true,
+      "effect_ack_comment_requires_closed_readback": true
+    }
   },
   "standing_internal_authority": {
     "substantive_review_execution": true,

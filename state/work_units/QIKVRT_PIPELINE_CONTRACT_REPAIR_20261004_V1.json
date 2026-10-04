@@ -33,6 +33,19 @@
     "not_executed_locally": "Full repository make test and the remaining manifest modules require the repository-native checkout; no result is inferred."
   },
   "native_validation": "UNVERIFIED_AT_CANDIDATE_CONSTRUCTION",
+  "issue_autofinish_extension": {
+    "construction_head": "17fb2077913646d15f9f5de789760b107ed9ee1c",
+    "construction_tree": "94c063383706913768d11b3f48b147699d467650",
+    "empty_check_rollup_is_success": false,
+    "minimum_successful_check_before_merge": 1,
+    "effect_ack_requires_issue_state": "CLOSED",
+    "validation": {
+      "pipeline_contract_tests": "99_OF_99_SUCCESS_NORMAL_AND_OPTIMIZED",
+      "issue_agent_tests": "11_OF_11_SUCCESS_NORMAL_AND_OPTIMIZED",
+      "workflow_shell_syntax": "PASS",
+      "full_repository_make_test": "PASS"
+    }
+  },
   "independent_review": "REQUIRED_NOT_CLAIMED",
   "main_integration": "NOT_CLAIMED",
   "live_permission_recovery": "NOT_CLAIMED",

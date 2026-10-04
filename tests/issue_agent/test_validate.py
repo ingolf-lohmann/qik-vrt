@@ -218,6 +218,48 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             self.assertIn(token, SYSTEM_PROMPT)
         self.assertIn("Do not leave an issue in an unclassified waiting state", SYSTEM_PROMPT)
 
+    def test_autofinish_requires_nonempty_successful_checks_on_both_repositories(self):
+        source = (ROOT / ".github/workflows/issue-agent-autofinish.yml").read_text(
+            encoding="utf-8"
+        )
+        for token in (
+            'check_count="$(printf',
+            'successful="$(printf',
+            'mirror_check_count="$(printf',
+            'mirror_successful="$(printf',
+            '[ "$check_count" -eq 0 ] || [ "$successful" -eq 0 ]',
+            '[ "$mirror_check_count" -eq 0 ] || [ "$mirror_successful" -eq 0 ]',
+        ):
+            self.assertIn(token, source)
+
+        policy = json.loads((
+            ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+        ).read_text(encoding="utf-8"))
+        postconditions = policy["issue_agent_integration"]["autofinish_postconditions"]
+        self.assertFalse(postconditions["empty_check_rollup_is_success"])
+        self.assertEqual(postconditions["minimum_successful_check_before_merge"], 1)
+        self.assertTrue(postconditions["authority_and_mirror_checks_are_independent"])
+
+    def test_effect_ack_follows_confirmed_issue_closure(self):
+        source = (ROOT / ".github/workflows/issue-agent-autofinish.yml").read_text(
+            encoding="utf-8"
+        )
+        close = source.index('gh issue close "$issue"')
+        readback = source.index('issue_state="$(gh issue view "$issue"', close)
+        closed_gate = source.index('[ "$issue_state" != "CLOSED" ]', readback)
+        effect_ack = source.index('**EFFECT_ACK_DONE**', closed_gate)
+        self.assertLess(close, readback)
+        self.assertLess(readback, closed_gate)
+        self.assertLess(closed_gate, effect_ack)
+
+        policy = json.loads((
+            ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+        ).read_text(encoding="utf-8"))
+        self.assertTrue(
+            policy["issue_agent_integration"]["autofinish_postconditions"]
+            ["effect_ack_comment_requires_closed_readback"]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

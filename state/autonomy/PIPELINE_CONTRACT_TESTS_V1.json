@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_pipeline_contract_test_manifest_v1",
-  "scope": "AUDIT_A_TO_E_AND_SELF_HEAL_PR_POSTCONDITION",
+  "scope": "AUDIT_A_TO_F_AND_SELF_HEAL_PR_POSTCONDITION",
   "runner": "tools/qikvrt_contract_test_runner.py",
   "required_make_target": "pipeline-contract-test",
   "execution_modes": [
@@ -11,7 +11,8 @@
     "tests.test_qikvrt_pipeline_contracts",
     "tests.test_qikvrt_self_heal_pr_materializer",
     "tests.test_qikvrt_continuous_auto_repair",
-    "tests.test_qikvrt_autonomous_pr_continuation"
+    "tests.test_qikvrt_autonomous_pr_continuation",
+    "tests.issue_agent.test_validate"
   ],
   "source_paths": [
     "Makefile",
@@ -22,11 +23,14 @@
     "tests/test_qikvrt_self_heal_pr_materializer.py",
     "tests/test_qikvrt_continuous_auto_repair.py",
     "tests/test_qikvrt_autonomous_pr_continuation.py",
+    "tests/issue_agent/test_validate.py",
     "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
     ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
     ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
     ".github/workflows/qikvrt_ci.yml",
-    ".github/workflows/qikvrt_autonomous_self_heal.yml"
+    ".github/workflows/qikvrt_autonomous_self_heal.yml",
+    ".github/workflows/issue-agent-autofinish.yml",
+    "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
   ],
   "requirements": {
     "A_RESUME_PENDING_OPERATION": [
@@ -54,6 +58,10 @@
       "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_final_ci_rejects_missing_execution_not_substituted_by_historical_pass",
       "tests.test_qikvrt_pipeline_contracts.RealGitContracts.test_final_ci_rejects_forged_coverage_flag_or_omitted_source"
     ],
+    "F_ISSUE_AUTOFINISH_POSTCONDITIONS": [
+      "tests.issue_agent.test_validate.ValidateIssueAgentBundleTest.test_autofinish_requires_nonempty_successful_checks_on_both_repositories",
+      "tests.issue_agent.test_validate.ValidateIssueAgentBundleTest.test_effect_ack_follows_confirmed_issue_closure"
+    ],
     "META_ACTUAL_TESTS_NOT_PRESENCE": [
       "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_runner_rejects_skipped_missing_duplicate_and_incomplete_requirements",
       "tests.test_qikvrt_pipeline_contracts.PipelineContracts.test_runner_records_failed_subtests_and_expected_failures",
@@ -76,6 +84,8 @@
     "final_evidence": "AFTER_TEST_EXECUTION_AND_FRESH_REMOTE_HEAD_TREE_READBACK",
     "comment_failure_changes_technical_result": false,
     "historical_artifacts_prove_current_execution": false,
+    "empty_check_rollup_proves_merge_readiness": false,
+    "effect_ack_precedes_confirmed_issue_closure": false,
     "automatic_permission_change": false,
     "EFFECT_ACK_DONE": false,
     "PREDECESSOR_EVIDENCE_TRANSFER": false
