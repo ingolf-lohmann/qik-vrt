@@ -1,0 +1,193 @@
+{
+  "schema": "qikvrt-monitor-deployment-work-unit/v1",
+  "work_unit_id": "MESH_MONITOR_REPOSITORY_DEPLOYMENT_20261004",
+  "created_at": "2026-10-04T15:36:31.884Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+  "source_commit": "674aa35ec0659119a19cda66b88f32050e34f105",
+  "source_tree": "5100b66a299ded9ecb64622d2d36a5a77ef1f85d",
+  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "state": "TESTED_REPOSITORY_SUCCESSOR_CAPABILITY_HOLD",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "creator",
+      "product_owner",
+      "code_owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "59a6b6077bdc",
+    "tools_and_adapters": [
+      "GitHub native connector",
+      "Railway native connector read only",
+      "Git",
+      "Python standard library",
+      "Node 24"
+    ],
+    "identity_limits": "Platform/session attribution is not biometric identity or model attestation."
+  },
+  "human_contributions": [
+    "Bounded request: smallest client-independent repository-native path for existing Railway mesh-monitor with exact source pin, durable state, health and restart bindings.",
+    "Conditional server-side deployment authorization; missing capability must be a persisted HOLD; no second service, parallel implementation, merge or governance weakening."
+  ],
+  "artificial_cognitive_contributions": [
+    "Repository and Railway exact-state diagnosis",
+    "Generated narrow deployment controller, push/status workflow and separate existing-client readback adapter",
+    "Fail-closed, drift, one-shot recovery and public byte-validation tests",
+    "Capability, source and provenance evidence"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "retention": "METADATA_ONLY",
+  "reuse_evidence": [
+    "Existing server/observer/client/health bytes from concurrent e2a8e1a retained unchanged; fixed deployed runtime/client are resolved separately from exact commit 674aa35.",
+    "Existing service, staged patch and staged persistent volume IDs reused.",
+    "Existing tools/qikvrt_subprocess.py, qikvrt_zenodo_actions.py redirect/argument guards and qikvrt_workflow_executor.py JSON encoding reused.",
+    "Existing pinned checkout/setup/upload actions, Python/Node lock, cache authority and Makefile verification reused."
+  ],
+  "reuse_insufficiency": "Parent/main have no Railway deployment workflow or API executor. The available staged client-connector admission is not callable by a server-side repository runner and cannot supply a server token.",
+  "inputs": [
+    {
+      "path": "state/work_units/MESH_MONITOR_MIRROR_CLIENT_REPLICATION_20261004.json",
+      "source_head": "674aa35ec0659119a19cda66b88f32050e34f105"
+    },
+    {
+      "path": "evidence/monitor_deploy/RAILWAY_TARGET_OBSERVATION_20261004.json"
+    },
+    {
+      "path": "state/deployments/MESH_MONITOR_RAILWAY_EXACT_674aa35.json"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_mesh_monitor_deploy.yml",
+      "bytes": 5434,
+      "sha256": "f0de07b872bef296bdef7182ecb9b8fb48580c9466f187028a2be1b41f01d950"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11330,
+      "sha256": "f7649e4e9f6ad834dd7f6764bcf696e7962863329cf6a468d747478277b02811"
+    },
+    {
+      "path": "docs/monitor/README.md",
+      "bytes": 16986,
+      "sha256": "a736f8300b067fb63549f29f2a8289cd1a32e62122a15382219a6babb06ce4da"
+    },
+    {
+      "path": "tools/qikvrt_mesh_monitor_deploy.py",
+      "bytes": 18495,
+      "sha256": "4d9fb09cd8c65519e4f5e0e5f1cd274a865c2016e934a73b2f40af62547fb753"
+    },
+    {
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "bytes": 5976,
+      "sha256": "e86e2fe1ec0c17c7bc7309184e838cd0a4cec636eeed29141f4a133b7cefb28f"
+    },
+    {
+      "path": "tests/test_mesh_monitor_deploy.py",
+      "bytes": 9991,
+      "sha256": "6b7be1f687bfeac025b1db5336a3b691d353373fff4cd0d13b62326a03686343"
+    },
+    {
+      "path": "tests/mesh_monitor_readback.test.mjs",
+      "bytes": 5955,
+      "sha256": "45836dc4821523127d357d9e16d81c8ae0b60e43788d24618a8f4c23a3d78586"
+    },
+    {
+      "path": "state/deployments/MESH_MONITOR_RAILWAY_EXACT_674aa35.json",
+      "bytes": 3011,
+      "sha256": "ac3face64610a3c1d197a2eb5430b7c5d37f30609936c87c404b2552011460e8"
+    },
+    {
+      "path": "runtime/capabilities/MESH_MONITOR_RAILWAY_SERVER_DEPLOYMENT_20261004.json",
+      "bytes": 3018,
+      "sha256": "1fb5a556f3ec5d68a3030be3862c28e9436635008558108b8e2d19404781fd0b"
+    },
+    {
+      "path": "evidence/monitor_deploy/RAILWAY_TARGET_OBSERVATION_20261004.json",
+      "bytes": 2726,
+      "sha256": "84750b8a4f5c991808e7f08523bcd8ff95f4a62b4b69dd08f01de16383767396"
+    },
+    {
+      "path": "evidence/monitor_deploy/LOCAL_SUCCESSOR_TESTS_20261004.log",
+      "bytes": 115581,
+      "sha256": "fb36f8efbf11630be8d032b29726d9c4b9aa4d022120e34fb9504ba9e56a84de"
+    }
+  ],
+  "git_history": {
+    "parent": "e2a8e1a647bfd085a3977aef5f72730257dedd93",
+    "successor_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+    "commit_binding": "Resolve the successor from the commit containing this exact work unit; no cyclic self-SHA field.",
+    "force_push": false,
+    "main_merge": false,
+    "concurrent_successor_preserved": {
+      "head": "e2a8e1a647bfd085a3977aef5f72730257dedd93",
+      "tree": "46abcfc2d2172317f661703bf6d4ba338443cad1",
+      "scope": "Existing two-node replication and timeout-recovery successor retained byte-for-byte; explicit deployment subject remains 674aa35."
+    }
+  },
+  "verification": {
+    "deployment_regressions": {
+      "state": "PASS",
+      "tests": 16
+    },
+    "independent_client_regressions": {
+      "state": "PASS",
+      "tests": 8
+    },
+    "actual_local_controller": {
+      "state": "HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE",
+      "network_requests": 0,
+      "railway_mutations": 0
+    },
+    "workflow_yaml_embedded_python_and_progress_frame": {
+      "state": "PASS"
+    },
+    "full_make_test": {
+      "state": "PASS",
+      "exit_code": 0,
+      "log": "evidence/monitor_deploy/LOCAL_SUCCESSOR_TESTS_20261004.log",
+      "bytes": 115581,
+      "sha256": "fb36f8efbf11630be8d032b29726d9c4b9aa4d022120e34fb9504ba9e56a84de",
+      "scope": "Local full suite on preserved e2a8e1a successor plus the implementation bytes listed in outputs; final provenance/log/integrity metadata materialized afterward. This is not inherited or native exact-head CI evidence."
+    },
+    "integrity": {
+      "state": "PASS",
+      "scope": "Final canonical trio regenerated and independently verified before successor publication; no cyclic work-unit self-SHA."
+    },
+    "boot": "CONTINUE; optional unrelated runtime profiles absent; tool-cache 14/14 at 100%.",
+    "pre_effect_controller": "HOLD; no competing-writer/current-main evidence for unrelated optimization, no autonomous optimization applied.",
+    "historical_test_dependency": "Fetched exact 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 for existing publication worktree regression; 8/8 tests pass. No release action or software downgrade.",
+    "native_successor_ci": "REQUIRES_FRESH_EXACT_HEAD_OBSERVATION_AFTER_PUBLICATION"
+  },
+  "human_decision": {
+    "task_and_conditional_deployment": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "new_generated_code_review": "PENDING_NATIVE_GOVERNANCE"
+  },
+  "external_effects": {
+    "repository_successor": "PERSISTED_IN_COMMIT_CONTAINING_THIS_RECORD; native branch/readback required before user completion claim",
+    "railway_deployment": "NOT_DISPATCHED_SERVER_CAPABILITY_ABSENT",
+    "merge": "NOT_PERFORMED",
+    "governance_change": "NONE",
+    "new_service": "NONE"
+  },
+  "open_acceptance_gates": [
+    "Authorized server-side Railway credential and actual API permission",
+    "Fresh exact deployed source, persistent volume and independent public client readback",
+    "Protected default-branch integration remains a separate review/merge effect",
+    "Provider webhook registration/delivery, live restart fault injection and cross-node failover remain independent"
+  ],
+  "capability_record": "runtime/capabilities/MESH_MONITOR_RAILWAY_SERVER_DEPLOYMENT_20261004.json",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "predecessor_evidence_transfer": false
+  },
+  "finalized_at": "2026-10-04T15:53:13.146037+00:00"
+}

@@ -95,6 +95,8 @@ test: repository-monitor-test compile integrity effect-ack-core-test scientific-
 .PHONY: repository-monitor-test
 repository-monitor-test:
 	cd docs/monitor && npm test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_mesh_monitor_deploy
+	node --test tests/mesh_monitor_readback.test.mjs
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_digital_twin_rest
 
 run-api:

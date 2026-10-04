@@ -183,3 +183,89 @@ connection, human Digital Twin, physical actuation or full C90 REST port.
 
 `policy/QIKVRT_UNIVERSAL_TERMINAL_IMPLEMENTATION_GAPS_20261004.json` records the
 owner's expanded scope and the actual unclosed carrier/acceptance dependencies.
+
+## Exact repository-native deployment of the existing Railway service
+
+`tools/qikvrt_mesh_monitor_deploy.py` and
+`.github/workflows/qikvrt_mesh_monitor_deploy.yml` close the missing executor
+path. They deploy only the existing `mesh-monitor` service
+`dc3773e0-d057-4779-b9c1-9ca0f2074f69` in the existing production environment.
+The immutable runtime subject is **674aa35ec0659119a19cda66b88f32050e34f105**,
+tree **5100b66a299ded9ecb64622d2d36a5a77ef1f85d**, root `/docs/monitor`.
+The executor successor is a separate subject: updating its branch never changes
+that runtime pin or transfers predecessor checks to the executor.
+
+The fixed contract is
+`state/deployments/MESH_MONITOR_RAILWAY_EXACT_674aa35.json`. It retains `npm test`,
+`npm start`, `/health`, the 60-second healthcheck, restart **ALWAYS** with the
+existing max-retries value 3, one `iad` replica and no sleeping. Only the already
+staged `mirror-monitor-events` volume is used at `/var/lib/qikvrt/monitor`.
+There is no new service, alternative server implementation, upload of a mutable
+working directory, or change to CODEOWNERS/review/rulesets.
+
+The owner authorized this bounded deployment. The push event on the existing
+candidate branch starts the executor without a ChatGPT client, schedule or
+interactive Railway confirmation. Future protected-branch integration remains
+a separate governed effect. This change does not merge itself or assert native
+review success. The workflow is not installed on `main` merely by existing in
+a draft candidate.
+
+The server-side runner supplies **one** already authorized credential:
+`RAILWAY_TOKEN` (project token, `Project-Access-Token` header) or
+`RAILWAY_API_TOKEN` (account/workspace token, bearer header). No token is created,
+extracted from the connector, put in an argument/cache/repository, or printed.
+An absent credential produces `HOLD_RAILWAY_SERVER_CREDENTIAL_UNAVAILABLE`
+before a network request. Permission, schema, state and drift failures remain
+HOLD; API bodies and variable values never become logs or receipts.
+
+The controller freshly validates the project, environment, service, source,
+runtime settings, variables and volume. It accepts only reviewed patch
+`9d4860c4-5003-48ef-a07f-d383f303b539`, limited to that service and volume;
+unrelated or destructive staged fields stop it. It acquires the create-only
+Git-Data ref `refs/tags/qikvrt-monitor-deploy/674aa35ec0659119a19cda66b88f32050e34f105`
+using the runner's `GITHUB_TOKEN`, reobserves immediately and makes at most one
+Railway mutation. The claim is retained on timeout, API failure or runner loss.
+Subsequent runners can observe an in-flight deploy or verify the exact live
+result; they cannot blindly repeat the mutation. A failed/ambiguous claim needs
+authoritative provider reobservation and a separately governed recovery, not
+deletion or force-update by this controller.
+
+`environmentPatchCommitStaged` has no expected-patch-ID/CAS argument in the
+primary API schema. The double read, strict patch allowlist, one-shot claim and
+workflow concurrency protect cooperating runners. They cannot exclude a
+privileged external writer changing staging after the last observation. That
+remaining platform concurrency limit is explicit; no stronger atomicity is
+claimed. The existing patch commit performs the deployment; it is never
+followed by an extra redeploy. If settings are already live and no patch remains,
+the only allowed deploy request is `serviceInstanceDeployV2` with the explicit
+runtime commit, after the same one-shot claim.
+
+`tools/qikvrt_mesh_monitor_readback.mjs` runs in a separate process without the
+deployment credentials. It fetches `/health`, `/api/node`, both client assets,
+the snapshot and the complete bounded journal, checks exact head/tree/version
+and artifact hashes, and applies the original snapshot/event bytes through the
+existing `client-replica.js`. A final node read must match its epoch, sequence,
+digest and journal head. Drift, altered bytes, missing health structure or the
+old public carrier fail closed. Application health `UNKNOWN`/`DEGRADED` is
+retained rather than becoming whole-system `HEALTHY` through deployment success.
+
+There is no status polling or blind retry. A `deployment_status` success event
+is readback-only; bounded pending deployment is an explicit HOLD. The workflow
+persists a safe receipt, `AI_PROGRESS.json` and `AI_STATUS.md` as Action artifacts
+and a human step summary. `PUBLIC_RUNTIME_READBACK_VERIFIED` is bounded to this
+carrier/client check; provider webhook registration/delivery, live restart fault
+injection and cross-node failover remain independent gates. `EFFECT_ACK_DONE`
+and general Mesh completion remain false.
+
+Local checks use the existing Python/Node toolchain, no Railway CLI:
+
+```sh
+python3 -B -m unittest -v tests.test_mesh_monitor_deploy
+node --test tests/mesh_monitor_readback.test.mjs
+make repository-monitor-test
+```
+
+The exact remaining capability is recorded in
+`runtime/capabilities/MESH_MONITOR_RAILWAY_SERVER_DEPLOYMENT_20261004.json` and
+the provenance work unit
+`state/work_units/MESH_MONITOR_REPOSITORY_DEPLOYMENT_20261004.json`.
