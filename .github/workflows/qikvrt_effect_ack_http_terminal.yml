@@ -11,6 +11,11 @@ on:
       - "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md"
       - "src/qikvrt_effect_ack_http_terminal.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "tests/test_self_host.py"
+      - "runtime/self-host/**"
+      - "docs/monitor/**"
+      - "tools/qikvrt_self_host.py"
+      - "tools/qikvrt_mesh_monitor_readback.mjs"
       - ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
   workflow_dispatch:
 
@@ -33,6 +38,14 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
+
+      - name: Set up standalone Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+
+      - name: Run standalone package, negative and crash-restart controls
+        run: python3 -B -m unittest -v tests.test_self_host
 
       - name: Parse machine-readable contracts and RFCXML
         shell: bash
@@ -81,6 +94,33 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
           PYTHONNOUSERSITE: "1"
         run: python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+
+      - name: Freeze and verify exact-head standalone package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .qikvrt/runtime/self-host
+          python3 -B tools/qikvrt_self_host.py pack --root . \
+            --expected-head "$(git rev-parse --verify HEAD^{commit})" \
+            --expected-tree "$(git rev-parse --verify HEAD^{tree})" \
+            --output "$RUNNER_TEMP/qikvrt-self-host" \
+            > .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json
+          cat .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json
+          pin="$(python3 -c 'import json; print(json.load(open(".qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json"))["manifest_sha256"])')"
+          python3 -B tools/qikvrt_self_host.py verify \
+            --root "$RUNNER_TEMP/qikvrt-self-host" --manifest-sha256 "$pin"
+
+      - name: Upload exact-head standalone package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-self-host-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-self-host.tar
+            ${{ runner.temp }}/qikvrt-self-host/MANIFEST.json
+            .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Package verified Firefox reference client
         shell: bash

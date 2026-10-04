@@ -86,8 +86,22 @@
     "effect_ack_done": false
   },
   "roadmap_binding": {
+    "bytes": 11244,
+    "sha256": "9764abcc81d6d6f2ba9524de6233dc6c4a99d50138bdacc27d07fcfccda41ba4",
+    "git_blob_sha1": "4f73ff5c49be8a7aa5adc1ad0c3ece0cddbbe0ea"
+  },
+  "historical_roadmap_binding": {
     "bytes": 8974,
     "sha256": "eeef48fdb537db63a35596d44645c06ecdf6bdeeb6d32faeb777264462a19f8b",
     "git_blob_sha1": "f6ef068f5bacd289cdc6c46b4e39ce21107f575a"
+  },
+  "implementation_successor": {
+    "work_unit_path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+    "milestone": "S1",
+    "state": "OPEN",
+    "original_candidate_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
+    "original_candidate_tree": "486ed9d95c3eb312a10d50dbfd11668004fa113b",
+    "predecessor_gate_transfer": false,
+    "effect_ack_done": false
   }
 }

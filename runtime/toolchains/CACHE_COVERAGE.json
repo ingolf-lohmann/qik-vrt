@@ -25,6 +25,12 @@
       "version": "2.96.0"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "git",
+      "provider": "source builder and existing owner terminal subject reader",
+      "version": "read-only-object-export"
+    },
+    {
       "cache_class": "build-cache",
       "component": "lean",
       "provider": "leanprover/lean-action+actions/cache",
@@ -33,7 +39,7 @@
     {
       "cache_class": "hosted-toolcache",
       "component": "node",
-      "provider": "actions/setup-node",
+      "provider": "actions/setup-node or operator-provisioned exact executable",
       "version": "24.x"
     },
     {
@@ -59,6 +65,12 @@
       "component": "python",
       "provider": "actions/setup-python",
       "version": "3.12.13"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "python-selfhost",
+      "provider": "package-bound operator interpreter",
+      "version": "3.12.x"
     },
     {
       "cache_class": "ecosystem-cache",
@@ -87,10 +99,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 14,
-  "declared_components": 14,
-  "lock_sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69",
-  "registry_sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6",
+  "covered_components": 16,
+  "declared_components": 16,
+  "lock_sha256": "4e03bdf41637bbf9f9f70b1a62df0abac79f5eb059e4dee26bc896700ed20928",
+  "registry_sha256": "f54dc9c74271aaa1a26954e7654eadc51652bd193bc23b48207b2dd17a6478d4",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

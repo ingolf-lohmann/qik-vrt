@@ -7,8 +7,10 @@ param(
     [switch]$CheckOnly,
     [switch]$Install,
     [switch]$AcceptThirdParty,
-    [ValidateSet('core', 'ietf', 'formal', 'audio', 'publication', 'all')]
+    [ValidateSet('core', 'ietf', 'formal', 'audio', 'publication', 'all', 'self-host')]
     [string]$Profile = 'ietf',
+    [ValidateSet('auto', 'none', 'github')]
+    [string]$Adapter = 'auto',
     [string]$CacheDir = ''
 )
 
@@ -424,15 +426,24 @@ try {
     if ($Install -and -not $AcceptThirdParty) { Stop-Block '-Install requires -AcceptThirdParty' }
     Assert-NoReparseChain $CacheDir
 
-    $ghArgs = @('-CacheDir', $CacheDir)
-    if ($Install) { $ghArgs += @('-Install', '-AcceptThirdParty') } else { $ghArgs += '-CheckOnly' }
-    $powerShellExe = (Get-Process -Id $PID).Path
-    & $powerShellExe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'bootstrap-gh.ps1') @ghArgs
-    $ghExit = $LASTEXITCODE
-    if ($ghExit -ne 0 -and $ghExit -ne 20) { exit $ghExit }
-    if ($ghExit -eq 20) { $script:Overall = 20 }
+    if ($Adapter -eq 'auto') { if ($Profile -eq 'self-host') { $Adapter = 'none' } else { $Adapter = 'github' } }
+    if ($Profile -ne 'self-host' -and $Adapter -ne 'github') { Stop-Block 'existing profiles require the GitHub adapter' }
+    if ($Adapter -eq 'github') {
+        $ghArgs = @('-CacheDir', $CacheDir)
+        if ($Install) { $ghArgs += @('-Install', '-AcceptThirdParty') } else { $ghArgs += '-CheckOnly' }
+        $powerShellExe = (Get-Process -Id $PID).Path
+        & $powerShellExe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot 'bootstrap-gh.ps1') @ghArgs
+        $ghExit = $LASTEXITCODE
+        if ($ghExit -ne 0 -and $ghExit -ne 20) { exit $ghExit }
+        if ($ghExit -eq 20) { $script:Overall = 20 }
+    }
 
     switch ($Profile) {
+        'self-host' {
+            if (-not (Test-Node24)) { Set-Continue 'self-host: operator-provisioned Node 24.x is absent' }
+            if ($null -eq (Get-CompatiblePython -Exact312)) { Set-Continue 'self-host: operator-provisioned Python 3.12.x is absent' }
+            Write-Output 'self-host: exact executable identities must be frozen by the package builder'
+        }
         'core' { Test-CoreProfile }
         'ietf' { Test-IetfProfile }
         'formal' { Test-FormalProfile }

@@ -1,0 +1,498 @@
+{
+  "schema": "qikvrt-attributable-work-unit/v1",
+  "work_unit_id": "SELF_HOSTED_NODE_PACKAGE_S1_20261004",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "pr": 457,
+  "source_parent_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
+  "source_parent_tree": "486ed9d95c3eb312a10d50dbfd11668004fa113b",
+  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
+  "state": "S1_PACKAGE_CANDIDATE_WITH_EXTERNAL_ACCEPTANCE_HOLDS",
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "human_principal": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "creator",
+      "product_owner",
+      "code_owner"
+    ],
+    "instruction_date": "2026-10-04",
+    "instruction_source": "CURRENT_USER_ACTION",
+    "purpose": "Smallest history-preserving self-host successor of PR457: conditional GitHub CLI, existing carriers, exact start/runtime/volume/auth/readback, executable negative/restart controls; precise deployment HOLD if own host absent."
+  },
+  "artificial_contributor": {
+    "identity": "OpenAI Codex",
+    "model_family": "GPT-6",
+    "model_or_build_identity": "UNAVAILABLE",
+    "role": "reuse inventory, source-bound integration, implementation, negative/restart tests and fresh candidate verification",
+    "retention": "METADATA_ONLY"
+  },
+  "reuse_evidence": {
+    "monitor_pr456": {
+      "source_head": "14fc43ec8263d7d278c54975ac0338130e0de716",
+      "source_tree": "31395a8a383e6feb10d4195d6fadcd1d78b644e7",
+      "import": "SELECTIVE_BLOB_REUSE_NOT_FULL_BRANCH_MERGE",
+      "files": [
+        {
+          "path": "docs/monitor/README.md",
+          "source_git_blob_sha1": "8fdfafc5dfc9dd0045dcb59da36d5fde561c83f9",
+          "source_sha256": "c88c528fe9e9267b74634defecfdf590e7dc66546fcd0043e765e4423007b38e",
+          "current_binding": {
+            "bytes": 11806,
+            "sha256": "add9ed045c5c37fc66f72281969fed4a81c1abb28fdacea8d57927d9115f7497",
+            "git_blob_sha1": "07f3d11967c70b93b9eb2c10d2cc64be5e12c6f9"
+          }
+        },
+        {
+          "path": "docs/monitor/URL_DIRECTORY.json",
+          "source_git_blob_sha1": "0bf0e7ecaab0b0e55cfb4ba76f7235a37ae7097a",
+          "source_sha256": "8b554272fffe33b94da653e584c368633a2afce426315f71c74add69e33e94a4",
+          "current_binding": {
+            "bytes": 2162,
+            "sha256": "8b554272fffe33b94da653e584c368633a2afce426315f71c74add69e33e94a4",
+            "git_blob_sha1": "0bf0e7ecaab0b0e55cfb4ba76f7235a37ae7097a"
+          }
+        },
+        {
+          "path": "docs/monitor/client-replica.js",
+          "source_git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b",
+          "source_sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472",
+          "current_binding": {
+            "bytes": 8342,
+            "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472",
+            "git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b"
+          }
+        },
+        {
+          "path": "docs/monitor/health-projection.js",
+          "source_git_blob_sha1": "c89f5b72c07b83522ebd8288b3432e85deaed2c1",
+          "source_sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee",
+          "current_binding": {
+            "bytes": 5299,
+            "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee",
+            "git_blob_sha1": "c89f5b72c07b83522ebd8288b3432e85deaed2c1"
+          }
+        },
+        {
+          "path": "docs/monitor/index.html",
+          "source_git_blob_sha1": "30e46aa6f396e4d6efdb3b386c26281626f7abf4",
+          "source_sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231",
+          "current_binding": {
+            "bytes": 47320,
+            "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231",
+            "git_blob_sha1": "30e46aa6f396e4d6efdb3b386c26281626f7abf4"
+          }
+        },
+        {
+          "path": "docs/monitor/monitor.test.mjs",
+          "source_git_blob_sha1": "451483496eca8bcf37f45616a49d82eb1b5279c3",
+          "source_sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76",
+          "current_binding": {
+            "bytes": 33125,
+            "sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76",
+            "git_blob_sha1": "451483496eca8bcf37f45616a49d82eb1b5279c3"
+          }
+        },
+        {
+          "path": "docs/monitor/observer.mjs",
+          "source_git_blob_sha1": "da889a5927330e8d0a86615f230fc77656b2faf9",
+          "source_sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596",
+          "current_binding": {
+            "bytes": 16128,
+            "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596",
+            "git_blob_sha1": "da889a5927330e8d0a86615f230fc77656b2faf9"
+          }
+        },
+        {
+          "path": "docs/monitor/observer.test.mjs",
+          "source_git_blob_sha1": "7ccc7995f3f3c00c236b8e40a54da9601f1f93a7",
+          "source_sha256": "6cca13a3c7b65b0d80dfae343e25c86ab5150dddf284505538c137f2084c4b4e",
+          "current_binding": {
+            "bytes": 11309,
+            "sha256": "6cca13a3c7b65b0d80dfae343e25c86ab5150dddf284505538c137f2084c4b4e",
+            "git_blob_sha1": "7ccc7995f3f3c00c236b8e40a54da9601f1f93a7"
+          }
+        },
+        {
+          "path": "docs/monitor/package.json",
+          "source_git_blob_sha1": "9639ca9f0fb15ac4a570b15dce1d61cc049e8134",
+          "source_sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428",
+          "current_binding": {
+            "bytes": 267,
+            "sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428",
+            "git_blob_sha1": "9639ca9f0fb15ac4a570b15dce1d61cc049e8134"
+          }
+        },
+        {
+          "path": "docs/monitor/server.mjs",
+          "source_git_blob_sha1": "081dc5e82a071b97766b8cc578c07e37801888df",
+          "source_sha256": "bd5dcc12ae6589275d9ff4e317001ccffafc689fadb5c16bef1f8f81a11a9a05",
+          "current_binding": {
+            "bytes": 34422,
+            "sha256": "487f556318a0417b20f5c58b9d28517e1338a4886fbf114dade86c144842655e",
+            "git_blob_sha1": "7a8286ad3ddbe59fba4322ee6222169382833f30"
+          }
+        }
+      ]
+    },
+    "terminal_pr454": {
+      "source_head": "c1424d4d53b03402c8284728d7a47e03c9de1b1c",
+      "source_tree": "29f2159e0a5906e3decc0ad7f545f0434d3f4e31",
+      "import": "SELECTIVE_BLOB_REUSE_NOT_FULL_BRANCH_MERGE",
+      "files": [
+        {
+          "path": "src/qikvrt_effect_ack_http_terminal.py",
+          "source_git_blob_sha1": "2668959d315f39f0d686350960282dd30218ca59",
+          "source_sha256": "ae5c7dbeca725f2c925b53f7d8c1f4e5f04aaa27a29d7d347d2f9c0bf4134179",
+          "current_binding": {
+            "bytes": 30091,
+            "sha256": "0ca66598e0400d91c5093615e983085d2f681d3ac7abae159b046c2b2c502cbb",
+            "git_blob_sha1": "8f04064d8dbfea5a9624162046f8b3f0916894e5"
+          }
+        },
+        {
+          "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+          "source_git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+          "source_sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143",
+          "current_binding": {
+            "bytes": 26955,
+            "sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143",
+            "git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e"
+          }
+        },
+        {
+          "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+          "source_git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
+          "source_sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047",
+          "current_binding": {
+            "bytes": 6745,
+            "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047",
+            "git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d"
+          }
+        }
+      ]
+    },
+    "independent_readback": {
+      "source_head": "14fc43ec8263d7d278c54975ac0338130e0de716",
+      "source_path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "source_git_blob_sha1": "329bb260a565fbdbaee35819d6e457d3dbbe57cc",
+      "operation": "EXTEND_EXISTING_REPLICA_READBACK_WITH_EXPLICIT_SELF_HOST_BINDINGS"
+    },
+    "productive_source_search": {
+      "mirror_parent_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
+      "donor_heads": [
+        "14fc43ec8263d7d278c54975ac0338130e0de716",
+        "c1424d4d53b03402c8284728d7a47e03c9de1b1c"
+      ],
+      "retained_checkpoint_head": "f77bc1183b25cd7a1fdb605bc39ee5ea27953d95",
+      "result": "NO_PRODUCTIVE_TEMDD_DAEMON_OR_FIREFOX_NOVNC_DEPLOYMENT_SOURCE",
+      "goldkelch_repository_read": "CURRENT_CONNECTION_GITHUB_API_404; GIT_ROUTE_NOT_READABLE",
+      "permission_claim": "NO_CLAIM_ABOUT_GLOBAL_REPOSITORY_EXISTENCE_OR_OTHER_PRINCIPALS"
+    }
+  },
+  "reuse_insufficiency": "The roadmap alone has no portable runtime package. The terminal donor contains the existing HTTP reference carrier and owner Unix ingress client, but explicitly lacks productive TEMDD/deployment sources. Reuse and bind the available carriers; do not invent a substitute daemon, executor, ledger or deployment source.",
+  "implemented_contracts": [
+    "self-host adapter none avoids gh; explicit github retains locked gh; all existing profiles still require github",
+    "committed allowlisted blobs, deterministic tar independent of umask, exact HEAD/tree/manifest/runtime executable hashes",
+    "private deterministic config and separate node-bound persistent volume layout with kernel single-writer lock",
+    "existing loopback HTTP reference terminal with private bearer auth; public read-only sanitized terminal and exported repository documents",
+    "existing monitor only, Railway/provider negative control before transport, local source adapter without remote polling",
+    "existing independent replica client checks exact runtime/config/source/assets and durable event digest chain",
+    "SIGKILL entire runtime group and restart compare acknowledged original bytes and final independent readback; reject wrong source/runtime/config/volume binding"
+  ],
+  "package_definition": {
+    "path": "runtime/self-host/PACKAGE.json",
+    "bytes": 1440,
+    "sha256": "a6bf60f8f643d8a5a21ba1545a851370f2300307513f0a1b20e6261a2b6130cb",
+    "git_blob_sha1": "f13f4c5fba7ab2e00d68b5cd2465c14d59cf22cc"
+  },
+  "implementation_files": [
+    {
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "bytes": 18100,
+      "sha256": "d8c4613e52dea356ea199e9a807721f45246d0f799b8632a5c2fa85ca7009b0b",
+      "git_blob_sha1": "77530218966b02ad6eab6d2ccf317d2688fd7494"
+    },
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "bytes": 8108,
+      "sha256": "533e62d01c21b5295caddcca9cea30006d674f0f3f59dfa788c9cafdd909349c",
+      "git_blob_sha1": "b7659fd84fb74d4bd3bf3d30d672beafae2c7c8a"
+    },
+    {
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "bytes": 11019,
+      "sha256": "6c8aec78082bd7d1858ca48ce0635ebaee8fef655b019f5f386a461227b12ec7",
+      "git_blob_sha1": "fa7eaafa5f370345e9eee8b531e129dd2cf8691e"
+    },
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "bytes": 6293,
+      "sha256": "bbc36ef7efd8c56a181b5e78df496b67d0144e285c54318c8a9224215f13c872",
+      "git_blob_sha1": "8b91ac4cf2cc58d3a4bcd695d703bd4465018da8"
+    },
+    {
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "bytes": 8901,
+      "sha256": "b9a62dc5a84806b81a8bc94e1587b2b9e221a6a655518cb7584e9f2d2b033096",
+      "git_blob_sha1": "50f414da7ba683f6e9845edb651cca51c8d0fb06"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11254,
+      "sha256": "6f57289efc92855c238dbee225ca9a4ab28d8b0b79c4b7f975896dcc64125399",
+      "git_blob_sha1": "941ce6e910e0bd0e7be9ea638cc53c7707ea5d8b"
+    },
+    {
+      "path": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+      "bytes": 11244,
+      "sha256": "9764abcc81d6d6f2ba9524de6233dc6c4a99d50138bdacc27d07fcfccda41ba4",
+      "git_blob_sha1": "4f73ff5c49be8a7aa5adc1ad0c3ece0cddbbe0ea"
+    },
+    {
+      "path": "docs/assets/js/qikvrt-repository-terminal.js",
+      "bytes": 22310,
+      "sha256": "30296c535826da2e9e49c528b1d53fd1fa87454883da347a428870c659c9ddb0",
+      "git_blob_sha1": "6b631b51572a2b4ab4df4a32787671ec289d3bf5"
+    },
+    {
+      "path": "docs/monitor/README.md",
+      "bytes": 11806,
+      "sha256": "add9ed045c5c37fc66f72281969fed4a81c1abb28fdacea8d57927d9115f7497",
+      "git_blob_sha1": "07f3d11967c70b93b9eb2c10d2cc64be5e12c6f9"
+    },
+    {
+      "path": "docs/monitor/URL_DIRECTORY.json",
+      "bytes": 2162,
+      "sha256": "8b554272fffe33b94da653e584c368633a2afce426315f71c74add69e33e94a4",
+      "git_blob_sha1": "0bf0e7ecaab0b0e55cfb4ba76f7235a37ae7097a"
+    },
+    {
+      "path": "docs/monitor/client-replica.js",
+      "bytes": 8342,
+      "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472",
+      "git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b"
+    },
+    {
+      "path": "docs/monitor/health-projection.js",
+      "bytes": 5299,
+      "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee",
+      "git_blob_sha1": "c89f5b72c07b83522ebd8288b3432e85deaed2c1"
+    },
+    {
+      "path": "docs/monitor/index.html",
+      "bytes": 47320,
+      "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231",
+      "git_blob_sha1": "30e46aa6f396e4d6efdb3b386c26281626f7abf4"
+    },
+    {
+      "path": "docs/monitor/monitor.test.mjs",
+      "bytes": 33125,
+      "sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76",
+      "git_blob_sha1": "451483496eca8bcf37f45616a49d82eb1b5279c3"
+    },
+    {
+      "path": "docs/monitor/observer.mjs",
+      "bytes": 16128,
+      "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596",
+      "git_blob_sha1": "da889a5927330e8d0a86615f230fc77656b2faf9"
+    },
+    {
+      "path": "docs/monitor/observer.test.mjs",
+      "bytes": 11309,
+      "sha256": "6cca13a3c7b65b0d80dfae343e25c86ab5150dddf284505538c137f2084c4b4e",
+      "git_blob_sha1": "7ccc7995f3f3c00c236b8e40a54da9601f1f93a7"
+    },
+    {
+      "path": "docs/monitor/package.json",
+      "bytes": 267,
+      "sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428",
+      "git_blob_sha1": "9639ca9f0fb15ac4a570b15dce1d61cc049e8134"
+    },
+    {
+      "path": "docs/monitor/self-host.mjs",
+      "bytes": 8479,
+      "sha256": "ec176ea902dd2bb13ca478cb0462c9c5491e5380136de63340396e36c9b2954e",
+      "git_blob_sha1": "0c7fe64b9bfc36ff04fa40f43042da341e343391"
+    },
+    {
+      "path": "docs/monitor/server.mjs",
+      "bytes": 34422,
+      "sha256": "487f556318a0417b20f5c58b9d28517e1338a4886fbf114dade86c144842655e",
+      "git_blob_sha1": "7a8286ad3ddbe59fba4322ee6222169382833f30"
+    },
+    {
+      "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+      "bytes": 6745,
+      "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047",
+      "git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d"
+    },
+    {
+      "path": "docs/terminal/index.html",
+      "bytes": 14845,
+      "sha256": "062aadcff3fa771a9a9233cfe4a74aa2b38ff2fbfb0e9a6b986e0c4ea17b4c2c",
+      "git_blob_sha1": "e0a4238d2f67a860ab463d28c0544ca7b298b2c6"
+    },
+    {
+      "path": "runtime/self-host/CONFIG.example.json",
+      "bytes": 321,
+      "sha256": "37ab72095c2d02a752303119fa148a565ef5c3054523439b266ff693e980f6da",
+      "git_blob_sha1": "ad283e40abc5e8f0f359b09ca60b011f6dc91b06"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 1440,
+      "sha256": "a6bf60f8f643d8a5a21ba1545a851370f2300307513f0a1b20e6261a2b6130cb",
+      "git_blob_sha1": "f13f4c5fba7ab2e00d68b5cd2465c14d59cf22cc"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 7242,
+      "sha256": "b816f3c11cdbdae4fee82a27bda68c32e51ab77755dbc9e4757d76c29991b54f",
+      "git_blob_sha1": "f59266620b5946168fdefefb1e606a9fbbe828f2"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3475,
+      "sha256": "d3f678acfad6389cf19124063937863741dac9f689038b82efcb967e0ee68ecf",
+      "git_blob_sha1": "d49220a1fd3bee3742d7cb18c9bc4cad84824f85"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 12222,
+      "sha256": "f54dc9c74271aaa1a26954e7654eadc51652bd193bc23b48207b2dd17a6478d4",
+      "git_blob_sha1": "9ce37bd0d9dba2914ffd2a92f3e3b38964cc7777"
+    },
+    {
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "bytes": 7194,
+      "sha256": "b03854e8692db5fc958951ca96b93aeacf625bd6c09f4c475ae73b7fcc3b1ca6",
+      "git_blob_sha1": "98a8bf3a5f2e5d8793c2ccd479ff09bc6545b869"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2902,
+      "sha256": "4e03bdf41637bbf9f9f70b1a62df0abac79f5eb059e4dee26bc896700ed20928",
+      "git_blob_sha1": "c2ab9c6a3dd4836741b7955c5f4382776cbb78f9"
+    },
+    {
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "bytes": 30091,
+      "sha256": "0ca66598e0400d91c5093615e983085d2f681d3ac7abae159b046c2b2c502cbb",
+      "git_blob_sha1": "8f04064d8dbfea5a9624162046f8b3f0916894e5"
+    },
+    {
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "bytes": 5527,
+      "sha256": "19032adb45e8423e1bceebc3c910cbdaa212b686530542c150ae6421c6ce5b68",
+      "git_blob_sha1": "dc37a723f491bc4343a998d5067bea731c55c068"
+    },
+    {
+      "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "bytes": 26955,
+      "sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143",
+      "git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 16670,
+      "sha256": "9919d9581efb6f998f4c46358c9f049f59e97428f20d42c3ddadecba059cb501",
+      "git_blob_sha1": "7d4b5b67f09e5c47905d90d8a80533bf0e635b1e"
+    },
+    {
+      "path": "tools/ai_runtime_bootloader.py",
+      "bytes": 14869,
+      "sha256": "cc806fa77566bcf0a1be80b24dd27b2d945a144a20d57776aff372a7ada873c4",
+      "git_blob_sha1": "ed848f2030fb4c9bf02febfa253c09631bfec0f7"
+    },
+    {
+      "path": "tools/bootstrap-runtime.ps1",
+      "bytes": 22974,
+      "sha256": "7ce2c465d76f4def824cd0ed4c5f392fa93121beec9e48f4cf302c1bd9cb9ae6",
+      "git_blob_sha1": "f48e2837b310158548c7450248ab48bbebbce442"
+    },
+    {
+      "path": "tools/bootstrap-runtime.sh",
+      "bytes": 17810,
+      "sha256": "2bde15087d814c24b31dabe7f6683f76a0868f0890e38c17db704c6c452e8803",
+      "git_blob_sha1": "4d8e2217d0dec6465410a1aafbfb0a117be0037f"
+    },
+    {
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "bytes": 9480,
+      "sha256": "60380776aee3b33272ab395320c25fb327fd72bfd778bf83a11ce7ea42fba35a",
+      "git_blob_sha1": "87f6dd86a6eb02d7ec2ca86f730324052d927aa2"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 13322,
+      "sha256": "738a82aeee0c1651fbaf62d39ae4d1dd54b6413c9e2ec2c7ae09c3f2fb69f7e7",
+      "git_blob_sha1": "076678a7ab8b426287e97bbee9671169497e5cbe"
+    }
+  ],
+  "local_validation": {
+    "path": "evidence/self_host/SELF_HOST_LOCAL_20261004.json",
+    "bytes": 3156,
+    "sha256": "087bb418423c9852c9efdb634c24718b20a88038efb6cb00a834050911f120cd",
+    "git_blob_sha1": "aa5d7e23cf11329756d0f868bc7bee988f51a841"
+  },
+  "exact_head_gates": {
+    "state": "REQUIRED_FRESH_ON_COMMITTED_SUCCESSOR; NOT_INHERITED_FROM_ROADMAP_OR_DONORS",
+    "workflows": [
+      "QIKVRT CI",
+      "QIKVRT repository evidence materialization",
+      "QIK-VRT global claim completion",
+      "QIKVRT Collective Proposal Review",
+      "QIKVRT EFFECT_ACK HTTP Firefox terminal"
+    ],
+    "terminal_module_requirement": "31 unmodified native Unix/HTTP controls plus 12 standalone cases; no fixture daemon admitted as productive runtime",
+    "package_artifact": "Existing EFFECT_ACK HTTP Firefox workflow freezes exact checkout HEAD/tree and uploads deterministic archive, manifest and build receipt",
+    "final_run_binding_location": "PR457 metadata and native workflow artifacts/checks; work unit does not self-reference its containing commit"
+  },
+  "deployment_hold": {
+    "code": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "scope": "CURRENT_TASK_CAPABILITY_SET_AND_BOUND_RESOURCES",
+    "callable_own_host_operation": null,
+    "authorized_deployment_identity": null,
+    "bound_persistent_mount_or_device": null,
+    "public_route": null,
+    "observations": [
+      "Current exposed tool inventory has no own-host SSH/container exec or Mesh deployment operation",
+      "Current checkout/local fixture has no admitted host subject, mount identity or public route",
+      "Railway managed build/config capabilities do not establish an independent own host"
+    ],
+    "retry_condition": "Actually callable authorized own-host operation, exact identity, verified persistent mount/device and HTTPS route; install exact complete package, use/read back public monitor and terminal, restart deployed carrier and compare confirmed data"
+  },
+  "productive_terminal_source_hold": {
+    "code": "HOLD_PRODUCTIVE_TERMINAL_SOURCE_UNAVAILABLE",
+    "missing": [
+      "existing productive TEMDD daemon bytes",
+      "existing Firefox/noVNC deployment sources and exact startup/runtime contract"
+    ],
+    "included_scope": "Existing HTTP reference carrier, read-only repository terminal and existing owner Unix client; reference HTTP input remains process-local",
+    "retry_condition": "Byte-exact complete source delivery with verified existing carrier identity, then extend this package without adding a second daemon or executor"
+  },
+  "authorization": {
+    "candidate_implementation_and_push": "CURRENT_OWNER_DIRECTIVE",
+    "main_merge": "NOT_PERFORMED",
+    "hosting_account_creation_or_spending": false,
+    "platform_account_or_protection_changes": false,
+    "private_mail_or_credentials_publication": false
+  },
+  "boundaries": {
+    "provider_independent_public_runtime_verified": false,
+    "native_productive_terminal_included": false,
+    "local_export_process_restart_verified": true,
+    "host_restart_verified": false,
+    "host_persistence_attested": false,
+    "public_readback_verified": false,
+    "public_url": null,
+    "power_loss_verified": false,
+    "multi_node_replication_verified": false,
+    "predecessor_evidence_transfer": false,
+    "ordinary_release": false,
+    "authority_effect": false,
+    "effect_ack_done": false
+  }
+}

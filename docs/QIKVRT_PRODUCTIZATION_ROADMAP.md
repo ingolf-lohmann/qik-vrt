@@ -110,3 +110,39 @@ kein `EFFECT_ACK_DONE`. Die früher beauftragten C90-, lokale
 Maschinencode-/Static-Link-, Linux-/Docker-, Atari-/Mega-ST-, Digital-Twin-
 und Siemens-Anschlüsse bleiben im Produktumfang und erhalten eigene
 gebundene Abnahmen. `PREDECESSOR_EVIDENCE_TRANSFER=false`.
+
+
+### S1-Implementierungsnachfolger vom 4. Oktober 2026
+
+Der history-preserving Nachfolger von PR #457 (`4f53f56014584cf8effbbad8cc15d199aaed4608`)
+liegt in `runtime/self-host/`. `self-host` startet mit Adapter `none` ohne
+GitHub CLI; nur der explizite GitHub-Adapter verlangt den unveränderten
+GitHub-Bootstrap. Die bisherigen Profile behalten ihre GitHub-Abhängigkeit.
+Der vorhandene Monitor aus PR #456 und die verfügbaren Terminal-Träger aus
+PR #454 werden selektiv weiterverwendet; kein zweiter Monitor, Executor oder
+produktiver TEMDD-Daemon wird eingeführt.
+
+Der Paketexport bindet versionierte Linux-Runtime-Executables, exakte
+Git-Blobs/HEAD/Tree, Startkonfiguration und ein getrenntes Volume.
+Authentisierungsgrenzen, Writer-Sperre, Provider-Ablehnung vor dem Transport
+und der bestehende unabhängige Monitor-Readback sind ausführbar geprüft.
+Ein SIGKILL-Neustart erhält die vorher quittierten Original-Journalbytes.
+Diese Nachweise betreffen lokale Prozesse und das konfigurierte Dateisystem.
+Sie ergeben keinen Stromausfall-, eigenen Host- oder öffentlichen Betriebsnachweis.
+
+S1 bleibt **OPEN**. Die produktiven TEMDD- und Firefox/noVNC-Deployment-Quellen
+sind im zugänglichen Mirror und dem retained Git-Checkpoint nicht vorhanden;
+der bekannte Goldkelch-Quellzugriff antwortet in dieser Verbindung mit 404.
+Das Paket enthält deshalb den vorhandenen HTTP-Referenzträger und Owner-Unix-Client,
+dessen produktiver Daemon weiterhin fehlt. Ein erfundener Ersatz schließt diese Lücke nicht.
+
+Der präzise Deployment-HOLD lautet
+`HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE`: Für diese Session sind
+keine tatsächlich aufrufbare Eigenhost-Operation, zugelassene Deployment-Identität,
+gebundenes persistentes Speichermedium und öffentliche Route verfügbar.
+Die unabhängige Quelllücke lautet `HOLD_PRODUCTIVE_TERMINAL_SOURCE_UNAVAILABLE`.
+Nächster zulässiger Schritt ist die vollständige Lieferung der vorhandenen
+produktiven Trägerquellen und die konkrete Host-/Storage-/Routing-Zulassung,
+danach exakte Installation, öffentlicher Readback und Deployment-Neustarttest.
+Work Unit: `state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json`.
+Weder eine öffentliche URL noch `EFFECT_ACK_DONE` wird aus Paket-/CI-Tests abgeleitet.

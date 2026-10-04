@@ -113,3 +113,15 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: repository-monitor-test self-host-test
+repository-monitor-test:
+	node docs/monitor/observer.test.mjs
+	node --test docs/monitor/monitor.test.mjs
+
+self-host-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
+	node --check docs/monitor/self-host.mjs
+	node --check tools/qikvrt_mesh_monitor_readback.mjs
+
+test: repository-monitor-test self-host-test

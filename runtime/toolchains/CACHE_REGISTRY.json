@@ -89,7 +89,8 @@
         "formal",
         "audio",
         "publication",
-        "all"
+        "all",
+        "self-host:github"
       ],
       "provider": "tools/bootstrap-gh.sh|tools/bootstrap-gh.ps1",
       "trusted_save": true,
@@ -100,6 +101,29 @@
         "execution self-test"
       ],
       "version": "2.96.0"
+    },
+    "git": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/PACKAGE.json",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned:exact-executable-or-behavioral-contract"
+      ],
+      "profiles": [
+        "self-host-build"
+      ],
+      "provider": "source builder and existing owner terminal subject reader",
+      "trusted_save": false,
+      "verification": [
+        "exact committed-source export",
+        "version and SHA-256 where runtime-bound",
+        "positive, negative and restart tests"
+      ],
+      "version": "read-only-object-export"
     },
     "lean": {
       "authority_files": [
@@ -132,25 +156,31 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "runtime/self-host/PACKAGE.json",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
         "github-hosted-toolcache:Node/24",
-        "github-actions-cache:npm"
+        "github-actions-cache:npm",
+        "operator-provisioned:manifest-bound-node24"
       ],
       "profiles": [
         "formal",
         "audio",
-        "all"
+        "all",
+        "self-host"
       ],
-      "provider": "actions/setup-node",
+      "provider": "actions/setup-node or operator-provisioned exact executable",
       "trusted_save": false,
       "verification": [
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution"
+        "test execution",
+        "self-host manifest version and executable SHA-256 with offline execution tests"
       ],
       "version": "24.x"
     },
@@ -258,6 +288,29 @@
         "runtime execution"
       ],
       "version": "3.12.13"
+    },
+    "python-selfhost": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/PACKAGE.json",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned:exact-executable-or-behavioral-contract"
+      ],
+      "profiles": [
+        "self-host"
+      ],
+      "provider": "package-bound operator interpreter",
+      "trusted_save": false,
+      "verification": [
+        "exact committed-source export",
+        "version and SHA-256 where runtime-bound",
+        "positive, negative and restart tests"
+      ],
+      "version": "3.12.x"
     },
     "sherpa-onnx-node": {
       "authority_files": [

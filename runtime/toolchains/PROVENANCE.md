@@ -113,3 +113,18 @@ any declared Poppler command is absent, it installs the distribution
 `poppler-utils` package without recommended packages, records the reported
 package and command versions, and then executes the unchanged PDF verification
 gate. Other installation remains an operator/platform responsibility.
+
+## S1 standalone runtime (2026-10-04)
+
+The additional `python-selfhost` component uses operator-provisioned CPython
+3.12.x, separately from the unchanged exact 3.12.13 IETF renderer. Upstream:
+https://www.python.org/ ; build/provider licenses and notices remain applicable.
+Node 24.x uses the existing component (https://nodejs.org/). Package assembly
+records actual version, architecture and executable SHA-256; every start must
+match them. No unverified fallback or interpreter download is performed.
+Read-only Git object export uses https://git-scm.com/ (GPL-2.0-only); it is a
+build/native-owner-client dependency, absent from the standalone HTTP readback.
+Provision failure holds; recovery restores the exact admitted executables or
+requires a reviewed new package/volume migration. Self-host fixtures test source
+binding, denied providers, authentication, crash restart and exact readback.
+The cache registry covers both added tools and the explicit GitHub-only adapter.
