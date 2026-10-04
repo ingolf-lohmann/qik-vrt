@@ -129,8 +129,8 @@ jobs:
           lake build
           python3 -B verify_qce_package.py \
             --lean "$(command -v lean)" \
-            --axiom-output qce-autonomous-axiom-output.txt \
-            > qce-autonomous-verification.json
+            --axiom-output "$RUNNER_TEMP/qce-autonomous-axiom-output.txt" \
+            > "$RUNNER_TEMP/qce-autonomous-verification.json"
 
       - name: Publish exact-head success status
         if: success()
