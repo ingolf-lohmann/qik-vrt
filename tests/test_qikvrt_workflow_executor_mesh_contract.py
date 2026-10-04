@@ -33,7 +33,7 @@ class WorkflowExecutorMeshContractTests(unittest.TestCase):
     def test_contract_is_authority_first_and_effect_bounded(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(contract["schema"], "qikvrt_workflow_executor_mesh_contract_v1")
-        self.assertEqual(contract["authority"]["repository"], "Goldkelch/qik-vrt")
+        self.assertEqual(contract["authority"]["repository"], "ingolf-lohmann/qik-vrt")
         self.assertEqual(contract["authority"]["entrypoint"], "AI")
         self.assertEqual(
             contract["executor"]["single_writer_order"],

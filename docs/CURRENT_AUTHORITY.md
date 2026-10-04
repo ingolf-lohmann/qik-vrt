@@ -16,16 +16,26 @@ the former Mirror, as the new Authority and instructed creation of a new Mirror.
 The exact directive and its distinct effect boundaries are retained in
 `state/authorization/delegations/OWNER_AUTHORITY_SUCCESSION_AND_NEW_MIRROR_20261004_V1.json`.
 
-This is an owner-authorized succession, not a readback of a completed runtime
-cutover. The new Mirror target is still unspecified and no new remote repository
-has been created. Existing role consumers, Seed registration, writer ordering,
-review governance and synchronization must be rebound and independently checked
-for the new epoch before operational completion is reported. Historical
+The history-preserving PR successor binds current routing, defaults, bootstrap,
+status and public interfaces to the new Authority in
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. It is a review candidate; Main has
+not been promoted and `AUTHORITY_CUTOVER_COMPLETED=false`. The separate new
+Mirror contract is `state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json`.
+Its target is unspecified and this executing API client exposes no repository
+creation operation. Therefore its exact state is
+`HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY`; no Mirror was created.
+Seed registration and node liveness require fresh records for the succession
+epoch, rather than admission of the former Mirror's receipts. Historical
 `Goldkelch/qik-vrt` release, publication and receipt bindings remain immutable.
 An unavailable account is not an independent reviewer; the Authority role change
 does not authorize self approval or weaker governance. The current review
 identity blocker is recorded in
 `state/work_units/QIKVRT_NATIVE_REVIEWER_ADMISSION_REPAIR_20261004_V1.json`.
+
+The path and reference classifications are retained in
+`state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json`.
+Frozen release/publication workflows remain bound to their original exact
+authorization subjects. They do not grant publication authority to this cutover.
 
 ## Active runtime
 

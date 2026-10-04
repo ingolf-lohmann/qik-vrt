@@ -67,7 +67,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                 return self.command_result(command, "origin\nupstream\n")
             if command == ("git", "remote", "get-url", "upstream"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             raise AssertionError(command)
 
@@ -82,7 +82,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                 return self.command_result(command, "origin\n")
             if command == ("git", "remote", "get-url", "origin"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             raise AssertionError(command)
 
@@ -127,7 +127,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
             self.assertEqual(MODULE._remote_main_revision(), expected)
 
     def test_execution_origin_accepts_only_policy_bound_repository_urls(self) -> None:
-        for repository in ("Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt"):
+        for repository in ("ingolf-lohmann/qik-vrt",):
             for suffix in ("", ".git"):
                 with self.subTest(repository=repository, suffix=suffix):
                     result = self.command_result((), f"https://github.com/{repository}{suffix}\n")
@@ -136,9 +136,10 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
 
     def test_unknown_missing_or_ambiguous_execution_origin_fails_closed(self) -> None:
         for urls, returncode in (
+            ("https://github.com/Goldkelch/qik-vrt.git\n", 0),
             ("https://github.com/example/qik-vrt.git\n", 0),
             ("https://github.com/ingolf-lohmann/qik-vrt.git.evil\n", 0),
-            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/Goldkelch/qik-vrt.git\n", 0),
+            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/ingolf-lohmann/qik-vrt.git\n", 0),
             ("", 1),
         ):
             with self.subTest(urls=urls, returncode=returncode):

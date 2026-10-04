@@ -26,6 +26,7 @@ from typing import Any, Mapping, Sequence
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_RELATIVE_PATH = "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+MIRROR_BOOTSTRAP_PATH = "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 ACTIVE_RUN_STATUSES = frozenset({"queued", "in_progress", "waiting", "requested", "pending"})
 
@@ -104,6 +105,52 @@ def _contract_sha256(root: Path) -> str:
         raise ExecutorBlock(f"cannot hash workflow executor contract: {exc}") from exc
 
 
+def mirror_bootstrap_status(root: Path = ROOT) -> dict[str, Any]:
+    """Observe the separately bound Mirror contract without creating a target."""
+    contract = load_contract(root)
+    authority = _mapping(contract.get("authority"), "contract authority")
+    value = _read_json_file(root / MIRROR_BOOTSTRAP_PATH, "Mirror bootstrap contract")
+    bootstrap = _mapping(value, "Mirror bootstrap contract")
+    if bootstrap.get("schema") != "qikvrt_new_mirror_bootstrap_contract_v1":
+        raise ExecutorBlock("Mirror bootstrap schema is invalid")
+    if bootstrap.get("authority_repository") != authority.get("repository"):
+        raise ExecutorBlock("Mirror bootstrap Authority binding drift")
+    if bootstrap.get("succession_epoch") != authority.get("succession_epoch"):
+        raise ExecutorBlock("Mirror bootstrap succession epoch drift")
+    target = _mapping(bootstrap.get("target"), "Mirror target")
+    repository = target.get("repository")
+    if repository is not None:
+        if not isinstance(repository, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+            raise ExecutorBlock("Mirror target repository is malformed")
+        if repository.casefold() in {
+            str(authority.get("repository")).casefold(),
+            str(authority.get("previous_authority_repository")).casefold(),
+        }:
+            raise ExecutorBlock("Mirror target aliases a current or predecessor Authority")
+    capability = _mapping(bootstrap.get("execution_capability"), "Mirror creation capability")
+    blockers = []
+    if repository is None or target.get("owner_target_verified") is not True:
+        blockers.append("NEW_MIRROR_IDENTITY_NOT_SPECIFIED_OR_VERIFIED")
+    if capability.get("api_repository_creation_callable") is not True:
+        blockers.append("API_NATIVE_REPOSITORY_CREATION_CAPABILITY_UNAVAILABLE")
+    # A declared route never substitutes for its authenticated target permission.
+    if not blockers and capability.get("target_permission_verified") is not True:
+        blockers.append("NEW_MIRROR_TARGET_PERMISSION_UNVERIFIED")
+    return {
+        "schema": "qikvrt_new_mirror_bootstrap_status_v1",
+        "state": "HOLD" if blockers else "PREPARED_REQUIRES_FRESH_NATIVE_REOBSERVATION",
+        "hold": "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY" if len(blockers) == 2 else (blockers[0] if blockers else None),
+        "authority_repository": authority["repository"],
+        "succession_epoch": authority["succession_epoch"],
+        "mirror_repository": repository,
+        "blockers": blockers,
+        "repository_creation_effect_count": 0,
+        "mirror_created": False,
+        "PREDECESSOR_EVIDENCE_TRANSFER": False,
+        "EFFECT_ACK_DONE": False,
+    }
+
+
 def _workflow_inventory(root: Path, revision: str) -> list[dict[str, str]]:
     completed = subprocess.run(
         ["git", "-C", str(root), "ls-tree", "-r", "-z", revision, "--", ".github/workflows"],
@@ -132,7 +179,7 @@ def _workflow_inventory(root: Path, revision: str) -> list[dict[str, str]]:
 
 def _validate_contract_shape(contract: Mapping[str, Any], root: Path) -> None:
     authority = _mapping(contract.get("authority"), "contract authority")
-    if authority.get("repository") != "Goldkelch/qik-vrt" or authority.get("entrypoint") != "AI":
+    if authority.get("repository") != "ingolf-lohmann/qik-vrt" or authority.get("entrypoint") != "AI":
         raise ExecutorBlock("contract authority binding is not canonical")
     executor = _mapping(contract.get("executor"), "contract executor")
     for key in ("controller_path", "workflow_path", "watchdog_workflow_path", "monitor_workflow_path"):
@@ -483,6 +530,9 @@ def _emit(value: Mapping[str, Any], as_json: bool) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    mirror = subcommands.add_parser("mirror-bootstrap-status")
+    mirror.add_argument("--require-ready", action="store_true")
+    mirror.add_argument("--json", action="store_true")
     for name in ("snapshot", "check"):
         command = subcommands.add_parser(name)
         command.add_argument("--baseline", type=Path)
@@ -509,6 +559,10 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
+        if arguments.command == "mirror-bootstrap-status":
+            value = mirror_bootstrap_status()
+            _emit(value, arguments.json)
+            return 2 if arguments.require_ready and value["state"] == "HOLD" else 0
         if arguments.command in {"snapshot", "check", "plan"}:
             baseline = _read_json_file(arguments.baseline, "baseline") if arguments.baseline else None
             value = snapshot(baseline=baseline if isinstance(baseline, Mapping) else None)

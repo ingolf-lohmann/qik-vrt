@@ -31,7 +31,7 @@ from tools.qikvrt_seed_common import (
 
 GUID = "a84f157a-cef2-4c47-bca9-8f407085bdbe"
 SOURCE = "example/node"
-SEED = "Goldkelch/qik-vrt"
+SEED = "ingolf-lohmann/qik-vrt"
 REQUEST_URL = (
     "https://raw.githubusercontent.com/example/node/refs/tags/v1/"
     "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"

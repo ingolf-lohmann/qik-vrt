@@ -81,14 +81,14 @@ Nicht verfügbare Angaben werden mit `UNAVAILABLE` bezeichnet und nicht erfunden
 Die Rollen sind eindeutig:
 
 ```text
-upstream = https://github.com/Goldkelch/qik-vrt.git
+upstream = https://github.com/ingolf-lohmann/qik-vrt.git
 origin   = persönliche Ursprungskopie oder LOCAL_ONLY
 ```
 
 Bei einer autorisierten Initialisierung gilt sinngemäß:
 
 ```sh
-git clone https://github.com/Goldkelch/qik-vrt.git qik-vrt-working-memory
+git clone https://github.com/ingolf-lohmann/qik-vrt.git qik-vrt-working-memory
 cd qik-vrt-working-memory
 git remote rename origin upstream
 git remote add origin <PERSONAL_ORIGIN_URL>
@@ -103,7 +103,7 @@ separat zu autorisierende Effekte. `QIKVRT_EXTERNAL_EFFECTS=disabled` ist die
 Voreinstellung.
 
 Die persönliche Kopie wird nicht allein durch ihre Existenz kanonisch. Die
-Authority bleibt `Goldkelch/qik-vrt`; ein persönliches `origin` ist die
+Die aktuelle Authority ist `ingolf-lohmann/qik-vrt`; ein persönliches `origin` ist die
 individuelle, dauerhafte Arbeits- und Nachweiskopie. Bytegleichheit,
 Synchronisierung oder Promotion dürfen nur für exakt geprüfte Commits und Pfade
 behauptet werden.

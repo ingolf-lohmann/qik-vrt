@@ -15,7 +15,6 @@
     "type": "NATURAL_PERSON"
   },
   "repositories": [
-    "Goldkelch/qik-vrt",
     "ingolf-lohmann/qik-vrt"
   ],
   "owner_delegation": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
@@ -152,5 +151,11 @@
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false,
     "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false
-  }
+  },
+  "historical_repositories": [
+    "Goldkelch/qik-vrt",
+    "ingolf-lohmann/qik-vrt"
+  ],
+  "role_binding_contract": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+  "new_mirror_bootstrap_contract": "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"
 }

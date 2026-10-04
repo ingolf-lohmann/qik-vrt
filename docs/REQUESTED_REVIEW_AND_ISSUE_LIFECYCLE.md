@@ -9,7 +9,7 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 Product Owner Ingolf Lohmann requires requested repository reviews and registered GitHub issues to receive a prompt, evidence-bound disposition instead of remaining indefinitely pending.
 
-This contract applies to `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt`. It is repository-internal governance. It does not bypass GitHub account rules, branch protection, required checks, external credentials, publication boundaries, or the distinction between a natural-person decision and the GitHub identity that signs an API event.
+This contract currently applies to `ingolf-lohmann/qik-vrt`; the new Mirror is unbound under `state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json`. Its historical scope included `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt`, and historical reviews retain that scope. It is repository-internal governance. It does not bypass GitHub account rules, branch protection, required checks, external credentials, publication boundaries, or the distinction between a natural-person decision and the GitHub identity that signs an API event.
 
 ## Requested reviews
 

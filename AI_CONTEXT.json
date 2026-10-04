@@ -10,7 +10,14 @@
     "machine_policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
     "machine_schema": "schemas/human_machine_progress.schema.json",
     "machine_state": "AI_PROGRESS.json",
-    "human_projection": "AI_STATUS.md"
+    "human_projection": "AI_STATUS.md",
+    "historical_projection_source": {
+      "source_repository": "Goldkelch/qik-vrt",
+      "commit": "4fd73232cc8d2189e14c950b376bb72ffcaf744e",
+      "root_tree": "93551633d0c2ee8c02ae232e23914acd06b7d858",
+      "ref_name": "evidence/content-disposition-batch-002-terminal-20260728-v1",
+      "is_current_authority_evidence": false
+    }
   },
   "runtime_cache": {
     "policy": "runtime/CACHE_POLICY.md",
@@ -97,14 +104,19 @@
     "name": "QIK-VRT",
     "responsible_human": "Ingolf Lohmann",
     "canonicality": {
-      "mode": "symmetric-canonical",
+      "mode": "authority-with-unbound-mirror",
       "repositories": [
-        "Goldkelch/qik-vrt",
         "ingolf-lohmann/qik-vrt"
       ],
       "equivalence_rule": "Symmetric canonicality is valid only for the scope whose exact bytes and declared state have been verified equivalent.",
       "chat_memory_authority": false,
-      "repository_evidence_overrides_conversation": true
+      "repository_evidence_overrides_conversation": true,
+      "authority_repository": "ingolf-lohmann/qik-vrt",
+      "mirror_repository": null,
+      "succession_epoch": "authority-succession-20261004-v1",
+      "historical_authority_repository": "Goldkelch/qik-vrt",
+      "role_contract": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "state": "REVIEW_CANDIDATE_NOT_ACTIVE"
     }
   },
   "required_read_order": [
@@ -135,7 +147,9 @@
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
-    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
+    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"
   ],
   "session_protocol": {
     "startup": [

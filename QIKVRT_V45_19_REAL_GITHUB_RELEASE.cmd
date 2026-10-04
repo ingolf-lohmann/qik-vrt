@@ -7,7 +7,7 @@ if not exist "%QIKVRT_ROOT%\tools\qikvrt_v45_19_document_persistence_release_win
   echo BLOCK wrapper target missing. Extract the ZIP fully before running.
   exit /b 1
 )
-set /p QIKVRT_ORIGIN=GitHub origin URL or OWNER/REPO [default Goldkelch/qik-vrt]: 
+set /p "QIKVRT_ORIGIN=GitHub origin URL or OWNER/REPO [default ingolf-lohmann/qik-vrt]: "
 powershell -NoProfile -ExecutionPolicy Bypass -File "%QIKVRT_ROOT%\tools\qikvrt_v45_19_document_persistence_release_windows.ps1" -Root "%QIKVRT_ROOT%" -OriginInput "%QIKVRT_ORIGIN%"
 echo Exit code: %ERRORLEVEL%
 pause

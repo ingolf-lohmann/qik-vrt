@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_pipeline_contract_test_manifest_v1",
-  "scope": "AUDIT_A_TO_F_AND_SELF_HEAL_PR_POSTCONDITION",
+  "scope": "AUDIT_A_TO_F_SELF_HEAL_PR_POSTCONDITION_AND_AUTHORITY_SUCCESSION",
   "runner": "tools/qikvrt_contract_test_runner.py",
   "required_make_target": "pipeline-contract-test",
   "execution_modes": [
@@ -13,7 +13,9 @@
     "tests.test_qikvrt_continuous_auto_repair",
     "tests.test_qikvrt_autonomous_pr_continuation",
     "tests.issue_agent.test_validate",
-    "tests.test_qikvrt_ci_fixture_isolation"
+    "tests.test_qikvrt_ci_fixture_isolation",
+    "tests.test_qikvrt_authority_cutover",
+    "tests.test_qikvrt_autonomous_pre_effect_controller"
   ],
   "source_paths": [
     "Makefile",
@@ -32,7 +34,21 @@
     ".github/workflows/qikvrt_autonomous_self_heal.yml",
     ".github/workflows/issue-agent-autofinish.yml",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
-    "tests/test_qikvrt_ci_fixture_isolation.py"
+    "tests/test_qikvrt_ci_fixture_isolation.py",
+    "tests/test_qikvrt_authority_cutover.py",
+    "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+    "tools/qikvrt_workflow_executor.py",
+    "tools/qikvrt_seed_common.py",
+    "tools/qikvrt_reflexive_repository_watchdog.py",
+    "tools/qikvrt_autonomous_pre_effect_controller.py",
+    "tools/ai_handoff.py",
+    "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json",
+    "state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json",
+    "AI_CONTEXT.json",
+    "AI_PROGRESS.json",
+    "AI_STATUS.md"
   ],
   "requirements": {
     "A_RESUME_PENDING_OPERATION": [
@@ -73,6 +89,25 @@
     "F_ISSUE_AUTOFINISH_POSTCONDITIONS": [
       "tests.issue_agent.test_validate.ValidateIssueAgentBundleTest.test_autofinish_requires_nonempty_successful_checks_on_both_repositories",
       "tests.issue_agent.test_validate.ValidateIssueAgentBundleTest.test_effect_ack_follows_confirmed_issue_closure"
+    ],
+    "AUTHORITY_SUCCESSION_FAIL_CLOSED_MIRROR": [
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_unknown_mirror_is_precise_identity_and_capability_hold",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_target_alone_cannot_bypass_creation_capability",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_capability_alone_cannot_invent_target",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_target_permission_is_required_and_preparation_is_not_effect",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_malformed_or_aliased_target_is_rejected",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_authority_or_epoch_drift_is_rejected",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_seed_holds_before_registry_fetch_or_write"
+    ],
+    "AUTHORITY_SUCCESSION_HISTORICAL_PROVENANCE": [
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_predecessor_liveness_is_not_admitted_as_current",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_historical_capsule_requires_exact_scope_and_cannot_be_current_evidence",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_classified_historical_files_are_byte_preserved"
+    ],
+    "AUTHORITY_SUCCESSION_CURRENT_REMOTE_SCOPE": [
+      "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_personal_working_copy_uses_bound_canonical_upstream",
+      "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_execution_origin_accepts_only_policy_bound_repository_urls",
+      "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_unknown_missing_or_ambiguous_execution_origin_fails_closed"
     ]
   },
   "contracts": {

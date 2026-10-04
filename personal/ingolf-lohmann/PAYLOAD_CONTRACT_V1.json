@@ -1,8 +1,8 @@
 {
   "schema": "qikvrt_personal_payload_contract_v1",
   "owner": "Ingolf Lohmann",
-  "status": "NORMATIVE_PERSONAL_MIRROR_EXTENSION",
-  "purpose": "Versioned provenance-bound personal payload in the Mirror without weakening Authority/Mirror evidence separation.",
+  "status": "NORMATIVE_PERSONAL_PAYLOAD_EXTENSION",
+  "purpose": "Versioned provenance-bound owner payload, with current repository roles resolved separately by the canonical remote policy and fresh evidence.",
   "root": "personal/ingolf-lohmann",
   "semantics": {
     "mirror_is_personal_payload_authority_for_owner_material": true,
@@ -36,9 +36,13 @@
   "digital_twin": {
     "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
     "mesh_contract": "policy/QIKVRT_ETHICAL_EVOLUTIONARY_DIGITAL_TWIN_MESH_V1.json",
-    "peer_repository": "Goldkelch/qik-vrt",
+    "peer_repository": null,
     "peer_state_is_not_authority": true,
-    "transport_ack_not_effect_ack": true
+    "transport_ack_not_effect_ack": true,
+    "historical_peer_repository": "Goldkelch/qik-vrt",
+    "role_binding_contract": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "mirror_bootstrap_contract": "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json",
+    "peer_state": "HOLD"
   },
   "completion_claims": {
     "PERSONAL_PAYLOAD_PATH_DEFINED": true,
@@ -139,5 +143,12 @@
     "successor": "OBSERVED_SUCCESSOR_BECOMES_NEXT_BOUND_INPUT",
     "mirror_seed_note": "Mirror main has no local Authority seed descriptor; this payload preserves the invariant without fabricating reciprocal seed execution.",
     "fail_closed": true
+  },
+  "current_host_role": "AUTHORITY_REVIEW_CANDIDATE",
+  "historical_host_binding": {
+    "status": "NORMATIVE_PERSONAL_MIRROR_EXTENSION",
+    "purpose": "Versioned provenance-bound personal payload in the Mirror without weakening Authority/Mirror evidence separation.",
+    "role": "MIRROR",
+    "is_current_role_evidence": false
   }
 }

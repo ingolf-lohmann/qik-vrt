@@ -2,8 +2,8 @@
   "schema": "qikvrt_effect_ack_http_terminal_v1",
   "version": "1.0",
   "status": "PRODUCT_OWNER_AUTHORIZED_CANDIDATE",
-  "authority_repository": "Goldkelch/qik-vrt",
-  "base_commit": "88dde0ba2394e941f11b8e848fcd4899bbc5d29c",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "base_commit": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
   "core_specification": "external/ietf/draft-lohmann-qikvrt-effect-ack-03.xml",
   "http_extension_specification": "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml",
   "invariants": {
@@ -22,18 +22,29 @@
   "terminal": {
     "mode": "INTERACTIVE_TERMINAL",
     "reference_client": "FIREFOX_WEBEXTENSION_MV3",
-    "entrypoint_match": "https://github.com/Goldkelch/qik-vrt/blob/main/AI*",
+    "entrypoint_match": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/AI*",
     "text": true,
     "audio": "EXPLICIT_CAPTURE_AND_SUBMIT",
     "video": "EXPLICIT_PREVIEW_SNAPSHOT_AND_SUBMIT",
-    "personalization": ["accent", "font_scale", "density", "panel_position"],
+    "personalization": [
+      "accent",
+      "font_scale",
+      "density",
+      "panel_position"
+    ],
     "counterpart": "QIKVRT_REPOSITORY_BACKEND_ADAPTER",
     "default_external_effect": "NONE"
   },
   "proxy_pattern": {
     "name": "QIKVRT_FIREFOX_TERMINAL_PROXY_V1",
     "purpose": "Normalize repository, backend and other client observations into one source-bound terminal frame and gate protected writes through EFFECT_ACK prepare/commit.",
-    "input_adapters": ["github_public_read", "http_backend", "local_qikvrt_api_shim", "mcp_agent", "other_client_snapshot"],
+    "input_adapters": [
+      "github_public_read",
+      "http_backend",
+      "local_qikvrt_api_shim",
+      "mcp_agent",
+      "other_client_snapshot"
+    ],
     "output_schema": "qikvrt_terminal_frame_v1",
     "may_render_non_done": true,
     "may_release_non_done": false,
@@ -47,5 +58,14 @@
     "html_element": "link",
     "new_html_parser_feature": false
   },
-  "completion_claims": {"PASS": false, "FINAL_PASS": false, "EFFECT_ACK_DONE": false}
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "historical_authority_source": {
+    "authority_repository": "Goldkelch/qik-vrt",
+    "base_commit": "88dde0ba2394e941f11b8e848fcd4899bbc5d29c"
+  },
+  "authority_binding_contract": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 }

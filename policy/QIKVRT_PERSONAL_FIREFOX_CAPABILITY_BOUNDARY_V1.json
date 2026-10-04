@@ -2,9 +2,11 @@
   "schema": "qikvrt_personal_firefox_capability_boundary_v1",
   "version": "1.0",
   "source_subject": {
-    "standard_repository": "Goldkelch/qik-vrt",
+    "standard_repository": "ingolf-lohmann/qik-vrt",
     "personal_repository": "ingolf-lohmann/qik-vrt",
-    "predecessor_evidence_transfer": false
+    "predecessor_evidence_transfer": false,
+    "historical_standard_repository": "Goldkelch/qik-vrt",
+    "edition_separation": "PACKAGE_AND_CAPABILITY_MANIFEST_SCOPE_NOT_REPOSITORY_OWNER_NAME"
   },
   "transitions": {
     "standard_to_personal": "ALLOW_WITH_FRESH_BINDING",
@@ -30,11 +32,12 @@
       "README.md"
     ],
     "forbidden_personal_markers": [
-      "ingolf-lohmann/qik-vrt",
+      "personal/ingolf-lohmann",
       "QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1",
       "QIKVRT_PERSONAL_FIREFOX",
       "OPENAI_API_KEY",
-      "CHATGPT_ACCESS_TOKEN"
+      "CHATGPT_ACCESS_TOKEN",
+      "PERSONAL_CAPABILITY_MANIFEST"
     ]
   },
   "personal_release_acceptance": {

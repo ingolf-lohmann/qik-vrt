@@ -1,0 +1,126 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_authority_cutover_work_unit_v1",
+  "work_unit_id": "QIKVRT_AUTHORITY_CUTOVER_20261004_V1",
+  "created_at": "2026-10-04T17:47:52Z",
+  "state": "REVIEW_CANDIDATE_WITH_SEPARATE_MIRROR_IDENTITY_CAPABILITY_HOLD",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "fix/self-heal-pr-postcondition-20261004-93be182a",
+  "source_commit": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
+  "source_tree": "99da5a0de002c8fb1cf20e23a638e42ffc15eda0",
+  "source_main_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "pull_request": 455,
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "attribution_source": "state/authorization/delegations/OWNER_AUTHORITY_SUCCESSION_AND_NEW_MIRROR_20261004_V1.json"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_family": "GPT-6",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "workspace-2b0519adcd96",
+    "tools_and_adapters": [
+      "GitHub connector native Git data REST",
+      "public GitHub REST readback",
+      "local Python/Git verification"
+    ],
+    "identity_and_observation_limits": "Model build and authenticated API signer are not inferred from the workspace or Git commit identity."
+  },
+  "human_contributions": [
+    "Designate former Mirror ingolf-lohmann/qik-vrt as the new Authority.",
+    "Preserve history and historical provenance; prepare a separate new Mirror without inventing an identity, browser fallback, merge or weaker governance."
+  ],
+  "artificial_cognitive_contributions": [
+    "Classify every matching UTF-8 source blob and its reference lines on the exact predecessor tree.",
+    "Rebind current routing/default/bootstrap/status/interface consumers and follow their normative source contracts.",
+    "Keep prior exact-subject releases, publication grants, receipts, portable Git evidence and CODEOWNERS unchanged.",
+    "Add executable rejection and provenance regressions to the required normal/optimized contract runner.",
+    "Prepare a fail-closed Mirror bootstrap/replication contract and use the existing executor/Seed/continuity mechanisms.",
+    "Regenerate the canonical integrity trio before native Git-tree and single-parent successor materialization."
+  ],
+  "classification": {
+    "path": "state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json",
+    "source_reference_files": 617,
+    "source_reference_lines": 1481,
+    "unchanged_classified_files": 576,
+    "global_replacement": false
+  },
+  "role_binding": {
+    "canonical_remote_policy": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "executor_consumer": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "historical_authority_repository": "Goldkelch/qik-vrt",
+    "succession_epoch": "authority-succession-20261004-v1",
+    "current_mirror_repository": null,
+    "candidate_is_main_activation": false
+  },
+  "mirror": {
+    "contract": "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json",
+    "state": "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY",
+    "blockers": [
+      "NEW_MIRROR_IDENTITY_NOT_SPECIFIED_OR_VERIFIED",
+      "API_NATIVE_REPOSITORY_CREATION_CAPABILITY_UNAVAILABLE"
+    ],
+    "creation_operation": null,
+    "repository_creation_effect_count": 0,
+    "capability_scope": "Callable API operations exposed to this execution environment; not a platform-wide availability claim.",
+    "retry_condition": "Owner target identity bound and API-native creation plus authenticated target permission freshly available.",
+    "next_action": "Freshly bind accepted Authority HEAD/TREE and target, create or verify once, replicate source objects and ancestry, initialize distinct role-local epoch records, execute fresh gates and persist reciprocal scoped readback."
+  },
+  "git_history": {
+    "history_preserving": true,
+    "required_parent": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
+    "additional_parents": [],
+    "force_push": false,
+    "merge": false,
+    "historical_blobs_preserved": true
+  },
+  "verification": {
+    "record_scope": "Pre-materialization work unit; final commit/head/tree are bound by fresh external native readback and contract-run artifacts, not by this self-containing record.",
+    "focused_regressions": {
+      "unique_tests": 48,
+      "normal_python": "PASS",
+      "scope": "Authority cutover, pre-effect remote policy, watchdog and public terminal tests on the local candidate bytes."
+    },
+    "required_commands": [
+      "python3 -B tools/qikvrt_contract_test_runner.py",
+      "make test",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "python3 -B tools/ai_handoff.py",
+      "python3 -B tools/qikvrt_workflow_executor.py mirror-bootstrap-status --json"
+    ],
+    "final_exact_head_evidence": "FRESH_POST_MATERIALIZATION_NATIVE_HEAD_TREE_RUNS_AND_READBACK_REQUIRED",
+    "historical_runs_are_current_validation": false
+  },
+  "human_decision": {
+    "directive": "OWNER_AUTHORITY_SUCCESSION_AND_NEW_MIRROR_20261004_V1",
+    "merge_authorized": false,
+    "mirror_target_identity_provided": false,
+    "independent_review_inferred": false
+  },
+  "effect_boundaries": {
+    "browser_fallback": false,
+    "external_release_or_deployment": false,
+    "mirror_created": false,
+    "Main_promoted": false,
+    "merge": false,
+    "self_approval": false,
+    "governance_weakening": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  },
+  "completion_claims": {
+    "AUTHORITY_CUTOVER_COMPLETED": false,
+    "MIRROR_BOOTSTRAP_COMPLETED": false,
+    "INDEPENDENT_CODE_OWNER_APPROVAL": false,
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

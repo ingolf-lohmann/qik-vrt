@@ -4,7 +4,7 @@ Dieses Paket publiziert eine GitHub-Pages-faehige Homepage unter `docs/`.
 
 ## Standardziel
 
-- Repository: `Goldkelch/qik-vrt`
+- Repository: `ingolf-lohmann/qik-vrt`
 - Branch: `main`
 - Pfad: `docs/`
 - Startseite: `docs/index.html`

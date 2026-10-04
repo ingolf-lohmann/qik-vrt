@@ -55,7 +55,7 @@ Kein GitHub-Erfolg ohne echten API-Nachweis.
 ## Vollautomatischer Token-only-GitHub-Pfad
 
 ```text
-Zielrepository: Goldkelch/qik-vrt
+Zielrepository: ingolf-lohmann/qik-vrt
 Branch: main
 Einzige Eingabe: GitHub token
 ```

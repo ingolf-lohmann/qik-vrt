@@ -16,7 +16,7 @@ or `EFFECT_ACK_DONE`.
 
 <!-- /qikvrt-machine-verifiable-science-charter-binding:v1 -->
 
-[![QIKVRT CI](https://github.com/Goldkelch/qik-vrt/actions/workflows/qikvrt_ci.yml/badge.svg?branch=main)](https://github.com/Goldkelch/qik-vrt/actions/workflows/qikvrt_ci.yml)
+[![QIKVRT CI](https://github.com/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_ci.yml/badge.svg?branch=main)](https://github.com/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_ci.yml)
 [![Release](https://img.shields.io/badge/release-v2026.07.22--effect--ack--universality--1.0.0-1f6feb)](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0)
 [![License: source--available](https://img.shields.io/badge/code-PolyForm%20Noncommercial-orange)](LICENSE)
 
@@ -77,8 +77,8 @@ open checks, controlled isolation, responsible blocking, and a fully bound
 - [Competition and evaluator entry point](docs/competition/README.md)
 - [Evidence matrix](docs/competition/EVIDENCE.md)
 - [Current authority map](docs/CURRENT_AUTHORITY.md)
-- [Project site](https://goldkelch.github.io/qik-vrt/)
-- [Canonical publication and reference overview](https://goldkelch.github.io/qik-vrt/publications/)
+- [Website source](https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/index.html) — new deployment not yet verified
+- [Current publication and reference sources](https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html); [historical published overview](https://goldkelch.github.io/qik-vrt/publications/)
 - [Machine-readable publication index](docs/publications/index.json)
 
 ### Current release and synchronized snapshot evidence
@@ -86,7 +86,7 @@ open checks, controlled isolation, responsible blocking, and a fully bound
 | Item | Verified value |
 |---|---|
 | Scientific release | [`v2026.07.22-effect-ack-universality-1.0.0`](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.22-effect-ack-universality-1.0.0) in both repositories |
-| Repository mesh snapshot | [`v2026.07.24-repository-mesh-sync-1.0.0`](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.24-repository-mesh-sync-1.0.0) in [Authority](https://github.com/Goldkelch/qik-vrt) and [Mirror](https://github.com/ingolf-lohmann/qik-vrt); identical content tree with repository-specific commits |
+| Historical repository mesh snapshot | [`v2026.07.24-repository-mesh-sync-1.0.0`](https://github.com/Goldkelch/qik-vrt/tree/v2026.07.24-repository-mesh-sync-1.0.0) in [Authority](https://github.com/Goldkelch/qik-vrt) and [Mirror](https://github.com/ingolf-lohmann/qik-vrt); identical content tree with repository-specific commits |
 | Working paper | [DOI 10.5281/zenodo.21498773](https://doi.org/10.5281/zenodo.21498773) |
 | Software snapshot | [DOI 10.5281/zenodo.21498774](https://doi.org/10.5281/zenodo.21498774) |
 | Official status clarification | [DOI 10.5281/zenodo.21500322](https://doi.org/10.5281/zenodo.21500322) |

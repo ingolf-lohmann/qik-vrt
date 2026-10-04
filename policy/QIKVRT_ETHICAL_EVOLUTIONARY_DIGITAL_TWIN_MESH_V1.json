@@ -23,8 +23,8 @@
   },
   "reciprocal_rest": {
     "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
-    "authority_repository": "Goldkelch/qik-vrt",
-    "mirror_repository": "ingolf-lohmann/qik-vrt",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "mirror_repository": null,
     "sequence": [
       "OBSERVE_LOCAL",
       "GET_PEER_STATE",
@@ -40,7 +40,10 @@
       "REPEAT"
     ],
     "peer_state_is_not_authority": true,
-    "transport_ack_not_effect_ack": true
+    "transport_ack_not_effect_ack": true,
+    "role_binding_contract": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "mirror_bootstrap_contract": "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json",
+    "mirror_state": "HOLD"
   },
   "artificial_cognition_audit": {
     "latest_case": "evidence/audits/ACOG_VIS_20260930_001.json",
@@ -55,5 +58,9 @@
     "PROVENANCE_HOLD",
     "SCIENTIFIC_CLAIM_HOLD"
   ],
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "historical_role_bindings": {
+    "authority_repository": "Goldkelch/qik-vrt",
+    "mirror_repository": "ingolf-lohmann/qik-vrt"
+  }
 }

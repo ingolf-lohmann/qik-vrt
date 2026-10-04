@@ -95,7 +95,7 @@ Windows path:
 
 ```text
 START.bat -> RUN.ps1 -> asks only GitHub token
-target = Goldkelch/qik-vrt
+target = ingolf-lohmann/qik-vrt
 branch = main
 ```
 
@@ -105,7 +105,7 @@ Linux/macOS path:
 
 ```text
 RUN.sh / START.command -> GH.py -> asks only GitHub token
-target = Goldkelch/qik-vrt
+target = ingolf-lohmann/qik-vrt
 branch = main
 ```
 

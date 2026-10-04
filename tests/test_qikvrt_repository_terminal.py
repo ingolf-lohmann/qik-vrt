@@ -49,8 +49,8 @@ class RepositoryTerminalTests(unittest.TestCase):
 
     def test_script_has_fixed_read_only_repository_surface(self) -> None:
         for marker in (
-            "Goldkelch/qik-vrt",
             "ingolf-lohmann/qik-vrt",
+            "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY",
             'method: "GET"',
             'credentials: "omit"',
             ".well-known/qik-vrt-self-disclosure.json",

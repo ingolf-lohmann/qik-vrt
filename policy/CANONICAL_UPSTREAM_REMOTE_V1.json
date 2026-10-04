@@ -4,22 +4,26 @@
   "status": "NORMATIVE",
   "smallest_action": "MATERIALIZE_POLICY_BOUND_CANONICAL_UPSTREAM_REMOTE",
   "canonical_upstream": {
-    "repository": "Goldkelch/qik-vrt",
+    "repository": "ingolf-lohmann/qik-vrt",
     "role": "AUTHORITY",
     "canonical_remote_name": "authority",
-    "canonical_https_url": "https://github.com/Goldkelch/qik-vrt.git",
-    "canonical_api_repository": "https://api.github.com/repos/Goldkelch/qik-vrt",
-    "canonical_entrypoint": "/AI",
-    "default_branch": "main"
-  },
-  "mirror": {
-    "repository": "ingolf-lohmann/qik-vrt",
-    "role": "MIRROR",
-    "canonical_remote_name": "mirror",
     "canonical_https_url": "https://github.com/ingolf-lohmann/qik-vrt.git",
     "canonical_api_repository": "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
     "canonical_entrypoint": "/AI",
-    "default_branch": "main"
+    "default_branch": "main",
+    "succession_epoch": "authority-succession-20261004-v1",
+    "binding_state": "REVIEW_CANDIDATE_NOT_ACTIVE"
+  },
+  "mirror": {
+    "repository": null,
+    "role": "MIRROR",
+    "canonical_remote_name": "mirror",
+    "canonical_https_url": null,
+    "canonical_api_repository": null,
+    "canonical_entrypoint": "/AI",
+    "default_branch": "main",
+    "state": "HOLD",
+    "bootstrap_contract": "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"
   },
   "selection_rule": {
     "source_of_truth": "canonical_upstream.repository",
@@ -54,5 +58,29 @@
     "Sequenz ist Ordnung.",
     "Kausalität ist Verantwortung.",
     "Eins und nicht keins."
-  ]
+  ],
+  "historical_role_bindings": {
+    "canonical_upstream": {
+      "repository": "Goldkelch/qik-vrt",
+      "role": "AUTHORITY",
+      "canonical_remote_name": "authority",
+      "canonical_https_url": "https://github.com/Goldkelch/qik-vrt.git",
+      "canonical_api_repository": "https://api.github.com/repos/Goldkelch/qik-vrt",
+      "canonical_entrypoint": "/AI",
+      "default_branch": "main"
+    },
+    "mirror": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "MIRROR",
+      "canonical_remote_name": "mirror",
+      "canonical_https_url": "https://github.com/ingolf-lohmann/qik-vrt.git",
+      "canonical_api_repository": "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
+      "canonical_entrypoint": "/AI",
+      "default_branch": "main"
+    },
+    "source_commit": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
+    "is_current_role_evidence": false
+  },
+  "role_consumer_contract": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+  "AUTHORITY_CUTOVER_COMPLETED": false
 }

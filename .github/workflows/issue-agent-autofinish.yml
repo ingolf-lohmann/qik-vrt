@@ -24,8 +24,8 @@ jobs:
   finish:
     runs-on: ubuntu-latest
     env:
-      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
-      MIRROR_REPOSITORY: ingolf-lohmann/qik-vrt
+      AUTHORITY_REPOSITORY: ingolf-lohmann/qik-vrt
+      MIRROR_REPOSITORY: ''
       MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
       REQUESTED_ISSUE: ${{ inputs.issue_number }}
       GH_TOKEN: ${{ github.token }}
@@ -33,6 +33,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Bind the new Mirror before any transaction effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_workflow_executor.py mirror-bootstrap-status --require-ready --json
+          mirror="$(python3 -c 'import json; print(json.load(open("state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"))["target"]["repository"])')"
+          test "$mirror" != "$AUTHORITY_REPOSITORY"
+          printf 'MIRROR_REPOSITORY=%s\n' "$mirror" >> "$GITHUB_ENV"
 
       - name: Resume all eligible issue-agent transactions
         shell: bash
@@ -94,7 +103,7 @@ jobs:
 
             mirror_pr="$(GH_TOKEN="$MESH_TOKEN" gh pr list --repo "$MIRROR_REPOSITORY" --state all --head "$sync_branch" --limit 1 --json number --jq '.[0].number // empty')"
             if [ -z "$mirror_pr" ]; then
-              GH_TOKEN="$MESH_TOKEN" gh pr create --repo "$MIRROR_REPOSITORY" --base main --head "$sync_branch" --title "Synchronize completed issue #$issue" --body "Byte-content synchronization from authority after autonomous completion of Goldkelch/qik-vrt#$issue."
+              GH_TOKEN="$MESH_TOKEN" gh pr create --repo "$MIRROR_REPOSITORY" --base main --head "$sync_branch" --title "Synchronize completed issue #$issue" --body "Byte-content synchronization from authority after autonomous completion of ingolf-lohmann/qik-vrt#$issue."
               mirror_pr="$(GH_TOKEN="$MESH_TOKEN" gh pr list --repo "$MIRROR_REPOSITORY" --state open --head "$sync_branch" --limit 1 --json number --jq '.[0].number')"
             fi
 
