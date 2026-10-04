@@ -59,6 +59,9 @@ jobs:
           grep -F 'review_requested' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F '*/5 * * * *' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F 'workflow_run:' .github/workflows/qikvrt_requested_review_executor.yml
+          grep -F 'collect_reviewer_admission(snapshot,GitHubRest())' .github/workflows/qikvrt_requested_review_executor.yml
+          grep -F 'tools/qikvrt_requested_review_executor.py persist' .github/workflows/qikvrt_requested_review_executor.yml
+          grep -F 'qikvrt-reviewer-admission-' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F 'independent Code-Owner approval: **not implied**' .github/workflows/qikvrt_requested_review_executor.yml
           grep -F 'permissions: {}' .github/workflows/qikvrt_code_owner_review_observer.yml
           grep -F 'QIKVRT requested review executor' .github/workflows/qikvrt_required_review_gate.yml

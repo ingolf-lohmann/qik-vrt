@@ -9,6 +9,24 @@ QIK-VRT contains an active reference implementation and a substantial
 historical research and delivery archive. This map identifies the shortest
 path to the current operational authority.
 
+## Owner-directed repository succession, 2026-10-04
+
+Product and Code Owner Ingolf Lohmann has designated `ingolf-lohmann/qik-vrt`,
+the former Mirror, as the new Authority and instructed creation of a new Mirror.
+The exact directive and its distinct effect boundaries are retained in
+`state/authorization/delegations/OWNER_AUTHORITY_SUCCESSION_AND_NEW_MIRROR_20261004_V1.json`.
+
+This is an owner-authorized succession, not a readback of a completed runtime
+cutover. The new Mirror target is still unspecified and no new remote repository
+has been created. Existing role consumers, Seed registration, writer ordering,
+review governance and synchronization must be rebound and independently checked
+for the new epoch before operational completion is reported. Historical
+`Goldkelch/qik-vrt` release, publication and receipt bindings remain immutable.
+An unavailable account is not an independent reviewer; the Authority role change
+does not authorize self approval or weaker governance. The current review
+identity blocker is recorded in
+`state/work_units/QIKVRT_NATIVE_REVIEWER_ADMISSION_REPAIR_20261004_V1.json`.
+
 ## Active runtime
 
 - `src/qikvrt_effect_ack.py` — five-state synchronous reference gate

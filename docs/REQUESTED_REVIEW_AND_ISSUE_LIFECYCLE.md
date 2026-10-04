@@ -25,6 +25,40 @@ A requested review may not be replaced by repeated requests, reminders, or statu
 
 A client must never impersonate another GitHub identity or claim that GitHub recorded `APPROVED` when the platform stored only `COMMENTED`. In that case the substantive finding and Product-Owner disposition must still be persisted accurately, together with the platform limitation.
 
+### Native reviewer admission
+
+Before review effects, resolve the current base branch's effective CODEOWNERS
+rules, preserve ownerless and more specific overrides, verify the exact source
+blob, and inspect GitHub's native CODEOWNERS errors. Candidate CODEOWNERS bytes
+cannot replace that authority. An empty errors collection is not identity proof.
+
+A user CODEOWNER requires a resolvable native human-account identity, a positive
+native collaborator check, and write access returned with that same stable user
+ID. A team requires an organization-owned repository, the correct organization
+and team IDs, visibility, an explicit team write grant, complete membership
+observation and at least one member distinct from the PR author. Missing,
+unreadable, malformed or contradictory metadata fails closed. Login aliases
+sharing the author's stable ID are self review.
+
+The REST API has no reviewer-request dry-run. Metadata alone therefore does not
+prove requestability: the existing carrier requires a current accepted native
+request with the same user/team identity for each changed ownership scope before
+calling a reviewer reachable. A potentially eligible owner without an accepted
+request remains `NO_ACTIVE_REVIEW_REQUEST`. An unresolvable or non-collaborating
+owner produces a precise HOLD even when the PR is Draft and its request lists
+are empty. No automatic request POST, alternate account, CODEOWNERS replacement,
+permission change or weakening of the native review rule follows from this HOLD.
+
+Immediately before the existing review POST, reobserve base, head, tree, scope,
+signer and native reviewer admission. An admission change forbids the write. The
+carrier attempts at most one review POST and independently reads native reviews
+even after a lost acknowledgement. A rejected approval is not retried as a
+COMMENT or published as successful review execution. The snapshot, blocker,
+decision and effect receipt remain in the native Action artifact; the exact-head
+status reports the established result. Unchanged blocker statuses are deduplicated.
+Neither a technical workflow review nor a distinct account ID proves independent
+natural-person review or satisfies the separate Code Owner governance gate.
+
 Review completion does not itself authorize merge, promotion, release, deployment, Zenodo, DOI, IETF, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
 
 ## Issues

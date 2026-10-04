@@ -95,11 +95,10 @@ jobs:
           for pr in prs:
               if pr.get('state')!='open' or pr.get('base',{}).get('ref')!='main': continue
               people=[x.get('login') for x in pr.get('requested_reviewers',[]) if x.get('login')]; teams=[x.get('slug') for x in pr.get('requested_teams',[]) if x.get('slug')]
-              if not people and not teams: continue
               head=pr['head']['sha']; reviews=pages(f"repos/{repo}/pulls/{pr['number']}/reviews?per_page=100")
               if any(f'<!-- {marker} head={head} ' in (review.get('body') or '') for review in reviews): continue
               candidates.append(pr)
-          candidates.sort(key=lambda pr:(pr.get('created_at') or '',pr['number'])); chosen=candidates[0] if candidates else None
+          candidates.sort(key=lambda pr:(not bool(pr.get('requested_reviewers') or pr.get('requested_teams')),pr.get('created_at') or '',pr['number'])); chosen=candidates[0] if candidates else None
           print(json.dumps({'state':'CANDIDATE' if chosen else 'NOOP','pr_number':chosen['number'] if chosen else None},sort_keys=True))
           PY
           cat /tmp/qikvrt-review-selection.json
@@ -118,6 +117,7 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-review-snapshot.json
           import json, os, subprocess
+          from tools.qikvrt_requested_review_executor import GitHubRest, collect_reviewer_admission
           repo=os.environ['REPOSITORY']; n=int(os.environ['PR_NUMBER']); required=json.loads(os.environ['REQUIRED_GATES_JSON'])
           def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):
@@ -128,7 +128,9 @@ jobs:
               return out
           pr=one(f'repos/{repo}/pulls/{n}'); main=one(f'repos/{repo}/commits/main')['sha']; head=pr['head']['sha']; observed=one(f'repos/{repo}/pulls/{n}')['head']['sha']; tree=one(f'repos/{repo}/git/commits/{head}')['tree']['sha']; files=pages(f'repos/{repo}/pulls/{n}/files?per_page=100'); runs=pages(f'repos/{repo}/actions/runs?head_sha={head}&event=pull_request&per_page=100')
           owner,name=repo.split('/',1); query='''query($owner:String!,$name:String!,$number:Int!){repository(owner:$owner,name:$name){pullRequest(number:$number){reviewThreads(first:100){nodes{isResolved}}}}}'''; graph=json.loads(subprocess.check_output(['gh','api','graphql','-f',f'query={query}','-F',f'owner={owner}','-F',f'name={name}','-F',f'number={n}'],text=True)); nodes=graph['data']['repository']['pullRequest']['reviewThreads']['nodes']
-          print(json.dumps({'repository':repo,'pr_number':n,'current_main_sha':main,'base_sha':pr['base']['sha'],'head_sha':head,'observed_head_sha':observed,'tree_sha':tree,'draft':bool(pr.get('draft')),'requested_reviewers':[x.get('login') for x in pr.get('requested_reviewers',[]) if x.get('login')],'requested_team_reviewers':[x.get('slug') for x in pr.get('requested_teams',[]) if x.get('slug')],'changed_paths':sorted(x['filename'] for x in files),'unresolved_review_threads':sum(1 for x in nodes if not x.get('isResolved')),'required_gates':required,'workflow_runs':[{'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')} for r in runs]},sort_keys=True))
+          snapshot={'repository':repo,'pr_number':n,'current_main_sha':main,'base_sha':pr['base']['sha'],'head_sha':head,'observed_head_sha':observed,'tree_sha':tree,'pr_author':pr['user'],'draft':bool(pr.get('draft')),'requested_reviewers':[x.get('login') for x in pr.get('requested_reviewers',[]) if x.get('login')],'requested_team_reviewers':[x.get('slug') for x in pr.get('requested_teams',[]) if x.get('slug')],'changed_paths':sorted(x['filename'] for x in files),'unresolved_review_threads':sum(1 for x in nodes if not x.get('isResolved')),'required_gates':required,'workflow_runs':[{'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')} for r in runs]}
+          snapshot['reviewer_admission']=collect_reviewer_admission(snapshot,GitHubRest())
+          print(json.dumps(snapshot,sort_keys=True))
           PY
           set +e
           python3 -B tools/qikvrt_requested_review_executor.py evaluate --input /tmp/qikvrt-review-snapshot.json > /tmp/qikvrt-review-decision.json
@@ -137,22 +139,42 @@ jobs:
           cat /tmp/qikvrt-review-decision.json
           python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
           import json
-          v=json.load(open('/tmp/qikvrt-review-decision.json')); print(f"state={v['state']}"); print(f"head={v.get('head_sha') or ''}"); print(f"tree={v.get('tree_sha') or ''}"); print(f"blocker={v.get('first_blocker') or ''}")
+          v=json.load(open('/tmp/qikvrt-review-decision.json')); print(f"state={v['state']}"); print(f"head={v.get('head_sha') or ''}"); print(f"tree={v.get('tree_sha') or ''}"); print(f"blocker={v.get('first_blocker') or ''}"); print(f"effect_allowed={str(v.get('review_effect_allowed') is True).lower()}")
           PY
           exit 0
 
-      - name: Persist precise waiting state
-        if: steps.active.outputs.active == 'true' && steps.decision.outputs.state == 'WAIT'
+      - name: Persist precise admission blocker or waiting state
+        if: steps.active.outputs.active == 'true' && steps.decision.outputs.state != '' && steps.decision.outputs.effect_allowed != 'true'
         env:
+          PR_NUMBER: ${{ steps.select.outputs.pr }}
           EXPECTED_HEAD: ${{ steps.decision.outputs.head }}
+          EXPECTED_TREE: ${{ steps.decision.outputs.tree }}
         shell: bash
         run: |
           set -euo pipefail
-          detail="$(python3 -c 'import json; print(json.load(open("/tmp/qikvrt-review-decision.json"))["detail"])')"
-          gh api --method POST "repos/${REPOSITORY}/statuses/${EXPECTED_HEAD}" -f state=pending -f context="$STATUS_CONTEXT" -f description="${detail:0:140}" -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          test "$(gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')" = "$EXPECTED_HEAD"
+          test "$(gh api "repos/${REPOSITORY}/git/commits/${EXPECTED_HEAD}" --jq '.tree.sha')" = "$EXPECTED_TREE"
+          python3 -B - <<'PY'
+          import json,os,subprocess
+          from tools.qikvrt_requested_review_executor import GitHubRest
+          decision=json.load(open('/tmp/qikvrt-review-decision.json'))
+          state='pending' if decision['state']=='WAIT' else 'failure'
+          description=('reviewer admission: '+(decision.get('first_blocker') or 'UNVERIFIED'))[:140]
+          path=f"repos/{os.environ['REPOSITORY']}/statuses/{os.environ['EXPECTED_HEAD']}"
+          pages=json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path+'?per_page=100'],text=True))
+          previous=next((s for page in pages for s in page if s.get('context')==os.environ['STATUS_CONTEXT']),None)
+          if not previous or previous.get('state')!=state or previous.get('description')!=description:
+              response=GitHubRest().post(path,{'state':state,'context':os.environ['STATUS_CONTEXT'],'description':description,'target_url':f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"})
+              if response['status']!=201: raise SystemExit('HOLD: blocker status write not confirmed')
+          observed=GitHubRest().get(f"repos/{os.environ['REPOSITORY']}/commits/{os.environ['EXPECTED_HEAD']}/status")
+          if observed['status']!=200 or not isinstance(observed.get('data'),dict): raise SystemExit('HOLD: blocker status readback unavailable')
+          rollup=observed['data']
+          if rollup.get('sha')!=os.environ['EXPECTED_HEAD'] or not any(s.get('context')==os.environ['STATUS_CONTEXT'] and s.get('state')==state and s.get('description')==description for s in rollup.get('statuses',[])): raise SystemExit('HOLD: blocker status readback differs')
+          with open('/tmp/qikvrt-review-status-readback.json','w') as file: json.dump({'head_sha':rollup['sha'],'context':os.environ['STATUS_CONTEXT'],'state':state,'description':description,'independent_review_implied':False},file,sort_keys=True)
+          PY
 
       - name: Persist substantive review disposition
-        if: steps.active.outputs.active == 'true' && steps.decision.outputs.state != '' && steps.decision.outputs.state != 'WAIT'
+        if: steps.active.outputs.active == 'true' && steps.decision.outputs.effect_allowed == 'true'
         env:
           PR_NUMBER: ${{ steps.select.outputs.pr }}
           EXPECTED_HEAD: ${{ steps.decision.outputs.head }}
@@ -179,20 +201,46 @@ jobs:
 
           Any head/tree/scope drift invalidates this review. No merge, release, publication, PASS, FINAL_PASS or EFFECT_ACK_DONE is implied.
           EOF
-          event="$DISPOSITION"; if [ "$event" = COMMENT_WITH_BLOCKER ]; then event=COMMENT; fi
           set +e
-          gh api --method POST "repos/${REPOSITORY}/pulls/${PR_NUMBER}/reviews" -f commit_id="$EXPECTED_HEAD" -f event="$event" --raw-field body="$(cat /tmp/qikvrt-review-body.md)" > /tmp/qikvrt-review-write.json 2>/tmp/qikvrt-review-write.err
+          python3 -B tools/qikvrt_requested_review_executor.py persist \
+            --input /tmp/qikvrt-review-snapshot.json \
+            --decision /tmp/qikvrt-review-decision.json \
+            --signer '{"login":"github-actions[bot]","id":41898282,"type":"Bot"}' \
+            --body /tmp/qikvrt-review-body.md > /tmp/qikvrt-review-write.json
           review_rc=$?
           set -e
-          platform_state="$event"
-          if [ "$review_rc" -ne 0 ]; then
-            gh api --method POST "repos/${REPOSITORY}/pulls/${PR_NUMBER}/reviews" -f commit_id="$EXPECTED_HEAD" -f event=COMMENT --raw-field body="$(cat /tmp/qikvrt-review-body.md)\n\nPlatform limitation: requested ${event} was rejected; persisted as COMMENT." > /tmp/qikvrt-review-write.json
-            platform_state=COMMENT
+          cat /tmp/qikvrt-review-write.json
+          platform_state="$(python3 -c 'import json; v=json.load(open("/tmp/qikvrt-review-write.json")); print(v.get("platform_state") or v.get("first_blocker") or "UNVERIFIED")')"
+          if [ "$review_rc" -eq 0 ] && [ "$DISPOSITION" = APPROVE ] && [ "$platform_state" = APPROVED ]; then status=success; else status=failure; fi
+          description="requested review disposition=${DISPOSITION}; platform=${platform_state}"
+          if [ "$platform_state" = NATIVE_REVIEW_REJECTED ] || [ "$platform_state" = UNCHANGED_NATIVE_REVIEW_REJECTION ]; then
+            description="$(python3 -c 'import json; v=json.load(open("/tmp/qikvrt-review-write.json")); print("review rejection: "+v["native_rejection_fingerprint"])')"
           fi
-          if [ "$DISPOSITION" = APPROVE ]; then status=success; description="substantive requested review executed; platform=${platform_state}"; else status=failure; description="requested review disposition=${DISPOSITION}; platform=${platform_state}"; fi
+          test "$(gh api "repos/${REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')" = "$EXPECTED_HEAD"
           gh api --method POST "repos/${REPOSITORY}/statuses/${EXPECTED_HEAD}" -f state="$status" -f context="$STATUS_CONTEXT" -f description="${description:0:140}" -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          STATUS_STATE="$status" STATUS_DESCRIPTION="${description:0:140}" python3 -B - <<'PY'
+          import json,os
+          from tools.qikvrt_requested_review_executor import GitHubRest
+          response=GitHubRest().get(f"repos/{os.environ['REPOSITORY']}/commits/{os.environ['EXPECTED_HEAD']}/status")
+          data=response.get('data')
+          if response['status']!=200 or not isinstance(data,dict) or data.get('sha')!=os.environ['EXPECTED_HEAD'] or not any(s.get('context')==os.environ['STATUS_CONTEXT'] and s.get('state')==os.environ['STATUS_STATE'] and s.get('description')==os.environ['STATUS_DESCRIPTION'] for s in data.get('statuses',[])): raise SystemExit('HOLD: review status readback unverified')
+          with open('/tmp/qikvrt-review-status-readback.json','w') as file: json.dump({'head_sha':data['sha'],'context':os.environ['STATUS_CONTEXT'],'state':os.environ['STATUS_STATE'],'description':os.environ['STATUS_DESCRIPTION'],'independent_review_implied':False},file,sort_keys=True)
+          PY
 
-      - name: Strict NOOP when no requested review exists
+      - name: Preserve native reviewer admission and effect receipts
+        if: always() && steps.active.outputs.active == 'true' && steps.select.outputs.state == 'CANDIDATE'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-reviewer-admission-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/qikvrt-review-selection.json
+            /tmp/qikvrt-review-snapshot.json
+            /tmp/qikvrt-review-decision.json
+            /tmp/qikvrt-review-write.json
+            /tmp/qikvrt-review-status-readback.json
+          if-no-files-found: error
+
+      - name: Strict NOOP when no review candidate exists
         if: steps.active.outputs.active == 'true' && steps.select.outputs.state != 'CANDIDATE'
         run: echo 'No unexecuted requested review is currently actionable.'
 
