@@ -1,37 +1,11 @@
 {
   "_license": {
+    "classification": "human_ai_work_unit_provenance_json",
     "copyright": "Copyright 2026 Ingolf Lohmann",
-    "rights_holder": "Ingolf Lohmann",
     "license": "CC-BY-NC-ND-4.0",
-    "classification": "human_ai_work_unit_provenance_json"
-  },
-  "schema": "qikvrt_human_ai_work_unit_v1",
-  "work_unit_id": "PR447_ARXIV_KONTINUITAET_STAGING_A2DBD3AC_V1",
-  "scope": "Independent review staging derived from frozen PR #447; not a publication/merge request",
-  "source": {
-    "repository": "ingolf-lohmann/qik-vrt",
-    "pr": 447,
-    "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
-    "tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
-    "ref": "work/collective-functional-consciousness-20261003",
-    "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
-    "scope": "frozen source only; not a current-main or Authority/Mirror equality claim"
-  },
-  "human": {
-    "attribution_id": "Ingolf Lohmann",
-    "contribution_class": "HUMAN",
-    "contributions": [
-      "task selection",
-      "frozen source choice",
-      "separate staging request",
-      "preserve PR #447 and original PDF/ZIP bytes",
-      "prohibition on submissions and authorization consumption"
-    ],
-    "acceptance_of_new_candidate": "PENDING"
+    "rights_holder": "Ingolf Lohmann"
   },
   "artificial_cognitive_system": {
-    "identity": "OpenAI Codex / GPT-6 family",
-    "exact_model_build": "UNAVAILABLE",
     "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
     "contributions": [
       "REST source retrieval and exact Git-object materialization",
@@ -40,218 +14,382 @@
       "source capsules, manifests, claim/effect boundaries and negative controls",
       "separate draft-review persistence"
     ],
+    "exact_model_build": "UNAVAILABLE",
+    "identity": "OpenAI Codex / GPT-6 family",
     "verified_global_or_scientific_completion": false
   },
-  "evidence_retention": "METADATA_ONLY",
-  "prepared_utc": "2026-10-04T00:18:13.075678+00:00",
   "candidate_branch": "staging/arxiv-kontinuitaet-a2dbd3ac-v1",
-  "parent_commit": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "continuations": [
+    {
+      "artificial_cognitive_system": {
+        "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+        "contributions": [
+          "fresh GitHub REST reads",
+          "verified recursive Git trees and canonical catalogs",
+          "staging fixity, source capsule and negative controls",
+          "unchanged classification/content-tree function reuse",
+          "two-parent merge commit and non-force branch update",
+          "fresh native validator readback"
+        ],
+        "exact_model_build": "UNAVAILABLE",
+        "identity": "OpenAI Codex / GPT-6 family",
+        "session_or_run_id": "UNAVAILABLE"
+      },
+      "conflict_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "continuation_id": "PR451_PR447_HISTORY_PRESERVING_INTEGRATION_20261004_V1",
+      "effects": {
+        "arxiv_submission": false,
+        "effect_ack_done": false,
+        "force_push": false,
+        "history_rewrite": false,
+        "ietf_datatracker_submission": false,
+        "main_merge": false,
+        "ordinary_release": false,
+        "pr_merge": false,
+        "upload_authorization_consumed": false,
+        "upload_authorization_created": false,
+        "zenodo_mutation": false
+      },
+      "frozen_source": {
+        "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "pr": 447,
+        "ref": "work/collective-functional-consciousness-20261003",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "scope": "frozen source only; not a current-main or Authority/Mirror equality claim",
+        "tree": "377df23cdc2816629332dc5f8e95834ad79687d0"
+      },
+      "human": {
+        "attribution_id": "Ingolf Lohmann",
+        "contribution_class": "HUMAN",
+        "contributions": [
+          "history-preserving update to current PR447",
+          "preserve checked payload bytes and frozen source provenance",
+          "regenerate only colliding integrity trio and necessary candidate bindings",
+          "fresh complete exact-head validation",
+          "no submission, PR merge or upload authorization consumption"
+        ]
+      },
+      "integrated_candidate_base": {
+        "head": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
+        "main_head": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+        "pr": 447,
+        "ref": "work/collective-functional-consciousness-20261003",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "235ab0a6664bf65887e634363b17cf514a723d08"
+      },
+      "integrity_preparation": {
+        "baseline": "current PR447 canonical catalog bound by exact Git blob, detached digest, index and complete Git path set",
+        "method": "reuse entries only for unchanged Git blobs; hash all staging and updated work-unit bytes; apply unchanged integrity classification and content-tree functions; require native full regeneration and verification",
+        "tool_cache": "PASS 14/14 declared tools (100%)"
+      },
+      "local_verification": {
+        "all_payload_blob_bytes_verified": true,
+        "negative_controls": [
+          "forbidden-submission-flag-rejected",
+          "changed-source-head-rejected",
+          "tampered-object-payload-rejected",
+          "missing-root-tree-rejected"
+        ],
+        "protected_original_git_blobs_preserved": true,
+        "scope_limit": "Partial API projection. ZIP actual-byte verification and full repository regeneration/tests are required on the native successor checkout; no complete local checkout, boot, re-render or predecessor CI transfer is claimed.",
+        "source_capsule_commit": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "source_capsule_tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+        "staging_blob_count": 24
+      },
+      "observed_utc": "2026-10-04T02:32:24.648535+00:00",
+      "preservation": {
+        "pr447_branch_written": false,
+        "source_capsule_rewritten": false,
+        "source_or_render_receipts_regenerated": false,
+        "source_provenance_rewritten": false,
+        "stage_bytes_changed": false,
+        "stage_paths": [
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/.gitattributes",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/BUILD_VALIDATION.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/CHANGE_NOTICE.md",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/CLAIM_MATRIX.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/METHOD_CLAIM_BOUNDARIES.md",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/PDF_RENDER_VALIDATION.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SHA256SUMS",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SOURCE_GIT_CAPSULE.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SOURCE_PROVENANCE.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/STAGING_README.md",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/STAGING_RETURN_RECEIPT.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/XELATEX_BUILD_LOG.txt",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/appendix.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/arxiv-source.tar.gz",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/arxiv_submission_manifest.json",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/build.py",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/claim-scope.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/delivery.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.pdf",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/measurements.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/orientation.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/theory.tex",
+          "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/verify_staging.py"
+        ]
+      },
+      "previous_candidate": {
+        "head": "4dc1952e597ba8e641245ced43b61daac8355e75",
+        "ref": "staging/arxiv-kontinuitaet-a2dbd3ac-v1",
+        "tree": "f1a15f08ada20885ddec4763d6f7712bbadf8fbf"
+      },
+      "required_parent_order": [
+        "4dc1952e597ba8e641245ced43b61daac8355e75",
+        "6aaac98a545b3855c3b7af2fdb5debc80b4ded66"
+      ],
+      "successor_verification": {
+        "candidate_binding": "Resulting Git commit parent/tree and detached PR metadata; no recursive in-file self-head digest",
+        "predecessor_evidence_transfer": false,
+        "required": [
+          "native QIKVRT CI complete make test",
+          "native full integrity generation and verification",
+          "fresh Collective Proposal Review and Global Completion",
+          "fresh exact-head workflow terminality and PR mergeability readback"
+        ],
+        "state": "PENDING_FRESH_NATIVE_EXACT_HEAD_GATES"
+      }
+    }
+  ],
+  "effects": {
+    "arxiv_submission": false,
+    "author_email_sent": false,
+    "authorized_repository_effect": "NEW_BRANCH_AND_DRAFT_PR_ONLY",
+    "effect_ack_done": false,
+    "force_push": false,
+    "ietf_datatracker_submission": false,
+    "main_merge": false,
+    "ordinary_release": false,
+    "production_activation": false,
+    "source_pr447_branch_write": false,
+    "upload_authorization_consumed": false,
+    "zenodo_mutation": false
+  },
+  "evidence_retention": "METADATA_ONLY",
+  "human": {
+    "acceptance_of_new_candidate": "PENDING",
+    "attribution_id": "Ingolf Lohmann",
+    "contribution_class": "HUMAN",
+    "contributions": [
+      "task selection",
+      "frozen source choice",
+      "separate staging request",
+      "preserve PR #447 and original PDF/ZIP bytes",
+      "prohibition on submissions and authorization consumption"
+    ]
+  },
+  "integrity_gate": {
+    "command": "python3 -B tools/qikvrt_integrity.py generate && python3 -B tools/qikvrt_integrity.py verify",
+    "required_for_this_successor": true,
+    "source_or_predecessor_checks_transferred": false
+  },
   "new_tree_and_commit_binding": "Git commit parent/tree and draft PR metadata; no recursive in-file self-head digest",
+  "next_owner_step": "Review this new exact staging candidate and its explicit limits; future submission remains separate.",
   "outputs": [
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/.gitattributes",
       "bytes": 8,
-      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
-      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/.gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/BUILD_VALIDATION.json",
       "bytes": 8286,
-      "sha256": "43ed345af01a00256640b3babc4dc38f392592109d5f94d7565a40874823827a",
-      "git_blob_sha1": "b28bd7eaf94b11f4211dde2c11b59647d5a7faf1"
+      "git_blob_sha1": "b28bd7eaf94b11f4211dde2c11b59647d5a7faf1",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/BUILD_VALIDATION.json",
+      "sha256": "43ed345af01a00256640b3babc4dc38f392592109d5f94d7565a40874823827a"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/CHANGE_NOTICE.md",
       "bytes": 1293,
-      "sha256": "3998dcb0f6422435e8ae06f55e69ea37893eb0c6cd14d9f09ebecec3c636f46f",
-      "git_blob_sha1": "0a931bcddb959888778b2679f7fadaa91343c5e1"
+      "git_blob_sha1": "0a931bcddb959888778b2679f7fadaa91343c5e1",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/CHANGE_NOTICE.md",
+      "sha256": "3998dcb0f6422435e8ae06f55e69ea37893eb0c6cd14d9f09ebecec3c636f46f"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/CLAIM_MATRIX.json",
       "bytes": 19350,
-      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f",
-      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e"
+      "git_blob_sha1": "6b20dcdedd577f790baa03822c254e5ace12be9e",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/CLAIM_MATRIX.json",
+      "sha256": "c740097bc00b22826428446b26fbd9996dbb5b728efbe0c006661904956f7f8f"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/METHOD_CLAIM_BOUNDARIES.md",
       "bytes": 4775,
-      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb",
-      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5"
+      "git_blob_sha1": "57445d1e042823e1b31e4c038a4392c42f8581c5",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/METHOD_CLAIM_BOUNDARIES.md",
+      "sha256": "53b7adcd602ba8fe47de8abc08593246a8170a56aea1196670bfd6c6e2b791fb"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/PDF_RENDER_VALIDATION.json",
       "bytes": 1571,
-      "sha256": "f3ee7eef86447c0f8b5202813134aa1bbef640b16ad40ca61c69f99851f64c73",
-      "git_blob_sha1": "d26bf86f9ee36ae64cb1bf24572d134714cdff13"
+      "git_blob_sha1": "d26bf86f9ee36ae64cb1bf24572d134714cdff13",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/PDF_RENDER_VALIDATION.json",
+      "sha256": "f3ee7eef86447c0f8b5202813134aa1bbef640b16ad40ca61c69f99851f64c73"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SHA256SUMS",
       "bytes": 1941,
-      "sha256": "cc514130ed094d3ada6dc443c4c94bb6b47c461c51553f7bd3debc4572a76b60",
-      "git_blob_sha1": "efa5d8171fdb2f19913a72f9a31fa77c151db8ea"
+      "git_blob_sha1": "efa5d8171fdb2f19913a72f9a31fa77c151db8ea",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SHA256SUMS",
+      "sha256": "cc514130ed094d3ada6dc443c4c94bb6b47c461c51553f7bd3debc4572a76b60"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SOURCE_GIT_CAPSULE.json",
       "bytes": 219179,
-      "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65",
-      "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07"
+      "git_blob_sha1": "f94a758555f068920637e41cf76ca207fe7c5a07",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SOURCE_GIT_CAPSULE.json",
+      "sha256": "c0a11130a090fb4fccc342aff70c6b10f74c7a87e3e97c7630eed441e9783f65"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SOURCE_PROVENANCE.json",
       "bytes": 8096,
-      "sha256": "86f5ef8c36c5d53d4e92c9b68db2af79690dc3f2e469505d883d7d2dba7f5a00",
-      "git_blob_sha1": "9b8b7d5ee8abfbbe9f113dbcdea13eb451ba17ef"
+      "git_blob_sha1": "9b8b7d5ee8abfbbe9f113dbcdea13eb451ba17ef",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/SOURCE_PROVENANCE.json",
+      "sha256": "86f5ef8c36c5d53d4e92c9b68db2af79690dc3f2e469505d883d7d2dba7f5a00"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/STAGING_README.md",
       "bytes": 1739,
-      "sha256": "dbaf3213b1393224ee4aed6e1c136133eb75b44505f06417cb90aa5f9f64cb17",
-      "git_blob_sha1": "edcf1f06edb9bfe63a14677267b51c3df504e498"
+      "git_blob_sha1": "edcf1f06edb9bfe63a14677267b51c3df504e498",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/STAGING_README.md",
+      "sha256": "dbaf3213b1393224ee4aed6e1c136133eb75b44505f06417cb90aa5f9f64cb17"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/STAGING_RETURN_RECEIPT.json",
       "bytes": 6695,
-      "sha256": "60cdc0354d595d501ebf1e07c0df7a641cdb87d2d524dd409ecd551ea3e8e106",
-      "git_blob_sha1": "2e219f06f21980f81b5b0d592b496bf117b75c0e"
+      "git_blob_sha1": "2e219f06f21980f81b5b0d592b496bf117b75c0e",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/STAGING_RETURN_RECEIPT.json",
+      "sha256": "60cdc0354d595d501ebf1e07c0df7a641cdb87d2d524dd409ecd551ea3e8e106"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/XELATEX_BUILD_LOG.txt",
       "bytes": 58469,
-      "sha256": "8451c251d988339f5dd09ecd7e74b135df3040417bfdbd1729bd93cf9d965a82",
-      "git_blob_sha1": "c02d5f732664e988db2c8e08bc43678327a0c81b"
+      "git_blob_sha1": "c02d5f732664e988db2c8e08bc43678327a0c81b",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/XELATEX_BUILD_LOG.txt",
+      "sha256": "8451c251d988339f5dd09ecd7e74b135df3040417bfdbd1729bd93cf9d965a82"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/appendix.tex",
       "bytes": 18024,
-      "sha256": "ef2a9c3228e261695f997df0d0ce934d11a0470efebba4c740acc127aca8ab75",
-      "git_blob_sha1": "72bf011c6b0150a9a8c46969d9cc7ad218a74b6b"
+      "git_blob_sha1": "72bf011c6b0150a9a8c46969d9cc7ad218a74b6b",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/appendix.tex",
+      "sha256": "ef2a9c3228e261695f997df0d0ce934d11a0470efebba4c740acc127aca8ab75"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/arxiv-source.tar.gz",
       "bytes": 34338,
-      "sha256": "52a6f8418c4e08d1139ae064f85c51ceae2bf2d96d21fe7209a1faf1a6fea562",
-      "git_blob_sha1": "93814a49678b680337e7a00923e9c96096991449"
+      "git_blob_sha1": "93814a49678b680337e7a00923e9c96096991449",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/arxiv-source.tar.gz",
+      "sha256": "52a6f8418c4e08d1139ae064f85c51ceae2bf2d96d21fe7209a1faf1a6fea562"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/arxiv_submission_manifest.json",
       "bytes": 10423,
-      "sha256": "b5d16052e64a983c0d070b796312ea1dff13801e4d40fc11b399f0b1a18e65dd",
-      "git_blob_sha1": "d256ba4e871455a89c3c8aa7d799d701a97f615f"
+      "git_blob_sha1": "d256ba4e871455a89c3c8aa7d799d701a97f615f",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/arxiv_submission_manifest.json",
+      "sha256": "b5d16052e64a983c0d070b796312ea1dff13801e4d40fc11b399f0b1a18e65dd"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/build.py",
       "bytes": 10252,
-      "sha256": "3c97559ea0c0a7b5f0f457b8eab0b8582908466c9d98835037b9b49428857f26",
-      "git_blob_sha1": "708e1fe3f7c61371ab6fb594879a9204ab589e24"
+      "git_blob_sha1": "708e1fe3f7c61371ab6fb594879a9204ab589e24",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/build.py",
+      "sha256": "3c97559ea0c0a7b5f0f457b8eab0b8582908466c9d98835037b9b49428857f26"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/claim-scope.tex",
       "bytes": 8989,
-      "sha256": "c261339c14798727c4ebaedce71fcbadedf496484d2788ca5bfeb0aab293ac53",
-      "git_blob_sha1": "08e44a584d8b0972ca1d891030c9191644cc3aa0"
+      "git_blob_sha1": "08e44a584d8b0972ca1d891030c9191644cc3aa0",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/claim-scope.tex",
+      "sha256": "c261339c14798727c4ebaedce71fcbadedf496484d2788ca5bfeb0aab293ac53"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/delivery.tex",
       "bytes": 21214,
-      "sha256": "e6116879d193b65490e2a2d667b7c05ab1d42dec321277c7d0660eb2ffb7a7a3",
-      "git_blob_sha1": "a38d67c8985f3f45800a9468da45870705b28c95"
+      "git_blob_sha1": "a38d67c8985f3f45800a9468da45870705b28c95",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/delivery.tex",
+      "sha256": "e6116879d193b65490e2a2d667b7c05ab1d42dec321277c7d0660eb2ffb7a7a3"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.pdf",
       "bytes": 596934,
-      "sha256": "7e386094ffee003edc095ab6fb4258690fbb60813cb2e05dcdc60961a468613c",
-      "git_blob_sha1": "45e4ffae62c4e3f6911ddd557b783a553d99b99d"
+      "git_blob_sha1": "45e4ffae62c4e3f6911ddd557b783a553d99b99d",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.pdf",
+      "sha256": "7e386094ffee003edc095ab6fb4258690fbb60813cb2e05dcdc60961a468613c"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.tex",
       "bytes": 5383,
-      "sha256": "0fc02baf62c8b657780325ee2f0dcb5ef285bcb0b0960ba06a077bfea79609c3",
-      "git_blob_sha1": "cd41a3687cf3db39497e97bc75a145a8780007d9"
+      "git_blob_sha1": "cd41a3687cf3db39497e97bc75a145a8780007d9",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/main.tex",
+      "sha256": "0fc02baf62c8b657780325ee2f0dcb5ef285bcb0b0960ba06a077bfea79609c3"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/measurements.tex",
       "bytes": 10258,
-      "sha256": "268091f9667059b71d6dea6c96d8f7cd15e154324dafc5a4c3d3c40d3bad6529",
-      "git_blob_sha1": "a6cef01487e903f3a8cb0a7a712779082f867703"
+      "git_blob_sha1": "a6cef01487e903f3a8cb0a7a712779082f867703",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/measurements.tex",
+      "sha256": "268091f9667059b71d6dea6c96d8f7cd15e154324dafc5a4c3d3c40d3bad6529"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/orientation.tex",
       "bytes": 5032,
-      "sha256": "18b21bbddcd1d3ab08d822183f9725ac8a44f9cc90ddcf592d381372920cc085",
-      "git_blob_sha1": "79b568e4f6157f7e92357e389586552ecc90c744"
+      "git_blob_sha1": "79b568e4f6157f7e92357e389586552ecc90c744",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/orientation.tex",
+      "sha256": "18b21bbddcd1d3ab08d822183f9725ac8a44f9cc90ddcf592d381372920cc085"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/theory.tex",
       "bytes": 23473,
-      "sha256": "70915330b7ffeab6ea534b02bb368f8c34bd96773e666edb4e20c38dbfb1f861",
-      "git_blob_sha1": "8f68433c6a63faa0578a61528f05e45ac1c5ca23"
+      "git_blob_sha1": "8f68433c6a63faa0578a61528f05e45ac1c5ca23",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/theory.tex",
+      "sha256": "70915330b7ffeab6ea534b02bb368f8c34bd96773e666edb4e20c38dbfb1f861"
     },
     {
-      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/verify_staging.py",
       "bytes": 4853,
-      "sha256": "abc831877d9d96199ed2140ff25caf131ce7268c4cf382197ad7e842748fb801",
-      "git_blob_sha1": "706a7ad19a3d08d4ee46b5c45b88ad8b1208bce5"
+      "git_blob_sha1": "706a7ad19a3d08d4ee46b5c45b88ad8b1208bce5",
+      "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/verify_staging.py",
+      "sha256": "abc831877d9d96199ed2140ff25caf131ce7268c4cf382197ad7e842748fb801"
     }
   ],
   "package_validation": {
-    "scope": "staging package only",
-    "result": "PASS_FIXITY_SOURCE_CLOSURE_AND_NO_SUBMISSION_FLAGS",
     "manifest": "arxiv_submission_manifest.json",
     "manifest_sha256": "b5d16052e64a983c0d070b796312ea1dff13801e4d40fc11b399f0b1a18e65dd",
-    "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
-    "source_tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
     "negative_controls": [
       "forbidden-submission-flag-rejected",
       "changed-source-head-rejected",
       "tampered-object-payload-rejected",
       "missing-root-tree-rejected"
     ],
-    "publication_or_scientific_proof_claimed": false
+    "publication_or_scientific_proof_claimed": false,
+    "result": "PASS_FIXITY_SOURCE_CLOSURE_AND_NO_SUBMISSION_FLAGS",
+    "scope": "staging package only",
+    "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "source_tree": "377df23cdc2816629332dc5f8e95834ad79687d0"
   },
-  "render_validation": {
-    "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/BUILD_VALIDATION.json",
-    "bytes": 8286,
-    "sha256": "43ed345af01a00256640b3babc4dc38f392592109d5f94d7565a40874823827a",
-    "git_blob_sha1": "b28bd7eaf94b11f4211dde2c11b59647d5a7faf1"
-  },
+  "parent_commit": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "prepared_utc": "2026-10-04T00:18:13.075678+00:00",
   "protected_original_artifacts": [
     {
-      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
       "bytes": 189440,
-      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
-      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5"
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
     },
     {
-      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
       "bytes": 1416550,
-      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
-      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62"
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4"
     }
   ],
-  "integrity_gate": {
-    "command": "python3 -B tools/qikvrt_integrity.py generate && python3 -B tools/qikvrt_integrity.py verify",
-    "required_for_this_successor": true,
-    "source_or_predecessor_checks_transferred": false
-  },
-  "effects": {
-    "authorized_repository_effect": "NEW_BRANCH_AND_DRAFT_PR_ONLY",
-    "source_pr447_branch_write": false,
-    "main_merge": false,
-    "force_push": false,
-    "arxiv_submission": false,
-    "ietf_datatracker_submission": false,
-    "author_email_sent": false,
-    "zenodo_mutation": false,
-    "production_activation": false,
-    "upload_authorization_consumed": false,
-    "ordinary_release": false,
-    "effect_ack_done": false
+  "render_validation": {
+    "bytes": 8286,
+    "git_blob_sha1": "b28bd7eaf94b11f4211dde2c11b59647d5a7faf1",
+    "path": "publication-staging/arxiv-die-wirksame-kontinuitaet-a2dbd3ac-v1/BUILD_VALIDATION.json",
+    "sha256": "43ed345af01a00256640b3babc4dc38f392592109d5f94d7565a40874823827a"
   },
   "review_boundaries": {
-    "native_pr_ci": "FRESH_SUCCESSOR_EVIDENCE_REQUIRED_NOT_INFERRED",
-    "responsible_human_acceptance": "PENDING",
+    "action_time_upload_authorization": "ABSENT",
     "author_decision_for_new_upload": "ABSENT",
-    "action_time_upload_authorization": "ABSENT"
+    "native_pr_ci": "FRESH_SUCCESSOR_EVIDENCE_REQUIRED_NOT_INFERRED",
+    "responsible_human_acceptance": "PENDING"
   },
-  "next_owner_step": "Review this new exact staging candidate and its explicit limits; future submission remains separate."
+  "schema": "qikvrt_human_ai_work_unit_v1",
+  "scope": "Independent review staging derived from frozen PR #447; not a publication/merge request",
+  "source": {
+    "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "pr": 447,
+    "ref": "work/collective-functional-consciousness-20261003",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scope": "frozen source only; not a current-main or Authority/Mirror equality claim",
+    "tree": "377df23cdc2816629332dc5f8e95834ad79687d0"
+  },
+  "work_unit_id": "PR447_ARXIV_KONTINUITAET_STAGING_A2DBD3AC_V1"
 }

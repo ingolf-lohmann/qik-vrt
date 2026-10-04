@@ -14,6 +14,143 @@
   "artificial_cognitive_contributions": [
     "Fresh refs and logs read; conflict-free Main delta established; exact lifecycle Git blobs selected; unchanged publication dependency closure checked; deterministic integrity delta prepared; two-parent merge and non-force ref update planned; successor native tests required."
   ],
+  "continuations": [
+    {
+      "artificial_cognitive_actor": {
+        "identity_and_observation_limits": "Local fixture is partial; no complete local checkout or runtime boot is claimed. Full successor verification must run on native GitHub checkout.",
+        "model_or_build": "GPT-6; exact build unavailable",
+        "provider": "OpenAI",
+        "session_or_run_id": "UNAVAILABLE",
+        "system_family": "Codex",
+        "tools_and_adapters": [
+          "GitHub REST connector",
+          "unchanged repository integrity classification and content-tree functions",
+          "native GitHub Actions validators"
+        ]
+      },
+      "authority": {
+        "human_actor": "Ingolf Lohmann",
+        "new_external_upload_authorization": false,
+        "retained_task_binding": "Original history-preserving PR447 integration instruction",
+        "standing_delegation": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+        "task": "Continue QIK-VRT authorized repository-internal pipeline"
+      },
+      "continuation_id": "PR447_CURRENT_MAIN_INTEGRATION_20261004_V1",
+      "expected_changed_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt",
+        "evidence/node_health/37154289864-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/37154289864-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "state/work_units/PR447_MAIN_HISTORY_PRESERVING_INTEGRATION_20261003.json"
+      ],
+      "external_effects": {
+        "authorization_consumed": false,
+        "authorization_created": false,
+        "consumption_ref_created": false,
+        "force_push": false,
+        "history_rewrite": false,
+        "main_promotion": false,
+        "publication": false,
+        "v3_contract_activated": false,
+        "zenodo_mutation": false
+      },
+      "integrated_main": {
+        "head": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+        "tree": "19009f21ecbd59fa13def19e96e6b6374bae0276"
+      },
+      "main_delta_bindings": [
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/37154289864-1.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/LATEST.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/37154289864-1.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 563,
+          "git_blob_sha1": "b4de5744585498f43ec6d02a50222eb4a3950bd5",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "sha256": "db7c1a20ae34dcc9d7549938a190e050d37657d42019079c7689e92a8f5bdfdd"
+        },
+        {
+          "bytes": 542,
+          "git_blob_sha1": "7709951570d8ba930e789b8c40582b9fe7dc7d9f",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "sha256": "a33cd9d21ff29a800b169537db8164600090b3d0eafb20dcb45dc4cf6e323ac6"
+        }
+      ],
+      "merge_base": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+      "observed_at": "2026-10-04T00:48:25.142134Z",
+      "preparation": {
+        "baseline_catalog_canonical_bytes_index_digest_and_git_path_set_verified": true,
+        "main_blob_bytes_verified": true,
+        "main_delta_overlap": false,
+        "main_only_commits": 1,
+        "method": "Reuse canonical baseline entries only for unchanged fresh Git blobs; apply actual Main/work-unit bytes through unchanged classification and content-tree functions; native full regeneration and full tests remain mandatory.",
+        "native_full_baseline_job": 111258124020,
+        "native_full_baseline_run": 37141973741,
+        "predecessor_evidence_transfer": false,
+        "prior_candidate_only_commits": 37,
+        "tool_cache_coverage": "PASS 14/14 declared tools (100%) in exact fetched-source fixture"
+      },
+      "preservation": {
+        "frozen_proof_return_manifest_regenerated": false,
+        "historical_source_bindings_rewritten": false,
+        "original_owner_artifact_decision": "Preserved as its separately documented historical event; not redated, consumed or promoted to native independent approval",
+        "publication_blob_count": 87,
+        "publication_changed_paths": []
+      },
+      "previous_candidate": {
+        "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "ref": "work/collective-functional-consciousness-20261003",
+        "tree": "377df23cdc2816629332dc5f8e95834ad79687d0"
+      },
+      "release_claims": {
+        "AUTHORITY_MIRROR_EQUALITY": false,
+        "EFFECT_ACK_DONE": false,
+        "FINAL_PASS": false,
+        "PASS": false
+      },
+      "required_parent_order": [
+        "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "8658b113979ab2bcc6e01a36e7931c21de5ea730"
+      ],
+      "scope": "History-preserving current-Main integration and exact-successor validation only",
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "successor_verification": {
+        "baseline_results_are_not_successor_results": true,
+        "required": [
+          "Exact successor PR and push CI",
+          "Native full integrity regeneration and verification",
+          "Successor actual PDF ZIP proof and denied-effects controls",
+          "Fresh synthetic-merge subject Collective Proposal Review and global completion"
+        ],
+        "state": "PENDING_FRESH_SUCCESSOR_NATIVE_GATES"
+      }
+    }
+  ],
   "created_at": "2026-10-03T17:47:59.364363Z",
   "external_effects": {
     "authorization_consumed": false,
