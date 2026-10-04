@@ -1,0 +1,171 @@
+{
+  "schema": "qikvrt_owner_hotpath_reactivation_proposal_v1",
+  "state": "REVIEW_CANDIDATE_NOT_ACTIVE",
+  "owner": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner",
+    "authorization_date": "2026-10-04",
+    "authorization_scope": "Profile-guided prioritization, compilation/linking preparation, QIK-VRT-native restart under latest criteria"
+  },
+  "source_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+    "tree": "19009f21ecbd59fa13def19e96e6b6374bae0276",
+    "authority_repository": "Goldkelch/qik-vrt",
+    "authority_observation": "NOT_FOUND_IN_CURRENT_CONNECTOR_SCOPE"
+  },
+  "reuse": {
+    "cache_policy": "runtime/CACHE_POLICY.md",
+    "cache_controller": "tools/qikvrt_tool_cache.py",
+    "hmi_policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+    "handoff": "tools/ai_handoff.py",
+    "continuation_workflow": ".github/workflows/issue-agent-backlog-resume.yml",
+    "executor_contract": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "progress_protocol": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+    "no_new_external_scheduler": true
+  },
+  "hotpaths": {
+    "meaning": "Repeated execution paths for solving tasks, not filesystem path popularity alone",
+    "measurement_binding": [
+      "source/tree digest",
+      "task and workload",
+      "OS/architecture/ABI",
+      "toolchain and build flags",
+      "policy digest",
+      "measurement window",
+      "profile hash"
+    ],
+    "metrics": [
+      "traversals",
+      "inclusive_cpu_time",
+      "self_cpu_time",
+      "latency_p50_p95_p99",
+      "instruction_cache_misses_when_supported",
+      "allocations_and_peak_rss",
+      "artifact_bytes",
+      "errors_and_verification_result"
+    ],
+    "ranking": "Rank by estimated avoidable total cost (traversals * measured avoidable cost per traversal), constrained by memory and artifact size budgets; frequency alone is not sufficient.",
+    "stages": [
+      "Measure representative cold/warm workloads with identical mandatory gates",
+      "Deduplicate immutable content by cryptographic content identity and preserve references/provenance",
+      "Reuse exact-key build and runtime cache entries",
+      "Review native lowering or AOT only for measured hot paths with established semantics",
+      "Use PGO for matching workloads; consider link-time optimization and hot/cold layout with compatible declared tools",
+      "Validate correctness and benchmark unseen workloads against baseline; retain successor only within explicit regression budgets"
+    ],
+    "tool_admission": "LLVM/Clang/llvm-profdata/BOLT/LTO are candidates, not admitted tools. Extend toolchain locks, registry, cache, license and self-test contracts before use.",
+    "space_rule": "Native code, inlining and profiles can increase size. Accept only measured size/resource tradeoffs; no blanket claim that compilation saves space.",
+    "cache_key": [
+      "source_sha256",
+      "dependency_digests",
+      "normalization_version",
+      "policy_digest",
+      "compiler_linker_versions",
+      "flags",
+      "OS",
+      "architecture",
+      "ABI",
+      "profile_sha256"
+    ],
+    "cache_authority": false,
+    "mandatory_checks_never_cached_away": true
+  },
+  "reactivation": {
+    "task_binding": [
+      "stable_task_id",
+      "human_goal",
+      "authorization_scope",
+      "source_head_tree",
+      "dependency_hashes",
+      "policy_and_quality_gate_fingerprint",
+      "completed_steps_and_exact_evidence",
+      "first_blocker",
+      "next_safe_step",
+      "retry_condition",
+      "lease_id_and_expiry",
+      "notification_fingerprint"
+    ],
+    "discovery": "Reuse repository-native backlog and continuation mechanisms; open issue-agent branches alone are not a complete inventory of work/* and staging/* tasks.",
+    "eligibility": [
+      "task is still authorized and relevant",
+      "no cancellation or superseding goal",
+      "current sources policies and gates freshly observed",
+      "no competing writer and expected-head lease acquired",
+      "trigger is a recovered dependency, changed relevant policy/source, due retry condition or explicit owner action"
+    ],
+    "decision_order": [
+      "HOLD if mandatory observation, authorization or dependency is unavailable",
+      "REBASE_AND_REVALIDATE if source binding changed without proven semantic invalidation",
+      "REVALIDATE if current criteria differ or old evidence is stale/incomplete",
+      "RESTART_FROM_LAST_VALID_BOUNDARY if artifacts or procedure cannot satisfy current rules",
+      "RESTART_FROM_ZERO if no checkpoint can be validated under current rules",
+      "RESUME only from an exact checkpoint valid under all current mandatory criteria",
+      "NOOP for unchanged blocker and unchanged evidence"
+    ],
+    "restart_semantics": [
+      "Archive old attempt and its status; do not erase or relabel historical results",
+      "Create successor attempt linked to predecessor",
+      "Recreate current acceptance conditions before executing",
+      "Recompute affected derivatives; preserve still-valid immutable sources only",
+      "Run all currently applicable gates and fresh effect readback"
+    ],
+    "no_blind_age_only_retry": true,
+    "retry_policy": "Bounded backoff; permanent blockers retried only after a relevant change; a missing timestamp is HOLD, never an epoch-zero retry.",
+    "exactly_once": "Claim compare-and-swap lease; persist request hash and execution id; reobserve after ambiguous dispatch before retry.",
+    "feedback": {
+      "use_existing_qikvrt_progress_protocol": true,
+      "notify_on": [
+        "new substantive progress",
+        "first new blocker",
+        "restart required and its cause",
+        "verified task-specific completion",
+        "owner decision required"
+      ],
+      "suppress": "Unchanged blocked state and repeated identical fingerprints",
+      "content": [
+        "task_id",
+        "old and current policy/source bindings",
+        "resume vs restart reason",
+        "steps invalidated and preserved",
+        "verified result or precise blocker",
+        "next safe step and retry condition"
+      ],
+      "delivery_requirement": "An Action artifact or queue entry is not observed delivery to Ingolf. Bind configured QIK-VRT channel and delivery receipt; mark delivery pending until readback."
+    }
+  },
+  "acceptance": [
+    "warm and cold paths preserve mandatory checks",
+    "policy change invalidates previous procedural acceptance",
+    "incompatible checkpoint produces restart plan, not RESUME",
+    "completed historical attempt is preserved and separate from current acceptance",
+    "unchanged blocker produces NOOP and no repeated notification",
+    "no duplicate dispatch on ambiguous transport",
+    "lost capability or unreadable authority produces HOLD",
+    "benchmarks bind inputs and code; no speed/size superiority inferred",
+    "notification is complete only with configured QIK-VRT delivery readback"
+  ],
+  "primary_sources": [
+    {
+      "url": "https://blog.chromium.org/2020/08/chrome-just-got-faster-with-profile.html",
+      "supports": "Google/Chromium PGO prioritizes performance-critical code based on representative real usage; historical method, not a QIK-VRT benchmark."
+    },
+    {
+      "url": "https://llvm.org/docs/HowToBuildWithPGO.html",
+      "supports": "Instrumentation, representative workloads, profile merge and profile-use build."
+    },
+    {
+      "url": "https://llvm.org/docs/AdvancedBuilds.html",
+      "supports": "PGO and LTO build configurations; BOLT optimization after linking."
+    }
+  ],
+  "activation": {
+    "runtime_changed": false,
+    "compiled_native_code": false,
+    "workflow_dispatched": false,
+    "scheduled_delivery_established": false,
+    "first_blocker": "No callable initial workflow_dispatch or admitted Mesh task execution operation is exposed in this client's connector set; the existing executor contract only allowlists a no-effect watchdog dispatch.",
+    "retry_condition": "Admitted QIK-VRT execution path supports this exact task and current subject is reobserved; review/admission of this successor policy and notification channel are established.",
+    "next_safe_action": "Review and integrate with existing cache/HMI/backlog contracts through a protected, exact-subject-bound successor; then run acceptance checks and bind native execution/delivery receipts."
+  }
+}

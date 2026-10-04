@@ -1,0 +1,64 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "OWNER-HOTPATH-CURRENT-CRITERIA-REACTIVATION-20261004",
+  "state": "CANDIDATE_READY_EXECUTION_NOT_ESTABLISHED",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "head": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+    "tree": "19009f21ecbd59fa13def19e96e6b6374bae0276",
+    "authority_repository": "Goldkelch/qik-vrt",
+    "authority_observation": "NOT_FOUND_IN_CURRENT_CONNECTOR_SCOPE"
+  },
+  "human": {
+    "identifier": "Ingolf Lohmann",
+    "contribution_class": "HUMAN",
+    "contributions": [
+      "Goal: rank frequently traversed problem-solving paths for efficient caching and native compilation/linking",
+      "Constraint: only QIK-VRT-native reactivation and feedback",
+      "Correction: resume under latest quality/procedure rules; restart when required",
+      "Authorization: strategy and bounded preparation approved 2026-10-04"
+    ],
+    "generated_candidate_acceptance": "PENDING"
+  },
+  "artificial_cognitive_system": {
+    "provider": "OpenAI",
+    "family": "Codex",
+    "model_build": "UNAVAILABLE",
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contributions": [
+      "Exact-source repository inspection",
+      "Proposal grounded in existing cache, HMI, handoff, backlog and workflow executor contracts",
+      "Explicit restart, evidence invalidation and delivery semantics",
+      "No invented native execution or compilation result"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
+      "sha256": "08ea00e0efe73103cd392cf30801302f0a72cbc4f9a5a848f9d639c0e0ec8480"
+    }
+  ],
+  "retention": "METADATA_ONLY",
+  "external_effects": {
+    "mirror_draft_candidate": "authorized preparation; readback recorded separately",
+    "authority_write": false,
+    "merge": false,
+    "release": false,
+    "dispatch": false
+  },
+  "blockers": [
+    "No callable initial workflow_dispatch or admitted Mesh task execution operation is exposed in this client's connector set; the existing executor contract only allowlists a no-effect watchdog dispatch.",
+    "Goldkelch authority not readable in current connector scope"
+  ],
+  "evidence_classes": {
+    "proposal": "NORMATIVE_AND_DESIGN_CANDIDATE",
+    "performance": "NOT_MEASURED",
+    "implementation": "NOT_IMPLEMENTED",
+    "live_delivery": "NOT_ESTABLISHED"
+  },
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
