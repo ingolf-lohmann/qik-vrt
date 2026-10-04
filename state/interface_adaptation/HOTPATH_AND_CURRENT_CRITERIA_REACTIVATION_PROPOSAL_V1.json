@@ -164,9 +164,9 @@
     "compiled_native_code": false,
     "workflow_dispatched": false,
     "scheduled_delivery_established": false,
-    "first_blocker": "No callable initial workflow_dispatch or admitted Mesh task execution operation is exposed in this client's connector set; the existing executor contract only allowlists a no-effect watchdog dispatch.",
-    "retry_condition": "Admitted QIK-VRT execution path supports this exact task and current subject is reobserved; review/admission of this successor policy and notification channel are established.",
-    "next_safe_action": "Review and integrate existing cache/HMI/backlog and owner Digital-Twin input/goal contracts; preserve current mandatory checks and bind actual execution/private write/readback/feedback receipts."
+    "first_blocker": "This client has no established authenticated private QIKVRT REST operation for the owner's actual Twin/profile. The running Universal Terminal is not evidence of that connection; main transport lacks personal-goal read/transition semantics.",
+    "retry_condition": "A materially new admitted private API connection or reviewed implementation/gate evidence becomes available. Reobserve current sources and criteria before continuing; unchanged blockage is NOOP.",
+    "next_safe_action": "Integrate personal input/goal semantics into the existing private store/authenticated transport under current review gates; reuse PR429, no duplicate scheduler or Twin."
   },
   "human_effect_acknowledgement": {
     "owner": "Ingolf Lohmann",
@@ -288,6 +288,112 @@
       "Stored/read-back record does not falsely establish benefit, consent or human goal fulfilment",
       "Restart uses current criteria; old receipts remain historical"
     ],
-    "next_safe_step": "Integrate a reviewed personal-goal/input adapter with the existing authenticated Twin/goal-pursuit contracts, obtain actual admitted private runtime connectivity, and verify principal-bound write/readback and a QIK-VRT feedback receipt."
+    "next_safe_step": "Integrate a reviewed personal-goal/input adapter with the existing authenticated Twin/goal-pursuit contracts, obtain actual admitted private runtime connectivity, and verify principal-bound write/readback and a QIK-VRT feedback receipt.",
+    "connection_assessment": {
+      "observed_date": "2026-10-04",
+      "state": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED",
+      "owner_authorization": "EXPLICIT_GAP_CLOSURE_AUTHORIZATION_PRESENT; DO_NOT_REQUEST_TASK_AUTHORIZATION_AGAIN",
+      "client_capability": {
+        "native_private_qikvrt_operation_exposed": false,
+        "initial_workflow_dispatch_exposed": false,
+        "plugin_lookup": "No relevant QIKVRT/Mesh REST connection found in the returned plugin results; directory search is not an exhaustive nonexistence proof.",
+        "credential_material_read_or_persisted": false
+      },
+      "repository": {
+        "mirror": "ingolf-lohmann/qik-vrt",
+        "main_head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+        "main_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+        "parent_candidate_head": "b77a98e5e07ce217fe5a3756038c54da437056f4",
+        "authority": "Goldkelch/qik-vrt",
+        "authority_read": "HTTP_404_IN_CURRENT_CONNECTOR_SCOPE; NOT_PROOF_OF_GLOBAL_ABSENCE"
+      },
+      "inspected_transport": {
+        "path": "src/qikvrt_github_api_shim.py",
+        "blob": "0d60c5119b123b46e9264af975e8d81333034c96",
+        "default_loopback": "127.0.0.1:8766",
+        "authenticated_principal": "QIKVRT_API_PRINCIPAL; ACTUAL_VALUE_NOT_OBSERVED",
+        "contract": "Repository-scoped authenticated byte-storage dispatch. Main GET exposes /health; no personal-goal read endpoint observed.",
+        "required_connection": "A secure admitted client route to the existing authenticated service, with actual principal/repository binding and reviewed private-input semantics."
+      },
+      "railway_observation": {
+        "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+        "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+        "service_id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+        "service_name": "universal-terminal",
+        "deployment_id": "d74053cf-7753-4d41-8d61-eab36b65c678",
+        "deployment_created_at": "2026-09-28T05:26:32.994Z",
+        "platform_status": "SUCCESS",
+        "service_url": "https://universal-terminal-production.up.railway.app",
+        "persistent_mount": "/var/lib/qikvrt",
+        "source_repository": "Goldkelch/qik-vrt",
+        "configured_source_commit": "2fdcf8d233b1495732ef38e3406ebfc095fd0ef3",
+        "historical_runtime_log": {
+          "timestamp": "2026-09-28T05:29:39.614202931Z",
+          "head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+          "tree": "956c16b291c05243437b1f018321936e4438949a",
+          "scope": "DEPLOYMENT_LOG_ASSERTION; NOT_FRESH_CURRENT_PRIVATE_READBACK"
+        },
+        "relevant_variable_names_observed": [
+          "QIKVRT_STATE_DIR",
+          "QIKVRT_TERMINAL_PASSWORD",
+          "QIKVRT_TERMINAL_USER",
+          "QIKVRT_EXACT_HEAD",
+          "QIKVRT_EXACT_TREE"
+        ],
+        "api_variable_names_in_service_listing": [],
+        "interpretation": "The live terminal configuration and persistent volume do not establish a personal authenticated Digital-Twin service. No QIKVRT_API_TOKEN, expiry, API_PRINCIPAL or ALLOWED_REPOSITORY names appear in this service's observed variable-name list.",
+        "public_read_attempt": "The public reader could not access /qik-vrt/mesh/v1/healthz or /api/digital-twin/v1. This is a reader boundary, not an observed endpoint HTTP status."
+      },
+      "reuse_candidates": [
+        {
+          "pr": 429,
+          "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+          "state": "OPEN_NOT_MERGED_NOT_DEPLOYED",
+          "paths": [
+            "src/qikvrt_digital_twin_scheduling.py",
+            "src/qikvrt_digital_twin_schedule_events.py",
+            "src/qikvrt_github_api_shim.py"
+          ],
+          "supported": "Private principal/repository/role-isolated SQLite, CAS operations, append-only ledger, snapshots and post-commit readback.",
+          "remainder": "Personal input/goal semantics and an actually admitted client/runtime connection. Planning is not dispatch or user delivery."
+        },
+        {
+          "pr": 414,
+          "path": "state/autonomy/AUTONOMOUS_OPTIMAL_GOAL_CONTRACT_V1.json",
+          "state": "OPEN_CANDIDATE_NOT_ACTIVE",
+          "supported": "Explicit goal-pursuit selection and work-ring design; no live personal API effect inferred."
+        }
+      ],
+      "next_native_work_unit": {
+        "task_id": "OWNER-HOTPATH-CURRENT-CRITERIA-REACTIVATION-20261004",
+        "admission_order": [
+          "Reobserve current main/candidate, contracts, actual client capability and competing writers.",
+          "Integrate personal input/goal semantics into the existing private store/authenticated transport under current review gates; reuse PR429, no duplicate scheduler or Twin.",
+          "Bind the admitted runtime, authenticated principal, exact repository role/source and private profile; keep credential material outside Git/caches/public reports.",
+          "Verify one private CAS write and independent authenticated readback; retain stable request/input identity and prevent duplicate effects.",
+          "Verify declared-goal prioritization, conflict visibility, current-criteria restart and a QIKVRT feedback/delivery receipt."
+        ],
+        "acceptance_predicates": [
+          "ACTUAL_AUTHENTICATED_PRINCIPAL",
+          "EXACT_REPOSITORY_ROLE_AND_SOURCE",
+          "PRIVATE_PROFILE_NAMESPACE",
+          "REVIEWED_CLOSED_INPUT_GOAL_SCHEMA",
+          "EXPECTED_VERSION_CAS",
+          "POST_WRITE_INDEPENDENT_READBACK",
+          "CURRENT_CRITERIA_REVALIDATION",
+          "TASK_SPECIFIC_EFFECT_RECEIPT",
+          "QIKVRT_FEEDBACK_DELIVERY_RECEIPT"
+        ],
+        "current_predicates": "UNVERIFIED; NO_LIVE_PRIVATE_WRITE_OR_GOAL_EFFECT_ACK",
+        "retry_trigger": "A materially new admitted private API connection or reviewed implementation/gate evidence becomes available. Reobserve current sources and criteria before continuing; unchanged blockage is NOOP.",
+        "runtime_scheduler": "EXISTING_QIKVRT_ONLY; NO_EXTERNAL_AUTOMATION_CREATED"
+      },
+      "activation": {
+        "private_runtime_write": false,
+        "new_runtime_deployment": false,
+        "credential_or_permission_widening": false,
+        "personal_effect_ack_done": false
+      }
+    }
   }
 }

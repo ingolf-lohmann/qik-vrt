@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_work_unit_v1",
   "work_unit_id": "OWNER-HOTPATH-CURRENT-CRITERIA-REACTIVATION-20261004",
-  "state": "CANDIDATE_READY_EXECUTION_NOT_ESTABLISHED",
+  "state": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED",
   "source": {
     "repository": "ingolf-lohmann/qik-vrt",
     "head": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
@@ -17,7 +17,8 @@
       "Constraint: only QIK-VRT-native reactivation and feedback",
       "Correction: resume under latest quality/procedure rules; restart when required",
       "Authorization: strategy and bounded preparation approved 2026-10-04",
-      "Owner explicitly authorizes Effect Acknowledgement for his own inputs and Digital-Twin role, transparent prioritization and support for his declared goals/principles; 2026-10-04."
+      "Owner explicitly authorizes Effect Acknowledgement for his own inputs and Digital-Twin role, transparent prioritization and support for his declared goals/principles; 2026-10-04.",
+      "Owner explicitly authorizes closing the personal Digital-Twin REST gap on 2026-10-04; authorization remains valid despite missing runtime capability."
     ],
     "generated_candidate_acceptance": "PENDING"
   },
@@ -31,13 +32,14 @@
       "Proposal grounded in existing cache, HMI, handoff, backlog and workflow executor contracts",
       "Explicit restart, evidence invalidation and delivery semantics",
       "No invented native execution or compilation result",
-      "Inspected current main Digital-Twin REST/transport and PR429 scheduling plus PR414 goal-pursuit contracts; added a source-bound human-input, prioritization, conflict and feedback extension."
+      "Inspected current main Digital-Twin REST/transport and PR429 scheduling plus PR414 goal-pursuit contracts; added a source-bound human-input, prioritization, conflict and feedback extension.",
+      "Inspected actual Railway terminal configuration/volume/variable names, historical deployed-subject log, current Mirror transport and existing PR429 private CAS store; recorded an exact capability-bound continuation."
     ]
   },
   "artifacts": [
     {
       "path": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
-      "sha256": "698b6d40e7354f2c93a8bd8a82eec8aca0b2c187ff107c00b066f68360d79bc9"
+      "sha256": "c0f7a6532d5f8803cf0b6cdf244ee450ed79a7aad8fc8e9afda421b81f6c6233"
     }
   ],
   "retention": "METADATA_ONLY",
@@ -49,8 +51,9 @@
     "dispatch": false
   },
   "blockers": [
-    "No callable initial workflow_dispatch or admitted Mesh task execution operation is exposed in this client's connector set; the existing executor contract only allowlists a no-effect watchdog dispatch.",
-    "Goldkelch authority not readable in current connector scope"
+    "This client has no established authenticated private QIKVRT REST operation for the owner's actual Twin/profile. The running Universal Terminal is not evidence of that connection; main transport lacks personal-goal read/transition semantics.",
+    "Authority source returns HTTP 404 in the current connector scope; no Authority write/readback established.",
+    "Personal input/goal adapter admission and current exact-head gates remain unresolved."
   ],
   "evidence_classes": {
     "proposal": "NORMATIVE_AND_DESIGN_CANDIDATE",
@@ -67,7 +70,8 @@
   "successor_source_binding": {
     "main_head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
     "main_tree": "25e36016536b45701abdc699c586394f53c69aa6",
-    "parent_candidate_head": "0f3e702d11636e96709f7ac1eda357aac0c9ee83",
+    "parent_candidate_head": "b77a98e5e07ce217fe5a3756038c54da437056f4",
     "privacy": "No private user input transcripts or personal goal contents in this public candidate."
-  }
+  },
+  "connection_assessment_state": "HOLD_PRIVATE_RUNTIME_CONNECTION_NOT_ESTABLISHED"
 }
