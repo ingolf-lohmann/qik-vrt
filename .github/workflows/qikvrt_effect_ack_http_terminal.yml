@@ -144,10 +144,14 @@ jobs:
           set -euo pipefail
           python3 -B tools/qikvrt_tool_cache.py verify
           mkdir -p "$RUNNER_TEMP/qikvrt-smalltalk"
-          python3 -B tools/qikvrt_smalltalk.py install --cache-dir "$RUNNER_TEMP/pharo-cache"
-          python3 -B tools/qikvrt_smalltalk.py test --cache-dir "$RUNNER_TEMP/pharo-cache" \
+          python3 -B tools/qikvrt_native_release.py build --root . \
+            --expected-head "$(git rev-parse HEAD)" --expected-tree "$(git rev-parse 'HEAD^{tree}')" \
+            --output "$RUNNER_TEMP/qikvrt-smalltalk-bootstrap"
+          helper="$RUNNER_TEMP/qikvrt-smalltalk-bootstrap/source/tools/qikvrt_smalltalk.py"
+          python3 -B "$helper" install --cache-dir "$RUNNER_TEMP/pharo-cache"
+          python3 -B "$helper" test --cache-dir "$RUNNER_TEMP/pharo-cache" \
             | tee "$RUNNER_TEMP/qikvrt-smalltalk/EXECUTION.log"
-          python3 -B tools/qikvrt_smalltalk.py build --cache-dir "$RUNNER_TEMP/pharo-cache" \
+          python3 -B "$helper" build --cache-dir "$RUNNER_TEMP/pharo-cache" \
             --output "$RUNNER_TEMP/qikvrt-smalltalk"
           cp runtime/toolchains/pharo-*LICENSE.txt "$RUNNER_TEMP/qikvrt-smalltalk/"
           cp runtime/toolchains/pharo-13.lock.json "$RUNNER_TEMP/qikvrt-smalltalk/"

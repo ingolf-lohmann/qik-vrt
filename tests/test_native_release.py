@@ -102,6 +102,17 @@ class NativeReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "SOURCE_MISMATCH"):
             native.catalog(artifacts, self.work / "wrong-candidate", "0" * 40, self.tree)
 
+    def test_smalltalk_boundary_imports_from_export_without_repository(self):
+        import sys
+        code = ("import sys,pathlib; p=pathlib.Path(sys.argv[1]); "
+                "sys.path.insert(0,str(p)); sys.path.insert(0,str(p/'src')); "
+                "from tools.qikvrt_smalltalk import test; "
+                "from tests.test_effect_ack_conformance import request; "
+                "from qikvrt_effect_ack import EffectAckEngine; "
+                "print(EffectAckEngine().evaluate(request()).state.value)")
+        raw = subprocess.check_output([sys.executable, "-I", "-B", "-c", code, str(self.package / "source")])
+        self.assertIn(b"EFFECT_ACK", raw)
+
 
 if __name__ == "__main__":
     unittest.main()
