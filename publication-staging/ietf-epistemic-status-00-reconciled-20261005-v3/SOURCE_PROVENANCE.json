@@ -1,0 +1,150 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "publication_staging_manifest"
+  },
+  "schema": "qikvrt_publication_staging_source_provenance_v1",
+  "candidate_id": "ietf-epistemic-status-00-reconciled-20261005-v3",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 447,
+    "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+    "ref": "work/collective-functional-consciousness-20261003",
+    "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "scope": "frozen source only; not a current-main or Authority/Mirror equality claim"
+  },
+  "inputs": [
+    {
+      "path": "external/ietf/draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 8070,
+      "sha256": "c5e02a1516e7a4a91be7e8e6458ff35e06c558ae55321c22438b30624fc88a8b",
+      "git_blob_sha1": "2a42d1a52cccb957eb8ce5704cf525a410049169"
+    },
+    {
+      "path": "runtime/toolchains/requirements-xml2rfc-3.34.0.txt",
+      "bytes": 3075,
+      "sha256": "cd8473b443cc337670f0eec920913f2cabe07d38d497eaff2d140319b393b565",
+      "git_blob_sha1": "d9b5243d9c3761e8662d1664cd3cb6488eeac534"
+    }
+  ],
+  "bibliography_inputs": [
+    {
+      "path": "bibxml/reference.RFC.2119.xml",
+      "bytes": 910,
+      "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+      "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111",
+      "source_url": "https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml",
+      "acquisition": "read-only HTTP GET for initial reference resolution; all acceptance renders offline"
+    },
+    {
+      "path": "bibxml/reference.RFC.8174.xml",
+      "bytes": 751,
+      "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+      "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b",
+      "source_url": "https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml",
+      "acquisition": "read-only HTTP GET for initial reference resolution; all acceptance renders offline"
+    }
+  ],
+  "source_xml_preserved_byte_exact": false,
+  "protected_original_artifacts": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "bytes": 189440,
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "bytes": 1416550,
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62"
+    }
+  ],
+  "contributions": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contributions": [
+      "research programme and frozen source authorship as attributed in the source",
+      "selected staging task, exact source, preservation and no-submission constraints",
+      "explicit 4 October 2026 author-review correction mandate; no destination submission or upload authorization",
+      "5 October scope reconciliation and successor preparation mandate, with conditional exact-authorized submission boundary"
+    ],
+    "artificial_cognitive_actor": "OpenAI Codex / GPT-6 family",
+    "artificial_cognitive_contributions": [
+      "fresh exact-ref and source verification",
+      "normative status, proof, scope and refinement correction",
+      "RFC xrefs and informative EFFECT_ACK reference",
+      "independent offline TXT/HTML renders",
+      "new manifests, provenance, return receipts and validation",
+      "Property-specific reporting and scope routing; no empirical claims or implementation conformance inferred"
+    ],
+    "human_acceptance_of_new_artifacts": "PENDING",
+    "evidence_retention": "METADATA_ONLY",
+    "exact_model_build": "UNAVAILABLE",
+    "exact_session_or_run_id": "UNAVAILABLE"
+  },
+  "effects": {
+    "arxiv_submission": false,
+    "datatracker_submission": false,
+    "zenodo_mutation": false,
+    "upload_authorization_consumed": false,
+    "production_contract_activation": false,
+    "pr447_head_changed": false,
+    "ordinary_release": false,
+    "effect_ack_done": false,
+    "pr_merge": false,
+    "main_merge": false,
+    "upload_authorization_created": false,
+    "force_push": false
+  },
+  "reuse": {
+    "manifest_pattern": "external/ietf/draft-lohmann-qikvrt-effect-ack-03.CANDIDATE.json",
+    "render_recipe_pattern": "tools/materialize_ietf_current_synthesis_candidate.py",
+    "reused_primitives": [
+      "check_renderer",
+      "digest",
+      "TextExtractor",
+      "line_count"
+    ],
+    "technical_insufficiency": "Extend the existing profile build/validator for a byte-distinct immutable v3 successor. Retain the already prepared separate EFFECT_ACK-04 content. No new publisher, executor, scheduler or protocol implementation."
+  },
+  "portable_source_binding": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 63964,
+    "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+    "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 3,
+    "objects": 10,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  },
+  "predecessor_candidate": {
+    "head": "17a86ca2e51da454d26fa16d454c6d32e338f024",
+    "tree": "6eada1b1d08b261e6156f588c965863025617e06",
+    "package": "publication-staging/ietf-epistemic-status-00-corrected-20261004-v2",
+    "manifest": {
+      "path": "SUBMISSION_MANIFEST.json",
+      "bytes": 11084,
+      "sha256": "af4ac7715a8bca2d9d95538a38a550e381751efd1d3f88ed780877099430b63b",
+      "git_blob_sha1": "748e46da3376d818741ee79549b43b041c353948"
+    }
+  },
+  "frozen_source_xml_preserved_byte_exact": true,
+  "derivation": {
+    "path": "DERIVATION_MAP.json",
+    "bytes": 11086,
+    "sha256": "4ea7a8e7cb22ce23af182d2c00f27b3f573e6419666f87425496299b4502f533",
+    "git_blob_sha1": "a8ba19ce1fb8db6060fc5d6e4b53e7babfd0e34e",
+    "successor_xml": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 13386,
+      "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+      "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+    },
+    "all_historical_source_bindings_retained": true
+  },
+  "successor_prepared_utc": "2026-10-05T15:17:00.122116+00:00",
+  "predecessor_evidence_transfer": false
+}
