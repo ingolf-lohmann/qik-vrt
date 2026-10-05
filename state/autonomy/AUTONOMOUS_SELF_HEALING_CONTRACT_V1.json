@@ -228,7 +228,10 @@
       "completion_claims": {
         "PREDECESSOR_EVIDENCE_TRANSFER": false,
         "EFFECT_ACK_DONE": false
-      }
+      },
+      "draft_continuation_opt_in": "<!-- qikvrt-autonomous-self-heal:enabled -->",
+      "requires_repeated_chat_authorization": false,
+      "legacy_draft_handoff_repair": "ONE_BODY_ONLY_PATCH_ON_VERIFIED_EXACT_INTERNAL_CANDIDATE_WITH_FRESH_READBACK"
     }
   },
   "completion_claims": {

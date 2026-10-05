@@ -20,6 +20,8 @@ from dataclasses import dataclass
 from typing import Any
 from urllib.parse import urlencode
 
+from tools.qikvrt_pipeline_contracts import MARKER as CONTINUATION_MARKER
+
 MARKER = "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
 SHA1 = re.compile(r"[0-9a-f]{40}")
 REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
@@ -140,6 +142,7 @@ def materialize(candidate: Candidate, api: Any, git: Any) -> dict[str, Any]:
         "classification": "BLOCKADE", "first_blocker": None,
         "PREDECESSOR_EVIDENCE_TRANSFER": False, "EFFECT_ACK_DONE": False,
         "transport_ack_is_effect_ack": False, "pr_create_attempted": False,
+        "continuation_bind_attempted": False, "continuation_enabled": False,
         "writer_route": os.environ.get("QIKVRT_PR_WRITER_ROUTE", "CALLER_BOUND"),
     }
 
@@ -237,7 +240,7 @@ def materialize(candidate: Candidate, api: Any, git: Any) -> dict[str, Any]:
             if branch_head() != head:
                 raise Block("CANDIDATE_HEAD_DRIFT")
             current_base()
-            body = (f"{MARKER}\n\nRepository-native bounded repair.\n\n"
+            body = (f"{MARKER}\n{CONTINUATION_MARKER}\n\nRepository-native bounded repair.\n\n"
                     f"Exact bindings:\n- observed current-main base: `{c.base}`\n"
                     f"- candidate head: `{head}`\n- candidate tree: `{c.tree}`\n"
                     f"- semantic fingerprint: `{c.fingerprint}`\n"
@@ -267,17 +270,44 @@ def materialize(candidate: Candidate, api: Any, git: Any) -> dict[str, Any]:
         result["pr_number"] = number
         pr = api("GET", f"{prefix}/pulls/{number}")
         verify_pr(pr, head)
+        # The standing internal delegation also owns the continuation handoff.
+        # A promotion marker alone is invisible to the existing draft worker.
+        # Resume legacy drafts by one bounded body-only write, then read back.
+        # Ready PRs remain under the separate promotion/review contract.
+        if pr.get("draft") is True and CONTINUATION_MARKER not in (pr.get("body") or ""):
+            if branch_head() != head:
+                raise Block("CANDIDATE_HEAD_DRIFT")
+            current_base()
+            fresh_pr = api("GET", f"{prefix}/pulls/{number}")
+            verify_pr(fresh_pr, head)
+            if fresh_pr.get("draft") is not True or fresh_pr.get("body") != pr.get("body"):
+                raise Block("PR_CONTINUATION_METADATA_DRIFT")
+            result["continuation_bind_attempted"] = True
+            bind_error = None
+            try:
+                api("PATCH", f"{prefix}/pulls/{number}", {
+                    "body": f"{pr['body'].rstrip()}\n\n{CONTINUATION_MARKER}\n"})
+            except ApiFailure as exc:
+                bind_error = exc
+            pr = api("GET", f"{prefix}/pulls/{number}")
+            verify_pr(pr, head)
+            if CONTINUATION_MARKER not in (pr.get("body") or ""):
+                if bind_error and bind_error.status in (401, 403):
+                    raise Block("PR_CONTINUATION_WRITER_CAPABILITY_UNAVAILABLE")
+                raise Block("PR_CONTINUATION_BINDING_NOT_READ_BACK")
+        result["continuation_enabled"] = CONTINUATION_MARKER in (pr.get("body") or "")
         if branch_head() != head:
             raise Block("CANDIDATE_HEAD_DRIFT")
         verify_commit(head)
         current_base()
         result.update(state="PR_ALREADY_MATERIALIZED" if existed else "PR_MATERIALIZED",
-                      classification="IDLE" if existed else "WORK")
+                      classification="IDLE" if existed and not result["continuation_bind_attempted"] else "WORK")
     except (Block, KeyError, TypeError, ValueError, AttributeError) as exc:
         result["first_blocker"] = str(exc) if isinstance(exc, Block) else "READBACK_SCHEMA_INVALID"
     # Run IDs/timestamps/attempt counts do not turn an unchanged state into progress.
     semantic = {key: result[key] for key in (
-        "repository", "base_head", "candidate_head", "candidate_tree", "pr_number", "first_blocker")}
+        "repository", "base_head", "candidate_head", "candidate_tree", "pr_number", "first_blocker",
+        "continuation_enabled")}
     result["transition_fingerprint"] = hashlib.sha256(
         json.dumps(semantic, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     return result

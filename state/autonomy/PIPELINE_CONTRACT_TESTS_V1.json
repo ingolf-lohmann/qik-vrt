@@ -111,6 +111,13 @@
       "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_personal_working_copy_uses_bound_canonical_upstream",
       "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_execution_origin_accepts_only_policy_bound_repository_urls",
       "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_unknown_missing_or_ambiguous_execution_origin_fails_closed"
+    ],
+    "SELF_HEAL_CONTINUATION_WITHOUT_CHAT": [
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_created_repair_is_selectable_without_another_owner_interaction",
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_legacy_draft_continuation_gap_is_repaired_then_becomes_read_only",
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_continuation_write_requires_readback_and_never_blindly_retries",
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_ready_or_unbound_pr_never_receives_continuation_opt_in",
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_continuation_metadata_drift_prevents_body_write"
     ]
   },
   "contracts": {
@@ -129,6 +136,8 @@
     "EFFECT_ACK_DONE": false,
     "PREDECESSOR_EVIDENCE_TRANSFER": false,
     "empty_check_rollup_proves_merge_readiness": false,
-    "effect_ack_precedes_confirmed_issue_closure": false
+    "effect_ack_precedes_confirmed_issue_closure": false,
+    "internal_continuation_requires_repeated_chat_authorization": false,
+    "legacy_draft_continuation_write": "AT_MOST_ONE_BODY_PATCH_AFTER_EXACT_BINDING_AND_METADATA_REOBSERVATION_THEN_FRESH_READBACK"
   }
 }

@@ -1,7 +1,7 @@
 {
   "schema": "qikvrt_self_heal_materialization_repair_work_unit_v1",
   "work_unit_id": "QIKVRT_SELF_HEAL_PR_POSTCONDITION_REPAIR_20261004_V1",
-  "state": "IMPLEMENTED_LOCAL_TESTED_PENDING_EXACT_HEAD_REPOSITORY_VALIDATION",
+  "state": "LOCAL_TESTS_PASSED_PENDING_FRESH_REMOTE_GATES_AND_NATIVE_GOVERNANCE",
   "source": {
     "repository": "ingolf-lohmann/qik-vrt",
     "ref": "main",
@@ -58,7 +58,52 @@
     "Postcondition/failure receipt survives the materialization step",
     "Allowlisted repair paths and all review/promotion conditions remain unchanged"
   ],
-  "outputs": [
+  "remaining_acceptance": [
+    "Materialize and verify the repository integrity projections on the actual candidate",
+    "Fresh complete applicable exact-head CI/evidence results",
+    "Independent exact-head Code-Owner review and enforced native governance",
+    "Reviewed integration before the changed main-only operational job can run",
+    "Fresh live materialization/readback using the configured writer route"
+  ],
+  "out_of_scope": [
+    "Independent QCE verifier failure on PR #437",
+    "Authority readback HTTP 404",
+    "Automatic administration or branch-protection changes",
+    "Release, deployment, publication or any external acceptance claim"
+  ],
+  "completion_claims": {
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false,
+    "repository_wide_PASS": false,
+    "merged": false,
+    "live_permission_recovery_verified": false,
+    "transport_ack_is_effect_ack": false
+  },
+  "initial_verification": {
+    "scope": "Focused partial workspace, not a full repository checkout",
+    "python": "3.13.5",
+    "commands": [
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests -v",
+        "tests": 41,
+        "outcome": "SUCCESS"
+      },
+      {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -O -m unittest discover -s tests -v",
+        "tests": 41,
+        "outcome": "SUCCESS"
+      }
+    ],
+    "unique_tests": 41,
+    "new_tests": 35,
+    "existing_tests_unchanged": 6,
+    "yaml_parse": "SUCCESS",
+    "bash_syntax_checked_run_blocks": 6,
+    "historical_negative_control": "Original branch-exists guard returns 0 without reaching PR creation",
+    "fault_injection": "Branch create succeeds, PR POST receives 403, next invocation creates exactly one PR on unchanged HEAD, third invocation performs reads only",
+    "test_boundaries": "Remote calls use deterministic failure-injection fakes; preparation tests use real temporary Git repositories with the existing controller interface stubbed. These are not live GitHub credential or full-repository proofs."
+  },
+  "initial_outputs": [
     {
       "path": "tools/qikvrt_self_heal_pr_materializer.py",
       "bytes": 14732,
@@ -84,49 +129,131 @@
       "git_blob_sha1": "5036d6ed667474949cce2a897cd2f1e9b1b7642b"
     }
   ],
-  "verification": {
-    "scope": "Focused partial workspace, not a full repository checkout",
-    "python": "3.13.5",
-    "commands": [
-      {
-        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests -v",
-        "tests": 41,
-        "outcome": "SUCCESS"
-      },
-      {
-        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -O -m unittest discover -s tests -v",
-        "tests": 41,
-        "outcome": "SUCCESS"
-      }
+  "continuation_revision_20261005": {
+    "human_contribution": {
+      "actor": "Ingolf Lohmann",
+      "role": "Product Owner",
+      "instruction_at": "2026-10-05T09:36:25+02:00",
+      "instruction": "Notwendige Repository-Änderungen dürfen keine erneute explizite Freigabe im ChatGPT-Client voraussetzen.",
+      "authority": "Existing ACTIVE OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2 for bounded internal work; no new grant requested or fabricated."
+    },
+    "artificial_cognitive_contribution": {
+      "provider": "OpenAI",
+      "system": "Codex",
+      "contribution": "Verified current native runs and partial remote state, connected the existing materializer to the existing continuation selector, added executable handoff/failure regressions and preserved Main lifecycle history."
+    },
+    "observed_main": {
+      "head": "86d7062f25f174039da0a5df8a856127553036f1",
+      "tree": "5421dceb17f1ecc0fd3f5c12891ca9c1a12e7cf2"
+    },
+    "live_incomplete_transaction": {
+      "run_id": 37278911502,
+      "job_id": 111662123908,
+      "candidate_head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+      "candidate_tree": "c94eaea15ef6d07d4c7661958061036011127692",
+      "branch": "automation/self-heal-e4d6a939ac3074c4f50a689e",
+      "pull_requests_at_observation": [],
+      "cause": "The unchanged Main branch-exists guard exits successfully before observing the missing PR."
+    },
+    "continuation_gap": {
+      "cause": "New internal repair PRs carry only the promotion marker; the existing continuation selector requires its separate opt-in marker.",
+      "repair": "New exact allowlisted drafts carry both markers; a legacy exact-bound internal repair draft can receive one body-only continuation update per invocation, followed by independent readback. Ready/unbound/foreign candidates and prewrite metadata drift do not authorize that update.",
+      "repeated_chat_authorization_required": false,
+      "chatgpt_scheduler_required": false,
+      "new_scheduler_created": false,
+      "atomic_github_metadata_cas_claimed": false
+    },
+    "retained_boundaries": [
+      "Active standing internal delegation",
+      "Unchanged repair allowlist",
+      "Independent native Code-Owner review",
+      "Enforced native governance",
+      "Terminal exact-head gates",
+      "History preservation",
+      "Separate exact publication/deployment authorization"
     ],
-    "unique_tests": 41,
-    "new_tests": 35,
-    "existing_tests_unchanged": 6,
-    "yaml_parse": "SUCCESS",
-    "bash_syntax_checked_run_blocks": 6,
-    "historical_negative_control": "Original branch-exists guard returns 0 without reaching PR creation",
-    "fault_injection": "Branch create succeeds, PR POST receives 403, next invocation creates exactly one PR on unchanged HEAD, third invocation performs reads only",
-    "test_boundaries": "Remote calls use deterministic failure-injection fakes; preparation tests use real temporary Git repositories with the existing controller interface stubbed. These are not live GitHub credential or full-repository proofs."
+    "local_verification": {
+      "command": "make pipeline-contract-test",
+      "normal": {
+        "state": "TESTS_PASSED",
+        "tests_executed": 132
+      },
+      "optimized": {
+        "state": "TESTS_PASSED",
+        "tests_executed": 132
+      },
+      "committed_subject": false,
+      "scope": "Real selector connected to deterministic REST fault models and existing temporary-Git tests. Not live rollout, independent review or global EFFECT_ACK.",
+      "full_make_test": "SUCCESS_ON_PRECOMMIT_CANDIDATE_BYTES"
+    },
+    "rollout_boundary": {
+      "changed_main_only_executor_active": false,
+      "main_native_rulesets_observed": [],
+      "main_protected_observed": false,
+      "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "admin_ruleset_mutation_tool_available": false,
+      "requires_owner_to_reauthorize_internal_work": false
+    },
+    "live_transaction_recovery": {
+      "readback_at": "2026-10-05T07:58:04.001208+00:00",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr_number": 459,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/459",
+      "head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+      "tree": "c94eaea15ef6d07d4c7661958061036011127692",
+      "base": "86d7062f25f174039da0a5df8a856127553036f1",
+      "state": "OPEN_DRAFT_NATIVE_READBACK_VERIFIED",
+      "changed_files": 3,
+      "full_local_make_test": "SUCCESS_ON_EXACT_COMMITTED_SUBJECT",
+      "continuation_opt_in": true,
+      "automatic_promotion_opt_in": false,
+      "reason": "Validation-only recovery while Main governance is not enforced; no activation of the uncorrected promotion path.",
+      "requires_repeated_chat_authorization": false,
+      "native_ci_result": "FRESH_OBSERVATION_REQUIRED",
+      "merged": false,
+      "EFFECT_ACK_DONE": false
+    },
+    "competing_writer_reconciliation": {
+      "prepared_commit": "95122c5ad1834b6679cd777366e9b5b8f98209b3",
+      "prepared_tree": "3e347dce6aefc07a2a547b0c3161619781f34c4a",
+      "remote_successor": "d2223d9d254710df9d84c34938b1fa282b981474",
+      "remote_tree": "b13e8dbc31268727975763b7d670e5da69a10e60",
+      "decision": "Retain the complete published successor unchanged and apply only the six non-conflicting continuation files in a single-parent successor. The separately verified Main integration, authority map and classification stay byte-identical to d2223d9d.",
+      "force_push": false,
+      "predecessor_evidence_transfer": false,
+      "fresh_successor_validation_required": true
+    }
   },
-  "remaining_acceptance": [
-    "Materialize and verify the repository integrity projections on the actual candidate",
-    "Fresh complete applicable exact-head CI/evidence results",
-    "Independent exact-head Code-Owner review and enforced native governance",
-    "Reviewed integration before the changed main-only operational job can run",
-    "Fresh live materialization/readback using the configured writer route"
-  ],
-  "out_of_scope": [
-    "Independent QCE verifier failure on PR #437",
-    "Authority readback HTTP 404",
-    "Automatic administration or branch-protection changes",
-    "Release, deployment, publication or any external acceptance claim"
-  ],
-  "completion_claims": {
-    "PREDECESSOR_EVIDENCE_TRANSFER": false,
-    "EFFECT_ACK_DONE": false,
-    "repository_wide_PASS": false,
-    "merged": false,
-    "live_permission_recovery_verified": false,
-    "transport_ack_is_effect_ack": false
-  }
+  "outputs": [
+    {
+      "path": "tools/qikvrt_self_heal_pr_materializer.py",
+      "bytes": 16529,
+      "sha256": "a88c6034e7a0e85919639bcb5e9ef15054b3a061164cca1c4dddef9972badc17",
+      "git_blob_sha1": "85f309e0e27dc11901c4ee6c9323de35c0348b72"
+    },
+    {
+      "path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "bytes": 28857,
+      "sha256": "159fc8c218e1faa4629acffed3d8e010abef5cb388a4c405df22a3903c8f8cff",
+      "git_blob_sha1": "b2b2ec09489d06453afd6acac77be12c018c04d6"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 8176,
+      "sha256": "5e7c8b912061180235cb605ef72061ae5cdb53b37d43fdd7add3efbddffb3e34",
+      "git_blob_sha1": "d0d76aaeb064a4fc7e843bcde8bd5a7de0d97f36"
+    },
+    {
+      "path": "state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json",
+      "bytes": 9616,
+      "sha256": "440da1c521c068efd96ea4507b7223fd0a2caf60da6cbd8da8c65251f262a185",
+      "git_blob_sha1": "e5e5ca5e36e9bb8e433450a84989b077eef3d5ae"
+    },
+    {
+      "path": "docs/operations/PIPELINE_POSTCONDITION_REPAIR.md",
+      "bytes": 8786,
+      "sha256": "82f4e7abec57bc62c612e6167e20d49951448240ef0a89a703092294c6e4ca08",
+      "git_blob_sha1": "ccc61bc1f3e4816f8de11bc37fcca686045818de"
+    }
+  ]
 }

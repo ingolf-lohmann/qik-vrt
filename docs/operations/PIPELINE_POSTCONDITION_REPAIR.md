@@ -42,6 +42,22 @@ unbounded API visibility delays. Missing/uncertain observations fail closed.
 
 ## B. Eligibility and fair work selection
 
+The 5 October 2026 continuation correction connects the existing self-heal PR
+materializer to this worker. New exact, allowlisted repair drafts carry both
+the existing promotion marker and the existing continuation marker. A legacy
+exact-bound repair draft with only the promotion marker receives at most one
+body-only update per invocation, preserving its observed text. Fresh metadata
+drift blocks that update; failed or ambiguous writes require independent PR,
+branch, commit and base readback before continuation is considered connected.
+The GitHub metadata write is not an atomic compare-and-swap transaction.
+
+The active `OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2` delegation already
+covers this bounded internal handoff. Repeated ChatGPT authorization and a
+ChatGPT scheduler are not prerequisites. Unchanged connected candidates are
+read-only; ready, foreign or incorrectly bound PRs receive no continuation
+opt-in. Independent native review, enforced governance, terminal exact-head
+gates and separately authorized external effects remain distinct conditions.
+
 Only open, opted-in, same-repository draft PRs targeting main are selectable.
 The executor rechecks the same conditions. Selection rotates by native workflow
 run number through the sorted eligible inventory. For N stable candidates, N

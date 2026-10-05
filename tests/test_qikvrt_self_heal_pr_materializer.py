@@ -61,10 +61,11 @@ class FakeAPI:
         self.bad_tree = False
         self.bad_blob = False
         self.after_pr_read = None
+        self.patch_mode = "ok"
 
     def make_pr(self):
         return {"number": 7, "state": "open", "draft": True,
-                "body": MODULE.MARKER,
+                "body": f"{MODULE.MARKER}\n{MODULE.CONTINUATION_MARKER}",
                 "head": {"sha": H, "ref": CANDIDATE.branch,
                          "repo": {"full_name": CANDIDATE.repository}},
                 "base": {"sha": B, "ref": "main",
@@ -130,11 +131,22 @@ class FakeAPI:
                     raise MODULE.ApiFailure(None)
                 if self.create_mode != "false_success":
                     self.prs = [self.make_pr()]
+                    self.prs[0]["body"] = data["body"]
                 if self.create_mode == "lost_after_effect":
                     raise MODULE.ApiFailure(None)
                 if self.create_mode == "race_after_effect":
                     raise MODULE.ApiFailure(422)
                 return copy.deepcopy(self.prs[0]) if self.prs else {}
+        if method == "PATCH" and path.endswith("/pulls/7"):
+            if set(data) != {"body"}:
+                raise AssertionError("continuation may only update the verified PR body")
+            if self.patch_mode == "denied":
+                raise MODULE.ApiFailure(403)
+            if self.patch_mode != "false_success":
+                self.prs[0]["body"] = data["body"]
+            if self.patch_mode == "lost_after_effect":
+                raise MODULE.ApiFailure(None)
+            return copy.deepcopy(self.prs[0])
         raise AssertionError(f"unexpected API operation: {method} {path}")
 
 
@@ -145,7 +157,7 @@ class MaterializationTests(unittest.TestCase):
         self.assertFalse(result["EFFECT_ACK_DONE"])
         self.assertFalse(result["PREDECESSOR_EVIDENCE_TRANSFER"])
         self.assertFalse(result["transport_ack_is_effect_ack"])
-        self.assertTrue(all(method in ("GET", "POST") for method, _, _ in api.calls))
+        self.assertTrue(all(method in ("GET", "POST", "PATCH") for method, _, _ in api.calls))
         self.assertFalse(any("/reviews" in path or "/merge" in path or "/permissions" in path
                              for _, path, _ in api.calls))
         return result
@@ -174,6 +186,74 @@ class MaterializationTests(unittest.TestCase):
         result = self.run_materializer(FakeAPI())
         self.assertEqual(result["state"], "PR_MATERIALIZED")
         self.assertTrue(result["pr_create_attempted"])
+
+    def test_created_repair_is_selectable_without_another_owner_interaction(self):
+        from tools import qikvrt_pipeline_contracts as continuation
+        api = FakeAPI()
+        result = self.run_materializer(api)
+        self.assertTrue(result["continuation_enabled"])
+        self.assertEqual(continuation.select(api.prs, CANDIDATE.repository, 1)["number"], 7)
+        self.assertIn(MODULE.MARKER, api.prs[0]["body"])
+        self.assertFalse(result["continuation_bind_attempted"])
+
+    def test_legacy_draft_continuation_gap_is_repaired_then_becomes_read_only(self):
+        from tools import qikvrt_pipeline_contracts as continuation
+        api = FakeAPI(pr=True)
+        original = MODULE.MARKER + "\n\nExisting exact candidate text."
+        api.prs[0]["body"] = original
+        self.assertIsNone(continuation.select(api.prs, CANDIDATE.repository, 1))
+        first = self.run_materializer(api)
+        self.assertEqual(first["classification"], "WORK")
+        self.assertTrue(first["continuation_enabled"])
+        self.assertTrue(api.prs[0]["body"].startswith(original))
+        self.assertEqual(continuation.select(api.prs, CANDIDATE.repository, 1)["number"], 7)
+        writes = [(m, p, d) for m, p, d in api.calls if m != "GET"]
+        self.assertEqual(writes, [("PATCH", "repos/owner/repo/pulls/7", {"body": api.prs[0]["body"]})])
+        before = len(api.calls)
+        second = self.run_materializer(api)
+        self.assertEqual(second["classification"], "IDLE")
+        self.assertEqual(second["transition_fingerprint"], first["transition_fingerprint"])
+        self.assertTrue(all(m == "GET" for m, _, _ in api.calls[before:]))
+
+    def test_continuation_write_requires_readback_and_never_blindly_retries(self):
+        for mode, blocker in (("denied", "PR_CONTINUATION_WRITER_CAPABILITY_UNAVAILABLE"),
+                              ("false_success", "PR_CONTINUATION_BINDING_NOT_READ_BACK"),
+                              ("lost_after_effect", None)):
+            with self.subTest(mode=mode):
+                api = FakeAPI(pr=True)
+                api.prs[0]["body"] = MODULE.MARKER
+                api.patch_mode = mode
+                result = self.run_materializer(api)
+                self.assertEqual(result["first_blocker"], blocker)
+                self.assertEqual(sum(m == "PATCH" for m, _, _ in api.calls), 1)
+                self.assertFalse(any(m == "POST" for m, _, _ in api.calls))
+                self.assertEqual(result["state"] == "HOLD", blocker is not None)
+
+    def test_ready_or_unbound_pr_never_receives_continuation_opt_in(self):
+        for ready in (False, True):
+            with self.subTest(ready=ready):
+                api = FakeAPI(pr=True)
+                api.prs[0]["body"] = MODULE.MARKER
+                if ready:
+                    api.prs[0]["draft"] = False
+                else:
+                    api.prs[0]["head"]["sha"] = OTHER
+                result = self.run_materializer(api)
+                self.assertFalse(result["continuation_enabled"])
+                self.assertTrue(all(m == "GET" for m, _, _ in api.calls))
+                self.assertEqual(result["state"] == "HOLD", not ready)
+
+    def test_continuation_metadata_drift_prevents_body_write(self):
+        api = FakeAPI(pr=True)
+        api.prs[0]["body"] = MODULE.MARKER
+        def human_edit(value):
+            value.prs[0]["body"] += "\nLater human correction."
+            value.after_pr_read = None
+        api.after_pr_read = human_edit
+        result = self.run_materializer(api)
+        self.assertEqual(result["first_blocker"], "PR_CONTINUATION_METADATA_DRIFT")
+        self.assertIn("Later human correction.", api.prs[0]["body"])
+        self.assertTrue(all(m == "GET" for m, _, _ in api.calls))
 
     def test_existing_valid_pr_is_read_only(self):
         api = FakeAPI(pr=True)
@@ -441,6 +521,8 @@ class WorkflowIntegrationTests(unittest.TestCase):
         self.assertEqual(boundary["completion_predicate"], "EXACT_CURRENT_BASE_HEAD_TREE_PR_READBACK")
         self.assertFalse(boundary["automatic_permission_change"])
         self.assertFalse(boundary["self_approval"])
+        self.assertFalse(boundary["requires_repeated_chat_authorization"])
+        self.assertEqual(boundary["draft_continuation_opt_in"], MODULE.CONTINUATION_MARKER)
         allowed = {p for h in contract["allowlisted_handlers"] for p in h["mutable_paths"]}
         self.assertNotIn("tools/qikvrt_self_heal_pr_materializer.py", allowed)
         self.assertNotIn(".github/workflows/qikvrt_autonomous_self_heal.yml", allowed)
