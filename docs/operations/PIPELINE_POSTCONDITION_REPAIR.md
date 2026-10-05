@@ -212,6 +212,19 @@ suppresses redispatch, and its terminal failure is preserved. Readback and
 metadata PATCH remain non-atomic; no global exactly-once guarantee is claimed
 against arbitrary competing external writers or unbounded API visibility delays.
 
+Native execution exposed one activation gap: Main `86d7062f...` still carries
+the legacy verifier without a subject-bound run title. Its HTTP-204 dispatches
+create runs that the new exact postcondition cannot identify safely. Before any
+dispatch, the helper now reads the carrier from exact trusted Main, verifies its
+Git blob and checks the binding protocol (including base-ref support for staging).
+A legacy, absent, denied, corrupt or drifted carrier produces a causal HOLD
+without another dispatch. Existing branch/PR materialization remains separately
+observable. The exact legacy Main bytes are an executable negative regression;
+after independently reviewed Main activation the same PR resumes without being
+recreated, using freshly observed candidate HEAD/TREE and current base identities
+after the existing re-entry. Old subjects and results do not transfer. No
+candidate writes itself onto Main to satisfy this precondition.
+
 The required normal and optimized runner includes stateful response fault
 regressions, real temporary Git/bare-remotes, Main isolation, byte-NOOP PR
 recovery, admission races, staging preservation and production shell parsing.

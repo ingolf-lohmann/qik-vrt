@@ -1558,5 +1558,22 @@
     "preservation_rule": "The old classified workflow bytes resolve through the retained source commit. Exactly this operational path may have the bound successor bytes; the mandatory regression compares the unchanged verification job and triggers and rejects an unbound path, digest, liveness claim or changed scheduler/verifier.",
     "PREDECESSOR_EVIDENCE_TRANSFER": false,
     "current_authority_liveness_proof": false
+  },
+  "trusted_main_verifier_protocol_gap": {
+    "observed_main": "86d7062f25f174039da0a5df8a856127553036f1",
+    "source_blob": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",
+    "source_path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+    "diagnostic_candidate": "fdc97668e812efad469a227867a99cd6b3cdc45a",
+    "legacy_dispatch_runs": [
+      37290053392,
+      37290162174
+    ],
+    "native_display_title": "qikvrt_autonomous_exact_head_verify",
+    "classification": "LEGACY_RUNS_NOT_ADMITTED_AS_EXACT_SUBJECT_SUCCESS_OR_EXACT_RESUME_IDENTITY",
+    "repair": "Read the trusted-Main carrier and its Git blob before dispatch; HOLD before write until exact run-title binding and, when needed, staging base-ref support are present.",
+    "first_blocker": "TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE",
+    "resume_after": "Independently reviewed Main activation through the existing native gates; no further ChatGPT approval, candidate self-promotion or new executor.",
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false
   }
 }

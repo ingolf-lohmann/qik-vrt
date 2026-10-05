@@ -146,7 +146,9 @@
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_staging_verifier_preserves_base_and_never_opts_into_main_continuation",
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_registered_internal_writers_use_shared_resume_without_duplicate_executor",
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_ready_pr_cannot_acquire_push_admission_in_ci_or_continuation",
-      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_late_branch_drift_cannot_leave_materialized_success_state"
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_late_branch_drift_cannot_leave_materialized_success_state",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_legacy_trusted_main_protocol_blocks_dispatch_then_resumes_without_new_pr",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_missing_denied_or_corrupt_verifier_protocol_never_dispatches"
     ],
     "REAL_WRITER_TRANSACTION_RECOVERY": [
       "tests.test_qikvrt_pipeline_contracts.RealWriterTransactions.test_real_main_writer_isolates_repair_and_recovers_lost_push_reply",

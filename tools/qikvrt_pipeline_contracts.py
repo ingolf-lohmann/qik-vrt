@@ -9,6 +9,8 @@ API observations are bounded; uncertain writes are followed by independent GETs.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import hashlib
 import json
 import os
@@ -184,6 +186,43 @@ def remote_identity(call: Any, repository: str, ref: str) -> tuple[str, str]:
 def run_title(pr: int, head: str, base: str, base_ref: str = "main") -> str:
     suffix = "" if branch(base_ref) == "main" else "-ref-" + base_ref
     return f"qikvrt-exact-pr-{pr}-{sha(head)}-{sha(base)}{suffix}"
+
+
+def verifier_protocol(call: Any, repository: str, base: str, base_ref: str) -> dict[str, str]:
+    """A dispatch always executes Main's carrier, even for a candidate PR.
+
+    Legacy unbound run titles cannot establish an exact-subject postcondition.
+    Do not send an unobservable write while the reviewed Main protocol is old.
+    """
+    main, tree = remote_identity(call, repository, "heads/main")
+    if base_ref == "main" and main != base:
+        raise Block("BASE_DRIFT")
+    path = ".github/workflows/" + WORKFLOW
+    try:
+        raw = call("GET", f"repos/{repository}/contents/{path}?ref={main}")
+    except ApiError as exc:
+        if exc.status == 404:
+            raise Block("TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE") from exc
+        raise
+    if raw.get("type") != "file" or raw.get("path") != path or raw.get("encoding") != "base64":
+        raise Block("VERIFIER_PROTOCOL_READBACK_INVALID")
+    try:
+        source = base64.b64decode("".join(raw["content"].split()), validate=True)
+        blob = hashlib.sha1(b"blob " + str(len(source)).encode() + b"\0" + source).hexdigest()
+        if blob != sha(raw["sha"]):
+            raise Block("VERIFIER_PROTOCOL_READBACK_INVALID")
+        text = source.decode("utf-8")
+    except (binascii.Error, UnicodeError) as exc:
+        raise Block("VERIFIER_PROTOCOL_READBACK_INVALID") from exc
+    lines = [line for line in text.splitlines() if line.startswith("run-name:")]
+    prefix = ("run-name: qikvrt-exact-pr-${{ github.event.client_payload.pull_request }}-"
+              "${{ github.event.client_payload.head_sha }}-${{ github.event.client_payload.base_sha }}")
+    if len(lines) != 1 or not lines[0].startswith(prefix):
+        raise Block("TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE")
+    if base_ref != "main" and ("github.event.client_payload.base_ref" not in lines[0]
+                               or "TARGET_BASE_REF:" not in text):
+        raise Block("TRUSTED_MAIN_STAGING_VERIFIER_PROTOCOL_UNAVAILABLE")
+    return {"trusted_main_head": main, "trusted_main_tree": tree, "verifier_protocol_blob": blob}
 
 
 def draft_postcondition(call: Any, repository: str, ref: str, head: str, tree: str,
@@ -486,6 +525,7 @@ def resume(call: Any, repository: str, pr_number: int, head: str, tree: str,
 
     try:
         bind()
+        value.update(verifier_protocol(call, repository, base, base_ref))
         runs = observe()
         error = None
         if not runs:
@@ -494,6 +534,9 @@ def resume(call: Any, repository: str, pr_number: int, head: str, tree: str,
             if any(s.get("context") == CONTEXT for s in statuses):
                 raise Block("LEGACY_VERIFIER_REQUIRES_EXACT_RUN_EVIDENCE")
             bind()
+            if remote_identity(call, repository, "heads/main") != (
+                    value["trusted_main_head"], value["trusted_main_tree"]):
+                raise Block("TRUSTED_MAIN_VERIFIER_SOURCE_DRIFT")
             value["dispatch_attempted"] = True
             try:
                 call("POST", f"{prefix}/dispatches", {

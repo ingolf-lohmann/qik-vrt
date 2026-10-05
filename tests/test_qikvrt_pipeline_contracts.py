@@ -3,6 +3,8 @@
 """Executable recovery, race, delivery and evidence regressions (no network)."""
 from __future__ import annotations
 import copy
+import base64
+import hashlib
 import io
 import json
 import os
@@ -45,6 +47,9 @@ class Server:
         self.lost_status = False
         self.lost_comment = False
         self.drift_after_dispatch = False
+        self.protocol = (ROOT / (".github/workflows/" + c.WORKFLOW)).read_bytes()
+        self.protocol_error = None
+        self.protocol_bad_blob = False
 
     def add_run(self, status="queued", conclusion=None):
         self.runs.append({"id": 7, "event": "repository_dispatch", "status": status,
@@ -84,6 +89,13 @@ class Server:
             raise AssertionError((method, path))
         if path_only.endswith("/git/ref/heads/main"):
             return {"object": {"type": "commit", "sha": self.main}}
+        if "/contents/.github/workflows/" in path_only:
+            if self.protocol_error:
+                raise c.ApiError(self.protocol_error)
+            blob = hashlib.sha1(b"blob " + str(len(self.protocol)).encode() + b"\0" + self.protocol).hexdigest()
+            return {"type": "file", "path": ".github/workflows/" + c.WORKFLOW,
+                    "encoding": "base64", "content": base64.b64encode(self.protocol).decode(),
+                    "sha": "0" * 40 if self.protocol_bad_blob else blob}
         if "/git/ref/heads/" in path_only:
             return {"object": {"type": "commit", "sha": self.head}}
         if "/git/commits/" in path_only:
@@ -613,6 +625,44 @@ class WriterServer(Server):
 
 
 class SharedWriterContracts(unittest.TestCase):
+    def test_legacy_trusted_main_protocol_blocks_dispatch_then_resumes_without_new_pr(self):
+        server = WriterServer(pr=True)
+        current = server.protocol
+        server.protocol = subprocess.check_output([
+            "git", "show", "86d7062f25f174039da0a5df8a856127553036f1:.github/workflows/" + c.WORKFLOW], cwd=ROOT)
+        server.runs = [{"event": "repository_dispatch", "display_title": "qikvrt_autonomous_exact_head_verify",
+                        "path": ".github/workflows/" + c.WORKFLOW, "status": "completed", "conclusion": "failure"}]
+        for _ in range(2):
+            result = server.postcondition()
+            self.assertEqual(result["materialization_state"], "PR_ALREADY_MATERIALIZED")
+            self.assertEqual(result["first_blocker"], "TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE")
+            self.assertFalse(result["verifier"]["dispatch_attempted"])
+            self.assertFalse(server.writes("/dispatches"))
+            self.assertFalse(server.writes("/pulls"))
+        server.protocol = current
+        # Main activation and candidate re-entry have new immutable subjects.
+        # The caller supplies their fresh observations; old identities do not transfer.
+        server.main, server.main_tree = "e" * 40, "f" * 40
+        server.head, server.tree = "1" * 40, "2" * 40
+        server.pr["base"]["sha"], server.pr["head"]["sha"] = server.main, server.head
+        resumed = server.postcondition()
+        self.assertEqual(resumed["verifier"]["state"], "VERIFIER_ACTIVE")
+        self.assertEqual(len(server.writes("/dispatches")), 1)
+        payload = server.writes("/dispatches")[0][2]["client_payload"]
+        self.assertEqual((payload["head_sha"], payload["base_sha"]), (server.head, server.main))
+        self.assertFalse(server.writes("/pulls"))
+
+    def test_missing_denied_or_corrupt_verifier_protocol_never_dispatches(self):
+        for status, bad_blob, expected in ((404, False, "TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE"),
+                                           (403, False, "API_HTTP_403"),
+                                           (None, True, "VERIFIER_PROTOCOL_READBACK_INVALID")):
+            with self.subTest(status=status, bad_blob=bad_blob):
+                server = WriterServer(pr=True)
+                server.protocol_error, server.protocol_bad_blob = status, bad_blob
+                result = server.postcondition()
+                self.assertEqual(result["first_blocker"], expected)
+                self.assertFalse(server.writes("/dispatches"))
+
     def test_registered_internal_writers_use_shared_resume_without_duplicate_executor(self):
         contract = json.loads((ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json").read_text())
         inventory = json.loads((ROOT / "state/work_units/QIKVRT_SHARED_WRITER_POSTCONDITIONS_20261005_V1.json").read_text())

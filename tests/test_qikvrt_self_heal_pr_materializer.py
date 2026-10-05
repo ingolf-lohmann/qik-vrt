@@ -84,6 +84,11 @@ class FakeAPI:
     def __call__(self, method, path, data=None):
         self.calls.append((method, path, copy.deepcopy(data)))
         if method == "GET":
+            if "/contents/.github/workflows/" in path:
+                payload = (ROOT / ".github/workflows/qikvrt_autonomous_exact_head_verify.yml").read_bytes()
+                blob = hashlib.sha1(b"blob " + str(len(payload)).encode() + b"\0" + payload).hexdigest()
+                return {"type": "file", "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+                        "encoding": "base64", "content": base64.b64encode(payload).decode(), "sha": blob}
             if "/actions/workflows/" in path and "/runs?" in path:
                 return {"workflow_runs": copy.deepcopy(self.runs)}
             if "/statuses?" in path:

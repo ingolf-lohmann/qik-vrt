@@ -290,6 +290,7 @@
     "required_acceptance": "NATIVE_REVIEW_GOVERNANCE_AND_EXTERNAL_EFFECT_GATES_UNCHANGED",
     "notification": "DEDUPLICATE_SEMANTIC_TRANSITION_FINGERPRINT",
     "exactly_once_under_arbitrary_concurrency_or_visibility_delays_claimed": false,
-    "EFFECT_ACK_DONE": false
+    "EFFECT_ACK_DONE": false,
+    "trusted_main_verifier_protocol": "Exact trusted-Main workflow blob and subject-bound run title are required before dispatch; staging also requires base-ref support. Legacy/absent/corrupt/unreadable/drifted carriers HOLD without dispatch and resume after independently reviewed Main activation."
   }
 }
