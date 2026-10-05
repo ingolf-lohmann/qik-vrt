@@ -22,6 +22,32 @@ from unittest.mock import patch
 from tests.test_self_host import StandaloneTests, host, ROOT
 
 
+def recovery_evidence(instance, name, snapshot_receipt, native_events, monitor_events, owner_unix):
+    output = os.environ.get('QIKVRT_STATE_RECOVERY_TEST_EVIDENCE')
+    if not output: return
+    directory = Path(output); directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    # CI gets synthetic test observations, never a private state snapshot,
+    # configuration, credential, ledger body or production acceptance claim.
+    receipt = {'schema':'qikvrt-self-host-state-recovery-readback/v1',
+        'source_head':host.git(ROOT,'rev-parse','HEAD').decode(),
+        'source_tree':host.git(ROOT,'rev-parse','HEAD^{tree}').decode(),
+        'source_worktree_dirty':bool(host.git(ROOT,'status','--porcelain','--untracked-files=normal')),
+        'fixture_head':instance.head,'fixture_tree':instance.tree,
+        'package_manifest_sha256':instance.pin,
+        'state_manifest_sha256':snapshot_receipt['state_manifest_sha256'],
+        'native_event_count':len(native_events),
+        'native_events_sha256':host.digest(host.raw_json(native_events)),
+        'monitor_event_count':len(monitor_events),
+        'monitor_events_sha256':host.digest(host.raw_json(monitor_events)),
+        'original_state_bytes_preserved':True,'fresh_original_ledger_readback_verified':True,
+        'actual_owner_unix_prepare_commit_and_daemon_restart':owner_unix,
+        'private_state_snapshot_uploaded':False,'railway_data_exported':False,
+        'host_admission_verified':False,'public_readback_verified':False,
+        'deployed_restart_verified':False,'railway_cutover_verified':False,
+        'review_governance_satisfied':False,'effect_ack_done':False}
+    (directory/name).write_bytes(host.raw_json(receipt))
+
+
 class SourceRecoveryTests(unittest.TestCase):
     def test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy(self):
         raw = b'<!doctype html><title>actual local noVNC asset fixture</title>'
@@ -108,6 +134,110 @@ class NativeStandaloneTests(unittest.TestCase):
         self.assertFalse(receipt['EFFECT_ACK_DONE'])
         return prepared, receipt['durable_readback']
 
+    def state_cli(self, operation, snapshot, pin=None):
+        args = [sys.executable, '-B', str(self.export/'tools/qikvrt_self_host.py'), operation,
+                '--root', str(self.export), '--manifest-sha256', self.pin, '--config', str(self.config_path)]
+        args += ['--output', str(snapshot)] if operation == 'snapshot-state' else [
+            '--state-snapshot', str(snapshot), '--state-manifest-sha256', pin or '0'*64]
+        result = subprocess.run(args, capture_output=True, text=True, timeout=15)
+        return result.returncode, json.loads(result.stdout)
+
+    def test_private_snapshot_restore_keeps_actual_native_and_journal_acknowledgments(self):
+        original = StandaloneTests.seed_acknowledged_event(self)
+        self.start(); prepared, event = self.commit_input()
+        epoch = self.get('/api/terminal')[1]['ledger_id']
+        before = self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events')
+        self.stop(abrupt=True)  # WAL may contain the acknowledged transaction.
+        snapshot = self.work/'private-snapshot'
+        code, receipt = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 0, receipt)
+        self.assertFalse(receipt['effect_ack_done'])
+        self.assertFalse(receipt['railway_data_exported'])
+        source_bytes = {p: (self.volume/p).read_bytes() for p in host.STATE_FILES if (self.volume/p).exists()}
+        self.assertEqual(set(source_bytes), set(json.loads((snapshot/'STATE_MANIFEST.json').read_bytes())['files']))
+        for name, raw in source_bytes.items(): self.assertEqual((snapshot/name).read_bytes(), raw)
+        # On a different host the same path is absent. Preserve the local source
+        # under another name to model this; recovery itself deletes nothing.
+        saved = self.work/'preserved-original'; self.volume.rename(saved)
+        code, restored = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 0, restored)
+        for key in ('effect_ack_done', 'host_admission_verified', 'runtime_readback_verified', 'railway_cutover_verified'):
+            self.assertFalse(restored[key])
+        for name, raw in source_bytes.items():
+            self.assertEqual((self.volume/name).read_bytes(), raw)
+            self.assertEqual((saved/name).read_bytes(), raw)
+            self.assertEqual((self.volume/name).stat().st_mode & 0o777, 0o600)
+        self.start()
+        self.assertEqual(self.get('/api/terminal')[1]['ledger_id'], epoch)
+        self.assertEqual(self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events'), before)
+        code, readback = self.cli('durable-readback', prepared)
+        self.assertEqual(code, 0, readback)
+        self.assertEqual(readback['durable_readback'], event)
+        journal = json.loads((self.volume/'monitor/node.json').read_bytes())
+        self.assertEqual(journal['deliveries'], original)
+        self.assertNotIn(self.token_file.read_text(), (snapshot/'STATE_MANIFEST.json').read_text())
+        recovery_evidence(self, 'NATIVE_OWNER_STATE_RECOVERY.json', receipt, [event], original, True)
+
+    def test_snapshot_blocks_active_native_or_monitor_writers_without_creating_output(self):
+        self.start(); self.commit_input()
+        snapshot = self.work/'private-snapshot'
+        code, result = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
+        self.stop()
+        import fcntl
+        with (self.volume/'temdd/owner.lock').open('rb') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            code, result = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
+
+    def test_recovery_is_create_only_and_rejects_wrong_pins_config_and_tampering(self):
+        self.start(); self.commit_input(); self.stop()
+        snapshot = self.work/'private-snapshot'
+        code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
+        code, again = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 2, again)
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('ALREADY_EXISTS', result['cause'])
+        saved = self.work/'preserved-original'; self.volume.rename(saved)
+        code, result = self.state_cli('restore-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertIn('PIN_MISMATCH', result['cause']); self.assertFalse(self.volume.exists())
+        old = self.config_path.read_bytes(); self.config['node_id'] = 'unadmitted:replacement'; self.save_config()
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('BINDING', result['cause']); self.assertFalse(self.volume.exists())
+        self.config_path.write_bytes(old)
+        (snapshot/'monitor/node.json').write_bytes(b'corrupted original journal')
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('FILE_MISMATCH', result['cause']); self.assertFalse(self.volume.exists())
+
+    def test_snapshot_rejects_symlinks_extra_files_and_public_modes(self):
+        self.start(); self.commit_input(); self.stop()
+        snapshot = self.work/'private-snapshot'
+        database = self.volume/'temdd/events.sqlite3'
+        original = self.work/'original.sqlite3'; database.rename(original); database.symlink_to(original)
+        code, result = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
+        database.unlink(); original.rename(database)
+        code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
+        self.volume.rename(self.work/'preserved-original')
+        (snapshot/'unlisted.token').write_text('not admitted')
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('INVENTORY', result['cause']); self.assertFalse(self.volume.exists())
+        (snapshot/'unlisted.token').unlink(); snapshot.chmod(0o755)
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('OWNER_ONLY', result['cause']); self.assertFalse(self.volume.exists())
+
+    def test_private_state_recovery_executes_without_git_gh_or_provider_transport(self):
+        self.start(); prepared, event = self.commit_input(); self.stop()
+        snapshot = self.work/'private-snapshot'
+        bindir = self.work/'bin'; bindir.mkdir(); (bindir/'node').symlink_to(shutil.which('node'))
+        with patch.dict(os.environ, {'PATH': str(bindir), 'HTTPS_PROXY': 'http://127.0.0.1:1'}):
+            code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
+            self.volume.rename(self.work/'preserved-original')
+            code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+            self.assertEqual(code, 0, result)
+        self.start(path=bindir)
+        code, readback = self.cli('durable-readback', prepared, path=bindir)
+        self.assertEqual(code, 0, readback); self.assertEqual(readback['durable_readback'], event)
+
     def test_actual_daemon_owner_commit_and_fresh_sqlite_sse_readback(self):
         runtime = self.start()
         self.assertTrue(runtime['native_terminal_daemon_available'])
@@ -189,6 +319,148 @@ class NativeStandaloneTests(unittest.TestCase):
         self.config['subject_pr'] = 0; self.save_config()
         self.assertIn('NATIVE_TERMINAL_SUBJECT', self.denied())
         self.assertFalse((self.volume/'temdd/events.sqlite3').exists())
+
+
+class StateSnapshotBackendTests(unittest.TestCase):
+    """Original SQLite/journal storage controls; owner-Unix E2E stays above."""
+    setUpClass = classmethod(StandaloneTests.setUpClass.__func__)
+    tearDownClass = classmethod(StandaloneTests.tearDownClass.__func__)
+    setUp = NativeStandaloneTests.setUp
+    save_config = StandaloneTests.save_config
+    stop = StandaloneTests.stop
+    state_cli = NativeStandaloneTests.state_cli
+    sql = NativeStandaloneTests.sql
+
+    def seed_stores(self, abrupt=False):
+        journal = StandaloneTests.seed_acknowledged_event(self)
+        _, binding = host.state_binding(self.export, self.pin, self.config_path)
+        (self.volume/'binding.json').write_bytes(host.raw_json(binding))
+        (self.volume/'binding.json').chmod(0o600)
+        (self.volume/'node.lock').touch(mode=0o600)
+        # Exercise the recovered original SQLite implementation in a separate
+        # process. Abrupt exit retains the real acknowledged WAL transaction.
+        script = '''
+import importlib.util, json, os, sys
+from pathlib import Path
+spec = importlib.util.spec_from_file_location('selfhost', Path(sys.argv[1])/'tools/qikvrt_self_host.py')
+host = importlib.util.module_from_spec(spec); spec.loader.exec_module(host)
+host.load_source(Path(sys.argv[1]), 'qikvrt_effect_ack_http_terminal')
+native = host.load_source(Path(sys.argv[1]), 'qikvrt_temdd_event_ledger')
+subject = json.loads(sys.argv[3])
+ledger = native.Ledger(sys.argv[2], subject)
+event = {'schema':native.SCHEMA,'kind':'OBSERVE','subject':subject,
+    'provenance':{'source':'transputer','native_event_id':'synthetic:snapshot-control'},
+    'observed_at':native.utc(),'message':'synthetic acknowledged state: Grüße Ω',
+    'payload':{'synthetic':True}}
+print(json.dumps({'epoch':ledger.epoch,'event':ledger.append(event)}), flush=True)
+if sys.argv[4] == 'abrupt': os._exit(0)
+ledger.close()
+'''
+        self.subject = {'repository':'ingolf-lohmann/qik-vrt','pr':457,'head':self.head,'tree':self.tree}
+        result = subprocess.run([sys.executable,'-B','-c',script,str(self.export),str(self.volume),
+            json.dumps(self.subject),'abrupt' if abrupt else 'close'],capture_output=True,text=True,timeout=8)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        return journal, json.loads(result.stdout)
+
+    def freeze_stores(self):
+        self.seed_stores()
+        snapshot = self.work/'private-snapshot'
+        code, receipt = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 0, receipt)
+        return snapshot, receipt['state_manifest_sha256']
+
+    def test_real_acknowledged_wal_and_journal_survive_exact_private_restore(self):
+        journal, acknowledged = self.seed_stores(abrupt=True)
+        before = self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events')
+        self.assertTrue((self.volume/'temdd/events.sqlite3-wal').stat().st_size)
+        original = {name:(self.volume/name).read_bytes() for name in host.STATE_FILES if (self.volume/name).exists()}
+        snapshot = self.work/'private-snapshot'
+        code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
+        self.assertFalse(receipt['effect_ack_done']); self.assertFalse(receipt['railway_data_exported'])
+        for name, raw in original.items(): self.assertEqual((snapshot/name).read_bytes(), raw)
+        preserved = self.work/'preserved-original'; self.volume.rename(preserved)
+        code, receipt = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 0, receipt)
+        self.assertFalse(receipt['runtime_readback_verified']); self.assertFalse(receipt['host_admission_verified'])
+        for name, raw in original.items():
+            self.assertEqual((preserved/name).read_bytes(), raw)
+            self.assertEqual((self.volume/name).read_bytes(), raw)
+            self.assertEqual((self.volume/name).stat().st_mode & 0o777, 0o600)
+        self.assertEqual(self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events'), before)
+        host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
+        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger')
+        ledger = native.Ledger(self.volume, self.subject)
+        try:
+            self.assertEqual(ledger.epoch, acknowledged['epoch'])
+            self.assertEqual(ledger.replay(0), [acknowledged['event']])
+        finally: ledger.close()
+        self.assertEqual(json.loads((self.volume/'monitor/node.json').read_bytes())['deliveries'], journal)
+        self.assertNotIn(self.token_file.read_text(), (snapshot/'STATE_MANIFEST.json').read_text())
+        recovery_evidence(self, 'ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json', receipt, [acknowledged['event']], journal, False)
+
+    def test_each_original_os_writer_lock_blocks_before_snapshot_creation(self):
+        self.seed_stores()
+        import fcntl
+        host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
+        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger')
+        ledger = native.Ledger(self.volume, self.subject)
+        snapshot = self.work/'private-snapshot'
+        try:
+            code, result = self.state_cli('snapshot-state', snapshot)
+            self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
+        finally: ledger.close()
+        with (self.volume/'node.lock').open('rb') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            code, result = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
+
+    def test_create_only_restore_rejects_wrong_pin_binding_and_corruption(self):
+        snapshot, pin = self.freeze_stores()
+        for operation in ('snapshot-state', 'restore-state'):
+            code, result = self.state_cli(operation, snapshot, pin)
+            self.assertEqual(code, 2, result); self.assertIn('ALREADY_EXISTS', result['cause'])
+        self.volume.rename(self.work/'preserved-original')
+        code, result = self.state_cli('restore-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertIn('PIN_MISMATCH', result['cause']); self.assertFalse(self.volume.exists())
+        config_raw = self.config_path.read_bytes(); self.config['node_id'] = 'unadmitted:replacement'; self.save_config()
+        code, result = self.state_cli('restore-state', snapshot, pin)
+        self.assertEqual(code, 2, result); self.assertIn('BINDING', result['cause']); self.assertFalse(self.volume.exists())
+        self.config_path.write_bytes(config_raw)
+        (snapshot/'monitor/node.json').write_bytes(b'corrupted original journal')
+        code, result = self.state_cli('restore-state', snapshot, pin)
+        self.assertEqual(code, 2, result); self.assertIn('FILE_MISMATCH', result['cause']); self.assertFalse(self.volume.exists())
+
+    def test_symlinks_unlisted_files_and_public_snapshot_modes_are_refused(self):
+        self.seed_stores(); snapshot = self.work/'private-snapshot'
+        database = self.volume/'temdd/events.sqlite3'; original = self.work/'preserved.sqlite3'
+        database.rename(original); database.symlink_to(original)
+        code, result = self.state_cli('snapshot-state', snapshot)
+        self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
+        database.unlink(); original.rename(database)
+        code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
+        self.volume.rename(self.work/'preserved-original')
+        (snapshot/'unlisted.token').write_text('not admitted')
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('INVENTORY', result['cause']); self.assertFalse(self.volume.exists())
+        (snapshot/'unlisted.token').unlink(); snapshot.chmod(0o755)
+        code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+        self.assertEqual(code, 2, result); self.assertIn('OWNER_ONLY', result['cause']); self.assertFalse(self.volume.exists())
+
+    def test_snapshot_and_restore_have_no_git_gh_or_remote_transport_requirement(self):
+        journal, acknowledged = self.seed_stores()
+        snapshot = self.work/'private-snapshot'; bindir = self.work/'bin'; bindir.mkdir()
+        (bindir/'node').symlink_to(shutil.which('node'))
+        self.assertIsNone(shutil.which('git',path=str(bindir))); self.assertIsNone(shutil.which('gh',path=str(bindir)))
+        with patch.dict(os.environ, {'PATH':str(bindir),'HTTPS_PROXY':'http://127.0.0.1:1'}):
+            code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
+            self.volume.rename(self.work/'preserved-original')
+            code, result = self.state_cli('restore-state', snapshot, receipt['state_manifest_sha256'])
+            self.assertEqual(code, 0, result)
+        host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
+        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger'); ledger = native.Ledger(self.volume, self.subject)
+        try: self.assertEqual(ledger.replay(0), [acknowledged['event']])
+        finally: ledger.close()
+        self.assertEqual(json.loads((self.volume/'monitor/node.json').read_bytes())['deliveries'], journal)
 
 
 if __name__ == '__main__': unittest.main()

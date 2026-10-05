@@ -283,5 +283,24 @@
       ],
       "inspection": "Fresh API compare: new main changes only node-health/registration renewal; new self-heal branch adds integrity outputs. No new deployment carrier or Own-Host execution endpoint in this delta."
     }
+  },
+  "railway_exit_continuation": {
+    "observed_at": "2026-10-05T08:34:12.597Z",
+    "source_head": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+    "source_tree": "43d028a4d33dc2b41be59e85783aab5a29093782",
+    "owner_task_authorized": true,
+    "observation": "evidence/self_host/RAILWAY_EXIT_PREPARATION_20261005.json",
+    "same_tool_operations": [
+      "snapshot-state",
+      "restore-state"
+    ],
+    "original_ledger_and_journal_preserved": true,
+    "credentials_exported": false,
+    "legacy_railway_volume_exported": false,
+    "target_host_execution_operation_exposed": false,
+    "state": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "successor_native_ci_required": true,
+    "railway_cutover_verified": false,
+    "effect_ack_done": false
   }
 }

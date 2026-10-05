@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.1.1
+# S1 standalone node package, version 1.1.3
 
 This package reuses the existing Node monitor and reference terminal. It now
 also includes the recovered original productive TEMDD ledger/Unix daemon and
@@ -79,6 +79,105 @@ reviewed migration. Do not delete or relabel acknowledged data to defeat the
 binding. A real persistent mount/device identity, capacity and power-loss
 guarantees remain host admission evidence; an ordinary local directory is not
 proof of host persistence. The runtime binds only its configured filesystem.
+
+## Private durable-state snapshot and exact restoration
+
+The existing launcher now provides `snapshot-state` and `restore-state`.
+The immutable code export excludes state. These separate operations preserve
+the **existing** native SQLite database, any WAL/SHM files, original monitor
+journal and exact volume binding. They create neither a replacement ledger
+nor synthetic production events. Tokens, credentials, Firefox profiles, caches
+and private operator receipts are deliberately outside this snapshot.
+
+On the source, stop the admitted service and its path unit through the existing
+supervisor. Keep automatic activation and every original writer fenced while
+transferring ownership; acquiring locks for a snapshot does not permanently
+stop a source service. Do not allow an old and a restored writer to operate
+the same node identity on different hosts.
+
+```sh
+sudo systemctl stop <authorized-name>.path <authorized-name>.service
+sudo systemctl show <authorized-name>.service --property=ActiveState,MainPID
+python3 -B tools/qikvrt_self_host.py snapshot-state \
+  --root <absolute-verified-package-directory> \
+  --manifest-sha256 <independent-package-pin> \
+  --config <absolute-unchanged-private-config> \
+  --output <absolute-new-private-snapshot-directory>
+```
+
+Run the snapshot as the original runtime UID. The command holds both existing
+OS writer locks, checks the exact package/config/node/source binding and
+streams a bounded 2 GiB inventory. It refuses a live writer before creating
+output. The new directory is mode 0700 and its files are mode 0600; file and
+directory sync plus independent digest readback precede a successful receipt.
+`STATE_MANIFEST.json` binds every file's size and SHA-256. An incomplete output
+is a failed operation and is never overwritten or automatically cleaned up.
+
+Treat the complete snapshot as private durable application data. Transfer it
+over the operator's existing authorized secure channel; keep the manifest pin
+in an independent trusted channel. Never put this directory in Git, an Actions
+artifact/cache, a public route or an email to another project participant.
+Provision credentials separately through the intended host's secret facility.
+
+On the independently authorized target, the configured state path must be
+**absent** beneath a pre-existing owner-only parent. Keep the exact configured
+absolute path, package pin, config bytes and node identity unchanged. The
+restoration is create-only; an existing state path, wrong manifest, changed
+binding, symlink, unlisted file, unsafe mode or changed file bytes returns HOLD.
+
+```sh
+python3 -B tools/qikvrt_self_host.py restore-state \
+  --root <absolute-verified-package-directory> \
+  --manifest-sha256 <same-independent-package-pin> \
+  --config <absolute-unchanged-private-config> \
+  --state-snapshot <absolute-private-snapshot-directory> \
+  --state-manifest-sha256 <independently-obtained-state-pin>
+```
+
+This copies and rechecks the acknowledged bytes before runtime use. It neither
+starts a process nor changes host admission. Bind a new host declaration to the
+actual target, validate its persistent mount, install the pinned supervisor
+units, then start through the existing `run-admitted` guard. Independently
+compare the original ledger epoch, exact native event rows/digest chain and
+monitor journal before and after a deployed restart, and repeat the external
+HTTPS readback. Snapshot/restore success alone leaves all host, runtime,
+Railway-cutover and EFFECT_ACK_DONE assertions false.
+
+A new package head or changed config requires separately reviewed migration;
+these operations cannot relabel old data for a new version. They also do not
+export a legacy Railway volume. The observed live Railway terminal has a
+different source/runtime layout whose exact data binding and export capability
+remain to be verified; do not apply this S1 binding to it by editing metadata.
+The [Railway SSH documentation](https://docs.railway.com/cli/ssh), freshly
+read on 5 October 2026, describes registered-key SSH and SCP/SFTP access to
+mounted-volume files. That is an operator transfer path, not a callable
+authenticated export capability in this task. Do not register a new key, expose
+a public data endpoint or copy a live SQLite file alone to bypass this gap.
+
+### Railway retirement boundary
+
+The fresh configuration inventory covers all five existing production services.
+It distinguishes applied configuration from staged changes; no staged patch was
+applied and no service, volume, route, variable value or account was changed.
+The precise observation is in
+`evidence/self_host/RAILWAY_EXIT_PREPARATION_20261005.json`.
+
+| Existing service | Observed dependency | Required retirement evidence |
+| --- | --- | --- |
+| `universal-terminal` | Goldkelch source `2fdcf8d`; GitHub/tool installation at boot; Railway domain, deployment identity and live `/var/lib/qikvrt` volume | Exact legacy source/data export; source-writer fence; admitted target; independent original-event/epoch and public-use/restart readback |
+| `mesh-monitor` | Applied Goldkelch `/docs/monitor` configuration; separate staged mirror source/volume changes | Actual current journal/source/route readback and safe export; independently accepted own-host monitor; no assumption that staged storage is live |
+| `mesh-monitor-exact` | Applied Goldkelch `/deploy/mesh-monitor`, managed Python startup | Bound replacement of its actual role/data and independently checked consumers/routes |
+| `mesh-monitor-live` | Applied Goldkelch `/deploy/mesh-monitor`, managed Python startup | Bound replacement of its actual role/data and independently checked consumers/routes |
+| `mesh-monitor-bootstrap` | Applied Python 3.13 Alpine image and Railway domain | Verify remaining bootstrap consumers and replace their actual endpoint before retirement |
+
+Before retiring each service, retain its recoverable original data and establish
+the replacement's exact role, ownership and route with independent acceptance.
+Keep the original writer fenced if rollback becomes necessary; reverse a
+cutover only after diagnosing which side owns the acknowledged state.
+Traffic/DNS switching, volume deletion, account cancellation and decommission
+are separate operations after this evidence. No spend, DNS change, account
+cancellation, staged deployment, legacy-state rebinding or Railway shutdown is
+performed by this preparation.
 
 ## Network, authentication and readback
 
@@ -244,6 +343,15 @@ admission bytes and observe automatic event-based recovery. Its receipt and
 systemd version are retained as an exact-head artifact. This is a CI fixture,
 not an owned public deployment. External HTTPS/readback, the actual deployed
 restart witness and review governance stay mandatory and separate.
+
+The same mandatory native lane also exercises snapshot/restore with a real
+owner-Unix Prepare/Commit, SIGKILL, exact SQLite/WAL and monitor-journal bytes,
+and fresh original-daemon readback after restoration. Additional original
+SQLite-backend controls cover abrupt WAL retention and each actual OS writer
+lock. They supplement the owner-Unix controls. Sanitized exact-head test
+receipts contain only synthetic-fixture digests/counts and explicit unfulfilled
+deployment assertions; the private state directories themselves are never
+uploaded.
 
 On the declared Linux runtime run `make test repository-monitor-test self-host-test`.
 The existing full repository suite stays intact; the two explicit S1 targets add

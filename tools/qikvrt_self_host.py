@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import fcntl
 import hashlib
 import importlib.util
@@ -31,6 +32,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFINITION = "runtime/self-host/PACKAGE.json"
 BROWSER_COMMANDS = ("firefox-esr", "Xvfb", "x11vnc", "websockify", "xdpyinfo", "xwininfo")
+STATE_FILES = frozenset(("binding.json", "monitor/node.json", "temdd/events.sqlite3",
+                        "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm"))
+STATE_MAX_BYTES = 2 * 1024 * 1024 * 1024
 
 
 def raw_json(value):
@@ -203,6 +207,197 @@ def private_path(path, directory=False):
     if (info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) != (0o700 if directory else 0o600)
             or not (stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode))):
         raise ValueError("OWNER_ONLY_PRIVATE_PATH_REQUIRED")
+
+
+def state_binding(package, pin, config_path):
+    """Bind recovery to the existing package/config, never grant a new subject."""
+    manifest = verify(package, pin)
+    if config_path is None: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
+    private_path(config_path)
+    raw = config_path.read_bytes()
+    config = json.loads(raw)
+    if (config.get("schema") != "qikvrt-self-host-config/v1"
+            or any(config.get(k) != manifest[k] for k in ("source_head", "source_tree"))
+            or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))):
+        raise ValueError("STATE_CONFIGURATION_BINDING_MISMATCH")
+    volume = Path(config["state_dir"])
+    if (not volume.is_absolute() or ".." in volume.parts
+            or any(p.is_symlink() for p in (volume, *volume.parents))
+            or volume == package or package in volume.parents or volume in package.parents):
+        raise ValueError("SEPARATE_PRIVATE_STATE_PATH_REQUIRED")
+    binding = {"schema": "qikvrt-self-host-volume/v1", "node_id": config["node_id"],
+        "manifest_sha256": pin, "config_sha256": digest(raw),
+        "source_head": manifest["source_head"], "source_tree": manifest["source_tree"]}
+    return volume, binding
+
+
+@contextlib.contextmanager
+def stopped_state(volume):
+    """Use both original OS locks, so a live monitor OR native writer blocks."""
+    private_path(volume, directory=True)
+    with contextlib.ExitStack() as locks:
+        names = ["node.lock"]
+        if (volume / "temdd/events.sqlite3").exists(): names.append("temdd/owner.lock")
+        for name in names:
+            path = volume / name
+            private_path(path)
+            lock = locks.enter_context(os.fdopen(os.open(path, os.O_RDWR | os.O_NOFOLLOW), "rb"))
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        yield
+
+
+def private_output(path, separate):
+    if (path is None or not path.is_absolute() or ".." in path.parts
+            or any(p.is_symlink() for p in (path, *path.parents))
+            or any(path == p or p in path.parents or path in p.parents for p in separate)):
+        raise ValueError("SEPARATE_CREATE_ONLY_PRIVATE_OUTPUT_REQUIRED")
+    private_path(path.parent, directory=True)
+    if path.exists(): raise ValueError("STATE_OUTPUT_ALREADY_EXISTS")
+
+
+def synced_private_file(path, raw):
+    with path.open("xb") as dest:
+        path.chmod(0o600)
+        dest.write(raw); dest.flush(); os.fsync(dest.fileno())
+    private_path(path)
+    if path.read_bytes() != raw: raise ValueError("STATE_FILE_READBACK_MISMATCH")
+
+
+def sync_directory(path):
+    fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try: os.fsync(fd)
+    finally: os.close(fd)
+
+
+def state_file_digest(path, destination=None):
+    # Original SQLite files may be 0644 inside the existing 0700 directory.
+    # Copies always become 0600. Stream bounded data instead of caching a DB.
+    if any(p.is_symlink() for p in (path, *path.parents)):
+        raise ValueError("STATE_SYMLINK_FORBIDDEN")
+    with contextlib.ExitStack() as stack:
+        source = stack.enter_context(os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW), "rb"))
+        info = os.fstat(source.fileno())
+        if not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid() or info.st_mode & 0o022:
+            raise ValueError("UNSAFE_SOURCE_STATE_FILE")
+        target = None
+        if destination is not None:
+            target = stack.enter_context(destination.open("xb"))
+            destination.chmod(0o600)
+        sha = hashlib.sha256(); size = 0
+        while chunk := source.read(1024 * 1024):
+            size += len(chunk)
+            if size > STATE_MAX_BYTES: raise ValueError("STATE_SNAPSHOT_SIZE_LIMIT")
+            sha.update(chunk)
+            if target is not None: target.write(chunk)
+        final = os.fstat(source.fileno())
+        if (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns) != (
+                final.st_dev, final.st_ino, final.st_size, final.st_mtime_ns, final.st_ctime_ns):
+            raise ValueError("STATE_SOURCE_CHANGED_DURING_COPY")
+        if target is not None: target.flush(); os.fsync(target.fileno())
+        entry = {"bytes": size, "sha256": sha.hexdigest()}
+    if destination is not None:
+        private_path(destination)
+        if state_file_digest(destination) != entry: raise ValueError("STATE_FILE_READBACK_MISMATCH")
+    return entry
+
+
+def snapshot_state(package, pin, config_path, output):
+    """Freeze only existing durable stores, not credentials or browser profiles."""
+    volume, binding = state_binding(package, pin, config_path)
+    private_output(output, (package, volume))
+    with stopped_state(volume):
+        private_path(volume / "binding.json")
+        if json.loads((volume / "binding.json").read_bytes()) != binding:
+            raise ValueError("PERSISTENT_VOLUME_BINDING_MISMATCH")
+        files = {}
+        total = 0
+        for name in sorted(STATE_FILES):
+            path = volume / name
+            if not path.exists() and not path.is_symlink(): continue
+            if path.parent != volume: private_path(path.parent, directory=True)
+            total += path.stat().st_size
+            if total > STATE_MAX_BYTES: raise ValueError("STATE_SNAPSHOT_SIZE_LIMIT")
+            files[name] = state_file_digest(path)
+        if "monitor/node.json" not in files: raise ValueError("EXISTING_MONITOR_STATE_REQUIRED")
+        if not files.get("temdd/events.sqlite3", {}).get("bytes"):
+            raise ValueError("EXISTING_NATIVE_LEDGER_REQUIRED")
+        # Create-only: never rewrite an earlier checkpoint or remove source data.
+        output.mkdir(mode=0o700)
+        for name, entry in files.items():
+            target = output / name
+            if target.parent != output: target.parent.mkdir(mode=0o700, exist_ok=True)
+            if state_file_digest(volume / name, target) != entry:
+                raise ValueError("STATE_SOURCE_CHANGED_DURING_COPY")
+        manifest = {"schema": "qikvrt-self-host-state-snapshot/v1", "binding": binding,
+            "scope": "EXACT_MONITOR_AND_NATIVE_SQLITE_BYTES; NOT_SECRETS_BROWSER_PROFILE_OR_OPERATOR_RECEIPTS",
+            "files": files,
+            "source_writer_quiescence": "ORIGINAL_NODE_AND_NATIVE_OWNER_OS_LOCKS_HELD",
+            "effect_ack_done": False}
+        raw = raw_json(manifest)
+        synced_private_file(output / "STATE_MANIFEST.json", raw)
+        for directory in (output / "monitor", output / "temdd", output): sync_directory(directory)
+        sync_directory(output.parent)
+        verify_state_snapshot(output, digest(raw), binding)
+        return {"state": "PRIVATE_STATE_SNAPSHOT_FROZEN", "state_manifest_sha256": digest(raw),
+            "files": len(files), "bytes": total, "runtime_readback_verified": False,
+            "railway_data_exported": False, "effect_ack_done": False}
+
+
+def verify_state_snapshot(snapshot, pin, binding):
+    private_path(snapshot, directory=True)
+    private_path(snapshot / "STATE_MANIFEST.json")
+    raw = (snapshot / "STATE_MANIFEST.json").read_bytes()
+    if not re.fullmatch(r"[a-f0-9]{64}", pin or "") or digest(raw) != pin:
+        raise ValueError("STATE_MANIFEST_PIN_MISMATCH")
+    manifest = json.loads(raw)
+    files = manifest.get("files", {})
+    if (manifest.get("schema") != "qikvrt-self-host-state-snapshot/v1"
+            or manifest.get("binding") != binding or manifest.get("effect_ack_done") is not False
+            or not isinstance(files, dict) or not {"binding.json", "monitor/node.json", "temdd/events.sqlite3"} <= set(files)
+            or not set(files) <= STATE_FILES):
+        raise ValueError("STATE_SNAPSHOT_BINDING_OR_SCHEMA_MISMATCH")
+    expected = set(files) | {"STATE_MANIFEST.json", "monitor", "temdd"}
+    actual = {p.relative_to(snapshot).as_posix() for p in snapshot.rglob("*")}
+    if actual != expected: raise ValueError("STATE_SNAPSHOT_INVENTORY_MISMATCH")
+    total = 0
+    for name, entry in files.items():
+        path = snapshot / name
+        if path.parent != snapshot: private_path(path.parent, directory=True)
+        private_path(path)
+        if (not isinstance(entry, dict) or set(entry) != {"bytes", "sha256"}
+                or type(entry["bytes"]) is not int or entry["bytes"] < 0
+                or entry["bytes"] != path.stat().st_size):
+            raise ValueError("STATE_SNAPSHOT_FILE_MISMATCH")
+        total += entry["bytes"]
+        if total > STATE_MAX_BYTES: raise ValueError("STATE_SNAPSHOT_SIZE_LIMIT")
+        if state_file_digest(path) != entry: raise ValueError("STATE_SNAPSHOT_FILE_MISMATCH")
+    if json.loads((snapshot / "binding.json").read_bytes()) != binding:
+        raise ValueError("PERSISTENT_VOLUME_BINDING_MISMATCH")
+    return manifest
+
+
+def restore_state(package, pin, config_path, snapshot, snapshot_pin):
+    """Restore to an absent path only; host admission/restart remain separate."""
+    volume, binding = state_binding(package, pin, config_path)
+    if snapshot is None: raise ValueError("PRIVATE_STATE_SNAPSHOT_REQUIRED")
+    private_output(volume, (package, snapshot))
+    manifest = verify_state_snapshot(snapshot, snapshot_pin, binding)
+    # Pin checked before any target creation; incomplete restores remain HOLD.
+    volume.mkdir(mode=0o700)
+    for name in ("monitor", "temdd", "receipts"): (volume / name).mkdir(mode=0o700)
+    for name in manifest["files"]:
+        if state_file_digest(snapshot / name, volume / name) != manifest["files"][name]:
+            raise ValueError("STATE_SNAPSHOT_CHANGED_DURING_RESTORE")
+    for directory in (volume / "monitor", volume / "temdd", volume / "receipts", volume): sync_directory(directory)
+    sync_directory(volume.parent)
+    for name, entry in manifest["files"].items():
+        private_path(volume / name)
+        if state_file_digest(volume / name) != entry:
+            raise ValueError("RESTORED_STATE_READBACK_MISMATCH")
+    return {"state": "STATE_BYTES_RESTORED_PENDING_HOST_ADMISSION_AND_RUNTIME_READBACK",
+        "state_manifest_sha256": snapshot_pin, "files": len(manifest["files"]),
+        "source_data_changed": False, "host_admission_verified": False,
+        "runtime_readback_verified": False, "railway_cutover_verified": False, "effect_ack_done": False}
 
 
 def own_host_observation(volume):
@@ -724,13 +919,15 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "run", "admit", "supervisor", "run-admitted"))
+    parser.add_argument("operation", choices=("pack", "verify", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
     parser.add_argument("--expected-tree")
     parser.add_argument("--manifest-sha256")
     parser.add_argument("--config", type=Path)
+    parser.add_argument("--state-snapshot", type=Path, help="private exact-byte snapshot directory; never a public export")
+    parser.add_argument("--state-manifest-sha256", help="independently obtained private state manifest pin")
     parser.add_argument("--admission", type=Path, help="private operator host declaration; no secrets")
     parser.add_argument("--admission-sha256", help="independently obtained host declaration pin")
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
@@ -755,6 +952,11 @@ def main():
             run_admitted(args.root.resolve(), args.manifest_sha256, args.config,
                          args.admission, args.admission_sha256, args.admission_tool_sha256)
             raise ValueError("ORIGINAL_LAUNCHER_EXEC_REQUIRED")
+        elif args.operation == "snapshot-state":
+            result = snapshot_state(args.root.resolve(), args.manifest_sha256, args.config, args.output)
+        elif args.operation == "restore-state":
+            result = restore_state(args.root.resolve(), args.manifest_sha256, args.config,
+                                   args.state_snapshot, args.state_manifest_sha256)
         else:
             if not args.config: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
             return start(args.root.resolve(), args.manifest_sha256, args.config.absolute())

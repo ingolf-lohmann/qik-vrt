@@ -50,7 +50,19 @@ jobs:
           node-version: '24'
 
       - name: Run standalone package, negative and crash-restart controls
+        id: standalone-runtime
+        env:
+          QIKVRT_STATE_RECOVERY_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-state-recovery-readback
         run: make self-host-test
+
+      - name: Preserve original native state restoration readback
+        if: ${{ always() && steps.standalone-runtime.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-native-state-recovery-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-state-recovery-readback
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Verify existing native systemd crash and admission restoration recovery
         id: systemd-runtime
