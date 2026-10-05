@@ -92,3 +92,33 @@ The concrete PR-202 evidence, historical PR-203 trees, old live target
 envelope, old target evaluation, old Zenodo queue, and their receipts remain
 historical evidence only. Their hashes and remote gates do not transfer to this
 current-main candidate.
+
+## Reciprocal lossless DevOps acceptance target, 2026-10-01
+
+Ingolf Lohmann's new Definition of Done requires both nodes to help implement
+the other node's outstanding work and to verify the resulting state. Bind a
+complete stable inventory of every PR and branch, then retain each original
+head/tip and its object history in the resulting role-local Main. Every bound
+PR must be natively merged. An equal tree, closed-unmerged duplicate, deleted
+ref, transport receipt or successful observer cannot satisfy this target.
+
+A final full census must have no open PR and no branch tip outside Main's
+ancestry. Fresh role-local quality evidence covers all applicable gates,
+independent native Code Owner review, provenance, rights, security and defect
+dispositions under an explicitly versioned quality profile. Both execution
+directions require authenticated source/target bindings, an accepted scoped
+EFFECT_ACK chain, and post-effect readback. Their proofs do not transfer.
+
+Freeze the closed software subjects before creating the public evidence bundle.
+Repository, current IETF protocol and Zenodo evidence require byte-exact public
+readback. Receipt storage must avoid hashing its own containing commit. New
+publication continues to use the existing single-use proof-bearing contracts.
+The declaration is normative; the live target remains unestablished until all
+these predicates have evidence. No universal quality maximum is inferred.
+
+The existing promotion core provides `evaluate-closure`. This pure evaluator
+checks a supplied, already verified snapshot. It performs no network requests
+and cannot authenticate JSON claims or execute merge/publication operations.
+Its positive result is `CLOSURE_READY_FOR_ACCEPTANCE`; final responsible
+acceptance and effect-specific gate evaluation remain separate. Unknown,
+stale, truncated, one-way or conflicting evidence produces BLOCK.
