@@ -1,6 +1,13 @@
 # QIK-VRT
 
 <!-- qikvrt-machine-verifiable-science-charter-binding:v1 -->
+## Bootstrapping und plattformgebundene Binaries
+
+[Anleitung, Laufzeitmatrix und Lizenzen](runtime/native/README.md) · [Variantenvertrag](runtime/native/VARIANTS.json).
+Der erhaltene C90-Kern ergänzt den bestehenden S1-HTTP-/Docker-Träger.
+Native Linux-, macOS- und Windows-Builds, SQLite, Smalltalk und MC68000 erhalten eigene Ausführungsbelege.
+Der aktuelle Veröffentlichungsstand steht im [Work-Unit-Register](state/work_units/QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1.json); ein offener Ziel- oder Zenodo-Nachweis bleibt offen.
+
 ## Charta einer maschinenprüfbaren Wissenschaft
 
 This QIK-VRT node adopts the canonical [Charta einer maschinenprüfbaren Wissenschaft](docs/CHARTA_MASCHINENPRUEFBARE_WISSENSCHAFT.md)

@@ -35,21 +35,31 @@
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "Makefile",
-        "tests/test_effect_ack_core.sh"
+        "tests/test_effect_ack_core.sh",
+        "tools/qikvrt_native_release.py",
+        "runtime/native/PACKAGE.json",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
-        "github-hosted-runner-image:ubuntu-24.04"
+        "github-hosted-runner-image:ubuntu-24.04",
+        "github-hosted-runner-image:macos-15",
+        "github-hosted-runner-image:windows-2025",
+        "operator-provisioned compiler:exact executable SHA-256"
       ],
       "profiles": [
         "core",
-        "all"
+        "all",
+        "native-release",
+        "smalltalk"
       ],
-      "provider": "pinned GitHub-hosted runner image",
+      "provider": "GitHub runner or operator-provisioned C90 compiler; actual executable/version bound per executed target",
       "trusted_save": false,
       "verification": [
         "strict ANSI-C90 compile contract",
-        "core execution tests"
+        "core execution tests",
+        "native shared library and SQLite BLOB UDF readback",
+        "Git-free rebuild from independently pinned source manifest"
       ],
       "version": "ansi-c90"
     },
@@ -222,6 +232,28 @@
       ],
       "version": "4.19.0"
     },
+    "m68k-toolchain": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/m68000/temdd_transition.s",
+        "tests/temdd/runtime-m68000.c",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "Ubuntu distribution runner package layer"
+      ],
+      "profiles": [
+        "native-release"
+      ],
+      "provider": "Ubuntu distribution gcc-m68k-linux-gnu and binutils-m68k-linux-gnu",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256, compiler and distribution versions",
+        "MC68000 object disassembly, raw kernel and 515-vector ABI execution"
+      ],
+      "version": "executed-compiler-binutils-package-binding"
+    },
     "node": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -281,6 +313,29 @@
         "productive startup, Unix/SQLite/SSE/restart and negative controls"
       ],
       "version": "reported-version-and-exact-package-digest"
+    },
+    "pharo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/pharo-13.lock.json",
+        "runtime/toolchains/pharo-image-LICENSE.txt",
+        "runtime/toolchains/pharo-vm-LICENSE.txt",
+        "tools/qikvrt_smalltalk.py"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        ".qikvrt/toolchains/pharo"
+      ],
+      "profiles": [
+        "native-release"
+      ],
+      "provider": "tools/qikvrt_smalltalk.py",
+      "trusted_save": false,
+      "verification": [
+        "archive SHA-256 and all extracted file bytes",
+        "fresh image restoration and 2621440-vector C90 differential execution"
+      ],
+      "version": "13.1-4f7563dfe5-vm80b106bb"
     },
     "poppler": {
       "authority_files": [
@@ -413,6 +468,28 @@
         "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls"
       ],
       "version": "3.12.x"
+    },
+    "qemu-m68k": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/m68000/temdd_transition.s",
+        "tests/temdd/runtime-m68000.c",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "Ubuntu distribution runner package layer"
+      ],
+      "profiles": [
+        "native-release"
+      ],
+      "provider": "Ubuntu distribution qemu-user",
+      "trusted_save": false,
+      "verification": [
+        "exact emulator SHA-256 and version",
+        "515-vector fresh MC68000 Linux ABI execution"
+      ],
+      "version": "executed-emulator-package-binding"
     },
     "sherpa-onnx-node": {
       "authority_files": [

@@ -19,6 +19,20 @@ on:
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
       - "tests/test_self_host.py"
       - "runtime/self-host/**"
+      - "next/core/**"
+      - "runtime/native/**"
+      - "runtime/m68000/**"
+      - "runtime/temdd/**"
+      - "runtime/toolchains/**"
+      - "src/temdd_core.c"
+      - "include/temdd_core.h"
+      - "src/smalltalk/**"
+      - "tests/smalltalk/**"
+      - "tests/temdd/**"
+      - "tests/test_temdd_core.c"
+      - "tests/test_native_release.py"
+      - "tools/qikvrt_native_release.py"
+      - "tools/qikvrt_smalltalk.py"
       - "docs/monitor/**"
       - "tools/qikvrt_self_host.py"
       - "tools/qikvrt_self_host_migration.py"
@@ -30,6 +44,154 @@ permissions:
   contents: read
 
 jobs:
+  native-runtime:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Execute exact-source native build, SQL and Git-free rebuild
+        shell: python {0}
+        run: |
+          import json, os, pathlib, subprocess, sys
+          root = pathlib.Path.cwd()
+          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
+          package = temp / 'qikvrt-native'
+          head = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          tree = subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip()
+          subprocess.run([sys.executable, '-B', 'tools/qikvrt_tool_cache.py', 'verify'], check=True)
+          subprocess.run([sys.executable, '-B', '-m', 'unittest', '-v', 'tests.test_native_release'], check=True)
+          raw = subprocess.check_output([sys.executable, '-B', 'tools/qikvrt_native_release.py', 'build',
+            '--root', str(root), '--expected-head', head, '--expected-tree', tree, '--output', str(package)])
+          print(raw.decode())
+          receipt = json.loads(raw)
+          (temp / 'NATIVE_BUILD.json').write_bytes(raw)
+          pin = receipt['manifest_sha256']
+          subprocess.run([sys.executable, '-B', 'tools/qikvrt_native_release.py', 'sql',
+            '--package', str(package), '--manifest-sha256', pin], check=True)
+          raw = subprocess.check_output([sys.executable, '-B', str(package / 'source/tools/qikvrt_native_release.py'),
+            'rebuild', '--package', str(package), '--manifest-sha256', pin, '--output', str(temp / 'qikvrt-native-rebuilt')])
+          print(raw.decode())
+          (temp / 'NATIVE_REBUILD.json').write_bytes(raw)
+      - name: Preserve target binaries, sources, licenses and fresh receipts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-native-${{ matrix.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-native.zip
+            ${{ runner.temp }}/qikvrt-native-rebuilt.zip
+            ${{ runner.temp }}/NATIVE_BUILD.json
+            ${{ runner.temp }}/NATIVE_REBUILD.json
+          if-no-files-found: error
+          retention-days: 30
+
+  smalltalk-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Execute locked Smalltalk bootstrap, restore and exhaustive comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          mkdir -p "$RUNNER_TEMP/qikvrt-smalltalk"
+          python3 -B tools/qikvrt_smalltalk.py install --cache-dir "$RUNNER_TEMP/pharo-cache"
+          python3 -B tools/qikvrt_smalltalk.py test --cache-dir "$RUNNER_TEMP/pharo-cache" \
+            | tee "$RUNNER_TEMP/qikvrt-smalltalk/EXECUTION.log"
+          python3 -B tools/qikvrt_smalltalk.py build --cache-dir "$RUNNER_TEMP/pharo-cache" \
+            --output "$RUNNER_TEMP/qikvrt-smalltalk"
+          cp runtime/toolchains/pharo-*LICENSE.txt "$RUNNER_TEMP/qikvrt-smalltalk/"
+          cp runtime/toolchains/pharo-13.lock.json "$RUNNER_TEMP/qikvrt-smalltalk/"
+          cp LICENSE LICENSES/PolyForm-Noncommercial-1.0.0.txt LICENSES/CC-BY-NC-ND-4.0.txt "$RUNNER_TEMP/qikvrt-smalltalk/"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, platform
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'qikvrt-smalltalk'
+          files = {p.name: {'bytes':p.stat().st_size, 'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in root.iterdir() if p.is_file()}
+          receipt = {'schema':'qikvrt-smalltalk-package/v1','source_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+            'target':platform.platform(),'files':files,'effect_ack_done':False,'historical_evidence_transferred':False}
+          (root / 'MANIFEST.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-smalltalk-linux-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-smalltalk
+            ${{ runner.temp }}/pharo-cache/pharo/*/image.zip
+            ${{ runner.temp }}/pharo-cache/pharo/*/vm.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  m68000-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Execute MC68000 ABI and retain object, raw bytes and toolchain witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-m68k-linux-gnu libc6-dev-m68k-cross qemu-user binutils-m68k-linux-gnu
+          out="$RUNNER_TEMP/qikvrt-m68000"
+          mkdir -p "$out"
+          m68k-linux-gnu-gcc -m68000 -c runtime/m68000/temdd_transition.s -o "$out/temdd-transition.o"
+          m68k-linux-gnu-objcopy -O binary -j .text "$out/temdd-transition.o" "$out/temdd-transition.bin"
+          m68k-linux-gnu-gcc -m68000 -std=c90 -pedantic-errors -Wall -Wextra -Werror -static \
+            tests/temdd/runtime-m68000.c "$out/temdd-transition.o" -o "$out/temdd-m68000-linux-abi"
+          m68k-linux-gnu-objdump -d "$out/temdd-transition.o" > "$out/DISASSEMBLY.txt"
+          qemu-m68k "$out/temdd-m68000-linux-abi" | tee "$out/EXECUTION.log"
+          grep -F 'TEMDD_M68000_EXECUTED vectors=515' "$out/EXECUTION.log"
+          m68k-linux-gnu-gcc --version > "$out/COMPILER.txt"
+          qemu-m68k --version > "$out/EMULATOR.txt"
+          dpkg-query -W gcc-m68k-linux-gnu libc6-dev-m68k-cross qemu-user binutils-m68k-linux-gnu > "$out/DISTRIBUTION_PACKAGES.tsv"
+          cp LICENSE LICENSES/PolyForm-Noncommercial-1.0.0.txt "$out/"
+          cp runtime/m68000/temdd_transition.s tests/temdd/runtime-m68000.c "$out/"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'qikvrt-m68000'
+          files = {p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in root.iterdir() if p.is_file()}
+          tools = {}
+          import shutil
+          for name in ['m68k-linux-gnu-gcc','m68k-linux-gnu-objcopy','m68k-linux-gnu-objdump','qemu-m68k']:
+            path = pathlib.Path(shutil.which(name)).resolve()
+            tools[name] = {'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+          receipt = {'schema':'qikvrt-m68000-package/v1','source_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+            'target':'mc68000-d0-kernel-with-m68k-linux-abi-emulator-witness','files':files,'tools':tools,
+            'effect_ack_done':False,'historical_evidence_transferred':False,'physical_hardware_witness':False}
+          (root / 'MANIFEST.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-m68000-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-m68000
+          if-no-files-found: error
+          retention-days: 30
+
   contract-and-e2e:
     runs-on: ubuntu-24.04
     timeout-minutes: 25

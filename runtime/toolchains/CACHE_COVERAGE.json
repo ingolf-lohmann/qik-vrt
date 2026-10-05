@@ -9,7 +9,7 @@
     {
       "cache_class": "runner-image-layer",
       "component": "cc",
-      "provider": "pinned GitHub-hosted runner image",
+      "provider": "GitHub runner or operator-provisioned C90 compiler; actual executable/version bound per executed target",
       "version": "ansi-c90"
     },
     {
@@ -55,6 +55,12 @@
       "version": "4.19.0"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "m68k-toolchain",
+      "provider": "Ubuntu distribution gcc-m68k-linux-gnu and binutils-m68k-linux-gnu",
+      "version": "executed-compiler-binutils-package-binding"
+    },
+    {
       "cache_class": "hosted-toolcache",
       "component": "node",
       "provider": "actions/setup-node or operator-provisioned exact executable",
@@ -65,6 +71,12 @@
       "component": "novnc",
       "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
       "version": "reported-version-and-exact-package-digest"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "pharo",
+      "provider": "tools/qikvrt_smalltalk.py",
+      "version": "13.1-4f7563dfe5-vm80b106bb"
     },
     {
       "cache_class": "runner-image-layer",
@@ -95,6 +107,12 @@
       "component": "python-selfhost",
       "provider": "package-bound operator interpreter",
       "version": "3.12.x"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "qemu-m68k",
+      "provider": "Ubuntu distribution qemu-user",
+      "version": "executed-emulator-package-binding"
     },
     {
       "cache_class": "ecosystem-cache",
@@ -153,10 +171,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 25,
-  "declared_components": 25,
-  "lock_sha256": "b01fb81d75e8d7ded554793b6c2fa814a90ed706161723f56e3e1557677b0611",
-  "registry_sha256": "638d78e6c5c9ce03b99d99869a680faa6e9411b239bba6dd41437a4ae76eff56",
+  "covered_components": 28,
+  "declared_components": 28,
+  "lock_sha256": "44467fd3043fbfb86897552b8742a4f8b6c866a9491423ef20bd034d9c6eb448",
+  "registry_sha256": "fb403c34e40b3575f8a17d59a009c1fd4f438605f506d3eac5fc1979cb0f3618",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

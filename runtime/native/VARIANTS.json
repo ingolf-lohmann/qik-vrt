@@ -1,0 +1,58 @@
+{
+  "_license": "CC-BY-NC-ND-4.0",
+  "base_operating_systems": [
+    "linux",
+    "darwin",
+    "win32"
+  ],
+  "new_variant_rule": {
+    "action": "freeze exact source, licenses, binary, fresh target receipt; generate new Zenodo-v2 candidate; publish only through existing authenticated publisher; public byte redownload; node-specific create-only import and readback",
+    "deduplicate_by": [
+      "source_tree",
+      "target",
+      "binary_sha256",
+      "license_digest"
+    ],
+    "external_authentication_required": true,
+    "predecessor_evidence_transfer": false,
+    "trigger": "verified new target or changed binary digest",
+    "unobserved_nodes_never_marked_synced": true
+  },
+  "schema": "qikvrt-native-variants/v1",
+  "variants": [
+    {
+      "availability": "REQUIRES_FRESH_EXECUTED_BUILD_RECEIPT",
+      "builder": "tools/qikvrt_native_release.py build",
+      "format": "native CLI and shared library",
+      "id": "host-native"
+    },
+    {
+      "availability": "REQUIRES_NATIVE_SQL_READBACK",
+      "builder": "tools/qikvrt_native_release.py sql",
+      "format": "SQLite BLOB UDF using the same verified native library",
+      "id": "sqlite"
+    },
+    {
+      "availability": "PER_BACKEND_EXECUTION_REQUIRED",
+      "format": "native semantic kernel plus original Smalltalk and MC68000 source",
+      "id": "temdd"
+    },
+    {
+      "availability": "REQUIRES_FRESH_IMAGE_RESTORE_AND_EXHAUSTIVE_TEST",
+      "builder": "tools/qikvrt_smalltalk.py build",
+      "format": "locked Pharo image",
+      "id": "smalltalk-pharo13"
+    },
+    {
+      "availability": "REQUIRES_ISA_AND_EMULATOR_READBACK",
+      "format": "original assembly object, raw kernel and Linux ABI witness",
+      "id": "mc68000-abi"
+    },
+    {
+      "availability": "REQUIRES_S1_NATIVE_RUNTIME_READBACK",
+      "builder": "tools/qikvrt_self_host.py pack",
+      "format": "existing S1 1.2.0 source/dependency carrier",
+      "id": "http-docker-linux"
+    }
+  ]
+}
