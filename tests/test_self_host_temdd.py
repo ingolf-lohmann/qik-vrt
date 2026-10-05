@@ -231,7 +231,13 @@ class NativeStandaloneTests(unittest.TestCase):
         StandaloneTests.seed_acknowledged_event(self)
         self.start(); prepared, event = self.commit_input(); self.stop()
         snapshot = self.work/'private-snapshot'
-        bindir = self.work/'bin'; bindir.mkdir(); (bindir/'node').symlink_to(shutil.which('node'))
+        bindir = self.work/'bin'; bindir.mkdir()
+        commands = ('node', *host.BROWSER_COMMANDS) if 'browser_runtime' in self.manifest else ('node',)
+        for name in commands:
+            found = shutil.which(name); self.assertIsNotNone(found, name)
+            (bindir/name).symlink_to(found)
+        self.assertIsNone(shutil.which('git', path=str(bindir)))
+        self.assertIsNone(shutil.which('gh', path=str(bindir)))
         with patch.dict(os.environ, {'PATH': str(bindir), 'HTTPS_PROXY': 'http://127.0.0.1:1'}):
             code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
             self.volume.rename(self.work/'preserved-original')
