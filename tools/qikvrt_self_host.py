@@ -281,6 +281,13 @@ def native_carrier(package, pin, config, config_path, binding, token):
         raise
 
 
+def novnc_readback(package, port):
+    # A loopback startup read must never inherit a provider/proxy route.
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    with opener.open('http://127.0.0.1:' + str(port) + '/vnc.html', timeout=2) as response:
+        return response.status == 200 and response.read() == (package / 'runtime/self-host/novnc/vnc.html').read_bytes()
+
+
 def browser_carrier(package, manifest, config, volume):
     """New portable start adapter of the recovered Firefox/Xvfb/VNC recipe.
 
@@ -307,7 +314,7 @@ def browser_carrier(package, manifest, config, volume):
         log = os.fdopen(fd, "wb"); logs.append(log)
         p = subprocess.Popen(argv, env=env, cwd=directory, stdout=log, stderr=log)
         processes.append(p); return p
-    def ready(check):
+    def ready(check, edge):
         until = time.monotonic() + 20
         while time.monotonic() < until:
             if any(p.poll() is not None for p in processes): raise ValueError("BROWSER_CHILD_EXITED")
@@ -315,11 +322,11 @@ def browser_carrier(package, manifest, config, volume):
                 if check(): return
             except (OSError, ValueError, subprocess.SubprocessError): pass
             time.sleep(.05)  # bounded startup probe, no runtime polling
-        raise ValueError("BROWSER_STARTUP_READBACK_TIMEOUT")
+        raise ValueError("BROWSER_STARTUP_READBACK_TIMEOUT:" + edge)
     try:
         spawn("xvfb", [shutil.which("Xvfb"), config["display"], "-screen", "0", "1440x900x24", "-nolisten", "tcp"])
         ready(lambda: subprocess.run([shutil.which("xdpyinfo"), "-display", config["display"]],
-            env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2).returncode == 0)
+            env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=2).returncode == 0, 'X11_DISPLAY')
         spawn("vnc", [shutil.which("x11vnc"), "-display", config["display"], "-forever", "-shared", "-localhost",
             "-rfbport", str(config["vnc_port"]), "-passwdfile", str(password)])
         spawn("novnc", [shutil.which("websockify"), "--web=" + str(package / "runtime/self-host/novnc"),
@@ -331,11 +338,8 @@ def browser_carrier(package, manifest, config, volume):
                 env=env, timeout=2).decode()
             title = re.search(r'<title>([^<]+)</title>', (package / 'docs/terminal/temdd/index.html').read_text())[1]
             return '"Navigator" "firefox' in raw and '"' + title in raw
-        ready(browser_window)
-        def novnc_readback():
-            with urllib.request.urlopen("http://127.0.0.1:" + str(config["novnc_port"]) + "/vnc.html", timeout=2) as r:
-                return r.status == 200 and r.read() == (package / "runtime/self-host/novnc/vnc.html").read_bytes()
-        ready(novnc_readback)
+        ready(browser_window, 'FIREFOX_NATIVE_DOCUMENT')
+        ready(lambda: novnc_readback(package, config['novnc_port']), 'NOVNC_HTTP')
         return processes, logs
     except BaseException:
         stop_children(processes, logs)

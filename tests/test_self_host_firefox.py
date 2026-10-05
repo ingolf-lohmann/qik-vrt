@@ -57,7 +57,20 @@ class FirefoxCarrierTests(NativeStandaloneTests):
         self.assertIsNone(shutil.which('git',path=str(binpath)))
         self.assertIsNone(shutil.which('gh',path=str(binpath)))
         from tests.test_self_host import StandaloneTests
-        return StandaloneTests.start(self,path=binpath)
+        try:
+            return StandaloneTests.start(self,path=binpath)
+        except AssertionError as exc:
+            # These are isolated synthetic fixtures, never a production profile.
+            # Retain bounded diagnostics before the private fixture is deleted.
+            evidence = os.environ.get('QIKVRT_BROWSER_TEST_EVIDENCE')
+            if evidence:
+                p=Path(evidence);p.mkdir(parents=True,exist_ok=True)
+                logs={f.name:f.read_bytes()[-65536:].decode('utf-8','replace').replace('Test9Vnc','<synthetic-password>')
+                    for f in (self.volume/'browser/logs').glob('*.log')}
+                (p/('FAILURE_'+self._testMethodName+'.json')).write_bytes(host.raw_json({
+                    'source_head':self.head,'source_tree':self.tree,'manifest_sha256':self.pin,
+                    'runtime_failure':str(exc),'fixture_component_logs':logs,'effect_ack_done':False}))
+            raise
 
     def websocket_rfb_auth(self):
         with socket.create_connection(('127.0.0.1',self.config['novnc_port']),timeout=5) as s:

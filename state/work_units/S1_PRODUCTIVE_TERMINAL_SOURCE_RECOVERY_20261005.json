@@ -470,16 +470,16 @@
       "sha256": "372d2265978332beb02da44bd277d0d78924f418fe0a369a94b99844a1f15e22"
     },
     {
-      "bytes": 8159,
-      "git_blob_sha1": "f05c8001da6425a2c5a4c9a17fcf7863f39dce12",
+      "bytes": 9042,
+      "git_blob_sha1": "25e301ef24fb2203c38ee25fc685f33e98338d79",
       "path": "tests/test_self_host_firefox.py",
-      "sha256": "00a77767c1a71103445d8afe8619dcc481a33acc7ab680e23a42db5651407ee6"
+      "sha256": "f3d0808951772ed20cddd8b866320264ed5bf04b10d84048ba96f3f4a8609014"
     },
     {
-      "bytes": 8747,
-      "git_blob_sha1": "3338d4cd34a71e923d3212d75a24ed329f1db5c8",
+      "bytes": 10400,
+      "git_blob_sha1": "0d444ae11b84baf790e00be062268346002b9ded",
       "path": "tests/test_self_host_temdd.py",
-      "sha256": "b218fcbf23530a0c6ebac955cade0a1473242b5150974a97f6dad099d684bde5"
+      "sha256": "eaabaa8149736bf638741168e26e7c3fbb8feec48c7391edeac04556d90c160b"
     },
     {
       "bytes": 21663,
@@ -518,10 +518,10 @@
       "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd"
     },
     {
-      "bytes": 28714,
-      "git_blob_sha1": "701d02107616d207a37bc56ef33dbd3e1e41d608",
+      "bytes": 28955,
+      "git_blob_sha1": "1b10ad42347a44fe402e117dba4592c1950c5a4f",
       "path": "tools/qikvrt_self_host.py",
-      "sha256": "e6cdaf8e57ad8a98969ce0f148e8b69e7203a82e69c05828c39e0760f108dd2c"
+      "sha256": "d1e42b243e6516e16f8d7a8dc08e6b03b396211b2dcd42e85769d4c4f1e0dc9c"
     }
   ],
   "local_validation": {
@@ -557,6 +557,23 @@
       "job_id": 111591981593,
       "repair": "Restore the original named test target as an unconditional dependency of self-host-test and an explicit S1-profile dependency of make test; original tests remain byte-identical; preserve generic portable platform contract; preserve original broad TEMDD workflow unchanged as archived source and add a real focused S1 native workflow instead of invoking the unavailable historical compiler/backend closure",
       "run_id": 37255635654
+    },
+    {
+      "cause_inference": "The launcher inherits the deliberately dead HTTP_PROXY fixture; its default urllib opener routes the loopback noVNC startup read through that proxy although child browser env is clean",
+      "effect_ack_done": false,
+      "failed_head": "fe06b23d43b08a9da6c6f22bc2d8c20f8fc9d799",
+      "failed_tree": "f6291fdb27492cff65b8d1dca0cfb80b0275dd56",
+      "failure": "BROWSER_STARTUP_READBACK_TIMEOUT; seven actual Firefox positive-start cases fail; native cases pass; no positive browser runtime receipt",
+      "fresh_runtime_gates": "REQUIRED_ON_SUCCESSOR; NO_INHERITED_PASS",
+      "job_id": 111593667702,
+      "local_causal_regression": {
+        "actual_control": "Default opener fails against the dead inherited proxy; explicit no-proxy opener returns byte-exact actual loopback HTTP and rejects different local asset bytes",
+        "command": "python3 -B -m unittest -v tests.test_self_host_temdd.SourceRecoveryTests",
+        "exit_code": 0,
+        "tests": 3
+      },
+      "repair": "Explicit no-proxy loopback noVNC opener; name each readiness edge; retain bounded synthetic CI component failure logs; no readiness timeout enlargement or gate removal",
+      "run_id": 37256188418
     }
   ],
   "schema": "qikvrt-attributable-work-unit/v1",

@@ -12,11 +12,39 @@ import sqlite3
 import subprocess
 import sys
 import unittest
+import tempfile
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import threading
+import urllib.error
+import urllib.request
+from unittest.mock import patch
 
 from tests.test_self_host import StandaloneTests, host, ROOT
 
 
 class SourceRecoveryTests(unittest.TestCase):
+    def test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy(self):
+        raw = b'<!doctype html><title>actual local noVNC asset fixture</title>'
+        class Handler(BaseHTTPRequestHandler):
+            def log_message(self, *args): pass
+            def do_GET(self):
+                self.send_response(200); self.send_header('Content-Length', str(len(raw)))
+                self.end_headers(); self.wfile.write(raw)
+        with tempfile.TemporaryDirectory() as tmp:
+            package = Path(tmp); asset = package/'runtime/self-host/novnc/vnc.html'
+            asset.parent.mkdir(parents=True); asset.write_bytes(raw)
+            server = ThreadingHTTPServer(('127.0.0.1',0), Handler)
+            thread = threading.Thread(target=server.serve_forever); thread.start()
+            try:
+                bad = 'http://127.0.0.1:1'
+                with patch.dict(os.environ, {'HTTP_PROXY':bad,'http_proxy':bad,'NO_PROXY':'','no_proxy':''}):
+                    with self.assertRaises(urllib.error.URLError):
+                        urllib.request.build_opener().open('http://127.0.0.1:'+str(server.server_port)+'/vnc.html', timeout=1)
+                    self.assertTrue(host.novnc_readback(package, server.server_port))
+                    asset.write_bytes(b'unadmitted other asset')
+                    self.assertFalse(host.novnc_readback(package, server.server_port))
+            finally: server.shutdown(); server.server_close(); thread.join()
+
     def test_every_recovered_source_keeps_its_original_blob_identity(self):
         r = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_20261005.json').read_bytes())
         self.assertEqual(r['result'], 'EXACT_HISTORICAL_ORIGINAL_BLOBS_RECOVERED')
