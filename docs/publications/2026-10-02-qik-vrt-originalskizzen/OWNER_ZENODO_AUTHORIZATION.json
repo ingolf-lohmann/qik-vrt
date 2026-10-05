@@ -1,0 +1,183 @@
+{
+  "_license": {
+    "classification": "owner_effect_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authorization_event": {
+    "authorized_at": "2026-10-02T14:49:37Z",
+    "candidate_return_receipt_sha256": "4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5",
+    "channel": "ChatGPT Work explicit canonical owner message",
+    "decision": "AUTHORIZE_EXACT_UPLOAD",
+    "exact_statement": "AUTHORIZE_EXACT_UPLOAD authorization_id=original-sketches-exact-upload-20261002-60dbe5f6eb284b12b2586470878ed0e6 publication_id=qikvrt-original-sketches-20261002-v1 return_sha256=4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5 metadata_sha256=6672ea5da380192fe191a4ddc1d8107c705e22ac840f96aa29c2ee08afd03ad6 machine_proof_sha256=99693d3c9407a5f755b6316aa543f99f53d32c655d2a38b5cfba1cf678bfeaaa",
+    "principal": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON"
+    },
+    "statement_sha256": "9c9f093316e6cb517e581596d10afde818b58b985e2e565b7815304ee9ac9af7"
+  },
+  "authorization_id": "original-sketches-exact-upload-20261002-60dbe5f6eb284b12b2586470878ed0e6",
+  "authorized_effects": [
+    "ACQUIRE_REPOSITORY_REMOTE_CONSUMPTION_LOCK",
+    "CREATE_PRODUCTION_ZENODO_RECORD",
+    "UPLOAD_EXACT_AUTHORIZED_FILES",
+    "PUBLISH_PRODUCTION_ZENODO_RECORD",
+    "VERIFY_PUBLIC_BYTE_EXACT_REDOWNLOAD",
+    "PERSIST_PUBLICATION_EVIDENCE"
+  ],
+  "candidate_return_receipt": {
+    "bytes": 3271,
+    "git_blob_sha": "02f4a1f89eaa4f4203c1727b6d2ad6507fb7a1f5",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PREPUBLICATION_RETURN_RECEIPT.json",
+    "sha256": "4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5"
+  },
+  "canonical_metadata_sha256": "6672ea5da380192fe191a4ddc1d8107c705e22ac840f96aa29c2ee08afd03ad6",
+  "machine_proof": {
+    "bytes": 14043,
+    "git_blob_sha": "2f24b91c386aa5b73b5a9223ff4c8fb965206f52",
+    "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+    "sha256": "99693d3c9407a5f755b6316aa543f99f53d32c655d2a38b5cfba1cf678bfeaaa"
+  },
+  "nonce": "c3ab426fe440a3a2b2e46ec3d111cd696aea5c7d060940b905804e026fd4a345",
+  "principal": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "publication_evidence_path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/zenodo-publication.json",
+  "publication_id": "qikvrt-original-sketches-20261002-v1",
+  "repository": "Goldkelch/qik-vrt",
+  "schema": "qikvrt_zenodo_owner_authorization_v1",
+  "single_use": true,
+  "single_use_scope": "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED",
+  "source_head": "c31a479c51e71bcf06fd62e1ea909d400e345bfe",
+  "uploads": [
+    {
+      "bytes": 5030,
+      "git_blob_sha": "49e2748ba0aee1cbf58220cdf1fc85c04de25a67",
+      "name": "README.md",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/README.md",
+      "sha256": "e984d34ec6509c78016988349e5ea82b92eab99786f3583113fe1a4980619b2e"
+    },
+    {
+      "bytes": 537515,
+      "git_blob_sha": "516996dbfc79375f8a7f0954d99a6b462156cfdc",
+      "name": "IMG_1096.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1096.jpeg",
+      "sha256": "fb8e50dddbdcb44fff569060c6942b03ab5a8a329fc836c18b9951e6c2cd6f02"
+    },
+    {
+      "bytes": 415168,
+      "git_blob_sha": "49e32ac369cfab3194bcafe6e65b50c217cbaf69",
+      "name": "IMG_1097.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1097.jpeg",
+      "sha256": "156c7029b7a4e2388f47a3cf1707dbbc7c79a98041eb224b8374ae35f7cb25fb"
+    },
+    {
+      "bytes": 347424,
+      "git_blob_sha": "a20622e70b8574f1ebdd5826f2184605931c2703",
+      "name": "IMG_1098.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1098.jpeg",
+      "sha256": "a060f5895f3c2cfd2170c0f9d23d45267ee865fcfc93de828adaa42f4300345c"
+    },
+    {
+      "bytes": 387781,
+      "git_blob_sha": "10464666e58aebcbc26df9f386bea9fc802b3696",
+      "name": "IMG_1099.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1099.jpeg",
+      "sha256": "c59575a5f55bf6113e8e1139615c7c734e69de661f8e57d9b5eb6c1586ee12d1"
+    },
+    {
+      "bytes": 412525,
+      "git_blob_sha": "feebe67861403377caf3148f1914c18ebc43c5d3",
+      "name": "IMG_1100.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1100.jpeg",
+      "sha256": "a7e9dd934e5e94c543899cfec90c0b357c10e2ac2f9a1f99731e902ceb9d7609"
+    },
+    {
+      "bytes": 388429,
+      "git_blob_sha": "7d3c351cd302316706110d6bb98a79d90ec3f0fd",
+      "name": "IMG_1101.jpeg",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/originals/IMG_1101.jpeg",
+      "sha256": "1bf3df251bbdb14218dcfb1cabec6c77d87ea771b195e9c75ac64e0ea2a2e8a9"
+    },
+    {
+      "bytes": 1657,
+      "git_blob_sha": "692343116070ccbcbd09c5055d99727474c6b45e",
+      "name": "ZENODO_METADATA_V2.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ZENODO_METADATA_V2.json",
+      "sha256": "e2379c87bb8fde78a1fa239a53a50eb916a052f3413f9bcf33a947cfa54e2819"
+    },
+    {
+      "bytes": 6395,
+      "git_blob_sha": "0331573a007acdceeac87134ab8eab523ab6fd57",
+      "name": "ARCHIVE_MANIFEST.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ARCHIVE_MANIFEST.json",
+      "sha256": "770e898745ddabec84d8beefdca38571949082a75200db074bdc36136f46aa59"
+    },
+    {
+      "bytes": 8349,
+      "git_blob_sha": "8e829703a0939b037a44ebd0784a944263df649b",
+      "name": "CLAIM_MATRIX.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX.json",
+      "sha256": "d4d4fd470d7dd9426a79b52b9ebd07eae05abf6feccfce43a9acfe83bc59e0ed"
+    },
+    {
+      "bytes": 5991,
+      "git_blob_sha": "228ab9c84f33ed3af528b09eba65ed4845598c2c",
+      "name": "CLAIM_MATRIX_V2.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/CLAIM_MATRIX_V2.json",
+      "sha256": "fb9fe18be03c23eaa58bc5747bc3617d574bf75f9e3b186da600a05d48df1b6c"
+    },
+    {
+      "bytes": 17184,
+      "git_blob_sha": "302fa52150b29a2e562200986f5a10e9bee82255",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "4677c2abf16af461f9f404ebad3293bfff4e3334c3e387f861ca2a4e86ed6e6e"
+    },
+    {
+      "bytes": 2934,
+      "git_blob_sha": "7ceb083429e5e5cbd72aba0711e3547c050cf036",
+      "name": "ORIGIN_AND_PUBLICATION_STATUS.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/ORIGIN_AND_PUBLICATION_STATUS.json",
+      "sha256": "90974089852b2b810244e8acd9f2e4bacd02eaf62f88729e87e1557170c86b10"
+    },
+    {
+      "bytes": 3609,
+      "git_blob_sha": "b2673a73053333eba99606f376ab772af9bbd3f2",
+      "name": "FROZEN_UPLOAD_CANDIDATE.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/FROZEN_UPLOAD_CANDIDATE.json",
+      "sha256": "ccaeebe732f181fe479855fa2cf71ee74495e2735522d58398140ddaf83b6572"
+    },
+    {
+      "bytes": 3104,
+      "git_blob_sha": "5c087314f31c16a537af8e1a1d24f0adb3b94cad",
+      "name": "RETURN_TO_OWNER.md",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/RETURN_TO_OWNER.md",
+      "sha256": "5e643801fcb280e72350509b3dfbbd94e3a213f308eda3e4b083f876c9400ad6"
+    },
+    {
+      "bytes": 4343,
+      "git_blob_sha": "c37c491043d6784683f7b925071b30f970fc6aa0",
+      "name": "BOUNDARY_TEST_REPORT.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/BOUNDARY_TEST_REPORT.json",
+      "sha256": "747f5082b4337c831b3b06f7caa50d1910a72434a7958a56a071fea5a002abdb"
+    },
+    {
+      "bytes": 3271,
+      "git_blob_sha": "02f4a1f89eaa4f4203c1727b6d2ad6507fb7a1f5",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "4f7a05f4deb082949e8bc5ac01d13db1f8bea0643b80ebabf2d38601ce6b60b5"
+    },
+    {
+      "bytes": 14043,
+      "git_blob_sha": "2f24b91c386aa5b73b5a9223ff4c8fb965206f52",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "path": "docs/publications/2026-10-02-qik-vrt-originalskizzen/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "99693d3c9407a5f755b6316aa543f99f53d32c655d2a38b5cfba1cf678bfeaaa"
+    }
+  ]
+}
