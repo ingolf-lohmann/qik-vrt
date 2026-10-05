@@ -17,6 +17,12 @@ Repository evidence is authoritative over conversation memory. The declared
 repositories are symmetrically canonical only for a scope whose exact bytes and
 state have been verified equivalent.
 
+For Ingolf Lohmann's personal reminder requests, the standing Owner rule is
+repository-native persistence and execution, not a new local ChatGPT schedule.
+Read `personal/ingolf-lohmann/reminders/README.md` and its versioned registry.
+Keep sensitive details private; public repository entries use neutral labels
+and authenticated references. Existing independent tasks retain their scopes.
+
 The architecture/implementation licensing boundary in `AI_CONTEXT.json` is
 mandatory context: freely available architecture and interoperability
 specifications do not automatically grant an open-source license for the

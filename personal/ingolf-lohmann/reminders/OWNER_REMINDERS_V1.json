@@ -1,0 +1,31 @@
+{
+  "schema": "qikvrt_owner_reminders_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "owner": "ingolf-lohmann",
+  "reminders": [
+    {
+      "id": "prepared-payment-20261006",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T08:30:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "d52c4ddfae4345d5a3f83c9625f51790609f287a",
+      "title": "Vorbereitete Zahlung prüfen und persönlich freigeben",
+      "private_artifacts": [
+        {
+          "label": "Zahlungspaket",
+          "library_file_id": "libfile_b59341d02fec8191825a4242fb210c28",
+          "version": 0,
+          "sha256": "e8ae06e61ba79552465b8f3c6521ccb801521ef11b424dbf7412c64bf978d8f0"
+        },
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_f204e8fd2c8c8191bb0fdee8af7195c8",
+          "version": 0,
+          "sha256": "5a98574268b548917d2f6cc79923477351476df381201c77a2b62539b6456fd5"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    }
+  ]
+}
