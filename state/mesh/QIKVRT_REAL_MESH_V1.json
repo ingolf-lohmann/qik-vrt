@@ -1,0 +1,96 @@
+{
+  "schema": "qikvrt_real_mesh_contract_v1",
+  "mesh_id": "QIKVRT_REAL_MULTI_PAIR_MESH_V1",
+  "purpose": "Execute a bounded multi-pair QIK-VRT runtime over independent event-driven TCP node processes instead of treating a static Authority/Mirror pair projection as a complete mesh.",
+  "minimum_topology": {
+    "pair_count": 2,
+    "node_process_count": 4,
+    "pair_shape": "EXACTLY_ONE_AUTHORITY_AND_ONE_MIRROR",
+    "peer_graph": "CONNECTED_CYCLIC_EVERY_NODE_DEGREE_AT_LEAST_TWO",
+    "redundant_routes_required": true
+  },
+  "transport": {
+    "protocol": "CANONICAL_NEWLINE_DELIMITED_JSON_OVER_TCP",
+    "network_scope": "LOOPBACK_TCP_ONLY",
+    "event_model": "SOCKET_EVENT_DRIVEN_NO_DOMAIN_POLLING",
+    "maximum_frame_bytes": 1048576,
+    "watchdog_timeout_is_domain_work": false,
+    "general_internet_reachability": false
+  },
+  "node_contract": {
+    "independent_process": true,
+    "append_only_hash_linked_ledger": true,
+    "restart_reconstruction": true,
+    "idempotent_exact_replay": true,
+    "message_id_rebinding": "EFFECT_ACK_BLOCK",
+    "payload_hash_tamper": "EFFECT_ACK_BLOCK",
+    "partition": "EFFECT_ACK_CONTINUE_WITHOUT_ORDINARY_RELEASE"
+  },
+  "pair_contract": {
+    "DIVERGED_is_observable": true,
+    "DIVERGED_authorizes_synchronization": false,
+    "tree_equality_implied_by_transport": false,
+    "repository_roles_remain_distinct": true
+  },
+  "effect_ack": {
+    "state_machine": "src/qikvrt_effect_ack.py",
+    "completion_scope": "BOUNDED_LOOPBACK_MULTI_PAIR_MESSAGE_DELIVERY_ONLY",
+    "all_hop_ledgers_must_be_reobserved": true,
+    "transport_ack_is_effect_ack": false
+  },
+  "effect_boundary": {
+    "external_effect": "NONE",
+    "general_effect_ack_done": false,
+    "general_internet_reachability": false,
+    "production_deployment": false,
+    "physical_hardware_execution": false,
+    "authority_mirror_synchronization": false,
+    "authority_mirror_equality_claimed": false,
+    "merge": false,
+    "PASS": false,
+    "FINAL_PASS": false
+  },
+  "multitasking_contract": {
+    "scope": "EXACT_IMPLEMENTATION_CHECKOUT_LOOPBACK_ROLE_PROCESSES_AND_DECLARED_LEDGER_CORPUS",
+    "runner": "tools/qikvrt_real_mesh_system_verification.py multitasking",
+    "node_counts": [
+      4,
+      8,
+      16
+    ],
+    "repetitions_per_count": 3,
+    "serialization": "SAME_MESSAGE_ID_ONLY; LEDGER_APPENDS_ARE_SYNCHRONOUS_IN_ONE_EVENT_LOOP",
+    "required_invariants": [
+      "INDEPENDENT_MESSAGE_PROGRESS_DURING_BLOCKED_HOP_ON_EACH_ROLE",
+      "CROSSING_ROUTES_WITHOUT_NODE_LOCK_CYCLE",
+      "CANCELLED_WAITER_PRESERVES_SINGLE_MESSAGE_LOCK",
+      "EXACT_REPLAY_NO_DUPLICATE_EFFECT",
+      "REBOUND_MESSAGE_ID_FAILS_CLOSED",
+      "FAILED_HOP_PRESERVED_WITHOUT_STOPPING_UNRELATED_TASK",
+      "EVERY_NODE_OBSERVED_AT_LEAST_TWO_UNFINISHED_MESSAGES",
+      "ALL_ACCEPTED_MESSAGES_COMPLETE_WITH_FRESH_PER_HOP_READBACK",
+      "ALL_PROCESSES_RESTART_AND_EXACT_REPLAY_LEAVES_LEDGER_BYTES_UNCHANGED",
+      "CONSOLIDATED_CORPUS_MEMBERSHIP_AND_BYTES_MATCH_EVERY_INPUT"
+    ],
+    "repository_pair_acceptance": "EACH_REPOSITORY_REQUIRES_ITS_OWN_EXACT_CLEAN_CHECKOUT_EXECUTION; COUNTERPART_REFERENCE_IS_NOT_EXECUTION",
+    "temdd_boundary": "Preserve T1-T16; this workload does not replace separate full TEMDD conformance, native review, Main integration or public product readback.",
+    "whole_repository_completion": false,
+    "unbounded_scalability": false,
+    "qualification": {
+      "verifier": "tools/qikvrt_real_mesh_system_verification.py verify-multitasking",
+      "rule": "NO_QUALIFICATION_WITHOUT_EXACT_CLEAN_SUBJECT_CURRENT_INPUT_VERSIONS_ALL_NINE_TRIALS_AND_ORIGINAL_CORPUS_READBACK",
+      "mutation_rule": "ANY_SUBJECT_INPUT_OR_RUNTIME_VERSION_CHANGE_INVALIDATES_QUALIFICATION",
+      "per_repository_execution_required": true,
+      "reference_is_execution": false,
+      "qualification_is_hosted_run_authentication": false,
+      "continuous_operation_proven": false,
+      "unbounded_scalability_proven": false,
+      "missing_failed_stale_or_incomplete_evidence": "BLOCK_UNQUALIFIED",
+      "production_activation": "SEPARATE_PROTECTED_MAIN_REVIEW_AND_EXECUTION_BOUNDARY",
+      "future_regression_prevention": "EXECUTABLE_NEGATIVE_CONTROLS_IN_CANONICAL_MAKE_TEST_AND_EXISTING_REAL_MESH_WORKFLOW",
+      "proof_scope": "DECLARED_4_8_16_NODE_WORKLOAD_AND_EXACT_IMPLEMENTATION_VERSION_ONLY",
+      "reobservation": "EXISTING_REAL_MESH_WORKFLOW_ON_EVERY_PR_HEAD_MAIN_PUSH_AND_15_MINUTE_DEFAULT_BRANCH_SCHEDULE",
+      "schedule_activation": "ONLY_AFTER_PROTECTED_DEFAULT_BRANCH_PROMOTION"
+    }
+  }
+}

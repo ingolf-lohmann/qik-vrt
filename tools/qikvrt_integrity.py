@@ -78,6 +78,7 @@ TRANSIENT_PREFIXES = (
     "unit_state/",
     "e2e_state/",
     ".qikvrt/runtime/",
+    ".qikvrt/real-mesh/",
     ".qikvrt/evidence/",
     ".qikvrt/api/",
     ".qikvrt/toolchains/",
@@ -766,6 +767,7 @@ def classification(relative: str) -> tuple[str, bool, str]:
         for prefix in (
             "logs/",
             ".qikvrt/runtime/",
+            ".qikvrt/real-mesh/",
             ".qikvrt/evidence/",
             ".qikvrt/api/",
             ".qikvrt/toolchains/",

@@ -1,0 +1,159 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "repository_internal_repair_work_unit_json"
+  },
+  "schema": "qikvrt_provenance_bound_work_unit_v1",
+  "work_unit_id": "REFLEXIVE_PIPELINE_DELIVERY_ERROR_20260930",
+  "created_at": "2026-09-30T17:42:48.667Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "repair/scaling-lossless-worker-v1",
+  "source_commit": "558b574c77284e62de1d89e6821496c711ac76a5",
+  "source_tree": "39dfbc19f19ddda86f47b2100a5d4fb3becf668f",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner; explicit repair authorization"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "identity_limit": "No independent human review identity is claimed."
+  },
+  "human_contributions": [
+    "Classify failure to deliver an open pipeline obligation as an error.",
+    "Authorize immediate reflexive application of existing repository diagnosis, repair and readback rules."
+  ],
+  "artificial_cognitive_contributions": [
+    "Read current repository, native jobs, logs and historical readback reconciliation.",
+    "Extend the existing watchdog to retain a fail-closed observation-error receipt.",
+    "Reproduce failures, execute targeted tests and regenerate integrity.",
+    "Reobserve and preserve the existing native legacy repair after concurrent PR head advance; do not duplicate it."
+  ],
+  "joint_components": [
+    {
+      "human": "Requirement and authorization",
+      "artificial_cognitive": "Implementation and bounded technical verification"
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "kind": "HISTORICAL_RECONCILIATION",
+      "file": "qikvrt-readback-closure-20260930.zip",
+      "run_id": 36730661657,
+      "attempt": 1,
+      "job_id": 109940857205,
+      "head": "d5c3744115e0b38708b81bd5356da30b2e10a3ef",
+      "tree": "bd660c8beaef8b45da56bfa52c332ea6584c2b37",
+      "ledger_commit": "473547667ce86a7134f443b9fbc79b7d85f18a2c",
+      "inner_artifact_sha256": "2032884161167786299cc6919658789b09193aac97ccd33d0904c316abd2cc8b",
+      "finding": "Receipts persisted; downstream queue step failed. Historical persistence is not a failed write and is not fresh candidate acceptance."
+    },
+    {
+      "kind": "NATIVE_OBSERVATION_FAILURE",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "c3fb7f570c55e4494a88cceae89ed0e42d989191",
+      "tree": "b48329215641dd59b90dfdc382f6292c881f3cce",
+      "run_id": 36750412284,
+      "job_id": 110007286200,
+      "artifact_id": 11114357371,
+      "observed_error": "gh: Not Found (HTTP 404)",
+      "failed_step": "Reobserve exact head, tree, runs, jobs, and previous reflexive receipt",
+      "observed_at": "2026-09-30T17:18:28.2380703Z",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/36750412284"
+    },
+    {
+      "kind": "NATIVE_LEGACY_SELF_DIRTY_FAILURE",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "head": "4867c2f3698af05853502568e738ae77d6375ad2",
+      "run_id": 36722700312,
+      "job_id": 109911606429,
+      "workflow_blob": "f400e1a423c9ab0bf9cc96339814673360ce32c9",
+      "observed_error": "BLOCK repository manifest differs from deterministic regeneration",
+      "prepared_patch": "QIKVRT_PR410_LEGACY_MULTI_PAIR_SCRATCH.patch"
+    }
+  ],
+  "outputs": {
+    "repair_paths": [
+      ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "tools/qikvrt_reflexive_repository_watchdog.py",
+      "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "docs/REFLEXIVE_REPOSITORY_WATCHDOG.md",
+      "policy/repository-status-stall-detection-v1.md"
+    ],
+    "native_receipt_schema": "qikvrt_reflexive_observation_failure_receipt_v1",
+    "integrity_projection": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ]
+  },
+  "git_history": {
+    "method": "APPEND_ONLY_SUCCESSOR_OF_CURRENT_PR410_HEAD",
+    "force_push": false,
+    "new_parallel_controller": false,
+    "initial_observed_head": "4867c2f3698af05853502568e738ae77d6375ad2",
+    "rebound_to_existing_successor": "558b574c77284e62de1d89e6821496c711ac76a5"
+  },
+  "verification": {
+    "scope": "LOCAL_REGRESSION_AND_EXPECTED_NATIVE_SUCCESSOR_EXECUTION",
+    "watchdog_negative_controls": [
+      "Authority readback 404 keeps the observation step failed and emits exact-bound HOLD.",
+      "Invalid identity and zero exit code rejected.",
+      "Checkout drift cannot claim exact binding."
+    ],
+    "legacy_negative_controls": [
+      "Historical original workflow reproduces manifest drift.",
+      "Existing successor 4a631ed1cff019fc0667ec91a512b6d34d346cff declares generated real-Mesh artifacts transient; preserve that tested source."
+    ],
+    "targeted_local_tests": {
+      "modules": [
+        "tests.test_qikvrt_reflexive_repository_watchdog",
+        "tests.test_qikvrt_workflow_executor_mesh_contract",
+        "tests.test_seed_workflows",
+        "tests.test_qikvrt_real_mesh",
+        "tests.test_integrity"
+      ],
+      "count": 56,
+      "status": "PASS",
+      "source_parent": "558b574c77284e62de1d89e6821496c711ac76a5"
+    },
+    "workflow_shell_and_embedded_python_syntax": "PASS",
+    "integrity": "REGENERATE_AND_VERIFY_BEFORE_REF_ADVANCE",
+    "native_successor_execution": "PENDING"
+  },
+  "human_decision": {
+    "state": "ACCEPTED",
+    "scope": "Immediate implementation of the stated bounded repair requirement",
+    "native_exact_successor_code_owner_approval": false
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "ruleset_change": false,
+    "credential_provisioning": false
+  },
+  "retained_blockers": {
+    "authority_current_readback": "HTTP 404 on current client route; cause not established",
+    "authority_historical_queue_repair_activation": "NOT_ESTABLISHED_BY_THIS_WORK_UNIT",
+    "protected_integration": "FRESH_CODE_OWNER_REVIEW_AND_REQUIRED_GATES_STILL_REQUIRED"
+  },
+  "continuation": {
+    "state": "CANDIDATE_READY_FOR_EXACT_SUCCESSOR_VALIDATION",
+    "next_action": "READ_BACK_NATIVE_SUCCESSOR_RECEIPTS; restore failed authorized Authority access and resume the existing Authority work unit",
+    "no_claim_from_artifact_upload": true,
+    "predecessor_evidence_transfer": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}
