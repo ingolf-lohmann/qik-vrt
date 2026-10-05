@@ -1,0 +1,119 @@
+{
+  "_license": "CC-BY-NC-ND-4.0",
+  "boundaries": {
+    "all_nodes_persisted": false,
+    "deployed_supervisor_verified": false,
+    "effect_ack_done": false,
+    "node_synchronization_verified": false,
+    "public_byte_readback": false,
+    "real_authenticated_login_verified": false,
+    "real_provider_credentials_used": false,
+    "zenodo_published": false
+  },
+  "implementation_base_head": "86e0ba74eb0f4784f1e302805932b8f1c532f34c",
+  "implementation_base_tree": "3946d444c2ed3eea14a6d12ec7a5696526e8d9c9",
+  "implementation_files": [
+    {
+      "bytes": 12048,
+      "git_blob_sha1": "b78532728818236c1aa4fe126e17258c694513ff",
+      "path": "Makefile",
+      "sha256": "712ee6ac1ae0d7e34c0de45c1a7c128c39d34f91ab03bf4ff6402b969b8b26bb"
+    },
+    {
+      "bytes": 76749,
+      "git_blob_sha1": "b6e23b3132b5c63785d241f7311d09dcd209161f",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "5dc1e3680cdb648254e3519692e8754c4e0115a02212d16a219a857e3a7e94d7"
+    },
+    {
+      "bytes": 14088,
+      "git_blob_sha1": "c947024dd8fed7c9279e90693a001d4902633909",
+      "path": "tests/test_self_host_publication.py",
+      "sha256": "d5b854b2f0de203a0e6f539395389b0d4fe6f63417af91d320a196dde66fb9b2"
+    },
+    {
+      "bytes": 4536,
+      "git_blob_sha1": "af4b70e719a7e7fc144d94ea009e1305d5131d08",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "3e85ae8dcc99f4db9ee4f801125aad7ec8418f3f80389d29237fa1603b800a86"
+    },
+    {
+      "bytes": 25234,
+      "git_blob_sha1": "9375f628c033069cbcb0a223cbea9f5988f31d1b",
+      "path": "runtime/self-host/README.md",
+      "sha256": "25e59e100c604a138d26b2cb928114ae73a2d188ce0bc59b1f5952608215e579"
+    },
+    {
+      "bytes": 5421,
+      "git_blob_sha1": "c21eef88286a588daa9ac0edede02f1a6086e5bf",
+      "path": "runtime/self-host/PUBLICATION.md",
+      "sha256": "1128228de229408912906445c744491746239c9549dacf7943b80e9533301aa4"
+    },
+    {
+      "bytes": 605,
+      "git_blob_sha1": "8dccb828350fd2c4f5b14fcb07f90172d6d8826d",
+      "path": "runtime/self-host/PUBLICATION_REQUEST.example.json",
+      "sha256": "6591771d01756d68a658f935cd47e351acdba74aebf55475e90f1bbf09b7730b"
+    },
+    {
+      "bytes": 826,
+      "git_blob_sha1": "bc7eb8c2ad48b553ad326fe960207e8c1854568e",
+      "path": "runtime/self-host/PUBLICATION_CREDENTIAL_REFERENCES.example.json",
+      "sha256": "e5a1bd4aad58ace85cbc30f0afc5786bb57468cd6aae64afeeab9cb1ed86e3f0"
+    }
+  ],
+  "observed_utc": "2026-10-05T14:57:18.315545+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt-publication-runtime-adapter-test-readback/v1",
+  "source_worktree_dirty": true,
+  "tests": {
+    "independent_unix_socket_probe": {
+      "classification": "LOCAL_EXECUTION_ENVIRONMENT_RESTRICTION",
+      "creation_verified": false,
+      "errno": 1,
+      "reason": "Operation not permitted",
+      "source_daemon_changed": false
+    },
+    "local_standalone_and_migration_regression": {
+      "adapter_tests_at_that_observation": 12,
+      "command": "python3 -B -m unittest -v tests.test_self_host_publication tests.test_self_host tests.test_self_host_temdd tests.test_self_host_migration",
+      "failure": "Native ingress socket creation: PermissionError errno 1 Operation not permitted",
+      "failures": 11,
+      "log_digest": {
+        "bytes": 30841,
+        "sha256": "7782f0fb70b1477149fa5ca1e5b93466b6c0997f22d424ec7e201e82e490bc09"
+      },
+      "result": "FAIL_ENVIRONMENT_BOUNDARY",
+      "tests_run": 100
+    },
+    "publication_adapter": {
+      "command": "python3 -B -m unittest -v tests.test_self_host_publication",
+      "external_publication_effects_mocked": true,
+      "log_digest": {
+        "bytes": 2949,
+        "sha256": "7773c6c17963ee21f5aed2e7c71e02b293bb2667e7484bdedaa3eece9442db6f"
+      },
+      "result": "PASS",
+      "tests_run": 16
+    },
+    "repository_and_monitor": {
+      "command": "make test repository-monitor-test",
+      "historical_test_source": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "log_digest": {
+        "bytes": 108434,
+        "sha256": "b8813243a823a99122953fb709df8ef94200a9826c2f6a35f40c47dc009ddfcf"
+      },
+      "missing_historical_source_repaired_by": "Exact depth-one read-only fetch; no complete-history restoration claimed",
+      "result": "PASS"
+    },
+    "unchanged_publisher_machine_proof_policy": {
+      "command": "python3 -B -m unittest -v tests.test_zenodo_machine_proof_policy",
+      "log_digest": {
+        "bytes": 13253,
+        "sha256": "d56662a7389b1b7f2e18b4ce134a2a2c4d902d7e415d309dda892c118007ef60"
+      },
+      "result": "PASS",
+      "tests_run": 68
+    }
+  }
+}

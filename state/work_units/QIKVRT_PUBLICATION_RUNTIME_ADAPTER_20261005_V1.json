@@ -1,0 +1,88 @@
+{
+  "_license": "CC-BY-NC-ND-4.0",
+  "closure": {
+    "adapter_implemented": true,
+    "all_local_regression_tests_pass": false,
+    "all_nodes_persisted": false,
+    "effect_ack_done": false,
+    "exact_head_ci_verified": false,
+    "new_adapter_tests_pass": true,
+    "node_synchronization_verified": false,
+    "production_adapter_active": false,
+    "public_byte_readback": false,
+    "repository_and_monitor_tests_pass": true,
+    "zenodo_published": false
+  },
+  "created_utc": "2026-10-05T14:52:40.875773+00:00",
+  "frozen_original_candidate": {
+    "artifact_id": 11343403081,
+    "bytes": 118774398,
+    "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+    "pull_request": 461,
+    "rebuilt": false,
+    "release_index_sha256": "3a4403cac04950bc5ba432d86c310b31380d4495a8f333451c854d4d64b6430e",
+    "replacement_authorized_by_this_work_unit": false,
+    "sha256": "c6d6cb258d8e2f35874f7783a3c802f8cd6159d6f8e8bcd2388dd375c1b011e3",
+    "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
+  },
+  "implementation_readback": {
+    "bytes": 4623,
+    "git_blob_sha1": "9a91c7b73a420550fb59c19280c8361586f543f3",
+    "path": "evidence/self_host/PUBLICATION_RUNTIME_ADAPTER_20261005.json",
+    "sha256": "0e03620a91efa39b2209b8b5d08d63aee926bcdfc772ef093d71a24e04490cb0"
+  },
+  "observed_production_boundaries": {
+    "authority_api_fresh_recheck": {
+      "account_enforcement_causation_verified": false,
+      "endpoint": "https://api.github.com/repos/Goldkelch/qik-vrt",
+      "error_code": "NOT_FOUND",
+      "head_tree_file_readback_verified": false,
+      "http_status": 404,
+      "readback_completed_before_utc": "2026-10-05T14:57:18.315928+00:00",
+      "recorded_utc": "2026-10-05T14:57:18.315928+00:00",
+      "route": "AUTHENTICATED_GITHUB_CONNECTOR_REST"
+    },
+    "authority_api_last_observed": "404 on both anonymous REST and authenticated connector at the preceding fresh observation; cannot be represented as current node receipt",
+    "pr461_v2_controls_verified": false,
+    "production_exec_callable": false,
+    "protected_register_login_success_written": false,
+    "railway_live_health": "HTTP200 READY is bounded health, not fresh Git/file or credential proof",
+    "scoped_publisher_credential_delivery_verified": false,
+    "supervisor_installed": false
+  },
+  "product_owner": {
+    "authorization": "Owner explicitly authorized implementation and legitimate use of existing QIK-VRT Terminal/Transputer/Mesh capabilities on 2026-10-05.",
+    "classification": "NORMATIVE_OWNER_REQUIREMENT",
+    "name": "Ingolf Lohmann",
+    "permanent_acceptance_criterion": "Use the existing QIK-VRT capabilities autonomously for authorized legitimate repair; archive bound pipeline results on Zenodo with independent public byte readback and fresh receipts for every required repository node.",
+    "requirement_fulfilled": false
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "required_production_prerequisites": [
+    "Fresh reachable actual Authority Goldkelch/qik-vrt and a complete exact committed execution checkout",
+    "Actual candidate-bound v2 manifest, machine proof, return receipt and canonical authorization accepted by the existing publisher",
+    "Callable independently admitted execution on the exact Terminal/Transputer carrier",
+    "Provider-managed scoped GitHub and Zenodo credential files with current reference metadata",
+    "Installed and verified exact existing-manager supervisor binding"
+  ],
+  "reuse": {
+    "launcher": "tools/qikvrt_self_host.py",
+    "new_daemon": false,
+    "new_http_shell_endpoint": false,
+    "new_publisher": false,
+    "protected_register": "Existing provider-managed credential references; adjacent protected interaction journal",
+    "publisher": "tools/qikvrt_zenodo_publish.py",
+    "publisher_source_changed": false,
+    "supervisor": "Existing systemd manager via one-shot service and prerequisite path events"
+  },
+  "schema": "qikvrt-publication-runtime-adapter-work-unit/v1",
+  "source_base": {
+    "complete_history_restoration_verified": false,
+    "head": "86e0ba74eb0f4784f1e302805932b8f1c532f34c",
+    "pull_request": 457,
+    "ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "tree": "3946d444c2ed3eea14a6d12ec7a5696526e8d9c9"
+  },
+  "state": "IMPLEMENTED_PENDING_EXACT_HEAD_CI_AND_PRODUCTION_ACTIVATION",
+  "work_unit_id": "QIKVRT_PUBLICATION_RUNTIME_ADAPTER_20261005_V1"
+}

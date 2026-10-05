@@ -1,0 +1,13 @@
+{
+  "schema": "qikvrt-publication-runtime-request/v1",
+  "repository": "Goldkelch/qik-vrt",
+  "checkout": "/private/verified-complete-authority-checkout",
+  "execution_head": "EXACT_EXECUTION_COMMIT",
+  "execution_tree": "EXACT_EXECUTION_TREE",
+  "manifest": "release/exact-candidate/publish-request.json",
+  "manifest_sha256": "INDEPENDENT_MANIFEST_SHA256",
+  "publisher_sha256": "EXACT_EXISTING_PUBLISHER_SHA256",
+  "launcher_sha256": "EXACT_REVIEWED_LAUNCHER_SHA256",
+  "python_sha256": "EXACT_PROVISIONED_INTERPRETER_SHA256",
+  "credential_registry": "/private/protected-credential-references.json"
+}
