@@ -46,12 +46,18 @@ export async function verifyClient(plan = contract, request = fetch) {
       runtime.terminal_scope === plan.terminal_scope && runtime.public_routing_verified === false &&
       runtime.adapter === plan.adapter && JSON.stringify(runtime.runtime) === JSON.stringify(plan.runtime) &&
       JSON.stringify(Object.entries(runtime.artifact_files_sha256).sort()) === JSON.stringify(Object.entries(plan.package_files).sort()) &&
-      runtime.native_terminal_daemon_available === false && runtime.effect_ack_done === false,
+      ['reference','temdd','firefox'].includes(runtime.terminal_profile) &&
+      runtime.native_terminal_daemon_available === (plan.native_terminal_daemon_included && ['temdd','firefox'].includes(runtime.terminal_profile)) && runtime.effect_ack_done === false,
       'HOLD_SELF_HOST_RUNTIME_BINDING');
     const terminal = await get('/api/terminal');
     require(terminal.manifest_sha256 === plan.manifest_sha256 && terminal.config_sha256 === plan.config_sha256 &&
       terminal.node_id === plan.node_id && terminal.public_effects === 'READ_ONLY' && terminal.effect_ack_done === false,
       'HOLD_SELF_HOST_TERMINAL_BINDING');
+    if (runtime.native_terminal_daemon_available) require(terminal.state === 'NATIVE_TEMDD_READY' &&
+      terminal.subject?.repository === plan.source_repository && terminal.subject?.head === plan.source_head &&
+      terminal.subject?.tree === plan.source_tree && Number.isSafeInteger(terminal.subject?.pr) && terminal.subject.pr > 0 &&
+      /^[a-f0-9]{32}$/.test(terminal.ledger_id || '') && terminal.public_event_bodies === false,
+      'HOLD_SELF_HOST_NATIVE_SUBJECT');
   }
   const health = await get('/health'); binding(health);
   const node = await get('/api/node'); binding(node);
@@ -110,7 +116,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       const volume = {schema:'qikvrt-self-host-volume/v1',node_id:nodeId,manifest_sha256:manifestPin,
         config_sha256:configPin,source_head:m.source_head,source_tree:m.source_tree};
       plan = {standalone:true,package_root:packageRoot,public_url:target.origin,manifest_sha256:manifestPin,
-        package_version:m.package_version,terminal_scope:m.terminal_scope,
+        package_version:m.package_version,terminal_scope:m.terminal_scope,native_terminal_daemon_included:m.native_terminal_daemon_included === true,
         volume_binding_sha256:sha(JSON.stringify(volume,Object.keys(volume).sort(),2)+'\n'),
         config_sha256:configPin,node_id:nodeId,adapter,runtime:m.runtime,source_repository:m.source_repository,
         source_head:m.source_head,source_tree:m.source_tree,version:'2026-10-04.9',

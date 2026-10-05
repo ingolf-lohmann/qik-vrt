@@ -115,12 +115,21 @@ class DurableHold(ValueError):
     """The owner-local persistence effect is not verified."""
 
 
-def durable_subject(root: str, repository: str, pr: int, head: str, tree: str) -> dict[str, Any]:
+def durable_subject(root: str, repository: str, pr: int, head: str, tree: str,
+                    manifest_pin: str | None = None) -> dict[str, Any]:
     """Require a clean, exact checkout; never relabel the running carrier."""
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
         raise DurableHold("REPOSITORY_REQUIRED")
     if type(pr) is not int or pr < 1 or not all(re.fullmatch(r"[0-9a-f]{40}", x or "") for x in (head, tree)):
         raise DurableHold("EXACT_SUBJECT_REQUIRED")
+    if manifest_pin is not None:
+        # Explicit sealed-export path. It neither probes Git nor changes the
+        # existing clean-checkout path when no independent pin is supplied.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("qikvrt_owner_self_host", Path(root) / "tools/qikvrt_self_host.py")
+        adapter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(adapter)
+        return adapter.packaged_subject(Path(root), manifest_pin, repository, pr, head, tree)
     def git(*args: str) -> str:
         return subprocess.check_output(["git", "-C", root, *args], text=True,
                                        stderr=subprocess.DEVNULL, timeout=5).strip()
@@ -573,6 +582,7 @@ def main() -> int:
     parser.add_argument("--pr", type=int)
     parser.add_argument("--expected-head")
     parser.add_argument("--expected-tree")
+    parser.add_argument("--manifest-sha256", help="independent sealed S1 export pin; avoids Git only when explicitly supplied")
     parser.add_argument("--input", type=Path)
     parser.add_argument("--prepared", type=Path)
     parser.add_argument("--prepare-hash")
@@ -581,7 +591,7 @@ def main() -> int:
         try:
             if not all((args.repository, args.pr, args.expected_head, args.expected_tree, args.input)):
                 raise DurableHold("EXACT_SUBJECT_AND_INPUT_REQUIRED")
-            subject = durable_subject(args.root, args.repository, args.pr, args.expected_head, args.expected_tree)
+            subject = durable_subject(args.root, args.repository, args.pr, args.expected_head, args.expected_tree, args.manifest_sha256)
             def load(path: Path) -> dict[str, Any]:
                 with path.open("rb") as source:
                     raw = source.read(MAX_NATIVE_EVENT * 2 + 1)

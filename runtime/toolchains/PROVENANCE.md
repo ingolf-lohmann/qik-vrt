@@ -128,3 +128,32 @@ Provision failure holds; recovery restores the exact admitted executables or
 requires a reviewed new package/volume migration. Self-host fixtures test source
 binding, denied providers, authentication, crash restart and exact readback.
 The cache registry covers both added tools and the explicit GitHub-only adapter.
+
+
+## S1 recovered Firefox/noVNC carrier
+
+The optional `self-host-firefox` profile preserves the existing Node 24 and
+Python 3.12 requirement and needs no GitHub CLI. Linux provisioning is declared
+in `runtime/self-host/Dockerfile`; startup performs no download or installation.
+The official base indexes observed on 2026-10-05 are pinned by digest:
+
+- `node:24-bookworm-slim`: `sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6`.
+- `python:3.12-slim-bookworm`: `sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3`.
+
+Debian apt resolution happens only while provisioning. An arbitrary later build
+is not claimed to reproduce those package versions. CI retains the actual OCI
+image ID and distribution versions; the frozen export pins actual Node/Python
+and browser executable hashes, Firefox version and every noVNC asset byte.
+Debian distribution-managed noVNC links are frozen as regular files within the
+explicit source tree or `/usr/share/javascript` and `/usr/share/nodejs`.
+The noVNC distribution copyright file travels with those assets. Firefox/noVNC
+use MPL-2.0, x11vnc GPL-2.0-or-later and websockify LGPL-3.0; X11 tool notices and
+other dependency licenses are carried by the actual Debian distribution image.
+No binary, private profile, password or credential is committed into the source
+package or tool cache. Existing tools retain their earlier versions and license
+boundaries. Missing Firefox dependencies produce CONTINUE readiness, not PASS.
+
+Original QIK-VRT deployment/source provenance is separately recorded in
+`evidence/self_host/SOURCE_RECOVERY_20261005.json`. The historical originals are
+not relabeled as new implementations. The S1 source/config binding and portable
+browser startup are explicitly new adapters, with no public deployment claim.

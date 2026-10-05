@@ -24,7 +24,7 @@ usage() {
     cat <<'EOF'
 Usage: tools/bootstrap-runtime.sh [--check-only] [--install]
        [--accept-third-party]
-       [--profile core|ietf|formal|audio|publication|all|self-host]
+       [--profile core|ietf|formal|audio|publication|all|self-host|self-host-firefox]
        [--adapter none|github]
        [--cache-dir PATH]
 
@@ -100,14 +100,14 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$PROFILE" in
-    core|ietf|formal|audio|publication|all|self-host) ;;
+    core|ietf|formal|audio|publication|all|self-host|self-host-firefox) ;;
     *) usage >&2; exit 2 ;;
 esac
 case "$ADAPTER" in auto|none|github) ;; *) usage >&2; exit 2 ;; esac
 if [ "$ADAPTER" = auto ]; then
-    if [ "$PROFILE" = self-host ]; then ADAPTER=none; else ADAPTER=github; fi
+    case "$PROFILE" in self-host|self-host-firefox) ADAPTER=none ;; *) ADAPTER=github ;; esac
 fi
-if [ "$PROFILE" != self-host ] && [ "$ADAPTER" != github ]; then
+if [ "$PROFILE" != self-host ] && [ "$PROFILE" != self-host-firefox ] && [ "$ADAPTER" != github ]; then
     fail "existing profiles require the GitHub adapter"
 fi
 if [ "$MODE" = install ] && [ "$ACCEPT_THIRD_PARTY" -ne 1 ]; then
@@ -425,7 +425,7 @@ check_publication_profile() {
 }
 
 case "$PROFILE" in
-    self-host)
+    self-host|self-host-firefox)
         if ! node_24_is_available; then
             mark_continue "self-host: operator-provisioned Node 24.x is absent"
         else
@@ -436,6 +436,13 @@ case "$PROFILE" in
             mark_continue "self-host: operator-provisioned Python 3.12.x is absent"
         else
             printf '%s\n' "PASS: self-host Python 3.12.x; exact executable identities are frozen by the package builder"
+        fi
+        if [ "$PROFILE" = self-host-firefox ]; then
+            [ "$(uname -s)" = Linux ] || mark_continue "self-host-firefox: Linux is required"
+            for browser_tool in firefox-esr Xvfb x11vnc websockify xdpyinfo xwininfo; do
+                command -v "$browser_tool" >/dev/null 2>&1 || mark_continue "self-host-firefox: operator-provisioned $browser_tool is absent"
+            done
+            test -s /usr/share/novnc/vnc.html && test -s /usr/share/novnc/core/rfb.js || mark_continue "self-host-firefox: complete noVNC source is absent"
         fi
         ;;
     core) check_core_profile ;;

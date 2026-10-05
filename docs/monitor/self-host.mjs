@@ -44,7 +44,9 @@ const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: 
   runtime: manifest.runtime, artifact_files_sha256: Object.fromEntries(Object.entries(manifest.files).map(([p,e]) => [p,e.sha256])),
   monitor_version: VERSION, volume_binding_sha256: hash(readFileSync(join(config.state_dir, 'binding.json'))),
   storage_scope: 'CONFIGURED_LOCAL_FILESYSTEM; HOST_PERSISTENCE_NOT_ATTESTED',
-  terminal_scope: manifest.terminal_scope, native_terminal_daemon_available: false,
+  terminal_scope: manifest.terminal_scope, terminal_profile:config.terminal_profile || 'reference',
+  native_terminal_daemon_available:manifest.native_terminal_daemon_included === true && ['temdd','firefox'].includes(config.terminal_profile),
+  browser_startup_verified:config.terminal_profile === 'firefox',
   public_routing_verified: false, effect_ack_done: false});
 async function routes(request, response, url) {
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
@@ -57,16 +59,29 @@ async function routes(request, response, url) {
   if (url.pathname === '/api/runtime') reply(response,200,binding(),'application/json',request.method);
   else if (url.pathname === '/api/terminal') {
     const token = readFileSync(config.terminal_token_file,'utf8').trim();
-    const observed = await fetch('http://127.0.0.1:'+config.terminal_port+'/terminal/state',
+    const native = ['temdd','firefox'].includes(config.terminal_profile);
+    const observed = await fetch('http://127.0.0.1:'+config.terminal_port+(native?'/api/temdd/subject':'/terminal/state'),
       {headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(3000)});
     if (!observed.ok) throw Error('LOCAL_TERMINAL_READBACK_FAILED');
     const state = await observed.json();
+    if (native) {
+      if (state.subject?.repository !== manifest.source_repository || state.subject?.head !== manifest.source_head ||
+          state.subject?.tree !== manifest.source_tree || state.subject?.pr !== config.subject_pr ||
+          !/^[a-f0-9]{32}$/.test(state.ledger_id || '') || state.dod !== false || state.evidence_transfer !== 'DENY') {
+        throw Error('LOCAL_NATIVE_TERMINAL_BINDING_MISMATCH');
+      }
+      reply(response,200,{schema:'qikvrt-self-host-terminal/v1',state:'NATIVE_TEMDD_READY',
+        node_id:config.node_id,manifest_sha256:pin,config_sha256:hash(configBytes),subject:state.subject,
+        ledger_id:state.ledger_id,native_source:'RECOVERED_HISTORICAL_ORIGINAL',public_effects:'READ_ONLY',
+        durable_input:'EXISTING_OWNER_UNIX_INGRESS',public_event_bodies:false,effect_ack_done:false},'application/json',request.method);
+      return true;
+    }
     if (state.runtime_binding?.manifest_sha256 !== pin || state.runtime_binding?.config_sha256 !== hash(configBytes) ||
         state.runtime_binding?.node_id !== config.node_id) throw Error('LOCAL_TERMINAL_BINDING_MISMATCH');
     // Personal input/records and credentials do not cross the public boundary.
     reply(response,200,{schema:'qikvrt-self-host-terminal/v1',state:'REFERENCE_HTTP_READY',
       node_id:config.node_id,manifest_sha256:pin,config_sha256:hash(configBytes),
-      public_effects:'READ_ONLY',durable_input:'EXISTING_OWNER_UNIX_INGRESS_ONLY; DAEMON_SOURCE_UNAVAILABLE',effect_ack_done:false},'application/json',request.method);
+      public_effects:'READ_ONLY',durable_input:'OWNER_UNIX_DAEMON_NOT_STARTED_IN_REFERENCE_PROFILE',effect_ack_done:false},'application/json',request.method);
   } else if (url.pathname === '/api/run') reply(response,503,{error:'GITHUB_ADAPTER_NOT_SELECTED'},'application/json',request.method);
   else if (url.pathname === '/api/repository') {
     const path = url.searchParams.get('path') || '';
@@ -102,7 +117,7 @@ const monitor = createMonitor({env,repositories,handleRequest:routes,
     local_runtime:binding(),boundaries:{workflow_success_is_effect_ack_done:false,remote_repository_observed:false}})} : {}),
 });
 monitor.server.listen(config.port,config.host,() => {
-  console.log(JSON.stringify({state:'SELF_HOST_REFERENCE_READY',source_head:manifest.source_head,
+  console.log(JSON.stringify({state:['temdd','firefox'].includes(config.terminal_profile)?'SELF_HOST_NATIVE_READY':'SELF_HOST_REFERENCE_READY',source_head:manifest.source_head,
     source_tree:manifest.source_tree,manifest_sha256:pin,config_sha256:hash(configBytes),node_id:config.node_id,
     adapter:config.adapter,effect_ack_done:false}));
 });

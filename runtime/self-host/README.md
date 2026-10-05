@@ -1,9 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.0.0
+# S1 standalone node package, version 1.1.0
 
-This package configures the existing `docs/monitor/server.mjs`, existing public
-repository terminal and existing `src/qikvrt_effect_ack_http_terminal.py`.
-It introduces no monitor, job executor, scheduler, daemon or effect ledger.
+This package reuses the existing Node monitor and reference terminal. It now
+also includes the recovered original productive TEMDD ledger/Unix daemon and
+Firefox/noVNC deployment sources from snapshot
+`c6a53e200c4835a4f871d8496feb81d953610831`. Exact source provenance and the new
+portable S1 adapter are described in [RECOVERED_TERMINAL.md](RECOVERED_TERMINAL.md).
+The recovered originals remain byte-identical. No second ledger or executor is
+introduced. Select `temdd` (the example default), `firefox`, or the compatibility
+`reference` profile explicitly. Missing profile retains the existing reference
+behavior for prior private configurations.
 Linux x86-64/ARM64 operators provision Node 24.x and Python 3.12.x. The builder
 freezes their actual patch versions, architectures and executable SHA-256;
 startup rejects any substitution. Python's renderer pin remains unchanged.
@@ -50,8 +56,8 @@ python3 -B tools/qikvrt_self_host.py run --root <package-directory> \
 ```
 
 The launcher and monitor share an OS file lock for the entire service lifetime,
-starts the existing HTTP reference terminal on loopback and the existing Node
-monitor, and shuts both down on termination. A failed bind never becomes a
+starts the selected original native or reference terminal on loopback and the
+existing Node monitor, and shuts both down on termination. A failed bind never becomes a
 ready receipt. Configure restart in the host's existing supervisor, using this
 exact command and unchanged private config. No second supervision/execution
 system or platform service is created. An isolated launcher crash leaves the
@@ -90,8 +96,9 @@ terminal at `/AI/` or `/terminal/`. Terminal repository reads resolve only
 allowlisted public exported files; the immutable package commit is explicitly
 distinguished from a current remote `main`. No public terminal effect or owner
 Unix operation is exposed. `/api/terminal` returns sanitized runtime metadata,
-not private input, record bodies, tokens or secret-file paths. The loopback
-reference HTTP endpoints require the configured bearer token. Owner durable
+not private input, record bodies, tokens or secret-file paths. Reference HTTP endpoints require the configured bearer token. Native subject
+and SSE reads retain the recovered loopback/Host/same-Origin boundary. Private
+native events are never proxied through the public monitor. Owner durable
 Prepare/Commit remain the existing Unix peer-UID/socket/SQLite client contract.
 
 Run the **existing independent monitor client** in a separate process:
@@ -121,20 +128,24 @@ A profile-specific Linux test is not imposed on unrelated portable callers.
 
 ## Precise remaining acceptance
 
-The productive Universal Terminal TEMDD daemon and Firefox/noVNC deployment
-sources are absent from the accessible Mirror tree and retained checkpoint.
-The known Goldkelch source read is unavailable; no replacement daemon is built.
-The package therefore includes the existing HTTP **reference** carrier and
-owner Unix **client**, not a complete productive terminal appliance. Reference
-HTTP events remain process-local; its positive bounded local input state is
-never promoted into S1/global EFFECT_ACK_DONE. Monitor confirmed data remains
-durable under its existing filesystem contract. The Unix fixture tests verify
-the existing client/ledger protocol, not a productive daemon.
+The former productive source gap is resolved for the exact recovered historical
+snapshot. The original Goldkelch commit declared by that snapshot could not be
+retrieved directly, and equality with a later Railway production build remains
+unverified. The selected native daemon runs its original SQLite/WAL and Unix
+implementation through the new sealed-source adapter. Reference HTTP remains
+process-local and does not supply durable native evidence.
+
+The native suite exercises actual owner Prepare/Commit, fresh SQLite/SSE,
+wrong subject, drift, duplicate commit and crash restart. The terminal workflow
+also builds the declared Linux Firefox carrier and runs the actual candidate
+export with only loopback networking, no Git/gh in its runtime PATH, real X11
+window and VNC WebSocket readbacks, plus native/browser crash restart. These
+checks establish only the execution recorded by the immutable workflow head.
 
 No callable own-host deployment operation, verified host identity, durable mount
 or public route is available in this task. The deployment work unit records
-`HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE` and the independent native
-terminal-source gap. Package/restart tests do not close either condition.
-S1 remains OPEN until complete source and host admission, exact deployment,
+`HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE` and references the historical source recovery separately. Container and local
+restart tests do not close the host admission condition.
+S1 remains OPEN until host admission, exact deployment,
 fresh public use/readback and deployed restart acceptance are established.
 No public URL, S1 DONE or EFFECT_ACK_DONE is asserted.

@@ -121,5 +121,6 @@ repository-monitor-test:
 
 self-host-test: tool-cache-contract
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd tests.test_temdd_event_ledger tests.test_temdd_runtime_subject_binding
 	node --check docs/monitor/self-host.mjs
 	node --check tools/qikvrt_mesh_monitor_readback.mjs

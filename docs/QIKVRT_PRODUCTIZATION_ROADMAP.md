@@ -146,3 +146,23 @@ produktiven Trägerquellen und die konkrete Host-/Storage-/Routing-Zulassung,
 danach exakte Installation, öffentlicher Readback und Deployment-Neustarttest.
 Work Unit: `state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json`.
 Weder eine öffentliche URL noch `EFFECT_ACK_DONE` wird aus Paket-/CI-Tests abgeleitet.
+
+
+### S1-Quellwiedergewinnung vom 5. Oktober 2026
+
+Die vorstehende Quelllücke beschreibt den Vorgängerstand. Eine erweiterte Suche
+über 551 Branch-Refs, 22 Tags, 448 PR-Head-Refs und 4.450 erreichbare Commits hat
+im Branch `architecture/universal-transputer-c90-v1` den verifizierten Snapshot
+`c6a53e200c4835a4f871d8496feb81d953610831` gefunden. Produktiver TEMDD-Ledger,
+Unix-Ingress und Firefox/noVNC-Rezepte werden mit unveränderten Originalblobs
+und vollständiger Pfad-/Hash-Provenienz in S1 1.1.0 übernommen. Der vom Snapshot
+genannte Goldkelch-Ursprungscommit ist nicht direkt wiederabrufbar; Gleichheit
+mit einem späteren produktiven Railway-Build wird nicht behauptet.
+
+Die versiegelte Paket-/Konfigurationsbindung und der portable Browser-Start sind
+neue S1-Adapter. Sie verwenden den originalen Ledger und Unix-Ingress; sie sind
+keine rekonstruierte Originalquelle. Fresh-head Linux-Tests müssen den echten
+nativen Runtime- und Firefox/noVNC-Neustart zurücklesen. Host-Identität,
+persistentes Gerät und authentisiertes öffentliches HTTPS bleiben davon
+getrennt **OPEN**. Keine Installation oder öffentliche Abnahme wird behauptet.
+Work Unit: `state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json`.

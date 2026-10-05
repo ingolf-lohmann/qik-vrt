@@ -1,28 +1,88 @@
 {
-  "schema": "qikvrt-provider-independence-roadmap-work-unit/v1",
-  "work_unit_id": "PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004",
-  "source_repository": "ingolf-lohmann/qik-vrt",
-  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
-  "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
-  "state": "ARCHITECTURE_ROADMAP_REVIEW_CANDIDATE",
+  "artificial_contributor": {
+    "identity": "OpenAI Codex",
+    "model_or_build_identity": "UNAVAILABLE",
+    "retention": "METADATA_ONLY",
+    "role": "reuse inventory, architecture synthesis and candidate verification"
+  },
+  "authorization": {
+    "hosting_account_creation_or_spending": false,
+    "main_merge": "NOT_PERFORMED",
+    "platform_account_or_protection_changes": false,
+    "private_mail_or_credentials_publication": false,
+    "roadmap_candidate": "OWNER_DIRECTIVE_2026_10_04"
+  },
+  "boundaries": {
+    "all_nodes_clients_products_verified": false,
+    "architecture_and_work_plan_only": true,
+    "effect_ack_done": false,
+    "multi_node_replication_verified": false,
+    "power_loss_verified": false,
+    "predecessor_evidence_transfer": false,
+    "provider_independent_runtime_verified": false,
+    "unbounded_losslessness_claim": false
+  },
+  "historical_roadmap_binding": {
+    "bytes": 8974,
+    "git_blob_sha1": "f6ef068f5bacd289cdc6c46b4e39ce21107f575a",
+    "sha256": "eeef48fdb537db63a35596d44645c06ecdf6bdeeb6d32faeb777264462a19f8b"
+  },
   "human_principal": {
+    "input": "Naja, wenn es real noch erreichbar ist, ist ja alles gut. Dann nehmen wir das auch, wie es ist und machen weiter. Letztlich müssen wir aber unabhängiger werden. Es kann jetzt nicht sein, dass wir von Railways abhängig sind. Das sind alles nur Zwischenstufen. Das Repository muss sich zum Schluss selber tragen. Und dieses Endsystem sollte sogar unabhängig von GitHub sein. Nur damit wir die Architektur Roadmap mal skizziert haben.",
+    "instruction_date": "2026-10-04",
+    "instruction_timezone": "Europe/Paris",
     "name": "Ingolf Lohmann",
     "roles": [
       "creator",
       "product_owner",
       "code_owner"
-    ],
-    "instruction_date": "2026-10-04",
-    "instruction_timezone": "Europe/Paris",
-    "input": "Naja, wenn es real noch erreichbar ist, ist ja alles gut. Dann nehmen wir das auch, wie es ist und machen weiter. Letztlich müssen wir aber unabhängiger werden. Es kann jetzt nicht sein, dass wir von Railways abhängig sind. Das sind alles nur Zwischenstufen. Das Repository muss sich zum Schluss selber tragen. Und dieses Endsystem sollte sogar unabhängig von GitHub sein. Nur damit wir die Architektur Roadmap mal skizziert haben."
+    ]
   },
-  "artificial_contributor": {
-    "identity": "OpenAI Codex",
-    "model_or_build_identity": "UNAVAILABLE",
-    "role": "reuse inventory, architecture synthesis and candidate verification",
-    "retention": "METADATA_ONLY"
+  "implementation_successor": {
+    "effect_ack_done": false,
+    "milestone": "S1",
+    "original_candidate_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
+    "original_candidate_tree": "486ed9d95c3eb312a10d50dbfd11668004fa113b",
+    "predecessor_gate_transfer": false,
+    "state": "OPEN",
+    "work_unit_path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json"
   },
-  "roadmap_path": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+  "milestones": [
+    {
+      "acceptance": "Fresh own-host bootstrap from verified bytes; no Railway access; public monitor/terminal use and exact runtime readback; restart preserves confirmed data.",
+      "id": "S1",
+      "name": "SELF_HOSTED_NODE_PACKAGE",
+      "state": "OPEN"
+    },
+    {
+      "acceptance": "Native repository event to bounded authorized job, durable artifact, approved effect and fresh readback without GitHub Actions or a chat client; reject stale approval and competing writers.",
+      "id": "S2",
+      "name": "NODE_LOCAL_EXECUTOR_AND_REPOSITORY_CONTROL",
+      "state": "OPEN"
+    },
+    {
+      "acceptance": "Three storing replicas, declared one-node failure bound; retained acknowledged bytes/effects, replay after lost responses and partition recovery, no duplicate effect and no concurrent admitted writer.",
+      "id": "S3",
+      "name": "DURABLE_MESH_REPLICATION_AND_FAILOVER",
+      "state": "OPEN"
+    },
+    {
+      "acceptance": "With GitHub and Railway unreachable, restore a fresh node from Mesh-owned bytes and complete bootstrap, identity, build, review, update, public runtime use and effect readback.",
+      "id": "S4",
+      "name": "PROVIDER_WITHDRAWAL_ACCEPTANCE",
+      "state": "OPEN"
+    }
+  ],
+  "next_work_unit": {
+    "action": "Reuse the monitor candidate and terminal carrier to bind a portable start/runtime/volume/auth/readback package; separate the standalone runtime profile from the blanket GitHub-CLI bootstrap check.",
+    "milestone": "S1",
+    "runtime_admission_dependencies": [
+      "exact reviewed source and runtime binding",
+      "actually callable own-host execution operation",
+      "identified persistent storage and public routing",
+      "authorized host identity and unchanged role/effect boundaries"
+    ]
+  },
   "reuse_evidence": [
     "Existing productization and open multi-node architecture roadmaps",
     "Existing AI bootstrap, local Git object identity and integrity authorities",
@@ -32,76 +92,24 @@
     "Existing Effect-Ack, private CAS/replay and Firefox terminal contracts"
   ],
   "reuse_insufficiency": "The existing roadmap has no milestones for withdrawing hosting and source-control platforms. The local workflow controller plans; its Action wrapper owns actual dispatch. The current runtime bootstrap checks GitHub CLI in every profile. The monitor candidate supports one writer per state directory, without cross-node replication. Extend existing contracts rather than introduce a parallel executor or ledger here.",
-  "milestones": [
-    {
-      "id": "S1",
-      "name": "SELF_HOSTED_NODE_PACKAGE",
-      "state": "OPEN",
-      "acceptance": "Fresh own-host bootstrap from verified bytes; no Railway access; public monitor/terminal use and exact runtime readback; restart preserves confirmed data."
-    },
-    {
-      "id": "S2",
-      "name": "NODE_LOCAL_EXECUTOR_AND_REPOSITORY_CONTROL",
-      "state": "OPEN",
-      "acceptance": "Native repository event to bounded authorized job, durable artifact, approved effect and fresh readback without GitHub Actions or a chat client; reject stale approval and competing writers."
-    },
-    {
-      "id": "S3",
-      "name": "DURABLE_MESH_REPLICATION_AND_FAILOVER",
-      "state": "OPEN",
-      "acceptance": "Three storing replicas, declared one-node failure bound; retained acknowledged bytes/effects, replay after lost responses and partition recovery, no duplicate effect and no concurrent admitted writer."
-    },
-    {
-      "id": "S4",
-      "name": "PROVIDER_WITHDRAWAL_ACCEPTANCE",
-      "state": "OPEN",
-      "acceptance": "With GitHub and Railway unreachable, restore a fresh node from Mesh-owned bytes and complete bootstrap, identity, build, review, update, public runtime use and effect readback."
-    }
-  ],
-  "next_work_unit": {
-    "milestone": "S1",
-    "action": "Reuse the monitor candidate and terminal carrier to bind a portable start/runtime/volume/auth/readback package; separate the standalone runtime profile from the blanket GitHub-CLI bootstrap check.",
-    "runtime_admission_dependencies": [
-      "exact reviewed source and runtime binding",
-      "actually callable own-host execution operation",
-      "identified persistent storage and public routing",
-      "authorized host identity and unchanged role/effect boundaries"
-    ]
-  },
-  "authorization": {
-    "roadmap_candidate": "OWNER_DIRECTIVE_2026_10_04",
-    "main_merge": "NOT_PERFORMED",
-    "hosting_account_creation_or_spending": false,
-    "platform_account_or_protection_changes": false,
-    "private_mail_or_credentials_publication": false
-  },
-  "boundaries": {
-    "architecture_and_work_plan_only": true,
-    "provider_independent_runtime_verified": false,
-    "multi_node_replication_verified": false,
-    "power_loss_verified": false,
-    "unbounded_losslessness_claim": false,
-    "all_nodes_clients_products_verified": false,
-    "predecessor_evidence_transfer": false,
-    "effect_ack_done": false
-  },
   "roadmap_binding": {
     "bytes": 11244,
-    "sha256": "9764abcc81d6d6f2ba9524de6233dc6c4a99d50138bdacc27d07fcfccda41ba4",
-    "git_blob_sha1": "4f73ff5c49be8a7aa5adc1ad0c3ece0cddbbe0ea"
+    "git_blob_sha1": "4f73ff5c49be8a7aa5adc1ad0c3ece0cddbbe0ea",
+    "sha256": "9764abcc81d6d6f2ba9524de6233dc6c4a99d50138bdacc27d07fcfccda41ba4"
   },
-  "historical_roadmap_binding": {
-    "bytes": 8974,
-    "sha256": "eeef48fdb537db63a35596d44645c06ecdf6bdeeb6d32faeb777264462a19f8b",
-    "git_blob_sha1": "f6ef068f5bacd289cdc6c46b4e39ce21107f575a"
-  },
-  "implementation_successor": {
-    "work_unit_path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+  "roadmap_path": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+  "schema": "qikvrt-provider-independence-roadmap-work-unit/v1",
+  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
+  "source_recovery_successor": {
+    "effect_ack_done": false,
+    "historical_source_recovered": true,
+    "host_admission_verified": false,
     "milestone": "S1",
     "state": "OPEN",
-    "original_candidate_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
-    "original_candidate_tree": "486ed9d95c3eb312a10d50dbfd11668004fa113b",
-    "predecessor_gate_transfer": false,
-    "effect_ack_done": false
-  }
+    "work_unit_path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json"
+  },
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "state": "ARCHITECTURE_ROADMAP_REVIEW_CANDIDATE",
+  "work_unit_id": "PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004"
 }

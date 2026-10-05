@@ -10,6 +10,10 @@ on:
       - "docs/terminal/QIKVRT_TERMINAL_FRAME_V1.schema.json"
       - "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md"
       - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_temdd_event_ledger.py"
+      - "deploy/universal-terminal/**"
+      - "tests/test_self_host_temdd.py"
+      - "tests/test_self_host_firefox.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
       - "tests/test_self_host.py"
       - "runtime/self-host/**"
@@ -25,7 +29,7 @@ permissions:
 jobs:
   contract-and-e2e:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Check out exact candidate head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -45,7 +49,36 @@ jobs:
           node-version: '24'
 
       - name: Run standalone package, negative and crash-restart controls
-        run: python3 -B -m unittest -v tests.test_self_host
+        run: make self-host-test
+
+      - name: Build isolated Firefox and noVNC dependency carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build --target test --file runtime/self-host/Dockerfile --tag qikvrt-self-host-firefox-test .
+
+      - name: Verify productive exported Firefox and noVNC without provider network
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qikvrt-firefox-readback"
+          docker image inspect qikvrt-self-host-firefox-test \
+            --format '{{json .Id}}' > "$RUNNER_TEMP/qikvrt-firefox-readback/OCI_IMAGE_ID.json"
+          docker run --rm --network none --shm-size 256m --tmpfs /tmp:size=768m,mode=1777 \
+            --mount "type=bind,source=$GITHUB_WORKSPACE,target=/source,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/qikvrt-firefox-readback,target=/evidence" \
+            --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
+            qikvrt-self-host-firefox-test \
+            python3 -B -m unittest -v tests.test_self_host_firefox
+
+      - name: Preserve isolated runtime readback and dependency versions
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-productive-terminal-readback-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-firefox-readback
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Parse machine-readable contracts and RFCXML
         shell: bash

@@ -8,6 +8,29 @@
     "runner-image-layer"
   ],
   "components": {
+    "Xvfb": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
     "cc": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -29,6 +52,29 @@
         "core execution tests"
       ],
       "version": "ansi-c90"
+    },
+    "docker": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "build-cache",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "docker build plus docker run --network none; actual image/dependency readback",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "OCI-build-and-isolated-runtime-contract"
     },
     "ffmpeg": {
       "authority_files": [
@@ -71,6 +117,29 @@
         "audio provenance tests"
       ],
       "version": "same-as-ffmpeg"
+    },
+    "firefox-esr": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
     },
     "gh": {
       "authority_files": [
@@ -183,6 +252,29 @@
         "self-host manifest version and executable SHA-256 with offline execution tests"
       ],
       "version": "24.x"
+    },
+    "novnc": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "all exported noVNC source sizes/SHA-256 and inventory",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "reported-version-and-exact-package-digest"
     },
     "poppler": {
       "authority_files": [
@@ -335,6 +427,75 @@
       ],
       "version": "1.13.4"
     },
+    "websockify": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
+    "x11vnc": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
+    "xdpyinfo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
     "xelatex": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -382,6 +543,29 @@
         "renderer self-test"
       ],
       "version": "3.34.0"
+    },
+    "xwininfo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
     },
     "zod": {
       "authority_files": [

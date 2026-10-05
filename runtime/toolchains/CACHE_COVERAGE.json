@@ -2,9 +2,21 @@
   "components": [
     {
       "cache_class": "runner-image-layer",
+      "component": "Xvfb",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "cc",
       "provider": "pinned GitHub-hosted runner image",
       "version": "ansi-c90"
+    },
+    {
+      "cache_class": "build-cache",
+      "component": "docker",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "OCI-build-and-isolated-runtime-contract"
     },
     {
       "cache_class": "runner-image-layer",
@@ -17,6 +29,12 @@
       "component": "ffprobe",
       "provider": "pinned GitHub-hosted runner image",
       "version": "same-as-ffmpeg"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "firefox-esr",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
     },
     {
       "cache_class": "repo-managed-archive",
@@ -41,6 +59,12 @@
       "component": "node",
       "provider": "actions/setup-node or operator-provisioned exact executable",
       "version": "24.x"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "novnc",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "reported-version-and-exact-package-digest"
     },
     {
       "cache_class": "runner-image-layer",
@@ -80,6 +104,24 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "websockify",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "x11vnc",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "xdpyinfo",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "xelatex",
       "provider": "pinned GitHub-hosted runner image",
       "version": "reported-version"
@@ -91,6 +133,12 @@
       "version": "3.34.0"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "xwininfo",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "zod",
       "provider": "actions/setup-node:npm",
@@ -99,10 +147,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 16,
-  "declared_components": 16,
-  "lock_sha256": "4e03bdf41637bbf9f9f70b1a62df0abac79f5eb059e4dee26bc896700ed20928",
-  "registry_sha256": "f54dc9c74271aaa1a26954e7654eadc51652bd193bc23b48207b2dd17a6478d4",
+  "covered_components": 24,
+  "declared_components": 24,
+  "lock_sha256": "d852c87a440cc1185ebe54829c8a36cae275dd91c880eb9871e40d529d08acdb",
+  "registry_sha256": "0c20490dbfd73376b4f489708b78abb7c176855245d466504389aa957a3acc62",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

@@ -178,7 +178,9 @@ adapter, authentication boundaries and independent readback are documented in
 `none` the activity source is the immutable exported repository; GitHub ingress
 and live detail routes are disabled and Railway transport is rejected. Existing
 server behavior is retained for its original entrypoint and explicit adapters.
-The package's public terminal is read-only. The productive native terminal
-source and an admitted own-host route remain separate precise HOLD conditions.
+The package's public terminal is read-only. The historical native TEMDD and
+Firefox/noVNC sources are now recovered with original blob provenance; see
+`runtime/self-host/RECOVERED_TERMINAL.md`. Independent host/storage/HTTPS
+admission remains a separate HOLD condition.
 No public deployment, complete S1, native terminal actuation or EFFECT_ACK_DONE
 is claimed.

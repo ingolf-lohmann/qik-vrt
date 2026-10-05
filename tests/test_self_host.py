@@ -105,7 +105,7 @@ class StandaloneTests(unittest.TestCase):
                    NODE_OPTIONS="--this-inherited-option-must-not-be-used")
         if path is not None: env['PATH'] = str(path)
         self.process = subprocess.Popen(self.command(),stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env,start_new_session=True)
-        until = time.monotonic()+10
+        until = time.monotonic()+getattr(self, 'START_TIMEOUT', 10)
         while time.monotonic() < until:
             if self.process.poll() is not None:
                 out,err = self.process.communicate(); self.fail("No ready runtime: "+out+err)
