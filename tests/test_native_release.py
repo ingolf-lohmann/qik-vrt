@@ -102,6 +102,26 @@ class NativeReleaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "SOURCE_MISMATCH"):
             native.catalog(artifacts, self.work / "wrong-candidate", "0" * 40, self.tree)
 
+    def test_catalog_backend_binds_nested_pharo_output_and_refuses_surplus(self):
+        artifacts = self.work / "nested-backend-readback"
+        artifacts.mkdir()
+        nested = artifacts / "pharo-local" / "ombu-sessions" / "session.ombu"
+        nested.parent.mkdir(parents=True)
+        nested.write_bytes(b"fresh Pharo output")
+        manifest = {"schema": "qikvrt-smalltalk-package/v1", "source_head": self.head,
+                    "source_tree": self.tree, "effect_ack_done": False,
+                    "files": {"pharo-local/ombu-sessions/session.ombu": {
+                        "bytes": nested.stat().st_size,
+                        "sha256": hashlib.sha256(nested.read_bytes()).hexdigest()}}}
+        path = artifacts / "MANIFEST.json"
+        path.write_bytes(native.canonical(manifest))
+        result = native.catalog(artifacts, self.work / "nested-candidate", self.head, self.tree)
+        self.assertEqual(result["variant_count"], 1)
+        manifest["files"] = {}
+        path.write_bytes(native.canonical(manifest))
+        with self.assertRaisesRegex(ValueError, "BACKEND_INVENTORY_MISMATCH"):
+            native.catalog(artifacts, self.work / "unbound-candidate", self.head, self.tree)
+
     def test_smalltalk_boundary_imports_from_export_without_repository(self):
         import sys
         code = ("import sys,pathlib; p=pathlib.Path(sys.argv[1]); "

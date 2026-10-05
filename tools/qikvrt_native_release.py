@@ -295,6 +295,8 @@ def catalog(artifacts, output, head, tree):
             raise ValueError("BACKEND_SOURCE_MISMATCH")
         if manifest.get("effect_ack_done") is not False:
             raise ValueError("BACKEND_EFFECT_CLAIM")
+        if set(relative_files(path.parent)) != set(manifest["files"]) | {"MANIFEST.json"}:
+            raise ValueError("BACKEND_INVENTORY_MISMATCH")
         for name, item in manifest["files"].items():
             raw = (path.parent / safe(name)).read_bytes()
             if sha(raw) != item["sha256"] or len(raw) != item["bytes"]:

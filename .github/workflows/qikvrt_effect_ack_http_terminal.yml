@@ -158,8 +158,9 @@ jobs:
           cp LICENSE LICENSES/PolyForm-Noncommercial-1.0.0.txt LICENSES/CC-BY-NC-ND-4.0.txt "$RUNNER_TEMP/qikvrt-smalltalk/"
           python3 - <<'PY'
           import hashlib, json, os, pathlib, subprocess, platform
+          from tools.qikvrt_native_release import relative_files
           root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'qikvrt-smalltalk'
-          files = {p.name: {'bytes':p.stat().st_size, 'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in root.iterdir() if p.is_file()}
+          files = {name: {'bytes':p.stat().st_size, 'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for name, p in sorted(relative_files(root).items())}
           receipt = {'schema':'qikvrt-smalltalk-package/v1','source_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
             'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
             'target':platform.platform(),'files':files,'effect_ack_done':False,'historical_evidence_transferred':False}
