@@ -135,7 +135,9 @@
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
-    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
+    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "policy/GLOBAL_SYSTEM_CLOSURE_V1.json",
+    "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json"
   ],
   "session_protocol": {
     "startup": [
@@ -210,5 +212,11 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "reciprocal_devops_definition_of_done": {
+    "policy": "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
+    "command": "python3 -B tools/qikvrt_expected_head_promotion.py evaluate-closure --input <verified-snapshot>",
+    "scope": "QIKVRT-RECIPROCAL-LOSSLESS-DEVOPS-CLOSURE-V1",
+    "rule": "A pure acceptance evaluation consumes externally authenticated verified observations; it neither executes protected effects nor authenticates facts supplied in JSON."
   }
 }
