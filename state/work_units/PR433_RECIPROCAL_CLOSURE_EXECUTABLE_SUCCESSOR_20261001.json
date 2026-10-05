@@ -1,0 +1,163 @@
+{
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "PR433_RECIPROCAL_CLOSURE_EXECUTABLE_SUCCESSOR_20261001",
+  "created_at": "2026-10-01T15:02:12.661645+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/reciprocal-devops-dod-20261001",
+  "source_commit": "3c04003fa85db6a66f2ff216edaa06bde1da8732",
+  "source_tree": "89e26e2b6ad2b061558203b2360f468ed88b9e91",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "class": "HUMAN"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "git",
+      "Python stdlib"
+    ],
+    "identity_limits": "Platform identity is not natural-person or cryptographic model identity."
+  },
+  "human_contributions": [
+    "Authorized this PR continuation and one admitted Mirror closure step; required native lossless history, capability fencing, no force/squash/self-approval/evidence transfer, and no reciprocal completion claims without fresh bilateral/public evidence."
+  ],
+  "artificial_cognitive_contributions": [
+    "Reused the decision core, policy, owner delegation and tests from #396; extended its single executable controller without adding a scheduled executor.",
+    "Implemented complete stable pagination, target capability, independent reviewer eligibility, native gates, intent replay fencing, ancestry readback, CONTINUE receipts and readback-only recovery.",
+    "Executed one host-connector REQUEST_REVIEW attempt for deterministically selected #426 and captured HTTP 422 plus complete unchanged post-effect censuses.",
+    "Preserved contradictory reviewer permission=write observation; did not infer a global membership cause or retry."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 396,
+      "head": "1819da9bf08478a7052312d24819a8c25c1533a3",
+      "reused_paths": [
+        "tools/qikvrt_pr_closure_engine.py",
+        "tests/test_qikvrt_pr_closure_engine.py",
+        "tests/test_reciprocal_closure_step.py",
+        "state/autonomy/AUTONOMOUS_PR_CLOSURE_POLICY_V1.json",
+        "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CLOSURE_V1.json"
+      ]
+    },
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 433,
+      "head": "3c04003fa85db6a66f2ff216edaa06bde1da8732",
+      "main": "469a95ac4ef14692dda69673b8a75eb2cf03685d"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "tools/qikvrt_pr_closure_engine.py",
+      "bytes": 39807,
+      "sha256": "edff7c29967ab7eb283152271235aac4aa142b22725231597ce58e4af50c5175",
+      "git_blob_sha1": "ea03be71c684734eceee7ae26a2589c9c52261a3"
+    },
+    {
+      "path": "tests/test_qikvrt_pr_closure_engine.py",
+      "bytes": 6348,
+      "sha256": "8795db45c21c43045a037d309dcbb61f7cb728d682f836c52e4f7d10e04881b5",
+      "git_blob_sha1": "b5f89da757079058bc060bd255716cb6edd6011c"
+    },
+    {
+      "path": "tests/test_reciprocal_closure_step.py",
+      "bytes": 16313,
+      "sha256": "51463e248d19b850a5e253781b1416d4205b4655a2bd7a5fa6f9f72851792de8",
+      "git_blob_sha1": "bde4a6a5f55dcf60ba058e8963095ff769ac1f39"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_PR_CLOSURE_POLICY_V1.json",
+      "bytes": 2117,
+      "sha256": "a5bf6b74d6e5efaffdce048cb1682610af8c70a5f7343e18aaa514ccf85e5c9d",
+      "git_blob_sha1": "e64b5f7668a792291776f3e865beb8c6822772cc"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CLOSURE_V1.json",
+      "bytes": 1950,
+      "sha256": "ff8963b97b1bb0a1882b76b478248d9b85ca45902ed9e3abda00b6a79dd6be96",
+      "git_blob_sha1": "652a18ada8ec3a44962d698e260fab4cc4bba3a7"
+    },
+    {
+      "path": "policy/QIKVRT_RECIPROCAL_DEVOPS_DOD_V1.json",
+      "bytes": 5327,
+      "sha256": "89a72457fdaa70a4279987be9d7e441b815676290bdc2b1b19a6e4536dd9a4ab",
+      "git_blob_sha1": "7c538d9e9cfe6b77bc29350d1a3be12be7c90fa1"
+    },
+    {
+      "path": "docs/architecture/RECIPROCAL_DEVOPS_CLOSURE_EXECUTION_V1.md",
+      "bytes": 4577,
+      "sha256": "3299e381a8a927423503905619704142e2c4ae9f9e12bfcd13412e51f90ae1bc",
+      "git_blob_sha1": "af93b8d655dafd9ccd1b326d7a798bacac6958da"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11163,
+      "sha256": "994236c2cbdc7fadaca24fd1eda6915977617c03c6b10562f96e6c8171150ccd",
+      "git_blob_sha1": "359602509aa43bf3246c6c9ae595edb5f9739f44"
+    },
+    {
+      "path": "evidence/reciprocal_devops/pr433/HOST_EFFECT_OBSERVATIONS_20261001.json",
+      "bytes": 753640,
+      "sha256": "4819281408e32380f5579d2bd3f6c1cecf30a9d3cc47f23605223921641246a3",
+      "git_blob_sha1": "15b49a68d42d3de80ffc3ff0eb9229845ef5c0bc"
+    },
+    {
+      "path": "evidence/reciprocal_devops/pr433/STEP_BLOCK_RECEIPT_20261001.json",
+      "bytes": 205895,
+      "sha256": "5ce3dc4e551f71c71a9390d3f8ed1821e1dd2831fb3ed46a2ab4f0c92d30c70a",
+      "git_blob_sha1": "6bc349aad4f6e636296d61dd8ecbd08606c46abd"
+    }
+  ],
+  "git_history": {
+    "mode": "history-preserving successor on existing PR branch",
+    "parent": "3c04003fa85db6a66f2ff216edaa06bde1da8732",
+    "force_push": false,
+    "in_file_containing_commit_hash_claimed": false
+  },
+  "verification": {
+    "targeted_tests": "59 PASS",
+    "full_repository_suite": {
+      "command": "make test",
+      "exit_code": 0,
+      "tested_input_tree": "861fe7873735dc4e661f31309ab288f2a11e63d6",
+      "log_sha256": "39ade1e3770fb143de76b858a324e0f28604882077226afe4a721dacca424360",
+      "scope": "Complete local suite on the tested input tree. Later verification-metadata edits require fresh integrity; exact successor-head CI remains separate."
+    },
+    "bootstrap": "CONTINUE; tool cache 14/14 PASS",
+    "environment_repair": "Single-branch clone omitted historical manifest source 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 required by an existing worktree test. Fetched that exact existing object read-only; no test or gate downgrade.",
+    "live_effect_scope": "Authorized host connector outside candidate-tree credentialed execution; selector preflight preceded the new reviewer-eligibility repair. The committed successor is not claimed to have run from trusted Main.",
+    "first_causal_blocker": "REVIEW_REQUEST_REJECTED_HTTP_422",
+    "permission_observation_conflict": true,
+    "authority_http_status": 404,
+    "mirror_native_ruleset_binding": null,
+    "live_receipt_binding": "PASS canonical receipt digest, immutable intent input, both evidence projections and hash-linked CONTINUE/BLOCK protocols; complete before/after census equality."
+  },
+  "human_decision": {
+    "task_execution": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "generated_implementation": "PENDING_INDEPENDENT_REVIEW"
+  },
+  "external_effects": {
+    "closure_mutation_attempts": 1,
+    "closure_mutation_applied": false,
+    "review_approval_performed": false,
+    "review_request_applied": false,
+    "main_unchanged": true,
+    "pr433_successor_write": "CANDIDATE_PREPARED; actual write/readback is externally bound to the successor commit, not self-asserted in this file.",
+    "no_zenodo_ietf_release_effect": true
+  },
+  "next_action": "Reconcile authenticated review-request eligibility with permission=write; bind actual Authority capability and native Mirror protection. Resume only after fresh target/head/gate/census observations. Do not blindly retry the rejected request.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "TARGET_REACHED": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}
