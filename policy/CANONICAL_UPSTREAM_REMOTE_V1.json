@@ -54,5 +54,14 @@
     "Sequenz ist Ordnung.",
     "Kausalität ist Verantwortung.",
     "Eins und nicht keins."
-  ]
+  ],
+  "node_genesis_recovery": {
+    "contract": "policy/QIKVRT_NODE_GENESIS_RECOVERY_V1.json",
+    "implementation": "tools/qikvrt_node_genesis.py",
+    "legacy_bindings_remain_current_until_controlled_successor": true,
+    "full_node_recovery_is_role_neutral": true,
+    "hierarchy_root": "Goldkelch/qik-vrt",
+    "isolated_genesis_is_not_live_authority": true,
+    "predecessor_evidence_transfer": false
+  }
 }

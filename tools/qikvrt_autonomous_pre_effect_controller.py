@@ -125,6 +125,10 @@ def _execution_source_remote() -> str:
         raise PreEffectBlock("repository remote role policy cannot be loaded") from exc
     if not isinstance(policy, dict) or policy.get("schema") != "qikvrt_canonical_upstream_remote_v1":
         raise PreEffectBlock("repository remote role policy schema mismatch")
+    if "node_genesis_state" in policy:
+        # Recovery/genesis only establishes isolated local bytes. Admission,
+        # fencing and scoped platform capabilities need their own executor.
+        raise PreEffectBlock("node genesis is isolated; external authority admission required")
     expected_urls = set()
     for key, role in (("canonical_upstream", "AUTHORITY"), ("mirror", "MIRROR")):
         binding = policy.get(key, {})

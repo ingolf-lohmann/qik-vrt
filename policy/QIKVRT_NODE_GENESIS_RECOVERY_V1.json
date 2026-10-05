@@ -1,0 +1,123 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann",
+    "classification": "node_genesis_recovery_contract"
+  },
+  "schema": "qikvrt_node_genesis_recovery_contract_v1",
+  "policy_id": "QIKVRT_NODE_GENESIS_RECOVERY_V1",
+  "status": "NORMATIVE_SUCCESSOR_CANDIDATE",
+  "owner_requirement": {
+    "actor": "Ingolf Lohmann",
+    "classification": "NORMATIVE_PRODUCT_REQUIREMENT",
+    "rule": "Every full node, independent of Authority or Mirror role, must reconstruct its complete persisted repository-internal state without another live Mesh node and may form a controlled Authority successor or new Mirror/Child genesis under Goldkelch ancestry."
+  },
+  "implementation": "tools/qikvrt_node_genesis.py",
+  "regression_tests": "tests/test_qikvrt_node_genesis.py",
+  "human_contract": "docs/QIKVRT_NODE_GENESIS_RECOVERY_V1.md",
+  "snapshot_schema": "qikvrt_full_node_snapshot_v1",
+  "node_binding_schema": "qikvrt_node_binding_v1",
+  "snapshot_files": [
+    "node.bundle",
+    "snapshot.json",
+    "snapshot.sha256"
+  ],
+  "format": {
+    "git_bundle_version": 2,
+    "git_object_format": "sha1",
+    "json": "UTF-8; sorted keys; two-space indent; LF; one final LF; no duplicate/unknown fields; no NaN",
+    "trusted_root": "SHA-256 of exact snapshot.json supplied independently by the recovering operator; an archive's own detached digest is not authentication",
+    "bundle_binding": "exact path node.bundle, byte count and SHA-256",
+    "refs": "sorted unique names with exact OIDs and explicit symbolic-ref targets; HEAD bound separately",
+    "history": "complete commit/tree/blob/tag closure reachable from all locally persisted refs and HEAD; no exclusions or prerequisite commits",
+    "closure_binding": "SHA-256 of canonical JSON sorted unique reachable Git object IDs plus count",
+    "pack_encoding_byte_identity": "the retained node.bundle itself is exact-byte bound; independently repacked archives need not be identical",
+    "reconstructed_byte_identity": "all reachable Git object payloads, tracked source-tree bytes, modes, refs and symbolic HEAD; Git pack compression, index timestamps and new observation receipts are not canonical application data"
+  },
+  "full_node_preconditions": [
+    "complete non-shallow non-promisor checked-out object store",
+    "no alternates, grafts or replace refs",
+    "clean persisted source tree; deliberate untracked changes must be committed first",
+    "every persisted Git object is reachable from HEAD or a retained ref; pin reflog-only/unreachable objects instead of losing them",
+    "fresh existing qikvrt_integrity verification succeeds",
+    "persisted source repository identity and Goldkelch-rooted ancestry are bound",
+    "active gitlink payloads are separately materialized before full-node export",
+    "the node's snapshot and trusted root digest survive loss of every other remote"
+  ],
+  "reconstruction_scope": {
+    "included": [
+      "all locally persisted refs and HEAD, their complete reachable Git history and trees",
+      "all tracked bytes including policy, registry, lifecycle, historical evidence and the integrity trio",
+      "repository-internal properties deterministically derivable from those bytes with the declared toolchain"
+    ],
+    "not_silently_claimed": [
+      "remote-only refs or bytes never persisted at the node",
+      "reflog/config metadata, dirty edits, ignored runtime caches or external artifacts; unreachable persisted objects block export until pinned by retention refs",
+      "LFS payloads beyond retained pointer bytes, external subrepositories or package-provider availability",
+      "GitHub issues, reviews, runs, permissions, secrets, organization rights or live platform state",
+      "fresh validity of historical evidence or complete global Mesh equality"
+    ]
+  },
+  "fresh_recovery_gates": [
+    "trusted root SHA-256 and canonical metadata validation",
+    "exact bundle bytes and ref coverage",
+    "bundle verification in a completely empty object database",
+    "strict full Git fsck and fresh reachable-object inventory",
+    "exact HEAD, tree, refs, symbolic refs and ancestry readback",
+    "fresh repository-native integrity verification",
+    "new observation-bound receipt; predecessor evidence remains historical"
+  ],
+  "role_genesis": {
+    "kinds": [
+      "RECOVERY_AUTHORITY",
+      "MIRROR",
+      "CHILD"
+    ],
+    "initial_state": "RECOVERED_ISOLATED",
+    "candidate_state": "CANDIDATE_ISOLATED",
+    "local_authorization": "--authorize-local-candidate plus exact source HEAD and trusted snapshot digest",
+    "history_rule": "new create-only genesis branch; one new commit whose parent is exactly the recovered source head; original refs and old evidence preserved",
+    "node_identity": "SHA-256 of canonical snapshot SHA-256, target repository and genesis kind",
+    "recovery_authority": "retain source repository identity; propose AUTHORITY role and increment declared authority epoch",
+    "mirror": "new repository identity; retain parent Authority provenance and epoch",
+    "child": "new independent AUTHORITY candidate; repository owner Goldkelch; retain complete parent history and explicit ancestry",
+    "hierarchy_root": "Goldkelch/qik-vrt",
+    "ancestry_cycles": "FORBIDDEN",
+    "registry_lifecycle": "restore original tracked bytes first; rebind new operational identity and renew lifecycle admission separately",
+    "authority_admission_requires": [
+      "exact candidate-bound responsible-owner decision under the applicable delegation",
+      "fencing or explicit controlled reconciliation of previous authorities; unreachability alone is not proof of extinction",
+      "rebinding and fresh verification of scoped credentials, target rights, rulesets and executor admission",
+      "fresh exact-head target gates and remote effect/readback evidence"
+    ],
+    "external_execution_guard": "existing pre-effect controller rejects every node_genesis_state marker; this V1 does not provide a remote admission executor",
+    "peer_rebinding": "former peers are not silently reclassified; an Authority candidate starts with no admitted mirror"
+  },
+  "capabilities_to_rebind": [
+    "AUTHENTICATED_PRINCIPAL_AND_SCOPED_CREDENTIALS",
+    "GITHUB_REPOSITORY_CREATION_AND_NAMESPACE_RIGHTS",
+    "BRANCH_RULESETS_CODEOWNER_REVIEW_AND_WORKFLOW_ADMISSION",
+    "SECRETS_OAUTH_BIOMETRIC_SIGNING_AND_DEPLOYMENT_BINDINGS",
+    "EXTERNAL_PAYLOADS_SERVICES_AND_PUBLIC_URL_READBACK",
+    "OLD_AUTHORITY_FENCING_AND_CURRENT_MESH_ADMISSION"
+  ],
+  "effects": {
+    "network_required_for_local_reconstruction": false,
+    "external_repository_creation_implemented": false,
+    "external_repository_creation_requires_verified_authority": true,
+    "force_push": false,
+    "history_rewrite": false,
+    "predecessor_evidence_transfer": false,
+    "secrets_exported": false,
+    "role_candidate_implies_live_authority": false,
+    "effect_ack_done_implied": false
+  },
+  "reuse_evidence": {
+    "tools/qikvrt_integrity.py": "reuse unchanged for fresh repository-manifest verification and genesis projections; existing portable source capsule explicitly excludes full snapshot and parent-history proof",
+    "tools/qikvrt_subprocess.py": "reuse unchanged for bounded Git execution",
+    "tools/qikvrt_seed_common.py": "retain existing registry/lifecycle bytes and future seed admission; no complete object-store reconstruction path exists here",
+    "state/authorization/delegations/OWNER_QIKVRT_EVOLUTIONARY_AUTOMATION_STANDING_DELEGATION_V1.json": "reuse history-preserving successor authority; does not manufacture external capabilities",
+    "new_component_reason": "No existing complete role-neutral single-node restore or self-clone implementation; selected-path capsules and publication bundles cannot cover all refs and their parent history."
+  }
+}
