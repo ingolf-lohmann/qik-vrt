@@ -19,6 +19,7 @@ import signal
 import socket
 import stat
 import struct
+import sqlite3
 import time
 import urllib.request
 import urllib.parse
@@ -788,12 +789,19 @@ def stop_children(processes, logs=()):
     for log in logs: log.close()
 
 
+def migration_module():
+    spec = importlib.util.spec_from_file_location("qikvrt_self_host_migration",
+        Path(__file__).with_name("qikvrt_self_host_migration.py"))
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    return module
+
+
 def start(package, pin, config_path):
     manifest = verify(package, pin)
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -835,6 +843,9 @@ def start(package, pin, config_path):
         raise ValueError("BOUNDED_TERMINAL_SECRET_REQUIRED")
     volume = Path(config["state_dir"])
     private_path(volume, directory=True)
+    # A failed or rolled-back import is never repaired by restarting/rebinding.
+    if (volume / ".MIGRATION_HOLD.json").exists() or (volume / ".MIGRATION_HOLD.json").is_symlink():
+        raise ValueError("MIGRATION_TARGET_QUARANTINED")
     if volume == package or package in volume.parents or volume in package.parents:
         raise ValueError("STATE_VOLUME_MUST_BE_SEPARATE_FROM_PACKAGE")
     for name in ("monitor", "temdd", "receipts"):
@@ -844,8 +855,12 @@ def start(package, pin, config_path):
     with os.fdopen(lock_fd, "w") as lock:
         private_path(volume / "node.lock")
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if (volume / ".MIGRATION_HOLD.json").exists() or (volume / ".MIGRATION_HOLD.json").is_symlink():
+            raise ValueError("MIGRATION_TARGET_QUARANTINED")
         binding = {"schema": "qikvrt-self-host-volume/v1", "node_id": config["node_id"], "manifest_sha256": pin,
                    "config_sha256": digest(raw), "source_head": manifest["source_head"], "source_tree": manifest["source_tree"]}
+        if "migration_export_sha256" in config:
+            migration_module().start_receipt(volume, config["migration_export_sha256"], binding, private_path)
         bound_path = volume / "binding.json"
         if bound_path.exists() or bound_path.is_symlink():
             private_path(bound_path)
@@ -919,7 +934,9 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state"))
+    parser.add_argument("operation", choices=("pack", "verify", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+        "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
+        "migration-verify-import", "migration-rollback"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
@@ -932,9 +949,18 @@ def main():
     parser.add_argument("--admission-sha256", help="independently obtained host declaration pin")
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
+    parser.add_argument("--snapshot", type=Path, help="separately sealed offline volume copy; never a live Railway mount")
+    parser.add_argument("--source-declaration", type=Path, help="private independently validated capture/layout declaration")
+    parser.add_argument("--source-declaration-sha256", help="independent exact declaration pin")
+    parser.add_argument("--bundle", type=Path, help="private verified migration export directory")
+    parser.add_argument("--export-sha256", help="independent EXPORT.json pin")
+    parser.add_argument("--import-sha256", help="independent private IMPORT.json pin")
+    parser.add_argument("--dry-run", action="store_true", help="verify export and proposed binding; create no target")
     args = parser.parse_args()
     try:
-        if args.operation == "pack":
+        if args.operation.startswith("migration-"):
+            result = migration_module().execute(args, verify, load_source, private_path)
+        elif args.operation == "pack":
             if not args.output or not args.expected_head or not args.expected_tree: raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
             result = freeze(args.root, args.output, args.expected_head, args.expected_tree, args.browser_assets_root)
         elif args.operation == "verify":
@@ -962,7 +988,7 @@ def main():
             return start(args.root.resolve(), args.manifest_sha256, args.config.absolute())
         print(json.dumps(result, sort_keys=True))
         return 0
-    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as exc:
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error, subprocess.SubprocessError) as exc:
         print(json.dumps({"state": "HOLD", "cause": str(exc), "effect_ack_done": False}, sort_keys=True))
         return 78 if args.operation == "run-admitted" else 2
 

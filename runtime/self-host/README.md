@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.1.3
+# S1 standalone node package, version 1.2.0
 
 This package reuses the existing Node monitor and reference terminal. It now
 also includes the recovered original productive TEMDD ledger/Unix daemon and
@@ -79,6 +79,17 @@ reviewed migration. Do not delete or relabel acknowledged data to defeat the
 binding. A real persistent mount/device identity, capacity and power-loss
 guarantees remain host admission evidence; an ordinary local directory is not
 proof of host persistence. The runtime binds only its configured filesystem.
+
+The [Railway → Own-Host migration contract](MIGRATION.md) now provides
+`migration-inventory`, `migration-verify-source`, `migration-export`,
+`migration-verify-export`, `migration-import --dry-run`, `migration-import`,
+`migration-verify-import` and `migration-rollback` in this same tool. It binds
+all source/target paths, sizes and digests, preserves original DB/WAL/journals
+and historical event subjects, and checks the explicit new `binding.json` in
+separate verifier processes. Failed or rolled-back imports remain quarantined;
+the launcher refuses them. These offline operations start no service and mutate
+no Railway state or route. Actual snapshot capture, host admission and external
+cutover readback remain independently evidence-bound.
 
 ## Private durable-state snapshot and exact restoration
 

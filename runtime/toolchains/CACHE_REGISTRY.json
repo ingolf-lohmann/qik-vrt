@@ -230,7 +230,10 @@
         ".github/workflows/qikvrt_formalization_and_audio.yml",
         "runtime/self-host/PACKAGE.json",
         "tools/qikvrt_self_host.py",
-        "tests/test_self_host.py"
+        "tests/test_self_host.py",
+        "tools/qikvrt_self_host_migration.py",
+        "tests/test_self_host_migration.py",
+        "runtime/self-host/MIGRATION.md"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -251,7 +254,8 @@
         "npm ci",
         "package-lock digest",
         "test execution",
-        "self-host manifest version and executable SHA-256 with offline execution tests"
+        "self-host manifest version and executable SHA-256 with offline execution tests",
+        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls"
       ],
       "version": "24.x"
     },
@@ -388,7 +392,10 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "runtime/self-host/PACKAGE.json",
         "tools/qikvrt_self_host.py",
-        "tests/test_self_host.py"
+        "tests/test_self_host.py",
+        "tools/qikvrt_self_host_migration.py",
+        "tests/test_self_host_migration.py",
+        "runtime/self-host/MIGRATION.md"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -402,7 +409,8 @@
       "verification": [
         "exact committed-source export",
         "version and SHA-256 where runtime-bound",
-        "positive, negative and restart tests"
+        "positive, negative and restart tests",
+        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls"
       ],
       "version": "3.12.x"
     },

@@ -182,3 +182,22 @@ its own IPv6 adapter nor LibVNCServer opens a default undeclared VNC port. Actua
 kernel listener readback requires exactly the four declared IPv4 loopback ports.
 Source authorities: https://docs.docker.com/reference/cli/docker/container/run/
 and the LibVNCServer-0.9.14 `libvncserver/cargs.c` / `sockets.c` source.
+
+## S1 offline Railway-state migration
+
+The storage-only migration module extends the existing self-host tool. It uses
+the already declared Python 3.12 stdlib (`sqlite3`, `hashlib`, `fcntl`, file I/O)
+and Node 24 original MonitorStore. No provider SDK, database server, new transfer
+daemon, installer or executable dependency is introduced; cache coverage stays
+25/25. The exact source export pins the new module with the existing launcher
+and verifier. The committed transport code is PolyForm-Noncommercial-1.0.0;
+private state, credentials and transfer manifests never enter tool caches.
+SQLite format authority: https://www.sqlite.org/fileformat2.html#walformat
+and Backup API: https://www.sqlite.org/backup.html . Native event checks reuse
+the recovered original Ledger validator; its restoration provenance is unchanged.
+Missing/changed pins, files, snapshots, SQLite/journal consistency or writer locks
+hold. Failed imports are quarantined; explicit rollback preserves target bytes
+and never resets a route or source writer. The mandatory completion receipt
+prevents implicit fresh-state startup after an interrupted planned migration.
+Dry-run and corruption controls run through `make self-host-test`; the existing
+native Unix lane verifies imported historical and new-subject event restart.

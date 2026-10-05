@@ -15,11 +15,13 @@ on:
       - "tests/test_self_host_temdd.py"
       - "tests/test_self_host_firefox.py"
       - "tests/test_self_host_systemd.py"
+      - "tests/test_self_host_migration.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
       - "tests/test_self_host.py"
       - "runtime/self-host/**"
       - "docs/monitor/**"
       - "tools/qikvrt_self_host.py"
+      - "tools/qikvrt_self_host_migration.py"
       - "tools/qikvrt_mesh_monitor_readback.mjs"
       - ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
   workflow_dispatch:

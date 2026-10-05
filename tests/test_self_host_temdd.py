@@ -472,4 +472,76 @@ ledger.close()
         self.assertEqual(json.loads((self.volume/'monitor/node.json').read_bytes())['deliveries'], journal)
 
 
+class NativeMigrationTests(unittest.TestCase):
+    """Real owner ingress/restart of an imported nonempty historical volume."""
+    from tests import test_self_host_migration as migration_controls
+    _fixture = migration_controls.MigrationTests
+    setUpClass = classmethod(_fixture.setUpClass.__func__)
+    tearDownClass = classmethod(_fixture.tearDownClass.__func__)
+    setUp = _fixture.setUp
+    save_config = _fixture.save_config
+    seal = _fixture.seal
+    native_event = _fixture.native_event
+    cli = _fixture.cli
+    exported = _fixture.exported
+    imported = _fixture.imported
+    command = StandaloneTests.command
+    start = StandaloneTests.start
+    stop = StandaloneTests.stop
+    get = StandaloneTests.get
+    owner_cli = NativeStandaloneTests.cli
+    sql = NativeStandaloneTests.sql
+
+    def test_imported_history_new_subject_owner_commit_and_actual_restart(self):
+        imported = self.imported()
+        historical = self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events')
+        journal = json.loads((self.snapshot/'monitor/node.json').read_bytes())['deliveries']
+        epoch = self.event['id'].split(':')[0]
+        self.start()
+        self.assertEqual(self.get('/api/terminal')[1]['ledger_id'], epoch)
+        code, prepared = self.owner_cli('durable-prepare'); self.assertEqual(code, 0, prepared)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
+        code, committed = self.owner_cli('durable-commit', prepared); self.assertEqual(code, 0, committed)
+        self.assertEqual(committed['durable_readback']['subject']['head'], self.head)
+        self.assertNotEqual(committed['durable_readback']['subject'], self.subject)
+        self.assertFalse(committed['EFFECT_ACK_DONE'])
+        acknowledged = self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events ORDER BY seq')
+        self.assertEqual(acknowledged[:1], historical)
+        self.stop(abrupt=True); self.start()
+        self.assertEqual(self.get('/api/terminal')[1]['ledger_id'], epoch)
+        self.assertEqual(self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events ORDER BY seq'), acknowledged)
+        code, fresh = self.owner_cli('durable-readback', prepared); self.assertEqual(code, 0, fresh)
+        self.assertEqual(fresh['durable_readback'], committed['durable_readback'])
+        self.assertEqual(json.loads((self.volume/'monitor/node.json').read_bytes())['deliveries'], journal)
+        migration = self.migration_controls.migration
+        self.assertEqual(migration.inventory(self.snapshot), self.before)
+        migration.same_bytes(self.volume/'legacy/railway', self.before)
+        output = os.environ.get('QIKVRT_STATE_RECOVERY_TEST_EVIDENCE')
+        if output:
+            directory = Path(output); directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+            # Hash-only synthetic observations; never publish a captured volume.
+            receipt = {'schema':'qikvrt-railway-migration-native-readback/v1',
+                'source_head':host.git(ROOT,'rev-parse','HEAD').decode(),
+                'source_tree':host.git(ROOT,'rev-parse','HEAD^{tree}').decode(),
+                'source_worktree_dirty':bool(host.git(ROOT,'status','--porcelain','--untracked-files=normal')),
+                'fixture_head':self.head,'fixture_tree':self.tree,
+                'package_manifest_sha256':self.pin,
+                'source_inventory_sha256':self.declaration['inventory_sha256'],
+                'export_sha256':self.export_pin,'import_sha256':self.import_pin,
+                'completion_sha256':imported['completion_sha256'],
+                'historical_rows_sha256':host.digest(host.raw_json(historical)),
+                'acknowledged_rows_sha256':host.digest(host.raw_json(acknowledged)),
+                'historical_monitor_events_sha256':host.digest(host.raw_json(journal)),
+                'historical_row_count':len(historical),'acknowledged_row_count':len(acknowledged),
+                'original_epoch_preserved':True,'historical_rows_and_monitor_events_preserved':True,
+                'offline_source_and_legacy_bytes_unchanged':True,
+                'actual_owner_unix_prepare_commit_and_daemon_restart':True,
+                'new_subject_fresh_durable_readback_verified':True,
+                'private_state_snapshot_uploaded':False,'railway_data_exported':False,
+                'host_admission_verified':False,'public_readback_verified':False,
+                'deployed_restart_verified':False,'railway_cutover_verified':False,
+                'review_governance_satisfied':False,'effect_ack_done':False}
+            (directory/'MIGRATION_NATIVE_OWNER_READBACK.json').write_bytes(host.raw_json(receipt))
+
+
 if __name__ == '__main__': unittest.main()
