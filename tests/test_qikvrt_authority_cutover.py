@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import unittest
@@ -78,8 +79,6 @@ class AuthorityCutoverTests(unittest.TestCase):
                              binding["source_git_blob_sha1"])
 
     def assert_operational_writer_successor(self, successor=None, current=None):
-        import yaml
-
         successor = successor or read_json(WRITER_SUCCESSOR)["operational_writer_successor"]
         path = successor["path"]
         self.assertEqual(path, ".github/workflows/qikvrt_global_completion.yml")
@@ -97,23 +96,31 @@ class AuthorityCutoverTests(unittest.TestCase):
                          successor["predecessor_git_blob_sha1"])
         current = (ROOT / path).read_bytes() if current is None else current
         self.assertEqual(hashlib.sha256(current).hexdigest(), successor["successor_sha256"])
-        old_workflow, new_workflow = yaml.safe_load(predecessor), yaml.safe_load(current)
-        old_writer = old_workflow["jobs"].pop("materialize")
-        new_writer = new_workflow["jobs"].pop("materialize")
+        def scopes(data):
+            prefix, rest = data.decode().split("  materialize:\n", 1)
+            writer, verifier = rest.split("  verify-global-completion:\n", 1)
+            header, steps = writer.split("    steps:\n", 1)
+            rows = [row.strip() for row in re.split(r"(?m)(?=^      - name: )", steps) if row.strip()]
+            return prefix, header, rows, verifier
+
+        old_prefix, old_header, old_steps, old_verifier = scopes(predecessor)
+        new_prefix, new_header, new_steps, new_verifier = scopes(current)
+        # Compare bytes directly: this gate also runs in stdlib-only workflows.
         # Triggers, concurrency and the whole verification job stay identical.
-        # Only the admitted writer handoff receives the scoped forward repair.
-        self.assertEqual(old_workflow, new_workflow)
-        self.assertEqual(old_writer["if"], new_writer["if"])
-        self.assertEqual(old_writer["runs-on"], new_writer["runs-on"])
-        self.assertEqual(new_writer["permissions"],
-                         {"contents": "write", "actions": "read", "pull-requests": "write"})
-        old_steps = old_writer["steps"]
-        new_steps = new_writer["steps"]
+        self.assertEqual(old_prefix, new_prefix)
+        self.assertEqual(old_verifier, new_verifier)
+        self.assertEqual(new_header, old_header.replace("      contents: write\n",
+                         "      contents: write\n      actions: read\n      pull-requests: write\n"))
+        self.assertEqual(len(old_steps), 8)
+        self.assertEqual(len(new_steps), 11)
         self.assertEqual(old_steps[:2], new_steps[:2])
         self.assertEqual(old_steps[2:-1], new_steps[3:-3])
-        self.assertIn("observe-writer", new_steps[2]["run"])
-        self.assertIn("publish-writer", new_steps[-2]["run"])
-        self.assertEqual(new_steps[-1]["if"], "always()")
+        self.assertEqual(new_steps[-3], old_steps[-1].replace(
+            'git push origin "HEAD:${GITHUB_REF_NAME}"',
+            "# Branch/PR/verifier writes are resumed by the shared postcondition step."))
+        self.assertIn("observe-writer", new_steps[2])
+        self.assertIn("publish-writer", new_steps[-2])
+        self.assertIn("        if: always()\n", new_steps[-1])
         return {path}
 
     def bootstrap_fixture(self, mutate=lambda value: None):
