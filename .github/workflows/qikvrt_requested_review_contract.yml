@@ -66,5 +66,8 @@ jobs:
           grep -F 'require_code_owner_review' tools/qikvrt_required_review_gate.py
           grep -F 'dismiss_stale_reviews_on_push' tools/qikvrt_required_review_gate.py
           grep -F 'require_last_push_approval' tools/qikvrt_required_review_gate.py
-          grep -F 'QIKVRT requested review execution' .github/workflows/qikvrt_expected_head_promotion.yml
-          grep -F 'statuses?per_page=100' .github/workflows/qikvrt_expected_head_promotion.yml
+          # Promotion now consumes native independent rules/reviews directly.
+          # The behavior tests above exercise the real observer with API fixtures;
+          # a synthetic requested-review status cannot replace owner approval.
+          grep -F "'rules':gh_pages(f'repos/{repo}/rules/branches/main')" .github/workflows/qikvrt_expected_head_promotion.yml
+          grep -F "'reviews':gh_pages(f'repos/{repo}/pulls/{pr_number}/reviews?per_page=100')" .github/workflows/qikvrt_expected_head_promotion.yml
