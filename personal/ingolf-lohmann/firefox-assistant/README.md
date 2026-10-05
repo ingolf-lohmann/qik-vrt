@@ -1,7 +1,17 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
 <!-- Copyright 2026 Ingolf Lohmann. -->
 
-# Personal-Rechercheadapter im vorhandenen Firefox-Terminal
+# Universales Raumzeit-Terminal
+
+Der technische Produktname lautet **Universales Raumzeit-Terminal**. Product
+Owner Ingolf Lohmann hat diesen Namen am 2026-10-05 freigegeben. QIK-VRT bleibt
+die technische Systembezeichnung; der persönliche Browserassistent für
+quellgebundene Recherche, Dokumentation und Fortsetzung beschreibt den konkreten
+Anwendungsfall. Eine zusätzliche Fantasie- oder Markenbezeichnung ist nicht
+festgelegt. Die Namensfreigabe ist kein Kundennutzen-Nachweis: Die unten
+beschriebenen Ausführungs- und Messgrenzen bleiben offen.
+
+## Personal-Rechercheadapter im vorhandenen Firefox-Terminal
 
 Ein opt-in Adapter am bestehenden Port 8771 führt quellgebundene Recherche- und
 Dokumentationsdialoge aus. Er ist kein zweiter Webserver, keine Kopie des

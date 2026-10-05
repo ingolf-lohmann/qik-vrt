@@ -3,6 +3,11 @@
 
 # Persönlicher Browserassistent: Unterbrechungs-A/B-Vertrag
 
+Produkt unter Prüfung: **Universales Raumzeit-Terminal** (technischer Name,
+freigegeben durch Product Owner Ingolf Lohmann am 2026-10-05). Der persönliche
+Browserassistent bleibt der konkrete Anwendungsfall dieses A/B-Vertrags.
+Die Benennung ändert weder Messvertrag noch ausstehende Produktmessungen.
+
 **Stand dieses Nachfolgers: Harness, synthetische Fixtures und opt-in
 Personal-Quelladapter vorhanden;
 produktnaher End-to-End-Lauf nicht ausgeführt; Kundennutzen offen.**
