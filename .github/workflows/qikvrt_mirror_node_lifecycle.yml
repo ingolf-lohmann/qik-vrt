@@ -8,7 +8,7 @@ on:
     - cron: "17 */6 * * *"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: qikvrt-mirror-node-lifecycle
@@ -16,6 +16,9 @@ concurrency:
 
 jobs:
   renew:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -45,19 +48,155 @@ jobs:
         run: |
           set -euo pipefail
           sh tools/qikvrt_mirror_node_lifecycle.sh
-      - name: Persist lifecycle successor on mirror main
+      - name: Propose lifecycle successor through existing expected-head governance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LIFECYCLE_RECEIPT_DIR: ${{ runner.temp }}/qikvrt-mirror-lifecycle
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p "$LIFECYCLE_RECEIPT_DIR"
+          export BASE_SHA='' CANDIDATE_HEAD='' CANDIDATE_TREE='' CANDIDATE_BRANCH='' PR_NUMBER=''
+          export PERSISTENCE_STATE=BLOCK PERSISTENCE_BLOCKER=LIFECYCLE_TOKEN_UNAVAILABLE
+          trap 'python3 -B - <<'"'"'PY'"'"'
+          import json, os
+          from pathlib import Path
+          receipt = {
+              "schema": "qikvrt_mirror_lifecycle_governance_receipt_v1",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "run_id": os.environ["QIKVRT_RUN_ID"],
+              "state": os.environ["PERSISTENCE_STATE"],
+              "first_blocker": os.environ["PERSISTENCE_BLOCKER"] or None,
+              "base_head": os.environ["BASE_SHA"],
+              "candidate_head": os.environ["CANDIDATE_HEAD"],
+              "candidate_tree": os.environ["CANDIDATE_TREE"],
+              "candidate_branch": os.environ["CANDIDATE_BRANCH"],
+              "pull_request": os.environ["PR_NUMBER"] or None,
+              "promotion_workflow": ".github/workflows/qikvrt_expected_head_promotion.yml",
+              "main_persisted": False,
+              "predecessor_evidence_transfer": False,
+              "effect_ack_done": False,
+          }
+          raw = json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+          Path(os.environ["LIFECYCLE_RECEIPT_DIR"], "PERSISTENCE.json").write_text(raw, encoding="utf-8")
+          print(raw, end="")
+          PY
+          ' EXIT
+          test -n "$GH_TOKEN"
+          BASE_SHA="$(git rev-parse --verify HEAD^{commit})"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BASE_READ_UNAVAILABLE
+          current_main="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq .object.sha)"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BASE_DRIFT
+          test "$current_main" = "$BASE_SHA"
+          PERSISTENCE_BLOCKER=LIFECYCLE_NATIVE_RULE_READ_UNAVAILABLE
+          gh api "repos/${GITHUB_REPOSITORY}/rules/branches/main" > "$LIFECYCLE_RECEIPT_DIR/main-rules.json"
+          PERSISTENCE_BLOCKER=CODE_OWNER_RULE_NOT_ENFORCED
+          python3 -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          from tools.qikvrt_required_review_gate import native_code_owner_rule_is_enforced
+          rules = json.loads(Path(os.environ['LIFECYCLE_RECEIPT_DIR'], 'main-rules.json').read_text())
+          if not isinstance(rules, list) or not all(isinstance(rule, dict) for rule in rules):
+              raise SystemExit('BLOCK: invalid native main rule observation')
+          if not native_code_owner_rule_is_enforced(rules):
+              raise SystemExit('BLOCK: CODE_OWNER_RULE_NOT_ENFORCED')
+          PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add qikvrt/runtime/onboarding/NODE_HEALTH.json \
+          PERSISTENCE_BLOCKER=LIFECYCLE_INTEGRITY_MATERIALIZATION_FAILED
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- qikvrt/runtime/onboarding/NODE_HEALTH.json \
                   qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json \
-                  evidence/node_health \
-                  evidence/node_registration_renewal
-          git diff --cached --quiet && { echo "BLOCK no lifecycle delta"; exit 3; }
+                  "evidence/node_health/$QIKVRT_RUN_ID.json" evidence/node_health/LATEST.json \
+                  "evidence/node_registration_renewal/$QIKVRT_RUN_ID.json" evidence/node_registration_renewal/LATEST.json \
+                  REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          PERSISTENCE_BLOCKER=LIFECYCLE_NON_ALLOWLISTED_DELTA
+          python3 -B - <<'PY'
+          import os, subprocess
+          run_id = os.environ['QIKVRT_RUN_ID']
+          allowed = {
+              'qikvrt/runtime/onboarding/NODE_HEALTH.json',
+              'qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json',
+              f'evidence/node_health/{run_id}.json', 'evidence/node_health/LATEST.json',
+              f'evidence/node_registration_renewal/{run_id}.json', 'evidence/node_registration_renewal/LATEST.json',
+              'REPOSITORY_FILE_MANIFEST.json', 'REPOSITORY_FILE_MANIFEST.json.sha256', 'SHA256SUMS.txt',
+          }
+          actual = set(subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines())
+          if not actual or actual - allowed:
+              raise SystemExit('BLOCK: empty or non-allowlisted lifecycle delta')
+          PY
+          CANDIDATE_BRANCH="$(python3 -B - <<'PY'
+          import os, subprocess
+          from tools.qikvrt_autonomous_self_heal import candidate_identity, semantic_fingerprint
+          paths = subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines()
+          identity = candidate_identity(os.environ['BASE_SHA'], semantic_fingerprint(paths))
+          print(f'automation/mirror-lifecycle-{identity[:24]}')
+          PY
+          )"
+          git switch -c "$CANDIDATE_BRANCH"
           git commit -m "chore(mesh): renew mirror node lifecycle"
-          git push origin HEAD:main
-          successor="$(git rev-parse HEAD)"
-          tree="$(git rev-parse HEAD^{tree})"
-          echo "QIKVRT_MIRROR_LIFECYCLE_PERSISTED head=$successor tree=$tree"
+          CANDIDATE_HEAD="$(git rev-parse --verify HEAD^{commit})"
+          CANDIDATE_TREE="$(git rev-parse HEAD^{tree})"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BASE_READ_UNAVAILABLE
+          current_main="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq .object.sha)"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BASE_DRIFT
+          test "$current_main" = "$BASE_SHA"
+          PERSISTENCE_BLOCKER=LIFECYCLE_REVIEW_BRANCH_WRITE_UNAVAILABLE
+          git push origin "HEAD:refs/heads/$CANDIDATE_BRANCH"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BRANCH_READBACK_UNAVAILABLE
+          remote_head="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/$CANDIDATE_BRANCH" --jq .object.sha)"
+          remote_tree="$(gh api "repos/${GITHUB_REPOSITORY}/git/commits/$CANDIDATE_HEAD" --jq .tree.sha)"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BRANCH_READBACK_MISMATCH
+          test "$remote_head" = "$CANDIDATE_HEAD"
+          test "$remote_tree" = "$CANDIDATE_TREE"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BASE_READ_UNAVAILABLE
+          current_main="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq .object.sha)"
+          PERSISTENCE_BLOCKER=LIFECYCLE_BASE_DRIFT
+          test "$current_main" = "$BASE_SHA"
+          python3 -B - <<'PY' > "$LIFECYCLE_RECEIPT_DIR/pr-request.json"
+          import json, os
+          marker = '<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->'
+          body = (f"{marker}\n\nMirror lifecycle candidate; run {os.environ['QIKVRT_RUN_ID']}.\n"
+                  f"Base: `{os.environ['BASE_SHA']}`; HEAD: `{os.environ['CANDIDATE_HEAD']}`; TREE: `{os.environ['CANDIDATE_TREE']}`.\n\n"
+                  "This proposal workflow never merges. Promotion uses the existing separate expected-head executor, "
+                  "current native Code Owner governance and fresh applicable exact-head gates. "
+                  "Health TTL and renewal times retain their source meaning; proposal persistence is not Main persistence. "
+                  "PREDECESSOR_EVIDENCE_TRANSFER=false; EFFECT_ACK_DONE=false.")
+          print(json.dumps({'base': 'main', 'head': os.environ['CANDIDATE_BRANCH'], 'draft': True,
+                            'title': f"chore(mesh): review mirror lifecycle {os.environ['QIKVRT_RUN_ID']}", 'body': body}))
+          PY
+          PERSISTENCE_BLOCKER=LIFECYCLE_WORKFLOW_TOKEN_PR_CREATE_UNAVAILABLE_OR_AMBIGUOUS
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pulls" \
+            --input "$LIFECYCLE_RECEIPT_DIR/pr-request.json" > "$LIFECYCLE_RECEIPT_DIR/pr-created.json"
+          PR_NUMBER="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["number"])' "$LIFECYCLE_RECEIPT_DIR/pr-created.json")"
+          PERSISTENCE_BLOCKER=LIFECYCLE_PR_READBACK_UNAVAILABLE
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/$PR_NUMBER" > "$LIFECYCLE_RECEIPT_DIR/pr-readback.json"
+          PERSISTENCE_BLOCKER=LIFECYCLE_PR_SUBJECT_READBACK_MISMATCH
+          python3 -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          pr = json.loads(Path(os.environ['LIFECYCLE_RECEIPT_DIR'], 'pr-readback.json').read_text())
+          if not (pr.get('state') == 'open' and pr.get('draft') is True
+                  and pr.get('base', {}).get('ref') == 'main'
+                  and pr['base']['sha'] == os.environ['BASE_SHA']
+                  and pr.get('head', {}).get('ref') == os.environ['CANDIDATE_BRANCH']
+                  and pr['head']['sha'] == os.environ['CANDIDATE_HEAD']
+                  and pr['head'].get('repo', {}).get('full_name') == os.environ['GITHUB_REPOSITORY']):
+              raise SystemExit('BLOCK: lifecycle PR subject differs from candidate')
+          PY
+          PERSISTENCE_STATE=PR_PENDING_EXPECTED_HEAD_GOVERNANCE
+          PERSISTENCE_BLOCKER=''
+      - name: Preserve lifecycle candidate and precise capability receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-mirror-lifecycle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-mirror-lifecycle
+            qikvrt/runtime/onboarding/NODE_HEALTH.json
+            qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json
+            evidence/node_health/${{ env.QIKVRT_RUN_ID }}.json
+            evidence/node_registration_renewal/${{ env.QIKVRT_RUN_ID }}.json
+          if-no-files-found: error
+          retention-days: 30

@@ -12,6 +12,14 @@ on:
       - "tools/qikvrt_seed_common.py"
       - "tests/test_qikvrt_workflow_executor_mesh_contract.py"
       - "tests/test_seed_workflows.py"
+      - ".github/workflows/qikvrt_code_owner_review_observer.yml"
+      - ".github/workflows/qikvrt_requested_review_executor.yml"
+      - ".github/workflows/qikvrt_required_review_gate.yml"
+      - ".github/workflows/qikvrt_expected_head_promotion.yml"
+      - "tools/qikvrt_required_review_gate.py"
+      - "tools/qikvrt_expected_head_promotion.py"
+      - "tests/test_qikvrt_required_review_gate.py"
+      - "tests/test_qikvrt_expected_head_promotion.py"
       - "acceptance/WORKFLOW_EXECUTOR_MESH_NODE_CONTINUITY_ACCEPTANCE_TEST.md"
       - "registry/NODE_DISCOVERY_POLICY.json"
       - "AI"
@@ -46,6 +54,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
+      - name: Check out trusted main governance evaluator
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Observe repository workflow, job, and step transitions serially
         env:
           GH_TOKEN: ${{ github.token }}
@@ -54,6 +69,7 @@ jobs:
           WATCH_WORKFLOW: QIKVRT live status watch
           MARKER: '<!-- qikvrt-live-status-watch -->'
           MAX_CYCLES: "12"
+          GOVERNANCE_STATUS_CONTEXT: QIKVRT required code-owner review
         run: |
           set -euo pipefail
           pr="$EVENT_PR"
@@ -81,12 +97,45 @@ jobs:
           cycle=0
           while :; do
             cycle=$((cycle + 1))
-            runs="$(gh api "repos/$REPOSITORY/actions/runs?branch=$branch&per_page=100")"
+            subject="$(gh api "repos/$REPOSITORY/pulls/$pr")"
+            head="$(printf '%s' "$subject" | jq -r .head.sha)"
+            branch="$(printf '%s' "$subject" | jq -r .head.ref)"
+            runs="$(gh api "repos/$REPOSITORY/actions/runs?head_sha=$head&per_page=100")"
             active="$(printf '%s' "$runs" | jq --arg self "$WATCH_WORKFLOW" '[.workflow_runs[] | select(.name != $self and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "requested" or .status == "pending"))]')"
-            latest="$(printf '%s' "$runs" | jq --arg self "$WATCH_WORKFLOW" '[.workflow_runs[] | select(.name != $self)][0:20]')"
+            latest="$(printf '%s' "$runs" | jq --arg self "$WATCH_WORKFLOW" '[.workflow_runs[] | select(.name != $self)] | group_by(.name) | map(max_by([.run_number, .run_attempt])) | sort_by(.created_at) | reverse')"
             active_count="$(printf '%s' "$active" | jq 'length')"
 
-            workflow_lines="$(printf '%s' "$latest" | jq -r 'if length == 0 then "| none | PENDING | - | - |" else .[] | "| " + .name + " | " + (.conclusion // .status) + " | [" + (.run_number|tostring) + "](" + .html_url + ") | `" + (.id|tostring) + "` |" end')"
+            governance="$(PR_NUMBER="$pr" EXPECTED_HEAD="$head" python3 -B - <<'PY'
+          import json, os, subprocess
+          from tools import qikvrt_required_review_gate as gate
+          repo=os.environ['REPOSITORY']; number=os.environ['PR_NUMBER']; head=os.environ['EXPECTED_HEAD']
+          def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
+          def pages(path):
+              result=[]
+              for page in json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path],text=True)):
+                  result.extend(page)
+              return result
+          try:
+              pr=one(f'repos/{repo}/pulls/{number}')
+              rules=one(f'repos/{repo}/rules/branches/main')
+              reviews=pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100')
+              statuses=pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
+              if hasattr(gate, 'project_governance'):
+                  projection=gate.project_governance(pr, rules, reviews, statuses)
+              else:
+                  native=gate.evaluate_required_review(pr, rules, reviews)
+                  projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':native.get('first_blocker') or 'GOVERNANCE_PROJECTOR_NOT_PROMOTED','head_sha':head,'native_review_gate':native}
+              current=one(f'repos/{repo}/pulls/{number}')
+              if pr['head']['sha'] != head or current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha']:
+                  projection.update(gate_state='failure', acceptance='BLOCKED', first_blocker='GOVERNANCE_SUBJECT_DRIFT')
+          except (OSError, ValueError, subprocess.SubprocessError, KeyError) as exc:
+              projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':'NATIVE_GOVERNANCE_OBSERVATION_UNAVAILABLE','head_sha':head,'detail':type(exc).__name__}
+          print(json.dumps(projection,sort_keys=True))
+          PY
+          )"
+            governance_state="$(printf '%s' "$governance" | jq -r .acceptance)"
+            governance_blocker="$(printf '%s' "$governance" | jq -r '.first_blocker // "none"')"
+            workflow_lines="$(printf '%s' "$latest" | jq -r 'if length == 0 then "| none | PENDING | - | - |" else .[] | "| " + .name + " | " + (.conclusion // .status) + (if .name == "QIKVRT code-owner review observer" or .name == "QIKVRT requested review executor" or .name == "QIKVRT required code-owner review" then " (EXECUTION_ONLY)" else "" end) + " | [" + (.run_number|tostring) + "](" + .html_url + ") | `" + (.id|tostring) + "` |" end')"
             step_rows=''
             total_steps=0
             completed_steps=0
@@ -121,7 +170,7 @@ jobs:
             empty=$((20 - filled))
             bar="$(printf '%*s' "$filled" '' | tr ' ' '█')$(printf '%*s' "$empty" '' | tr ' ' '░')"
             now="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-            signature="$(printf '%s\n%s\n%s\n%s' "$active_count" "$completed_steps" "$total_steps" "$step_rows" | sha256sum | awk '{print $1}')"
+            signature="$(printf '%s\n%s\n%s\n%s\n%s\n%s' "$head" "$governance" "$active_count" "$completed_steps" "$total_steps" "$step_rows" | sha256sum | awk '{print $1}')"
 
             if [ "$signature" != "$state_signature" ]; then
               update_status "## QIKVRT bounded repository runtime observation
@@ -130,13 +179,20 @@ jobs:
 
           - Repository: \`$REPOSITORY\`
           - Branch: \`$branch\`
+          - Exact PR HEAD: \`$head\`
           - Observation cycle: \`$cycle/$MAX_CYCLES\`
           - Observed at: \`$now\`
           - Active external runs: \`$active_count\`
 
-          ### Workflows
+          ### Native governance acceptance
 
-          | Workflow | State | Run | Run ID |
+          **\`$governance_state\` — \`$governance_blocker\`**
+
+          Fresh native rules and current-head Code Owner reviews control this result. The dedicated \`$GOVERNANCE_STATUS_CONTEXT\` status must agree. Successful event observation, NOOP, technical disposition or status publication never establishes enforcement or independent approval. Completed-step percentages measure execution only.
+
+          ### Workflow execution telemetry
+
+          | Workflow | Execution state | Run | Run ID |
           |---|---|---:|---:|
           $workflow_lines
 
@@ -147,6 +203,11 @@ jobs:
           $step_rows
 
           Observation is opt-in and bounded so the watcher cannot monopolize a runner while the observed jobs wait behind it. A new explicit invocation supersedes any older invocation for the same pull request."
+              {
+                echo "## Native governance acceptance for PR #$pr"
+                echo "Head: $head; $governance_state; blocker: $governance_blocker"
+                echo 'Workflow success and completed-step percentages are execution telemetry only.'
+              } >> "$GITHUB_STEP_SUMMARY"
               state_signature="$signature"
             fi
 

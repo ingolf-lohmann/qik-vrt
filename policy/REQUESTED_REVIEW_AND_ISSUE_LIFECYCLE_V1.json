@@ -67,12 +67,18 @@
       "workflow_run.completed"
     ],
     "recovery_schedule": "*/5 * * * *",
-    "exact_head_status_context": "QIKVRT requested review execution",
+    "exact_head_status_context": "QIKVRT requested review disposition",
+    "status_scope": "TECHNICAL_DISPOSITION_ONLY",
+    "native_governance_status_context": "QIKVRT required code-owner review",
+    "legacy_native_governance_status_alias": "QIKVRT requested review execution",
+    "native_status_sole_writer": ".github/workflows/qikvrt_required_review_gate.yml",
+    "execution_success_implies_enforcement_or_independent_approval": false,
     "promotion_workflow": ".github/workflows/qikvrt_expected_head_promotion.yml",
     "promotion_requires_successful_review_status": true,
+    "promotion_requires_fresh_native_rules_and_exact_head_independent_review": true,
     "duplicate_exact_head_review": "FORBIDDEN",
     "head_tree_or_scope_drift_invalidates_review": true,
-    "platform_approval_fallback": "PERSIST_SUBSTANTIVE_DISPOSITION_AS_COMMENT_WITH_EXACT_PLATFORM_LIMITATION",
+    "platform_approval_fallback": "AUTOMATED_APPROVE_DISPOSITION_IS_ALWAYS_COMMENT_ONLY",
     "independent_code_owner_approval_may_be_inferred": false
   },
   "issue_lifecycle": {

@@ -17,6 +17,9 @@ SUCCESS = "success"
 PENDING = "pending"
 FAILURE = "failure"
 DECISIVE_REVIEW_STATES = {"APPROVED", "CHANGES_REQUESTED", "DISMISSED"}
+GOVERNANCE_STATUS_CONTEXT = "QIKVRT required code-owner review"
+LEGACY_GOVERNANCE_STATUS_CONTEXT = "QIKVRT requested review execution"
+REVIEW_DISPOSITION_STATUS_CONTEXT = "QIKVRT requested review disposition"
 
 
 class ReviewGateInputError(ValueError):
@@ -37,8 +40,8 @@ def _login(value: Any, label: str) -> str:
     return value.strip()
 
 
-def _review_sort_key(review: Mapping[str, Any]) -> tuple[str, int]:
-    submitted_at = review.get("submitted_at")
+def _review_sort_key(review: Mapping[str, Any], timestamp_field: str = "submitted_at") -> tuple[str, int]:
+    submitted_at = review.get(timestamp_field)
     if not isinstance(submitted_at, str):
         submitted_at = ""
     identifier = review.get("id", -1)
@@ -142,6 +145,8 @@ def evaluate_required_review(pr: Mapping[str, Any], rules: Sequence[Mapping[str,
         raise ReviewGateInputError(f"unsupported decisive review state: {latest_state}")
     if author_login.casefold() == owner_login.casefold():
         return _block(gate_state=FAILURE, blocker="CODE_OWNER_REVIEW_SELF_APPROVAL", detail="the pull-request author cannot satisfy the independent Code Owner review gate", pr_number=pr_number, head_sha=head_sha, required_code_owner=owner_login)
+    if latest["user"].get("type") == "Bot" or owner_login.casefold().endswith("[bot]"):
+        return _block(gate_state=FAILURE, blocker="CODE_OWNER_REVIEW_AUTOMATED_APPROVAL", detail="an automated reviewer cannot satisfy independent Code Owner approval", pr_number=pr_number, head_sha=head_sha, required_code_owner=owner_login)
 
     return {
         "schema": SCHEMA,
@@ -154,6 +159,52 @@ def evaluate_required_review(pr: Mapping[str, Any], rules: Sequence[Mapping[str,
         "review_id": latest.get("id"),
         "external_effect": "NONE",
         "review_mutation": "FORBIDDEN",
+    }
+
+
+def project_governance(pr: Mapping[str, Any], rules: Sequence[Mapping[str, Any]], reviews: Sequence[Mapping[str, Any]], statuses: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Project fresh native evidence; execution success is never an input vote.
+
+    The dedicated status must agree with the fresh native decision. The old
+    shared status is a compatibility alias, never a substitute for that status.
+    A missing, conflicting or stale publication keeps acceptance closed.
+    """
+    decision = evaluate_required_review(pr, rules, reviews)
+    if not isinstance(statuses, list) or not all(isinstance(item, Mapping) for item in statuses):
+        raise ReviewGateInputError("statuses observation must be a list of objects")
+    latest = {}
+    for item in statuses:
+        context = item.get("context")
+        if context in {GOVERNANCE_STATUS_CONTEXT, LEGACY_GOVERNANCE_STATUS_CONTEXT}:
+            previous = latest.get(context)
+            if previous is None or _review_sort_key(item, "created_at") > _review_sort_key(previous, "created_at"):
+                latest[context] = item
+    state, blocker = decision["gate_state"], decision["first_blocker"]
+    published = latest.get(GOVERNANCE_STATUS_CONTEXT)
+    legacy = latest.get(LEGACY_GOVERNANCE_STATUS_CONTEXT)
+    if state == SUCCESS:
+        if published is None:
+            state, blocker = PENDING, "NATIVE_GOVERNANCE_STATUS_MISSING"
+        elif published.get("state") != SUCCESS:
+            state, blocker = FAILURE, "NATIVE_GOVERNANCE_STATUS_NOT_SUCCESSFUL"
+        elif legacy is not None and legacy.get("state") != SUCCESS:
+            state, blocker = FAILURE, "GOVERNANCE_STATUS_DISAGREEMENT"
+    return {
+        "schema": "qikvrt_governance_projection_v1",
+        "pr_number": decision["pr_number"],
+        "head_sha": decision["head_sha"],
+        "base_sha": (pr.get("base") or {}).get("sha"),
+        "gate_state": state,
+        "first_blocker": blocker,
+        "native_review_gate": decision,
+        "acceptance": "NATIVE_GOVERNANCE_SATISFIED" if state == SUCCESS else "BLOCKED",
+        "status_context": GOVERNANCE_STATUS_CONTEXT,
+        "status_id": published.get("id") if published else None,
+        "legacy_status_context": LEGACY_GOVERNANCE_STATUS_CONTEXT,
+        "legacy_status_id": legacy.get("id") if legacy else None,
+        "execution_success_implies_enforcement": False,
+        "execution_success_implies_independent_approval": False,
+        "completion_claims": {"PASS": False, "FINAL_PASS": False, "EFFECT_ACK_DONE": False},
     }
 
 
