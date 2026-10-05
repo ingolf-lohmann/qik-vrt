@@ -376,3 +376,69 @@ Provisioning sources:
 - https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/manage-larger-runners
 - https://docs.github.com/en/actions/reference/runners/larger-runners
 - https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-larger-runners
+
+## Windows-11-AMD64 admission, 5 October 2026
+
+The current machine contract under
+`windows_acceptance.windows11_amd64_client_measurement` now separates
+`runner_binding`, `current_runtime_candidate_input` and
+`same_carrier_runtime_admission`. Discovery reads the exact Main, #438 and #461
+trees and actual numeric Actions jobs. The runner-inventory endpoint is rejected
+by the current connector allowlist. Inventory is incomplete; neither global
+carrier absence nor an available dedicated client runner is proved.
+
+`runner_binding.state=UNBOUND`: the dedicated existing selector, host/runner ID,
+native client OS identity, availability, repository access and callable initial
+execution operation have no observed value. These fields must be filled from
+fresh authorized readbacks before execution. No label, host, paid resource or
+dispatch is manufactured by this preparation. The existing three-input dispatch
+contract remains the Firefox execution path. Independently bind the then-current
+successor HEAD/TREE, rather than the discovery parent recorded in the work unit.
+
+The separately pinned runtime input is [PR #461 at
+1d28e59f99f0814a3410465a0712cb3ca0e899a9](https://github.com/ingolf-lohmann/qik-vrt/tree/1d28e59f99f0814a3410465a0712cb3ca0e899a9),
+TREE `533c31c8e1765e3928767b4b290b8573ae8c7f9b`. Run `37304233153`,
+job `111743929182`, artifact `11342338623` supplies a Windows Server build,
+independently downloaded and byte-checked. The outer artifact SHA-256 is
+`ea73fc2ea93e1a1ccdaf57051a24e57e17bdcae5ac6ffa3c24d3e18f49a81395`;
+the inner `qikvrt-native.zip` SHA-256 is
+`2fdc3e255481163a2e03b80ffa3071a2359a57a7289db18b196b6486c5866092`;
+its manifest pin is
+`d3bb1294fdf72bbca36f08a7b610e65c8d294f8681d7b66af6a4ba6bf88cf764`.
+The machine contract additionally binds the actual AMD64 CLI/DLL bytes. These
+are verified candidate inputs, not Windows-11 client-execution evidence.
+
+The existing #438 workflow runs the Firefox witness; it does not execute the
+separate native package. Its native-package execution operation therefore also
+remains unbound. Once an authorized client carrier is available, execute the
+existing #461 package operations on that same clean host, keeping both distinct
+source identities. After independent archive and manifest verification, using
+an already verified extraction of the pinned package, the existing operations
+are:
+
+```powershell
+$pin = 'd3bb1294fdf72bbca36f08a7b610e65c8d294f8681d7b66af6a4ba6bf88cf764'
+python -B "$package/source/tools/qikvrt_native_release.py" verify --package "$package" --manifest-sha256 $pin
+& "$package/bin/qikvrt-c90.exe" evaluate 0000000700000003060201010100
+python -B "$package/source/tools/qikvrt_native_release.py" sql --package "$package" --manifest-sha256 $pin
+python -B "$package/source/tools/qikvrt_native_release.py" rebuild --package "$package" --manifest-sha256 $pin --output "$newOutput"
+python -B "$package/source/tools/qikvrt_native_release.py" verify --package "$package" --manifest-sha256 $pin
+```
+
+Every operation must exit successfully; CLI and SQL must return
+`000000040201`. Bind the actual host/OS and executing binary hashes, command
+results, fresh rebuild manifest/binaries, and unchanged input bytes. Artifact
+expiry requires exact-source reconstruction with fresh pins, not acceptance of
+a different build. Preserve the native receipt alongside the same-carrier
+Firefox source, run/attempt/job/artifact, real restart, full records, replay and
+startup-refusal readbacks. Downloaded Server receipts cannot supply those client
+observations.
+
+`product_target_matches` means only that the preflight OS/build/edition matches.
+`product_target_verified` stays false until the actual native Firefox effect and
+all restart/record/replay/negative-start controls complete on that supported
+client architecture; it stays false on execution failure. The AMD64 field
+`windows_11_amd64_client_execution_observed` additionally requires native AMD64.
+ARM64 verification remains confined to ARM64. The combined Firefox/runtime
+admission and Personal release remain separate unverified scopes until their
+own same-carrier and independent readbacks exist.

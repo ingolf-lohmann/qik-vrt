@@ -846,7 +846,8 @@ def witness(output, headless=False, linux=False, expected_architecture=None,
                'unbounded_scalability_proved': False,
                'hardware_required': False, 'extension_loaded': False,
                'terminal_functional_readback': False, 'local_effect_readback': False,
-               'product_target_verified': False, 'authenticated_runtime_readback': False,
+               'product_target_matches': False, 'product_target_verified': False,
+               'authenticated_runtime_readback': False,
                'public_url_fresh_readback': False,
                'personal_release_effect_ack_done': False, 'state': 'HOLD'}
     if linux:
@@ -892,8 +893,8 @@ def witness(output, headless=False, linux=False, expected_architecture=None,
         if not linux and sys.version_info[:3] != (3, 13, 15):
             raise RuntimeError('WINDOWS_WITNESS_INTERPRETER_VERSION_MISMATCH')
         receipt['python_version'] = platform.python_version()
-        receipt['product_target_verified'] = False if linux else target_matches(receipt['os'], contract['product_target'])
-        if require_product_target and not receipt['product_target_verified']:
+        receipt['product_target_matches'] = False if linux else target_matches(receipt['os'], contract['product_target'])
+        if require_product_target and not receipt['product_target_matches']:
             # An unsuitable carrier is not a failed browser execution. Refuse
             # before any driver provisioning, browser or terminal effect.
             receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_PRODUCT_TARGET_REQUIRED'
@@ -1081,22 +1082,25 @@ def witness(output, headless=False, linux=False, expected_architecture=None,
                            reason='HOLD_PERSONAL_CAPABILITY_AUTHENTICATED_RUNTIME_AND_RELEASE_INSTALL_REQUIRED')
             if not receipt['public_url_fresh_readback']:
                 receipt['reason'] = 'HOLD_PUBLIC_URL_AND_SEPARATE_PERSONAL_RELEASE_GATES'
-            if not receipt['product_target_verified']:
-                receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_CLIENT_WITNESS_REQUIRED'
-                if not linux:
-                    receipt['windows_witness_test'] = 'HOLD'
             if not linux:
                 native = native_windows_architectures_match(receipt['os'], {
                     'python': receipt['python_binary_architecture'],
                     'firefox': receipt['firefox_binary_architecture'],
                     'geckodriver': receipt['driver_binary_architecture'],
                 }, expected_architecture)
+                # OS admission is only a match. Product verification requires
+                # the actual browser effect, restart, records and refusals above.
+                receipt['product_target_verified'] = receipt['product_target_matches'] and native
                 receipt['windows_native_architecture_witness_test'] = 'PASS' if native else 'HOLD'
                 receipt['windows_amd64_execution_observed'] = native and receipt['os']['architecture'] == 'AMD64'
                 receipt['windows_os_evidence_scope'] = (
                     'SUPPORTED_WINDOWS_11_CLIENT' if receipt['product_target_verified'] else
                     'SERVER_COMPATIBILITY_ONLY' if receipt['os']['product_type'] in (2, 3) else
                     'OTHER_WINDOWS_COMPATIBILITY_ONLY')
+            if not receipt['product_target_verified']:
+                receipt['reason'] = 'HOLD_SUPPORTED_WINDOWS_11_CLIENT_WITNESS_REQUIRED'
+                if not linux:
+                    receipt['windows_witness_test'] = 'HOLD'
             if not linux and receipt['browser_execution_mode'] != 'NATIVE':
                 receipt['windows_witness_test'] = 'HOLD'
                 receipt['reason'] = 'HOLD_NATIVE_WINDOWS_ARCHITECTURE_EXECUTION_REQUIRED'
@@ -1110,6 +1114,7 @@ def witness(output, headless=False, linux=False, expected_architecture=None,
                 receipt['reason'] = 'HOLD_COMPLETE_MESH_LINUX_CLOSURE_LIVE_NODES_AND_RELEASE_GATES'
         return 0
     except Exception as error:
+        receipt['product_target_verified'] = False
         receipt['reason'] = type(error).__name__ + ': ' + str(error)
         if linux:
             receipt['linux_ring_test'] = 'FAIL'

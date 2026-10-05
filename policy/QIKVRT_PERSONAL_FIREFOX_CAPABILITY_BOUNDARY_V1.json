@@ -378,6 +378,124 @@
           "https://docs.github.com/en/actions/reference/runners/larger-runners",
           "https://docs.github.com/en/actions/how-tos/manage-runners/larger-runners/use-larger-runners"
         ]
+      },
+      "current_runtime_candidate_input": {
+        "architecture_evidence_transfer": false,
+        "artifact_archive_bytes": 364068,
+        "artifact_archive_sha256": "ea73fc2ea93e1a1ccdaf57051a24e57e17bdcae5ac6ffa3c24d3e18f49a81395",
+        "artifact_id": 11342338623,
+        "artifact_name": "qikvrt-native-windows-2025-1d28e59f99f0814a3410465a0712cb3ca0e899a9",
+        "binaries": {
+          "bin/qikvrt-c90.exe": {
+            "architecture": "AMD64",
+            "bytes": 73659,
+            "pe_machine": "0x8664",
+            "sha256": "b6cf4e11097cc79e187f1bd59d093a99ec4f3f79dd0be5e3058b1db234442bec"
+          },
+          "bin/qikvrt.dll": {
+            "architecture": "AMD64",
+            "bytes": 56529,
+            "pe_machine": "0x8664",
+            "sha256": "cf567e69aab5ba78f523ef64e0d4ae464e5f5c26e5c730a6e1cb0d1413fc99c6"
+          }
+        },
+        "client_execution_observed": false,
+        "head": "1d28e59f99f0814a3410465a0712cb3ca0e899a9",
+        "manifest_sha256": "d3bb1294fdf72bbca36f08a7b610e65c8d294f8681d7b66af6a4ba6bf88cf764",
+        "numeric_job_id": 111743929182,
+        "observed_producer_platform": {
+          "machine": "AMD64",
+          "os_version": "Windows-2025Server-10.0.26100-SP0",
+          "system": "win32"
+        },
+        "package_archive_bytes": 185262,
+        "package_archive_name": "qikvrt-native.zip",
+        "package_archive_sha256": "2fdc3e255481163a2e03b80ffa3071a2359a57a7289db18b196b6486c5866092",
+        "predecessor_evidence_transfer": false,
+        "pull_request": 461,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "retention": "Actions artifact expires; input locator only, not durable public delivery. If unavailable, reconstruct exact source and collect new input pins.",
+        "run_attempt": 1,
+        "run_id": 37304233153,
+        "source_files_verified_against_exact_runtime_tree": 45,
+        "state": "BYTE_VERIFIED_RUNTIME_INPUT_ONLY",
+        "tree": "533c31c8e1765e3928767b4b290b8573ae8c7f9b"
+      },
+      "product_target_receipt_semantics": {
+        "amd64_client_verified_field": "windows_11_amd64_client_execution_observed",
+        "failed_or_unexecuted_witness_product_target_verified": false,
+        "native_runtime_input_is_client_execution_evidence": false,
+        "product_target_matches": "OS/build/edition/native architecture preflight comparison only; never execution acceptance.",
+        "product_target_verified": "False until native headed Firefox effect, every event/record, actual TerminateProcess/distinct restart, both replay-409 refusals and ten negative starts complete on the matching supported client architecture."
+      },
+      "runner_binding": {
+        "authorized_execution_operation": null,
+        "billing_effect_authorized": false,
+        "dedicated_runner_label": null,
+        "first_causal_observation": "GET /repos/ingolf-lohmann/qik-vrt/actions/runners?per_page=100 was rejected by the connector endpoint allowlist; no inventory response obtained.",
+        "global_runner_absence_proved": false,
+        "host_identity": null,
+        "initial_workflow_dispatch_callable": false,
+        "missing_fields": [
+          "current_runner_inventory_or_host_identity_readback",
+          "dedicated_existing_windows11_amd64_selector",
+          "actual_product_type_1_build_26200_25H2_accepted_edition_and_native_amd64",
+          "repository_scope_and_clean_headed_desktop",
+          "callable_initial_execution_operation"
+        ],
+        "observed_at": null,
+        "online_readback": null,
+        "operation_authorization_receipt": null,
+        "os_identity_readback": null,
+        "provisioning_performed": false,
+        "repository": "ingolf-lohmann/qik-vrt",
+        "repository_access_readback": null,
+        "retry_condition": "Fresh supported Windows11 AMD64 host/runner identity and scoped callable operation exposed. Reobserve actual candidate refs; changed runtime input requires fresh artifact pins.",
+        "runner_group_id": null,
+        "runner_id": null,
+        "runner_inventory_complete": false,
+        "state": "UNBOUND"
+      },
+      "same_carrier_runtime_admission": {
+        "architecture_evidence_transfer": false,
+        "candidate_trees_are_identical": false,
+        "combined_client_product_target_verified": false,
+        "existing_firefox_workflow_executes_native_runtime_package": false,
+        "firefox_dispatch_subject": "Fresh PR #438 successor: independently observed HEAD/TREE must match checkout and workflow event. Discovery parent is not dispatch subject.",
+        "firefox_execution_route": {
+          "admission_job": "boundary",
+          "automatic_pull_request_client_dispatch": false,
+          "empty_runner_behavior": "SERVER_COMPATIBILITY_ONLY",
+          "event": "workflow_dispatch",
+          "inputs": {
+            "expected_head": "FRESH_INDEPENDENT_40_HEX_HEAD",
+            "expected_tree": "FRESH_INDEPENDENT_40_HEX_TREE",
+            "windows11_amd64_runner": "EXISTING_AUTHORIZED_DEDICATED_RUNNER_LABEL"
+          },
+          "job": "windows-witness / AMD64",
+          "provisioning_or_billing_authorized": false,
+          "requires_product_target": true,
+          "workflow": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+        },
+        "native_execution_operation": null,
+        "predecessor_evidence_transfer": false,
+        "required_native_operations": [
+          "verify_package_before_any_execution",
+          "execute_same_pinned_AMD64_CLI_and_DLL_SQL_on_actual_client",
+          "execute_locked_package_rebuild_and_selftests_to_new_output",
+          "verify_input_package_unchanged_after_execution"
+        ],
+        "runtime_subject": "current_runtime_candidate_input exact PR #461 package source and independent archive/manifest/binary pins",
+        "same_carrier_readback_requires": [
+          "fresh actual Windows11 ProductType1/build/edition/native-AMD64 identity",
+          "same authorized host/runner and bounded execution interval for native runtime and Firefox witness",
+          "both distinct source HEAD/TREE bindings and executing PE hashes",
+          "fresh native CLI/SQL/rebuild results and output binary hashes",
+          "Firefox seed/State/TerminateProcess/restart/every-record/two-replay-409/ten-startup-refusal receipt",
+          "numeric run/attempt/job/artifact and archive digest verification; compare actual logs to receipts"
+        ],
+        "server_or_arm64_fallback": false,
+        "state": "HOLD_RUNNER_AND_NATIVE_RUNTIME_EXECUTION_BINDING_REQUIRED"
       }
     }
   },

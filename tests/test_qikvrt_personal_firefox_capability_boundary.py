@@ -337,6 +337,7 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             terminal.assert_not_called()
             self.assertFalse(receipt['windows_11_amd64_client_execution_observed'])
             self.assertFalse(receipt['windows_amd64_execution_observed'])
+            self.assertFalse(receipt['product_target_verified'])
             self.assertFalse(receipt['local_effect_readback'])
             self.assertFalse(receipt['personal_release_effect_ack_done'])
             return code, receipt
@@ -369,7 +370,8 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
              'edition': 'Enterprise', 'architecture': 'AMD64', 'process_architecture': 'AMD64'},
             expected_provision=True)
         self.assertEqual(code, 1)
-        self.assertTrue(receipt['product_target_verified'])
+        self.assertTrue(receipt['product_target_matches'])
+        self.assertFalse(receipt['product_target_verified'])
         self.assertIn('PROVISIONING_BOUNDARY_TEST_ONLY', receipt['reason'])
 
     def test_strict_client_requires_independently_bound_tree_before_effect(self):
