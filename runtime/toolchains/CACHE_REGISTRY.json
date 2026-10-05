@@ -12,11 +12,18 @@
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "Makefile",
-        "tests/test_effect_ack_core.sh"
+        "tests/test_effect_ack_core.sh",
+        "runtime/toolchains/NATIVE_RECIPES.json",
+        "tools/qikvrt_tool_cache.py",
+        "tests/test_native_runtime_cache.py",
+        "src/effect_ack_core.c",
+        "include/qikvrt/effect_ack.h",
+        "tests/test_effect_ack_core.c"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
-        "github-hosted-runner-image:ubuntu-24.04"
+        "github-hosted-runner-image:ubuntu-24.04",
+        ".qikvrt/toolchains/native/v1/<exact-source-compiler-target-key>"
       ],
       "profiles": [
         "core",
@@ -26,7 +33,11 @@
       "trusted_save": false,
       "verification": [
         "strict ANSI-C90 compile contract",
-        "core execution tests"
+        "core execution tests",
+        "source, system headers, compiler bytes/version, target/ABI flags and static link inputs SHA-256",
+        "ELF program headers reject dynamic linkage",
+        "execution self-test on cold and warm reuse; corrupt artifacts BLOCK",
+        "concurrent first use compiles once; source update invalidates; bounded measured hot-layer planning"
       ],
       "version": "ansi-c90"
     },
@@ -132,7 +143,10 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "docs/monitor/package.json",
+        "docs/monitor/server.mjs",
+        "docs/monitor/monitor.test.mjs"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -150,7 +164,8 @@
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution"
+        "test execution",
+        "repository monitor no-dependency Node 24 HTTP, durable journal and client replica acceptance"
       ],
       "version": "24.x"
     },

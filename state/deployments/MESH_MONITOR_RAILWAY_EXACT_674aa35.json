@@ -1,0 +1,52 @@
+{
+  "schema": "qikvrt-monitor-deployment-contract/v1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_head": "674aa35ec0659119a19cda66b88f32050e34f105",
+  "source_tree": "5100b66a299ded9ecb64622d2d36a5a77ef1f85d",
+  "source_root": "/docs/monitor",
+  "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+  "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+  "service_id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+  "service_name": "mesh-monitor",
+  "volume_id": "e802140e-b6a9-476c-a937-dde322253539",
+  "state_directory": "/var/lib/qikvrt/monitor",
+  "staged_patch_id": "9d4860c4-5003-48ef-a07f-d383f303b539",
+  "health_path": "/health",
+  "restart_policy": "ALWAYS",
+  "restart_policy_max_retries": 3,
+  "replicas": 1,
+  "sleep_application": false,
+  "public_url": "https://mesh-monitor-production.up.railway.app",
+  "node_id": "mirror:ingolf-lohmann/qik-vrt",
+  "version": "2026-10-04.8",
+  "artifact_files_sha256": {
+    "server.mjs": "0fda7dc8b7c1f3ce95c24c02bfdba584e8010553086f82a85f5bde914a7e8423",
+    "observer.mjs": "0e6e7479f8a927d2338a82e7af2de04048078ec5aa2014122ca11518700cc35d",
+    "index.html": "eeeac1e61f5a5b0f007bba3aa397a413610f6be04e292303c9ba5525cdc5fcd2",
+    "client-replica.js": "43c15dbf982a4b4a4a7a34b11c5d6cb0508c70d1efb4155a09aef5ea8e304a85",
+    "health-projection.js": "c30559de8cb4238d759ab940e8f22717eed424ef2ebb7c91d87a55dd78c0c980",
+    "package.json": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428"
+  },
+  "credential_sources": {
+    "project_token": "RAILWAY_TOKEN",
+    "account_or_workspace_token": "RAILWAY_API_TOKEN",
+    "atomic_repository_claim": "GITHUB_TOKEN",
+    "credentials_in_repository": false,
+    "interactive_login": false
+  },
+  "source_governance": "PR456 native review failure remains separate; no review, ruleset, merge or approval mutation.",
+  "dispatch_semantics": "One Railway mutation after exact patch/config validation, create-only Git ref and fresh reobservation. No blind retry. Existing claim allows readback only.",
+  "retry_condition": "Supply an already authorized server-side credential to the same controller/runner. An existing claim never authorizes another mutation. Ambiguous dispatch requires provider readback.",
+  "limitations": [
+    "environmentPatchCommitStaged has no patch-ID/CAS argument in the primary API schema. Double read and one repository claim serialize cooperating runners; they do not prevent a privileged external writer racing after the final observation.",
+    "Bounded client readback does not prove GitHub-provider delivery, restart fault injection in production or cross-node failover."
+  ],
+  "primary_sources": [
+    "https://docs.railway.com/integrations/api",
+    "https://docs.railway.com/integrations/api/manage-environments",
+    "https://docs.railway.com/integrations/api/manage-services",
+    "https://github.com/railwayapp/cli/tree/1bc05636f79e9d094edcce48e413254c0a1a6c1d/src/gql"
+  ],
+  "effect_ack_done": false,
+  "PREDECESSOR_EVIDENCE_TRANSFER": false
+}

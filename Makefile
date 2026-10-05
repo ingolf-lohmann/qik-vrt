@@ -14,7 +14,7 @@ effect-ack-core-compile:
 	$(CC) $(EFFECT_ACK_C90_CFLAGS) -Iinclude -fsyntax-only src/effect_ack_core.c tests/test_effect_ack_core.c
 
 effect-ack-core-test: effect-ack-core-compile
-	CC="$(CC)" sh tests/test_effect_ack_core.sh
+	CC="$(CC)" PYTHON="$(PYTHON)" sh tests/test_effect_ack_core.sh
 
 scientific-bundle-test:
 	PYTHON="$(PYTHON)" sh tests/test_effect_ack_scientific_bundle.sh
@@ -29,6 +29,7 @@ anticipation-contract:
 
 tool-cache-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_tool_cache.py verify
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_native_runtime_cache
 
 runtime-contract: tool-cache-contract
 	sh -n tools/bootstrap-gh.sh tools/bootstrap-runtime.sh
@@ -88,8 +89,15 @@ seed:
 e2e:
 	$(PYTHON) tests/test_tcpip_e2e.py
 
-test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
+test: repository-monitor-test compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify
+
+.PHONY: repository-monitor-test
+repository-monitor-test:
+	cd docs/monitor && npm test
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_mesh_monitor_deploy
+	node --test tests/mesh_monitor_readback.test.mjs
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_digital_twin_rest
 
 run-api:
 	@test -n "$(QIKVRT_API_TOKEN)" || (echo "BLOCK: set QIKVRT_API_TOKEN" >&2; exit 2)

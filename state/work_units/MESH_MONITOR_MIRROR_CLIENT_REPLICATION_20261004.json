@@ -1,0 +1,183 @@
+{
+  "schema": "qikvrt-monitor-work-unit/v1",
+  "work_unit_id": "MESH_MONITOR_MIRROR_CLIENT_REPLICATION_20261004",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
+  "state": "TESTED_CROSS_NODE_READ_FAILOVER_CANDIDATE_NOT_DEPLOYED",
+  "human_principal": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "creator",
+      "product_owner",
+      "code_owner"
+    ],
+    "input": "Move the monitor to the Mirror, approval granted; own instance per client; detect and eliminate discrepancies; publish URL coverage; no-data-loss proof is an acceptance criterion. Immediate per-instance system health; compile core once per exact source/compiler/target with static linkage; bounded hot-layer translation; full C90/Universal Terminal/Digital Twin/Docker/Atari/Mega ST/Siemens scope and continuous operation; renewed owner implementation and deployment approval."
+  },
+  "artificial_contributor": {
+    "identity": "OpenAI Codex",
+    "model_or_build_identity": "UNAVAILABLE",
+    "role": "implementation and verification",
+    "retention": "METADATA_ONLY_EXCEPT_EXPLICITLY_REQUIRED_PUBLIC_WEBHOOK_BYTES"
+  },
+  "reuse_evidence": [
+    "Existing docs/monitor carrier",
+    "Existing Railway mesh-monitor service dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+    "Tested repository observation and UI from qikvrt-activity source 3f01475bd19e2efedd7bfaa9a10898480b22befd with the current local-clock correction",
+    "Existing qikvrt_tool_cache.py/CACHE_POLICY for native artifact derivation",
+    "Existing Digital Twin REST contract and Firefox HTTP Effect-Ack reference",
+    "Native readback of missing Digital Twin reference model from Mirror commit 04e5ee0f06ae33965b4041a7f4175ac3764e688b, blob 816d55781e53e0801390a96e8032c9fa2b327ae2"
+  ],
+  "reuse_insufficiency": "Existing monitor is a static polling page with no server ingress, durable public-event journal or client replica protocol. Existing Universal Terminal TEMDD ledger is retained; the isolated read-only monitor does not replace or write it.",
+  "authorization": {
+    "mirror_public_deployment": "OWNER_EXPLICIT_2026_10_04",
+    "main_merge": "NOT_PERFORMED_SELF_APPROVAL_FORBIDDEN",
+    "private_data_publication": false,
+    "current_task": {
+      "implementation": "OWNER_EXPLICIT_ACTION_2026_10_04",
+      "history_preserving_successor": true,
+      "merge": false,
+      "deployment": false
+    }
+  },
+  "validation": {
+    "monitor_clock_source_and_ui_regressions": "PASS",
+    "signed_http_durable_replication_acceptance_tests": "PASS_24_TESTS_INCLUDING_LOCAL_CROSS_NODE_NEGATIVE_AND_RESTART_CASES",
+    "accepted_events": 32,
+    "simultaneous_clients": 4,
+    "byte_exact_fanout": true,
+    "restart_and_replay": true,
+    "duplicate_and_conflicting_delivery": true,
+    "signature_rejection": true,
+    "storage_failure_no_positive_ack": true,
+    "make_test": "PASS_CURRENT_IMPLEMENTATION",
+    "tool_cache_coverage_percent": 100,
+    "boot_profile": "CONTINUE_WITH_EXISTING_RUNTIME_PROFILE_AVAILABILITY_BOUNDARIES",
+    "native_cache_tests": "PASS_6_TESTS",
+    "native_core_conformance_checks": 7864387,
+    "native_static_linkage": "ELF_NO_DYNAMIC_SEGMENT_OR_INTERPRETER",
+    "digital_twin_rest_reference_tests": "PASS_3_INDEPENDENT_TESTS"
+  },
+  "open_acceptance_gates": [
+    "Native GitHub hook registration and fresh provider delivery",
+    "Independent client readback on the public deployed candidate",
+    "Authority node carrier readback",
+    "Independent deployed-node durable replication and failover readback; local read/replay path tested",
+    "Every required native client and product runtime",
+    "Complete C90 Universal Transputer/transceiver/REST carrier and human Digital Twin",
+    "Exact owner Linux image, Docker build/publication and live operation",
+    "Actual Atari/Mega ST carrier and execution",
+    "Exact Siemens Horizon/Twin contract and authorized live tenant connection"
+  ],
+  "boundaries": {
+    "bounded_test_evidence_only": true,
+    "physical_hardware_proof": false,
+    "all_mesh_data_loss_eliminated": false,
+    "predecessor_evidence_transfer": false,
+    "workflow_success_is_effect_ack_done": false,
+    "effect_ack_done": false
+  },
+  "cross_node_successor": {
+    "source_commit": "674aa35ec0659119a19cda66b88f32050e34f105",
+    "source_tree": "5100b66a299ded9ecb64622d2d36a5a77ef1f85d",
+    "source_ref": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+    "requested_predecessor": "49482306615a9bc14428112905bf287bdf1171a2",
+    "human_contribution": "Ingolf Lohmann: authorized the smallest deterministic cross-node replication/read-failover extension, executable negative and recovery tests, history-preserving successor and fresh exact-head gates; excluded merge/deployment and unsupported losslessness/EFFECT_ACK_DONE claims.",
+    "artificial_contribution": "OpenAI Codex / GPT-6: extended existing MonitorStore/server/client validation and health projection, generated regression code, ran verification and materialized successor.",
+    "git_history": {
+      "method": "new commit with current reobserved PR head as parent; no history rewrite",
+      "parent": "14c8b76878d03e0dd1e2453613ace8b0700be119"
+    },
+    "protocol": "qikvrt-monitor-replication/v1",
+    "controller": "existing docs/monitor/server.mjs only",
+    "scope": "one writer, one configured required durable read-only replica; failover serves verified journal checkpoint without writer promotion",
+    "invariants": [
+      "ORIGINAL_PAYLOAD_BYTES",
+      "ORIGINAL_RECORD_ORDER_AND_BYTES",
+      "CONSECUTIVE_SEQUENCE",
+      "UNCHANGED_DIGEST_CHAIN",
+      "FSYNC_BEFORE_PEER_RECEIPT",
+      "VERIFIED_PEER_READBACK_BEFORE_SOURCE_ACK",
+      "NO_POSITIVE_ACK_ON_UNCONFIRMED_REPLICATION",
+      "NO_SECOND_OBSERVATION_CONTROLLER",
+      "NO_WRITE_FAILOVER_WITHOUT_FENCING"
+    ],
+    "local_validation": {
+      "monitor_tests": 24,
+      "result": "PASS",
+      "separate_local_processes": 2,
+      "accepted_events": 32,
+      "independent_clients": 4,
+      "byte_exact_failover_replay": true,
+      "complete_make_test": "PASS_CORRECTED_TEST_AND_BOUND_IMPLEMENTATION_BYTES",
+      "integrity": "PASS_REGENERATED_AND_VERIFIED",
+      "exact_head_gates": "REQUIRE_FRESH_SUCCESSOR_RUNS",
+      "verification_scope": "Exact listed implementation/documentation bytes; successor commit requires fresh native gates. No predecessor check is transferred.",
+      "make_test_log_sha256": "94dbbbe34e6e687f5e30372771cd8ae99c9bd057b34c437f830382e49bbce799",
+      "make_test_log_bytes": 111730,
+      "commands": [
+        "cd docs/monitor && npm test",
+        "make test",
+        "python3 -B tools/qikvrt_integrity.py verify",
+        "python3 -B tools/qikvrt_tool_cache.py verify"
+      ]
+    },
+    "outputs": [
+      {
+        "path": "docs/monitor/server.mjs",
+        "bytes": 33634,
+        "sha256": "bd5dcc12ae6589275d9ff4e317001ccffafc689fadb5c16bef1f8f81a11a9a05"
+      },
+      {
+        "path": "docs/monitor/monitor.test.mjs",
+        "bytes": 33125,
+        "sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76"
+      },
+      {
+        "path": "docs/monitor/client-replica.js",
+        "bytes": 8342,
+        "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+      },
+      {
+        "path": "docs/monitor/health-projection.js",
+        "bytes": 5299,
+        "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee"
+      },
+      {
+        "path": "docs/monitor/observer.mjs",
+        "bytes": 16128,
+        "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596"
+      },
+      {
+        "path": "docs/monitor/index.html",
+        "bytes": 47320,
+        "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231"
+      },
+      {
+        "path": "docs/monitor/README.md",
+        "bytes": 11867,
+        "sha256": "b8167c45068c7b33efbd57c1945bfe6d23479d79b08752e310ff034b85d0b4af"
+      }
+    ],
+    "deployed_nodes_observed": false,
+    "deployed_failover_readback": false,
+    "mesh_wide_losslessness": false,
+    "effect_ack_done": false,
+    "predecessor_evidence_transfer": false,
+    "external_effects": {
+      "merge": "NOT_PERFORMED",
+      "deployment": "NOT_PERFORMED",
+      "candidate_ref_update": "AUTHORIZED_AFTER_CURRENT_TREE_TESTS"
+    },
+    "first_remaining_acceptance_gap": "Actually separated deployed nodes and fault-injected failover readback; excluded from this task.",
+    "ci_correction": {
+      "parent": "14c8b76878d03e0dd1e2453613ace8b0700be119",
+      "parent_tree": "2bc9e7a083e6523ee43114eb35c30c1f2fce0614",
+      "observed_run": 37213143623,
+      "artifact": 11306793631,
+      "artifact_sha256": "2f0df4f46c0c2b3605c26f06ba57b37f214e66e79b39458e5d6cd12dd2e36050",
+      "observed_failure": "Initial CI make test: 23/24 monitor tests passed; healthy reconnect exceeded the injected 20 ms timeout. Later reentry succeeded but does not erase that failure.",
+      "repair": "Timeout fault waits for the request AbortSignal; healthy restart uses production default timeout. No deadline weakening in production code."
+    }
+  }
+}

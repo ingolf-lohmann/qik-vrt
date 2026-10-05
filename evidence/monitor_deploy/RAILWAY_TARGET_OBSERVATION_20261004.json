@@ -1,0 +1,97 @@
+{
+  "schema": "qikvrt-monitor-railway-target-observation/v1",
+  "observed_at": "2026-10-04T15:36:31.884Z",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "subject_head": "674aa35ec0659119a19cda66b88f32050e34f105",
+  "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+  "environment": {
+    "id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+    "name": "production"
+  },
+  "service": {
+    "id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+    "name": "mesh-monitor",
+    "state": "live-with-staged-changes"
+  },
+  "config": {
+    "source": {
+      "repo": "ingolf-lohmann/qik-vrt",
+      "rootDirectory": "/docs/monitor",
+      "image": null,
+      "branch": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+      "commitSha": "674aa35ec0659119a19cda66b88f32050e34f105"
+    },
+    "networking": {
+      "serviceDomains": {
+        "mesh-monitor-production.up.railway.app": {}
+      }
+    },
+    "build": {
+      "builder": "RAILPACK",
+      "watchPatterns": [
+        "docs/monitor/**"
+      ],
+      "buildCommand": "npm test",
+      "buildEnvironment": "V3"
+    },
+    "deploy": {
+      "startCommand": "npm start",
+      "healthcheckPath": "/health",
+      "healthcheckTimeout": 60,
+      "restartPolicyMaxRetries": 3,
+      "useLegacyStacker": false,
+      "ipv6EgressEnabled": false,
+      "runtime": "V2",
+      "multiRegionConfig": {
+        "iad": {
+          "numReplicas": 1
+        }
+      },
+      "sleepApplication": false,
+      "restartPolicyType": "ALWAYS"
+    },
+    "volumeMounts": {
+      "e802140e-b6a9-476c-a937-dde322253539": {
+        "mountPath": "/var/lib/qikvrt/monitor"
+      }
+    }
+  },
+  "volumes": [
+    {
+      "id": "e802140e-b6a9-476c-a937-dde322253539",
+      "name": "mirror-monitor-events",
+      "mountPath": "/var/lib/qikvrt/monitor",
+      "sizeMB": 500,
+      "region": "iad",
+      "state": "staged-create"
+    }
+  ],
+  "staged": {
+    "patchId": "9d4860c4-5003-48ef-a07f-d383f303b539",
+    "status": "STAGED",
+    "changeCount": 21,
+    "message": null,
+    "createdAt": "2026-09-17T11:23:18.024Z",
+    "updatedAt": "2026-10-04T14:18:26.061Z"
+  },
+  "latest_deployment": {
+    "id": "278211b2-3d12-4bc6-8d56-ffdfb7590a7a",
+    "status": "SUCCESS",
+    "createdAt": "2026-09-19T05:14:47.567Z",
+    "url": null
+  },
+  "public_domains": {
+    "serviceDomains": [
+      {
+        "id": "e018e02b-498c-4e52-897a-cdf7bca87d4a",
+        "domain": "mesh-monitor-production.up.railway.app",
+        "targetPort": null
+      }
+    ],
+    "customDomains": []
+  },
+  "scope": "Native connector readback, with staged settings applied in this projection. Config projection is not live deployment acceptance.",
+  "private_values_retained": false,
+  "write_performed": false,
+  "effect_ack_done": false
+}
