@@ -735,5 +735,66 @@
     {"path":"work-units/RCP_001_IMPLEMENT_CAPABILITY_MATERIALIZER.json","source_git_blob_sha1":"d6ab69d9c373f712270475159e6d92e5a5f64907","source_worktree_sha256":"9db293df4140c78f676052b8ff712598f04cefb284fbeb423566aea45d34c546","disposition":"HISTORICAL_OR_SCOPED_REFERENCE_PRESERVED","source_reference_lines":{"HISTORICAL_OR_FROZEN_SUBJECT":[9]}},
     {"path":"work-units/RECOVER_13_RECORD_RECONCILIATION_RECEIPT.json","source_git_blob_sha1":"a756813b8a78ed5c5a89b1e6100f67564fe3f53f","source_worktree_sha256":"7419b076e6f0e8891d38865fc4ed1c850417c7068a9838c1e2a7b6ecf6e57e9c","disposition":"HISTORICAL_OR_SCOPED_REFERENCE_PRESERVED","source_reference_lines":{"HISTORICAL_OR_FROZEN_SUBJECT":[11]}},
     {"path":"zenodo/metadata.json","source_git_blob_sha1":"6f1c9894ca8cd0f65a4f5c3e76a6d0e2bdd5a881","source_worktree_sha256":"74da6815c540d653703796c5e4adf4422900cb47e6d1e453ecf389efd9f1d30e","disposition":"HISTORICAL_OR_SCOPED_REFERENCE_PRESERVED","source_reference_lines":{"HISTORICAL_OR_FROZEN_SUBJECT":[31]}}
-  ]
+  ],
+  "main_lifecycle_successor": {
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_main_head": "0a44160d16c3937dc5888652791f4bd1a7136af7",
+    "source_main_tree": "e2eedbfcc2f197cb5a4f30139daeb8075be9a921",
+    "predecessor_cutover_head": "050be9cf4ac983819b516907ef35a8670c94cafc",
+    "predecessor_cutover_tree": "57696c28cb63b32a1b1f693b00c50c8fd61f19db",
+    "merge_base": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+    "main_projection_bindings": [
+      {
+        "path": "evidence/node_health/37201684625-1.json",
+        "bytes": 241,
+        "sha256": "d96bbb51f70e9265df2e7cb30827ffd4a9844a11ba7438afd98042730713e4c0",
+        "git_blob_sha1": "2448dafc7cac9ddbef96aa98b8f53e14bc6d4f4f"
+      },
+      {
+        "path": "evidence/node_health/37235824372-1.json",
+        "bytes": 241,
+        "sha256": "0be70fd732958190edaab039617b00a26e244ff0d34f88931d240b9e204f69d6",
+        "git_blob_sha1": "fa01b335fe878c663475c441e4a5fd8d8e938c20"
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "bytes": 241,
+        "sha256": "0be70fd732958190edaab039617b00a26e244ff0d34f88931d240b9e204f69d6",
+        "git_blob_sha1": "fa01b335fe878c663475c441e4a5fd8d8e938c20"
+      },
+      {
+        "path": "evidence/node_registration_renewal/37201684625-1.json",
+        "bytes": 262,
+        "sha256": "c8362ee30cd881dced0cafcecaafd12a5225e6300bdb7f4738c32f503df7b9e0",
+        "git_blob_sha1": "4b98bc7b6a9900d465de540c754a69761b2cc0c5"
+      },
+      {
+        "path": "evidence/node_registration_renewal/37235824372-1.json",
+        "bytes": 262,
+        "sha256": "893f5c4388631bd4ea2ac2c3f247b2060f2c2701fc123a9c56b5486909655c40",
+        "git_blob_sha1": "c872f704c36085ddffe8b2539675463bb6fa3b26"
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "bytes": 262,
+        "sha256": "893f5c4388631bd4ea2ac2c3f247b2060f2c2701fc123a9c56b5486909655c40",
+        "git_blob_sha1": "c872f704c36085ddffe8b2539675463bb6fa3b26"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "bytes": 563,
+        "sha256": "01bbc8663e865f4fbdb2dfc97b73e82ec1b14a5e5e8ffa559ebf1bff1a2b01f3",
+        "git_blob_sha1": "93da558c120c34ca4ba6925c932e77017f519566"
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "bytes": 542,
+        "sha256": "88d1cb6956b40414fcdcc546751fbf88d93ae7f43987d8e3be032f9b8843797c",
+        "git_blob_sha1": "c34906996cbeda09c41b9c58da7dff17c21d7c30"
+      }
+    ],
+    "preservation_rule": "Original classification entries and digest bindings remain unchanged. Superseded lifecycle projection bytes resolve through the original source commit; all other historical/scoped bindings remain byte-identical at their current paths. Incoming Main receipts and projections retain Main bytes and provenance.",
+    "current_authority_liveness_proof": false,
+    "liveness_boundary": "These are the current Main projections of the former Mirror registration epoch, including historical Goldkelch seed provenance. Fresh Authority-epoch liveness records remain separately required; no predecessor proof is transferred."
+  }
 }

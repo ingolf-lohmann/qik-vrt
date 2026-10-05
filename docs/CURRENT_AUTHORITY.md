@@ -37,6 +37,16 @@ The path and reference classifications are retained in
 Frozen release/publication workflows remain bound to their original exact
 authorization subjects. They do not grant publication authority to this cutover.
 
+The PR's history-preserving Main integration is bound to
+`0a44160d16c3937dc5888652791f4bd1a7136af7` in the classification's
+`main_lifecycle_successor` and the cutover work unit's `main_integration`.
+Main's current lifecycle projections and incoming receipts retain their exact
+Main bytes. Superseded projection bytes remain bound through their original
+source commit; the original classification and historical digest bindings are
+unchanged. These former-Mirror lifecycle projections retain their historical
+seed identity and are not fresh Authority-epoch liveness evidence. Exact-head
+and synthetic-merge verification must be executed freshly for this successor.
+
 ## Active runtime
 
 - `src/qikvrt_effect_ack.py` — five-state synchronous reference gate

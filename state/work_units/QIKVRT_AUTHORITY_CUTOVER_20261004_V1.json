@@ -122,5 +122,77 @@
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
+  },
+  "main_integration": {
+    "observed_at": "2026-10-05T01:54:51Z",
+    "state": "HISTORY_PRESERVING_MAIN_INTEGRATION_CANDIDATE_REQUIRES_FRESH_FINAL_HEAD_GATES",
+    "source_main_head": "0a44160d16c3937dc5888652791f4bd1a7136af7",
+    "source_main_tree": "e2eedbfcc2f197cb5a4f30139daeb8075be9a921",
+    "predecessor_cutover_head": "050be9cf4ac983819b516907ef35a8670c94cafc",
+    "predecessor_cutover_tree": "57696c28cb63b32a1b1f693b00c50c8fd61f19db",
+    "merge_base": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+    "required_ordered_commit_parents": [
+      "050be9cf4ac983819b516907ef35a8670c94cafc",
+      "0a44160d16c3937dc5888652791f4bd1a7136af7"
+    ],
+    "integration_method": "NON_FORCE_PR_BRANCH_MERGE_COMMIT_RETAINING_BOTH_ANCESTRIES",
+    "main_projection_binding": "state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json#main_lifecycle_successor",
+    "incoming_main_paths": [
+      "evidence/node_health/37201684625-1.json",
+      "evidence/node_health/37235824372-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/37201684625-1.json",
+      "evidence/node_registration_renewal/37235824372-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+    ],
+    "human_contributions": [
+      "Request history-preserving integration onto exact Main 0a44160d16c3937dc5888652791f4bd1a7136af7, retain historical receipts and Authority provenance, and freshly verify Exact-Head CI plus synthetic Global Completion and Collective Review."
+    ],
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_family": "GPT-6",
+      "model_or_build": "UNAVAILABLE",
+      "session_or_run_id": "workspace-018c543ae868"
+    },
+    "artificial_cognitive_contributions": [
+      "Reproduce the frozen-current-path preservation failure on the incoming Main lifecycle bytes.",
+      "Add exact Main successor bindings without rewriting original reference classifications or historical digest bindings.",
+      "Extend the mandatory preservation regression to verify historical source blobs, unchanged classification metadata, inherited ancestry, current Main projection bytes and negative controls.",
+      "Regenerate only the canonical integrity trio and publish one history-preserving PR successor after local validation."
+    ],
+    "verification": {
+      "pre_repair_reproduction": "Three assertion failures in test_classified_historical_files_are_byte_preserved; two distinct mutable onboarding paths.",
+      "required_fresh_subjects": [
+        "FINAL_PR_HEAD_AND_TREE",
+        "SYNTHETIC_MERGE_HEAD_AND_TREE"
+      ],
+      "required_native_workflows": [
+        "QIKVRT CI",
+        "QIK-VRT global claim completion",
+        "QIKVRT Collective Proposal Review"
+      ],
+      "result": "FRESH_POST_MATERIALIZATION_RUN_AND_ARTIFACT_READBACK_REQUIRED",
+      "predecessor_runs_are_current_validation": false
+    },
+    "boundaries": {
+      "historical_receipts_rewritten": false,
+      "historical_authority_provenance_rewritten": false,
+      "governance_changed": false,
+      "self_approval": false,
+      "force_push": false,
+      "Main_promoted": false,
+      "new_mirror_created": false,
+      "AUTHORITY_CUTOVER_COMPLETED": false,
+      "MIRROR_BOOTSTRAP_COMPLETED": false,
+      "PREDECESSOR_EVIDENCE_TRANSFER": false,
+      "EFFECT_ACK_DONE": false
+    },
+    "remaining_blockers": [
+      "CODE_OWNER_RULE_NOT_ENFORCED_REQUIRES_FRESH_NATIVE_GOVERNANCE_READBACK",
+      "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY"
+    ]
   }
 }

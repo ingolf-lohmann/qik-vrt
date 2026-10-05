@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -20,6 +21,12 @@ ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY = "ingolf-lohmann/qik-vrt"
 CLASSIFICATION = "state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json"
 HOLD = "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY"
+LIFECYCLE_PROJECTIONS = {
+    "evidence/node_health/LATEST.json",
+    "evidence/node_registration_renewal/LATEST.json",
+    "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+    "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+}
 
 
 def read_json(path: str) -> dict:
@@ -27,6 +34,48 @@ def read_json(path: str) -> dict:
 
 
 class AuthorityCutoverTests(unittest.TestCase):
+    def git_bytes(self, *args):
+        return subprocess.check_output(["git", *args], cwd=ROOT, timeout=30)
+
+    def assert_main_lifecycle_successor(self, inventory):
+        successor = inventory["main_lifecycle_successor"]
+        main = successor["source_main_head"]
+        self.assertEqual(self.git_bytes("rev-parse", main + "^{tree}").decode().strip(),
+                         successor["source_main_tree"])
+        self.assertEqual(self.git_bytes("merge-base", successor["predecessor_cutover_head"], main).decode().strip(),
+                         successor["merge_base"])
+        self.assertFalse(successor["current_authority_liveness_proof"])
+        bindings = successor["main_projection_bindings"]
+        paths = [binding["path"] for binding in bindings]
+        self.assertEqual(len(paths), len(set(paths)))
+        self.assertEqual(set(paths), set(self.git_bytes(
+            "diff", "--name-only", successor["merge_base"], main).decode().splitlines()))
+        self.assertTrue(LIFECYCLE_PROJECTIONS <= set(paths))
+        for binding in bindings:
+            path = binding["path"]
+            if path not in LIFECYCLE_PROJECTIONS:
+                self.assertIn(str(Path(path).parent),
+                              {"evidence/node_health", "evidence/node_registration_renewal"})
+                self.assertRegex(Path(path).name, r"^[0-9]+-[0-9]+\.json$")
+            data = self.git_bytes("show", main + ":" + path)
+            self.assertEqual(len(data), binding["bytes"])
+            self.assertEqual(hashlib.sha256(data).hexdigest(), binding["sha256"])
+            self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(),
+                             binding["git_blob_sha1"])
+            self.assertEqual((ROOT / path).read_bytes(), data)
+        return set(paths)
+
+    def assert_preserved_binding(self, inventory, binding, successor_paths):
+        path = binding["path"]
+        # A later Main projection changes the current path, never its old receipt.
+        # Resolve the original binding through the retained source commit instead.
+        data = (self.git_bytes("show", inventory["source_head"] + ":" + path)
+                if path in successor_paths else (ROOT / path).read_bytes())
+        self.assertEqual(hashlib.sha256(data).hexdigest(), binding["source_worktree_sha256"])
+        if path in successor_paths:
+            self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(),
+                             binding["source_git_blob_sha1"])
+
     def bootstrap_fixture(self, mutate=lambda value: None):
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
@@ -139,13 +188,36 @@ class AuthorityCutoverTests(unittest.TestCase):
         self.assertEqual(inventory["source_head"], "410dbaba6098074f05e2a5b4da7ca94d7edb90a3")
         self.assertEqual(inventory["source_reference_file_count"], len(inventory["references"]))
         self.assertFalse(inventory["PREDECESSOR_EVIDENCE_TRANSFER"])
+        successor_paths = self.assert_main_lifecycle_successor(inventory)
         for reference in inventory["references"]:
             if reference["disposition"] == "HISTORICAL_OR_SCOPED_REFERENCE_PRESERVED":
                 with self.subTest(path=reference["path"]):
-                    digest = hashlib.sha256((ROOT / reference["path"]).read_bytes()).hexdigest()
-                    self.assertEqual(digest, reference["source_worktree_sha256"])
+                    self.assert_preserved_binding(inventory, reference, successor_paths)
         for binding in inventory["additional_preserved_bindings"]:
-            self.assertEqual(hashlib.sha256((ROOT / binding["path"]).read_bytes()).hexdigest(), binding["source_worktree_sha256"])
+            with self.subTest(path=binding["path"]):
+                self.assert_preserved_binding(inventory, binding, successor_paths)
+
+    def test_main_successor_retains_original_classification_bindings(self):
+        inventory = read_json(CLASSIFICATION)
+        successor = inventory.pop("main_lifecycle_successor")
+        original = json.loads(self.git_bytes("show", successor["predecessor_cutover_head"] + ":" + CLASSIFICATION))
+        self.assertEqual(inventory, original)
+        self.assertEqual(self.git_bytes("merge-base", successor["predecessor_cutover_head"], "HEAD").decode().strip(),
+                         successor["predecessor_cutover_head"])
+
+    def test_main_successor_rejects_unbound_path_or_projection_digest(self):
+        for key, value in (("path", "AI_PROGRESS.json"), ("sha256", "0" * 64)):
+            with self.subTest(key=key):
+                inventory = read_json(CLASSIFICATION)
+                inventory["main_lifecycle_successor"]["main_projection_bindings"][0][key] = value
+                with self.assertRaises(AssertionError):
+                    self.assert_main_lifecycle_successor(inventory)
+
+    def test_main_projection_cannot_become_new_authority_liveness(self):
+        inventory = read_json(CLASSIFICATION)
+        inventory["main_lifecycle_successor"]["current_authority_liveness_proof"] = True
+        with self.assertRaises(AssertionError):
+            self.assert_main_lifecycle_successor(inventory)
 
 
 if __name__ == "__main__":
