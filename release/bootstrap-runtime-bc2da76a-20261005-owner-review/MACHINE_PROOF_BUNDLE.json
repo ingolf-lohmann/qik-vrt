@@ -1,0 +1,525 @@
+{
+  "_license": {
+    "classification": "machine_readable_proof_bundle",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artifacts": [
+    {
+      "git_blob_sha1": "efcbf7031dd425604bb17b32e4a74114e7891972",
+      "kind": "OTHER",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/BUNDLE_PARTS.json",
+      "sha256": "9110057030188b844b50c7cbadf2d59665e1132177c73d4c654be2b26b343834"
+    },
+    {
+      "git_blob_sha1": "b2a958b3f8751f2dc608eac6f3b6cc7d71baf54d",
+      "kind": "EVIDENCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/RELEASE_INDEX.json",
+      "sha256": "3a4403cac04950bc5ba432d86c310b31380d4495a8f333451c854d4d64b6430e"
+    },
+    {
+      "git_blob_sha1": "53064eb51bcc98d7d7a3ec2a31917d7525c8e19d",
+      "kind": "EVIDENCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/PR461_EXACT_HEAD_ACCEPTANCE_bc2da76a.json",
+      "sha256": "1fc36539f7da18e5b762dbb096b8e91b1d8883564cdd62b78131716512869e84"
+    },
+    {
+      "git_blob_sha1": "c642754fffb9ddd8966df4c2ab0aff7a0e946e64",
+      "kind": "EVIDENCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/PR461_CI_READBACK_bc2da76a.json",
+      "sha256": "075095f699db0c1a24eb426c495c9e3fa738c9504e41b4697b0f27ada188dfdf"
+    },
+    {
+      "git_blob_sha1": "11e6c073e2cc3adaf706bdf7ed8d037074df9a76",
+      "kind": "SOURCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_RECOVERY_20261005.json",
+      "sha256": "0b31f19a6dae63a4df1d94e24a69911c0dbc2888c46b522b59ac28f8793d575f"
+    },
+    {
+      "git_blob_sha1": "da8ec725e31a24b0c6dc6eb18823227088fe9024",
+      "kind": "EVIDENCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/FRESH_CI_READBACK.json",
+      "sha256": "cd209623738e3e695335f7c82463d07bedeaa1fdd12c81318a6d0a5f04039dc5"
+    },
+    {
+      "git_blob_sha1": "a87998248fda8a02e6d7fb37f3ea26aabeddadf2",
+      "kind": "SOURCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "707de0f6ed0dc0973453dd779495b70b313066a09a1563ba85f73c9e33c00119"
+    },
+    {
+      "git_blob_sha1": "abf1d6836f47c28e15626118f8886ca7edaee0e3",
+      "kind": "CLAIM_MATRIX",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/CLAIM_MATRIX.json",
+      "sha256": "bd7eeadb5925ef38b0eaa2bad3b87f42b485c301d6370188a4ea4aa1859e2af9"
+    },
+    {
+      "git_blob_sha1": "88748d54b9686b35ae648d31c2d514e085571c69",
+      "kind": "EVIDENCE",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/BYTE_AUDIT.json",
+      "sha256": "37361c0b7c6995b0366f09230602854e0db891808a6229eacc3b881dbf80bf00"
+    },
+    {
+      "git_blob_sha1": "72636e025153295de64335a12cbfb65126c419df",
+      "kind": "BOUNDARY_TEST",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/BOUNDARY_TEST_REPORT.json",
+      "sha256": "be51982eb5ac7a05172465c2e2ca477d20161819fce6a77c781bb9dcc56962df"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "ba2b642c3939caea1870f5d67cb73813d0d7970aef1a67b342ab224ca666c0cf",
+      "git_blob_sha1": "7c7cd3d10322d5e1a07c8db84e2c49cb8a10b9d3",
+      "kind": "RETURN_RECEIPT"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/ZENODO_METADATA_DRAFT.json",
+      "sha256": "34ea1dafa7580c989c012569b48d66c1ff4651529738cf5edc897f33b3a7eda6",
+      "git_blob_sha1": "b0c762a0c7753291f3d90c754946979d5e256c37",
+      "kind": "OTHER"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/PRODUCTION_STATUS.json",
+      "sha256": "d0592c5c319b2af197c33a582064b88b8b5fdcc4bd463a95a29b97a6ba09c3da",
+      "git_blob_sha1": "57107a5e2847fbf64a77957ac4bd87e9442e5f8e",
+      "kind": "OTHER"
+    }
+  ],
+  "candidate": {
+    "files": [
+      {
+        "bytes": 3259,
+        "git_blob_sha1": "09f7c911687b528c60c3659d30367729e48f55ce",
+        "name": "README.md",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/README.md",
+        "role": "PRIMARY",
+        "sha256": "96bbd0427443778290ee17166cef15a6252fbd500115d29c959f4b3f31f80136"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "504d1fc8e1e620e50f348187305be330e31fa515",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part000",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part000",
+        "role": "SUPPLEMENT",
+        "sha256": "2452d0ac5b9209d57b2d36470b9fd3f8942426088000eafaa2219dfd97682754"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "723c1c7a6a4b488950b89ea5733d2547e6e294c8",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part001",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part001",
+        "role": "SUPPLEMENT",
+        "sha256": "06c05c7620159d3bfc8e44e73bc139c9edd90d964e44ba9f7c29479e98c585db"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "5a69c2324aff4320099849ebb5b369cda991e57a",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part002",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part002",
+        "role": "SUPPLEMENT",
+        "sha256": "c683669cdd9f76190f1432b7e8e177c1ecc45617de22a683e00177d937c84fc9"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "17b20952c9bbfadd088221e70e4fcd7acecffbb3",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part003",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part003",
+        "role": "SUPPLEMENT",
+        "sha256": "e5722d429e88318d26319db96ff023af59870d89c5b036b6196237684cc2230f"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "27209624656dcc7dba4813e93b8868ca87579999",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part004",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part004",
+        "role": "SUPPLEMENT",
+        "sha256": "1995da763d6411bd6e6af6e984c2a02baf3c71c9d168a61daecc80519b3cb13c"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "e86f6f64f9c24efc9e9063bc3303c75b906fbac0",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part005",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part005",
+        "role": "SUPPLEMENT",
+        "sha256": "dc6316f21c020224b856881c6c2f29e3f789e5913d8165eb49a072177551b678"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "4dddc8ccbac6ea1857ad469f39a1448d1672fdbd",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part006",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part006",
+        "role": "SUPPLEMENT",
+        "sha256": "38ad2a6ec86fcf6b057b79c075fac4b4ceaa07da963015cbbf10f490e9a61c6f"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "c9c1d4ee7f53484c1ed886dafd91cc78e3fd571a",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part007",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part007",
+        "role": "SUPPLEMENT",
+        "sha256": "8161cf1f6c988d03775bf8ddc381b6d2c3ea8dda6cfce3ea8cb06a55c5a0a57e"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "e976502aca64d963ace4b58d59901991bcc21652",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part008",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part008",
+        "role": "SUPPLEMENT",
+        "sha256": "530baa503f04dd49843f441161ff323348b10bc1852e7dde6980882ec412a06b"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "9dea68d37ffcb26e19a521661862966a715a5aac",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part009",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part009",
+        "role": "SUPPLEMENT",
+        "sha256": "d2e843d92766339f66ac96eba1b1fe83f5fb6a4425716d6d553d905225f45da3"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "7db0bb6ce1aafa84b748e71059631da60ec8796c",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part010",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part010",
+        "role": "SUPPLEMENT",
+        "sha256": "95d587d227e56b106b17ead152eb8387c4c921c7464a2e68a67ff1d23d61f7b2"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "8b2cc32f5a6ad77bdd04d157c6ffd9fe7b84ea9f",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part011",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part011",
+        "role": "SUPPLEMENT",
+        "sha256": "f8f95c40c31c10cb32839482cc1e641caecfccd541d452429b119468140485c5"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "0dcd2ba0ebf069beb67e0863b12e21609ba59dd3",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part012",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part012",
+        "role": "SUPPLEMENT",
+        "sha256": "7d4abe5076bad55747927a57e0c0f83d502bf464a5ae5c2960d87c4464a3815d"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "431c04c3de18ca4554c842e0b967033119889a12",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part013",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part013",
+        "role": "SUPPLEMENT",
+        "sha256": "394bb3e395d2054c7a878d3e1cf28e42db37c5e022e53ba21737e950a6d562ab"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "f3b3bb7ba3daadb6e72fd0fd389715141189a198",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part014",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part014",
+        "role": "SUPPLEMENT",
+        "sha256": "42624d8ae411ab4e8cea580baa854c4e6ff3d917019beb984f042018b5ff43e0"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "8c3e5667d4144097cbcd94e8cea00268b385619d",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part015",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part015",
+        "role": "SUPPLEMENT",
+        "sha256": "383daf3f8382a3dba25e206446798feec3fa8a437b4fc4a3e2c50c74092fcd55"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "bfaa3431eac1af3534012edc678cf08d92839c1d",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part016",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part016",
+        "role": "SUPPLEMENT",
+        "sha256": "3ba73afc4087352803634197d1cd261af939a61da6d1280ab9a35c1622455f4b"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "3d9f3d0819c05a03b6115e4d0ffe270903e8d890",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part017",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part017",
+        "role": "SUPPLEMENT",
+        "sha256": "76e0b84cead4525712a40094767e738cc1e3b17e01ca608af79fd86f0a0bcbad"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "51711711dbdcb4f715a7526381ef168d1ed8983e",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part018",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part018",
+        "role": "SUPPLEMENT",
+        "sha256": "00cc6d1b89b560e76ef6b9fc4999907044843d5e8b6d3cb4f2aff58b2ddde791"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "262410b6213ef9a9f1915009630c5c433669f85c",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part019",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part019",
+        "role": "SUPPLEMENT",
+        "sha256": "8f4b60538bc92d6b7a91ce5f909caa9cbe1f0594343c45003e2069c8ff45564d"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "d0c9fba8f80afe58f61787c33984660dbeda5e02",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part020",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part020",
+        "role": "SUPPLEMENT",
+        "sha256": "0ab7099aa288e1b551c1f9190ca81cd904ce97714be2edc0e126e420b39f64a8"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "348cbe75c34823ef0f6288af31f423a5aff01ee4",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part021",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part021",
+        "role": "SUPPLEMENT",
+        "sha256": "187d5dc5ad57a71b8f47dfab15df23fa3ce20dd1fd2ce958a0644dbd5903b19c"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "d365b204cc11f8cd921c15b59904905bffd45a08",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part022",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part022",
+        "role": "SUPPLEMENT",
+        "sha256": "72fc0219b8051d8900f9627e95b71278f458be457d6945461d8d154d67565c03"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "3d4fc22b22123d0ce05e9a2ef3953cc5becd3b0b",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part023",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part023",
+        "role": "SUPPLEMENT",
+        "sha256": "a37e798582dc63ae2b7c0ea676386fae1a5aa1bce1c2f6e1fc8df1a3a29b088b"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "c6283b3b169fa8e0d2d66ee188ae8587795ac5e9",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part024",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part024",
+        "role": "SUPPLEMENT",
+        "sha256": "a163c7b2e5309a92444041a3d62520b0ca1373193eb96f772260ade8f728d253"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "30a0dd76712b1d490b0cba7539d09455e2c4894f",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part025",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part025",
+        "role": "SUPPLEMENT",
+        "sha256": "a53c85de232ba60c873efa634fb76488e7bc87c4005e4baf4cbd9d1d95bddaf2"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "552c1bee7fe49042f48d7b29b310c974db556cfb",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part026",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part026",
+        "role": "SUPPLEMENT",
+        "sha256": "b9ad6b6d6841feda4cce0285135f54a53ab319ae11eefeb9c3f5ce75eee74c95"
+      },
+      {
+        "bytes": 4194304,
+        "git_blob_sha1": "4db4b49f69edaddee8a22bf073db37edd3b9914e",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part027",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part027",
+        "role": "SUPPLEMENT",
+        "sha256": "82446dad2029b15216c87a9a37a5a643082414e784ccb033bedc51557710e305"
+      },
+      {
+        "bytes": 1333886,
+        "git_blob_sha1": "0d5282ca78c8fb1a3b39b4ec66a70c1cb9ac8a6e",
+        "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part028",
+        "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part028",
+        "role": "SUPPLEMENT",
+        "sha256": "3d137f1484407cb1b64f3378593207d6b5dfbf499f4ce1c0b0b58772f9185cf9"
+      }
+    ],
+    "primary_document_path": "release/bootstrap-runtime-bc2da76a-20261005/README.md"
+  },
+  "claims": [
+    {
+      "claim_id": "BRT-001",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#NATIVE_CI"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Original exact-source CI only; no Windows 11 or all-node acceptance.",
+      "source_refs": [],
+      "statement": "CLI and shared-library packages were executed on Linux x86_64, macOS arm64 and Windows Server 2025 AMD64.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-002",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#NATIVE_CI"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "SQLite and native CLI/shared-library adapters from this source; no claim about every SQL implementation.",
+      "source_refs": [],
+      "statement": "The same native kernel is usable through a verified SQLite BLOB UDF with a 14-octet input and 6-octet output.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-003",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "Provider-independent semantic kernel and package rebuild; no universal independence from other software.",
+      "source_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#EXACT_SOURCE"
+      ],
+      "statement": "The retained C90 kernel does not call provider APIs, a network, operating-system services or heap allocation; CLI/build/SQL/Pharo/S1 dependencies remain declared.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "BRT-004",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#NATIVE_CI"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Original native build/rebuild witnesses; compiler and platform libraries remain required.",
+      "source_refs": [],
+      "statement": "The CI rebuilt each native package from independently pinned package bytes without Git or provider access.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-005",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#SMALLTALK_CI"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Archived Linux Pharo CI execution log; no transfer to another VM/image/target.",
+      "source_refs": [],
+      "statement": "Pinned Pharo 13.1 restored and matched 2621440 C90 comparison vectors, with 23 additional Python/C90/Smalltalk boundary cases.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-006",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#MC68000_CI"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "MC68000 ISA kernel and Linux ABI emulator; no physical hardware acceptance.",
+      "source_refs": [],
+      "statement": "The MC68000 kernel has object/raw bytes/disassembly and an emulated m68k Linux-ABI witness over 515 vectors.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-007",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#HTTP_S1_CI"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "Complete OCI/noVNC runtime payload and public appliance delivery are not in this archive.",
+      "source_refs": [],
+      "statement": "The archive preserves the S1 HTTP/Docker source carrier and exact-source Firefox/noVNC execution readbacks.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-008",
+      "classification": "SOURCE_BOUND",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "scope": "PolyForm-Noncommercial QIKVRT code, CC-BY-NC-ND documentation, preserved historical and third-party exceptions.",
+      "source_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#LICENSES"
+      ],
+      "statement": "Original per-file licenses and third-party runtime notices are retained; public access does not grant a broader QIKVRT implementation license.",
+      "status": "BOUND"
+    },
+    {
+      "claim_id": "BRT-009",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "evidence_refs": [
+        "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json#EXACT_SOURCE"
+      ],
+      "proof_refs": [],
+      "publication_wording": "EMPIRICALLY_SUPPORTED",
+      "scope": "This exact catalog, archive, source HEAD and TREE; source/CI acceptance is separate from publication.",
+      "source_refs": [],
+      "statement": "The frozen catalog has 57 payload files and five native/backend rows; the 118774398-byte archive and its reconstruction were independently SHA-256 verified.",
+      "status": "EVIDENCED"
+    },
+    {
+      "claim_id": "BRT-010",
+      "classification": "NORMATIVE",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "scope": "Ingolf Lohmann requested future-variant behavior; active publication requires the existing admitted and authenticated production route.",
+      "source_refs": [],
+      "statement": "Publish each freshly verified new target or changed binary as a source/license/binary/evidence-bound version, followed by public byte readback and per-node import/readback.",
+      "status": "DECLARED"
+    },
+    {
+      "claim_id": "BRT-011",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Authority currently returns authenticated 404; productive publisher credential delivery is unestablished.",
+      "source_refs": [],
+      "statement": "Zenodo publication, public DOI/file verification and synchronization of every required node remain open.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "BRT-012",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Windows Server 2025 AMD64 is the observed Windows environment and does not close this target.",
+      "source_refs": [],
+      "statement": "Windows 11 AMD64 client execution remains open.",
+      "status": "OPEN"
+    },
+    {
+      "claim_id": "BRT-013",
+      "classification": "OPEN",
+      "evidence_refs": [],
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "scope": "Emulator output is not hardware execution.",
+      "source_refs": [],
+      "statement": "Physical MC68000 hardware execution remains open.",
+      "status": "OPEN"
+    }
+  ],
+  "completion_claims": {
+    "machine_proof_complete": true,
+    "zenodo_upload_authorized": true
+  },
+  "gates": {
+    "all_claims_dispositioned": true,
+    "all_references_resolve": true,
+    "candidate_frozen": true,
+    "formal_claims_have_kernel_receipts": true,
+    "open_claims_not_worded_as_facts": true,
+    "proof_bundle_in_upload_fileset": true,
+    "returned_bytes_equal_upload_bytes": true
+  },
+  "policy": {
+    "git_blob_sha1": "e9578d30d22f845e7df684128dcd9332641c00be",
+    "id": "qikvrt-zenodo-machine-proof-before-publication-v2",
+    "path": "policy/zenodo-machine-proof-policy-v2.json",
+    "sha256": "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec47",
+    "version": "2.0.0"
+  },
+  "prepublication_return": {
+    "candidate_returned_to_owner": true,
+    "change_notice_path": null,
+    "content_changed": false,
+    "receipt_path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/PREPUBLICATION_RETURN_RECEIPT.json"
+  },
+  "publication_id": "qikvrt-bootstrap-runtime-bc2da76a-20261005",
+  "schema": "qikvrt_zenodo_machine_proof_bundle_v2"
+}

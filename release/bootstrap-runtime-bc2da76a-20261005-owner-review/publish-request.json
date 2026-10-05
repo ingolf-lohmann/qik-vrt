@@ -1,0 +1,263 @@
+{
+  "schema": "qikvrt_zenodo_publication_manifest_v2",
+  "state": "publish",
+  "confirm": "PUBLISH_TO_PRODUCTION_ZENODO",
+  "repository": "Goldkelch/qik-vrt",
+  "source_head": "83439a26d3d80088e048e495ba46fff73785cf9c",
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Lohmann, Ingolf"
+      }
+    ],
+    "description": "Source-bound QIK-VRT bootstrap and verified native Linux x86_64, macOS arm64 and Windows Server 2025 AMD64 packages; SQLite/TEMDD, Pharo 13.1 Linux and an emulated MC68000 Linux-ABI witness. Includes original sources, exact licenses, binaries and scoped execution evidence. Reassemble the 29 numbered parts according to BUNDLE_PARTS.json. This version does not establish Windows 11, physical MC68000, a complete archived OCI appliance, or universal independence from all other software. QIK-VRT code remains PolyForm-Noncommercial-1.0.0; documentation CC-BY-NC-ND-4.0; historical and third-party licenses remain unchanged. See included notices for component rights.",
+    "keywords": [
+      "QIK-VRT",
+      "Universales Raumzeit-Terminal",
+      "bootstrap",
+      "TEMDD",
+      "Effect-Acknowledgement"
+    ],
+    "license": "other-nc",
+    "prereserve_doi": true,
+    "publication_date": "2026-10-05",
+    "title": "Universales Raumzeit-Terminal: source-bound bootstrap and verified runtime variants",
+    "upload_type": "software",
+    "version": "source-bc2da76a-20261005"
+  },
+  "files": [
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/README.md",
+      "name": "README.md",
+      "git_blob_sha": "09f7c911687b528c60c3659d30367729e48f55ce"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part000",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part000",
+      "git_blob_sha": "504d1fc8e1e620e50f348187305be330e31fa515"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part001",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part001",
+      "git_blob_sha": "723c1c7a6a4b488950b89ea5733d2547e6e294c8"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part002",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part002",
+      "git_blob_sha": "5a69c2324aff4320099849ebb5b369cda991e57a"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part003",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part003",
+      "git_blob_sha": "17b20952c9bbfadd088221e70e4fcd7acecffbb3"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part004",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part004",
+      "git_blob_sha": "27209624656dcc7dba4813e93b8868ca87579999"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part005",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part005",
+      "git_blob_sha": "e86f6f64f9c24efc9e9063bc3303c75b906fbac0"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part006",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part006",
+      "git_blob_sha": "4dddc8ccbac6ea1857ad469f39a1448d1672fdbd"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part007",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part007",
+      "git_blob_sha": "c9c1d4ee7f53484c1ed886dafd91cc78e3fd571a"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part008",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part008",
+      "git_blob_sha": "e976502aca64d963ace4b58d59901991bcc21652"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part009",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part009",
+      "git_blob_sha": "9dea68d37ffcb26e19a521661862966a715a5aac"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part010",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part010",
+      "git_blob_sha": "7db0bb6ce1aafa84b748e71059631da60ec8796c"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part011",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part011",
+      "git_blob_sha": "8b2cc32f5a6ad77bdd04d157c6ffd9fe7b84ea9f"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part012",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part012",
+      "git_blob_sha": "0dcd2ba0ebf069beb67e0863b12e21609ba59dd3"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part013",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part013",
+      "git_blob_sha": "431c04c3de18ca4554c842e0b967033119889a12"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part014",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part014",
+      "git_blob_sha": "f3b3bb7ba3daadb6e72fd0fd389715141189a198"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part015",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part015",
+      "git_blob_sha": "8c3e5667d4144097cbcd94e8cea00268b385619d"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part016",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part016",
+      "git_blob_sha": "bfaa3431eac1af3534012edc678cf08d92839c1d"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part017",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part017",
+      "git_blob_sha": "3d9f3d0819c05a03b6115e4d0ffe270903e8d890"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part018",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part018",
+      "git_blob_sha": "51711711dbdcb4f715a7526381ef168d1ed8983e"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part019",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part019",
+      "git_blob_sha": "262410b6213ef9a9f1915009630c5c433669f85c"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part020",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part020",
+      "git_blob_sha": "d0c9fba8f80afe58f61787c33984660dbeda5e02"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part021",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part021",
+      "git_blob_sha": "348cbe75c34823ef0f6288af31f423a5aff01ee4"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part022",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part022",
+      "git_blob_sha": "d365b204cc11f8cd921c15b59904905bffd45a08"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part023",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part023",
+      "git_blob_sha": "3d4fc22b22123d0ce05e9a2ef3953cc5becd3b0b"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part024",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part024",
+      "git_blob_sha": "c6283b3b169fa8e0d2d66ee188ae8587795ac5e9"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part025",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part025",
+      "git_blob_sha": "30a0dd76712b1d490b0cba7539d09455e2c4894f"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part026",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part026",
+      "git_blob_sha": "552c1bee7fe49042f48d7b29b310c974db556cfb"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part027",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part027",
+      "git_blob_sha": "4db4b49f69edaddee8a22bf073db37edd3b9914e"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part028",
+      "name": "QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part028",
+      "git_blob_sha": "0d5282ca78c8fb1a3b39b4ec66a70c1cb9ac8a6e"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/BUNDLE_PARTS.json",
+      "name": "BUNDLE_PARTS.json",
+      "git_blob_sha": "efcbf7031dd425604bb17b32e4a74114e7891972"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/RELEASE_INDEX.json",
+      "name": "RELEASE_INDEX.json",
+      "git_blob_sha": "b2a958b3f8751f2dc608eac6f3b6cc7d71baf54d"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/PR461_EXACT_HEAD_ACCEPTANCE_bc2da76a.json",
+      "name": "PR461_EXACT_HEAD_ACCEPTANCE_bc2da76a.json",
+      "git_blob_sha": "53064eb51bcc98d7d7a3ec2a31917d7525c8e19d"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/PR461_CI_READBACK_bc2da76a.json",
+      "name": "PR461_CI_READBACK_bc2da76a.json",
+      "git_blob_sha": "c642754fffb9ddd8966df4c2ab0aff7a0e946e64"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_RECOVERY_20261005.json",
+      "name": "SOURCE_RECOVERY_20261005.json",
+      "git_blob_sha": "11e6c073e2cc3adaf706bdf7ed8d037074df9a76"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/FRESH_CI_READBACK.json",
+      "name": "FRESH_CI_READBACK.json",
+      "git_blob_sha": "da8ec725e31a24b0c6dc6eb18823227088fe9024"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/SOURCE_EVIDENCE_BINDINGS.json",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "git_blob_sha": "a87998248fda8a02e6d7fb37f3ea26aabeddadf2"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/CLAIM_MATRIX.json",
+      "name": "CLAIM_MATRIX.json",
+      "git_blob_sha": "abf1d6836f47c28e15626118f8886ca7edaee0e3"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/BYTE_AUDIT.json",
+      "name": "BYTE_AUDIT.json",
+      "git_blob_sha": "88748d54b9686b35ae648d31c2d514e085571c69"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/BOUNDARY_TEST_REPORT.json",
+      "name": "BOUNDARY_TEST_REPORT.json",
+      "git_blob_sha": "72636e025153295de64335a12cbfb65126c419df"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/PREPUBLICATION_RETURN_RECEIPT.json",
+      "name": "PREPUBLICATION_RETURN_RECEIPT.json",
+      "git_blob_sha": "7c7cd3d10322d5e1a07c8db84e2c49cb8a10b9d3"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/ZENODO_METADATA_DRAFT.json",
+      "name": "ZENODO_METADATA_DRAFT.json",
+      "git_blob_sha": "b0c762a0c7753291f3d90c754946979d5e256c37"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/PRODUCTION_STATUS.json",
+      "name": "PRODUCTION_STATUS.json",
+      "git_blob_sha": "57107a5e2847fbf64a77957ac4bd87e9442e5f8e"
+    },
+    {
+      "path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/MACHINE_PROOF_BUNDLE.json",
+      "name": "MACHINE_PROOF_BUNDLE.json",
+      "git_blob_sha": "987d9b33e5f8fe09bc852442aaa46b27c43446cf"
+    }
+  ],
+  "machine_proof": {
+    "path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/MACHINE_PROOF_BUNDLE.json",
+    "git_blob_sha": "987d9b33e5f8fe09bc852442aaa46b27c43446cf",
+    "policy_id": "qikvrt-zenodo-machine-proof-before-publication-v2"
+  },
+  "owner_authorization": {
+    "path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/OWNER_ZENODO_AUTHORIZATION.json",
+    "bytes": 17799,
+    "sha256": "b01d58a83b789a76933067aa7a466e6961ecc8a4681e5b5717bebf7f9e858dea",
+    "git_blob_sha": "86853c5eb2d0a311ac341ef0321df9c0ffed8ef9"
+  },
+  "evidence_path": "release/bootstrap-runtime-bc2da76a-20261005-owner-review/zenodo-publication.json"
+}
