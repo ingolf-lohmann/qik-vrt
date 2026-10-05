@@ -101,6 +101,34 @@
       ],
       "version": "2.96.0"
     },
+    "ghdl": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/bootstrap-runtime.sh",
+        "tests/test_effect_ack_clock_carrier.py",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_key": "platform/version/archive_sha256/bootstrap_digest",
+      "cache_locations": [
+        ".qikvrt/toolchains/ghdl/6.0.0/ubuntu24.04-x86_64"
+      ],
+      "failure_recovery": "stage then atomic rename; failed final verification removes new install; existing mismatched cache blocks",
+      "license": "GPL-2.0-or-later; upstream archive notices retained",
+      "profiles": [
+        "clock",
+        "all"
+      ],
+      "provider": "https://github.com/ghdl/ghdl/releases/tag/v6.0.0",
+      "trusted_save": false,
+      "verification": [
+        "locked upstream archive SHA-256",
+        "every installed file byte-compared to locked archive",
+        "GHDL exact version",
+        "VHDL simulation and synthesis self-tests"
+      ],
+      "version": "6.0.0"
+    },
     "lean": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",

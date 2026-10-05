@@ -20,7 +20,11 @@ path to the current operational authority.
 - `tools/qikvrt_subprocess.py` — bounded subprocess supervision
 - `tools/qikvrt_integrity.py` — canonical content-tree integrity tooling
 - `src/effect_ack_core.c` and `include/qikvrt/effect_ack.h` — strict ANSI-C90
-  five-state core
+  five-state core and contiguous per-cycle reference gate; clock admission and
+  physical coverage boundary: `docs/QIKVRT_PROCESSOR_CLOCK.md`
+- `rtl/effect_ack_clock_carrier.vhd` — synthesizable per-edge carrier with atomic
+  snapshot, fenced protected output and separate coverage counter; physical
+  board binding remains OPEN, readback fails closed without it
 - `tools/qikvrt_adaptive_runtime.sh` and `runtime/` — bounded proposal-only
   collective adaptation and exact-key verified cache reuse
 - `tools/qikvrt_anticipation.py`, `anticipation/`, and

@@ -23,11 +23,11 @@ usage() {
     cat <<'EOF'
 Usage: tools/bootstrap-runtime.sh [--check-only] [--install]
        [--accept-third-party]
-       [--profile core|ietf|formal|audio|publication|all]
+       [--profile core|clock|ietf|formal|audio|publication|all]
        [--cache-dir PATH]
 
-Every profile checks GitHub CLI first. Only the verified GitHub CLI and
-xml2rfc environments have an automatic install path. Other profile tools are
+Except clock, every profile checks GitHub CLI first. Verified GitHub CLI,
+GHDL and xml2rfc environments have an automatic install path. Other tools are
 operator-managed and produce a precise CONTINUE when absent. Default: check.
 
 Exit status: 0 PASS, 20 CONTINUE (runtime absent), 1 BLOCK, 2 usage error.
@@ -91,7 +91,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$PROFILE" in
-    core|ietf|formal|audio|publication|all) ;;
+    core|clock|ietf|formal|audio|publication|all) ;;
     *) usage >&2; exit 2 ;;
 esac
 if [ "$MODE" = install ] && [ "$ACCEPT_THIRD_PARTY" -ne 1 ]; then
@@ -100,12 +100,15 @@ fi
 
 reject_symlink_chain "$CACHE_DIR"
 set +e
-if [ "$MODE" = install ]; then
+if [ "$PROFILE" = clock ]; then
+    GH_RC=0
+elif [ "$MODE" = install ]; then
     sh "$SCRIPT_DIR/bootstrap-gh.sh" --install --accept-third-party --cache-dir "$CACHE_DIR"
+    GH_RC=$?
 else
     sh "$SCRIPT_DIR/bootstrap-gh.sh" --check-only --cache-dir "$CACHE_DIR"
+    GH_RC=$?
 fi
-GH_RC=$?
 set -e
 case "$GH_RC" in
     0) ;;
@@ -173,6 +176,90 @@ find_python_312() {
         fi
     done
     return 1
+}
+
+check_clock_profile() {
+    clock_python=$(find_python) || fail "clock: Python >=3.10 is required"
+    set +e
+    "$clock_python" - "$MODE" "$CACHE_DIR" <<'PY'
+import hashlib, os, pathlib, shutil, subprocess, sys, tarfile, tempfile, urllib.request
+mode, cache = sys.argv[1:]
+version = '6.0.0'
+name = 'ghdl-mcode-6.0.0-ubuntu24.04-x86_64'
+digest = '30d6a977b8456d140bbafecbbe64b1947a3d92eeae8f5e6d9f528a174f9566e7'
+target = pathlib.Path(cache).resolve() / 'ghdl' / version / 'ubuntu24.04-x86_64'
+archive = target / (name + '.tar.gz')
+def reject_links(path):
+    if any(p.is_symlink() for p in (path, *path.parents)):
+        raise ValueError('GHDL cache path contains a symlink')
+def verify(root):
+    reject_links(root)
+    packed = root / (name + '.tar.gz')
+    if hashlib.sha256(packed.read_bytes()).hexdigest() != digest:
+        raise ValueError('GHDL archive hash mismatch')
+    with tarfile.open(packed) as tar:
+        for member in tar:
+            relative = pathlib.PurePosixPath(member.name)
+            if relative.is_absolute() or '..' in relative.parts or relative.parts[0] != name:
+                raise ValueError('unsafe archive path')
+            path = root.joinpath(*relative.parts)
+            reject_links(path)
+            if member.isfile():
+                if path.is_symlink() or path.read_bytes() != tar.extractfile(member).read():
+                    raise ValueError('GHDL final-path byte mismatch')
+            elif not member.isdir():
+                raise ValueError('unsupported archive member')
+    executable = root / name / 'bin/ghdl'
+    output = subprocess.run([str(executable), '--version'], check=True,
+                            capture_output=True, text=True).stdout
+    if not output.startswith('GHDL 6.0.0 '): raise ValueError('GHDL version mismatch')
+    return executable
+try:
+    reject_links(target)
+    if target.exists():
+        executable = verify(target)
+        print('PASS: clock GHDL verified archive and final path:', executable)
+    elif mode != 'install':
+        print('CONTINUE: clock: locked GHDL absent; explicit install required', file=sys.stderr)
+        sys.exit(20)
+    else:
+        if os.uname().machine != 'x86_64' or 'VERSION_ID="24.04"' not in pathlib.Path('/etc/os-release').read_text():
+            raise ValueError('GHDL locked platform requires Ubuntu 24.04 x86_64')
+        target.parent.mkdir(parents=True, exist_ok=True)
+        stage = pathlib.Path(tempfile.mkdtemp(prefix='.install-', dir=target.parent))
+        promoted = False
+        try:
+            packed = stage / archive.name
+            supplied = os.environ.get('QIKVRT_GHDL_ARCHIVE')
+            print('RUNNING: clock: acquire locked GHDL archive', flush=True)
+            if supplied: shutil.copyfile(supplied, packed)
+            else:
+                url = 'https://github.com/ghdl/ghdl/releases/download/v6.0.0/' + packed.name
+                with urllib.request.urlopen(url, timeout=60) as response, packed.open('wb') as sink:
+                    shutil.copyfileobj(response, sink)
+            if hashlib.sha256(packed.read_bytes()).hexdigest() != digest:
+                raise ValueError('GHDL archive hash mismatch')
+            with tarfile.open(packed) as tar:
+                for member in tar:
+                    parts = pathlib.PurePosixPath(member.name).parts
+                    if not parts or parts[0] != name or '..' in parts or not (member.isfile() or member.isdir()):
+                        raise ValueError('unsafe archive member')
+                # Paths and member types above are already closed; extraction
+                # stays compatible with the declared Python >=3.10 profile.
+                tar.extractall(stage)
+            verify(stage)
+            stage.rename(target); promoted = True
+            executable = verify(target)
+            print('PASS: clock: staged, byte-verified and self-tested GHDL:', executable)
+        except BaseException:
+            shutil.rmtree(target if promoted else stage)
+            raise
+except (OSError, ValueError, subprocess.SubprocessError, tarfile.TarError) as exc:
+    print('BLOCK: clock:', exc, file=sys.stderr); sys.exit(1)
+PY
+    clock_rc=$?
+    set -e
+    case "$clock_rc" in 0) ;; 20) OVERALL=20 ;; *) exit "$clock_rc" ;; esac
 }
 
 check_core_profile() {
@@ -408,12 +495,14 @@ check_publication_profile() {
 
 case "$PROFILE" in
     core) check_core_profile ;;
+    clock) check_clock_profile ;;
     ietf) check_ietf_profile ;;
     formal) check_formal_profile ;;
     audio) check_audio_profile ;;
     publication) check_publication_profile ;;
     all)
         check_core_profile
+        check_clock_profile
         check_ietf_profile
         check_formal_profile
         check_audio_profile
