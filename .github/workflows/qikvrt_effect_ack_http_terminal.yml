@@ -58,6 +58,12 @@ jobs:
           QIKVRT_STATE_RECOVERY_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-state-recovery-readback
         run: make self-host-test
 
+      - name: Verify static React source and browser-module syntax
+        run: |
+          node --check docs/monitor/react-runtime.js
+          node --check docs/monitor/mesh-react.js
+          node --check docs/monitor/self-host.mjs
+
       - name: Preserve original native state restoration readback
         if: ${{ always() && steps.standalone-runtime.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

@@ -25,6 +25,10 @@ const realFetch = globalThis.fetch;
 // A denied request throws before transport; the regression counts attempts.
 globalThis.fetch = providerFetch(config.adapter, realFetch);
 const files = new Map([
+  ['/assets/css/qikvrt-mesh-react.css', ['docs/monitor/mesh-react.css', 'text/css']],
+  ['/assets/js/qikvrt-mesh-react.js', ['docs/monitor/mesh-react.js', 'text/javascript']],
+  ['/assets/js/qikvrt-react-runtime.js', ['docs/monitor/react-runtime.js', 'text/javascript']],
+  ['/scheibenhard-original.html', ['docs/monitor/scheibenhard-original.html', 'text/html']],
   ['/assets/css/qikvrt.css', ['docs/assets/css/qikvrt.css', 'text/css']],
   ['/assets/css/qikvrt-terminal.css', ['docs/assets/css/qikvrt-terminal.css', 'text/css']],
   ['/assets/js/qikvrt-repository-terminal.js', ['docs/assets/js/qikvrt-repository-terminal.js', 'text/javascript']],
@@ -52,11 +56,12 @@ async function routes(request, response, url) {
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
     reply(response, 409, {error:'GITHUB_ADAPTER_NOT_SELECTED', effect_ack_done:false}); return true;
   }
-  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/'].includes(url.pathname) || files.has(url.pathname) ||
+  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client'].includes(url.pathname) || files.has(url.pathname) ||
     (config.adapter === 'none' && url.pathname === '/api/run');
   if (!owned) return false;
   if (!['GET','HEAD'].includes(request.method)) { reply(response,405,{error:'READ_ONLY_ROUTE'}); return true; }
-  if (url.pathname === '/api/runtime') reply(response,200,binding(),'application/json',request.method);
+  if (['/mesh','/node','/client'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
+  else if (url.pathname === '/api/runtime') reply(response,200,binding(),'application/json',request.method);
   else if (url.pathname === '/api/terminal') {
     const token = readFileSync(config.terminal_token_file,'utf8').trim();
     const native = ['temdd','firefox'].includes(config.terminal_profile);

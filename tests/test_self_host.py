@@ -186,6 +186,56 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
         self.assertFalse((second/".git").exists())
         host.verify(second,self.pin)
 
+    def test_static_react_export_serves_each_scope_and_preserves_original_bytes(self):
+        self.start()
+        for route in ("/mesh", "/node?repository=ingolf-lohmann%2Fqik-vrt", "/client"):
+            code, page = self.get(route)
+            self.assertEqual(code, 200)
+            self.assertIn('data-qikvrt-monitor-version="2026-10-04.9"', page)
+            self.assertIn('/assets/js/qikvrt-react-runtime.js', page)
+            self.assertNotIn('MONITOR_VERSION', page)
+        for route, name in (("/assets/js/qikvrt-react-runtime.js", "react-runtime.js"),
+                            ("/assets/js/qikvrt-mesh-react.js", "mesh-react.js"),
+                            ("/assets/css/qikvrt-mesh-react.css", "mesh-react.css"),
+                            ("/scheibenhard-original.html", "scheibenhard-original.html")):
+            code, body = self.get(route)
+            self.assertEqual(code, 200)
+            self.assertEqual(body, (self.export / "docs/monitor" / name).read_text())
+            self.assertEqual(self.get(route, method="POST")[0], 405)
+        original = (self.export / "docs/monitor/scheibenhard-original.html").read_bytes()
+        self.assertEqual(hashlib.sha256(original).hexdigest(),
+                         "141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6")
+        code, runtime = self.get("/api/runtime")
+        self.assertEqual(code, 200)
+        self.assertFalse(runtime["public_routing_verified"])
+        self.assertFalse(runtime["effect_ack_done"])
+        script = """
+import vm from 'node:vm'; import {readFileSync} from 'node:fs';
+const context=vm.createContext({setTimeout,clearTimeout,performance});
+vm.runInContext(readFileSync('docs/monitor/react-runtime.js','utf8'),context);
+console.log(JSON.stringify({version:context.QikvrtReact.React.version,createRoot:typeof context.QikvrtReact.ReactDOM.createRoot}));
+"""
+        result = subprocess.run(["node", "--input-type=module", "-e", script], cwd=self.export,
+                                capture_output=True, text=True, timeout=8, check=True)
+        self.assertEqual(json.loads(result.stdout), {"version":"19.2.6", "createRoot":"function"})
+
+    def test_static_react_source_and_license_drift_refuse_before_export(self):
+        copy = self.work / "react-drift"
+        shutil.copytree(self.export, copy)
+        self.assertEqual(host.verify_react_assets(copy)["state"], "STATIC_REACT_BYTES_VERIFIED")
+        license_path = copy / "docs/monitor/REACT_LICENSE.txt"
+        original_license = license_path.read_bytes()
+        license_path.write_bytes(original_license + b"changed")
+        with self.assertRaisesRegex(ValueError, "STATIC_REACT_BYTES_OR_LICENSE_DRIFT"):
+            host.verify_react_assets(copy)
+        license_path.write_bytes(original_license)
+        bundle_path = copy / "docs/monitor/react-runtime.js"
+        raw = bundle_path.read_bytes().replace(b'exports.version = "19.2.6"', b'exports.version = "19.2.5"')
+        if raw == bundle_path.read_bytes(): raw += b'changed'
+        bundle_path.write_bytes(raw)
+        with self.assertRaisesRegex(ValueError, "STATIC_REACT_BYTES_OR_LICENSE_DRIFT"):
+            host.verify_react_assets(copy)
+
     def test_wrong_source_and_unreviewed_worktree_fail_export(self):
         with self.assertRaisesRegex(ValueError,"SOURCE_BINDING"):
             host.freeze(self.source,self.work/"bad","0"*40,self.tree)

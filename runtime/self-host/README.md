@@ -1,5 +1,25 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.2.0
+# S1 standalone node package, version 1.4.0
+
+The same S1 listener now serves the static React document at `/mesh`, `/node`
+and `/client`. Node selection is `/node?repository=<declared-repository>`.
+It consumes the existing hash-checked client replica and event stream, refreshes
+on opening, visibility/online recovery and explicit readback, and displays the
+original observation timestamp even after disconnection. React, React DOM and
+Scheduler are frozen with complete MIT notices in `REACT_LOCK.json`; no CDN,
+npm installation or framework server is needed. The source document is preserved
+byte-for-byte at `/scheibenhard-original.html`. This adds no new monitor, ledger,
+executor or public mutation route.
+
+The complete public acceptance order is [MESH_ACTIVATION.json](MESH_ACTIVATION.json).
+Candidate CI builds/verifies this document inside the existing S1 lane. Actual
+hosting-platform CI is not instantiated: its own-host principal/executor is
+unavailable. The contract requires a current complete node/terminal inventory,
+one fresh native Transputer ping and authenticated receipt at every terminal,
+with shared logical identity, measured receive window and clock uncertainty.
+An HTTP health response, SSE connection or local React test cannot close it.
+Own-host public deployment, all-node delivery and the first all-terminal round
+trip remain OPEN. They are not replaced by the separately hosted observer Site.
 
 This package reuses the existing Node monitor and reference terminal. It now
 also includes the recovered original productive TEMDD ledger/Unix daemon and

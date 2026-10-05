@@ -97,6 +97,12 @@
       "version": "3.12.x"
     },
     {
+      "cache_class": "repo-managed-archive",
+      "component": "react-browser",
+      "provider": "Pinned React 19.2.6, React DOM 19.2.6 and Scheduler 0.27.0 production CommonJS source bytes; MIT",
+      "version": "19.2.6+0.27.0"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "sherpa-onnx-node",
       "provider": "actions/setup-node:npm",
@@ -153,10 +159,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 25,
-  "declared_components": 25,
-  "lock_sha256": "b01fb81d75e8d7ded554793b6c2fa814a90ed706161723f56e3e1557677b0611",
-  "registry_sha256": "8a6019b230c9347d25b0ceb26ee4a4fb2c34d67b3200b0c3495bbcf90a97ab4a",
+  "covered_components": 26,
+  "declared_components": 26,
+  "lock_sha256": "707e939a754db2bfcc56f44834107f98536d1139548e5588698c80746c960020",
+  "registry_sha256": "8c35aa0700b5e471e0065a058dc1b102c7c812422ddffd5db7ae0bd7304c0288",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt-self-host-mesh-activation/v1",
+  "work_unit_id": "S1_REACT_MESH_FIRST_PING_20261005",
+  "owner": "Ingolf Lohmann",
+  "authorization": "CURRENT_DIRECT_OWNER_REQUEST_SELF_HOST_EACH_REPOSITORY_NODE_MESH_HOSTING_CI_AND_FIRST_TRANSPUTER_PING",
+  "observed_at": "2026-10-05T20:40:27.425673Z",
+  "source_candidate": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 457,
+    "base_head": "86e0ba74eb0f4784f1e302805932b8f1c532f34c",
+    "base_tree": "3946d444c2ed3eea14a6d12ec7a5696526e8d9c9"
+  },
+  "reuse": {
+    "launcher": "tools/qikvrt_self_host.py",
+    "monitor": "docs/monitor/self-host.mjs",
+    "native_ingress": "src/qikvrt_temdd_event_ledger.py:submit",
+    "replica": "docs/monitor/client-replica.js",
+    "candidate_ci": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    "registry": "registry/NODEMESH_INDEX.json"
+  },
+  "static_document": {
+    "mesh_path": "/mesh",
+    "node_path": "/node?repository=<declared-repository>",
+    "client_path": "/client",
+    "runtime": "React 19.2.6 / React DOM 19.2.6 / Scheduler 0.27.0",
+    "external_cdn_required": false,
+    "source_original": {
+      "path": "docs/monitor/scheibenhard-original.html",
+      "bytes": 19160,
+      "sha256": "141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6"
+    }
+  },
+  "required_acceptance_order": [
+    "Fresh complete admitted repository-node and terminal inventory; preserve known and unavailable members, no shrinking to obtain PASS",
+    "Bind own-host principal, privileged executor, private transfer, actual persistent mount, public IPv4/HTTPS routing and valid certificate",
+    "Exact-source candidate CI succeeds; freeze and independently verify the static React plus native S1 package for each admitted node",
+    "Instantiate the hosting-platform pipeline against exact artifact and existing admit/supervisor/run-admitted operations; retain deployment run/readback",
+    "Independently GET exact static document and assets from public HTTPS for every repository-node and the Mesh; recheck hashes and deployed source identity",
+    "Open every admitted universal terminal and verify its live client identity/source/replica before emission",
+    "Submit one fresh nonce-bound ping through the existing owner Unix ingress of the universal Transputer, not a substitute observer or HTTP health route",
+    "Read back that exact native event id, ledger epoch, digest, nonce and logical ping identity at every admitted terminal; verify authenticated terminal-bound receipt and actual receive times",
+    "Preserve the same event/epoch/receipt chain after deployed restart; no receipt transfer from a predecessor source",
+    "Persist the exact finite-scope completion receipt only after all public, native and terminal checks are closed"
+  ],
+  "simultaneous_receive": {
+    "meaning": "One shared logical ping/barrier and complete receipt set in a measured receive window",
+    "logical_ping_id_required": true,
+    "measured_receive_times_required": true,
+    "clock_uncertainty_required": true,
+    "absolute_physical_simultaneity_claimed": false
+  },
+  "coverage": {
+    "authority": "Goldkelch/qik-vrt",
+    "registered_mirror": "ingolf-lohmann/qik-vrt",
+    "mirror_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+    "registry_source_is_historical": true,
+    "fresh_terminal_inventory": null,
+    "own_host_bindings": null,
+    "hosting_pipeline_run": null,
+    "first_native_ping": null,
+    "terminal_receipts": []
+  },
+  "first_causal_blocker": "AUTHENTICATED_OWN_HOST_PROVISIONING_AND_EXECUTOR_UNAVAILABLE",
+  "secondary_boundaries": [
+    "AUTHORITY_READBACK_HTTP_404",
+    "LEGACY_RAILWAY_PRIVILEGED_CAPTURE_AND_PRIVATE_TRANSFER_UNAVAILABLE",
+    "FRESH_COMPLETE_TERMINAL_INVENTORY_AND_RECEIPT_CARRIER_UNBOUND"
+  ],
+  "retry_condition": "Existing account/identity/billing gate closed and an authenticated own-host provisioning plus privileged execution/private transfer route is available; reobserve candidate before effect. Do not retry DigitalOcean mutation without changed payment admission.",
+  "smallest_next_action": "Complete the already encountered provider-native account/identity/billing handoff, then bind actual host and reuse existing S1 admit/supervisor/run-admitted. No new blanket text approval is required.",
+  "acceptance": {
+    "own_host_deployed": false,
+    "hosting_pipeline_instantiated": false,
+    "every_repository_node_public": false,
+    "mesh_public_self_host": false,
+    "native_first_ping_emitted": false,
+    "all_terminal_receipts_verified": false,
+    "s1_done": false,
+    "effect_ack_done": false,
+    "ordinary_release": false
+  }
+}

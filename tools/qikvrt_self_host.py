@@ -64,6 +64,32 @@ def browser_executables():
             for name in BROWSER_COMMANDS}
 
 
+def verify_react_assets(root):
+    """Recheck the static dependency and each unmodified upstream source slice."""
+    lock = json.loads((root / "runtime/self-host/REACT_LOCK.json").read_bytes())
+    if lock.get("schema") != "qikvrt-static-react-lock/v1":
+        raise ValueError("STATIC_REACT_LOCK_REQUIRED")
+    bundle = (root / "docs/monitor/react-runtime.js").read_bytes()
+    license_bytes = (root / "docs/monitor/REACT_LICENSE.txt").read_bytes()
+    if (lock["bundle"]["path"] != "docs/monitor/react-runtime.js"
+            or len(bundle) != lock["bundle"]["bytes"] or digest(bundle) != lock["bundle"]["sha256"]
+            or lock["license"]["path"] != "docs/monitor/REACT_LICENSE.txt"
+            or digest(license_bytes) != lock["license"]["sha256"]
+            or b"MIT License" not in license_bytes or license_bytes not in bundle):
+        raise ValueError("STATIC_REACT_BYTES_OR_LICENSE_DRIFT")
+    if [item["module"] for item in lock["sources"]] != ["react", "react-dom", "scheduler", "react-dom/client"]:
+        raise ValueError("STATIC_REACT_MODULE_SET_DRIFT")
+    for item in lock["sources"]:
+        marker = ('factories[' + json.dumps(item["module"]) + ']=function(module,exports,require){\n').encode()
+        if bundle.count(marker) != 1 or item["license"] != "MIT":
+            raise ValueError("STATIC_REACT_SOURCE_BINDING_DRIFT")
+        offset = bundle.index(marker) + len(marker)
+        source = bundle[offset:offset + item["bytes"]]
+        if digest(source) != item["sha256"] or bundle[offset + item["bytes"]:offset + item["bytes"] + 4] != b"\n};\n":
+            raise ValueError("STATIC_REACT_SOURCE_BINDING_DRIFT")
+    return {"state": "STATIC_REACT_BYTES_VERIFIED", "bundle_sha256": digest(bundle), "effect_ack_done": False}
+
+
 def freeze(root, output, head, tree, browser_assets=None):
     """Export committed bytes only. Tar metadata is deterministic; no credentials."""
     if git(root, "rev-parse", "HEAD").decode() != head or git(root, "rev-parse", "HEAD^{tree}").decode() != tree:
@@ -138,6 +164,7 @@ def freeze(root, output, head, tree, browser_assets=None):
             manifest["files"][name] = {"bytes": len(data), "sha256": digest(data), "mode": "100644"}
             manifest["browser_runtime"]["files"].append(name)
             manifest["browser_runtime"]["files"].sort()
+        verify_react_assets(output)
         data = raw_json(manifest)
         (output / "MANIFEST.json").write_bytes(data)
         (output / "MANIFEST.json").chmod(0o644)

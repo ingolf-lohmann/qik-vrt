@@ -211,3 +211,19 @@ Docker lane tests the complete storage adapter, real process-census admission
 and foreign-owner preservation. Private request/capture/export bytes remain
 outside Git and caches. The currently unavailable authenticated privileged
 exec/SSH plus private transfer carrier remains an explicit capability HOLD.
+
+## Static React S1 interface
+
+React and React DOM 19.2.6 and Scheduler 0.27.0 are reused from the already
+installed, lock-bound Site source dependencies. Their unmodified production
+CommonJS sources and identical full MIT licenses were independently read.
+`runtime/self-host/REACT_LOCK.json` binds each source slice, package/version,
+reproduction locator and the assembled browser bundle. All upstream notices and
+the complete MIT permission text accompany the bundle. This MIT dependency does
+not relicense QIK-VRT implementation code. No CDN, compiler, npm installation,
+server renderer or new service is needed at S1 startup. The existing package
+freezer verifies the bundle and every original source slice; the ordinary
+manifest then binds the emitted assets. Corruption returns HOLD before export.
+Node VM/API and real exported-process HTTP controls verify this bounded scope.
+Browser rendering, public hosting, provider CI, native Mesh ping and all terminal
+receipts remain separately required; source assets never establish those effects.
