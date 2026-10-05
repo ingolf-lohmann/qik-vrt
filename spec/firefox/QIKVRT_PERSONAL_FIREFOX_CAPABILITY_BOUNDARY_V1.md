@@ -55,3 +55,24 @@ SOURCE_REPOSITORY
 ```
 
 A successor mutation invalidates predecessor release evidence.
+
+## Opt-in source adapter, 2026-10-05
+
+The existing HTTP terminal accepts `--personal-state-dir` and an explicit
+`--personal-model`. It loads `src/qikvrt_personal_assistant.py` only for that
+opt-in path. `personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json`
+declares the source capability and the shared `/personal/` Firefox surface.
+The Standard extension's seven packaged files remain unchanged and do not
+include this Personal payload.
+
+Both ordinary conversation mode and QIK-VRT mode retain provider conversations,
+full local transcripts, saved outputs and session restore. Only the observed,
+source-bound checkpoint included on resume differs. Model output is never
+independent acceptance. No harness oracle is loaded by the adapter.
+
+The implemented authentication is server-side OpenAI API bearer authentication
+plus an ephemeral local client bearer. A signed-in ChatGPT/SSO bridge is not
+implemented or established. Runtime credentials and browser authentication
+state are never committed or placed in the SQLite store. Source availability,
+test doubles, a local paired client and a restored transcript do not establish
+external authentication, provider retention readback or a Firefox product run.

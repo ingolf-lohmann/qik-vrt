@@ -48,6 +48,11 @@ SOURCE_PATHS = [
     "browser/firefox/qikvrt-terminal/content.js",
     "src/qikvrt_effect_ack_http_terminal.py",
     "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+    "src/qikvrt_personal_assistant.py",
+    "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+    "personal/ingolf-lohmann/firefox-assistant/ui.html",
+    "personal/ingolf-lohmann/firefox-assistant/ui.js",
+    "personal/ingolf-lohmann/firefox-assistant/ui.css",
     "runtime/toolchains/TOOLCHAIN.lock.tsv",
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
@@ -117,11 +122,17 @@ def preflight() -> dict[str, Any]:
         result = subprocess.run([firefox, "--version"], capture_output=True, text=True, timeout=10, check=False)
         browser["version"] = result.stdout.strip() if result.returncode == 0 else None
         browser["executable_sha256"] = digest(Path(firefox).resolve().read_bytes())
-    blockers = ["EXECUTABLE_PERSONAL_RESEARCH_ASSISTANT_ADAPTER_NOT_IMPLEMENTED", "BASELINE_ASSISTANT_AND_RETENTION_NOT_BOUND"]
+    manifest_path = ROOT / candidate.get("personal_capability_manifest", "MISSING_CAPABILITIES")
+    manifest = read_json(manifest_path) if manifest_path.is_file() else None
+    adapter_materialized = bool(manifest and (ROOT / manifest.get("adapter", "MISSING_ADAPTER")).is_file())
+    # Source presence and an environment variable are not authenticated execution.
+    blockers = [] if adapter_materialized else ["EXECUTABLE_PERSONAL_RESEARCH_ASSISTANT_ADAPTER_NOT_IMPLEMENTED"]
+    blockers += ["AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+                 "BASELINE_RUNTIME_AND_NORMAL_RETENTION_READBACK_NOT_BOUND",
+                 "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+                 "PRODUCT_INTERRUPTION_AND_ORACLE_ISOLATION_NOT_BOUND"]
     if not firefox:
         blockers.append("FIREFOX_EXECUTABLE_UNAVAILABLE")
-    if candidate.get("authenticated_runtime_readback") is not True:
-        blockers.append("AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED")
     return {
         "schema": "qikvrt_browser_ab_preflight_v1",
         "observed_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -130,9 +141,14 @@ def preflight() -> dict[str, Any]:
         "source_files": {p: {"bytes": (ROOT / p).stat().st_size, "sha256": digest((ROOT / p).read_bytes())} for p in SOURCE_PATHS},
         "environment": {"python": platform.python_version(), "os": platform.platform(), "machine": platform.machine(), "firefox": browser},
         "personal_release_candidate": candidate,
+        "personal_adapter_source_materialized": adapter_materialized,
+        "personal_capability_manifest": manifest,
+        "authenticated_runtime_readback": False,
+        "baseline_implementation_materialized": bool(manifest and manifest.get("normal_baseline")),
+        "baseline_runtime_readback": False,
         "status": "PRODUCT_EXECUTION_NOT_AVAILABLE", "blockers": blockers,
         "product_trials_executed": 0, "product_metrics": None, "product_claim_allowed": False,
-        "terminal_boundary": "The existing loopback bridge accepts terminal input; it is not a persistent authenticated research/documentation assistant.",
+        "terminal_boundary": "The optional Personal adapter shares the terminal server and implements source-bound model requests, normal conversation persistence and checkpoint resume. Real authenticated Firefox product execution is not established by this offline preflight.",
     }
 
 
@@ -450,7 +466,7 @@ def analyze(run: Path) -> dict[str, Any]:
         "manifest_sha256": digest((run / "manifest.json").read_bytes()),
         "planned_trials": len(trials), "product_trials_executed": 0, "product_claim_allowed": False,
         "product_metrics": None, "trials": trials, "paired_deltas": contrasts,
-        "limitations": ["No product adapter, actual Firefox research run or authenticated assistant runtime is established by this version.", "No benefit estimate, speedup, significance or causal claim is produced from harness exercises.", "Null latency is not zero; censored failures and invalid/incomplete/missing trials are retained.", "Hash chaining detects accidental/tampered bytes against retained bindings; it is not independent identity attestation or proof that an operator reported honestly."],
+        "limitations": ["Adapter source does not establish an actual authenticated Firefox product run; this evaluator accepts harness data only.", "No benefit estimate, speedup, significance or causal claim is produced from harness exercises.", "Null latency is not zero; censored failures and invalid/incomplete/missing trials are retained.", "Hash chaining detects accidental/tampered bytes against retained bindings; it is not independent identity attestation or proof that an operator reported honestly."],
     }
 
 

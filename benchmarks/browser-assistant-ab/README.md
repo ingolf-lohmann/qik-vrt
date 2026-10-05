@@ -3,7 +3,8 @@
 
 # Persönlicher Browserassistent: Unterbrechungs-A/B-Vertrag
 
-**Stand dieser Implementierung: Harness und synthetische Fixtures vorhanden;
+**Stand dieses Nachfolgers: Harness, synthetische Fixtures und opt-in
+Personal-Quelladapter vorhanden;
 produktnaher End-to-End-Lauf nicht ausgeführt; Kundennutzen offen.**
 
 Der Versuch soll die offene Produktfrage beantworten: Kann ein persönlicher
@@ -15,15 +16,21 @@ belegt weder diesen Produktvorteil noch Kaufwürdigkeit.
 
 ## Vorhandenes wiederverwenden
 
-Der Firefox-Client `browser/firefox/qikvrt-terminal/` und
-`src/qikvrt_effect_ack_http_terminal.py` werden unverändert wiederverwendet.
+Der Standard-Firefox-Client `browser/firefox/qikvrt-terminal/` bleibt unverändert.
+`src/qikvrt_effect_ack_http_terminal.py` erhält einen opt-in Adapter auf demselben
+Server: `src/qikvrt_personal_assistant.py`, Oberfläche `/personal/` und Manifest
+`personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json`.
 Der isolierte `terminal-smoke` prüft Discovery → Prepare → vollständigen
 Record-Readback → Commit → frischen State-Readback → Replay-Verweigerung.
 Er führt eine lokale Terminaleingabe aus, keine Recherche oder Fortsetzung.
 Die Erweiterung speichert Personalisierung und Repository-Beobachtungen; daraus
 folgt kein ausführbarer persönlicher Rechercheassistent. Der bestehende
-Personal-Vertrag verlangt eine Capability Manifest und authentifizierten
-Runtime-Readback; diese fehlen auf dem gebundenen Main.
+Personal-Vertrag verlangt ein Capability-Manifest und authentifizierten
+Runtime-Readback. Das Manifest ist im Nachfolger materialisiert; eine echte
+authentifizierte Ausführung bleibt offen. Der Quelladapter verwendet die
+OpenAI API mit bereitgestellten Backend-Zugangsdaten, keinen behaupteten
+ChatGPT-Pro-/SSO-Pfad. Seine technischen Tests verwenden Transport-Doubles
+und bleiben außerhalb der Produkttrials.
 
 Suche vor Erstellung: Main `86d7062f25f174039da0a5df8a856127553036f1`,
 Tree `5421dceb17f1ecc0fd3f5c12891ca9c1a12e7cf2`, insbesondere `browser/`,
@@ -53,7 +60,10 @@ Belege nicht. In dieser Version bleibt jeder Lauf deshalb eine Harness-Übung.
 
 Vor einem Produktlauf sind Firefox-Build, Erweiterungspaket, OS/Host,
 Assistent/Modell, Parameter, Werkzeuge und Cache-/Netzpolitik identisch zu
-binden. Die genaue gewöhnliche Baseline ist noch nicht gewählt/gebunden.
+binden. Die implementierte gewöhnliche Baseline ist derselbe Quelladapter im
+normalen Gesprächsmodus: gleiche Provider-Conversations, vollständige lokale
+Historie, gespeicherte Antworten und Restore. Eine reale Baseline-Laufzeit
+samt Provider-Retention-Readback ist weiterhin nicht gebunden.
 Sie muss ihre tatsächlich vorhandenen normalen Restore-Tabs, gespeicherten
 Dokumente und Chat-Historie behalten dürfen. Keinen absichtlich geschwächten
 Vergleich herstellen. Nur die deklarierte Fortsetzungsfunktion unterscheidet
@@ -175,17 +185,25 @@ Die tatsächlichen vier Nutzermetriken benötigen vollständige Produktinstrumen
 
 ## Erste reale Ausführungsgrenze und Fortsetzung
 
-Der erste fehlende produktseitige Baustein ist ein aufrufbarer persönlicher
-Recherche-/Dokumentationsassistent mit authentifiziertem Firefox-/Terminal-
-Fortsetzungspfad. Hinzu kommen die gebundene gewöhnliche Baseline und die
-Firefox-Installation im Versuchshost. Eine reine Firefox-Installation schließt
-die Assistentenlücke nicht. `preflight` benennt jede getrennte Grenze;
+Der aufrufbare Personal-Adapter und sein normaler Baseline-Modus sind als
+Quellbaustein implementiert. Die erste verbleibende reale Capability-Grenze
+ist die authentifizierte Modell-Laufzeit. Es fehlen außerdem deren normaler
+Baseline-/Provider-Retention-Readback, Firefox im Versuchshost, äquivalente
+reale Vorläufe und Produkt-Unterbrechungs-/Oracle-Isolationsbelege.
+`preflight` unterscheidet Quellimplementierung und echte Ausführung;
 `product_trials_executed=0`, `product_metrics=null`,
 `product_claim_allowed=false` bleiben maschinenlesbar.
 
-Sobald der reale Adapter vorhanden ist: den vorhandenen Harness erweitern,
+Sobald die authentifizierte Runtime samt Firefox-Pfad belegt ist: den vorhandenen Harness erweitern,
 Versions-/Identitäts- und Interruptionstraces anbinden, echten
 Produktmodus separat reviewen, identische Vorläufe prüfen und den vollständigen
 Plan frisch ausführen. Alle vier Metriken, Qualität und Fehlläufe aus Rohdaten
 auswerten. Erst diese Ausführung kann die Produktfrage beantworten.
 Keine neuen Mailentwürfe oder Nutzenversprechen aus diesem Vorbereitungsstand.
+
+Die ursprünglichen Rohdaten unter `evidence/benchmarks/browser-assistant-ab/2026-10-05/`
+sind historische, unveränderte Nachweise auf HEAD
+`5bd1afc5bfa7c3887698f24f899b72e6f5701990`. Ihr bytegenauer Replay verlangt diesen
+gebundenen Checkout. Nach Änderungen an Harness-/Runtimebytes einen neuen Plan
+erzeugen; frühere Manifeste oder synthetische Uhren nicht auf den Nachfolger
+übertragen. Die separate `personal-adapter/`-Evidenz bindet den neuen Quellstand.

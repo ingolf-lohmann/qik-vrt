@@ -7,6 +7,11 @@ on:
       - "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md"
       - "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
       - "browser/firefox/qikvrt-terminal/**"
+      - "personal/ingolf-lohmann/firefox-assistant/**"
+      - "src/qikvrt_personal_assistant.py"
+      - "src/qikvrt_effect_ack_http_terminal.py"
+      - "tools/qikvrt_browser_assistant_ab.py"
+      - "tests/test_qikvrt_personal_assistant.py"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
@@ -41,6 +46,7 @@ jobs:
           set -euo pipefail
           python3 -m json.tool policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json >/dev/null
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1             python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_assistant tests.test_qikvrt_effect_ack_http_terminal
 
       - name: Build Standard package twice and prove byte identity
         shell: bash
@@ -87,6 +93,8 @@ jobs:
               json.dumps(receipt,sort_keys=True,indent=2)+'\n',encoding='utf-8')
           print(json.dumps(receipt,sort_keys=True))
           PY
+          python3 -B tools/qikvrt_browser_assistant_ab.py preflight \
+            > /tmp/qikvrt-personal-firefox-boundary/PRODUCT_PREFLIGHT.json
 
       - name: Preserve exact-head boundary evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
