@@ -47,5 +47,74 @@
     "download_without_license_consent",
     "platform_adapter_without_general_dependency_contract"
   ],
-  "canonical_formula": "Every adapter implements the same general dependency contract; no runtime environment owns the rule."
+  "canonical_formula": "Every adapter implements the same general dependency contract; no runtime environment owns the rule.",
+  "extensions": {
+    "external_dependency_assimilation_v1": {
+      "owner_authorization": "state/authorization/delegations/OWNER_EXTERNAL_DEPENDENCY_ASSIMILATION_V1.json",
+      "effective_at": "2026-10-03T13:57:55+02:00",
+      "purpose": "Turn every problematic external dependency into a bounded work unit for capability reconstruction, QIK-VRT implementation and persistent learning.",
+      "scope": "ALL_PROBLEMATIC_EXTERNAL_DEPENDENCIES_WITHIN_AUTHORIZED_QIKVRT_WORK",
+      "reuse_before_create": true,
+      "loop": [
+        "OBSERVE",
+        "CLASSIFY",
+        "MODEL_REQUIRED_BEHAVIOR",
+        "REUSE_OR_REIMPLEMENT",
+        "VALIDATE_ORIGINAL_FAILURE_AND_CONFORMANCE",
+        "VERIFY_INDEPENDENCE",
+        "REOBSERVE_EFFECT",
+        "PERSIST_LEARNING",
+        "CONTINUE"
+      ],
+      "dependency_work_unit_required_fields": [
+        "dependency_id",
+        "required_function",
+        "exact_subject",
+        "observed_failure",
+        "cause_status",
+        "reusable_qikvrt_capability",
+        "source_and_rights_context",
+        "replacement_candidate",
+        "equivalence_scope",
+        "original_failure_test",
+        "negative_and_regression_controls",
+        "dependency_unavailable_test",
+        "fresh_effect_readback",
+        "remaining_external_roles",
+        "learning_receipt",
+        "first_blocker",
+        "next_executable_action"
+      ],
+      "replacement_acceptance": {
+        "required_function_works_on_fresh_exact_subject": true,
+        "original_failure_retested": true,
+        "applicable_conformance_and_regression_gates_pass": true,
+        "original_dependency_unavailable_test_required_for_independence_claim": true,
+        "external_roles_and_remaining_dependencies_explicit": true,
+        "baseline_and_candidate_measurements_required_for_improvement_claim": true,
+        "proposal_or_test_is_not_effect_ack": true,
+        "software_downgrade_is_not_a_repair_path": true
+      },
+      "learning": {
+        "human_ledger": "LEARN.md",
+        "machine_ledger": "LEARN.json",
+        "versioned_work_units": "state/work_units/<WORK_UNIT_ID>.json",
+        "source_code_tests_model_and_recovery_persisted": true,
+        "unverified_model_output_is_not_authority": true
+      },
+      "unresolved_dependency": {
+        "state": "EFFECT_ACK_CONTINUE_OR_BLOCK_FOR_EXACT_EFFECT",
+        "required": [
+          "concrete_causal_blocker",
+          "observed_evidence",
+          "retry_condition",
+          "smallest_authorized_next_action"
+        ],
+        "unchanged_failure_is_not_progress": true
+      },
+      "authority_capability_access_admission_effect_are_distinct": true,
+      "legacy_required_dependency_resolution_fields_preserved": true,
+      "blanket_dependency_elimination_or_executor_activation_claim_allowed": false
+    }
+  }
 }
