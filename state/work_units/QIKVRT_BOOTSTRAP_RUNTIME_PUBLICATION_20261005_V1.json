@@ -9,8 +9,8 @@
   "authentication_observation": {
     "biometric_confirmation_verified": false,
     "identity_provider_origin": "https://github.com",
-    "last_observed_utc": "2026-10-05T13:34:40.018Z",
-    "last_visible_state": "GITHUB_LOGIN_WAITING_FOR_BROWSER_INTERACTION_PARTIAL_PASSKEY_SUPPORT",
+    "last_observed_utc": "2026-10-05T13:51:11.622Z",
+    "last_visible_state": "NATIVE_GITHUB_SIGN_IN_REJECTED_ACCOUNT_SUSPENSION_MESSAGE",
     "observed_signed_in": false,
     "origin": "https://zenodo.org",
     "protected_registry_binding_established": false,
@@ -26,7 +26,24 @@
     "registry_write_verified": false,
     "secure_request_result": "submitted",
     "selected_method": "passkey",
-    "selected_provider": "github"
+    "selected_provider": "github",
+    "native_sign_in_block": {
+      "state": "NATIVE_GITHUB_SIGN_IN_REJECTED_ACCOUNT_SUSPENSION_MESSAGE",
+      "source_kind": "OWNER_SUPPLIED_SCREENSHOT_VISUAL_READBACK",
+      "source_name": "IMG_6128.png",
+      "owner_message_submitted_at": "2026-10-05T15:49:26+02:00",
+      "observed_utc": "2026-10-05T13:51:11.622Z",
+      "site": "github.com",
+      "account_identity": "NOT_ESTABLISHED_BY_SCREENSHOT",
+      "provider_message_class": "ACCOUNT_SUSPENSION",
+      "message_boundary": "The visible page reports suspension; the account identity, underlying enforcement grounds and causation of repository API 404s are not established.",
+      "successful_authentication": false,
+      "successful_register_update": false,
+      "raw_attachment_hash_verified": false,
+      "further_browser_sign_in_attempts_stopped": true,
+      "next_required_authority": "GITHUB_SUPPORT_APPEAL_OR_REINSTATEMENT",
+      "support_message_sent": false
+    }
   },
   "authentication_requirement": {
     "auth_channel": "PROVIDER_INDEPENDENT_SINGLE_SIGN_ON",
@@ -420,6 +437,28 @@
         "GitHub",
         "OpenAIRE"
       ]
+    },
+    "authentication_before_suspension_message": {
+      "biometric_confirmation_verified": false,
+      "identity_provider_origin": "https://github.com",
+      "last_observed_utc": "2026-10-05T13:34:40.018Z",
+      "last_visible_state": "GITHUB_LOGIN_WAITING_FOR_BROWSER_INTERACTION_PARTIAL_PASSKEY_SUPPORT",
+      "observed_signed_in": false,
+      "origin": "https://zenodo.org",
+      "protected_registry_binding_established": false,
+      "publisher_credentials": {
+        "GH_TOKEN_available": false,
+        "GITHUB_TOKEN_available": false,
+        "ZENODO_ACCESS_TOKEN_available": false,
+        "ZENODO_TOKEN_available": false
+      },
+      "registry_gap": "Existing protected internal registry was not resolved to a callable current runtime carrier; no successful login event is established.",
+      "registry_readback_verified": false,
+      "registry_update_required_after_success": true,
+      "registry_write_verified": false,
+      "secure_request_result": "submitted",
+      "selected_method": "passkey",
+      "selected_provider": "github"
     }
   },
   "historical_pass_transfer": false,
@@ -454,13 +493,13 @@
     "blocking_dependencies": [
       "CURRENT_AUTHORITY_ACCESS_UNAVAILABLE",
       "PUBLISHER_SCOPED_API_CREDENTIALS_NOT_AVAILABLE",
-      "SECURE_PASSKEY_SIGN_IN_AWAITING_USER_INTERACTION",
+      "NATIVE_GITHUB_SIGN_IN_REJECTED_ACCOUNT_SUSPENSION_MESSAGE",
       "CANDIDATE_BOUND_V2_COMPANION_CONTROLS_NOT_VERIFIED",
       "PROTECTED_INTERNAL_AUTH_REGISTRY_RUNTIME_BINDING_NOT_ESTABLISHED"
     ],
     "effect_state": "EFFECT_ACK_BLOCK",
     "exact_candidate_bytes_unchanged": true,
-    "next_action": "Complete the existing secure user-selected SSO/passkey route and independently verify the Zenodo destination session.",
+    "next_action": "Resolve the native GitHub account suspension through the official support appeal/reinstatement route. The screenshot does not identify the affected account; after reinstatement, independently verify destination sign-in, protected-registry write/readback and current Authority access before resuming publication.",
     "receipt_bytes": 26366,
     "receipt_path": "evidence/native_release/PR461_PUBLICATION_CONTINUATION_bc2da76a_20261005_V1.json",
     "receipt_sha256": "06ef5bc89490b4210fb8e57806f7d0e36b4d944711f4590e4e018969f24e076a"
@@ -475,8 +514,8 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35"
   },
-  "state": "PUBLICATION_BLOCKED_CURRENT_AUTHORITY_AND_AUTHENTICATED_RUNTIME_GAPS",
-  "updated_utc": "2026-10-05T13:38:17.648495+00:00",
+  "state": "PUBLICATION_BLOCKED_NATIVE_SIGN_IN_SUSPENSION_AND_AUTHORITY_RUNTIME_GAPS",
+  "updated_utc": "2026-10-05T13:51:11.622Z",
   "variant_contract": "runtime/native/VARIANTS.json",
   "visible_documentation": "runtime/native/README.md",
   "work_unit_id": "QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1",
@@ -488,5 +527,24 @@
     "publisher": "tools/qikvrt_zenodo_publish.py",
     "record_id": null,
     "state": "NOT_PUBLISHED; CURRENT_AUTHORITY_ACCESS_AND_PUBLISHER_CREDENTIALS_UNAVAILABLE"
-  }
+  },
+  "authentication_events": [
+    {
+      "state": "NATIVE_GITHUB_SIGN_IN_REJECTED_ACCOUNT_SUSPENSION_MESSAGE",
+      "source_kind": "OWNER_SUPPLIED_SCREENSHOT_VISUAL_READBACK",
+      "source_name": "IMG_6128.png",
+      "owner_message_submitted_at": "2026-10-05T15:49:26+02:00",
+      "observed_utc": "2026-10-05T13:51:11.622Z",
+      "site": "github.com",
+      "account_identity": "NOT_ESTABLISHED_BY_SCREENSHOT",
+      "provider_message_class": "ACCOUNT_SUSPENSION",
+      "message_boundary": "The visible page reports suspension; the account identity, underlying enforcement grounds and causation of repository API 404s are not established.",
+      "successful_authentication": false,
+      "successful_register_update": false,
+      "raw_attachment_hash_verified": false,
+      "further_browser_sign_in_attempts_stopped": true,
+      "next_required_authority": "GITHUB_SUPPORT_APPEAL_OR_REINSTATEMENT",
+      "support_message_sent": false
+    }
+  ]
 }
