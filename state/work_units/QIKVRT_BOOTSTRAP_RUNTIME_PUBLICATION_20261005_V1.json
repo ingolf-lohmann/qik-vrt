@@ -8,29 +8,281 @@
   },
   "build_workflow": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
   "candidate": {
-    "observed_head": "be67b5fabf8b48a679f572b734e87e8f88567c73",
-    "observed_tree": "f7775d088feb9c26f2a02ea6c4d00c986002c271",
+    "artifact": {
+      "artifact_id": 11343403081,
+      "artifact_name": "qikvrt-runtime-publication-candidate-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "ci_run_id": 37305763679,
+      "independent_catalog_reproduction": "BYTE_IDENTICAL_INDEX_AND_COMPLETE_FILESET",
+      "indexed_files": 57,
+      "outer_archive_bytes": 118774398,
+      "outer_archive_sha256": "c6d6cb258d8e2f35874f7783a3c802f8cd6159d6f8e8bcd2388dd375c1b011e3",
+      "release_index_bytes": 14542,
+      "release_index_sha256": "3a4403cac04950bc5ba432d86c310b31380d4495a8f333451c854d4d64b6430e",
+      "variant_rows": 5
+    },
+    "observed_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+    "observed_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
     "pull_request": 461,
-    "scope": "historical source candidate; successor repair adds portable cache paths and automatic publication-candidate collection"
+    "scope": "FROZEN_EXACT_SOURCE_CI_PUBLICATION_CANDIDATE"
   },
   "closure": {
     "all_nodes_persisted": false,
     "all_targets_executed": false,
     "effect_ack_done": false,
+    "exact_head_ci_acceptance_closed": true,
+    "executed_target_scope_verified": true,
+    "frozen_publication_candidate_verified": true,
+    "node_synchronization_verified": false,
     "zenodo_published": false
   },
   "created_utc": "2026-10-05T10:41:49.361053+00:00",
-  "fresh_ci_observation": {
-    "head": "be67b5fabf8b48a679f572b734e87e8f88567c73",
-    "linux": "success",
-    "macos": "success",
-    "mc68000": "success",
-    "run_id": 37298811276,
-    "smalltalk": "success",
-    "successor_evidence_transfer": false,
-    "windows": "failure; cache registry path compared platform-native separators to POSIX authority; causal repair to as_posix"
+  "evidence_projection": {
+    "acceptance_receipt_path": "evidence/native_release/PR461_EXACT_HEAD_ACCEPTANCE_bc2da76a.json",
+    "acceptance_receipt_sha256": "1fc36539f7da18e5b762dbb096b8e91b1d8883564cdd62b78131716512869e84",
+    "branch": "evidence/pr461-frozen-candidate-bc2da76a-20261005",
+    "placement": "SEPARATE_EVIDENCE_BRANCH_WITH_FROZEN_SOURCE_AS_PARENT",
+    "projection_commit_is_not_execution_subject": true,
+    "release_index_path": "evidence/native_release/PR461_RELEASE_INDEX_bc2da76a.json",
+    "release_index_sha256": "3a4403cac04950bc5ba432d86c310b31380d4495a8f333451c854d4d64b6430e",
+    "subject_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+    "subject_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
   },
-  "fresh_evidence_required": true,
+  "executed_scope": {
+    "boundaries": [
+      "Windows Server 2025 AMD64 is not a Windows 11 execution witness.",
+      "macOS target is arm64; Linux target is x86_64.",
+      "MC68000 is an object/raw-kernel/Linux ABI emulator witness, not physical hardware.",
+      "HTTP/Docker scope is source carrier plus exact-source CI execution/readback; full OCI image and noVNC runtime payload are not in this catalog.",
+      "Catalog has five explicit native/backend rows. SQLite and TEMDD are covered by those backend executions; S1/HTTP/Docker is retained and verified through indexed readback files.",
+      "No code-owner approval, merge, deployment, Zenodo publication or repository-node synchronization is established."
+    ],
+    "http_docker_linux": {
+      "archive_sha256": "b140f4e16b36e324dff0ca11858684d10bcd695f4397e8a658ea1329f87a31da",
+      "browser_dependency_binding": {
+        "Xvfb": "6eda36f0c84969a0fbe3f411c4a16521620db8a16c13defbee690cad86bd9ef8",
+        "firefox-esr": "617a7a905680b94f8d00e9bf92b8f03705389094e43edb9c7363756ca4b25327",
+        "websockify": "1a14abe56973818410c2a504f66496645dcb0df1b5a3d499a7b6f0cf0c848388",
+        "x11vnc": "84af9b01b1961384e4f6e3f9d41bee5adb54c304fe81da2b8db2e61b22ad0652",
+        "xdpyinfo": "e7e1a29eb970f5eb5c0592a4fc4dd4c6cafd5d79358dfb7b27a81b74d060ccca",
+        "xwininfo": "fcd45fa8cf04e0c62086dbbb3e9d4762b0080cc41622cf53a5bddea92b7be84c"
+      },
+      "browser_execution_sha256": "852dfbb36559a1e88df87039ca50da0b2a753e655277a4ea1f6324b7922d11aa",
+      "browser_manifest_sha256": "c9fefff65f8900b7cfeec1c5fa728b0cba1c63fb42c6f64cc6ec5e25383cd6c1",
+      "browser_restart_sha256": "16ea9c65104aea66ccfc5a182e21379da4913b185f36d3e56e4d9a4065cc557e",
+      "firefox_version": "Mozilla Firefox 153.4.0esr",
+      "fixture_pr_is_not_external_pr_acceptance": true,
+      "full_oci_image_or_novnc_runtime_payload_archived": false,
+      "native_fixture_subject_pr": 457,
+      "oci_image_id": "sha256:2c73d58abf18c0eb2c6b6fc3bbfff755f5fbf3d6b8a21ef6dbe60072bdf63570",
+      "package_manifest_sha256": "ea35e923ce8377d6bc9b48d0e0d46d3800320f2775eaa2830a7212e7cc35cfdb",
+      "public_https_readback_verified": false,
+      "runtime_binding": {
+        "node": {
+          "executable_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+          "version": "v24.21.0"
+        },
+        "platform": "x86_64",
+        "python": {
+          "executable_sha256": "bef88f140b625959f8af25c7b75cce2cd5d4b29cc2f2b079befd7f68eda4dba0",
+          "version": "Python 3.12.14"
+        },
+        "system": "linux"
+      },
+      "source_and_license_files_verified_against_git": 81,
+      "state": "S1_SOURCE_CARRIER_BYTES_AND_EXACT_SOURCE_BROWSER_CI_EXECUTION_VERIFIED"
+    },
+    "native_and_backend_targets": [
+      {
+        "artifact_name": "qikvrt-native-macos-15-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "scope": null,
+        "target": {
+          "machine": "arm64",
+          "os_version": "macOS-15.7.9-arm64-arm-64bit",
+          "system": "darwin"
+        },
+        "variants": [
+          "host-native",
+          "sqlite",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-native-ubuntu-24.04-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "scope": null,
+        "target": {
+          "machine": "x86_64",
+          "os_version": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "system": "linux"
+        },
+        "variants": [
+          "host-native",
+          "sqlite",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-native-windows-2025-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "scope": null,
+        "target": {
+          "machine": "AMD64",
+          "os_version": "Windows-2025Server-10.0.26100-SP0",
+          "system": "win32"
+        },
+        "variants": [
+          "host-native",
+          "sqlite",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "scope": null,
+        "target": "mc68000-d0-kernel-with-m68k-linux-abi-emulator-witness",
+        "variants": [
+          "mc68000-abi",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "scope": null,
+        "target": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "variants": [
+          "smalltalk-pharo13",
+          "temdd"
+        ]
+      }
+    ]
+  },
+  "fresh_ci_observation": {
+    "all_eight_gates": "SUCCESS",
+    "checks": [
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:59:08Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111751049243",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111751049243",
+        "id": 111751049243,
+        "name": "publication-candidate",
+        "started_at": "2026-10-05T11:58:49Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:58:43Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748947922",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748947922",
+        "id": 111748947922,
+        "name": "contract-and-e2e",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:12Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946750",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946750",
+        "id": 111748946750,
+        "name": "native-runtime (ubuntu-24.04)",
+        "started_at": "2026-10-05T11:52:48Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:24Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946582",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946582",
+        "id": 111748946582,
+        "name": "native-runtime (macos-15)",
+        "started_at": "2026-10-05T11:52:53Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:32Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946573",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946573",
+        "id": 111748946573,
+        "name": "native-runtime (windows-2025)",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:32Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946502",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946502",
+        "id": 111748946502,
+        "name": "m68000-runtime",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387318
+        },
+        "completed_at": "2026-10-05T11:55:32Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763704/job/111748946307",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763704/job/111748946307",
+        "id": 111748946307,
+        "name": "test",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:44Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946117",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946117",
+        "id": 111748946117,
+        "name": "smalltalk-runtime",
+        "started_at": "2026-10-05T11:52:46Z",
+        "status": "completed"
+      }
+    ],
+    "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+    "observed_at": "2026-10-05T12:05:55.493Z",
+    "receipt_path": "evidence/native_release/PR461_CI_READBACK_bc2da76a.json",
+    "receipt_sha256": "075095f699db0c1a24eb426c495c9e3fa738c9504e41b4697b0f27ada188dfdf",
+    "run_ids": [
+      37305763679,
+      37305763704
+    ],
+    "successor_evidence_transfer": false,
+    "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
+  },
+  "fresh_evidence_required": false,
+  "future_publication_and_node_readbacks_required": true,
   "future_variants": {
     "client_scheduler_required": false,
     "deduplication": [
@@ -40,7 +292,64 @@
       "license_digest"
     ],
     "requested": true,
-    "state": "REPOSITORY_NATIVE_CI_COLLECTOR_IMPLEMENTED; PUBLICATION_STILL_REQUIRES_EXISTING_V2_CONTROLS_AND_AUTHENTICATION"
+    "state": "BOUNDED_EXECUTED_VARIANTS_VERIFIED_AND_CATALOG_FROZEN; FUTURE_TARGETS_AND_PUBLICATION_REQUIRE_SEPARATE_EVIDENCE"
+  },
+  "historical_observations": {
+    "candidate": {
+      "observed_head": "be67b5fabf8b48a679f572b734e87e8f88567c73",
+      "observed_tree": "f7775d088feb9c26f2a02ea6c4d00c986002c271",
+      "pull_request": 461,
+      "scope": "historical source candidate; successor repair adds portable cache paths and automatic publication-candidate collection"
+    },
+    "ci_observation": {
+      "head": "be67b5fabf8b48a679f572b734e87e8f88567c73",
+      "linux": "success",
+      "macos": "success",
+      "mc68000": "success",
+      "run_id": 37298811276,
+      "smalltalk": "success",
+      "successor_evidence_transfer": false,
+      "windows": "failure; cache registry path compared platform-native separators to POSIX authority; causal repair to as_posix"
+    },
+    "local_verification": {
+      "license_tests": "PASS 5/5",
+      "native_package_tests": "PASS 5/5 including source-bound publication catalog",
+      "repository_make_test": "PASS after fetching required historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "scope": "Local checkout verification, not external native-target or Zenodo readback",
+      "test_log_sha256": "b6cc960846fe2e68d2ac421453dc73ba6a301df9ec2aac481ec9a2c25bad41ad",
+      "workflow_and_self_host_tests": "PASS 42/42"
+    },
+    "nodes": [
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "role": "mirror",
+        "state": "CANDIDATE_BRANCH_PERSISTED"
+      },
+      {
+        "observation": "Authenticated /AI file read returned 404 NOT_FOUND; this does not prove repository deletion or suspension.",
+        "repository": "Goldkelch/qik-vrt",
+        "role": "authority",
+        "state": "CONTENT_ACCESS_BLOCKED_NOT_FOUND"
+      }
+    ],
+    "scope": "PRESERVED_PREDECESSOR_OBSERVATIONS_ONLY; NO PASS TRANSFER TO CURRENT SOURCE",
+    "work_unit_snapshot_at_verified_source": {
+      "git_blob_sha1": "d3cb6446209718edfbf4c6b7e823bec8be8f993f",
+      "path": "state/work_units/QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1.json",
+      "sha256": "25121405806ed5a959d179fcb69e48b9bd22e58feb5e74482518ecab9f9b6115",
+      "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698"
+    },
+    "zenodo_login_observation": {
+      "credential_or_biometric_confirmation_occurred": false,
+      "direct_apple_sso_offered": false,
+      "signed_in": false,
+      "url": "https://zenodo.org/login/?next=/",
+      "visible_sso": [
+        "ORCID",
+        "GitHub",
+        "OpenAIRE"
+      ]
+    }
   },
   "historical_pass_transfer": false,
   "human_owner": {
@@ -48,25 +357,16 @@
     "name": "Ingolf Lohmann"
   },
   "independence_scope": "No network/provider API/OS calls/heap in C90 kernel; CLI uses libc; build uses compiler; SQL uses Python/sqlite3/ctypes; Pharo and S1 retain declared runtimes.",
-  "local_verification": {
-    "license_tests": "PASS 5/5",
-    "native_package_tests": "PASS 5/5 including source-bound publication catalog",
-    "repository_make_test": "PASS after fetching required historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
-    "scope": "Local checkout verification, not external native-target or Zenodo readback",
-    "test_log_sha256": "b6cc960846fe2e68d2ac421453dc73ba6a301df9ec2aac481ec9a2c25bad41ad",
-    "workflow_and_self_host_tests": "PASS 42/42"
-  },
   "nodes": [
     {
       "repository": "ingolf-lohmann/qik-vrt",
       "role": "mirror",
-      "state": "CANDIDATE_BRANCH_PERSISTED"
+      "state": "FROZEN_CANDIDATE_AND_SEPARATE_EVIDENCE_PROJECTION_ONLY; NO ALL_NODE_SYNCHRONIZATION"
     },
     {
-      "observation": "Authenticated /AI file read returned 404 NOT_FOUND; this does not prove repository deletion or suspension.",
       "repository": "Goldkelch/qik-vrt",
       "role": "authority",
-      "state": "CONTENT_ACCESS_BLOCKED_NOT_FOUND"
+      "state": "NOT_READ_BACK_IN_THIS_EXACT_HEAD_ACCEPTANCE; PREVIOUS_ACCESS_OBSERVATION_IS_HISTORICAL"
     }
   ],
   "package_definition": "runtime/native/PACKAGE.json",
@@ -80,7 +380,8 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35"
   },
-  "state": "CANDIDATE_PERSISTED_NATIVE_TARGET_VERIFICATION_IN_PROGRESS",
+  "state": "FROZEN_PUBLICATION_CANDIDATE_BYTE_VERIFIED",
+  "updated_utc": "2026-10-05T12:05:55.493Z",
   "variant_contract": "runtime/native/VARIANTS.json",
   "visible_documentation": "runtime/native/README.md",
   "work_unit_id": "QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1",
@@ -88,20 +389,9 @@
     "doi": null,
     "exact_candidate_authorization_consumed": false,
     "existing_machine_proof_v2_contract_preserved": true,
-    "login_observation": {
-      "credential_or_biometric_confirmation_occurred": false,
-      "direct_apple_sso_offered": false,
-      "signed_in": false,
-      "url": "https://zenodo.org/login/?next=/",
-      "visible_sso": [
-        "ORCID",
-        "GitHub",
-        "OpenAIRE"
-      ]
-    },
     "public_byte_readback": false,
     "publisher": "tools/qikvrt_zenodo_publish.py",
     "record_id": null,
-    "state": "PENDING_AUTHENTICATED_PUBLICATION"
+    "state": "NOT_PUBLISHED_IN_THIS_BOUNDED_ACCEPTANCE; AUTHENTICATED_PUBLIC_BYTE_READBACK_REQUIRED"
   }
 }
