@@ -7,8 +7,10 @@ on:
   push:
     branches:
       - automation/formalization-v2-inspect-20260723
+      - review/zenodo-access-preflight-20261005
     paths:
       - release/formalization-v2-inspection-request.json
+      - .github/workflows/qikvrt_formalization_v2_inspect.yml
 
 permissions:
   contents: read
@@ -19,7 +21,7 @@ concurrency:
 
 jobs:
   inspect:
-    if: github.repository == 'Goldkelch/qik-vrt'
+    if: github.repository == 'Goldkelch/qik-vrt' && github.ref == 'refs/heads/automation/formalization-v2-inspect-20260723'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -261,3 +263,60 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
+
+  credential-auth-preflight:
+    name: Read-only Zenodo credential preflight for Ingolf repository
+    if: >-
+      github.repository == 'ingolf-lohmann/qik-vrt' &&
+      github.ref == 'refs/heads/review/zenodo-access-preflight-20261005' &&
+      github.actor == 'ingolf-lohmann' &&
+      github.triggering_actor == 'ingolf-lohmann'
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Report presence and authenticated GET status only
+        env:
+          ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I -S -B - <<'PY_PREFLIGHT'
+          import os
+          import sys
+          import urllib.error
+          import urllib.request
+          
+          token = os.environ.get("ZENODO_ACCESS_TOKEN", "")
+          print("secret_present=" + str(bool(token)).lower())
+          if not token or any(character.isspace() for character in token):
+              print("auth_http_status=NOT_RUN")
+              raise SystemExit(1)
+          
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          
+          opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+          request = urllib.request.Request(
+              "https://zenodo.org/api/deposit/depositions?size=1",
+              headers={
+                  "Authorization": "Bearer " + token,
+                  "Accept": "application/json",
+                  "User-Agent": "qikvrt-read-only-credential-preflight/1",
+              },
+              method="GET",
+          )
+          try:
+              with opener.open(request, timeout=30) as response:
+                  status = int(response.status)
+          except urllib.error.HTTPError as error:
+              status = int(error.code)
+              error.close()
+          except Exception:
+              print("auth_http_status=NETWORK_ERROR")
+              raise SystemExit(1)
+          print("auth_http_status=" + str(status))
+          raise SystemExit(0 if status == 200 else 1)
+          PY_PREFLIGHT
