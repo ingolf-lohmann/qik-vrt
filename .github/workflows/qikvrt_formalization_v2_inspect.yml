@@ -275,6 +275,7 @@ jobs:
       contents: read
     runs-on: ubuntu-24.04
     timeout-minutes: 3
+    environment: zenodo-production
     steps:
       - name: Report presence and authenticated GET status only
         env:
