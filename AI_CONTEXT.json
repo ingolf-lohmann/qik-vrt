@@ -1,5 +1,13 @@
 {
   "schema": "qikvrt-ai-context/1.3",
+  "digital_twin_scheduling": {
+    "native_contract": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULE_EVENTS_CONTRACT_V1.json",
+    "executor_projection_contract": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json",
+    "documentation": "docs/QIKVRT_DIGITAL_TWIN_SCHEDULING.md",
+    "private_state_only": true,
+    "external_effect_verified": false,
+    "predecessor_evidence_transfer": false
+  },
   "context_id": "qik-vrt-cross-ai-handoff-2026-07-23",
   "entrypoint": "AI",
   "entrypoint_rule": "Every QIK-VRT repository exposes the same root path /AI as the shortest GitHub-native human and machine runtime entrypoint.",
@@ -210,5 +218,12 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "digital_twin_personal_transitions": {
+    "contract": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json#/personal_extension",
+    "base_path": "/api/digital-twin/v1/personal",
+    "state": "REVIEW_CANDIDATE_NOT_ACTIVE",
+    "private_owner_runtime_established": false,
+    "effect_ack_done": false
   }
 }

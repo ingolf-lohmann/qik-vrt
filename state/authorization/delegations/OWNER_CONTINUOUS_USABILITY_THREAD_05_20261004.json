@@ -1,0 +1,131 @@
+{
+  "schema": "qikvrt_owner_continuous_usability_thread_v1",
+  "thread_id": "OWNER-THREAD-05-CONTINUOUS-USABILITY-20261004",
+  "state": "AUTHORIZED_REVIEWABLE_REQUIREMENTS_RUNTIME_ACTIVATION_UNVERIFIED",
+  "owner": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner"
+  },
+  "source": {
+    "kind": "explicit_owner_instruction",
+    "observed_at": "2026-10-04T09:26:59+02:00",
+    "language": "de",
+    "human_contribution": "Authorize a fifth continuous work thread improving usability, user interfaces, human-machine effectiveness and efficiency, including ChatGPT to QIK-VRT REST API, Mesh and nodes, with minimum necessary owner intervention.",
+    "ai_contribution": "Operational decomposition, measurements, acceptance boundaries and existing-carrier mapping."
+  },
+  "source_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "main_head": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+    "main_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+    "candidate_pr": 453,
+    "parent_candidate_head": "f38c89b4e4779e2e997be33370a71b15894ee778",
+    "parent_candidate_tree": "3e409550bab35f7deea68f0ecc4e435cf4afe6a8",
+    "authority_repository": "Goldkelch/qik-vrt",
+    "authority_execution": "NOT_ESTABLISHED_IN_CURRENT_CONNECTOR_SCOPE"
+  },
+  "scope": [
+    "user interfaces and task flows",
+    "human-machine effectiveness, accessibility and efficiency",
+    "ChatGPT component to QIK-VRT authenticated REST API",
+    "Mesh and node interfaces, handoff and feedback",
+    "cross-thread requirements traceability and useful task effects"
+  ],
+  "reuse": {
+    "hmi_policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+    "collective_cognition_policy": "policy/HUMAN_MACHINE_COLLECTIVE_COGNITION_V1.json",
+    "evaluation_matrix": "state/interface_adaptation/EVALUATION_MATRIX.json",
+    "current_criteria_proposal": "state/interface_adaptation/HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_PROPOSAL_V1.json",
+    "work_unit": "state/work_units/OWNER_HOTPATH_AND_CURRENT_CRITERIA_REACTIVATION_20261004.json",
+    "private_scheduling_candidate_pr": 429,
+    "existing_executor_contract": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "no_parallel_twin_or_controller": true
+  },
+  "authorization": {
+    "already_authorized_routine_reversible_repository_internal_work": "CONTINUE_WITHOUT_REPEATED_OWNER_QUESTION",
+    "continuous_measurement_diagnosis_and_reviewable_improvement": true,
+    "owner_can_correct_reprioritize_or_stop": true,
+    "explicit_scope_does_not_supply_missing_authentication_or_independent_reviews": true,
+    "production_deployment_or_external_publication": "SEPARATE_EXACT_EFFECT_AUTHORITY_REQUIRED"
+  },
+  "optimization_loop": [
+    "OBSERVE",
+    "MEASURE",
+    "DIAGNOSE",
+    "ADAPT",
+    "VALIDATE",
+    "COMPARE",
+    "LEARN"
+  ],
+  "priority": "First failing edge in a real useful user task; maximize accepted useful effects while minimizing necessary human interventions and handling time, under equivalent mandatory verification and declared regression budgets.",
+  "measurement_contract": {
+    "journeys": [
+      "capture an authorized input, resolve its task and return a source-bound response",
+      "perform one admitted authenticated REST operation and independently read back its exact effect",
+      "handoff one authorized work unit to a Mesh node and return an exact execution-bound result"
+    ],
+    "binding": [
+      "task and requirement revision",
+      "actual authenticated principal and repository/node role",
+      "source head/tree and artifact hashes",
+      "tool/model and policy fingerprints",
+      "cold or warm path",
+      "input/workload and measurement window",
+      "execution and readback identifiers"
+    ],
+    "metrics": [
+      "accepted useful task effects",
+      "necessary and avoidable human interventions",
+      "human handling time when actually observed",
+      "time to first useful result",
+      "end-to-end latency p50/p95/p99 when sample size supports them",
+      "errors and recovery/correction rate",
+      "duplicate requests and effects",
+      "tool calls and repository reads",
+      "cache hits and misses",
+      "CPU/memory/bytes where measurable",
+      "accessibility and provenance completeness"
+    ],
+    "comparison": "Matched baseline/candidate workloads with the same mandatory gates; at least three comparable observations before a routing preference. Unknown telemetry remains unknown; zero accepted outcomes do not yield an efficiency ratio.",
+    "baseline_state": "NOT_MEASURED",
+    "performance_or_usability_advantage": "NOT_ESTABLISHED"
+  },
+  "autonomous_work_rule": [
+    "Reuse exact authorizations, current sources and stable explicit owner corrections.",
+    "Choose the fastest previously verified equivalent path; invalidate derived caches on source, policy, tool or correction drift.",
+    "Continue safe independent work while a dependent route is blocked.",
+    "Ask only for a genuinely missing non-deterministic decision, authentication/admission or protected-authority predicate with no supported autonomous route.",
+    "Prepare a concrete reviewable result before a required final human decision.",
+    "Notify only material progress, a first actionable blocker, a necessary owner decision or verified task-specific completion; suppress unchanged HOLDs.",
+    "Retain exact-request identity and CAS/leases; reconstruct ambiguous effects before retry."
+  ],
+  "acceptance": [
+    "Requirement -> bounded work unit -> implementation -> exact-subject verification -> observed useful effect -> acceptance -> regression history.",
+    "User-visible improvements require an actually observed user path; CI alone is insufficient.",
+    "Warm and cold paths retain mandatory gates, security, privacy, source provenance and uncertainty.",
+    "Actual API principal, closed schema and private namespace are verified before personal state mutation.",
+    "REST and Mesh effects are read back independently with execution identity; no predecessor evidence transfer.",
+    "Accessibility and correctness stay within explicitly bound regression budgets.",
+    "Routine repeated authorization requests target zero; human usefulness judgments remain explicit where required."
+  ],
+  "next_bounded_work_unit": {
+    "id": "THREAD05-HMI-REST-MESH-BASELINE-01",
+    "action": "Reuse the existing HMI evaluation matrix to bind a baseline for the three declared journeys; inspect the first failing authenticated client-to-REST edge and prepare its smallest reviewed adapter or usability repair. Reuse PR429 and PR453 rather than create a parallel scheduler.",
+    "first_blocker": "An admitted authenticated private QIK-VRT operation for this client's actual principal is not established; current main transport does not establish personal input/goal read-transition semantics.",
+    "retry_condition": "Materially new admitted client capability, authenticated runtime connection or reviewed adapter evidence; reobserve current subject and criteria before execution.",
+    "independent_work": "Repository-bound interface requirements, closed-schema review, reusable measurements and regression preparation may continue within available capabilities."
+  },
+  "execution_state": {
+    "directive_persistence": "VERIFY_BY_FRESH_GITHUB_READBACK",
+    "runtime_scheduler_or_delivery_activation": "UNVERIFIED",
+    "private_runtime_write": false,
+    "mesh_dispatch": false,
+    "deployment": false,
+    "authority_write": false
+  },
+  "effect_boundaries": {
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "technical_receipt_is_human_goal_fulfilment": false,
+    "task_specific_effect_ack_done": false,
+    "repository_wide_done": false
+  }
+}

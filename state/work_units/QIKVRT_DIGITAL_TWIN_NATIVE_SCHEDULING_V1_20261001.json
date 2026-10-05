@@ -1,0 +1,196 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_ai_provenance_work_unit_v1",
+  "work_unit_id": "QIKVRT-DIGITAL-TWIN-NATIVE-SCHEDULING-V1-20261001",
+  "created_at": "2026-10-01T12:34:01Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_role": "MIRROR",
+  "source_ref": "main",
+  "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "source_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product Owner / Code Owner",
+    "platform_identity_proves_natural_person": false
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6 family; exact build UNAVAILABLE",
+    "session_or_run_id": "74e843579ff1",
+    "tools_and_adapters": [
+      "repository Git CLI",
+      "Python standard library",
+      "GitHub connector"
+    ],
+    "identity_and_observation_limits": "Platform metadata is not biometric, natural-person or exact deployed model attestation."
+  },
+  "human_contributions": [
+    {
+      "class": "HUMAN",
+      "type": "scope_and_authorization",
+      "summary": "Repository-native native schedule contract, stable event IDs, canonical timezone/DST, CAS, tombstone, deterministic ordering, post-effect readback, neutral sync receipts; exclude PR #422 repair code."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "type": "implementation_and_validation",
+      "summary": "Extend reusable private SQLite storage and authenticated shim with native event ledger, canonical time binding, replay, neutral scoped evidence, documentation and negative/concurrency/HTTP tests."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [
+    {
+      "component": "reused executor projection source/test/shim/contract",
+      "source_commit": "1bd9f15c70f62387829f2d24d3b7b3dbc61ceb76",
+      "class": "UNRESOLVED",
+      "reason": "Existing local committed candidate was read and reused; its natural-person/model creation identity is not inferred from Git author."
+    }
+  ],
+  "inputs": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+      "path": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json"
+    },
+    {
+      "pr": 422,
+      "observed_head": "630fd695791da71185077fb442e0f090a8fbcb13",
+      "functional_paths_excluded": [
+        "src/qikvrt_siemens_reference_integration.py",
+        "tests/test_qikvrt_digital_twin_rest.py",
+        "tests/test_qikvrt_expected_head_promotion_contract.py",
+        "tests/test_ruleset_authority_token_route.py"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12180,
+      "sha256": "6b90c620c3ebfb84019efcd45e0d4e07267f6081905dca1eaa60436075845f05"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11514,
+      "sha256": "2029d4b65a69b8044ff4225784b269cf80c0deca2c48d63c515105a3243f2b9f"
+    },
+    {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 15564,
+      "sha256": "f7c049467efcd0ad97e153608364bf3249a83348296da2f43459a068cceef999"
+    },
+    {
+      "path": "docs/QIKVRT_DIGITAL_TWIN_SCHEDULING.md",
+      "bytes": 9730,
+      "sha256": "1c2917fa9e35aa2c52f1f94d82bfd1030502f484156f99a93907c1fc082449c3"
+    },
+    {
+      "path": "policy/QIKVRT_DIGITAL_TWIN_REST_CONTRACT_V1.json",
+      "bytes": 1696,
+      "sha256": "509267702dc732b5e5e8a4e656f58e2f856f0e1047134456a9f704f825575af8"
+    },
+    {
+      "path": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULE_EVENTS_CONTRACT_V1.json",
+      "bytes": 8404,
+      "sha256": "d3a4bca2202c426bf7e152095cf7cb571231b376fbce567adaf0eb7246c86e43"
+    },
+    {
+      "path": "policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json",
+      "bytes": 2920,
+      "sha256": "b24149ce434c63d3ea98700dd1e1ca662221d74c497636eb214442903b6d4870"
+    },
+    {
+      "path": "schemas/qikvrt_schedule_events_v1.schema.json",
+      "bytes": 12560,
+      "sha256": "3c0e3f611b8a9b5fdb6d29e3ae58d8ba60582ba17654371682a7d4d3385ef51b"
+    },
+    {
+      "path": "src/qikvrt_digital_twin_schedule_events.py",
+      "bytes": 27590,
+      "sha256": "2e100b859d86608f078cf22564ec37b41dc8c4445aea29b0869468dbc9451646"
+    },
+    {
+      "path": "src/qikvrt_digital_twin_scheduling.py",
+      "bytes": 17336,
+      "sha256": "dd0a0baf0777b32795ca8e819394543d2e4ca52c90ecdc565b1052a373fa2596"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 24447,
+      "sha256": "eb370d73722ec45c22ac6cf03b131a6cee008810bd8de45021e5a8669e8112d0"
+    },
+    {
+      "path": "tests/test_qikvrt_digital_twin_schedule_events.py",
+      "bytes": 27476,
+      "sha256": "0c45255c8cf3f19dc04b3332822c86c5f90dc02faef64eb0296d795e8a78c3be"
+    },
+    {
+      "path": "tests/test_qikvrt_digital_twin_scheduling.py",
+      "bytes": 12237,
+      "sha256": "452683a9e35e6b21893511cafa719db5e1e31a86ae2968aa98d1817ba42818eb"
+    }
+  ],
+  "git_history": {
+    "branch": "feature/digital-twin-scheduling-v1-20261001",
+    "parent": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "final_head_and_tree": "Read literal candidate commit/tree from Git and the PR; self-referential head is intentionally not embedded."
+  },
+  "verification": {
+    "scope": "Observed candidate source contents; every final head requires fresh validation. No predecessor evidence transfer.",
+    "checks": [
+      {
+        "command": "python3 -B -m unittest -q tests.test_qikvrt_digital_twin_schedule_events tests.test_qikvrt_digital_twin_scheduling tests.test_handler_security tests.test_api_client tests.test_tcpip_e2e",
+        "exit_code": 0,
+        "test_executions": 71,
+        "log_sha256": "a919d7b5193ab8eb3df4534c7ad721d871df3c6d1b9ef322712a0a56b66a6a41"
+      },
+      {
+        "command": "make test",
+        "exit_code": 0,
+        "scope": "Prior candidate validation before the final depth and large-HTTP-replay regression additions; final exact head must be reexecuted."
+      },
+      {
+        "command": "python3 -B tools/qikvrt_tool_cache.py verify",
+        "exit_code": 0,
+        "declared_tools_verified": "14/14"
+      }
+    ],
+    "environment": {
+      "python": "Python 3.12.14",
+      "timezone_provider": "Exact system TZif bytes bound per event; unavailable or changed bytes fail closed."
+    },
+    "fixture_recovery": {
+      "missing_git_object": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "action": "Fetch exact historical object without source changes; originally failing make test rerun succeeded."
+    }
+  },
+  "human_decision": {
+    "task_scope": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "candidate_acceptance": "PENDING_INDEPENDENT_REVIEW"
+  },
+  "external_effects": {
+    "requested_repository_candidate": "isolated review branch and draft PR; requires fresh remote readback",
+    "calendar_mutation_performed": false,
+    "automation_created_or_updated": false,
+    "job_dispatch_by_schedule_layer": false,
+    "authority_repository_modified": false,
+    "merge_or_deployment_performed": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "authority_mirror_equality": false,
+    "external_calendar_success": false
+  },
+  "continuation": {
+    "next_action": "Reobserve final exact head/tree; run full gates; persist and freshly read the isolated draft candidate; independent review and Main/deployment acceptance remain separate.",
+    "predecessor_evidence_transfer": false
+  }
+}
