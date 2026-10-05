@@ -102,6 +102,8 @@ def main() -> int:
         ap.error("--expected-sha256 must be exactly 64 hexadecimal characters")
     parsed_base = urlparse(args.base_url)
     loopback_hosts = {"127.0.0.1", "localhost", "::1"}
+    if parsed_base.hostname not in loopback_hosts:
+        ap.error("NO_BYPASS: compatibility dispatch is restricted to the local shim")
     if parsed_base.scheme not in {"http", "https"} or not parsed_base.hostname:
         ap.error("--base-url must be an absolute HTTP(S) URL")
     if parsed_base.scheme != "https" and parsed_base.hostname not in loopback_hosts:

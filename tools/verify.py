@@ -57,26 +57,19 @@ for forbidden in ['http.extraHeader=Authorization: Bearer','https://x-access-tok
 
 if '.Trim()' in ps and '$stderr.Trim()' in ps: fail('direct stderr.Trim() null-unsafe pattern remains')
 if 'Get-Content -LiteralPath $stdoutFile -Raw -ErrorAction SilentlyContinue }' in ps: fail('legacy null-unsafe stdout read block remains')
-for required_frag in ["if ($null -eq $stdout) { $stdout = '' }", "if ($null -eq $stderr) { $stderr = '' }", "$stderrText = [string]$stderr", "$statusText = [string]$status"]:
-    if required_frag not in ps: fail(f'missing V2.7 null-safe fragment: {required_frag}')
-
-
+for required_frag in ["if ($null -eq $stdout) { $stdout = '' }", "if ($null -eq $stderr) { $stderr = '' }", "$stderrText = [string]$stderr"]:
+    if required_frag not in ps: fail(f'missing local selftest null-safe fragment: {required_frag}')
 for required_frag in [
-    'function Get-QikvrtObjProp', 'function Test-QikvrtRepoPushPermission', 'function Get-QikvrtRepoPermissionText',
-    'Authenticated GitHub login:', 'Authenticated repository permission summary',
-    'GitHub authorization preflight failed before local publish worktree creation',
-    'has no push/write permission', 'GitHub repository write authorization preflight PASS'
+    'function Invoke-GitSafe', '[string[]]$GitArgs', 'Start-Process', 'RedirectStandardOutput',
+    'RedirectStandardError', 'LocalGitSelfTestOnly', 'DryRunOnly',
+    "if ($Method -ne 'Get') { throw 'NO_BYPASS:",
+    "if ($GitArgs -contains 'push' -or $GitArgs -contains 'send-pack') { throw 'NO_BYPASS:",
+    "function Invoke-GitHubUpload { throw 'NO_BYPASS:",
+    "throw 'NO_BYPASS: productive GitHub publication disabled; use current Authority broker'"
 ]:
-    if required_frag not in ps: fail(f'missing V2.7 authz preflight fragment: {required_frag}')
-
-for required_frag in [
-    'function Invoke-GitSafe', '[string[]]$GitArgs', 'Start-Process', 'RedirectStandardOutput', 'RedirectStandardError', 'ExitCode',
-    'AuthPreflightOnly', 'Set-GitTransportAuthHeader', 'Get-GitAuthArgs', 'x-access-token:',
-    'http.https://github.com/.extraheader=AUTHORIZATION: basic', 'credential.helper=', 'GCM_INTERACTIVE',
-    'ls-remote', 'AUTH PREFLIGHT PASS', '$fetchArgs =', '$pushBranchArgs =', '$pushTagArgs =',
-    'No GitHub Git-Blobs API used', 'AllowNotFound', '404 treated as expected absence', 'function Invoke-GitHubUpload([string]$UploadUrl'
-]:
-    if required_frag not in ps: fail(f'missing V2.7 auth-header publish fragment: {required_frag}')
+    if required_frag not in ps: fail(f'missing No-Bypass/local selftest fragment: {required_frag}')
+for forbidden in ["$pushBranchArgs =", "$pushTagArgs =", "Invoke-GitHubJson -Method Post", "Invoke-RestMethod -Method Post"]:
+    if forbidden in ps: fail(f'productive GitHub bypass reintroduced: {forbidden}')
 
 selftest = (ROOT/'tools/git_invocation_selftest.ps1').read_text(errors='ignore')
 if 'LocalGitSelfTestOnly' not in selftest: fail('git invocation selftest does not call LocalGitSelfTestOnly path')

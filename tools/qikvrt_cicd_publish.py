@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2026 Ingolf Lohmann.
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-"""Fail-closed QIK-VRT publication planner and explicitly gated publisher."""
+"""QIK-VRT publication planner; legacy productive GitHub paths are disabled."""
 from __future__ import annotations
 
 import argparse
@@ -31,7 +31,7 @@ SAFE_REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="QIK-VRT CI/CD: dry-run by default; publication requires explicit opt-in."
+        description="QIK-VRT CI/CD: dry-run planner; productive GitHub execution is disabled by No-Bypass."
     )
     parser.add_argument("--mode", choices=("dry-run", "plan", "execute"), default="dry-run")
     parser.add_argument("--evidence-dir", default=".qikvrt/evidence")
@@ -201,6 +201,23 @@ def _redact(text: str) -> str:
 
 
 def _run(command: list[str], timeout: int = 180) -> dict[str, Any]:
+    # Query shapes cannot carry -c, upload-pack, filters or arbitrary commands.
+    query = command in (["git", "rev-parse", "--is-inside-work-tree"],
+                        ["git", "rev-parse", "HEAD"], ["git", "status", "--porcelain"],
+                        ["gh", "--version"], ["gh", "auth", "status"])
+    if len(command) == 5 and command[:4] == ["git", "remote", "get-url", "--push"]:
+        query = bool(SAFE_REF.fullmatch(command[4]) and not command[4].startswith("-"))
+    if len(command) == 4 and command[:2] == ["git", "ls-remote"]:
+        query = all(SAFE_REF.fullmatch(x) and not x.startswith("-") for x in command[2:])
+    if len(command) == 5 and command[:4] == ["git", "ls-files", "--error-unmatch", "--"]:
+        query = bool(SAFE_REF.fullmatch(command[4]))
+    if len(command) == 4 and command[:3] == ["git", "hash-object", "--"]:
+        query = bool(SAFE_REF.fullmatch(command[3]))
+    if len(command) == 3 and command[:2] == ["git", "rev-parse"] and command[2].startswith("HEAD:"):
+        query = bool(SAFE_REF.fullmatch(command[2][5:]))
+    if not query:
+        return {"command": command, "returncode": 20, "stdout": "",
+                "stderr": "NO_BYPASS: uncontracted command denied"}
     try:
         process = run_bounded(
             command,
@@ -377,6 +394,9 @@ def execute_plan(
     plan: dict[str, Any], journal: PublicationJournal | None = None
 ) -> tuple[int, list[dict[str, Any]], str]:
     """Run read-only preflights, then exactly the explicitly planned effects."""
+    if any(action.get("effect") in {"github_push", "github_release"}
+           for action in plan.get("actions", [])):
+        return 20, [], "NO_BYPASS: GitHub publication requires current Authority broker"
     steps: list[dict[str, Any]] = []
     preflights = [
         ["git", "rev-parse", "--is-inside-work-tree"],

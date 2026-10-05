@@ -1,0 +1,273 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "provenance_bound_work_unit"
+  },
+  "schema": "qikvrt_full_node_recovery_and_derivation_work_unit_v1",
+  "work_unit_id": "QIKVRT-FULL-NODE-RECOVERY-AND-DERIVATION-20261001-V1",
+  "created_at": "2026-10-01T12:08:20Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+  "source_tree": "39fb41dd5d46c6affffa9bd812398880a347c533",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner",
+      "Creator"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact runtime build UNAVAILABLE",
+    "session_or_run_id": "scratch-session-d26450fd8cda",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git CLI",
+      "Python standard library"
+    ],
+    "identity_and_observation_limits": [
+      "platform account or Git author is not natural-person proof",
+      "no live hardware, complete production-node or authority-promotion proof"
+    ]
+  },
+  "human_contributions": [
+    {
+      "class": "HUMAN",
+      "contribution": "Every full Authority or Mirror must restore the complete accepted Mesh state alone, recover active authority and create new Mirrors or independent projects permanently rooted at Goldkelch/qik-vrt."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Repository inventory; closure, replication and fencing specification; bounded offline checkpoint/restore/clone implementation; Seed claim gate; scheduler validation; regression tests; integrity materialization and review-candidate preparation."
+    }
+  ],
+  "joint_components": [
+    {
+      "class": "JOINT_WITH_SEPARABLE_COMPONENTS",
+      "human_part": "Product requirement and permanent Goldkelch hierarchy",
+      "artificial_part": "Implementation and typed technical evidence"
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "kind": "OWNER_REQUIREMENT",
+      "source": "current interaction",
+      "date": "2026-10-01",
+      "classification": "NORMATIVE_NOT_A_FORMAL_PROOF"
+    },
+    {
+      "kind": "CANONICAL_SIGNATURE_REUSE",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pull_request": 424,
+      "head": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+      "tree": "c17cbb48976d4d4fa0062e2704e07f96f1aa665c",
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "bytes": 400,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+      "reused_unchanged": true,
+      "review_or_effect_evidence_transferred": false
+    }
+  ],
+  "reuse_inventory": [
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "reused": "Canonical integrity trio and source-object evidence semantics",
+      "insufficient_for_full_backup": "Existing capsule is bounded to 2 MiB, 128 objects, 64 paths and excludes complete snapshot/history."
+    },
+    {
+      "path": "tools/qikvrt_seed_common.py",
+      "reused": "Strict JSON parser, canonical JSON serialization and actual Seed registration gate",
+      "extension": "Reject unsupported remote full_node claims; ordinary registration preserved."
+    },
+    {
+      "path": "tools/qikvrt_subprocess.py",
+      "reused": "Time/output-bounded Git supervision"
+    },
+    {
+      "path": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "reused": "Preserved current role-local liveness rather than flattening Authority/Mirror identity"
+    },
+    {
+      "path": "src/qikvrt_standpoint_codex.py",
+      "source": "PR 424 exact subject",
+      "reuse": "Exact canonical signature image only; serializer implementation and reviews not copied or inferred"
+    },
+    {
+      "search_scope": "current main workflows/tools/src/policy/registry/state",
+      "outcome": "No existing standalone full-node bundle restore or GitHub project creation executor located."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12316,
+      "sha256": "467a2dc5fc60d2509dbc2a4135d78758b3ce4fd998f3e73bc364ac9843dc1467",
+      "git_blob_sha1": "88e313f6a7d862c04bdb1db872711c62ca144c5e"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11029,
+      "sha256": "17dcb67a9e409cae10c5bb01b96891c0b6b2415b91eeb4e381eb4aa84896171e",
+      "git_blob_sha1": "7cb3be4fd29096a788ae16381cb3b3a4b60223d7"
+    },
+    {
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "bytes": 400,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b"
+    },
+    {
+      "path": "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+      "bytes": 9832,
+      "sha256": "564b23ad4df2253427aabea4ac6b3625a7255daa917304911f7a06128c280ae5",
+      "git_blob_sha1": "fedfa757f5a99918b2f2aef443dff10b2887ca24"
+    },
+    {
+      "path": "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json",
+      "bytes": 7467,
+      "sha256": "9c123cf8ab6e329725a797c0960a294a794f95dc11e794127c75637a40b943c0",
+      "git_blob_sha1": "729cc43d3fd41cf9ccd7c2c3184a41bbaec15f73"
+    },
+    {
+      "path": "registry/NODE_DISCOVERY_POLICY.json",
+      "bytes": 1837,
+      "sha256": "86d0295b4ac802e8a059297ddedb9ebc0a8e131fa9cc9129db206f7efd926de2",
+      "git_blob_sha1": "553bf300348f6a36a164ba80d841fa1e7519cc41"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3269,
+      "sha256": "e1bddb7c95ea315ab4976b17790e93d20f53616f5f1c694dc86f2ca5b36a9cc7",
+      "git_blob_sha1": "12ba4a0958d7cc5f94bfde30dc4f7d23932eb5ad"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 11565,
+      "sha256": "ac279090330f36325d8908bc127aff7533153ce1f0e6d1e84f4c1f47619ab7ee",
+      "git_blob_sha1": "6d447f652bad1c44fede32190232a00743e4b029"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2718,
+      "sha256": "ff3788ff80ab89da7dd1229676c6eb238e5a23b3baaeef8cac6142c8dba9eef0",
+      "git_blob_sha1": "6d145b79ae94614f4eb990f414755bf79dc1d2f3"
+    },
+    {
+      "path": "tests/test_qikvrt_mesh_recovery.py",
+      "bytes": 22879,
+      "sha256": "91b909a3a99b9af33f13f8f30db9866c8ed406a3f468889fe24fd5396def93d0",
+      "git_blob_sha1": "2a448c8ae5e1e19490268cfff8d7ba39c2f450f3"
+    },
+    {
+      "path": "tools/qikvrt_mesh_recovery.py",
+      "bytes": 31388,
+      "sha256": "a655b8435da7b2998c53d82c00e0c6bc561d3e90398f6480e3a33ce67cda16cb",
+      "git_blob_sha1": "4e3cbb8ec85e70fad13fa4f017077061fc1bef62"
+    },
+    {
+      "path": "tools/qikvrt_seed_common.py",
+      "bytes": 51979,
+      "sha256": "2b5646d297096f9696518b8039f2499a38272b8f114e57ba991fdf67e248dfbf",
+      "git_blob_sha1": "2b71c680e36532e5482fb9820ecee71865995fb0"
+    }
+  ],
+  "integrity_projections": [
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "git_history": {
+    "review_branch": "work/full-node-recovery-20261001-c621b863",
+    "parent": "c621b863945adab208d4ed72f6197c7220b1dbb4",
+    "force_push": false,
+    "enclosing_commit_and_tree_are_the_final_subject_binding": true
+  },
+  "verification": {
+    "state": "LOCAL_TEST_PASS_PENDING_REMOTE_EXACT_HEAD_REVIEW",
+    "make_test": {
+      "command": "make test",
+      "exit_code": 0,
+      "python_test_executions": 548,
+      "python_test_blocks": 18,
+      "new_recovery_tests": 21,
+      "scope": "Local semantic worktree bound by outputs; final committed subject requires fresh reexecution/readback."
+    },
+    "related_contracts": {
+      "tests": 57,
+      "exit_code": 0,
+      "scope": "Earlier local implementation stage; not transferred as final exact-head proof"
+    },
+    "runtime_observed": {
+      "python": "3.12.14",
+      "git": "2.51.1",
+      "platform": "Linux",
+      "canonical_renderer_profile_proved": false
+    },
+    "bootstrap": {
+      "core": "CONTINUE_AFTER_INTEGRITY_REGENERATION",
+      "missing_optional_runtime_is_not_installed_implicitly": true
+    },
+    "baseline_integrity_drift": "Canonical Main manifest was stale at source head; repaired by existing deterministic generator.",
+    "historical_git_dependency_recovery": {
+      "initial_checkout": "shallow",
+      "unshallow_main_alone_was_sufficient": false,
+      "required_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "actual_recovery": "git fetch --no-tags origin exact required commit",
+      "local_durable_ref": "refs/qikvrt/recovery/56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "full_make_test_after_actual_object_recovery": "PASS",
+      "regression": "Required historical source object must exist after standalone bundle restore; missing object blocked."
+    },
+    "negative_controls": [
+      "source destruction",
+      "incomplete/incremental bundle",
+      "historical object omitted from bundle",
+      "rehashed foreign 400-byte signature",
+      "missing/surplus assets and categories",
+      "noncanonical JSON and duplicate keys",
+      "root cycle or reparenting",
+      "symlink/traversal and overwrite",
+      "HEAD/ref writer drift",
+      "scheduler duplicate idempotency/cursor/owner/timezone defects",
+      "unsupported Seed full-node self-report"
+    ]
+  },
+  "human_decision": {
+    "requirements": "OWNER_DIRECTIVE",
+    "generated_candidate_review": "PENDING",
+    "acceptance_changes_origin_classification": false
+  },
+  "external_effects": {
+    "authority_get": "HTTP_404_FROM_GITHUB_CONNECTOR",
+    "authority_down_or_destroyed_inferred": false,
+    "source_main_changed": false,
+    "live_authority_promotion": false,
+    "new_github_project_created": false,
+    "new_runtime_mirror_activated": false,
+    "release_or_publication": false
+  },
+  "production_open_requirements": [
+    "Owner-reviewed complete production dependency closure and current write watermark",
+    "Self-contained runtime payloads, full required source-object graph, platform metadata, scheduler state and decryptable local recovery escrow",
+    "Independent live full-node admission and runtime bootstrap",
+    "Exclusive fenced authority recovery and current target-scoped creation capability",
+    "Root graph registration, actual new Mirror/project creation and fresh effect readbacks"
+  ],
+  "next_action": "Review the enclosing exact-head candidate and preserve the Goldkelch root. Then bind and run the real production closure/restore/capability/fencing/creation acceptance chain; do not infer live completion from these fixture tests.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "FULL_NODE_ADMITTED": false,
+    "AUTHORITY_RECOVERED": false,
+    "PROJECT_CREATED": false,
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  }
+}

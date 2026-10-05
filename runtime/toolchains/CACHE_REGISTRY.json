@@ -101,6 +101,33 @@
       ],
       "version": "2.96.0"
     },
+    "git": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "tools/qikvrt_mesh_recovery.py",
+        "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "failure_recovery": "BLOCK on missing binary, unsupported behavior, missing objects or failed restore; preserve source and use a new output directory",
+      "profiles": [
+        "core",
+        "all"
+      ],
+      "progress_telemetry": "create, verify, restore and plan CLI return machine-readable scope-bound receipts or BLOCK",
+      "provenance_license": "Git upstream https://git-scm.com; GPL-2.0-only; no Git binary vendored",
+      "provider": "existing Git executable; behavior and reported version verified locally",
+      "trusted_save": false,
+      "verification": [
+        "git --version",
+        "standalone full-history bundle restored without source",
+        "git fsck --full --strict",
+        "tests/test_qikvrt_mesh_recovery.py"
+      ],
+      "version": "standalone-bundle-v1"
+    },
     "lean": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -257,7 +284,50 @@
         "pip dependency-lock digest",
         "runtime execution"
       ],
-      "version": "3.12.13"
+      "version": "3.12.13",
+      "behavioral_contracts": {
+        "fenced_authority_sink_v1": {
+          "platform": "POSIX_LOCAL_PRIVATE_CONTROL_PLANE",
+          "modules": [
+            "sqlite3",
+            "os",
+            "secrets",
+            "time",
+            "hmac"
+          ],
+          "no_sqlite_cli_or_third_party_package_required": true,
+          "verification": "python3 -B -m unittest tests.test_qikvrt_authority_transition -v",
+          "required_behavior": [
+            "BEGIN IMMEDIATE serializes CAS and sink writes",
+            "synchronous FULL durable commit",
+            "mode=rw refuses absent database",
+            "private POSIX ownership and no symlinks",
+            "bounded SQLite busy timeout and fail-closed errors"
+          ],
+          "failure_recovery": "BLOCK missing/invalid/busy control plane; preserve pending fenced successor; reopen and freshly activate; never restore stale epochs",
+          "mutable_database_and_credentials_are_cache_payloads": false,
+          "provider_extension": {
+            "implementation": "src/qikvrt_github_api_shim.py",
+            "existing_transport": "scripts/qikvrt_api_client.py NoRedirectHandler/MAX_RESPONSE_BYTES",
+            "modules": [
+              "urllib.request",
+              "urllib.error",
+              "datetime",
+              "http.server"
+            ],
+            "new_tools_or_packages_required": false,
+            "verification": "python3 -B -m unittest tests.test_qikvrt_github_authority_provider -v",
+            "required_behavior": [
+              "durable intent before outbound request",
+              "takeover lock spans permit check and native provider CAS",
+              "ambiguous dispatch resumes with GET only",
+              "real provider ref/commit/tree and durable receipt readback",
+              "pinned mirror origin, no redirects and redacted bounded responses"
+            ],
+            "failure_recovery": "Preserve PREPARED/PENDING; reconcile read-only; block takeover until uncertainty resolved; never cache control-plane data or credentials"
+          }
+        }
+      }
     },
     "sherpa-onnx-node": {
       "authority_files": [

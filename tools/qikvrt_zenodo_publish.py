@@ -1288,6 +1288,9 @@ def _github_api_request(
     accept: tuple[int, ...] = (200,),
 ) -> tuple[int, dict[str, Any]]:
     """Use only the pinned GitHub Git-Data REST origin, with redacted errors."""
+    if method != "GET":
+        from tools.qikvrt_authority_transition import deny_unbrokered_provider_write
+        deny_unbrokered_provider_write()
     repository_prefix = "/repos/Goldkelch/qik-vrt/"
     if not path.startswith(repository_prefix) or any(
         character in path for character in ("\x00", "\r", "\n", "?", "#")

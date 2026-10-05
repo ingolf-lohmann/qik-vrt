@@ -1,5 +1,5 @@
 @echo off
-setlocal EnableExtensions
-cd /d "%~dp0"
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\github_zenodo_release_publish.ps1" %*
-exit /b %ERRORLEVEL%
+rem SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+rem Copyright 2026 Ingolf Lohmann.
+echo NO_BYPASS: direct GitHub release disabled; use current Authority broker 1>&2
+exit /b 78

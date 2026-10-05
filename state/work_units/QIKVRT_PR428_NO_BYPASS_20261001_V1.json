@@ -1,0 +1,109 @@
+{
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "Platform identity does not authenticate a natural person or independently attest model build",
+    "model_or_build": "UNAVAILABLE",
+    "provider": "OpenAI",
+    "session_or_run_id": "015c76765201",
+    "system_family": "Codex / GPT-6",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "POSIX Python/Git/Make runtime"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Exact PR/Main readback",
+    "Writer inventory and conservative source gate in existing Authority adapter",
+    "Fail-closed unsupported entrypoints, transports and workflow admissions",
+    "Negative controls and full suite",
+    "Typed inventory, policy, documentation and successor preparation",
+    "Versioned V2 digest-bound governance checkpoint preservation, invariant validation, tamper and destructive restore controls; universal capability proof remains open",
+    "Detected and quarantined 57 filename-mapped packaged writer variants, preserved original bytes as historical incoming artifacts, and covered shebang/extensionless entrypoints"
+  ],
+  "base_main": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+  "created_at": "2026-10-01T16:03:11.744009Z",
+  "external_effects": {
+    "authorized": "Continue existing draft PR #428 through review branch and description update",
+    "merge": false,
+    "production_broker_effect": false,
+    "production_takeover": false,
+    "publication": false,
+    "release": false,
+    "route": "CONNECTED_GITHUB_REVIEW_BRANCH_WRITER",
+    "route_is_candidate_broker": false
+  },
+  "git_history": {
+    "base_main_ancestor_preserved": true,
+    "force_push": false,
+    "history_rewrite": false,
+    "parent": "9fe3ff9ad0ca8c2d8cc5214495e0eb585cb59f0e"
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Bounded No-Bypass task, exact PR observation, named direct writers, denial authorization, source/production evidence boundaries",
+    "Role-independent universal reverse-engineering and life-preserving technology-independence requirement; preserve through every node successor"
+  ],
+  "human_decision": "PENDING_REVIEW_OF_GENERATED_SUCCESSOR",
+  "inputs": {
+    "base": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+    "parent_head": "9fe3ff9ad0ca8c2d8cc5214495e0eb585cb59f0e",
+    "task": "Owner request in current session; metadata only"
+  },
+  "joint_components": {
+    "artificial": "implementation, tests, evidence",
+    "classification": "JOINT_WITH_SEPARABLE_COMPONENTS",
+    "human": "scope, constraints, action authorization"
+  },
+  "outputs": [
+    "state/work_units/QIKVRT_PR428_WRITER_INVENTORY_20261001_V1.json",
+    "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md",
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json"
+  ],
+  "production_blockers": [
+    "No provisioned private production AuthorityControlPlane",
+    "No usable bound broker GITHUB_TOKEN and expiry",
+    "No connected administration/credential-revocation operation",
+    "Candidate changes not yet active on trusted Main",
+    "No fresh bound productive mirror effect"
+  ],
+  "release_claims": {
+    "effect_ack_done": false,
+    "full_node_admission": false,
+    "provider_authority_fencing_verified": false,
+    "universal_reverse_engineering_verified": false
+  },
+  "schema": "qikvrt_ai_contribution_work_unit_v1",
+  "source_commit": "9fe3ff9ad0ca8c2d8cc5214495e0eb585cb59f0e",
+  "source_ref": "work/full-node-recovery-20261001-c621b863",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "de7ad4e3e1e1c23362082730fdc9c9674b93bfa4",
+  "unresolved_origin": [],
+  "verification": {
+    "final_exact_head_validation": "REQUIRED_AFTER_SUCCESSOR_MATERIALIZATION_NO_PREDECESSOR_TRANSFER",
+    "fresh_ci_receipt_regression_repair": {
+      "historical_receipt_bytes_or_effect_claims_changed": false,
+      "job_id": 110470888836,
+      "observed_head": "5cbd1aba88a6b82727947dad5af42380d36b9341",
+      "reason": "Historical scoped receipt was incorrectly compared against the evolved current append-only index",
+      "repair": "Verify exact historical mirror-main index blob and preserve every historical row plus metadata, with rewrite/deletion/reorder/duplicate negative controls",
+      "required_make_gate_extended": true,
+      "run_id": 36892373156
+    },
+    "optional_historical_h3_suite": {
+      "failures_or_errors_due_to_object_closure": 6,
+      "mirror_git_commit_read": "HTTP_404",
+      "missing_object": "53e757ebce929b40250f90a02ed2a9ec62de6217",
+      "not_hidden_or_counted_as_pass": true,
+      "state": "BLOCK_EXTERNAL_GIT_OBJECT_CLOSURE",
+      "unrelated_to_new_transport_denial": "YES"
+    },
+    "packaged_writer_quarantine": "state/work_units/QIKVRT_PR428_PACKAGED_WRITER_QUARANTINE_20261001_V1.json",
+    "required_commands": [
+      "python3 -B tools/qikvrt_mesh_recovery.py verify-policy",
+      "python3 -B tools/qikvrt_authority_transition.py audit-writers",
+      "make test",
+      "git diff --check"
+    ],
+    "source_gate": "SOURCE_ADMISSION_ONLY_NOT_FORMAL_COMPLETE_MEDIATION"
+  },
+  "work_unit_id": "QIKVRT_PR428_NO_BYPASS_20261001_V1"
+}

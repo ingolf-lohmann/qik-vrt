@@ -30,8 +30,8 @@ on:
         default: ""
 
 permissions:
-  actions: write
-  contents: write
+  actions: read
+  contents: read
 
 concurrency:
   group: qikvrt-repository-evidence-${{ github.head_ref || github.ref_name }}
@@ -39,24 +39,18 @@ concurrency:
 
 jobs:
   materialize:
-    # A completed CI run is an independent repository-native admission carrier
-    # for the same exact PR head when GitHub leaves the materializer check
-    # pending with zero jobs. Ignore the materializer's own workflow_run events
-    # by listening only to QIKVRT CI above.
     if: >-
       (github.event_name == 'workflow_run' &&
        github.event.workflow_run.event == 'pull_request' &&
        github.event.workflow_run.head_repository.full_name == github.repository) ||
       (github.event_name != 'workflow_run' &&
        (github.event_name != 'pull_request' ||
-        (github.event.pull_request.head.repo.full_name == github.repository &&
-         github.actor != 'dependabot[bot]')))
-
-    # Bot-authored synchronize events are legitimate successors when this
-    # materializer or another bounded repository writer advances the same PR.
-    # The exact-ref compare-and-swap guard below prevents stale writers from
-    # overwriting a newer successor, so admission must not be suppressed merely
-    # because the event actor is github-actions[bot].
+        github.event.pull_request.head.repo.full_name == github.repository))
+    permissions:
+      contents: read
+      actions: read
+    # Materialize locally, then require the existing private Authority broker.
+    # Missing broker capability is an explicit HOLD, never native-token fallback.
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -65,6 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           ref: ${{ env.EXPECTED_HEAD }}
           fetch-depth: 0
       - name: Bind exact target ref and head
@@ -336,29 +331,14 @@ jobs:
             echo "Repository evidence is already current."
             exit 0
           fi
-          git commit -m "ci: materialize repository evidence"
-          remote_head_after_commit="$(
-            git ls-remote --heads origin "refs/heads/$TARGET_REF" |
-              awk 'NR == 1 { print $1 }'
-          )"
-          if [ "$remote_head_after_commit" != "$source_head" ]; then
-            echo "BLOCK: target ref advanced while repository evidence was materialized" >&2
-            echo "source_head=$source_head" >&2
-            echo "remote_head_after_commit=$remote_head_after_commit" >&2
-            exit 2
-          fi
-          git push origin "HEAD:$TARGET_REF"
-
-          # A push performed with GITHUB_TOKEN creates a pull_request synchronize
-          # event whose workflows require approval and therefore have zero jobs.
-          # Explicitly re-run those exact-successor workflow runs through the
-          # Actions API so the bot-authored successor is actually executed.
-          successor="$(git rev-parse --verify HEAD^{commit})"
-          sleep 3
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$successor&event=pull_request&per_page=100" \
-            --jq '.workflow_runs[] | select(.conclusion == "action_required") | .id' |
-          while read -r run_id; do
-            test -n "$run_id" || continue
-            gh api --method POST "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/rerun"
-            echo "QIKVRT_SUCCESSOR_REENTRY requested run_id=$run_id head=$successor"
-          done
+          python3 -B tools/qikvrt_authority_transition.py publish-successor \
+            --profile repository_evidence --target-ref "$TARGET_REF" \
+            --expected-head "$source_head" --receipt .qikvrt/evidence-broker-receipt.json
+      - name: Upload broker disposition
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-evidence-broker-disposition
+          path: .qikvrt/evidence-broker-receipt.json
+          include-hidden-files: true
+          if-no-files-found: ignore

@@ -11,7 +11,7 @@ name: QIK-VRT formalization v2 alpha.3 publication
       - release/formalization-v2-alpha3-publication-request.json
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: qikvrt-formalization-v2-alpha3-publication
@@ -19,12 +19,15 @@ concurrency:
 
 jobs:
   publish:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Checkout exact authorized candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           ref: ${{ github.sha }}
           fetch-depth: 0
 

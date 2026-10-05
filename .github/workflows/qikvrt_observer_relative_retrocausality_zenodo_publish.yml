@@ -12,8 +12,8 @@ on:
         type: string
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 
 concurrency:
   group: qikvrt-observer-relative-retrocausality-zenodo-v2
@@ -21,12 +21,14 @@ concurrency:
 
 jobs:
   publish:
-    if: >-
-      github.repository == 'Goldkelch/qik-vrt' &&
-      github.ref == 'refs/heads/main' &&
-      github.actor == 'Goldkelch' &&
-      github.triggering_actor == 'Goldkelch' &&
-      inputs.confirmation == 'PUBLISH_OBSERVER_RELATIVE_RETROCAUSALITY_ZENODO_V2'
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
+    # Previous admission: if: >-
+    # Previous admission: github.repository == 'Goldkelch/qik-vrt' &&
+    # Previous admission: github.ref == 'refs/heads/main' &&
+    # Previous admission: github.actor == 'Goldkelch' &&
+    # Previous admission: github.triggering_actor == 'Goldkelch' &&
+    # Previous admission: inputs.confirmation == 'PUBLISH_OBSERVER_RELATIVE_RETROCAUSALITY_ZENODO_V2'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     environment: zenodo-production

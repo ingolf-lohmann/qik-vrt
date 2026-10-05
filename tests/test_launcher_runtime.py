@@ -306,7 +306,7 @@ class CicdTests(unittest.TestCase):
                 self.assertFalse(ok)
                 self.assertIn("changed after planning", reason)
 
-    def test_execute_preflight_rejects_untracked_source(self) -> None:
+    def test_legacy_github_execution_is_denied_before_preflight(self) -> None:
         head = "a" * 40
         plan = {
             "github_repository": "owner/repo",
@@ -333,7 +333,8 @@ class CicdTests(unittest.TestCase):
         with mock.patch.object(cicd, "_run", side_effect=fake_run) as runner:
             code, _steps, reason = cicd.execute_plan(plan)
         self.assertEqual(code, 20)
-        self.assertIn("untracked source changes", reason)
+        self.assertIn("NO_BYPASS", reason)
+        runner.assert_not_called()
         self.assertNotIn(["git", "push", "origin", "HEAD:refs/heads/main"], [
             call.args[0] for call in runner.call_args_list
         ])
@@ -366,13 +367,9 @@ class CicdTests(unittest.TestCase):
                 cicd, "_run", side_effect=successful_run
             ):
                 code, _steps, _reason = cicd.execute_plan(plan, journal)
-            self.assertEqual(code, 0)
-            durable = json.loads(journal.path.read_text(encoding="utf-8"))
-            self.assertEqual(durable["state"], "COMMITTED")
-            self.assertEqual(
-                [event["state"] for event in durable["events"]],
-                ["PREPARED", "APPLIED", "VERIFIED", "COMMITTED"],
-            )
+            self.assertEqual(code, 20)
+            self.assertFalse(journal.path.exists())
+
 
     def test_missing_effect_authorization_writes_no_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

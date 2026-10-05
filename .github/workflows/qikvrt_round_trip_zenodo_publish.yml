@@ -11,7 +11,7 @@ on:
       - .github/workflows/qikvrt_round_trip_zenodo_publish.yml
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: qikvrt-round-trip-canonical-zenodo-v1-8db8780b
@@ -19,7 +19,9 @@ concurrency:
 
 jobs:
   reconcile:
-    if: github.repository == 'Goldkelch/qik-vrt'
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
+    # Previous admission: if: github.repository == 'Goldkelch/qik-vrt'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
@@ -43,7 +45,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Verify exact reconciliation boundary
         shell: bash

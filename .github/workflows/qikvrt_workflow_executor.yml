@@ -24,7 +24,7 @@ on:
       - "registry/NODE_DISCOVERY_POLICY.json"
 
 permissions:
-  actions: write
+  actions: read
   contents: read
 
 concurrency:
@@ -33,6 +33,8 @@ concurrency:
 
 jobs:
   observe-plan-and-dispatch-one-safe-watchdog:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:

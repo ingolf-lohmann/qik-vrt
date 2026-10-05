@@ -11,7 +11,7 @@ on:
       - release/repository-mesh-sync-request.json
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: qikvrt-repository-mesh-sync-tag-${{ github.repository }}
@@ -19,7 +19,9 @@ concurrency:
 
 jobs:
   validate-and-tag:
-    if: github.repository == 'Goldkelch/qik-vrt' || github.repository == 'ingolf-lohmann/qik-vrt'
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
+    # Previous admission: if: github.repository == 'Goldkelch/qik-vrt' || github.repository == 'ingolf-lohmann/qik-vrt'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:

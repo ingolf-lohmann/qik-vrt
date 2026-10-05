@@ -26,9 +26,9 @@ on:
 
 permissions:
   actions: read
-  contents: write
-  issues: write
-  pull-requests: write
+  contents: read
+  issues: read
+  pull-requests: read
   statuses: read
 
 concurrency:
@@ -37,6 +37,8 @@ concurrency:
 
 jobs:
   evaluate-and-promote:
+    if: ${{ false }} # NO_BYPASS: unsupported provider writer disabled
+    permissions: {}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
