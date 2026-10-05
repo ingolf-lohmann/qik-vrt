@@ -1,0 +1,27 @@
+{
+  "_license": {
+    "classification": "machine_readable_byte_audit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "all_eight_frozen_source_checks_success": true,
+  "all_indexed_sizes_and_sha256_match": true,
+  "all_nodes_persisted": false,
+  "archive_reassembly_byte_identical": true,
+  "current_archive_target_execution_repeated": false,
+  "effect_ack_done": false,
+  "indexed_files": 57,
+  "local_linux_cli_readback": "000000040201",
+  "local_sql_readback": "000000040201",
+  "observed_at": "2026-10-05T16:23:17.456066+00:00",
+  "outer_archive_bytes": 118774398,
+  "outer_archive_sha256": "c6d6cb258d8e2f35874f7783a3c802f8cd6159d6f8e8bcd2388dd375c1b011e3",
+  "schema": "qikvrt-bootstrap-runtime-byte-audit/v1",
+  "smalltalk_and_mc68000_manifests_verified": true,
+  "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+  "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+  "three_native_manifests_verified": true,
+  "zenodo_published": false
+}

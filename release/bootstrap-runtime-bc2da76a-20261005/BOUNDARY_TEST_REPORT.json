@@ -1,0 +1,45 @@
+{
+  "_license": {
+    "classification": "machine_readable_boundary_tests",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "checks": [
+    {
+      "id": "EXACT_CATALOG_SET",
+      "scope": "57 payloads plus RELEASE_INDEX only",
+      "status": "PASS"
+    },
+    {
+      "id": "PART_REASSEMBLY",
+      "scope": "29 ordered part bytes reconstruct the exact original archive",
+      "status": "PASS"
+    },
+    {
+      "id": "FROZEN_SOURCE_CI",
+      "scope": "Eight fresh-read original source checks; no successor PASS transfer",
+      "status": "PASS"
+    },
+    {
+      "id": "SERVER_NOT_CLIENT",
+      "scope": "Windows Server evidence remains bounded; Windows 11 explicitly OPEN",
+      "status": "PASS"
+    },
+    {
+      "id": "EMULATOR_NOT_HARDWARE",
+      "scope": "Physical MC68000 remains OPEN",
+      "status": "PASS"
+    },
+    {
+      "id": "ARCHIVE_NOT_PUBLICATION",
+      "scope": "No DOI, public-byte readback or all-node synchronization is fabricated",
+      "status": "PASS"
+    }
+  ],
+  "production_mutations": 0,
+  "schema": "qikvrt-bootstrap-runtime-publication-boundaries/v1",
+  "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+  "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
+}

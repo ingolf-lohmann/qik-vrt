@@ -1,0 +1,278 @@
+{
+  "ci_run_id": "37305763679",
+  "effect_ack_done": false,
+  "files": {
+    "LICENSE": {
+      "bytes": 3279,
+      "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6"
+    },
+    "LICENSES/CC-BY-NC-ND-4.0.txt": {
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    "LICENSES/PolyForm-Noncommercial-1.0.0.txt": {
+      "bytes": 4563,
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    "qikvrt-native-darwin-arm64.zip": {
+      "bytes": 116692,
+      "sha256": "904a5c8abfc4af18f4badc7ca572bcc43c491f69698b2ddbeace2db8fbd75fb8"
+    },
+    "qikvrt-native-linux-x86_64.zip": {
+      "bytes": 127445,
+      "sha256": "379a7c7e2e96662d3c9cb4b62c23e6faba0f4ef033ada6702f694a3e8f3b8c10"
+    },
+    "qikvrt-native-win32-AMD64.zip": {
+      "bytes": 185266,
+      "sha256": "1f8b28160c30b3d95947841d50881daf2a4c103b25704d40d19edf5bf196d2bd"
+    },
+    "readbacks/qikvrt-firefox-terminal-37305763679-1/qikvrt-ai-terminal.xpi": {
+      "bytes": 11206,
+      "sha256": "4a4f46acf05ed025c9cf7f39e886a5b9ff64e119d763a59c16d73a60fbe4ddd3"
+    },
+    "readbacks/qikvrt-firefox-terminal-37305763679-1/qikvrt-ai-terminal.xpi.sha256": {
+      "bytes": 117,
+      "sha256": "50a76dcfa6418c9f7dec975ab918332eb119a34e546d816345ec013c98e7ccac"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/COMPILER.txt": {
+      "bytes": 259,
+      "sha256": "5361fb0de0ba17b3a5f08a5199a9725702423fb9fe1ddcb002d9960028756f58"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/DISASSEMBLY.txt": {
+      "bytes": 649,
+      "sha256": "d0274f7d26121e9be5e1260e22d0a8973c3f58f1c91e8541bc5c18e51a0a1477"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/DISTRIBUTION_PACKAGES.tsv": {
+      "bytes": 154,
+      "sha256": "45844448a988fba319a40160427bbedaa762170dc8ea765ad75c255570196faf"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/EMULATOR.txt": {
+      "bytes": 128,
+      "sha256": "942d31e4c22a0c5606d3e88e39cafc896c9033576471ba39e3b5d4d167158c68"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/EXECUTION.log": {
+      "bytes": 34,
+      "sha256": "461d63a79956a05006e786dad7a798f4bffc87051b9e856e36ef7315615db64f"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/LICENSE": {
+      "bytes": 3279,
+      "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/MANIFEST.json": {
+      "bytes": 2503,
+      "sha256": "5648d87c34cefc2172d1b394d586f0663ff95572939784f872d19fb51cdc745c"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/PolyForm-Noncommercial-1.0.0.txt": {
+      "bytes": 4563,
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/runtime-m68000.c": {
+      "bytes": 643,
+      "sha256": "9e9e60ba89b07a010fd16846d0a2d0ef748c6d14d0d5a771ce3957fb1b6d8759"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/temdd-m68000-linux-abi": {
+      "bytes": 495352,
+      "sha256": "67ad1a738ad5daf0bf233d2d00f4f365cd61fbe572e0070d62548d5904112fc1"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/temdd-transition.bin": {
+      "bytes": 34,
+      "sha256": "354aa477f0c413582b605d7e1f0b52ac32da394b877447037040e8f8f5cdc420"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/temdd-transition.o": {
+      "bytes": 668,
+      "sha256": "49f03440af3899b7f35236b8f6e40b1242e7062bf24faccafa970966a4d7e467"
+    },
+    "readbacks/qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/temdd_transition.s": {
+      "bytes": 701,
+      "sha256": "1775cda90edd91180fdb03800de09053ffedb3b9bd89a83ed5e06ae3e08d4e09"
+    },
+    "readbacks/qikvrt-native-macos-15-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_BUILD.json": {
+      "bytes": 531,
+      "sha256": "9e662915f1fc286a05dd9ab484018b0fe0e6c57c2efb1a34d075775eb64aa3c9"
+    },
+    "readbacks/qikvrt-native-macos-15-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_REBUILD.json": {
+      "bytes": 635,
+      "sha256": "57624daeabff9705fad47edd9fecf45c962baf623d7d3b52e4ad0b5c64e5814d"
+    },
+    "readbacks/qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/MIGRATION_NATIVE_OWNER_READBACK.json": {
+      "bytes": 1718,
+      "sha256": "8e0ca37de83bd6b3a86cebdca4161bb289634f296f1be9ec982d4146695a9228"
+    },
+    "readbacks/qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_OWNER_STATE_RECOVERY.json": {
+      "bytes": 1228,
+      "sha256": "3c80dfabe49be73446d1395e7b5545d0d1e18fd0ca4375aed99c59191cc18c3a"
+    },
+    "readbacks/qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json": {
+      "bytes": 1229,
+      "sha256": "d05904fafc87cc7db1953e4db7b4ea738f99aa064d9cfcb6ebdbb91483b42c65"
+    },
+    "readbacks/qikvrt-native-ubuntu-24.04-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_BUILD.json": {
+      "bytes": 548,
+      "sha256": "acd8c3f040ab13ccd76a752d667bea778f4a2d271c87011f51b7518628c5626b"
+    },
+    "readbacks/qikvrt-native-ubuntu-24.04-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_REBUILD.json": {
+      "bytes": 652,
+      "sha256": "f8611358f371f42bea268fd5ca60078a91acaf9a6c0657d05e48f451f250f12b"
+    },
+    "readbacks/qikvrt-native-windows-2025-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_BUILD.json": {
+      "bytes": 551,
+      "sha256": "e58034995018ba059c16d79492d994b9926ebdcab6f87903ab9b2b267f1b2f3e"
+    },
+    "readbacks/qikvrt-native-windows-2025-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_REBUILD.json": {
+      "bytes": 656,
+      "sha256": "fa94d18f049f3c2d5c60fd86564dce2bd6d35f1b10755f6d73671f0ed13f21d6"
+    },
+    "readbacks/qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/DISTRIBUTION_PACKAGES.tsv": {
+      "bytes": 8926,
+      "sha256": "5234a13a1794ed51ef93456a39da45ab43219680384b47683a6523462ff7d5a1"
+    },
+    "readbacks/qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/DOCKER_ENGINE_VERSION.json": {
+      "bytes": 9,
+      "sha256": "bb01e98a1e16e838dd91bea46c0ab4bf0911443351a65b541a65cf7548ea7313"
+    },
+    "readbacks/qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/FIREFOX_NATIVE_READBACK.json": {
+      "bytes": 3479,
+      "sha256": "852dfbb36559a1e88df87039ca50da0b2a753e655277a4ea1f6324b7922d11aa"
+    },
+    "readbacks/qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/FIREFOX_NATIVE_RESTART_READBACK.json": {
+      "bytes": 2003,
+      "sha256": "16ea9c65104aea66ccfc5a182e21379da4913b185f36d3e56e4d9a4065cc557e"
+    },
+    "readbacks/qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/MANIFEST.json": {
+      "bytes": 43822,
+      "sha256": "c9fefff65f8900b7cfeec1c5fa728b0cba1c63fb42c6f64cc6ec5e25383cd6c1"
+    },
+    "readbacks/qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/OCI_IMAGE_ID.json": {
+      "bytes": 74,
+      "sha256": "0c76ea104a69efc9b6fe178bd94c37d7ea27a52f5725999a7673e13ece6ac8c3"
+    },
+    "readbacks/qikvrt-self-host-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/_temp/qikvrt-self-host.tar": {
+      "bytes": 921600,
+      "sha256": "b140f4e16b36e324dff0ca11858684d10bcd695f4397e8a658ea1329f87a31da"
+    },
+    "readbacks/qikvrt-self-host-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/_temp/qikvrt-self-host/MANIFEST.json": {
+      "bytes": 15751,
+      "sha256": "ea35e923ce8377d6bc9b48d0e0d46d3800320f2775eaa2830a7212e7cc35cfdb"
+    },
+    "readbacks/qikvrt-self-host-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qik-vrt/qik-vrt/.qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json": {
+      "bytes": 345,
+      "sha256": "d329c71f962add20cc08f4acfb183d3b7c13008c619f727cc121d72d39ad4263"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/pharo-cache/pharo/13.1-4f7563dfe5-vm80b106bb/image.zip": {
+      "bytes": 23875027,
+      "sha256": "897668dd548864f74730065de3fa2b1f4b5d3636d4c7d14f91945f0a5ce22590"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/pharo-cache/pharo/13.1-4f7563dfe5-vm80b106bb/vm.zip": {
+      "bytes": 70494614,
+      "sha256": "80b106bbfd27f4db997e15831978836157043541c1e2b1e29fe3f10839bf78de"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/CC-BY-NC-ND-4.0.txt": {
+      "bytes": 19127,
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/EXECUTION.log": {
+      "bytes": 317,
+      "sha256": "93d2dd13d4acc8af5a266465ecdce0e310eec7ea96c3abd50e60ed2484389cf3"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/LICENSE": {
+      "bytes": 3279,
+      "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/MANIFEST.json": {
+      "bytes": 2078,
+      "sha256": "24aa50569d1afbcd690f98ce355cb43e6e782f32f1c61cc34ca45a7da023c170"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/Pharo13.1-64bit-4f7563d.sources": {
+      "bytes": 45281276,
+      "sha256": "d3151077b03ed99a2e06fa0793b3d126ed506e3019ec1762526edf9212073109"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/PolyForm-Noncommercial-1.0.0.txt": {
+      "bytes": 4563,
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/QIKVRT.changes": {
+      "bytes": 5059,
+      "sha256": "3b29ff78812925c1c18bc59c14443ffc4df0e6b1c207def7e56755db9df165b5"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/QIKVRT.image": {
+      "bytes": 56117544,
+      "sha256": "ec83f7aed20decc1c0ed58afbb8615b45ff17cc8189cf95bfe683cda5a19ca26"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/pharo-13.lock.json": {
+      "bytes": 1243,
+      "sha256": "bc8fcdf396d63f7bcdd516cb1ff18a4facfa4572e891fd9ac1db3559ea9f03cc"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/pharo-image-LICENSE.txt": {
+      "bytes": 4198,
+      "sha256": "e91fbd063b049918e6ea8b1a404f876c9faa3e3f53ecdb533c00d13e50d4dd92"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/pharo-local/ombu-sessions/Pharo13.0-SNAPSHOT-64bit-4f7563dfe5.37137DCCD6B7DC28.ombu": {
+      "bytes": 13252,
+      "sha256": "6089ecd4de06b3716e2a47673aa36bc7b8f96205d7aa640192ffd532021dab36"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/pharo-vm-LICENSE.txt": {
+      "bytes": 1183,
+      "sha256": "747468de57941f2484a8c054f817c8b5fad2ac2f0ea39579a8d57a2e6fc918d9"
+    },
+    "readbacks/qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/qikvrt-smalltalk/smalltalk-image-receipt.json": {
+      "bytes": 449,
+      "sha256": "0e10a6ffd8138357913fe03af6cf81742ca7c8b810c04e1f050b3d73c454b783"
+    },
+    "readbacks/qikvrt-systemd-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/RECOVERY.json": {
+      "bytes": 1149,
+      "sha256": "1af20b7319c54ace4a1073fec54e09a0acc7df40af9f8d39e296880cca8d9a48"
+    },
+    "readbacks/qikvrt-systemd-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/SYSTEMD_VERSION.txt": {
+      "bytes": 330,
+      "sha256": "24e682030f54829600ce9c96ef9d8be4297eb4cd1b11eca8fa7f83c5c4595fc7"
+    },
+    "runtime/native/README.md": {
+      "bytes": 7327,
+      "sha256": "4c384c78db82ddc39f79ce4fbcb359673697a72e4d55cf3d6999db8db48c3860"
+    }
+  },
+  "historical_evidence_transfer": false,
+  "node_propagation": "PER_NODE_IMPORT_AND_FRESH_READBACK_REQUIRED",
+  "publisher": "tools/qikvrt_zenodo_publish.py",
+  "schema": "qikvrt-runtime-publication-candidate/v1",
+  "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+  "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+  "state": "FROZEN_CANDIDATE",
+  "variants": [
+    {
+      "archive_sha256": "904a5c8abfc4af18f4badc7ca572bcc43c491f69698b2ddbeace2db8fbd75fb8",
+      "binary_sha256": "9eecbc9cc273a6b27ad5f5eec3747c9f1bf4bc425a35310d9d6f2f479a81e193",
+      "execution_scope": "EXECUTED_NATIVE_C90_AND_SQL_ADAPTERS; NOT_FULL_NODE_OR_PUBLICATION_ACCEPTANCE",
+      "file": "qikvrt-native-darwin-arm64.zip",
+      "manifest_sha256": "8bb3d98f72acd9f171229f7d5bd3c3a80705316e62745242c25464660faac032",
+      "target": "darwin-arm64"
+    },
+    {
+      "archive_sha256": "379a7c7e2e96662d3c9cb4b62c23e6faba0f4ef033ada6702f694a3e8f3b8c10",
+      "binary_sha256": "8424d86fcadc82b8394dc4acc803455200fb96d945cc21218ceb647c6ced9227",
+      "execution_scope": "EXECUTED_NATIVE_C90_AND_SQL_ADAPTERS; NOT_FULL_NODE_OR_PUBLICATION_ACCEPTANCE",
+      "file": "qikvrt-native-linux-x86_64.zip",
+      "manifest_sha256": "d80bcc008413bc2bfff6dd914b710bed1cd5a787e9544a2d1139d5167f330b8b",
+      "target": "linux-x86_64"
+    },
+    {
+      "archive_sha256": "1f8b28160c30b3d95947841d50881daf2a4c103b25704d40d19edf5bf196d2bd",
+      "binary_sha256": "a844a18d46edd8583d067915d582a933bfcb69a4265a4e069d176ab224053d34",
+      "execution_scope": "EXECUTED_NATIVE_C90_AND_SQL_ADAPTERS; NOT_FULL_NODE_OR_PUBLICATION_ACCEPTANCE",
+      "file": "qikvrt-native-win32-AMD64.zip",
+      "manifest_sha256": "5dac49aa480b057a403baa638e79790f5e924118ea5cb7091d42352795acd3e4",
+      "target": "win32-AMD64"
+    },
+    {
+      "execution_scope": "mc68000-d0-linux-abi-witness",
+      "manifest_sha256": "5648d87c34cefc2172d1b394d586f0663ff95572939784f872d19fb51cdc745c",
+      "target": "mc68000-d0-linux-abi-witness"
+    },
+    {
+      "execution_scope": "smalltalk-pharo13-linux",
+      "manifest_sha256": "24aa50569d1afbcd690f98ce355cb43e6e782f32f1c61cc34ca45a7da023c170",
+      "target": "smalltalk-pharo13-linux"
+    }
+  ],
+  "zenodo_state": "PENDING_EXISTING_V2_CONTROLS_AUTHENTICATION_AND_PUBLIC_BYTE_READBACK"
+}

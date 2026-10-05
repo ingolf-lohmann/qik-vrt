@@ -1,0 +1,282 @@
+{
+  "_license": {
+    "classification": "machine_readable_public_archive_readback",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "all_binary_parts_byte_equal": true,
+  "all_nodes_persisted": false,
+  "archive_bytes": 118774398,
+  "archive_sha256": "c6d6cb258d8e2f35874f7783a3c802f8cd6159d6f8e8bcd2388dd375c1b011e3",
+  "branch_attachment_pending": true,
+  "public_parts": [
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "504d1fc8e1e620e50f348187305be330e31fa515",
+      "index": 0,
+      "observed_at_utc": "2026-10-05T16:37:35.455114+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part000",
+      "public_blob_download_matches": true,
+      "sha256": "2452d0ac5b9209d57b2d36470b9fd3f8942426088000eafaa2219dfd97682754"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "723c1c7a6a4b488950b89ea5733d2547e6e294c8",
+      "index": 1,
+      "observed_at_utc": "2026-10-05T16:37:35.287111+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part001",
+      "public_blob_download_matches": true,
+      "sha256": "06c05c7620159d3bfc8e44e73bc139c9edd90d964e44ba9f7c29479e98c585db"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "5a69c2324aff4320099849ebb5b369cda991e57a",
+      "index": 2,
+      "observed_at_utc": "2026-10-05T16:37:35.526134+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part002",
+      "public_blob_download_matches": true,
+      "sha256": "c683669cdd9f76190f1432b7e8e177c1ecc45617de22a683e00177d937c84fc9"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "17b20952c9bbfadd088221e70e4fcd7acecffbb3",
+      "index": 3,
+      "observed_at_utc": "2026-10-05T16:37:35.580763+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part003",
+      "public_blob_download_matches": true,
+      "sha256": "e5722d429e88318d26319db96ff023af59870d89c5b036b6196237684cc2230f"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "27209624656dcc7dba4813e93b8868ca87579999",
+      "index": 4,
+      "observed_at_utc": "2026-10-05T16:37:35.581824+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part004",
+      "public_blob_download_matches": true,
+      "sha256": "1995da763d6411bd6e6af6e984c2a02baf3c71c9d168a61daecc80519b3cb13c"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "e86f6f64f9c24efc9e9063bc3303c75b906fbac0",
+      "index": 5,
+      "observed_at_utc": "2026-10-05T16:37:35.521000+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part005",
+      "public_blob_download_matches": true,
+      "sha256": "dc6316f21c020224b856881c6c2f29e3f789e5913d8165eb49a072177551b678"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "4dddc8ccbac6ea1857ad469f39a1448d1672fdbd",
+      "index": 6,
+      "observed_at_utc": "2026-10-05T16:37:42.965091+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part006",
+      "public_blob_download_matches": true,
+      "sha256": "38ad2a6ec86fcf6b057b79c075fac4b4ceaa07da963015cbbf10f490e9a61c6f"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "c9c1d4ee7f53484c1ed886dafd91cc78e3fd571a",
+      "index": 7,
+      "observed_at_utc": "2026-10-05T16:37:42.727072+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part007",
+      "public_blob_download_matches": true,
+      "sha256": "8161cf1f6c988d03775bf8ddc381b6d2c3ea8dda6cfce3ea8cb06a55c5a0a57e"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "e976502aca64d963ace4b58d59901991bcc21652",
+      "index": 8,
+      "observed_at_utc": "2026-10-05T16:37:42.957471+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part008",
+      "public_blob_download_matches": true,
+      "sha256": "530baa503f04dd49843f441161ff323348b10bc1852e7dde6980882ec412a06b"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "9dea68d37ffcb26e19a521661862966a715a5aac",
+      "index": 9,
+      "observed_at_utc": "2026-10-05T16:37:42.967314+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part009",
+      "public_blob_download_matches": true,
+      "sha256": "d2e843d92766339f66ac96eba1b1fe83f5fb6a4425716d6d553d905225f45da3"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "7db0bb6ce1aafa84b748e71059631da60ec8796c",
+      "index": 10,
+      "observed_at_utc": "2026-10-05T16:37:42.888894+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part010",
+      "public_blob_download_matches": true,
+      "sha256": "95d587d227e56b106b17ead152eb8387c4c921c7464a2e68a67ff1d23d61f7b2"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "8b2cc32f5a6ad77bdd04d157c6ffd9fe7b84ea9f",
+      "index": 11,
+      "observed_at_utc": "2026-10-05T16:37:42.966014+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part011",
+      "public_blob_download_matches": true,
+      "sha256": "f8f95c40c31c10cb32839482cc1e641caecfccd541d452429b119468140485c5"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "0dcd2ba0ebf069beb67e0863b12e21609ba59dd3",
+      "index": 12,
+      "observed_at_utc": "2026-10-05T16:37:55.035583+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part012",
+      "public_blob_download_matches": true,
+      "sha256": "7d4abe5076bad55747927a57e0c0f83d502bf464a5ae5c2960d87c4464a3815d"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "431c04c3de18ca4554c842e0b967033119889a12",
+      "index": 13,
+      "observed_at_utc": "2026-10-05T16:37:55.069616+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part013",
+      "public_blob_download_matches": true,
+      "sha256": "394bb3e395d2054c7a878d3e1cf28e42db37c5e022e53ba21737e950a6d562ab"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "f3b3bb7ba3daadb6e72fd0fd389715141189a198",
+      "index": 14,
+      "observed_at_utc": "2026-10-05T16:37:55.046577+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part014",
+      "public_blob_download_matches": true,
+      "sha256": "42624d8ae411ab4e8cea580baa854c4e6ff3d917019beb984f042018b5ff43e0"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "8c3e5667d4144097cbcd94e8cea00268b385619d",
+      "index": 15,
+      "observed_at_utc": "2026-10-05T16:37:55.047632+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part015",
+      "public_blob_download_matches": true,
+      "sha256": "383daf3f8382a3dba25e206446798feec3fa8a437b4fc4a3e2c50c74092fcd55"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "bfaa3431eac1af3534012edc678cf08d92839c1d",
+      "index": 16,
+      "observed_at_utc": "2026-10-05T16:37:55.076256+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part016",
+      "public_blob_download_matches": true,
+      "sha256": "3ba73afc4087352803634197d1cd261af939a61da6d1280ab9a35c1622455f4b"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "3d9f3d0819c05a03b6115e4d0ffe270903e8d890",
+      "index": 17,
+      "observed_at_utc": "2026-10-05T16:37:55.070988+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part017",
+      "public_blob_download_matches": true,
+      "sha256": "76e0b84cead4525712a40094767e738cc1e3b17e01ca608af79fd86f0a0bcbad"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "51711711dbdcb4f715a7526381ef168d1ed8983e",
+      "index": 18,
+      "observed_at_utc": "2026-10-05T16:38:02.342734+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part018",
+      "public_blob_download_matches": true,
+      "sha256": "00cc6d1b89b560e76ef6b9fc4999907044843d5e8b6d3cb4f2aff58b2ddde791"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "262410b6213ef9a9f1915009630c5c433669f85c",
+      "index": 19,
+      "observed_at_utc": "2026-10-05T16:38:02.499437+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part019",
+      "public_blob_download_matches": true,
+      "sha256": "8f4b60538bc92d6b7a91ce5f909caa9cbe1f0594343c45003e2069c8ff45564d"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "d0c9fba8f80afe58f61787c33984660dbeda5e02",
+      "index": 20,
+      "observed_at_utc": "2026-10-05T16:38:02.420811+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part020",
+      "public_blob_download_matches": true,
+      "sha256": "0ab7099aa288e1b551c1f9190ca81cd904ce97714be2edc0e126e420b39f64a8"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "348cbe75c34823ef0f6288af31f423a5aff01ee4",
+      "index": 21,
+      "observed_at_utc": "2026-10-05T16:38:02.427153+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part021",
+      "public_blob_download_matches": true,
+      "sha256": "187d5dc5ad57a71b8f47dfab15df23fa3ce20dd1fd2ce958a0644dbd5903b19c"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "d365b204cc11f8cd921c15b59904905bffd45a08",
+      "index": 22,
+      "observed_at_utc": "2026-10-05T16:38:02.502140+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part022",
+      "public_blob_download_matches": true,
+      "sha256": "72fc0219b8051d8900f9627e95b71278f458be457d6945461d8d154d67565c03"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "3d4fc22b22123d0ce05e9a2ef3953cc5becd3b0b",
+      "index": 23,
+      "observed_at_utc": "2026-10-05T16:38:02.498018+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part023",
+      "public_blob_download_matches": true,
+      "sha256": "a37e798582dc63ae2b7c0ea676386fae1a5aa1bce1c2f6e1fc8df1a3a29b088b"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "c6283b3b169fa8e0d2d66ee188ae8587795ac5e9",
+      "index": 24,
+      "observed_at_utc": "2026-10-05T16:38:09.661780+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part024",
+      "public_blob_download_matches": true,
+      "sha256": "a163c7b2e5309a92444041a3d62520b0ca1373193eb96f772260ade8f728d253"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "30a0dd76712b1d490b0cba7539d09455e2c4894f",
+      "index": 25,
+      "observed_at_utc": "2026-10-05T16:38:09.794535+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part025",
+      "public_blob_download_matches": true,
+      "sha256": "a53c85de232ba60c873efa634fb76488e7bc87c4005e4baf4cbd9d1d95bddaf2"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "552c1bee7fe49042f48d7b29b310c974db556cfb",
+      "index": 26,
+      "observed_at_utc": "2026-10-05T16:38:09.617161+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part026",
+      "public_blob_download_matches": true,
+      "sha256": "b9ad6b6d6841feda4cce0285135f54a53ab319ae11eefeb9c3f5ce75eee74c95"
+    },
+    {
+      "bytes": 4194304,
+      "git_blob_sha1": "4db4b49f69edaddee8a22bf073db37edd3b9914e",
+      "index": 27,
+      "observed_at_utc": "2026-10-05T16:38:09.795560+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part027",
+      "public_blob_download_matches": true,
+      "sha256": "82446dad2029b15216c87a9a37a5a643082414e784ccb033bedc51557710e305"
+    },
+    {
+      "bytes": 1333886,
+      "git_blob_sha1": "0d5282ca78c8fb1a3b39b4ec66a70c1cb9ac8a6e",
+      "index": 28,
+      "observed_at_utc": "2026-10-05T16:38:09.436576+00:00",
+      "path": "release/bootstrap-runtime-bc2da76a-20261005/QIKVRT_Bootstrap_Runtime_bc2da76a.zip.part028",
+      "public_blob_download_matches": true,
+      "sha256": "3d137f1484407cb1b64f3378593207d6b5dfbf499f4ce1c0b0b58772f9185cf9"
+    }
+  ],
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt-public-archive-blob-readback/v1",
+  "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+  "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+  "zenodo_published": false
+}

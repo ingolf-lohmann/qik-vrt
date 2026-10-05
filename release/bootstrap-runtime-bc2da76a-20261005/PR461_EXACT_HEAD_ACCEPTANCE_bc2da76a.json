@@ -1,0 +1,823 @@
+{
+  "_license": "CC-BY-NC-ND-4.0",
+  "boundaries": [
+    "Windows Server 2025 AMD64 is not a Windows 11 execution witness.",
+    "macOS target is arm64; Linux target is x86_64.",
+    "MC68000 is an object/raw-kernel/Linux ABI emulator witness, not physical hardware.",
+    "HTTP/Docker scope is source carrier plus exact-source CI execution/readback; full OCI image and noVNC runtime payload are not in this catalog.",
+    "Catalog has five explicit native/backend rows. SQLite and TEMDD are covered by those backend executions; S1/HTTP/Docker is retained and verified through indexed readback files.",
+    "No code-owner approval, merge, deployment, Zenodo publication or repository-node synchronization is established."
+  ],
+  "catalog": {
+    "artifact_id": 11343403081,
+    "artifact_name": "qikvrt-runtime-publication-candidate-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+    "ci_run_id": 37305763679,
+    "independent_catalog_reproduction": "BYTE_IDENTICAL_INDEX_AND_COMPLETE_FILESET",
+    "indexed_files": 57,
+    "outer_archive_bytes": 118774398,
+    "outer_archive_sha256": "c6d6cb258d8e2f35874f7783a3c802f8cd6159d6f8e8bcd2388dd375c1b011e3",
+    "release_index_bytes": 14542,
+    "release_index_sha256": "3a4403cac04950bc5ba432d86c310b31380d4495a8f333451c854d4d64b6430e",
+    "variant_rows": 5
+  },
+  "ci_readback": {
+    "all_eight_exact_source_checks_success": true,
+    "checks": [
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:59:08Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111751049243",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111751049243",
+        "id": 111751049243,
+        "name": "publication-candidate",
+        "started_at": "2026-10-05T11:58:49Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:58:43Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748947922",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748947922",
+        "id": 111748947922,
+        "name": "contract-and-e2e",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:12Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946750",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946750",
+        "id": 111748946750,
+        "name": "native-runtime (ubuntu-24.04)",
+        "started_at": "2026-10-05T11:52:48Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:24Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946582",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946582",
+        "id": 111748946582,
+        "name": "native-runtime (macos-15)",
+        "started_at": "2026-10-05T11:52:53Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:32Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946573",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946573",
+        "id": 111748946573,
+        "name": "native-runtime (windows-2025)",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:32Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946502",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946502",
+        "id": 111748946502,
+        "name": "m68000-runtime",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387318
+        },
+        "completed_at": "2026-10-05T11:55:32Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763704/job/111748946307",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763704/job/111748946307",
+        "id": 111748946307,
+        "name": "test",
+        "started_at": "2026-10-05T11:52:47Z",
+        "status": "completed"
+      },
+      {
+        "check_suite": {
+          "id": 101042387233
+        },
+        "completed_at": "2026-10-05T11:53:44Z",
+        "conclusion": "success",
+        "details_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946117",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679/job/111748946117",
+        "id": 111748946117,
+        "name": "smalltalk-runtime",
+        "started_at": "2026-10-05T11:52:46Z",
+        "status": "completed"
+      }
+    ],
+    "observed_at": "2026-10-05T12:05:55.493Z",
+    "path": "evidence/native_release/PR461_CI_READBACK_bc2da76a.json",
+    "runs": [
+      {
+        "check_suite_id": 101042387233,
+        "conclusion": "success",
+        "created_at": "2026-10-05T11:52:44Z",
+        "event": "push",
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763679",
+        "id": 37305763679,
+        "name": "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        "run_attempt": 1,
+        "status": "completed",
+        "updated_at": "2026-10-05T11:59:09Z"
+      },
+      {
+        "check_suite_id": 101042387318,
+        "conclusion": "success",
+        "created_at": "2026-10-05T11:52:44Z",
+        "event": "push",
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "html_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37305763704",
+        "id": 37305763704,
+        "name": "QIKVRT CI",
+        "path": ".github/workflows/qikvrt_ci.yml",
+        "run_attempt": 1,
+        "status": "completed",
+        "updated_at": "2026-10-05T11:55:33Z"
+      }
+    ],
+    "sha256": "075095f699db0c1a24eb426c495c9e3fa738c9504e41b4697b0f27ada188dfdf"
+  },
+  "downloaded_artifacts": [
+    {
+      "digest": "sha256:cd3e069d9cf71e0c4ca0e0373bd5f049220976ceb8e39e5a1f874ef2fc9ba5c2",
+      "id": 11344300136,
+      "name": "qikvrt-self-host-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 259796,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:12621a1ea5bd4f82e9d99fae1b0d67d223f63ad0f1c82208ed388aec58c580f3",
+      "id": 11344025646,
+      "name": "qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 117778874,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:3a30439ac7e451b35cf7726da1ca5862d043c65f53ad8139cbb23abfb2c3fd33",
+      "id": 11343865793,
+      "name": "qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 256953,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:92b7788c681c70d2dfab04a4af6b6627e3764ae72f72242162064aab7f2ea527",
+      "id": 11343486580,
+      "name": "qikvrt-native-macos-15-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 226146,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:c6d6cb258d8e2f35874f7783a3c802f8cd6159d6f8e8bcd2388dd375c1b011e3",
+      "id": 11343403081,
+      "name": "qikvrt-runtime-publication-candidate-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 118774398,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:5e1abdea2696e300a69fa4b629db8895b567ad8899c4d7aa269cfa6bc5e3a415",
+      "id": 11343392922,
+      "name": "qikvrt-productive-terminal-readback-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 18388,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:2c0337c609539d9bdf6e4978571bdab6b28e92533c3efb2a5f2c3aac032bad88",
+      "id": 11343274836,
+      "name": "qikvrt-firefox-terminal-37305763679-1",
+      "size_in_bytes": 11289,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:4c8411c8a0ab3eb1d81a8a7fbde0294d12a756f9a182111b2f34230905b7c605",
+      "id": 11343264178,
+      "name": "qikvrt-systemd-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 1187,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:52cfb6bf80a4682e5ec98bb63cfe7347f00521df3a047d7cb7ed4b1ae320dd79",
+      "id": 11343154372,
+      "name": "qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 2628,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:f2de426073d359d660c39e74ba4ac1be23a9ec0829249f52ff63be15330f79a9",
+      "id": 11343064289,
+      "name": "qikvrt-native-windows-2025-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 364088,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    },
+    {
+      "digest": "sha256:0702a4abfcc4e751830eb670c8fa631360ff2d8422f1925c7f2adaf7b2bff13b",
+      "id": 11342894235,
+      "name": "qikvrt-native-ubuntu-24.04-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "size_in_bytes": 248374,
+      "workflow_run": {
+        "head_branch": "work/bootstrap-runtime-release-20261005",
+        "head_repository_id": 1273784147,
+        "head_sha": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "id": 37305763679,
+        "repository_id": 1273784147
+      }
+    }
+  ],
+  "effect_ack_done": false,
+  "firefox_extension": {
+    "archive_sha256": "4a4f46acf05ed025c9cf7f39e886a5b9ff64e119d763a59c16d73a60fbe4ddd3",
+    "source_files_verified_against_git": 7
+  },
+  "http_docker_linux": {
+    "archive_sha256": "b140f4e16b36e324dff0ca11858684d10bcd695f4397e8a658ea1329f87a31da",
+    "browser_dependency_binding": {
+      "Xvfb": "6eda36f0c84969a0fbe3f411c4a16521620db8a16c13defbee690cad86bd9ef8",
+      "firefox-esr": "617a7a905680b94f8d00e9bf92b8f03705389094e43edb9c7363756ca4b25327",
+      "websockify": "1a14abe56973818410c2a504f66496645dcb0df1b5a3d499a7b6f0cf0c848388",
+      "x11vnc": "84af9b01b1961384e4f6e3f9d41bee5adb54c304fe81da2b8db2e61b22ad0652",
+      "xdpyinfo": "e7e1a29eb970f5eb5c0592a4fc4dd4c6cafd5d79358dfb7b27a81b74d060ccca",
+      "xwininfo": "fcd45fa8cf04e0c62086dbbb3e9d4762b0080cc41622cf53a5bddea92b7be84c"
+    },
+    "browser_execution_sha256": "852dfbb36559a1e88df87039ca50da0b2a753e655277a4ea1f6324b7922d11aa",
+    "browser_manifest_sha256": "c9fefff65f8900b7cfeec1c5fa728b0cba1c63fb42c6f64cc6ec5e25383cd6c1",
+    "browser_restart_sha256": "16ea9c65104aea66ccfc5a182e21379da4913b185f36d3e56e4d9a4065cc557e",
+    "firefox_version": "Mozilla Firefox 153.4.0esr",
+    "fixture_pr_is_not_external_pr_acceptance": true,
+    "full_oci_image_or_novnc_runtime_payload_archived": false,
+    "native_fixture_subject_pr": 457,
+    "oci_image_id": "sha256:2c73d58abf18c0eb2c6b6fc3bbfff755f5fbf3d6b8a21ef6dbe60072bdf63570",
+    "package_manifest_sha256": "ea35e923ce8377d6bc9b48d0e0d46d3800320f2775eaa2830a7212e7cc35cfdb",
+    "public_https_readback_verified": false,
+    "runtime_binding": {
+      "node": {
+        "executable_sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+        "version": "v24.21.0"
+      },
+      "platform": "x86_64",
+      "python": {
+        "executable_sha256": "bef88f140b625959f8af25c7b75cce2cd5d4b29cc2f2b079befd7f68eda4dba0",
+        "version": "Python 3.12.14"
+      },
+      "system": "linux"
+    },
+    "source_and_license_files_verified_against_git": 81,
+    "state": "S1_SOURCE_CARRIER_BYTES_AND_EXACT_SOURCE_BROWSER_CI_EXECUTION_VERIFIED"
+  },
+  "native_target_readback": {
+    "all_nodes_persisted": false,
+    "effect_ack_done": false,
+    "method": "Authenticated fresh run/artifact metadata; outer GitHub ZIP pins; inner archive/manifest/file pins; exact Git-source and license bytes; execution receipt provenance; ISA file headers; MC68000 object .text readback.",
+    "predecessor_evidence_transfer": false,
+    "pull_request": 461,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "schema": "qikvrt-runtime-artifact-byte-readback/v1",
+    "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+    "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+    "state": "FIVE_EXECUTED_NATIVE_AND_BACKEND_TARGET_ARTIFACTS_BYTE_VERIFIED",
+    "targets": [
+      {
+        "artifact_name": "qikvrt-native-macos-15-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "builds": [
+          {
+            "archive_sha256": "904a5c8abfc4af18f4badc7ca572bcc43c491f69698b2ddbeace2db8fbd75fb8",
+            "binary_sha256": "9eecbc9cc273a6b27ad5f5eec3747c9f1bf4bc425a35310d9d6f2f479a81e193",
+            "compiler": {
+              "executable_sha256": "7f30f076d0e9c38f772a76449fca9da8cf97f6a3d43b94c90a00e4f9ce7ad39e",
+              "version": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n"
+            },
+            "execution_logs": {
+              "adapters": "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed",
+              "core": "PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure\n",
+              "effect-ack": "EFFECT_ACK C90 core: PASS (7864387 checks)\n",
+              "temdd": ""
+            },
+            "execution_sha256": "864117e91c0fd1311f1c1cd806741d721ac6f76103ebffe89369ac4cd5f14ef0",
+            "file_count": 52,
+            "kind": "native_build",
+            "manifest_sha256": "8bb3d98f72acd9f171229f7d5bd3c3a80705316e62745242c25464660faac032",
+            "python_version": "3.12.10",
+            "shared_sha256": "cdafc62a4c7a13ca936e399a85378ff9d5944b7b3021befd6720da45f1d91489",
+            "source_files_verified_against_git": 45,
+            "sqlite_version": "3.49.1"
+          },
+          {
+            "archive_sha256": "45d54b693df0804fe4742b31d0eb71af51f320bcb10c99176684f1423c92a54d",
+            "binary_sha256": "9eecbc9cc273a6b27ad5f5eec3747c9f1bf4bc425a35310d9d6f2f479a81e193",
+            "compiler": {
+              "executable_sha256": "7f30f076d0e9c38f772a76449fca9da8cf97f6a3d43b94c90a00e4f9ce7ad39e",
+              "version": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n"
+            },
+            "execution_logs": {
+              "adapters": "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed",
+              "core": "PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure\n",
+              "effect-ack": "EFFECT_ACK C90 core: PASS (7864387 checks)\n",
+              "temdd": ""
+            },
+            "execution_sha256": "3cb76f95e6fd99e4944dfcda7480423b27ada3dd9c03c4abf9021ba0069dca6d",
+            "file_count": 52,
+            "kind": "git_free_rebuild",
+            "manifest_sha256": "f7099a893561f038a9870f388eecd0fbc944a3414e2f70d04af97c034ef7f1fd",
+            "python_version": "3.12.10",
+            "shared_sha256": "a1611ce610f289d8dc369448337423d10a1b0c9f3c420a699b31fd079982ff8a",
+            "source_files_verified_against_git": 45,
+            "sqlite_version": "3.49.1"
+          }
+        ],
+        "license_binding": {
+          "LICENSE": {
+            "bytes": 3279,
+            "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001",
+            "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+            "source_path": "LICENSE"
+          },
+          "LICENSES/CC-BY-NC-ND-4.0.txt": {
+            "bytes": 19127,
+            "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+            "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+            "source_path": "LICENSES/CC-BY-NC-ND-4.0.txt"
+          },
+          "LICENSES/PolyForm-Noncommercial-1.0.0.txt": {
+            "bytes": 4563,
+            "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+            "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8",
+            "source_path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt"
+          },
+          "LICENSE_TRANSITION.md": {
+            "bytes": 2728,
+            "git_blob_sha1": "928aec559bb87f0e2bce5c274fc82364849b78d8",
+            "sha256": "584ae0da32dabcb68c67a843a87a3d7ac2d56344a5cb5dedd22fa0741ac8bc49",
+            "source_path": "LICENSE_TRANSITION.md"
+          },
+          "runtime/toolchains/pharo-image-LICENSE.txt": {
+            "bytes": 4198,
+            "git_blob_sha1": "cb50ec877f8050f609cc08001495cb4ec01dcb9b",
+            "sha256": "e91fbd063b049918e6ea8b1a404f876c9faa3e3f53ecdb533c00d13e50d4dd92",
+            "source_path": "runtime/toolchains/pharo-image-LICENSE.txt"
+          },
+          "runtime/toolchains/pharo-vm-LICENSE.txt": {
+            "bytes": 1183,
+            "git_blob_sha1": "1c6c7bce7c9571403fefcb25a07aa9c7e2773555",
+            "sha256": "747468de57941f2484a8c054f817c8b5fad2ac2f0ea39579a8d57a2e6fc918d9",
+            "source_path": "runtime/toolchains/pharo-vm-LICENSE.txt"
+          }
+        },
+        "target": {
+          "machine": "arm64",
+          "os_version": "macOS-15.7.9-arm64-arm-64bit",
+          "system": "darwin"
+        },
+        "variants": [
+          "host-native",
+          "sqlite",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-native-ubuntu-24.04-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "builds": [
+          {
+            "archive_sha256": "379a7c7e2e96662d3c9cb4b62c23e6faba0f4ef033ada6702f694a3e8f3b8c10",
+            "binary_sha256": "8424d86fcadc82b8394dc4acc803455200fb96d945cc21218ceb647c6ced9227",
+            "compiler": {
+              "executable_sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+              "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+            },
+            "execution_logs": {
+              "adapters": "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed",
+              "core": "PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure\n",
+              "effect-ack": "EFFECT_ACK C90 core: PASS (7864387 checks)\n",
+              "temdd": ""
+            },
+            "execution_sha256": "756f6c7d0d39b8816030b35da56e52cbb6b2ac6e21a77f7f5a4965aa79f6e3e0",
+            "file_count": 52,
+            "kind": "native_build",
+            "manifest_sha256": "d80bcc008413bc2bfff6dd914b710bed1cd5a787e9544a2d1139d5167f330b8b",
+            "python_version": "3.12.14",
+            "shared_sha256": "1eea0d1087a67c6a2e1d133a0708812aca7d029023f74ddaabd4785fbcd588c3",
+            "source_files_verified_against_git": 45,
+            "sqlite_version": "3.45.1"
+          },
+          {
+            "archive_sha256": "9446d7b5ebba13257ade0a03149ad8d930867cf0b1e1edde07638a23169a933a",
+            "binary_sha256": "8424d86fcadc82b8394dc4acc803455200fb96d945cc21218ceb647c6ced9227",
+            "compiler": {
+              "executable_sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+              "version": "x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+            },
+            "execution_logs": {
+              "adapters": "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed",
+              "core": "PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure\n",
+              "effect-ack": "EFFECT_ACK C90 core: PASS (7864387 checks)\n",
+              "temdd": ""
+            },
+            "execution_sha256": "b2426fe53cc33986ebc063b2461bd76943554ffdeebf2a5124e6de985fd18e9a",
+            "file_count": 52,
+            "kind": "git_free_rebuild",
+            "manifest_sha256": "f0619c1a12a85bf565d00bd51a82d3640617e6161e2dd55262257e8d48852900",
+            "python_version": "3.12.14",
+            "shared_sha256": "1eea0d1087a67c6a2e1d133a0708812aca7d029023f74ddaabd4785fbcd588c3",
+            "source_files_verified_against_git": 45,
+            "sqlite_version": "3.45.1"
+          }
+        ],
+        "license_binding": {
+          "LICENSE": {
+            "bytes": 3279,
+            "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001",
+            "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+            "source_path": "LICENSE"
+          },
+          "LICENSES/CC-BY-NC-ND-4.0.txt": {
+            "bytes": 19127,
+            "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+            "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+            "source_path": "LICENSES/CC-BY-NC-ND-4.0.txt"
+          },
+          "LICENSES/PolyForm-Noncommercial-1.0.0.txt": {
+            "bytes": 4563,
+            "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+            "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8",
+            "source_path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt"
+          },
+          "LICENSE_TRANSITION.md": {
+            "bytes": 2728,
+            "git_blob_sha1": "928aec559bb87f0e2bce5c274fc82364849b78d8",
+            "sha256": "584ae0da32dabcb68c67a843a87a3d7ac2d56344a5cb5dedd22fa0741ac8bc49",
+            "source_path": "LICENSE_TRANSITION.md"
+          },
+          "runtime/toolchains/pharo-image-LICENSE.txt": {
+            "bytes": 4198,
+            "git_blob_sha1": "cb50ec877f8050f609cc08001495cb4ec01dcb9b",
+            "sha256": "e91fbd063b049918e6ea8b1a404f876c9faa3e3f53ecdb533c00d13e50d4dd92",
+            "source_path": "runtime/toolchains/pharo-image-LICENSE.txt"
+          },
+          "runtime/toolchains/pharo-vm-LICENSE.txt": {
+            "bytes": 1183,
+            "git_blob_sha1": "1c6c7bce7c9571403fefcb25a07aa9c7e2773555",
+            "sha256": "747468de57941f2484a8c054f817c8b5fad2ac2f0ea39579a8d57a2e6fc918d9",
+            "source_path": "runtime/toolchains/pharo-vm-LICENSE.txt"
+          }
+        },
+        "target": {
+          "machine": "x86_64",
+          "os_version": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "system": "linux"
+        },
+        "variants": [
+          "host-native",
+          "sqlite",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-native-windows-2025-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "builds": [
+          {
+            "archive_sha256": "1f8b28160c30b3d95947841d50881daf2a4c103b25704d40d19edf5bf196d2bd",
+            "binary_sha256": "a844a18d46edd8583d067915d582a933bfcb69a4265a4e069d176ab224053d34",
+            "compiler": {
+              "executable_sha256": "0aeaac2ec1ba2fb290ad3a4bbe7b76d5baedd3743530e5da6d64fb57a2d71850",
+              "version": "cc.exe (x86_64-posix-seh-rev1, Built by MinGW-Builds project) 15.2.0\r\nCopyright (C) 2025 Free Software Foundation, Inc.\r\nThis is free software; see the source for copying conditions.  There is NO\r\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\r\n\r\n"
+            },
+            "execution_logs": {
+              "adapters": "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed",
+              "core": "PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure\r\n",
+              "effect-ack": "EFFECT_ACK C90 core: PASS (7864387 checks)\r\n",
+              "temdd": ""
+            },
+            "execution_sha256": "1d58f052cc17732a6fe81c52bc99b8aae92ebe5a9f943a103992a5a94444c38f",
+            "file_count": 52,
+            "kind": "native_build",
+            "manifest_sha256": "5dac49aa480b057a403baa638e79790f5e924118ea5cb7091d42352795acd3e4",
+            "python_version": "3.12.10",
+            "shared_sha256": "7873aa960d65af534d186bb18d9c72bd20f3e9b63d2a90c934f9374e21bb979d",
+            "source_files_verified_against_git": 45,
+            "sqlite_version": "3.49.1"
+          },
+          {
+            "archive_sha256": "60a37ad3cb5dfa641017d1bf26be56b33a407f642059329afd39320d3975178b",
+            "binary_sha256": "b7d1f29ec25526cef6f5d03fa27bf5f4996237694be819dfc7a4d3a6c4213450",
+            "compiler": {
+              "executable_sha256": "0aeaac2ec1ba2fb290ad3a4bbe7b76d5baedd3743530e5da6d64fb57a2d71850",
+              "version": "cc.exe (x86_64-posix-seh-rev1, Built by MinGW-Builds project) 15.2.0\r\nCopyright (C) 2025 Free Software Foundation, Inc.\r\nThis is free software; see the source for copying conditions.  There is NO\r\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\r\n\r\n"
+            },
+            "execution_logs": {
+              "adapters": "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed",
+              "core": "PASS C90: LUT/guards, SHA/FNV, state mapping, 16 chunks, reorder/replay, forged chunk, binding, backpressure\r\n",
+              "effect-ack": "EFFECT_ACK C90 core: PASS (7864387 checks)\r\n",
+              "temdd": ""
+            },
+            "execution_sha256": "ac518772bc8a3a79e704fe9160a4a562cab5c2062de6cdebaa99e27c56e649f3",
+            "file_count": 52,
+            "kind": "git_free_rebuild",
+            "manifest_sha256": "f81868f446fb614dce7c63ad06683dd42f0aec36a78255b9712944def7fc6c33",
+            "python_version": "3.12.10",
+            "shared_sha256": "44dd2c6a5fa679b7dbed42b52647995b666c00e7bf31f9ad29a004059f071a01",
+            "source_files_verified_against_git": 45,
+            "sqlite_version": "3.49.1"
+          }
+        ],
+        "license_binding": {
+          "LICENSE": {
+            "bytes": 3279,
+            "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001",
+            "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+            "source_path": "LICENSE"
+          },
+          "LICENSES/CC-BY-NC-ND-4.0.txt": {
+            "bytes": 19127,
+            "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+            "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+            "source_path": "LICENSES/CC-BY-NC-ND-4.0.txt"
+          },
+          "LICENSES/PolyForm-Noncommercial-1.0.0.txt": {
+            "bytes": 4563,
+            "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+            "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8",
+            "source_path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt"
+          },
+          "LICENSE_TRANSITION.md": {
+            "bytes": 2728,
+            "git_blob_sha1": "928aec559bb87f0e2bce5c274fc82364849b78d8",
+            "sha256": "584ae0da32dabcb68c67a843a87a3d7ac2d56344a5cb5dedd22fa0741ac8bc49",
+            "source_path": "LICENSE_TRANSITION.md"
+          },
+          "runtime/toolchains/pharo-image-LICENSE.txt": {
+            "bytes": 4198,
+            "git_blob_sha1": "cb50ec877f8050f609cc08001495cb4ec01dcb9b",
+            "sha256": "e91fbd063b049918e6ea8b1a404f876c9faa3e3f53ecdb533c00d13e50d4dd92",
+            "source_path": "runtime/toolchains/pharo-image-LICENSE.txt"
+          },
+          "runtime/toolchains/pharo-vm-LICENSE.txt": {
+            "bytes": 1183,
+            "git_blob_sha1": "1c6c7bce7c9571403fefcb25a07aa9c7e2773555",
+            "sha256": "747468de57941f2484a8c054f817c8b5fad2ac2f0ea39579a8d57a2e6fc918d9",
+            "source_path": "runtime/toolchains/pharo-vm-LICENSE.txt"
+          }
+        },
+        "target": {
+          "machine": "AMD64",
+          "os_version": "Windows-2025Server-10.0.26100-SP0",
+          "system": "win32"
+        },
+        "variants": [
+          "host-native",
+          "sqlite",
+          "temdd"
+        ]
+      },
+      {
+        "abi_witness_sha256": "67ad1a738ad5daf0bf233d2d00f4f365cd61fbe572e0070d62548d5904112fc1",
+        "artifact_name": "qikvrt-m68000-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "execution_log": "TEMDD_M68000_EXECUTED vectors=515\n",
+        "execution_log_sha256": "461d63a79956a05006e786dad7a798f4bffc87051b9e856e36ef7315615db64f",
+        "files_verified": 12,
+        "isa_scope": "MC68000 object and raw .text; m68k Linux ABI emulator witness; no physical hardware witness",
+        "license_binding": {
+          "LICENSE": {
+            "bytes": 3279,
+            "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001",
+            "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+            "source_path": "LICENSE"
+          },
+          "PolyForm-Noncommercial-1.0.0.txt": {
+            "bytes": 4563,
+            "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+            "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8",
+            "source_path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt"
+          }
+        },
+        "manifest_sha256": "5648d87c34cefc2172d1b394d586f0663ff95572939784f872d19fb51cdc745c",
+        "raw_kernel_bytes": 34,
+        "raw_kernel_sha256": "354aa477f0c413582b605d7e1f0b52ac32da394b877447037040e8f8f5cdc420",
+        "target": "mc68000-d0-kernel-with-m68k-linux-abi-emulator-witness",
+        "tool_digests": {
+          "m68k-linux-gnu-gcc": {
+            "sha256": "6fc05274d190ea4b09ad5ff421ec4d73262cc5e889b03149a6ce5880eb56827a"
+          },
+          "m68k-linux-gnu-objcopy": {
+            "sha256": "b34601a02ddb1be3cdc363f67ccf9587c5c2554098e6ff83566252f196fb89b3"
+          },
+          "m68k-linux-gnu-objdump": {
+            "sha256": "240d1acf1e8f1e3a09498300e8ca4f23076df5f3f7c16af48d534efcc03feded"
+          },
+          "qemu-m68k": {
+            "sha256": "56b29a720fcdf76493b0fee0a90ec7b5b7e158b924f0eef72025364ebfe416e6"
+          }
+        },
+        "variants": [
+          "mc68000-abi",
+          "temdd"
+        ]
+      },
+      {
+        "artifact_name": "qikvrt-smalltalk-linux-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "execution_log": "QIKVRT_SMALLTALK_IMAGE_RESTORED\nTEMDD_SMALLTALK_EXECUTED vectors=6\nQIKVRT_SMALLTALK_VECTORS=2621440\nQIKVRT_PYTHON_C90_SMALLTALK_BOUNDARIES=23\nQIKVRT_SMALLTALK_C90_EXHAUSTIVE_MATCH vectors=2621440 sha256=4d42866a336d28b78432bc12a313fd8b76f8f7199164caa9dea65ff3c0d71a85\nPHARO_TEST_OK version=13.1-4f7563dfe5-vm80b106bb\n",
+        "execution_log_sha256": "93d2dd13d4acc8af5a266465ecdce0e310eec7ea96c3abd50e60ed2484389cf3",
+        "files_verified": 12,
+        "image_receipt_sha256": "0e10a6ffd8138357913fe03af6cf81742ca7c8b810c04e1f050b3d73c454b783",
+        "image_sha256": "ec83f7aed20decc1c0ed58afbb8615b45ff17cc8189cf95bfe683cda5a19ca26",
+        "license_binding": {
+          "CC-BY-NC-ND-4.0.txt": {
+            "bytes": 19127,
+            "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+            "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea",
+            "source_path": "LICENSES/CC-BY-NC-ND-4.0.txt"
+          },
+          "LICENSE": {
+            "bytes": 3279,
+            "git_blob_sha1": "f8f1b350467a1a670adf4b6375d2d49cb5da4001",
+            "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6",
+            "source_path": "LICENSE"
+          },
+          "PolyForm-Noncommercial-1.0.0.txt": {
+            "bytes": 4563,
+            "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+            "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8",
+            "source_path": "LICENSES/PolyForm-Noncommercial-1.0.0.txt"
+          },
+          "pharo-image-LICENSE.txt": {
+            "bytes": 4198,
+            "git_blob_sha1": "cb50ec877f8050f609cc08001495cb4ec01dcb9b",
+            "sha256": "e91fbd063b049918e6ea8b1a404f876c9faa3e3f53ecdb533c00d13e50d4dd92",
+            "source_path": "runtime/toolchains/pharo-image-LICENSE.txt"
+          },
+          "pharo-vm-LICENSE.txt": {
+            "bytes": 1183,
+            "git_blob_sha1": "1c6c7bce7c9571403fefcb25a07aa9c7e2773555",
+            "sha256": "747468de57941f2484a8c054f817c8b5fad2ac2f0ea39579a8d57a2e6fc918d9",
+            "source_path": "runtime/toolchains/pharo-vm-LICENSE.txt"
+          }
+        },
+        "manifest_sha256": "24aa50569d1afbcd690f98ce355cb43e6e782f32f1c61cc34ca45a7da023c170",
+        "original_archives": {
+          "image": {
+            "bytes": 23875027,
+            "sha256": "897668dd548864f74730065de3fa2b1f4b5d3636d4c7d14f91945f0a5ce22590"
+          },
+          "vm": {
+            "bytes": 70494614,
+            "sha256": "80b106bbfd27f4db997e15831978836157043541c1e2b1e29fe3f10839bf78de"
+          }
+        },
+        "target": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "variants": [
+          "smalltalk-pharo13",
+          "temdd"
+        ]
+      }
+    ],
+    "zenodo_published": false
+  },
+  "node_synchronization_verified": false,
+  "observed_at": "2026-10-05T12:03:29.559356+00:00",
+  "predecessor_evidence_transfer": false,
+  "pull_request": 461,
+  "recovery_readbacks": [
+    {
+      "file": "qikvrt-systemd-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/RECOVERY.json",
+      "fixture_head": "95713386d10dd1649a13882404e462a0057f7ba2",
+      "fixture_tree": "8f24ec355e93492a55f6a0694073841fcd03a3c7",
+      "scope": "FRESH_SOURCE_BOUND_SYNTHETIC_CI_FIXTURE",
+      "sha256": "1af20b7319c54ace4a1073fec54e09a0acc7df40af9f8d39e296880cca8d9a48"
+    },
+    {
+      "file": "qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/MIGRATION_NATIVE_OWNER_READBACK.json",
+      "fixture_head": "4a193da44dd42eaa64e7e963065042c3b8f5cead",
+      "fixture_tree": "8f24ec355e93492a55f6a0694073841fcd03a3c7",
+      "scope": "FRESH_SOURCE_BOUND_SYNTHETIC_CI_FIXTURE",
+      "sha256": "8e0ca37de83bd6b3a86cebdca4161bb289634f296f1be9ec982d4146695a9228"
+    },
+    {
+      "file": "qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/NATIVE_OWNER_STATE_RECOVERY.json",
+      "fixture_head": "cd9b366c463a473dc8120a2ef355126f7d8a6b32",
+      "fixture_tree": "8f24ec355e93492a55f6a0694073841fcd03a3c7",
+      "scope": "FRESH_SOURCE_BOUND_SYNTHETIC_CI_FIXTURE",
+      "sha256": "3c80dfabe49be73446d1395e7b5545d0d1e18fd0ca4375aed99c59191cc18c3a"
+    },
+    {
+      "file": "qikvrt-native-state-recovery-bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698/ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json",
+      "fixture_head": "3135d3a557d7a576b27ba05d0710721cd4908fd5",
+      "fixture_tree": "8f24ec355e93492a55f6a0694073841fcd03a3c7",
+      "scope": "FRESH_SOURCE_BOUND_SYNTHETIC_CI_FIXTURE",
+      "sha256": "d05904fafc87cc7db1953e4db7b4ea738f99aa064d9cfcb6ebdbb91483b42c65"
+    }
+  ],
+  "repairs": [
+    {
+      "cause": "root-only Smalltalk manifest omitted generated pharo-local/ombu-sessions file",
+      "predecessor_head": "2273cc54c555ac4476faeadd984758e390e48df5",
+      "recursive_backend_inventory_verified_on_final_head": true,
+      "repair_head": "1d28e59f99f0814a3410465a0712cb3ca0e899a9",
+      "surplus_backend_file_refusal_regression_tests": "PASS 7/7 fresh source tests; no predecessor PASS transferred"
+    },
+    {
+      "cause": "final CI upload excluded the indexed .qikvrt/runtime/self-host/PACKAGE_BUILD_RECEIPT.json",
+      "complete_payload_and_release_index_verified_on_final_head": true,
+      "failed_artifact_id": 11343470003,
+      "predecessor_head": "1d28e59f99f0814a3410465a0712cb3ca0e899a9",
+      "repair_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698"
+    }
+  ],
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt-pr461-frozen-candidate-acceptance/v1",
+  "scope": "EXACT_SOURCE_CI_RUNTIME_ARTIFACTS_AND_CATALOG_ONLY",
+  "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+  "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+  "state": "FROZEN_PUBLICATION_CANDIDATE_BYTE_VERIFIED",
+  "zenodo_published": false
+}

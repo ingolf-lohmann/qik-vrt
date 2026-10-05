@@ -1,0 +1,22 @@
+{
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "description": "Source-bound QIK-VRT bootstrap and verified native Linux x86_64, macOS arm64 and Windows Server 2025 AMD64 packages; SQLite/TEMDD, Pharo 13.1 Linux and an emulated MC68000 Linux-ABI witness. Includes original sources, exact licenses, binaries and scoped execution evidence. Reassemble the 29 numbered parts according to BUNDLE_PARTS.json. This version does not establish Windows 11, physical MC68000, a complete archived OCI appliance, or universal independence from all other software. QIK-VRT code remains PolyForm-Noncommercial-1.0.0; documentation CC-BY-NC-ND-4.0; historical and third-party licenses remain unchanged. See included notices for component rights.",
+  "keywords": [
+    "QIK-VRT",
+    "Universales Raumzeit-Terminal",
+    "bootstrap",
+    "TEMDD",
+    "Effect-Acknowledgement"
+  ],
+  "license": "other-nc",
+  "prereserve_doi": true,
+  "publication_date": "2026-10-05",
+  "title": "Universales Raumzeit-Terminal: source-bound bootstrap and verified runtime variants",
+  "upload_type": "software",
+  "version": "source-bc2da76a-20261005"
+}
