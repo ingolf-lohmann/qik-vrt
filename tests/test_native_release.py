@@ -90,6 +90,18 @@ class NativeReleaseTests(unittest.TestCase):
         finally:
             path.write_bytes(original)
 
+    def test_catalog_binds_executed_package_and_refuses_source_drift(self):
+        artifacts = self.work / "artifact-readback"
+        artifacts.mkdir()
+        shutil.copyfile(Path(str(self.package) + ".zip"), artifacts / "qikvrt-native.zip")
+        (artifacts / "NATIVE_BUILD.json").write_bytes(native.canonical(self.result))
+        output = self.work / "publication-candidate"
+        result = native.catalog(artifacts, output, self.head, self.tree)
+        self.assertEqual(result["variant_count"], 1)
+        self.assertFalse(result["zenodo_published"])
+        with self.assertRaisesRegex(ValueError, "SOURCE_MISMATCH"):
+            native.catalog(artifacts, self.work / "wrong-candidate", "0" * 40, self.tree)
+
 
 if __name__ == "__main__":
     unittest.main()

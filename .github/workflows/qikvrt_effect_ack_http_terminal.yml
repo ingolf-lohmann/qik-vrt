@@ -44,6 +44,36 @@ permissions:
   contents: read
 
 jobs:
+  publication-candidate:
+    needs: [native-runtime, smalltalk-runtime, m68000-runtime, contract-and-e2e]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          path: ${{ runner.temp }}/qikvrt-variant-readbacks
+      - name: Freeze source-bound publication candidate on every successful variant build
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_native_release.py catalog \
+            --artifacts "$RUNNER_TEMP/qikvrt-variant-readbacks" \
+            --expected-head "$(git rev-parse HEAD)" --expected-tree "$(git rev-parse 'HEAD^{tree}')" \
+            --output "$RUNNER_TEMP/qikvrt-runtime-publication-candidate"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-runtime-publication-candidate-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-runtime-publication-candidate
+          if-no-files-found: error
+          retention-days: 30
+
   native-runtime:
     strategy:
       fail-fast: false

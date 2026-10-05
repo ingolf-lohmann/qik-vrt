@@ -25,6 +25,13 @@ Unabhängigkeit von Betriebssystem, Compiler und Interpreter wird nicht behaupte
 | MC68000 ABI | Objekt, rohe `.text`-Bytes, statischer Linux-ABI-Test | `-m68000`, Disassembly und QEMU-Ausführung; kein Hardwarebeweis |
 | HTTP / Docker | bestehendes S1-Paket 1.2.0 | `make self-host-test`, native systemd- und isolierte Docker-Tests |
 
+Die bestehende Repository-CI sammelt nach Erfolg aller Zieljobs automatisch
+einen `qikvrt-runtime-publication-candidate-HEAD` mit `RELEASE_INDEX.json`.
+`tools/qikvrt_native_release.py catalog` prüft Quellbindung, Archivbytes und
+Ausführungsbelege und stellt die zusammengehörigen Downloads bereit. Dieser
+serverseitige Schritt braucht keinen laufenden ChatGPT-Client. Das CI-Artefakt
+ist ein zeitlich begrenzter Träger; erst Git-/Zenodo-Persistenz ist das Archiv.
+
 Eine Builddefinition ist noch kein verfügbares Binary. Ein Ziel wird erst mit
 seinem erfolgreich ausgeführten `EXECUTION.json`, den Artefaktbytes und ihren
 Prüfsummen aufgenommen. Windows-Server-CI ist kein Nachweis einer Ausführung

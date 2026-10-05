@@ -231,9 +231,99 @@ def build(root, output, head=None, tree=None, rebuild_pin=None, compiler=None):
             "manifest_sha256": pin, "archive_sha256": sha(archive.read_bytes()), "effect_ack_done": False}
 
 
+def unpack(archive, output):
+    """Extract an artifact without accepting symlinks, duplicates or path escape."""
+    with zipfile.ZipFile(archive) as z:
+        names = set()
+        for entry in z.infolist():
+            name = entry.filename.rstrip("/")
+            safe(name)
+            if name in names or (entry.external_attr >> 16) & 0o170000 == 0o120000:
+                raise ValueError("UNSAFE_ARCHIVE_MEMBER")
+            names.add(name)
+            if entry.file_size > 512 * 1024 * 1024:
+                raise ValueError("ARCHIVE_MEMBER_SIZE")
+        z.extractall(output)
+        if os.name != "nt":
+            for entry in z.infolist():
+                if not entry.is_dir() and entry.external_attr >> 16 & 0o111:
+                    (output / entry.filename).chmod(0o755)
+
+
+def catalog(artifacts, output, head, tree):
+    """Freeze tested variants for the existing Zenodo-v2 publication controls."""
+    if not re.fullmatch(r"[0-9a-f]{40}", head or "") or not re.fullmatch(r"[0-9a-f]{40}", tree or ""):
+        raise ValueError("EXACT_SOURCE_REQUIRED")
+    rows = []
+    sources = []
+    for receipt_path in sorted(artifacts.rglob("NATIVE_BUILD.json")):
+        receipt = json.loads(receipt_path.read_bytes())
+        if receipt["source"]["head"] != head or receipt["source"]["tree"] != tree:
+            raise ValueError("VARIANT_SOURCE_MISMATCH")
+        archive = receipt_path.parent / "qikvrt-native.zip"
+        if sha(archive.read_bytes()) != receipt["archive_sha256"]:
+            raise ValueError("VARIANT_ARCHIVE_MISMATCH")
+        with tempfile.TemporaryDirectory() as temp:
+            unpack(archive, Path(temp))
+            manifest = verify(Path(temp), receipt["manifest_sha256"])
+            execution = json.loads((Path(temp) / "EXECUTION.json").read_bytes())
+            if (execution["source"] != receipt["source"] or execution["target"] != receipt["target"]
+                    or execution["binary_sha256"] != manifest["files"][manifest["cli"]]["sha256"]
+                    or execution["shared_sha256"] != manifest["files"][manifest["shared_library"]]["sha256"]):
+                raise ValueError("VARIANT_EXECUTION_BINDING")
+        target = receipt["target"]["system"] + "-" + receipt["target"]["machine"]
+        name = "qikvrt-native-" + target + ".zip"
+        rows.append({"target": target, "file": name, "archive_sha256": receipt["archive_sha256"],
+                     "manifest_sha256": receipt["manifest_sha256"], "binary_sha256": execution["binary_sha256"],
+                     "execution_scope": execution["scope"]})
+        sources.append((archive, name))
+    for path in sorted(artifacts.rglob("MANIFEST.json")):
+        manifest = json.loads(path.read_bytes())
+        if manifest.get("schema") not in ("qikvrt-smalltalk-package/v1", "qikvrt-m68000-package/v1"):
+            continue
+        if manifest["source_head"] != head or manifest["source_tree"] != tree:
+            raise ValueError("BACKEND_SOURCE_MISMATCH")
+        if manifest.get("effect_ack_done") is not False:
+            raise ValueError("BACKEND_EFFECT_CLAIM")
+        for name, item in manifest["files"].items():
+            raw = (path.parent / safe(name)).read_bytes()
+            if sha(raw) != item["sha256"] or len(raw) != item["bytes"]:
+                raise ValueError("BACKEND_BYTES_MISMATCH")
+        target = "smalltalk-pharo13-linux" if "smalltalk" in manifest["schema"] else "mc68000-d0-linux-abi-witness"
+        rows.append({"target":target, "manifest_sha256":sha(path.read_bytes()), "execution_scope":target})
+    if not rows or len({row["target"] for row in rows}) != len(rows):
+        raise ValueError("EMPTY_OR_DUPLICATE_VARIANTS")
+    output.mkdir(parents=True, exist_ok=False)
+    for archive, name in sources:
+        shutil.copyfile(archive, output / name)
+    # Retain the backend images, VM bootstrap archives and S1 tar unchanged.
+    for path in sorted(artifacts.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("ARTIFACT_SYMLINK")
+        if not path.is_file() or path.name in ("qikvrt-native.zip", "qikvrt-native-rebuilt.zip"):
+            continue
+        relative = path.relative_to(artifacts).as_posix()
+        destination = output / "readbacks" / safe(relative)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, destination)
+    for name in ("LICENSE", "LICENSES/PolyForm-Noncommercial-1.0.0.txt", "LICENSES/CC-BY-NC-ND-4.0.txt", "runtime/native/README.md"):
+        destination = output / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, destination)
+    index = {"schema":"qikvrt-runtime-publication-candidate/v1", "source_head":head, "source_tree":tree,
+             "variants":rows, "ci_run_id":os.environ.get("GITHUB_RUN_ID"), "state":"FROZEN_CANDIDATE",
+             "zenodo_state":"PENDING_EXISTING_V2_CONTROLS_AUTHENTICATION_AND_PUBLIC_BYTE_READBACK",
+             "publisher":"tools/qikvrt_zenodo_publish.py", "node_propagation":"PER_NODE_IMPORT_AND_FRESH_READBACK_REQUIRED",
+             "historical_evidence_transfer":False, "effect_ack_done":False,
+             "files":{name:{"bytes":p.stat().st_size,"sha256":sha(p.read_bytes())} for name,p in sorted(relative_files(output).items())}}
+    (output / "RELEASE_INDEX.json").write_bytes(canonical(index))
+    return {"state":"FROZEN_CANDIDATE", "variant_count":len(rows),
+            "release_index_sha256":sha((output / "RELEASE_INDEX.json").read_bytes()), "zenodo_published":False, "effect_ack_done":False}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("build", "rebuild", "verify", "sql"))
+    parser.add_argument("operation", choices=("build", "rebuild", "verify", "sql", "catalog"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--package", type=Path)
@@ -241,9 +331,14 @@ def main():
     parser.add_argument("--expected-tree")
     parser.add_argument("--manifest-sha256")
     parser.add_argument("--cc")
+    parser.add_argument("--artifacts", type=Path)
     args = parser.parse_args()
     try:
-        if args.operation in ("build", "rebuild"):
+        if args.operation == "catalog":
+            if args.artifacts is None or args.output is None:
+                parser.error("catalog requires --artifacts and new --output")
+            result = catalog(args.artifacts, args.output, args.expected_head, args.expected_tree)
+        elif args.operation in ("build", "rebuild"):
             if args.output is None or (args.operation == "rebuild" and args.package is None):
                 parser.error("new --output and --package for rebuild required")
             if args.operation == "rebuild" and not args.manifest_sha256:

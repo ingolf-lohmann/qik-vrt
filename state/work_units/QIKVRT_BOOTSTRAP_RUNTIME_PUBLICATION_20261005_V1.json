@@ -7,6 +7,12 @@
     "role": "Codex implementation contribution"
   },
   "build_workflow": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+  "candidate": {
+    "observed_head": "be67b5fabf8b48a679f572b734e87e8f88567c73",
+    "observed_tree": "f7775d088feb9c26f2a02ea6c4d00c986002c271",
+    "pull_request": 461,
+    "scope": "historical source candidate; successor repair adds portable cache paths and automatic publication-candidate collection"
+  },
   "closure": {
     "all_nodes_persisted": false,
     "all_targets_executed": false,
@@ -14,8 +20,19 @@
     "zenodo_published": false
   },
   "created_utc": "2026-10-05T10:41:49.361053+00:00",
+  "fresh_ci_observation": {
+    "head": "be67b5fabf8b48a679f572b734e87e8f88567c73",
+    "linux": "success",
+    "macos": "success",
+    "mc68000": "success",
+    "run_id": 37298811276,
+    "smalltalk": "success",
+    "successor_evidence_transfer": false,
+    "windows": "failure; cache registry path compared platform-native separators to POSIX authority; causal repair to as_posix"
+  },
   "fresh_evidence_required": true,
   "future_variants": {
+    "client_scheduler_required": false,
     "deduplication": [
       "source_tree",
       "target",
@@ -23,7 +40,7 @@
       "license_digest"
     ],
     "requested": true,
-    "state": "VERIFIED_VARIANT_CONTRACT_AND_CI_PREPARED; AUTOMATION_NOT_YET_ACTIVATED"
+    "state": "REPOSITORY_NATIVE_CI_COLLECTOR_IMPLEMENTED; PUBLICATION_STILL_REQUIRES_EXISTING_V2_CONTROLS_AND_AUTHENTICATION"
   },
   "historical_pass_transfer": false,
   "human_owner": {
@@ -33,7 +50,7 @@
   "independence_scope": "No network/provider API/OS calls/heap in C90 kernel; CLI uses libc; build uses compiler; SQL uses Python/sqlite3/ctypes; Pharo and S1 retain declared runtimes.",
   "local_verification": {
     "license_tests": "PASS 5/5",
-    "native_package_tests": "PASS 4/4; real C90 build and SQLite execution plus Git-free rebuild",
+    "native_package_tests": "PASS 5/5 including source-bound publication catalog",
     "repository_make_test": "PASS after fetching required historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
     "scope": "Local checkout verification, not external native-target or Zenodo readback",
     "test_log_sha256": "b6cc960846fe2e68d2ac421453dc73ba6a301df9ec2aac481ec9a2c25bad41ad",
@@ -43,7 +60,7 @@
     {
       "repository": "ingolf-lohmann/qik-vrt",
       "role": "mirror",
-      "state": "PREPARING_EXACT_CANDIDATE"
+      "state": "CANDIDATE_BRANCH_PERSISTED"
     },
     {
       "observation": "Authenticated /AI file read returned 404 NOT_FOUND; this does not prove repository deletion or suspension.",
@@ -63,7 +80,7 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35"
   },
-  "state": "IN_PROGRESS",
+  "state": "CANDIDATE_PERSISTED_NATIVE_TARGET_VERIFICATION_IN_PROGRESS",
   "variant_contract": "runtime/native/VARIANTS.json",
   "visible_documentation": "runtime/native/README.md",
   "work_unit_id": "QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1",
