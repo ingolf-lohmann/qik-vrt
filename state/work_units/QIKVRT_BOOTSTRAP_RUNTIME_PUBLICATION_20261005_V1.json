@@ -6,6 +6,41 @@
     "provider": "OpenAI",
     "role": "Codex implementation contribution"
   },
+  "authentication_observation": {
+    "biometric_confirmation_verified": false,
+    "identity_provider_origin": "https://github.com",
+    "last_observed_utc": "2026-10-05T13:34:40.018Z",
+    "last_visible_state": "GITHUB_LOGIN_WAITING_FOR_BROWSER_INTERACTION_PARTIAL_PASSKEY_SUPPORT",
+    "observed_signed_in": false,
+    "origin": "https://zenodo.org",
+    "protected_registry_binding_established": false,
+    "publisher_credentials": {
+      "GH_TOKEN_available": false,
+      "GITHUB_TOKEN_available": false,
+      "ZENODO_ACCESS_TOKEN_available": false,
+      "ZENODO_TOKEN_available": false
+    },
+    "registry_gap": "Existing protected internal registry was not resolved to a callable current runtime carrier; no successful login event is established.",
+    "registry_readback_verified": false,
+    "registry_update_required_after_success": true,
+    "registry_write_verified": false,
+    "secure_request_result": "submitted",
+    "selected_method": "passkey",
+    "selected_provider": "github"
+  },
+  "authentication_requirement": {
+    "auth_channel": "PROVIDER_INDEPENDENT_SINGLE_SIGN_ON",
+    "exclusive_provider": null,
+    "persistent_instruction_commit": "80d07d3",
+    "persistent_instruction_verified": true,
+    "raw_biometrics_or_secrets_in_git": false,
+    "register_successful_authentication_and_successful_username_password_token_events": true,
+    "requested_biometrics": [
+      "fingerprint",
+      "voice",
+      "face"
+    ]
+  },
   "build_workflow": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
   "candidate": {
     "artifact": {
@@ -33,6 +68,7 @@
     "executed_target_scope_verified": true,
     "frozen_publication_candidate_verified": true,
     "node_synchronization_verified": false,
+    "public_byte_readback": false,
     "zenodo_published": false
   },
   "created_utc": "2026-10-05T10:41:49.361053+00:00",
@@ -332,6 +368,41 @@
         "state": "CONTENT_ACCESS_BLOCKED_NOT_FOUND"
       }
     ],
+    "publication_checkpoint_at_a6fc8984": {
+      "closure": {
+        "all_nodes_persisted": false,
+        "all_targets_executed": false,
+        "effect_ack_done": false,
+        "exact_head_ci_acceptance_closed": true,
+        "executed_target_scope_verified": true,
+        "frozen_publication_candidate_verified": true,
+        "node_synchronization_verified": false,
+        "zenodo_published": false
+      },
+      "nodes": [
+        {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "role": "mirror",
+          "state": "FROZEN_CANDIDATE_AND_SEPARATE_EVIDENCE_PROJECTION_ONLY; NO ALL_NODE_SYNCHRONIZATION"
+        },
+        {
+          "repository": "Goldkelch/qik-vrt",
+          "role": "authority",
+          "state": "NOT_READ_BACK_IN_THIS_EXACT_HEAD_ACCEPTANCE; PREVIOUS_ACCESS_OBSERVATION_IS_HISTORICAL"
+        }
+      ],
+      "state": "FROZEN_PUBLICATION_CANDIDATE_BYTE_VERIFIED",
+      "updated_utc": "2026-10-05T12:05:55.493Z",
+      "zenodo": {
+        "doi": null,
+        "exact_candidate_authorization_consumed": false,
+        "existing_machine_proof_v2_contract_preserved": true,
+        "public_byte_readback": false,
+        "publisher": "tools/qikvrt_zenodo_publish.py",
+        "record_id": null,
+        "state": "NOT_PUBLISHED_IN_THIS_BOUNDED_ACCEPTANCE; AUTHENTICATED_PUBLIC_BYTE_READBACK_REQUIRED"
+      }
+    },
     "scope": "PRESERVED_PREDECESSOR_OBSERVATIONS_ONLY; NO PASS TRANSFER TO CURRENT SOURCE",
     "work_unit_snapshot_at_verified_source": {
       "git_blob_sha1": "d3cb6446209718edfbf4c6b7e823bec8be8f993f",
@@ -359,17 +430,41 @@
   "independence_scope": "No network/provider API/OS calls/heap in C90 kernel; CLI uses libc; build uses compiler; SQL uses Python/sqlite3/ctypes; Pharo and S1 retain declared runtimes.",
   "nodes": [
     {
+      "candidate_newly_promoted": false,
+      "publication_receipt_synchronization_verified": false,
       "repository": "ingolf-lohmann/qik-vrt",
       "role": "mirror",
-      "state": "FROZEN_CANDIDATE_AND_SEPARATE_EVIDENCE_PROJECTION_ONLY; NO ALL_NODE_SYNCHRONIZATION"
+      "source_binding_verified": true,
+      "source_head_readback": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "source_tree_readback": "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
     },
     {
+      "file_readback": null,
+      "fresh_readback_state": "AUTHENTICATED_AI_AND_MAIN_READ_404_NOT_FOUND",
+      "interpretation": "Current authenticated access boundary; repository deletion or suspension is not inferred.",
       "repository": "Goldkelch/qik-vrt",
       "role": "authority",
-      "state": "NOT_READ_BACK_IN_THIS_EXACT_HEAD_ACCEPTANCE; PREVIOUS_ACCESS_OBSERVATION_IS_HISTORICAL"
+      "source_head_readback": null,
+      "source_tree_readback": null,
+      "synchronized": false
     }
   ],
   "package_definition": "runtime/native/PACKAGE.json",
+  "publication_continuation": {
+    "blocking_dependencies": [
+      "CURRENT_AUTHORITY_ACCESS_UNAVAILABLE",
+      "PUBLISHER_SCOPED_API_CREDENTIALS_NOT_AVAILABLE",
+      "SECURE_PASSKEY_SIGN_IN_AWAITING_USER_INTERACTION",
+      "CANDIDATE_BOUND_V2_COMPANION_CONTROLS_NOT_VERIFIED",
+      "PROTECTED_INTERNAL_AUTH_REGISTRY_RUNTIME_BINDING_NOT_ESTABLISHED"
+    ],
+    "effect_state": "EFFECT_ACK_BLOCK",
+    "exact_candidate_bytes_unchanged": true,
+    "next_action": "Complete the existing secure user-selected SSO/passkey route and independently verify the Zenodo destination session.",
+    "receipt_bytes": 26366,
+    "receipt_path": "evidence/native_release/PR461_PUBLICATION_CONTINUATION_bc2da76a_20261005_V1.json",
+    "receipt_sha256": "06ef5bc89490b4210fb8e57806f7d0e36b4d944711f4590e4e018969f24e076a"
+  },
   "recovery_receipt": "evidence/native_release/SOURCE_RECOVERY_20261005.json",
   "request": "Persist reusable provider-independent bootstrapping, target binaries and licenses on Zenodo and every QIKVRT node; publish new verified runtime variants prominently.",
   "reused_native_snapshot": "c6a53e200c4835a4f871d8496feb81d953610831",
@@ -380,8 +475,8 @@
     "repository": "ingolf-lohmann/qik-vrt",
     "tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35"
   },
-  "state": "FROZEN_PUBLICATION_CANDIDATE_BYTE_VERIFIED",
-  "updated_utc": "2026-10-05T12:05:55.493Z",
+  "state": "PUBLICATION_BLOCKED_CURRENT_AUTHORITY_AND_AUTHENTICATED_RUNTIME_GAPS",
+  "updated_utc": "2026-10-05T13:38:17.648495+00:00",
   "variant_contract": "runtime/native/VARIANTS.json",
   "visible_documentation": "runtime/native/README.md",
   "work_unit_id": "QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1",
@@ -392,6 +487,6 @@
     "public_byte_readback": false,
     "publisher": "tools/qikvrt_zenodo_publish.py",
     "record_id": null,
-    "state": "NOT_PUBLISHED_IN_THIS_BOUNDED_ACCEPTANCE; AUTHENTICATED_PUBLIC_BYTE_READBACK_REQUIRED"
+    "state": "NOT_PUBLISHED; CURRENT_AUTHORITY_ACCESS_AND_PUBLISHER_CREDENTIALS_UNAVAILABLE"
   }
 }
