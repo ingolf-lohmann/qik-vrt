@@ -1,0 +1,63 @@
+{
+  "causal_runner_io_stall_proved": false,
+  "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_firefox_capability_boundary",
+  "comparative_speedup_proved": false,
+  "complete_local_git_checkout": false,
+  "controls": [
+    "Actual reduced 1/2/4 process trial receipts and restart/replay invariants",
+    "Controlled delay through original file fsync retains exact snapshot bytes",
+    "Injected fsync failure still poisons original State",
+    "Nested v1/v2 cgroup roots, ancestors and hidden/traversal refusal",
+    "Missing/reset counters and signed clock residuals remain explicit"
+  ],
+  "failures": 0,
+  "head": null,
+  "local_default_workload_smoke": {
+    "clients": 4,
+    "comparative_speedup_claimed": false,
+    "effects": 80,
+    "receipt_sha256": "10b186e38d5bfb75de4d26941ecf9b7d329b4b0a529472bcffb754342684c143",
+    "records": 160,
+    "source_sha256": {
+      "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "src/qikvrt_api_handler.py": "b31038728504dd8278c1111367fe051a1f6258606bd5a1e1b36019f909ae5b8a",
+      "src/qikvrt_effect_ack.py": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+      "src/qikvrt_effect_ack_http_terminal.py": "60ff7bdeabedb81e05f653e59846aa21480293179630f70ba0d43984cf946d51",
+      "tools/qikvrt_firefox_windows_witness.py": "826bc7379f9f8d820c6b29dcc5efaad5d014d6eb272a6ae79300ff0dc35c5793"
+    },
+    "state": "PASS_SOURCE_BYTES_BEFORE_FINAL_COVERAGE_METADATA_ONLY",
+    "trials": 9,
+    "workload": 64
+  },
+  "native_successor_verification": "REQUIRED_FRESH; predecessor receipt not transferred",
+  "personal_release_effect_ack_done": false,
+  "preserved_function_sha256": {
+    "benchmark_speedup": "eb339bb293aee26f2619bb2bf437aa63ecbf52df0dc845bdbd07ce37bce73ece",
+    "durable_restart_controls": "a843e844b8f3be04662f8b645d4609cb9a8d2d00aa5147f6ec9de3fddb2e7903",
+    "lossless_scale_consolidation_controls": "62c39adc2d95c70661870c135071b252b727ab1e8421e7e07f9e247ac471f7fe",
+    "network_loss_controls": "3562a301903f6ecacc613cf23147dedcb02f6a7a29776c73c5eb5da556442272",
+    "witness": "dcd67fc1aeaa450815961f7986fb7f5213a6e39bf8dd2c5c7d12bee499efc354"
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "runner_independent_scaling_proved": false,
+  "runtime_bootstrap": "BLOCK: partial API source fixture lacks complete Git identity/integrity closure; no global boot PASS claimed.",
+  "schema": "qikvrt_linux_variance_source_verification_v1",
+  "skips": 0,
+  "source_sha256": {
+    "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "src/qikvrt_api_handler.py": "b31038728504dd8278c1111367fe051a1f6258606bd5a1e1b36019f909ae5b8a",
+    "src/qikvrt_effect_ack.py": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+    "src/qikvrt_effect_ack_http_terminal.py": "60ff7bdeabedb81e05f653e59846aa21480293179630f70ba0d43984cf946d51",
+    "tests/test_qikvrt_effect_ack_http_terminal.py": "1993293cdb2be652268f995bc9a792cfdd0373140c8c06d20e902ea2b619d9b7",
+    "tools/qikvrt_firefox_windows_witness.py": "1dcb8b54b8f13b6cd0dac29a5746334b25da7ab39da8f5a208297d130fd22920"
+  },
+  "state": "PASS_SOURCE_SCOPE_ONLY",
+  "test_log": {
+    "bytes": 15847,
+    "path": "evidence/linux-ring/20261002/LOCAL_VARIANCE_TESTS.log",
+    "sha256": "6e4c8d0385c9e260c1368b3d73db13e68102899ae8a52190913f2f5a2fe78471"
+  },
+  "tests": 71,
+  "tool_cache_contract": "PASS 18/18; 100%",
+  "tree": null
+}

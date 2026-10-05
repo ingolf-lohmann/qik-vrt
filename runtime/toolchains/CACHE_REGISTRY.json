@@ -72,6 +72,84 @@
       ],
       "version": "same-as-ffmpeg"
     },
+    "firefox": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "tools/qikvrt_firefox_windows_witness.py",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:windows-11-arm"
+      ],
+      "failure_recovery": "Emit HOLD; discard mismatched archive; do not cache profiles or authentication state; no silent version fallback.",
+      "license": "MPL-2.0",
+      "profiles": [
+        "firefox-windows"
+      ],
+      "provider": "Mozilla Firefox through GitHub windows-11-arm runner image",
+      "trusted_save": false,
+      "verification": [
+        "exact WebDriver browserVersion",
+        "binary SHA256 receipt",
+        "actual extension load and terminal effect readback"
+      ],
+      "version": "156.0.1"
+    },
+    "firefox-linux": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "tools/qikvrt_firefox_windows_witness.py",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "failure_recovery": "HOLD on missing/incompatible executable; no software downgrade or implicit download; throwaway profile only",
+      "license": "MPL-2.0",
+      "profiles": [
+        "firefox-linux-ring"
+      ],
+      "provider": "Mozilla Firefox through declared GitHub ubuntu-24.04 runner image; fresh ImageVersion and actual runtime binary digest",
+      "trusted_save": false,
+      "verification": [
+        "actual WebDriver browserVersion matches 156.x",
+        "launcher and actual /proc browser executable SHA256 receipts",
+        "real extension prepare/commit/readback and seed negative controls"
+      ],
+      "version": "156.x"
+    },
+    "geckodriver": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "tools/qikvrt_firefox_windows_witness.py",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "ephemeral-windows-witness-output/driver-cache",
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "failure_recovery": "Emit HOLD; discard mismatched archive; do not cache profiles or authentication state; no silent version fallback.",
+      "license": "MPL-2.0",
+      "profiles": [
+        "firefox-windows",
+        "firefox-linux-ring"
+      ],
+      "provider": "Mozilla content-digest-bound official release archives; Linux uses declared native runner-image driver, exact version and binary receipt",
+      "trusted_save": false,
+      "verification": [
+        "archive SHA256 before extraction",
+        "warm cache verified re-extraction",
+        "exact executable version",
+        "WebDriver actual browser session"
+      ],
+      "version": "0.37.1"
+    },
     "gh": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -132,7 +210,9 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "browser/firefox/qikvrt-terminal/content.js",
+        "tests/test_qikvrt_effect_ack_http_terminal.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -142,7 +222,8 @@
       "profiles": [
         "formal",
         "audio",
-        "all"
+        "all",
+        "firefox-linux-ring"
       ],
       "provider": "actions/setup-node",
       "trusted_save": false,
@@ -150,7 +231,8 @@
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution"
+        "test execution",
+        "actual terminal source with deferred observation/prepare regression"
       ],
       "version": "24.x"
     },
@@ -237,27 +319,58 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
         ".github/workflows/qikvrt_adaptive_runtime.yml",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "tools/qikvrt_linux_scale_isolation.py",
+        "policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json",
+        "tests/test_qikvrt_linux_scale_isolation.py"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
         "github-hosted-toolcache:Python/3.12.13",
-        "github-actions-cache:pip"
+        "github-actions-cache:pip",
+        "dedicated-runner:externally-attested-offline-CPython/3.12.13"
       ],
       "profiles": [
         "ietf",
         "formal",
         "publication",
-        "all"
+        "all",
+        "firefox-linux-ring",
+        "linux-scale-isolation"
       ],
-      "provider": "actions/setup-python",
+      "provider": "actions/setup-python for hosted checks; externally provisioned exact offline interpreter for admitted dedicated control",
       "trusted_save": false,
       "verification": [
         "exact interpreter version where required",
         "pip dependency-lock digest",
-        "runtime execution"
+        "runtime execution",
+        "dedicated control pins exact interpreter version/binary SHA-256; no setup download, hosted fallback or automatic retry"
       ],
       "version": "3.12.13"
+    },
+    "python-windows-witness": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+        "tools/qikvrt_firefox_windows_witness.py",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:windows-11-arm"
+      ],
+      "failure_recovery": "Emit HOLD; discard mismatched archive; do not cache profiles or authentication state; no silent version fallback.",
+      "license": "PSF-2.0",
+      "profiles": [
+        "firefox-windows"
+      ],
+      "provider": "GitHub windows-11-arm runner-image Python",
+      "trusted_save": false,
+      "verification": [
+        "exact interpreter version",
+        "stdlib unittest and witness execution"
+      ],
+      "version": "3.13.15"
     },
     "sherpa-onnx-node": {
       "authority_files": [

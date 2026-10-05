@@ -1,0 +1,158 @@
+{
+  "artificial_cognitive_actor": {
+    "identity_limits": "Platform/Git identities do not establish natural-person or model attestation.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "standard-library source checks"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh exact-head/tree inventory; two conflict-free two-parent Main integrations while refs remain unchanged.",
+    "Reuse the existing workload engine; implement fixed 36-trial controlled lifecycle, external admission and fail-closed telemetry.",
+    "Disable hosted performance trigger, add dedicated dispatch carrier, schema, documentation, tests, cache-profile bindings and integrity materialization."
+  ],
+  "created_at": "2026-10-03T17:00:58.932415+00:00",
+  "external_effects": {
+    "dedicated_dispatch": false,
+    "deployment": false,
+    "main_promotion": false,
+    "pr_branch_update": "AUTHORIZED_HISTORY_PRESERVING_NON_FORCE",
+    "publication": false,
+    "release": false
+  },
+  "first_execution_boundary": "EXTERNALLY_VERIFIED_DEDICATED_HOST_VOLUME_ATTESTATION_AND_EXACT_NATIVE_ENVIRONMENT_REQUIRED",
+  "git_history": {
+    "candidate_head_binding": "Containing successor commit/tree; fresh native receipts must bind that exact subject.",
+    "candidate_parent": "ab15b69dca2264dda5466921ece12f6a05e523e3",
+    "force_push": false,
+    "integration_parents": [
+      "a1d35df440eada9bfae24df335f08da67dd5a875",
+      "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "8458a6d68f104840efa65e22cf54b06ac2a2ec31",
+      "6105892b1c6992f6be19e0f29fe0530e319eaaf1"
+    ],
+    "rewrite": false
+  },
+  "historical_native_observation": {
+    "head": "a1d35df440eada9bfae24df335f08da67dd5a875",
+    "run_id": "37045385898",
+    "scope": "HISTORICAL_EPYC_7763_HOST_ONLY",
+    "transfer_to_successor": false
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Require fresh Main/PR readback and history-preserving Main integration.",
+    "Authorize implementing the already-specified dedicated isolated/interference control, with no additional unmodified hosted trials and no portable scaling claim."
+  ],
+  "human_decision": "IMPLEMENTATION_AUTHORIZED; INDEPENDENT_EXACT_HEAD_REVIEW_PENDING",
+  "inputs": [
+    "docs/terminal/QIKVRT_LINUX_COMPARABLE_SCALE_BENCHMARK_V1.md",
+    "state/work_units/QIKVRT_PR443_COMPARABLE_SCALE_20261002.json"
+  ],
+  "integrated_main": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+  "integration_head": "ab15b69dca2264dda5466921ece12f6a05e523e3",
+  "integration_tree": "403a8073ee6eb0c080c578d64654f28e1d69f4aa",
+  "joint_components": "Purpose/constraints are HUMAN; implementation/verification are ARTIFICIAL_COGNITIVE_SYSTEM; contributions remain separable.",
+  "measurement_contract": "policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json",
+  "next_action": "On a verified dedicated runner generate zero-trial inventory, bind independently verified host/volume isolation reports to the exact subject, and execute the single leased 36-trial carrier through the reviewed exact ref. No rerun, hosted fallback or repetition extension.",
+  "original_merge": "8458a6d68f104840efa65e22cf54b06ac2a2ec31",
+  "outputs": [
+    {
+      "bytes": 137745,
+      "git_blob_sha1": "102467d97f70f76e4475148c9bb4fd92c6edb364",
+      "path": "tools/qikvrt_firefox_windows_witness.py",
+      "sha256": "e2930d1c89ae28295aea1e31b7cf4bc35fb07a0ece72cf044612ea42ef47643c"
+    },
+    {
+      "bytes": 38252,
+      "git_blob_sha1": "bb2ccf8da5f4f1c18f0a0e554f5071cf33874fe5",
+      "path": "tools/qikvrt_linux_scale_isolation.py",
+      "sha256": "38c2feae27aa664e8225847f10a2409229663823bef8f6bc102d55a914006078"
+    },
+    {
+      "bytes": 3325,
+      "git_blob_sha1": "276650ca542f367728194910b55adcd88f826136",
+      "path": "policy/QIKVRT_LINUX_SCALE_ISOLATION_V1.json",
+      "sha256": "c46534fe508ed784cb1b4f4f6ee7a5c5df998b747c9f87b9fa4e15fc5d31c1e6"
+    },
+    {
+      "bytes": 3626,
+      "git_blob_sha1": "bfebcb97ecf11390560a77676724436ef6538b5f",
+      "path": "schemas/qikvrt-linux-scale-isolation-attestation-v1.schema.json",
+      "sha256": "b2165153ab5a464aa0e808acf3fbfbec525b8d182545d6f469530d927f01cdbe"
+    },
+    {
+      "bytes": 23569,
+      "git_blob_sha1": "bc88f2602944ea0528e9a7aae0dfdb56d285b313",
+      "path": "tests/test_qikvrt_linux_scale_isolation.py",
+      "sha256": "311f3f35a686db8eb6a5feeede5c29aac7ef7d160527d5f5c1cc980f0166113f"
+    },
+    {
+      "bytes": 13779,
+      "git_blob_sha1": "a8f04f33116ca5c24ee4d6f51cf06a3fb497d75e",
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "sha256": "046ab701040d449fb2964da9471f7bbd10ec4dfd75867209a170190fecd3e5c7"
+    },
+    {
+      "bytes": 12759,
+      "git_blob_sha1": "89962afaf97f899d7a9c813f4253c205cefecdde",
+      "path": "Makefile",
+      "sha256": "3bae5f1a7a57cf0aee3198c2c2172b0e3b2c3289fe1da0038d9d3a27304f3660"
+    },
+    {
+      "bytes": 12839,
+      "git_blob_sha1": "5b5ef6aca06466e15b1776bc8d9a09f0862c61d1",
+      "path": "docs/terminal/QIKVRT_LINUX_COMPARABLE_SCALE_BENCHMARK_V1.md",
+      "sha256": "df7d16c165027473d9495588f6463cbc41573fe095743158bd1dd0ab434e900c"
+    },
+    {
+      "bytes": 10143,
+      "git_blob_sha1": "48ea560bf4a02e609ae48685a2246f973b95e545",
+      "path": "docs/terminal/QIKVRT_LINUX_ISOLATED_SCALE_CONTROL_V1.md",
+      "sha256": "cff9f7717d040f316567d7238403233e0e7718b5dd96e6544c6d362a155002a2"
+    },
+    {
+      "bytes": 15305,
+      "git_blob_sha1": "ec6b1aedb68654cc30c37c0637803e842e07aa69",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "d6d5b53ee0a4e4a649319d9ee39457de4ea02307521d3283d8087cf2c956cbfb"
+    },
+    {
+      "bytes": 4070,
+      "git_blob_sha1": "c512896e23555d8e88795a4e1ade79a5425ce319",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "385577ae0448d7317a3ba52645b9780f64bcfb3506565361909dcb4c68e9177f"
+    },
+    {
+      "bytes": 4833,
+      "git_blob_sha1": "31d6b34b87fd1bdc87118152f244456c01672b26",
+      "path": "evidence/linux-ring/20261003/LOCAL_ISOLATED_CARRIER_VERIFICATION.json",
+      "sha256": "0f47b78c344fa892c78b392a67474aeae6e118af3f36ecc6d269acaf8320caa3"
+    }
+  ],
+  "predecessor_evidence_transfer": false,
+  "prepared_not_executed": true,
+  "release_claims": {
+    "causal_runner_io_stall_proved": false,
+    "effect_ack_done": false,
+    "runner_independent_scaling_proved": false,
+    "unbounded_scalability_proved": false
+  },
+  "schema": "qikvrt_provenance_bound_work_unit_v1",
+  "source_head": "a1d35df440eada9bfae24df335f08da67dd5a875",
+  "source_ref": "work/linux-ring-scale-consolidation-20261002",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "cc2addb9429e50f99eec8ed016e9f6f0846d89ce",
+  "unresolved_origin": [],
+  "verification": {
+    "full_checkout_exact_head_gates": "REQUIRED_AFTER_NON_FORCE_BRANCH_UPDATE",
+    "integrity": "Exact-parent manifest records reused only for unchanged Git blobs; Main delta and every implementation file rehashed; fresh full-checkout native regeneration/verification remains required.",
+    "source_scope": "evidence/linux-ring/20261003/LOCAL_ISOLATED_CARRIER_VERIFICATION.json",
+    "tests_passed": 87
+  },
+  "work_unit_id": "QIKVRT_PR443_ISOLATED_CONTROL_20261003"
+}

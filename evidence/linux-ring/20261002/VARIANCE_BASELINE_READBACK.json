@@ -1,0 +1,214 @@
+{
+  "artifact_id": 11226239403,
+  "artifact_zip_sha256": "2e5a7dfed76e894c06636759cba29c941b32b83409bc9e82f89cf366c671eb4d",
+  "causal_runner_io_stall_proved": false,
+  "comparative_speedup_proved": false,
+  "comparisons_to_one_process": {
+    "2": {
+      "all_repetitions_faster": false,
+      "bootstrap_percentile_interval_97_5": [
+        0.9819638566125491,
+        1.756966149254709
+      ],
+      "bootstrap_resamples": 5000,
+      "bootstrap_seed": 443,
+      "geometric_mean_ratio": 1.4168499291090544,
+      "inference_limit": "Small paired sample; percentile bootstrap is approximate, not independent replication.",
+      "minimum_repetitions_for_speedup_claim": 6,
+      "paired_wall_time_ratios": [
+        1.7469404585578763,
+        0.6095492808621535,
+        1.4809610377958649,
+        1.8049255046566737,
+        1.6438368410514272,
+        1.7289982996393038
+      ],
+      "ratio_distribution": {
+        "coefficient_of_variation": 0.3006473829734899,
+        "max": 1.8049255046566737,
+        "mean": 1.5025352370938831,
+        "min": 0.6095492808621535,
+        "n": 6,
+        "p25": 1.5216799886097554,
+        "p50": 1.6864175703453657,
+        "p75": 1.7424549188282332,
+        "p95": 1.7904292431319744,
+        "p99": 1.8020262523517339,
+        "sample_stdev": 0.4517332868577281
+      },
+      "scope": "THIS_HOST_IDENTICAL_PRELOAD_WORKLOAD_AND_FOUR_CLIENTS_ONLY",
+      "speedup_supported": false
+    },
+    "4": {
+      "all_repetitions_faster": false,
+      "bootstrap_percentile_interval_97_5": [
+        0.7008318310477264,
+        2.26768012260504
+      ],
+      "bootstrap_resamples": 5000,
+      "bootstrap_seed": 443,
+      "geometric_mean_ratio": 1.4559100056037608,
+      "inference_limit": "Small paired sample; percentile bootstrap is approximate, not independent replication.",
+      "minimum_repetitions_for_speedup_claim": 6,
+      "paired_wall_time_ratios": [
+        1.2730140499343499,
+        0.31330456672385154,
+        2.0099074548217386,
+        2.1815750428798517,
+        2.2905759732496933,
+        2.377477105563636
+      ],
+      "ratio_distribution": {
+        "coefficient_of_variation": 0.461724236427165,
+        "max": 2.377477105563636,
+        "mean": 1.7409756988621867,
+        "min": 0.31330456672385154,
+        "n": 6,
+        "p25": 1.457237401156197,
+        "p50": 2.0957412488507954,
+        "p75": 2.263325740657233,
+        "p95": 2.3557518224851504,
+        "p99": 2.3731320489479386,
+        "sample_stdev": 0.8038506751953931
+      },
+      "scope": "THIS_HOST_IDENTICAL_PRELOAD_WORKLOAD_AND_FOUR_CLIENTS_ONLY",
+      "speedup_supported": false
+    }
+  },
+  "evidence_boundary": "Historical native subject only; original root-only quota probe UNAVAILABLE. Physical I/O isolation, actual cgroup ancestry and syscall-level storage waits were not observed.",
+  "head": "e998f89cfcee647773acd2d91a7cf0d3a4f00a74",
+  "job_id": 110845708035,
+  "observed_association": "Execution and persistence-union outliers occur in the same trials; cause unidentified.",
+  "predecessor_evidence_transfer": false,
+  "run_id": 37009544042,
+  "schema": "qikvrt_pr443_variance_baseline_readback_v1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "summary": {
+    "1": {
+      "execution_including_persistence": {
+        "coefficient_of_variation": 0.28716613117085826,
+        "max": 0.568427173,
+        "mean": 0.370680747,
+        "min": 0.28901804,
+        "n": 6,
+        "p25": 0.296632675,
+        "p50": 0.3402147085,
+        "p75": 0.38813206825,
+        "p95": 0.5242330820000001,
+        "p99": 0.5595883548,
+        "sample_stdev": 0.10644695601551372
+      },
+      "persistence_wall_union": {
+        "coefficient_of_variation": 0.29469601329823797,
+        "max": 0.563691299,
+        "mean": 0.36262951833333334,
+        "min": 0.284020838,
+        "n": 6,
+        "p25": 0.2883628045,
+        "p50": 0.330210614,
+        "p75": 0.37747531125,
+        "p95": 0.5184990595000001,
+        "p99": 0.5546528511000001,
+        "sample_stdev": 0.10686547335709363
+      },
+      "setup": {
+        "coefficient_of_variation": 0.028068266703223193,
+        "max": 0.16604782699999987,
+        "mean": 0.1623160404999986,
+        "min": 0.15431960099999742,
+        "n": 6,
+        "p25": 0.16060038049999825,
+        "p50": 0.16394089349999774,
+        "p75": 0.1656053372499997,
+        "p95": 0.16600812325000014,
+        "p99": 0.16603988624999994,
+        "sample_stdev": 0.004555929914965138
+      }
+    },
+    "2": {
+      "execution_including_persistence": {
+        "coefficient_of_variation": 0.9398022322285939,
+        "max": 0.932536861,
+        "mean": 0.3209707615,
+        "min": 0.167159239,
+        "n": 6,
+        "p25": 0.1706421155,
+        "p50": 0.20169118549999998,
+        "p75": 0.24726305075,
+        "p95": 0.763140961,
+        "p99": 0.898657681,
+        "sample_stdev": 0.30164903813781163
+      },
+      "persistence_wall_union": {
+        "coefficient_of_variation": 0.9637568290198013,
+        "max": 0.916869452,
+        "mean": 0.31006224233333335,
+        "min": 0.161326873,
+        "n": 6,
+        "p25": 0.16476933625,
+        "p50": 0.1909547435,
+        "p75": 0.23090876700000001,
+        "p95": 0.7470411305,
+        "p99": 0.8829037877000001,
+        "sample_stdev": 0.29882460346994255
+      },
+      "setup": {
+        "coefficient_of_variation": 0.03673654159875368,
+        "max": 0.31403346700000156,
+        "mean": 0.2971256395000014,
+        "min": 0.2840075280000036,
+        "n": 6,
+        "p25": 0.28913985124999897,
+        "p50": 0.2979772615000016,
+        "p75": 0.3014175187500019,
+        "p95": 0.3110061615000017,
+        "p99": 0.3134280059000016,
+        "sample_stdev": 0.010915368415548092
+      }
+    },
+    "4": {
+      "execution_including_persistence": {
+        "coefficient_of_variation": 1.4941212338257774,
+        "max": 1.814295843,
+        "mean": 0.449798986,
+        "min": 0.121565015,
+        "n": 6,
+        "p25": 0.1311528835,
+        "p50": 0.163340343,
+        "p75": 0.277706567,
+        "p95": 1.4376359605,
+        "p99": 1.7389638665000002,
+        "sample_stdev": 0.6720542159359036
+      },
+      "persistence_wall_union": {
+        "coefficient_of_variation": 1.514803851901601,
+        "max": 1.799987768,
+        "mean": 0.4415892296666667,
+        "min": 0.118781032,
+        "n": 6,
+        "p25": 0.124100213,
+        "p50": 0.15545807,
+        "p75": 0.2685166505,
+        "p95": 1.42457422325,
+        "p99": 1.7249050590500004,
+        "sample_stdev": 0.6689210660573274
+      },
+      "setup": {
+        "coefficient_of_variation": 0.009937169126877896,
+        "max": 0.5741017669999948,
+        "mean": 0.5675014600000002,
+        "min": 0.5589648599999961,
+        "n": 6,
+        "p25": 0.5645883042500017,
+        "p50": 0.5676163855000027,
+        "p75": 0.5717519100000032,
+        "p95": 0.5737286369999968,
+        "p99": 0.5740271409999952,
+        "sample_stdev": 0.005639357987770134
+      }
+    }
+  },
+  "tree": "81c0931f2a98b057d6d422655c9871fc50a24395",
+  "verified_record_digests_and_input_seed_bindings": 6336,
+  "verified_trial_receipts": 18
+}
