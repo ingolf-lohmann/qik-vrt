@@ -105,7 +105,11 @@
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "policy/QIKVRT_CLAIM_AUDIT_V1.json",
+        "tools/qikvrt_global_completion.py",
+        "tools/lean/ClaimKernel.lean",
+        "third_party/lean4checker/PROVENANCE.json"
       ],
       "cache_class": "build-cache",
       "cache_locations": [
@@ -123,7 +127,11 @@
         "lean-toolchain contract",
         "lake manifest digest",
         "lake build",
-        "kernel proof checks"
+        "kernel proof checks",
+        "native Linux x64 Lean binary and kernel library SHA-256",
+        "isolated exact-head source rebuild; no project proof cache",
+        "independent project declaration kernel replay at trust level zero",
+        "per-claim source, statement, proof, registry, object, axiom and execution bindings"
       ],
       "version": "4.19.0"
     },
