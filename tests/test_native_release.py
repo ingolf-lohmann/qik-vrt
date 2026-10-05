@@ -42,10 +42,10 @@ class NativeReleaseTests(unittest.TestCase):
     def test_executed_source_and_sql_binding(self):
         manifest = native.verify(self.package, self.pin)
         self.assertEqual(manifest["source"]["head"], self.head)
-        evaluate = native.sql_function(self.package, self.pin)
-        self.assertEqual(evaluate(bytes.fromhex("0000000700000003060201010100")), bytes.fromhex("000000040201"))
-        with self.assertRaisesRegex(ValueError, "EXACT_14_BYTE"):
-            evaluate(b"short")
+        import sys
+        raw = subprocess.check_output([sys.executable, str(ROOT / "tools/qikvrt_native_release.py"),
+            "sql", "--package", str(self.package), "--manifest-sha256", self.pin])
+        self.assertEqual(json.loads(raw)["sql_readback"], "000000040201")
         receipt = json.loads((self.package / "EXECUTION.json").read_bytes())
         self.assertEqual(receipt["source"]["tree"], self.tree)
         self.assertEqual(receipt["binary_sha256"], hashlib.sha256((self.package / manifest["cli"]).read_bytes()).hexdigest())

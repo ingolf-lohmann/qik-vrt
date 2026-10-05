@@ -126,6 +126,18 @@ def selftest(output, binary, shared, source, compiler):
                              capture_output=True, timeout=10)
         if bad.returncode == 0:
             raise ValueError("TRUNCATED_TRANSPORT_ADMITTED")
+    # Windows keeps a ctypes-loaded DLL mapped until process exit. Execute the
+    # ABI/SQL witness in its own process so package cleanup can remove the DLL.
+    run([sys.executable, "-I", "-B", "-c",
+         "import sys; sys.path.insert(0, sys.argv[1]); from tools.qikvrt_native_release import selftest_shared; selftest_shared(sys.argv[2])",
+         source, shared.resolve()])
+    logs["adapters"] = "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed"
+    return logs
+
+
+def selftest_shared(shared):
+    shared = Path(shared)
+    vector = bytes.fromhex("0000000700000003060201010100")
     lib = ctypes.CDLL(str(shared.resolve()))
     kernel = lib.qikvrt_evaluate_bytes
     kernel.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
@@ -154,8 +166,6 @@ def selftest(output, binary, shared, source, compiler):
         changed[index] = 0 if index != 13 else 1
         if eval_blob(bytes(changed)) != bytes.fromhex("000000000100"):
             raise ValueError("KERNEL_GUARD_REGRESSION")
-    logs["adapters"] = "CLI, shared octet ABI, SQLite BLOB UDF, 8192-byte transport, truncation and invalid input controls executed"
-    return logs
 
 
 def build(root, output, head=None, tree=None, rebuild_pin=None, compiler=None):
