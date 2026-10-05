@@ -108,6 +108,12 @@ personal-firefox-boundary-test:
 
 test: personal-firefox-boundary-test
 
+.PHONY: browser-assistant-ab-test
+browser-assistant-ab-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_browser_assistant_ab
+
+test: browser-assistant-ab-test
+
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py

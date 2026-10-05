@@ -1,0 +1,191 @@
+<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
+<!-- Copyright 2026 Ingolf Lohmann. -->
+
+# Persönlicher Browserassistent: Unterbrechungs-A/B-Vertrag
+
+**Stand dieser Implementierung: Harness und synthetische Fixtures vorhanden;
+produktnaher End-to-End-Lauf nicht ausgeführt; Kundennutzen offen.**
+
+Der Versuch soll die offene Produktfrage beantworten: Kann ein persönlicher
+Browserassistent eine unterbrochene Recherche-/Dokumentationsaufgabe mit weniger
+Zeit, erneutem Kontext, falschen Abschlüssen und menschlichen Eingriffen
+fortsetzen? Ein erfolgreicher Zustandsabgleich beantwortet diese Frage allein
+nicht. Eine technische Referenzmessung oder eine geskriptete Harness-Übung
+belegt weder diesen Produktvorteil noch Kaufwürdigkeit.
+
+## Vorhandenes wiederverwenden
+
+Der Firefox-Client `browser/firefox/qikvrt-terminal/` und
+`src/qikvrt_effect_ack_http_terminal.py` werden unverändert wiederverwendet.
+Der isolierte `terminal-smoke` prüft Discovery → Prepare → vollständigen
+Record-Readback → Commit → frischen State-Readback → Replay-Verweigerung.
+Er führt eine lokale Terminaleingabe aus, keine Recherche oder Fortsetzung.
+Die Erweiterung speichert Personalisierung und Repository-Beobachtungen; daraus
+folgt kein ausführbarer persönlicher Rechercheassistent. Der bestehende
+Personal-Vertrag verlangt eine Capability Manifest und authentifizierten
+Runtime-Readback; diese fehlen auf dem gebundenen Main.
+
+Suche vor Erstellung: Main `86d7062f25f174039da0a5df8a856127553036f1`,
+Tree `5421dceb17f1ecc0fd3f5c12891ca9c1a12e7cf2`, insbesondere `browser/`,
+`src/`, `tools/`, `tests/`, `policy/`, Terminal-Workflow und Personal-Vertrag.
+Kein vorhandener Harness verband unterbrochene Browseraufgaben mit allen vier
+Produktmetriken. PR #445 ergänzt Gesprächs-/Arbeitskontinuität als Protokoll,
+keinen ausführbaren Browserbenchmark. Deshalb ist dieses ergänzende
+Messwerkzeug erforderlich. Es ersetzt keinen Produktadapter.
+
+## Design und Ausführungsgrenze
+
+`contract.json` ist der eingefrorene Messvertrag. Der Standardplan umfasst
+zwei Aufgaben mit je sechs Paaren, also 24 geplante Einzelversuche. Jedes Paar
+enthält dieselbe vollständige Aufgabe, dieselben Quellen und denselben
+gespeicherten Zwischenstand einmal als Baseline und einmal als QIK-VRT-Arm.
+Die Reihenfolge AB/BA ist pro Aufgabe ausgeglichen und über den festen Seed
+reproduzierbar. Unterbrechungsklassen sind Verlust des Assistentenprozesses und
+Zurücksetzen des Gesprächskontexts. Die Unterbrechung dauert in beiden Armen
+60 Sekunden; das Beobachtungsfenster ab Wiederaufnahmesignal 180 Sekunden.
+
+**Der Fixture-Zwischenstand ist ein kontrollierter Versuchsinput, kein
+Nachweis eines bereits ausgeführten Vorlaufs oder eines produktseitigen
+Checkpoints.** Für einen späteren Produktlauf müssen beide Vorläufe mit
+äquivalenter tatsächlich beobachteter Arbeit und Verlust-/Restart-Belegen
+gebunden werden. Eine Konsoleingabe `interruption_observed` ersetzt diese
+Belege nicht. In dieser Version bleibt jeder Lauf deshalb eine Harness-Übung.
+
+Vor einem Produktlauf sind Firefox-Build, Erweiterungspaket, OS/Host,
+Assistent/Modell, Parameter, Werkzeuge und Cache-/Netzpolitik identisch zu
+binden. Die genaue gewöhnliche Baseline ist noch nicht gewählt/gebunden.
+Sie muss ihre tatsächlich vorhandenen normalen Restore-Tabs, gespeicherten
+Dokumente und Chat-Historie behalten dürfen. Keinen absichtlich geschwächten
+Vergleich herstellen. Nur die deklarierte Fortsetzungsfunktion unterscheidet
+die Arme. Produktseitig erzeugte Fortsetzung und deren Aufwand sind zu
+protokollieren, nicht vom Harness aus den Bewertungsantworten zu erzeugen.
+
+Jeder Lauf verwendet frische isolierte Browser-/Assistentenprofile. Das Oracle
+darf dem Assistenten nicht zugänglich sein. Die HTTP-Aufgabenansicht lässt es
+weg; für reale Agenten ist zusätzlich eine getrennte Dateisystem-/Tool-Sicht
+erforderlich. Gleiche menschliche Teilnehmer lernen bei wiederholten Aufgaben;
+AB/BA beseitigt diesen Effekt nicht. Teilnehmercluster, Reihenfolge und
+Unterbrechungsklasse sind separat zu berichten. Mehrere Kennungen oder
+geskriptete Trials beweisen keine unabhängigen Nutzerbeobachtungen.
+
+## Aufgaben und unabhängige Bewertung
+
+| Fixture | Zu erbringende Arbeit | Fehlerkontrolle |
+| --- | --- | --- |
+| `research-costs` | Quellgebundener Vergleich aktueller Kosten, Updates und Aussagegrenzen zweier erfundener Anbieter | Überholte Preisliste; kein erfundener Kundennutzen |
+| `document-recovery` | Übergabe mit tatsächlichem Export-/Importstatus, nächstem Schritt und Abnahmegrenze | Ungeprüfter Altvermerk „Migration erledigt“ gegenüber aktuellem Nicht-Export |
+
+`fixtures/*.json` bindet Aufgabe, Revisionen, Quellen, gespeicherten Entwurf,
+bereits akzeptierte und offene Schritte sowie das getrennte Bewertungsoracle.
+Quellenidentitäten sind SHA-256 des kanonischen UTF-8-JSON-Quellenobjekts
+(ID, Revision, Text); Fixture-/Checkpointidentitäten ebenso. Der Hash der
+gesamten Fixture-Datei wird zusätzlich gebunden. Eine richtige Behauptung mit
+veralteter oder fehlender Quellenbindung besteht die Bewertung nicht.
+
+## Metriken
+
+| Metrik | Operative Definition |
+| --- | --- |
+| Belastbare Wiederaufnahme | Monotone Beobachterzeit ab `resume_signal` bis zu korrektem Arbeitsstand-Probe **und danach** korrekt ausgeführtem offenem Schritt mit richtigen Fakten und Quellenhashes |
+| Erneut einzugebender Kontext | Unicode-Codepoints, UTF-8-Bytes und Anzahl menschlicher Kontext-Gesten; Einfügen zählt mit. Automatischer Kontext wird separat erfasst |
+| Fehlabschlüsse | Jede unbelegte `step_claim`-/`task_claim`-Meldung zum Zeitpunkt der Meldung; zusätzlich Zahl verschiedener betroffener Schritte. Spätere Korrektur löscht frühere Fehlabschlüsse nicht |
+| Menschliche Eingriffe | Eindeutige tatsächliche Kontext-, Instruktions-, Korrektur-, Freigabe-, Restart- oder Eskalationsgesten nach Signal. Feste Beobachter-Protokollschritte separat |
+| Aufgabenqualität | Alle geforderten Schrittoutputs am Ende unabhängig richtig, innerhalb des Beobachtungsfensters; Selbstmeldung „erledigt“ ist kein Erfolg |
+
+Zeit für Restore, Reauthentifizierung, Lesen, erneute Eingabe und Prüfung nach
+dem Signal gehört zur Latenz. Die Uhr wird nicht erst nach dem Context-Restore
+gestartet. Nach dem Horizont werden keine weiteren Arbeitsereignisse als
+Messdaten zugelassen; `trial_end(reason=timeout)` schließt den Versuch.
+Nicht wiederaufgenommene Versuche erhalten **keine Null-Latenz**: Sie bleiben
+mit `null` und Zensierungs-/Abbruchstatus erhalten. Unvollständige, ungültige
+und nicht gestartete Versuche bleiben ebenfalls in der geplanten Ergebnistabelle.
+Ein vorzeitiger Fehlabschluss gilt nicht als schnelle erfolgreiche Wiederaufnahme.
+
+## Reproduzieren
+
+Aus einem Checkout des Kandidaten, Python 3.12 oder neuer, nur Standardbibliothek:
+
+```bash
+python3 -B tools/qikvrt_tool_cache.py verify
+python3 -B tools/qikvrt_browser_assistant_ab.py preflight
+python3 -B tools/qikvrt_browser_assistant_ab.py plan --output .qikvrt/runtime/browser-ab/run-001
+python3 -B tools/qikvrt_browser_assistant_ab.py serve --run .qikvrt/runtime/browser-ab/run-001 --port 8782
+```
+
+Die Konsole ist auf `http://127.0.0.1:8782/` beschränkt. Sie ist ein
+Beobachter-/Fixture-Harness, kein Chatbot. Ihre Bedienung kann die
+Messinstrumentierung üben; sie erzeugt keine Firefox-/Assistenten-Belege.
+Ein neuer Ordner pro Lauf verhindert Überschreiben früherer Daten. Kein
+Zugang zu Gmail, Produktivdiensten oder privaten Browserprofilen ist nötig.
+
+```bash
+python3 -B tools/qikvrt_browser_assistant_ab.py analyze --run .qikvrt/runtime/browser-ab/run-001 --output .qikvrt/runtime/browser-ab/analysis-001
+python3 -B tools/qikvrt_browser_assistant_ab.py terminal-smoke
+python3 -B tools/qikvrt_browser_assistant_ab.py self-check --output .qikvrt/runtime/browser-ab/self-check-001
+make browser-assistant-ab-test
+```
+
+`analyze` erzeugt `analysis.json`, `trials.csv` und `paired-deltas.json`.
+Delta-Vorzeichen ist QIK-VRT minus Baseline. Latenzdeltas für Paare mit
+fehlender/zensierter Latenz bleiben `null`; sie werden nicht auf null gesetzt
+oder aus einer Erfolgsauswahl zu einem Speedup verrechnet. Aufgabenerfolg,
+Fehler, Reihenfolge und Unterbrechungsklasse stehen neben jedem Delta.
+Diese Version erstellt keine aggregierte Nutzen-, Signifikanz- oder
+Überlegenheitsbehauptung. Der `self-check` verwendet absichtlich gleiche
+geskriptete Antworten und synthetische Uhren in beiden Armen; er prüft nur
+Messmechanik und bleibt `HARNESS_SELF_TEST`.
+
+## Rohdatenvertrag
+
+`manifest.json` bindet Seed, vollständige Paarliste, Vertrag, Fixtures,
+Python/OS, Repository-HEAD/TREE, Dirty-Flag und die genauen Harness-/Terminal-
+Quellbytes. Änderungen an einer dieser Dateien verlangen einen neuen Plan
+oder den original gebundenen Checkout. Der Vorbereitungszustand im Manifest
+wird nicht nachträglich umgeschrieben; die separate Auswertung berichtet
+beobachtete Ereignisse.
+
+Pro Versuch: `events/<trial_id>.jsonl`, serverseitiger monotoner Zeitstempel,
+UTC, fortlaufende Sequenz, Beobachterepoch, Manifesthash, Vorgängerhash und
+SHA-256 des Ereignisses. Payloads bleiben in den Rohbytes. Append ist
+serialisiert und fsync-gesichert. Der Beobachter bleibt außerhalb des
+unterbrochenen Clients. Ein Beobachterrestart invalidiert den Trial; seine
+alte Uhr darf nicht auf einen Nachfolger übertragen werden. Geplante Trials
+müssen in der gebundenen Reihenfolge ausgeführt werden, einschließlich
+Fehler-/Timeoutversuchen.
+
+| Ereignis | Payload |
+| --- | --- |
+| `trial_start` | `{}` |
+| `checkpoint_readback` | Exaktes `pair.binding` aus dem Plan |
+| `interruption_observed` | `{"class":"assistant_process_loss"}` oder gebundene Kontextreset-Klasse |
+| `resume_signal` | `{}` nach der Unterbrechungsdauer |
+| `human_input` | `gesture_id`, `kind`, tatsächlicher `text` (leer bei reiner Geste zulässig) |
+| `automatic_context` | Tatsächlicher `text`, separat gebundener `origin_sha256` |
+| `resume_probe` | `task_sha256`, `checkpoint_sha256`, Quellen-ID→Hash, `completed_steps`, `pending_steps`, `next_step` |
+| `step_output` | `step_id`, unabhängig zu prüfende `facts`, Quellen-ID→Hash in `citations` |
+| `step_claim` / `task_claim` | `step_id` beziehungsweise `{}` |
+| `trial_end` | `reason`: `completed`, `timeout` oder `abort` |
+
+POST `/api/event`: `trial_id`, `type`, `payload`. Nicht der Client bestimmt
+die Messzeit. Die Konsole quittiert die Speicherung, ohne dem Teilnehmer
+eine richtige Antwort oder einen positiven Bewertungsstatus zurückzugeben.
+Die Hashkette sichert Bindungen und erleichtert Manipulationserkennung;
+sie beweist keine Personenidentität oder wahrheitsgemäße Meldung eines Operators.
+Die tatsächlichen vier Nutzermetriken benötigen vollständige Produktinstrumentierung.
+
+## Erste reale Ausführungsgrenze und Fortsetzung
+
+Der erste fehlende produktseitige Baustein ist ein aufrufbarer persönlicher
+Recherche-/Dokumentationsassistent mit authentifiziertem Firefox-/Terminal-
+Fortsetzungspfad. Hinzu kommen die gebundene gewöhnliche Baseline und die
+Firefox-Installation im Versuchshost. Eine reine Firefox-Installation schließt
+die Assistentenlücke nicht. `preflight` benennt jede getrennte Grenze;
+`product_trials_executed=0`, `product_metrics=null`,
+`product_claim_allowed=false` bleiben maschinenlesbar.
+
+Sobald der reale Adapter vorhanden ist: den vorhandenen Harness erweitern,
+Versions-/Identitäts- und Interruptionstraces anbinden, echten
+Produktmodus separat reviewen, identische Vorläufe prüfen und den vollständigen
+Plan frisch ausführen. Alle vier Metriken, Qualität und Fehlläufe aus Rohdaten
+auswerten. Erst diese Ausführung kann die Produktfrage beantworten.
+Keine neuen Mailentwürfe oder Nutzenversprechen aus diesem Vorbereitungsstand.
