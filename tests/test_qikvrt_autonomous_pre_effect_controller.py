@@ -40,6 +40,26 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
         preconditions["NO_COMPETING_WRITER"] = False
         self.assertEqual(MODULE.classify(preconditions, None), "HOLD")
 
+    def test_missing_precondition_is_hold_but_not_halt_when_local_edge_exists(self) -> None:
+        preconditions = {name: True for name in MODULE.EXPECTED_PRECONDITIONS}
+        preconditions["NO_COMPETING_WRITER"] = False
+        decision = MODULE.classify(preconditions, None)
+        recursive = MODULE._recursive_haltpoint(preconditions, decision, None)
+        self.assertEqual(decision, "HOLD")
+        self.assertEqual(recursive["classification"], "WORK")
+        self.assertFalse(recursive["halt"])
+        self.assertEqual(recursive["next_action"], "SERIALIZE_TO_ONE_EXPECTED_HEAD_WRITER")
+
+    def test_irreversible_effect_is_real_halt_without_exact_owner_authorization(self) -> None:
+        preconditions = {name: True for name in MODULE.EXPECTED_PRECONDITIONS}
+        decision = MODULE.classify(preconditions, "PUBLIC_RELEASE")
+        recursive = MODULE._recursive_haltpoint(preconditions, decision, "PUBLIC_RELEASE")
+        self.assertEqual(recursive["classification"], "BLOCKADE")
+        self.assertTrue(recursive["halt"])
+        self.assertEqual(
+            recursive["reason"], "REQUIRED_EXACT_HUMAN_AUTHORIZATION_UNAVAILABLE"
+        )
+
     def test_irreversible_effect_requires_exact_owner_authorization(self) -> None:
         preconditions = {name: True for name in MODULE.EXPECTED_PRECONDITIONS}
         for effect in MODULE.IRREVERSIBLE_EFFECTS:

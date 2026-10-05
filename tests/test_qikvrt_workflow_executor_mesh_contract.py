@@ -53,6 +53,22 @@ class WorkflowExecutorMeshContractTests(unittest.TestCase):
                 }
             ],
         )
+        recursive = contract["reflexive_deadlock_prevention"]["recursive_haltpoint"]
+        self.assertTrue(recursive["enabled"])
+        self.assertEqual(
+            recursive["rule"],
+            "HOLD_OR_BLOCKADE_IS_NOT_HALT_WHILE_A_PRODUCTIVE_EDGE_CAN_BE_DERIVED_OR_EXECUTED",
+        )
+        self.assertEqual(
+            recursive["halt_allowed_only_if"],
+            [
+                "FINAL_IDLE",
+                "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
+                "REQUIRED_EXACT_HUMAN_AUTHORIZATION_UNAVAILABLE",
+            ],
+        )
+        self.assertFalse(recursive["predecessor_evidence_transfer"])
+        self.assertFalse(recursive["transport_ack_is_effect_ack"])
         boundaries = contract["boundaries"]
         self.assertEqual(boundaries["direct_repository_mutation"], "FORBIDDEN")
         self.assertFalse(boundaries["watchdog_terminality_is_gate_success"])

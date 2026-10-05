@@ -207,6 +207,25 @@
       "zero_job_is_trusted_execution": false,
       "deadlock_freedom_proved": false,
       "universal_relational_database_superiority_proved": false
+    },
+    "recursive_haltpoint": {
+      "enabled": true,
+      "policy_path": "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json",
+      "controller_path": "tools/qikvrt_recursive_haltpoint.py",
+      "acceptance_test_path": "tests/test_qikvrt_recursive_haltpoint.py",
+      "rule": "HOLD_OR_BLOCKADE_IS_NOT_HALT_WHILE_A_PRODUCTIVE_EDGE_CAN_BE_DERIVED_OR_EXECUTED",
+      "halt_allowed_only_if": [
+        "FINAL_IDLE",
+        "REQUIRED_EXTERNAL_CAPABILITY_UNAVAILABLE",
+        "REQUIRED_EXACT_HUMAN_AUTHORIZATION_UNAVAILABLE"
+      ],
+      "predecessor_evidence_transfer": false,
+      "transport_ack_is_effect_ack": false,
+      "recursive_application": [
+        "EVERY_OBSERVATION",
+        "EVERY_BLOCKER_TRANSITION",
+        "AFTER_EVERY_REPAIR_OR_EFFECT_ATTEMPT"
+      ]
     }
   },
   "boundaries": {

@@ -13,6 +13,7 @@ from collections.abc import Sequence
 from typing import Any
 
 from tools import qikvrt_autonomous_self_heal as self_heal
+from tools import qikvrt_recursive_haltpoint as haltpoint
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 POLICY = ROOT / "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json"
@@ -190,6 +191,88 @@ def classify(preconditions: dict[str, bool], requested_effect: str | None) -> st
     return "AUTONOMOUS_EXECUTION_ALLOWED"
 
 
+PRODUCTIVE_EDGE_BY_PRECONDITION = {
+    "CURRENT_MAIN_REOBSERVED": "REOBSERVE_CURRENT_MAIN",
+    "EXACT_HEAD_BOUND": "REBIND_EXACT_HEAD_TREE",
+    "NO_COMPETING_WRITER": "SERIALIZE_TO_ONE_EXPECTED_HEAD_WRITER",
+    "DETERMINISTIC_STATE": "REPAIR_OR_REOBSERVE_DETERMINISTIC_POLICY_STATE",
+    "REPOSITORY_NATIVE_EVIDENCE": "MATERIALIZE_OR_REOBSERVE_REQUIRED_REPOSITORY_EVIDENCE",
+}
+
+
+def _recursive_haltpoint(
+    preconditions: dict[str, bool],
+    decision: str,
+    requested_effect: str | None,
+    result_state: str | None = None,
+) -> dict[str, Any]:
+    if decision == "REQUIRE_EXACT_PRODUCT_OWNER_AUTHORIZATION":
+        observation = {
+            "exact_subject_bound": preconditions.get("EXACT_HEAD_BOUND") is True,
+            "final_idle": False,
+            "effect_ack_done": False,
+            "first_blocker": "EXACT_PRODUCT_OWNER_AUTHORIZATION_REQUIRED",
+            "productive_edge": "OBTAIN_EXACT_PRODUCT_OWNER_AUTHORIZATION",
+            "edge_authorized": False,
+            "edge_callable": False,
+            "requires_external_capability": False,
+            "external_capability_available": True,
+            "requires_exact_human_authorization": True,
+            "exact_human_authorization_available": False,
+            "transport_ack": False,
+            "predecessor_evidence_transfer": False,
+        }
+        return haltpoint.classify(observation)
+
+    if decision == "HOLD":
+        missing = next(
+            (name for name in EXPECTED_PRECONDITIONS if preconditions.get(name) is not True),
+            "UNCLASSIFIED_PRECONDITION",
+        )
+        edge = PRODUCTIVE_EDGE_BY_PRECONDITION.get(
+            missing, "DERIVE_FIRST_PRODUCTIVE_EDGE"
+        )
+        observation = {
+            "exact_subject_bound": preconditions.get("EXACT_HEAD_BOUND") is True,
+            "final_idle": False,
+            "effect_ack_done": False,
+            "first_blocker": missing,
+            "productive_edge": edge,
+            "edge_authorized": True,
+            "edge_callable": True,
+            "requires_external_capability": False,
+            "external_capability_available": True,
+            "requires_exact_human_authorization": False,
+            "exact_human_authorization_available": True,
+            "transport_ack": False,
+            "predecessor_evidence_transfer": False,
+        }
+        return haltpoint.classify(observation)
+
+    if result_state == "CANDIDATE_READY":
+        blocker = "BOUNDED_REPAIR_CANDIDATE_READY"
+        edge = "VERIFY_AND_PROPOSE_EXACT_CANDIDATE"
+    else:
+        blocker = None
+        edge = None
+    observation = {
+        "exact_subject_bound": preconditions.get("EXACT_HEAD_BOUND") is True,
+        "final_idle": False,
+        "effect_ack_done": False,
+        "first_blocker": blocker,
+        "productive_edge": edge,
+        "edge_authorized": edge is not None,
+        "edge_callable": edge is not None,
+        "requires_external_capability": False,
+        "external_capability_available": True,
+        "requires_exact_human_authorization": False,
+        "exact_human_authorization_available": True,
+        "transport_ack": False,
+        "predecessor_evidence_transfer": False,
+    }
+    return haltpoint.classify(observation)
+
+
 def execute(command: str, requested_effect: str | None = None) -> dict[str, Any]:
     load_policy()
     preconditions = observe_preconditions()
@@ -205,12 +288,18 @@ def execute(command: str, requested_effect: str | None = None) -> dict[str, Any]
                 "FINAL_PASS": False,
                 "EFFECT_ACK_DONE": False,
             },
+            "recursive_haltpoint": _recursive_haltpoint(
+                preconditions, decision, requested_effect
+            ),
         }
     result = self_heal.execute(command == "apply")
     result["schema"] = "qikvrt_autonomous_pre_effect_result_v1"
     result["pre_effect_policy"] = "AUTONOMOUS-PRE-EFFECT-POLICY-V1"
     result["preconditions"] = preconditions
     result["decision"] = decision
+    result["recursive_haltpoint"] = _recursive_haltpoint(
+        preconditions, decision, requested_effect, result.get("state")
+    )
     return result
 
 

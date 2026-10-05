@@ -28,6 +28,9 @@ on:
       - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
       - ".github/workflows/qikvrt_live_status_watch.yml"
       - "tools/qikvrt_reflexive_repository_watchdog.py"
+      - "tools/qikvrt_recursive_haltpoint.py"
+      - "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json"
+      - "tests/test_qikvrt_recursive_haltpoint.py"
       - "tools/qikvrt_workflow_executor.py"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
       - "registry/NODE_DISCOVERY_POLICY.json"
@@ -42,6 +45,9 @@ on:
       - ".github/workflows/qikvrt_reflexive_repository_watchdog.yml"
       - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
       - "tools/qikvrt_reflexive_repository_watchdog.py"
+      - "tools/qikvrt_recursive_haltpoint.py"
+      - "policy/QIKVRT_RECURSIVE_HALTPOINT_V1.json"
+      - "tests/test_qikvrt_recursive_haltpoint.py"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
       - "registry/NODE_DISCOVERY_POLICY.json"
       - "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
@@ -211,7 +217,7 @@ jobs:
           python3 -B tools/qikvrt_reflexive_repository_watchdog.py "${args[@]}" \
             > "$root/reflexive-watchdog-receipt.json"
           cp "$root/reflexive-watchdog-receipt.json" "$root/gatewatch-receipt.json"
-          jq '{state, disposition, first_blocker, productive_edge, semantic_fingerprint}' \
+          jq '{state, disposition, first_blocker, productive_edge, recursive_haltpoint, semantic_fingerprint}' \
             "$root/reflexive-watchdog-receipt.json"
 
       - name: Verify reflexive prevention and mesh continuity contracts
@@ -228,6 +234,7 @@ jobs:
           trap restore_liveness EXIT
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v \
             tests.test_qikvrt_reflexive_repository_watchdog \
+            tests.test_qikvrt_recursive_haltpoint \
             tests.test_qikvrt_workflow_executor_mesh_contract \
             tests.test_seed_workflows
 
