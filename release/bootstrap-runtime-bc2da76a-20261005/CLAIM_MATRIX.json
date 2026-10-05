@@ -1,0 +1,149 @@
+{
+  "_license": {
+    "classification": "machine_readable_claim_matrix",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "claim_count": 13,
+  "claims": [
+    {
+      "boundary": "Original exact-source CI only; no Windows 11 or all-node acceptance.",
+      "claim_id": "BRT-001",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "NATIVE_CI"
+      ],
+      "statement": "CLI and shared-library packages were executed on Linux x86_64, macOS arm64 and Windows Server 2025 AMD64.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "SQLite and native CLI/shared-library adapters from this source; no claim about every SQL implementation.",
+      "claim_id": "BRT-002",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "NATIVE_CI"
+      ],
+      "statement": "The same native kernel is usable through a verified SQLite BLOB UDF with a 14-octet input and 6-octet output.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "Provider-independent semantic kernel and package rebuild; no universal independence from other software.",
+      "claim_id": "BRT-003",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "EXACT_SOURCE"
+      ],
+      "statement": "The retained C90 kernel does not call provider APIs, a network, operating-system services or heap allocation; CLI/build/SQL/Pharo/S1 dependencies remain declared.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Original native build/rebuild witnesses; compiler and platform libraries remain required.",
+      "claim_id": "BRT-004",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "NATIVE_CI"
+      ],
+      "statement": "The CI rebuilt each native package from independently pinned package bytes without Git or provider access.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "Archived Linux Pharo CI execution log; no transfer to another VM/image/target.",
+      "claim_id": "BRT-005",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "SMALLTALK_CI"
+      ],
+      "statement": "Pinned Pharo 13.1 restored and matched 2621440 C90 comparison vectors, with 23 additional Python/C90/Smalltalk boundary cases.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "MC68000 ISA kernel and Linux ABI emulator; no physical hardware acceptance.",
+      "claim_id": "BRT-006",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "MC68000_CI"
+      ],
+      "statement": "The MC68000 kernel has object/raw bytes/disassembly and an emulated m68k Linux-ABI witness over 515 vectors.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "Complete OCI/noVNC runtime payload and public appliance delivery are not in this archive.",
+      "claim_id": "BRT-007",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "HTTP_S1_CI"
+      ],
+      "statement": "The archive preserves the S1 HTTP/Docker source carrier and exact-source Firefox/noVNC execution readbacks.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "PolyForm-Noncommercial QIKVRT code, CC-BY-NC-ND documentation, preserved historical and third-party exceptions.",
+      "claim_id": "BRT-008",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "sources": [
+        "LICENSES"
+      ],
+      "statement": "Original per-file licenses and third-party runtime notices are retained; public access does not grant a broader QIKVRT implementation license.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "This exact catalog, archive, source HEAD and TREE; source/CI acceptance is separate from publication.",
+      "claim_id": "BRT-009",
+      "classification": "EMPIRICALLY_EVIDENCED",
+      "proof_refs": [],
+      "sources": [
+        "EXACT_SOURCE"
+      ],
+      "statement": "The frozen catalog has 57 payload files and five native/backend rows; the 118774398-byte archive and its reconstruction were independently SHA-256 verified.",
+      "status": "EVIDENCED"
+    },
+    {
+      "boundary": "Ingolf Lohmann requested future-variant behavior; active publication requires the existing admitted and authenticated production route.",
+      "claim_id": "BRT-010",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Publish each freshly verified new target or changed binary as a source/license/binary/evidence-bound version, followed by public byte readback and per-node import/readback.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Authority currently returns authenticated 404; productive publisher credential delivery is unestablished.",
+      "claim_id": "BRT-011",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Zenodo publication, public DOI/file verification and synchronization of every required node remain open.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Windows Server 2025 AMD64 is the observed Windows environment and does not close this target.",
+      "claim_id": "BRT-012",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Windows 11 AMD64 client execution remains open.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Emulator output is not hardware execution.",
+      "claim_id": "BRT-013",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "sources": [],
+      "statement": "Physical MC68000 hardware execution remains open.",
+      "status": "OPEN"
+    }
+  ],
+  "publication_id": "qikvrt-bootstrap-runtime-bc2da76a-20261005",
+  "schema": "qikvrt-bootstrap-runtime-claim-matrix/v1"
+}

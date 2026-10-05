@@ -1,0 +1,53 @@
+{
+  "_license": {
+    "classification": "machine_readable_publication_status",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "all_nodes_persisted": false,
+  "automatic_publication_activated": false,
+  "blockers": [
+    "AUTHORITY_AUTHENTICATED_READ_HTTP_404",
+    "PROTECTED_PUBLISHER_CREDENTIAL_DELIVERY_UNESTABLISHED",
+    "CANONICAL_CANDIDATE_BOUND_OWNER_EVENT_NOT_YET_RECORDED"
+  ],
+  "effect_ack_done": false,
+  "future_variant_rule": {
+    "deduplicate_by": [
+      "source_tree",
+      "target",
+      "binary_sha256",
+      "license_digest"
+    ],
+    "owner_requested": true,
+    "per_node_import_and_fresh_readback_required": true,
+    "public_byte_redownload_required": true,
+    "publish_through_existing_publisher": true,
+    "source_and_target_receipts_required": true
+  },
+  "metadata_license_vocabulary_remote_readback": "PENDING",
+  "mirror_archive_blobs_public_byte_equal": true,
+  "mirror_archive_branch_attachment": "PENDING_CREATE_ONLY_REVIEW_BRANCH",
+  "next_existing_carrier": {
+    "main_deployment_required": true,
+    "publisher": "tools/qikvrt_zenodo_publish.py",
+    "pull_request": 463
+  },
+  "original_candidate_archive_unchanged": true,
+  "publication_id": "qikvrt-bootstrap-runtime-bc2da76a-20261005",
+  "publication_watch": {
+    "automation_id": "6a88d1fc61048191af0d5a3a68ff2f88",
+    "existing_prompt_extended_for_new_variants": true,
+    "external_executor_created": false,
+    "mode": "READ_ONLY"
+  },
+  "schema": "qikvrt-bootstrap-runtime-production-status/v1",
+  "source_head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+  "source_tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+  "state": "FROZEN_RUNTIME_VERIFIED_V2_REVIEW_DRAFT_PRODUCTION_BLOCKED",
+  "workflow_dispatches": 0,
+  "zenodo_mutations": 0,
+  "zenodo_published": false
+}

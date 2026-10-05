@@ -1,0 +1,112 @@
+{
+  "_license": {
+    "classification": "machine_readable_source_evidence_bindings",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "original_repository_source_urls_are_provenance_not_final_scientific_citations": true,
+  "publication_id": "qikvrt-bootstrap-runtime-bc2da76a-20261005",
+  "schema": "qikvrt-bootstrap-runtime-evidence-bindings/v1",
+  "sources": [
+    {
+      "evidence": {
+        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "release_index_sha256": "3a4403cac04950bc5ba432d86c310b31380d4495a8f333451c854d4d64b6430e",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
+      },
+      "id": "EXACT_SOURCE",
+      "scope": "Original frozen source commit and independently verified 57-file release index"
+    },
+    {
+      "evidence": {
+        "check_names": [
+          "native-runtime (ubuntu-24.04)",
+          "native-runtime (macos-15)",
+          "native-runtime (windows-2025)"
+        ],
+        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "run_id": 37305763679,
+        "targets": [
+          {
+            "archive_sha256": "904a5c8abfc4af18f4badc7ca572bcc43c491f69698b2ddbeace2db8fbd75fb8",
+            "binary_sha256": "9eecbc9cc273a6b27ad5f5eec3747c9f1bf4bc425a35310d9d6f2f479a81e193",
+            "execution_scope": "EXECUTED_NATIVE_C90_AND_SQL_ADAPTERS; NOT_FULL_NODE_OR_PUBLICATION_ACCEPTANCE",
+            "file": "qikvrt-native-darwin-arm64.zip",
+            "manifest_sha256": "8bb3d98f72acd9f171229f7d5bd3c3a80705316e62745242c25464660faac032",
+            "target": "darwin-arm64"
+          },
+          {
+            "archive_sha256": "379a7c7e2e96662d3c9cb4b62c23e6faba0f4ef033ada6702f694a3e8f3b8c10",
+            "binary_sha256": "8424d86fcadc82b8394dc4acc803455200fb96d945cc21218ceb647c6ced9227",
+            "execution_scope": "EXECUTED_NATIVE_C90_AND_SQL_ADAPTERS; NOT_FULL_NODE_OR_PUBLICATION_ACCEPTANCE",
+            "file": "qikvrt-native-linux-x86_64.zip",
+            "manifest_sha256": "d80bcc008413bc2bfff6dd914b710bed1cd5a787e9544a2d1139d5167f330b8b",
+            "target": "linux-x86_64"
+          },
+          {
+            "archive_sha256": "1f8b28160c30b3d95947841d50881daf2a4c103b25704d40d19edf5bf196d2bd",
+            "binary_sha256": "a844a18d46edd8583d067915d582a933bfcb69a4265a4e069d176ab224053d34",
+            "execution_scope": "EXECUTED_NATIVE_C90_AND_SQL_ADAPTERS; NOT_FULL_NODE_OR_PUBLICATION_ACCEPTANCE",
+            "file": "qikvrt-native-win32-AMD64.zip",
+            "manifest_sha256": "5dac49aa480b057a403baa638e79790f5e924118ea5cb7091d42352795acd3e4",
+            "target": "win32-AMD64"
+          }
+        ]
+      },
+      "id": "NATIVE_CI",
+      "scope": "Three native targets, CLI/shared library/SQLite/rebuild on the frozen source"
+    },
+    {
+      "evidence": {
+        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "log": "QIKVRT_SMALLTALK_IMAGE_RESTORED\nTEMDD_SMALLTALK_EXECUTED vectors=6\nQIKVRT_SMALLTALK_VECTORS=2621440\nQIKVRT_PYTHON_C90_SMALLTALK_BOUNDARIES=23\nQIKVRT_SMALLTALK_C90_EXHAUSTIVE_MATCH vectors=2621440 sha256=4d42866a336d28b78432bc12a313fd8b76f8f7199164caa9dea65ff3c0d71a85\nPHARO_TEST_OK version=13.1-4f7563dfe5-vm80b106bb\n",
+        "run_id": 37305763679
+      },
+      "id": "SMALLTALK_CI",
+      "scope": "Pinned Pharo execution log from the frozen catalog"
+    },
+    {
+      "evidence": {
+        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "log": "TEMDD_M68000_EXECUTED vectors=515\n",
+        "physical_hardware_witness": false,
+        "run_id": 37305763679
+      },
+      "id": "MC68000_CI",
+      "scope": "Emulated MC68000 Linux-ABI witness from the frozen catalog"
+    },
+    {
+      "evidence": {
+        "complete_oci_runtime_archived": false,
+        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "public_appliance_acceptance": false,
+        "run_id": 37305763679
+      },
+      "id": "HTTP_S1_CI",
+      "scope": "S1 source carrier and native Firefox/noVNC CI readbacks retained in the exact archive"
+    },
+    {
+      "evidence": {
+        "paths": [
+          "LICENSE",
+          "LICENSES/PolyForm-Noncommercial-1.0.0.txt",
+          "LICENSES/CC-BY-NC-ND-4.0.txt"
+        ],
+        "record_level_license_does_not_relicense_payloads": true
+      },
+      "id": "LICENSES",
+      "scope": "Preserved per-file QIKVRT, historical and third-party license notices"
+    },
+    {
+      "evidence": {
+        "authorization_scope": "Bootstrap/runtime persistence and future verified variants; no fabricated exact canonical publisher event",
+        "instruction_date": "2026-10-05"
+      },
+      "id": "OWNER_VARIANTS",
+      "scope": "Ingolf Lohmann current instruction: preserve bootstrap and runtime binaries on Zenodo and every declared node; publish each verified new variant prominently"
+    }
+  ]
+}
