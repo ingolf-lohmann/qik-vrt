@@ -125,7 +125,7 @@ temdd-event-ledger-test: tool-cache-contract
 
 # The historical admission target is part of explicitly selected S1 runtimes.
 # Generic portable callers retain their existing platform contract.
-ifneq ($(filter self-host self-host-firefox,$(QIKVRT_RUNTIME_PROFILE)),)
+ifneq ($(filter self-host self-host-firefox self-host-systemd,$(QIKVRT_RUNTIME_PROFILE)),)
 test: temdd-event-ledger-test
 endif
 

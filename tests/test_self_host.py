@@ -26,6 +26,19 @@ spec.loader.exec_module(host)
 
 
 class WorkflowRuntimeTests(unittest.TestCase):
+    def test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference(self):
+        workflow=(ROOT/'.github/workflows/qikvrt_effect_ack_http_terminal.yml').read_text()
+        start=workflow.index('- name: Verify existing native systemd crash and admission restoration recovery')
+        end=workflow.index('- name: Preserve native systemd recovery readback')
+        gate=workflow[start:end]
+        self.assertIn('python3 -B -m unittest -v tests.test_self_host_systemd',gate)
+        self.assertIn('--profile self-host-systemd --adapter none',gate)
+        for weakening in ('continue-on-error','|| true','if:'): self.assertNotIn(weakening,gate)
+        fixture=(ROOT/'tests/test_self_host_systemd.py').read_text()
+        self.assertIn("'public_readback_verified':False",fixture)
+        self.assertIn("'deployed_restart_verified':False",fixture)
+        self.assertIn("'effect_ack_done':False",fixture)
+
     def test_batch003_requires_s1_runtime_and_tests_before_persistence(self):
         workflow = (ROOT / ".github/workflows/qikvrt_batch003_remaining_disposition.yml").read_text()
         gates = workflow.index("- name: Run complete repository gates")
@@ -425,6 +438,77 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
                 mock.patch.object(Path,'read_text',return_value='17 1 0:4 / / rw - overlay overlay rw\n'):
             with self.assertRaisesRegex(ValueError,'PERSISTENT_HOST_MOUNT_REQUIRED'):
                 host.own_host_observation(self.volume)
+
+    def test_supervisor_is_create_only_and_preserves_admission_on_every_start(self):
+        declaration,observed,path,save=self.host_declaration()
+        declaration['supervisor_id']='systemd:qikvrt-fixture-only.service'
+        tool_pin=host.digest(Path(host.__file__).read_bytes())
+        with mock.patch.object(host,'own_host_observation',return_value=observed):
+            plan=host.supervisor_plan(self.export,self.pin,self.config_path,path,save(),tool_pin)
+        output=self.work/'supervisor'
+        receipt=host.materialize_supervisor(plan,output)
+        unit=(output/plan['unit_name']).read_bytes()
+        self.assertEqual(host.digest(unit),receipt['unit_sha256'])
+        self.assertIn(b'run-admitted',unit)
+        self.assertIn(path.as_posix().encode(),unit)
+        for directive in (b'Restart=always',b'RestartPreventExitStatus=78',b'KillMode=control-group',
+                b'StartLimitBurst=5',b'RequiresMountsFor=',b'BindsTo=',b'WantedBy=multi-user.target'):
+            self.assertIn(directive,unit)
+        self.assertNotIn(self.token_file.read_bytes(),unit)
+        path_unit=(output/plan['path_unit_name']).read_bytes()
+        self.assertEqual(host.digest(path_unit),receipt['path_unit_sha256'])
+        self.assertIn(b'PathChanged=',path_unit)
+        self.assertNotIn(b'PathExists=',path_unit)
+        for line in path_unit.decode().splitlines():
+            if line.startswith('PathChanged='):
+                self.assertTrue(line.split('=',1)[1].startswith('/'),'systemd path parser requires raw absolute path')
+        for k in ('supervisor_installed','live_recovery_verified','public_readback_verified','effect_ack_done'):
+            self.assertIs(receipt[k],False)
+        with self.assertRaises(FileExistsError): host.materialize_supervisor(plan,output)
+        self.assertFalse((self.volume/'binding.json').exists())
+
+    def test_guard_independently_verifies_then_execs_original_export(self):
+        declaration,observed,path,save=self.host_declaration()
+        declaration['supervisor_id']='systemd:qikvrt-fixture-only.service'
+        tool_pin=host.digest(Path(host.__file__).read_bytes())
+        with mock.patch.object(host,'own_host_observation',return_value=observed), \
+                mock.patch.object(host,'systemd_invocation',return_value='a'*32), \
+                mock.patch.object(host.os,'execv',side_effect=RuntimeError('exec observed')) as execute:
+            with self.assertRaisesRegex(RuntimeError,'exec observed'):
+                host.run_admitted(self.export,self.pin,self.config_path,path,save(),tool_pin)
+        args=execute.call_args.args[1]
+        self.assertEqual(args[1:],self.command()[1:])
+        self.assertFalse((self.volume/'binding.json').exists())
+
+    def test_guard_pin_drift_and_wrong_persisted_identity_cannot_execute(self):
+        declaration,observed,path,save=self.host_declaration()
+        declaration['supervisor_id']='systemd:qikvrt-fixture-only.service'
+        tool_pin=host.digest(Path(host.__file__).read_bytes())
+        with mock.patch.object(host,'own_host_observation',return_value=observed), \
+                mock.patch.object(host.os,'execv',side_effect=AssertionError('must not execute')):
+            with self.assertRaisesRegex(ValueError,'TOOL_PIN_MISMATCH'):
+                host.run_admitted(self.export,self.pin,self.config_path,path,save(),'0'*64)
+            binding=self.volume/'binding.json'
+            binding.write_bytes(b'{"node_id":"wrong-node"}\n');binding.chmod(0o600)
+            before=binding.read_bytes()
+            with self.assertRaisesRegex(ValueError,'VOLUME_BINDING_MISMATCH'):
+                host.run_admitted(self.export,self.pin,self.config_path,path,save(),tool_pin)
+            self.assertEqual(binding.read_bytes(),before)
+        result=subprocess.run([sys.executable,'-B',str(ROOT/'tools/qikvrt_self_host.py'),'run-admitted',
+            '--root',str(self.export),'--manifest-sha256',self.pin,'--admission-tool-sha256','0'*64],
+            capture_output=True,text=True,timeout=10)
+        self.assertEqual(result.returncode,78,result.stdout+result.stderr)
+        self.assertFalse(json.loads(result.stdout)['effect_ack_done'])
+
+    def test_supervisor_invocation_requires_actual_manager_mainpid_and_id(self):
+        with mock.patch.object(Path,'read_text',return_value='python\n'):
+            with self.assertRaisesRegex(ValueError,'ACTIVE_HOST_SYSTEMD'):
+                host.systemd_invocation('qikvrt-fixture-only.service')
+        with mock.patch.object(Path,'read_text',return_value='systemd\n'), \
+                mock.patch.dict(os.environ,{'INVOCATION_ID':'a'*32}), \
+                mock.patch.object(host.subprocess,'check_output',side_effect=[b'systemd 255\n',b'MainPID=0\nInvocationID='+b'a'*32+b'\n']):
+            with self.assertRaisesRegex(ValueError,'INVOCATION_BINDING_MISMATCH'):
+                host.systemd_invocation('qikvrt-fixture-only.service')
 
 
 if __name__ == '__main__': unittest.main()

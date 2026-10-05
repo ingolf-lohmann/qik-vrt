@@ -37,6 +37,37 @@
     },
     "test_scope": "SYNTHETIC_LOCAL_FIXTURES; NOT_OWN_HOST_ACCEPTANCE"
   },
+  "continuation_runtime_recovery": {
+    "candidate_contents": "CONTAINING_COMMIT",
+    "deployed_restart_verified": false,
+    "effect_ack_done": false,
+    "local_native_systemd_execution": "NOT_PERFORMED; native CI runner required",
+    "local_systemd_preflight": "BLOCK_MALFORMED_SYSTEMCTL_VERSION; /usr/local/bin/systemctl is a container placeholder, not an active supervisor",
+    "public_readback_verified": false,
+    "public_url": null,
+    "repository_gates": {
+      "command": "make test repository-monitor-test",
+      "log_sha256": "f837209b0174b29aaab1bc7d6845e8553ca6775c0b51401bfebf65e5f32dd549",
+      "monitor_tests": 24,
+      "result": "PASS"
+    },
+    "source_head": "34c74ae770378cad8febeb2a559bf0db13aad3b0",
+    "standalone_tests": {
+      "log_sha256": "80c692edfd2ededfe8ec9e2852521b80a46e1b0901ff26b3ac218d12c5d7c246",
+      "result": "PASS",
+      "tests": 24
+    },
+    "tool_cache_coverage": {
+      "covered": 25,
+      "declared": 25,
+      "percent": 100
+    },
+    "unit_syntax": {
+      "result": "PASS",
+      "scope": "SYNTHETIC_ROOT_MOUNT_DECLARATION; NO_ACTIVE_SUPERVISOR",
+      "tool": "/usr/bin/systemd-analyze 255"
+    }
+  },
   "deployed_restart_verified": false,
   "deployment_performed": false,
   "effect_ack_done": false,

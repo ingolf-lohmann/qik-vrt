@@ -14,6 +14,7 @@ on:
       - "deploy/universal-terminal/**"
       - "tests/test_self_host_temdd.py"
       - "tests/test_self_host_firefox.py"
+      - "tests/test_self_host_systemd.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
       - "tests/test_self_host.py"
       - "runtime/self-host/**"
@@ -50,6 +51,23 @@ jobs:
 
       - name: Run standalone package, negative and crash-restart controls
         run: make self-host-test
+
+      - name: Verify existing native systemd crash and admission restoration recovery
+        id: systemd-runtime
+        env:
+          QIKVRT_SYSTEMD_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-systemd-readback
+        run: |
+          sh tools/bootstrap-runtime.sh --check-only --profile self-host-systemd --adapter none
+          python3 -B -m unittest -v tests.test_self_host_systemd
+
+      - name: Preserve native systemd recovery readback
+        if: ${{ always() && steps.systemd-runtime.outcome == 'success' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-systemd-recovery-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/qikvrt-systemd-readback
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Build isolated Firefox and noVNC dependency carrier
         shell: bash

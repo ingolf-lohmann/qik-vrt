@@ -29,3 +29,4 @@ xdpyinfo	exact-executable-binding	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_O
 xwininfo	exact-executable-binding	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	self_host_firefox_source_and_runtime_verification
 novnc	reported-version-and-exact-package-digest	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	MPL-2.0	self_host_firefox_source_and_runtime_verification
 docker	OCI-build-and-isolated-runtime-contract	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	Apache-2.0	self_host_firefox_source_and_runtime_verification
+systemd	252-or-newer-unit-contract	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	LGPL-2.1-or-later	optional_own_host_supervisor_binding

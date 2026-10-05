@@ -24,7 +24,7 @@ usage() {
     cat <<'EOF'
 Usage: tools/bootstrap-runtime.sh [--check-only] [--install]
        [--accept-third-party]
-       [--profile core|ietf|formal|audio|publication|all|self-host|self-host-firefox]
+       [--profile core|ietf|formal|audio|publication|all|self-host|self-host-firefox|self-host-systemd]
        [--adapter none|github]
        [--cache-dir PATH]
 
@@ -100,14 +100,14 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$PROFILE" in
-    core|ietf|formal|audio|publication|all|self-host|self-host-firefox) ;;
+    core|ietf|formal|audio|publication|all|self-host|self-host-firefox|self-host-systemd) ;;
     *) usage >&2; exit 2 ;;
 esac
 case "$ADAPTER" in auto|none|github) ;; *) usage >&2; exit 2 ;; esac
 if [ "$ADAPTER" = auto ]; then
-    case "$PROFILE" in self-host|self-host-firefox) ADAPTER=none ;; *) ADAPTER=github ;; esac
+    case "$PROFILE" in self-host|self-host-firefox|self-host-systemd) ADAPTER=none ;; *) ADAPTER=github ;; esac
 fi
-if [ "$PROFILE" != self-host ] && [ "$PROFILE" != self-host-firefox ] && [ "$ADAPTER" != github ]; then
+if [ "$PROFILE" != self-host ] && [ "$PROFILE" != self-host-firefox ] && [ "$PROFILE" != self-host-systemd ] && [ "$ADAPTER" != github ]; then
     fail "existing profiles require the GitHub adapter"
 fi
 if [ "$MODE" = install ] && [ "$ACCEPT_THIRD_PARTY" -ne 1 ]; then
@@ -425,7 +425,7 @@ check_publication_profile() {
 }
 
 case "$PROFILE" in
-    self-host|self-host-firefox)
+    self-host|self-host-firefox|self-host-systemd)
         if ! node_24_is_available; then
             mark_continue "self-host: operator-provisioned Node 24.x is absent"
         else
@@ -443,6 +443,21 @@ case "$PROFILE" in
                 command -v "$browser_tool" >/dev/null 2>&1 || mark_continue "self-host-firefox: operator-provisioned $browser_tool is absent"
             done
             test -s /usr/share/novnc/vnc.html && test -s /usr/share/novnc/core/rfb.js || mark_continue "self-host-firefox: complete noVNC source is absent"
+        fi
+        if [ "$PROFILE" = self-host-systemd ]; then
+            [ "$(uname -s)" = Linux ] || mark_continue "self-host-systemd: Linux is required"
+            for supervisor_tool in systemctl systemd-analyze; do
+                if ! command -v "$supervisor_tool" >/dev/null 2>&1; then
+                    mark_continue "self-host-systemd: operator-provisioned $supervisor_tool is absent"
+                else
+                    supervisor_version=$("$supervisor_tool" --version | awk 'NR == 1 && $1 == "systemd" {print $2}')
+                    case "$supervisor_version" in
+                        ''|*[!0-9]*) fail "self-host-systemd: malformed $supervisor_tool version" ;;
+                        *) [ "$supervisor_version" -ge 252 ] || mark_continue "self-host-systemd: systemd >=252 is required" ;;
+                    esac
+                fi
+            done
+            printf '%s\n' "self-host-systemd: unit syntax can be checked locally; native active supervisor/control-plane admission remains separate"
         fi
         ;;
     core) check_core_profile ;;

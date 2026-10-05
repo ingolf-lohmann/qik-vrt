@@ -5,6 +5,19 @@ Copyright 2026 Ingolf Lohmann.
 
 # Runtime toolchain provenance
 
+The optional `self-host-systemd` profile uses an already provisioned Linux
+systemd >=252. The host distribution owns its binary/package provenance; no
+service startup installs or downloads tools. The behavioral contract is unit
+syntax verification, exact guard pins and native supervisor/cgroup restart
+controls in the existing terminal workflow. The 252 minimum includes path
+trigger rate limits. Upstream unit/service/exec contracts are at
+<https://github.com/systemd/systemd/tree/v255/man>. `systemctl --version` is
+retained with the native test receipt. Actual host admission must separately
+bind the authorized host supervisor and its independently validated evidence.
+Unavailable tools yield CONTINUE; invalid unit/pin/identity/mount yields HOLD.
+Recovery never deletes state, changes a package pin, installs dependencies,
+grants review approval or creates a public acceptance receipt.
+
 No executable or authentication token is stored in this directory. The files
 here define independently checkable versions, upstream locations, checksums,
 and license boundaries for an optional local cache.
