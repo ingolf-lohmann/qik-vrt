@@ -8,9 +8,32 @@ on:
       - "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
       - "browser/firefox/qikvrt-terminal/**"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
+      - "tools/qikvrt_firefox_windows_witness.py"
+      - "tools/qikvrt_tool_cache.py"
+      - "runtime/toolchains/**"
+      - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_api_handler.py"
+      - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
   workflow_dispatch:
+    inputs:
+      windows11_amd64_runner:
+        description: 'Existing authorized repository-accessible Windows 11 x64 runner label; empty keeps Server compatibility only. No provisioning authorization.'
+        type: string
+        default: ''
+        required: false
+      expected_head:
+        description: 'Independently read exact commit SHA, required with a Windows 11 AMD64 runner'
+        type: string
+        default: ''
+        required: false
+      expected_tree:
+        description: 'Independently read exact tree SHA, required with a Windows 11 AMD64 runner'
+        type: string
+        default: ''
+        required: false
 
 permissions:
   contents: read
@@ -34,6 +57,30 @@ jobs:
           test "$(git rev-parse HEAD)" = '${{ github.event.pull_request.head.sha || github.sha }}'
           echo "HEAD=$(git rev-parse HEAD)"
           echo "TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Admit optional Windows 11 AMD64 carrier binding
+        shell: bash
+        env:
+          CLIENT_RUNNER: ${{ inputs.windows11_amd64_runner }}
+          CLIENT_HEAD: ${{ inputs.expected_head }}
+          CLIENT_TREE: ${{ inputs.expected_tree }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_HEAD: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import os,re,subprocess
+          runner,head,tree=(os.environ.get(k,'') for k in ('CLIENT_RUNNER','CLIENT_HEAD','CLIENT_TREE'))
+          if runner:
+              assert os.environ['EVENT_NAME']=='workflow_dispatch', 'EXPLICIT_DISPATCH_REQUIRED'
+              assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,127}',runner), 'INVALID_RUNNER_LABEL'
+              assert runner not in ('windows-2025','windows-2022','windows-latest','windows-11-arm','self-hosted','Windows','X64'), 'DEDICATED_WINDOWS11_AMD64_LABEL_REQUIRED'
+              assert re.fullmatch(r'[0-9a-f]{40}',head) and re.fullmatch(r'[0-9a-f]{40}',tree), 'INDEPENDENT_HEAD_TREE_REQUIRED'
+              assert head==os.environ['EVENT_HEAD']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), 'EXACT_HEAD_MISMATCH'
+              assert tree==subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(), 'EXACT_TREE_MISMATCH'
+          else:
+              assert not head and not tree, 'RUNNER_BINDING_REQUIRED'
+          print('WINDOWS11_AMD64_BINDING_VALIDATED' if runner else 'SERVER_COMPATIBILITY_ONLY')
+          PY
 
       - name: Validate machine-readable boundary
         shell: bash
@@ -93,5 +140,134 @@ jobs:
         with:
           name: qikvrt-personal-firefox-boundary-${{ github.event.pull_request.head.sha || github.sha }}
           path: /tmp/qikvrt-personal-firefox-boundary
+          if-no-files-found: error
+          retention-days: 30
+
+  linux-seed-ring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact Linux ring candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Use declared interpreter
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - name: Verify cache, seed controls and real HTTP concurrency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+      - name: Run actual Firefox seed-bound ring on Linux
+        shell: bash
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_firefox_windows_witness.py --linux-ring --headless --output "$RUNNER_TEMP/qikvrt-firefox-linux-ring"
+      - name: Preserve Linux ring readback even on failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-linux-ring-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/geckodriver.log
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/screenshot.png
+            ${{ runner.temp }}/qikvrt-firefox-linux-ring/standard.xpi
+          # The private state file contains token material. Preserve readbacks,
+          # never the .qikvrt/api store itself.
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-witness:
+    # Validate dispatch bindings on Linux before allocating an optional carrier.
+    needs: boundary
+    name: Native Windows ${{ matrix.architecture }} (${{ matrix.runner }})
+    # Server AMD64 controls do not establish Windows 11 AMD64 client acceptance.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-11-arm
+            architecture: ARM64
+            python_architecture: arm64
+          - runner: ${{ inputs.windows11_amd64_runner || 'windows-2025' }}
+            architecture: AMD64
+            python_architecture: x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      QIKVRT_RUNNER_LABEL: ${{ matrix.runner }}
+      QIKVRT_EXPECTED_ARCHITECTURE: ${{ matrix.architecture }}
+      QIKVRT_REQUIRE_PRODUCT_TARGET: ${{ matrix.architecture == 'AMD64' && inputs.windows11_amd64_runner != '' }}
+    steps:
+      - name: Check out exact Windows candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Use declared native Windows interpreter
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13.15'
+          architecture: ${{ matrix.python_architecture }}
+      - name: Verify cache and acceptance contract
+        shell: pwsh
+        run: |
+          $output = "$env:RUNNER_TEMP/qikvrt-firefox-windows-$env:QIKVRT_EXPECTED_ARCHITECTURE"
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          @{
+            schema = 'qikvrt_firefox_windows_preflight_v1'
+            head = (git rev-parse HEAD)
+            tree = (git rev-parse 'HEAD^{tree}')
+            state = 'HOLD'
+            stage = 'CACHE_AND_CONTRACT_PREFLIGHT'
+            runner_label = $env:QIKVRT_RUNNER_LABEL
+            expected_architecture = $env:QIKVRT_EXPECTED_ARCHITECTURE
+            architecture_evidence_transfer = $false
+            predecessor_evidence_transfer = $false
+            observed_at = [DateTime]::UtcNow.ToString('o')
+            personal_release_effect_ack_done = $false
+          } | ConvertTo-Json | Set-Content -Encoding utf8 "$output/RECEIPT.json"
+          python -B tools/qikvrt_tool_cache.py verify
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Run the same State validation and real CLI restart controls natively.
+          python -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal
+          exit $LASTEXITCODE
+      - name: Read canonical public URL and verify seed-bound durable Firefox effect
+        shell: pwsh
+        env:
+          QIKVRT_EXPECTED_HEAD: ${{ matrix.architecture == 'AMD64' && inputs.windows11_amd64_runner != '' && inputs.expected_head || github.event.pull_request.head.sha || github.sha }}
+          QIKVRT_EXPECTED_TREE: ${{ matrix.architecture == 'AMD64' && inputs.windows11_amd64_runner != '' && inputs.expected_tree || '' }}
+        run: |
+          $targetArguments = @()
+          if ($env:QIKVRT_REQUIRE_PRODUCT_TARGET -eq 'true') { $targetArguments += '--require-product-target' }
+          python -B tools/qikvrt_firefox_windows_witness.py --expected-architecture "$env:QIKVRT_EXPECTED_ARCHITECTURE" @targetArguments --output "$env:RUNNER_TEMP/qikvrt-firefox-windows-$env:QIKVRT_EXPECTED_ARCHITECTURE"
+          exit $LASTEXITCODE
+      - name: Preserve Windows evidence even on functional failure
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-windows-${{ matrix.architecture }}-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/RECEIPT.json
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/PUBLIC_URL_READBACK.json
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/PUBLIC_URL_HTTP.html
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/PUBLIC_URL_BROWSER.png
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/screenshot.png
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/geckodriver.log
+            ${{ runner.temp }}/qikvrt-firefox-windows-${{ matrix.architecture }}/standard.xpi
+          # Persist only readbacks. The state root holds token/key material.
           if-no-files-found: error
           retention-days: 30
