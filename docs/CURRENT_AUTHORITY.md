@@ -38,8 +38,10 @@ Frozen release/publication workflows remain bound to their original exact
 authorization subjects. They do not grant publication authority to this cutover.
 
 The PR's history-preserving Main integration is bound to
-`0a44160d16c3937dc5888652791f4bd1a7136af7` in the classification's
+`86d7062f25f174039da0a5df8a856127553036f1` in the classification's
 `main_lifecycle_successor` and the cutover work unit's `main_integration`.
+The previous integration record remains in `main_integration_history` and its
+exact predecessor commit; it supplies historical provenance, not current gates.
 Main's current lifecycle projections and incoming receipts retain their exact
 Main bytes. Superseded projection bytes remain bound through their original
 source commit; the original classification and historical digest bindings are

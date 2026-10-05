@@ -738,8 +738,8 @@
   ],
   "main_lifecycle_successor": {
     "source_repository": "ingolf-lohmann/qik-vrt",
-    "source_main_head": "0a44160d16c3937dc5888652791f4bd1a7136af7",
-    "source_main_tree": "e2eedbfcc2f197cb5a4f30139daeb8075be9a921",
+    "source_main_head": "86d7062f25f174039da0a5df8a856127553036f1",
+    "source_main_tree": "5421dceb17f1ecc0fd3f5c12891ca9c1a12e7cf2",
     "predecessor_cutover_head": "050be9cf4ac983819b516907ef35a8670c94cafc",
     "predecessor_cutover_tree": "57696c28cb63b32a1b1f693b00c50c8fd61f19db",
     "merge_base": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
@@ -757,10 +757,16 @@
         "git_blob_sha1": "fa01b335fe878c663475c441e4a5fd8d8e938c20"
       },
       {
+        "path": "evidence/node_health/37268524250-1.json",
+        "bytes": 241,
+        "sha256": "9f1228947772ec19bd2dd906748fb2b153836620665115ab53b206508f6cd6ec",
+        "git_blob_sha1": "0e284a7c572193e005726439e83a872834f2ec05"
+      },
+      {
         "path": "evidence/node_health/LATEST.json",
         "bytes": 241,
-        "sha256": "0be70fd732958190edaab039617b00a26e244ff0d34f88931d240b9e204f69d6",
-        "git_blob_sha1": "fa01b335fe878c663475c441e4a5fd8d8e938c20"
+        "sha256": "9f1228947772ec19bd2dd906748fb2b153836620665115ab53b206508f6cd6ec",
+        "git_blob_sha1": "0e284a7c572193e005726439e83a872834f2ec05"
       },
       {
         "path": "evidence/node_registration_renewal/37201684625-1.json",
@@ -775,22 +781,28 @@
         "git_blob_sha1": "c872f704c36085ddffe8b2539675463bb6fa3b26"
       },
       {
+        "path": "evidence/node_registration_renewal/37268524250-1.json",
+        "bytes": 262,
+        "sha256": "7fc9927c4819a29ec680345dd339e9dbd20e7aada63a63076771e0e46cfb9cf2",
+        "git_blob_sha1": "b5d3aa632571a2d23b15562d92a031d955f0edd5"
+      },
+      {
         "path": "evidence/node_registration_renewal/LATEST.json",
         "bytes": 262,
-        "sha256": "893f5c4388631bd4ea2ac2c3f247b2060f2c2701fc123a9c56b5486909655c40",
-        "git_blob_sha1": "c872f704c36085ddffe8b2539675463bb6fa3b26"
+        "sha256": "7fc9927c4819a29ec680345dd339e9dbd20e7aada63a63076771e0e46cfb9cf2",
+        "git_blob_sha1": "b5d3aa632571a2d23b15562d92a031d955f0edd5"
       },
       {
         "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
         "bytes": 563,
-        "sha256": "01bbc8663e865f4fbdb2dfc97b73e82ec1b14a5e5e8ffa559ebf1bff1a2b01f3",
-        "git_blob_sha1": "93da558c120c34ca4ba6925c932e77017f519566"
+        "sha256": "31eb23955d5853666d2bfbbf436da3ab361e232c10e4ec8688c7a0bd6dbbd1ed",
+        "git_blob_sha1": "295976f19821e83ed8137398c9dff3e499c274ba"
       },
       {
         "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
         "bytes": 542,
-        "sha256": "88d1cb6956b40414fcdcc546751fbf88d93ae7f43987d8e3be032f9b8843797c",
-        "git_blob_sha1": "c34906996cbeda09c41b9c58da7dff17c21d7c30"
+        "sha256": "8ff6a1431d826119c9d61277e08f1ed6666b47f7ecfdec4e069144418d1db34d",
+        "git_blob_sha1": "047dc95d0e3ec99f002162f72199e75c27ecca7f"
       }
     ],
     "preservation_rule": "Original classification entries and digest bindings remain unchanged. Superseded lifecycle projection bytes resolve through the original source commit; all other historical/scoped bindings remain byte-identical at their current paths. Incoming Main receipts and projections retain Main bytes and provenance.",
