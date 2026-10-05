@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.1.0
+# S1 standalone node package, version 1.1.1
 
 This package reuses the existing Node monitor and reference terminal. It now
 also includes the recovered original productive TEMDD ledger/Unix daemon and
@@ -116,6 +116,62 @@ is installed; self-host selects an explicit separate plan. No credentials are
 needed in the readback process. A local URL proves only local HTTP readback.
 
 ## Executable S1 validation
+
+### Own-host admission and existing launcher binding
+
+`admit` extends this same tool. It makes no network call, starts no service,
+creates no supervisor, modifies no state and grants no deployment authority.
+Without a private host declaration and private configuration it returns
+`HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE` (exit 2).
+
+Copy `HOST_ADMISSION.example.json` outside the package, mode 0600. All nulls
+mean missing evidence; they are deliberately not a fabricated host or URL.
+Bind exact package Head/Tree/manifest, config digest and node ID. The host
+operator supplies the SHA-256 of the exact `/etc/machine-id` bytes and the
+selected persistent mount fields from `/proc/self/mountinfo`: `mount_point`,
+`mount_root`, `device_major_minor`, `filesystem`, `mount_source`. The command
+selects the longest mount containing the configured private `state_dir` and
+compares these fields locally. Overlay, tmpfs and other ephemeral filesystems
+are refused. A matching mount is not a power-loss or capacity guarantee.
+
+The declaration also identifies the actually callable, authorized host
+execution operation, existing supervisor/service, authorized public HTTPS
+origin and digests of independently validated ownership/authorization,
+persistence and HTTPS-routing evidence. Evidence digests alone do not validate
+those records. Obtain the declaration pin through an independent trusted
+channel; do not infer it from an untrusted self-report. Do not put secrets or
+credential values in the declaration, arguments, launcher plan or repository.
+
+```sh
+python3 -B tools/qikvrt_self_host.py admit --root <absolute-package-directory> \
+  --manifest-sha256 <independent-package-pin> --config <absolute-private-config> \
+  --admission <absolute-private-host-declaration> \
+  --admission-sha256 <independent-host-declaration-pin>
+```
+
+The result is `HOST_LAUNCHER_BOUND_PENDING_EXTERNAL_ACCEPTANCE`, with argv arrays
+for the **existing** exported `verify`, `run` and independent monitor-readback
+commands. No declaration-supplied command is executed. An independently
+reviewed successor tool can prepare this plan for the unchanged exact #457
+export `3bf52747bc94de847d390ffacabecae183aee588` / Tree
+`96c7bb691675dcd15bb5045871201adb400074f0`; the plan runs that export's original
+launcher. A newly packed successor binds its own fresh source pair instead.
+
+After independently validating the named host/control-plane and evidence,
+use the existing supervisor with the emitted verify/run argv. From a separate
+external client execute the emitted readback against the exact HTTPS origin.
+Record acknowledged native SQLite events through the existing owner Unix
+ingress and the existing monitor journal, restart the actual deployed service
+via the same supervisor, then repeat public readback and compare the exact
+acknowledged event bytes and digest chain. Neither an empty ledger nor a
+local restart substitutes for this witness. Record supervisor restart identity,
+before/after process identities, mount binding and independent observations.
+
+This plan leaves `host_admission_verified`, `public_readback_verified`,
+`restart_verified`, `review_governance_satisfied` and `effect_ack_done` false.
+Current host capability/HOLD evidence is in
+`runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json`; tests of synthetic
+declarations are explicitly local controls and are not host acceptance.
 
 On the declared Linux runtime run `make test repository-monitor-test self-host-test`.
 The existing full repository suite stays intact; the two explicit S1 targets add

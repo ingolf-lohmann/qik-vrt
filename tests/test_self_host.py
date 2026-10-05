@@ -14,6 +14,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest import mock
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -358,6 +359,72 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
         alias=self.work/'token-alias';alias.symlink_to(self.token_file)
         self.config['terminal_token_file']=str(alias);self.save_config()
         self.assertIn('NOT_SYMLINKED',self.denied())
+
+    def host_declaration(self):
+        self.config.update(terminal_profile='temdd', source_repository=self.manifest['source_repository'], subject_pr=457)
+        self.save_config()
+        observed={'machine_id_sha256':'a'*64,'mount':{'mount_point':str(self.volume),'mount_root':'/',
+            'device_major_minor':'8:1','filesystem':'ext4','mount_source':'/dev/fixture-only'}}
+        declaration={'schema':'qikvrt-own-host-admission/v1','source_head':self.head,'source_tree':self.tree,
+            'manifest_sha256':self.pin,'config_sha256':host.digest(self.config_path.read_bytes()),
+            'node_id':self.config['node_id'],**observed,'public_origin':'https://operator-host.example.org',
+            'execution_operation':'fixture-only: no external operation','supervisor_id':'fixture:existing-supervisor',
+            'authorization_evidence_sha256':'b'*64,'persistence_evidence_sha256':'c'*64,
+            'https_routing_evidence_sha256':'d'*64}
+        path=self.work/'admission.json'
+        def save():
+            raw=host.raw_json(declaration);path.write_bytes(raw);path.chmod(0o600);return host.digest(raw)
+        return declaration,observed,path,save
+
+    def test_admission_missing_does_not_start_or_claim_completion(self):
+        command=[sys.executable,'-B',str(self.export/'tools/qikvrt_self_host.py'),'admit',
+            '--root',str(self.export),'--manifest-sha256',self.pin]
+        result=subprocess.run(command,capture_output=True,text=True,timeout=8)
+        self.assertEqual(result.returncode,2,result.stdout+result.stderr)
+        value=json.loads(result.stdout)
+        self.assertEqual(value['cause'],'HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE')
+        self.assertFalse(value['effect_ack_done'])
+        self.assertFalse((self.volume/'binding.json').exists())
+
+    def test_admission_binds_original_launcher_without_any_external_effect(self):
+        declaration,observed,path,save=self.host_declaration()
+        host.verify(self.export,self.pin)
+        with mock.patch.object(host,'own_host_observation',return_value=observed), \
+                mock.patch.object(host,'runtime',side_effect=lambda command:self.manifest['runtime']['node' if command=='node' else 'python']), \
+                mock.patch.object(host.subprocess,'Popen',side_effect=AssertionError('must not execute')):
+            result=host.admission_plan(self.export,self.pin,self.config_path,path,save())
+        self.assertEqual(result['state'],'HOST_LAUNCHER_BOUND_PENDING_EXTERNAL_ACCEPTANCE')
+        expected=self.command();expected[0]=str(Path(sys.executable).resolve())
+        self.assertEqual(result['run_argv'],expected)
+        self.assertEqual(result['readback_argv'][2:],['--self-host',str(self.export),declaration['public_origin'],
+            self.pin,host.digest(self.config_path.read_bytes()),self.config['node_id'],'none'])
+        for key in ('execution_performed','host_admission_verified','public_readback_verified',
+                    'restart_verified','review_governance_satisfied','effect_ack_done'):
+            self.assertIs(result[key],False)
+        self.assertFalse((self.volume/'binding.json').exists())
+
+    def test_admission_rejects_pin_subject_route_identity_and_mount_drift(self):
+        declaration,observed,path,save=self.host_declaration()
+        pin=save()
+        with self.assertRaisesRegex(ValueError,'PIN_MISMATCH'):
+            host.admission_plan(self.export,self.pin,self.config_path,path,'0'*64)
+        controls=[('source_tree','0'*40,'SUBJECT_MISMATCH'),('public_origin','http://127.0.0.1','PUBLIC_HTTPS'),
+            ('public_origin','https://127.0.0.1','PUBLIC_HTTPS'),('public_origin','https://mesh.up.railway.app','PUBLIC_HTTPS'),
+            ('machine_id_sha256','e'*64,'IDENTITY_OR_MOUNT'),('mount',{**observed['mount'],'mount_source':'/dev/wrong'},'IDENTITY_OR_MOUNT'),
+            ('persistence_evidence_sha256',None,'EVIDENCE_BINDINGS')]
+        for key,value,cause in controls:
+            before=declaration[key];declaration[key]=value
+            with self.subTest(key=key,value=value), mock.patch.object(host,'own_host_observation',return_value=observed):
+                with self.assertRaisesRegex(ValueError,cause):
+                    host.admission_plan(self.export,self.pin,self.config_path,path,save())
+            declaration[key]=before
+        self.assertFalse((self.volume/'binding.json').exists())
+
+    def test_ephemeral_mount_cannot_be_host_persistence_evidence(self):
+        with mock.patch.object(Path,'read_bytes',return_value=b'a'*32+b'\n'), \
+                mock.patch.object(Path,'read_text',return_value='17 1 0:4 / / rw - overlay overlay rw\n'):
+            with self.assertRaisesRegex(ValueError,'PERSISTENT_HOST_MOUNT_REQUIRED'):
+                host.own_host_observation(self.volume)
 
 
 if __name__ == '__main__': unittest.main()

@@ -46,6 +46,7 @@
     "evidence/self_host/SOURCE_RECOVERY_20261005.json",
     "runtime/self-host/CONFIG.example.json",
     "runtime/self-host/Dockerfile",
+    "runtime/self-host/HOST_ADMISSION.example.json",
     "runtime/self-host/PACKAGE.json",
     "runtime/self-host/README.md",
     "runtime/self-host/RECOVERED_TERMINAL.md",
@@ -83,5 +84,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.1.0"
+  "version": "1.1.1"
 }

@@ -8,6 +8,7 @@ import argparse
 import fcntl
 import hashlib
 import importlib.util
+import ipaddress
 import json
 import os
 import platform
@@ -19,6 +20,7 @@ import stat
 import struct
 import time
 import urllib.request
+import urllib.parse
 import subprocess
 import sys
 import tarfile
@@ -201,6 +203,103 @@ def private_path(path, directory=False):
     if (info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) != (0o700 if directory else 0o600)
             or not (stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode))):
         raise ValueError("OWNER_ONLY_PRIVATE_PATH_REQUIRED")
+
+
+def own_host_observation(volume):
+    """Observe this Linux host/mount, without reading credentials or using a provider."""
+    machine = Path("/etc/machine-id").read_bytes()
+    if not re.fullmatch(rb"[a-f0-9]{32}\n?", machine) or machine.strip() == b"0" * 32:
+        raise ValueError("OWN_HOST_MACHINE_ID_UNAVAILABLE")
+    def unescape(value):
+        return re.sub(r"\\([0-7]{3})", lambda m: chr(int(m[1], 8)), value)
+    mounts = []
+    for line in Path("/proc/self/mountinfo").read_text().splitlines():
+        left, right = line.split(" - ", 1)
+        fields, fs = left.split(), right.split()
+        point = Path(unescape(fields[4]))
+        if volume == point or point in volume.parents:
+            mounts.append({"mount_point": str(point), "mount_root": unescape(fields[3]),
+                "device_major_minor": fields[2], "filesystem": fs[0], "mount_source": unescape(fs[1])})
+    if not mounts: raise ValueError("OWN_HOST_MOUNT_UNAVAILABLE")
+    mount = max(mounts, key=lambda m: len(Path(m["mount_point"]).parts))
+    if mount["filesystem"] in {"overlay", "tmpfs", "ramfs", "devtmpfs", "squashfs", "proc", "sysfs"}:
+        raise ValueError("PERSISTENT_HOST_MOUNT_REQUIRED")
+    return {"machine_id_sha256": digest(machine), "mount": mount}
+
+
+def admission_plan(package, pin, config_path=None, admission_path=None, admission_pin=None):
+    """Bind the existing launcher to pinned host declarations; never deploy or assert acceptance.
+
+    An independently obtained admission pin binds the operator's declaration.
+    Local identity/mount comparisons do not validate the external authorization,
+    storage guarantees, control-plane capability, HTTPS route or review governance.
+    """
+    manifest = verify(package, pin)
+    if config_path is None or admission_path is None:
+        raise ValueError("HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE")
+    private_path(config_path); private_path(admission_path)
+    config_raw, admission_raw = config_path.read_bytes(), admission_path.read_bytes()
+    if not re.fullmatch(r"[a-f0-9]{64}", admission_pin or "") or digest(admission_raw) != admission_pin:
+        raise ValueError("HOST_ADMISSION_PIN_MISMATCH")
+    config, admission = json.loads(config_raw), json.loads(admission_raw)
+    fields = {"schema", "source_head", "source_tree", "manifest_sha256", "config_sha256", "node_id",
+              "machine_id_sha256", "mount", "public_origin", "execution_operation", "supervisor_id",
+              "authorization_evidence_sha256", "persistence_evidence_sha256", "https_routing_evidence_sha256"}
+    if (set(admission) != fields or admission["schema"] != "qikvrt-own-host-admission/v1"
+            or config.get("schema") != "qikvrt-self-host-config/v1"
+            or config.get("adapter") != "none" or config.get("terminal_profile") not in {"temdd", "firefox"}
+            or config.get("source_repository") != manifest["source_repository"]
+            or type(config.get("subject_pr")) is not int or config["subject_pr"] < 1
+            or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
+            or "CHANGE_ME" in config["node_id"]
+            or admission["manifest_sha256"] != pin or admission["config_sha256"] != digest(config_raw)
+            or admission["node_id"] != config["node_id"]
+            or any(admission[k] != manifest[k] or config.get(k) != manifest[k] for k in ("source_head", "source_tree"))):
+        raise ValueError("HOST_ADMISSION_SUBJECT_MISMATCH")
+    for field in ("authorization_evidence_sha256", "persistence_evidence_sha256", "https_routing_evidence_sha256"):
+        if not re.fullmatch(r"[a-f0-9]{64}", admission.get(field) or ""):
+            raise ValueError("HOST_ADMISSION_EVIDENCE_BINDINGS_REQUIRED")
+    if any(not isinstance(admission.get(k), str) or not admission[k].strip()
+            or len(admission[k]) > 256 or any(c in admission[k] for c in "\r\n\x00")
+            for k in ("execution_operation", "supervisor_id")):
+        raise ValueError("EXISTING_HOST_EXECUTION_AND_SUPERVISOR_REQUIRED")
+    origin = admission.get("public_origin")
+    if not isinstance(origin, str): raise ValueError("AUTHORIZED_PUBLIC_HTTPS_ORIGIN_REQUIRED")
+    url = urllib.parse.urlsplit(origin)
+    hostname = url.hostname or ""
+    if (url.scheme != "https" or url.username or url.password or url.path or url.query or url.fragment
+            or url.port not in {None, 443} or not hostname or hostname == "localhost"
+            or hostname.endswith((".localhost", ".local", ".invalid", ".test", ".railway.app", ".vercel.app"))):
+        raise ValueError("AUTHORIZED_PUBLIC_HTTPS_ORIGIN_REQUIRED")
+    try:
+        address = ipaddress.ip_address(hostname)
+    except ValueError:
+        label = r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?"
+        tld = r"[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?"
+        if len(hostname) > 253 or not re.fullmatch(r"(?:" + label + r"\.)+" + tld, hostname):
+            raise ValueError("AUTHORIZED_PUBLIC_HTTPS_ORIGIN_REQUIRED")
+    else:
+        if not address.is_global: raise ValueError("AUTHORIZED_PUBLIC_HTTPS_ORIGIN_REQUIRED")
+    volume = Path(config["state_dir"]); private_path(volume, directory=True)
+    observed = own_host_observation(volume)
+    if admission["machine_id_sha256"] != observed["machine_id_sha256"] or admission["mount"] != observed["mount"]:
+        raise ValueError("OWN_HOST_IDENTITY_OR_MOUNT_MISMATCH")
+    common = ["--root", str(package), "--manifest-sha256", pin]
+    launcher = [str(Path(sys.executable).resolve()), "-B", str(package / "tools/qikvrt_self_host.py")]
+    return {"schema": "qikvrt-own-host-launcher-binding/v1", "state": "HOST_LAUNCHER_BOUND_PENDING_EXTERNAL_ACCEPTANCE",
+        "source_head": manifest["source_head"], "source_tree": manifest["source_tree"], "manifest_sha256": pin,
+        "config_sha256": digest(config_raw), "node_id": config["node_id"], "admission_sha256": admission_pin,
+        "admission_tool_sha256": digest(Path(__file__).read_bytes()),
+        "local_identity_and_mount_match": True, "verify_argv": launcher + ["verify", *common],
+        "run_argv": launcher + ["run", *common, "--config", str(config_path)],
+        "readback_argv": [str(Path(shutil.which("node")).resolve()), str(package / "tools/qikvrt_mesh_monitor_readback.mjs"),
+            "--self-host", str(package), origin, pin, digest(config_raw), config["node_id"], "none"],
+        "execution_performed": False, "host_admission_verified": False, "public_readback_verified": False,
+        "restart_verified": False, "review_governance_satisfied": False, "effect_ack_done": False,
+        "remaining": ["validate independent host/control-plane, persistence and HTTPS authorization evidence",
+            "use existing supervisor and exact verify/run argv on the admitted host",
+            "fresh independent public readback, actual supervisor restart and byte-exact durable data readback",
+            "separate current native review governance"]}
 
 
 def packaged_subject(package, pin, repository, pr, head, tree):
@@ -486,13 +585,15 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "run"))
+    parser.add_argument("operation", choices=("pack", "verify", "run", "admit"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
     parser.add_argument("--expected-tree")
     parser.add_argument("--manifest-sha256")
     parser.add_argument("--config", type=Path)
+    parser.add_argument("--admission", type=Path, help="private operator host declaration; no secrets")
+    parser.add_argument("--admission-sha256", help="independently obtained host declaration pin")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
     args = parser.parse_args()
     try:
@@ -502,6 +603,9 @@ def main():
         elif args.operation == "verify":
             verify(args.root, args.manifest_sha256)
             result = {"state": "EXACT_PACKAGE_RUNTIME_VERIFIED", "effect_ack_done": False}
+        elif args.operation == "admit":
+            result = admission_plan(args.root.resolve(), args.manifest_sha256, args.config,
+                                    args.admission, args.admission_sha256)
         else:
             if not args.config: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
             return start(args.root.resolve(), args.manifest_sha256, args.config.absolute())
