@@ -1,0 +1,93 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PRODUCT_NAME_RAUMZEIT_TERMINAL_20261006",
+  "created_at": "2026-10-05T22:29:13.668706+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "a317625810c1a7a2aee7d3109fa265209bac70a2",
+  "source_tree": "48212bdf4e5e42f5d38cd7d55118af9d0dcbdd23",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Established the technical product name and authorized a bounded patch of current product references while preserving historical material and independent technical names."
+  ],
+  "artificial_cognitive_contributions": [
+    "Inventoried canonical entry, product, offering and UI copy; classified all four legacy-name occurrences; replaced exactly two product references in AI."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "AI_git_blob_sha1": "702a1e006a1aeed035b504d3a19416d6740844c2",
+    "reference_pr": 464,
+    "reference_pr_head": "83439a26d3d80088e048e495ba46fff73785cf9c",
+    "reference_pr_modified": false
+  },
+  "outputs": {
+    "AI": {
+      "bytes": 18263,
+      "sha256": "045f41f6837028fe1ae98d9d346e0bc11ad8a1337dd483f718709ce9b90b7f20",
+      "git_blob_sha1": "dca799f178ebc9a971b3cc90e67209bff06a9746",
+      "product_reference_replacements": 2
+    }
+  },
+  "git_history": {
+    "branch": "work/product-name-raumzeit-terminal-20261006",
+    "parent_commit": "a317625810c1a7a2aee7d3109fa265209bac70a2",
+    "force_push": false,
+    "history_rewrite": false,
+    "subject_binding": "Containing Git commit and tree"
+  },
+  "verification": {
+    "exact_transformation": "AI successor equals original bytes with exactly two authorized product-name substitutions",
+    "canonical_copy_without_legacy_name": {
+      "README.md": "repository entry",
+      "docs/index.html": "product website entry",
+      "docs/QIKVRT_COMMERCIAL_OFFERING.md": "commercial offering",
+      "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md": "product roadmap",
+      "docs/QIKVRT_4AU1_PRODUCTIZATION_RELEASE_SEED.md": "product seed",
+      "docs/qikvrt_trust_mesh/LANDING_PAGE_DE.md": "landing copy",
+      "docs/qikvrt_trust_mesh/OFFERING_AND_PRICING_DE.md": "offering and pricing",
+      "docs/terminal/index.html": "repository-terminal UI",
+      "docs/assets/js/qikvrt-repository-terminal.js": "repository-terminal UI copy",
+      "browser/firefox/qikvrt-terminal/README.md": "Firefox reference adapter",
+      "browser/firefox/qikvrt-terminal/manifest.json": "extension title and description",
+      "browser/firefox/qikvrt-terminal/options.html": "extension options UI",
+      "browser/firefox/qikvrt-terminal/content.js": "extension in-page UI"
+    },
+    "preserved_occurrences": {
+      "personal/ingolf-lohmann/PAYLOAD_CONTRACT_V1.json": {
+        "reason": "technical Terminal/Transputer interface scope, not product or UI copy",
+        "git_blob_sha1": "65a1095dd8764df8ea34379e1ef0c1c32a40f812",
+        "sha256": "6b04ae334dfbce974a04b0cbcdd32492e4f9c5bbc615fa8952ab2a3536d5ed0e"
+      },
+      "personal/ingolf-lohmann/entries/2026-09-30-owner-receipt-universal-media-bidirectionality.json": {
+        "reason": "historical attributed owner receipt",
+        "git_blob_sha1": "f7384c00b06177444afd02978b116f22427bf878",
+        "sha256": "5add640519a4787fcdbc898920b807b2316ae96d56007ddd74d7ca29300ae75c"
+      }
+    },
+    "git_diff_check": "PASS_FOR_PRODUCT_PATCH",
+    "runtime_boot": "CONTINUE_OPTIONAL_RUNTIMES_ABSENT",
+    "tool_cache": "14/14 declared tools, 100 percent coverage",
+    "autonomous_pre_effect_check": "NOOP"
+  },
+  "human_decision": {
+    "patch_creation": "AUTHORIZED",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "review_candidate": "WITHIN_REQUESTED_SCOPE",
+    "merge": "NOT_AUTHORIZED_BY_THIS_TASK",
+    "release_deployment_publication": "OUT_OF_SCOPE"
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
