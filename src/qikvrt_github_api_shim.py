@@ -17,7 +17,9 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
+from qikvrt_api_handler import (
+    HandlerConfig, decode_secret_material, execute_work_unit, recover_work_units, run_handler,
+)
 from qikvrt_effect_ack import EffectState
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
@@ -120,7 +122,12 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
-        self.wfile.write(data)
+        try:
+            self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError):
+            # The durable result remains authoritative after a lost reply.
+            # Never execute or retry the handler to repair its transport ACK.
+            return
 
     def _read_json(self) -> dict:
         if self.headers.get("Transfer-Encoding") is not None:
@@ -290,6 +297,10 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                 trusted_attestation_signer=os.environ.get("QIKVRT_TRUSTED_ATTESTATION_SIGNER", "").strip(),
             )
             result = run_handler(cfg)
+            if cfg.operation == "work_unit_handoff" and result.get("state") == "QUEUED":
+                threading.Thread(target=execute_work_unit,
+                                 args=(cfg.root, cfg.artifact_id, requested_repository, principal,
+                                       _security_configuration_valid), daemon=True).start()
             effect_state = result.get("effect_state")
             status = {
                 EffectState.EFFECT_ACK_DONE.value: 202,
@@ -380,6 +391,8 @@ def main() -> int:
         context.minimum_version = ssl.TLSVersion.TLSv1_2
         context.load_cert_chain(certfile=cert_file, keyfile=key_file)
         server.socket = context.wrap_socket(server.socket, server_side=True)
+    recover_work_units(Path(os.environ.get("QIKVRT_REPO_ROOT", os.getcwd())),
+                       allowed_repository, principal, _security_configuration_valid)
     print(json.dumps({"status": "PASS", "listening": f"{host}:{port}"}), flush=True)
     try:
         server.serve_forever()

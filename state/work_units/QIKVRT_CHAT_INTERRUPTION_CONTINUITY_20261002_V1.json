@@ -1,0 +1,236 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "schema": "qikvrt_chat_interruption_continuity_work_unit_v1",
+  "work_unit_id": "QIKVRT_CHAT_INTERRUPTION_CONTINUITY_20261002_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source": {
+    "ref": "refs/heads/main",
+    "head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+    "tree": "007ceaef554f275ff6f53383f8572505b4ec52be",
+    "use": "EXACT_DIAGNOSTIC_SUBJECT_NOT_FUTURE_GATE_EVIDENCE"
+  },
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "reported_at": "2026-10-02T23:23:29+02:00",
+    "statement": "Also bisher ist es noch so, dass bei einer Zwischenfrage das gesamte Abarbeitungssystem des Repositories zum Erliegen kommt und ich momentan über den dafür zur Verfügung stehenden Client ChatGPT die betreffenden Task wieder neu starten muss. Und das ist natürlich inakzeptabel und auch viel zu fehleranfällig.",
+    "symptom_class": "USER_REPORTED_INTERACTIVE_TASK_CONTINUATION_FAILURE",
+    "raw_client_execution_trace_available": false
+  },
+  "diagnosis": {
+    "observed_carrier_scope": {
+      "contract": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "contract_blob": "28e88e103545685c48f8c92041130e34eb05188b",
+      "pr_continuation_workflow": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "pr_continuation_workflow_blob": "b138d57fb249f8352c8d4e856e9fc7634a5b81c4",
+      "requires_same_repository_draft_opt_in": true,
+      "maximum_pull_requests_per_run": 1,
+      "allowlisted_failure_classes": [
+        "ANTICIPATION_PROJECTION_DRIFT",
+        "PUBLICATION_OVERVIEW_DRIFT",
+        "REPOSITORY_NATIVE_INTEGRITY_STALE"
+      ],
+      "workflow_executor_authorized_scope": "ONE_NO_EFFECT_EXACT_HEAD_WATCHDOG"
+    },
+    "verified_general_chat_task_handoff": false,
+    "productive_task_continuity_witness": false,
+    "client_root_cause": "UNESTABLISHED_WITHOUT_CLIENT_TASK_EVENT_TRACE",
+    "causal_hypothesis": "Interactive task progression depends on a chat invocation where no admitted durable productive handoff has been verified for the requested operation.",
+    "epistemic_status": "USER_REPORTED_SYMPTOM_PLUS_SOURCE_BOUND_CARRIER_SCOPE; CAUSAL_HYPOTHESIS_NOT_VERIFIED",
+    "first_missing_effect": "ADMITTED_DURABLE_PRODUCTIVE_HANDOFF_FOR_THE_SAME_AUTHORIZED_WORK_UNIT",
+    "session_capability_boundary": "NO_EXPOSED_CHATGPT_TASK_PAUSE_RESUME_OR_GENERAL_PRODUCTIVE_MESH_HANDOFF_OPERATION",
+    "authorization_state": "EXISTING_BOUNDED_REPAIR_AUTHORIZATION_RETAINED; NO_RENEWED_OWNER_START_REQUIRED"
+  },
+  "reuse": {
+    "existing_paths": [
+      "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "state/work_units/",
+      "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "tools/qikvrt_workflow_executor.py",
+      ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "src/qikvrt_api_handler.py",
+      "src/qikvrt_github_api_shim.py",
+      "scripts/qikvrt_api_client.py"
+    ],
+    "recursive_haltpoint_candidate": {
+      "pull_request": 441,
+      "observed_head": "098ec35d8c67c41473acb2e04fa613d2ee755801",
+      "use": "INTEGRATION_REFERENCE_ONLY; NO_TRANSFER_OF_GATES"
+    },
+    "new_executor_or_scheduler_created": false,
+    "chat_autonomous_loop_reenabled": false,
+    "observer_promoted_to_executor": false
+  },
+  "continuation_invariants": {
+    "question_or_status_request": "ANSWER_AND_CONTINUE_EXISTING_AUTHORIZED_WORK_UNIT",
+    "task_replacement_or_cancellation": "ONLY_EXPLICIT_USER_CANCELLATION_OR_INCOMPATIBLE_REPLACEMENT",
+    "chat_turn_end_is_task_completion": false,
+    "chat_session_is_executor_lifetime": false,
+    "preserve_existing_authorization": true,
+    "reask_already_granted_task_authorization": false,
+    "durable_handoff": "EXACT_SUBJECT_BOUND_EXISTING_WORK_UNIT_AND_ADMITTED_EXECUTOR_RECEIPT",
+    "resume": "REOBSERVE_CURRENT_HEAD_TREE_WRITER_AND_EFFECT_JOURNAL_BEFORE_NEXT_ACTION",
+    "ambiguous_effect_response": "RECONCILE_AUTHORITATIVE_EFFECT_READBACK_BEFORE_ANY_RETRY",
+    "blocked_scope_stops_independent_scopes": false,
+    "productive_continuity_claim_requires": "ACTUAL_TASK_CONTINUES_AFTER_CLIENT_INTERRUPTION_WITH_FRESH_INDEPENDENT_EFFECT_READBACK"
+  },
+  "task_references": [
+    {
+      "pull_request": 437,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/437",
+      "ref": "refs/heads/work/meta-transistor-feedback-20261001-7e5a588d",
+      "observed_head": "355c84016ce1d32eafb82a2cf61133d22e9c5d88",
+      "observed_base": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "observation_use": "NAVIGATION_ONLY_REOBSERVE_BEFORE_ACTION",
+      "gate_transfer": false
+    },
+    {
+      "pull_request": 438,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/438",
+      "ref": "refs/heads/work/firefox-windows-witness-20261001",
+      "observed_head": "5258c00c049a62898ee5f783f50987ac65b78d3d",
+      "observed_base": "469a95ac4ef14692dda69673b8a75eb2cf03685d",
+      "observation_use": "NAVIGATION_ONLY_REOBSERVE_BEFORE_ACTION",
+      "gate_transfer": false
+    },
+    {
+      "pull_request": 441,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/441",
+      "ref": "refs/heads/agent/recursive-haltpoint-v1",
+      "observed_head": "098ec35d8c67c41473acb2e04fa613d2ee755801",
+      "observed_base": "6e085ab1e2b68e0cdf8e014c8400824f0502f11c",
+      "observation_use": "NAVIGATION_ONLY_REOBSERVE_BEFORE_ACTION",
+      "gate_transfer": false
+    },
+    {
+      "pull_request": 442,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/442",
+      "ref": "refs/heads/publication/original-sketches-20261002-v1",
+      "observed_head": "f7ca844939ba70c2629e2e0f7ac910c66d87ca82",
+      "observed_base": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "observation_use": "NAVIGATION_ONLY_REOBSERVE_BEFORE_ACTION",
+      "gate_transfer": false
+    },
+    {
+      "pull_request": 443,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/443",
+      "ref": "refs/heads/work/linux-ring-scale-consolidation-20261002",
+      "observed_head": "a1d35df440eada9bfae24df335f08da67dd5a875",
+      "observed_base": "fd120af6bff3b837f26446276674d688daad20db",
+      "observation_use": "NAVIGATION_ONLY_REOBSERVE_BEFORE_ACTION",
+      "gate_transfer": false
+    },
+    {
+      "pull_request": 444,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/444",
+      "ref": "refs/heads/work/authority-recovery-acceptance-20261002",
+      "observed_head": "380fb965a184ee6137bc98ea58868eb8b59ecbce",
+      "observed_base": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+      "observation_use": "NAVIGATION_ONLY_REOBSERVE_BEFORE_ACTION",
+      "gate_transfer": false
+    }
+  ],
+  "next_action": {
+    "kind": "EXTEND_AND_VERIFY_EXISTING_TASK_INGRESS_AND_ADMITTED_EXECUTOR",
+    "instructions": [
+      "Read /AI and current Main; reobserve each relevant PR HEAD/TREE and active writer immediately before any action.",
+      "Capture a bounded real client task/event trace for a side question and bind it to the existing work-unit identifier; establish the actual missing handoff edge instead of inferring client implementation.",
+      "Reuse the existing durable work-unit inbox/journal and executor admission. Verify a callable operation for the exact authorized next effect; do not route general feature work through a projection-only repair handler.",
+      "Keep each current PR objective and separately bound publication authorization intact. Continue independent eligible scopes; do not globally HALT because one external lane is unavailable.",
+      "Execute and read back the productive interruption controls below. Persist the receipt before claiming repair."
+    ],
+    "blocked_until": "CALLABLE_AUTHORIZED_PRODUCTIVE_HANDOFF_AND_ACTUAL_CLIENT_INTERRUPTION_TEST_AVAILABLE",
+    "already_granted_authorization_must_not_be_reasked": true
+  },
+  "acceptance": {
+    "state": "NOT_EXECUTED",
+    "required_evidence": [
+      "WORK_UNIT_ID",
+      "AUTHORIZATION_SCOPE",
+      "REPOSITORY_REF_HEAD_TREE",
+      "CLIENT_QUESTION_AND_INTERRUPTION_EVENT_TIMES",
+      "ADMITTED_EXECUTOR_RUN_ATTEMPT_JOB_OR_EQUIVALENT_ID",
+      "FRESH_WRITER_FENCE_AND_EFFECT_JOURNAL_BINDING",
+      "ACTUAL_PRODUCTIVE_EFFECT",
+      "FRESH_INDEPENDENT_READBACK",
+      "OWNER_MANUAL_RESTART_COUNT",
+      "DUPLICATE_EFFECT_COUNT"
+    ],
+    "positive_controls": [
+      "During an admitted bounded task, ask a status/explanation question; answer and retain the original work-unit identity, purpose and next action.",
+      "Disconnect/end the interactive client and observe the admitted executor complete the remaining bounded task without another Owner RUN or restart.",
+      "Recover a terminated executor through the existing durable checkpoint with a new process/run identity; reconcile the actual effect journal before any repeated operation.",
+      "Show that an unavailable external capability in one task leaves independent authorized tasks eligible."
+    ],
+    "negative_controls": [
+      "Explicit Owner cancellation stops further effects within the cancelled scope.",
+      "HEAD/TREE drift requires fresh binding and gates; predecessor success is never inherited.",
+      "A competing admitted writer/fence prevents a second writer.",
+      "Lost transport acknowledgement or replay cannot produce a second effect or reconsume exact upload authorization.",
+      "Contract-only or observer-only success cannot set productive continuity or EFFECT_ACK_DONE."
+    ],
+    "required_result": {
+      "owner_manual_restart_count": 0,
+      "duplicate_effect_count": 0,
+      "productive_execution_after_client_interruption": true,
+      "fresh_independent_readback": true
+    }
+  },
+  "completion": {
+    "contract_candidate_prepared": true,
+    "productive_repair_executed": false,
+    "productive_repair_verified": false,
+    "main_promoted": false,
+    "client_behavior_changed": false,
+    "effect_ack_done": false,
+    "predecessor_evidence_transfer": false,
+    "handoff_interface_candidate_implemented": true
+  },
+  "artificial_cognitive_contribution": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "agent": "OpenAI Codex",
+    "scope": "Fresh API source diagnosis, retained task references, reviewable continuity contract and unexecuted acceptance plan."
+  },
+  "continuation_carrier_candidate": {
+    "schema": "qikvrt_existing_api_work_unit_handoff_candidate_v1",
+    "implementation_base_head": "d4abb49133dc509233acff1df8dc202af65d6475",
+    "implementation_base_tree": "1b63d750baba9bcbeff030a595bdd292b873c8e6",
+    "existing_handler": "src/qikvrt_api_handler.py",
+    "existing_http_adapter": "src/qikvrt_github_api_shim.py",
+    "existing_client": "scripts/qikvrt_api_client.py",
+    "contract": "docs/WORK_UNIT_HANDOFF.md",
+    "controls": "tests/test_work_unit_handoff.py",
+    "operations": [
+      "work_unit_handoff",
+      "work_unit_status",
+      "work_unit_event"
+    ],
+    "productive_operation_scope": "INGEST_EXACT_EXISTING_WORK_UNIT_SNAPSHOT_ONLY",
+    "carrier_scope": "INSTALLED_LOCAL_OR_HTTPS_MESH_ADAPTER",
+    "github_workflow_dispatch_exposes_this_handoff": false,
+    "general_chat_task_execution_verified": false,
+    "actual_chatgpt_client_interruption_observed": false,
+    "journal_checkpoint": "existing .qikvrt/api/transactions/work-unit.<ID>.json",
+    "writer_fences": "existing generalized process_lock; per-work-unit admission and handler-wide effect serialization",
+    "new_workflow_or_parallel_scheduler_created": false,
+    "reported_client_event_is_independent_witness": false,
+    "owner_manual_restart_count": null,
+    "duplicate_effect_count": null,
+    "next_gate": "ACTUAL_CHATGPT_CLIENT_EVENT_BRIDGE_AND_PRODUCTIVE_HANDOFF_WITNESS",
+    "human_request_scope": "Implement the smallest existing-path handoff; execute automated interruption and negative controls; stop at the genuine client-action/capability gate.",
+    "artificial_cognitive_contribution": {
+      "actor": "OpenAI Codex",
+      "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "scope": "Existing-handler, adapter/client implementation; bounded process controls and explicit product evidence limits."
+    },
+    "human_acceptance_of_candidate": "PENDING",
+    "predecessor_evidence_transfer": false
+  }
+}

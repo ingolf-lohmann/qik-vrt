@@ -87,6 +87,7 @@ seed:
 
 e2e:
 	$(PYTHON) tests/test_tcpip_e2e.py
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -B -m unittest -v tests.test_work_unit_handoff
 
 test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify

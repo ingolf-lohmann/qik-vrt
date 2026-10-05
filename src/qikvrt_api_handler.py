@@ -23,6 +23,8 @@ import re
 import tempfile
 import threading
 import stat
+import subprocess
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -53,6 +55,10 @@ MAX_BASE64_CHARS = 4 * ((MAX_PAYLOAD_BYTES + 2) // 3)
 MIN_SECRET_BYTES = 32
 MAX_SECRET_BYTES = 128
 _HANDLER_LOCK = threading.RLock()
+_EXECUTOR_SOURCE_DIGESTS = {
+    name: hashlib.sha256((Path(__file__).parent / name).read_bytes()).hexdigest()
+    for name in ("qikvrt_api_handler.py", "qikvrt_github_api_shim.py", "qikvrt_effect_ack.py")
+}
 
 
 class IntegrityIsolationError(RuntimeError):
@@ -245,18 +251,18 @@ def secure_read_bytes(path: Path, *, max_bytes: int | None = None) -> bytes:
 
 
 @contextlib.contextmanager
-def process_lock(root: Path):
+def process_lock(root: Path, *, name: str = "handler.lock", blocking: bool = True):
     """Serialize handler effects across processes sharing the same root."""
 
-    lock_path = dirs(root)["state"] / "handler.lock"
+    lock_path = dirs(root)["state"] / safe_id(name, field="lock name")
     _assert_safe_target(lock_path)
     flags = os.O_CREAT | os.O_RDWR
     if hasattr(os, "O_NOFOLLOW"):
         flags |= os.O_NOFOLLOW
     fd = os.open(lock_path, flags, 0o600)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
-        yield
+        fcntl.flock(fd, fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB))
+        yield fd
     finally:
         fcntl.flock(fd, fcntl.LOCK_UN)
         os.close(fd)
@@ -1531,11 +1537,11 @@ def _exception_result(cfg: HandlerConfig, exc: Exception) -> dict[str, Any]:
     )
 
 
-def run_handler(cfg: HandlerConfig) -> dict[str, Any]:
+def run_handler(cfg: HandlerConfig, *, _lock_held: bool = False) -> dict[str, Any]:
     """Run one serialized, audited and idempotent handler operation."""
 
     with _HANDLER_LOCK:
-        with process_lock(cfg.root):
+        with (contextlib.nullcontext() if _lock_held else process_lock(cfg.root)):
             try:
                 _request_preconditions(cfg)
                 if not cfg.dry_run:
@@ -1570,6 +1576,8 @@ def run_handler(cfg: HandlerConfig) -> dict[str, Any]:
                     result = op_stage(cfg)
                 elif cfg.operation == "release_status":
                     result = op_release_status(cfg)
+                elif cfg.operation in WORK_UNIT_OPERATIONS:
+                    result = op_work_unit(cfg)
                 else:
                     raise ValueError("unknown operation")
 
@@ -1583,6 +1591,8 @@ def run_handler(cfg: HandlerConfig) -> dict[str, Any]:
                         "request_fingerprint": fingerprint,
                         "effect_state": result.get("effect_state"),
                         "ordinary_release": result.get("ordinary_release", False),
+                        "replayed": was_replay,
+                        "write_status": result.get("write_status"),
                         "result_sha256": sha256_identifier(_canonical_bytes(result)),
                     },
                 )
@@ -1631,6 +1641,310 @@ def run_handler(cfg: HandlerConfig) -> dict[str, Any]:
                     result["effect_state"] = EffectState.EFFECT_ACK_ISOLATE.value
                     result["ordinary_release"] = False
                 return result
+
+
+WORK_UNIT_OPERATIONS = frozenset({"work_unit_handoff", "work_unit_status", "work_unit_event"})
+WORK_UNIT_RECORD_SCHEMA = "qikvrt_api_work_unit_continuation_v1"
+_WORK_UNIT_WAKE = threading.Event()
+
+
+def _work_unit_path(root: Path, work_unit_id: str) -> Path:
+    return dirs(root)["transactions"] / f"work-unit.{safe_id(work_unit_id)}.json"
+
+
+def work_unit_fence_name(work_unit_id: str) -> str:
+    return "work-unit-writer." + sha256_bytes(safe_id(work_unit_id).encode("ascii"))[:40] + ".lock"
+
+
+def _work_unit_input(cfg: HandlerConfig) -> dict[str, Any]:
+    if len(cfg.payload_b64) > 16384:
+        raise ValueError("work-unit envelope exceeds its bound")
+    try:
+        raw = base64.b64decode(cfg.payload_b64, validate=True)
+    except ValueError as exc:
+        raise ValueError("invalid work-unit envelope base64") from exc
+    return _json_object_from_bytes(raw, evidence_name="work-unit envelope")
+
+
+def _work_unit_subject(root: Path, subject: Mapping[str, Any], work_unit_id: str,
+                       expected_sha256: str) -> bytes:
+    """Fresh LOCAL checkout observation; this is not a remote-ref assertion."""
+    if set(subject) != {"head", "tree", "ref"}:
+        raise PolicyBlockError("work-unit subject fields differ")
+    if any(not isinstance(subject[k], str) for k in subject):
+        raise PolicyBlockError("work-unit subject must contain strings")
+    if not all(re.fullmatch(r"[0-9a-f]{40}", subject[k]) for k in ("head", "tree")):
+        raise PolicyBlockError("work-unit HEAD/TREE must be exact Git identities")
+    if not re.fullmatch(r"refs/heads/[A-Za-z0-9_./-]{1,200}", subject["ref"]):
+        raise PolicyBlockError("work-unit ref must be a full local branch ref")
+    environment = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    environment.update(GIT_ALLOW_PROTOCOL="file", GIT_NO_LAZY_FETCH="1",
+                       GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+    def git(*args: str) -> str:
+        result = subprocess.run(["git", "-C", str(root.resolve()), *args],
+                                env=environment, stdin=subprocess.DEVNULL,
+                                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                                timeout=5, check=False)
+        if result.returncode or len(result.stdout) > 4096:
+            raise PolicyBlockError("WORK_UNIT_SUBJECT_DRIFT_OR_UNAVAILABLE")
+        return result.stdout.decode("ascii").strip()
+    if (git("rev-parse", "--verify", "HEAD^{commit}") != subject["head"]
+            or git("rev-parse", "--verify", "HEAD^{tree}") != subject["tree"]
+            or git("rev-parse", "--verify", subject["ref"]) != subject["head"]):
+        raise PolicyBlockError("WORK_UNIT_SUBJECT_DRIFT")
+    git("diff-index", "--quiet", "HEAD", "--")
+    for name, digest in _EXECUTOR_SOURCE_DIGESTS.items():
+        if sha256_bytes(secure_read_bytes(root.resolve() / "src" / name)) != digest:
+            raise PolicyBlockError("WORK_UNIT_EXECUTOR_SOURCE_DRIFT")
+    source = root.resolve() / "state" / "work_units" / f"{safe_id(work_unit_id)}.json"
+    raw = secure_read_bytes(source, max_bytes=1024 * 1024)
+    work = _json_object_from_bytes(raw, evidence_name="source work unit")
+    if work.get("work_unit_id") != work_unit_id or sha256_bytes(raw) != expected_sha256:
+        raise PolicyBlockError("WORK_UNIT_SOURCE_ID_OR_BYTES_DRIFT")
+    return raw
+
+
+def _work_unit_record(root: Path, work_unit_id: str) -> dict[str, Any]:
+    record = _secure_json(_work_unit_path(root, work_unit_id))
+    handoff = record.get("handoff")
+    if (record.get("schema") != WORK_UNIT_RECORD_SCHEMA or not isinstance(handoff, dict)
+            or handoff.get("work_unit_id") != work_unit_id
+            or record.get("handoff_sha256") != sha256_bytes(_canonical_bytes(handoff))):
+        raise IntegrityIsolationError("work-unit handoff identity or digest differs")
+    audit_path = dirs(root)["audit"] / "events.jsonl"
+    validate_audit_chain(audit_path)
+    anchor = record.get("journal_anchor", {})
+    journal = None
+    latest_unit_sequence = None
+    for line in secure_read_bytes(audit_path, max_bytes=64 * 1024 * 1024).splitlines():
+        entry = _strict_json_loads(line)
+        if entry.get("work_unit_id") == work_unit_id:
+            latest_unit_sequence = entry["sequence"]
+        if entry.get("sequence") == anchor.get("sequence"):
+            journal = entry
+    projection = {k: v for k, v in record.items() if k != "journal_anchor"}
+    if (not journal or latest_unit_sequence != anchor.get("sequence")
+            or journal.get("event_hash") != anchor.get("event_hash")
+            or journal.get("work_unit_id") != work_unit_id
+            or journal.get("record_sha256") != sha256_bytes(_canonical_bytes(projection))):
+        raise IntegrityIsolationError("work-unit checkpoint has no matching journal record")
+    return record
+
+
+def _save_work_unit(root: Path, record: dict[str, Any], event: str) -> None:
+    unit = record["handoff"]["work_unit_id"]
+    record.pop("journal_anchor", None)
+    record["updated_at"] = utc_now()
+    journal = append_audit(root, {"event": event, "work_unit_id": unit,
+                                 "state": record["state"],
+                                 "record_sha256": sha256_bytes(_canonical_bytes(record)),
+                                 "executor": record.get("executor")})
+    record["journal_anchor"] = {"sequence": journal["sequence"], "event_hash": journal["event_hash"]}
+    write_json(_work_unit_path(root, unit), record)
+
+
+def _work_unit_response(cfg: HandlerConfig, record: Mapping[str, Any]) -> dict[str, Any]:
+    tail = validate_audit_chain(dirs(cfg.root)["audit"] / "events.jsonl")
+    # Admission and local opaque-byte effects cannot establish a ChatGPT repair.
+    writer_held = False
+    try:
+        with process_lock(cfg.root, name=work_unit_fence_name(cfg.artifact_id), blocking=False):
+            pass
+    except BlockingIOError:
+        writer_held = True
+    effect_readback = False
+    if record["state"] == "COMPLETED":
+        handoff = record["handoff"]
+        raw = secure_read_bytes(dirs(cfg.root)["inbox"] / f"{cfg.artifact_id}.bin",
+                                max_bytes=1024 * 1024)
+        receipt = _load_receipt(_work_unit_effect_config(cfg.root, handoff, raw, "readback"))
+        if receipt != {k: v for k, v in record["result"].items() if k != "replayed"}:
+            raise IntegrityIsolationError("work-unit result does not match fresh effect receipt/readback")
+        effect_readback = True
+    response = {"operation": cfg.operation, "work_unit_id": cfg.artifact_id,
+            "state": record["state"], "executor": record.get("executor"),
+            "handoff_sha256": record["handoff_sha256"],
+            "journal_readback": {"sequence": tail["sequence"], "event_hash": tail["event_hash"]},
+            "events": record.get("events", []), "result": record.get("result"),
+            "blocking_reason": record.get("blocking_reason"),
+            "writer_fence_held": writer_held,
+            "effect_readback_verified": effect_readback,
+            "productive_continuity_verified": False, "client_behavior_changed": False,
+            "subject_observation_scope": "LOCAL_CHECKOUT_ONLY",
+            "owner_manual_restart_count": None, "duplicate_effect_count": None}
+    descriptor = _canonical_bytes(response)
+    ack = _effect_request(cfg, payload=descriptor, declared_hash=sha256_bytes(descriptor),
+                          decision=ConnectionDecision.CONTINUE, policy_allows_release=False,
+                          reasons=("BOUNDED_WORK_UNIT_HANDOFF_OR_READBACK_ONLY",),
+                          evidence_refs=("sha256:" + record["handoff_sha256"],),
+                          next_checks=("INDEPENDENT_CLIENT_AND_EFFECT_READBACK_REQUIRED",))
+    return _with_effect(response, ack, cfg=cfg)
+
+
+def _work_unit_effect_config(root: Path, handoff: Mapping[str, Any], raw: bytes,
+                             run_id: str) -> HandlerConfig:
+    return HandlerConfig(root=root, operation="ingest", artifact_id=handoff["work_unit_id"],
+                         payload_b64=base64.b64encode(raw).decode("ascii"),
+                         expected_sha256=handoff["expected_sha256"], dry_run=False,
+                         repository=handoff["repository"], run_id=run_id,
+                         request_id="wu-effect-" + sha256_bytes(_canonical_bytes(handoff))[:48],
+                         effect_accepted=True, responsibility_owner=handoff["responsibility_owner"],
+                         origin_authenticated=True)
+
+
+def op_work_unit(cfg: HandlerConfig) -> dict[str, Any]:
+    unit = safe_id(cfg.artifact_id)
+    if cfg.operation == "work_unit_handoff":
+        _mutation_preconditions(cfg)
+        if cfg.dry_run:
+            raise PolicyBlockError("work-unit admission requires an authorized non-dry-run request")
+        envelope = _work_unit_input(cfg)
+        if (set(envelope) != {"schema", "work_unit_id", "subject"}
+                or envelope["schema"] != "qikvrt_work_unit_handoff_v1"
+                or envelope["work_unit_id"] != unit or not isinstance(envelope["subject"], dict)):
+            raise ValueError("unsupported work-unit handoff envelope")
+        expected = require_sha(cfg.expected_sha256)
+        _work_unit_subject(cfg.root, envelope["subject"], unit, expected)
+        path = _work_unit_path(cfg.root, unit)
+        if path.exists():
+            record = _work_unit_record(cfg.root, unit)
+            if record["request_fingerprint"] != _request_fingerprint(cfg):
+                raise IntegrityIsolationError("work unit already has a different authorized handoff")
+        else:
+            handoff = {**envelope, "repository": cfg.repository,
+                       "responsibility_owner": cfg.responsibility_owner,
+                       "request_id": cfg.request_id, "expected_sha256": expected,
+                       "operation_scope": "INGEST_EXACT_WORK_UNIT_SNAPSHOT_ONLY"}
+            record = {"schema": WORK_UNIT_RECORD_SCHEMA, "handoff": handoff,
+                      "handoff_sha256": sha256_bytes(_canonical_bytes(handoff)),
+                      "request_fingerprint": _request_fingerprint(cfg),
+                      "state": "QUEUED", "executor": None, "events": [], "result": None}
+            _save_work_unit(cfg.root, record, "work_unit_queued")
+    else:
+        record = _work_unit_record(cfg.root, unit)
+        handoff = record["handoff"]
+        if (cfg.repository != handoff["repository"]
+                or cfg.responsibility_owner != handoff["responsibility_owner"]
+                or not cfg.origin_authenticated):
+            raise PolicyBlockError("work-unit status/event principal or repository differs")
+        if cfg.operation == "work_unit_event":
+            _mutation_preconditions(cfg)
+            if cfg.dry_run:
+                raise PolicyBlockError("work-unit event cannot be dry-run")
+            event = _work_unit_input(cfg)
+            if set(event) != {"kind", "evidence_sha256"} or event["kind"] not in {
+                    "QUESTION_ANSWERED", "CLIENT_DISCONNECT_REPORTED", "EXPLICIT_CANCEL"}:
+                raise ValueError("unsupported work-unit event")
+            require_sha(event["evidence_sha256"])
+            prior = next((x for x in record["events"] if x["request_id"] == cfg.request_id), None)
+            item = {**event, "request_id": cfg.request_id,
+                    "request_fingerprint": _request_fingerprint(cfg), "observed_at": utc_now()}
+            if prior:
+                if prior["request_fingerprint"] != item["request_fingerprint"]:
+                    raise IntegrityIsolationError("work-unit event replay content differs")
+            else:
+                if record["state"] in {"COMPLETED", "CANCELLED", "BLOCKED"}:
+                    raise PolicyBlockError("terminal work unit cannot accept a new event")
+                if len(record["events"]) >= 128:
+                    raise PolicyBlockError("work-unit client event bound reached")
+                if event["kind"] != "EXPLICIT_CANCEL" and record["state"] != "WAITING_CLIENT_EVENT":
+                    raise PolicyBlockError("client witness requires an admitted executor")
+                if (event["kind"] == "CLIENT_DISCONNECT_REPORTED" and not any(
+                        x["kind"] == "QUESTION_ANSWERED" for x in record["events"])):
+                    raise PolicyBlockError("disconnect witness requires the prior intermediate answer")
+                record["events"].append(item)
+                if event["kind"] == "EXPLICIT_CANCEL":
+                    record["state"] = "CANCELLED"
+                _save_work_unit(cfg.root, record, "work_unit_client_event")
+                _WORK_UNIT_WAKE.set()
+    return _work_unit_response(cfg, record)
+
+
+def execute_work_unit(root: Path, unit: str, repository: str, principal: str,
+                      credential_valid: Any) -> None:
+    """One existing API-handler effect, with a durable client-event barrier.
+
+    No arbitrary task commands, scheduler, Git writes or external publication.
+    The service owns the thread; disconnecting an HTTP client does not cancel it.
+    """
+    try:
+        with process_lock(root, name=work_unit_fence_name(unit), blocking=False) as fence:
+            executor = {"kind": "EXISTING_API_HANDLER", "run_id": uuid.uuid4().hex,
+                        "pid": os.getpid(), "thread_id": threading.get_native_id(),
+                        "loaded_source_sha256": _EXECUTOR_SOURCE_DIGESTS,
+                        "writer_fence": {"device": os.fstat(fence).st_dev,
+                                         "inode": os.fstat(fence).st_ino}}
+            with _HANDLER_LOCK, process_lock(root):
+                record = _work_unit_record(root, unit)
+                if record["state"] in {"COMPLETED", "CANCELLED", "BLOCKED"}:
+                    return
+                handoff = record["handoff"]
+                if (repository != handoff["repository"] or principal != handoff["responsibility_owner"]
+                        or not credential_valid()):
+                    raise PolicyBlockError("WORK_UNIT_RECOVERY_CREDENTIAL_NOT_ESTABLISHED")
+                _work_unit_subject(root, handoff["subject"], unit, handoff["expected_sha256"])
+                record["executor"] = executor
+                record["state"] = "WAITING_CLIENT_EVENT"
+                record.pop("blocking_reason", None)
+                _save_work_unit(root, record, "work_unit_executor_admitted")
+            while True:
+                with _HANDLER_LOCK, process_lock(root):
+                    record = _work_unit_record(root, unit)
+                    if record["state"] == "CANCELLED":
+                        return
+                    kinds = {x["kind"] for x in record["events"]}
+                    if {"QUESTION_ANSWERED", "CLIENT_DISCONNECT_REPORTED"} <= kinds:
+                        if not credential_valid():
+                            raise PolicyBlockError("WORK_UNIT_EXECUTOR_CREDENTIAL_EXPIRED")
+                        raw = _work_unit_subject(root, handoff["subject"], unit, handoff["expected_sha256"])
+                        result = run_handler(_work_unit_effect_config(root, handoff, raw,
+                                             executor["run_id"]), _lock_held=True)
+                        record["result"] = result
+                        record["state"] = ("COMPLETED" if result.get("effect_state") ==
+                                           EffectState.EFFECT_ACK_DONE.value else "BLOCKED")
+                        _save_work_unit(root, record, "work_unit_effect_readback")
+                        return
+                # Cross-process events are read from the same durable journal;
+                # this bounded wakeup is not a second task scheduler.
+                _WORK_UNIT_WAKE.wait(timeout=1)
+                _WORK_UNIT_WAKE.clear()
+    except BlockingIOError:
+        with _HANDLER_LOCK, process_lock(root):
+            record = _work_unit_record(root, unit)
+            # A duplicate worker must not overwrite the active writer's state.
+            if record["state"] == "QUEUED":
+                record["state"] = "HOLD_COMPETING_WRITER"
+                record["blocking_reason"] = "WORK_UNIT_COMPETING_WRITER"
+                _save_work_unit(root, record, "work_unit_writer_denied")
+    except Exception as exc:
+        with _HANDLER_LOCK, process_lock(root):
+            try:
+                record = _work_unit_record(root, unit)
+            except Exception:
+                # Do not overwrite a corrupt or incompletely committed checkpoint.
+                # Authenticated status/readback will expose the isolation boundary.
+                return
+            if record["state"] not in {"CANCELLED", "COMPLETED"}:
+                record["state"] = "BLOCKED"
+                record["blocking_reason"] = str(exc)
+                _save_work_unit(root, record, "work_unit_executor_blocked")
+
+
+def recover_work_units(root: Path, repository: str, principal: str,
+                       credential_valid: Any) -> list[threading.Thread]:
+    """Rebind unresolved work units on service startup, using current credentials."""
+    threads = []
+    for path in sorted(dirs(root)["transactions"].glob("work-unit.*.json")):
+        unit = path.name[len("work-unit."):-len(".json")]
+        with _HANDLER_LOCK, process_lock(root):
+            record = _work_unit_record(root, unit)
+            if record["state"] not in {"QUEUED", "WAITING_CLIENT_EVENT", "HOLD_COMPETING_WRITER"}:
+                continue
+        thread = threading.Thread(target=execute_work_unit,
+                                  args=(root, unit, repository, principal, credential_valid), daemon=True)
+        thread.start()
+        threads.append(thread)
+    return threads
 
 
 def config_from_env(root: Path | None = None) -> HandlerConfig:

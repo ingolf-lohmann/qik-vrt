@@ -3,13 +3,16 @@
 openapi: 3.0.3
 info:
   title: QIKVRT GitHub Dispatch Adapter API
-  version: 2.0.0
+  version: 2.1.0
   description: >
     The local adapter exposes GitHub-shaped dispatch paths but evaluates the
     request synchronously and returns a QIK-VRT EFFECT_ACK body. GitHub's real
     dispatch API remains asynchronous and normally returns 204; callers must
     subsequently inspect the workflow run and its qikvrt-api-state artifact.
     Technical dispatch acceptance is never ordinary effect permission.
+    The installed local/HTTPS Mesh adapter additionally exposes bounded
+    work_unit_handoff, work_unit_status and work_unit_event operations described
+    in docs/WORK_UNIT_HANDOFF.md; these are not GitHub workflow inputs.
 servers:
   - url: http://127.0.0.1:8766
     description: Loopback-only synchronous test/development adapter
@@ -114,7 +117,7 @@ components:
       additionalProperties: false
       required: [operation, artifact_id, dry_run, request_id, effect_accepted]
       properties:
-        operation: { type: string, enum: [ingest, verify, stage, release_status] }
+        operation: { type: string, enum: [ingest, verify, stage, release_status, work_unit_handoff, work_unit_status, work_unit_event] }
         artifact_id: { type: string, pattern: '^[A-Za-z0-9_.=-]{1,128}$' }
         payload_b64: { type: string }
         expected_sha256: { type: string, pattern: '^[0-9a-fA-F]{64}$' }
