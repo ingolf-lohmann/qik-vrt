@@ -56,10 +56,10 @@
   },
   "implementation_files": [
     {
-      "bytes": 7975,
-      "git_blob_sha1": "1ad7b5b5c182b20bd2e9ac5ef958f8c12c5588b7",
+      "bytes": 8111,
+      "git_blob_sha1": "2e1cf1b67fc740681e7cd7a4e348f6da299f974c",
       "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
-      "sha256": "b3f17dc4dd5683453e949451b7061ba553d290af5241475236d4097e8beb9815"
+      "sha256": "eede5fcbc774baf03a7188261776651416b5c3cab51efcee6426ad8ecd87925c"
     },
     {
       "bytes": 3058,
@@ -260,10 +260,10 @@
       "sha256": "862acc5d841f76be8dc587a1dfa0f1610ef274717c5e0696f8d324a7a05aed35"
     },
     {
-      "bytes": 5205,
-      "git_blob_sha1": "cf312799be6fc761d594f1d66a08ca48849a7b66",
+      "bytes": 5569,
+      "git_blob_sha1": "43b677d3044a71cccc2a0b9a19a1fd2741191a69",
       "path": "runtime/self-host/RECOVERED_TERMINAL.md",
-      "sha256": "e66347e01f53b8a8d2030a5812eeb76fcc055f69f90500af1dc3f0c6fbca5b9e"
+      "sha256": "17cce25cdc39af59608f1bfe872c2b0a9f766a56ffd146b31ea84baf274456d4"
     },
     {
       "bytes": 6577,
@@ -411,21 +411,21 @@
     },
     {
       "bytes": 5414,
-      "git_blob_sha1": "82c8e21a38ed1919d7601228e50c088cfa671a20",
+      "git_blob_sha1": "302786ada70bf9f11a9a1d1acaa12a94f9e95cb5",
       "path": "runtime/toolchains/CACHE_COVERAGE.json",
-      "sha256": "ef327e20d5b704b3d8ab25aaf0e1da614425e42f846acf961a3d5d7be2af33db"
+      "sha256": "f1968265f61fcb42e38ea43777fdb782ec741d08f744f0e520c2a315db2bd0b7"
     },
     {
-      "bytes": 18843,
-      "git_blob_sha1": "e111d1e106e4b8e4dde6b14a70114816cfd903c7",
+      "bytes": 19032,
+      "git_blob_sha1": "f094577ae3012a157e930600aeada09e65c9443f",
       "path": "runtime/toolchains/CACHE_REGISTRY.json",
-      "sha256": "0c20490dbfd73376b4f489708b78abb7c176855245d466504389aa957a3acc62"
+      "sha256": "37c36e12e675290fee02c2e5bcc992ac22f4254eb9bba17b95d6167144d507ee"
     },
     {
-      "bytes": 9008,
-      "git_blob_sha1": "141089202b277b554eae68683a02ee27801be110",
+      "bytes": 9805,
+      "git_blob_sha1": "514f7011120ff6c2c82d27da0e886497375ac96e",
       "path": "runtime/toolchains/PROVENANCE.md",
-      "sha256": "1988f6bb19ac6d4fc59eac0bd9a8b007dcac621f86c2f41f1fe5cc4420b36f9c"
+      "sha256": "a410c5c4a29a5f16a66c9dd6633c9d18fa9bd9ff3f63f78e70cdd4aa7699f3cc"
     },
     {
       "bytes": 4169,
@@ -470,10 +470,10 @@
       "sha256": "372d2265978332beb02da44bd277d0d78924f418fe0a369a94b99844a1f15e22"
     },
     {
-      "bytes": 9042,
-      "git_blob_sha1": "25e301ef24fb2203c38ee25fc685f33e98338d79",
+      "bytes": 10825,
+      "git_blob_sha1": "286a15030c9a7bd8c1c04b9493264c0a9edcb5ab",
       "path": "tests/test_self_host_firefox.py",
-      "sha256": "f3d0808951772ed20cddd8b866320264ed5bf04b10d84048ba96f3f4a8609014"
+      "sha256": "f4365f8c37b776be987e0f6cf08badec013c39e18751d42af24d659769a8fc29"
     },
     {
       "bytes": 10400,
@@ -518,10 +518,10 @@
       "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd"
     },
     {
-      "bytes": 28955,
-      "git_blob_sha1": "1b10ad42347a44fe402e117dba4592c1950c5a4f",
+      "bytes": 28982,
+      "git_blob_sha1": "1788bab299d3fcaf07af99c57a2d1f2471636d99",
       "path": "tools/qikvrt_self_host.py",
-      "sha256": "d1e42b243e6516e16f8d7a8dc08e6b03b396211b2dcd42e85769d4c4f1e0dc9c"
+      "sha256": "75d334b48eefb837ad02b285765764b5a0912d6b0bc2596284a7ae2ba02c1345"
     }
   ],
   "local_validation": {
@@ -574,6 +574,23 @@
       },
       "repair": "Explicit no-proxy loopback noVNC opener; name each readiness edge; retain bounded synthetic CI component failure logs; no readiness timeout enlargement or gate removal",
       "run_id": 37256188418
+    },
+    {
+      "effect_ack_done": false,
+      "exact_artifact": {
+        "downloaded_and_hash_verified": true,
+        "id": 11323107645,
+        "sha256": "ce06993d25efc019d582c0f8f46050e1b0643bdcb284efa540fece8091f54e74"
+      },
+      "failed_head": "799b46c37a31e88204dd3ab76e873a6cb84fa6bd",
+      "failed_tree": "97631ef4ad91fa149ca7862b16de64e4712d7b4c",
+      "failure": "Cold Firefox/native/noVNC readback passes; browser crash restart and later cases fail BROWSER_CHILD_EXITED",
+      "fresh_runtime_gates": "REQUIRED_ON_SUCCESSOR; PREDECESSOR_COLD_START_NOT_TRANSFERRED",
+      "job_id": 111595645773,
+      "observed_additional_socket_boundary": "LibVNCServer logs an undeclared default IPv6 listener on 5900 even with configured IPv4 port; disable both x11vnc IPv6 and library IPv6 default; assert actual kernel listeners equal the four declared IPv4 loopback ports",
+      "observed_cause": "xvfb.log reports Server is already active for display 101 and /tmp/.X101-lock after process-group SIGKILL; test Python was namespace PID1 without an orphan reaper",
+      "repair": "Use Docker platform --init, bind the actual reaper executable and engine version, assert old Xvfb PID removal and fresh acknowledged profile/SQLite readback",
+      "run_id": 37256843587
     }
   ],
   "schema": "qikvrt-attributable-work-unit/v1",

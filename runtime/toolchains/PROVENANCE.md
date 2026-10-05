@@ -157,3 +157,15 @@ Original QIK-VRT deployment/source provenance is separately recorded in
 `evidence/self_host/SOURCE_RECOVERY_20261005.json`. The historical originals are
 not relabeled as new implementations. The S1 source/config binding and portable
 browser startup are explicitly new adapters, with no public deployment claim.
+
+
+The isolated Firefox acceptance runs Docker with `--init`; the platform-provided
+Docker init (tini, MIT) is the namespace PID 1 and reaps killed child processes.
+It is part of the Docker distribution, not an additional QIK-VRT executor or
+bundled binary. CI records the actual Docker engine version and init executable
+hash. A real crash/restart control observes removal of the old Xvfb PID before
+acknowledged ledger/profile readback. x11vnc uses `-no6 -rfbportv6 0` so neither
+its own IPv6 adapter nor LibVNCServer opens a default undeclared VNC port. Actual
+kernel listener readback requires exactly the four declared IPv4 loopback ports.
+Source authorities: https://docs.docker.com/reference/cli/docker/container/run/
+and the LibVNCServer-0.9.14 `libvncserver/cargs.c` / `sockets.c` source.

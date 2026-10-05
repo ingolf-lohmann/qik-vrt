@@ -61,15 +61,20 @@ Set `terminal_profile: firefox`, explicit separate `novnc_port`, `vnc_port`,
 `display` (for example `:99`) and an owner-only `browser_password_file` containing
 exactly eight printable ASCII bytes. The adapter starts Xvfb, x11vnc,
 websockify and Firefox on the native IDE. VNC authentication is mandatory; every
-VNC/noVNC listener remains loopback. No unsigned extension/signing exception is
+VNC/noVNC listener remains loopback. Both x11vnc and LibVNCServer IPv6
+listeners are disabled; the configured IPv4 port is the only VNC listener. No unsigned extension/signing exception is
 enabled. Bounded startup checks require a real Firefox Navigator window and
 byte-exact noVNC HTTP response. Linux pidfds supervise actual child exits without
 runtime polling. Profile/state/logs are private and outside the export.
 
 The existing terminal workflow builds the dependency image and runs the actual
-candidate export in `docker run --network none`, with a private temporary
+candidate export in `docker run --init --network none`, with a private temporary
 volume. It checks Firefox/X11, noVNC WebSocket/RFB authentication negotiation,
-native Prepare/Commit/SQLite/SSE and crash/restart preservation. Artifacts bind
+native Prepare/Commit/SQLite/SSE and crash/restart preservation. The container
+must provide a real init reaper; operators use their existing host supervisor
+with process-group termination and orphan reaping. Kernel PID and TCP-listener
+readbacks verify crashed Xvfb removal and only four declared loopback ports.
+Artifacts bind
 the actual candidate head/tree, package, binary/source hashes and fresh runtime
 readbacks. A missing dependency or failed runtime is an error, not a skipped
 acceptance case.

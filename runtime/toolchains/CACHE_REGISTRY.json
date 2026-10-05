@@ -72,7 +72,9 @@
       "trusted_save": false,
       "verification": [
         "docker build plus docker run --network none; actual image/dependency readback",
-        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+        "productive startup, Unix/SQLite/SSE/restart and negative controls",
+        "Docker --init platform reaper PID1/executable readback and actual crash orphan reaping",
+        "Actual kernel TCP listener readback: only the four declared loopback IPv4 ports"
       ],
       "version": "OCI-build-and-isolated-runtime-contract"
     },

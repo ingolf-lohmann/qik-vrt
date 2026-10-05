@@ -102,15 +102,32 @@ class FirefoxCarrierTests(NativeStandaloneTests):
             f.close()
             return {'websocket_status':101,'rfb_version':banner.decode().strip(),'vnc_authentication_required':True}
 
+    def kernel_listeners(self):
+        listeners=[]
+        for name in ('tcp','tcp6'):
+            for line in Path('/proc/net/'+name).read_text().splitlines()[1:]:
+                row=line.split()
+                if row[3] != '0A': continue
+                address,port=row[1].split(':')
+                self.assertEqual(name, 'tcp', 'The IPv4-only carrier must have no extra IPv6 listener')
+                self.assertEqual(address, '0100007F', 'All carrier listeners must be loopback')
+                listeners.append({'address':'127.0.0.1','port':int(port,16)})
+        self.assertEqual({e['port'] for e in listeners}, {self.config[k] for k in ('port','terminal_port','novnc_port','vnc_port')})
+        return sorted(listeners,key=lambda e:e['port'])
+
     def test_actual_firefox_window_novnc_websocket_and_candidate_binding(self):
         interfaces = sorted(name for _, name in socket.if_nameindex())
         self.assertEqual(interfaces, ['lo'], 'This acceptance requires the declared network-none carrier')
+        init_name=Path('/proc/1/comm').read_text().strip()
+        self.assertIn(init_name, ('docker-init','tini'), 'The declared container must have a real child reaper')
+        init_binding={'name':init_name,'executable_sha256':host.digest(Path('/proc/1/exe').read_bytes())}
         runtime=self.start()
         self.assertTrue(runtime['browser_startup_verified'])
         self.assertTrue(runtime['native_terminal_daemon_available'])
         self.assertEqual(runtime['source_head'], self.head)
         self.assertFalse((self.export/'.git').exists())
         readback=self.websocket_rfb_auth()
+        listeners=self.kernel_listeners()
         prepared,event=self.commit_input()
         terminal=self.get('/api/terminal')[1]
         self.assertEqual(terminal['subject'],event['subject'])
@@ -126,6 +143,7 @@ class FirefoxCarrierTests(NativeStandaloneTests):
                 'firefox_navigator_window_observed':True,'git_in_runtime_path':False,'gh_in_runtime_path':False,
                 'native_terminal_document_title_observed':True,
                 'outbound_network':'DOCKER_NETWORK_NONE','observed_network_interfaces':interfaces,
+                'observed_listeners':listeners,'container_init':init_binding,
                 'scope':'ACTUAL_EXACT_CANDIDATE_RUNTIME_IN_CI_CONTAINER',
                 'independent_host_identity_verified':False,'public_https_readback_verified':False,
                 'deployment_performed':False,'effect_ack_done':False}
@@ -138,7 +156,16 @@ class FirefoxCarrierTests(NativeStandaloneTests):
         marker=self.volume/'browser/profile/qikvrt-test-restart-marker'
         marker.write_bytes(b'private fixture marker; no credentials')
         before=self.sql('SELECT binding,source,native_id,native_digest,body,body_digest FROM events')
+        old_xvfb=[]
+        for p in Path('/proc').glob('[0-9]*'):
+            try:
+                if p.joinpath('comm').read_text().strip()=='Xvfb' and os.getpgid(int(p.name))==self.process.pid:
+                    old_xvfb.append(int(p.name))
+            except (OSError,ValueError): pass
+        self.assertEqual(len(old_xvfb),1)
         self.stop(abrupt=True);self.start()
+        self.assertTrue(all(not Path('/proc/'+str(pid)).exists() for pid in old_xvfb))
+        listeners_after_restart=self.kernel_listeners()
         self.assertEqual(marker.read_bytes(),b'private fixture marker; no credentials')
         self.assertEqual(self.sql('SELECT binding,source,native_id,native_digest,body,body_digest FROM events'),before)
         code,readback=self.cli('durable-readback',prepared)
@@ -149,7 +176,9 @@ class FirefoxCarrierTests(NativeStandaloneTests):
             (Path(evidence)/'FIREFOX_NATIVE_RESTART_READBACK.json').write_bytes(host.raw_json({
                 'schema':'qikvrt-self-host-firefox-restart-readback/v1','source_head':self.head,'source_tree':self.tree,
                 'manifest_sha256':self.pin,'native_durable_event':event,'profile_marker_preserved':True,
-                'native_original_rows_preserved':True,'public_https_readback_verified':False,'effect_ack_done':False}))
+                'native_original_rows_preserved':True,'crashed_xvfb_pids':old_xvfb,
+                'crashed_xvfb_reaped':True,'observed_listeners_after_restart':listeners_after_restart,
+                'public_https_readback_verified':False,'effect_ack_done':False}))
 
     # The inherited adversarial native controls apply to this actual browser
     # variant too. They exercise the same kernel, with actual GUI children.

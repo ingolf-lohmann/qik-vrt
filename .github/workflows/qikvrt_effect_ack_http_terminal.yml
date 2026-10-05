@@ -65,7 +65,8 @@ jobs:
           mkdir -p "$RUNNER_TEMP/qikvrt-firefox-readback"
           docker image inspect qikvrt-self-host-firefox-test \
             --format '{{json .Id}}' > "$RUNNER_TEMP/qikvrt-firefox-readback/OCI_IMAGE_ID.json"
-          docker run --rm --network none --shm-size 256m --tmpfs /tmp:size=768m,mode=1777 \
+          docker version --format '{{json .Server.Version}}' > "$RUNNER_TEMP/qikvrt-firefox-readback/DOCKER_ENGINE_VERSION.json"
+          docker run --rm --init --network none --shm-size 256m --tmpfs /tmp:size=768m,mode=1777 \
             --mount "type=bind,source=$GITHUB_WORKSPACE,target=/source,readonly" \
             --mount "type=bind,source=$RUNNER_TEMP/qikvrt-firefox-readback,target=/evidence" \
             --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
