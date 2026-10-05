@@ -10,6 +10,39 @@
   "version": "1.0",
   "purpose": "Make repeated human-machine interaction progressively faster, clearer and more accurate without weakening provenance, scientific, legal, security or effect boundaries.",
   "reuse_before_create": true,
+  "answer_search_roadmap": {
+    "rule_id": "ANSWER-SEARCH-ROADMAP-15-30-60-V1",
+    "declared_by": "Ingolf Lohmann",
+    "declared_at": "2026-09-28T01:19:51+02:00",
+    "kind": "NORMATIVE_SEARCH_AND_COMMUNICATION_GUIDANCE",
+    "scope": "Finding and communicating a useful answer; not a runtime deadline for authorized implementation, verification or persistence.",
+    "announce_at_search_start": true,
+    "announcement_de": "Ich nutze die 15/30/60-Sekunden-Roadmap als Orientierung für die Antwortsuche.",
+    "reference_seconds": 30,
+    "reference_is_measured_baseline": false,
+    "useful_result_check_target_seconds": 15,
+    "output_preparation_target_seconds": 15,
+    "first_output_target_seconds": 30,
+    "single_extension_seconds": 30,
+    "unproductive_search_stop_target_seconds": 60,
+    "useful_result": "Relevant and sufficiently supported for its declared scope; a clearly bounded partial answer is admissible.",
+    "when_useful_by_first_check": "Use the remaining target window to formulate the result and begin useful output by the 30-second orientation point.",
+    "when_not_useful_by_first_window": "Use at most one further 30-second orientation window to resolve the concrete uncertainty.",
+    "when_still_unproductive": {
+      "action": "STOP_UNPRODUCTIVE_SEARCH_AND_RETURN_CONSTRUCTIVE_REFINEMENT",
+      "required_output": [
+        "precise missing evidence or ambiguous part of the question",
+        "a proposed refined question",
+        "one concrete answerable variant or next input"
+      ]
+    },
+    "hard_wall_clock_guarantee": false,
+    "artificial_wait_required": false,
+    "mandatory_gates_may_be_skipped": false,
+    "useful_work_in_progress_must_be_aborted": false,
+    "longer_execution": "Start useful output with a bounded finding and continue authorized work under the existing progress and effect contracts; the roadmap alone is not a completion receipt.",
+    "mesh_adoption": "Persist and read back the exact successor on each node; this declaration does not attest unobserved propagation."
+  },
   "authorities": [
     "runtime/CACHE_POLICY.md",
     "runtime/toolchains/CACHE_REGISTRY.json",
