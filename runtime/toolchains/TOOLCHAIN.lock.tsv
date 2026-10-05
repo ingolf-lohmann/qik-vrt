@@ -19,3 +19,5 @@ ffprobe	same-as-ffmpeg	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY	U
 cc	ansi-c90	cross-platform	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	IMPLEMENTATION_LICENSE_APPLIES	dependency_minimal_core
 xelatex	reported-version	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	scientific_pdf_rendering
 poppler	reported-version	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	pdf_visual_verification
+python-embed-windows	3.12.10	windows-amd64	python-3.12.10-embed-amd64.zip	4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3	PSF-2.0	offline_windows_start
+powershell	windows-inbox-5.1-or-7.x	windows-amd64	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	WINDOWS_PLATFORM_TERMS_OR_MIT	windows_runtime_bootstrap

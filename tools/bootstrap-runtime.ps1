@@ -7,9 +7,14 @@ param(
     [switch]$CheckOnly,
     [switch]$Install,
     [switch]$AcceptThirdParty,
-    [ValidateSet('core', 'ietf', 'formal', 'audio', 'publication', 'all')]
+    [ValidateSet('core', 'ietf', 'formal', 'audio', 'publication', 'all', 'windows-start')]
     [string]$Profile = 'ietf',
-    [string]$CacheDir = ''
+    [string]$CacheDir = '',
+    [string]$ArchiveFile = '',
+    [switch]$ReconstructUpstream,
+    [switch]$RestoreReleaseAsset,
+    [switch]$PrintPath,
+    [string]$RuntimeReceiptFile = ''
 )
 
 Set-StrictMode -Version Latest
@@ -76,6 +81,337 @@ function Assert-NoReparseChain([string]$Path) {
         $parent = [IO.Path]::GetDirectoryName($cursor)
         if ([string]::IsNullOrWhiteSpace($parent) -or $parent -eq $cursor) { break }
         $cursor = $parent
+    }
+}
+
+function Write-WindowsPythonStep([string]$Event, [string]$State) {
+    [Console]::Error.WriteLine((@{
+        timestamp = [DateTime]::UtcNow.ToString('o')
+        event = "windows_python_$Event"
+        component = 'python-embed-windows'
+        status = $State
+    } | ConvertTo-Json -Compress))
+}
+
+function Get-WindowsPythonBinding {
+    $manifestPath = Join-Path $RepoRoot 'runtime/toolchains/python-3.12.10-embed-amd64.payload.json'
+    Assert-NoReparseChain $manifestPath
+    $spec = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+    $rows = @(Get-Content -LiteralPath (Join-Path $RepoRoot 'runtime/toolchains/TOOLCHAIN.lock.tsv') |
+        Where-Object { $_ -match '^python-embed-windows\t' })
+    if ($rows.Count -ne 1) { throw 'Windows Python requires exactly one toolchain lock row' }
+    $fields = $rows[0].Split([char]9)
+    if ($fields.Count -ne 7 -or $fields[1] -ne $spec.version -or
+        $fields[2] -ne 'windows-amd64' -or $fields[3] -ne $spec.archive -or
+        $fields[4] -ne $spec.archive_sha256 -or $fields[5] -ne $spec.license -or
+        $spec.schema -ne 'qikvrt-windows-python-payload/1.0' -or
+        $spec.version -ne '3.12.10' -or $spec.platform -ne 'windows-amd64' -or
+        $spec.component -ne 'python-embed-windows' -or
+        $spec.archive -ne 'python-3.12.10-embed-amd64.zip' -or
+        $spec.archive_sha256 -notmatch '^[0-9a-f]{64}$' -or
+        $spec.upstream_url -ne 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip') {
+        throw 'Windows Python payload/lock/platform binding mismatch'
+    }
+    foreach ($binding in @(
+        @($spec.license_file, $spec.license_sha256),
+        @($spec.upstream_sbom_file, $spec.upstream_sbom_sha256),
+        @($spec.upstream_sigstore_file, $spec.upstream_sigstore_sha256))) {
+        $path = Join-Path $RepoRoot $binding[0]
+        Assert-NoReparseChain $path
+        if ((Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant() -ne $binding[1]) {
+            throw "Windows Python provenance/license bytes differ: $($binding[0])"
+        }
+    }
+    $root = Join-Path $CacheDir ("python-embed/3.12.10/windows-amd64/sha256/" + $spec.archive_sha256)
+    Assert-NoReparseChain $root
+    return [pscustomobject]@{
+        Spec = $spec
+        ManifestPath = $manifestPath
+        Root = $root
+        Archive = Join-Path $root ("archive/" + $spec.archive)
+        Runtime = Join-Path $root 'runtime'
+    }
+}
+
+function Assert-WindowsPythonArchive($Binding, [string]$Path) {
+    Assert-NoReparseChain $Path
+    $spec = $Binding.Spec
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf) -or
+        (Get-Item -LiteralPath $Path).Length -ne $spec.archive_bytes -or
+        (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToLowerInvariant() -ne $spec.archive_sha256) {
+        throw 'Windows Python archive checksum/size mismatch or missing cache'
+    }
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zip = [IO.Compression.ZipFile]::OpenRead($Path)
+    $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    try {
+        foreach ($entry in $zip.Entries) {
+            $name = $entry.FullName
+            if ($name -notmatch '^[A-Za-z0-9_.-]+$' -or -not $seen.Add($name)) {
+                throw 'Windows Python archive has an unsafe or duplicate member'
+            }
+            $property = $spec.files.PSObject.Properties[$name]
+            if ($null -eq $property -or $entry.Length -ne $property.Value.bytes) {
+                throw "Windows Python ZIP member binding mismatch: $name"
+            }
+            $stream = $entry.Open()
+            $hasher = [Security.Cryptography.SHA256]::Create()
+            try {
+                $digest = [BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+            } finally { $hasher.Dispose(); $stream.Dispose() }
+            if ($digest -ne $property.Value.sha256) { throw "Windows Python ZIP member hash mismatch: $name" }
+        }
+        if ($seen.Count -ne @($spec.files.PSObject.Properties).Count -or
+            -not $seen.Contains('python.exe') -or -not $seen.Contains('python312._pth') -or
+            -not $seen.Contains('LICENSE.txt') -or
+            $spec.files.'LICENSE.txt'.sha256 -ne $spec.license_sha256) {
+            throw 'Windows Python ZIP membership/license is incomplete'
+        }
+    } finally { $zip.Dispose() }
+}
+
+function Get-WindowsPythonReleaseBinding($Binding) {
+    $relative = 'runtime/toolchains/python-3.12.10-embed-amd64.release.json'
+    $path = Join-Path $RepoRoot $relative
+    Assert-NoReparseChain $path
+    $registry = Get-Content -LiteralPath (Join-Path $RepoRoot 'runtime/toolchains/CACHE_REGISTRY.json') -Raw | ConvertFrom-Json
+    $link = $registry.components.'python-embed-windows'.durable_release_candidate
+    $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant()
+    if ($link.path -ne $relative -or $link.sha256 -ne $hash) { throw 'Release candidate authority hash mismatch' }
+    $release = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
+    $name = 'qikvrt-cpython-3.12.10-windows-amd64-sha256-' + $Binding.Spec.archive_sha256 + '.zip'
+    $tag = 'runtime-cpython-3.12.10-windows-amd64-sha256-' + $Binding.Spec.archive_sha256
+    $url = 'https://github.com/ingolf-lohmann/qik-vrt/releases/download/' + $tag + '/' + $name
+    if ($release.schema -ne 'qikvrt-runtime-release-candidate/1.0' -or
+        $release.repository -ne 'ingolf-lohmann/qik-vrt' -or $release.tag -ne $tag -or
+        $release.version -ne $Binding.Spec.version -or $release.platform -ne $Binding.Spec.platform -or
+        $release.archive.asset_name -ne $name -or $release.archive.sha256 -ne $Binding.Spec.archive_sha256 -or
+        $release.archive.bytes -ne $Binding.Spec.archive_bytes -or $release.download_url -ne $url -or
+        -not $release.no_clobber -or -not $release.immutable_release_required) {
+        throw 'Release candidate version/platform/bytes/No-Clobber binding mismatch'
+    }
+    foreach ($item in $release.bindings) {
+        if ($item.path -notmatch '^(runtime/toolchains/|third_party/python/)[A-Za-z0-9_.-]+$') {
+            throw 'Unsafe release candidate metadata path'
+        }
+        $bound = Join-Path $RepoRoot $item.path
+        Assert-NoReparseChain $bound
+        if ((Get-Item -LiteralPath $bound).Length -ne $item.bytes -or
+            (Get-FileHash -Algorithm SHA256 -LiteralPath $bound).Hash.ToLowerInvariant() -ne $item.sha256) {
+            throw 'Release candidate provenance/license/receipt bytes differ'
+        }
+    }
+    $witness = $registry.components.'python-embed-windows'.native_offline_witness
+    $expected = @('runtime/toolchains/python-3.12.10-embed-amd64.payload.json',
+        'runtime/toolchains/TOOLCHAIN.lock.tsv', $Binding.Spec.license_file,
+        $Binding.Spec.upstream_sbom_file, $Binding.Spec.upstream_sigstore_file,
+        'third_party/python/THIRD_PARTY_PYTHON_RUNTIME_PROVENANCE.json',
+        $witness.receipt_path, $witness.cache_receipt_path)
+    $actual = @($release.bindings | ForEach-Object { $_.path } | Sort-Object -Unique)
+    if ($release.bindings.Count -ne $expected.Count -or $actual.Count -ne $expected.Count -or
+        @(Compare-Object ($expected | Sort-Object) $actual).Count -ne 0) {
+        throw 'Release candidate metadata binding set is incomplete'
+    }
+    return [pscustomobject]@{ Candidate = $release; Hash = $hash; Path = $path }
+}
+
+function Restore-WindowsPythonReleaseAsset($Binding, [string]$Destination) {
+    Assert-NoReparseChain $Destination
+    if (Test-Path -LiteralPath $Destination) { throw 'Release restore is No-Clobber: destination already exists' }
+    $bound = Get-WindowsPythonReleaseBinding $Binding
+    $release = $bound.Candidate
+    Write-WindowsPythonStep 'release_asset_download' 'RUNNING'
+    $metadata = Invoke-RestMethod -Uri ('https://api.github.com/repos/' + $release.repository +
+        '/releases/tags/' + $release.tag) -TimeoutSec 15
+    $asset = @($metadata.assets | Where-Object { $_.name -ceq $release.archive.asset_name })
+    if ($metadata.draft -or -not $metadata.immutable -or $metadata.tag_name -cne $release.tag -or
+        $asset.Count -ne 1 -or $asset[0].state -ne 'uploaded' -or
+        $asset[0].size -ne $Binding.Spec.archive_bytes -or
+        $asset[0].digest -cne ('sha256:' + $Binding.Spec.archive_sha256)) {
+        throw 'WINDOWS_PYTHON_RELEASE_ASSET_MISSING_OR_UNVERIFIED: no upstream fallback'
+    }
+    $sidecar = 'qikvrt-runtime-carrier-sha256-' + $bound.Hash + '.json'
+    $companion = @($metadata.assets | Where-Object { $_.name -ceq $sidecar })
+    if ($companion.Count -ne 1 -or $companion[0].digest -cne ('sha256:' + $bound.Hash) -or
+        $companion[0].size -ne (Get-Item -LiteralPath $bound.Path).Length) {
+        throw 'Release candidate companion metadata mismatch'
+    }
+    $temporary = $Destination + '.metadata'
+    Assert-NoReparseChain $temporary
+    if (Test-Path -LiteralPath $temporary) { throw 'Release restore is No-Clobber: companion destination already exists' }
+    try {
+        Invoke-WebRequest -Uri ('https://github.com/' + $release.repository + '/releases/download/' +
+            $release.tag + '/' + $sidecar) -OutFile $temporary -UseBasicParsing -TimeoutSec 15
+        if ((Get-FileHash -Algorithm SHA256 -LiteralPath $temporary).Hash.ToLowerInvariant() -ne $bound.Hash) {
+            throw 'Downloaded release companion SHA-256 mismatch'
+        }
+        Invoke-WebRequest -Uri $release.download_url -OutFile $Destination -UseBasicParsing -TimeoutSec 60
+        Assert-WindowsPythonArchive $Binding $Destination
+        Write-WindowsPythonStep 'release_asset_byte_readback' 'PASS'
+    } finally {
+        if (Test-Path -LiteralPath $temporary) { Remove-Item -LiteralPath $temporary -Force }
+    }
+}
+
+function Assert-WindowsPythonFiles($Binding, [string]$Directory) {
+    Assert-NoReparseChain $Directory
+    $actual = @(Get-ChildItem -LiteralPath $Directory -Force)
+    if ($actual.Count -ne @($Binding.Spec.files.PSObject.Properties).Count) {
+        throw 'Windows Python extracted cache has missing or unexpected files'
+    }
+    foreach ($file in $actual) {
+        Assert-NoReparseChain $file.FullName
+        $property = $Binding.Spec.files.PSObject.Properties[$file.Name]
+        if ($file.PSIsContainer -or $null -eq $property -or $file.Length -ne $property.Value.bytes -or
+            (Get-FileHash -Algorithm SHA256 -LiteralPath $file.FullName).Hash.ToLowerInvariant() -ne $property.Value.sha256) {
+            throw "Windows Python extracted payload hash/layout mismatch: $($file.Name)"
+        }
+    }
+}
+
+function Invoke-WindowsPythonSelfTest([string]$PythonPath) {
+    $test = @'
+import hashlib, json, platform, sqlite3, ssl, struct, sys
+assert sys.version_info[:3] == (3, 12, 10)
+assert struct.calcsize('P') == 8 and sys.flags.isolated == 1
+assert hashlib.sha256(b'QIK-VRT').hexdigest() == '05451ff8377afc6bde735fd37f15dda78f97267c2e1a3245c0ed04eb73064f57'
+with sqlite3.connect(':memory:') as db:
+    assert db.execute('select 400 + 1').fetchone()[0] == 401
+print(json.dumps(dict(version=platform.python_version(), pointer_bits=64, isolated=True,
+                     sqlite_readback=True, executable=sys.executable, ssl=ssl.OPENSSL_VERSION)))
+'@
+    $code = "exec(__import__('base64').b64decode('" + [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($test)) + "'))"
+    $start = [Diagnostics.ProcessStartInfo]::new()
+    $start.FileName = $PythonPath
+    $start.Arguments = '-I -B -c "' + $code + '"'
+    $start.WorkingDirectory = Split-Path -Parent $PythonPath
+    $start.UseShellExecute = $false
+    $start.RedirectStandardOutput = $true
+    $start.RedirectStandardError = $true
+    $process = [Diagnostics.Process]::new()
+    $process.StartInfo = $start
+    try {
+        if (-not $process.Start()) { throw 'Windows Python self-test could not start' }
+        $stdout = $process.StandardOutput.ReadToEndAsync()
+        $stderr = $process.StandardError.ReadToEndAsync()
+        if (-not $process.WaitForExit(15000)) {
+            $process.Kill()
+            [void]$process.WaitForExit(2000)
+            throw 'Windows Python self-test exceeded its 15-second bound'
+        }
+        if ($process.ExitCode -ne 0) { throw "Windows Python isolated self-test failed: $($stderr.Result)" }
+        $result = $stdout.Result | ConvertFrom-Json
+        if ($result.version -ne '3.12.10' -or $result.pointer_bits -ne 64 -or
+            -not $result.isolated -or -not $result.sqlite_readback -or
+            [IO.Path]::GetFullPath($result.executable) -ne [IO.Path]::GetFullPath($PythonPath)) {
+            throw 'Windows Python self-test returned a mismatched runtime identity'
+        }
+        return $result
+    } finally { $process.Dispose() }
+}
+
+function Invoke-WindowsStartProfile {
+    if (-not [Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([Runtime.InteropServices.OSPlatform]::Windows) -or
+        [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne 'X64') {
+        throw 'windows-start requires a native Windows x64 carrier'
+    }
+    if ($PSVersionTable.PSVersion -lt [version]'5.1') { throw 'Windows Python bootstrap requires PowerShell >= 5.1' }
+    $binding = Get-WindowsPythonBinding
+    $stage = $null
+    $archiveStage = $null
+    $promoted = $false
+    $downloaded = $false
+    $source = 'existing_cache'
+    try {
+        Write-WindowsPythonStep 'restore' 'RUNNING'
+        Assert-NoReparseChain $binding.Archive
+        if (-not (Test-Path -LiteralPath $binding.Archive -PathType Leaf)) {
+            if (Test-Path -LiteralPath $binding.Runtime) { throw 'Windows Python runtime exists without its bound archive' }
+            if (-not $Install) {
+                Write-WindowsPythonStep 'missing_cache' 'CONTINUE'
+                Set-Continue 'windows-start: locked cache is absent; check-only performs no network access'
+                return
+            }
+            if ([string]::IsNullOrWhiteSpace($ArchiveFile) -and -not $ReconstructUpstream -and -not $RestoreReleaseAsset) {
+                throw 'WINDOWS_PYTHON_MISSING_CACHE: supply -ArchiveFile, -RestoreReleaseAsset or explicitly reconstruct upstream'
+            }
+            $archiveParent = Split-Path -Parent $binding.Archive
+            New-Item -ItemType Directory -Path $archiveParent -Force | Out-Null
+            $archiveStage = Join-Path $archiveParent ('.archive-' + [guid]::NewGuid().ToString('N') + '.zip')
+            if (-not [string]::IsNullOrWhiteSpace($ArchiveFile)) {
+                Assert-WindowsPythonArchive $binding $ArchiveFile
+                Copy-Item -LiteralPath $ArchiveFile -Destination $archiveStage
+                $source = 'local_archive'
+            } elseif ($RestoreReleaseAsset) {
+                Restore-WindowsPythonReleaseAsset $binding $archiveStage
+                $source = 'verified_release_asset'
+            } else {
+                Write-WindowsPythonStep 'controlled_reconstruction' 'RUNNING'
+                Invoke-WebRequest -Uri $binding.Spec.upstream_url -OutFile $archiveStage -UseBasicParsing -TimeoutSec 60
+                $downloaded = $true
+                $source = 'upstream_reconstruction'
+            }
+            Assert-WindowsPythonArchive $binding $archiveStage
+            [IO.File]::Move($archiveStage, $binding.Archive)
+            $archiveStage = $null
+        }
+        Write-WindowsPythonStep 'verify_archive' 'RUNNING'
+        Assert-WindowsPythonArchive $binding $binding.Archive
+        Assert-NoReparseChain $binding.Runtime
+        if (-not (Test-Path -LiteralPath $binding.Runtime -PathType Container)) {
+            if (-not $Install) {
+                Set-Continue 'windows-start: verified archive is present; offline local restoration is required'
+                return
+            }
+            $stage = Join-Path $binding.Root ('.install-' + [guid]::NewGuid().ToString('N'))
+            Write-WindowsPythonStep 'derive' 'RUNNING'
+            [IO.Compression.ZipFile]::ExtractToDirectory($binding.Archive, $stage)
+            Assert-WindowsPythonFiles $binding $stage
+            [IO.Directory]::Move($stage, $binding.Runtime)
+            $stage = $null
+            $promoted = $true
+        }
+        Write-WindowsPythonStep 'verify_final_bytes' 'RUNNING'
+        if ($env:QIKVRT_TEST_FAIL_WINDOWS_PYTHON_FINAL_VERIFY -eq '1') {
+            throw 'test-requested Windows Python final verification failure'
+        }
+        Assert-WindowsPythonFiles $binding $binding.Runtime
+        $pythonPath = Join-Path $binding.Runtime 'python.exe'
+        Write-WindowsPythonStep 'self_test' 'RUNNING'
+        $selfTest = Invoke-WindowsPythonSelfTest $pythonPath
+        if (-not [string]::IsNullOrWhiteSpace($RuntimeReceiptFile)) {
+            Assert-NoReparseChain $RuntimeReceiptFile
+            $receipt = @{
+                schema = 'qikvrt-windows-python-cache-receipt/1.0'
+                observed_utc = [DateTime]::UtcNow.ToString('o')
+                component = $binding.Spec.component
+                version = $binding.Spec.version
+                platform = $binding.Spec.platform
+                archive_sha256 = $binding.Spec.archive_sha256
+                manifest_sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $binding.ManifestPath).Hash.ToLowerInvariant()
+                license_sha256 = $binding.Spec.license_sha256
+                source = $source
+                upstream_download_performed = $downloaded
+                powershell_version = $PSVersionTable.PSVersion.ToString()
+                self_test = $selfTest
+                native_offline_launcher_witness = $false
+                dependency_closed = $false
+                effect_ack_done = $false
+            }
+            $text = ($receipt | ConvertTo-Json -Depth 8) + "`n"
+            [IO.File]::WriteAllText([IO.Path]::GetFullPath($RuntimeReceiptFile), $text, [Text.UTF8Encoding]::new($false))
+        }
+        $promoted = $false
+        Write-WindowsPythonStep 'verified' 'PASS'
+        if ($PrintPath) { Write-Output $pythonPath } else { Write-Output "PASS: locked CPython 3.12.10 Windows x64: $pythonPath" }
+    } finally {
+        if ($promoted -and (Test-Path -LiteralPath $binding.Runtime)) {
+            Write-WindowsPythonStep 'rollback' 'RUNNING'
+            Assert-NoReparseChain $binding.Runtime
+            Remove-Item -LiteralPath $binding.Runtime -Recurse -Force
+        }
+        if ($null -ne $stage -and (Test-Path -LiteralPath $stage)) { Remove-Item -LiteralPath $stage -Recurse -Force }
+        if ($null -ne $archiveStage -and (Test-Path -LiteralPath $archiveStage)) { Remove-Item -LiteralPath $archiveStage -Force }
     }
 }
 
@@ -422,7 +758,20 @@ function Test-PublicationProfile {
 try {
     if ($CheckOnly -and $Install) { Stop-Block '-CheckOnly and -Install are mutually exclusive' }
     if ($Install -and -not $AcceptThirdParty) { Stop-Block '-Install requires -AcceptThirdParty' }
+    if ($ReconstructUpstream -and (-not $Install -or -not $AcceptThirdParty -or $Profile -ne 'windows-start')) {
+        Stop-Block '-ReconstructUpstream requires windows-start, -Install and -AcceptThirdParty'
+    }
+    if ($RestoreReleaseAsset -and (-not $Install -or -not $AcceptThirdParty -or
+        $Profile -ne 'windows-start' -or $ReconstructUpstream -or $ArchiveFile)) {
+        Stop-Block '-RestoreReleaseAsset requires windows-start, -Install, -AcceptThirdParty and no competing acquisition path'
+    }
     Assert-NoReparseChain $CacheDir
+
+    if ($Profile -eq 'windows-start') {
+        try { Invoke-WindowsStartProfile } catch { Stop-Block $_.Exception.Message }
+        exit $script:Overall
+    }
+    if ($PrintPath -or $ArchiveFile -or $RuntimeReceiptFile) { Stop-Block 'Windows startup options require -Profile windows-start' }
 
     $ghArgs = @('-CacheDir', $CacheDir)
     if ($Install) { $ghArgs += @('-Install', '-AcceptThirdParty') } else { $ghArgs += '-CheckOnly' }

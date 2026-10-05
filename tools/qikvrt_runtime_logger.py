@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import datetime as dt
-import fcntl
 import hashlib
 import json
 import math
@@ -19,6 +18,13 @@ import time
 import traceback
 from typing import Any, Callable, TypeVar
 
+if os.name == "nt":
+    import ctypes
+    from ctypes import wintypes
+    import msvcrt
+else:
+    import fcntl
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 LOG_DIR = ROOT / "logs"
 DEFAULT_LOG_FILE = LOG_DIR / "qikvrt_last_run.jsonl"
@@ -27,6 +33,89 @@ MAX_POINTER_LOG_BYTES = 16 * 1024 * 1024
 
 _WRITE_LOCK = threading.Lock()
 _T = TypeVar("_T")
+
+
+def _windows_private_open(path: pathlib.Path, flags: int, *, protect_owner_dacl: bool = True) -> int:
+    """Open the actual file, reject reparse points and protect its owner DACL."""
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    security = ctypes.WinDLL("advapi32", use_last_error=True)
+    kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+        wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+    kernel.CreateFileW.restype = wintypes.HANDLE
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.GetFileInformationByHandleEx.argtypes = [wintypes.HANDLE, ctypes.c_int,
+        wintypes.LPVOID, wintypes.DWORD]
+    kernel.GetFileInformationByHandleEx.restype = wintypes.BOOL
+    kernel.LocalFree.argtypes = [wintypes.LPVOID]
+    kernel.LocalFree.restype = wintypes.LPVOID
+    security.ConvertStringSecurityDescriptorToSecurityDescriptorW.argtypes = [
+        wintypes.LPCWSTR, wintypes.DWORD, ctypes.POINTER(wintypes.LPVOID), wintypes.LPVOID]
+    security.ConvertStringSecurityDescriptorToSecurityDescriptorW.restype = wintypes.BOOL
+    security.GetSecurityDescriptorDacl.argtypes = [wintypes.LPVOID,
+        ctypes.POINTER(wintypes.BOOL), ctypes.POINTER(wintypes.LPVOID), ctypes.POINTER(wintypes.BOOL)]
+    security.GetSecurityDescriptorDacl.restype = wintypes.BOOL
+    security.SetSecurityInfo.argtypes = [wintypes.HANDLE, ctypes.c_int, wintypes.DWORD,
+        wintypes.LPVOID, wintypes.LPVOID, wintypes.LPVOID, wintypes.LPVOID]
+    security.SetSecurityInfo.restype = wintypes.DWORD
+    access = 0x00040000 if protect_owner_dacl else 0
+    access |= 0x40000000 if flags & os.O_WRONLY else 0x80000000
+    disposition = 1 if flags & os.O_EXCL else 4 if flags & os.O_CREAT else 3
+    # Public immutable input reads deny concurrent write/delete and do not
+    # mutate source permissions. Runtime logs retain their private DACL contract.
+    share = 7 if protect_owner_dacl else 1
+    handle = kernel.CreateFileW(str(path), access, share, None, disposition, 0x00200080, None)
+    if handle == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    descriptor = None
+    try:
+        attributes = (wintypes.DWORD * 2)()
+        if not kernel.GetFileInformationByHandleEx(handle, 9, attributes, ctypes.sizeof(attributes)):
+            raise ctypes.WinError(ctypes.get_last_error())
+        if attributes[0] & 0x400:
+            raise OSError(f"runtime file must not be a reparse point: {path}")
+        descriptor = msvcrt.open_osfhandle(handle, (flags & os.O_APPEND) | os.O_BINARY | os.O_NOINHERIT)
+        handle = None  # The CRT descriptor now owns the native handle.
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+            raise OSError(f"runtime file is not a regular unaliased file: {path}")
+        if not protect_owner_dacl:
+            return descriptor
+        security_descriptor = wintypes.LPVOID()
+        if not security.ConvertStringSecurityDescriptorToSecurityDescriptorW(
+                "D:P(A;;FA;;;OW)", 1, ctypes.byref(security_descriptor), None):
+            raise ctypes.WinError(ctypes.get_last_error())
+        try:
+            present, defaulted, dacl = wintypes.BOOL(), wintypes.BOOL(), wintypes.LPVOID()
+            if not security.GetSecurityDescriptorDacl(security_descriptor, ctypes.byref(present),
+                    ctypes.byref(dacl), ctypes.byref(defaulted)) or not present.value or not dacl.value:
+                raise OSError("runtime owner DACL must be present and non-null")
+            result = security.SetSecurityInfo(msvcrt.get_osfhandle(descriptor), 1, 0x80000004,
+                None, None, dacl, None)
+            if result:
+                raise ctypes.WinError(result)
+        finally:
+            kernel.LocalFree(security_descriptor)
+        return descriptor
+    except BaseException:
+        if descriptor is not None:
+            os.close(descriptor)
+        raise
+    finally:
+        if handle is not None:
+            kernel.CloseHandle(handle)
+
+
+def _lock_log(descriptor: int, *, shared: bool = False, release: bool = False) -> None:
+    if os.name != "nt":
+        fcntl.flock(descriptor, fcntl.LOCK_UN if release else fcntl.LOCK_SH if shared else fcntl.LOCK_EX)
+        return
+    position = os.lseek(descriptor, 0, os.SEEK_CUR)
+    try:
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        mode = msvcrt.LK_UNLCK if release else msvcrt.LK_RLCK if shared else msvcrt.LK_LOCK
+        msvcrt.locking(descriptor, mode, 1)
+    finally:
+        os.lseek(descriptor, position, os.SEEK_SET)
 
 
 def utc_now() -> str:
@@ -62,10 +151,10 @@ def _json_safe(value: Any) -> Any:
 
 def ensure_log_dir() -> pathlib.Path:
     """Create and return the volatile runtime log directory."""
-    if LOG_DIR.is_symlink():
+    if LOG_DIR.is_symlink() or (os.name == "nt" and LOG_DIR.is_junction()):
         raise OSError(f"runtime log directory must not be a symlink: {LOG_DIR}")
     LOG_DIR.mkdir(parents=True, exist_ok=True)
-    if not LOG_DIR.is_dir() or LOG_DIR.is_symlink():
+    if not LOG_DIR.is_dir() or LOG_DIR.is_symlink() or (os.name == "nt" and LOG_DIR.is_junction()):
         raise OSError(f"runtime log directory is not a regular directory: {LOG_DIR}")
     return LOG_DIR
 
@@ -73,6 +162,8 @@ def ensure_log_dir() -> pathlib.Path:
 def _open_log(flags: int) -> int:
     """Open the fixed log without following a substituted final symlink."""
     ensure_log_dir()
+    if os.name == "nt":
+        return _windows_private_open(LOG_FILE, flags)
     nofollow = getattr(os, "O_NOFOLLOW", 0)
     descriptor = os.open(LOG_FILE, flags | nofollow, 0o600)
     try:
@@ -99,7 +190,7 @@ def _read_current_log_bounded() -> bytes:
     """Read the completed run log without following substitutions."""
     descriptor = _open_log(os.O_RDONLY)
     try:
-        fcntl.flock(descriptor, fcntl.LOCK_SH)
+        _lock_log(descriptor, shared=True)
         before = os.fstat(descriptor)
         if before.st_size > MAX_POINTER_LOG_BYTES:
             raise OSError("runtime log exceeds the latest-pointer size bound")
@@ -124,7 +215,7 @@ def _read_current_log_bounded() -> bytes:
             raise OSError("runtime log changed while building the latest pointer")
         return data
     finally:
-        fcntl.flock(descriptor, fcntl.LOCK_UN)
+        _lock_log(descriptor, release=True)
         os.close(descriptor)
 
 
@@ -162,23 +253,28 @@ def _write_latest_pointer(status: str, exit_code: int) -> None:
     temporary = pointer.with_name(
         f".{pointer.name}.{os.getpid()}.{secrets.token_hex(6)}.tmp"
     )
-    descriptor = os.open(
-        temporary,
-        os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0),
-        0o600,
-    )
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+    descriptor = (_windows_private_open(temporary, flags) if os.name == "nt"
+        else os.open(temporary, flags, 0o600))
     try:
         _write_all(descriptor, encoded)
         os.fsync(descriptor)
     finally:
         os.close(descriptor)
     try:
-        os.replace(temporary, pointer)
-        directory_descriptor = os.open(LOG_DIR, os.O_RDONLY)
-        try:
-            os.fsync(directory_descriptor)
-        finally:
-            os.close(directory_descriptor)
+        if os.name == "nt":
+            kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+            kernel.MoveFileExW.argtypes = [wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD]
+            kernel.MoveFileExW.restype = wintypes.BOOL
+            if not kernel.MoveFileExW(str(temporary), str(pointer), 0x9):
+                raise ctypes.WinError(ctypes.get_last_error())
+        else:
+            os.replace(temporary, pointer)
+            directory_descriptor = os.open(LOG_DIR, os.O_RDONLY)
+            try:
+                os.fsync(directory_descriptor)
+            finally:
+                os.close(directory_descriptor)
     finally:
         if temporary.exists():
             temporary.unlink()
@@ -198,11 +294,11 @@ def write_event(event: str, **fields: Any) -> dict[str, Any]:
     with _WRITE_LOCK:
         descriptor = _open_log(os.O_WRONLY | os.O_APPEND | os.O_CREAT)
         try:
-            fcntl.flock(descriptor, fcntl.LOCK_EX)
+            _lock_log(descriptor)
             _write_all(descriptor, encoded)
             os.fsync(descriptor)
         finally:
-            fcntl.flock(descriptor, fcntl.LOCK_UN)
+            _lock_log(descriptor, release=True)
             os.close(descriptor)
     return payload
 
@@ -214,11 +310,11 @@ def reset_log(launcher: str) -> pathlib.Path:
         _select_unique_run_log()
         descriptor = _open_log(os.O_WRONLY | os.O_CREAT)
         try:
-            fcntl.flock(descriptor, fcntl.LOCK_EX)
+            _lock_log(descriptor)
             os.ftruncate(descriptor, 0)
             os.fsync(descriptor)
         finally:
-            fcntl.flock(descriptor, fcntl.LOCK_UN)
+            _lock_log(descriptor, release=True)
             os.close(descriptor)
     write_event(
         "run_start",

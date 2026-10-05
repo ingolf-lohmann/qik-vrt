@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LOCK_PATH = ROOT / "runtime/toolchains/TOOLCHAIN.lock.tsv"
 REGISTRY_PATH = ROOT / "runtime/toolchains/CACHE_REGISTRY.json"
 COVERAGE_PATH = ROOT / "runtime/toolchains/CACHE_COVERAGE.json"
+WINDOWS_RELEASE_PATH = "runtime/toolchains/python-3.12.10-embed-amd64.release.json"
 
 REQUIRED_COMPONENT_FIELDS = {
     "version",
@@ -99,17 +100,153 @@ def read_registry() -> dict[str, Any]:
         raise ContractError(f"invalid cache registry JSON: {exc}") from exc
     if registry.get("schema") != "qikvrt-tool-cache-registry/1.0":
         raise ContractError("unsupported cache registry schema")
-    if registry.get("lock_authority") != str(LOCK_PATH.relative_to(ROOT)):
+    if registry.get("lock_authority") != LOCK_PATH.relative_to(ROOT).as_posix():
         raise ContractError(
             "cache registry lock_authority does not identify TOOLCHAIN.lock.tsv"
         )
-    if registry.get("coverage_authority") != str(COVERAGE_PATH.relative_to(ROOT)):
+    if registry.get("coverage_authority") != COVERAGE_PATH.relative_to(ROOT).as_posix():
         raise ContractError(
             "cache registry coverage_authority does not identify CACHE_COVERAGE.json"
         )
     if not isinstance(registry.get("components"), dict):
         raise ContractError("cache registry components must be an object")
     return registry
+
+
+def validate_windows_python_payload(registry: dict[str, Any]) -> None:
+    """Cross-check the Windows starter against the existing lock and upstream bytes."""
+    component = registry['components'].get('python-embed-windows')
+    if component is None:
+        return
+    relative = component.get('payload_manifest')
+    if relative != 'runtime/toolchains/python-3.12.10-embed-amd64.payload.json':
+        raise ContractError('Windows Python payload authority path mismatch')
+    try:
+        spec = json.loads((ROOT / relative).read_text(encoding='utf-8'))
+        rows = [line.split('\t') for line in LOCK_PATH.read_text(encoding='utf-8').splitlines()
+                if line.startswith('python-embed-windows\t')]
+        if len(rows) != 1 or rows[0][1:6] != [spec['version'], spec['platform'], spec['archive'],
+                                               spec['archive_sha256'], spec['license']]:
+            raise ContractError('Windows Python payload differs from toolchain lock')
+        if (spec['schema'] != 'qikvrt-windows-python-payload/1.0' or spec['version'] != '3.12.10'
+                or spec['platform'] != 'windows-amd64' or spec['network_default'] != 'DENY'):
+            raise ContractError('Windows Python payload identity/network policy mismatch')
+        for path_key, hash_key in [('license_file', 'license_sha256'),
+                                   ('upstream_sbom_file', 'upstream_sbom_sha256'),
+                                   ('upstream_sigstore_file', 'upstream_sigstore_sha256')]:
+            if sha256_bytes((ROOT / spec[path_key]).read_bytes()) != spec[hash_key]:
+                raise ContractError(f'Windows Python provenance hash mismatch: {path_key}')
+        sbom = json.loads((ROOT / spec['upstream_sbom_file']).read_text(encoding='utf-8'))
+        upstream = [p for p in sbom['packages'] if p['SPDXID'] == 'SPDXRef-PACKAGE-cpython']
+        if (len(upstream) != 1 or upstream[0]['versionInfo'] != spec['version']
+                or upstream[0]['downloadLocation'] != spec['upstream_url']
+                or upstream[0]['licenseConcluded'] != spec['license']
+                or {'algorithm': 'SHA256', 'checksumValue': spec['archive_sha256']}
+                   not in upstream[0]['checksums']):
+            raise ContractError('Windows Python upstream SPDX binding mismatch')
+        files = spec['files']
+        if len(files) != 35 or files['LICENSE.txt']['sha256'] != spec['license_sha256']:
+            raise ContractError('Windows Python complete payload/license binding mismatch')
+        for name, record in files.items():
+            if (not name or Path(name).name != name or '/' in name or '\\' in name
+                    or record['bytes'] <= 0 or len(record['sha256']) != 64
+                    or any(c not in '0123456789abcdef' for c in record['sha256'])):
+                raise ContractError('Windows Python member identity/hash/size mismatch')
+        witness = component.get('native_offline_witness')
+        if witness is not None:
+            receipts = []
+            for path_key, hash_key in [('receipt_path', 'receipt_sha256'),
+                                       ('cache_receipt_path', 'cache_receipt_sha256')]:
+                raw = (ROOT / witness[path_key]).read_bytes()
+                if sha256_bytes(raw) != witness[hash_key]:
+                    raise ContractError('Windows Python native offline witness hash mismatch')
+                receipts.append(json.loads(raw))
+            offline, cached = receipts
+            if (offline['schema'] != 'qikvrt-windows-python-offline-start-receipt/1.0'
+                    or offline['source_head'] != witness['source_head']
+                    or offline['source_tree'] != witness['source_tree']
+                    or str(offline['run_id']) != str(witness['run_id'])
+                    or offline['archive_sha256'] != spec['archive_sha256']
+                    or offline['license_sha256'] != spec['license_sha256']
+                    or offline['payload_manifest_sha256'] != sha256_bytes((ROOT / relative).read_bytes())
+                    or not offline['native_windows_x64'] or not offline['os_egress_denied']
+                    or offline['system_python_candidates_exposed']
+                    or offline['upstream_download_during_offline_start']
+                    or not offline['dependency_closed_for_materialized_carrier']
+                    or offline['cold_offline_restore'] != 'PASS'
+                    or offline['fresh_qikvrt_cmd_start'] != 'PASS'
+                    or offline['warm_offline_start'] != 'PASS'
+                    or not offline['effect_acceptance_retained']
+                    or offline['main_activation_verified'] or offline['effect_ack_done']
+                    or cached['archive_sha256'] != spec['archive_sha256']
+                    or cached['upstream_download_performed']
+                    or cached['self_test'] != offline['runtime_self_test']
+                    or cached['version'] != spec['version']
+                    or cached['self_test']['pointer_bits'] != 64):
+                raise ContractError('Windows Python native offline witness identity/scope mismatch')
+            expected_controls = {'native-log-contract', 'native-log-owner-dacl', 'missing-cache',
+                'tampered-archive', 'missing-archive', 'tampered-executable', 'missing-stdlib',
+                'unexpected-module', 'reparse-cache', 'reconstruction-consent-required',
+                'final-verification-rollback'}
+            controls = offline['negative_controls']
+            if set(controls) != expected_controls or any(v['result'] != 'PASS' for v in controls.values()):
+                raise ContractError('Windows Python native offline negative controls are incomplete')
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        raise ContractError(f'invalid Windows Python payload authority: {exc}') from exc
+
+
+def windows_release_candidate(registry: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Resolve the immutable candidate; availability and publication remain unproved."""
+    registry = read_registry() if registry is None else registry
+    component = registry['components']['python-embed-windows']
+    try:
+        from tools.qikvrt_integrity import _regular_file_bytes
+        raw = _regular_file_bytes(ROOT, WINDOWS_RELEASE_PATH)
+        link = component['durable_release_candidate']
+        if link['path'] != WINDOWS_RELEASE_PATH or sha256_bytes(raw) != link['sha256']:
+            raise ContractError('Windows release candidate registry hash mismatch')
+        candidate = json.loads(raw)
+        spec = json.loads(_regular_file_bytes(ROOT, component['payload_manifest']))
+        archive = candidate['archive']
+        name = f"qikvrt-cpython-{spec['version']}-{spec['platform']}-sha256-{spec['archive_sha256']}.zip"
+        tag = f"runtime-cpython-{spec['version']}-{spec['platform']}-sha256-{spec['archive_sha256']}"
+        if (candidate['schema'] != 'qikvrt-runtime-release-candidate/1.0'
+                or candidate['component'] != spec['component']
+                or candidate['version'] != spec['version'] or candidate['platform'] != spec['platform']
+                or candidate['license'] != spec['license']
+                or archive != {'upstream_name': spec['archive'], 'asset_name': name,
+                               'bytes': spec['archive_bytes'], 'sha256': spec['archive_sha256']}
+                or candidate['repository'] != 'ingolf-lohmann/qik-vrt'
+                or candidate['tag'] != tag
+                or candidate['download_url'] != f"https://github.com/{candidate['repository']}/releases/download/{tag}/{name}"
+                or candidate['state'] != 'PREPARED_NOT_PUBLISHED'
+                or candidate['no_clobber'] is not True or candidate['immutable_release_required'] is not True
+                or candidate['durable_public_readback_verified'] is not False
+                or candidate['main_activation_verified'] is not False
+                or candidate['effect_ack_done'] is not False
+                or candidate['reconstruction'] != {'url': spec['upstream_url'],
+                                                   'requires': spec['reconstruction_requires']}):
+            raise ContractError('Windows release candidate identity/effect boundary mismatch')
+        witness = component['native_offline_witness']
+        expected = {component['payload_manifest'], 'runtime/toolchains/TOOLCHAIN.lock.tsv',
+                    spec['license_file'], spec['upstream_sbom_file'], spec['upstream_sigstore_file'],
+                    'third_party/python/THIRD_PARTY_PYTHON_RUNTIME_PROVENANCE.json',
+                    witness['receipt_path'], witness['cache_receipt_path']}
+        bindings = candidate['bindings']
+        if {b['path'] for b in bindings} != expected or len(bindings) != len(expected):
+            raise ContractError('Windows release candidate binding set mismatch')
+        for binding in bindings:
+            data = _regular_file_bytes(ROOT, binding['path'])
+            blob = hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
+            if (set(binding) != {'path', 'bytes', 'sha256', 'git_blob_sha1'}
+                    or type(binding['bytes']) is not int or binding['bytes'] != len(data)
+                    or binding['sha256'] != sha256_bytes(data) or binding['git_blob_sha1'] != blob):
+                raise ContractError(f"Windows release candidate bound bytes differ: {binding['path']}")
+        if candidate['historical_native_witness'] != witness:
+            raise ContractError('Windows release candidate historical witness mismatch')
+        return candidate
+    except (OSError, KeyError, TypeError, ValueError, RuntimeError) as exc:
+        raise ContractError(f'invalid Windows release candidate: {exc}') from exc
 
 
 def validate_registry(
@@ -197,6 +334,9 @@ def validate_registry(
                 "version": expected_version,
             }
         )
+    validate_windows_python_payload(registry)
+    if 'durable_release_candidate' in entries.get('python-embed-windows', {}):
+        windows_release_candidate(registry)
     return coverage
 
 

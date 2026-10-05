@@ -5,6 +5,155 @@ Copyright (c) 2026 Ingolf Lohmann.
 
 # Runtime cache policy
 
+## Windows x64 startup carrier
+
+The existing `windows-start` profile in `tools/bootstrap-runtime.ps1` binds
+`python-embed-windows` in `TOOLCHAIN.lock.tsv` and `CACHE_REGISTRY.json` to the
+exact CPython 3.12.10 embeddable ZIP. Its payload manifest binds the archive,
+all 35 extracted members, complete upstream license text, SPDX SBOM and recorded
+Sigstore bundle. Recording the bundle does not claim signature verification.
+
+The managed location is
+`.qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/`;
+`QIKVRT_TOOLCHAIN_CACHE` may select the same layout on an external carrier.
+`archive/` retains the exact ZIP and `runtime/` is derived locally. Both Windows
+frontends reuse this profile. A materialized archive starts without a live
+python.org request, ambient Python, pip or package-index access. Every start
+rehashes the ZIP, checks its complete member set against repository bindings,
+compares every extracted file, rejects reparse points and extra/missing files,
+and executes the isolated exact-version x64 self-test before the QIK-VRT launcher.
+
+Offline materialization from an existing archive:
+
+```powershell
+tools/bootstrap-runtime.ps1 -Profile windows-start -Install -AcceptThirdParty -ArchiveFile X:\verified\python-3.12.10-embed-amd64.zip
+qikvrt.cmd --runtime-self-test
+qikvrt.cmd --help
+```
+
+The first command requires a previously obtained, hash-bound ZIP. Download is
+available only as explicit controlled reconstruction:
+
+```powershell
+runtime/download_python_runtime.ps1 -AcceptThirdParty -ReconstructUpstream
+```
+
+Normal startup never calls that adapter or enables its network flag. A missing
+mandatory cache blocks startup; check-only reports `CONTINUE` without installing
+or downloading. Invalid existing material blocks and is never silently replaced.
+Installation stages and verifies files, atomically promotes only the new runtime,
+rechecks its final path, and removes that new runtime if final verification fails.
+
+The existing runtime logger uses native Windows file handles, protected
+owner-rights DACLs, bounded CRT byte-range locks and write-through pointer
+replacement on Windows. POSIX permission and locking checks remain active.
+Native concurrent-writer, alias-rejection and DACL-readback controls exercise
+this platform contract. A filesystem that cannot enforce it blocks logging.
+
+The existing adaptive-runtime workflow restores an exact cache key, performs
+explicit preparation outside the offline interval, then executes
+`tests/test_runtime_bootstrap.ps1` on native Windows x64. The test denies outbound
+traffic for every executable on the start path through read-back OS firewall
+rules, removes ambient Python commands, restores from the already materialized
+archive, starts the real `qikvrt.cmd`, checks its runtime and launcher log, and
+executes tamper/missing/reparse/consent/rollback controls. Firewall state is restored
+in `finally`. Its artifact carries the exact-subject receipt and materialized
+archive; it is a candidate carrier with finite retention, not a reviewed release.
+Only reviewed Main may save the protected shared cache. No broad restore prefix
+or cross-OS restore is allowed.
+
+Materialization, coverage, local Linux tests and syntax checks do not close this
+dependency. Closure for a materialized carrier requires a freshly read native
+`OFFLINE_START_RECEIPT.json` for the exact candidate HEAD/TREE. Main activation,
+reviewed durable release delivery and overall `EFFECT_ACK_DONE` remain separate.
+
+The immutable `python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json` and
+`python-3.12.10-embed-amd64.CACHE_SELF_TEST.json` in the existing toolchain
+directory bind the observed carrier at source HEAD
+`1f2441dd443bd9ad58574ed1626e66e18172e66a`, tree
+`e4fe8bb0471c1ce1f1f9308a8d874e22953304ac`. Their artifact bytes and nested
+archive were redownloaded and verified. The registry binds both receipt hashes
+and checks source identity, offline scope and all 11 negative/logger controls.
+These records establish that observed materialized carrier's closure. A
+successor HEAD still requires its own fresh native check; the archived snapshot
+does not activate Main or authorize a release or ordinary effect.
+
+The starter's CPython 3.12.10 binding preserves the previously selected embeddable
+artifact. The independent IETF renderer remains bound to CPython 3.12.13; this
+change does not select an older interpreter for that profile.
+
+## Durable Windows carrier candidate
+
+`runtime/toolchains/python-3.12.10-embed-amd64.release.json` extends the existing
+registry and release planner. It binds version/platform, the unchanged upstream
+archive, all payload/license/provenance authorities and the immutable historical
+offline/cache receipts by byte count, SHA-256 and Git blob identity. The original
+receipts are historical source evidence, never fresh evidence for a successor.
+The raw archive asset name contains its complete SHA-256. The companion candidate
+JSON has its own content-addressed name. Large payload bytes remain outside Git.
+
+Prepare the two exact assets and the review plan through the existing publisher:
+
+```powershell
+python tools/qikvrt_cicd_publish.py --runtime-carrier prepare --carrier-archive X:/verified/python-3.12.10-embed-amd64.zip --evidence-dir .qikvrt/evidence/runtime-release-candidate
+```
+
+Use the verified cache interpreter if an ambient Python is unavailable. This mode
+performs local preparation only and rejects every execute/publication flag.
+Its output directory is create-only; a collision blocks without replacement.
+Failure removes only the output created by this invocation. The plan preserves
+input HEAD/TREE and whether the worktree was clean. Its proposed tag/release/API
+commands are data, not an executable authorization or a generic publisher plan.
+
+The existing adaptive-runtime job prepares this fileset on the exact candidate,
+executes carrier contract tests, and retains it with the fresh native offline
+receipt in the existing finite-retention Action artifact. This is a review carrier.
+It is not durable release availability. Before any external tag/release/asset
+effect, reobserve the exact reviewed publish subject, enforce code-owner review,
+require all current gates and no competing writer, bind separate effect authority
+to that subject and both asset digests, and use the existing master gate/publisher
+boundary. Tag creation is create-only. Release upload has no `--clobber`, delete,
+replacement or automatic retry. Publish only with immutable-release enforcement.
+Immutable configuration, draft publication and tag creation are separate external
+effects; preparation neither enables nor performs them.
+
+After those separately authorized effects, use a new readback process:
+
+```powershell
+python tools/qikvrt_cicd_publish.py --runtime-carrier readback --carrier-reviewed-head <exact-reviewed-publish-head> --evidence-dir .qikvrt/evidence/runtime-release-readback
+```
+
+The readback uses anonymous REST metadata/tag GETs and fresh public asset GETs
+into a new temporary directory. It requires the exact tag commit, an immutable
+public release, the exact asset set/digests/sizes, both downloaded byte hashes,
+and the complete ZIP payload. Metadata or upload success alone is insufficient.
+It writes `RELEASE_DOWNLOAD_READBACK.json`; failure leaves no reusable downloaded
+carrier and never reaches python.org. This verifies delivery only; a fresh native
+offline launcher receipt must additionally establish startup of the restored bytes.
+Privileged platform deletion remains outside client No-Clobber enforcement.
+
+Explicit consumer restoration uses the existing Windows bootstrap:
+
+```powershell
+tools/bootstrap-runtime.ps1 -Profile windows-start -Install -AcceptThirdParty -RestoreReleaseAsset
+qikvrt.cmd --runtime-self-test
+qikvrt.cmd --help
+```
+
+A missing, mutable or altered asset blocks without upstream fallback. Release
+restoration cannot be combined with `-ArchiveFile` or `-ReconstructUpstream`.
+Normal startup continues using local verified bytes without network access.
+python.org remains only the separately explicit, consent-bound reconstruction
+operation already documented above. Final-path failure rolls back only newly
+promoted runtime material and preserves a prior valid carrier.
+
+The candidate remains `PREPARED_NOT_PUBLISHED`,
+`durable_public_readback_verified=false`, `main_activation_verified=false` and
+`effect_ack_done=false`. Controlled HTTP/PowerShell transport fixtures test
+restore/missing/tamper/No-Clobber/rollback behavior; they are not public release
+or independent-review evidence. A successful anonymous download demonstrates
+byte delivery, not reviewer, organizational or causal independence.
+
 ## Purpose
 
 The repository is the durable runtime authority. Runtime caches are reusable

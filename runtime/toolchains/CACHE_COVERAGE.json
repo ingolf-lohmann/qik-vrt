@@ -43,6 +43,12 @@
       "version": "reported-version"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "powershell",
+      "provider": "Windows inbox PowerShell or PowerShell 7 on the declared Windows carrier",
+      "version": "windows-inbox-5.1-or-7.x"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "pypdf",
       "provider": "hash-locked Python wheel cache",
@@ -59,6 +65,12 @@
       "component": "python",
       "provider": "actions/setup-python",
       "version": "3.12.13"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "python-embed-windows",
+      "provider": "tools/bootstrap-runtime.ps1 -Profile windows-start",
+      "version": "3.12.10"
     },
     {
       "cache_class": "ecosystem-cache",
@@ -87,10 +99,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 14,
-  "declared_components": 14,
-  "lock_sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69",
-  "registry_sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6",
+  "covered_components": 16,
+  "declared_components": 16,
+  "lock_sha256": "92007b93f1e36865487febf3868617ff1add850ea7274e2a8ab1f1884bd3e982",
+  "registry_sha256": "c1af800b844267ea72447feabf7d78575a4d4fe94fe9e13e2e2d269689c88193",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

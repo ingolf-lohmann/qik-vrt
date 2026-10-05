@@ -1,0 +1,209 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_windows_x64_python_offline_cache_work_unit_v1",
+  "work_unit_id": "WINDOWS-X64-PYTHON-OFFLINE-CACHE-20261003-V1",
+  "created_at": "2026-10-03T13:02:00Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+  "source_tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "identity_proof_boundary": "Attribution follows the authorized task and repository context; it is not biometric identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "qikvrt-windows-python-cache-20261003",
+    "tools_and_adapters": [
+      "GitHub native REST connector",
+      "local Git object reconstruction",
+      "Python 3.12",
+      "PowerShell 7.6.6 Linux syntax and byte-contract checks"
+    ],
+    "identity_and_observation_limits": "Linux verification is not a native Windows start witness. Hidden implementation internals and legal personhood are not claimed."
+  },
+  "human_contributions": [
+    {
+      "type": "SCOPE_AUTHORIZATION",
+      "description": "Close the existing Windows x64 Python startup dependency through the repository runtime/cache authority, bind exact bytes and provenance, preserve controlled reconstruction, and require fresh offline startup evidence before claiming closure."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "REPAIR_AND_VERIFICATION",
+      "description": "Extended the existing bootstrap, toolchain lock, cache registry, launchers, provenance and adaptive-runtime workflow; checked official payload bytes and added native offline/tamper/missing-cache controls."
+    }
+  ],
+  "joint_components": [
+    {
+      "component": "Materialized Windows Python startup carrier",
+      "human_part": "scope and acceptance condition",
+      "artificial_cognitive_part": "exact payload binding, existing-path implementation, tests and evidence preparation",
+      "separable": true
+    }
+  ],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "raw_transcript_persisted": false,
+    "archive": "python-3.12.10-embed-amd64.zip",
+    "archive_sha256": "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+    "archive_bytes": 11133606,
+    "upstream_authority": "https://www.python.org/ftp/python/3.12.10/",
+    "license": "PSF-2.0 and the complete upstream LICENSE.txt notices",
+    "license_sha256": "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419",
+    "sigstore_signature_verified": false,
+    "predecessor_evidence_transferred": false
+  },
+  "reuse_before_create": {
+    "reused": [
+      "tools/bootstrap-runtime.ps1",
+      "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "runtime/toolchains/CACHE_REGISTRY.json",
+      "tools/qikvrt_tool_cache.py",
+      "qikvrt.ps1",
+      "qikvrt.cmd",
+      "runtime/download_python_runtime.ps1",
+      ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "existing GitHub Actions cache and artifact actions"
+    ],
+    "new_authority_files": "Exact upstream payload manifest, SPDX SBOM, Sigstore record and complete license bytes supplement the existing toolchain directory.",
+    "new_test_adapter_basis": "The existing POSIX runtime test cannot exercise Windows executable loading, cmd forwarding, native PowerShell or Windows firewall controls; tests/test_runtime_bootstrap.ps1 is the Windows adapter in the same test path and existing workflow."
+  },
+  "outputs": {
+    "payload_location": ".qikvrt/toolchains/python-embed/3.12.10/windows-amd64/sha256/4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3/",
+    "large_binary_in_git": false,
+    "receipt_path": "qikvrt-windows-offline-start-<exact-head>/OFFLINE_START_RECEIPT.json",
+    "carrier_path": "existing workflow artifact/toolchains/python-embed/3.12.10/windows-amd64/sha256/<archive-sha256>/archive/",
+    "durable_release_delivery": "NOT_CLAIMED; candidate artifacts have finite retention",
+    "self_binding_rule": "The containing Git commit/tree and repository native integrity trio bind the exact files; no impossible in-file self-hash is asserted.",
+    "committed_receipt_paths": [
+      "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+      "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json"
+    ]
+  },
+  "verification": {
+    "official_zip_hash_size_and_35_members": "PASS_LOCAL_FRESH_BYTES",
+    "upstream_sbom_and_complete_license_binding": "PASS_LOCAL_FRESH_BYTES",
+    "tool_cache_coverage": "PASS_16_OF_16",
+    "launcher_and_license_tests": "PASS_LOCAL",
+    "powershell_syntax": "PASS_POWERSHELL_7_LINUX_ONLY",
+    "actual_payload_hash_tamper_missing_extra_controls": "PASS_POWERSHELL_7_LINUX_BYTE_CONTRACT_ONLY",
+    "complete_repository_test": {
+      "result": "PASS",
+      "command": "make test",
+      "unittest_executions": 530,
+      "fresh_checkout_source_tree": "f6b5a0eb12bd8159ae223536fdcaeb89bef587eb",
+      "log_sha256": "476746bc8afa68b06117612b1cc3dabc6a876518c4406db1a1e7959e9cbfae04",
+      "log_bytes": 103178,
+      "observed_utc": "2026-10-03T13:12:04.208416+00:00",
+      "scope": "Fresh local checkout; not native Windows runtime evidence."
+    },
+    "repository_native_integrity": "PASS_DETERMINISTIC_REGENERATION_AND_FRESH_CHECKOUT; REGENERATE_AFTER_THIS_METADATA_UPDATE",
+    "native_windows_offline_start": {
+      "result": "PASS_NATIVE_OFFLINE_START_READBACK",
+      "receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+      "receipt_sha256": "02739f64452c3dfb619033fb4d9cb1fb5671b40624229d615c72f9fadb0d7a94",
+      "cache_receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json",
+      "cache_receipt_sha256": "685586904628b82b31897d17381de99dc01cd73153f98e81607b5cefa290b8d2",
+      "source_head": "1f2441dd443bd9ad58574ed1626e66e18172e66a",
+      "source_tree": "e4fe8bb0471c1ce1f1f9308a8d874e22953304ac",
+      "run_id": 37128130457,
+      "job_id": 111217559829,
+      "artifact_id": 11275860977,
+      "artifact_sha256": "7799e99632e65358e7597caa51d0252c205241cd03df27c67f9aeeec2bc23c78",
+      "artifact_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128130457/artifacts/11275860977",
+      "scope": "Observed materialized cache carrier on native Windows Server 2022 x64; not Main activation, durable release delivery or an effect acknowledgment.",
+      "current_head_rule": "This immutable source snapshot does not replace required fresh checks on a successor HEAD."
+    },
+    "independent_candidate_review": "NOT_CLAIMED",
+    "first_current_blocker": "LATEST_HEAD_REOBSERVATION_THEN_AUTHENTICATED_CODE_OWNER_REVIEW_FOR_MAIN_ACTIVATION",
+    "native_attempts": [
+      {
+        "source_head": "d5aec74536b9c7c22589ceb01e06759f4ad8d7e5",
+        "source_tree": "df029d71c34c6dae51a0bc9a2dae7fcde7df392d",
+        "run_id": 37125885821,
+        "job_id": 111210962636,
+        "runtime_materialization_and_self_test": "PASS_NATIVE_WINDOWS_X64",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "Test adapter joined multiple Get-Command git Source values into one command path. Select exactly one application before isolation.",
+        "dependency_closed": false
+      },
+      {
+        "source_head": "316179be14dbc7322f778264aed5a40aa04e47b5",
+        "source_tree": "a07fd1be54f1ef0e7570b986babe33067499bfd7",
+        "run_id": 37126642850,
+        "job_id": 111213161591,
+        "runtime_materialization_and_self_test": "PASS_NATIVE_WINDOWS_X64",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "The OS egress denial raised a WebException with an inner socket exception; GetBaseException lost the expected outer type. Preserve the exception chain.",
+        "additional_static_start_blocker": "The existing logger unconditionally imported Unix-only fcntl and used Unix-only permissions/directory fsync. Extend its native platform branch without bypassing private permissions, locking or atomic receipt replacement.",
+        "dependency_closed": false
+      },
+      {
+        "source_head": "dbdde1eadecac386a18e8646d73a5dff3fd11ff1",
+        "source_tree": "328e0009285362dbb27d81c64cbedfbb54b01b79",
+        "run_id": 37127400997,
+        "job_id": 111215403559,
+        "runtime_materialization_and_self_test": "PASS_NATIVE_WINDOWS_X64",
+        "os_egress_negative_control": "PASS",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "An ambient Python application remained discoverable when SystemRoot was retained in PATH. The witness already binds all executable paths absolutely; use a fresh empty PATH directory instead.",
+        "dependency_closed": false
+      },
+      {
+        "source_head": "0755751b93a2ba268c43e7605ffaaca8bde2e552",
+        "source_tree": "2aadee842eb521f0ab0769a6658f46ead22f67fd",
+        "run_id": 37127768460,
+        "job_id": 111216489488,
+        "os_egress_negative_control": "PASS",
+        "ambient_python_commands_removed": "PASS",
+        "offline_start": "NOT_REACHED",
+        "first_causal_failure": "The encoded PowerShell command quoted parameter names as positional strings. Preserve named parameter tokens and quote only values; terminate on binding errors.",
+        "dependency_closed": false
+      }
+    ],
+    "tool_cache_native_receipt_binding": "HASH_AND_IDENTITY_VALIDATED_WITH_TAMPER_AND_MISSING_RECEIPT_NEGATIVE_TEST"
+  },
+  "human_decision": {
+    "directive": "RECEIVED",
+    "candidate_review": "REQUIRED_FOR_PROMOTION",
+    "acceptance": "SCOPE_AUTHORIZATION_RECORDED",
+    "rejection": "NOT_RECORDED",
+    "manual_modification": "NOT_RECORDED"
+  },
+  "git_history": {
+    "branch": "repair/windows-python-offline-cache-20261003",
+    "base_commit": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "content_commit": "BOUND_BY_CONTAINING_GIT_COMMIT",
+    "force_push": false,
+    "history_rewrite": false,
+    "merge": "NOT_EXECUTED"
+  },
+  "external_effects": {
+    "review_branch_creation": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "repository_file_commits": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "pull_request": "AUTHORIZED_REPOSITORY_INTERNAL_EFFECT",
+    "main_activation": "NOT_EXECUTED",
+    "release": "NOT_EXECUTED",
+    "deployment": "NOT_EXECUTED"
+  },
+  "candidate_state": "NATIVE_MATERIALIZED_CARRIER_PROVEN_RECEIPTS_PERSISTED_PENDING_LATEST_HEAD_GATES_AND_MAIN_REVIEW",
+  "release_claims": {
+    "DEPENDENCY_CLOSED": true,
+    "FINAL_PASS": false,
+    "MAIN_ACTIVATION_VERIFIED": false,
+    "EFFECT_ACK_DONE": false,
+    "DEPENDENCY_CLOSED_SCOPE": "EXACT_OBSERVED_MATERIALIZED_CARRIER"
+  }
+}

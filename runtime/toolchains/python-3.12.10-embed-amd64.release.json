@@ -1,0 +1,118 @@
+{
+  "_license": {
+    "classification": "runtime_release_candidate_metadata",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann",
+    "third_party_archive_license": "PSF-2.0; complete upstream LICENSE.txt controls"
+  },
+  "archive": {
+    "asset_name": "qikvrt-cpython-3.12.10-windows-amd64-sha256-4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3.zip",
+    "bytes": 11133606,
+    "sha256": "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+    "upstream_name": "python-3.12.10-embed-amd64.zip"
+  },
+  "availability_rule": "Candidate binding is not a published asset. Require independent anonymous download and complete byte readback of an immutable public release; then fresh native offline startup of that restored carrier.",
+  "bindings": [
+    {
+      "bytes": 5998,
+      "git_blob_sha1": "ab33308238438d5e9b2dfa73dededc9f51e07754",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64.payload.json",
+      "sha256": "0119f95dcece5191342049380b5274e5ecfe51e2fca81682e162e16cd6b3acfd"
+    },
+    {
+      "bytes": 2918,
+      "git_blob_sha1": "2480ab810b6037c4293e210d2b15ec3ebda58540",
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "sha256": "92007b93f1e36865487febf3868617ff1add850ea7274e2a8ab1f1884bd3e982"
+    },
+    {
+      "bytes": 36874,
+      "git_blob_sha1": "3cfebe5f96d117a80385f46c51733f633c22ed3f",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64-LICENSE.txt",
+      "sha256": "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419"
+    },
+    {
+      "bytes": 15267,
+      "git_blob_sha1": "e5ba4d56d462373030b7999140e2a721a9d42eba",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64.spdx.json",
+      "sha256": "efa53ba4f26e8a06410677ec6d010e97133a7a1ab38e0485f6936da2911879fa"
+    },
+    {
+      "bytes": 4915,
+      "git_blob_sha1": "ebad0834835305754840eaaf24f02a15784161f1",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64.sigstore.json",
+      "sha256": "8aa5b4e555fd8b73b3dfef2f04328739f52d30706655930dcdf6111603d015be"
+    },
+    {
+      "bytes": 3678,
+      "git_blob_sha1": "2f7c040ecbb349f80b24af5a2635d4334cdb6211",
+      "path": "third_party/python/THIRD_PARTY_PYTHON_RUNTIME_PROVENANCE.json",
+      "sha256": "2e716c71e48ee7331a67c8e253a78ddee2e41fd6057a6645f92e6369eb88e687"
+    },
+    {
+      "bytes": 6530,
+      "git_blob_sha1": "617cf8cbdee27a4fc4d4f765834c0014c0a30430",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+      "sha256": "02739f64452c3dfb619033fb4d9cb1fb5671b40624229d615c72f9fadb0d7a94"
+    },
+    {
+      "bytes": 1319,
+      "git_blob_sha1": "c726e73bdb8478a684027eb731fc19d38f672600",
+      "path": "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json",
+      "sha256": "685586904628b82b31897d17381de99dc01cd73153f98e81607b5cefa290b8d2"
+    }
+  ],
+  "component": "python-embed-windows",
+  "download_url": "https://github.com/ingolf-lohmann/qik-vrt/releases/download/runtime-cpython-3.12.10-windows-amd64-sha256-4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3/qikvrt-cpython-3.12.10-windows-amd64-sha256-4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3.zip",
+  "durable_public_readback_verified": false,
+  "effect_ack_done": false,
+  "historical_native_witness": {
+    "artifact_id": 11275860977,
+    "artifact_sha256": "7799e99632e65358e7597caa51d0252c205241cd03df27c67f9aeeec2bc23c78",
+    "artifact_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37128130457/artifacts/11275860977",
+    "cache_receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.CACHE_SELF_TEST.json",
+    "cache_receipt_sha256": "685586904628b82b31897d17381de99dc01cd73153f98e81607b5cefa290b8d2",
+    "current_head_rule": "This immutable source snapshot does not replace required fresh checks on a successor HEAD.",
+    "job_id": 111217559829,
+    "receipt_path": "runtime/toolchains/python-3.12.10-embed-amd64.OFFLINE_START_RECEIPT.json",
+    "receipt_sha256": "02739f64452c3dfb619033fb4d9cb1fb5671b40624229d615c72f9fadb0d7a94",
+    "run_id": 37128130457,
+    "scope": "Observed materialized cache carrier on native Windows Server 2022 x64; not Main activation, durable release delivery or an effect acknowledgment.",
+    "source_head": "1f2441dd443bd9ad58574ed1626e66e18172e66a",
+    "source_tree": "e4fe8bb0471c1ce1f1f9308a8d874e22953304ac"
+  },
+  "immutable_release_required": true,
+  "license": "PSF-2.0",
+  "main_activation_verified": false,
+  "no_clobber": true,
+  "platform": "windows-amd64",
+  "privileged_mutation_boundary": "No-Clobber rejects replacement by this path. Privileged platform deletion is outside this client; an absent asset blocks and never silently falls back upstream.",
+  "reconstruction": {
+    "requires": [
+      "Install",
+      "AcceptThirdParty",
+      "ReconstructUpstream"
+    ],
+    "url": "https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip"
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "required_before_effect": [
+    "CURRENT_REPOSITORY_CODE_OWNER_RULE_ENFORCED",
+    "FRESH_AUTHENTICATED_CODE_OWNER_REVIEW_OF_EXACT_PUBLISH_SUBJECT",
+    "ALL_APPLICABLE_EXACT_HEAD_CHECKS_TERMINAL_GREEN",
+    "UNCHANGED_EXPECTED_HEAD_AND_NO_COMPETING_WRITER",
+    "SEPARATE_EXACT_ASSET_TAG_AND_RELEASE_EFFECT_AUTHORIZATION",
+    "EXISTING_MASTER_GATE_AND_CICD_PUBLISH_ACCEPTANCE",
+    "IMMUTABLE_RELEASE_CONFIGURATION_VERIFIED"
+  ],
+  "schema": "qikvrt-runtime-release-candidate/1.0",
+  "source_candidate": {
+    "head": "f74313ad2bd534ab14aa6b1466963ff45956b15b",
+    "meaning": "Preparation input only; successor checks, review and publication tag require their own exact-subject evidence.",
+    "tree": "3cc87e1d43999cfcea683fac19fc018e091ec267"
+  },
+  "state": "PREPARED_NOT_PUBLISHED",
+  "tag": "runtime-cpython-3.12.10-windows-amd64-sha256-4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+  "version": "3.12.10"
+}
