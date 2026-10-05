@@ -2,6 +2,9 @@
 name: QIKVRT EFFECT_ACK HTTP Firefox terminal
 
 on:
+  push:
+    branches:
+      - work/bootstrap-runtime-release-20261005
   pull_request:
     paths:
       - "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml"
