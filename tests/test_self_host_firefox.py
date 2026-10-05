@@ -111,6 +111,7 @@ class FirefoxCarrierTests(NativeStandaloneTests):
                 'native_durable_event':event,'firefox_version':self.manifest['browser_runtime']['firefox_version'],
                 'browser_executables':self.manifest['browser_runtime']['executables'],'transport':readback,
                 'firefox_navigator_window_observed':True,'git_in_runtime_path':False,'gh_in_runtime_path':False,
+                'native_terminal_document_title_observed':True,
                 'outbound_network':'DOCKER_NETWORK_NONE','observed_network_interfaces':interfaces,
                 'scope':'ACTUAL_EXACT_CANDIDATE_RUNTIME_IN_CI_CONTAINER',
                 'independent_host_identity_verified':False,'public_https_readback_verified':False,

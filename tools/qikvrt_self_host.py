@@ -97,7 +97,8 @@ def freeze(root, output, head, tree, browser_assets=None):
             # Debian's noVNC tree contains distribution-managed JS links.
             # Freeze their resolved source bytes as regular files, with no key,
             # certificate, credential, VCS or executable payload admitted.
-            suffixes = {".html", ".js", ".css", ".svg", ".png", ".jpg", ".ico", ".woff", ".woff2", ".json", ".txt", ".map"}
+            suffixes = {".html", ".js", ".css", ".svg", ".png", ".jpg", ".jpeg", ".gif", ".ico",
+                        ".woff", ".woff2", ".ttf", ".eot", ".oga", ".ogg", ".wav", ".mp3", ".json", ".txt", ".map"}
             allowed = (browser_assets.resolve(), Path('/usr/share/javascript'), Path('/usr/share/nodejs'))
             def admitted(source):
                 resolved = source.resolve(strict=True)
@@ -328,7 +329,8 @@ def browser_carrier(package, manifest, config, volume):
         def browser_window():
             raw = subprocess.check_output([shutil.which("xwininfo"), "-display", config["display"], "-root", "-tree"],
                 env=env, timeout=2).decode()
-            return '"Navigator" "firefox' in raw
+            title = re.search(r'<title>([^<]+)</title>', (package / 'docs/terminal/temdd/index.html').read_text())[1]
+            return '"Navigator" "firefox' in raw and '"' + title in raw
         ready(browser_window)
         def novnc_readback():
             with urllib.request.urlopen("http://127.0.0.1:" + str(config["novnc_port"]) + "/vnc.html", timeout=2) as r:

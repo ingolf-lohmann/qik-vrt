@@ -58,6 +58,7 @@ jobs:
           docker build --target test --file runtime/self-host/Dockerfile --tag qikvrt-self-host-firefox-test .
 
       - name: Verify productive exported Firefox and noVNC without provider network
+        id: firefox-runtime
         shell: bash
         run: |
           set -euo pipefail
@@ -72,7 +73,7 @@ jobs:
             python3 -B -m unittest -v tests.test_self_host_firefox
 
       - name: Preserve isolated runtime readback and dependency versions
-        if: ${{ always() }}
+        if: ${{ always() && steps.firefox-runtime.outcome != 'skipped' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: qikvrt-productive-terminal-readback-${{ github.event.pull_request.head.sha || github.sha }}

@@ -138,38 +138,6 @@
       "source_path": "docs/terminal/temdd/index.html"
     },
     {
-      "bytes": 21653,
-      "git_blob_sha1": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
-      "mode": "100644",
-      "restored_path": "src/qikvrt_temdd_event_ledger.py",
-      "sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
-      "source_path": "src/qikvrt_temdd_event_ledger.py"
-    },
-    {
-      "bytes": 8652,
-      "git_blob_sha1": "1891b1e2edcdbb2b0c5ebeb73c787e3d7ab15564",
-      "mode": "100644",
-      "restored_path": "tests/test_qikvrt_temdd_public_proxy.py",
-      "sha256": "505d1608109f75caac698e2af97278a58431b7a2235f8f2ce03ed98cb3a962ee",
-      "source_path": "tests/test_qikvrt_temdd_public_proxy.py"
-    },
-    {
-      "bytes": 21663,
-      "git_blob_sha1": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
-      "mode": "100644",
-      "restored_path": "tests/test_temdd_event_ledger.py",
-      "sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
-      "source_path": "tests/test_temdd_event_ledger.py"
-    },
-    {
-      "bytes": 3806,
-      "git_blob_sha1": "58f5af0d026dfa9319f99b3beb8dcd6e30aec18d",
-      "mode": "100644",
-      "restored_path": "tests/test_temdd_runtime_subject_binding.py",
-      "sha256": "e6c1c98665c50fdf2c5de1ac29f17f5ccf78aefdcdbd9abb4e700aeb5ac6bc4a",
-      "source_path": "tests/test_temdd_runtime_subject_binding.py"
-    },
-    {
       "bytes": 6577,
       "git_blob_sha1": "1eefd2549e6866fe0e2187174c55060b2f115ca3",
       "mode": "100644",
@@ -352,6 +320,46 @@
       "restored_path": "runtime/self-host/original-firefox/terminal.css",
       "sha256": "769dffd97cb95d995a4b72b073cbef669391421b0c4acabf07f9ef79cb1f99ed",
       "source_path": "browser/firefox/qikvrt-terminal/terminal.css"
+    },
+    {
+      "bytes": 13389,
+      "git_blob_sha1": "c0dbf5d880d146c23645d8de971c34ae64da6906",
+      "mode": "100644",
+      "restored_path": "runtime/self-host/original-workflows/qikvrt_temdd.yml",
+      "sha256": "5ecd9a8470f02da7e32da16812fe61f2fe42e214b00bec2d08ee139daa5e99c8",
+      "source_path": ".github/workflows/qikvrt_temdd.yml"
+    },
+    {
+      "bytes": 21653,
+      "git_blob_sha1": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
+      "mode": "100644",
+      "restored_path": "src/qikvrt_temdd_event_ledger.py",
+      "sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+      "source_path": "src/qikvrt_temdd_event_ledger.py"
+    },
+    {
+      "bytes": 8652,
+      "git_blob_sha1": "1891b1e2edcdbb2b0c5ebeb73c787e3d7ab15564",
+      "mode": "100644",
+      "restored_path": "tests/test_qikvrt_temdd_public_proxy.py",
+      "sha256": "505d1608109f75caac698e2af97278a58431b7a2235f8f2ce03ed98cb3a962ee",
+      "source_path": "tests/test_qikvrt_temdd_public_proxy.py"
+    },
+    {
+      "bytes": 21663,
+      "git_blob_sha1": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
+      "mode": "100644",
+      "restored_path": "tests/test_temdd_event_ledger.py",
+      "sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
+      "source_path": "tests/test_temdd_event_ledger.py"
+    },
+    {
+      "bytes": 3806,
+      "git_blob_sha1": "58f5af0d026dfa9319f99b3beb8dcd6e30aec18d",
+      "mode": "100644",
+      "restored_path": "tests/test_temdd_runtime_subject_binding.py",
+      "sha256": "e6c1c98665c50fdf2c5de1ac29f17f5ccf78aefdcdbd9abb4e700aeb5ac6bc4a",
+      "source_path": "tests/test_temdd_runtime_subject_binding.py"
     }
   ],
   "main_observed": "0a44160d16c3937dc5888652791f4bd1a7136af7",

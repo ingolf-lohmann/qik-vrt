@@ -56,16 +56,22 @@
   },
   "implementation_files": [
     {
-      "bytes": 7901,
-      "git_blob_sha1": "20694f465b393faf19ed033ae3bb4d1e47d6f1e5",
+      "bytes": 7975,
+      "git_blob_sha1": "1ad7b5b5c182b20bd2e9ac5ef958f8c12c5588b7",
       "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
-      "sha256": "d165ac1c1f8439a260d4620ebfa69c26130ebac304071d467725a960369b3e6e"
+      "sha256": "b3f17dc4dd5683453e949451b7061ba553d290af5241475236d4097e8beb9815"
     },
     {
-      "bytes": 11380,
-      "git_blob_sha1": "2e8b9b381f653e7f41d2c592a51d93a0c488814c",
+      "bytes": 3058,
+      "git_blob_sha1": "cffcb872da82ac29d6b6f312d255d7a38948506f",
+      "path": ".github/workflows/qikvrt_temdd.yml",
+      "sha256": "90278614a3befd6353181998cd97a55b5102c1f863e4633706088354cf14b653"
+    },
+    {
+      "bytes": 11818,
+      "git_blob_sha1": "fcd50c15f4e882913370a41d8fcd841c5e2b4a66",
       "path": "Makefile",
-      "sha256": "360199d84a0006b111278c47bf8e312882066b728ae65cf74c71b9c7e6411747"
+      "sha256": "3ebd7151ba55dd2b5a39380403054481a9c04292d573e62fa7db82633fd6530a"
     },
     {
       "bytes": 4957,
@@ -206,10 +212,10 @@
       "sha256": "893f5c4388631bd4ea2ac2c3f247b2060f2c2701fc123a9c56b5486909655c40"
     },
     {
-      "bytes": 120160,
-      "git_blob_sha1": "4e26997aedbfa3b74652d162363496e1038e1df1",
+      "bytes": 120508,
+      "git_blob_sha1": "dfe1c78ead2edff550895e3fb32200e8892bce5d",
       "path": "evidence/self_host/SOURCE_RECOVERY_20261005.json",
-      "sha256": "ced533f27353732daaaa8e740d9ba1f9deb4e9e50653759ee539a7fcfd0dcc83"
+      "sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e"
     },
     {
       "bytes": 2366,
@@ -242,10 +248,10 @@
       "sha256": "d393d3eb7eaae2c1dcd4404ef6cf86600ea794a068ff32cf3a793d3abb0fec3b"
     },
     {
-      "bytes": 3849,
-      "git_blob_sha1": "9035f3e500d074db1c44c00811e439c5238d179b",
+      "bytes": 3910,
+      "git_blob_sha1": "bff9c80bc29d276b9ce8e050093646c6fc6aaedf",
       "path": "runtime/self-host/PACKAGE.json",
-      "sha256": "7e6fbefe8f8822adf8d72207cc7a70beed23274bfbb91ff35191c32f2057e0c1"
+      "sha256": "44b675f6fcf1abb653dafd79197da9f77a2077a7e3fe7fd658503208a878fb91"
     },
     {
       "bytes": 8829,
@@ -398,6 +404,12 @@
       "sha256": "769dffd97cb95d995a4b72b073cbef669391421b0c4acabf07f9ef79cb1f99ed"
     },
     {
+      "bytes": 13389,
+      "git_blob_sha1": "c0dbf5d880d146c23645d8de971c34ae64da6906",
+      "path": "runtime/self-host/original-workflows/qikvrt_temdd.yml",
+      "sha256": "5ecd9a8470f02da7e32da16812fe61f2fe42e214b00bec2d08ee139daa5e99c8"
+    },
+    {
       "bytes": 5414,
       "git_blob_sha1": "82c8e21a38ed1919d7601228e50c088cfa671a20",
       "path": "runtime/toolchains/CACHE_COVERAGE.json",
@@ -458,10 +470,10 @@
       "sha256": "372d2265978332beb02da44bd277d0d78924f418fe0a369a94b99844a1f15e22"
     },
     {
-      "bytes": 8095,
-      "git_blob_sha1": "2ffa5004777fc52af706efe96a39113e33b2b8c9",
+      "bytes": 8159,
+      "git_blob_sha1": "f05c8001da6425a2c5a4c9a17fcf7863f39dce12",
       "path": "tests/test_self_host_firefox.py",
-      "sha256": "274b2db8016d32ff651197f9838118a4b0803ab5a1b84dc764ca6abd3882e8f1"
+      "sha256": "00a77767c1a71103445d8afe8619dcc481a33acc7ab680e23a42db5651407ee6"
     },
     {
       "bytes": 8747,
@@ -489,7 +501,6 @@
     },
     {
       "bytes": 24266,
-      "checkout_line_ending": "CRLF_BY_GITATTRIBUTES; GIT_BLOB_HAS_NORMALIZED_LF",
       "git_blob_sha1": "b6d8600b7894920971890ce06d7d2ec9da510668",
       "path": "tools/bootstrap-runtime.ps1",
       "sha256": "a304946b15f0a421de4247a36698091298e5fa68965e87f9c5d35031c13f7328"
@@ -507,10 +518,10 @@
       "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd"
     },
     {
-      "bytes": 28484,
-      "git_blob_sha1": "860d313872604d0ea0ec59e06b0f1afb9890b001",
+      "bytes": 28714,
+      "git_blob_sha1": "701d02107616d207a37bc56ef33dbd3e1e41d608",
       "path": "tools/qikvrt_self_host.py",
-      "sha256": "8d70e01a0fead0fcfd74731646b3cd1e9f2294ffa7f15ca3b5ac409c35e84ffe"
+      "sha256": "e6cdaf8e57ad8a98969ce0f148e8b69e7203a82e69c05828c39e0760f108dd2c"
     }
   ],
   "local_validation": {
@@ -524,17 +535,36 @@
   "milestone_state": "OPEN",
   "pr": 457,
   "reuse_evidence": {
-    "bytes": 120160,
-    "git_blob_sha1": "4e26997aedbfa3b74652d162363496e1038e1df1",
+    "bytes": 120508,
+    "git_blob_sha1": "dfe1c78ead2edff550895e3fb32200e8892bce5d",
     "path": "evidence/self_host/SOURCE_RECOVERY_20261005.json",
-    "sha256": "ced533f27353732daaaa8e740d9ba1f9deb4e9e50653759ee539a7fcfd0dcc83"
+    "sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e"
   },
+  "runtime_gate_repairs": [
+    {
+      "effect_ack_done": false,
+      "executed_scope": "55 native/source/original-subject tests executed; single original Makefile-admission failure; GUI not started",
+      "failed_head": "ccf46e64ebd54fcdb1e064cc4c04d4fe0cbb8b47",
+      "failed_tree": "ebc16c3b12864b917a6de715b7d7347969513546",
+      "failure": "Original test_repository_entrypoint_and_test_admission requires real Makefile test: temdd-event-ledger-test dependency",
+      "focused_local_regression": {
+        "command": "python3 -B -m unittest -v tests.test_self_host tests.test_self_host_temdd.SourceRecoveryTests tests.test_temdd_runtime_subject_binding tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission",
+        "exit_code": 0,
+        "scope": "LOCAL_FIXTURE_AND_ORIGINAL_ADMISSION; NATIVE_GUI_READBACK_STILL_REQUIRED_ON_SUCCESSOR",
+        "tests": 25
+      },
+      "fresh_runtime_gates": "REQUIRED_ON_SUCCESSOR; NO_INHERITED_PASS",
+      "job_id": 111591981593,
+      "repair": "Restore the original named test target as an unconditional dependency of self-host-test and an explicit S1-profile dependency of make test; original tests remain byte-identical; preserve generic portable platform contract; preserve original broad TEMDD workflow unchanged as archived source and add a real focused S1 native workflow instead of invoking the unavailable historical compiler/backend closure",
+      "run_id": 37255635654
+    }
+  ],
   "schema": "qikvrt-attributable-work-unit/v1",
   "source_classification": {
     "authority_origin_commit_directly_retrieved": false,
     "latest_railway_production_equality": "UNVERIFIED",
     "new_code": "S1_PACKAGE_BINDING_AND_PORTABLE_BROWSER_START_ADAPTER; NOT_RESTORED_ORIGINAL_SOURCE",
-    "originals": "43 BYTE_EXACT_HISTORICAL_FILES; SEE SOURCE_RECOVERY",
+    "originals": "44 BYTE_EXACT_HISTORICAL_FILES; SEE SOURCE_RECOVERY",
     "reconstructed_daemon": false
   },
   "source_parent_head": "dfddd74b031867c5113827780ad937379c85914f",

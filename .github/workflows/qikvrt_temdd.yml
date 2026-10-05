@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# New focused S1 admission; the broader original workflow is archived unchanged.
+name: QIKVRT productive TEMDD S1 carrier
+on:
+  pull_request:
+    paths:
+      - 'src/qikvrt_temdd_event_ledger.py'
+      - 'src/qikvrt_effect_ack_http_terminal.py'
+      - 'tests/test_temdd*'
+      - 'tests/test_self_host*'
+      - 'runtime/self-host/**'
+      - 'deploy/universal-terminal/**'
+      - 'docs/terminal/temdd/**'
+      - 'tools/qikvrt_self_host.py'
+      - 'Makefile'
+      - '.github/workflows/qikvrt_temdd.yml'
+      - 'REPOSITORY_FILE_MANIFEST.json.sha256'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-carrier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Verify exact native S1 admission and original producer controls
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          python3 -B tools/qikvrt_tool_cache.py verify
+          sh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none
+          python3 -B tools/qikvrt_integrity.py verify
+          make temdd-event-ledger-test self-host-test 2>&1 | tee "$RUNNER_TEMP/temdd-s1-tests.log"
+          git diff --exit-code
+          python3 -B - <<'PY' > "$RUNNER_TEMP/temdd-s1-binding.json"
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          git=lambda *a:subprocess.check_output(['git',*a],text=True).strip()
+          print(json.dumps({'schema':'qikvrt-temdd-s1-native-gate/v1',
+            'source_head':git('rev-parse','HEAD'),'source_tree':git('rev-parse','HEAD^{tree}'),
+            'native_source_sha256':hashlib.sha256(Path('src/qikvrt_temdd_event_ledger.py').read_bytes()).hexdigest(),
+            'run_id':os.environ['GITHUB_RUN_ID'],'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+            'scope':'EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT',
+            'predecessor_evidence_transfer':False,'effect_ack_done':False},sort_keys=True))
+          PY
+      - name: Preserve native execution and exact source binding
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-temdd-s1-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/temdd-s1-tests.log
+            ${{ runner.temp }}/temdd-s1-binding.json
+          if-no-files-found: error
+          retention-days: 30
