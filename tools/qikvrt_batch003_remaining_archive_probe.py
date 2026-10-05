@@ -10,7 +10,7 @@ and cache trees are counted separately from first-party text assertion sources.
 No Zenodo mutation or completion status is authorized by this tool.
 """
 from __future__ import annotations
-import argparse,base64,hashlib,io,json,pathlib,stat,time,urllib.error,urllib.parse,urllib.request,zipfile
+import argparse,base64,hashlib,http.client,io,json,pathlib,stat,time,urllib.error,urllib.parse,urllib.request,zipfile
 from collections import Counter
 from typing import Any,Mapping
 SUBJECTS=[
@@ -41,14 +41,26 @@ def get(url:str,accept:str,limit:int)->bytes:
    with urllib.request.urlopen(req,timeout=240) as r:
     u=urllib.parse.urlsplit(r.geturl());host=(u.hostname or '').lower()
     if u.scheme!='https' or not(host=='zenodo.org' or host.endswith('.zenodo.org')):fail(f'redirect outside Zenodo: {r.geturl()}')
+    if r.status!=200 or r.headers.get('Content-Range') is not None:fail(f'partial/non-200 download rejected: {url}')
+    declared=r.headers.get('Content-Length')
+    if declared is not None:
+     try:declared=int(declared,10)
+     except ValueError:fail(f'invalid Content-Length: {url}')
+     if declared<0 or declared>limit:fail(f'declared download bound exceeded: {url}')
     out=bytearray()
     while True:
      chunk=r.read(min(1024*1024,limit+1-len(out)))
      if not chunk:break
      out.extend(chunk)
      if len(out)>limit:fail(f'download bound exceeded: {url}')
+    # Sized reads can return EOF without raising IncompleteRead. Do not pass a
+    # truncated response to record verification or change its frozen binding.
+    if declared is not None and len(out)!=declared:
+     raise http.client.IncompleteRead(bytes(out),declared-len(out))
     return bytes(out)
-  except (urllib.error.URLError,TimeoutError,OSError) as ex:last=ex;time.sleep(2**n)
+  except (urllib.error.URLError,TimeoutError,OSError,http.client.IncompleteRead) as ex:
+   last=ex
+   if n<4:time.sleep(2**n)
  raise E(f'GET failed {url}: {last}')
 def files(v:Mapping[str,Any])->list[dict[str,Any]]:
  raw=v.get('files')
@@ -129,7 +141,7 @@ def record(subject:Mapping[str,Any],rec:Mapping[str,Any],cache:dict[str,dict[str
  if not isinstance(url,str):url=f'https://zenodo.org/api/records/{rid}/files/{urllib.parse.quote(rec["name"],safe="")}/content'
  b=get(url,'application/octet-stream, */*;q=0.1',MAX_PUBLIC);d=dig(b)
  for k in ('bytes','md5','sha256'):
-  if d[k]!=exp[k]:fail(f'exact public byte mismatch {rid}:{k}')
+  if d[k]!=exp[k]:fail(f'exact public byte mismatch {rid}:{k}; expected={dict(exp)}; observed={d}; url={url}')
  if d['sha256'] not in cache:
   rows=[];state={'entries':0,'bytes':0};inspect_zip(b,rec['name'],0,state,rows);cache[d['sha256']]={'rows':rows,'state':state}
  return {'record_id':rid,'doi':rec['doi'],'public_name':rec['name'],**d,'payload_inventory_sha256':hashlib.sha256(json.dumps(cache[d['sha256']]['rows'],sort_keys=True,separators=(',',':')).encode()).hexdigest()}
