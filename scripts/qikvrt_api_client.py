@@ -75,7 +75,9 @@ def main() -> int:
     ap.add_argument("--owner", required=True)
     ap.add_argument("--repo", required=True)
     ap.add_argument("--ref", default="main")
-    ap.add_argument("--operation", choices=["ingest", "verify", "stage", "release_status"], default="ingest")
+    ap.add_argument("--operation", choices=["ingest", "verify", "stage", "release_status",
+                                           "work_unit_handoff", "work_unit_status", "work_unit_event"],
+                    default="ingest")
     ap.add_argument("--artifact-id", default="qikvrt_artifact")
     ap.add_argument("--payload-file")
     ap.add_argument("--expected-sha256")
@@ -101,6 +103,10 @@ def main() -> int:
     if args.expected_sha256 and not SHA256_HEX.fullmatch(args.expected_sha256):
         ap.error("--expected-sha256 must be exactly 64 hexadecimal characters")
     parsed_base = urlparse(args.base_url)
+    if args.operation.startswith("work_unit_") and parsed_base.hostname == "api.github.com":
+        ap.error("work-unit operations require the admitted local/HTTPS Mesh adapter, not GitHub dispatch")
+    if args.operation == "work_unit_handoff" and not args.expected_sha256:
+        ap.error("work-unit handoff requires the explicit source work-unit SHA-256")
     loopback_hosts = {"127.0.0.1", "localhost", "::1"}
     if parsed_base.scheme not in {"http", "https"} or not parsed_base.hostname:
         ap.error("--base-url must be an absolute HTTP(S) URL")

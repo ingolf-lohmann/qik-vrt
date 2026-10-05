@@ -54,7 +54,10 @@
       "state/work_units/",
       "tools/qikvrt_autonomous_pre_effect_controller.py",
       "tools/qikvrt_workflow_executor.py",
-      ".github/workflows/qikvrt_autonomous_pr_continuation.yml"
+      ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "src/qikvrt_api_handler.py",
+      "src/qikvrt_github_api_shim.py",
+      "scripts/qikvrt_api_client.py"
     ],
     "recursive_haltpoint_candidate": {
       "pull_request": 441,
@@ -187,11 +190,47 @@
     "main_promoted": false,
     "client_behavior_changed": false,
     "effect_ack_done": false,
-    "predecessor_evidence_transfer": false
+    "predecessor_evidence_transfer": false,
+    "handoff_interface_candidate_implemented": true
   },
   "artificial_cognitive_contribution": {
     "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
     "agent": "OpenAI Codex",
     "scope": "Fresh API source diagnosis, retained task references, reviewable continuity contract and unexecuted acceptance plan."
+  },
+  "continuation_carrier_candidate": {
+    "schema": "qikvrt_existing_api_work_unit_handoff_candidate_v1",
+    "implementation_base_head": "d4abb49133dc509233acff1df8dc202af65d6475",
+    "implementation_base_tree": "1b63d750baba9bcbeff030a595bdd292b873c8e6",
+    "existing_handler": "src/qikvrt_api_handler.py",
+    "existing_http_adapter": "src/qikvrt_github_api_shim.py",
+    "existing_client": "scripts/qikvrt_api_client.py",
+    "contract": "docs/WORK_UNIT_HANDOFF.md",
+    "controls": "tests/test_work_unit_handoff.py",
+    "operations": [
+      "work_unit_handoff",
+      "work_unit_status",
+      "work_unit_event"
+    ],
+    "productive_operation_scope": "INGEST_EXACT_EXISTING_WORK_UNIT_SNAPSHOT_ONLY",
+    "carrier_scope": "INSTALLED_LOCAL_OR_HTTPS_MESH_ADAPTER",
+    "github_workflow_dispatch_exposes_this_handoff": false,
+    "general_chat_task_execution_verified": false,
+    "actual_chatgpt_client_interruption_observed": false,
+    "journal_checkpoint": "existing .qikvrt/api/transactions/work-unit.<ID>.json",
+    "writer_fences": "existing generalized process_lock; per-work-unit admission and handler-wide effect serialization",
+    "new_workflow_or_parallel_scheduler_created": false,
+    "reported_client_event_is_independent_witness": false,
+    "owner_manual_restart_count": null,
+    "duplicate_effect_count": null,
+    "next_gate": "ACTUAL_CHATGPT_CLIENT_EVENT_BRIDGE_AND_PRODUCTIVE_HANDOFF_WITNESS",
+    "human_request_scope": "Implement the smallest existing-path handoff; execute automated interruption and negative controls; stop at the genuine client-action/capability gate.",
+    "artificial_cognitive_contribution": {
+      "actor": "OpenAI Codex",
+      "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "scope": "Existing-handler, adapter/client implementation; bounded process controls and explicit product evidence limits."
+    },
+    "human_acceptance_of_candidate": "PENDING",
+    "predecessor_evidence_transfer": false
   }
 }
