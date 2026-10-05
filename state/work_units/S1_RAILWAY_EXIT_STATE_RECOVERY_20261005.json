@@ -13,11 +13,11 @@
   "milestone_state": "OPEN",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
-  "source_commit": "4718e0ac162548f5285fb4a92e0f805f8c959965",
-  "source_tree": "43d028a4d33dc2b41be59e85783aab5a29093782",
+  "source_commit": "367de5c4ec53c3d1878def707561fbafb4b66670",
+  "source_tree": "fcc0fd12f5754e74e3861de030290711eff0b398",
   "fresh_base_head": "86d7062f25f174039da0a5df8a856127553036f1",
   "git_history": {
-    "parent": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+    "parent": "367de5c4ec53c3d1878def707561fbafb4b66670",
     "history_rewritten": false,
     "original_recovered_files_modified": false,
     "successor_commit_binding": "CONTAINING_COMMIT_AND_NATIVE_IMMUTABLE_EVENT_HEAD"
@@ -62,9 +62,9 @@
     },
     {
       "path": "tests/test_self_host_temdd.py",
-      "bytes": 29153,
-      "sha256": "a210323a12af7c42110305dbb6013e6502603e34fb4d88edba04a1400f566d10",
-      "git_blob_sha1": "e6471e6d7070cad7537603418ee7ba90d20a66b6"
+      "bytes": 29315,
+      "sha256": "679ef373b6b226f542894dc954721e7fdd6b5d40509943066ce986bf0948b18b",
+      "git_blob_sha1": "7c0d94318747474619d23aef7ae171070d876a90"
     },
     {
       "path": "runtime/self-host/PACKAGE.json",
@@ -102,7 +102,7 @@
       "result": "PASS",
       "command": "python3 -B -m unittest -v tests.test_self_host tests.test_self_host_temdd.SourceRecoveryTests tests.test_self_host_temdd.StateSnapshotBackendTests",
       "tests": 32,
-      "log_sha256": "14ccb1323fd93215dac08fa05e33b1c5dde57b371ecdfbb5bd01c9af5fa132bf",
+      "log_sha256": "13f02f134667be8c56e4b7b44baca9b810c3dfc333b739bfb708555058afd26a",
       "scope": "Local original storage and portable exported-process controls; not owner-Unix E2E or target acceptance"
     },
     "local_owner_unix_boundary": {
@@ -117,7 +117,16 @@
       "log_sha256": "b49a276dc964399eaacbabe822971c1b7c932989e929b59f840b07b432b427da",
       "scope": "Complete existing repository targets plus original monitor tests; native owner-Unix, systemd and Firefox remain required on successor CI"
     },
-    "native_owner_unix_systemd_firefox_and_complete_gates": "REQUIRED_ON_NEW_EXACT_HEAD; NO_PREDECESSOR_TRANSFER"
+    "native_owner_unix_systemd_firefox_and_complete_gates": "REQUIRED_ON_NEW_EXACT_HEAD; NO_PREDECESSOR_TRANSFER",
+    "native_fixture_correction": {
+      "failed_exact_head": "367de5c4ec53c3d1878def707561fbafb4b66670",
+      "failed_run": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37285783797",
+      "failed_job": 111684216066,
+      "cause": "Three new native negative fixtures had not created the original acknowledged monitor journal; snapshot correctly rejected EXISTING_MONITOR_STATE_REQUIRED.",
+      "repair": "Seed an actual original monitor acknowledgment in those three fixtures before native owner Prepare/Commit and daemon stop. Required runtime state guard and all native controls remain unchanged.",
+      "fresh_successor_required": true,
+      "failed_predecessor_not_pass": true
+    }
   },
   "external_effects": {
     "candidate_git_write": "AUTHORIZED_REVIEWABLE_FAST_FORWARD_SUCCESSOR",

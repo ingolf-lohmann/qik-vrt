@@ -191,6 +191,7 @@ class NativeStandaloneTests(unittest.TestCase):
         self.assertEqual(code, 2, result); self.assertFalse(snapshot.exists())
 
     def test_recovery_is_create_only_and_rejects_wrong_pins_config_and_tampering(self):
+        StandaloneTests.seed_acknowledged_event(self)
         self.start(); self.commit_input(); self.stop()
         snapshot = self.work/'private-snapshot'
         code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
@@ -209,6 +210,7 @@ class NativeStandaloneTests(unittest.TestCase):
         self.assertEqual(code, 2, result); self.assertIn('FILE_MISMATCH', result['cause']); self.assertFalse(self.volume.exists())
 
     def test_snapshot_rejects_symlinks_extra_files_and_public_modes(self):
+        StandaloneTests.seed_acknowledged_event(self)
         self.start(); self.commit_input(); self.stop()
         snapshot = self.work/'private-snapshot'
         database = self.volume/'temdd/events.sqlite3'
@@ -226,6 +228,7 @@ class NativeStandaloneTests(unittest.TestCase):
         self.assertEqual(code, 2, result); self.assertIn('OWNER_ONLY', result['cause']); self.assertFalse(self.volume.exists())
 
     def test_private_state_recovery_executes_without_git_gh_or_provider_transport(self):
+        StandaloneTests.seed_acknowledged_event(self)
         self.start(); prepared, event = self.commit_input(); self.stop()
         snapshot = self.work/'private-snapshot'
         bindir = self.work/'bin'; bindir.mkdir(); (bindir/'node').symlink_to(shutil.which('node'))
