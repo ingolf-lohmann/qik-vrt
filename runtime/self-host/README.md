@@ -1,5 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.2.0
+# S1 standalone node package, version 1.4.0
+
+The existing launcher also provides a separate, disabled-by-default
+[exact publication continuation adapter](PUBLICATION.md). It invokes the
+existing Zenodo publisher once, using protected credential references, and
+prepares an event-triggered one-shot unit for the existing host manager.
+This adapter requires a separately verified complete Authority Git checkout;
+it does not turn a sealed S1 source export into an Authority checkout.
 
 This package reuses the existing Node monitor and reference terminal. It now
 also includes the recovered original productive TEMDD ledger/Unix daemon and
