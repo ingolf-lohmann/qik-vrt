@@ -256,5 +256,73 @@
     "EFFECT_ACK_DONE": false,
     "ordinary_release": false,
     "S1_DONE": false
+  },
+  "successor_requirement": {
+    "received_at": "2026-10-05T23:47:47+02:00",
+    "recorded_at": "2026-10-05T21:54:32.806Z",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Require the linked Scheibenhard capability surface from every repository node.",
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6; build UNAVAILABLE",
+      "session_or_run_id": "363978c2a270"
+    },
+    "artificial_cognitive_contribution": "Exact source/metadata read; extend existing S1 activation contract, node URL directory and documentation. No runtime/source implementation is changed.",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "source_commit": "daa560b42030b03f185d7bb893b1b41b1a4406d8",
+    "source_tree": "588b7d307ec7914616fd20153d7ab3c04623b371",
+    "reference_source": {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "version": 2,
+      "source_head": "047bb8fd4a45b0db67288bda1945dd5a280a6ee2",
+      "source_tree": "13bf0d42a410f6287563cbe5bb569699ab2e48d8",
+      "source_files": [
+        {
+          "path": "lib/evidence-core.ts",
+          "sha256": "4d247725a74f34ffc73f393b09464dac1456dce26422dc4b4ca2fb950e0545fc"
+        },
+        {
+          "path": "lib/evidence-store.ts",
+          "sha256": "df2bae99d915780a96548a0ede7aab521c6db7f1abf25d7dc9086a0a5104b983"
+        },
+        {
+          "path": "app/page.tsx",
+          "sha256": "c00c9bb50bdf483dff50789d8e1c18774547fa21df2c612120a7e88267020e2e"
+        },
+        {
+          "path": "state/UPDATE_CONTRACT.json",
+          "sha256": "b804e187b8bce80a5eb00fde742a4ae82ec7efafa73696d6a3685b901fa0eca1"
+        }
+      ],
+      "observation_scope": "SITES_METADATA_AND_EXACT_SOURCE_READ; NOT_A_FRESH_PUBLIC_HTTP_OR_NATIVE_RUNTIME_WITNESS"
+    },
+    "changed_source_paths": [
+      "runtime/self-host/MESH_ACTIVATION.json",
+      "runtime/self-host/README.md",
+      "docs/monitor/URL_DIRECTORY.json",
+      "state/work_units/S1_REACT_MESH_FIRST_PING_20261005.json"
+    ],
+    "verification_scope": "JSON/documentary successor and canonical integrity metadata only; all parent tests and runtime observations remain historical. Fresh exact-head CI must be reobserved.",
+    "source_bootloader": "FULL_CURRENT_REPOSITORY_BOOT_NOT_EXECUTED_IN_THIS_SESSION; API-bound selected-file fixture only, not a complete clone.",
+    "first_causal_blocker": "AUTHENTICATED_OWN_HOST_PROVISIONING_AND_EXECUTOR_UNAVAILABLE",
+    "implementation_review": "PENDING",
+    "next_action": "Bind authenticated own host, carry and test the required capabilities through the existing S1 runtime, then publish and independently read back every fresh node/mesh receipt without weakening native ping/restart gates.",
+    "predecessor_evidence_transfer": false,
+    "all_node_surfaces_verified": false,
+    "native_runtime_executed": false,
+    "own_host_deployed": false,
+    "hosting_ci_instantiated": false,
+    "effect_ack_done": false,
+    "ordinary_release": false,
+    "verification": {
+  "tool_cache_metadata": "26/26 declared cache/provision strategies verified in the selected-file fixture; not installed runtime verification.",
+  "contract": "Valid JSON; scope current/future nodes and Mesh; all ten pre-existing ordered native/public/restart gates retained; false effect/ordinary-release claims preserved.",
+  "integrity": "Base manifest Git blob and canonical index authenticated; inventory matches full API tree; 34 unchanged Windows Git blobs and checkout CRLF SHA-256 bindings independently verified under .gitattributes; changed bytes will regenerate the existing canonical integrity trio.",
+  "full_repository_suite": "NOT_EXECUTED_LOCALLY; SELECTED_FILE_FIXTURE_ONLY",
+  "successor_native_ci": "NOT_YET_OBSERVED; no predecessor result transfer"
+}
   }
 }

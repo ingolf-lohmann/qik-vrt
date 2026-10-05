@@ -4,17 +4,79 @@
   "inventory_source": "registry/NODEMESH_INDEX.json",
   "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
   "entries": [
-    {"kind": "mesh_monitor", "repository": "ingolf-lohmann/qik-vrt", "url": "https://mesh-monitor-production.up.railway.app/mesh", "state": "VERIFY_CURRENT_INSTANCE_VIA_API_NODE_AND_CLIENT_READBACK"},
-    {"kind": "mirror_node_monitor", "repository": "ingolf-lohmann/qik-vrt", "url": "https://mesh-monitor-production.up.railway.app/node", "state": "VERIFY_CURRENT_INSTANCE_VIA_API_NODE_AND_CLIENT_READBACK"},
-    {"kind": "client_instance", "repository": "ingolf-lohmann/qik-vrt", "url": "https://mesh-monitor-production.up.railway.app/client", "state": "OWN_INSTANCE_PER_CLIENT_TAB_VERIFY_LOCAL_REPLICA"},
-    {"kind": "universal_terminal", "repository": "Goldkelch/qik-vrt", "url": "https://universal-terminal-production.up.railway.app/AI/", "state": "ENTRYPOINT_BROWSER_OBSERVED_2026_10_04_NOT_MONITOR_REPLICATION_ACCEPTANCE"},
-    {"kind": "previous_chatgpt_dashboard", "url": "https://qikvrt-activity.ingolf-lohmann.chatgpt.site/#main", "state": "TRANSITIONAL_ENTRYPOINT_RETAIN_UNTIL_MIRROR_READBACK"}
+    {
+      "kind": "mesh_monitor",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "url": "https://mesh-monitor-production.up.railway.app/mesh",
+      "state": "VERIFY_CURRENT_INSTANCE_VIA_API_NODE_AND_CLIENT_READBACK"
+    },
+    {
+      "kind": "mirror_node_monitor",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "url": "https://mesh-monitor-production.up.railway.app/node",
+      "state": "VERIFY_CURRENT_INSTANCE_VIA_API_NODE_AND_CLIENT_READBACK"
+    },
+    {
+      "kind": "client_instance",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "url": "https://mesh-monitor-production.up.railway.app/client",
+      "state": "OWN_INSTANCE_PER_CLIENT_TAB_VERIFY_LOCAL_REPLICA"
+    },
+    {
+      "kind": "universal_terminal",
+      "repository": "Goldkelch/qik-vrt",
+      "url": "https://universal-terminal-production.up.railway.app/AI/",
+      "state": "ENTRYPOINT_BROWSER_OBSERVED_2026_10_04_NOT_MONITOR_REPLICATION_ACCEPTANCE"
+    },
+    {
+      "kind": "previous_chatgpt_dashboard",
+      "url": "https://qikvrt-activity.ingolf-lohmann.chatgpt.site/#main",
+      "state": "TRANSITIONAL_ENTRYPOINT_RETAIN_UNTIL_MIRROR_READBACK"
+    }
   ],
   "required_unverified_coverage": [
-    {"kind": "authority_node_monitor", "repository": "Goldkelch/qik-vrt", "url": null, "state": "NO_CURRENT_AUTHORITY_BOUND_MONITOR_READBACK"},
-    {"kind": "all_native_clients", "url": null, "state": "REUSABLE_REPLICA_IMPLEMENTATION_AVAILABLE_INDIVIDUAL_DEPLOYMENTS_NOT_OBSERVED"},
-    {"kind": "all_terminal_capable_products", "url": null, "state": "PRODUCT_RUNTIME_INVENTORY_AND_DEPLOYMENT_READBACK_REQUIRED"},
-    {"kind": "resource_constrained_products", "url": null, "state": "READ_ONLY_EVENT_AND_STATE_INTERFACES_AVAILABLE_NATIVE_TRANSPUTER_ATTACHMENT_NOT_OBSERVED"}
+    {
+      "kind": "authority_node_monitor",
+      "repository": "Goldkelch/qik-vrt",
+      "url": null,
+      "state": "NO_CURRENT_AUTHORITY_BOUND_MONITOR_READBACK"
+    },
+    {
+      "kind": "all_native_clients",
+      "url": null,
+      "state": "REUSABLE_REPLICA_IMPLEMENTATION_AVAILABLE_INDIVIDUAL_DEPLOYMENTS_NOT_OBSERVED"
+    },
+    {
+      "kind": "all_terminal_capable_products",
+      "url": null,
+      "state": "PRODUCT_RUNTIME_INVENTORY_AND_DEPLOYMENT_READBACK_REQUIRED"
+    },
+    {
+      "kind": "resource_constrained_products",
+      "url": null,
+      "state": "READ_ONLY_EVENT_AND_STATE_INTERFACES_AVAILABLE_NATIVE_TRANSPUTER_ATTACHMENT_NOT_OBSERVED"
+    }
   ],
-  "acceptance": {"all_nodes_verified": false, "all_clients_verified": false, "all_products_verified": false, "provider_delivery_verified": false, "mesh_losslessness_verified": false, "effect_ack_done": false}
+  "acceptance": {
+    "all_nodes_verified": false,
+    "all_clients_verified": false,
+    "all_products_verified": false,
+    "provider_delivery_verified": false,
+    "mesh_losslessness_verified": false,
+    "effect_ack_done": false
+  },
+  "capability_reference": {
+    "kind": "scheibenhard_evidence_surface_reference",
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+    "source_head": "047bb8fd4a45b0db67288bda1945dd5a280a6ee2",
+    "source_tree": "13bf0d42a410f6287563cbe5bb569699ab2e48d8",
+    "contract": "runtime/self-host/MESH_ACTIVATION.json#/required_repository_surface",
+    "scope": "REFERENCE_ONLY; NO_PER_NODE_SELF_HOST_ACCEPTANCE"
+  },
+  "required_node_surface_coverage": {
+    "scope": "CURRENT_AND_FUTURE_NODES_PLUS_MESH",
+    "inventory": "Fresh registry/node/terminal inventory; historical registry is not current coverage proof",
+    "receipt_contract": "runtime/self-host/MESH_ACTIVATION.json#/required_repository_surface",
+    "all_node_surfaces_verified": false
+  }
 }

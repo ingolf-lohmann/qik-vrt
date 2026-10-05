@@ -402,6 +402,47 @@ after provisioning the S1 runtime. The existing terminal workflow additionally
 requires all 31 HTTP/owner-Unix controls and freezes the actual source package.
 A profile-specific Linux test is not imposed on unrelated portable callers.
 
+
+## Verbindliche Nachweisoberfläche je Repository-Knoten
+
+Product Owner Ingolf Lohmann verlangt seit dem 5. Oktober 2026, 23:47 Uhr
+Europe/Paris, die Oberfläche
+<https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/>
+für **jeden gegenwärtigen und künftigen QIK-VRT-Repository-Knoten** und für das
+Mesh insgesamt. Produktname: **Universales Raumzeit-Terminal**.
+
+Jeder Knoten stellt eine eigene, öffentlich über HTTPS erreichbare,
+repositorygebundene Instanz bereit. Er zeigt seine Identität, Rolle, exakt
+ausgelieferten HEAD/TREE und Paketbytes sowie getrennt davon den frisch
+beobachteten Remote-Stand. Bekannte unerreichbare Knoten bleiben sichtbar.
+Ein gemeinsamer Host ist zulässig, sofern Identität, Quelle, Speicher und
+Readback jeder Instanz einzeln prüfbar sind.
+
+Zum Mindestumfang gehören automatische Aktualisierung beim Öffnen und
+Fortsetzen, der vorhandene Replica-/SSE-Pfad, explizite Aktualisierung,
+zeitgebundene HTTP-Befunde, persistierte unveränderte Beobachtungsbytes mit
+SHA-256, ein separater bytegenauer Readback, sichtbare Historie und
+JSON-Downloads. Quellen, Bootstrap-/Runtime-Paket, Manifest, Downloadprüfung
+und Lizenzhinweise bleiben nachvollziehbar. Ein Hintergrundlauf muss über das
+Repository oder die zugelassene Hosting-CI ohne geöffneten Client arbeiten.
+
+Die Referenz aktualisiert offene Clients und wiederverwendbare Serverbefunde
+im 60-Sekunden-Fenster, markiert Befunde nach 120 Sekunden als veraltet und
+hält 200 Beobachtungen vor. Jede Instanz erklärt und prüft ihre Frische und
+Aufbewahrung; geschützte native Wirkungsbelege behalten ihre eigenen Regeln.
+Bei Fehlern bleibt der ursprüngliche Beobachtungszeitpunkt erhalten.
+Standard-Knoten übernehmen ausschließlich freigegebene öffentliche Metadaten
+und lizenzierte Paketbytes, keine persönlichen Inhalte oder Geheimnisse.
+
+Der maschinenlesbare Vertrag und die exakt gebundene Referenzquelle stehen in
+[`MESH_ACTIVATION.json#/required_repository_surface`](MESH_ACTIVATION.json).
+Bestehender Monitor, S1-Listener, Replica und Paketpfad werden weiterverwendet.
+Die vollständige Funktionsdeckung und öffentliche Bereitstellung je Knoten
+sind weiterhin **ungeprüft**. Der aktuelle Referenzstand ist kein neuer
+öffentlicher HTTP-, Hosting-CI- oder nativer Transputer-Wirkungsnachweis.
+Alle bisherigen Erst-Ping-, vollständigen Terminal-Empfangs- und
+Restart-Abnahmestufen bleiben erforderlich.
+
 ## Precise remaining acceptance
 
 The former productive source gap is resolved for the exact recovered historical
