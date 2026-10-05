@@ -27,6 +27,36 @@ A client must never impersonate another GitHub identity or claim that GitHub rec
 
 Review completion does not itself authorize merge, promotion, release, deployment, Zenodo, DOI, IETF, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
 
+## Native governance signal contract
+
+| Surface | Successful execution establishes | Governance authority |
+|---|---|---|
+| Code-owner review observer | A valid review lifecycle event was observed | None; no native rules or approval are inferred |
+| Requested review executor | Selection or a technical disposition completed; `NOOP` is possible | None; automated `APPROVE` dispositions are recorded as `COMMENT` |
+| Native gate publisher | The native decision was published | The published decision, not the publisher's workflow conclusion |
+| `QIKVRT required code-owner review` status | Native enforcement and an independent current-head Code Owner approval satisfy the bounded gate | Dedicated native prerequisite, freshly reobserved before promotion |
+| `QIKVRT requested review disposition` status | A technical disposition was recorded | Informational; never substitutes for native approval |
+
+The native publisher is the sole writer of the dedicated status and the legacy
+`QIKVRT requested review execution` alias. Both carry the same native decision.
+The technical executor cannot overwrite either with its own success. The legacy
+alias alone cannot satisfy acceptance; disagreement keeps acceptance blocked.
+
+The live projection and promotion decision reuse
+`tools/qikvrt_required_review_gate.py`. They require fresh applicable native
+rules, actual submitted reviews bound to the current PR HEAD, and agreement with
+the dedicated native status. Missing, stale, self-approved, adverse, mismatched,
+or unavailable evidence stays blocked even when every observed workflow is green.
+The watcher labels observer/executor/publisher runs `EXECUTION_ONLY`, binds its
+reads to the current HEAD, and measures execution completion separately from
+native governance acceptance. A publisher or workflow failure may signal an
+execution defect; successful execution never changes the native evidence.
+
+Candidate tests prove only the candidate implementation. The native publisher
+and promotion executor continue to execute trusted `main` code. A repair under
+review is not a deployed enforcement fix. No self-approval, merge, Ruleset
+mutation, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE` follows from this contract.
+
 ## Issues
 
 Every observed open issue must have a current repository-native lifecycle disposition. The allowed dispositions are:
