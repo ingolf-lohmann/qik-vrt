@@ -1,0 +1,10 @@
+'QIKVRT.Labyrinth.reverse_is_same_portal' does not depend on any axioms
+'QIKVRT.Labyrinth.grow_preserves_soundness' does not depend on any axioms
+'QIKVRT.Labyrinth.grow_is_monotone' does not depend on any axioms
+'QIKVRT.Labyrinth.two_witnesses_are_sound' does not depend on any axioms
+'QIKVRT.Labyrinth.closed_set_covers_reachable' does not depend on any axioms
+'QIKVRT.Labyrinth.connected_closed_set_covers_all' does not depend on any axioms
+'QIKVRT.Labyrinth.no_infinite_strict_rank_descent' depends on axioms: [propext, Quot.sound]
+'QIKVRT.Labyrinth.complete_empty_is_zero' does not depend on any axioms
+'QIKVRT.Labyrinth.complete_singleton_is_unique' does not depend on any axioms
+'QIKVRT.Labyrinth.partial_empty_does_not_imply_zero' does not depend on any axioms

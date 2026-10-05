@@ -1,0 +1,79 @@
+{
+  "axiom_audit": [
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.reverse_is_same_portal"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.grow_preserves_soundness"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.grow_is_monotone"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.two_witnesses_are_sound"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.closed_set_covers_reachable"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.connected_closed_set_covers_all"
+    },
+    {
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ],
+      "theorem": "QIKVRT.Labyrinth.no_infinite_strict_rank_descent"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.complete_empty_is_zero"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.complete_singleton_is_unique"
+    },
+    {
+      "axioms": [],
+      "theorem": "QIKVRT.Labyrinth.partial_empty_does_not_imply_zero"
+    }
+  ],
+  "command": [
+    "/home/runner/.elan/toolchains/leanprover--lean4---v4.19.0/bin/lean",
+    "-E",
+    "hasSorry",
+    "--root=/home/runner/work/qik-vrt/qik-vrt/docs/publications/2026-10-04-labyrinth-closure",
+    "-o",
+    "/home/runner/work/qik-vrt/qik-vrt/formalization/QIKVRT_Formalization_v2.0/.lake/build/labyrinth-closure-evidence/KERNEL_RECEIPT.olean",
+    "/home/runner/work/qik-vrt/qik-vrt/docs/publications/2026-10-04-labyrinth-closure/LabyrinthClosure.lean"
+  ],
+  "compiled_object_sha256": "7304c0b662e76b5ba08e818b6deaab6b1c0349e5927851d7505c1445b5e0debd",
+  "exit_code": 0,
+  "false_statement_rejected": true,
+  "github_context": {
+    "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt",
+    "GITHUB_RUN_ATTEMPT": "1",
+    "GITHUB_RUN_ID": "37183487075",
+    "GITHUB_SHA": "bbe8d194740b2d9c5cdf136965a2de1e8d3273c8"
+  },
+  "kernel_verified": true,
+  "lean_githash": "6caaee842e9495688c1567e78c0e68dbb96942aa",
+  "lean_version_exit": 0,
+  "lean_version_stderr": "",
+  "lean_version_stdout": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)\n",
+  "log_sha256": "e31fba4cc722702786b4dbc2bc1e96013fa9b7b8308ac9e2f1e2d8357212ea90",
+  "negative_exit_code": 1,
+  "negative_output_sha256": "a22560c3082798ffedaff3e9cfd8d9fe1ab01ddf6868f683963d5485d770fe15",
+  "schema": "qikvrt_labyrinth_kernel_evidence_v1",
+  "scope": "Ten abstract model lemmas only; no Python refinement, stochastic theorem, or production conformance.",
+  "source_bytes": 4295,
+  "source_git_blob_sha1": "f836be6b17838b0d7b4020c04d6d46d91fa1c139",
+  "source_sha256": "e2db44a40e1c43c2a1e13b6b7a5078b42eaaf53f8fe91499671883ccb76f31b0",
+  "status": "KERNEL_VERIFIED_WITHIN_DECLARED_MODEL_LEMMAS"
+}

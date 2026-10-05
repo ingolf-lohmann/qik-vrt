@@ -1,0 +1,163 @@
+{
+  "after": {
+    "body": {
+      "events": 1,
+      "external_effects": "NONE",
+      "last_event": {
+        "audio_present": false,
+        "event_id": 1,
+        "external_effect": "NONE",
+        "input_hash": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+        "kind": "TERMINAL_INPUT_ACCEPTED",
+        "observed_at": "2026-10-04T06:48:00Z",
+        "record_hash": "9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+        "text": "QIK-VRT Arbeitsnachweis LABYRINTH_PROOF_20261004_V1.\nIdee, Ziel und Auftrag: Ingolf Lohmann. Ausarbeitung und Prüfung: OpenAI Codex.\nErgebnis: Auf einem endlichen statischen zusammenhängenden ungerichteten Graphen findet der einfache gleichverteilte Zufallslauf alle Durchgänge mit Wahrscheinlichkeit eins. Ein garantiert erkennbarer endlicher Abschluss folgt daraus allein nicht. Mit vollständiger lokaler Nachbarerfassung, stabilen Identitäten, Gedächtnis und offener Arbeitsliste terminiert die Erkundung und bestimmt exakt die Durchgänge der erreichbaren Komponente. Globaler Abschluss braucht vollständige globale Abdeckung.\nPrüfung: 168146 Graph/Partition/Start-Fälle über alle Graphen bis fünf Knoten und 19 Grenzprüfungen bestanden. Lean 4.19.0 prüfte zehn abstrakte Modelllemmas; falsche Kontrolle zurückgewiesen. Kernel-Lauf 37183487075. Kein Beweis der gesamten Produktimplementierung und keine Authority/Mirror-Gleichheit.\nReview: https://github.com/ingolf-lohmann/qik-vrt/pull/454\nPROOF.md SHA256 444c357aa444a03002c461fdb1aa50a735e94b7c5af34f7b290939c9262f1132\nPDF SHA256 86cff8cf7d5a65a2464231a78bcaa3bd3bdc284dcb8f634de50738e840c811ec\n",
+        "video_present": false
+      },
+      "repository_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "repository_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "schema": "qikvrt_terminal_backend_state_v1"
+    },
+    "bytes_sha256": "5fc950a922b256d4e2930778c8b5b2fda355fcc1b3b955d15ef9666f5d9e15c0",
+    "status": 200,
+    "time": "2026-10-04T06:48:06.508732+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/state"
+  },
+  "authorization": "Current human proof/persistence directive and explicit instruction to use existing Universal Terminal",
+  "before": {
+    "body": {
+      "events": 0,
+      "external_effects": "NONE",
+      "last_event": null,
+      "repository_head": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+      "repository_tree": "956c16b291c05243437b1f018321936e4438949a",
+      "schema": "qikvrt_terminal_backend_state_v1"
+    },
+    "bytes_sha256": "5eacc1e259ae08a184e771de1e18d2e6e5298521f3209cc1debee14013df2392",
+    "status": 200,
+    "time": "2026-10-04T06:47:44.039864+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/state"
+  },
+  "capability": {
+    "body": {
+      "external_effects": "NONE",
+      "modes": [
+        "prepare",
+        "commit"
+      ],
+      "protected_effects": [
+        "terminal_input"
+      ],
+      "record_template": "/effect-ack/records/{sha256}",
+      "schema": "qikvrt_effect_ack_http_capability_v1",
+      "versions": [
+        1
+      ]
+    },
+    "bytes_sha256": "af478d612f094b973df9899a3f51c45de42179d19be984ba421e5398b77ae587",
+    "status": 200,
+    "time": "2026-10-04T06:47:38.634167+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/.well-known/effect-ack"
+  },
+  "commit": {
+    "body": {
+      "ordinary_release": true,
+      "post_effect": {
+        "audio_present": false,
+        "event_id": 1,
+        "external_effect": "NONE",
+        "input_hash": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+        "kind": "TERMINAL_INPUT_ACCEPTED",
+        "observed_at": "2026-10-04T06:48:00Z",
+        "record_hash": "9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+        "text": "QIK-VRT Arbeitsnachweis LABYRINTH_PROOF_20261004_V1.\nIdee, Ziel und Auftrag: Ingolf Lohmann. Ausarbeitung und Prüfung: OpenAI Codex.\nErgebnis: Auf einem endlichen statischen zusammenhängenden ungerichteten Graphen findet der einfache gleichverteilte Zufallslauf alle Durchgänge mit Wahrscheinlichkeit eins. Ein garantiert erkennbarer endlicher Abschluss folgt daraus allein nicht. Mit vollständiger lokaler Nachbarerfassung, stabilen Identitäten, Gedächtnis und offener Arbeitsliste terminiert die Erkundung und bestimmt exakt die Durchgänge der erreichbaren Komponente. Globaler Abschluss braucht vollständige globale Abdeckung.\nPrüfung: 168146 Graph/Partition/Start-Fälle über alle Graphen bis fünf Knoten und 19 Grenzprüfungen bestanden. Lean 4.19.0 prüfte zehn abstrakte Modelllemmas; falsche Kontrolle zurückgewiesen. Kernel-Lauf 37183487075. Kein Beweis der gesamten Produktimplementierung und keine Authority/Mirror-Gleichheit.\nReview: https://github.com/ingolf-lohmann/qik-vrt/pull/454\nPROOF.md SHA256 444c357aa444a03002c461fdb1aa50a735e94b7c5af34f7b290939c9262f1132\nPDF SHA256 86cff8cf7d5a65a2464231a78bcaa3bd3bdc284dcb8f634de50738e840c811ec\n",
+        "video_present": false
+      },
+      "state": "EFFECT_ACK_DONE",
+      "successor_record": {
+        "created_utc": "2026-10-04T06:48:00Z",
+        "external_effect": "NONE",
+        "input_hash": "sha256:b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+        "message_type": "effect-ack-record",
+        "ordinary_release": true,
+        "policy_allows_release": true,
+        "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+        "policy_version": 1,
+        "reason": "single-use exact-bound loopback commit executed",
+        "record_hash": "sha256:e289a9824ea4a5993a9231a1f0b9eddcd336f09e97d8bc7287cca2a28b65aa5c",
+        "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+        "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+        "state": "EFFECT_ACK_DONE",
+        "wire_version": 1
+      }
+    },
+    "bytes_sha256": "4fb643d9bf5b5a1eaaf87f44969fd50eb54f2485f7f26eedb8be4350f9eae148",
+    "status": 200,
+    "time": "2026-10-04T06:48:00.920417+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/commit"
+  },
+  "input_bytes": 1246,
+  "input_sha256": "b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+  "prepare": {
+    "body": {
+      "expires_in_seconds": 120,
+      "external_effect": "NONE",
+      "ordinary_release": false,
+      "record_hash": "9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+      "record_url": "/effect-ack/records/9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+      "state": "EFFECT_ACK_DONE"
+    },
+    "bytes_sha256": "a4f69e6d91624bdf6e947f5b7e6591eebbaa1d21db46b18e1958409a12619033",
+    "status": 200,
+    "time": "2026-10-04T06:47:49.852270+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/terminal/prepare"
+  },
+  "record": {
+    "body": {
+      "created_utc": "2026-10-04T06:47:49Z",
+      "external_effect": "NONE",
+      "input_hash": "sha256:b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+      "message_type": "effect-ack-record",
+      "ordinary_release": true,
+      "policy_allows_release": true,
+      "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+      "policy_version": 1,
+      "reason": "loopback terminal input satisfies bounded local policy",
+      "record_hash": "sha256:9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+      "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+      "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+      "state": "EFFECT_ACK_DONE",
+      "wire_version": 1
+    },
+    "bytes_sha256": "c47966f8292be80389ac7066ad549093592a16c74aeb01a35f9110bd6f97b725",
+    "status": 200,
+    "time": "2026-10-04T06:48:12.701363+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/effect-ack/records/9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78"
+  },
+  "record_hash": "sha256:9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+  "schema": "qikvrt_labyrinth_terminal_roundtrip_v1",
+  "scope": "Terminal input acceptance; no shell execution, durable runtime write, deployment or repository effect inferred.",
+  "status": "TERMINAL_INPUT_ACCEPTED_AND_REOBSERVED",
+  "validated_prepared_record": {
+    "body": {
+      "created_utc": "2026-10-04T06:47:49Z",
+      "external_effect": "NONE",
+      "input_hash": "sha256:b73bfe07c6b5d3f618cfaa4610b8eebbb22c38ffeba03ef207f47f20cca5038e",
+      "message_type": "effect-ack-record",
+      "ordinary_release": true,
+      "policy_allows_release": true,
+      "policy_id": "QIKVRT_LOOPBACK_TERMINAL_V1",
+      "policy_version": 1,
+      "reason": "loopback terminal input satisfies bounded local policy",
+      "record_hash": "sha256:9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78",
+      "responsibility_owner": "LOCAL_INTERACTIVE_USER",
+      "schema": "qikvrt_effect_ack_http_terminal_record_v1",
+      "state": "EFFECT_ACK_DONE",
+      "wire_version": 1
+    },
+    "bytes_sha256": "c47966f8292be80389ac7066ad549093592a16c74aeb01a35f9110bd6f97b725",
+    "status": 200,
+    "time": "2026-10-04T06:47:55.404404+00:00",
+    "url": "https://universal-terminal-production.up.railway.app/qik-vrt/mesh/v1/effect-ack/effect-ack/records/9bf3f860239ea3fbe2c6a0a935f3c7b7a3df4932450528c6bad74be32e209d78"
+  }
+}

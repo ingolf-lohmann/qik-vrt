@@ -17,6 +17,7 @@ on:
       - "docs/publications/2026-08-02-causality-is-relation-vrtcore/**"
       - "docs/publications/2026-08-02-vrtcore-smg-h5/**"
       - "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/**"
+      - "docs/publications/2026-10-04-labyrinth-closure/**"
       - ".github/workflows/qikvrt_manuscript_proof.yml"
       - "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md"
       - "schemas/human_machine_progress.schema.json"
@@ -33,6 +34,7 @@ on:
       - "docs/publications/2026-08-02-causality-is-relation-vrtcore/**"
       - "docs/publications/2026-08-02-vrtcore-smg-h5/**"
       - "docs/publications/2026-08-02-vrtcore-virtual-sphere-h6/**"
+      - "docs/publications/2026-10-04-labyrinth-closure/**"
       - ".github/workflows/qikvrt_manuscript_proof.yml"
       - "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md"
       - "schemas/human_machine_progress.schema.json"
@@ -42,6 +44,47 @@ permissions:
   contents: read
 
 jobs:
+  labyrinth-model-kernel:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+      - name: Verify declared runtime cache coverage
+        run: python3 tools/qikvrt_tool_cache.py verify
+      - name: Provision locked Lean kernel using existing runtime action
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
+        with:
+          lake-package-directory: formalization/QIKVRT_Formalization_v2.0
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: false
+      - name: Verify labyrinth closure model and kernel boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          publication=docs/publications/2026-10-04-labyrinth-closure
+          evidence=formalization/QIKVRT_Formalization_v2.0/.lake/build/labyrinth-closure-evidence
+          mkdir -p "$evidence"
+          lean_bin="$(cd formalization/QIKVRT_Formalization_v2.0 && lake env which lean)"
+          python3 -B "$publication/check_labyrinth.py" \
+            --output "$evidence/TEST_RECEIPT.json" \
+            --lean "$lean_bin" \
+            --kernel-output "$evidence/KERNEL_RECEIPT.json"
+      - name: Upload labyrinth closure evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-labyrinth-closure-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          path: formalization/QIKVRT_Formalization_v2.0/.lake/build/labyrinth-closure-evidence/
+          if-no-files-found: ignore
   source-claim-and-kernel-gates:
     runs-on: ubuntu-24.04
     defaults:
