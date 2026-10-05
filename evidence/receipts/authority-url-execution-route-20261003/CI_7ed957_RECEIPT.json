@@ -1,0 +1,26 @@
+{
+  "MAKE_TEST_EXIT": 0,
+  "command": "make test",
+  "conclusion": "success",
+  "event": "push",
+  "head": "7ed957669a8f6f0e03c62cff7787a45cfaceab12",
+  "integrity": {
+    "classified_entries": 3927,
+    "immutable_digests": 3918,
+    "result": "PASS"
+  },
+  "job_id": 111098519974,
+  "log_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37086743364/job/111098519974",
+  "predecessor_evidence_transfer": false,
+  "probe_boundary_tests": {
+    "count": 13,
+    "result": "PASS"
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "run_attempt": 1,
+  "run_id": 37086743364,
+  "schema": "qikvrt_native_ci_receipt_v1",
+  "scope": "Exact executed code subject only; a receipt-only successor requires a fresh integrity/CI readback.",
+  "source": "Native workflow jobs and decoded job log via GitHub REST connector",
+  "tree": "507870ae80f0a07906198c94aba0f06119f08f13"
+}

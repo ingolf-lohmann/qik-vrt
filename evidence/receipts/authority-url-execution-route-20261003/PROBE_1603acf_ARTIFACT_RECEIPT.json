@@ -1,0 +1,20 @@
+{
+  "artifact_id": 11259683002,
+  "run_id": 37085715307,
+  "job_id": 111095461008,
+  "head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
+  "tree": "e02160ac45ac93944f6ce1c24762df0112e72ada",
+  "archive_bytes": 1155,
+  "archive_sha256": "5a508ec98db536fe0c5e9355a8314c688a24ecf88121451ca388d8ef43255683",
+  "readback_bytes": 2520,
+  "readback_sha256": "ed1a30ee9a86deccbb4b9150d93d135821ab7df222e0e2747a6786da5dfcf821",
+  "first_blocker": "AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+  "effect_ack_done": false,
+  "native_CI": {
+    "run_id": 37085715319,
+    "job_id": 111095461158,
+    "MAKE_TEST_EXIT": 0,
+    "subject_head": "1603acf44336dc2a44a9a9caea3fc0e386ae722c",
+    "subject_tree": "e02160ac45ac93944f6ce1c24762df0112e72ada"
+  }
+}
