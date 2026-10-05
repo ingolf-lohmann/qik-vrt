@@ -15,6 +15,9 @@ path to the current operational authority.
 - `src/qikvrt_api_handler.py` — authenticated ingest, verification, staging,
   status, transaction, provenance, and audit behavior
 - `src/qikvrt_github_api_shim.py` — repository-scoped local HTTP adapter
+- `src/qikvrt_digital_twin_scheduling.py` — private durable scheduling projection,
+  exact-revision synchronization and calendar planning through that adapter;
+  contract `policy/QIKVRT_DIGITAL_TWIN_SCHEDULING_CONTRACT_V1.json`
 - `scripts/qikvrt_api_client.py` — validating client
 - `qikvrt.py` — authorization-before-effect launcher and publication planner
 - `tools/qikvrt_subprocess.py` — bounded subprocess supervision

@@ -1,0 +1,112 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_digital_twin_scheduling_contract_v1",
+  "owner_requirement": "Scheduling must also exist in the Digital Twin and be kept synchronized.",
+  "owner": "Ingolf Lohmann",
+  "declared_at": "2026-10-01T11:02:18Z",
+  "implementation": "src/qikvrt_digital_twin_scheduling.py",
+  "reused_transport": "src/qikvrt_github_api_shim.py",
+  "base_path": "/api/digital-twin/v1/schedules",
+  "source_executor": "chatgpt_automations",
+  "identity": "The existing executor task ID is the Twin task ID; copying it must not create a second executor.",
+  "private_runtime_state": ".qikvrt/api/schedules/<repository-and-principal-sha256>.sqlite3",
+  "synchronization": [
+    "READ_CURRENT_EXECUTOR_CONFIGURATION",
+    "IMPORT_AND_READ_LOCAL_CONFIGURATION",
+    "PREPARE_CHANGE_WITH_EXPECTED_LOCAL_REVISION",
+    "APPLY_TO_EXISTING_EXECUTOR_TASK",
+    "FRESH_EXECUTOR_READBACK",
+    "RECONCILE_EXACT_DESIRED_CONFIGURATION",
+    "READ_LOCAL_CONFIGURATION_AGAIN"
+  ],
+  "bound_fields": [
+    "id",
+    "title",
+    "prompt",
+    "schedule",
+    "default_timezone",
+    "timing_mode",
+    "is_enabled"
+  ],
+  "source_observation_fields": [
+    "updated_at",
+    "last_run_time",
+    "next_run_time"
+  ],
+  "supported_calendar_subset": {
+    "required": [
+      "explicit DTSTART timezone",
+      "recurring RRULE"
+    ],
+    "frequency": [
+      "HOURLY",
+      "DAILY",
+      "WEEKLY"
+    ],
+    "interval": [
+      1,
+      366
+    ],
+    "daily_or_weekly": "single BYHOUR/BYMINUTE/BYSECOND; unnumbered BYDAY only for WEEKLY",
+    "hourly": "elapsed UTC intervals anchored by DTSTART; BY filters unsupported",
+    "dst_gap": "skip nonexistent local slot",
+    "dst_fold": "first fold only",
+    "unsupported": "Fail closed; never approximate unsupported COUNT, UNTIL, monthly, multi-hour or webhook schedules."
+  },
+  "invariants": {
+    "sqlite_atomic_compare_and_swap": true,
+    "fresh_import_max_age_seconds": 300,
+    "stale_source_or_version_collision_rejected": true,
+    "prepared_change_requires_exact_configuration_readback": true,
+    "source_snapshot_authenticity_requires_authorized_adapter": true,
+    "source_timestamp_is_not_itself_authentication": true,
+    "prompt_and_credentials_in_public_git": false,
+    "one_executing_scheduler_per_task": true,
+    "native_duplicate_dispatch": false,
+    "task_metadata_must_not_claim_notification_delivery": true,
+    "planned_slot_is_not_hosted_execution_receipt": true,
+    "unchanged_configuration_is_idempotent": true,
+    "polling_loop_in_registry": false
+  },
+  "effect_boundary": {
+    "configuration_readback_is_not_job_execution": true,
+    "local_registry_is_not_public_runtime": true,
+    "continuous_bridge_requires_actual_runtime_evidence": true,
+    "main_integration_implied": false,
+    "deployment_implied": false,
+    "effect_ack_done": false
+  },
+  "regression_entrypoint": "make digital-twin-scheduling-test",
+  "continuous_bridge_adapter": {
+    "implementation": "src/qikvrt_digital_twin_scheduling.py:SchedulingBridge",
+    "transport": "POST /api/digital-twin/v1/schedules/bridge",
+    "trigger": "Existing source events, resume and restart/redelivery; no timer or second executor",
+    "request_fields": [
+      "task_id",
+      "event_id",
+      "expected_revision",
+      "changes"
+    ],
+    "durable_journal": "Private schedule_bridge SQLite table; event ID binds exact original request",
+    "stages": [
+      "PREPARED",
+      "ATTEMPTED",
+      "VERIFIED"
+    ],
+    "remote_mutation": "Update existing task only, atomic source-domain CAS required",
+    "provider": "Server-configured HttpScheduleExecutor; HTTPS or loopback HTTP; scoped expiring credential",
+    "source_read_contract": "Closed scope envelope and fresh task/version/observed_at/conditional_update observation",
+    "source_version_binding": "Exact configuration and updated_at; rollback and contradictory version bindings reject",
+    "idempotency": "A replay freshly reads source; ATTEMPTED never resubmits an update",
+    "local_recovery": "Journal revision changes atomically with reconcile; independent persisted task read",
+    "ordinary_automations_update_supports_exposed_atomic_cas": false,
+    "provider_without_cas": "Observation only; changed desired configuration holds",
+    "actual_event_carrier_installed_or_verified": false,
+    "productive_continuous_bridge_verified": false,
+    "verification_boundary": "Test gateway proves adapter behavior only; actual provider authentication, CAS and event/restart carrier require fresh deployed-subject witnesses"
+  }
+}
