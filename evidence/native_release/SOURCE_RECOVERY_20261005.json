@@ -1,0 +1,306 @@
+{
+  "_license": "CC-BY-NC-ND-4.0",
+  "adapted_paths": [
+    "next/core/adapters/stdio.c",
+    "runtime/m68000/temdd_transition.s",
+    "tests/temdd/runtime-m68000.c",
+    "tools/qikvrt_smalltalk.py"
+  ],
+  "effect_ack_done": false,
+  "schema": "qikvrt-native-source-recovery/v1",
+  "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "f1640191ec25495c90e997b38e77490995808b1c",
+  "sources": [
+    {
+      "bytes": 374,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "79efe5deadd70206ce313b2d0e138d72087e350a",
+      "original_mode": "100644",
+      "path": "include/temdd_core.h",
+      "sha256": "77baed66758807f8caf42fb5506ad371d0719790f092d476492351cef92a4bf9",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1538,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "5e0fe9bec80bd165d88ee650b4f73052ad8da8bc",
+      "original_mode": "100644",
+      "path": "next/core/Makefile",
+      "sha256": "5fcddc08c8771c7bd713232429f2ac70ffa4067dc8bce22a88f46aaf5d7a3f76",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 3190,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "ddd7841e71e57014c1935e2cbfc4cf0aeeb9e00e",
+      "original_mode": "100644",
+      "path": "next/core/adapters/stdio.c",
+      "sha256": "172c6f1756e330a52d589c7952254002a9cd8a81eceada9204c3142bd862e495",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1697,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "64741469cc0402ea1b41a03c8fc4bc5641b970a5",
+      "original_mode": "100644",
+      "path": "next/core/include/qikvrt_bus.h",
+      "sha256": "82b96016f65087b11802b119ce2b712c40e35a2aa7cb2bdd6e597fa31d6b8f1a",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 3989,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "6436fe95e18ad912fbc01899957698edd8e98d55",
+      "original_mode": "100644",
+      "path": "next/core/include/qikvrt_transputer.h",
+      "sha256": "298d87d7fb87ffe82b08a7820635a4427cd3ce7035ccb8fa4a09146cc9bded81",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 690,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "af8c5c3d7c2c20240e662ef1399035b7b0af06f6",
+      "original_mode": "100644",
+      "path": "next/core/include/qikvrt_types.h",
+      "sha256": "e50e5f115651ae7ca922d9cc4e8dd79b608433e6d3aea2959d42a72846e4bc97",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1791,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "8d432fe3cfc47a507c861a2b5eb8b6bcf80571c0",
+      "original_mode": "100644",
+      "path": "next/core/include/qikvrt_wire_v1.h",
+      "sha256": "6a7e9d0ba1c3852f3900dd608744429f066ad4972fef181f517217a81f8f556f",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 4915,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "61f76cebde84c276ab88f7e4e1fa3fb3a466e008",
+      "original_mode": "100644",
+      "path": "next/core/src/qikvrt_bus.c",
+      "sha256": "2af20b548426d31ed98e2dc3a656bd81649d2b5a636203921e686c75619e83fb",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 5656,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "5249c6321f58331ed2ba18082617f160306acbd4",
+      "original_mode": "100644",
+      "path": "next/core/src/qikvrt_exchange.c",
+      "sha256": "eea181a8a0d396cc81ebf8ca38f06960429539f8dfe79b611eb21a98d1e7f6f9",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 2019,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "455a88356cce80184afe6d118d2e915d4584f9d6",
+      "original_mode": "100644",
+      "path": "next/core/src/qikvrt_kernel.c",
+      "sha256": "6b57865464a9ff9acf0f55daa29516163396b6f156582026ad162f9ac87b46d2",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 2758,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "f33909d3830017680ad697f19ce327744fa7fc95",
+      "original_mode": "100644",
+      "path": "next/core/src/qikvrt_sha256_v1.c",
+      "sha256": "2d64f219003a97fe70f6a8e83678df6c73ee35d44dd0d23c00d99730b8a0220b",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 4207,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "6536372a7d1c9bd69e6f3c5bdda2a1c964aba666",
+      "original_mode": "100644",
+      "path": "next/core/src/qikvrt_wire_v1.c",
+      "sha256": "5adb12d1a66005b35b03776c415780a18c5bb563eec7c390e56a7779d9e53db4",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 4879,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "b7d3f5fe63201e89474ea67658468413f8d04781",
+      "original_mode": "100644",
+      "path": "next/core/tests/test_core.c",
+      "sha256": "4669df19386dc2203e5e732d0e3ec9cd09f3e535ca0737d3acadfb62de4c2e86",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 701,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "73f7eb025be3bc6da89e1090c89eccdf090d0d12",
+      "original_mode": "100644",
+      "path": "runtime/m68000/temdd_transition.s",
+      "sha256": "80bed5d9f74a59730d7ff0bcace978b03bf3c2a0447a8e205f6fd4eb71764372",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 779,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "73012a78347c49f2b04472be35d271def493e8d7",
+      "original_mode": "100644",
+      "path": "runtime/temdd/TEMDDRuntime.st",
+      "sha256": "a7a7996949b79eb966c58c5c4d808e43c56c7974673437d653832aebdd9c2bd4",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1243,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "813464eb03f98682ad7c42a2cb57ada1c6eb734c",
+      "original_mode": "100644",
+      "path": "runtime/toolchains/pharo-13.lock.json",
+      "sha256": "bc8fcdf396d63f7bcdd516cb1ff18a4facfa4572e891fd9ac1db3559ea9f03cc",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 4198,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "cb50ec877f8050f609cc08001495cb4ec01dcb9b",
+      "original_mode": "100644",
+      "path": "runtime/toolchains/pharo-image-LICENSE.txt",
+      "sha256": "e91fbd063b049918e6ea8b1a404f876c9faa3e3f53ecdb533c00d13e50d4dd92",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1183,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "1c6c7bce7c9571403fefcb25a07aa9c7e2773555",
+      "original_mode": "100644",
+      "path": "runtime/toolchains/pharo-vm-LICENSE.txt",
+      "sha256": "747468de57941f2484a8c054f817c8b5fad2ac2f0ea39579a8d57a2e6fc918d9",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 3086,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "7644f00e70f2748929be3d15b90ee09c2343fd2b",
+      "original_mode": "100644",
+      "path": "src/smalltalk/QikvrtEffectAck.st",
+      "sha256": "0f1c1e59d3783c4c4cf5eb40b0d01ffc4f7e1a5f0ed3c78faacef40893a78156",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 2398,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "335081828e21b11d91f2f712ae8a3d596d7b68fb",
+      "original_mode": "100644",
+      "path": "src/smalltalk/README.md",
+      "sha256": "8a553a65065a6e6283ba22c2e9b5c0b6f906931721597b87244afe62e6418532",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 284,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "c5f4081e2deeaa98bf177415c393a235a60bb11d",
+      "original_mode": "100644",
+      "path": "src/smalltalk/save-image.st",
+      "sha256": "0ac2d393937dd7ca79185fa6132d2a5959bbe1521227a16d15ff8198a110ae81",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 282,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "89ccfdb0177b6123c72025d356ce31bfb353ce2e",
+      "original_mode": "100644",
+      "path": "src/smalltalk/smoke.st",
+      "sha256": "f11259525e77d37a8c6a0ec57e1499c3e48683b8089af982a0a2f95b405aa2fd",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 509,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "f8be56548e4c05c2f564b4b7aa94fd2fc5587e41",
+      "original_mode": "100644",
+      "path": "src/temdd_core.c",
+      "sha256": "9da6a6bd2e020b92e94c8698e6fd8294aaad537870673068f3abfbf19dd898d8",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 687,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "b5b1acee2f6397dd3ca4b81a8f39762ed6939c76",
+      "original_mode": "100644",
+      "path": "tests/smalltalk/core-vectors.c",
+      "sha256": "7805ed4d229a80200a9afcd4202676eaf2eeec6139411bd3cb3c841d003c7249",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1381,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "6bacfda0ac9310ee4b7825b2d13e841cbb6ccfad",
+      "original_mode": "100644",
+      "path": "tests/smalltalk/core-vectors.st",
+      "sha256": "3001872cac15f8cbd03abf17b6c9727aad41cf2f150a36176f4227b5e2f3bbb2",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 423,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "94126fc55d8835a49b10246fe8deb04ec69f4453",
+      "original_mode": "100644",
+      "path": "tests/temdd/runtime-m68000.c",
+      "sha256": "e7def8103f63be31352de7057f533831391d63512bb222d957cff6fce35b3fa0",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 1096,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "2c722bf7bcf0a4d2c2a358f17a071f6a53d0ad72",
+      "original_mode": "100644",
+      "path": "tests/temdd/runtime-smalltalk.st",
+      "sha256": "ed46b169f8510692883096062336955a82c2cc12a7be6f7b592f8c347d90bd00",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 424,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "18c575d0fb3116dd951dc7e42bda63783bcb7ba1",
+      "original_mode": "100644",
+      "path": "tests/test_temdd_core.c",
+      "sha256": "f268efc246aa0ce3b46f5bac496c945da0c837a93fe513b5af2e39a7cc16f172",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    },
+    {
+      "bytes": 9832,
+      "license": "PER_FILE_NOTICE_AND_REPOSITORY_LICENSE_MAP",
+      "original_git_blob_sha1": "20ef6eff3399f89e4e449ee2db5662edd8062eb5",
+      "original_mode": "100644",
+      "path": "tools/qikvrt_smalltalk.py",
+      "sha256": "a9832fba6b29ea9e3cc8cdad256d60b33cdc19728cb45c9eae616f433475de70",
+      "source_head": "c6a53e200c4835a4f871d8496feb81d953610831",
+      "test_evidence_transferred": false
+    }
+  ]
+}

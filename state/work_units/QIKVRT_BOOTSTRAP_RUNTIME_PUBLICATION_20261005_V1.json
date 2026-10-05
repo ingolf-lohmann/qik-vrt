@@ -1,0 +1,90 @@
+{
+  "_license": "CC-BY-NC-ND-4.0",
+  "ai_origin": {
+    "build": "UNAVAILABLE",
+    "model": "GPT-6",
+    "provider": "OpenAI",
+    "role": "Codex implementation contribution"
+  },
+  "build_workflow": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+  "closure": {
+    "all_nodes_persisted": false,
+    "all_targets_executed": false,
+    "effect_ack_done": false,
+    "zenodo_published": false
+  },
+  "created_utc": "2026-10-05T10:41:49.361053+00:00",
+  "fresh_evidence_required": true,
+  "future_variants": {
+    "deduplication": [
+      "source_tree",
+      "target",
+      "binary_sha256",
+      "license_digest"
+    ],
+    "requested": true,
+    "state": "VERIFIED_VARIANT_CONTRACT_AND_CI_PREPARED; AUTOMATION_NOT_YET_ACTIVATED"
+  },
+  "historical_pass_transfer": false,
+  "human_owner": {
+    "identity_basis": "public repository ownership and current instruction",
+    "name": "Ingolf Lohmann"
+  },
+  "independence_scope": "No network/provider API/OS calls/heap in C90 kernel; CLI uses libc; build uses compiler; SQL uses Python/sqlite3/ctypes; Pharo and S1 retain declared runtimes.",
+  "local_verification": {
+    "license_tests": "PASS 5/5",
+    "native_package_tests": "PASS 4/4; real C90 build and SQLite execution plus Git-free rebuild",
+    "repository_make_test": "PASS after fetching required historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+    "scope": "Local checkout verification, not external native-target or Zenodo readback",
+    "test_log_sha256": "b6cc960846fe2e68d2ac421453dc73ba6a301df9ec2aac481ec9a2c25bad41ad",
+    "workflow_and_self_host_tests": "PASS 42/42"
+  },
+  "nodes": [
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "mirror",
+      "state": "PREPARING_EXACT_CANDIDATE"
+    },
+    {
+      "observation": "Authenticated /AI file read returned 404 NOT_FOUND; this does not prove repository deletion or suspension.",
+      "repository": "Goldkelch/qik-vrt",
+      "role": "authority",
+      "state": "CONTENT_ACCESS_BLOCKED_NOT_FOUND"
+    }
+  ],
+  "package_definition": "runtime/native/PACKAGE.json",
+  "recovery_receipt": "evidence/native_release/SOURCE_RECOVERY_20261005.json",
+  "request": "Persist reusable provider-independent bootstrapping, target binaries and licenses on Zenodo and every QIKVRT node; publish new verified runtime variants prominently.",
+  "reused_native_snapshot": "c6a53e200c4835a4f871d8496feb81d953610831",
+  "schema": "qikvrt-work-unit/v1",
+  "source_base": {
+    "head": "812d062f3e4f963e388ed89fdc8ece47f0541e64",
+    "pull_request": 457,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35"
+  },
+  "state": "IN_PROGRESS",
+  "variant_contract": "runtime/native/VARIANTS.json",
+  "visible_documentation": "runtime/native/README.md",
+  "work_unit_id": "QIKVRT_BOOTSTRAP_RUNTIME_PUBLICATION_20261005_V1",
+  "zenodo": {
+    "doi": null,
+    "exact_candidate_authorization_consumed": false,
+    "existing_machine_proof_v2_contract_preserved": true,
+    "login_observation": {
+      "credential_or_biometric_confirmation_occurred": false,
+      "direct_apple_sso_offered": false,
+      "signed_in": false,
+      "url": "https://zenodo.org/login/?next=/",
+      "visible_sso": [
+        "ORCID",
+        "GitHub",
+        "OpenAIRE"
+      ]
+    },
+    "public_byte_readback": false,
+    "publisher": "tools/qikvrt_zenodo_publish.py",
+    "record_id": null,
+    "state": "PENDING_AUTHENTICATED_PUBLICATION"
+  }
+}
