@@ -35,6 +35,18 @@ POLICY_SHA256 = "933d6322a1e294848c6385d1384ab0ec3862c8675ebe35ec2fc4cad3e0baec4
 POLICY_GIT_BLOB_SHA1 = "e9578d30d22f845e7df684128dcd9332641c00be"
 BUNDLE_SCHEMA = "qikvrt_zenodo_machine_proof_bundle_v2"
 BUNDLE_SCHEMA_PATH = "policy/qikvrt-zenodo-machine-proof-bundle-v2.schema.json"
+PROPOSED_POLICY_SCHEMA = "qikvrt_zenodo_machine_proof_policy_v3"
+PROPOSED_POLICY_ID = "qikvrt-zenodo-machine-proof-before-publication-v3"
+PROPOSED_POLICY_PATH = "policy/zenodo-machine-proof-policy-v3.json"
+PROPOSED_POLICY_VERSION = "3.0.0"
+PROPOSED_POLICY_SHA256 = (
+    "e8163b42acdc26ede6c996f695c4e5362edd580085717264bbf20f5782093f78"
+)
+PROPOSED_POLICY_GIT_BLOB_SHA1 = "35ecc7887e486491278f63e0a61102d1be06e5ef"
+PROPOSED_BUNDLE_SCHEMA = "qikvrt_zenodo_machine_proof_bundle_v3"
+PROPOSED_BUNDLE_SCHEMA_PATH = (
+    "policy/qikvrt-zenodo-machine-proof-bundle-v3.schema.json"
+)
 RETURN_SCHEMA = "qikvrt_prepublication_return_receipt_v2"
 RETURN_SCHEMA_PATH = "policy/qikvrt-prepublication-return-receipt-v2.schema.json"
 CANONICAL_KERNEL_RECEIPT_SCHEMA = (
@@ -666,6 +678,90 @@ def validate_active_policy(
         "sha256": observed_sha256,
         "git_blob_sha1": observed_blob,
         "schema_contracts": schema_contracts,
+    }
+
+
+def validate_proposed_policy(
+    root: pathlib.Path,
+    binding: Any,
+) -> dict[str, Any]:
+    """Validate a versioned review candidate without activating production v3."""
+    expected_binding = {
+        "id": PROPOSED_POLICY_ID,
+        "path": PROPOSED_POLICY_PATH,
+        "version": PROPOSED_POLICY_VERSION,
+        "sha256": PROPOSED_POLICY_SHA256,
+        "git_blob_sha1": PROPOSED_POLICY_GIT_BLOB_SHA1,
+    }
+    if not isinstance(binding, dict):
+        fail("proposed policy must be an object")
+    exact_keys(binding, set(expected_binding), "proposed policy")
+    if binding != expected_binding:
+        fail("proof bundle is not bound to the exact proposed v3 policy")
+    policy_path = safe_relative(root, PROPOSED_POLICY_PATH, "proposed policy.path")
+    value, raw = load_json(policy_path, "proposed v3 Zenodo proof policy")
+    if (
+        hashlib.sha256(raw).hexdigest() != PROPOSED_POLICY_SHA256
+        or git_blob_sha1(raw) != PROPOSED_POLICY_GIT_BLOB_SHA1
+    ):
+        fail("proposed v3 policy exact byte identity differs")
+    predecessor_binding = {
+        "id": POLICY_ID,
+        "path": POLICY_PATH,
+        "version": POLICY_VERSION,
+        "sha256": POLICY_SHA256,
+        "git_blob_sha1": POLICY_GIT_BLOB_SHA1,
+    }
+    # The new readiness path must not weaken or rewrite the active v2/v1 bytes.
+    validate_active_policy(root, predecessor_binding)
+    if (
+        value.get("schema") != PROPOSED_POLICY_SCHEMA
+        or value.get("policy_id") != PROPOSED_POLICY_ID
+        or value.get("version") != PROPOSED_POLICY_VERSION
+        or value.get("proposed_successor_of") != predecessor_binding
+        or value.get("proposal") != {
+            "state": "REVIEW_REQUIRED",
+            "review_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/447",
+            "production_mutation_authorized": False,
+            "owner_activation_present": False,
+        }
+        or value.get("immutable_proof") != {
+            "completion_claims": {"machine_proof_complete": True},
+            "owner_authorization_is_detached": True,
+            "authorization_must_not_rewrite_proof_bundle": True,
+            "owner_decision_binds_exact_bundle_sha256": True,
+        }
+    ):
+        fail("proposed v3 policy readiness-only semantic contract differs")
+    contracts = value.get("schema_contracts")
+    if not isinstance(contracts, dict):
+        fail("proposed v3 policy lacks schema contracts")
+    exact_keys(
+        contracts,
+        {"machine_proof_bundle", "prepublication_return_receipt"},
+        "proposed v3 policy schema contracts",
+    )
+    schema_contracts = {
+        "machine_proof_bundle": validate_schema_contract_file(
+            root,
+            contracts["machine_proof_bundle"],
+            "proposed v3 machine-proof bundle schema",
+            expected_path=PROPOSED_BUNDLE_SCHEMA_PATH,
+            expected_schema=PROPOSED_BUNDLE_SCHEMA,
+        ),
+        "prepublication_return_receipt": validate_schema_contract_file(
+            root,
+            contracts["prepublication_return_receipt"],
+            "unchanged v2 prepublication return receipt schema",
+            expected_path=RETURN_SCHEMA_PATH,
+            expected_schema=RETURN_SCHEMA,
+        ),
+    }
+    return {
+        **expected_binding,
+        "schema_contracts": schema_contracts,
+        "review_state": "REVIEW_REQUIRED",
+        "production_mutation_authorized": False,
     }
 
 
@@ -2086,6 +2182,69 @@ def validate_bundle(
     upload_paths: Iterable[str] | None = None,
 ) -> dict[str, Any]:
     """Validate one complete proof bundle and return its normalized identity."""
+    return _validate_bundle(
+        root, bundle_path, upload_paths=upload_paths, prepublication_v3=False
+    )
+
+
+def validate_prepublication_bundle(
+    root: pathlib.Path,
+    bundle_path: pathlib.Path,
+    *,
+    upload_paths: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    """Check immutable proposed v3 proof readiness; never grant upload authority."""
+    return _validate_bundle(
+        root, bundle_path, upload_paths=upload_paths, prepublication_v3=True
+    )
+
+
+def validate_publication_bundle_v3(
+    root: pathlib.Path,
+    bundle_path: pathlib.Path,
+    *,
+    upload_paths: Iterable[str] | None = None,
+) -> dict[str, Any]:
+    """Validate immutable v3 bytes for the versioned publisher, without authority.
+
+    Production support is distinct from activation and exact-upload authority.
+    The publisher must validate both detached decisions before any effect.
+    The default validate_bundle entry point retains its frozen v2 semantics.
+    """
+    return validate_prepublication_bundle(root, bundle_path, upload_paths=upload_paths)
+
+
+def publication_contract_blobs(root: pathlib.Path, *, v3: bool) -> dict[str, str]:
+    """Return verified exact control identities for the selected production path."""
+    v2 = validate_active_policy(root, {
+        "id": POLICY_ID, "path": POLICY_PATH, "version": POLICY_VERSION,
+        "sha256": POLICY_SHA256, "git_blob_sha1": POLICY_GIT_BLOB_SHA1,
+    })
+    legacy = validate_legacy_contract_freeze(root)
+    controls = {POLICY_PATH: v2["git_blob_sha1"],
+                LEGACY_POLICY_PATH: legacy["policy"]["git_blob_sha1"]}
+    for contract in (*v2["schema_contracts"].values(),
+                     *legacy["schema_contracts"].values()):
+        controls[contract["path"]] = contract["git_blob_sha1"]
+    if v3:
+        proposed = validate_proposed_policy(root, {
+            "id": PROPOSED_POLICY_ID, "path": PROPOSED_POLICY_PATH,
+            "version": PROPOSED_POLICY_VERSION, "sha256": PROPOSED_POLICY_SHA256,
+            "git_blob_sha1": PROPOSED_POLICY_GIT_BLOB_SHA1,
+        })
+        controls[PROPOSED_POLICY_PATH] = proposed["git_blob_sha1"]
+        for contract in proposed["schema_contracts"].values():
+            controls[contract["path"]] = contract["git_blob_sha1"]
+    return controls
+
+
+def _validate_bundle(
+    root: pathlib.Path,
+    bundle_path: pathlib.Path,
+    *,
+    upload_paths: Iterable[str] | None,
+    prepublication_v3: bool,
+) -> dict[str, Any]:
     root = root.resolve()
     bundle_path = bundle_path.resolve()
     try:
@@ -2114,7 +2273,8 @@ def validate_bundle(
         },
         "machine proof bundle",
     )
-    if value["schema"] != BUNDLE_SCHEMA:
+    expected_schema = PROPOSED_BUNDLE_SCHEMA if prepublication_v3 else BUNDLE_SCHEMA
+    if value["schema"] != expected_schema:
         fail("unsupported machine proof bundle schema")
     validate_license(
         value["_license"],
@@ -2126,7 +2286,11 @@ def validate_bundle(
         "publication_id",
     )
 
-    policy_identity = validate_active_policy(root, value["policy"])
+    policy_identity = (
+        validate_proposed_policy(root, value["policy"])
+        if prepublication_v3
+        else validate_active_policy(root, value["policy"])
+    )
 
     candidate = value["candidate"]
     if not isinstance(candidate, dict):
@@ -2470,9 +2634,14 @@ def validate_bundle(
     completion = value["completion_claims"]
     if not isinstance(completion, dict):
         fail("completion_claims must be an object")
-    exact_keys(completion, {"machine_proof_complete", "zenodo_upload_authorized"}, "completion_claims")
-    if completion != {"machine_proof_complete": True, "zenodo_upload_authorized": True}:
-        fail("proof bundle does not authorize the exact Zenodo upload")
+    if prepublication_v3:
+        exact_keys(completion, {"machine_proof_complete"}, "completion_claims")
+        if completion != {"machine_proof_complete": True}:
+            fail("proposed v3 proof readiness is incomplete")
+    else:
+        exact_keys(completion, {"machine_proof_complete", "zenodo_upload_authorized"}, "completion_claims")
+        if completion != {"machine_proof_complete": True, "zenodo_upload_authorized": True}:
+            fail("proof bundle does not authorize the exact Zenodo upload")
 
     if upload_paths is not None:
         upload_list = list(upload_paths)
@@ -2500,8 +2669,8 @@ def validate_bundle(
                 + "; ".join(details)
             )
 
-    return {
-        "schema": BUNDLE_SCHEMA,
+    receipt = {
+        "schema": expected_schema,
         "publication_id": publication_id,
         "path": bundle_relative,
         "bytes": len(raw),
@@ -2512,19 +2681,29 @@ def validate_bundle(
         "candidate_file_count": len(candidate_by_path),
         "artifact_count": len(artifact_by_path),
         "machine_proof_complete": True,
-        "zenodo_upload_authorized": True,
+        "zenodo_upload_authorized": not prepublication_v3,
     }
+    if prepublication_v3:
+        receipt["review_state"] = "REVIEW_REQUIRED"
+        receipt["production_mutation_authorized"] = False
+    return receipt
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate a QIK-VRT Zenodo machine-proof bundle")
     parser.add_argument("--proof-bundle", required=True)
     parser.add_argument("--upload-path", action="append", default=[])
+    parser.add_argument(
+        "--prepublication-v3",
+        action="store_true",
+        help="validate the proposed v3 readiness contract without production authority",
+    )
     args = parser.parse_args(argv)
     root = pathlib.Path.cwd().resolve()
     try:
         bundle_path = safe_relative(root, args.proof_bundle, "--proof-bundle")
-        receipt = validate_bundle(
+        validator = validate_prepublication_bundle if args.prepublication_v3 else validate_bundle
+        receipt = validator(
             root,
             bundle_path,
             upload_paths=args.upload_path if args.upload_path else None,
@@ -2532,7 +2711,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     except ProofGateError as exc:
         print(f"BLOCK: {exc}", file=sys.stderr)
         return 2
-    print("ZENODO_MACHINE_PROOF_STATE=verified")
+    print(
+        "ZENODO_MACHINE_PROOF_STATE="
+        + ("prepublication_ready_review_required" if args.prepublication_v3 else "verified")
+    )
+    if args.prepublication_v3:
+        print("ZENODO_UPLOAD_AUTHORIZED=false")
+        print("ZENODO_PRODUCTION_MUTATION_AUTHORIZED=false")
     print("ZENODO_MACHINE_PROOF_SHA256=" + receipt["sha256"])
     print("ZENODO_MACHINE_PROOF_GIT_BLOB=" + receipt["git_blob_sha1"])
     print("ZENODO_MACHINE_PROOF_CLAIMS=" + str(receipt["claim_count"]))

@@ -1,0 +1,44 @@
+{
+  "active_v2_schema_conformance_claimed": false,
+  "calculation_result": {
+    "bytes": 3160,
+    "git_blob_sha1_computed_locally": "ed6de7a21c4e5c0bcc1b0e008f3ce1baf7217a70",
+    "path": "calculations/RECALCULATIONS_AND_METHOD_CONTROLS.json",
+    "sha256": "fcc754ccf0f6b594a398599727995dc4ea30242a4322bfeee6cd9ddf542c0ba7"
+  },
+  "claim_disposition": {
+    "bytes": 11706,
+    "git_blob_sha1_computed_locally": "51cb14a2663445e8c07f0e222bf06916889e5814",
+    "path": "CLAIM_DISPOSITION_DRAFT.json",
+    "sha256": "086e67d1f44c1ba9922aecc297783199f17bc5cd18aa378838d7770fd95d2f06"
+  },
+  "formal_kernel_receipts": [],
+  "global_truthfulness_proved": false,
+  "live_distributed_speedup_proved": false,
+  "phenomenal_consciousness_proved": false,
+  "primary_document": {
+    "bytes": 189440,
+    "git_blob_sha1_computed_locally": "053259060c1d495d3e6a99537342dfb1888eebc5",
+    "path": "QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+    "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce"
+  },
+  "proposed_v3_production_activation_claimed": false,
+  "remaining_gates": [
+    "Complete source/evidence freeze and review",
+    "Resolve and approve active publication-contract transition",
+    "Validate final exact fileset against approved active schema",
+    "Return final publishable bytes to owner",
+    "Obtain later candidate-specific single-use authorization",
+    "Use authorized production carrier",
+    "Public byte-exact re-download and repository/node receipts"
+  ],
+  "schema": "qikvrt_editorial_proof_readiness_draft_v1",
+  "source_bindings": {
+    "bytes": 13517,
+    "git_blob_sha1_computed_locally": "b5237f484d81f6a31770b769c928899c014c1260",
+    "path": "SOURCE_BINDINGS.json",
+    "sha256": "95285e6a4b7528a69240443eeeffe3f124be7fb0e21e7cb30bc977fd8ce7fe2a"
+  },
+  "status": "STAGED_NOT_PRODUCTION_VALIDATED",
+  "zenodo_upload_authorized": false
+}

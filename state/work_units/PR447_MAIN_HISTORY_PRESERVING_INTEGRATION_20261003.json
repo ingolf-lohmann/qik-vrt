@@ -1,0 +1,403 @@
+{
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "Session identity does not authenticate a natural person; local repository projection is not a complete checkout.",
+    "model_or_build": "GPT-6; exact build unavailable",
+    "provider": "OpenAI",
+    "session_or_run_id": "bbe768ac78ba",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "repository-native integrity canonicalization",
+      "native GitHub Actions validators"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh refs and logs read; conflict-free Main delta established; exact lifecycle Git blobs selected; unchanged publication dependency closure checked; deterministic integrity delta prepared; two-parent merge and non-force ref update planned; successor native tests required."
+  ],
+  "continuations": [
+    {
+      "artificial_cognitive_actor": {
+        "identity_and_observation_limits": "Local fixture is partial; no complete local checkout or runtime boot is claimed. Full successor verification must run on native GitHub checkout.",
+        "model_or_build": "GPT-6; exact build unavailable",
+        "provider": "OpenAI",
+        "session_or_run_id": "UNAVAILABLE",
+        "system_family": "Codex",
+        "tools_and_adapters": [
+          "GitHub REST connector",
+          "unchanged repository integrity classification and content-tree functions",
+          "native GitHub Actions validators"
+        ]
+      },
+      "authority": {
+        "human_actor": "Ingolf Lohmann",
+        "new_external_upload_authorization": false,
+        "retained_task_binding": "Original history-preserving PR447 integration instruction",
+        "standing_delegation": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+        "task": "Continue QIK-VRT authorized repository-internal pipeline"
+      },
+      "continuation_id": "PR447_CURRENT_MAIN_INTEGRATION_20261004_V1",
+      "expected_changed_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt",
+        "evidence/node_health/37154289864-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/37154289864-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "state/work_units/PR447_MAIN_HISTORY_PRESERVING_INTEGRATION_20261003.json"
+      ],
+      "external_effects": {
+        "authorization_consumed": false,
+        "authorization_created": false,
+        "consumption_ref_created": false,
+        "force_push": false,
+        "history_rewrite": false,
+        "main_promotion": false,
+        "publication": false,
+        "v3_contract_activated": false,
+        "zenodo_mutation": false
+      },
+      "integrated_main": {
+        "head": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+        "tree": "19009f21ecbd59fa13def19e96e6b6374bae0276"
+      },
+      "main_delta_bindings": [
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/37154289864-1.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/LATEST.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/37154289864-1.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 563,
+          "git_blob_sha1": "b4de5744585498f43ec6d02a50222eb4a3950bd5",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "sha256": "db7c1a20ae34dcc9d7549938a190e050d37657d42019079c7689e92a8f5bdfdd"
+        },
+        {
+          "bytes": 542,
+          "git_blob_sha1": "7709951570d8ba930e789b8c40582b9fe7dc7d9f",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "sha256": "a33cd9d21ff29a800b169537db8164600090b3d0eafb20dcb45dc4cf6e323ac6"
+        }
+      ],
+      "merge_base": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+      "observed_at": "2026-10-04T00:48:25.142134Z",
+      "preparation": {
+        "baseline_catalog_canonical_bytes_index_digest_and_git_path_set_verified": true,
+        "main_blob_bytes_verified": true,
+        "main_delta_overlap": false,
+        "main_only_commits": 1,
+        "method": "Reuse canonical baseline entries only for unchanged fresh Git blobs; apply actual Main/work-unit bytes through unchanged classification and content-tree functions; native full regeneration and full tests remain mandatory.",
+        "native_full_baseline_job": 111258124020,
+        "native_full_baseline_run": 37141973741,
+        "predecessor_evidence_transfer": false,
+        "prior_candidate_only_commits": 37,
+        "tool_cache_coverage": "PASS 14/14 declared tools (100%) in exact fetched-source fixture"
+      },
+      "preservation": {
+        "frozen_proof_return_manifest_regenerated": false,
+        "historical_source_bindings_rewritten": false,
+        "original_owner_artifact_decision": "Preserved as its separately documented historical event; not redated, consumed or promoted to native independent approval",
+        "publication_blob_count": 87,
+        "publication_changed_paths": []
+      },
+      "previous_candidate": {
+        "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "ref": "work/collective-functional-consciousness-20261003",
+        "tree": "377df23cdc2816629332dc5f8e95834ad79687d0"
+      },
+      "release_claims": {
+        "AUTHORITY_MIRROR_EQUALITY": false,
+        "EFFECT_ACK_DONE": false,
+        "FINAL_PASS": false,
+        "PASS": false
+      },
+      "required_parent_order": [
+        "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+        "8658b113979ab2bcc6e01a36e7931c21de5ea730"
+      ],
+      "scope": "History-preserving current-Main integration and exact-successor validation only",
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "successor_verification": {
+        "baseline_results_are_not_successor_results": true,
+        "required": [
+          "Exact successor PR and push CI",
+          "Native full integrity regeneration and verification",
+          "Successor actual PDF ZIP proof and denied-effects controls",
+          "Fresh synthetic-merge subject Collective Proposal Review and global completion"
+        ],
+        "state": "PENDING_FRESH_SUCCESSOR_NATIVE_GATES"
+      }
+    }
+  ],
+  "created_at": "2026-10-03T17:47:59.364363Z",
+  "external_effects": {
+    "authorization_consumed": false,
+    "authorization_created": false,
+    "consumption_ref_created": false,
+    "main_promotion": false,
+    "publication": "NONE",
+    "requested_repository_effect": "Update existing draft PR branch only",
+    "v3_contract_activated": false,
+    "zenodo_mutation": false
+  },
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "main_delta_overlaps_pr_delta": false,
+    "main_only_commits": 1,
+    "main_tree": "3369a9cdd1e1913175466156b7a4b96e24699d02",
+    "merge_base": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "prior_pr_only_commits": 36,
+    "required_parent_order": [
+      "0ed80b5c94653666f138182c871143551e070147",
+      "6105892b1c6992f6be19e0f29fe0530e319eaaf1"
+    ]
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized fresh Main read and history-preserving integration into PR #447, invariant PDF/ZIP bytes, necessary Main-dependent bindings only, fresh exact-head and synthetic merge-head validation. Prohibited publication, v3 activation and upload-authorization consumption."
+  ],
+  "human_decision": {
+    "owner_acceptance": "PENDING",
+    "owner_upload_decision": "ABSENT",
+    "task_scope": "AUTHORIZED"
+  },
+  "inputs": [
+    {
+      "bytes": 241,
+      "git_blob_sha1": "141ccdf9d6e233c0dc27ffa462e2237cba32619a",
+      "path": "evidence/node_health/37136228467-1.json",
+      "sha256": "6113ebf0ca3621d1ecf3ea989a5bc8e8344e12474f190b2a42355fb5a526f896"
+    },
+    {
+      "bytes": 241,
+      "git_blob_sha1": "141ccdf9d6e233c0dc27ffa462e2237cba32619a",
+      "path": "evidence/node_health/LATEST.json",
+      "sha256": "6113ebf0ca3621d1ecf3ea989a5bc8e8344e12474f190b2a42355fb5a526f896"
+    },
+    {
+      "bytes": 262,
+      "git_blob_sha1": "6f9bc1d44f9e897219be00ff824b1e6d96c8b48d",
+      "path": "evidence/node_registration_renewal/37136228467-1.json",
+      "sha256": "a7fa1b0a930faa0a14de3679285ad0da7ddc45aadbeb33442a451b4d9653a126"
+    },
+    {
+      "bytes": 262,
+      "git_blob_sha1": "6f9bc1d44f9e897219be00ff824b1e6d96c8b48d",
+      "path": "evidence/node_registration_renewal/LATEST.json",
+      "sha256": "a7fa1b0a930faa0a14de3679285ad0da7ddc45aadbeb33442a451b4d9653a126"
+    },
+    {
+      "bytes": 563,
+      "git_blob_sha1": "763ce3f12a36126a27152f0f729c3fe36ea94fde",
+      "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "sha256": "03fa7e949baa7fc59af7846ef1c48d75fef2988b8954fd987eb36e5caa9e7288"
+    },
+    {
+      "bytes": 542,
+      "git_blob_sha1": "1073b2be9a97c83a11fd92fb21c0e44b731e39e7",
+      "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "sha256": "3e46b542daa6af4ba806e8baf52a1f1610fdfd6126333055c82a63667558fb9c"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    "evidence/node_health/37136228467-1.json",
+    "evidence/node_health/LATEST.json",
+    "evidence/node_registration_renewal/37136228467-1.json",
+    "evidence/node_registration_renewal/LATEST.json",
+    "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+    "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+    "state/work_units/PR447_MAIN_HISTORY_PRESERVING_INTEGRATION_20261003.json",
+    "REPOSITORY_FILE_MANIFEST.json",
+    "SHA256SUMS.txt",
+    "REPOSITORY_FILE_MANIFEST.json.sha256"
+  ],
+  "preservation_scope": {
+    "all_publication_blob_identities_unchanged": true,
+    "frozen_proof_return_and_package_manifests_regenerated": false,
+    "publication_path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/",
+    "reason": "The Main-only delta has no overlap with PR changes and no lifecycle path is referenced by the active publication proof/source/fileset closure. Existing source observations and prior Main integration receipts remain historical.",
+    "unchanged_blob_count": 87
+  },
+  "preserved_publication_bindings": [
+    {
+      "bytes": 21459,
+      "git_blob_sha1": "1d6a809adc936b1c3e55266c55ccf575d2b2fe17",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "23f87519cf6e905b8978884f1384ebdcc94408316a9f6af45f93aa55629f7ebb"
+    },
+    {
+      "bytes": 8789,
+      "git_blob_sha1": "00469d55c5828be64a5ec4b99054452c9eedff7b",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_MANIFEST.json",
+      "sha256": "f06f4927690e7ac98853059d4727a9268c162aa8ebffeb3d1f0c7ee513c6181e"
+    },
+    {
+      "bytes": 5010,
+      "git_blob_sha1": "08751d12087f7ef7bb5b5e4b4b07425366a80b3f",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "bab9a631789d3b6ccfd4e3a64fa16af50ad90ce2236d799235c92e0a4dd9b5dc"
+    },
+    {
+      "bytes": 1950,
+      "git_blob_sha1": "a00f222adb90407b2d19e6e1d845ea702bfd8513",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/UNIVERSAL_META_INTEGRATION_MACHINE_PROOF_BUNDLE.json",
+      "sha256": "58d3215acd636de29e9d3b073a4f9969c2f8a861aa7c0126af0016c172d8b615"
+    },
+    {
+      "bytes": 674,
+      "git_blob_sha1": "5c0235b7bab415eb93f65c3b3212f161db4238ee",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/UNIVERSAL_META_INTEGRATION_PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "aa4d131fe3b615ff817b1e5e27c24353373a8d651c20f28044fbbbf1a8f3d030"
+    },
+    {
+      "bytes": 30503,
+      "git_blob_sha1": "017ac43ceabb77e42e2e6703218dabe2bc025e55",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/MACHINE_PROOF_BUNDLE.json",
+      "sha256": "c1f0ca91ce694ec05fcbf014d894856b50f682418f68a122dba67311f8b3c0c9"
+    },
+    {
+      "bytes": 18174,
+      "git_blob_sha1": "5286000dd4922df6d48eaeb588b20b3629baef3f",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PREPUBLICATION_MANIFEST.json",
+      "sha256": "3e832609b14ad25d9fff29bdb0414b5883555368bf1e42868bb740b198ba6ab1"
+    },
+    {
+      "bytes": 6267,
+      "git_blob_sha1": "73bddbdbf4c22075730f6d0c6df02e1ed6baaf5c",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/PREPUBLICATION_RETURN_RECEIPT.json",
+      "sha256": "ee64e4fd1dc1dc75fb53dd4a5c01a80ca6d02b2a51a3b3f8a8d49dc924d1ceab"
+    },
+    {
+      "bytes": 52913,
+      "git_blob_sha1": "f9d17b76f2f2fc758b13ae3fcb6f45480d086638",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/QIK-VRT_Kollektives_Funktionales_Bewusstsein_2026-10-03.pdf",
+      "sha256": "7132552a69813d34448c41c58100ebd30572a17a505b4405303e5601c14171a6",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 189440,
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 1416550,
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 189440,
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 143857,
+      "git_blob_sha1": "b2beb3fbea89b449443f7fbf53ff5a5dcd9f1a12",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Die_universelle_Huelle_2026-10-03.pdf",
+      "sha256": "83bd343294ebf14f92b6454b3977343030aa0a2f88ba0803c94bedfbd4ebf18d",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 82564,
+      "git_blob_sha1": "7e1dae9f57ff1e9073e6987226d3424a053d3b49",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Kognition_Wirkung_Evidenz_2026-10-03.pdf",
+      "sha256": "5f3c824d7febe92808ffdcde8533fc3efa2eb0ab0dbc08313181ac00ecbe62bb",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 176577,
+      "git_blob_sha1": "bc1cd73da3435d7169304ca7b886c7b2c5807174",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Kollektives_Funktionales_Bewusstsein_Zenodo_Candidate_2026-10-03.pdf",
+      "sha256": "63f732e0f2825f650ce00e0d8be81a2ca7a1aac0dd545298c47b9ab0d7ffb9b9",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 169240,
+      "git_blob_sha1": "3408c9debd2868cc55fff578b7a3b2bf8926ee82",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Kuenstliche_Kognition_Speicher_Bewusstsein_2026-10-03.pdf",
+      "sha256": "6d306e287f6a895a8a67d485b6381e2cfabb84370645de811975be5a55359a2d",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 127288,
+      "git_blob_sha1": "a0079f1e7fdae0e0f2aac913d6f8b52aa184e5fb",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Speicher_Bewusstsein_Forecast_2026-10-03.pdf",
+      "sha256": "e3a7189f12731593c965a4a46f53b75bc5c94500f0e4292522a0b2de20df9f07",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 375155,
+      "git_blob_sha1": "154acca77c9f8ca4cea5a6257f57aafb07b7fa73",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIK-VRT_Wissenschaftlicher_Artikel_Kognition_Wirkung_Evidenz_2026-10-03.pdf",
+      "sha256": "ec66cc8ce638390bd9e4f792c90a6a4031991663c6102e08fe329c96ce7815cc",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    },
+    {
+      "bytes": 247170,
+      "git_blob_sha1": "dc874cd8b459967770a089273431e5128b413813",
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/original-review/historical_sources/QIKVRT_SINN_UND_ZWECK(4).pdf",
+      "sha256": "6a15c71919a6c703cfeabfa3e1e13d9d1928c2a9accdfc333aef807c267f31ca",
+      "verification": "Fresh exact-head Git tree identity; actual-byte native tests required on successor."
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_provenance_bound_work_unit_v1",
+  "source_commit": "0ed80b5c94653666f138182c871143551e070147",
+  "source_ref": "work/collective-functional-consciousness-20261003",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "d9405086aef5f297d825ebad1bcacffbe5ed9ba9",
+  "unresolved_origin": [],
+  "verification": {
+    "observed_failure": {
+      "collective_review_run_id": 37136931778,
+      "error": "repository manifest differs from deterministic regeneration",
+      "global_completion_run_id": 37136931633,
+      "scope": "Historical failing merge-head subject; predecessor successes are not transferred.",
+      "synthetic_merge_head": "1d01032b5f1aa1111f6b0979818f823aea0aec79",
+      "synthetic_merge_tree": "57a98e2f2e0d003cadedb6353837cb50e6b62dd0"
+    },
+    "preparation": {
+      "baseline_catalog_and_tree_path_set_equal": true,
+      "baseline_catalog_canonical_bytes_index_and_detached_digest_verified": true,
+      "cache_coverage": "PASS: 14/14 declared tools have cache strategies (100%)",
+      "integrity_method": "Delta canonicalization through the unchanged repository generator classification/content-tree functions. Unchanged entries are retained only where fresh Git blob identity is unchanged. Full native generation/verify required on successor.",
+      "local_complete_checkout_tests_run": false,
+      "main_blob_bytes_verified": true
+    },
+    "successor_checks": "PENDING: exact-head PR-CI and push-CI, repository evidence, benchmark, Collective Proposal Review and global claim completion on freshly read synthetic merge ref. No success transferred from a predecessor."
+  },
+  "work_unit_id": "PR447_MAIN_HISTORY_PRESERVING_INTEGRATION_20261003"
+}

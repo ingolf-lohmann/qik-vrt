@@ -1,0 +1,22 @@
+{
+  "base": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+  "boundary": "PR report freshly read. Run log for 37128318275 separately inspected. This file is an attributed summary, not the raw full API response.",
+  "draft": true,
+  "head": "a31ebb7eb810334c4f00ebadd4604fa5cf45abea",
+  "merged": false,
+  "no_independent_review_or_publication_inferred": true,
+  "pr_updated_at": "2026-10-03T14:10:31Z",
+  "schema": "qikvrt_editorial_final_pr_readback_v1",
+  "source_reported_current_head_runs": {
+    "all_terminal": true,
+    "registered": 12,
+    "skipped": 3,
+    "success": 9
+  },
+  "source_reported_live_benchmark": "HOLD_AUTHORITY_CREDENTIAL_DELIVERY_NOT_ESTABLISHED",
+  "source_reported_production_policy": "strict v2; v3 is not activated",
+  "source_type": "fresh GitHub connector PR metadata/body read",
+  "state": "open",
+  "tree_reported": "8d9e02da17284a9a9bca95e373cee5a513570295",
+  "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/447"
+}
