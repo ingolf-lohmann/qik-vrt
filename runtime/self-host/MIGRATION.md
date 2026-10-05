@@ -29,6 +29,11 @@ is modified by this implementation or its tests.
 
 ## Capture boundary
 
+The additive, once-only capture path in [CAPTURE.md](CAPTURE.md) composes the
+existing legacy supervisor with a private pinned hook. It fills the declaration
+from actual capture checks and leaves the source fenced. Its presence is not
+an installed privileged carrier or independent authentication of the cut.
+
 Export accepts only a separate, owner-only **offline snapshot**, never a live
 mount. An authorized operator must first independently verify the actual source
 Head/Tree, volume identity, all writer cessation (terminal, SQLite, browser and

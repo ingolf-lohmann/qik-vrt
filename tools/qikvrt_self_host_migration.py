@@ -9,6 +9,7 @@ place only in a disposable copy. No producer, socket, route or supervisor starts
 from __future__ import annotations
 
 import contextlib
+import datetime
 import fcntl
 import hashlib
 import json
@@ -16,6 +17,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import shlex
 import sqlite3
 import stat
 import struct
@@ -32,6 +34,7 @@ SOURCE_SCHEMA = "qikvrt-railway-offline-source/v1"
 EXPORT_SCHEMA = "qikvrt-railway-state-export/v1"
 IMPORT_SCHEMA = "qikvrt-railway-state-import/v1"
 HOLD = ".MIGRATION_HOLD.json"
+CAPTURE_HOLD = ".RAILWAY_CAPTURE_HOLD.json"
 RECEIPT = "receipts/railway-migration/IMPORT.json"
 VERIFIED = "receipts/railway-migration/VERIFIED.json"
 SOURCE_CARRIER = {
@@ -111,7 +114,7 @@ def read(path):
         return data
 
 
-def inventory(root):
+def inventory(root, *, privileged_capture=False):
     """No writes, sockets, symlinks, hardlinks or silently skipped private files."""
     confined(root)
     if not root.is_dir(): raise ValueError("MIGRATION_DIRECTORY_REQUIRED")
@@ -127,11 +130,16 @@ def inventory(root):
             elif stat.S_ISREG(info.st_mode):
                 if info.st_nlink != 1: raise ValueError("SINGLE_LINK_REGULAR_MIGRATION_FILE_REQUIRED")
                 if info.st_size > 512 * 1024 * 1024: raise ValueError("MIGRATION_FILE_SIZE_LIMIT")
-                entry.update(kind="file", **storage.state_file_digest(path))
+                entry.update(kind="file", **storage.state_file_digest(path, privileged_capture=privileged_capture))
             else:
                 raise ValueError("UNSUPPORTED_MIGRATION_ENTRY:" + key)
-            if info.st_uid != os.geteuid() or entry["mode"] & 0o7000:
+            if ((not privileged_capture and info.st_uid != os.geteuid()) or entry["mode"] & 0o7000
+                    or (privileged_capture and os.geteuid() != 0)):
                 raise ValueError("MIGRATION_OWNER_OR_SPECIAL_MODE_MISMATCH")
+            if privileged_capture:
+                if os.listxattr(path, follow_symlinks=False):
+                    raise ValueError("CAPTURE_EXTENDED_METADATA_REQUIRES_REVIEW")
+                entry.update(uid=info.st_uid, gid=info.st_gid)
             result[key] = entry
             if len(result) > 100000: raise ValueError("MIGRATION_INVENTORY_LIMIT")
     if sum(e.get("bytes", 0) for e in result.values()) > 4 * 1024**3:
@@ -172,13 +180,13 @@ def sync(path):
     storage.sync_directory(path)
 
 
-def copy_tree(source, dest, entries):
+def copy_tree(source, dest, entries, *, privileged_capture=False):
     for name, entry in entries.items():
         path = dest / relative(name)
         if entry["kind"] == "directory": directories(path)
         else:
             directories(path.parent)
-            if storage.state_file_digest(source / name, path) != {"bytes": entry["bytes"], "sha256": entry["sha256"]}:
+            if storage.state_file_digest(source / name, path, privileged_capture=privileged_capture) != {"bytes": entry["bytes"], "sha256": entry["sha256"]}:
                 raise ValueError("SOURCE_CHANGED_DURING_COPY:" + name)
             sync(path.parent)
     for directory in sorted((p for p in dest.rglob("*") if p.is_dir()), reverse=True): sync(directory)
@@ -544,6 +552,196 @@ def verify_import(args, manifest, load_source, private_path):
     return receipt
 
 
+def capture_processes():
+    """A bounded census in the actual container PID namespace, not an env claim.
+
+    Only this process and its transport/supervisor ancestors may remain. An
+    unknown process, even one without a currently open volume FD, refuses copy.
+    Privileged operator interference remains an external trust boundary.
+    """
+    try:
+        same_namespace = os.readlink('/proc/self/ns/pid') == os.readlink('/proc/1/ns/pid')
+    except OSError as exc:
+        raise ValueError('CAPTURE_CONTAINER_PID_NAMESPACE_REQUIRED') from exc
+    if not same_namespace:
+        raise ValueError('CAPTURE_CONTAINER_PID_NAMESPACE_REQUIRED')
+    allowed = set()
+    pid = os.getpid()
+    while pid:
+        if pid in allowed: raise ValueError('CAPTURE_PROCESS_ANCESTRY_CYCLE')
+        allowed.add(pid)
+        fields = Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()
+        pid = int(fields[1])
+    observed = []
+    for proc in sorted(Path('/proc').iterdir()):
+        if not proc.name.isdigit(): continue
+        try:
+            fields = (proc / 'stat').read_text().rsplit(')', 1)[1].split()
+        except FileNotFoundError:
+            continue
+        pid = int(proc.name)
+        if pid not in allowed and fields[0] != 'Z':
+            raise ValueError('CAPTURE_UNKNOWN_OR_LIVE_PROCESS')
+        observed.append({'pid': pid, 'start_ticks': int(fields[19]), 'state': fields[0],
+                         'role': 'CAPTURE_ANCESTOR' if pid in allowed else 'EXITED_ZOMBIE'})
+    return observed
+
+
+def capture_request(args, private_path):
+    if args.dry_run: raise ValueError('CAPTURE_DRY_RUN_IS_NOT_ARM_OR_EXECUTION')
+    if os.geteuid() != 0 or sys.platform != 'linux':
+        raise ValueError('PRIVILEGED_LINUX_CAPTURE_REQUIRED')
+    disjoint(args.root, args.source_root, args.live_volume, args.capture_request, args.output)
+    if any((parent / '.git').exists() for path in (args.capture_request, args.output) for parent in path.parents):
+        raise ValueError('CAPTURE_PRIVATE_PATH_MUST_NOT_BE_IN_REPOSITORY')
+    private_path(args.capture_request); private_path(args.output.parent, directory=True)
+    confined(args.source_root); confined(args.live_volume)
+    if str(args.live_volume) != SOURCE_CARRIER['mount_path'] or not os.path.ismount(args.live_volume):
+        raise ValueError('ACTUAL_RAILWAY_VOLUME_MOUNT_REQUIRED')
+    data = read(args.capture_request)
+    if sha(data) != pin(args.capture_request_sha256): raise ValueError('CAPTURE_REQUEST_PIN_MISMATCH')
+    request = decode(data)
+    expected = {'schema', 'carrier', 'deployment_id', 'source_repository', 'source_head', 'source_tree',
+                'snapshot_id', 'expires_at', 'layout', 'acknowledgements', 'restart_fence_receipt_sha256'}
+    if (set(request) != expected or request['schema'] != 'qikvrt-railway-capture-request/v1'
+            or request['carrier'] != SOURCE_CARRIER or request['source_repository'] != 'Goldkelch/qik-vrt'
+            or not isinstance(request['snapshot_id'], str) or not request['snapshot_id'].strip()):
+        raise ValueError('EXACT_PRIVATE_CAPTURE_REQUEST_REQUIRED')
+    pin(request['restart_fence_receipt_sha256'])
+    if not isinstance(request['expires_at'], str): raise ValueError('FRESH_BOUNDED_CAPTURE_REQUEST_REQUIRED')
+    deadline = datetime.datetime.fromisoformat(request['expires_at'].replace('Z', '+00:00'))
+    now = datetime.datetime.now(datetime.timezone.utc)
+    if deadline.tzinfo is None or not 0 < (deadline - now).total_seconds() <= 900:
+        raise ValueError('FRESH_BOUNDED_CAPTURE_REQUEST_REQUIRED')
+    for field, env in [('project_id', 'RAILWAY_PROJECT_ID'), ('environment_id', 'RAILWAY_ENVIRONMENT_ID'),
+                       ('service_id', 'RAILWAY_SERVICE_ID'), ('volume_id', 'RAILWAY_VOLUME_ID')]:
+        if os.environ.get(env) != SOURCE_CARRIER[field]: raise ValueError('RAILWAY_CARRIER_IDENTITY_UNVERIFIED')
+    if not request['deployment_id'] or os.environ.get('RAILWAY_DEPLOYMENT_ID') != request['deployment_id']:
+        raise ValueError('RAILWAY_DEPLOYMENT_IDENTITY_UNVERIFIED')
+    for ref, field in [('HEAD', 'source_head'), ('HEAD^{tree}', 'source_tree')]:
+        if storage.git(args.source_root, 'rev-parse', '--verify', ref).decode() != request[field]:
+            raise ValueError('LIVE_CAPTURE_SOURCE_BINDING_MISMATCH')
+    storage.git(args.source_root, 'diff', '--quiet', 'HEAD', '--')
+    if storage.git(args.source_root, 'ls-files', '--others', '--exclude-standard'):
+        raise ValueError('LIVE_CAPTURE_UNTRACKED_SOURCE_REQUIRES_REVIEW')
+    if set(request['acknowledgements']) != {'epoch', 'events', 'logical_sha256'}:
+        raise ValueError('INDEPENDENT_DURABLE_ACKNOWLEDGEMENT_CUT_REQUIRED')
+    if not isinstance(request['acknowledgements']['epoch'], str) or not re.fullmatch(r'[a-f0-9]{32}', request['acknowledgements']['epoch']):
+        raise ValueError('NATIVE_ACKNOWLEDGEMENT_EPOCH_REQUIRED')
+    pin(request['acknowledgements']['logical_sha256'])
+    if type(request['acknowledgements']['events']) is not int or request['acknowledgements']['events'] < 1:
+        raise ValueError('NONEMPTY_DURABLE_ACKNOWLEDGEMENT_CUT_REQUIRED')
+    return request, data
+
+
+def capture_supervisor(args):
+    """Compose the unchanged actual supervisor and one reviewed hook. No start.
+
+    Historical recovered sources stay byte-frozen. This is a new additive
+    adapter, not a second provider executor or supervisor implementation.
+    """
+    original = subprocess.check_output(['git', '-C', str(args.source_root), 'cat-file', 'blob',
+        'HEAD:deploy/universal-terminal/cloud-entrypoint.sh'], timeout=30, stderr=subprocess.DEVNULL)
+    if original != read(args.source_root / 'deploy/universal-terminal/cloud-entrypoint.sh'):
+        raise ValueError('ORIGINAL_SUPERVISOR_SOURCE_MISMATCH')
+    anchor = b'set -eu\n'
+    if original.count(anchor) != 1 or b'trap cleanup EXIT' not in original:
+        raise ValueError('UNKNOWN_ORIGINAL_SUPERVISOR_CONTRACT')
+    hook = args.root / 'deploy/universal-terminal/railway-capture-hook.sh'
+    disjoint(args.root, args.source_root, args.live_volume, args.capture_request, args.output, args.capture_output)
+    if args.capture_output.exists(): raise ValueError('CAPTURE_OUTPUT_ALREADY_EXISTS')
+    storage.private_path(args.capture_output.parent, directory=True)
+    if any((p / '.git').exists() for p in args.capture_output.parents):
+        raise ValueError('CAPTURE_PRIVATE_PATH_MUST_NOT_BE_IN_REPOSITORY')
+    values = {'QIKVRT_CAPTURE_PACKAGE': str(args.root), 'QIKVRT_CAPTURE_PACKAGE_SHA256': args.manifest_sha256,
+              'QIKVRT_CAPTURE_REQUEST': str(args.capture_request), 'QIKVRT_CAPTURE_REQUEST_SHA256': args.capture_request_sha256,
+              'QIKVRT_CAPTURE_OUTPUT': str(args.capture_output), 'QIKVRT_CAPTURE_SOURCE_ROOT': str(args.source_root)}
+    prefix = ''.join('export ' + key + '=' + shlex.quote(value) + '\n' for key, value in values.items())
+    prefix += '. ' + shlex.quote(str(hook)) + '\n'
+    script = original.replace(anchor, anchor + prefix.encode(), 1)
+    write(args.output, script)
+    return {'state': 'CAPTURE_SUPERVISOR_MATERIALIZED_NOT_STARTED', 'supervisor_sha256': sha(script),
+            'original_supervisor_sha256': sha(original), 'hook_sha256': sha(read(hook)),
+            'deployment_performed': False, 'effect_ack_done': False}
+
+
+def capture(args, manifest, load_source, private_path):
+    request, request_raw = capture_request(args, private_path)
+    if args.operation == 'migration-capture-supervisor':
+        return capture_supervisor(args)
+    guard = {'schema': 'qikvrt-railway-capture-fence/v1', 'state': 'ARMED_NO_AUTOMATIC_RESUME',
+             'request_sha256': args.capture_request_sha256, 'manifest_sha256': args.manifest_sha256,
+             'source_head': request['source_head'], 'source_tree': request['source_tree'], 'effect_ack_done': False}
+    fence = args.live_volume / CAPTURE_HOLD
+    if args.operation == 'migration-capture-arm':
+        if args.output.exists(): raise ValueError('CAPTURE_OUTPUT_ALREADY_EXISTS')
+        # Checked before stopping anything. A duplicate or ambiguous arm never
+        # becomes a second dispatch. The existing supervisor owns quiescence.
+        write(fence, raw(guard))
+        return {'state': 'CAPTURE_ARMED_SOURCE_STOP_PENDING', 'request_sha256': args.capture_request_sha256,
+                'snapshot_created': False, 'effect_ack_done': False}
+    private_path(fence)
+    if read(fence) != raw(guard): raise ValueError('CAPTURE_FENCE_BINDING_MISMATCH')
+    processes = capture_processes()
+    info = args.live_volume.stat()
+    root_metadata = {'uid': info.st_uid, 'gid': info.st_gid, 'mode': stat.S_IMODE(info.st_mode),
+                     'device': info.st_dev, 'inode': info.st_ino}
+    if os.listxattr(args.live_volume, follow_symlinks=False) or root_metadata['mode'] & 0o7000:
+        raise ValueError('CAPTURE_ROOT_METADATA_REQUIRES_REVIEW')
+    original = inventory(args.live_volume, privileged_capture=True)
+    normalized = {n: {k: v for k, v in e.items() if k not in {'uid', 'gid'}} for n, e in original.items()}
+    declaration = {k: request[k] for k in ('carrier', 'source_repository', 'source_head', 'source_tree', 'snapshot_id', 'layout')}
+    declaration.update(schema=SOURCE_SCHEMA, capture_evidence_sha256='0' * 64,
+                       consistency='QUIESCED_OFFLINE_SNAPSHOT', inventory_sha256=sha(raw(normalized)))
+    # Reuse the exact layout/ambiguity validator, before creating a copy.
+    with tempfile.TemporaryDirectory(prefix='qikvrt-capture-layout-') as temp:
+        witness = Path(temp) / 'source.json'; witness.write_bytes(raw(declaration))
+        source_declaration(witness, sha(raw(declaration)), normalized)
+    if shutil.disk_usage(args.output.parent).free < sum(e.get('bytes', 0) for e in original.values()) + 1048576:
+        raise ValueError('CAPTURE_PRIVATE_STORAGE_CAPACITY_UNAVAILABLE')
+    with locked(args.live_volume, request['layout']['locks']):
+        capture_processes()
+        if inventory(args.live_volume, privileged_capture=True) != original:
+            raise ValueError('CAPTURE_SOURCE_CHANGED_BEFORE_COPY')
+        fresh(args.output); snapshot = args.output / 'snapshot'; fresh(snapshot)
+        try:
+            copy_tree(args.live_volume, snapshot, original, privileged_capture=True)
+            same_bytes(snapshot, normalized)
+            observed = consistency(args.root, snapshot, declaration, inventory(snapshot), load_source)
+            ledger = observed['sqlite'][request['layout']['ledger']]
+            if {k: ledger[k] for k in request['acknowledgements']} != request['acknowledgements']:
+                raise ValueError('CAPTURE_DURABLE_ACKNOWLEDGEMENT_CUT_MISMATCH')
+            capture_processes()
+            capture_request(args, private_path)
+            after = args.live_volume.stat()
+            if os.listxattr(args.live_volume, follow_symlinks=False):
+                raise ValueError('CAPTURE_ROOT_METADATA_REQUIRES_REVIEW')
+            if root_metadata != {'uid': after.st_uid, 'gid': after.st_gid, 'mode': stat.S_IMODE(after.st_mode),
+                                 'device': after.st_dev, 'inode': after.st_ino}:
+                raise ValueError('CAPTURE_SOURCE_MOUNT_REPLACED')
+            if inventory(args.live_volume, privileged_capture=True) != original:
+                raise ValueError('CAPTURE_SOURCE_CHANGED_AFTER_COPY')
+            evidence = {'schema': 'qikvrt-private-railway-capture/v1', 'request_sha256': sha(request_raw),
+                        'package_manifest_sha256': args.manifest_sha256, 'source_inventory': original,
+                        'source_root_metadata': root_metadata,
+                        'snapshot_inventory_sha256': sha(raw(inventory(snapshot))), 'consistency': observed,
+                        'process_census': processes, 'producer_locks_held': request['layout']['locks'],
+                        'restart_fence_receipt_sha256': request['restart_fence_receipt_sha256'],
+                        'capture_operator_assertion_independently_authenticated': False, 'effect_ack_done': False}
+            evidence_raw = raw(evidence); write(args.output / 'CAPTURE.json', evidence_raw)
+            write(args.output / 'REQUEST.json', request_raw)
+            declaration.update(capture_evidence_sha256=sha(evidence_raw), inventory_sha256=evidence['snapshot_inventory_sha256'])
+            source_raw = raw(declaration); write(args.output / 'SOURCE.json', source_raw)
+            source_declaration(args.output / 'SOURCE.json', sha(source_raw), inventory(snapshot))
+            return {'state': 'OFFLINE_CAPTURE_SEALED_PENDING_INDEPENDENT_VALIDATION',
+                    'capture_evidence_sha256': sha(evidence_raw), 'source_declaration_sha256': sha(source_raw),
+                    'inventory_sha256': declaration['inventory_sha256'], 'source_restart_permitted': False,
+                    'capture_consistency_independently_validated': False, 'effect_ack_done': False}
+        except BaseException:
+            write(args.output / HOLD, raw({'state': 'CAPTURE_QUARANTINED_SOURCE_FENCED', 'effect_ack_done': False}))
+            raise
+
+
 def execute(args, verify, load_source, private_path):
     required = {
         "migration-inventory": ("snapshot",),
@@ -553,6 +751,9 @@ def execute(args, verify, load_source, private_path):
         "migration-import": ("bundle", "export_sha256", "manifest_sha256", "config", "output"),
         "migration-verify-import": ("bundle", "export_sha256", "manifest_sha256", "config", "output", "import_sha256"),
         "migration-rollback": ("bundle", "export_sha256", "manifest_sha256", "config", "output", "import_sha256"),
+        "migration-capture-arm": ("live_volume", "source_root", "capture_request", "capture_request_sha256", "manifest_sha256", "output"),
+        "migration-capture-supervisor": ("live_volume", "source_root", "capture_request", "capture_request_sha256", "manifest_sha256", "output", "capture_output"),
+        "migration-capture": ("live_volume", "source_root", "capture_request", "capture_request_sha256", "manifest_sha256", "output"),
     }
     if args.operation not in required or any(getattr(args, k, None) is None for k in required[args.operation]):
         raise ValueError("EXACT_MIGRATION_INPUTS_REQUIRED")
@@ -565,6 +766,8 @@ def execute(args, verify, load_source, private_path):
     manifest = verify(args.root, args.manifest_sha256)
     if manifest["files"].get("tools/qikvrt_self_host_migration.py", {}).get("sha256") != sha(Path(__file__).read_bytes()):
         raise ValueError("EXACT_PACKAGED_MIGRATION_VERIFIER_REQUIRED")
+    if args.operation.startswith('migration-capture'):
+        return capture(args, manifest, load_source, private_path)
     if args.bundle is not None and args.operation != "migration-rollback":
         private_path(args.bundle, directory=True)
         private_path(args.bundle / "EXPORT.json"); private_path(args.bundle / "SOURCE.json")

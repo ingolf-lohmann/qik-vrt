@@ -270,7 +270,7 @@ def sync_directory(path):
     finally: os.close(fd)
 
 
-def state_file_digest(path, destination=None):
+def state_file_digest(path, destination=None, *, privileged_capture=False):
     # Original SQLite files may be 0644 inside the existing 0700 directory.
     # Copies always become 0600. Stream bounded data instead of caching a DB.
     if any(p.is_symlink() for p in (path, *path.parents)):
@@ -278,7 +278,9 @@ def state_file_digest(path, destination=None):
     with contextlib.ExitStack() as stack:
         source = stack.enter_context(os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW), "rb"))
         info = os.fstat(source.fileno())
-        if not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid() or info.st_mode & 0o022:
+        if (not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_mode & 0o7000
+                or (privileged_capture and os.geteuid() != 0)
+                or (not privileged_capture and (info.st_uid != os.geteuid() or info.st_mode & 0o022))):
             raise ValueError("UNSAFE_SOURCE_STATE_FILE")
         target = None
         if destination is not None:
@@ -936,7 +938,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("pack", "verify", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
-        "migration-verify-import", "migration-rollback"))
+        "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
@@ -955,6 +957,11 @@ def main():
     parser.add_argument("--bundle", type=Path, help="private verified migration export directory")
     parser.add_argument("--export-sha256", help="independent EXPORT.json pin")
     parser.add_argument("--import-sha256", help="independent private IMPORT.json pin")
+    parser.add_argument("--live-volume", type=Path, help="privileged source volume; capture operations only")
+    parser.add_argument("--source-root", type=Path, help="actual unchanged live Git checkout; not the sealed capture package")
+    parser.add_argument("--capture-request", type=Path, help="owner-only independently pinned capture and acknowledgement cut")
+    parser.add_argument("--capture-request-sha256", help="independent private capture request pin")
+    parser.add_argument("--capture-output", type=Path, help="separate future snapshot destination for the unstarted supervisor adapter")
     parser.add_argument("--dry-run", action="store_true", help="verify export and proposed binding; create no target")
     args = parser.parse_args()
     try:
@@ -989,7 +996,9 @@ def main():
         print(json.dumps(result, sort_keys=True))
         return 0
     except (OSError, ValueError, KeyError, TypeError, sqlite3.Error, subprocess.SubprocessError) as exc:
-        print(json.dumps({"state": "HOLD", "cause": str(exc), "effect_ack_done": False}, sort_keys=True))
+        # Capture diagnostics can contain private filenames or event data.
+        cause = "CAPTURE_GATE_REFUSED" if args.operation.startswith("migration-capture") else str(exc)
+        print(json.dumps({"state": "HOLD", "cause": cause, "effect_ack_done": False}, sort_keys=True))
         return 78 if args.operation == "run-admitted" else 2
 
 

@@ -19,6 +19,7 @@
     "deploy/universal-terminal/nginx.conf",
     "deploy/universal-terminal/qikvrt_ip_bootstrap.c",
     "deploy/universal-terminal/qikvrt_smtpd.py",
+    "deploy/universal-terminal/railway-capture-hook.sh",
     "deploy/universal-terminal/runtime-health.sh",
     "deploy/universal-terminal/service-entrypoint.sh",
     "deploy/universal-terminal/snmpd.conf",
@@ -45,6 +46,8 @@
     "docs/terminal/temdd/index.html",
     "evidence/self_host/SOURCE_RECOVERY_20261005.json",
     "runtime/self-host/CONFIG.example.json",
+    "runtime/self-host/CAPTURE.md",
+    "runtime/self-host/CAPTURE_REQUEST.example.json",
     "runtime/self-host/Dockerfile",
     "runtime/self-host/HOST_ADMISSION.example.json",
     "runtime/self-host/MIGRATION.md",
@@ -87,5 +90,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.2.0"
+  "version": "1.3.0"
 }

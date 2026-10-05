@@ -91,6 +91,15 @@ the launcher refuses them. These offline operations start no service and mutate
 no Railway state or route. Actual snapshot capture, host admission and external
 cutover readback remain independently evidence-bound.
 
+The additive [one-shot Railway capture path](CAPTURE.md) now supplies
+`migration-capture-supervisor`, `migration-capture-arm` and `migration-capture`.
+The supervisor composer is unstarted and preserves all original recovered
+source bytes. Its private, pinned hook fences startup before requesting bounded
+writer shutdown, refuses unknown processes and drift, records complete private
+metadata/acknowledgement evidence and fills `SOURCE.json`. Actual privileged
+execution and private transfer remain a separate capability HOLD; no source
+snapshot or production export is inferred from this adapter or its tests.
+
 ## Private durable-state snapshot and exact restoration
 
 The existing launcher now provides `snapshot-state` and `restore-state`.

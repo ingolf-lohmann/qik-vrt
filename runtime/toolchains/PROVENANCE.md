@@ -201,3 +201,13 @@ and never resets a route or source writer. The mandatory completion receipt
 prevents implicit fresh-state startup after an interrupted planned migration.
 Dry-run and corruption controls run through `make self-host-test`; the existing
 native Unix lane verifies imported historical and new-subject event restart.
+
+The one-shot Railway capture adapter reuses those same Python/Git/Node
+authorities and the original cloud supervisor; it adds no executable dependency
+or cache profile. Privileged Linux mount metadata, `fcntl` locks, `/proc` PID
+namespace visibility and mixed UID/GID access are required behavioral inputs,
+not inferred from provider environment variables. The existing isolated root
+Docker lane tests the complete storage adapter, real process-census admission
+and foreign-owner preservation. Private request/capture/export bytes remain
+outside Git and caches. The currently unavailable authenticated privileged
+exec/SSH plus private transfer carrier remains an explicit capability HOLD.

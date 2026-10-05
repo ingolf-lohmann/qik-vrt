@@ -16,6 +16,7 @@ on:
       - "tests/test_self_host_firefox.py"
       - "tests/test_self_host_systemd.py"
       - "tests/test_self_host_migration.py"
+      - "tests/test_self_host_capture.py"
       - "tests/test_qikvrt_effect_ack_http_terminal.py"
       - "tests/test_self_host.py"
       - "runtime/self-host/**"
@@ -103,7 +104,7 @@ jobs:
             --mount "type=bind,source=$RUNNER_TEMP/qikvrt-firefox-readback,target=/evidence" \
             --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
             qikvrt-self-host-firefox-test \
-            python3 -B -m unittest -v tests.test_self_host_firefox
+            python3 -B -m unittest -v tests.test_self_host_firefox tests.test_self_host_capture
 
       - name: Preserve isolated runtime readback and dependency versions
         if: ${{ always() && steps.firefox-runtime.outcome != 'skipped' }}
