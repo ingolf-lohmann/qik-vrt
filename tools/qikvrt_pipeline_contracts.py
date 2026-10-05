@@ -16,10 +16,12 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+from urllib.parse import urlencode
 from datetime import datetime, timezone
 from typing import Any
 
 MARKER = "<!-- qikvrt-autonomous-self-heal:enabled -->"
+VERIFIER_MARKER = "<!-- qikvrt-repair-exact-head:enabled -->"
 CONTEXT = "QIKVRT autonomous exact-head verification"
 WORKFLOW = "qikvrt_autonomous_exact_head_verify.yml"
 ACTIVE = {"queued", "in_progress", "waiting", "requested", "pending"}
@@ -41,7 +43,10 @@ class ApiError(Block):
 
 
 def api(method: str, path: str, data: Any = None) -> Any:
-    if method not in {"GET", "POST"} or not path.startswith("repos/"):
+    if method not in {"GET", "POST", "PATCH"} or not path.startswith("repos/"):
+        raise Block("API_SCOPE_INVALID")
+    if method == "PATCH" and (not re.fullmatch(r"repos/[^/]+/[^/]+/pulls/[1-9][0-9]*", path)
+                              or not isinstance(data, dict) or set(data) != {"body"}):
         raise Block("API_SCOPE_INVALID")
     command = ["gh", "api", "--hostname", "github.com", "--method", method, path,
                "-H", "Accept: application/vnd.github+json"]
@@ -176,33 +181,307 @@ def remote_identity(call: Any, repository: str, ref: str) -> tuple[str, str]:
     raise Block("TAG_CHAIN_BOUND_EXCEEDED")
 
 
-def run_title(pr: int, head: str, base: str) -> str:
-    return f"qikvrt-exact-pr-{pr}-{sha(head)}-{sha(base)}"
+def run_title(pr: int, head: str, base: str, base_ref: str = "main") -> str:
+    suffix = "" if branch(base_ref) == "main" else "-ref-" + base_ref
+    return f"qikvrt-exact-pr-{pr}-{sha(head)}-{sha(base)}{suffix}"
+
+
+def draft_postcondition(call: Any, repository: str, ref: str, head: str, tree: str,
+                        base: str, *, base_ref: str = "main", required_marker: str = "", body: str = "",
+                        title: str = "repair: resume repository-internal candidate") -> dict[str, Any]:
+    """Finish the PR portion of an admitted internal writer, even on byte NOOP.
+
+    No branch writer, scheduler, permission escalation, review or merge lives
+    here. Closed/ready/staging/foreign candidates cannot gain continuation.
+    A body PATCH is bounded but is not an atomic metadata compare-and-swap.
+    """
+    value = receipt("qikvrt_draft_postcondition_v1", repository=repo(repository),
+                    ref=branch(ref), head=sha(head), tree=sha(tree), base=sha(base),
+                    base_ref=branch(base_ref), pr_number=None, pr_create_attempted=False,
+                    continuation_bind_attempted=False, continuation_enabled=False)
+    prefix = f"repos/{repository}"
+
+    def bind() -> None:
+        if remote_identity(call, repository, "heads/" + ref) != (head, tree):
+            raise Block("CANDIDATE_HEAD_DRIFT")
+        if remote_identity(call, repository, "heads/" + base_ref)[0] != base:
+            raise Block("BASE_DRIFT")
+
+    def inventory() -> list[dict[str, Any]]:
+        query = urlencode({"state": "all", "head": repository.split('/')[0] + ':' + ref,
+                           "per_page": 100})
+        rows = call("GET", f"{prefix}/pulls?{query}")
+        if not isinstance(rows, list) or len(rows) >= 100:
+            raise Block("PR_ENUMERATION_INCOMPLETE")
+        if len(rows) > 1:
+            raise Block("DUPLICATE_CANDIDATE_PRS")
+        return rows
+
+    def verify(pr: dict[str, Any]) -> None:
+        if pr["state"] != "open":
+            raise Block("CANDIDATE_PR_CLOSED")
+        if (pr["head"]["sha"] != head or pr["head"]["ref"] != ref
+                or pr["head"]["repo"]["full_name"] != repository
+                or pr["base"]["sha"] != base or pr["base"]["ref"] != base_ref
+                or pr["base"]["repo"]["full_name"] != repository
+                or required_marker not in (pr.get("body") or "")):
+            raise Block("PR_EXACT_BINDING_MISMATCH")
+        if pr.get("draft") is not True:
+            raise Block("READY_PR_REQUIRES_NATIVE_REVIEW_BOUNDARY")
+
+    try:
+        if ref in {"main", base_ref}:
+            raise Block("REVIEW_BRANCH_REQUIRED")
+        bind()
+        rows = inventory()
+        existed = bool(rows)
+        error = None
+        if not rows:
+            bind()
+            value["pr_create_attempted"] = True
+            text = (body.rstrip() + f"\n\n{required_marker}\n{VERIFIER_MARKER}\n" + (MARKER + "\n" if base_ref == "main" else "") + "\n"
+                    f"Exact repository-internal candidate: HEAD `{head}`, TREE `{tree}`, "
+                    f"current base `{base_ref}` at `{base}`.\n"
+                    "PREDECESSOR_EVIDENCE_TRANSFER=false. EFFECT_ACK_DONE=false.\n"
+                    "Independent review, native governance and external-effect gates remain mandatory.\n")
+            try:
+                call("POST", f"{prefix}/pulls", {"head": ref, "base": base_ref, "draft": True,
+                                                "title": title, "body": text})
+            except Block as exc:
+                error = exc
+            rows = inventory()  # Neither a response nor an exception proves effect.
+        if not rows:
+            if isinstance(error, ApiError) and error.status in (401, 403):
+                raise Block("PR_WRITER_CAPABILITY_UNAVAILABLE")
+            raise Block("PR_CREATION_NOT_READ_BACK")
+        number = rows[0]["number"]
+        if type(number) is not int or number < 1:
+            raise Block("PR_NUMBER_INVALID")
+        value["pr_number"] = number
+        pr = call("GET", f"{prefix}/pulls/{number}")
+        verify(pr)
+        marker = MARKER if base_ref == "main" else VERIFIER_MARKER
+        if marker not in (pr.get("body") or ""):
+            bind()
+            fresh = call("GET", f"{prefix}/pulls/{number}")
+            verify(fresh)
+            if fresh.get("body") != pr.get("body"):
+                raise Block("PR_CONTINUATION_METADATA_DRIFT")
+            value["continuation_bind_attempted"] = True
+            error = None
+            try:
+                call("PATCH", f"{prefix}/pulls/{number}", {
+                    "body": (pr.get("body") or "").rstrip() + f"\n\n{marker}\n"})
+            except Block as exc:
+                error = exc
+            pr = call("GET", f"{prefix}/pulls/{number}")
+            verify(pr)
+            if marker not in (pr.get("body") or ""):
+                if isinstance(error, ApiError) and error.status in (401, 403):
+                    raise Block("PR_CONTINUATION_WRITER_CAPABILITY_UNAVAILABLE")
+                raise Block("PR_CONTINUATION_BINDING_NOT_READ_BACK")
+        value["continuation_enabled"] = base_ref == "main"
+        bind()
+        value.update(state="PR_ALREADY_MATERIALIZED" if existed else "PR_MATERIALIZED",
+                     classification="IDLE" if existed and not value["continuation_bind_attempted"] else "WORK")
+    except (Block, KeyError, TypeError, ValueError, AttributeError) as exc:
+        value["first_blocker"] = str(exc) if isinstance(exc, Block) else "READBACK_SCHEMA_INVALID"
+    return value
+
+
+def candidate_postcondition(call: Any, repository: str, ref: str, head: str,
+                            tree: str, base: str, **metadata: Any) -> dict[str, Any]:
+    """One shared Branch -> Draft PR -> existing Exact-Head verifier handoff."""
+    value = draft_postcondition(call, repository, ref, head, tree, base, **metadata)
+    value["materialization_state"] = value["state"]
+    if value["classification"] != "BLOCKADE":
+        verifier = resume(call, repository, value["pr_number"], head, tree, base, ref, value["base_ref"])
+        value["verifier"] = verifier
+        value["verification"] = verifier["state"]
+        if verifier["classification"] == "BLOCKADE":
+            value.update(state="HOLD", classification="BLOCKADE", first_blocker=verifier["first_blocker"])
+        elif verifier["dispatch_attempted"]:
+            value["classification"] = "WORK"
+    return value
+
+
+def push_postcondition(call: Any, push: Any, repository: str, ref: str,
+                       head: str, tree: str, base: str, predecessor: str | None,
+                       base_ref: str = "main", pr_number: int | None = None) -> dict[str, Any]:
+    """Resolve uncertain non-force writes from remote identity, never retry them."""
+    value = receipt("qikvrt_branch_write_postcondition_v1", repository=repo(repository),
+                    ref=branch(ref), head=sha(head), tree=sha(tree), base=sha(base),
+                    base_ref=branch(base_ref), push_attempted=False)
+    try:
+        if ref in {"main", base_ref}:
+            raise Block("REVIEW_BRANCH_REQUIRED")
+        if predecessor is not None:
+            sha(predecessor)
+        if remote_identity(call, repository, "heads/" + base_ref)[0] != base:
+            raise Block("BASE_DRIFT")
+        if pr_number is not None:
+            if type(pr_number) is not int or pr_number < 1:
+                raise Block("PR_NUMBER_INVALID")
+            pr = call("GET", f"repos/{repository}/pulls/{pr_number}")
+            if (pr.get("state") != "open" or pr.get("draft") is not True
+                    or pr["head"]["repo"]["full_name"] != repository
+                    or pr["base"]["repo"]["full_name"] != repository
+                    or pr["head"]["ref"] != ref or pr["head"]["sha"] not in {head, predecessor}
+                    or pr["base"]["ref"] != base_ref or pr["base"]["sha"] != base):
+                raise Block("PR_WRITER_ADMISSION_CHANGED")
+        try:
+            before = remote_identity(call, repository, "heads/" + ref)
+        except ApiError as exc:
+            if exc.status != 404:
+                raise
+            before = None
+        if before != (head, tree):
+            if (before[0] if before else None) != predecessor:
+                raise Block("COMPETING_BRANCH_WRITER")
+            value["push_attempted"] = True
+            try:
+                push()
+            except Block:
+                pass
+            # This GET also runs after a denied/lost/malformed write response.
+            if remote_identity(call, repository, "heads/" + ref) != (head, tree):
+                raise Block("BRANCH_WRITE_NOT_READ_BACK")
+        if remote_identity(call, repository, "heads/" + base_ref)[0] != base:
+            raise Block("BASE_DRIFT")
+        value.update(state="BRANCH_READ_BACK", classification="WORK" if value["push_attempted"] else "IDLE")
+    except (Block, KeyError, TypeError, ValueError, AttributeError) as exc:
+        value["first_blocker"] = str(exc) if isinstance(exc, Block) else "READBACK_SCHEMA_INVALID"
+    return value
+
+
+def observe_writer(call: Any, root: Path, repository: str, ref: str, base_ref: str = "main") -> dict[str, Any]:
+    """Bind the existing workflow's source before generation, without effects."""
+    head = sha(git("rev-parse", "HEAD", root=root))
+    tree = sha(git("rev-parse", "HEAD^{tree}", root=root))
+    branch(ref)
+    existed = True
+    try:
+        remote = remote_identity(call, repository, "heads/" + ref)
+    except ApiError as exc:
+        if exc.status != 404:
+            raise
+        existed, remote = False, None
+    if existed and remote != (head, tree):
+        raise Block("WRITER_SOURCE_DRIFT")
+    base, base_tree = remote_identity(call, repository, "heads/" + branch(base_ref))
+    if not existed and (head, tree) != (base, base_tree):
+        raise Block("NEW_BRANCH_SOURCE_NOT_CURRENT_MAIN")
+    return receipt("qikvrt_writer_input_v1", repository=repository, ref=ref, head=head, tree=tree,
+                   base=base, base_tree=base_tree, base_ref=base_ref, branch_existed=existed,
+                   state="WRITER_INPUT_BOUND", classification="WORK")
+
+
+def publish_writer(call: Any, root: Path, observed: dict[str, Any],
+                   *, push: Any = None) -> dict[str, Any]:
+    """Postcondition step of an existing writer; never schedules or generates work."""
+    value = receipt("qikvrt_writer_postcondition_v1")
+    try:
+        if observed.get("schema") != "qikvrt_writer_input_v1" or observed.get("state") != "WRITER_INPUT_BOUND":
+            raise Block("WRITER_INPUT_NOT_BOUND")
+        repository, source_ref = repo(observed["repository"]), branch(observed["ref"])
+        source, base = sha(observed["head"]), sha(observed["base"])
+        base_ref = branch(observed.get("base_ref", "main"))
+        remote_url = git("remote", "get-url", "origin", root=root)
+        if remote_url not in {f"https://github.com/{repository}.git", f"https://github.com/{repository}",
+                              f"git@github.com:{repository}.git"}:
+            raise Block("WRITER_REMOTE_REPOSITORY_MISMATCH")
+        head, tree = sha(git("rev-parse", "HEAD", root=root)), sha(git("rev-parse", "HEAD^{tree}", root=root))
+        value.update(repository=repository, head=head, tree=tree, base=base, base_ref=base_ref, source_head=source)
+        if remote_identity(call, repository, "heads/" + base_ref)[0] != base:
+            raise Block("BASE_DRIFT")
+        if git("diff", "--name-only", root=root) or git("diff", "--cached", "--name-only", root=root):
+            raise Block("WRITER_TRACKED_WORKTREE_DIRTY")
+        # The source must remain an ancestor; no force update or history rewrite.
+        git("merge-base", "--is-ancestor", source, head, root=root)
+        if source_ref == base_ref:
+            if source != base:
+                raise Block("BASE_DRIFT")
+            if head == source:
+                value.update(state="NOOP", classification="IDLE")
+                return value
+            identity = hashlib.sha256((repository + base_ref + base + tree).encode()).hexdigest()[:24]
+            ref, predecessor = "automation/repair-" + identity, None
+            try:
+                remote_head, remote_tree = remote_identity(call, repository, "heads/" + ref)
+            except ApiError as exc:
+                if exc.status != 404:
+                    raise
+            else:
+                commit = call("GET", f"repos/{repository}/git/commits/{remote_head}")
+                if remote_tree != tree or [p["sha"] for p in commit["parents"]] != [base]:
+                    raise Block("EXISTING_BRANCH_BINDING_MISMATCH")
+                # Reconstructed identical bytes use the immutable remote subject;
+                # its verifier still executes freshly on that exact subject.
+                head = remote_head
+                value["head"] = head
+        else:
+            ref, predecessor = source_ref, source if observed.get("branch_existed") is True else None
+            query = urlencode({"state": "all", "head": repository.split('/')[0] + ':' + ref,
+                               "per_page": 100})
+            rows = call("GET", f"repos/{repository}/pulls?{query}")
+            if not isinstance(rows, list) or len(rows) >= 100:
+                raise Block("PR_ENUMERATION_INCOMPLETE")
+            if len(rows) > 1:
+                raise Block("DUPLICATE_CANDIDATE_PRS")
+            if rows:
+                pr = rows[0]
+                if pr.get("state") != "open":
+                    raise Block("CANDIDATE_PR_CLOSED")
+                if pr.get("draft") is not True:
+                    raise Block("READY_PR_REQUIRES_NATIVE_REVIEW_BOUNDARY")
+                if (pr["head"]["repo"]["full_name"] != repository
+                        or pr["base"]["repo"]["full_name"] != repository
+                        or pr["head"]["ref"] != ref or pr["head"]["sha"] not in {source, head}
+                        or pr["base"]["ref"] != base_ref or pr["base"]["sha"] != base):
+                    raise Block("PR_EXACT_BINDING_MISMATCH")
+        value["ref"] = ref
+        written = push_postcondition(call, push or (lambda: git(
+            "push", "origin", f"HEAD:refs/heads/{ref}", root=root)), repository, ref, head, tree, base, predecessor, base_ref)
+        value["branch_write"] = written
+        if written["classification"] == "BLOCKADE":
+            raise Block(written["first_blocker"])
+        completed = candidate_postcondition(call, repository, ref, head, tree, base, base_ref=base_ref)
+        value["postcondition"] = completed
+        value.update(state=completed["state"], classification=completed["classification"],
+                     first_blocker=completed["first_blocker"], pr_number=completed["pr_number"])
+    except (Block, KeyError, TypeError, ValueError, AttributeError) as exc:
+        value["first_blocker"] = str(exc) if isinstance(exc, Block) else "READBACK_SCHEMA_INVALID"
+    return value
 
 
 def resume(call: Any, repository: str, pr_number: int, head: str, tree: str,
-           base: str, ref: str) -> dict[str, Any]:
+           base: str, ref: str, base_ref: str = "main") -> dict[str, Any]:
     value = receipt("qikvrt_continuation_postcondition_v1", repository=repo(repository),
                     pr_number=pr_number, head=sha(head), tree=sha(tree), base=sha(base),
-                    dispatch_attempted=False, verification="UNVERIFIED")
+                    base_ref=branch(base_ref), dispatch_attempted=False, verification="UNVERIFIED")
     prefix = f"repos/{repository}"
 
     def bind() -> None:
         pr = call("GET", f"{prefix}/pulls/{pr_number}")
-        if not eligible(pr, repository) or pr["head"]["ref"] != branch(ref):
+        verification_eligible = (eligible(pr, repository) if base_ref == "main" else (
+            pr.get("state") == "open" and pr.get("draft") is True
+            and VERIFIER_MARKER in (pr.get("body") or "")
+            and pr["head"]["repo"]["full_name"] == repository
+            and pr["base"]["repo"]["full_name"] == repository and pr["base"]["ref"] == base_ref))
+        if not verification_eligible or pr["head"]["ref"] != branch(ref):
             raise Block("PR_ELIGIBILITY_CHANGED")
         if pr["head"]["sha"] != head or pr["base"]["sha"] != base:
             raise Block("PR_BINDING_DRIFT")
         if remote_identity(call, repository, "heads/" + ref) != (head, tree):
             raise Block("REMOTE_HEAD_TREE_DRIFT")
-        if remote_identity(call, repository, "heads/main")[0] != base:
+        if remote_identity(call, repository, "heads/" + base_ref)[0] != base:
             raise Block("BASE_DRIFT")
 
     def observe() -> list[dict[str, Any]]:
         runs = listing(call, f"{prefix}/actions/workflows/{WORKFLOW}/runs?event=repository_dispatch", "workflow_runs")
         # repository_dispatch head_sha names main, not the PR subject.
         return [r for r in runs if r.get("event") == "repository_dispatch"
-                and r.get("display_title") == run_title(pr_number, head, base)
+                and r.get("display_title") == run_title(pr_number, head, base, base_ref)
                 and r.get("path", "").split("@", 1)[0] == ".github/workflows/" + WORKFLOW]
 
     try:
@@ -220,8 +499,8 @@ def resume(call: Any, repository: str, pr_number: int, head: str, tree: str,
                 call("POST", f"{prefix}/dispatches", {
                     "event_type": "qikvrt_autonomous_exact_head_verify", "client_payload": {
                         "repository": repository, "pull_request": pr_number, "head_ref": ref,
-                        "head_sha": head, "base_sha": base, "source_head_sha": head}})
-            except ApiError as exc:
+                        "head_sha": head, "base_sha": base, "base_ref": base_ref, "source_head_sha": head}})
+            except Block as exc:
                 error = str(exc)
             runs = observe()  # Includes timeout/403/204: none is acceptance.
         bind()
@@ -266,10 +545,10 @@ def technical_result(outcomes: dict[str, str], qce_required: bool) -> tuple[str,
 
 def deliver(call: Any, repository: str, pr_number: int, head: str, base: str,
             run_url: str, outcomes: dict[str, str], qce_required: bool,
-            local_identity: tuple[str, str, bool] | None = None) -> dict[str, Any]:
+            local_identity: tuple[str, str, bool] | None = None, base_ref: str = "main") -> dict[str, Any]:
     technical, causal = technical_result(outcomes, qce_required)
     value = receipt("qikvrt_verifier_phase_results_v1", repository=repo(repository), head=sha(head),
-                    base=sha(base), pr_number=pr_number, verification=technical,
+                    base=sha(base), base_ref=branch(base_ref), pr_number=pr_number, verification=technical,
                     verification_first_blocker=causal, raw_outcomes=outcomes,
                     status_delivery="UNVERIFIED", comment_delivery="NOT_ATTEMPTED")
     prefix = f"repos/{repository}"
@@ -279,9 +558,9 @@ def deliver(call: Any, repository: str, pr_number: int, head: str, base: str,
         if not re.fullmatch(rf"https://github\.com/{re.escape(repository)}/actions/runs/[0-9]+", run_url):
             raise Block("RUN_URL_INVALID")
         pr = call("GET", f"{prefix}/pulls/{pr_number}")
-        if pr["head"]["sha"] != head or pr["base"]["sha"] != base:
+        if pr["head"]["sha"] != head or pr["base"]["sha"] != base or pr["base"]["ref"] != base_ref:
             raise Block("SUBJECT_SUPERSEDED")
-        if remote_identity(call, repository, "heads/main")[0] != base:
+        if remote_identity(call, repository, "heads/" + base_ref)[0] != base:
             raise Block("BASE_DRIFT")
         if technical == "success":
             if (local_identity is None or local_identity[0] != head or local_identity[2] is not True
@@ -294,7 +573,7 @@ def deliver(call: Any, repository: str, pr_number: int, head: str, base: str,
             call("POST", target, {"state": technical, "context": CONTEXT,
                                   "description": "Exact technical checks: " + technical,
                                   "target_url": run_url})
-        except ApiError:
+        except Block:
             pass
         values = listing(call, f"{prefix}/commits/{head}/statuses")
         found = [v for v in values if v.get("context") == CONTEXT]
@@ -315,7 +594,7 @@ def deliver(call: Any, repository: str, pr_number: int, head: str, base: str,
         if not found:
             try:
                 call("POST", comments_path, {"body": text})
-            except ApiError:
+            except Block:
                 pass
             comments = listing(call, comments_path)
             found = [c for c in comments if c.get("body") == text
@@ -324,7 +603,7 @@ def deliver(call: Any, repository: str, pr_number: int, head: str, base: str,
             raise Block("COMMENT_DELIVERY_NOT_READ_BACK")
         value["comment_delivery"] = "READ_BACK"
         if (remote_identity(call, repository, "heads/" + branch(pr["head"]["ref"])) != (head, value["tree"])
-                or remote_identity(call, repository, "heads/main")[0] != base):
+                or remote_identity(call, repository, "heads/" + base_ref)[0] != base):
             raise Block("SUBJECT_SUPERSEDED_AFTER_DELIVERY")
         value.update(state="VERIFIED_AND_REPORTED", classification="WORK")
     except (Block, KeyError, TypeError, ValueError, AttributeError) as exc:
@@ -398,13 +677,30 @@ def final_ci(call: Any, root: Path, repository: str, ref: str,
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("select", "resume", "deliver", "ci-final"))
+    parser.add_argument("command", choices=("select", "resume", "deliver", "ci-final", "observe-writer", "publish-writer", "push-readback"))
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--input", type=Path)
     args = parser.parse_args()
     value = receipt("qikvrt_pipeline_operation_failure_v1")
     try:
         repository = repo(os.environ["GITHUB_REPOSITORY"])
-        if args.command == "select":
+        if args.command == "observe-writer":
+            value = observe_writer(api, Path.cwd(), repository, os.environ["TARGET_REF"], os.environ.get("TARGET_BASE_REF", "main"))
+        elif args.command == "publish-writer":
+            if args.input is None:
+                raise Block("WRITER_INPUT_NOT_BOUND")
+            observed = json.loads(args.input.read_text(encoding="utf-8"))
+            if observed.get("repository") != repository:
+                raise Block("WRITER_REPOSITORY_MISMATCH")
+            value = publish_writer(api, Path.cwd(), observed)
+        elif args.command == "push-readback":
+            ref = branch(os.environ["TARGET_REF"])
+            value = push_postcondition(api, lambda: git("push", "origin", "HEAD:refs/heads/" + ref,
+                                                       root=Path.cwd()), repository, ref,
+                                       os.environ["CANDIDATE_HEAD"], os.environ["CANDIDATE_TREE"],
+                                       os.environ["CURRENT_BASE"], os.environ["PREDECESSOR_HEAD"],
+                                       pr_number=int(os.environ["PR_NUMBER"]) if os.environ.get("PR_NUMBER") else None)
+        elif args.command == "select":
             chosen = select(listing(api, f"repos/{repository}/pulls?state=open"), repository,
                             int(os.environ["GITHUB_RUN_NUMBER"]))
             selected = None if chosen is None else {"number": chosen["number"], "head": chosen["head"]["sha"],
@@ -433,7 +729,8 @@ def main() -> int:
                             outcomes, os.environ["QCE_REQUIRED"] == "true",
                             (git("rev-parse", "HEAD", root=Path.cwd()),
                              git("rev-parse", "HEAD^{tree}", root=Path.cwd()),
-                             not bool(git("status", "--porcelain=v1", "--untracked-files=all", root=Path.cwd()))))
+                             not bool(git("status", "--porcelain=v1", "--untracked-files=all", root=Path.cwd()))),
+                            os.environ.get("TARGET_BASE_REF", "main"))
         else:
             value = final_ci(api, Path.cwd(), os.environ.get("SUBJECT_REPOSITORY", repository),
                              os.environ["SUBJECT_REF"], args.output.parent,

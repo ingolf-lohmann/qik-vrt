@@ -169,7 +169,11 @@ jobs:
             live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
             test "$live_head_before_push" = "$EXPECTED_HEAD"
             test "$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')" = "$live_main"
-            git push origin "HEAD:refs/heads/${HEAD_REF}"
+            export TARGET_REF="$HEAD_REF" PREDECESSOR_HEAD="$EXPECTED_HEAD"
+            export CURRENT_BASE="$live_main"
+            export CANDIDATE_HEAD="$(git rev-parse HEAD)" CANDIDATE_TREE="$(git rev-parse HEAD^{tree})"
+            python3 -B "$RUNNER_TEMP/qikvrt-pipeline-contracts.py" push-readback \
+              --output "$RUNNER_TEMP/qikvrt-continuation/branch-write.json"
           fi
 
           # Resume qikvrt_autonomous_exact_head_verify even with unchanged bytes.

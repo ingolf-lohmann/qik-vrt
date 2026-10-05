@@ -151,3 +151,69 @@ own requirement/test/runner/evidence connection.
 
 `PREDECESSOR_EVIDENCE_TRANSFER=false`; `TRANSPORT_ACK != EFFECT_ACK`;
 `EFFECT_ACK_DONE=false`.
+
+
+## Shared writer postcondition audit, 5 October 2026
+
+The production stranded-branch case is draft PR #459, HEAD
+`9c431098c4680f295a90bafe49ba747a74d288e6`. This successor starts from PR #455
+HEAD `ca2678839c4170871d2624e21df614b295f55477`, TREE
+`d411ea95cdb8b66d2f35f7b589ebbbb17c233766`, with Main
+`86d7062f25f174039da0a5df8a856127553036f1`. These are source bindings,
+not current-success claims for a later commit.
+
+`AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json.same_repository_writer_postconditions`
+inventories twelve existing internal writer carriers. The source/native audit
+is retained in
+`state/work_units/QIKVRT_SHARED_WRITER_POSTCONDITIONS_20261005_V1.json`:
+185 registered workflows were read; 77 have source on observed Main.
+Registration without a current source is classified historically and is not
+silently restored or dispatched. Other write carriers retain their exact bytes
+and their separate liveness, cross-repository, release or publication contracts.
+
+The active Global Completion writer also has an older Authority-reference
+classification. Its original classification and digest entries stay unchanged.
+The new work unit binds exactly that operational workflow's forward successor;
+the preservation regression still resolves and verifies its historical Git blob,
+and additionally compares the unchanged triggers, concurrency, generation steps
+and entire verification job. Negative controls reject a different path, changed
+digest, liveness claim or scheduler/verifier change even with a replacement
+successor digest. The old receipt does not become current execution evidence.
+
+The existing `qikvrt_pipeline_contracts.py` now shares source/base observation,
+bounded non-force push readback, draft-PR materialization and exact verifier
+handoff. Every generic writer preserves its existing generation, staging and
+checks. The self-heal materializer retains its original allowlist, identity and
+create-only branch write; it delegates the PR/verifier phases to that same
+helper. CI retains its tested fixpoint and its final exact-subject receipt.
+The continuation retains its selector, maximum one candidate and scheduler.
+The former repository-evidence rerun/sleep path is replaced by the existing
+exact-head verifier handoff. No scheduler or executor is added.
+
+A changed Main materializer is isolated on a base/tree-bound review branch.
+An unchanged review branch still reconciles its missing PR/verifier. Lost,
+denied, malformed or misleading write responses are not effect evidence;
+independent remote observations decide whether the next phase may execute.
+Read denial is not branch absence. A closed, ready, foreign, duplicate,
+metadata-drifted or competing subject produces HOLD without being reopened,
+made draft, overwritten, approved or merged. The CI and continuation push
+entrypoints also recheck draft admission before a branch write.
+
+Versioned corpus candidates keep their original staging base. Their existing
+verifier receives an exact base-ref/head/tree binding; it is read-only apart
+from separately typed status/comment delivery. Staging candidates receive no
+Main-continuation or promotion marker. Main continuation selection and all
+review, governance, owner-content-return and external-effect gates retain their
+original scope. The generic helper grants no promotion marker.
+
+Per invocation, each effect phase has at most one branch push, PR POST,
+body-only PATCH and verifier dispatch. An already observed exact native verifier
+suppresses redispatch, and its terminal failure is preserved. Readback and
+metadata PATCH remain non-atomic; no global exactly-once guarantee is claimed
+against arbitrary competing external writers or unbounded API visibility delays.
+
+The required normal and optimized runner includes stateful response fault
+regressions, real temporary Git/bare-remotes, Main isolation, byte-NOOP PR
+recovery, admission races, staging preservation and production shell parsing.
+Review candidate construction, exact local/native technical tests and reviewed
+Main activation remain separate evidence states. `EFFECT_ACK_DONE=false`.

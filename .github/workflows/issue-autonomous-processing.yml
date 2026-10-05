@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
   issues: write
   pull-requests: write
   models: read
@@ -45,6 +46,25 @@ jobs:
           jq -e '.pull_request | not' issue.json >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
+      - name: Bind resumable issue work branch without history rewrite
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$ISSUE_NUMBER" =~ ^[1-9][0-9]*$ ]]
+          export TARGET_REF="issue-agent/$ISSUE_NUMBER"
+          remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+          if test -n "$remote"; then
+            git fetch --no-tags origin "$TARGET_REF"
+            test "$(git rev-parse FETCH_HEAD)" = "$remote"
+            git switch -c "$TARGET_REF" "$remote"
+          else
+            git switch -c "$TARGET_REF"
+          fi
+          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-issue-writer-input.json"
       - name: Materialize request and repository context
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
@@ -92,29 +112,33 @@ jobs:
 
       - name: Create or update issue work branch and pull request
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
           branch="issue-agent/$ISSUE_NUMBER"
           git config user.name "qik-vrt-issue-agent[bot]"
           git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
-          git checkout -B "$branch"
           git add "evidence/issues/$ISSUE_NUMBER"
           if ! git diff --cached --quiet; then
             git commit -m "issue-agent: process issue #$ISSUE_NUMBER"
-            git push --force-with-lease origin "$branch"
+            # Non-force branch/PR/verifier handoff follows below.
           fi
 
-          pr_number="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')"
-          if [ -z "$pr_number" ]; then
-            gh pr create \
-              --base main \
-              --head "$branch" \
-              --title "Issue agent: process #$ISSUE_NUMBER" \
-              --body "Repository-native processing artifacts for #$ISSUE_NUMBER.\n\nThe resumable auto-finish workflow may merge this PR only after EFFECT_ACK_DONE and successful repository checks. It then synchronizes the mirror, creates the common tag, and closes the issue."
-          fi
-
-          pr_url="$(gh pr list --head "$branch" --state open --json url --jq '.[0].url')"
+          python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+            --input "$RUNNER_TEMP/qikvrt-issue-writer-input.json" \
+            --output "$RUNNER_TEMP/qikvrt-issue-writer-postcondition.json"
+          pr_number="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["pr_number"])' "$RUNNER_TEMP/qikvrt-issue-writer-postcondition.json")"
+          pr_url="https://github.com/$GITHUB_REPOSITORY/pull/$pr_number"
           status="$(jq -r '.status' "evidence/issues/$ISSUE_NUMBER/STATUS.json")"
           gh issue comment "$ISSUE_NUMBER" --body "Repository processing status: **$status**\n\nWork product: $pr_url\n\nThe repository auto-finish transaction now owns merge, mirror synchronization, common tagging, and issue closure. Any failed gate remains BLOCK."
+      - name: Preserve issue writer postcondition or causal blockade
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-issue-writer-postcondition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-issue-writer-input.json
+            ${{ runner.temp }}/qikvrt-issue-writer-postcondition.json
+          if-no-files-found: error
+          retention-days: 30

@@ -20,6 +20,7 @@ from tools import qikvrt_reflexive_repository_watchdog as watchdog
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY = "ingolf-lohmann/qik-vrt"
 CLASSIFICATION = "state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json"
+WRITER_SUCCESSOR = "state/work_units/QIKVRT_SHARED_WRITER_POSTCONDITIONS_20261005_V1.json"
 HOLD = "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY"
 LIFECYCLE_PROJECTIONS = {
     "evidence/node_health/LATEST.json",
@@ -75,6 +76,45 @@ class AuthorityCutoverTests(unittest.TestCase):
         if path in successor_paths:
             self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(),
                              binding["source_git_blob_sha1"])
+
+    def assert_operational_writer_successor(self, successor=None, current=None):
+        import yaml
+
+        successor = successor or read_json(WRITER_SUCCESSOR)["operational_writer_successor"]
+        path = successor["path"]
+        self.assertEqual(path, ".github/workflows/qikvrt_global_completion.yml")
+        self.assertEqual(successor["source_commit"], "ca2678839c4170871d2624e21df614b295f55477")
+        self.assertEqual(successor["historical_source_commit"], read_json(CLASSIFICATION)["source_head"])
+        self.assertFalse(successor["PREDECESSOR_EVIDENCE_TRANSFER"])
+        self.assertFalse(successor["current_authority_liveness_proof"])
+        self.assertEqual(self.git_bytes("merge-base", successor["source_commit"], "HEAD").decode().strip(),
+                         successor["source_commit"])
+        predecessor = self.git_bytes("show", successor["source_commit"] + ":" + path)
+        historical = self.git_bytes("show", successor["historical_source_commit"] + ":" + path)
+        self.assertEqual(predecessor, historical)
+        self.assertEqual(hashlib.sha256(historical).hexdigest(), successor["predecessor_sha256"])
+        self.assertEqual(hashlib.sha1(b"blob " + str(len(historical)).encode() + b"\0" + historical).hexdigest(),
+                         successor["predecessor_git_blob_sha1"])
+        current = (ROOT / path).read_bytes() if current is None else current
+        self.assertEqual(hashlib.sha256(current).hexdigest(), successor["successor_sha256"])
+        old_workflow, new_workflow = yaml.safe_load(predecessor), yaml.safe_load(current)
+        old_writer = old_workflow["jobs"].pop("materialize")
+        new_writer = new_workflow["jobs"].pop("materialize")
+        # Triggers, concurrency and the whole verification job stay identical.
+        # Only the admitted writer handoff receives the scoped forward repair.
+        self.assertEqual(old_workflow, new_workflow)
+        self.assertEqual(old_writer["if"], new_writer["if"])
+        self.assertEqual(old_writer["runs-on"], new_writer["runs-on"])
+        self.assertEqual(new_writer["permissions"],
+                         {"contents": "write", "actions": "read", "pull-requests": "write"})
+        old_steps = old_writer["steps"]
+        new_steps = new_writer["steps"]
+        self.assertEqual(old_steps[:2], new_steps[:2])
+        self.assertEqual(old_steps[2:-1], new_steps[3:-3])
+        self.assertIn("observe-writer", new_steps[2]["run"])
+        self.assertIn("publish-writer", new_steps[-2]["run"])
+        self.assertEqual(new_steps[-1]["if"], "always()")
+        return {path}
 
     def bootstrap_fixture(self, mutate=lambda value: None):
         directory = tempfile.TemporaryDirectory()
@@ -189,6 +229,7 @@ class AuthorityCutoverTests(unittest.TestCase):
         self.assertEqual(inventory["source_reference_file_count"], len(inventory["references"]))
         self.assertFalse(inventory["PREDECESSOR_EVIDENCE_TRANSFER"])
         successor_paths = self.assert_main_lifecycle_successor(inventory)
+        successor_paths |= self.assert_operational_writer_successor()
         for reference in inventory["references"]:
             if reference["disposition"] == "HISTORICAL_OR_SCOPED_REFERENCE_PRESERVED":
                 with self.subTest(path=reference["path"]):
@@ -218,6 +259,31 @@ class AuthorityCutoverTests(unittest.TestCase):
         inventory["main_lifecycle_successor"]["current_authority_liveness_proof"] = True
         with self.assertRaises(AssertionError):
             self.assert_main_lifecycle_successor(inventory)
+
+    def test_operational_writer_successor_retains_historical_subject_and_verification(self):
+        self.assert_operational_writer_successor()
+
+    def test_operational_writer_successor_rejects_unbound_path_digest_and_liveness(self):
+        for key, value in (("path", "AI_PROGRESS.json"), ("successor_sha256", "0" * 64),
+                           ("predecessor_sha256", "0" * 64), ("current_authority_liveness_proof", True),
+                           ("PREDECESSOR_EVIDENCE_TRANSFER", True)):
+            with self.subTest(key=key):
+                successor = read_json(WRITER_SUCCESSOR)["operational_writer_successor"]
+                successor[key] = value
+                with self.assertRaises(AssertionError):
+                    self.assert_operational_writer_successor(successor)
+
+    def test_operational_writer_successor_rejects_scheduler_or_verifier_changes_even_with_new_digest(self):
+        successor = read_json(WRITER_SUCCESSOR)["operational_writer_successor"]
+        current = (ROOT / successor["path"]).read_bytes()
+        for before, after in ((b"cancel-in-progress: false", b"cancel-in-progress: true"),
+                              (b"run: make test", b"run: echo accepted")):
+            with self.subTest(before=before):
+                self.assertIn(before, current)
+                tampered = current.replace(before, after)
+                binding = dict(successor, successor_sha256=hashlib.sha256(tampered).hexdigest())
+                with self.assertRaises(AssertionError):
+                    self.assert_operational_writer_successor(binding, tampered)
 
 
 if __name__ == "__main__":

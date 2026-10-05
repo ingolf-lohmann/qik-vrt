@@ -62,6 +62,16 @@ class FakeAPI:
         self.bad_blob = False
         self.after_pr_read = None
         self.patch_mode = "ok"
+        self.runs = []
+        if pr:
+            self.add_run()
+
+    def add_run(self):
+        from tools import qikvrt_pipeline_contracts as pipeline
+        self.runs.append({"id": 17, "event": "repository_dispatch", "status": "queued",
+                          "conclusion": None, "display_title": pipeline.run_title(7, H, B),
+                          "path": ".github/workflows/" + pipeline.WORKFLOW,
+                          "html_url": "https://github.com/owner/repo/actions/runs/17"})
 
     def make_pr(self):
         return {"number": 7, "state": "open", "draft": True,
@@ -74,14 +84,18 @@ class FakeAPI:
     def __call__(self, method, path, data=None):
         self.calls.append((method, path, copy.deepcopy(data)))
         if method == "GET":
+            if "/actions/workflows/" in path and "/runs?" in path:
+                return {"workflow_runs": copy.deepcopy(self.runs)}
+            if "/statuses?" in path:
+                return []
             if path.endswith("/git/ref/heads/main"):
-                return {"object": {"sha": self.base}}
+                return {"object": {"type": "commit", "sha": self.base}}
             if "/git/ref/heads/" in path:
                 if self.read_error:
                     raise MODULE.ApiFailure(self.read_error)
                 if self.head is None:
                     raise MODULE.ApiFailure(404)
-                return {"object": {"sha": self.head}}
+                return {"object": {"type": "commit", "sha": self.head}}
             if "/git/commits/" in path:
                 if self.commit_error:
                     raise MODULE.ApiFailure(self.commit_error)
@@ -100,6 +114,9 @@ class FakeAPI:
                     self.after_pr_read(self)
                 return value
         if method == "POST":
+            if path.endswith("/dispatches"):
+                self.add_run()
+                return None
             if path.endswith("/git/blobs"):
                 if base64.b64decode(data["content"]) != PAYLOAD:
                     raise AssertionError("blob bytes differ")
@@ -121,7 +138,7 @@ class FakeAPI:
                     raise MODULE.ApiFailure(422)
                 if self.ref_mode == "lost":
                     raise MODULE.ApiFailure(None)
-                return {"object": {"sha": self.head}}
+                return {"object": {"type": "commit", "sha": self.head}}
             if path.endswith("/pulls"):
                 if data["draft"] is not True or data["base"] != "main":
                     raise AssertionError("PR boundary differs")
@@ -241,7 +258,7 @@ class MaterializationTests(unittest.TestCase):
                 result = self.run_materializer(api)
                 self.assertFalse(result["continuation_enabled"])
                 self.assertTrue(all(m == "GET" for m, _, _ in api.calls))
-                self.assertEqual(result["state"] == "HOLD", not ready)
+                self.assertEqual(result["state"], "HOLD")
 
     def test_continuation_metadata_drift_prevents_body_write(self):
         api = FakeAPI(pr=True)
@@ -274,7 +291,7 @@ class MaterializationTests(unittest.TestCase):
                 api = FakeAPI()
                 api.create_mode = mode
                 self.assertEqual(self.run_materializer(api)["state"], "PR_MATERIALIZED")
-                self.assertEqual(sum(m == "POST" for m, _, _ in api.calls), 1)
+                self.assertEqual(sum(m == "POST" and p.endswith("/pulls") for m, p, _ in api.calls), 1)
 
     def test_successful_transport_without_pr_is_not_success(self):
         api = FakeAPI()
@@ -285,7 +302,7 @@ class MaterializationTests(unittest.TestCase):
         api = FakeAPI()
         api.create_mode = "lost_without_effect"
         self.assertEqual(self.run_materializer(api)["state"], "HOLD")
-        self.assertEqual(sum(m == "POST" for m, _, _ in api.calls), 1)
+        self.assertEqual(sum(m == "POST" and p.endswith("/pulls") for m, p, _ in api.calls), 1)
         api.create_mode = "ok"
         self.assertEqual(self.run_materializer(api)["state"], "PR_MATERIALIZED")
 
@@ -340,10 +357,25 @@ class MaterializationTests(unittest.TestCase):
         self.assertEqual(self.run_materializer(api)["first_blocker"], "CANDIDATE_PR_CLOSED")
         self.assertTrue(all(m == "GET" for m, _, _ in api.calls))
 
+    def test_late_branch_drift_cannot_leave_materialized_success_state(self):
+        class LateDrift(FakeAPI):
+            reads = 0
+            def __call__(self, method, path, data=None):
+                value = super().__call__(method, path, data)
+                if method == "GET" and path.endswith("/git/commits/" + H):
+                    self.reads += 1
+                    if self.reads == 5:
+                        self.head = OTHER
+                return value
+        value = self.run_materializer(LateDrift(pr=True))
+        self.assertEqual(value["first_blocker"], "CANDIDATE_HEAD_DRIFT")
+        self.assertEqual(value["state"], "HOLD")
+        self.assertEqual(value["classification"], "BLOCKADE")
+
     def test_ready_pr_is_not_demoted(self):
         api = FakeAPI(pr=True)
         api.prs[0]["draft"] = False
-        self.assertEqual(self.run_materializer(api)["state"], "PR_ALREADY_MATERIALIZED")
+        self.assertEqual(self.run_materializer(api)["first_blocker"], "READY_PR_REQUIRES_NATIVE_REVIEW_BOUNDARY")
         self.assertFalse(api.prs[0]["draft"])
 
     def test_missing_branch_with_existing_pr_is_not_recreated(self):

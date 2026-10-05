@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: write
+  actions: read
+  pull-requests: write
 
 jobs:
   test:
@@ -90,7 +92,9 @@ jobs:
           QIKVRT_CONTRACT_EVIDENCE_DIR: ${{ runner.temp }}/qikvrt-ci-final/tests
           TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           MAX_SUCCESSORS: "4"
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -99,6 +103,9 @@ jobs:
           subject="$(git rev-parse --verify HEAD^{commit})"
           test "$subject" = "$EXPECTED_HEAD"
 
+          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-ci-final/writer-input.json"
+          current_base="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["base"])' "$RUNNER_TEMP/qikvrt-ci-final/writer-input.json")"
           for iteration in $(seq 0 "$MAX_SUCCESSORS"); do
             subject="$(git rev-parse --verify HEAD^{commit})"
             tree="$(git rev-parse --verify HEAD^{tree})"
@@ -137,6 +144,11 @@ jobs:
               test "$remote_final" = "$subject"
               test "$(git rev-parse --verify HEAD^{tree})" = "$tree"
               git diff --quiet
+              if test "$subject" != "$EXPECTED_HEAD"; then
+                python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+                  --input "$RUNNER_TEMP/qikvrt-ci-final/writer-input.json" \
+                  --output "$RUNNER_TEMP/qikvrt-ci-final/writer-postcondition.json"
+              fi
               echo "QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status"
               exit 0
             fi
@@ -148,7 +160,10 @@ jobs:
             git commit -m "ci: materialize exact-subject repository integrity"
             successor="$(git rev-parse --verify HEAD^{commit})"
             successor_tree="$(git rev-parse --verify HEAD^{tree})"
-            git push origin "HEAD:$TARGET_REF"
+            PREDECESSOR_HEAD="$subject" CURRENT_BASE="$current_base" \
+              CANDIDATE_HEAD="$successor" CANDIDATE_TREE="$successor_tree" \
+              python3 -B tools/qikvrt_pipeline_contracts.py push-readback \
+                --output "$RUNNER_TEMP/qikvrt-ci-final/branch-write-$iteration.json"
 
             remote_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
             test "$remote_after" = "$successor"

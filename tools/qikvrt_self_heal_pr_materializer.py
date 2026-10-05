@@ -20,6 +20,7 @@ from dataclasses import dataclass
 from typing import Any
 from urllib.parse import urlencode
 
+from tools import qikvrt_pipeline_contracts as pipeline
 from tools.qikvrt_pipeline_contracts import MARKER as CONTINUATION_MARKER
 
 MARKER = "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
@@ -27,35 +28,14 @@ SHA1 = re.compile(r"[0-9a-f]{40}")
 REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
 
 
-class Block(RuntimeError):
-    """A stable, credential-free causal classification."""
-
-
-class ApiFailure(Block):
-    def __init__(self, status: int | None):
-        self.status = status
-        super().__init__(f"API_HTTP_{status}" if status else "API_TRANSPORT_UNCERTAIN")
+# Use one typed transport contract across every internal writer.
+Block = pipeline.Block
+ApiFailure = pipeline.ApiError
 
 
 class GitHubAPI:
     def __call__(self, method: str, path: str, data: Any = None) -> Any:
-        command = ["gh", "api", "--hostname", "github.com", "--method", method, path,
-                   "-H", "Accept: application/vnd.github+json"]
-        if data is not None:
-            command.extend(["--input", "-"])
-        try:
-            result = subprocess.run(command, input=json.dumps(data) if data is not None else None,
-                                    text=True, capture_output=True, timeout=60, check=False)
-        except (OSError, subprocess.TimeoutExpired) as exc:
-            raise ApiFailure(None) from exc
-        if result.returncode:
-            status = re.search(r"HTTP (\d{3})", result.stderr)
-            # Never persist stderr, headers, or tokens in the receipt.
-            raise ApiFailure(int(status[1]) if status else None)
-        try:
-            return json.loads(result.stdout)
-        except ValueError as exc:
-            raise Block("API_RESPONSE_INVALID") from exc
+        return pipeline.api(method, path, data)
 
 
 class Git:
@@ -177,16 +157,6 @@ def materialize(candidate: Candidate, api: Any, git: Any) -> dict[str, Any]:
             raise Block("DUPLICATE_CANDIDATE_PRS")
         return values
 
-    def verify_pr(pr: dict[str, Any], head: str) -> None:
-        if pr["state"] != "open":
-            raise Block("CANDIDATE_PR_CLOSED")
-        if (pr["head"]["sha"] != head or pr["head"]["ref"] != c.branch
-                or pr["head"]["repo"]["full_name"].lower() != c.repository.lower()
-                or pr["base"]["ref"] != "main" or pr["base"]["sha"] != c.base
-                or pr["base"]["repo"]["full_name"].lower() != c.repository.lower()
-                or MARKER not in (pr.get("body") or "")):
-            raise Block("PR_EXACT_BINDING_MISMATCH")
-
     try:
         current_base()
         head = branch_head()
@@ -221,88 +191,35 @@ def materialize(candidate: Candidate, api: Any, git: Any) -> dict[str, Any]:
             try:
                 api("POST", f"{prefix}/git/refs", {
                     "ref": f"refs/heads/{c.branch}", "sha": commit["sha"]})
-            except ApiFailure as exc:
+            except Block as exc:
                 ref_error = exc
             # A lost response or a concurrent create is resolved by readback.
             head = branch_head()
             if head is None:
-                if ref_error and ref_error.status in (401, 403):
+                if isinstance(ref_error, ApiFailure) and ref_error.status in (401, 403):
                     raise Block("BRANCH_WRITER_CAPABILITY_UNAVAILABLE")
                 raise Block("BRANCH_CREATION_NOT_READ_BACK")
         result["candidate_head"] = head
         verify_commit(head)
         current_base()
-        prs = pull_requests()
-        create_error: ApiFailure | None = None
-        existed = bool(prs)
-        if not prs:
-            # The existing branch is a checkpoint, never a completion predicate.
+        completed = pipeline.candidate_postcondition(
+            api, c.repository, c.branch, head, c.tree, c.base, required_marker=MARKER,
+            title=f"fix(autonomy): bounded deterministic self-heal {c.identity[:16]}",
+            body=(f"Repository-native bounded repair. Semantic fingerprint `{c.fingerprint}`; "
+                  f"candidate identity `{c.identity}`.\nExact allowlisted paths:\n"
+                  + "\n".join(f"- `{p}`" for p in c.paths)))
+        result.update({key: completed[key] for key in (
+            "state", "classification", "first_blocker", "pr_number", "pr_create_attempted",
+            "continuation_bind_attempted", "continuation_enabled", "materialization_state")})
+        result["verifier"] = completed.get("verifier")
+        if completed["classification"] != "BLOCKADE":
             if branch_head() != head:
                 raise Block("CANDIDATE_HEAD_DRIFT")
+            verify_commit(head)
             current_base()
-            body = (f"{MARKER}\n{CONTINUATION_MARKER}\n\nRepository-native bounded repair.\n\n"
-                    f"Exact bindings:\n- observed current-main base: `{c.base}`\n"
-                    f"- candidate head: `{head}`\n- candidate tree: `{c.tree}`\n"
-                    f"- semantic fingerprint: `{c.fingerprint}`\n"
-                    f"- base-and-fingerprint candidate identity: `{c.identity}`\n\nExact allowlisted paths:\n"
-                    + "\n".join(f"- `{p}`" for p in c.paths)
-                    + "\n\nPREDECESSOR_EVIDENCE_TRANSFER=false. EFFECT_ACK_DONE=false.\n"
-                    "No merge, approval, permission change, release, deployment or publication. "
-                    "All applicable exact-head gates and independent review remain mandatory. "
-                    "No scientific confirmation, physical correspondence, repository-wide PASS, "
-                    "FINAL_PASS, full synchronization or symmetric canonicality is claimed.\n")
-            result["pr_create_attempted"] = True
-            try:
-                api("POST", f"{prefix}/pulls", {
-                    "title": f"fix(autonomy): bounded deterministic self-heal {c.identity[:16]}",
-                    "head": c.branch, "base": "main", "draft": True, "body": body})
-            except ApiFailure as exc:
-                create_error = exc
-            # A 2xx/403/422/5xx/timeout response is not the postcondition.
-            prs = pull_requests()
-        if not prs:
-            if create_error and create_error.status in (401, 403):
-                raise Block("PR_WRITER_CAPABILITY_UNAVAILABLE")
-            raise Block("PR_CREATION_NOT_READ_BACK")
-        number = prs[0]["number"]
-        if type(number) is not int or number <= 0:
-            raise Block("PR_NUMBER_INVALID")
-        result["pr_number"] = number
-        pr = api("GET", f"{prefix}/pulls/{number}")
-        verify_pr(pr, head)
-        # The standing internal delegation also owns the continuation handoff.
-        # A promotion marker alone is invisible to the existing draft worker.
-        # Resume legacy drafts by one bounded body-only write, then read back.
-        # Ready PRs remain under the separate promotion/review contract.
-        if pr.get("draft") is True and CONTINUATION_MARKER not in (pr.get("body") or ""):
-            if branch_head() != head:
-                raise Block("CANDIDATE_HEAD_DRIFT")
-            current_base()
-            fresh_pr = api("GET", f"{prefix}/pulls/{number}")
-            verify_pr(fresh_pr, head)
-            if fresh_pr.get("draft") is not True or fresh_pr.get("body") != pr.get("body"):
-                raise Block("PR_CONTINUATION_METADATA_DRIFT")
-            result["continuation_bind_attempted"] = True
-            bind_error = None
-            try:
-                api("PATCH", f"{prefix}/pulls/{number}", {
-                    "body": f"{pr['body'].rstrip()}\n\n{CONTINUATION_MARKER}\n"})
-            except ApiFailure as exc:
-                bind_error = exc
-            pr = api("GET", f"{prefix}/pulls/{number}")
-            verify_pr(pr, head)
-            if CONTINUATION_MARKER not in (pr.get("body") or ""):
-                if bind_error and bind_error.status in (401, 403):
-                    raise Block("PR_CONTINUATION_WRITER_CAPABILITY_UNAVAILABLE")
-                raise Block("PR_CONTINUATION_BINDING_NOT_READ_BACK")
-        result["continuation_enabled"] = CONTINUATION_MARKER in (pr.get("body") or "")
-        if branch_head() != head:
-            raise Block("CANDIDATE_HEAD_DRIFT")
-        verify_commit(head)
-        current_base()
-        result.update(state="PR_ALREADY_MATERIALIZED" if existed else "PR_MATERIALIZED",
-                      classification="IDLE" if existed and not result["continuation_bind_attempted"] else "WORK")
+
     except (Block, KeyError, TypeError, ValueError, AttributeError) as exc:
+        result.update(state="HOLD", classification="BLOCKADE")
         result["first_blocker"] = str(exc) if isinstance(exc, Block) else "READBACK_SCHEMA_INVALID"
     # Run IDs/timestamps/attempt counts do not turn an unchanged state into progress.
     semantic = {key: result[key] for key in (

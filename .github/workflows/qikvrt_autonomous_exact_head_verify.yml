@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
 name: QIK-VRT autonomous exact-head verification
-run-name: qikvrt-exact-pr-${{ github.event.client_payload.pull_request }}-${{ github.event.client_payload.head_sha }}-${{ github.event.client_payload.base_sha }}
+run-name: qikvrt-exact-pr-${{ github.event.client_payload.pull_request }}-${{ github.event.client_payload.head_sha }}-${{ github.event.client_payload.base_sha }}${{ github.event.client_payload.base_ref != '' && github.event.client_payload.base_ref != 'main' && format('-ref-{0}', github.event.client_payload.base_ref) || '' }}
 
 on:
   repository_dispatch:
@@ -25,6 +25,7 @@ jobs:
       TARGET_PR: ${{ github.event.client_payload.pull_request }}
       TARGET_REF: ${{ github.event.client_payload.head_ref }}
       TARGET_SHA: ${{ github.event.client_payload.head_sha }}
+      TARGET_BASE_REF: ${{ github.event.client_payload.base_ref || 'main' }}
       TARGET_BASE_SHA: ${{ github.event.client_payload.base_sha }}
     steps:
       - name: Check out trusted workflow implementation
@@ -46,12 +47,13 @@ jobs:
           [[ "$TARGET_BASE_SHA" =~ ^[0-9a-f]{40}$ ]]
           [[ "$TARGET_PR" =~ ^[1-9][0-9]*$ ]]
           git check-ref-format --branch "$TARGET_REF"
+          git check-ref-format --branch "$TARGET_BASE_REF"
           gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}" > "$RUNNER_TEMP/qikvrt-verifier-pr.json"
           jq -e --arg repo "$GITHUB_REPOSITORY" --arg head "$TARGET_SHA" \
-            --arg base "$TARGET_BASE_SHA" --arg ref "$TARGET_REF" \
-            '.state == "open" and .head.repo.full_name == $repo and .base.repo.full_name == $repo and .head.ref == $ref and .base.ref == "main" and .head.sha == $head and .base.sha == $base' \
+            --arg base "$TARGET_BASE_SHA" --arg ref "$TARGET_REF" --arg base_ref "$TARGET_BASE_REF" \
+            '.state == "open" and .head.repo.full_name == $repo and .base.repo.full_name == $repo and .head.ref == $ref and .base.ref == $base_ref and .head.sha == $head and .base.sha == $base' \
             "$RUNNER_TEMP/qikvrt-verifier-pr.json"
-          test "$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')" = "$TARGET_BASE_SHA"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/${TARGET_BASE_REF}" --jq '.object.sha')" = "$TARGET_BASE_SHA"
 
       - name: Check out exact candidate head
         id: checkout

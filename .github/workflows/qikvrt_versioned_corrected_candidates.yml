@@ -17,6 +17,8 @@ on:
 
 permissions:
   contents: write
+  actions: read
+  pull-requests: write
 
 concurrency:
   group: qikvrt-versioned-corrected-candidates-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
@@ -40,6 +42,15 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
+      - name: Bind existing staging base and exact writer source
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+          TARGET_BASE_REF: agent/batch003-subject-172dd-public-freeze-probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-writer-input.json"
       - name: Compile exact candidate builder
         shell: bash
         run: |
@@ -95,7 +106,26 @@ jobs:
             exit 0
           fi
           git commit -m "Materialize six versioned corrected corpus candidates"
-          git push origin "HEAD:${TARGET_REF}"
+          # Shared postcondition retains the staging target and separate owner decision.
+      - name: Resume staging Branch Draft-PR Exact-Head verifier postcondition
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+            --input "$RUNNER_TEMP/qikvrt-writer-input.json" \
+            --output "$RUNNER_TEMP/qikvrt-writer-postcondition.json"
+      - name: Preserve staging writer postcondition or causal blockade
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-staging-writer-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-writer-input.json
+            ${{ runner.temp }}/qikvrt-writer-postcondition.json
+          if-no-files-found: error
+          retention-days: 30
       - name: Upload exact owner-return package
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

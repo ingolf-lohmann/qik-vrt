@@ -48,7 +48,20 @@
     "state/work_units/QIKVRT_AUTHORITY_REFERENCE_CLASSIFICATION_20261004_V1.json",
     "AI_CONTEXT.json",
     "AI_PROGRESS.json",
-    "AI_STATUS.md"
+    "AI_STATUS.md",
+    ".github/workflows/qikvrt_batch04_integrity.yml",
+    ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+    ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+    ".github/workflows/qikvrt_global_completion.yml",
+    ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+    ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+    ".github/workflows/qikvrt_escape_stages_integrity.yml",
+    ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+    ".github/workflows/issue-autonomous-processing.yml",
+    "tests/test_aphorism_corpus_v2.py",
+    "tests/test_effect_ack_release_workflows.py",
+    "docs/operations/PIPELINE_POSTCONDITION_REPAIR.md",
+    "state/work_units/QIKVRT_SHARED_WRITER_POSTCONDITIONS_20261005_V1.json"
   ],
   "requirements": {
     "A_RESUME_PENDING_OPERATION": [
@@ -105,7 +118,10 @@
       "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_classified_historical_files_are_byte_preserved",
       "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_main_successor_retains_original_classification_bindings",
       "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_main_successor_rejects_unbound_path_or_projection_digest",
-      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_main_projection_cannot_become_new_authority_liveness"
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_main_projection_cannot_become_new_authority_liveness",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_operational_writer_successor_retains_historical_subject_and_verification",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_operational_writer_successor_rejects_unbound_path_digest_and_liveness",
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_operational_writer_successor_rejects_scheduler_or_verifier_changes_even_with_new_digest"
     ],
     "AUTHORITY_SUCCESSION_CURRENT_REMOTE_SCOPE": [
       "tests.test_qikvrt_autonomous_pre_effect_controller.AutonomousPreEffectControllerTests.test_personal_working_copy_uses_bound_canonical_upstream",
@@ -118,6 +134,25 @@
       "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_continuation_write_requires_readback_and_never_blindly_retries",
       "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_ready_or_unbound_pr_never_receives_continuation_opt_in",
       "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_continuation_metadata_drift_prevents_body_write"
+    ],
+    "SHARED_WRITER_POSTCONDITIONS": [
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_branch_exists_pr_missing_completes_same_head_and_becomes_read_only",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_pr_denied_lost_malformed_and_misleading_responses_require_readback",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_verifier_denial_or_false_transport_is_resumed_without_recreating_pr",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_push_denied_lost_false_and_malformed_write_outcomes_are_independent",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_branch_competition_base_drift_and_permission_failure_prevent_write",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_ready_closed_staging_foreign_and_metadata_drift_preserve_boundaries",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_main_is_never_an_internal_candidate_target",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_staging_verifier_preserves_base_and_never_opts_into_main_continuation",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_registered_internal_writers_use_shared_resume_without_duplicate_executor",
+      "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_ready_pr_cannot_acquire_push_admission_in_ci_or_continuation",
+      "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_late_branch_drift_cannot_leave_materialized_success_state"
+    ],
+    "REAL_WRITER_TRANSACTION_RECOVERY": [
+      "tests.test_qikvrt_pipeline_contracts.RealWriterTransactions.test_real_main_writer_isolates_repair_and_recovers_lost_push_reply",
+      "tests.test_qikvrt_pipeline_contracts.RealWriterTransactions.test_byte_noop_on_existing_review_branch_still_creates_missing_pr_and_verifier",
+      "tests.test_qikvrt_pipeline_contracts.RealWriterTransactions.test_ready_pr_blocks_before_any_branch_or_metadata_write",
+      "tests.test_qikvrt_pipeline_contracts.RealWriterTransactions.test_noop_still_reobserves_base_and_wrong_remote_never_writes"
     ]
   },
   "contracts": {
@@ -138,6 +173,8 @@
     "empty_check_rollup_proves_merge_readiness": false,
     "effect_ack_precedes_confirmed_issue_closure": false,
     "internal_continuation_requires_repeated_chat_authorization": false,
-    "legacy_draft_continuation_write": "AT_MOST_ONE_BODY_PATCH_AFTER_EXACT_BINDING_AND_METADATA_REOBSERVATION_THEN_FRESH_READBACK"
+    "legacy_draft_continuation_write": "AT_MOST_ONE_BODY_PATCH_AFTER_EXACT_BINDING_AND_METADATA_REOBSERVATION_THEN_FRESH_READBACK",
+    "all_current_internal_writer_postconditions": "EXACT_BRANCH_DRAFT_PR_AND_NATIVE_VERIFIER_READBACK_WITH_ORIGINAL_BASE_REF",
+    "staging_verification_promotes_or_enables_main_continuation": false
   }
 }

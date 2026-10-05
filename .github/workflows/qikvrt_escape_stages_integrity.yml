@@ -7,7 +7,9 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: write
+  pull-requests: write
 
 concurrency:
   group: qikvrt-escape-stages-integrity
@@ -22,6 +24,15 @@ jobs:
         with:
           ref: agent/escape-stages-batch06
           fetch-depth: 0
+      - name: Bind writer source and current Main before materialization
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+          TARGET_REF: agent/escape-stages-batch06
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-writer-input.json"
       - name: Regenerate and verify repository integrity
         run: |
           set -euo pipefail
@@ -38,4 +49,23 @@ jobs:
             exit 0
           fi
           git commit -m "fix: regenerate integrity for escape-stage proof batch"
-          git push origin HEAD:agent/escape-stages-batch06
+          # Branch/PR/verifier writes are resumed by the shared postcondition step.
+      - name: Resume Branch Draft-PR Exact-Head verifier postcondition
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+            --input "$RUNNER_TEMP/qikvrt-writer-input.json" \
+            --output "$RUNNER_TEMP/qikvrt-writer-postcondition.json"
+      - name: Preserve writer input and postcondition or causal blockade
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-writer-postcondition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-writer-input.json
+            ${{ runner.temp }}/qikvrt-writer-postcondition.json
+          if-no-files-found: error
+          retention-days: 30

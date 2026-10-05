@@ -347,7 +347,7 @@ class PipelineContracts(unittest.TestCase):
         self.assertNotIn("exit 0", block)
         self.assertIn('qikvrt-pipeline-contracts.py" resume', block)
         self.assertIn('qikvrt-pipeline-contracts.py" select', source)
-        self.assertIn('git push origin "HEAD:refs/heads/${HEAD_REF}"', source)
+        self.assertIn('qikvrt-pipeline-contracts.py" push-readback', source)
 
     def test_runner_context_is_not_used_before_steps(self):
         # GitHub contexts reference: runner is unavailable in jobs.<id>.env.
@@ -537,7 +537,7 @@ class RealGitContracts(unittest.TestCase):
         start = source.index('              remote_final=')
         end = source.index('              echo "QIKVRT_FIXPOINT_REACHED', start)
         guard = textwrap.dedent(source[start:end])
-        env = dict(os.environ, TARGET_REF="fixture", subject=self.head, tree=self.tree)
+        env = dict(os.environ, TARGET_REF="fixture", subject=self.head, tree=self.tree, EXPECTED_HEAD=self.head)
         stable = subprocess.run(["bash", "-ec", guard], cwd=self.root, env=env, capture_output=True)
         self.assertEqual(stable.returncode, 0)
         (self.root / "source.txt").write_text("B\n")
@@ -546,6 +546,327 @@ class RealGitContracts(unittest.TestCase):
         self.g("checkout", "--detach", self.head)
         drifted = subprocess.run(["bash", "-ec", guard], cwd=self.root, env=env, capture_output=True)
         self.assertNotEqual(drifted.returncode, 0)
+
+
+class WriterServer(Server):
+    """Authoritative state is independent from the deliberately faulty replies."""
+    def __init__(self, pr=False):
+        super().__init__()
+        self.present = pr
+        self.pr_mode = "ok"
+        self.patch_mode = "ok"
+        self.dispatch_mode = "ok"
+        self.after_pr_read = None
+        self.ref_error = None
+        self.parents = [B]
+
+    def add_run(self, status="queued", conclusion=None):
+        self.runs.append({"id": 7, "event": "repository_dispatch", "status": status,
+                          "conclusion": conclusion, "head_sha": self.main,
+                          "display_title": c.run_title(101, self.head, self.main, self.pr["base"]["ref"]),
+                          "path": ".github/workflows/" + c.WORKFLOW, "html_url": RUN_URL})
+
+    def __call__(self, method, path, data=None):
+        only = urlsplit(path).path
+        if method == "GET" and only.endswith("/git/ref/heads/staging"):
+            self.calls.append((method, path, data))
+            return {"object": {"type": "commit", "sha": self.main}}
+        if method == "GET" and "/git/ref/heads/" in only and not only.endswith("/main") and self.ref_error:
+            self.calls.append((method, path, data))
+            raise c.ApiError(self.ref_error)
+        if method == "GET" and only.endswith("/pulls"):
+            self.calls.append((method, path, data))
+            return [copy.deepcopy(self.pr)] if self.present else []
+        if method == "GET" and only.endswith("/pulls/101"):
+            self.calls.append((method, path, data))
+            answer = copy.deepcopy(self.pr)
+            if self.after_pr_read:
+                self.after_pr_read(self)
+            return answer
+        if method in {"POST", "PATCH"} and (only.endswith("/pulls") or only.endswith("/pulls/101")):
+            self.calls.append((method, path, copy.deepcopy(data)))
+            mode = self.pr_mode if method == "POST" else self.patch_mode
+            if mode == "denied":
+                raise c.ApiError(403)
+            if mode not in {"false_success", "lost_without_effect"}:
+                if method == "POST":
+                    self.present = True
+                    self.pr.update(state="open", draft=data["draft"])
+                    self.pr["head"].update(ref=data["head"], sha=self.head)
+                    self.pr["base"].update(sha=self.main, ref=data["base"])
+                self.pr["body"] = data["body"]
+            if mode.startswith("lost"):
+                raise c.ApiError(None)
+            if mode == "malformed_after_effect":
+                raise c.Block("API_RESPONSE_INVALID")
+            return {"number": 999, "head": {"sha": "f" * 40}}  # Never proof authority.
+        if method == "POST" and only.endswith("/dispatches") and self.dispatch_mode == "malformed_after_effect":
+            self.calls.append((method, path, data)); self.add_run()
+            raise c.Block("API_RESPONSE_INVALID")
+        value = super().__call__(method, path, data)
+        if method == "GET" and "/git/commits/" in only:
+            value["parents"] = [{"sha": p} for p in self.parents]
+        return value
+
+    def postcondition(self):
+        return c.candidate_postcondition(self, REPOSITORY, "fix/example", self.head, self.tree, self.main)
+
+
+class SharedWriterContracts(unittest.TestCase):
+    def test_registered_internal_writers_use_shared_resume_without_duplicate_executor(self):
+        contract = json.loads((ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json").read_text())
+        inventory = json.loads((ROOT / "state/work_units/QIKVRT_SHARED_WRITER_POSTCONDITIONS_20261005_V1.json").read_text())
+        common = contract["same_repository_writer_postconditions"]
+        self.assertEqual(len(common["workflow_paths"]), 12)
+        self.assertEqual(common["workflow_paths"], inventory["inventory"]["internal_writer_paths"])
+        self.assertFalse(common["new_scheduler"]); self.assertFalse(common["new_executor"])
+        self.assertFalse(common["self_approval"])
+        for path in common["workflow_paths"]:
+            with self.subTest(path=path):
+                source = (ROOT / path).read_text()
+                self.assertNotIn("git push", source)
+                if path.endswith("qikvrt_autonomous_self_heal.yml"):
+                    self.assertIn("tools.qikvrt_self_heal_pr_materializer", source)
+                elif path.endswith("qikvrt_autonomous_pr_continuation.yml"):
+                    self.assertIn('qikvrt-pipeline-contracts.py" push-readback', source)
+                    self.assertIn('qikvrt-pipeline-contracts.py" resume', source)
+                else:
+                    self.assertIn("observe-writer", source)
+                    self.assertIn("publish-writer", source)
+                    self.assertLess(source.index("actions/checkout@"), source.index("observe-writer"))
+                self.assertIn("if: always()", source)
+                # Exercise every production shell block's parser, rather than
+                # treating mere helper-name presence as valid workflow admission.
+                lines = source.splitlines()
+                for index, line in enumerate(lines):
+                    if not line.rstrip().endswith("run: |"):
+                        continue
+                    indent = len(line) - len(line.lstrip()) + 2
+                    script = []
+                    for following in lines[index + 1:]:
+                        if following.strip() and len(following) - len(following.lstrip()) < indent:
+                            break
+                        script.append(following[indent:])
+                    parsed = subprocess.run(["bash", "-n"], input="\n".join(script),
+                                            text=True, capture_output=True, timeout=10)
+                    self.assertEqual(parsed.returncode, 0, parsed.stderr)
+        import hashlib
+        for row in inventory["inventory"]["other_write_carriers"]:
+            self.assertEqual(hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest(), row["source_sha256"])
+
+    def test_ready_pr_cannot_acquire_push_admission_in_ci_or_continuation(self):
+        server = WriterServer(pr=True); server.pr["draft"] = False
+        attempted = []
+        value = c.push_postcondition(server, lambda: attempted.append(1), REPOSITORY, "fix/example",
+                                     "e" * 40, "f" * 40, B, H, pr_number=101)
+        self.assertEqual(value["first_blocker"], "PR_WRITER_ADMISSION_CHANGED")
+        self.assertFalse(attempted)
+
+    def test_staging_verifier_preserves_base_and_never_opts_into_main_continuation(self):
+        server = WriterServer()
+        value = c.candidate_postcondition(server, REPOSITORY, "fix/example", H, T, B, base_ref="staging")
+        self.assertEqual(value["verifier"]["state"], "VERIFIER_ACTIVE")
+        self.assertEqual(server.pr["base"]["ref"], "staging")
+        self.assertNotIn(c.MARKER, server.pr["body"])
+        self.assertIn(c.VERIFIER_MARKER, server.pr["body"])
+        self.assertIsNone(c.select([server.pr], REPOSITORY, 1))
+        self.assertEqual(server.writes("/dispatches")[0][2]["client_payload"]["base_ref"], "staging")
+        self.assertFalse(value["continuation_enabled"])
+
+    def test_branch_exists_pr_missing_completes_same_head_and_becomes_read_only(self):
+        server = WriterServer()
+        first = server.postcondition()
+        self.assertEqual(first["state"], "PR_MATERIALIZED")
+        self.assertEqual(first["verifier"]["state"], "VERIFIER_ACTIVE")
+        before = len(server.calls)
+        again = server.postcondition()
+        self.assertEqual(again["state"], "PR_ALREADY_MATERIALIZED")
+        self.assertTrue(all(m == "GET" for m, _, _ in server.calls[before:]))
+        self.assertEqual(len(server.writes("/pulls")), 1)
+        self.assertEqual(len(server.writes("/dispatches")), 1)
+        self.assertFalse(again["EFFECT_ACK_DONE"])
+
+    def test_pr_denied_lost_malformed_and_misleading_responses_require_readback(self):
+        for mode, expected in (("denied", "PR_WRITER_CAPABILITY_UNAVAILABLE"),
+                               ("lost_without_effect", "PR_CREATION_NOT_READ_BACK"),
+                               ("false_success", "PR_CREATION_NOT_READ_BACK"),
+                               ("lost_after_effect", None), ("malformed_after_effect", None)):
+            with self.subTest(mode=mode):
+                server = WriterServer(); server.pr_mode = mode
+                first = server.postcondition()
+                self.assertEqual(first["first_blocker"], expected)
+                self.assertEqual(len(server.writes("/pulls")), 1)
+                if expected:
+                    self.assertFalse(server.writes("/dispatches"))
+                    server.pr_mode = "ok"
+                    self.assertEqual(server.postcondition()["state"], "PR_MATERIALIZED")
+                else:
+                    server.postcondition()
+                    self.assertEqual(len(server.writes("/pulls")), 1)
+
+    def test_verifier_denial_or_false_transport_is_resumed_without_recreating_pr(self):
+        for mode in ("denied", "false_success", "lost_after_effect", "malformed_after_effect"):
+            with self.subTest(mode=mode):
+                server = WriterServer()
+                server.dispatch_error = 403 if mode == "denied" else None
+                server.drop_dispatch = mode == "false_success"
+                server.lost_dispatch = mode == "lost_after_effect"
+                server.dispatch_mode = mode
+                first = server.postcondition()
+                self.assertEqual(first["state"] == "HOLD", mode in {"denied", "false_success"})
+                server.dispatch_error = None; server.drop_dispatch = False
+                second = server.postcondition()
+                self.assertEqual(second["verifier"]["state"], "VERIFIER_ACTIVE")
+                self.assertEqual(len(server.writes("/pulls")), 1)
+                self.assertEqual(len(server.writes("/dispatches")), 2 if first["state"] == "HOLD" else 1)
+
+    def test_push_denied_lost_false_and_malformed_write_outcomes_are_independent(self):
+        for mode in ("denied", "lost_after_effect", "false_success", "malformed_after_effect"):
+            with self.subTest(mode=mode):
+                server = WriterServer(); server.head, server.tree = B, BT
+                attempts = []
+                def push():
+                    attempts.append(1)
+                    if mode in {"lost_after_effect", "malformed_after_effect"}:
+                        server.head, server.tree = H, T
+                    if mode != "false_success":
+                        raise c.Block("GIT_OPERATION_UNCERTAIN")
+                result = c.push_postcondition(server, push, REPOSITORY, "fix/example", H, T, B, B)
+                self.assertEqual(result["state"] == "BRANCH_READ_BACK", mode.endswith("after_effect"))
+                self.assertEqual(len(attempts), 1)
+                if result["state"] == "BRANCH_READ_BACK":
+                    c.push_postcondition(server, push, REPOSITORY, "fix/example", H, T, B, B)
+                    self.assertEqual(len(attempts), 1)
+
+    def test_branch_competition_base_drift_and_permission_failure_prevent_write(self):
+        for mode, expected in (("competing", "COMPETING_BRANCH_WRITER"),
+                               ("base", "BASE_DRIFT"), ("permission", "API_HTTP_403")):
+            with self.subTest(mode=mode):
+                server = WriterServer(); attempted = []
+                if mode == "base": server.main = "f" * 40
+                if mode == "permission": server.ref_error = 403
+                result = c.push_postcondition(server, lambda: attempted.append(1), REPOSITORY,
+                                             "fix/example", "e" * 40, "f" * 40, B, B)
+                self.assertEqual(result["first_blocker"], expected)
+                self.assertFalse(attempted)
+
+    def test_ready_closed_staging_foreign_and_metadata_drift_preserve_boundaries(self):
+        for mode in ("ready", "closed", "staging", "foreign", "metadata"):
+            with self.subTest(mode=mode):
+                server = WriterServer(pr=True); server.pr["body"] = "Existing human text."
+                if mode == "ready": server.pr["draft"] = False
+                if mode == "closed": server.pr["state"] = "closed"
+                if mode == "staging": server.pr["base"]["ref"] = "staging"
+                if mode == "foreign": server.pr["head"]["repo"]["full_name"] = "foreign/repo"
+                if mode == "metadata":
+                    def edit(s):
+                        s.pr["body"] += " Later human change."; s.after_pr_read = None
+                    server.after_pr_read = edit
+                result = server.postcondition()
+                self.assertEqual(result["state"], "HOLD")
+                self.assertTrue(all(m == "GET" for m, _, _ in server.calls))
+
+    def test_main_is_never_an_internal_candidate_target(self):
+        server = WriterServer()
+        self.assertEqual(c.draft_postcondition(server, REPOSITORY, "main", H, T, B)["first_blocker"],
+                         "REVIEW_BRANCH_REQUIRED")
+        attempted = []
+        self.assertEqual(c.push_postcondition(server, lambda: attempted.append(1), REPOSITORY,
+                                             "main", H, T, B, B)["first_blocker"], "REVIEW_BRANCH_REQUIRED")
+        self.assertFalse(attempted)
+        self.assertFalse(server.calls)
+
+
+class RealWriterTransactions(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory(prefix="qikvrt-writer-")
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name) / "source"; self.root.mkdir()
+        self.remote = Path(self.directory.name) / "remote.git"
+        self.g("init", "--bare", str(self.remote))
+        self.g("init"); self.g("config", "user.name", "Writer fixture")
+        self.g("config", "user.email", "writer@example.invalid")
+        (self.root / "generated.txt").write_text("base\n")
+        self.g("add", "."); self.g("commit", "-m", "Main")
+        self.base = self.g("rev-parse", "HEAD"); self.base_tree = self.g("rev-parse", "HEAD^{tree}")
+        self.g("push", str(self.remote), "HEAD:refs/heads/main")
+        self.g("remote", "add", "origin", "https://github.com/owner/repo.git")
+        self.server = WriterServer()
+        self.server.main, self.server.main_tree = self.base, self.base_tree
+        self.server.head, self.server.tree = self.base, self.base_tree
+        self.server.parents = [self.base]
+
+    def g(self, *args):
+        return subprocess.check_output(["git", *args], cwd=self.root, stderr=subprocess.DEVNULL,
+                                       timeout=15).decode().strip()
+
+    def commit_repair(self):
+        (self.root / "generated.txt").write_text("repaired\n")
+        self.g("add", "."); self.g("commit", "-m", "Bounded repair")
+        return self.g("rev-parse", "HEAD"), self.g("rev-parse", "HEAD^{tree}")
+
+    def test_real_main_writer_isolates_repair_and_recovers_lost_push_reply(self):
+        observed = c.observe_writer(self.server, self.root, REPOSITORY, "main")
+        head, tree = self.commit_repair()
+        import hashlib
+        ref = "automation/repair-" + hashlib.sha256((REPOSITORY + "main" + self.base + tree).encode()).hexdigest()[:24]
+        self.server.ref_error = 404
+        attempts = []
+        def push():
+            attempts.append(1)
+            self.g("push", str(self.remote), "HEAD:refs/heads/" + ref)
+            self.server.ref_error = None
+            self.server.head, self.server.tree = head, tree
+            raise c.Block("GIT_OPERATION_UNCERTAIN")
+        value = c.publish_writer(self.server, self.root, observed, push=push)
+        self.assertEqual(value["state"], "PR_MATERIALIZED")
+        self.assertEqual(value["postcondition"]["verifier"]["state"], "VERIFIER_ACTIVE")
+        self.assertEqual(self.g("--git-dir", str(self.remote), "rev-parse", "refs/heads/main"), self.base)
+        self.assertEqual(self.g("--git-dir", str(self.remote), "rev-parse", "refs/heads/" + ref), head)
+        before = len(self.server.calls)
+        again = c.publish_writer(self.server, self.root, observed, push=push)
+        self.assertEqual(again["state"], "PR_ALREADY_MATERIALIZED")
+        self.assertEqual(len(attempts), 1)
+        self.assertTrue(all(m == "GET" for m, _, _ in self.server.calls[before:]))
+
+    def test_byte_noop_on_existing_review_branch_still_creates_missing_pr_and_verifier(self):
+        head, tree = self.commit_repair()
+        self.g("push", str(self.remote), "HEAD:refs/heads/fix/example")
+        self.server.head, self.server.tree = head, tree
+        observed = c.observe_writer(self.server, self.root, REPOSITORY, "fix/example")
+        attempted = []
+        value = c.publish_writer(self.server, self.root, observed, push=lambda: attempted.append(1))
+        self.assertEqual(value["state"], "PR_MATERIALIZED")
+        self.assertEqual(value["head"], head)
+        self.assertFalse(attempted)
+        self.assertEqual(value["postcondition"]["verifier"]["state"], "VERIFIER_ACTIVE")
+
+    def test_ready_pr_blocks_before_any_branch_or_metadata_write(self):
+        self.commit_repair()
+        source, source_tree = self.g("rev-parse", "HEAD"), self.g("rev-parse", "HEAD^{tree}")
+        self.server.head, self.server.tree, self.server.present = source, source_tree, True
+        self.server.pr["head"]["sha"] = source
+        self.server.pr["base"]["sha"] = self.base
+        self.server.pr["draft"] = False
+        observed = c.observe_writer(self.server, self.root, REPOSITORY, "fix/example")
+        (self.root / "generated.txt").write_text("next repair\n")
+        self.g("add", "."); self.g("commit", "-m", "Successor")
+        attempted = []
+        value = c.publish_writer(self.server, self.root, observed, push=lambda: attempted.append(1))
+        self.assertEqual(value["first_blocker"], "READY_PR_REQUIRES_NATIVE_REVIEW_BOUNDARY")
+        self.assertFalse(attempted)
+        self.assertTrue(all(m == "GET" for m, _, _ in self.server.calls))
+
+    def test_noop_still_reobserves_base_and_wrong_remote_never_writes(self):
+        observed = c.observe_writer(self.server, self.root, REPOSITORY, "main")
+        self.assertEqual(c.publish_writer(self.server, self.root, observed)["state"], "NOOP")
+        self.server.main = "f" * 40
+        self.assertEqual(c.publish_writer(self.server, self.root, observed)["first_blocker"], "BASE_DRIFT")
+        self.server.main = self.base
+        self.g("remote", "set-url", "origin", "https://github.com/foreign/repo.git")
+        self.assertEqual(c.publish_writer(self.server, self.root, observed)["first_blocker"],
+                         "WRITER_REMOTE_REPOSITORY_MISMATCH")
+        self.assertTrue(all(m == "GET" for m, _, _ in self.server.calls))
 
 
 if __name__ == "__main__":

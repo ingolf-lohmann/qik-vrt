@@ -30,8 +30,9 @@ on:
         default: ""
 
 permissions:
-  actions: write
+  actions: read
   contents: write
+  pull-requests: write
 
 concurrency:
   group: qikvrt-repository-evidence-${{ github.head_ref || github.ref_name }}
@@ -67,6 +68,14 @@ jobs:
         with:
           ref: ${{ env.EXPECTED_HEAD }}
           fetch-depth: 0
+      - name: Bind writer source and current Main before materialization
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-writer-input.json"
       - name: Bind exact target ref and head
         shell: bash
         run: |
@@ -347,18 +356,24 @@ jobs:
             echo "remote_head_after_commit=$remote_head_after_commit" >&2
             exit 2
           fi
-          git push origin "HEAD:$TARGET_REF"
+          # Branch/PR/verifier writes are resumed by the shared postcondition step.
 
-          # A push performed with GITHUB_TOKEN creates a pull_request synchronize
-          # event whose workflows require approval and therefore have zero jobs.
-          # Explicitly re-run those exact-successor workflow runs through the
-          # Actions API so the bot-authored successor is actually executed.
-          successor="$(git rev-parse --verify HEAD^{commit})"
-          sleep 3
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$successor&event=pull_request&per_page=100" \
-            --jq '.workflow_runs[] | select(.conclusion == "action_required") | .id' |
-          while read -r run_id; do
-            test -n "$run_id" || continue
-            gh api --method POST "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/rerun"
-            echo "QIKVRT_SUCCESSOR_REENTRY requested run_id=$run_id head=$successor"
-          done
+      - name: Resume Branch Draft-PR Exact-Head verifier postcondition
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+            --input "$RUNNER_TEMP/qikvrt-writer-input.json" \
+            --output "$RUNNER_TEMP/qikvrt-writer-postcondition.json"
+      - name: Preserve writer input and postcondition or causal blockade
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-writer-postcondition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-writer-input.json
+            ${{ runner.temp }}/qikvrt-writer-postcondition.json
+          if-no-files-found: error
+          retention-days: 30
