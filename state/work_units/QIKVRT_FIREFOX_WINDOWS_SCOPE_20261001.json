@@ -2231,19 +2231,35 @@
       "retry_condition": "Fresh supported Windows11 AMD64 host/runner identity and scoped callable operation exposed. Reobserve actual candidate refs; changed runtime input requires fresh artifact pins."
     },
     "firefox_server_artifact_readback": {
-      "run_id": 37115978292,
-      "numeric_job_id": 111182798742,
-      "artifact_id": 11270524354,
-      "archive_sha256": "60b51db43ef9b7e3c4bc870e512e5f28aee2ee66e763d6a2a324e4712acd4a56",
-      "archive_bytes": 86960,
-      "head": "b0e3828c9f02fb7772dc094afd9182d937c86f93",
-      "tree": "9010780bc9905ad433278462a5ffbc46486d5dbf",
-      "product_type": 3,
+      "archive_sha256": "fac8c7b2bcced0fb6a718bfb98db54f4dd397db0ff68f79d487c7ad08cb03ed1",
+      "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+      "tree": "9a2627d35ed6c04a872598daf38b2a9133074ec9",
+      "run_id": "37306108153",
+      "run_attempt": "1",
+      "os": {
+        "architecture": "AMD64",
+        "architecture_method": "IsWow64Process2_NATIVE_MACHINE",
+        "build": 26100,
+        "display_version": "24H2",
+        "edition": "ServerDatacenter",
+        "platform": "Windows-2025Server-10.0.26100-SP0",
+        "process_architecture": "AMD64",
+        "product_type": 3,
+        "ubr": 33438
+      },
       "architecture": "AMD64",
-      "windows_amd64_execution_observed": true,
       "windows_11_amd64_client_execution_observed": false,
-      "product_target_verified": false,
-      "acceptance_scope": "EXACT_INPUT_SERVER_COMPATIBILITY_ONLY; NO_SUCCESSOR_OR_CLIENT_ACCEPTANCE"
+      "product_target_verified_in_executed_architecture": false,
+      "actual_restart": true,
+      "replay_409_count": 2,
+      "negative_startup_controls": 10,
+      "source_and_artifact_byte_bindings": "PASS",
+      "receipt_sha256": "ef832f330ab26d31c4c7703172213cc7b7df5d8a3595158621d22947bbea9778",
+      "artifact_id": 11343941601,
+      "numeric_job_id": 111750337681,
+      "runner_label": "windows-2025",
+      "log_receipt_agreement": true,
+      "evidence_transfer_to_successor": false
     },
     "causal_defect": {
       "component": "tools/qikvrt_firefox_windows_witness.py",
@@ -2263,7 +2279,7 @@
     "personal_release_effect_ack_done": false,
     "runner_inventory_complete": false,
     "global_runner_absence_proved": false,
-    "next_action": "Expose fresh existing native Windows11 AMD64 runner/host identity and scoped callable operation; fill current binding fields. Reobserve successor Firefox HEAD/TREE and runtime input pins, execute on this same carrier, then independently verify each artifact and every record.",
+    "next_action": "Expose the existing supported Windows11 AMD64 host/runner identity, dedicated selector, repository access and callable initial execution operation. Also expose exact current #461 native input pins and a same-carrier native execution operation. Reobserve both source candidates before native witness; no predecessor, Server or ARM64 transfer.",
     "reuse": {
       "new_parallel_workflow": false,
       "new_script": false,
@@ -2287,7 +2303,8 @@
       "full_make_test": "PASS",
       "full_make_test_log_sha256": "3dbc8cb605eb11bc272cfb5dc35e757938b6fa908cce48ed1555b61d232f6416",
       "full_make_scope": "Local Linux candidate code and contract; artifact-input binding refreshed afterward, with final integrity and focused validation. Fresh remote exact-successor CI required.",
-      "historical_capsule_objects_restored": 13
+      "historical_capsule_objects_restored": 13,
+      "metadata_refresh_scope": "Only the existing admission contract/spec/work unit and their integrity metadata change after e114deab readback; previous full-suite and native artifact receipts remain explicitly bound to e114deab, with fresh successor checks required."
     },
     "release_claims": {
       "PASS": false,
@@ -2337,15 +2354,273 @@
       "tree": "13cb42c49e4441b4276ce5e2ab53410b72b22830"
     },
     "current_runtime_reobservation": {
-      "head": "1d28e59f99f0814a3410465a0712cb3ca0e899a9",
-      "tree": "533c31c8e1765e3928767b4b290b8573ae8c7f9b",
-      "observed_parent": "2273cc54c555ac4476faeadd984758e390e48df5",
-      "reason": "#461 advanced during discovery. Native input bytes were independently downloaded and verified again on the successor; no predecessor evidence transfer.",
-      "run_id": 37304233153,
-      "numeric_job_id": 111743929182,
-      "runner_label": "windows-2025",
-      "source_files_checked": 45,
-      "server_receipt_is_client_witness": false
+      "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+      "observed_parent": "1d28e59f99f0814a3410465a0712cb3ca0e899a9",
+      "observed_at": "2026-10-05T12:09:45.023Z",
+      "reason": "#461 advanced again during final readback. The only source delta is bounded hidden-file upload plus integrity metadata. A native artifact for the new HEAD was not observed; predecessor package/source acceptance is not transferred.",
+      "observed_exact_head_runs": [
+        {
+          "id": 37305763704,
+          "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+          "path": ".github/workflows/qikvrt_ci.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37305763679,
+          "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+          "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "current_native_windows_artifact_observed": false,
+      "server_receipt_is_client_witness": false,
+      "independent_native_input_retry_required": true
+    },
+    "runtime_reobservation_history": [
+      {
+        "head": "1d28e59f99f0814a3410465a0712cb3ca0e899a9",
+        "tree": "533c31c8e1765e3928767b4b290b8573ae8c7f9b",
+        "observed_parent": "2273cc54c555ac4476faeadd984758e390e48df5",
+        "reason": "#461 advanced during discovery. Native input bytes were independently downloaded and verified again on the successor; no predecessor evidence transfer.",
+        "run_id": 37304233153,
+        "numeric_job_id": 111743929182,
+        "runner_label": "windows-2025",
+        "source_files_checked": 45,
+        "server_receipt_is_client_witness": false
+      }
+    ],
+    "current_runtime_candidate_input": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pull_request": 461,
+      "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+      "observed_at": "2026-10-05T12:09:45.023Z",
+      "state": "HOLD_EXACT_CURRENT_RUNTIME_HEAD_NATIVE_INPUT_NOT_OBSERVED",
+      "artifact_id": null,
+      "run_id": null,
+      "numeric_job_id": null,
+      "manifest_sha256": null,
+      "binaries": {},
+      "client_execution_observed": false,
+      "previous_verified_input_ref": "#/windows_acceptance/windows11_amd64_client_measurement/previous_verified_runtime_candidate_input",
+      "previous_input_matches_current_head": false,
+      "predecessor_evidence_transfer": false,
+      "architecture_evidence_transfer": false,
+      "readback_scope": "Fresh current #461 PR HEAD/TREE and all Actions runs filtered by that HEAD; only CI and HTTP terminal runs observed, no native Windows producer run.",
+      "retry_condition": "Produce or expose a native AMD64 artifact for this exact source HEAD/TREE, independently pin archive/manifest/source/executable bytes, then reobserve candidate and carrier before client execution."
+    },
+    "verified_runtime_input_matches_current_head": false,
+    "historical_firefox_server_artifact_readback": {
+      "run_id": 37115978292,
+      "numeric_job_id": 111182798742,
+      "artifact_id": 11270524354,
+      "archive_sha256": "60b51db43ef9b7e3c4bc870e512e5f28aee2ee66e763d6a2a324e4712acd4a56",
+      "archive_bytes": 86960,
+      "head": "b0e3828c9f02fb7772dc094afd9182d937c86f93",
+      "tree": "9010780bc9905ad433278462a5ffbc46486d5dbf",
+      "product_type": 3,
+      "architecture": "AMD64",
+      "windows_amd64_execution_observed": true,
+      "windows_11_amd64_client_execution_observed": false,
+      "product_target_verified": false,
+      "acceptance_scope": "EXACT_INPUT_SERVER_COMPATIBILITY_ONLY; NO_SUCCESSOR_OR_CLIENT_ACCEPTANCE"
+    },
+    "firefox_arm64_artifact_readback": {
+      "archive_sha256": "0201189c4c19dba13cf89d07f54f9db550067ce8bfddca3387b849cb2c2f20b6",
+      "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+      "tree": "9a2627d35ed6c04a872598daf38b2a9133074ec9",
+      "run_id": "37306108153",
+      "run_attempt": "1",
+      "os": {
+        "architecture": "ARM64",
+        "architecture_method": "IsWow64Process2_NATIVE_MACHINE",
+        "build": 26200,
+        "display_version": "25H2",
+        "edition": "Enterprise",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "process_architecture": "ARM64",
+        "product_type": 1,
+        "ubr": 9457
+      },
+      "architecture": "ARM64",
+      "windows_11_amd64_client_execution_observed": false,
+      "product_target_verified_in_executed_architecture": true,
+      "actual_restart": true,
+      "replay_409_count": 2,
+      "negative_startup_controls": 10,
+      "source_and_artifact_byte_bindings": "PASS",
+      "receipt_sha256": "c263ec319fb0401dfaa1b178d6f1d103c3fe91cf1382b004a884c62fcf5f8cca",
+      "artifact_id": 11343786748,
+      "numeric_job_id": 111750337907,
+      "runner_label": "windows-11-arm",
+      "log_receipt_agreement": true,
+      "evidence_transfer_to_successor": false,
+      "accepts_windows11_amd64": false
+    },
+    "completed_firefox_successor_readback": {
+      "observed_at": "2026-10-05T12:09:45.023Z",
+      "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+      "tree": "9a2627d35ed6c04a872598daf38b2a9133074ec9",
+      "runs": [
+        {
+          "id": 37306108259,
+          "name": "QIKVRT PR18 integrity repair",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37306108212,
+          "name": "QIKVRT Batch-003 remaining archive probe",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37306108219,
+          "name": "QIKVRT code-owner review observer",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108236,
+          "name": "QIKVRT Batch-003 subject 172dd public archive probe",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37306108191,
+          "name": "QIKVRT workflow executor watchdog",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108204,
+          "name": "QIKVRT requested review executor",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108176,
+          "name": "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108159,
+          "name": "QIK-VRT global claim completion",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_global_completion.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108198,
+          "name": "QIKVRT Collective Proposal Review",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_collective_review.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108154,
+          "name": "QIKVRT adaptive runtime",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108153,
+          "name": "QIKVRT Personal Firefox capability boundary",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108211,
+          "name": "QIKVRT CI",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_ci.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108167,
+          "name": "QIKVRT Batch-003 remaining subject disposition",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108272,
+          "name": "QIKVRT live status watch",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_live_status_watch.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306108216,
+          "name": "QIKVRT repository evidence materialization",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306101955,
+          "name": "QIK-VRT universal ontology finite-model verification",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37306102073,
+          "name": "QIKVRT CI",
+          "head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+          "path": ".github/workflows/qikvrt_ci.yml",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "artifact_and_log_receipt_equality_verified": true,
+      "native_windows11_amd64_dispatch_count": 0,
+      "windows_11_amd64_client_execution_observed": false,
+      "product_target_verified": false,
+      "combined_native_runtime_and_firefox_client_verified": false,
+      "acceptance_transfer_to_subsequent_metadata_successor": false,
+      "separate_governance_readback": {
+        "state": "failure",
+        "context": "QIKVRT requested review execution",
+        "description": "failure: CODE_OWNER_RULE_NOT_ENFORCED",
+        "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37306163112",
+        "source_head": "e114deab4a20fc59580b4c00142b15bcdc6f6993",
+        "acceptance_transfer_to_successor": false
+      }
+    },
+    "final_main_ref_readback": {
+      "head": "86d7062f25f174039da0a5df8a856127553036f1",
+      "unchanged_from_discovery": true,
+      "existing_workflow_inventory_reused": true
     }
   }
 }

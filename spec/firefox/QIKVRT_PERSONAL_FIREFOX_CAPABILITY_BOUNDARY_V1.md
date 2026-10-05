@@ -395,7 +395,16 @@ dispatch is manufactured by this preparation. The existing three-input dispatch
 contract remains the Firefox execution path. Independently bind the then-current
 successor HEAD/TREE, rather than the discovery parent recorded in the work unit.
 
-The separately pinned runtime input is [PR #461 at
+The final #461 readback advanced to HEAD
+`bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698`, TREE
+`be501e917d2d8ded677e6c32ee4eddc27f2c1398`. Only CI and HTTP terminal
+runs for that HEAD were observed; its exact native Windows package input is
+unbound. The contract records this additional HOLD and requires new matching
+archive/manifest/source/binary pins before client execution. The already
+verified predecessor is preserved under `previous_verified_runtime_candidate_input`;
+its bytes do not accept the new runtime subject.
+
+The separately pinned historical runtime input is [PR #461 at
 1d28e59f99f0814a3410465a0712cb3ca0e899a9](https://github.com/ingolf-lohmann/qik-vrt/tree/1d28e59f99f0814a3410465a0712cb3ca0e899a9),
 TREE `533c31c8e1765e3928767b4b290b8573ae8c7f9b`. Run `37304233153`,
 job `111743929182`, artifact `11342338623` supplies a Windows Server build,
@@ -406,18 +415,18 @@ the inner `qikvrt-native.zip` SHA-256 is
 its manifest pin is
 `d3bb1294fdf72bbca36f08a7b610e65c8d294f8681d7b66af6a4ba6bf88cf764`.
 The machine contract additionally binds the actual AMD64 CLI/DLL bytes. These
-are verified candidate inputs, not Windows-11 client-execution evidence.
+are verified predecessor inputs, not Windows-11 client-execution evidence.
 
 The existing #438 workflow runs the Firefox witness; it does not execute the
 separate native package. Its native-package execution operation therefore also
 remains unbound. Once an authorized client carrier is available, execute the
 existing #461 package operations on that same clean host, keeping both distinct
 source identities. After independent archive and manifest verification, using
-an already verified extraction of the pinned package, the existing operations
+an already verified extraction of a freshly pinned current package, the existing operations
 are:
 
 ```powershell
-$pin = 'd3bb1294fdf72bbca36f08a7b610e65c8d294f8681d7b66af6a4ba6bf88cf764'
+$pin = 'INDEPENDENT_CURRENT_CANDIDATE_MANIFEST_SHA256'
 python -B "$package/source/tools/qikvrt_native_release.py" verify --package "$package" --manifest-sha256 $pin
 & "$package/bin/qikvrt-c90.exe" evaluate 0000000700000003060201010100
 python -B "$package/source/tools/qikvrt_native_release.py" sql --package "$package" --manifest-sha256 $pin
