@@ -5,6 +5,19 @@ Copyright 2026 Ingolf Lohmann.
 
 # Runtime toolchain provenance
 
+The optional `self-host-systemd` profile uses an already provisioned Linux
+systemd >=252. The host distribution owns its binary/package provenance; no
+service startup installs or downloads tools. The behavioral contract is unit
+syntax verification, exact guard pins and native supervisor/cgroup restart
+controls in the existing terminal workflow. The 252 minimum includes path
+trigger rate limits. Upstream unit/service/exec contracts are at
+<https://github.com/systemd/systemd/tree/v255/man>. `systemctl --version` is
+retained with the native test receipt. Actual host admission must separately
+bind the authorized host supervisor and its independently validated evidence.
+Unavailable tools yield CONTINUE; invalid unit/pin/identity/mount yields HOLD.
+Recovery never deletes state, changes a package pin, installs dependencies,
+grants review approval or creates a public acceptance receipt.
+
 No executable or authentication token is stored in this directory. The files
 here define independently checkable versions, upstream locations, checksums,
 and license boundaries for an optional local cache.
@@ -113,3 +126,88 @@ any declared Poppler command is absent, it installs the distribution
 `poppler-utils` package without recommended packages, records the reported
 package and command versions, and then executes the unchanged PDF verification
 gate. Other installation remains an operator/platform responsibility.
+
+## S1 standalone runtime (2026-10-04)
+
+The additional `python-selfhost` component uses operator-provisioned CPython
+3.12.x, separately from the unchanged exact 3.12.13 IETF renderer. Upstream:
+https://www.python.org/ ; build/provider licenses and notices remain applicable.
+Node 24.x uses the existing component (https://nodejs.org/). Package assembly
+records actual version, architecture and executable SHA-256; every start must
+match them. No unverified fallback or interpreter download is performed.
+Read-only Git object export uses https://git-scm.com/ (GPL-2.0-only); it is a
+build/native-owner-client dependency, absent from the standalone HTTP readback.
+Provision failure holds; recovery restores the exact admitted executables or
+requires a reviewed new package/volume migration. Self-host fixtures test source
+binding, denied providers, authentication, crash restart and exact readback.
+The cache registry covers both added tools and the explicit GitHub-only adapter.
+
+
+## S1 recovered Firefox/noVNC carrier
+
+The optional `self-host-firefox` profile preserves the existing Node 24 and
+Python 3.12 requirement and needs no GitHub CLI. Linux provisioning is declared
+in `runtime/self-host/Dockerfile`; startup performs no download or installation.
+The official base indexes observed on 2026-10-05 are pinned by digest:
+
+- `node:24-bookworm-slim`: `sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6`.
+- `python:3.12-slim-bookworm`: `sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3`.
+
+Debian apt resolution happens only while provisioning. An arbitrary later build
+is not claimed to reproduce those package versions. CI retains the actual OCI
+image ID and distribution versions; the frozen export pins actual Node/Python
+and browser executable hashes, Firefox version and every noVNC asset byte.
+Debian distribution-managed noVNC links are frozen as regular files within the
+explicit source tree or `/usr/share/javascript` and `/usr/share/nodejs`.
+The noVNC distribution copyright file travels with those assets. Firefox/noVNC
+use MPL-2.0, x11vnc GPL-2.0-or-later and websockify LGPL-3.0; X11 tool notices and
+other dependency licenses are carried by the actual Debian distribution image.
+No binary, private profile, password or credential is committed into the source
+package or tool cache. Existing tools retain their earlier versions and license
+boundaries. Missing Firefox dependencies produce CONTINUE readiness, not PASS.
+
+Original QIK-VRT deployment/source provenance is separately recorded in
+`evidence/self_host/SOURCE_RECOVERY_20261005.json`. The historical originals are
+not relabeled as new implementations. The S1 source/config binding and portable
+browser startup are explicitly new adapters, with no public deployment claim.
+
+
+The isolated Firefox acceptance runs Docker with `--init`; the platform-provided
+Docker init (tini, MIT) is the namespace PID 1 and reaps killed child processes.
+It is part of the Docker distribution, not an additional QIK-VRT executor or
+bundled binary. CI records the actual Docker engine version and init executable
+hash. A real crash/restart control observes removal of the old Xvfb PID before
+acknowledged ledger/profile readback. x11vnc uses `-no6 -rfbportv6 0` so neither
+its own IPv6 adapter nor LibVNCServer opens a default undeclared VNC port. Actual
+kernel listener readback requires exactly the four declared IPv4 loopback ports.
+Source authorities: https://docs.docker.com/reference/cli/docker/container/run/
+and the LibVNCServer-0.9.14 `libvncserver/cargs.c` / `sockets.c` source.
+
+## S1 offline Railway-state migration
+
+The storage-only migration module extends the existing self-host tool. It uses
+the already declared Python 3.12 stdlib (`sqlite3`, `hashlib`, `fcntl`, file I/O)
+and Node 24 original MonitorStore. No provider SDK, database server, new transfer
+daemon, installer or executable dependency is introduced; cache coverage stays
+25/25. The exact source export pins the new module with the existing launcher
+and verifier. The committed transport code is PolyForm-Noncommercial-1.0.0;
+private state, credentials and transfer manifests never enter tool caches.
+SQLite format authority: https://www.sqlite.org/fileformat2.html#walformat
+and Backup API: https://www.sqlite.org/backup.html . Native event checks reuse
+the recovered original Ledger validator; its restoration provenance is unchanged.
+Missing/changed pins, files, snapshots, SQLite/journal consistency or writer locks
+hold. Failed imports are quarantined; explicit rollback preserves target bytes
+and never resets a route or source writer. The mandatory completion receipt
+prevents implicit fresh-state startup after an interrupted planned migration.
+Dry-run and corruption controls run through `make self-host-test`; the existing
+native Unix lane verifies imported historical and new-subject event restart.
+
+The one-shot Railway capture adapter reuses those same Python/Git/Node
+authorities and the original cloud supervisor; it adds no executable dependency
+or cache profile. Privileged Linux mount metadata, `fcntl` locks, `/proc` PID
+namespace visibility and mixed UID/GID access are required behavioral inputs,
+not inferred from provider environment variables. The existing isolated root
+Docker lane tests the complete storage adapter, real process-census admission
+and foreign-owner preservation. Private request/capture/export bytes remain
+outside Git and caches. The currently unavailable authenticated privileged
+exec/SSH plus private transfer carrier remains an explicit capability HOLD.

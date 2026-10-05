@@ -1,0 +1,207 @@
+{
+  "artificial_cognitive_actor": {
+    "model_family": "GPT-6",
+    "model_or_build_identity": "UNAVAILABLE",
+    "provider": "OpenAI",
+    "retention": "METADATA_ONLY",
+    "session_id": "6d583895a9e2",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserve current PR, branch delta, Railway resources and Vercel default-scope resources",
+    "Extend original launcher with create-only systemd service/path binding and pinned guard; no second supervisor",
+    "Declare optional supervisor tool/cache/bootstrap contract; 25/25 coverage",
+    "Require real native CI MainPID-only crash, orphan cleanup, durable data and exact-admission restoration tests in existing terminal lane"
+  ],
+  "automatic_recovery_limits": [
+    "Only admitted existing host and same pinned artifacts",
+    "Process exit or boot/mount activation and exact-file restoration events",
+    "Maximum five service starts/path triggers per 300 seconds; HOLD 78 prevents restart storm",
+    "No credential invention, host purchase, source migration, ledger deletion/recreation or new-head auto deployment",
+    "Process hangs, permanent host failure, data corruption, revoked routing and exhausted budget remain explicit external repair conditions"
+  ],
+  "capability_hold": "runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json",
+  "created_at": "2026-10-05T07:31:59.247710+00:00",
+  "external_effects": {
+    "candidate_git_write": "AUTHORIZED_REVIEWABLE_FAST_FORWARD_SUCCESSOR",
+    "credentials_or_secrets_persisted": false,
+    "host_or_routing_deployment": "NOT_PERFORMED",
+    "unit_installation_on_owner_host": "NOT_PERFORMED"
+  },
+  "first_causal_external_blocker": "No callable authorized Own-Host control-plane/SSH endpoint with host identity, persistent mount and authorized HTTPS route is exposed. User task approval grants no missing endpoint or credential.",
+  "fresh_base_head": "86d7062f25f174039da0a5df8a856127553036f1",
+  "git_history": {
+    "history_rewritten": false,
+    "original_recovered_files_modified": false,
+    "parent": "34c74ae770378cad8febeb2a559bf0db13aad3b0",
+    "successor_commit_binding": "CONTAINING_COMMIT_AND_NATIVE_IMMUTABLE_EVENT_HEAD"
+  },
+  "human_actor": {
+    "identity_proof": "NOT_INFERRED; METADATA_ONLY",
+    "instruction_source": "CURRENT_USER_MESSAGE",
+    "name": "Ingolf Lohmann",
+    "provided_role_and_name": "Product Owner Ingo Flomann"
+  },
+  "human_contributions": [
+    "Explicit authorization to close the gap, prevent recurrence and automatically recover future restorable failure",
+    "Existing exact-head/external-readback/deployed-restart/governance separation remains mandatory"
+  ],
+  "human_decision": {
+    "candidate_review": "PENDING",
+    "main_merge": "NOT_PERFORMED",
+    "task_implementation": "EXPLICIT_AUTHORIZATION_CURRENT_USER_MESSAGE"
+  },
+  "inputs": [
+    {
+      "bytes": 177814,
+      "git_blob_sha1": "ffdc681eee6989254c604727ca9729bb3ecd5321",
+      "path": "evidence/self_host/OWN_HOST_HISTORY_SEARCH_20261005.json",
+      "sha256": "1073f3f2d94799e1bb3c74396493167f6c211d3bff84ed6e9e42be6e3c777447"
+    }
+  ],
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "next_action": "Expose the authorized own-host execution capability; independently validate pins and admission, install exact generated units, perform external HTTPS readback and a real deployed restart witness. Same pinned bytes restore by event; changed authority or corruption requires validated repair.",
+  "outputs": [
+    {
+      "bytes": 46314,
+      "git_blob_sha1": "9ecfcbd3f8860b83a9b797f0b0bfe1f64bbb13f1",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "2eb5aebf47322400c86786805bca832eab4aa255723b00a326fb549bdf79a364"
+    },
+    {
+      "bytes": 31420,
+      "git_blob_sha1": "64df12c4525b816dd642d1713fa7edfb71f46343",
+      "path": "tests/test_self_host.py",
+      "sha256": "f90cd7567941bc89455984851db6634edd74c128be001d511ed16daf82672f13"
+    },
+    {
+      "bytes": 9137,
+      "git_blob_sha1": "c108093c6c5becd69256f954112ed04245cd46a3",
+      "path": "tests/test_self_host_systemd.py",
+      "sha256": "6a66f2bf7a346f12439d85bd18598de1c3a1123b0579542c0903cc3323390fb7"
+    },
+    {
+      "bytes": 8983,
+      "git_blob_sha1": "6b027141fcf8531358a1d3f442ce1f71c3363a60",
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "f9162d9ec57f6ddcd8252ea43f34b34d828d516bcf9817956907807f0a8e4b3e"
+    },
+    {
+      "bytes": 3963,
+      "git_blob_sha1": "cf59fda2187944be53532956aa1e6060d4d70c04",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "68ecc39017af1babeba922b13fc9ddf0b7d6c350202e03f42a443ade0ba14908"
+    },
+    {
+      "bytes": 16501,
+      "git_blob_sha1": "e64312709cb87f405e3904f70f6d137b1230b3cb",
+      "path": "runtime/self-host/README.md",
+      "sha256": "2d9a3d67e97d4b49c3ec083b6cf503ac1daa9864688b167473cc2e73169e6605"
+    },
+    {
+      "bytes": 4309,
+      "git_blob_sha1": "bfb0a587194e140ca54a66afc61c01ca38cf09e7",
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "sha256": "b01fb81d75e8d7ded554793b6c2fa814a90ed706161723f56e3e1557677b0611"
+    },
+    {
+      "bytes": 20396,
+      "git_blob_sha1": "621f0585a8279df3da4492f4c6579f0abea4ae21",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "1ec739e405b27f9310ce080923207484ffc8c0901c309ca9d48af81b7b958516"
+    },
+    {
+      "bytes": 5657,
+      "git_blob_sha1": "170bc7f45a1d7418e2177a22eb21f8d36d43a9d8",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "491c3c115d2e6cd3813811b8b4afd07639f33690baee2896059bde346739fe64"
+    },
+    {
+      "bytes": 10698,
+      "git_blob_sha1": "e4d66e93000788926c8800113d4d5f4e8703ff99",
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "sha256": "840938f01726f5487c1c87f941ae14ea2f78e8b05a05dd58ed190ff21a8cea06"
+    },
+    {
+      "bytes": 19616,
+      "git_blob_sha1": "a324af7cab0ce869790a9164575b08a200abccda",
+      "path": "tools/bootstrap-runtime.sh",
+      "sha256": "7cda0ed49cf2c325036de9d3747a451953e372d3370ec2a3212f79ba8c2eb79a"
+    },
+    {
+      "bytes": 14911,
+      "git_blob_sha1": "45f14776445f7ec76ccb94e20cf20fb5ee505d12",
+      "path": "tools/ai_runtime_bootloader.py",
+      "sha256": "5ecbc5194af9b827aad15428db449915756c2addce1980688cff6265c6e16188"
+    },
+    {
+      "bytes": 11836,
+      "git_blob_sha1": "0e241e47d6ccd1416500da1cc3328af86e757c29",
+      "path": "Makefile",
+      "sha256": "187e7b3ddaa1222e2f3853794fc93a17510c68aae67f32368e0d0c20eaa9fb7a"
+    },
+    {
+      "bytes": 12276,
+      "git_blob_sha1": "6dda0243b929efcfb8c3ecef2b4dc3a38738fbd7",
+      "path": "runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json",
+      "sha256": "af1dc0c6cb7ad38b5ab1aad54a0e220e73d6de1dfcc6af205d3dddd77c678e98"
+    },
+    {
+      "bytes": 4172,
+      "git_blob_sha1": "d6fb48bb5c4b2aef092b26949d7fb623de3d55a3",
+      "path": "evidence/self_host/OWN_HOST_LOCAL_VALIDATION_20261005.json",
+      "sha256": "f9d46a36bf48335f8bf304f5a997053fa3fb16e6271470beada70af078afab0c"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "S1_DONE": false,
+    "deployed_restart_verified": false,
+    "deployment_performed": false,
+    "host_admission_verified": false,
+    "ordinary_release": false,
+    "public_readback_verified": false,
+    "public_url": null,
+    "review_governance_satisfied": false
+  },
+  "reuse_evidence": {
+    "ci": "existing .github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    "independent_readback": "tools/qikvrt_mesh_monitor_readback.mjs",
+    "insufficiency": "admit emitted a plan but no enabled boot/mount/crash/recovery binding or fail-closed restore-event path",
+    "launcher": "tools/qikvrt_self_host.py",
+    "runtime": "existing original export run via exec",
+    "supervisor": "already provisioned systemd; no daemon or executor created",
+    "verifier": "existing export verify"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "34c74ae770378cad8febeb2a559bf0db13aad3b0",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "59542b066623c9990bb55c5ffa51af0bb9ab9386",
+  "verification": {
+    "bootloader_tests": {
+      "result": "PASS",
+      "tests": 8
+    },
+    "full_repository_gates": "REQUIRED_ON_NEW_EXACT_HEAD; NO_PREDECESSOR_TRANSFER",
+    "local_portable_repository_and_monitor": {
+      "command": "make test repository-monitor-test",
+      "log_sha256": "f837209b0174b29aaab1bc7d6845e8553ca6775c0b51401bfebf65e5f32dd549",
+      "monitor_tests": 24,
+      "result": "PASS"
+    },
+    "native_supervisor": "REQUIRED_ON_NEW_EXACT_HEAD; LOCAL_EXECUTOR_HAS_NO_ACTIVE_SYSTEMD",
+    "standalone_tests": {
+      "log_sha256": "80c692edfd2ededfe8ec9e2852521b80a46e1b0901ff26b3ac218d12c5d7c246",
+      "result": "PASS",
+      "tests": 24
+    },
+    "unit_parser": {
+      "result": "PASS",
+      "scope": "SYNTHETIC_LOCAL_DECLARATION; NOT_HOST_ACCEPTANCE"
+    }
+  },
+  "work_unit_id": "S1_OWN_HOST_RECOVERY_20261005"
+}

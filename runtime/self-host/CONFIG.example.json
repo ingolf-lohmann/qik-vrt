@@ -1,0 +1,15 @@
+{
+  "adapter": "none",
+  "host": "127.0.0.1",
+  "node_id": "own-node:CHANGE_ME",
+  "port": 8080,
+  "schema": "qikvrt-self-host-config/v1",
+  "source_head": "EXACT_HEAD",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "EXACT_TREE",
+  "state_dir": "/var/lib/qikvrt/node",
+  "subject_pr": 457,
+  "terminal_port": 8771,
+  "terminal_profile": "temdd",
+  "terminal_token_file": "/etc/qikvrt/terminal.token"
+}

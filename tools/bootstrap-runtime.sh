@@ -7,6 +7,7 @@ set -eu
 MODE=check
 ACCEPT_THIRD_PARTY=0
 PROFILE=ietf
+ADAPTER=auto
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 CACHE_DIR=${QIKVRT_TOOLCHAIN_CACHE:-"$ROOT/.qikvrt/toolchains"}
@@ -23,10 +24,13 @@ usage() {
     cat <<'EOF'
 Usage: tools/bootstrap-runtime.sh [--check-only] [--install]
        [--accept-third-party]
-       [--profile core|ietf|formal|audio|publication|all]
+       [--profile core|ietf|formal|audio|publication|all|self-host|self-host-firefox|self-host-systemd]
+       [--adapter none|github]
        [--cache-dir PATH]
 
-Every profile checks GitHub CLI first. Only the verified GitHub CLI and
+Existing profiles check GitHub CLI first. self-host defaults to adapter none;
+it requires GitHub CLI only with --adapter github. Existing profiles cannot
+disable their GitHub contract. Only the verified GitHub CLI and
 xml2rfc environments have an automatic install path. Other profile tools are
 operator-managed and produce a precise CONTINUE when absent. Default: check.
 
@@ -79,6 +83,11 @@ while [ "$#" -gt 0 ]; do
             [ "$#" -gt 0 ] || { usage >&2; exit 2; }
             PROFILE=$1
             ;;
+        --adapter)
+            shift
+            [ "$#" -gt 0 ] || { usage >&2; exit 2; }
+            ADAPTER=$1
+            ;;
         --cache-dir)
             shift
             [ "$#" -gt 0 ] || { usage >&2; exit 2; }
@@ -91,27 +100,36 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$PROFILE" in
-    core|ietf|formal|audio|publication|all) ;;
+    core|ietf|formal|audio|publication|all|self-host|self-host-firefox|self-host-systemd) ;;
     *) usage >&2; exit 2 ;;
 esac
+case "$ADAPTER" in auto|none|github) ;; *) usage >&2; exit 2 ;; esac
+if [ "$ADAPTER" = auto ]; then
+    case "$PROFILE" in self-host|self-host-firefox|self-host-systemd) ADAPTER=none ;; *) ADAPTER=github ;; esac
+fi
+if [ "$PROFILE" != self-host ] && [ "$PROFILE" != self-host-firefox ] && [ "$PROFILE" != self-host-systemd ] && [ "$ADAPTER" != github ]; then
+    fail "existing profiles require the GitHub adapter"
+fi
 if [ "$MODE" = install ] && [ "$ACCEPT_THIRD_PARTY" -ne 1 ]; then
     fail "--install requires --accept-third-party"
 fi
 
 reject_symlink_chain "$CACHE_DIR"
-set +e
-if [ "$MODE" = install ]; then
-    sh "$SCRIPT_DIR/bootstrap-gh.sh" --install --accept-third-party --cache-dir "$CACHE_DIR"
-else
-    sh "$SCRIPT_DIR/bootstrap-gh.sh" --check-only --cache-dir "$CACHE_DIR"
+if [ "$ADAPTER" = github ]; then
+    set +e
+    if [ "$MODE" = install ]; then
+        sh "$SCRIPT_DIR/bootstrap-gh.sh" --install --accept-third-party --cache-dir "$CACHE_DIR"
+    else
+        sh "$SCRIPT_DIR/bootstrap-gh.sh" --check-only --cache-dir "$CACHE_DIR"
+    fi
+    GH_RC=$?
+    set -e
+    case "$GH_RC" in
+        0) ;;
+        20) OVERALL=20 ;;
+        *) exit "$GH_RC" ;;
+    esac
 fi
-GH_RC=$?
-set -e
-case "$GH_RC" in
-    0) ;;
-    20) OVERALL=20 ;;
-    *) exit "$GH_RC" ;;
-esac
 
 python_is_compatible() {
     "$1" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)' >/dev/null 2>&1
@@ -407,6 +425,41 @@ check_publication_profile() {
 }
 
 case "$PROFILE" in
+    self-host|self-host-firefox|self-host-systemd)
+        if ! node_24_is_available; then
+            mark_continue "self-host: operator-provisioned Node 24.x is absent"
+        else
+            printf '%s\n' "PASS: self-host Node 24.x ($(node --version)); adapter=$ADAPTER"
+        fi
+        node_python=$(find_python_312 || true)
+        if [ -z "$node_python" ]; then
+            mark_continue "self-host: operator-provisioned Python 3.12.x is absent"
+        else
+            printf '%s\n' "PASS: self-host Python 3.12.x; exact executable identities are frozen by the package builder"
+        fi
+        if [ "$PROFILE" = self-host-firefox ]; then
+            [ "$(uname -s)" = Linux ] || mark_continue "self-host-firefox: Linux is required"
+            for browser_tool in firefox-esr Xvfb x11vnc websockify xdpyinfo xwininfo; do
+                command -v "$browser_tool" >/dev/null 2>&1 || mark_continue "self-host-firefox: operator-provisioned $browser_tool is absent"
+            done
+            test -s /usr/share/novnc/vnc.html && test -s /usr/share/novnc/core/rfb.js || mark_continue "self-host-firefox: complete noVNC source is absent"
+        fi
+        if [ "$PROFILE" = self-host-systemd ]; then
+            [ "$(uname -s)" = Linux ] || mark_continue "self-host-systemd: Linux is required"
+            for supervisor_tool in systemctl systemd-analyze; do
+                if ! command -v "$supervisor_tool" >/dev/null 2>&1; then
+                    mark_continue "self-host-systemd: operator-provisioned $supervisor_tool is absent"
+                else
+                    supervisor_version=$("$supervisor_tool" --version | awk 'NR == 1 && $1 == "systemd" {print $2}')
+                    case "$supervisor_version" in
+                        ''|*[!0-9]*) fail "self-host-systemd: malformed $supervisor_tool version" ;;
+                        *) [ "$supervisor_version" -ge 252 ] || mark_continue "self-host-systemd: systemd >=252 is required" ;;
+                    esac
+                fi
+            done
+            printf '%s\n' "self-host-systemd: unit syntax can be checked locally; native active supervisor/control-plane admission remains separate"
+        fi
+        ;;
     core) check_core_profile ;;
     ietf) check_ietf_profile ;;
     formal) check_formal_profile ;;

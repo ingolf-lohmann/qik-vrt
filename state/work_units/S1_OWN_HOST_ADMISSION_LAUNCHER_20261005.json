@@ -1,0 +1,168 @@
+{
+  "artificial_cognitive_actor": {
+    "model_family": "GPT-6",
+    "model_or_build_identity": "UNAVAILABLE",
+    "provider": "OpenAI",
+    "retention": "METADATA_ONLY",
+    "session_id": "6d583895a9e2",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh GitHub branch/history and Railway/Vercel carrier inventory",
+    "Exact original package freeze and independent separate-process verification",
+    "Extend existing launcher with declarative pinned admission plan, local identity/mount check and original verify/run/readback argv",
+    "Executable admission negative controls and full available local repository verification",
+    "Persist actual resource/capability and local native Unix-socket limitation"
+  ],
+  "capability_hold": "runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json",
+  "created_at": "2026-10-05T05:44:12.817301+00:00",
+  "external_effects": {
+    "candidate_git_write": "AUTHORIZED_REVIEWABLE_SUCCESSOR; readback required",
+    "credential_values_persisted": false,
+    "host_deployment_performed": false,
+    "platform_mutations_performed": false
+  },
+  "git_history": {
+    "history_rewritten": false,
+    "original_recovered_files_modified": false,
+    "parent": "3bf52747bc94de847d390ffacabecae183aee588",
+    "successor_commit_binding": "Containing commit and native immutable event head; never self-reference this work-unit commit"
+  },
+  "human_actor": {
+    "instruction_source": "CURRENT_USER_ACTION",
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "human_contributions": [
+    "Task scope: inspect current history and deployment carriers for an existing usable own host; otherwise materialize only the missing host admission/launcher binding and precise HOLD",
+    "Acceptance limits: exact package, independent verify, public external readback and real deployed restart; governance separate"
+  ],
+  "human_decision": {
+    "candidate_review": "PENDING",
+    "main_merge": "NOT_PERFORMED",
+    "task_implementation": "AUTHORIZED_CURRENT_USER_ACTION"
+  },
+  "inputs": [
+    {
+      "bytes": 177814,
+      "git_blob_sha1": "ffdc681eee6989254c604727ca9729bb3ecd5321",
+      "path": "evidence/self_host/OWN_HOST_HISTORY_SEARCH_20261005.json",
+      "sha256": "1073f3f2d94799e1bb3c74396493167f6c211d3bff84ed6e9e42be6e3c777447"
+    }
+  ],
+  "joint_components": [],
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "next_action": "On an actually callable authorized own host, obtain independently validated private admission/config pins and prepare the exact launcher; external public readback and deployed restart required. Native exact-successor CI required independently.",
+  "outputs": [
+    {
+      "bytes": 36376,
+      "git_blob_sha1": "a296ce34136c8ff1b453fb19b52a488ef5e934e6",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "3f874e72f1601898cb181591885236d1c4ffebb1b0389277a051994efad41993"
+    },
+    {
+      "bytes": 25569,
+      "git_blob_sha1": "08edbb217ed2aadd4f90ba0e93e6e7113ab8cb4e",
+      "path": "tests/test_self_host.py",
+      "sha256": "f3fcb7aac3de9eda84f4b34034e2100c663b598cedd90b4760fd4bc0e1bc0375"
+    },
+    {
+      "bytes": 3963,
+      "git_blob_sha1": "6e52da34ce13e857594f1375cacb01112aea9f2d",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "1a6dd34bd91def37d2d4f4a22ed2a3c7fc7c4a4e2f22b9fd457c6b1ce978db30"
+    },
+    {
+      "bytes": 12222,
+      "git_blob_sha1": "9d742299c9ddddcccc2a711fe90831451e49e57d",
+      "path": "runtime/self-host/README.md",
+      "sha256": "df04d2b60026c3f7f89d71d4bd5fc31be2131301a13c8cf79afae159b5f728aa"
+    },
+    {
+      "bytes": 412,
+      "git_blob_sha1": "fe825cef138bbe7258ea091606e58d96c5317973",
+      "path": "runtime/self-host/HOST_ADMISSION.example.json",
+      "sha256": "2352b7e337e8405cc1e5911be4be3e9b6a5d7732566b03be1468b1a02517e774"
+    },
+    {
+      "bytes": 9029,
+      "git_blob_sha1": "ccb938dc91d97147aeb61eb1a849df232634a729",
+      "path": "runtime/capabilities/S1_OWN_HOST_ADMISSION_20261005.json",
+      "sha256": "752acd3fedd284f10ad2f18e43cb44242b08d8951fcfb5e9f3fe03f81e2dedb0"
+    },
+    {
+      "bytes": 177814,
+      "git_blob_sha1": "ffdc681eee6989254c604727ca9729bb3ecd5321",
+      "path": "evidence/self_host/OWN_HOST_HISTORY_SEARCH_20261005.json",
+      "sha256": "1073f3f2d94799e1bb3c74396493167f6c211d3bff84ed6e9e42be6e3c777447"
+    },
+    {
+      "bytes": 3001,
+      "git_blob_sha1": "7ebb76ed76f6b31bc18a68cc777164f6ffbffa01",
+      "path": "evidence/self_host/OWN_HOST_LOCAL_VALIDATION_20261005.json",
+      "sha256": "3a26d289f54bda43b13ab2007de16fe5d004e0cdd1db5cb1f2b2c34825a5016a"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "S1_DONE": false,
+    "deployed_restart_verified": false,
+    "deployment_performed": false,
+    "host_admission_verified": false,
+    "ordinary_release": false,
+    "public_readback_verified": false,
+    "public_url": null,
+    "review_governance_satisfied": false
+  },
+  "reuse_evidence": {
+    "existing_independent_readback": "tools/qikvrt_mesh_monitor_readback.mjs",
+    "existing_launch_operation": "run",
+    "existing_package_verifier": "verify",
+    "existing_private_path_verifier": "private_path",
+    "existing_tool": "tools/qikvrt_self_host.py",
+    "insufficiency": "Existing launcher binds configured local filesystem but does not bind a host identity, actual persistent mount, authorized HTTPS declaration and existing supervisor to an exact original export",
+    "new_executor_or_ledger_or_supervisor": false
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "3bf52747bc94de847d390ffacabecae183aee588",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "96c7bb691675dcd15bb5045871201adb400074f0",
+  "unresolved_origin": [],
+  "verification": {
+    "combined_local_success_claimed": false,
+    "initial_combined_command": "make test repository-monitor-test self-host-test",
+    "native_local_execution": {
+      "errno": 1,
+      "exception": "PermissionError",
+      "original_tests_modified": false,
+      "remote_exact_head_gate_required": true,
+      "result": "BLOCK_LOCAL_EXECUTOR_UNIX_SOCKET_BIND"
+    },
+    "new_admission_controls": [
+      "missing host returns exact HOLD and creates no volume binding",
+      "pinned declaration emits original verify/run/readback argv with no service execution or completion",
+      "wrong declaration pin, exact subject, HTTPS origin, identity, mount and evidence binding rejected",
+      "overlay mount refused as persistence"
+    ],
+    "portable_and_monitor_log_sha256": "74244f582ada375c8c3ad3c3e1739ace3784c8adf7d6c5edfbe9c691082732df",
+    "portable_make_test": "PASS_BEFORE_NATIVE_TARGET",
+    "repository_monitor_tests": {
+      "node_tests": 24,
+      "result": "PASS"
+    },
+    "standalone_log_sha256": "3b52ae9445f31871f503f61a98c84a5d71bc2eda94746b44169a090f6acb7f0c",
+    "standalone_tests": {
+      "command": "python3 -B -m unittest -v tests.test_self_host",
+      "result": "PASS",
+      "tests": 19
+    },
+    "test_scope": "SYNTHETIC_LOCAL_FIXTURES; NOT_OWN_HOST_ACCEPTANCE"
+  },
+  "work_unit_id": "S1_OWN_HOST_ADMISSION_LAUNCHER_20261005"
+}
