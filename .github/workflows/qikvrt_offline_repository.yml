@@ -96,6 +96,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/qikvrt-offline-transfer"
           python3 -B tools/qikvrt_integrity.py verify
           python3 -B tools/qikvrt_offline_repository.py pack --ref HEAD --output "$RUNNER_TEMP/qikvrt-offline-transfer/repository.qikvrt.gz" > "$RUNNER_TEMP/qikvrt-offline-transfer/RECEIPT.json"
+          python3 -B tools/qikvrt_offline_repository.py client --ref HEAD --output "$RUNNER_TEMP/qikvrt-offline-transfer/offline-client.zip" > "$RUNNER_TEMP/qikvrt-offline-transfer/CLIENT_RECEIPT.json"
           cp docs/monitor/offline/README.md "$RUNNER_TEMP/qikvrt-offline-transfer/README.md"
           git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/qikvrt-offline-transfer/SUBJECT.txt"
           git status --porcelain --untracked-files=no > "$RUNNER_TEMP/qikvrt-offline-transfer/TRACKED_STATUS.txt"
@@ -104,4 +105,12 @@ jobs:
         with:
           name: qikvrt-complete-offline-repository-${{ github.sha }}
           path: ${{ runner.temp }}/qikvrt-offline-transfer
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-static-offline-client-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-offline-transfer/offline-client.zip
+            ${{ runner.temp }}/qikvrt-offline-transfer/CLIENT_RECEIPT.json
+            ${{ runner.temp }}/qikvrt-offline-transfer/SUBJECT.txt
           retention-days: 30

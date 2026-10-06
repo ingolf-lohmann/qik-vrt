@@ -15,6 +15,7 @@ import json
 import pathlib
 import subprocess
 import tempfile
+import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CLIENT = ROOT / "docs/monitor/offline"
@@ -53,6 +54,29 @@ def shell():
     worker = (CLIENT / "service-worker.template.js").read_text().replace("__SHELL_ID__", shell_id).replace("__ASSETS__", canonical(hashes))
     (CLIENT / "service-worker.js").write_text(worker)
     return {"schema": "qikvrt-offline-shell/v1", "shell_sha256": shell_id, "assets": hashes}
+
+def client_package(ref, output):
+    """Export only committed static-client bytes; never private browser data."""
+    output = pathlib.Path(output)
+    if output.exists():
+        raise ValueError("OUTPUT_ALREADY_EXISTS")
+    head = git("rev-parse", "--verify", ref + "^{commit}").decode().strip()
+    tree = git("rev-parse", head + "^{tree}").decode().strip()
+    files = {}
+    for name in (*ASSETS, "service-worker.js", "static-server.mjs", "package.json", "README.md"):
+        files[name] = git("show", head + ":docs/monitor/offline/" + name)
+    binding = {"schema": "qikvrt-offline-client-source/v1", "repository": "ingolf-lohmann/qik-vrt", "source_head": head, "source_tree": tree,
+               "files": {name: {"bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()} for name, data in sorted(files.items())},
+               "first_install_requires_https": True, "actual_iphone_devices_tested": False, "native_review": False, "main_effect": False}
+    files["SOURCE.json"] = (canonical(binding) + "\n").encode()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(output, "x", compression=zipfile.ZIP_DEFLATED) as archive:
+        for name, data in sorted(files.items()):
+            info = zipfile.ZipInfo(name, (1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o100644 << 16
+            archive.writestr(info, data)
+    return {"schema": "qikvrt-offline-client-receipt/v1", "source_head": head, "source_tree": tree, "archive_bytes": output.stat().st_size, "archive_sha256": file_hash(output), "files": len(files), "native_review": False, "main_effect": False}
 
 def pack(ref, output, paths=()):
     output = pathlib.Path(output)
@@ -143,12 +167,12 @@ def file_hash(path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("shell", "pack"))
+    parser.add_argument("command", choices=("shell", "pack", "client"))
     parser.add_argument("--ref", default="HEAD")
     parser.add_argument("--output")
     parser.add_argument("--path", action="append", default=[])
     args = parser.parse_args()
-    if args.command == "pack" and not args.output: parser.error("pack requires --output")
-    print(json.dumps(shell() if args.command == "shell" else pack(args.ref, args.output, args.path), indent=2, sort_keys=True))
+    if args.command != "shell" and not args.output: parser.error(args.command + " requires --output")
+    print(json.dumps(shell() if args.command == "shell" else client_package(args.ref, args.output) if args.command == "client" else pack(args.ref, args.output, args.path), indent=2, sort_keys=True))
 
 if __name__ == "__main__": main()

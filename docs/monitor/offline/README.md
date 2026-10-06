@@ -110,3 +110,19 @@ Nachweis schaltet daher den tatsächlichen Origin-Server ab; Chromium erhält
 zusätzlich das Offline-Flag. Dies belegt ausfallfestes lokales Arbeiten, keine
 physische iPhone-Flugmodus-Abnahme. Browser-`navigator.onLine` ist nur ein Hinweis.
 Upstream-Diagnose: https://github.com/microsoft/playwright/issues/42775
+
+## Statisches Client-Paket und HTTPS-Hosting
+
+Das native Transfer-Artefakt enthält zusätzlich `offline-client.zip` mit allen
+Produktionsdateien, MIT-Lizenz, Startskript und `SOURCE.json`. Die Datei benennt
+den unveränderlichen Quell-HEAD/TREE und die SHA-256-Werte der einzelnen Bytes.
+Entpackt kann es mit Node 24 über `node static-server.mjs` lokal verwendet oder
+als rein statischer Inhalt über einen eigenen HTTPS-Origin bereitgestellt werden.
+Das ZIP allein installiert in der iPhone-Dateien-Vorschau keine Offline-App.
+
+Die Bereitstellung über die verbundenen Hostingwege ist aktuell blockiert:
+Railway meldet einen abgelaufenen Trial; Vercel verweigert den Zugriff auf den
+vorhandenen Ingolf-Workspace mit HTTP 403. GitHub Pages ist nicht aktiviert.
+Diese technischen Hostingzustände ändern weder Ingolf Lohmanns Freigabe noch
+die aktuelle Mesh Authority. Ein bereits funktionierender HTTPS-Einstieg wird
+erst nach erfolgreichem Deployment und Byte-Readback benannt.

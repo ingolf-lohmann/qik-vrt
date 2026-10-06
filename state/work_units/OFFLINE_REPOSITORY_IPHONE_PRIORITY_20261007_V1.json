@@ -28,6 +28,10 @@
   ],
   "external_effects": {
     "authorized": "Reviewable branch/PR, fresh CI transfer artifacts and isolated read-only static HTTPS delivery",
+    "github_pages": {
+      "activation_performed": false,
+      "has_pages": false
+    },
     "main_write": false,
     "merge": false,
     "native_review_submission": false,
@@ -37,7 +41,14 @@
       "mutation_succeeded": false,
       "paid_plan_selected": false
     },
-    "ruleset_change": false
+    "ruleset_change": false,
+    "vercel_delivery_access": {
+      "cli_available": false,
+      "deployment_performed": false,
+      "readback": "GET specific existing project returned HTTP403 forbidden",
+      "scope": "ingolflohmann-8385",
+      "team_id": "team_gy5f8lcnU2bifwDJ5dC3MT27"
+    }
   },
   "git_history": {
     "branch": "work/offline-iphone-repository-20261007",
@@ -101,6 +112,7 @@
     "actual_iphone_readback": false,
     "browser_contract": ".github/workflows/qikvrt_offline_repository.yml",
     "complete_source": "Native gzip transfer imported as actual browser File in Chromium and WebKit; every source byte and Git tree verified",
+    "delivery_package": "Native client ZIP with actual committed source bytes and source HEAD/TREE/SHA256 manifest",
     "device_test_scope": "390px touch layout and desktop WebKit are not actual iPhone tests",
     "initial_native_findings": {
       "chromium_cause": "Actual cached offline navigation succeeded; navigator.onLine UI hint remained online and test incorrectly equated it with reachable network. Product label now explicitly identifies hint; uncached fetch is negative control.",

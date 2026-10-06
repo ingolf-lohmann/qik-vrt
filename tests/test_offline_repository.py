@@ -7,6 +7,7 @@ import pathlib
 import subprocess
 import tempfile
 import unittest
+import zipfile
 from tools import qikvrt_offline_repository as offline
 
 class OfflineTransferTests(unittest.TestCase):
@@ -32,6 +33,22 @@ class OfflineTransferTests(unittest.TestCase):
         for item in (lock['bundle'],lock['license']):
             self.assertEqual(hashlib.sha256((offline.ROOT/item['path']).read_bytes()).hexdigest(),item['sha256'])
         self.assertEqual(lock['reuse_source_commit'],'53040b450853b0ab5a3d59765b86030b3bd0c978')
+
+    def test_client_package_exports_committed_source_bytes_and_binding(self):
+        with tempfile.TemporaryDirectory() as d:
+            path=pathlib.Path(d)/'client.zip'
+            receipt=offline.client_package('HEAD',path)
+            with zipfile.ZipFile(path) as archive:
+                binding=json.loads(archive.read('SOURCE.json'))
+                self.assertEqual(binding['source_head'],receipt['source_head'])
+                for name, item in binding['files'].items():
+                    data=archive.read(name)
+                    self.assertEqual(hashlib.sha256(data).hexdigest(),item['sha256'])
+                    self.assertEqual(data,offline.git('show',receipt['source_head']+':docs/monitor/offline/'+name))
+                self.assertNotIn('repository.qikvrt.gz',archive.namelist())
+                self.assertFalse(binding['actual_iphone_devices_tested'])
+            self.assertEqual(receipt['archive_sha256'],offline.file_hash(path))
+            with self.assertRaisesRegex(ValueError,'OUTPUT_ALREADY_EXISTS'): offline.client_package('HEAD',path)
 
     def test_pack_refuses_overwrite_and_missing_source_paths(self):
         with tempfile.TemporaryDirectory() as d:
