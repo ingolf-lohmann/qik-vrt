@@ -63,11 +63,11 @@ async function routes(request, response, url) {
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
     reply(response, 409, {error:'GITHUB_ADAPTER_NOT_SELECTED', effect_ack_done:false}); return true;
   }
-  const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client'].includes(url.pathname) || files.has(url.pathname) ||
+  const owned = ['/','/index.html','/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client'].includes(url.pathname) || files.has(url.pathname) ||
     (config.adapter === 'none' && url.pathname === '/api/run');
   if (!owned) return false;
   if (!['GET','HEAD'].includes(request.method)) { reply(response,405,{error:'READ_ONLY_ROUTE'}); return true; }
-  if (['/mesh','/node','/client'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
+  if (['/','/index.html','/mesh','/node','/client'].includes(url.pathname)) reply(response,200,readFileSync(join(root,'docs/monitor/index-react.html'),'utf8').replace('MONITOR_VERSION',VERSION),'text/html',request.method);
   else if (url.pathname === '/api/runtime') reply(response,200,binding(),'application/json',request.method);
   else if (url.pathname === '/api/terminal') {
     const token = readFileSync(config.terminal_token_file,'utf8').trim();

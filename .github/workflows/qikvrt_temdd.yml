@@ -92,9 +92,12 @@ jobs:
       - name: Execute real desktop Origin persistence and negative controls
         env:
           QIKVRT_ORIGIN_TEST_EVIDENCE: ${{ runner.temp }}/origin-desktop-witness.json
+          QIKVRT_ENTRY_TEST_EVIDENCE: ${{ runner.temp }}/terminal-entry-browser-witness.json
+          QIKVRT_ENTRY_SCREENSHOT_DIR: ${{ runner.temp }}/terminal-entry-review
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p "$QIKVRT_ENTRY_SCREENSHOT_DIR"
           QIKVRT_ORIGIN_FIXTURE_DIR="$PWD/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.browser.test.mjs 2>&1 | tee "$RUNNER_TEMP/origin-browser-tests.log"
           git diff --exit-code
       - name: Preserve native execution and exact source binding
@@ -106,6 +109,8 @@ jobs:
             ${{ runner.temp }}/temdd-s1-tests.log
             ${{ runner.temp }}/temdd-s1-binding.json
             ${{ runner.temp }}/origin-browser-tests.log
+            ${{ runner.temp }}/terminal-entry-browser-witness.json
+            ${{ runner.temp }}/terminal-entry-review/*.png
             ${{ runner.temp }}/origin-desktop-witness.json
 
             ${{ runner.temp }}/owner-rest-evidence/*.json

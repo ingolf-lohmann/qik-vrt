@@ -1,0 +1,77 @@
+{
+  "schema": "qikvrt-terminal-entry-clarity-work-unit/v1",
+  "work_unit_id": "TERMINAL_ENTRY_CLARITY_20261006_V1",
+  "scope": "EXISTING_PASSIVE_REACT_TERMINAL_ENTRY; NO_PUBLIC_DEPLOYMENT",
+  "source_parent": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 474,
+    "head": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
+    "tree": "1b96726a258cd5efdf8cc0512013d245328167e5"
+  },
+  "product_contract": {
+    "pr": 472,
+    "head": "0221b70e97274fbe7a29a40d9ccff5e8f2963961",
+    "entry": "https://raumzeitterminal.de/",
+    "root_document": "index.html"
+  },
+  "human_directive": {
+    "author": "Ingolf Lohmann",
+    "source": "Explicit task of 2026-10-06: revise existing React entry; apply six Dueck questions; preserve passive terminal and evidence limits"
+  },
+  "contributions": {
+    "human": [
+      "Product scope",
+      "Six-question acceptance checklist",
+      "Authority and licensing boundaries"
+    ],
+    "artificial_cognitive": {
+      "provider": "OpenAI",
+      "system": "Codex",
+      "model_family": "GPT-6",
+      "exact_build": "UNAVAILABLE",
+      "components": [
+        "React view, styling and root routing",
+        "Preparation-only form",
+        "Existing browser-harness and HTTP-test extensions",
+        "Acceptance documentation"
+      ]
+    }
+  },
+  "implemented": [
+    "Personal task and target users precede technical telemetry",
+    "Bounded technical evidence and product targets remain separate",
+    "Existing SQLite export view is primary entry action",
+    "Three-question setup preview remains memory-only",
+    "Mesh/node/readback interfaces remain secondary reachable views",
+    "Updates, buyers, pricing, license and unmeasured advantage stated explicitly"
+  ],
+  "verification": {
+    "state": "CANDIDATE_CHECKPOINT_FRESH_VALIDATION_PENDING",
+    "required": [
+      "make test repository-monitor-test origin-adapter-test",
+      "Native static React root/index HEAD and POST controls",
+      "Existing S1 browser harness with six UI control groups"
+    ],
+    "editorial_source": "docs/monitor/README.md#raumzeitterminal-personal-entry-in-the-existing-react-client",
+    "independent_user_acceptance": false,
+    "predecessor_evidence_transfer": false
+  },
+  "recovery": {
+    "observation": "Local workspace replaced during attempted desktop browser test; no browser result established. Source changes reconstructed; fresh checks required.",
+    "cause": "UNESTABLISHED",
+    "next_action": "Secure reviewable candidate; execute fresh candidate tests and native CI; inspect exact-source witness and screenshots."
+  },
+  "boundaries": {
+    "personal_runtime_admitted": false,
+    "automatic_context_resumption_verified": false,
+    "public_https_verified": false,
+    "android_verified": false,
+    "ios_verified": false,
+    "customers_verified": false,
+    "price_list_exists": false,
+    "measured_customer_advantage": false,
+    "merge_authorized_by_this_record": false,
+    "deployment_authorized_by_this_record": false,
+    "effect_ack_done": false
+  }
+}

@@ -506,12 +506,15 @@ m.server.closeAllConnections();await new Promise(r=>m.server.close(r));
 
     def test_static_react_export_serves_each_scope_and_preserves_original_bytes(self):
         self.start()
-        for route in ("/mesh", "/node?repository=ingolf-lohmann%2Fqik-vrt", "/client"):
+        for route in ("/", "/index.html", "/mesh", "/node?repository=ingolf-lohmann%2Fqik-vrt", "/client"):
             code, page = self.get(route)
             self.assertEqual(code, 200)
             self.assertIn('data-qikvrt-monitor-version="2026-10-04.9"', page)
             self.assertIn('/assets/js/qikvrt-react-runtime.js', page)
             self.assertNotIn('MONITOR_VERSION', page)
+            self.assertIn('RaumzeitTerminal · Persönlicher Arbeitskontext', page)
+            self.assertEqual(self.get(route, method="HEAD")[0], 200)
+            self.assertEqual(self.get(route, method="POST")[0], 405)
         for route, name in (("/assets/js/qikvrt-react-runtime.js", "react-runtime.js"),
                             ("/assets/js/qikvrt-mesh-react.js", "mesh-react.js"),
                             ("/assets/css/qikvrt-mesh-react.css", "mesh-react.css"),

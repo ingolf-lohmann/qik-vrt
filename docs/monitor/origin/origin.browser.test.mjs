@@ -82,3 +82,92 @@ test('actual desktop Chromium: atomic original-store persistence, reload, offlin
   const output=process.env.QIKVRT_ORIGIN_TEST_EVIDENCE;
   if(output){const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();writeFileSync(output,JSON.stringify({schema:'qikvrt-origin-desktop-witness/v1',source_head:git('rev-parse','HEAD'),source_tree:git('rev-parse','HEAD^{tree}'),worktree_dirty:!!git('status','--porcelain'),platform:process.platform,architecture:process.arch,playwright:'1.62.1',browser_version:browser.browser()?.version()||'persistent-context',browser_executable_sha256:sha(readFileSync(executable)),origin:url,scope:'REAL_DESKTOP_CHROMIUM_LOOPBACK; SYNTHETIC_ORIGINAL_KERNEL_STORE',checks,android_verified:false,ios_verified:false,public_https_verified:false,effect_ack_done:false},null,2)+'\n');}
 });
+
+test('existing React entry: six product answers and passive personal preparation',async t=>{
+  const source=resolve(new URL('..',import.meta.url).pathname);
+  const assets=new Map([
+    ['/assets/css/qikvrt-mesh-react.css','mesh-react.css'],
+    ['/assets/js/qikvrt-react-runtime.js','react-runtime.js'],
+    ['/assets/js/qikvrt-mesh-react.js','mesh-react.js'],
+    ['/assets/js/qikvrt-mesh-file-codec.js','mesh-file-codec.js'],
+    ['/assets/js/qikvrt-mesh-file-client.js','mesh-file-client.js'],
+    ['/assets/js/qikvrt-mesh-file-view.js','mesh-file-view.js'],
+    ['/client-replica.js','client-replica.js']]);
+  const requests=[];
+  const listener=createServer((request,response)=>{
+    requests.push({method:request.method,url:request.url});
+    const path=new URL(request.url,'http://localhost').pathname;
+    const name=['/','/index.html','/client','/mesh','/node'].includes(path)?'index-react.html':assets.get(path);
+    // Unavailable telemetry must not block preparation or imply a fresh readback.
+    if(!name){response.writeHead(503,{'Content-Type':'application/json'});response.end('{"error":"FIXTURE_READBACK_UNAVAILABLE"}');return;}
+    response.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css'})[extname(name)],'Cache-Control':'no-store'});
+    response.end(readFileSync(join(source,name),'utf8').replace('MONITOR_VERSION','2026-10-04.9'));
+  });
+  await new Promise(resolve=>listener.listen(0,'127.0.0.1',resolve));
+  let session;
+  t.after(async()=>{await session?.close();listener.closeAllConnections();await new Promise(resolve=>listener.close(resolve));});
+  session=await chromium.launch({executablePath:executable,headless:true,args:['--no-sandbox']});
+  const page=await session.newPage({viewport:{width:1280,height:900}}),errors=[],browserRequests=[];
+  const base='http://localhost:'+listener.address().port;
+  page.on('pageerror',error=>errors.push(error.message));
+  page.on('request',request=>browserRequests.push(request.url()));
+  await page.goto(base+'/');
+  await page.getByRole('heading',{name:'Deine Arbeit mit Kontext fortsetzen'}).waitFor();
+  const storageBefore=await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)}));
+  const entryChecks=[];
+  for(const phrase of ['persönlicher Browserassistent','recherchieren','Technisch belegt','Produktziel','noch nicht gemeinsam abgenommen','messbarer Anwendervergleich fehlt'])
+    assert.ok((await page.locator('main').innerText()).includes(phrase),phrase);
+  assert.equal(await page.getByRole('heading',{name:'Repository-Nodes'}).count(),0);
+  entryChecks.push('PERSONAL_TASK_AND_BOUNDED_STATUS_BEFORE_MONITOR');
+  await page.getByRole('link',{name:'Kontextdatei öffnen',exact:true}).click();
+  assert.ok(await page.getByLabel('Repository-Datei öffnen',{exact:true}).isVisible());
+  assert.equal(await page.locator('#persoenlicher-einstieg').getAttribute('open'),null);
+  entryChecks.push('RETURNING_FILE_READER_NOT_AUTOMATICALLY_ONBOARDED');
+  await page.getByRole('link',{name:'Persönlichen Einstieg vorbereiten',exact:true}).click();
+  await page.getByLabel('1. Kennung für deine Beiträge (Name oder Pseudonym)',{exact:true}).fill('UI-only private fixture');
+  await page.getByRole('button',{name:'Angaben als Vorschau prüfen'}).click();
+  assert.ok((await page.getByRole('status').last().innerText()).includes('nicht an eine Laufzeit übergeben'));
+  await page.getByLabel('Zielkonfiguration',{exact:true}).selectOption('PRIVATE_ORIGIN');
+  await page.getByLabel('Eigene HTTPS-Zieladresse',{exact:true}).fill('https://name:password@private.invalid/');
+  await page.getByRole('button',{name:'Angaben als Vorschau prüfen'}).click();
+  assert.ok((await page.getByRole('alert').innerText()).includes('ohne Zugangsdaten'));
+  assert.equal(await page.getByRole('heading',{name:'Einrichtungsvorschau'}).count(),0);
+  await page.getByLabel('Eigene HTTPS-Zieladresse',{exact:true}).fill('https://private.invalid/context');
+  await page.getByLabel('3. Nachweistiefe',{exact:true}).selectOption('FULL_TRANSCRIPT');
+  await page.getByRole('button',{name:'Angaben als Vorschau prüfen'}).click();
+  assert.ok((await page.getByRole('status').last().innerText()).includes('Rechte, Einwilligungen und Authentifizierung'));
+  assert.deepEqual(await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)})),storageBefore);
+  assert.ok(requests.every(request=>request.method==='GET'&&!request.url.includes('private.invalid')&&!request.url.includes('UI-only')));
+  assert.ok(browserRequests.every(url=>url.startsWith(base+'/')));
+  entryChecks.push('THREE_QUESTION_PREVIEW_NO_WRITE_NO_PERSONAL_TRANSPORT_CREDENTIAL_URL_REFUSED');
+  await page.locator('#nachweise summary').click();
+  const answers=await page.locator('.product-answers>li').allTextContents();
+  assert.equal(answers.length,6);
+  for(const [i,phrase] of [[0,'unterbrochen'],[1,'nicht belegt'],[2,'Ingolf Lohmann'],[3,'keine verbindliche Preisliste'],[4,'keine vollständige'],[5,'noch nicht gemessen']])assert.ok(answers[i].includes(phrase));
+  entryChecks.push('ALL_SIX_DUECK_QUESTIONS_ANSWERED_WITH_EXPLICIT_LIMITS');
+  await page.reload();await page.getByRole('heading',{name:'Deine Arbeit mit Kontext fortsetzen'}).waitFor();
+  assert.equal(await page.getByRole('heading',{name:'Einrichtungsvorschau'}).count(),0);
+  await page.getByRole('link',{name:'Mesh-Monitor',exact:true}).click();
+  await page.getByRole('heading',{name:'Das Mesh im aktuellen Nachweisstand'}).waitFor();
+  assert.ok((await page.getByRole('alert').innerText()).includes('Readback offen'));
+  await page.getByRole('link',{name:'Mein Kontext',exact:true}).click();
+  await page.getByRole('heading',{name:'Deine Arbeit mit Kontext fortsetzen'}).waitFor();
+  entryChecks.push('RELOAD_CLEARS_PREVIEW_MONITOR_AND_READBACK_ERROR_REMAIN_REACHABLE');
+  for(const width of [390,1280]){
+    await page.setViewportSize({width,height:900});
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    assert.ok(await page.getByRole('link',{name:'Kontextdatei öffnen',exact:true}).isVisible());
+    if(process.env.QIKVRT_ENTRY_SCREENSHOT_DIR)await page.screenshot({path:join(process.env.QIKVRT_ENTRY_SCREENSHOT_DIR,'raumzeitterminal-entry-'+width+'.png'),fullPage:true});
+  }
+  assert.deepEqual(errors,[]);
+  entryChecks.push('NARROW_AND_DESKTOP_LAYOUT_NO_OVERFLOW_OR_REACT_ERRORS');
+  if(process.env.QIKVRT_ENTRY_TEST_EVIDENCE){
+    const git=(...args)=>execFileSync('git',args,{encoding:'utf8'}).trim();
+    writeFileSync(process.env.QIKVRT_ENTRY_TEST_EVIDENCE,JSON.stringify({schema:'qikvrt-terminal-entry-browser-witness/v1',
+      source_head:git('rev-parse','HEAD'),source_tree:git('rev-parse','HEAD^{tree}'),worktree_dirty:!!git('status','--porcelain'),
+      source_sha256:Object.fromEntries(['mesh-react.js','mesh-react.css','index-react.html'].map(name=>[name,sha(readFileSync(join(source,name)))])),
+      platform:process.platform,architecture:process.arch,browser_version:session.version(),checks:entryChecks,
+      scope:'REAL_DESKTOP_CHROMIUM_LOOPBACK_WITH_UNAVAILABLE_TELEMETRY; NO_PERSONAL_RUNTIME_ADMISSION',
+      android_verified:false,ios_verified:false,public_https_verified:false,independent_user_acceptance:false,effect_ack_done:false},null,2)+'\n');
+  }
+});
