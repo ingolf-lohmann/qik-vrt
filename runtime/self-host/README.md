@@ -1,5 +1,41 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.4.0
+# S1 standalone node package, version 1.5.0
+
+Every current and future repository node, including Authority and Mirror, must
+implement and run both the universal Transputer and the universal Terminal.
+The normative bus obligations are in `MESH_ACTIVATION.json#/required_node_runtime`.
+There are no role exemptions. A reference-only diagnostic profile does not admit
+a node to the productive Mesh.
+
+`python3 -B tools/qikvrt_self_host.py mesh-contract` checks the role-independent
+contract and the exact packaged source carriers. The existing `pack` and `verify`
+paths invoke the same gate and bind its contract digest in the package manifest.
+Missing either component, weakened effect invariants, unsafe partition behavior,
+or an incomplete fault model blocks package admission. This source gate does
+not assert that a node is deployed or that failover has executed.
+
+Fault acceptance must exercise process crash, node loss, network partition,
+provider loss, lost Effect-Ack, simultaneous takeover, stale writer and rejoin on
+the real public workload. It must retain the same session/Work Unit, original
+event bytes and confirmed effects, with zero acknowledged-effect loss and zero
+duplicate irreversible effects. A takeover needs authenticated journal catch-up
+and a fence that the effect carrier enforces against the previous writer; an
+unknown outcome permits readback only. One provider hosting multiple repositories
+does not establish independence from provider loss.
+
+Ordinarily unnoticed recovery is a measured acceptance objective. Declare the
+failure bound, topology, workload and numerical RTO/interruption SLO first;
+record p50/p95/p99/maximum interruption, failed requests, retries and queue age.
+If a safe quorum is absent, preserve confirmed reads and hold writes visibly.
+Do not hide an unverified effect behind a successful response. Necessary
+authorized operations require documented REST/API adapters.
+
+The existing monitor replica protects a confirmed observation prefix. It does
+not replicate the native TEMDD effect ledger or implement writer takeover. The
+current S1 native terminal/Transputer remains a single-node carrier; live
+multi-node effect replication, write fencing and transparent recovery are open
+implementation/host-acceptance work. The neuronal description is an architecture
+analogy governed by the existing evidence/adaptation policy.
 
 The same S1 listener now serves the static React document at `/mesh`, `/node`
 and `/client`. Node selection is `/node?repository=<declared-repository>`.

@@ -36,6 +36,19 @@ BROWSER_COMMANDS = ("firefox-esr", "Xvfb", "x11vnc", "websockify", "xdpyinfo", "
 STATE_FILES = frozenset(("binding.json", "monitor/node.json", "temdd/events.sqlite3",
                         "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm"))
 STATE_MAX_BYTES = 2 * 1024 * 1024 * 1024
+MESH_CONTRACT = "runtime/self-host/MESH_ACTIVATION.json"
+MESH_COMPONENT_FILES = {
+    "universal_transputer": ["src/qikvrt_temdd_event_ledger.py"],
+    "universal_terminal": ["src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
+                           "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"],
+}
+MESH_FAULT_CASES = ("PROCESS_CRASH", "NODE_LOSS", "NETWORK_PARTITION", "PROVIDER_LOSS",
+                    "LOST_EFFECT_ACK", "CONCURRENT_TAKEOVER", "STALE_WRITER", "NODE_REJOIN")
+MESH_INVARIANTS = ("same_work_unit_after_failover", "preserve_confirmed_effects",
+                   "no_duplicate_irreversible_effect", "fence_previous_writer",
+                   "replicate_before_positive_effect_ack", "fresh_authenticated_readback",
+                   "retain_unavailable_inventory_members", "preserve_original_event_bytes",
+                   "measure_user_visible_interruption", "hold_writes_without_safe_quorum")
 
 
 def raw_json(value):
@@ -62,6 +75,65 @@ def browser_executables():
     # universal version. Actual package versions are retained by the image build.
     return {name: digest(Path(shutil.which(name) or name).resolve(strict=True).read_bytes())
             for name in BROWSER_COMMANDS}
+
+
+def mesh_contract(root, definition=None):
+    """Verify role-independent source obligations, never infer deployed fault tolerance.
+
+    This is the package admission boundary. Live receipts, leader fencing and
+    original native effect replication still need separate runtime acceptance.
+    """
+    definition = definition if definition is not None else json.loads((root / DEFINITION).read_bytes())
+    raw = (root / MESH_CONTRACT).read_bytes()
+    activation = json.loads(raw)
+    if not isinstance(activation, dict) or not isinstance(definition, dict):
+        raise ValueError("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+    contract = activation.get("required_node_runtime", {})
+    if (not isinstance(contract, dict)
+            or activation.get("schema") != "qikvrt-self-host-mesh-activation/v1"
+            or contract.get("schema") != "qikvrt-node-bus-contract/v1"
+            or contract.get("scope") != "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE"
+            or contract.get("all_roles") is not True
+            or contract.get("role_exemptions") != []
+            or contract.get("source_carriers") != MESH_COMPONENT_FILES
+            or contract.get("live_acceptance_required") is not True):
+        raise ValueError("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+    required = {MESH_CONTRACT, "tools/qikvrt_self_host.py", "docs/monitor/self-host.mjs"}
+    required.update(path for paths in MESH_COMPONENT_FILES.values() for path in paths)
+    files = definition.get("files")
+    if (not isinstance(files, list) or not all(isinstance(path, str) for path in files)
+            or len(files) != len(set(files)) or not required <= set(files)
+            or definition.get("native_terminal_daemon_included") is not True):
+        raise ValueError("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+    invariants = contract.get("invariants", {})
+    if not isinstance(invariants, dict) or any(invariants.get(key) is not True for key in MESH_INVARIANTS):
+        raise ValueError("MESH_CONTINUITY_INVARIANTS_REQUIRED")
+    cases = contract.get("required_fault_cases")
+    if (not isinstance(cases, list) or not all(isinstance(case, str) for case in cases)
+            or len(cases) != len(set(cases)) or set(cases) != set(MESH_FAULT_CASES)):
+        raise ValueError("MESH_FAULT_MODEL_REQUIRED")
+    limits = contract.get("acceptance_limits", {})
+    if not isinstance(limits, dict) or any(type(limits.get(key)) is not int or limits[key] != value
+            for key, value in (("acknowledged_effect_loss", 0), ("duplicate_irreversible_effects", 0),
+                               ("concurrent_writers_per_effect", 1))):
+        raise ValueError("MESH_EFFECT_SAFETY_LIMITS_REQUIRED")
+    if limits.get("quorum_loss_behavior") != "HOLD_WRITES_PRESERVE_CONFIRMED_READS":
+        raise ValueError("MESH_SAFE_PARTITION_BEHAVIOR_REQUIRED")
+    for field in ("rto_ms", "user_visible_interruption_slo_ms"):
+        value = limits.get(field)
+        if field not in limits or (value is not None and (type(value) is not int or value < 0)):
+            raise ValueError("MESH_WORKLOAD_BOUND_AVAILABILITY_LIMIT_REQUIRED")
+    component_hashes = {}
+    for name in sorted(required):
+        path = root / name
+        if path.is_symlink() or any(p.is_symlink() for p in path.parents) or not path.is_file():
+            raise ValueError("MESH_REGULAR_SOURCE_COMPONENT_REQUIRED")
+        component_hashes[name] = digest(path.read_bytes())
+    return {"schema": "qikvrt-node-bus-contract-check/v1", "state": "SOURCE_OBLIGATIONS_BOUND",
+            "contract_sha256": digest(raw), "source_component_sha256": component_hashes,
+            "required_fault_cases": list(MESH_FAULT_CASES), "native_runtime_executed": False,
+            "all_node_runtime_verified": False, "write_failover_verified": False,
+            "application_transparency_verified": False, "effect_ack_done": False}
 
 
 def verify_react_assets(root):
@@ -165,6 +237,7 @@ def freeze(root, output, head, tree, browser_assets=None):
             manifest["browser_runtime"]["files"].append(name)
             manifest["browser_runtime"]["files"].sort()
         verify_react_assets(output)
+        manifest["mesh_node_contract_sha256"] = mesh_contract(output, definition)["contract_sha256"]
         data = raw_json(manifest)
         (output / "MANIFEST.json").write_bytes(data)
         (output / "MANIFEST.json").chmod(0o644)
@@ -220,6 +293,8 @@ def verify(package, expected):
         raise ValueError("NOVNC_SOURCE_CONFINEMENT_REQUIRED")
     if set(value["files"]) != set(definition["files"]) | extra or definition["version"] != value["package_version"]:
         raise ValueError("PACKAGE_DEFINITION_MISMATCH")
+    if value.get("mesh_node_contract_sha256") != mesh_contract(package, definition)["contract_sha256"]:
+        raise ValueError("MESH_NODE_CONTRACT_BINDING_MISMATCH")
     if browser is not None and browser["executables"] != browser_executables():
         raise ValueError("BROWSER_EXECUTABLE_BINDING_MISMATCH")
     if value["runtime"] != {"node": runtime("node"), "python": runtime(sys.executable),
@@ -963,7 +1038,7 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -994,6 +1069,8 @@ def main():
     try:
         if args.operation.startswith("migration-"):
             result = migration_module().execute(args, verify, load_source, private_path)
+        elif args.operation == "mesh-contract":
+            result = mesh_contract(args.root)
         elif args.operation == "pack":
             if not args.output or not args.expected_head or not args.expected_tree: raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
             result = freeze(args.root, args.output, args.expected_head, args.expected_tree, args.browser_assets_root)

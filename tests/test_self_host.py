@@ -58,7 +58,191 @@ class WorkflowRuntimeTests(unittest.TestCase):
         self.assertNotIn("|| true", complete)
 
 
+class MeshContractTests(unittest.TestCase):
+    """Source admission controls; no simulated receipt becomes live failover evidence."""
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="qikvrt-mesh-contract-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.definition = json.loads((ROOT / host.DEFINITION).read_bytes())
+        self.activation = json.loads((ROOT / host.MESH_CONTRACT).read_bytes())
+        required = {host.DEFINITION, host.MESH_CONTRACT, "tools/qikvrt_self_host.py",
+                    "docs/monitor/self-host.mjs"}
+        required.update(path for paths in host.MESH_COMPONENT_FILES.values() for path in paths)
+        for name in required:
+            dest = self.root / name
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / name, dest)
+
+    def save(self):
+        (self.root / host.DEFINITION).write_bytes(host.raw_json(self.definition))
+        (self.root / host.MESH_CONTRACT).write_bytes(host.raw_json(self.activation))
+
+    def refuse(self, reason):
+        self.save()
+        with self.assertRaisesRegex(ValueError, reason):
+            host.mesh_contract(self.root)
+
+    def test_each_role_requires_both_components_without_runtime_success_inference(self):
+        result = host.mesh_contract(self.root)
+        self.assertEqual(result["state"], "SOURCE_OBLIGATIONS_BOUND")
+        self.assertEqual(result["contract_sha256"], host.digest((self.root / host.MESH_CONTRACT).read_bytes()))
+        self.assertEqual(set(result["required_fault_cases"]), set(host.MESH_FAULT_CASES))
+        for field in ("native_runtime_executed", "all_node_runtime_verified", "write_failover_verified",
+                      "application_transparency_verified", "effect_ack_done"):
+            self.assertIs(result[field], False)
+
+    def test_missing_node_runtime_contract_refused(self):
+        del self.activation["required_node_runtime"]
+        self.refuse("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+
+    def test_wrong_json_shapes_refuse_through_the_structured_cli(self):
+        for activation in ([], {"required_node_runtime": []}):
+            with self.subTest(activation=activation):
+                (self.root / host.MESH_CONTRACT).write_bytes(host.raw_json(activation))
+                run = subprocess.run([sys.executable, "-B", str(ROOT / "tools/qikvrt_self_host.py"),
+                                      "mesh-contract", "--root", str(self.root)], capture_output=True, text=True)
+                self.assertEqual(run.returncode, 2, run.stdout + run.stderr)
+                result = json.loads(run.stdout)
+                self.assertEqual(result["state"], "HOLD")
+                self.assertIs(result["effect_ack_done"], False)
+
+    def test_declared_live_success_is_not_trusted_as_a_runtime_receipt(self):
+        contract = self.activation["required_node_runtime"]
+        for key in ("all_node_runtime_verified", "write_failover_verified",
+                    "application_transparency_verified", "effect_ack_done"):
+            contract[key] = True
+        self.save()
+        result = host.mesh_contract(self.root)
+        for key in ("all_node_runtime_verified", "write_failover_verified",
+                    "application_transparency_verified", "effect_ack_done"):
+            self.assertIs(result[key], False)
+
+    def test_role_exemption_refused_for_authority_and_mirror(self):
+        for role in ("Authority", "Mirror"):
+            with self.subTest(role=role):
+                self.activation["required_node_runtime"]["role_exemptions"] = [role]
+                self.refuse("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+
+    def test_current_nodes_only_scope_refused(self):
+        self.activation["required_node_runtime"]["scope"] = "CURRENT_NODES_ONLY"
+        self.refuse("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+
+    def test_source_presence_cannot_replace_live_acceptance(self):
+        self.activation["required_node_runtime"]["live_acceptance_required"] = False
+        self.refuse("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+
+    def test_removed_terminal_or_transputer_carrier_refused(self):
+        for name in ("src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
+                     "docs/terminal/temdd/index.html", "docs/monitor/client-replica.js"):
+            with self.subTest(name=name):
+                original = list(self.definition["files"])
+                self.definition["files"].remove(name)
+                self.refuse("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+                self.definition["files"] = original
+
+    def test_reference_only_package_refused(self):
+        self.definition["native_terminal_daemon_included"] = False
+        self.refuse("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+
+    def test_duplicate_package_carrier_refused(self):
+        self.definition["files"].append(self.definition["files"][0])
+        self.refuse("MESH_NATIVE_COMPONENT_PACKAGE_REQUIRED")
+
+    def test_every_effect_continuity_invariant_is_required(self):
+        invariants = self.activation["required_node_runtime"]["invariants"]
+        for field in host.MESH_INVARIANTS:
+            with self.subTest(field=field):
+                invariants[field] = False
+                self.refuse("MESH_CONTINUITY_INVARIANTS_REQUIRED")
+                invariants[field] = True
+
+    def test_every_fault_case_is_required_including_provider_loss_and_rejoin(self):
+        for case in host.MESH_FAULT_CASES:
+            with self.subTest(case=case):
+                cases = list(host.MESH_FAULT_CASES)
+                cases.remove(case)
+                self.activation["required_node_runtime"]["required_fault_cases"] = cases
+                self.refuse("MESH_FAULT_MODEL_REQUIRED")
+
+    def test_duplicate_fault_case_cannot_supply_missing_coverage(self):
+        cases = self.activation["required_node_runtime"]["required_fault_cases"]
+        cases.append(cases[0])
+        self.refuse("MESH_FAULT_MODEL_REQUIRED")
+
+    def test_effect_loss_duplication_and_parallel_writers_refused(self):
+        limits = self.activation["required_node_runtime"]["acceptance_limits"]
+        for field, bad in (("acknowledged_effect_loss", 1), ("duplicate_irreversible_effects", 1),
+                           ("concurrent_writers_per_effect", 2), ("acknowledged_effect_loss", False)):
+            with self.subTest(field=field, bad=bad):
+                original = limits[field]
+                limits[field] = bad
+                self.refuse("MESH_EFFECT_SAFETY_LIMITS_REQUIRED")
+                limits[field] = original
+
+    def test_available_partition_cannot_allow_unsafe_writes(self):
+        self.activation["required_node_runtime"]["acceptance_limits"]["quorum_loss_behavior"] = "WRITE_ANYWHERE"
+        self.refuse("MESH_SAFE_PARTITION_BEHAVIOR_REQUIRED")
+
+    def test_missing_or_invalid_workload_limits_refused(self):
+        limits = self.activation["required_node_runtime"]["acceptance_limits"]
+        del limits["rto_ms"]
+        self.refuse("MESH_WORKLOAD_BOUND_AVAILABILITY_LIMIT_REQUIRED")
+        for bad in (-1, True, "unlimited"):
+            with self.subTest(bad=bad):
+                limits["rto_ms"] = bad
+                self.refuse("MESH_WORKLOAD_BOUND_AVAILABILITY_LIMIT_REQUIRED")
+
+    def test_unknown_slo_preserved_and_never_promoted_to_transparent_recovery(self):
+        result = host.mesh_contract(self.root)
+        self.assertIsNone(self.activation["required_node_runtime"]["acceptance_limits"]["rto_ms"])
+        self.assertIs(result["application_transparency_verified"], False)
+
+    def test_missing_source_refused_without_replacing_node_with_central_link(self):
+        (self.root / "docs/monitor/client-replica.js").unlink()
+        with self.assertRaisesRegex(ValueError, "MESH_REGULAR_SOURCE_COMPONENT_REQUIRED"):
+            host.mesh_contract(self.root)
+
+    def test_symlinked_carrier_refused(self):
+        path = self.root / "src/qikvrt_effect_ack_http_terminal.py"
+        path.unlink()
+        path.symlink_to(ROOT / "src/qikvrt_effect_ack_http_terminal.py")
+        with self.assertRaisesRegex(ValueError, "MESH_REGULAR_SOURCE_COMPONENT_REQUIRED"):
+            host.mesh_contract(self.root)
+
+    def test_cli_is_read_only_and_does_not_infer_effect_ack(self):
+        self.save()
+        before = {p.relative_to(self.root).as_posix(): host.digest(p.read_bytes())
+                  for p in self.root.rglob("*") if p.is_file()}
+        run = subprocess.run([sys.executable, "-B", str(ROOT / "tools/qikvrt_self_host.py"),
+                              "mesh-contract", "--root", str(self.root)], capture_output=True, text=True)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+        self.assertIs(json.loads(run.stdout)["effect_ack_done"], False)
+        after = {p.relative_to(self.root).as_posix(): host.digest(p.read_bytes())
+                 for p in self.root.rglob("*") if p.is_file()}
+        self.assertEqual(before, after)
+
+
 class StandaloneTests(unittest.TestCase):
+    def test_frozen_manifest_binds_mesh_contract_and_rejects_digest_substitution(self):
+        self.assertEqual(self.manifest["mesh_node_contract_sha256"],
+                         host.digest((self.export / host.MESH_CONTRACT).read_bytes()))
+        original = (self.export / "MANIFEST.json").read_bytes()
+        for bad in (None, "0" * 64):
+            with self.subTest(bad=bad):
+                manifest = json.loads(original)
+                if bad is None:
+                    del manifest["mesh_node_contract_sha256"]
+                else:
+                    manifest["mesh_node_contract_sha256"] = bad
+                raw = host.raw_json(manifest)
+                (self.export / "MANIFEST.json").write_bytes(raw)
+                try:
+                    with self.assertRaisesRegex(ValueError, "MESH_NODE_CONTRACT_BINDING_MISMATCH"):
+                        host.verify(self.export, host.digest(raw))
+                finally:
+                    (self.export / "MANIFEST.json").write_bytes(original)
+
     @classmethod
     def setUpClass(cls):
         cls.scratch = tempfile.TemporaryDirectory(prefix="qikvrt-node-test-")

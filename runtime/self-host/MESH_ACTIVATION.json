@@ -32,6 +32,7 @@
   },
   "required_acceptance_order": [
     "Fresh complete admitted repository-node and terminal inventory; preserve known and unavailable members, no shrinking to obtain PASS",
+    "Verify an exact-source-bound native universal Transputer and universal Terminal at every inventoried node under required_node_runtime; freeze package only through the mesh-contract gate.",
     "Bind own-host principal, privileged executor, private transfer, actual persistent mount, public IPv4/HTTPS routing and valid certificate",
     "Exact-source candidate CI succeeds; freeze and independently verify the static React plus native S1 package for each admitted node",
     "Instantiate the hosting-platform pipeline against exact artifact and existing admit/supervisor/run-admitted operations; retain deployment run/readback",
@@ -40,6 +41,7 @@
     "Submit one fresh nonce-bound ping through the existing owner Unix ingress of the universal Transputer, not a substitute observer or HTTP health route",
     "Read back that exact native event id, ledger epoch, digest, nonce and logical ping identity at every admitted terminal; verify authenticated terminal-bound receipt and actual receive times",
     "Preserve the same event/epoch/receipt chain after deployed restart; no receipt transfer from a predecessor source",
+    "Inject every required_node_runtime fault case on the actual public workload; verify original native-effect journal, writer fences, Work Unit/session continuity, complete node coverage and workload-bound RTO/SLO.",
     "Persist the exact finite-scope completion receipt only after all public, native and terminal checks are closed"
   ],
   "simultaneous_receive": {
@@ -78,7 +80,11 @@
     "s1_done": false,
     "effect_ack_done": false,
     "ordinary_release": false,
-    "every_repository_node_surface_verified": false
+    "every_repository_node_surface_verified": false,
+    "every_node_transputer_and_terminal_verified": false,
+    "native_effect_replication_verified": false,
+    "write_failover_verified": false,
+    "application_transparency_verified": false
   },
   "required_repository_surface": {
     "requirement_id": "EACH_REPOSITORY_NODE_PROVIDES_SCHEIBENHARD_EVIDENCE_SURFACE",
@@ -156,6 +162,105 @@
     "implementation_status": "REQUIREMENT_BOUND; EXISTING_STATIC_REACT_AND_MONITOR_REUSE_AVAILABLE; FULL_REFERENCE_CAPABILITY_PARITY_AND_PUBLIC_NODE_DEPLOYMENTS_NOT_VERIFIED",
     "current_node_surface_receipts": [],
     "every_repository_node_surface_verified": false,
+    "effect_ack_done": false
+  },
+  "required_node_runtime": {
+    "schema": "qikvrt-node-bus-contract/v1",
+    "requirement_id": "EVERY_NODE_UNIVERSAL_TRANSPUTER_UNIVERSAL_TERMINAL_FAULT_TOLERANT_BUS_20261006",
+    "received_at": "2026-10-06T07:41:48+02:00",
+    "owner": "Ingolf Lohmann",
+    "scope": "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE",
+    "all_roles": true,
+    "role_exemptions": [],
+    "product_name": "Universales Raumzeit-Terminal",
+    "source_carriers": {
+      "universal_transputer": [
+        "src/qikvrt_temdd_event_ledger.py"
+      ],
+      "universal_terminal": [
+        "src/qikvrt_temdd_event_ledger.py",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "docs/terminal/temdd/index.html",
+        "docs/monitor/client-replica.js"
+      ]
+    },
+    "live_acceptance_required": true,
+    "implementation_obligations": [
+      "Each Authority, Mirror and future admitted node runs its own universal Transputer and universal Terminal; a source copy, central link or reference-only profile is not live node acceptance.",
+      "Expose every necessary authorized operation through documented REST/API adapters; browser remote-proxy interaction is not an execution carrier.",
+      "Preserve logical work-unit/session identity, original causal/event order, durable effect receipts and authenticated readback across serving-node changes.",
+      "Replicate the native effect journal and confirmation before positive Effect-Ack; monitor observation replication alone does not establish native-effect replication.",
+      "Use independent failure domains, authenticated peer discovery and quorum/fencing for every write takeover. Repository role does not create a permanent single execution dependency or grant promotion authority.",
+      "A returned node remains fenced until authenticated original-byte catch-up and current epoch/admission verification. An unknown effect is readback-only until resolved.",
+      "The bus may learn from attributed verified observations under existing adaptation policy; the neuronal description is an architectural analogy, not biological or autonomous authority evidence."
+    ],
+    "invariants": {
+      "same_work_unit_after_failover": true,
+      "preserve_confirmed_effects": true,
+      "no_duplicate_irreversible_effect": true,
+      "fence_previous_writer": true,
+      "replicate_before_positive_effect_ack": true,
+      "fresh_authenticated_readback": true,
+      "retain_unavailable_inventory_members": true,
+      "preserve_original_event_bytes": true,
+      "measure_user_visible_interruption": true,
+      "hold_writes_without_safe_quorum": true
+    },
+    "required_fault_cases": [
+      "PROCESS_CRASH",
+      "NODE_LOSS",
+      "NETWORK_PARTITION",
+      "PROVIDER_LOSS",
+      "LOST_EFFECT_ACK",
+      "CONCURRENT_TAKEOVER",
+      "STALE_WRITER",
+      "NODE_REJOIN"
+    ],
+    "acceptance_limits": {
+      "acknowledged_effect_loss": 0,
+      "duplicate_irreversible_effects": 0,
+      "concurrent_writers_per_effect": 1,
+      "rto_ms": null,
+      "user_visible_interruption_slo_ms": null,
+      "quorum_loss_behavior": "HOLD_WRITES_PRESERVE_CONFIRMED_READS",
+      "slo_binding": "Declare workload, topology, fault bound, independent failure domains and RTO/SLO before a live transparency claim; missing numerical limits block that claim."
+    },
+    "required_measurements": [
+      "p50_interruption_ms",
+      "p95_interruption_ms",
+      "p99_interruption_ms",
+      "maximum_interruption_ms",
+      "failed_user_requests",
+      "automatic_retries",
+      "queue_age_ms",
+      "acknowledged_effect_loss",
+      "duplicate_irreversible_effects",
+      "writer_fencing_receipts",
+      "original_journal_readback",
+      "same_session_and_work_unit_readback"
+    ],
+    "node_receipt_required_fields": [
+      "repository",
+      "role",
+      "node_id",
+      "deployed_head",
+      "deployed_tree",
+      "package_sha256",
+      "transputer_runtime_readback",
+      "terminal_runtime_readback",
+      "native_effect_replication_readback",
+      "peer_and_failure_domain_bindings",
+      "fault_injection_receipts",
+      "workload_and_slo_binding",
+      "independent_public_readback"
+    ],
+    "acceptance_rule": "Every inventoried member retains an explicit state; require fresh exact-source-bound native component and fault-injection receipts per node and for the aggregate. No inventory shrink, predecessor evidence transfer, lost confirmed effect or duplicate irreversible effect.",
+    "existing_runtime_limit": "S1 exports the native single-node ledger/owner ingress/HTTP-SSE terminal and a separate monitor read-replica. General native-effect replication, fenced writer takeover and live transparent recovery across every node are NOT_ESTABLISHED.",
+    "coverage_receipts": [],
+    "all_node_runtime_verified": false,
+    "native_effect_replication_verified": false,
+    "write_failover_verified": false,
+    "application_transparency_verified": false,
     "effect_ack_done": false
   }
 }

@@ -318,11 +318,146 @@
     "effect_ack_done": false,
     "ordinary_release": false,
     "verification": {
-  "tool_cache_metadata": "26/26 declared cache/provision strategies verified in the selected-file fixture; not installed runtime verification.",
-  "contract": "Valid JSON; scope current/future nodes and Mesh; all ten pre-existing ordered native/public/restart gates retained; false effect/ordinary-release claims preserved.",
-  "integrity": "Base manifest Git blob and canonical index authenticated; inventory matches full API tree; 34 unchanged Windows Git blobs and checkout CRLF SHA-256 bindings independently verified under .gitattributes; changed bytes will regenerate the existing canonical integrity trio.",
-  "full_repository_suite": "NOT_EXECUTED_LOCALLY; SELECTED_FILE_FIXTURE_ONLY",
-  "successor_native_ci": "NOT_YET_OBSERVED; no predecessor result transfer"
-}
+      "tool_cache_metadata": "26/26 declared cache/provision strategies verified in the selected-file fixture; not installed runtime verification.",
+      "contract": "Valid JSON; scope current/future nodes and Mesh; all ten pre-existing ordered native/public/restart gates retained; false effect/ordinary-release claims preserved.",
+      "integrity": "Base manifest Git blob and canonical index authenticated; inventory matches full API tree; 34 unchanged Windows Git blobs and checkout CRLF SHA-256 bindings independently verified under .gitattributes; changed bytes will regenerate the existing canonical integrity trio.",
+      "full_repository_suite": "NOT_EXECUTED_LOCALLY; SELECTED_FILE_FIXTURE_ONLY",
+      "successor_native_ci": "NOT_YET_OBSERVED; no predecessor result transfer"
+    }
+  },
+  "node_bus_successor": {
+    "requirement_id": "EVERY_NODE_UNIVERSAL_TRANSPUTER_UNIVERSAL_TERMINAL_FAULT_TOLERANT_BUS_20261006",
+    "received_at": "2026-10-06T07:41:48+02:00",
+    "recorded_at": "2026-10-06T05:55:14.312285+00:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "source_commit": "7f8049f0b84e4031887570c36c093d1750ba92e6",
+    "source_tree": "98069e8ab4473442e3748a32637e93db95f10aea",
+    "human_actor": {
+      "identifier": "Ingolf Lohmann",
+      "role": "Product and Code Owner"
+    },
+    "human_contributions": [
+      "Every Authority, Mirror and future repository node implements a universal Transputer and a universal Terminal.",
+      "Fault-tolerant bus objective: compensate single-node loss with ordinarily unnoticed continuity."
+    ],
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6; build UNAVAILABLE",
+      "session_or_run_id": "01a10fbb-75fc-73a2-8968-ef5662a9404f"
+    },
+    "artificial_cognitive_contributions": [
+      "Existing S1 package/launcher/verification extended; no parallel ledger, scheduler, executor or monitor.",
+      "Role-independent source admission gate, package manifest contract digest and 21 new regression tests.",
+      "Native-effect preservation, single fenced writer, lost-ACK readback, safe partition and original-byte rejoin obligations; workload-bound measured transparency.",
+      "Source/provider and real-runtime limits remain separately open."
+    ],
+    "evidence_retention": "METADATA_ONLY",
+    "joint_components": [],
+    "unresolved_origin": [],
+    "outputs": [
+      {
+        "path": "AGENTS.md",
+        "bytes": 9483,
+        "sha256": "ccdd7f4f65598a0a58d6683863f746f65ac0f30054e5a6a0b34533c0a5bbc2ff",
+        "git_blob_sha1": "8ab379fd2fb2c2b76c4ad56e4aed1b158011c2d6"
+      },
+      {
+        "path": "tools/qikvrt_self_host.py",
+        "bytes": 67446,
+        "sha256": "5cab410e0e7ccda8a8c8a5c5eb67f758a6995d4e6949f42b3477a07209cbe19b",
+        "git_blob_sha1": "47d42238628b001b5a7ee06b339143901a85e5e0"
+      },
+      {
+        "path": "tests/test_self_host.py",
+        "bytes": 44643,
+        "sha256": "0f93705b9502ccf09f7e9a020109b2aed81311b213d2005f5cb2938b36b4055c",
+        "git_blob_sha1": "8361b65ba281d860676dfea03bac38c0d03c82e3"
+      },
+      {
+        "path": "runtime/self-host/MESH_ACTIVATION.json",
+        "bytes": 15493,
+        "sha256": "78176e254b52a06e62fc8ff18d39e3797e520699358ca3362861b2492aca0e64",
+        "git_blob_sha1": "09756b5f87141899f238ff6937a583ff4d9fbd96"
+      },
+      {
+        "path": "runtime/self-host/PACKAGE.json",
+        "bytes": 4561,
+        "sha256": "810bda66fee70035d5293f951cc4b8288909109ad850bba95b7814445ca2e93c",
+        "git_blob_sha1": "60ef21ff3567eeacf357ce2a48d1473e5cc40b07"
+      },
+      {
+        "path": "runtime/self-host/README.md",
+        "bytes": 30920,
+        "sha256": "eb4b7d578e1b5235a8e2c6dab4f5009626bced32d0b21b003c1d968562632c7d",
+        "git_blob_sha1": "142c9fee88cfcd67f222fe0532e268744a38333c"
+      },
+      {
+        "path": "docs/monitor/URL_DIRECTORY.json",
+        "bytes": 3500,
+        "sha256": "6690a93648b82b0c8ffc327dfe0fc2439654a78f1bfce70b13f579e1b4604a33",
+        "git_blob_sha1": "f56501f57d414fee4b605a0cd29152c2da79b486"
+      }
+    ],
+    "self_binding": "This record is authenticated by the canonical repository integrity manifest; no self-digest cycle.",
+    "verification": {
+      "fixture": "Exact API-bound selected source files; no complete clone/history closure or full all-profile bootloader claim.",
+      "self_host_suite": {
+        "command": "python3 -B -m unittest -v tests.test_self_host",
+        "exit_code": 0,
+        "tests": 47,
+        "failures": 0,
+        "skips": 0,
+        "new_tests": 21,
+        "log_bytes": 8604,
+        "log_sha256": "0d07afe2b4ad1eefa2d65128ffa8ff08a56fdd57f48a4a852aa83ab750388ece"
+      },
+      "monitor_suite": {
+        "command": "node --test docs/monitor/monitor.test.mjs docs/monitor/observer.test.mjs",
+        "exit_code": 0,
+        "tests": 25,
+        "failures": 0,
+        "skips": 0,
+        "scope": "Local two-process monitor read-replication, writer SIGKILL, four clients and 32 original events, journal/restart/lost-response/partition controls. Not native TEMDD effect replication, write takeover, deployment, independent hosts or an application-interruption SLO."
+      },
+      "source_original_bytes": "Every materialized unchanged source matches its API-tree Git blob. The user-supplied original has SHA-256 141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6 and remains unchanged.",
+      "tool_cache": "26/26 declared cache/provision contracts; 100%; no installed-all-profiles inference.",
+      "native_local_attempt": {
+        "command": "python3 -B -m unittest -v tests.test_self_host_temdd",
+        "result": "FAILED; native Unix carrier did not start with EPERM. Complete source-history check additionally unavailable in the partial API fixture. Initial missing helper authority/original final-newline materialization faults were repaired and the separate final 47-test source/standalone suite passed. Native results are not promoted.",
+        "boundary": "A separate direct AF_UNIX socket creation also returned PermissionError errno=1 before bind; environment capability is unavailable. No skip, substitute HTTP writer or downgrade."
+      },
+      "full_repository_suite": "NOT_EXECUTED_LOCALLY",
+      "successor_native_ci": "NOT_YET_OBSERVED; no predecessor result transfer",
+      "integrity": "Authenticated base manifest/index and complete API blob inventory; unchanged bindings retained, eight changed semantic files regenerate canonical projections incrementally. Not a full historical object closure."
+    },
+    "implementation_status": {
+      "per_node_obligations_and_source_gate": "IMPLEMENTED_IN_REVIEW_CANDIDATE",
+      "native_single_node_carrier": "EXISTING_REUSED_SOURCE; THIS_LOCAL_ENVIRONMENT_BLOCKED",
+      "monitor_read_replica": "LOCAL_EXISTING_PATH_TESTED",
+      "native_effect_cross_node_replication": "NOT_IMPLEMENTED_IN_EXISTING_S1",
+      "fenced_write_takeover": "NOT_IMPLEMENTED_IN_EXISTING_S1",
+      "live_mesh_transparency": "NOT_ESTABLISHED"
+    },
+    "human_decision": "TASK_SCOPE_AUTHORIZED; IMPLEMENTATION_REVIEW_PENDING",
+    "external_effects": {
+      "candidate_successor": "AUTHORIZED_PENDING_READBACK",
+      "main_merge": false,
+      "ruleset_change": false,
+      "deployment": false,
+      "fault_injection_on_live_nodes": false,
+      "publication": false
+    },
+    "first_causal_blocker": "LIVE_NODE_INVENTORY_PRIVILEGED_EXECUTION_AND_PRIVATE_TRANSFER_UNAVAILABLE",
+    "retry_condition": "A real authenticated admitted node execution/private-transfer route and independent persistent hosting domain become available; reobserve source and use existing S1 admission path.",
+    "next_action": "Observe exact successor CI; retain native Unix/systemd/Firefox gates. On admitted own hosts, extend the existing native journal with authenticated replication/enforced fences using the fresh node/workload bindings, then exercise all eight failure cases and record numerical RTO/SLO, original event receipts and public readbacks for every node. No terminal acceptance until every gate is closed.",
+    "predecessor_evidence_transfer": false,
+    "all_node_runtime_verified": false,
+    "native_effect_replication_verified": false,
+    "write_failover_verified": false,
+    "application_transparency_verified": false,
+    "effect_ack_done": false,
+    "ordinary_release": false
   }
 }

@@ -121,6 +121,26 @@ The normative production policy is
 `policy/ZENODO_MACHINE_PROOF_BEFORE_PUBLICATION.md`. The superseded v1 policy
 remains an immutable historical contract.
 
+## Every-node universal bus
+
+Every current or future repository node, including Authority and Mirror, MUST
+implement and run both a universal Transputer and a universal Terminal under
+`runtime/self-host/MESH_ACTIVATION.json#/required_node_runtime`. Repository role
+provides no exemption. Run the existing S1 `mesh-contract` source gate before
+package admission; `pack` and `verify` enforce the same gate. A copied source,
+central link or reference-only diagnostic profile is not live node acceptance.
+
+Fault tolerance requires native-effect replication, enforced writer fencing,
+same-Work-Unit/session continuation and fresh authenticated original-byte
+readback. Test every declared crash/loss/partition/lost-ACK/takeover/rejoin case
+on the actual workload, with zero lost acknowledged effects and zero duplicate
+irreversible effects. Declare numerical RTO and interruption SLO before claiming
+ordinarily unnoticed recovery. A missing safe quorum holds writes visibly and
+preserves confirmed reads. Retain unavailable nodes in coverage records. A
+monitor read-replica does not establish native-effect replication or write
+takeover, and multiple repositories on one provider do not establish provider
+failure independence. Source-gate success is never deployment or Mesh acceptance.
+
 ## Bounded collective adaptation
 
 1. Observe only accessible, authorized state and record the measurement method,
