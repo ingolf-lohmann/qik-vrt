@@ -98,6 +98,14 @@ e2e:
 test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify
 
+.PHONY: monitor-test
+monitor-test: tool-cache-contract
+	node --check docs/monitor/mesh-react.js
+	node --check docs/monitor/client-replica.js
+	node --test docs/monitor/react-feedback.test.mjs
+
+test: monitor-test
+
 run-api:
 	@test -n "$(QIKVRT_API_TOKEN)" || (echo "BLOCK: set QIKVRT_API_TOKEN" >&2; exit 2)
 	@test -n "$(QIKVRT_API_TOKEN_EXPIRES_UTC)" || (echo "BLOCK: set QIKVRT_API_TOKEN_EXPIRES_UTC" >&2; exit 2)

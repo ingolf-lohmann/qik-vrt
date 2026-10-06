@@ -37,6 +37,12 @@
       "version": "24.x"
     },
     {
+      "cache_class": "hosted-toolcache",
+      "component": "playwright-monitor-tests",
+      "provider": "https://github.com/microsoft/playwright/tree/v1.62.1",
+      "version": "1.62.1"
+    },
+    {
       "cache_class": "runner-image-layer",
       "component": "poppler",
       "provider": "ubuntu-24.04 runner image with guarded apt poppler-utils fallback",
@@ -93,10 +99,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 15,
-  "declared_components": 15,
-  "lock_sha256": "22d52ab772d012a23e3b713a97df578b4c98ce14cd0b0b333ae4c81e2758f405",
-  "registry_sha256": "02c023aa69fc06576fdd397ca72d247944887d110828dc43474d7da7ce94776a",
+  "covered_components": 16,
+  "declared_components": 16,
+  "lock_sha256": "980e9acf83fb4d952f5f929833daa92d44d58bbe1b1bb1f49f24dae4feb70653",
+  "registry_sha256": "7cad8b1920701c1e43a7d61ff023627e7b5b86af43c1976b233e9ae1bfd535b5",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,
