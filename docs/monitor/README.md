@@ -233,3 +233,15 @@ and narrow/desktop layout. The existing S1 lane retains original persistence
 controls and adds a separate exact-source UI witness and screenshots to its
 artifact. A narrow desktop viewport is not actual mobile-device acceptance.
 Editorial and automated checks are not an independent usability study.
+# React Authority-404 source successor
+
+`mesh-react.js` renders repository-source and terminal REST failures with state,
+impact, observed status and uncertainty, responsible actor, next REST step and
+evidenced repair progress. Original diagnostics remain selectable JSON in native
+details. The exact #468 observation is a replay input; its test results and the
+Storage/Origin stack are not evidence for this successor. Reproduce with
+`node --test docs/monitor/react-feedback.test.mjs`; the existing
+`repository-monitor-test` target includes it. See
+[`evidence/monitor-feedback/react/README.md`](../../evidence/monitor-feedback/react/README.md)
+for the preserved #476 baseline and fresh comparison. Human comprehension is
+`NOT_MEASURED`; main integration and public delivery remain separate.

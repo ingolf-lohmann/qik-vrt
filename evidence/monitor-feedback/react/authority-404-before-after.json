@@ -1,0 +1,127 @@
+{
+  "schema": "qikvrt-react-monitor-feedback-comparison/v1",
+  "case_id": "AUTHORITY_REPOSITORY_HTTP_404",
+  "method": "Captured provider status/text/headers projected into a controlled repository source; actual React 19.2.6 elements and client-replica digest acceptance in Node vm, controlled hooks and I/O. Synthetic sibling and runtime held equal. No ReactDOM/browser or storage execution.",
+  "baseline": {
+    "commit": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+    "tree": "29f40e2318869f107d4688d3b5401a2e5c1b0633",
+    "source_blob": "d0a3232ec1353a4a00e8a4ae958470985120637e",
+    "source_sha256": "8e250ad9c3c256ab5ab154bdc055b70ee0f33e300d5650ca16a1c6900c80bfe9"
+  },
+  "candidate_source_sha256": "a7f5a3e603f6342d9e5baf3ba72da003fde41b9acbb3d16a47f3b0afb2458806",
+  "observation_sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+  "explanation_groups": [
+    "Zustand",
+    "Auswirkung",
+    "Belegter Status / Unsicherheit",
+    "Zuständiger Akteur + nächster REST-Schritt",
+    "Reparaturfortschritt"
+  ],
+  "before": {
+    "explicit_required_explanation_fields": 0,
+    "authority_feedback": "Goldkelch/qik-vrtbeobachtetNode öffnen"
+  },
+  "after": {
+    "explicit_required_explanation_fields": 5,
+    "explanations": {
+      "Zustand": "Die angefragte Quelle ist derzeit nicht lesbar.",
+      "Auswirkung": "Kein vollständiger Repository- und Workflow-Stand verfügbar. Daraus folgt kein Betriebszustand des Knotens.",
+      "Belegter Status / Unsicherheit": "Die REST-Anfrage erhielt HTTP 404. Ob die Quelle fehlt oder für diesen Zugriff nicht sichtbar ist, ist nicht geklärt.",
+      "Zuständiger Akteur": "Repository-Verantwortliche",
+      "Nächster REST-Schritt": "Den angegebenen REST-Endpunkt und den Zugriff prüfen; nach der Korrektur „Readback erneuern“ wählen. Endpunkt: https://api.github.com/repos/Goldkelch/qik-vrt",
+      "Reparaturfortschritt": "Ein Reparaturstart ist durch diesen Monitor nicht belegt. Die Meldung beschreibt den beobachteten Abruf.",
+      "Node": "SYNTHETIC_RUNTIME",
+      "Quellrepository": "ingolf-lohmann/qik-vrt",
+      "Commit": "",
+      "Tree": "",
+      "Paket": "",
+      "Profil": "",
+      "Nativer Kanal": "UNKNOWN",
+      "Ledger-Epoch": "offen",
+      "Öffentliches Routing": "separate Abnahme offen",
+      "Mesh-Abnahme": "offen"
+    },
+    "diagnostics": [
+      {
+        "source_url": "https://api.github.com/repos/Goldkelch/qik-vrt",
+        "method": "GET",
+        "observed_at": "2026-10-06T17:17:52.884228+00:00",
+        "last_success_at": null,
+        "phase": "HTTP",
+        "status": 404,
+        "status_text": "Not Found",
+        "original_error": "404 Not Found; remaining=56",
+        "error_name": "Error",
+        "provider_request_id": "4FA4:3818E4:63C8922:145808DE:6AC52D40",
+        "rate_limit_remaining": "56",
+        "rate_limit_reset": "1791309154",
+        "retry_after": null,
+        "response_body": "{\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest\",\"status\":\"404\"}",
+        "response_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+        "next_attempt_at": null,
+        "cause_established": false
+      }
+    ]
+  },
+  "automated_measurements": {
+    "requests_before": [
+      {
+        "path": "/api/activity",
+        "method": "GET",
+        "credentials": null
+      },
+      {
+        "path": "/api/runtime",
+        "method": "GET",
+        "credentials": null
+      },
+      {
+        "path": "/api/terminal",
+        "method": "GET",
+        "credentials": null
+      }
+    ],
+    "requests_after": [
+      {
+        "path": "/api/activity",
+        "method": "GET",
+        "credentials": null
+      },
+      {
+        "path": "/api/runtime",
+        "method": "GET",
+        "credentials": null
+      },
+      {
+        "path": "/api/terminal",
+        "method": "GET",
+        "credentials": null
+      }
+    ],
+    "streams_before": 1,
+    "streams_after": 1,
+    "original_error_retained": true,
+    "successful_sibling_visible_before": true,
+    "successful_sibling_visible_after": true
+  },
+  "human_comprehension": {
+    "state": "NOT_MEASURED",
+    "participants": 0,
+    "understanding_rate_before": null,
+    "understanding_rate_after": null,
+    "clarification_requests": null,
+    "time_to_identify_next_action_ms": null,
+    "comprehension_improvement_measured": false
+  },
+  "boundaries": {
+    "controlled_replay_is_live_deployment": false,
+    "automated_field_presence_is_human_comprehension": false,
+    "provider_404_cause_established": false,
+    "runtime_fault_repaired": false,
+    "storage_stack_test_evidence_transferred": false,
+    "predecessor_evidence_transfer": false,
+    "main_integrated": false,
+    "public_delivered": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
