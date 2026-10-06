@@ -127,6 +127,48 @@ class OwnerReminderTests(unittest.TestCase):
         with self.assertRaises(module.ReminderError):
             api.observe_delivery(CONFIG["reminders"][0], "expected")
 
+    def test_expired_window_does_not_claim_or_post(self):
+        config = copy.deepcopy(CONFIG)
+        config["reminders"] = config["reminders"][:1]
+        config["reminders"][0]["expires"] = "2026-10-06T10:00:00+02:00"
+        api = FakeGitHub()
+        result = module.execute(config, module.instant("2026-10-06T08:00:00Z"), api, HEAD)
+        self.assertEqual(result["receipts"][0]["notification"], "EXPIRED_NO_EFFECT")
+        self.assertEqual(result["receipts"][0]["task_completion"], "NOT_PROVEN")
+        self.assertFalse(api.posts)
+
+    def test_invalid_expiry_rejected(self):
+        for value in ("2026-10-06T08:30:00+02:00", "2026-10-06T08:29:00+02:00",
+                      "2026-10-06T10:00:00", "2026-10-06T10:00:00+00:00"):
+            config = copy.deepcopy(CONFIG)
+            config["reminders"][0]["expires"] = value
+            with self.assertRaises(module.ReminderError):
+                module.validate(config)
+
+    def test_today_windows_do_not_burst_or_continue_tomorrow(self):
+        config = copy.deepcopy(CONFIG)
+        config["reminders"] = [r for r in config["reminders"]
+                               if r["id"].startswith("personal-document-20261006-")]
+        self.assertEqual(len(config["reminders"]), 6)
+        at_noon = module.execute(config, module.instant("2026-10-06T10:23:00Z"))
+        self.assertEqual(sum(r["notification"] == "DUE_NO_EFFECT_PREVIEW"
+                             for r in at_noon["receipts"]), 1)
+        self.assertEqual(at_noon["receipts"][0]["notification"], "EXPIRED_NO_EFFECT")
+        tomorrow = module.execute(config, module.instant("2026-10-07T06:00:00Z"))
+        self.assertTrue(all(r["notification"] == "EXPIRED_NO_EFFECT"
+                            for r in tomorrow["receipts"]))
+
+    def test_completed_today_task_stops_all_occurrences(self):
+        config = copy.deepcopy(CONFIG)
+        config["reminders"] = [r for r in config["reminders"]
+                               if r["id"].startswith("personal-document-20261006-")]
+        for row in config["reminders"]:
+            row["state"] = "COMPLETED"
+        api = FakeGitHub()
+        result = module.execute(config, module.instant("2026-10-06T18:15:00Z"), api, HEAD)
+        self.assertTrue(all(r["notification"] == "COMPLETED" for r in result["receipts"]))
+        self.assertFalse(api.posts)
+
 
 if __name__ == "__main__":
     unittest.main()
