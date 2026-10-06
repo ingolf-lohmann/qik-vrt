@@ -1,0 +1,99 @@
+{
+  "_license": {
+    "license": "CC-BY-NC-ND-4.0",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_react_feedback_main_integration_v1",
+  "work_unit_id": "REACT_FEEDBACK_MAIN_INTEGRATION_20261007_V1",
+  "created_at": "2026-10-06T23:12:23.594157Z",
+  "state": "MINIMAL_REACT_PREREQUISITES_PREPARED",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "source_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Requested a history-preserving main-based successor of #482; minimal evidenced prerequisites, exact fixture, explanations, alert, copyable raw diagnostics, fresh gates."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system": "Codex",
+    "model_family": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "dependency inspection",
+    "monitor-only source extraction",
+    "fresh integrity generation",
+    "verification and main-based draft preparation"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "original_sources": {
+    "pr476": {
+      "head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+      "tree": "29f40e2318869f107d4688d3b5401a2e5c1b0633"
+    },
+    "pr482": {
+      "head": "53040b450853b0ab5a3d59765b86030b3bd0c978",
+      "tree": "7e919c54e44c8cbf40ff67d381726c9256a66e2a",
+      "commits": [
+        "53f3807d5414699cc52dcb6c654983c080cbb40a",
+        "53040b450853b0ab5a3d59765b86030b3bd0c978"
+      ]
+    }
+  },
+  "git_history": {
+    "branch": "work/react-feedback-main-71f8c153-20261007",
+    "parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "method": "New linear commits; explicit source references; no old branch merge, retarget, force push or rewrite. Containing commits bind outputs."
+  },
+  "dependency_scope": {
+    "required": [
+      "React/ReactDOM/Scheduler production bundle and MIT license/lock",
+      "existing client-replica digest/event validation",
+      "monitor App subset of #476, CSS subset and static shell",
+      "fresh replay and browser checks"
+    ],
+    "excluded": [
+      "Self-Host packaging/providers/supervisors",
+      "native terminal/Unix/SQLite runtime",
+      "mesh-file store/codec/client/view",
+      "Origin/sqljs/onboarding and file-reading surfaces",
+      "historical #476/#482 work units and check/receipt bytes"
+    ],
+    "static_entry": "docs/monitor/index-react.html?view=mesh or view=node; also recognizes existing /mesh and /node host routes",
+    "api_contract": [
+      "/api/activity",
+      "/api/runtime",
+      "/api/terminal",
+      "/api/stream"
+    ],
+    "api_host_added": false,
+    "old_main_monitor_replaced": false
+  },
+  "inputs": [],
+  "outputs": [],
+  "verification": {
+    "fresh_exact_head_required": true,
+    "predecessor_evidence_transfer": false,
+    "local_boot_integrity_initially": "BLOCK: main lifecycle writer had not regenerated integrity; existing controller regenerated current bytes",
+    "portable_capsule": "13 exact verified historical Git objects hydrated locally; this is input closure, not transferred test acceptance"
+  },
+  "human_decision": "IMPLEMENTATION_AUTHORIZED_FINAL_NATIVE_REVIEW_NOT_INFERRED",
+  "external_effects": {
+    "draft_pr": "PENDING",
+    "main_merge": false,
+    "deployment": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "human_comprehension": {
+    "state": "NOT_MEASURED",
+    "participants": 0
+  }
+}

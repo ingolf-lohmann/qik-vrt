@@ -19,3 +19,4 @@ ffprobe	same-as-ffmpeg	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY	U
 cc	ansi-c90	cross-platform	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	IMPLEMENTATION_LICENSE_APPLIES	dependency_minimal_core
 xelatex	reported-version	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	scientific_pdf_rendering
 poppler	reported-version	cross-platform	NO_BUNDLED_ARCHIVE	COMMAND_CONTRACT_ONLY	UPSTREAM_DISTRIBUTION_LICENSES_APPLY	pdf_visual_verification
+react-browser	19.2.6+0.27.0	static-browser	docs/monitor/react-runtime.js	fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca	MIT	static_monitor_react_interface
