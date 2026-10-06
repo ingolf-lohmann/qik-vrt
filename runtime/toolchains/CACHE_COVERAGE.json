@@ -67,6 +67,12 @@
       "version": "reported-version-and-exact-package-digest"
     },
     {
+      "cache_class": "hosted-toolcache",
+      "component": "playwright-origin-tests",
+      "provider": "https://github.com/microsoft/playwright/tree/v1.62.1",
+      "version": "1.62.1"
+    },
+    {
       "cache_class": "runner-image-layer",
       "component": "poppler",
       "provider": "ubuntu-24.04 runner image with guarded apt poppler-utils fallback",
@@ -107,6 +113,12 @@
       "component": "sherpa-onnx-node",
       "provider": "actions/setup-node:npm",
       "version": "1.13.4"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "sqljs-browser",
+      "provider": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
+      "version": "1.14.2"
     },
     {
       "cache_class": "runner-image-layer",
@@ -159,10 +171,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 26,
-  "declared_components": 26,
-  "lock_sha256": "707e939a754db2bfcc56f44834107f98536d1139548e5588698c80746c960020",
-  "registry_sha256": "8c35aa0700b5e471e0065a058dc1b102c7c812422ddffd5db7ae0bd7304c0288",
+  "covered_components": 28,
+  "declared_components": 28,
+  "lock_sha256": "2b1a20ddadd56bb677e99fc9b1d8097997eec39d0f67cd7db8311589a86eb565",
+  "registry_sha256": "d72f1257eedfbd1ddd778b70b3e5fbe326e3da974ab96e34c6dd05de992bc506",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

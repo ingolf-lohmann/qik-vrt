@@ -43,7 +43,7 @@ jobs:
           python3 -B tools/qikvrt_tool_cache.py verify
           sh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none
           python3 -B tools/qikvrt_integrity.py verify
-          make temdd-event-ledger-test self-host-test 2>&1 | tee "$RUNNER_TEMP/temdd-s1-tests.log"
+          make temdd-event-ledger-test self-host-test origin-adapter-test 2>&1 | tee "$RUNNER_TEMP/temdd-s1-tests.log"
           git diff --exit-code
           python3 -B - <<'PY' > "$RUNNER_TEMP/temdd-s1-binding.json"
           import hashlib,json,os,subprocess
@@ -56,6 +56,45 @@ jobs:
             'scope':'EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT',
             'predecessor_evidence_transfer':False,'effect_ack_done':False},sort_keys=True))
           PY
+      - name: Provision exact desktop Origin test runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          mkdir -p "$RUNNER_TEMP/qikvrt-origin-tests"
+          cp runtime/self-host/origin-tests/package.json runtime/self-host/origin-tests/package-lock.json "$RUNNER_TEMP/qikvrt-origin-tests/"
+          npm ci --prefix "$RUNNER_TEMP/qikvrt-origin-tests" --ignore-scripts --omit=optional --no-audit --no-fund
+          python3 -B - <<'PY'
+          import hashlib,json,os,urllib.request,zipfile
+          from pathlib import Path
+          lock=json.loads(Path('runtime/self-host/ORIGIN_BROWSER_TEST_LOCK.json').read_bytes())
+          directory=Path(os.environ['RUNNER_TEMP'])/'qikvrt-origin-browser'
+          directory.mkdir(mode=0o700)
+          archive=directory/'browser.zip'
+          with urllib.request.urlopen(lock['archive_url'],timeout=60) as source,archive.open('xb') as dest:
+            while chunk:=source.read(1024*1024): dest.write(chunk)
+          raw=archive.read_bytes()
+          assert len(raw)==lock['archive_bytes'] and hashlib.sha256(raw).hexdigest()==lock['archive_sha256']
+          with zipfile.ZipFile(archive) as bundle:
+            for item in bundle.infolist():
+              assert not item.filename.startswith('/') and '..' not in Path(item.filename).parts
+            bundle.extractall(directory)
+            for item in bundle.infolist():
+              path=directory/item.filename
+              if path.is_file():path.chmod(0o755 if (item.external_attr>>16)&0o111 else 0o644)
+          executable=directory/lock['executable_relative_path']
+          with Path(os.environ['GITHUB_ENV']).open('a') as env:
+            env.write('QIKVRT_ORIGIN_CHROMIUM_EXECUTABLE='+str(executable)+'\n')
+            env.write('NODE_PATH='+str(Path(os.environ['RUNNER_TEMP'])/'qikvrt-origin-tests/node_modules')+'\n')
+          PY
+      - name: Execute real desktop Origin persistence and negative controls
+        env:
+          QIKVRT_ORIGIN_TEST_EVIDENCE: ${{ runner.temp }}/origin-desktop-witness.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          QIKVRT_ORIGIN_FIXTURE_DIR="$PWD/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.browser.test.mjs 2>&1 | tee "$RUNNER_TEMP/origin-browser-tests.log"
+          git diff --exit-code
       - name: Preserve native execution and exact source binding
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -64,5 +103,7 @@ jobs:
           path: |
             ${{ runner.temp }}/temdd-s1-tests.log
             ${{ runner.temp }}/temdd-s1-binding.json
+            ${{ runner.temp }}/origin-browser-tests.log
+            ${{ runner.temp }}/origin-desktop-witness.json
           if-no-files-found: error
           retention-days: 30

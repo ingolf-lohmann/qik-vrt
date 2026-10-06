@@ -31,3 +31,5 @@ novnc	reported-version-and-exact-package-digest	linux	NO_BUNDLED_ARCHIVE	BEHAVIO
 docker	OCI-build-and-isolated-runtime-contract	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	Apache-2.0	self_host_firefox_source_and_runtime_verification
 systemd	252-or-newer-unit-contract	linux	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	LGPL-2.1-or-later	optional_own_host_supervisor_binding
 react-browser	19.2.6+0.27.0	static-browser	docs/monitor/react-runtime.js	fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca	MIT	static_self_host_react_interface
+sqljs-browser	1.14.2	wasm-browser	docs/monitor/origin/vendor/sql-wasm.wasm	PINNED_BY_ORIGIN_SQLITE_LOCK	MIT_AND_SQLITE_PUBLIC_DOMAIN	origin_monolith_read_only_sqlite
+playwright-origin-tests	1.62.1	linux-desktop	NO_BUNDLED_ARCHIVE	BEHAVIORAL_CONTRACT_ONLY	Apache-2.0	origin_adapter_browser_verification

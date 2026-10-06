@@ -1,0 +1,253 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "model_or_build": "GPT-6; exact build unavailable",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Extend the existing stopped-writer checkpoint with source-bound Origin shell export",
+    "Unmodified npm-integrity-bound sql.js 1.14.2 in a query-only Worker",
+    "Atomic IndexedDB image admission, strict transaction request, byte/SQL readback and native identity preservation",
+    "Hash-pinned offline Service Worker, passive React observer and explicit byte-identical import/export",
+    "Original-kernel, corruption/origin/File-start controls and real-desktop browser persistence harness in the existing S1 lane"
+  ],
+  "created_at": "2026-10-06T08:17:05Z",
+  "external_effects": {
+    "CI_trigger": "EXISTING_BRANCH_AND_PR_EVENT_ONLY; NO_MANUAL_DISPATCH",
+    "deployment": false,
+    "main_write": false,
+    "merge": false,
+    "publication": false
+  },
+  "git_history": {
+    "branch_preserved": true,
+    "history_rewritten": false,
+    "parent": "b1658ac934dbf529cc4cb271554bf9cf26111c9f"
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "App-Store-free smallest secure browser Origin adapter for the same logical SQLite monolith",
+    "Passive React Terminal; preserve offline/restart storage and existing identity",
+    "No unrestricted mobile filesystem or pure-file self-execution claims; actual Android/iOS witnesses only on available devices/runners"
+  ],
+  "human_decision": {
+    "generated_candidate_acceptance": "PENDING_NATIVE_CODE_OWNER_REVIEW",
+    "product_acceptance": "OPEN",
+    "task_implementation_authorized": true
+  },
+  "inputs": [
+    {
+      "head": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+      "pr": 469,
+      "tree": "4c56a464394816f391c3221218707e6c04e05527"
+    },
+    {
+      "path": "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
+      "source": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz"
+    }
+  ],
+  "joint_components": [],
+  "mobile_acceptance_boundary": {
+    "required": [
+      "Actual device/runner identity and OS/browser version",
+      "Trusted HTTPS bootstrap and verified cached shell",
+      "Import identical original SQLite bytes and retain native epoch/carrier pin",
+      "Offline reload and browser/process restart plus background resume",
+      "Quota/denied persistence/corrupt bytes/File-start refusal; reconnect and identical native export"
+    ],
+    "retry_condition": "An authorized executable Android/iOS device or runner becomes available; use this same candidate and fresh receipts without predecessor evidence",
+    "state": "HOLD_REAL_ANDROID_AND_IOS_WITNESSES_NOT_EXECUTED"
+  },
+  "next_execution": "Fresh native and desktop Origin test lane on the updated PR469 candidate; stop at actual mobile-device acceptance boundary",
+  "outputs": [
+    {
+      "bytes": 5579,
+      "path": ".github/workflows/qikvrt_temdd.yml",
+      "sha256": "3efe6b6855f387f76d741ca5817b5f9ec0bf74330ac223e9b2508f6a288fe963"
+    },
+    {
+      "bytes": 12503,
+      "path": "Makefile",
+      "sha256": "0453d2d93546682f14a391c9ab6fa5a0ec27667cd80727b9e431a97af7121710"
+    },
+    {
+      "bytes": 1003,
+      "path": "docs/monitor/origin/index.html",
+      "sha256": "457e89ef36a23a75f11887187c11f80ef71377b4b4913e20ba4487b731aadf40"
+    },
+    {
+      "bytes": 6252,
+      "path": "docs/monitor/origin/origin-store.js",
+      "sha256": "046f2042652885b90674585c1b8474004915d258fe7c57ebe890924936054b4a"
+    },
+    {
+      "bytes": 6071,
+      "path": "docs/monitor/origin/origin-terminal.js",
+      "sha256": "2d0a95a0d6c4c0b8517949844d7036afa235b9bb81a6beed60e89e63db730c9f"
+    },
+    {
+      "bytes": 8048,
+      "path": "docs/monitor/origin/origin.browser.test.mjs",
+      "sha256": "0828efc609dcf94656088ab5e4f0c806b44fd068ed221173511adaae8e37deca"
+    },
+    {
+      "bytes": 4780,
+      "path": "docs/monitor/origin/origin.test.mjs",
+      "sha256": "a5fa53bd39b2dd3eb71ce877fcdaba70d8c9af408d1ee94c68a92f65efdde765"
+    },
+    {
+      "bytes": 2305,
+      "path": "docs/monitor/origin/service-worker.template.js",
+      "sha256": "03c52641a6426614d0e268c2b8bf1fc64836fde6d57bb03c16f1936fa65e328b"
+    },
+    {
+      "bytes": 6605,
+      "path": "docs/monitor/origin/sqlite-reader.js",
+      "sha256": "180e961ece3767c9ef24aec2955e1fafdec056a1d4af5d856aa23499dbe4e345"
+    },
+    {
+      "bytes": 540,
+      "path": "docs/monitor/origin/store-worker.js",
+      "sha256": "52dfad6a9870e56c2e0099e72fac646fce7b1067bab0c548bfdc31224e702b71"
+    },
+    {
+      "bytes": 2199,
+      "path": "docs/monitor/origin/vendor/SQLJS_LICENSE.txt",
+      "sha256": "60a3f6e4d7b29b4321359e683b36cf198d24f58e24582070f56e6fa89d5ee2be"
+    },
+    {
+      "bytes": 46535,
+      "path": "docs/monitor/origin/vendor/sql-wasm.js",
+      "sha256": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7"
+    },
+    {
+      "bytes": 658410,
+      "path": "docs/monitor/origin/vendor/sql-wasm.wasm",
+      "sha256": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
+    },
+    {
+      "bytes": 20447,
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "sha256": "2d603f77785ab4ca1e68b025972cf6fbf70dbff5ecc21168a82be93f6cd28840"
+    },
+    {
+      "bytes": 626,
+      "path": "runtime/self-host/ORIGIN_BROWSER_TEST_LOCK.json",
+      "sha256": "73f9785168d11e4d3997319d438da1af6565cc417b4540bde4c28f73539032db"
+    },
+    {
+      "bytes": 1063,
+      "path": "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
+      "sha256": "72d8c5cde2a1e3335f45d814a6705743ebe04a94afc4a1cca94649157e065c69"
+    },
+    {
+      "bytes": 5091,
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "95314fcd65e01b957ae2386f1661cccc450bf1f7d37eaea463f8c473748799d1"
+    },
+    {
+      "bytes": 45373,
+      "path": "runtime/self-host/README.md",
+      "sha256": "a72bccd90d08bc2313f04989369f98879e3f236033114283963d64bc838da5c8"
+    },
+    {
+      "bytes": 1803,
+      "path": "runtime/self-host/origin-tests/package-lock.json",
+      "sha256": "0dcbcee753ca4f5fb3bae42743399158c850708836a07f373c82f5d60b8dfa90"
+    },
+    {
+      "bytes": 221,
+      "path": "runtime/self-host/origin-tests/package.json",
+      "sha256": "d7eeddf1f92b1856d69eef2cd312a77a942d37a43d2e1825280e90bd000ee533"
+    },
+    {
+      "bytes": 6297,
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "464dedaa631fa8c28e65dc45e3ca118d799698685641163278836a9993c41057"
+    },
+    {
+      "bytes": 24757,
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "d72f1257eedfbd1ddd778b70b3e5fbe326e3da974ab96e34c6dd05de992bc506"
+    },
+    {
+      "bytes": 15792,
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "sha256": "32d5c7439c5265568e50e920a462b21da69b74cf47ff17cb606ce565e505e500"
+    },
+    {
+      "bytes": 4786,
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "sha256": "2b1a20ddadd56bb677e99fc9b1d8097997eec39d0f67cd7db8311589a86eb565"
+    },
+    {
+      "bytes": 46392,
+      "path": "tests/test_self_host_temdd.py",
+      "sha256": "6a4873baf1933b8381757a0d267ffd9ab5947cdb18f608081b708abb18e00d1f"
+    },
+    {
+      "bytes": 104896,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "4e74adb20e2fef3a12728883c6b36cdb642d8238aaac33b61e4eb2698bbb65f3"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "android_verified": false,
+    "ios_verified": false,
+    "mobile_runtime_verified": false,
+    "public_https_verified": false
+  },
+  "reuse_evidence": {
+    "checkpoint": "Extended checkpoint_monolith retains both existing native writer locks and private state binding",
+    "native_kernel": "src/qikvrt_temdd_event_ledger.py remains unchanged; byte-bound original",
+    "new_browser_adapter_reason": "The existing Linux Python/Unix adapter and monitor JSON replica cannot read or retain the original SQLite file in a browser origin; no prior SQLite browser adapter or mobile runner found",
+    "react": "Existing pinned static React bundle and stylesheet reused",
+    "workflow": "Existing qikvrt_temdd.yml lane extended; no second executor or mobile claim lane created"
+  },
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "scope_boundary": "Secure-Origin source adapter for passive verification/readback of the original SQLite carrier. Native Python execution, cloud native-effect replication, write takeover and public/mobile acceptance are separate and not established.",
+  "source_commit": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+  "source_ref": "work/node-client-monolith-20261006",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "4c56a464394816f391c3221218707e6c04e05527",
+  "unresolved_origin": [],
+  "verification": {
+    "browser_ci": "Required fresh qikvrt_temdd.yml candidate lane; receipt binds actual source head/tree and dirty flag",
+    "device_route_observation": {
+      "adb": "UNAVAILABLE",
+      "android_emulator": "UNAVAILABLE",
+      "android_or_ios_executable_route_established": false,
+      "local_platform": "Linux",
+      "repository_mobile_device_jobs": "NOT_FOUND",
+      "xcrun": "UNAVAILABLE"
+    },
+    "local_browser_witness": "NOT_EXECUTED_BEFORE_PAGE_LOAD; Chrome 151.0.7922.34 socket(AF_UNIX) EPERM",
+    "local_bus_original_kernel_controls": {
+      "count": 24,
+      "result": "PASS"
+    },
+    "local_content_scope": "Uncommitted candidate bytes bound by outputs; not a remote exact-head CI receipt",
+    "local_make_test_and_repository_monitor": "PASS; shallow historical object 56127a6f fetched before rerun",
+    "local_origin_export_controls": {
+      "count": 2,
+      "result": "PASS"
+    },
+    "local_sqlite_origin_test_groups": {
+      "count": 8,
+      "result": "PASS"
+    },
+    "predecessor_evidence_transfer": false,
+    "tool_cache_coverage": "28/28 (100%)"
+  },
+  "work_unit_id": "NODE_CLIENT_ORIGIN_ADAPTER_20261006_V1"
+}

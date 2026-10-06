@@ -286,6 +286,33 @@
       ],
       "version": "reported-version-and-exact-package-digest"
     },
+    "playwright-origin-tests": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "docs/monitor/origin/origin.browser.test.mjs",
+        "runtime/self-host/ORIGIN_BROWSER_TEST_LOCK.json",
+        "runtime/self-host/origin-tests/package.json",
+        "runtime/self-host/origin-tests/package-lock.json",
+        ".github/workflows/qikvrt_temdd.yml"
+      ],
+      "cache_class": "hosted-toolcache",
+      "cache_locations": [
+        "npm-integrity-locked Playwright 1.62.1 package",
+        "SHA256-locked official Chrome for Testing 151.0.7922.34 archive"
+      ],
+      "profiles": [
+        "self-host-origin-tests"
+      ],
+      "provider": "https://github.com/microsoft/playwright/tree/v1.62.1",
+      "trusted_save": false,
+      "verification": [
+        "npm ci SRI locks; browser archive SHA-256 and byte count; exact executable --version",
+        "desktop persistent-context close/relaunch; offline and negative controls",
+        "device emulation or desktop WebKit never counted as Android or iOS witness"
+      ],
+      "version": "1.62.1"
+    },
     "poppler": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -469,6 +496,28 @@
         "offline audio tests"
       ],
       "version": "1.13.4"
+    },
+    "sqljs-browser": {
+      "authority_files": [
+        "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "docs/monitor/origin/vendor"
+      ],
+      "profiles": [
+        "self-host-origin"
+      ],
+      "provider": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
+      "trusted_save": false,
+      "verification": [
+        "archive SHA-512 integrity; every vendored file size and SHA-256",
+        "actual original SQLite carrier validation; corrupt-byte and identity refusal",
+        "offline Service Worker cache hashes; fail closed and preserve previous store on error"
+      ],
+      "version": "1.14.2"
     },
     "systemd": {
       "authority_files": [
