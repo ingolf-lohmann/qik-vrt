@@ -6,7 +6,7 @@
   "source_base_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
   "requested_execution": "REPOSITORY_NATIVE_WEBHOOKS_NO_CLIENT_SCHEDULER",
   "client_mail_watch": "DISABLED_NATIVE_CONTROL_PLANE_READBACK",
-  "implementation": "EXISTING_REST_LOOP_AND_PRIVATE_GRAPH_DELTA_CURRENT_MESSAGE_CONSUMER",
+  "implementation": "EXISTING_REST_LOOP_GRAPH_PROVIDER_CONSUMER_PRIVATE_TASKS_AND_DAY_PLAN",
   "ingress_contract": "docs/GRAPH_MAIL_WEBHOOK.md",
   "private_data_in_public_repository": false,
   "activation": "BLOCKED_OWN_HTTPS_HOST_GRAPH_OAUTH_SUBSCRIPTION_AND_REAL_MAIL_CONSUMER_BINDING",
@@ -16,7 +16,7 @@
   "live_mail_event_read_back": false,
   "document_delivery_verified": false,
   "monitoring_gap": "CLIENT_WATCH_DISABLED_REPOSITORY_WEBHOOK_NOT_YET_ACTIVE",
-  "next_action": "Run and read back exact successor HEAD/TREE gates. Separately bind the private consumer/OAuth on the existing admitted HTTPS runtime, register/read back the native subscription and verify an actual provider mail observation and document delivery. No client scheduler or timed polling.",
+  "next_action": "Verify the exact successor HEAD/TREE remote gates. Production activation remains separate: admitted private host/provider/task bindings, OAuth, public HTTPS callback, native subscription registration and a genuine independently read-back mail event. No client polling or second scheduler; private notification delivery and owner task completion require separate effect evidence.",
   "effect_ack_done": false,
   "source_predecessor_head": "43cf26294c95c710ece3aaa806848744a2de0c7e",
   "source_predecessor_tree": "cdd9e7e0c44d03d21797c62e679d454047625cef",
@@ -56,75 +56,65 @@
   "outputs": [
     {
       "path": "src/qikvrt_graph_mail_consumer.py",
-      "bytes": 21626,
-      "sha256": "51cc421283778273421323072e43ebc80253dada855356327bd2fa4ae2d8154d"
+      "bytes": 38602,
+      "sha256": "e9ed419f0bbcb9187024fffca5f86121c32255a27139ac19b40541a64f64775d"
     },
     {
       "path": "src/qikvrt_graph_webhook.py",
-      "bytes": 20046,
-      "sha256": "0c2144ff53ff342af6c339b9eac6f2160e7739d44c61a4fdbbdf33c0361a0951"
+      "bytes": 20503,
+      "sha256": "1ef21b2b3b0e56af996b7607eb83d3c0d8d376eb733a68b5f22e60b85d291839"
     },
     {
       "path": "src/qikvrt_github_api_shim.py",
-      "bytes": 20862,
-      "sha256": "0d25fb44a087b6a47055a3287c53e03d02d7de34525d630b04fa14a4094e6725"
+      "bytes": 21118,
+      "sha256": "12744a7de53a2256431211865bf19a17b5c69fbf923c122c93be4ce0bb1d340d"
     },
     {
       "path": "tools/qikvrt_graph_subscription.py",
-      "bytes": 10252,
-      "sha256": "5393e1e74dd1c183fdffb9af19211ede1b453ea85c496b44467f3c7796caf337"
+      "bytes": 10350,
+      "sha256": "55728aa7eae9905889a91b0c199fbbcf9accd1c42a50c02541d2c9120d2bacb5"
+    },
+    {
+      "path": "tools/qikvrt_owner_reminders.py",
+      "bytes": 19707,
+      "sha256": "0a8060d006c708343c9870e26a57910297a22020967984136f356540117f2493"
     },
     {
       "path": "tests/test_graph_mail_consumer.py",
-      "bytes": 30385,
-      "sha256": "5fae1fe9dfe554ac47a7c13dc387ff582699f1dd9fc8d1eeab9419a2595c4849"
+      "bytes": 52285,
+      "sha256": "242ec26d517a005521b469ecdba4d22851b5e14742a8bb1a3fbc103929614733"
     },
     {
       "path": "docs/GRAPH_MAIL_WEBHOOK.md",
-      "bytes": 16315,
-      "sha256": "1d5981e5652259d01ff76de197c626c72b4e2a5c92ea309872e182e14af63555"
+      "bytes": 22528,
+      "sha256": "b0f7b5d2895fd3141c3b1b1168a03cffe153f6d719d4b47eaf1dd52ca778449f"
     },
     {
-      "path": "Makefile",
-      "bytes": 11448,
-      "sha256": "1cdda884d4c753eca59f346f7af53f5fa0a153036a2e098c26030154aa0635f3"
+      "path": "personal/ingolf-lohmann/reminders/README.md",
+      "bytes": 6107,
+      "sha256": "981986e061d129a26d30ca2fd273d2c231bf9d1119e4cb6417939b2984c329b8"
     }
   ],
   "verification": {
-    "candidate_command": "make graph-mail-webhook-test",
-    "candidate_test_count": 61,
-    "candidate_result": "PASS_CURRENT_CANDIDATE_SYNTHETIC_PROVIDER_AND_LOCAL_HTTP",
-    "full_suite_initial_result": "BLOCK_MISSING_HISTORICAL_GIT_OBJECT",
-    "historical_object_restored": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
-    "original_historical_test_recheck": "PASS_WITHOUT_SOURCE_OR_GATE_CHANGE",
-    "new_exact_head_results": "PENDING; must be observed after successor commit creation",
-    "predecessor_evidence_transfer": false,
-    "negative_controls": [
-      "failed durable ingest: no wake",
-      "partial durable batch: wake retained",
-      "invalid auth, tenant, subscription, resource, batch: no ingress",
-      "validation challenge: no ingest/no wake",
-      "concurrent wake during scan retained",
-      "idle loop: no store scan/no timed retry",
-      "missing/forged/corrupt ingest provenance: blocked",
-      "symlink pending: blocked",
-      "conflicting reconciliation receipt: preserved and blocked",
-      "worker storage failure: pending retained",
-      "abrupt process exit: startup recovery",
-      "replay/restart: identical receipt without overwrite",
-      "lifecycle bytes: no Graph effect"
-    ],
-    "predecessor_exact_head_make_test": {
-      "head": "c26a86da22ad89c1f96d0e3da28b2a545a8f8e33",
-      "tree": "ca80fa8c6b355199ea9b9ff52a076fc1d8f4eeb2",
-      "result": "PASS",
-      "python_tests": 575,
-      "graph_tests": 32,
-      "log_bytes": 111680,
-      "log_sha256": "b3a38ee7ee0945b702c1330c370f4d7a7dd3ddca037cef6f4ef136ac1c959062",
-      "transferred_to_successor": false
+    "candidate_command": "make test",
+    "candidate_python_test_executions": 631,
+    "candidate_python_groups": 19,
+    "graph_controls": 88,
+    "new_task_controls": 27,
+    "existing_owner_reminder_controls": 16,
+    "candidate_result": "PASS_CURRENT_WORKTREE_SYNTHETIC_PROVIDER_REAL_LOCAL_HTTP_AND_FULL_REPOSITORY_GATES",
+    "candidate_log": {
+      "bytes": 122716,
+      "sha256": "93f9e4949aeca5099d91833915310f2c4dbf71cf1f2979de873d7b52f255756b"
     },
-    "historical_worker_candidate_test_count": 32
+    "graph_reminder_log": {
+      "bytes": 19554,
+      "sha256": "2bae866d1da07052b028024b69a073e15c74c75a68785c8c7cd2e31a9f3e771e"
+    },
+    "remote_exact_head_result": "PENDING_AT_COMMIT_TIME",
+    "predecessor_evidence_transfer": false,
+    "original_historical_fixture_recheck": "PASS_UNCHANGED_AFTER_REUSING_EXACT_LOCAL_DONOR_COMMIT_AND_SHALLOW_BOUNDARY",
+    "historical_fixture_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2"
   },
   "integration_reconciliation": {
     "current_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
@@ -293,7 +283,9 @@
         "bytes": 11448,
         "sha256": "1cdda884d4c753eca59f346f7af53f5fa0a153036a2e098c26030154aa0635f3"
       }
-    ]
+    ],
+    "output_binding": "HISTORICAL_FB986E6_SOURCE_ONLY_NOT_CURRENT_OUTPUTS",
+    "subject_head": "fb986e6aa70233e330377b6c86e75968536e51ec"
   },
   "predecessor_worker_outputs": [
     {
@@ -316,5 +308,166 @@
       "bytes": 10437,
       "sha256": "1277c4ca0ddda6ac6e075fbe6158396d124ad31ddf7ffb462e72ab02582fe5d5"
     }
-  ]
+  ],
+  "predecessor_mail_consumer_outputs": [
+    {
+      "path": "src/qikvrt_graph_mail_consumer.py",
+      "bytes": 21626,
+      "sha256": "51cc421283778273421323072e43ebc80253dada855356327bd2fa4ae2d8154d"
+    },
+    {
+      "path": "src/qikvrt_graph_webhook.py",
+      "bytes": 20046,
+      "sha256": "0c2144ff53ff342af6c339b9eac6f2160e7739d44c61a4fdbbdf33c0361a0951"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 20862,
+      "sha256": "0d25fb44a087b6a47055a3287c53e03d02d7de34525d630b04fa14a4094e6725"
+    },
+    {
+      "path": "tools/qikvrt_graph_subscription.py",
+      "bytes": 10252,
+      "sha256": "5393e1e74dd1c183fdffb9af19211ede1b453ea85c496b44467f3c7796caf337"
+    },
+    {
+      "path": "tests/test_graph_mail_consumer.py",
+      "bytes": 30385,
+      "sha256": "5fae1fe9dfe554ac47a7c13dc387ff582699f1dd9fc8d1eeab9419a2595c4849"
+    },
+    {
+      "path": "docs/GRAPH_MAIL_WEBHOOK.md",
+      "bytes": 16315,
+      "sha256": "1d5981e5652259d01ff76de197c626c72b4e2a5c92ea309872e182e14af63555"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11448,
+      "sha256": "1cdda884d4c753eca59f346f7af53f5fa0a153036a2e098c26030154aa0635f3"
+    }
+  ],
+  "predecessor_mail_consumer_verification": {
+    "candidate_command": "make graph-mail-webhook-test",
+    "candidate_test_count": 61,
+    "candidate_result": "PASS_CURRENT_CANDIDATE_SYNTHETIC_PROVIDER_AND_LOCAL_HTTP",
+    "full_suite_initial_result": "BLOCK_MISSING_HISTORICAL_GIT_OBJECT",
+    "historical_object_restored": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+    "original_historical_test_recheck": "PASS_WITHOUT_SOURCE_OR_GATE_CHANGE",
+    "new_exact_head_results": "PENDING; must be observed after successor commit creation",
+    "predecessor_evidence_transfer": false,
+    "negative_controls": [
+      "failed durable ingest: no wake",
+      "partial durable batch: wake retained",
+      "invalid auth, tenant, subscription, resource, batch: no ingress",
+      "validation challenge: no ingest/no wake",
+      "concurrent wake during scan retained",
+      "idle loop: no store scan/no timed retry",
+      "missing/forged/corrupt ingest provenance: blocked",
+      "symlink pending: blocked",
+      "conflicting reconciliation receipt: preserved and blocked",
+      "worker storage failure: pending retained",
+      "abrupt process exit: startup recovery",
+      "replay/restart: identical receipt without overwrite",
+      "lifecycle bytes: no Graph effect"
+    ],
+    "predecessor_exact_head_make_test": {
+      "head": "c26a86da22ad89c1f96d0e3da28b2a545a8f8e33",
+      "tree": "ca80fa8c6b355199ea9b9ff52a076fc1d8f4eeb2",
+      "result": "PASS",
+      "python_tests": 575,
+      "graph_tests": 32,
+      "log_bytes": 111680,
+      "log_sha256": "b3a38ee7ee0945b702c1330c370f4d7a7dd3ddca037cef6f4ef136ac1c959062",
+      "transferred_to_successor": false
+    },
+    "historical_worker_candidate_test_count": 32
+  },
+  "native_mail_task_consumer_implementation_bound": true,
+  "native_mail_task_consumer_bound": false,
+  "mail_task_consumer_successor": {
+    "source_head": "fb986e6aa70233e330377b6c86e75968536e51ec",
+    "source_tree": "0b40b05ef733f5f4747de9056c509dac1724136e",
+    "source_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "source_main_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+    "created_at_utc": "2026-10-06T21:51:21.885695+00:00",
+    "reuse_before_create": {
+      "available_history_commits": 2318,
+      "method": "available local all-ref mail/inbox/reminder/lifecycle path history; current source; fresh open successor inventory",
+      "history_reuse": [
+        "79ddba3b6d0970203053b2719c41e9410276741c:owner reminder windows",
+        "a3176258:existing reminder/day-plan adapter"
+      ],
+      "compatible_open_successor": "PR477 fb986e6aa70233e330377b6c86e75968536e51ec native provider consumer reused",
+      "finding": "No task-classification consumer located in the searched history/path scope or open successor source; extend existing provider/reminder modules rather than create parallel machinery."
+    },
+    "task_consumer": "src/qikvrt_graph_mail_consumer.py:GraphMailTaskConsumer",
+    "runtime_binding": "QIKVRT_GRAPH_MAIL_TASK_BINDING",
+    "private_effect_scope": "PRIVATE_MAIL_CLASSIFICATION_AND_TASK_PLAN_ONLY",
+    "existing_reminder_adapter": "tools/qikvrt_owner_reminders.py:project_private_mail_plan",
+    "classification_scope": "SELECTED_CURRENT_UNIQUE_BODY_RULES_ONLY",
+    "human_sender_basis": "PRIVATE_CONTACT_CLASSIFICATION_NOT_IDENTITY_ATTESTATION",
+    "rule_languages": [
+      "DE",
+      "EN",
+      "FR"
+    ],
+    "unknown_sender_requests": "PRIVATE_OWNER_REVIEW_ATTENTION_NO_HUMAN_IDENTITY_CLAIM_NO_DERIVED_TASK",
+    "urgent_important_without_explicit_action": "ATTENTION_ONLY_NO_INVENTED_TASK",
+    "deadlines_inferred": false,
+    "public_registry_modified": false,
+    "scheduler_created": false,
+    "second_worker_created": false,
+    "original_messages_modified": false,
+    "timed_polling": false,
+    "timed_retry": false,
+    "commit_rule": "Committed native provider chain only; native task capsule/provenance and source/excerpt/plan readback; compare-and-set fsynced pointer. Recover pending committed observations before a new provider read. Ignore orphan candidates.",
+    "task_identity": "One mailbox/immutable-message-bound task across replay, version/read flag changes and selected-folder moves",
+    "source_removal": "SOURCE_UNAVAILABLE_REVIEW_REQUIRED_NOT_COMPLETED",
+    "request_change_without_recognizable_action": "SOURCE_CHANGED_REVIEW_REQUIRED_NOT_COMPLETED",
+    "private_readback": "GraphMailTaskConsumer.read_private_state(webhook_binding)",
+    "public_projection": "SCOPE_STATUS_COUNTS_ONLY_NO_PRIVATE_IDS_CONTENT_ADDRESSES_KEYS_OR_RAW_EXCEPTIONS",
+    "limits": {
+      "messages_and_tasks": 10000,
+      "observation_batch": 256,
+      "source_chain_readback": 10000,
+      "current_unique_body_characters": 65536
+    },
+    "synthetic_controls": [
+      "native HTTP wake to private task/day plan",
+      "stable replay/update/read-flag/restart task identity",
+      "abrupt fresh-process loss before task pointer then two fresh-process recoveries",
+      "urgent important FYI does not invent task",
+      "DE EN FR source-bound request and no guessed deadline",
+      "unknown sender, bulk/auto/no-reply, CC, quotes, drafts, self and negation boundaries",
+      "truncated preview never task basis",
+      "selected-folder move and deletion without false completion",
+      "storage/provenance/capsule/binding/symlink/current-field failures",
+      "competing task writer rejected",
+      "native storage provenance alone cannot accept forged excerpt or orphan provider source",
+      "pending tasks recover before unavailable provider",
+      "owner-timezone priority/date projection",
+      "lifecycle private status without Graph control-plane effects",
+      "no idle/timed retry and sanitized public runtime errors"
+    ],
+    "activation_gates": {
+      "public_https_callback_observed": false,
+      "private_graph_oauth_verified": false,
+      "native_subscription_registered": false,
+      "production_consumer_bindings_admitted": false,
+      "live_mail_event_read_back": false,
+      "private_notification_sent": false,
+      "owner_task_completion_verified": false,
+      "document_received": false
+    },
+    "provenance": {
+      "human_actor": "Ingolf Lohmann",
+      "human_contribution": "Authorized this bounded consumer/task classification/day-plan work in the current task; no public private-content receipt and separate live activation gates.",
+      "artificial_cognitive_actor": "OpenAI Codex (GPT-6)",
+      "model_build": "UNAVAILABLE",
+      "artificial_cognitive_contribution": "Reuse search, existing-module private task classification and runtime handoff, source-bound native checkpoint, synthetic controls, fresh verification and documentation.",
+      "evidence_retention": "METADATA_ONLY",
+      "native_codeowner_acceptance": "NOT_SUBMITTED_OR_INFERRED"
+    },
+    "effect_ack_done": false
+  }
 }

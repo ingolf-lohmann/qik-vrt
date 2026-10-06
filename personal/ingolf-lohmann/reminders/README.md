@@ -88,3 +88,17 @@ Bestehende Einträge ohne `expires` behalten ihre bisherigen Hashes,
 Idempotenz- und Nachlaufregeln. Die neuen Endgrenzen sind Teil des gebundenen
 Auftrags und seiner Inhaltsidentität. Zustellung bleibt ein separat
 zurückzulesender GitHub-Kommentar, kein Nachweis menschlichen Lesens.
+
+## Privater ereignisgesteuerter Mail-Eingang
+
+Der bestehende Adapter `tools/qikvrt_owner_reminders.py` verarbeitet zusätzlich
+quellengebundene private Mail-Aufgaben über `project_private_mail_plan`. Der
+Graph-Consumer ruft diesen Pfad im bestehenden REST-Wakeup/Wiederanlauf auf;
+kein weiterer Scheduler wird angelegt. Erkennbare direkte Anfragen privat
+klassifizierter menschlicher Kontakte können eine Aufgabe begründen; wichtige
+oder dringliche Informationen bleiben ohne abgeleitete Handlung im Hinweis-
+pfad. Fälligkeiten werden nicht erfunden. Aufgabenstatus und Tagesplan werden
+gemeinsam im privaten nativen Checkpoint gespeichert, nicht in dieser
+öffentlichen Registry oder in Actions-Artefakten. Mail-Löschung bedeutet keine
+Erledigung. Tatsächliche private Benachrichtigung bleibt ein eigener Effekt.
+Bindung, Begrenzungen und Prüfungen: `docs/GRAPH_MAIL_WEBHOOK.md`.

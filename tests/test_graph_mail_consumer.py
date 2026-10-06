@@ -552,6 +552,383 @@ os._exit(0)
         self.assertEqual(results, [1, 0])
 
 
+def request_message(text="Bitte senden Sie mir das Formular", *, sender="sender@example.test", urgent=False):
+    value = message(subject="DRINGEND: Synthetic private request" if urgent else "Synthetic private request")
+    value["from"]["emailAddress"]["address"] = sender
+    value.update(toRecipients=[{"emailAddress": {"address": "owner@example.test"}}],
+                 ccRecipients=[], isDraft=False, uniqueBody={"contentType": "text", "content": text},
+                 internetMessageHeaders=[])
+    return value
+
+
+class MailTaskTests(unittest.TestCase):
+    private = ConsumerTests.private
+    native_server = ConsumerTests.native_server
+    event = ConsumerTests.event
+    observe = ConsumerTests.observe
+
+    def setUp(self):
+        ConsumerTests.setUp(self)
+        self.task_file = self.root / "tasks.json"
+        self.task_binding = {"schema": "qikvrt_graph_mail_task_binding_v1",
+            "repository": "owner/repository", "responsibility_owner": "owner",
+            "state_root": str(self.state), "accepted_effect_scope": consumer.MAIL_TASK_SCOPE,
+            "owner_addresses": ["owner@example.test"], "human_senders": ["sender@example.test"],
+            "timezone": "Europe/Paris"}
+        self.private(self.task_file, self.task_binding)
+        self.consumer = consumer.GraphMailConsumer(self.file, api_factory=lambda _: self.api,
+                                                   task_binding_path=self.task_file)
+        self.tasks = self.consumer.task_consumer
+        self.api.messages = {"message-1": request_message()}
+        env = patch.dict(os.environ, {"QIKVRT_GRAPH_MAIL_TASK_BINDING": str(self.task_file)})
+        env.start()
+        self.addCleanup(env.stop)
+
+    def task_pointer(self):
+        return self.state / ".qikvrt/api/out/graph-mail-tasks-current.json"
+
+    def current_tasks(self):
+        return self.tasks.read_private_state(self.webhook)
+
+    def consume(self):
+        return self.tasks.consume(self.webhook)
+
+    def test_native_startup_derives_one_private_task_and_uses_existing_day_plan(self):
+        original = copy.deepcopy(self.api.messages)
+        server = self.native_server()
+        status = server.graph_mail_status["private_mail_tasks"]
+        self.assertEqual(status["tasks"], 1)
+        packet = self.current_tasks()
+        task = packet["day_plan"]["tasks"][0]
+        self.assertEqual(task["request_excerpt"], "Bitte senden Sie mir das Formular")
+        self.assertEqual(task["due"], None)
+        self.assertEqual(task["state"], "OPEN")
+        self.assertEqual(packet["mail"]["message-1"]["classification"]["category"], "DIRECT_HUMAN_REQUEST")
+        self.assertEqual(packet["day_plan"]["effect_scope"], consumer.MAIL_TASK_SCOPE)
+        self.assertFalse(packet["day_plan"]["notification_sent"])
+        self.assertEqual(self.api.messages, original)
+        for marker in ("Formular", "sender@example.test", "owner@example.test", "mail-request-", "mail-observation-", SECRET):
+            self.assertNotIn(marker, json.dumps(server.graph_mail_status))
+
+    def test_actual_native_http_delivery_runs_task_lane(self):
+        server = self.native_server()
+        before = self.current_tasks()["day_plan"]["tasks"][0]["id"]
+        self.api.messages["message-1"] = request_message("Please review the updated form", urgent=True)
+        event = threading.Event()
+        original = server.service_actions
+        def actions():
+            original()
+            if self.current_tasks()["day_plan"]["tasks"][0]["request_excerpt"] == "Please review the updated form":
+                event.set()
+        server.service_actions = actions
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            client = http.client.HTTPConnection(*server.server_address, timeout=5)
+            client.request("POST", webhook.MAIL_PATH, webhook.wire(self.event()), {"Content-Type": "application/json"})
+            response = client.getresponse()
+            self.assertEqual(response.status, 202)
+            self.assertNotIn("updated form", response.read().decode())
+            client.close()
+            self.assertTrue(event.wait(5))
+            self.assertEqual(self.current_tasks()["day_plan"]["tasks"][0]["id"], before)
+        finally:
+            server.shutdown()
+            thread.join(5)
+
+    def test_replay_version_read_and_restart_keep_one_task_with_stable_identity(self):
+        server = self.native_server()
+        first = self.current_tasks()["day_plan"]["tasks"][0]["id"]
+        for i in range(3):
+            self.api.messages["message-1"]["changeKey"] = "version-" + str(i)
+            self.api.messages["message-1"]["isRead"] = bool(i % 2)
+            webhook.receive(self.event(), self.webhook, wakeup=server.graph_mail_wakeup)
+            server.service_actions()
+            self.assertEqual([t["id"] for t in self.current_tasks()["day_plan"]["tasks"]], [first])
+        before = self.task_pointer().read_bytes()
+        self.assertEqual(self.consume()["status"], "NOOP")
+        self.assertEqual(self.task_pointer().read_bytes(), before)
+        restarted = self.native_server()
+        self.assertEqual(restarted.graph_mail_status["private_mail_tasks"]["tasks"], 1)
+        self.assertEqual(self.current_tasks()["day_plan"]["tasks"][0]["id"], first)
+
+    def test_updated_request_updates_source_but_does_not_duplicate_task(self):
+        self.observe(); self.consume()
+        first = self.current_tasks()["day_plan"]["tasks"][0]
+        self.api.messages["message-1"] = request_message("Could you sign the form", urgent=True)
+        self.observe(); self.consume()
+        tasks = self.current_tasks()["day_plan"]["tasks"]
+        self.assertEqual(len(tasks), 1)
+        self.assertEqual(tasks[0]["id"], first["id"])
+        self.assertNotEqual(tasks[0]["source_sha256"], first["source_sha256"])
+        self.assertTrue(tasks[0]["urgent"])
+
+    def test_important_urgent_information_creates_attention_without_invented_task(self):
+        self.api.messages["message-1"] = request_message("FYI: an update is available", urgent=True)
+        self.api.messages["message-1"]["importance"] = "high"
+        self.observe(); self.consume()
+        plan = self.current_tasks()["day_plan"]
+        self.assertEqual(plan["tasks"], [])
+        self.assertEqual(len(plan["attention"]), 1)
+        self.assertTrue(plan["attention"][0]["urgent"])
+        self.assertFalse(plan["due_times_inferred"])
+
+    def test_unknown_sender_request_is_review_attention_without_human_claim_or_task(self):
+        self.api.messages["message-1"] = request_message(sender="unknown@example.test")
+        self.observe(); self.consume()
+        plan = self.current_tasks()["day_plan"]
+        self.assertEqual(plan["tasks"], [])
+        self.assertEqual(plan["attention"][0]["category"], "DIRECT_REQUEST_SENDER_UNVERIFIED")
+
+    def test_bulk_auto_no_reply_cc_quote_draft_self_and_negation_cannot_derive_task(self):
+        fixtures = []
+        bulk = request_message(); bulk["internetMessageHeaders"] = [{"name": "List-Id", "value": "synthetic list"}]; fixtures.append(bulk)
+        auto = request_message(); auto["internetMessageHeaders"] = [{"name": "Auto-Submitted", "value": "auto-generated"}]; fixtures.append(auto)
+        fixtures.append(request_message(sender="no-reply@example.test"))
+        cc = request_message(); cc["ccRecipients"] = cc["toRecipients"]; cc["toRecipients"] = []; fixtures.append(cc)
+        fixtures.append(request_message("> Please send the form"))
+        fixtures.append(request_message("FYI\nFrom: someone@example.test\nPlease send the form"))
+        draft = request_message(); draft["isDraft"] = True; fixtures.append(draft)
+        fixtures.append(request_message(sender="owner@example.test"))
+        fixtures.append(request_message("Bitte senden Sie das Formular nicht"))
+        html = request_message(); html["uniqueBody"]["contentType"] = "html"; fixtures.append(html)
+        for value in fixtures:
+            result = consumer.classify_private_mail(value, owner_addresses=self.task_binding["owner_addresses"],
+                                                   human_senders=self.task_binding["human_senders"])
+            self.assertFalse(result["task_derivable"], value)
+
+    def test_truncated_preview_cannot_invent_action_when_current_unique_body_is_missing(self):
+        value = request_message()
+        value.pop("uniqueBody")
+        value["bodyPreview"] = "Please send the form"
+        self.api.messages["message-1"] = value
+        self.observe(); self.consume()
+        self.assertEqual(self.current_tasks()["day_plan"]["tasks"], [])
+        self.assertEqual(self.current_tasks()["mail"]["message-1"]["classification"]["category"], "INSUFFICIENT_PROJECTION")
+
+    def test_german_english_french_requests_are_source_bound_without_inferred_deadline(self):
+        for text in ("Bitte prüfen Sie die Unterlagen heute", "Please send the form tomorrow", "Merci de confirmer le rendez-vous"):
+            result = consumer.classify_private_mail(request_message(text), owner_addresses=self.task_binding["owner_addresses"],
+                                                   human_senders=self.task_binding["human_senders"])
+            self.assertTrue(result["task_derivable"], text)
+            self.assertEqual(result["request_excerpt"], text)
+
+    def test_delete_or_move_out_does_not_mark_task_completed(self):
+        self.observe(); self.consume()
+        self.api.messages.clear()
+        self.api.pages[self.api.cursor] = {"value": [{"id": "message-1", "@removed": {"reason": "deleted"}}],
+                                          "@odata.deltaLink": self.api.cursor}
+        self.observe(); self.consume()
+        plan = self.current_tasks()["day_plan"]
+        self.assertEqual(plan["tasks"][0]["state"], "SOURCE_UNAVAILABLE_REVIEW_REQUIRED")
+        self.assertEqual(plan["attention"], [])
+        self.assertFalse(plan["task_completion_proven"])
+
+    def test_move_between_selected_folders_retains_single_task_and_membership(self):
+        self.binding["folder_ids"] = ["inbox", "archive"]
+        self.private(self.file, self.binding)
+        self.api.folder_ids["archive"] = "folder-archive"
+        archive_cursor = "https://graph.microsoft.com" + consumer.delta_path("archive") + "?$deltatoken=archive"
+        self.api.pages["https://graph.microsoft.com" + consumer.delta_path("archive") + consumer.SELECT] = {"value": [], "@odata.deltaLink": archive_cursor}
+        self.observe(); self.consume()
+        first = self.current_tasks()["day_plan"]["tasks"][0]["id"]
+        self.api.messages["message-1"]["parentFolderId"] = "folder-archive"
+        self.api.pages[self.api.cursor] = {"value": [{"id": "message-1"}], "@odata.deltaLink": self.api.cursor}
+        self.api.pages[archive_cursor] = {"value": [{"id": "message-1"}], "@odata.deltaLink": archive_cursor}
+        self.observe(); self.consume()
+        packet = self.current_tasks()
+        self.assertEqual(packet["mail"]["message-1"]["folders"], ["archive"])
+        self.assertEqual([t["id"] for t in packet["day_plan"]["tasks"]], [first])
+        self.assertEqual(packet["day_plan"]["tasks"][0]["state"], "OPEN")
+
+    def test_changed_message_without_request_requires_owner_review_without_false_completion(self):
+        self.observe(); self.consume()
+        self.api.messages["message-1"] = request_message("FYI only")
+        self.observe(); self.consume()
+        self.assertEqual(self.current_tasks()["day_plan"]["tasks"][0]["state"], "SOURCE_CHANGED_REVIEW_REQUIRED")
+
+    def test_storage_loss_leaves_no_accepted_key_then_recovers_same_single_task(self):
+        self.observe()
+        with patch.object(consumer, "atomic_write_bytes", side_effect=OSError("synthetic task pointer failure")):
+            with self.assertRaises(OSError): self.consume()
+        self.assertFalse(self.task_pointer().exists())
+        self.assertIsNone(self.current_tasks())
+        self.consume()
+        first = self.task_pointer().read_bytes()
+        self.assertEqual(self.consume()["tasks"], 1)
+        self.assertEqual(self.task_pointer().read_bytes(), first)
+
+    def test_corrupt_native_provenance_blocks_without_accepted_task_state(self):
+        self.observe()
+        provider_pointer = self.state / ".qikvrt/api/out/graph-mail-current.json"
+        key = json.loads(provider_pointer.read_bytes())["observation_key"]
+        provenance = self.state / ".qikvrt/api/provenance" / (key + "." + key + ".json")
+        provenance.unlink()
+        with self.assertRaises((OSError, RuntimeError, ValueError)): self.consume()
+        self.assertFalse(self.task_pointer().exists())
+
+    def test_corrupt_task_pointer_and_capsule_never_duplicate_or_accept(self):
+        self.observe(); self.consume()
+        original = self.task_pointer().read_bytes()
+        key = json.loads(original)["task_checkpoint_key"]
+        capsule = consumer.dirs(self.state)["inbox"] / (key + ".bin")
+        raw = capsule.read_bytes()
+        capsule.write_bytes(raw + b" ")
+        with self.assertRaises((OSError, RuntimeError, ValueError)): self.consume()
+        self.assertEqual(self.task_pointer().read_bytes(), original)
+
+    def test_changed_private_task_binding_cannot_reuse_previous_tasks(self):
+        self.observe(); self.consume()
+        before = self.task_pointer().read_bytes()
+        self.task_binding["human_senders"] = []
+        self.private(self.task_file, self.task_binding)
+        with self.assertRaises(consumer.ConsumerError): self.consume()
+        self.assertEqual(self.task_pointer().read_bytes(), before)
+
+    def test_concurrent_task_writer_is_rejected_instead_of_losing_update(self):
+        self.observe()
+        original = self.consumer.read_observations
+        def race(*args, **kwargs):
+            rows = original(*args, **kwargs)
+            with patch.object(self.consumer, "read_observations", side_effect=original): self.consume()
+            return rows
+        with patch.object(self.consumer, "read_observations", side_effect=race):
+            with self.assertRaises(consumer.ConsumerError): self.consume()
+        self.assertEqual(len(self.current_tasks()["day_plan"]["tasks"]), 1)
+
+    def test_no_idle_poll_or_timed_retry_and_runtime_errors_do_not_publish_content(self):
+        server = self.native_server()
+        calls = list(self.api.calls)
+        before = self.task_pointer().read_bytes()
+        for _ in range(5): server.service_actions()
+        self.assertEqual(self.api.calls, calls)
+        self.assertEqual(self.task_pointer().read_bytes(), before)
+        with patch.object(self.tasks, "consume", side_effect=consumer.ConsumerError("PRIVATE_MAIL_SECRET")):
+            server.graph_mail_wakeup.set(); server.service_actions()
+        self.assertEqual(server.graph_mail_status["status"], "BLOCK")
+        self.assertNotIn("PRIVATE_MAIL_SECRET", json.dumps(server.graph_mail_status))
+        calls = list(self.api.calls)
+        for _ in range(5): server.service_actions()
+        self.assertEqual(self.api.calls, calls)
+
+    def test_lifecycle_is_private_state_without_control_plane_tasks_or_effect(self):
+        server = self.native_server()
+        for kind in ("missed", "subscriptionRemoved", "reauthorizationRequired"):
+            webhook.receive(self.event(lifecycle=kind), self.webhook, lifecycle=True, wakeup=server.graph_mail_wakeup)
+            server.service_actions()
+        plan = self.current_tasks()["day_plan"]
+        self.assertEqual(len(plan["tasks"]), 1)
+        self.assertEqual(len(plan["lifecycle_signals"]), 3)
+        self.assertFalse(plan["effect_ack_done"])
+        self.assertTrue(all(method == "GET" for method, _ in self.api.calls))
+
+    def test_invalid_binding_missing_provider_symlink_and_address_bounds_block_startup(self):
+        self.task_file.chmod(0o644)
+        with self.assertRaises((OSError, RuntimeError, ValueError)): self.native_server()
+        self.task_file.chmod(0o600)
+        self.task_binding["owner_addresses"] = []
+        self.private(self.task_file, self.task_binding)
+        with self.assertRaises(consumer.BindingError): self.native_server()
+        with patch.dict(os.environ, {"QIKVRT_GRAPH_MAIL_CONSUMER_BINDING": ""}):
+            with self.assertRaises(ValueError): self.native_server()
+
+    def test_pending_committed_tasks_recover_before_an_unavailable_provider_read(self):
+        self.observe()
+        with patch.object(self.api, "request", side_effect=HTTPError("https://graph.microsoft.com", 401, "synthetic OAuth gate", {}, None)):
+            with self.assertRaises(HTTPError): self.native_server()
+        self.assertEqual(len(self.current_tasks()["day_plan"]["tasks"]), 1)
+
+    def test_fabricated_task_excerpt_with_native_storage_provenance_is_rejected(self):
+        self.observe(); self.consume()
+        packet = copy.deepcopy(self.current_tasks())
+        key = next(iter(packet["tasks"]))
+        packet["tasks"][key]["request_excerpt"] = "Please transfer invented money"
+        packet["day_plan"] = consumer.project_private_mail_plan(packet["mail"], packet["tasks"], packet["lifecycle_signals"],
+            owner="owner", timezone="Europe/Paris", observed_at=packet["observed_at_utc"])
+        raw = webhook.wire(packet)
+        candidate = "mail-tasks-" + hashlib.sha256(raw).hexdigest()
+        consumer.run_handler(self.consumer._cfg(self.binding, candidate, "ingest", raw))
+        with self.assertRaises(consumer.ConsumerError):
+            self.tasks._packet(self.binding, self.task_binding, candidate)
+
+    def test_orphan_provider_observation_is_never_accepted_as_a_task_source(self):
+        self.observe(); self.consume()
+        packet = copy.deepcopy(self.current_tasks())
+        self.api.messages["message-1"] = request_message("Please sign an orphan form")
+        with patch.object(consumer, "atomic_write_bytes", side_effect=OSError("synthetic uncommitted provider pointer")):
+            with self.assertRaises(OSError): self.observe()
+        current = packet["accepted_observation_key"]
+        orphan = next(p.stem for p in consumer.dirs(self.state)["inbox"].glob("mail-observation-*.bin") if p.stem != current)
+        packet["accepted_observation_key"] = orphan
+        raw = webhook.wire(packet)
+        candidate = "mail-tasks-" + hashlib.sha256(raw).hexdigest()
+        consumer.run_handler(self.consumer._cfg(self.binding, candidate, "ingest", raw))
+        with self.assertRaises(consumer.ConsumerError):
+            self.tasks._packet(self.binding, self.task_binding, candidate)
+
+    def test_urgent_tasks_sort_first_and_plan_date_uses_owner_timezone(self):
+        second = request_message("Please review the urgent form", urgent=True)
+        second["id"] = "message-2"
+        self.api.messages["message-2"] = second
+        self.observe(); self.consume()
+        plan = self.current_tasks()["day_plan"]
+        self.assertEqual(len(plan["tasks"]), 2)
+        self.assertEqual(plan["tasks"][0]["source_message_id"], "message-2")
+        dated = consumer.project_private_mail_plan({}, {}, [], owner="owner", timezone="Europe/Paris",
+                                                 observed_at="2026-10-06T23:30:00Z")
+        self.assertEqual(dated["local_date"], "2026-10-07")
+
+    def test_bad_current_task_fields_fail_closed_without_any_task_pointer(self):
+        for field, value in (("toRecipients", [{"emailAddress": {"address": "invalid"}}]),
+                             ("internetMessageHeaders", [{"name": "List-Id", "value": 9}]),
+                             ("uniqueBody", {"contentType": "text", "content": "x" * 65537})):
+            candidate = request_message(); candidate[field] = value
+            self.api.messages["message-1"] = candidate
+            with self.assertRaises((ValueError, RuntimeError)): self.observe()
+            self.assertFalse(self.task_pointer().exists())
+
+    def test_private_task_binding_and_checkpoint_symlinks_are_rejected(self):
+        backing = self.root / "task-backing.json"
+        self.task_file.rename(backing)
+        self.task_file.symlink_to(backing)
+        with self.assertRaises((ValueError, RuntimeError, OSError)): self.consume()
+        self.task_file.unlink(); backing.rename(self.task_file)
+        self.observe(); self.consume()
+        pointer = self.task_pointer()
+        backing = pointer.with_name("task-pointer-backing.json")
+        pointer.rename(backing); pointer.symlink_to(backing)
+        with self.assertRaises((ValueError, RuntimeError, OSError)): self.consume()
+
+    def test_fresh_process_loss_before_task_pointer_recovers_exactly_one_task(self):
+        self.observe()
+        child = r"""
+import json, os, sys
+from pathlib import Path
+sys.path.insert(0, 'src')
+import qikvrt_graph_mail_consumer as native
+from tests.test_graph_mail_consumer import SyntheticGraph
+webhook = json.loads(Path(os.environ['QIKVRT_GRAPH_WEBHOOK_BINDING']).read_bytes())
+c = native.GraphMailConsumer(os.environ['QIKVRT_GRAPH_MAIL_CONSUMER_BINDING'],
+    api_factory=lambda _: SyntheticGraph(), task_binding_path=os.environ['QIKVRT_GRAPH_MAIL_TASK_BINDING'])
+if sys.argv[1] == 'crash':
+    native.atomic_write_bytes = lambda *args, **kwargs: os._exit(73)
+result = c.task_consumer.consume(webhook)
+print(json.dumps(result), flush=True)
+os._exit(0)
+"""
+        for phase in ("crash", "restart", "restart"):
+            run = run_bounded([sys.executable, "-B", "-S", "-c", child, phase],
+                              cwd=Path(__file__).resolve().parents[1], env=os.environ.copy(),
+                              timeout=15, max_output_bytes=4096)
+            self.assertEqual(run.returncode, 73 if phase == "crash" else 0, run.stderr)
+            if phase == "crash": self.assertFalse(self.task_pointer().exists())
+            else:
+                status = json.loads(run.stdout)
+                self.assertEqual(status["tasks"], 1)
+                self.assertNotIn("Formular", run.stdout)
+
+
+
 class TransportTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -583,7 +960,7 @@ class TransportTests(unittest.TestCase):
         with patch.object(self.api.opener, "open", side_effect=open_request):
             self.assertEqual(self.api.mail_get(url), {"id": "message-1"})
         self.assertEqual(seen[0].get_method(), "GET")
-        self.assertEqual(seen[0].get_header("Prefer"), 'IdType="ImmutableId"')
+        self.assertEqual(seen[0].get_header("Prefer"), 'IdType="ImmutableId", outlook.body-content-type="text"')
         self.assertEqual(self.api.last_readback["sha256"], hashlib.sha256(raw).hexdigest())
         self.assertNotIn("synthetic-only-bearer", json.dumps(self.api.last_readback))
 

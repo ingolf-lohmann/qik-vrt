@@ -320,6 +320,11 @@ class GraphMailReconciler:
                 "native_mail_consumer_bound": False, "provider_readback_performed": False,
                 "document_received": False, "effect_ack_done": False}
         if self.consumer is not None:
+            tasks = getattr(self.consumer, "task_consumer", None)
+            if tasks is not None:
+                # Recover already committed observations even if a subsequent
+                # provider read is unavailable. No OAuth/network effect here.
+                tasks.consume(binding, binding_guard=self._binding)
             trigger = ("START_RECOVERY" if not self._consumer_started else
                        "RECOVERY" if self._consumer_recovery else "DURABLE_WAKE")
             try:
@@ -332,6 +337,8 @@ class GraphMailReconciler:
             self._consumer_recovery = False
             result.update(native_mail_consumer_bound=True, provider_readback_performed=True,
                           mail_observation=observed)
+            if tasks is not None:
+                result["private_mail_tasks"] = tasks.consume(binding, binding_guard=self._binding)
         return result
 
 

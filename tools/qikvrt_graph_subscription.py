@@ -67,15 +67,15 @@ class Graph:
                     r"/v1\.0/me/(?:mailFolders/[A-Za-z0-9_%=+\-]+(?:/messages/delta)?"
                     r"|messages/[A-Za-z0-9_%=+\-]+)", parsed.path)):
             raise SubscriptionError("fixed Graph mail read endpoint required")
-        return self._request_url("GET", url)
+        return self._request_url("GET", url, mail_text=True)
 
-    def _request_url(self, method, url, payload=None):
+    def _request_url(self, method, url, payload=None, *, mail_text=False):
         request = urllib.request.Request(
             url, method=method,
             data=None if payload is None else wire(payload),
             headers={"Authorization": "Bearer " + self.token,
                      "Content-Type": "application/json", "Accept": "application/json",
-                     "Prefer": 'IdType="ImmutableId"'})
+                     "Prefer": 'IdType="ImmutableId"' + (', outlook.body-content-type="text"' if mail_text else '')})
         with self.opener.open(request, timeout=20) as response:
             raw = response.read(1048577)
         if len(raw) > 1048576:

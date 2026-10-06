@@ -46,13 +46,16 @@ class QikvrtGitHubApiServer(ThreadingHTTPServer):
         try:
             path = os.environ.get("QIKVRT_GRAPH_WEBHOOK_BINDING", "")
             consumer_path = os.environ.get("QIKVRT_GRAPH_MAIL_CONSUMER_BINDING", "")
+            task_path = os.environ.get("QIKVRT_GRAPH_MAIL_TASK_BINDING", "")
             if consumer_path and not path:
                 raise ValueError("mail consumer requires the private webhook binding")
+            if task_path and not consumer_path:
+                raise ValueError("mail task consumer requires the private provider consumer")
             if path:
                 self.graph_mail_reconciler = GraphMailReconciler(
                     path, repository=os.environ.get("QIKVRT_ALLOWED_REPOSITORY", ""),
                     principal=os.environ.get("QIKVRT_API_PRINCIPAL", ""),
-                    consumer=GraphMailConsumer(consumer_path) if consumer_path else None)
+                    consumer=GraphMailConsumer(consumer_path, task_binding_path=task_path or None) if consumer_path else None)
                 # Complete startup reconciliation before accepting HTTP requests.
                 self.graph_mail_status = self.graph_mail_reconciler.reconcile()
         except Exception:

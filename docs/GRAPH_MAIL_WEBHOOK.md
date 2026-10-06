@@ -146,6 +146,102 @@ by the consumer. Lifecycle signals are retained for separately admitted
 control-plane recovery; successful mail reconciliation does not claim that an
 expired or removed subscription was repaired.
 
+## Private classification, tasks and day plan
+
+The compatible #477 successor is reused: `GraphMailConsumer` is the producer;
+`GraphMailTaskConsumer` in the same source file consumes only its committed,
+provenance-verified observation chain. `REUSE_BEFORE_CREATE` searched the
+available 2,318-commit history's mail/inbox/reminder/lifecycle path inventory,
+current source and open successors. The compatible provider consumer already
+exists at `fb986e6aa70233e330377b6c86e75968536e51ec`; the historical reminder
+changes provide the day-plan adapter but no mail classifier/task consumer.
+There is no new source module, workflow, scheduler, worker or public registry.
+
+Set `QIKVRT_GRAPH_MAIL_TASK_BINDING` only on the existing private REST host,
+together with its webhook and provider bindings. Its absolute owner-only file
+has this schema (all addresses below are synthetic placeholders):
+
+```json
+{
+  "schema": "qikvrt_graph_mail_task_binding_v1",
+  "repository": "owner/repository",
+  "responsibility_owner": "owner",
+  "state_root": "/var/lib/qikvrt/private-mail",
+  "accepted_effect_scope": "PRIVATE_MAIL_CLASSIFICATION_AND_TASK_PLAN_ONLY",
+  "owner_addresses": ["owner@example.test"],
+  "human_senders": ["contact@example.test"],
+  "timezone": "Europe/Paris"
+}
+```
+
+Addresses must be sorted, distinct and case-normalized. `human_senders` is an
+explicit private contact classification; it is not authentication of a natural
+person or protection against spoofed sender headers. An unknown sender's
+recognizable directly addressed request is retained for owner review in the
+attention lane; it does not acquire verified human status or a derived task.
+Changing contact, owner, mailbox or folder bindings blocks reuse of existing
+state until an explicitly reviewed private migration. No real address, OAuth
+material, contact list or private state is checked into Git.
+
+Current message GETs additionally select `toRecipients`, `ccRecipients`,
+`isDraft`, `internetMessageHeaders` and `uniqueBody`, with immutable IDs and
+`outlook.body-content-type="text"`. Existing committed observations remain
+readable when these extra fields are absent. Such a projection cannot derive
+a task. The existing folder-delta selection/cursor contract is retained.
+`bodyPreview` is truncated, so it cannot be the basis of a task. The rule scope
+is `SELECTED_CURRENT_UNIQUE_BODY_RULES_ONLY`, not complete semantic mail
+understanding. HTML, incomplete fields and requests outside the supported
+German/English/French rules do not create guessed actions. Explicit request
+rules and excerpts remain in private state for human inspection.
+
+Direct requests require the owner in To, an explicitly classified human sender,
+a received non-draft message and a supported positive request in the current
+unique text. Bulk/automatic headers, no-reply senders, self-sent messages,
+CC-only messages, quoted/forwarded text and negated requests cannot derive a
+task. Explicit urgency words and Graph `importance=high` create classification
+signals. A signal is rule evidence, not proof of urgency or a commitment. An
+urgent or important FYI can enter attention without creating a task. Dates and
+deadlines are never invented; derived tasks have `due=null` and require owner
+confirmation with evidence before completion.
+
+Each provider message has one stable task identity across replay, version/read
+flag changes and moves. An updated recognized request updates its source
+binding. Removal from selected folders becomes
+`SOURCE_UNAVAILABLE_REVIEW_REQUIRED`; removal of the recognizable request
+becomes `SOURCE_CHANGED_REVIEW_REQUIRED`. Neither means completed or cancelled.
+Lifecycle signals are retained privately and create no subscription/OAuth
+recovery task or control-plane write.
+
+The existing `tools/qikvrt_owner_reminders.py` now accepts the bounded private
+mail/task state through `project_private_mail_plan`. It produces a private
+owner-timezone day plan with tasks ranked by urgency/importance and a separate
+attention/notification-intent lane. This event-native lane does not execute the
+public reminder delivery path, invent Library references, send a notification
+or change `OWNER_REMINDERS_V1.json`. The existing scheduled reminders retain
+their independent scope. Actual private notification delivery remains an
+independently admitted and read-back effect.
+
+A single native immutable `mail-tasks-<hash>.bin` capsule includes mail status,
+source-bound tasks and that exact day plan. Native provenance, every source
+message in the committed provider chain and the entire private plan are
+independently read back before a compare-and-set, fsynced atomic
+`graph-mail-tasks-current.json` pointer advances. Losing the process before
+that pointer leaves an ignored orphan and a replayable observation. Competing
+writers, forged excerpts, uncommitted provider sources, corrupt provenance,
+symlinks and changed bindings fail closed. The existing REST pass first
+recovers accepted provider observations, then reads the provider and consumes
+newly committed observations. A later provider failure cannot erase recovered
+tasks. Idle loops do nothing; failure requires a genuine delivery or restart.
+
+`read_private_state(webhook_binding)` returns the verified capsule and day plan
+only to the host-private caller. It is not a public endpoint or public receipt.
+Public health includes scope/status/counts only; task IDs, observation keys,
+mail text, subjects, sender/recipient identities, cursor URLs, raw exceptions
+and contact classifications never enter it. All verification fixtures are
+synthetic. Classification and task-plan binding do not establish public HTTPS,
+OAuth, subscription registration, a live provider mail event, document receipt,
+human task completion or `EFFECT_ACK_DONE`.
+
 ## Private deployment binding
 
 Set `QIKVRT_GRAPH_WEBHOOK_BINDING` to an absolute, owner-only regular JSON
@@ -260,7 +356,13 @@ overwrite, abrupt process exit/restart, provenance/tamper/symlink/storage
 negative controls, synthetic control-plane tests and the native provider
 consumer controls. These include a real HTTP wake, versionless/idless replay,
 independent current message reads, delta reset, page/read bounds, deletion/move,
-private inbox continuation, stale-writer rejection and process-loss recovery. `make test` includes
+private inbox continuation, stale-writer rejection and process-loss recovery.
+The private task controls add real local HTTP-to-plan execution, explicit
+DE/EN/FR request derivation, urgency-only attention, unknown/bulk/CC/quote/draft
+and negation boundaries, stable IDs on replay/update/move, no false completion
+on removal, committed source/excerpt proof, abrupt fresh-process loss and
+recovery, storage/tamper/symlink/binding/concurrency controls, owner-timezone
+priority projection and no idle/timed retry or public content leakage. `make test` includes
 this target and all existing gates.
 No new dependency or undeclared runtime is required.
 
