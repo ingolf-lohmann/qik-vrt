@@ -126,6 +126,7 @@ repository-monitor-test:
 	node docs/monitor/observer.test.mjs
 	node --test docs/monitor/monitor.test.mjs
 	node --test docs/monitor/mesh-file.test.mjs
+	node --test docs/monitor/react-feedback.test.mjs
 
 .PHONY: temdd-event-ledger-test
 temdd-event-ledger-test: tool-cache-contract

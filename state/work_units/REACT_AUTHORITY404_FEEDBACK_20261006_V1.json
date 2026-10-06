@@ -1,0 +1,192 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_react_authority404_feedback_work_unit_v1",
+  "work_unit_id": "REACT_AUTHORITY404_FEEDBACK_20261006_V1",
+  "state": "SOURCE_SUCCESSOR_FOCUSED_REPLAY_VERIFIED_REVIEW_PENDING",
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 476,
+    "ref": "work/raumzeitterminal-entry-20261006",
+    "head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+    "tree": "29f40e2318869f107d4688d3b5401a2e5c1b0633"
+  },
+  "semantic_reference": {
+    "pr": 468,
+    "head": "a4dc05c1fcef9390538a664eba75899f3a649582",
+    "path": "docs/monitor/index.html",
+    "scope": "SEMANTIC_REFERENCE_ONLY_NOT_SUCCESSOR_ACCEPTANCE"
+  },
+  "fixture_origin": {
+    "pr": 468,
+    "head": "a4dc05c1fcef9390538a664eba75899f3a649582",
+    "path": "evidence/monitor-feedback/authority-404-observation.json",
+    "git_blob_sha1": "d2263805ead86bc88192a502ed85b6462c435413",
+    "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+    "reuse_class": "EXACT_OBSERVATION_INPUT_NOT_TEST_RECEIPT"
+  },
+  "contributions": {
+    "human": {
+      "actor": "Ingolf Lohmann",
+      "class": "HUMAN",
+      "contribution": "Requested bounded React source successor, fixed 404 fixture, copyable originals, fresh test and separated integration/delivery."
+    },
+    "artificial_cognitive": {
+      "provider": "OpenAI",
+      "system": "Codex",
+      "model_family": "GPT-6",
+      "exact_build": "UNAVAILABLE",
+      "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": [
+        "source inspection",
+        "React feedback implementation",
+        "controlled replay and negative tests",
+        "comparison/provenance",
+        "incremental integrity preparation",
+        "draft successor and readback"
+      ]
+    },
+    "human_acceptance_of_generated_bytes": "PENDING"
+  },
+  "candidate": {
+    "branch": "work/react-authority404-feedback-b9e03ef6-20261006",
+    "parent_head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+    "corrective_commit_parent": "53f3807d5414699cc52dcb6c654983c080cbb40a",
+    "binding_rule": "The containing Git commit/tree binds these source bytes; candidate HEAD is read back separately, avoiding a self-referential commit-ID field.",
+    "changed_source_and_evidence_paths": [
+      "Makefile",
+      "docs/monitor/mesh-react.js",
+      "docs/monitor/mesh-react.css",
+      "docs/monitor/package.json",
+      "docs/monitor/README.md",
+      "docs/monitor/react-feedback.test.mjs",
+      "evidence/monitor-feedback/react/authority-404-observation.json",
+      "evidence/monitor-feedback/react/baseline-mesh-react.js",
+      "evidence/monitor-feedback/react/authority-404-before-after.json",
+      "evidence/monitor-feedback/react/README.md",
+      "state/work_units/REACT_AUTHORITY404_FEEDBACK_20261006_V1.json"
+    ],
+    "source_bindings": {
+      "Makefile": {
+        "bytes": 12926,
+        "sha256": "7a1e37c5ce5b84a21e41a6d99b16f94b74ec51584f7ff583fa96a02506ebb687",
+        "git_blob_sha1": "323eb29f7caafe648c6b43dc089b0359b857dfcf"
+      },
+      "docs/monitor/mesh-react.js": {
+        "bytes": 25911,
+        "sha256": "1afc7287c747bea7b9414db3933b97d82ba31b00424290edf1bee84056d80aed",
+        "git_blob_sha1": "5df840271fb575792ad0e7fa250e85250f70ebe9"
+      },
+      "docs/monitor/mesh-react.css": {
+        "bytes": 5706,
+        "sha256": "2de0ce792baa264fb6372f424b8629a205b8346ae6e33218976ae9ec82a5a3ed",
+        "git_blob_sha1": "42c6fa7db739d9847ff311c5e0b4ac309d479d90"
+      },
+      "docs/monitor/package.json": {
+        "bytes": 310,
+        "sha256": "6cce4336cae5b59b5986a2c966ab82b894c241fbe86ca8ae4a9744d8b8a59504",
+        "git_blob_sha1": "e9fc1bde15927da091c20d836b40e0129e563192"
+      },
+      "docs/monitor/README.md": {
+        "bytes": 16170,
+        "sha256": "006505d9ba86991eac8994bdf2e1da0ffa72290876eb7e8ad4970a79c664ebb3",
+        "git_blob_sha1": "d03971e028daaba01a37460cd0a26a5d2fdb2c4a"
+      },
+      "docs/monitor/react-feedback.test.mjs": {
+        "bytes": 19615,
+        "sha256": "9ceeac99d029ec5ed2a2c31512acddb4856f43c1b08d373d8b2bc2329fc4fe4e",
+        "git_blob_sha1": "8b8306f31363ab89f18a347f64a473838637494b"
+      },
+      "evidence/monitor-feedback/react/authority-404-observation.json": {
+        "bytes": 809,
+        "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+        "git_blob_sha1": "d2263805ead86bc88192a502ed85b6462c435413"
+      },
+      "evidence/monitor-feedback/react/baseline-mesh-react.js": {
+        "bytes": 17603,
+        "sha256": "8e250ad9c3c256ab5ab154bdc055b70ee0f33e300d5650ca16a1c6900c80bfe9",
+        "git_blob_sha1": "d0a3232ec1353a4a00e8a4ae958470985120637e"
+      },
+      "evidence/monitor-feedback/react/authority-404-before-after.json": {
+        "bytes": 4819,
+        "sha256": "8c231384f8ce296216e39dd67f3eeeeecdbb05977fa53375cd2642674582c829",
+        "git_blob_sha1": "9f20b76e9ceb0c8f094c7dcb595e6b1b16ec1802"
+      },
+      "evidence/monitor-feedback/react/README.md": {
+        "bytes": 5344,
+        "sha256": "44f59db80b1ebea9428b21c2f0ac1af793858708df8f3854a809329990cc895d",
+        "git_blob_sha1": "056a9d733f50f60bec777c8ac781c9b351805211"
+      }
+    }
+  },
+  "verification": {
+    "focused_command": "node --test docs/monitor/react-feedback.test.mjs",
+    "runtime": "Node 24.19.0; existing React 19.2.6",
+    "tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "scope": "ACTUAL_REACT_ELEMENT_SOURCE_REPLAY_WITH_CONTROLLED_HOOKS_IO_AND_EXISTING_CLIENT_REPLICA_ACCEPTANCE",
+    "report": "evidence/monitor-feedback/react/authority-404-before-after.json",
+    "explanation_coverage_before": 0,
+    "explanation_coverage_after": 5,
+    "explanation_group_total": 5,
+    "get_requests_before": 3,
+    "get_requests_after": 3,
+    "event_streams_before": 1,
+    "event_streams_after": 1,
+    "new_dependencies": 0,
+    "runtime_feedback_changes_implemented": true,
+    "storage_stack_executed": false,
+    "storage_stack_test_evidence_transferred": false,
+    "full_repository_checks": "REQUIRE_FRESH_SUCCESSOR_EXECUTION_NOT_INFERRED_FROM_PARENT",
+    "reactdom_browser_check": "NOT_ESTABLISHED_BY_THIS_REPLAY",
+    "tool_cache_contract": "28/28 declared tools, 100 percent; locally executed before scoped verification"
+  },
+  "historical_successor_observation": {
+    "head": "53f3807d5414699cc52dcb6c654983c080cbb40a",
+    "tree": "3f0f32103495876b6358868be74e9be814e8eac1",
+    "run_id": 37537382306,
+    "job_id": 112521725821,
+    "native_integrity_and_source_binding_step": "SUCCESS_ON_THAT_HEAD_ONLY",
+    "browser_react_entry_test": "FAILURE: getByRole(alert) timeout at origin.browser.test.mjs:158",
+    "established_source_regression": "The delta replaced the existing role=alert by role=status and removed the visible Readback offen caption; the real browser locator requires both.",
+    "repair": "Restore the existing role=alert and visible caption; keep structured explanations/details. Add a focused assertion of that contract.",
+    "fresh_successor_checks_required": true,
+    "storage_result_is_react_feedback_acceptance": false
+  },
+  "integrity_preparation": {
+    "method": "Native classification/serializer; unchanged checkout byte sizes/digests from exact-blob-bound manifest/index, preserving .gitattributes CRLF normalization. Changed bytes freshly hashed.",
+    "unchanged_input_digest_reuse_is_test_result_transfer": false,
+    "complete_checkout_local_integrity_verification": false,
+    "required_native_readback": "tools/qikvrt_integrity.py verify on the complete successor checkout; no integrity gate weakened"
+  },
+  "human_comprehension": {
+    "state": "NOT_MEASURED",
+    "participants": 0,
+    "understanding_rate_before": null,
+    "understanding_rate_after": null,
+    "clarification_requests": null,
+    "time_to_identify_next_action_ms": null,
+    "comprehension_improvement_measured": false
+  },
+  "boundaries": {
+    "predecessor_evidence_transfer": false,
+    "provider_404_cause_established": false,
+    "runtime_fault_repaired": false,
+    "main_integration_performed": false,
+    "public_delivery_performed": false,
+    "native_review_inferred": false,
+    "all_node_rollout": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "next_steps": [
+    "Review the isolated source delta against #476 and bind any successor change freshly.",
+    "Observe complete-checkout technical gates separately from source replay, storage historical receipts and governance.",
+    "Integrate the dependency chain on main only through its separately authorized native gates.",
+    "Deliver and observe the public React source independently; measure human comprehension with real participants before claiming improvement."
+  ]
+}
