@@ -899,6 +899,31 @@ class MailTaskTests(unittest.TestCase):
         pointer.rename(backing); pointer.symlink_to(backing)
         with self.assertRaises((ValueError, RuntimeError, OSError)): self.consume()
 
+    def test_forged_current_folder_status_with_real_source_text_is_rejected(self):
+        self.observe(); self.consume()
+        packet = copy.deepcopy(self.current_tasks())
+        packet["mail"]["message-1"]["folders"] = []
+        key = next(iter(packet["tasks"]))
+        packet["tasks"][key]["state"] = "SOURCE_UNAVAILABLE_REVIEW_REQUIRED"
+        packet["day_plan"] = consumer.project_private_mail_plan(packet["mail"], packet["tasks"], packet["lifecycle_signals"],
+            owner="owner", timezone="Europe/Paris", observed_at=packet["observed_at_utc"])
+        raw = webhook.wire(packet); candidate = "mail-tasks-" + hashlib.sha256(raw).hexdigest()
+        consumer.run_handler(self.consumer._cfg(self.binding, candidate, "ingest", raw))
+        with self.assertRaises(consumer.ConsumerError): self.tasks._packet(self.binding, self.task_binding, candidate)
+
+    def test_forged_owner_completion_or_suppressed_derived_task_is_rejected(self):
+        self.observe(); self.consume()
+        for variant in ("completed", "omitted"):
+            packet = copy.deepcopy(self.current_tasks())
+            key = next(iter(packet["tasks"]))
+            if variant == "completed": packet["tasks"][key]["state"] = "COMPLETED"
+            else: packet["tasks"] = {}
+            packet["day_plan"] = consumer.project_private_mail_plan(packet["mail"], packet["tasks"], packet["lifecycle_signals"],
+                owner="owner", timezone="Europe/Paris", observed_at=packet["observed_at_utc"])
+            raw = webhook.wire(packet); candidate = "mail-tasks-" + hashlib.sha256(raw).hexdigest()
+            consumer.run_handler(self.consumer._cfg(self.binding, candidate, "ingest", raw))
+            with self.assertRaises(consumer.ConsumerError): self.tasks._packet(self.binding, self.task_binding, candidate)
+
     def test_fresh_process_loss_before_task_pointer_recovers_exactly_one_task(self):
         self.observe()
         child = r"""

@@ -484,6 +484,7 @@ class GraphMailTaskConsumer:
         pointer = _strict_json_loads(read_private(dirs(Path(provider["state_root"]))["out"] / "graph-mail-current.json"))
         current, sources, seen = pointer["observation_key"], {}, set()
         accepted_seen = False
+        accepted = None
         while needed:
             if current is None or current in seen or len(seen) >= 10000:
                 raise ConsumerError("private task source is not in the bounded committed provider chain")
@@ -491,10 +492,17 @@ class GraphMailTaskConsumer:
             source = self.consumer._packet(provider, current)
             if current == packet["accepted_observation_key"]:
                 accepted_seen = True
+                accepted = source
             if accepted_seen and current in needed:
                 sources[current] = source["observation"]
                 needed.remove(current)
             current = source["previous_observation"]
+        memberships = {}
+        for folder, state in accepted["folders"].items():
+            for mid, item in state["messages"].items():
+                memberships.setdefault(mid, {})[folder] = item
+        if set(memberships) - set(packet["mail"]):
+            raise ConsumerError("private current provider messages are missing from task state")
         def source_message(key, mid, sha256):
             matches = [c["message"] for c in sources[key]["changes"] if c["kind"] == "UPSERT"
                        and c["message_id"] == mid and c["sha256"] == sha256]
@@ -506,18 +514,31 @@ class GraphMailTaskConsumer:
             if (set(entry) != {"folders", "message", "classification", "source_observation_key", "sha256"}
                     or not isinstance(entry["folders"], list)
                     or set(entry["folders"]) - set(provider["folder_ids"])
+                    or entry["folders"] != sorted(memberships.get(mid, {}))
+                    or any(item["sha256"] != entry["sha256"] or item["message"] != entry["message"]
+                           for item in memberships.get(mid, {}).values())
                     or projection(entry["message"], mid) != entry["message"]
                     or digest(entry["message"]) != entry["sha256"]
                     or source_message(entry["source_observation_key"], mid, entry["sha256"]) != entry["message"]
                     or classify_private_mail(entry["message"], owner_addresses=task_binding["owner_addresses"],
                         human_senders=task_binding["human_senders"]) != entry["classification"]):
                 raise ConsumerError("private task mail evidence mismatch")
+            if entry["folders"] and entry["classification"]["task_derivable"]:
+                expected_key = "mail-request-" + digest({"mailbox": provider["mailbox_id"], "message": mid})
+                if expected_key not in packet["tasks"]:
+                    raise ConsumerError("source-derived private request task was omitted")
         for key, task in packet["tasks"].items():
             expected_key = "mail-request-" + digest({"mailbox": provider["mailbox_id"], "message": task["source_message_id"]})
             source = source_message(task["source_observation_key"], task["source_message_id"], task["source_sha256"])
             classification = classify_private_mail(source, owner_addresses=task_binding["owner_addresses"],
                                                     human_senders=task_binding["human_senders"])
+            entry = packet["mail"][task["source_message_id"]]
+            expected_state = ("SOURCE_UNAVAILABLE_REVIEW_REQUIRED" if not entry["folders"]
+                              else "OPEN" if entry["classification"]["task_derivable"]
+                              else "SOURCE_CHANGED_REVIEW_REQUIRED")
             if (key != expected_key or not classification["task_derivable"]
+                    or task["state"] != expected_state
+                    or expected_state == "OPEN" and task["source_sha256"] != entry["sha256"]
                     or task["request_rule"] != classification["request_rule"]
                     or task["request_excerpt"] != classification["request_excerpt"]
                     or task["urgent"] != classification["urgent"]
@@ -591,13 +612,13 @@ class GraphMailTaskConsumer:
                 if entry["folders"] and entry["classification"]["task_derivable"]:
                     classification = entry["classification"]
                     tasks[key] = {"id": key, "kind": "REVIEW_AND_HANDLE_EXPLICIT_MAIL_REQUEST",
-                        "state": existing["state"] if existing and existing["state"] in {"COMPLETED", "CANCELLED"} else "OPEN",
+                        "state": "OPEN",
                         "source_message_id": mid, "source_observation_key": entry["source_observation_key"],
                         "source_sha256": entry["sha256"], "request_rule": classification["request_rule"],
                         "request_excerpt": classification["request_excerpt"], "due": None,
                         "urgent": classification["urgent"], "important": classification["important"],
                         "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"}
-                elif existing and existing["state"] not in {"COMPLETED", "CANCELLED"}:
+                elif existing:
                     existing["state"] = ("SOURCE_CHANGED_REVIEW_REQUIRED" if entry["folders"]
                                          else "SOURCE_UNAVAILABLE_REVIEW_REQUIRED")
         if max(len(mail), len(tasks)) > MAX_MESSAGES:

@@ -56,8 +56,8 @@
   "outputs": [
     {
       "path": "src/qikvrt_graph_mail_consumer.py",
-      "bytes": 38602,
-      "sha256": "e9ed419f0bbcb9187024fffca5f86121c32255a27139ac19b40541a64f64775d"
+      "bytes": 39909,
+      "sha256": "03e6ce1e57eb40c6dc295e2b46685eedb1f5596b2a41a1cfcacc9f260632e50e"
     },
     {
       "path": "src/qikvrt_graph_webhook.py",
@@ -81,13 +81,13 @@
     },
     {
       "path": "tests/test_graph_mail_consumer.py",
-      "bytes": 52285,
-      "sha256": "242ec26d517a005521b469ecdba4d22851b5e14742a8bb1a3fbc103929614733"
+      "bytes": 54091,
+      "sha256": "e0be389525e00656b3f94e3477fbe2f45e35bd7833d20730261e49d17437eda4"
     },
     {
       "path": "docs/GRAPH_MAIL_WEBHOOK.md",
-      "bytes": 22528,
-      "sha256": "b0f7b5d2895fd3141c3b1b1168a03cffe153f6d719d4b47eaf1dd52ca778449f"
+      "bytes": 22942,
+      "sha256": "916a0b66674eb254dd5e95005765220dfec0cc1ee3d598d62068044379ac750e"
     },
     {
       "path": "personal/ingolf-lohmann/reminders/README.md",
@@ -97,19 +97,19 @@
   ],
   "verification": {
     "candidate_command": "make test",
-    "candidate_python_test_executions": 631,
+    "candidate_python_test_executions": 633,
     "candidate_python_groups": 19,
-    "graph_controls": 88,
-    "new_task_controls": 27,
+    "graph_controls": 90,
+    "new_task_controls": 29,
     "existing_owner_reminder_controls": 16,
     "candidate_result": "PASS_CURRENT_WORKTREE_SYNTHETIC_PROVIDER_REAL_LOCAL_HTTP_AND_FULL_REPOSITORY_GATES",
     "candidate_log": {
-      "bytes": 122716,
-      "sha256": "93f9e4949aeca5099d91833915310f2c4dbf71cf1f2979de873d7b52f255756b"
+      "bytes": 123096,
+      "sha256": "edd7880ebb297d9732fa995fd491dbc5c4912d8b619daabc9d30891f6b018884"
     },
     "graph_reminder_log": {
-      "bytes": 19554,
-      "sha256": "2bae866d1da07052b028024b69a073e15c74c75a68785c8c7cd2e31a9f3e771e"
+      "bytes": 19934,
+      "sha256": "742027fbdb31d774521979113bb76c18ef8adea74e97d40b4e9a1c16cae4f9e1"
     },
     "remote_exact_head_result": "PENDING_AT_COMMIT_TIME",
     "predecessor_evidence_transfer": false,
@@ -385,8 +385,8 @@
   "native_mail_task_consumer_implementation_bound": true,
   "native_mail_task_consumer_bound": false,
   "mail_task_consumer_successor": {
-    "source_head": "fb986e6aa70233e330377b6c86e75968536e51ec",
-    "source_tree": "0b40b05ef733f5f4747de9056c509dac1724136e",
+    "source_head": "966848be8edbd53bde6bc997de8fe8e92322939b",
+    "source_tree": "d715810e0f7427b4e1f3da14ba24106051bf3e52",
     "source_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
     "source_main_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
     "created_at_utc": "2026-10-06T21:51:21.885695+00:00",
@@ -447,7 +447,8 @@
       "pending tasks recover before unavailable provider",
       "owner-timezone priority/date projection",
       "lifecycle private status without Graph control-plane effects",
-      "no idle/timed retry and sanitized public runtime errors"
+      "no idle/timed retry and sanitized public runtime errors",
+      "current provider membership/task state conservation; no false owner completion or omitted current request"
     ],
     "activation_gates": {
       "public_https_callback_observed": false,
@@ -468,6 +469,42 @@
       "evidence_retention": "METADATA_ONLY",
       "native_codeowner_acceptance": "NOT_SUBMITTED_OR_INFERRED"
     },
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "initial_reuse_head": "fb986e6aa70233e330377b6c86e75968536e51ec",
+    "initial_reuse_tree": "0b40b05ef733f5f4747de9056c509dac1724136e",
+    "updated_at_utc": "2026-10-06T21:59:04.679648+00:00",
+    "status_source_repair": {
+      "predecessor_head": "966848be8edbd53bde6bc997de8fe8e92322939b",
+      "predecessor_tree": "d715810e0f7427b4e1f3da14ba24106051bf3e52",
+      "reproducer": "Two synthetic native-provenance controls fail on the predecessor verifier: forged current folder status and forged completion/omitted current task were not rejected.",
+      "cause": "The verifier proved historical request text but did not cross-check current membership/task state and current required-task conservation against the accepted provider snapshot.",
+      "repair": "Independently bind current folder/message hashes to accepted snapshot; require exact source-derived pending state, retain current explicit request task, reject unproven terminal owner disposition.",
+      "reproducer_after_repair": "PASS_TWO_ORIGINAL_FAILING_CONTROLS_UNCHANGED",
+      "new_task_controls": 29,
+      "source_and_status_proof_bound": true,
+      "predecessor_evidence_transfer": false
+    },
+    "owner_disposition_boundary": "No terminal owner disposition accepted by this bounded Graph consumer without a separately introduced reviewed proof contract."
+  },
+  "initial_task_candidate_validation": {
+    "candidate_command": "make test",
+    "candidate_python_test_executions": 631,
+    "candidate_python_groups": 19,
+    "graph_controls": 88,
+    "new_task_controls": 27,
+    "existing_owner_reminder_controls": 16,
+    "candidate_result": "PASS_CURRENT_WORKTREE_SYNTHETIC_PROVIDER_REAL_LOCAL_HTTP_AND_FULL_REPOSITORY_GATES",
+    "candidate_log": {
+      "bytes": 122716,
+      "sha256": "93f9e4949aeca5099d91833915310f2c4dbf71cf1f2979de873d7b52f255756b"
+    },
+    "graph_reminder_log": {
+      "bytes": 19554,
+      "sha256": "2bae866d1da07052b028024b69a073e15c74c75a68785c8c7cd2e31a9f3e771e"
+    },
+    "remote_exact_head_result": "PENDING_AT_COMMIT_TIME",
+    "predecessor_evidence_transfer": false,
+    "original_historical_fixture_recheck": "PASS_UNCHANGED_AFTER_REUSING_EXACT_LOCAL_DONOR_COMMIT_AND_SHALLOW_BOUNDARY",
+    "historical_fixture_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2"
   }
 }

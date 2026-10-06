@@ -228,7 +228,12 @@ independently read back before a compare-and-set, fsynced atomic
 `graph-mail-tasks-current.json` pointer advances. Losing the process before
 that pointer leaves an ignored orphan and a replayable observation. Competing
 writers, forged excerpts, uncommitted provider sources, corrupt provenance,
-symlinks and changed bindings fail closed. The existing REST pass first
+symlinks and changed bindings fail closed. Current folder membership and task
+status must additionally match the accepted provider snapshot; recognizable
+current requests cannot be omitted. This bounded consumer has no owner-disposal
+interface: a fabricated COMPLETED/CANCELLED state is rejected, rather than
+inferred from source text or opaque-byte storage provenance. A future owner
+completion path requires its own independently admitted proof contract. The existing REST pass first
 recovers accepted provider observations, then reads the provider and consumes
 newly committed observations. A later provider failure cannot erase recovered
 tasks. Idle loops do nothing; failure requires a genuine delivery or restart.
