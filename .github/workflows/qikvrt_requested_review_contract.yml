@@ -10,10 +10,16 @@ on:
       - ".github/workflows/qikvrt_code_owner_review_observer.yml"
       - ".github/workflows/qikvrt_required_review_gate.yml"
       - ".github/workflows/qikvrt_expected_head_promotion.yml"
+      - ".github/workflows/qikvrt_mirror_node_lifecycle.yml"
+      - "tools/qikvrt_mirror_node_lifecycle.sh"
+      - "tests/test_seed_workflows.py"
       - "tools/qikvrt_requested_review_executor.py"
       - "tools/qikvrt_required_review_gate.py"
+      - "tools/qikvrt_expected_head_promotion.py"
+      - ".github/workflows/qikvrt_live_status_watch.yml"
       - "tests/test_qikvrt_requested_review_executor.py"
       - "tests/test_qikvrt_required_review_gate.py"
+      - "tests/test_qikvrt_expected_head_promotion.py"
       - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
   workflow_dispatch:
@@ -50,7 +56,8 @@ jobs:
           python3 -B -m unittest -v \
             tests.test_qikvrt_requested_review_executor \
             tests.test_qikvrt_required_review_gate \
-            tests.test_qikvrt_expected_head_promotion
+            tests.test_qikvrt_expected_head_promotion \
+            tests.test_seed_workflows.MirrorLifecycleGovernanceTests
 
       - name: Verify event, recovery, identity and promotion bindings
         shell: bash
@@ -66,5 +73,9 @@ jobs:
           grep -F 'require_code_owner_review' tools/qikvrt_required_review_gate.py
           grep -F 'dismiss_stale_reviews_on_push' tools/qikvrt_required_review_gate.py
           grep -F 'require_last_push_approval' tools/qikvrt_required_review_gate.py
-          grep -F 'QIKVRT requested review execution' .github/workflows/qikvrt_expected_head_promotion.yml
+          grep -F 'STATUS_CONTEXT: QIKVRT requested review disposition' .github/workflows/qikvrt_requested_review_executor.yml
+          grep -F 'STATUS_CONTEXT: QIKVRT required code-owner review' .github/workflows/qikvrt_required_review_gate.yml
+          grep -F 'QIKVRT required code-owner review' .github/workflows/qikvrt_expected_head_promotion.yml
+          grep -F 'governance_projection' tools/qikvrt_expected_head_promotion.py
+          grep -F '(EXECUTION_ONLY)' .github/workflows/qikvrt_live_status_watch.yml
           grep -F 'statuses?per_page=100' .github/workflows/qikvrt_expected_head_promotion.yml

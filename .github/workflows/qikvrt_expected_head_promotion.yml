@@ -19,6 +19,7 @@ on:
       - "QIK-VRT global claim completion"
       - "QIKVRT Batch-003 remaining subject disposition"
       - "QIKVRT requested review executor"
+      - "QIKVRT required code-owner review"
       - "QIK-VRT universal ontology finite-model verification"
       - "QIK-VRT measurement-independence boundary verification"
       - "QIK-VRT manuscript proof coverage"
@@ -43,9 +44,9 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
-      REVIEW_STATUS_CONTEXT: "QIKVRT requested review execution"
+      REVIEW_STATUS_CONTEXT: "QIKVRT required code-owner review"
       REQUIRED_GATES_JSON: >-
-        ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT requested review execution"]
+        ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT required code-owner review"]
     steps:
       - name: Check out current main promotion code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -122,6 +123,7 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-promotion-snapshot.json
           import json, os, subprocess
+          from tools.qikvrt_required_review_gate import project_governance
           repo=os.environ['REPOSITORY']
           pr_number=int(os.environ['PR_NUMBER'])
           required=json.loads(os.environ['REQUIRED_GATES_JSON'])
@@ -152,6 +154,9 @@ jobs:
           ]
 
           statuses=gh_pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
+          rules=gh_json(f'repos/{repo}/rules/branches/main')
+          reviews=gh_pages(f'repos/{repo}/pulls/{pr_number}/reviews?per_page=100')
+          governance=project_governance(pr, rules, reviews, statuses)
           review_status=next((s for s in statuses if s.get('context') == review_context), None)
           if review_status is None:
               synthetic={'name':review_context,'status':'in_progress','conclusion':None,'run_number':0}
@@ -184,6 +189,7 @@ jobs:
               'required_gates':required,
               'workflow_runs':workflow_runs,
               'competing_writer_overlaps':overlaps,
+              'governance_projection':governance,
           }, sort_keys=True))
           PY
 
@@ -220,6 +226,25 @@ jobs:
           test "$current_base" = "$EXPECTED_BASE"
           test "$current_head" = "$EXPECTED_HEAD"
 
+          # Status publication and technical execution cannot replace a fresh
+          # native read immediately before either promotion phase.
+          python3 -B - <<'PY'
+          import json, os, subprocess
+          from tools.qikvrt_required_review_gate import project_governance
+          repo=os.environ['REPOSITORY']; number=os.environ['PR_NUMBER']
+          def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
+          def pages(path):
+              result=[]
+              for page in json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',path],text=True)):
+                  result.extend(page)
+              return result
+          pr=one(f'repos/{repo}/pulls/{number}'); head=pr['head']['sha']
+          projection=project_governance(pr, one(f'repos/{repo}/rules/branches/main'), pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100'), pages(f'repos/{repo}/commits/{head}/statuses?per_page=100'))
+          current=one(f'repos/{repo}/pulls/{number}')
+          if head != os.environ['EXPECTED_HEAD'] or pr['base']['sha'] != os.environ['EXPECTED_BASE'] or current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha'] or projection['gate_state'] != 'success':
+              raise SystemExit(f"BLOCK: fresh native governance {projection.get('first_blocker') or 'SUBJECT_DRIFT'}")
+          PY
+
           if [ "$draft" = true ]; then
             gh pr ready "$PR_NUMBER" --repo "$REPOSITORY"
             echo "READY_RECLASSIFIED_REOBSERVATION_REQUIRED" >> "$GITHUB_STEP_SUMMARY"
@@ -239,7 +264,7 @@ jobs:
           test "$(python3 -c 'import json; print(str(json.load(open("/tmp/qikvrt-promotion-merge.json"))["merged"]).lower())')" = true
           promoted_main="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
           test "$promoted_main" != "$EXPECTED_BASE"
-          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Expected-head promotion completed by repository-native executor. Source head: \`$EXPECTED_HEAD\`; previous main: \`$EXPECTED_BASE\`; promoted main: \`$promoted_main\`. Requested-review execution was exact-head bound. No Zenodo/IETF/release/PASS/FINAL_PASS/EFFECT_ACK_DONE effect is implied."
+          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Expected-head promotion completed by repository-native executor. Source head: \`$EXPECTED_HEAD\`; previous main: \`$EXPECTED_BASE\`; promoted main: \`$promoted_main\`. Native enforcement and independent Code Owner review were freshly reobserved before promotion. No Zenodo/IETF/release/PASS/FINAL_PASS/EFFECT_ACK_DONE effect is implied."
 
       - name: Persist bounded decision summary
         if: always()

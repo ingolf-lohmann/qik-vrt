@@ -28,6 +28,7 @@ concurrency:
 
 jobs:
   publish:
+    name: Publish native governance status (execution only)
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 8
@@ -35,7 +36,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       REQUIRED_CODE_OWNER: Goldkelch
-      STATUS_CONTEXT: QIKVRT requested review execution
+      STATUS_CONTEXT: QIKVRT required code-owner review
+      LEGACY_STATUS_CONTEXT: QIKVRT requested review execution
       REQUESTED_PR: ${{ inputs.pr || '' }}
       EVENT_NAME: ${{ github.event_name }}
       EVENT_PRS: ${{ toJSON(github.event.workflow_run.pull_requests || fromJSON('[]')) }}
@@ -61,7 +63,10 @@ jobs:
           event_name = os.environ['EVENT_NAME']
           event_prs = json.loads(os.environ.get('EVENT_PRS') or '[]')
           owner = os.environ['REQUIRED_CODE_OWNER']
-          context = os.environ['STATUS_CONTEXT']
+          contexts = (os.environ['STATUS_CONTEXT'], os.environ['LEGACY_STATUS_CONTEXT'])
+          summary = Path(os.environ['GITHUB_STEP_SUMMARY'])
+          with summary.open('a', encoding='utf-8') as stream:
+              stream.write('## Native governance decisions\n\nPublisher execution success means the decisions were recorded. Only the native gate state establishes its bounded prerequisite; green observer/executor runs are execution telemetry.\n\n')
 
           def gh_json(path):
               return json.loads(subprocess.check_output(['gh','api',path], text=True))
@@ -87,12 +92,18 @@ jobs:
               rules=gh_json(f'repos/{repo}/rules/branches/main')
               reviews=gh_pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100')
               decision=evaluate_required_review(pr, rules, reviews, required_code_owner=owner)
+              current=gh_json(f'repos/{repo}/pulls/{number}')
+              if current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha']:
+                  raise SystemExit('BLOCK: native governance subject drifted before status publication')
               state=decision['gate_state']
               description=f"{state}: {decision.get('first_blocker') or 'CODE_OWNER_REVIEW_CURRENT'}"[:140]
-              subprocess.check_call([
-                  'gh','api','--method','POST',f'repos/{repo}/statuses/{head}',
-                  '-f',f'state={state}','-f',f'context={context}','-f',f'description={description}',
-                  '-f',f'target_url={os.environ["GITHUB_SERVER_URL"]}/{repo}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
-              ])
+              for context in contexts:
+                  subprocess.check_call([
+                      'gh','api','--method','POST',f'repos/{repo}/statuses/{head}',
+                      '-f',f'state={state}','-f',f'context={context}','-f',f'description={description}',
+                      '-f',f'target_url={os.environ["GITHUB_SERVER_URL"]}/{repo}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
+                  ])
+              with summary.open('a', encoding='utf-8') as stream:
+                  stream.write(f"- PR #{number}, head `{head}`: **{state} — {decision.get('first_blocker') or 'CODE_OWNER_REVIEW_CURRENT'}**\n")
               print(json.dumps(decision, sort_keys=True))
           PY
