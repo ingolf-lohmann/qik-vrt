@@ -592,5 +592,135 @@
       "Original native effect replication and enforced cross-node writer takeover remain open; deferred proposal batching cannot substitute for them."
     ],
     "resume": "Reobserve PR 457 HEAD/TREE and exact-source CI/artifacts. Use existing mesh-cache-stage/idle/send on an admitted owner-selected exportable workload; preserve failed/ambiguous outboxes. Do not deploy uncaptured native private state, apply unrelated staged changes, merge or publish from this receipt."
+  },
+  "local_cache_object_identity_repair": {
+    "source_parent_head": "f91071a114f38d4a25a4d70becf55076ea73f6a7",
+    "source_parent_tree": "1da32581b3a5181f36a50987d0919adfc9a81b7d",
+    "cause": "JavaScript object prototype names are not safe Work Unit identifiers: assigning __proto__ could omit that unit from the durable own-key inventory.",
+    "repair": "Reject __proto__, constructor and prototype as node and Work Unit IDs in the existing local cache and receiver; add direct local and authenticated real HTTP rejection controls.",
+    "human_contribution": "Ingolf Lohmann: original Mesh/cache/idle requirements and authorization.",
+    "artificial_cognitive_contribution": "OpenAI Codex GPT-6; build UNAVAILABLE: bounded protocol correctness repair, implementation and verification.",
+    "retention": "METADATA_ONLY",
+    "outputs": {
+      "tools/qikvrt_self_host.py": {
+        "bytes": 89788,
+        "sha256": "9e9da4d9550742df09e891faa4bf6ee2d88dfc25b42ef3707b82d1f1508c1234"
+      },
+      "docs/monitor/server.mjs": {
+        "bytes": 46630,
+        "sha256": "a2e8d66c81c7afa89b9ddfa81caf2f2e7d6f491da153df726b88fe08177090b8"
+      },
+      "tests/test_self_host.py": {
+        "bytes": 68114,
+        "sha256": "ce2e678a027c9cd6ab882d20c093f14b75acf1de57698693570fb30cec94d245"
+      }
+    },
+    "tests": {
+      "self_host": 73,
+      "monitor_observer": 25,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": {
+        "cache_full_tests.log": {
+          "bytes": 13442,
+          "sha256": "93e22646f0639419c234ee6e12c1a18ed917fcfbd7f249be4ad471513c45c54f"
+        },
+        "cache_monitor_tests.log": {
+          "bytes": 5241,
+          "sha256": "d0cf1044bad61bc9e5746640865a4fc140ed489774153533b58ca6b3ac70af28"
+        }
+      }
+    },
+    "traffic_measurement": {
+      "baseline_payload_posts": 32,
+      "baseline_payload_wire_bytes": 2850829,
+      "effect_ack_done": false,
+      "fixture_head": "edccdd7ae23731609ef7f458f3d5c3c14c228e04",
+      "fixture_tree": "1cc79111c6b81e57acee46accb46df9901fea735",
+      "metadata_readbacks": 1,
+      "network_scope": "LOOPBACK_PYTHON_TO_NODE",
+      "payload_posts": 1,
+      "per_update_source_bytes": 2097206,
+      "run_id": null,
+      "runtime_component_sha256": {
+        "docs/monitor/self-host.mjs": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db",
+        "docs/monitor/server.mjs": "a2e8d66c81c7afa89b9ddfa81caf2f2e7d6f491da153df726b88fe08177090b8",
+        "tools/qikvrt_self_host.py": "9e9da4d9550742df09e891faa4bf6ee2d88dfc25b42ef3707b82d1f1508c1234"
+      },
+      "schema": "qikvrt-local-mesh-work-measurement/v1",
+      "single_batch_wire_bytes": 102440,
+      "source_binding_scope": "SELECTED_API_FILES_ONLY",
+      "source_head": null,
+      "source_tree": null,
+      "whole_mesh_performance_verified": false,
+      "work_units": 32
+    },
+    "parent_exported_receiver_readback": {
+      "all_node_runtime_verified": false,
+      "candidate_source_head": "f91071a114f38d4a25a4d70becf55076ea73f6a7",
+      "candidate_source_tree": "1da32581b3a5181f36a50987d0919adfc9a81b7d",
+      "delivered": {
+        "batch_id": "8e258efc314910a7ac227a0c09469cb182e669752c4f202df7600513cf5f5f97",
+        "effect_ack_done": false,
+        "local_idle_state": "IDLE_STABLE_VALIDATED",
+        "proposal_execution": "NOT_EXECUTED",
+        "state": "MESH_WORK_BATCH_READBACK_CONFIRMED",
+        "whole_mesh_distribution_verified": false
+      },
+      "effect_ack_done": false,
+      "export_fixture_head": "d23d766ddbb1342fa068b504f66ef143b0e3ab9a",
+      "export_fixture_tree": "25b5ecda29d9af67d170e62cec0518f463f508f0",
+      "export_manifest_sha256": "0f4adf7ada5d80d6317b1ee3dd08d37a0096d2f04b036a6864123e4bb20e3293",
+      "frozen": {
+        "batch_id": "8e258efc314910a7ac227a0c09469cb182e669752c4f202df7600513cf5f5f97",
+        "effect_ack_done": false,
+        "state": "MESH_WORK_IDLE_BATCH_FROZEN",
+        "transferred_objects": 2,
+        "whole_node_idle_verified": false,
+        "wire_bytes": 29208,
+        "work_units": 1
+      },
+      "provider_apis_unavailable": true,
+      "public_readback_verified": false,
+      "receipt": {
+        "batch_id": "8e258efc314910a7ac227a0c09469cb182e669752c4f202df7600513cf5f5f97",
+        "effect_ack_done": false,
+        "entries_sha256": "0e20ffbce9d65253b4e601c2e51106d7f32290f7c236da408188941580a7a427",
+        "node_id": "local:export-fixture",
+        "proposal_execution": "NOT_EXECUTED",
+        "receipt_sha256": "a5d2935435e34f521b0a1e275a6eadd603fa8c37be6f3ab571830c70ec76e7ef",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "revision": 1,
+        "schema": "qikvrt-repository-work-receipt/v1",
+        "scope": "OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES",
+        "serving_node_id": "fixture:standalone",
+        "source_head": "d23d766ddbb1342fa068b504f66ef143b0e3ab9a",
+        "source_tree": "25b5ecda29d9af67d170e62cec0518f463f508f0"
+      },
+      "runtime_component_sha256": {
+        "docs/monitor/self-host.mjs": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db",
+        "docs/monitor/server.mjs": "d75fbefb52da2b1f5fb62cdbae899bd3503d5afa0abfba4b2dc2d3c1faa93264",
+        "tools/qikvrt_self_host.py": "3768ee58e6c38c99d21bc65e1bb3a83ee79bee118c8fdf634316bc8351672ba8"
+      },
+      "runtime_profile": "REFERENCE_ONLY_LOCAL_PROCESS; NOT_NATIVE_NODE_ADMISSION",
+      "schema": "qikvrt-exported-mesh-work-readback/v1",
+      "staged": {
+        "cache_hits": 0,
+        "cached_objects": 2,
+        "cloud_requests": 0,
+        "effect_ack_done": false,
+        "revision": 1,
+        "state": "MESH_WORK_LOCALLY_STAGED"
+      },
+      "state": "EXPORTED_S1_BATCH_AND_RESTART_VERIFIED"
+    },
+    "parent_readback_scope": "Exact f91071a1 export fixture and receiver/config wiring; historical source evidence, not a successor runtime receipt.",
+    "all_node_runtime_verified": false,
+    "whole_node_idle_verified": false,
+    "whole_mesh_performance_verified": false,
+    "effect_ack_done": false,
+    "next_action": "Reobserve the successor exact HEAD/TREE and native CI. Complete full work inventory and admitted own-host execution/capture/transfer before real all-node idle/failover/performance acceptance."
   }
 }

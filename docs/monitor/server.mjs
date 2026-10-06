@@ -21,7 +21,7 @@ export const meshWire = value => value && typeof value === 'object' ?
   Array.isArray(value) ? '['+value.map(meshWire).join(',')+']' :
     '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+meshWire(value[k])).join(',')+'}' : JSON.stringify(value);
 const hex64 = value => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
-const identity = value => typeof value === 'string' && /^[A-Za-z0-9_.:-]{1,100}$/.test(value);
+const identity = value => typeof value === 'string' && /^[A-Za-z0-9_.:-]{1,100}$/.test(value) && !['__proto__','constructor','prototype'].includes(value);
 const shape = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).sort().join(',') === keys;
 const sourceBinding = value => shape(value,'head,tree') && Object.values(value).every(v=>typeof v === 'string' && /^[a-f0-9]{40}$/.test(v));
 function meshObjects(objects) {

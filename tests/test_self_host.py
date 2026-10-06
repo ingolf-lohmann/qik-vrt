@@ -892,6 +892,11 @@ class MeshWorkCacheTests(unittest.TestCase):
         self.assertEqual(len(self.pending()[1]["objects"]), 2)
         self.assertEqual(len(self.pending()[1]["work_units"]), 2)
 
+    def test_reserved_object_names_cannot_drop_a_work_unit_in_the_node_receiver(self):
+        for name in ("__proto__", "constructor", "prototype"):
+            with self.assertRaisesRegex(ValueError, "MESH_WORK_UNIT_REQUIRED"): self.stage(name)
+        self.assertFalse(self.cache.path.exists())
+
     def test_no_transfer_before_validated_idle_and_no_request_from_failed_gate(self):
         self.stage()
         with self.assertRaisesRegex(ValueError, "VALIDATED_IDLE_BATCH_REQUIRED"): self.cache.send({}, self.transport)
@@ -998,12 +1003,13 @@ class MeshWorkCacheTests(unittest.TestCase):
         _, packet = self.pending()
         self.assertEqual(self.packet_request(packet, secret=b"wrong-key")[0], 401)
         self.assertEqual(self.packet_request(packet, node_id="unadmitted:node")[0], 403)
-        for change in ("idle", "object", "repository", "entries", "unused-object"):
+        for change in ("idle", "object", "repository", "entries", "unit-identity", "unused-object"):
             candidate = json.loads(host.mesh_wire(packet))
             if change == "idle": candidate["idle"]["validation"]["exit_code"] = 1
             elif change == "object": candidate["objects"][next(iter(candidate["objects"]))] = base64.b64encode(b"corrupt bytes").decode()
             elif change == "repository": candidate["repository"] = "unknown/repository"
             elif change == "entries": candidate["entries"]["work.txt"]["bytes"] += 1
+            elif change == "unit-identity": candidate["work_units"][0]["id"] = "__proto__"
             else: candidate["objects"][host.digest(b"unreferenced")] = base64.b64encode(b"unreferenced").decode()
             del candidate["batch_id"]; candidate["batch_id"] = host.digest(host.mesh_wire(candidate))
             self.assertEqual(self.packet_request(candidate)[0], 409, change)

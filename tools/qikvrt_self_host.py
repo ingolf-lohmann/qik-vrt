@@ -191,6 +191,7 @@ class MeshWorkCache:
 
     def stage(self, root, paths, unit_id, instructions):
         if (not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", unit_id or "")
+                or unit_id in ("__proto__", "constructor", "prototype")
                 or not isinstance(instructions, bytes) or len(instructions) > MESH_WORK_MAX):
             raise ValueError("MESH_WORK_UNIT_REQUIRED")
         with self.locked():
