@@ -52,6 +52,6 @@ test_snapshot_binds_every_workflow_to_the_exact_head_and_tree (tests.test_qikvrt
 test_watchdog_binds_the_literal_pull_request_head (tests.test_qikvrt_workflow_executor_mesh_contract.WorkflowExecutorMeshContractTests.test_watchdog_binds_the_literal_pull_request_head) ... ok
 
 ----------------------------------------------------------------------
-Ran 52 tests in 2.612s
+Ran 52 tests in 3.342s
 
 OK

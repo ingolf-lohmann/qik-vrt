@@ -118,7 +118,8 @@
       "observation_scope": "SITES_METADATA_AND_EXACT_SOURCE_READ; NOT_A_FRESH_PUBLIC_HTTP_OR_NATIVE_RUNTIME_WITNESS"
     },
     "normative_scope": "Every current and future admitted QIK-VRT repository node, including Authority and Personal/Mirror, plus the Mesh aggregate.",
-    "product_name": "Universales Raumzeit-Terminal",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "product_name": "RaumzeitTerminal",
     "provision_rule": "Each node MUST expose its own repository-bound public HTTPS evidence surface. A central dashboard link or an unbound copy does not satisfy node provision. Node paths on a shared admitted host are allowed only with independently verifiable identity, source, artifacts, storage and readback.",
     "required_capabilities": [
       "Public node identity, repository and role, deployed exact HEAD/TREE/artifact binding and separately observed remote repository state; packaged source must never be labeled current remote main.",
@@ -172,7 +173,8 @@
     "scope": "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE",
     "all_roles": true,
     "role_exemptions": [],
-    "product_name": "Universales Raumzeit-Terminal",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "product_name": "RaumzeitTerminal",
     "source_carriers": {
       "universal_transputer": [
         "src/qikvrt_temdd_event_ledger.py"
@@ -387,6 +389,8 @@
     "owner": "Ingolf Lohmann",
     "received_at": "2026-10-06T10:14:09+02:00",
     "technology_name": "Universales Raumzeit-Terminal",
+    "technology_domain": "Informatik",
+    "technology_components": ["Hardware", "Software"],
     "product_name": "RaumzeitTerminal",
     "product_name_written_as_one_word": true,
     "domain_stem": "raumzeitterminal",

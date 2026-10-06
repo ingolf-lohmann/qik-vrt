@@ -1,0 +1,49 @@
+{
+  "schema": "qikvrt-independent-public-readback-verification/v1",
+  "observed_at": "2026-10-06T08:38:16.869655+00:00",
+  "user_agent": "QIKVRT-Independent-Readback/2",
+  "evidence_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/evidence",
+  "evidence_http_status": 200,
+  "snapshot_id": "516faf49-e2c8-40fd-90bf-fe7060cd3e17",
+  "started_at": "2026-10-06T08:35:44.649Z",
+  "completed_at": "2026-10-06T08:35:45.163Z",
+  "served_at": "2026-10-06T08:35:45.791Z",
+  "age_ms_at_response": 628,
+  "stale_at_response": false,
+  "persistence_verified": true,
+  "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=516faf49-e2c8-40fd-90bf-fe7060cd3e17",
+  "readback_http_status": 200,
+  "readback_bytes": 3614,
+  "expected_snapshot_sha256": "6d4ba6f200165ce84803fb7196e173deaf332b460a03e768784f940f1da73102",
+  "actual_readback_sha256": "6d4ba6f200165ce84803fb7196e173deaf332b460a03e768784f940f1da73102",
+  "byte_exact_sha256_match": true,
+  "parsed_snapshot_equality": true,
+  "previous_snapshot_id": "7f0ec53d-6f4b-4ac4-a232-984c021b5efc",
+  "previous_completed_at": "2026-10-06T07:34:20.170Z",
+  "repositories": [
+    {
+      "repository": "Goldkelch/qik-vrt",
+      "role": "Authority",
+      "status": 404,
+      "head": null,
+      "tree": null,
+      "error": "HTTP 404"
+    },
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "Personal / Mirror",
+      "status": 200,
+      "head": "79ddba3b6d0970203053b2719c41e9410276741c",
+      "tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2"
+    }
+  ],
+  "native_runtime_start_observed": false,
+  "native_mesh_execution_verified": false,
+  "effect_ack_done": false,
+  "ordinary_release": false,
+  "site_source_head": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
+  "site_source_modified": false,
+  "public_site_deployed": false,
+  "update_contract": "qikvrt-dynamic-evidence-update-contract/v2",
+  "separation": "HTTP_AND_PERSISTENCE_VERIFIED; PACKAGE_AND_NATIVE_ACCEPTANCE_REMAIN_SEPARATE"
+}

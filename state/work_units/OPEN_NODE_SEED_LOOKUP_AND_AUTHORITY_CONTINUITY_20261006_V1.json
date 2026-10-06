@@ -60,7 +60,13 @@
     "coordinator_scope": "EVERY_EXPLICITLY_SUPPLIED_ENDPOINT; RETAIN_UNKNOWN_OR_INCOMPATIBLE_MEMBERS; NO_GLOBAL_SCAN",
     "authority_exchange": "REQUIREMENT_AND_PACKAGE_GATE_BOUND; LIVE_STATE_REPLICATION_QUORUM_FENCING_AND_ROLE_CHANGE_NOT_IMPLEMENTED_OR_VERIFIED_BY_THIS_PATCH",
     "native_original_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
-    "received_seed_or_invitation_auto_executes": false
+    "received_seed_or_invitation_auto_executes": false,
+    "product_name_revision": {
+      "product_name": "RaumzeitTerminal",
+      "technology_name": "Universales Raumzeit-Terminal",
+      "browser_titles_and_current_contract_fields_aligned": true,
+      "previous_candidate_head": "4434a8d7e85e4afa366d7830b92b5651ecad9a28"
+    }
   },
   "hosting_readback": {
     "observation_time_precision": "CURRENT_SESSION_CONNECTOR_READ_BOUNDED_BY_USER_TIME_CONTEXT; PROVIDER_RESPONSE_HAS_NO_READ_TIMESTAMP",
@@ -105,17 +111,43 @@
   },
   "public_observer": {
     "fresh_request": "HTTP_GET_USER_AGENT_QIKVRT-Independent-Readback/2",
-    "new_observation_verified": false,
-    "observed_error": "curl exit 28; Proxy CONNECT aborted due to timeout; HTTP status 000 means no observed origin HTTP status",
-    "last_verified_snapshot_id": "7f0ec53d-6f4b-4ac4-a232-984c021b5efc",
-    "last_verified_completed_at": "2026-10-06T07:34:20.170Z",
-    "last_verified_snapshot_sha256": "afc4bcee3a398fc8909b35d04d3343a072f5d491b2df88531fc7ad473dc21a3b",
+    "new_observation_verified": true,
+    "last_verified_snapshot_id": "516faf49-e2c8-40fd-90bf-fe7060cd3e17",
+    "last_verified_completed_at": "2026-10-06T08:35:45.163Z",
+    "last_verified_snapshot_sha256": "6d4ba6f200165ce84803fb7196e173deaf332b460a03e768784f940f1da73102",
     "last_verified_snapshot_preserved": true,
     "site_source_head": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
     "site_source_modified": false,
     "site_version_deployed": false,
     "transport_failure_is_transient": true,
-    "recurring_updater_disabled": false
+    "recurring_updater_disabled": false,
+    "prior_transport_error": "curl exit 28; Proxy CONNECT aborted due to timeout; HTTP status 000 means no observed origin HTTP status",
+    "previous_verified_snapshot_id": "7f0ec53d-6f4b-4ac4-a232-984c021b5efc",
+    "previous_verified_completed_at": "2026-10-06T07:34:20.170Z",
+    "previous_verified_snapshot_sha256": "afc4bcee3a398fc8909b35d04d3343a072f5d491b2df88531fc7ad473dc21a3b",
+    "evidence_http_status": 200,
+    "readback_http_status": 200,
+    "readback_bytes": 3614,
+    "byte_exact_snapshot_readback_verified": true,
+    "public_native_runtime_acceptance": false,
+    "fresh_remote_repository_observations": [
+      {
+        "repository": "Goldkelch/qik-vrt",
+        "role": "Authority",
+        "status": 404,
+        "head": null,
+        "tree": null,
+        "error": "HTTP 404"
+      },
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "role": "Personal / Mirror",
+        "status": 200,
+        "head": "79ddba3b6d0970203053b2719c41e9410276741c",
+        "tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2"
+      }
+    ],
+    "transport_current_request_succeeded": true
   },
   "verification": {
     "local_focused_tests": {
@@ -142,19 +174,56 @@
       {
         "path": "evidence/native-runtime-acceptance/20261006/node-admission-local-tests.txt",
         "bytes": 9139,
-        "sha256": "417aff6b1d0e6380c49d210444da1b1fe369fb9787336213dbc2e07a2b6606b7"
+        "sha256": "f76604e760d6984eee144bd5885027c3366ce4db3fb4b375adec08a2f281752a"
       },
       {
         "path": "evidence/native-runtime-acceptance/20261006/node-admission-monitor-tests.txt",
-        "bytes": 4973,
-        "sha256": "452945b4fa4bcd1593013a07e7df92bd97814fdae310aa2fa00310724e182dc8"
+        "bytes": 4977,
+        "sha256": "9d77730970930de58f1c460df640066a1fcaff73613ac95e4882ee56d18c5b86"
       },
       {
         "path": "evidence/native-runtime-acceptance/20261006/domain-check-original.json",
         "bytes": 484,
         "sha256": "61fd985e2c0b5f2abafd4fdc71376d0d1150fe5f6c111c8de867832026cb4276"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/20261006/public-evidence-516faf49-e2c8-40fd-90bf-fe7060cd3e17.json",
+        "bytes": 5619,
+        "sha256": "545220dada07f3b396d63dda6b89d81b3197fdf353002438c35be2eea291fa4f"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/20261006/public-observer-verification-516faf49-e2c8-40fd-90bf-fe7060cd3e17.json",
+        "bytes": 2005,
+        "sha256": "19c99140d822efbb4022dcca4f3d97eabdf3cab4997e9c78f7c155b94fc54b57"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/20261006/public-readback-516faf49-e2c8-40fd-90bf-fe7060cd3e17.json",
+        "bytes": 3614,
+        "sha256": "6d4ba6f200165ce84803fb7196e173deaf332b460a03e768784f940f1da73102"
       }
-    ]
+    ],
+    "predecessor_ci_observation": {
+      "head": "4434a8d7e85e4afa366d7830b92b5651ecad9a28",
+      "tree": "4a02eb06e68a8ceb3ee657b33638fc934421818d",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_NOT_TRANSFERRED_TO_CONTAINING_HEAD",
+      "runs": [
+        {
+          "id": 37436396094,
+          "name": "QIKVRT CI",
+          "conclusion": "success"
+        },
+        {
+          "id": 37436396074,
+          "name": "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+          "conclusion": "success"
+        },
+        {
+          "id": 37436466840,
+          "name": "QIKVRT productive TEMDD S1 carrier",
+          "conclusion": "success"
+        }
+      ]
+    }
   },
   "outputs": [
     {
@@ -199,8 +268,8 @@
     },
     {
       "path": "runtime/self-host/MESH_ACTIVATION.json",
-      "bytes": 21720,
-      "sha256": "98b842dd7de5ce7fd261e74a8fef9ac74b51a1f21a47f76d0e6f936922901526"
+      "bytes": 21900,
+      "sha256": "8a6918007a04d2938511562c0807a3035a693926078dfddb25edcf061d63767e"
     },
     {
       "path": "tests/test_self_host.py",
@@ -226,6 +295,21 @@
       "path": "runtime/self-host/README.md",
       "bytes": 42743,
       "sha256": "7e8d98a72b80ef70bdc6939a5e417fa6f9dd13d42d36d0f30448071456967865"
+    },
+    {
+      "path": "docs/monitor/index-react.html",
+      "bytes": 839,
+      "sha256": "53d333b0ea47ebc9f746edc6c779c9a9e1b978279112d44357e43cf9528191df"
+    },
+    {
+      "path": "docs/monitor/index.html",
+      "bytes": 47329,
+      "sha256": "ea4eb1ea92afbafbf6c545a71354d389383729c1e99a2584aa23ccb601556f93"
+    },
+    {
+      "path": "docs/terminal/temdd/index.html",
+      "bytes": 10668,
+      "sha256": "7d6a6248f030abb74de4dd3e415ff3f18ff457b518bc58380d511cc090366bf4"
     }
   ],
   "external_blockers": [
@@ -316,7 +400,12 @@
       ],
       "application_submitted": false,
       "payment_made": false
-    }
+    },
+    "technology_domain": "Informatik",
+    "technology_components": [
+      "Hardware",
+      "Software"
+    ]
   },
   "remote_reobserved_before_mutation": {
     "main_head": "79ddba3b6d0970203053b2719c41e9410276741c",
