@@ -206,6 +206,51 @@ Plan frisch ausführen. Alle vier Metriken, Qualität und Fehlläufe aus Rohdate
 auswerten. Erst diese Ausführung kann die Produktfrage beantworten.
 Keine neuen Mailentwürfe oder Nutzenversprechen aus diesem Vorbereitungsstand.
 
+## Gebundener nativer TEMDD-Lauf
+
+Der bestehende Harness bietet zusätzlich `temdd-carrier`. Er verwendet den
+unveränderten S1-Quellstand aus PR #461, Commit
+`bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698`, TREE
+`be501e917d2d8ded677e6c32ee4eddc27f2c1398`. Quelle und aktueller A/B-Auftrag
+werden getrennt gebunden. Ein früherer Quelltest wird nicht als frische
+Auftragsausführung verwendet. Die Implementierung wird nicht in den Personal-
+Baum kopiert; Quellhashes, saubere Checkouts und der bestehende S1-Toolvertrag
+werden vor und nach der Ausführung überprüft.
+
+Mit einem bereits vorhandenen sauberen Checkout dieses Quellstands auf Linux:
+
+```bash
+python3 -B tools/qikvrt_browser_assistant_ab.py temdd-carrier \
+  --source /absolute/path/to/frozen-temdd-source \
+  --output .qikvrt/runtime/browser-ab/temdd-native-001 \
+  --expected-head "$(git rev-parse HEAD)" --pr 462
+```
+
+Das neue Ausgabeverzeichnis enthält den tatsächlich ausgeführten Produkt-
+Preflight, CLI-Eingaben und Quittungen, Ledger-Ereignisse sowie HTTP-/SSE-
+Readbacks. Die originale CLI startet den Listener und schreibt über den
+owner-only Unix-Socket. Der Harness prüft identische Wiederholungen,
+Native-ID-Konflikte, falsche Auftrags-HEADs und anschließende HTTP-/SSE-
+Readbacks. Er beendet den tatsächlichen Serverprozess mit SIGKILL, startet
+ihn auf demselben privaten Zustand neu und vergleicht den gesamten früher
+committeten Ereignispräfix einschließlich IDs und Digests. Der Neustart
+erzeugt erwartungsgemäß ein weiteres originales Listener-Ereignis.
+
+Der zusätzliche Job im vorhandenen Personal-Firefox-Prüfworkflow führt auf
+Ubuntu 24.04 außerdem die originalen TEMDD-/Self-Host-Tests und den C90-
+Referenzkern aus. Sein Artefakt enthält die vollständigen Testlogs und
+gebundenen Rohreadbacks. Wenn der Host Unix-Sockets verweigert, endet der
+Harness mit Exit 2, `HOST_NATIVE_UNIX_INGRESS_UNAVAILABLE` und BLOCK-Receipt,
+bevor ein Server gestartet wird. Kein Test wird zur grünen Ausweichroute.
+
+`native_transport_status=PASS` gilt ausschließlich für die dort gemessene
+CLI-/Ingress-/Restart-/Readback-Funktion. `state=HOLD`, `acceptance=false`,
+`effect_ack_done=false`, `product_trials_executed=0`, `product_metrics=null`
+und `product_claim_allowed=false` bleiben erhalten. Dieser Lauf startet
+keinen authentifizierten Modellassistenten und keine Browser-A/B-Aufgabe;
+er liefert keinen Kaufnutzen-Nachweis und keine öffentliche Deployment-
+Abnahme nach TEMDD T1–T16.
+
 Die ursprünglichen Rohdaten unter `evidence/benchmarks/browser-assistant-ab/2026-10-05/`
 sind historische, unveränderte Nachweise auf HEAD
 `5bd1afc5bfa7c3887698f24f899b72e6f5701990`. Ihr bytegenauer Replay verlangt diesen

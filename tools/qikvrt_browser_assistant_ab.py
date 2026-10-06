@@ -10,15 +10,21 @@ from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
 import csv
 import hashlib
+import http.client
 import importlib.util
 import json
 import os
 import platform
 import random
 import re
+import selectors
 import shutil
+import signal
+import socket
+import sqlite3
 import subprocess
 import sys
 import threading
@@ -57,6 +63,14 @@ SOURCE_PATHS = [
     "runtime/toolchains/CACHE_REGISTRY.json",
     "runtime/toolchains/CACHE_COVERAGE.json",
 ]
+# Reuse the frozen S1 implementation without copying it into the Personal tree.
+# Source controls and task execution have separate identities and receipts.
+TEMDD_SOURCE_HEAD = "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698"
+TEMDD_SOURCE_TREE = "be501e917d2d8ded677e6c32ee4eddc27f2c1398"
+TEMDD_SOURCE_FILES = {
+    "src/qikvrt_temdd_event_ledger.py": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+    "src/qikvrt_effect_ack_http_terminal.py": "039b7c34fe4ae8766ae0b141734ef91131377e5e58fedb7746320242543da2d8",
+}
 
 
 class InvalidRun(ValueError):
@@ -620,6 +634,254 @@ def self_check(output: Path) -> dict[str, Any]:
     return analyze(output)
 
 
+def temdd_source_binding(source: Path) -> dict[str, Any]:
+    """Reject a floating, dirty or substituted native implementation before use."""
+    def source_git(*args: str) -> str:
+        try:
+            return subprocess.check_output(["git", "-C", str(source), *args], text=True,
+                                           stderr=subprocess.DEVNULL, timeout=10).strip()
+        except (OSError, subprocess.SubprocessError) as exc:
+            raise InvalidRun("EXACT_TEMDD_SOURCE_UNOBSERVABLE_OR_CHANGED") from exc
+    if (source_git("rev-parse", "HEAD") != TEMDD_SOURCE_HEAD
+            or source_git("rev-parse", "HEAD^{tree}") != TEMDD_SOURCE_TREE
+            or source_git("status", "--porcelain")):
+        raise InvalidRun("EXACT_TEMDD_SOURCE_UNOBSERVABLE_OR_CHANGED")
+    files = {p: digest((source / p).read_bytes()) for p in TEMDD_SOURCE_FILES}
+    if files != TEMDD_SOURCE_FILES:
+        raise InvalidRun("EXACT_TEMDD_SOURCE_BYTES_CHANGED")
+    return {"repository": "ingolf-lohmann/qik-vrt", "pr": 461,
+            "head": TEMDD_SOURCE_HEAD, "tree": TEMDD_SOURCE_TREE, "source_files": files}
+
+
+def temdd_carrier(source: Path, output: Path, expected_head: str, pr: int) -> dict[str, Any]:
+    """Run the original CLI/Unix/SSE path on one fresh exact task subject.
+
+    This is native transport evidence. It executes no model or browser trial,
+    grants no deployment acceptance and never promotes product preflight.
+    """
+    source, output = source.resolve(), output.resolve()
+    implementation = temdd_source_binding(source)
+    observed = preflight()
+    if (not re.fullmatch(r"[0-9a-f]{40}", expected_head) or observed["head"] != expected_head
+            or observed["worktree_dirty"] or type(pr) is not int or pr < 1):
+        raise InvalidRun("EXACT_TEMDD_TASK_UNOBSERVABLE_OR_CHANGED")
+    if output == ROOT or (ROOT in output.parents and not (ROOT / ".qikvrt/runtime") in output.parents):
+        raise InvalidRun("Native raw data must be outside the tracked tree or under .qikvrt/runtime")
+    output.mkdir(mode=0o700, parents=True, exist_ok=False)
+    task = {"repository": observed["repository"], "pr": pr,
+            "head": observed["head"], "tree": observed["tree"]}
+    receipt = {"schema": "qikvrt_browser_ab_temdd_carrier_v1", "observed_utc": observed["observed_utc"],
+        "native_implementation": implementation, "task_subject": task,
+        "driver_sha256": digest(Path(__file__).read_bytes()), "environment": observed["environment"],
+        "github_run_id": os.environ.get("GITHUB_RUN_ID"), "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+        "evidence_class": "NATIVE_TRANSPORT_EXECUTION_ONLY", "state": "HOLD", "dod": False,
+        "native_transport_status": "BLOCK", "native_transport_execution_complete": False,
+        "predecessor_evidence_transfer": False, "public_url_readback": False,
+        "acceptance": False, "effect_ack_done": False, "product_trials_executed": 0,
+        "product_metrics": None, "product_claim_allowed": False, "product_blockers": observed["blockers"],
+        "scope": "Original CLI, owner-only Unix ingress, durable restart and loopback HTTP/SSE; no product trials or deployment",
+        "commands": [], "controls": {}, "raw_files": {}}
+    write_json(output / "PRODUCT_PREFLIGHT.json", observed)
+    state = output / "state"
+    state.mkdir(mode=0o700)
+    child = None
+    logs = []
+    # This transport run does not need or inherit model credentials.
+    env = {k: v for k, v in os.environ.items() if k not in ("OPENAI_API_KEY", "QIKVRT_PERSONAL_LOCAL_TOKEN")}
+    env.update(PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1")
+    native = source / "src/qikvrt_temdd_event_ledger.py"
+
+    def finite(argv, *, data=None, cwd=source, timeout=30):
+        result = subprocess.run(argv, input=data, capture_output=True, cwd=cwd,
+                                env=env, timeout=timeout, check=False)
+        record = {"argv": [str(a) for a in argv], "returncode": result.returncode,
+                  "stdout": result.stdout.decode("utf-8"), "stderr": result.stderr.decode("utf-8")}
+        if data is not None:
+            record["stdin"] = json.loads(data)
+        receipt["commands"].append(record)
+        return result
+
+    def require(value, reason):
+        if not value:
+            raise InvalidRun(reason)
+
+    def rows():
+        path = state / "temdd/events.sqlite3"
+        with contextlib.closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)) as db:
+            epoch = db.execute("SELECT value FROM meta WHERE key='epoch'").fetchone()[0]
+            records = []
+            for seq, binding, text, expected in db.execute("SELECT seq,binding,body,body_digest FROM events ORDER BY seq"):
+                body = json.loads(text)
+                require(binding == digest(canonical(task)) and body["subject"] == task
+                        and digest(canonical(body)) == expected and body["dod"] is False
+                        and body["evidence_transfer"] == "DENY", "INDEPENDENT_LEDGER_READBACK_MISMATCH")
+                records.append(dict(body, id=f"{epoch}:{seq}", ledger_digest=expected))
+            return records
+
+    def start(label):
+        nonlocal child
+        error_log = (output / f"{label}.stderr.log").open("xb")
+        logs.append(error_log)
+        argv = [sys.executable, "-B", str(native), "serve", "--root", str(ROOT),
+                "--repository", task["repository"], "--pr", str(pr), "--state-dir", str(state), "--port", "0"]
+        child = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=error_log, cwd=source, env=env)
+        with selectors.DefaultSelector() as ready:
+            ready.register(child.stdout, selectors.EVENT_READ)
+            require(bool(ready.select(15)), "NATIVE_CLI_START_TIMEOUT")
+            raw = child.stdout.readline(65537)
+        require(bool(raw) and len(raw) <= 65536, "NATIVE_CLI_START_FAILED")
+        listener = json.loads(raw)
+        require(listener == {"state": "LISTENING", "subject": task, "dod": False}, "NATIVE_CLI_SUBJECT_MISMATCH")
+        receipt["commands"].append({"argv": argv, "pid": child.pid, "listener": listener})
+        startup = rows()[-1]
+        require(startup["provenance"]["source"] == "transputer" and startup["payload"]["pid"] == child.pid,
+                "NATIVE_CLI_LISTENER_READBACK_MISMATCH")
+        address = startup["payload"]["http_address"]
+        require(address[0] == "127.0.0.1" and type(address[1]) is int and 0 < address[1] < 65536,
+                "NATIVE_CLI_LOOPBACK_REQUIRED")
+        return address[1]
+
+    def append(event, reason=None):
+        result = finite([sys.executable, "-B", str(native), "append", "--state-dir", str(state)], data=canonical(event))
+        if reason is not None:
+            reply = json.loads(result.stderr)
+            require(result.returncode == 2 and reply == {"state": "HOLD", "reason": reason, "dod": False},
+                    "NATIVE_NEGATIVE_CONTROL_NOT_REJECTED")
+            return reply
+        require(result.returncode == 0, "NATIVE_CLI_APPEND_FAILED")
+        reply = json.loads(result.stdout)
+        require(reply.get("state") == "PERSISTED" and reply.get("authority_effect") is False
+                and reply.get("dod") is False, "NATIVE_CLI_APPEND_READBACK_MISMATCH")
+        return reply["event"]
+
+    def read_http(port, expected, label):
+        connection = http.client.HTTPConnection("127.0.0.1", port, timeout=5)
+        try:
+            connection.request("GET", "/api/temdd/subject")
+            response = connection.getresponse()
+            subject = json.loads(response.read(65537))
+            require(response.status == 200 and subject.get("subject") == task and subject.get("dod") is False,
+                    "NATIVE_HTTP_SUBJECT_READBACK_MISMATCH")
+        finally:
+            connection.close()
+        stream = http.client.HTTPConnection("127.0.0.1", port, timeout=5)
+        frames, fields = [], {}
+        try:
+            stream.request("GET", "/api/temdd/events")
+            response = stream.getresponse()
+            require(response.status == 200 and response.getheader("Content-Type", "").startswith("text/event-stream"),
+                    "NATIVE_SSE_UNAVAILABLE")
+            # Bound frame and line count; do not wait indefinitely on a stream.
+            for _ in range(10 * (len(expected) + 1)):
+                raw = response.fp.readline(65537)
+                require(bool(raw) and len(raw) <= 65536, "NATIVE_SSE_FRAME_UNAVAILABLE")
+                line = raw.decode("utf-8").rstrip("\r\n")
+                if not line:
+                    if "data" in fields:
+                        frames.append(dict(fields, data=json.loads(fields["data"])))
+                        fields = {}
+                        if len(frames) == len(expected) + 1:
+                            break
+                elif ":" in line:
+                    key, value = line.split(":", 1)
+                    fields[key] = value.lstrip(" ")
+        finally:
+            stream.close()
+        require(len(frames) == len(expected) + 1 and frames[0].get("event") == "subject"
+                and frames[0]["data"].get("subject") == task and frames[0]["data"].get("dod") is False
+                and [frame["data"] for frame in frames[1:]] == expected
+                and [frame.get("id") for frame in frames[1:]] == [event["id"] for event in expected],
+                "NATIVE_SSE_LEDGER_REPLAY_MISMATCH")
+        write_json(output / f"{label}.json", {"http_subject": subject, "sse_frames": frames})
+
+    def event(kind, label, payload):
+        return {"schema": "qikvrt_temdd_native_event_v1", "kind": kind, "subject": task,
+            "provenance": {"source": "repository", "native_event_id": run_id + ":" + label},
+            "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "message": label, "payload": payload}
+
+    try:
+        for argv in ([sys.executable, "-B", "tools/qikvrt_tool_cache.py", "verify"],
+                     ["sh", "tools/bootstrap-runtime.sh", "--check-only", "--profile", "self-host", "--adapter", "none"]):
+            require(finite(argv).returncode == 0, "NATIVE_SOURCE_RUNTIME_CONTRACT_UNAVAILABLE")
+        require(platform.system() == "Linux" and hasattr(socket, "AF_UNIX") and hasattr(signal, "SIGKILL"),
+                "NATIVE_LINUX_UNIX_CARRIER_REQUIRED")
+        # Fail before starting a CLI whose tests cannot tear down a missing socket.
+        try:
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
+                probe.bind(str(output / "unix-probe.sock"))
+            (output / "unix-probe.sock").unlink()
+        except OSError as exc:
+            receipt["host_transport_error"] = {"type": type(exc).__name__, "errno": exc.errno, "message": str(exc)}
+            raise InvalidRun("HOST_NATIVE_UNIX_INGRESS_UNAVAILABLE") from exc
+        run_id = "browser-ab-temdd:" + uuid.uuid4().hex
+        port = start("before-kill")
+        events = [event("OBSERVE", "fresh-source-and-task-binding", {"native_implementation": implementation}),
+                  event("ACTION", "actual-offline-product-preflight", {"preflight_sha256": digest((output / "PRODUCT_PREFLIGHT.json").read_bytes()),
+                        "status": observed["status"], "product_trials_executed": 0, "product_metrics": None}),
+                  event("CLASSIFY", "observed-product-execution-blockers", {"blockers": observed["blockers"]}),
+                  event("HOLD", "no-product-or-deployment-acceptance", {"acceptance": False, "effect_ack_done": False})]
+        submitted = [append(value) for value in events]
+        before = rows()
+        require(before[1:] == submitted, "NATIVE_COMMIT_READBACK_MISMATCH")
+        require(append(events[-1]) == submitted[-1] and rows() == before, "NATIVE_DUPLICATE_NOT_IDEMPOTENT")
+        conflict = dict(events[-1], message="conflicting-native-event-content")
+        append(conflict, "NATIVE_EVENT_ID_CONFLICT")
+        wrong = dict(events[-1], subject=dict(task, head="0" * 40))
+        append(wrong, "EXACT_SUBJECT_MISMATCH")
+        require(rows() == before, "NATIVE_REJECTED_INPUT_CHANGED_LEDGER")
+        write_json(output / "LEDGER_BEFORE_SIGKILL.json", before)
+        read_http(port, before, "HTTP_SSE_BEFORE_SIGKILL")
+        child.kill()
+        killed = child.wait(timeout=5)
+        require(killed == -signal.SIGKILL, "NATIVE_SIGKILL_NOT_OBSERVED")
+        child.stdout.close()
+        port = start("after-restart")
+        restarted = rows()
+        require(restarted[:-1] == before and len(restarted) == len(before) + 1
+                and int(restarted[-1]["id"].split(":")[1]) > int(before[-1]["id"].split(":")[1]),
+                "NATIVE_SIGKILL_DURABLE_PREFIX_NOT_PRESERVED")
+        require(append(events[-1]) == submitted[-1] and rows() == restarted, "NATIVE_RESTART_DUPLICATE_NOT_IDEMPOTENT")
+        append(event("READBACK", "actual-cli-sigkill-restart-and-replay", {"killed_returncode": killed,
+                     "committed_prefix_records": len(before), "committed_prefix_byte_identical": True, "dod": False}))
+        after = rows()
+        write_json(output / "LEDGER_AFTER_RESTART.json", after)
+        read_http(port, after, "HTTP_SSE_AFTER_RESTART")
+        require(temdd_source_binding(source) == implementation and git("rev-parse", "HEAD") == expected_head
+                and not git("status", "--porcelain"), "EXACT_SUBJECT_CHANGED_DURING_EXECUTION")
+        receipt["controls"] = {"original_cli_serve": True, "original_cli_unix_append": True,
+            "durable_sqlite_readback": True, "duplicate_idempotent_before_and_after_restart": True,
+            "conflicting_native_id_rejected": True, "wrong_task_head_rejected": True,
+            "real_sigkill_returncode": killed, "committed_prefix_records": len(before),
+            "committed_prefix_byte_identical_after_restart": True, "loopback_http_subject_readback": True,
+            "sse_replay_matches_all_ledger_records": True, "final_record_count": len(after)}
+        receipt.update(native_transport_status="PASS", native_transport_execution_complete=True,
+                       reason="PRODUCT_EXECUTION_NOT_AVAILABLE; NO_DEPLOYMENT_ACCEPTANCE")
+    except (InvalidRun, OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as exc:
+        receipt["reason"] = str(exc)
+        receipt["error_type"] = type(exc).__name__
+    finally:
+        if child is not None:
+            if child.poll() is None:
+                child.terminate()
+                try:
+                    child.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    child.kill()
+                    child.wait(timeout=5)
+            if child.stdout:
+                child.stdout.close()
+        for stream in logs:
+            stream.flush()
+            os.fsync(stream.fileno())
+            stream.close()
+        for path in sorted(output.glob("*")):
+            if path.is_file():
+                receipt["raw_files"][path.name] = {"bytes": path.stat().st_size, "sha256": digest(path.read_bytes())}
+        write_json(output / "RECEIPT.json", receipt)
+    return receipt
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -637,6 +899,11 @@ def main() -> int:
     check = sub.add_parser("self-check")
     check.add_argument("--output", type=Path, required=True)
     sub.add_parser("terminal-smoke")
+    native = sub.add_parser("temdd-carrier")
+    native.add_argument("--source", type=Path, required=True)
+    native.add_argument("--output", type=Path, required=True)
+    native.add_argument("--expected-head", required=True)
+    native.add_argument("--pr", type=int, required=True)
     args = parser.parse_args()
     try:
         if args.command == "preflight":
@@ -649,6 +916,8 @@ def main() -> int:
             result = self_check(args.output)
         elif args.command == "terminal-smoke":
             result = terminal_smoke()
+        elif args.command == "temdd-carrier":
+            result = temdd_carrier(args.source, args.output, args.expected_head, args.pr)
         else:
             server = build_server(args.run, args.port)
             print(json.dumps({"url": f"http://127.0.0.1:{server.server_port}", "status": "HARNESS_CONSOLE_ONLY", "product_claim_allowed": False}), flush=True)
@@ -658,6 +927,8 @@ def main() -> int:
                 server.server_close()
             return 0
         print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False))
+        if args.command == "temdd-carrier" and not result["native_transport_execution_complete"]:
+            return 2
         return 0
     except (InvalidRun, OSError, ValueError, KeyError, TypeError) as exc:
         print(json.dumps({"status": "BLOCK", "reason": str(exc), "product_claim_allowed": False}))

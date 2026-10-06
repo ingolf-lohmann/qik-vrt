@@ -7,11 +7,66 @@ import json
 import tempfile
 import threading
 import unittest
+from unittest import mock
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from tools import qikvrt_browser_assistant_ab as ab
+
+
+class NativeCarrierBoundaryTests(unittest.TestCase):
+    def test_other_checkout_cannot_supply_native_source_or_launch_a_process(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.object(ab, "preflight") as product_observation:
+            output = Path(temp) / "untouched"
+            with self.assertRaisesRegex(ab.InvalidRun, "EXACT_TEMDD_SOURCE"):
+                ab.temdd_carrier(ab.ROOT, output, "a" * 40, 462)
+            self.assertFalse(output.exists())
+            product_observation.assert_not_called()
+
+    def test_native_source_dirty_or_substituted_bytes_are_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            with mock.patch.object(ab.subprocess, "check_output", side_effect=[ab.TEMDD_SOURCE_HEAD, ab.TEMDD_SOURCE_TREE, " M src/native.py"]):
+                with self.assertRaisesRegex(ab.InvalidRun, "EXACT_TEMDD_SOURCE"):
+                    ab.temdd_source_binding(root)
+            for path in ab.TEMDD_SOURCE_FILES:
+                file = root / path
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text("substituted implementation\n", encoding="utf-8")
+            with mock.patch.object(ab.subprocess, "check_output", side_effect=[ab.TEMDD_SOURCE_HEAD, ab.TEMDD_SOURCE_TREE, ""]):
+                with self.assertRaisesRegex(ab.InvalidRun, "EXACT_TEMDD_SOURCE_BYTES_CHANGED"):
+                    ab.temdd_source_binding(root)
+
+    def test_denied_unix_host_saves_a_failed_receipt_and_never_launches_native_cli(self):
+        head = "a" * 40
+        observed = {"head": head, "tree": "b" * 40, "repository": "ingolf-lohmann/qik-vrt",
+                    "worktree_dirty": False, "observed_utc": "2026-10-06T00:00:00Z",
+                    "environment": {}, "blockers": ["AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED"]}
+        checked = ab.subprocess.CompletedProcess([], 0, b"PASS\n", b"")
+        with tempfile.TemporaryDirectory() as temp, \
+                mock.patch.object(ab, "temdd_source_binding", return_value={"head": ab.TEMDD_SOURCE_HEAD}), \
+                mock.patch.object(ab, "preflight", return_value=observed), \
+                mock.patch.object(ab.subprocess, "run", return_value=checked), \
+                mock.patch.object(ab.subprocess, "Popen") as launch, \
+                mock.patch.object(ab.platform, "system", return_value="Linux"), \
+                mock.patch.object(ab.socket, "socket", side_effect=PermissionError(1, "Operation not permitted")):
+            output = Path(temp) / "blocked"
+            receipt = ab.temdd_carrier(Path(temp), output, head, 462)
+            self.assertEqual(receipt, ab.read_json(output / "RECEIPT.json"))
+            self.assertEqual(receipt["reason"], "HOST_NATIVE_UNIX_INGRESS_UNAVAILABLE")
+            self.assertEqual(receipt["host_transport_error"]["errno"], 1)
+            self.assertFalse(receipt["native_transport_execution_complete"])
+            self.assertEqual(receipt["controls"], {})
+            self.assertEqual(receipt["native_transport_status"], "BLOCK")
+            self.assertEqual(receipt["state"], "HOLD")
+            self.assertEqual(receipt["product_trials_executed"], 0)
+            self.assertIsNone(receipt["product_metrics"])
+            self.assertFalse(receipt["product_claim_allowed"])
+            self.assertFalse(receipt["effect_ack_done"])
+            launch.assert_not_called()
+            with self.assertRaises(FileExistsError):
+                ab.temdd_carrier(Path(temp), output, head, 462)
 
 
 class BrowserABTests(unittest.TestCase):

@@ -328,5 +328,82 @@
     "product_benefit_proven": false,
     "effect_ack_done": false,
     "authority_mirror_equality": false
+  },
+  "temdd_native_continuation": {
+    "schema": "qikvrt_browser_ab_temdd_continuation_v1",
+    "recorded_date": "2026-10-06",
+    "predecessor_task_head": "42a462411fd7cdc5769b4458aca6eed0ee5e5f69",
+    "predecessor_task_tree": "23b757b106d85ddb634b72fb595d1e47ef3b137a",
+    "human_actor": {
+      "attribution_id": "Ingolf Lohmann",
+      "contribution_class": "HUMAN",
+      "contribution": "Authorized continuation of the browser A/B task and actual TEMDD execution."
+    },
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6",
+      "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Extended the existing A/B harness and Personal boundary workflow to execute the original native CLI on a qualified carrier; added fail-closed checks and reproduction documentation."
+    },
+    "native_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 461,
+      "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+      "source_unchanged": true,
+      "license": "PolyForm-Noncommercial-1.0.0"
+    },
+    "reuse_before_create": {
+      "reused": [
+        "tools/qikvrt_browser_assistant_ab.py",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "src/qikvrt_temdd_event_ledger.py at frozen native_source",
+        "tests/test_temdd_event_ledger.py at frozen native_source",
+        "tools/qikvrt_self_host.py and original self-host tests at frozen native_source"
+      ],
+      "insufficiency": "Local host denies AF_UNIX creation with errno 1. The prior source CI did execute native controls, but it did not execute a fresh original CLI SIGKILL/restart bound to the browser A/B task. Added one subcommand and one job to existing components; no copied implementation, new workflow or weakened ingress."
+    },
+    "execution_contract": {
+      "task_subject": "Clean exact current candidate HEAD/TREE and PR are freshly observed at invocation and rechecked after execution. They are not substituted by this predecessor record.",
+      "fresh_private_state": true,
+      "original_native_unix_ingress_required": true,
+      "actual_sigkill_and_restart_required": true,
+      "independent_sqlite_and_http_sse_readback_required": true,
+      "native_source_and_tool_contracts_verified_before_execution": true,
+      "failure_exit_code": 2,
+      "native_status_scope": "CLI/ingress/durable restart/loopback readback only",
+      "raw_data": "Original CLI inputs/replies, preflight, raw ledger before/after SIGKILL and HTTP/SSE frames; job artifacts bind exact HEAD/TREE, run and hashes."
+    },
+    "output_bindings": [
+      {
+        "path": "tools/qikvrt_browser_assistant_ab.py",
+        "bytes": 54385,
+        "sha256": "324aa79730fa513b0da8a3445f535811ab112be6b46ff804b0fef0526260d02b"
+      },
+      {
+        "path": "tests/test_qikvrt_browser_assistant_ab.py",
+        "bytes": 15524,
+        "sha256": "b80bf5fe33d7830379b3d53ca9c35fbbead95ab6629d6d217ae764b386765ce8"
+      },
+      {
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "bytes": 10140,
+        "sha256": "38a3c0ef2e20a288b4cc5873bf95d6ae6c9d854d99f82381ad4708455b5d0b6a"
+      },
+      {
+        "path": "benchmarks/browser-assistant-ab/README.md",
+        "bytes": 15834,
+        "sha256": "88d027089634017598fcca26be9ef6ab82bdeb4c47325e38d6a5dcfd5943a8d2"
+      }
+    ],
+    "validation_state_at_materialization": "SOURCE_IMPLEMENTATION_PREPARED; FRESH_NATIVE_EXECUTION_REQUIRED",
+    "product_trials_executed": 0,
+    "product_metrics": null,
+    "product_claim_allowed": false,
+    "acceptance": false,
+    "effect_ack_done": false,
+    "open_product_boundary": "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED; comparator retention, equivalent pre-runs and interruption/oracle isolation remain unbound.",
+    "historical_evidence_rule": "Original work-unit fields and frozen benchmark receipts remain historical. No source-control or predecessor task evidence is promoted into current product execution."
   }
 }
