@@ -57,6 +57,22 @@ and promotion executor continue to execute trusted `main` code. A repair under
 review is not a deployed enforcement fix. No self-approval, merge, Ruleset
 mutation, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE` follows from this contract.
 
+The policy field `review_executor.native_governance_status_context` binds the
+Ruleset writer, native gate and promotion to `QIKVRT required code-owner review`.
+`review_executor.exact_head_status_context` binds only the technical executor to
+`QIKVRT requested review disposition`. The legacy `QIKVRT requested review execution`
+status is an alias published by the native gate; it cannot satisfy promotion by
+itself. A workflow may share a status name, but its successful run is execution
+telemetry only. Administrative activation remains a separate effect.
+
+The existing requested-review contract executes the writer and native publisher
+with intercepted REST, the executor with a bounded fake CLI and the promotion
+snapshot against native rules/reviews/status fixtures. It verifies the three
+roles, preserves every native protection, checks both publisher contexts and
+proves that a technical APPROVE disposition submits COMMENT. The same contract
+executes the actual lifecycle branch/PR persistence controls. All evidence is
+bound freshly to the combined successor; predecessor results are historical.
+
 ## Issues
 
 Every observed open issue must have a current repository-native lifecycle disposition. The allowed dispositions are:

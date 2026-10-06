@@ -79,7 +79,18 @@
     "duplicate_exact_head_review": "FORBIDDEN",
     "head_tree_or_scope_drift_invalidates_review": true,
     "platform_approval_fallback": "AUTOMATED_APPROVE_DISPOSITION_IS_ALWAYS_COMMENT_ONLY",
-    "independent_code_owner_approval_may_be_inferred": false
+    "independent_code_owner_approval_may_be_inferred": false,
+    "required_check_binding": {
+      "context_source": "review_executor.native_governance_status_context",
+      "ruleset_writer": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "native_review_gate": ".github/workflows/qikvrt_required_review_gate.yml",
+      "trusted_status_integration_id": 15368,
+      "workflow_execution_success_satisfies_governance": false,
+      "legacy_alias_is_acceptance_substitute": false,
+      "technical_disposition_is_acceptance_substitute": false,
+      "native_code_owner_approval_still_required": true,
+      "administrative_ruleset_activation": "SEPARATE_EFFECT"
+    }
   },
   "issue_lifecycle": {
     "unclassified_open_issue": "FORBIDDEN",
