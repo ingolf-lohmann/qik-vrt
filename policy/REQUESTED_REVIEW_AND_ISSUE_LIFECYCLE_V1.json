@@ -148,5 +148,36 @@
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false,
     "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false
+  },
+  "mesh_authority": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "human": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON",
+      "github_login": "ingolf-lohmann",
+      "roles": [
+        "Product Owner",
+        "Code Owner"
+      ]
+    },
+    "executor": {
+      "name": "QIK-VRT executing instance",
+      "role": "TESTED_EVENT_MODEL_DRIVEN_EXECUTION",
+      "may_submit_native_approve": false
+    },
+    "repository": {
+      "full_name": "ingolf-lohmann/qik-vrt",
+      "role": "DURABLE_WORKING_MEMORY",
+      "may_submit_native_approve": false
+    },
+    "independent_native_code_owner_review_required": true,
+    "former_authority_repository": "Goldkelch/qik-vrt",
+    "former_authority_permission_required": false,
+    "owner_directive": {
+      "submitted_at": "2026-10-06T21:56:08Z",
+      "text": "Falsch. Die Authority ist mittlerweile bei uns.",
+      "application_authorized_at": "2026-10-06T21:58:40Z"
+    },
+    "github_platform_effects_are_separate": true
   }
 }

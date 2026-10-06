@@ -26,7 +26,7 @@ SPEC.loader.exec_module(MODULE)
 class RequestedReviewExecutorTests(unittest.TestCase):
     def snapshot(self, **overrides):
         value = {
-            "repository": "example/qik-vrt",
+            "repository": "ingolf-lohmann/qik-vrt",
             "pr_number": 349,
             "current_main_sha": "a" * 40,
             "base_sha": "a" * 40,
@@ -34,7 +34,7 @@ class RequestedReviewExecutorTests(unittest.TestCase):
             "observed_head_sha": "b" * 40,
             "tree_sha": "c" * 40,
             "draft": False,
-            "requested_reviewers": ["Goldkelch"],
+            "requested_reviewers": ["ingolf-lohmann"],
             "requested_team_reviewers": [],
             "changed_paths": ["src/a.py", "tests/test_a.py"],
             "unresolved_review_threads": 0,
@@ -131,7 +131,7 @@ class RequestedReviewExecutorTests(unittest.TestCase):
             '''))
             mock.chmod(0o755)
             context = workflow.split("      STATUS_CONTEXT: ", 1)[1].splitlines()[0]
-            env = {**os.environ, "PATH": str(root) + os.pathsep + os.environ["PATH"], "PR_NUMBER": "349", "REPOSITORY": "example/qik-vrt", "EXPECTED_HEAD": "b" * 40, "EXPECTED_TREE": "c" * 40, "DISPOSITION": "APPROVE", "REVIEW_MARKER": "fixture-review", "STATUS_CONTEXT": context, "GITHUB_SERVER_URL": "https://github.com", "GITHUB_REPOSITORY": "example/qik-vrt", "GITHUB_RUN_ID": "123", "MOCK_API_LOG": str(root / "api.jsonl")}
+            env = {**os.environ, "PATH": str(root) + os.pathsep + os.environ["PATH"], "PR_NUMBER": "349", "REPOSITORY": "ingolf-lohmann/qik-vrt", "EXPECTED_HEAD": "b" * 40, "EXPECTED_TREE": "c" * 40, "DISPOSITION": "APPROVE", "REVIEW_MARKER": "fixture-review", "STATUS_CONTEXT": context, "GITHUB_SERVER_URL": "https://github.com", "GITHUB_REPOSITORY": "ingolf-lohmann/qik-vrt", "GITHUB_RUN_ID": "123", "MOCK_API_LOG": str(root / "api.jsonl")}
             subprocess.run(["bash", "-c", script], env=env, check=True, capture_output=True, text=True)
             calls = [json.loads(line) for line in (root / "api.jsonl").read_text().splitlines()]
             reviews = [call for call in calls if "--method" in call and any(path.endswith("/reviews") for path in call)]

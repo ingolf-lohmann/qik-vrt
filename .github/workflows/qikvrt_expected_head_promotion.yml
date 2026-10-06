@@ -123,7 +123,7 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-promotion-snapshot.json
           import json, os, subprocess
-          from tools.qikvrt_required_review_gate import project_governance
+          from tools.qikvrt_required_review_gate import project_governance, resolve_required_code_owner
           repo=os.environ['REPOSITORY']
           pr_number=int(os.environ['PR_NUMBER'])
           required=json.loads(os.environ['REQUIRED_GATES_JSON'])
@@ -156,7 +156,7 @@ jobs:
           statuses=gh_pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
           rules=gh_json(f'repos/{repo}/rules/branches/main')
           reviews=gh_pages(f'repos/{repo}/pulls/{pr_number}/reviews?per_page=100')
-          governance=project_governance(pr, rules, reviews, statuses)
+          governance=project_governance(pr, rules, reviews, statuses, required_code_owner=resolve_required_code_owner(repo))
           review_status=next((s for s in statuses if s.get('context') == review_context), None)
           if review_status is None:
               synthetic={'name':review_context,'status':'in_progress','conclusion':None,'run_number':0}
@@ -230,7 +230,7 @@ jobs:
           # native read immediately before either promotion phase.
           python3 -B - <<'PY'
           import json, os, subprocess
-          from tools.qikvrt_required_review_gate import project_governance
+          from tools.qikvrt_required_review_gate import project_governance, resolve_required_code_owner
           repo=os.environ['REPOSITORY']; number=os.environ['PR_NUMBER']
           def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):
@@ -239,7 +239,7 @@ jobs:
                   result.extend(page)
               return result
           pr=one(f'repos/{repo}/pulls/{number}'); head=pr['head']['sha']
-          projection=project_governance(pr, one(f'repos/{repo}/rules/branches/main'), pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100'), pages(f'repos/{repo}/commits/{head}/statuses?per_page=100'))
+          projection=project_governance(pr, one(f'repos/{repo}/rules/branches/main'), pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100'), pages(f'repos/{repo}/commits/{head}/statuses?per_page=100'), required_code_owner=resolve_required_code_owner(repo))
           current=one(f'repos/{repo}/pulls/{number}')
           if head != os.environ['EXPECTED_HEAD'] or pr['base']['sha'] != os.environ['EXPECTED_BASE'] or current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha'] or projection['gate_state'] != 'success':
               raise SystemExit(f"BLOCK: fresh native governance {projection.get('first_blocker') or 'SUBJECT_DRIFT'}")

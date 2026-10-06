@@ -45,7 +45,8 @@ def required_gates(path):
 class AuthorityTokenRouteTests(unittest.TestCase):
     def run_route(self, **values):
         source = WORKFLOW.read_text()
-        script = source.split('        run: |\n', 1)[1].split('\n      - name:', 1)[0]
+        block = source.split('      - name: Resolve least-privilege authority route\n', 1)[1]
+        script = block.split('        run: |\n', 1)[1].split('\n      - name:', 1)[0]
         script = '\n'.join(line[10:] for line in script.splitlines())
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'output'
@@ -176,7 +177,7 @@ class AuthorityTokenRouteTests(unittest.TestCase):
 
 
 class RequiredReviewContextContractTests(unittest.TestCase):
-    repository = 'fixture/repository'
+    repository = 'ingolf-lohmann/qik-vrt'
     head = 'b' * 40
     base = 'a' * 40
     gate = ROOT / '.github/workflows/qikvrt_required_review_gate.yml'
@@ -245,7 +246,6 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             'REQUESTED_PR': '641',
             'EVENT_NAME': 'workflow_dispatch',
             'EVENT_PRS': '[]',
-            'REQUIRED_CODE_OWNER': env_value(self.gate, 'REQUIRED_CODE_OWNER'),
             'STATUS_CONTEXT': env_value(self.gate, 'STATUS_CONTEXT'),
             'LEGACY_STATUS_CONTEXT': env_value(self.gate, 'LEGACY_STATUS_CONTEXT'),
             'GITHUB_SERVER_URL': 'https://github.com',
@@ -284,7 +284,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             if path == f'repos/{self.repository}/rules/branches/main':
                 return json.dumps([{'type':'pull_request','parameters':{'require_code_owner_review':True,'required_approving_review_count':1,'dismiss_stale_reviews_on_push':True,'require_last_push_approval':True}}]) if native_satisfied else '[]'
             if path == f'repos/{self.repository}/pulls/641/reviews?per_page=100':
-                return json.dumps([[{'id':4,'user':{'login':'Goldkelch','type':'User'},'state':'APPROVED','commit_id':self.head,'submitted_at':'2026-10-06T21:00:00Z'}]]) if native_satisfied else '[[]]'
+                return json.dumps([[{'id':4,'user':{'login':'ingolf-lohmann','type':'User'},'state':'APPROVED','commit_id':self.head,'submitted_at':'2026-10-06T21:00:00Z'}]]) if native_satisfied else '[[]]'
             if path == f'repos/{self.repository}/pulls/641/files?per_page=100':
                 return '[[{"filename":"fixture.txt"}]]'
             if path == f'repos/{self.repository}/pulls?state=open&base=main&per_page=100':

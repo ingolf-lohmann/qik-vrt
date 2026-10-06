@@ -5,6 +5,7 @@ name: QIKVRT requested review contract
 on:
   pull_request:
     paths:
+      - ".github/CODEOWNERS"
       - ".github/workflows/qikvrt_requested_review_executor.yml"
       - ".github/workflows/qikvrt_requested_review_contract.yml"
       - ".github/workflows/qikvrt_code_owner_review_observer.yml"
@@ -71,6 +72,7 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY'
           import json, subprocess
+          from tools.qikvrt_required_review_gate import resolve_required_code_owner
           from tests.test_ruleset_authority_token_route import RequiredReviewContextContractTests
           check = RequiredReviewContextContractTests()
           check.setUp()
@@ -88,6 +90,8 @@ jobs:
               'generated_native_alias': check.legacy,
               'generated_disposition_context': check.disposition,
               'native_approval_required': True,
+              'authority_repository': check.repository,
+              'required_code_owner': resolve_required_code_owner(check.repository),
               'writer_post_sha256': namespace['post_hash'],
               'api_calls_intercepted': True,
               'administrative_effect': False,

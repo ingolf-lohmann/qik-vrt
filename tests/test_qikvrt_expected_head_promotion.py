@@ -28,7 +28,7 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
     def snapshot(self, **overrides):
         native_pr = {"number": 459, "head": {"sha": "b" * 40}, "base": {"sha": "a" * 40}, "user": {"login": "integration-author"}}
         rules = [{"type": "pull_request", "parameters": {"required_approving_review_count": 1, "require_code_owner_review": True, "dismiss_stale_reviews_on_push": True, "require_last_push_approval": True}}]
-        reviews = [{"id": 7, "submitted_at": "2026-10-05T11:00:00Z", "state": "APPROVED", "commit_id": "b" * 40, "user": {"login": "Goldkelch"}}]
+        reviews = [{"id": 7, "submitted_at": "2026-10-05T11:00:00Z", "state": "APPROVED", "commit_id": "b" * 40, "user": {"login": "ingolf-lohmann"}}]
         statuses = [{"id": 8, "context": GOVERNANCE_STATUS_CONTEXT, "state": "success"}]
         value = {
             "pr_number": 459,
@@ -187,7 +187,7 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
                     else: print(json.dumps(value))
                 '''))
                 mock.chmod(0o755)
-                env = {**os.environ, "PATH": str(root) + os.pathsep + os.environ["PATH"], "REPOSITORY": "example/qik-vrt", "PR_NUMBER": "459", "EXPECTED_BASE": "a" * 40, "EXPECTED_HEAD": "b" * 40, "MOCK_PR": str(root / "pr.json"), "MOCK_API_LOG": str(root / "api.jsonl")}
+                env = {**os.environ, "PATH": str(root) + os.pathsep + os.environ["PATH"], "REPOSITORY": "ingolf-lohmann/qik-vrt", "PR_NUMBER": "459", "EXPECTED_BASE": "a" * 40, "EXPECTED_HEAD": "b" * 40, "MOCK_PR": str(root / "pr.json"), "MOCK_API_LOG": str(root / "api.jsonl")}
                 result = subprocess.run(["bash", "-c", script], env=env, cwd=ROOT, text=True, capture_output=True)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("CODE_OWNER_RULE_NOT_ENFORCED", result.stderr)

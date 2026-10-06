@@ -81,6 +81,8 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-review-selection.json
           import json, os, subprocess
+          from tools.qikvrt_required_review_gate import resolve_required_code_owner
+          resolve_required_code_owner(os.environ['REPOSITORY'])
           repo=os.environ['REPOSITORY']; requested=os.environ.get('REQUESTED_PR','').strip(); event_pr=os.environ.get('EVENT_PR','').strip(); event_head=os.environ.get('EVENT_HEAD','').strip()
           def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):

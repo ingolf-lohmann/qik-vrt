@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import copy
 import pathlib
 import json
 import os
@@ -45,7 +46,7 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
             "submitted_at": "2026-08-16T16:00:00Z",
             "state": "APPROVED",
             "commit_id": self.head,
-            "user": {"login": "Goldkelch"},
+            "user": {"login": "ingolf-lohmann"},
         }
         value.update(overrides)
         return value
@@ -77,6 +78,50 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
         result = self.evaluate([self.approval(user={"login": "someone-else"})])
         self.assertEqual(result["first_blocker"], "CODE_OWNER_REVIEW_MISSING")
 
+    def test_former_authority_review_cannot_replace_current_human_owner(self):
+        result = self.evaluate([self.approval(user={"login": "Goldkelch"})])
+        self.assertEqual(result["first_blocker"], "CODE_OWNER_REVIEW_MISSING")
+
+    def test_actual_policy_and_codeowners_resolve_current_mesh_human(self):
+        self.assertEqual(MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt"), "ingolf-lohmann")
+
+    def test_unknown_or_former_repository_does_not_inherit_current_authority(self):
+        for repository in ("Goldkelch/qik-vrt", "foreign/qik-vrt", ""):
+            with self.subTest(repository=repository), self.assertRaises(MODULE.ReviewGateInputError):
+                MODULE.resolve_required_code_owner(repository)
+
+    def test_policy_codeowners_disagreement_never_falls_back_to_former_owner(self):
+        for codeowners in ("* @Goldkelch", "* @ingolf-lohmann\n/runtime/ @Goldkelch", "", "* @ingolf-lohmann @Goldkelch"):
+            with self.subTest(codeowners=codeowners), self.assertRaises(MODULE.ReviewGateInputError):
+                MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", codeowners=codeowners)
+
+    def test_missing_or_collapsed_authority_roles_fail_closed(self):
+        policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
+        for field in ("human", "executor", "repository"):
+            candidate = copy.deepcopy(policy)
+            del candidate["mesh_authority"][field]
+            with self.subTest(field=field), self.assertRaises(MODULE.ReviewGateInputError):
+                MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=candidate)
+        for role in ("executor", "repository"):
+            candidate = copy.deepcopy(policy)
+            candidate["mesh_authority"][role]["may_submit_native_approve"] = True
+            with self.subTest(role=role), self.assertRaises(MODULE.ReviewGateInputError):
+                MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=candidate)
+
+    def test_authority_cannot_disable_independence_or_assign_bot_owner(self):
+        policy = json.loads((ROOT / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text())
+        candidate = copy.deepcopy(policy)
+        candidate["mesh_authority"]["independent_native_code_owner_review_required"] = False
+        with self.assertRaises(MODULE.ReviewGateInputError):
+            MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=candidate)
+        candidate = copy.deepcopy(policy)
+        candidate["mesh_authority"]["human"]["github_login"] = "github-actions[bot]"
+        with self.assertRaises(MODULE.ReviewGateInputError):
+            MODULE.resolve_required_code_owner("ingolf-lohmann/qik-vrt", policy=candidate, codeowners="* @github-actions[bot]")
+
+    def test_owner_comment_is_authorization_without_native_approval(self):
+        self.assertEqual(self.projection(reviews=[self.approval(state="COMMENTED")])["first_blocker"], "CODE_OWNER_REVIEW_NOT_APPROVED")
+
     def test_old_head_approval_is_stale(self):
         result = self.evaluate([self.approval(commit_id="a" * 40)])
         self.assertEqual(result["first_blocker"], "CODE_OWNER_REVIEW_STALE")
@@ -99,7 +144,7 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
         self.assertEqual(result["first_blocker"], "CODE_OWNER_REVIEW_DISMISSED")
 
     def test_pr_author_cannot_satisfy_independent_gate(self):
-        result = self.evaluate([self.approval()], pr=self.pr(user={"login": "Goldkelch"}))
+        result = self.evaluate([self.approval()], pr=self.pr(user={"login": "ingolf-lohmann"}))
         self.assertEqual((result["gate_state"], result["first_blocker"]), ("failure", "CODE_OWNER_REVIEW_SELF_APPROVAL"))
 
     def statuses(self, state="success"):
@@ -127,10 +172,10 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
                 self.assertEqual((result["acceptance"], result["first_blocker"]), ("BLOCKED", blocker))
 
     def test_self_approval_cannot_be_promoted_by_green_status(self):
-        self.assertEqual(self.projection(pr=self.pr(user={"login": "Goldkelch"}))["first_blocker"], "CODE_OWNER_REVIEW_SELF_APPROVAL")
+        self.assertEqual(self.projection(pr=self.pr(user={"login": "ingolf-lohmann"}))["first_blocker"], "CODE_OWNER_REVIEW_SELF_APPROVAL")
 
     def test_automated_approval_cannot_be_promoted_by_green_status(self):
-        result = self.projection(reviews=[self.approval(user={"login": "Goldkelch", "type": "Bot"})])
+        result = self.projection(reviews=[self.approval(user={"login": "ingolf-lohmann", "type": "Bot"})])
         self.assertEqual((result["acceptance"], result["first_blocker"]), ("BLOCKED", "CODE_OWNER_REVIEW_AUTOMATED_APPROVAL"))
 
     def test_legacy_and_technical_success_do_not_replace_native_status(self):
@@ -168,7 +213,7 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
             if "/reviews?" in path: return "[[]]"
             self.fail(f"unexpected API read: {command}")
         with tempfile.TemporaryDirectory() as directory:
-            env = {"REPOSITORY": "example/qik-vrt", "REQUESTED_PR": "641", "EVENT_NAME": "workflow_dispatch", "EVENT_PRS": "[]", "REQUIRED_CODE_OWNER": "Goldkelch", "STATUS_CONTEXT": MODULE.GOVERNANCE_STATUS_CONTEXT, "LEGACY_STATUS_CONTEXT": MODULE.LEGACY_GOVERNANCE_STATUS_CONTEXT, "GITHUB_STEP_SUMMARY": str(pathlib.Path(directory) / "summary"), "GITHUB_SERVER_URL": "https://github.com", "GITHUB_RUN_ID": "123"}
+            env = {"REPOSITORY": "ingolf-lohmann/qik-vrt", "REQUESTED_PR": "641", "EVENT_NAME": "workflow_dispatch", "EVENT_PRS": "[]", "REQUIRED_CODE_OWNER": "ingolf-lohmann", "STATUS_CONTEXT": MODULE.GOVERNANCE_STATUS_CONTEXT, "LEGACY_STATUS_CONTEXT": MODULE.LEGACY_GOVERNANCE_STATUS_CONTEXT, "GITHUB_STEP_SUMMARY": str(pathlib.Path(directory) / "summary"), "GITHUB_SERVER_URL": "https://github.com", "GITHUB_RUN_ID": "123"}
             with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=read), patch("subprocess.check_call", side_effect=lambda command: posts.append(command)):
                 exec(compile(source, "publisher-workflow", "exec"), {})
             self.assertEqual(len(posts), 2)
@@ -189,12 +234,48 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
             if "/reviews?" in path: return "[[]]"
             if "/statuses?" in path: return json.dumps([self.statuses()])
             self.fail(f"unexpected API read: {command}")
-        env = {"REPOSITORY": "example/qik-vrt", "PR_NUMBER": "641", "EXPECTED_HEAD": self.head}
+        env = {"REPOSITORY": "ingolf-lohmann/qik-vrt", "PR_NUMBER": "641", "EXPECTED_HEAD": self.head}
         namespace = {}
         with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=read):
             exec(compile(source, "live-projection-workflow", "exec"), namespace)
         self.assertEqual(namespace["projection"]["first_blocker"], "CODE_OWNER_RULE_NOT_ENFORCED")
         self.assertEqual(namespace["projection"]["acceptance"], "BLOCKED")
+
+    def test_actual_writer_binds_current_authority_before_any_admin_effect(self):
+        source = self.embedded_python("qikvrt_goldkelch_ruleset_authority_effect.yml", "python3 -B - <<'PY'\n")
+        with patch.dict(os.environ, {"TARGET_REPOSITORY": "ingolf-lohmann/qik-vrt"}), patch("subprocess.check_call") as write:
+            namespace = {}
+            exec(compile(source, "writer-authority-binding", "exec"), namespace)
+            self.assertEqual(namespace["owner"], "ingolf-lohmann")
+            write.assert_not_called()
+        with patch.dict(os.environ, {"TARGET_REPOSITORY": "foreign/qik-vrt"}), self.assertRaisesRegex(ValueError, "outside the current Mesh Authority binding"):
+            exec(compile(source, "writer-authority-binding", "exec"), {})
+
+    def test_actual_executor_rejects_foreign_authority_before_repository_reads(self):
+        source = self.embedded_python("qikvrt_requested_review_executor.yml", "python3 -B - <<'PY' > /tmp/qikvrt-review-selection.json\n")
+        env = {"REPOSITORY": "foreign/qik-vrt", "REQUESTED_PR": "", "EVENT_PR": "", "EVENT_HEAD": "", "REVIEW_MARKER": "fixture-only"}
+        with patch.dict(os.environ, env), patch("subprocess.check_output") as read, self.assertRaisesRegex(ValueError, "outside the current Mesh Authority binding"):
+            exec(compile(source, "executor-authority-binding", "exec"), {})
+        read.assert_not_called()
+
+    def test_actual_publisher_accepts_current_owner_independent_native_review(self):
+        source = self.embedded_python("qikvrt_required_review_gate.yml", "python3 -B - <<'PY'\n")
+        posts = []
+        pr = self.pr(base={"sha": "a" * 40, "ref": "main"}, state="open")
+        def read(command, **kwargs):
+            path = command[-1]
+            if path.endswith("/pulls/641"): return json.dumps(pr)
+            if path.endswith("/rules/branches/main"): return json.dumps(self.enforced_rules())
+            if "/reviews?" in path: return json.dumps([[self.approval()]])
+            self.fail(f"unexpected API read: {command}")
+        with tempfile.TemporaryDirectory() as directory:
+            env = {"REPOSITORY": "ingolf-lohmann/qik-vrt", "REQUESTED_PR": "641", "EVENT_NAME": "workflow_dispatch", "EVENT_PRS": "[]", "STATUS_CONTEXT": MODULE.GOVERNANCE_STATUS_CONTEXT, "LEGACY_STATUS_CONTEXT": MODULE.LEGACY_GOVERNANCE_STATUS_CONTEXT, "GITHUB_STEP_SUMMARY": str(pathlib.Path(directory) / "summary"), "GITHUB_SERVER_URL": "https://github.com", "GITHUB_RUN_ID": "123"}
+            with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=read), patch("subprocess.check_call", side_effect=lambda command: posts.append(command)):
+                namespace = {}
+                exec(compile(source, "publisher-current-owner", "exec"), namespace)
+            self.assertEqual(len(posts), 2)
+            self.assertTrue(all("state=success" in post for post in posts))
+            self.assertEqual(namespace['decision']['required_code_owner'], 'ingolf-lohmann')
 
 
 if __name__ == "__main__":

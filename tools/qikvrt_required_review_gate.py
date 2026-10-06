@@ -12,7 +12,7 @@ from collections.abc import Mapping, Sequence
 from typing import Any
 
 SCHEMA = "qikvrt_required_code_owner_review_gate_v1"
-DEFAULT_CODE_OWNER = "Goldkelch"
+DEFAULT_CODE_OWNER = "ingolf-lohmann"
 SUCCESS = "success"
 PENDING = "pending"
 FAILURE = "failure"
@@ -24,6 +24,42 @@ REVIEW_DISPOSITION_STATUS_CONTEXT = "QIKVRT requested review disposition"
 
 class ReviewGateInputError(ValueError):
     pass
+
+
+def resolve_required_code_owner(repository: str, *, policy: Mapping[str, Any] | None = None, codeowners: str | None = None) -> str:
+    """Bind the trusted repository's three roles without creating native approval.
+
+    Unknown repositories or a policy/CODEOWNERS disagreement fail closed.
+    Human authority, execution identity and durable storage are distinct roles.
+    """
+    root = pathlib.Path(__file__).resolve().parents[1]
+    if policy is None:
+        policy = json.loads((root / "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json").read_text(encoding="utf-8"))
+    if not isinstance(policy, Mapping):
+        raise ReviewGateInputError("Mesh Authority policy must be an object")
+    authority = policy.get("mesh_authority")
+    if not isinstance(authority, Mapping):
+        raise ReviewGateInputError("current Mesh Authority binding is missing")
+    human = authority.get("human")
+    executor = authority.get("executor")
+    memory = authority.get("repository")
+    if not all(isinstance(role, Mapping) for role in (human, executor, memory)):
+        raise ReviewGateInputError("Mesh Authority must retain human, executor and repository roles")
+    if repository != memory.get("full_name") or repository != authority.get("authority_repository"):
+        raise ReviewGateInputError("repository is outside the current Mesh Authority binding")
+    owner = _login(human.get("github_login"), "Mesh Authority human login")
+    if human.get("type") != "NATURAL_PERSON" or owner.casefold().endswith("[bot]"):
+        raise ReviewGateInputError("native Code Owner must be a human principal")
+    if executor.get("may_submit_native_approve") is not False or memory.get("may_submit_native_approve") is not False:
+        raise ReviewGateInputError("executor and repository cannot supply native human approval")
+    if authority.get("independent_native_code_owner_review_required") is not True:
+        raise ReviewGateInputError("independent native Code Owner review must remain required")
+    if codeowners is None:
+        codeowners = (root / ".github/CODEOWNERS").read_text(encoding="utf-8")
+    entries = [line.split("#", 1)[0].split() for line in codeowners.splitlines() if line.split("#", 1)[0].strip()]
+    if not entries or entries[0] != ["*", "@" + owner] or any(entry[1:] != ["@" + owner] for entry in entries):
+        raise ReviewGateInputError("CODEOWNERS disagrees with current Mesh Authority human")
+    return owner
 
 
 def _sha(value: Any, label: str) -> str:
@@ -162,14 +198,14 @@ def evaluate_required_review(pr: Mapping[str, Any], rules: Sequence[Mapping[str,
     }
 
 
-def project_governance(pr: Mapping[str, Any], rules: Sequence[Mapping[str, Any]], reviews: Sequence[Mapping[str, Any]], statuses: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def project_governance(pr: Mapping[str, Any], rules: Sequence[Mapping[str, Any]], reviews: Sequence[Mapping[str, Any]], statuses: Sequence[Mapping[str, Any]], *, required_code_owner: str = DEFAULT_CODE_OWNER) -> dict[str, Any]:
     """Project fresh native evidence; execution success is never an input vote.
 
     The dedicated status must agree with the fresh native decision. The old
     shared status is a compatibility alias, never a substitute for that status.
     A missing, conflicting or stale publication keeps acceptance closed.
     """
-    decision = evaluate_required_review(pr, rules, reviews)
+    decision = evaluate_required_review(pr, rules, reviews, required_code_owner=required_code_owner)
     if not isinstance(statuses, list) or not all(isinstance(item, Mapping) for item in statuses):
         raise ReviewGateInputError("statuses observation must be a list of objects")
     latest = {}

@@ -11,6 +11,30 @@ Product Owner Ingolf Lohmann requires requested repository reviews and registere
 
 This contract applies to `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt`. It is repository-internal governance. It does not bypass GitHub account rules, branch protection, required checks, external credentials, publication boundaries, or the distinction between a natural-person decision and the GitHub identity that signs an API event.
 
+## Current Mesh Authority for the personal repository
+
+For `ingolf-lohmann/qik-vrt`, the Owner's 6 October 2026 correction binds three
+roles: Ingolf Lohmann is the human Product Owner and Code Owner; the QIK-VRT
+executing instance carries out authorized tested work; the repository retains
+its durable working memory. The current authority is this Mesh constellation.
+`Goldkelch/qik-vrt` remains a historical source, not a superior permission issuer
+for this repository. The binding is in the existing policy's `mesh_authority`.
+
+The existing gate resolves the human login from that trusted policy and verifies
+all CODEOWNERS entries. Publisher, technical executor, Ruleset writer and both
+promotion observations use that resolver; an unknown repository or disagreement
+fails closed. Native review still requires an independent human APPROVED event
+on the exact current HEAD. An Owner decision is valid authority, while a
+COMMENT, author self-approval or automated technical APPROVE cannot fabricate
+that separate GitHub state. Drafts created through the Owner's own principal
+remain subject to the native self-approval restriction. A workflow/repository
+identity is an executor or store, never a substitute human reviewer.
+
+The Ruleset writer retains its historical filename for continuity and every
+existing protection. Administrative credentials and live adoption remain
+separate observed effects; the authority allocation alone does not mint them.
+
+
 ## Requested reviews
 
 When a review is requested, a conforming repository client or agent must act without deliberate queueing:
