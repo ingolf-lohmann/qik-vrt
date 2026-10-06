@@ -113,6 +113,12 @@ test('existing React entry: six product answers and passive personal preparation
   page.on('request',request=>browserRequests.push(request.url()));
   await page.goto(base+'/');
   await page.getByRole('heading',{name:'Deine Arbeit mit Kontext fortsetzen'}).waitFor();
+  if(process.env.QIKVRT_ENTRY_SCREENSHOT_DIR){
+    for(const width of [390,1280]){
+      await page.setViewportSize({width,height:900});
+      await page.screenshot({path:join(process.env.QIKVRT_ENTRY_SCREENSHOT_DIR,'raumzeitterminal-entry-'+width+'.png'),fullPage:true});
+    }
+  }
   const storageBefore=await page.evaluate(()=>({local:Object.entries(localStorage),session:Object.entries(sessionStorage)}));
   const entryChecks=[];
   for(const phrase of ['persönlicher Browserassistent','recherchieren','Technisch belegt','Produktziel','noch nicht gemeinsam abgenommen','messbarer Anwendervergleich fehlt'])
@@ -157,6 +163,8 @@ test('existing React entry: six product answers and passive personal preparation
     await page.setViewportSize({width,height:900});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
     assert.ok(await page.getByRole('link',{name:'Kontextdatei öffnen',exact:true}).isVisible());
+    const bounds=await page.getByRole('link',{name:'Kontextdatei öffnen',exact:true}).evaluate(node=>({top:node.getBoundingClientRect().top,bottom:node.getBoundingClientRect().bottom}));
+    assert.ok(bounds.top>=0&&bounds.bottom<=900,'Primary context action must be in the first viewport at width '+width);
     if(process.env.QIKVRT_ENTRY_SCREENSHOT_DIR)await page.screenshot({path:join(process.env.QIKVRT_ENTRY_SCREENSHOT_DIR,'raumzeitterminal-entry-'+width+'.png'),fullPage:true});
   }
   assert.deepEqual(errors,[]);

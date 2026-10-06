@@ -54,12 +54,22 @@
     ],
     "editorial_source": "docs/monitor/README.md#raumzeitterminal-personal-entry-in-the-existing-react-client",
     "independent_user_acceptance": false,
-    "predecessor_evidence_transfer": false
+    "predecessor_evidence_transfer": false,
+    "prior_candidate": {
+      "head": "de6c929bbc1ea04c7d4413c31c0c37063dff9ff1",
+      "tree": "0c7de56d06b076776efb7776c709c7e7ddaa2a2d",
+      "native_run_id": 37448082258,
+      "native_job_id": 112217647381,
+      "native_admission_and_original_persistence": "success",
+      "browser_origin_controls": "success",
+      "ui_outcome": "FAIL: exact Zielkonfiguration label lookup timed out after successful preview",
+      "scope": "HISTORICAL_PREDECESSOR_ONLY; NO_EVIDENCE_TRANSFER"
+    }
   },
   "recovery": {
     "observation": "Local workspace replaced during attempted desktop browser test; no browser result established. Source changes reconstructed; fresh checks required.",
     "cause": "UNESTABLISHED",
-    "next_action": "Secure reviewable candidate; execute fresh candidate tests and native CI; inspect exact-source witness and screenshots."
+    "next_action": "Execute fresh local and native checks on this repaired successor; independently read the exact-source UI witness and screenshots."
   },
   "boundaries": {
     "personal_runtime_admitted": false,
@@ -73,5 +83,15 @@
     "merge_authorized_by_this_record": false,
     "deployment_authorized_by_this_record": false,
     "effect_ack_done": false
-  }
+  },
+  "repairs": [
+    {
+      "cause": "The nested select labels included option text in the exact browser label lookup.",
+      "change": "Separate explicit htmlFor/id labels for origin and retention selectors; retain the originally failing exact-label control."
+    },
+    {
+      "cause": "First-viewport reachability was not previously measured.",
+      "change": "Shorten the opening copy; compact narrow-viewport spacing; add an explicit primary-action viewport bound and source-pinned screenshots."
+    }
+  ]
 }
