@@ -69,7 +69,8 @@ node docs/monitor/offline/static-server.mjs
 Für die Browserprüfung das integritätsgebundene Playwright-Testpaket unter
 `runtime/offline/browser-tests` mit `npm ci` installieren; der native Workflow
 prüft Chromium und WebKit gegen denselben eingefrorenen HEAD/TREE. Er prüft
-wirkliches IndexedDB, Offline-Neuladen, Browser-Prozessneustart, getrennte Origins,
+wirkliches IndexedDB, Neuladen bei abgeschaltetem Origin, einen fehlschlagenden
+ungecachten Abruf als Negativkontrolle, Browser-Prozessneustart, getrennte Origins,
 binäre Mehrblock-Dateien, zwei Geräte-Branches, Konfliktentscheidung, Rücktransfer,
 Manipulation, Abbruch und den konkurrierenden Writer. Außerdem importiert jeder
 Browser den vollständigen nativen gzip-Transfer als tatsächliche Browser-Datei
@@ -102,3 +103,10 @@ React-Laufzeit: bytegleich wiederverwendet aus
 `docs/monitor/react-runtime.js` und `REACT_LICENSE.txt`, React 19.2.6 / Scheduler
 0.27.0, MIT. Implementierungsbeitrag: OpenAI Codex; Anforderungen und Freigabe:
 Ingolf Lohmann. Projektnutzung gemäß der geltenden Repository-Lizenz.
+
+Die WebKit-Offline-Emulation `setOffline(true)` scheiterte im ersten nativen Lauf
+vor der Cache-Navigation mit „WebKit encountered an internal error“. Der frische
+Nachweis schaltet daher den tatsächlichen Origin-Server ab; Chromium erhält
+zusätzlich das Offline-Flag. Dies belegt ausfallfestes lokales Arbeiten, keine
+physische iPhone-Flugmodus-Abnahme. Browser-`navigator.onLine` ist nur ein Hinweis.
+Upstream-Diagnose: https://github.com/microsoft/playwright/issues/42775

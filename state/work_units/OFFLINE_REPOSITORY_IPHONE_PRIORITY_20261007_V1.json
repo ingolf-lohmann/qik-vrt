@@ -32,6 +32,11 @@
     "merge": false,
     "native_review_submission": false,
     "private_client_data_upload": false,
+    "railway_delivery_attempt": {
+      "error": "Your trial has expired. Please select a plan to continue using Railway.",
+      "mutation_succeeded": false,
+      "paid_plan_selected": false
+    },
     "ruleset_change": false
   },
   "git_history": {
@@ -97,6 +102,15 @@
     "browser_contract": ".github/workflows/qikvrt_offline_repository.yml",
     "complete_source": "Native gzip transfer imported as actual browser File in Chromium and WebKit; every source byte and Git tree verified",
     "device_test_scope": "390px touch layout and desktop WebKit are not actual iPhone tests",
+    "initial_native_findings": {
+      "chromium_cause": "Actual cached offline navigation succeeded; navigator.onLine UI hint remained online and test incorrectly equated it with reachable network. Product label now explicitly identifies hint; uncached fetch is negative control.",
+      "chromium_job": 112557492303,
+      "fresh_successor_required": true,
+      "previous_evidence_transfer": false,
+      "subject_head": "218c61376b7c343cd10cc0f393a92894e569e0d8",
+      "webkit_cause": "Playwright WebKit setOffline navigation internal error, also documented upstream issue42775. Fresh controls stop the actual origin and restart offline without simulating returned bytes.",
+      "webkit_job": 112557492353
+    },
     "local_browser_limit": "Chromium process stopped before app startup: process_singleton socket() syscall Operation not permitted; native CI is independent execution route.",
     "predecessor_evidence_transfer": false,
     "record_scope": "PRE_EFFECT_PROVENANCE_ONLY",
