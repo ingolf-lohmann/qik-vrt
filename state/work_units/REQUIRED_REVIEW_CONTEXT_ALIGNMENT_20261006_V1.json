@@ -1,0 +1,182 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "build_id": "UNAVAILABLE",
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "b959bfbb6f32",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "git",
+      "Python standard library",
+      "bash"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh main/HEAD/TREE readback and exact 3956-blob reconstruction.",
+    "Select existing normative review_executor.exact_head_status_context as canonical.",
+    "Repair writer context and its normalized-payload SHA-256; bind consumers and exact-head contract triggers.",
+    "Execute actual embedded writer/gate/promotion Python with intercepted API and gh calls; execute both actual executor status shell paths with an isolated fake gh.",
+    "Refresh stale existing test guards to match current conditional-reobservation and competing-writer checks without changing production guards.",
+    "Materialize repository integrity authorities after pre-existing main drift."
+  ],
+  "context_contract": {
+    "canonical_source": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json#/review_executor/exact_head_status_context",
+    "canonical_status": "QIKVRT requested review execution",
+    "native_code_owner_approval_still_required": true,
+    "new_writer_normalized_sha256": "79557f204ba7aae51c530d5555cb9b8dee5213c26525cdd57677c2abe9493011",
+    "previous_writer_normalized_sha256": "45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd",
+    "workflow_name": "QIKVRT required code-owner review",
+    "workflow_name_is_status_context": false
+  },
+  "created_at": "2026-10-06T18:48:01.757513Z",
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "deployment": false,
+    "merge": false,
+    "planned": [
+      "Create reviewable draft candidate directly against main",
+      "Fresh readback of candidate tests and actual status"
+    ],
+    "publication": false,
+    "ruleset_admin_write": false
+  },
+  "first_remaining_external_boundary": "RULESET_ADMIN_ACTIVATION_REMAINS_SEPARATE; this work unit does not claim native enforcement",
+  "git_history": {
+    "branch": "work/required-review-context-20261006",
+    "candidate_head_binding": "Git commit and native workflow/PR readback; not self-referential",
+    "force_push": false,
+    "parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "target_base": "main"
+  },
+  "human_actor": {
+    "contribution_class": "HUMAN",
+    "id": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Identify the independent Required-Check context conflict observed in PR #475.",
+    "Authorize reconciliation of writer, gate, executor, promotion and contract tests without weakened protections.",
+    "Keep administrative ruleset activation as a separate step."
+  ],
+  "human_decision": {
+    "candidate_acceptance": "PENDING",
+    "task_execution": "AUTHORIZED_BY_CURRENT_REQUEST"
+  },
+  "inputs": [
+    {
+      "canonical_context": "QIKVRT requested review execution",
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "ref": "71f8c15319bf79456ac177d80941b4f59d372996"
+    },
+    {
+      "observed_head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
+      "repository_pull_request": "https://github.com/ingolf-lohmann/qik-vrt/pull/475",
+      "scope": "problem origin only; no predecessor checks imported"
+    }
+  ],
+  "joint_components": [],
+  "next_action": "Run fresh exact-head tests; read actual published status and writer payload. Activate the native ruleset only in a separately authorized administrative work unit.",
+  "outputs": [
+    {
+      "bytes": 12317,
+      "git_blob_sha1": "875692169a8aa939bf4f5fe01066ad3de879fc19",
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "8a53d5c6705a1a0da2753bc2cf2582c8bf333fbe93dfab4ff439faf9b275cfbe"
+    },
+    {
+      "bytes": 11364,
+      "git_blob_sha1": "46293c03f05249869f46048f7c2b587f7c5c0e43",
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "sha256": "e11021919d1ecc3e72e3db341933452048c249de4d2b4878b7d8acc5f7153754"
+    },
+    {
+      "bytes": 5075,
+      "git_blob_sha1": "b156ae75ae427f6be2651bfdd8fcc001d16ea904",
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "8863b7215497834bf73b8ea8068d9c15ea58607430078557b5a5b49eaddfaf5e"
+    },
+    {
+      "bytes": 11926,
+      "git_blob_sha1": "3e447306861ab5fc2ef4078dd6bd0d0d7aa901f8",
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "be5c0968cb4228914f0ff02cda7f1747b9d02e061d5f0b11f1f8fbb06e0ae5f1"
+    },
+    {
+      "bytes": 3907,
+      "git_blob_sha1": "bae7136c94a25c2ca56c7882468b9d1a033c1a83",
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "sha256": "00d63b3f601503a142963e3523bd7db481fc722c2fd521e8b55579de767dc344"
+    },
+    {
+      "bytes": 5403,
+      "git_blob_sha1": "105216b5766e222be18006fa91a98769dc15e520",
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "sha256": "30d03f9cc916e48c710f0241e0b786a4e39bcdac4c94686a09edc60286ab9587"
+    },
+    {
+      "bytes": 6123,
+      "git_blob_sha1": "432a73b4ba66b935f1d154b60b1f0689f94a2e7b",
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "sha256": "a669b53f376a0d1dd408d7c67a9554b23b7aa86768987d38b20ca7d2822d8eed"
+    },
+    {
+      "bytes": 3553,
+      "git_blob_sha1": "9c140805f9336b8ca5c73d7b9ba2dcf0ec81a399",
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "sha256": "68da294d5f51cb5039156b1452da8f5bccdb003ae6f4d7760059d5e2fcc35c19"
+    },
+    {
+      "bytes": 17622,
+      "git_blob_sha1": "e5331c2cd1e9c88e186a294b75952393ee3794b2",
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "sha256": "bb8d2a3129f5952f445149db30d0db3e4b6380f555e3f529697ea5aa4b3c5c4a"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "MERGED": false,
+    "PASS": false,
+    "RULESET_ENFORCED": false
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+  "unresolved_origin": [],
+  "verification": {
+    "additional_full_local_suite": {
+      "affected_test": "tests.test_observer_relative_retrocausality_zenodo_finalizer.test_write_then_committed_descendant_check_is_local_only",
+      "command": "make test",
+      "first_failure": "Historical test worktree commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 was not initially in this isolated clone. After reusing source objects, its git show -s still requires missing parent commits 2a5fa70045bca8d6ca671ca0510bf5d2f2dbd26d / 88700942cf76e7c32b5dd315fafa9843bdbfb118.",
+      "full_remote_ci_required": "fresh candidate HEAD with complete fetched history",
+      "source_or_test_semantics_changed_for_this_failure": false,
+      "state": "BLOCK_LOCAL_GIT_OBJECT_CLOSURE"
+    },
+    "live_status_context": "PENDING_FRESH_CANDIDATE_STATUS_READBACK",
+    "post_fix_candidate_tests": {
+      "binding": "candidate working-tree bytes in outputs; exact-head rerun still required",
+      "command": "python3 -B -m unittest -v tests.test_ruleset_authority_token_route tests.test_qikvrt_required_review_gate tests.test_qikvrt_requested_review_executor tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract",
+      "failures": 0,
+      "state": "PASS",
+      "tests": 43
+    },
+    "pre_fix_regression": {
+      "evidence_type": "LOCAL_INTERCEPTED_API_TEST",
+      "failed": 2,
+      "reason": "Writer desired check uses workflow name instead of the generated canonical commit-status context.",
+      "tests": 10
+    },
+    "protected_rules": "Native one-approval Code-Owner gate, stale-review dismissal, last-push approval, unattributed-change approval, thread resolution, test/App-15368, strict checks, non-fast-forward, deletion and no bypass actors remain unchanged.",
+    "remote_exact_head_tests": "PENDING_FRESH_NATIVE_RUN",
+    "trusted_default_branch_execution": "SEPARATE_FROM_CANDIDATE_TREE_TESTS"
+  },
+  "work_unit_id": "REQUIRED_REVIEW_CONTEXT_ALIGNMENT_20261006_V1"
+}

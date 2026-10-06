@@ -51,3 +51,15 @@ Report only material changes: a new disposition, a resolved or newly evidenced b
 ## Machine authority
 
 The normative machine-readable policy is `policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`. The natural-person delegation is `state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`.
+
+The canonical required-check context is `QIKVRT requested review execution`,
+bound by `review_executor.exact_head_status_context`. The ruleset writer,
+trusted native-review gate, requested-review executor and expected-head promotion
+must use that exact commit-status context. `QIKVRT required code-owner review`
+is the native-review workflow's name, not its published status context.
+`tests/test_ruleset_authority_token_route.py` executes the writer and publisher
+with intercepted API calls and verifies that promotion consumes the published
+context. Workflow success does not imply that the published review status is
+successful. Native Code-Owner review, stale-review dismissal, last-push approval,
+one approving review, strict checks and the GitHub Actions integration binding
+remain required. Administrative ruleset activation is a separate effect.

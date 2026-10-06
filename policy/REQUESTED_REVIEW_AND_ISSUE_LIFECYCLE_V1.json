@@ -68,6 +68,14 @@
     ],
     "recovery_schedule": "*/5 * * * *",
     "exact_head_status_context": "QIKVRT requested review execution",
+    "required_check_binding": {
+      "context_source": "review_executor.exact_head_status_context",
+      "ruleset_writer": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "native_review_gate": ".github/workflows/qikvrt_required_review_gate.yml",
+      "workflow_name_is_status_context": false,
+      "native_code_owner_approval_still_required": true,
+      "administrative_ruleset_activation": "SEPARATE_EFFECT"
+    },
     "promotion_workflow": ".github/workflows/qikvrt_expected_head_promotion.yml",
     "promotion_requires_successful_review_status": true,
     "duplicate_exact_head_review": "FORBIDDEN",

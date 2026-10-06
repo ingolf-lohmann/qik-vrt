@@ -35,6 +35,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       REQUIRED_CODE_OWNER: Goldkelch
+      # Policy review_executor.exact_head_status_context; distinct from workflow name.
       STATUS_CONTEXT: QIKVRT requested review execution
       REQUESTED_PR: ${{ inputs.pr || '' }}
       EVENT_NAME: ${{ github.event_name }}

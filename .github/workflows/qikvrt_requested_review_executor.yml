@@ -39,6 +39,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
+      # Policy review_executor.exact_head_status_context; distinct from workflow name.
       STATUS_CONTEXT: QIKVRT requested review execution
       REVIEW_MARKER: qikvrt-requested-review-executor:v1
       REQUIRED_GATES_JSON: >-

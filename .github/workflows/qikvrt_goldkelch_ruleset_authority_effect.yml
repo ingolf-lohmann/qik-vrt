@@ -21,7 +21,7 @@ jobs:
     env:
       TARGET_REPOSITORY: ${{ github.repository }}
       RULESET_NAME: "QIK-VRT main protection"
-      EXPECTED_POST_SHA256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
+      EXPECTED_POST_SHA256: 79557f204ba7aae51c530d5555cb9b8dee5213c26525cdd57677c2abe9493011
       RULESET_ADMIN_TOKEN: ${{ secrets.QIKVRT_RULESET_ADMIN_TOKEN }}
       ADMIN_TOKEN: ${{ secrets.QIKVRT_GITHUB_ADMIN_TOKEN }}
       MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
@@ -116,7 +116,8 @@ jobs:
                           "do_not_enforce_on_create": False,
                           "required_status_checks": [
                               {
-                                  "context": "QIKVRT required code-owner review",
+                                  # Canonical commit status from REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json.
+                                  "context": "QIKVRT requested review execution",
                                   "integration_id": 15368,
                               },
                               {

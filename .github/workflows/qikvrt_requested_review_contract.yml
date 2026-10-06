@@ -10,10 +10,14 @@ on:
       - ".github/workflows/qikvrt_code_owner_review_observer.yml"
       - ".github/workflows/qikvrt_required_review_gate.yml"
       - ".github/workflows/qikvrt_expected_head_promotion.yml"
+      - ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml"
       - "tools/qikvrt_requested_review_executor.py"
       - "tools/qikvrt_required_review_gate.py"
       - "tests/test_qikvrt_requested_review_executor.py"
       - "tests/test_qikvrt_required_review_gate.py"
+      - "tests/test_ruleset_authority_token_route.py"
+      - "tests/test_qikvrt_expected_head_promotion.py"
+      - "tests/test_qikvrt_expected_head_promotion_contract.py"
       - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
   workflow_dispatch:
@@ -42,6 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
           python3 -m py_compile \
             tools/qikvrt_requested_review_executor.py \
             tools/qikvrt_required_review_gate.py \
@@ -50,7 +55,35 @@ jobs:
           python3 -B -m unittest -v \
             tests.test_qikvrt_requested_review_executor \
             tests.test_qikvrt_required_review_gate \
-            tests.test_qikvrt_expected_head_promotion
+            tests.test_qikvrt_expected_head_promotion \
+            tests.test_qikvrt_expected_head_promotion_contract \
+            tests.test_ruleset_authority_token_route
+
+      - name: Record exact-head generated context witness without administrative effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import json, subprocess
+          from tests.test_ruleset_authority_token_route import RequiredReviewContextContractTests
+          check = RequiredReviewContextContractTests()
+          check.setUp()
+          desired, namespace, _ = check.run_writer()
+          status = check.run_gate()
+          checks = next(rule['parameters']['required_status_checks'] for rule in desired['rules'] if rule['type'] == 'required_status_checks')
+          assert {'context': status['context'], 'integration_id': 15368} in checks
+          print(json.dumps({
+              'schema': 'qikvrt_generated_review_context_witness_v1',
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'required_status_checks': checks,
+              'generated_status_context': status['context'],
+              'writer_post_sha256': namespace['post_hash'],
+              'api_calls_intercepted': True,
+              'administrative_effect': False,
+              'native_code_owner_approval_implied': False,
+          }, sort_keys=True))
+          PY
 
       - name: Verify event, recovery, identity and promotion bindings
         shell: bash

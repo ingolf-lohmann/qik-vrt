@@ -43,6 +43,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
       PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
+      # Policy review_executor.exact_head_status_context; consume commit status, not workflow name.
       REVIEW_STATUS_CONTEXT: "QIKVRT requested review execution"
       REQUIRED_GATES_JSON: >-
         ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT requested review execution"]
