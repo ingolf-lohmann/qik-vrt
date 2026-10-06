@@ -164,7 +164,8 @@
     },
     "new_head_native_gates": "PENDING_NEW_HEAD_EXECUTION",
     "new_head_native_reviews": "PENDING_FRESH_READBACK",
-    "predecessor_evidence_transfer": false
+    "predecessor_evidence_transfer": false,
+    "integrity_metadata_local_scope": "Incremental metadata derivation from the exact unchanged remote blob set; full containing-tree byte verification is required in fresh native CI."
   },
   "live_execution": {
     "state": "HOLD",
@@ -214,8 +215,8 @@
   },
   "git_history": {
     "candidate_branch": "work/provider-admission-main-successor-20261006",
-    "parent": "92b2b3189743c3b81b4a18b6ad10f69ca063b79b",
-    "expected_remote_head": "92b2b3189743c3b81b4a18b6ad10f69ca063b79b",
+    "parent": "36f5b26c1f17e2d38eaa1a979f0b1bbd80d76642",
+    "expected_remote_head": "36f5b26c1f17e2d38eaa1a979f0b1bbd80d76642",
     "force_push": false,
     "history_rewrite": false,
     "resulting_identity": "Independently bound by new remote commit/tree and readback; no self-referential hash in this record."
@@ -254,9 +255,9 @@
     },
     {
       "path": ".github/workflows/qikvrt_workflow_executor.yml",
-      "bytes": 14009,
-      "sha256": "c0bad58d1529a39ffffbd29aa412bee3d5c0d7736784c2837a6679b0a0565735",
-      "git_blob_sha1": "dc9f763b5bb159a24a458360a56482a3006c3207"
+      "bytes": 14060,
+      "sha256": "851777d6dd7b7170fd187cc492c976aa3b35fa9f00f01005fb18dddad165d613",
+      "git_blob_sha1": "79b6b14ee36cf2bca8adfaf27ef2c54f5a7e7b98"
     },
     {
       "path": "runtime/self-host/PROVIDER_ADMISSION.md",
@@ -264,5 +265,36 @@
       "sha256": "8000b85154a58d8c26af3a99f87bd1ebe7f6a59fcba4a08335b768097fb72842",
       "git_blob_sha1": "465aa50d2d1d087a55e50bfe3948f807ab29962a"
     }
-  ]
+  ],
+  "integrity_materialization": {
+    "state": "REPAIRED_CANDIDATE_PENDING_FRESH_NATIVE_VERIFY",
+    "failed_head": "8d5b3088277c96d98f9e7b5783971247a6e8fab2",
+    "failed_tree": "c7381b500004636ea97acc46fec4a84104de919d",
+    "cause": "The first source commit omitted deterministic regeneration of all three integrity authorities after five source/Work Unit changes.",
+    "observed_error": "BLOCK repository manifest differs from deterministic regeneration",
+    "observed_runs": [
+      37504259545,
+      37504267426,
+      37504267562,
+      37504267470
+    ],
+    "repair": "Regenerate REPOSITORY_FILE_MANIFEST.json, SHA256SUMS.txt and detached digest using unchanged source-blob metadata plus exact newly hashed file bytes; native verifier must independently rehash the whole containing successor.",
+    "no_gate_weakening": true,
+    "first_native_failed_tree_is_not_accepted": true,
+    "incremental_source_metadata_is_not_current_head_test_evidence": true,
+    "repeat_prevention": "Add unchanged canonical integrity verify to the read-only provider preflight before IONOS secret delivery.",
+    "native_repository_repair": {
+      "head": "36f5b26c1f17e2d38eaa1a979f0b1bbd80d76642",
+      "tree": "2e716f3a742e7769b71ce76d4830926e62e4cd03",
+      "parent": "8d5b3088277c96d98f9e7b5783971247a6e8fab2",
+      "paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "SHA256SUMS.txt",
+        "REPOSITORY_FILE_MANIFEST.json.sha256"
+      ],
+      "reused_not_overwritten": true,
+      "source_changes": false,
+      "source_new_PR_run_admission": "action_required"
+    }
+  }
 }
