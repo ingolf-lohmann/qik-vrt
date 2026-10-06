@@ -1,0 +1,392 @@
+
+
+
+
+Network Working Group                                         I. Lohmann
+Internet-Draft                                    Independent Researcher
+Intended status: Experimental                             5 October 2026
+Expires: 8 April 2027
+
+
+   QIK-VRT Epistemic Status Profile for Evidence-Bound Machine Claims
+                draft-lohmann-qikvrt-epistemic-status-00
+
+Abstract
+
+   This document defines an Experimental application-layer profile for
+   representing the epistemic status of claims emitted or processed by
+   machine cognition systems.  The profile requires a claim not to be
+   represented with a stronger epistemic status than its validated,
+   provenance-bound evidence supports.
+
+   The profile distinguishes object truth from epistemic truthfulness.
+   It does not guarantee that external sources are true, that reasoning
+   is infallible, or that the external world is completely observable.
+   It specifies how an implementation reports what is proved, observed,
+   source-bound, interpretative, normative, predicted, or open.
+
+   The profile is designed to compose with QIK-VRT EFFECT_ACK without
+   modifying the five-state EFFECT_ACK version-1 wire contract.
+   EFFECT_ACK controls downstream effect authorization; this profile
+   controls the strength of epistemic claims.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 8 April 2027.
+
+
+
+
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 1]
+
+Internet-Draft          QIK-VRT Epistemic Status            October 2026
+
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Conventions and Definitions . . . . . . . . . . . . . . . . .   3
+   3.  Epistemic Status Vocabulary . . . . . . . . . . . . . . . . .   3
+   4.  Normative Invariants  . . . . . . . . . . . . . . . . . . . .   4
+   5.  Claim Binding . . . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Property-Specific Evidence and Effect Readback  . . . . . . .   5
+   7.  Relationship to EFFECT_ACK  . . . . . . . . . . . . . . . . .   6
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   9.  Non-Goals . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .   7
+   12. Informative References  . . . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
+
+1.  Introduction
+
+   A machine can produce a linguistically confident assertion even when
+   its available evidence is weaker than the assertion.  This profile
+   defines a machine-checkable boundary between an assertion and the
+   evidence status that an implementation is permitted to claim for it.
+
+   The central invariant is:
+
+   ASSERT_AS_FORMAL_PROVED(C) implies VALID_BOUND_FORMAL_PROOF(C)
+
+   if VALID_BOUND_FORMAL_PROOF(C) is false,
+   C MUST NOT be classified as FORMAL_PROVED.
+
+
+
+
+
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 2]
+
+Internet-Draft          QIK-VRT Epistemic Status            October 2026
+
+
+   VALID_BOUND_FORMAL_PROOF(C) means that a checked proof artifact
+   establishes the exact formal proposition resolved by claim_id, in the
+   identified formal model and under the bound assumptions and proof-
+   checking environment.  Formal acceptance does not establish unencoded
+   premises or external-world correspondence.
+
+2.  Conventions and Definitions
+
+   The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD,
+   SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL are to be
+   interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only
+   when, they appear in all capitals.
+
+   Claim  A bounded proposition associated with a subject, scope, time,
+      and epistemic status.
+
+   Bound evidence  Evidence whose identity, source, applicable state,
+      time, and relation to the claim have been validated by the
+      deployment.
+
+   Object truth  Whether the proposition actually corresponds to the
+      external world.
+
+   Epistemic truthfulness  Whether the system represents the strength
+      and limitations of its available evidence without overstating
+      them.
+
+3.  Epistemic Status Vocabulary
+
+   A conforming deployment MUST represent each governed claim using one
+   of the following statuses.  A deployment-defined refinement MUST bind
+   its parent status from this vocabulary and retain all evidence
+   conditions of that parent.  Additional conditions MAY narrow the
+   refinement; they MUST NOT replace or relax the parent conditions:
+
+   FORMAL_PROVED  Proved inside an explicitly identified formal model
+      with bound assumptions and proof artifact.
+
+   EMPIRICALLY_EVIDENCED  Supported by identified observation or
+      measurement evidence within stated conditions and uncertainty.
+
+   SOURCE_BOUND  Accurately reports what an identified source states; it
+      does not promote the source statement to object truth.
+
+   INTERPRETATIVE  An interpretation whose author, subject, and limits
+      are explicit.
+
+   NORMATIVE  A rule, value, requirement, or authorization rather than
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 3]
+
+Internet-Draft          QIK-VRT Epistemic Status            October 2026
+
+
+      an empirical observation.
+
+   PREDICTED  A forecast or model-derived future/unknown-state claim not
+      yet observed.
+
+   OPEN  Not established by the currently validated evidence.
+
+   These evidence classes do not form a universal ranking.  Formal
+   proof, empirical support, documentary attribution, interpretation,
+   and normative authority answer different questions.  Status selection
+   MUST use the conditions of the selected class and the scope of the
+   claim rather than a single strength score.
+
+4.  Normative Invariants
+
+   *  A producer MUST NOT classify a claim as FORMAL_PROVED without a
+      checked proof artifact bound to the exact formal proposition,
+      claim scope, model, assumptions, and proof-checking environment.
+
+   *  A producer MUST NOT classify a claim as EMPIRICALLY_EVIDENCED
+      without a validated observation or measurement binding appropriate
+      to the scope.
+
+   *  A SOURCE_BOUND claim MUST NOT be promoted to object truth solely
+      because the source is present, authoritative, popular, or
+      cryptographically identified.
+
+   *  A PREDICTED claim MUST NOT be represented as EMPIRICALLY_EVIDENCED
+      merely because an execution completed successfully.
+
+   *  A historical PASS MUST NOT be represented as a current PASS for a
+      changed subject unless an explicit invariance relation justifies
+      the transfer.
+
+   *  The same rules MUST apply to claims previously emitted by the
+      cognition system itself.
+
+5.  Claim Binding
+
+   A deployment profile MUST bind at least claim_id, claim_scope,
+   subject identity, subject state or version where applicable,
+   observation time, evidence references, source identity, and epistemic
+   status.  The claim_id MUST resolve the exact proposition or an
+   immutable reference to that proposition.  The claim_scope MUST state
+   the applicable domain, conditions, and limits.  Evidence references
+   MUST identify the evidence required by the selected status and its
+   relation to this exact proposition and scope.  For FORMAL_PROVED they
+   MUST resolve the checked proof, formal model, assumptions, and proof-
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 4]
+
+Internet-Draft          QIK-VRT Epistemic Status            October 2026
+
+
+   checking environment.  A deployment-defined refinement MUST
+   additionally bind its parent status and the unchanged evidence
+   conditions of that parent.  A deployment SHOULD also bind the
+   evaluator and applicable policy version.
+
+   claim = (
+     claim_id,
+     claim_scope,
+     subject,
+     subject_state,
+     observed_at,
+     evidence_refs,
+     source_refs,
+     evaluator,
+     policy_version,
+     epistemic_status
+   )
+
+6.  Property-Specific Evidence and Effect Readback
+
+   When a reported result contains properties with different evidence
+   requirements, a producer MUST bind and classify those properties
+   separately.  A result concerning source fixity, formal acceptance,
+   tested behavior, platform execution, effect authorization, or
+   persisted target state MUST NOT be used as evidence for another
+   property solely because the properties share a task, artifact,
+   evaluator, or repository.
+
+   A content digest or byte-exact comparison establishes only the
+   content identity covered by that validation and its stated
+   assumptions.  A producer MUST NOT use it alone to classify a claim
+   about a natural person's identity, authorship, an authenticated
+   principal, causal independence, or permission as established.  Such
+   claims require evidence appropriate to the exact identity,
+   attribution, independence, or authority proposition.
+
+   Request receipt, execution success, authorization for effect, and
+   observation of an effect are distinct propositions.  A producer MUST
+   NOT represent a target effect as EMPIRICALLY_EVIDENCED solely from an
+   acknowledgement, a process exit code, a successful harness, or an
+   authorization record.  Evidence for that effect MUST include a
+   validated readback bound to the target subject and state, the
+   declared effect boundary, observation time, and the applicable
+   persistence or durability scope.  A lost response does not establish
+   absence of effect; an apparent success response does not establish
+   its presence.
+
+
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 5]
+
+Internet-Draft          QIK-VRT Epistemic Status            October 2026
+
+
+   A claim about execution on a particular platform MUST bind the
+   observed operating-system and architecture predicates relevant to
+   that claim.  A build target, runner label, or successful execution on
+   another platform MUST NOT by itself establish execution on the
+   claimed platform.
+
+   If a required property remains unestablished, a producer MUST retain
+   its OPEN disposition and MUST NOT promote an aggregate completion
+   claim.  Separately established properties retain their own validated
+   status and scope.  Missing admission, absent execution evidence,
+   failed validation, and an unobserved effect SHOULD be reported as
+   distinct unresolved conditions.
+
+7.  Relationship to EFFECT_ACK
+
+   This profile composes with the independently specified QIK-VRT
+   EFFECT_ACK mechanism [I-D.lohmann-qikvrt-effect-ack-03] and does not
+   change its five-state version-1 wire contract.  EFFECT_ACK determines
+   whether a downstream effect is authorized under a bound policy and
+   evidence set.  This profile determines which epistemic status may be
+   asserted for a claim.
+
+   An EFFECT_ACK_DONE record does not, by itself, make an external
+   proposition true.  Likewise, a FORMAL_PROVED or EMPIRICALLY_EVIDENCED
+   claim does not, by itself, authorize a downstream effect.
+
+   An authorization record also does not, by itself, establish that the
+   authorized target effect occurred or persisted.  A claim that the
+   effect occurred remains subject to the property-specific evidence and
+   readback requirements of Section 6.  This requirement governs claim
+   reporting; it adds no EFFECT_ACK state, wire member, or release
+   predicate.
+
+   The cited draft is informative work in progress.  Its research-
+   profile labels are not additional EFFECT_ACK version-1 enum values
+   and are not an implicit identical registration of this profile's
+   status vocabulary.  This composition description creates no new
+   mandatory wire member or protocol dependency.
+
+8.  Security Considerations
+
+   Implementations MUST fail closed with respect to epistemic strength
+   when required evidence cannot be validated.  Missing evidence, stale
+   subject identity, unresolved source identity, or unsupported status
+   semantics MUST NOT be converted into a stronger claim status.
+
+
+
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 6]
+
+Internet-Draft          QIK-VRT Epistemic Status            October 2026
+
+
+   Attackers may attempt evidence substitution, stale-evidence replay,
+   source laundering, status escalation, or provenance truncation.
+   Deployments MUST bind claim status to the exact evidence and subject
+   state needed to detect these failures.
+
+9.  Non-Goals
+
+   *  This profile does not guarantee the truth of all external data.
+
+   *  This profile does not guarantee infallible inference.
+
+   *  This profile does not define consciousness or prove phenomenal
+      consciousness.
+
+   *  This profile does not replace scientific peer review, source
+      criticism, or domain-specific validation.
+
+10.  IANA Considerations
+
+   This document has no IANA actions.
+
+11.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+12.  Informative References
+
+   [I-D.lohmann-qikvrt-effect-ack-03]
+              Lohmann, I., "QIK-VRT Effect Acknowledgement: Separating
+              Receipt from Authorization for Downstream Effect", Work in
+              Progress, Internet-Draft, draft-lohmann-qikvrt-effect-ack-
+              03, 2 August 2026, <https://datatracker.ietf.org/doc/html/
+              draft-lohmann-qikvrt-effect-ack-03>.
+
+Author's Address
+
+   Ingolf Lohmann
+   Independent Researcher
+   Email: ingolf.lohmann@live.com
+
+
+
+
+
+Lohmann                   Expires 8 April 2027                  [Page 7]
