@@ -1,0 +1,230 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "personal_work_unit_json"
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "work_unit_id": "S1_MONOLITHIC_MESH_FILE_20261006",
+  "created_at": "2026-10-06T06:57:22.296133+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_commit": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+  "source_tree": "68bf501265ae7c79837e79c954d7d4f013642ea2",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product and Code Owner"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; build UNAVAILABLE",
+    "session_or_run_id": "a21e363896c0",
+    "tools_and_adapters": [
+      "executor",
+      "GitHub connector",
+      "existing S1 exporter",
+      "existing React monitor runtime"
+    ]
+  },
+  "human_contributions": [
+    "Explicit authorization to finish recovery and implement filesystem-compatible monolithic repository storage",
+    "React HTML client plus one normal local repository file, including mobile endpoints",
+    "Universal Terminal handling and explicit Universal Transceiver REST cloud interaction",
+    "Filesystem consistency checks, actual I/O metrics, accessible analogue and numeric display, machine-readable orchestration information"
+  ],
+  "artificial_cognitive_contributions": [
+    "Exact source tree materialization using previously verified recovery object store and 38 SHA-verified source blobs",
+    "Shared framed-binary codec and immutable revision chain",
+    "Normal file adapter on existing listener with expected-head append, fsync, readback and cooperative locking",
+    "Offline bundled React client, source export, authenticated prefix synchronization and telemetry",
+    "Existing S1 snapshot/restore integration and negative/crash controls"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "reuse_before_create": {
+    "reused": [
+      "docs/monitor/server.mjs",
+      "docs/monitor/mesh-react.js",
+      "docs/monitor/react-runtime.js",
+      "tools/qikvrt_self_host.py",
+      "runtime/self-host/PACKAGE.json",
+      "existing monitor and S1 CI targets"
+    ],
+    "technical_gap": "Existing JSON monitor journal and native SQLite effect ledger lack a shared browser/Node portable source-tree codec. The new files are components of the existing runtime, not another executor."
+  },
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 12031,
+      "sha256": "8ee6df024b355d78adecbc1534177fdedcc1a8fd2b50600e1f41018266fc465b",
+      "git_blob_sha1": "ff97b73c0865e37c7287b21735a2f3bfdfe45bc2"
+    },
+    {
+      "path": "docs/monitor/index-react.html",
+      "bytes": 1036,
+      "sha256": "437cd692eb954f200ed16c88af83836194bde6fa84827dc7ce89017a12243290",
+      "git_blob_sha1": "850003d68d642b1ad969921ed609cdf1dec1a102"
+    },
+    {
+      "path": "docs/monitor/mesh-file-client.js",
+      "bytes": 8303,
+      "sha256": "975275de9369d0005dfc46b5b135fffc130af2d3387e5fe9ecd4bdb04c1d9779",
+      "git_blob_sha1": "72bcf2c35c5e3db881eba46c69114b5596148f0c"
+    },
+    {
+      "path": "docs/monitor/mesh-file-codec.js",
+      "bytes": 9801,
+      "sha256": "431cf8f902dac893bf4382570ab39dea83513d5f020694896d5e9b52bf9cc2e7",
+      "git_blob_sha1": "4bf1788e963355e07dea073c025765fe4ac8fdb4"
+    },
+    {
+      "path": "docs/monitor/mesh-file-store.mjs",
+      "bytes": 17249,
+      "sha256": "16cf701851748bbd4323a7a66d5191909e49f1182381545da666be420bb49af2",
+      "git_blob_sha1": "212efa361f1f0a58d503aecc7314a68f8a231227"
+    },
+    {
+      "path": "docs/monitor/mesh-file-view.js",
+      "bytes": 7839,
+      "sha256": "f5115ed316850ecf2fb641ce6aff46b506d86f8ba1872ba1b700e33fe0092acc",
+      "git_blob_sha1": "3486297d40710e2ce6c33a533b77c0bb84bb2487"
+    },
+    {
+      "path": "docs/monitor/mesh-file.test.mjs",
+      "bytes": 13951,
+      "sha256": "a83b83fbdafb296fa4b5d9325f7f388541643efb9f890ea67ab0a5fee5b732b0",
+      "git_blob_sha1": "8158e1e6e3bee8178466c62eb8dc602e489b6ee8"
+    },
+    {
+      "path": "docs/monitor/mesh-react.css",
+      "bytes": 3224,
+      "sha256": "d460711f1eb710388565adb626574fea860aa0ff7a3a43dd4633c2f940dc90f7",
+      "git_blob_sha1": "777bafc706c4abf39db34316a69cc61409cb2127"
+    },
+    {
+      "path": "docs/monitor/mesh-react.js",
+      "bytes": 8365,
+      "sha256": "ca58f6655cdacfeb6ae5211739907c3676a76cb203d8f828b07d0ae05482b13a",
+      "git_blob_sha1": "bfde568044a3bda9b510fb39372da9db08265aee"
+    },
+    {
+      "path": "docs/monitor/package.json",
+      "bytes": 286,
+      "sha256": "a4c4ccada7439a9d4c427c099fe5ea62af6bf1492cccabcf8fa5702e8b92eead",
+      "git_blob_sha1": "61c3863b8e15d97556faea0009952838be365bd4"
+    },
+    {
+      "path": "docs/monitor/self-host.mjs",
+      "bytes": 11008,
+      "sha256": "47d21fbd9547564d07e2452edd24a09b5bcde8172ec25e2763f6eaca1e4b0dc7",
+      "git_blob_sha1": "cf1f65a9c36b7474ea74a88390270c94017141ee"
+    },
+    {
+      "path": "docs/monitor/server.mjs",
+      "bytes": 47053,
+      "sha256": "a04f25186ce312b67eedc319072ddfc978d94f55e5e9b1d9aeade2baa42f3bd7",
+      "git_blob_sha1": "5194cc3efd6e5b7ca8ca404b1d0c83fe7f279a66"
+    },
+    {
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "bytes": 18424,
+      "sha256": "1b256c655647ebf393fd2844bd4c492c3e2e0b4aefc8f59b84fb7ed2a02b89b9",
+      "git_blob_sha1": "5bdc9f916f8bf1c837b31e27fe08e258b8eb6035"
+    },
+    {
+      "path": "runtime/self-host/MESH_FILE.md",
+      "bytes": 11134,
+      "sha256": "481dbac621a9fee19d180e9543ed68c5394a63987015617eb927bc3946aeec9b",
+      "git_blob_sha1": "503e1cf711dadaa282a070626d1aab2e77a67d67"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 4756,
+      "sha256": "0c81c3520846e9126a68286d4f66fa687cdff73e6423244f331d227c9a354d5f",
+      "git_blob_sha1": "a49f2f04a6a0daa483043f29bcc9ed493b89187a"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 71560,
+      "sha256": "4336434f1eae9e6bc3a9f9e74ba6da6a3af2783fa747529bfcb9951180253c3d",
+      "git_blob_sha1": "d6d7e66756653424e7fe8647b12c282bc2540524"
+    },
+    {
+      "path": "tests/test_self_host_temdd.py",
+      "bytes": 35150,
+      "sha256": "63319c03899f974ac3d8c232e0b0af2714aac58cf7845e38f464e63838080e13",
+      "git_blob_sha1": "05e0060729f5897fc6aa9d816ae76d1973df9481"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 94020,
+      "sha256": "2229ccf079451f506156ccc415721236a4c0dcf6b05906b3a94c32eb02d435da",
+      "git_blob_sha1": "4be1f028855e5f82f8abf8c825475c2acd55b328"
+    }
+  ],
+  "local_validation": {
+    "mesh_file_tests": "13 passed on integrated source",
+    "monitor_tests": "24 passed and observer contract passed",
+    "self_host_tests": "76 passed on integrated latest S1 source",
+    "source_obligation_tests": "Both cache and portable source obligations executed in 76 S1 tests",
+    "state_snapshot_backend_tests": "5 passed including optional monolithic file",
+    "migration_and_capture": "35 passed; one unchanged chown control blocked by runtime unmapped UID/GID (EINVAL)",
+    "owner_unix_e2e": "BLOCKED_LOCAL_EPERM; native CI required",
+    "full_repository_make_test": "PASSED_LOCAL_EXIT_0; final successor integrity and exact-head CI required"
+  },
+  "boundaries": {
+    "source_export_is_live_cloud_state": false,
+    "native_effect_ledger_migration_verified": false,
+    "native_effect_failover_verified": false,
+    "mobile_device_validation_complete": false,
+    "public_cloud_deployment_performed": false,
+    "authority_restored": false,
+    "current_git_history_closure_complete": false,
+    "current_source_tree_exact": true,
+    "effect_ack_done": false
+  },
+  "external_recovery": {
+    "authority": "Goldkelch/qik-vrt",
+    "last_authorized_api_result": "404; cause unproven",
+    "retained_railway_checkout": "f2fa5a5e11dafe6d9579301c2a479e0eaa02d16c",
+    "live_capture_and_export_callable": false,
+    "earlier_sandbox_clone": "UNKNOWN_AFTER_HTTP_504; NOT_RETRIED",
+    "existing_verified_backup_head": "8362f71168aa031001fcfdc5ba95729197a9d54e",
+    "backup_history_refs": 1028,
+    "backup_reachable_objects": 31470,
+    "backup_strict_historical_findings": "OPEN_UNCHANGED"
+  },
+  "authorization": {
+    "statement": "Freigabe erteilt.",
+    "scope": "Implement and verify portable storage; persist reviewable source and deliverables. No force update, provider access bypass or unsafe live restart.",
+    "human_decision": "TASK_SCOPE_AUTHORIZED; IMPLEMENTATION_REVIEW_PENDING"
+  },
+  "completion": {
+    "portable_candidate": "IMPLEMENTED_LOCAL_CONTROLS_PASSED; EXACT_HEAD_CI_PENDING",
+    "external_authority_recovery": "BLOCK_REQUIRED_OFFICIAL_ACCESS_OR_SEALED_LIVE_EXPORT",
+    "global_effect_ack_done": false
+  },
+  "source_representation": "ORIGINAL_COMMITTED_BLOB_BYTES; CHECKOUT_EOL_TRANSFORMS_NOT_APPLIED",
+  "local_candidate_history": [
+    "27acdb176ce06b1b8755e5b3c6b315e12c1fba08",
+    "a86448311e39b4e96570a5d4537b89a44b30c786"
+  ],
+  "initial_source_commit": "71990a322187072dc847fa03d0a7923efc047d58",
+  "initial_source_tree": "72d93b5c9e3f9b65d0cd25ce9608798d50bfa2e8",
+  "concurrent_source_integration": {
+    "commits": [
+      "f91071a114f38d4a25a4d70becf55076ea73f6a7",
+      "bb1be6decdf1e9bf01c7b24aa625613053e4a352"
+    ],
+    "retained": "Existing local cache, stable-idle transfer, proposal receiver authentication/readback and reserved-object-identifier refusal",
+    "semantic_conflicts_resolved": [
+      "both source obligations retained",
+      "configuration admits both cache peers and monolithic file options",
+      "existing operations retained plus portable export",
+      "both test families retained"
+    ],
+    "shared_remote_branch_modified": false
+  }
+}

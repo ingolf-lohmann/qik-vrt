@@ -299,5 +299,24 @@
       "native_safety": "Confirmed native effects retain immediate replication/fencing/Effect-Ack obligations. Deferred work proposals never become durable cross-node effect confirmation or execution authority.",
       "implementation_scope": "Existing S1 launcher private snapshot/fsync/OS-lock primitives and existing MonitorStore/listener; no parallel scheduler, executor or native effect ledger."
     }
+  },
+  "portable_repository": {
+    "schema": "qikvrt-portable-repository-obligation/v1",
+    "single_persistent_file": true,
+    "react_html_client": true,
+    "git_and_github_optional_at_runtime": true,
+    "mobile_file_chooser_fallback_required": true,
+    "consistency_and_io_metrics_required": true,
+    "cloud_transport": "EXPLICIT_AUTHENTICATED_REST",
+    "format": "QIKMESH1",
+    "contract": "runtime/self-host/MESH_FILE.md",
+    "source_files": [
+      "docs/monitor/mesh-file-codec.js",
+      "docs/monitor/mesh-file-client.js",
+      "docs/monitor/mesh-file-view.js",
+      "docs/monitor/mesh-file-store.mjs"
+    ],
+    "native_effect_ledger_migration_verified": false,
+    "target_devices_verified": false
   }
 }

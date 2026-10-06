@@ -69,7 +69,7 @@ class MeshContractTests(unittest.TestCase):
         self.definition = json.loads((ROOT / host.DEFINITION).read_bytes())
         self.activation = json.loads((ROOT / host.MESH_CONTRACT).read_bytes())
         required = {host.DEFINITION, host.MESH_CONTRACT, "tools/qikvrt_self_host.py",
-                    "docs/monitor/self-host.mjs"}
+                    "docs/monitor/self-host.mjs", "runtime/self-host/MESH_FILE.md", *host.MESH_PORTABLE_FILES}
         required.update(path for paths in host.MESH_COMPONENT_FILES.values() for path in paths)
         required.update(host.MESH_CACHE_SOURCE_FILES)
         for name in required:
@@ -114,6 +114,15 @@ class MeshContractTests(unittest.TestCase):
             self.activation = json.loads(host.raw_json(original))
             self.activation["required_node_runtime"]["local_repository_cache"][key] = True
             self.refuse("MESH_LOCAL_CACHE_AND_IDLE_TRANSFER_CONTRACT_REQUIRED")
+
+    def test_portable_file_obligations_cannot_be_removed_or_replaced_by_git_at_runtime(self):
+        portable = self.activation["portable_repository"]
+        for field in ("single_persistent_file", "react_html_client", "git_and_github_optional_at_runtime",
+                      "mobile_file_chooser_fallback_required", "consistency_and_io_metrics_required"):
+            with self.subTest(field=field):
+                portable[field] = False
+                self.refuse("PORTABLE_MONOLITHIC_REPOSITORY_CONTRACT_REQUIRED")
+                portable[field] = True
 
     def test_wrong_json_shapes_refuse_through_the_structured_cli(self):
         for activation in ([], {"required_node_runtime": []}):
@@ -243,6 +252,52 @@ class MeshContractTests(unittest.TestCase):
 
 
 class StandaloneTests(unittest.TestCase):
+    def test_portable_export_contains_exact_source_tree_and_one_offline_react_document(self):
+        output = self.work / "portable"
+        receipt = host.portable(self.source, output, self.head, self.tree)
+        self.assertEqual(receipt["state"], "PORTABLE_SOURCE_EXPORTED")
+        self.assertEqual({p.name for p in output.iterdir()}, {"repository.qmesh", "universal-terminal.html"})
+        html = (output / "universal-terminal.html").read_text()
+        self.assertIn('data-qikvrt-offline="true"', html)
+        self.assertIn('MIT License', html)
+        self.assertNotIn('<script defer src=', html)
+        script = """
+import {readFileSync} from 'node:fs';
+import './docs/monitor/mesh-file-codec.js';
+const M=globalThis.QikvrtMeshFile,raw=readFileSync(process.argv[1]),source=M.byteSource(raw),state=await M.scan(source);
+const manifest=JSON.parse(await (await M.entryBlob(source,state,'QIKVRT_SOURCE_TREE.json')).text());
+const ai=await (await M.entryBlob(source,state,'AI')).text();
+console.log(JSON.stringify({manifest,ai,entries:state.entries.size,head:state.head}));
+"""
+        result = subprocess.check_output(["node", "--input-type=module", "-e", script, str(output / "repository.qmesh")],
+                                         cwd=ROOT, timeout=30)
+        value = json.loads(result)
+        self.assertEqual(value["manifest"]["head"], self.head)
+        self.assertEqual(value["manifest"]["tree"], self.tree)
+        self.assertEqual(value["ai"], (self.source / "AI").read_text())
+        self.assertEqual(value["entries"], len(value["manifest"]["files"]) + 1)
+        self.assertEqual(value["head"], receipt["head"])
+        with self.assertRaises(subprocess.CalledProcessError):
+            host.portable(self.source, output, self.head, self.tree)
+
+    def test_optional_mesh_file_uses_existing_listener_and_owner_key_without_public_content(self):
+        script = "import './docs/monitor/mesh-file-codec.js';process.stdout.write(await QikvrtMeshFile.create('private-mesh-fixture'));"
+        raw = subprocess.check_output(["node", "--input-type=module", "-e", script], cwd=ROOT)
+        path = self.volume / "repository.qmesh"
+        path.write_bytes(raw)
+        path.chmod(0o600)
+        self.config["mesh_file"] = "repository.qmesh"
+        self.save_config()
+        self.start()
+        self.assertEqual(self.get('/api/mesh-file/status')[0], 401)
+        code, state = self.get('/api/mesh-file/status', headers={"Authorization": "Bearer " + self.token_file.read_text()})
+        self.assertEqual(code, 200)
+        self.assertEqual(state["state"], "VERIFIED")
+        self.assertEqual(state["repository_id"], "private-mesh-fixture")
+        self.assertFalse(state["effect_ack_done"])
+        self.assertNotIn("genesis", state)
+        self.assertEqual(self.get('/api/runtime')[0], 200)
+
     def test_frozen_manifest_binds_mesh_contract_and_rejects_digest_substitution(self):
         self.assertEqual(self.manifest["mesh_node_contract_sha256"],
                          host.digest((self.export / host.MESH_CONTRACT).read_bytes()))

@@ -27,6 +27,9 @@ globalThis.fetch = providerFetch(config.adapter, realFetch);
 const files = new Map([
   ['/assets/css/qikvrt-mesh-react.css', ['docs/monitor/mesh-react.css', 'text/css']],
   ['/assets/js/qikvrt-mesh-react.js', ['docs/monitor/mesh-react.js', 'text/javascript']],
+  ['/assets/js/qikvrt-mesh-file-codec.js', ['docs/monitor/mesh-file-codec.js', 'text/javascript']],
+  ['/assets/js/qikvrt-mesh-file-client.js', ['docs/monitor/mesh-file-client.js', 'text/javascript']],
+  ['/assets/js/qikvrt-mesh-file-view.js', ['docs/monitor/mesh-file-view.js', 'text/javascript']],
   ['/assets/js/qikvrt-react-runtime.js', ['docs/monitor/react-runtime.js', 'text/javascript']],
   ['/scheibenhard-original.html', ['docs/monitor/scheibenhard-original.html', 'text/html']],
   ['/assets/css/qikvrt.css', ['docs/assets/css/qikvrt.css', 'text/css']],
@@ -117,6 +120,9 @@ const env = {QIKVRT_MONITOR_SOURCE_HEAD:manifest.source_head,QIKVRT_MONITOR_SOUR
   QIKVRT_MESH_WORK_PEERS:JSON.stringify(config.mesh_work_peers || []),
   QIKVRT_MONITOR_STATE_DIR:join(config.state_dir,'monitor'),QIKVRT_MONITOR_REPOSITORIES:JSON.stringify(repositories)};
 if (config.adapter === 'github' && config.github_webhook_secret_file) env.QIKVRT_GITHUB_WEBHOOK_SECRET = readFileSync(config.github_webhook_secret_file,'utf8').trim();
+if(config.mesh_file){env.QIKVRT_MESH_FILE=join(config.state_dir,config.mesh_file);
+  env.QIKVRT_MESH_FILE_TOKEN=readFileSync(config.terminal_token_file,'utf8').trim();
+  env.QIKVRT_MESH_FILE_ALLOWED_ORIGINS=JSON.stringify(config.mesh_file_allowed_origins||[]);}
 const monitor = createMonitor({env,repositories,handleRequest:routes,
   ...(config.adapter === 'none' ? {observe:async()=>({schema:'qikvrt-public-activity/v1',version:VERSION,
     generated_at:new Date().toISOString(),mode:'local_packaged_source',repositories:[],delivery:{periodic_polling:false},

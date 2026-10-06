@@ -8,6 +8,6 @@
   },
   "scripts": {
     "start": "node server.mjs",
-    "test": "node observer.test.mjs && node --test monitor.test.mjs"
+    "test": "node observer.test.mjs && node --test monitor.test.mjs mesh-file.test.mjs"
   }
 }

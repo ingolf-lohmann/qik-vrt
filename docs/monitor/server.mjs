@@ -6,6 +6,7 @@ import {readFileSync, mkdirSync, openSync, closeSync, writeFileSync, renameSync,
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import observer, {snapshot, configureRepositories, invalidateRepository, SECURITY} from './observer.mjs';
+import {MeshFileStore,meshFileRoutes} from './mesh-file-store.mjs';
 import './health-projection.js';
 
 export const VERSION = '2026-10-04.9';
@@ -335,6 +336,9 @@ export function createMonitor(options = {}) {
   const artifacts = Object.fromEntries(['server.mjs','observer.mjs','index.html','client-replica.js','health-projection.js','package.json'].map(name=>[name,sha256(readFileSync(new URL('./'+name,import.meta.url)))]));
   const statePath = options.statePath || resolve(env.QIKVRT_MONITOR_STATE_DIR || '/var/lib/qikvrt/monitor', 'node.json');
   const store = new MonitorStore(statePath, nodeId);
+  const meshStore=options.meshFileStore || (env.QIKVRT_MESH_FILE ? new MeshFileStore(env.QIKVRT_MESH_FILE) : null);
+  const meshRoutes=meshStore ? meshFileRoutes(meshStore,env.QIKVRT_MESH_FILE_TOKEN,
+    {allowedOrigins:JSON.parse(env.QIKVRT_MESH_FILE_ALLOWED_ORIGINS||'[]')}) : null;
   if ((role === 'primary' && store.state.journal_source_node_id) ||
       (role === 'replica' && store.state.journal_source_node_id && store.state.journal_source_node_id !== primaryId) ||
       (store.state.required_replica_node_id && store.state.required_replica_node_id !== replicaId)) throw new Error('DURABLE_REPLICATION_CONFIGURATION_MISMATCH');
@@ -476,6 +480,7 @@ export function createMonitor(options = {}) {
   const server = http.createServer(async (request, response) => {
     try {
       const url = new URL(request.url, 'http://monitor.invalid');
+      if(meshRoutes && await meshRoutes(request,response,url))return;
       // Reuse this listener for fixed standalone read routes. The hook cannot
       // replace the durable monitor store or start another observer/executor.
       if (options.handleRequest && await options.handleRequest(request, response, url)) return;

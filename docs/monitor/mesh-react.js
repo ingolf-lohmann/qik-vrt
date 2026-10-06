@@ -18,6 +18,7 @@
     const [tick, setTick] = React.useState(Date.now());
     const refresh = React.useRef(() => {});
     React.useEffect(() => {
+      if(document.documentElement.dataset.qikvrtOffline==='true'){setTransport('lokale Datei');return;}
       const replica = globalThis.QikvrtReplica.create({version:document.documentElement.dataset.qikvrtMonitorVersion});
       let alive = true, stream, pending = false;
       async function get(path) {
@@ -69,6 +70,10 @@
       const clock = setInterval(() => {if (alive) setTick(Date.now());}, 1000);
       return () => {alive=false;stream?.close();clearInterval(clock);document.removeEventListener('visibilitychange',resume);window.removeEventListener('online',resume);};
     }, []);
+    if(document.documentElement.dataset.qikvrtOffline==='true')return h(React.Fragment,null,
+      h('header',null,h('strong',null,'QIK-VRT'),h('a',{href:'#file-terminal-title'},'Datei-Terminal')),
+      h('main',{id:'main'},h('h1',null,'Universales Raumzeit-Terminal'),h(globalThis.QikvrtMeshFileView),
+        h('footer',null,'Ingolf Lohmann · Lokales monolithisches Repository · React Universal Terminal')));
     const scope = location.pathname === '/node' ? 'node' : 'mesh';
     const repository = new URL(location.href).searchParams.get('repository') || runtime?.source_repository;
     const repos = (data?.repositories || []).filter(repo => scope === 'mesh' || repo.name === repository);
@@ -82,6 +87,7 @@
         h('h1',null,scope === 'mesh' ? 'Das Mesh im aktuellen Nachweisstand' : repository || 'Repository-Node'),
         h('div',{className:'meta'},h('p',null,'Stream: ',transport,' · Datenstand: ',date(observed), age !== null ? ' · Alter: '+age+' s' : ''),h('button',{onClick:()=>refresh.current()},'Readback erneuern')),
         error ? h('p',{role:'alert',className:'error'},'Readback offen: ',error,'; der letzte Datenstand bleibt sichtbar.') : null,
+        h(globalThis.QikvrtMeshFileView),
         h('section',{className:'notice'},h('h2',null,'Erster gemeinsamer Ping'),
           h('p',null,'Noch nicht abgenommen. Öffentliche Self-Host-Auslieferung, Hosting-CI und Empfang an allen zugelassenen Terminals sind offen.'),
           h('p',{className:'sub'},'Ein verbundener Stream und ein Runtime-Readback werden getrennt vom vollständigen Round Trip geführt.')),

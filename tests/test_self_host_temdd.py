@@ -143,6 +143,10 @@ class NativeStandaloneTests(unittest.TestCase):
         return result.returncode, json.loads(result.stdout)
 
     def test_private_snapshot_restore_keeps_actual_native_and_journal_acknowledgments(self):
+        script = "import './docs/monitor/mesh-file-codec.js';process.stdout.write(await QikvrtMeshFile.create('snapshot-mesh-fixture'));"
+        mesh = self.volume / 'repository.qmesh'
+        mesh.write_bytes(subprocess.check_output(['node', '--input-type=module', '-e', script], cwd=ROOT))
+        mesh.chmod(0o600)
         original = StandaloneTests.seed_acknowledged_event(self)
         self.start(); prepared, event = self.commit_input()
         epoch = self.get('/api/terminal')[1]['ledger_id']
@@ -155,6 +159,7 @@ class NativeStandaloneTests(unittest.TestCase):
         self.assertFalse(receipt['railway_data_exported'])
         source_bytes = {p: (self.volume/p).read_bytes() for p in host.STATE_FILES if (self.volume/p).exists()}
         self.assertEqual(set(source_bytes), set(json.loads((snapshot/'STATE_MANIFEST.json').read_bytes())['files']))
+        self.assertIn('repository.qmesh', source_bytes)
         for name, raw in source_bytes.items(): self.assertEqual((snapshot/name).read_bytes(), raw)
         # On a different host the same path is absent. Preserve the local source
         # under another name to model this; recovery itself deletes nothing.
@@ -379,10 +384,15 @@ ledger.close()
         return snapshot, receipt['state_manifest_sha256']
 
     def test_real_acknowledged_wal_and_journal_survive_exact_private_restore(self):
+        script = "import './docs/monitor/mesh-file-codec.js';process.stdout.write(await QikvrtMeshFile.create('backend-snapshot-mesh'));"
+        mesh = self.volume / 'repository.qmesh'
+        mesh.write_bytes(subprocess.check_output(['node','--input-type=module','-e',script],cwd=ROOT))
+        mesh.chmod(0o600)
         journal, acknowledged = self.seed_stores(abrupt=True)
         before = self.sql('SELECT seq,binding,source,native_id,native_digest,body,body_digest FROM events')
         self.assertTrue((self.volume/'temdd/events.sqlite3-wal').stat().st_size)
         original = {name:(self.volume/name).read_bytes() for name in host.STATE_FILES if (self.volume/name).exists()}
+        self.assertIn('repository.qmesh', original)
         snapshot = self.work/'private-snapshot'
         code, receipt = self.state_cli('snapshot-state', snapshot); self.assertEqual(code, 0, receipt)
         self.assertFalse(receipt['effect_ack_done']); self.assertFalse(receipt['railway_data_exported'])

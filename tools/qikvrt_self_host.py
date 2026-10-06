@@ -38,9 +38,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFINITION = "runtime/self-host/PACKAGE.json"
 BROWSER_COMMANDS = ("firefox-esr", "Xvfb", "x11vnc", "websockify", "xdpyinfo", "xwininfo")
 STATE_FILES = frozenset(("binding.json", "monitor/node.json", "temdd/events.sqlite3",
-                        "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm"))
+                        "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm", "repository.qmesh"))
 STATE_MAX_BYTES = 2 * 1024 * 1024 * 1024
 MESH_CONTRACT = "runtime/self-host/MESH_ACTIVATION.json"
+MESH_PORTABLE_FILES = ["docs/monitor/mesh-file-codec.js", "docs/monitor/mesh-file-client.js",
+                       "docs/monitor/mesh-file-view.js", "docs/monitor/mesh-file-store.mjs"]
 MESH_COMPONENT_FILES = {
     "universal_transputer": ["src/qikvrt_temdd_event_ledger.py"],
     "universal_terminal": ["src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
@@ -402,7 +404,15 @@ def mesh_contract(root, definition=None):
             or contract.get("source_carriers") != MESH_COMPONENT_FILES
             or contract.get("live_acceptance_required") is not True):
         raise ValueError("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
-    required = {MESH_CONTRACT, "tools/qikvrt_self_host.py", "docs/monitor/self-host.mjs"}
+    portable = activation.get("portable_repository", {})
+    if (not isinstance(portable, dict) or portable.get("schema") != "qikvrt-portable-repository-obligation/v1"
+            or portable.get("format") != "QIKMESH1" or portable.get("cloud_transport") != "EXPLICIT_AUTHENTICATED_REST"
+            or portable.get("contract") != "runtime/self-host/MESH_FILE.md"
+            or portable.get("source_files") != MESH_PORTABLE_FILES
+            or any(portable.get(key) is not True for key in ("single_persistent_file", "react_html_client",
+                "git_and_github_optional_at_runtime", "mobile_file_chooser_fallback_required", "consistency_and_io_metrics_required"))):
+        raise ValueError("PORTABLE_MONOLITHIC_REPOSITORY_CONTRACT_REQUIRED")
+    required = {MESH_CONTRACT, "tools/qikvrt_self_host.py", "docs/monitor/self-host.mjs", "runtime/self-host/MESH_FILE.md", *MESH_PORTABLE_FILES}
     required.update(MESH_CACHE_SOURCE_FILES)
     required.update(path for paths in MESH_COMPONENT_FILES.values() for path in paths)
     files = definition.get("files")
@@ -476,6 +486,28 @@ def verify_react_assets(root):
         if digest(source) != item["sha256"] or bundle[offset + item["bytes"]:offset + item["bytes"] + 4] != b"\n};\n":
             raise ValueError("STATIC_REACT_SOURCE_BINDING_DRIFT")
     return {"state": "STATIC_REACT_BYTES_VERIFIED", "bundle_sha256": digest(bundle), "effect_ack_done": False}
+
+
+def portable(root, output, head, tree):
+    """Single-file source export through the existing S1 package operation."""
+    if git(root, "rev-parse", "HEAD").decode() != head or git(root, "rev-parse", "HEAD^{tree}").decode() != tree:
+        raise ValueError("EXACT_SOURCE_BINDING_MISMATCH")
+    git(root, "diff", "--quiet", head, "--")
+    verify_react_assets(root)
+    files = []
+    for record in git(root, "ls-tree", "-r", "-z", head).split(b"\0"):
+        if not record:
+            continue
+        metadata, name = record.split(b"\t", 1)
+        mode, kind, sha = metadata.decode().split()
+        if kind != "blob":
+            raise ValueError("PORTABLE_SUBMODULE_EXPORT_NOT_DEFINED")
+        files.append({"path": name.decode("utf-8"), "mode": mode, "sha": sha})
+    data = {"root": str(root), "output": str(output), "files": files, "head": head, "tree": tree,
+            "repositoryId": "qikvrt-source-" + head}
+    result = subprocess.check_output(["node", str(root / "docs/monitor/mesh-file-store.mjs"), "portable-export"],
+                                     input=raw_json(data), timeout=300)
+    return json.loads(result)
 
 
 def freeze(root, output, head, tree, browser_assets=None):
@@ -662,6 +694,11 @@ def stopped_state(volume):
             private_path(path)
             lock = locks.enter_context(os.fdopen(os.open(path, os.O_RDWR | os.O_NOFOLLOW), "rb"))
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        mesh_lock = volume / "repository.qmesh.lock"
+        if (volume / "repository.qmesh").exists():
+            fd = os.open(mesh_lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+            locks.callback(mesh_lock.unlink)
+            locks.callback(os.close, fd)
         yield
 
 
@@ -742,6 +779,8 @@ def snapshot_state(package, pin, config_path, output):
         if "monitor/node.json" not in files: raise ValueError("EXISTING_MONITOR_STATE_REQUIRED")
         if not files.get("temdd/events.sqlite3", {}).get("bytes"):
             raise ValueError("EXISTING_NATIVE_LEDGER_REQUIRED")
+        if json.loads(config_path.read_bytes()).get("mesh_file") and "repository.qmesh" not in files:
+            raise ValueError("EXISTING_MESH_FILE_REQUIRED")
         # Create-only: never rewrite an earlier checkpoint or remove source data.
         output.mkdir(mode=0o700)
         for name, entry in files.items():
@@ -750,7 +789,7 @@ def snapshot_state(package, pin, config_path, output):
             if state_file_digest(volume / name, target) != entry:
                 raise ValueError("STATE_SOURCE_CHANGED_DURING_COPY")
         manifest = {"schema": "qikvrt-self-host-state-snapshot/v1", "binding": binding,
-            "scope": "EXACT_MONITOR_AND_NATIVE_SQLITE_BYTES; NOT_SECRETS_BROWSER_PROFILE_OR_OPERATOR_RECEIPTS",
+            "scope": "EXACT_MONITOR_NATIVE_SQLITE_AND_OPTIONAL_MESH_FILE_BYTES; NOT_SECRETS_BROWSER_PROFILE_OR_OPERATOR_RECEIPTS",
             "files": files,
             "source_writer_quiescence": "ORIGINAL_NODE_AND_NATIVE_OWNER_OS_LOCKS_HELD",
             "effect_ack_done": False}
@@ -794,6 +833,9 @@ def verify_state_snapshot(snapshot, pin, binding):
         if state_file_digest(path) != entry: raise ValueError("STATE_SNAPSHOT_FILE_MISMATCH")
     if json.loads((snapshot / "binding.json").read_bytes()) != binding:
         raise ValueError("PERSISTENT_VOLUME_BINDING_MISMATCH")
+    if "repository.qmesh" in files:
+        subprocess.check_output(["node", str(ROOT / "docs/monitor/mesh-file-store.mjs"), "verify-file",
+                                 str(snapshot / "repository.qmesh")], timeout=300)
     return manifest
 
 
@@ -803,6 +845,8 @@ def restore_state(package, pin, config_path, snapshot, snapshot_pin):
     if snapshot is None: raise ValueError("PRIVATE_STATE_SNAPSHOT_REQUIRED")
     private_output(volume, (package, snapshot))
     manifest = verify_state_snapshot(snapshot, snapshot_pin, binding)
+    if json.loads(config_path.read_bytes()).get("mesh_file") and "repository.qmesh" not in manifest["files"]:
+        raise ValueError("EXISTING_MESH_FILE_REQUIRED")
     # Pin checked before any target creation; incomplete restores remain HOLD.
     volume.mkdir(mode=0o700)
     for name in ("monitor", "temdd", "receipts"): (volume / name).mkdir(mode=0o700)
@@ -1221,7 +1265,7 @@ def start(package, pin, config_path):
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "mesh_file", "mesh_file_allowed_origins"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -1277,6 +1321,19 @@ def start(package, pin, config_path):
         raise ValueError("BOUNDED_TERMINAL_SECRET_REQUIRED")
     volume = Path(config["state_dir"])
     private_path(volume, directory=True)
+    if "mesh_file" in config:
+        if config["mesh_file"] != "repository.qmesh":
+            raise ValueError("PORTABLE_MESH_BASENAME_REQUIRED")
+        private_path(volume / config["mesh_file"])
+    origins = config.get("mesh_file_allowed_origins", [])
+    if (not isinstance(origins, list) or len(origins) > 16
+            or any(not isinstance(origin, str) or (origin != "null" and
+                (urllib.parse.urlparse(origin).scheme != "https" or
+                 urllib.parse.urlparse(origin).path or urllib.parse.urlparse(origin).params or
+                 urllib.parse.urlparse(origin).query or urllib.parse.urlparse(origin).fragment or
+                 urllib.parse.urlparse(origin).username or not urllib.parse.urlparse(origin).hostname))
+                for origin in origins)):
+        raise ValueError("EXACT_MESH_CLIENT_ORIGINS_REQUIRED")
     # A failed or rolled-back import is never repaired by restarting/rebinding.
     if (volume / ".MIGRATION_HOLD.json").exists() or (volume / ".MIGRATION_HOLD.json").is_symlink():
         raise ValueError("MIGRATION_TARGET_QUARANTINED")
@@ -1368,7 +1425,7 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("pack", "portable", "verify", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -1421,6 +1478,10 @@ def main():
             result = migration_module().execute(args, verify, load_source, private_path)
         elif args.operation == "mesh-contract":
             result = mesh_contract(args.root)
+        elif args.operation == "portable":
+            if not args.output or not args.expected_head or not args.expected_tree:
+                raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
+            result = portable(args.root.resolve(), args.output.absolute(), args.expected_head, args.expected_tree)
         elif args.operation == "pack":
             if not args.output or not args.expected_head or not args.expected_tree: raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
             result = freeze(args.root, args.output, args.expected_head, args.expected_tree, args.browser_assets_root)
