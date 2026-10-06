@@ -1,0 +1,21 @@
+{
+  "schema": "qikvrt_owner_mail_webhook_migration_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "owner_instruction_date": "2026-10-06",
+  "source_base_head": "79ddba3b6d0970203053b2719c41e9410276741c",
+  "source_base_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
+  "requested_execution": "REPOSITORY_NATIVE_WEBHOOKS_NO_CLIENT_SCHEDULER",
+  "client_mail_watch": "DISABLED_NATIVE_CONTROL_PLANE_READBACK",
+  "implementation": "EXISTING_REST_SHIM_AND_PRIVATE_INGEST_REPLAY_ADAPTER",
+  "ingress_contract": "docs/GRAPH_MAIL_WEBHOOK.md",
+  "private_data_in_public_repository": false,
+  "activation": "BLOCKED_OWN_HTTPS_HOST_GRAPH_OAUTH_SUBSCRIPTION_AND_WORKER_BINDING",
+  "public_callback_observed": false,
+  "native_subscription_registered": false,
+  "native_worker_bound": false,
+  "live_mail_event_read_back": false,
+  "document_delivery_verified": false,
+  "monitoring_gap": "CLIENT_WATCH_DISABLED_REPOSITORY_WEBHOOK_NOT_YET_ACTIVE",
+  "next_action": "Bind the reviewed exact source to the existing admitted own-host runtime, a private delegated Graph credential and the existing native worker; register through the repository subscription tool and observe a real event independently.",
+  "effect_ack_done": false
+}

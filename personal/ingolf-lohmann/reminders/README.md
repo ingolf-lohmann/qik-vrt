@@ -9,6 +9,15 @@ ChatGPT-Automation anlegen. Diese Regel gilt für künftige Erinnerungsaufträge
 solange Ingolf Lohmann nichts anderes bestimmt; bestehende fremde Aufgaben
 werden dadurch nicht geändert oder übernommen.
 
+Klarstellung vom 6. Oktober: Eingangsprüfungen für Dokumente und vergleichbare
+Mail-Aufgaben werden ereignisgesteuert über Repository-Webhooks ausgeführt.
+Keine clientseitige Zeitsteuerung dafür anlegen, erweitern oder wieder starten.
+Der bestehende REST-/Ingest-Pfad und seine private Anbindung sind in
+`docs/GRAPH_MAIL_WEBHOOK.md` beschrieben. Ein vorbereiteter Webhook ist erst
+nach Host-, Subscription-, Worker- und Wirkungs-Readback aktiv. Die vorhandenen
+Repository-Erinnerungen mit ausdrücklich gebundenen Fälligkeitszeiten behalten
+ihren gesonderten Auftrag.
+
 `OWNER_REMINDERS_V1.json` ist die versionierte Auftragsquelle. Der bestehende
 `.github/workflows/qikvrt_workflow_executor.yml` ruft den kleinen Reminder-Adapter
 auf. Ein GitHub-Kommentar mit Owner-Erwähnung ist der Benachrichtigungskanal;

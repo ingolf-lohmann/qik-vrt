@@ -19,6 +19,7 @@ from urllib.parse import urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
+from qikvrt_graph_webhook import handle as handle_graph_webhook
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
@@ -213,6 +214,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
     def do_POST(self):
         if not self._rate_allowed():
             self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+            return
+        if handle_graph_webhook(self):
             return
         if not self._authorized():
             self._send_json(401, {"status": "BLOCK", "reason": "unauthorized"})

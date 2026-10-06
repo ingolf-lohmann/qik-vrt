@@ -23,6 +23,13 @@ Read `personal/ingolf-lohmann/reminders/README.md` and its versioned registry.
 Keep sensitive details private; public repository entries use neutral labels
 and authenticated references. Existing independent tasks retain their scopes.
 
+Owner clarification of 6 October 2026: mail/document arrival checks and
+comparable condition watches are repository-owned webhook tasks. Do not create,
+resume or extend a client-side scheduler for them. Read
+`docs/GRAPH_MAIL_WEBHOOK.md`; distinguish implemented ingress, subscription
+registration, admitted native worker and independently verified live effect.
+Never restore a client watch to hide an unbound repository webhook.
+
 The architecture/implementation licensing boundary in `AI_CONTEXT.json` is
 mandatory context: freely available architecture and interoperability
 specifications do not automatically grant an open-source license for the
