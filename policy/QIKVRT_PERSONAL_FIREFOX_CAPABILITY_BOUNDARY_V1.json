@@ -47,7 +47,11 @@
     ],
     "current_candidate": {
       "boundary_contract_materialized": true,
-      "personal_capability_manifest_materialized": false,
+      "personal_capability_manifest_materialized": true,
+      "personal_capability_manifest": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "executable_adapter_materialized": true,
+      "normal_baseline_implementation_materialized": true,
+      "normal_baseline_runtime_readback": false,
       "authenticated_runtime_readback": false,
       "personal_release_effect_ack_done": false,
       "state": "HOLD"

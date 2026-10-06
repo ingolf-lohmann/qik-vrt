@@ -112,8 +112,15 @@ clean:
 .PHONY: personal-firefox-boundary-test
 personal-firefox-boundary-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_assistant
 
 test: personal-firefox-boundary-test
+
+.PHONY: browser-assistant-ab-test
+browser-assistant-ab-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_browser_assistant_ab
+
+test: browser-assistant-ab-test
 
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:

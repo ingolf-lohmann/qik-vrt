@@ -79,7 +79,9 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
     def test_personal_release_stays_hold_until_fresh_runtime_evidence(self) -> None:
         candidate = self.policy["personal_release_acceptance"]["current_candidate"]
         self.assertTrue(candidate["boundary_contract_materialized"])
-        self.assertFalse(candidate["personal_capability_manifest_materialized"])
+        self.assertTrue(candidate["personal_capability_manifest_materialized"])
+        self.assertTrue((ROOT / candidate["personal_capability_manifest"]).is_file())
+        self.assertFalse(candidate["normal_baseline_runtime_readback"])
         self.assertFalse(candidate["authenticated_runtime_readback"])
         self.assertFalse(candidate["personal_release_effect_ack_done"])
         self.assertEqual(candidate["state"], "HOLD")

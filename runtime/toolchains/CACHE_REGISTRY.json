@@ -237,7 +237,14 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "tools/bootstrap-runtime.sh",
         ".github/workflows/qikvrt_adaptive_runtime.yml",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "tools/qikvrt_browser_assistant_ab.py",
+        "tests/test_qikvrt_browser_assistant_ab.py",
+        "benchmarks/browser-assistant-ab/contract.json",
+        "src/qikvrt_personal_assistant.py",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "tests/test_qikvrt_personal_assistant.py",
+        "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [

@@ -1,0 +1,48 @@
+{
+  "schema": "qikvrt_personal_assistant_capabilities_v1",
+  "version": "1.0.1",
+  "product_name": "Universales Raumzeit-Terminal",
+  "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "edition": "PERSONAL_OPT_IN",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "entrypoint": "src/qikvrt_effect_ack_http_terminal.py",
+  "adapter": "src/qikvrt_personal_assistant.py",
+  "firefox_surface": "http://127.0.0.1:8771/personal/",
+  "capability_readback": "/personal/capabilities",
+  "operations": ["create_source_bound_task", "research_documentation_turn", "ordinary_history_readback", "resume_observed_checkpoint"],
+  "provider": {
+    "authority": "https://api.openai.com/v1",
+    "authentication": "SERVER_MEMORY_BEARER_FROM_OPENAI_API_KEY",
+    "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+    "api": "RESPONSES_WITH_CONVERSATIONS",
+    "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+    "proprietary_runtime_redistributed": false
+  },
+  "client_authentication": "EPHEMERAL_LOCAL_BEARER_FROM_QIKVRT_PERSONAL_LOCAL_TOKEN",
+  "credentials_in_repository_or_runtime_database": false,
+  "normal_baseline": {
+    "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
+    "mode": "baseline",
+    "persistence": ["normal provider conversation", "full local transcript", "saved outputs", "session list and readback", "browser tab restore"],
+    "same_provider_model_instructions_parameters_tools": true,
+    "automatic_history_deletion_or_reset": false,
+    "comparison_scope": "This comparator is the adapter's ordinary conversation mode. It is not a measurement of ChatGPT UI or another vendor product."
+  },
+  "qikvrt_mode": {
+    "mode": "qikvrt",
+    "additional_capability": "HASH_BOUND_OBSERVED_OUTPUT_CHECKPOINT_ON_RESUME",
+    "checkpoint_is_independent_acceptance": false,
+    "checkpoint_from_harness_oracle": false
+  },
+  "runtime_state": "PRIVATE_EXTERNAL_DIRECTORY_SQLITE_WAL_SYNCHRONOUS_FULL",
+  "ambiguous_external_result": "DURABLE_PENDING_AND_NO_AUTOMATIC_RETRY",
+  "runtime_evidence_class": "SOURCE_CAPABILITY_MANIFEST_ONLY",
+  "authenticated_runtime_readback": false,
+  "firefox_execution_observed": false,
+  "equivalent_pre_runs_observed": false,
+  "product_trials_executed": 0,
+  "product_metrics": null,
+  "product_claim_allowed": false,
+  "personal_release_effect_ack_done": false
+}

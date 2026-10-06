@@ -1,0 +1,409 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_browser_assistant_ab_work_unit_v1",
+  "work_unit_id": "QIKVRT-BROWSER-ASSISTANT-AB-20261005-V1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "86d7062f25f174039da0a5df8a856127553036f1",
+  "source_tree": "5421dceb17f1ecc0fd3f5c12891ca9c1a12e7cf2",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "contribution_class": "HUMAN",
+    "contributions": [
+      "Specified the matched interrupted-browser A/B task and four minimum metrics.",
+      "Authorized harness/fixtures/measurement-contract fallback if a product-near run is unavailable.",
+      "Required that no product advantage be claimed before measurements; the existing Dueck response must not be repeated as an email draft."
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "UNAVAILABLE",
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contributions": [
+      "Exact-main source and capability reobservation.",
+      "Standard-library harness, loopback observer console, paired synthetic fixtures and event evaluator.",
+      "Failure-oriented tests, reproducibility instructions and isolated reuse of existing HTTP terminal.",
+      "Frozen preparation and explicitly synthetic self-test receipts."
+    ]
+  },
+  "input_retention": "METADATA_ONLY",
+  "raw_gmail_or_chat_transcript_persisted": false,
+  "reuse_before_create": {
+    "existing_paths": [
+      "browser/firefox/qikvrt-terminal",
+      "src/qikvrt_effect_ack_http_terminal.py",
+      "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "Makefile",
+      "runtime/toolchains/CACHE_REGISTRY.json"
+    ],
+    "insufficiency": "Existing bridge accepts bounded terminal input, not browser research continuation; no interrupted-task metric collector/evaluator found in the bounded current-main search."
+  },
+  "input_bindings": [
+    {
+      "path": "AI",
+      "bytes": 18241,
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 11787,
+      "sha256": "7e9b8f6e831a1061bf570c1c57b175f10f05fb918e1d4f8831e210724be42991"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 8200,
+      "sha256": "bfc8ef292f4b72eab2923b1fd18de45303bdc81ac1ac66dc6fcb258f918fcc2e"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/manifest.json",
+      "bytes": 1040,
+      "sha256": "83bcdef35587bda131c0517abda944db509f94e95aa9a35f16d8ea0f03f9b06a"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/background.js",
+      "bytes": 10470,
+      "sha256": "d6ac437244b24f05542460df7e89614fb77b6c495c8c112b373a6049a5bfe610"
+    },
+    {
+      "path": "browser/firefox/qikvrt-terminal/content.js",
+      "bytes": 8904,
+      "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+    },
+    {
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "bytes": 14765,
+      "sha256": "79f014cbba32499138c492969d55309f00aacd915d2620049480334275bbb63a"
+    },
+    {
+      "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+      "bytes": 2741,
+      "sha256": "750e1d73b94d64edba4082248fd38cd8ad332bacc09fe2fc585f18d8999e79b8"
+    },
+    {
+      "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+      "bytes": 1716,
+      "sha256": "e5815ec00ef0968a8bf390d4fd5a6304d4767fcae3477cfa7a1722c5d660d55f"
+    },
+    {
+      "path": "docs/QIKVRT_COMMERCIAL_OFFERING.md",
+      "bytes": 1094,
+      "sha256": "1d1dc7ef4d233acebfefd89ae5578a18418b6887096546d0587ad0365e03f832"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2599,
+      "sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69"
+    }
+  ],
+  "output_bindings": [
+    {
+      "path": "tools/qikvrt_browser_assistant_ab.py",
+      "bytes": 36909,
+      "sha256": "097dfb70f4961adcbb2ef63aef037fa56b75e300a9377f1a124da3e0fd4167c7"
+    },
+    {
+      "path": "tests/test_qikvrt_browser_assistant_ab.py",
+      "bytes": 11954,
+      "sha256": "81efd526be2d43d85cfeaa82fd97629725d009ae640384ee74d5e0be465528ba"
+    },
+    {
+      "path": "benchmarks/browser-assistant-ab/README.md",
+      "bytes": 11791,
+      "sha256": "10b20533923b56fa098e2a293d9740697fbba768f6a29babef8544b979cf8e79"
+    },
+    {
+      "path": "benchmarks/browser-assistant-ab/contract.json",
+      "bytes": 3981,
+      "sha256": "8fa87af107087ddf8c0ca75350c052802bc4993790ea23fb884808d12991edd8"
+    },
+    {
+      "path": "benchmarks/browser-assistant-ab/console.html",
+      "bytes": 4936,
+      "sha256": "e4d97ca077963bc3936e3cc3be5ed2a4f39c22aa15ed131f18758f3a1e3e0c4a"
+    },
+    {
+      "path": "benchmarks/browser-assistant-ab/fixtures/research-costs.json",
+      "bytes": 2299,
+      "sha256": "f0db968bab64b926c4b9751afe359edf058cd9b75b3a7879e1ec63215389c9bd"
+    },
+    {
+      "path": "benchmarks/browser-assistant-ab/fixtures/document-recovery.json",
+      "bytes": 2183,
+      "sha256": "c8b46df25f59a58e2c31a48e68d3bb7340fbddc458371a02d12bd9772cf42c44"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11037,
+      "sha256": "f6fcd8dc2c64e5135045c0dedbc5b61570a8d8a7588703012d4911a291c9d5cd"
+    },
+    {
+      "path": "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md",
+      "bytes": 4963,
+      "sha256": "ba4402c4f72c1051f78ddb9f9e257aca402a2a717d4613bff828e6fd1ecd80af"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 10574,
+      "sha256": "420c806625071b26ae6c9f245d181236726e2ce485d825e20e66e409cd181625"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3054,
+      "sha256": "6a138586aa0cbd457f336c5bc76ecbc907d914228b5df9de1bb69ac60621374b"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/PREFLIGHT.json",
+      "bytes": 2926,
+      "sha256": "054a691266b11f786ddc47f598952c156806155108a3861ac29fca9192a81440"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/README.md",
+      "bytes": 2990,
+      "sha256": "0da7977e216d0006b22756950a45ad44efa628972f11b6b3ce41f3580e7b8009"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/SELF_TEST_ANALYSIS.json",
+      "bytes": 12068,
+      "sha256": "3ab4a63bf3474e383a969920173cce2d90e538d68f9a0ba792d5cadeb4f0f8ac"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/TERMINAL_SMOKE.json",
+      "bytes": 1580,
+      "sha256": "76a3a898920f16811f395949068f632a52d7d66fdecbdf6f4c1d06dc96a9fcfc"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/VALIDATION.json",
+      "bytes": 1512,
+      "sha256": "b2d13307a4c3196b44b41a3469b5f592511361e083e1993fb35332e8b2359fa6"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-analysis/analysis.json",
+      "bytes": 13309,
+      "sha256": "b5ef72cba02b887c91f995491f312f0fcd963789c673b613c7e89caaaa9e07c4"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-analysis/paired-deltas.json",
+      "bytes": 5529,
+      "sha256": "89bfcb60bb1a89b8d09edd6dc892a78240c7372c39ce0bc16fee42ce5e0aafc0"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-analysis/trials.csv",
+      "bytes": 2224,
+      "sha256": "4f2afe53f4faaf82c980b507b5e6b646fd9994c55a48df5ee9b1cdd10c23b3b5"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-run/contract.json",
+      "bytes": 4099,
+      "sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-run/fixtures/document-recovery.json",
+      "bytes": 2521,
+      "sha256": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-run/fixtures/research-costs.json",
+      "bytes": 2681,
+      "sha256": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/prepared-run/manifest.json",
+      "bytes": 12484,
+      "sha256": "64928cc3b0730c25d2d91d5c4adf865e5f7586a27cf06ee7f563187b3ca77952"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/contract.json",
+      "bytes": 4099,
+      "sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p001-baseline.jsonl",
+      "bytes": 8005,
+      "sha256": "14ef728a5297ce6912d64014a7a1d4143383859ee6c3da727345a3d698649c91"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p001-qikvrt.jsonl",
+      "bytes": 7979,
+      "sha256": "dcd5166054b8aafb076c8e6c7fefc3676651647ae5dc6a498ef2765b300f84cb"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p002-baseline.jsonl",
+      "bytes": 8006,
+      "sha256": "b555451d9731977aea8999002eecc9d5565d4633a1535dfa4c7fb6b6ce36b547"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p002-qikvrt.jsonl",
+      "bytes": 7968,
+      "sha256": "a9e4bf2534f5407171d81cfc909ac05c02785496a3276c30d3177d2cd8562a1a"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p003-baseline.jsonl",
+      "bytes": 7850,
+      "sha256": "fc9aee1b6a39004e3996a45ce88d089c2a32eb4b13083501b6cb275b1c5b66e9"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p003-qikvrt.jsonl",
+      "bytes": 7824,
+      "sha256": "d166dc94b6c674a8c7468bc51764673b372d8dd89bf92c79c9d97290f1360110"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p004-baseline.jsonl",
+      "bytes": 7854,
+      "sha256": "88c7b2dbeb0269daf5a65df7efdbf112b983dc273569841b56ff2a56560eefaa"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/events/p004-qikvrt.jsonl",
+      "bytes": 7828,
+      "sha256": "412590782abc408ae4f4bfbfee04effe0ad4a68c43ca10ae990b782bc5641326"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/fixtures/document-recovery.json",
+      "bytes": 2521,
+      "sha256": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/fixtures/research-costs.json",
+      "bytes": 2681,
+      "sha256": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/self-test-run/manifest.json",
+      "bytes": 6586,
+      "sha256": "53a9ebe89988e390a5200add525536dc0729e1619aacd8ea5e8309203e39e69f"
+    },
+    {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/MAKE_TEST.txt",
+      "bytes": 106228,
+      "sha256": "f1d8996e49578c5138390633135be6004431c309a6fb859f662cc95e184528cd"
+    }
+  ],
+  "containing_commit_binding": "The containing Git commit/tree and canonical integrity trio bind this record and all final output bytes. No impossible in-file self-hash or successor exact-head gate transfer.",
+  "git_branch": "work/browser-assistant-ab-20261005",
+  "human_candidate_acceptance": "PENDING_REVIEW",
+  "verification": {
+    "focused_tests": 27,
+    "focused_status": "PASS_FOR_BOUND_IMPLEMENTATION",
+    "console_js_syntax": "PASS",
+    "full_repository_gate": "PASS_LOCAL_IMPLEMENTATION_AND_RECEIPT_TREE",
+    "technical_terminal_smoke": "PASS_LOCAL_HTTP_REFERENCE_SCOPE_ONLY",
+    "product_e2e": "NOT_EXECUTED",
+    "full_repository_command": "make test",
+    "full_repository_exit_code": 0,
+    "reported_unittest_tests": 542,
+    "full_log": {
+      "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/MAKE_TEST.txt",
+      "bytes": 106228,
+      "sha256": "f1d8996e49578c5138390633135be6004431c309a6fb859f662cc95e184528cd"
+    },
+    "remote_exact_head_gates": "NOT_YET_OBSERVED",
+    "test_scope": "The final implementation and frozen raw run bytes passed locally; only this validation metadata and containing work-unit record are updated afterwards. No product or native remote-gate acceptance is inferred."
+  },
+  "product_trials_executed": 0,
+  "product_metrics": null,
+  "product_claim_allowed": false,
+  "blockers": [
+    "EXECUTABLE_PERSONAL_RESEARCH_ASSISTANT_ADAPTER_NOT_IMPLEMENTED",
+    "BASELINE_ASSISTANT_AND_RETENTION_NOT_BOUND",
+    "FIREFOX_EXECUTABLE_UNAVAILABLE",
+    "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED"
+  ],
+  "next_step": "Integrate the executable authenticated Personal research assistant adapter and bind the ordinary comparator; then instrument real pre-runs/interruption/continuation and freshly execute the complete paired design.",
+  "external_effects": {
+    "review_branch": "PREPARED_FOR_REPOSITORY_WRITE",
+    "draft_pr": "PREPARED",
+    "merge": "NOT_EXECUTED",
+    "gmail": "NOT_EXECUTED",
+    "zenodo": "NOT_EXECUTED",
+    "ietf": "NOT_EXECUTED",
+    "deployment": "NOT_EXECUTED"
+  },
+  "completion_claims": {
+    "repository_wide_done": false,
+    "product_benefit_proven": false,
+    "effect_ack_done": false,
+    "authority_mirror_equality": false
+  },
+  "temdd_native_continuation": {
+    "schema": "qikvrt_browser_ab_temdd_continuation_v1",
+    "recorded_date": "2026-10-06",
+    "predecessor_task_head": "42a462411fd7cdc5769b4458aca6eed0ee5e5f69",
+    "predecessor_task_tree": "23b757b106d85ddb634b72fb595d1e47ef3b137a",
+    "human_actor": {
+      "attribution_id": "Ingolf Lohmann",
+      "contribution_class": "HUMAN",
+      "contribution": "Authorized continuation of the browser A/B task and actual TEMDD execution."
+    },
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6",
+      "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+      "contribution": "Extended the existing A/B harness and Personal boundary workflow to execute the original native CLI on a qualified carrier; added fail-closed checks and reproduction documentation."
+    },
+    "native_source": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 461,
+      "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+      "tree": "be501e917d2d8ded677e6c32ee4eddc27f2c1398",
+      "source_unchanged": true,
+      "license": "PolyForm-Noncommercial-1.0.0"
+    },
+    "reuse_before_create": {
+      "reused": [
+        "tools/qikvrt_browser_assistant_ab.py",
+        ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "src/qikvrt_temdd_event_ledger.py at frozen native_source",
+        "tests/test_temdd_event_ledger.py at frozen native_source",
+        "tools/qikvrt_self_host.py and original self-host tests at frozen native_source"
+      ],
+      "insufficiency": "Local host denies AF_UNIX creation with errno 1. The prior source CI did execute native controls, but it did not execute a fresh original CLI SIGKILL/restart bound to the browser A/B task. Added one subcommand and one job to existing components; no copied implementation, new workflow or weakened ingress."
+    },
+    "execution_contract": {
+      "task_subject": "Clean exact current candidate HEAD/TREE and PR are freshly observed at invocation and rechecked after execution. They are not substituted by this predecessor record.",
+      "fresh_private_state": true,
+      "original_native_unix_ingress_required": true,
+      "actual_sigkill_and_restart_required": true,
+      "independent_sqlite_and_http_sse_readback_required": true,
+      "native_source_and_tool_contracts_verified_before_execution": true,
+      "failure_exit_code": 2,
+      "native_status_scope": "CLI/ingress/durable restart/loopback readback only",
+      "raw_data": "Original CLI inputs/replies, preflight, raw ledger before/after SIGKILL and HTTP/SSE frames; job artifacts bind exact HEAD/TREE, run and hashes."
+    },
+    "output_bindings": [
+      {
+        "path": "tools/qikvrt_browser_assistant_ab.py",
+        "bytes": 54385,
+        "sha256": "324aa79730fa513b0da8a3445f535811ab112be6b46ff804b0fef0526260d02b"
+      },
+      {
+        "path": "tests/test_qikvrt_browser_assistant_ab.py",
+        "bytes": 15524,
+        "sha256": "b80bf5fe33d7830379b3d53ca9c35fbbead95ab6629d6d217ae764b386765ce8"
+      },
+      {
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "bytes": 10140,
+        "sha256": "38a3c0ef2e20a288b4cc5873bf95d6ae6c9d854d99f82381ad4708455b5d0b6a"
+      },
+      {
+        "path": "benchmarks/browser-assistant-ab/README.md",
+        "bytes": 15834,
+        "sha256": "88d027089634017598fcca26be9ef6ab82bdeb4c47325e38d6a5dcfd5943a8d2"
+      }
+    ],
+    "validation_state_at_materialization": "SOURCE_IMPLEMENTATION_PREPARED; FRESH_NATIVE_EXECUTION_REQUIRED",
+    "product_trials_executed": 0,
+    "product_metrics": null,
+    "product_claim_allowed": false,
+    "acceptance": false,
+    "effect_ack_done": false,
+    "open_product_boundary": "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED; comparator retention, equivalent pre-runs and interruption/oracle isolation remain unbound.",
+    "historical_evidence_rule": "Original work-unit fields and frozen benchmark receipts remain historical. No source-control or predecessor task evidence is promoted into current product execution."
+  }
+}

@@ -7,6 +7,13 @@ on:
       - "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md"
       - "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json"
       - "browser/firefox/qikvrt-terminal/**"
+      - "personal/ingolf-lohmann/firefox-assistant/**"
+      - "src/qikvrt_personal_assistant.py"
+      - "src/qikvrt_effect_ack_http_terminal.py"
+      - "tools/qikvrt_browser_assistant_ab.py"
+      - "tests/test_qikvrt_personal_assistant.py"
+      - "tests/test_qikvrt_browser_assistant_ab.py"
+      - "benchmarks/browser-assistant-ab/**"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
       - "Makefile"
       - ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml"
@@ -41,6 +48,7 @@ jobs:
           set -euo pipefail
           python3 -m json.tool policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json >/dev/null
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1             python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_assistant tests.test_qikvrt_effect_ack_http_terminal
 
       - name: Build Standard package twice and prove byte identity
         shell: bash
@@ -87,11 +95,105 @@ jobs:
               json.dumps(receipt,sort_keys=True,indent=2)+'\n',encoding='utf-8')
           print(json.dumps(receipt,sort_keys=True))
           PY
+          python3 -B tools/qikvrt_browser_assistant_ab.py preflight \
+            > /tmp/qikvrt-personal-firefox-boundary/PRODUCT_PREFLIGHT.json
 
       - name: Preserve exact-head boundary evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: qikvrt-personal-firefox-boundary-${{ github.event.pull_request.head.sha || github.sha }}
           path: /tmp/qikvrt-personal-firefox-boundary
+          if-no-files-found: error
+          retention-days: 30
+
+  temdd-native-carrier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+      SUBJECT_PR: ${{ github.event.pull_request.number || 462 }}
+    steps:
+      - name: Check out exact browser task subject
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Reuse frozen native S1 implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ingolf-lohmann/qik-vrt
+          ref: bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698
+          path: .qikvrt/runtime/temdd-native-source
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.13'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Verify both tool contracts and execute original native controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          python3 -B tools/qikvrt_tool_cache.py verify
+          diagnostics="$RUNNER_TEMP/temdd-browser-carrier"
+          mkdir -p "$diagnostics"
+          cd .qikvrt/runtime/temdd-native-source
+          test "$(git rev-parse HEAD)" = bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698
+          test "$(git rev-parse HEAD^{tree})" = be501e917d2d8ded677e6c32ee4eddc27f2c1398
+          python3 -B tools/qikvrt_tool_cache.py verify
+          sh tools/bootstrap-runtime.sh --check-only --profile self-host --adapter none
+          python3 -B tools/qikvrt_integrity.py verify
+          cc -std=c90 -pedantic-errors -Wall -Wextra -Werror -Iinclude \
+            src/temdd_core.c tests/test_temdd_core.c -o "$diagnostics/temdd-core-test"
+          "$diagnostics/temdd-core-test"
+          cc --version > "$diagnostics/COMPILER.log"
+          sha256sum "$diagnostics/temdd-core-test" >> "$diagnostics/COMPILER.log"
+          make temdd-event-ledger-test self-host-test 2>&1 | tee "$diagnostics/ORIGINAL_NATIVE_CONTROLS.log"
+          test -z "$(git status --porcelain)"
+      - name: Execute original CLI interruption and exact task readback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_browser_assistant_ab.py temdd-carrier \
+            --source .qikvrt/runtime/temdd-native-source \
+            --output "$RUNNER_TEMP/temdd-browser-carrier/run" \
+            --expected-head "$EXPECTED_HEAD" --pr "$SUBJECT_PR" \
+            > "$RUNNER_TEMP/temdd-browser-carrier/CLI_RESULT.json"
+          git diff --exit-code
+      - name: Bind raw native execution without product promotion
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'temdd-browser-carrier'
+          files={str(p.relative_to(out)):{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+                 for p in sorted(out.glob('*.log'))+sorted(out.glob('*.json'))+sorted((out/'run').glob('*.json'))+sorted((out/'run').glob('*.log'))}
+          git=lambda *a:subprocess.check_output(['git',*a],text=True).strip()
+          binding={'schema':'qikvrt_browser_ab_temdd_native_job_v1','head':git('rev-parse','HEAD'),
+                   'tree':git('rev-parse','HEAD^{tree}'),'run_id':os.environ['GITHUB_RUN_ID'],
+                   'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'raw_files':files,
+                   'effect_ack_done':False,'product_trials_executed':0,'product_metrics':None,'product_claim_allowed':False}
+          (out/'JOB_BINDING.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
+          receipt=json.loads((out/'run/RECEIPT.json').read_text()) if (out/'run/RECEIPT.json').is_file() else None
+          print(json.dumps({'head':binding['head'],'tree':binding['tree'],
+                'native_transport_status':receipt['native_transport_status'] if receipt else 'NOT_EXECUTED',
+                'native_transport_execution_complete':receipt['native_transport_execution_complete'] if receipt else False,
+                'controls':receipt['controls'] if receipt else {},'product_trials_executed':0,
+                'product_metrics':None,'product_claim_allowed':False,'effect_ack_done':False},sort_keys=True))
+          PY
+      - name: Preserve source-bound controls and actual CLI raw readback
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-temdd-browser-carrier-${{ github.event.pull_request.head.sha || github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/temdd-browser-carrier/*.json
+            ${{ runner.temp }}/temdd-browser-carrier/*.log
+            ${{ runner.temp }}/temdd-browser-carrier/run/*.json
+            ${{ runner.temp }}/temdd-browser-carrier/run/*.log
           if-no-files-found: error
           retention-days: 30
