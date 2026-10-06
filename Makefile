@@ -39,6 +39,7 @@ runtime-contract: tool-cache-contract
 
 ai-runtime-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ai_runtime_bootloader
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_human_machine_interface_adaptation
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/ai_runtime_bootloader.py --help >/dev/null
 
 interaction-archive-test:

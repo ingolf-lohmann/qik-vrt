@@ -1,0 +1,206 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt-work-unit/v1",
+  "work_unit_id": "MONITOR_HTTP404_HUMAN_FEEDBACK_20261006_V1",
+  "objective_id": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
+  "created_at": "2026-10-06T17:31:55.164710+00:00",
+  "state": "HTML_MONITOR_CANDIDATE_IMPLEMENTED_HUMAN_COMPREHENSION_NOT_MEASURED",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/work/human-readable-feedback-goal-20261006-68d15cbf",
+  "source_commit": "cf5e10162c946df70d5d8547d58ad311ac29a0b3",
+  "source_tree": "1ae1a72040364dc2c0aa62925b6774685f508b9d",
+  "reobserved_main": {
+    "commit": "79ddba3b6d0970203053b2719c41e9410276741c",
+    "tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2"
+  },
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "role": "Product and Code Owner"
+  },
+  "human_contributions": [
+    "Select a real frequently visible monitor/runtime failure; preserve technical evidence; compare before/after; separate runtime implementation and comprehension measurement."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_build": "UNAVAILABLE",
+    "session_id": "0bc41acd7daa",
+    "identity_boundary": "Platform/tool identity does not authenticate a natural person."
+  },
+  "artificial_cognitive_contributions": [
+    "Repository and REST observation",
+    "Existing HTML emitter implementation",
+    "Controlled replay and negative controls",
+    "Provenance, comparison and evidence separation"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "evidence/monitor-feedback/baseline-index.html",
+      "bytes": 5037,
+      "sha256": "8b6baa9afde7952fc3635841f5f78063bd0153ab43b2b8e837f0e9a07def8ae6",
+      "git_blob_sha1": "0e3f2303c0bab85ca40faf9922514e031e7bd2b6"
+    },
+    {
+      "path": "evidence/monitor-feedback/authority-404-observation.json",
+      "bytes": 809,
+      "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+      "git_blob_sha1": "d2263805ead86bc88192a502ed85b6462c435413"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "docs/monitor/index.html",
+      "bytes": 13222,
+      "sha256": "863f451a20caa2c96310c3237d1ba3c113eb5269acc93b14a4ebf7165d1ccf2b",
+      "git_blob_sha1": "39a7a43e64201e330b922e98c7c16018f0fa50d2"
+    },
+    {
+      "path": "tests/test_human_machine_interface_adaptation.py",
+      "bytes": 18944,
+      "sha256": "688656c52fdfdc5782e70443de36de06f56bfaf5370d4176e9fc7d3498f3382f",
+      "git_blob_sha1": "f0ead1c10bfd54d888b6eb920007fc35d74aab7c"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11232,
+      "sha256": "b0c6cdc567dd05d241f3af790a4cabfd790a21ac7de173d4f3029da119566027",
+      "git_blob_sha1": "1a05dc88c6d14014831e293daa9573db228874ef"
+    },
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "bytes": 7971,
+      "sha256": "7f74cafe7ae2c7a562e9c5ddf73102d6213022275580e1eddbcc040cb89b0ea7",
+      "git_blob_sha1": "91bc12bd3d5a87ee15dc7074869092b9ff69a68a"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 10610,
+      "sha256": "e71a4bd1f12e0b0b064cd45154ae746350ca026d92cc3cb1847cb0addf7cc07d",
+      "git_blob_sha1": "a000c70d4b2f6de2cc90f681d33ba6dad293e4b0"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3054,
+      "sha256": "310e363a9cd99bf2fd5236b78bcec4037edab47545357a230b5d552d4356d57f",
+      "git_blob_sha1": "a059c1f82f7bbf5b3bc5fc97bde4105e884dde80"
+    },
+    {
+      "path": "evidence/monitor-feedback/authority-404-before-after.json",
+      "bytes": 3403,
+      "sha256": "f40165e6fdbac94659737858c72ef569d5547da639c67f83c50502ebd77527a6",
+      "git_blob_sha1": "0def8a2084407acea405877339405ad0218b348a"
+    },
+    {
+      "path": "evidence/monitor-feedback/README.md",
+      "bytes": 6127,
+      "sha256": "2de9fde40817066879d2f9212de165830531b4e790dbd4b507fc01c8c099a2ce",
+      "git_blob_sha1": "7da3eb9106742065b8b3a683809d6b1474d3a515"
+    }
+  ],
+  "reuse_basis": [
+    "existing docs/monitor/index.html emitter",
+    "existing tests/test_human_machine_interface_adaptation.py",
+    "existing ai-runtime-contract and QIKVRT CI",
+    "existing Node 24 cache/provision contract",
+    "existing interface policy/evaluation matrix"
+  ],
+  "surface_selection": {
+    "path": "docs/monitor/index.html",
+    "reason": "Executable existing emitter present on both source PR and main; React source is absent there.",
+    "react_source_observed_at": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+    "react_projection_changed": false
+  },
+  "runtime_change": {
+    "runtime_feedback_changes_implemented": true,
+    "scope": "Candidate HTML monitor error presentation and per-repository failure isolation",
+    "runtime_validation": "20 focused tests passed; 13 monitor tests plus 7 existing policy tests",
+    "runtime_rollout_verified": false,
+    "provider_failure_repaired": false,
+    "machine_state_and_evidence_meaning_preserved": true,
+    "repair_start_claimed": false
+  },
+  "automated_message_measurement": {
+    "method": "Controlled replay of the captured HTTP status/text/headers through both actual HTML emitters in Node vm; synthetic sibling responses held identical.",
+    "case_count_live_capture": 1,
+    "language": "de-DE",
+    "comparison": "evidence/monitor-feedback/authority-404-before-after.json",
+    "metrics": {
+      "explicit_required_explanation_fields_before": 0,
+      "explicit_required_explanation_fields_after": 5,
+      "original_error_retained": true,
+      "status_retained": true,
+      "provider_request_id_retained": true,
+      "source_url_retained": true,
+      "requests_before": 8,
+      "requests_after": 8,
+      "successful_sibling_visible_before": false,
+      "successful_sibling_visible_after": true
+    },
+    "not_a_human_comprehension_measure": true
+  },
+  "human_comprehension_measurement": {
+    "state": "NOT_MEASURED",
+    "participants": 0,
+    "understanding_rate_before": null,
+    "understanding_rate_after": null,
+    "clarification_requests": null,
+    "time_to_identify_next_action_ms": null,
+    "comprehension_improvement_measured": false
+  },
+  "verification": {
+    "node_version": "v24.19.0",
+    "python_version": "3.12.14",
+    "tool_cache_coverage_percent": 100,
+    "focused_tests": {
+      "command": "python3 -B -m unittest -v tests.test_human_machine_interface_adaptation",
+      "result": "PASS_20",
+      "log_sha256": "d844dd0e47a7d6d412e6c35a600093587c900ee7081de0af7bd7e4b90a59fdd1"
+    },
+    "source_candidate_full_suite": {
+      "command": "make test",
+      "result": "LOCAL_PASS_BEFORE_WORK_UNIT_AND_POLICY_RECEIPT_UPDATE",
+      "log_sha256": "1cdc9cbe3093fed31f143fa92d42ea5e27727047a31b70536922a57553202df7",
+      "scope": "Current source code/test bytes; final commit and remote required gates remain separate."
+    },
+    "historical_git_object_recovery": "Partial clone lacked blobs required by the existing portable-source-capsule integrity test. Fetched historical commits 56127a6 and 4fd7323 and preloaded the exact 13-object source closure; no test or gate was weakened.",
+    "bootloader": "CONTINUE",
+    "collective_bootstrap": "CONTINUE",
+    "unrelated_optimization_controller": "HOLD; not applied",
+    "browser_interaction": "OPEN_MISSING_LOCAL_BROWSER_EXECUTABLE",
+    "keyboard_screenreader_real_device": "NOT_VERIFIED",
+    "remote_exact_head_gates": "REQUIRED_ON_FINAL_HEAD"
+  },
+  "git_history": {
+    "method": "History-preserving successor with parents source PR head and reobserved main; generated integrity merge conflicts are rematerialized.",
+    "final_commit_binding": "Read back from PR #468 after non-force ref update; no self-referential commit hash in this work unit."
+  },
+  "human_decision": "Implementation authorized by the current task; native review and human comprehension responses not recorded.",
+  "external_effects": {
+    "authorized_candidate_effect": "Review-branch update and PR metadata",
+    "main_merge": false,
+    "deployment": false,
+    "new_scheduler": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "boundaries": {
+    "runtime_feedback_changes_implemented": true,
+    "comprehension_improvement_measured": false,
+    "public_runtime_rollout_verified": false,
+    "all_nodes_persisted": false,
+    "predecessor_evidence_transfer": false,
+    "merge": false,
+    "deployment": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

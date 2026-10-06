@@ -36,8 +36,49 @@
   },
   "human_readable_feedback_evaluation": {
     "objective_id": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
-    "state": "BASELINE_NOT_YET_MEASURED",
-    "rows": [],
+    "state": "AUTOMATED_COMPARISON_RECORDED_HUMAN_COMPREHENSION_NOT_MEASURED",
+    "rows": [
+      {
+        "case_id": "AUTHORITY_REPOSITORY_HTTP_404",
+        "language": "de-DE",
+        "work_unit": "state/work_units/MONITOR_HTTP404_HUMAN_FEEDBACK_20261006_V1.json",
+        "comparison": "evidence/monitor-feedback/authority-404-before-after.json",
+        "baseline_source_sha256": "8b6baa9afde7952fc3635841f5f78063bd0153ab43b2b8e837f0e9a07def8ae6",
+        "candidate_source_sha256": "863f451a20caa2c96310c3237d1ba3c113eb5269acc93b14a4ebf7165d1ccf2b",
+        "runtime_change": {
+          "runtime_feedback_changes_implemented": true,
+          "scope": "Candidate HTML monitor error presentation and per-repository failure isolation",
+          "runtime_validation": "20 focused tests passed; 13 monitor tests plus 7 existing policy tests",
+          "runtime_rollout_verified": false,
+          "provider_failure_repaired": false,
+          "machine_state_and_evidence_meaning_preserved": true,
+          "repair_start_claimed": false
+        },
+        "automated_message_measurements": {
+          "explicit_required_explanation_fields_before": 0,
+          "explicit_required_explanation_fields_after": 5,
+          "original_error_retained": true,
+          "status_retained": true,
+          "provider_request_id_retained": true,
+          "source_url_retained": true,
+          "requests_before": 8,
+          "requests_after": 8,
+          "successful_sibling_visible_before": false,
+          "successful_sibling_visible_after": true
+        },
+        "human_comprehension": {
+          "state": "NOT_MEASURED",
+          "participants": 0,
+          "understanding_rate_before": null,
+          "understanding_rate_after": null,
+          "clarification_requests": null,
+          "time_to_identify_next_action_ms": null,
+          "comprehension_improvement_measured": false
+        },
+        "browser_interaction_verified": false,
+        "repair_progress_measurement": "No repair start asserted; automated negative control only."
+      }
+    ],
     "declared_metrics": [
       "human_state_impact_next_action_understanding_rate",
       "feedback_clarification_requests",

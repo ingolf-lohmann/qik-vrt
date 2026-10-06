@@ -1,1 +1,203 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QIK-VRT Live Monitor</title><style>body{font-family:system-ui;background:#111;color:#eee;margin:0}header,main{max-width:1200px;margin:auto;padding:1rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1rem}.card{background:#1b1b1b;border:1px solid #444;border-radius:10px;padding:1rem}.ok{color:#7ee787}.bad{color:#ff7b72}.run{color:#d2a8ff}.muted{color:#999}a{color:#58a6ff}table{width:100%;border-collapse:collapse}td,th{padding:.35rem;border-bottom:1px solid #333;text-align:left;font-size:.9rem}code{word-break:break-all}input{width:min(36rem,90%)}#log{white-space:pre-wrap;font-family:monospace;font-size:.8rem;max-height:18rem;overflow:auto}</style></head><body><header><h1>QIK-VRT Repository Live Monitor</h1><p>Direkte Beobachtung der Authority- und Mirror-Repositories über die offizielle GitHub-API. Keine Chat-Projektion.</p><p><input id="token" type="password" autocomplete="off" placeholder="Optional: GitHub Fine-grained Token nur für diese Browser-Sitzung"> <button onclick="activate()">Live-Modus aktivieren</button> <button onclick="refreshAll()">Jetzt aktualisieren</button></p><p id="mode" class="muted"></p><p id="clock" class="muted"></p></header><main><div id="repos" class="grid"></div><div class="card"><h2>Ereignisprotokoll</h2><div id="log"></div></div></main><script>const repos=['Goldkelch/qik-vrt','ingolf-lohmann/qik-vrt'],api='https://api.github.com',state={};let timer=null,token=sessionStorage.getItem('qikvrt_monitor_token')||'';document.getElementById('token').value=token;function esc(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function cls(s){return ['success','completed','clean'].includes(s)?'ok':['failure','cancelled','timed_out','action_required'].includes(s)?'bad':'run'}function interval(){return token?10000:240000}function schedule(){clearInterval(timer);timer=setInterval(refreshAll,interval());document.getElementById('mode').textContent=token?'Authentifizierter Live-Modus: 10 Sekunden. Token bleibt ausschließlich im sessionStorage dieses Tabs.':'Öffentlicher Fallback: 4 Minuten wegen GitHub-Rate-Limit. Für 10 Sekunden einen read-only Fine-grained Token eingeben.'}function activate(){token=document.getElementById('token').value.trim();token?sessionStorage.setItem('qikvrt_monitor_token',token):sessionStorage.removeItem('qikvrt_monitor_token');schedule();refreshAll()}async function get(path){const h={Accept:'application/vnd.github+json'};if(token)h.Authorization='Bearer '+token;const r=await fetch(api+path,{headers:h});if(!r.ok)throw new Error(r.status+' '+r.statusText+'; remaining='+r.headers.get('x-ratelimit-remaining'));return r.json()}function event(m){const e=document.getElementById('log');e.textContent=new Date().toISOString()+'  '+m+'\n'+e.textContent.slice(0,12000)}async function load(repo){const [meta,prs,runs,commits]=await Promise.all([get('/repos/'+repo),get('/repos/'+repo+'/pulls?state=open&per_page=20&sort=updated&direction=desc'),get('/repos/'+repo+'/actions/runs?per_page=30'),get('/repos/'+repo+'/commits?per_page=10')]);const sig=JSON.stringify({h:commits[0]?.sha,p:prs.map(x=>[x.number,x.head.sha,x.updated_at,x.draft]),r:runs.workflow_runs.map(x=>[x.id,x.status,x.conclusion,x.head_sha])});if(state[repo]&&state[repo]!==sig)event(repo+': technischer Zustand geändert');state[repo]=sig;return{repo,meta,prs,runs:runs.workflow_runs,commits}}function render(d){const a=d.runs.filter(x=>x.status!=='completed'),f=d.runs.filter(x=>['failure','cancelled','timed_out','action_required'].includes(x.conclusion));return `<section class="card"><h2>${esc(d.repo)}</h2><p>Default: <code>${esc(d.meta.default_branch)}</code><br>Head: <code>${esc(d.commits[0]?.sha)}</code></p><p>Offene PRs: <b>${d.prs.length}</b> · aktive Runs: <b class="${a.length?'run':'ok'}">${a.length}</b> · problematische Runs: <b class="${f.length?'bad':'ok'}">${f.length}</b></p><h3>Pull Requests</h3><table>${d.prs.slice(0,10).map(p=>`<tr><td><a target="_blank" href="${p.html_url}">#${p.number}</a></td><td><code>${p.head.sha.slice(0,10)}</code></td><td>${p.draft?'DRAFT':'READY'}</td></tr>`).join('')}</table><h3>Workflows</h3><table>${d.runs.slice(0,15).map(r=>`<tr><td><a target="_blank" href="${r.html_url}">${esc(r.name)}</a></td><td><code>${(r.head_sha||'').slice(0,10)}</code></td><td class="${cls(r.conclusion||r.status)}">${esc(r.status)} / ${esc(r.conclusion||'—')}</td></tr>`).join('')}</table></section>`}async function refreshAll(){document.getElementById('clock').textContent='Aktualisierung läuft …';try{const d=await Promise.all(repos.map(load));document.getElementById('repos').innerHTML=d.map(render).join('');document.getElementById('clock').textContent='Stand: '+new Date().toLocaleString()}catch(e){event('FEHLER: '+e.message);document.getElementById('clock').textContent=e.message}}schedule();refreshAll();</script></body></html>
+<!doctype html>
+<!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+     Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex. -->
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>QIK-VRT Live Monitor</title>
+  <style>
+    body{font-family:system-ui;background:#111;color:#eee;margin:0}
+    header,main{max-width:1200px;margin:auto;padding:1rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:1rem}
+    .card{background:#1b1b1b;border:1px solid #444;border-radius:10px;padding:1rem}
+    .ok{color:#7ee787}.bad{color:#ff7b72}.run{color:#d2a8ff}.muted{color:#aaa}
+    a{color:#58a6ff}table{width:100%;border-collapse:collapse}
+    td,th{padding:.35rem;border-bottom:1px solid #333;text-align:left;font-size:.9rem}
+    code,pre{overflow-wrap:anywhere;white-space:pre-wrap}input{width:min(36rem,90%)}
+    #log{white-space:pre-wrap;font-family:monospace;font-size:.8rem;max-height:18rem;overflow:auto}
+    dt{font-weight:600;margin-top:.7rem}dd{margin:.2rem 0 .5rem}summary{cursor:pointer}
+    details{margin-top:1rem}button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #58a6ff;outline-offset:3px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>QIK-VRT Repository Live Monitor</h1>
+  <p>Direkte Beobachtung der Authority- und Mirror-Repositories über die offizielle GitHub-API. Keine Chat-Projektion.</p>
+  <p><label for="token">Optionaler GitHub-Lesetoken für diese Browser-Sitzung</label><br>
+    <input id="token" type="password" autocomplete="off">
+    <button onclick="activate()">Live-Modus aktivieren</button>
+    <button onclick="refreshAll()">Jetzt aktualisieren</button></p>
+  <p id="mode" class="muted"></p>
+  <p id="clock" class="muted" role="status" aria-live="polite"></p>
+</header>
+<main>
+  <div id="repos" class="grid"></div>
+  <div class="card"><h2>Ereignisprotokoll</h2><div id="log"></div></div>
+</main>
+<script>
+'use strict';
+const repos=['Goldkelch/qik-vrt','ingolf-lohmann/qik-vrt'], api='https://api.github.com';
+const state={}, lastGood={}, lastFailure={};
+let timer=null, refreshing=false, token=sessionStorage.getItem('qikvrt_monitor_token')||'';
+document.getElementById('token').value=token;
+function esc(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function redact(s){
+  return String(s??'').replace(/\bBearer\s+[^\s;,]+/gi,'Bearer [REDACTED]')
+    .replace(/\b(?:gh[pousr]_|github_pat_)[A-Za-z0-9_]+/g,'[REDACTED]')
+    .replace(/([?&](?:access_token|token|secret|password)=)[^\s&#]+/gi,'$1[REDACTED]');
+}
+function cls(s){return ['success','completed','clean'].includes(s)?'ok':['failure','cancelled','timed_out','action_required'].includes(s)?'bad':'run';}
+function interval(){return token?10000:240000;}
+function schedule(){
+  clearInterval(timer);timer=setInterval(refreshAll,interval());
+  document.getElementById('mode').textContent=token?
+    'Authentifizierter Live-Modus: 10 Sekunden. Token bleibt ausschließlich im sessionStorage dieses Tabs.':
+    'Öffentlicher Fallback: 4 Minuten wegen GitHub-Rate-Limit. Für 10 Sekunden einen read-only Fine-grained Token eingeben.';
+}
+function activate(){
+  token=document.getElementById('token').value.trim();
+  token?sessionStorage.setItem('qikvrt_monitor_token',token):sessionStorage.removeItem('qikvrt_monitor_token');
+  schedule();refreshAll();
+}
+async function get(path){
+  const headers={Accept:'application/vnd.github+json'};
+  if(token)headers.Authorization='Bearer '+token;
+  let response=null, phase='REQUEST';
+  try{
+    response=await fetch(api+path,{headers});
+    phase='HTTP';
+    if(!response.ok)throw new Error(response.status+' '+response.statusText+'; remaining='+response.headers.get('x-ratelimit-remaining'));
+    phase='JSON';
+    return await response.json();
+  }catch(error){
+    const wrapped=new Error(redact(error?.message||String(error)));
+    wrapped.diagnostic={
+      source_url:api+path, method:'GET', observed_at:new Date().toISOString(),
+      phase, status:response?.status??null, status_text:response?.statusText??null,
+      original_error:wrapped.message, error_name:error?.name||'Error',
+      provider_request_id:response?.headers.get('x-github-request-id')??null,
+      rate_limit_remaining:response?.headers.get('x-ratelimit-remaining')??null,
+      rate_limit_reset:response?.headers.get('x-ratelimit-reset')??null,
+      retry_after:response?.headers.get('retry-after')??null
+    };
+    throw wrapped;
+  }
+}
+function event(message){
+  const log=document.getElementById('log');
+  log.textContent=new Date().toISOString()+'  '+redact(message)+'\n'+log.textContent.slice(0,12000);
+}
+async function load(repo){
+  const paths=['/repos/'+repo,'/repos/'+repo+'/pulls?state=open&per_page=20&sort=updated&direction=desc',
+    '/repos/'+repo+'/actions/runs?per_page=30','/repos/'+repo+'/commits?per_page=10'];
+  const results=await Promise.allSettled(paths.map(get));
+  const failures=results.filter(result=>result.status==='rejected').map(result=>result.reason.diagnostic);
+  if(failures.length){
+    const error=new Error(failures.map(failure=>failure.original_error).join(' · '));
+    error.failures=failures;throw error;
+  }
+  const [meta,prs,runs,commits]=results.map(result=>result.value);
+  const sig=JSON.stringify({h:commits[0]?.sha,p:prs.map(x=>[x.number,x.head.sha,x.updated_at,x.draft]),
+    r:runs.workflow_runs.map(x=>[x.id,x.status,x.conclusion,x.head_sha])});
+  if(state[repo]&&state[repo]!==sig)event(repo+': technischer Zustand geändert');
+  state[repo]=sig;
+  return {repo,meta,prs,runs:runs.workflow_runs,commits,observed_at:new Date().toISOString()};
+}
+function explainFailure(diagnostic){
+  const d=diagnostic;
+  let state='Die Quelle konnte nicht aktualisiert werden.',
+    cause='Die Ursache ist nicht geklärt.',
+    next='Repository-Verantwortliche: den angegebenen REST-Endpunkt und den Zugriff prüfen; danach „Jetzt aktualisieren“ wählen.';
+  if(d.phase==='EVALUATION'){
+    state='Die gelesenen Daten konnten nicht ausgewertet werden.';
+    cause='Die Auswertung des Readbacks scheiterte. Ein HTTP-Status ist an diesen Auswertungsfehler nicht gebunden; die Ursache ist ungeklärt.';
+    next='Monitor-Verantwortliche: Datenformat und Fehlerdiagnose prüfen; nach der Korrektur erneut aktualisieren.';
+  }else if(d.phase==='JSON'){
+    state='Die Antwort konnte nicht ausgewertet werden.';
+    cause='Die HTTP-Antwort liegt vor, aber das Lesen als JSON scheiterte. Warum die Antwort nicht auswertbar ist, ist ungeklärt.';
+    next='Monitor-Verantwortliche: Antwortformat des REST-Endpunkts prüfen; nach der Korrektur erneut aktualisieren.';
+  }else if(d.status===404){
+    state='Die angefragte Quelle ist derzeit nicht lesbar.';
+    cause='Die REST-Anfrage erhielt HTTP 404. Ob die Quelle fehlt oder für diesen Zugriff nicht sichtbar ist, ist nicht geklärt.';
+  }else if(d.status===429||(d.status===403&&d.rate_limit_remaining==='0')){
+    state='Der Anbieter begrenzt den Abruf.';
+    cause='Die Antwort meldet HTTP '+d.status+(d.rate_limit_remaining==='0'?' und ein verbleibendes API-Kontingent von 0.':'.')+' Weitere Sperrgründe sind nicht geklärt.';
+    next='Monitor-Nutzende: den in den technischen Details genannten Retry-After-/Reset-Zeitpunkt beachten; erst danach erneut aktualisieren. Fehlt eine Wartezeit, müssen die Repository-Verantwortlichen die Begrenzung prüfen.';
+  }else if(d.status===401||d.status===403){
+    state='Der Zugriff auf die Quelle wurde abgewiesen.';
+    cause='Die Antwort meldet HTTP '+d.status+'. Ob Zugangsdaten, Leseberechtigung oder eine andere Zugriffssperre verantwortlich sind, ist nicht geklärt.';
+  }else if(d.status>=500){
+    state='Der angefragte Dienst meldet einen Serverfehler.';
+    cause='Die Antwort meldet HTTP '+d.status+'. Die Ursache im Dienst oder seinem vorgeschalteten System ist nicht geklärt.';
+    next='Repository-Verantwortliche: den Dienst über den REST-Pfad prüfen; nach bestätigter Wiederherstellung erneut aktualisieren.';
+  }else if(d.status===null){
+    state='Der Abruf lieferte keine HTTP-Antwort.';
+    cause='Der Browser meldet '+d.error_name+'. Ob Netzwerk, Browser-Zugriffsschutz oder die Gegenstelle verantwortlich ist, ist nicht geklärt.';
+    next='Monitor-Nutzende: Verbindung und Browser-Netzwerkdiagnose für den angegebenen REST-Endpunkt prüfen; nach Beseitigung des Hindernisses erneut aktualisieren.';
+  }
+  return {state,cause,next};
+}
+function renderFailure(repo,error,previous){
+  const failures=error.failures||[error.diagnostic||{
+    source_url:api+'/repos/'+repo,status:null,phase:'EVALUATION',error_name:error.name||'Error',
+    original_error:redact(error.message),observed_at:new Date().toISOString()
+  }];
+  const impact=previous?
+    'Kein neuer vollständiger Repository- und Workflow-Stand. Der letzte erfolgreiche Stand bleibt als veraltet sichtbar. Daraus folgt kein aktueller Betriebszustand.':
+    'Kein vollständiger Repository- und Workflow-Stand verfügbar. Daraus folgt kein Betriebszustand des Knotens.';
+  return `<section class="card" aria-label="${esc(repo)}: Readback offen"><h2>${esc(repo)}</h2>
+    <p class="bad"><strong>Readback offen</strong> · ${error.failures?failures.length+' von 4 Quellen konnten nicht gelesen werden.':'Die Readback-Auswertung ist unvollständig.'}</p>
+    <dl><dt>Auswirkung</dt><dd>${esc(impact)}</dd></dl>
+    ${failures.map(d=>{const text=explainFailure(d);return `<div class="feedback"><dl>
+      <dt>Zustand</dt><dd>${esc(text.state)}</dd>
+      <dt>Ursache / Unsicherheit</dt><dd>${esc(text.cause)}</dd>
+      <dt>Nächster Schritt</dt><dd>${esc(text.next)}</dd></dl>
+      <details><summary>Technische Details: ${esc(d.status===null?d.error_name:'HTTP '+d.status)} · ${esc(d.source_url)}</summary>
+        <pre tabindex="0" aria-label="Kopierbare Fehlerdiagnose">${esc(JSON.stringify(d,null,2))}</pre>
+      </details></div>`;}).join('')}
+    <dl><dt>Reparaturfortschritt</dt><dd>Ein Reparaturstart ist durch diesen Monitor nicht belegt. Die Meldung beschreibt den beobachteten Abruf.</dd></dl>
+    ${previous?`<details><summary>Letzter erfolgreicher Stand: ${esc(previous.observed_at)} · veraltet</summary>${render(previous)}</details>`:''}
+  </section>`;
+}
+function render(d){
+  const active=d.runs.filter(x=>x.status!=='completed'), failed=d.runs.filter(x=>['failure','cancelled','timed_out','action_required'].includes(x.conclusion));
+  return `<section class="card"><h2>${esc(d.repo)}</h2><p>Default: <code>${esc(d.meta.default_branch)}</code><br>Head: <code>${esc(d.commits[0]?.sha)}</code></p>
+    <p>Readback: ${esc(d.observed_at)}</p>
+    <p>Offene PRs: <b>${d.prs.length}</b> · aktive Runs: <b class="${active.length?'run':'ok'}">${active.length}</b> · problematische Runs: <b class="${failed.length?'bad':'ok'}">${failed.length}</b></p>
+    <h3>Pull Requests</h3><table>${d.prs.slice(0,10).map(p=>`<tr><td><a target="_blank" rel="noopener" href="${esc(p.html_url)}">#${p.number}</a></td><td><code>${esc(p.head.sha.slice(0,10))}</code></td><td>${p.draft?'DRAFT':'READY'}</td></tr>`).join('')}</table>
+    <h3>Workflows</h3><table>${d.runs.slice(0,15).map(r=>`<tr><td><a target="_blank" rel="noopener" href="${esc(r.html_url)}">${esc(r.name)}</a></td><td><code>${esc((r.head_sha||'').slice(0,10))}</code></td><td class="${cls(r.conclusion||r.status)}">${esc(r.status)} / ${esc(r.conclusion||'—')}</td></tr>`).join('')}</table></section>`;
+}
+async function refreshAll(){
+  if(refreshing)return;
+  refreshing=true;
+  document.getElementById('clock').textContent='Aktualisierung läuft …';
+  try{
+    const results=await Promise.allSettled(repos.map(load));
+    document.getElementById('repos').innerHTML=results.map((result,index)=>{
+      const repo=repos[index];
+      if(result.status==='fulfilled'){
+        lastGood[repo]=result.value;
+        if(lastFailure[repo])event(repo+': Repository-Readback wieder vollständig; keine Runtime-Reparatur damit belegt');
+        delete lastFailure[repo];return render(result.value);
+      }
+      const signature=JSON.stringify(result.reason.failures?.map(d=>({
+        source_url:d.source_url,status:d.status,phase:d.phase,error_name:d.error_name,
+        original_error:d.original_error.replace(/remaining=[^; ]+/g,'remaining=*'),
+        quota_exhausted:d.rate_limit_remaining==='0',retry_after:d.retry_after,
+        rate_limit_reset:d.rate_limit_remaining==='0'?d.rate_limit_reset:null
+      }))||redact(result.reason.message));
+      if(lastFailure[repo]!==signature)event(repo+': FEHLER: '+result.reason.message);
+      lastFailure[repo]=signature;
+      return renderFailure(repo,result.reason,lastGood[repo]);
+    }).join('');
+    const count=results.filter(result=>result.status==='rejected').length;
+    document.getElementById('clock').textContent=count?
+      'Readback offen für '+count+' von '+repos.length+' Repositories. Erfolgreiche und veraltete Stände sind getrennt gekennzeichnet.':
+      'Repository-Readback vollständig: '+new Date().toLocaleString()+'. Kein Nachweis der Knotenlaufzeit.';
+  }finally{refreshing=false;}
+}
+schedule();refreshAll();
+</script>
+</body>
+</html>

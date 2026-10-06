@@ -1,0 +1,73 @@
+{
+  "schema": "qikvrt_monitor_feedback_comparison_v1",
+  "case_id": "AUTHORITY_REPOSITORY_HTTP_404",
+  "language": "de-DE",
+  "method": "Controlled replay of the captured HTTP status/text/headers through both actual HTML emitters in Node vm; synthetic sibling responses held identical.",
+  "baseline_commit": "cf5e10162c946df70d5d8547d58ad311ac29a0b3",
+  "baseline_tree": "1ae1a72040364dc2c0aa62925b6774685f508b9d",
+  "baseline_source_blob": "0e3f2303c0bab85ca40faf9922514e031e7bd2b6",
+  "baseline_source_sha256": "8b6baa9afde7952fc3635841f5f78063bd0153ab43b2b8e837f0e9a07def8ae6",
+  "candidate_source_sha256": "863f451a20caa2c96310c3237d1ba3c113eb5269acc93b14a4ebf7165d1ccf2b",
+  "observation_sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+  "before": {
+    "visible_feedback": "404 Not Found; remaining=56",
+    "event_log": "2026-10-06T17:17:52.884Z  FEHLER: 404 Not Found; remaining=56\n",
+    "explicit_required_explanation_fields": 0
+  },
+  "after": {
+    "visible_feedback": "Readback offen für 1 von 2 Repositories. Erfolgreiche und veraltete Stände sind getrennt gekennzeichnet.",
+    "explanations": {
+      "Zustand": "Die angefragte Quelle ist derzeit nicht lesbar.",
+      "Auswirkung": "Kein vollständiger Repository- und Workflow-Stand verfügbar. Daraus folgt kein Betriebszustand des Knotens.",
+      "Ursache / Unsicherheit": "Die REST-Anfrage erhielt HTTP 404. Ob die Quelle fehlt oder für diesen Zugriff nicht sichtbar ist, ist nicht geklärt.",
+      "Nächster Schritt": "Repository-Verantwortliche: den angegebenen REST-Endpunkt und den Zugriff prüfen; danach „Jetzt aktualisieren“ wählen.",
+      "Reparaturfortschritt": "Ein Reparaturstart ist durch diesen Monitor nicht belegt. Die Meldung beschreibt den beobachteten Abruf."
+    },
+    "diagnostics": [
+      {
+        "source_url": "https://api.github.com/repos/Goldkelch/qik-vrt",
+        "method": "GET",
+        "observed_at": "2026-10-06T17:17:52.884Z",
+        "phase": "HTTP",
+        "status": 404,
+        "status_text": "Not Found",
+        "original_error": "404 Not Found; remaining=56",
+        "error_name": "Error",
+        "provider_request_id": "4FA4:3818E4:63C8922:145808DE:6AC52D40",
+        "rate_limit_remaining": "56",
+        "rate_limit_reset": "1791309154",
+        "retry_after": null
+      }
+    ],
+    "explicit_required_explanation_fields": 5
+  },
+  "automated_measurements": {
+    "explicit_required_explanation_fields_before": 0,
+    "explicit_required_explanation_fields_after": 5,
+    "original_error_retained": true,
+    "status_retained": true,
+    "provider_request_id_retained": true,
+    "source_url_retained": true,
+    "requests_before": 8,
+    "requests_after": 8,
+    "successful_sibling_visible_before": false,
+    "successful_sibling_visible_after": true
+  },
+  "human_comprehension": {
+    "state": "NOT_MEASURED",
+    "participants": 0,
+    "understanding_rate_before": null,
+    "understanding_rate_after": null,
+    "clarification_requests": null,
+    "time_to_identify_next_action_ms": null,
+    "comprehension_improvement_measured": false
+  },
+  "boundaries": {
+    "controlled_replay_is_live_deployment": false,
+    "automated_field_presence_is_human_comprehension": false,
+    "provider_404_cause_established": false,
+    "runtime_fault_repaired": false,
+    "predecessor_evidence_transfer": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

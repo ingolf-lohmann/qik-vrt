@@ -205,7 +205,7 @@
   },
   "human_readable_feedback": {
     "objective_id": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
-    "state": "REQUIREMENT_PERSISTED_IMPLEMENTATION_AND_MEASUREMENT_OPEN",
+    "state": "FIRST_HTML_MONITOR_CANDIDATE_IMPLEMENTED_HUMAN_MEASUREMENT_OPEN",
     "owner": "Ingolf Lohmann, Product Owner",
     "directive": "Insgesamt werden wir die Fehlermeldungen und die an der Oberfläche sichtbaren Rückmeldungen im Allgemeinen fortlaufend menschenlesbarer gestalten.",
     "human_contract": "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md#continuous-human-readable-feedback",
@@ -259,7 +259,9 @@
       "machine_readable_state_and_evidence_remain_identical_in_meaning",
       "accessibility_localization_privacy_and_existing_mandatory_gates_pass"
     ],
-    "measurement_state": "NOT_MEASURED",
-    "runtime_rollout_verified": false
+    "measurement_state": "AUTOMATED_FIELD_COVERAGE_RECORDED_HUMAN_COMPREHENSION_NOT_MEASURED",
+    "runtime_rollout_verified": false,
+    "implementation_work_unit": "state/work_units/MONITOR_HTTP404_HUMAN_FEEDBACK_20261006_V1.json",
+    "runtime_implementation_scope": "docs/monitor/index.html candidate; public deployment and other surfaces remain unverified"
   }
 }
