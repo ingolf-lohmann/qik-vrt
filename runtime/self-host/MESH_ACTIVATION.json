@@ -299,5 +299,51 @@
       "native_safety": "Confirmed native effects retain immediate replication/fencing/Effect-Ack obligations. Deferred work proposals never become durable cross-node effect confirmation or execution authority.",
       "implementation_scope": "Existing S1 launcher private snapshot/fsync/OS-lock primitives and existing MonitorStore/listener; no parallel scheduler, executor or native effect ledger."
     }
+  },
+  "deployment_contract": {
+    "all_manufacturers_verified": false,
+    "app_store_required": false,
+    "authorized_at": "2026-10-06T08:31:00+02:00",
+    "cloud_sync_verified": false,
+    "effect_ack_done": false,
+    "git_required_at_runtime": false,
+    "live_acceptance_required": true,
+    "local_url_produced_by_runtime_adapter_from_embedded_carrier": true,
+    "logical_object": "ONE_MONOLITHIC_INTERACTIVE_STORE",
+    "mobile_candidate": {
+      "adapter": "BROWSER_ORIGIN_RUNTIME_NOT_IMPLEMENTED",
+      "public_https_and_offline_persistence_require_separate_witness": true,
+      "requires_initial_executable_bootstrap": true,
+      "standalone_file_cannot_self_execute_without_runtime": true
+    },
+    "mobile_runtime_verified": false,
+    "native_candidate": {
+      "adapter": "EXISTING_S1_LINUX_PYTHON_NODE",
+      "code_cache": "DISPOSABLE_EXTRACTED_SEALED_CARRIER",
+      "credentials": "PRIVATE_EXTERNAL_RUNTIME_BINDING_NOT_STORED_IN_OBJECT",
+      "existing_ledger_path": "<private-state>/temdd/events.sqlite3",
+      "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+      "portable_cut": "STOP_BOTH_EXISTING_WRITERS_AND_CHECKPOINT_BEFORE_MAIN_FILE_COPY",
+      "terminal_profile": "temdd",
+      "terminal_url": "http://127.0.0.1:<port>/client"
+    },
+    "native_runtime_verified": false,
+    "owner": "Ingolf Lohmann",
+    "role_exemptions": [],
+    "role_scope": [
+      "REPOSITORY_NODE",
+      "REPOSITORY_CLIENT"
+    ],
+    "runtime_adapter_is_not_store_authority": true,
+    "runtime_adapter_required": true,
+    "same_store_format_and_starter": true,
+    "schema": "qikvrt-node-client-monolithic-deployment/v1",
+    "source_locators": [
+      "https://www.w3.org/TR/service-workers/",
+      "https://webkit.org/blog/12257/the-file-system-access-api-with-origin-private-file-system/",
+      "https://webkit.org/blog/14403/updates-to-storage-policy/",
+      "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
+    ],
+    "terminal": "REACT_HTML_PASSIVE_INPUT_OUTPUT_OPENED_ON_DEMAND"
   }
 }

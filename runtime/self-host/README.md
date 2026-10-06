@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.6.0
+# S1 standalone node package, version 1.7.0
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.
@@ -584,3 +584,97 @@ restart tests do not close the host admission condition.
 S1 remains OPEN until host admission, exact deployment,
 fresh public use/readback and deployed restart acceptance are established.
 No public URL, S1 DONE or EFFECT_ACK_DONE is asserted.
+
+## Same monolithic store for a Node and a Client
+
+The Owner's deployment instruction of 6 October 2026 is bound in
+`MESH_ACTIVATION.json#/deployment_contract`. A Node and a Client use the same
+store format and starter. Their role does not select a different distribution.
+The Terminal remains passive input/output and is opened on demand.
+
+The native candidate extends the existing S1 builder. It puts the sealed package
+files, pinned React runtime and package manifest into a `carrier` table in the
+same SQLite file used by the original native TEMDD ledger. The ledger's
+`meta` and `events` tables, owner ingress, preparation, commit, replay and
+independent SQLite readback are reused unchanged. No second effect kernel or
+Git service is required at runtime. The SQLite file is a normal filesystem file.
+
+The current native ABI places that object at
+`<private-state>/temdd/events.sqlite3`. The code extracted from its pinned
+carrier is a disposable cache, not another authoritative repository. Host
+configuration, credentials, operating-system locks and sockets are runtime
+bindings. They are not part of a public distribution or copied as private state.
+The separate monitor journal remains a read projection; its history is not
+included in a single-file native-ledger relocation.
+
+After making a reviewed exact S1 export with the existing `pack` operation:
+
+```sh
+python3 tools/qikvrt_self_host.py monolith-pack \
+  --root /private/sealed-package --manifest-sha256 <independent-manifest-pin> \
+  --output /private/state/temdd/events.sqlite3
+python3 tools/qikvrt_self_host.py monolith-run \
+  --root /private/state/temdd/events.sqlite3 \
+  --manifest-sha256 <independent-manifest-pin> --config /private/config.json
+```
+
+The parent directories must already be owner-only directories. Creation is
+exclusive. The configuration retains the existing exact head/tree, runtime,
+token and volume binding; `terminal_profile` must be `temdd`. The outer starter
+must itself have the same bytes as the starter embedded in the sealed carrier.
+The ready response and `/api/runtime` give the local React URL
+`http://127.0.0.1:<port>/client`. `/node` and `/client` serve the same React
+carrier. No browser or Firefox/noVNC process is opened by `monolith-run`.
+The existing owner input protocol still uses private Unix ingress; this patch
+does not claim the separately requested complete owner REST interface.
+
+Opening or reading the Terminal does not append an input or start a workflow.
+An explicitly committed owner input is persisted by the existing ledger in
+the same monolithic file and read back independently. This is a local native
+ledger effect, not cloud synchronization, public deployment or Mesh acceptance.
+
+### Transfer only a stable complete image
+
+SQLite can need WAL/SHM companions while the runtime is active. A main-file-only
+copy of an active runtime is not a complete snapshot. Stop the runtime, then:
+
+```sh
+python3 tools/qikvrt_self_host.py monolith-checkpoint \
+  --root /private/state/temdd/events.sqlite3 \
+  --manifest-sha256 <independent-manifest-pin> --config /private/config.json
+```
+
+This operation must hold both existing writer locks, verify the volume binding,
+checkpoint the WAL, return to the single-main-file journal mode, reject remaining
+transaction companions, fsync the file and directory, and return its fresh hash.
+It does not admit a live competing writer or copy private tokens. Only after this
+cut may the object be transferred alone. The recipient independently verifies
+the carrier pin and provisions its own private runtime binding. Old prepared
+inputs retain their old route binding and are not automatically reauthorized.
+Automatic replication, fence/quorum takeover, power-loss and mobile evidence
+remain separate acceptance obligations.
+
+### Mobile runtime remains an open implementation and witness
+
+The same logical object contract applies to mobile clients. This candidate's
+adapter is still Linux/Python/Node. A filesystem file does not execute without
+a suitable runtime, and a mobile browser cannot be assumed to run this native
+starter. A mobile origin adapter for this SQLite carrier is not implemented.
+
+WebKit supports Home Screen web apps without an App Store; it requires an
+executable initial web entry. Service Worker registration requires the permitted
+HTTP(S) origin and secure-context conditions, rather than an arbitrary embedded
+blob worker script. Browser-owned persistent storage is origin-bound, may not
+map to a user-visible file, and is subject to quota and eviction. These platform
+contracts must be checked by the adapter and exercised on actual devices.
+
+Primary source locators:
+
+- https://www.w3.org/TR/service-workers/
+- https://webkit.org/blog/12257/the-file-system-access-api-with-origin-private-file-system/
+- https://webkit.org/blog/14403/updates-to-storage-policy/
+- https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/
+
+`mobile_runtime_verified=false`, `all_manufacturers_verified=false`, and
+`EFFECT_ACK_DONE=false` remain explicit. Neither a source gate nor a native Linux
+test supplies mobile, public URL or cloud synchronization acceptance.

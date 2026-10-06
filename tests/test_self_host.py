@@ -114,6 +114,17 @@ class MeshContractTests(unittest.TestCase):
             self.activation = json.loads(host.raw_json(original))
             self.activation["required_node_runtime"]["local_repository_cache"][key] = True
             self.refuse("MESH_LOCAL_CACHE_AND_IDLE_TRANSFER_CONTRACT_REQUIRED")
+    def test_node_client_deployment_cannot_exempt_a_role_or_launch_an_active_terminal(self):
+        deployment = self.activation['deployment_contract']
+        for field, value in (('role_scope', ['REPOSITORY_NODE']), ('role_exemptions', ['REPOSITORY_CLIENT']),
+                             ('same_store_format_and_starter', False), ('terminal', 'AUTOMATIC_ACTIVE_CONTROLLER'),
+                             ('runtime_adapter_required', False), ('live_acceptance_required', False),
+                             ('app_store_required', True), ('git_required_at_runtime', True)):
+            with self.subTest(field=field):
+                old = deployment[field]
+                deployment[field] = value
+                self.refuse('NODE_CLIENT_MONOLITHIC_PASSIVE_DEPLOYMENT_CONTRACT_REQUIRED')
+                deployment[field] = old
 
     def test_wrong_json_shapes_refuse_through_the_structured_cli(self):
         for activation in ([], {"required_node_runtime": []}):

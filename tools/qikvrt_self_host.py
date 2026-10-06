@@ -29,6 +29,7 @@ import urllib.error
 import subprocess
 import sys
 import tarfile
+import tempfile
 import threading
 import uuid
 from http.server import ThreadingHTTPServer
@@ -41,6 +42,9 @@ STATE_FILES = frozenset(("binding.json", "monitor/node.json", "temdd/events.sqli
                         "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm"))
 STATE_MAX_BYTES = 2 * 1024 * 1024 * 1024
 MESH_CONTRACT = "runtime/self-host/MESH_ACTIVATION.json"
+MONOLITH_APPLICATION_ID = 0x51495654
+MONOLITH_MAX_FILES = 4096
+MONOLITH_MAX_FILE_BYTES = 16 * 1024 * 1024
 MESH_COMPONENT_FILES = {
     "universal_transputer": ["src/qikvrt_temdd_event_ledger.py"],
     "universal_terminal": ["src/qikvrt_temdd_event_ledger.py", "src/qikvrt_effect_ack_http_terminal.py",
@@ -439,6 +443,18 @@ def mesh_contract(root, definition=None):
         value = limits.get(field)
         if field not in limits or (value is not None and (type(value) is not int or value < 0)):
             raise ValueError("MESH_WORKLOAD_BOUND_AVAILABILITY_LIMIT_REQUIRED")
+    deployment = activation.get("deployment_contract", {})
+    if (not isinstance(deployment, dict)
+            or deployment.get("schema") != "qikvrt-node-client-monolithic-deployment/v1"
+            or deployment.get("role_scope") != ["REPOSITORY_NODE", "REPOSITORY_CLIENT"]
+            or deployment.get("role_exemptions") != []
+            or deployment.get("same_store_format_and_starter") is not True
+            or deployment.get("terminal") != "REACT_HTML_PASSIVE_INPUT_OUTPUT_OPENED_ON_DEMAND"
+            or deployment.get("runtime_adapter_required") is not True
+            or deployment.get("live_acceptance_required") is not True
+            or deployment.get("app_store_required") is not False
+            or deployment.get("git_required_at_runtime") is not False):
+        raise ValueError("NODE_CLIENT_MONOLITHIC_PASSIVE_DEPLOYMENT_CONTRACT_REQUIRED")
     component_hashes = {}
     for name in sorted(required):
         path = root / name
@@ -626,6 +642,147 @@ def private_path(path, directory=False):
     if (info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) != (0o700 if directory else 0o600)
             or not (stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode))):
         raise ValueError("OWNER_ONLY_PRIVATE_PATH_REQUIRED")
+
+
+def pack_monolith(package, pin, output):
+    """Put the sealed S1 carrier into the *existing* native SQLite datastore.
+
+    The recovered ledger later creates its own meta/events tables in this same
+    file. No second ledger, input protocol, execution kernel or React dependency.
+    This is a native Linux carrier, not an assertion of mobile browser support.
+    """
+    manifest = verify(package, pin)
+    private_output(output, (package,))
+    synced_private_file(output, b"")
+    try:
+        with contextlib.closing(sqlite3.connect(output)) as db:
+            db.execute("PRAGMA journal_mode=DELETE")
+            db.execute("PRAGMA synchronous=FULL")
+            db.execute("PRAGMA application_id=" + str(MONOLITH_APPLICATION_ID))
+            db.execute("PRAGMA user_version=1")
+            with db:
+                db.execute("CREATE TABLE carrier (path TEXT PRIMARY KEY, body BLOB NOT NULL)")
+                for name in sorted(set(manifest["files"]) | {"MANIFEST.json"}):
+                    db.execute("INSERT INTO carrier VALUES (?,?)", (name, (package / name).read_bytes()))
+        with output.open("rb") as stored: os.fsync(stored.fileno())
+        fd = os.open(output.parent, os.O_RDONLY)
+        try: os.fsync(fd)
+        finally: os.close(fd)
+        return {"schema": "qikvrt-monolithic-store-receipt/v1", "state": "NATIVE_CONTAINER_CREATED",
+                "manifest_sha256": pin, "file_sha256": digest(output.read_bytes()),
+                "source_head": manifest["source_head"], "source_tree": manifest["source_tree"],
+                "role_scope": "NODE_AND_CLIENT_SAME_FORMAT_AND_STARTER",
+                "native_runtime_executed": False, "mobile_runtime_verified": False, "effect_ack_done": False}
+    except BaseException:
+        output.unlink(missing_ok=True)
+        raise
+
+
+@contextlib.contextmanager
+def materialized_monolith(store, pin):
+    """Verify all embedded bytes before reconstructing a disposable code cache.
+
+    Only the existing ledger may mutate meta/events; the independently pinned
+    carrier remains immutable. Active SQLite journal/WAL files are transactional
+    companions, so copying the main file alone while a writer runs is forbidden.
+    """
+    private_path(store)
+    for suffix in ("-wal", "-shm", "-journal"):
+        sidecar = Path(str(store) + suffix)
+        if sidecar.exists() or sidecar.is_symlink(): private_path(sidecar)
+    allowed_tables = {"carrier", "meta", "events", "sqlite_sequence"}
+    with contextlib.closing(sqlite3.connect(store.as_uri() + "?mode=ro", uri=True)) as db:
+        db.execute("PRAGMA trusted_schema=OFF")
+        if (db.execute("PRAGMA application_id").fetchone() != (MONOLITH_APPLICATION_ID,)
+                or db.execute("PRAGMA user_version").fetchone() != (1,)
+                or db.execute("PRAGMA quick_check").fetchone() != ("ok",)):
+            raise ValueError("MONOLITH_FORMAT_OR_INTEGRITY_MISMATCH")
+        tables = set()
+        for kind, name, table, sql in db.execute("SELECT type,name,tbl_name,sql FROM sqlite_master"):
+            if kind == "table" and name in allowed_tables and "VIRTUAL" not in (sql or "").upper():
+                tables.add(name)
+            elif kind == "index" and (name == "events_binding" and table == "events"
+                    or name.startswith("sqlite_autoindex_") and table in allowed_tables):
+                pass
+            else:
+                raise ValueError("MONOLITH_UNADMITTED_SCHEMA")
+        if "carrier" not in tables:
+            raise ValueError("MONOLITH_CARRIER_REQUIRED")
+        sizes = dict(db.execute("SELECT path,length(body) FROM carrier"))
+        if (not 1 <= len(sizes) <= MONOLITH_MAX_FILES or "MANIFEST.json" not in sizes
+                or any(type(size) is not int or not 1 <= size <= MONOLITH_MAX_FILE_BYTES for size in sizes.values())):
+            raise ValueError("BOUNDED_MONOLITH_CARRIER_REQUIRED")
+        raw = db.execute("SELECT body FROM carrier WHERE path=?", ("MANIFEST.json",)).fetchone()[0]
+        if not isinstance(raw, bytes) or digest(raw) != pin:
+            raise ValueError("PACKAGE_MANIFEST_PIN_MISMATCH")
+        manifest = json.loads(raw)
+        if set(sizes) != set(manifest["files"]) | {"MANIFEST.json"}:
+            raise ValueError("MONOLITH_CARRIER_INVENTORY_MISMATCH")
+        with tempfile.TemporaryDirectory(prefix="qikvrt-carrier-") as temp:
+            package = Path(temp)
+            for name, body in db.execute("SELECT path,body FROM carrier ORDER BY path"):
+                if (not isinstance(name, str) or not name or name.startswith("/")
+                        or any(part in ("", ".", "..") for part in name.split("/")) or not isinstance(body, bytes)):
+                    raise ValueError("UNSAFE_MONOLITH_CARRIER_PATH")
+                mode = "100644" if name == "MANIFEST.json" else manifest["files"][name]["mode"]
+                if mode not in ("100644", "100755"):
+                    raise ValueError("REGULAR_COMMITTED_FILES_REQUIRED")
+                dest = package / name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                with dest.open("xb") as target: target.write(body)
+                dest.chmod(0o755 if mode == "100755" else 0o644)
+            verify(package, pin)
+            # Release the read transaction before a native writer starts.
+            db.close()
+            yield package
+
+
+def run_monolith(store, pin, config_path):
+    if config_path is None: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
+    private_path(config_path)
+    config = json.loads(config_path.read_bytes())
+    if (config.get("terminal_profile") != "temdd"
+            or store != Path(config["state_dir"]) / "temdd/events.sqlite3"):
+        raise ValueError("MONOLITH_EXISTING_NATIVE_LEDGER_PATH_AND_PASSIVE_PROFILE_REQUIRED")
+    with materialized_monolith(store, pin) as package:
+        if digest(Path(__file__).read_bytes()) != digest((package / "tools/qikvrt_self_host.py").read_bytes()):
+            raise ValueError("MONOLITH_STARTER_BINDING_MISMATCH")
+        return start(package, pin, config_path, monolith=True)
+
+
+def checkpoint_monolith(store, pin, config_path):
+    """Seal a transferable main file only after both existing writer locks stop."""
+    if config_path is None: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
+    private_path(config_path)
+    config = json.loads(config_path.read_bytes())
+    if (config.get("terminal_profile") != "temdd"
+            or store != Path(config["state_dir"]) / "temdd/events.sqlite3"):
+        raise ValueError("MONOLITH_EXISTING_NATIVE_LEDGER_PATH_AND_PASSIVE_PROFILE_REQUIRED")
+    with materialized_monolith(store, pin) as package:
+        volume, binding = state_binding(package, pin, config_path)
+        with stopped_state(volume):
+            bound = volume / "binding.json"
+            private_path(bound)
+            if json.loads(bound.read_bytes()) != binding:
+                raise ValueError("PERSISTENT_VOLUME_BINDING_MISMATCH")
+            with contextlib.closing(sqlite3.connect(store)) as db:
+                if db.execute("PRAGMA wal_checkpoint(TRUNCATE)").fetchone() != (0, 0, 0):
+                    raise ValueError("MONOLITH_CHECKPOINT_BUSY")
+                if db.execute("PRAGMA journal_mode=DELETE").fetchone() != ("delete",):
+                    raise ValueError("MONOLITH_IDLE_MAIN_FILE_REQUIRED")
+                count = db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+                epoch = db.execute("SELECT value FROM meta WHERE key='epoch'").fetchone()[0]
+            if any(Path(str(store) + suffix).exists() for suffix in ("-wal", "-shm", "-journal")):
+                raise ValueError("MONOLITH_TRANSACTION_COMPANION_STILL_PRESENT")
+            with store.open("rb") as source: os.fsync(source.fileno())
+            fd = os.open(store.parent, os.O_RDONLY)
+            try: os.fsync(fd)
+            finally: os.close(fd)
+            raw = store.read_bytes()
+            return {"schema": "qikvrt-monolithic-store-receipt/v1", "state": "STABLE_SINGLE_FILE_IMAGE",
+                    "manifest_sha256": pin, "file_sha256": digest(raw), "bytes": len(raw),
+                    "ledger_id": epoch, "ledger_records": count, "both_writer_locks_held": True,
+                    "cloud_synchronization_verified": False, "mobile_runtime_verified": False, "effect_ack_done": False}
 
 
 def state_binding(package, pin, config_path):
@@ -1216,7 +1373,7 @@ def migration_module():
     return module
 
 
-def start(package, pin, config_path):
+def start(package, pin, config_path, monolith=False):
     manifest = verify(package, pin)
     private_path(config_path)
     raw = config_path.read_bytes()
@@ -1326,6 +1483,7 @@ def start(package, pin, config_path):
         env = {"PATH": os.environ.get("PATH", ""), "LANG": "C.UTF-8", "QIKVRT_NODE_CONFIG": str(config_path),
                "QIKVRT_NODE_PACKAGE": str(package), "QIKVRT_NODE_MANIFEST_SHA256": pin,
                "QIKVRT_NODE_CONFIG_SHA256": digest(raw)}
+        if monolith: env["QIKVRT_MONOLITH_MODE"] = "SQLITE_CARRIER_V1"
         process = None
         browser_processes, browser_logs = [], []
         def stop(_signum, _frame):
@@ -1368,7 +1526,7 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("pack", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -1427,6 +1585,18 @@ def main():
         elif args.operation == "verify":
             verify(args.root, args.manifest_sha256)
             result = {"state": "EXACT_PACKAGE_RUNTIME_VERIFIED", "effect_ack_done": False}
+        elif args.operation == "monolith-pack":
+            result = pack_monolith(args.root.resolve(), args.manifest_sha256, args.output)
+        elif args.operation == "monolith-verify":
+            with materialized_monolith(args.root.absolute(), args.manifest_sha256):
+                result = {"state": "EXACT_MONOLITH_CARRIER_VERIFIED", "mobile_runtime_verified": False,
+                          "effect_ack_done": False}
+        elif args.operation == "monolith-run":
+            return run_monolith(args.root.absolute(), args.manifest_sha256,
+                                args.config.absolute() if args.config else None)
+        elif args.operation == "monolith-checkpoint":
+            result = checkpoint_monolith(args.root.absolute(), args.manifest_sha256,
+                                         args.config.absolute() if args.config else None)
         elif args.operation == "admit":
             result = admission_plan(args.root.resolve(), args.manifest_sha256, args.config,
                                     args.admission, args.admission_sha256)

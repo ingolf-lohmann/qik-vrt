@@ -51,6 +51,10 @@ const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: 
   terminal_scope: manifest.terminal_scope, terminal_profile:config.terminal_profile || 'reference',
   native_terminal_daemon_available:manifest.native_terminal_daemon_included === true && ['temdd','firefox'].includes(config.terminal_profile),
   browser_startup_verified:config.terminal_profile === 'firefox',
+  local_url:'http://127.0.0.1:'+config.port+'/client',
+  terminal_opening:config.terminal_profile === 'firefox' ? 'EXPLICIT_FIREFOX_PROFILE' : 'ON_DEMAND_URL',
+  deployment_object:process.env.QIKVRT_MONOLITH_MODE === 'SQLITE_CARRIER_V1' ? 'NATIVE_SQLITE_CARRIER_AND_LEDGER' : 'SEALED_DIRECTORY',
+  mobile_runtime_verified:false,
   public_routing_verified: false, effect_ack_done: false});
 async function routes(request, response, url) {
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
@@ -125,6 +129,8 @@ const monitor = createMonitor({env,repositories,handleRequest:routes,
 monitor.server.listen(config.port,config.host,() => {
   console.log(JSON.stringify({state:['temdd','firefox'].includes(config.terminal_profile)?'SELF_HOST_NATIVE_READY':'SELF_HOST_REFERENCE_READY',source_head:manifest.source_head,
     source_tree:manifest.source_tree,manifest_sha256:pin,config_sha256:hash(configBytes),node_id:config.node_id,
-    adapter:config.adapter,effect_ack_done:false}));
+    adapter:config.adapter,local_url:'http://127.0.0.1:'+config.port+'/client',
+    terminal_opening:config.terminal_profile === 'firefox' ? 'EXPLICIT_FIREFOX_PROFILE' : 'ON_DEMAND_URL',
+    effect_ack_done:false}));
 });
 for (const s of ['SIGINT','SIGTERM']) process.on(s,()=>{monitor.server.closeAllConnections();monitor.server.close(()=>process.exit(0));});

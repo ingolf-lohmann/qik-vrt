@@ -3,6 +3,7 @@
 """Actual recovered daemon in a Git-free S1 export, never a substitute fixture."""
 from __future__ import annotations
 import hashlib
+import contextlib
 import http.client
 import json
 import os
@@ -121,7 +122,7 @@ class NativeStandaloneTests(unittest.TestCase):
 
     def sql(self, query):
         path = self.volume / 'temdd/events.sqlite3'
-        with sqlite3.connect(path.as_uri()+'?mode=ro', uri=True) as db:
+        with contextlib.closing(sqlite3.connect(path.as_uri()+'?mode=ro', uri=True)) as db:
             return db.execute(query).fetchall()
 
     def commit_input(self):
@@ -328,6 +329,144 @@ class NativeStandaloneTests(unittest.TestCase):
         self.config['subject_pr'] = 0; self.save_config()
         self.assertIn('NATIVE_TERMINAL_SUBJECT', self.denied())
         self.assertFalse((self.volume/'temdd/events.sqlite3').exists())
+
+
+class MonolithicStoreTests(unittest.TestCase):
+    """Real original daemon, carrier bytes and input receipts in one SQLite file."""
+    setUpClass = NativeStandaloneTests.__dict__['setUpClass']
+    tearDownClass = NativeStandaloneTests.__dict__['tearDownClass']
+    save_config = NativeStandaloneTests.save_config
+    start = NativeStandaloneTests.start
+    stop = NativeStandaloneTests.stop
+    get = NativeStandaloneTests.get
+    cli = NativeStandaloneTests.cli
+    sql = NativeStandaloneTests.sql
+    commit_input = NativeStandaloneTests.commit_input
+
+    def setUp(self):
+        NativeStandaloneTests.setUp(self)
+        directory = self.volume / 'temdd'; directory.mkdir(mode=0o700)
+        self.store = directory / 'events.sqlite3'
+        self.created = host.pack_monolith(self.export, self.pin, self.store)
+
+    def command(self, package=None, pin=None):
+        return [sys.executable, '-B', str(self.export/'tools/qikvrt_self_host.py'), 'monolith-run',
+                '--root', str(self.store), '--manifest-sha256', pin or self.pin, '--config', str(self.config_path)]
+
+    def test_same_native_store_serves_both_roles_without_opening_or_inserting_input(self):
+        runtime = self.start()
+        self.assertEqual(runtime['deployment_object'], 'NATIVE_SQLITE_CARRIER_AND_LEDGER')
+        self.assertEqual(runtime['local_url'], self.url+'/client')
+        self.assertEqual(runtime['terminal_opening'], 'ON_DEMAND_URL')
+        self.assertFalse(runtime['browser_startup_verified'])
+        self.assertFalse(runtime['mobile_runtime_verified'])
+        for path in ('/node', '/client', '/mesh'):
+            status, html = self.get(path)
+            self.assertEqual(status, 200)
+            self.assertIn('qikvrt-react-runtime.js', html)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(0,)])
+        status, js = self.get('/assets/js/qikvrt-react-runtime.js')
+        self.assertEqual(status, 200)
+        self.assertEqual(js.encode(), (self.export/'docs/monitor/react-runtime.js').read_bytes())
+
+    def test_actual_input_and_restart_preserve_original_readback_in_the_carrier_database(self):
+        self.start()
+        prepared, event = self.commit_input()
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM carrier'), [(len(self.manifest['files'])+1,)])
+        self.stop(abrupt=True)
+        self.start()
+        code, receipt = self.cli('durable-readback', prepared)
+        self.assertEqual(code, 0, receipt)
+        self.assertEqual(receipt['durable_readback'], event)
+        code, replay = self.cli('durable-commit', prepared)
+        self.assertEqual(code, 2, replay)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
+
+    def test_checkpoint_blocks_live_writer_then_single_file_relocation_restores_state(self):
+        self.start()
+        _, event = self.commit_input()
+        with self.assertRaises(BlockingIOError):
+            host.checkpoint_monolith(self.store, self.pin, self.config_path)
+        self.stop()
+        receipt = host.checkpoint_monolith(self.store, self.pin, self.config_path)
+        self.assertEqual(receipt['state'], 'STABLE_SINGLE_FILE_IMAGE')
+        self.assertEqual(receipt['file_sha256'], host.digest(self.store.read_bytes()))
+        self.assertEqual(receipt['ledger_records'], 1)
+        self.assertTrue(receipt['both_writer_locks_held'])
+        self.assertFalse(receipt['cloud_synchronization_verified'])
+        self.assertFalse(receipt['effect_ack_done'])
+        self.assertFalse(any(Path(str(self.store)+s).exists() for s in ('-wal','-shm','-journal')))
+        # Only this file is copied. No old binding, node journal, code cache,
+        # socket, token or process state is carried to the new private volume.
+        self.volume = self.work/'successor-volume'; self.volume.mkdir(mode=0o700)
+        (self.volume/'temdd').mkdir(mode=0o700)
+        successor = self.volume/'temdd/events.sqlite3'
+        shutil.copy2(self.store, successor); self.store = successor
+        self.config['state_dir'] = str(self.volume); self.save_config()
+        runtime = self.start()
+        self.assertEqual(runtime['deployment_object'], 'NATIVE_SQLITE_CARRIER_AND_LEDGER')
+        self.assertEqual(json.loads(self.sql('SELECT body FROM events WHERE seq=1')[0][0]),
+                         {k:v for k,v in event.items() if k not in ('id','ledger_digest')})
+        code, plan = self.cli('durable-prepare'); self.assertEqual(code, 0, plan)
+        code, committed = self.cli('durable-commit', plan); self.assertEqual(code, 0, committed)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(2,)])
+
+    def test_wrong_pin_embedded_bytes_and_schema_refuse_without_a_listener(self):
+        for mutation in ('pin', 'bytes', 'trigger'):
+            with self.subTest(mutation=mutation):
+                original = self.store.read_bytes()
+                try:
+                    if mutation == 'bytes':
+                        with sqlite3.connect(self.store) as db:
+                            db.execute("UPDATE carrier SET body=? WHERE path=?", (b'unadmitted bytes','docs/monitor/react-runtime.js'))
+                    elif mutation == 'trigger':
+                        with sqlite3.connect(self.store) as db:
+                            db.execute('CREATE TRIGGER unadmitted AFTER DELETE ON carrier BEGIN SELECT 1; END')
+                    with self.assertRaises(ValueError):
+                        with host.materialized_monolith(self.store, '0'*64 if mutation=='pin' else self.pin): pass
+                finally: self.store.write_bytes(original)
+
+    def test_pack_is_create_only_and_symlinked_or_public_objects_are_refused(self):
+        original = self.store.read_bytes()
+        with self.assertRaises(ValueError): host.pack_monolith(self.export,self.pin,self.store)
+        self.assertEqual(self.store.read_bytes(), original)
+        link = self.work/'link.sqlite3'; link.symlink_to(self.store)
+        with self.assertRaises(ValueError):
+            with host.materialized_monolith(link,self.pin): pass
+        self.store.chmod(0o644)
+        with self.assertRaises(ValueError):
+            with host.materialized_monolith(self.store,self.pin): pass
+        self.store.chmod(0o600)
+
+    def test_browser_profile_cannot_silently_open_a_terminal_from_monolith_run(self):
+        self.config['terminal_profile']='firefox'; self.save_config()
+        result = subprocess.run(self.command(),capture_output=True,text=True,timeout=15)
+        self.assertEqual(result.returncode,2)
+        self.assertIn('PASSIVE_PROFILE_REQUIRED',json.loads(result.stdout)['cause'])
+
+    def test_original_sqlite_kernel_appends_replays_and_closes_with_carrier_bytes_intact(self):
+        # Executes the real kernel without Unix ingress. This is useful bounded
+        # evidence in sandboxes which deny AF_UNIX; it is not a process witness.
+        host.load_source(self.export, 'qikvrt_effect_ack_http_terminal')
+        native = host.load_source(self.export, 'qikvrt_temdd_event_ledger')
+        subject = {'repository':'ingolf-lohmann/qik-vrt','pr':457,'head':self.head,'tree':self.tree}
+        ledger = native.Ledger(self.volume, subject)
+        input_event = {'schema':native.SCHEMA,'kind':'OBSERVE','subject':subject,
+            'provenance':{'source':'transputer','native_event_id':'monolith-kernel-witness'},
+            'observed_at':'2026-10-06T06:31:00Z','message':'synthetic local kernel witness',
+            'payload':{'text':'Grüße Ω','effect_ack_done':False}}
+        try:
+            event = ledger.append(input_event)
+            self.assertEqual(ledger.append(input_event), event)
+            self.assertEqual(ledger.replay(0), [event])
+        finally: ledger.close()
+        ledger = native.Ledger(self.volume, subject)
+        try: self.assertEqual(ledger.replay(0), [event])
+        finally: ledger.close()
+        with host.materialized_monolith(self.store,self.pin) as package:
+            self.assertEqual((package/'docs/monitor/react-runtime.js').read_bytes(),
+                             (self.export/'docs/monitor/react-runtime.js').read_bytes())
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
 
 
 class StateSnapshotBackendTests(unittest.TestCase):

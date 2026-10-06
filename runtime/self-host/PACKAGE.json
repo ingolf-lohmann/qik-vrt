@@ -93,10 +93,11 @@
     "tools/qikvrt_self_host.py",
     "tools/qikvrt_self_host_migration.py"
   ],
+  "monolithic_store": "SQLITE_CARRIER_AND_EXISTING_NATIVE_LEDGER",
   "native_terminal_daemon_included": true,
   "providers_required": [],
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.6.0"
+  "version": "1.7.0"
 }
