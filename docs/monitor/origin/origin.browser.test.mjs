@@ -149,7 +149,7 @@ test('existing React entry: six product answers and passive personal preparation
   await page.locator('#nachweise summary').click();
   const answers=await page.locator('.product-answers>li').allTextContents();
   assert.equal(answers.length,6);
-  for(const [i,phrase] of [[0,'unterbrochen'],[1,'nicht belegt'],[2,'Ingolf Lohmann'],[3,'keine verbindliche Preisliste'],[4,'keine vollständige'],[5,'noch nicht gemessen']])assert.ok(answers[i].includes(phrase));
+  for(const [i,phrase] of [[0,'unterbrochen'],[1,'nicht belegt'],[2,'Ingolf Lohmann'],[3,'keine verbindliche Preisliste'],[4,'keine vollständige'],[5,'noch nicht gemessen']])assert.ok(answers[i].includes(phrase),'Dueck answer '+(i+1)+' must include its concrete scenario/disposition: '+phrase);
   entryChecks.push('ALL_SIX_DUECK_QUESTIONS_ANSWERED_WITH_EXPLICIT_LIMITS');
   await page.reload();await page.getByRole('heading',{name:'Deine Arbeit mit Kontext fortsetzen'}).waitFor();
   assert.equal(await page.getByRole('heading',{name:'Einrichtungsvorschau'}).count(),0);

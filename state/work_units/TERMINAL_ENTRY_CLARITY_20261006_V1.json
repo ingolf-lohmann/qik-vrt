@@ -64,6 +64,16 @@
       "browser_origin_controls": "success",
       "ui_outcome": "FAIL: exact Zielkonfiguration label lookup timed out after successful preview",
       "scope": "HISTORICAL_PREDECESSOR_ONLY; NO_EVIDENCE_TRANSFER"
+    },
+    "second_candidate": {
+      "head": "151ed17c59606f676c1ba06a3057b1e7c8636da6",
+      "tree": "982e6b959b841467d22b0fa6205ad0b10609f05c",
+      "native_run_id": 37448916148,
+      "native_job_id": 112220392822,
+      "artifact_id": 11404518647,
+      "artifact_sha256": "067ee8631ded1f9e66e8a5283e686be20a251c1560529f463fba34cc0bc1fec7",
+      "outcome": "Native/Origin and first three UI control groups succeeded; first Dueck-answer scenario substring absent; no complete UI witness.",
+      "visual_review": "Bound screenshot at 390px shows task, evidence boundaries and primary action before y=900. Desktop screenshot also retained. This is a predecessor-specific visual observation, not transferred candidate acceptance."
     }
   },
   "recovery": {
@@ -92,6 +102,10 @@
     {
       "cause": "First-viewport reachability was not previously measured.",
       "change": "Shorten the opening copy; compact narrow-viewport spacing; add an explicit primary-action viewport bound and source-pinned screenshots."
+    },
+    {
+      "cause": "The first expanded Dueck answer omitted the explicit interrupted-task scenario required by the checklist.",
+      "change": "Add unterbrochene to that answer and retain the failing disposition check; improve assertion diagnostics."
     }
   ]
 }

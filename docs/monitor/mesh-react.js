@@ -80,7 +80,7 @@
         h('details', null, h('summary', null, 'Sechs konkrete Fragen zum Produkt'),
           h('ol', {className:'product-answers'},
             h('li', null, h('h3', null, 'Welchen Arbeitsauftrag löst es?'),
-              h('p', null, 'Produktziel: Eine Recherche oder Entwicklungsaufgabe am nächsten Tag am letzten nachvollziehbaren Stand fortsetzen. Quellen, offene Fragen, Entscheidungen und Freigaben sollen erhalten bleiben. Außenwirkungen sollen nur im autorisierten Laufzeitpfad erfolgen.')),
+              h('p', null, 'Produktziel: Eine unterbrochene Recherche oder Entwicklungsaufgabe am nächsten Tag am letzten nachvollziehbaren Stand fortsetzen. Quellen, offene Fragen, Entscheidungen und Freigaben sollen erhalten bleiben. Außenwirkungen sollen nur im autorisierten Laufzeitpfad erfolgen.')),
             h('li', null, h('h3', null, 'Wer nutzt und kauft es?'),
               h('p', null, 'Die genannten Zielgruppen sind mögliche Anwender. Eine tatsächliche Kunden- oder Käuferbasis ist in diesem Nachweisstand nicht belegt.')),
             h('li', null, h('h3', null, 'Wer verantwortet Updates?'),
