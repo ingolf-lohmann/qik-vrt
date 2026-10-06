@@ -22,13 +22,15 @@
     "tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45"
   },
   "history": {
-    "first_parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "first_parent": "9400e4edbdc3cd4e72b96c786d1d508b0673059f",
     "source_pr": 452,
     "source_head_retained": true,
     "old_pr_retargeted": false,
     "history_rewrite": false,
     "source_is_git_parent": false,
-    "lineage": "Single-parent successor from main; immutable source commit/tree/path/blob closure preserves selected IETF origin. The old stack stays on its original ref."
+    "lineage": "Single-parent successor from main; immutable source commit/tree/path/blob closure preserves selected IETF origin. The old stack stays on its original ref.",
+    "initial_successor_parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "repair": "Preserve initial successor and append the native PR merge-projection binding correction."
   },
   "imports": [
     {
@@ -410,7 +412,8 @@
     "semantic_validator": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/verify_staging.py:boundaries + content_checks + validate_xml",
     "source_closure": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
     "native_gates": "Existing QIKVRT CI, Collective Proposal Review, global claim completion and code-owner observer; no new workflow.",
-    "technical_insufficiency": "The frozen staging main() requires off-scope Collective documents in the current worktree. A bounded successor verifier reuses its semantic checks with only the original XML materialized in an isolated temporary directory. Frozen package files are not edited."
+    "technical_insufficiency": "The frozen staging main() requires off-scope Collective documents in the current worktree. A bounded successor verifier reuses its semantic checks with only the original XML materialized in an isolated temporary directory. Frozen package files are not edited.",
+    "pr_test_projection": "Existing workflows may check out GitHub temporary merge refs. The verifier binds actual event parents and requires candidate-tree identity; only the real candidate ancestry is tested against the frozen main base."
   },
   "evidence_semantics": {
     "predecessor_evidence_transfer": false,

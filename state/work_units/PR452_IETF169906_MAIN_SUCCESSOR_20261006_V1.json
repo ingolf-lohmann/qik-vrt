@@ -24,7 +24,8 @@
   "artificial_cognitive_contributions": [
     "Fresh GitHub main/PR/source-tree reconstruction.",
     "Selected 35 unchanged IETF files; bounded portable Git source closure.",
-    "Successor validation and native CI binding without importing the Collective stack."
+    "Successor validation and native CI binding without importing the Collective stack.",
+    "Bind service-created PR merge projections separately from candidate ancestry and reject mismatched projection trees or extra parents."
   ],
   "joint_components": [],
   "unresolved_origin": [],
@@ -401,20 +402,31 @@
     ]
   },
   "git_history": {
-    "first_parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "first_parent": "9400e4edbdc3cd4e72b96c786d1d508b0673059f",
     "source_pr": 452,
     "source_head_retained": true,
     "old_pr_retargeted": false,
     "history_rewrite": false,
     "source_is_git_parent": false,
-    "lineage": "Single-parent successor from main; immutable source commit/tree/path/blob closure preserves selected IETF origin. The old stack stays on its original ref."
+    "lineage": "Single-parent successor from main; immutable source commit/tree/path/blob closure preserves selected IETF origin. The old stack stays on its original ref.",
+    "initial_successor_parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "repair": "Preserve initial successor and append the native PR merge-projection binding correction."
   },
   "verification": {
     "scope": "Containing successor only",
     "command": "make ietf-epistemic-main-successor-test",
     "native_command": "make test",
     "native_exact_head_gate_state_at_materialization": "NOT_YET_EXECUTED",
-    "fresh_post_write_readback_destination": "Successor PR body; no predecessor run transfer"
+    "fresh_post_write_readback_destination": "Successor PR body; no predecessor run transfer",
+    "historical_first_successor_observation": {
+      "head": "9400e4edbdc3cd4e72b96c786d1d508b0673059f",
+      "global_run": 37536802753,
+      "job": 112519790090,
+      "failing_step": "Run complete mandatory repository suite",
+      "error": "nonlinear old-stack ancestry imported",
+      "cause": "The new verifier classified the temporary GitHub merge projection as candidate ancestry.",
+      "successor_evidence": false
+    }
   },
   "human_decision": {
     "implementation_mandate": "EXPLICIT_CURRENT_TASK",

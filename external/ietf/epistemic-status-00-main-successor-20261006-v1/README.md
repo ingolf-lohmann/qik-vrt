@@ -36,7 +36,10 @@ make ietf-epistemic-main-successor-test
 make test
 ```
 
-The existing CI runs this gate on the actual candidate HEAD. Its negative
+The existing CI runs this gate on the actual candidate HEAD. A workflow's
+temporary GitHub PR merge projection is accepted only with its actual event
+parents bound and a tree byte-identical to the candidate; candidate ancestry
+still has to be linear from the frozen main base. Its negative
 controls reject off-scope imports, changed bytes and rewritten pending flags;
 the reused v3 semantic controls execute again. Applicable native workflows,
 including the code-owner event observer, must be freshly observed on this PR.

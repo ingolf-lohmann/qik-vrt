@@ -7,6 +7,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -58,6 +59,12 @@ def check_paths(imported, changed):
     require(set(changed) <= set(imported) | EXTRA, 'off-scope path imported')
 
 
+def check_projection(checkout, subject, parents, base, checkout_tree, subject_tree):
+    require(parents == [base, subject], 'unbound PR merge projection parents')
+    require(checkout != subject and checkout_tree == subject_tree,
+            'PR merge projection differs from the exact candidate tree')
+
+
 def checksums(directory):
     listed = set()
     for line in (directory/'SHA256SUMS').read_text().splitlines():
@@ -80,15 +87,33 @@ def verify(candidate_worktree=False, negative_controls=False):
             provenance['source']['root_tree_sha1'] == SOURCE_TREE, 'source binding drift')
     require(provenance['evidence_semantics']['predecessor_evidence_transfer'] is False,
             'predecessor evidence transfer')
-    head = git('rev-parse', 'HEAD^{commit}')
+    checkout = git('rev-parse', 'HEAD^{commit}')
     tree = git('rev-parse', 'HEAD^{tree}')
+    head = checkout
+    projection = False
+    # Some existing workflows check out GitHub's temporary refs/pull/N/merge.
+    # This service projection is not candidate ancestry. Bind its real event
+    # parents and require exact candidate-tree identity before using its files.
+    event_path = os.environ.get('GITHUB_EVENT_PATH')
+    if os.environ.get('GITHUB_EVENT_NAME') == 'pull_request' and event_path:
+        event = json.loads(Path(event_path).read_text())
+        pr = event['pull_request']
+        require(pr['base']['ref'] == 'main', 'PR event is not based on main')
+        event_head = pr['head']['sha']
+        if checkout != event_head:
+            subject_tree = git('rev-parse', event_head+'^{tree}')
+            check_projection(checkout, event_head, git('show','-s','--format=%P',checkout).split(),
+                             pr['base']['sha'], tree, subject_tree)
+            head = event_head
+            projection = True
     if not candidate_worktree:
         require(head != BASE, 'successor commit is not yet created')
         require(not git('diff', '--name-only', 'HEAD'), 'subject worktree differs from HEAD')
-    git('merge-base', '--is-ancestor', BASE, 'HEAD')
-    ancestry = git('rev-list', '--parents', BASE+'..HEAD').splitlines()
+    git('merge-base', '--is-ancestor', BASE, head)
+    ancestry = git('rev-list', '--parents', BASE+'..'+head).splitlines()
     require(all(len(row.split()) == 2 for row in ancestry), 'nonlinear old-stack ancestry imported')
-    changed = git('diff', '--name-only', BASE).splitlines()
+    changed = git('diff', '--name-only', BASE).splitlines() if candidate_worktree else git(
+        'diff', '--name-only', BASE, head).splitlines()
     imported = [x['path'] for x in provenance['imports']]
     check_paths(imported, changed)
     require(set(provenance['allowed_changed_paths']) == set(imported) | EXTRA,
@@ -161,6 +186,11 @@ def verify(candidate_worktree=False, negative_controls=False):
         altered = copy.deepcopy(manifest)
         altered['published'] = True
         denied('historical-pending-publication-flag-rejected', lambda: validation.boundaries(altered))
+        check_projection('projection', 'subject', ['base','subject'], 'base', 'tree','tree')
+        denied('merge-projection-tree-drift-rejected', lambda: check_projection(
+            'projection','subject',['base','subject'],'base','other-tree','tree'))
+        denied('merge-projection-extra-parent-rejected', lambda: check_projection(
+            'projection','subject',['base','old-stack','subject'],'base','tree','tree'))
         with tempfile.TemporaryDirectory() as temp:
             temporary_root = Path(temp)
             value = json.loads((HERE/'SOURCE_GIT_CAPSULE.json').read_text())
@@ -183,6 +213,7 @@ def verify(candidate_worktree=False, negative_controls=False):
         'schema':'qikvrt_ietf_main_successor_verification_v1',
         'result':'PASS_BOUNDED_MAIN_SUCCESSOR_FIXITY_PROVENANCE_AND_SEMANTICS',
         'subject':{'repository':'ingolf-lohmann/qik-vrt','head':head,'tree':tree,
+                   'checkout_head':checkout,'byte_identical_pr_merge_projection':projection,
                    'candidate_worktree':candidate_worktree,'base':BASE},
         'changed_paths':changed,'source_bound_imports':35,'source_capsule_objects':len(capsule.objects),
         'semantic_negative_controls':semantic['semantic_negative_controls'],
