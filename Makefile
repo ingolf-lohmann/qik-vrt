@@ -64,7 +64,7 @@ owner-reminders-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_owner_reminders
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_owner_reminders.py >/dev/null
 
-test: owner-reminders-test
+test: offline-repository-test  owner-reminders-test
 
 repository-terminal-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_repository_terminal
@@ -95,7 +95,7 @@ seed:
 e2e:
 	$(PYTHON) tests/test_tcpip_e2e.py
 
-test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
+test: offline-repository-test  compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify
 
 run-api:
@@ -113,16 +113,21 @@ clean:
 personal-firefox-boundary-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
 
-test: personal-firefox-boundary-test
+test: offline-repository-test  personal-firefox-boundary-test
 
 .PHONY: machine-verifiable-science-charter-test
 machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
-test: machine-verifiable-science-charter-test
+test: offline-repository-test  machine-verifiable-science-charter-test
 
 .PHONY: ruleset-authority-test
 ruleset-authority-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_ruleset_authority_token_route
 
-test: ruleset-authority-test
+test: offline-repository-test  ruleset-authority-test
+
+.PHONY: offline-repository-test
+offline-repository-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_offline_repository
+	node --test docs/monitor/offline/repository.test.mjs

@@ -1,0 +1,106 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "identity_and_observation_limits": "API attribution is not independent native human approval or an actual iPhone-device witness.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "offline-iphone-repository-20261007",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git",
+      "Python standard library",
+      "Node",
+      "native Chromium and WebKit CI",
+      "Railway static hosting"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Implement bounded content-addressed IndexedDB working-tree persistence, history and two-device merge.",
+    "Reuse exact local React production runtime and its license.",
+    "Generate native Git-object-bound transfer and hash-pinned offline client.",
+    "Require fresh complete-source real-browser readback and restart; preserve Main governance."
+  ],
+  "external_effects": {
+    "authorized": "Reviewable branch/PR, fresh CI transfer artifacts and isolated read-only static HTTPS delivery",
+    "main_write": false,
+    "merge": false,
+    "native_review_submission": false,
+    "private_client_data_upload": false,
+    "ruleset_change": false
+  },
+  "git_history": {
+    "branch": "work/offline-iphone-repository-20261007",
+    "candidate_head_binding": "Final native HEAD/TREE and fresh exact-head CI; no self-reference.",
+    "force_push": false,
+    "history_preserved": true,
+    "parent": "717589d7aa57c733263023257c44510549c1ecb8",
+    "predecessor_evidence_transfer": false
+  },
+  "governance": {
+    "authority_human": "Ingolf Lohmann",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "executing_instance": "QIK-VRT",
+    "independent_native_review": "PRESERVED",
+    "main_activation": false,
+    "native_approve_fabricated": false,
+    "protections": "PRESERVED"
+  },
+  "human_actor": {
+    "contribution_class": "HUMAN",
+    "id": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "human_contributions": [
+    "Set offline Mesh repository and universal monitor as highest priority.",
+    "Authorize static React client, functional repository persistence and transfer to both iPhones."
+  ],
+  "human_decision": {
+    "priority": "HIGHEST",
+    "task_execution": "AUTHORIZED_BY_CURRENT_REQUEST"
+  },
+  "joint_components": [],
+  "next_action": "Freeze integrity-bound source; fresh exact-head complete transfer and browser CI; qualified isolated HTTPS delivery; preserve separate native Main activation requirements.",
+  "outputs": [],
+  "persistence_contract": {
+    "atomic_head": "IndexedDB strict transaction with expected-head lease and readback",
+    "browser_storage": "Origin-private; persistence grant and quota are browser policy, file backup required",
+    "canonical_sqlite_replacement": false,
+    "content_identity": "SHA-256 blocks and revision; actual Git SHA-1 blob/tree bytes independently reconstructed",
+    "data_scope": "COMPLETE_VERSIONED_GIT_WORKING_TREE_AND_LOCAL_REVISION_HISTORY",
+    "device_transfer": "Verified file export/import; explicit three-way two-parent merge",
+    "first_install": "HTTPS and network; later app and data offline",
+    "native_git_history": false
+  },
+  "reuse_before_create": {
+    "existing_path": "docs/monitor/react-runtime.js and runtime/self-host browser test package",
+    "insufficiency": "Existing read-only SQLite origin projection cannot persist edited files, complete 400 MB Git working tree, local version history or divergent two-phone changes. Separate offline working replica does not replace canonical execution ledger.",
+    "react_source": "53040b450853b0ab5a3d59765b86030b3bd0c978",
+    "reuse_scope": "BYTE_IDENTICAL_RUNTIME_AND_TEST_DEPENDENCY_LOCK_ONLY"
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "717589d7aa57c733263023257c44510549c1ecb8",
+  "source_ref": "work/governance-reconcile-20261006",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "6b42af192f8c66280d029cf56faa3e76bb000bd0",
+  "unresolved_origin": [],
+  "verification": {
+    "actual_iphone_readback": false,
+    "browser_contract": ".github/workflows/qikvrt_offline_repository.yml",
+    "complete_source": "Native gzip transfer imported as actual browser File in Chromium and WebKit; every source byte and Git tree verified",
+    "device_test_scope": "390px touch layout and desktop WebKit are not actual iPhone tests",
+    "local_browser_limit": "Chromium process stopped before app startup: process_singleton socket() syscall Operation not permitted; native CI is independent execution route.",
+    "predecessor_evidence_transfer": false,
+    "record_scope": "PRE_EFFECT_PROVENANCE_ONLY",
+    "source_exact_head_tests": "make test and make offline-repository-test; integrity and tool cache verify"
+  },
+  "work_unit_id": "OFFLINE_REPOSITORY_IPHONE_PRIORITY_20261007_V1"
+}
