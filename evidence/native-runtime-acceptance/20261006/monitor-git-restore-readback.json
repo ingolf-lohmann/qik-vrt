@@ -1,0 +1,27 @@
+{
+  "effect_ack_done": false,
+  "network_required": false,
+  "object_closure_readback_verified": true,
+  "provider_credentials_used": false,
+  "public_service_readback": false,
+  "reachable_object_count": 232,
+  "reachable_object_ids_sha256": "de3d2bd6f843860da9ea2005c5d3a726e07f1fafcd7243dda51be0b9840191c0",
+  "refs": {
+    "refs/heads/main": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68"
+  },
+  "repository_quality_accepted": false,
+  "restored_consistency": {
+    "strict_exit_code": 0,
+    "strict_findings": [],
+    "strict_passed": true
+  },
+  "source_consistency": {
+    "strict_exit_code": 0,
+    "strict_findings": [],
+    "strict_passed": true
+  },
+  "source_head": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
+  "source_tree": "a3468c39f1bd3f88e91b9c2a43fe0ef9f6b194a3",
+  "state": "LOCAL_GIT_RESTORE_BYTE_VERIFIED",
+  "symbolic_head": "refs/heads/main"
+}

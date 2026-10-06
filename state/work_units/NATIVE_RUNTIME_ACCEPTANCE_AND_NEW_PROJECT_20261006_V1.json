@@ -1,0 +1,280 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Current exact-head reobservation",
+    "Existing S1 backup/restore reused; network-disabled empty-target restoration",
+    "Exact original native CI ZIP and source binding independently verified",
+    "Site v3 full Git closure retained as original bundle",
+    "Current public snapshot independently byte-verified",
+    "Exact S1 1.7.0 package and monolithic Node/Client carrier prepared",
+    "Concrete operation and runtime capability boundaries recorded"
+  ],
+  "blockers": [
+    "NEW_REPOSITORY_CREATION_OPERATION_NOT_EXPOSED",
+    "NO_ADMITTED_REACHABLE_NATIVE_HOST_AND_OWNER_REST_ENDPOINT",
+    "CURRENT_EXECUTOR_AF_UNIX_SOCKET_EPERM",
+    "PR469_CODEOWNER_OBSERVER_BASE_NOT_MAIN",
+    "WHOLE_MESH_NATIVE_EFFECT_REPLICATION_FENCING_QUORUM_RECOVERY_NOT_VERIFIED"
+  ],
+  "created_at": "2026-10-06T07:41:39.451595+00:00",
+  "external_effects": {
+    "deployment": false,
+    "merge": false,
+    "new_repository": false,
+    "product_release": false,
+    "public_observer_refresh": true,
+    "publication": false,
+    "source_receipt_branch": "REVIEW_CANDIDATE; remote ref and commit must be independently reobserved"
+  },
+  "git_history": {
+    "branch": "work/native-acceptance-new-project-20261006",
+    "history_rewritten": false,
+    "native_source_PR": 469,
+    "parent": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+    "stacked_S1_PR": 457
+  },
+  "hosting_observation": {
+    "account_status": "warning",
+    "droplets_returned": 0,
+    "inconsistent_empty_inventory_and_quota_warning_preserved": true,
+    "new_host_created": false,
+    "provider": "DigitalOcean",
+    "status_message": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel."
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Native runtime acceptance required",
+    "Creation of a new GitHub project required",
+    "All properties, capabilities, evidence and original histories must survive"
+  ],
+  "human_decision": {
+    "generated_candidate_acceptance": "NOT_INFERRED",
+    "product_acceptance": "OPEN",
+    "task_scope_authorized": true
+  },
+  "inputs": [
+    {
+      "head": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "4c56a464394816f391c3221218707e6c04e05527"
+    },
+    {
+      "head": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
+      "site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "tree": "a3468c39f1bd3f88e91b9c2a43fe0ef9f6b194a3",
+      "version_number": 3
+    }
+  ],
+  "joint_components": [],
+  "new_github_project": {
+    "CLI_authentication": "NOT_PRESENT; no GH_TOKEN/GITHUB_TOKEN/SSH_AUTH_SOCK",
+    "browser_fallback": "NOT_AUTHORIZED_OR_AUTHENTICATED_IN_THIS_RUN",
+    "callable_connector_operation": "UNAVAILABLE",
+    "created": false,
+    "creation_operation": "POST https://api.github.com/user/repos",
+    "creation_reobserve_rule": "Inspect owner/name and unique repository identity before retry after any ambiguous response",
+    "interpretation": "NEW_GITHUB_SOURCE_REPOSITORY",
+    "node_admitted": false,
+    "proposed_name": "qik-vrt-native",
+    "proposed_owner": "ingolf-lohmann",
+    "reviewable_creation_body": {
+      "auto_init": false,
+      "description": "QIK-VRT native Node/Client and Mesh runtime; original source and evidence preserved",
+      "name": "qik-vrt-native",
+      "private": false
+    }
+  },
+  "next_execution": "Provide an authenticated repository-create operation for the existing owner and an admitted native execution host. Create only after target reobservation; import both pinned source histories; rebind node identity without rewriting old evidence; preserve GitHub review gates; execute fresh public native/terminal/fault acceptance on each admitted node.",
+  "outputs": [
+    {
+      "bytes": 1002,
+      "path": "evidence/native-runtime-acceptance/20261006/monitor-git-recovery-manifest.json",
+      "sha256": "1df43673bf3122d2b48b3c95507102222050805ea56a06dfd34ac1e6770ecbf5"
+    },
+    {
+      "bytes": 865,
+      "path": "evidence/native-runtime-acceptance/20261006/monitor-git-restore-readback.json",
+      "sha256": "41160e0de601b9bd3ba2620875e5ee7932aa80b86745fe3bf732296dca0caddf"
+    },
+    {
+      "bytes": 805346,
+      "path": "evidence/native-runtime-acceptance/20261006/monitor-source-history.bundle",
+      "sha256": "81656d2b96105a617a87ac12f6f3275bbf7ea66b630d2d308392335c121b96fe"
+    },
+    {
+      "bytes": 6369,
+      "path": "evidence/native-runtime-acceptance/20261006/native-ci-original.zip",
+      "sha256": "951aba0e3802edcc592a83523b9cab2f2905d5ae2b9e266568890867c2a0659c"
+    },
+    {
+      "bytes": 3614,
+      "path": "evidence/native-runtime-acceptance/20261006/public-snapshot-original.json",
+      "sha256": "afc4bcee3a398fc8909b35d04d3343a072f5d491b2df88531fc7ad473dc21a3b"
+    },
+    {
+      "bytes": 17823,
+      "path": "evidence/native-runtime-acceptance/20261006/s1-package-original-manifest.json",
+      "sha256": "68f9d727d149b18aa8d3a6c1ec3c9bb436eb169417c41ae4433ee7961e340d78"
+    },
+    {
+      "bytes": 206063,
+      "path": "evidence/native-runtime-acceptance/20261006/source-git-recovery-manifest.json",
+      "sha256": "3598a8c9e7a439942f3730c01e2f84a7244c409b8b1dd5d4aa009909c8d0abdc"
+    },
+    {
+      "bytes": 206062,
+      "path": "evidence/native-runtime-acceptance/20261006/source-git-restore-readback.json",
+      "sha256": "baebd1a8b453ef92c8b45d68b9f4528d10e61b0e636844ac87127f58008eae4c"
+    }
+  ],
+  "preservation": {
+    "GitHub_settings_reviews_secrets_and_CI_identity_transferred": false,
+    "credentials_transferred": false,
+    "full_git_backup_bundle": {
+      "bytes": 322550004,
+      "location_scope": "LOCAL_PREPARATION_ONLY; not uploaded to new repository",
+      "sha256": "b800f400401729b65357ab9fa5d3db78f9941e454ae3dfdd05f3aa5a59fb57df",
+      "source_provider_loss_continuity_established": false
+    },
+    "historical_strict_findings": {
+      "strict_exit_code": 4,
+      "strict_findings": [
+        "error in tree 16e30fc27bc1d2741f5c317fc66cc96395666134: largePathname: contains excessively large pathname"
+      ],
+      "strict_passed": false
+    },
+    "history_rewritten": false,
+    "monitor_source_objects": 232,
+    "monitor_source_original_bundle": {
+      "bytes": 805346,
+      "sha256": "81656d2b96105a617a87ac12f6f3275bbf7ea66b630d2d308392335c121b96fe"
+    },
+    "monitor_source_restore_verified": true,
+    "network_disabled_empty_target_restore": true,
+    "original_source_and_workflows_changed": false,
+    "predecessor_live_acceptance_transferred": false,
+    "private_production_volumes_and_events_captured": false,
+    "source_git_object_ids_sha256": "b73acc8d5d840efc0b5a72f78f3c1fcae8fcc27bcbe7cff09f831f4a20167680",
+    "source_git_reachable_objects": 32479,
+    "source_git_refs": 2077,
+    "strict_history_clean": false
+  },
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "all_manufacturers_verified": false,
+    "new_github_repository_created": false,
+    "public_native_runtime_accepted": false,
+    "whole_mesh_native_runtime_accepted": false
+  },
+  "required_capabilities_preserved_as_open_requirements": [
+    "Every inventoried Authority/Mirror/future node: native universal Transputer and passive universal Terminal",
+    "Static React interface with automatic dynamic refresh and offline replica",
+    "Original native input, prepare, commit, durable exact-byte readback and restart",
+    "Same monolithic Node/Client format and existing stable-idle work cache",
+    "Own-source public HTTPS surfaces with admitted hosting pipeline and first ping delivered to every terminal",
+    "Complete authenticated owner REST execution interface",
+    "Native effect replication before positive Effect-Ack, quorum, writer fencing, loss/partition/takeover/rejoin and same Work Unit/session",
+    "Declared numerical RTO/interruption SLO and actual workload measurements",
+    "Actual mobile/platform witnesses; unavailable inventory members remain visible"
+  ],
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "scope_boundary": "Preparation and bounded exact-source evidence. NEW_REPOSITORY_CREATED=false; PUBLIC_NATIVE_RUNTIME_ACCEPTED=false; WHOLE_MESH_ACCEPTED=false.",
+  "source_commit": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+  "source_ref": "work/node-client-monolith-20261006",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "4c56a464394816f391c3221218707e6c04e05527",
+  "unresolved_origin": [],
+  "verification": {
+    "codeowner_observer": {
+      "PR": 469,
+      "job_id": 112150752313,
+      "message": "BLOCK: pull request is not based on main",
+      "native_candidate_unchanged": true,
+      "run_id": 37427619269,
+      "state": "BLOCK"
+    },
+    "local_executor": {
+      "errno": 1,
+      "error": "[Errno 1] Operation not permitted",
+      "operation": "AF_UNIX_CREATE_BIND_ON_THIS_EXECUTOR",
+      "production_runtime": false,
+      "state": "BLOCK"
+    },
+    "monolith": {
+      "bytes": 1662976,
+      "native_runtime_executed_on_this_executor": false,
+      "private_path_refusal_preserved": true,
+      "same_node_client_carrier_verified": true,
+      "sha256": "f6b69974d816133673bf804f6eb07a5da8dc9b1038eca88d60a9a9a85f687e07"
+    },
+    "native_CI": {
+      "archive": {
+        "bytes": 6369,
+        "sha256": "951aba0e3802edcc592a83523b9cab2f2905d5ae2b9e266568890867c2a0659c"
+      },
+      "artifact_id": 11395556762,
+      "job_id": 112150751787,
+      "monolithic_native_cases": [
+        "test_actual_input_and_restart_preserve_original_readback_in_the_carrier_database (tests.test_self_host_temdd.MonolithicStoreTests.test_actual_input_and_restart_preserve_original_readback_in_the_carrier_database) ... ok",
+        "test_browser_profile_cannot_silently_open_a_terminal_from_monolith_run (tests.test_self_host_temdd.MonolithicStoreTests.test_browser_profile_cannot_silently_open_a_terminal_from_monolith_run) ... ok",
+        "test_checkpoint_blocks_live_writer_then_single_file_relocation_restores_state (tests.test_self_host_temdd.MonolithicStoreTests.test_checkpoint_blocks_live_writer_then_single_file_relocation_restores_state) ... ok",
+        "test_original_sqlite_kernel_appends_replays_and_closes_with_carrier_bytes_intact (tests.test_self_host_temdd.MonolithicStoreTests.test_original_sqlite_kernel_appends_replays_and_closes_with_carrier_bytes_intact) ... ok",
+        "test_pack_is_create_only_and_symlinked_or_public_objects_are_refused (tests.test_self_host_temdd.MonolithicStoreTests.test_pack_is_create_only_and_symlinked_or_public_objects_are_refused) ... ok",
+        "test_same_native_store_serves_both_roles_without_opening_or_inserting_input (tests.test_self_host_temdd.MonolithicStoreTests.test_same_native_store_serves_both_roles_without_opening_or_inserting_input) ... ok",
+        "test_wrong_pin_embedded_bytes_and_schema_refuse_without_a_listener (tests.test_self_host_temdd.MonolithicStoreTests.test_wrong_pin_embedded_bytes_and_schema_refuse_without_a_listener) ... ok"
+      ],
+      "production_deployment": false,
+      "run_id": 37427619150,
+      "source_binding": {
+        "effect_ack_done": false,
+        "native_source_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+        "predecessor_evidence_transfer": false,
+        "run_attempt": "1",
+        "run_id": "37427619150",
+        "schema": "qikvrt-temdd-s1-native-gate/v1",
+        "scope": "EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT",
+        "source_head": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+        "source_tree": "4c56a464394816f391c3221218707e6c04e05527"
+      },
+      "state": "PASS_BOUNDED_LINUX_CONTROLS_ONLY"
+    },
+    "public_observer": {
+      "byte_exact_readback_verified": true,
+      "complete_node_inventory": false,
+      "completed_at": "2026-10-06T07:34:20.170Z",
+      "evidence_http": 200,
+      "evidence_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/evidence",
+      "mesh_coverage_percent": 0,
+      "native_mesh_execution_verified": false,
+      "native_runtime_start_observed": false,
+      "persistence_verified": true,
+      "readback_http": 200,
+      "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=7f0ec53d-6f4b-4ac4-a232-984c021b5efc",
+      "snapshot_id": "7f0ec53d-6f4b-4ac4-a232-984c021b5efc",
+      "snapshot_sha256": "afc4bcee3a398fc8909b35d04d3343a072f5d491b2df88531fc7ad473dc21a3b"
+    },
+    "s1": {
+      "exact_package_runtime_verified": true,
+      "exported_regular_files": 92,
+      "manifest_sha256": "68f9d727d149b18aa8d3a6c1ec3c9bb436eb169417c41ae4433ee7961e340d78",
+      "package_archive_sha256": "120277287d9de23caeab2dded5b04dd7b99682f31899bee3adfaee0fbc5d6588",
+      "source_head": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+      "source_tree": "4c56a464394816f391c3221218707e6c04e05527",
+      "version": "1.7.0"
+    }
+  },
+  "work_unit_id": "NATIVE_RUNTIME_ACCEPTANCE_AND_NEW_PROJECT_20261006_V1"
+}

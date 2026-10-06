@@ -1,0 +1,485 @@
+{
+  "effect_ack_done": false,
+  "files": {
+    ".well-known/qik-vrt-self-disclosure.json": {
+      "bytes": 1220,
+      "mode": "100644",
+      "sha256": "1d8480a27d9423943030504667f0782727819c72ae1ce0a27fe1005771850ecf"
+    },
+    "AI": {
+      "bytes": 18241,
+      "mode": "100644",
+      "sha256": "3c969855b144090529a5e12496f9ec2389fd7b17919dbf8c8a75a7853d98b1fe"
+    },
+    "LICENSE": {
+      "bytes": 3279,
+      "mode": "100644",
+      "sha256": "b72bb73f40c5b63f77e4efa80a408d52b64c98ae4f0cb4cc99b86072285258f6"
+    },
+    "LICENSES/CC-BY-NC-ND-4.0.txt": {
+      "bytes": 19127,
+      "mode": "100644",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    "LICENSES/PolyForm-Noncommercial-1.0.0.txt": {
+      "bytes": 4563,
+      "mode": "100644",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    },
+    "LICENSE_TRANSITION.md": {
+      "bytes": 2728,
+      "mode": "100644",
+      "sha256": "584ae0da32dabcb68c67a843a87a3d7ac2d56344a5cb5dedd22fa0741ac8bc49"
+    },
+    "README.md": {
+      "bytes": 20605,
+      "mode": "100644",
+      "sha256": "e08d50c0d240d75ca25bad7d21c489bfe0c27e5675fa81d250dac46bcd0e27d8"
+    },
+    "STATUS.md": {
+      "bytes": 9525,
+      "mode": "100644",
+      "sha256": "9927c7e58ab6c9214ec75474a2e7cfe9d93da2c319519b7725745841e01d54df"
+    },
+    "deploy/universal-terminal/Dockerfile": {
+      "bytes": 4957,
+      "mode": "100644",
+      "sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7"
+    },
+    "deploy/universal-terminal/cloud-entrypoint.sh": {
+      "bytes": 5001,
+      "mode": "100755",
+      "sha256": "97b2507ed2ac3955ed80682403ed482334201511849285c881e5c8739bfc6b9c"
+    },
+    "deploy/universal-terminal/compose.yaml": {
+      "bytes": 5661,
+      "mode": "100644",
+      "sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1"
+    },
+    "deploy/universal-terminal/db.qik-vrt.mesh": {
+      "bytes": 314,
+      "mode": "100644",
+      "sha256": "2b76539a1a5828fead91905b46dd62113b0a3e97985c5339d0e2077f95a28f95"
+    },
+    "deploy/universal-terminal/entrypoint.sh": {
+      "bytes": 7470,
+      "mode": "100755",
+      "sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b"
+    },
+    "deploy/universal-terminal/mesh-index.html": {
+      "bytes": 1604,
+      "mode": "100644",
+      "sha256": "f1d52c2edee53ebcb546803eb549aa0027121dc7b43fd3f861827612f0f162c6"
+    },
+    "deploy/universal-terminal/mirror-bootstrap.sh": {
+      "bytes": 1900,
+      "mode": "100755",
+      "sha256": "f6889cda54e74b6fa3bc2faf9f73fbe9aca48c394d461769d1f91e5a24202edc"
+    },
+    "deploy/universal-terminal/named.conf": {
+      "bytes": 357,
+      "mode": "100644",
+      "sha256": "5df23f5a9d0217cbd38a1d86dd6b661f9cbeea72489a577ef1349948165c6d90"
+    },
+    "deploy/universal-terminal/nginx.conf": {
+      "bytes": 4026,
+      "mode": "100644",
+      "sha256": "583491a285112a900cedb5b1e4dc001ddc1df1efd90d13f1f234127f0758489b"
+    },
+    "deploy/universal-terminal/qikvrt_ip_bootstrap.c": {
+      "bytes": 3992,
+      "mode": "100644",
+      "sha256": "73c9c63e410e4e3f0802627473eac9ae19d6c89ca85a07e75a0bd63136482a0e"
+    },
+    "deploy/universal-terminal/qikvrt_smtpd.py": {
+      "bytes": 4396,
+      "mode": "100755",
+      "sha256": "9b68ef0b402ac269418571eebfc9aee5fd33eece849dbe259bd69b73a1e3ce29"
+    },
+    "deploy/universal-terminal/railway-capture-hook.sh": {
+      "bytes": 3000,
+      "mode": "100644",
+      "sha256": "76321bfc22ad40768edd78ea73ca2845d5c91d7611430375f925524025cb077c"
+    },
+    "deploy/universal-terminal/runtime-health.sh": {
+      "bytes": 1548,
+      "mode": "100755",
+      "sha256": "731d9e2adddf83999623424f9a306a6dd1ff2b142ec6a179cfd2c9ae12f13bf3"
+    },
+    "deploy/universal-terminal/service-entrypoint.sh": {
+      "bytes": 5285,
+      "mode": "100755",
+      "sha256": "57c34784cf4a82a93a7639cf7917f37bb75e1a4b404e41243f890c5a85f06054"
+    },
+    "deploy/universal-terminal/snmpd.conf": {
+      "bytes": 151,
+      "mode": "100644",
+      "sha256": "3d7caeb6b2f8e0a75f6c66a01b6520ba2403c5ac0b9f64837a11ee2e61e17528"
+    },
+    "deploy/universal-terminal/sshd_config": {
+      "bytes": 468,
+      "mode": "100644",
+      "sha256": "2effb563d95bdb35c9cb22ed144b718dd5ba6df509c70e3db8c4cb44f9b839b3"
+    },
+    "docs/ARCHITECTURE.md": {
+      "bytes": 1451,
+      "mode": "100644",
+      "sha256": "be4b5d9c80094f202b150d6b03cce0a935eb7c4303cda60068e01b11f285204e"
+    },
+    "docs/BOUNDARIES.md": {
+      "bytes": 718,
+      "mode": "100644",
+      "sha256": "52c035de8a9b477599e6616d05922156841702bf105224f422ad65da72792def"
+    },
+    "docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md": {
+      "bytes": 4895,
+      "mode": "100644",
+      "sha256": "19e373f8388bad8fdfdbaefe90341a565915b97297a2cf02786c8269c065b743"
+    },
+    "docs/assets/css/qikvrt-terminal.css": {
+      "bytes": 4819,
+      "mode": "100644",
+      "sha256": "989727fba017a414370f57aecb11fb0205e1c36d1ed23b83cb7256dfb04ac545"
+    },
+    "docs/assets/css/qikvrt.css": {
+      "bytes": 6360,
+      "mode": "100644",
+      "sha256": "2825eb34d67fd3097fc5ebf492089ac94eb8c8f6045a76ea7902b7a2c0cc272d"
+    },
+    "docs/assets/js/qikvrt-local-engine.js": {
+      "bytes": 4280,
+      "mode": "100644",
+      "sha256": "46586dea61b217a711f105c50efcbf9400d613443eda76f8f42ce7f56ec87f59"
+    },
+    "docs/assets/js/qikvrt-repository-terminal.js": {
+      "bytes": 22310,
+      "mode": "100644",
+      "sha256": "30296c535826da2e9e49c528b1d53fd1fa87454883da347a428870c659c9ddb0"
+    },
+    "docs/monitor/REACT_LICENSE.txt": {
+      "bytes": 1088,
+      "mode": "100644",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    "docs/monitor/README.md": {
+      "bytes": 11922,
+      "mode": "100644",
+      "sha256": "5afc63b464462d7f6eb094e23d59adf328df22de937a03ddfcf8bd884bbf01f0"
+    },
+    "docs/monitor/URL_DIRECTORY.json": {
+      "bytes": 3500,
+      "mode": "100644",
+      "sha256": "6690a93648b82b0c8ffc327dfe0fc2439654a78f1bfce70b13f579e1b4604a33"
+    },
+    "docs/monitor/client-replica.js": {
+      "bytes": 8342,
+      "mode": "100644",
+      "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+    },
+    "docs/monitor/health-projection.js": {
+      "bytes": 5299,
+      "mode": "100644",
+      "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee"
+    },
+    "docs/monitor/index-react.html": {
+      "bytes": 835,
+      "mode": "100644",
+      "sha256": "740f52f57fd5810fcc63fbb9003b8ee9d7400318a592cef3591076ea0845d939"
+    },
+    "docs/monitor/index.html": {
+      "bytes": 47320,
+      "mode": "100644",
+      "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231"
+    },
+    "docs/monitor/mesh-react.css": {
+      "bytes": 1839,
+      "mode": "100644",
+      "sha256": "0add9bc7f3c4a3980c7079f017e35bf889c657853e7b98350054b7f1eaa505da"
+    },
+    "docs/monitor/mesh-react.js": {
+      "bytes": 7805,
+      "mode": "100644",
+      "sha256": "b5e9ec8102b7ff85bc16aea74dbfd5d04e35d62e83bb8da8a668e973baae60a9"
+    },
+    "docs/monitor/observer.mjs": {
+      "bytes": 16128,
+      "mode": "100644",
+      "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596"
+    },
+    "docs/monitor/package.json": {
+      "bytes": 267,
+      "mode": "100644",
+      "sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428"
+    },
+    "docs/monitor/react-runtime.js": {
+      "bytes": 571915,
+      "mode": "100644",
+      "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+    },
+    "docs/monitor/scheibenhard-original.html": {
+      "bytes": 19160,
+      "mode": "100644",
+      "sha256": "141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6"
+    },
+    "docs/monitor/self-host.mjs": {
+      "bytes": 10939,
+      "mode": "100644",
+      "sha256": "41bbb98f1095cddefef0602212fc0e3701789e76a6e3c53ee2a9cbb3659a5ec4"
+    },
+    "docs/monitor/server.mjs": {
+      "bytes": 46630,
+      "mode": "100644",
+      "sha256": "a2e8d66c81c7afa89b9ddfa81caf2f2e7d6f491da153df726b88fe08177090b8"
+    },
+    "docs/publications/index.json": {
+      "bytes": 28270,
+      "mode": "100644",
+      "sha256": "e304c8ed2be5920d8b34f73c69c2a25b0ee620c0bb688c10c2412735813f78ad"
+    },
+    "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md": {
+      "bytes": 6745,
+      "mode": "100644",
+      "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+    },
+    "docs/terminal/index.html": {
+      "bytes": 14845,
+      "mode": "100644",
+      "sha256": "062aadcff3fa771a9a9233cfe4a74aa2b38ff2fbfb0e9a6b986e0c4ea17b4c2c"
+    },
+    "docs/terminal/temdd/index.html": {
+      "bytes": 10647,
+      "mode": "100644",
+      "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819"
+    },
+    "evidence/self_host/SOURCE_RECOVERY_20261005.json": {
+      "bytes": 120508,
+      "mode": "100644",
+      "sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e"
+    },
+    "runtime/self-host/CAPTURE.md": {
+      "bytes": 8949,
+      "mode": "100644",
+      "sha256": "67620f371ff29834be238c56d33a5a766f0287354c5d01ac64ece66ee3fe8865"
+    },
+    "runtime/self-host/CAPTURE_REQUEST.example.json": {
+      "bytes": 876,
+      "mode": "100644",
+      "sha256": "8618c00576347cdd7094483e98f9c5a90088ebb2ecbd173d14649e6d309be963"
+    },
+    "runtime/self-host/CONFIG.example.json": {
+      "bytes": 422,
+      "mode": "100644",
+      "sha256": "c9ce35bb8897d8ccd3e5b726422b2e09bb534ef6519ddf90f0fe6dbce3ffb424"
+    },
+    "runtime/self-host/Dockerfile": {
+      "bytes": 1208,
+      "mode": "100644",
+      "sha256": "d393d3eb7eaae2c1dcd4404ef6cf86600ea794a068ff32cf3a793d3abb0fec3b"
+    },
+    "runtime/self-host/HOST_ADMISSION.example.json": {
+      "bytes": 412,
+      "mode": "100644",
+      "sha256": "2352b7e337e8405cc1e5911be4be3e9b6a5d7732566b03be1468b1a02517e774"
+    },
+    "runtime/self-host/MESH_ACTIVATION.json": {
+      "bytes": 19742,
+      "mode": "100644",
+      "sha256": "2dca0b9297c244fd4074bfbda037006113e62409d946f13c093c5e4f16828aaf"
+    },
+    "runtime/self-host/MIGRATION.md": {
+      "bytes": 16512,
+      "mode": "100644",
+      "sha256": "4545cadd9ddaaa848d3dcef63ad74b28df3b6d85971437ce2b28e919469c104a"
+    },
+    "runtime/self-host/MIGRATION_SOURCE.example.json": {
+      "bytes": 887,
+      "mode": "100644",
+      "sha256": "331387cc616a48df37890e0cfffc272d402d972afa543307dd90c44c6d4cebc4"
+    },
+    "runtime/self-host/PACKAGE.json": {
+      "bytes": 4628,
+      "mode": "100644",
+      "sha256": "00c0462d9d4db72e29d90f586f6461e40ecd5a27ff6c0b3c64db0ffdc207a13c"
+    },
+    "runtime/self-host/REACT_LOCK.json": {
+      "bytes": 2286,
+      "mode": "100644",
+      "sha256": "96f126867217cd7addef20c2a3169cc9cce01492c5b544f0fc656eb996c3ee7f"
+    },
+    "runtime/self-host/README.md": {
+      "bytes": 40999,
+      "mode": "100644",
+      "sha256": "7897e0fa29fe845e88bd5560903f98a6310930193d669cac000c1639d85d3212"
+    },
+    "runtime/self-host/RECOVERED_TERMINAL.md": {
+      "bytes": 5569,
+      "mode": "100644",
+      "sha256": "17cce25cdc39af59608f1bfe872c2b0a9f766a56ffd146b31ea84baf274456d4"
+    },
+    "runtime/self-host/original-firefox/README.md": {
+      "bytes": 6577,
+      "mode": "100644",
+      "sha256": "f71fbf101d2d3a365fc094cd5697493826459688b377a67ca575f01499d2d9c6"
+    },
+    "runtime/self-host/original-firefox/_locales/ar/messages.json": {
+      "bytes": 3955,
+      "mode": "100644",
+      "sha256": "42ec0581a07b76d2c25d227c39151af2caaba7b8883551840db9497207a1672c"
+    },
+    "runtime/self-host/original-firefox/_locales/de/messages.json": {
+      "bytes": 3670,
+      "mode": "100644",
+      "sha256": "56986ec3e64d8e2a6f070bc438bd4c4e0cba1c3b53ccb8e6dc7f453a01abb4cb"
+    },
+    "runtime/self-host/original-firefox/_locales/en/messages.json": {
+      "bytes": 3411,
+      "mode": "100644",
+      "sha256": "ad4403073b812bce47d215ea936b010df68cd8cedaab9f7cc74fddf44c659a6d"
+    },
+    "runtime/self-host/original-firefox/_locales/es/messages.json": {
+      "bytes": 3639,
+      "mode": "100644",
+      "sha256": "1e3037677d0abf91dfc9fb33c81fe81313e745f891e2143e46351e5886246090"
+    },
+    "runtime/self-host/original-firefox/_locales/fr/messages.json": {
+      "bytes": 3765,
+      "mode": "100644",
+      "sha256": "4d2265145bcc645b899b9d43b73e9fd002133ce99a80e78def9792c990fcf225"
+    },
+    "runtime/self-host/original-firefox/_locales/hi/messages.json": {
+      "bytes": 5834,
+      "mode": "100644",
+      "sha256": "231458fdd2cd0a8d43da6382e304a12e548da389767de53f9eb1e4c2b7f13eb0"
+    },
+    "runtime/self-host/original-firefox/_locales/id/messages.json": {
+      "bytes": 3542,
+      "mode": "100644",
+      "sha256": "09fb19851b9e9370524244db6bbc84931a354d942325ac49a6660a4e15f12d95"
+    },
+    "runtime/self-host/original-firefox/_locales/it/messages.json": {
+      "bytes": 3716,
+      "mode": "100644",
+      "sha256": "499086963505889846a271b5f0415d9b52a5884028634086019b88dc6cc10d34"
+    },
+    "runtime/self-host/original-firefox/_locales/ja/messages.json": {
+      "bytes": 4021,
+      "mode": "100644",
+      "sha256": "9e38ac2cdcf822cd21b0d7fdc9c3b915b94aa6770272780450d4a871bdf7ce3b"
+    },
+    "runtime/self-host/original-firefox/_locales/ko/messages.json": {
+      "bytes": 3787,
+      "mode": "100644",
+      "sha256": "5dbfbf3ec9a2a2f7b9ebb217ad26221bbef89ebb203bf7c95be5c88646ca37c3"
+    },
+    "runtime/self-host/original-firefox/_locales/pt_BR/messages.json": {
+      "bytes": 3629,
+      "mode": "100644",
+      "sha256": "f6c849089370d4a13b73cef843fcb39a43c7fa7a402dbfbc16fbd7a8a572b3e5"
+    },
+    "runtime/self-host/original-firefox/_locales/ru/messages.json": {
+      "bytes": 4706,
+      "mode": "100644",
+      "sha256": "f006010304185d32003f0bed98ff42a76a3ad4d5f97b38371b4cb524ab10aea2"
+    },
+    "runtime/self-host/original-firefox/_locales/tr/messages.json": {
+      "bytes": 3513,
+      "mode": "100644",
+      "sha256": "6f442192d324f983ede84f9735ae681e51e6235a6ab7b4dd61cdd9a53daf8775"
+    },
+    "runtime/self-host/original-firefox/_locales/zh_CN/messages.json": {
+      "bytes": 3350,
+      "mode": "100644",
+      "sha256": "e71fa8c582e6f67de441d2128ab4e63d8ad9a2e12c896837010bc618d9c0d8d4"
+    },
+    "runtime/self-host/original-firefox/authenticated_delivery.js": {
+      "bytes": 15796,
+      "mode": "100644",
+      "sha256": "8b62b0dd7beadc24b5d037102d10b3590714e446298e833a5ae41eeeea74ff26"
+    },
+    "runtime/self-host/original-firefox/background.js": {
+      "bytes": 15060,
+      "mode": "100644",
+      "sha256": "d76e058245d216d28c78065031006377b80e6396f102356c3c359e3635961cc3"
+    },
+    "runtime/self-host/original-firefox/content.js": {
+      "bytes": 9424,
+      "mode": "100644",
+      "sha256": "f41f930c6e0600956d1436e7f25c100c8d55200ca6b20e3581bf3aab4f4bcbae"
+    },
+    "runtime/self-host/original-firefox/manifest.json": {
+      "bytes": 1578,
+      "mode": "100644",
+      "sha256": "f17889e6922a1c0eb84f949c49c1ef20ba73e80f10ca8e36c0c23f585d0bed65"
+    },
+    "runtime/self-host/original-firefox/options.html": {
+      "bytes": 1634,
+      "mode": "100644",
+      "sha256": "5c972e6528d43608f5ecf754054ddaa22992e53d9a49d93c3d258b0b7e88c5b3"
+    },
+    "runtime/self-host/original-firefox/options.js": {
+      "bytes": 1154,
+      "mode": "100644",
+      "sha256": "a20467bc0d329369b562a02909412bbbc6596cd9e5e3f27530fcfa4373669f4d"
+    },
+    "runtime/self-host/original-firefox/review_effect.js": {
+      "bytes": 5377,
+      "mode": "100644",
+      "sha256": "a905219e62db17e5a9f355bbcb10e64efdeb9c02472572967cb53dafa0e114be"
+    },
+    "runtime/self-host/original-firefox/terminal.css": {
+      "bytes": 3536,
+      "mode": "100644",
+      "sha256": "769dffd97cb95d995a4b72b073cbef669391421b0c4acabf07f9ef79cb1f99ed"
+    },
+    "runtime/self-host/original-workflows/qikvrt_temdd.yml": {
+      "bytes": 13389,
+      "mode": "100644",
+      "sha256": "5ecd9a8470f02da7e32da16812fe61f2fe42e214b00bec2d08ee139daa5e99c8"
+    },
+    "src/qikvrt_effect_ack_http_terminal.py": {
+      "bytes": 30823,
+      "mode": "100644",
+      "sha256": "039b7c34fe4ae8766ae0b141734ef91131377e5e58fedb7746320242543da2d8"
+    },
+    "src/qikvrt_temdd_event_ledger.py": {
+      "bytes": 21653,
+      "mode": "100644",
+      "sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13"
+    },
+    "tools/qikvrt_mesh_monitor_readback.mjs": {
+      "bytes": 10198,
+      "mode": "100644",
+      "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd"
+    },
+    "tools/qikvrt_self_host.py": {
+      "bytes": 100142,
+      "mode": "100644",
+      "sha256": "abf23e199a5b202a09327d77f0ab20a6acf8a0d89001b0b4b9968ddc612c197c"
+    },
+    "tools/qikvrt_self_host_migration.py": {
+      "bytes": 54166,
+      "mode": "100644",
+      "sha256": "4fbde896752ec5032755f68ffd537df4d37059763d68f8b24f75ff523cde6746"
+    }
+  },
+  "mesh_node_contract_sha256": "2dca0b9297c244fd4074bfbda037006113e62409d946f13c093c5e4f16828aaf",
+  "native_terminal_daemon_included": true,
+  "package_version": "1.7.0",
+  "runtime": {
+    "node": {
+      "executable_sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "version": "v24.19.0"
+    },
+    "platform": "x86_64",
+    "python": {
+      "executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "Python 3.12.14"
+    },
+    "system": "linux"
+  },
+  "schema": "qikvrt-self-host-package/v1",
+  "source_head": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "4c56a464394816f391c3221218707e6c04e05527",
+  "terminal_scope": "RECOVERED_HISTORICAL_TEMDD_DAEMON_AND_FIREFOX_NOVNC_SOURCES; SEALED_S1_ADAPTER"
+}

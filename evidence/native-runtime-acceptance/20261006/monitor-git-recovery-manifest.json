@@ -1,0 +1,29 @@
+{
+  "bundle": {
+    "bytes": 805346,
+    "name": "history.bundle",
+    "sha256": "81656d2b96105a617a87ac12f6f3275bbf7ea66b630d2d308392335c121b96fe"
+  },
+  "effect_ack_done": false,
+  "excluded": [
+    "GitHub issues, reviews and settings",
+    "uncommitted files",
+    "repository configuration, credentials and hooks",
+    "external LFS objects, submodule repositories and runtime volumes"
+  ],
+  "reachable_object_count": 232,
+  "reachable_object_ids_sha256": "de3d2bd6f843860da9ea2005c5d3a726e07f1fafcd7243dda51be0b9840191c0",
+  "refs": {
+    "refs/heads/main": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68"
+  },
+  "schema": "qikvrt-independent-git-recovery/v1",
+  "scope": "ALL_LOCALLY_REACHABLE_GIT_OBJECTS_AND_REFS_PLUS_HEAD",
+  "source_consistency": {
+    "strict_exit_code": 0,
+    "strict_findings": [],
+    "strict_passed": true
+  },
+  "source_head": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
+  "source_tree": "a3468c39f1bd3f88e91b9c2a43fe0ef9f6b194a3",
+  "symbolic_head": "refs/heads/main"
+}
