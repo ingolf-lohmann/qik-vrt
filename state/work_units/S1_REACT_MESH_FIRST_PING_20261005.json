@@ -328,11 +328,11 @@
   "node_bus_successor": {
     "requirement_id": "EVERY_NODE_UNIVERSAL_TRANSPUTER_UNIVERSAL_TERMINAL_FAULT_TOLERANT_BUS_20261006",
     "received_at": "2026-10-06T07:41:48+02:00",
-    "recorded_at": "2026-10-06T05:55:14.312285+00:00",
+    "recorded_at": "2026-10-06T06:00:11.070154+00:00",
     "source_repository": "ingolf-lohmann/qik-vrt",
     "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
-    "source_commit": "7f8049f0b84e4031887570c36c093d1750ba92e6",
-    "source_tree": "98069e8ab4473442e3748a32637e93db95f10aea",
+    "source_commit": "aab3aa6b279e0a383d91475a6019b44e5ce84ff7",
+    "source_tree": "31f19fc9a20813a8b25b6b5037fd4449707c48ea",
     "human_actor": {
       "identifier": "Ingolf Lohmann",
       "role": "Product and Code Owner"
@@ -351,7 +351,8 @@
       "Existing S1 package/launcher/verification extended; no parallel ledger, scheduler, executor or monitor.",
       "Role-independent source admission gate, package manifest contract digest and 21 new regression tests.",
       "Native-effect preservation, single fenced writer, lost-ACK readback, safe partition and original-byte rejoin obligations; workload-bound measured transparency.",
-      "Source/provider and real-runtime limits remain separately open."
+      "Source/provider and real-runtime limits remain separately open.",
+      "Extend the existing read-only native S1/Firefox workflow with the same path-filtered push trigger; PR-only registration did not expose a current native run through the available initial-dispatch capability."
     ],
     "evidence_retention": "METADATA_ONLY",
     "joint_components": [],
@@ -398,6 +399,12 @@
         "bytes": 3500,
         "sha256": "6690a93648b82b0c8ffc327dfe0fc2439654a78f1bfce70b13f579e1b4604a33",
         "git_blob_sha1": "f56501f57d414fee4b605a0cd29152c2da79b486"
+      },
+      {
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        "bytes": 10986,
+        "sha256": "707135d83aed5cbd794982d4239d0fb98fbe563b19d50b4b5fc07927b46245df",
+        "git_blob_sha1": "2bf14b25241638538801ecbfbc494b6ef61b923d"
       }
     ],
     "self_binding": "This record is authenticated by the canonical repository integrity manifest; no self-digest cycle.",
@@ -429,8 +436,14 @@
         "boundary": "A separate direct AF_UNIX socket creation also returned PermissionError errno=1 before bind; environment capability is unavailable. No skip, substitute HTTP writer or downgrade."
       },
       "full_repository_suite": "NOT_EXECUTED_LOCALLY",
-      "successor_native_ci": "NOT_YET_OBSERVED; no predecessor result transfer",
-      "integrity": "Authenticated base manifest/index and complete API blob inventory; unchanged bindings retained, eight changed semantic files regenerate canonical projections incrementally. Not a full historical object closure."
+      "successor_native_ci": "NOT_YET_OBSERVED; freshly registered by this source successor, no earlier gate transfer.",
+      "integrity": "Authenticated source manifest/index and complete API blob inventory; two changed semantic files regenerate the existing canonical projections incrementally. Not a full historical object closure.",
+      "local_fixture_semantics": "Local tests retain exact tested source-byte scope; they are not current-head native gate receipts. Current successor CI must execute its own gates.",
+      "workflow_adapter": {
+        "change": "Same existing pull-request path allowlist for push; contents permission remains read; no external deployment or rerun API.",
+        "tests": "Existing two WorkflowRuntimeTests succeeded; cache coverage 26/26.",
+        "source_workflow_readback": "On aab3aa6b only ordinary push CI and ontology were registered; native S1 workflow had pull_request/workflow_dispatch triggers only."
+      }
     },
     "implementation_status": {
       "per_node_obligations_and_source_gate": "IMPLEMENTED_IN_REVIEW_CANDIDATE",
@@ -458,6 +471,7 @@
     "write_failover_verified": false,
     "application_transparency_verified": false,
     "effect_ack_done": false,
-    "ordinary_release": false
+    "ordinary_release": false,
+    "prior_source_gate_commit": "aab3aa6b279e0a383d91475a6019b44e5ce84ff7"
   }
 }

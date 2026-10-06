@@ -25,6 +25,29 @@ on:
       - "tools/qikvrt_self_host_migration.py"
       - "tools/qikvrt_mesh_monitor_readback.mjs"
       - ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+  push:
+    paths:
+      - "external/ietf/draft-lohmann-qikvrt-effect-ack-http-00.xml"
+      - "policy/QIKVRT_EFFECT_ACK_HTTP_TERMINAL_V1.json"
+      - "browser/firefox/qikvrt-terminal/**"
+      - "docs/terminal/QIKVRT_TERMINAL_FRAME_V1.schema.json"
+      - "docs/terminal/FIREFOX_EFFECT_ACK_TERMINAL_PROXY_V1.md"
+      - "src/qikvrt_effect_ack_http_terminal.py"
+      - "src/qikvrt_temdd_event_ledger.py"
+      - "deploy/universal-terminal/**"
+      - "tests/test_self_host_temdd.py"
+      - "tests/test_self_host_firefox.py"
+      - "tests/test_self_host_systemd.py"
+      - "tests/test_self_host_migration.py"
+      - "tests/test_self_host_capture.py"
+      - "tests/test_qikvrt_effect_ack_http_terminal.py"
+      - "tests/test_self_host.py"
+      - "runtime/self-host/**"
+      - "docs/monitor/**"
+      - "tools/qikvrt_self_host.py"
+      - "tools/qikvrt_self_host_migration.py"
+      - "tools/qikvrt_mesh_monitor_readback.mjs"
+      - ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
   workflow_dispatch:
 
 permissions:
