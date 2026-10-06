@@ -8,6 +8,8 @@ on:
     - cron: "23 * * * *"
     - cron: "30 8 * * *"
       timezone: "Europe/Paris"
+    - cron: "0 10-20/2 6 10 *"
+      timezone: "Europe/Paris"
   push:
     branches: [main]
     paths:
