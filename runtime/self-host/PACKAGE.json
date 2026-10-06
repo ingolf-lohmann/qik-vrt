@@ -76,6 +76,10 @@
     "runtime/self-host/MIGRATION_SOURCE.example.json",
     "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
     "runtime/self-host/PACKAGE.json",
+    "runtime/self-host/PROVIDER_ADMISSION.md",
+    "runtime/self-host/PROVIDER_AUTHORIZATION.example.json",
+    "runtime/self-host/PROVIDER_BINDING.example.json",
+    "runtime/self-host/PROVIDER_REQUEST.example.json",
     "runtime/self-host/REACT_LOCK.json",
     "runtime/self-host/README.md",
     "runtime/self-host/RECOVERED_TERMINAL.md",
@@ -107,7 +111,9 @@
     "src/qikvrt_temdd_event_ledger.py",
     "tools/qikvrt_mesh_monitor_readback.mjs",
     "tools/qikvrt_self_host.py",
-    "tools/qikvrt_self_host_migration.py"
+    "tools/qikvrt_self_host_migration.py",
+    "tools/qikvrt_self_host_provider.py",
+    "tools/qikvrt_subprocess.py"
   ],
   "monolithic_store": "SQLITE_CARRIER_AND_EXISTING_NATIVE_LEDGER",
   "native_terminal_daemon_included": true,
@@ -116,5 +122,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.10.0"
+  "version": "1.11.0"
 }

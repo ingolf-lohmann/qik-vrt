@@ -7,11 +7,42 @@ import vm from 'node:vm';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
+import https from 'node:https';
+import {isIPv4} from 'node:net';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const require = (condition, code) => {if (!condition) throw new Error(code);};
 const legacyContract = new URL('../state/deployments/MESH_MONITOR_RAILWAY_EXACT_674aa35.json', import.meta.url);
 const contract = existsSync(legacyContract) ? JSON.parse(readFileSync(legacyContract)) : null;
+
+// Optional provider-bound IPv4: reuse the same verifier without a second DNS
+// resolution or inherited provider credentials. TLS CA/SNI checks stay enabled.
+export function pinnedIPv4Request(origin, address) {
+  const target = new URL(origin);
+  require(target.protocol === 'https:' && isIPv4(address), 'HOLD_PROVIDER_HTTPS_IPV4_PIN');
+  const agent = new https.Agent({lookup:(_name, options, callback) => {
+    if (options.all) callback(null, [{address, family:4}]);
+    else callback(null, address, 4);
+  }});
+  return async (url, options = {}) => {
+    const next = new URL(url);
+    require(next.origin === target.origin && !next.username && !next.password, 'HOLD_PINNED_READBACK_ORIGIN');
+    return await new Promise((resolve, reject) => {
+      const request = https.get(next, {agent, headers:options.headers, signal:options.signal}, response => {
+        const chunks = []; let size = 0;
+        response.on('data', chunk => {
+          size += chunk.length;
+          if (size > 8*1024*1024) request.destroy(new Error('HOLD_PUBLIC_RESPONSE_TOO_LARGE'));
+          else chunks.push(chunk);
+        });
+        response.on('error', reject);
+        response.on('end', () => resolve(new Response(Buffer.concat(chunks), {status:response.statusCode})));
+      });
+      request.setTimeout(15000, () => request.destroy(new Error('HOLD_PUBLIC_TIMEOUT')));
+      request.on('error', reject);
+    });
+  };
+}
 
 export async function verifyClient(plan = contract, request = fetch) {
   require(plan, 'EXACT_READBACK_PLAN_REQUIRED');
@@ -103,8 +134,9 @@ export async function verifyClient(plan = contract, request = fetch) {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     let plan = contract;
+    let request = fetch;
     if (process.argv[2] === '--self-host') {
-      const [packageRoot, url, manifestPin, configPin, nodeId, adapter] = process.argv.slice(3);
+      const [packageRoot, url, manifestPin, configPin, nodeId, adapter, ipv4Pin] = process.argv.slice(3);
       const raw = readFileSync(resolve(packageRoot, 'MANIFEST.json'));
       require(sha(raw) === manifestPin && /^[a-f0-9]{64}$/.test(configPin || '') &&
         /^[A-Za-z0-9_.:-]{1,100}$/.test(nodeId || '') && ['none','github'].includes(adapter), 'HOLD_EXPECTED_PINS_REQUIRED');
@@ -122,8 +154,9 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
         source_head:m.source_head,source_tree:m.source_tree,version:'2026-10-04.9',
         package_files:Object.fromEntries(Object.entries(m.files).map(([p,e])=>[p,e.sha256])),
         artifact_files_sha256:Object.fromEntries(['server.mjs','observer.mjs','index.html','client-replica.js','health-projection.js','package.json'].map(p=>[p,m.files['docs/monitor/'+p].sha256]))};
+      if (ipv4Pin) request = pinnedIPv4Request(plan.public_url, ipv4Pin);
     }
-    console.log(JSON.stringify(await verifyClient(plan)));
+    console.log(JSON.stringify(await verifyClient(plan, request)));
   }
   catch (_) { console.log(JSON.stringify({state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',effect_ack_done:false})); process.exitCode=20; }
 }

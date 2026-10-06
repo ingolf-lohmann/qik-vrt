@@ -1922,6 +1922,13 @@ def migration_module():
     return module
 
 
+def provider_module():
+    spec = importlib.util.spec_from_file_location("qikvrt_self_host_provider",
+        Path(__file__).with_name("qikvrt_self_host_provider.py"))
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    return module
+
+
 def start(package, pin, config_path, monolith=False):
     manifest = verify(package, pin)
     private_path(config_path)
@@ -2095,7 +2102,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
-        "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
+        "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
+        "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
@@ -2126,9 +2134,26 @@ def main():
     parser.add_argument("--capture-request-sha256", help="independent private capture request pin")
     parser.add_argument("--capture-output", type=Path, help="separate future snapshot destination for the unstarted supervisor adapter")
     parser.add_argument("--dry-run", action="store_true", help="verify export and proposed binding; create no target")
+    parser.add_argument("--provider", choices=("digitalocean", "ionos", "hetzner"))
+    parser.add_argument("--provider-binding", type=Path, help="private exact product and account/project/contract binding")
+    parser.add_argument("--provider-binding-sha256")
+    parser.add_argument("--provider-credential", type=Path, help="existing owner-only bearer token; never an argument value")
+    parser.add_argument("--provider-inventory", type=Path, help="independently pinned private inventory; plans only")
+    parser.add_argument("--provider-inventory-sha256")
+    parser.add_argument("--provider-request", type=Path)
+    parser.add_argument("--provider-request-sha256")
+    parser.add_argument("--provider-public-key", type=Path, help="existing public SSH key; no generation or private-key reads")
+    parser.add_argument("--provider-public-key-sha256")
+    parser.add_argument("--provider-quote", type=Path, help="independently pinned IONOS Cloud contract quote")
+    parser.add_argument("--provider-quote-sha256")
+    parser.add_argument("--provider-authorization", type=Path, help="exact private create, payment and previously accepted terms evidence")
+    parser.add_argument("--provider-authorization-sha256")
+    parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
     args = parser.parse_args()
     try:
-        if args.operation.startswith("mesh-cache-"):
+        if args.operation.startswith("provider-"):
+            result = provider_module().execute(args)
+        elif args.operation.startswith("mesh-cache-"):
             if not args.mesh_cache or not args.work_request: raise ValueError("MESH_WORK_PRIVATE_REQUEST_REQUIRED")
             private_path(args.work_request)
             work = json.loads(args.work_request.read_bytes())

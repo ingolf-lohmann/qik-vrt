@@ -22,6 +22,16 @@ No executable or authentication token is stored in this directory. The files
 here define independently checkable versions, upstream locations, checksums,
 and license boundaries for an optional local cache.
 
+The S1 provider admission extension uses the already locked Python 3.12 standard
+library (HTTPS/TLS, JSON, Decimal, POSIX locks/fsync) and existing Node 24 monitor
+readback plus the existing bounded subprocess helper. It installs no provider
+SDK/CLI. Its source/API authorities, error/recovery boundaries and control tests
+are in `runtime/self-host/PROVIDER_ADMISSION.md` and
+`tests/test_self_host_provider.py`; both extend the existing cache registry.
+Bearer credentials, mutable provider state and payment/terms authorizations are
+private operator inputs and never cache payloads. A successful fake-provider
+test does not establish a live REST/SSH/HTTPS admission.
+
 ## GitHub CLI 2.96.0
 
 - Upstream project: <https://github.com/cli/cli>

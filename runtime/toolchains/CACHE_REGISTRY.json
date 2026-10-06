@@ -237,7 +237,10 @@
         "tests/test_self_host.py",
         "tools/qikvrt_self_host_migration.py",
         "tests/test_self_host_migration.py",
-        "runtime/self-host/MIGRATION.md"
+        "runtime/self-host/MIGRATION.md",
+        "tools/qikvrt_self_host_provider.py",
+        "tests/test_self_host_provider.py",
+        "runtime/self-host/PROVIDER_ADMISSION.md"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -259,7 +262,8 @@
         "package-lock digest",
         "test execution",
         "self-host manifest version and executable SHA-256 with offline execution tests",
-        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls"
+        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls",
+        "provider-neutral GET inventory, contradiction/partial-page refusal, exact cost/key binding, immutable fsynced intent and ambiguous-ACK restart/readback controls; no live host or payment/terms inference"
       ],
       "version": "24.x"
     },
@@ -429,7 +433,10 @@
         "runtime/self-host/MIGRATION.md",
         "runtime/self-host/CAPTURE.md",
         "deploy/universal-terminal/railway-capture-hook.sh",
-        "tests/test_self_host_capture.py"
+        "tests/test_self_host_capture.py",
+        "tools/qikvrt_self_host_provider.py",
+        "tests/test_self_host_provider.py",
+        "runtime/self-host/PROVIDER_ADMISSION.md"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -445,7 +452,8 @@
         "version and SHA-256 where runtime-bound",
         "positive, negative and restart tests",
         "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls",
-        "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred"
+        "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred",
+        "provider-neutral GET inventory, contradiction/partial-page refusal, exact cost/key binding, immutable fsynced intent and ambiguous-ACK restart/readback controls; no live host or payment/terms inference"
       ],
       "version": "3.12.x"
     },

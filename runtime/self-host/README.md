@@ -523,6 +523,14 @@ needed in the readback process. A local URL proves only local HTTP readback.
 
 ### Own-host admission and existing launcher binding
 
+The same entrypoint now includes provider-neutral inventory/admission for
+DigitalOcean, IONOS/1and1 Cloud and Hetzner. Start with `provider-inventory` and
+`provider-classify`; contradictory or incomplete account/inventory observations
+hold creation. See [PROVIDER_ADMISSION.md](PROVIDER_ADMISSION.md) for exact
+region/size/cost/key binding, separate create authorization, durable idempotent
+receipts and the existing independent public readback. These provider stages
+do not replace the native own-host admission below.
+
 `admit` extends this same tool. It makes no network call, starts no service,
 creates no supervisor, modifies no state and grants no deployment authority.
 Without a private host declaration and private configuration it returns
