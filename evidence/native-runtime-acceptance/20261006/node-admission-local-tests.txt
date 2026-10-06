@@ -50,8 +50,11 @@ test_plan_is_exact_head_deduplicated_and_writer_serialized (tests.test_qikvrt_wo
 test_self_healing_and_node_policy_point_to_the_same_continuity_contract (tests.test_qikvrt_workflow_executor_mesh_contract.WorkflowExecutorMeshContractTests.test_self_healing_and_node_policy_point_to_the_same_continuity_contract) ... ok
 test_snapshot_binds_every_workflow_to_the_exact_head_and_tree (tests.test_qikvrt_workflow_executor_mesh_contract.WorkflowExecutorMeshContractTests.test_snapshot_binds_every_workflow_to_the_exact_head_and_tree) ... ok
 test_watchdog_binds_the_literal_pull_request_head (tests.test_qikvrt_workflow_executor_mesh_contract.WorkflowExecutorMeshContractTests.test_watchdog_binds_the_literal_pull_request_head) ... ok
+test_every_recovered_source_keeps_its_original_blob_identity (tests.test_self_host_temdd.SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity) ... ok
+test_native_kernel_is_in_the_export_and_no_provider_is_required (tests.test_self_host_temdd.SourceRecoveryTests.test_native_kernel_is_in_the_export_and_no_provider_is_required) ... ok
+test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy (tests.test_self_host_temdd.SourceRecoveryTests.test_novnc_startup_reads_actual_loopback_bytes_under_a_dead_inherited_proxy) ... ok
 
 ----------------------------------------------------------------------
-Ran 52 tests in 3.342s
+Ran 55 tests in 3.200s
 
 OK

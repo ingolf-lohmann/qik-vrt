@@ -64,8 +64,9 @@
     "product_name_revision": {
       "product_name": "RaumzeitTerminal",
       "technology_name": "Universales Raumzeit-Terminal",
-      "browser_titles_and_current_contract_fields_aligned": true,
-      "previous_candidate_head": "4434a8d7e85e4afa366d7830b92b5651ecad9a28"
+      "previous_candidate_head": "4434a8d7e85e4afa366d7830b92b5651ecad9a28",
+      "current_react_and_monitor_titles_and_product_contract_fields_aligned": true,
+      "historical_native_temdd_original_bytes_preserved": true
     }
   },
   "hosting_readback": {
@@ -152,9 +153,9 @@
   "verification": {
     "local_focused_tests": {
       "status": "PASS",
-      "cases": 52,
-      "scope": "EXPORTED_REFERENCE_HTTP_LOOKUP_BYTE_READBACK_RESTART_SOURCE_GATES_DYNAMIC_SEED_QUEUE_AND_WORKFLOW_CONTINUITY",
-      "command": "python3 -B -m unittest -v tests.test_self_host.StandaloneTests.test_real_seed_lookup_and_invitation_readback_do_not_grant_node_or_authority_acceptance tests.test_self_host.MeshContractTests tests.test_seed_workflows tests.test_qikvrt_workflow_executor_mesh_contract"
+      "cases": 55,
+      "scope": "EXPORTED_REFERENCE_HTTP_LOOKUP_BYTE_READBACK_RESTART_SOURCE_GATES_DYNAMIC_SEED_QUEUE_AND_WORKFLOW_CONTINUITY; ORIGINAL_HISTORICAL_CARRIER_IDENTITY",
+      "command": "python3 -B -m unittest -v tests.test_self_host.StandaloneTests.test_real_seed_lookup_and_invitation_readback_do_not_grant_node_or_authority_acceptance tests.test_self_host.MeshContractTests tests.test_seed_workflows tests.test_qikvrt_workflow_executor_mesh_contract tests.test_self_host_temdd.SourceRecoveryTests"
     },
     "independent_remote_and_exact_head_ci": "REQUIRES_POST_WRITE_READBACK",
     "test_fixture_live_public_mesh_acceptance": false,
@@ -173,8 +174,8 @@
     "log_artifacts": [
       {
         "path": "evidence/native-runtime-acceptance/20261006/node-admission-local-tests.txt",
-        "bytes": 9139,
-        "sha256": "f76604e760d6984eee144bd5885027c3366ce4db3fb4b375adec08a2f281752a"
+        "bytes": 9709,
+        "sha256": "67a8d0b740491f6168f08cc88a0a654048d775f5566c9cd1c7cb8b3026d3127b"
       },
       {
         "path": "evidence/native-runtime-acceptance/20261006/node-admission-monitor-tests.txt",
@@ -223,6 +224,21 @@
           "conclusion": "success"
         }
       ]
+    },
+    "repaired_candidate_failure": {
+      "failed_head": "20eb25ec3cab3f8c6377e275148844d2797a16ff",
+      "failed_tree": "3017d2141b130ee4763ccbb2c80adbd654e12999",
+      "runs": [
+        37437712388,
+        37437717714
+      ],
+      "test": "tests.test_self_host_temdd.SourceRecoveryTests.test_every_recovered_source_keeps_its_original_blob_identity",
+      "cause": "Product-name edit changed the protected historical TEMDD HTML source (10668 vs 10647 original bytes)",
+      "repair": "Restore the exact original carrier; keep current product naming in React/monitor frontend and current normative product contract fields",
+      "original_restored_sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+      "original_restored_git_blob_sha1": "2c32118f30c37d8393ae174b06aedb3ece1fe4c0",
+      "recovery_test_or_original_digest_weakened": false,
+      "local_post_repair_source_recovery_tests": "PASS_3_ORIGINAL_CONTROLS_UNCHANGED"
     }
   },
   "outputs": [
@@ -308,8 +324,8 @@
     },
     {
       "path": "docs/terminal/temdd/index.html",
-      "bytes": 10668,
-      "sha256": "7d6a6248f030abb74de4dd3e415ff3f18ff457b518bc58380d511cc090366bf4"
+      "bytes": 10647,
+      "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819"
     }
   ],
   "external_blockers": [
