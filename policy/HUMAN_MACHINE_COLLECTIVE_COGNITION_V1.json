@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_human_machine_collective_cognition_v1",
-  "version": "1.0",
+  "version": "1.1",
   "human_contract": "docs/HUMAN_MACHINE_COLLECTIVE_COGNITION_ARCHITECTURE.md",
   "objectives": [
     "maximize verified useful cognition per human intervention",
@@ -32,7 +32,45 @@
     "actor_identity_separation_required": true,
     "majority_vote_is_not_truth": true,
     "conflicts_resolved_by": ["source evidence","countermodels","formal checks","tests","human normative decision when still required"],
-    "human_acceptance_does_not_reclassify_ai_origin": true
+    "human_acceptance_does_not_reclassify_ai_origin": true,
+    "shared_mesh_goal_authorization": "state/authorization/delegations/OWNER_MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_V1.json"
+  },
+  "shared_mesh_goal_execution": {
+    "status": "OWNER_AUTHORIZED_NORMATIVE_CONTRACT",
+    "all_admitted_participants_eligible": true,
+    "common_goal_and_scope_binding_required": true,
+    "participant_permissions_and_resource_admission_required": true,
+    "independent_work_parallelization_allowed": true,
+    "dependency_order_and_writer_fencing_required": true,
+    "scaling_must_preserve_acceptance_invariants": true,
+    "existing_executors_ledgers_and_transceivers_required": true,
+    "terminal_role": "PASSIVE_OBSERVER_AND_AUTHORIZED_INPUT_SURFACE",
+    "required_result_preservation": [
+      "original_result_bytes_and_sha256",
+      "goal_work_unit_and_participant_identity",
+      "exact_source_head_tree_or_monolith_snapshot",
+      "human_and_artificial_contribution_provenance",
+      "dependency_and_parent_successor_relations",
+      "supporting_and_contradicting_evidence",
+      "uncertainty_failures_and_open_obligations",
+      "rights_and_license_metadata",
+      "durable_effect_and_fresh_readback_receipts"
+    ],
+    "consolidation_acceptance": [
+      "complete_expected_result_manifest",
+      "all_original_result_bytes_reconstructable",
+      "every_expected_work_unit_has_result_or_explicit_open_failure_disposition",
+      "no_silent_overwrite_or_conflict_erasure",
+      "no_duplicate_effect_on_replay_or_recovery",
+      "fresh_exact_subject_readback"
+    ],
+    "duplicate_result_handling": "CONTENT_REUSE_WITH_EVERY_ORIGINAL_CONTRIBUTION_RECEIPT_PRESERVED",
+    "partition_or_ambiguous_effect_handling": "PRESERVE_DURABLE_PENDING_WORK_AND_REOBSERVE_BEFORE_RETRY",
+    "goal_done_requires_all_completion_criteria": true,
+    "performance_claim_requires_comparable_measurement": true,
+    "all_node_runtime_verified": false,
+    "whole_mesh_lossless_consolidation_verified": false,
+    "effect_ack_done": false
   },
   "reality_model_contract": {
     "suitable_model_can_describe_reality": true,

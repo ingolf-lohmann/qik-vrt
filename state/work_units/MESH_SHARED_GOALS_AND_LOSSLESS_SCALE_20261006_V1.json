@@ -1,0 +1,36 @@
+{
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "work_unit_id": "MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_20261006_V1",
+  "owner": "Ingolf Lohmann",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "79ddba3b6d0970203053b2719c41e9410276741c",
+  "source_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
+  "scope": "Persist Owner-authorized common-goal Mesh participation, independent parallelism, permitted scaling and lossless result consolidation in existing bootstrap and collective-cognition rules.",
+  "human_contribution": "Ingolf Lohmann states the common-goal, all-participant, parallelization, scaling and lossless-consolidation requirement and explicitly grants authorization on 2026-10-06.",
+  "artificial_cognitive_contribution": "OpenAI Codex binds the directive to existing cognition and continuity rules, original-byte and contribution preservation, expected result inventory, conflict/failure retention, idempotency, current-subject readback and explicit runtime-evidence limits.",
+  "origin": "JOINT_WITH_SEPARABLE_COMPONENTS",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE"
+  },
+  "evidence_retention": "METADATA_ONLY",
+  "authorization_record": "state/authorization/delegations/OWNER_MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_V1.json",
+  "existing_implementation_paths": [
+    {"repository": "ingolf-lohmann/qik-vrt", "pr": 410, "scope": "lossless observation, role-local worker and bounded multi-pair Mesh candidate"},
+    {"repository": "ingolf-lohmann/qik-vrt", "pr": 443, "scope": "isolated matched scaling measurement candidate"},
+    {"repository": "ingolf-lohmann/qik-vrt", "pr": 457, "scope": "universal node bus and stable-idle batched work candidate"},
+    {"repository": "ingolf-lohmann/qik-vrt", "pr": 469, "scope": "same Node/Client monolith and passive terminal candidate"}
+  ],
+  "implementation_path_semantics": "Existing reviewable candidates are reuse/resume locators; their mutable heads and historical tests are not acceptance evidence for this successor.",
+  "candidate_branch": "work/mesh-collective-goals-20261006-79ddba3b",
+  "verification_contract": "Existing tool-cache, bootstrap/handoff, collective bootstrap, repository integrity and full make test gates; exact candidate HEAD/TREE and native CI results must be reobserved after publication.",
+  "human_directive_acceptance": "EXPLICITLY_AUTHORIZED",
+  "implementation_review_and_main_promotion": "OPEN",
+  "external_effects": "REVIEWABLE_REPOSITORY_CANDIDATE_ONLY; no production runtime, new scheduler, resource purchase or publication activation",
+  "runtime_boundary": "No new worker/executor/ledger implementation. All-node live participation, public deployment and whole-Mesh lossless effect consolidation remain separately evidence-bound.",
+  "authority_propagation": "NOT_VERIFIED",
+  "predecessor_evidence_transfer": false,
+  "release_claims": {"PASS": false, "FINAL_PASS": false, "EFFECT_ACK_DONE": false}
+}

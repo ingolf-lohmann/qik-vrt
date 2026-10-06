@@ -1,0 +1,51 @@
+{
+  "schema": "qikvrt_owner_mesh_shared_goals_and_lossless_scale_v1",
+  "authorization_id": "OWNER-MESH-SHARED-GOALS-AND-LOSSLESS-SCALE-20261006-V1",
+  "owner": "Ingolf Lohmann",
+  "declared_at": "2026-10-06T10:21:44+02:00",
+  "state": "ACTIVE_FOR_BOUND_SCOPE_UNDER_EXISTING_RULES",
+  "human_contribution": "Owner authorizes admitted QIK-VRT Mesh participants to cooperate, parallelize and scale for common goals and receive and consolidate results without loss, under the applicable existing rules.",
+  "authorization_scope": {
+    "eligible_participants": "ALL_ADMITTED_QIKVRT_MESH_PARTICIPANTS",
+    "shared_goal_work": true,
+    "independent_parallel_work": true,
+    "scaling_of_already_permitted_resources": true,
+    "lossless_result_delivery_and_consolidation": true,
+    "goal_scope_resource_and_participant_binding_required": true,
+    "existing_permissions_rights_security_review_and_effect_rules_apply": true
+  },
+  "bindings": {
+    "collective_cognition": "policy/HUMAN_MACHINE_COLLECTIVE_COGNITION_V1.json",
+    "human_contract": "docs/HUMAN_MACHINE_COLLECTIVE_COGNITION_ARCHITECTURE.md",
+    "epistemic_continuity": "policy/QIKVRT_EPISTEMIC_CONNECTABILITY_CONTINUITY_V1.json",
+    "proposal_only_runtime": "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "repository_continuation": "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json",
+    "entrypoint": "AI",
+    "bootstrap": "AI_CONTEXT.json",
+    "contribution_record": "state/work_units/MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_20261006_V1.json"
+  },
+  "required_boundaries": [
+    "REUSE_EXISTING_EXECUTORS_LEDGERS_AND_TRANSCEIVERS",
+    "PRESERVE_ALL_ORIGINAL_RESULT_BYTES_AND_CONTRIBUTION_RECEIPTS",
+    "PRESERVE_CONTRADICTIONS_UNCERTAINTY_FAILURES_AND_OPEN_WORK",
+    "PRESERVE_DEPENDENCIES_WRITER_FENCING_AND_IDEMPOTENT_REPLAY",
+    "REQUIRE_COMPLETE_EXPECTED_RESULT_MANIFEST_AND_FRESH_EXACT_SUBJECT_READBACK",
+    "KEEP_UNIVERSAL_TERMINAL_PASSIVE",
+    "DO_NOT_TRANSFER_PREDECESSOR_ACCEPTANCE",
+    "DO_NOT_INFER_NEW_EXTERNAL_EFFECT_AUTHORITY_FROM_PARALLELISM"
+  ],
+  "not_authorized_by_this_record": [
+    "access_to_unadmitted_participant_credentials_or_private_data",
+    "resource_purchase_or_new_host_account_commitment",
+    "review_or_branch_protection_weakening",
+    "force_push_history_rewrite_or_unconditional_merge",
+    "unbound_deployment_publication_or_other_external_effect"
+  ],
+  "evidence_boundary": {
+    "owner_architecture_and_working_rule_authorization": true,
+    "actual_all_participant_execution_proven": false,
+    "whole_mesh_lossless_consolidation_proven": false,
+    "linear_or_unbounded_scaling_proven": false,
+    "general_effect_ack_done": false
+  }
+}

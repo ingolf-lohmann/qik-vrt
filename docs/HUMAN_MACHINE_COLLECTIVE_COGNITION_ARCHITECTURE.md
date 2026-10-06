@@ -57,6 +57,36 @@ Mehrere künstlich-kognitive Systeme dürfen parallel Vorschläge erzeugen, müs
 
 Werkzeug- und Kontextinteroperabilität soll über offene, lizenzkompatible Adapter erfolgen. Referenzprojekte werden nicht ungeprüft vendort. QIK-VRT bindet ihre Lizenz, Version, Integrationsart und den Umfang der tatsächlich übernommenen Teile.
 
+## Gemeinsame Ziele, Parallelisierung und verlustfreie Konsolidierung
+
+Die Owner-Freigabe von Ingolf Lohmann vom 6. Oktober 2026 ist in
+`state/authorization/delegations/OWNER_MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_V1.json`
+gebunden. Alle zugelassenen Teilnehmer des QIK-VRT-Mesh dürfen unter den
+geltenden Regeln an gemeinsamen Zielen zusammenarbeiten und freigegebene
+Ressourcen parallelisieren und skalieren. Jeder Auftrag bindet Ziel und Umfang,
+Teilnehmer, Berechtigungen, Work Units, Abhängigkeiten, den exakten
+Repository-Stand beziehungsweise Monolith-Snapshot und seine Abnahmekriterien.
+Unabhängige Teilaufgaben dürfen parallel laufen; abhängige Schritte und
+konkurrierende Schreiber behalten Reihenfolge und Fencing. Die bestehenden
+Executor-, Ledger- und Transceiver-Pfade werden wiederverwendet.
+
+Eine Konsolidierung erhält sämtliche ursprünglichen Ergebnisbytes mit Digests,
+Beitragsidentitäten, Provenienz, Gegenbelegen, Unsicherheiten, Fehlern, offenen
+Arbeiten und Wirkungs-/Readback-Receipts. Identische Inhalte dürfen gemeinsam
+gespeichert werden; alle ursprünglichen Beitragsbelege bleiben erhalten.
+Widersprüche werden explizit geführt. Ein vollständiges Soll-Ergebnismanifest
+macht fehlende oder gescheiterte Work Units sichtbar. Erst wenn sämtliche
+Zielkriterien erfüllt und die Ergebnisse am exakten Gegenstand frisch
+zurückgelesen sind, darf das gemeinsame Ziel als abgeschlossen gelten.
+
+Partition, Neustart und unklare Zustellung erhalten dauerhafte offene Arbeit.
+Vor einer Wiederholung wird die vorhandene Wirkung über den bestehenden
+idempotenten Pfad geprüft. Das Universale Raumzeit-Terminal beobachtet diese
+Aktivitäten passiv; parallele Arbeit begründet keinen zweiten Effektledger.
+Die Freigabe beschreibt eine verbindliche Arbeitsregel. Tatsächliche
+Gesamt-Mesh-Ausführung, Verlustfreiheit im Betrieb, Skalierungsleistung und
+`EFFECT_ACK_DONE` benötigen weiterhin eigene aktuelle Nachweise.
+
 ## Open-Source-Anschlussstellen
 
 Der zugehörige Registry-Vertrag führt insbesondere folgende Anschlussstellen als nicht-vendorte Referenzen:
