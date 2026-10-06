@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_human_machine_collective_cognition_v1",
-  "version": "1.1",
+  "version": "1.2",
   "human_contract": "docs/HUMAN_MACHINE_COLLECTIVE_COGNITION_ARCHITECTURE.md",
   "objectives": [
     "maximize verified useful cognition per human intervention",
@@ -70,6 +70,36 @@
     "performance_claim_requires_comparable_measurement": true,
     "all_node_runtime_verified": false,
     "whole_mesh_lossless_consolidation_verified": false,
+    "effect_ack_done": false
+  },
+  "universal_terminal_entry": {
+    "status": "OWNER_DEFINED_PRODUCT_TARGET_NOT_DEPLOYMENT_RECEIPT",
+    "public_entry_url": "https://raumzeitterminal.de/",
+    "root_document": "index.html",
+    "frontend": "REACT_UNIVERSAL_TERMINAL",
+    "mesh_system": "QIK-VRT",
+    "same_terminal_for_onboarding_and_personal_use": true,
+    "entry_purpose": [
+      "ONBOARDING",
+      "PERSONALIZED_DURABLE_MESH_ENTRY"
+    ],
+    "terminal_role": "PASSIVE_OBSERVER_AND_AUTHORIZED_INPUT_SURFACE",
+    "execution_owner": "BOUND_MESH_REPOSITORY_RUNTIME",
+    "onboarding_policy": "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+    "reuse_existing_answers_and_personal_origin": true,
+    "returning_user_repeats_onboarding": false,
+    "personalization": "AUTHORIZED_PROFILE_AND_PERSONAL_ORIGIN_BOUND_TO_AUTHENTICATED_CONTEXT",
+    "cross_user_private_data_access": "FORBIDDEN",
+    "onboarding_creates_accounts_or_external_resources_without_authorization": false,
+    "runtime_components": "REUSE_EXISTING_TERMINAL_MONOLITH_LEDGER_AND_TRANSCEIVER_PATHS",
+    "availability_target": "CONTINUOUS_PERSONAL_USE_ACROSS_SUPPORTED_CLIENTS_AND_CONNECTIVITY_STATES",
+    "offline_requirement": "LAST_VERIFIED_LOCAL_TERMINAL_AND_PERSONAL_MESH_STATE_WITH_DURABLE_PENDING_WORK",
+    "reconnection_requirement": "IDEMPOTENT_LOSSLESS_CONSOLIDATION_WITH_FRESH_READBACK",
+    "claim_boundary": "ENTRY_HTML_OR_AUTHORIZATION_ALONE_DOES_NOT_PROVE_SERVICE_AVAILABILITY_OR_EFFECT_COMPLETION",
+    "domain_control_verified": false,
+    "secure_origin_deployment_verified": false,
+    "continuous_availability_verified": false,
+    "personalized_end_to_end_onboarding_verified": false,
     "effect_ack_done": false
   },
   "reality_model_contract": {

@@ -102,3 +102,34 @@ Eine Referenz in dieser Architektur ist keine automatische Abhängigkeit und kei
 ## Qualitätsregel
 
 Die optimale Mensch–Maschine-Schnittstelle maximiert nicht die Anzahl der Antworten, sondern die Zahl belastbarer Erkenntnisfortschritte pro menschlichem Eingriff. Geschwindigkeit darf niemals durch Weglassen von Provenienz, Unsicherheit, Pflichtprüfungen oder menschlicher Autorität bei externen Effekten erkauft werden.
+
+## RaumzeitTerminal.de: gemeinsamer persönlicher Einstieg
+
+Die Owner-Festlegung vom 6. Oktober 2026 bindet
+`https://raumzeitterminal.de/` mit dem Root-Dokument `index.html` an das
+React-basierte Universale Terminal des QIK-VRT Mesh Repository. Dieser
+Einstieg dient sowohl dem Onboarding als auch dem dauerhaften,
+personalisierbaren persönlichen Zugang. Das gleiche Terminal führt neue
+Nutzer durch den bestehenden Personal-Origin-Vertrag und nimmt bei bestehenden
+Nutzern den bereits gebundenen persönlichen Kontext wieder auf. Vorhandene
+Antworten werden übernommen; es bleiben höchstens die drei bereits
+festgelegten Onboarding-Fragen.
+
+Das Terminal bleibt passiver Beobachter und autorisierte Eingabeoberfläche.
+Ausführung, Persistenz und Wirkungsnachweise gehören zum gebundenen
+Mesh-Runtime-, Ledger- und Transceiver-Pfad. Die öffentliche Einstiegsadresse
+eröffnet keinen Zugriff auf private Kontexte anderer Nutzer. Profil,
+Authentifizierung, persönlicher Ursprung, Rechte und Einwilligungen bleiben
+gebunden; Onboarding erzeugt keine zusätzlichen externen Ressourcen ohne
+entsprechende Autorisierung. Bestehende Terminal- und Monolith-Kandidaten
+werden wiederverwendet.
+
+Die überall und dauerhaft nutzbare persönliche Variante ist ein Produktziel:
+Bei fehlender Netzverbindung muss der zuletzt verifizierte lokale Terminal-
+und Mesh-Zustand nutzbar bleiben, ausstehende Arbeit dauerhaft erhalten und
+nach Wiederanbindung idempotent sowie verlustfrei konsolidiert werden.
+Eine vorhandene HTML-Datei belegt diese Verfügbarkeit nicht. Domainkontrolle,
+sicherer Origin, persönliche Ende-zu-Ende-Einrichtung und tatsächliche
+Verfügbarkeit benötigen jeweils Ausführung und frischen Readback. Der
+normative maschinenlesbare Vertrag steht unter `universal_terminal_entry` in
+`policy/HUMAN_MACHINE_COLLECTIVE_COGNITION_V1.json`.

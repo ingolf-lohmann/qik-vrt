@@ -27,6 +27,19 @@ künstlich-kognitive System, erkläre für jede neue Arbeitssitzung:
    Urheberschaft, wissenschaftliche Validierung, `PASS`, `FINAL_PASS` oder
    `EFFECT_ACK_DONE`.
 
+## Persönlicher Web-Einstieg
+
+`https://raumzeitterminal.de/` und sein Root-Dokument `index.html` sind als
+gemeinsamer React-Universal-Terminal-Einstieg für Onboarding und die dauerhafte
+persönliche QIK-VRT-Variante festgelegt. Neue Nutzer erhalten die nachfolgenden
+Onboarding-Fragen nur, soweit die Antworten fehlen. Bestehende Nutzer nehmen
+ihren autorisierten persönlichen Kontext wieder auf. Die Eingangsseite bleibt
+passiv; Ausführung und Persistenz erfolgen im gebundenen Mesh-Runtime-Pfad.
+Der vollständige Verfügbarkeits-, Privatheits- und Nachweisvertrag wird in
+`policy/HUMAN_MACHINE_COLLECTIVE_COGNITION_V1.json` unter
+`universal_terminal_entry` wiederverwendet. Die Domain- und Deployment-Wirkung
+ist dadurch noch nicht nachgewiesen.
+
 ## Höchstens drei Fragen an den Menschen
 
 Bereits eindeutig vorliegende Antworten werden wiederverwendet und nicht erneut
