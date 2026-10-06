@@ -345,5 +345,54 @@
       "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
     ],
     "terminal": "REACT_HTML_PASSIVE_INPUT_OUTPUT_OPENED_ON_DEMAND"
+  },
+  "required_repository_node_admission": {
+    "owner": "Ingolf Lohmann",
+    "policy_path": "registry/NODE_DISCOVERY_POLICY.json",
+    "invitation_route": "/api/mesh/invitation",
+    "lookup_route": "/api/mesh/lookup",
+    "live_acceptance_required": true,
+    "implementation_scope": "SOURCE_INVITATION_AND_READ_ONLY_SEED_RESPONSE; FULL_NATIVE_CONNECTION_AND_AUTHORITY_HANDOFF_OPEN",
+    "native_mesh_connection_verified": false,
+    "authority_handoff_verified": false,
+    "effect_ack_done": false
+  },
+  "hosting_pipeline": {
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-06T10:10:55+02:00",
+    "work_unit": "OPEN_NODE_SEED_LOOKUP_AND_AUTHORITY_CONTINUITY_20261006_V1",
+    "reuse": [
+      "tools/qikvrt_self_host.py:admit",
+      "tools/qikvrt_self_host.py:supervisor",
+      "tools/qikvrt_self_host.py:run-admitted",
+      "runtime/self-host/HOST_ADMISSION.example.json"
+    ],
+    "providers": [
+      "IONOS_1AND1",
+      "HETZNER",
+      "DIGITALOCEAN",
+      "OTHER_OWNER_ADMITTED_PROVIDERS"
+    ],
+    "existing_providers_retained": true,
+    "geographic_distribution_required": true,
+    "independent_provider_failure_domains_required": true,
+    "client_locality_latency_measurements_required": true,
+    "small_nodes_allowed": true,
+    "budget_and_runtime_capacity_must_be_bound": true,
+    "configuration_is_not_availability_guarantee": true,
+    "public_native_hosts_verified": false,
+    "effect_ack_done": false
+  },
+  "product_identity": {
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-06T10:14:09+02:00",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "product_name": "RaumzeitTerminal",
+    "product_name_written_as_one_word": true,
+    "domain_stem": "raumzeitterminal",
+    "domain_registration_requires_current_registrar_availability": true,
+    "trademark_protection_requires_exact_territory_goods_services_and_admissibility_review": true,
+    "domain_registered": false,
+    "trademark_registered": false
   }
 }

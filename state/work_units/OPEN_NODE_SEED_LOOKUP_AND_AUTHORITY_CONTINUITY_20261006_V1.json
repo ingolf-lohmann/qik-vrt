@@ -1,0 +1,329 @@
+{
+  "schema": "qikvrt_provenance_work_unit_v1",
+  "id": "OPEN_NODE_SEED_LOOKUP_AND_AUTHORITY_CONTINUITY_20261006_V1",
+  "created_at": "2026-10-06T08:14:38.122038+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/native-acceptance-new-project-20261006",
+  "source_commit": "83a1742692eef8af8528ab364048954125f4fa5e",
+  "source_tree": "e79a76815af940731407be88c1b9f611e96b69ad",
+  "candidate_binding": "CONTAINING_COMMIT_AND_FRESH_REMOTE_READBACK",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "role": "Product and Code Owner"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "identity_limits": [
+      "Session attribution is not cryptographic human or model authentication"
+    ]
+  },
+  "human_contributions": [
+    "Standing invitation and complete connection requirements for Transputer, Terminal and Mesh Authority",
+    "Authorize 400-byte seed cloud lookup with compatible-node responses",
+    "Require replaceable Authority for availability and continuity",
+    "Keep DigitalOcean, Hetzner and other providers in the pipeline; add IONOS/1and1 using existing customer relationship",
+    "Separate the technology name Universales Raumzeit-Terminal from product/domain name RaumzeitTerminal; check domains and trademark admissibility before protection"
+  ],
+  "artificial_cognitive_contributions": [
+    "Extend existing S1 and Seed controllers instead of creating a second runtime or workflow",
+    "Restore canonical V1 seed and normative policy exactly from retained repository history",
+    "Execute real exported-process lookup, original policy-byte readback, restart and adversarial controls",
+    "Preserve failed registry members in current acceptance results",
+    "Keep live native connection and Authority role transition outside structural/HTTP success",
+    "Read available hosting account state and official provider REST contracts without provisioning trial"
+  ],
+  "human_decision": {
+    "implementation_authorization": "CURRENT_EXPLICIT_OWNER_REQUESTS",
+    "exact_generated_candidate_acceptance": "RESPONSIBLE_NATIVE_REVIEW_PENDING",
+    "no_redundant_task_authorization_required": true
+  },
+  "seed": {
+    "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+    "bytes": 400,
+    "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+    "git_blob_sha1": "9b06a2b407fb99d99d2bda5a3decc80ab68a092b",
+    "origin_commit": "def7a93e7ae36426bebaf7b82519b670025f8f42",
+    "historical_original_owner_seed_recovered": false,
+    "legacy_417_byte_artifact": "RETAINED_IN_HISTORY_NOT_RELABELED_TRUNCATED_OR_PADDED",
+    "seed_is_credential": false
+  },
+  "implementation": {
+    "package_version": "1.7.1",
+    "invitation": "GET /api/mesh/invitation",
+    "byte_exact_policy_readback": "GET /api/mesh/invitation/source",
+    "seed_response": "POST /api/mesh/lookup?nonce=<16..128 safe characters>; exact canonical 400-byte application/octet-stream body",
+    "coordinator": "python3 -B tools/qikvrt_seed_common.py lookup --lookup-url https://<admitted-node>/api/mesh/lookup [--lookup-url ...]",
+    "coordinator_scope": "EVERY_EXPLICITLY_SUPPLIED_ENDPOINT; RETAIN_UNKNOWN_OR_INCOMPATIBLE_MEMBERS; NO_GLOBAL_SCAN",
+    "authority_exchange": "REQUIREMENT_AND_PACKAGE_GATE_BOUND; LIVE_STATE_REPLICATION_QUORUM_FENCING_AND_ROLE_CHANGE_NOT_IMPLEMENTED_OR_VERIFIED_BY_THIS_PATCH",
+    "native_original_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+    "received_seed_or_invitation_auto_executes": false
+  },
+  "hosting_readback": {
+    "observation_time_precision": "CURRENT_SESSION_CONNECTOR_READ_BOUNDED_BY_USER_TIME_CONTEXT; PROVIDER_RESPONSE_HAS_NO_READ_TIMESTAMP",
+    "DigitalOcean": {
+      "inventory_observed": true,
+      "droplets_returned": 0,
+      "account_status": "warning",
+      "droplet_limit": 3,
+      "provider_message": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel.",
+      "inventory_warning_disagreement_retained": true,
+      "machine_provisioned_or_native_host_admitted": false,
+      "retry_condition": "CHANGED_PROVIDER_NATIVE_ACCOUNT_ADMISSION_AND_PRIVILEGED_EXECUTOR_BINDING"
+    },
+    "IONOS_1and1": {
+      "pipeline_state": "ADDED_WITHOUT_REMOVING_OTHER_PROVIDERS",
+      "existing_customer": "OWNER_REPORTED",
+      "exact_cloud_product_contract": "UNBOUND",
+      "authenticated_api_and_privileged_machine_execution": "NOT_AVAILABLE_IN_CURRENT_CLIENT",
+      "native_machine_inventory": "UNKNOWN_NOT_EMPTY",
+      "documentation": [
+        "https://docs.ionos.com/reference/get-started",
+        "https://docs.ionos.com/nodejs-sdk/api/datacentersapi",
+        "https://docs.ionos.com/nodejs-sdk/api/serversapi"
+      ]
+    },
+    "Hetzner": {
+      "pipeline_state": "RETAINED",
+      "authenticated_project_api_and_privileged_machine_execution": "NOT_AVAILABLE_IN_CURRENT_CLIENT",
+      "native_machine_inventory": "UNKNOWN_NOT_EMPTY",
+      "documentation": [
+        "https://docs.hetzner.cloud/reference/cloud",
+        "https://docs.hetzner.cloud/changelog"
+      ],
+      "new_provisioning_must_not_use_removed_datacenter_endpoints": true
+    },
+    "other_providers": "RETAINED_ONLY_AFTER_OWNER_ADMISSION_NO_INVENTED_HOSTS",
+    "global_high_availability_and_client_latency_improvement": "REQUIRE_PROVIDER_FAILURE_INDEPENDENCE_AND_MEASURED_NATIVE_WORKLOAD_RECEIPTS_NOT_VERIFIED",
+    "observation_interval_utc": {
+      "from": "2026-10-06T08:09:04Z",
+      "to": "2026-10-06T08:10:55Z"
+    }
+  },
+  "public_observer": {
+    "fresh_request": "HTTP_GET_USER_AGENT_QIKVRT-Independent-Readback/2",
+    "new_observation_verified": false,
+    "observed_error": "curl exit 28; Proxy CONNECT aborted due to timeout; HTTP status 000 means no observed origin HTTP status",
+    "last_verified_snapshot_id": "7f0ec53d-6f4b-4ac4-a232-984c021b5efc",
+    "last_verified_completed_at": "2026-10-06T07:34:20.170Z",
+    "last_verified_snapshot_sha256": "afc4bcee3a398fc8909b35d04d3343a072f5d491b2df88531fc7ad473dc21a3b",
+    "last_verified_snapshot_preserved": true,
+    "site_source_head": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
+    "site_source_modified": false,
+    "site_version_deployed": false,
+    "transport_failure_is_transient": true,
+    "recurring_updater_disabled": false
+  },
+  "verification": {
+    "local_focused_tests": {
+      "status": "PASS",
+      "cases": 52,
+      "scope": "EXPORTED_REFERENCE_HTTP_LOOKUP_BYTE_READBACK_RESTART_SOURCE_GATES_DYNAMIC_SEED_QUEUE_AND_WORKFLOW_CONTINUITY",
+      "command": "python3 -B -m unittest -v tests.test_self_host.StandaloneTests.test_real_seed_lookup_and_invitation_readback_do_not_grant_node_or_authority_acceptance tests.test_self_host.MeshContractTests tests.test_seed_workflows tests.test_qikvrt_workflow_executor_mesh_contract"
+    },
+    "independent_remote_and_exact_head_ci": "REQUIRES_POST_WRITE_READBACK",
+    "test_fixture_live_public_mesh_acceptance": false,
+    "predecessor_evidence_transfer": false,
+    "existing_monitor_tests": {
+      "status": "PASS",
+      "cases": 24,
+      "command": "node --test docs/monitor/monitor.test.mjs"
+    },
+    "domain_register_search": {
+      "DPMA_basis_form": "ACCESSIBLE_FORM_ONLY; NO_QUERY_RESULT_RECEIPT",
+      "TMview_exact_word_query": "JAVASCRIPT_RESPONSE_HAS_NO_QUERY_RESULT_RECEIPT",
+      "DATA_INPI_query": "FETCH_ERROR; NO_QUERY_RESULT_RECEIPT",
+      "indexed_web_queries": "NO_BOUND_OFFICIAL_EXACT_OR_SIMILARITY_RESULT; NOT_A_CLEARANCE_CERTIFICATE"
+    },
+    "log_artifacts": [
+      {
+        "path": "evidence/native-runtime-acceptance/20261006/node-admission-local-tests.txt",
+        "bytes": 9139,
+        "sha256": "417aff6b1d0e6380c49d210444da1b1fe369fb9787336213dbc2e07a2b6606b7"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/20261006/node-admission-monitor-tests.txt",
+        "bytes": 4973,
+        "sha256": "452945b4fa4bcd1593013a07e7df92bd97814fdae310aa2fa00310724e182dc8"
+      },
+      {
+        "path": "evidence/native-runtime-acceptance/20261006/domain-check-original.json",
+        "bytes": 484,
+        "sha256": "61fd985e2c0b5f2abafd4fdc71376d0d1150fe5f6c111c8de867832026cb4276"
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 104332,
+      "sha256": "5e924989b34981ce4ed8f9cf916ec5a57cd5201d46de60686961ede3fee26953"
+    },
+    {
+      "path": "tools/qikvrt_seed_common.py",
+      "bytes": 56472,
+      "sha256": "104e60de8dbb8357107a0639c0326758215d802c167f21d3a9a56d0e6701834c"
+    },
+    {
+      "path": "docs/monitor/server.mjs",
+      "bytes": 46637,
+      "sha256": "2067fb69e5903d043b06b91cb21744ede3560fa4424f70e4b99a46a8139e0d2a"
+    },
+    {
+      "path": "docs/monitor/self-host.mjs",
+      "bytes": 14003,
+      "sha256": "7cd4a05a7f5866e48cef603b4790a6d436e69bd1649a8c6272daa96213103df2"
+    },
+    {
+      "path": "docs/monitor/mesh-react.js",
+      "bytes": 8649,
+      "sha256": "7533edd08ecce7710d4248913aba0d8167a6826cf56b9c9f10cda40144be6b49"
+    },
+    {
+      "path": "registry/NODE_DISCOVERY_POLICY.json",
+      "bytes": 3673,
+      "sha256": "a77346a9ed9ca8386b29e7b96ba999f20c93f85a4fe0461072d9dbf169ba03f2"
+    },
+    {
+      "path": "registry/node_request_queue/README.md",
+      "bytes": 2013,
+      "sha256": "d28fc5b7563a53e75132e1e823f24ccfe44297da97ea1b63545f979bc6819711"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 4769,
+      "sha256": "37670af5a9bb052430ad2f98fbd528c1fc2138619b09426ef0edefcb9c28f997"
+    },
+    {
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "bytes": 21720,
+      "sha256": "98b842dd7de5ce7fd261e74a8fef9ac74b51a1f21a47f76d0e6f936922901526"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 74555,
+      "sha256": "c6fd8dd577e5d0b933325dc57e1fdd76121cd471c5d211fe85adebc7757dd32a"
+    },
+    {
+      "path": "tests/test_seed_workflows.py",
+      "bytes": 20412,
+      "sha256": "c34ee3c0ff6a41908df8cf10bd4ec242cf8ddb44a40a3312037085aed4ec1b0b"
+    },
+    {
+      "path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "bytes": 400,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+    },
+    {
+      "path": "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+      "bytes": 8490,
+      "sha256": "f1d5ad65ccebbe131919ab349fb2a8493e0ac0b7c0881e6132ef4850aa12368a"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 42743,
+      "sha256": "7e8d98a72b80ef70bdc6939a5e417fa6f9dd13d42d36d0f30448071456967865"
+    }
+  ],
+  "external_blockers": [
+    "GITHUB_REPOSITORY_CREATE_OPERATION_NOT_EXPOSED_AND_NO_AUTHENTICATED_CLI_CREDENTIAL_ROUTE",
+    "NO_ADMITTED_PUBLIC_NATIVE_HOST_AND_PRIVILEGED_EXECUTOR",
+    "DIGITALOCEAN_ACCOUNT_ADMISSION_WARNING",
+    "IONOS_AND_HETZNER_AUTHENTICATED_CONTROL_PLANE_AND_EXECUTION_UNBOUND",
+    "AUTHORITY_CURRENT_REPOSITORY_READBACK_UNAVAILABLE",
+    "GENERAL_NATIVE_EFFECT_REPLICATION_AND_SAFE_AUTHORITY_WRITER_HANDOFF_NOT_VERIFIED"
+  ],
+  "external_effects": {
+    "existing_repository_review_candidate_persistence": "AUTHORIZED",
+    "new_github_repository_created": false,
+    "authority_role_changed": false,
+    "provider_provisioning": false,
+    "deployment": false,
+    "main_merge": false,
+    "ordinary_release": false,
+    "publication": false
+  },
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "AUTHORITY_MIRROR_EQUALITY": false,
+    "ALL_NODES_CONNECTED": false,
+    "PUBLIC_NATIVE_RUNTIME_ACCEPTANCE": false
+  },
+  "candidate_ref": "work/open-node-seed-lookup-20261006",
+  "product_identity": {
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-06T10:14:09+02:00",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "product_name": "RaumzeitTerminal",
+    "product_name_written_as_one_word": true,
+    "domain_stem": "raumzeitterminal",
+    "domain_registration_requires_current_registrar_availability": true,
+    "trademark_protection_requires_exact_territory_goods_services_and_admissibility_review": true,
+    "domain_registered": false,
+    "trademark_registered": false,
+    "domain_check": {
+      "checked_at": "2026-10-06T08:19:05.765707+00:00",
+      "provider": "Vercel search_domains public read-only registry lookup",
+      "domains": {
+        "raumzeitterminal.com": "AVAILABLE_AT_QUERY_TIME",
+        "raumzeitterminal.de": "NOT_AVAILABLE_AT_QUERIED_PROVIDER",
+        "raumzeitterminal.fr": "NOT_AVAILABLE_AT_QUERIED_PROVIDER",
+        "raumzeitterminal.eu": "NOT_AVAILABLE_AT_QUERIED_PROVIDER"
+      },
+      "ionos_registrar_confirmation": "NOT_EXECUTED",
+      "reserved_or_purchased": false,
+      "trademark_clearance": "OPEN_NO_AUTHORITATIVE_EXACT_OR_SIMILARITY_REGISTER_RESULT_OBTAINED",
+      "registered_mark": false
+    },
+    "filing_preparation": {
+      "proposed_word_mark": "RaumzeitTerminal",
+      "applicant": "Ingolf Lohmann",
+      "territory_options": [
+        "EU_INCLUDING_FR_AND_DE",
+        "GERMANY",
+        "FRANCE"
+      ],
+      "final_territory": "OWNER_DECISION_REQUIRED",
+      "candidate_goods_services": [
+        "Downloadable computer software for passive user terminals and distributed repository/mesh interaction",
+        "Software as a service and development/hosting of that software"
+      ],
+      "candidate_classes": [
+        9,
+        42
+      ],
+      "final_goods_services": "REQUIRES_OFFICIAL_ACCEPTED_TERMS_AND_EXISTING_RIGHTS_REVIEW",
+      "applicant_legal_address": "NOT_BOUND_IN_THIS_SOURCE_SCOPE",
+      "fee_information": {
+        "DPMA_electronic_up_to_three_classes_EUR": 290,
+        "EUIPO_online_one_class_EUR": 850,
+        "EUIPO_online_two_classes_EUR": 900
+      },
+      "fee_sources": [
+        "https://www.dpma.de/service/gebuehren/marken/",
+        "https://www.euipo.europa.eu/en/trade-marks/before-applying/fees-payments"
+      ],
+      "absolute_distinctiveness_and_relative_rights_review": "OPEN",
+      "legal_sources": [
+        "https://www.dpma.de/marken/anmeldung/erforderliche_angaben/index.html",
+        "https://www.dpma.de/english/trade_marks/trade_mark_search/",
+        "https://www.euipo.europa.eu/en/trade-marks/before-applying/availability",
+        "https://www.inpi.fr/ressources/propriete-intellectuelle/rechercher-une-marque-base-marques"
+      ],
+      "application_submitted": false,
+      "payment_made": false
+    }
+  },
+  "remote_reobserved_before_mutation": {
+    "main_head": "79ddba3b6d0970203053b2719c41e9410276741c",
+    "main_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
+    "preservation_branch_head": "83a1742692eef8af8528ab364048954125f4fa5e",
+    "pr469_head": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+    "new_candidate_parent": "83a1742692eef8af8528ab364048954125f4fa5e",
+    "source_branch_proposals_are_not_current_main_or_main_promotion": true
+  }
+}

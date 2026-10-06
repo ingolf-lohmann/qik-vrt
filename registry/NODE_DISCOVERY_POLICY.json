@@ -2,7 +2,10 @@
   "qikvrt_event": "OPEN_MULTI_NODE_DISCOVERY_POLICY_4AV1",
   "fixed_node_count": false,
   "node_count_prompt": false,
-  "discovery_scope": ["registry/KNOWN_NODE_REQUESTS.tsv", "registry/node_request_queue/*.tsv"],
+  "discovery_scope": [
+    "registry/KNOWN_NODE_REQUESTS.tsv",
+    "registry/node_request_queue/*.tsv"
+  ],
   "no_global_scanning": true,
   "seed_writes_only_to_seed_repository": true,
   "future_nodes_added_by_queue_rows": true,
@@ -24,5 +27,61 @@
     "node_liveness": "EXACT_NODE_RECORDS_OR_NOT_APPLICABLE",
     "admission_policy": "PREEMPTIVE_HOLD_BEFORE_SECOND_WRITER",
     "seed_validation": "EXACT_REFLEXIVE_WATCHDOG_CONTRACT_REQUIRED"
+  },
+  "standing_invitation": {
+    "schema": "qikvrt-open-node-invitation/v1",
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-06T09:54:59+02:00",
+    "state": "OPEN_FOR_AUTHORIZED_REQUESTS",
+    "components": [
+      "universal_transputer",
+      "universal_terminal",
+      "mesh_authority"
+    ],
+    "scope": "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE",
+    "role_exemptions": [],
+    "required_connection_gates": [
+      "EXPLICIT_NODE_POLICY",
+      "EXACT_WORKFLOW_CONTINUITY_RECEIPT",
+      "EXACT_SOURCE_PACKAGE",
+      "ADMITTED_NATIVE_TRANSPUTER_AND_TERMINAL",
+      "PUBLIC_NODE_EVIDENCE_AND_BYTE_EXACT_READBACK",
+      "NATIVE_EFFECT_REPLICATION_AND_WRITER_FENCING",
+      "COMPLETE_PING_TERMINAL_RECEIPTS_AND_RESTART",
+      "WORKLOAD_FAULT_AND_AVAILABILITY_ACCEPTANCE"
+    ],
+    "queue_receipt_is_native_acceptance": false,
+    "automatic_untrusted_execution": false,
+    "retain_unavailable_nodes": true,
+    "seed_lookup": {
+      "schema": "qikvrt-seed-lookup/v1",
+      "received_at": "2026-10-06T10:02:02+02:00",
+      "seed_path": "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
+      "bytes": 400,
+      "sha256": "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792",
+      "lookup_route": "/api/mesh/lookup",
+      "request_body": "EXACT_CANONICAL_400_BYTES",
+      "lookup_scope": "OWNER_DECLARED_OR_ADMITTED_ENDPOINTS_NO_GLOBAL_SCANNING",
+      "fanout": "EACH_DECLARED_POTENTIALLY_COMPATIBLE_ENDPOINT",
+      "compatibility_scope": "EXACT_CANONICAL_SIGNATURE_AND_PACKAGED_CONTRACT",
+      "seed_is_credential": false,
+      "historical_owner_seed_recovered": false,
+      "response_is_node_admission": false
+    },
+    "authority_handoff": {
+      "received_at": "2026-10-06T10:03:47+02:00",
+      "replaceable": true,
+      "permanent_execution_dependency": false,
+      "unavailable_authority_auto_promotes": false,
+      "required_gates": [
+        "FREEZE_PREDECESSOR_AND_FENCE_WRITER",
+        "EXACT_STATE_AND_CONFIRMED_EFFECT_BYTE_RESTORE",
+        "AUTHENTICATED_NEW_ROLE_AND_EPOCH_ADMISSION",
+        "SAFE_QUORUM_OR_VISIBLE_WRITE_HOLD",
+        "FRESH_SUCCESSOR_SOURCE_AND_PUBLIC_NATIVE_READBACK"
+      ],
+      "predecessor_evidence_transfer": false,
+      "handoff_executed": false
+    }
   }
 }

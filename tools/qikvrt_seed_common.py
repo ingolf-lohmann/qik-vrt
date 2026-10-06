@@ -427,14 +427,16 @@ class HttpJsonFetcher:
             urllib.request.HTTPSHandler(context=context),
         )
 
-    def __call__(self, url: str) -> FetchedJson:
+    def __call__(self, url: str, body: bytes | None = None) -> FetchedJson:
         request = urllib.request.Request(
             url,
             headers={
                 "Accept": "application/json, text/plain;q=0.9",
                 "User-Agent": "qikvrt-seed-validator/2",
+                **({"Content-Type": "application/octet-stream"} if body is not None else {}),
             },
-            method="GET",
+            data=body,
+            method="POST" if body is not None else "GET",
         )
         try:
             with self._opener.open(request, timeout=self.timeout_seconds) as response:
@@ -449,6 +451,61 @@ class HttpJsonFetcher:
             raise SeedError(f"network fetch failed for {url}: {exc}") from exc
         value = parse_json_bytes(raw, url)
         return FetchedJson(value=value, sha256=hashlib.sha256(raw).hexdigest())
+
+
+def run_lookup(root: Path, endpoints: list[str], fetch: Callable[..., FetchedJson], *,
+               nonce: str | None = None) -> dict[str, Any]:
+    """Send one preserved canonical seed to every explicitly supplied endpoint.
+
+    Responses are discovery data. They neither register a Node nor promote an
+    Authority or execute work. Failed members remain in the returned inventory.
+    """
+    seed = _read_bytes_limited(root / "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin", max_bytes=400)
+    seed_sha256 = hashlib.sha256(seed).hexdigest()
+    if len(seed) != 400 or seed_sha256 != "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792":
+        raise SeedError("lookup requires the exact preserved canonical 400-byte seed")
+    if not endpoints or len(endpoints) != len(set(endpoints)) or len(endpoints) > MAX_NODE_ROWS:
+        raise SeedError("lookup requires distinct explicitly declared endpoints within the registry budget")
+    nonce = nonce or uuid.uuid4().hex
+    if not re.fullmatch(r"[A-Za-z0-9_-]{16,128}", nonce):
+        raise SeedError("lookup nonce must contain 16 to 128 safe characters")
+    for endpoint in endpoints:
+        parsed = urllib.parse.urlsplit(endpoint)
+        local = parsed.scheme == "http" and parsed.hostname in ("127.0.0.1", "localhost", "::1")
+        if (not (parsed.scheme == "https" or local) or not parsed.hostname or parsed.username
+                or parsed.password or parsed.path != "/api/mesh/lookup" or parsed.query or parsed.fragment):
+            raise SeedError("lookup endpoint must be an explicit HTTPS Node route or a local HTTP test route")
+    results: list[dict[str, Any]] = []
+    for endpoint in endpoints:
+        try:
+            response = fetch(endpoint + "?nonce=" + nonce, seed)
+            value = response.value
+            for key, expected in (("schema", "qikvrt-seed-lookup-response/v1"), ("nonce", nonce),
+                                  ("seed_bytes", 400), ("seed_sha256", seed_sha256),
+                                  ("compatibility", "EXACT_SEED_AND_PACKAGED_NODE_CONTRACT"),
+                                  ("native_runtime_acceptance", False), ("authority_handoff_verified", False),
+                                  ("all_nodes_connected", False), ("effect_ack_done", False)):
+                _require_exact(value, key, expected, endpoint)
+            if not isinstance(value.get("source_repository"), str):
+                raise SeedError("lookup response repository must be a string")
+            _validate_repository(value["source_repository"], "lookup response repository")
+            if (not isinstance(value.get("node_id"), str) or not value["node_id"]
+                    or any(not isinstance(value.get(key), str) or not re.fullmatch(r"[0-9a-f]{40}", value[key])
+                           for key in ("source_head", "source_tree"))
+                    or any(not isinstance(value.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", value[key])
+                           for key in ("manifest_sha256", "policy_sha256"))):
+                raise SeedError("lookup response lacks exact source and package identities")
+            results.append({"endpoint": endpoint, "state": "COMPATIBILITY_RESPONSE_RECEIVED",
+                            "response_sha256": response.sha256, "response": value})
+        except SeedError as exc:
+            results.append({"endpoint": endpoint, "state": "UNKNOWN_OR_INCOMPATIBLE", "error": str(exc)})
+    return {"schema": "qikvrt-seed-lookup-run/v1", "status": "PASS" if all(
+            result["state"] == "COMPATIBILITY_RESPONSE_RECEIVED" for result in results) else "BLOCK",
+            "observed_at": _format_utc(_utc_now()), "nonce": nonce, "seed_bytes": len(seed),
+            "seed_sha256": seed_sha256, "endpoint_count": len(endpoints), "results": results,
+            "verification_scope": "DECLARED_ENDPOINT_NONCE_SEED_AND_RESPONSE_BINDINGS_ONLY",
+            "registry_mutated": False, "native_runtime_acceptance": False,
+            "authority_handoff_verified": False, "all_nodes_connected": False, "effect_ack_done": False}
 
 
 def _require_exact(value: Mapping[str, Any], key: str, expected: Any, label: str) -> None:
@@ -546,8 +603,10 @@ def run_acceptance(
                 )
             except SeedError as exc:
                 errors.append({"guid": node.guid, "error": str(exc)})
+                prepared.append((node, policy, "BLOCK", None, None, None))
             except workflow_executor.ExecutorBlock as exc:
                 errors.append({"guid": node.guid, "error": str(exc)})
+                prepared.append((node, policy, "BLOCK", None, None, None))
         else:
             prepared.append((node, policy, policy.status, None, None, None))
 
@@ -563,6 +622,10 @@ def run_acceptance(
         "suspended_count": sum(status == "SUSPENDED" for _, _, status, _, _, _ in prepared),
         "revoked_count": sum(status == "REVOKED" for _, _, status, _, _, _ in prepared),
         "fail_count": len(errors),
+        "acceptance_scope": "REGISTRY_AND_STRUCTURAL_CONTINUITY_ONLY",
+        "native_runtime_acceptance": False,
+        "all_nodes_connected": False,
+        "effect_ack_done": False,
         "errors": errors,
         "results": [
             {
@@ -603,6 +666,9 @@ def run_acceptance(
             "policy_status": policy.status,
             "policy_reason": policy.reason,
             "acceptance_mode": "FAIL_CLOSED_SEED_REGISTRY_V2",
+            "acceptance_scope": "REGISTRY_AND_STRUCTURAL_CONTINUITY_ONLY",
+            "native_runtime_acceptance": False,
+            "effect_ack_done": False,
             "accepted_utc": utc,
             "last_acceptance_run_id": run_id,
             "source_registry_path": node.source_path,
@@ -1193,10 +1259,11 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "operation",
-        choices=("acceptance", "maintenance", "revalidate", "dashboard", "audit-export"),
+        choices=("acceptance", "maintenance", "revalidate", "dashboard", "audit-export", "lookup"),
     )
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--run-id", default=os.environ.get("QIKVRT_RUN_ID", ""))
+    parser.add_argument("--lookup-url", action="append", default=[], help="Explicit Node seed-lookup endpoint; repeat for each Node")
     parser.add_argument(
         "--seed-repository",
         default=os.environ.get("QIKVRT_SEED_REPOSITORY", DEFAULT_SEED_REPOSITORY),
@@ -1211,7 +1278,11 @@ def main(argv: Iterable[str] | None = None) -> int:
     if not arguments.run_id:
         arguments.run_id = _utc_now().strftime("%Y%m%dT%H%M%SZ")
     try:
-        if arguments.operation == "acceptance":
+        if arguments.operation == "lookup":
+            result = run_lookup(root, arguments.lookup_url, HttpJsonFetcher(arguments.timeout_seconds))
+            print(canonical_json_bytes(result).decode(), end="")
+            return _result_exit_code(result)
+        elif arguments.operation == "acceptance":
             result = run_acceptance(
                 root,
                 arguments.run_id,

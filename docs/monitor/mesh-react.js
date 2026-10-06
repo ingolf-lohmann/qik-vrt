@@ -13,6 +13,7 @@
     const [data, setData] = React.useState(null);
     const [runtime, setRuntime] = React.useState(null);
     const [native, setNative] = React.useState(null);
+    const [invitation, setInvitation] = React.useState(null);
     const [transport, setTransport] = React.useState('verbinde');
     const [error, setError] = React.useState('');
     const [tick, setTick] = React.useState(Date.now());
@@ -35,12 +36,13 @@
         if (pending) return;
         pending = true;
         try {
-          const results = await Promise.allSettled([get('/api/activity'),get('/api/runtime'),get('/api/terminal')]);
+          const results = await Promise.allSettled([get('/api/activity'),get('/api/runtime'),get('/api/terminal'),get('/api/mesh/invitation')]);
           if (!alive) return;
           if (results[0].status === 'fulfilled') await apply(results[0].value);
           else throw results[0].reason;
           if (results[1].status === 'fulfilled') setRuntime(results[1].value);
           if (results[2].status === 'fulfilled') setNative(results[2].value);
+          if (results[3].status === 'fulfilled') setInvitation(results[3].value);
           const failed = results.slice(1).filter(result => result.status === 'rejected');
           if (failed.length) setError(failed.map(result => result.reason.message).join(' · '));
         } catch (e) {if (alive) setError(e.message);} finally {pending = false;}
@@ -77,7 +79,7 @@
     const runs = repos.flatMap(repo => [...(repo.running?.runs || []), ...(repo.waiting?.runs || []), ...(repo.recent?.runs || [])])
       .filter((run,index,all) => all.findIndex(other => other.id === run.id && other.repository === run.repository) === index);
     return h(React.Fragment,null,
-      h('header',null,h('strong',null,'QIK-VRT'),h('nav',null,h('a',{href:'/mesh'},'Mesh'),h('a',{href:'/node'},'Repository-Node'),h('a',{href:'/AI/'},'Universales Terminal'))),
+      h('header',null,h('strong',null,'RaumzeitTerminal'),h('nav',null,h('a',{href:'/mesh'},'Mesh'),h('a',{href:'/node'},'Repository-Node'),h('a',{href:'/AI/'},'Universales Terminal'))),
       h('main',{id:'main'},h('p',{className:'sub'},'Universales Raumzeit-Terminal'),
         h('h1',null,scope === 'mesh' ? 'Das Mesh im aktuellen Nachweisstand' : repository || 'Repository-Node'),
         h('div',{className:'meta'},h('p',null,'Stream: ',transport,' · Datenstand: ',date(observed), age !== null ? ' · Alter: '+age+' s' : ''),h('button',{onClick:()=>refresh.current()},'Readback erneuern')),
@@ -88,6 +90,10 @@
         h('section',null,h('h2',null,'Repository-Nodes'),h('div',{className:'grid'},
           repos.length ? repos.map(repo => h('article',{key:repo.name},h('h3',null,repo.name),h('p',null,repo.availability?.state || repo.state || 'beobachtet'),
             h('a',{href:'/node?repository='+encodeURIComponent(repo.name)},'Node öffnen'))) : h('p',null,'Kein frisch bestätigter Remote-Node-Stand.'))),
+        h('section',null,h('h2',null,'Neue Repository-Nodes willkommen'),invitation ? h(React.Fragment,null,
+          h('p',null,'Transputor, Terminal und Mesh Authority sind für neue autorisierte Node-Anfragen offen. Der vollständige Anschluss erfordert die native Abnahme des jeweiligen Nodes.'),
+          h('a',{href:invitation.policy_readback_url,download:'QIKVRT-Node-Aufnahmebedingungen.json'},'Aufnahmebedingungen herunterladen'),
+          h('p',{className:'sub'},'Letzter Readback: ',date(invitation.observed_at),'. Erreichbarkeit des entfernten Aufnahme-Executors ist separat zu prüfen.')) : h('p',null,'Aufnahmebedingungen noch nicht gelesen.')),
         h('section',null,h('h2',null,'Dieser Self-Host-Kandidat'),runtime ? fields({
           'Node':runtime.node_id,'Quellrepository':runtime.source_repository,'Commit':runtime.source_head,'Tree':runtime.source_tree,
           'Paket':runtime.manifest_sha256,'Profil':runtime.terminal_profile,'Nativer Kanal':native?.state || 'offen',

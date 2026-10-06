@@ -69,7 +69,8 @@ class MeshContractTests(unittest.TestCase):
         self.definition = json.loads((ROOT / host.DEFINITION).read_bytes())
         self.activation = json.loads((ROOT / host.MESH_CONTRACT).read_bytes())
         required = {host.DEFINITION, host.MESH_CONTRACT, "tools/qikvrt_self_host.py",
-                    "docs/monitor/self-host.mjs"}
+                    "docs/monitor/self-host.mjs", host.MESH_DISCOVERY_POLICY,
+                    host.MESH_SEED_PATH, "policy/QIKVRT_STANDPOINT_CODEX_V1.json"}
         required.update(path for paths in host.MESH_COMPONENT_FILES.values() for path in paths)
         required.update(host.MESH_CACHE_SOURCE_FILES)
         for name in required:
@@ -98,6 +99,54 @@ class MeshContractTests(unittest.TestCase):
     def test_missing_node_runtime_contract_refused(self):
         del self.activation["required_node_runtime"]
         self.refuse("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+
+    def test_open_invitation_cannot_exempt_components_fix_node_count_or_bypass_native_gates(self):
+        path = self.root / host.MESH_DISCOVERY_POLICY
+        original = json.loads(path.read_bytes())
+        for field, value in (("components", ["mesh_authority"]), ("role_exemptions", ["Authority"]),
+                             ("required_connection_gates", []), ("queue_receipt_is_native_acceptance", True),
+                             ("automatic_untrusted_execution", True), ("retain_unavailable_nodes", False)):
+            with self.subTest(field=field):
+                policy = json.loads(host.raw_json(original))
+                policy["standing_invitation"][field] = value
+                path.write_bytes(host.raw_json(policy))
+                self.refuse("OPEN_NODE_INVITATION_AND_NATIVE_CONNECTION_GATES_REQUIRED")
+        policy = json.loads(host.raw_json(original))
+        policy["fixed_node_count"] = True
+        path.write_bytes(host.raw_json(policy))
+        self.refuse("OPEN_NODE_INVITATION_AND_NATIVE_CONNECTION_GATES_REQUIRED")
+        path.write_bytes(host.raw_json(original))
+        result = host.mesh_contract(self.root)
+        self.assertEqual(result["node_invitation_state"], "OPEN_FOR_AUTHORIZED_REQUESTS")
+        self.assertFalse(result["all_nodes_connected"])
+
+    def test_missing_or_closed_invitation_blocks_package_admission(self):
+        path = self.root / host.MESH_DISCOVERY_POLICY
+        policy = json.loads(path.read_bytes())
+        del policy["standing_invitation"]
+        path.write_bytes(host.raw_json(policy))
+        self.refuse("OPEN_NODE_INVITATION_AND_NATIVE_CONNECTION_GATES_REQUIRED")
+
+    def test_source_invitation_cannot_remove_live_node_acceptance(self):
+        self.activation["required_repository_node_admission"]["live_acceptance_required"] = False
+        self.refuse("OPEN_NODE_INVITATION_AND_NATIVE_CONNECTION_GATES_REQUIRED")
+
+    def test_wrong_seed_bytes_and_unsafe_authority_replacement_refuse(self):
+        seed_path = self.root / host.MESH_SEED_PATH
+        seed = seed_path.read_bytes()
+        seed_path.write_bytes(seed[:-1] + bytes([seed[-1] ^ 1]))
+        self.refuse("EXACT_CANONICAL_400_BYTE_SEED_REQUIRED")
+        seed_path.write_bytes(seed)
+        path = self.root / host.MESH_DISCOVERY_POLICY
+        original = json.loads(path.read_bytes())
+        for key, value in (("replaceable", False), ("permanent_execution_dependency", True),
+                           ("unavailable_authority_auto_promotes", True), ("predecessor_evidence_transfer", True),
+                           ("required_gates", [])):
+            with self.subTest(key=key):
+                policy = json.loads(host.raw_json(original))
+                policy["standing_invitation"]["authority_handoff"][key] = value
+                path.write_bytes(host.raw_json(policy))
+                self.refuse("SEED_LOOKUP_AND_FENCED_AUTHORITY_HANDOFF_CONTRACT_REQUIRED")
 
     def test_missing_local_cache_or_weakened_idle_contract_refuses_package_admission(self):
         original = json.loads(host.raw_json(self.activation))
@@ -432,6 +481,47 @@ console.log(JSON.stringify({version:context.QikvrtReact.React.version,createRoot
         result = subprocess.run(["node", "--input-type=module", "-e", script], cwd=self.export,
                                 capture_output=True, text=True, timeout=8, check=True)
         self.assertEqual(json.loads(result.stdout), {"version":"19.2.6", "createRoot":"function"})
+
+    def test_real_seed_lookup_and_invitation_readback_do_not_grant_node_or_authority_acceptance(self):
+        self.start()
+        code, invitation = self.get('/api/mesh/invitation')
+        self.assertEqual(code, 200)
+        request = urllib.request.Request(self.url + invitation['policy_readback_url'])
+        with urllib.request.urlopen(request, timeout=4) as response:
+            policy_bytes = response.read()
+        self.assertEqual(hashlib.sha256(policy_bytes).hexdigest(), invitation['policy_sha256'])
+        self.assertEqual(policy_bytes, (self.export / host.MESH_DISCOVERY_POLICY).read_bytes())
+        self.assertEqual(self.get('/api/mesh/invitation', method='POST')[0], 405)
+        seed = (self.export / host.MESH_SEED_PATH).read_bytes()
+        def lookup(body, nonce='0123456789abcdef'):
+            request = urllib.request.Request(self.url + '/api/mesh/lookup?nonce=' + nonce,
+                method='POST', data=body, headers={'Content-Type':'application/octet-stream'})
+            try: response = urllib.request.urlopen(request, timeout=4)
+            except urllib.error.HTTPError as error: response = error
+            with response: return response.status, json.loads(response.read())
+        code, value = lookup(seed)
+        self.assertEqual(code, 200)
+        self.assertEqual(value['seed_bytes'], 400)
+        self.assertEqual(value['seed_sha256'], host.MESH_SEED_SHA256)
+        self.assertEqual(value['source_head'], self.head)
+        self.assertEqual(value['source_tree'], self.tree)
+        self.assertEqual(value['manifest_sha256'], self.pin)
+        self.assertEqual(value['nonce'], '0123456789abcdef')
+        self.assertEqual(value['components'], host.MESH_INVITATION_COMPONENTS)
+        from tools.qikvrt_seed_common import HttpJsonFetcher, run_lookup
+        roundtrip = run_lookup(ROOT, [self.url + '/api/mesh/lookup'], HttpJsonFetcher(4))
+        self.assertEqual(roundtrip['status'], 'PASS')
+        self.assertFalse(roundtrip['authority_handoff_verified'])
+        for field in ('native_runtime_acceptance','authority_handoff_verified','all_nodes_connected','effect_ack_done'):
+            self.assertFalse(value[field])
+        self.assertEqual(lookup(seed[:-1])[0], 422)
+        self.assertEqual(lookup(seed[:-1] + bytes([seed[-1] ^ 1]))[0], 422)
+        self.assertEqual(lookup(seed + b'x')[0], 413)
+        self.assertEqual(lookup(seed, nonce='bad')[0], 400)
+        self.assertEqual(self.get('/api/mesh/lookup')[0], 405)
+        self.stop(abrupt=True)
+        self.start()
+        self.assertEqual(lookup(seed)[0], 200)
 
     def test_static_react_source_and_license_drift_refuse_before_export(self):
         copy = self.work / "react-drift"

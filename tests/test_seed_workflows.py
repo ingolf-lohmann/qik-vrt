@@ -24,6 +24,7 @@ from tools.qikvrt_seed_common import (
     run_audit_export,
     run_dashboard,
     run_maintenance,
+    run_lookup,
     run_revalidation,
     validate_raw_request_url,
 )
@@ -231,6 +232,68 @@ class SeedWorkflowTests(unittest.TestCase):
         lines = (self.root / "ledger/NODE_REGISTRATION_LEDGER.jsonl").read_bytes().splitlines()
         self.assertEqual(1, len(lines))
         self.assertEqual(GUID, parse_json_bytes(lines[0], "ledger")["guid"])
+        self.assertFalse(entry["native_runtime_acceptance"])
+        self.assertFalse(entry["effect_ack_done"])
+
+    def test_later_future_nodes_are_discovered_and_failed_members_are_retained(self) -> None:
+        self.accept()
+        other_guid = "2d75ab01-6b61-4a80-8805-64ab3e2cc9c7"
+        other_repo = "example/future-node"
+        other_url = f"https://raw.githubusercontent.com/{other_repo}/main/qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
+        with (self.root / "registry/node_request_queue/LATER.tsv").open("a") as stream:
+            stream.write(f"{other_guid}\t{other_repo}\t{SEED}\t{other_url}\tmain\t1500\tACTIVE\n")
+        with (self.root / "registry/NODE_POLICY.tsv").open("a") as stream:
+            stream.write(f"{other_guid}\tACTIVE\towner authorized future node\n")
+        documents = remote_documents()
+        declaration = continuity_declaration()
+        declaration["receipt_url"] = workflow_executor.expected_node_receipt_url(other_repo, "main")
+        documents[other_url] = {**request_document(), "repository_guid":other_guid,
+                                "source_repository":other_repo, "workflow_executor_continuity":declaration}
+        documents[declaration["receipt_url"]] = workflow_executor.build_node_receipt(other_repo, "main")
+        result = run_acceptance(self.root, "later-node", FakeFetcher(documents), now=NOW)
+        self.assertEqual(result["accepted_count"], 2)
+        self.assertFalse(result["all_nodes_connected"])
+        del documents[other_url]
+        blocked = run_acceptance(self.root, "later-unreachable", FakeFetcher(documents), now=NOW)
+        self.assertEqual(blocked["status"], "BLOCK")
+        self.assertEqual({row["guid"] for row in blocked["results"]}, {GUID, other_guid})
+        self.assertTrue((self.root / f"registry/nodes/{other_guid}.json").exists())
+
+    def test_seed_lookup_fans_out_without_promoting_or_dropping_failed_nodes(self) -> None:
+        seed = (Path(__file__).resolve().parents[1] / "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin").read_bytes()
+        target = self.root / "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
+        target.parent.mkdir(); target.write_bytes(seed)
+        endpoints = ["https://one.example/api/mesh/lookup", "https://two.example/api/mesh/lookup", "https://three.example/api/mesh/lookup"]
+        attempts = []
+        nonce = "0123456789abcdef"
+        def fetch(url, body):
+            attempts.append((url, body))
+            if url.startswith(endpoints[1]): raise SeedError("declared node currently unreachable")
+            value = {"schema":"qikvrt-seed-lookup-response/v1", "nonce":nonce, "seed_bytes":400,
+                "seed_sha256":hashlib.sha256(seed).hexdigest(), "compatibility":"EXACT_SEED_AND_PACKAGED_NODE_CONTRACT",
+                "node_id":url, "source_repository":SOURCE, "source_head":"a"*40, "source_tree":"b"*40,
+                "manifest_sha256":"c"*64, "policy_sha256":"d"*64, "native_runtime_acceptance":False,
+                "authority_handoff_verified":False, "all_nodes_connected":False, "effect_ack_done":False}
+            return FetchedJson(value, hashlib.sha256(canonical_json_bytes(value)).hexdigest())
+        before = {p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        result = run_lookup(self.root, endpoints, fetch, nonce=nonce)
+        self.assertEqual(result["status"], "BLOCK")
+        self.assertEqual(len(result["results"]), 3)
+        self.assertEqual(len(attempts), 3)
+        self.assertTrue(all(body == seed for _,body in attempts))
+        self.assertFalse(result["registry_mutated"])
+        self.assertFalse(result["authority_handoff_verified"])
+        self.assertEqual(before, {p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+        for field, bad in (("nonce", "wrong-nonce-0123456789"), ("source_repository", {}),
+                           ("source_head", "stale"), ("effect_ack_done", True)):
+            with self.subTest(field=field):
+                def bad_fetch(url, body):
+                    response = fetch(url, body)
+                    value = {**response.value, field:bad}
+                    return FetchedJson(value, hashlib.sha256(canonical_json_bytes(value)).hexdigest())
+                rejected = run_lookup(self.root, [endpoints[0], endpoints[2]], bad_fetch, nonce=nonce)
+                self.assertEqual(rejected['status'], 'BLOCK')
+                self.assertEqual(len(rejected['results']), 2)
 
     def test_future_queue_node_requires_exact_workflow_executor_continuity_receipt(self) -> None:
         self.move_node_to_future_queue()

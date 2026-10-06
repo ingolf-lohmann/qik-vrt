@@ -42,6 +42,14 @@ STATE_FILES = frozenset(("binding.json", "monitor/node.json", "temdd/events.sqli
                         "temdd/events.sqlite3-wal", "temdd/events.sqlite3-shm"))
 STATE_MAX_BYTES = 2 * 1024 * 1024 * 1024
 MESH_CONTRACT = "runtime/self-host/MESH_ACTIVATION.json"
+MESH_DISCOVERY_POLICY = "registry/NODE_DISCOVERY_POLICY.json"
+MESH_SEED_PATH = "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin"
+MESH_SEED_SHA256 = "27a84a7e19e1b46f50d3a855b87da65f5fe07b806575b0d15ca0587b7cab5792"
+MESH_INVITATION_COMPONENTS = ["universal_transputer", "universal_terminal", "mesh_authority"]
+MESH_CONNECTION_GATES = ["EXPLICIT_NODE_POLICY", "EXACT_WORKFLOW_CONTINUITY_RECEIPT",
+    "EXACT_SOURCE_PACKAGE", "ADMITTED_NATIVE_TRANSPUTER_AND_TERMINAL",
+    "PUBLIC_NODE_EVIDENCE_AND_BYTE_EXACT_READBACK", "NATIVE_EFFECT_REPLICATION_AND_WRITER_FENCING",
+    "COMPLETE_PING_TERMINAL_RECEIPTS_AND_RESTART", "WORKLOAD_FAULT_AND_AVAILABILITY_ACCEPTANCE"]
 MONOLITH_APPLICATION_ID = 0x51495654
 MONOLITH_MAX_FILES = 4096
 MONOLITH_MAX_FILE_BYTES = 16 * 1024 * 1024
@@ -407,6 +415,8 @@ def mesh_contract(root, definition=None):
             or contract.get("live_acceptance_required") is not True):
         raise ValueError("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
     required = {MESH_CONTRACT, "tools/qikvrt_self_host.py", "docs/monitor/self-host.mjs"}
+    required.add(MESH_DISCOVERY_POLICY)
+    required.update((MESH_SEED_PATH, "policy/QIKVRT_STANDPOINT_CODEX_V1.json"))
     required.update(MESH_CACHE_SOURCE_FILES)
     required.update(path for paths in MESH_COMPONENT_FILES.values() for path in paths)
     files = definition.get("files")
@@ -439,6 +449,46 @@ def mesh_contract(root, definition=None):
         raise ValueError("MESH_EFFECT_SAFETY_LIMITS_REQUIRED")
     if limits.get("quorum_loss_behavior") != "HOLD_WRITES_PRESERVE_CONFIRMED_READS":
         raise ValueError("MESH_SAFE_PARTITION_BEHAVIOR_REQUIRED")
+    discovery = json.loads((root / MESH_DISCOVERY_POLICY).read_bytes())
+    invitation = discovery.get("standing_invitation", {}) if isinstance(discovery, dict) else {}
+    admission = activation.get("required_repository_node_admission", {})
+    if (not isinstance(invitation, dict) or not isinstance(admission, dict)
+            or invitation.get("schema") != "qikvrt-open-node-invitation/v1"
+            or invitation.get("state") != "OPEN_FOR_AUTHORIZED_REQUESTS"
+            or invitation.get("components") != MESH_INVITATION_COMPONENTS
+            or invitation.get("scope") != "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE"
+            or invitation.get("role_exemptions") != []
+            or invitation.get("required_connection_gates") != MESH_CONNECTION_GATES
+            or invitation.get("queue_receipt_is_native_acceptance") is not False
+            or invitation.get("automatic_untrusted_execution") is not False
+            or invitation.get("retain_unavailable_nodes") is not True
+            or discovery.get("fixed_node_count") is not False
+            or discovery.get("node_count_prompt") is not False
+            or discovery.get("no_global_scanning") is not True
+            or discovery.get("future_nodes_added_by_queue_rows") is not True
+            or discovery.get("discovery_scope") != ["registry/KNOWN_NODE_REQUESTS.tsv", "registry/node_request_queue/*.tsv"]
+            or admission.get("policy_path") != MESH_DISCOVERY_POLICY
+            or admission.get("invitation_route") != "/api/mesh/invitation"
+            or admission.get("live_acceptance_required") is not True):
+        raise ValueError("OPEN_NODE_INVITATION_AND_NATIVE_CONNECTION_GATES_REQUIRED")
+    seed = invitation.get("seed_lookup", {})
+    handoff = invitation.get("authority_handoff", {})
+    if (not isinstance(seed, dict) or seed.get("schema") != "qikvrt-seed-lookup/v1"
+            or seed.get("seed_path") != MESH_SEED_PATH or type(seed.get("bytes")) is not int or seed["bytes"] != 400
+            or seed.get("sha256") != MESH_SEED_SHA256 or seed.get("lookup_route") != "/api/mesh/lookup"
+            or seed.get("seed_is_credential") is not False or seed.get("response_is_node_admission") is not False
+            or seed.get("historical_owner_seed_recovered") is not False
+            or not isinstance(handoff, dict) or handoff.get("replaceable") is not True
+            or handoff.get("permanent_execution_dependency") is not False
+            or handoff.get("unavailable_authority_auto_promotes") is not False
+            or handoff.get("predecessor_evidence_transfer") is not False
+            or handoff.get("required_gates") != ["FREEZE_PREDECESSOR_AND_FENCE_WRITER",
+                "EXACT_STATE_AND_CONFIRMED_EFFECT_BYTE_RESTORE", "AUTHENTICATED_NEW_ROLE_AND_EPOCH_ADMISSION",
+                "SAFE_QUORUM_OR_VISIBLE_WRITE_HOLD", "FRESH_SUCCESSOR_SOURCE_AND_PUBLIC_NATIVE_READBACK"]):
+        raise ValueError("SEED_LOOKUP_AND_FENCED_AUTHORITY_HANDOFF_CONTRACT_REQUIRED")
+    seed_bytes = (root / MESH_SEED_PATH).read_bytes()
+    if len(seed_bytes) != 400 or digest(seed_bytes) != MESH_SEED_SHA256:
+        raise ValueError("EXACT_CANONICAL_400_BYTE_SEED_REQUIRED")
     for field in ("rto_ms", "user_visible_interruption_slo_ms"):
         value = limits.get(field)
         if field not in limits or (value is not None and (type(value) is not int or value < 0)):
@@ -463,6 +513,9 @@ def mesh_contract(root, definition=None):
         component_hashes[name] = digest(path.read_bytes())
     return {"schema": "qikvrt-node-bus-contract-check/v1", "state": "SOURCE_OBLIGATIONS_BOUND",
             "contract_sha256": digest(raw), "source_component_sha256": component_hashes,
+            "node_invitation_state": invitation["state"],
+            "node_connection_gates": list(MESH_CONNECTION_GATES), "all_nodes_connected": False,
+            "seed_sha256": MESH_SEED_SHA256, "authority_handoff_verified": False,
             "required_fault_cases": list(MESH_FAULT_CASES), "native_runtime_executed": False,
             "all_node_runtime_verified": False, "write_failover_verified": False,
             "application_transparency_verified": False, "effect_ack_done": False}
