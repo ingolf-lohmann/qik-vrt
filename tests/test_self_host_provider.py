@@ -393,4 +393,151 @@ class TransportTests(unittest.TestCase):
             with self.assertRaises(ValueError): provider.decode(data)
 
 
+class RepositoryIONOSReadonlyTests(unittest.TestCase):
+    """Real request construction against a fake wire; never a live provider."""
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.directory = Path(self.temporary.name) / 'receipts'
+        self.directory.mkdir(mode=0o700)
+        self.binding = {'product': 'ionos-cloud-v6', 'principal_id': '424242', 'principal_evidence_sha256': '1' * 64}
+        self.binding_bytes = provider.wire(self.binding)
+        self.environment = {'IONOS_TOKEN': 'fixture-ionos-token-never-live',
+            'IONOS_BINDING_SECRET_NAME': 'EXISTING_FIXTURE_BINDING',
+            'IONOS_BINDING_JSON': self.binding_bytes.decode(),
+            'IONOS_BINDING_SHA256': provider.sha(self.binding_bytes)}
+        self.subject = {'repository': 'ingolf-lohmann/qik-vrt', 'ref': 'refs/heads/main',
+            'head': 'a' * 40, 'tree': 'b' * 40, 'run_id': '123', 'run_attempt': '1'}
+        self.calls = []
+        self.contracts = [{'properties': {'contractNumber': 424242, 'owner': 'PRIVATE_OWNER'}}]
+        self.failure = None
+
+    def open(self, request, timeout):
+        self.calls.append(request)
+        self.assertEqual(request.get_method(), 'GET')
+        self.assertIsNone(request.data)
+        self.assertEqual(dict((k.lower(), v) for k, v in request.header_items())['x-contract-number'], '424242')
+        self.assertTrue(request.full_url.startswith(provider.PRODUCTS['ionos'][1] + '/'))
+        if self.failure: raise self.failure
+        path = request.full_url[len(provider.PRODUCTS['ionos'][1]):].split('&')[0]
+        values = {
+            '/datacenters?depth=1': {'items': [{'id': 'dc-fixture', 'properties': {'location': 'de/fra'}}]},
+            '/datacenters/dc-fixture/servers?depth=3': {'items': [{'id': 'server-fixture',
+                'properties': {'name': 'PRIVATE_RESOURCE_NAME', 'vmState': 'RUNNING', 'cores': 1, 'ram': 1024},
+                'metadata': {'state': 'AVAILABLE'}, 'entities': {'nics': {'items': [{'properties': {'ips': ['93.184.216.34']}}]}}}]},
+            '/datacenters/dc-fixture/lans?depth=1': {'items': [{'id': '1', 'properties': {'public': True}}]},
+            '/contracts?depth=1': {'items': self.contracts, 'PRIVATE_PROVIDER_BODY': 'DO_NOT_PERSIST'},
+            '/locations?depth=1': {'items': [{'id': 'de/fra'}]},
+            '/templates?depth=1': {'items': []},
+            '/images?depth=1': {'items': [{'id': 'image-fixture', 'name': 'PRIVATE_IMAGE_NAME'}]},
+        }
+        self.assertIn(path, values)
+        class Response(io.BytesIO):
+            status = 200
+            def geturl(self): return request.full_url
+        return Response(provider.wire(values[path]))
+
+    def observe(self, environment=None):
+        opener = mock.Mock(open=self.open)
+        with mock.patch.dict(os.environ, self.environment if environment is None else environment, clear=True), \
+                mock.patch.object(provider.urllib.request, 'build_opener', return_value=opener):
+            return provider.repository_readonly(self.directory, self.subject)
+
+    def test_missing_deliveries_name_every_binding_without_any_network(self):
+        result = self.observe({})
+        self.assertEqual(result['first_boundary'], 'HOLD_IONOS_READONLY_BINDING_UNAVAILABLE')
+        self.assertEqual(len(result['missing_bindings']), 4)
+        self.assertTrue(any('secrets.IONOS_TOKEN' in item for item in result['missing_bindings']))
+        self.assertEqual(self.calls, [])
+        self.assertEqual(provider.decode((self.directory / 'receipt.json').read_bytes()), result)
+
+    def test_real_contract_and_original_independent_pin_are_required_before_network(self):
+        for change in [{'principal_id': None}, {'principal_evidence_sha256': None}, {'product': None}]:
+            with self.subTest(change=change):
+                binding = dict(self.binding, **change)
+                env = dict(self.environment, IONOS_BINDING_JSON=provider.wire(binding).decode(),
+                    IONOS_BINDING_SHA256=provider.sha(provider.wire(binding)))
+                result = self.observe(env)
+                self.assertEqual(result['state'], 'HOLD')
+                self.assertTrue(result['missing_bindings'])
+                (self.directory / 'receipt.json').unlink()
+        env = dict(self.environment, IONOS_BINDING_JSON=self.binding_bytes.decode() + '\n')
+        self.assertEqual(self.observe(env)['first_boundary'], 'HOLD_IONOS_PROVIDER_BINDING_PIN_MISMATCH')
+        self.assertEqual(self.calls, [])
+
+    def test_wrong_source_or_branch_does_not_deliver_any_provider_request(self):
+        self.subject['ref'] = 'refs/heads/candidate/unreviewed'
+        result = self.observe()
+        self.assertEqual(result['first_boundary'], 'HOLD_IONOS_EXACT_SOURCE_SUBJECT_REQUIRED')
+        self.assertNotIn('subject', result)
+        self.assertEqual(self.calls, [])
+
+    def test_both_operations_fresh_readback_and_receipt_exclude_private_provider_bytes(self):
+        result = self.observe()
+        self.assertEqual(result['state'], 'INVENTORY_READ_ADMITTED_PENDING_REQUEST_BINDING')
+        self.assertTrue(result['inventory_completed'] and result['classification_completed'])
+        self.assertTrue(result['fresh_private_readback_verified'])
+        self.assertFalse(result['provider_create_executed'] or result['payment_executed'] or result['terms_accepted'] or result['effect_ack_done'])
+        self.assertEqual(result['inventory_metadata']['resources_count'], 1)
+        self.assertEqual(result['inventory_metadata']['reads_count'], len(self.calls))
+        self.assertEqual(len(self.calls), 7)
+        persisted = (self.directory / 'receipt.json').read_text()
+        for private in ['424242', self.environment['IONOS_TOKEN'], 'PRIVATE_OWNER', 'PRIVATE_PROVIDER_BODY',
+                        'PRIVATE_RESOURCE_NAME', 'PRIVATE_IMAGE_NAME', 'server-fixture', 'dc-fixture', '93.184.216.34']:
+            self.assertNotIn(private, persisted)
+        self.assertEqual(provider.decode(persisted), result)
+        self.assertEqual(list(self.directory.iterdir()), [self.directory / 'receipt.json'])
+        self.assertEqual(list(Path(self.temporary.name).iterdir()), [self.directory])
+        self.assertEqual((self.directory / 'receipt.json').stat().st_mode & 0o777, 0o600)
+
+    def test_wrong_duplicate_or_missing_provider_contract_never_admits(self):
+        for contracts in [[], [{'properties': {'contractNumber': 999}}], self.contracts * 2, [{'properties': None}]]:
+            with self.subTest(contracts=contracts):
+                self.contracts = contracts
+                result = self.observe()
+                self.assertEqual(result['first_boundary'], 'HOLD_IONOS_CONTRACT_PRINCIPAL_UNCONFIRMED')
+                self.assertFalse(result['classification_completed'])
+                (self.directory / 'receipt.json').unlink()
+        self.assertTrue(all(request.get_method() == 'GET' for request in self.calls))
+
+    def test_http_failure_or_arbitrary_exception_never_leaks_provider_body_or_retries(self):
+        for failure, expected in [
+                (urllib.error.HTTPError('https://api.ionos.com/cloudapi/v6', 403, 'PRIVATE_MESSAGE', {}, io.BytesIO(b'PRIVATE_BODY')),
+                 'HOLD_PROVIDER_PERMISSION'),
+                (ValueError('PRIVATE_BODY_AND_TOKEN'), 'HOLD_IONOS_READONLY_EXECUTION_FAILED')]:
+            with self.subTest(expected=expected):
+                self.failure = failure
+                before = len(self.calls)
+                result = self.observe()
+                self.assertEqual(result['first_boundary'], expected)
+                self.assertEqual(len(self.calls) - before, 1)
+                self.assertNotIn('PRIVATE', (self.directory / 'receipt.json').read_text())
+                self.assertFalse(result['classification_completed'])
+                self.assertEqual(list(Path(self.temporary.name).iterdir()), [self.directory])
+                (self.directory / 'receipt.json').unlink()
+
+    def test_readonly_capability_rejects_create_and_noninventory_paths_before_transport(self):
+        api = provider.ReadOnlyIONOSAPI('ionos', self.environment['IONOS_TOKEN'], self.binding)
+        with mock.patch.object(api.opener, 'open') as opened:
+            for path, body in [('/datacenters/dc-fixture/servers', {}), ('/billing', None), ('/servers', None),
+                               ('/contracts?depth=1', {}), ('//other.example', None)]:
+                with self.subTest(path=path, body=body), self.assertRaises(ValueError): api.call(path, body)
+            opened.assert_not_called()
+
+    def test_inventory_changed_after_classification_refuses_fresh_readback_and_cleans_private_bytes(self):
+        original = provider.execute
+        def tamper(args, **kwargs):
+            result = original(args, **kwargs)
+            if args.operation == 'provider-classify': args.provider_inventory.write_bytes(b'PRIVATE_TAMPERED_BYTES')
+            return result
+        with mock.patch.object(provider, 'execute', side_effect=tamper):
+            result = self.observe()
+        self.assertEqual(result['first_boundary'], 'PROVIDER_INPUT_PIN_MISMATCH')
+        self.assertTrue(result['inventory_completed'] and result['classification_completed'])
+        self.assertFalse(result['fresh_private_readback_verified'])
+        self.assertEqual(len(self.calls), 7)
+        self.assertNotIn('PRIVATE', (self.directory / 'receipt.json').read_text())
+        self.assertEqual(list(Path(self.temporary.name).iterdir()), [self.directory])
+
+
 if __name__=='__main__': unittest.main()

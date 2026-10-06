@@ -4,6 +4,28 @@ name: QIKVRT workflow executor
 
 on:
   workflow_dispatch:
+    inputs:
+      task_mode:
+        description: Existing executor or separately requested IONOS GET inventory/classification
+        type: choice
+        default: executor
+        options: [executor, ionos-inventory-classify]
+      expected_main_head:
+        description: Independently observed exact main commit for IONOS read-only execution
+        type: string
+        default: ""
+      expected_main_tree:
+        description: Independently observed exact main tree for IONOS read-only execution
+        type: string
+        default: ""
+      ionos_binding_secret:
+        description: Name of an EXISTING repository secret carrying the private PROVIDER_BINDING JSON
+        type: string
+        default: ""
+      ionos_binding_sha256:
+        description: Independent SHA-256 of the exact existing private binding bytes
+        type: string
+        default: ""
   schedule:
     - cron: "23 * * * *"
     - cron: "30 8 * * *"
@@ -40,7 +62,7 @@ concurrency:
 
 jobs:
   owner-reminders:
-    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main'
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.task_mode == 'executor')
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -73,6 +95,7 @@ jobs:
           retention-days: 90
 
   observe-plan-and-dispatch-one-safe-watchdog:
+    if: github.event_name != 'workflow_dispatch' || inputs.task_mode == 'executor'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -172,3 +195,90 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           path: .qikvrt/workflow-executor
+
+  ionos-readonly:
+    if: github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.task_mode == 'ionos-inventory-classify'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Check out exact trusted main event commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up declared Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12.13"
+      - name: Verify coverage and fresh exact main before any provider credential delivery
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN_HEAD: ${{ inputs.expected_main_head }}
+          EXPECTED_MAIN_TREE: ${{ inputs.expected_main_tree }}
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B - <<'PY'
+          import os, re, subprocess, urllib.request
+          from pathlib import Path
+          from tools import qikvrt_self_host_provider as provider
+          def require(condition):
+              if not condition: raise ValueError('EXACT_MAIN_REQUIRED')
+          try:
+              head, tree = os.environ['EXPECTED_MAIN_HEAD'], os.environ['EXPECTED_MAIN_TREE']
+              require(all(re.fullmatch(r'[a-f0-9]{40}', value) for value in (head, tree)))
+              require(os.environ['GITHUB_REPOSITORY'] == 'ingolf-lohmann/qik-vrt')
+              require(os.environ['GITHUB_REF'] == 'refs/heads/main')
+              require(os.environ['GITHUB_SHA'] == head)
+              for kind, expected in [('commit', head), ('tree', tree)]:
+                  require(subprocess.check_output(['git', 'rev-parse', '--verify', 'HEAD^{' + kind + '}'], text=True).strip() == expected)
+              opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), provider.NoRedirect())
+              def get(path):
+                  url = 'https://api.github.com/repos/ingolf-lohmann/qik-vrt/' + path
+                  request = urllib.request.Request(url, method='GET', headers={
+                      'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28', 'Cache-Control': 'no-cache'})
+                  with opener.open(request, timeout=15) as response:
+                      require(response.geturl() == url and response.status == 200)
+                      data = response.read(1024 * 1024 + 1)
+                      require(len(data) <= 1024 * 1024)
+                  return provider.decode(data)
+              require(get('git/ref/heads/main')['object']['sha'] == head)
+              require(get('git/commits/' + head)['tree']['sha'] == tree)
+              directory = Path(os.environ['RUNNER_TEMP']) / 'qikvrt-ionos-readonly'
+              directory.mkdir(mode=0o700)
+              provider.host.private_path(directory, directory=True)
+              subject = {'repository': os.environ['GITHUB_REPOSITORY'], 'ref': os.environ['GITHUB_REF'],
+                  'head': head, 'tree': tree, 'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT']}
+              provider.host.synced_private_file(directory / 'subject.json', provider.wire(subject))
+              provider.host.sync_directory(directory)
+          except (AssertionError, ValueError, OSError, KeyError, TypeError, subprocess.SubprocessError):
+              raise SystemExit('HOLD_IONOS_EXACT_MAIN_BINDING_REQUIRED') from None
+          PY
+      - name: Existing IONOS GET inventory and classify with private fresh readback
+        env:
+          IONOS_TOKEN: ${{ secrets.IONOS_TOKEN }}
+          IONOS_BINDING_SECRET_NAME: ${{ inputs.ionos_binding_secret }}
+          IONOS_BINDING_JSON: ${{ secrets[inputs.ionos_binding_secret] }}
+          IONOS_BINDING_SHA256: ${{ inputs.ionos_binding_sha256 }}
+        run: |
+          python3 -B - <<'PY'
+          import os
+          from pathlib import Path
+          from tools import qikvrt_self_host_provider as provider
+          directory = Path(os.environ['RUNNER_TEMP']) / 'qikvrt-ionos-readonly'
+          subject = provider.decode((directory / 'subject.json').read_bytes())
+          receipt = provider.repository_readonly(directory, subject)
+          print('IONOS_READONLY_STATE=' + receipt['state'])
+          print('IONOS_READONLY_BOUNDARY=' + (receipt['first_boundary'] or 'NONE'))
+          raise SystemExit(2 if receipt['state'] == 'HOLD' else 0)
+          PY
+      - name: Persist only bounded IONOS receipt metadata
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-ionos-readonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-ionos-readonly/receipt.json
+          if-no-files-found: error
+          retention-days: 7

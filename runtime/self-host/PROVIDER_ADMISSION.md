@@ -119,6 +119,54 @@ connector projection can be classified/planned but cannot authorize an API
 create. Declare `complete=false` if a connector omits pagination/total/GPU scope
 evidence. `provider-inventory` is GET-only and stops at absent product/credential.
 
+## Repository-native IONOS read-only binding
+
+Reuse `.github/workflows/qikvrt_workflow_executor.yml` with the manual
+`task_mode=ionos-inventory-classify`. This mode excludes reminder delivery and
+watchdog dispatch and is not added to the autonomous dispatch allowlist. Only
+the trusted `main` ref may receive provider secrets; its native event commit,
+local tree and fresh GitHub REST main/commit reads must match the independently
+supplied `expected_main_head` and `expected_main_tree` first. The unmerged #474
+prerequisite and this provider candidate retain their existing integration and
+review gates before that trusted source is available.
+
+The job consumes existing `secrets.IONOS_TOKEN`. `ionos_binding_secret` names an
+**existing** repository secret containing the exact private JSON schema from
+`PROVIDER_BINDING.example.json`; it does not create a credential or invent a
+secret name. `ionos_binding_sha256` independently pins its original bytes,
+including any final newline. Required actual values are `product=ionos-cloud-v6`,
+a numeric Cloud contract number as `principal_id`, and the nonzero
+`principal_evidence_sha256` of independently verified evidence. No secret's
+presence or accessibility is inferred from this consumer. Absent delivery, an
+empty template or an absent/mismatched independent pin produces a named HOLD
+and the precise missing binding before any IONOS request. A plain IONOS/1and1
+customer account is not that Cloud contract.
+
+`repository_readonly` in the existing provider module invokes the original
+`provider-inventory` and `provider-classify` operations using a capability that
+admits only the existing IONOS GET routes and rejects any body/create attempt.
+The `/contracts` collection must include the bound contract exactly once; a
+header alone does not establish principal equality. Both operations use the
+same fresh private inventory bytes and independent digest readback. Proxy,
+redirect and automatic retry remain prohibited. No provider plan/apply, server,
+key, datacenter, payment or terms effect is reachable from this workflow mode.
+
+Only `receipt.json` is uploaded, with seven-day retention: exact source/run
+subject, UTC interval, binding/inventory/contract-response digests, collection
+counts, classification and bounded failure code/status. Token, principal
+number, owner name, IPs, raw GET paths containing resource IDs, complete
+responses and private binding/inventory files are excluded. The latter reside
+in an owner-only temporary directory and are removed even on handled failure.
+Receipt persistence uses existing S1 fsync/private-file/readback primitives.
+Successful read admission remains `INVENTORY_READ_ADMITTED_PENDING_REQUEST_BINDING`,
+with `effect_ack_done=false`; it is not provisioning or deployment acceptance.
+
+Reuse assessment: the existing executor owns manual dispatch and artifact
+persistence, and the existing provider implements inventory, classification and
+private pinning. Their missing connection is repaired without another workflow,
+launcher, credential store or provider adapter. The automatic watchdog allowlist
+and governance files remain intact.
+
 `provider-apply` uses the same binding/request and a durable
 `--provider-receipts /private/receipts` directory. Explicit reuse requires no
 paid grant. Creation requires `--provider-authorization` and its independent

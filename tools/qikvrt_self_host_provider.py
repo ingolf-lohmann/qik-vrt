@@ -26,6 +26,8 @@ import socket
 import ssl
 import subprocess
 import sys
+import tempfile
+from types import SimpleNamespace
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -751,7 +753,7 @@ def independent_readback(api, request, package, manifest_pin, config, receipts):
     return receipt
 
 
-def api_from_args(args):
+def api_from_args(args, api_class=API):
     if not args.provider_binding or not args.provider_binding_sha256:
         raise ValueError("HOLD_EXACT_PROVIDER_PRODUCT_AND_PRINCIPAL_BINDING_REQUIRED")
     binding = pinned(args.provider_binding, args.provider_binding_sha256)
@@ -760,10 +762,10 @@ def api_from_args(args):
         if args.provider_credential.stat().st_size > 4096: raise ValueError("BOUNDED_PROVIDER_CREDENTIAL_REQUIRED")
         token = args.provider_credential.read_text().strip()
     else: token = os.environ.get(TOKEN_ENV[args.provider], "")
-    return API(args.provider, token, binding)
+    return api_class(args.provider, token, binding)
 
 
-def execute(args):
+def execute(args, api_class=API):
     if args.provider not in PRODUCTS: raise ValueError("SUPPORTED_PROVIDER_REQUIRED")
     local_key = None
     if args.provider_public_key:
@@ -774,7 +776,7 @@ def execute(args):
         public_key(local_key)
     external_quote = pinned(args.provider_quote, args.provider_quote_sha256) if args.provider_quote else None
     if args.operation == "provider-inventory":
-        value = collect(api_from_args(args), local_key)
+        value = collect(api_from_args(args, api_class), local_key)
         if args.output:
             host.private_output(args.output, [args.root.resolve()])
             host.synced_private_file(args.output, wire(value)); host.sync_directory(args.output.parent)
@@ -818,4 +820,137 @@ def execute(args):
         with receipts.locked(): return reconcile(api, request, receipts)
     if args.operation == "provider-readback":
         return independent_readback(api, request, args.root.resolve(), args.manifest_sha256, args.config, receipts)
+
+
+class ReadOnlyIONOSAPI(API):
+    """Repository inventory capability: fixed IONOS GETs, no create capability."""
+    def call(self, path, body=None):
+        if self.provider != "ionos" or body is not None:
+            raise ValueError("HOLD_IONOS_READONLY_OPERATION_REQUIRED")
+        allowed = (r"/(?:locations|templates|images|datacenters)\?depth=1&limit=1000&offset=[0-9]+",
+                   r"/datacenters/[A-Za-z0-9_.:-]+/servers\?depth=3&limit=1000&offset=[0-9]+",
+                   r"/datacenters/[A-Za-z0-9_.:-]+/lans\?depth=1&limit=1000&offset=[0-9]+",
+                   r"/contracts\?depth=1")
+        if not any(re.fullmatch(pattern, path) for pattern in allowed):
+            raise ValueError("HOLD_IONOS_READONLY_PATH_REQUIRED")
+        result = super().call(path)
+        if path == "/contracts?depth=1":
+            items = result.get("items")
+            if (not isinstance(items, list) or any(not isinstance(item, dict)
+                    or not isinstance(item.get("properties"), dict) for item in items)):
+                raise ValueError("HOLD_IONOS_CONTRACT_PRINCIPAL_UNCONFIRMED")
+            matches = [item for item in items if type(item["properties"].get("contractNumber")) in (int, str)
+                       and str(item["properties"]["contractNumber"]) == self.binding["principal_id"]]
+            if len(matches) != 1:
+                raise ValueError("HOLD_IONOS_CONTRACT_PRINCIPAL_UNCONFIRMED")
+        return result
+
+
+def repository_readonly(directory, subject):
+    """Reuse both provider operations; persist only a bounded metadata receipt.
+
+    An existing secret name and an independently supplied binding digest are
+    required. Neither this wrapper nor its workflow creates or discovers secrets.
+    Private binding/inventory bytes are temporary; exceptions are never echoed.
+    """
+    env = os.environ
+    host.private_path(directory, directory=True)
+    receipt_path = directory / "receipt.json"
+    host.private_output(receipt_path, [host.ROOT])
+    receipt = {"schema": "qikvrt-ionos-readonly-receipt/v1", "state": "HOLD",
+               "first_boundary": None, "missing_bindings": [], "started_at": timestamp(),
+               "operations": ["provider-inventory", "provider-classify"],
+               "provider": "ionos", "origin": PRODUCTS["ionos"][1],
+               "inventory_started": False, "inventory_completed": False,
+               "classification_started": False, "classification_completed": False,
+               "fresh_private_readback_verified": False, "provider_create_executed": False,
+               "payment_executed": False, "terms_accepted": False, "effect_ack_done": False}
+    safe_errors = {"HOLD_PROVIDER_REDIRECT_FORBIDDEN", "HOLD_PROVIDER_HTTP", "HOLD_PAYMENT_METHOD_REQUIRED",
+                   "HOLD_PROVIDER_AUTHENTICATION", "HOLD_PROVIDER_PERMISSION", "HOLD_PROVIDER_RATE_LIMIT",
+                   "HOLD_PROVIDER_TRANSPORT_OUTCOME_UNKNOWN", "HOLD_PROVIDER_CREDENTIAL_UNBOUND",
+                   "HOLD_PROVIDER_INVENTORY_SHAPE", "HOLD_PROVIDER_INVENTORY_DUPLICATE_OR_UNSTABLE",
+                   "HOLD_PROVIDER_PAGINATION_UNBOUND", "HOLD_PROVIDER_PAGINATION_CHANGED",
+                   "HOLD_PROVIDER_PAGINATION_INCOMPLETE", "HOLD_PROVIDER_INVENTORY_PAGE_LIMIT",
+                   "HOLD_PROVIDER_OBSERVATION_NOT_FRESH", "HOLD_PROVIDER_OBSERVATION_TIME_ORDER",
+                   "HOLD_IONOS_READONLY_OPERATION_REQUIRED", "HOLD_IONOS_READONLY_PATH_REQUIRED",
+                   "HOLD_IONOS_CONTRACT_PRINCIPAL_UNCONFIRMED", "PROVIDER_RESPONSE_SIZE_LIMIT",
+                   "DUPLICATE_PROVIDER_JSON_KEY", "NONFINITE_PROVIDER_JSON", "PROVIDER_INPUT_PIN_MISMATCH"}
+    try:
+        if (not isinstance(subject, dict) or set(subject) != {"repository", "ref", "head", "tree", "run_id", "run_attempt"}
+                or subject["repository"] != "ingolf-lohmann/qik-vrt" or subject["ref"] != "refs/heads/main"
+                or any(not re.fullmatch(r"[a-f0-9]{40}", str(subject[key])) for key in ("head", "tree"))
+                or any(not re.fullmatch(r"[1-9][0-9]*", str(subject[key])) for key in ("run_id", "run_attempt"))):
+            receipt["missing_bindings"] = ["fresh exact main HEAD/TREE and native run subject"]
+            raise ValueError("HOLD_IONOS_EXACT_SOURCE_SUBJECT_REQUIRED")
+        receipt["subject"] = dict(subject)
+        carrier = env.get("IONOS_BINDING_SECRET_NAME", "")
+        text = env.get("IONOS_BINDING_JSON", "")
+        binding_pin = env.get("IONOS_BINDING_SHA256", "")
+        for condition, missing in (
+                (not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,99}", carrier) or carrier.upper().startswith("GITHUB_"),
+                 "existing repository secret name carrying PROVIDER_BINDING JSON"),
+                (not text, "selected existing repository secret -> IONOS_BINDING_JSON delivery"),
+                (not re.fullmatch(r"[a-f0-9]{64}", binding_pin) or binding_pin == "0" * 64,
+                 "independent SHA-256 pin of exact PROVIDER_BINDING bytes"),
+                (not env.get("IONOS_TOKEN"), "secrets.IONOS_TOKEN -> IONOS_TOKEN delivery")):
+            if condition: receipt["missing_bindings"].append(missing)
+        if receipt["missing_bindings"]:
+            raise ValueError("HOLD_IONOS_READONLY_BINDING_UNAVAILABLE")
+        raw = text.encode("utf-8")
+        if len(raw) > 8192 or sha(raw) != binding_pin:
+            raise ValueError("HOLD_IONOS_PROVIDER_BINDING_PIN_MISMATCH")
+        binding = decode(raw)
+        if (not isinstance(binding, dict) or set(binding) != {"product", "principal_id", "principal_evidence_sha256"}
+                or binding["product"] != "ionos-cloud-v6"):
+            receipt["missing_bindings"] = ["product=ionos-cloud-v6 in pinned PROVIDER_BINDING"]
+            raise ValueError("HOLD_IONOS_PROVIDER_PRODUCT_BINDING_REQUIRED")
+        if not isinstance(binding["principal_id"], str) or not re.fullmatch(r"[0-9]{1,20}", binding["principal_id"]):
+            receipt["missing_bindings"].append("actual independently verified IONOS Cloud contract number as principal_id")
+        evidence_pin = binding.get("principal_evidence_sha256")
+        if not isinstance(evidence_pin, str) or not re.fullmatch(r"[a-f0-9]{64}", evidence_pin) or evidence_pin == "0" * 64:
+            receipt["missing_bindings"].append("principal_evidence_sha256 for independently verified contract evidence")
+        if receipt["missing_bindings"]:
+            raise ValueError("HOLD_IONOS_CONTRACT_PRINCIPAL_BINDING_REQUIRED")
+        receipt["binding_sha256"] = binding_pin
+        with tempfile.TemporaryDirectory(prefix="ionos-private-", dir=directory.parent) as temporary:
+            private = Path(temporary)
+            binding_path, inventory_path = private / "binding.json", private / "inventory.json"
+            host.synced_private_file(binding_path, raw)
+            args = SimpleNamespace(operation="provider-inventory", provider="ionos", root=host.ROOT,
+                    provider_binding=binding_path, provider_binding_sha256=binding_pin, provider_credential=None,
+                    provider_public_key=None, provider_quote=None, output=inventory_path)
+            # The workflow supplies IONOS_TOKEN only to this single bounded step.
+            # api_from_args intentionally retains its existing environment carrier.
+            receipt["inventory_started"] = True
+            inventory = execute(args, api_class=ReadOnlyIONOSAPI)
+            receipt["inventory_completed"] = True
+            inventory_pin = sha(wire(inventory))
+            args.operation, args.output = "provider-classify", None
+            args.provider_inventory, args.provider_inventory_sha256 = inventory_path, inventory_pin
+            receipt["classification_started"] = True
+            classification = execute(args)
+            receipt["classification_completed"] = True
+            observed = pinned(inventory_path, inventory_pin)
+            if (observed != inventory or classification["inventory_sha256"] != inventory_pin
+                    or classify(observed) != classification["first_boundary"]
+                    or any(read.get("method") != "GET" for read in observed["reads"])):
+                raise ValueError("HOLD_IONOS_PRIVATE_READBACK_MISMATCH")
+            receipt.update(state=classification["state"], first_boundary=classification["first_boundary"],
+                    inventory_sha256=inventory_pin, fresh_private_readback_verified=True,
+                    classification={key: classification[key] for key in ("state", "first_boundary", "inventory_sha256", "resources_returned")},
+                    inventory_metadata={key + "_count": len(observed[key]) for key in ("resources", "datacenters", "regions", "sizes", "images", "reads")},
+                    contract_response_sha256=observed["account"]["contract_response_sha256"])
+    except (ValueError, OSError, KeyError, TypeError, RecursionError) as exc:
+        code = str(exc)
+        preflight_errors = {"HOLD_IONOS_EXACT_SOURCE_SUBJECT_REQUIRED", "HOLD_IONOS_READONLY_BINDING_UNAVAILABLE",
+                            "HOLD_IONOS_PROVIDER_BINDING_PIN_MISMATCH", "HOLD_IONOS_PROVIDER_PRODUCT_BINDING_REQUIRED",
+                            "HOLD_IONOS_CONTRACT_PRINCIPAL_BINDING_REQUIRED",
+                            "HOLD_IONOS_PRIVATE_READBACK_MISMATCH"}
+        receipt["first_boundary"] = code if code in safe_errors | preflight_errors else "HOLD_IONOS_READONLY_EXECUTION_FAILED"
+        if isinstance(exc, ProviderError): receipt["http_status"] = exc.status
+    receipt["completed_at"] = timestamp()
+    host.synced_private_file(receipt_path, wire(receipt)); host.sync_directory(directory)
+    if decode(receipt_path.read_bytes()) != receipt:
+        raise ValueError("HOLD_IONOS_METADATA_RECEIPT_READBACK_MISMATCH")
+    return receipt
     raise ValueError("SUPPORTED_PROVIDER_OPERATION_REQUIRED")
