@@ -1,0 +1,159 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "authorized GitHub connector",
+      "git",
+      "Python 3.12",
+      "Node 24",
+      "existing S1 launcher and original TEMDD ledger"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Extended the existing S1 native carrier with explicit per-principal authenticated Owner REST capabilities",
+    "Reused original input validation, Effect-Ack Structured Field parser, Ledger.append and independent readonly SQLite readback",
+    "Persisted preparations in the original SQLite meta table in the same monolith; retained exact historical kernel bytes",
+    "Added native exported-process REST/restart/monolith-only-restore/concurrent/lost-response and negative controls",
+    "Extended existing docs, config and CI evidence carrier"
+  ],
+  "created_at": "2026-10-06T08:11:58.985529+00:00",
+  "external_effects": {
+    "deployment": false,
+    "main_write": false,
+    "manual_workflow_dispatch": false,
+    "merge": false,
+    "pr469_candidate_update": "AUTHORIZED; EXPECTED_HEAD_BOUND_WRITE_AND_READBACK_REQUIRED",
+    "publication": false
+  },
+  "git_history": {
+    "expected_head_lease_required": true,
+    "history_rewritten": false,
+    "parent": "b1658ac934dbf529cc4cb271554bf9cf26111c9f"
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized extending PR #469 or an exactly bound successor with authenticated Owner REST input",
+    "Required original Ledger, Prepare/Commit, Subject binding, Replay and EFFECT_ACK contracts",
+    "Required independent readback and negative identity, subject, replay-conflict and authorization controls",
+    "Required Unix ingress remain a separate optional local adapter"
+  ],
+  "human_decision": {
+    "generated_candidate_acceptance": "PENDING_NATIVE_REVIEW",
+    "product_acceptance": "OPEN",
+    "task_implementation_authorized": true
+  },
+  "inputs": [
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "source_commit": "b1658ac934dbf529cc4cb271554bf9cf26111c9f"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "source_commit": "b1658ac934dbf529cc4cb271554bf9cf26111c9f"
+    }
+  ],
+  "joint_components": [],
+  "next_execution": "Materialize integrity; run final local tests; expected-head-bound PR update; observe exact-head hosted full/native/HTTP lanes and downloaded S1 evidence.",
+  "outputs": [
+    {
+      "bytes": 114879,
+      "git_blob_sha1": "1d4b79fe390491a4c6d3b2257dc49883b8d64875",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "e020bce8d315ecf166c7de94f01e86f3bf0b5403a3016c2dfd7dbb4401c26e77"
+    },
+    {
+      "bytes": 57392,
+      "git_blob_sha1": "d9fe62d52ff3e4e08e7b6c3c59fd15954308f310",
+      "path": "tests/test_self_host_temdd.py",
+      "sha256": "450b1f09161b35108731ea79c2eb442d4e97032140da99c43157a61f292662ae"
+    },
+    {
+      "bytes": 11281,
+      "git_blob_sha1": "90579071af95b903a9de2849088b3480b5218c28",
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "3942aaef567f0d9aca1387dd7ac66718d87ac024821f98737a654d72f7ce20d9"
+    },
+    {
+      "bytes": 45859,
+      "git_blob_sha1": "9e065fcab1ba2589170616f4e6afacd2e5d19a25",
+      "path": "runtime/self-host/README.md",
+      "sha256": "2d0d175c774ff249f6099b57536da78d7d9673d279e1e97aad96e62016d9c488"
+    },
+    {
+      "bytes": 6028,
+      "git_blob_sha1": "42862ab286d007be416934201cf85ccf56c01bc9",
+      "path": "runtime/self-host/RECOVERED_TERMINAL.md",
+      "sha256": "0d63611a9c66aae2751030218028424449478e36560045319657c13adfed1d60"
+    },
+    {
+      "bytes": 473,
+      "git_blob_sha1": "5b2f119e5f7acfee91792bbce55ccae5020ab89d",
+      "path": "runtime/self-host/CONFIG.example.json",
+      "sha256": "bae3e7339e0723bc14639c74c47a350b402e1160a5d3a6730eb6d19084753b9b"
+    },
+    {
+      "bytes": 4628,
+      "git_blob_sha1": "2378734a0c6944b5f3c692121bc952e4a1350ac2",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "97fd8fb6e3570dbdee900b648d5cf10130758636261fccc16b5f3419f8650b9c"
+    },
+    {
+      "bytes": 19822,
+      "git_blob_sha1": "2598b8aebcb25822d75a247ea2aa728d9f78ef25",
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "sha256": "b87292553813805885c5ab434b33d0d85cbec94ce5907fb0cfac806b38ea6b1f"
+    },
+    {
+      "bytes": 3198,
+      "git_blob_sha1": "286b4dbb3263c446cc04f69fd6eff81b3746e165",
+      "path": ".github/workflows/qikvrt_temdd.yml",
+      "sha256": "987151704c4012a2333a4adf6975bef20e6706784ebf5b13bdc9fd4f7f577122"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "mobile_runtime_verified": false,
+    "public_url_verified": false
+  },
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "scope_boundary": "Authenticated native Linux REST storage candidate and executed synthetic process tests; not public deployment, native human identity proof, general Mesh synchronization or product acceptance",
+  "source_commit": "b1658ac934dbf529cc4cb271554bf9cf26111c9f",
+  "source_ref": "work/node-client-monolith-20261006",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "4c56a464394816f391c3221218707e6c04e05527",
+  "unresolved_origin": [],
+  "verification": {
+    "ci_evidence": "Existing productive TEMDD S1 carrier exports exact HEAD/TREE, positive and negative Owner REST test artifacts. New-head result must be read back.",
+    "environment_limits": {
+      "AF_UNIX": "EPERM; unchanged separate original ingress lane requires hosted Linux",
+      "node": "v24.19.0",
+      "python": "3.12.14"
+    },
+    "exact_successor_native_ci": "REQUIRED_NOT_YET_OBSERVED",
+    "final_local_gates": "REQUIRED_AFTER_FINAL_INTEGRITY_MATERIALIZATION",
+    "independent_readback_scope": "fresh readonly SQLite connection in native process plus external readonly connection in test driver; no Unix ingress",
+    "predecessor_evidence_transfer": false,
+    "supporting_local_lost_commit_response_test": {
+      "count": 1,
+      "log_sha256": "6654e66021f301554dbdf438d2948e809c2cbb2565173515b32a7a8b21f578c5",
+      "state": "PASS"
+    },
+    "supporting_local_source_and_mesh_tests": {
+      "count": 32,
+      "log_sha256": "d6447ecfdf9009682a3471ced7d27371ec9da706f34f64827cca0701841ef360",
+      "state": "PASS"
+    }
+  },
+  "work_unit_id": "OWNER_REST_MONOLITH_20261006_V1"
+}

@@ -36,6 +36,7 @@ jobs:
       - name: Verify exact native S1 admission and original producer controls
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          QIKVRT_OWNER_REST_TEST_EVIDENCE: ${{ runner.temp }}/owner-rest-evidence
         shell: bash
         run: |
           set -euo pipefail
@@ -64,5 +65,6 @@ jobs:
           path: |
             ${{ runner.temp }}/temdd-s1-tests.log
             ${{ runner.temp }}/temdd-s1-binding.json
+            ${{ runner.temp }}/owner-rest-evidence/*.json
           if-no-files-found: error
           retention-days: 30

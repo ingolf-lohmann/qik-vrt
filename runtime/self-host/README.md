@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.7.0
+# S1 standalone node package, version 1.8.0
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.
@@ -158,6 +158,82 @@ GitHub CLI check or installation. Its default adapter is `none`. Selecting
 profile still requires that bootstrap and refuses `--adapter none`.
 The PowerShell checker carries the same adapter selection; the actual service
 launcher is Linux-only. The profile checker is readiness, not deployment proof.
+
+## Authenticated Owner REST input
+
+The native `temdd` and `firefox` profiles now provide direct HTTP input through
+the original TEMDD ledger, including when `unix_ingress` is `false`. No Unix
+socket, browser proxy, remote desktop, Git installation or provider credential
+is required by this path. The separate Unix adapter defaults to enabled for
+existing configurations and retains its original mode/UID boundary.
+
+Provision a distinct private 0600 ASCII bearer key (32–256 characters) for each
+explicit principal, outside the package and monolith. The read-only terminal key
+cannot authorize Owner REST. Add the following to the private, source-bound
+configuration; permission names grant only the stated local storage operation:
+
+```json
+{"unix_ingress":false,"owner_rest_grants":[
+ {"principal":"owner:ingolf-lohmann","token_file":"/etc/qikvrt/owner-rest.token",
+  "permissions":["prepare","commit","readback"]}
+]}
+```
+
+No grants means the REST writer is disabled. Each request revalidates secret
+file ownership/mode and current bearer bytes. Rotation revokes the previous key
+immediately. A changed configuration/source/volume binding holds the runtime;
+it never widens a live grant. Principal authentication is a provisioned capability
+binding, not biometric proof of a natural person. TLS/public ingress and mobile
+acceptance require their own deployment evidence. The existing terminal-port
+listener stays at `127.0.0.1`; the public monitor exposes no owner input route.
+
+Send `Authorization: Bearer <private-key>` and `QIKVRT-Owner: <principal>`.
+Write requests use `Content-Type: application/json` and this exact envelope:
+
+```json
+{"schema":"qikvrt_owner_rest_input_v1","request_id":"owner:unique-work-unit",
+ "subject":{"repository":"ingolf-lohmann/qik-vrt","pr":469,
+            "head":"EXACT_HEAD","tree":"EXACT_TREE"},
+ "input":{"schema":"qikvrt_terminal_input_v1","text":"Exact owner input"}}
+```
+
+The subject must match the running package/configuration, including its PR.
+`input` uses the existing bounded text contract (4096 characters); audio/video
+remain explicitly unadmitted. Request bodies are at most 32768 UTF-8 bytes.
+Every request ID is bound to principal, subject and exact canonical input.
+
+| Operation on the configured terminal port | Binding and result |
+|---|---|
+| `POST /api/owner/prepare` | `Effect-Ack-Request: v=1, mode=prepare`; persists the preparation in the existing SQLite `meta` table, inserts no input event, returns `record_hash` and `commit_token`. |
+| `POST /api/owner/commit` | Same envelope; `Effect-Ack-Request: v=1, mode=commit, token=:BASE64_ASCII_TOKEN:, hash=:BASE64_32_HASH_BYTES:`; calls the original ledger append and verifies its result through a new read-only SQLite connection. |
+| `GET /api/owner/receipts/<request_id>` | Same authorization/identity headers plus `QIKVRT-Subject: <exact subject JSON>`; independent read-only SQLite observation without resubmission or a preparation ticket. |
+
+The Structured Field token is Base64 of the returned ASCII `commit_token`;
+the hash is Base64 of the 32 decoded bytes of the hexadecimal `record_hash`.
+Both wire fields reuse the existing Effect-Ack parser. Initial commit expires
+after 120 seconds. A stored preparation survives restart; an already committed
+request can be read back and replayed after expiry. Exact Prepare replay returns
+the same binding; exact Commit replay returns the original event with
+`replayed=true`, including concurrent requests and single-file restore. Same ID
+with different input is HTTP 409, without a second event. A lost response permits
+authenticated receipt readback before a retry. Key rotation invalidates old
+commit tickets, while the newly authenticated same principal can recover receipts.
+
+Bearer keys are not stored in the SQLite carrier, events, preparation metadata
+or receipts. Preparation and original event bytes occupy the same monolithic
+database as the pinned carrier. Commit success means verified local persistence:
+`EFFECT_ACK_CONTINUE`, `ordinary_release=false`, `EFFECT_ACK_DONE=false`. It grants
+no repository, publication, deployment or other downstream effect. Failed
+authentication is 401; identity, origin or permission refusal is 403; subject,
+ticket, expiry or replay conflict is 409; absent authority or unavailable storage
+holds at 503. The public `/api/terminal` readback advertises the private REST URL
+and adapter availability without exposing personal event bodies or credentials.
+
+`tests.test_self_host_temdd.OwnerRESTMonolithTests` executes the exported native
+process with Unix ingress disabled, real authenticated REST, independent SQLite
+readback, concurrent idempotent commits, SIGKILL/restart, monolith-only restore
+and the negative identity/subject/conflict/authorization controls. The original
+Unix ingress and historical source identity tests remain mandatory separately.
 
 ## Freeze, transfer and start
 

@@ -469,6 +469,220 @@ class MonolithicStoreTests(unittest.TestCase):
         self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
 
 
+class OwnerRESTMonolithTests(unittest.TestCase):
+    """Actual S1 process, authenticated HTTP and original SQLite; no AF_UNIX."""
+    setUpClass = MonolithicStoreTests.__dict__['setUpClass']
+    tearDownClass = MonolithicStoreTests.__dict__['tearDownClass']
+    save_config = NativeStandaloneTests.save_config
+    start = NativeStandaloneTests.start
+    stop = NativeStandaloneTests.stop
+    get = NativeStandaloneTests.get
+    sql = NativeStandaloneTests.sql
+    command = MonolithicStoreTests.command
+
+    def setUp(self):
+        MonolithicStoreTests.setUp(self)
+        self.refusals=[]
+        self.owner_token = self.work/'owner.token'
+        self.owner_token.write_text('synthetic-owner-rest-key-separate-from-read-only-token')
+        self.owner_token.chmod(0o600)
+        self.reader_token = self.work/'reader.token'
+        self.reader_token.write_text('synthetic-reader-rest-key-without-write-authorization')
+        self.reader_token.chmod(0o600)
+        self.config.update(unix_ingress=False, owner_rest_grants=[
+            {'principal':'owner:fixture','token_file':str(self.owner_token),'permissions':['prepare','commit','readback']},
+            {'principal':'reader:fixture','token_file':str(self.reader_token),'permissions':['readback']}])
+        self.save_config()
+        self.request = {'schema':'qikvrt_owner_rest_input_v1','request_id':'rest:synthetic-001',
+            'subject':{'repository':'ingolf-lohmann/qik-vrt','pr':457,'head':self.head,'tree':self.tree},
+            'input':{'schema':'qikvrt_terminal_input_v1','text':'synthetic private REST input: Grüße Ω'}}
+
+    def rest(self, operation, body=None, prepared=None, token=None, principal='owner:fixture', extra=None):
+        headers = {'Authorization':'Bearer '+(token or self.owner_token.read_text()),'QIKVRT-Owner':principal}
+        if operation == 'readback':
+            method='GET'; path='/api/owner/receipts/'+self.request['request_id']
+            raw=None; headers['QIKVRT-Subject']=json.dumps(self.request['subject'])
+        else:
+            method='POST'; path='/api/owner/'+operation
+            raw=host.mesh_wire(body or self.request)
+            headers.update({'Content-Type':'application/json','Effect-Ack-Request':'v=1, mode=prepare'})
+            if operation == 'commit':
+                import base64
+                sf=lambda b: ':'+base64.b64encode(b).decode('ascii')+':'
+                headers['Effect-Ack-Request']='v=1, mode=commit, token='+sf(prepared['commit_token'].encode())+', hash='+sf(bytes.fromhex(prepared['record_hash']))
+        if extra:
+            for k,v in extra.items():
+                if v is None: headers.pop(k,None)
+                else: headers[k]=v
+        conn=http.client.HTTPConnection('127.0.0.1',self.config['terminal_port'],timeout=6)
+        try:
+            conn.request(method,path,body=raw,headers=headers)
+            reply=conn.getresponse(); payload=reply.read()
+            self.assertNotIn('state=done',reply.getheader('Effect-Ack',''))
+            return reply.status,json.loads(payload)
+        finally: conn.close()
+
+    def prepared(self):
+        status,prepared=self.rest('prepare'); self.assertEqual(status,200,prepared)
+        self.assertEqual(prepared['state'],'PREPARED')
+        self.assertFalse(prepared['EFFECT_ACK_DONE'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+        self.assertEqual(self.rest('prepare'),(200,prepared))
+        return prepared
+
+    def assert_refusal(self, status, reason, operation, **kwargs):
+        before=self.sql('SELECT seq,body FROM events')
+        code,result=self.rest(operation,**kwargs)
+        self.assertEqual(code,status,result); self.assertEqual(result['reason'],reason)
+        self.assertFalse(result['ordinary_release'])
+        self.assertEqual(self.sql('SELECT seq,body FROM events'),before)
+        self.refusals.append({'operation':operation,'status':code,'reason':reason,
+            'event_count':len(before),'no_additional_event':True})
+
+    def test_rest_persists_in_same_monolith_and_independent_readback_replays_after_sigkill(self):
+        self.start()
+        self.assertFalse((self.volume/'temdd/ingress.sock').exists())
+        metadata=self.get('/api/terminal')[1]
+        self.assertTrue(metadata['owner_rest_input_enabled']); self.assertFalse(metadata['unix_ingress_enabled'])
+        prepared=self.prepared()
+        status,receipt=self.rest('commit',prepared=prepared); self.assertEqual(status,200,receipt)
+        event=receipt['durable_readback']
+        self.assertTrue(receipt['independent_sqlite_readback']); self.assertFalse(receipt['replayed'])
+        self.assertFalse(receipt['EFFECT_ACK_DONE']); self.assertFalse(receipt['ordinary_release'])
+        # New independent readonly DB connection, outside the native process.
+        row=self.sql('SELECT seq,binding,native_digest,body,body_digest FROM events')[0]
+        self.assertEqual(json.loads(row[3]),{k:v for k,v in event.items() if k not in ('id','ledger_digest')})
+        self.assertEqual(row[1],host.digest(host.mesh_wire(self.request['subject'])))
+        self.assertEqual(row[2],host.digest(host.mesh_wire(prepared['preparation']['event'])))
+        self.assertEqual(row[4],host.digest(host.mesh_wire(json.loads(row[3]))))
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM carrier'),[(len(self.manifest['files'])+1,)])
+        for secret in (self.owner_token.read_text(),self.reader_token.read_text(),self.token_file.read_text()):
+            self.assertNotIn(secret,json.dumps(self.sql('SELECT value FROM meta'))+row[3]+json.dumps(receipt))
+        status,observed=self.rest('readback'); self.assertEqual(status,200,observed)
+        self.assertEqual(observed['durable_readback'],event)
+        status,replay=self.rest('commit',prepared=prepared); self.assertEqual(status,200,replay)
+        self.assertTrue(replay['replayed']); self.assertEqual(replay['durable_readback'],event)
+        self.stop(abrupt=True); self.start()
+        self.assertFalse((self.volume/'temdd/ingress.sock').exists())
+        self.assertEqual(self.rest('prepare'),(200,prepared))
+        self.assertEqual(self.rest('readback')[1]['durable_readback'],event)
+        self.assertEqual(self.rest('commit',prepared=prepared)[1]['durable_readback'],event)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+        self.stop()
+        checkpoint=host.checkpoint_monolith(self.store,self.pin,self.config_path)
+        self.assertEqual(checkpoint['ledger_records'],1)
+        # Restore only the monolith. Preparation and event survive without Unix.
+        successor=self.work/'rest-successor'; successor.mkdir(mode=0o700)
+        (successor/'temdd').mkdir(mode=0o700)
+        shutil.copy2(self.store,successor/'temdd/events.sqlite3')
+        self.volume=successor; self.store=successor/'temdd/events.sqlite3'
+        self.config['state_dir']=str(successor); self.save_config(); self.start()
+        self.assertEqual(self.rest('readback')[1]['durable_readback'],event)
+        self.assertEqual(self.rest('commit',prepared=prepared)[1]['durable_readback'],event)
+        output=os.environ.get('QIKVRT_OWNER_REST_TEST_EVIDENCE')
+        if output:
+            directory=Path(output); directory.mkdir(parents=True,exist_ok=True)
+            evidence={'schema':'qikvrt-owner-rest-monolith-e2e/v1',
+                'source_head':host.git(ROOT,'rev-parse','HEAD').decode(),
+                'source_tree':host.git(ROOT,'rev-parse','HEAD^{tree}').decode(),
+                'source_worktree_dirty':bool(host.git(ROOT,'status','--porcelain','--untracked-files=normal')),
+                'fixture_head':self.head,'fixture_tree':self.tree,'manifest_sha256':self.pin,
+                'original_ledger_event_sha256':host.digest(host.mesh_wire(event)),
+                'rest_to_original_sqlite':True,'independent_sqlite_readback':True,
+                'prepare_and_commit_idempotent':True,'actual_sigkill_restart':True,
+                'single_file_restore':True,'unix_ingress_present':False,
+                'public_deployment_verified':False,'effect_ack_done':False}
+            (directory/'OWNER_REST_MONOLITH_E2E.json').write_bytes(host.raw_json(evidence))
+
+    def test_identity_subject_conflict_and_authorization_fail_closed_without_effect(self):
+        self.start(); prepared=self.prepared()
+        for operation in ('prepare','commit','readback'):
+            kwargs={'prepared':prepared} if operation=='commit' else {}
+            self.assert_refusal(401,'OWNER_REST_AUTHENTICATION_REQUIRED',operation,extra={'Authorization':None},**kwargs)
+            self.assert_refusal(401,'OWNER_REST_AUTHENTICATION_REQUIRED',operation,token='invalid-synthetic-token',**kwargs)
+            self.assert_refusal(401,'OWNER_REST_AUTHENTICATION_REQUIRED',operation,token=self.token_file.read_text(),**kwargs)
+            self.assert_refusal(403,'OWNER_REST_IDENTITY_MISMATCH',operation,principal='wrong:identity',**kwargs)
+            self.assert_refusal(403,'OWNER_REST_SAME_ORIGIN_LOOPBACK_REQUIRED',operation,extra={'Origin':'https://untrusted.invalid'},**kwargs)
+        for operation in ('prepare','commit'):
+            self.assert_refusal(403,'OWNER_REST_PERMISSION_REQUIRED',operation,prepared=prepared,
+                principal='reader:fixture',token=self.reader_token.read_text())
+        for field,replacement in [('repository','wrong/repo'),('pr',458),('head','0'*40),('tree','0'*40)]:
+            wrong=json.loads(json.dumps(self.request)); wrong['subject'][field]=replacement
+            for operation in ('prepare','commit'):
+                self.assert_refusal(409,'EXACT_OWNER_REST_SUBJECT_MISMATCH',operation,body=wrong,prepared=prepared)
+            self.assert_refusal(409,'EXACT_OWNER_REST_SUBJECT_MISMATCH','readback',extra={'QIKVRT-Subject':json.dumps(wrong['subject'])})
+        conflict=json.loads(json.dumps(self.request)); conflict['input']['text']='changed exact input'
+        for operation in ('prepare','commit'):
+            self.assert_refusal(409,'OWNER_REST_REPLAY_CONFLICT',operation,body=conflict,prepared=prepared)
+        for field,value in [('record_hash','0'*64),('commit_token','0'*64)]:
+            wrong={**prepared,field:value}
+            self.assert_refusal(409,'OWNER_REST_COMMIT_BINDING_MISMATCH','commit',prepared=wrong)
+        self.assertEqual(self.rest('commit',prepared=prepared)[0],200)
+        self.assert_refusal(409,'OWNER_REST_REPLAY_CONFLICT','commit',body=conflict,prepared=prepared)
+        self.stop(abrupt=True); self.start()
+        self.assert_refusal(409,'OWNER_REST_REPLAY_CONFLICT','prepare',body=conflict)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+        output=os.environ.get('QIKVRT_OWNER_REST_TEST_EVIDENCE')
+        if output:
+            directory=Path(output); directory.mkdir(parents=True,exist_ok=True)
+            (directory/'OWNER_REST_NEGATIVE_CONTROLS.json').write_bytes(host.raw_json({
+                'schema':'qikvrt-owner-rest-negative-controls/v1',
+                'source_head':host.git(ROOT,'rev-parse','HEAD').decode(),
+                'source_tree':host.git(ROOT,'rev-parse','HEAD^{tree}').decode(),
+                'source_worktree_dirty':bool(host.git(ROOT,'status','--porcelain','--untracked-files=normal')),
+                'fixture_head':self.head,'fixture_tree':self.tree,'controls':self.refusals,
+                'private_inputs_or_credentials_uploaded':False,'effect_ack_done':False}))
+
+    def test_prepare_and_permission_survive_restart_concurrent_commits_append_once(self):
+        self.start(); prepared=self.prepared(); self.stop(abrupt=True); self.start()
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            results=list(pool.map(lambda _:self.rest('commit',prepared=prepared),range(8)))
+        self.assertTrue(all(code==200 for code,_ in results),results)
+        events=[body['durable_readback'] for _,body in results]
+        self.assertTrue(all(event==events[0] for event in events))
+        self.assertEqual(sum(not body['replayed'] for _,body in results),1)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+        # Rotation revokes the old bearer on the next request. Existing reads
+        # remain recoverable by the explicitly configured principal's new key.
+        old=self.owner_token.read_text()
+        self.owner_token.write_text('synthetic-rotated-owner-rest-key-at-least-thirty-two-bytes')
+        self.assert_refusal(401,'OWNER_REST_AUTHENTICATION_REQUIRED','readback',token=old)
+        self.assertEqual(self.rest('readback')[1]['durable_readback'],events[0])
+
+    def test_absent_grant_and_public_secret_mode_never_enable_a_writer(self):
+        self.config['owner_rest_grants']=[]; self.save_config(); self.start()
+        self.assert_refusal(503,'OWNER_REST_NOT_AUTHORIZED','prepare')
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(0,)])
+        self.stop()
+        self.config['owner_rest_grants']=[{'principal':'owner:fixture','token_file':str(self.owner_token),
+            'permissions':['prepare','commit','readback']}]
+        self.owner_token.chmod(0o644); self.save_config()
+        result=subprocess.run(self.command(),capture_output=True,text=True,timeout=15)
+        self.assertEqual(result.returncode,2,result.stdout+result.stderr)
+        self.assertIn('OWNER_ONLY_PRIVATE_PATH_REQUIRED',result.stdout)
+
+    def test_lost_commit_response_recovers_by_get_without_resubmitting(self):
+        self.start(); prepared=self.prepared()
+        import base64, time
+        sf=lambda b: ':'+base64.b64encode(b).decode('ascii')+':'
+        headers={'Authorization':'Bearer '+self.owner_token.read_text(),'QIKVRT-Owner':'owner:fixture',
+            'Content-Type':'application/json','Effect-Ack-Request':'v=1, mode=commit, token='+
+            sf(prepared['commit_token'].encode())+', hash='+sf(bytes.fromhex(prepared['record_hash']))}
+        conn=http.client.HTTPConnection('127.0.0.1',self.config['terminal_port'],timeout=5)
+        conn.request('POST','/api/owner/commit',host.mesh_wire(self.request),headers)
+        conn.close()  # No status, header or body is read and no POST is repeated.
+        until=time.monotonic()+5
+        while time.monotonic()<until and self.sql('SELECT COUNT(*) FROM events')!=[(1,)]:
+            time.sleep(0.01)
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+        self.stop(abrupt=True); self.start()
+        status,receipt=self.rest('readback'); self.assertEqual(status,200,receipt)
+        self.assertTrue(receipt['independent_sqlite_readback'])
+        self.assertEqual(receipt['durable_readback']['payload']['terminal_input'],self.request['input'])
+        self.assertEqual(self.sql('SELECT COUNT(*) FROM events'),[(1,)])
+
+
 class StateSnapshotBackendTests(unittest.TestCase):
     """Original SQLite/journal storage controls; owner-Unix E2E stays above."""
     setUpClass = classmethod(StandaloneTests.setUpClass.__func__)

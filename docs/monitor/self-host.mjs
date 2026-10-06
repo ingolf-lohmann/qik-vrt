@@ -82,7 +82,11 @@ async function routes(request, response, url) {
       reply(response,200,{schema:'qikvrt-self-host-terminal/v1',state:'NATIVE_TEMDD_READY',
         node_id:config.node_id,manifest_sha256:pin,config_sha256:hash(configBytes),subject:state.subject,
         ledger_id:state.ledger_id,native_source:'RECOVERED_HISTORICAL_ORIGINAL',public_effects:'READ_ONLY',
-        durable_input:'EXISTING_OWNER_UNIX_INGRESS',public_event_bodies:false,effect_ack_done:false},'application/json',request.method);
+        durable_input:config.owner_rest_grants?.length ? 'AUTHENTICATED_OWNER_REST_PREPARE_COMMIT' : 'EXISTING_OWNER_UNIX_INGRESS',
+        owner_rest_input_enabled:!!config.owner_rest_grants?.length,
+        owner_rest_base_url:config.owner_rest_grants?.length ? 'http://127.0.0.1:'+config.terminal_port+'/api/owner' : null,
+        unix_ingress_enabled:config.unix_ingress !== false,
+        public_event_bodies:false,effect_ack_done:false},'application/json',request.method);
       return true;
     }
     if (state.runtime_binding?.manifest_sha256 !== pin || state.runtime_binding?.config_sha256 !== hash(configBytes) ||

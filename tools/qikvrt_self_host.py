@@ -16,6 +16,7 @@ import json
 import os
 import platform
 import re
+import secrets
 import shutil
 import signal
 import socket
@@ -26,6 +27,7 @@ import time
 import urllib.request
 import urllib.parse
 import urllib.error
+from urllib.parse import urlsplit
 import subprocess
 import sys
 import tarfile
@@ -1231,11 +1233,161 @@ def load_source(package, name):
     return module
 
 
+def owner_rest_grants(config, terminal_token):
+    """Explicit owner capabilities, separate from the read-only terminal key."""
+    grants = config.get("owner_rest_grants", [])
+    if not isinstance(grants, list) or len(grants) > 32:
+        raise ValueError("BOUNDED_OWNER_REST_GRANTS_REQUIRED")
+    result, principals, tokens = [], set(), {terminal_token}
+    for grant in grants:
+        if (not isinstance(grant, dict) or set(grant) != {"principal", "token_file", "permissions"}
+                or not re.fullmatch(r"[A-Za-z0-9_.@:-]{1,100}", grant.get("principal", ""))
+                or grant["principal"] in principals or not isinstance(grant["permissions"], list)
+                or not grant["permissions"] or any(p not in ("prepare", "commit", "readback") for p in grant["permissions"])
+                or len(set(grant["permissions"])) != len(grant["permissions"])):
+            raise ValueError("EXPLICIT_DISTINCT_OWNER_REST_CAPABILITY_REQUIRED")
+        path = Path(grant["token_file"]); private_path(path)
+        token = path.read_text().strip()
+        if (not 32 <= len(token) <= 256 or not token.isascii()
+                or any(ord(c) <= 32 or ord(c) >= 127 for c in token) or token in tokens):
+            raise ValueError("DISTINCT_BOUNDED_OWNER_REST_SECRET_REQUIRED")
+        principals.add(grant["principal"]); tokens.add(token)
+        result.append({"principal": grant["principal"], "permissions": grant["permissions"], "token": token})
+    return result
+
+
+class OwnerREST:
+    """Transport adapter of the original ledger; no Unix client or second store.
+
+    Prepare records use the existing meta table. The original append transaction
+    owns the effect. A fresh read-only SQLite connection verifies it, including
+    recovery after a lost response or restart. No bearer secret enters the DB.
+    """
+    def __init__(self, runtime, terminal, state_dir):
+        self.runtime, self.terminal, self.state_dir = runtime, terminal, state_dir
+
+    def request(self, value):
+        if (not isinstance(value, dict) or set(value) != {"schema", "request_id", "subject", "input"}
+                or value["schema"] != "qikvrt_owner_rest_input_v1"
+                or not isinstance(value["request_id"], str)
+                or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", value["request_id"])):
+            raise ValueError("BOUNDED_OWNER_REST_REQUEST_REQUIRED")
+        exact = self.runtime.ensure_subject()
+        if mesh_wire(value["subject"]) != mesh_wire(exact):
+            raise ValueError("EXACT_OWNER_REST_SUBJECT_MISMATCH")
+        return {**value, "input": self.terminal._durable_input(value["input"])}
+
+    def key(self, principal, request_id):
+        return "owner-rest:" + digest(mesh_wire([principal, request_id]))
+
+    def record(self, principal, request_id):
+        row = self.runtime.ledger.db.execute("SELECT value FROM meta WHERE key=?",
+            (self.key(principal, request_id),)).fetchone()
+        if row is None: return None
+        record = json.loads(row[0])
+        request, plan = record["request"], record["plan"]
+        frozen = self.request(request)
+        event = plan["event"]
+        if (set(record) != {"request", "plan", "record_hash"}
+                or set(plan) != {"schema", "principal", "request_id", "subject", "input_hash", "ledger_id", "event", "expires_at"}
+                or plan["schema"] != "qikvrt_owner_rest_terminal_preparation_v1"
+                or plan["principal"] != principal or plan["request_id"] != request_id
+                or frozen["request_id"] != request_id or plan["subject"] != frozen["subject"]
+                or plan["ledger_id"] != self.runtime.ledger.epoch
+                or plan["input_hash"] != "sha256:" + digest(mesh_wire(frozen["input"]))
+                or event["payload"] != {"adapter": "QIKVRT_OWNER_REST_TERMINAL_V1",
+                    "principal": principal, "request_id": request_id, "terminal_input": frozen["input"],
+                    "input_hash": plan["input_hash"], "effect_ack_done": False}
+                or event["subject"] != plan["subject"] or event["kind"] != "OBSERVE"
+                or event["provenance"]["source"] != "transputer"
+                or not re.fullmatch(r"terminal:[0-9a-f]{48}", event["provenance"]["native_event_id"])
+                or type(plan["expires_at"]) is not int or record["record_hash"] != digest(mesh_wire(plan))):
+            raise ValueError("OWNER_REST_PREPARATION_READBACK_MISMATCH")
+        self.runtime.ledger._validate(event)
+        return record
+
+    def ticket(self, grant, record):
+        return hmac.new(grant["token"].encode("ascii"), mesh_wire(record["plan"]), hashlib.sha256).hexdigest()
+
+    def prepare(self, grant, value):
+        value = self.request(value)
+        ledger = self.runtime.ledger
+        with ledger.condition:
+            record = self.record(grant["principal"], value["request_id"])
+            if record is not None and mesh_wire(record["request"]) != mesh_wire(value):
+                raise ValueError("OWNER_REST_REPLAY_CONFLICT")
+            if record is None:
+                input_hash = "sha256:" + digest(mesh_wire(value["input"]))
+                event = {"schema": self.terminal.NATIVE_SCHEMA, "kind": "OBSERVE", "subject": value["subject"],
+                    "provenance": {"source": "transputer", "native_event_id": "terminal:" + secrets.token_hex(24)},
+                    "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    "message": "Universal Terminal: hash-bound durable input observation",
+                    "payload": {"adapter": "QIKVRT_OWNER_REST_TERMINAL_V1", "principal": grant["principal"],
+                        "request_id": value["request_id"], "terminal_input": value["input"],
+                        "input_hash": input_hash, "effect_ack_done": False}}
+                ledger._validate(event)
+                plan = {"schema": "qikvrt_owner_rest_terminal_preparation_v1", "principal": grant["principal"],
+                    "request_id": value["request_id"], "subject": value["subject"], "input_hash": input_hash,
+                    "ledger_id": ledger.epoch, "event": event, "expires_at": int(time.time()) + self.terminal.TOKEN_TTL_SECONDS}
+                record = {"request": value, "plan": plan, "record_hash": digest(mesh_wire(plan))}
+                with ledger.db:
+                    ledger.db.execute("INSERT INTO meta VALUES (?,?)",
+                        (self.key(grant["principal"], value["request_id"]), mesh_wire(record).decode("utf-8")))
+                if self.record(grant["principal"], value["request_id"]) != record:
+                    raise ValueError("OWNER_REST_PREPARATION_READBACK_MISMATCH")
+            return {"state": "PREPARED", "preparation": record["plan"], "record_hash": record["record_hash"],
+                "prepare_hash": "sha256:" + record["record_hash"], "commit_token": self.ticket(grant, record),
+                "ordinary_release": False, "EFFECT_ACK_DONE": False}
+
+    def observed(self, record):
+        epoch, event = self.terminal._durable_read(self.state_dir, record["plan"]["event"])
+        if epoch != record["plan"]["ledger_id"]:
+            raise ValueError("OWNER_REST_LEDGER_MISMATCH")
+        return event
+
+    def receipt(self, record, event, replayed):
+        return {"state": "EFFECT_ACK_CONTINUE", "durable_persisted": True, "durable_readback": event,
+            "principal": record["plan"]["principal"], "request_id": record["plan"]["request_id"],
+            "prepare_hash": "sha256:" + record["record_hash"], "replayed": replayed,
+            "independent_sqlite_readback": True, "ordinary_release": False, "EFFECT_ACK_DONE": False,
+            "public_readback_verified": False, "authority_effect": False}
+
+    def commit(self, grant, value, binding):
+        value = self.request(value)
+        with self.runtime.ledger.condition:
+            record = self.record(grant["principal"], value["request_id"])
+            if record is None: raise ValueError("OWNER_REST_PREPARATION_REQUIRED")
+            if mesh_wire(record["request"]) != mesh_wire(value):
+                raise ValueError("OWNER_REST_REPLAY_CONFLICT")
+            if (binding["hash"] != record["record_hash"]
+                    or not hmac.compare_digest(binding["token"], self.ticket(grant, record))):
+                raise ValueError("OWNER_REST_COMMIT_BINDING_MISMATCH")
+            event = self.observed(record)
+            if event is not None: return self.receipt(record, event, True)
+            if record["plan"]["expires_at"] <= time.time():
+                raise ValueError("OWNER_REST_PREPARATION_EXPIRED")
+            appended = self.runtime.append(record["plan"]["event"])
+            event = self.observed(record)
+            if event is None or mesh_wire(event) != mesh_wire(appended):
+                raise ValueError("OWNER_REST_DURABLE_READBACK_MISMATCH")
+            return self.receipt(record, event, False)
+
+    def readback(self, grant, request_id, exact_subject):
+        if mesh_wire(exact_subject) != mesh_wire(self.runtime.ensure_subject()):
+            raise ValueError("EXACT_OWNER_REST_SUBJECT_MISMATCH")
+        with self.runtime.ledger.condition:
+            record = self.record(grant["principal"], request_id)
+            if record is None: raise ValueError("OWNER_REST_PREPARATION_REQUIRED")
+            event = self.observed(record)
+            if event is None: raise ValueError("OWNER_REST_EVENT_NOT_OBSERVED")
+            return self.receipt(record, event, True)
+
+
 def native_carrier(package, pin, config, config_path, binding, token):
     """Reuse the recovered ledger/HTTP/Unix implementation; adapt only its source binding.
 
-    The original Runtime requires Git. This new S1 adapter binds the sealed
-    package/config/volume instead. Original source bytes remain unmodified.
+    The original Runtime requires Git. This S1 adapter binds the sealed
+    package/config/volume and adds authenticated REST. Original bytes are frozen.
     """
     native = load_source(package, "qikvrt_temdd_event_ledger")
 
@@ -1270,18 +1422,85 @@ def native_carrier(package, pin, config, config_path, binding, token):
     ingress = server = None
     try:
         original_handler = native.make_handler(runtime_instance)
+        terminal = sys.modules["qikvrt_effect_ack_http_terminal"]
+        grants = owner_rest_grants(config, token)
+        rest = OwnerREST(runtime_instance, terminal, config["state_dir"])
 
-        class ReadOnlyHTTP(original_handler):
+        class OwnerHTTP(original_handler):
+            def owner_guard(self, permission):
+                self.close_connection = True
+                self.connection.settimeout(5)
+                if not grants:
+                    self._hold("OWNER_REST_NOT_AUTHORIZED", 503); return None
+                host = self.headers.get("Host", "")
+                if (host not in {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+                        or self.headers.get("Origin") not in (None, "http://" + host)):
+                    self._hold("OWNER_REST_SAME_ORIGIN_LOOPBACK_REQUIRED", 403); return None
+                if any(len(self.headers.get_all(name, [])) != 1 for name in ("Host", "Authorization", "QIKVRT-Owner")):
+                    self._hold("OWNER_REST_AUTHENTICATION_REQUIRED", 401); return None
+                try:
+                    live_grants = owner_rest_grants(config, token)
+                except (OSError, ValueError):
+                    self._hold("OWNER_REST_AUTHORITY_UNAVAILABLE", 503); return None
+                auth = self.headers.get("Authorization", "").encode("utf-8")
+                grant = next((g for g in live_grants if hmac.compare_digest(auth, ("Bearer " + g["token"]).encode("ascii"))), None)
+                if grant is None:
+                    self._hold("OWNER_REST_AUTHENTICATION_REQUIRED", 401); return None
+                if self.headers.get("QIKVRT-Owner") != grant["principal"]:
+                    self._hold("OWNER_REST_IDENTITY_MISMATCH", 403); return None
+                if permission not in grant["permissions"]:
+                    self._hold("OWNER_REST_PERMISSION_REQUIRED", 403); return None
+                return grant
+
+            def do_GET(self):
+                route = urlsplit(self.path)
+                prefix = "/api/owner/receipts/"
+                if not route.path.startswith(prefix): return super().do_GET()
+                grant = self.owner_guard("readback")
+                if grant is None: return
+                try:
+                    request_id = route.path[len(prefix):]
+                    if (route.query or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", request_id)
+                            or len(self.headers.get_all("QIKVRT-Subject", [])) != 1):
+                        raise ValueError("EXACT_OWNER_REST_READBACK_ROUTE_REQUIRED")
+                    result = rest.readback(grant, request_id, json.loads(self.headers["QIKVRT-Subject"]))
+                    self._json(200, result, state=result["state"], record_hash=result["prepare_hash"][7:])
+                except (ValueError, KeyError, TypeError, RecursionError) as exc:
+                    self._hold(str(exc) if isinstance(exc, ValueError) else "INVALID_OWNER_REST_REQUEST", 409)
+                except (OSError, sqlite3.Error): self._hold("OWNER_REST_READBACK_UNAVAILABLE", 503)
+
             def do_POST(self):
-                self._hold("NATIVE_UNIX_INGRESS_REQUIRED", 405)
+                route = urlsplit(self.path)
+                operation = {"/api/owner/prepare": "prepare", "/api/owner/commit": "commit"}.get(route.path)
+                if operation is None:
+                    self.close_connection = True
+                    return self._hold("OWNER_REST_ROUTE_REQUIRED_LOCAL_UNIX_ADAPTER_SEPARATE", 405)
+                grant = self.owner_guard(operation)
+                if grant is None: return
+                try:
+                    if route.query or any(len(self.headers.get_all(h, [])) != 1 for h in
+                            ("Content-Length", "Content-Type", "Effect-Ack-Request")):
+                        raise ValueError("BOUNDED_OWNER_REST_HTTP_HEADERS_REQUIRED")
+                    if not 1 <= int(self.headers["Content-Length"]) <= terminal.MAX_NATIVE_EVENT // 2:
+                        raise ValueError("BOUNDED_OWNER_REST_BODY_REQUIRED")
+                    effect = terminal.parse_effect_ack_request(self.headers["Effect-Ack-Request"])
+                    if effect["mode"] != operation: raise ValueError("OWNER_REST_EFFECT_ACK_MODE_MISMATCH")
+                    value = self._read_body()
+                    result = rest.prepare(grant, value) if operation == "prepare" else rest.commit(grant, value, effect)
+                    self._json(200, result, state="EFFECT_ACK_CONTINUE", record_hash=result.get("record_hash", result["prepare_hash"][7:]),
+                        commit_token=result.get("commit_token"))
+                except (ValueError, KeyError, TypeError, RecursionError) as exc:
+                    self._hold(str(exc) if isinstance(exc, ValueError) else "INVALID_OWNER_REST_REQUEST", 409)
+                except (OSError, sqlite3.Error): self._hold("OWNER_REST_PERSISTENCE_OR_READBACK_UNAVAILABLE", 503)
 
-        ingress = native.make_ingress(runtime_instance)
-        # Defense in depth for the existing mode-0600 owner-only ingress.
-        def same_owner(request, _address):
-            _, uid, _ = struct.unpack("3i", request.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, 12))
-            return uid == os.geteuid()
-        ingress.verify_request = same_owner
-        server = ThreadingHTTPServer(("127.0.0.1", config["terminal_port"]), ReadOnlyHTTP)
+        if config.get("unix_ingress", True):
+            ingress = native.make_ingress(runtime_instance)
+            # Defense in depth for the separate mode-0600 owner-only adapter.
+            def same_owner(request, _address):
+                _, uid, _ = struct.unpack("3i", request.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, 12))
+                return uid == os.geteuid()
+            ingress.verify_request = same_owner
+        server = ThreadingHTTPServer(("127.0.0.1", config["terminal_port"]), OwnerHTTP)
         server.terminal_auth_token = token
         server.runtime_binding = binding
         return runtime_instance, ingress, server
@@ -1378,7 +1597,7 @@ def start(package, pin, config_path, monolith=False):
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers", "owner_rest_grants", "unix_ingress"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -1403,6 +1622,9 @@ def start(package, pin, config_path, monolith=False):
     profile = config.get("terminal_profile", "reference")
     if profile not in {"reference", "temdd", "firefox"}:
         raise ValueError("UNKNOWN_TERMINAL_PROFILE")
+    if (type(config.get("unix_ingress", True)) is not bool
+            or profile == "reference" and (config.get("owner_rest_grants") or config.get("unix_ingress") is False)):
+        raise ValueError("NATIVE_OWNER_REST_AND_UNIX_ADAPTER_CONFIGURATION_REQUIRED")
     if profile != "reference" and (type(config.get("subject_pr")) is not int or config["subject_pr"] < 1
             or config.get("source_repository") != manifest["source_repository"]
             or manifest.get("native_terminal_daemon_included") is not True):
@@ -1432,6 +1654,7 @@ def start(package, pin, config_path, monolith=False):
     token = token_file.read_text().strip()
     if len(token) < 32 or len(token) > 256 or not token.isascii() or any(c.isspace() for c in token):
         raise ValueError("BOUNDED_TERMINAL_SECRET_REQUIRED")
+    owner_rest_grants(config, token)
     volume = Path(config["state_dir"])
     private_path(volume, directory=True)
     # A failed or rolled-back import is never repaired by restarting/rebinding.
@@ -1517,9 +1740,10 @@ def start(package, pin, config_path, monolith=False):
                 except subprocess.TimeoutExpired: process.kill(); process.wait()
             server.shutdown(); server.server_close(); thread.join(timeout=2)
             stop_children(browser_processes, browser_logs)
-            if ingress is not None:
+            if native_runtime is not None:
                 native_runtime.ledger.stop()
-                ingress.shutdown(); ingress.server_close(); ingress_thread.join(timeout=6)
+                if ingress is not None:
+                    ingress.shutdown(); ingress.server_close(); ingress_thread.join(timeout=6)
                 native_runtime.ledger.close()
             for s, handler in old_handlers.items(): signal.signal(s, handler)
 

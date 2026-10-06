@@ -39,7 +39,13 @@ arguments. This explicit path verifies the sealed export instead of a Git
 checkout. Prepare still inserts no event; Commit uses the existing mode-0600
 Unix ingress and owner UID; receipt verification uses a fresh read-only SQLite
 connection. The recovered daemon keeps original native-ID conflict detection,
-WAL/FULL commit, epoch, event bytes and SSE replay. HTTP writes are refused.
+WAL/FULL commit, epoch, event bytes and SSE replay. The S1 launcher additionally
+provides authenticated Owner REST Prepare/Commit/readback using this same original
+ledger, as documented in [README.md](README.md#authenticated-owner-rest-input).
+Its preparation records occupy the original SQLite `meta` table; it requires no
+Unix socket. `unix_ingress:false` disables only the separate local Unix adapter.
+Legacy HTTP input routes remain refused. The recovered original source bytes
+and the historical Unix-only contract stay unchanged.
 
 The public monitor `/api/terminal` reads and validates the native subject and
 epoch, returning sanitized metadata only. Private event bodies and native SSE
