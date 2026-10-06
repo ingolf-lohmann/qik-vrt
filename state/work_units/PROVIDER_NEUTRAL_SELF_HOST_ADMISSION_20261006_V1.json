@@ -1,0 +1,190 @@
+{
+  "artificial_cognitive_actor": {
+    "contribution": "Source inspection, implementation, control tests, authenticated connector reads and evidence materialization",
+    "identifier": "OpenAI Codex",
+    "model_family": "GPT-6"
+  },
+  "authorization": {
+    "authenticated_read_only_requested": true,
+    "implementation_requested": true,
+    "merge_or_public_native_acceptance_claim_authorized": false,
+    "paid_create_authorized_by_this_task": false,
+    "terms_acceptance_authorized_by_this_task": false,
+    "unknown_resource_deletion_authorized": false
+  },
+  "candidate_branch": "work/provider-neutral-admission-20261006",
+  "completion": {
+    "effect_ack_done": false,
+    "independent_public_client_witness_executed": false,
+    "native_host_admitted": false,
+    "provider_operations_executed": [
+      "AUTHENTICATED_READ_ONLY_CONNECTOR_READS"
+    ],
+    "public_ipv4_https_witness_executed": false,
+    "server_created": false,
+    "ssh_key_created": false,
+    "terms_accepted": false,
+    "unknown_resource_deleted": false
+  },
+  "human_actor": {
+    "contribution": "Requested provider-neutral admission, fail-closed inventory, cost/key/replay/readback boundaries",
+    "identifier": "Ingolf Lohmann",
+    "role": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "implementation": {
+    "contract": "runtime/self-host/PROVIDER_ADMISSION.md",
+    "files": {
+      "Makefile": {
+        "bytes": 12045,
+        "sha256": "a7e4e2f379240f4873d5c5cece2a5aab0144acc27dda6cbaaf9c051882a94330"
+      },
+      "runtime/self-host/PACKAGE.json": {
+        "bytes": 5063,
+        "sha256": "4198ac6b190ef729a5054ef426d79b3d701fd1fbd2611db0c2ee802802924699"
+      },
+      "runtime/self-host/PROVIDER_ADMISSION.md": {
+        "bytes": 10229,
+        "sha256": "521c12c1cdaf9ef02e919e1ef710ae9dd13536e21fb89b713cca9d38096a5107"
+      },
+      "tests/test_self_host_provider.py": {
+        "bytes": 27335,
+        "sha256": "5888f90bd5da8e55b20852bf5dcc770a24b999a62d2616b190e66eabe1c6b943"
+      },
+      "tools/qikvrt_mesh_monitor_readback.mjs": {
+        "bytes": 11791,
+        "sha256": "055d4e7412ced34480ccc3c776a0bfd34838f81d07c7ccfe4467f6b196bc3d0c"
+      },
+      "tools/qikvrt_self_host.py": {
+        "bytes": 106175,
+        "sha256": "2a5f1224a52ba4aea4fe8dbe1ac45cd438d0c9142e6c68df5cd06a164a8bb6ab"
+      },
+      "tools/qikvrt_self_host_provider.py": {
+        "bytes": 51685,
+        "sha256": "eafe029a3b0fd966469c20e12bb7e5918ac3afcea23cb50a3f9ad20394bce95b"
+      },
+      "tools/qikvrt_subprocess.py": {
+        "bytes": 5715,
+        "sha256": "8344349b8e5c1827764e595b3ae56b8bdd720acb7feaaaee4abb1ca5656d5807"
+      }
+    },
+    "operations": [
+      "provider-inventory",
+      "provider-classify",
+      "provider-plan",
+      "provider-apply",
+      "provider-reconcile",
+      "provider-readback"
+    ],
+    "providers": [
+      "digitalocean-v2",
+      "ionos-cloud-v6",
+      "hetzner-cloud-v1"
+    ],
+    "receipt_fencing_scope": "ONE_ADMITTED_DURABLE_PRIVATE_RECEIPT_STORE_AND_COOPERATING_EXECUTORS; EXTERNAL_WRITERS_OR_PRIVILEGED_DELETION_NOT_PREVENTED"
+  },
+  "live_readback": {
+    "DigitalOcean": {
+      "account": {
+        "message": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel.",
+        "resource_limit": 3,
+        "status": "warning"
+      },
+      "authenticated_reads_executed": [
+        "digitalocean_droplet_list",
+        "digitalocean_account_get_information",
+        "digitalocean_key_list",
+        "digitalocean_region_list",
+        "digitalocean_size_list"
+      ],
+      "catalog_candidate": {
+        "base_hourly": "0.00893",
+        "base_monthly": "6",
+        "boot_disk_gb": 25,
+        "currency": "USD",
+        "included_transfer_tb": 1,
+        "memory_mb": 1024,
+        "region": "fra1",
+        "region_available": true,
+        "size": "s-1vcpu-1gb",
+        "status": "READ_CATALOG_ONLY; NO_CREATE_OR_COST_AUTHORIZATION",
+        "variable_usage_and_tax_cap_established": false,
+        "vcpus": 1
+      },
+      "complete_account_inventory_established": false,
+      "completeness_boundary": "Connector projection omits raw pagination/total and has no GPU selector; empty returned inventory is not asserted to be all account resources",
+      "droplets_returned": 0,
+      "existing_public_ssh_keys_returned": 0,
+      "first_boundary": "HOLD_PROVIDER_ACCOUNT_INVENTORY_CONFLICT",
+      "historical_403": "User-supplied PR457 predecessor observation; not transferred into current payment verification",
+      "observed_by_new_cli": true,
+      "payment_method_currently_verified": false,
+      "principal_sha256": "521f71631ff33b9f4468022cb869d4b8abe171dda3f54b601a4f86460fbb1ef9",
+      "private_inventory_sha256": "849fe57b24edc8ccecfb553a7240ded2a1c99f92455d371070b9f3b6f3d5d6da",
+      "provider_state_cause_established": false,
+      "regions_returned": 18,
+      "retry_condition": "Changed provider-native account/limit/inventory evidence resolving disagreement, followed by exact SSH/key/price/payment/accepted-terms/executor binding; no blind create retry",
+      "sizes_returned": 43,
+      "terms_binding_currently_verified": false
+    },
+    "Hetzner": {
+      "current_client_authentication_route": "UNBOUND",
+      "first_boundary": "HOLD_EXACT_PROVIDER_PRODUCT_AND_PRINCIPAL_BINDING_REQUIRED",
+      "inventory": "UNKNOWN_NOT_EMPTY",
+      "project_principal_and_token": "UNBOUND",
+      "read_only_attempt": "Existing provider-inventory CLI executed without invented binding; returned exact product/principal HOLD before credentials/transport",
+      "retry_condition": "Bind actual project/principal and existing authorized read token/connector; use current locations API"
+    },
+    "IONOS_1and1": {
+      "current_client_authentication_route": "UNBOUND",
+      "exact_cloud_product_and_contract": "UNBOUND",
+      "first_boundary": "HOLD_EXACT_PROVIDER_PRODUCT_AND_PRINCIPAL_BINDING_REQUIRED",
+      "inventory": "UNKNOWN_NOT_EMPTY",
+      "read_only_attempt": "Existing provider-inventory CLI executed without invented binding; returned exact product/principal HOLD before credentials/transport",
+      "retry_condition": "Bind actual existing product/contract and authorized read token/connector; 1and1 Cloud Panel is not assumed equivalent to CloudAPI v6"
+    },
+    "observation_interval_utc": {
+      "from": "2026-10-06T09:20:16.274Z",
+      "to": "2026-10-06T09:20:54.567Z"
+    }
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "reuse_before_create": {
+    "extended_entrypoint": "tools/qikvrt_self_host.py",
+    "new_module_reason": "Existing offline admit has no provider inventory/catalog, quote/key, paid-effect fencing or reconciliation transport",
+    "parallel_launcher_supervisor_workflow_or_native_ledger_created": false,
+    "reused": [
+      "admission_plan",
+      "verify",
+      "private_path",
+      "synced_private_file",
+      "sync_directory",
+      "tools/qikvrt_subprocess.py",
+      "tools/qikvrt_mesh_monitor_readback.mjs"
+    ],
+    "searched": [
+      "tools",
+      "runtime/self-host",
+      "policy",
+      ".github/workflows"
+    ]
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_base": {
+    "branch": "work/open-node-seed-lookup-20261006",
+    "head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+    "pr": 471,
+    "prior_ci_evidence_transferred": false,
+    "tree": "b82773510736b812b26c178fa5ce0590eb0f1e85"
+  },
+  "state": "IMPLEMENTED_AND_LOCAL_CONTROLS_VERIFIED; LIVE_HOST_ADMISSION_HOLD",
+  "validation": {
+    "integrity": "Generate and verify exact successor bytes before GitHub mutation",
+    "local_controls": "evidence/self_host/PROVIDER_ADMISSION_LOCAL_20261006.json",
+    "new_exact_head_native_ci": "REQUIRES_FRESH_SUCCESSOR_RUN; PREDECESSOR_SUCCESS_IS_NOT_TRANSFERRED",
+    "tool_cache": "26/26 declared tools, 100 percent coverage; verified after render"
+  },
+  "work_unit_id": "PROVIDER_NEUTRAL_SELF_HOST_ADMISSION_20261006_V1"
+}

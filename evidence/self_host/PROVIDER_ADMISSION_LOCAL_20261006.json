@@ -1,0 +1,87 @@
+{
+  "effect_ack_done": false,
+  "fake_provider_tests_are_live_provider_witness": false,
+  "files": {
+    "Makefile": {
+      "bytes": 12045,
+      "sha256": "a7e4e2f379240f4873d5c5cece2a5aab0144acc27dda6cbaaf9c051882a94330"
+    },
+    "runtime/self-host/PACKAGE.json": {
+      "bytes": 5063,
+      "sha256": "4198ac6b190ef729a5054ef426d79b3d701fd1fbd2611db0c2ee802802924699"
+    },
+    "runtime/self-host/PROVIDER_ADMISSION.md": {
+      "bytes": 10229,
+      "sha256": "521c12c1cdaf9ef02e919e1ef710ae9dd13536e21fb89b713cca9d38096a5107"
+    },
+    "tests/test_self_host_provider.py": {
+      "bytes": 27335,
+      "sha256": "5888f90bd5da8e55b20852bf5dcc770a24b999a62d2616b190e66eabe1c6b943"
+    },
+    "tools/qikvrt_mesh_monitor_readback.mjs": {
+      "bytes": 11791,
+      "sha256": "055d4e7412ced34480ccc3c776a0bfd34838f81d07c7ccfe4467f6b196bc3d0c"
+    },
+    "tools/qikvrt_self_host.py": {
+      "bytes": 106175,
+      "sha256": "2a5f1224a52ba4aea4fe8dbe1ac45cd438d0c9142e6c68df5cd06a164a8bb6ab"
+    },
+    "tools/qikvrt_self_host_provider.py": {
+      "bytes": 51685,
+      "sha256": "eafe029a3b0fd966469c20e12bb7e5918ac3afcea23cb50a3f9ad20394bce95b"
+    },
+    "tools/qikvrt_subprocess.py": {
+      "bytes": 5715,
+      "sha256": "8344349b8e5c1827764e595b3ae56b8bdd720acb7feaaaee4abb1ca5656d5807"
+    }
+  },
+  "full_local_native_runtime": {
+    "bounded_reproduction": "ProducerTests.setUp then start_servers; no test or native code weakened",
+    "command": "make self-host-test",
+    "first_test": "tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served",
+    "hung_test_session_terminated": true,
+    "next": "Run unchanged full native tests through existing GitHub CI on successor exact Head",
+    "observed_error": "PermissionError [Errno 1] Operation not permitted",
+    "session_exit_code": 130,
+    "state": "BLOCK_LOCAL_UNIX_SOCKET_PERMISSION"
+  },
+  "native_host_admitted": false,
+  "observed_at": "2026-10-06T09:29:26.242012+00:00",
+  "runs": [
+    {
+      "command": "python3 -B -m unittest -v tests.test_self_host_provider",
+      "exit_code": 0,
+      "output": "test_cli_returns_first_unbound_control_plane_without_accessing_credentials (tests.test_self_host_provider.AdmissionTests.test_cli_returns_first_unbound_control_plane_without_accessing_credentials) ... ok\ntest_competing_cooperating_writer_is_fenced_without_a_second_create (tests.test_self_host_provider.AdmissionTests.test_competing_cooperating_writer_is_fenced_without_a_second_create) ... ok\ntest_conflicting_empty_account_blocks_before_quote_key_or_any_create (tests.test_self_host_provider.AdmissionTests.test_conflicting_empty_account_blocks_before_quote_key_or_any_create) ... ok\ntest_crash_after_intent_before_send_holds_even_when_inventory_is_empty (tests.test_self_host_provider.AdmissionTests.test_crash_after_intent_before_send_holds_even_when_inventory_is_empty) ... ok\ntest_current_region_size_price_and_existing_key_are_bound (tests.test_self_host_provider.AdmissionTests.test_current_region_size_price_and_existing_key_are_bound) ... ok\ntest_existing_resource_reused_explicitly_unknown_resources_retained_without_delete (tests.test_self_host_provider.AdmissionTests.test_existing_resource_reused_explicitly_unknown_resources_retained_without_delete) ... ok\ntest_hetzner_quotes_primary_ipv4_and_uses_locations_not_removed_datacenters (tests.test_self_host_provider.AdmissionTests.test_hetzner_quotes_primary_ipv4_and_uses_locations_not_removed_datacenters) ... ok\ntest_independent_verifier_is_reused_with_ipv4_pin_and_without_provider_environment (tests.test_self_host_provider.AdmissionTests.test_independent_verifier_is_reused_with_ipv4_pin_and_without_provider_environment) ... ok\ntest_intent_is_fsynced_and_restart_reuses_readback_without_duplicate_create (tests.test_self_host_provider.AdmissionTests.test_intent_is_fsynced_and_restart_reuses_readback_without_duplicate_create) ... ok\ntest_ionos_keeps_exact_cloud_contract_spec_public_lan_quote_and_existing_key (tests.test_self_host_provider.AdmissionTests.test_ionos_keeps_exact_cloud_contract_spec_public_lan_quote_and_existing_key) ... ok\ntest_key_selection_uses_wire_identity_ignoring_comment_and_reported_fingerprint (tests.test_self_host_provider.AdmissionTests.test_key_selection_uses_wire_identity_ignoring_comment_and_reported_fingerprint) ... ok\ntest_lost_ack_is_resolved_by_actual_resource_get_never_repeated_post (tests.test_self_host_provider.AdmissionTests.test_lost_ack_is_resolved_by_actual_resource_get_never_repeated_post) ... ok\ntest_missing_price_budget_bad_currency_or_over_budget_never_admits (tests.test_self_host_provider.AdmissionTests.test_missing_price_budget_bad_currency_or_over_budget_never_admits) ... ok\ntest_no_grant_wrong_terms_payment_or_expired_grant_never_sends (tests.test_self_host_provider.AdmissionTests.test_no_grant_wrong_terms_payment_or_expired_grant_never_sends) ... ok\ntest_price_or_inventory_change_invalidates_prior_create_authorization (tests.test_self_host_provider.AdmissionTests.test_price_or_inventory_change_invalidates_prior_create_authorization) ... ok\ntest_rejected_payment_preserves_exact_status_and_does_not_retry (tests.test_self_host_provider.AdmissionTests.test_rejected_payment_preserves_exact_status_and_does_not_retry) ... ok\ntest_stale_snapshot_conflicting_key_and_invalid_origin_refused (tests.test_self_host_provider.AdmissionTests.test_stale_snapshot_conflicting_key_and_invalid_origin_refused) ... ok\ntest_unknown_or_incomplete_inventory_is_not_an_empty_admission (tests.test_self_host_provider.AdmissionTests.test_unknown_or_incomplete_inventory_is_not_an_empty_admission) ... ok\ntest_warning_full_limit_bad_principal_and_duplicate_inventory_fail_closed (tests.test_self_host_provider.AdmissionTests.test_warning_full_limit_bad_principal_and_duplicate_inventory_fail_closed) ... ok\ntest_duplicate_json_and_nonfinite_values_refused (tests.test_self_host_provider.TransportTests.test_duplicate_json_and_nonfinite_values_refused) ... ok\ntest_fixed_origin_no_delete_no_redirect_no_credential_in_error (tests.test_self_host_provider.TransportTests.test_fixed_origin_no_delete_no_redirect_no_credential_in_error) ... ok\ntest_ipv4_pinned_tls_preserves_sni_and_requires_fresh_exact_source_health (tests.test_self_host_provider.TransportTests.test_ipv4_pinned_tls_preserves_sni_and_requires_fresh_exact_source_health) ... ok\ntest_no_fake_legacy_ionos_or_missing_product_is_admitted (tests.test_self_host_provider.TransportTests.test_no_fake_legacy_ionos_or_missing_product_is_admitted) ... ok\ntest_pagination_covers_all_pages_and_refuses_duplicates_incomplete_metadata_and_limits (tests.test_self_host_provider.TransportTests.test_pagination_covers_all_pages_and_refuses_duplicates_incomplete_metadata_and_limits) ... ok\ntest_public_ipv4_and_https_dns_health_source_fail_closed (tests.test_self_host_provider.TransportTests.test_public_ipv4_and_https_dns_health_source_fail_closed) ... ok\n\n----------------------------------------------------------------------\nRan 25 tests in 0.321s\n\nOK\n",
+      "tests": 25
+    },
+    {
+      "command": "python3 -B -m unittest -v tests.test_self_host.MeshContractTests tests.test_self_host.WorkflowRuntimeTests",
+      "exit_code": 0,
+      "output": "test_available_partition_cannot_allow_unsafe_writes (tests.test_self_host.MeshContractTests.test_available_partition_cannot_allow_unsafe_writes) ... ok\ntest_cli_is_read_only_and_does_not_infer_effect_ack (tests.test_self_host.MeshContractTests.test_cli_is_read_only_and_does_not_infer_effect_ack) ... ok\ntest_current_nodes_only_scope_refused (tests.test_self_host.MeshContractTests.test_current_nodes_only_scope_refused) ... ok\ntest_declared_live_success_is_not_trusted_as_a_runtime_receipt (tests.test_self_host.MeshContractTests.test_declared_live_success_is_not_trusted_as_a_runtime_receipt) ... ok\ntest_duplicate_fault_case_cannot_supply_missing_coverage (tests.test_self_host.MeshContractTests.test_duplicate_fault_case_cannot_supply_missing_coverage) ... ok\ntest_duplicate_package_carrier_refused (tests.test_self_host.MeshContractTests.test_duplicate_package_carrier_refused) ... ok\ntest_each_role_requires_both_components_without_runtime_success_inference (tests.test_self_host.MeshContractTests.test_each_role_requires_both_components_without_runtime_success_inference) ... ok\ntest_effect_loss_duplication_and_parallel_writers_refused (tests.test_self_host.MeshContractTests.test_effect_loss_duplication_and_parallel_writers_refused) ... ok\ntest_every_effect_continuity_invariant_is_required (tests.test_self_host.MeshContractTests.test_every_effect_continuity_invariant_is_required) ... ok\ntest_every_fault_case_is_required_including_provider_loss_and_rejoin (tests.test_self_host.MeshContractTests.test_every_fault_case_is_required_including_provider_loss_and_rejoin) ... ok\ntest_missing_local_cache_or_weakened_idle_contract_refuses_package_admission (tests.test_self_host.MeshContractTests.test_missing_local_cache_or_weakened_idle_contract_refuses_package_admission) ... ok\ntest_missing_node_runtime_contract_refused (tests.test_self_host.MeshContractTests.test_missing_node_runtime_contract_refused) ... ok\ntest_missing_or_closed_invitation_blocks_package_admission (tests.test_self_host.MeshContractTests.test_missing_or_closed_invitation_blocks_package_admission) ... ok\ntest_missing_or_invalid_workload_limits_refused (tests.test_self_host.MeshContractTests.test_missing_or_invalid_workload_limits_refused) ... ok\ntest_missing_source_refused_without_replacing_node_with_central_link (tests.test_self_host.MeshContractTests.test_missing_source_refused_without_replacing_node_with_central_link) ... ok\ntest_native_effect_replication_cannot_be_delayed_or_received_proposals_auto_executed (tests.test_self_host.MeshContractTests.test_native_effect_replication_cannot_be_delayed_or_received_proposals_auto_executed) ... ok\ntest_node_client_deployment_cannot_exempt_a_role_or_launch_an_active_terminal (tests.test_self_host.MeshContractTests.test_node_client_deployment_cannot_exempt_a_role_or_launch_an_active_terminal) ... ok\ntest_open_invitation_cannot_exempt_components_fix_node_count_or_bypass_native_gates (tests.test_self_host.MeshContractTests.test_open_invitation_cannot_exempt_components_fix_node_count_or_bypass_native_gates) ... ok\ntest_reference_only_package_refused (tests.test_self_host.MeshContractTests.test_reference_only_package_refused) ... ok\ntest_removed_terminal_or_transputer_carrier_refused (tests.test_self_host.MeshContractTests.test_removed_terminal_or_transputer_carrier_refused) ... ok\ntest_role_exemption_refused_for_authority_and_mirror (tests.test_self_host.MeshContractTests.test_role_exemption_refused_for_authority_and_mirror) ... ok\ntest_source_invitation_cannot_remove_live_node_acceptance (tests.test_self_host.MeshContractTests.test_source_invitation_cannot_remove_live_node_acceptance) ... ok\ntest_source_presence_cannot_replace_live_acceptance (tests.test_self_host.MeshContractTests.test_source_presence_cannot_replace_live_acceptance) ... ok\ntest_symlinked_carrier_refused (tests.test_self_host.MeshContractTests.test_symlinked_carrier_refused) ... ok\ntest_unknown_slo_preserved_and_never_promoted_to_transparent_recovery (tests.test_self_host.MeshContractTests.test_unknown_slo_preserved_and_never_promoted_to_transparent_recovery) ... ok\ntest_wrong_json_shapes_refuse_through_the_structured_cli (tests.test_self_host.MeshContractTests.test_wrong_json_shapes_refuse_through_the_structured_cli) ... ok\ntest_wrong_seed_bytes_and_unsafe_authority_replacement_refuse (tests.test_self_host.MeshContractTests.test_wrong_seed_bytes_and_unsafe_authority_replacement_refuse) ... ok\ntest_batch003_requires_s1_runtime_and_tests_before_persistence (tests.test_self_host.WorkflowRuntimeTests.test_batch003_requires_s1_runtime_and_tests_before_persistence) ... ok\ntest_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference (tests.test_self_host.WorkflowRuntimeTests.test_terminal_lane_requires_real_supervisor_recovery_without_host_acceptance_inference) ... ok\n\n----------------------------------------------------------------------\nRan 29 tests in 0.379s\n\nOK\n",
+      "tests": 29
+    },
+    {
+      "command": "python3 -B -m unittest -q tests.test_integrity",
+      "exit_code": 0,
+      "output": "Ran 5 tests; OK; original tool result retained in current execution",
+      "tests": 5
+    },
+    {
+      "command": "node existing-verifier pinnedIPv4Request negative controls",
+      "controls": [
+        "HTTP scheme rejected",
+        "IPv6 address rejected",
+        "different HTTPS origin rejected before transport"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B -m py_compile tools/qikvrt_self_host.py tools/qikvrt_self_host_provider.py tests/test_self_host_provider.py; node --check tools/qikvrt_mesh_monitor_readback.mjs; git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "schema": "qikvrt-provider-admission-local-controls/v1",
+  "source_base_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+  "source_base_tree": "b82773510736b812b26c178fa5ce0590eb0f1e85",
+  "subject": "EXACT_SELECTED_WORKTREE_BYTES; NEW_NATIVE_CI_REQUIRED_AFTER_COMMIT"
+}
