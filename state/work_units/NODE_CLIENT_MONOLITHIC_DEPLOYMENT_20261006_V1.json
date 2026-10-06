@@ -1,0 +1,146 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "model_or_build": "GPT-6; exact build unavailable",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Reuse of the existing S1 carrier and unmodified native SQLite ledger/input/readback protocol",
+    "Same-file carrier table and original meta/events tables",
+    "Pinned source materialization, on-demand local URL and stopped-writer checkpoint",
+    "Executable format, manipulation, original-kernel and native process/restart/relocation controls",
+    "Primary-source mobile capability boundaries"
+  ],
+  "authority_readback": "NOT_ESTABLISHED_API_404",
+  "authority_repository": "Goldkelch/qik-vrt",
+  "created_at": "2026-10-06T06:49:50.327040+00:00",
+  "external_effects": {
+    "CI_trigger": "ONLY_EXISTING_BRANCH_EVENT_NO_MANUAL_DISPATCH",
+    "deployment": false,
+    "main_write": false,
+    "merge": false,
+    "publication": false
+  },
+  "first_local_execution_blocker": "AF_UNIX_CREATION_DENIED_BY_EXECUTION_ENVIRONMENT",
+  "git_history": {
+    "competing_writer_preserved": "S1 stable-idle work-cache successor f91071a1 and reserved-identifier repair/readback successor bb1be6de",
+    "history_rewritten": false,
+    "initial_patch_commit": "00cd3e4874f1d99769625212d45c4c55236654af",
+    "parent": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+    "prior_reconciled_candidate": "8533c8563d0b0a6b86a85086a9411b6cf2d2e4b4"
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Node and Client have the same deployment format and runtime-adapted start",
+    "One monolithic interactive store carries the passive React HTML Terminal",
+    "Terminal opening only on demand; minimize mobile deployment and avoid App Stores",
+    "Implementation authorized on 2026-10-06T08:31:00+02:00"
+  ],
+  "human_decision": {
+    "generated_candidate_acceptance": "PENDING_NATIVE_REVIEW",
+    "product_acceptance": "OPEN",
+    "task_implementation_authorized": true
+  },
+  "inputs": [
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "source_commit": "71990a322187072dc847fa03d0a7923efc047d58"
+    }
+  ],
+  "joint_components": [],
+  "next_execution": "Existing QIKVRT CI and EFFECT_ACK native terminal lane on successor candidate",
+  "open_product_requirements": [
+    "Executable mobile origin adapter for the same SQLite carrier",
+    "Actual Android/iOS offline, persistence, background-resume and reconnection witnesses",
+    "Complete authenticated owner REST input interface; current input remains original owner Unix ingress",
+    "Public self-host deployment and fresh public URL readback",
+    "Full Mesh conflict-free synchronization, quorum/fencing and recovery acceptance"
+  ],
+  "outputs": [
+    {
+      "bytes": 100142,
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "abf23e199a5b202a09327d77f0ab20a6acf8a0d89001b0b4b9968ddc612c197c"
+    },
+    {
+      "bytes": 10939,
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "41bbb98f1095cddefef0602212fc0e3701789e76a6e3c53ee2a9cbb3659a5ec4"
+    },
+    {
+      "bytes": 4628,
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "00c0462d9d4db72e29d90f586f6461e40ecd5a27ff6c0b3c64db0ffdc207a13c"
+    },
+    {
+      "bytes": 19742,
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "sha256": "2dca0b9297c244fd4074bfbda037006113e62409d946f13c093c5e4f16828aaf"
+    },
+    {
+      "bytes": 40999,
+      "path": "runtime/self-host/README.md",
+      "sha256": "7897e0fa29fe845e88bd5560903f98a6310930193d669cac000c1639d85d3212"
+    },
+    {
+      "bytes": 68948,
+      "path": "tests/test_self_host.py",
+      "sha256": "b84d021841f0281f305c6ddc7eafef119df65fa9bb46c361a1b643105096d2ec"
+    },
+    {
+      "bytes": 42601,
+      "path": "tests/test_self_host_temdd.py",
+      "sha256": "dbb41bf03b91840b98b069b84cb48a6e016f437c7829c6b93f6b266c55fb85ff"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "all_manufacturers_verified": false,
+    "cloud_sync_verified": false,
+    "mobile_runtime_verified": false,
+    "public_url_verified": false
+  },
+  "schema": "qikvrt_work_unit_provenance_v1",
+  "scope_boundary": "Native source candidate and bounded SQLite kernel evidence; no public or mobile deployment acceptance",
+  "source_commit": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+  "source_ref": "work/node-client-monolith-20261006",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "68bf501265ae7c79837e79c954d7d4f013642ea2",
+  "transfer_boundary": "Main file alone transferable only after stopped-writer monolith-checkpoint; live WAL/SHM companions must not be discarded",
+  "unresolved_origin": [],
+  "verification": {
+    "all_required_gates": "NOT_YET_PASS",
+    "environment": {
+      "AF_INET_BIND": "PASS",
+      "AF_UNIX_SOCKET": "EPERM",
+      "node": "v24.19.0",
+      "python": "Python 3.12.14",
+      "system": "Linux execution sandbox"
+    },
+    "historical_git_closure": "All 13 source-capsule objects fetched and byte-compared against the existing exact committed capsule; no threshold weakened",
+    "local_core_log_sha256": "cfb242cd1a42d0bc58ada6dc3b85270149c2b3d5f1b11fbaea1a4573fccecc34",
+    "local_core_make_test": "PASS_ON_EXACT_PREVIOUS_RECONCILED_CANDIDATE_8533c856; final bb1be6de-based candidate requires fresh checks",
+    "local_native_process": "BLOCKED_ENVIRONMENT_AF_UNIX_SOCKET_EPERM",
+    "local_pass": [
+      "26/26 locked tool cache coverage",
+      "Baseline S1 repository integrity before modification",
+      "21 bus-contract controls including Node/Client scope and passive deployment",
+      "Create-only object, carrier pin, source-byte and injected-trigger refusals",
+      "Actual unmodified native SQLite append/idempotent replay/close/reopen with embedded React bytes intact",
+      "Python and Node syntax and diff whitespace"
+    ],
+    "local_test_subject": "Exact selected-path Git fixture; not the current remote candidate HEAD",
+    "remote_candidate_CI": "REQUIRED_NOT_YET_OBSERVED",
+    "unchanged_baseline_reproduces_same_socket_block": true
+  },
+  "work_unit_id": "NODE_CLIENT_MONOLITHIC_DEPLOYMENT_20261006_V1"
+}
