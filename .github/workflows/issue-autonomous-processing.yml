@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
 name: Autonomous issue processing
 
 on:
@@ -41,9 +43,10 @@ jobs:
           set -euo pipefail
           number="$EVENT_ISSUE_NUMBER"
           if [ "$EVENT_NAME" = "workflow_dispatch" ]; then number="$INPUT_ISSUE_NUMBER"; fi
-          test -n "$number"
-          gh api "repos/$REPOSITORY/issues/$number" > issue.json
-          jq -e '.pull_request | not' issue.json >/dev/null
+          [[ "$number" =~ ^[1-9][0-9]*$ ]]
+          # Transport input is not a repository artifact or integrity input.
+          gh api "repos/$REPOSITORY/issues/$number" > "$RUNNER_TEMP/qikvrt-issue-input.json"
+          jq -e '.pull_request | not' "$RUNNER_TEMP/qikvrt-issue-input.json" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
       - name: Bind resumable issue work branch without history rewrite
@@ -54,6 +57,8 @@ jobs:
         run: |
           set -euo pipefail
           [[ "$ISSUE_NUMBER" =~ ^[1-9][0-9]*$ ]]
+          # Reuse the continuation's trusted-Main reporter across checkout.
+          cp tools/qikvrt_pipeline_contracts.py "$RUNNER_TEMP/qikvrt-issue-pipeline-contracts.py"
           export TARGET_REF="issue-agent/$ISSUE_NUMBER"
           remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
           if test -n "$remote"; then
@@ -63,7 +68,7 @@ jobs:
           else
             git switch -c "$TARGET_REF"
           fi
-          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+          python3 -B "$RUNNER_TEMP/qikvrt-issue-pipeline-contracts.py" observe-writer \
             --output "$RUNNER_TEMP/qikvrt-issue-writer-input.json"
       - name: Materialize request and repository context
         env:
@@ -72,7 +77,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/issue_agent/materialize.py \
-            --issue issue.json \
+            --issue "$RUNNER_TEMP/qikvrt-issue-input.json" \
             --repository "$REPOSITORY" \
             --output-dir "evidence/issues/$ISSUE_NUMBER"
 
@@ -85,7 +90,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/issue_agent/infer.py \
-            --issue issue.json \
+            --issue "$RUNNER_TEMP/qikvrt-issue-input.json" \
             --context "evidence/issues/$ISSUE_NUMBER/CONTEXT.md" \
             --output "evidence/issues/$ISSUE_NUMBER/ANSWER.md" \
             --model "openai/gpt-4.1"
@@ -119,13 +124,23 @@ jobs:
           branch="issue-agent/$ISSUE_NUMBER"
           git config user.name "qik-vrt-issue-agent[bot]"
           git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
-          git add "evidence/issues/$ISSUE_NUMBER"
+          # Bind the entire generated bundle to the canonical integrity trio.
+          # Both guards run before any commit or remote postcondition effect.
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- "evidence/issues/$ISSUE_NUMBER" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          # Verification of a worktree is insufficient if its bytes are omitted
+          # from the staged successor. Reject unstaged and untracked inputs.
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"
           if ! git diff --cached --quiet; then
             git commit -m "issue-agent: process issue #$ISSUE_NUMBER"
             # Non-force branch/PR/verifier handoff follows below.
           fi
 
-          python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+          python3 -B "$RUNNER_TEMP/qikvrt-issue-pipeline-contracts.py" publish-writer \
             --input "$RUNNER_TEMP/qikvrt-issue-writer-input.json" \
             --output "$RUNNER_TEMP/qikvrt-issue-writer-postcondition.json"
           pr_number="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["pr_number"])' "$RUNNER_TEMP/qikvrt-issue-writer-postcondition.json")"

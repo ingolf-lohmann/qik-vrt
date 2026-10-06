@@ -1559,6 +1559,36 @@
     "PREDECESSOR_EVIDENCE_TRANSFER": false,
     "current_authority_liveness_proof": false
   },
+  "issue_writer_integrity_successor": {
+    "state": "CANDIDATE_IMPLEMENTED_PENDING_FRESH_COMMITTED_TESTS_AND_NATIVE_ACTIVATION",
+    "human_actor": "Ingolf Lohmann",
+    "human_authorization": "Ja, dann wissen wir ja, wo unter anderem eine Differenz zu finden und zu schließen ist, Freigabe erteilt.",
+    "implementation_actor": "Codex / OpenAI artificial cognitive system",
+    "repair_pr": 455,
+    "candidate_predecessor_head": "9ecedf844db854fca23ecde3acdf797fab7e9e14",
+    "candidate_predecessor_tree": "7c128b4ce9b5291c3c87a097eca65642c1b91a34",
+    "observed_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "observed_main_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+    "affected_issue_pr": 467,
+    "affected_issue_head": "6619d3ae99c72a3118276520db95ec98a3249c6f",
+    "affected_issue_tree": "eb1ad5b8403e36658181a90f6d9da5c629edbce8",
+    "observed_failure": "Active Main stages only the issue evidence directory and force-replaces its branch. PR #455 already preserves branch history, but still omits the canonical integrity trio. A later writer therefore regenerates an integrity-invalid commit and can supersede a manually repaired tree.",
+    "reuse": "Extend the existing issue writer, canonical integrity generator/verifier, shared postcondition reporter, existing issue tests and required contract runner. No new scheduler, executor, repair PR or governance bypass.",
+    "change": [
+      "Resolve raw issue API input in RUNNER_TEMP, outside repository integrity inputs",
+      "Carry the existing trusted-Main shared reporter across checkout of an older issue branch",
+      "Generate and verify the canonical integrity trio before any commit or remote postcondition effect",
+      "Stage the issue bundle and all three integrity authorities together",
+      "Reject unstaged or untracked integrity inputs rather than committing a worktree-only verification result",
+      "Retain non-force history-preserving shared writer postconditions"
+    ],
+    "acceptance_requirement": "ISSUE_WRITER_COMMITTED_INTEGRITY in state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json",
+    "tests": "Production shell, canonical integrity tool, real temporary Git and bare remotes: legacy omission reproduction, exact committed readback, successive/manual history preservation, unsafe generation, post-generation corruption, omitted staged inputs, transport-input isolation and older-branch reporter binding.",
+    "activation_boundary": "Fresh exact-commit tests and native checks are required. This candidate is not active Main; governance, independent native review and actual issue executor effects remain distinct obligations.",
+    "request_execution_scope": "Review candidate update only; no inference-capability fix, Main promotion, forced branch reset, duplicate dispatch, rerun, deployment or publication.",
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false
+  },
   "trusted_main_verifier_protocol_gap": {
     "observed_main": "86d7062f25f174039da0a5df8a856127553036f1",
     "source_blob": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",

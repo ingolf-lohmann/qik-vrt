@@ -20,6 +20,8 @@
   "source_paths": [
     "Makefile",
     "tools/qikvrt_pipeline_contracts.py",
+    "tools/qikvrt_integrity.py",
+    "tools/qikvrt_subprocess.py",
     "tools/qikvrt_contract_test_runner.py",
     "tools/qikvrt_self_heal_pr_materializer.py",
     "tests/test_qikvrt_pipeline_contracts.py",
@@ -33,6 +35,7 @@
     ".github/workflows/qikvrt_ci.yml",
     ".github/workflows/qikvrt_autonomous_self_heal.yml",
     ".github/workflows/issue-agent-autofinish.yml",
+    ".github/workflows/issue-autonomous-processing.yml",
     "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
     "tests/test_qikvrt_ci_fixture_isolation.py",
     "tests/test_qikvrt_authority_cutover.py",
@@ -149,6 +152,15 @@
       "tests.test_qikvrt_self_heal_pr_materializer.MaterializationTests.test_late_branch_drift_cannot_leave_materialized_success_state",
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_legacy_trusted_main_protocol_blocks_dispatch_then_resumes_without_new_pr",
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_missing_denied_or_corrupt_verifier_protocol_never_dispatches"
+    ],
+    "ISSUE_WRITER_COMMITTED_INTEGRITY": [
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_legacy_omission_fails_exact_commit_then_repaired_writer_passes",
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_two_successors_preserve_manual_repair_history_and_canonical_trio",
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_generation_failure_never_commits_or_reaches_remote_effect",
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_corruption_between_generate_and_verify_never_commits",
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_unstaged_or_untracked_integrity_input_cannot_escape_commit",
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_transport_input_is_resolved_outside_tree_and_invalid_number_stops",
+      "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_existing_branch_binding_keeps_history_and_uses_trusted_reporter"
     ],
     "REAL_WRITER_TRANSACTION_RECOVERY": [
       "tests.test_qikvrt_pipeline_contracts.RealWriterTransactions.test_real_main_writer_isolates_repair_and_recovers_lost_push_reply",
