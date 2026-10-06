@@ -241,6 +241,31 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
         self.assertEqual(namespace["projection"]["first_blocker"], "CODE_OWNER_RULE_NOT_ENFORCED")
         self.assertEqual(namespace["projection"]["acceptance"], "BLOCKED")
 
+    def test_actual_live_projection_closes_transition_with_old_trusted_main_core(self):
+        from tools import qikvrt_required_review_gate as native_gate
+        source = self.embedded_python("qikvrt_live_status_watch.yml", "python3 -B - <<'PY'\n")
+        pr = self.pr(base={"sha": "a" * 40, "ref": "main"}, state="open")
+        def read(command, **kwargs):
+            path = command[-1]
+            if path.endswith("/pulls/641"): return json.dumps(pr)
+            if path.endswith("/rules/branches/main"): return json.dumps(self.enforced_rules())
+            if "/reviews?" in path: return json.dumps([[self.approval()]])
+            if "/statuses?" in path: return json.dumps([self.statuses()])
+            self.fail(f"unexpected API read: {command}")
+        env = {"REPOSITORY": "ingolf-lohmann/qik-vrt", "PR_NUMBER": "641", "EXPECTED_HEAD": self.head}
+        namespace = {}
+        with patch.dict(os.environ, env), patch("subprocess.check_output", side_effect=read), patch.object(native_gate, "resolve_required_code_owner", None):
+            exec(compile(source, "live-bootstrap-transition", "exec"), namespace)
+        self.assertEqual(namespace["projection"]["first_blocker"], "AUTHORITY_BINDING_NOT_PROMOTED")
+        self.assertEqual(namespace["projection"]["acceptance"], "BLOCKED")
+
+    def test_actual_executor_bootstraps_without_native_effect_before_role_adoption(self):
+        from tools import qikvrt_required_review_gate as native_gate
+        source = self.embedded_python("qikvrt_requested_review_executor.yml", "python3 -B - <<'PY'\n")
+        with patch.dict(os.environ, {"REPOSITORY": "ingolf-lohmann/qik-vrt"}), patch.object(native_gate, "resolve_required_code_owner", None), self.assertRaises(SystemExit) as result:
+            exec(compile(source, "executor-bootstrap-transition", "exec"), {})
+        self.assertEqual(result.exception.code, 2)
+
     def test_actual_writer_binds_current_authority_before_any_admin_effect(self):
         source = self.embedded_python("qikvrt_goldkelch_ruleset_authority_effect.yml", "python3 -B - <<'PY'\n")
         with patch.dict(os.environ, {"TARGET_REPOSITORY": "ingolf-lohmann/qik-vrt"}), patch("subprocess.check_call") as write:

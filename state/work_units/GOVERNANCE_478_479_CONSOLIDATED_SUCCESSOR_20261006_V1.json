@@ -26,6 +26,16 @@
   ],
   "authority_application_successor": {
     "application_authorized_at": "2026-10-06T21:58:40Z",
+    "bootstrap_transition_repair": {
+      "cause": "Candidate live workflow imports old trusted-Main gate without resolve_required_code_owner; unhandled AttributeError",
+      "native_failure_job": 112524773874,
+      "native_failure_run": 37538303325,
+      "old_results": "Historical only; fresh tests required on this successor",
+      "parent_head": "c2b5f3740159476e338ecd1c9948c912ca992b8e",
+      "parent_tree": "baeef6e48341abbf05d7bf5742aa5617d2159d6b",
+      "repair": "Explicit AUTHORITY_BINDING_NOT_PROMOTED blocked projection; technical executor activation remains bootstrap NOOP until trusted role binding exists",
+      "scope": "No fallback to former authority or relaxation of native approval"
+    },
     "candidate_head_tree_binding": "Native commit/PR and fresh exact-head verifier; no self-reference",
     "current_main": "71f8c15319bf79456ac177d80941b4f59d372996",
     "independent_native_review_and_all_ruleset_protections": "PRESERVED",
@@ -178,10 +188,10 @@
       "sha256": "bfe554a15c993d0b46d33100682a0c8dd38718988d54c495082256a9fe8c260d"
     },
     {
-      "bytes": 10964,
-      "git_blob_sha1": "5c4d254a1fc1ab05e674b17a389fa1e418d7d964",
+      "bytes": 10997,
+      "git_blob_sha1": "ca66f83148125ea7f5cacd8386f0df034cca5ded",
       "path": ".github/workflows/qikvrt_live_status_watch.yml",
-      "sha256": "b3b7fae99c4d93fbac4f957ab77bc0e76c9480c65d73a0694a17f471c79a705c"
+      "sha256": "bdd5e54a7ccc73384121f3d13c6abd5d8ff7a0ef6640493d41ba2590be5f3c22"
     },
     {
       "bytes": 11178,
@@ -196,10 +206,10 @@
       "sha256": "4f77cd53d4e55f3d73d0811dee5e2288ae796410d035d06fd7c13f9c62773e87"
     },
     {
-      "bytes": 13019,
-      "git_blob_sha1": "07c06b673cf24f460777d2f0e9fcf0b71ef0a90f",
+      "bytes": 13609,
+      "git_blob_sha1": "e32a2947c2d266de3763c0efb410d9b78e75fe5a",
       "path": ".github/workflows/qikvrt_requested_review_executor.yml",
-      "sha256": "0f84a50924578c13e895b2fd4b7a608138abfb377b6a5b5de2368358f9b7ce31"
+      "sha256": "91ae244aa9d82731a406a9cc15ab51e12eca5b034a748927fe65157de6fd2934"
     },
     {
       "bytes": 4882,
@@ -244,10 +254,10 @@
       "sha256": "14661083ff0617ecc8c7c263c4448d6aec72e5a3aae6f4f1ab7043d1c7c79845"
     },
     {
-      "bytes": 16851,
-      "git_blob_sha1": "1989885ce296fdf55b4a27c63133df38075a6214",
+      "bytes": 18732,
+      "git_blob_sha1": "e88693e9e0a9e4d10a8ba43c52bf3cb80b807783",
       "path": "tests/test_qikvrt_required_review_gate.py",
-      "sha256": "cf11667d597cf9b1f3b8c504271e7e414847a7a9d058aca5d6ce8c9fc08c63da"
+      "sha256": "dbca4480c3805d3251a43c82ffa0037b9c115d3fe2c9fd379f60266709f847ae"
     },
     {
       "bytes": 26067,

@@ -56,7 +56,20 @@ jobs:
         id: active
         shell: bash
         run: |
-          if test -f tools/qikvrt_requested_review_executor.py; then
+          if test -f tools/qikvrt_requested_review_executor.py && python3 -B - <<'PY'
+          import os, sys
+          from tools import qikvrt_required_review_gate as gate
+          resolver = getattr(gate, 'resolve_required_code_owner', None)
+          if not callable(resolver):
+              print('BOOTSTRAP_NOOP: current Mesh Authority binding is not yet promoted.')
+              sys.exit(2)
+          try:
+              resolver(os.environ['REPOSITORY'])
+          except (OSError, ValueError) as exc:
+              print(f'BOOTSTRAP_NOOP: Mesh Authority binding invalid: {type(exc).__name__}')
+              sys.exit(2)
+          PY
+          then
             echo 'active=true' >> "$GITHUB_OUTPUT"
           else
             echo 'active=false' >> "$GITHUB_OUTPUT"

@@ -120,11 +120,12 @@ jobs:
               rules=one(f'repos/{repo}/rules/branches/main')
               reviews=pages(f'repos/{repo}/pulls/{number}/reviews?per_page=100')
               statuses=pages(f'repos/{repo}/commits/{head}/statuses?per_page=100')
-              if hasattr(gate, 'project_governance'):
+              if not callable(getattr(gate, 'resolve_required_code_owner', None)):
+                  projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':'AUTHORITY_BINDING_NOT_PROMOTED','head_sha':head}
+              elif hasattr(gate, 'project_governance'):
                   projection=gate.project_governance(pr, rules, reviews, statuses, required_code_owner=gate.resolve_required_code_owner(repo))
               else:
-                  native=gate.evaluate_required_review(pr, rules, reviews, required_code_owner=gate.resolve_required_code_owner(repo))
-                  projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':native.get('first_blocker') or 'GOVERNANCE_PROJECTOR_NOT_PROMOTED','head_sha':head,'native_review_gate':native}
+                  projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':'GOVERNANCE_PROJECTOR_NOT_PROMOTED','head_sha':head}
               current=one(f'repos/{repo}/pulls/{number}')
               if pr['head']['sha'] != head or current['head']['sha'] != head or current['base']['sha'] != pr['base']['sha']:
                   projection.update(gate_state='failure', acceptance='BLOCKED', first_blocker='GOVERNANCE_SUBJECT_DRIFT')
