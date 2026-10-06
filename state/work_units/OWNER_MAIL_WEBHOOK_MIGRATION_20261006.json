@@ -6,16 +6,98 @@
   "source_base_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
   "requested_execution": "REPOSITORY_NATIVE_WEBHOOKS_NO_CLIENT_SCHEDULER",
   "client_mail_watch": "DISABLED_NATIVE_CONTROL_PLANE_READBACK",
-  "implementation": "EXISTING_REST_SHIM_AND_PRIVATE_INGEST_REPLAY_ADAPTER",
+  "implementation": "EXISTING_REST_SERVICE_LOOP_NATIVE_VERIFY_AND_PRIVATE_INGEST_REPLAY_ADAPTER",
   "ingress_contract": "docs/GRAPH_MAIL_WEBHOOK.md",
   "private_data_in_public_repository": false,
-  "activation": "BLOCKED_OWN_HTTPS_HOST_GRAPH_OAUTH_SUBSCRIPTION_AND_WORKER_BINDING",
+  "activation": "BLOCKED_OWN_HTTPS_HOST_GRAPH_OAUTH_SUBSCRIPTION_AND_REAL_MAIL_CONSUMER_BINDING",
   "public_callback_observed": false,
   "native_subscription_registered": false,
   "native_worker_bound": false,
   "live_mail_event_read_back": false,
   "document_delivery_verified": false,
   "monitoring_gap": "CLIENT_WATCH_DISABLED_REPOSITORY_WEBHOOK_NOT_YET_ACTIVE",
-  "next_action": "Bind the reviewed exact source to the existing admitted own-host runtime, a private delegated Graph credential and the existing native worker; register through the repository subscription tool and observe a real event independently.",
-  "effect_ack_done": false
+  "next_action": "Run fresh exact-head gates for the repository event adapter. Separately bind the actual existing mail/lifecycle consumer on an admitted persistent HTTPS host; obtain private Graph OAuth, register the subscription and independently read a real mail event. Private byte reconciliation is not a mailbox observation.",
+  "effect_ack_done": false,
+  "source_predecessor_head": "43cf26294c95c710ece3aaa806848744a2de0c7e",
+  "source_predecessor_tree": "cdd9e7e0c44d03d21797c62e679d454047625cef",
+  "repository_event_worker_binding_implemented": true,
+  "repository_worker_scope": "PRIVATE_GRAPH_EVENT_RECONCILIATION_ONLY",
+  "existing_runtime_reused": [
+    "src/qikvrt_github_api_shim.py:ThreadingHTTPServer.service_actions",
+    "src/qikvrt_api_handler.py:run_handler, _verify_ingest_provenance, process_lock, atomic_write_bytes"
+  ],
+  "second_scheduler_created": false,
+  "second_worker_created": false,
+  "native_mail_consumer_source_found": false,
+  "repository_worker_validation": "CANDIDATE_TREE_32_GRAPH_TESTS_PASS_NEW_EXACT_HEAD_GATES_PENDING",
+  "contribution_provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Requested repository-internal durable wakeup, startup/replay/restart handling, reuse and strict separation of activation gates.",
+    "artificial_cognitive_actor": "OpenAI Codex (GPT-6)",
+    "model_build": "UNAVAILABLE",
+    "artificial_cognitive_contribution": "Inspected exact sources, extended the existing REST loop and handler adapter, implemented tests and bounded evidence.",
+    "evidence_retention": "METADATA_ONLY",
+    "human_acceptance_of_successor": "PENDING",
+    "source_paths_searched": [
+      "src/",
+      "tools/",
+      "runtime/",
+      "personal/",
+      ".github/workflows/"
+    ],
+    "additional_reuse_candidate": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "branch": "work/provider-admission-main-successor-20261006",
+      "head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
+      "source_imported": false,
+      "finding": "Native terminal/ledger path present; no executable Graph mail/lifecycle consumer found."
+    }
+  },
+  "outputs": [
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 20316,
+      "sha256": "3c04a98544ea9a77d7a718cfc153acf991380d6383c4c62156fbc98be8d7d050"
+    },
+    {
+      "path": "src/qikvrt_graph_webhook.py",
+      "bytes": 18836,
+      "sha256": "6b8775f2f0f49e18003d57465d89a47494308f7a8e4f4d8e35099dfa722b4a8d"
+    },
+    {
+      "path": "tests/test_graph_mail_webhook.py",
+      "bytes": 26804,
+      "sha256": "a60253cbd04cae6fd5e4c8f43b00a41b626a9d801abb08477066b02495675018"
+    },
+    {
+      "path": "docs/GRAPH_MAIL_WEBHOOK.md",
+      "bytes": 10437,
+      "sha256": "1277c4ca0ddda6ac6e075fbe6158396d124ad31ddf7ffb462e72ab02582fe5d5"
+    }
+  ],
+  "verification": {
+    "candidate_command": "make graph-mail-webhook-test",
+    "candidate_test_count": 32,
+    "candidate_result": "PASS",
+    "full_suite_initial_result": "BLOCK_MISSING_HISTORICAL_GIT_OBJECT",
+    "historical_object_restored": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+    "original_historical_test_recheck": "PASS_WITHOUT_SOURCE_OR_GATE_CHANGE",
+    "new_exact_head_results": "PENDING; must be observed after successor commit creation",
+    "predecessor_evidence_transfer": false,
+    "negative_controls": [
+      "failed durable ingest: no wake",
+      "partial durable batch: wake retained",
+      "invalid auth, tenant, subscription, resource, batch: no ingress",
+      "validation challenge: no ingest/no wake",
+      "concurrent wake during scan retained",
+      "idle loop: no store scan/no timed retry",
+      "missing/forged/corrupt ingest provenance: blocked",
+      "symlink pending: blocked",
+      "conflicting reconciliation receipt: preserved and blocked",
+      "worker storage failure: pending retained",
+      "abrupt process exit: startup recovery",
+      "replay/restart: identical receipt without overwrite",
+      "lifecycle bytes: no Graph effect"
+    ]
+  }
 }

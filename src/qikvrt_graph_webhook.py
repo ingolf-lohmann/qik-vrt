@@ -20,6 +20,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from qikvrt_api_handler import (
     HandlerConfig, run_handler, secure_read_bytes, _strict_json_loads, _assert_safe_target,
+    atomic_write_bytes, dirs, process_lock, _verify_ingest_provenance,
 )
 
 MAIL_PATH = "/webhooks/microsoft-graph/mail"
@@ -27,6 +28,8 @@ LIFECYCLE_PATH = "/webhooks/microsoft-graph/lifecycle"
 PATHS = {MAIL_PATH, LIFECYCLE_PATH}
 SCOPE = "OPAQUE_GRAPH_MAIL_EVENT_STORAGE_ONLY"
 GUID = re.compile(r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\Z")
+EVENT_KEY = re.compile(r"graph-[0-9a-f]{64}\Z")
+WORKER_SCOPE = "PRIVATE_GRAPH_EVENT_RECONCILIATION_ONLY"
 
 
 class BindingError(ValueError):
@@ -160,7 +163,7 @@ def normalize(body, binding, *, lifecycle=False):
     return result
 
 
-def receive(body, binding, *, lifecycle=False):
+def receive(body, binding, *, lifecycle=False, wakeup=None):
     # Validate the entire batch before writing any record. Never persist clientState.
     records = normalize(body, binding, lifecycle=lifecycle)
     accepted = []
@@ -182,8 +185,132 @@ def receive(body, binding, *, lifecycle=False):
         if secure_read_bytes(target, max_bytes=262144) != payload:
             raise OSError("independent notification byte readback mismatch")
         accepted.append(cfg.artifact_id)
+        # Signal each independently durable record. A later storage failure in
+        # this batch must not strand the earlier committed records until restart.
+        # Clear-before-scan in the existing server loop preserves concurrent wakes.
+        if wakeup is not None:
+            wakeup.set()
     return {"status": "TRANSPORT_ACK", "queued": len(accepted), "event_keys": accepted,
             "effect_scope": SCOPE, "document_received": False, "effect_ack_done": False}
+
+
+class GraphMailReconciler:
+    """Adapter executed by the existing REST server loop, never a new worker.
+
+    Reuse the native serialized handler and its provenance, recovery and fsync
+    primitives. Receipts mean private event bytes were reconciled, not that a
+    mailbox was read or that a live mail/lifecycle consumer has been admitted.
+    The inbox remains intact for that separately bound consumer.
+    """
+
+    def __init__(self, binding_path, *, repository, principal):
+        self.binding_path = binding_path
+        self.repository = repository
+        self.principal = principal
+
+    def _binding(self):
+        return load_binding(self.binding_path, repository=self.repository,
+                            principal=self.principal)
+
+    @staticmethod
+    def _record(payload, binding):
+        record = _strict_json_loads(payload)
+        if not isinstance(record, dict):
+            raise NotificationError("stored notification object required")
+        known = next((row for row in binding["subscriptions"]
+                      if row["id"] == record.get("subscription_id")), None)
+        if known is None:
+            raise NotificationError("stored notification subscription unbound")
+        row = {"subscriptionId": record.get("subscription_id"),
+               "tenantId": record.get("tenant_id"), "clientState": known["client_state"],
+               "id": record.get("notification_id")}
+        kind = record.get("kind", "")
+        if not isinstance(kind, str):
+            raise NotificationError("stored notification kind required")
+        lifecycle = kind.startswith("lifecycle.")
+        if lifecycle:
+            row["lifecycleEvent"] = kind.removeprefix("lifecycle.")
+        else:
+            row.update(changeType=kind.removeprefix("message."),
+                       resource=record.get("resource"),
+                       resourceData={"@odata.type": "#Microsoft.Graph.Message",
+                                     "id": record.get("message_id"),
+                                     "@odata.etag": record.get("etag")})
+        expected = normalize({"value": [row]}, binding, lifecycle=lifecycle)[0]
+        if wire(expected) != payload:
+            raise NotificationError("stored notification is not exact normalized metadata")
+        return record
+
+    def _verified(self, key, binding):
+        if not EVENT_KEY.fullmatch(key):
+            raise NotificationError("stored notification key malformed")
+        root = Path(binding["state_root"])
+        locations = dirs(root)
+        target = locations["inbox"] / (key + ".bin")
+        payload = read_private(target)
+        digest = hashlib.sha256(payload).hexdigest()
+        if key != "graph-" + digest:
+            raise NotificationError("stored notification key/hash mismatch")
+        self._record(payload, binding)
+        sidecar = locations["inbox"] / (key + ".bin.sha256")
+        cfg = HandlerConfig(root=root, operation="verify", artifact_id=key,
+                            request_id="verify-" + key, payload_b64="", expected_sha256=digest,
+                            dry_run=True, repository=self.repository, run_id="graph-worker",
+                            responsibility_owner=self.principal, origin_authenticated=True)
+        provenance = _verify_ingest_provenance(
+            cfg, artifact_id=key, payload_path=target, sidecar_path=sidecar,
+            metadata_path=locations["provenance"] / (key + "." + key + ".json"),
+            payload=payload, sidecar_bytes=read_private(sidecar))
+        if provenance["responsibility_owner"] != self.principal:
+            raise NotificationError("stored notification responsibility mismatch")
+        return cfg, {
+            "schema": "qikvrt_graph_mail_worker_receipt_v1", "event_key": key,
+            "sha256": digest, "repository": self.repository,
+            "responsibility_owner": self.principal, "effect_scope": WORKER_SCOPE,
+            "ingest_receipt_sha256": provenance["receipt_sha256"],
+            "document_received": False, "provider_readback_performed": False,
+            "native_mail_consumer_bound": False, "effect_ack_done": False,
+        }
+
+    def reconcile(self):
+        binding = self._binding()
+        root = Path(binding["state_root"])
+        with process_lock(root):
+            keys = sorted(p.stem for p in dirs(root)["inbox"].glob("graph-*.bin"))
+            if len(keys) > 10000:
+                raise NotificationError("private notification backlog exceeds bound")
+        reconciled = 0
+        for key in keys:
+            # Require committed ingress provenance, not just a correctly named
+            # JSON file. Short native locks serialize against concurrent ingress.
+            with process_lock(root):
+                cfg, receipt = self._verified(key, binding)
+            result = run_handler(cfg)
+            if (result.get("effect_state") != "EFFECT_ACK_DONE"
+                    or result.get("effect_scope") != "byte-hash-comparison-only"
+                    or result.get("sha256_match") is not True):
+                raise OSError("native notification verification failed")
+            with process_lock(root):
+                current = self._binding()
+                if current != binding:
+                    raise BindingError("private binding changed during reconciliation")
+                _, checked = self._verified(key, current)
+                if checked != receipt:
+                    raise NotificationError("notification provenance changed during reconciliation")
+                target = dirs(root)["out"] / (key + ".reconciled.json")
+                _assert_safe_target(target)
+                encoded = wire(receipt)
+                if target.exists():
+                    if read_private(target) != encoded:
+                        raise NotificationError("private reconciliation receipt conflict")
+                else:
+                    atomic_write_bytes(target, encoded)
+                    if read_private(target) != encoded:
+                        raise OSError("independent worker receipt readback mismatch")
+                reconciled += 1
+        return {"status": "RECONCILED", "records": reconciled, "effect_scope": WORKER_SCOPE,
+                "native_mail_consumer_bound": False, "provider_readback_performed": False,
+                "document_received": False, "effect_ack_done": False}
 
 
 def handle(handler):
@@ -215,14 +342,9 @@ def handle(handler):
             handler.end_headers()
             handler.wfile.write(data)
             return True
-        receipt = receive(handler._read_json(), binding,
-                          lifecycle=parsed.path == LIFECYCLE_PATH)
-        # The existing host may bind its native worker's Event here. Replays also
-        # wake it: basic notifications can lack an event ID/etag, so workers must
-        # independently fetch the current message and deduplicate document hashes.
         wake = getattr(handler.server, "graph_mail_wakeup", None)
-        if wake is not None:
-            wake.set()
+        receipt = receive(handler._read_json(), binding,
+                          lifecycle=parsed.path == LIFECYCLE_PATH, wakeup=wake)
         handler._send_json(202, receipt)
     except BindingError:
         handler._send_json(503, {"status": "BLOCK", "reason": "Graph webhook binding unavailable"})

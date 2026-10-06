@@ -19,7 +19,7 @@ from urllib.parse import urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
-from qikvrt_graph_webhook import handle as handle_graph_webhook
+from qikvrt_graph_webhook import GraphMailReconciler, handle as handle_graph_webhook
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
@@ -27,6 +27,47 @@ REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMP
 MAX_REQUEST_BYTES = 1024 * 1024
 _RATE_LOCK = threading.Lock()
 _RATE_WINDOWS: dict[str, tuple[int, int]] = {}
+
+
+class QikvrtGitHubApiServer(ThreadingHTTPServer):
+    """Bind Graph reconciliation to the existing native server service loop.
+
+    No additional thread, scheduler, timer or mailbox poll is created. The loop
+    only scans the private ingest store at startup and on a durable-event wake.
+    """
+
+    def __init__(self, address, handler):
+        super().__init__(address, handler)
+        self.graph_mail_wakeup = threading.Event()
+        self.graph_mail_reconciler = None
+        self.graph_mail_status = {"status": "UNBOUND", "native_mail_consumer_bound": False,
+                                  "effect_ack_done": False}
+        try:
+            path = os.environ.get("QIKVRT_GRAPH_WEBHOOK_BINDING", "")
+            if path:
+                self.graph_mail_reconciler = GraphMailReconciler(
+                    path, repository=os.environ.get("QIKVRT_ALLOWED_REPOSITORY", ""),
+                    principal=os.environ.get("QIKVRT_API_PRINCIPAL", ""))
+                # Complete startup reconciliation before accepting HTTP requests.
+                self.graph_mail_status = self.graph_mail_reconciler.reconcile()
+        except Exception:
+            self.server_close()
+            raise
+
+    def service_actions(self):
+        super().service_actions()
+        if self.graph_mail_reconciler is None or not self.graph_mail_wakeup.is_set():
+            return
+        # Clear before scanning. A concurrent durable delivery sets the Event
+        # again and receives another pass, including a replay of the same key.
+        self.graph_mail_wakeup.clear()
+        try:
+            self.graph_mail_status = self.graph_mail_reconciler.reconcile()
+        except (OSError, RuntimeError, ValueError, TypeError, KeyError):
+            # No timed retry. Durable records are retained; another delivery or
+            # a restart provides the next reconciliation opportunity.
+            self.graph_mail_status = {"status": "BLOCK", "reason": "private Graph reconciliation failed",
+                                      "native_mail_consumer_bound": False, "effect_ack_done": False}
 
 
 def _unique_json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -206,6 +247,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                     "configuration_valid": valid,
                     "authentication_configured": _api_credential_valid(),
                     "remote_attestation_configured": attestation_configured,
+                    "graph_mail_reconciliation": getattr(self.server, "graph_mail_status", {
+                        "status": "UNBOUND", "native_mail_consumer_bound": False,
+                        "effect_ack_done": False}),
                 },
             )
             return
@@ -371,7 +415,11 @@ def main() -> int:
     if host != "127.0.0.1" and os.environ.get("QIKVRT_ALLOW_NON_LOOPBACK") != "1":
         print("BLOCK non-loopback requires QIKVRT_ALLOW_NON_LOOPBACK=1", file=sys.stderr)
         return 2
-    server = ThreadingHTTPServer((host, port), QikvrtGitHubApiShim)
+    try:
+        server = QikvrtGitHubApiServer((host, port), QikvrtGitHubApiShim)
+    except (OSError, RuntimeError, ValueError, TypeError, KeyError):
+        print("BLOCK private Graph startup reconciliation failed", file=sys.stderr)
+        return 2
     if host != "127.0.0.1":
         cert_file = os.environ.get("QIKVRT_TLS_CERT_FILE", "")
         key_file = os.environ.get("QIKVRT_TLS_KEY_FILE", "")

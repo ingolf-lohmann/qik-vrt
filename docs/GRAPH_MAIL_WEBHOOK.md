@@ -38,18 +38,51 @@ host's private binding. Public source and tests contain only synthetic data.
   produce different keys. Mail text, diagnoses and attachments never enter
   Git, public Actions artifacts or logs.
 
-If the admitted host binds its existing worker's `threading.Event` as
-`server.graph_mail_wakeup`, every durably accepted delivery, including replays,
-wakes that worker. This signal is not task completion. Basic notifications
+The existing REST entrypoint now constructs `QikvrtGitHubApiServer` and binds
+its `threading.Event` as `server.graph_mail_wakeup` when the private Graph
+binding is configured. Every independently durable record, including replays,
+sets that event. If a later storage operation in a validated batch fails, the
+earlier durable records still wake the loop; the HTTP response remains `503`.
+Rejected notifications and validation challenges never wake it.
+
+`GraphMailReconciler` is an adapter of the existing native REST service loop
+and serialized API handler. It creates no additional thread, worker process or
+scheduler. Before serving HTTP, it reconciles existing `graph-<hash>.bin`
+records in the same private ingest store. On a wake, the existing
+`service_actions` hook clears the event **before** scanning; a concurrent wake
+therefore survives for another pass. Idle service-loop iterations do not scan
+the store or query the mailbox. There is no timed mailbox poll or timed retry.
+
+Each pass verifies exact normalized metadata and the current subscription,
+tenant and mailbox binding, then reuses the native ingest-provenance verifier
+and `run_handler` byte verification. A correctly named/hash-matched file alone
+is insufficient: the original committed transaction, replay receipt, sidecar,
+responsibility and protocol must match. The existing private `api/out` stores
+fsynced `graph-<hash>.reconciled.json` receipts with independent byte readback.
+Replay and restart revalidate the original evidence and reuse identical
+receipts without overwriting them. Corrupt records, symlinks, missing provenance
+and conflicting receipts fail closed. A runtime reconciliation failure is
+visible as `BLOCK` in `/health`; pending bytes remain for another real delivery
+or restart, rather than an automatic timed retry.
+
+These receipts attest only `PRIVATE_GRAPH_EVENT_RECONCILIATION_ONLY`. They
+retain `native_mail_consumer_bound=false`, `provider_readback_performed=false`,
+`document_received=false` and `effect_ack_done=false`. The inbox records remain
+intact for the separately admitted mail/lifecycle consumer. No executable Graph
+mail consumer was found in the bound #477 source tree. The existing server loop
+and handler are reused here; no external consumer is invented or imported from
+an unmerged Self-Host lane.
+
+The signal and local reconciliation are not task completion. Basic notifications
 may omit an event ID or etag: the worker must independently fetch the current
 message, reconcile its version, and deduplicate actual document/notification
 effects by exact hashes. Ingress deduplication alone cannot prove that every
 distinct mailbox mutation was observed.
 
-On startup or recovery, the existing worker must reconcile pending
-`graph-<hash>.bin` records in the same private ingest store before waiting for
-the next event. This adapter does not claim that such a worker has been bound
-or that any document has arrived. There is no timed mailbox poll.
+The admitted mail consumer must still independently reconcile provider state
+on startup/recovery and on replay. A local event-byte receipt is not a provider
+cursor or a completed mail observation, especially when a basic notification
+omits its event ID or etag.
 
 ## Private deployment binding
 
@@ -122,17 +155,22 @@ close a document task. There is no automatic reply, complaint or medical/legal
 decision.
 
 The currently exposed Outlook connector can search/read mail but exposes no
-Graph subscription registration action or transferable OAuth binding. A
-matching own-host/worker HTTPS endpoint is not currently admitted. The
-candidate therefore remains activation-blocked. Disabling the client watch is
-verified; repository reception of live mailbox events is not yet established.
+Graph subscription registration action or transferable OAuth binding. No
+matching own-host/worker HTTPS endpoint is established by this candidate's
+local tests. The candidate therefore remains activation-blocked. The local
+native REST binding does not establish a persistent production worker, public
+callback, Graph OAuth, registered subscription or real mail readback. Disabling
+the client watch is verified; repository reception of live mailbox events is
+not yet established.
 The resulting monitoring gap must remain visible, rather than restarting the
 client watch as a fallback.
 
 ## Verification and primary contracts
 
-`make graph-mail-webhook-test` runs real loopback HTTP calls, replay across
-fresh server processes and synthetic control-plane tests. `make test` includes
+`make graph-mail-webhook-test` runs real native-loop HTTP calls, wake ordering,
+startup reconciliation, concurrent wake preservation, replay without receipt
+overwrite, abrupt process exit/restart, provenance/tamper/symlink/storage
+negative controls and synthetic control-plane tests. `make test` includes
 this target and all existing gates.
 No new dependency or undeclared runtime is required.
 
