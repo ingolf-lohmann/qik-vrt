@@ -8,6 +8,8 @@ import argparse
 import contextlib
 import fcntl
 import hashlib
+import hmac
+import base64
 import importlib.util
 import ipaddress
 import json
@@ -23,10 +25,12 @@ import sqlite3
 import time
 import urllib.request
 import urllib.parse
+import urllib.error
 import subprocess
 import sys
 import tarfile
 import threading
+import uuid
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 
@@ -49,6 +53,305 @@ MESH_INVARIANTS = ("same_work_unit_after_failover", "preserve_confirmed_effects"
                    "replicate_before_positive_effect_ack", "fresh_authenticated_readback",
                    "retain_unavailable_inventory_members", "preserve_original_event_bytes",
                    "measure_user_visible_interruption", "hold_writes_without_safe_quorum")
+MESH_WORK_MAX = 16 * 1024 * 1024
+MESH_WORK_SCOPE = "OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES"
+MESH_CACHE_SOURCE_FILES = ["tools/qikvrt_self_host.py", "docs/monitor/server.mjs", "docs/monitor/self-host.mjs"]
+MESH_CACHE_INVARIANTS = ("all_nodes", "content_addressed_original_bytes", "fresh_checks_on_warm_path",
+    "source_bound_validation", "stable_idle_before_transfer", "single_frozen_batch", "atomic_receiver_install",
+    "conditional_base_match", "persist_ambiguous_transfer", "readback_before_retry", "authenticated_independent_readback",
+    "preserve_work_units_and_instruction_bytes", "hold_on_capacity_or_unknown_state")
+
+
+def mesh_wire(value):
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+                      allow_nan=False).encode("utf-8")
+
+
+class MeshWorkCache:
+    """Finite proposal cache/outbox using the existing private snapshot primitives.
+
+    This never delays native-effect replication, executes a received proposal,
+    mutates Git, or infers whole-node idle. Only cooperating cache writers and
+    selected exact Git bytes belong to this measured idle scope.
+    """
+    def __init__(self, directory, repository, node_id):
+        self.directory = Path(directory)
+        if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository or "")
+                or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", node_id or "")
+                or node_id in ("__proto__", "constructor", "prototype")):
+            raise ValueError("MESH_WORK_IDENTITY_REQUIRED")
+        self.binding = {"repository": repository, "node_id": node_id}
+        private_path(self.directory.parent, directory=True)
+        if not self.directory.exists():
+            self.directory.mkdir(mode=0o700)
+            sync_directory(self.directory.parent)
+        private_path(self.directory, directory=True)
+        for name in ("objects", "outbox"):
+            path = self.directory / name
+            if not path.exists(): path.mkdir(mode=0o700)
+            private_path(path, directory=True)
+        self.path = self.directory / "CACHE_STATE.json"
+
+    @contextlib.contextmanager
+    def locked(self):
+        fd = os.open(self.directory / "cache.lock", os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+        try:
+            private_path(self.directory / "cache.lock")
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            if self.path.exists():
+                private_path(self.path)
+                envelope = json.loads(self.path.read_bytes())
+                self.state = envelope["state"]
+                if (envelope["sha256"] != digest(mesh_wire(self.state))
+                        or self.state.get("schema") != "qikvrt-repository-work-cache/v1"
+                        or self.state.get("binding") != self.binding):
+                    raise ValueError("MESH_WORK_CACHE_READBACK_MISMATCH")
+            else:
+                self.state = {"schema": "qikvrt-repository-work-cache/v1", "binding": self.binding,
+                    "epoch": uuid.uuid4().hex, "revision": 0, "entries": {}, "work_units": [],
+                    "seen_units": {}, "acknowledged_objects": [], "last_ack": "0" * 64,
+                    "source": None, "root": None, "mode": "DIRTY", "pending": None}
+            yield
+        finally:
+            os.close(fd)
+
+    def save(self):
+        raw = raw_json({"state": self.state, "sha256": digest(mesh_wire(self.state))})
+        temp = self.directory / (".state-" + uuid.uuid4().hex)
+        try:
+            synced_private_file(temp, raw)
+            os.replace(temp, self.path)
+            sync_directory(self.directory)
+            private_path(self.path)
+            if self.path.read_bytes() != raw: raise ValueError("MESH_WORK_CACHE_READBACK_MISMATCH")
+        finally:
+            if temp.exists(): temp.unlink()
+
+    def object(self, key):
+        if not re.fullmatch(r"[a-f0-9]{64}", key or ""):
+            raise ValueError("MESH_WORK_OBJECT_DIGEST_REQUIRED")
+        path = self.directory / "objects" / key
+        private_path(path)
+        raw = path.read_bytes()
+        if len(raw) > MESH_WORK_MAX or digest(raw) != key:
+            raise ValueError("MESH_WORK_OBJECT_READBACK_MISMATCH")
+        return raw
+
+    def cache(self, raw):
+        key = digest(raw)
+        path = self.directory / "objects" / key
+        hit = path.exists()
+        if hit:
+            if self.object(key) != raw: raise ValueError("MESH_WORK_OBJECT_READBACK_MISMATCH")
+        else:
+            synced_private_file(path, raw)
+            sync_directory(path.parent)
+        return key, hit
+
+    def snapshot(self, root, paths):
+        root = Path(root).resolve(strict=True)
+        if (root == self.directory or root in self.directory.parents or self.directory in root.parents
+                or not isinstance(paths, list) or not paths or len(paths) > 8192
+                or len(paths) != len(set(paths)) or any(not isinstance(p, str) or
+                    not re.fullmatch(r"[A-Za-z0-9_.+/-]{1,256}", p) or p.startswith("/") or
+                    any(part in ("", ".", "..", ".git", "__proto__", "constructor", "prototype")
+                        for part in p.split("/")) for p in paths)):
+            raise ValueError("MESH_WORK_EXPLICIT_TRACKED_FILE_SCOPE_REQUIRED")
+        head = git(root, "rev-parse", "--verify", "HEAD^{commit}").decode()
+        tree = git(root, "rev-parse", "--verify", head + "^{tree}").decode()
+        if git(root, "status", "--porcelain", "--untracked-files=all"):
+            raise ValueError("MESH_WORK_CLEAN_LOCAL_COMMIT_REQUIRED")
+        tracked = {}
+        for row in git(root, "ls-tree", "-r", "-z", head, "--", *paths).split(b"\0"):
+            if not row: continue
+            metadata, name = row.split(b"\t", 1)
+            mode, kind, blob = metadata.split()
+            if kind != b"blob" or mode not in (b"100644", b"100755"):
+                raise ValueError("MESH_WORK_REGULAR_TRACKED_FILES_REQUIRED")
+            tracked[name.decode()] = blob.decode()
+        if set(tracked) != set(paths): raise ValueError("MESH_WORK_REGULAR_TRACKED_FILES_REQUIRED")
+        entries, objects = {}, {}
+        total = 0
+        for name in sorted(paths):
+            path = root / name
+            if any(p.is_symlink() for p in (path, *path.parents)):
+                raise ValueError("MESH_WORK_SOURCE_SYMLINK_FORBIDDEN")
+            entry = state_file_digest(path)
+            total += entry["bytes"]
+            if total > MESH_WORK_MAX: raise ValueError("MESH_WORK_SNAPSHOT_TOO_LARGE")
+            raw = path.read_bytes()
+            blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+            if digest(raw) != entry["sha256"] or blob != tracked[name]:
+                raise ValueError("MESH_WORK_EXACT_GIT_BYTES_REQUIRED")
+            entries[name] = entry
+            objects[entry["sha256"]] = raw
+        if git(root, "rev-parse", "--verify", "HEAD^{commit}").decode() != head or git(root, "status", "--porcelain", "--untracked-files=all"):
+            raise ValueError("MESH_WORK_SOURCE_CHANGED")
+        return {"head": head, "tree": tree}, entries, objects
+
+    def stage(self, root, paths, unit_id, instructions):
+        if (not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", unit_id or "")
+                or not isinstance(instructions, bytes) or len(instructions) > MESH_WORK_MAX):
+            raise ValueError("MESH_WORK_UNIT_REQUIRED")
+        with self.locked():
+            if self.state["pending"]: raise ValueError("MESH_WORK_PENDING_BATCH_BACKPRESSURE")
+            if len(self.state["work_units"]) >= 1024: raise ValueError("MESH_WORK_BATCH_CAPACITY_HOLD")
+            source, entries, objects = self.snapshot(root, paths)
+            unit = {"id": unit_id, "source": source, "entries_sha256": digest(mesh_wire(entries)),
+                    "instructions_sha256": digest(instructions)}
+            unit_key = digest(mesh_wire(unit))
+            if unit_id in self.state["seen_units"]:
+                if self.state["seen_units"][unit_id] != unit_key: raise ValueError("MESH_WORK_UNIT_CONFLICT")
+                return {"state": "MESH_WORK_DUPLICATE_NOOP", "effect_ack_done": False}
+            if self.state["root"] is not None and self.state["root"] != str(Path(root).resolve()):
+                raise ValueError("MESH_WORK_LOCAL_ROOT_BINDING_MISMATCH")
+            objects[digest(instructions)] = instructions
+            hits = sum(self.cache(raw)[1] for raw in objects.values())
+            self.state.update(root=str(Path(root).resolve()), source=source, entries=entries,
+                revision=self.state["revision"] + 1, mode="DIRTY", idle=None)
+            self.state["work_units"].append(unit)
+            self.state["seen_units"][unit_id] = unit_key
+            self.save()
+            return {"state": "MESH_WORK_LOCALLY_STAGED", "revision": self.state["revision"],
+                    "cache_hits": hits, "cached_objects": len(objects), "cloud_requests": 0, "effect_ack_done": False}
+
+    def current(self):
+        source, entries, _ = self.snapshot(Path(self.state["root"]), sorted(self.state["entries"]))
+        if source != self.state["source"] or entries != self.state["entries"]:
+            raise ValueError("MESH_WORK_IDLE_INVALIDATED")
+        for key in {e["sha256"] for e in entries.values()} | {u["instructions_sha256"] for u in self.state["work_units"]}:
+            self.object(key)
+
+    def pending(self):
+        pin = self.state["pending"]["batch_id"]
+        path = self.directory / "outbox" / pin
+        private_path(path)
+        raw = path.read_bytes()
+        packet = json.loads(raw)
+        unsigned = dict(packet); unsigned.pop("batch_id", None)
+        if (packet.get("batch_id") != pin or digest(mesh_wire(unsigned)) != pin
+                or raw != mesh_wire(packet) or len(raw) > MESH_WORK_MAX):
+            raise ValueError("MESH_WORK_OUTBOX_READBACK_MISMATCH")
+        return raw, packet
+
+    def idle(self, command):
+        with self.locked():
+            if self.state["pending"]:
+                self.current(); self.pending()
+                return {"state": "MESH_WORK_IDLE_BATCH_REUSED", "batch_id": self.state["pending"]["batch_id"], "effect_ack_done": False}
+            if not self.state["work_units"]: return {"state": "MESH_WORK_NOOP", "effect_ack_done": False}
+            if not isinstance(command, list) or not command or any(not isinstance(a, str) or not a or "\0" in a for a in command):
+                raise ValueError("MESH_WORK_EXPLICIT_VALIDATION_COMMAND_REQUIRED")
+            self.current()
+            self.state.update(mode="VALIDATING", idle=None); self.save()
+            try:
+                result = subprocess.run(command, cwd=self.state["root"], capture_output=True, timeout=60, check=False)
+                if result.returncode != 0: raise ValueError("MESH_WORK_VALIDATION_FAILED")
+                self.current()
+                proof = {"state": "IDLE_STABLE_VALIDATED", "scope": "CACHE_WRITER_LOCK_AND_EXACT_SELECTED_GIT_BYTES",
+                    "active_cache_writers": 0, "equal_source_observations": 2,
+                    "entries_sha256": digest(mesh_wire(self.state["entries"])),
+                    "validation": {"kind": "EXECUTED_COMMAND_EXIT_ZERO", "command_sha256": digest(mesh_wire(command)),
+                        "exit_code": 0, "stdout_sha256": digest(result.stdout), "stderr_sha256": digest(result.stderr)}}
+                required = {e["sha256"] for e in self.state["entries"].values()} | {u["instructions_sha256"] for u in self.state["work_units"]}
+                packet = {"schema": "qikvrt-repository-work-batch/v1", **self.binding, "scope": MESH_WORK_SCOPE,
+                    "epoch": self.state["epoch"], "revision": self.state["revision"], "base_digest": self.state["last_ack"],
+                    "source": self.state["source"], "entries": self.state["entries"], "work_units": self.state["work_units"],
+                    "objects": {key: base64.b64encode(self.object(key)).decode() for key in sorted(required - set(self.state["acknowledged_objects"]))},
+                    "idle": proof, "effect_ack_done": False}
+                packet["batch_id"] = digest(mesh_wire(packet))
+                raw = mesh_wire(packet)
+                if len(raw) > MESH_WORK_MAX: raise ValueError("MESH_WORK_BATCH_TOO_LARGE")
+                target = self.directory / "outbox" / packet["batch_id"]
+                if target.exists():
+                    private_path(target)
+                    if target.read_bytes() != raw: raise ValueError("MESH_WORK_OUTBOX_READBACK_MISMATCH")
+                else: synced_private_file(target, raw); sync_directory(target.parent)
+                self.state.update(mode="IDLE_STABLE_VALIDATED", idle=proof,
+                    pending={"batch_id": packet["batch_id"], "attempted": False})
+                self.save()
+                return {"state": "MESH_WORK_IDLE_BATCH_FROZEN", "batch_id": packet["batch_id"],
+                        "wire_bytes": len(raw), "transferred_objects": len(packet["objects"]),
+                        "work_units": len(packet["work_units"]), "whole_node_idle_verified": False, "effect_ack_done": False}
+            except BaseException:
+                self.state.update(mode="HOLD", idle=None); self.save()
+                raise
+
+    def send(self, peer, transport=None):
+        with self.locked():
+            if not self.state["pending"] or self.state["mode"] != "IDLE_STABLE_VALIDATED":
+                raise ValueError("MESH_WORK_VALIDATED_IDLE_BATCH_REQUIRED")
+            raw, packet = self.pending()
+            if not self.state["pending"]["attempted"]: self.current()
+            secret_path = Path(peer["secret_file"])
+            private_path(secret_path)
+            secret = secret_path.read_bytes().strip()
+            if not 32 <= len(secret) <= 256 or not secret.isascii() or any(c <= 32 or c >= 127 for c in secret):
+                raise ValueError("MESH_WORK_PEER_KEY_REQUIRED")
+            target = urllib.parse.urlsplit(peer["url"])
+            if (target.scheme not in ("http", "https") or not target.hostname or target.username or target.password
+                    or target.path not in ("", "/") or target.query or target.fragment
+                    or (target.scheme == "http" and target.hostname not in ("127.0.0.1", "localhost"))
+                    or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", peer.get("node_id", ""))
+                    or any(not re.fullmatch(r"[a-f0-9]{40}", peer.get(k, "")) for k in ("source_head", "source_tree"))):
+                raise ValueError("MESH_WORK_PINNED_PEER_REQUIRED")
+            def request(method, path, body=b""):
+                signature = "sha256=" + hmac.new(secret, method.encode() + b"\n" + path.encode() + b"\n" + body, hashlib.sha256).hexdigest()
+                headers = {"Content-Type": "application/json", "x-qikvrt-mesh-node": self.binding["node_id"],
+                           "x-qikvrt-replication-signature": signature}
+                status, data, response_signature = (transport or mesh_work_transport)(peer["url"].rstrip("/") + path, method, body, headers)
+                expected = "sha256=" + hmac.new(secret, b"RESPONSE\n" + path.encode() + b"\n" + data, hashlib.sha256).hexdigest()
+                if not isinstance(response_signature, str) or not hmac.compare_digest(expected, response_signature):
+                    raise ValueError("MESH_WORK_AUTHENTICATED_READBACK_REQUIRED")
+                return status, json.loads(data)
+            path = "/api/mesh-work/receipt/" + packet["batch_id"]
+            known = None
+            if self.state["pending"]["attempted"]:
+                status, known = request("GET", path)
+                if status == 404: known = None
+                elif status != 200: raise ValueError("MESH_WORK_RECEIPT_UNAVAILABLE")
+            if known is None:
+                self.current()  # No new payload transfer from an invalidated idle.
+                self.state["pending"]["attempted"] = True; self.save()
+                status, _ = request("POST", "/api/mesh-work/batch", raw)
+                if status != 200: raise ValueError("MESH_WORK_TRANSFER_REFUSED")
+                status, known = request("GET", path)
+                if status != 200: raise ValueError("MESH_WORK_RECEIPT_UNAVAILABLE")
+            expected = {"schema": "qikvrt-repository-work-receipt/v1", **self.binding,
+                "batch_id": packet["batch_id"], "revision": packet["revision"],
+                "entries_sha256": packet["idle"]["entries_sha256"], "scope": MESH_WORK_SCOPE,
+                "serving_node_id": peer["node_id"], "source_head": peer["source_head"], "source_tree": peer["source_tree"],
+                "proposal_execution": "NOT_EXECUTED", "effect_ack_done": False}
+            if not isinstance(known, dict) or any(known.get(k) != v for k, v in expected.items()):
+                raise ValueError("MESH_WORK_RECEIPT_BINDING_MISMATCH")
+            try:
+                self.current()
+                local_mode = "IDLE_STABLE_VALIDATED"
+            except ValueError:
+                # A known receipt resolves only this already-delivered batch.
+                # New local work must be staged/validated afresh, never resent.
+                local_mode = "DIRTY"
+            self.state.update(last_ack=packet["batch_id"], pending=None, work_units=[],
+                mode=local_mode, idle=self.state.get("idle") if local_mode == "IDLE_STABLE_VALIDATED" else None,
+                acknowledged_objects=sorted(set(self.state["acknowledged_objects"]) | set(packet["objects"])))
+            self.save()
+            return {"state": "MESH_WORK_BATCH_READBACK_CONFIRMED", "batch_id": packet["batch_id"],
+                    "local_idle_state": local_mode,
+                    "proposal_execution": "NOT_EXECUTED", "whole_mesh_distribution_verified": False, "effect_ack_done": False}
+
+
+def mesh_work_transport(url, method, body, headers):
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *args, **kwargs): return None
+    request = urllib.request.Request(url, data=body if method == "POST" else None, headers=headers, method=method)
+    try:
+        response = urllib.request.build_opener(NoRedirect).open(request, timeout=10)
+    except urllib.error.HTTPError as exc:
+        response = exc
+    with response:
+        raw = response.read(MESH_WORK_MAX + 1)
+        if len(raw) > MESH_WORK_MAX: raise ValueError("MESH_WORK_READBACK_TOO_LARGE")
+        return response.code, raw, response.headers.get("x-qikvrt-replication-signature")
 
 
 def raw_json(value):
@@ -99,6 +402,7 @@ def mesh_contract(root, definition=None):
             or contract.get("live_acceptance_required") is not True):
         raise ValueError("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
     required = {MESH_CONTRACT, "tools/qikvrt_self_host.py", "docs/monitor/self-host.mjs"}
+    required.update(MESH_CACHE_SOURCE_FILES)
     required.update(path for paths in MESH_COMPONENT_FILES.values() for path in paths)
     files = definition.get("files")
     if (not isinstance(files, list) or not all(isinstance(path, str) for path in files)
@@ -108,6 +412,17 @@ def mesh_contract(root, definition=None):
     invariants = contract.get("invariants", {})
     if not isinstance(invariants, dict) or any(invariants.get(key) is not True for key in MESH_INVARIANTS):
         raise ValueError("MESH_CONTINUITY_INVARIANTS_REQUIRED")
+    cache = contract.get("local_repository_cache", {})
+    if (not isinstance(cache, dict) or cache.get("schema") != "qikvrt-repository-work-cache-contract/v1"
+            or cache.get("source_carriers") != MESH_CACHE_SOURCE_FILES
+            or any(cache.get(key) is not True for key in MESH_CACHE_INVARIANTS)
+            or cache.get("idle_scope") != "CACHE_WRITER_LOCK_AND_EXACT_SELECTED_GIT_BYTES"
+            or cache.get("canonical_idle_state") != "IDLE_STABLE_VALIDATED"
+            or cache.get("scope") != MESH_WORK_SCOPE
+            or cache.get("native_effect_replication_deferred") is not False
+            or cache.get("received_proposals_auto_execute") is not False
+            or type(cache.get("max_batch_wire_bytes")) is not int or cache["max_batch_wire_bytes"] != MESH_WORK_MAX):
+        raise ValueError("MESH_LOCAL_CACHE_AND_IDLE_TRANSFER_CONTRACT_REQUIRED")
     cases = contract.get("required_fault_cases")
     if (not isinstance(cases, list) or not all(isinstance(case, str) for case in cases)
             or len(cases) != len(set(cases)) or set(cases) != set(MESH_FAULT_CASES)):
@@ -905,7 +1220,7 @@ def start(package, pin, config_path):
     private_path(config_path)
     raw = config_path.read_bytes()
     config = json.loads(raw)
-    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256"}
+    fields = {"schema", "node_id", "source_head", "source_tree", "adapter", "state_dir", "host", "port", "terminal_port", "terminal_token_file", "github_webhook_secret_file", "terminal_profile", "subject_pr", "source_repository", "browser_password_file", "novnc_port", "vnc_port", "display", "migration_export_sha256", "mesh_work_peers"}
     if (set(config) - fields or config.get("schema") != "qikvrt-self-host-config/v1"
             or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", config.get("node_id", ""))
             or config.get("adapter") not in {"none", "github"} or config.get("host") not in {"127.0.0.1", "0.0.0.0"}
@@ -913,6 +1228,20 @@ def start(package, pin, config_path):
             or config["port"] == config["terminal_port"]
             or any(config.get(k) != manifest[k] for k in ("source_head", "source_tree"))):
         raise ValueError("START_CONFIGURATION_BINDING_MISMATCH")
+    peers = config.get("mesh_work_peers", [])
+    if not isinstance(peers, list): raise ValueError("MESH_WORK_ADMITTED_PEERS_REQUIRED")
+    peer_ids, peer_keys = set(), set()
+    for peer in peers:
+        if (not isinstance(peer, dict) or set(peer) != {"node_id", "repository", "secret_file"}
+                or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", peer.get("node_id", ""))
+                or peer["node_id"] in peer_ids | {"__proto__", "constructor", "prototype"}
+                or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", peer.get("repository", ""))):
+            raise ValueError("MESH_WORK_ADMITTED_PEERS_REQUIRED")
+        key = Path(peer["secret_file"]); private_path(key)
+        raw_key = key.read_bytes().strip()
+        if not 32 <= len(raw_key) <= 256 or not raw_key.isascii() or any(c <= 32 or c >= 127 for c in raw_key) or raw_key in peer_keys:
+            raise ValueError("MESH_WORK_DISTINCT_BOUNDED_PEER_KEYS_REQUIRED")
+        peer_ids.add(peer["node_id"]); peer_keys.add(raw_key)
     profile = config.get("terminal_profile", "reference")
     if profile not in {"reference", "temdd", "firefox"}:
         raise ValueError("UNKNOWN_TERMINAL_PROFILE")
@@ -1038,7 +1367,7 @@ def start(package, pin, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -1047,6 +1376,10 @@ def main():
     parser.add_argument("--expected-tree")
     parser.add_argument("--manifest-sha256")
     parser.add_argument("--config", type=Path)
+    parser.add_argument("--mesh-cache", type=Path, help="separate owner-only proposal object cache and durable outbox")
+    parser.add_argument("--work-request", type=Path, help="private explicit exportable file/work-unit selection")
+    parser.add_argument("--peer", type=Path, help="private peer URL, exact source pins and owner-only key path")
+    parser.add_argument("--validation-command", nargs=argparse.REMAINDER, help="explicit finite command; run against the same exact local commit")
     parser.add_argument("--state-snapshot", type=Path, help="private exact-byte snapshot directory; never a public export")
     parser.add_argument("--state-manifest-sha256", help="independently obtained private state manifest pin")
     parser.add_argument("--admission", type=Path, help="private operator host declaration; no secrets")
@@ -1067,7 +1400,23 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="verify export and proposed binding; create no target")
     args = parser.parse_args()
     try:
-        if args.operation.startswith("migration-"):
+        if args.operation.startswith("mesh-cache-"):
+            if not args.mesh_cache or not args.work_request: raise ValueError("MESH_WORK_PRIVATE_REQUEST_REQUIRED")
+            private_path(args.work_request)
+            work = json.loads(args.work_request.read_bytes())
+            if work.get("schema") != "qikvrt-repository-work-request/v1" or work.get("scope") != MESH_WORK_SCOPE:
+                raise ValueError("MESH_WORK_EXPLICIT_EXPORTABLE_SCOPE_REQUIRED")
+            cache = MeshWorkCache(args.mesh_cache, work["repository"], work["node_id"])
+            if args.operation == "mesh-cache-stage":
+                instructions = Path(work["instructions_file"])
+                private_path(instructions)
+                result = cache.stage(args.root, work["paths"], work["work_unit_id"], instructions.read_bytes())
+            elif args.operation == "mesh-cache-idle": result = cache.idle(args.validation_command)
+            else:
+                if not args.peer: raise ValueError("MESH_WORK_PRIVATE_PEER_REQUIRED")
+                private_path(args.peer)
+                result = cache.send(json.loads(args.peer.read_bytes()))
+        elif args.operation.startswith("migration-"):
             result = migration_module().execute(args, verify, load_source, private_path)
         elif args.operation == "mesh-contract":
             result = mesh_contract(args.root)

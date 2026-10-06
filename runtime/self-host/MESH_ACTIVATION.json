@@ -261,6 +261,43 @@
     "native_effect_replication_verified": false,
     "write_failover_verified": false,
     "application_transparency_verified": false,
-    "effect_ack_done": false
+    "effect_ack_done": false,
+    "local_repository_cache": {
+      "schema": "qikvrt-repository-work-cache-contract/v1",
+      "requirement_id": "OWNER_LOCAL_REPOSITORY_CACHE_STABLE_IDLE_BATCH_20261006",
+      "received_at": "2026-10-06T08:25:31+02:00",
+      "owner": "Ingolf Lohmann",
+      "source_carriers": [
+        "tools/qikvrt_self_host.py",
+        "docs/monitor/server.mjs",
+        "docs/monitor/self-host.mjs"
+      ],
+      "all_nodes": true,
+      "scope": "OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES",
+      "content_addressed_original_bytes": true,
+      "fresh_checks_on_warm_path": true,
+      "source_bound_validation": true,
+      "stable_idle_before_transfer": true,
+      "single_frozen_batch": true,
+      "atomic_receiver_install": true,
+      "conditional_base_match": true,
+      "persist_ambiguous_transfer": true,
+      "readback_before_retry": true,
+      "authenticated_independent_readback": true,
+      "preserve_work_units_and_instruction_bytes": true,
+      "hold_on_capacity_or_unknown_state": true,
+      "idle_scope": "CACHE_WRITER_LOCK_AND_EXACT_SELECTED_GIT_BYTES",
+      "canonical_idle_state": "IDLE_STABLE_VALIDATED",
+      "native_effect_replication_deferred": false,
+      "received_proposals_auto_execute": false,
+      "max_batch_wire_bytes": 16777216,
+      "max_work_units_per_batch": 1024,
+      "whole_node_idle_verified": false,
+      "whole_mesh_performance_verified": false,
+      "optimal_distribution_verified": false,
+      "live_acceptance_rule": "Require a complete admitted work/executor inventory and independent exact-byte node idle/readback evidence before expanding the finite cache-writer scope. Measure actual workload latency/throughput, total transferred bytes, queue age and recovery; do not infer global speedup or optimal scheduling from fewer payload transfers.",
+      "native_safety": "Confirmed native effects retain immediate replication/fencing/Effect-Ack obligations. Deferred work proposals never become durable cross-node effect confirmation or execution authority.",
+      "implementation_scope": "Existing S1 launcher private snapshot/fsync/OS-lock primitives and existing MonitorStore/listener; no parallel scheduler, executor or native effect ledger."
+    }
   }
 }

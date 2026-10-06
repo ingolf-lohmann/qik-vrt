@@ -17,6 +17,8 @@ import unittest
 from unittest import mock
 import urllib.error
 import urllib.request
+import hmac
+import base64
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,6 +71,7 @@ class MeshContractTests(unittest.TestCase):
         required = {host.DEFINITION, host.MESH_CONTRACT, "tools/qikvrt_self_host.py",
                     "docs/monitor/self-host.mjs"}
         required.update(path for paths in host.MESH_COMPONENT_FILES.values() for path in paths)
+        required.update(host.MESH_CACHE_SOURCE_FILES)
         for name in required:
             dest = self.root / name
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -95,6 +98,22 @@ class MeshContractTests(unittest.TestCase):
     def test_missing_node_runtime_contract_refused(self):
         del self.activation["required_node_runtime"]
         self.refuse("EVERY_NODE_TRANSPUTER_AND_TERMINAL_CONTRACT_REQUIRED")
+
+    def test_missing_local_cache_or_weakened_idle_contract_refuses_package_admission(self):
+        original = json.loads(host.raw_json(self.activation))
+        del self.activation["required_node_runtime"]["local_repository_cache"]
+        self.refuse("MESH_LOCAL_CACHE_AND_IDLE_TRANSFER_CONTRACT_REQUIRED")
+        for key in host.MESH_CACHE_INVARIANTS:
+            self.activation = json.loads(host.raw_json(original))
+            self.activation["required_node_runtime"]["local_repository_cache"][key] = False
+            self.refuse("MESH_LOCAL_CACHE_AND_IDLE_TRANSFER_CONTRACT_REQUIRED")
+
+    def test_native_effect_replication_cannot_be_delayed_or_received_proposals_auto_executed(self):
+        original = json.loads(host.raw_json(self.activation))
+        for key in ("native_effect_replication_deferred", "received_proposals_auto_execute"):
+            self.activation = json.loads(host.raw_json(original))
+            self.activation["required_node_runtime"]["local_repository_cache"][key] = True
+            self.refuse("MESH_LOCAL_CACHE_AND_IDLE_TRANSFER_CONTRACT_REQUIRED")
 
     def test_wrong_json_shapes_refuse_through_the_structured_cli(self):
         for activation in ([], {"required_node_runtime": []}):
@@ -743,6 +762,345 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
                 mock.patch.object(host.subprocess,'check_output',side_effect=[b'systemd 255\n',b'MainPID=0\nInvocationID='+b'a'*32+b'\n']):
             with self.assertRaisesRegex(ValueError,'INVOCATION_BINDING_MISMATCH'):
                 host.systemd_invocation('qikvrt-fixture-only.service')
+
+
+class MeshWorkCacheTests(unittest.TestCase):
+    """Actual local Git, Python cache, Node receiver and authenticated HTTP.
+
+    Fixtures establish bounded proposal delivery; not productive Mesh/idle or
+    optimal scheduling acceptance. Received instruction bytes are never run.
+    """
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="qikvrt-mesh-work-")
+        self.addCleanup(self.temp.cleanup)
+        self.directory = Path(self.temp.name)
+        self.repo = self.directory / "repo"; self.repo.mkdir(mode=0o700)
+        self.git("init", "-q")
+        self.git("config", "user.name", "Mesh test fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.file = self.repo / "work.txt"; self.file.write_bytes(b"Original exportable bytes: Gr\xc3\xbc\xc3\x9fe \xce\xa9\n")
+        self.git("add", "."); self.git("commit", "-qm", "Fixture")
+        self.cache = host.MeshWorkCache(self.directory / "cache", "ingolf-lohmann/qik-vrt", "local:fixture")
+        self.key = self.directory / "peer.key"; self.key.write_bytes(b"fixture-only-mesh-peer-key-32-bytes-exact"); self.key.chmod(0o600)
+        self.peer = {"node_id": "cloud:fixture", "source_head": "a" * 40, "source_tree": "b" * 40, "secret_file": str(self.key)}
+        self.calls = []
+
+    def git(self, *args):
+        return subprocess.check_output(["git", "-C", str(self.repo), *args], stderr=subprocess.DEVNULL).strip()
+
+    def stage(self, identifier="unit:one", instructions=b"Owner-approved exportable proposal; do not execute automatically."):
+        return self.cache.stage(self.repo, ["work.txt"], identifier, instructions)
+
+    def freeze(self):
+        return self.cache.idle([sys.executable, "-B", "-c", "from pathlib import Path; assert Path('work.txt').is_file()"])
+
+    def state(self):
+        return json.loads(self.cache.path.read_bytes())["state"]
+
+    def pending(self):
+        with self.cache.locked(): return self.cache.pending()
+
+    def transport(self, url, method, raw, headers):
+        self.calls.append((method, url, len(raw)))
+        return host.mesh_work_transport(url, method, raw, headers)
+
+    def cloud(self, occupied=False, label="cloud"):
+        import select
+        state = self.directory / (label + ".json")
+        config = self.directory / (label + "-config.json")
+        config.write_bytes(host.raw_json({"statePath": str(state), "env": {
+            "QIKVRT_MONITOR_NODE_ID": self.peer["node_id"], "QIKVRT_MONITOR_SOURCE_HEAD": self.peer["source_head"],
+            "QIKVRT_MONITOR_SOURCE_TREE": self.peer["source_tree"],
+            "QIKVRT_MESH_WORK_PEERS": json.dumps([{"node_id": "local:fixture", "repository": "ingolf-lohmann/qik-vrt", "secret_file": str(self.key)}])}}))
+        code = "import {readFileSync} from 'node:fs';import {createMonitor} from './docs/monitor/server.mjs';const m=createMonitor(JSON.parse(readFileSync(process.argv[1])));m.server.listen(0,'127.0.0.1',()=>console.log(JSON.stringify({port:m.server.address().port})));"
+        process = subprocess.Popen(["node", "--input-type=module", "-e", code, str(config)], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+        def stop():
+            if process.poll() is None: process.terminate()
+            try: process.wait(timeout=5)
+            except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=5)
+            process.stdout.close()
+        self.addCleanup(stop)
+        self.assertTrue(select.select([process.stdout], [], [], 5)[0], "Cloud fixture did not become ready")
+        ready = process.stdout.readline()
+        self.assertTrue(ready, "Cloud fixture exited before readiness")
+        self.peer["url"] = "http://127.0.0.1:" + str(json.loads(ready)["port"])
+        if occupied: state.mkdir(mode=0o700)
+        return state, stop
+
+    def test_32_local_changes_use_one_payload_after_real_validation_and_less_measured_traffic(self):
+        self.cloud(label="baseline-cloud")
+        baseline_peer = dict(self.peer)
+        baseline = host.MeshWorkCache(self.directory / "baseline-cache", **self.cache.binding)
+        self.cloud()
+        original = b"a" * (64 * 1024)
+        full_bytes = 0; baseline_posts = []
+        for n in range(32):
+            self.file.write_bytes(original + str(n).encode())
+            self.git("add", "."); self.git("commit", "-qm", f"Local work {n}")
+            self.stage(f"work:{n}", f"Keep proposal {n} with its original provenance".encode())
+            full_bytes += len(self.file.read_bytes())
+            baseline.stage(self.repo, ["work.txt"], f"work:{n}", f"Keep proposal {n} with its original provenance".encode())
+            baseline.idle([sys.executable, "-B", "-c", "from pathlib import Path; assert Path('work.txt').is_file()"])
+            def baseline_transport(url, method, raw, headers):
+                if method == "POST": baseline_posts.append(len(raw))
+                return host.mesh_work_transport(url, method, raw, headers)
+            baseline.send(baseline_peer, baseline_transport)
+        self.assertFalse(self.calls)
+        receipt = self.freeze()
+        self.assertEqual(receipt["work_units"], 32)
+        raw, packet = self.pending()
+        self.assertLess(len(raw), full_bytes)
+        self.assertEqual(len(baseline_posts), 32)
+        self.assertLess(len(raw), sum(baseline_posts))
+        self.assertEqual(packet["idle"]["state"], "IDLE_STABLE_VALIDATED")
+        self.assertIs(receipt["whole_node_idle_verified"], False)
+        result = self.cache.send(self.peer, self.transport)
+        self.assertEqual(result["state"], "MESH_WORK_BATCH_READBACK_CONFIRMED")
+        self.assertEqual([method for method, _, _ in self.calls], ["POST", "GET"])
+        self.assertIsNone(self.state()["pending"])
+        self.assertIs(result["effect_ack_done"], False)
+        state = json.loads((self.directory / "cloud.json").read_bytes())["mesh_work"]
+        self.assertEqual(len(state["nodes"]["local:fixture"]["units"]), 32)
+        key = packet["entries"]["work.txt"]["sha256"]
+        self.assertEqual(base64.b64decode(state["objects"][key]), self.file.read_bytes())
+        self.assertFalse((self.directory / "executed-instruction").exists())
+        # Scope-bound comparable payload counts, not an invented speedup/SLO.
+        evidence = {"schema": "qikvrt-local-mesh-work-measurement/v1", "work_units": 32,
+            "per_update_source_bytes": full_bytes, "baseline_payload_posts": len(baseline_posts),
+            "baseline_payload_wire_bytes": sum(baseline_posts), "single_batch_wire_bytes": len(raw), "payload_posts": 1,
+            "metadata_readbacks": 1, "network_scope": "LOOPBACK_PYTHON_TO_NODE",
+            "fixture_head": self.git("rev-parse", "HEAD").decode(), "fixture_tree": self.git("rev-parse", "HEAD^{tree}").decode(),
+            "runtime_component_sha256": {name: host.digest((ROOT / name).read_bytes()) for name in host.MESH_CACHE_SOURCE_FILES},
+            "whole_mesh_performance_verified": False,
+            "effect_ack_done": False}
+        if os.environ.get("QIKVRT_MESH_WORK_TEST_EVIDENCE"):
+            try:
+                source_head = host.git(ROOT, "rev-parse", "HEAD^{commit}").decode()
+                source_tree = host.git(ROOT, "rev-parse", source_head + "^{tree}").decode()
+            except subprocess.SubprocessError: source_head = source_tree = None
+            evidence.update(source_head=source_head, source_tree=source_tree,
+                run_id=os.environ.get("GITHUB_RUN_ID"), source_binding_scope="EXACT_CHECKOUT" if source_head else "SELECTED_API_FILES_ONLY")
+            path = Path(os.environ["QIKVRT_MESH_WORK_TEST_EVIDENCE"]); path.mkdir(parents=True, exist_ok=True)
+            (path / "LOCAL_WORK_BATCH.json").write_bytes(host.raw_json(evidence))
+
+    def test_warm_objects_and_original_instruction_bytes_survive_restart(self):
+        first = self.stage()
+        self.assertEqual(first["cache_hits"], 0)
+        new = host.MeshWorkCache(self.cache.directory, **self.cache.binding)
+        self.assertEqual(new.stage(self.repo, ["work.txt"], "unit:two", b"Owner-approved exportable proposal; do not execute automatically.")["cache_hits"], 2)
+        new.idle([sys.executable, "-c", "pass"])
+        self.assertEqual(len(self.pending()[1]["objects"]), 2)
+        self.assertEqual(len(self.pending()[1]["work_units"]), 2)
+
+    def test_no_transfer_before_validated_idle_and_no_request_from_failed_gate(self):
+        self.stage()
+        with self.assertRaisesRegex(ValueError, "VALIDATED_IDLE_BATCH_REQUIRED"): self.cache.send({}, self.transport)
+        with self.assertRaisesRegex(ValueError, "VALIDATION_FAILED"): self.cache.idle([sys.executable, "-c", "raise SystemExit(7)"])
+        self.assertEqual(self.state()["mode"], "HOLD")
+        self.assertFalse(self.calls)
+        self.assertIsNone(self.state()["pending"])
+
+    def test_gate_that_changes_exact_bytes_cannot_produce_idle(self):
+        self.stage()
+        with self.assertRaisesRegex(ValueError, "CLEAN_LOCAL_COMMIT_REQUIRED"):
+            self.cache.idle([sys.executable, "-c", "from pathlib import Path; Path('work.txt').write_text('changed')"])
+        self.assertIsNone(self.state()["pending"])
+
+    def test_new_commit_invalidates_idle_before_any_transport(self):
+        self.stage(); self.freeze()
+        self.file.write_bytes(b"new local state")
+        self.git("add", "."); self.git("commit", "-qm", "Changed while idle")
+        with self.assertRaisesRegex(ValueError, "IDLE_INVALIDATED"): self.cache.send({}, self.transport)
+        self.assertFalse(self.calls)
+        self.assertIsNotNone(self.state()["pending"])
+
+    def test_pending_batch_blocks_new_work_without_dropping_original(self):
+        self.stage(); receipt = self.freeze()
+        with self.assertRaisesRegex(ValueError, "PENDING_BATCH_BACKPRESSURE"): self.stage("unit:two")
+        self.assertEqual(self.state()["pending"]["batch_id"], receipt["batch_id"])
+
+    def test_same_unit_retry_is_noop_and_changed_content_conflicts(self):
+        self.stage()
+        self.assertEqual(self.stage()["state"], "MESH_WORK_DUPLICATE_NOOP")
+        with self.assertRaisesRegex(ValueError, "UNIT_CONFLICT"): self.stage(instructions=b"different bytes")
+        self.assertEqual(self.state()["revision"], 1)
+
+    def test_lost_response_is_resolved_by_readback_after_both_process_restarts_without_repost(self):
+        state, stop = self.cloud()
+        self.stage(instructions=b"touch /this-command-is-not-executed")
+        self.freeze()
+        def lost(url, method, raw, headers):
+            result = self.transport(url, method, raw, headers)
+            if method == "POST": raise ConnectionError("Response lost after actual durable receiver commit")
+            return result
+        with self.assertRaises(ConnectionError): self.cache.send(self.peer, lost)
+        before = state.read_bytes(); stop()
+        self.cloud()
+        self.cache = host.MeshWorkCache(self.cache.directory, **self.cache.binding)
+        result = self.cache.send(self.peer, self.transport)
+        self.assertEqual(result["state"], "MESH_WORK_BATCH_READBACK_CONFIRMED")
+        self.assertEqual([method for method, _, _ in self.calls], ["POST", "GET"])
+        self.assertEqual(state.read_bytes(), before)
+
+    def test_already_delivered_batch_can_be_read_back_after_local_work_advances(self):
+        self.cloud(); self.stage(); self.freeze()
+        def lost(url, method, raw, headers):
+            result = self.transport(url, method, raw, headers)
+            if method == "POST": raise ConnectionError("Durable delivery response lost")
+            return result
+        with self.assertRaises(ConnectionError): self.cache.send(self.peer, lost)
+        self.file.write_bytes(b"Local successor bytes")
+        self.git("add", "."); self.git("commit", "-qm", "Local successor")
+        result = self.cache.send(self.peer, self.transport)
+        self.assertEqual(result["local_idle_state"], "DIRTY")
+        self.assertEqual([method for method, _, _ in self.calls], ["POST", "GET"])
+        self.assertIsNone(self.state()["pending"])
+        self.stage("successor:unit")
+
+    def test_bad_authenticated_response_keeps_outbox_then_reads_real_receipt(self):
+        self.cloud(); self.stage(); self.freeze()
+        def bad(url, method, raw, headers):
+            status, body, _ = self.transport(url, method, raw, headers)
+            return status, body, "sha256=" + "0" * 64
+        with self.assertRaisesRegex(ValueError, "AUTHENTICATED_READBACK_REQUIRED"): self.cache.send(self.peer, bad)
+        self.assertIsNotNone(self.state()["pending"])
+        self.cache.send(self.peer, self.transport)
+        self.assertEqual(sum(method == "POST" for method, _, _ in self.calls), 1)
+
+    def test_receiver_storage_failure_holds_original_batch_until_recovery(self):
+        state, stop = self.cloud(occupied=True)
+        self.stage(); self.freeze()
+        raw, packet = self.pending()
+        with self.assertRaisesRegex(ValueError, "TRANSFER_REFUSED"): self.cache.send(self.peer, self.transport)
+        self.assertEqual(self.pending()[0], raw)
+        stop(); state.rmdir(); self.cloud()
+        self.assertEqual(self.cache.send(self.peer, self.transport)["batch_id"], packet["batch_id"])
+        self.assertEqual([method for method, _, _ in self.calls], ["POST", "GET", "POST", "GET"])
+
+    def test_network_outage_keeps_pending_then_reads_before_retrying_same_bytes(self):
+        self.cloud(); self.stage(); self.freeze()
+        raw, _ = self.pending()
+        def outage(*args): raise ConnectionError("Actual send route unavailable before transport")
+        with self.assertRaises(ConnectionError): self.cache.send(self.peer, outage)
+        self.assertEqual(self.pending()[0], raw)
+        self.cache.send(self.peer, self.transport)
+        self.assertEqual([method for method, _, _ in self.calls], ["GET", "POST", "GET"])
+
+    def packet_request(self, packet, node_id="local:fixture", secret=None):
+        raw = host.mesh_wire(packet)
+        key = secret if secret is not None else self.key.read_bytes()
+        signature = "sha256=" + hmac.new(key, b"POST\n/api/mesh-work/batch\n" + raw, hashlib.sha256).hexdigest()
+        return host.mesh_work_transport(self.peer["url"] + "/api/mesh-work/batch", "POST", raw,
+            {"content-type": "application/json", "x-qikvrt-mesh-node": node_id, "x-qikvrt-replication-signature": signature})
+
+    def test_bad_peer_digest_idle_or_object_cannot_mutate_the_cloud(self):
+        state, _ = self.cloud(); self.stage(); self.freeze()
+        _, packet = self.pending()
+        self.assertEqual(self.packet_request(packet, secret=b"wrong-key")[0], 401)
+        self.assertEqual(self.packet_request(packet, node_id="unadmitted:node")[0], 403)
+        for change in ("idle", "object", "repository", "entries", "unused-object"):
+            candidate = json.loads(host.mesh_wire(packet))
+            if change == "idle": candidate["idle"]["validation"]["exit_code"] = 1
+            elif change == "object": candidate["objects"][next(iter(candidate["objects"]))] = base64.b64encode(b"corrupt bytes").decode()
+            elif change == "repository": candidate["repository"] = "unknown/repository"
+            elif change == "entries": candidate["entries"]["work.txt"]["bytes"] += 1
+            else: candidate["objects"][host.digest(b"unreferenced")] = base64.b64encode(b"unreferenced").decode()
+            del candidate["batch_id"]; candidate["batch_id"] = host.digest(host.mesh_wire(candidate))
+            self.assertEqual(self.packet_request(candidate)[0], 409, change)
+            self.assertFalse(state.exists(), change)
+
+    def test_stale_concurrent_local_copy_cannot_overwrite_the_confirmed_cloud_prefix(self):
+        state, _ = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer, self.transport)
+        before = state.read_bytes()
+        stale = host.MeshWorkCache(self.directory / "stale-cache", **self.cache.binding)
+        stale.stage(self.repo, ["work.txt"], "stale:unit", b"Proposal from a separate unacknowledged copy")
+        stale.idle([sys.executable, "-c", "pass"])
+        with self.assertRaisesRegex(ValueError, "TRANSFER_REFUSED"): stale.send(self.peer, self.transport)
+        self.assertEqual(state.read_bytes(), before)
+        with stale.locked(): self.assertIsNotNone(stale.state["pending"])
+
+    def test_numeric_file_names_preserve_cross_language_canonical_digests(self):
+        self.cloud()
+        for name in ("2", "10"): (self.repo / name).write_bytes(b"original " + name.encode())
+        self.git("add", "."); self.git("commit", "-qm", "Numeric file names")
+        self.cache.stage(self.repo, ["2", "10"], "numeric:unit", b"Preserve lexical canonical ordering")
+        self.freeze()
+        self.assertEqual(self.cache.send(self.peer, self.transport)["state"], "MESH_WORK_BATCH_READBACK_CONFIRMED")
+
+    def test_cloud_restart_rejects_corrupted_original_object_or_receipt(self):
+        state, stop = self.cloud(); self.stage(); self.freeze(); self.cache.send(self.peer, self.transport); stop()
+        original = state.read_bytes()
+        for target in ("object", "receipt"):
+            prior = json.loads(original)
+            if target == "object": prior["mesh_work"]["objects"][next(iter(prior["mesh_work"]["objects"]))] = base64.b64encode(b"wrong").decode()
+            else:
+                receipt = next(iter(prior["mesh_work"]["nodes"]["local:fixture"]["receipts"].values()))
+                receipt["source_tree"] = "c" * 40
+            state.write_bytes(host.raw_json(prior))
+            code = "import {MonitorStore} from './docs/monitor/server.mjs';new MonitorStore(process.argv[1],'cloud:fixture');"
+            run = subprocess.run(["node", "--input-type=module", "-e", code, str(state)], cwd=ROOT, capture_output=True, text=True, timeout=5)
+            self.assertNotEqual(run.returncode, 0, target)
+            self.assertIn("MESH_WORK_", run.stderr)
+
+    def test_acknowledged_content_is_not_retransmitted_in_successor_batch(self):
+        self.cloud(); self.stage(); first = self.freeze(); self.cache.send(self.peer, self.transport)
+        self.stage("unit:two", b"A new proposal reuses the same local source bytes")
+        self.freeze(); _, packet = self.pending()
+        self.assertEqual(packet["base_digest"], first["batch_id"])
+        self.assertNotIn(host.digest(self.file.read_bytes()), packet["objects"])
+        self.assertEqual(len(packet["objects"]), 1)
+        self.cache.send(self.peer, self.transport)
+
+    def test_wrong_server_source_pins_cannot_confirm_the_local_batch(self):
+        self.cloud(); self.stage(); self.freeze()
+        self.peer["source_tree"] = "c" * 40
+        with self.assertRaisesRegex(ValueError, "RECEIPT_BINDING_MISMATCH"): self.cache.send(self.peer, self.transport)
+        self.assertIsNotNone(self.state()["pending"])
+
+    def test_corrupt_cached_original_bytes_are_not_trusted_on_a_warm_path(self):
+        self.stage()
+        path = self.cache.directory / "objects" / host.digest(self.file.read_bytes())
+        path.write_bytes(b"corrupt")
+        with self.assertRaisesRegex(ValueError, "OBJECT_READBACK_MISMATCH"): self.freeze()
+        self.assertIsNone(self.state()["pending"])
+
+    def test_corrupt_outbox_and_state_refuse_before_transport(self):
+        self.stage(); self.freeze()
+        raw, packet = self.pending()
+        (self.cache.directory / "outbox" / packet["batch_id"]).write_bytes(raw + b" ")
+        with self.assertRaisesRegex(ValueError, "OUTBOX_READBACK_MISMATCH"): self.cache.send({}, self.transport)
+        envelope = json.loads(self.cache.path.read_bytes()); envelope["state"]["revision"] += 1
+        self.cache.path.write_bytes(host.raw_json(envelope))
+        with self.assertRaisesRegex(ValueError, "CACHE_READBACK_MISMATCH"): self.freeze()
+        self.assertFalse(self.calls)
+
+    def test_symlinks_dirty_worktree_and_untracked_files_do_not_enter_the_cache(self):
+        self.file.unlink(); self.file.symlink_to(self.key)
+        with self.assertRaisesRegex(ValueError, "CLEAN_LOCAL_COMMIT_REQUIRED"): self.stage()
+        self.file.unlink(); self.git("checkout", "--", "work.txt")
+        (self.repo / "unknown.txt").write_text("untracked")
+        with self.assertRaisesRegex(ValueError, "CLEAN_LOCAL_COMMIT_REQUIRED"): self.stage()
+        self.assertFalse(self.cache.path.exists())
+
+    def test_second_cache_writer_cannot_stage_or_validate_under_existing_os_lock(self):
+        with self.cache.locked():
+            with self.assertRaises(BlockingIOError): self.stage()
+        self.assertFalse(self.cache.path.exists())
+
+    def test_cli_uses_private_explicit_request_and_has_no_implicit_cloud_transfer(self):
+        instructions = self.directory / "instructions.txt"; instructions.write_bytes(b"Original approved proposal"); instructions.chmod(0o600)
+        request = self.directory / "request.json"
+        request.write_bytes(host.raw_json({"schema": "qikvrt-repository-work-request/v1", "scope": host.MESH_WORK_SCOPE,
+            **self.cache.binding, "paths": ["work.txt"], "work_unit_id": "cli:work", "instructions_file": str(instructions)})); request.chmod(0o600)
+        args = [sys.executable, "-B", str(ROOT / "tools/qikvrt_self_host.py"), "mesh-cache-stage", "--root", str(self.repo),
+                "--mesh-cache", str(self.cache.directory), "--work-request", str(request)]
+        run = subprocess.run(args, capture_output=True, text=True, timeout=10)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+        self.assertEqual(json.loads(run.stdout)["cloud_requests"], 0)
+        args[3] = "mesh-cache-idle"
+        run = subprocess.run(args + ["--validation-command", sys.executable, "-c", "pass"], capture_output=True, text=True, timeout=10)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+        self.assertEqual(json.loads(run.stdout)["state"], "MESH_WORK_IDLE_BATCH_FROZEN")
 
 
 if __name__ == '__main__': unittest.main()

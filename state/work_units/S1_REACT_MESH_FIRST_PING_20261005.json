@@ -473,5 +473,124 @@
     "effect_ack_done": false,
     "ordinary_release": false,
     "prior_source_gate_commit": "aab3aa6b279e0a383d91475a6019b44e5ce84ff7"
+  },
+  "local_cache_idle_batch_successor": {
+    "schema": "qikvrt-source-bound-contribution/v1",
+    "requirement_id": "OWNER_LOCAL_REPOSITORY_CACHE_STABLE_IDLE_BATCH_20261006",
+    "received_at": "2026-10-06T08:25:31+02:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_parent_head": "71990a322187072dc847fa03d0a7923efc047d58",
+    "source_parent_tree": "72d93b5c9e3f9b65d0cd25ce9608798d50bfa2e8",
+    "candidate_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "pull_request": 457,
+    "human_contribution": {
+      "identifier": "Ingolf Lohmann",
+      "role": "Product and Code Owner",
+      "scope": "Local repository Mesh-storage copy/cache; stable repeatable idle; one bounded transfer of validated work; lower traffic and workload distribution; authorization explicitly granted."
+    },
+    "artificial_cognitive_contribution": {
+      "provider": "OpenAI",
+      "client": "Codex",
+      "model_family": "GPT-6",
+      "build": "UNAVAILABLE",
+      "scope": "Protocol, implementation in existing launcher/MonitorStore, tests and evidence-bound delivery; no product-wide idle/performance/optimality claim."
+    },
+    "retention": "METADATA_ONLY",
+    "outputs": {
+      "AGENTS.md": {
+        "bytes": 10313,
+        "sha256": "1036063df3fc5c71752fb3ac0b2efa8c34bac0cbb051523ae087e9bb6b9e09cc"
+      },
+      "tools/qikvrt_self_host.py": {
+        "bytes": 89716,
+        "sha256": "3768ee58e6c38c99d21bc65e1bb3a83ee79bee118c8fdf634316bc8351672ba8"
+      },
+      "tests/test_self_host.py": {
+        "bytes": 67707,
+        "sha256": "bf37d491ac1bf5e734e4e03af7c945d0a5becc3e4e5f8e8488d535f4812bfcf3"
+      },
+      "docs/monitor/server.mjs": {
+        "bytes": 46570,
+        "sha256": "d75fbefb52da2b1f5fb62cdbae899bd3503d5afa0abfba4b2dc2d3c1faa93264"
+      },
+      "docs/monitor/self-host.mjs": {
+        "bytes": 10446,
+        "sha256": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db"
+      },
+      "runtime/self-host/MESH_ACTIVATION.json": {
+        "bytes": 17705,
+        "sha256": "77b8501e4b179910191368a662259140e2a9b24e0349e33889de49c6acaa9838"
+      },
+      "runtime/self-host/PACKAGE.json": {
+        "bytes": 4561,
+        "sha256": "eb69d03c8f12e2ad0052ae3d67146b95f79801570b2b3177f4b78ac417783194"
+      },
+      "runtime/self-host/README.md": {
+        "bytes": 35860,
+        "sha256": "19b9d36f54b44211134f58acba9e3b2b2a2cb7a2fd11b10f855dab71829e02f5"
+      },
+      ".github/workflows/qikvrt_effect_ack_http_terminal.yml": {
+        "bytes": 11078,
+        "sha256": "af89370f43d37b7d35905cea3d40971455083b89a56453d0b46d713042b596ae"
+      }
+    },
+    "verification": {
+      "local_self_host_tests": 72,
+      "local_self_host_tests_exit": 0,
+      "monitor_and_observer_tests": 25,
+      "monitor_and_observer_tests_exit": 0,
+      "test_logs": {
+        "cache_full_tests.log": {
+          "bytes": 13249,
+          "sha256": "ccff6bda1badf840677b89fab7aa4177f641055a89ef5c8f64880e29e5e874c7"
+        },
+        "cache_monitor_tests.log": {
+          "bytes": 5242,
+          "sha256": "0147a93bbad83e235c8ed3a4f8712067fdff6352d2815f182fef3590ff312d91"
+        }
+      },
+      "traffic_measurement": {
+        "baseline_payload_posts": 32,
+        "baseline_payload_wire_bytes": 2850829,
+        "effect_ack_done": false,
+        "fixture_head": "511720e83bbf302be4575a34221fb977b3665db3",
+        "fixture_tree": "1cc79111c6b81e57acee46accb46df9901fea735",
+        "metadata_readbacks": 1,
+        "network_scope": "LOOPBACK_PYTHON_TO_NODE",
+        "payload_posts": 1,
+        "per_update_source_bytes": 2097206,
+        "run_id": null,
+        "runtime_component_sha256": {
+          "docs/monitor/self-host.mjs": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db",
+          "docs/monitor/server.mjs": "d75fbefb52da2b1f5fb62cdbae899bd3503d5afa0abfba4b2dc2d3c1faa93264",
+          "tools/qikvrt_self_host.py": "3768ee58e6c38c99d21bc65e1bb3a83ee79bee118c8fdf634316bc8351672ba8"
+        },
+        "schema": "qikvrt-local-mesh-work-measurement/v1",
+        "single_batch_wire_bytes": 102440,
+        "source_binding_scope": "SELECTED_API_FILES_ONLY",
+        "source_head": null,
+        "source_tree": null,
+        "whole_mesh_performance_verified": false,
+        "work_units": 32
+      },
+      "measurement_scope": "Two real loopback Node receivers, same 32 committed source updates and original work instructions; 32 baseline POSTs versus 1 batched POST; separate authenticated GET readbacks. Not public independent-host performance.",
+      "boot_scope": "Selected API-materialized files, not a complete Git clone or full local bootstrap/history acceptance. Fresh exact-head hosted CI remains separate."
+    },
+    "safety": {
+      "native_effect_replication_deferred": false,
+      "proposals_executed": false,
+      "external_credentials_cached": false,
+      "all_node_runtime_verified": false,
+      "whole_node_idle_verified": false,
+      "whole_mesh_performance_verified": false,
+      "optimal_distribution_verified": false,
+      "effect_ack_done": false
+    },
+    "open_work": [
+      "Complete work/executor inventory and independently admitted persistent host/peer/key/own-host execution and private capture/transfer path.",
+      "Actual complete-node idle, numeric workload latency/throughput and queue age/backpressure, independent failure domains and public HTTPS readbacks.",
+      "Original native effect replication and enforced cross-node writer takeover remain open; deferred proposal batching cannot substitute for them."
+    ],
+    "resume": "Reobserve PR 457 HEAD/TREE and exact-source CI/artifacts. Use existing mesh-cache-stage/idle/send on an admitted owner-selected exportable workload; preserve failed/ambiguous outboxes. Do not deploy uncaptured native private state, apply unrelated staged changes, merge or publish from this receipt."
   }
 }

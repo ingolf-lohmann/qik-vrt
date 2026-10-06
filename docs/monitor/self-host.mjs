@@ -114,6 +114,7 @@ async function routes(request, response, url) {
 const repositories = [{name:manifest.source_repository,role:'Packaged source',branch:'main'}];
 const env = {QIKVRT_MONITOR_SOURCE_HEAD:manifest.source_head,QIKVRT_MONITOR_SOURCE_TREE:manifest.source_tree,
   QIKVRT_MONITOR_SOURCE_REPOSITORY:manifest.source_repository,QIKVRT_MONITOR_NODE_ID:config.node_id,
+  QIKVRT_MESH_WORK_PEERS:JSON.stringify(config.mesh_work_peers || []),
   QIKVRT_MONITOR_STATE_DIR:join(config.state_dir,'monitor'),QIKVRT_MONITOR_REPOSITORIES:JSON.stringify(repositories)};
 if (config.adapter === 'github' && config.github_webhook_secret_file) env.QIKVRT_GITHUB_WEBHOOK_SECRET = readFileSync(config.github_webhook_secret_file,'utf8').trim();
 const monitor = createMonitor({env,repositories,handleRequest:routes,

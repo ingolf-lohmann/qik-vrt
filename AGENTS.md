@@ -141,6 +141,18 @@ monitor read-replica does not establish native-effect replication or write
 takeover, and multiple repositories on one provider do not establish provider
 failure independence. Source-gate success is never deployment or Mesh acceptance.
 
+Every node also uses the local repository-work cache and stable-idle batch
+contract in that same file. Reuse S1 `mesh-cache-stage`, `mesh-cache-idle` and
+`mesh-cache-send`; retain original instructions and Work Unit provenance, cache
+exact selected Git bytes by content digest, and validate the unchanged local
+commit before freezing one transfer. A warm cache never skips fresh checks.
+The receiver atomically accepts only authenticated, base-bound proposals and
+does not execute them. Resolve ambiguous transfers by authenticated readback
+before retry; retain the outbox under failure/capacity/conflict. The finite
+cache-writer idle scope is not proof of whole-node idle or optimal Mesh load
+distribution. Native effect replication and positive Effect-Ack obligations
+must never be deferred until this later proposal transfer.
+
 ## Bounded collective adaptation
 
 1. Observe only accessible, authorized state and record the measurement method,

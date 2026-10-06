@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.5.0
+# S1 standalone node package, version 1.6.0
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.
@@ -36,6 +36,88 @@ current S1 native terminal/Transputer remains a single-node carrier; live
 multi-node effect replication, write fencing and transparent recovery are open
 implementation/host-acceptance work. The neuronal description is an architecture
 analogy governed by the existing evidence/adaptation policy.
+
+## Local repository copy, cache and stable-idle work batch
+
+Every node has the same local cache obligations in
+`MESH_ACTIVATION.json#/required_node_runtime/local_repository_cache`.
+The existing launcher now provides a content-addressed private copy of explicitly
+selected, regular, committed repository files and original exportable work
+instructions. Work Unit IDs, source HEAD/TREE and instruction bytes are retained.
+Local candidate updates are consolidated into one final file inventory; no
+native effect event or effect acknowledgement enters this deferred path.
+
+This reuses the existing private snapshot/fsync/OS-lock helpers and the existing
+MonitorStore/listener. `snapshot-state` requires stopped native writers and copies
+whole private runtime stores; it cannot stage exportable work proposals during
+local development. The added cache/outbox is therefore a bounded extension, not
+another native ledger, scheduler or executor. It does not create Git commits.
+
+Create a private 0600 work request outside the selected checkout, with:
+
+```json
+{"schema":"qikvrt-repository-work-request/v1","scope":"OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES",
+ "repository":"ingolf-lohmann/qik-vrt","node_id":"local:admitted-node",
+ "paths":["AI","README.md"],"work_unit_id":"owner-work:unique-id",
+ "instructions_file":"/private/owner/exportable-instructions.txt"}
+```
+
+The cache parent is owner-only 0700 and separate from the checkout. The instruction
+file must be explicitly exportable and 0600. Run `stage` for each distinct local
+Work Unit, then validate the final exact local state; no cloud request occurs
+during staging:
+
+```sh
+python3 -B tools/qikvrt_self_host.py mesh-cache-stage --root /private/local-repo \
+  --mesh-cache /private/cache/local-work --work-request /private/owner/work.json
+python3 -B tools/qikvrt_self_host.py mesh-cache-idle \
+  --mesh-cache /private/cache/local-work --work-request /private/owner/work.json \
+  --validation-command python3 -B -m unittest tests.test_self_host
+python3 -B tools/qikvrt_self_host.py mesh-cache-send \
+  --mesh-cache /private/cache/local-work --work-request /private/owner/work.json \
+  --peer /private/owner/cloud-peer.json
+```
+
+The explicit validation command has a 60-second bound; a timeout/failure holds
+the batch. The finite idle proof means: cache writer lock held; clean local
+commit; selected file bytes match its Git blobs; unchanged HEAD/TREE/inventory
+before and after an executed zero-exit validation. `IDLE_STABLE_VALIDATED` is the
+same state predicate for every batch. It does not prove that unregistered jobs,
+the native runtime or every node are idle. Whole-node admission requires a
+complete work/executor inventory and an independent workload-bound proof.
+
+The private peer declaration contains `url`, `node_id`, `source_head`,
+`source_tree` and `secret_file`; source pins identify the admitted receiver
+package, and the 0600 key is a distinct 32–256 byte ASCII peer key. Only HTTPS
+or loopback HTTP is permitted, with no redirects. Receiver S1 configuration may
+declare `mesh_work_peers`, each containing `node_id`, `repository`, `secret_file`.
+No peer is admitted by default. Credentials never enter cached objects or the
+wire batch. Selection grants no publication right for personal/private state.
+
+The existing listener accepts HMAC-bound `POST /api/mesh-work/batch` and a
+separate authenticated `GET /api/mesh-work/receipt/<batch_id>`. Original bytes,
+the idle/validation binding, epoch, prior accepted batch, revision and file
+inventory are checked before one fsync/rename transaction. Received instruction
+bytes remain proposals and are not executed. This is a configured-peer
+attestation and exact-byte delivery receipt, not an independent rerun of the
+sender's validation or a native Effect-Ack.
+
+Only not-yet-acknowledged content objects cross the network; repeated bytes are
+deduplicated without dropping Work Units. A lost response retains the exact
+outbox; retry queries the authoritative receipt before a further POST. A stale
+parallel copy, changed idle input, invalid signature/digest, full store or
+unavailable receiver holds work. A pending batch blocks additional cache
+staging until readback resolves it. Source files and cached/outbox originals
+are retained. Protocol bounds are 16 MiB per batch, 1024 Work Units and 8192
+selected files; the receiver holds at 64 MiB of proposal state rather than
+silently evicting an accepted receipt. There is no autonomous garbage collector.
+
+Tests compare actual loopback payload requests and bytes for individually sent
+updates and a single batch, and cover cache reuse, restart, lost responses,
+partitions, corrupt bytes/receipts and competing copies. Fewer transferred
+bytes/requests do not establish a numerical user-latency speedup, optimal global
+scheduling, public independent-node deployment or live Mesh transparency.
+The existing native ledger replication-before-Effect-Ack requirement is unchanged.
 
 The same S1 listener now serves the static React document at `/mesh`, `/node`
 and `/client`. Node selection is `/node?repository=<declared-repository>`.

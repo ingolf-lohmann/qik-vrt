@@ -79,6 +79,7 @@ jobs:
         id: standalone-runtime
         env:
           QIKVRT_STATE_RECOVERY_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-state-recovery-readback
+          QIKVRT_MESH_WORK_TEST_EVIDENCE: ${{ runner.temp }}/qikvrt-state-recovery-readback
         run: make self-host-test
 
       - name: Verify static React source and browser-module syntax
