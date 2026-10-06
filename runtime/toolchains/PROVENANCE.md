@@ -227,3 +227,33 @@ manifest then binds the emitted assets. Corruption returns HOLD before export.
 Node VM/API and real exported-process HTTP controls verify this bounded scope.
 Browser rendering, public hosting, provider CI, native Mesh ping and all terminal
 receipts remain separately required; source assets never establish those effects.
+
+## Origin SQLite readback and desktop test runtime
+
+sql.js 1.14.2 is copied as the unmodified `sql-wasm.js`/`sql-wasm.wasm` pair
+from `https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz`. The archive's
+registry SHA-512 integrity was checked before extraction; its SHA-256 and each
+retained file's SHA-256/size are in `runtime/self-host/ORIGIN_SQLITE_LOCK.json`.
+The full upstream MIT, SQLite public-domain and Emscripten notices accompany
+the assets. They do not relicense QIK-VRT source. Runtime verification refuses
+changed dependencies before shell export. The native SQLite image is read
+with fixed, query-only SQL in an isolated Worker and never rewritten by sql.js.
+No CDN or package installation occurs at Terminal startup. Failed import,
+transaction abort, quota, corrupt cached bytes or mismatched epoch/carrier pin
+hold visibly and retain the previously admitted store. Cache installation
+verifies every shell body and never caches imports, credentials or API bodies.
+
+Desktop tests use Playwright 1.62.1 (Apache-2.0), its npm integrity-locked
+`origin-tests/package-lock.json`, and Chrome for Testing 151.0.7922.34, the
+Playwright Chromium revision 1234. `ORIGIN_BROWSER_TEST_LOCK.json` pins the
+official browser archive source, byte count and SHA-256. The CLI CDN route
+returned invalid archives in the local workspace; the verified official
+Google storage archive was available. Local persistent Chromium startup is
+blocked by AF_UNIX `socket()` returning EPERM before any page loads. No older
+browser, sandbox-policy change or emulated persistence substitutes for that
+proof. The existing Linux S1 CI executor provides the fresh browser-test route.
+Dependency extraction/version checking and test execution fail closed; retained
+archives may be reused only after the same pins pass. Browser-data profiles and
+production state are never cache inputs. Test receipts contain only synthetic
+original-kernel fixture bindings, runtime versions, hashes and scoped results.
+Desktop success does not establish a public HTTPS or Android/iOS witness.

@@ -752,11 +752,83 @@ def run_monolith(store, pin, config_path):
         return start(package, pin, config_path, monolith=True)
 
 
-def checkpoint_monolith(store, pin, config_path):
+def verify_origin_sqlite_assets(root):
+    lock = json.loads((root / 'runtime/self-host/ORIGIN_SQLITE_LOCK.json').read_bytes())
+    expected = {'docs/monitor/origin/vendor/' + name for name in
+                ('SQLJS_LICENSE.txt', 'sql-wasm.js', 'sql-wasm.wasm')}
+    if (lock.get('schema') != 'qikvrt-origin-sqlite-lock/v1'
+            or lock.get('version') != '1.14.2' or set(lock.get('files', {})) != expected):
+        raise ValueError('ORIGIN_SQLITE_LOCK_REQUIRED')
+    for name, entry in lock['files'].items():
+        path = root / name
+        if path.is_symlink() or not path.is_file(): raise ValueError('ORIGIN_SQLITE_ASSET_REQUIRED')
+        raw = path.read_bytes()
+        if len(raw) != entry['bytes'] or digest(raw) != entry['sha256']:
+            raise ValueError('ORIGIN_SQLITE_ASSET_DRIFT')
+    return lock
+
+
+def export_origin_shell(package, output, config, receipt):
+    """Emit a bootstrap, never private SQLite bytes or credentials, under locks.
+
+    The independently pinned image is explicitly selected in the browser. All
+    shell paths are relative, so an HTTPS subpath works without a root scope.
+    """
+    verify_origin_sqlite_assets(package)
+    verify_react_assets(package)
+    manifest = json.loads((package / 'MANIFEST.json').read_bytes())
+    assets = {'index.html':'docs/monitor/origin/index.html',
+        'react-runtime.js':'docs/monitor/react-runtime.js',
+        'REACT_LICENSE.txt':'docs/monitor/REACT_LICENSE.txt',
+        'mesh-react.css':'docs/monitor/mesh-react.css'}
+    for name in ('origin-store.js','origin-terminal.js','sqlite-reader.js','store-worker.js',
+                 'vendor/sql-wasm.js','vendor/sql-wasm.wasm','vendor/SQLJS_LICENSE.txt'):
+        assets[name] = 'docs/monitor/origin/' + name
+    profile = {'schema':'qikvrt-origin-bootstrap/v1','ledger_id':receipt['ledger_id'],
+        'store_sha256':receipt['file_sha256'],'manifest_sha256':receipt['manifest_sha256'],
+        'subject':{'repository':manifest['source_repository'],'pr':config['subject_pr'],
+                   'head':manifest['source_head'],'tree':manifest['source_tree']},
+        'max_store_bytes':64*1024*1024,'max_events':10000,
+        'role_scope':['REPOSITORY_NODE','REPOSITORY_CLIENT'],
+        'storage_scope':'ORIGIN_PRIVATE_INDEXEDDB','native_execution':False,
+        'mobile_runtime_verified':False,'effect_ack_done':False}
+    if receipt['bytes'] > profile['max_store_bytes'] or receipt['ledger_records'] > profile['max_events']:
+        raise ValueError('BOUNDED_ORIGIN_STORE_REQUIRED')
+    output.mkdir(mode=0o700)
+    try:
+        hashes = {}
+        for dest_name, source_name in sorted(assets.items()):
+            raw = (package / source_name).read_bytes()
+            dest = output / dest_name
+            dest.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
+            synced_private_file(dest, raw)
+            hashes[dest_name] = digest(raw)
+        raw = raw_json(profile)
+        synced_private_file(output/'ORIGIN_PROFILE.json',raw)
+        hashes['ORIGIN_PROFILE.json'] = digest(raw)
+        shell_id = digest(raw_json(hashes))
+        template = (package/'docs/monitor/origin/service-worker.template.js').read_text()
+        worker = template.replace('__SHELL_ID__',shell_id).replace('__SHELL_ASSETS__',json.dumps(hashes,sort_keys=True))
+        synced_private_file(output/'service-worker.js',worker.encode())
+        for directory in sorted((p for p in output.rglob('*') if p.is_dir()),reverse=True): sync_directory(directory)
+        sync_directory(output); sync_directory(output.parent)
+        return {'schema':'qikvrt-origin-export-receipt/v1','state':'SOURCE_BOOTSTRAP_EXPORTED',
+            'shell_sha256':shell_id,'shell_files_sha256':dict(hashes,**{'service-worker.js':digest(worker.encode())}),
+            'store_sha256':receipt['file_sha256'],'ledger_id':receipt['ledger_id'],
+            'manifest_sha256':receipt['manifest_sha256'],'private_store_included':False,
+            'native_code_executed_in_browser':False,'mobile_runtime_verified':False,
+            'public_https_verified':False,'effect_ack_done':False}
+    except BaseException:
+        shutil.rmtree(output)
+        raise
+
+
+def checkpoint_monolith(store, pin, config_path, origin_output=None):
     """Seal a transferable main file only after both existing writer locks stop."""
     if config_path is None: raise ValueError("PRIVATE_START_CONFIGURATION_REQUIRED")
     private_path(config_path)
     config = json.loads(config_path.read_bytes())
+    if origin_output is not None: private_output(origin_output, (store, config_path))
     if (config.get("terminal_profile") != "temdd"
             or store != Path(config["state_dir"]) / "temdd/events.sqlite3"):
         raise ValueError("MONOLITH_EXISTING_NATIVE_LEDGER_PATH_AND_PASSIVE_PROFILE_REQUIRED")
@@ -781,10 +853,11 @@ def checkpoint_monolith(store, pin, config_path):
             try: os.fsync(fd)
             finally: os.close(fd)
             raw = store.read_bytes()
-            return {"schema": "qikvrt-monolithic-store-receipt/v1", "state": "STABLE_SINGLE_FILE_IMAGE",
+            receipt = {"schema": "qikvrt-monolithic-store-receipt/v1", "state": "STABLE_SINGLE_FILE_IMAGE",
                     "manifest_sha256": pin, "file_sha256": digest(raw), "bytes": len(raw),
                     "ledger_id": epoch, "ledger_records": count, "both_writer_locks_held": True,
                     "cloud_synchronization_verified": False, "mobile_runtime_verified": False, "effect_ack_done": False}
+            return export_origin_shell(package, origin_output, config, receipt) if origin_output is not None else receipt
 
 
 def state_binding(package, pin, config_path):
@@ -1750,7 +1823,7 @@ def start(package, pin, config_path, monolith=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("pack", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("pack", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -1821,6 +1894,10 @@ def main():
         elif args.operation == "monolith-checkpoint":
             result = checkpoint_monolith(args.root.absolute(), args.manifest_sha256,
                                          args.config.absolute() if args.config else None)
+        elif args.operation == "monolith-origin-export":
+            if args.output is None: raise ValueError('ORIGIN_BOOTSTRAP_OUTPUT_REQUIRED')
+            result = checkpoint_monolith(args.root.absolute(), args.manifest_sha256,
+                                         args.config.absolute() if args.config else None, args.output)
         elif args.operation == "admit":
             result = admission_plan(args.root.resolve(), args.manifest_sha256, args.config,
                                     args.admission, args.admission_sha256)

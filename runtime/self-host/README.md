@@ -237,6 +237,77 @@ Unix ingress and historical source identity tests remain mandatory separately.
 
 ## Freeze, transfer and start
 
+### App-Store-free secure Origin adapter
+
+`monolith-origin-export` extends the same stopped-writer checkpoint. It emits
+a static HTTPS bootstrap for both Node and Client roles from the independently
+pinned carrier. The browser explicitly imports the **unchanged SQLite main
+file** into one origin-private IndexedDB record. It does not create another
+ledger or epoch. A Web Worker uses pinned sql.js 1.14.2 solely for fixed,
+read-only SQLite integrity, carrier-byte and native-ledger readback queries.
+The embedded Python source remains retained source and is not executed by the
+browser. The React Terminal is passive: no native commands, inferred effects,
+automatic file execution, background task scheduler or cloud writer is added.
+
+After stopping both existing writers, use the same private configuration and
+manifest pin as the native monolith:
+
+```sh
+python3 -B tools/qikvrt_self_host.py monolith-origin-export \
+  --root /absolute/private-state/temdd/events.sqlite3 \
+  --manifest-sha256 <independently supplied carrier-manifest-sha256> \
+  --config /absolute/private/config.json \
+  --output /absolute/private/new-origin-shell
+```
+
+The output includes the exact image SHA-256, native `meta.epoch`, source subject,
+React/SQLite licenses and an individually hash-pinned Service Worker shell.
+**It contains no private SQLite image, event bodies or credentials.** Publishing
+that shell and obtaining an authenticated public HTTPS readback remain separate
+effects. Serve it under a dedicated trusted HTTPS origin or subpath with normal
+JavaScript and `application/wasm` MIME types. Loopback HTTP is admitted only for
+development. Arbitrary HTTP, opaque origins and `file:` starts fail closed.
+Use the HTTPS URL once online; the fully verified shell then works offline.
+Installing a Home Screen shortcut is optional; no App Store or Git is required.
+
+Choose the checkpointed SQLite file through the browser's explicit file picker.
+This is user-mediated import, **not unrestricted filesystem access on iOS or
+Android**. The browser checks the independent image digest, SQLite format and
+integrity, every embedded carrier file, the original manifest pin, native epoch
+and original event-body digests before committing. Transaction completion is
+followed by fresh byte and SQL readback. Reload, browser restart and offline
+opening reuse that record; they do not reset identity. An explicit download
+exports the identical original SQLite bytes for native restoration. A new
+independently bound checkpoint can replace the image only if all prior record
+identities and digests remain an unchanged prefix. Capacity is explicitly
+bounded to 64 MiB and 10,000 original ledger records; unsupported images are
+refused without truncation.
+
+IndexedDB and the shell cache belong to the browser origin and profile. They
+are not freely visible filesystem elements. `navigator.storage.persist()` is
+requested and its actual result is reported. Denial, quota exhaustion,
+browser-data deletion and storage eviction are not turned into native fsync
+or unlimited retention claims. A corrupt image is retained but not presented
+as valid; automatic recreation or epoch replacement is forbidden. The adapter
+does not implement native Python execution, native-effect replication or Mesh
+write takeover in the mobile browser.
+
+`make origin-adapter-test` exercises the original native SQLite fixture and
+negative controls. `make origin-adapter-browser-test` additionally uses locked
+Playwright/Chromium for actual IndexedDB transactions, corrupt import, offline
+Service Worker/WASM/React loading, byte-identical export, reload and a complete
+browser-process close/relaunch. It is desktop Linux evidence only. The existing
+S1 CI lane executes these tests on its exact candidate head. A device-emulated
+viewport or desktop WebKit must never be reported as an Android/iOS witness.
+Actual Android/iOS offline, storage, restart and reconnection acceptance remains
+`NOT_EXECUTED` until corresponding devices or executable runner routes exist;
+`mobile_runtime_verified=false` and `effect_ack_done=false` remain explicit.
+
+Platform sources: [Service Workers](https://www.w3.org/TR/service-workers/),
+[secure contexts](https://www.w3.org/TR/secure-contexts/),
+[WebKit storage policy](https://webkit.org/blog/14403/updates-to-storage-policy/),
+[sql.js source](https://github.com/sql-js/sql.js/tree/v1.14.2).
+
 In a clean reviewed checkout run:
 
 ```sh

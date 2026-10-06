@@ -41,6 +41,15 @@
     "docs/monitor/mesh-react.css",
     "docs/monitor/mesh-react.js",
     "docs/monitor/observer.mjs",
+    "docs/monitor/origin/index.html",
+    "docs/monitor/origin/origin-store.js",
+    "docs/monitor/origin/origin-terminal.js",
+    "docs/monitor/origin/service-worker.template.js",
+    "docs/monitor/origin/sqlite-reader.js",
+    "docs/monitor/origin/store-worker.js",
+    "docs/monitor/origin/vendor/SQLJS_LICENSE.txt",
+    "docs/monitor/origin/vendor/sql-wasm.js",
+    "docs/monitor/origin/vendor/sql-wasm.wasm",
     "docs/monitor/package.json",
     "docs/monitor/react-runtime.js",
     "docs/monitor/scheibenhard-original.html",
@@ -59,6 +68,7 @@
     "runtime/self-host/MESH_ACTIVATION.json",
     "runtime/self-host/MIGRATION.md",
     "runtime/self-host/MIGRATION_SOURCE.example.json",
+    "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
     "runtime/self-host/PACKAGE.json",
     "runtime/self-host/REACT_LOCK.json",
     "runtime/self-host/README.md",
@@ -99,5 +109,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.8.0"
+  "version": "1.9.0"
 }

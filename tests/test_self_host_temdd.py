@@ -469,6 +469,64 @@ class MonolithicStoreTests(unittest.TestCase):
         self.assertEqual(self.sql('SELECT COUNT(*) FROM events'), [(1,)])
 
 
+class OriginExportTests(unittest.TestCase):
+    setUpClass = classmethod(StandaloneTests.setUpClass.__func__)
+    tearDownClass = classmethod(StandaloneTests.tearDownClass.__func__)
+    save_config = StandaloneTests.save_config
+    stop = StandaloneTests.stop
+
+    def setUp(self):
+        StandaloneTests.setUp(self)
+        self.config.update(terminal_profile='temdd',subject_pr=457,source_repository='ingolf-lohmann/qik-vrt')
+        self.save_config()
+        (self.volume/'temdd').mkdir(mode=0o700)
+        self.store=self.volume/'temdd/events.sqlite3'
+        host.pack_monolith(self.export,self.pin,self.store)
+        host.load_source(self.export,'qikvrt_effect_ack_http_terminal')
+        native=host.load_source(self.export,'qikvrt_temdd_event_ledger')
+        self.subject={'repository':'ingolf-lohmann/qik-vrt','pr':457,'head':self.head,'tree':self.tree}
+        ledger=native.Ledger(self.volume,self.subject)
+        self.event=ledger.append({'schema':native.SCHEMA,'kind':'OBSERVE','subject':self.subject,
+            'provenance':{'source':'transputer','native_event_id':'origin-adapter-synthetic-witness'},
+            'observed_at':'2026-10-06T07:54:32Z','message':'Originalbytes: Grüße Ω',
+            'payload':{'effect_ack_done':False}})
+        ledger.close()
+        _,binding=host.state_binding(self.export,self.pin,self.config_path)
+        host.synced_private_file(self.volume/'binding.json',host.raw_json(binding))
+        host.synced_private_file(self.volume/'node.lock',b'')
+
+    def test_export_binds_original_identity_and_excludes_private_store_and_credentials(self):
+        output=self.work/'origin'
+        receipt=host.checkpoint_monolith(self.store,self.pin,self.config_path,output)
+        profile=json.loads((output/'ORIGIN_PROFILE.json').read_bytes())
+        self.assertEqual(profile['ledger_id'],self.event['id'].split(':')[0])
+        self.assertEqual(profile['manifest_sha256'],self.pin)
+        self.assertEqual(profile['subject'],self.subject)
+        self.assertEqual(profile['store_sha256'],host.digest(self.store.read_bytes()))
+        self.assertFalse(receipt['private_store_included'])
+        self.assertFalse(receipt['mobile_runtime_verified'])
+        for name,digest in receipt['shell_files_sha256'].items():
+            self.assertEqual(host.digest((output/name).read_bytes()),digest)
+        self.assertFalse(any(p.suffix in ('.db','.sqlite3') for p in output.rglob('*')))
+        self.assertNotIn(self.event['message'].encode(),b''.join(p.read_bytes() for p in output.rglob('*') if p.is_file()))
+        self.assertNotIn(self.token_file.read_bytes(),b''.join(p.read_bytes() for p in output.rglob('*') if p.is_file()))
+        with self.assertRaises(ValueError):host.checkpoint_monolith(self.store,self.pin,self.config_path,output)
+        # Optional export of this synthetic fixture for Node/real browser tests.
+        destination=os.environ.get('QIKVRT_ORIGIN_FIXTURE_DIR')
+        if destination:
+            target=Path(destination);target.mkdir(mode=0o700,parents=True,exist_ok=True)
+            shutil.copytree(output,target/'origin',dirs_exist_ok=True)
+            shutil.copy2(self.store,target/'monolith.sqlite3')
+            (target/'expected-event.json').write_bytes(host.raw_json(self.event))
+
+    def test_locked_sqlite_dependency_corruption_fails_before_shell_creation(self):
+        original=(self.export/'docs/monitor/origin/vendor/sql-wasm.wasm').read_bytes()
+        try:
+            (self.export/'docs/monitor/origin/vendor/sql-wasm.wasm').write_bytes(original+b'corrupt')
+            with self.assertRaisesRegex(ValueError,'ORIGIN_SQLITE_ASSET_DRIFT'):
+                host.verify_origin_sqlite_assets(self.export)
+        finally:(self.export/'docs/monitor/origin/vendor/sql-wasm.wasm').write_bytes(original)
+
 class OwnerRESTMonolithTests(unittest.TestCase):
     """Actual S1 process, authenticated HTTP and original SQLite; no AF_UNIX."""
     setUpClass = MonolithicStoreTests.__dict__['setUpClass']

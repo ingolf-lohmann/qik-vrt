@@ -311,10 +311,21 @@
     "local_url_produced_by_runtime_adapter_from_embedded_carrier": true,
     "logical_object": "ONE_MONOLITHIC_INTERACTIVE_STORE",
     "mobile_candidate": {
-      "adapter": "BROWSER_ORIGIN_RUNTIME_NOT_IMPLEMENTED",
+      "adapter": "SECURE_ORIGIN_SQLITE_IMAGE_ADAPTER",
+      "android_witness": "NOT_EXECUTED_NO_DEVICE_OR_RUNNER_ESTABLISHED",
+      "arbitrary_filesystem_access": false,
+      "bootstrap": "HTTPS_SAME_ORIGIN_STATIC_SHELL; LOOPBACK_ONLY_FOR_DEVELOPMENT",
+      "ios_witness": "NOT_EXECUTED_NO_DEVICE_OR_RUNNER_ESTABLISHED",
+      "native_python_execution_in_browser": false,
+      "offline_bootstrap": "SHA256_PINNED_SERVICE_WORKER_SHELL",
+      "passive_terminal": true,
+      "persistent_storage": "REQUEST_AND_REPORT_BROWSER_POLICY; NO_FSYNC_OR_EVICTION_IMMUNITY_INFERRED",
       "public_https_and_offline_persistence_require_separate_witness": true,
+      "pure_file_start_supported": false,
       "requires_initial_executable_bootstrap": true,
-      "standalone_file_cannot_self_execute_without_runtime": true
+      "standalone_file_cannot_self_execute_without_runtime": true,
+      "storage": "ORIGIN_PRIVATE_INDEXEDDB_ATOMIC_SQLITE_IMAGE",
+      "store_identity": "PRESERVE_NATIVE_META_EPOCH_AND_CARRIER_MANIFEST_PIN"
     },
     "mobile_runtime_verified": false,
     "native_candidate": {
