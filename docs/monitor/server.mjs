@@ -99,7 +99,7 @@ function verifyReplication(raw, signature, method, path, secret) {
     Buffer.from(replicationSignature(raw, method, path, secret).slice(7), 'hex'));
 }
 
-async function readBody(request, limit) {
+export async function readBody(request, limit) {
   const chunks = []; let size = 0;
   for await (const chunk of request) {
     size += chunk.length;

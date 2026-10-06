@@ -4,7 +4,7 @@
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {resolve, join} from 'node:path';
-import {createMonitor, providerFetch, VERSION} from './server.mjs';
+import {createMonitor, providerFetch, readBody, VERSION} from './server.mjs';
 
 const root = process.env.QIKVRT_NODE_PACKAGE;
 const configBytes = readFileSync(process.env.QIKVRT_NODE_CONFIG);
@@ -12,6 +12,9 @@ const config = JSON.parse(configBytes);
 const hash = value => createHash('sha256').update(value).digest('hex');
 const rawManifest = readFileSync(join(root, 'MANIFEST.json'));
 const manifest = JSON.parse(rawManifest);
+const discoveryBytes = readFileSync(join(root, 'registry/NODE_DISCOVERY_POLICY.json'));
+const discovery = JSON.parse(discoveryBytes);
+const seedBytes = readFileSync(join(root, discovery.standing_invitation.seed_lookup.seed_path));
 const pin = process.env.QIKVRT_NODE_MANIFEST_SHA256;
 if (hash(rawManifest) !== pin || hash(configBytes) !== process.env.QIKVRT_NODE_CONFIG_SHA256 ||
     manifest.runtime.node.version !== process.version ||
@@ -57,8 +60,48 @@ const binding = () => ({schema: 'qikvrt-self-host-runtime/v1', package_version: 
   mobile_runtime_verified:false,
   public_routing_verified: false, effect_ack_done: false});
 async function routes(request, response, url) {
+  if (url.pathname === '/api/mesh/lookup') {
+    if (request.method !== 'POST') {reply(response,405,{error:'POST_EXACT_400_BYTE_SEED_REQUIRED'});return true;}
+    const nonce=url.searchParams.get('nonce') || '';
+    if (!/^[A-Za-z0-9_-]{16,128}$/.test(nonce) ||
+        !/^application\/octet-stream(?:;|$)/i.test(request.headers['content-type'] || '')) {
+      reply(response,400,{error:'NONCE_AND_BINARY_SEED_REQUIRED',effect_ack_done:false});return true;
+    }
+    let received;
+    try {received=await readBody(request,400);} catch (error) {
+      if (error.message!=='PAYLOAD_TOO_LARGE') throw error;
+      reply(response,413,{error:'SEED_MUST_BE_EXACTLY_400_BYTES',effect_ack_done:false});return true;
+    }
+    const length=received.length;
+    if (length!==400 || !received.equals(seedBytes)) {
+      reply(response,422,{error:'INCOMPATIBLE_CANONICAL_SEED',effect_ack_done:false});return true;
+    }
+    reply(response,200,{schema:'qikvrt-seed-lookup-response/v1',nonce,seed_bytes:length,seed_sha256:hash(received),
+      node_id:config.node_id,source_repository:manifest.source_repository,source_head:manifest.source_head,
+      source_tree:manifest.source_tree,manifest_sha256:pin,policy_sha256:hash(discoveryBytes),
+      observed_at:new Date().toISOString(),compatibility:'EXACT_SEED_AND_PACKAGED_NODE_CONTRACT',
+      invitation_url:'/api/mesh/invitation',components:discovery.standing_invitation.components,
+      native_runtime_acceptance:false,authority_handoff_verified:false,all_nodes_connected:false,effect_ack_done:false});
+    return true;
+  }
   if (url.pathname === '/api/webhooks/github' && config.adapter === 'none') {
     reply(response, 409, {error:'GITHUB_ADAPTER_NOT_SELECTED', effect_ack_done:false}); return true;
+  }
+  if (['/api/mesh/invitation', '/api/mesh/invitation/source'].includes(url.pathname)) {
+    if (!['GET','HEAD'].includes(request.method)) {
+      reply(response,405,{error:'READ_ONLY_INVITATION_ROUTE',effect_ack_done:false}); return true;
+    }
+    if (url.pathname.endsWith('/source')) reply(response,200,discoveryBytes,'application/json',request.method);
+    else reply(response,200,{schema:'qikvrt-node-invitation-readback/v1',observed_at:new Date().toISOString(),
+      node_id:config.node_id,source_repository:manifest.source_repository,source_head:manifest.source_head,
+      source_tree:manifest.source_tree,manifest_sha256:pin,invitation:discovery.standing_invitation,
+      discovery_scope:discovery.discovery_scope,policy_sha256:hash(discoveryBytes),
+      policy_readback_url:'/api/mesh/invitation/source',
+      request_queue_repository:'Goldkelch/qik-vrt',request_queue_path:'registry/node_request_queue',
+      request_queue_url:'https://github.com/Goldkelch/qik-vrt/tree/main/registry/node_request_queue',
+      readiness_scope:'PACKAGED_INVITATION_CONTRACT; REMOTE_ADMISSION_EXECUTOR_NOT_ATTESTED',
+      native_runtime_acceptance:false,all_nodes_connected:false,effect_ack_done:false},'application/json',request.method);
+    return true;
   }
   const owned = ['/api/runtime','/api/terminal','/api/repository','/AI/','/terminal/','/mesh','/node','/client'].includes(url.pathname) || files.has(url.pathname) ||
     (config.adapter === 'none' && url.pathname === '/api/run');

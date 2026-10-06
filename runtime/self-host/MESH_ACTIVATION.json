@@ -118,7 +118,8 @@
       "observation_scope": "SITES_METADATA_AND_EXACT_SOURCE_READ; NOT_A_FRESH_PUBLIC_HTTP_OR_NATIVE_RUNTIME_WITNESS"
     },
     "normative_scope": "Every current and future admitted QIK-VRT repository node, including Authority and Personal/Mirror, plus the Mesh aggregate.",
-    "product_name": "Universales Raumzeit-Terminal",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "product_name": "RaumzeitTerminal",
     "provision_rule": "Each node MUST expose its own repository-bound public HTTPS evidence surface. A central dashboard link or an unbound copy does not satisfy node provision. Node paths on a shared admitted host are allowed only with independently verifiable identity, source, artifacts, storage and readback.",
     "required_capabilities": [
       "Public node identity, repository and role, deployed exact HEAD/TREE/artifact binding and separately observed remote repository state; packaged source must never be labeled current remote main.",
@@ -172,7 +173,8 @@
     "scope": "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE",
     "all_roles": true,
     "role_exemptions": [],
-    "product_name": "Universales Raumzeit-Terminal",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "product_name": "RaumzeitTerminal",
     "source_carriers": {
       "universal_transputer": [
         "src/qikvrt_temdd_event_ledger.py"
@@ -345,5 +347,56 @@
       "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
     ],
     "terminal": "REACT_HTML_PASSIVE_INPUT_OUTPUT_OPENED_ON_DEMAND"
+  },
+  "required_repository_node_admission": {
+    "owner": "Ingolf Lohmann",
+    "policy_path": "registry/NODE_DISCOVERY_POLICY.json",
+    "invitation_route": "/api/mesh/invitation",
+    "lookup_route": "/api/mesh/lookup",
+    "live_acceptance_required": true,
+    "implementation_scope": "SOURCE_INVITATION_AND_READ_ONLY_SEED_RESPONSE; FULL_NATIVE_CONNECTION_AND_AUTHORITY_HANDOFF_OPEN",
+    "native_mesh_connection_verified": false,
+    "authority_handoff_verified": false,
+    "effect_ack_done": false
+  },
+  "hosting_pipeline": {
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-06T10:10:55+02:00",
+    "work_unit": "OPEN_NODE_SEED_LOOKUP_AND_AUTHORITY_CONTINUITY_20261006_V1",
+    "reuse": [
+      "tools/qikvrt_self_host.py:admit",
+      "tools/qikvrt_self_host.py:supervisor",
+      "tools/qikvrt_self_host.py:run-admitted",
+      "runtime/self-host/HOST_ADMISSION.example.json"
+    ],
+    "providers": [
+      "IONOS_1AND1",
+      "HETZNER",
+      "DIGITALOCEAN",
+      "OTHER_OWNER_ADMITTED_PROVIDERS"
+    ],
+    "existing_providers_retained": true,
+    "geographic_distribution_required": true,
+    "independent_provider_failure_domains_required": true,
+    "client_locality_latency_measurements_required": true,
+    "small_nodes_allowed": true,
+    "budget_and_runtime_capacity_must_be_bound": true,
+    "configuration_is_not_availability_guarantee": true,
+    "public_native_hosts_verified": false,
+    "effect_ack_done": false
+  },
+  "product_identity": {
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-06T10:14:09+02:00",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "technology_domain": "Informatik",
+    "technology_components": ["Hardware", "Software"],
+    "product_name": "RaumzeitTerminal",
+    "product_name_written_as_one_word": true,
+    "domain_stem": "raumzeitterminal",
+    "domain_registration_requires_current_registrar_availability": true,
+    "trademark_protection_requires_exact_territory_goods_services_and_admissibility_review": true,
+    "domain_registered": false,
+    "trademark_registered": false
   }
 }

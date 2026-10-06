@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.7.0
+# S1 standalone node package, version 1.7.1
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.
@@ -678,3 +678,36 @@ Primary source locators:
 `mobile_runtime_verified=false`, `all_manufacturers_verified=false`, and
 `EFFECT_ACK_DONE=false` remain explicit. Neither a source gate nor a native Linux
 test supplies mobile, public URL or cloud synchronization acceptance.
+
+### Open Node invitation and preserved 400-byte lookup
+
+The passive frontend is named **RaumzeitTerminal**. The underlying hardware and
+software technology is the **Universales Raumzeit-Terminal**. Domain availability
+and trademark clearance remain distinct from runtime acceptance.
+
+Every S1 export publishes `GET /api/mesh/invitation` and the original policy
+bytes at `GET /api/mesh/invitation/source`. Send the exact canonical 400-byte
+`canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin` to
+`POST /api/mesh/lookup?nonce=<16..128 safe characters>` with
+`Content-Type: application/octet-stream`. A compatible node answers with that
+nonce, the seed digest and its source/package identity. HTTP framing and the
+response are outside the 400-byte seed. The preserved V1 signature is not
+relabeled as the recovered historical original owner image or as a credential.
+
+The existing repository Seed controller fans out to every explicitly declared
+endpoint and retains failed members:
+
+```sh
+python3 -B tools/qikvrt_seed_common.py lookup \
+  --lookup-url https://node-one.example/api/mesh/lookup \
+  --lookup-url https://node-two.example/api/mesh/lookup
+```
+
+This coordinator runs from the reviewed repository, independently of an open
+terminal. It does not scan the Internet, mutate the registry, execute received
+work, admit peers, or promote an Authority. Use the existing reviewed queue and
+explicit node-policy path for registration. The source gate preserves all
+native connection obligations. An Authority exchange additionally requires
+predecessor fencing, exact confirmed-state recovery, authenticated new role and
+epoch admission, safe quorum, and a fresh successor native/public readback.
+These live obligations remain open in this candidate.

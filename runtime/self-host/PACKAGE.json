@@ -8,6 +8,7 @@
     "LICENSE_TRANSITION.md",
     "README.md",
     "STATUS.md",
+    "canonical/QIKVRT_STANDPOINT_SIGNATURE_V1.bin",
     "deploy/universal-terminal/Dockerfile",
     "deploy/universal-terminal/cloud-entrypoint.sh",
     "deploy/universal-terminal/compose.yaml",
@@ -51,6 +52,8 @@
     "docs/terminal/index.html",
     "docs/terminal/temdd/index.html",
     "evidence/self_host/SOURCE_RECOVERY_20261005.json",
+    "policy/QIKVRT_STANDPOINT_CODEX_V1.json",
+    "registry/NODE_DISCOVERY_POLICY.json",
     "runtime/self-host/CAPTURE.md",
     "runtime/self-host/CAPTURE_REQUEST.example.json",
     "runtime/self-host/CONFIG.example.json",
@@ -99,5 +102,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.7.0"
+  "version": "1.7.1"
 }
