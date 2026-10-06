@@ -74,12 +74,42 @@
       "artifact_sha256": "067ee8631ded1f9e66e8a5283e686be20a251c1560529f463fba34cc0bc1fec7",
       "outcome": "Native/Origin and first three UI control groups succeeded; first Dueck-answer scenario substring absent; no complete UI witness.",
       "visual_review": "Bound screenshot at 390px shows task, evidence boundaries and primary action before y=900. Desktop screenshot also retained. This is a predecessor-specific visual observation, not transferred candidate acceptance."
+    },
+    "third_candidate": {
+      "head": "be8c8404a11794b13b038ce7c153fa64f1575809",
+      "tree": "0eb0803e26ba4f8bb3e0d4079de4e80a735b5f39",
+      "native_run_id": 37449629341,
+      "native_job_id": 112222768331,
+      "artifact_id": 11406950701,
+      "artifact_sha256": "66f55d1fc97a508868d05556e91fadd0c726184e711419b2aee31bf9815a532c",
+      "outcome": "Native S1, twelve original Origin controls and all six UI groups succeeded. Artifact digest, HEAD/TREE and three UI asset hashes independently read back; 390/1280px screenshots visually reviewed.",
+      "scope": "HISTORICAL_PREDECESSOR_ONLY; NO_EVIDENCE_TRANSFER"
+    },
+    "native_test_harness_failure": {
+      "run_id": 37449629333,
+      "job_id": 112222767816,
+      "observed": "NativeStandaloneTests.test_public_monitor_has_no_private_event_body_or_durable_http_writer failed before startup with START_CONFIGURATION_BINDING_MISMATCH.",
+      "causal_reproduction": "Setting the independently allocated terminal port equal to the monitor port reproduces the exact refusal before ledger creation. The original failing private configuration was not retained; port reuse is the identified nondeterministic fixture input, not a directly archived original value.",
+      "repair": "Reserve both sockets simultaneously while allocating the distinct ports. Keep the production rejection unchanged and add an executed equal-port negative control.",
+      "scope": "TEST_FIXTURE_ALLOCATION_ONLY; NO_PRODUCTION_GATE_DOWNGRADE"
+    },
+    "ontology_bootstrap_recovery": {
+      "run_id": 37449622750,
+      "failed_job_id": 112222743301,
+      "cause": "Elan release download returned upstream HTTP 500 before Lean verification.",
+      "retry_job_id": 112224520835,
+      "outcome": "Cause-bound retry succeeded; no Lean or workflow changes."
+    },
+    "local_fixture_checks": {
+      "equal_port_refusal": "PASS; productive runtime refuses equal ports and leaves state empty",
+      "static_react_scopes": "PASS; root/index/client/mesh/node retain exact assets, HEAD and passive POST controls",
+      "native_monitor_control": "BLOCK in local executor: [Errno 1] Operation not permitted before readiness; no productive control or scope weakened. Fresh admitted GitHub-native runner remains the verification path."
     }
   },
   "recovery": {
     "observation": "Local workspace replaced during attempted desktop browser test; no browser result established. Source changes reconstructed; fresh checks required.",
     "cause": "UNESTABLISHED",
-    "next_action": "Execute fresh local and native checks on this repaired successor; independently read the exact-source UI witness and screenshots."
+    "next_action": "Execute fresh native and browser gates on the successor with the corrected fixture; independently read exact-source witnesses. Public deployment and personal runtime acceptance remain open."
   },
   "boundaries": {
     "personal_runtime_admitted": false,
@@ -106,6 +136,10 @@
     {
       "cause": "The first expanded Dueck answer omitted the explicit interrupted-task scenario required by the checklist.",
       "change": "Add unterbrochene to that answer and retain the failing disposition check; improve assertion diagnostics."
+    },
+    {
+      "cause": "The existing fixture closed each ephemeral port reservation before allocating the next, permitting an equal-port invalid startup configuration.",
+      "change": "Allocate both ports with simultaneous live reservations; retain the productive equal-port refusal and test that it creates no runtime state."
     }
   ]
 }

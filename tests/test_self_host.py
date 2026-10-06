@@ -410,12 +410,16 @@ class StandaloneTests(unittest.TestCase):
         self.token_file = self.work / "terminal.token"
         self.token_file.write_text("test-only-32-byte-local-token-no-real-credential")
         self.token_file.chmod(0o600)
-        def port():
-            with socket.socket() as s:
-                s.bind(("127.0.0.1",0)); return s.getsockname()[1]
+        # Keep both reservations alive until allocation is complete. Closing
+        # the first socket before the second bind can return the same port.
+        with socket.socket() as monitor, socket.socket() as terminal:
+            monitor.bind(("127.0.0.1", 0))
+            terminal.bind(("127.0.0.1", 0))
+            monitor_port = monitor.getsockname()[1]
+            terminal_port = terminal.getsockname()[1]
         self.config = {"schema":"qikvrt-self-host-config/v1","node_id":"fixture:standalone",
             "source_head":self.head,"source_tree":self.tree,"adapter":"none","state_dir":str(self.volume),
-            "host":"127.0.0.1","port":port(),"terminal_port":port(),"terminal_token_file":str(self.token_file)}
+            "host":"127.0.0.1","port":monitor_port,"terminal_port":terminal_port,"terminal_token_file":str(self.token_file)}
         self.config_path = self.work / "config.json"
         self.save_config()
         self.url = "http://127.0.0.1:"+str(self.config["port"])
@@ -474,6 +478,12 @@ class StandaloneTests(unittest.TestCase):
         value=json.loads(p.stdout)
         self.assertFalse(value["effect_ack_done"])
         return value["cause"]
+
+    def test_equal_monitor_and_terminal_ports_hold_before_runtime_creation(self):
+        self.config['terminal_port'] = self.config['port']
+        self.save_config()
+        self.assertEqual(self.denied(), 'START_CONFIGURATION_BINDING_MISMATCH')
+        self.assertEqual(list(self.volume.iterdir()), [])
 
     def seed_acknowledged_event(self):
         (self.volume/"monitor").mkdir(mode=0o700)
