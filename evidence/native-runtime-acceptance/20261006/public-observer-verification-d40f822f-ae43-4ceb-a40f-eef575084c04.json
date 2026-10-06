@@ -1,0 +1,69 @@
+{
+  "schema": "qikvrt-independent-public-observer-verification/v2",
+  "verified_at": "2026-10-06T09:15:54.202303+00:00",
+  "site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+  "site_source_commit": "ce7a31e9af4f7b22c9a4a275c1a8d0b71e6f4a68",
+  "update_contract_schema": "qikvrt-dynamic-evidence-update-contract/v2",
+  "method": "GET",
+  "user_agent": "QIKVRT-Independent-Readback/2",
+  "snapshot_id": "d40f822f-ae43-4ceb-a40f-eef575084c04",
+  "started_at": "2026-10-06T09:11:39.839Z",
+  "completed_at": "2026-10-06T09:11:39.930Z",
+  "served_at": "2026-10-06T09:11:40.544Z",
+  "newer_than_snapshot": "516faf49-e2c8-40fd-90bf-fe7060cd3e17",
+  "evidence_http_status": 200,
+  "readback_http_status": 200,
+  "evidence_bytes": 4811,
+  "evidence_sha256": "d8d7f4c6c511d219785de771c5e0eeffa4db3dd19a3bca691d396e57ce3e8033",
+  "readback_bytes": 2798,
+  "readback_sha256": "fd99751d8f09eafc4585aae4ba1bd6bc508db7b8bd9d3c7b19b665ccc66b7ba8",
+  "persistence_snapshot_sha256": "fd99751d8f09eafc4585aae4ba1bd6bc508db7b8bd9d3c7b19b665ccc66b7ba8",
+  "persistence_verified": true,
+  "byte_exact_readback_sha256_match": true,
+  "parsed_snapshot_equal": true,
+  "age_ms_at_response": 614,
+  "stale": false,
+  "http_reachability": "VERIFIED_FOR_DASHBOARD_AND_IMMUTABLE_READBACK",
+  "package_evidence": "SEPARATE_NOT_INFERRED_FROM_HTTP",
+  "native_runtime_acceptance": false,
+  "native_mesh_execution_verified": false,
+  "effect_ack_done": false,
+  "ordinary_release": false,
+  "repository_observations": [
+    {
+      "repository": "Goldkelch/qik-vrt",
+      "role": "Authority",
+      "status": 403,
+      "head": null,
+      "tree": null,
+      "error": "HTTP 403"
+    },
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "role": "Personal / Mirror",
+      "status": 403,
+      "head": null,
+      "tree": null,
+      "error": "HTTP 403"
+    }
+  ],
+  "material_transitions": [
+    {
+      "repository": "Goldkelch/qik-vrt",
+      "previous_http_status": 404,
+      "new_http_status": 403,
+      "classification": "OBSERVATION_SOURCE_ERROR_CAUSE_NOT_DETERMINED"
+    },
+    {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "previous_http_status": 200,
+      "new_http_status": 403,
+      "classification": "OBSERVATION_SOURCE_ERROR_CAUSE_NOT_DETERMINED"
+    }
+  ],
+  "no_site_source_change": true,
+  "no_site_deployment": true,
+  "no_product_release": true,
+  "updater_disable_required": false,
+  "disable_reason": "Request succeeded; source HTTP403 may be transient and does not establish a permanent block"
+}

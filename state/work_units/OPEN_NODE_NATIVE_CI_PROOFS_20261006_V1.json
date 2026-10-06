@@ -1,0 +1,306 @@
+{
+  "schema": "qikvrt_provenance_work_unit_v1",
+  "id": "OPEN_NODE_NATIVE_CI_PROOFS_20261006_V1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/open-node-seed-lookup-20261006",
+  "source_commit": "45808064641c637a2a9c722e3305dfb7aa322db0",
+  "source_tree": "b82773510736b812b26c178fa5ce0590eb0f1e85",
+  "evidence_ref": "evidence/open-node-native-ci-20261006",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product and Code Owner"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "identity_limits": [
+      "Session attribution is not cryptographic human or model authentication"
+    ]
+  },
+  "human_contributions": [
+    "Authorize native runtime work, exact preservation of evidence and RaumzeitTerminal frontend/product naming"
+  ],
+  "artificial_cognitive_contributions": [
+    "Independently read exact-source native CI results",
+    "Verify all six original CI archives and all 95 original package files",
+    "Preserve original runtime evidence on a separate evidence ref"
+  ],
+  "completed_source_checks": [
+    {
+      "id": 37438710781,
+      "name": "QIKVRT CI",
+      "head_sha": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710781",
+      "updated_at": "2026-10-06T08:57:56Z"
+    },
+    {
+      "id": 37438710806,
+      "name": "QIKVRT productive TEMDD S1 carrier",
+      "head_sha": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710806",
+      "updated_at": "2026-10-06T08:52:25Z"
+    },
+    {
+      "id": 37438710786,
+      "name": "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+      "head_sha": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710786",
+      "updated_at": "2026-10-06T08:55:54Z"
+    },
+    {
+      "id": 37438704761,
+      "name": "QIKVRT CI",
+      "head_sha": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438704761",
+      "updated_at": "2026-10-06T08:53:10Z"
+    }
+  ],
+  "original_ci_package": {
+    "package_version": "1.7.1",
+    "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+    "source_tree": "b82773510736b812b26c178fa5ce0590eb0f1e85",
+    "manifest_sha256": "0cc31cfb62d3265fc8fe86c47280c53d432454e9f6d764e380f3c53c97225ed9",
+    "archive_sha256": "5ce34ba8aae907411711a7d27f236b84ebe6362da74d0cb12323f2be23894050",
+    "files_byte_verified": 95,
+    "packaged_native_source_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+    "packaged_original_temdd_html_sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819",
+    "verification": "ALL_MANIFEST_LISTED_ORIGINAL_TAR_BYTES_MATCH"
+  },
+  "native_binding_original": {
+    "effect_ack_done": false,
+    "native_source_sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13",
+    "predecessor_evidence_transfer": false,
+    "run_attempt": "1",
+    "run_id": "37438710806",
+    "schema": "qikvrt-temdd-s1-native-gate/v1",
+    "scope": "EXECUTED_ORIGINAL_AND_PORTABLE_NATIVE_CONTROLS; NO_DEPLOYMENT",
+    "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+    "source_tree": "b82773510736b812b26c178fa5ce0590eb0f1e85"
+  },
+  "native_monolithic_controls_passed": 7,
+  "original_archives": [
+    {
+      "artifact_id": 11400991401,
+      "name": "qikvrt-systemd-recovery-45808064641c637a2a9c722e3305dfb7aa322db0",
+      "workflow_run_id": 37438710786,
+      "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "github_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710786/artifacts/11400991401",
+      "github_original_expiry": "2026-11-05T08:52:30Z",
+      "bytes": 1186,
+      "sha256": "034bde3b4d49da6cb2f64cb2833f9e2e87b793a5afa764178d8d739913517ec2",
+      "git_blob_sha1": "52a9757003c30fd1a4b0e50df9a4609701ef5128",
+      "preserved_path": "evidence/native-runtime-acceptance/20261006/45808064/qikvrt-systemd-recovery-45808064641c637a2a9c722e3305dfb7aa322db0.zip",
+      "original_archive_byte_verification": "PASS",
+      "zip_crc_verification": "PASS"
+    },
+    {
+      "artifact_id": 11400851226,
+      "name": "qikvrt-firefox-terminal-37438710786-1",
+      "workflow_run_id": 37438710786,
+      "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "github_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710786/artifacts/11400851226",
+      "github_original_expiry": "2026-11-05T08:55:51Z",
+      "bytes": 11289,
+      "sha256": "9ef6e8d93aeabdb6f2f0d426fa255477e9cf016db2508e42bbfc5aba54752550",
+      "git_blob_sha1": "33f301efdc4d546c95d362ac15d83bf78982bf5b",
+      "preserved_path": "evidence/native-runtime-acceptance/20261006/45808064/qikvrt-firefox-terminal-37438710786-1.zip",
+      "original_archive_byte_verification": "PASS",
+      "zip_crc_verification": "PASS"
+    },
+    {
+      "artifact_id": 11400555983,
+      "name": "qikvrt-native-state-recovery-45808064641c637a2a9c722e3305dfb7aa322db0",
+      "workflow_run_id": 37438710786,
+      "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "github_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710786/artifacts/11400555983",
+      "github_original_expiry": "2026-11-05T08:52:12Z",
+      "bytes": 3386,
+      "sha256": "17e8bc6352b1fbec6117a89881201558efad14fa32f27deef06743892a838c14",
+      "git_blob_sha1": "9ed402670042661057c8df91a78d99900a906184",
+      "preserved_path": "evidence/native-runtime-acceptance/20261006/45808064/qikvrt-native-state-recovery-45808064641c637a2a9c722e3305dfb7aa322db0.zip",
+      "original_archive_byte_verification": "PASS",
+      "zip_crc_verification": "PASS"
+    },
+    {
+      "artifact_id": 11400526650,
+      "name": "qikvrt-self-host-45808064641c637a2a9c722e3305dfb7aa322db0",
+      "workflow_run_id": 37438710786,
+      "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "github_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710786/artifacts/11400526650",
+      "github_original_expiry": "2026-11-05T08:55:50Z",
+      "bytes": 420211,
+      "sha256": "09fefe5995b38feaa9af71db623a7bf5de34439f5b25ca16949abaf87e381688",
+      "git_blob_sha1": "896654494eaa11b245f55834e74e282f7a32b76b",
+      "preserved_path": "evidence/native-runtime-acceptance/20261006/45808064/qikvrt-self-host-45808064641c637a2a9c722e3305dfb7aa322db0.zip",
+      "original_archive_byte_verification": "PASS",
+      "zip_crc_verification": "PASS"
+    },
+    {
+      "artifact_id": 11400268151,
+      "name": "qikvrt-productive-terminal-readback-45808064641c637a2a9c722e3305dfb7aa322db0",
+      "workflow_run_id": 37438710786,
+      "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "github_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710786/artifacts/11400268151",
+      "github_original_expiry": "2026-11-05T08:55:24Z",
+      "bytes": 19259,
+      "sha256": "3dd0e1f027dd12afb46129579f60d7cf0c03857031ef56a14b6dfc157b8addcb",
+      "git_blob_sha1": "51e21c20e395c3e856912445b8a4ed5e9308dfde",
+      "preserved_path": "evidence/native-runtime-acceptance/20261006/45808064/qikvrt-productive-terminal-readback-45808064641c637a2a9c722e3305dfb7aa322db0.zip",
+      "original_archive_byte_verification": "PASS",
+      "zip_crc_verification": "PASS"
+    },
+    {
+      "artifact_id": 11400476109,
+      "name": "qikvrt-temdd-s1-45808064641c637a2a9c722e3305dfb7aa322db0",
+      "workflow_run_id": 37438710806,
+      "source_head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+      "github_url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37438710806/artifacts/11400476109",
+      "github_original_expiry": "2026-11-05T08:52:22Z",
+      "bytes": 6494,
+      "sha256": "caaa603bf3f77fb785c4b6b5405d3bffdfe437923465ffaa6b3f583a76ed676c",
+      "git_blob_sha1": "9ee745b18e272e277d5457a89d73a421fc3a5ea0",
+      "preserved_path": "evidence/native-runtime-acceptance/20261006/45808064/qikvrt-temdd-s1-45808064641c637a2a9c722e3305dfb7aa322db0.zip",
+      "original_archive_byte_verification": "PASS",
+      "zip_crc_verification": "PASS"
+    }
+  ],
+  "preservation_state": "ORIGINAL_BYTES_VERIFIED; CONTAINING_COMMIT_REMOTE_READBACK_REQUIRED",
+  "scope": "NATIVE_LINUX_CI_REFERENCE_AND_ORIGINAL_ARTIFACT_PRESERVATION; PUBLIC_NATIVE_DEPLOYMENT_OPEN",
+  "protected_historical_source_identity_preserved": true,
+  "original_recovery_manifest_and_tests_unchanged": true,
+  "failed_candidate_history": {
+    "head": "20eb25ec3cab3f8c6377e275148844d2797a16ff",
+    "cause": "Product-name edit changed protected historical TEMDD HTML bytes",
+    "repair_head": "45808064641c637a2a9c722e3305dfb7aa322db0"
+  },
+  "public_observer_reference": {
+    "snapshot_id": "d40f822f-ae43-4ceb-a40f-eef575084c04",
+    "completed_at": "2026-10-06T09:11:39.930Z",
+    "readback_bytes": 2798,
+    "readback_sha256": "fd99751d8f09eafc4585aae4ba1bd6bc508db7b8bd9d3c7b19b665ccc66b7ba8",
+    "http_and_persistence_verified": true,
+    "public_native_runtime_verified": false,
+    "repository_source_http_statuses": {
+      "Goldkelch/qik-vrt": 403,
+      "ingolf-lohmann/qik-vrt": 403
+    },
+    "material_source_errors": [
+      {
+        "repository": "Goldkelch/qik-vrt",
+        "previous_http_status": 404,
+        "new_http_status": 403,
+        "classification": "OBSERVATION_SOURCE_ERROR_CAUSE_NOT_DETERMINED"
+      },
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "previous_http_status": 200,
+        "new_http_status": 403,
+        "classification": "OBSERVATION_SOURCE_ERROR_CAUSE_NOT_DETERMINED"
+      }
+    ],
+    "verification_path": "evidence/native-runtime-acceptance/20261006/public-observer-verification-d40f822f-ae43-4ceb-a40f-eef575084c04.json"
+  },
+  "successor_repository_preparation": {
+    "proposed_repository": "ingolf-lohmann/raumzeitterminal",
+    "create_request": {
+      "name": "raumzeitterminal",
+      "description": "QIK-VRT RaumzeitTerminal native repository-node frontend and preserved evidence",
+      "private": false,
+      "auto_init": false
+    },
+    "new_repository_created": false,
+    "new_remote_import_executed": false,
+    "all_ref_history_empty_target_restore_verified_locally": true,
+    "first_boundary": "GITHUB_REPOSITORY_CREATE_OPERATION_NOT_EXPOSED; AUTHENTICATED_CLI_ROUTE_NOT_AVAILABLE"
+  },
+  "release_claims": {
+    "native_CI_reference_controls_passed": true,
+    "public_native_runtime_acceptance": false,
+    "all_nodes_connected": false,
+    "authority_handoff_verified": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "predecessor_evidence_transfer": false,
+    "ordinary_release": false,
+    "public_site_deployment": false
+  },
+  "external_blockers": [
+    "ADMITTED_PUBLIC_NATIVE_LINUX_HOST_AND_PRIVILEGED_EXECUTOR_UNBOUND",
+    "DIGITALOCEAN_ACCOUNT_PROVISIONING_WARNING",
+    "IONOS_AND_HETZNER_AUTHENTICATED_CONTROL_PLANES_UNBOUND",
+    "GITHUB_NEW_REPOSITORY_CREATION_CAPABILITY_NOT_EXPOSED",
+    "MAIN_BASE_CODE_OWNER_GATE_AND_AUTHORITY_READBACK_404",
+    "GENERAL_NATIVE_EFFECT_REPLICATION_AND_LIVE_AUTHORITY_HANDOFF_OPEN",
+    "LATEST_PUBLIC_OBSERVER_REPOSITORY_SOURCES_HTTP403_CAUSE_NOT_DETERMINED",
+    "IONOS_DOMAIN_RESERVATION_AND_TRADEMARK_CLEARANCE_OPERATIONS_UNBOUND"
+  ],
+  "observed_at": "2026-10-06T09:17:03.194566+00:00",
+  "previous_public_observer_reference": {
+    "snapshot_id": "516faf49-e2c8-40fd-90bf-fe7060cd3e17",
+    "completed_at": "2026-10-06T08:35:45.163Z",
+    "readback_bytes": 3614,
+    "readback_sha256": "6d4ba6f200165ce84803fb7196e173deaf332b460a03e768784f940f1da73102",
+    "http_and_persistence_verified": true,
+    "public_native_runtime_verified": false
+  },
+  "domain_registry_observation": {
+    "schema": "qikvrt-domain-status-observation/v1",
+    "domain": "raumzeitterminal.de",
+    "product_name": "RaumzeitTerminal",
+    "technology_name": "Universales Raumzeit-Terminal",
+    "provider_preference": "1&1 / IONOS; user reports existing customer",
+    "observed_at": "2026-10-06T09:17:03.194265+00:00",
+    "response_date": "Tue, 06 Oct 2026 09:15:39 GMT",
+    "method": "HEAD",
+    "url": "https://rdap.denic.de/domain/raumzeitterminal.de",
+    "http_status": 404,
+    "registry": "DENIC",
+    "interpretation": "NOT_REGISTERED_AT_OBSERVATION_TIME",
+    "interpretation_source": "https://www.denic.de/services/whois-service/rdap-service/",
+    "reservation_completed": false,
+    "domain_purchase_completed": false,
+    "registrar_authenticated_control_plane_bound": false,
+    "trademark_exact_and_similarity_clearance_completed": false,
+    "trademark_admissibility_confirmed": false,
+    "trademark_filed": false,
+    "legal_admissibility_not_inferred_from_domain_status": true,
+    "prior_provider_availability_false_not_global_registration_result": true,
+    "private_registrant_data_retrieved": false
+  },
+  "hosting_account_observation": {
+    "observed_at": "2026-10-06T09:17:03.194561+00:00",
+    "DigitalOcean": {
+      "droplets_listed": 0,
+      "account_status": "warning",
+      "droplet_limit": 3,
+      "status_message": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel.",
+      "empty_inventory_and_warning_preserved_without_billing_inference": true
+    },
+    "IONOS": {
+      "existing_customer": "USER_REPORTED",
+      "inventory": "UNKNOWN",
+      "authenticated_control_plane_bound": false
+    },
+    "Hetzner": {
+      "inventory": "UNKNOWN",
+      "authenticated_control_plane_bound": false
+    },
+    "additional_providers_remain_in_pipeline": true,
+    "new_vm_provisioned": false
+  }
+}
