@@ -1,0 +1,134 @@
+{
+  "schema": "qikvrt_publication_source_derivation_v1",
+  "source": {
+    "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+    "bytes": 8070,
+    "sha256": "c5e02a1516e7a4a91be7e8e6458ff35e06c558ae55321c22438b30624fc88a8b",
+    "git_blob_sha1": "2a42d1a52cccb957eb8ce5704cf525a410049169"
+  },
+  "source_repository_path": "publication-staging/ietf-epistemic-status-00-a2dbd3ac-v1/draft-lohmann-qikvrt-epistemic-status-00.xml",
+  "successor": {
+    "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+    "bytes": 13386,
+    "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+    "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+  },
+  "method": "ordered exact-text replacements; first occurrence only for operation 2",
+  "operations": [
+    {
+      "index": 0,
+      "from": "day=\"3\"",
+      "to": "day=\"4\"",
+      "count": 1
+    },
+    {
+      "index": 1,
+      "from": "ASSERT_AS_PROVED(C) implies VALID_BOUND_EVIDENCE(C)\n\nif VALID_BOUND_EVIDENCE(C) is false,\nC MUST NOT be classified as PROVED.",
+      "to": "ASSERT_AS_FORMAL_PROVED(C) implies VALID_BOUND_FORMAL_PROOF(C)\n\nif VALID_BOUND_FORMAL_PROOF(C) is false,\nC MUST NOT be classified as FORMAL_PROVED.",
+      "count": 1
+    },
+    {
+      "index": 2,
+      "from": "</sourcecode>\n    </section>",
+      "to": "</sourcecode>\n      <t>VALID_BOUND_FORMAL_PROOF(C) means that a checked proof artifact establishes the exact formal proposition resolved by claim_id, in the identified formal model and under the bound assumptions and proof-checking environment.  Formal acceptance does not establish unencoded premises or external-world correspondence.</t>\n    </section>",
+      "count": 1
+    },
+    {
+      "index": 3,
+      "from": "described in BCP 14 when, and only when,",
+      "to": "described in BCP 14 <xref target=\"RFC2119\"/> <xref target=\"RFC8174\"/> when, and only when,",
+      "count": 1
+    },
+    {
+      "index": 4,
+      "from": "using one of the following statuses or a deployment-defined refinement whose semantics are no stronger:",
+      "to": "using one of the following statuses.  A deployment-defined refinement MUST bind its parent status from this vocabulary and retain all evidence conditions of that parent.  Additional conditions MAY narrow the refinement; they MUST NOT replace or relax the parent conditions:",
+      "count": 1
+    },
+    {
+      "index": 5,
+      "from": "</dl>\n    </section>\n    <section>\n      <name>Normative Invariants</name>",
+      "to": "</dl>\n      <t>These evidence classes do not form a universal ranking.  Formal proof, empirical support, documentary attribution, interpretation, and normative authority answer different questions.  Status selection MUST use the conditions of the selected class and the scope of the claim rather than a single strength score.</t>\n    </section>\n    <section>\n      <name>Normative Invariants</name>",
+      "count": 1
+    },
+    {
+      "index": 6,
+      "from": "as OBSERVED merely because",
+      "to": "as EMPIRICALLY_EVIDENCED merely because",
+      "count": 1
+    },
+    {
+      "index": 7,
+      "from": "without a validated proof binding to the exact formal subject and assumptions.",
+      "to": "without a checked proof artifact bound to the exact formal proposition, claim scope, model, assumptions, and proof-checking environment.",
+      "count": 1
+    },
+    {
+      "index": 8,
+      "from": "A deployment profile MUST bind at least claim identifier, subject identity, subject state or version where applicable, observation time, evidence references, source identity, and epistemic status.  A deployment SHOULD also bind the evaluator and applicable policy version.",
+      "to": "A deployment profile MUST bind at least claim_id, claim_scope, subject identity, subject state or version where applicable, observation time, evidence references, source identity, and epistemic status.  The claim_id MUST resolve the exact proposition or an immutable reference to that proposition.  The claim_scope MUST state the applicable domain, conditions, and limits.  Evidence references MUST identify the evidence required by the selected status and its relation to this exact proposition and scope.  For FORMAL_PROVED they MUST resolve the checked proof, formal model, assumptions, and proof-checking environment.  A deployment-defined refinement MUST additionally bind its parent status and the unchanged evidence conditions of that parent.  A deployment SHOULD also bind the evaluator and applicable policy version.",
+      "count": 1
+    },
+    {
+      "index": 9,
+      "from": "  claim_id,\n  subject,",
+      "to": "  claim_id,\n  claim_scope,\n  subject,",
+      "count": 1
+    },
+    {
+      "index": 10,
+      "from": "This profile does not change the QIK-VRT EFFECT_ACK five-state version-1 contract.",
+      "to": "This profile composes with the independently specified QIK-VRT EFFECT_ACK mechanism <xref target=\"I-D.lohmann-qikvrt-effect-ack-03\"/> and does not change its five-state version-1 wire contract.",
+      "count": 1
+    },
+    {
+      "index": 11,
+      "from": "    </section>\n    <section>\n      <name>Security and Failure Modes</name>",
+      "to": "      <t>The cited draft is informative work in progress.  Its research-profile labels are not additional EFFECT_ACK version-1 enum values and are not an implicit identical registration of this profile's status vocabulary.  This composition description creates no new mandatory wire member or protocol dependency.</t>\n    </section>\n    <section>\n      <name>Security Considerations</name>",
+      "count": 1
+    },
+    {
+      "index": 12,
+      "from": "    </references>\n  </back>",
+      "to": "    </references>\n    <references>\n      <name>Informative References</name>\n      <reference anchor=\"I-D.lohmann-qikvrt-effect-ack-03\" target=\"https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03\">\n        <front>\n          <title>QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect</title>\n          <author initials=\"I.\" surname=\"Lohmann\" fullname=\"Ingolf Lohmann\"><organization>Independent Researcher</organization></author>\n          <date year=\"2026\" month=\"August\" day=\"2\"/>\n        </front>\n        <seriesInfo name=\"Internet-Draft\" value=\"draft-lohmann-qikvrt-effect-ack-03\"/>\n      </reference>\n    </references>\n  </back>",
+      "count": 1
+    },
+    {
+      "index": 14,
+      "from": "<date year=\"2026\" month=\"October\" day=\"4\"/>",
+      "to": "<date year=\"2026\" month=\"October\" day=\"5\"/>",
+      "count": 1,
+      "reason": "Use the successor document date, without changing historical source dates."
+    },
+    {
+      "index": 15,
+      "from": "    <section>\n      <name>Relationship to EFFECT_ACK</name>",
+      "to": "    <section anchor=\"property-specific-evidence\">\n      <name>Property-Specific Evidence and Effect Readback</name>\n      <t>When a reported result contains properties with different evidence requirements, a producer MUST bind and classify those properties separately.  A result concerning source fixity, formal acceptance, tested behavior, platform execution, effect authorization, or persisted target state MUST NOT be used as evidence for another property solely because the properties share a task, artifact, evaluator, or repository.</t>\n      <t>A content digest or byte-exact comparison establishes only the content identity covered by that validation and its stated assumptions.  A producer MUST NOT use it alone to classify a claim about a natural person's identity, authorship, an authenticated principal, causal independence, or permission as established.  Such claims require evidence appropriate to the exact identity, attribution, independence, or authority proposition.</t>\n      <t>Request receipt, execution success, authorization for effect, and observation of an effect are distinct propositions.  A producer MUST NOT represent a target effect as EMPIRICALLY_EVIDENCED solely from an acknowledgement, a process exit code, a successful harness, or an authorization record.  Evidence for that effect MUST include a validated readback bound to the target subject and state, the declared effect boundary, observation time, and the applicable persistence or durability scope.  A lost response does not establish absence of effect; an apparent success response does not establish its presence.</t>\n      <t>A claim about execution on a particular platform MUST bind the observed operating-system and architecture predicates relevant to that claim.  A build target, runner label, or successful execution on another platform MUST NOT by itself establish execution on the claimed platform.</t>\n      <t>If a required property remains unestablished, a producer MUST retain its OPEN disposition and MUST NOT promote an aggregate completion claim.  Separately established properties retain their own validated status and scope.  Missing admission, absent execution evidence, failed validation, and an unobserved effect SHOULD be reported as distinct unresolved conditions.</t>\n    </section>\n    <section>\n      <name>Relationship to EFFECT_ACK</name>",
+      "count": 1,
+      "reason": "Add scope-appropriate independent property, identity, platform, partial-effect and readback claim rules."
+    },
+    {
+      "index": 16,
+      "from": "      <t>An EFFECT_ACK_DONE record does not, by itself, make an external proposition true.  Likewise, a FORMAL_PROVED or EMPIRICALLY_EVIDENCED claim does not, by itself, authorize a downstream effect.</t>",
+      "to": "      <t>An EFFECT_ACK_DONE record does not, by itself, make an external proposition true.  Likewise, a FORMAL_PROVED or EMPIRICALLY_EVIDENCED claim does not, by itself, authorize a downstream effect.</t>\n      <t>An authorization record also does not, by itself, establish that the authorized target effect occurred or persisted.  A claim that the effect occurred remains subject to the property-specific evidence and readback requirements of <xref target=\"property-specific-evidence\"/>.  This requirement governs claim reporting; it adds no EFFECT_ACK state, wire member, or release predicate.</t>",
+      "count": 1,
+      "reason": "Separate authorization from evidence that the target effect occurred; keep the v1 wire and release predicate unchanged."
+    }
+  ],
+  "human_acceptance": "PENDING",
+  "no_new_status_classes": true,
+  "frozen_source_rewritten": false,
+  "candidate_id": "ietf-epistemic-status-00-reconciled-20261005-v3",
+  "predecessor_candidate": {
+    "head": "17a86ca2e51da454d26fa16d454c6d32e338f024",
+    "tree": "6eada1b1d08b261e6156f588c965863025617e06",
+    "package": "publication-staging/ietf-epistemic-status-00-corrected-20261004-v2",
+    "manifest": {
+      "path": "SUBMISSION_MANIFEST.json",
+      "bytes": 11084,
+      "sha256": "af4ac7715a8bca2d9d95538a38a550e381751efd1d3f88ed780877099430b63b",
+      "git_blob_sha1": "748e46da3376d818741ee79549b43b041c353948"
+    }
+  },
+  "predecessor_evidence_transfer": false
+}

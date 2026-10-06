@@ -1,0 +1,100 @@
+{
+  "schema": "qikvrt_publication_source_derivation_v1",
+  "source": {
+    "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+    "bytes": 8070,
+    "sha256": "c5e02a1516e7a4a91be7e8e6458ff35e06c558ae55321c22438b30624fc88a8b",
+    "git_blob_sha1": "2a42d1a52cccb957eb8ce5704cf525a410049169"
+  },
+  "source_repository_path": "publication-staging/ietf-epistemic-status-00-a2dbd3ac-v1/draft-lohmann-qikvrt-epistemic-status-00.xml",
+  "successor": {
+    "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+    "bytes": 10692,
+    "sha256": "dd200d495f46f85ddd43810718998d414ce328201fdaba8d0e6577e0b00dcf6c",
+    "git_blob_sha1": "66d09958de567ab13a9922b3a909b15c3b355950"
+  },
+  "method": "ordered exact-text replacements; first occurrence only for operation 2",
+  "operations": [
+    {
+      "index": 0,
+      "from": "day=\"3\"",
+      "to": "day=\"4\"",
+      "count": 1
+    },
+    {
+      "index": 1,
+      "from": "ASSERT_AS_PROVED(C) implies VALID_BOUND_EVIDENCE(C)\n\nif VALID_BOUND_EVIDENCE(C) is false,\nC MUST NOT be classified as PROVED.",
+      "to": "ASSERT_AS_FORMAL_PROVED(C) implies VALID_BOUND_FORMAL_PROOF(C)\n\nif VALID_BOUND_FORMAL_PROOF(C) is false,\nC MUST NOT be classified as FORMAL_PROVED.",
+      "count": 1
+    },
+    {
+      "index": 2,
+      "from": "</sourcecode>\n    </section>",
+      "to": "</sourcecode>\n      <t>VALID_BOUND_FORMAL_PROOF(C) means that a checked proof artifact establishes the exact formal proposition resolved by claim_id, in the identified formal model and under the bound assumptions and proof-checking environment.  Formal acceptance does not establish unencoded premises or external-world correspondence.</t>\n    </section>",
+      "count": 1
+    },
+    {
+      "index": 3,
+      "from": "described in BCP 14 when, and only when,",
+      "to": "described in BCP 14 <xref target=\"RFC2119\"/> <xref target=\"RFC8174\"/> when, and only when,",
+      "count": 1
+    },
+    {
+      "index": 4,
+      "from": "using one of the following statuses or a deployment-defined refinement whose semantics are no stronger:",
+      "to": "using one of the following statuses.  A deployment-defined refinement MUST bind its parent status from this vocabulary and retain all evidence conditions of that parent.  Additional conditions MAY narrow the refinement; they MUST NOT replace or relax the parent conditions:",
+      "count": 1
+    },
+    {
+      "index": 5,
+      "from": "</dl>\n    </section>\n    <section>\n      <name>Normative Invariants</name>",
+      "to": "</dl>\n      <t>These evidence classes do not form a universal ranking.  Formal proof, empirical support, documentary attribution, interpretation, and normative authority answer different questions.  Status selection MUST use the conditions of the selected class and the scope of the claim rather than a single strength score.</t>\n    </section>\n    <section>\n      <name>Normative Invariants</name>",
+      "count": 1
+    },
+    {
+      "index": 6,
+      "from": "as OBSERVED merely because",
+      "to": "as EMPIRICALLY_EVIDENCED merely because",
+      "count": 1
+    },
+    {
+      "index": 7,
+      "from": "without a validated proof binding to the exact formal subject and assumptions.",
+      "to": "without a checked proof artifact bound to the exact formal proposition, claim scope, model, assumptions, and proof-checking environment.",
+      "count": 1
+    },
+    {
+      "index": 8,
+      "from": "A deployment profile MUST bind at least claim identifier, subject identity, subject state or version where applicable, observation time, evidence references, source identity, and epistemic status.  A deployment SHOULD also bind the evaluator and applicable policy version.",
+      "to": "A deployment profile MUST bind at least claim_id, claim_scope, subject identity, subject state or version where applicable, observation time, evidence references, source identity, and epistemic status.  The claim_id MUST resolve the exact proposition or an immutable reference to that proposition.  The claim_scope MUST state the applicable domain, conditions, and limits.  Evidence references MUST identify the evidence required by the selected status and its relation to this exact proposition and scope.  For FORMAL_PROVED they MUST resolve the checked proof, formal model, assumptions, and proof-checking environment.  A deployment-defined refinement MUST additionally bind its parent status and the unchanged evidence conditions of that parent.  A deployment SHOULD also bind the evaluator and applicable policy version.",
+      "count": 1
+    },
+    {
+      "index": 9,
+      "from": "  claim_id,\n  subject,",
+      "to": "  claim_id,\n  claim_scope,\n  subject,",
+      "count": 1
+    },
+    {
+      "index": 10,
+      "from": "This profile does not change the QIK-VRT EFFECT_ACK five-state version-1 contract.",
+      "to": "This profile composes with the independently specified QIK-VRT EFFECT_ACK mechanism <xref target=\"I-D.lohmann-qikvrt-effect-ack-03\"/> and does not change its five-state version-1 wire contract.",
+      "count": 1
+    },
+    {
+      "index": 11,
+      "from": "    </section>\n    <section>\n      <name>Security and Failure Modes</name>",
+      "to": "      <t>The cited draft is informative work in progress.  Its research-profile labels are not additional EFFECT_ACK version-1 enum values and are not an implicit identical registration of this profile's status vocabulary.  This composition description creates no new mandatory wire member or protocol dependency.</t>\n    </section>\n    <section>\n      <name>Security Considerations</name>",
+      "count": 1
+    },
+    {
+      "index": 12,
+      "from": "    </references>\n  </back>",
+      "to": "    </references>\n    <references>\n      <name>Informative References</name>\n      <reference anchor=\"I-D.lohmann-qikvrt-effect-ack-03\" target=\"https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03\">\n        <front>\n          <title>QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect</title>\n          <author initials=\"I.\" surname=\"Lohmann\" fullname=\"Ingolf Lohmann\"><organization>Independent Researcher</organization></author>\n          <date year=\"2026\" month=\"August\" day=\"2\"/>\n        </front>\n        <seriesInfo name=\"Internet-Draft\" value=\"draft-lohmann-qikvrt-effect-ack-03\"/>\n      </reference>\n    </references>\n  </back>",
+      "count": 1
+    }
+  ],
+  "human_acceptance": "PENDING",
+  "no_new_status_classes": true,
+  "frozen_source_rewritten": false
+}

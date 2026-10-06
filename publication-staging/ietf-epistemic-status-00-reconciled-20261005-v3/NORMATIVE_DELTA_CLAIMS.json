@@ -1,0 +1,58 @@
+{
+  "schema": "qikvrt_ietf_normative_delta_claims_v1",
+  "candidate_id": "ietf-epistemic-status-00-reconciled-20261005-v3",
+  "claims": [
+    {
+      "claim_id": "ES-V3-01",
+      "proposition": "Different properties require separately bound evidence and classification.",
+      "epistemic_status": "NORMATIVE",
+      "claim_scope": "Proposed Epistemic Status profile reporting rules; no implementation, physical-world or standards-acceptance proof.",
+      "source": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "author_acceptance": "PENDING"
+    },
+    {
+      "claim_id": "ES-V3-02",
+      "proposition": "Byte identity alone establishes no natural-person, authorship, principal or authority claim.",
+      "epistemic_status": "NORMATIVE",
+      "claim_scope": "Proposed Epistemic Status profile reporting rules; no implementation, physical-world or standards-acceptance proof.",
+      "source": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "author_acceptance": "PENDING"
+    },
+    {
+      "claim_id": "ES-V3-03",
+      "proposition": "Evidence of target effect requires bound readback appropriate to the declared persistence scope; receipt/execution/permission are separate.",
+      "epistemic_status": "NORMATIVE",
+      "claim_scope": "Proposed Epistemic Status profile reporting rules; no implementation, physical-world or standards-acceptance proof.",
+      "source": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "author_acceptance": "PENDING"
+    },
+    {
+      "claim_id": "ES-V3-04",
+      "proposition": "Platform execution claims require observed operating-system and architecture predicates.",
+      "epistemic_status": "NORMATIVE",
+      "claim_scope": "Proposed Epistemic Status profile reporting rules; no implementation, physical-world or standards-acceptance proof.",
+      "source": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "author_acceptance": "PENDING"
+    },
+    {
+      "claim_id": "ES-V3-05",
+      "proposition": "An unresolved required property remains OPEN and cannot promote aggregate completion.",
+      "epistemic_status": "NORMATIVE",
+      "claim_scope": "Proposed Epistemic Status profile reporting rules; no implementation, physical-world or standards-acceptance proof.",
+      "source": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "author_acceptance": "PENDING"
+    },
+    {
+      "claim_id": "ES-V3-06",
+      "proposition": "The profile does not modify EFFECT_ACK states, wire members or release predicates.",
+      "epistemic_status": "NORMATIVE",
+      "claim_scope": "Proposed Epistemic Status profile reporting rules; no implementation, physical-world or standards-acceptance proof.",
+      "source": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "author_acceptance": "PENDING"
+    }
+  ],
+  "formal_proved_claims_added": 0,
+  "empirical_measurements_added": 0,
+  "ietf_consensus": false,
+  "rfc_status": false
+}

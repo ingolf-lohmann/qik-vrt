@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+     version="3"
+     ipr="trust200902"
+     category="exp"
+     submissionType="IETF"
+     docName="draft-lohmann-qikvrt-epistemic-status-00"
+     tocInclude="true"
+     symRefs="true"
+     sortRefs="true">
+  <front>
+    <title abbrev="QIK-VRT Epistemic Status">QIK-VRT Epistemic Status Profile for Evidence-Bound Machine Claims</title>
+    <seriesInfo name="Internet-Draft" value="draft-lohmann-qikvrt-epistemic-status-00"/>
+    <author initials="I." surname="Lohmann" fullname="Ingolf Lohmann">
+      <organization>Independent Researcher</organization>
+      <address><email>ingolf.lohmann@live.com</email></address>
+    </author>
+    <date year="2026" month="October" day="3"/>
+    <area>Applications and Real-Time</area>
+    <keyword>epistemic status</keyword>
+    <keyword>provenance</keyword>
+    <keyword>evidence</keyword>
+    <keyword>artificial cognition</keyword>
+    <keyword>truthfulness</keyword>
+    <abstract>
+      <t>This document defines an Experimental application-layer profile for representing the epistemic status of claims emitted or processed by machine cognition systems.  The profile requires a claim not to be represented with a stronger epistemic status than its validated, provenance-bound evidence supports.</t>
+      <t>The profile distinguishes object truth from epistemic truthfulness.  It does not guarantee that external sources are true, that reasoning is infallible, or that the external world is completely observable.  It specifies how an implementation reports what is proved, observed, source-bound, interpretative, normative, predicted, or open.</t>
+      <t>The profile is designed to compose with QIK-VRT EFFECT_ACK without modifying the five-state EFFECT_ACK version-1 wire contract.  EFFECT_ACK controls downstream effect authorization; this profile controls the strength of epistemic claims.</t>
+    </abstract>
+  </front>
+  <middle>
+    <section>
+      <name>Introduction</name>
+      <t>A machine can produce a linguistically confident assertion even when its available evidence is weaker than the assertion.  This profile defines a machine-checkable boundary between an assertion and the evidence status that an implementation is permitted to claim for it.</t>
+      <t>The central invariant is:</t>
+      <sourcecode type="text"><![CDATA[
+ASSERT_AS_PROVED(C) implies VALID_BOUND_EVIDENCE(C)
+
+if VALID_BOUND_EVIDENCE(C) is false,
+C MUST NOT be classified as PROVED.
+]]></sourcecode>
+    </section>
+    <section>
+      <name>Conventions and Definitions</name>
+      <t>The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL are to be interpreted as described in BCP 14 when, and only when, they appear in all capitals.</t>
+      <dl>
+        <dt>Claim</dt><dd>A bounded proposition associated with a subject, scope, time, and epistemic status.</dd>
+        <dt>Bound evidence</dt><dd>Evidence whose identity, source, applicable state, time, and relation to the claim have been validated by the deployment.</dd>
+        <dt>Object truth</dt><dd>Whether the proposition actually corresponds to the external world.</dd>
+        <dt>Epistemic truthfulness</dt><dd>Whether the system represents the strength and limitations of its available evidence without overstating them.</dd>
+      </dl>
+    </section>
+    <section>
+      <name>Epistemic Status Vocabulary</name>
+      <t>A conforming deployment MUST represent each governed claim using one of the following statuses or a deployment-defined refinement whose semantics are no stronger:</t>
+      <dl>
+        <dt>FORMAL_PROVED</dt><dd>Proved inside an explicitly identified formal model with bound assumptions and proof artifact.</dd>
+        <dt>EMPIRICALLY_EVIDENCED</dt><dd>Supported by identified observation or measurement evidence within stated conditions and uncertainty.</dd>
+        <dt>SOURCE_BOUND</dt><dd>Accurately reports what an identified source states; it does not promote the source statement to object truth.</dd>
+        <dt>INTERPRETATIVE</dt><dd>An interpretation whose author, subject, and limits are explicit.</dd>
+        <dt>NORMATIVE</dt><dd>A rule, value, requirement, or authorization rather than an empirical observation.</dd>
+        <dt>PREDICTED</dt><dd>A forecast or model-derived future/unknown-state claim not yet observed.</dd>
+        <dt>OPEN</dt><dd>Not established by the currently validated evidence.</dd>
+      </dl>
+    </section>
+    <section>
+      <name>Normative Invariants</name>
+      <ul>
+        <li>A producer MUST NOT classify a claim as FORMAL_PROVED without a validated proof binding to the exact formal subject and assumptions.</li>
+        <li>A producer MUST NOT classify a claim as EMPIRICALLY_EVIDENCED without a validated observation or measurement binding appropriate to the scope.</li>
+        <li>A SOURCE_BOUND claim MUST NOT be promoted to object truth solely because the source is present, authoritative, popular, or cryptographically identified.</li>
+        <li>A PREDICTED claim MUST NOT be represented as OBSERVED merely because an execution completed successfully.</li>
+        <li>A historical PASS MUST NOT be represented as a current PASS for a changed subject unless an explicit invariance relation justifies the transfer.</li>
+        <li>The same rules MUST apply to claims previously emitted by the cognition system itself.</li>
+      </ul>
+    </section>
+    <section>
+      <name>Claim Binding</name>
+      <t>A deployment profile MUST bind at least claim identifier, subject identity, subject state or version where applicable, observation time, evidence references, source identity, and epistemic status.  A deployment SHOULD also bind the evaluator and applicable policy version.</t>
+      <sourcecode type="text"><![CDATA[
+claim = (
+  claim_id,
+  subject,
+  subject_state,
+  observed_at,
+  evidence_refs,
+  source_refs,
+  evaluator,
+  policy_version,
+  epistemic_status
+)
+]]></sourcecode>
+    </section>
+    <section>
+      <name>Relationship to EFFECT_ACK</name>
+      <t>This profile does not change the QIK-VRT EFFECT_ACK five-state version-1 contract.  EFFECT_ACK determines whether a downstream effect is authorized under a bound policy and evidence set.  This profile determines which epistemic status may be asserted for a claim.</t>
+      <t>An EFFECT_ACK_DONE record does not, by itself, make an external proposition true.  Likewise, a FORMAL_PROVED or EMPIRICALLY_EVIDENCED claim does not, by itself, authorize a downstream effect.</t>
+    </section>
+    <section>
+      <name>Security and Failure Modes</name>
+      <t>Implementations MUST fail closed with respect to epistemic strength when required evidence cannot be validated.  Missing evidence, stale subject identity, unresolved source identity, or unsupported status semantics MUST NOT be converted into a stronger claim status.</t>
+      <t>Attackers may attempt evidence substitution, stale-evidence replay, source laundering, status escalation, or provenance truncation.  Deployments MUST bind claim status to the exact evidence and subject state needed to detect these failures.</t>
+    </section>
+    <section>
+      <name>Non-Goals</name>
+      <ul>
+        <li>This profile does not guarantee the truth of all external data.</li>
+        <li>This profile does not guarantee infallible inference.</li>
+        <li>This profile does not define consciousness or prove phenomenal consciousness.</li>
+        <li>This profile does not replace scientific peer review, source criticism, or domain-specific validation.</li>
+      </ul>
+    </section>
+    <section>
+      <name>IANA Considerations</name>
+      <t>This document has no IANA actions.</t>
+    </section>
+  </middle>
+  <back>
+    <references>
+      <name>Normative References</name>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+    </references>
+  </back>
+</rfc>

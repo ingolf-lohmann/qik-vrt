@@ -1,0 +1,209 @@
+{
+  "schema": "qikvrt_publication_staging_return_receipt_v1",
+  "candidate_id": "ietf-epistemic-status-00-reconciled-20261005-v3",
+  "source_head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+  "source_tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+  "returned_artifacts": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+    },
+    {
+      "path": "CHANGE_NOTICE.md",
+      "bytes": 1391,
+      "sha256": "0028869c9b85eb43fbdec6d69d8a34a182ebba305763c4782da73ae1a1358db1",
+      "git_blob_sha1": "227829d32e40e018b9239f5a812c6793daf0de3d"
+    },
+    {
+      "path": "CONTENT_VALIDATION.json",
+      "bytes": 4550,
+      "sha256": "0a826badb78a719deab0cb46ff4737c704226411863bc5646d65032bc2b10ea9",
+      "git_blob_sha1": "3db75391e488ba63dc77db05e9242d19c9ffb779"
+    },
+    {
+      "path": "DERIVATION_MAP.json",
+      "bytes": 11086,
+      "sha256": "4ea7a8e7cb22ce23af182d2c00f27b3f573e6419666f87425496299b4502f533",
+      "git_blob_sha1": "a8ba19ce1fb8db6060fc5d6e4b53e7babfd0e34e"
+    },
+    {
+      "path": "DESTINATION_READBACK.json",
+      "bytes": 1322,
+      "sha256": "fdaac801b67c7680397861c9afcc14798cbed679d03ec87f3a947e0f73f028e8",
+      "git_blob_sha1": "cfd3f05871c6b972d6f332a3595554f6a6c9a196"
+    },
+    {
+      "path": "EXACT_ARTIFACT_AUTHORIZATION_DRAFT.md",
+      "bytes": 1536,
+      "sha256": "758f3eb0561c201056de865a202f7f2eea151b0c5d9a0bca2a503df3a5fdd2ef",
+      "git_blob_sha1": "6c4bdce1891e5d6ad812c78546b841f0fa023e39"
+    },
+    {
+      "path": "NORMATIVE_DELTA_CLAIMS.json",
+      "bytes": 2913,
+      "sha256": "1b593af2d50088f6bcb232a5ea51be9ded8a05d3316e8c0a6151c32fa690ed95",
+      "git_blob_sha1": "a759b9228f84d71789813e0579d6e7db0c2cd66c"
+    },
+    {
+      "path": "RENDER_VALIDATION.json",
+      "bytes": 4190,
+      "sha256": "c6a9a893bd3e6dfb700a4d7cd21cf1e0629c8386c62fd6867f2f90290ca74b2d",
+      "git_blob_sha1": "777b61b3a9303d8aab0590095f15b001935b4c02"
+    },
+    {
+      "path": "SCOPE_RECONCILIATION.json",
+      "bytes": 4256,
+      "sha256": "3e25321bbe37751a3150a4133935c9b29281bfa2efc16f3e77eeccff63095969",
+      "git_blob_sha1": "7d1d4ed05b84a1d582faf1f91af23587adb07fdf"
+    },
+    {
+      "path": "SOURCE_GIT_CAPSULE.json",
+      "bytes": 63964,
+      "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+      "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1"
+    },
+    {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 6794,
+      "sha256": "01c40d8f689749ace51a6ff7dfaa4a2baa4d70ef254d5f81c7b02aaa3355df33",
+      "git_blob_sha1": "c4238598aec67976a03adc8c3da9a30d0234eb5a"
+    },
+    {
+      "path": "SOURCE_VISIBILITY_CHECK.json",
+      "bytes": 529,
+      "sha256": "b0367ae39fd577e31f9b426e9a02b973cf6f5801d71e16523bfeb86ad457cbc4",
+      "git_blob_sha1": "24b30a68971d89fda0af4b94484a88f4216753ac"
+    },
+    {
+      "path": "SOURCE_VISIBILITY_MANIFEST.json",
+      "bytes": 693,
+      "sha256": "922eab47aae5e58863143c43b8c98b0a7793a4e059b7de9cd89c47927f649156",
+      "git_blob_sha1": "abd02e8d2022c926a54b40a447c041240311772e"
+    },
+    {
+      "path": "STAGING_README.md",
+      "bytes": 910,
+      "sha256": "62fe66726417ec1f781cadf12846ec6b3b144ab2b5611022a41fe3823ef9c675",
+      "git_blob_sha1": "7571b93f6ea9320e0a499c74a079ac7c17f13561"
+    },
+    {
+      "path": "SUBMISSION_MANIFEST.json",
+      "bytes": 13798,
+      "sha256": "3d63d6574a32a869add077db0adf78c186726f773bc8a3b7130356ae11f4439d",
+      "git_blob_sha1": "b6f4ae4168a455d5a49057527540d277d59a4f62"
+    },
+    {
+      "path": "XML2RFC_HTML_LOG.txt",
+      "bytes": 556,
+      "sha256": "dfcf91ca62d6bde5775205ee3a0698535d8305b9faef51383c991dd1a93a6a94",
+      "git_blob_sha1": "e5a7bfbdf45cbf82ee20b9e17cf04131a6313d90"
+    },
+    {
+      "path": "XML2RFC_TEXT_LOG.txt",
+      "bytes": 555,
+      "sha256": "358e6293da944493166c31186e550c31b411253afae3030e7edba4fa4e57b40b",
+      "git_blob_sha1": "e1dff31721a4014b87f4a35c4210a9886e82532e"
+    },
+    {
+      "path": "bibxml/reference.RFC.2119.xml",
+      "bytes": 910,
+      "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+      "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111"
+    },
+    {
+      "path": "bibxml/reference.RFC.8174.xml",
+      "bytes": 751,
+      "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+      "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b"
+    },
+    {
+      "path": "build.py",
+      "bytes": 8741,
+      "sha256": "74571186d1cbaa44b91fde8f42b3c49726a2974173922fe1b3a85efbbef20d4d",
+      "git_blob_sha1": "51217e860b0d0328043692aeb9a4d91df3b61296"
+    },
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "bytes": 56690,
+      "sha256": "3a7ad5bc02ecb299ccbe8c00212be8424f478fa074ee6063ce68fdb0dac455d8",
+      "git_blob_sha1": "5ffcea2cb663234af0dcb8a263411898d0cbb932"
+    },
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 15309,
+      "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+      "git_blob_sha1": "21131cafd954f9d9f494ec42e7d4aec99740ff0e"
+    },
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 13386,
+      "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+      "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+    },
+    {
+      "path": "verify_staging.py",
+      "bytes": 16788,
+      "sha256": "88346d1351970d5bc70ec22fe6b1bfe6153e4d94705de021caf421cc5c47aa21",
+      "git_blob_sha1": "e140288db5632c0c66cbc7ced413baa41c0da7a8"
+    }
+  ],
+  "source_capsule_verification": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 63964,
+    "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+    "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 3,
+    "objects": 10,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  },
+  "protected_original_artifacts": [
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Die_wirksame_Kontinuitaet_Gesamtausgabe_2026-10-03.pdf",
+      "bytes": 189440,
+      "sha256": "c82e9182dc2b6068b2d7a70edbd4c3696557813aa8859e92c72a865a46256cce",
+      "git_blob_sha1": "053259060c1d495d3e6a99537342dfb1888eebc5"
+    },
+    {
+      "path": "docs/publications/2026-10-03-qik-vrt-collective-functional-consciousness/gesamtausgabe/QIK-VRT_Gesamtausgabe_Quellen_Pruefpaket_2026-10-03.zip",
+      "bytes": 1416550,
+      "sha256": "ed6a224db353c7bacb3b24f2231feb2eb4ea992affa10d397937a0ff074246b4",
+      "git_blob_sha1": "e0338b71a415c8a1165f4ccc894acf27ae084e62"
+    }
+  ],
+  "human_review_status": "PENDING_FOR_NEW_CANDIDATE",
+  "publication": "NOT_SUBMITTED",
+  "owner_authorization_for_original_pdf_zip_transferred": false,
+  "action_time_upload_authorization": "ABSENT",
+  "zenodo_authorization_consumed": false,
+  "effect_ack_done": false,
+  "scope": "Scope-reconciled new-byte author-review return. No submission, contribution-term acceptance, merge or production activation.",
+  "prepared_utc": "2026-10-05T15:24:32.641701+00:00",
+  "predecessor": {
+    "head": "17a86ca2e51da454d26fa16d454c6d32e338f024",
+    "tree": "6eada1b1d08b261e6156f588c965863025617e06",
+    "package": "publication-staging/ietf-epistemic-status-00-corrected-20261004-v2",
+    "manifest": {
+      "path": "SUBMISSION_MANIFEST.json",
+      "bytes": 11084,
+      "sha256": "af4ac7715a8bca2d9d95538a38a550e381751efd1d3f88ed780877099430b63b",
+      "git_blob_sha1": "748e46da3376d818741ee79549b43b041c353948"
+    }
+  },
+  "predecessor_evidence_transfer": false,
+  "content_validation": {
+    "path": "CONTENT_VALIDATION.json",
+    "bytes": 4550,
+    "sha256": "0a826badb78a719deab0cb46ff4737c704226411863bc5646d65032bc2b10ea9",
+    "git_blob_sha1": "3db75391e488ba63dc77db05e9242d19c9ffb779"
+  },
+  "submission_manifest": {
+    "path": "SUBMISSION_MANIFEST.json",
+    "bytes": 13798,
+    "sha256": "3d63d6574a32a869add077db0adf78c186726f773bc8a3b7130356ae11f4439d",
+    "git_blob_sha1": "b6f4ae4168a455d5a49057527540d277d59a4f62"
+  },
+  "upload_authorization_created": false
+}

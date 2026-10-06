@@ -1,0 +1,110 @@
+{
+  "schema": "qikvrt_publication_candidate_content_validation_v1",
+  "state": "PASS_CANDIDATE_CONTENT_CHECKS_WITH_RECORDED_EDITORIAL_LIMITS",
+  "candidate_id": "ietf-epistemic-status-00-reconciled-20261005-v3",
+  "observed_utc": "2026-10-05T15:24:32.636137+00:00",
+  "checked_artifacts": {
+    "draft-lohmann-qikvrt-epistemic-status-00.xml": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 13386,
+      "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+      "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+    },
+    "draft-lohmann-qikvrt-epistemic-status-00.txt": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 15309,
+      "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+      "git_blob_sha1": "21131cafd954f9d9f494ec42e7d4aec99740ff0e"
+    },
+    "draft-lohmann-qikvrt-epistemic-status-00.html": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "bytes": 56690,
+      "sha256": "3a7ad5bc02ecb299ccbe8c00212be8424f478fa074ee6063ce68fdb0dac455d8",
+      "git_blob_sha1": "5ffcea2cb663234af0dcb8a263411898d0cbb932"
+    },
+    "DERIVATION_MAP.json": {
+      "path": "DERIVATION_MAP.json",
+      "bytes": 11086,
+      "sha256": "4ea7a8e7cb22ce23af182d2c00f27b3f573e6419666f87425496299b4502f533",
+      "git_blob_sha1": "a8ba19ce1fb8db6060fc5d6e4b53e7babfd0e34e"
+    },
+    "RENDER_VALIDATION.json": {
+      "path": "RENDER_VALIDATION.json",
+      "bytes": 4190,
+      "sha256": "c6a9a893bd3e6dfb700a4d7cd21cf1e0629c8386c62fd6867f2f90290ca74b2d",
+      "git_blob_sha1": "777b61b3a9303d8aab0590095f15b001935b4c02"
+    },
+    "SCOPE_RECONCILIATION.json": {
+      "path": "SCOPE_RECONCILIATION.json",
+      "bytes": 4256,
+      "sha256": "3e25321bbe37751a3150a4133935c9b29281bfa2efc16f3e77eeccff63095969",
+      "git_blob_sha1": "7d1d4ed05b84a1d582faf1f91af23587adb07fdf"
+    },
+    "NORMATIVE_DELTA_CLAIMS.json": {
+      "path": "NORMATIVE_DELTA_CLAIMS.json",
+      "bytes": 2913,
+      "sha256": "1b593af2d50088f6bcb232a5ea51be9ded8a05d3316e8c0a6151c32fa690ed95",
+      "git_blob_sha1": "a759b9228f84d71789813e0579d6e7db0c2cd66c"
+    },
+    "DESTINATION_READBACK.json": {
+      "path": "DESTINATION_READBACK.json",
+      "bytes": 1322,
+      "sha256": "fdaac801b67c7680397861c9afcc14798cbed679d03ec87f3a947e0f73f028e8",
+      "git_blob_sha1": "cfd3f05871c6b972d6f332a3595554f6a6c9a196"
+    },
+    "SOURCE_VISIBILITY_CHECK.json": {
+      "path": "SOURCE_VISIBILITY_CHECK.json",
+      "bytes": 529,
+      "sha256": "b0367ae39fd577e31f9b426e9a02b973cf6f5801d71e16523bfeb86ad457cbc4",
+      "git_blob_sha1": "24b30a68971d89fda0af4b94484a88f4216753ac"
+    },
+    "SOURCE_VISIBILITY_MANIFEST.json": {
+      "path": "SOURCE_VISIBILITY_MANIFEST.json",
+      "bytes": 693,
+      "sha256": "922eab47aae5e58863143c43b8c98b0a7793a4e059b7de9cd89c47927f649156",
+      "git_blob_sha1": "abd02e8d2022c926a54b40a447c041240311772e"
+    }
+  },
+  "checks": {
+    "seven_statuses": [
+      "FORMAL_PROVED",
+      "EMPIRICALLY_EVIDENCED",
+      "SOURCE_BOUND",
+      "INTERPRETATIVE",
+      "NORMATIVE",
+      "PREDICTED",
+      "OPEN"
+    ],
+    "derivation_operations": 16,
+    "exact_proposition_scope_proof_model_assumptions_checker_bound": true,
+    "refinement_retains_parent_conditions": true,
+    "rfc_xrefs_resolve": true,
+    "effect_ack_03_reference_informative": true,
+    "effect_ack_v1_wire_unchanged": true,
+    "non_goals_and_security_text_preserved": true,
+    "html_fragment_links_resolved": 111,
+    "rendered_paragraphs_checked": 54,
+    "warning_count_per_mode": 0,
+    "semantic_negative_controls": [
+      "formal-status-alias-rejected",
+      "missing-scope-binding-rejected",
+      "transport-success-as-effect-rejected",
+      "content-digest-as-person-identity-rejected",
+      "platform-substitution-rejected",
+      "partial-completion-promotion-rejected"
+    ],
+    "property_specific_evidence_and_effect_readback_checked": true,
+    "digest_is_not_person_identity_checked": true,
+    "platform_predicates_checked": true,
+    "partial_claims_do_not_promote_aggregate_checked": true,
+    "interoperability_or_deployment_conformance_proved": false
+  },
+  "editorial_limits": [
+    "Normative proposal, not implementation or interoperability proof.",
+    "No new experiment or model theorem.",
+    "Revision mandate does not establish exact-byte human acceptance or IETF contribution decision."
+  ],
+  "author_acceptance": "PENDING_FOR_NEW_BYTES",
+  "submitted": false,
+  "published": false
+}

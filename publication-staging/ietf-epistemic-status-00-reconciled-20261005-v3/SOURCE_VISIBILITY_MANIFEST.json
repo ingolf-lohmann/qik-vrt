@@ -1,0 +1,26 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_V1",
+  "sources": [
+    {
+      "id": "RFC2119",
+      "title": "Key words for use in RFCs to Indicate Requirement Levels",
+      "urls": [
+        "https://www.rfc-editor.org/info/rfc2119"
+      ]
+    },
+    {
+      "id": "RFC8174",
+      "title": "Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words",
+      "urls": [
+        "https://www.rfc-editor.org/info/rfc8174"
+      ]
+    },
+    {
+      "id": "EFFECT_ACK_03",
+      "title": "QIK-VRT Effect Acknowledgement: Separating Receipt from Authorization for Downstream Effect",
+      "urls": [
+        "https://datatracker.ietf.org/doc/html/draft-lohmann-qikvrt-effect-ack-03"
+      ]
+    }
+  ]
+}

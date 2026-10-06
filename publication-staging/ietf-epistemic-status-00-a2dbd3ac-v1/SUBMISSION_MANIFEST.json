@@ -1,0 +1,229 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "publication_staging_manifest"
+  },
+  "schema": "qikvrt_ietf_draft_candidate_v1",
+  "state": "PREPARED_REVIEW_REQUIRED_NOT_SUBMITTED",
+  "candidate_id": "ietf-epistemic-status-00-a2dbd3ac-v1",
+  "internet_draft": "draft-lohmann-qikvrt-epistemic-status-00",
+  "predecessor": null,
+  "title": "QIK-VRT Epistemic Status Profile for Evidence-Bound Machine Claims",
+  "author": "Ingolf Lohmann",
+  "document_date": "2026-10-03",
+  "intended_status": "Experimental",
+  "submission": "Individual Submission",
+  "submission_type": "IETF",
+  "datatracker_submission_performed": false,
+  "submitted": false,
+  "published": false,
+  "consensus": false,
+  "author_email_notification_sent": false,
+  "source_basis": {
+    "path": "external/ietf/draft-lohmann-qikvrt-epistemic-status-00.xml",
+    "bytes": 8070,
+    "sha256": "c5e02a1516e7a4a91be7e8e6458ff35e06c558ae55321c22438b30624fc88a8b",
+    "git_blob_sha1": "2a42d1a52cccb957eb8ce5704cf525a410049169"
+  },
+  "source": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 447,
+    "head": "a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "tree": "377df23cdc2816629332dc5f8e95834ad79687d0",
+    "ref": "work/collective-functional-consciousness-20261003",
+    "immutable_url": "https://github.com/ingolf-lohmann/qik-vrt/tree/a2dbd3ac25c2935a022ea8ef54d95912e34035f7",
+    "scope": "frozen source only; not a current-main or Authority/Mirror equality claim"
+  },
+  "artifacts": {
+    "draft-lohmann-qikvrt-epistemic-status-00.xml": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "bytes": 8070,
+      "sha256": "c5e02a1516e7a4a91be7e8e6458ff35e06c558ae55321c22438b30624fc88a8b",
+      "git_blob_sha1": "2a42d1a52cccb957eb8ce5704cf525a410049169"
+    },
+    "draft-lohmann-qikvrt-epistemic-status-00.txt": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 9849,
+      "sha256": "da19565e2a0023f4487f73726d4e83c5e1cc68ababca0dc6c433d00bad2e439f",
+      "git_blob_sha1": "f8a60e5f6474d2a46a60aeb1b04883fdb40027e1"
+    },
+    "draft-lohmann-qikvrt-epistemic-status-00.html": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "bytes": 49649,
+      "sha256": "41c8d1d56e9699ede4bfe0dfd8eff0fc2929d7dc002781856402fe59e650afa3",
+      "git_blob_sha1": "f9433f0361fcd3c3a9742e759f7ff2e608c1da7c"
+    },
+    "RENDER_VALIDATION.json": {
+      "path": "RENDER_VALIDATION.json",
+      "bytes": 4309,
+      "sha256": "c64e24c1bc3ca3f15a7513629f3325f32e5b7cb0904aaf310c2fc79592d96680",
+      "git_blob_sha1": "0e440760e0fc5144637738194fecac3cd658ea0e"
+    },
+    "SOURCE_PROVENANCE.json": {
+      "path": "SOURCE_PROVENANCE.json",
+      "bytes": 5034,
+      "sha256": "0d90005ff88f65e3e0f52cdb3604e86a6662482588821a70ae123a069d7f6b44",
+      "git_blob_sha1": "8bfe8192745b875dd14897551166572c7bc693c3"
+    },
+    "STAGING_README.md": {
+      "path": "STAGING_README.md",
+      "bytes": 1782,
+      "sha256": "5dc533f2cb56cc4422f7ae7a98f704236369c911b9acf4112e3101563023a03e",
+      "git_blob_sha1": "6ce029abc7b73239052a00c38c6bbb7e2140e29f"
+    },
+    "build.py": {
+      "path": "build.py",
+      "bytes": 8260,
+      "sha256": "b9abedbaad85376960d9426f43badbae3adb12c213f495f581b0e932ece4dd6a",
+      "git_blob_sha1": "87de2ef4e4d0c84a57918c4a33b62bb0e11e9445"
+    },
+    "XML2RFC_TEXT_LOG.txt": {
+      "path": "XML2RFC_TEXT_LOG.txt",
+      "bytes": 851,
+      "sha256": "c9efbaa5bed88bb2e4907a33d12fb7f2ab74e4544304ccc0c5bfe0b4f8ecc755",
+      "git_blob_sha1": "34e848b7cbef3a7ecc2d67781696a85b809f52bb"
+    },
+    "XML2RFC_HTML_LOG.txt": {
+      "path": "XML2RFC_HTML_LOG.txt",
+      "bytes": 852,
+      "sha256": "3a1547eb91fdfe8753a96b64a31cc5f52ae7a2c1b5e4d75d2c3ed9c42fb3187f",
+      "git_blob_sha1": "fad33b1cc750ab9844acc58efee3fecbcf2bebbd"
+    },
+    "bibxml/reference.RFC.2119.xml": {
+      "path": "bibxml/reference.RFC.2119.xml",
+      "bytes": 910,
+      "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+      "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111"
+    },
+    "bibxml/reference.RFC.8174.xml": {
+      "path": "bibxml/reference.RFC.8174.xml",
+      "bytes": 751,
+      "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+      "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b"
+    },
+    "SOURCE_GIT_CAPSULE.json": {
+      "path": "SOURCE_GIT_CAPSULE.json",
+      "bytes": 63964,
+      "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+      "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1"
+    },
+    ".gitattributes": {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+    },
+    "verify_staging.py": {
+      "path": "verify_staging.py",
+      "bytes": 4853,
+      "sha256": "abc831877d9d96199ed2140ff25caf131ce7268c4cf382197ad7e842748fb801",
+      "git_blob_sha1": "706a7ad19a3d08d4ee46b5c45b88ad8b1208bce5"
+    }
+  },
+  "toolchain": {
+    "xml2rfc": "3.34.0",
+    "python_observed": "3.12.14",
+    "python_historical_lock": "3.12.13",
+    "historical_python_patch_reproduced": false,
+    "python_patch_boundary": "Local reproducibility is verified on the recorded interpreter. The frozen full-runtime patch pin is not promoted to reproduced when different.",
+    "packages": {
+      "certifi": "2026.7.22",
+      "charset-normalizer": "3.4.9",
+      "configargparse": "1.7.5",
+      "google-i18n-address": "3.1.1",
+      "idna": "3.18",
+      "intervaltree": "3.2.1",
+      "jinja2": "3.1.6",
+      "lxml": "6.1.1",
+      "markupsafe": "3.0.3",
+      "natsort": "8.4.0",
+      "platformdirs": "4.11.0",
+      "pycountry": "26.2.16",
+      "pypdf": "6.15.0",
+      "pyyaml": "6.0.3",
+      "requests": "2.34.2",
+      "sortedcontainers": "2.4.0",
+      "urllib3": "2.7.0",
+      "wcwidth": "0.8.2",
+      "xml2rfc": "3.34.0"
+    },
+    "requirements": {
+      "path": "requirements-xml2rfc-3.34.0.txt",
+      "bytes": 3075,
+      "sha256": "cd8473b443cc337670f0eec920913f2cabe07d38d497eaff2d140319b393b565"
+    },
+    "requirements_hash_locked_install": true,
+    "network_access_during_render": false,
+    "configuration_files_skipped": true,
+    "isolated_caches_per_run_and_mode": true
+  },
+  "claim_boundaries": {
+    "normative_profile_proposal_only": true,
+    "epistemic_statuses": [
+      "FORMAL_PROVED",
+      "EMPIRICALLY_EVIDENCED",
+      "SOURCE_BOUND",
+      "INTERPRETATIVE",
+      "NORMATIVE",
+      "PREDICTED",
+      "OPEN"
+    ],
+    "object_truth_guaranteed": false,
+    "inference_infallibility_claimed": false,
+    "phenomenal_consciousness_proved": false,
+    "scientific_peer_review_replaced": false,
+    "effect_ack_v1_wire_changed": false,
+    "downstream_effect_authorized_by_claim_status": false,
+    "ietf_standard_claimed": false,
+    "ietf_consensus_claimed": false,
+    "working_group_adoption_claimed": false,
+    "independent_interoperability_verified": false
+  },
+  "authorization_boundary": {
+    "current_authorization_state": "STAGING_ONLY_NOT_AN_UPLOAD_DECISION",
+    "original_pr447_authorization_transferred": false,
+    "new_candidate_author_decision": "ABSENT",
+    "action_time_upload_authorization": "ABSENT",
+    "destination_account_observed": false,
+    "zenodo_authorization_consumed": false
+  },
+  "effects": {
+    "arxiv_submission": false,
+    "datatracker_submission": false,
+    "zenodo_mutation": false,
+    "upload_authorization_consumed": false,
+    "production_contract_activation": false,
+    "pr447_head_changed": false,
+    "ordinary_release": false,
+    "effect_ack_done": false
+  },
+  "provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contributions": [
+      "research programme and frozen source authorship as attributed in the source",
+      "selected staging task, exact source, preservation and no-submission constraints"
+    ],
+    "artificial_cognitive_actor": "OpenAI Codex GPT-6",
+    "artificial_cognitive_contributions": [
+      "source verification",
+      "mechanical staging transformations",
+      "build recipes, manifests and validation",
+      "separate review-branch preparation"
+    ],
+    "human_acceptance_of_new_artifacts": "PENDING",
+    "evidence_retention": "METADATA_ONLY"
+  },
+  "render_status": "RENDER_VERIFIED_WITH_TWO_SOURCE_WARNINGS_REVIEW_REQUIRED",
+  "portable_source_binding": {
+    "path": "SOURCE_GIT_CAPSULE.json",
+    "bytes": 63964,
+    "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+    "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1",
+    "native_validator": "tools/qikvrt_integrity.py:load_portable_git_source_capsule + cross_check_portable_git_source_capsule",
+    "selected_paths": 3,
+    "objects": 10,
+    "result": "PASS_SELECTED_SOURCE_CLOSURE_ONLY"
+  }
+}
