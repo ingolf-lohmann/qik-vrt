@@ -12,15 +12,18 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timedelta, timezone
 import hmac
+import hashlib
 import json
 from pathlib import Path
 import re
 import sys
 import urllib.request
+from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from qikvrt_graph_webhook import load_binding, read_private, wire, BindingError
 from qikvrt_api_handler import atomic_write_bytes
+from qikvrt_api_handler import _strict_json_loads
 try:
     from tools.qikvrt_seed_common import _NoRedirect
 except ModuleNotFoundError:
@@ -34,6 +37,8 @@ class SubscriptionError(RuntimeError):
 
 
 class Graph:
+    source = "MICROSOFT_GRAPH_HTTPS"
+
     def __init__(self, token_file):
         self.token = read_private(Path(token_file), limit=16384).decode("ascii").strip()
         if not self.token or any(ord(c) <= 32 or ord(c) >= 127 for c in self.token):
@@ -47,16 +52,38 @@ class Graph:
             and re.fullmatch(r"[0-9a-fA-F-]{36}", suffix.split("/")[1]))
         if not allowed:
             raise SubscriptionError("fixed Graph control-plane endpoint required")
+        return self._request_url(method, "https://graph.microsoft.com/v1.0/" + suffix, payload)
+
+    def mail_get(self, url):
+        """Reuse the private transport for read-only, fixed-origin mail reads.
+
+        The consumer additionally binds pagination to the exact folder path.
+        Notification URLs and message resources never become request targets.
+        """
+        parsed = urlsplit(url)
+        if (parsed.scheme != "https" or parsed.netloc != "graph.microsoft.com"
+                or parsed.fragment or any(ord(c) <= 32 or ord(c) >= 127 for c in url)
+                or not re.fullmatch(
+                    r"/v1\.0/me/(?:mailFolders/[A-Za-z0-9_%=+\-]+(?:/messages/delta)?"
+                    r"|messages/[A-Za-z0-9_%=+\-]+)", parsed.path)):
+            raise SubscriptionError("fixed Graph mail read endpoint required")
+        return self._request_url("GET", url)
+
+    def _request_url(self, method, url, payload=None):
         request = urllib.request.Request(
-            "https://graph.microsoft.com/v1.0/" + suffix, method=method,
+            url, method=method,
             data=None if payload is None else wire(payload),
             headers={"Authorization": "Bearer " + self.token,
-                     "Content-Type": "application/json", "Accept": "application/json"})
+                     "Content-Type": "application/json", "Accept": "application/json",
+                     "Prefer": 'IdType="ImmutableId"'})
         with self.opener.open(request, timeout=20) as response:
             raw = response.read(1048577)
         if len(raw) > 1048576:
-            raise SubscriptionError("Graph control-plane response exceeds limit")
-        return json.loads(raw)
+            raise SubscriptionError("Graph response exceeds limit")
+        self.last_readback = {"url": url, "bytes": len(raw),
+                              "sha256": hashlib.sha256(raw).hexdigest(),
+                              "read_at_utc": datetime.now(timezone.utc).isoformat()}
+        return _strict_json_loads(raw)
 
 
 def expiry(value):

@@ -6,7 +6,7 @@
   "source_base_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
   "requested_execution": "REPOSITORY_NATIVE_WEBHOOKS_NO_CLIENT_SCHEDULER",
   "client_mail_watch": "DISABLED_NATIVE_CONTROL_PLANE_READBACK",
-  "implementation": "EXISTING_REST_SERVICE_LOOP_NATIVE_VERIFY_AND_PRIVATE_INGEST_REPLAY_ADAPTER",
+  "implementation": "EXISTING_REST_LOOP_AND_PRIVATE_GRAPH_DELTA_CURRENT_MESSAGE_CONSUMER",
   "ingress_contract": "docs/GRAPH_MAIL_WEBHOOK.md",
   "private_data_in_public_repository": false,
   "activation": "BLOCKED_OWN_HTTPS_HOST_GRAPH_OAUTH_SUBSCRIPTION_AND_REAL_MAIL_CONSUMER_BINDING",
@@ -16,7 +16,7 @@
   "live_mail_event_read_back": false,
   "document_delivery_verified": false,
   "monitoring_gap": "CLIENT_WATCH_DISABLED_REPOSITORY_WEBHOOK_NOT_YET_ACTIVE",
-  "next_action": "Run fresh exact-head gates for the repository event adapter. Separately bind the actual existing mail/lifecycle consumer on an admitted persistent HTTPS host; obtain private Graph OAuth, register the subscription and independently read a real mail event. Private byte reconciliation is not a mailbox observation.",
+  "next_action": "Run and read back exact successor HEAD/TREE gates. Separately bind the private consumer/OAuth on the existing admitted HTTPS runtime, register/read back the native subscription and verify an actual provider mail observation and document delivery. No client scheduler or timed polling.",
   "effect_ack_done": false,
   "source_predecessor_head": "43cf26294c95c710ece3aaa806848744a2de0c7e",
   "source_predecessor_tree": "cdd9e7e0c44d03d21797c62e679d454047625cef",
@@ -28,8 +28,8 @@
   ],
   "second_scheduler_created": false,
   "second_worker_created": false,
-  "native_mail_consumer_source_found": false,
-  "repository_worker_validation": "NEW_MAIN_RECONCILED_EXACT_HEAD_CHECKS_PENDING_NO_PREDECESSOR_TRANSFER",
+  "native_mail_consumer_source_found": true,
+  "repository_worker_validation": "SUCCESSOR_CANDIDATE_GRAPH_CONTROLS_PASS_EXACT_HEAD_REMOTE_GATES_PENDING",
   "contribution_provenance": {
     "human_actor": "Ingolf Lohmann",
     "human_contribution": "Requested repository-internal durable wakeup, startup/replay/restart handling, reuse and strict separation of activation gates.",
@@ -55,30 +55,45 @@
   },
   "outputs": [
     {
-      "path": "src/qikvrt_github_api_shim.py",
-      "bytes": 20316,
-      "sha256": "3c04a98544ea9a77d7a718cfc153acf991380d6383c4c62156fbc98be8d7d050"
+      "path": "src/qikvrt_graph_mail_consumer.py",
+      "bytes": 21626,
+      "sha256": "51cc421283778273421323072e43ebc80253dada855356327bd2fa4ae2d8154d"
     },
     {
       "path": "src/qikvrt_graph_webhook.py",
-      "bytes": 18836,
-      "sha256": "6b8775f2f0f49e18003d57465d89a47494308f7a8e4f4d8e35099dfa722b4a8d"
+      "bytes": 20046,
+      "sha256": "0c2144ff53ff342af6c339b9eac6f2160e7739d44c61a4fdbbdf33c0361a0951"
     },
     {
-      "path": "tests/test_graph_mail_webhook.py",
-      "bytes": 26804,
-      "sha256": "a60253cbd04cae6fd5e4c8f43b00a41b626a9d801abb08477066b02495675018"
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 20862,
+      "sha256": "0d25fb44a087b6a47055a3287c53e03d02d7de34525d630b04fa14a4094e6725"
+    },
+    {
+      "path": "tools/qikvrt_graph_subscription.py",
+      "bytes": 10252,
+      "sha256": "5393e1e74dd1c183fdffb9af19211ede1b453ea85c496b44467f3c7796caf337"
+    },
+    {
+      "path": "tests/test_graph_mail_consumer.py",
+      "bytes": 30385,
+      "sha256": "5fae1fe9dfe554ac47a7c13dc387ff582699f1dd9fc8d1eeab9419a2595c4849"
     },
     {
       "path": "docs/GRAPH_MAIL_WEBHOOK.md",
-      "bytes": 10437,
-      "sha256": "1277c4ca0ddda6ac6e075fbe6158396d124ad31ddf7ffb462e72ab02582fe5d5"
+      "bytes": 16315,
+      "sha256": "1d5981e5652259d01ff76de197c626c72b4e2a5c92ea309872e182e14af63555"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11448,
+      "sha256": "1cdda884d4c753eca59f346f7af53f5fa0a153036a2e098c26030154aa0635f3"
     }
   ],
   "verification": {
     "candidate_command": "make graph-mail-webhook-test",
-    "candidate_test_count": 32,
-    "candidate_result": "PASS",
+    "candidate_test_count": 61,
+    "candidate_result": "PASS_CURRENT_CANDIDATE_SYNTHETIC_PROVIDER_AND_LOCAL_HTTP",
     "full_suite_initial_result": "BLOCK_MISSING_HISTORICAL_GIT_OBJECT",
     "historical_object_restored": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
     "original_historical_test_recheck": "PASS_WITHOUT_SOURCE_OR_GATE_CHANGE",
@@ -108,7 +123,8 @@
       "log_bytes": 111680,
       "log_sha256": "b3a38ee7ee0945b702c1330c370f4d7a7dd3ddca037cef6f4ef136ac1c959062",
       "transferred_to_successor": false
-    }
+    },
+    "historical_worker_candidate_test_count": 32
   },
   "integration_reconciliation": {
     "current_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
@@ -129,5 +145,176 @@
     "observed_failure": "BLOCK repository manifest differs from deterministic regeneration",
     "cause": "The lane checked the GitHub merge subject with a newer main Node lifecycle state; the candidate manifest still bound the earlier state.",
     "repair": "Regular successor commit with current main as a second parent and fresh deterministic integrity; no workflow or gate change."
-  }
+  },
+  "native_mail_consumer_implementation_bound": true,
+  "native_mail_consumer_bound": false,
+  "provider_readback_performed": false,
+  "document_received": false,
+  "mail_consumer_successor": {
+    "source_head": "b3518f22f3e6071c8ded6f7b38266f54a2533943",
+    "source_tree": "c39bd139393de8e9f144a21584bfb82ea0107b33",
+    "source_base_head": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "source_reobserved_before_materialization": true,
+    "created_at_utc": "2026-10-06T21:21:03.474675+00:00",
+    "native_consumer": "src/qikvrt_graph_mail_consumer.py:GraphMailConsumer",
+    "runtime_binding": "QIKVRT_GRAPH_MAIL_CONSUMER_BINDING",
+    "private_effect_scope": "PRIVATE_GRAPH_MAIL_PROVIDER_OBSERVATION_ONLY",
+    "provider_read_scope": "CONFIGURED_FOLDERS_SELECTED_MESSAGE_FIELDS",
+    "execution_triggers": [
+      "START_RECOVERY",
+      "DURABLE_WAKE",
+      "RECOVERY_AFTER_NEW_WAKE"
+    ],
+    "scheduler_created": false,
+    "timed_provider_polling": false,
+    "second_worker_created": false,
+    "reuse_evidence": [
+      "No executable consumer in the predecessor src/tools/runtime source; the predecessor work unit also records the unmerged self-host source search.",
+      "Reuse tools/qikvrt_graph_subscription.py:Graph for private fixed-origin, no-redirect OAuth transport.",
+      "Reuse QikvrtGitHubApiServer.service_actions and GraphMailReconciler for startup, durable replay wake and recovery.",
+      "Reuse native ingest, replay receipts, committed provenance, process_lock and fsynced atomic_write_bytes."
+    ],
+    "private_inbox_handoff": "GraphMailConsumer.read_observations(webhook_binding, after_key=last_accepted_observation)",
+    "commit_rule": "Complete all bound folders and independent current message reads; native immutable capsule/provenance readback; compare-and-set atomic pointer. Ignore unreachable orphan candidates.",
+    "deduplication": "Compare current provider version and selected-content SHA-256 against committed per-folder state; notification ID/ETag absence or duplicate event key never suppresses a new provider read.",
+    "lifecycle_boundary": "Lifecycle signals are privately observed; OAuth refresh, renewal, reauthorization and registration remain separately admitted control-plane effects.",
+    "limits": {
+      "messages": 10000,
+      "pages_per_folder": 128,
+      "successful_reads_per_pass": 12000,
+      "native_capsule_bytes": 16777216
+    },
+    "activation_gates": {
+      "production_host_consumer_admitted": false,
+      "private_graph_oauth_verified": false,
+      "subscription_registered": false,
+      "public_https_callback_observed": false,
+      "live_provider_mail_readback": false,
+      "document_received": false
+    },
+    "provenance": {
+      "human_actor": "Ingolf Lohmann",
+      "human_contribution": "Requested native fail-closed provider consumer, no scheduler or timed polling, private verifiable observations, replay/restart/negative controls and separate activation gates.",
+      "artificial_cognitive_actor": "OpenAI Codex (GPT-6)",
+      "model_build": "UNAVAILABLE",
+      "artificial_cognitive_contribution": "Source analysis, transport reuse, provider consumer and runtime binding, synthetic current-message/recovery controls and evidence documentation.",
+      "evidence_retention": "METADATA_ONLY",
+      "human_acceptance_of_successor": "PENDING"
+    },
+    "verification": {
+      "candidate_command": "make graph-mail-webhook-test",
+      "candidate_tests": 61,
+      "new_consumer_tests": 29,
+      "candidate_result": "PASS_SYNTHETIC_PROVIDER_AND_REAL_LOCAL_HTTP_ONLY",
+      "remote_exact_head_result": "PENDING_AT_COMMIT_TIME_NO_PREDECESSOR_TRANSFER",
+      "full_repository_suite": "PASS_CANDIDATE_WORKTREE; final committed HEAD/TREE remote gates are pending at commit time",
+      "predecessor_evidence_transfer": false,
+      "controls": [
+        "replay without event ID/ETag reads new provider version",
+        "unchanged provider state emits no duplicate mail changes",
+        "same version changed content and versionless projection",
+        "complete paginated delta plus independent current message GET",
+        "404/deletion and moved-folder reconciliation",
+        "provider-declared 410 resets once",
+        "partial pages/provider errors preserve cursor",
+        "idle loop has no provider read or timed retry",
+        "real HTTP wake and sanitized health",
+        "private inbox readback ignores orphan candidates",
+        "unknown inbox continuation/cycles/bounds fail closed",
+        "fresh process loss before pointer commit then restart observes one change",
+        "concurrent writer compare-and-set",
+        "wrong mailbox/folder/bindings, symlinks, tamper and missing native provenance",
+        "native storage failure preserves cursor",
+        "fixed origin/GET-only, no redirect, strict/bounded provider JSON",
+        "lifecycle reads create no Graph write effects"
+      ],
+      "candidate_log": {
+        "status": "SUPERSEDED_BY_FRESH_FULL_CANDIDATE_SUITE_61_GRAPH_TESTS",
+        "previous_60_test_log": {
+          "bytes": 11518,
+          "sha256": "94161ef08930f6f397f2836691fcc93efb4b61ff1c499b308eb04d5b43e46a66",
+          "status": "HISTORICAL_60_TEST_RUN; fresh successor full-suite result must be bound after commit"
+        }
+      },
+      "historical_object_repair": {
+        "object": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "local_reuse_attempt": "BLOCK_DONOR_PROMISOR_MISSING_BLOB_56117715b416487c35eeb888bb73de1f25eb64fe",
+        "source_or_test_change": false,
+        "continuation": "FETCH_EXACT_OBJECT_FROM_EXISTING_ORIGIN",
+        "result": "PASS_ORIGINAL_FAILING_TEST_UNCHANGED",
+        "source": "EXACT_OBJECT_FETCHED_FROM_EXISTING_ORIGIN"
+      },
+      "full_candidate_validation": {
+        "command": "make test",
+        "exit_code": 0,
+        "python_tests": 604,
+        "python_groups": 19,
+        "graph_tests": 61,
+        "log_bytes": 117506,
+        "log_sha256": "6f9c439d43966697acadb01082b66160e38529967cd5c451c3d7065fe31a0c72",
+        "exact_successor_remote_head_result": "PENDING_AT_COMMIT_TIME",
+        "predecessor_evidence_transfer": false
+      }
+    },
+    "effect_ack_done": false,
+    "outputs": [
+      {
+        "path": "src/qikvrt_graph_mail_consumer.py",
+        "bytes": 21626,
+        "sha256": "51cc421283778273421323072e43ebc80253dada855356327bd2fa4ae2d8154d"
+      },
+      {
+        "path": "src/qikvrt_graph_webhook.py",
+        "bytes": 20046,
+        "sha256": "0c2144ff53ff342af6c339b9eac6f2160e7739d44c61a4fdbbdf33c0361a0951"
+      },
+      {
+        "path": "src/qikvrt_github_api_shim.py",
+        "bytes": 20862,
+        "sha256": "0d25fb44a087b6a47055a3287c53e03d02d7de34525d630b04fa14a4094e6725"
+      },
+      {
+        "path": "tools/qikvrt_graph_subscription.py",
+        "bytes": 10252,
+        "sha256": "5393e1e74dd1c183fdffb9af19211ede1b453ea85c496b44467f3c7796caf337"
+      },
+      {
+        "path": "tests/test_graph_mail_consumer.py",
+        "bytes": 30385,
+        "sha256": "5fae1fe9dfe554ac47a7c13dc387ff582699f1dd9fc8d1eeab9419a2595c4849"
+      },
+      {
+        "path": "docs/GRAPH_MAIL_WEBHOOK.md",
+        "bytes": 16315,
+        "sha256": "1d5981e5652259d01ff76de197c626c72b4e2a5c92ea309872e182e14af63555"
+      },
+      {
+        "path": "Makefile",
+        "bytes": 11448,
+        "sha256": "1cdda884d4c753eca59f346f7af53f5fa0a153036a2e098c26030154aa0635f3"
+      }
+    ]
+  },
+  "predecessor_worker_outputs": [
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 20316,
+      "sha256": "3c04a98544ea9a77d7a718cfc153acf991380d6383c4c62156fbc98be8d7d050"
+    },
+    {
+      "path": "src/qikvrt_graph_webhook.py",
+      "bytes": 18836,
+      "sha256": "6b8775f2f0f49e18003d57465d89a47494308f7a8e4f4d8e35099dfa722b4a8d"
+    },
+    {
+      "path": "tests/test_graph_mail_webhook.py",
+      "bytes": 26804,
+      "sha256": "a60253cbd04cae6fd5e4c8f43b00a41b626a9d801abb08477066b02495675018"
+    },
+    {
+      "path": "docs/GRAPH_MAIL_WEBHOOK.md",
+      "bytes": 10437,
+      "sha256": "1277c4ca0ddda6ac6e075fbe6158396d124ad31ddf7ffb462e72ab02582fe5d5"
+    }
+  ]
 }

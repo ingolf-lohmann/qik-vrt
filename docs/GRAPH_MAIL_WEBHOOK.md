@@ -65,24 +65,86 @@ and conflicting receipts fail closed. A runtime reconciliation failure is
 visible as `BLOCK` in `/health`; pending bytes remain for another real delivery
 or restart, rather than an automatic timed retry.
 
-These receipts attest only `PRIVATE_GRAPH_EVENT_RECONCILIATION_ONLY`. They
-retain `native_mail_consumer_bound=false`, `provider_readback_performed=false`,
-`document_received=false` and `effect_ack_done=false`. The inbox records remain
-intact for the separately admitted mail/lifecycle consumer. No executable Graph
-mail consumer was found in the bound #477 source tree. The existing server loop
-and handler are reused here; no external consumer is invented or imported from
-an unmerged Self-Host lane.
+The original event receipts continue to attest only
+`PRIVATE_GRAPH_EVENT_RECONCILIATION_ONLY`; their existing false provider/mail
+fields remain correct and immutable. The separately configured native
+`GraphMailConsumer` now extends this same reconciliation pass with
+`PRIVATE_GRAPH_MAIL_PROVIDER_OBSERVATION_ONLY`. No consumer is silently activated
+when its private binding is absent. Explicit invalid consumer configuration
+blocks startup before HTTP serving.
 
-The signal and local reconciliation are not task completion. Basic notifications
-may omit an event ID or etag: the worker must independently fetch the current
-message, reconcile its version, and deduplicate actual document/notification
-effects by exact hashes. Ingress deduplication alone cannot prove that every
-distinct mailbox mutation was observed.
+## Native provider reconciliation and private inbox handoff
 
-The admitted mail consumer must still independently reconcile provider state
-on startup/recovery and on replay. A local event-byte receipt is not a provider
-cursor or a completed mail observation, especially when a basic notification
-omits its event ID or etag.
+`src/qikvrt_graph_mail_consumer.py` reuses the existing subscription tool's
+private `Graph` transport, no-redirect handler, owner-only file reads and the
+native handler's ingest, provenance, process lock and fsynced atomic writer.
+The ordinary REST entrypoint works with `-S` and from another working directory.
+It creates no second server, worker, scheduler or timer. Provider reads occur
+only in startup/recovery and a pass triggered by a durable Graph wake, including
+replayed basic notifications and all three lifecycle event kinds. Idle service
+iterations perform no scan or provider read. After a failure another genuine
+wake or process restart is required; there is no timed retry.
+
+Each admitted pass independently reads `/me` and verifies the bound mailbox,
+resolves each configured folder's native ID, then completes that folder's delta
+round. Opaque next/delta links must keep the exact HTTPS origin and folder path;
+empty intermediate pages are followed, cycles, excessive pages and incomplete
+responses fail closed. Every touched message is independently read through
+`/me/messages/<provider-id>` using the selected properties and
+`Prefer: IdType="ImmutableId"`. A current 404 or changed `parentFolderId` is a
+removal from the selected folder. Provider data, rather than notification ID,
+ETag or event key, determines current membership and version. Canonical hashes
+include both the provider version and selected content; changed selected content
+is detected even if the version marker is unchanged. A complete selected
+projection is required when the version marker is absent. Duplicated event bytes
+still wake another provider read without re-emitting an unchanged message.
+
+No notification resource is a network target. Graph reads use only fixed
+`https://graph.microsoft.com/v1.0/me` endpoints. The existing transport is
+GET-only for this consumer, rejects redirects, duplicate/non-finite JSON and
+responses over 1 MiB. Each folder round is bounded to 128 pages, the selected
+state to 10,000 messages and the pass to 12,000 successful reads. An HTTP 410
+on a previously saved delta cursor permits one provider-justified initial
+resynchronization in the same pass. Only a complete replacement may remove
+previously observed messages absent from that scope; a failing reset is not
+retried. Other HTTP/OAuth/provider failures leave the cursor unchanged.
+
+Only after **all** configured folders and current message reads succeed does
+native ingest commit an immutable `mail-observation-<hash>.bin` capsule, its
+sidecar, original transaction and responsibility-bound provenance. The capsule
+contains selected private messages, version hashes, actual changes/removals,
+provider response hashes, cursor state, observed lifecycle signals and a link to
+the preceding committed observation. The atomic, independently read-back
+`.qikvrt/api/out/graph-mail-current.json` points to that capsule. Compare-and-set
+under the existing process lock prevents concurrent rounds or changed private
+bindings from overwriting newer state. Network reads do not hold the native
+handler lock. Partial rounds, storage failures and process loss before pointer
+commit cannot advance a provider cursor.
+
+The downstream private inbox evaluator calls
+`GraphMailConsumer.read_observations(webhook_binding, after_key=<its last
+accepted observation>)`. It independently verifies native provenance and reads
+only the committed hash-linked chain in chronological order. An ingested
+candidate left unreachable by process loss is ignored. Unknown continuation
+anchors, broken evidence and exceeded readback bounds block rather than return
+a partial accepted history. The evaluator keeps its own accepted key; neither
+an observation receipt nor cursor progress accepts a document or sends a user
+notification. The public health projection reports only state, counts and scope,
+never mailbox/message/folder identities, private observation keys, mail content,
+OAuth material, cursor URLs or raw provider errors.
+
+Coverage is explicitly `CONFIGURED_FOLDERS_SELECTED_MESSAGE_FIELDS`. Configure
+`inbox` for incoming mail or list other admitted folders privately; the
+`/me/messages` subscription can wake a pass for changes outside these folders,
+but that does not extend the readback scope. Delta/current reads are not a
+globally atomic mailbox snapshot, a full audit of every intermediate mutation,
+an attachment download or proof of actual document delivery. Tenant identity
+remains a private deployment assertion (`PRIVATE_CONFIGURATION_NOT_TOKEN_ATTESTATION`),
+separate from the independently verified mailbox identity. No OAuth consent,
+refresh, subscription create/renew/re-authorize or HTTPS activation is performed
+by the consumer. Lifecycle signals are retained for separately admitted
+control-plane recovery; successful mail reconciliation does not claim that an
+expired or removed subscription was repaired.
 
 ## Private deployment binding
 
@@ -144,6 +206,31 @@ refresh, recovery, worker binding and actual document receipt remain distinct
 acceptance requirements. A lost-response recovery or local test is not a
 continuous-operation claim.
 
+Set `QIKVRT_GRAPH_MAIL_CONSUMER_BINDING` in the existing REST runtime to an
+additional absolute, owner-only private JSON file. Its owner/repository/store,
+tenant and mailbox must exactly match the webhook binding. Example schema only:
+
+```json
+{
+  "schema": "qikvrt_graph_mail_consumer_binding_v1",
+  "repository": "owner/repository",
+  "responsibility_owner": "owner",
+  "state_root": "/var/lib/qikvrt/private-mail",
+  "accepted_effect_scope": "PRIVATE_GRAPH_MAIL_PROVIDER_OBSERVATION_ONLY",
+  "tenant_id": "22222222-2222-2222-2222-222222222222",
+  "mailbox_id": "verified-mailbox-id",
+  "folder_ids": ["inbox"],
+  "token_file": "/private/graph-oauth-bearer"
+}
+```
+
+The bearer remains host-private and must already authorize `/me` and the
+selected mail reads (the existing delegated account/`Mail.Read` grant). A file
+or configuration alone is not a verified OAuth or live-mail gate. Changing the
+mailbox, tenant or folder scope does not silently inherit old cursor evidence.
+The binding and all provider-derived data stay outside public Git and Actions
+artifacts. Neither a connector token nor the example values are a live binding.
+
 ## Deployment acceptance and current boundary
 
 Activation requires the exact reviewed source, a verified persistent own host,
@@ -170,7 +257,10 @@ client watch as a fallback.
 `make graph-mail-webhook-test` runs real native-loop HTTP calls, wake ordering,
 startup reconciliation, concurrent wake preservation, replay without receipt
 overwrite, abrupt process exit/restart, provenance/tamper/symlink/storage
-negative controls and synthetic control-plane tests. `make test` includes
+negative controls, synthetic control-plane tests and the native provider
+consumer controls. These include a real HTTP wake, versionless/idless replay,
+independent current message reads, delta reset, page/read bounds, deletion/move,
+private inbox continuation, stale-writer rejection and process-loss recovery. `make test` includes
 this target and all existing gates.
 No new dependency or undeclared runtime is required.
 
@@ -179,3 +269,6 @@ No new dependency or undeclared runtime is required.
 - [Subscription creation](https://learn.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0)
 - [Lifecycle recovery](https://learn.microsoft.com/en-us/graph/change-notifications-lifecycle-events)
 - [Subscription expiration](https://learn.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0)
+
+- [Message delta rounds and folder scope](https://learn.microsoft.com/en-us/graph/api/message-delta)
+- [Immutable Outlook IDs](https://learn.microsoft.com/en-us/graph/outlook-immutable-id)

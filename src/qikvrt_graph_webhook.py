@@ -198,15 +198,19 @@ class GraphMailReconciler:
     """Adapter executed by the existing REST server loop, never a new worker.
 
     Reuse the native serialized handler and its provenance, recovery and fsync
-    primitives. Receipts mean private event bytes were reconciled, not that a
-    mailbox was read or that a live mail/lifecycle consumer has been admitted.
-    The inbox remains intact for that separately bound consumer.
+    primitives. Event receipts mean private event bytes were reconciled. A
+    separately configured native consumer independently reads provider state;
+    its observation scope remains separate from these immutable event receipts.
+    No receipt here accepts a document or establishes a production deployment.
     """
 
-    def __init__(self, binding_path, *, repository, principal):
+    def __init__(self, binding_path, *, repository, principal, consumer=None):
         self.binding_path = binding_path
         self.repository = repository
         self.principal = principal
+        self.consumer = consumer
+        self._consumer_started = False
+        self._consumer_recovery = False
 
     def _binding(self):
         return load_binding(self.binding_path, repository=self.repository,
@@ -280,6 +284,7 @@ class GraphMailReconciler:
             if len(keys) > 10000:
                 raise NotificationError("private notification backlog exceeds bound")
         reconciled = 0
+        lifecycle = set()
         for key in keys:
             # Require committed ingress provenance, not just a correctly named
             # JSON file. Short native locks serialize against concurrent ingress.
@@ -307,10 +312,27 @@ class GraphMailReconciler:
                     atomic_write_bytes(target, encoded)
                     if read_private(target) != encoded:
                         raise OSError("independent worker receipt readback mismatch")
+                record = self._record(read_private(dirs(root)["inbox"] / (key + ".bin")), current)
+                if record["kind"].startswith("lifecycle."):
+                    lifecycle.add(record["kind"])
                 reconciled += 1
-        return {"status": "RECONCILED", "records": reconciled, "effect_scope": WORKER_SCOPE,
+        result = {"status": "RECONCILED", "records": reconciled, "effect_scope": WORKER_SCOPE,
                 "native_mail_consumer_bound": False, "provider_readback_performed": False,
                 "document_received": False, "effect_ack_done": False}
+        if self.consumer is not None:
+            trigger = ("START_RECOVERY" if not self._consumer_started else
+                       "RECOVERY" if self._consumer_recovery else "DURABLE_WAKE")
+            try:
+                observed = self.consumer.observe(binding, event_keys=keys, lifecycle=lifecycle,
+                                                 trigger=trigger, binding_guard=self._binding)
+            except Exception:
+                self._consumer_recovery = True
+                raise
+            self._consumer_started = True
+            self._consumer_recovery = False
+            result.update(native_mail_consumer_bound=True, provider_readback_performed=True,
+                          mail_observation=observed)
+        return result
 
 
 def handle(handler):

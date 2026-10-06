@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
 from qikvrt_effect_ack import EffectState
 from qikvrt_graph_webhook import GraphMailReconciler, handle as handle_graph_webhook
+from qikvrt_graph_mail_consumer import GraphMailConsumer
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
@@ -44,10 +45,14 @@ class QikvrtGitHubApiServer(ThreadingHTTPServer):
                                   "effect_ack_done": False}
         try:
             path = os.environ.get("QIKVRT_GRAPH_WEBHOOK_BINDING", "")
+            consumer_path = os.environ.get("QIKVRT_GRAPH_MAIL_CONSUMER_BINDING", "")
+            if consumer_path and not path:
+                raise ValueError("mail consumer requires the private webhook binding")
             if path:
                 self.graph_mail_reconciler = GraphMailReconciler(
                     path, repository=os.environ.get("QIKVRT_ALLOWED_REPOSITORY", ""),
-                    principal=os.environ.get("QIKVRT_API_PRINCIPAL", ""))
+                    principal=os.environ.get("QIKVRT_API_PRINCIPAL", ""),
+                    consumer=GraphMailConsumer(consumer_path) if consumer_path else None)
                 # Complete startup reconciliation before accepting HTTP requests.
                 self.graph_mail_status = self.graph_mail_reconciler.reconcile()
         except Exception:
@@ -67,7 +72,9 @@ class QikvrtGitHubApiServer(ThreadingHTTPServer):
             # No timed retry. Durable records are retained; another delivery or
             # a restart provides the next reconciliation opportunity.
             self.graph_mail_status = {"status": "BLOCK", "reason": "private Graph reconciliation failed",
-                                      "native_mail_consumer_bound": False, "effect_ack_done": False}
+                                      "native_mail_consumer_bound": self.graph_mail_reconciler.consumer is not None,
+                                      "provider_readback_performed": False,
+                                      "document_received": False, "effect_ack_done": False}
 
 
 def _unique_json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:

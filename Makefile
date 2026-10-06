@@ -68,7 +68,7 @@ test: owner-reminders-test
 
 .PHONY: graph-mail-webhook-test
 graph-mail-webhook-test:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_graph_mail_webhook
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_graph_mail_webhook tests.test_graph_mail_consumer
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_graph_subscription.py --help >/dev/null
 
 test: graph-mail-webhook-test
