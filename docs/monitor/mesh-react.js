@@ -271,7 +271,8 @@
       h('main',{id:'main'},h('p',{className:'sub'},'Universales Raumzeit-Terminal'),
         h('h1',null,scope === 'mesh' ? 'Das Mesh im aktuellen Nachweisstand' : repository || 'Repository-Node'),
         h('div',{className:'meta'},h('p',null,'Stream: ',transport,' · Datenstand: ',date(observed), age !== null ? ' · Alter: '+age+' s' : ''),h('button',{onClick:()=>refresh.current()},'Readback erneuern')),
-        error.length ? h('div',{role:'status','aria-live':'polite'}, ...error.map((failure,index) =>
+        error.length ? h('div',{role:'alert'},
+          h('p',{className:'error'},'Readback offen: Der letzte Datenstand bleibt sichtbar. Die folgenden Diagnosen beschreiben die offenen Abrufe.'), ...error.map((failure,index) =>
           h(ReadbackFeedback,{key:String(failure.source_url)+'-'+index,failure,previous:failure.source_url === '/api/activity' && !!data}))) : null,
         h(globalThis.QikvrtMeshFileView),
         h('section',{className:'notice'},h('h2',null,'Erster gemeinsamer Ping'),

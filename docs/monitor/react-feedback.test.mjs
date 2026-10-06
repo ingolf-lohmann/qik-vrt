@@ -196,6 +196,8 @@ test('activity HTTP failure does not hide successful runtime and terminal siblin
   const result=await replay(candidateSource,{failures:{'/api/activity':{status:404,statusText:'Not Found',headers:observation.headers}}});
   assert.equal(coverage(explanations(result.tree)),5);assert.ok(text(result.tree).includes('SYNTHETIC_RUNTIME'));
   assert.equal(diagnoses(result.tree)[0].original_error,'/api/activity: HTTP 404');
+  const alert=nodes(result.tree).find(node=>node.props.role==='alert');assert.ok(alert,'existing browser alert contract retained');
+  assert.match(text(alert),/Readback offen/);
 });
 test('all rejected REST responses remain separate, not a flattened error chain',async()=>{
   const result=await replay(candidateSource,{failures:{'/api/activity':{status:404},'/api/runtime':{status:502},'/api/terminal':{status:401}}});
