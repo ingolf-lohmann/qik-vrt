@@ -58,7 +58,10 @@
     "return_to_user_before_executable_successor_exhausted": false,
     "observation_frequency": "EVENT_AND_WORKLOAD_SENSITIVE",
     "deduplicate_unchanged_observations": true,
-    "monitoring_activity_is_progress": false
+    "monitoring_activity_is_progress": false,
+    "human_readable_feedback_required": true,
+    "repair_execution_state_explicit": true,
+    "technical_diagnostics_in_accessible_details": true
   },
   "tracked_snapshot": {
     "schema": "qikvrt-ai-progress/3.1",
@@ -131,5 +134,11 @@
       "BOUNDED_OBSERVATION_WINDOW_ENDED"
     ],
     "causal_failure_becomes_next_work_unit": true
+  },
+  "human_readable_feedback": {
+    "objective_id": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
+    "policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+    "human_contract": "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md#continuous-human-readable-feedback",
+    "machine_states_and_evidence_unchanged": true
   }
 }

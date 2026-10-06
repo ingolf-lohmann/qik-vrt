@@ -43,6 +43,19 @@ blockers and next actions. Persistent workflows MUST maintain `AI_PROGRESS.json`
 and `AI_STATUS.md`. Repetitive unchanged status and long explanations in place
 of executable work are prohibited.
 
+## Continuous human-readable feedback
+
+Every user-visible error, status and progress projection MUST apply
+`HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT` from
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json` and
+`docs/HUMAN_MACHINE_PROGRESS_STANDARD.md`. Explain state, impact, evidenced
+cause or uncertainty, next action and actual repair progress in plain localized
+language. Say whether repair is planned, started, completed or blocked only
+when that state is evidenced. Retain exact machine states and diagnostics in
+accessible details. Reuse existing emitters; compare real before/after cases
+before claiming improved comprehension. This objective applies continuously
+and does not authorize a new scheduler, broader effects or weaker gates.
+
 ## Reuse before creation
 
 `REUSE_BEFORE_CREATE` is mandatory. Before creating a new workflow, script,

@@ -72,3 +72,15 @@ Eine Referenz in dieser Architektur ist keine automatische Abhängigkeit und kei
 ## Qualitätsregel
 
 Die optimale Mensch–Maschine-Schnittstelle maximiert nicht die Anzahl der Antworten, sondern die Zahl belastbarer Erkenntnisfortschritte pro menschlichem Eingriff. Geschwindigkeit darf niemals durch Weglassen von Provenienz, Unsicherheit, Pflichtprüfungen oder menschlicher Autorität bei externen Effekten erkauft werden.
+
+## Fortlaufend menschenlesbare Rückmeldungen
+
+Fehlermeldungen und alle sichtbaren Rückmeldungen des Universalen Raumzeit-Terminals
+werden fortlaufend auf Verständlichkeit optimiert. Maßgeblich sind das Ziel
+`HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT` in der bestehenden
+[Interface-Policy](../policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json) und der
+[Fortschrittsstandard](HUMAN_MACHINE_PROGRESS_STANDARD.md#continuous-human-readable-feedback).
+Zustand, Auswirkung, belegte Ursache oder Unsicherheit, nächster Schritt und
+der tatsächliche Reparaturstand müssen verständlich sein. Technische Details
+bleiben barrierefrei zugänglich. Verbesserungen werden an vergleichbaren realen
+Fällen gemessen; ein gespeichertes Ziel belegt noch keine umgesetzte Oberfläche.

@@ -44,3 +44,12 @@ python3 -B src/qikvrt_effect_ack_http_terminal.py --host 127.0.0.1 --port 8771
 ```
 
 The bridge demonstrates the complete local prepare/commit/reobserve shape but deliberately cannot perform repository writes, releases, deployments, publication or actuator effects.
+
+## Human-readable feedback optimization
+
+This client inherits `HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT` from the
+[existing interface policy](../../../policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json)
+and [progress standard](../../../docs/HUMAN_MACHINE_PROGRESS_STANDARD.md#continuous-human-readable-feedback).
+Future bounded changes improve visible errors, state, impact, next action and
+actual repair progress while retaining accessible technical diagnostics. This
+requirement does not claim that the current extension has completed that rollout.
