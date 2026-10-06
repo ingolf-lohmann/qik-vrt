@@ -184,3 +184,52 @@ Firefox/noVNC sources are now recovered with original blob provenance; see
 admission remains a separate HOLD condition.
 No public deployment, complete S1, native terminal actuation or EFFECT_ACK_DONE
 is claimed.
+
+## RaumzeitTerminal: personal entry in the existing React client
+
+The self-host listener serves the same `index-react.html` at `/`, `/index.html`
+and `/client`. The first view explains a personal browser assistant for
+resuming research/development work with sources, decisions and authorizations
+across sessions. `/mesh` and `/node` retain the monitor, its errors and fresh
+readback boundaries. This is an implementation-side root route; it establishes
+no domain control or public deployment of `raumzeitterminal.de`.
+
+The primary action opens the existing read-only SQLite export panel. File
+opening does not authenticate its owner or resume a runtime. The explicitly
+opened setup form uses the three existing Personal-Origin questions: attribution
+identifier, personal-origin configuration and evidence retention. Defaults are
+local-only and metadata-only. Editing invalidates the preview; credential URLs,
+queries and fragments are refused. Fields stay in React memory; no API write,
+account, remote origin, transcript or durable personal store is created. Reload
+clears the preview. Existing monitor instance metadata retains its behavior.
+Returning file readers are not automatically asked the onboarding questions.
+Authenticated binding, reuse of established answers and actual personal task
+resumption remain product targets.
+
+Dueck's six questions form the editorial acceptance checklist inside the same
+React terminal:
+
+| Question | Visible answer and evidence limit |
+| --- | --- |
+| Concrete use case | Continue an interrupted research/development task; persistent sources, decisions and permissions are a product target. |
+| Actual users/buyers | Target groups are named; a customer or buyer base is not established by available evidence. |
+| Updates | Ingolf Lohmann holds Product/Code responsibility; OpenAI Codex contributes implementation. Changes are versioned and checked; no interval or support SLA is promised. |
+| Later costs | No binding price list; commercial use requires a separate written license; operating/model/support costs remain unpriced. |
+| Exact capability | Local export reading, technical readbacks and a transient setup preview; component evidence does not establish the complete browser assistant. |
+| Measurable advantage | No measured customer advantage; proposed equal-task comparison records resumption time, repeated context and confirmed effects without duplication. |
+
+The component link resolves historical native run `37444676087` on #474 HEAD
+`a3a19ed041900fbffb2aa38bb4c51fdffb0f7751`, TREE
+`1b96726a258cd5efdf8cc0512013d245328167e5`. This exact-source SQLite/Owner-REST
+and desktop-origin evidence never supplies a transferred check for new UI bytes.
+Public HTTPS, actual Android/iOS, per-user authentication, automatic context
+resumption, customer benefit and EFFECT_ACK_DONE remain open.
+
+The existing desktop Origin harness adds actual React interaction controls with
+unavailable telemetry: primary file opening without onboarding, three-question
+preview, credential-URL refusal, no added storage or personal transport, six
+bounded product answers, preview clearing on reload, monitor/error navigation
+and narrow/desktop layout. The existing S1 lane retains original persistence
+controls and adds a separate exact-source UI witness and screenshots to its
+artifact. A narrow desktop viewport is not actual mobile-device acceptance.
+Editorial and automated checks are not an independent usability study.
