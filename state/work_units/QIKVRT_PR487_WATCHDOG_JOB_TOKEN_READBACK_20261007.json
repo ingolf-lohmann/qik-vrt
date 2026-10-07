@@ -28,7 +28,8 @@
     "Requested separate minimal fail-closed diagnosis/repair of watchdog Job-token visibility; preserve frozen #487 and its Node-24/Ubuntu-26.04 review scope."
   ],
   "artificial_cognitive_contributions": [
-    "Reobserved PR, Main, exact run attempt, permissions, endpoint and failure log; extended existing watchdog with sanitized native-response evidence, same-token repository probe, and negative controls."
+    "Reobserved PR, Main, exact run attempt, permissions, endpoint and failure log; extended existing watchdog with sanitized native-response evidence, same-token repository probe, and negative controls.",
+    "Corrected the initial SUBJECT_READBACK attribution after downloading and byte-verifying the original attempt-2 artifact: its native failure stage is AUTHORITY_READBACK and its exact PR head/tree were written only after the subject guard passed."
   ],
   "joint_components": [],
   "unresolved_origin": [],
@@ -42,8 +43,8 @@
     "run_id": 37623637412,
     "attempt": 2,
     "job_id": 112804228510,
-    "stage": "SUBJECT_READBACK",
-    "endpoint": "repos/ingolf-lohmann/qik-vrt/pulls/487",
+    "stage": "AUTHORITY_READBACK",
+    "endpoint": "repos/Goldkelch/qik-vrt/git/ref/heads/main",
     "http_status": 404,
     "declared_permissions": {
       "actions": "read",
@@ -52,11 +53,16 @@
     },
     "token": "github.token -> GH_TOKEN",
     "event_pr": 487,
-    "cause": "TOKEN_RESOURCE_VISIBILITY_UNRESOLVED; endpoint, PR identity and read permission are correctly declared"
+    "subject_guard_passed": true,
+    "cause": "CONTRACT_DECLARED_GOLDKELCH_MAIN_REF_UNREADABLE; provider-side cause of the resource 404 remains UNESTABLISHED",
+    "artifact_id": 11483787209,
+    "artifact_zip_sha256": "8dd47c8c7e71e5a1a67f692a64c835f58e9d954fc150427e9ff32eefbf927d12",
+    "native_receipt_observed_at": "2026-10-07T12:59:08Z",
+    "initial_subject_readback_attribution": "SUPERSEDED_BY_VERIFIED_NATIVE_ARTIFACT"
   },
   "execution_route": {
     "reuse": "Existing native pull-request watchdog; no additional workflow; no callable initial dispatch connector",
-    "scope": "Candidate PR exact head only; original #487 has no new retry",
+    "scope": "Candidate PR exact head only; this client did not submit a new retry of original #487",
     "job_token_mandatory": true,
     "anonymous_fallback": false,
     "permissions_widened": false,
@@ -109,7 +115,7 @@
   "verification": {
     "preparation": "42 tests in the affected three-module gate; seven real-shell response cases cover PR/repository 404, 401, wrong head, wrong PR, malformed JSON, and valid PR readback followed by authority failure",
     "native_gate": "PENDING_FRESH_CANDIDATE_HEAD; response evidence decides boundary",
-    "scope": "diagnostic hardening; no recovered job-token readback claimed"
+    "scope": "diagnostic hardening; original PR readback passed and no recovered Goldkelch read path is claimed"
   },
   "human_decision": "TASK_SCOPE_AUTHORIZED; NATIVE_REVIEW_PENDING",
   "external_effects": {
@@ -140,6 +146,25 @@
     "http_status": 404,
     "artifact_id": 11497916032,
     "artifact_sha256": "c32e681f04f623fbd786198e6df91df9daf659f18f0688192eda87801e1648e5",
-    "cause_of_original_pr487_404_established": false
+    "cause_of_original_pr487_404_established": false,
+    "original_failure_stage_established": true
+  },
+  "verified_diagnostic_predecessor": {
+    "head": "7d8f24f85517bc8ec7e9abc1220467f5ce9c78c1",
+    "tree": "febe58a19bb24764f32246bd9fb4c1c337f9beec",
+    "run_id": 37654104577,
+    "attempt": 1,
+    "job_id": 112904709384,
+    "artifact_id": 11497532752,
+    "artifact_zip_sha256": "68253f27c09f12713087e3554b2974699cdf58f3ff452728c2c25966b19c6ebe",
+    "subject_pr490_http_status": 200,
+    "frozen_pr487_http_status": 200,
+    "frozen_pr487_legacy_command_exit": 0,
+    "frozen_pr487_head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+    "failure_stage": "AUTHORITY_READBACK",
+    "authority_ref_http_status": 404,
+    "authority_repository_probe_http_status": 404,
+    "disposition": "HOLD",
+    "fresh_evidence_for_corrected_candidate_head": false
   }
 }
