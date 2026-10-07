@@ -16,13 +16,30 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+      - name: Bind Ubuntu 26.04 compatibility to the exact source
+        env:
+          EXPECTED_HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          . /etc/os-release
+          test "$ID" = ubuntu
+          test "$VERSION_ID" = 26.04
+          test "$(git rev-parse HEAD^{commit})" = "$EXPECTED_HEAD"
+          echo "QIKVRT_UBUNTU26_SUBJECT head=$(git rev-parse HEAD^{commit}) tree=$(git rev-parse HEAD^{tree}) os=$ID version=$VERSION_ID"
+          git --version
+          python3 --version
+          cc --version
+          gh --version
+          jq --version
+          test "$(date -u -d '2026-10-19T00:00:00Z' +%FT%TZ)" = '2026-10-19T00:00:00Z'
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
         continue-on-error: true

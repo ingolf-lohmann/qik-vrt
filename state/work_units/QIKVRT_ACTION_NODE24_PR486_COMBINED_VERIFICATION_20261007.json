@@ -1,0 +1,49 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt_bounded_combined_compatibility_verification_v1",
+  "work_unit_id": "QIKVRT_ACTION_NODE24_PR486_COMBINED_VERIFICATION_20261007",
+  "created_at": "2026-10-07T12:49:46.046178+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "ref": "verify/actions-node24-ubuntu26-20261007",
+  "frozen_issue_repair": {
+    "pull_request": 486,
+    "head": "c622abf3c6be9eee10d4862b511a6fd3fe001585",
+    "tree": "e90692b23fbe963d9a04a577d519210318f7c151",
+    "head_changed": false
+  },
+  "runtime_repair": {
+    "pull_request": 487,
+    "head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+    "tree": "24365dc44d6ccfde4384b551b9be95d1d4a31ad4"
+  },
+  "combined_parent_order": [
+    "c622abf3c6be9eee10d4862b511a6fd3fe001585",
+    "75dc18e9fb4f0593007a753dc4728537f2befb97"
+  ],
+  "issue_agent_script_test_and_makefile_changes": [],
+  "issue_processing_workflow_delta": "Only actions/checkout@v4 -> existing SHA-pinned Node-24 checkout v7.0.1; all triggers, environments, permissions, guards, handlers, execution ordering and effect boundaries are preserved.",
+  "issue_processing_workflow_sha256": "f1f2ff16de55172f361a188d4e7290a716e07c392b55c0f4f9280da1df641c06",
+  "verification": {
+    "expected": "Fresh push CI runs complete make test including 25 frozen #486 regressions, on actual ubuntu-26.04; this is a separate exact subject, not original #486 head evidence.",
+    "native_run": "PENDING",
+    "predecessor_evidence_transfer": false
+  },
+  "external_effects": {
+    "main_merge": false,
+    "pr486_mutated": false,
+    "live_issue_effect": false,
+    "publication_or_deployment": false
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann: requested compatibility scope and unchanged #486 semantics",
+    "artificial_cognitive": "OpenAI Codex / GPT-6: exact combined tree and verification construction"
+  },
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

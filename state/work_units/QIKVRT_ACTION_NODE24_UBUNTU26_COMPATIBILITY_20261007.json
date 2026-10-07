@@ -1,0 +1,906 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "source_bound_compatibility_work_unit"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_ACTION_NODE24_UBUNTU26_COMPATIBILITY_20261007",
+  "created_at": "2026-10-07T12:38:39.045732+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "3d6148513b289005e71c73bae12de26f5f42f445",
+  "source_tree": "712f0a997e201f66c912c2682d4ee5fa67c0b8d1",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Requested source-bound Node-20 and ubuntu-latest audit, Node-24-compatible repairs retaining SHA pinning, explicit critical Ubuntu-26.04 tests, frozen #486 native-review head and fresh exact-head CI."
+  ],
+  "artificial_cognitive_contributions": [
+    "Current source and review readback, exact action-metadata audit including composite dependencies, bounded action upgrades, reuse of CI/adaptive/formal-audio workflows for explicit Ubuntu-26.04 coverage, local and native verification."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "frozen_pr486": {
+    "number": 486,
+    "head": "c622abf3c6be9eee10d4862b511a6fd3fe001585",
+    "tree": "e90692b23fbe963d9a04a577d519210318f7c151",
+    "draft": false,
+    "native_reviews": [],
+    "head_mutation_allowed": false,
+    "review_base_preserved": true,
+    "observed_semantics": "DETERMINISTIC_COMPILER_AND_HISTORY_PRESERVING_BOUNDED_HANDOFF"
+  },
+  "execution_route": {
+    "mesh_contract": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "mesh_dispatch_scope": "WATCHDOG_ONLY; no callable initial workflow-dispatch connector for this effect",
+    "selected_route": "Existing native push and pull-request CI on a separate main-based repair branch; separate verification-only combined #486 ref.",
+    "new_parallel_workflows_created": false
+  },
+  "audit": {
+    "actions": [
+      {
+        "uses": "actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+        "url": "https://raw.githubusercontent.com/actions/cache/55cc8345863c7cc4c66a329aec7e433d2d1c52a9/restore/action.yml",
+        "bytes": 1589,
+        "sha256": "bb552a94cec165255080b7e13fe3d2051c6c79e321e99435b5859dc7de5e9057",
+        "runs_using": [
+          "node24"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "url": "https://raw.githubusercontent.com/actions/cache/0057852bfaa89a56745cba8c7296529d2fc39830/save/action.yml",
+        "bytes": 776,
+        "sha256": "9f3f665720a6cfc4d47b7994e316ab5b12b39a5b0a2dea5d179baa012e50f46a",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/cache@caa296126883cff596d87d8935842f9db880ef25",
+        "url": "https://raw.githubusercontent.com/actions/cache/caa296126883cff596d87d8935842f9db880ef25/action.yml",
+        "bytes": 1945,
+        "sha256": "c04edf35104c16c8944076df01561748bac9cd10941417e467a236e508e52dda",
+        "runs_using": [
+          "node24"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "url": "https://raw.githubusercontent.com/actions/checkout/11d5960a326750d5838078e36cf38b85af677262/action.yml",
+        "bytes": 5144,
+        "sha256": "6188f6991491ed38977347cdaad0b0cd921a6d6232892363c91f433c22954f4f",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "url": "https://raw.githubusercontent.com/actions/checkout/3d3c42e5aac5ba805825da76410c181273ba90b1/action.yml",
+        "bytes": 5144,
+        "sha256": "d59219cb79590abdb877deaa14e3b65a00c05318bf5a6f3b989b9162b5d08c35",
+        "runs_using": [
+          "node24"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/checkout@v4",
+        "url": "https://raw.githubusercontent.com/actions/checkout/v4/action.yml",
+        "bytes": 5144,
+        "sha256": "6188f6991491ed38977347cdaad0b0cd921a6d6232892363c91f433c22954f4f",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349",
+        "url": "https://raw.githubusercontent.com/actions/create-github-app-token/fee1f7d63c2ff003460e3d139729b119787bc349/action.yml",
+        "bytes": 10946,
+        "sha256": "90227c2d40214751bdfc9f17171a79f541db5783d7de1784c55ee82470a22878",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+        "url": "https://raw.githubusercontent.com/actions/download-artifact/3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c/action.yml",
+        "bytes": 2635,
+        "sha256": "e98559b7a31ba31be4709f20d22102dc2737fa630f69a339eb89981151e505fe",
+        "runs_using": [
+          "node24"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "url": "https://raw.githubusercontent.com/actions/setup-node/49933ea5288caeca8642d1e84afbd3f7d6820020/action.yml",
+        "bytes": 2614,
+        "sha256": "8aee59063ebc272d850507febb30930de2684be1b1240cf5f3dff13179fcff0b",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "url": "https://raw.githubusercontent.com/actions/setup-python/a26af69be951a213d495a4c3e4e4022e16d87065/action.yml",
+        "bytes": 2364,
+        "sha256": "0acca40eee6f548ea8269ece66fd625fe9deb1f61f31f0b58562068fc083eb37",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+        "url": "https://raw.githubusercontent.com/actions/upload-artifact/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a/action.yml",
+        "bytes": 3603,
+        "sha256": "c5979822866a72362e609844b6ebe77d4b7e759af68cc1c2c425dcf51481fab4",
+        "runs_using": [
+          "node24"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "url": "https://raw.githubusercontent.com/actions/upload-artifact/ea165f8d65b6e75b540449e92b4886f43607fa02/action.yml",
+        "bytes": 3159,
+        "sha256": "29b21270ff44638a165ea12abb4481796770c629e513217af7b4df1aa3821177",
+        "runs_using": [
+          "node20"
+        ],
+        "nested_uses": []
+      },
+      {
+        "uses": "leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9",
+        "url": "https://raw.githubusercontent.com/leanprover/lean-action/38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9/action.yml",
+        "bytes": 11786,
+        "sha256": "6580d3e13284cb16407ca2b6ad8ec3ab02e5c96978d95a34ffd3427c98d10c00",
+        "runs_using": [
+          "composite"
+        ],
+        "nested_uses": [
+          "actions/cache/restore@v5",
+          "actions/cache/save@v5"
+        ]
+      }
+    ],
+    "changes": [
+      {
+        "path": ".github/workflows/issue-agent-autofinish.yml",
+        "before": "actions/checkout@v4",
+        "after": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "occurrences": 1,
+        "replacement_version": "v7.0.1"
+      },
+      {
+        "path": ".github/workflows/issue-autonomous-processing.yml",
+        "before": "actions/checkout@v4",
+        "after": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "occurrences": 1,
+        "replacement_version": "v7.0.1"
+      },
+      {
+        "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 4,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+        "before": "actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830",
+        "after": "actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+        "occurrences": 2,
+        "replacement_version": "v6.1.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_audio_request.yml",
+        "before": "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "after": "actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+        "occurrences": 2,
+        "replacement_version": "v5.0.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+        "before": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "after": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "occurrences": 1,
+        "replacement_version": "v7.0.1"
+      },
+      {
+        "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+        "before": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "after": "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+        "occurrences": 1,
+        "replacement_version": "v7.0.1"
+      },
+      {
+        "path": ".github/workflows/qikvrt_corpus_closure_overlay.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_effect_ack_finalize.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 3,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "before": "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "after": "actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444",
+        "occurrences": 2,
+        "replacement_version": "v5.0.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_global_completion.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "before": "actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349",
+        "after": "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1",
+        "occurrences": 1,
+        "replacement_version": "v3.2.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_measurement_derived_dimensions.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_publication_router.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_qce_c_measurement_binding.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_qce_candidate.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_qce_causal_axis_bridge.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_qce_causal_axis_selection.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_qce_now_serialization.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_qce_null_calibration_ratio.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_status_report_finalize.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_status_report_reserve.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_workflow_executor.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 1,
+        "replacement_version": "v6.3.0"
+      },
+      {
+        "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
+        "before": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "after": "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "occurrences": 2,
+        "replacement_version": "v6.3.0"
+      }
+    ],
+    "node20_occurrences": 62,
+    "latest": [
+      ".github/workflows/issue-agent-autofinish.yml",
+      ".github/workflows/issue-agent-backlog-resume.yml",
+      ".github/workflows/issue-autonomous-processing.yml",
+      ".github/workflows/qikvrt_ci.yml",
+      ".github/workflows/qikvrt_mesh_api.yml",
+      ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      ".github/workflows/qikvrt_seed_node_revalidation.yml",
+      ".github/workflows/qikvrt_seed_registry_acceptance.yml"
+    ]
+  },
+  "composite_dependencies": {
+    "source": "leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9",
+    "runs_using": "composite",
+    "nested_actions": [
+      {
+        "uses": "actions/cache/restore@v5",
+        "runs_using": "node24"
+      },
+      {
+        "uses": "actions/cache/save@v5",
+        "runs_using": "node24"
+      }
+    ],
+    "outer_pin_changed": false,
+    "transitive_upstream_tags_are_mutable": true
+  },
+  "ubuntu_migration": {
+    "announcement_url": "https://github.blog/changelog/2026-09-17-ubuntu-26-generally-available-and-latest-migration/",
+    "window": [
+      "2026-10-19",
+      "2026-11-19"
+    ],
+    "new_24_04_pins": [],
+    "confirmed_incompatibilities": [],
+    "ci_exact_runner": "ubuntu-26.04",
+    "adaptive_contract_matrix_added": "ubuntu-26.04",
+    "formal_and_audio_matrix": [
+      "ubuntu-24.04",
+      "ubuntu-26.04"
+    ],
+    "remaining_latest": [
+      ".github/workflows/issue-agent-autofinish.yml",
+      ".github/workflows/issue-agent-backlog-resume.yml",
+      ".github/workflows/issue-autonomous-processing.yml",
+      ".github/workflows/qikvrt_mesh_api.yml",
+      ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+      ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+      ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+      ".github/workflows/qikvrt_seed_node_revalidation.yml",
+      ".github/workflows/qikvrt_seed_registry_acceptance.yml"
+    ],
+    "remaining_latest_disposition": "No proven image incompatibility; preserve labels. Full core/seed/API/issue regressions and host-tool probes are tested by reused CI on 26.04; live provider effects remain outside compatibility verification.",
+    "latest_dependencies": {
+      "issue-agent": "Git, Python stdlib, GitHub CLI, jq, GNU date for backlog age; checkout credential support",
+      "mesh-api": "Python isolated entrypoint, content-addressed artifact restore/upload",
+      "seed": "POSIX shell, Git, Python stdlib and bounded HTTP reads; existing local fixture and structural tests included in make test"
+    }
+  },
+  "inputs": [
+    {
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "source_head": "c622abf3c6be9eee10d4862b511a6fd3fe001585",
+      "semantics_frozen": true
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/issue-agent-autofinish.yml",
+      "bytes": 7398,
+      "sha256": "102b8108d6fe4d5fb0b026c5273d58d9d52274e595b7df7a511161de3b7ad24b",
+      "git_blob_sha1": "a9a3dbbce1a19175dcd3a20df5cf1072019e16ec"
+    },
+    {
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "bytes": 4803,
+      "sha256": "7429c5d3ec647c1be83048b1fa994261afa2019840cccfce76b1e3ed71ea6c40",
+      "git_blob_sha1": "f8a2bbb6ab9b95a858cb86b8f1aaf46db0451686"
+    },
+    {
+      "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "bytes": 25175,
+      "sha256": "65f945ec9c6e0dc71bdde61edc12f88e28772ad24f12942b522dce15212311b0",
+      "git_blob_sha1": "2298365e4c93ffa6fe3e598ae45e5d3573526b9b"
+    },
+    {
+      "path": ".github/workflows/qikvrt_audio_request.yml",
+      "bytes": 9788,
+      "sha256": "bf48f223c626c4a37f5b8fb106ae6557d33bfe9691a4c2e5f2d21e2f26e6916f",
+      "git_blob_sha1": "9b841f853e70461f6d5116c78c8f455a0337b6b8"
+    },
+    {
+      "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "bytes": 5181,
+      "sha256": "66b816bc8def4792029167a1d6a004b9c297e6479c18ed471a90ad4556d5e9e1",
+      "git_blob_sha1": "7a5f134442a2e692bb755830e9a3173e05cacc0a"
+    },
+    {
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "bytes": 10219,
+      "sha256": "90ac49ef663365ba445d518bc9d18a52af645241bde4b3195060a022258179fe",
+      "git_blob_sha1": "a5ea813286ca1a5214f1b4beb8f2d3c98770c6ed"
+    },
+    {
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "bytes": 9634,
+      "sha256": "4a148e29e38924eee3c6891ec35ca8b13137855fcbe0cae6084d4083cad28a18",
+      "git_blob_sha1": "90ef307866ae7fb0f863842fa9d158e983745bb5"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+      "bytes": 2210,
+      "sha256": "cf194c280123dd36cb34884424aba2a267e159770eda8abf9300aeb36887c672",
+      "git_blob_sha1": "d7a64f505848bff081be7f2d892169202642fd83"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "bytes": 4565,
+      "sha256": "f0bd11873b077e969e20973987c79ffaa886ed05235d6750a8f045b03e233f7e",
+      "git_blob_sha1": "0300b9f463cb55000904d977f5623763af64949a"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+      "bytes": 3048,
+      "sha256": "a699ebe6f2b4e7ba766331239c093249a09860ea09f266b523e1a770d482c95c",
+      "git_blob_sha1": "39e4a949c64f35cdadcfff2acae1301daac45b38"
+    },
+    {
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "bytes": 17947,
+      "sha256": "a0f04d6d96ef1f939f780858a0d53296ae14652d0941bf1b088041daf1ea5534",
+      "git_blob_sha1": "bfebd1bc7f766a5e20bf95b5c8ac12d8dbcdc0f1"
+    },
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "bytes": 8545,
+      "sha256": "90624535aadbb56c9334b8e8bd180e81d531cfe7f4d2111e60a2a076868be78d",
+      "git_blob_sha1": "84c19c67f63b0b45d1873325b8bb151681d0d3ee"
+    },
+    {
+      "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+      "bytes": 2575,
+      "sha256": "3711f08b5e804149fd84f5e1111e6bdb02b914e78da6a6619794239889a34d5f",
+      "git_blob_sha1": "34416a93cba610b6ed758cc658c9ced448ad7217"
+    },
+    {
+      "path": ".github/workflows/qikvrt_corpus_closure_overlay.yml",
+      "bytes": 1181,
+      "sha256": "810298477147aa0cf2e35dd315247a35b0b02e5aa793fd1430160c1308dc40a3",
+      "git_blob_sha1": "f5a1d3c8ea7514b6c8f8e990aeaa226107a5fd48"
+    },
+    {
+      "path": ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml",
+      "bytes": 1259,
+      "sha256": "a7cf35162b46b36f6f298c3bb4aad70db9abf145d89af5b5177562b6e31bf530",
+      "git_blob_sha1": "e45672b8e08f3ab164777b01ecb5404555db98e5"
+    },
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_finalize.yml",
+      "bytes": 46830,
+      "sha256": "381e971da1922e63a5d3ee8bc77b3848fa2c8f2811807009cddca6d241e2fea2",
+      "git_blob_sha1": "9f5b7f18bf9a395fafac1a8333d92653467e2692"
+    },
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "bytes": 4456,
+      "sha256": "c2e480f2c4d49ddec0e2c4d8dc352bc665d59ff82a973b242a23887b41ec8cdd",
+      "git_blob_sha1": "a81c52bf67abb365ee376d50079860fe698c16c4"
+    },
+    {
+      "path": ".github/workflows/qikvrt_formalization_and_audio.yml",
+      "bytes": 4022,
+      "sha256": "22f36cc30435b112bacfaa4ddce4b1d99dbba2bca75c5dacadc3792d0c6ec0b5",
+      "git_blob_sha1": "91344383bfcf35865e2baa370fd2dcc922aaf00e"
+    },
+    {
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+      "bytes": 24977,
+      "sha256": "10b01b93ccfefcbc82a1faa2804582d9f5fd4b6f06b6a8ad53214e278fa59fd5",
+      "git_blob_sha1": "2c14cec2eb48e1243c6855693f795ff45a4b1258"
+    },
+    {
+      "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+      "bytes": 34396,
+      "sha256": "1768b146ed691cb9efed552f25539b028681955f1f0cc16f329a34d63af85bb8",
+      "git_blob_sha1": "c90ae8ba4ef6a7429ca768247cdf7a1730851b90"
+    },
+    {
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "bytes": 8637,
+      "sha256": "b9fc3af2b36bfb802498ae9ba7cc9e93a3f3bc95011a6b890b31a977e850f99f",
+      "git_blob_sha1": "f8bb4e8de3a47d9dcfda0463335d6c046140c015"
+    },
+    {
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "bytes": 11262,
+      "sha256": "f720fe8e2dea2aad805badc545f1813fb78b3f7a7da3c23bebc1374aa55b8cc0",
+      "git_blob_sha1": "e342ca1b6e323295b8f0e288230ab76bbe69775b"
+    },
+    {
+      "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+      "bytes": 7727,
+      "sha256": "8aa30a44ee02b52831930b00babfe17e61c21ee79d25b9415fbbd73212c31f85",
+      "git_blob_sha1": "a7e8ed954bcf3345f47cc9aa74d6884da1746f9c"
+    },
+    {
+      "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+      "bytes": 19672,
+      "sha256": "b998c3e834df86cf2b1200488a02b63a0782f3ed1fbc7ca8d95fcee264df16e9",
+      "git_blob_sha1": "b4ec6921ff95e358ad8be48ee3e007539e489c4b"
+    },
+    {
+      "path": ".github/workflows/qikvrt_measurement_derived_dimensions.yml",
+      "bytes": 8190,
+      "sha256": "cdc84ab5f1795e8f06e4100f845383c745439addf9c358edf318c2a4daf01c39",
+      "git_blob_sha1": "639ae4ee243a796abb25deafc3b9f7b53736fcf0"
+    },
+    {
+      "path": ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+      "bytes": 1629,
+      "sha256": "2a8374b614db1a906c4bf91aee92c50bbc2581fcbd9cde4152893d389ecd914d",
+      "git_blob_sha1": "23364bf7eaaa33b93bb17041788c3a63acbdcf31"
+    },
+    {
+      "path": ".github/workflows/qikvrt_publication_router.yml",
+      "bytes": 895,
+      "sha256": "2ad429e32c3660fa71c944af940683d0970b5625d673065ba12cdb5c99b2e7ee",
+      "git_blob_sha1": "74d9298b9b01a23b6419952caccb1b0bffdab627"
+    },
+    {
+      "path": ".github/workflows/qikvrt_qce_c_measurement_binding.yml",
+      "bytes": 11627,
+      "sha256": "85ebcf5191c87320684a2879c117e849ba356c65913fbbaa81a486c97a180950",
+      "git_blob_sha1": "99f044608d0c3cd3a70ddb0d1f6d6b4d9095cc23"
+    },
+    {
+      "path": ".github/workflows/qikvrt_qce_candidate.yml",
+      "bytes": 3932,
+      "sha256": "bd73d83e5a07f4df0eb2ac9dd3d1c3a09b966d10adf73036c6f3cc869e7961ac",
+      "git_blob_sha1": "de1a291dfa752125a8870fabb6f2ffc4f2397cb3"
+    },
+    {
+      "path": ".github/workflows/qikvrt_qce_causal_axis_bridge.yml",
+      "bytes": 10591,
+      "sha256": "4c3a3ca51ec171930e2afadb2477d5bd9c2d163d6aa17d187d6170db8d46aff5",
+      "git_blob_sha1": "7a9687cd66ca9855148068e55fbe8f335391e11e"
+    },
+    {
+      "path": ".github/workflows/qikvrt_qce_causal_axis_selection.yml",
+      "bytes": 12648,
+      "sha256": "65331a099826ffd9aa3ed9897a196a5bb3c23f3576697e9ca44179f164da28e6",
+      "git_blob_sha1": "fb427b7dbc9f2f22a706cc3e15bcbd4f86884cc0"
+    },
+    {
+      "path": ".github/workflows/qikvrt_qce_now_serialization.yml",
+      "bytes": 9671,
+      "sha256": "a4b29956ec607e631406d56bd05ce69a06955906a0351142f531d097c5aca7fb",
+      "git_blob_sha1": "2a5cb99b152fea1b0fa67c99c3ba4cd069434c06"
+    },
+    {
+      "path": ".github/workflows/qikvrt_qce_null_calibration_ratio.yml",
+      "bytes": 11110,
+      "sha256": "3a538511a3e3d6830049698a5540f8085d10c191541662fb179512a6f1e69654",
+      "git_blob_sha1": "53e5197f50e383c4a9e053e541760911e5486528"
+    },
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "bytes": 10979,
+      "sha256": "58dcbb7d7c2670b0f80a9ceac506945d3a43ae6e4f6c931c9b9a76cd65b41104",
+      "git_blob_sha1": "b0eb48d1b5098199627d1fe2eab3fdd910de1bcb"
+    },
+    {
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "bytes": 3250,
+      "sha256": "dfff8476e0458c245c671c7bc23052c96462c2a9b0ad555ac7f7fb9817b08c3f",
+      "git_blob_sha1": "3302f36bbf5e3fb1b2158fb3dd764f159f298e94"
+    },
+    {
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "bytes": 11848,
+      "sha256": "9beb8c88f3e95d6df6707deaa3577a70e47c20cabbf2b0b8722cdedc909de2ec",
+      "git_blob_sha1": "3eaa74197b01447f615bde176e54d398ca30de3a"
+    },
+    {
+      "path": ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+      "bytes": 3743,
+      "sha256": "5abe46bfa09059cb9318a406b924099596c059494b0023be3888cabb9f26abcd",
+      "git_blob_sha1": "058021b79662bba06cbb92d6f1e47b6192e123c5"
+    },
+    {
+      "path": ".github/workflows/qikvrt_status_report_finalize.yml",
+      "bytes": 38835,
+      "sha256": "fbe5ea33df5dc76e354a74bcb6388041faebc2e82914512e536eee214a0fd985",
+      "git_blob_sha1": "aa728b623dcfdec2af8a001b2dbe64caeab1ad22"
+    },
+    {
+      "path": ".github/workflows/qikvrt_status_report_reserve.yml",
+      "bytes": 35274,
+      "sha256": "32280e86dd040caaa945511e8789d0ae726a3612445405b83e5a4c3969f7393f",
+      "git_blob_sha1": "c157c13c91663fa88e736211d9f8befdc510c428"
+    },
+    {
+      "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+      "bytes": 7157,
+      "sha256": "88d569c0ec657493cf738261c3fd24a7636d7359fa72e53aff4c9b3491922849",
+      "git_blob_sha1": "d0eacadea72700070489c6357768eead85337259"
+    },
+    {
+      "path": ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+      "bytes": 4436,
+      "sha256": "031e3a00230a94f85b19c1e1c877cd57c28db0aac9c1284680485fb4ada25a86",
+      "git_blob_sha1": "7f4e536da8cdabdecc04f6eef03256521cc7f3e7"
+    },
+    {
+      "path": ".github/workflows/qikvrt_workflow_executor.yml",
+      "bytes": 7937,
+      "sha256": "9d8c2a81612fe3b1c80eb8964161509a5b00e38f172366bbd10f788f82400e03",
+      "git_blob_sha1": "2eaac793958bf606e7af5b28f1da7732122fb1aa"
+    },
+    {
+      "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "bytes": 3488,
+      "sha256": "cec2d2e4b16502ad5cf21ebf4cfe784ad20b6d8974256c01b9fa257a5258ed2a",
+      "git_blob_sha1": "3bfdd850643e8c5e10f4c48a0bf2ce1150978b6a"
+    },
+    {
+      "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
+      "bytes": 27608,
+      "sha256": "62700973b35b70defc77fc5588a7fcfebb0034faafaa31aceaaebe5937e85d07",
+      "git_blob_sha1": "aa8b5ecae2fa5a5f452faefd6da0b3f0b8edc36e"
+    },
+    {
+      "path": "tests/test_effect_ack_release_workflows.py",
+      "bytes": 27254,
+      "sha256": "64891469bf7f9646fa8a5e8f1e32e2f27b35b52221e3c10707ae97c518298805",
+      "git_blob_sha1": "3f78e03c15096951bffe64ec3940dbf07a697c33"
+    },
+    {
+      "path": "tests/test_status_release_workflows.py",
+      "bytes": 11762,
+      "sha256": "5789cfc1d09e84e1153249c1b8c6eb493444c7ccd19abdfa2425ca53c3ffaeaa",
+      "git_blob_sha1": "7c599b5b6ea083af49960ed3f9576766135dd0f4"
+    }
+  ],
+  "git_history": {
+    "branch": "work/actions-node24-ubuntu26-20261007",
+    "base": "3d6148513b289005e71c73bae12de26f5f42f445",
+    "direct_main_successor": true,
+    "force_push": false,
+    "integration_verification_branch": "verify/actions-node24-ubuntu26-20261007",
+    "integration_parents": [
+      "c622abf3c6be9eee10d4862b511a6fd3fe001585",
+      "REPAIR_HEAD_TO_BE_READ_BACK"
+    ]
+  },
+  "verification": {
+    "local_static": "77 YAML workflows and 361 POSIX shell blocks validated; 31 existing workflow contracts pass. Updated the pre-existing exact-renderer contract for a third mandatory Linux lane; optional lanes remain unchanged.",
+    "full_make_test": "PENDING_EXACT_HEAD_EXECUTION",
+    "native_exact_head_ci": "PENDING",
+    "combined_pr486_ci": "PENDING_SEPARATE_EXACT_SUBJECT",
+    "predecessor_evidence_transfer": false,
+    "initial_local_failure": {
+      "test": "test_adaptive_runtime_exact_renderer_capability_is_fail_closed",
+      "observation": "Fixed matrix count expected 2 mandatory lanes; adding 26.04 yields 3.",
+      "repair": "Assert 3 mandatory entries and explicitly verify ubuntu-26.04 has exact_renderer_optional=false. No continue-on-error or renderer fallback was widened."
+    },
+    "local_checkout_gap": {
+      "observation": "A historical-finalizer regression requires Git object 56127a6fd7dadea331fea98ed6cba19b4b96c6b2, absent in the initial shallow preparation clone.",
+      "repair": "Fetched the required historical commit. Native CI retains fetch-depth=0; no product or workflow downgrade."
+    }
+  },
+  "sources": [
+    "https://github.blog/changelog/2026-09-23-node-20-is-no-longer-available-in-github-actions/",
+    "https://github.blog/changelog/2026-09-17-ubuntu-26-generally-available-and-latest-migration/",
+    "https://github.com/actions/setup-python/releases/tag/v6.3.0",
+    "https://github.com/actions/setup-node/releases/tag/v5.0.0",
+    "https://github.com/actions/create-github-app-token/releases/tag/v3.2.0"
+  ],
+  "human_decision": "REQUESTED_SCOPE_AUTHORIZED; NATIVE_APPROVAL_NOT_INFERRED",
+  "external_effects": {
+    "pr486_changed": false,
+    "main_merge": false,
+    "ruleset_changed": false,
+    "permissions_widened": false,
+    "live_issue_processing_triggered": false,
+    "publish_or_deploy": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
