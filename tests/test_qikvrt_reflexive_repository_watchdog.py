@@ -481,10 +481,11 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
                 ROOT / "tools/qikvrt_reflexive_repository_watchdog.py",
                 root / "tools/qikvrt_reflexive_repository_watchdog.py",
             )
+            (root / "state/autonomy").mkdir(parents=True)
+            shutil.copyfile(CONTRACT, root / "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json")
             stubs = {
                 "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
-                "jq": "#!/bin/bash\necho Goldkelch/qik-vrt\n",
-                "gh": f'#!/bin/bash\nif [[ "$2" == "repos/example/qik-vrt/git/ref/heads/main" ]]; then echo {HEAD}; else echo "gh: Not Found (HTTP 404)" >&2; exit 1; fi\n',
+                "gh": f'#!/bin/bash\nif [[ "$*" == *"repos/example/qik-vrt/git/ref/heads/main"* ]]; then printf \'HTTP/2.0 200 OK\\n\\n{{"object":{{"sha":"{HEAD}"}}}}\\n\'; else echo "gh: Not Found (HTTP 404)" >&2; exit 1; fi\n',
             }
             for name, source in stubs.items():
                 path = binary / name
@@ -499,6 +500,7 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
                 "EXPECTED_HEAD": HEAD,
                 "CURRENT_RUN_ID": "12345",
                 "CURRENT_RUN_ATTEMPT": "2",
+                "GH_TOKEN": "fixture-job-token",
             }
             observed = subprocess.run(
                 ["bash", "-c", self.step_body("Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")],
@@ -529,6 +531,72 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
                 receipt_path.read_bytes(),
                 (receipt_path.parent / "gatewatch-receipt.json").read_bytes(),
             )
+
+    def test_subject_readback_fails_closed_and_retains_only_safe_diagnostics(self) -> None:
+        cases = [
+            (404, '{"message":"Not Found"}', 200),
+            (404, '{"message":"Not Found"}', 404),
+            (401, '{"message":"Bad credentials"}', 401),
+            (200, json.dumps({"number": 487, "head": {"sha": "c" * 40, "repo": {"full_name": "example/qik-vrt"}}}), 200),
+            (200, 'not-json', 200),
+            (200, json.dumps({"number": 488, "head": {"sha": HEAD, "repo": {"full_name": "example/qik-vrt"}}}), 200),
+            (200, json.dumps({"number": 487, "head": {"sha": HEAD, "repo": {"full_name": "example/qik-vrt"}}}), 200),
+        ]
+        for status, body, repository_status in cases:
+            with self.subTest(status=status, body=body, repository_status=repository_status), tempfile.TemporaryDirectory() as temporary:
+                root = pathlib.Path(temporary)
+                binary = root / "bin"
+                binary.mkdir()
+                (root / "tools").mkdir()
+                (root / "state/autonomy").mkdir(parents=True)
+                shutil.copyfile(CONTRACT, root / "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json")
+                shutil.copyfile(ROOT / "tools/qikvrt_reflexive_repository_watchdog.py", root / "tools/qikvrt_reflexive_repository_watchdog.py")
+                git_stub = binary / "git"
+                git_stub.write_text(f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n', encoding="utf-8")
+                git_stub.chmod(0o700)
+                gh_stub = binary / "gh"
+                gh_stub.write_text(
+                    "#!/usr/bin/env python3\nimport json, pathlib, sys\n"
+                    "with pathlib.Path('requests.jsonl').open('a') as f: f.write(json.dumps(sys.argv[1:])+'\\n')\n"
+                    "endpoint = sys.argv[-1]\n"
+                    "if endpoint not in ['repos/example/qik-vrt/pulls/487', 'repos/example/qik-vrt']: print('gh: Not Found (HTTP 404)', file=sys.stderr); raise SystemExit(1)\n"
+                    f"status, body = ({status}, {body!r}) if endpoint.endswith('/pulls/487') else ({repository_status}, '{{\"full_name\":\"example/qik-vrt\"}}')\n"
+                    "print(f'HTTP/2.0 {status}\\nx-github-request-id: fixture-request\\nx-accepted-github-permissions: pull_requests=read\\nauthorization: fixture-job-token\\n\\n{body}')\n"
+                    "raise SystemExit(0 if status == 200 else 1)\n",
+                    encoding="utf-8",
+                )
+                gh_stub.chmod(0o700)
+                environment = {**os.environ, "PATH": str(binary) + os.pathsep + os.environ["PATH"],
+                               "GH_TOKEN": "fixture-job-token", "REPOSITORY": "example/qik-vrt",
+                               "EVENT_NAME": "pull_request", "EVENT_PR": "487", "EXPECTED_HEAD": HEAD,
+                               "CURRENT_RUN_ID": "12345", "CURRENT_RUN_ATTEMPT": "1"}
+                observed = subprocess.run(["bash", "-c", self.step_body("Reobserve exact head, tree, runs, jobs, and previous reflexive receipt")], cwd=root, env=environment, capture_output=True, text=True, timeout=10)
+                self.assertNotEqual(observed.returncode, 0)
+                preserved = subprocess.run(["bash", "-c", self.step_body("Preserve failed observation as machine-readable HOLD")], cwd=root, env=environment, capture_output=True, text=True, timeout=10)
+                self.assertEqual(preserved.returncode, 0, preserved.stderr)
+                evidence = root / ".qikvrt/reflexive-repository-watchdog"
+                receipt = json.loads((evidence / "reflexive-watchdog-receipt.json").read_text())
+                subject_matches = status == 200 and body == cases[-1][1]
+                self.assertEqual(receipt["failure"]["stage"], "AUTHORITY_READBACK" if subject_matches else "SUBJECT_READBACK")
+                self.assertEqual(receipt["disposition"], "HOLD")
+                self.assertFalse(any(receipt["completion_claims"].values()))
+                diagnostic = json.loads((evidence / "subject-readback-diagnostics.json").read_text())
+                self.assertEqual(diagnostic["http_status"], status)
+                self.assertEqual(diagnostic["headers"]["x-github-request-id"], "fixture-request")
+                self.assertFalse(any(diagnostic["completion_claims"].values()))
+                for path in evidence.rglob("*"):
+                    if path.is_file():
+                        self.assertNotIn("fixture-job-token", path.read_text())
+                requests = [json.loads(line) for line in (root / "requests.jsonl").read_text().splitlines()]
+                self.assertEqual(len(requests), 2 if status != 200 or subject_matches else 1)
+                for request in requests[:1 if subject_matches else len(requests)]:
+                    self.assertIn("--include", request)
+                    self.assertEqual(request[request.index("--method") + 1], "GET")
+                    self.assertEqual(request[request.index("--hostname") + 1], "github.com")
+                    self.assertNotIn("fixture-job-token", request)
+                if status != 200:
+                    probe = json.loads((evidence / "repository-visibility-diagnostics.json").read_text())
+                    self.assertEqual(probe["http_status"], repository_status)
 
     def test_failure_receipt_rejects_invalid_identity_and_zero_exit(self) -> None:
         arguments = dict(

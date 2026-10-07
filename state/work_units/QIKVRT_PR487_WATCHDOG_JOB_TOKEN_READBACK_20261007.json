@@ -1,0 +1,129 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "bounded_native_readback_diagnosis_work_unit"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_PR487_WATCHDOG_JOB_TOKEN_READBACK_20261007",
+  "created_at": "2026-10-07T16:26:16.749336+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+  "source_tree": "22794901b7e69d948508943b38b4c850dfc7c2c5",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Requested separate minimal fail-closed diagnosis/repair of watchdog Job-token visibility; preserve frozen #487 and its Node-24/Ubuntu-26.04 review scope."
+  ],
+  "artificial_cognitive_contributions": [
+    "Reobserved PR, Main, exact run attempt, permissions, endpoint and failure log; extended existing watchdog with sanitized native-response evidence, same-token repository probe, and negative controls."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "frozen_pr487": {
+    "head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+    "tree": "24365dc44d6ccfde4384b551b9be95d1d4a31ad4",
+    "head_mutation_allowed": false
+  },
+  "observed_failure": {
+    "run_id": 37623637412,
+    "attempt": 2,
+    "job_id": 112804228510,
+    "stage": "SUBJECT_READBACK",
+    "endpoint": "repos/ingolf-lohmann/qik-vrt/pulls/487",
+    "http_status": 404,
+    "declared_permissions": {
+      "actions": "read",
+      "contents": "read",
+      "pull-requests": "read"
+    },
+    "token": "github.token -> GH_TOKEN",
+    "event_pr": 487,
+    "cause": "TOKEN_RESOURCE_VISIBILITY_UNRESOLVED; endpoint, PR identity and read permission are correctly declared"
+  },
+  "execution_route": {
+    "reuse": "Existing native pull-request watchdog; no additional workflow; no callable initial dispatch connector",
+    "scope": "Candidate PR exact head only; original #487 has no new retry",
+    "job_token_mandatory": true,
+    "anonymous_fallback": false,
+    "permissions_widened": false,
+    "retry_count": 0,
+    "failure_receipt_preserved": true
+  },
+  "compatibility_dependency": {
+    "source_pr": 487,
+    "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+    "setup_python_pin": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+    "only_existing_audited_target_gate_pin_reused": true,
+    "original_pr_unchanged": true
+  },
+  "inputs": [
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "bytes": 10970,
+      "sha256": "4960e837a93fc8b3e5d2ffd285a72238e0a75ffc206e07c548360fd093089672",
+      "git_blob_sha1": "c3e51de650574e6a67127bedddb533ecf7bed298"
+    },
+    {
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "bytes": 23610,
+      "sha256": "30ba8cfc3b5cffdca723b9f802f7b52c052055fcbb1ad630ebefc090960263a3",
+      "git_blob_sha1": "25b529764eb3a799fc4e5b3ff4792141d78d4f72"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "bytes": 14695,
+      "sha256": "38324b1d20f6dadfbcda074a8162431c29e07ff470484b0ffa815ca07f3e4bd2",
+      "git_blob_sha1": "7bbae822b87fb9ca4d051bbe12ebd4e4b1cdf93a"
+    },
+    {
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "bytes": 29161,
+      "sha256": "dff658b9051aafef6c059add63af650ecbaff424223f01fdb93c1518154dd5a8",
+      "git_blob_sha1": "00bad712fdb0666576339932edf364c22641bdd2"
+    }
+  ],
+  "git_history": {
+    "base": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+    "branch": "repair/pr487-watchdog-readback-20261007",
+    "force_push": false,
+    "history_rewrite": false
+  },
+  "verification": {
+    "preparation": "42 tests in the affected three-module gate; seven real-shell response cases cover PR/repository 404, 401, wrong head, wrong PR, malformed JSON, and valid PR readback followed by authority failure",
+    "native_gate": "PENDING_FRESH_CANDIDATE_HEAD; response evidence decides boundary",
+    "scope": "diagnostic hardening; no recovered job-token readback claimed"
+  },
+  "human_decision": "TASK_SCOPE_AUTHORIZED; NATIVE_REVIEW_PENDING",
+  "external_effects": {
+    "intended": [
+      "review branch and draft PR",
+      "fresh affected native gate"
+    ],
+    "merge": false,
+    "release": false,
+    "deployment": false,
+    "zenodo_mutation": false,
+    "authority_policy_change": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
