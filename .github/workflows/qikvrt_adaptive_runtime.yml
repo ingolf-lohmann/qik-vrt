@@ -65,6 +65,9 @@ jobs:
           - os: ubuntu-24.04
             family: posix
             exact_renderer_optional: false
+          - os: ubuntu-26.04
+            family: posix
+            exact_renderer_optional: false
           - os: macos-15-intel
             family: posix
             exact_renderer_optional: true
@@ -82,14 +85,14 @@ jobs:
       - name: Probe exact renderer interpreter CPython 3.12.13 x64
         id: renderer-python
         continue-on-error: ${{ matrix.exact_renderer_optional }}
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12.13"
           architecture: x64
 
       - name: Bind fallback Python 3.12 for non-renderer contract checks
         if: steps.renderer-python.outcome == 'failure'
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
           architecture: x64
@@ -364,14 +367,14 @@ jobs:
       - name: Probe exact renderer interpreter CPython 3.12.13 x64
         id: renderer-python
         continue-on-error: ${{ matrix.exact_renderer_optional }}
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12.13"
           architecture: x64
 
       - name: Bind fallback Python 3.12 for non-renderer cache checks
         if: steps.renderer-python.outcome == 'failure'
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
           architecture: x64
@@ -455,7 +458,7 @@ jobs:
 
       - name: Save verified exact renderer and GH cache
         if: steps.renderer-python.outcome == 'success' && steps.exact-runtime-cache.outputs.cache-hit != 'true' && success()
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             .qikvrt/toolchains/gh
@@ -464,7 +467,7 @@ jobs:
 
       - name: Save verified GH-only cache without exact renderer
         if: steps.renderer-python.outcome == 'failure' && steps.gh-only-cache.outputs.cache-hit != 'true' && success()
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .qikvrt/toolchains/gh
           key: qikvrt-runtime-v4-py-3.12.13-unavailable-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('runtime/toolchains/**', 'tools/bootstrap-gh.sh', 'tools/bootstrap-gh.ps1', 'tools/bootstrap-runtime.sh', 'tools/bootstrap-runtime.ps1') }}

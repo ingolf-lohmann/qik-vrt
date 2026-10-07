@@ -254,7 +254,11 @@ class EffectAckReleaseWorkflowTests(unittest.TestCase):
 
     def test_adaptive_runtime_exact_renderer_capability_is_fail_closed(self) -> None:
         text = ADAPTIVE_RUNTIME.read_text(encoding="utf-8")
-        self.assertEqual(text.count("exact_renderer_optional: false"), 2)
+        self.assertEqual(text.count("exact_renderer_optional: false"), 3)
+        self.assertRegex(
+            text,
+            r"os: ubuntu-26\.04\s+family: posix\s+exact_renderer_optional: false",
+        )
         self.assertEqual(text.count("exact_renderer_optional: true"), 4)
         self.assertEqual(text.count("id: renderer-python"), 2)
         self.assertEqual(
