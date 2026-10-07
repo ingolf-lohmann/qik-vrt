@@ -1583,6 +1583,96 @@
       "Retain non-force history-preserving shared writer postconditions"
     ],
     "acceptance_requirement": "ISSUE_WRITER_COMMITTED_INTEGRITY in state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json",
+    "current_main_integration": {
+      "tested_issue_repair_commit": "4ff3b6a27a9c783d1c5dd4f22acb1da71544d848",
+      "main_parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+      "method": "Preserve both ordered parents, import existing Main changes, and regenerate the canonical integrity trio for the combined tree",
+      "conflicts": "Only the three generated integrity authorities conflicted; no hand-authored Main or candidate source conflict",
+      "main_changes_are_existing_evidence_not_new_effects": true,
+      "fresh_combined_subject_tests_required": true,
+      "lifecycle_projection_successor": {
+        "source_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
+        "source_main_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+        "predecessor_main_head": "86d7062f25f174039da0a5df8a856127553036f1",
+        "main_projection_bindings": [
+          {
+            "path": "evidence/node_health/37325712969-1.json",
+            "bytes": 241,
+            "sha256": "232183086aa6f1afce00946a53e0a80081fbaee4f24cbe743ea5d2aa81597edc",
+            "git_blob_sha1": "a3ac1152770b7e580062d48d67a6030412a3ebca"
+          },
+          {
+            "path": "evidence/node_health/37391781257-1.json",
+            "bytes": 241,
+            "sha256": "a71f36ada66503c485b9e563ab512468623f5f2f0b47b4d22354c0ec4614ee2e",
+            "git_blob_sha1": "5385b1aee5d3b5804b68817160c3e26ca4fc3de0"
+          },
+          {
+            "path": "evidence/node_health/37422938516-1.json",
+            "bytes": 241,
+            "sha256": "383b76789e8296664a8aa87bffaeb672e5044dedba4a0ae54536013826348ac0",
+            "git_blob_sha1": "1a2a538ed5b9a45ade40567fcc40c961d1b3b635"
+          },
+          {
+            "path": "evidence/node_health/37510511694-1.json",
+            "bytes": 241,
+            "sha256": "afdddf385c000ce39e2f330ee96e01d31c1a1c832734c8ceb07fda5bd63d04f0",
+            "git_blob_sha1": "795cbaf12c5252d54edc0bec275cf4687ebe6c11"
+          },
+          {
+            "path": "evidence/node_health/LATEST.json",
+            "bytes": 241,
+            "sha256": "afdddf385c000ce39e2f330ee96e01d31c1a1c832734c8ceb07fda5bd63d04f0",
+            "git_blob_sha1": "795cbaf12c5252d54edc0bec275cf4687ebe6c11"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37325712969-1.json",
+            "bytes": 262,
+            "sha256": "101f9fbaded98fec7e2a6a843b53f73e6e0bce09101b2d17b14ac761076c9502",
+            "git_blob_sha1": "04254af28c7e63ceea4989016ca34d0c1682a9d1"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37391781257-1.json",
+            "bytes": 262,
+            "sha256": "4a35c54033bb2ce8609f4a24971a0b0481ea375927faf66f4fbebc419d8a14de",
+            "git_blob_sha1": "36709cf8626ddfe881692c8ff71376c2381bc64c"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37422938516-1.json",
+            "bytes": 262,
+            "sha256": "94631147e90dfdfc33090a0829f08355041c2d37707edaa0898989479a612278",
+            "git_blob_sha1": "7dbde8dbbfc4c6f216c46876881124cc9d7f8ff0"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37510511694-1.json",
+            "bytes": 262,
+            "sha256": "c1d6e2083eec4c2122b0c0a2705a65c33294b0c9458639e9c2875303a5dc35f0",
+            "git_blob_sha1": "c82daccbf4c228421ef2b1b8abf3282c8b89e1cc"
+          },
+          {
+            "path": "evidence/node_registration_renewal/LATEST.json",
+            "bytes": 262,
+            "sha256": "c1d6e2083eec4c2122b0c0a2705a65c33294b0c9458639e9c2875303a5dc35f0",
+            "git_blob_sha1": "c82daccbf4c228421ef2b1b8abf3282c8b89e1cc"
+          },
+          {
+            "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+            "bytes": 563,
+            "sha256": "b76a09a752174147f780e46cd96e50336ddb92b2ec987994b3ec2ea92edc762d",
+            "git_blob_sha1": "3f0c97d0947339b9e320d2f6d0722ae21c308710"
+          },
+          {
+            "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+            "bytes": 542,
+            "sha256": "7a1a67aa3dc17c991b40c298927ea80ce592475b8218d782d09a8555f4022b41",
+            "git_blob_sha1": "dd11ab3943b03a8b759ef026f0b563105527f24e"
+          }
+        ],
+        "current_authority_liveness_proof": false,
+        "PREDECESSOR_EVIDENCE_TRANSFER": false
+      },
+      "PREDECESSOR_EVIDENCE_TRANSFER": false
+    },
     "tests": "Production shell, canonical integrity tool, real temporary Git and bare remotes: legacy omission reproduction, exact committed readback, successive/manual history preservation, unsafe generation, post-generation corruption, omitted staged inputs, transport-input isolation and older-branch reporter binding.",
     "activation_boundary": "Fresh exact-commit tests and native checks are required. This candidate is not active Main; governance, independent native review and actual issue executor effects remain distinct obligations.",
     "request_execution_scope": "Review candidate update only; no inference-capability fix, Main promotion, forced branch reset, duplicate dispatch, rerun, deployment or publication.",

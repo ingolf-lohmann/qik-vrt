@@ -153,6 +153,9 @@
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_legacy_trusted_main_protocol_blocks_dispatch_then_resumes_without_new_pr",
       "tests.test_qikvrt_pipeline_contracts.SharedWriterContracts.test_missing_denied_or_corrupt_verifier_protocol_never_dispatches"
     ],
+    "LATER_MAIN_LIFECYCLE_PROJECTION_PRESERVATION": [
+      "tests.test_qikvrt_authority_cutover.AuthorityCutoverTests.test_later_main_projection_retains_original_bindings_and_rejects_drift"
+    ],
     "ISSUE_WRITER_COMMITTED_INTEGRITY": [
       "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_legacy_omission_fails_exact_commit_then_repaired_writer_passes",
       "tests.issue_agent.test_validate.IssueWriterIntegrityTest.test_two_successors_preserve_manual_repair_history_and_canonical_trio",

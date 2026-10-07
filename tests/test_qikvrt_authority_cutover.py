@@ -39,8 +39,45 @@ class AuthorityCutoverTests(unittest.TestCase):
     def git_bytes(self, *args):
         return subprocess.check_output(["git", *args], cwd=ROOT, timeout=30)
 
-    def assert_main_lifecycle_successor(self, inventory):
+    def assert_main_lifecycle_successor(self, inventory, later=None):
         successor = inventory["main_lifecycle_successor"]
+        if later is None:
+            integration = read_json(WRITER_SUCCESSOR).get("issue_writer_integrity_successor", {}).get(
+                "current_main_integration", {})
+            later = integration.get("lifecycle_projection_successor")
+        later_paths = set()
+        if later is not None:
+            # Bind a forward Main successor separately. Never rewrite the old
+            # classification/digests or admit former-epoch liveness as current.
+            self.assertFalse(later["current_authority_liveness_proof"])
+            self.assertFalse(later["PREDECESSOR_EVIDENCE_TRANSFER"])
+            self.assertEqual(later["predecessor_main_head"], successor["source_main_head"])
+            new_main = later["source_main_head"]
+            self.assertEqual(self.git_bytes("rev-parse", new_main + "^{tree}").decode().strip(),
+                             later["source_main_tree"])
+            self.assertEqual(self.git_bytes("merge-base", later["predecessor_main_head"], new_main).decode().strip(),
+                             later["predecessor_main_head"])
+            expected = {path for path in self.git_bytes(
+                "diff", "--name-only", later["predecessor_main_head"], new_main).decode().splitlines()
+                if path in LIFECYCLE_PROJECTIONS or str(Path(path).parent) in
+                {"evidence/node_health", "evidence/node_registration_renewal"}}
+            bindings = later["main_projection_bindings"]
+            later_paths = {binding["path"] for binding in bindings}
+            self.assertEqual(len(later_paths), len(bindings))
+            self.assertEqual(later_paths, expected)
+            self.assertTrue(LIFECYCLE_PROJECTIONS <= later_paths)
+            for binding in bindings:
+                path = binding["path"]
+                if path not in LIFECYCLE_PROJECTIONS:
+                    self.assertIn(str(Path(path).parent),
+                                  {"evidence/node_health", "evidence/node_registration_renewal"})
+                    self.assertRegex(Path(path).name, r"^[0-9]+-[0-9]+\.json$")
+                data = self.git_bytes("show", new_main + ":" + path)
+                self.assertEqual(len(data), binding["bytes"])
+                self.assertEqual(hashlib.sha256(data).hexdigest(), binding["sha256"])
+                self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(),
+                                 binding["git_blob_sha1"])
+                self.assertEqual((ROOT / path).read_bytes(), data)
         main = successor["source_main_head"]
         self.assertEqual(self.git_bytes("rev-parse", main + "^{tree}").decode().strip(),
                          successor["source_main_tree"])
@@ -64,8 +101,9 @@ class AuthorityCutoverTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(data).hexdigest(), binding["sha256"])
             self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(),
                              binding["git_blob_sha1"])
-            self.assertEqual((ROOT / path).read_bytes(), data)
-        return set(paths)
+            if path not in later_paths:
+                self.assertEqual((ROOT / path).read_bytes(), data)
+        return set(paths) | later_paths
 
     def assert_preserved_binding(self, inventory, binding, successor_paths):
         path = binding["path"]
@@ -252,6 +290,27 @@ class AuthorityCutoverTests(unittest.TestCase):
         self.assertEqual(inventory, original)
         self.assertEqual(self.git_bytes("merge-base", successor["predecessor_cutover_head"], "HEAD").decode().strip(),
                          successor["predecessor_cutover_head"])
+
+    def test_later_main_projection_retains_original_bindings_and_rejects_drift(self):
+        inventory = read_json(CLASSIFICATION)
+        original_bytes = (ROOT / CLASSIFICATION).read_bytes()
+        later = read_json(WRITER_SUCCESSOR)["issue_writer_integrity_successor"][
+            "current_main_integration"]["lifecycle_projection_successor"]
+        self.assertTrue(LIFECYCLE_PROJECTIONS <= self.assert_main_lifecycle_successor(inventory, later))
+        with mock.patch(__name__ + ".read_json", return_value={}):
+            with self.assertRaises(AssertionError):
+                self.assert_main_lifecycle_successor(inventory)
+        for mutation in ("liveness", "predecessor_transfer", "path", "digest", "source_tree"):
+            with self.subTest(mutation=mutation):
+                changed = copy.deepcopy(later)
+                if mutation == "liveness": changed["current_authority_liveness_proof"] = True
+                elif mutation == "predecessor_transfer": changed["PREDECESSOR_EVIDENCE_TRANSFER"] = True
+                elif mutation == "path": changed["main_projection_bindings"][0]["path"] = "AI"
+                elif mutation == "digest": changed["main_projection_bindings"][0]["sha256"] = "0" * 64
+                else: changed["source_main_tree"] = "0" * 40
+                with self.assertRaises(AssertionError):
+                    self.assert_main_lifecycle_successor(inventory, changed)
+        self.assertEqual((ROOT / CLASSIFICATION).read_bytes(), original_bytes)
 
     def test_main_successor_rejects_unbound_path_or_projection_digest(self):
         for key, value in (("path", "AI_PROGRESS.json"), ("sha256", "0" * 64)):
