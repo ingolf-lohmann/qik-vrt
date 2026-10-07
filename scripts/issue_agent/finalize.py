@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import hashlib
 import json
 import re
 from datetime import datetime, timezone
@@ -39,27 +40,30 @@ def disposition_token(markdown: str) -> str | None:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--directory", required=True)
-    p.add_argument("--inference-outcome", required=True)
+    outcome = p.add_mutually_exclusive_group(required=True)
+    outcome.add_argument("--processing-outcome", choices=("success", "failure", "cancelled", "skipped"))
+    outcome.add_argument("--inference-outcome", help="Legacy outcome; fail closed without an admitted inference carrier")
     args = p.parse_args()
 
     directory = Path(args.directory)
     answer = directory / "ANSWER.md"
-    inference_succeeded = (
-        args.inference_outcome == "success"
+    compilation_succeeded = (
+        args.processing_outcome == "success"
         and answer.exists()
         and answer.stat().st_size > 0
     )
-    if not inference_succeeded:
+    if not compilation_succeeded:
+        reason = "MODEL_INFERENCE_UNAVAILABLE" if args.inference_outcome is not None else "DETERMINISTIC_COMPILER_FAILED"
         answer.write_text(
             "# Repository answer\n\n"
-            "The autonomous model step was not available or failed. No scientific or technical "
+            "The deterministic compiler failed. No scientific or technical "
             "answer is asserted. The request and repository context were materialized for review.\n\n"
             "## Evidence used\n\nRepository request and materialized context only.\n\n"
             "## Formal status\n\nNOT_EVALUATED\n\n"
             "## Empirical status\n\nNOT_EVALUATED\n\n"
             "## Issue disposition\n\nBLOCKED_WITH_NEXT_ACTION\n\n"
-            "## Disposition reason\n\nMODEL_INFERENCE_UNAVAILABLE\n\n"
-            "## Required next action\n\nResume the bounded issue transaction when a trusted inference or deterministic work-unit path is available.\n\n"
+            f"## Disposition reason\n\n{reason}\n\n"
+            "## Required next action\n\nRepair the repository-local compiler and replay this unchanged issue event.\n\n"
             "## Gate result\n\nBLOCK\n",
             encoding="utf-8",
         )
@@ -91,7 +95,18 @@ def main() -> None:
     status = {
         "status": status_value,
         "issue_materialized": True,
-        "model_inference_completed": inference_succeeded,
+        "deterministic_compilation_completed": compilation_succeeded,
+        "external_model_used": False,
+        "model_inference_completed": False,
+        "processing_carrier": "repository-local-deterministic-compiler",
+        "work_unit": {
+            "schema": "qikvrt_issue_deterministic_work_unit_v1",
+            "request_sha256": hashlib.sha256((directory / "REQUEST.json").read_bytes()).hexdigest(),
+            "context_sha256": hashlib.sha256((directory / "CONTEXT.md").read_bytes()).hexdigest(),
+            "answer_sha256": hashlib.sha256(answer.read_bytes()).hexdigest(),
+            "effecting_handler": None,
+            "capability_gap": "NO_REVIEWED_EFFECTING_HANDLER_OR_AUTHORIZED_INFERENCE_CARRIER",
+        },
         "issue_disposition": disposition,
         "disposition_reason": reason,
         "next_action": next_action,

@@ -14,7 +14,6 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
-  models: read
 
 concurrency:
   group: issue-agent-${{ github.event.issue.number || inputs.issue_number }}
@@ -23,10 +22,28 @@ concurrency:
 jobs:
   process:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ISSUE_JSON: ${{ runner.temp }}/qikvrt-issue.json
+      TRUSTED_PROCESSOR_ROOT: ${{ runner.temp }}/qikvrt-issue-processor
+      HANDOFF_DIRECTORY: ${{ runner.temp }}/qikvrt-issue-handoff
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 0
+
+      - name: Validate and retain trusted processor
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest discover -s tests/issue_agent -p 'test_*.py'
+          mkdir -p "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent" "$TRUSTED_PROCESSOR_ROOT/tools"
+          cp scripts/issue_agent/*.py "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/"
+          cp tools/qikvrt_subprocess.py tools/qikvrt_integrity.py "$TRUSTED_PROCESSOR_ROOT/tools/"
+          touch "$TRUSTED_PROCESSOR_ROOT/scripts/__init__.py" \
+            "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/__init__.py" \
+            "$TRUSTED_PROCESSOR_ROOT/tools/__init__.py"
 
       - name: Resolve issue
         id: issue
@@ -40,10 +57,27 @@ jobs:
           set -euo pipefail
           number="$EVENT_ISSUE_NUMBER"
           if [ "$EVENT_NAME" = "workflow_dispatch" ]; then number="$INPUT_ISSUE_NUMBER"; fi
-          test -n "$number"
-          gh api "repos/$REPOSITORY/issues/$number" > issue.json
-          jq -e '.pull_request | not' issue.json >/dev/null
+          [[ "$number" =~ ^[1-9][0-9]*$ ]]
+          gh api "repos/$REPOSITORY/issues/$number" > "$ISSUE_JSON"
+          jq -e --argjson number "$number" '(.pull_request | not) and .number == $number' "$ISSUE_JSON" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare history-preserving issue branch
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          set -euo pipefail
+          branch="issue-agent/$ISSUE_NUMBER"
+          git config user.name "qik-vrt-issue-agent[bot]"
+          git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
+          remote="$(git ls-remote --heads origin "refs/heads/$branch")"
+          if [ -n "$remote" ]; then
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git checkout -b "$branch" --track "origin/$branch"
+            git merge --no-edit "$GITHUB_SHA"
+          else
+            git checkout -b "$branch" "$GITHUB_SHA"
+          fi
 
       - name: Materialize request and repository context
         env:
@@ -51,70 +85,88 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
-          python3 scripts/issue_agent/materialize.py \
-            --issue issue.json \
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/materialize.py" \
+            --issue "$ISSUE_JSON" \
             --repository "$REPOSITORY" \
             --output-dir "evidence/issues/$ISSUE_NUMBER"
 
-      - name: Generate repository-grounded answer
-        id: inference
+      - name: Compile deterministic repository-grounded disposition
+        id: compilation
         continue-on-error: true
         env:
-          GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
-          python3 scripts/issue_agent/infer.py \
-            --issue issue.json \
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/compile.py" \
+            --issue "$ISSUE_JSON" \
             --context "evidence/issues/$ISSUE_NUMBER/CONTEXT.md" \
-            --output "evidence/issues/$ISSUE_NUMBER/ANSWER.md" \
-            --model "openai/gpt-4.1"
+            --output "evidence/issues/$ISSUE_NUMBER/ANSWER.md"
 
       - name: Enforce truthful status
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
-          INFERENCE_OUTCOME: ${{ steps.inference.outcome }}
+          PROCESSING_OUTCOME: ${{ steps.compilation.outcome }}
         run: |
           set -euo pipefail
-          python3 scripts/issue_agent/finalize.py \
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/finalize.py" \
             --directory "evidence/issues/$ISSUE_NUMBER" \
-            --inference-outcome "$INFERENCE_OUTCOME"
+            --processing-outcome "$PROCESSING_OUTCOME"
 
-      - name: Validate and promote generated artifacts
+      - name: Validate evidence and materialize canonical integrity
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
-          python3 -m unittest discover -s tests/issue_agent -p 'test_*.py'
-          python3 scripts/issue_agent/validate.py "evidence/issues/$ISSUE_NUMBER"
-          python3 scripts/issue_agent/promote.py "evidence/issues/$ISSUE_NUMBER"
-          python3 scripts/issue_agent/validate.py "evidence/issues/$ISSUE_NUMBER"
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/validate.py" "evidence/issues/$ISSUE_NUMBER"
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/promote.py" "evidence/issues/$ISSUE_NUMBER"
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/validate.py" "evidence/issues/$ISSUE_NUMBER"
+          python3 -B - "$TRUSTED_PROCESSOR_ROOT" <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, sys.argv[1])
+          from tools.qikvrt_integrity import generate, verify
+          generate(Path.cwd())
+          verify(Path.cwd())
+          PY
 
-      - name: Create or update issue work branch and pull request
+      - name: Persist issue work branch
+        id: publication
         env:
-          GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
           branch="issue-agent/$ISSUE_NUMBER"
-          git config user.name "qik-vrt-issue-agent[bot]"
-          git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
-          git checkout -B "$branch"
-          git add "evidence/issues/$ISSUE_NUMBER"
+          git add "evidence/issues/$ISSUE_NUMBER" \
+            REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
           if ! git diff --cached --quiet; then
             git commit -m "issue-agent: process issue #$ISSUE_NUMBER"
-            git push --force-with-lease origin "$branch"
           fi
+          # Ordinary push preserves previous evidence and rejects a competing writer.
+          git push origin "HEAD:refs/heads/$branch"
+          echo "commit=$(git rev-parse HEAD^{commit})" >> "$GITHUB_OUTPUT"
+          echo "tree=$(git rev-parse HEAD^{tree})" >> "$GITHUB_OUTPUT"
 
-          pr_number="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')"
-          if [ -z "$pr_number" ]; then
-            gh pr create \
-              --base main \
-              --head "$branch" \
-              --title "Issue agent: process #$ISSUE_NUMBER" \
-              --body "Repository-native processing artifacts for #$ISSUE_NUMBER.\n\nThe resumable auto-finish workflow may merge this PR only after EFFECT_ACK_DONE and successful repository checks. It then synchronizes the mirror, creates the common tag, and closes the issue."
-          fi
+      - name: Record review handoff and notify issue
+        if: always() && steps.publication.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          PUBLISHED_COMMIT: ${{ steps.publication.outputs.commit }}
+          PUBLISHED_TREE: ${{ steps.publication.outputs.tree }}
+        run: |
+          set -euo pipefail
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/handoff.py" \
+            --repository "$REPOSITORY" --issue-number "$ISSUE_NUMBER" \
+            --commit "$PUBLISHED_COMMIT" --tree "$PUBLISHED_TREE" \
+            --source-commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" --output-directory "$HANDOFF_DIRECTORY"
 
-          pr_url="$(gh pr list --head "$branch" --state open --json url --jq '.[0].url')"
-          status="$(jq -r '.status' "evidence/issues/$ISSUE_NUMBER/STATUS.json")"
-          gh issue comment "$ISSUE_NUMBER" --body "Repository processing status: **$status**\n\nWork product: $pr_url\n\nThe repository auto-finish transaction now owns merge, mirror synchronization, common tagging, and issue closure. Any failed gate remains BLOCK."
+      - name: Retain exact review handoff receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: issue-agent-handoff-${{ steps.issue.outputs.number }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-issue-handoff/
+          retention-days: 30
+          if-no-files-found: warn
