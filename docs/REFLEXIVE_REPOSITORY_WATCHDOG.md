@@ -4,6 +4,26 @@ The adaptive repository monitor is extended by a read-only watchdog that observe
 
 ## Operational model
 
+The workflow-executor contract declares `ingolf-lohmann/qik-vrt` as Authority
+and `Goldkelch/qik-vrt` as Mirror, following the Owner's preserved role decision.
+This candidate declaration does not activate the role policy on Main. The
+separate role carrier is PR #484; PR #490 preserves the original job-token
+diagnostic scope. Neither existing PR head is changed by this correction.
+
+The `authority-readback` command uses the mandatory GitHub job token for
+explicit GETs of the declared Authority Main ref and the role policy at that
+exact commit. It verifies the policy blob, its repository binding and native
+review boundaries, then reobserves the Main ref. A denied read, missing active
+role policy, malformed response or drift fails closed and preserves `HOLD`.
+There is no Mirror or anonymous fallback. Snapshot and node-receipt generation
+remain structural declarations; the local exact-Main dispatch plan also holds
+until the role policy agrees. These observations never supply native approval.
+
+Historical node Acceptance receipts remain unchanged. A Mirror receipt or a
+receipt without repository identity cannot establish Authority liveness, even
+if its Git commit equals the observed Authority commit. Node continuity binds
+the corrected contract digest and requires fresh acceptance after activation.
+
 Each repository instance carries the same contract, controller, workflow, and regression test. The Authority remains the serialized source of the portable contract; Mirror and future mesh nodes must retain their own repository identity and integrity projections while satisfying the same structural acceptance.
 
 The watchdog treats repository activity as a resource-allocation graph:

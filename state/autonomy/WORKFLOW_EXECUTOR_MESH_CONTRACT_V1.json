@@ -2,7 +2,10 @@
   "schema": "qikvrt_workflow_executor_mesh_contract_v1",
   "contract_id": "qikvrt-workflow-executor-mesh-v1",
   "authority": {
-    "repository": "Goldkelch/qik-vrt",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "mirror_repositories": ["Goldkelch/qik-vrt"],
+    "role_policy_path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "activation": "FRESH_AUTHORITY_MAIN_POLICY_READBACK_REQUIRED",
     "entrypoint": "AI",
     "self_healing_contract_path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
   },
@@ -138,7 +141,7 @@
         "seed_acceptance_path": "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json",
         "renewal_path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
         "health_path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
-        "authority_repository": "Goldkelch/qik-vrt",
+        "authority_repository": "ingolf-lohmann/qik-vrt",
         "warning_seconds": 3600,
         "all_records_absent_state": "NOT_APPLICABLE",
         "expired_or_overdue_disposition": "HOLD",

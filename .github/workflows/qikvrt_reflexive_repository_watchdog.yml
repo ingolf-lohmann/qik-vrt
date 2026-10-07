@@ -30,6 +30,7 @@ on:
       - "tools/qikvrt_reflexive_repository_watchdog.py"
       - "tools/qikvrt_workflow_executor.py"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+      - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "registry/NODE_DISCOVERY_POLICY.json"
       - "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
       - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
@@ -43,6 +44,8 @@ on:
       - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
       - "tools/qikvrt_reflexive_repository_watchdog.py"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+      - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+      - "tools/qikvrt_workflow_executor.py"
       - "registry/NODE_DISCOVERY_POLICY.json"
       - "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
       - "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
@@ -114,10 +117,12 @@ jobs:
           else
             printf '%s\n' MAIN > "$root/observation-scope.txt"
           fi
-          authority_repository="$(jq -r '.authority.repository' state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json)"
-          test "$authority_repository" != null
           observation_stage=AUTHORITY_READBACK
-          gh api "repos/$authority_repository/git/ref/heads/main" --jq '.object.sha' \
+          # Candidate roles are declarations. Only the same job token's fresh
+          # Authority Main policy readback can establish operational activation.
+          python3 -B tools/qikvrt_workflow_executor.py authority-readback --json \
+            > "$root/authority-role-readback.json"
+          jq -er '.main_head' "$root/authority-role-readback.json" \
             > "$root/observed-authority-main-head.txt"
           observation_stage=RUNS_READBACK
           gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \
