@@ -57,6 +57,14 @@ export class Repository {
   constructor(db){this.db=db;}
   close(){this.db.close();}
   get(store,key){return request(this.db.transaction(store,'readonly').objectStore(store).get(key));}
+  async editorDraft(tab){const key=tab?'editor:'+tab:await this.get('refs','editor:last');return key?this.get('refs',key):null;}
+  async checkpointEditor(tab,state){
+    // UI recovery is separate from revisions: an unsaved draft is never committed.
+    const key='editor:'+tab,row={schema:'qikvrt-editor-checkpoint/v1',state};
+    await write(this.db,['refs'],tx=>{const refs=tx.objectStore('refs');refs.put(row,key);refs.put(key,'editor:last');});
+    const after=await this.get('refs',key);
+    if(canonical(after?.state)!==canonical(state)||after?.state.prepared?.size!==state.prepared?.size)fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
+  }
   async snapshot(id){const row=await this.get('snapshots',id);if(!row||await hashObject(row)!==id)fail('SNAPSHOT_READBACK_MISMATCH');checkSnapshot(row);return row;}
   async head(){const id=await this.get('refs','head');return id?{id,snapshot:await this.snapshot(id)}:null;}
   async block(id){const blob=await this.get('blocks',id);if(!(blob instanceof Blob)||blob.size>LIMITS.chunk||await digest(await blob.arrayBuffer())!==id)fail('CONTENT_READBACK_MISMATCH');return blob;}

@@ -48,11 +48,14 @@ def tree_hash(files):
         return hashlib.sha1(b"tree " + str(len(body)).encode() + b"\0" + body).hexdigest()
     return visit(root)
 
-def shell():
-    hashes = {name: hashlib.sha256((CLIENT / name).read_bytes()).hexdigest() for name in ASSETS}
-    shell_id = hashlib.sha256(canonical(hashes).encode()).hexdigest()
-    worker = (CLIENT / "service-worker.template.js").read_text().replace("__SHELL_ID__", shell_id).replace("__ASSETS__", canonical(hashes))
-    (CLIENT / "service-worker.js").write_text(worker)
+def shell(client=CLIENT):
+    hashes = {name: hashlib.sha256((client / name).read_bytes()).hexdigest() for name in ASSETS}
+    template = (client / "service-worker.template.js").read_text()
+    # Worker-only changes must stage into a new cache as well.
+    binding = {"assets": hashes, "worker_template_sha256": hashlib.sha256(template.encode()).hexdigest()}
+    shell_id = hashlib.sha256(canonical(binding).encode()).hexdigest()
+    worker = template.replace("__SHELL_ID__", shell_id).replace("__ASSETS__", canonical(hashes))
+    (client / "service-worker.js").write_text(worker)
     return {"schema": "qikvrt-offline-shell/v1", "shell_sha256": shell_id, "assets": hashes}
 
 def client_package(ref, output):

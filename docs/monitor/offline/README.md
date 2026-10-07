@@ -126,3 +126,67 @@ vorhandenen Ingolf-Workspace mit HTTP 403. GitHub Pages ist nicht aktiviert.
 Diese technischen Hostingzustände ändern weder Ingolf Lohmanns Freigabe noch
 die aktuelle Mesh Authority. Ein bereits funktionierender HTTPS-Einstieg wird
 erst nach erfolgreichem Deployment und Byte-Readback benannt.
+
+## Automatische Clientaktualisierung
+
+Der vorhandene Service Worker prüft neue Produktionsdateien vollständig mit
+SHA-256 und liest den fertigen separaten Versionscache zurück. Erst danach ist
+die Version installierbar. Auch Änderungen ausschließlich am Worker bekommen
+einen eigenen Versionscache. Ein unvollständiger Download, Netzabbruch oder
+Prüfsummenfehler verwirft den Kandidaten; der aktive Worker und die bisherigen
+Caches bleiben erhalten. Die HTTPS-Publikation des Workers ist die
+Vertrauensautorität: Diese Inhaltsprüfung ist keine unabhängige Signatur gegen
+einen kompromittierten Origin.
+
+Der Client prüft bei Start, Online-Ereignis, Wiederanzeigen/Fokus und Rückkehr
+in den Vordergrund automatisch auf Updates (`updateViaCache: 'none'`).
+Wiederholte Vordergrundereignisse werden 30 Sekunden lang zusammengefasst;
+eine Netzrückkehr löst eine neue Prüfung aus. Es gibt keinen Hintergrundtimer
+und keine automatische GitHub-Repository-Beobachtung.
+
+Ein installierter Update-Worker verlangt von **allen** geöffneten Clients einen
+zurückgelesenen IndexedDB-Checkpoint. Laufende Speichern-/Import-/Export-/Teilen-
+Vorgänge, eine IME-Komposition und die erste Sekunde nach einer Texteingabe
+schieben die Übergabe auf. Während der kurzen Übergabe sind neue Änderungen
+gesperrt. `skipWaiting()` und `clients.claim()` wechseln anschließend den
+vollständigen Client; sichtbare Fenster laden automatisch neu, Hintergrundfenster
+bei ihrer nächsten Anzeige. Der Entwurf mit Pfad, Text, Suche, Konfliktentscheidungen,
+vorbereitetem Export sowie Fokus und Textauswahl wird wiederhergestellt. Ein
+Entwurf wird dadurch **nicht** als neue Repository-Revision gespeichert. Die
+vorhandene IndexedDB-Datenbank, Arbeitsstände und lokale Historie bleiben erhalten.
+Entwürfe werden nach einer Eingabepause auch ohne Update lokal gesichert;
+mehrere Tabs haben eigene Checkpoints. Nach einem kalten Start ohne Tab-Kennung
+wird der zuletzt gesicherte Entwurf angeboten bzw. wiederhergestellt.
+
+Ein offener Altclient aus #484 besitzt diese Übergabe noch nicht. Der neue Worker
+überspringt dessen fehlendes Checkpoint-Acknowledgement nicht: Die erste Übernahme
+erfolgt automatisch nach dem Schließen seiner Fenster und dem nächsten Öffnen.
+Ungespeicherter RAM-Inhalt eines bereits ausgelieferten Altclients kann nicht
+nachträglich durch einen Service Worker gesichert werden. Sein geprüftes
+`ad47e6386536abdca5d5ba025832b27718ee66dd` bleibt als eigenständiger PR erhalten.
+
+**Mobile Grenze:** Eine vollständig geschlossene oder vom Betriebssystem
+suspendierte App führt diese Vordergrundlogik nicht aus. Eine Aktualisierung
+während dieser Zeit oder zu einer garantierten Uhrzeit wird nicht zugesagt.
+Beim nächsten geeigneten Online-Öffnen bzw. Fortsetzen erfolgen Prüfung und
+Übernahme automatisch. Browser-Quota, Eviktion und ein Abbruch vor abgeschlossenem
+IndexedDB-Checkpoint bleiben Systemgrenzen; der letzte bestätigte Stand bleibt
+die Recovery-Basis. Desktop-Chromium und Desktop-WebKit attestieren kein echtes
+iPhone und keinen öffentlichen Produktionsorigin.
+
+`browser.test.mjs` veröffentlicht vier vom bestehenden Produktionsbuilder
+gebaute Versionen nacheinander unter **demselben** Origin. Ohne einen Update-
+Knopf, `registration.update()` oder `skipWaiting()` aus dem Test werden die
+Online-Ereignishandler ausgeübt. Echte HTTP-Verbindungsabbrüche und manipulierte
+Assetbytes müssen die Installation verweigern. Die Tests prüfen die automatische
+Übernahme, zwei unabhängige ungespeicherte Entwürfe, einen laufenden Schreibvorgang,
+sämtliche aktiv ausgelieferten Asset-Digests, Textauswahl, unveränderte Historie,
+Wiederherstellung nach Fehler, kalten Prozessneustart und anschließende Offline-
+Navigation. Die Online-Ereignisse sind DOM-Lifecycle-Kontrollen; es wird kein
+physischer Mobilfunk-/Flugmoduswechsel behauptet.
+
+Primärquellen für Lifecycle und Ausführungsgrenzen:
+
+- https://www.w3.org/TR/service-workers/
+- https://webkit.org/blog/8090/workers-at-your-service/
+- https://webkit.org/blog/14403/updates-to-storage-policy/

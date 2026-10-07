@@ -71,8 +71,10 @@ class OfflineTransferTests(unittest.TestCase):
 
     def test_committed_service_worker_pins_all_production_dependencies_and_no_user_data(self):
         hashes={name:hashlib.sha256((offline.CLIENT/name).read_bytes()).hexdigest() for name in offline.ASSETS}
-        shell_id=hashlib.sha256(offline.canonical(hashes).encode()).hexdigest()
-        expected=(offline.CLIENT/'service-worker.template.js').read_text().replace('__SHELL_ID__',shell_id).replace('__ASSETS__',offline.canonical(hashes))
+        template=(offline.CLIENT/'service-worker.template.js').read_text()
+        binding={'assets':hashes,'worker_template_sha256':hashlib.sha256(template.encode()).hexdigest()}
+        shell_id=hashlib.sha256(offline.canonical(binding).encode()).hexdigest()
+        expected=template.replace('__SHELL_ID__',shell_id).replace('__ASSETS__',offline.canonical(hashes))
         self.assertEqual((offline.CLIENT/'service-worker.js').read_text(),expected)
         self.assertNotIn('repository.qikvrt',offline.ASSETS)
         self.assertNotIn('monitor/observation.json',offline.ASSETS)
