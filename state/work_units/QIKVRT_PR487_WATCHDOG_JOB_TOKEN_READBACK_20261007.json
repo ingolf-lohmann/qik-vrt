@@ -61,7 +61,8 @@
     "anonymous_fallback": false,
     "permissions_widened": false,
     "retry_count": 0,
-    "failure_receipt_preserved": true
+    "failure_receipt_preserved": true,
+    "additional_control": "This repair PR branch alone compares the original frozen PR #487 using the explicit native response read and the original gh command, in one job-token lifetime; controls cannot satisfy the candidate subject guard."
   },
   "compatibility_dependency": {
     "source_pr": 487,
@@ -87,22 +88,23 @@
   "outputs": [
     {
       "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
-      "bytes": 14695,
-      "sha256": "38324b1d20f6dadfbcda074a8162431c29e07ff470484b0ffa815ca07f3e4bd2",
-      "git_blob_sha1": "7bbae822b87fb9ca4d051bbe12ebd4e4b1cdf93a"
+      "bytes": 16214,
+      "sha256": "36b7bac52b101f14733014ffb0150e553b2f0fa25e8a84fbcccff543321986fd",
+      "git_blob_sha1": "3837afb8a9fc3e406bef64b0270340af256b5e10"
     },
     {
       "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
-      "bytes": 29161,
-      "sha256": "dff658b9051aafef6c059add63af650ecbaff424223f01fdb93c1518154dd5a8",
-      "git_blob_sha1": "00bad712fdb0666576339932edf364c22641bdd2"
+      "bytes": 29126,
+      "sha256": "7220a81afb917e302ceaeb949abab9d8243ee4d51c93ac9101e07410e3b9f04e",
+      "git_blob_sha1": "f53a9cdc9050d538c4ee2ac1eba98a8bd1608e45"
     }
   ],
   "git_history": {
     "base": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
     "branch": "repair/pr487-watchdog-readback-20261007",
     "force_push": false,
-    "history_rewrite": false
+    "history_rewrite": false,
+    "ordered_successor_parent": "6ace62d2c5042cf5b63fa0f0979825cd78efb65d"
   },
   "verification": {
     "preparation": "42 tests in the affected three-module gate; seven real-shell response cases cover PR/repository 404, 401, wrong head, wrong PR, malformed JSON, and valid PR readback followed by authority failure",
@@ -125,5 +127,19 @@
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
+  },
+  "observed_candidate_run": {
+    "head": "6ace62d2c5042cf5b63fa0f0979825cd78efb65d",
+    "tree": "399f64cfe924e0c9b4bee777cfe657662574e7df",
+    "run_id": 37653022935,
+    "job_id": 112900974279,
+    "pr": 490,
+    "subject_readback_http_status": 200,
+    "failure_stage": "AUTHORITY_READBACK",
+    "failing_repository": "Goldkelch/qik-vrt",
+    "http_status": 404,
+    "artifact_id": 11497916032,
+    "artifact_sha256": "c32e681f04f623fbd786198e6df91df9daf659f18f0688192eda87801e1648e5",
+    "cause_of_original_pr487_404_established": false
   }
 }

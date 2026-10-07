@@ -588,8 +588,8 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
                     if path.is_file():
                         self.assertNotIn("fixture-job-token", path.read_text())
                 requests = [json.loads(line) for line in (root / "requests.jsonl").read_text().splitlines()]
-                self.assertEqual(len(requests), 2 if status != 200 or subject_matches else 1)
-                for request in requests[:1 if subject_matches else len(requests)]:
+                self.assertEqual(len(requests), 3 if subject_matches else 2 if status != 200 else 1)
+                for request in requests:
                     self.assertIn("--include", request)
                     self.assertEqual(request[request.index("--method") + 1], "GET")
                     self.assertEqual(request[request.index("--hostname") + 1], "github.com")
