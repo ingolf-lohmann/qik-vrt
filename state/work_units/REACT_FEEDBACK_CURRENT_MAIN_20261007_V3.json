@@ -1,0 +1,1120 @@
+{
+  "_license": {
+    "license": "CC-BY-NC-ND-4.0",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_react_feedback_current_main_v3",
+  "work_unit_id": "REACT_FEEDBACK_CURRENT_MAIN_20261007_V3",
+  "created_at": "2026-10-07T20:59:25.507782+00:00",
+  "state": "CURRENT_MAIN_FORWARD_MERGE_PREPARED_FRESH_EXACT_HEAD_GATES_PENDING",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/react-feedback-main-71f8c153-20261007",
+  "source_commit": "9611b53a258de36c7944cc92021688278536eb9e",
+  "source_tree": "afabeeb3a93b9d035fc8cad5c45a32b10a6edf55",
+  "current_main": {
+    "head": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+    "tree": "22794901b7e69d948508943b38b4c850dfc7c2c5"
+  },
+  "previous_current_main": "3d6148513b289005e71c73bae12de26f5f42f445",
+  "historical_integration_base": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Authorized PR #483 current-main reobservation, exact path/byte comparison, history-preserving update when the invariant requires it, and fresh exact-head/ReactDOM gates."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system": "Codex",
+    "model_family": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserved the additional six-path lifecycle Main drift and unchanged PR head.",
+    "Compared all recursive input trees and changed blobs; reproduced BASE_DRIFT in both existing evaluators.",
+    "Prepared one two-parent forward merge with source preservation, a new work unit and deterministic integrity regeneration."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "head": "9611b53a258de36c7944cc92021688278536eb9e",
+      "path": "docs/monitor/README.md",
+      "bytes": 4989,
+      "sha256": "ec21c0683317d5574cb2a402b2d9b116856928c59a78ca3be919e0e67550dc9b",
+      "git_blob_sha1": "bab72974843765f482c6c8c11d0f66e23804db66"
+    },
+    {
+      "head": "9611b53a258de36c7944cc92021688278536eb9e",
+      "path": "state/work_units/REACT_FEEDBACK_CURRENT_MAIN_20261007_V2.json",
+      "bytes": 38181,
+      "sha256": "a145f54cb5ef274d475b85ee05af7146c3afea8cb2ff7407a760621b7c3c4a74",
+      "git_blob_sha1": "5ea245fcaca3f233c15ad92f60ff04d27d9485fc"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "docs/monitor/README.md",
+      "bytes": 6044,
+      "sha256": "5ebdd8ef829e90bd4942c670e21bdd83e9771a8c2f2d4a919609aa42284dac99",
+      "git_blob_sha1": "159f30e8d96eafa52a539ecc0dc3cde964039001"
+    },
+    {
+      "path": "state/work_units/REACT_FEEDBACK_CURRENT_MAIN_20261007_V3.json",
+      "binding": "Containing Git commit/tree; no circular self digest."
+    },
+    {
+      "paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "method": "tools/qikvrt_integrity.py generate; containing commit/tree binds the outputs."
+    }
+  ],
+  "git_history": {
+    "method": "Two-parent forward merge; preserve predecessor and current Main; expected-old-head, non-force ref update.",
+    "parents": [
+      "9611b53a258de36c7944cc92021688278536eb9e",
+      "46e0adee5c4d85e479f3f552bf6890614afa22fc"
+    ],
+    "no_force_push": true,
+    "no_history_rewrite": true
+  },
+  "decision": {
+    "current_base_required": true,
+    "source_only_merge_is_equivalent": true,
+    "scope_repair": "Retain React bytes and all prior work units; merge Main and regenerate combined-tree integrity.",
+    "evaluator_sources": [
+      {
+        "path": "tools/qikvrt_requested_review_executor.py",
+        "head": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+        "git_blob_sha1": "839e0943897b418314a7fbdb29e8b8cbe9d3837a",
+        "predicate": "base_sha == current_main_sha; otherwise BASE_DRIFT"
+      },
+      {
+        "path": "tools/qikvrt_expected_head_promotion.py",
+        "head": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+        "git_blob_sha1": "78feaaf5dc9777f6df6611af9dc310e3f80940f2",
+        "predicate": "base_sha == current_main_sha; otherwise BASE_DRIFT"
+      }
+    ]
+  },
+  "byte_comparison": {
+    "schema": "qikvrt_pr483_main_drift_byte_comparison_v1",
+    "observed_at": "2026-10-07T20:59:25.507782+00:00",
+    "base": "3d6148513b289005e71c73bae12de26f5f42f445",
+    "main": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+    "candidate": "9611b53a258de36c7944cc92021688278536eb9e",
+    "candidate_tree": "afabeeb3a93b9d035fc8cad5c45a32b10a6edf55",
+    "computed_merge_tree": "4a3a36a69da836b6a448de07ae3f2f465e033b25",
+    "method": "Exact mode/type/Git blob over every recursive tree entry; SHA-256 and byte count for every changed input blob.",
+    "main_paths": [
+      {
+        "path": "evidence/node_health/37627620170-1.json",
+        "old": null,
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "63970f2fb86d24789d06ee80bb008e73a1c8d04b",
+          "bytes": 241,
+          "sha256": "0f37c9f1e74077e96981ac59f701afadc8043e52c43c1cd88f012d8c4a66da3e"
+        },
+        "candidate": null,
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "63970f2fb86d24789d06ee80bb008e73a1c8d04b",
+          "bytes": 241,
+          "sha256": "0f37c9f1e74077e96981ac59f701afadc8043e52c43c1cd88f012d8c4a66da3e"
+        }
+      },
+      {
+        "path": "evidence/node_health/LATEST.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "5476abbe880dda379a5db4b25817aeb347d65bfe",
+          "bytes": 241,
+          "sha256": "2c8b892761ab14e79979e0e84e9d214245d812cd5e1c1c498cf7385f00b80a54"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "63970f2fb86d24789d06ee80bb008e73a1c8d04b",
+          "bytes": 241,
+          "sha256": "0f37c9f1e74077e96981ac59f701afadc8043e52c43c1cd88f012d8c4a66da3e"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "5476abbe880dda379a5db4b25817aeb347d65bfe",
+          "bytes": 241,
+          "sha256": "2c8b892761ab14e79979e0e84e9d214245d812cd5e1c1c498cf7385f00b80a54"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "63970f2fb86d24789d06ee80bb008e73a1c8d04b",
+          "bytes": 241,
+          "sha256": "0f37c9f1e74077e96981ac59f701afadc8043e52c43c1cd88f012d8c4a66da3e"
+        }
+      },
+      {
+        "path": "evidence/node_registration_renewal/37627620170-1.json",
+        "old": null,
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "ed817d2fdc17e9f37de767265dbd5dac0510b054",
+          "bytes": 262,
+          "sha256": "c9606825b208e3871bb3f8a57f12b0625083e4b15d049c27da269d3cb4242f54"
+        },
+        "candidate": null,
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "ed817d2fdc17e9f37de767265dbd5dac0510b054",
+          "bytes": 262,
+          "sha256": "c9606825b208e3871bb3f8a57f12b0625083e4b15d049c27da269d3cb4242f54"
+        }
+      },
+      {
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "11c07cb1b5b9674a74e240af2053203ec84b213c",
+          "bytes": 262,
+          "sha256": "8f26000137d1a862f0a476450b9e24b4c3b73401563c08a0d6eee026e73ee1da"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "ed817d2fdc17e9f37de767265dbd5dac0510b054",
+          "bytes": 262,
+          "sha256": "c9606825b208e3871bb3f8a57f12b0625083e4b15d049c27da269d3cb4242f54"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "11c07cb1b5b9674a74e240af2053203ec84b213c",
+          "bytes": 262,
+          "sha256": "8f26000137d1a862f0a476450b9e24b4c3b73401563c08a0d6eee026e73ee1da"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "ed817d2fdc17e9f37de767265dbd5dac0510b054",
+          "bytes": 262,
+          "sha256": "c9606825b208e3871bb3f8a57f12b0625083e4b15d049c27da269d3cb4242f54"
+        }
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "e2300370ff0a34572a89579121792649d5268174",
+          "bytes": 563,
+          "sha256": "927409fe38eb29063031aadaf4e1c849e715d4b2323dcb102c1fd39a1e998574"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "f1591eca767f3d8e02112cb39e1bcf7b31310e76",
+          "bytes": 563,
+          "sha256": "2dcdd9737500d455bcd96e0d710f6f29ece6ae47e81605420c151f8a75957607"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "e2300370ff0a34572a89579121792649d5268174",
+          "bytes": 563,
+          "sha256": "927409fe38eb29063031aadaf4e1c849e715d4b2323dcb102c1fd39a1e998574"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "f1591eca767f3d8e02112cb39e1bcf7b31310e76",
+          "bytes": 563,
+          "sha256": "2dcdd9737500d455bcd96e0d710f6f29ece6ae47e81605420c151f8a75957607"
+        }
+      },
+      {
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4f9082ebdae5f4be6f4d4e749e3527cb10637393",
+          "bytes": 542,
+          "sha256": "8f8ef9b9736f4c9fcf9a94dea4e3ca48e721629b62483d164c823bfeaaf4e9ce"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "fc427326c9a5f7cd97bdc7626815aecad6c664cc",
+          "bytes": 542,
+          "sha256": "7378cdf47a6e0a5c8472e823bb026738536f4dab6b3dad33e004ee1ed59d8550"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4f9082ebdae5f4be6f4d4e749e3527cb10637393",
+          "bytes": 542,
+          "sha256": "8f8ef9b9736f4c9fcf9a94dea4e3ca48e721629b62483d164c823bfeaaf4e9ce"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "fc427326c9a5f7cd97bdc7626815aecad6c664cc",
+          "bytes": 542,
+          "sha256": "7378cdf47a6e0a5c8472e823bb026738536f4dab6b3dad33e004ee1ed59d8550"
+        }
+      }
+    ],
+    "candidate_paths": [
+      {
+        "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c3fce059f331c2987ada61b505992aef39dde4bd",
+          "bytes": 25145,
+          "sha256": "d86d3fa92a7558d5ab94e1996bc6d03c54d07b0894e9c3fc070ff2736eb6cff3"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c3fce059f331c2987ada61b505992aef39dde4bd",
+          "bytes": 25145,
+          "sha256": "d86d3fa92a7558d5ab94e1996bc6d03c54d07b0894e9c3fc070ff2736eb6cff3"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "056132364a11d2549dad24b4b3e53122532b92a8",
+          "bytes": 25216,
+          "sha256": "90c61de320ecb6433189f60fcbc8d253f9fb8fc49cbe347386f7006ef95404ae"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "056132364a11d2549dad24b4b3e53122532b92a8",
+          "bytes": 25216,
+          "sha256": "90c61de320ecb6433189f60fcbc8d253f9fb8fc49cbe347386f7006ef95404ae"
+        }
+      },
+      {
+        "path": ".github/workflows/qikvrt_ci.yml",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+          "bytes": 7776,
+          "sha256": "c9c65f62eccc27f447dff205cf549218b5aa12af548a0767440bfecb22246300"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "61d990bf550bb659cc8165e72ac14e2090db89a0",
+          "bytes": 7776,
+          "sha256": "c9c65f62eccc27f447dff205cf549218b5aa12af548a0767440bfecb22246300"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "2b82f6e305bd19c615852e052ff7c9b64fca2b6e",
+          "bytes": 7961,
+          "sha256": "c7d45aa404a614f925650d544c9a563e76dc1a8e1a24831bea58a2a231b6bd05"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "2b82f6e305bd19c615852e052ff7c9b64fca2b6e",
+          "bytes": 7961,
+          "sha256": "c7d45aa404a614f925650d544c9a563e76dc1a8e1a24831bea58a2a231b6bd05"
+        }
+      },
+      {
+        "path": ".github/workflows/qikvrt_collective_review.yml",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+          "bytes": 10577,
+          "sha256": "46b3854ac3d2d0e7491e76206b822d34365db90d9154c90c3cba52f1a8d8e812"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "48fd528d890850c9c5e2bb7b78c11a7842c91826",
+          "bytes": 10577,
+          "sha256": "46b3854ac3d2d0e7491e76206b822d34365db90d9154c90c3cba52f1a8d8e812"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "e782771df1cfd7b57e3b8dc7ec3d83df5ed6dc01",
+          "bytes": 10834,
+          "sha256": "8e4eeb439854b49020251f359163e168c7553eb1d6068174e10c82d831cc8b52"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "e782771df1cfd7b57e3b8dc7ec3d83df5ed6dc01",
+          "bytes": 10834,
+          "sha256": "8e4eeb439854b49020251f359163e168c7553eb1d6068174e10c82d831cc8b52"
+        }
+      },
+      {
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+          "bytes": 4447,
+          "sha256": "fa1e3bbc32492a87d3a1b0c1f7bfa0e6a0d7cd6dd4c3cdb30335f47e438cf089"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "815e32524401aac59fa79aa4f2fb1e37b2f49fdc",
+          "bytes": 4447,
+          "sha256": "fa1e3bbc32492a87d3a1b0c1f7bfa0e6a0d7cd6dd4c3cdb30335f47e438cf089"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "5bdd0ba5ba66f18ecb44540c3344832dcad88175",
+          "bytes": 8315,
+          "sha256": "db7d00bd518f90b66c6873553d646b6e4e55efd24d2083f913d4e8946c99078e"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "5bdd0ba5ba66f18ecb44540c3344832dcad88175",
+          "bytes": 8315,
+          "sha256": "db7d00bd518f90b66c6873553d646b6e4e55efd24d2083f913d4e8946c99078e"
+        }
+      },
+      {
+        "path": "Makefile",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "24376be68ad04628774d6249632ecf3ae3b4f333",
+          "bytes": 11112,
+          "sha256": "d03be740ca36ba81ede9c5f987bbcb3207615a15d57670c5abf1ba547b7cd9f8"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "24376be68ad04628774d6249632ecf3ae3b4f333",
+          "bytes": 11112,
+          "sha256": "d03be740ca36ba81ede9c5f987bbcb3207615a15d57670c5abf1ba547b7cd9f8"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4a92d99a010a3232c567d442e6ec35b4334c74ec",
+          "bytes": 11324,
+          "sha256": "bda5ff0e725b2769c24486222cdd70a496c410947259e0220c5c36a9f2d5b607"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4a92d99a010a3232c567d442e6ec35b4334c74ec",
+          "bytes": 11324,
+          "sha256": "bda5ff0e725b2769c24486222cdd70a496c410947259e0220c5c36a9f2d5b607"
+        }
+      },
+      {
+        "path": "REPOSITORY_FILE_MANIFEST.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "6d5901356f97e1bcc4cace11a6bc094745232d03",
+          "bytes": 1087510,
+          "sha256": "f443e77a9fbc1cf523df4c487b5d1586b2a4780ffa423e11d21d27852930d381"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "6d5901356f97e1bcc4cace11a6bc094745232d03",
+          "bytes": 1087510,
+          "sha256": "f443e77a9fbc1cf523df4c487b5d1586b2a4780ffa423e11d21d27852930d381"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "97e5bd0a0be411d21489ae762598f132e2b30b93",
+          "bytes": 1093596,
+          "sha256": "09f430f9f5c1ff0b544d0f98a2ab3cc58e4b27fd04110c4b496e52650abf68fe"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "97e5bd0a0be411d21489ae762598f132e2b30b93",
+          "bytes": 1093596,
+          "sha256": "09f430f9f5c1ff0b544d0f98a2ab3cc58e4b27fd04110c4b496e52650abf68fe"
+        }
+      },
+      {
+        "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "486a7498f0ca8a4916b422f7b0f3acd9aa8c2596",
+          "bytes": 96,
+          "sha256": "5328e5df964dcbfe8b77ea7dc92655c4bb5070e2a5bca1e46eda609667eb4204"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "486a7498f0ca8a4916b422f7b0f3acd9aa8c2596",
+          "bytes": 96,
+          "sha256": "5328e5df964dcbfe8b77ea7dc92655c4bb5070e2a5bca1e46eda609667eb4204"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "2a35a8e183a8a93bf8cab4e95a4cd59141946ed4",
+          "bytes": 96,
+          "sha256": "cf04d6b22ea9ea8e57a6cb46bccc0aa09c167231b21a047c041c7790c95a3af4"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "2a35a8e183a8a93bf8cab4e95a4cd59141946ed4",
+          "bytes": 96,
+          "sha256": "cf04d6b22ea9ea8e57a6cb46bccc0aa09c167231b21a047c041c7790c95a3af4"
+        }
+      },
+      {
+        "path": "SHA256SUMS.txt",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "b9f2b31b6e78e0991820df1f3c474cb1ba936d97",
+          "bytes": 517558,
+          "sha256": "ee52431f638ca0376f6f319548729cee587d890d1a02dcdfc2b8a6e93ee22898"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "b9f2b31b6e78e0991820df1f3c474cb1ba936d97",
+          "bytes": 517558,
+          "sha256": "ee52431f638ca0376f6f319548729cee587d890d1a02dcdfc2b8a6e93ee22898"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c92974308a5e575a9aa8c6946cee40d7e9f12700",
+          "bytes": 520149,
+          "sha256": "8939227a44d878c6ea6b572cc3cb368d639d7adfad1f0ce230fb18c934563f79"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c92974308a5e575a9aa8c6946cee40d7e9f12700",
+          "bytes": 520149,
+          "sha256": "8939227a44d878c6ea6b572cc3cb368d639d7adfad1f0ce230fb18c934563f79"
+        }
+      },
+      {
+        "path": "docs/monitor/REACT_LICENSE.txt",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "b93be90515ccd0b9daedaa589e42bf5929693f1f",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "b93be90515ccd0b9daedaa589e42bf5929693f1f",
+          "bytes": 1088,
+          "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+        }
+      },
+      {
+        "path": "docs/monitor/REACT_LOCK.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4480fea34c358b610ea93fc70709bbc12374c3fe",
+          "bytes": 2286,
+          "sha256": "96f126867217cd7addef20c2a3169cc9cce01492c5b544f0fc656eb996c3ee7f"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4480fea34c358b610ea93fc70709bbc12374c3fe",
+          "bytes": 2286,
+          "sha256": "96f126867217cd7addef20c2a3169cc9cce01492c5b544f0fc656eb996c3ee7f"
+        }
+      },
+      {
+        "path": "docs/monitor/README.md",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "bab72974843765f482c6c8c11d0f66e23804db66",
+          "bytes": 4989,
+          "sha256": "ec21c0683317d5574cb2a402b2d9b116856928c59a78ca3be919e0e67550dc9b"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "bab72974843765f482c6c8c11d0f66e23804db66",
+          "bytes": 4989,
+          "sha256": "ec21c0683317d5574cb2a402b2d9b116856928c59a78ca3be919e0e67550dc9b"
+        }
+      },
+      {
+        "path": "docs/monitor/browser-tests/BROWSER_LOCK.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "3d26a7487c117344c3abd652b90395261a107735",
+          "bytes": 628,
+          "sha256": "be1404fbc731f9be00b1dce1487cfbd43ec1deddb3ec04d69611783d2aa4ff05"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "3d26a7487c117344c3abd652b90395261a107735",
+          "bytes": 628,
+          "sha256": "be1404fbc731f9be00b1dce1487cfbd43ec1deddb3ec04d69611783d2aa4ff05"
+        }
+      },
+      {
+        "path": "docs/monitor/browser-tests/package-lock.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "9901ed226dc41c59c2771652a3621c21e41f0cdc",
+          "bytes": 1817,
+          "sha256": "5caf98c5d144d196264baf42756aa84110d0bc22381daa22aa8acb4bd5830ee2"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "9901ed226dc41c59c2771652a3621c21e41f0cdc",
+          "bytes": 1817,
+          "sha256": "5caf98c5d144d196264baf42756aa84110d0bc22381daa22aa8acb4bd5830ee2"
+        }
+      },
+      {
+        "path": "docs/monitor/browser-tests/package.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "bdff458c1b92a53bd12c76f426110149154d4f86",
+          "bytes": 228,
+          "sha256": "b8456604aff6e29ed5d9fd1dd1dab813404890f7b80d012ea02793b07592db49"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "bdff458c1b92a53bd12c76f426110149154d4f86",
+          "bytes": 228,
+          "sha256": "b8456604aff6e29ed5d9fd1dd1dab813404890f7b80d012ea02793b07592db49"
+        }
+      },
+      {
+        "path": "docs/monitor/client-replica.js",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b",
+          "bytes": 8342,
+          "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b",
+          "bytes": 8342,
+          "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+        }
+      },
+      {
+        "path": "docs/monitor/index-react.html",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "11c19e23f8ac642d6af697c6acaea8a62b9b9024",
+          "bytes": 870,
+          "sha256": "09cd7f0097ecb4beeec2984b4f08d9edab75c1d10d505c9f0e2339fb3ef2251b"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "11c19e23f8ac642d6af697c6acaea8a62b9b9024",
+          "bytes": 870,
+          "sha256": "09cd7f0097ecb4beeec2984b4f08d9edab75c1d10d505c9f0e2339fb3ef2251b"
+        }
+      },
+      {
+        "path": "docs/monitor/index.html",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "0e3f2303c0bab85ca40faf9922514e031e7bd2b6",
+          "bytes": 5037,
+          "sha256": "8b6baa9afde7952fc3635841f5f78063bd0153ab43b2b8e837f0e9a07def8ae6"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "0e3f2303c0bab85ca40faf9922514e031e7bd2b6",
+          "bytes": 5037,
+          "sha256": "8b6baa9afde7952fc3635841f5f78063bd0153ab43b2b8e837f0e9a07def8ae6"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "1b595524c6661c704388caf48038158d9f93d464",
+          "bytes": 5138,
+          "sha256": "fcc16d4326d1dc7e07584841ae968ebac2704fdd2878d050dc2414e686747097"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "1b595524c6661c704388caf48038158d9f93d464",
+          "bytes": 5138,
+          "sha256": "fcc16d4326d1dc7e07584841ae968ebac2704fdd2878d050dc2414e686747097"
+        }
+      },
+      {
+        "path": "docs/monitor/mesh-react.css",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "ab359bbd3d2f53ce567a324d60e518ed8d652819",
+          "bytes": 2360,
+          "sha256": "11801e7e6a4e05f677ec19993b3a55a8a884faaf3d7d978173e65f66d3ab7bf1"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "ab359bbd3d2f53ce567a324d60e518ed8d652819",
+          "bytes": 2360,
+          "sha256": "11801e7e6a4e05f677ec19993b3a55a8a884faaf3d7d978173e65f66d3ab7bf1"
+        }
+      },
+      {
+        "path": "docs/monitor/mesh-react.js",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "877a138b130605d22c9ac77056be07930431c189",
+          "bytes": 16013,
+          "sha256": "0ffd733c1407c0f961380fdb4a06bd6bf7aa8eee09aa43bb0ba815c900e1b45b"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "877a138b130605d22c9ac77056be07930431c189",
+          "bytes": 16013,
+          "sha256": "0ffd733c1407c0f961380fdb4a06bd6bf7aa8eee09aa43bb0ba815c900e1b45b"
+        }
+      },
+      {
+        "path": "docs/monitor/package.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "74fb1e3726aa692e918520b62125d72fcfae65f0",
+          "bytes": 283,
+          "sha256": "46770ffbd9af2ae036b9c10fb8bc424073a846df8a7037ffae82cfa67dd8b290"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "74fb1e3726aa692e918520b62125d72fcfae65f0",
+          "bytes": 283,
+          "sha256": "46770ffbd9af2ae036b9c10fb8bc424073a846df8a7037ffae82cfa67dd8b290"
+        }
+      },
+      {
+        "path": "docs/monitor/react-feedback.browser.test.mjs",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "2d82b229ea27843521bf3b42a738d51d64b632a5",
+          "bytes": 8018,
+          "sha256": "ef567126e711228e91434a23f8e6dca24f822be6081943ca4a821d4402dfa68c"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "2d82b229ea27843521bf3b42a738d51d64b632a5",
+          "bytes": 8018,
+          "sha256": "ef567126e711228e91434a23f8e6dca24f822be6081943ca4a821d4402dfa68c"
+        }
+      },
+      {
+        "path": "docs/monitor/react-feedback.test.mjs",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "f264a03afaea9b09cf1352594b6ed4b3d0fb8dae",
+          "bytes": 20964,
+          "sha256": "874f4d7455758f8c850d85a5a7b707647dfd7ce8a5b43a422b7c02c873cdf1ed"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "f264a03afaea9b09cf1352594b6ed4b3d0fb8dae",
+          "bytes": 20964,
+          "sha256": "874f4d7455758f8c850d85a5a7b707647dfd7ce8a5b43a422b7c02c873cdf1ed"
+        }
+      },
+      {
+        "path": "docs/monitor/react-runtime.js",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4f495e10784d2d89c4e5c4e33dcd904bcd0f0927",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "4f495e10784d2d89c4e5c4e33dcd904bcd0f0927",
+          "bytes": 571915,
+          "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+        }
+      },
+      {
+        "path": "evidence/monitor-feedback/react/README.md",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "1fc6d9b1b0c7c98b937005c7e5d75bffe56cb588",
+          "bytes": 2479,
+          "sha256": "3d47bbcfb1bba62090e3f500712ef9fa22bc36f0bfa24ffc1b99b614887d89ba"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "1fc6d9b1b0c7c98b937005c7e5d75bffe56cb588",
+          "bytes": 2479,
+          "sha256": "3d47bbcfb1bba62090e3f500712ef9fa22bc36f0bfa24ffc1b99b614887d89ba"
+        }
+      },
+      {
+        "path": "evidence/monitor-feedback/react/authority-404-before-after.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "39e8a0196e87b51ae8d4c29488173e750059e75b",
+          "bytes": 4819,
+          "sha256": "fbb4b0f618f5a672dbc05063a45107e4b559906b8d7ea474839a49fc3709983d"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "39e8a0196e87b51ae8d4c29488173e750059e75b",
+          "bytes": 4819,
+          "sha256": "fbb4b0f618f5a672dbc05063a45107e4b559906b8d7ea474839a49fc3709983d"
+        }
+      },
+      {
+        "path": "evidence/monitor-feedback/react/authority-404-observation.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "d2263805ead86bc88192a502ed85b6462c435413",
+          "bytes": 809,
+          "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "d2263805ead86bc88192a502ed85b6462c435413",
+          "bytes": 809,
+          "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec"
+        }
+      },
+      {
+        "path": "evidence/monitor-feedback/react/baseline-mesh-react.js",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "d0a3232ec1353a4a00e8a4ae958470985120637e",
+          "bytes": 17603,
+          "sha256": "8e250ad9c3c256ab5ab154bdc055b70ee0f33e300d5650ca16a1c6900c80bfe9"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "d0a3232ec1353a4a00e8a4ae958470985120637e",
+          "bytes": 17603,
+          "sha256": "8e250ad9c3c256ab5ab154bdc055b70ee0f33e300d5650ca16a1c6900c80bfe9"
+        }
+      },
+      {
+        "path": "runtime/toolchains/CACHE_COVERAGE.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c59b080a31a0cbdd9ce53dbc842505f75949fd7a",
+          "bytes": 3054,
+          "sha256": "8864a086af2ebec233681df691830d8181f3d7ea31e22e2d19f2d6eec9136626"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c59b080a31a0cbdd9ce53dbc842505f75949fd7a",
+          "bytes": 3054,
+          "sha256": "8864a086af2ebec233681df691830d8181f3d7ea31e22e2d19f2d6eec9136626"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "eda784acd3400fb45488349d7b06032ab2c400ff",
+          "bytes": 3500,
+          "sha256": "00219979111d5d2f886279a798d1c1b3944026c6b188ef640cc1af62a9736f88"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "eda784acd3400fb45488349d7b06032ab2c400ff",
+          "bytes": 3500,
+          "sha256": "00219979111d5d2f886279a798d1c1b3944026c6b188ef640cc1af62a9736f88"
+        }
+      },
+      {
+        "path": "runtime/toolchains/CACHE_REGISTRY.json",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "aa8af4fde94b9151804e5bf9feef1e7afee3cf7b",
+          "bytes": 10416,
+          "sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "aa8af4fde94b9151804e5bf9feef1e7afee3cf7b",
+          "bytes": 10416,
+          "sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "9371771c5200bafab930c64745d554d64174c923",
+          "bytes": 12427,
+          "sha256": "7cad8b1920701c1e43a7d61ff023627e7b5b86af43c1976b233e9ae1bfd535b5"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "9371771c5200bafab930c64745d554d64174c923",
+          "bytes": 12427,
+          "sha256": "7cad8b1920701c1e43a7d61ff023627e7b5b86af43c1976b233e9ae1bfd535b5"
+        }
+      },
+      {
+        "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "old": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "89b2c4425da04b015d6c534729eaf67aebab06e5",
+          "bytes": 2599,
+          "sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69"
+        },
+        "main": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "89b2c4425da04b015d6c534729eaf67aebab06e5",
+          "bytes": 2599,
+          "sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69"
+        },
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "a2f5b17c197ea9d865b7e526396b1fadd9af1490",
+          "bytes": 2908,
+          "sha256": "980e9acf83fb4d952f5f929833daa92d44d58bbe1b1bb1f49f24dae4feb70653"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "a2f5b17c197ea9d865b7e526396b1fadd9af1490",
+          "bytes": 2908,
+          "sha256": "980e9acf83fb4d952f5f929833daa92d44d58bbe1b1bb1f49f24dae4feb70653"
+        }
+      },
+      {
+        "path": "state/work_units/REACT_FEEDBACK_CURRENT_MAIN_20261007_V2.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "5ea245fcaca3f233c15ad92f60ff04d27d9485fc",
+          "bytes": 38181,
+          "sha256": "a145f54cb5ef274d475b85ee05af7146c3afea8cb2ff7407a760621b7c3c4a74"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "5ea245fcaca3f233c15ad92f60ff04d27d9485fc",
+          "bytes": 38181,
+          "sha256": "a145f54cb5ef274d475b85ee05af7146c3afea8cb2ff7407a760621b7c3c4a74"
+        }
+      },
+      {
+        "path": "state/work_units/REACT_FEEDBACK_MAIN_INTEGRATION_20261007_V1.json",
+        "old": null,
+        "main": null,
+        "candidate": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c5c74b7f5a5596506b601917f9ee893df7d9e1b7",
+          "bytes": 13035,
+          "sha256": "bf78fda9a087c5d6d5860738d67662ddb5aeaad35913d4ea1ca4ddac09d14acf"
+        },
+        "merge": {
+          "mode": "100644",
+          "type": "blob",
+          "blob": "c5c74b7f5a5596506b601917f9ee893df7d9e1b7",
+          "bytes": 13035,
+          "sha256": "bf78fda9a087c5d6d5860738d67662ddb5aeaad35913d4ea1ca4ddac09d14acf"
+        }
+      }
+    ],
+    "path_overlap": [],
+    "main_delta_preserved": true,
+    "candidate_delta_preserved": true,
+    "all_other_paths_unchanged": true,
+    "merge_conflicts": false,
+    "source_only_merge_equivalence": true,
+    "combined_tree_integrity": "BLOCK repository manifest differs from deterministic regeneration",
+    "review_and_promotion_require_current_base": true,
+    "fresh_review_evaluation": {
+      "schema": "qikvrt_requested_review_decision_v1",
+      "state": "COMMENT_WITH_BLOCKER",
+      "first_blocker": "BASE_DRIFT",
+      "detail": "base 3d6148513b289005e71c73bae12de26f5f42f445 != current main 46e0adee5c4d85e479f3f552bf6890614afa22fc",
+      "repository": null,
+      "pr_number": 483,
+      "base_sha": "3d6148513b289005e71c73bae12de26f5f42f445",
+      "head_sha": "9611b53a258de36c7944cc92021688278536eb9e",
+      "tree_sha": "afabeeb3a93b9d035fc8cad5c45a32b10a6edf55",
+      "reviewed_scope": [],
+      "completion_claims": {
+        "PASS": false,
+        "FINAL_PASS": false,
+        "EFFECT_ACK_DONE": false,
+        "INDEPENDENT_CODE_OWNER_APPROVAL": false
+      }
+    },
+    "fresh_promotion_evaluation": {
+      "schema": "qikvrt_expected_head_promotion_decision_v1",
+      "state": "BLOCK",
+      "first_blocker": "BASE_DRIFT",
+      "detail": "current main 46e0adee5c4d85e479f3f552bf6890614afa22fc != candidate base 3d6148513b289005e71c73bae12de26f5f42f445",
+      "pr_number": 483,
+      "expected_head_sha": "9611b53a258de36c7944cc92021688278536eb9e",
+      "external_effect": "NONE",
+      "completion_claims": {
+        "PASS": false,
+        "FINAL_PASS": false,
+        "EFFECT_ACK_DONE": false,
+        "AUTHORITY_MIRROR_EQUALITY": false
+      }
+    },
+    "predecessor_evidence_transfer": false
+  },
+  "verification": {
+    "predecessor_evidence_transfer": false,
+    "fresh_exact_head_required": true,
+    "old_candidate_gate": "Historical 9611b53a gates do not accept this successor.",
+    "combined_tree_preflight_integrity": "BLOCK repository manifest differs from deterministic regeneration",
+    "focused_command": "make monitor-test",
+    "browser_command": "node --test docs/monitor/react-feedback.browser.test.mjs",
+    "full_suite_command": "make test",
+    "applicable_remote_gates": [
+      "QIKVRT CI",
+      "QIKVRT Collective Proposal Review",
+      "QIKVRT adaptive runtime",
+      "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+      "QIKVRT code-owner review observer",
+      "trusted-main required-review/native rules and review readback"
+    ],
+    "new_successor_results": "PENDING; independently bind results to the final containing successor commit/tree.",
+    "tool_cache_coverage": "16/16 (100%) before update; repeat on final head."
+  },
+  "historical_owner_review": {
+    "id": 5441867306,
+    "commit_id": "9611b53a258de36c7944cc92021688278536eb9e",
+    "platform_state": "COMMENTED",
+    "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/483#pullrequestreview-5441867306",
+    "transfer_to_new_candidate": false
+  },
+  "human_decision": "CURRENT_MAIN_FORWARD_UPDATE_AND_FRESH_VERIFICATION_AUTHORIZED",
+  "external_effects": {
+    "target_pr": 483,
+    "branch_update": "PREPARED_NOT_EXECUTED",
+    "native_review_not_inferred": true,
+    "main_merge": false,
+    "deployment": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "boundaries": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "goldkelch_repository_role": "MIRROR_OWNER_DECISION",
+    "native_CODEOWNERS_or_rules_unchanged": true,
+    "node_lifecycle_excluded_from_react_delta": true,
+    "react_source_unchanged": true,
+    "historical_fixture_is_not_current_provider_readback": true,
+    "human_comprehension": "NOT_MEASURED"
+  }
+}

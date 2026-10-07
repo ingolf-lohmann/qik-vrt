@@ -72,3 +72,24 @@ README, the successor work unit and freshly generated integrity outputs are
 added to the combined source tree. The initial work unit remains immutable
 historical provenance. Fresh exact-head and ReactDOM results must bind the
 containing successor commit/tree; earlier results do not accept it.
+
+
+## Additional current-main update on 7 October 2026
+
+Main moved again to
+`46e0adee5c4d85e479f3f552bf6890614afa22fc` at 13:20 UTC.
+Work unit `state/work_units/REACT_FEEDBACK_CURRENT_MAIN_20261007_V3.json`
+binds the history-preserving follow-up from
+`9611b53a258de36c7944cc92021688278536eb9e` onto that Main.
+The six additional lifecycle paths are byte-identical to Main and absent
+from the resulting React delta. All existing monitor source, tests,
+dependency locks, runtime contracts, workflows and the V1/V2 work units
+retain their previous bytes.
+
+The current-base predicates are unchanged. Only this documentation,
+the new work unit and deterministic integrity outputs are adjusted beyond
+the conflict-free source merge. The containing successor commit/tree must
+receive fresh complete-suite, native CI/runtime and ReactDOM evidence.
+The previous tests and the owner review on `9611b53a…` remain historical;
+neither is an acceptance of this changed head. Native rule enforcement
+and independent current-head approval remain separate prerequisites.
