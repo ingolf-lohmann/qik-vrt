@@ -1,8 +1,102 @@
-// SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0; Copyright 2026 Ingolf Lohmann.
-const CACHE='qikvrt-offline-07eb6aa705da716694f109cf1fd2891fff3472d20170f4785204f6f366d3e115',ASSETS={"client.js":"08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
+// SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+// Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
+const SHELL='72a59bba6ed7a202aa48fb1ea1e18034201603ad1f9f0b00763765cc6856e9ed', ASSETS={"client.js":"a88fbde37d5f2bb857d62413e8aa82fae7da1f542d525d238557abd30bf45f33","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"6916c1e2a0791f071829cbf6e33b6c44d6d5da62337373743f21c8a5d2bcc72e","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","updates.js":"9a99ff89a8c54b5757597087e671500b583c8b2246a6d18e8f1185e560fe62b1","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
+const PREFIX='qikvrt-offline-', CACHE=PREFIX+SHELL, NAMESPACE='__qikvrt_release__/';
+const scope=new URL(self.registration.scope), metadata=new URL('.qikvrt-release.json',scope);
 const hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
-async function valid(response,sha){return response?.ok&&!response.redirected&&hex(await crypto.subtle.digest('SHA-256',await response.clone().arrayBuffer()))===sha;}
-self.addEventListener('install',event=>event.waitUntil((async()=>{const present=await caches.has(CACHE);try{const rows=[];for(const [path,sha]of Object.entries(ASSETS)){const url=new URL(path,self.registration.scope),response=await fetch(url,{cache:'no-store',credentials:'same-origin'});if(new URL(response.url).origin!==self.location.origin||!await valid(response,sha))throw Error('OFFLINE_SHELL_DIGEST_MISMATCH');rows.push([url,response]);}const cache=await caches.open(CACHE);for(const [url,response]of rows)await cache.put(url,response);await self.skipWaiting();}catch(e){if(!present)await caches.delete(CACHE);throw e;}})()));
+const digest=async b=>hex(await crypto.subtle.digest('SHA-256',b));
+const canonical=map=>JSON.stringify(Object.fromEntries(Object.entries(map).sort(([a],[b])=>a<b?-1:a>b?1:0)));
+async function valid(response,sha){return response?.ok&&!response.redirected&&await digest(await response.clone().arrayBuffer())===sha;}
+async function manifest(shell) {
+  if(!/^[a-f0-9]{64}$/.test(shell))throw Error('INVALID_RELEASE');
+  const cache=await caches.open(PREFIX+shell),response=await cache.match(metadata);
+  if(!response?.ok)throw Error('INCOMPLETE_RELEASE');
+  const assets=await response.json();
+  if(!assets||Array.isArray(assets)||Object.keys(assets).length>64||!Object.hasOwn(assets,'index.html')||Object.entries(assets).some(([path,sha])=>!Object.hasOwn(ASSETS,path)||!/^[a-f0-9]{64}$/.test(sha)))throw Error('INVALID_RELEASE_MANIFEST');
+  if(await digest(new TextEncoder().encode(canonical(assets)))!==shell)throw Error('RELEASE_BINDING_MISMATCH');
+  return {cache,assets};
+}
+async function complete(shell=SHELL) {
+  try{const {cache,assets}=await manifest(shell);for(const [path,sha]of Object.entries(assets))if(!await valid(await cache.match(new URL(path,scope)),sha))return false;return true;}catch{return false;}
+}
+async function install() {
+  const present=await caches.has(CACHE);
+  if(await complete())return;
+  try {
+    const rows=[];
+    for(const [path,sha]of Object.entries(ASSETS)) {
+      const url=new URL(path,scope),response=await fetch(url,{cache:'no-store',credentials:'same-origin',redirect:'error'});
+      if(new URL(response.url).origin!==scope.origin||!await valid(response,sha))throw Error('OFFLINE_SHELL_DIGEST_MISMATCH');
+      rows.push([url,response]);
+    }
+    const cache=await caches.open(CACHE);
+    for(const [url,response]of rows)await cache.put(url,response);
+    await cache.put(metadata,new Response(canonical(ASSETS),{headers:{'content-type':'application/json'}}));
+    if(!await complete())throw Error('OFFLINE_SHELL_READBACK_MISMATCH');
+  }catch(error){if(!present)await caches.delete(CACHE);throw error;}
+}
+self.addEventListener('install',event=>event.waitUntil(install()));
+// No unconditional skipWaiting: live clients must confirm recoverable state.
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
-self.addEventListener('message',event=>{if(event.data?.type==='QIKVRT_OFFLINE_READY')event.waitUntil((async()=>{const cache=await caches.open(CACHE);let ready=true;for(const [path,sha]of Object.entries(ASSETS)){if(!await valid(await cache.match(new URL(path,self.registration.scope)),sha)){ready=false;break;}}event.ports[0]?.postMessage({ready,cache:CACHE});})());});
-self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url),scope=new URL(self.registration.scope);if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;const path=url.pathname.slice(scope.pathname.length)||'index.html';if(!Object.hasOwn(ASSETS,path))return;event.respondWith((async()=>{const response=await(await caches.open(CACHE)).match(new URL(path,scope));return await valid(response,ASSETS[path])?response:new Response('Offline-Client unvollständig oder verändert',{status:503});})());});
+const windows=async()=> (await self.clients.matchAll({type:'window',includeUncontrolled:true})).filter(client=>client.url.startsWith(scope.href));
+const notify=(clients,message)=>{for(const client of clients)client.postMessage(message);};
+function prepare(client,attempt) {return new Promise(resolve=>{
+  const channel=new MessageChannel(),timer=setTimeout(()=>finish(false),8000);
+  const finish=ready=>{clearTimeout(timer);channel.port1.close();resolve(ready);};
+  channel.port1.onmessage=({data})=>finish(data?.ready===true&&data.attempt===attempt&&/^[a-f0-9]{64}$/.test(data.shell||''));
+  try{client.postMessage({type:'QIKVRT_UPDATE_PREPARE',shell:SHELL,attempt},[channel.port2]);}catch{finish(false);}
+});}
+let preparing;
+async function prepareAll() {
+  const attempt=crypto.randomUUID(),clients=await windows();let committed=false;
+  try {
+    // A known damaged/evicted staging cache can be rebuilt only from the same
+    // fully verified release bytes. A failed repair leaves the active worker.
+    if(!await complete())await install();
+    const replies=await Promise.all(clients.map(client=>prepare(client,attempt)));
+    const confirmed=new Set(clients.filter((_,i)=>replies[i]).map(c=>c.id));
+    if((await windows()).some(c=>!confirmed.has(c.id)))return {state:'WAITING_FOR_CLIENTS'};
+    if(!await complete())throw Error('INCOMPLETE_RELEASE');
+    if((await windows()).some(c=>!confirmed.has(c.id)))return {state:'WAITING_FOR_CLIENTS'};
+    await self.skipWaiting();committed=true;return {state:'ACTIVATING',shell:SHELL};
+  }catch{return {state:'UPDATE_REJECTED'};}
+  finally{if(!committed)notify(clients,{type:'QIKVRT_UPDATE_ABORT',attempt});}
+}
+self.addEventListener('message',event=>{
+  if(!event.source?.url?.startsWith(scope.href))return;
+  if(event.data?.type==='QIKVRT_OFFLINE_READY')event.waitUntil((async()=>{
+    event.ports[0]?.postMessage({ready:await complete(),cache:CACHE,shell:SHELL});
+  })());
+  if(event.data?.type==='QIKVRT_UPDATE_REQUEST')event.waitUntil((async()=>{
+    if(!preparing)preparing=prepareAll().finally(()=>{preparing=null;});
+    event.ports[0]?.postMessage(await preparing);
+  })());
+});
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET')return;
+  const url=new URL(event.request.url);
+  if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
+  let path=url.pathname.slice(scope.pathname.length)||'index.html',shell=SHELL;
+  const pinned=path.startsWith(NAMESPACE);
+  if(pinned){const parts=path.slice(NAMESPACE.length).split('/');shell=parts.shift();path=parts.join('/')||'index.html';}
+  if(!pinned&&!Object.hasOwn(ASSETS,path))return;
+  event.respondWith((async()=>{
+    try {
+      const {cache,assets}=await manifest(shell);
+      if(!Object.hasOwn(assets,path))throw Error('ASSET_NOT_IN_RELEASE');
+      const response=await cache.match(new URL(path,scope));
+      if(!await valid(response,assets[path]))throw Error('ASSET_DIGEST_MISMATCH');
+      if(path==='manifest.webmanifest'){
+        const data=await response.json();data.id=scope.href;data.start_url=scope.href;data.scope=scope.href;
+        if(data.icons)data.icons=data.icons.map(icon=>({...icon,src:new URL(NAMESPACE+shell+'/'+icon.src,scope).href}));
+        const headers=new Headers(response.headers);headers.delete('content-length');
+        return new Response(JSON.stringify(data),{status:200,headers});
+      }
+      if(path!=='index.html')return response;
+      // Versioned resource URLs preserve relative imports across claim/restart.
+      const html=(await response.text()).replace(/\b(href|src)="([^"]+)"/g,(all,attribute,target)=>Object.hasOwn(assets,target)?attribute+'="'+new URL(NAMESPACE+shell+'/'+target,scope).href+'"':all);
+      const headers=new Headers(response.headers);headers.delete('content-length');headers.set('x-qikvrt-shell',shell);
+      return new Response(html,{status:200,headers});
+    }catch{return new Response('Offline-Client unvollständig oder verändert',{status:503,headers:{'content-type':'text/plain;charset=utf-8'}});}
+  })());
+});

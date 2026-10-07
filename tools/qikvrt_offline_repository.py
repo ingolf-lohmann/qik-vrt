@@ -20,7 +20,7 @@ import zipfile
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CLIENT = ROOT / "docs/monitor/offline"
 CHUNK = 1048576
-ASSETS = ("index.html", "style.css", "manifest.webmanifest", "icon.svg", "client.js", "repository.js", "git-hash.js", "vendor/react-runtime.js", "vendor/REACT_LICENSE.txt")
+ASSETS = ("index.html", "style.css", "manifest.webmanifest", "icon.svg", "client.js", "updates.js", "repository.js", "git-hash.js", "vendor/react-runtime.js", "vendor/REACT_LICENSE.txt")
 
 def canonical(value):
     return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))

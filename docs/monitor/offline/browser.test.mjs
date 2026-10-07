@@ -6,6 +6,7 @@ import {spawn} from 'node:child_process';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {updateControls} from './update-controls.mjs';
 const here=dirname(fileURLToPath(import.meta.url)),root=resolve(here,'../../..');
 const require=createRequire(import.meta.url);
 const {chromium,webkit}=require(process.env.QIKVRT_PLAYWRIGHT_MODULE||'playwright');
@@ -48,5 +49,6 @@ try{const [one,two]=await Promise.all([serve(Number(process.env.QIKVRT_OFFLINE_P
     await full.getByLabel('Datei suchen',{exact:true}).fill('docs/monitor/offline/');assert.equal(await full.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await full.screenshot({path:resolve(output,'complete-repository-iphone-layout.png'),fullPage:true});
     checks.push('complete frozen repository gzip imports through the real React file chooser and verifies all source bytes, native Git tree and populated mobile layout');
   }
+  const updates=await updateControls(engine,output,here,options);checks.push(...updates.checks);
   assert.deepEqual(errors,[]);await writeFile(resolve(output,'browser-readback.json'),JSON.stringify({schema:'qikvrt-offline-browser-readback/v1',engine:engine===webkit?'webkit':'chromium',mobile_layout:{width:390,height:844},actual_iphone_devices:false,offline_disruption:{origin_server_stopped:true,uncached_network_request_failed:true,playwright_offline_flag:engine===chromium,webkit_offline_emulation:'Excluded from acceptance after native internal error; upstream microsoft/playwright#42775'},complete_source:completeSource,checks,check_count:checks.length,second_origin_final_head:large,console_errors:errors,native_execution:false,main_effect:false},null,2)+'\n');console.log(JSON.stringify({checks:checks.length,engine:engine===webkit?'webkit':'chromium',actual_iphone_devices:false,output}));
 }catch(error){let state;try{state=await activePage?.evaluate(()=>({url:location.href,online_hint:navigator.onLine,controlled:!!navigator.serviceWorker.controller,text:document.body.innerText.slice(0,3000)}));await activePage?.screenshot({path:resolve(output,'failure.png'),fullPage:true});}catch{}await writeFile(resolve(output,'failure.json'),JSON.stringify({error:error.message,stack:error.stack,checks,console_errors:errors,state},null,2)+'\n');throw error;}finally{await browser?.close();for(const child of servers)child.kill();}

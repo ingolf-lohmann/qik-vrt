@@ -75,6 +75,9 @@ jobs:
           name: qikvrt-offline-browser-${{ matrix.engine }}-${{ github.sha }}
           path: |
             ${{ runner.temp }}/offline-${{ matrix.engine }}/browser-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-failure.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-failure.png
             ${{ runner.temp }}/offline-${{ matrix.engine }}/iphone-layout.png
             ${{ runner.temp }}/offline-${{ matrix.engine }}/complete-repository-iphone-layout.png
             ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.json
