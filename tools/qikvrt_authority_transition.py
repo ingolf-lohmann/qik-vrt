@@ -37,6 +37,10 @@ BINDING_KEYS = {"node_id", "repository", "head", "tree", "manifest_sha256", "sch
 STATE_KEYS = {"schema", "control_plane_epoch", "authority_epoch", "revision", "phase",
               "binding", "fence", "scheduler", "root_repository"}
 PERMIT_KEYS = {"control_plane_epoch", "authority_epoch", "node_id", "fence"}
+QUORUM_SCHEMA = "qikvrt_authority_quorum_v1"
+ROUND_SCHEMA = "qikvrt_authority_quorum_round_v1"
+VOTE_SCHEMA = "qikvrt_authority_quorum_vote_v1"
+MAX_QUORUM_MEMBERS = 32
 
 
 def deny_unbrokered_provider_write() -> None:
@@ -268,7 +272,217 @@ class AuthorityControlPlane:
                        (observation["id"], token_hash(token), canonical_json_bytes(observation), observation["expires_ns"]))
         return observation
 
-    def takeover(self, node: Path, manifest_sha256: str, token: str, observation: dict) -> dict:
+    @staticmethod
+    def checked_observation(db, token: str, observation: dict, binding: dict, state: dict) -> None:
+        if not isinstance(observation, dict) or not isinstance(observation.get("id"), str):
+            raise TransitionError("invalid observation")
+        row = db.execute("SELECT document FROM observations WHERE id=? AND token_hash=?",
+                         (observation["id"], token_hash(token))).fetchone()
+        if row is None or decode(row[0]) != observation:
+            raise TransitionError("unknown, altered or consumed observation")
+        now = time.time_ns()
+        if not observation["issued_ns"] <= now <= observation["expires_ns"]:
+            raise TransitionError("stale observation or clock rollback")
+        if (observation["target"] != binding
+                or observation["state_sha256"] != recovery.digest(canonical_json_bytes(state))):
+            raise TransitionError("stale epoch/revision: Authority CAS conflict")
+
+    @staticmethod
+    def configured_quorum(db, state: dict) -> dict | None:
+        if not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='authority_quorum'").fetchone():
+            return None  # Historical explicit-owner takeover remains unchanged.
+        row = db.execute("SELECT document FROM authority_quorum WHERE singleton=1").fetchone()
+        if row is None:
+            raise TransitionError("missing admitted quorum")
+        config = decode(row[0])
+        recovery.exact(config, {"schema", "id", "control_plane_epoch", "authority_epoch", "members", "quorum"}, "quorum")
+        recovery.require_digest(config["id"])
+        members = config["members"]
+        if (config["schema"] != QUORUM_SCHEMA or config["control_plane_epoch"] != state["control_plane_epoch"]
+                or type(config["authority_epoch"]) is not int or config["authority_epoch"] != state["authority_epoch"]
+                or not isinstance(members, dict) or not 3 <= len(members) <= MAX_QUORUM_MEMBERS
+                or type(config["quorum"]) is not int or config["quorum"] != len(members) // 2 + 1):
+            raise TransitionError("stale or invalid admitted quorum")
+        capabilities = set()
+        for node_id, member in members.items():
+            recovery.require_digest(node_id)
+            recovery.exact(member, {"token_hash", "binding"}, "quorum member")
+            recovery.require_digest(member["token_hash"])
+            recovery.exact(member["binding"], BINDING_KEYS, "quorum member binding")
+            if (member["binding"]["node_id"] != node_id or member["token_hash"] in capabilities
+                    or any(member["binding"][k] != state["binding"][k] for k in ("head", "tree"))):
+                raise TransitionError("quorum member identity or accepted subject drift")
+            capabilities.add(member["token_hash"])
+        if state["binding"]["node_id"] not in members:
+            raise TransitionError("current Authority missing from electorate")
+        return config
+
+    def configure_quorum(self, admin_token: str, node_ids: list[str]) -> dict:
+        """Owner admits an exact electorate before failure; not a liveness probe.
+
+        Members authenticate with existing target-scoped capabilities. Distinct
+        identities do not prove independent hosts or independent observations.
+        No ordinary mirror can add voters, reduce quorum or renew recovery grants.
+        """
+        if (not isinstance(node_ids, list) or not 3 <= len(node_ids) <= MAX_QUORUM_MEMBERS
+                or any(not isinstance(n, str) for n in node_ids) or len(set(node_ids)) != len(node_ids)):
+            raise TransitionError("quorum needs three or more distinct admitted nodes")
+        for node_id in node_ids:
+            recovery.require_digest(node_id)
+        with self.transaction() as db:
+            if not db.execute("SELECT 1 FROM admin WHERE token_hash=?", (token_hash(admin_token),)).fetchone():
+                raise TransitionError("quorum configuration requires owner admin capability")
+            state = self.state(db)
+            if state["phase"] != "ACTIVE":
+                raise TransitionError("quorum configuration requires active Authority")
+            members = {}
+            for capability, raw_binding, role, epoch in db.execute("SELECT token_hash,binding,role,recovery_epoch FROM grants"):
+                binding = decode(raw_binding)
+                recovery.exact(binding, BINDING_KEYS, "electorate binding")
+                eligible = ((role == "AUTHORITY" and binding == state["binding"])
+                            or (role == "RECOVERY" and epoch == state["authority_epoch"]))
+                if binding["node_id"] not in node_ids or not eligible:
+                    continue
+                if binding["node_id"] in members:
+                    raise TransitionError("ambiguous electorate capability for one node")
+                if any(binding[k] != state["binding"][k] for k in ("head", "tree")):
+                    raise TransitionError("electorate accepted HEAD/TREE mismatch")
+                members[binding["node_id"]] = {"token_hash": capability, "binding": binding}
+            if set(members) != set(node_ids) or state["binding"]["node_id"] not in members:
+                raise TransitionError("electorate lacks current Authority or admitted recovery nodes")
+            config = {"schema": QUORUM_SCHEMA, "id": secrets.token_hex(32),
+                      "control_plane_epoch": state["control_plane_epoch"], "authority_epoch": state["authority_epoch"],
+                      "members": members, "quorum": len(members) // 2 + 1}
+            db.execute("CREATE TABLE IF NOT EXISTS authority_quorum (singleton INTEGER PRIMARY KEY CHECK(singleton=1), document BLOB NOT NULL)")
+            db.execute("CREATE TABLE IF NOT EXISTS authority_quorum_rounds (id TEXT PRIMARY KEY, observation_id TEXT UNIQUE NOT NULL, document BLOB NOT NULL)")
+            db.execute("CREATE TABLE IF NOT EXISTS authority_quorum_votes (config_id TEXT NOT NULL, voter_node_id TEXT NOT NULL, round_id TEXT NOT NULL, document BLOB NOT NULL, PRIMARY KEY(config_id,voter_node_id))")
+            db.execute("INSERT OR REPLACE INTO authority_quorum VALUES (1,?)", (canonical_json_bytes(config),))
+        return {"schema": QUORUM_SCHEMA, "config_id": config["id"], "authority_epoch": config["authority_epoch"],
+                "members": sorted(members), "quorum": config["quorum"], "writer_enabled": False,
+                "effect_ack_done": False, "independent_hosts_verified": False}
+
+    def open_quorum_round(self, node: Path, manifest_sha256: str, token: str,
+                          observation: dict, incident_sha256: str) -> dict:
+        """Event-driven recovery proposal. Incident digest is attributed input,
+        never a proof that an unreachable Authority process has been destroyed.
+        """
+        recovery.require_digest(incident_sha256)
+        binding, _ = verify_restored(node, manifest_sha256)
+        with self.transaction() as db:
+            grant, role = self.grant(db, token)
+            state = self.state(db)
+            config = self.configured_quorum(db, state)
+            if config is None:
+                raise TransitionError("owner-admitted quorum required")
+            member = config["members"].get(binding["node_id"])
+            granted_epoch = db.execute("SELECT recovery_epoch FROM grants WHERE token_hash=?", (token_hash(token),)).fetchone()[0]
+            if (grant != binding or role != "RECOVERY" or granted_epoch != state["authority_epoch"]
+                    or member != {"token_hash": token_hash(token), "binding": binding}):
+                raise TransitionError("candidate lacks exact current electorate recovery capability")
+            self.checked_observation(db, token, observation, binding, state)
+            row = db.execute("SELECT document FROM authority_quorum_rounds WHERE observation_id=?", (observation["id"],)).fetchone()
+            if row:
+                proposal = decode(row[0])
+                if proposal["config_id"] != config["id"] or proposal["incident_sha256"] != incident_sha256:
+                    raise TransitionError("quorum round replay binding conflict")
+            else:
+                proposal = {"schema": ROUND_SCHEMA, "id": secrets.token_hex(32), "config_id": config["id"],
+                            "observation_id": observation["id"], "state_sha256": observation["state_sha256"],
+                            "candidate": binding, "incident_sha256": incident_sha256,
+                            "issued_ns": observation["issued_ns"], "expires_ns": observation["expires_ns"]}
+                db.execute("INSERT INTO authority_quorum_rounds VALUES (?,?,?)", (proposal["id"], observation["id"], canonical_json_bytes(proposal)))
+        return {**proposal, "quorum": config["quorum"], "writer_enabled": False, "effect_ack_done": False}
+
+    @staticmethod
+    def checked_round(db, config: dict, state: dict, round_id: str) -> dict:
+        recovery.require_digest(round_id)
+        row = db.execute("SELECT document FROM authority_quorum_rounds WHERE id=?", (round_id,)).fetchone()
+        if row is None:
+            raise TransitionError("unknown quorum round")
+        proposal = decode(row[0])
+        recovery.exact(proposal, {"schema", "id", "config_id", "observation_id", "state_sha256", "candidate", "incident_sha256", "issued_ns", "expires_ns"}, "quorum round")
+        now = time.time_ns()
+        if (proposal["schema"] != ROUND_SCHEMA or proposal["id"] != round_id or proposal["config_id"] != config["id"]
+                or type(proposal["issued_ns"]) is not int or type(proposal["expires_ns"]) is not int
+                or not proposal["issued_ns"] <= now <= proposal["expires_ns"]
+                or proposal["state_sha256"] != recovery.digest(canonical_json_bytes(state))):
+            raise TransitionError("expired or superseded quorum round")
+        recovery.require_digest(proposal["incident_sha256"])
+        recovery.exact(proposal["candidate"], BINDING_KEYS, "quorum candidate")
+        if proposal["candidate"] != config["members"].get(proposal["candidate"]["node_id"], {}).get("binding"):
+            raise TransitionError("quorum candidate drift")
+        return proposal
+
+    def vote_quorum_round(self, node: Path, manifest_sha256: str, token: str,
+                          round_id: str, failure_observation_sha256: str) -> dict:
+        recovery.require_digest(failure_observation_sha256)
+        binding, _ = verify_restored(node, manifest_sha256)
+        with self.transaction() as db:
+            grant, role = self.grant(db, token)
+            state = self.state(db)
+            config = self.configured_quorum(db, state)
+            if config is None:
+                raise TransitionError("owner-admitted quorum required")
+            proposal = self.checked_round(db, config, state, round_id)
+            if (grant != binding or role not in {"RECOVERY", "AUTHORITY"}
+                    or config["members"].get(binding["node_id"]) != {"token_hash": token_hash(token), "binding": binding}):
+                raise TransitionError("voter outside admitted electorate")
+            now = time.time_ns()
+            previous = db.execute("SELECT document FROM authority_quorum_votes WHERE config_id=? AND voter_node_id=?", (config["id"], binding["node_id"])).fetchone()
+            if previous:
+                prior = decode(previous[0])
+                if prior["round_id"] == round_id:
+                    if prior["failure_observation_sha256"] != failure_observation_sha256:
+                        raise TransitionError("vote replay observation conflict")
+                    return {**prior, "replayed": True, "effect_ack_done": False}
+                if now < prior["issued_ns"] or now <= prior["expires_ns"]:
+                    raise TransitionError("voter already committed to an unexpired quorum round")
+            vote = {"schema": VOTE_SCHEMA, "config_id": config["id"], "round_id": round_id,
+                    "voter_node_id": binding["node_id"], "candidate_node_id": proposal["candidate"]["node_id"],
+                    "state_sha256": proposal["state_sha256"], "incident_sha256": proposal["incident_sha256"],
+                    "failure_observation_sha256": failure_observation_sha256,
+                    "issued_ns": now, "expires_ns": proposal["expires_ns"]}
+            db.execute("INSERT OR REPLACE INTO authority_quorum_votes VALUES (?,?,?,?)", (config["id"], binding["node_id"], round_id, canonical_json_bytes(vote)))
+        return {**vote, "replayed": False, "effect_ack_done": False}
+
+    def checked_quorum_certificate(self, db, state: dict, binding: dict, observation: dict,
+                                    round_id: str | None) -> dict | None:
+        config = self.configured_quorum(db, state)
+        if config is None:
+            if round_id is not None:
+                raise TransitionError("unconfigured quorum certificate")
+            return None
+        if round_id is None:
+            raise TransitionError("configured quorum certificate required; manual bypass forbidden")
+        proposal = self.checked_round(db, config, state, round_id)
+        if proposal["candidate"] != binding or proposal["observation_id"] != observation["id"]:
+            raise TransitionError("quorum certificate candidate/observation mismatch")
+        voters = []
+        now = time.time_ns()
+        for voter, raw in db.execute("SELECT voter_node_id,document FROM authority_quorum_votes WHERE config_id=? AND round_id=?", (config["id"], round_id)):
+            vote = decode(raw)
+            recovery.exact(vote, {"schema", "config_id", "round_id", "voter_node_id", "candidate_node_id", "state_sha256", "incident_sha256", "failure_observation_sha256", "issued_ns", "expires_ns"}, "quorum vote")
+            member = config["members"].get(voter)
+            if (member is None or vote["schema"] != VOTE_SCHEMA or vote["config_id"] != config["id"]
+                    or vote["round_id"] != round_id or vote["voter_node_id"] != voter
+                    or vote["candidate_node_id"] != binding["node_id"] or vote["state_sha256"] != proposal["state_sha256"]
+                    or vote["incident_sha256"] != proposal["incident_sha256"]
+                    or type(vote["issued_ns"]) is not int or type(vote["expires_ns"]) is not int
+                    or not proposal["issued_ns"] <= vote["issued_ns"] <= now <= vote["expires_ns"] <= proposal["expires_ns"]):
+                raise TransitionError("quorum vote binding or lifetime drift")
+            recovery.require_digest(vote["failure_observation_sha256"])
+            grant = db.execute("SELECT binding,role,recovery_epoch FROM grants WHERE token_hash=?", (member["token_hash"],)).fetchone()
+            if (grant is None or decode(grant[0]) != member["binding"] or grant[1] not in {"AUTHORITY", "RECOVERY"}
+                    or (grant[1] == "RECOVERY" and grant[2] != state["authority_epoch"])):
+                raise TransitionError("quorum voter admission changed")
+            voters.append(voter)
+        if len(voters) < config["quorum"]:
+            raise TransitionError("quorum unavailable; successor writer remains fenced")
+        return {"config_id": config["id"], "round_id": round_id, "quorum": config["quorum"],
+                "voters": sorted(voters), "scope": "ADMITTED_SURVIVING_CONTROL_PLANE"}
+
+    def takeover(self, node: Path, manifest_sha256: str, token: str, observation: dict,
+                 quorum_round_id: str | None = None) -> dict:
         binding, scheduler = verify_restored(node, manifest_sha256)
         # Authentication, fresh observation, CAS, fence rotation and role/schedule
         # rebinding share the same transaction as the sink's writer exclusion.
@@ -276,16 +490,8 @@ class AuthorityControlPlane:
             grant, role = self.grant(db, token)
             if grant != binding or role not in {"RECOVERY", "PENDING"}:
                 raise TransitionError("no target-scoped recovery grant")
-            if not isinstance(observation, dict) or not isinstance(observation.get("id"), str):
-                raise TransitionError("invalid observation")
-            row = db.execute("SELECT document FROM observations WHERE id=? AND token_hash=?",
-                             (observation["id"], token_hash(token))).fetchone()
-            if row is None or decode(row[0]) != observation:
-                raise TransitionError("unknown, altered or consumed observation")
-            now = time.time_ns()
-            if not observation["issued_ns"] <= now <= observation["expires_ns"]:
-                raise TransitionError("stale observation or clock rollback")
             state = self.state(db)
+            self.checked_observation(db, token, observation, binding, state)
             # A provider timeout/process death can leave a request in flight.
             # Never rotate the fence while that effect is unresolved. The
             # provider adapter may reconcile it by GET only, including restart.
@@ -296,9 +502,7 @@ class AuthorityControlPlane:
                                       (token_hash(token),)).fetchone()[0]
             if granted_epoch != state["authority_epoch"]:
                 raise TransitionError("stale epoch: Owner recovery grant requires renewal")
-            if (observation["target"] != binding
-                    or observation["state_sha256"] != recovery.digest(canonical_json_bytes(state))):
-                raise TransitionError("stale epoch/revision: Authority CAS conflict")
+            certificate = self.checked_quorum_certificate(db, state, binding, observation, quorum_round_id)
             # Preserve every cursor/key; rebind only role-local ownership. The
             # surviving sink ledger deduplicates already committed pending work.
             scheduler = decode(canonical_json_bytes(scheduler))
@@ -322,7 +526,7 @@ class AuthorityControlPlane:
             self.store(db, successor)
         # Commit acknowledgement alone never opens the writer. Separate fresh
         # activation/readback is required, including after a process restart.
-        return {"permit": self.permit(successor), "authority_changed": True,
+        return {"permit": self.permit(successor), "authority_changed": True, "quorum_certificate": certificate,
                 "writer_enabled": False, "effect_ack_done": False}
 
     @staticmethod
@@ -851,7 +1055,8 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.buffer.write(canonical_json_bytes(result))
         return 2 if result["violations"] else 0
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("init", "grant", "observe", "takeover", "activate", "write", "readback", "rejoin"))
+    parser.add_argument("operation", choices=("init", "grant", "observe", "takeover", "activate", "write", "readback", "rejoin",
+                                               "quorum-configure", "quorum-open", "quorum-vote"))
     parser.add_argument("--control-plane", type=Path, required=True)
     parser.add_argument("--token-file", type=Path, required=True)
     parser.add_argument("--admin-token-file", type=Path)
@@ -862,11 +1067,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--permit", type=Path)
     parser.add_argument("--effect-id")
     parser.add_argument("--payload", type=Path)
+    parser.add_argument("--electorate", type=Path)
+    parser.add_argument("--quorum-round")
+    parser.add_argument("--incident-sha256")
+    parser.add_argument("--failure-observation-sha256")
     args = parser.parse_args(argv)
     try:
         cp = AuthorityControlPlane(args.control_plane)
         token = secret_file(args.token_file)
-        if args.operation in {"init", "grant", "observe", "takeover", "activate"}:
+        if args.operation in {"init", "grant", "observe", "takeover", "activate", "quorum-open", "quorum-vote"}:
             if args.node is None or args.expect_manifest_sha256 is None:
                 raise TransitionError("node and externally pinned manifest digest required")
         if args.operation in {"init", "grant"}:
@@ -883,11 +1092,22 @@ def main(argv: list[str] | None = None) -> int:
             result = cp.authorize_recovery(args.node, args.expect_manifest_sha256, admin, token)
         elif args.operation == "observe":
             result = cp.observe(args.node, args.expect_manifest_sha256, token)
-        elif args.operation == "takeover":
+        elif args.operation == "quorum-configure":
+            if args.electorate is None:
+                raise TransitionError("owner-pinned electorate file required")
+            result = cp.configure_quorum(token, decode(recovery.read_file(args.electorate)))
+        elif args.operation in {"takeover", "quorum-open"}:
             if args.observation is None:
                 raise TransitionError("fresh authenticated observation required")
-            result = cp.takeover(args.node, args.expect_manifest_sha256, token,
-                                 decode(recovery.read_file(args.observation)))
+            observation = decode(recovery.read_file(args.observation))
+            if args.operation == "quorum-open":
+                result = cp.open_quorum_round(args.node, args.expect_manifest_sha256, token,
+                                             observation, args.incident_sha256)
+            else:
+                result = cp.takeover(args.node, args.expect_manifest_sha256, token, observation, args.quorum_round)
+        elif args.operation == "quorum-vote":
+            result = cp.vote_quorum_round(args.node, args.expect_manifest_sha256, token,
+                                          args.quorum_round, args.failure_observation_sha256)
         elif args.operation == "activate":
             result = cp.activate(args.node, args.expect_manifest_sha256, token, permit)
         elif args.operation == "write":

@@ -531,3 +531,72 @@ ausdrücklich BLOCK statt ungeprüft neue Provider-Kapazität zu behaupten.
 V1/V2-Inventare und der erste Port-Work-Unit bleiben unverändert historisch;
 V3 bindet die aktuellen Source-Bytes. Ein zusätzliches Fixture verwendet alle
 drei tatsächlichen Integritätsdateien im vorhandenen HTTP/Broker/CAS/Ledger-Pfad.
+
+## Mirror-Abstimmung vor der Übernahme — Nachfolger vom 7. Oktober 2026
+
+Der bestehende `AuthorityControlPlane` erhält eine optionale, vor dem Ausfall
+vom Owner konfigurierte Wählergruppe aus drei bis 32 exakt zugelassenen Nodes.
+Bei drei Nodes können die beiden verbliebenen Mirrors eine Mehrheit bilden.
+Sie verwenden ihre vorhandenen privaten, ziel- und epochgebundenen Recovery-
+Berechtigungen. Die Mehrheit ist stets `floor(N / 2) + 1`; ein einzelner Mirror
+kann sie weder verkleinern noch Nodes hinzufügen. Zwei Credentials für denselben
+Node werden nicht als zwei Stimmen zugelassen.
+
+Die bestehende CLI stellt `quorum-configure`, `quorum-open` und `quorum-vote`
+bereit. `quorum-configure --electorate <private-json-array-of-node-ids>` verlangt
+die vorhandene separate Owner-Admin-Capability als `--token-file`. Erst nach
+dieser Zulassung kann ein Recovery-Node auf ein konkretes Ausfallereignis hin
+eine Runde öffnen: `quorum-open --observation <fresh-observation-file>
+--incident-sha256 <incident-digest>`. Jeder zugelassene Peer liest seinen eigenen
+aktuellen Restore und den aktuellen Control-Plane-Zustand, bevor er mit
+`quorum-vote --quorum-round <round-id> --failure-observation-sha256
+<peer-observation-digest>` abstimmt. Capability-Werte bleiben in privaten Dateien
+und werden weder ausgegeben noch in Repository oder Cache gespeichert.
+
+Die Runde bindet Control-Plane-Epoch, Authority-Epoch, den vollständigen
+aktuellen Zustandsdigest, Kandidat, Target-HEAD/TREE, ursprüngliche Observation,
+Incident-Digest und das bestehende 30-Sekunden-Fenster. Stimmen werden synchron
+und dauerhaft im bestehenden SQLite-Sink gespeichert. Ein Peer kann innerhalb
+eines noch gültigen Fensters nicht für konkurrierende Kandidaten stimmen;
+identische Wiederholungen zählen nur einmal. Eine andere Observation, ein
+zwischenzeitlich bestätigter Effekt, eine neue Wählergruppe, fehlende Mehrheit,
+abgelaufene Runde oder Clock-Rollback sperrt die Übernahme.
+
+`takeover --quorum-round <round-id>` prüft die aktuelle Mehrheit innerhalb
+derselben Transaktion wie die bisherige Writer-Sperre und Epoch-CAS. Sobald
+eine Wählergruppe konfiguriert ist, kann der alte manuelle CLI-Pfad dieses Gate
+nicht umgehen. Ein erfolgreiches Commit bleibt `PENDING_READBACK`; erst der
+vorhandene separate `activate`-Readback öffnet den neuen Writer. Ungeklärte
+Provider-Effekte blockieren weiterhin jede Übernahme. Alte Permits bleiben
+abgewiesen; Scheduler-Cursor, Work-Unit- und Idempotency-Kennungen werden
+erhalten. Der nächste Epoch benötigt frische zugelassene Nodes und erneuerte
+Owner-Recovery-Grants; eine vergangene Mehrheit schafft keine neue Berechtigung.
+
+**Frischer Testumfang:** Der Authority-Test startet einen echten Writer-Prozess,
+bestätigt einen terminalgebundenen Effekt, beendet den Prozess mit SIGKILL und
+entfernt dessen Quell-/Restore-/Checkpoint-Verzeichnisse. Die beiden vorhandenen
+Mirrors stimmen in getrennten CLI-Prozessen ab. Nach CAS und separater
+Aktivierung werden dieselben Session-/Work-Unit-/Effektbytes einmalig aus dem
+überlebenden Sink zurückgelesen; ein alter Writer-Versuch wird abgewiesen.
+Die gemessene Wiederaufnahmezeit ist ausschließlich eine lokale Prozessfixture,
+kein produktives RTO/SLO und keine gemessene menschliche Unbemerkbarkeit.
+
+**Grenzen:** Dieses Verfahren setzt die bereits vorhandene unabhängige,
+unverändert überlebende private Control Plane und ausschließlich gefencete
+Sink-Schreiber voraus. Es ist keine neu implementierte verteilte Replikation
+dieser Control Plane. Verschiedene Node-Kennungen beweisen keine unabhängigen
+Hosts oder unabhängigen Beobachtungen. Incident-/Peer-Digests binden zugelassene
+Aussagen; sie beweisen nicht allein den Tod einer Authority. Ein früherer
+GitHub-404 bleibt eine beobachtete Zugriffsgrenze; der neue SIGKILL-Test ist eine
+gesonderte tatsächlich ausgeführte Ausfallinjektion.
+
+Native TEMDD-Effect-Replikation vor positivem Effect-Ack, selbstständiger
+produktiver Peer-Ereigniseingang, kompletter Anschluss-/Service-Transfer, stabile
+öffentliche Terminal-URL, echte Browser-/iPhone-Session-Kontinuität und Abnahme
+über unabhängige Hosts bleiben offen. Die vorhandenen S1-/React-/Monitor-Pfade
+werden dadurch weder ersetzt noch als vollständig hergestellt erklärt.
+
+Die Owner-Vorgabe behandelt ChatGPT in der QIK-VRT-Architektur als
+Mensch-Maschine-Schnittstelle ohne unabhängige Authority-Rolle. Menschliche
+Anforderungen und Freigaben bleiben Ingolf Lohmann zugeordnet; KI-gestützte
+Implementierung und Tests behalten ihre separate, sichtbare Provenienz.

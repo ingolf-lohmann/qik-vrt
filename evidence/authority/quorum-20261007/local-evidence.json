@@ -1,0 +1,61 @@
+{
+  "schema": "qikvrt_mirror_quorum_local_evidence_v1",
+  "scope": "PARTIAL_SOURCE_LOCAL_PROCESS_AND_PROVIDER_FIXTURES",
+  "captured_utc": "2026-10-07T06:49:04.169349+00:00",
+  "source_parent_head": "522cbc91179535bf941185415b4a434c24fbee61",
+  "source_parent_tree": "077c59a519fcb924d81a5ff029e91b55f33d8a52",
+  "components": {
+    "tools/qikvrt_authority_transition.py": {
+      "sha256": "9ac892fb5bf5a9502c8def53760ad8553f7e6cb6634aa7cbfcd8e762283dcfb9",
+      "bytes": 71266
+    },
+    "tests/test_qikvrt_authority_transition.py": {
+      "sha256": "3cbf681fd45e304ba4f75cf16aa200b9c657993c44bf6e6e916063b40b9505dc",
+      "bytes": 32697
+    },
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json": {
+      "sha256": "a6e9b50deaf7b27df50a4fe627834d421f18776330638184e0ea473e8e107be5",
+      "bytes": 21023
+    },
+    "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md": {
+      "sha256": "9d296d20b58c9b43953bb9b4485c02fd5cc1d26423e392778f201d1ab7c50870",
+      "bytes": 39276
+    }
+  },
+  "tests": {
+    "result": "OK",
+    "count": 94,
+    "command": "python3 -B -m unittest tests.test_qikvrt_authority_transition tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests tests.test_qikvrt_mesh_recovery -v",
+    "log_path": "evidence/authority/quorum-20261007/scoped-regression.log",
+    "log_sha256": "079a1de6bdbdd9a195ac4c6606eec9e9b555e9de94fb107b24c4cffb8552b91c",
+    "repository_no_bypass_full_source_audit_executed": false,
+    "prior_broader_attempt": {
+      "tests": 75,
+      "errors": 8,
+      "reason": "PARTIAL_CHECKOUT_MISSING_INPUTS_AND_NO_GIT_INDEX",
+      "not_a_passing_full_repository_run": true
+    }
+  },
+  "process_readback": {
+    "authority_epoch": 8,
+    "authority_process_killed": true,
+    "effect_ack_done": false,
+    "fixture_recovery_elapsed_ns": 1146134200,
+    "independent_hosts_verified": false,
+    "native_terminal_ui_failover_verified": false,
+    "previous_writer_rejected": true,
+    "same_effect_id_replayed_once": true,
+    "same_terminal_session_and_work_unit_bytes": true,
+    "scope": "LOCAL_PROCESS_FAILURE_WITH_SURVIVING_FENCED_CONTROL_PLANE",
+    "voter_processes": 2
+  },
+  "fresh_productive_boundary": {
+    "effect_ack_done": false,
+    "productive_provider_effect": false,
+    "reason": "BROKER_CAPABILITY_NOT_PROVISIONED",
+    "state": "HOLD"
+  },
+  "native_successor_checks": "REQUIRED_AFTER_PUBLISH",
+  "production_failover_proved": false,
+  "effect_ack_done": false
+}

@@ -1,0 +1,298 @@
+test_accepted_head_and_scheduler_cannot_regress_at_takeover (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_accepted_head_and_scheduler_cannot_regress_at_takeover) ... ok
+test_accepted_state_change_invalidates_every_existing_quorum_vote (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_accepted_state_change_invalidates_every_existing_quorum_vote) ... ok
+test_activation_superseded_before_final_readback_cannot_return_enabled (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_activation_superseded_before_final_readback_cannot_return_enabled) ... ok
+test_busy_control_plane_blocks_without_unfencing_or_hidden_retry (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_busy_control_plane_blocks_without_unfencing_or_hidden_retry) ... ok
+test_checkpoint_epoch_is_not_current_observation_and_bad_capability_is_rejected (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_checkpoint_epoch_is_not_current_observation_and_bad_capability_is_rejected) ... ok
+test_complete_authority_loss_takeover_and_actual_sink_effect (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_complete_authority_loss_takeover_and_actual_sink_effect) ... ok
+test_concurrent_takeover_only_one_cas_wins (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_concurrent_takeover_only_one_cas_wins) ... ok
+test_duplicate_vote_counts_once_and_changed_observation_is_rejected (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_duplicate_vote_counts_once_and_changed_observation_is_rejected) ... ok
+test_epoch_capacity_exhaustion_does_not_materialize_an_unreadable_successor (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_epoch_capacity_exhaustion_does_not_materialize_an_unreadable_successor) ... ok
+test_executable_cli_observe_takeover_activate_write_readback (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_executable_cli_observe_takeover_activate_write_readback) ... ok
+test_expired_altered_foreign_and_consumed_observations_fail_closed (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_expired_altered_foreign_and_consumed_observations_fail_closed) ... ok
+test_expired_and_clock_rollback_quorum_proofs_hold_without_mutating_authority (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_expired_and_clock_rollback_quorum_proofs_hold_without_mutating_authority) ... ok
+test_losing_recovery_grant_cannot_take_a_later_epoch_without_owner_renewal (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_losing_recovery_grant_cannot_take_a_later_epoch_without_owner_renewal) ... ok
+test_missing_recreated_symlink_or_public_control_plane_is_not_auto_recovered (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_missing_recreated_symlink_or_public_control_plane_is_not_auto_recovered) ... ok
+test_old_authority_rejoins_as_fenced_mirror_without_admission_inflation (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_old_authority_rejoins_as_fenced_mirror_without_admission_inflation) ... ok
+test_old_writer_cannot_borrow_new_public_fence_or_replay_completed_effect (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_old_writer_cannot_borrow_new_public_fence_or_replay_completed_effect) ... ok
+test_owner_reconfiguration_invalidates_old_round_without_vote_transfer (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_owner_reconfiguration_invalidates_old_round_without_vote_transfer) ... ok
+test_pending_cas_fences_both_writers_until_separate_fresh_readback (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_pending_cas_fences_both_writers_until_separate_fresh_readback) ... ok
+test_post_cas_target_and_scheduler_tampering_never_enables_writer (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_post_cas_target_and_scheduler_tampering_never_enables_writer) ... ok
+test_quorum_loss_and_manual_bypass_cannot_promote_a_successor (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_quorum_loss_and_manual_bypass_cannot_promote_a_successor) ... ok
+test_quorum_requires_exact_owner_admitted_members_and_capabilities (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_quorum_requires_exact_owner_admitted_members_and_capabilities) ... ok
+test_quorum_survives_actual_authority_process_kill_and_preserves_terminal_work (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_quorum_survives_actual_authority_process_kill_and_preserves_terminal_work) ... ok
+test_readback_mismatch_and_superseded_activation_fail_closed (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_readback_mismatch_and_superseded_activation_fail_closed) ... ok
+test_scheduler_rebinding_and_exact_once_sink_replay_survive_takeover (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_scheduler_rebinding_and_exact_once_sink_replay_survive_takeover) ... ok
+test_sink_write_race_and_takeover_have_one_transaction_order (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_sink_write_race_and_takeover_have_one_transaction_order) ... ok
+test_stale_epoch_cannot_overwrite_competing_successor (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_stale_epoch_cannot_overwrite_competing_successor) ... ok
+test_successful_quorum_cannot_inherit_admission_into_a_later_epoch (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_successful_quorum_cannot_inherit_admission_into_a_later_epoch) ... ok
+test_unresolved_provider_effect_still_blocks_quorum_takeover (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_unresolved_provider_effect_still_blocks_quorum_takeover) ... ok
+test_voter_cannot_vote_for_competing_candidates_during_one_live_round (tests.test_qikvrt_authority_transition.AuthorityTransitionTests.test_voter_cannot_vote_for_competing_candidates_during_one_live_round) ... ok
+test_actual_readback_is_required_even_after_201 (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_actual_readback_is_required_even_after_201) ... ok
+test_authenticated_existing_shim_route_has_real_http_readback_and_redaction (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_authenticated_existing_shim_route_has_real_http_readback_and_redaction) ... ok
+test_complete_production_http_transport_contract_with_locked_admission (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_complete_production_http_transport_contract_with_locked_admission) ... ok
+test_concurrent_takeover_loser_cannot_touch_provider (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_concurrent_takeover_loser_cannot_touch_provider) ... ok
+test_definite_cas_rejection_is_not_laundered_by_matching_competitor (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_definite_cas_rejection_is_not_laundered_by_matching_competitor) ... ok
+test_missing_control_plane_is_not_recreated (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_missing_control_plane_is_not_recreated) ... ok
+test_old_writer_after_takeover_and_rejoin_never_calls_provider (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_old_writer_after_takeover_and_rejoin_never_calls_provider) ... ok
+test_pending_activation_has_no_provider_access (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_pending_activation_has_no_provider_access) ... ok
+test_provider_idempotency_key_is_bound_across_epochs (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_provider_idempotency_key_is_bound_across_epochs) ... ok
+test_provider_native_cas_race_preserves_competing_ref (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_provider_native_cas_race_preserves_competing_ref) ... ok
+test_provider_preexisting_ref_is_cas_conflict_never_accepted_as_our_effect (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_provider_preexisting_ref_is_cas_conflict_never_accepted_as_our_effect) ... ok
+test_restart_after_committed_effect_before_transport_ack_is_get_only (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_restart_after_committed_effect_before_transport_ack_is_get_only) ... ok
+test_restart_during_preflight_can_resume_without_losing_intent (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_restart_during_preflight_can_resume_without_losing_intent) ... ok
+test_same_key_concurrent_requests_have_at_most_one_provider_post (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_same_key_concurrent_requests_have_at_most_one_provider_post) ... ok
+test_stale_permit_each_epoch_node_fence_and_boolean_epoch (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_stale_permit_each_epoch_node_fence_and_boolean_epoch) ... ok
+test_successful_bound_mirror_effect_and_fresh_idempotent_replay (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_successful_bound_mirror_effect_and_fresh_idempotent_replay) ... ok
+test_takeover_cannot_interleave_with_outbound_post (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_takeover_cannot_interleave_with_outbound_post) ... ok
+test_target_tree_drift_rejected_before_mutation (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_target_tree_drift_rejected_before_mutation) ... ok
+test_timeout_without_observed_effect_never_retries_and_blocks_takeover (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_timeout_without_observed_effect_never_retries_and_blocks_takeover) ... ok
+test_transport_pins_origin_token_expiry_no_redirect_and_bounded_json (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_transport_pins_origin_token_expiry_no_redirect_and_bounded_json) ... ok
+test_unknown_operations_fields_and_authority_root_are_denied (tests.test_qikvrt_github_authority_provider.GitHubAuthorityProviderTests.test_unknown_operations_fields_and_authority_root_are_denied) ... ok
+test_actual_three_integrity_files_fit_the_complete_http_cas_byte_ledger_path (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_actual_three_integrity_files_fit_the_complete_http_cas_byte_ledger_path) ... {
+  "binding": {
+    "head": "d8313bf5b3a45027e1a2fd2c725ba8b3d512851f",
+    "manifest_sha256": "2244c2722537f2201bf69fcd7323bcd1015bb731811e1ac4dd7ff4bf65ce1eb8",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scheduler_sha256": "f976931c0708ccfa1270e946fd57636fbaca3f22af26db53c46c9320558a00bb",
+    "tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7"
+  },
+  "durable_ledger_readback": true,
+  "effect_ack_done": false,
+  "effect_id": "materialize:8e68c6cdaa6c5a6dea14267f57575ccd3727fa0b2d019e1e7b2aadc021833585",
+  "effect_scope": "BROKER_NATIVE_EXPECTED_HEAD_MATERIALIZATION",
+  "expected_head": "d8313bf5b3a45027e1a2fd2c725ba8b3d512851f",
+  "expected_tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7",
+  "files": [
+    {
+      "blob": "365389a4617e1d4e73b9de6a54ff7096d77e1b01",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "sha256": "942003ed848ada69ce3fc2c3d4241e96c2c4f58132564023f657b9b86f774e3c"
+    },
+    {
+      "blob": "9b17e20fbbc8357ed9b9c5c92cc27a3bb9018003",
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "sha256": "ce7d7a6c0db108eaf8763f35e5025e37cb19188db200d78c981831a166843a19"
+    },
+    {
+      "blob": "926b79fbdc5e89b037e2968e2757bf5689ae5b35",
+      "path": "SHA256SUMS.txt",
+      "sha256": "d4aebcf7b5c8b4aeda132a35a8b74bfa64e766cb6f09ab31e025db898c955f59"
+    }
+  ],
+  "fresh_provider_readback": true,
+  "intent_sha256": "6d85091ce074eeb3c9cd3e714fe0efb00e3a3f6c8777c5091c2f01214499c2dc",
+  "native_ref_commit_tree_bytes_verified": true,
+  "observed_utc": "2026-10-07T06:47:51.586380+00:00",
+  "permit": {
+    "authority_epoch": 8,
+    "control_plane_epoch": "1befb044e1b5081202446dfac9fba3f7b90b1ae0b205e0648da5e8d7b4fe92fd",
+    "fence": "d12a549107767382543596a62163aee9b700d1b1ba4601185efb3ae4ffeffb9b",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "productive_provider_effect": true,
+  "profile": "ci_integrity",
+  "provider_authority_fencing_verified": false,
+  "ref": "refs/heads/work/cli-fixture",
+  "replayed": false,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_github_materialize_readback_v1",
+  "sha": "74643b2e15487d28abb8628797cf3af74c30bf6d",
+  "state": "CONTINUE",
+  "tree": "9ea5f0d496273ae4113adeb5af80c7a29b640e9e"
+}
+ok
+test_ambient_native_workflow_token_is_not_a_broker_capability (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_ambient_native_workflow_token_is_not_a_broker_capability) ... ok
+test_ambiguous_transport_before_effect_stays_pending_and_blocks_other_writer (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_ambiguous_transport_before_effect_stays_pending_and_blocks_other_writer) ... ok
+test_both_profiles_native_cas_bytes_durable_readback_and_replay (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_both_profiles_native_cas_bytes_durable_readback_and_replay) ... ok
+test_capacity_and_accidental_shell_terminator_path_fail_before_provider (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_capacity_and_accidental_shell_terminator_path_fail_before_provider) ... ok
+test_concurrent_same_key_has_one_native_effect (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_concurrent_same_key_has_one_native_effect) ... ok
+test_crash_after_effect_get_only_recovery_no_duplicate (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_crash_after_effect_get_only_recovery_no_duplicate) ... ok
+test_missing_capability_and_each_stale_permit_never_reach_provider (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_missing_capability_and_each_stale_permit_never_reach_provider) ... ok
+test_missing_private_provider_capability_persists_prepared_intent_no_transport (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_missing_private_provider_capability_persists_prepared_intent_no_transport) ... ok
+test_native_commit_parent_and_intent_message_are_required (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_native_commit_parent_and_intent_message_are_required) ... ok
+test_preexisting_advanced_ref_and_atomic_competing_writer_are_rejected (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_preexisting_advanced_ref_and_atomic_competing_writer_are_rejected) ... ok
+test_real_http_transport_uses_only_fixed_graphql_and_native_gets (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_real_http_transport_uses_only_fixed_graphql_and_native_gets) ... ok
+test_replay_with_different_binding_is_rejected_before_transport (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_replay_with_different_binding_is_rejected_before_transport) ... ok
+test_scoped_large_intent_decoder_stays_bounded_canonical_and_strict (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_scoped_large_intent_decoder_stays_bounded_canonical_and_strict) ... ok
+test_separate_durable_ledger_readback_is_required (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_separate_durable_ledger_readback_is_required) ... ok
+test_source_path_tree_and_byte_tampering_cannot_expand_effect (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_source_path_tree_and_byte_tampering_cannot_expand_effect) ... ok
+test_staged_workflow_client_existing_http_shim_provider_and_ledger_end_to_end (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_staged_workflow_client_existing_http_shim_provider_and_ledger_end_to_end) ... {
+  "binding": {
+    "head": "d8313bf5b3a45027e1a2fd2c725ba8b3d512851f",
+    "manifest_sha256": "2244c2722537f2201bf69fcd7323bcd1015bb731811e1ac4dd7ff4bf65ce1eb8",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scheduler_sha256": "f976931c0708ccfa1270e946fd57636fbaca3f22af26db53c46c9320558a00bb",
+    "tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7"
+  },
+  "durable_ledger_readback": true,
+  "effect_ack_done": false,
+  "effect_id": "materialize:8e68c6cdaa6c5a6dea14267f57575ccd3727fa0b2d019e1e7b2aadc021833585",
+  "effect_scope": "BROKER_NATIVE_EXPECTED_HEAD_MATERIALIZATION",
+  "expected_head": "d8313bf5b3a45027e1a2fd2c725ba8b3d512851f",
+  "expected_tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7",
+  "files": [
+    {
+      "blob": "365389a4617e1d4e73b9de6a54ff7096d77e1b01",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "sha256": "942003ed848ada69ce3fc2c3d4241e96c2c4f58132564023f657b9b86f774e3c"
+    },
+    {
+      "blob": "9b17e20fbbc8357ed9b9c5c92cc27a3bb9018003",
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "sha256": "ce7d7a6c0db108eaf8763f35e5025e37cb19188db200d78c981831a166843a19"
+    },
+    {
+      "blob": "926b79fbdc5e89b037e2968e2757bf5689ae5b35",
+      "path": "SHA256SUMS.txt",
+      "sha256": "d4aebcf7b5c8b4aeda132a35a8b74bfa64e766cb6f09ab31e025db898c955f59"
+    }
+  ],
+  "fresh_provider_readback": true,
+  "intent_sha256": "6d85091ce074eeb3c9cd3e714fe0efb00e3a3f6c8777c5091c2f01214499c2dc",
+  "native_ref_commit_tree_bytes_verified": true,
+  "observed_utc": "2026-10-07T06:47:51.742349+00:00",
+  "permit": {
+    "authority_epoch": 8,
+    "control_plane_epoch": "1befb044e1b5081202446dfac9fba3f7b90b1ae0b205e0648da5e8d7b4fe92fd",
+    "fence": "d12a549107767382543596a62163aee9b700d1b1ba4601185efb3ae4ffeffb9b",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "productive_provider_effect": true,
+  "profile": "ci_integrity",
+  "provider_authority_fencing_verified": false,
+  "ref": "refs/heads/work/cli-fixture",
+  "replayed": true,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_github_materialize_readback_v1",
+  "sha": "74643b2e15487d28abb8628797cf3af74c30bf6d",
+  "state": "CONTINUE",
+  "tree": "9ea5f0d496273ae4113adeb5af80c7a29b640e9e"
+}
+ok
+test_workflow_cli_missing_provision_returns_hold_without_provider (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_workflow_cli_missing_provision_returns_hold_without_provider) ... ok
+test_wrong_native_bytes_after_effect_stays_pending (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_wrong_native_bytes_after_effect_stays_pending) ... ok
+test_wrong_post_effect_commit_tree_and_ref_drift_never_verify (tests.test_qikvrt_github_authority_provider.MaterializeSuccessorTests.test_wrong_post_effect_commit_tree_and_ref_drift_never_verify) ... ok
+test_authority_and_mirror_share_the_same_offline_contract (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_authority_and_mirror_share_the_same_offline_contract) ... ok
+test_canonical_json_duplicate_keys_unknown_fields_and_incomplete_scope (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_canonical_json_duplicate_keys_unknown_fields_and_incomplete_scope) ... ok
+test_clone_assigns_distinct_identities_and_preserves_parent_and_global_signature (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_clone_assigns_distinct_identities_and_preserves_parent_and_global_signature) ... ok
+test_head_or_ref_change_after_plan_is_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_head_or_ref_change_after_plan_is_blocked) ... ok
+test_incremental_bundle_cannot_borrow_ancestors_from_live_source (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_incremental_bundle_cannot_borrow_ancestors_from_live_source) ... ok
+test_independence_payload_and_versioned_contract_are_mandatory (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_independence_payload_and_versioned_contract_are_mandatory) ... ok
+test_independence_policy_survives_source_loss_and_rehashed_checkpoint_tampering_is_denied (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_independence_policy_survives_source_loss_and_rehashed_checkpoint_tampering_is_denied) ... ok
+test_independence_requirement_cannot_be_deleted_or_weakened_even_with_new_hashes (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_independence_requirement_cannot_be_deleted_or_weakened_even_with_new_hashes) ... ok
+test_manifest_and_bundle_tampering_is_blocked_by_pinned_readback (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_manifest_and_bundle_tampering_is_blocked_by_pinned_readback) ... ok
+test_mid_capture_writer_drift_is_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_mid_capture_writer_drift_is_blocked) ... ok
+test_missing_surplus_or_incomplete_files_are_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_missing_surplus_or_incomplete_files_are_blocked) ... ok
+test_mode_tampering_is_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_mode_tampering_is_blocked) ... ok
+test_policy_entrypoint_tool_cache_and_aggregate_test_bindings (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_policy_entrypoint_tool_cache_and_aggregate_test_bindings) ... ok
+test_project_plan_remains_under_goldkelch_root_and_does_not_create_remote (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_project_plan_remains_under_goldkelch_root_and_does_not_create_remote) ... ok
+test_promotion_plan_does_not_grant_an_authority_role_or_transfer_old_epoch_evidence (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_promotion_plan_does_not_grant_an_authority_role_or_transfer_old_epoch_evidence) ... ok
+test_rehashed_foreign_400_byte_signature_cannot_replace_shared_v1_image (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_rehashed_foreign_400_byte_signature_cannot_replace_shared_v1_image) ... ok
+test_required_historical_source_object_must_survive_in_the_standalone_bundle (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_required_historical_source_object_must_survive_in_the_standalone_bundle) ... ok
+test_restores_every_ref_history_signature_asset_and_scheduler_after_source_loss (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_restores_every_ref_history_signature_asset_and_scheduler_after_source_loss) ... ok
+test_root_cycles_duplicate_ids_and_traversal_are_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_root_cycles_duplicate_ids_and_traversal_are_blocked) ... ok
+test_scheduler_requires_definitions_cursor_timezone_and_unique_idempotency (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_scheduler_requires_definitions_cursor_timezone_and_unique_idempotency) ... ok
+test_seed_does_not_admit_self_asserted_full_node_from_a_remote_receipt (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_seed_does_not_admit_self_asserted_full_node_from_a_remote_receipt) ... ok
+test_shallow_partial_alternates_grafts_and_replacement_refs_are_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_shallow_partial_alternates_grafts_and_replacement_refs_are_blocked) ... ok
+test_signature_manipulation_or_wrong_size_is_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_signature_manipulation_or_wrong_size_is_blocked) ... ok
+test_symlink_payload_and_existing_output_are_blocked (tests.test_qikvrt_mesh_recovery.MeshRecoveryTests.test_symlink_payload_and_existing_output_are_blocked) ... ok
+
+----------------------------------------------------------------------
+Ran 94 tests in 65.995s
+
+OK
+{
+  "binding": {
+    "head": "950093ef92679b03b1061af2e2e324e67aabbc13",
+    "manifest_sha256": "9bf8a3fdcd68fb556e90b7f37b2dcab0895a0b7f6ea1920c8507067fb04e495b",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scheduler_sha256": "f976931c0708ccfa1270e946fd57636fbaca3f22af26db53c46c9320558a00bb",
+    "tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7"
+  },
+  "durable_ledger_readback": true,
+  "effect_ack_done": false,
+  "effect_id": "materialize:661c394ae55b89c23a00854ceba793ce3c0d60e6c904094c2e0c749e511d50b2",
+  "effect_scope": "BROKER_NATIVE_EXPECTED_HEAD_MATERIALIZATION",
+  "expected_head": "950093ef92679b03b1061af2e2e324e67aabbc13",
+  "expected_tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7",
+  "files": [
+    {
+      "blob": "2b16af269f8d3f13d7a70ccd5cfdbc5c1f7a8410",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "sha256": "ab3533a3a9ae6e479f83fe6f7af104b8ec8549dac1779a47490e0f2c34d51942"
+    }
+  ],
+  "fresh_provider_readback": true,
+  "intent_sha256": "75173b59c54db3046f99c600526d3365c6cf250b28ec482c4faac6ca80d81004",
+  "native_ref_commit_tree_bytes_verified": true,
+  "observed_utc": "2026-10-07T06:48:04.677501+00:00",
+  "permit": {
+    "authority_epoch": 8,
+    "control_plane_epoch": "6904da3fa73c4746afce035419f688c60d6f765e9f1826046b2c26373ab716f4",
+    "fence": "bc4f986cf7af123282082b8d6b0948cdd49627c5a4ebad690aee1444bba53c6c",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "productive_provider_effect": true,
+  "profile": "ci_integrity",
+  "provider_authority_fencing_verified": false,
+  "ref": "refs/heads/work/cli-fixture",
+  "replayed": false,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_github_materialize_readback_v1",
+  "sha": "ec75757d7aded2974cba444ad46d0b999fe7d460",
+  "state": "CONTINUE",
+  "tree": "615e8b433e2a39651bd3206892543cfe761940a9"
+}
+{
+  "binding": {
+    "head": "950093ef92679b03b1061af2e2e324e67aabbc13",
+    "manifest_sha256": "9bf8a3fdcd68fb556e90b7f37b2dcab0895a0b7f6ea1920c8507067fb04e495b",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "scheduler_sha256": "f976931c0708ccfa1270e946fd57636fbaca3f22af26db53c46c9320558a00bb",
+    "tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7"
+  },
+  "durable_ledger_readback": true,
+  "effect_ack_done": false,
+  "effect_id": "materialize:661c394ae55b89c23a00854ceba793ce3c0d60e6c904094c2e0c749e511d50b2",
+  "effect_scope": "BROKER_NATIVE_EXPECTED_HEAD_MATERIALIZATION",
+  "expected_head": "950093ef92679b03b1061af2e2e324e67aabbc13",
+  "expected_tree": "98ab4d9b1b74dc5ad81e40ef4d38cc4d7afaa7a7",
+  "files": [
+    {
+      "blob": "2b16af269f8d3f13d7a70ccd5cfdbc5c1f7a8410",
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "sha256": "ab3533a3a9ae6e479f83fe6f7af104b8ec8549dac1779a47490e0f2c34d51942"
+    }
+  ],
+  "fresh_provider_readback": true,
+  "intent_sha256": "75173b59c54db3046f99c600526d3365c6cf250b28ec482c4faac6ca80d81004",
+  "native_ref_commit_tree_bytes_verified": true,
+  "observed_utc": "2026-10-07T06:48:04.710752+00:00",
+  "permit": {
+    "authority_epoch": 8,
+    "control_plane_epoch": "6904da3fa73c4746afce035419f688c60d6f765e9f1826046b2c26373ab716f4",
+    "fence": "bc4f986cf7af123282082b8d6b0948cdd49627c5a4ebad690aee1444bba53c6c",
+    "node_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "productive_provider_effect": true,
+  "profile": "ci_integrity",
+  "provider_authority_fencing_verified": false,
+  "ref": "refs/heads/work/cli-fixture",
+  "replayed": true,
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_github_materialize_readback_v1",
+  "sha": "ec75757d7aded2974cba444ad46d0b999fe7d460",
+  "state": "CONTINUE",
+  "tree": "615e8b433e2a39651bd3206892543cfe761940a9"
+}
+{
+  "effect_ack_done": false,
+  "productive_provider_effect": false,
+  "reason": "BROKER_CAPABILITY_NOT_PROVISIONED",
+  "state": "HOLD"
+}
+QIKVRT_QUORUM_PROCESS_READBACK {"authority_epoch": 8, "authority_process_killed": true, "effect_ack_done": false, "fixture_recovery_elapsed_ns": 1146134200, "independent_hosts_verified": false, "native_terminal_ui_failover_verified": false, "previous_writer_rejected": true, "same_effect_id_replayed_once": true, "same_terminal_session_and_work_unit_bytes": true, "scope": "LOCAL_PROCESS_FAILURE_WITH_SURVIVING_FENCED_CONTROL_PLANE", "voter_processes": 2}

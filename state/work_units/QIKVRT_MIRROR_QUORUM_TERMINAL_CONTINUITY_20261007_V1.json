@@ -1,0 +1,56 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "id": "QIKVRT_MIRROR_QUORUM_TERMINAL_CONTINUITY_20261007_V1",
+  "owner": "Ingolf Lohmann",
+  "implementation_provenance": "OpenAI Codex assisted implementation and tests",
+  "owner_request": "Surviving Mirrors agree on autonomous Authority succession; preserve connected Universal Terminal work and acknowledge only observed effects. ChatGPT acts as HMI without an independent Authority role.",
+  "status": "CANDIDATE_LOCAL_TESTED_PRODUCTIVE_BLOCKED",
+  "reuse_existing_pr": 428,
+  "source_parent_head": "522cbc91179535bf941185415b4a434c24fbee61",
+  "components": {
+    "tools/qikvrt_authority_transition.py": {
+      "sha256": "9ac892fb5bf5a9502c8def53760ad8553f7e6cb6634aa7cbfcd8e762283dcfb9",
+      "bytes": 71266
+    },
+    "tests/test_qikvrt_authority_transition.py": {
+      "sha256": "3cbf681fd45e304ba4f75cf16aa200b9c657993c44bf6e6e916063b40b9505dc",
+      "bytes": 32697
+    },
+    "policy/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION_V1.json": {
+      "sha256": "a6e9b50deaf7b27df50a4fe627834d421f18776330638184e0ea473e8e107be5",
+      "bytes": 21023
+    },
+    "docs/QIKVRT_FULL_NODE_RECOVERY_AND_DERIVATION.md": {
+      "sha256": "9d296d20b58c9b43953bb9b4485c02fd5cc1d26423e392778f201d1ab7c50870",
+      "bytes": 39276
+    }
+  },
+  "evidence_path": "evidence/authority/quorum-20261007/local-evidence.json",
+  "evidence_sha256": "295905143e0273fb711df214d88c454e5fdf0a410c95f15ca3e00c3af584bc68",
+  "implemented": "Owner-admitted majority in existing AuthorityControlPlane; exact current bindings, one unexpired vote per peer, transactional quorum/fence/CAS, separate activation readback. No new controller or provider writer.",
+  "first_causal_blocker": "BROKER_CAPABILITY_NOT_PROVISIONED",
+  "scope_boundaries": [
+    "One independently surviving private SQLite control plane; no distributed CP replication.",
+    "Node/capability identity and attributed observation digests do not prove independent hosts or death detection.",
+    "Fresh epoch admission must be renewed by owner; no automatic permission transfer.",
+    "No productive native TEMDD replication before positive effect acknowledgement proved.",
+    "No autonomous productive peer-event input, complete attached service transfer or native browser/iPhone session continuity proved.",
+    "Historical GitHub 404 is access unavailability; cause of Authority failure remains unestablished.",
+    "Partial materialization; full source audit, full repository tests and native exact-successor checks still required.",
+    "No IETF publication or registration performed or verified."
+  ],
+  "resume_order": [
+    "Freshly read successor HEAD/TREE, reviews and native runs; execute existing full CI only through already admitted native path.",
+    "Provision the EXISTING independently surviving private shim/control plane and exact-epoch peer capabilities outside repository; do not disclose credentials in chat or source.",
+    "Bind independent host and native effect-replication readback; connect the existing peer event input to quorum CLI.",
+    "Inject an authorized real Authority outage with existing Universal Terminal session, pending acknowledged effects and scheduler work; read the same external endpoint, replicated native ledger and old-writer rejection.",
+    "Only then assess full service takeover and Effect Ack; do not transfer local fixture or previous-head results."
+  ],
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "PRODUCTIVE_FAILOVER": false,
+    "INVISIBLE_TERMINAL_SWITCH": false
+  }
+}

@@ -3,6 +3,7 @@
 # Copyright 2026 Ingolf Lohmann.
 """Real persistent sink effects and destructive-source fenced takeover tests."""
 import copy
+import json
 from concurrent.futures import ThreadPoolExecutor
 import os
 from pathlib import Path
@@ -11,6 +12,7 @@ import sqlite3
 import subprocess
 import sys
 import threading
+import time
 import unittest
 from unittest import mock
 
@@ -78,6 +80,204 @@ class AuthorityTransitionTests(unittest.TestCase):
             self.cp.commit_write(OLD_TOKEN, self.old_permit, 'forbidden', b'old')
         with self.cp.transaction() as db:
             self.assertIsNone(db.execute("SELECT 1 FROM effects WHERE id='forbidden'").fetchone())
+
+    def electorate(self):
+        return [self.cp.readback(OLD_TOKEN)['node_id'], self.cp.readback(NEW_TOKEN)['node_id'],
+                self.cp.readback(COMPETITOR_TOKEN)['node_id']]
+
+    def quorum_proposal(self):
+        self.cp.configure_quorum(ADMIN, self.electorate())
+        observation = self.cp.observe(self.node, self.manifest, NEW_TOKEN)
+        proposal = self.cp.open_quorum_round(self.node, self.manifest, NEW_TOKEN, observation, '6' * 64)
+        return observation, proposal
+
+    def quorum_votes(self, proposal):
+        for node, token, witness in ((self.node, NEW_TOKEN, '7' * 64),
+                                     (self.competitor, COMPETITOR_TOKEN, '8' * 64)):
+            self.cp.vote_quorum_round(node, self.manifest, token, proposal['id'], witness)
+
+    def test_quorum_survives_actual_authority_process_kill_and_preserves_terminal_work(self):
+        # Three admitted identities, two independent child voters, one surviving
+        # private sink. This is not a claim of three independent failure domains.
+        self.cp.configure_quorum(ADMIN, self.electorate())
+        token_paths = {}
+        for label, token in [('old', OLD_TOKEN), ('candidate', NEW_TOKEN), ('peer', COMPETITOR_TOKEN)]:
+            path = self.root / (label + '.capability')
+            path.write_text(token)
+            path.chmod(0o600)
+            token_paths[label] = path
+        payload = canonical_json_bytes({'work_unit_id': 'terminal:43', 'session_id': 'terminal:existing',
+                                        'cursor': 'effect:43', 'bytes': 'confirmed before failure'})
+        permit_path = self.root / 'old-permit.json'
+        permit_path.write_bytes(canonical_json_bytes(self.old_permit))
+        payload_path = self.root / 'terminal-payload.bin'
+        payload_path.write_bytes(payload)
+        script = ('import json,sys; from pathlib import Path; '
+                  'from tools.qikvrt_authority_transition import AuthorityControlPlane,secret_file,decode; '
+                  'cp=AuthorityControlPlane(Path(sys.argv[1])); '
+                  'r=cp.commit_write(secret_file(Path(sys.argv[2])),decode(Path(sys.argv[3]).read_bytes()),'
+                  '"terminal:43:effect:43",Path(sys.argv[4]).read_bytes()); '
+                  'print(json.dumps(r),flush=True); sys.stdin.read()')
+        writer = subprocess.Popen([sys.executable, '-B', '-c', script, str(self.cp.path),
+                                   str(token_paths['old']), str(permit_path), str(payload_path)],
+                                  cwd=transition.ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE, text=True)
+        self.addCleanup(lambda: writer.kill() if writer.poll() is None else None)
+        self.addCleanup(writer.stdout.close)
+        self.addCleanup(writer.stderr.close)
+        self.addCleanup(writer.stdin.close)
+        committed = json.loads(writer.stdout.readline())
+        self.assertTrue(committed['fresh_sink_readback'])
+        started = time.monotonic_ns()
+        writer.kill()
+        writer.wait(timeout=5)
+        self.assertLess(writer.returncode, 0)
+        shutil.rmtree(self.old_node)
+        shutil.rmtree(self.fixture.source)
+        shutil.rmtree(self.fixture.payload)
+        for directory in (self.root / 'checkpoint', self.root / 'old-checkpoint'):
+            shutil.rmtree(directory)
+
+        def command(operation, label, extra=(), expected=0):
+            result = subprocess.run([sys.executable, '-B', str(transition.ROOT / 'tools/qikvrt_authority_transition.py'),
+                                     operation, '--control-plane', str(self.cp.path),
+                                     '--token-file', str(token_paths[label]), *extra],
+                                    cwd=transition.ROOT, capture_output=True, timeout=15)
+            self.assertEqual(result.returncode, expected, result.stderr.decode())
+            return json.loads(result.stdout)
+
+        target = ['--node', str(self.node), '--expect-manifest-sha256', self.manifest]
+        observation = command('observe', 'candidate', target)
+        observation_path = self.root / 'quorum-observation.json'
+        observation_path.write_bytes(canonical_json_bytes(observation))
+        proposal = command('quorum-open', 'candidate', target + ['--observation', str(observation_path),
+                            '--incident-sha256', recovery.digest(canonical_json_bytes(committed))])
+        for label, node in [('candidate', self.node), ('peer', self.competitor)]:
+            command('quorum-vote', label, ['--node', str(node), '--expect-manifest-sha256', self.manifest,
+                    '--quorum-round', proposal['id'], '--failure-observation-sha256', recovery.digest(label.encode())])
+        changed = command('takeover', 'candidate', target + ['--observation', str(observation_path),
+                          '--quorum-round', proposal['id']])
+        self.assertEqual(len(changed['quorum_certificate']['voters']), 2)
+        self.assertFalse(changed['writer_enabled'])
+        successor_permit = self.root / 'successor-permit.json'
+        successor_permit.write_bytes(canonical_json_bytes(changed['permit']))
+        activated = command('activate', 'candidate', target + ['--permit', str(successor_permit)])
+        self.assertTrue(activated['writer_enabled'])
+        replay = command('write', 'candidate', ['--permit', str(successor_permit), '--effect-id', 'terminal:43:effect:43',
+                         '--payload', str(payload_path)])
+        self.assertTrue(replay['replayed'])
+        self.assertEqual(replay['payload_sha256'], committed['payload_sha256'])
+        self.assertFalse(replay['effect_ack_done'])
+        command('write', 'old', ['--permit', str(permit_path), '--effect-id', 'terminal:43:effect:44',
+                '--payload', str(payload_path)], expected=2)
+        result = command('readback', 'candidate')
+        with self.cp.transaction() as db:
+            rows = db.execute('SELECT id,payload FROM effects').fetchall()
+        self.assertEqual(rows, [('terminal:43:effect:43', payload)])
+        self.assertEqual(result['state']['scheduler']['schedules'][0]['pending_work'][0]['work_unit_id'], 'watch:43')
+        self.assert_old_rejected()
+        print('QIKVRT_QUORUM_PROCESS_READBACK ' + json.dumps({
+            'authority_process_killed': True, 'voter_processes': 2, 'authority_epoch': result['state']['authority_epoch'],
+            'same_terminal_session_and_work_unit_bytes': True, 'same_effect_id_replayed_once': True,
+            'previous_writer_rejected': True, 'fixture_recovery_elapsed_ns': time.monotonic_ns() - started,
+            'independent_hosts_verified': False, 'native_terminal_ui_failover_verified': False,
+            'scope': 'LOCAL_PROCESS_FAILURE_WITH_SURVIVING_FENCED_CONTROL_PLANE', 'effect_ack_done': False}, sort_keys=True))
+
+    def test_quorum_loss_and_manual_bypass_cannot_promote_a_successor(self):
+        observation, proposal = self.quorum_proposal()
+        self.cp.vote_quorum_round(self.node, self.manifest, NEW_TOKEN, proposal['id'], '7' * 64)
+        before = self.cp.readback(NEW_TOKEN)['state']
+        with self.assertRaisesRegex(transition.TransitionError, 'quorum unavailable'):
+            self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])
+        with self.assertRaisesRegex(transition.TransitionError, 'manual bypass forbidden'):
+            self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation)
+        self.assertEqual(self.cp.readback(NEW_TOKEN)['state'], before)
+
+    def test_duplicate_vote_counts_once_and_changed_observation_is_rejected(self):
+        observation, proposal = self.quorum_proposal()
+        first = self.cp.vote_quorum_round(self.node, self.manifest, NEW_TOKEN, proposal['id'], '7' * 64)
+        repeated = self.cp.vote_quorum_round(self.node, self.manifest, NEW_TOKEN, proposal['id'], '7' * 64)
+        self.assertFalse(first['replayed'])
+        self.assertTrue(repeated['replayed'])
+        with self.assertRaisesRegex(transition.TransitionError, 'vote replay observation conflict'):
+            self.cp.vote_quorum_round(self.node, self.manifest, NEW_TOKEN, proposal['id'], '9' * 64)
+        with self.assertRaisesRegex(transition.TransitionError, 'quorum unavailable'):
+            self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])
+
+    def test_voter_cannot_vote_for_competing_candidates_during_one_live_round(self):
+        observation, proposal = self.quorum_proposal()
+        competing_observation = self.cp.observe(self.competitor, self.manifest, COMPETITOR_TOKEN)
+        competing = self.cp.open_quorum_round(self.competitor, self.manifest, COMPETITOR_TOKEN,
+                                             competing_observation, '9' * 64)
+        self.cp.vote_quorum_round(self.node, self.manifest, NEW_TOKEN, proposal['id'], '7' * 64)
+        with self.assertRaisesRegex(transition.TransitionError, 'unexpired quorum round'):
+            self.cp.vote_quorum_round(self.node, self.manifest, NEW_TOKEN, competing['id'], '7' * 64)
+        with self.assertRaisesRegex(transition.TransitionError, 'quorum round replay binding conflict'):
+            self.cp.open_quorum_round(self.node, self.manifest, NEW_TOKEN, observation, '9' * 64)
+
+    def test_quorum_requires_exact_owner_admitted_members_and_capabilities(self):
+        members = self.electorate()
+        for ids in (members[:2], [members[0], members[1], members[1]], [members[0], members[1], 'f' * 64]):
+            with self.assertRaises(transition.TransitionError):
+                self.cp.configure_quorum(ADMIN, ids)
+        with self.assertRaisesRegex(transition.TransitionError, 'owner admin capability'):
+            self.cp.configure_quorum(NEW_TOKEN, members)
+        _, proposal = self.quorum_proposal()
+        with self.assertRaises(transition.TransitionError):
+            self.cp.vote_quorum_round(self.competitor, self.manifest, NEW_TOKEN, proposal['id'], '8' * 64)
+        with self.assertRaises(transition.TransitionError):
+            self.cp.vote_quorum_round(self.competitor, self.manifest, 'f' * 64, proposal['id'], '8' * 64)
+
+    def test_expired_and_clock_rollback_quorum_proofs_hold_without_mutating_authority(self):
+        observation, proposal = self.quorum_proposal()
+        self.quorum_votes(proposal)
+        before = self.cp.readback(NEW_TOKEN)['state']
+        for stamp in (proposal['issued_ns'] - 1, proposal['expires_ns'] + 1):
+            with mock.patch.object(transition.time, 'time_ns', return_value=stamp):
+                with self.assertRaises(transition.TransitionError):
+                    self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])
+                with self.assertRaises(transition.TransitionError):
+                    self.cp.vote_quorum_round(self.competitor, self.manifest, COMPETITOR_TOKEN, proposal['id'], '8' * 64)
+        self.assertEqual(self.cp.readback(NEW_TOKEN)['state'], before)
+
+    def test_accepted_state_change_invalidates_every_existing_quorum_vote(self):
+        observation, proposal = self.quorum_proposal()
+        self.quorum_votes(proposal)
+        self.cp.commit_write(OLD_TOKEN, self.old_permit, 'later-confirmed-effect', b'preserve me')
+        before = self.cp.readback(NEW_TOKEN)['state']
+        with self.assertRaises(transition.TransitionError):
+            self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])
+        with self.assertRaisesRegex(transition.TransitionError, 'superseded quorum round'):
+            self.cp.vote_quorum_round(self.competitor, self.manifest, COMPETITOR_TOKEN, proposal['id'], '8' * 64)
+        self.assertEqual(self.cp.readback(NEW_TOKEN)['state'], before)
+
+    def test_owner_reconfiguration_invalidates_old_round_without_vote_transfer(self):
+        observation, proposal = self.quorum_proposal()
+        self.quorum_votes(proposal)
+        self.cp.configure_quorum(ADMIN, self.electorate())
+        with self.assertRaisesRegex(transition.TransitionError, 'superseded quorum round'):
+            self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])
+        with self.assertRaisesRegex(transition.TransitionError, 'quorum round replay binding conflict'):
+            self.cp.open_quorum_round(self.node, self.manifest, NEW_TOKEN, observation, '6' * 64)
+
+    def test_unresolved_provider_effect_still_blocks_quorum_takeover(self):
+        observation, proposal = self.quorum_proposal()
+        self.quorum_votes(proposal)
+        with self.cp.transaction() as db:
+            db.execute('CREATE TABLE provider_effects (status TEXT)')
+            db.execute("INSERT INTO provider_effects VALUES ('PENDING')")
+        with self.assertRaisesRegex(transition.TransitionError, 'unresolved provider effect'):
+            self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])
+
+    def test_successful_quorum_cannot_inherit_admission_into_a_later_epoch(self):
+        observation, proposal = self.quorum_proposal()
+        self.quorum_votes(proposal)
+        permit = self.cp.takeover(self.node, self.manifest, NEW_TOKEN, observation, proposal['id'])['permit']
+        self.cp.activate(self.node, self.manifest, NEW_TOKEN, permit)
+        fresh = self.cp.observe(self.competitor, self.manifest, COMPETITOR_TOKEN)
+        with self.assertRaisesRegex(transition.TransitionError, 'stale or invalid admitted quorum'):
+            self.cp.open_quorum_round(self.competitor, self.manifest, COMPETITOR_TOKEN, fresh, '6' * 64)
+        self.assert_old_rejected()
 
     def test_complete_authority_loss_takeover_and_actual_sink_effect(self):
         shutil.rmtree(self.old_node)
