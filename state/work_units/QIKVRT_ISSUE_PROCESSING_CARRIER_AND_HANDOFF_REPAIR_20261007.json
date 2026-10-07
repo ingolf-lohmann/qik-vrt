@@ -28,6 +28,41 @@
     "retirement_primary_source": "https://github.blog/changelog/2026-07-30-github-models-is-now-retired/",
     "search_scope": "All tracked Main files including hidden adapters; relevant open issue-processor candidates including #379 and #485. OPENAI_API_KEY occurred only as a personal-capability boundary marker, not an admitted inference carrier."
   },
+  "correction_history": [
+    {
+      "correction": "Export processor paths from RUNNER_TEMP through GITHUB_ENV in a setup step; execute that step in the added regression.",
+      "diagnosis": "runner.temp is unavailable in jobs.<job_id>.env; GitHub Contexts reference confirms step scope is required.",
+      "diagnosis_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts",
+      "native_run": 37589722884,
+      "native_validation_observation": {
+        "conclusion": "failure",
+        "event": "push",
+        "jobs": 0,
+        "status": "completed"
+      },
+      "predecessor_commit": "3c4b73f1d0c4ca4fa516944230f8463b3f791412",
+      "predecessor_make_test_log_sha256": "aae724dd23b220e95af8ac070a91bca126f7a345f2061f3d55c87c4102c5c8c4",
+      "predecessor_results_transferred": false,
+      "predecessor_tree": "6256186ef8adb91613e4e3eb2e742cdcee52a201",
+      "predecessor_verification": {
+        "actual_local_python": "3.12.14",
+        "exact_committed_subject_tests": "REQUIRED_AFTER_COMMIT; read back in PR evidence",
+        "issue_agent_regressions": 24,
+        "local_preflight_make_test": "PASS",
+        "preflight_log_sha256": "f7ac9896ade4da33cb777ac7ee973dff503adc2626a488cd09ee11d5ea85f485",
+        "provider_test_boundary": "Git transactions and workflow branch/push shells are real local executions; GitHub PR/comment responses are fixtures, not live provider effects.",
+        "startup_notes": {
+          "base_integrity_stale_before_task_edits": true,
+          "bounded_optimization_apply": "HOLD because task edits make worktree dirty; no unrelated optimization performed",
+          "candidate_integrity_regenerated": true,
+          "optional_runtime_profile_state": "CONTINUE",
+          "partial_clone_historical_source_blobs_prefetched": true
+        },
+        "tool_cache": "14/14 (100%)",
+        "workflow_shell_blocks": 9
+      }
+    }
+  ],
   "created_at": "2026-10-07T07:44:04.137263+00:00",
   "external_effects": {
     "authorized_scope": "Reviewable repair branch and draft PR only; no Main merge, approval, ruleset change, issue closure, deployment or publication."
@@ -62,6 +97,7 @@
   },
   "git_history": {
     "branch": "work/issue-processing-repair-20261007-3d614851",
+    "correction_parent": "3c4b73f1d0c4ca4fa516944230f8463b3f791412",
     "force_push": false,
     "main_mutation": false,
     "parent": "3d6148513b289005e71c73bae12de26f5f42f445"
@@ -131,10 +167,10 @@
   "joint_components": [],
   "outputs": [
     {
-      "bytes": 7173,
-      "git_blob_sha1": "306582759b1f1421d2026b6a2a1f9ea64c7dc6d6",
+      "bytes": 7315,
+      "git_blob_sha1": "39f515e8535b7cea93ad6c9baffa9da7c278abcc",
       "path": ".github/workflows/issue-autonomous-processing.yml",
-      "sha256": "23bf00c747dc1368dab648ed646407e18680ba7b00d7846cd9a6eeeb8eee4f15"
+      "sha256": "44a71307b1f86506de3a9cda5f86bed64f217b760b7152d2b7e08ddeb001290b"
     },
     {
       "bytes": 11292,
@@ -185,10 +221,10 @@
       "sha256": "6d6400b7eed4318c747a0cf13b9136e572de074b9f5d9fff23121d7f68b1ab2e"
     },
     {
-      "bytes": 15628,
-      "git_blob_sha1": "575eec4b6ed349b8f9d7cf5d67705d64d4e3d6b9",
+      "bytes": 16818,
+      "git_blob_sha1": "59b4e566aadae1fef9a91e25d572b4f4b70d4bd7",
       "path": "tests/issue_agent/test_processing.py",
-      "sha256": "02b87faede7dbef7ee88a6258db009da9dcdfbbfa5f5690e154a8ff65da3988d"
+      "sha256": "1cef45bb4e08c898bfb31ece5d3c5d4723db6435e3f36bfc32e0d460acf2c516"
     }
   ],
   "predecessor_evidence_transfer": false,
@@ -227,10 +263,13 @@
   "unresolved_origin": [],
   "verification": {
     "actual_local_python": "3.12.14",
+    "complete_make_test": "REQUIRED_AFTER_SUCCESSOR_COMMIT; read back in PR evidence",
     "exact_committed_subject_tests": "REQUIRED_AFTER_COMMIT; read back in PR evidence",
-    "issue_agent_regressions": 24,
-    "local_preflight_make_test": "PASS",
-    "preflight_log_sha256": "f7ac9896ade4da33cb777ac7ee973dff503adc2626a488cd09ee11d5ea85f485",
+    "issue_agent_regression_result": "PASS on successor source bytes; full exact-commit checks required afterward",
+    "issue_agent_regressions": 25,
+    "local_preflight_make_test": "PASS on successor candidate before final evidence receipt materialization",
+    "native_workflow_validation": "REQUIRED_AFTER_SUCCESSOR_PUBLICATION; no live workflow execution claimed",
+    "preflight_log_sha256": "07a69be007068f2abc4957214f373eaac851c18eb2f9319c2fab2bf28b2a911c",
     "provider_test_boundary": "Git transactions and workflow branch/push shells are real local executions; GitHub PR/comment responses are fixtures, not live provider effects.",
     "startup_notes": {
       "base_integrity_stale_before_task_edits": true,
@@ -240,7 +279,8 @@
       "partial_clone_historical_source_blobs_prefetched": true
     },
     "tool_cache": "14/14 (100%)",
-    "workflow_shell_blocks": 9
+    "workflow_shell_blocks": 10,
+    "workflow_shell_syntax_result": "PASS"
   },
   "work_unit_id": "QIKVRT_ISSUE_PROCESSING_CARRIER_AND_HANDOFF_REPAIR_20261007"
 }

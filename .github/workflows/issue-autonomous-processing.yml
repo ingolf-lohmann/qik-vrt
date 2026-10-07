@@ -23,15 +23,18 @@ jobs:
   process:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      ISSUE_JSON: ${{ runner.temp }}/qikvrt-issue.json
-      TRUSTED_PROCESSOR_ROOT: ${{ runner.temp }}/qikvrt-issue-processor
-      HANDOFF_DIRECTORY: ${{ runner.temp }}/qikvrt-issue-handoff
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
+
+      - name: Set transient processor paths
+        run: |
+          set -euo pipefail
+          echo "ISSUE_JSON=$RUNNER_TEMP/qikvrt-issue.json" >> "$GITHUB_ENV"
+          echo "TRUSTED_PROCESSOR_ROOT=$RUNNER_TEMP/qikvrt-issue-processor" >> "$GITHUB_ENV"
+          echo "HANDOFF_DIRECTORY=$RUNNER_TEMP/qikvrt-issue-handoff" >> "$GITHUB_ENV"
 
       - name: Validate and retain trusted processor
         run: |

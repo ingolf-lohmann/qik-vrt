@@ -28,6 +28,26 @@ def step_script(name):
     return "\n".join(line[10:] for line in block.splitlines()) + "\n"
 
 
+class WorkflowEnvironmentTest(unittest.TestCase):
+    def test_runner_paths_are_exported_at_step_scope(self):
+        # GitHub rejects runner context in jobs.<job_id>.env before creating a job.
+        self.assertNotIn("${{ runner.", WORKFLOW.split("    steps:\n", 1)[0])
+        with tempfile.TemporaryDirectory(prefix="issue processor ") as directory:
+            environment_file = Path(directory) / "github env"
+            result = subprocess.run(
+                ["bash", "-c", step_script("Set transient processor paths")],
+                env=dict(os.environ, RUNNER_TEMP=directory, GITHUB_ENV=str(environment_file)),
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            exported = dict(line.split("=", 1) for line in environment_file.read_text().splitlines())
+            self.assertEqual(exported, {
+                "ISSUE_JSON": str(Path(directory) / "qikvrt-issue.json"),
+                "TRUSTED_PROCESSOR_ROOT": str(Path(directory) / "qikvrt-issue-processor"),
+                "HANDOFF_DIRECTORY": str(Path(directory) / "qikvrt-issue-handoff"),
+            })
+
+
 class GitHubStub:
     """Only the GitHub boundary is replaced; Git transactions remain real."""
     def __init__(self, subject, mode="success"):
