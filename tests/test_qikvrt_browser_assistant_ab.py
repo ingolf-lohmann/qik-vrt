@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import threading
 import unittest
@@ -13,6 +14,81 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from tools import qikvrt_browser_assistant_ab as ab
+
+
+class PersonalCarrierTests(unittest.TestCase):
+    """Actual loopback adapter routing with explicit model transport doubles."""
+    def test_frozen_task_roundtrip_restart_and_no_oracle_or_product_promotion(self):
+        from src import qikvrt_personal_assistant as personal
+        from src import qikvrt_effect_ack_http_terminal as terminal
+        from tests.test_qikvrt_personal_assistant import TransportDouble, TOKEN, KEY
+        from http.server import ThreadingHTTPServer
+        with tempfile.TemporaryDirectory() as temp, mock.patch.dict(os.environ, {"QIKVRT_PERSONAL_LOCAL_TOKEN": TOKEN}):
+            root = Path(temp)
+            run = root / "run"
+            manifest = ab.make_plan(run)
+            pair = manifest["pairs"][0]
+            tid = pair["pair_id"] + "-baseline"
+            transport = TransportDouble()
+            runtime = personal.PersonalRuntime(root / "state", "explicit-test-model", KEY, TOKEN, transport=transport)
+            server = ThreadingHTTPServer(("127.0.0.1", 0), personal.personal_handler(terminal.Handler, runtime))
+            worker = threading.Thread(target=server.serve_forever, daemon=True); worker.start()
+            try:
+                first = ab.personal_carrier(run, tid, server.server_port, root / "first")
+                self.assertEqual(first["state"], "INTEGRATION_READBACK_ONLY")
+                self.assertTrue(first["baseline_local_retention_readback"])
+                self.assertFalse(first["authenticated_runtime_readback"])
+                self.assertEqual(first["product_trials_executed"], 0)
+                self.assertIsNone(first["product_metrics"])
+                provider_input = json.loads(transport.requests[-1][1]["input"][0]["content"])
+                self.assertEqual(set(provider_input), {"task", "sources", "source_hashes"})
+                self.assertNotIn("oracle", provider_input)
+                self.assertNotIn("checkpoint", provider_input)
+                session = runtime.load(first["session_id"])
+                self.assertIsNone(session["checkpoint"])
+                server.shutdown(); server.server_close(); worker.join()
+                runtime.close()
+                runtime = personal.PersonalRuntime(root / "state", "explicit-test-model", KEY, TOKEN, transport=transport)
+                server = ThreadingHTTPServer(("127.0.0.1", 0), personal.personal_handler(terminal.Handler, runtime))
+                worker = threading.Thread(target=server.serve_forever, daemon=True); worker.start()
+                n = len(transport.requests)
+                restored = ab.personal_carrier(run, tid, server.server_port, root / "restored", first["session_id"])
+                self.assertEqual(restored["session_sha256"], first["session_sha256"])
+                self.assertEqual(len(transport.requests), n)
+                self.assertEqual(restored["assistant_create_attempts"], 0)
+                self.assertFalse(restored["interruption_observed"])
+                # A session from another task/arm cannot be relabelled.
+                other = ab.personal_carrier(run, pair["pair_id"] + "-qikvrt", server.server_port, root / "wrong-arm", first["session_id"])
+                self.assertEqual(other["state"], "BLOCK")
+                self.assertEqual(len(transport.requests), n)
+                # Reject a different running source before any paid model request.
+                original_subject = runtime.subject
+                runtime.subject = {**runtime.subject, "sources": {}}
+                mismatch = ab.personal_carrier(run, tid, server.server_port, root / "wrong-source")
+                self.assertEqual(mismatch["state"], "BLOCK")
+                self.assertEqual(mismatch["assistant_create_attempts"], 0)
+                self.assertEqual(len(transport.requests), n)
+                runtime.subject = original_subject
+                # Ambiguous provider result remains pending, and is not retried.
+                transport.fail = True
+                blocked = ab.personal_carrier(run, tid, server.server_port, root / "failed")
+                self.assertEqual(blocked["state"], "BLOCK")
+                self.assertEqual(blocked["assistant_create_attempts"], 1)
+                self.assertEqual(len(transport.requests), n + 1)
+                self.assertFalse(blocked["product_claim_allowed"])
+                for path in root.rglob("response-*.json"):
+                    self.assertNotIn(TOKEN.encode(), path.read_bytes())
+                    self.assertNotIn(KEY.encode(), path.read_bytes())
+            finally:
+                server.shutdown(); server.server_close(); worker.join(); runtime.close()
+
+    def test_missing_auth_rejects_before_network_or_output(self):
+        with tempfile.TemporaryDirectory() as temp, mock.patch.dict(os.environ, {"QIKVRT_PERSONAL_LOCAL_TOKEN": ""}), mock.patch.object(ab.http.client, "HTTPConnection") as network:
+            root = Path(temp); manifest = ab.make_plan(root / "run")
+            with self.assertRaisesRegex(ab.InvalidRun, "AUTHENTICATION_UNAVAILABLE"):
+                ab.personal_carrier(root / "run", manifest["pairs"][0]["trials"][0], 8771, root / "out")
+            network.assert_not_called()
+            self.assertFalse((root / "out").exists())
 
 
 class NativeCarrierBoundaryTests(unittest.TestCase):

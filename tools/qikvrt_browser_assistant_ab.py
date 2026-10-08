@@ -56,6 +56,7 @@ SOURCE_PATHS = [
     "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
     "src/qikvrt_personal_assistant.py",
     "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+    "personal/ingolf-lohmann/firefox-assistant/README.md",
     "personal/ingolf-lohmann/firefox-assistant/ui.html",
     "personal/ingolf-lohmann/firefox-assistant/ui.js",
     "personal/ingolf-lohmann/firefox-assistant/ui.css",
@@ -550,6 +551,123 @@ def build_server(run: Path, port: int = 0) -> ThreadingHTTPServer:
     return ThreadingHTTPServer(("127.0.0.1", port), Handler)
 
 
+def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
+                     session_id: str | None = None) -> dict[str, Any]:
+    """Observer-owned HTTP integration, never an A/B product-trial substitute.
+
+    With no session ID, creates ONE real provider request via the existing
+    adapter. With an ID, only reads existing ordinary persistence (e.g. after a
+    separately witnessed restart). No oracle, fixture checkpoint, reset, retry,
+    or model-output-derived success is supplied by this carrier.
+    """
+    manifest, _, tasks = load_run(run)
+    pair = pair_for(manifest, trial_id)
+    task = tasks[pair["task_id"]]
+    mode = trial_id.rsplit("-", 1)[1]
+    token = os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", "")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{32,256}", token):
+        raise InvalidRun("PERSONAL_LOCAL_AUTHENTICATION_UNAVAILABLE")
+    if not 1 <= port <= 65535:
+        raise InvalidRun("PERSONAL_LOOPBACK_PORT_INVALID")
+    if session_id is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,160}", session_id):
+        raise InvalidRun("PERSONAL_SESSION_ID_INVALID")
+    output = output.absolute()
+    if any(p.is_symlink() for p in [output, *output.parents]):
+        raise InvalidRun("PERSONAL_OBSERVER_OUTPUT_UNSAFE")
+    output.mkdir(parents=True, exist_ok=False, mode=0o700)
+    receipt = {"schema": "qikvrt_browser_ab_personal_carrier_v1", "state": "HOLD",
+               "evidence_class": "PERSONAL_HTTP_INTEGRATION_ONLY", "trial_id": trial_id,
+               "manifest_sha256": digest((run / "manifest.json").read_bytes()),
+               "observer_epoch": str(uuid.uuid4()), "operations": [],
+               "assistant_create_attempts": 0, "authenticated_runtime_readback": False,
+               "baseline_local_retention_readback": False,
+               "provider_retention_readback": False, "firefox_execution_observed": False,
+               "interruption_observed": False, "equivalent_pre_runs_observed": False,
+               "oracle_filesystem_isolation_verified": False,
+               "product_trials_executed": 0, "product_metrics": None,
+               "product_claim_allowed": False, "effect_ack_done": False}
+
+    def request(method, path, body=None):
+        # Fixed literal loopback; HTTPConnection neither redirects nor retries.
+        # Authentication never appears in argv, persisted payloads or errors.
+        connection = http.client.HTTPConnection("127.0.0.1", port, timeout=95)
+        start = time.monotonic_ns()
+        entry = {"method": method, "path": path, "start_monotonic_ns": start}
+        receipt["operations"].append(entry)
+        if body is not None:
+            entry["request_sha256"] = digest(canonical(body))
+        try:
+            connection.request(method, path, body=canonical(body) if body is not None else None,
+                               headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"})
+            response = connection.getresponse()
+            entry["http_status"] = response.status
+            raw = response.read(2 * 1024 * 1024 + 1)
+            if len(raw) > 2 * 1024 * 1024 or any(secret and secret.encode() in raw for secret in (token, os.environ.get("OPENAI_API_KEY", ""))):
+                raise InvalidRun("PERSONAL_RESPONSE_OVERSIZE_OR_SECRET")
+            entry["response_sha256"] = digest(raw)
+            raw_path = output / f"response-{len(receipt['operations']):02}.json"
+            with raw_path.open("xb") as stream:
+                stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+            raw_path.chmod(0o600)
+            if response.status != 200:
+                raise InvalidRun("PERSONAL_HTTP_" + str(response.status) + "_NO_RETRY")
+            value = json.loads(raw)
+            if not isinstance(value, dict):
+                raise InvalidRun("PERSONAL_RESPONSE_NOT_OBJECT")
+            return value
+        finally:
+            entry["end_monotonic_ns"] = time.monotonic_ns()
+            connection.close()
+
+    try:
+        initial = request("GET", "/personal/capabilities")
+        expected_sources = {p: v["sha256"] for p, v in manifest["preflight"]["source_files"].items()}
+        required = {"src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py"}
+        initial_sources = initial["subject"]["sources"]
+        if (initial.get("local_client_authenticated") is not True or not required <= set(initial_sources)
+                or any(p not in expected_sources or v["sha256"] != expected_sources[p] for p, v in initial_sources.items())):
+            raise InvalidRun("PERSONAL_RUNTIME_SOURCE_OR_AUTH_MISMATCH_BEFORE_REQUEST")
+        if session_id is None:
+            # Allowlist, never copy fixture/oracle/checkpoint wholesale.
+            body = {"mode": mode, "task": task["prompt"], "sources": task["sources"], "confirmed": True}
+            receipt["assistant_create_attempts"] = 1
+            value = request("POST", "/personal/create", body)
+            session_id = value["session"]["id"]
+            if not re.fullmatch(r"[A-Za-z0-9_-]{1,160}", session_id):
+                raise InvalidRun("PERSONAL_SESSION_ID_INVALID")
+        value = request("GET", "/personal/session/" + session_id)
+        session = value["session"]
+        if (value["session_sha256"] != digest(canonical(session)) or session["mode"] != mode
+                or session["task"] != task["prompt"] or session["sources"] != task["sources"]
+                or session["source_hashes"] != source_map(task) or session["status"] != "READY"
+                or not session["history"]):
+            raise InvalidRun("PERSONAL_SESSION_TASK_SOURCE_OR_RETENTION_BINDING_MISMATCH")
+        if mode == "baseline" and session["checkpoint"] is not None:
+            raise InvalidRun("BASELINE_UNEXPECTED_QIKVRT_CHECKPOINT")
+        capabilities = request("GET", "/personal/capabilities")
+        if capabilities["binding"] != initial["binding"] or capabilities["binding"] != value["binding"] or capabilities.get("local_client_authenticated") is not True:
+            raise InvalidRun("PERSONAL_RUNTIME_BINDING_OR_LOCAL_AUTH_MISMATCH")
+        expected_sources = {p: v["sha256"] for p, v in manifest["preflight"]["source_files"].items()}
+        runtime_sources = capabilities["subject"]["sources"]
+        if any(p not in expected_sources or v["sha256"] != expected_sources[p] for p, v in runtime_sources.items()):
+            raise InvalidRun("PERSONAL_RUNTIME_SOURCE_MISMATCH")
+        required = {"src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py"}
+        if not required <= set(runtime_sources):
+            raise InvalidRun("PERSONAL_RUNTIME_SOURCE_BINDING_INCOMPLETE")
+        receipt.update(session_id=session_id, session_sha256=value["session_sha256"],
+                       binding=value["binding"], baseline_local_retention_readback=mode == "baseline",
+                       authenticated_runtime_readback=capabilities.get("authenticated_runtime_readback") is True,
+                       state="INTEGRATION_READBACK_ONLY")
+        # GET evidence after restart is retained even when auth freshness expires.
+        receipt["remaining_boundary"] = "No Firefox, equivalent pre-run, provider-retention, independent interruption or oracle filesystem isolation is established by this HTTP carrier."
+    except (InvalidRun, OSError, ValueError, KeyError, TypeError, http.client.HTTPException) as exc:
+        # Never persist exception representations from transport/provider code.
+        receipt.update(state="BLOCK", reason=str(exc) if isinstance(exc, InvalidRun) else "PERSONAL_TRANSPORT_OR_READBACK_INVALID_NO_RETRY")
+    receipt["receipt_payload_sha256"] = digest(canonical(receipt))
+    write_json(output / "RECEIPT.json", receipt)
+    return receipt
+
+
 def terminal_smoke() -> dict[str, Any]:
     """Actual existing HTTP path, no Firefox, no product measurements, no live service."""
     spec = importlib.util.spec_from_file_location("qikvrt_ab_terminal_smoke", ROOT / "src/qikvrt_effect_ack_http_terminal.py")
@@ -899,6 +1017,12 @@ def main() -> int:
     check = sub.add_parser("self-check")
     check.add_argument("--output", type=Path, required=True)
     sub.add_parser("terminal-smoke")
+    personal = sub.add_parser("personal-carrier")
+    personal.add_argument("--run", type=Path, required=True)
+    personal.add_argument("--trial-id", required=True)
+    personal.add_argument("--port", type=int, default=8771)
+    personal.add_argument("--output", type=Path, required=True)
+    personal.add_argument("--session-id", help="Read-only existing-session readback; omit to create one actual assistant pre-run")
     native = sub.add_parser("temdd-carrier")
     native.add_argument("--source", type=Path, required=True)
     native.add_argument("--output", type=Path, required=True)
@@ -914,6 +1038,8 @@ def main() -> int:
             result = export_analysis(args.run, args.output) if args.output else analyze(args.run)
         elif args.command == "self-check":
             result = self_check(args.output)
+        elif args.command == "personal-carrier":
+            result = personal_carrier(args.run, args.trial_id, args.port, args.output, args.session_id)
         elif args.command == "terminal-smoke":
             result = terminal_smoke()
         elif args.command == "temdd-carrier":
@@ -928,6 +1054,8 @@ def main() -> int:
             return 0
         print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False))
         if args.command == "temdd-carrier" and not result["native_transport_execution_complete"]:
+            return 2
+        if args.command == "personal-carrier" and result["state"] == "BLOCK":
             return 2
         return 0
     except (InvalidRun, OSError, ValueError, KeyError, TypeError) as exc:

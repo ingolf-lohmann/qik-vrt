@@ -257,3 +257,47 @@ sind historische, unveränderte Nachweise auf HEAD
 gebundenen Checkout. Nach Änderungen an Harness-/Runtimebytes einen neuen Plan
 erzeugen; frühere Manifeste oder synthetische Uhren nicht auf den Nachfolger
 übertragen. Die separate `personal-adapter/`-Evidenz bindet den neuen Quellstand.
+
+## HTTP-Anschluss für echte Personal-Vorläufe (Integrationsschritt)
+
+`personal-carrier` verbindet den vorhandenen Plan mit dem vorhandenen Adapter.
+Er prüft zuerst lokal authentifizierte Capability-/Quellbindungen und sendet
+bei fehlender `--session-id` genau einen Create-Aufruf mit Aufgabenstellung,
+Quellen und Arm an `/personal/create`. Oracle und Fixture-Checkpoint werden
+nicht übertragen. Der Adapter verwendet seinen bestehenden Providerpfad und
+seine gewöhnliche Persistenz. Unklare Antworten werden nicht wiederholt.
+
+```bash
+python3 -B tools/qikvrt_browser_assistant_ab.py plan --output /private/observer/run
+# Bestehenden opt-in Terminalserver mit explizitem Modell und privatem Zustand
+# starten; OPENAI_API_KEY und QIKVRT_PERSONAL_LOCAL_TOKEN bleiben im Environment.
+python3 -B src/qikvrt_effect_ack_http_terminal.py --personal-model MODEL --personal-state-dir /private/assistant/state
+python3 -B tools/qikvrt_browser_assistant_ab.py personal-carrier --run /private/observer/run --trial-id TRIAL_FROM_PLAN --output /private/observer/pre-run
+# Nach separat beobachtetem Neustart: ausschließlich GET, keine Modellanfrage.
+python3 -B tools/qikvrt_browser_assistant_ab.py personal-carrier --run /private/observer/run --trial-id TRIAL_FROM_PLAN --session-id SESSION_FROM_RECEIPT --output /private/observer/restored
+```
+
+Jeder neue Observer-Ordner enthält exakte HTTP-Antwortbytes, deren SHA-256,
+monotone Anfangs-/Endzeiten und ein gebundenes Receipt. Sitzung, Aufgabenstellung,
+Arm, Quellenhashes, vollständige lokale Historie und Runtime-Bindung werden
+geprüft. Fremde Aufgaben oder Arme können nicht umetikettiert werden. Der
+Baseline-Checkpoint bleibt leer; ihre gewöhnliche Historie wird nicht gelöscht.
+Ein Transport-Double kann keine authentifizierte Modell-Laufzeit attestieren.
+Fehlende lokale Authentifizierung blockiert vor jeder Netzwerkoperation.
+
+Dies ist **kein Produktversuch**: ein Create liefert noch keinen äquivalenten
+Vorlauf. GET nach einem Restart beweist für sich keinen SIGKILL. Der Carrier
+misst weder Wiederaufnahme noch die vier Nutzermetriken. Er verifiziert keine
+Provider-Retention, Firefox-Ausführung oder Dateisystem-Isolation des Oracle.
+Der Assistent muss weiterhin ohne Zugriff auf Observer-Checkout, Fixtures und
+Bewertungswerkzeuge betrieben werden; eine bloße HTTP-Allowlist beweist diese
+Isolation nicht. Die Rohantworten gehören ausschließlich in die private
+Observer-Sicht. Der synthetische Fixture-Zwischenstand wird nicht als realer
+Checkpoint übernommen. Planreihenfolge, unabhängige Unterbrechungsbelege,
+60 Sekunden Unterbrechung, 180 Sekunden Messfenster und alle Fehlerfälle
+bleiben für den späteren Produktlauf erforderlich.
+
+`product_trials_executed=0`, `product_metrics=null` und
+`product_claim_allowed=false` bleiben unverändert. Historische Pläne benötigen
+weiterhin ihre gebundenen Quellbytes; für diesen Anschluss einen frischen Plan
+erstellen.
