@@ -57,15 +57,20 @@ export class Repository {
   constructor(db){this.db=db;}
   close(){this.db.close();}
   get(store,key){return request(this.db.transaction(store,'readonly').objectStore(store).get(key));}
-  async checkpointSession(id, state) {
+  async checkpointSession(id, state, {foreground=false}={}) {
     if (!/^[a-f0-9-]{36}$/.test(id) || !state || typeof state.path !== 'string' || typeof state.text !== 'string') fail('INVALID_EDITOR_CHECKPOINT');
-    const value = {schema:'qikvrt-editor-checkpoint/v1', saved_at:new Date().toISOString(), state};
+    const prepared=state.prepared??null;
+    if(prepared!==null&&(!(prepared instanceof Blob)||prepared.size>LIMITS.total*2))fail('INVALID_EDITOR_CHECKPOINT');
+    const prepared_binding=prepared?{name:prepared.name||'qikvrt.qikvrt',type:prepared.type,size:prepared.size,sha256:await digest(await prepared.arrayBuffer())}:null;
+    const value = {schema:'qikvrt-editor-checkpoint/v1', saved_at:new Date().toISOString(), state:{...state,prepared:null}, prepared_binding};
     if (encoder.encode(canonical(value)).length > 8388608) fail('EDITOR_CHECKPOINT_CAPACITY_LIMIT');
-    const row = {value, sha256:await hashObject(value)};
+    const row = {value, prepared, sha256:await hashObject(value)};
     // Separate refs key: no snapshot/head mutation and no schema upgrade lock.
-    await write(this.db, ['refs'], tx => tx.objectStore('refs').put(row, 'editor:'+id));
+    await write(this.db, ['refs'], tx => {const refs=tx.objectStore('refs');refs.put(row,'editor:'+id);
+      // Decide foreground ownership at the durable-write boundary, after hashing.
+      if(typeof foreground==='function'?foreground():foreground)refs.put(id,'editor:last');});
     const readback = await this.session(id);
-    if (!equal(readback, state)) fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
+    if (!equal({...readback,prepared:null}, {...state,prepared:null})) fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
     return readback;
   }
   async session(id) {
@@ -73,11 +78,13 @@ export class Repository {
     const row = await this.get('refs', 'editor:'+id);
     if (!row) return null;
     if (row.value?.schema !== 'qikvrt-editor-checkpoint/v1' || await hashObject(row.value) !== row.sha256) fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
-    return row.value.state;
+    const binding=row.value.prepared_binding;
+    if(binding&&(!(row.prepared instanceof Blob)||row.prepared.size!==binding.size||row.prepared.type!==binding.type||await digest(await row.prepared.arrayBuffer())!==binding.sha256))fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
+    return {...row.value.state,prepared:binding?new File([row.prepared],binding.name,{type:binding.type}):null};
   }
   async sessions() {
     const keys=await request(this.db.transaction('refs','readonly').objectStore('refs').getAllKeys()),out=[];
-    for(const key of keys){if(!String(key).startsWith('editor:'))continue;const id=String(key).slice(7);
+    for(const key of keys){if(key==='editor:last'||!String(key).startsWith('editor:'))continue;const id=String(key).slice(7);
       try{const state=await this.session(id),row=await this.get('refs',key);out.push({id,state,saved_at:row.value.saved_at??null});}
       catch{out.push({id,unavailable:true});}
     }

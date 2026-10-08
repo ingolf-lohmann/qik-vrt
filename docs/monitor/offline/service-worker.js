@@ -1,19 +1,23 @@
 // SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 // Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
-const SHELL='0358e8e1c6232e928945961152ecdf708effabc2ec4385cbe354f1bebd93606c', ASSETS={"client.js":"83f35ecb0ab2b373cae1ee365563c09f777e62bb4d5cc9f9680725cc907c6757","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"bb11532077b2f044d56e7193fd3c2dc6ff1655fa337fe2e248edecb58e158476","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","updates.js":"6f13c243255da93c3e47611bfd3b166d548b0b375e9b992f89b79669e5520821","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
+const SHELL='eb194cbbb17d360dbac56a32fe2842918c6813dd2883af88e840deb3c546c232', ASSETS={"client.js":"6d1c77b8a0e609c5854304f192032afd36b493c0a82f9c5c717f33e7d1a55a87","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","updates.js":"afd64ee3dbe5da979b83adbd98205d5d730cd7f0eae5b4e604f5ae9b0b5f2b26","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
+const TEMPLATE='d38578dab879465e8ea6235d8dafbc19397ea782db0b01a5ee27727fdda4cb4c';
 const PREFIX='qikvrt-offline-', CACHE=PREFIX+SHELL, NAMESPACE='__qikvrt_release__/';
 const scope=new URL(self.registration.scope), metadata=new URL('.qikvrt-release.json',scope);
 const hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
 const digest=async b=>hex(await crypto.subtle.digest('SHA-256',b));
-const canonical=map=>JSON.stringify(Object.fromEntries(Object.entries(map).sort(([a],[b])=>a<b?-1:a>b?1:0)));
+const canonical=value=>value&&typeof value==='object'?'{'+Object.keys(value).sort().map(key=>JSON.stringify(key)+':'+canonical(value[key])).join(',')+'}':JSON.stringify(value);
 async function valid(response,sha){return response?.ok&&!response.redirected&&await digest(await response.clone().arrayBuffer())===sha;}
 async function manifest(shell) {
   if(!/^[a-f0-9]{64}$/.test(shell))throw Error('INVALID_RELEASE');
   const cache=await caches.open(PREFIX+shell),response=await cache.match(metadata);
   if(!response?.ok)throw Error('INCOMPLETE_RELEASE');
-  const assets=await response.json();
+  const binding=await response.json(),assets=binding.assets||binding;
   if(!assets||Array.isArray(assets)||Object.keys(assets).length>64||!Object.hasOwn(assets,'index.html')||Object.entries(assets).some(([path,sha])=>!Object.hasOwn(ASSETS,path)||!/^[a-f0-9]{64}$/.test(sha)))throw Error('INVALID_RELEASE_MANIFEST');
-  if(await digest(new TextEncoder().encode(canonical(assets)))!==shell)throw Error('RELEASE_BINDING_MISMATCH');
+  // Retained #493 caches use the old asset-only identity; new releases bind
+  // the worker template too, so a worker-only update cannot reuse its cache.
+  if(binding.assets&&(!/^[a-f0-9]{64}$/.test(binding.worker_template_sha256||'')||(shell===SHELL&&binding.worker_template_sha256!==TEMPLATE)))throw Error('INVALID_WORKER_BINDING');
+  if(await digest(new TextEncoder().encode(canonical(binding)))!==shell)throw Error('RELEASE_BINDING_MISMATCH');
   return {cache,assets};
 }
 async function complete(shell=SHELL) {
@@ -31,7 +35,7 @@ async function install() {
     }
     const cache=await caches.open(CACHE);
     for(const [url,response]of rows)await cache.put(url,response);
-    await cache.put(metadata,new Response(canonical(ASSETS),{headers:{'content-type':'application/json'}}));
+    await cache.put(metadata,new Response(canonical({assets:ASSETS,worker_template_sha256:TEMPLATE}),{headers:{'content-type':'application/json'}}));
     if(!await complete())throw Error('OFFLINE_SHELL_READBACK_MISMATCH');
   }catch(error){if(!present)await caches.delete(CACHE);throw error;}
 }

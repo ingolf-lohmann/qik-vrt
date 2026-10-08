@@ -4,6 +4,7 @@ import gzip
 import hashlib
 import json
 import pathlib
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -71,10 +72,27 @@ class OfflineTransferTests(unittest.TestCase):
 
     def test_committed_service_worker_pins_all_production_dependencies_and_no_user_data(self):
         hashes={name:hashlib.sha256((offline.CLIENT/name).read_bytes()).hexdigest() for name in offline.ASSETS}
-        shell_id=hashlib.sha256(offline.canonical(hashes).encode()).hexdigest()
-        expected=(offline.CLIENT/'service-worker.template.js').read_text().replace('__SHELL_ID__',shell_id).replace('__ASSETS__',offline.canonical(hashes))
+        template=(offline.CLIENT/'service-worker.template.js').read_text()
+        template_sha=hashlib.sha256(template.encode()).hexdigest()
+        shell_id=hashlib.sha256(offline.canonical({'assets':hashes,'worker_template_sha256':template_sha}).encode()).hexdigest()
+        expected=template.replace('__SHELL_ID__',shell_id).replace('__ASSETS__',offline.canonical(hashes)).replace('__WORKER_TEMPLATE_SHA256__',template_sha)
         self.assertEqual((offline.CLIENT/'service-worker.js').read_text(),expected)
         self.assertNotIn('repository.qikvrt',offline.ASSETS)
         self.assertNotIn('monitor/observation.json',offline.ASSETS)
+
+    def test_worker_only_change_has_an_independent_cache_without_mutating_predecessor(self):
+        with tempfile.TemporaryDirectory() as d:
+            client=pathlib.Path(d)
+            for name in (*offline.ASSETS,'service-worker.template.js'):
+                (client/name).parent.mkdir(parents=True,exist_ok=True)
+                shutil.copy2(offline.CLIENT/name,client/name)
+            a=offline.shell(client)
+            predecessor=(client/'service-worker.js').read_bytes()
+            template=client/'service-worker.template.js'
+            template.write_text(template.read_text()+'\n// bounded worker-only fixture\n')
+            b=offline.shell(client)
+            self.assertEqual(a['assets'],b['assets'])
+            self.assertNotEqual(a['shell_sha256'],b['shell_sha256'])
+            self.assertNotEqual(predecessor,(client/'service-worker.js').read_bytes())
 
 if __name__=='__main__': unittest.main()

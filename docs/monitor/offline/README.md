@@ -210,3 +210,41 @@ Primärquellen für die Update-/Hintergrundgrenzen (geprüft 2026-10-08):
 - https://developer.chrome.com/docs/workbox/service-worker-lifecycle/
 - https://developer.chrome.com/docs/capabilities/periodic-background-sync
 - https://webkit.org/blog/14403/updates-to-storage-policy/
+
+## Integrationsweg für #492 und #493
+
+Ein eigener main-basierter Nachfolger von #493 ist der einzige technische
+Integrationskandidat. #484, #492 und #493 behalten ihre geprüften Heads. Die
+Quell- und Evidenzbindungen stehen in
+`state/work_units/OFFLINE_UPDATE_INTEGRATION_492_493_20261008_V1.json`.
+
+| Anforderung | #492 | #493 | Kandidat |
+| --- | --- | --- | --- |
+| Sichtbare Online-Sitzung | Lifecycle ohne regelmäßigen Takt | Fünf-Minuten-Takt und Lifecycle | #493 |
+| Parallele Clients | Checkpoint-Barriere | Versuch-ID, Abort/Timeout, wiederholte Inventur | #493 |
+| Versionsgebundene Modulimporte | Unversionierte Ressourcen | Exakter Versionsnamespace | #493 |
+| Beschädigtes Staging | Prüfung ohne Reparatur | Erneute Prüfung und Reparatur | #493 |
+| Reine Worker-Änderung | Neue Cache-Identität | Identität unverändert, reproduziert | Worker-Vorlage zusätzlich gebunden |
+| IME und letzte Eingabe | Quieszenz schützt Übergabe | Kein solches Prädikat | #492-Schutz im #493-Controller |
+| Entwürfe | Eigener Tab und letzter Vordergrundstand | Eigener Tab und verwaiste Entwürfe über UI | Beide, Vordergrundbesitz beim dauerhaften Schreiben |
+| Vorbereiteter Export | Im Checkpoint; nur Größe zurückgeprüft | Fehlt im Checkpoint | Name, Typ, Länge und SHA-256 der tatsächlichen Bytes |
+
+Nur ein Update-Controller bleibt aktiv. Eingabeende und abgeschlossene Aktionen
+stoßen eine erneute Übergabe der bereits bereitgestellten Version an. Neue
+Eingaben und IME halten die Übergabe zurück. Nach Lock werden keine neuen
+Aktionen zugelassen; alle aktuellen Clients müssen ihre strict-IndexedDB-
+Checkpoints bestätigt und zurückgelesen haben. Die bestätigte Repository-
+Historie wird durch die Aktualisierung nicht verändert.
+
+Versionsidentitäten binden Assets und Worker-Vorlage. Alte #493-Manifestformen
+bleiben für vorhandene Versionsnamespaces lesbar. Exporte werden getrennt von
+JSON-Metadaten als Blob mit tatsächlichem Byte-Readback gesichert. Die
+Datenbankversion, Laufzeitabhängigkeiten und Code-Owner-Regeln bleiben bestehen.
+
+Die Rückfallgarantie betrifft abgewiesene Downloads, unvollständiges/beschädigtes
+Staging und gescheiterte Checkpoints: Die letzte gesunde aktive Version bleibt
+erhalten. Eine automatische Rückstufung nach einem erst nach Aktivierung
+erkannten Anwendungsfehler ist nicht belegt. Physisches iPhone, garantierte
+iOS-Hintergrundarbeit, Main-Aktivierung und produktive Bereitstellung werden
+nicht aus Browsertests abgeleitet. HTTPS-Origin bleibt die Vertrauenswurzel.
+Native Code-Owner-Review und Ruleset-Durchsetzung sind eigenständige Grenzen.

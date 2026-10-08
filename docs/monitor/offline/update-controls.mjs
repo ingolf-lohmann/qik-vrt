@@ -17,13 +17,14 @@ export async function updateControls(engine, output, here, options) {
   const original=new Map(await Promise.all(Object.keys(assets).map(async name=>[name,await readFile(resolve(here,name))])));
   const build=tag=>{
     const files=new Map(original);
-    if(tag!=='A')files.set('client.js',Buffer.concat([files.get('client.js'),Buffer.from('\n// bounded release fixture '+tag+'\n')]));
+    if(tag!=='A')files.set('client.js',Buffer.concat([files.get('client.js'),Buffer.from('\n// bounded release fixture '+(tag==='E'?'D':tag)+'\n')]));
     const hashes=Object.fromEntries([...files].sort(([a],[b])=>a<b?-1:a>b?1:0).map(([name,data])=>[name,hash(data)]));
-    const id=hash(JSON.stringify(hashes));
-    files.set('service-worker.js',Buffer.from(tag==='A'?worker:template.replaceAll('__SHELL_ID__',id).replace('__ASSETS__',JSON.stringify(hashes))));
+    const nextTemplate=template+(tag==='E'?'\n// bounded worker-only release fixture\n':'');
+    const templateSha=hash(nextTemplate),id=hash(JSON.stringify({assets:hashes,worker_template_sha256:templateSha}));
+    files.set('service-worker.js',Buffer.from(tag==='A'?worker:nextTemplate.replaceAll('__SHELL_ID__',id).replace('__ASSETS__',JSON.stringify(hashes)).replace('__WORKER_TEMPLATE_SHA256__',templateSha)));
     return {id,files};
   };
-  const releases=Object.fromEntries(['A','B','C','D'].map(tag=>[tag,build(tag)]));
+  const releases=Object.fromEntries(['A','B','C','D','E'].map(tag=>[tag,build(tag)]));
   let current=releases.A,fault=null,port,context,server,active;
   const requests=[],checks=[],errors=[],prefix='/update-fixture/';
   async function serve(){server=createServer((req,res)=>{
@@ -103,9 +104,18 @@ export async function updateControls(engine, output, here, options) {
     await two.evaluate(()=>{window.realTransaction=IDBDatabase.prototype.transaction;IDBDatabase.prototype.transaction=function(names,mode,...rest){if(mode==='readwrite'&&[names].flat().includes('refs'))throw new DOMException('Test quota boundary','QuotaExceededError');return window.realTransaction.call(this,names,mode,...rest);};});
     await eventCheck(one);await pause(1500);await sameVersion(one,releases.B.id);await sameVersion(two,releases.B.id);assert.deepEqual(await report(one),saved);
     checks.push('failed strict IndexedDB checkpoint blocks release adoption without losing the unconfirmed peer draft');
-    await two.evaluate(()=>{IDBDatabase.prototype.transaction=window.realTransaction;});await eventCheck(one);
+    await two.evaluate(()=>{IDBDatabase.prototype.transaction=window.realTransaction;document.querySelector('[data-testid=editor-text]').dispatchEvent(new CompositionEvent('compositionstart',{bubbles:true,data:'β'}));});
+    await eventCheck(one);await pause(1500);await sameVersion(one,releases.B.id);await sameVersion(two,releases.B.id);
+    assert.equal(await two.getByTestId('editor-text').isEnabled(),true);
+    checks.push('active IME composition in one peer holds every client on the predecessor without disabling its editor');
+    await two.evaluate(()=>document.querySelector('[data-testid=editor-text]').dispatchEvent(new CompositionEvent('compositionend',{bubbles:true,data:'β'})));
     await adopted(one,releases.C.id);await adopted(two,releases.C.id);assert.equal(await two.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(one),saved);
-    checks.push('recovered storage resumes the same waiting release and preserves the latest confirmed revision');
+    checks.push('compositionend resumes the already-staged release after input quiescence without manual reload or another update request');
+
+    await one.bringToFront();await one.getByRole('button',{name:'Sicherung vorbereiten',exact:true}).click();await one.getByRole('button',{name:'Fertigen Stand teilen',exact:true}).waitFor();
+    await one.getByTestId('editor-text').focus();await one.getByTestId('editor-text').evaluate(editor=>editor.setSelectionRange(2,6,'backward'));
+    await pause(1300);
+    const exportBefore=await one.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository,digest}=await import(new URL('repository.js',src));const r=await Repository.open();try{const d=await r.session(sessionStorage.getItem('qikvrt-editor-session'));return {name:d.prepared.name,size:d.prepared.size,sha256:await digest(await d.prepared.arrayBuffer())};}finally{r.close();}});
 
     const hold=await context.newPage();await hold.goto(url+'hold.html');current=releases.D;await eventCheck(one);await until(()=>waiting(one));await pause(8500);
     await one.evaluate(async id=>{const cache=await caches.open('qikvrt-offline-'+id);const url=new URL('repository.js',location.href);await cache.put(url,new Response('damaged staged cache'));},releases.D.id);
@@ -114,13 +124,36 @@ export async function updateControls(engine, output, here, options) {
     await serve();await eventCheck(one,'pageshow');await adopted(one,releases.D.id);await adopted(two,releases.D.id);
     assert.equal(await two.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(one),saved);
     checks.push('pageshow recovery rebuilds damaged staging only from complete digest-bound bytes and adopts without manual reload');
+    await one.getByRole('button',{name:'Fertigen Stand teilen',exact:true}).waitFor();
+    const exportAfter=await one.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository,digest}=await import(new URL('repository.js',src));const r=await Repository.open();try{const d=await r.session(sessionStorage.getItem('qikvrt-editor-session'));return {name:d.prepared.name,size:d.prepared.size,sha256:await digest(await d.prepared.arrayBuffer())};}finally{r.close();}});
+    assert.deepEqual(exportAfter,exportBefore);assert.deepEqual(await one.getByTestId('editor-text').evaluate(e=>[e.selectionStart,e.selectionEnd,e.selectionDirection]),[2,6,'backward']);
+    checks.push('prepared export retains exact bytes/name and backward caret selection survives the version handoff');
+
+    assert.notEqual(releases.D.id,releases.E.id);assert.deepEqual(releases.D.files.get('client.js'),releases.E.files.get('client.js'));
+    current=releases.E;await eventCheck(one);await adopted(one,releases.E.id);await adopted(two,releases.E.id);assert.deepEqual(await report(one),saved);
+    const retained=await one.evaluate(async id=>{const response=await fetch('__qikvrt_release__/'+id+'/repository.js');return {status:response.status,body:await response.text()};},releases.D.id);
+    assert.equal(retained.status,200);assert.equal(retained.body,releases.D.files.get('repository.js').toString());
+    checks.push('worker-only release receives a distinct cache, is automatically adopted and keeps the predecessor namespace readable');
+
+    const checkpointGuard=await one.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository}=await import(new URL('repository.js',src));const r=await Repository.open();try{
+      const id=sessionStorage.getItem('qikvrt-editor-session'),pointer=await r.get('refs','editor:last'),peer=crypto.randomUUID();
+      await r.checkpointSession(peer,{path:'personal/background.md',text:'background draft',prepared:null},{foreground:false});
+      const unchanged=await r.get('refs','editor:last')===pointer,row=await r.get('refs','editor:'+id),data=new Uint8Array(await row.prepared.arrayBuffer());data[0]^=1;
+      await new Promise((resolve,reject)=>{const tx=r.db.transaction('refs','readwrite',{durability:'strict'});tx.objectStore('refs').put({...row,prepared:new Blob([data],{type:row.prepared.type})},'editor:'+peer);tx.oncomplete=resolve;tx.onabort=reject;});
+      let rejected=false;try{await r.session(peer);}catch(e){rejected=e.message==='EDITOR_CHECKPOINT_READBACK_MISMATCH';}return {unchanged,rejected};
+    }finally{r.close();}});
+    assert.deepEqual(checkpointGuard,{unchanged:true,rejected:true});
+    checks.push('background checkpoints cannot replace foreground recovery; same-size prepared-byte corruption is rejected');
 
     // Corruption of a retained old namespace must fail closed, never substitute D.
     const rejected=await one.evaluate(async id=>{const cache=await caches.open('qikvrt-offline-'+id);await cache.put(new URL('client.js',location.href),new Response('tampered retained release'));return (await fetch('__qikvrt_release__/'+id+'/client.js')).status;},releases.A.id);
     assert.equal(rejected,503);checks.push('corrupt retained-version asset returns 503 instead of a different release or network fallback');
-    await pause(700);await stop();await context.close();context=null;
+    await one.bringToFront();await one.getByTestId('editor-text').fill(draftA);await pause(1300);
+    await stop();await context.close();context=null;
     context=await engine.launchPersistentContext(profile,options);const restored=await context.newPage();active=restored;restored.on('pageerror',e=>errors.push(e.message));
     await restored.goto(url);await ready(restored);assert.deepEqual(await report(restored),saved);
+    assert.equal(await restored.getByTestId('editor-text').inputValue(),draftA);
+    checks.push('cold process reopen automatically restores the last foreground draft without using a background checkpoint');
     checks.push('browser process restart with stopped origin restores the final verified release and confirmed IndexedDB history');
     const recovery=restored.getByTestId('recover-draft').filter({hasText:'personal/draft-B.md'}).first();await recovery.click();await restored.getByRole('status').filter({hasText:'Gesicherter Entwurf geöffnet.'}).waitFor();assert.equal(await restored.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(restored),saved);checks.push('orphaned parallel draft remains recoverable through the UI after process restart loses the tab session key');
     assert.deepEqual(errors,[]);

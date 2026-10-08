@@ -1,19 +1,23 @@
 // SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 // Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
 const SHELL='__SHELL_ID__', ASSETS=__ASSETS__;
+const TEMPLATE='__WORKER_TEMPLATE_SHA256__';
 const PREFIX='qikvrt-offline-', CACHE=PREFIX+SHELL, NAMESPACE='__qikvrt_release__/';
 const scope=new URL(self.registration.scope), metadata=new URL('.qikvrt-release.json',scope);
 const hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
 const digest=async b=>hex(await crypto.subtle.digest('SHA-256',b));
-const canonical=map=>JSON.stringify(Object.fromEntries(Object.entries(map).sort(([a],[b])=>a<b?-1:a>b?1:0)));
+const canonical=value=>value&&typeof value==='object'?'{'+Object.keys(value).sort().map(key=>JSON.stringify(key)+':'+canonical(value[key])).join(',')+'}':JSON.stringify(value);
 async function valid(response,sha){return response?.ok&&!response.redirected&&await digest(await response.clone().arrayBuffer())===sha;}
 async function manifest(shell) {
   if(!/^[a-f0-9]{64}$/.test(shell))throw Error('INVALID_RELEASE');
   const cache=await caches.open(PREFIX+shell),response=await cache.match(metadata);
   if(!response?.ok)throw Error('INCOMPLETE_RELEASE');
-  const assets=await response.json();
+  const binding=await response.json(),assets=binding.assets||binding;
   if(!assets||Array.isArray(assets)||Object.keys(assets).length>64||!Object.hasOwn(assets,'index.html')||Object.entries(assets).some(([path,sha])=>!Object.hasOwn(ASSETS,path)||!/^[a-f0-9]{64}$/.test(sha)))throw Error('INVALID_RELEASE_MANIFEST');
-  if(await digest(new TextEncoder().encode(canonical(assets)))!==shell)throw Error('RELEASE_BINDING_MISMATCH');
+  // Retained #493 caches use the old asset-only identity; new releases bind
+  // the worker template too, so a worker-only update cannot reuse its cache.
+  if(binding.assets&&(!/^[a-f0-9]{64}$/.test(binding.worker_template_sha256||'')||(shell===SHELL&&binding.worker_template_sha256!==TEMPLATE)))throw Error('INVALID_WORKER_BINDING');
+  if(await digest(new TextEncoder().encode(canonical(binding)))!==shell)throw Error('RELEASE_BINDING_MISMATCH');
   return {cache,assets};
 }
 async function complete(shell=SHELL) {
@@ -31,7 +35,7 @@ async function install() {
     }
     const cache=await caches.open(CACHE);
     for(const [url,response]of rows)await cache.put(url,response);
-    await cache.put(metadata,new Response(canonical(ASSETS),{headers:{'content-type':'application/json'}}));
+    await cache.put(metadata,new Response(canonical({assets:ASSETS,worker_template_sha256:TEMPLATE}),{headers:{'content-type':'application/json'}}));
     if(!await complete())throw Error('OFFLINE_SHELL_READBACK_MISMATCH');
   }catch(error){if(!present)await caches.delete(CACHE);throw error;}
 }

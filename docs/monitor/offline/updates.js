@@ -30,7 +30,7 @@ export async function shell() {
 }
 export function automaticUpdates(registration, {prepare, unlock, status}) {
   let stopped = false, checking = false, last = -Infinity, retryAt = 0, failures = 0;
-  let transition = null, recoveryTimer, adopting = false;
+  let transition = null, recoveryTimer, advanceTimer, adopting = false;
   const resumeEditing = () => { clearTimeout(recoveryTimer); transition = null; unlock(); };
   const message = async event => {
     const data = event.data;
@@ -39,6 +39,7 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
     // A different concurrent attempt must not release another attempt's lock.
     if (transition && transition.attempt !== data.attempt) { event.ports[0].postMessage({ready: false}); return; }
     transition = data; status('preparing');
+    clearTimeout(recoveryTimer);
     recoveryTimer = setTimeout(() => { resumeEditing(); status('waiting'); }, 25000);
     try {
       const ready = await prepare(data.shell);
@@ -54,7 +55,7 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
     try {
       const next = await call(navigator.serviceWorker.controller, {type: 'QIKVRT_OFFLINE_READY'});
       if (!next.ready) throw Error('OFFLINE_SHELL_NOT_READY');
-      if (next.shell === release) { if (transition) resumeEditing(); return; }
+      if (next.shell === release) return;
       // Also protects against an unexpected controllerchange, e.g. a client
       // created between the last census and skipWaiting. Never reload busy work.
       if (!await prepare(next.shell)) { status('waiting'); return; }
@@ -68,6 +69,12 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
     const reply = await call(registration.waiting, {type: 'QIKVRT_UPDATE_REQUEST'}, 20000);
     if (reply?.state !== 'ACTIVATING') status('waiting');
   };
+  // Retry only the already-staged handoff after an edit/action becomes quiet.
+  // This does not add another download timer or a competing update path.
+  const schedule = () => { clearTimeout(advanceTimer); if (!stopped) advanceTimer = setTimeout(async () => {
+    if (document.hidden) return;
+    try { await adopt(); await activate(); } catch { status('failed'); }
+  }, 1200); };
   const check = async () => {
     if (stopped || checking || document.hidden || navigator.onLine === false) return;
     const now = Date.now();
@@ -93,10 +100,10 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
   document.addEventListener('visibilitychange', check);
   const interval = setInterval(check, UPDATE_INTERVAL);
   installed(); const initialized=check();
-  const stop=() => { stopped = true; clearInterval(interval); resumeEditing(); registration.removeEventListener('updatefound', installed);
+  const stop=() => { stopped = true; clearInterval(interval); clearTimeout(advanceTimer); resumeEditing(); registration.removeEventListener('updatefound', installed);
     navigator.serviceWorker.removeEventListener('message', message); navigator.serviceWorker.removeEventListener('controllerchange', adopt);
     for (const name of ['online', 'pageshow', 'focus']) window.removeEventListener(name, check);
     document.removeEventListener('visibilitychange', check);
   };
-  stop.initialized=initialized;return stop;
+  stop.initialized=initialized;stop.schedule=schedule;return stop;
 }

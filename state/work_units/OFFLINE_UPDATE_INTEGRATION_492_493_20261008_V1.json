@@ -1,0 +1,170 @@
+{
+  "schema": "qikvrt_offline_update_integration_work_unit_v1",
+  "work_unit_id": "OFFLINE_UPDATE_INTEGRATION_492_493_20261008_V1",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_repository": "Goldkelch/qik-vrt",
+  "source_commit": "7a1d039de4e062b0dac52c1ab373b46e25a84b40",
+  "source_tree": "d0ef3ba2490302f0336beb1b977b25a73cf93bd4",
+  "candidate_branch": "work/offline-iphone-repository-update-integration-20261008",
+  "preserved_predecessors": [
+    {
+      "pr": 484,
+      "head": "ad47e6386536abdca5d5ba025832b27718ee66dd"
+    },
+    {
+      "pr": 492,
+      "head": "a8a401c25da08f5fa60b8cf5f0f8b311fce8fbcd"
+    },
+    {
+      "pr": 493,
+      "head": "7a1d039de4e062b0dac52c1ab373b46e25a84b40"
+    }
+  ],
+  "main_parent": "4d1eb3f61cc9a4ac5b072c59bdb0e4227b2ca6a4",
+  "main_drift": {
+    "common_ancestor": "3d6148513b289005e71c73bae12de26f5f42f445",
+    "changed_paths": 8,
+    "scope": "node health and registration only",
+    "offline_scope_overlap": false,
+    "merge_conflicts": false
+  },
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Compare actual implementations and fresh exact-head evidence; consolidate only necessary improvements; preserve predecessor heads and code-owner policy; run candidate regressions."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "Source/evidence analysis",
+    "Minimal PR493 successor patches",
+    "Bounded regression extensions",
+    "Verification and evidence readback"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "human_decision": "IMPLEMENTATION_AUTHORIZED_FINAL_ACCEPTANCE_PENDING",
+  "decision": {
+    "basis": 493,
+    "take_from_492": [
+      "Worker-template-bound distinct cache identity",
+      "IME and recent-input quiescence with staged handoff retry",
+      "Capture editor state before locking and restore focus after controls are enabled",
+      "Foreground recovery pointer decided at durable-write time",
+      "Prepared export persistence with exact-byte verification"
+    ],
+    "retain_from_493": [
+      "Visible online cadence/lifecycle, cooldown and backoff",
+      "Attempt-bound all-client checkpoints, timeout/abort and repeat census",
+      "Release-qualified imports and retained namespaces",
+      "SHA-256 per-session checkpoints and orphan draft UI",
+      "Staging revalidation and repair"
+    ],
+    "excluded": [
+      "Second scheduler/client",
+      "Wholesale cherry-pick",
+      "Database schema migration",
+      "Workflow permission or code-owner policy weakening"
+    ]
+  },
+  "predecessor_evidence": [
+    {
+      "pr": 492,
+      "artifact": 11520586606,
+      "sha256": "b7ec39e339a19daf69674c0e40d4e6c0ad0a068b945f5929d6d089c45dd78da9",
+      "head": "a8a401c25da08f5fa60b8cf5f0f8b311fce8fbcd",
+      "tree": "345b50304c87b9461eb9652ea9fccc6300b12628",
+      "engine": "chromium",
+      "controls": 23,
+      "console_errors": [],
+      "tracked_clean": true
+    },
+    {
+      "pr": 492,
+      "artifact": 11519419630,
+      "sha256": "e16a9102813b28ead17d009ee28a24dd5a03b7c0a011d9f926cce256997941c8",
+      "head": "a8a401c25da08f5fa60b8cf5f0f8b311fce8fbcd",
+      "tree": "345b50304c87b9461eb9652ea9fccc6300b12628",
+      "engine": "webkit",
+      "controls": 23,
+      "console_errors": [],
+      "tracked_clean": true
+    },
+    {
+      "pr": 493,
+      "artifact": 11520875577,
+      "sha256": "ec3ef4514b74f8443288b002d76edcc082fa571952f8d28f816626ea501f3e13",
+      "head": "7a1d039de4e062b0dac52c1ab373b46e25a84b40",
+      "tree": "d0ef3ba2490302f0336beb1b977b25a73cf93bd4",
+      "engine": "chromium",
+      "controls": 27,
+      "console_errors": [],
+      "tracked_clean": true
+    },
+    {
+      "pr": 493,
+      "artifact": 11520054065,
+      "sha256": "bc4c4fa83d41d24c655ef0f3058e313e0bf8048c129c7ec876e2ba03ffb9217e",
+      "head": "7a1d039de4e062b0dac52c1ab373b46e25a84b40",
+      "tree": "d0ef3ba2490302f0336beb1b977b25a73cf93bd4",
+      "engine": "webkit",
+      "controls": 27,
+      "console_errors": [],
+      "tracked_clean": true
+    }
+  ],
+  "predecessor_evidence_transfer": false,
+  "reproduced_defect": {
+    "subject": "7a1d039de4e062b0dac52c1ab373b46e25a84b40",
+    "worker_only_identity_changed": false,
+    "before": "0358e8e1c6232e928945961152ecdf708effabc2ec4385cbe354f1bebd93606c",
+    "after": "0358e8e1c6232e928945961152ecdf708effabc2ec4385cbe354f1bebd93606c"
+  },
+  "required_candidate_verification": [
+    "Full make test",
+    "Native Chromium and WebKit update regressions",
+    "Frozen complete repository source/tree import",
+    "Remote head/tree and predecessor-preservation readback"
+  ],
+  "local_browser_boundary": {
+    "playwright": "1.62.1",
+    "chromium_revision": "1234",
+    "webkit_revision": "2336",
+    "execution": "NOT_ESTABLISHED",
+    "cause": "apt privilege switching unsupported; locked CDN downloads returned non-ZIP payloads",
+    "route": "existing native offline repository workflow"
+  },
+  "governance_observation": {
+    "reviews_492": 0,
+    "reviews_493": 0,
+    "rulesets": [],
+    "main_protected": false,
+    "enforcement_claim": false,
+    "policy_weakened": false
+  },
+  "verification": {
+    "state": "REQUIRES_FRESH_CANDIDATE_RESULTS",
+    "carrier": "Draft PR body and native artifacts must bind final exact HEAD/TREE; this record does not self-attest its containing commit."
+  },
+  "external_effects": {
+    "draft_successor": "AUTHORIZED_CANDIDATE_ONLY",
+    "merge": false,
+    "deployment": false,
+    "main_activation": false
+  },
+  "release_claims": {
+    "physical_ios_witness": false,
+    "guaranteed_background_updates": false,
+    "runtime_regression_auto_rollback": false,
+    "effect_ack_done": false
+  }
+}
