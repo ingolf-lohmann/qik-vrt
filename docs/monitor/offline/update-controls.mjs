@@ -72,7 +72,7 @@ export async function updateControls(engine, output, here, options) {
     checks.push('interrupted asset transfer cannot install or expose a partial release');
 
     fault=null;const peer=await context.newPage();await peer.goto(url+'hold.html');
-    await eventCheck(one,'focus');await until(()=>waiting(one));await pause(8500);
+    await eventCheck(one,'focus');await until(()=>waiting(one));await one.waitForFunction(()=>document.querySelector('[data-testid=update-state]')?.getAttribute('data-state')==='preparing');assert.equal(await one.getByTestId('editor-text').isDisabled(),true);assert.equal(await one.getByLabel('Datei suchen',{exact:true}).isDisabled(),true);await pause(8500);
     await sameVersion(one,releases.A.id);await sameVersion(two,releases.A.id);
     assert.equal(await one.getByTestId('editor-text').isEnabled(),true);
     checks.push('focus event stages a complete release; a non-cooperating peer holds activation and timeout unlocks editing');
