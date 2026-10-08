@@ -59,9 +59,9 @@
   "next_action": "Run the complete candidate suite; publish this separate stacked draft and read fresh native Chromium/WebKit version-transition receipts on its exact HEAD/TREE.",
   "outputs": [
     {
-      "bytes": 23018,
+      "bytes": 23261,
       "path": "docs/monitor/offline/client.js",
-      "sha256": "b8eda9ae113379eae455e40c8279fa5a4e4341d8c41cbc06c4432b08c91372d0"
+      "sha256": "52802553a0dc53fa07b1e8b0d9545335cd674bd10b2e6105d70e853d01b1168e"
     },
     {
       "bytes": 17328,
@@ -76,12 +76,12 @@
     {
       "bytes": 4783,
       "path": "docs/monitor/offline/service-worker.js",
-      "sha256": "a62864e9e60137218398dd8dac2b500ca7ef1f977ed1a55457e52a38a468e4c8"
+      "sha256": "9252d47f3b9db62c4de4596e05c3be5a1f3620cc7cd26d8914d1fe1177e7fff4"
     },
     {
-      "bytes": 26998,
+      "bytes": 28043,
       "path": "docs/monitor/offline/browser.test.mjs",
-      "sha256": "ecc422b37ef4389f9f77e9f5b5b64ae206ece19348ece06e58b4ca622c92b7bd"
+      "sha256": "27584f4b747818424f7eb15000201e9f0397c1c6272842b8b83ce7c4643081c4"
     },
     {
       "bytes": 11977,
@@ -132,6 +132,15 @@
     "cold_restore_diagnostics": {
       "chromium_job": 113079589908,
       "error": "Cold restore selected background editor text instead of foreground editor text. Both draft checkpoints remained stored.",
+      "intermediate_followup": {
+        "chromium_job": 113081541477,
+        "forward_change": "Foreground contact completes a quiescent checkpoint immediately rather than relying only on a later timer; queued writes classify foreground at execution time.",
+        "head": "421de5578df99ae3899a3555f7718df5e4f29480",
+        "next_control": "Read the actual durable default-draft pointer before closing the process; preserve the unchanged cold text assertion.",
+        "result": "Same cold selector failure. Captured focus alone did not close the gap.",
+        "tree": "d40e366ec62b87c579824b798df77bf24692a39a",
+        "webkit_job": 113081541523
+      },
       "new_candidate_verification_required": true,
       "observed_head": "c2fd03a1b9adc41d6a8a474cfffe699ef818b2d3",
       "observed_tree": "ea4b17d782bdb2aa5d3d8cdf4fe8ae465aaea239",

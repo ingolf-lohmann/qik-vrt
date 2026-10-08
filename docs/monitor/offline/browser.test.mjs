@@ -45,7 +45,7 @@ async function updateControls(engine,options){
     const {Repository}=await import('./repository.js');const r=await Repository.open(),head=await r.head(),history=await r.history();r.close();
     const reg=await navigator.serviceWorker.getRegistration();
     const receipt=await new Promise(resolve=>{const channel=new MessageChannel();channel.port1.onmessage=({data})=>{channel.port1.close();resolve(data);};navigator.serviceWorker.controller.postMessage({type:'QIKVRT_OFFLINE_READY'},[channel.port2]);});
-    return {head:head.id,revisions:history.length,release:globalThis.QIKVRT_TEST_RELEASE,cache:receipt.cache,ready:receipt.ready,waiting:!!reg.waiting,installing:!!reg.installing,text:document.querySelector('[data-testid=editor-text]').value,path:document.querySelector('[data-testid=editor-path]').value};
+    return {boot:globalThis.QIKVRT_BOOT_TAB??null,tab:sessionStorage.getItem('qikvrt-editor-tab-v1'),head:head.id,revisions:history.length,release:globalThis.QIKVRT_TEST_RELEASE,cache:receipt.cache,ready:receipt.ready,waiting:!!reg.waiting,installing:!!reg.installing,text:document.querySelector('[data-testid=editor-text]').value,path:document.querySelector('[data-testid=editor-path]').value};
   });}
   async function wholeShell(page,expected){
     const found=await page.evaluate(async assets=>{
@@ -102,10 +102,18 @@ async function updateControls(engine,options){
     controls.push('next online event recovers a rejected download without manual update; text selection and history survive');
     await failed(first,d,'integrity');const badDigest=await readback(first);assert.equal(badDigest.cache,restored.cache);assert.equal(badDigest.head,restored.head);assert.equal(badDigest.text,restored.text);assert.equal(badDigest.waiting,false);await wholeShell(first,c);
     controls.push('SHA-256 mismatch rejects manipulated bytes and preserves the preceding complete version');
+    const recoveryBeforeClose=await first.evaluate(async()=>{
+      const {Repository}=await import('./repository.js'),r=await Repository.open(),latest=await r.editorDraft(),key=await r.get('refs','editor:last');r.close();
+      return {focused:document.hasFocus(),hidden:document.hidden,tab:sessionStorage.getItem('qikvrt-editor-tab-v1'),latest_key:key,latest_text:latest?.state.text,latest_focus:latest?.state.focus};
+    });
+    console.log(JSON.stringify({schema:'qikvrt-client-cold-recovery-checkpoint/v1',recoveryBeforeClose}));
+    assert.equal(recoveryBeforeClose.latest_text,restored.text);
     // No scheduling or update promise while the browser process is fully closed.
     await context.close();context=null;fault=null;
     const closedAt=downloads.length;await new Promise(resolve=>setTimeout(resolve,300));assert.equal(downloads.length,closedAt);
-    context=await engine.launchPersistentContext(profile,options);observeErrors(context);const cold=await context.newPage();await cold.goto(url);await loaded(cold,'D');
+    context=await engine.launchPersistentContext(profile,options);observeErrors(context);const cold=await context.newPage();
+    await cold.addInitScript(()=>{if(!sessionStorage.getItem('test-cold-boot-meta'))sessionStorage.setItem('test-cold-boot-meta',JSON.stringify({tab:sessionStorage.getItem('qikvrt-editor-tab-v1'),navigation:performance.getEntriesByType('navigation')[0]?.type}));globalThis.QIKVRT_BOOT_TAB=JSON.parse(sessionStorage.getItem('test-cold-boot-meta'));});
+    await cold.goto(url);await loaded(cold,'D');
     const recovered=await readback(cold);assert.equal(recovered.head,restored.head);assert.equal(recovered.text,restored.text);await wholeShell(cold,d);
     assert.equal(await cold.evaluate(cache=>caches.has(cache),restored.cache),true);
     controls.push('cold reopen applies the healthy publication automatically and recovers the IndexedDB draft; the previous cache is retained');

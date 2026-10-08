@@ -32,7 +32,7 @@ function automaticUpdates(registration,pageCache,runtime,setLocked,setError){
   }
   function persist(state=editorState()){
     // Queue snapshots in observation order; an older write cannot win a race.
-    draftWrite=draftWrite.catch(()=>{}).then(()=>runtime.store.checkpointEditor(runtime.tab,state,{foreground:state.focus.foreground}));
+    draftWrite=draftWrite.catch(()=>{}).then(()=>runtime.store.checkpointEditor(runtime.tab,state,{foreground:document.hasFocus()&&!document.hidden}));
     return draftWrite;
   }
   async function checkpoint(){
@@ -76,6 +76,9 @@ function automaticUpdates(registration,pageCache,runtime,setLocked,setError){
   async function contact(force=false){
     if(disposed||document.hidden||!navigator.onLine)return;
     schedule();
+    // A foreground contact must not leave recovery pointing at a prior tab
+    // until a timer fires. Inputs/actions still retain the quiescence guard.
+    if(canCheckpoint()&&!runtime.locked){lastDraft=null;await advance();}
     if(checking||(!force&&Date.now()-lastCheck<30000))return;
     lastCheck=Date.now();
     checking=registration.update().catch(()=>{}).finally(()=>{checking=null;schedule();});
