@@ -59,9 +59,9 @@
   "next_action": "Run the complete candidate suite; publish this separate stacked draft and read fresh native Chromium/WebKit version-transition receipts on its exact HEAD/TREE.",
   "outputs": [
     {
-      "bytes": 22572,
+      "bytes": 22933,
       "path": "docs/monitor/offline/client.js",
-      "sha256": "d5c812400194af09308be2b9bfe435c8d1620bb4be7a85136f8b96706a2bb9c7"
+      "sha256": "379ac9aea35f8b8433a6faf1e466fb9c55d5aa1272eaf0258180ec82137bfbd1"
     },
     {
       "bytes": 17292,
@@ -76,12 +76,12 @@
     {
       "bytes": 4783,
       "path": "docs/monitor/offline/service-worker.js",
-      "sha256": "381b7605acc3ba0f498f160cb3c374b7e53942cb90816ee218aa0ad9760547fc"
+      "sha256": "eed6dc3fc5faee4caa7c6ebd1e4ef5495e95a612ca0ab59f61966dfe2471797a"
     },
     {
-      "bytes": 26685,
+      "bytes": 26998,
       "path": "docs/monitor/offline/browser.test.mjs",
-      "sha256": "1ea8da1850c16adbf826221180703069ba076022530087895ab716a6251f28a7"
+      "sha256": "ecc422b37ef4389f9f77e9f5b5b64ae206ece19348ece06e58b4ca622c92b7bd"
     },
     {
       "bytes": 11914,
@@ -119,6 +119,15 @@
   "unresolved_origin": [],
   "verification": {
     "browser_contract": ".github/workflows/qikvrt_offline_repository.yml",
+    "candidate_diagnostics": {
+      "chromium_job": 113077683165,
+      "error": "Text preserved; focus/selection actual [false,36,36], expected [true,3,9].",
+      "new_candidate_verification_required": true,
+      "observed_head": "dde215ce5d0f43f972de8268979757d9ddb2f23a",
+      "observed_tree": "a0b3e11fe9072ada844c64d604e8f9044501c3ff",
+      "repair": "Capture focus before disabling controls; restore it in the post-render React layout effect after values and enabled state are committed. Assertions remain unchanged.",
+      "webkit_job": 113077683196
+    },
     "candidate_exact_head_native_controls_required": true,
     "native_candidate_results_binding": "Fresh native job logs and browser-readback.json must name the final candidate HEAD/TREE; no predecessor results are transferred.",
     "online_event_scope": "DOM lifecycle event; actual HTTP downloads fail; no test-side registration.update or skipWaiting",

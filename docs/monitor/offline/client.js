@@ -25,19 +25,23 @@ function automaticUpdates(registration,pageCache,runtime,setLocked,setError){
   const on=(target,event,handler)=>{target.addEventListener(event,handler);listeners.push(()=>target.removeEventListener(event,handler));};
   const lock=value=>{runtime.locked=value;setLocked(value);};
   const canCheckpoint=()=>runtime.ready&&!runtime.busy&&!runtime.composing&&Date.now()-runtime.changedAt>=1000;
-  function persist(){
+  function editorState(){
     const element=document.activeElement;
     const focus={testid:element?.getAttribute('data-testid'),start:element?.selectionStart,end:element?.selectionEnd,direction:element?.selectionDirection,scrollTop:element?.scrollTop,scroll:[scrollX,scrollY]};
-    const state={...runtime.state,focus};
+    return {...runtime.state,focus};
+  }
+  function persist(state=editorState()){
     // Queue snapshots in observation order; an older write cannot win a race.
     draftWrite=draftWrite.catch(()=>{}).then(()=>runtime.store.checkpointEditor(runtime.tab,state));
     return draftWrite;
   }
   async function checkpoint(){
     if(!canCheckpoint())return false;
+    // Disabling a focused control can blur it synchronously. Capture first.
+    const state=editorState();
     lock(true);
     try{
-      await persist();
+      await persist(state);
       return true;
     }catch(e){lock(false);setError(explain(e));return false;}
   }
@@ -91,7 +95,15 @@ function automaticUpdates(registration,pageCache,runtime,setLocked,setError){
 }
 function App(){const [store,setStore]=React.useState(null),[head,setHead]=React.useState(null),[error,setError]=React.useState(''),[notice,setNotice]=React.useState(''),[busy,setBusy]=React.useState(false),[ready,setReady]=React.useState(false),[online,setOnline]=React.useState(navigator.onLine),[persistent,setPersistent]=React.useState(false),[quota,setQuota]=React.useState(null),[path,setPath]=React.useState('personal/arbeitsnotiz.md'),[text,setText]=React.useState(''),[filter,setFilter]=React.useState(''),[incoming,setIncoming]=React.useState([]),[plan,setPlan]=React.useState(null),[choices,setChoices]=React.useState({}),[monitor,setMonitor]=React.useState(null),[report,setReport]=React.useState(null),[prepared,setPrepared]=React.useState(null),[history,setHistory]=React.useState([]),[locked,setLocked]=React.useState(false),[version,setVersion]=React.useState('');
   const runtimeRef=React.useRef({busy:false,locked:false,composing:false,changedAt:0,ready:false}),runtime=runtimeRef.current;
-  React.useLayoutEffect(()=>{runtime.state={path,text,filter,plan,choices,prepared};runtime.ready=!!store&&ready;});
+  React.useLayoutEffect(()=>{
+    runtime.state={path,text,filter,plan,choices,prepared};runtime.ready=!!store&&ready;
+    // Restore only after React has committed values and enabled the controls.
+    if(runtime.ready&&runtime.restoreFocus){
+      const f=runtime.restoreFocus,e=f.testid&&document.querySelector('[data-testid="'+f.testid+'"]');
+      if(e){e.focus();if(typeof f.start==='number')e.setSelectionRange(f.start,f.end,f.direction);e.scrollTop=f.scrollTop||0;}
+      if(f.scroll)scrollTo(...f.scroll);runtime.restoreFocus=null;
+    }
+  });
   async function refresh(adapter=store){if(!adapter)return;const next=await adapter.head();setHead(next);setHistory(await adapter.history());setIncoming(await adapter.incoming());setPersistent(await navigator.storage?.persisted?.()===true);setQuota(await navigator.storage?.estimate?.());if(next?.snapshot.files.some(f=>f.path==='monitor/observation.json')){const file=await adapter.file('monitor/observation.json');setMonitor(JSON.parse(await file.text()));}}
   React.useEffect(()=>{
     let live=true,adapter,stopUpdates;
@@ -106,7 +118,7 @@ function App(){const [store,setStore]=React.useState(null),[head,setHead]=React.
       if(draft?.schema==='qikvrt-editor-checkpoint/v1'){
         const d=draft.state;setPath(d.path);setText(d.text);setFilter(d.filter);setPlan(d.plan);setChoices(d.choices);setPrepared(d.prepared);
         setNotice('Bearbeitungszustand wiederhergestellt. Lokale Revisionen bleiben erhalten.');
-        setTimeout(()=>{const f=d.focus,e=f?.testid&&document.querySelector('[data-testid="'+f.testid+'"]');if(e){e.focus();if(typeof f.start==='number')e.setSelectionRange(f.start,f.end,f.direction);e.scrollTop=f.scrollTop||0;}if(f?.scroll)scrollTo(...f.scroll);},0);
+        runtime.restoreFocus=d.focus;
       }
       setStore(adapter);setReady(true);setVersion(cache);await refresh(adapter);
       if(live)stopUpdates=automaticUpdates(registration,cache,runtime,setLocked,setError);

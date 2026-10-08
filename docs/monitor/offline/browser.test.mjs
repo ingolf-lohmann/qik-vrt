@@ -113,6 +113,9 @@ async function updateControls(engine,options){
     controls.push('updated version and repository remain usable on offline navigation after recovery');
     assert.deepEqual(updateErrors,[]);
     return {schema:'qikvrt-client-update-regression/v1',console_errors:updateErrors,controls,versions:Object.fromEntries(Object.entries(releases).map(([label,r])=>[label,r.binding.shell_sha256])),final:recovered,download_faults:downloads.filter(r=>r.fault),online_event_method:'DOM online lifecycle event; actual HTTP asset failures; no registration.update or skipWaiting call from tests',closed_app_background_update_guaranteed:false,actual_iphone_devices:false};
+  }catch(error){
+    console.log(JSON.stringify({schema:'qikvrt-client-update-failure/v1',error:error.message,controls,download_faults:downloads.filter(r=>r.fault),states:await Promise.all((context?.pages()||[]).map(page=>readback(page).catch(()=>null)))}));
+    throw error;
   }finally{await context?.close();if(!netClosed)await new Promise(resolve=>server.close(resolve));}
 }
 let browser,activePage;
@@ -152,6 +155,6 @@ try{const [one,two]=await Promise.all([serve(Number(process.env.QIKVRT_OFFLINE_P
     await full.getByLabel('Datei suchen',{exact:true}).fill('docs/monitor/offline/');assert.equal(await full.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await full.screenshot({path:resolve(output,'complete-repository-iphone-layout.png'),fullPage:true});
     checks.push('complete frozen repository gzip imports through the real React file chooser and verifies all source bytes, native Git tree and populated mobile layout');
   }
-  const updates=await updateControls(engine,options);checks.push(...updates.controls);
+  const updates=await updateControls(engine,options);checks.push(...updates.controls);console.log(JSON.stringify(updates));
   assert.deepEqual(errors,[]);await writeFile(resolve(output,'browser-readback.json'),JSON.stringify({schema:'qikvrt-offline-browser-readback/v1',engine:engine===webkit?'webkit':'chromium',mobile_layout:{width:390,height:844},actual_iphone_devices:false,offline_disruption:{origin_server_stopped:true,uncached_network_request_failed:true,playwright_offline_flag:engine===chromium,webkit_offline_emulation:'Excluded from acceptance after native internal error; upstream microsoft/playwright#42775'},complete_source:completeSource,automatic_updates:updates,checks,check_count:checks.length,second_origin_final_head:large,console_errors:errors,native_execution:false,main_effect:false},null,2)+'\n');console.log(JSON.stringify({checks:checks.length,engine:engine===webkit?'webkit':'chromium',actual_iphone_devices:false,output}));
 }catch(error){let state;try{state=await activePage?.evaluate(()=>({url:location.href,online_hint:navigator.onLine,controlled:!!navigator.serviceWorker.controller,text:document.body.innerText.slice(0,3000)}));await activePage?.screenshot({path:resolve(output,'failure.png'),fullPage:true});}catch{}await writeFile(resolve(output,'failure.json'),JSON.stringify({error:error.message,stack:error.stack,checks,console_errors:errors,state},null,2)+'\n');throw error;}finally{await browser?.close();for(const child of servers)child.kill();}
