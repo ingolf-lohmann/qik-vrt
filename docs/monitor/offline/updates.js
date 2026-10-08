@@ -34,6 +34,7 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
   const resumeEditing = () => { clearTimeout(recoveryTimer); transition = null; unlock(); };
   const message = async event => {
     const data = event.data;
+    if(data?.type==='QIKVRT_RECOVERY'&&event.source===navigator.serviceWorker.controller){await adopt();return;}
     if (data?.type === 'QIKVRT_UPDATE_ABORT' && transition?.attempt === data.attempt) { resumeEditing(); status('waiting'); }
     if (data?.type !== 'QIKVRT_UPDATE_PREPARE' || !event.ports[0] || event.source !== registration.waiting) return;
     // A different concurrent attempt must not release another attempt's lock.
@@ -93,6 +94,10 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
     if (worker.state === 'installed' && registration.waiting) activate().catch(() => status('failed'));
     if (worker.state === 'redundant') status('failed');
   }); };
+  // A runtime failure must not discard work entered since the activation
+  // checkpoint. The independent boot guard uses the same existing checkpoint.
+  const recoveryCheckpoint=()=>prepare(null);
+  globalThis.qikvrtRecoveryCheckpoint=recoveryCheckpoint;
   navigator.serviceWorker.addEventListener('message', message);
   navigator.serviceWorker.addEventListener('controllerchange', adopt);
   registration.addEventListener('updatefound', installed);
@@ -101,6 +106,7 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
   const interval = setInterval(check, UPDATE_INTERVAL);
   installed(); const initialized=check();
   const stop=() => { stopped = true; clearInterval(interval); clearTimeout(advanceTimer); resumeEditing(); registration.removeEventListener('updatefound', installed);
+    if(globalThis.qikvrtRecoveryCheckpoint===recoveryCheckpoint)delete globalThis.qikvrtRecoveryCheckpoint;
     navigator.serviceWorker.removeEventListener('message', message); navigator.serviceWorker.removeEventListener('controllerchange', adopt);
     for (const name of ['online', 'pageshow', 'focus']) window.removeEventListener(name, check);
     document.removeEventListener('visibilitychange', check);

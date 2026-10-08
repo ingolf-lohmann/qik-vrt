@@ -243,8 +243,35 @@ Datenbankversion, Laufzeitabhängigkeiten und Code-Owner-Regeln bleiben bestehen
 
 Die Rückfallgarantie betrifft abgewiesene Downloads, unvollständiges/beschädigtes
 Staging und gescheiterte Checkpoints: Die letzte gesunde aktive Version bleibt
-erhalten. Eine automatische Rückstufung nach einem erst nach Aktivierung
-erkannten Anwendungsfehler ist nicht belegt. Physisches iPhone, garantierte
+erhalten. Der getrennte Nachfolger von #495 ergänzt eine versionsgebundene
+Gesundheitsprüfung nach Aktivierung: Ein vor React und den Modulimporten
+ausgeführter, gleichursprünglicher Watchdog prüft UI-Bereitschaft, Repository-
+Readback und die Entwurfsinventur. Alle aktuellen Clients müssen mit einem
+Navigationstoken für dieselbe Version antworten. Erst dann wird sie als gesund
+gespeichert. Syntax-/Startfehler, ausbleibende Bereitschaft (20 Sekunden) und
+globale Laufzeitfehler lösen einen kontrollierten Rückfall aus. Der Worker
+prüft alle Bytes des vorher gesund bestätigten Versionscaches erneut.
+
+Die Gesundheitshistorie und Versionssperren liegen in einem scoped Cache-
+Journal mit Write/Readback; Repository-IndexedDB und Versionscaches werden
+nicht gelöscht. Aktive Anwendungen verwenden vor dem Rückfall dieselbe
+Checkpoint-Funktion wie vor Updates. Ein nicht sicher checkpointbarer Client
+wird nicht absichtlich neu geladen. Gesperrte Versionen werden nicht erneut
+aktiviert. Ein Worker-Neustart prüft einen offenen Aktivierungsversuch erneut;
+nach 60 Sekunden ohne Bestätigung erfolgt der Rückfall beim nächsten Kontakt.
+Es gibt keinen garantierten Hintergrundtimer in einem beendeten Worker.
+
+Ein früherer Cache ohne Anwendungsgesundheitsnachweis wird nicht nachträglich
+als gesund erklärt. Deshalb braucht die erste Installation dieses Protokolls
+zunächst einen erfolgreichen Gesundheitsdurchlauf. Fehlt ein vollständiger
+gesunder Vorgänger, bleibt die Wiederherstellung ausdrücklich blockiert.
+Globale Fehler und Startbereitschaft sind ein begrenzter Gesundheitsvertrag;
+unbemerkte fachliche Fehler und ein vollständig blockierter JavaScript-Thread
+werden damit nicht universell erkannt. Die neuen Chromium-/WebKit-Kontrollen
+injizieren echte Syntax-, Start-, Bereitschafts- und spätere Laufzeitfehler;
+ihr Erfolg muss für den jeweiligen Nachfolger-HEAD belegt werden.
+
+Physisches iPhone, garantierte
 iOS-Hintergrundarbeit, Main-Aktivierung und produktive Bereitstellung werden
 nicht aus Browsertests abgeleitet. HTTPS-Origin bleibt die Vertrauenswurzel.
 Native Code-Owner-Review und Ruleset-Durchsetzung sind eigenständige Grenzen.

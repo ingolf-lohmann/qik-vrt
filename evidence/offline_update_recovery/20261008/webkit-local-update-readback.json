@@ -1,0 +1,960 @@
+{
+  "schema": "qikvrt-offline-update-browser-readback/v1",
+  "releases": {
+    "A": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+    "B": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+    "C": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+    "D": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+    "E": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+    "F": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+    "G": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+    "H": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+    "I": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b"
+  },
+  "checks": [
+    "five-minute active-session check rejects a SHA-256-damaged release without head/draft changes",
+    "interrupted asset transfer cannot install or expose a partial release",
+    "focus event stages a complete release; a non-cooperating peer holds activation and timeout unlocks editing",
+    "online recovery switches two clients automatically and restores distinct unsaved paths/text with unchanged confirmed history",
+    "release-qualified resources retain old exact bytes after claim; relative modules cannot mix releases",
+    "an in-flight real UI save holds activation until its new revision is committed and read back",
+    "failed strict IndexedDB checkpoint blocks release adoption without losing the unconfirmed peer draft",
+    "active IME composition in one peer holds every client on the predecessor without disabling its editor",
+    "compositionend resumes the already-staged release after input quiescence without manual reload or another update request",
+    "post-install cache corruption is reverified before skipWaiting; network loss holds the healthy predecessor",
+    "pageshow recovery rebuilds damaged staging only from complete digest-bound bytes and adopts without manual reload",
+    "prepared export retains exact bytes/name and backward caret selection survives the version handoff",
+    "worker-only release receives a distinct cache, is automatically adopted and keeps the predecessor namespace readable",
+    "post-activation F fault rolls both clients back to E, retains distinct draft/history, and quarantines the failed release",
+    "post-activation G fault rolls both clients back to E, retains distinct draft/history, and quarantines the failed release",
+    "post-activation H fault rolls both clients back to E, retains distinct draft/history, and quarantines the failed release",
+    "runtime exception after positive health receipt checkpoints newer work and recovers both clients without altering confirmed history",
+    "background checkpoints cannot replace foreground recovery; same-size prepared-byte corruption is rejected",
+    "corrupt retained-version asset returns 503 instead of a different release or network fallback",
+    "cold process reopen automatically restores the last foreground draft without using a background checkpoint",
+    "browser process restart with stopped origin restores the final verified release and confirmed IndexedDB history",
+    "orphaned parallel draft remains recoverable through the UI after process restart loses the tab session key",
+    "corrupt foreground checkpoint fails closed on offline cold restart while intact revisions and older verified drafts remain accessible"
+  ],
+  "check_count": 23,
+  "requests": [
+    {
+      "path": "",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e450ad13dc2ab913a211a77cd22aa3fd10713bce5c36b2ca621a1efe13a7eb7b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "client.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "git-hash.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "icon.svg",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "index.html",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "client.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "git-hash.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "icon.svg",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "index.html",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "tamper"
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "client.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "git-hash.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "icon.svg",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "index.html",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "hold.html",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": "disconnect"
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "6782aa58bc3db7670ef1bcc3edc6baf5cf1f432e92639f77f906b8a549872bcf",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "hold.html",
+      "release": "e0f01802d2ee857b93f85a1b839dfd8953aff22d4d5862f1b036e960febf24ac",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "44650b0be40da97dd1b56c10db675e1439ccf00bfa59949a5010f73d6d21a7e2",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "45a1246b619a6c8b849895c670fe2b9b73e9c3ca3f090e4267fb00d3edc67d2a",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "4401615bd4577f32f87d49892b13b3a18573823ab5c9edb73250a4a52d906083",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "30932d61145883626bd5e33308d9f8b7195cb0fa029114d351ace4d9766f6c6c",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "2e71ae1d1de6b4a4bb5dfb8c03c7ca034ba89d39c6c65be751d2652d32277cd0",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "client.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "git-hash.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "icon.svg",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "index.html",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "manifest.webmanifest",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "repository.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "style.css",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "updates.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "vendor/REACT_LICENSE.txt",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "vendor/react-runtime.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "runtime-fault.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    },
+    {
+      "path": "service-worker.js",
+      "release": "88a5a2e31b14b2285605a878fc67d472e2892e287416b6b85a97da02ffe52e5b",
+      "fault": null
+    }
+  ],
+  "confirmed_before": {
+    "head": "36d183fb9ff6aab28155220500307ee95da458990c2b9787d50b3f0b10d2e75c",
+    "revisions": 2,
+    "files": 1,
+    "bytes": 32,
+    "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+    "native_execution": false,
+    "github_write": false,
+    "native_review": false
+  },
+  "confirmed_after": {
+    "head": "4f83a16ccef65a7f02a335d961fc65538594852d28b279796610bfa9552405cc",
+    "revisions": 3,
+    "files": 2,
+    "bytes": 55,
+    "scope": "LOCAL_OFFLINE_WORKING_REPLICA",
+    "native_execution": false,
+    "github_write": false,
+    "native_review": false
+  },
+  "console_errors": [],
+  "physical_ios_witness": false,
+  "background_update_guarantee": false
+}

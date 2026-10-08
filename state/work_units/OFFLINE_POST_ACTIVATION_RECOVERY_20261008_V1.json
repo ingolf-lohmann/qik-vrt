@@ -1,0 +1,82 @@
+{
+  "schema": "qikvrt_offline_post_activation_recovery_work_unit_v1",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0"
+  },
+  "work_unit_id": "OFFLINE_POST_ACTIVATION_RECOVERY_20261008_V1",
+  "human_contribution": {
+    "owner": "Ingolf Lohmann",
+    "scope": "Requirements and authorization for bounded post-activation recovery; predecessor and governance preservation"
+  },
+  "artificial_cognitive_contribution": {
+    "system": "OpenAI Codex",
+    "scope": "Implementation, diagnostic tests and attributed verification"
+  },
+  "predecessor": {
+    "pr": 495,
+    "head": "8813a79c72d8956f8691958bfaf2b268d8259577",
+    "tree": "b79582af0d1e4eeae57b064209128e27fb218156",
+    "preserved": true
+  },
+  "observed_main": "512ec968f0ee4c0b9154ffe56848ff1ce6dafa7d",
+  "main_drift": {
+    "paths": 6,
+    "offline_overlap": false,
+    "scope": "Node health/registration only; successor keeps #495 parent"
+  },
+  "implementation_sha256": {
+    "service-worker.template.js": "c5f4aa043281142473f2f9938209a51479a1ef76c48e904e386c6dbb5bdccd33",
+    "service-worker.js": "f65fc68752b55c26bd8017906b10bb510c54de1a077d77ee2c59044056de8b39",
+    "updates.js": "e0bb896365c5be7be402b4a8f15ab710622588f8de050c3e2e6a4b8412ea8de2",
+    "client.js": "ec8f57f90cccdbb09ec915c326aca1d411a2957d9e5fce35ecb246690676eaf8",
+    "repository.js": "a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec"
+  },
+  "local_receipts": [
+    {
+      "engine": "chromium",
+      "path": "evidence/offline_update_recovery/20261008/chromium-local-update-readback.json",
+      "sha256": "18edf60e64d7e47d176efb38f71a56c980e3549f92d59ce71e5b3e2938d04392",
+      "checks": 23,
+      "scope": "LOCAL_IMPLEMENTATION_CONTROLS_NOT_NATIVE_EXACT_HEAD"
+    },
+    {
+      "engine": "webkit",
+      "path": "evidence/offline_update_recovery/20261008/webkit-local-update-readback.json",
+      "sha256": "708d8febc03f66039a64faf2c2d5ecab75185e363d4d231918a3a9eaef72d424",
+      "checks": 23,
+      "scope": "LOCAL_IMPLEMENTATION_CONTROLS_NOT_NATIVE_EXACT_HEAD"
+    }
+  ],
+  "test_harness_boundary": "Local receipts used pause(1300) after late draft entry; final harness explicitly advances the context-wide cadence clock there. Native exact-head execution is separately required.",
+  "invariants": [
+    "Existing immutable verified release caches reused",
+    "Existing strict IndexedDB checkpoints and data schema retained",
+    "No predecessor health inferred from byte completeness",
+    "All live clients required before promotion to healthy",
+    "Navigation-token/client/release bound health receipts",
+    "Runtime failure or missing readiness quarantines failed release",
+    "Only complete previously health-confirmed cache used for recovery",
+    "In-flight peer token retained across failure broadcast",
+    "Existing checkpoint required before reload of an editing application",
+    "No version-loop, cache deletion, new update controller or protected-policy change"
+  ],
+  "governance": {
+    "draft_required": true,
+    "native_reviews_observed": [],
+    "rulesets_observed": [],
+    "main_protected_observed": false,
+    "status": "HOLD",
+    "rules_changed": false
+  },
+  "boundaries": [
+    "First protocol bootstrap has no health-confirmed predecessor until a successful health cycle",
+    "No general detection of semantic errors or fully blocked JS thread",
+    "Suspended worker deadline is checked on next event; no guaranteed background execution",
+    "Browser-controlled storage can be externally evicted",
+    "Physical iPhone not tested",
+    "No production acceptance, merge, Main activation or deployment"
+  ],
+  "native_exact_head": "PENDING_NEW_SUCCESSOR_EXECUTION",
+  "effect_ack_done": false
+}
