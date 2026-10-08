@@ -554,6 +554,19 @@
     "self_host_tests_skipped": false,
     "state": "IMPLEMENTED_REQUIRES_FRESH_COMMITTED_SUCCESSOR_GATES"
   },
+  "runtime_image_delivery_successor": {
+    "archive_round_trip_scope": "Same CI Docker engine; not a clean-host restore or deployed acceptance.",
+    "artificial_cognitive_contribution": "OpenAI Codex: extend the existing terminal workflow to retain the runtime image and an executable-bound Firefox/noVNC source package.",
+    "candidate_verification": "Fresh successor CI required; predecessor checks are historical only.",
+    "deployment_hold": "HOST_AND_DNS_WRITER_ADMISSION_NOT_ESTABLISHED",
+    "effect_ack_done": false,
+    "human_contribution": "Ingolf Lohmann: complete the existing Linux Docker/Firefox terminal delivery and commissioned permanent raumzeitterminal.de operation.",
+    "observed_gap": "Prior productive-terminal artifact retains image ID and browser readback, but not the complete loadable image.",
+    "reuse": "Existing Docker runtime/test targets, exact-head pack/verify, native Firefox suite, and artifact upload.",
+    "source_parent_head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
+    "source_parent_tree": "1e0d6ee3f8c290dd63774084cbc40ea13f6cc41e",
+    "state": "REVIEW_CANDIDATE_REQUIRES_EXACT_HEAD_NATIVE_CI"
+  },
   "schema": "qikvrt-attributable-work-unit/v1",
   "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
   "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",

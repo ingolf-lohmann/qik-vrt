@@ -145,6 +145,94 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Freeze matching Firefox package and archive runtime image
+        shell: bash
+        run: |
+          set -euo pipefail
+          delivery="$RUNNER_TEMP/qikvrt-firefox-delivery"
+          mkdir -p "$delivery"
+          head="$(git rev-parse --verify HEAD^{commit})"
+          tree="$(git rev-parse --verify HEAD^{tree})"
+          # Reuse the tested build cache; export only the runtime target.
+          tag="qikvrt-self-host-firefox-runtime:$head"
+          docker build --target runtime --file runtime/self-host/Dockerfile --tag "$tag" .
+          docker image inspect "$tag" > "$delivery/RUNTIME_IMAGE.json"
+          docker run --rm --network none \
+            --mount "type=bind,source=$GITHUB_WORKSPACE,target=/source,readonly" \
+            --mount "type=bind,source=$delivery,target=/delivery" \
+            qikvrt-self-host-firefox-test \
+            python3 -B tools/qikvrt_self_host.py pack --root /source \
+              --expected-head "$head" --expected-tree "$tree" \
+              --browser-assets-root /usr/share/novnc --output /delivery/package \
+            > "$delivery/PACKAGE_BUILD_RECEIPT.json"
+          pin="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["manifest_sha256"])' "$delivery/PACKAGE_BUILD_RECEIPT.json")"
+          # The exported package must verify in the actual Git-free runtime image.
+          docker run --rm --network none --read-only --tmpfs /tmp:size=64m,mode=1777 \
+            --mount "type=bind,source=$delivery/package,target=/package,readonly" \
+            --workdir /package "$tag" \
+            python3 -B tools/qikvrt_self_host.py verify --root /package --manifest-sha256 "$pin" \
+            > "$delivery/RUNTIME_PACKAGE_READBACK.json"
+          docker run --rm --network none --read-only "$tag" \
+            cat /usr/local/share/qikvrt-distribution-packages.tsv \
+            > "$delivery/DISTRIBUTION_PACKAGES.tsv"
+          docker save --output "$delivery/runtime-image.tar" "$tag"
+          python3 - "$delivery" <<'PY'
+          import gzip, pathlib, shutil, sys
+          root = pathlib.Path(sys.argv[1])
+          with (root / 'runtime-image.tar').open('rb') as source:
+              with (root / 'runtime-image.tar.gz').open('wb') as target:
+                  with gzip.GzipFile(filename='', fileobj=target, mode='wb', mtime=0) as transport:
+                      shutil.copyfileobj(source, transport)
+          (root / 'runtime-image.tar').unlink()
+          PY
+          # Load the actual compressed transport, not a different intermediate.
+          docker load --input "$delivery/runtime-image.tar.gz" > "$delivery/IMAGE_LOAD_READBACK.txt"
+          docker image inspect "$tag" > "$delivery/LOADED_IMAGE.json"
+          python3 - "$delivery" "$head" "$tree" <<'PY'
+          import hashlib, json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          original = json.loads((root / 'RUNTIME_IMAGE.json').read_bytes())[0]
+          loaded = json.loads((root / 'LOADED_IMAGE.json').read_bytes())[0]
+          if original['Id'] != loaded['Id'] or original['RootFS'] != loaded['RootFS']:
+              raise SystemExit('RUNTIME_IMAGE_LOAD_BINDING_MISMATCH')
+          receipt = json.loads((root / 'PACKAGE_BUILD_RECEIPT.json').read_bytes())
+          manifest = json.loads((root / 'package/MANIFEST.json').read_bytes())
+          if (receipt['source_head'], receipt['source_tree']) != tuple(sys.argv[2:]):
+              raise SystemExit('DELIVERY_SOURCE_BINDING_MISMATCH')
+          if 'browser_runtime' not in manifest:
+              raise SystemExit('FIREFOX_PACKAGE_REQUIRED')
+          files = {}
+          for name in ('runtime-image.tar.gz', 'package.tar', 'PACKAGE_BUILD_RECEIPT.json',
+                       'RUNTIME_PACKAGE_READBACK.json', 'RUNTIME_IMAGE.json', 'LOADED_IMAGE.json',
+                       'IMAGE_LOAD_READBACK.txt', 'DISTRIBUTION_PACKAGES.tsv'):
+              path = root / name
+              with path.open('rb') as source:
+                  sha = hashlib.file_digest(source, 'sha256').hexdigest()
+              files[name] = {'bytes': path.stat().st_size, 'sha256': sha}
+          result = {'schema': 'qikvrt-firefox-runtime-delivery/v1',
+                    'source_head': sys.argv[2], 'source_tree': sys.argv[3],
+                    'runtime_image_id': original['Id'], 'os': original['Os'],
+                    'architecture': original['Architecture'], 'files': files,
+                    'manifest_sha256': receipt['manifest_sha256'],
+                    'image_load_scope': 'SAME_CI_ENGINE; NOT_EMPTY_HOST_RESTORE',
+                    'public_https_verified': False, 'effect_ack_done': False}
+          (root / 'DELIVERY.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
+          PY
+
+      - name: Preserve complete runtime image and matching Firefox package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-firefox-runtime-delivery-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.json
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.txt
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.tsv
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.tar
+            ${{ runner.temp }}/qikvrt-firefox-delivery/*.tar.gz
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Parse machine-readable contracts and RFCXML
         shell: bash
         run: |
