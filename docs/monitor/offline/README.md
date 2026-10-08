@@ -126,3 +126,87 @@ vorhandenen Ingolf-Workspace mit HTTP 403. GitHub Pages ist nicht aktiviert.
 Diese technischen Hostingzustände ändern weder Ingolf Lohmanns Freigabe noch
 die aktuelle Mesh Authority. Ein bereits funktionierender HTTPS-Einstieg wird
 erst nach erfolgreichem Deployment und Byte-Readback benannt.
+
+## Automatische sichere Client-Aktualisierung
+
+Der bestehende Worker bleibt unter derselben URL und demselben HTTPS-Scope
+registriert (`updateViaCache: none`). Der Client prüft beim Start, bei `online`,
+`focus`, `pageshow` und Rückkehr in die sichtbare App sowie alle fünf Minuten
+während sichtbarer, als online gemeldeter Sitzungen. Gleichzeitige Prüfungen
+werden zusammengefasst; Ereignisse haben 30 Sekunden Mindestabstand. Fehler
+verlängern die Wiederaufnahmefrist auf höchstens fünf Minuten. Erreichbarkeit
+wird durch den Abruf geprüft, nicht aus `navigator.onLine` abgeleitet. Diese
+Prüfung aktualisiert nur Clientcode; sie beobachtet GitHub nicht und überträgt
+keine persönlichen Dateien.
+
+Ein Release ist der SHA-256-gebundene Asset-Satz aus dem vorhandenen Builder.
+Alle Dateien werden ohne HTTP-Cache und ohne Redirect geladen, vollständig
+geprüft, gespeichert und erneut gelesen. Erst danach wird die Installation
+abgeschlossen. Ein Completion-Record ist an den SHA-256 des kanonischen
+Asset-Manifests gebunden. Hashes prüfen Integrität und Versionszugehörigkeit;
+sie sind keine Herausgebersignatur. Die Vertrauenswurzel bleibt der HTTPS-Origin.
+
+`skipWaiting()` wird erst nach einer Vorbereitung aller erreichbaren offenen
+Clients aufgerufen. Jeder Client sperrt neue Eingaben kurz, wartet auf einen
+ruhenden Arbeitsraum, sichert Pfad, Text, Filter, Konfliktentscheidungen und
+Editorposition getrennt von bestätigten Revisionen in einer strikten
+IndexedDB-Transaktion und bestätigt den SHA-256-Readback. Beschäftigte,
+fehlerhafte oder nicht antwortende Clients halten den Wechsel an. Ein zweiter
+Client-Abgleich erfasst neu hinzugekommene Tabs. Abgebrochene Abstimmungen lösen
+die Eingabesperre; ein Timeout schützt auch gegen einen beendeten Worker.
+
+Nach `clients.claim()` prüft jeder Client den neuen Cache und seinen Entwurf
+nochmals, navigiert automatisch zum stabilen Einstieg und stellt den Entwurf
+wieder her. Auch ein unerwarteter Controllerwechsel lädt niemals einen
+beschäftigten Arbeitsraum neu. Neue Dokumente übernehmen einen vorhandenen
+Tab-Checkpoint und schreiben anschließend unter einer eigenen Identität;
+auch kopierte `sessionStorage`-Werte führen nicht zu gemeinsam überschriebenen
+Entwürfen. Geht eine Tab-Sitzungskennung bei einem Neustart verloren, sind ihre
+verifizierten Sicherungen unter „Gesicherte Entwürfe“ weiterhin einzeln verfügbar.
+Die Auswahl eines Parallelentwurfs überschreibt keine bestätigte Revision und
+sichert den aktuell geöffneten Entwurf vor dem Wechsel. Checkpoints liegen unter eigenen `refs`-Schlüsseln im vorhandenen
+Datenbankschema. Sie erzeugen keine Revision und ändern weder HEAD noch Historie.
+Eine beschädigte Sicherung wird sichtbar angehalten, nicht stillschweigend als
+leerer Entwurf ersetzt. Die gewöhnliche Entwurfsicherung hat 500 ms Verzögerung;
+vor jedem automatischen Wechsel wird sie ausdrücklich vollständig bestätigt.
+
+Die aus verifizierten HTML-Bytes abgeleiteten Script-/CSS-URLs enthalten die
+Release-ID. Relative Modulimporte bleiben dadurch im selben Namespace.
+Vorherige Caches bleiben für noch laufende oder spät fortgesetzte Dokumente
+verfügbar; unbekannte oder beschädigte gebundene Assets ergeben HTTP 503 statt
+Code aus einem anderen Release. Die erste ungeprüfte Netzwerkseite gibt die
+Bearbeitung erst nach einer Navigation durch den geprüften Worker frei.
+Beschädigte Staging-Caches werden nur durch erneuten vollständigen Abruf der
+bekannten, digestgebundenen Bytes repariert. Ein Fehler ersetzt den gesunden
+aktiven Worker nicht. Es gibt weder eine Datenbankmigration noch automatische
+Löschung alter Revisionen oder Entwürfe.
+
+### Plattformgrenzen, insbesondere iOS
+
+| Fall | Automatisch möglich / Grenze |
+| --- | --- |
+| Bereits eingerichteter Client, aktive Online-Sitzung | Updateprüfung, Asset-Verifikation, sicherer Reload und Entwurfswiederherstellung brauchen keine weitere Benutzerfreigabe. |
+| Alle kontrollierten Fenster geschlossen | Der Browser darf einen vollständig installierten wartenden Worker selbst aktivieren; der nächste Start verwendet die neue Version. |
+| Lang laufende sichtbare Sitzung | Der Fünf-Minuten-Takt ist ein Vordergrund-Timer. Auslastung oder Browserdrosselung können ihn verzögern. |
+| Suspendierte oder geschlossene iOS-App | Kein garantierter Timer, Download, Aktivierungszeitpunkt oder Weiterlauf. Worker sind ereignisgebunden und dürfen beendet werden. Bei Rückkehr wird erneut geprüft. |
+| Periodic Background Sync / Push | Kein Bestandteil dieser Lösung. Selbst eine verfügbare API legt keinen verlässlichen, vom Entwickler garantierten Ausführungstakt fest. |
+| Bereits laufender unveränderter Client aus PR #484 | Er kennt die neue Entwurfsabstimmung nicht. Der neue Worker bleibt wartend und erzwingt keinen Reload. Die sichere Erstübernahme erfolgt nach natürlichem Schließen der alten Clients und erneutem Öffnen. |
+| Originwechsel, iOS-Safari versus Home-Screen-App | Speichergrenzen bleiben getrennt. Ein Codeupdate überträgt Arbeitsdaten nicht zwischen Origins oder Installationen. |
+| Prozessabbruch, Speicher-Eviction, Geräte-/Browserdatenlöschung | Browserpolitik bleibt maßgeblich. Der kontrollierte Releasewechsel bestätigt Entwürfe vorab; beliebiger Absturz vor der normalen 500-ms-Sicherung und dauerhafte Aufbewahrung sind keine Garantie. Datei-Backups bleiben verfügbar. |
+
+Die vorhandene Chromium-/WebKit-Prüfung wird um echte Wechsel zwischen vier
+lokalen Release-Fixtures erweitert: sichtbarer Sitzungstakt, Online-/Focus-/
+Pageshow-Ereignisse, Netzabbruch, beschädigte Assets und Staging-Caches,
+unkooperative und parallele Clients, laufende UI-Schreiboperation,
+IndexedDB-Sicherungsfehler, Wiederaufnahme, unveränderte bestätigte Historie,
+getrennte Entwürfe und Browserprozess-Neustart bei abgeschaltetem Origin.
+`update-readback.json` ist aktuelle Ausführungsevidenz; Test-Fixtures sind keine
+veröffentlichten Releases und Desktop-WebKit attestiert kein physisches iPhone.
+
+Primärquellen für die Update-/Hintergrundgrenzen (geprüft 2026-10-08):
+
+- https://w3c.github.io/ServiceWorker/#service-worker-lifetime
+- https://w3c.github.io/ServiceWorker/#service-worker-registration-update
+- https://developer.chrome.com/docs/workbox/service-worker-lifecycle/
+- https://developer.chrome.com/docs/capabilities/periodic-background-sync
+- https://webkit.org/blog/14403/updates-to-storage-policy/

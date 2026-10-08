@@ -130,4 +130,4 @@ test: offline-repository-test  ruleset-authority-test
 .PHONY: offline-repository-test
 offline-repository-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_offline_repository
-	node --test docs/monitor/offline/repository.test.mjs
+	node --test docs/monitor/offline/repository.test.mjs docs/monitor/offline/service-worker.test.mjs

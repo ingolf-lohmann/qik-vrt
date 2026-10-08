@@ -1,0 +1,89 @@
+{
+  "schema": "qikvrt_offline_safe_autoupdate_work_unit_v1",
+  "work_unit_id": "OFFLINE_SAFE_AUTOUPDATE_20261008_V1",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt"
+  },
+  "repository": "ingolf-lohmann/qik-vrt",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "mirror_repository": "Goldkelch/qik-vrt",
+  "predecessor": {
+    "pr": 484,
+    "head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+    "tree": "3af7d383933a8972469f48928a800aa6c06031d4",
+    "branch": "work/offline-iphone-repository-20261007",
+    "head_mutation_authorized": false
+  },
+  "candidate_branch": "work/offline-safe-autoupdate-20261008",
+  "authorization": {
+    "human": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ],
+    "scope": "Implement safe automatic updates of the existing offline client; preserve PR484 head; create separate reviewable successor and fresh exact-head tests."
+  },
+  "implementation": {
+    "reuse": [
+      "Existing service-worker.template.js and shell builder",
+      "Existing IndexedDB refs store and strict write/readback",
+      "Existing browser.test.mjs and native offline-repository workflow"
+    ],
+    "new_modules_reason": "Extract update lifecycle from the existing client and extend the same browser suite with mutable release fixtures; no second client or scheduler.",
+    "verification_before_activation": [
+      "All asset SHA-256 digests",
+      "Canonical release manifest SHA-256",
+      "Cache byte readback",
+      "All current window clients checkpoint ready",
+      "Second and final current-client census"
+    ],
+    "draft_checkpoint": "qikvrt-editor-checkpoint/v1; separate refs keys; strict transaction; SHA-256 readback; per-document identity",
+    "active_cadence_seconds": 300,
+    "event_cooldown_seconds": 30,
+    "events": [
+      "startup",
+      "online",
+      "focus",
+      "pageshow",
+      "visible"
+    ],
+    "mixed_version_prevention": "Release-qualified asset URLs and relative module imports; retained verified release caches; fail closed without network/version substitution",
+    "confirmed_repository_changes_by_update": false,
+    "database_schema_migration": false,
+    "orphaned_draft_recovery": "Verified per-session checkpoint inventory and explicit UI recovery after loss of a tab session key; current editor is checkpointed before choosing another draft."
+  },
+  "required_evidence": [
+    "make test on frozen successor",
+    "Native Chromium update-readback.json and SUBJECT.txt",
+    "Native WebKit update-readback.json and SUBJECT.txt",
+    "Fresh remote successor HEAD/TREE readback",
+    "PR484 head-preservation readback"
+  ],
+  "boundaries": {
+    "predecessor_evidence_transfer": false,
+    "physical_ios_witness": false,
+    "guaranteed_ios_background_schedule": false,
+    "legacy_PR484_live_client_requires_natural_reopen": true,
+    "public_deployment": false,
+    "main_effect": false,
+    "native_review": false,
+    "merge": false,
+    "effect_ack_done": false
+  },
+  "provenance": {
+    "human_contribution": "Requirements, scope and implementation authorization: Ingolf Lohmann",
+    "artificial_cognitive_contribution": "Diagnosis, implementation, tests, documentation and evidence preparation: OpenAI Codex",
+    "exact_model_build": "UNAVAILABLE"
+  },
+  "observed_repairs": [
+    {
+      "source_head": "8df8f25cee9946025df93d557b469656eee427a5",
+      "native_run": 37705131733,
+      "finding": "Cached network Response.url retained the unversioned module base, causing bootstrap reload loops.",
+      "repair": "Rewrap verified resource bytes in a fresh Response so response URL inherits the requested release namespace.",
+      "regression": "Worker control preserves cache response URLs in its oracle and asserts blank returned URL; real browser checks import.meta release binding."
+    }
+  ]
+}

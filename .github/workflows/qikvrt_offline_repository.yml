@@ -64,9 +64,10 @@ jobs:
           QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
         run: |
           set -euo pipefail
+          mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
+          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt"
           make offline-repository-test
           node docs/monitor/offline/browser.test.mjs
-          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt"
           git status --porcelain --untracked-files=no > "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
           test ! -s "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -75,6 +76,9 @@ jobs:
           name: qikvrt-offline-browser-${{ matrix.engine }}-${{ github.sha }}
           path: |
             ${{ runner.temp }}/offline-${{ matrix.engine }}/browser-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-failure.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-failure.png
             ${{ runner.temp }}/offline-${{ matrix.engine }}/iphone-layout.png
             ${{ runner.temp }}/offline-${{ matrix.engine }}/complete-repository-iphone-layout.png
             ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.json
