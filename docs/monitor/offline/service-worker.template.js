@@ -78,7 +78,7 @@ async function selected(){
 function healthGuard(shell,token,root){
   let stopped=false,checking=false,healthy=false;
   const call=message=>new Promise((resolve,reject)=>{const c=new MessageChannel(),t=setTimeout(()=>{c.port1.close();reject(Error('HEALTH_ACK_TIMEOUT'));},5000);c.port1.onmessage=({data})=>{clearTimeout(t);c.port1.close();resolve(data);};navigator.serviceWorker.controller.postMessage({...message,shell,token},[c.port2]);});
-  const recover=async()=>{if(healthy&&globalThis.qikvrtRecoveryCheckpoint&&!await globalThis.qikvrtRecoveryCheckpoint())return;location.replace(root);};
+  const recover=async()=>{const checkpoint=globalThis.qikvrtRecoveryCheckpoint;if(typeof checkpoint==='function'){if(!await checkpoint())return;}else if(document.querySelector('[data-testid=editor-text]')?.disabled===false)return;location.replace(root);};
   const fail=async(reason='STARTUP_TIMEOUT')=>{if(stopped)return;stopped=true;clearInterval(timer);try{const result=await call({type:'QIKVRT_HEALTH_FAILED',reason:typeof reason==='string'?reason:reason.type});if(result?.recovery)await recover();}catch{}};
   window.addEventListener('error',fail,true);window.addEventListener('unhandledrejection',fail);
   navigator.serviceWorker.addEventListener('message',event=>{if(event.source===navigator.serviceWorker.controller&&event.data?.type==='QIKVRT_RECOVERY'&&!stopped){stopped=true;clearInterval(timer);recover().catch(()=>{});}});

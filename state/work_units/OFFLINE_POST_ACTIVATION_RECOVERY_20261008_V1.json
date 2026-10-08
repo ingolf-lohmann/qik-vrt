@@ -78,5 +78,17 @@
     "No production acceptance, merge, Main activation or deployment"
   ],
   "native_exact_head": "PENDING_NEW_SUCCESSOR_EXECUTION",
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "successor_repair": {
+    "parent_head": "05ad492a93149e4b908e7bd7809ba81c9be0721b",
+    "reason": "Checkpoint every editable application before recovery, including the readiness-to-health-receipt interval; refuse reload of an editable legacy client without a checkpoint hook.",
+    "implementation_sha256": {
+      "service-worker.template.js": "5213b0ddc0708473ab5afba179d1298694fd91dfa4963bfb6146da6304a42ec4",
+      "service-worker.js": "c45a7b925e0e94bcea1804cfce92ffc199f45408368dc3745ba80886d937a264",
+      "updates.js": "e0bb896365c5be7be402b4a8f15ab710622588f8de050c3e2e6a4b8412ea8de2",
+      "client.js": "ec8f57f90cccdbb09ec915c326aca1d411a2957d9e5fce35ecb246690676eaf8",
+      "repository.js": "a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec"
+    },
+    "native_exact_head": "PENDING_SUCCESSOR_EXECUTION"
+  }
 }
