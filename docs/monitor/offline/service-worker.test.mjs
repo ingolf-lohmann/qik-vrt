@@ -9,11 +9,12 @@ const template=await readFile(new URL('./service-worker.template.js',import.meta
 const data={'index.html':'<script type="module" src="client.js"></script>','client.js':'import "./repository.js";','repository.js':'export const revision="A";'};
 const assets=Object.fromEntries(Object.entries(data).sort().map(([p,v])=>[p,createHash('sha256').update(v).digest('hex')]));
 const id=createHash('sha256').update(JSON.stringify(assets)).digest('hex'),scope='https://example.test/app/';
+function networkURL(response,url){const clone=response.clone.bind(response);Object.defineProperty(response,'url',{value:url});response.clone=()=>networkURL(clone(),url);return response;}
 function worker({bad=false,disconnect=false,clients=[],arriving=false}={}) {
   const stores=new Map(),listeners=new Map();let skipped=0,censuses=0;
   const cache={async has(name){return stores.has(name);},async delete(name){return stores.delete(name);},async open(name){if(!stores.has(name))stores.set(name,new Map());const map=stores.get(name);return {async match(url){return map.get(String(url))?.clone();},async put(url,response){map.set(String(url),response.clone());}};}};
   const self={registration:{scope},location:{origin:'https://example.test'},clients:{async claim(){},async matchAll(){if(arriving&&++censuses>1)return [...clients,{id:'late',url:scope+'hold.html'}];return clients;}},addEventListener:(name,fn)=>listeners.set(name,fn),async skipWaiting(){skipped++;}};
-  const fetch=async url=>{const path=String(url).slice(scope.length);if(disconnect&&path==='repository.js')throw Error('NETWORK_INTERRUPTED');const response=new Response(bad&&path==='repository.js'?'bad':data[path]);Object.defineProperty(response,'url',{value:String(url)});return response;};
+  const fetch=async url=>{const path=String(url).slice(scope.length);if(disconnect&&path==='repository.js')throw Error('NETWORK_INTERRUPTED');return networkURL(new Response(bad&&path==='repository.js'?'bad':data[path]),String(url));};
   vm.runInNewContext(template.replace('__SHELL_ID__',id).replace('__ASSETS__',JSON.stringify(assets)),{self,caches:cache,fetch,crypto,URL,Response,Headers,TextEncoder,Uint8Array,MessageChannel,setTimeout,clearTimeout});
   const dispatch=(name,event={})=>{let result;listeners.get(name)({...event,waitUntil:p=>{result=p;},respondWith:p=>{result=p;}});return result;};
   const message=async type=>{let result;await dispatch('message',{source:{url:scope},data:{type},ports:[{postMessage:value=>{result=value;}}]});return result;};
@@ -35,6 +36,7 @@ test('release namespace returns exact module bytes and rejects corrupt/unknown a
   const fetch=path=>w.dispatch('fetch',{request:{method:'GET',url:scope+path}});
   const html=await (await fetch('')).text();assert.ok(html.includes(scope+'__qikvrt_release__/'+id+'/client.js'));
   assert.equal(await(await fetch('__qikvrt_release__/'+id+'/repository.js')).text(),data['repository.js']);
+  assert.equal((await fetch('__qikvrt_release__/'+id+'/client.js')).url,'','module response must inherit the requested release URL rather than the cached network URL');
   const cache=await w.cache.open('qikvrt-offline-'+id);await cache.put(scope+'repository.js',new Response('corrupt'));
   assert.equal((await fetch('__qikvrt_release__/'+id+'/repository.js')).status,503);assert.equal((await fetch('__qikvrt_release__/'+id+'/missing.js')).status,503);
 });

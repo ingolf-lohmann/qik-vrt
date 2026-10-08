@@ -40,8 +40,8 @@ export async function updateControls(engine, output, here, options) {
   const ready=async page=>{await page.getByTestId('shell-ready').filter({hasText:'vollständig'}).waitFor();await page.waitForFunction(()=>!document.querySelector('[data-testid=editor-text]').disabled);};
   const version=page=>page.getByTestId('release-version').textContent();
   const report=page=>page.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository}=await import(new URL('repository.js',src));const r=await Repository.open();try{return await r.verify();}finally{r.close();}});
-  const interval=async page=>page.clock.fastForward(310000);
-  const eventCheck=async(page,event='online')=>{await page.clock.fastForward(70000);await page.evaluate(name=>window.dispatchEvent(new Event(name)),event);};
+  const interval=async page=>{await page.bringToFront();await page.clock.fastForward(310000);};
+  const eventCheck=async(page,event='online')=>{await page.bringToFront();await page.clock.fastForward(70000);await page.evaluate(name=>window.dispatchEvent(new Event(name)),event);};
   const waiting=page=>page.evaluate(async()=>!!(await navigator.serviceWorker.getRegistration()).waiting);
   const sameVersion=async(page,id)=>assert.equal(await version(page),id);
   const adopted=async(page,id)=>{await page.waitForFunction(id=>document.querySelector('[data-testid=release-version]')?.textContent===id,id);await ready(page);};
@@ -50,6 +50,7 @@ export async function updateControls(engine, output, here, options) {
     context=await engine.launchPersistentContext(profile,options);
     const one=await context.newPage();active=one;one.on('pageerror',e=>errors.push(e.message));await one.clock.install();await one.goto(url);await ready(one);
     assert.equal(await version(one),releases.A.id);
+    assert.equal(await one.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;return (await import(new URL('updates.js',src))).release;}),releases.A.id);
     await one.getByRole('button',{name:'Arbeitskopie anlegen',exact:true}).click();
     await one.getByTestId('editor-text').fill('confirmed before release switch\n');await one.getByTestId('save').click();
     await one.getByRole('status').filter({hasText:'gespeichert und zurückgelesen'}).waitFor();const before=await report(one);

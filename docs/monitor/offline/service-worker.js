@@ -92,7 +92,9 @@ self.addEventListener('fetch',event=>{
         const headers=new Headers(response.headers);headers.delete('content-length');
         return new Response(JSON.stringify(data),{status:200,headers});
       }
-      if(path!=='index.html')return response;
+      // A cached network Response retains its original URL. Rewrap the verified
+      // bytes so import.meta.url / relative imports use the requested namespace.
+      if(path!=='index.html')return new Response(response.body,{status:response.status,statusText:response.statusText,headers:response.headers});
       // Versioned resource URLs preserve relative imports across claim/restart.
       const html=(await response.text()).replace(/\b(href|src)="([^"]+)"/g,(all,attribute,target)=>Object.hasOwn(assets,target)?attribute+'="'+new URL(NAMESPACE+shell+'/'+target,scope).href+'"':all);
       const headers=new Headers(response.headers);headers.delete('content-length');headers.set('x-qikvrt-shell',shell);
