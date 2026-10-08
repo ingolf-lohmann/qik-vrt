@@ -562,6 +562,17 @@
     "effect_ack_done": false,
     "human_contribution": "Ingolf Lohmann: complete the existing Linux Docker/Firefox terminal delivery and commissioned permanent raumzeitterminal.de operation.",
     "observed_gap": "Prior productive-terminal artifact retains image ID and browser readback, but not the complete loadable image.",
+    "original_delivery_failure": {
+      "ci_required": "Fresh exact-successor full workflow; predecessor browser tests remain historical.",
+      "error": "PermissionError: host cannot read container-owned 0700 package/MANIFEST.json",
+      "head": "d95366905d357359d2b1c92efce94710df7d8c16",
+      "job_id": 113091691811,
+      "repair": "Read MANIFEST.json from the already frozen public package.tar; retain private directory mode and ownership.",
+      "run_id": 37709465648,
+      "step": "Freeze matching Firefox package and archive runtime image",
+      "tree": "c38aec9102349075c37afcea802902efe853885e",
+      "verified_before_failure": "Runtime-target pack verification and compressed docker-load succeeded before receipt generation; no delivery artifact uploaded."
+    },
     "reuse": "Existing Docker runtime/test targets, exact-head pack/verify, native Firefox suite, and artifact upload.",
     "source_parent_head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
     "source_parent_tree": "1e0d6ee3f8c290dd63774084cbc40ea13f6cc41e",

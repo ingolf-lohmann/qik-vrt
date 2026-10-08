@@ -189,14 +189,16 @@ jobs:
           docker load --input "$delivery/runtime-image.tar.gz" > "$delivery/IMAGE_LOAD_READBACK.txt"
           docker image inspect "$tag" > "$delivery/LOADED_IMAGE.json"
           python3 - "$delivery" "$head" "$tree" <<'PY'
-          import hashlib, json, pathlib, sys
+          import hashlib, json, pathlib, sys, tarfile
           root = pathlib.Path(sys.argv[1])
           original = json.loads((root / 'RUNTIME_IMAGE.json').read_bytes())[0]
           loaded = json.loads((root / 'LOADED_IMAGE.json').read_bytes())[0]
           if original['Id'] != loaded['Id'] or original['RootFS'] != loaded['RootFS']:
               raise SystemExit('RUNTIME_IMAGE_LOAD_BINDING_MISMATCH')
           receipt = json.loads((root / 'PACKAGE_BUILD_RECEIPT.json').read_bytes())
-          manifest = json.loads((root / 'package/MANIFEST.json').read_bytes())
+          # Preserve the container-owned 0700 directory; read public export bytes.
+          with tarfile.open(root / 'package.tar', 'r:') as archive:
+              manifest = json.load(archive.extractfile('MANIFEST.json'))
           if (receipt['source_head'], receipt['source_tree']) != tuple(sys.argv[2:]):
               raise SystemExit('DELIVERY_SOURCE_BINDING_MISMATCH')
           if 'browser_runtime' not in manifest:
