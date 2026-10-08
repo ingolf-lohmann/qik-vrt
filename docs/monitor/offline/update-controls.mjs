@@ -40,8 +40,11 @@ export async function updateControls(engine, output, here, options) {
   const ready=async page=>{await page.getByTestId('shell-ready').filter({hasText:/^Client vollständig im Offline-Cache geprüft\.$/}).waitFor();await page.waitForFunction(()=>!document.querySelector('[data-testid=editor-text]').disabled);};
   const version=page=>page.getByTestId('release-version').textContent();
   const report=page=>page.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository}=await import(new URL('repository.js',src));const r=await Repository.open();try{return await r.verify();}finally{r.close();}});
-  const interval=async page=>{await page.bringToFront();await page.clock.fastForward(310000);};
-  const eventCheck=async(page,event='online')=>{await page.bringToFront();await page.clock.fastForward(70000);await page.evaluate(name=>window.dispatchEvent(new Event(name)),event);};
+  // Cadence advances timers once, after the foreground check has settled.
+  // Event controls advance Date only: jumping live MessageChannel timeouts
+  // while a real worker is reading cache bytes creates a false clock race.
+  const interval=async page=>{await page.clock.fastForward(310000);};
+  const eventCheck=async(page,event='online')=>{const now=await page.evaluate(()=>Date.now());await page.clock.setSystemTime(now+70000);await page.bringToFront();await page.evaluate(name=>window.dispatchEvent(new Event(name)),event);};
   const waiting=page=>page.evaluate(async()=>!!(await navigator.serviceWorker.getRegistration()).waiting);
   const sameVersion=async(page,id)=>assert.equal(await version(page),id);
   const adopted=async(page,id)=>{await page.waitForFunction(id=>document.querySelector('[data-testid=release-version]')?.textContent===id,id);await ready(page);};
@@ -59,19 +62,20 @@ export async function updateControls(engine, output, here, options) {
     const two=await context.newPage();two.on('pageerror',e=>errors.push(e.message));await two.goto(url);await ready(two);
     await two.getByTestId('editor-path').fill('personal/draft-B.md');await two.getByTestId('editor-text').fill(draftB);
 
+    await one.bringToFront();await one.waitForFunction(()=>document.querySelector('[data-testid=update-state]')?.getAttribute('data-state')==='current');
     current=releases.B;fault={path:'repository.js',type:'tamper'};const count=requests.length;
     await interval(one);await until(()=>requests.slice(count).some(r=>r.path==='repository.js'));
     await until(async()=>!await one.evaluate(async()=>!!(await navigator.serviceWorker.getRegistration()).installing));
     await sameVersion(one,releases.A.id);assert.equal(await waiting(one),false);assert.deepEqual(await report(one),before);
     assert.equal(await one.getByTestId('editor-text').inputValue(),draftA);checks.push('five-minute active-session check rejects a SHA-256-damaged release without head/draft changes');
 
-    fault={path:'repository.js',type:'disconnect'};const dropped=requests.length;await interval(one);
+    fault={path:'repository.js',type:'disconnect'};const dropped=requests.length;await eventCheck(one);
     await until(()=>requests.slice(dropped).some(r=>r.path==='repository.js'));
     await until(async()=>!await one.evaluate(async()=>!!(await navigator.serviceWorker.getRegistration()).installing));
     await sameVersion(one,releases.A.id);assert.equal(await waiting(one),false);assert.deepEqual(await report(one),before);
     checks.push('interrupted asset transfer cannot install or expose a partial release');
 
-    fault=null;const peer=await context.newPage();await peer.goto(url+'hold.html');
+    const peer=await context.newPage();await peer.goto(url+'hold.html');fault=null;
     await eventCheck(one,'focus');await until(()=>waiting(one));await one.waitForFunction(()=>document.querySelector('[data-testid=update-state]')?.getAttribute('data-state')==='preparing');assert.equal(await one.getByTestId('editor-text').isDisabled(),true);assert.equal(await one.getByLabel('Datei suchen',{exact:true}).isDisabled(),true);await pause(8500);
     await sameVersion(one,releases.A.id);await sameVersion(two,releases.A.id);
     assert.equal(await one.getByTestId('editor-text').isEnabled(),true);
@@ -91,21 +95,21 @@ export async function updateControls(engine, output, here, options) {
     await one.evaluate(async()=>{const {Repository}=await import(new URL('repository.js',document.querySelector('script[type=module]').src));const save=Repository.prototype.save;
       Repository.prototype.save=async function(...args){window.pendingSaveEntered=true;await new Promise(resolve=>{window.finishPendingSave=resolve;});return save.apply(this,args);};});
     await one.getByTestId('save').click();await one.waitForFunction(()=>window.pendingSaveEntered);
-    current=releases.C;await interval(one);await until(()=>waiting(one));await pause(1000);await sameVersion(one,releases.B.id);
+    current=releases.C;await eventCheck(one);await until(()=>waiting(one));await pause(1000);await sameVersion(one,releases.B.id);
     await one.evaluate(()=>window.finishPendingSave());await one.getByRole('status').filter({hasText:'gespeichert und zurückgelesen'}).waitFor();
     const saved=await report(one);assert.notEqual(saved.head,before.head);assert.equal(saved.revisions,before.revisions+1);
     checks.push('an in-flight real UI save holds activation until its new revision is committed and read back');
 
     await two.evaluate(()=>{window.realTransaction=IDBDatabase.prototype.transaction;IDBDatabase.prototype.transaction=function(names,mode,...rest){if(mode==='readwrite'&&[names].flat().includes('refs'))throw new DOMException('Test quota boundary','QuotaExceededError');return window.realTransaction.call(this,names,mode,...rest);};});
-    await interval(one);await pause(1500);await sameVersion(one,releases.B.id);await sameVersion(two,releases.B.id);assert.deepEqual(await report(one),saved);
+    await eventCheck(one);await pause(1500);await sameVersion(one,releases.B.id);await sameVersion(two,releases.B.id);assert.deepEqual(await report(one),saved);
     checks.push('failed strict IndexedDB checkpoint blocks release adoption without losing the unconfirmed peer draft');
-    await two.evaluate(()=>{IDBDatabase.prototype.transaction=window.realTransaction;});await interval(one);
+    await two.evaluate(()=>{IDBDatabase.prototype.transaction=window.realTransaction;});await eventCheck(one);
     await adopted(one,releases.C.id);await adopted(two,releases.C.id);assert.equal(await two.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(one),saved);
     checks.push('recovered storage resumes the same waiting release and preserves the latest confirmed revision');
 
-    const hold=await context.newPage();await hold.goto(url+'hold.html');current=releases.D;await interval(one);await until(()=>waiting(one));await pause(8500);
+    const hold=await context.newPage();await hold.goto(url+'hold.html');current=releases.D;await eventCheck(one);await until(()=>waiting(one));await pause(8500);
     await one.evaluate(async id=>{const cache=await caches.open('qikvrt-offline-'+id);const url=new URL('repository.js',location.href);await cache.put(url,new Response('damaged staged cache'));},releases.D.id);
-    await stop();await hold.close();await interval(one);await pause(1500);await sameVersion(one,releases.C.id);assert.deepEqual(await report(one),saved);
+    await stop();await hold.close();await eventCheck(one);await pause(1500);await sameVersion(one,releases.C.id);assert.deepEqual(await report(one),saved);
     checks.push('post-install cache corruption is reverified before skipWaiting; network loss holds the healthy predecessor');
     await serve();await eventCheck(one,'pageshow');await adopted(one,releases.D.id);await adopted(two,releases.D.id);
     assert.equal(await two.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(one),saved);
@@ -122,7 +126,7 @@ export async function updateControls(engine, output, here, options) {
     assert.deepEqual(errors,[]);
     const result={schema:'qikvrt-offline-update-browser-readback/v1',releases:Object.fromEntries(Object.entries(releases).map(([tag,r])=>[tag,r.id])),checks,check_count:checks.length,requests,confirmed_before:before,confirmed_after:saved,console_errors:errors,physical_ios_witness:false,background_update_guarantee:false};
     await writeFile(resolve(output,'update-readback.json'),JSON.stringify(result,null,2)+'\n');return result;
-  }catch(error){let state;try{state=await active?.evaluate(()=>({url:location.href,text:document.body.innerText,controlled:!!navigator.serviceWorker.controller}));await active?.screenshot({path:resolve(output,'update-failure.png'),fullPage:true});}catch{}
+  }catch(error){let state;try{state=await active?.evaluate(async()=>{const registration=await navigator.serviceWorker.getRegistration();return {url:location.href,text:document.body.innerText,controlled:!!navigator.serviceWorker.controller,hidden:document.hidden,now:Date.now(),active:registration?.active?.state,waiting:registration?.waiting?.state,installing:registration?.installing?.state};});await active?.screenshot({path:resolve(output,'update-failure.png'),fullPage:true});}catch{}
     await writeFile(resolve(output,'update-failure.json'),JSON.stringify({error:error.message,stack:error.stack,checks,requests,state,errors},null,2)+'\n');throw error;
   }finally{await context?.close();if(server?.listening)await stop();}
 }
