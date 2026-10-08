@@ -2,8 +2,9 @@
 // Real IndexedDB, cache, reload and two browser origins. Mobile layout is not an iPhone-device witness.
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {spawn} from 'node:child_process';
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {spawn,spawnSync} from 'node:child_process';
+import {createServer} from 'node:http';
+import {readFile,writeFile,mkdir,cp,mkdtemp} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const here=dirname(fileURLToPath(import.meta.url)),root=resolve(here,'../../..');
@@ -11,6 +12,120 @@ const require=createRequire(import.meta.url);
 const {chromium,webkit}=require(process.env.QIKVRT_PLAYWRIGHT_MODULE||'playwright');
 const servers=[];
 async function serve(port){const child=spawn(process.execPath,[resolve(here,'static-server.mjs')],{env:{...process.env,PORT:String(port)},stdio:['ignore','pipe','pipe']});servers.push(child);await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);child.once('exit',()=>reject(Error('SERVER_STOPPED')));});return 'http://127.0.0.1:'+port;}
+// Publish distinct production-built shells at one stable origin. Faults affect
+// real worker HTTP downloads, not a mocked worker or an activation API shortcut.
+async function updateControls(engine,options){
+  const dir=await mkdtemp(resolve(output,'update-releases-')),releases={};
+  async function release(label){
+    const destination=resolve(dir,label);await cp(here,destination,{recursive:true});
+    await writeFile(resolve(destination,'client.js'),(await readFile(resolve(destination,'client.js'),'utf8'))+'\nglobalThis.QIKVRT_TEST_RELEASE='+JSON.stringify(label)+';\n');
+    const generated=spawnSync(process.env.PYTHON||'python3',['-B','-c','import pathlib,sys,json; from tools.qikvrt_offline_repository import shell; print(json.dumps(shell(pathlib.Path(sys.argv[1]))))',destination],{cwd:root,encoding:'utf8'});
+    assert.equal(generated.status,0,generated.stderr);
+    const binding=JSON.parse(generated.stdout),files=new Map();
+    for(const name of [...Object.keys(binding.assets),'service-worker.js'])files.set('/'+name,await readFile(resolve(destination,name)));
+    return releases[label]={label,binding,files};
+  }
+  const a=await release('A'),b=await release('B'),c=await release('C'),d=await release('D');
+  let published=a,fault=null,downloads=[],context,netClosed=false;
+  const server=createServer((req,res)=>{
+    const path=new URL(req.url,'http://localhost').pathname;
+    const bytes=published.files.get(path==='/'?'/index.html':path);
+    downloads.push({release:published.label,path,fault:fault?.path===path?fault.kind:null});
+    if(fault?.path===path&&fault.kind==='disconnect'){req.socket.destroy();return;}
+    if(!bytes){res.writeHead(404);res.end();return;}
+    const content=fault?.path===path&&fault.kind==='integrity'?Buffer.concat([bytes,Buffer.from('\nCORRUPTED_UPDATE')]):bytes;
+    res.writeHead(200,{'content-type':path.endsWith('.js')?'text/javascript':path.endsWith('.css')?'text/css':path.endsWith('.svg')?'image/svg+xml':path.endsWith('.webmanifest')?'application/manifest+json':'text/html','cache-control':'no-store','content-length':content.length});res.end(content);
+  });
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  const url='http://127.0.0.1:'+server.address().port,profile=resolve(dir,'browser-profile'),controls=[],updateErrors=[];
+  const observeErrors=ctx=>ctx.on('page',page=>page.on('pageerror',error=>updateErrors.push(error.message)));
+  async function loaded(page,label){await page.waitForFunction(value=>globalThis.QIKVRT_TEST_RELEASE===value,label,{timeout:30000});await page.getByTestId('shell-ready').filter({hasText:'vollständig'}).waitFor();await page.waitForFunction(()=>!document.querySelector('[data-testid=editor-text]').disabled);}
+  const onlineContact=page=>page.evaluate(()=>window.dispatchEvent(new Event('online')));
+  async function readback(page){return page.evaluate(async()=>{
+    const {Repository}=await import('./repository.js');const r=await Repository.open(),head=await r.head(),history=await r.history();r.close();
+    const reg=await navigator.serviceWorker.getRegistration();
+    const receipt=await new Promise(resolve=>{const channel=new MessageChannel();channel.port1.onmessage=({data})=>{channel.port1.close();resolve(data);};navigator.serviceWorker.controller.postMessage({type:'QIKVRT_OFFLINE_READY'},[channel.port2]);});
+    return {boot:globalThis.QIKVRT_BOOT_TAB??null,tab:sessionStorage.getItem('qikvrt-editor-tab-v1'),head:head.id,revisions:history.length,release:globalThis.QIKVRT_TEST_RELEASE,cache:receipt.cache,ready:receipt.ready,waiting:!!reg.waiting,installing:!!reg.installing,text:document.querySelector('[data-testid=editor-text]').value,path:document.querySelector('[data-testid=editor-path]').value};
+  });}
+  async function wholeShell(page,expected){
+    const found=await page.evaluate(async assets=>{
+      const out={};for(const path of Object.keys(assets)){const r=await fetch('./'+path);out[path]=[...new Uint8Array(await crypto.subtle.digest('SHA-256',await r.arrayBuffer()))].map(v=>v.toString(16).padStart(2,'0')).join('');}return out;
+    },expected.binding.assets);
+    assert.deepEqual(found,expected.binding.assets);
+  }
+  async function failed(page,target,kind){
+    published=target;fault={path:'/repository.js',kind};const at=downloads.length;
+    await page.evaluate(async()=>{const reg=await navigator.serviceWorker.getRegistration();globalThis.QIKVRT_FAILED_INSTALL=false;reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker.addEventListener('statechange',()=>{if(worker.state==='redundant')globalThis.QIKVRT_FAILED_INSTALL=true;});},{once:true});});
+    await onlineContact(page);
+    await page.waitForFunction(()=>globalThis.QIKVRT_FAILED_INSTALL===true,{},{timeout:30000});
+    assert(downloads.slice(at).some(r=>r.fault===kind),'fault reached real HTTP install fetch');
+  }
+  try{
+    context=await engine.launchPersistentContext(profile,options);observeErrors(context);
+    const first=await context.newPage();await first.goto(url);await loaded(first,'A');
+    await first.getByRole('button',{name:'Arbeitskopie anlegen',exact:true}).click();await first.getByTestId('editor-text').fill('saved baseline');await first.getByTestId('save').click();await first.getByRole('status').filter({hasText:'gespeichert und zurückgelesen'}).waitFor();
+    await first.getByTestId('editor-path').fill('personal/unsaved-first.md');await first.getByTestId('editor-text').fill('ungespeicherter Entwurf · erster Tab');
+    const copiedTab=await first.evaluate(()=>sessionStorage.getItem('qikvrt-editor-tab-v1'));
+    const second=await context.newPage();
+    await second.addInitScript(key=>{if(!sessionStorage.getItem('test-inherited-tab')){sessionStorage.setItem('qikvrt-editor-tab-v1',key);sessionStorage.setItem('test-inherited-tab','1');}},copiedTab);
+    await second.goto(url);await loaded(second,'A');
+    assert.notEqual(await second.evaluate(()=>sessionStorage.getItem('qikvrt-editor-tab-v1')),copiedTab);
+    await second.getByTestId('editor-path').fill('personal/in-flight.md');await second.getByTestId('editor-text').fill('laufender Speichervorgang');
+    await second.evaluate(async()=>{const {Repository}=await import('./repository.js');const save=Repository.prototype.save;Repository.prototype.save=async function(...args){await new Promise(resolve=>globalThis.releaseInFlight=resolve);return save.apply(this,args);};});
+    await second.getByTestId('save').click();await second.waitForFunction(()=>typeof globalThis.releaseInFlight==='function');
+    const before=await readback(first);published=b;await onlineContact(first);await onlineContact(second);
+    await second.waitForFunction(async()=>!!(await navigator.serviceWorker.getRegistration()).waiting);
+    // The staged worker is complete, but the executing old client remains in charge.
+    await new Promise(resolve=>setTimeout(resolve,1800));
+    assert.equal((await readback(first)).cache,before.cache);assert.equal((await readback(second)).release,'A');
+    assert.equal(await second.getByTestId('editor-text').isDisabled(),true);await wholeShell(first,a);
+    controls.push('running repository action defers activation and finishes on the old client');
+    await second.evaluate(()=>globalThis.releaseInFlight());
+    await loaded(second,'B');await first.bringToFront();await loaded(first,'B');
+    assert.equal(await first.getByTestId('editor-text').inputValue(),'ungespeicherter Entwurf · erster Tab');assert.equal(await first.getByTestId('editor-path').inputValue(),'personal/unsaved-first.md');
+    assert.equal(await second.getByTestId('editor-text').inputValue(),'laufender Speichervorgang');
+    const admitted=await readback(first);assert.notEqual(admitted.head,before.head);assert.equal(admitted.revisions,before.revisions+1);
+    const unsavedAbsent=await first.evaluate(async()=>{const {Repository}=await import('./repository.js');const r=await Repository.open();const h=await r.head();r.close();return !h.snapshot.files.some(f=>f.path==='personal/unsaved-first.md');});assert.equal(unsavedAbsent,true);
+    controls.push('automatic A to B transition preserves independent per-tab drafts without committing them');
+    await wholeShell(first,b);controls.push('every served application asset belongs to one complete activated version');
+    await first.getByTestId('editor-text').focus();await first.evaluate(()=>document.querySelector('[data-testid=editor-text]').setSelectionRange(3,9,'forward'));
+    await failed(first,c,'disconnect');const brokenNetwork=await readback(first);assert.equal(brokenNetwork.cache,admitted.cache);assert.equal(brokenNetwork.head,admitted.head);assert.equal(brokenNetwork.text,admitted.text);assert.equal(brokenNetwork.waiting,false);await wholeShell(first,b);
+    controls.push('interrupted HTTP asset transfer rejects installation and retains the last verified shell and repository');
+    fault=null;await first.getByTestId('editor-text').dispatchEvent('compositionstart');await onlineContact(first);
+    await first.waitForFunction(async()=>!!(await navigator.serviceWorker.getRegistration()).waiting);
+    await new Promise(resolve=>setTimeout(resolve,1800));assert.equal((await readback(first)).cache,admitted.cache);
+    controls.push('active IME composition defers the complete staged update until compositionend');
+    await first.getByTestId('editor-text').dispatchEvent('compositionend');await loaded(first,'C');await second.bringToFront();await loaded(second,'C');await first.bringToFront();
+    assert.equal(await first.getByTestId('editor-text').inputValue(),admitted.text);
+    const caret=await first.evaluate(()=>{const e=document.querySelector('[data-testid=editor-text]');return [document.activeElement===e,e.selectionStart,e.selectionEnd];});assert.deepEqual(caret,[true,3,9]);
+    const restored=await readback(first);assert.equal(restored.head,admitted.head);assert.equal(restored.revisions,admitted.revisions);await wholeShell(first,c);
+    controls.push('next online event recovers a rejected download without manual update; text selection and history survive');
+    await failed(first,d,'integrity');const badDigest=await readback(first);assert.equal(badDigest.cache,restored.cache);assert.equal(badDigest.head,restored.head);assert.equal(badDigest.text,restored.text);assert.equal(badDigest.waiting,false);await wholeShell(first,c);
+    controls.push('SHA-256 mismatch rejects manipulated bytes and preserves the preceding complete version');
+    const recoveryBeforeClose=await first.evaluate(async()=>{
+      const {Repository}=await import('./repository.js'),r=await Repository.open(),latest=await r.editorDraft(),key=await r.get('refs','editor:last');r.close();
+      return {focused:document.hasFocus(),hidden:document.hidden,tab:sessionStorage.getItem('qikvrt-editor-tab-v1'),latest_key:key,latest_text:latest?.state.text,latest_focus:latest?.state.focus};
+    });
+    console.log(JSON.stringify({schema:'qikvrt-client-cold-recovery-checkpoint/v1',recoveryBeforeClose}));
+    assert.equal(recoveryBeforeClose.latest_text,restored.text);
+    // No scheduling or update promise while the browser process is fully closed.
+    await context.close();context=null;fault=null;
+    const closedAt=downloads.length;await new Promise(resolve=>setTimeout(resolve,300));assert.equal(downloads.length,closedAt);
+    context=await engine.launchPersistentContext(profile,options);observeErrors(context);const cold=await context.newPage();
+    await cold.addInitScript(()=>{if(!sessionStorage.getItem('test-cold-boot-meta'))sessionStorage.setItem('test-cold-boot-meta',JSON.stringify({tab:sessionStorage.getItem('qikvrt-editor-tab-v1'),navigation:performance.getEntriesByType('navigation')[0]?.type}));globalThis.QIKVRT_BOOT_TAB=JSON.parse(sessionStorage.getItem('test-cold-boot-meta'));});
+    await cold.goto(url);await loaded(cold,'D');
+    const recovered=await readback(cold);assert.equal(recovered.head,restored.head);assert.equal(recovered.text,restored.text);await wholeShell(cold,d);
+    assert.equal(await cold.evaluate(cache=>caches.has(cache),restored.cache),true);
+    controls.push('cold reopen applies the healthy publication automatically and recovers the IndexedDB draft; the previous cache is retained');
+    await new Promise(resolve=>server.close(resolve));netClosed=true;await cold.reload();await loaded(cold,'D');assert.equal((await readback(cold)).head,recovered.head);
+    controls.push('updated version and repository remain usable on offline navigation after recovery');
+    assert.deepEqual(updateErrors,[]);
+    return {schema:'qikvrt-client-update-regression/v1',console_errors:updateErrors,controls,versions:Object.fromEntries(Object.entries(releases).map(([label,r])=>[label,r.binding.shell_sha256])),final:recovered,download_faults:downloads.filter(r=>r.fault),online_event_method:'DOM online lifecycle event; actual HTTP asset failures; no registration.update or skipWaiting call from tests',closed_app_background_update_guaranteed:false,actual_iphone_devices:false};
+  }catch(error){
+    console.log(JSON.stringify({schema:'qikvrt-client-update-failure/v1',error:error.message,controls,download_faults:downloads.filter(r=>r.fault),states:await Promise.all((context?.pages()||[]).map(page=>readback(page).catch(()=>null)))}));
+    throw error;
+  }finally{await context?.close();if(!netClosed)await new Promise(resolve=>server.close(resolve));}
+}
 let browser,activePage;
 async function stopOrigin(child){if(child.exitCode!==null)return;await new Promise(resolve=>{child.once('exit',resolve);child.kill();});}
 const output=process.env.QIKVRT_OFFLINE_EVIDENCE_DIR||'/tmp/qikvrt-offline-browser';await mkdir(output,{recursive:true});
@@ -48,5 +163,6 @@ try{const [one,two]=await Promise.all([serve(Number(process.env.QIKVRT_OFFLINE_P
     await full.getByLabel('Datei suchen',{exact:true}).fill('docs/monitor/offline/');assert.equal(await full.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await full.screenshot({path:resolve(output,'complete-repository-iphone-layout.png'),fullPage:true});
     checks.push('complete frozen repository gzip imports through the real React file chooser and verifies all source bytes, native Git tree and populated mobile layout');
   }
-  assert.deepEqual(errors,[]);await writeFile(resolve(output,'browser-readback.json'),JSON.stringify({schema:'qikvrt-offline-browser-readback/v1',engine:engine===webkit?'webkit':'chromium',mobile_layout:{width:390,height:844},actual_iphone_devices:false,offline_disruption:{origin_server_stopped:true,uncached_network_request_failed:true,playwright_offline_flag:engine===chromium,webkit_offline_emulation:'Excluded from acceptance after native internal error; upstream microsoft/playwright#42775'},complete_source:completeSource,checks,check_count:checks.length,second_origin_final_head:large,console_errors:errors,native_execution:false,main_effect:false},null,2)+'\n');console.log(JSON.stringify({checks:checks.length,engine:engine===webkit?'webkit':'chromium',actual_iphone_devices:false,output}));
+  const updates=await updateControls(engine,options);checks.push(...updates.controls);console.log(JSON.stringify(updates));
+  assert.deepEqual(errors,[]);await writeFile(resolve(output,'browser-readback.json'),JSON.stringify({schema:'qikvrt-offline-browser-readback/v1',engine:engine===webkit?'webkit':'chromium',mobile_layout:{width:390,height:844},actual_iphone_devices:false,offline_disruption:{origin_server_stopped:true,uncached_network_request_failed:true,playwright_offline_flag:engine===chromium,webkit_offline_emulation:'Excluded from acceptance after native internal error; upstream microsoft/playwright#42775'},complete_source:completeSource,automatic_updates:updates,checks,check_count:checks.length,second_origin_final_head:large,console_errors:errors,native_execution:false,main_effect:false},null,2)+'\n');console.log(JSON.stringify({checks:checks.length,engine:engine===webkit?'webkit':'chromium',actual_iphone_devices:false,output}));
 }catch(error){let state;try{state=await activePage?.evaluate(()=>({url:location.href,online_hint:navigator.onLine,controlled:!!navigator.serviceWorker.controller,text:document.body.innerText.slice(0,3000)}));await activePage?.screenshot({path:resolve(output,'failure.png'),fullPage:true});}catch{}await writeFile(resolve(output,'failure.json'),JSON.stringify({error:error.message,stack:error.stack,checks,console_errors:errors,state},null,2)+'\n');throw error;}finally{await browser?.close();for(const child of servers)child.kill();}

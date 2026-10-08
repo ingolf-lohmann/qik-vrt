@@ -1,0 +1,175 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "API and hosted desktop browser controls do not establish independent human native approval, a physical iPhone witness or production HTTPS deployment.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "automatic-client-update-20261008",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Extend existing Service Worker with complete staging readback and an all-client IndexedDB checkpoint barrier before skipWaiting.",
+    "Extend existing client with lifecycle-triggered update checks, quiescent editor checkpoints, safe automatic reload and draft/focus restoration.",
+    "Reuse existing refs store, database version, production shell builder and native browser workflow.",
+    "Exercise four real version publications at one origin with real broken HTTP asset downloads and integrity rejection."
+  ],
+  "boundaries": {
+    "closed_app_background_update_guaranteed": false,
+    "deployment": false,
+    "draft_is_repository_commit": false,
+    "effect_ack_done": false,
+    "legacy_pr484_live_draft_migration": "No forced activation of legacy windows without checkpoint support; naturally adopts after windows close and app reopens. Uncheckpointed legacy RAM cannot be recovered retroactively.",
+    "main_promotion": false,
+    "native_review": false,
+    "storage_eviction_or_fsync_guaranteed": false,
+    "suspended_app_update_guaranteed": false,
+    "trust_root": "HTTPS-published worker and embedded manifest; no independent signature against compromised origin"
+  },
+  "git_history": {
+    "branch": "work/offline-iphone-repository-auto-update-20261008",
+    "force_push": false,
+    "history_preserved": true,
+    "parent": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+    "pr_base_branch": "work/offline-iphone-repository-20261007",
+    "predecessor_evidence_transfer": false,
+    "preserved_pull_request": 484
+  },
+  "human_actor": {
+    "contribution_class": "HUMAN",
+    "id": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "human_contributions": [
+    "Require autonomous client update at the next suitable online contact with local repository and unsaved work preserved.",
+    "Require Chromium/WebKit version-transition controls for successful updates, interrupted transfers, integrity errors and recovery.",
+    "Preserve PR484 exact head and deliver changes through a separate reviewable successor."
+  ],
+  "human_decision": {
+    "generated_result_acceptance": "PENDING",
+    "task_execution": "AUTHORIZED_BY_CURRENT_REQUEST"
+  },
+  "joint_components": [],
+  "next_action": "Run the complete candidate suite; publish this separate stacked draft and read fresh native Chromium/WebKit version-transition receipts on its exact HEAD/TREE.",
+  "outputs": [
+    {
+      "bytes": 23261,
+      "path": "docs/monitor/offline/client.js",
+      "sha256": "52802553a0dc53fa07b1e8b0d9545335cd674bd10b2e6105d70e853d01b1168e"
+    },
+    {
+      "bytes": 17328,
+      "path": "docs/monitor/offline/repository.js",
+      "sha256": "547343e175ef7093de9c514ebffb79143f97578471e46e66729d1460e5cc2084"
+    },
+    {
+      "bytes": 3983,
+      "path": "docs/monitor/offline/service-worker.template.js",
+      "sha256": "3b2c3075fcbe43e24df31b63530d593c7626a4d1e7152787ef80eb1cd3557d29"
+    },
+    {
+      "bytes": 4783,
+      "path": "docs/monitor/offline/service-worker.js",
+      "sha256": "9252d47f3b9db62c4de4596e05c3be5a1f3620cc7cd26d8914d1fe1177e7fff4"
+    },
+    {
+      "bytes": 28043,
+      "path": "docs/monitor/offline/browser.test.mjs",
+      "sha256": "27584f4b747818424f7eb15000201e9f0397c1c6272842b8b83ce7c4643081c4"
+    },
+    {
+      "bytes": 11977,
+      "path": "docs/monitor/offline/README.md",
+      "sha256": "a5577ab2b280b895ca3bdebc87fb0845c93e2a1e57f053fe863b957e9113aa08"
+    },
+    {
+      "bytes": 10125,
+      "path": "tools/qikvrt_offline_repository.py",
+      "sha256": "da436631cd9e84d76adca8ce211d9104963c0613f2a8e979d82ca7cc4e9e0236"
+    },
+    {
+      "bytes": 4897,
+      "path": "tests/test_offline_repository.py",
+      "sha256": "6ef6cfd82c90f3efb5ac2fa6d2bc8e0d2847d382fb6f4e0d069fb34307c75307"
+    }
+  ],
+  "reuse_before_create": {
+    "existing_components": [
+      "docs/monitor/offline/service-worker.template.js",
+      "docs/monitor/offline/client.js",
+      "docs/monitor/offline/repository.js",
+      "docs/monitor/offline/browser.test.mjs",
+      "tools/qikvrt_offline_repository.py",
+      ".github/workflows/qikvrt_offline_repository.yml"
+    ],
+    "indexeddb_schema_version_unchanged": true,
+    "new_executor_or_workflow": false
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+  "source_ref": "work/offline-iphone-repository-20261007",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "3af7d383933a8972469f48928a800aa6c06031d4",
+  "unresolved_origin": [],
+  "verification": {
+    "browser_contract": ".github/workflows/qikvrt_offline_repository.yml",
+    "candidate_diagnostics": {
+      "chromium_job": 113077683165,
+      "error": "Text preserved; focus/selection actual [false,36,36], expected [true,3,9].",
+      "new_candidate_verification_required": true,
+      "observed_head": "dde215ce5d0f43f972de8268979757d9ddb2f23a",
+      "observed_tree": "a0b3e11fe9072ada844c64d604e8f9044501c3ff",
+      "repair": "Capture focus before disabling controls; restore it in the post-render React layout effect after values and enabled state are committed. Assertions remain unchanged.",
+      "webkit_job": 113077683196
+    },
+    "candidate_exact_head_native_controls_required": true,
+    "cold_restore_diagnostics": {
+      "chromium_job": 113079589908,
+      "error": "Cold restore selected background editor text instead of foreground editor text. Both draft checkpoints remained stored.",
+      "intermediate_followup": {
+        "chromium_job": 113081541477,
+        "forward_change": "Foreground contact completes a quiescent checkpoint immediately rather than relying only on a later timer; queued writes classify foreground at execution time.",
+        "head": "421de5578df99ae3899a3555f7718df5e4f29480",
+        "next_control": "Read the actual durable default-draft pointer before closing the process; preserve the unchanged cold text assertion.",
+        "result": "Same cold selector failure. Captured focus alone did not close the gap.",
+        "tree": "d40e366ec62b87c579824b798df77bf24692a39a",
+        "webkit_job": 113081541523
+      },
+      "new_candidate_verification_required": true,
+      "observed_head": "c2fd03a1b9adc41d6a8a474cfffe699ef818b2d3",
+      "observed_tree": "ea4b17d782bdb2aa5d3d8cdf4fe8ae465aaea239",
+      "passed_controls": [
+        "automatic A to B with independent drafts",
+        "in-flight action and IME deferral",
+        "complete shell identities",
+        "network and SHA-256 rejection",
+        "healthy recovery with text selection"
+      ],
+      "repair": "All windows retain independent checkpoints; only a checkpoint captured with document.hasFocus() and visible document updates editor:last. Cold-restore assertions remain unchanged.",
+      "webkit_job": 113079589875
+    },
+    "native_candidate_results_binding": "Fresh native job logs and browser-readback.json must name the final candidate HEAD/TREE; no predecessor results are transferred.",
+    "online_event_scope": "DOM lifecycle event; actual HTTP downloads fail; no test-side registration.update or skipWaiting",
+    "physical_iphone_tested": false,
+    "public_production_origin_tested": false,
+    "required_update_controls": [
+      "all-client checkpoint and running-action deferral",
+      "automatic publication A to B without update button",
+      "two independent unsaved drafts without extra revisions",
+      "complete activated shell asset identity",
+      "real HTTP asset disconnect retains predecessor",
+      "next online lifecycle recovers healthy publication",
+      "SHA-256 mismatch retains predecessor",
+      "cold process reopen applies healthy update",
+      "subsequent offline navigation",
+      "IME composition defers activation until compositionend"
+    ]
+  },
+  "work_unit_id": "CLIENT_AUTOMATIC_UPDATE_20261008_V1"
+}
