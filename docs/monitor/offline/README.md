@@ -155,8 +155,9 @@ vorbereitetem Export sowie Fokus und Textauswahl wird wiederhergestellt. Ein
 Entwurf wird dadurch **nicht** als neue Repository-Revision gespeichert. Die
 vorhandene IndexedDB-Datenbank, Arbeitsstände und lokale Historie bleiben erhalten.
 Entwürfe werden nach einer Eingabepause auch ohne Update lokal gesichert;
-mehrere Tabs haben eigene Checkpoints. Nach einem kalten Start ohne Tab-Kennung
-wird der zuletzt gesicherte Entwurf angeboten bzw. wiederhergestellt.
+mehrere Tabs haben eigene Checkpoints. Hintergrund-Sicherungen ändern den
+Vordergrund-Verweis nicht. Nach einem kalten Start ohne Tab-Kennung wird der
+zuletzt im Vordergrund gesicherte Entwurf wiederhergestellt.
 
 Ein offener Altclient aus #484 besitzt diese Übergabe noch nicht. Der neue Worker
 überspringt dessen fehlendes Checkpoint-Acknowledgement nicht: Die erste Übernahme

@@ -59,14 +59,14 @@
   "next_action": "Run the complete candidate suite; publish this separate stacked draft and read fresh native Chromium/WebKit version-transition receipts on its exact HEAD/TREE.",
   "outputs": [
     {
-      "bytes": 22933,
+      "bytes": 23018,
       "path": "docs/monitor/offline/client.js",
-      "sha256": "379ac9aea35f8b8433a6faf1e466fb9c55d5aa1272eaf0258180ec82137bfbd1"
+      "sha256": "b8eda9ae113379eae455e40c8279fa5a4e4341d8c41cbc06c4432b08c91372d0"
     },
     {
-      "bytes": 17292,
+      "bytes": 17328,
       "path": "docs/monitor/offline/repository.js",
-      "sha256": "6665579db5c1a329650137610a660c228e8d6f3eba9b74abde93b7eb6b3d4324"
+      "sha256": "547343e175ef7093de9c514ebffb79143f97578471e46e66729d1460e5cc2084"
     },
     {
       "bytes": 3983,
@@ -76,7 +76,7 @@
     {
       "bytes": 4783,
       "path": "docs/monitor/offline/service-worker.js",
-      "sha256": "eed6dc3fc5faee4caa7c6ebd1e4ef5495e95a612ca0ab59f61966dfe2471797a"
+      "sha256": "a62864e9e60137218398dd8dac2b500ca7ef1f977ed1a55457e52a38a468e4c8"
     },
     {
       "bytes": 26998,
@@ -84,9 +84,9 @@
       "sha256": "ecc422b37ef4389f9f77e9f5b5b64ae206ece19348ece06e58b4ca622c92b7bd"
     },
     {
-      "bytes": 11914,
+      "bytes": 11977,
       "path": "docs/monitor/offline/README.md",
-      "sha256": "db077a5c90db5e15b8a92ccc589d9e3dbfede9226910687715777187497261ef"
+      "sha256": "a5577ab2b280b895ca3bdebc87fb0845c93e2a1e57f053fe863b957e9113aa08"
     },
     {
       "bytes": 10125,
@@ -129,6 +129,22 @@
       "webkit_job": 113077683196
     },
     "candidate_exact_head_native_controls_required": true,
+    "cold_restore_diagnostics": {
+      "chromium_job": 113079589908,
+      "error": "Cold restore selected background editor text instead of foreground editor text. Both draft checkpoints remained stored.",
+      "new_candidate_verification_required": true,
+      "observed_head": "c2fd03a1b9adc41d6a8a474cfffe699ef818b2d3",
+      "observed_tree": "ea4b17d782bdb2aa5d3d8cdf4fe8ae465aaea239",
+      "passed_controls": [
+        "automatic A to B with independent drafts",
+        "in-flight action and IME deferral",
+        "complete shell identities",
+        "network and SHA-256 rejection",
+        "healthy recovery with text selection"
+      ],
+      "repair": "All windows retain independent checkpoints; only a checkpoint captured with document.hasFocus() and visible document updates editor:last. Cold-restore assertions remain unchanged.",
+      "webkit_job": 113079589875
+    },
     "native_candidate_results_binding": "Fresh native job logs and browser-readback.json must name the final candidate HEAD/TREE; no predecessor results are transferred.",
     "online_event_scope": "DOM lifecycle event; actual HTTP downloads fail; no test-side registration.update or skipWaiting",
     "physical_iphone_tested": false,

@@ -58,10 +58,10 @@ export class Repository {
   close(){this.db.close();}
   get(store,key){return request(this.db.transaction(store,'readonly').objectStore(store).get(key));}
   async editorDraft(tab){const key=tab?'editor:'+tab:await this.get('refs','editor:last');return key?this.get('refs',key):null;}
-  async checkpointEditor(tab,state){
+  async checkpointEditor(tab,state,{foreground=false}={}){
     // UI recovery is separate from revisions: an unsaved draft is never committed.
     const key='editor:'+tab,row={schema:'qikvrt-editor-checkpoint/v1',state};
-    await write(this.db,['refs'],tx=>{const refs=tx.objectStore('refs');refs.put(row,key);refs.put(key,'editor:last');});
+    await write(this.db,['refs'],tx=>{const refs=tx.objectStore('refs');refs.put(row,key);if(foreground)refs.put(key,'editor:last');});
     const after=await this.get('refs',key);
     if(canonical(after?.state)!==canonical(state)||after?.state.prepared?.size!==state.prepared?.size)fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
   }

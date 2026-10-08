@@ -27,12 +27,12 @@ function automaticUpdates(registration,pageCache,runtime,setLocked,setError){
   const canCheckpoint=()=>runtime.ready&&!runtime.busy&&!runtime.composing&&Date.now()-runtime.changedAt>=1000;
   function editorState(){
     const element=document.activeElement;
-    const focus={testid:element?.getAttribute('data-testid'),start:element?.selectionStart,end:element?.selectionEnd,direction:element?.selectionDirection,scrollTop:element?.scrollTop,scroll:[scrollX,scrollY]};
+    const focus={foreground:document.hasFocus()&&!document.hidden,testid:element?.getAttribute('data-testid'),start:element?.selectionStart,end:element?.selectionEnd,direction:element?.selectionDirection,scrollTop:element?.scrollTop,scroll:[scrollX,scrollY]};
     return {...runtime.state,focus};
   }
   function persist(state=editorState()){
     // Queue snapshots in observation order; an older write cannot win a race.
-    draftWrite=draftWrite.catch(()=>{}).then(()=>runtime.store.checkpointEditor(runtime.tab,state));
+    draftWrite=draftWrite.catch(()=>{}).then(()=>runtime.store.checkpointEditor(runtime.tab,state,{foreground:state.focus.foreground}));
     return draftWrite;
   }
   async function checkpoint(){
