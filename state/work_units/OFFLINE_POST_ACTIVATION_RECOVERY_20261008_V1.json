@@ -104,5 +104,20 @@
       "repository.js": "a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec"
     },
     "native_exact_head": "PENDING_SUCCESSOR_EXECUTION"
+  },
+  "busy_readiness_repair": {
+    "parent_head": "4e3d8e44e8717cd56009258e9ca8d4f82e412290",
+    "native_failure_run": 37739552287,
+    "observed_failure": "Both native engines quarantined the release with STARTUP_TIMEOUT during a legitimate complete-repository import; the UI was running but its editor was busy.",
+    "repair": "UI readiness does not require an idle editor. Cancel the startup watchdog once matching ready UI exists; probe the existing canonical head and verified checkpoint inventory, not the separate full-history audit.",
+    "health_scope": "VERSION_BOUND_UI_CANONICAL_HEAD_AND_EDITOR_CHECKPOINT_READBACK; not a universal application or full dataset audit",
+    "implementation_sha256": {
+      "service-worker.template.js": "009daf62245ae3dedcbf86de0f80108dd28c7440379e364516cfd1b6ebc11662",
+      "service-worker.js": "94857d4ee0b6b727aa257b66f27e2c0e300fd5f3e0585de51ad346d26a0c9ff1",
+      "updates.js": "e0bb896365c5be7be402b4a8f15ab710622588f8de050c3e2e6a4b8412ea8de2",
+      "client.js": "ec8f57f90cccdbb09ec915c326aca1d411a2957d9e5fce35ecb246690676eaf8",
+      "repository.js": "a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec"
+    },
+    "native_exact_head": "PENDING_SUCCESSOR_EXECUTION"
   }
 }

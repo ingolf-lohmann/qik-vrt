@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 // Copyright 2026 Ingolf Lohmann. Implementation contribution: OpenAI Codex.
-const SHELL='f6711fc906a4d19be01614f6807c40537ad9e19fc4043160e112f5d5d3507a31', ASSETS={"client.js":"ec8f57f90cccdbb09ec915c326aca1d411a2957d9e5fce35ecb246690676eaf8","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","updates.js":"e0bb896365c5be7be402b4a8f15ab710622588f8de050c3e2e6a4b8412ea8de2","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
-const TEMPLATE='9906fa0c5a55612ea268c7df5c47add0be2bad890136b49efd2f5e509c991f6e';
+const SHELL='0b1540eee9bd51f8b3f26f311abdd5347087dc965545ae1152ce9786b89781de', ASSETS={"client.js":"ec8f57f90cccdbb09ec915c326aca1d411a2957d9e5fce35ecb246690676eaf8","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","updates.js":"e0bb896365c5be7be402b4a8f15ab710622588f8de050c3e2e6a4b8412ea8de2","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
+const TEMPLATE='009daf62245ae3dedcbf86de0f80108dd28c7440379e364516cfd1b6ebc11662';
 const PREFIX='qikvrt-offline-', CACHE=PREFIX+SHELL, NAMESPACE='__qikvrt_release__/';
 const scope=new URL(self.registration.scope), metadata=new URL('.qikvrt-release.json',scope);
 const hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
@@ -83,8 +83,9 @@ function healthGuard(shell,token,root){
   window.addEventListener('error',fail,true);window.addEventListener('unhandledrejection',fail);
   navigator.serviceWorker.addEventListener('message',event=>{if(event.source===navigator.serviceWorker.controller&&event.data?.type==='QIKVRT_RECOVERY'&&!stopped){stopped=true;clearInterval(timer);recover().catch(()=>{});}});
   const timer=setInterval(async()=>{if(stopped||checking)return;checking=true;try{
-    if(!healthy&&document.querySelector('[data-testid=shell-ready]')?.classList.contains('success')&&document.querySelector('[data-testid=release-version]')?.textContent===shell&&!document.querySelector('[data-testid=editor-text]')?.disabled){
-      const src=new URL('__qikvrt_release__/'+shell+'/repository.js',root),{Repository}=await import(src),r=await Repository.open();try{if(await r.head())await r.verify();await r.sessions();}finally{r.close();}healthy=true;
+    if(!healthy&&document.querySelector('[data-testid=shell-ready]')?.classList.contains('success')&&document.querySelector('[data-testid=release-version]')?.textContent===shell&&document.querySelector('[data-testid=editor-text]')){
+      clearTimeout(timeout); // Ready but legitimately busy is not a startup failure.
+      const src=new URL('__qikvrt_release__/'+shell+'/repository.js',root),{Repository}=await import(src),r=await Repository.open();try{await r.head();await r.sessions();}finally{r.close();}healthy=true;
     }
     if(healthy){const result=await call({type:'QIKVRT_HEALTH_OK'});if(result?.accepted){document.documentElement.dataset.qikvrtHealth=shell;clearTimeout(timeout);clearInterval(timer);}if(result?.recovery){stopped=true;await recover();}}
   }catch{await fail('READBACK_FAILED');}finally{checking=false;}},500);

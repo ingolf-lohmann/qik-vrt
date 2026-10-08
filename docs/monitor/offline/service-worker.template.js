@@ -83,8 +83,9 @@ function healthGuard(shell,token,root){
   window.addEventListener('error',fail,true);window.addEventListener('unhandledrejection',fail);
   navigator.serviceWorker.addEventListener('message',event=>{if(event.source===navigator.serviceWorker.controller&&event.data?.type==='QIKVRT_RECOVERY'&&!stopped){stopped=true;clearInterval(timer);recover().catch(()=>{});}});
   const timer=setInterval(async()=>{if(stopped||checking)return;checking=true;try{
-    if(!healthy&&document.querySelector('[data-testid=shell-ready]')?.classList.contains('success')&&document.querySelector('[data-testid=release-version]')?.textContent===shell&&!document.querySelector('[data-testid=editor-text]')?.disabled){
-      const src=new URL('__qikvrt_release__/'+shell+'/repository.js',root),{Repository}=await import(src),r=await Repository.open();try{if(await r.head())await r.verify();await r.sessions();}finally{r.close();}healthy=true;
+    if(!healthy&&document.querySelector('[data-testid=shell-ready]')?.classList.contains('success')&&document.querySelector('[data-testid=release-version]')?.textContent===shell&&document.querySelector('[data-testid=editor-text]')){
+      clearTimeout(timeout); // Ready but legitimately busy is not a startup failure.
+      const src=new URL('__qikvrt_release__/'+shell+'/repository.js',root),{Repository}=await import(src),r=await Repository.open();try{await r.head();await r.sessions();}finally{r.close();}healthy=true;
     }
     if(healthy){const result=await call({type:'QIKVRT_HEALTH_OK'});if(result?.accepted){document.documentElement.dataset.qikvrtHealth=shell;clearTimeout(timeout);clearInterval(timer);}if(result?.recovery){stopped=true;await recover();}}
   }catch{await fail('READBACK_FAILED');}finally{checking=false;}},500);

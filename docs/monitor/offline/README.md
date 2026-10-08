@@ -245,8 +245,9 @@ Die Rückfallgarantie betrifft abgewiesene Downloads, unvollständiges/beschädi
 Staging und gescheiterte Checkpoints: Die letzte gesunde aktive Version bleibt
 erhalten. Der getrennte Nachfolger von #495 ergänzt eine versionsgebundene
 Gesundheitsprüfung nach Aktivierung: Ein vor React und den Modulimporten
-ausgeführter, gleichursprünglicher Watchdog prüft UI-Bereitschaft, Repository-
-Readback und die Entwurfsinventur. Alle aktuellen Clients müssen mit einem
+ausgeführter, gleichursprünglicher Watchdog prüft UI-Bereitschaft, kanonischen Repository-Head und die Entwurfsinventur.
+Ein beschäftigter Editor ist kein fehlgeschlagener Start. Der vollständige
+Inhalts-/Historien-Audit bleibt eine eigene Verifikationsoperation. Alle aktuellen Clients müssen mit einem
 Navigationstoken für dieselbe Version antworten. Erst dann wird sie als gesund
 gespeichert. Syntax-/Startfehler, ausbleibende Bereitschaft (20 Sekunden) und
 globale Laufzeitfehler lösen einen kontrollierten Rückfall aus. Der Worker
