@@ -37,7 +37,7 @@ export async function updateControls(engine, output, here, options) {
     res.end(fault?.path===path&&fault.type==='tamper'?Buffer.from('damaged update'):data);
   });await new Promise(resolve=>server.listen(port||0,'127.0.0.1',resolve));port=server.address().port;return 'http://127.0.0.1:'+port+prefix;}
   async function stop(){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
-  const ready=async page=>{await page.getByTestId('shell-ready').filter({hasText:'vollständig'}).waitFor();await page.waitForFunction(()=>!document.querySelector('[data-testid=editor-text]').disabled);};
+  const ready=async page=>{await page.getByTestId('shell-ready').filter({hasText:/^Client vollständig im Offline-Cache geprüft\.$/}).waitFor();await page.waitForFunction(()=>!document.querySelector('[data-testid=editor-text]').disabled);};
   const version=page=>page.getByTestId('release-version').textContent();
   const report=page=>page.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository}=await import(new URL('repository.js',src));const r=await Repository.open();try{return await r.verify();}finally{r.close();}});
   const interval=async page=>{await page.bringToFront();await page.clock.fastForward(310000);};
