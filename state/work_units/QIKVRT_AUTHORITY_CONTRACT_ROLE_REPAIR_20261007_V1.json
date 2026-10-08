@@ -39,7 +39,10 @@
   },
   "owner_role_decision": {
     "human": "Ingolf Lohmann",
-    "roles": ["Product Owner", "Code Owner"],
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ],
     "authority_repository": "ingolf-lohmann/qik-vrt",
     "mirror_repository": "Goldkelch/qik-vrt",
     "repository_carrier": "PR #484 policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json mesh_authority",
@@ -48,7 +51,10 @@
   },
   "established_defect": {
     "contract_path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
-    "incorrect_fields": ["authority.repository", "reflexive_deadlock_prevention.gatewatch.node_liveness.authority_repository"],
+    "incorrect_fields": [
+      "authority.repository",
+      "reflexive_deadlock_prevention.gatewatch.node_liveness.authority_repository"
+    ],
     "main_and_pr484_contract_target": "Goldkelch/qik-vrt",
     "additional_consumer_defects": [
       "Executor structural validation hard-coded the former Authority.",
@@ -90,7 +96,11 @@
     "Fresh reflexive native run: preserve failure/HOLD until active Authority Main role policy and all other gates are evidenced."
   ],
   "integrity_regeneration": {
-    "required_authorities": ["REPOSITORY_FILE_MANIFEST.json", "REPOSITORY_FILE_MANIFEST.json.sha256", "SHA256SUMS.txt"],
+    "required_authorities": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
     "also_recovers_base_manifest_omissions": [
       "evidence/node_health/37510511694-1.json",
       "evidence/node_health/37578851517-1.json",
@@ -132,5 +142,14 @@
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
+  },
+  "current_main_reconciliation": {
+    "main_head": "512ec968f0ee4c0b9154ffe56848ff1ce6dafa7d",
+    "main_tree": "726d722713d7dfd84b4bf0dee86fb43b5bca8d35",
+    "retained_candidate_parent": "2c153f1e40271ecc64383001e577ae4f35c02a5f",
+    "method": "History-preserving merge of two Main lifecycle commits; no source conflicts. Regenerate integrity for actual merged bytes.",
+    "owner_requirement": "Every unfinished work unit must have an admitted productive continuation or an explicit causal blocker with event-bound durable resumption. Suppress unchanged failing retries; preserve productive writers.",
+    "role_activation": "NOT_ESTABLISHED",
+    "predecessor_evidence_transfer": false
   }
 }
