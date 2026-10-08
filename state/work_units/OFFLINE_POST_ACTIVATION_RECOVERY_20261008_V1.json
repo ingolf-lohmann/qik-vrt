@@ -90,5 +90,19 @@
       "repository.js": "a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec"
     },
     "native_exact_head": "PENDING_SUCCESSOR_EXECUTION"
+  },
+  "lifecycle_repair": {
+    "parent_head": "bfe7e0cb7bfa71a37c36b71c79e89bd2387e5b38",
+    "observed_failure": "WebKit rapid offline reload aborted an in-flight health readback; READBACK_FAILED quarantined the first release before a healthy predecessor existed.",
+    "repair": "Stop the document guard on pagehide; resume it on persisted pageshow.",
+    "local_reobservation": "Full WebKit browser suite: 36 PASS including 23 recovery controls, at dirty candidate implementation; exact-head tests remain separate.",
+    "implementation_sha256": {
+      "service-worker.template.js": "9906fa0c5a55612ea268c7df5c47add0be2bad890136b49efd2f5e509c991f6e",
+      "service-worker.js": "77bf757586542ef22e2d23634d36326e91963b469e92d2bad3bbcefaaf2a2000",
+      "updates.js": "e0bb896365c5be7be402b4a8f15ab710622588f8de050c3e2e6a4b8412ea8de2",
+      "client.js": "ec8f57f90cccdbb09ec915c326aca1d411a2957d9e5fce35ecb246690676eaf8",
+      "repository.js": "a65468b9703742e3dccb5fe5486fb25c992ff1d2b2d0a33b72f0a4eb0a9f98ec"
+    },
+    "native_exact_head": "PENDING_SUCCESSOR_EXECUTION"
   }
 }

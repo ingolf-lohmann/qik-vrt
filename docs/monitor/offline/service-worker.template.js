@@ -89,6 +89,8 @@ function healthGuard(shell,token,root){
     if(healthy){const result=await call({type:'QIKVRT_HEALTH_OK'});if(result?.accepted){document.documentElement.dataset.qikvrtHealth=shell;clearTimeout(timeout);clearInterval(timer);}if(result?.recovery){stopped=true;await recover();}}
   }catch{await fail('READBACK_FAILED');}finally{checking=false;}},500);
   const timeout=setTimeout(fail,20000);
+  window.addEventListener('pagehide',()=>{stopped=true;clearInterval(timer);clearTimeout(timeout);});
+  window.addEventListener('pageshow',event=>{if(event.persisted)healthGuard(shell,token,root);});
 }
 async function healthMessage(event){
   const state=await journal(),lease=state.leases[event.data.token];
