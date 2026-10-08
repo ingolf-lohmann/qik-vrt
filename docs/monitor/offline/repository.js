@@ -59,7 +59,7 @@ export class Repository {
   get(store,key){return request(this.db.transaction(store,'readonly').objectStore(store).get(key));}
   async checkpointSession(id, state) {
     if (!/^[a-f0-9-]{36}$/.test(id) || !state || typeof state.path !== 'string' || typeof state.text !== 'string') fail('INVALID_EDITOR_CHECKPOINT');
-    const value = {schema:'qikvrt-editor-checkpoint/v1', state};
+    const value = {schema:'qikvrt-editor-checkpoint/v1', saved_at:new Date().toISOString(), state};
     if (encoder.encode(canonical(value)).length > 8388608) fail('EDITOR_CHECKPOINT_CAPACITY_LIMIT');
     const row = {value, sha256:await hashObject(value)};
     // Separate refs key: no snapshot/head mutation and no schema upgrade lock.
@@ -74,6 +74,14 @@ export class Repository {
     if (!row) return null;
     if (row.value?.schema !== 'qikvrt-editor-checkpoint/v1' || await hashObject(row.value) !== row.sha256) fail('EDITOR_CHECKPOINT_READBACK_MISMATCH');
     return row.value.state;
+  }
+  async sessions() {
+    const keys=await request(this.db.transaction('refs','readonly').objectStore('refs').getAllKeys()),out=[];
+    for(const key of keys){if(!String(key).startsWith('editor:'))continue;const id=String(key).slice(7);
+      try{const state=await this.session(id),row=await this.get('refs',key);out.push({id,state,saved_at:row.value.saved_at??null});}
+      catch{out.push({id,unavailable:true});}
+    }
+    return out.sort((a,b)=>(b.saved_at??'').localeCompare(a.saved_at??''));
   }
   async snapshot(id){const row=await this.get('snapshots',id);if(!row||await hashObject(row)!==id)fail('SNAPSHOT_READBACK_MISMATCH');checkSnapshot(row);return row;}
   async head(){const id=await this.get('refs','head');return id?{id,snapshot:await this.snapshot(id)}:null;}

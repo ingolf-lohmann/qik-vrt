@@ -118,6 +118,7 @@ export async function updateControls(engine, output, here, options) {
     context=await engine.launchPersistentContext(profile,options);const restored=await context.newPage();active=restored;restored.on('pageerror',e=>errors.push(e.message));
     await restored.goto(url);await ready(restored);assert.deepEqual(await report(restored),saved);
     checks.push('browser process restart with stopped origin restores the final verified release and confirmed IndexedDB history');
+    const recovery=restored.getByTestId('recover-draft').filter({hasText:'personal/draft-B.md'}).first();await recovery.click();await restored.getByRole('status').filter({hasText:'Gesicherter Entwurf geöffnet.'}).waitFor();assert.equal(await restored.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(restored),saved);checks.push('orphaned parallel draft remains recoverable through the UI after process restart loses the tab session key');
     assert.deepEqual(errors,[]);
     const result={schema:'qikvrt-offline-update-browser-readback/v1',releases:Object.fromEntries(Object.entries(releases).map(([tag,r])=>[tag,r.id])),checks,check_count:checks.length,requests,confirmed_before:before,confirmed_after:saved,console_errors:errors,physical_ios_witness:false,background_update_guarantee:false};
     await writeFile(resolve(output,'update-readback.json'),JSON.stringify(result,null,2)+'\n');return result;

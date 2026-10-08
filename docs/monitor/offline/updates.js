@@ -92,10 +92,11 @@ export function automaticUpdates(registration, {prepare, unlock, status}) {
   for (const name of ['online', 'pageshow', 'focus']) window.addEventListener(name, check);
   document.addEventListener('visibilitychange', check);
   const interval = setInterval(check, UPDATE_INTERVAL);
-  installed(); check();
-  return () => { stopped = true; clearInterval(interval); resumeEditing(); registration.removeEventListener('updatefound', installed);
+  installed(); const initialized=check();
+  const stop=() => { stopped = true; clearInterval(interval); resumeEditing(); registration.removeEventListener('updatefound', installed);
     navigator.serviceWorker.removeEventListener('message', message); navigator.serviceWorker.removeEventListener('controllerchange', adopt);
     for (const name of ['online', 'pageshow', 'focus']) window.removeEventListener(name, check);
     document.removeEventListener('visibilitychange', check);
   };
+  stop.initialized=initialized;return stop;
 }

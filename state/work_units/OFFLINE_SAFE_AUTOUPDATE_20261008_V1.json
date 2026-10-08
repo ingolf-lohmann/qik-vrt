@@ -51,7 +51,8 @@
     ],
     "mixed_version_prevention": "Release-qualified asset URLs and relative module imports; retained verified release caches; fail closed without network/version substitution",
     "confirmed_repository_changes_by_update": false,
-    "database_schema_migration": false
+    "database_schema_migration": false,
+    "orphaned_draft_recovery": "Verified per-session checkpoint inventory and explicit UI recovery after loss of a tab session key; current editor is checkpointed before choosing another draft."
   },
   "required_evidence": [
     "make test on frozen successor",
@@ -75,5 +76,14 @@
     "human_contribution": "Requirements, scope and implementation authorization: Ingolf Lohmann",
     "artificial_cognitive_contribution": "Diagnosis, implementation, tests, documentation and evidence preparation: OpenAI Codex",
     "exact_model_build": "UNAVAILABLE"
-  }
+  },
+  "observed_repairs": [
+    {
+      "source_head": "8df8f25cee9946025df93d557b469656eee427a5",
+      "native_run": 37705131733,
+      "finding": "Cached network Response.url retained the unversioned module base, causing bootstrap reload loops.",
+      "repair": "Rewrap verified resource bytes in a fresh Response so response URL inherits the requested release namespace.",
+      "regression": "Worker control preserves cache response URLs in its oracle and asserts blank returned URL; real browser checks import.meta release binding."
+    }
+  ]
 }

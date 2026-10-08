@@ -161,7 +161,10 @@ wieder her. Auch ein unerwarteter Controllerwechsel lädt niemals einen
 beschäftigten Arbeitsraum neu. Neue Dokumente übernehmen einen vorhandenen
 Tab-Checkpoint und schreiben anschließend unter einer eigenen Identität;
 auch kopierte `sessionStorage`-Werte führen nicht zu gemeinsam überschriebenen
-Entwürfen. Checkpoints liegen unter eigenen `refs`-Schlüsseln im vorhandenen
+Entwürfen. Geht eine Tab-Sitzungskennung bei einem Neustart verloren, sind ihre
+verifizierten Sicherungen unter „Gesicherte Entwürfe“ weiterhin einzeln verfügbar.
+Die Auswahl eines Parallelentwurfs überschreibt keine bestätigte Revision und
+sichert den aktuell geöffneten Entwurf vor dem Wechsel. Checkpoints liegen unter eigenen `refs`-Schlüsseln im vorhandenen
 Datenbankschema. Sie erzeugen keine Revision und ändern weder HEAD noch Historie.
 Eine beschädigte Sicherung wird sichtbar angehalten, nicht stillschweigend als
 leerer Entwurf ersetzt. Die gewöhnliche Entwurfsicherung hat 500 ms Verzögerung;
