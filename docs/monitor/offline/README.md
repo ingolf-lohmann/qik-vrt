@@ -248,3 +248,10 @@ erkannten Anwendungsfehler ist nicht belegt. Physisches iPhone, garantierte
 iOS-Hintergrundarbeit, Main-Aktivierung und produktive Bereitstellung werden
 nicht aus Browsertests abgeleitet. HTTPS-Origin bleibt die Vertrauenswurzel.
 Native Code-Owner-Review und Ruleset-Durchsetzung sind eigenständige Grenzen.
+
+Ein beschädigter Vordergrund-Checkpoint wird beim Start explizit abgewiesen.
+Der Client öffnet weiterhin intakte bestätigte Repository-Stände und die
+Inventur älterer geprüfter Entwürfe. Der beschädigte Eintrag bleibt als nicht
+verfügbar erhalten; sein Text wird weder geladen noch stillschweigend als
+wiederhergestellt erklärt. Auch dieser Pfad wird bei gestopptem Origin nach
+einem echten Prozessneustart geprüft.

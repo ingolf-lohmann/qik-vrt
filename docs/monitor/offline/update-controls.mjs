@@ -156,6 +156,19 @@ export async function updateControls(engine, output, here, options) {
     checks.push('cold process reopen automatically restores the last foreground draft without using a background checkpoint');
     checks.push('browser process restart with stopped origin restores the final verified release and confirmed IndexedDB history');
     const recovery=restored.getByTestId('recover-draft').filter({hasText:'personal/draft-B.md'}).first();await recovery.click();await restored.getByRole('status').filter({hasText:'Gesicherter Entwurf geöffnet.'}).waitFor();assert.equal(await restored.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(restored),saved);checks.push('orphaned parallel draft remains recoverable through the UI after process restart loses the tab session key');
+    await pause(1300);
+    const damaged=await restored.evaluate(async()=>{const src=document.querySelector('script[type=module]').src;const {Repository}=await import(new URL('repository.js',src));const r=await Repository.open();try{
+      const id=await r.get('refs','editor:last'),row=await r.get('refs','editor:'+id);row.value.state.text+=' damaged checkpoint';
+      await new Promise((resolve,reject)=>{const tx=r.db.transaction('refs','readwrite',{durability:'strict'});tx.objectStore('refs').put(row,'editor:'+id);tx.oncomplete=resolve;tx.onabort=reject;});
+      let rejected=false;try{await r.session(id);}catch(e){rejected=e.message==='EDITOR_CHECKPOINT_READBACK_MISMATCH';}return {id,rejected};
+    }finally{r.close();}});assert.equal(damaged.rejected,true);
+    await context.close();context=null;context=await engine.launchPersistentContext(profile,options);
+    const intact=await context.newPage();active=intact;intact.on('pageerror',e=>errors.push(e.message));await intact.goto(url);await ready(intact);assert.deepEqual(await report(intact),saved);
+    await intact.getByRole('alert').filter({hasText:'EDITOR_CHECKPOINT_READBACK_MISMATCH'}).waitFor();
+    const inventory=await intact.evaluate(async id=>{const src=document.querySelector('script[type=module]').src;const {Repository}=await import(new URL('repository.js',src));const r=await Repository.open();try{return (await r.sessions()).find(row=>row.id===id);}finally{r.close();}},damaged.id);
+    assert.equal(inventory.unavailable,true);
+    const healthy=intact.getByTestId('recover-draft').filter({hasText:'personal/draft-B.md'}).first();await healthy.click();await intact.getByRole('status').filter({hasText:'Gesicherter Entwurf geöffnet.'}).waitFor();assert.equal(await intact.getByTestId('editor-text').inputValue(),draftB);assert.deepEqual(await report(intact),saved);
+    checks.push('corrupt foreground checkpoint fails closed on offline cold restart while intact revisions and older verified drafts remain accessible');
     assert.deepEqual(errors,[]);
     const result={schema:'qikvrt-offline-update-browser-readback/v1',releases:Object.fromEntries(Object.entries(releases).map(([tag,r])=>[tag,r.id])),checks,check_count:checks.length,requests,confirmed_before:before,confirmed_after:saved,console_errors:errors,physical_ios_witness:false,background_update_guarantee:false};
     await writeFile(resolve(output,'update-readback.json'),JSON.stringify(result,null,2)+'\n');return result;

@@ -22,7 +22,9 @@ function App(){const [store,setStore]=React.useState(null),[head,setHead]=React.
     const composing=()=>{latest.current.composing=true;},composed=()=>{latest.current.composing=false;input();};
     const prevent=event=>{if(latest.current.locked){event.preventDefault();event.stopImmediatePropagation();}};
     (async()=>{try{const registration=await shell();adapter=await Repository.open();if(!live){adapter.close();return;}
-      const previous=sessionStorage.getItem('qikvrt-editor-session')||await adapter.get('refs','editor:last'),draft=previous?await adapter.session(previous):null;session.current=crypto.randomUUID();
+      const previous=sessionStorage.getItem('qikvrt-editor-session')||await adapter.get('refs','editor:last');let draft=null;
+      if(previous)try{draft=await adapter.session(previous);}catch(e){if(!['INVALID_EDITOR_CHECKPOINT','EDITOR_CHECKPOINT_READBACK_MISMATCH'].includes(e.message))throw e;setError(explain(e));}
+      session.current=crypto.randomUUID();
       if(draft){latest.current={...latest.current,...draft,restoreFocus:draft};setPath(draft.path);setText(draft.text);setFilter(draft.filter||'');setPlan(draft.plan||null);setChoices(draft.choices||{});setPrepared(draft.prepared||null);}
       setStore(adapter);await refresh(adapter);latest.current.restored=true;stopUpdates=automaticUpdates(registration,{prepare:()=>prepareUpdate(adapter),unlock:unlockUpdate,status:setUpdateState});updateWake.current=stopUpdates.schedule;await stopUpdates.initialized;if(live)setReady(true);
     }catch(e){if(live)setError(explain(e));}})();

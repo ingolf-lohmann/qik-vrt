@@ -166,5 +166,12 @@
     "guaranteed_background_updates": false,
     "runtime_regression_auto_rollback": false,
     "effect_ack_done": false
+  },
+  "recovery_guard": {
+    "diagnostic_subject": "c75020d236062acdcceb69b107b96a17f4b40079",
+    "finding": "The newly added foreground pointer must not make valid repository revisions inaccessible when its checkpoint is damaged.",
+    "repair": "Reject invalid checkpoint bytes explicitly, retain its unavailable inventory entry, finish opening intact repository state and leave older verified drafts available through existing UI.",
+    "regression": "Tamper foreground checkpoint without updating SHA-256, stop origin, close process, reopen offline, verify intact revision/history and recover an older valid draft.",
+    "predecessor_checks_transferred": false
   }
 }
