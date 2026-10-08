@@ -101,7 +101,7 @@ def _security_configuration_valid() -> bool:
 
 
 class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
-    server_version = "QIKVRTGitHubApiShim/2.0"
+    server_version = "QIKVRTGitHubApiShim/2.1"
 
     def setup(self) -> None:
         super().setup()
@@ -229,9 +229,11 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         try:
             body = self._read_json()
             if m:
-                unknown = set(body) - {"ref", "inputs"}
+                unknown = set(body) - {"ref", "inputs", "return_run_details"}
                 if unknown:
                     raise ValueError(f"unknown workflow dispatch fields: {sorted(unknown)}")
+                if "return_run_details" in body and type(body["return_run_details"]) is not bool:
+                    raise ValueError("return_run_details must be boolean")
                 owner, repo = m.group(1), m.group(2)
                 ref = body.get("ref")
                 if not isinstance(ref, str) or not ref.strip() or len(ref) > 255:
