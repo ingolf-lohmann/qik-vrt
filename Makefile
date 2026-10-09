@@ -105,6 +105,13 @@ run-api:
 	@test -n "$(QIKVRT_API_PRINCIPAL)" || (echo "BLOCK: set QIKVRT_API_PRINCIPAL" >&2; exit 2)
 	PYTHONNOUSERSITE=1 $(PYTHON) -S src/qikvrt_github_api_shim.py
 
+.PHONY: mcp-conformance-test
+mcp-conformance-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_mcp_e2e
+	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m py_compile scripts/qikvrt_mcp_probe.py
+
+test: mcp-conformance-test
+
 clean:
 	rm -rf unit_state e2e_state .qikvrt/runtime .qikvrt/evidence .qikvrt/api .qikvrt/cache .qikvrt/release .qikvrt/interactions logs __pycache__ src/__pycache__ scripts/__pycache__ tests/__pycache__ tools/__pycache__
 
