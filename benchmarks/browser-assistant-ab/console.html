@@ -13,7 +13,7 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:14px;bo
 .boundary{background:#fff1ca;padding:14px;border-left:5px solid #ad7314}.status{min-height:40px}
 </style>
 <h1>Unterbrochene Browseraufgaben: A/B Messkonsole</h1>
-<p class="boundary"><strong>Harness, keine Produktmessung.</strong> Diese Konsole protokolliert Übungen mit synthetischen Quellen. Sie führt keinen persönlichen Browserassistenten aus. Tatsächliche Firefox-, Assistenten-, Unterbrechungs- und Fortsetzungsadapter fehlen. Aus dieser Übung folgt kein Produktvorteil.</p>
+<p class="boundary"><strong>Harness, keine Produktmessung.</strong> Diese Konsole protokolliert Übungen mit synthetischen Quellen. Ein separat gestarteter, lokal authentifizierter Personal-Adapter kann beobachtet werden. Firefox-Ausführung, äquivalente Vorläufe, Unterbrechung, Provider-Retention und Oracle-Isolation benötigen eigene Nachweise. Aus dieser Übung folgt kein Produktvorteil.</p>
 <label for="trial">Versuch in vorab festgelegter Reihenfolge</label><select id="trial"></select>
 <h2>Aufgabe, Quellen und gemeinsamer gespeicherter Entwurf</h2><pre id="task"></pre>
 <label for="event">Beobachtetes Ereignis</label><select id="event">
@@ -21,8 +21,16 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:14px;bo
 <option>human_input</option><option>automatic_context</option><option>resume_probe</option><option>step_output</option><option>step_claim</option><option>task_claim</option><option>trial_end</option>
 </select>
 <label for="payload">Ereignisdaten (JSON)</label><textarea id="payload" spellcheck="false">{}</textarea>
+<label for="observation">Optionaler Rohantwort-Nachweis für reine Beobachtertranskription (JSON)</label><textarea id="observation" spellcheck="false" placeholder='{"receipt":"personal-observations/.../RECEIPT.json","receipt_sha256":"...","text_sha256":"...","excerpt":"Wörtlicher Antwortausschnitt"}'></textarea>
 <p>Der Beobachter muss beim Unterbrechen des Clients weiterlaufen. Zwischen Unterbrechung und Wiederaufnahmesignal liegen 60 Sekunden. Ab dem Signal läuft die Uhr einschließlich Anmeldung, Restore, Lesen und menschlicher Kontexteingabe. Nach 180 Sekunden ein Timeout erfassen. Jede tatsächliche Hilfe als eindeutige <code>human_input</code>-Geste erfassen; reine Beobachtertranskription ist keine Hilfe. Diese manuelle Übung ersetzt keine automatische Produktinstrumentierung.</p>
 <button id="record" type="button">Beobachtung protokollieren</button><pre class="status" id="status" aria-live="polite"></pre>
+<h2>Vorhandene Personal-Sitzung beobachten</h2>
+<p>Erst nach dem Wiederaufnahmesignal. Die lokale Pairing-Authentifizierung bleibt im Beobachterprozess. Der folgende Klick bestätigt höchstens eine kostenpflichtige Modellanfrage über den vorhandenen Adapter; kein automatischer Retry. Beide Arme verwenden denselben Fortsetzungsendpunkt und behalten ihre normale Historie. Reine Beobachtertranskription gehört in das Ereignisformular; tatsächliche Hilfe wird hier als menschliche Geste erfasst.</p>
+<label for="personal-port">Port des vorhandenen lokalen Adapters</label><input id="personal-port" type="number" min="1" max="65535" value="8771">
+<label for="session-id">Bereits angelegte Sitzungskennung</label><input id="session-id" autocomplete="off">
+<label for="input-kind">Tatsächliche Eingabeart</label><select id="input-kind"><option>context_reentry</option><option>instruction</option><option>correction</option><option>approval</option><option>restart</option><option>escalation</option></select>
+<label for="input-text">Tatsächlich an den Assistenten gesendeter Text</label><textarea id="input-text"></textarea>
+<button id="personal-resume" type="button">Eine Modellanfrage bestätigen und beobachten</button>
 <p>Die Aufgabe enthält keine Bewertungsantworten. Es gibt keine private Profil-, Gmail- oder Netzwerkquelle. Die Messdaten bleiben im lokalen Versuchsverzeichnis.</p>
 <script>
 "use strict";
@@ -48,10 +56,21 @@ async function task(){
 kind.addEventListener("change",preset);trial.addEventListener("change",task);
 document.getElementById("record").addEventListener("click",async()=>{
   try{
-    const response=await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({trial_id:trial.value,type:kind.value,payload:JSON.parse(payload.value)})});
+    const body={trial_id:trial.value,type:kind.value,payload:JSON.parse(payload.value)};
+    const evidence=document.getElementById("observation").value.trim();
+    if(evidence)body.observation=JSON.parse(evidence);
+    const response=await fetch("/api/event",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
     status.textContent=show(await response.json());
     if(kind.value==="human_input" && response.ok)preset();
   }catch(error){status.textContent=error.message;}
+});
+document.getElementById("personal-resume").addEventListener("click",async event=>{
+  const button=event.currentTarget;button.disabled=true;
+  try{
+    const response=await fetch("/api/personal-resume",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({trial_id:trial.value,port:Number(document.getElementById("personal-port").value),session_id:document.getElementById("session-id").value,gesture_id:crypto.randomUUID(),kind:document.getElementById("input-kind").value,text:document.getElementById("input-text").value,confirmed:true})});
+    const result=await response.json();status.textContent=show(result);
+    if(response.ok && result.state==="OBSERVED_TURN_READBACK_ONLY")button.disabled=false;
+  }catch(error){status.textContent=`Antwort ungeklärt; nicht erneut senden. Zuerst vorhandene Sitzung unabhängig zurücklesen. ${error.message}`;}
 });
 async function init(){
   const response=await fetch("/api/plan");plan=await response.json();

@@ -1,0 +1,141 @@
+{
+  "artificial_cognitive_contribution": "OpenAI Codex: existing-carrier/observer instrumentation, failure-oriented tests and bounded readback",
+  "candidate_source_sha256": {
+    "benchmarks/browser-assistant-ab/README.md": "2efa0f205e6bd8f72da26a32c572811323da9e799fcc64f986c27bad265b4cc1",
+    "benchmarks/browser-assistant-ab/console.html": "ef54977a4b93cf2c1b9b57c1d43eb3cc4544e590daf3a80ed12a0ff9735f751e",
+    "tests/test_qikvrt_browser_assistant_ab.py": "0c52dc504773e8b1312eb10b941e2c4b22043bf71eb6ac9e2d9c741ce6877ca9",
+    "tools/qikvrt_browser_assistant_ab.py": "c6bb55577e9b1299a04a433cb560cdbf945d7d28266dca7a0c5a45054c32699c"
+  },
+  "comparison_conditions_changed": false,
+  "economic_assumptions": {
+    "buyer_benefit": "UNMEASURED",
+    "maintenance_cost": "UNMEASURED",
+    "willingness_to_pay": "UNMEASURED"
+  },
+  "effect_ack_done": false,
+  "email_sent": false,
+  "existing_historical_test_artifacts": "UNCHANGED_PARENT_TREE; verify after REST tree write",
+  "frozen_comparison_bytes_sha256": {
+    "benchmarks/browser-assistant-ab/contract.json": "8fa87af107087ddf8c0ca75350c052802bc4993790ea23fb884808d12991edd8",
+    "benchmarks/browser-assistant-ab/fixtures/document-recovery.json": "c8b46df25f59a58e2c31a48e68d3bb7340fbddc458371a02d12bd9772cf42c44",
+    "benchmarks/browser-assistant-ab/fixtures/research-costs.json": "f0db968bab64b926c4b9751afe359edf058cd9b75b3a7879e1ec63215389c9bd"
+  },
+  "github_route": "REST_API_ONLY",
+  "human_contribution": "Ingolf Lohmann: authorized existing A/B continuation and frozen comparison requirements",
+  "initial_execution_access": {
+    "callable_mesh_native_executor": false,
+    "firefox_executable": null,
+    "local_pairing_token_present": false,
+    "openai_api_key_present": false
+  },
+  "local_checkout_scope": {
+    "full_bootloader_acceptance": false,
+    "full_checkout": false,
+    "full_make_test_executed_locally": false,
+    "method": "REST sparse projection; exact commit and all tree objects recomputed; selected blob bytes verified",
+    "reason": "Local projection does not materialize the whole repository or complete all-profile runtime."
+  },
+  "next_action": "On an authorized authenticated Firefox host, bind actual pre-runs, provider retention, interruption and oracle isolation, then execute all 24 frozen trials including failures; no credentials in artifacts.",
+  "not_executed_product_trials": 24,
+  "observed_utc": "2026-10-09T14:33:05.668036+00:00",
+  "planned_product_trials": 24,
+  "pr462": {
+    "head": "d0477150b4cc0b2516c2579d70da9ed71c60e048",
+    "tree": "8721a0f4e42b2045261ad7250a553bcc50dbb4ac"
+  },
+  "product_claim_allowed": false,
+  "product_metrics": null,
+  "product_trials_executed": 0,
+  "raw_files": {
+    "FOCUSED_51_TESTS.log": {
+      "bytes": 10162,
+      "sha256": "866ad51d0c5b48bb7558ade62a1def579d82404cd58e48470f339f9451e59a0f"
+    },
+    "HARNESS_SELF_CHECK.json": {
+      "bytes": 12074,
+      "sha256": "6708d6d9b34b20356aa560f13232e36f67a7bd822d69c5354b0bfdee611d46b0"
+    },
+    "ORIGINAL_33_TESTS.log": {
+      "bytes": 6474,
+      "sha256": "7c245e7f1fdd1c8135fd6e1b3267592e374e9f9a768233843bddfb3cdc6f116c"
+    },
+    "PREFLIGHT.json": {
+      "bytes": 7395,
+      "sha256": "ed5176d665c254c433b9b627fcf85133baa1177ba56575c7c5b3418e4921af2f"
+    },
+    "TERMINAL_SMOKE.json": {
+      "bytes": 1580,
+      "sha256": "8db870354bebb70afec4803fbe3737d0887f7c34621949045bc757c02faa9a11"
+    },
+    "TOOL_CACHE.log": {
+      "bytes": 56,
+      "sha256": "3d43010046ce4dbcd399dc3e18f8f545af266966a3d84a81fca8485996f6bd0d"
+    },
+    "prepared-analysis/analysis.json": {
+      "bytes": 13315,
+      "sha256": "9d7366839e34ef1afed40aa8cd759bd3f909a35b84198bb9f1289a9be487e82a"
+    },
+    "prepared-analysis/paired-deltas.json": {
+      "bytes": 5529,
+      "sha256": "89bfcb60bb1a89b8d09edd6dc892a78240c7372c39ce0bc16fee42ce5e0aafc0"
+    },
+    "prepared-analysis/trials.csv": {
+      "bytes": 2224,
+      "sha256": "4f2afe53f4faaf82c980b507b5e6b646fd9994c55a48df5ee9b1cdd10c23b3b5"
+    },
+    "prepared-run/contract.json": {
+      "bytes": 4099,
+      "sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75"
+    },
+    "prepared-run/fixtures/document-recovery.json": {
+      "bytes": 2521,
+      "sha256": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e"
+    },
+    "prepared-run/fixtures/research-costs.json": {
+      "bytes": 2681,
+      "sha256": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+    },
+    "prepared-run/manifest.json": {
+      "bytes": 17147,
+      "sha256": "234be37b79e39ddf2b5b3e7f27e391e2a39d57d655be3a05948fd1bf63b09322"
+    }
+  },
+  "remaining": [
+    "AUTHENTICATED_PERSONAL_FIREFOX_RUNTIME_NOT_ESTABLISHED",
+    "REAL_PROVIDER_RETENTION_NOT_READ_BACK",
+    "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+    "INDEPENDENT_PRODUCT_INTERRUPTION_NOT_OBSERVED",
+    "ORACLE_FILESYSTEM_ISOLATION_NOT_VERIFIED",
+    "REAL_PRODUCT_OUTPUT_ANNOTATION_VALIDITY_AND_PARTICIPANT_INDEPENDENCE_NOT_ESTABLISHED"
+  ],
+  "repository": "ingolf-lohmann/qik-vrt",
+  "result_readback": "A separately observed successor HEAD/TREE and native CI result must bind the final candidate; this precommit receipt does not claim them.",
+  "retry_disposition": "NO_RETRY_OF_UNCHANGED_MISSING_AUTHENTICATION; no paid or product request attempted",
+  "schema": "qikvrt_browser_ab_observer_instrumentation_v1",
+  "second_benchmark_implementation_created": false,
+  "source_subject": {
+    "head": "c24dfc39bd833263f2ea6ca7d435d96e1133e542",
+    "pr": 496,
+    "tree": "50917c20bacd1e885b3e13267018bbe84c8d6193"
+  },
+  "tests": {
+    "cache_contract": {
+      "declared": 14,
+      "verified": 14
+    },
+    "current_focused": {
+      "count": 51,
+      "exit_code": 0,
+      "log": "FOCUSED_51_TESTS.log",
+      "model_evidence": "TECHNICAL_TEST_DOUBLE",
+      "observer_timing": "SYNTHETIC_TEST_CLOCK"
+    },
+    "harness_self_check": "SCRIPTED_OUTPUTS_AND_SYNTHETIC_CLOCK; NOT_PRODUCT_DATA",
+    "original_focused": {
+      "count": 33,
+      "exit_code": 0,
+      "log": "ORIGINAL_33_TESTS.log"
+    },
+    "terminal_smoke": "REAL_LOOPBACK_HTTP_REFERENCE_ONLY; NO_FIREFOX_OR_MODEL"
+  }
+}

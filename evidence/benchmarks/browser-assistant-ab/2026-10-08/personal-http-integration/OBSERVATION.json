@@ -1,0 +1,52 @@
+{
+  "schema": "qikvrt_personal_http_integration_observation_v1",
+  "observed_utc": "2026-10-08T06:08:18.054970+00:00",
+  "source_head": "d0477150b4cc0b2516c2579d70da9ed71c60e048",
+  "source_tree": "8721a0f4e42b2045261ad7250a553bcc50dbb4ac",
+  "candidate_source_sha256": {
+    "tools/qikvrt_browser_assistant_ab.py": "120438299358a2e42d84c0d4d783a264719a1fb950769791664b36ee3d873d75",
+    "tests/test_qikvrt_browser_assistant_ab.py": "d4fc48af68ebc42a37ba3a6bc1e364e37b04833ee817f2aac010777e9a919cd8"
+  },
+  "human_contribution": "Ingolf Lohmann: task, frozen benchmark, evidence and baseline retention requirements",
+  "artificial_cognitive_contribution": "Codex: HTTP integration implementation, tests and documentation",
+  "tests": {
+    "focused": {
+      "exit_code": 0,
+      "count": 33,
+      "model_transport": "TECHNICAL_TEST_DOUBLE",
+      "restart": "CLOSE_REOPEN_NOT_SIGKILL"
+    },
+    "full_suite": {
+      "exit_code": 0,
+      "log": "MAKE_TEST.txt",
+      "log_sha256": "afc29a19d564bc4c41ab86560ff77954c7e3154654ef35f803a8e38523fc451b",
+      "scope": "final implementation and tests; evidence-only receipt finalization follows"
+    }
+  },
+  "execution_access": {
+    "firefox_executable": null,
+    "openai_api_key_present": false,
+    "local_pairing_token_present": false,
+    "github_cli_present": false,
+    "chatgpt_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+    "mesh_workflow_dispatch_callable": false
+  },
+  "remaining": [
+    "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+    "FIREFOX_EXECUTABLE_UNAVAILABLE",
+    "PROVIDER_RETENTION_NOT_READ_BACK",
+    "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+    "INDEPENDENT_PRODUCT_INTERRUPTION_NOT_OBSERVED",
+    "ORACLE_FILESYSTEM_ISOLATION_NOT_VERIFIED",
+    "PRODUCT_METRIC_INSTRUMENTATION_NOT_COMPLETE"
+  ],
+  "next_action": "Use the reviewed carrier on a host with Firefox and authorized backend credentials. Bind real pre-runs and independent interruption/observer evidence before a fresh 24-trial product run.",
+  "existing_pr_heads_modified": false,
+  "governance_modified": false,
+  "product_trials_executed": 0,
+  "product_metrics": null,
+  "product_claim_allowed": false,
+  "effect_ack_done": false,
+  "planned_trials": 24,
+  "not_executed_trials": 24
+}
