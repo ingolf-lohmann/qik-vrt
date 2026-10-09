@@ -8,6 +8,7 @@ CORPUS = ROOT / "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json"
 CONTEXT = ROOT / "AI_CONTEXT.json"
 AI = ROOT / "AI"
 BOOTLOADER = ROOT / "tools/ai_runtime_bootloader.py"
+AUDIO_REQUEST = ROOT / "state/audio/USER_SUPPLIED_AUDIO_TRANSCRIPTION_REQUEST_V1.json"
 
 
 class TestAIBootstrapKnowledgeCorpus(unittest.TestCase):
@@ -17,6 +18,7 @@ class TestAIBootstrapKnowledgeCorpus(unittest.TestCase):
         cls.context = json.loads(CONTEXT.read_text(encoding="utf-8"))
         cls.ai = AI.read_text(encoding="utf-8")
         cls.bootloader = BOOTLOADER.read_text(encoding="utf-8")
+        cls.audio_request = json.loads(AUDIO_REQUEST.read_text(encoding="utf-8"))
 
     def test_all_supplied_artifacts_are_inventoried(self):
         artifacts = self.corpus["source_artifacts"]
@@ -59,7 +61,9 @@ class TestAIBootstrapKnowledgeCorpus(unittest.TestCase):
         self.assertIn("docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md", required)
         self.assertIn("policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json", required)
         self.assertIn("SUPPLIED KNOWLEDGE CORPUS", self.ai)
-        self.assertIn("UNTRANSCRIBED", self.ai)
+        self.assertEqual(self.audio_request["state_machine"][0], "BOUND_PENDING_ASR")
+        self.assertIn("BOUND_PENDING_ASR", self.ai)
+        self.assertIn("Their filenames are not transcripts", self.ai)
 
     def test_bootloader_validates_corpus(self):
         self.assertIn("load_bootstrap_corpus", self.bootloader)

@@ -43,6 +43,22 @@ blockers and next actions. Persistent workflows MUST maintain `AI_PROGRESS.json`
 and `AI_STATUS.md`. Repetitive unchanged status and long explanations in place
 of executable work are prohibited.
 
+## Verification at the end of every action
+
+`END_OF_ACTION_VERIFICATION` is mandatory. At the end of every action the
+client MUST reobserve the current repository state, at minimum the exact head
+and tree of the bound branch, and MUST reobserve and report the delivery
+evidence for `raumzeitterminal.de` under `evidence/native-runtime-acceptance/`.
+The explicit absence of a delivery proof is a result and MUST be reported as
+such; it MUST NOT be reported as delivery. A client-side resolution or fetch
+failure is not registry evidence.
+
+A new change MUST be followed through to a fresh readback. An unchanged error,
+meaning the same subject, blocker and action with no new information, MUST NOT
+trigger a renewed attempt. The binding contract is
+`state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json`,
+resolved through `AI_CONTEXT.json.required_read_order`.
+
 ## Reuse before creation
 
 `REUSE_BEFORE_CREATE` is mandatory. Before creating a new workflow, script,

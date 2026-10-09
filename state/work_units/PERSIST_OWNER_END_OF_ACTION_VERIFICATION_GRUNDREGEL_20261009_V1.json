@@ -1,0 +1,124 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "PERSIST_OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_20261009_V1",
+  "created_at": "2026-10-09T09:23:45Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "502229de5259080939b54ec99dd131a7c96f476c",
+  "source_tree": "4c60f64a2646f77403587c16fda4173833fcb03b",
+  "scope": "Persist the owner's confirmed QIK-VRT Grundregel in the repository so every conforming client applies it from repository evidence instead of the owner restating it.",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner",
+    "identity_proof_boundary": "Attribution follows the owner context stated in the chat session; the session provides no independent identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "Anthropic",
+    "system_family": "Claude",
+    "model_or_build": "claude-opus-5 (configured identifier; the serving model may differ)",
+    "session_or_run_id": "session_01H33M4wrA95BSxCCCp3pExH",
+    "tools_and_adapters": [
+      "anonymous Git read of the public repository",
+      "local shell in an isolated cloud container"
+    ],
+    "observed_at": "2026-10-09T09:23:45Z",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "refs/heads/main",
+    "source_commit": "502229de5259080939b54ec99dd131a7c96f476c",
+    "identity_and_observation_limits": "Self-declared runtime identity. No GitHub credential, no GitHub Actions or API readback, and no observation of raumzeitterminal.de from this session."
+  },
+  "human_contributions": [
+    {
+      "type": "STANDING_RULE",
+      "description": "QIK-VRT Grundregel, stated and then explicitly confirmed on 2026-10-09: check the current repository state and the delivery evidence for raumzeitterminal.de at the end of every action; follow new changes through to a fresh readback; do not trigger a renewed attempt for an unchanged error."
+    },
+    {
+      "type": "PURPOSE",
+      "description": "Minimize interaction with the owner, creator, code owner and product owner of this repository."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "REUSE_BEFORE_CREATE",
+      "description": "Reused the existing delegation convention under state/authorization/delegations/ and the AI_CONTEXT.required_read_order binding rather than creating a new mechanism."
+    },
+    {
+      "type": "REPOSITORY_MUTATION",
+      "description": "Persisted the rule as an owner delegation, bound it into AI_CONTEXT.json required_read_order and a named context key, and added the matching mandatory section to AGENTS.md."
+    },
+    {
+      "type": "BOUNDARY",
+      "description": "Recorded that absence of a delivery proof is a result and must not be reported as delivery, and that a client-side resolution or fetch failure is not registry evidence."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "raw_transcript_persisted": false,
+    "rule_utf8_sha256": "3da7fe6aae9729791584a9f34ca4aaf74f01fa9c7d9aac3bb5055c9f02df84d5"
+  },
+  "outputs": [
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "AI_CONTEXT.json",
+    "AGENTS.md",
+    "state/work_units/PERSIST_OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_20261009_V1.json"
+  ],
+  "components": {
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json": {
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+      "bytes": 3191,
+      "git_blob": "0cda572c33f46216bab7d569a2e61569a61f6722"
+    },
+    "AI_CONTEXT.json": {
+      "sha256": "027083638b5136cb3ac2ae059cc275d68cc5ae12a9e8c712d70b6615cb10a2fb",
+      "bytes": 12271,
+      "git_blob": "df22c279f3d98e7b5609037f7aa06c9e7efe2ef3"
+    },
+    "AGENTS.md": {
+      "sha256": "6cc3aa1be65b5b55b18780f923a1d4d1a0871eb77fa6fc71090ae77294297904",
+      "bytes": 9481,
+      "git_blob": "fc3467af9d6f9e434f4f0816a83f63af22e53bf9"
+    }
+  },
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "strategy": "Single successor of main 502229de; delivered as a hash-bound artifact, not pushed."
+  },
+  "verification": {
+    "environment": "Local container, Python 3.13.",
+    "make_test": {
+      "result": "PASS",
+      "exit_code": 0
+    },
+    "integrity_verify_after_generate": "PASS",
+    "hosted_ci_on_this_subject": "NOT_OBSERVED"
+  },
+  "observed_preexisting_defect": {
+    "test": "tests/test_ai_bootstrap_knowledge_corpus.py::test_context_and_entrypoint_bind_corpus",
+    "assertion": "assertIn('UNTRANSCRIBED', AI)",
+    "actual": "The AI entrypoint uses BOUND_PENDING_ASR; the token UNTRANSCRIBED does not occur.",
+    "reproduced_on": "untouched main 502229de in a clean worktree",
+    "caused_by_this_work_unit": false,
+    "covered_by_make_test": false,
+    "disposition": "REPORTED_NOT_REPAIRED",
+    "reason": "Two admissible non-equivalent repairs exist (align the test with the current vocabulary, or restore the token in the entrypoint). Per OWNER-QIKVRT-EVOLUTIONARY-AUTOMATION-STANDING-DELEGATION-V1 interaction_policy this is a genuinely new semantic choice and is referred to the owner."
+  },
+  "external_effects": {
+    "push": false,
+    "pull_request": false,
+    "broker_submission": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "predecessor_evidence_transfer": false,
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  }
+}
