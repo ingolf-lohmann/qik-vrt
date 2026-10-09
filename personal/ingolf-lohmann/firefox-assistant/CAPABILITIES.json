@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_personal_assistant_capabilities_v1",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "product_name": "Universales Raumzeit-Terminal",
   "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -10,7 +10,12 @@
   "adapter": "src/qikvrt_personal_assistant.py",
   "firefox_surface": "http://127.0.0.1:8771/personal/",
   "capability_readback": "/personal/capabilities",
-  "operations": ["create_source_bound_task", "research_documentation_turn", "ordinary_history_readback", "resume_observed_checkpoint"],
+  "operations": [
+    "create_source_bound_task",
+    "research_documentation_turn",
+    "ordinary_history_readback",
+    "resume_observed_checkpoint"
+  ],
   "provider": {
     "authority": "https://api.openai.com/v1",
     "authentication": "SERVER_MEMORY_BEARER_FROM_OPENAI_API_KEY",
@@ -24,7 +29,13 @@
   "normal_baseline": {
     "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
     "mode": "baseline",
-    "persistence": ["normal provider conversation", "full local transcript", "saved outputs", "session list and readback", "browser tab restore"],
+    "persistence": [
+      "normal provider conversation",
+      "full local transcript",
+      "saved outputs",
+      "session list and readback",
+      "browser tab restore"
+    ],
     "same_provider_model_instructions_parameters_tools": true,
     "automatic_history_deletion_or_reset": false,
     "comparison_scope": "This comparator is the adapter's ordinary conversation mode. It is not a measurement of ChatGPT UI or another vendor product."
@@ -44,5 +55,47 @@
   "product_trials_executed": 0,
   "product_metrics": null,
   "product_claim_allowed": false,
-  "personal_release_effect_ack_done": false
+  "personal_release_effect_ack_done": false,
+  "providers": {
+    "openai": {
+      "authority": "https://api.openai.com/v1",
+      "authentication": "SERVER_MEMORY_BEARER_FROM_OPENAI_API_KEY",
+      "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+      "api": "RESPONSES_WITH_CONVERSATIONS",
+      "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+      "proprietary_runtime_redistributed": false
+    },
+    "claude": {
+      "authority": "https://api.anthropic.com/v1",
+      "authentication": "SERVER_MEMORY_API_KEY_FROM_ANTHROPIC_API_KEY",
+      "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+      "api": "STATELESS_MESSAGES_WITH_FULL_LOCAL_HISTORY",
+      "api_version": "2023-06-01",
+      "provider_conversation_retention_claimed": false,
+      "credential_scope_preflight": "COUNT_TOKENS_RESPONSE_ORGANIZATION_AND_WORKSPACE_MATCH",
+      "automatic_fallback": false
+    }
+  },
+  "provider_selection": "EXPLICIT_BACKEND_CONFIGURATION_DEFAULT_OPENAI; STATE_DIRECTORY_PROVIDER_IMMUTABLE",
+  "budget": {
+    "schema": "qikvrt_personal_budget_v1",
+    "required_for_all_new_provider_calls": true,
+    "readback": "/personal/budget",
+    "source": "PRIVATE_OPERATOR_CONFIRMED_SNAPSHOT_NOT_PLAN_ENTITLEMENT",
+    "money_unit": "INTEGER_MICRO_USD",
+    "reservation": "SQLITE_BEGIN_IMMEDIATE_FULL_MODEL_CONTEXT_COST_UPPER_BOUND",
+    "unknown_expired_or_exhausted": "BLOCK_BEFORE_PROVIDER_CALL",
+    "ambiguous_result": "RETAIN_RESERVATION_NO_RETRY_NO_PROVIDER_SWITCH",
+    "auto_purchase": false,
+    "auto_reload": false,
+    "remote_balance_api_implemented": false,
+    "account_activation_observed": false
+  },
+  "compatibility": {
+    "legacy_openai_binding_and_session_bytes_preserved": true,
+    "legacy_session_readback_without_budget": true,
+    "new_spending_requires_confirmed_budget": true,
+    "legacy_request_without_id": "DETERMINISTIC_CONTENT_KEY",
+    "intentional_identical_new_work": "EXPLICIT_NEW_REQUEST_ID"
+  }
 }

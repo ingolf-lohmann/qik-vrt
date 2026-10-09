@@ -21,6 +21,7 @@ from urllib.request import Request, urlopen
 
 from src import qikvrt_effect_ack_http_terminal as terminal
 from src import qikvrt_personal_assistant as personal
+from tests.test_qikvrt_personal_budget import snapshot
 
 
 TOKEN = "test-local-client-secret-" + "x" * 32
@@ -41,6 +42,7 @@ class TransportDouble:
         if path == "/conversations":
             return {"id": "conv_test_" + str(len(self.requests))}, receipt
         return {"id": "resp_test_" + str(len(self.requests)), "model": "explicit-test-model",
+                "usage": {"input_tokens": 30, "output_tokens": 20},
                 "status": "completed", "output": [{"type": "message", "role": "assistant",
                 "content": [{"type": "output_text", "text": "Unverified technical draft."}]}]}, receipt
 
@@ -50,7 +52,7 @@ class PersonalAssistantTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name) / "private-state"
         self.transport = TransportDouble()
-        self.runtime = personal.PersonalRuntime(self.root, "explicit-test-model", KEY, TOKEN, transport=self.transport)
+        self.runtime = personal.PersonalRuntime(self.root, "explicit-test-model", KEY, TOKEN, transport=self.transport, budget_snapshot=snapshot())
 
     def tearDown(self):
         if self.runtime:
@@ -207,8 +209,8 @@ class PersonalAssistantTests(unittest.TestCase):
         script = r'''
 import json,sys,time
 from src import qikvrt_personal_assistant as p
-from tests.test_qikvrt_personal_assistant import TransportDouble,TOKEN,KEY,SOURCES
-r=p.PersonalRuntime(sys.argv[1],"explicit-test-model",KEY,TOKEN,transport=TransportDouble())
+from tests.test_qikvrt_personal_assistant import TransportDouble,TOKEN,KEY,SOURCES,snapshot
+r=p.PersonalRuntime(sys.argv[1],"explicit-test-model",KEY,TOKEN,transport=TransportDouble(),budget_snapshot=snapshot())
 ids=[r.create(m,"Technical restart task",SOURCES)["session"]["id"] for m in ["baseline","qikvrt"]]
 print(json.dumps(ids),flush=True)
 time.sleep(30)

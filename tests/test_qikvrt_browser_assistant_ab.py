@@ -21,7 +21,7 @@ class PersonalCarrierTests(unittest.TestCase):
     def test_frozen_task_roundtrip_restart_and_no_oracle_or_product_promotion(self):
         from src import qikvrt_personal_assistant as personal
         from src import qikvrt_effect_ack_http_terminal as terminal
-        from tests.test_qikvrt_personal_assistant import TransportDouble, TOKEN, KEY
+        from tests.test_qikvrt_personal_assistant import TransportDouble, TOKEN, KEY, snapshot
         from http.server import ThreadingHTTPServer
         with tempfile.TemporaryDirectory() as temp, mock.patch.dict(os.environ, {"QIKVRT_PERSONAL_LOCAL_TOKEN": TOKEN}):
             root = Path(temp)
@@ -30,7 +30,7 @@ class PersonalCarrierTests(unittest.TestCase):
             pair = manifest["pairs"][0]
             tid = pair["pair_id"] + "-baseline"
             transport = TransportDouble()
-            runtime = personal.PersonalRuntime(root / "state", "explicit-test-model", KEY, TOKEN, transport=transport)
+            runtime = personal.PersonalRuntime(root / "state", "explicit-test-model", KEY, TOKEN, transport=transport, budget_snapshot=snapshot())
             server = ThreadingHTTPServer(("127.0.0.1", 0), personal.personal_handler(terminal.Handler, runtime))
             worker = threading.Thread(target=server.serve_forever, daemon=True); worker.start()
             try:
