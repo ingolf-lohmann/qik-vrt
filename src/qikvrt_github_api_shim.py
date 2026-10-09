@@ -111,14 +111,16 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             timeout = 10.0
         self.connection.settimeout(timeout if 0.1 <= timeout <= 120 else 10.0)
 
-    def _send_json(self, status: int, body: dict) -> None:
-        data = json.dumps(body, ensure_ascii=False, indent=2).encode("utf-8")
+    def _send_json(self, status: int, body: dict | None, *, headers: dict | None = None) -> None:
+        data = b"" if body is None else json.dumps(body, ensure_ascii=False, indent=2).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Connection", "close")
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
+        for key, value in (headers or {}).items():
+            self.send_header(key, value)
         self.end_headers()
         self.wfile.write(data)
 
@@ -140,6 +142,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         if n > MAX_REQUEST_BYTES:
             raise ValueError("request too large")
         raw = self.rfile.read(n)
+        if len(raw) != n:
+            raise ValueError("incomplete JSON request body")
         try:
             body = json.loads(
                 raw.decode("utf-8"),
@@ -189,6 +193,10 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         raise ValueError(f"{field} must be true or false")
 
     def do_GET(self):
+        if self.path == "/mcp":
+            if self._mcp_guard():
+                self._send_json(405, {"reason": "standalone SSE is not offered"}, headers={"Allow": "POST"})
+            return
         if self.path == "/health":
             valid = _security_configuration_valid()
             attestation_configured = bool(
@@ -211,6 +219,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if self.path == "/mcp":
+            self._mcp_post()
+            return
         if not self._rate_allowed():
             self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
             return
@@ -313,6 +324,46 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
                 print(f"QIK-VRT adapter internal error: {type(exc).__name__}: {exc}", file=sys.stderr)
             self._send_json(500, {"status": "BLOCK", "reason": "internal adapter error"})
 
+    def _mcp_guard(self) -> bool:
+        from qikvrt_mcp_adapter import authorized, enabled, origin_allowed
+        if not enabled():
+            self._send_json(404, {"reason": "not found"})
+        elif not self._rate_allowed():
+            self._send_json(429, {"reason": "rate limit exceeded"})
+        elif not origin_allowed(self.headers):
+            self._send_json(403, {"reason": "origin refused"})
+        elif not authorized(self.headers):
+            self._send_json(401, {"reason": "unauthorized"}, headers={"WWW-Authenticate": 'Bearer realm="qikvrt-mcp", scope="repository:read capability:read effect_ack:read"'})
+        else:
+            return True
+        return False
+
+    def _mcp_post(self) -> None:
+        if not self._mcp_guard():
+            return
+        from qikvrt_mcp_adapter import rpc
+        try:
+            versions = self.headers.get_all("MCP-Protocol-Version", [])
+            if len(versions) > 1:
+                raise ValueError("duplicate protocol version")
+            accept = {item.split(";", 1)[0].strip() for item in self.headers.get("Accept", "").split(",")}
+            if not {"application/json", "text/event-stream"} <= accept:
+                self._send_json(406, {"reason": "Accept must include application/json and text/event-stream"})
+                return
+            status, result = rpc(self._read_json(), versions[0] if versions else None, self.headers)
+            self._send_json(status, result)
+        except (ValueError, UnicodeError):
+            self._send_json(400, {"jsonrpc": "2.0", "id": None, "error": {"code": -32600, "message": "Invalid bounded MCP request"}})
+        except Exception:
+            self._send_json(500, {"jsonrpc": "2.0", "id": None, "error": {"code": -32603, "message": "Internal error; no effect granted"}})
+
+    def do_DELETE(self):
+        if self.path == "/mcp":
+            if self._mcp_guard():
+                self._send_json(405, {"reason": "stateless MCP has no session to delete"}, headers={"Allow": "POST"})
+            return
+        self._send_json(404, {"reason": "not found"})
+
     def log_message(self, fmt, *args):
         if os.environ.get("QIKVRT_API_LOG", "0") == "1":
             super().log_message(fmt, *args)
@@ -365,6 +416,13 @@ def main() -> int:
     if not 1 <= rate_limit <= 100_000:
         print("BLOCK QIKVRT_RATE_LIMIT_PER_MINUTE must be between 1 and 100000", file=sys.stderr)
         return 2
+    if os.environ.get("QIKVRT_MCP_ENABLED") == "1":
+        from qikvrt_mcp_adapter import configuration
+        try:
+            configuration()
+        except (ValueError, TypeError):
+            print("BLOCK invalid MCP read-credential configuration", file=sys.stderr)
+            return 2
     if host != "127.0.0.1" and os.environ.get("QIKVRT_ALLOW_NON_LOOPBACK") != "1":
         print("BLOCK non-loopback requires QIKVRT_ALLOW_NON_LOOPBACK=1", file=sys.stderr)
         return 2
