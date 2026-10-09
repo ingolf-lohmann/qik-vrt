@@ -765,10 +765,24 @@ def run_maintenance(
     *,
     now: dt.datetime | None = None,
     seed_repository: str = DEFAULT_SEED_REPOSITORY,
+    lifecycle_api_factory: Any = None,
 ) -> dict[str, Any]:
     now = now or _utc_now()
     run_id, utc = _run_metadata(run_id, now)
     nodes, policies = load_nodes(root, seed_repository)
+    transports = {}
+    transport_path = root / 'registry/NODE_LIFECYCLE_TRANSPORT_V1.json'
+    if transport_path.exists():
+        configuration = read_json(transport_path)
+        if configuration.get('schema') != 'qikvrt_node_lifecycle_transport_v1':
+            raise SeedError('invalid lifecycle transport schema')
+        transports = configuration.get('nodes')
+        identities = {n.guid: n.source_repository for n in nodes}
+        if not isinstance(transports, dict) or any(
+                guid not in identities or not isinstance(value, dict)
+                or value != {'repository': identities[guid], 'transport': 'PUBLIC_REST_SNAPSHOT_V1'}
+                for guid, value in transports.items()):
+            raise SeedError('lifecycle transport differs from accepted node identity')
     index_nodes: list[dict[str, Any]] = []
     status_nodes: list[dict[str, Any]] = []
     error_count = 0
@@ -792,23 +806,47 @@ def run_maintenance(
         health_url = _raw_node_url(node, "NODE_HEALTH.json")
         ack_url = _raw_node_url(node, "SEED_ACCEPTANCE_STATUS.json")
         renewal_url = _raw_node_url(node, "NODE_REGISTRATION_RENEWAL.json")
+        public_documents = None
+        public_error = None
+        if node.guid in transports and policy.status == 'ACTIVE' and registry_status == 'ACCEPTED':
+            try:
+                try:
+                    from tools import qikvrt_mirror_node_lifecycle as lifecycle
+                except ModuleNotFoundError:
+                    import qikvrt_mirror_node_lifecycle as lifecycle
+                factory = lifecycle_api_factory or lifecycle.Rest
+                public_documents, public_head = lifecycle.read_public(node, factory(node.source_repository), now)
+                evidence['lifecycle_snapshot_head'] = public_head
+                evidence['lifecycle_review_state'] = 'UNREVIEWED_TELEMETRY'
+                api_url = f'https://api.github.com/repos/{node.source_repository}/contents/'
+                health_url = f'{api_url}NODE_HEALTH.json?ref={public_head}'
+                renewal_url = f'{api_url}NODE_REGISTRATION_RENEWAL.json?ref={public_head}'
+                ack_url = f'{api_url}qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json?ref=main'
+            except (RuntimeError, KeyError, TypeError, ValueError) as exc:
+                public_error = SeedError(f'public lifecycle unavailable: {exc}')
+        def lifecycle_document(index: int, url: str) -> FetchedJson:
+            if public_error:
+                raise public_error
+            if public_documents is not None:
+                return public_documents[index]
+            return fetch(url)
         if policy.status == "ACTIVE" and registry_status == "ACCEPTED":
             try:
-                health = fetch(health_url)
+                health = lifecycle_document(0, health_url)
                 heartbeat_status, heartbeat_utc, expires_utc = _validate_health(health.value, node, now)
                 health_visible = True
                 evidence["health_sha256"] = health.sha256
             except SeedError as exc:
                 errors.append({"source": "health", "error": str(exc)})
             try:
-                acknowledgement = fetch(ack_url)
+                acknowledgement = lifecycle_document(2, ack_url)
                 _validate_ack(acknowledgement.value, node)
                 ack_visible = True
                 evidence["ack_sha256"] = acknowledgement.sha256
             except SeedError as exc:
                 errors.append({"source": "ack", "error": str(exc)})
             try:
-                renewal = fetch(renewal_url)
+                renewal = lifecycle_document(1, renewal_url)
                 _validate_renewal(renewal.value, node)
                 renewal_visible = True
                 evidence["renewal_sha256"] = renewal.sha256
