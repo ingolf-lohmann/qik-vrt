@@ -3,13 +3,16 @@
 openapi: 3.0.3
 info:
   title: QIKVRT GitHub Dispatch Adapter API
-  version: 2.0.0
+  version: 2.3.0
   description: >
     The local adapter exposes GitHub-shaped dispatch paths but evaluates the
     request synchronously and returns a QIK-VRT EFFECT_ACK body. GitHub's real
-    dispatch API remains asynchronous and normally returns 204; callers must
+    dispatch API remains asynchronous and returns 204, or 200 with run details
+    when requested; callers must
     subsequently inspect the workflow run and its qikvrt-api-state artifact.
     Technical dispatch acceptance is never ordinary effect permission.
+    The fixed Ruleset-writer dispatch is GitHub-only; the local adapter retains
+    its existing Mesh routes and cannot execute repository-administration effects.
 servers:
   - url: http://127.0.0.1:8766
     description: Loopback-only synchronous test/development adapter
@@ -46,7 +49,13 @@ paths:
               properties:
                 ref: { type: string, minLength: 1, maxLength: 255 }
                 inputs: { $ref: '#/components/schemas/DispatchInputs' }
+                return_run_details: { type: boolean, default: false, description: GitHub may return an asynchronous run receipt. The local adapter still returns its synchronous 202 EFFECT_ACK evaluation. }
       responses:
+        '200':
+          description: GitHub accepted an asynchronous dispatch and returned run details; execution and effect require independent readback.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DispatchRunDetails' }
         '202': { description: Local evaluation reached DONE or CONTINUE; inspect effect_state. }
         '204': { description: GitHub accepted the asynchronous dispatch; no effect result is implied. }
         '400': { description: Invalid request shape, value, or adapter configuration. }
@@ -56,6 +65,59 @@ paths:
         '423': { description: EFFECT_ACK_ISOLATE due to integrity or replay conflict. }
         '429': { description: Rate limit exceeded. }
         '500': { description: Internal adapter failure; no effect permission is implied. }
+  /repos/{owner}/{repo}/actions/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml/dispatches:
+    servers:
+      - url: https://api.github.com
+    post:
+      operationId: rulesetAuthorityDispatch
+      summary: Dispatch only the existing reviewed Ruleset writer on Main.
+      description: >
+        The client requires explicit effect acceptance, a freshly observed Main
+        SHA, an explicitly selected pinned writer version with byte-recomputed
+        Git blob identity and a complete bounded run inventory. Omission retains
+        the legacy-v1 contract; there is no automatic fallback between versions.
+        Version selection is local client metadata, never a workflow input. It
+        issues at most one POST and never retries an ambiguous response. The
+        request identifier is local correlation metadata, not GitHub idempotency.
+        Subsequent GET-only ruleset_authority_readback verifies the run and jobs,
+        canonical Ruleset digest and protected Main independently. A verified
+        Ruleset postcondition grants neither a native review nor merge or release.
+      x-qikvrt-writer-versions:
+        default: legacy-v1
+        legacy-v1:
+          workflow_blob_sha: 1202d24c2f23eb8fa52ab7c562a583e79f9e8444
+          ruleset_post_sha256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
+        lifecycle-v2:
+          workflow_blob_sha: ab47a8ec98c39b39bda420050cb7c970a9da6165
+          ruleset_post_sha256: 45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema: { type: string, enum: [ingolf-lohmann] }
+        - name: repo
+          in: path
+          required: true
+          schema: { type: string, enum: [qik-vrt] }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [ref]
+              properties:
+                ref: { type: string, enum: [main] }
+            example: { ref: main }
+      responses:
+        '204': { description: Empty transport acceptance only; independently read the actual run and Ruleset effect. }
+        '401': { description: Authentication denied; no retry or credential echo. }
+        '403': { description: Actions-write permission or workflow admission denied; no bypass or automatic retry. }
+        '404': { description: Repository or fixed workflow unavailable to the authenticated principal. }
+        '422': { description: Dispatch rejected; reobserve the trusted Main writer and authorization. }
+        '429': { description: Rate limited; no automatic repeat. }
+        '500': { description: Outcome may be ambiguous; authoritative readback required before another dispatch. }
   /repos/{owner}/{repo}/dispatches:
     post:
       operationId: repositoryDispatch
@@ -97,6 +159,13 @@ components:
       required: true
       schema: { type: string, pattern: '^[A-Za-z0-9_.-]{1,100}$' }
   schemas:
+    DispatchRunDetails:
+      type: object
+      required: [workflow_run_id, run_url, html_url]
+      properties:
+        workflow_run_id: { type: integer, minimum: 1 }
+        run_url: { type: string, format: uri }
+        html_url: { type: string, format: uri }
     Health:
       type: object
       additionalProperties: false
