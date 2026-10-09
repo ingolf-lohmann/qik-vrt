@@ -115,7 +115,28 @@
       "status": "TO_BE_FRESHLY_EXECUTED_ON_FROZEN_CANDIDATE_HEAD",
       "initial_environment_failure": "Missing REST-materialized parent tree metadata and historical commit/worktree closure; exact objects restored without modifying the test",
       "historical_source_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
-      "source_history_is_complete": false
+      "source_history_is_complete": false,
+      "native_push_failure": {
+        "head": "e514aa2b329b59456de19b5fede86940b67bc482",
+        "tree": "c666a7a615f5c4c1989134609484f40e72ecab3d",
+        "run_id": 37947509975,
+        "job_id": 113877511728,
+        "first_blocker": "CANONICAL_CHECKOUT_EOL_MISMATCH",
+        "affected_existing_windows_files": 34,
+        "verified_cause": "The REST materialization restored exact normalized Git blobs, but the manifest was generated before applying existing eol=crlf checkout attributes. Native checkout materialized CRLF and rejected the LF-derived digests.",
+        "repair": "Materialize existing Windows files through git cat-file --filters using their unchanged HEAD blobs and existing eol attributes, then regenerate integrity authorities. No Windows source blob or verification rule changed.",
+        "unmodified_failure_retry_count": 0,
+        "original_checkout_manifest_hashes_verified": 35
+      },
+      "prior_candidate_exact_head_local": {
+        "head": "e514aa2b329b59456de19b5fede86940b67bc482",
+        "tree": "c666a7a615f5c4c1989134609484f40e72ecab3d",
+        "command": "make test",
+        "exit_code": 0,
+        "unittest_executions": 861,
+        "log_sha256": "0af0a6522faf904c0bf51f3078264f35b3cdf4ae86a68d65241aa47c83ce0a08",
+        "transfer_to_successor": false
+      }
     },
     "native_exact_head_checks": "REQUIRED_FRESH_READ_AFTER_DRAFT_CREATION",
     "predecessor_evidence_transfer": false
