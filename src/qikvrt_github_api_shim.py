@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import base64
+import hashlib
 import hmac
 import os
 import re
@@ -14,18 +16,74 @@ import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler
+from qikvrt_api_handler import HandlerConfig, decode_secret_material, run_handler, read_ingested_artifact, safe_id, require_sha
 from qikvrt_effect_ack import EffectState
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from qikvrt_api_client import API_CONTRACT_VERSION, read_regular_file
 
 REPOSITORY_COMPONENT = r"([A-Za-z0-9_.-]{1,100})"
 DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/actions/workflows/qikvrt_mesh_api\.yml/dispatches$")
 REPO_DISPATCH_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/dispatches$")
+READBACK_RE = re.compile(rf"^/repos/{REPOSITORY_COMPONENT}/{REPOSITORY_COMPONENT}/qikvrt/artifacts/([A-Za-z0-9_.=-]{{1,128}})/readback$")
+MCP_VERSIONS = ("2025-11-25", "2026-07-28")
+MCP_MAX_PAYLOAD_BYTES = 256 * 1024
+MCP_SOURCE_PATHS = ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
+                    "src/qikvrt_effect_ack.py", "src/qikvrt_github_api_shim.py")
 MAX_REQUEST_BYTES = 1024 * 1024
 _RATE_LOCK = threading.Lock()
 _RATE_WINDOWS: dict[str, tuple[int, int]] = {}
+
+
+def mcp_implementation_binding() -> dict:
+    root = Path(__file__).resolve().parents[1]
+    digests = {path: hashlib.sha256(read_regular_file(root / path, max_bytes=1024 * 1024)).hexdigest()
+               for path in MCP_SOURCE_PATHS}
+    encoded = json.dumps(digests, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return {"sha256": hashlib.sha256(encoded).hexdigest(), "files": digests,
+            "api_contract_version": API_CONTRACT_VERSION,
+            "scope": "runtime-source-bytes; remote HEAD/TREE must be independently read"}
+
+
+MCP_BOOT_BINDING = mcp_implementation_binding()
+
+
+def _mcp_scopes() -> set[str]:
+    return set(os.environ.get("QIKVRT_MCP_SCOPES", "").split())
+
+
+def _mcp_configuration_valid() -> bool:
+    enabled = os.environ.get("QIKVRT_MCP_ENABLED", "0")
+    return enabled in {"0", "1"} and _mcp_scopes() <= {"ingest", "readback"}
+
+
+def _mcp_tools() -> list[dict]:
+    common = {
+        "repository": {"type": "string"},
+        "artifact_id": {"type": "string", "pattern": "^[A-Za-z0-9_.=-]{1,128}$"},
+        "request_id": {"type": "string", "pattern": "^[A-Za-z0-9_.=-]{1,128}$"},
+        "expected_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "api_contract_version": {"type": "string", "const": API_CONTRACT_VERSION},
+        "expected_implementation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    }
+    result = []
+    for scope in sorted(_mcp_scopes()):
+        properties = dict(common)
+        if scope == "ingest":
+            properties.update({"payload_b64": {"type": "string", "maxLength": 4 * ((MCP_MAX_PAYLOAD_BYTES + 2) // 3)},
+                               "effect_accepted": {"type": "boolean", "const": True}})
+        result.append({
+            "name": f"qikvrt_{scope}",
+            "description": ("Store opaque bytes only after explicit scoped acceptance; stable request_id is idempotent."
+                            if scope == "ingest" else "Read committed ingest bytes and provenance without mutation."),
+            "inputSchema": {"type": "object", "properties": properties,
+                            "required": list(properties), "additionalProperties": False},
+            "annotations": {"readOnlyHint": scope == "readback", "destructiveHint": False,
+                            "idempotentHint": True, "openWorldHint": False},
+        })
+    return result
 
 
 def _unique_json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -140,6 +198,8 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         if n > MAX_REQUEST_BYTES:
             raise ValueError("request too large")
         raw = self.rfile.read(n)
+        if len(raw) != n:
+            raise ValueError("incomplete request body")
         try:
             body = json.loads(
                 raw.decode("utf-8"),
@@ -188,7 +248,227 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
             return raw.lower() == "true"
         raise ValueError(f"{field} must be true or false")
 
+    def _mcp_guard(self) -> bool:
+        if not _mcp_configuration_valid():
+            self._send_json(503, {"status": "BLOCK", "reason": "invalid service configuration"})
+            return False
+        for header in ("Host", "Origin", "Authorization", "Accept", "Content-Type",
+                       "MCP-Protocol-Version", "Mcp-Method", "Mcp-Name"):
+            if len(self.headers.get_all(header, [])) > 1:
+                self._send_json(400, {"status": "BLOCK", "reason": "duplicate security or routing header"})
+                return False
+        hosts = set(os.environ.get("QIKVRT_MCP_HOSTS", "").split())
+        if not hosts and self.server.server_address[0] == "127.0.0.1":
+            hosts = {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+        if self.headers.get("Host", "") not in hosts:
+            self._send_json(403, {"status": "BLOCK", "reason": "Host outside the configured scope"})
+            return False
+        origins = set(os.environ.get("QIKVRT_MCP_ORIGINS", "").split())
+        if self.server.server_address[0] == "127.0.0.1":
+            origins |= {f"http://{host}" for host in hosts}
+        if "Origin" in self.headers and self.headers["Origin"] not in origins:
+            self._send_json(403, {"status": "BLOCK", "reason": "Origin outside the configured scope"})
+            return False
+        if not self._rate_allowed():
+            self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
+            return False
+        if not self._authorized():
+            self._send_json(401, {"status": "BLOCK", "reason": "unauthorized"})
+            return False
+        if not _security_configuration_valid():
+            self._send_json(503, {"status": "BLOCK", "reason": "invalid service configuration"})
+            return False
+        return True
+
+    def _mcp_cfg(self, arguments: dict, *, write: bool) -> HandlerConfig:
+        common = {"repository", "artifact_id", "request_id", "expected_sha256",
+                  "api_contract_version", "expected_implementation_sha256"}
+        required = common | ({"payload_b64", "effect_accepted"} if write else set())
+        if not isinstance(arguments, dict) or set(arguments) != required:
+            raise ValueError("exact tool argument fields are required")
+        if any(not isinstance(arguments[key], str) for key in required - {"effect_accepted"}):
+            raise ValueError("tool string arguments are required")
+        if arguments["api_contract_version"] != API_CONTRACT_VERSION:
+            raise ValueError("REST contract version mismatch")
+        binding = mcp_implementation_binding()
+        if binding != MCP_BOOT_BINDING or arguments["expected_implementation_sha256"] != binding["sha256"]:
+            raise ValueError("implementation source binding mismatch")
+        if arguments["repository"] != os.environ.get("QIKVRT_ALLOWED_REPOSITORY"):
+            raise ValueError("repository outside the credential scope")
+        safe_id(arguments["artifact_id"])
+        safe_id(arguments["request_id"], field="request_id")
+        require_sha(arguments["expected_sha256"])
+        if write:
+            if arguments["effect_accepted"] is not True:
+                raise ValueError("explicit scoped effect acceptance is required")
+            encoded = arguments["payload_b64"]
+            if len(encoded) > 4 * ((MCP_MAX_PAYLOAD_BYTES + 2) // 3):
+                raise ValueError("MCP payload exceeds 256 KiB")
+            payload = base64.b64decode(encoded, validate=True)
+            if (len(payload) > MCP_MAX_PAYLOAD_BYTES
+                    or base64.b64encode(payload).decode("ascii") != encoded
+                    or hashlib.sha256(payload).hexdigest() != arguments["expected_sha256"]):
+                raise ValueError("MCP payload byte binding mismatch")
+        return HandlerConfig(
+            root=Path(os.environ.get("QIKVRT_REPO_ROOT", os.getcwd())),
+            operation="ingest" if write else "verify",
+            artifact_id=arguments["artifact_id"], payload_b64=arguments.get("payload_b64", ""),
+            expected_sha256=arguments["expected_sha256"], dry_run=not write,
+            repository=arguments["repository"], run_id="mcp-rest-shim",
+            request_id=arguments["request_id"], effect_accepted=write,
+            responsibility_owner=os.environ["QIKVRT_API_PRINCIPAL"].strip(), origin_authenticated=True,
+            trusted_attestation_secret=os.environ.get("QIKVRT_REMOTE_ATTESTATION_SECRET", ""),
+            trusted_attestation_signer=os.environ.get("QIKVRT_TRUSTED_ATTESTATION_SIGNER", "").strip(),
+        )
+
+    def _artifact_readback(self) -> None:
+        if not self._mcp_guard():
+            return
+        if "readback" not in _mcp_scopes():
+            self._send_json(403, {"status": "BLOCK", "reason": "readback permission required"})
+            return
+        try:
+            parsed = urlparse(self.path)
+            match = READBACK_RE.fullmatch(parsed.path)
+            query = parse_qs(parsed.query, strict_parsing=True)
+            if (set(query) != {"request_id", "expected_sha256", "api_contract_version", "expected_implementation_sha256"}
+                    or parsed.params or parsed.fragment or any(len(values) != 1 for values in query.values())):
+                raise ValueError("invalid readback locator")
+            arguments = {key: values[0] for key, values in query.items()}
+            arguments.update({"repository": f"{match.group(1)}/{match.group(2)}", "artifact_id": match.group(3)})
+            cfg = self._mcp_cfg(arguments, write=False)
+            payload, proof = read_ingested_artifact(cfg, max_bytes=MCP_MAX_PAYLOAD_BYTES)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/octet-stream")
+            self.send_header("Content-Length", str(len(payload)))
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Connection", "close")
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("X-QIKVRT-Readback-SHA256", proof["sha256"])
+            self.end_headers()
+            self.wfile.write(payload)
+        except Exception:
+            self._send_json(409, {"status": "BLOCK", "reason": "readback binding or committed evidence unavailable"})
+
+    def _mcp_post(self) -> None:
+        if not self._mcp_guard():
+            return
+        identifier = None
+        version = self.headers.get("MCP-Protocol-Version", "")
+        def error(status: int, code: int, message: str, data=None) -> None:
+            body = {"jsonrpc": "2.0", "id": identifier, "error": {"code": code, "message": message}}
+            if data is not None:
+                body["error"]["data"] = data
+            self._send_json(status, body)
+        def reply(result: dict) -> None:
+            if version == "2026-07-28":
+                result["resultType"] = "complete"
+            self._send_json(200, {"jsonrpc": "2.0", "id": identifier, "result": result})
+        try:
+            accept = {item.split(";", 1)[0].strip() for item in self.headers.get("Accept", "").split(",")}
+            if not {"application/json", "text/event-stream"} <= accept:
+                raise ValueError("Accept must include JSON and event-stream")
+            body = self._read_json()
+            if (body.get("jsonrpc") != "2.0" or set(body) - {"jsonrpc", "id", "method", "params"}
+                    or not isinstance(body.get("method"), str) or not isinstance(body.get("params", {}), dict)):
+                raise ValueError("invalid JSON-RPC request")
+            identifier = body.get("id")
+            if "id" in body and (type(identifier) not in (str, int) or isinstance(identifier, str) and not 0 < len(identifier) <= 128):
+                raise ValueError("invalid JSON-RPC id")
+            method = body["method"]
+            params = body.get("params", {})
+            if method == "initialize":
+                version = params.get("protocolVersion", "")
+                if (set(params) != {"protocolVersion", "capabilities", "clientInfo"}
+                        or not isinstance(params["capabilities"], dict) or not isinstance(params["clientInfo"], dict)):
+                    raise ValueError("invalid initialization")
+                if self.headers.get("MCP-Protocol-Version") not in (None, version):
+                    error(400, -32020, "HeaderMismatch")
+                    return
+            if version not in MCP_VERSIONS:
+                error(400, -32022, "Unsupported protocol version", {"supported": list(MCP_VERSIONS)})
+                return
+            body_meta = params.get("_meta", {})
+            if (isinstance(body_meta, dict) and "io.modelcontextprotocol/protocolVersion" in body_meta
+                    and body_meta["io.modelcontextprotocol/protocolVersion"] != version):
+                error(400, -32020, "HeaderMismatch")
+                return
+            if version == "2026-07-28":
+                meta = params.get("_meta", {})
+                info = meta.get("io.modelcontextprotocol/clientInfo", {}) if isinstance(meta, dict) else {}
+                if (not isinstance(meta, dict) or meta.get("io.modelcontextprotocol/protocolVersion") != version
+                        or self.headers.get("Mcp-Method") != method):
+                    error(400, -32020, "HeaderMismatch")
+                    return
+                if (not isinstance(info, dict) or not all(isinstance(info.get(k), str) and 0 < len(info[k]) <= 256 for k in ("name", "version"))
+                        or not isinstance(meta.get("io.modelcontextprotocol/clientCapabilities"), dict)):
+                    raise ValueError("required per-request client metadata missing")
+                if method == "tools/call":
+                    name_header = self.headers.get("Mcp-Name", "")
+                    if name_header.startswith("=?base64?") and name_header.endswith("?="):
+                        name_header = base64.b64decode(name_header[9:-2], validate=True).decode("utf-8")
+                    if name_header != params.get("name"):
+                        error(400, -32020, "HeaderMismatch")
+                        return
+            if "id" not in body:
+                if method == "notifications/initialized" and version == "2025-11-25" and not params:
+                    self.send_response(202)
+                    self.send_header("Content-Length", "0")
+                    self.send_header("Connection", "close")
+                    self.end_headers()
+                    return
+                raise ValueError("effectful notifications are forbidden")
+            server_info = {"name": "QIKVRT-REST-MCP", "version": "1.0.0"}
+            if method == "initialize" and version == "2025-11-25":
+                reply({"protocolVersion": version, "capabilities": {"tools": {}}, "serverInfo": server_info,
+                       "_meta": {"qikvrt/implementation": MCP_BOOT_BINDING}})
+            elif method == "server/discover" and version == "2026-07-28" and set(params) == {"_meta"}:
+                reply({"supportedVersions": list(MCP_VERSIONS), "capabilities": {"tools": {}},
+                       "_meta": {"io.modelcontextprotocol/serverInfo": server_info, "qikvrt/implementation": MCP_BOOT_BINDING},
+                       "cacheScope": "private", "ttlMs": 0})
+            elif method in {"tools/list", "ping"}:
+                if set(params) - {"_meta"}:
+                    raise ValueError("unexpected method parameters")
+                reply({"tools": _mcp_tools()} if method == "tools/list" else {})
+            elif method == "tools/call":
+                if set(params) - {"name", "arguments", "_meta"} or not {"name", "arguments"} <= set(params):
+                    raise ValueError("exact call parameters are required")
+                name = params["name"]
+                if name not in {"qikvrt_ingest", "qikvrt_readback"}:
+                    error(200, -32602, "Unknown tool")
+                    return
+                scope = name.removeprefix("qikvrt_")
+                if scope not in _mcp_scopes():
+                    error(403, -32001, "Required permission unavailable")
+                    return
+                cfg = self._mcp_cfg(params["arguments"], write=scope == "ingest")
+                if scope == "ingest":
+                    result = run_handler(cfg)
+                else:
+                    payload, result = read_ingested_artifact(cfg, max_bytes=MCP_MAX_PAYLOAD_BYTES)
+                    result["payload_b64"] = base64.b64encode(payload).decode("ascii")
+                wrapped = {"api_contract_version": API_CONTRACT_VERSION,
+                           "implementation": MCP_BOOT_BINDING, "handler_result": result,
+                           "effect_state": EffectState.EFFECT_ACK_CONTINUE.value, "ordinary_release": False,
+                           "claude_connector_execution_verified": False}
+                is_error = not (result.get("readback_verified") or result.get("effect_state") == EffectState.EFFECT_ACK_DONE.value)
+                reply({"content": [{"type": "text", "text": json.dumps(wrapped, ensure_ascii=False, sort_keys=True)}],
+                       "structuredContent": wrapped, "isError": is_error})
+            else:
+                error(404 if version == "2026-07-28" else 200, -32601, "Method not found")
+        except (ValueError, UnicodeError):
+            error(400, -32602, "Invalid request or exact version/source/effect binding")
+        except Exception:
+            error(200, -32603, "Committed evidence unavailable; reobserve before any mutation")
+
     def do_GET(self):
+        if self.path == "/mcp" and os.environ.get("QIKVRT_MCP_ENABLED") == "1":
+            if self._mcp_guard():
+                self._send_json(405, {"status": "BLOCK", "reason": "MCP uses POST; no SSE stream"})
+            return
+        if READBACK_RE.match(urlparse(self.path).path) and os.environ.get("QIKVRT_MCP_ENABLED") == "1":
+            self._artifact_readback()
+            return
         if self.path == "/health":
             valid = _security_configuration_valid()
             attestation_configured = bool(
@@ -211,6 +491,9 @@ class QikvrtGitHubApiShim(BaseHTTPRequestHandler):
         self._send_json(404, {"status": "BLOCK", "reason": "not found"})
 
     def do_POST(self):
+        if self.path == "/mcp" and os.environ.get("QIKVRT_MCP_ENABLED") == "1":
+            self._mcp_post()
+            return
         if not self._rate_allowed():
             self._send_json(429, {"status": "BLOCK", "reason": "rate limit exceeded"})
             return
@@ -366,6 +649,9 @@ def main() -> int:
         return 2
     if not 1 <= rate_limit <= 100_000:
         print("BLOCK QIKVRT_RATE_LIMIT_PER_MINUTE must be between 1 and 100000", file=sys.stderr)
+        return 2
+    if not _mcp_configuration_valid():
+        print("BLOCK invalid MCP enable flag or scope allowlist", file=sys.stderr)
         return 2
     if host != "127.0.0.1" and os.environ.get("QIKVRT_ALLOW_NON_LOOPBACK") != "1":
         print("BLOCK non-loopback requires QIKVRT_ALLOW_NON_LOOPBACK=1", file=sys.stderr)
