@@ -1,0 +1,418 @@
+{
+  "contract_sha256": "1910743f21f4303b89b019c5c95a144c611ff01a8d8c5d06a68b56965e244b75",
+  "evidence_class": "HARNESS_PREPARATION",
+  "execution": "NOT_EXECUTED",
+  "fixture_files": {
+    "document-recovery": "b81c2c30cfc70dfef3c67c269bf13eb839cb80c5b993ae8fbe475e42e1c7159e",
+    "research-costs": "cf38f611e3bd108f52f59ff2fe85f406c50e9be4d458a65d7df1ff419c3051f2"
+  },
+  "pairs": [
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p002",
+      "task_id": "research-costs",
+      "trials": [
+        "p002-baseline",
+        "p002-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p003",
+      "task_id": "research-costs",
+      "trials": [
+        "p003-qikvrt",
+        "p003-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p001",
+      "task_id": "research-costs",
+      "trials": [
+        "p001-qikvrt",
+        "p001-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p007",
+      "task_id": "document-recovery",
+      "trials": [
+        "p007-qikvrt",
+        "p007-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p010",
+      "task_id": "document-recovery",
+      "trials": [
+        "p010-qikvrt",
+        "p010-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "BA",
+      "pair_id": "p004",
+      "task_id": "research-costs",
+      "trials": [
+        "p004-qikvrt",
+        "p004-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p006",
+      "task_id": "research-costs",
+      "trials": [
+        "p006-baseline",
+        "p006-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p008",
+      "task_id": "document-recovery",
+      "trials": [
+        "p008-baseline",
+        "p008-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p011",
+      "task_id": "document-recovery",
+      "trials": [
+        "p011-baseline",
+        "p011-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "BA",
+      "pair_id": "p009",
+      "task_id": "document-recovery",
+      "trials": [
+        "p009-qikvrt",
+        "p009-baseline"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "08f2181c84dc953e521f0fc650873aee8689daf3f86b5fee8443abc556e6829f",
+        "sources": {
+          "atlas-current": "371c9fe36f379a87f9fa664318e79806571788bbed0534b64ddb773b86248ec6",
+          "atlas-old": "f140c376df927467bb0e357b40d896b38074d2d229034ee3f45760c0b0770f97",
+          "beacon-current": "f8dc54bdeefef0a0a45481979f45269f77b08f9c68490df01b68b317d413a50a"
+        },
+        "task_sha256": "d9e8b02ed9e1e2eabf904b96b41a3ea345e8305f1698107379dbca11177a5466"
+      },
+      "interruption": "assistant_process_loss",
+      "order": "AB",
+      "pair_id": "p005",
+      "task_id": "research-costs",
+      "trials": [
+        "p005-baseline",
+        "p005-qikvrt"
+      ]
+    },
+    {
+      "binding": {
+        "checkpoint_sha256": "37ccd98f67f31456961aa8c2a53b40f2b9d9fd8d073ca1ccae36c319675983e9",
+        "sources": {
+          "live-status": "f34720bb811493212265e0473998b740165fe7559fd6487184bcb3528678fdfa",
+          "old-note": "f529d5b0b64b394e06375452c5977f880b9419bef81fe37aba347c79511714bb",
+          "plan": "49f3c7543bdc1f45b7db069a13ed922fb9f90cabb22eddda3b505fb0135aa839"
+        },
+        "task_sha256": "d5106b8001acbeecfb8889b06da42ad5ccbd961578fbbf7c8439a4e264dab08c"
+      },
+      "interruption": "conversation_context_reset",
+      "order": "AB",
+      "pair_id": "p012",
+      "task_id": "document-recovery",
+      "trials": [
+        "p012-baseline",
+        "p012-qikvrt"
+      ]
+    }
+  ],
+  "pairs_per_task": 6,
+  "preflight": {
+    "authenticated_runtime_readback": false,
+    "authentication_environment_present": {
+      "backend_api_key": false,
+      "local_pairing_token": false
+    },
+    "baseline_implementation_materialized": true,
+    "baseline_runtime_readback": false,
+    "blockers": [
+      "AUTHENTICATED_PERSONAL_RUNTIME_NOT_ESTABLISHED",
+      "BASELINE_RUNTIME_AND_NORMAL_RETENTION_READBACK_NOT_BOUND",
+      "EQUIVALENT_REAL_PRE_RUNS_NOT_OBSERVED",
+      "PRODUCT_INTERRUPTION_AND_ORACLE_ISOLATION_NOT_BOUND",
+      "FIREFOX_EXECUTABLE_UNAVAILABLE"
+    ],
+    "environment": {
+      "firefox": {
+        "executable": null,
+        "executable_sha256": null,
+        "version": null
+      },
+      "machine": "x86_64",
+      "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "python": "3.12.14"
+    },
+    "head": "c24dfc39bd833263f2ea6ca7d435d96e1133e542",
+    "measurement_instrumentation": "OBSERVER_OWNED_HTTP_TURN_AND_RAW_OUTPUT_ANNOTATIONS; HARNESS_ONLY",
+    "observed_utc": "2026-10-09T14:31:13Z",
+    "personal_adapter_source_materialized": true,
+    "personal_capability_manifest": {
+      "adapter": "src/qikvrt_personal_assistant.py",
+      "ambiguous_external_result": "DURABLE_PENDING_AND_NO_AUTOMATIC_RETRY",
+      "authenticated_runtime_readback": false,
+      "capability_readback": "/personal/capabilities",
+      "client_authentication": "EPHEMERAL_LOCAL_BEARER_FROM_QIKVRT_PERSONAL_LOCAL_TOKEN",
+      "credentials_in_repository_or_runtime_database": false,
+      "edition": "PERSONAL_OPT_IN",
+      "entrypoint": "src/qikvrt_effect_ack_http_terminal.py",
+      "equivalent_pre_runs_observed": false,
+      "firefox_execution_observed": false,
+      "firefox_surface": "http://127.0.0.1:8771/personal/",
+      "license": "PolyForm-Noncommercial-1.0.0",
+      "normal_baseline": {
+        "automatic_history_deletion_or_reset": false,
+        "comparison_scope": "This comparator is the adapter's ordinary conversation mode. It is not a measurement of ChatGPT UI or another vendor product.",
+        "identity": "SAME_SOURCE_BOUND_ASSISTANT_ORDINARY_CONVERSATION_MODE",
+        "mode": "baseline",
+        "persistence": [
+          "normal provider conversation",
+          "full local transcript",
+          "saved outputs",
+          "session list and readback",
+          "browser tab restore"
+        ],
+        "same_provider_model_instructions_parameters_tools": true
+      },
+      "operations": [
+        "create_source_bound_task",
+        "research_documentation_turn",
+        "ordinary_history_readback",
+        "resume_observed_checkpoint"
+      ],
+      "personal_release_effect_ack_done": false,
+      "product_claim_allowed": false,
+      "product_descriptor": "Persönlicher Browserassistent für quellgebundene Recherche, Dokumentation und Fortsetzung",
+      "product_metrics": null,
+      "product_name": "Universales Raumzeit-Terminal",
+      "product_trials_executed": 0,
+      "provider": {
+        "api": "RESPONSES_WITH_CONVERSATIONS",
+        "authentication": "SERVER_MEMORY_BEARER_FROM_OPENAI_API_KEY",
+        "authority": "https://api.openai.com/v1",
+        "chatgpt_signed_in_session_bridge": "NOT_IMPLEMENTED_OR_ATTESTED",
+        "model": "EXPLICIT_RUNTIME_ARGUMENT_REQUIRED",
+        "proprietary_runtime_redistributed": false
+      },
+      "qikvrt_mode": {
+        "additional_capability": "HASH_BOUND_OBSERVED_OUTPUT_CHECKPOINT_ON_RESUME",
+        "checkpoint_from_harness_oracle": false,
+        "checkpoint_is_independent_acceptance": false,
+        "mode": "qikvrt"
+      },
+      "repository": "ingolf-lohmann/qik-vrt",
+      "runtime_evidence_class": "SOURCE_CAPABILITY_MANIFEST_ONLY",
+      "runtime_state": "PRIVATE_EXTERNAL_DIRECTORY_SQLITE_WAL_SYNCHRONOUS_FULL",
+      "schema": "qikvrt_personal_assistant_capabilities_v1",
+      "version": "1.0.1"
+    },
+    "personal_release_candidate": {
+      "authenticated_runtime_readback": false,
+      "boundary_contract_materialized": true,
+      "executable_adapter_materialized": true,
+      "normal_baseline_implementation_materialized": true,
+      "normal_baseline_runtime_readback": false,
+      "personal_capability_manifest": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "personal_capability_manifest_materialized": true,
+      "personal_release_effect_ack_done": false,
+      "state": "HOLD"
+    },
+    "product_claim_allowed": false,
+    "product_metrics": null,
+    "product_trials_executed": 0,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "schema": "qikvrt_browser_ab_preflight_v1",
+    "source_files": {
+      "benchmarks/browser-assistant-ab/console.html": {
+        "bytes": 7582,
+        "sha256": "ef54977a4b93cf2c1b9b57c1d43eb3cc4544e590daf3a80ed12a0ff9735f751e"
+      },
+      "browser/firefox/qikvrt-terminal/background.js": {
+        "bytes": 10470,
+        "sha256": "d6ac437244b24f05542460df7e89614fb77b6c495c8c112b373a6049a5bfe610"
+      },
+      "browser/firefox/qikvrt-terminal/content.js": {
+        "bytes": 8904,
+        "sha256": "e7a9bb13052036c6445d4f0f3391b03cf54ff73cee6646ba9237eff2e8fb1e07"
+      },
+      "browser/firefox/qikvrt-terminal/manifest.json": {
+        "bytes": 1040,
+        "sha256": "83bcdef35587bda131c0517abda944db509f94e95aa9a35f16d8ea0f03f9b06a"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json": {
+        "bytes": 2443,
+        "sha256": "ba2a7a227ee0403201512a8ceedb9ce4247998591059c014136b192d9ea9700b"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/README.md": {
+        "bytes": 6157,
+        "sha256": "b44b5ef67b5bd73dd3657afb18a2478f1e4e3b401d15ae6f3fb3df6eb1203c8b"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.css": {
+        "bytes": 990,
+        "sha256": "7921e5e36bf04307074a3dc98edd77200a79173ecca6520e10ecadd2271a390b"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.html": {
+        "bytes": 2010,
+        "sha256": "860c355e373d609cd41fde301d05cc2395a29ca1a7508021e4d2e0186f9a49da"
+      },
+      "personal/ingolf-lohmann/firefox-assistant/ui.js": {
+        "bytes": 3532,
+        "sha256": "e6ba8e202c02a61f229afc5fbbecfe1fe05de068d8d521aee0e299523c9a5fb5"
+      },
+      "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json": {
+        "bytes": 1971,
+        "sha256": "9eb9b2e3fdd3c760224290b8b2278c07050da6516dfe34f9096e06587843e385"
+      },
+      "runtime/toolchains/CACHE_COVERAGE.json": {
+        "bytes": 3054,
+        "sha256": "f8e272a7ae8ed05da5f29b1e4ef7df04b01f666913d1661f6096314077027d08"
+      },
+      "runtime/toolchains/CACHE_REGISTRY.json": {
+        "bytes": 10790,
+        "sha256": "3cd6ea7d83d7547757d25adc022930c149b48cc621904d7080564e0a45997a7e"
+      },
+      "runtime/toolchains/TOOLCHAIN.lock.tsv": {
+        "bytes": 2599,
+        "sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69"
+      },
+      "src/qikvrt_effect_ack_http_terminal.py": {
+        "bytes": 15778,
+        "sha256": "300caae7c842007880548704ebd30e4ef1a0cab12338ff134c801ac52bda1fb8"
+      },
+      "src/qikvrt_personal_assistant.py": {
+        "bytes": 22633,
+        "sha256": "aaaaa72a54f08ddb0031e1edc70e9ead4469aded351ef78e12c814b9692e8c9c"
+      },
+      "tools/qikvrt_browser_assistant_ab.py": {
+        "bytes": 72466,
+        "sha256": "c6bb55577e9b1299a04a433cb560cdbf945d7d28266dca7a0c5a45054c32699c"
+      }
+    },
+    "status": "PRODUCT_EXECUTION_NOT_AVAILABLE",
+    "terminal_boundary": "The optional Personal adapter shares the terminal server and implements source-bound model requests, normal conversation persistence and checkpoint resume. Real authenticated Firefox product execution is not established by this offline preflight.",
+    "tree": "50917c20bacd1e885b3e13267018bbe84c8d6193",
+    "worktree_dirty": true
+  },
+  "product_claim_allowed": false,
+  "schema": "qikvrt_browser_ab_run_v1",
+  "seed": 20261005
+}

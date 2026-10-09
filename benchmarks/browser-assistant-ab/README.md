@@ -286,7 +286,7 @@ Ein Transport-Double kann keine authentifizierte Modell-Laufzeit attestieren.
 Fehlende lokale Authentifizierung blockiert vor jeder Netzwerkoperation.
 
 Dies ist **kein Produktversuch**: ein Create liefert noch keinen äquivalenten
-Vorlauf. GET nach einem Restart beweist für sich keinen SIGKILL. Der Carrier
+Vorlauf. GET nach einem Restart beweist für sich keinen SIGKILL. Der Create-/GET-Carrier
 misst weder Wiederaufnahme noch die vier Nutzermetriken. Er verifiziert keine
 Provider-Retention, Firefox-Ausführung oder Dateisystem-Isolation des Oracle.
 Der Assistent muss weiterhin ohne Zugriff auf Observer-Checkout, Fixtures und
@@ -301,3 +301,81 @@ bleiben für den späteren Produktlauf erforderlich.
 `product_claim_allowed=false` bleiben unverändert. Historische Pläne benötigen
 weiterhin ihre gebundenen Quellbytes; für diesen Anschluss einen frischen Plan
 erstellen.
+
+## Beobachtete Fortsetzungsanfragen und Rohantwort-Annotationen
+
+Die bestehende Messkonsole und derselbe `personal-carrier` können nun eine
+bereits angelegte Sitzung während der Wiederaufnahme beobachten. Der
+Beobachter bleibt auf dem vorhandenen `serve`-Prozess; ein neuer Observer
+oder eine neue Uhr darf einen begonnenen Versuch nicht übernehmen.
+
+`POST /api/personal-resume` auf diesem Beobachter erwartet:
+
+```json
+{
+  "trial_id": "TRIAL_FROM_PLAN",
+  "port": 8771,
+  "session_id": "SESSION_FROM_PRE_RUN",
+  "gesture_id": "UNIQUE_ACTUAL_HUMAN_GESTURE",
+  "kind": "context_reentry",
+  "text": "Tatsächlich an den Assistenten gesendeter Text",
+  "confirmed": true
+}
+```
+
+Die Eingabegeste wird mit der bestehenden monotonen Observer-Uhr vor Restore,
+Authentifizierungsprüfung und HTTP-Anfrage erfasst. Ein falscher Arm, fehlende
+Quellbindung, ein abgelaufenes Messfenster oder eine andere Observer-Epoch
+blockiert vor einer Modellanfrage. Zugangsdaten in einer Eingabe werden vor
+deren Persistierung abgewiesen. Beide Arme verwenden `/personal/resume`;
+die normale Baseline-Historie und Provider-Conversation bleiben erhalten.
+Der tatsächliche QIK-VRT-Kontext wird ausschließlich aus dem unabhängig
+zurückgelesenen Produkt-Checkpoint gebunden, nicht aus Fixture oder Oracle.
+
+Nach höchstens einem POST wird die Sitzung per separatem GET zurückgelesen.
+Der vorherige Verlauf muss bytegleich als Präfix erhalten sein, genau eine
+neue Antwort vorliegen, und deren tatsächlich gespeicherte Eingabe muss mit
+menschlichem Text und gegebenenfalls automatischem Kontext übereinstimmen.
+Automatischer Kontext wird separat im bestehenden Journal erfasst. Bei
+ungeklärtem Ergebnis gibt es keinen Retry; die Geste und das BLOCK-Receipt
+bleiben erhalten. Die anschließende Abbruch-/Timeoutbeobachtung ist weiterhin
+ein eigener Protokollschritt. Die Antwort wird weder als Erfolg ausgelegt
+noch aus dem Oracle in richtige Messereignisse umgewandelt.
+
+Die Antwort nennt das private Receipt, seinen Dateihash und die exakt per
+GET beobachteten Antwortbytes. Für `resume_probe`, `step_output`, `step_claim`
+oder `task_claim` kann `/api/event` zusätzlich folgende `observation` tragen:
+
+```json
+{
+  "receipt": "personal-observations/32_HEX_CHARACTERS/RECEIPT.json",
+  "receipt_sha256": "SHA256_OF_EXACT_RECEIPT_FILE",
+  "text_sha256": "SHA256_OF_RAW_OUTPUT_TEXT",
+  "excerpt": "Wörtlicher Ausschnitt aus der tatsächlichen Antwort"
+}
+```
+
+Das Ereignis bindet dann Manifest, Versuch, Observer-Epoch, Receipt,
+unabhängigen Session-GET, Antworttext und wörtlichen Ausschnitt. Jede spätere
+Auswertung prüft diese Bindungen erneut; fehlende oder manipulierte Rohdateien
+machen den Versuch ungültig. Das ist die Provenienz einer **menschlich
+codierten Beobachtung**, kein automatischer Nachweis ihrer semantischen
+Richtigkeit. Der vorhandene unabhängige Auswerter prüft Fakten und Quellen
+gegen das separate Oracle. Reine Beobachtertranskription zählt nicht als Hilfe;
+tatsächliche Hilfe muss als `human_input` erfasst werden. Die bisherigen
+manuellen Harness-Ereignisse bleiben lesbar und werden nicht nachträglich zu
+Produktdaten hochgestuft.
+
+Diese Instrumentierung ändert keine Vergleichsbedingung: eingefrorene Aufgaben,
+Seed `20261005`, sechs Paare je Aufgabe, AB/BA-Reihenfolge, 60 Sekunden
+Unterbrechung und 180 Sekunden Beobachtungsfenster bleiben identisch. Die
+vier bestehenden Metriken werden wiederverwendet. Für authentifizierte
+Firefox-Ausführung, reale äquivalente Vorläufe, Provider-Retention, unabhängig
+beobachteten Verlust/Neustart, Profile-/Dateisystem-Isolation und Teilnehmer-
+bzw. Agentenunabhängigkeit fehlen weiterhin reale Nachweise.
+
+Ein frischer Plan enthält daher weiterhin 24 `NOT_EXECUTED`-Produktversuche;
+`product_trials_executed=0`, `product_metrics=null`,
+`product_claim_allowed=false`. Technische Transport-Doubles und synthetische
+Uhren prüfen die Instrumentierung; sie begründen weder Produktvorteil noch
+Wartungs-, Preis-, Käufer- oder Wirtschaftlichkeitsaussagen.

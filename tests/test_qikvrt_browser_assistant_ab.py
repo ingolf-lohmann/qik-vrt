@@ -91,6 +91,192 @@ class PersonalCarrierTests(unittest.TestCase):
             self.assertFalse((root / "out").exists())
 
 
+class ObservedPersonalTurnTests(unittest.TestCase):
+    """Actual HTTP and observer journal; model responses remain explicit doubles."""
+    def setUp(self):
+        from http.server import ThreadingHTTPServer
+        from src import qikvrt_personal_assistant as personal
+        from src import qikvrt_effect_ack_http_terminal as terminal
+        from tests.test_qikvrt_personal_assistant import TransportDouble, TOKEN, KEY
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.run = self.root / "run"
+        self.manifest = ab.make_plan(self.run, repeats=2)
+        self.now = 10**9
+        self.journal = ab.Journal(self.run, clock=lambda: self.now)
+        self.pair = self.manifest["pairs"][0]
+        self.transport = TransportDouble()
+        self.runtime = personal.PersonalRuntime(self.root / "state", "explicit-test-model", KEY, TOKEN, transport=self.transport)
+        self.server = ThreadingHTTPServer(("127.0.0.1", 0), personal.personal_handler(terminal.Handler, self.runtime))
+        self.worker = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.worker.start()
+        self.auth = mock.patch.dict(os.environ, {"QIKVRT_PERSONAL_LOCAL_TOKEN": TOKEN})
+        self.auth.start()
+
+    def tearDown(self):
+        self.server.shutdown(); self.server.server_close(); self.worker.join()
+        self.runtime.close(); self.auth.stop(); self.temp.cleanup()
+
+    def prepare(self, tid):
+        first = ab.personal_carrier(self.run, tid, self.server.server_port, self.root / (tid + "-create"))
+        self.assertEqual(first["state"], "INTEGRATION_READBACK_ONLY")
+        for kind, payload in [("trial_start", {}), ("checkpoint_readback", self.pair["binding"]),
+                              ("interruption_observed", {"class": self.pair["interruption"]})]:
+            self.journal.append(tid, kind, payload)
+        self.now += 60 * 10**9
+        self.journal.append(tid, "resume_signal", {})
+        return first
+
+    def turn(self, tid, first, name="a", **overrides):
+        gesture = dict(gesture_id=tid + name, kind="context_reentry", text="ä😊")
+        gesture.update(overrides)
+        return ab.personal_carrier(self.run, tid, self.server.server_port,
+            self.run / "personal-observations" / (name * 32), first["session_id"],
+            journal=self.journal, turn=gesture)
+
+    def observation(self, receipt, name="a"):
+        path = self.run / "personal-observations" / (name * 32) / "RECEIPT.json"
+        return dict(receipt=str(path.relative_to(self.run)), receipt_sha256=ab.digest(path.read_bytes()),
+            text_sha256=receipt["output_observation"]["text_sha256"],
+            excerpt=receipt["output_observation"]["text"])
+
+    def test_same_observer_counts_actual_unicode_gestures_and_product_context_both_arms(self):
+        for index, tid in enumerate(self.pair["trials"]):
+            first = self.prepare(tid)
+            before = self.runtime.load(first["session_id"])
+            n = len(self.transport.requests)
+            receipt = self.turn(tid, first, name="a" if index == 0 else "b")
+            self.assertEqual(receipt["state"], "OBSERVED_TURN_READBACK_ONLY")
+            self.assertEqual(receipt["observer_epoch"], self.journal.epoch)
+            self.assertEqual(receipt["assistant_create_attempts"], 0)
+            self.assertEqual(receipt["assistant_turn_attempts"], 1)
+            self.assertEqual(len(self.transport.requests), n + 1)
+            self.assertEqual(self.runtime.load(first["session_id"])["history"][:-1], before["history"])
+            self.assertEqual([x["method"] for x in receipt["operations"]], ["GET", "GET", "POST", "GET", "GET"])
+            self.assertEqual(receipt["operations"][2]["path"], "/personal/resume")
+            self.assertFalse(receipt["authenticated_runtime_readback"])
+            self.assertEqual(receipt["product_trials_executed"], 0)
+            self.assertIsNone(receipt["product_metrics"])
+            self.assertNotIn("oracle", self.transport.requests[-1][1]["input"][0]["content"])
+            self.journal.append(tid, "trial_end", {"reason": "abort"})
+            task = self.journal.tasks[self.pair["task_id"]]
+            row = ab.evaluate(ab.read_events(self.run, tid), task, self.journal.contract, self.pair)
+            self.assertEqual(row["context_reentered_characters"], 2)
+            self.assertEqual(row["context_reentered_utf8_bytes"], 6)
+            self.assertEqual(row["human_interventions"], 1)
+            self.assertEqual(row["false_completed_step_claims"], 0)
+            self.assertIsNone(row["reliable_resume_ms"])
+            self.assertEqual(row["automatic_context_utf8_bytes"] > 0, tid.endswith("-qikvrt"))
+        self.assertFalse(ab.analyze(self.run)["product_claim_allowed"])
+
+    def test_wrong_arm_or_expired_horizon_refuses_before_any_paid_turn(self):
+        tid = self.pair["trials"][0]
+        first = self.prepare(tid)
+        self.runtime.db.execute("UPDATE sessions SET body=? WHERE id=?",
+            (ab.canonical(dict(self.runtime.load(first["session_id"]), mode="qikvrt" if tid.endswith("baseline") else "baseline")).decode(), first["session_id"]))
+        self.runtime.db.commit()
+        n = len(self.transport.requests)
+        receipt = self.turn(tid, first)
+        self.assertEqual(receipt["state"], "BLOCK")
+        self.assertEqual(receipt["assistant_turn_attempts"], 0)
+        self.assertEqual(len(self.transport.requests), n)
+        self.now += 181 * 10**9
+        expired = self.turn(tid, first, name="b")
+        self.assertEqual(expired["state"], "BLOCK")
+        self.assertIn("horizon exceeded", expired["reason"])
+        self.assertEqual(expired["operations"], [])
+        self.assertEqual(len(self.transport.requests), n)
+
+    def test_ambiguous_paid_result_preserves_gesture_and_pending_intent_without_retry(self):
+        tid = self.pair["trials"][0]
+        first = self.prepare(tid)
+        self.transport.fail = True
+        n = len(self.transport.requests)
+        receipt = self.turn(tid, first)
+        self.assertEqual(receipt["state"], "BLOCK")
+        self.assertEqual(receipt["assistant_turn_attempts"], 1)
+        self.assertEqual(len(self.transport.requests), n + 1)
+        self.assertEqual(self.runtime.load(first["session_id"])["status"], "TURN_PENDING")
+        self.assertEqual(ab.read_events(self.run, tid)[-1]["type"], "human_input")
+        duplicate = self.turn(tid, first, name="b", gesture_id=tid + "a")
+        self.assertEqual(duplicate["state"], "BLOCK")
+        self.assertEqual(duplicate["operations"], [])
+        self.assertEqual(len(self.transport.requests), n + 1)
+
+    def test_secret_input_and_another_observer_are_rejected_without_persistence_or_network(self):
+        from tests.test_qikvrt_personal_assistant import TOKEN
+        tid = self.pair["trials"][0]
+        first = self.prepare(tid)
+        n = len(self.transport.requests)
+        with self.assertRaisesRegex(ab.InvalidRun, "CONTAINS_RUNTIME_SECRET"):
+            self.turn(tid, first, text=TOKEN)
+        self.assertEqual(len(self.transport.requests), n)
+        self.assertFalse((self.run / "personal-observations" / ("a" * 32)).exists())
+        other = ab.Journal(self.run, clock=lambda: self.now)
+        receipt = ab.personal_carrier(self.run, tid, self.server.server_port,
+            self.run / "personal-observations" / ("b" * 32), first["session_id"],
+            journal=other, turn={"gesture_id":"other-epoch","kind":"instruction","text":"continue"})
+        self.assertEqual(receipt["state"], "BLOCK")
+        self.assertEqual(receipt["operations"], [])
+        self.assertEqual(len(self.transport.requests), n)
+
+    def test_literal_output_annotations_bind_raw_get_and_detect_later_tampering(self):
+        tid = self.pair["trials"][0]
+        first = self.prepare(tid)
+        original = self.transport.post
+        def output(path, payload):
+            value, receipt = original(path, payload)
+            if path == "/responses":
+                value["output"][0]["content"][0]["text"] = "Aufgabe erledigt."
+            return value, receipt
+        self.transport.post = output
+        receipt = self.turn(tid, first)
+        evidence = self.observation(receipt)
+        with self.assertRaises(ab.InvalidRun):
+            self.journal.append(tid, "task_claim", {}, dict(evidence, excerpt="nicht in der Antwort"))
+        event = self.journal.append(tid, "task_claim", {}, evidence)
+        self.assertEqual(event["observation"], evidence)
+        self.journal.append(tid, "trial_end", {"reason": "abort"})
+        row = next(r for r in ab.analyze(self.run)["trials"] if r["trial_id"] == tid)
+        self.assertEqual(row["false_completed_step_claims"], 1)
+        raw = self.run / evidence["receipt"]
+        response = raw.parent / receipt["output_observation"]["response_file"]
+        response.write_text("{}")
+        row = next(r for r in ab.analyze(self.run)["trials"] if r["trial_id"] == tid)
+        self.assertEqual(row["state"], "INVALID_OR_INCOMPLETE")
+        response.unlink()
+        self.assertEqual(next(r for r in ab.analyze(self.run)["trials"] if r["trial_id"] == tid)["state"], "INVALID_OR_INCOMPLETE")
+
+    def test_existing_observer_http_endpoint_refuses_unconfirmed_or_unstarted_turn(self):
+        with mock.patch.object(ab, "Journal", return_value=self.journal):
+            observer = ab.build_server(self.run)
+        worker = threading.Thread(target=observer.serve_forever, daemon=True); worker.start()
+        body = dict(trial_id=self.pair["trials"][0], port=self.server.server_port,
+            session_id="existing", gesture_id="human-1", kind="instruction", text="continue", confirmed=False)
+        base = f"http://127.0.0.1:{observer.server_port}"
+        n = len(self.transport.requests)
+        try:
+            for confirmed, code in [(False, 400), (True, 409)]:
+                body["confirmed"] = confirmed
+                with self.assertRaises(HTTPError) as exc:
+                    urlopen(Request(base + "/api/personal-resume", data=ab.canonical(body),
+                        headers={"Content-Type": "application/json"}), timeout=5)
+                self.assertEqual(exc.exception.code, code)
+            self.assertEqual(len(self.transport.requests), n)
+            first = self.prepare(self.pair["trials"][0])
+            n = len(self.transport.requests)
+            body["session_id"] = first["session_id"]
+            with urlopen(Request(base + "/api/personal-resume", data=ab.canonical(body),
+                headers={"Content-Type": "application/json"}), timeout=5) as response:
+                value = json.load(response)
+            self.assertEqual(value["state"], "OBSERVED_TURN_READBACK_ONLY")
+            self.assertEqual(len(self.transport.requests), n + 1)
+            self.assertFalse(value["product_claim_allowed"])
+            self.assertIn("personal-observations/", value["receipt"])
+        finally:
+            observer.shutdown(); observer.server_close(); worker.join()
+
+
 class NativeCarrierBoundaryTests(unittest.TestCase):
     def test_other_checkout_cannot_supply_native_source_or_launch_a_process(self):
         with tempfile.TemporaryDirectory() as temp, mock.patch.object(ab, "preflight") as product_observation:

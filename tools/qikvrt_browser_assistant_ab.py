@@ -159,6 +159,11 @@ def preflight() -> dict[str, Any]:
         "personal_adapter_source_materialized": adapter_materialized,
         "personal_capability_manifest": manifest,
         "authenticated_runtime_readback": False,
+        "authentication_environment_present": {
+            "backend_api_key": bool(os.environ.get("OPENAI_API_KEY")),
+            "local_pairing_token": bool(os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN")),
+        },
+        "measurement_instrumentation": "OBSERVER_OWNED_HTTP_TURN_AND_RAW_OUTPUT_ANNOTATIONS; HARNESS_ONLY",
         "baseline_implementation_materialized": bool(manifest and manifest.get("normal_baseline")),
         "baseline_runtime_readback": False,
         "status": "PRODUCT_EXECUTION_NOT_AVAILABLE", "blockers": blockers,
@@ -403,6 +408,8 @@ def read_events(run: Path, trial_id: str) -> list[dict[str, Any]]:
             raise InvalidRun("Observer restarted; timing cannot be compared")
         if frame["evidence_class"] != evidence_class:
             raise InvalidRun("Product event class unsupported")
+        if "observation" in frame:
+            validate_personal_observation(run, trial_id, frame["observer_epoch"], frame["type"], frame["observation"])
         previous, prior_ns, epoch = claimed, frame["monotonic_ns"], frame["observer_epoch"]
         result.append({**frame, "sha256": claimed})
     return result
@@ -416,7 +423,8 @@ class Journal:
         self.epoch, self.lock = str(uuid.uuid4()), threading.Lock()
         self.manifest_hash = digest((run / "manifest.json").read_bytes())
 
-    def append(self, trial_id: str, kind: str, payload: dict[str, Any]) -> dict[str, Any]:
+    def append(self, trial_id: str, kind: str, payload: dict[str, Any],
+               observation: dict[str, Any] | None = None) -> dict[str, Any]:
         pair = pair_for(self.manifest, trial_id)
         with self.lock:
             events = read_events(self.run, trial_id)
@@ -433,6 +441,9 @@ class Journal:
                      "observer_epoch": self.epoch, "manifest_sha256": self.manifest_hash,
                      "evidence_class": self.manifest["evidence_class"],
                      "previous_sha256": events[-1]["sha256"] if events else ZERO}
+            if observation is not None:
+                validate_personal_observation(self.run, trial_id, self.epoch, kind, observation)
+                event["observation"] = observation
             # Validate before appending, including clock monotonicity and protocol.
             if events and event["monotonic_ns"] < events[-1]["monotonic_ns"]:
                 raise InvalidRun("Observer clock regressed")
@@ -534,13 +545,27 @@ def build_server(run: Path, port: int = 0) -> ThreadingHTTPServer:
                 expected_host = f"127.0.0.1:{self.server.server_port}"
                 if self.headers.get("Host") != expected_host or self.headers.get("Origin") not in {None, f"http://{expected_host}"}:
                     raise InvalidRun("Only this loopback origin is allowed")
-                if self.path != "/api/event" or self.headers.get("Content-Type", "").split(";")[0] != "application/json" or self.headers.get("Transfer-Encoding"):
+                if self.path not in {"/api/event", "/api/personal-resume"} or self.headers.get("Content-Type", "").split(";")[0] != "application/json" or self.headers.get("Transfer-Encoding"):
                     raise InvalidRun("Bounded JSON event endpoint required")
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 < length <= 65536:
                     raise InvalidRun("Event outside size bound")
                 request = json.loads(self.rfile.read(length))
-                event = journal.append(request["trial_id"], request["type"], request["payload"])
+                if self.path == "/api/personal-resume":
+                    if set(request) != {"trial_id", "port", "session_id", "gesture_id", "kind", "text", "confirmed"} or request["confirmed"] is not True:
+                        raise InvalidRun("PERSONAL_OBSERVED_TURN_FIELDS_OR_CONFIRMATION_INVALID")
+                    output = run / "personal-observations" / uuid.uuid4().hex
+                    receipt = personal_carrier(run, request["trial_id"], request["port"], output,
+                        request["session_id"], journal=journal,
+                        turn={k: request[k] for k in ("gesture_id", "kind", "text")})
+                    self.respond(200 if receipt["state"] != "BLOCK" else 409,
+                        canonical({"state": receipt["state"], "reason": receipt.get("reason"),
+                                   "receipt": str((output / "RECEIPT.json").relative_to(run)),
+                                   "receipt_sha256": digest((output / "RECEIPT.json").read_bytes()),
+                                   "output_observation": receipt.get("output_observation"),
+                                   "product_claim_allowed": False}))
+                    return
+                event = journal.append(request["trial_id"], request["type"], request["payload"], request.get("observation"))
                 self.respond(200, canonical({"recorded": True, "seq": event["seq"], "sha256": event["sha256"], "product_claim_allowed": False}))
             except (InvalidRun, ValueError, KeyError, TypeError) as exc:
                 self.respond(400, canonical({"error": str(exc)}))
@@ -552,13 +577,16 @@ def build_server(run: Path, port: int = 0) -> ThreadingHTTPServer:
 
 
 def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
-                     session_id: str | None = None) -> dict[str, Any]:
+                     session_id: str | None = None, *, journal: Journal | None = None,
+                     turn: dict[str, Any] | None = None) -> dict[str, Any]:
     """Observer-owned HTTP integration, never an A/B product-trial substitute.
 
     With no session ID, creates ONE real provider request via the existing
     adapter. With an ID, only reads existing ordinary persistence (e.g. after a
-    separately witnessed restart). No oracle, fixture checkpoint, reset, retry,
-    or model-output-derived success is supplied by this carrier.
+    separately witnessed restart), unless a turn and the live Journal are
+    explicitly supplied. The observed turn uses the same resume endpoint in
+    both arms and retains ordinary history. No oracle, fixture checkpoint,
+    reset, retry, or model-output-derived success is supplied by this carrier.
     """
     manifest, _, tasks = load_run(run)
     pair = pair_for(manifest, trial_id)
@@ -567,10 +595,18 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
     token = os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", "")
     if not re.fullmatch(r"[A-Za-z0-9_-]{32,256}", token):
         raise InvalidRun("PERSONAL_LOCAL_AUTHENTICATION_UNAVAILABLE")
-    if not 1 <= port <= 65535:
+    if type(port) is not int or not 1 <= port <= 65535:
         raise InvalidRun("PERSONAL_LOOPBACK_PORT_INVALID")
     if session_id is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,160}", session_id):
         raise InvalidRun("PERSONAL_SESSION_ID_INVALID")
+    if turn is not None and (journal is None or journal.run.resolve() != run.resolve()
+            or session_id is None or set(turn) != {"gesture_id", "kind", "text"}
+            or turn.get("kind") not in INPUT_KINDS or not isinstance(turn.get("text"), str)
+            or not turn["text"].strip() or len(turn["text"]) > 100000):
+        raise InvalidRun("PERSONAL_OBSERVED_TURN_REQUIRES_EXISTING_SESSION_AND_SAME_OBSERVER")
+    if turn is not None and any(secret and secret.encode() in canonical(turn)
+            for secret in (token, os.environ.get("OPENAI_API_KEY", ""))):
+        raise InvalidRun("PERSONAL_OBSERVED_INPUT_CONTAINS_RUNTIME_SECRET")
     output = output.absolute()
     if any(p.is_symlink() for p in [output, *output.parents]):
         raise InvalidRun("PERSONAL_OBSERVER_OUTPUT_UNSAFE")
@@ -578,8 +614,9 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
     receipt = {"schema": "qikvrt_browser_ab_personal_carrier_v1", "state": "HOLD",
                "evidence_class": "PERSONAL_HTTP_INTEGRATION_ONLY", "trial_id": trial_id,
                "manifest_sha256": digest((run / "manifest.json").read_bytes()),
-               "observer_epoch": str(uuid.uuid4()), "operations": [],
+               "observer_epoch": journal.epoch if journal is not None else str(uuid.uuid4()), "operations": [],
                "assistant_create_attempts": 0, "authenticated_runtime_readback": False,
+               "assistant_turn_attempts": 0, "journal_events": [],
                "baseline_local_retention_readback": False,
                "provider_retention_readback": False, "firefox_execution_observed": False,
                "interruption_observed": False, "equivalent_pre_runs_observed": False,
@@ -606,6 +643,7 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
                 raise InvalidRun("PERSONAL_RESPONSE_OVERSIZE_OR_SECRET")
             entry["response_sha256"] = digest(raw)
             raw_path = output / f"response-{len(receipt['operations']):02}.json"
+            entry["response_file"] = raw_path.name
             with raw_path.open("xb") as stream:
                 stream.write(raw); stream.flush(); os.fsync(stream.fileno())
             raw_path.chmod(0o600)
@@ -620,6 +658,12 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
             connection.close()
 
     try:
+        if turn is not None:
+            # Observe the actual submitted gesture before restore/auth/readback.
+            # Journal rejects wrong order, expired horizons and observer restarts
+            # before this path can issue a model request.
+            event = journal.append(trial_id, "human_input", turn)
+            receipt["journal_events"].append({"type": event["type"], "sha256": event["sha256"]})
         initial = request("GET", "/personal/capabilities")
         expected_sources = {p: v["sha256"] for p, v in manifest["preflight"]["source_files"].items()}
         required = {"src/qikvrt_personal_assistant.py", "src/qikvrt_effect_ack_http_terminal.py"}
@@ -644,6 +688,42 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
             raise InvalidRun("PERSONAL_SESSION_TASK_SOURCE_OR_RETENTION_BINDING_MISMATCH")
         if mode == "baseline" and session["checkpoint"] is not None:
             raise InvalidRun("BASELINE_UNEXPECTED_QIKVRT_CHECKPOINT")
+        if turn is not None:
+            before = session
+            expected_automatic = (canonical({"kind": "QIKVRT_OBSERVED_CHECKPOINT",
+                "checkpoint": before["checkpoint"], "task": before["task"],
+                "sources": before["sources"]}).decode() if mode == "qikvrt" else None)
+            receipt["pre_turn_session_sha256"] = value["session_sha256"]
+            receipt["assistant_turn_attempts"] = 1
+            posted = request("POST", "/personal/resume",
+                {"session_id": session_id, "text": turn["text"], "confirmed": True})
+            value = request("GET", "/personal/session/" + session_id)
+            session = value["session"]
+            expected_input = expected_automatic + "\n" + turn["text"] if expected_automatic is not None else turn["text"]
+            if (value["session_sha256"] != digest(canonical(session))
+                    or posted.get("session_sha256") != value["session_sha256"]
+                    or posted.get("session") != session or session["mode"] != mode
+                    or session["task"] != task["prompt"] or session["sources"] != task["sources"]
+                    or session["source_hashes"] != source_map(task) or session["status"] != "READY"
+                    or session["conversation_id"] != before["conversation_id"]
+                    or len(session["history"]) != len(before["history"]) + 1
+                    or session["history"][:-1] != before["history"]
+                    or session["history"][-1]["intent"]["input"] != expected_input
+                    or posted.get("automatic_context") != expected_automatic
+                    or (mode == "baseline" and session["checkpoint"] is not None)):
+                raise InvalidRun("PERSONAL_TURN_OR_ORDINARY_RETENTION_READBACK_MISMATCH_NO_RETRY")
+            if expected_automatic is not None:
+                event = journal.append(trial_id, "automatic_context",
+                    {"text": expected_automatic, "origin_sha256": digest(canonical(before["checkpoint"]))})
+                receipt["journal_events"].append({"type": event["type"], "sha256": event["sha256"]})
+            receipt["output_observation"] = {
+                "response_file": receipt["operations"][-1]["response_file"],
+                "response_sha256": receipt["operations"][-1]["response_sha256"],
+                "session_sha256": value["session_sha256"], "session_id": session_id,
+                "history_index": len(session["history"]) - 1,
+                "text_sha256": digest(session["history"][-1]["text"].encode()),
+                "text": session["history"][-1]["text"],
+                "interpretation": "RAW_MODEL_OUTPUT_UNVERIFIED; no oracle-derived events"}
         capabilities = request("GET", "/personal/capabilities")
         if capabilities["binding"] != initial["binding"] or capabilities["binding"] != value["binding"] or capabilities.get("local_client_authenticated") is not True:
             raise InvalidRun("PERSONAL_RUNTIME_BINDING_OR_LOCAL_AUTH_MISMATCH")
@@ -657,7 +737,7 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
         receipt.update(session_id=session_id, session_sha256=value["session_sha256"],
                        binding=value["binding"], baseline_local_retention_readback=mode == "baseline",
                        authenticated_runtime_readback=capabilities.get("authenticated_runtime_readback") is True,
-                       state="INTEGRATION_READBACK_ONLY")
+                       state="OBSERVED_TURN_READBACK_ONLY" if turn is not None else "INTEGRATION_READBACK_ONLY")
         # GET evidence after restart is retained even when auth freshness expires.
         receipt["remaining_boundary"] = "No Firefox, equivalent pre-run, provider-retention, independent interruption or oracle filesystem isolation is established by this HTTP carrier."
     except (InvalidRun, OSError, ValueError, KeyError, TypeError, http.client.HTTPException) as exc:
@@ -666,6 +746,66 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
     receipt["receipt_payload_sha256"] = digest(canonical(receipt))
     write_json(output / "RECEIPT.json", receipt)
     return receipt
+
+
+def validate_personal_observation(run: Path, trial_id: str, epoch: str, kind: str,
+                                  observation: dict[str, Any]) -> None:
+    try:
+        _validate_personal_observation(run, trial_id, epoch, kind, observation)
+    except (OSError, KeyError, TypeError, IndexError) as exc:
+        raise InvalidRun("PERSONAL_OUTPUT_EVIDENCE_MISSING_OR_MALFORMED") from exc
+
+
+def _validate_personal_observation(run: Path, trial_id: str, epoch: str, kind: str,
+                                   observation: dict[str, Any]) -> None:
+    """Bind a human-coded output event to exact raw GET bytes, without scoring it.
+
+    A literal excerpt provides audit provenance, not proof that the annotation
+    is faithful. The existing independent oracle still evaluates the payload.
+    """
+    required = {"receipt", "receipt_sha256", "text_sha256", "excerpt"}
+    if (kind not in {"resume_probe", "step_output", "step_claim", "task_claim"}
+            or not isinstance(observation, dict) or set(observation) != required
+            or not all(isinstance(v, str) for v in observation.values())
+            or not observation["excerpt"]):
+        raise InvalidRun("PERSONAL_OUTPUT_ANNOTATION_INVALID")
+    relative = Path(observation["receipt"])
+    if (relative.is_absolute() or len(relative.parts) != 3
+            or relative.parts[0] != "personal-observations"
+            or not re.fullmatch(r"[0-9a-f]{32}", relative.parts[1])
+            or relative.parts[2] != "RECEIPT.json"):
+        raise InvalidRun("PERSONAL_OUTPUT_RECEIPT_PATH_UNSAFE")
+    path = run / relative
+    if any(p.is_symlink() for p in [path, *path.parents]):
+        raise InvalidRun("PERSONAL_OUTPUT_RECEIPT_PATH_UNSAFE")
+    raw = path.read_bytes()
+    if digest(raw) != observation["receipt_sha256"]:
+        raise InvalidRun("PERSONAL_OUTPUT_RECEIPT_DIGEST_MISMATCH")
+    receipt = json.loads(raw)
+    claimed = receipt.pop("receipt_payload_sha256")
+    if (claimed != digest(canonical(receipt)) or receipt["trial_id"] != trial_id
+            or receipt["observer_epoch"] != epoch
+            or receipt["manifest_sha256"] != digest((run / "manifest.json").read_bytes())
+            or receipt["state"] != "OBSERVED_TURN_READBACK_ONLY"):
+        raise InvalidRun("PERSONAL_OUTPUT_OBSERVER_OR_TRIAL_BINDING_MISMATCH")
+    output = receipt["output_observation"]
+    if not re.fullmatch(r"response-[0-9]{2}\.json", output["response_file"]):
+        raise InvalidRun("PERSONAL_OUTPUT_RAW_PATH_UNSAFE")
+    response_path = path.parent / output["response_file"]
+    if response_path.is_symlink():
+        raise InvalidRun("PERSONAL_OUTPUT_RAW_PATH_UNSAFE")
+    response_raw = response_path.read_bytes()
+    value = json.loads(response_raw)
+    session = value["session"]
+    text = session["history"][output["history_index"]]["text"]
+    if (digest(response_raw) != output["response_sha256"]
+            or value["session_sha256"] != digest(canonical(session))
+            or value["session_sha256"] != output["session_sha256"]
+            or session["id"] != output["session_id"]
+            or text != output["text"] or digest(text.encode()) != output["text_sha256"]
+            or output["text_sha256"] != observation["text_sha256"]
+            or observation["excerpt"] not in text):
+        raise InvalidRun("PERSONAL_OUTPUT_RAW_READBACK_OR_EXCERPT_MISMATCH")
 
 
 def terminal_smoke() -> dict[str, Any]:
