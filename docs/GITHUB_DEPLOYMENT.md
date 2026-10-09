@@ -7,10 +7,10 @@ must each be established; a successful GET does not establish any of them.
 Never replace missing initial admission with a rerun, proxy trigger, browser
 login, or permission expansion.
 
-## Dispatch adapter contract 2.1.0
+## Dispatch adapter/client contract 2.2.0
 
-`api/qikvrt_github_api.openapi.yaml` remains compatible with 2.0.0 requests.
-The four operations and existing effect gates are unchanged. The optional
+`api/qikvrt_github_api.openapi.yaml` remains compatible with 2.0.0 and 2.1.0 requests.
+The four Mesh operations and existing effect gates are unchanged. The optional
 boolean `return_run_details` requests GitHub's asynchronous run ID and URLs.
 The loopback adapter accepts this field but retains its synchronous `202`
 response and existing handler result.
@@ -67,6 +67,66 @@ observer authorizes merge, release, deployment or `EFFECT_ACK_DONE`.
    first; dispatch idempotency is not inferred from a request identifier.
 
 ## Governance repair boundary
+
+The 2.2 client adds two narrowly scoped operations. They accept only
+`https://api.github.com`, `ingolf-lohmann/qik-vrt`, `main` and the reviewed writer
+blob `1202d24c2f23eb8fa52ab7c562a583e79f9e8444`. There is no arbitrary-workflow
+argument, local-adapter proxy, caller-supplied workflow input or credential
+argument. Authentication uses the existing `QIKVRT_API_TOKEN` environment
+handoff; the client never stores the credential or prints provider error bodies.
+No new secret, permission, trigger or authority route is installed.
+
+After fresh Main/target and authorization checks, with an already delivered
+Actions-write credential and an already configured writer authority route:
+
+```sh
+python3 scripts/qikvrt_api_client.py \
+  --base-url https://api.github.com \
+  --owner ingolf-lohmann --repo qik-vrt --ref main \
+  --operation ruleset_authority_dispatch \
+  --expected-main-sha EXACT_FRESH_MAIN_SHA \
+  --request-id OWNER_AUTHORIZED_UNIQUE_REQUEST_ID \
+  --dry-run false --accept-effect
+```
+
+The POST body is exactly `{"ref":"main"}`. Its local request ID is never sent
+as an unsupported workflow input and does not make GitHub dispatch idempotent.
+The client checks Main twice, pins the writer blob, and refuses active or
+already observed exact-head writer runs. It fails closed if a bounded collection
+is incomplete or reaches 100 entries. A lost response, nonempty 204, unexpected
+success status, denied request or redirect causes no retry. The provider accepts
+a ref without an atomic expected-SHA lease: Main can still move after the last
+GET. The actual executing run's SHA must therefore be checked independently.
+
+HTTP 204 returns exit 20 with transport acceptance, an unknown run identity,
+`execution_verified=false` and `ruleset_effect_verified=false`. Identify the
+actual run through authoritative repository/workflow/event/ref/head evidence;
+time proximity alone does not identify a run. Then use the independent read path:
+
+```sh
+python3 scripts/qikvrt_api_client.py \
+  --base-url https://api.github.com \
+  --owner ingolf-lohmann --repo qik-vrt --ref main \
+  --operation ruleset_authority_readback \
+  --expected-main-sha EXACT_EXECUTING_MAIN_SHA \
+  --request-id OWNER_AUTHORIZED_UNIQUE_REQUEST_ID \
+  --ruleset-run-id INDEPENDENTLY_VERIFIED_RUN_ID
+```
+
+This operation issues GETs only. It checks the fixed run's repository, workflow,
+event, Main SHA and attempt; nonempty successful native `reconcile` jobs; the
+unique repository-owned Ruleset detail against the existing canonical digest
+`45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd`; and
+`main.protected=true`. It reobserves Main and the run to detect drift. Missing,
+foreign, stale, incomplete or mismatching evidence cannot verify the effect.
+
+Exit 0 and `ruleset_effect_verified=true` mean only the independently observed
+Ruleset postcondition. They do not establish that this particular dispatch
+created an already existing Ruleset: `mutation_attribution_verified=false`.
+`effect_state=EFFECT_ACK_CONTINUE`, `native_review_verified=false` and
+`ordinary_release=false` remain explicit. An observed but unverified effect
+returns 20; invalid or inaccessible evidence returns 1. Current-head Code Owner
+review and governed incorporation still require their own native evidence.
 
 The existing ruleset writer is
 `.github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml`. Its native
