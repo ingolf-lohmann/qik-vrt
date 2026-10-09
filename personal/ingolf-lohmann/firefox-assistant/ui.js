@@ -4,13 +4,26 @@
 const el = id => document.getElementById(id);
 let token = "", sessionId = null, busy = false;
 async function request(path, body) {
+  if (body) {
+    const bytes = new TextEncoder().encode(JSON.stringify({path, body}));
+    const fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), b => b.toString(16).padStart(2, "0")).join("");
+    const previous = JSON.parse(sessionStorage.getItem("qikvrt-pending-request") || "null");
+    if (previous && previous.fingerprint !== fingerprint) throw new Error("Vorherige Anfrage ungeklärt: gespeicherten Stand und Budget prüfen");
+    const pending = previous || {fingerprint, id: crypto.randomUUID()};
+    sessionStorage.setItem("qikvrt-pending-request", JSON.stringify(pending));
+    body = {...body, request_id: pending.id};
+  }
   const response = await fetch(`/personal/${path}`, {
     method: body ? "POST" : "GET", credentials: "omit", cache: "no-store",
     headers: {"Authorization": `Bearer ${token}`, ...(body ? {"Content-Type": "application/json"} : {})},
     ...(body ? {body: JSON.stringify({...body, confirmed: true})} : {})
   });
   const result = await response.json();
-  if (!response.ok) throw new Error(result.reason || `HTTP ${response.status}`);
+  if (!response.ok) {
+    if (body && result.request_recorded === false) sessionStorage.removeItem("qikvrt-pending-request");
+    throw new Error(result.reason || `HTTP ${response.status}`);
+  }
+  if (body) sessionStorage.removeItem("qikvrt-pending-request");
   return result;
 }
 function render(result) {
@@ -40,7 +53,13 @@ async function action(fn) {
   busy = true;
   for (const button of document.querySelectorAll("button")) button.disabled = true;
   el("status").textContent = "Anfrage läuft …";
-  try { await fn(); } catch (error) {
+  try {
+    await fn();
+    if (token) {
+      const budget = await request("budget");
+      el("status").textContent += ` · Budget ${budget.provider}: ${budget.state}${budget.reason ? " · " + budget.reason : ""}${budget.warnings?.length ? " · " + budget.warnings.join(" · ") : ""}`;
+    }
+  } catch (error) {
     el("status").textContent = `BLOCK: ${error.message}. Bei ungeklärtem Provider-Ergebnis zuerst gespeicherten Stand prüfen.`;
   } finally {
     busy = false;

@@ -1,0 +1,157 @@
+{
+  "schema": "qikvrt_personal_work_unit_v1",
+  "work_unit_id": "CLAUDE_BUDGET_503_20261009_V1",
+  "created_at": "2026-10-09T07:58:01.625646+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "integration/browser-ab-personal-http-20261008",
+  "source_commit": "c24dfc39bd833263f2ea6ca7d435d96e1133e542",
+  "source_tree": "50917c20bacd1e885b3e13267018bbe84c8d6193",
+  "observed_main": "502229de5259080939b54ec99dd131a7c96f476c",
+  "github_route": "REST_API_ONLY",
+  "git_branch": "integration/personal-claude-budget-503-20261009",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "contribution_class": "HUMAN",
+    "contributions": [
+      "Issue #503 authorization and explicit Claude integration, budget, regression, REST-only and no-purchase scope."
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contributions": [
+      "REST readbacks and exact source reconstruction",
+      "Original budget/provider implementation and tests",
+      "Local verification, isolated candidate and artifact preparation"
+    ]
+  },
+  "human_candidate_acceptance": "PENDING_REVIEW",
+  "reuse_before_create": {
+    "reused": [
+      "Existing PersonalRuntime SQLite state and HTTP terminal",
+      "OpenAITransport fixed-authority transport and no-retry behavior",
+      "Existing Personal UI, capability manifest, workflow and Makefile",
+      "Existing A/B carrier source binding"
+    ],
+    "new_module_reason": "No provider-credit ledger existed in src/tests/tools inventory; reusable BudgetLedger separates accounting from provider transport."
+  },
+  "output_bindings": [
+    {
+      "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+      "bytes": 10261,
+      "sha256": "087421f419dd873a4fafb529def12dcc333b3dde3035adac903d1343f15cf56b"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11539,
+      "sha256": "069677737365b81baff838f5859b4c4f9733a730dc30f3e745c7dba83b22eb78"
+    },
+    {
+      "path": "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
+      "bytes": 4405,
+      "sha256": "8a8b319a54ccc6c306de3e71b21acc4282927590405fcaf633ae46d3cfcc0f7c"
+    },
+    {
+      "path": "personal/ingolf-lohmann/firefox-assistant/README.md",
+      "bytes": 14377,
+      "sha256": "37bbeaec6d576bf6493ee4b8eea6dc16ad83bb7a025796c2e126a9f155567f8a"
+    },
+    {
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.html",
+      "bytes": 2088,
+      "sha256": "134cb2b63d84145f9370c697581999b49bfbc91e5634e1f6b1b140e0df05f1d3"
+    },
+    {
+      "path": "personal/ingolf-lohmann/firefox-assistant/ui.js",
+      "bytes": 4661,
+      "sha256": "b5ebb1819f04236b2838509ac821e2fbb21d70d65ccbc0a35ce79476f1d33b41"
+    },
+    {
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "bytes": 16191,
+      "sha256": "9b13349270c455a6d64f071a9ac00d21c986047328c67e505a4a76c1d3c668ad"
+    },
+    {
+      "path": "src/qikvrt_personal_assistant.py",
+      "bytes": 32963,
+      "sha256": "926b788ecfcd7e69555eee8a86edbdf00e1cd487d5bf0ef2e901f98424c5170f"
+    },
+    {
+      "path": "src/qikvrt_personal_budget.py",
+      "bytes": 19962,
+      "sha256": "0a6777cb493389591e15b2b3691b7215b649a323d97a154d3dbf2d5bcf4dc608"
+    },
+    {
+      "path": "tests/test_qikvrt_browser_assistant_ab.py",
+      "bytes": 20793,
+      "sha256": "410812ae6de533c398ee71bcf003fb6d05a4ea43e3d8a85761162c35a1265da9"
+    },
+    {
+      "path": "tests/test_qikvrt_personal_assistant.py",
+      "bytes": 14039,
+      "sha256": "1872993dbcfb723f53ba8af209e7224229d3ec3b9383553aef13909f603f844c"
+    },
+    {
+      "path": "tests/test_qikvrt_personal_budget.py",
+      "bytes": 24853,
+      "sha256": "1f1164c61cd8e7dbf3b39a49e64dcf8f21b9789db9a9499f357575a47eea4fe9"
+    },
+    {
+      "path": "tools/qikvrt_browser_assistant_ab.py",
+      "bytes": 62993,
+      "sha256": "2f6f60e283e03ff8eea595612318cdd0470fdab24be9f214db2a528afaea577f"
+    }
+  ],
+  "verification": {
+    "source_focused_tests": 79,
+    "source_focused_result": "PASS",
+    "source_full_make_test_exit": 0,
+    "source_full_reported_unittest_count": 606,
+    "exact_containing_head_tests": "Run after final content freeze; remote results require separate current REST readback",
+    "test_doubles_not_live_provider_evidence": true,
+    "historical_fixture": {
+      "commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "tree": "10bceed0af444e5704e4c2946402355c0c957e0d",
+      "rest_missing_blobs_restored": 47,
+      "causal_test": "Previously failing real worktree/descendant test passes after exact object restoration; test unchanged."
+    }
+  },
+  "existing_related_candidate": {
+    "pr": 504,
+    "head": "28cb456917f4e68f724eca450b7c68b62e158218",
+    "scope": "Blocked request/evidence handoff; no competing provider or budget implementation"
+  },
+  "external_boundaries": {
+    "authority": "Goldkelch/qik-vrt",
+    "authority_readback": "HTTP_404_HEAD_TREE_UNVERIFIED",
+    "account_credit_balance": "UNOBSERVED",
+    "credit_activation": "NOT_EXECUTED",
+    "real_provider_calls": 0,
+    "subscription_purchase": "NOT_EXECUTED",
+    "credit_purchase": "NOT_EXECUTED",
+    "auto_reload": "NO_IMPLEMENTED_WRITE_PATH",
+    "provider_switch": "NO_AUTOMATIC_FALLBACK",
+    "workflow_dispatch": "NOT_EXPOSED",
+    "publication": "NOT_EXECUTED",
+    "deployment": "NOT_EXECUTED",
+    "merge": "NOT_EXECUTED"
+  },
+  "limits": [
+    "Private operator-confirmed snapshots are not independent live balance observations.",
+    "Local reservation serializes one ledger; other keys/workspaces can consume shared provider balances.",
+    "Provider-enforced limits and disabled auto-reload must be independently configured/confirmed.",
+    "Model input ceiling and all-tier upper-bound pricing require current independent evidence.",
+    "Ambiguous reservations fail closed; no automated provider reconciliation.",
+    "New spending on existing OpenAI state requires a confirmed OpenAI budget; legacy data and readback preserved.",
+    "Account-specific credential/store binding and production Firefox execution remain unobserved."
+  ],
+  "completion_claims": {
+    "authority_mirror_equality": false,
+    "product_benefit_proven": false,
+    "personal_release_effect_ack_done": false,
+    "repository_wide_done": false
+  },
+  "next_action": "Independently inspect candidate HEAD/TREE and native checks; resolve prerequisite PR #496/#462 and native review/Authority boundary before main promotion. Supply separately confirmed private account/budget and model-price evidence before any paid runtime use."
+}

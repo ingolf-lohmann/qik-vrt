@@ -343,6 +343,8 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--personal-state-dir", help="Opt-in Personal adapter: private runtime data directory")
     parser.add_argument("--personal-model", help="Explicit model identifier; no implicit model substitution")
+    parser.add_argument("--personal-provider", choices=("openai", "claude"), default="openai")
+    parser.add_argument("--personal-budget-file", help="Private confirmed budget snapshot; never a tariff-derived balance")
     args = parser.parse_args()
     if args.host not in {"127.0.0.1", "localhost"}:
         raise SystemExit("BLOCK: reference terminal bridge is loopback-only")
@@ -351,11 +353,12 @@ def main() -> int:
     if args.personal_state_dir:
         from qikvrt_personal_assistant import PersonalRuntime, personal_handler
         try:
-            runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model)
+            runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model,
+                                                       provider=args.personal_provider, budget_file=args.personal_budget_file)
             handler = personal_handler(Handler, runtime)
         except (ValueError, OSError) as exc:
             raise SystemExit("BLOCK: " + str(exc)) from None
-    elif args.personal_model:
+    elif args.personal_model or args.personal_budget_file or args.personal_provider != "openai":
         raise SystemExit("BLOCK: --personal-model requires --personal-state-dir")
     server = ThreadingHTTPServer((args.host, args.port), handler)
     print(json.dumps({"state": "READY", "host": args.host, "port": args.port,

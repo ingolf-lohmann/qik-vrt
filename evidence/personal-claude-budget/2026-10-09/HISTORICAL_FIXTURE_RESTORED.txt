@@ -1,0 +1,7 @@
+test_write_then_committed_descendant_check_is_local_only (tests.test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_write_then_committed_descendant_check_is_local_only)
+Exercise the real two-commit transition in an isolated worktree. ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 3.122s
+
+OK

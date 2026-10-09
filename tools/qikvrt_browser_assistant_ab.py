@@ -55,6 +55,7 @@ SOURCE_PATHS = [
     "src/qikvrt_effect_ack_http_terminal.py",
     "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
     "src/qikvrt_personal_assistant.py",
+    "src/qikvrt_personal_budget.py",
     "personal/ingolf-lohmann/firefox-assistant/CAPABILITIES.json",
     "personal/ingolf-lohmann/firefox-assistant/README.md",
     "personal/ingolf-lohmann/firefox-assistant/ui.html",
@@ -629,7 +630,8 @@ def personal_carrier(run: Path, trial_id: str, port: int, output: Path,
             raise InvalidRun("PERSONAL_RUNTIME_SOURCE_OR_AUTH_MISMATCH_BEFORE_REQUEST")
         if session_id is None:
             # Allowlist, never copy fixture/oracle/checkpoint wholesale.
-            body = {"mode": mode, "task": task["prompt"], "sources": task["sources"], "confirmed": True}
+            body = {"mode": mode, "task": task["prompt"], "sources": task["sources"], "confirmed": True,
+                    "request_id": "carrier_" + receipt["observer_epoch"]}
             receipt["assistant_create_attempts"] = 1
             value = request("POST", "/personal/create", body)
             session_id = value["session"]["id"]

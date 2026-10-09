@@ -9,9 +9,11 @@ on:
       - "browser/firefox/qikvrt-terminal/**"
       - "personal/ingolf-lohmann/firefox-assistant/**"
       - "src/qikvrt_personal_assistant.py"
+      - "src/qikvrt_personal_budget.py"
       - "src/qikvrt_effect_ack_http_terminal.py"
       - "tools/qikvrt_browser_assistant_ab.py"
       - "tests/test_qikvrt_personal_assistant.py"
+      - "tests/test_qikvrt_personal_budget.py"
       - "tests/test_qikvrt_browser_assistant_ab.py"
       - "benchmarks/browser-assistant-ab/**"
       - "tests/test_qikvrt_personal_firefox_capability_boundary.py"
@@ -48,7 +50,7 @@ jobs:
           set -euo pipefail
           python3 -m json.tool policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json >/dev/null
           PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1             python3 -B -m unittest -v tests.test_qikvrt_personal_firefox_capability_boundary
-          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_assistant tests.test_qikvrt_effect_ack_http_terminal
+          PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_personal_assistant tests.test_qikvrt_personal_budget tests.test_qikvrt_effect_ack_http_terminal
 
       - name: Build Standard package twice and prove byte identity
         shell: bash
