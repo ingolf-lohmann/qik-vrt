@@ -59,5 +59,18 @@
     "mesh_registration_completed": false,
     "public_runtime_delivered": false,
     "EFFECT_ACK_DONE": false
+  },
+  "native_successor_findings": {
+    "first_head": "79263776835a3194fb2a4a15a616945bf92462e4",
+    "ci_run": 37946468951,
+    "full_ci": "success",
+    "finite_model_run": 37946468940,
+    "finite_model": "success",
+    "contract_run": 37946469009,
+    "ubuntu_macos_windows_contracts": "success",
+    "isolated_watchdog_regression": "Reproduced onboarding removal failure, repaired fixture isolation; actual config checked separately in Make target",
+    "authority_readback": "Goldkelch/qik-vrt 404 in reflexive watchdog; no unchanged retry",
+    "current_rulesets": [],
+    "independent_reviews": []
   }
 }

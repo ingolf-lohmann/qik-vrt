@@ -246,10 +246,24 @@ class SeedWorkflowTests(unittest.TestCase):
         self.assertFalse((self.root / "qikvrt/runtime/onboarding/NODE_HEALTH.json").exists())
         self.assertFalse((self.root / "evidence/node_health").exists())
 
-    def test_seed_workflow_uses_executing_repository_and_current_migration_is_coherent(self):
+    def test_seed_workflow_uses_executing_repository_and_local_migration_is_coherent(self):
         repository = Path(__file__).resolve().parents[1]
-        node = validate_local_handshake(repository, "ingolf-lohmann/qik-vrt")
+        # Watchdogs deliberately remove role-local onboarding files. Exercise
+        # the validator with a real isolated fixture, independent of that state.
+        source = SEED
+        path = self.root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+        path.write_text(path.read_text().replace("\t" + SOURCE + "\t", "\t" + source + "\t"))
+        path = self.root / "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
+        request = read_json(path); request["source_repository"] = source
+        path.write_bytes(canonical_json_bytes(request))
+        path = self.root / "registry/KNOWN_NODE_REQUESTS.tsv"
+        path.write_text(path.read_text().replace("\t" + SOURCE + "\t", "\t" + source + "\t")
+                        .replace("raw.githubusercontent.com/" + SOURCE + "/", "raw.githubusercontent.com/" + source + "/"))
+        node = validate_local_handshake(self.root, source)
         self.assertEqual(node.source_repository, node.seed_repository)
+        path.write_text(path.read_text().replace("\t" + SEED + "\t", "\tother/seed\t", 1))
+        with self.assertRaises(SeedError):
+            validate_local_handshake(self.root, source)
         for workflow in repository.joinpath(".github/workflows").glob("qikvrt_seed_*.yml"):
             self.assertIn("QIKVRT_SEED_REPOSITORY: ${{ github.repository }}", workflow.read_text())
 
