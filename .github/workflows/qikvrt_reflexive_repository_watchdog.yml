@@ -74,7 +74,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0; unchanged audited #487 pin
         with:
           python-version: "3.12"
 
@@ -82,11 +82,13 @@ jobs:
         id: reobserve
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_HOST: github.com
           REPOSITORY: ${{ github.repository }}
           EVENT_NAME: ${{ github.event_name }}
           EVENT_PR: ${{ github.event.pull_request.number || '' }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
           CURRENT_RUN_ID: ${{ github.run_id }}
+          FROZEN_PR_CONTROL: ${{ github.head_ref == 'repair/pr487-watchdog-readback-20261007' && '487' || '' }}
         shell: bash
         run: |
           set -eEuo pipefail
@@ -97,12 +99,88 @@ jobs:
           local_head="$(git rev-parse --verify HEAD^{commit})"
           test "$local_head" = "$EXPECTED_HEAD"
           observation_stage=SUBJECT_READBACK
+          test -n "$GH_TOKEN"
+          # Keep the job token mandatory. Record only allowlisted response
+          # metadata; never retry anonymously or persist request credentials.
+          api_observation() {
+            local endpoint="$1" output="$2" response rc=0
+            response="$(mktemp)"
+            gh api --hostname github.com --method GET --include "$endpoint" \
+              > "$response" || rc=$?
+            python3 -B - "$response" "$output" "$endpoint" "$rc" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          raw = Path(sys.argv[1]).read_text(encoding="utf-8").replace("\r\n", "\n")
+          header, separator, body = raw.partition("\n\n")
+          lines = header.splitlines()
+          status = None
+          if lines and lines[0].startswith("HTTP/"):
+              fields = lines[0].split()
+              if len(fields) > 1 and fields[1].isdigit():
+                  status = int(fields[1])
+          allowed = {"x-github-request-id", "x-accepted-github-permissions",
+                     "x-ratelimit-resource", "x-ratelimit-remaining", "date"}
+          headers = {}
+          for line in lines[1:]:
+              key, colon, value = line.partition(":")
+              if colon and key.lower() in allowed:
+                  headers[key.lower()] = value.strip()[:256]
+          try:
+              value = json.loads(body) if separator else None
+          except json.JSONDecodeError:
+              value = None
+          valid = isinstance(value, dict)
+          value = value if valid else {}
+          head = value.get("head") if isinstance(value.get("head"), dict) else {}
+          object_ref = value.get("object") if isinstance(value.get("object"), dict) else {}
+          head_repo = head.get("repo") if isinstance(head.get("repo"), dict) else {}
+          observation = {"endpoint": sys.argv[3], "credential": "MANDATORY_GITHUB_JOB_TOKEN",
+                         "cli_exit_code": int(sys.argv[4]), "http_status": status,
+                         "headers": headers, "json_object_received": valid,
+                         "number": value.get("number"), "repository_full_name": value.get("full_name"),
+                         "head_sha": head.get("sha") or object_ref.get("sha"),
+                         "head_repository": head_repo.get("full_name"),
+                         "completion_claims": {"PASS": False, "FINAL_PASS": False, "EFFECT_ACK_DONE": False}}
+          Path(sys.argv[2]).write_text(json.dumps(observation, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          PY
+            rm -f "$response"
+            return "$rc"
+          }
           if test "$EVENT_NAME" = pull_request; then
-            live_head="$(gh api "repos/$REPOSITORY/pulls/$EVENT_PR" --jq '.head.sha')"
+            subject_endpoint="repos/$REPOSITORY/pulls/$EVENT_PR"
           else
-            live_head="$(gh api "repos/$REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+            subject_endpoint="repos/$REPOSITORY/git/ref/heads/main"
           fi
+          subject_rc=0
+          api_observation "$subject_endpoint" "$root/subject-readback-diagnostics.json" || subject_rc=$?
+          if test "$subject_rc" -ne 0; then
+            # One same-token repository probe distinguishes repository visibility
+            # from PR visibility. It cannot satisfy the failed subject readback.
+            api_observation "repos/$REPOSITORY" "$root/repository-visibility-diagnostics.json" || true
+          fi
+          jq '{endpoint, cli_exit_code, http_status, headers}' "$root/subject-readback-diagnostics.json"
+          test "$subject_rc" -eq 0
+          jq -e '.http_status == 200 and .json_object_received == true' "$root/subject-readback-diagnostics.json" > /dev/null
+          if test "$EVENT_NAME" = pull_request; then
+            jq -e --arg repo "$REPOSITORY" --argjson number "$EVENT_PR" \
+              '.number == $number and .head_repository == $repo' "$root/subject-readback-diagnostics.json" > /dev/null
+          fi
+          live_head="$(jq -er '.head_sha' "$root/subject-readback-diagnostics.json")"
           test "$live_head" = "$EXPECTED_HEAD"
+          if test -n "${FROZEN_PR_CONTROL:-}"; then
+            # Bounded control for the original failing resource in this repair
+            # branch only. Neither result supplies current-subject evidence.
+            api_observation "repos/$REPOSITORY/pulls/$FROZEN_PR_CONTROL" \
+              "$root/frozen-pr-control-diagnostics.json" || true
+            legacy_rc=0
+            gh api "repos/$REPOSITORY/pulls/$FROZEN_PR_CONTROL" --jq '.head.sha' \
+              > "$root/frozen-pr-legacy-control-head.txt" || legacy_rc=$?
+            printf '%s\n' "$legacy_rc" > "$root/frozen-pr-legacy-control-exit.txt"
+            jq '{endpoint, cli_exit_code, http_status, number, head_sha}' \
+              "$root/frozen-pr-control-diagnostics.json"
+          fi
           git rev-parse --verify HEAD^{tree} > "$root/observed-tree.txt"
           printf '%s\n' "$EXPECTED_HEAD" > "$root/observed-head.txt"
           if test "$EVENT_NAME" = pull_request; then
@@ -117,7 +195,18 @@ jobs:
           authority_repository="$(jq -r '.authority.repository' state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json)"
           test "$authority_repository" != null
           observation_stage=AUTHORITY_READBACK
-          gh api "repos/$authority_repository/git/ref/heads/main" --jq '.object.sha' \
+          authority_rc=0
+          api_observation "repos/$authority_repository/git/ref/heads/main" \
+            "$root/authority-readback-diagnostics.json" || authority_rc=$?
+          if test "$authority_rc" -ne 0; then
+            api_observation "repos/$authority_repository" \
+              "$root/authority-repository-visibility-diagnostics.json" || true
+          fi
+          jq '{endpoint, cli_exit_code, http_status, headers}' "$root/authority-readback-diagnostics.json"
+          test "$authority_rc" -eq 0
+          jq -e '.http_status == 200 and .json_object_received == true' \
+            "$root/authority-readback-diagnostics.json" > /dev/null
+          jq -er '.head_sha' "$root/authority-readback-diagnostics.json" \
             > "$root/observed-authority-main-head.txt"
           observation_stage=RUNS_READBACK
           gh api "repos/$REPOSITORY/actions/runs?head_sha=$EXPECTED_HEAD&per_page=100" \

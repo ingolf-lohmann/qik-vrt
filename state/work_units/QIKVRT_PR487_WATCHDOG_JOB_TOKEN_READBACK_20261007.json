@@ -1,0 +1,170 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "bounded_native_readback_diagnosis_work_unit"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "QIKVRT_PR487_WATCHDOG_JOB_TOKEN_READBACK_20261007",
+  "created_at": "2026-10-07T16:26:16.749336+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+  "source_tree": "22794901b7e69d948508943b38b4c850dfc7c2c5",
+  "human_actor": {
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Requested separate minimal fail-closed diagnosis/repair of watchdog Job-token visibility; preserve frozen #487 and its Node-24/Ubuntu-26.04 review scope."
+  ],
+  "artificial_cognitive_contributions": [
+    "Reobserved PR, Main, exact run attempt, permissions, endpoint and failure log; extended existing watchdog with sanitized native-response evidence, same-token repository probe, and negative controls.",
+    "Corrected the initial SUBJECT_READBACK attribution after downloading and byte-verifying the original attempt-2 artifact: its native failure stage is AUTHORITY_READBACK and its exact PR head/tree were written only after the subject guard passed."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "evidence_retention": "METADATA_ONLY",
+  "frozen_pr487": {
+    "head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+    "tree": "24365dc44d6ccfde4384b551b9be95d1d4a31ad4",
+    "head_mutation_allowed": false
+  },
+  "observed_failure": {
+    "run_id": 37623637412,
+    "attempt": 2,
+    "job_id": 112804228510,
+    "stage": "AUTHORITY_READBACK",
+    "endpoint": "repos/Goldkelch/qik-vrt/git/ref/heads/main",
+    "http_status": 404,
+    "declared_permissions": {
+      "actions": "read",
+      "contents": "read",
+      "pull-requests": "read"
+    },
+    "token": "github.token -> GH_TOKEN",
+    "event_pr": 487,
+    "subject_guard_passed": true,
+    "cause": "CONTRACT_DECLARED_GOLDKELCH_MAIN_REF_UNREADABLE; provider-side cause of the resource 404 remains UNESTABLISHED",
+    "artifact_id": 11483787209,
+    "artifact_zip_sha256": "8dd47c8c7e71e5a1a67f692a64c835f58e9d954fc150427e9ff32eefbf927d12",
+    "native_receipt_observed_at": "2026-10-07T12:59:08Z",
+    "initial_subject_readback_attribution": "SUPERSEDED_BY_VERIFIED_NATIVE_ARTIFACT"
+  },
+  "execution_route": {
+    "reuse": "Existing native pull-request watchdog; no additional workflow; no callable initial dispatch connector",
+    "scope": "Candidate PR exact head only; this client did not submit a new retry of original #487",
+    "job_token_mandatory": true,
+    "anonymous_fallback": false,
+    "permissions_widened": false,
+    "retry_count": 0,
+    "failure_receipt_preserved": true,
+    "additional_control": "This repair PR branch alone compares the original frozen PR #487 using the explicit native response read and the original gh command, in one job-token lifetime; controls cannot satisfy the candidate subject guard."
+  },
+  "compatibility_dependency": {
+    "source_pr": 487,
+    "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+    "setup_python_pin": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+    "only_existing_audited_target_gate_pin_reused": true,
+    "original_pr_unchanged": true
+  },
+  "inputs": [
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "bytes": 10970,
+      "sha256": "4960e837a93fc8b3e5d2ffd285a72238e0a75ffc206e07c548360fd093089672",
+      "git_blob_sha1": "c3e51de650574e6a67127bedddb533ecf7bed298"
+    },
+    {
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "bytes": 23610,
+      "sha256": "30ba8cfc3b5cffdca723b9f802f7b52c052055fcbb1ad630ebefc090960263a3",
+      "git_blob_sha1": "25b529764eb3a799fc4e5b3ff4792141d78d4f72"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      "bytes": 16214,
+      "sha256": "36b7bac52b101f14733014ffb0150e553b2f0fa25e8a84fbcccff543321986fd",
+      "git_blob_sha1": "3837afb8a9fc3e406bef64b0270340af256b5e10"
+    },
+    {
+      "path": "tests/test_qikvrt_reflexive_repository_watchdog.py",
+      "bytes": 29126,
+      "sha256": "7220a81afb917e302ceaeb949abab9d8243ee4d51c93ac9101e07410e3b9f04e",
+      "git_blob_sha1": "f53a9cdc9050d538c4ee2ac1eba98a8bd1608e45"
+    }
+  ],
+  "git_history": {
+    "base": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+    "branch": "repair/pr487-watchdog-readback-20261007",
+    "force_push": false,
+    "history_rewrite": false,
+    "ordered_successor_parent": "6ace62d2c5042cf5b63fa0f0979825cd78efb65d"
+  },
+  "verification": {
+    "preparation": "42 tests in the affected three-module gate; seven real-shell response cases cover PR/repository 404, 401, wrong head, wrong PR, malformed JSON, and valid PR readback followed by authority failure",
+    "native_gate": "PENDING_FRESH_CANDIDATE_HEAD; response evidence decides boundary",
+    "scope": "diagnostic hardening; original PR readback passed and no recovered Goldkelch read path is claimed"
+  },
+  "human_decision": "TASK_SCOPE_AUTHORIZED; NATIVE_REVIEW_PENDING",
+  "external_effects": {
+    "intended": [
+      "review branch and draft PR",
+      "fresh affected native gate"
+    ],
+    "merge": false,
+    "release": false,
+    "deployment": false,
+    "zenodo_mutation": false,
+    "authority_policy_change": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "observed_candidate_run": {
+    "head": "6ace62d2c5042cf5b63fa0f0979825cd78efb65d",
+    "tree": "399f64cfe924e0c9b4bee777cfe657662574e7df",
+    "run_id": 37653022935,
+    "job_id": 112900974279,
+    "pr": 490,
+    "subject_readback_http_status": 200,
+    "failure_stage": "AUTHORITY_READBACK",
+    "failing_repository": "Goldkelch/qik-vrt",
+    "http_status": 404,
+    "artifact_id": 11497916032,
+    "artifact_sha256": "c32e681f04f623fbd786198e6df91df9daf659f18f0688192eda87801e1648e5",
+    "cause_of_original_pr487_404_established": false,
+    "original_failure_stage_established": true
+  },
+  "verified_diagnostic_predecessor": {
+    "head": "7d8f24f85517bc8ec7e9abc1220467f5ce9c78c1",
+    "tree": "febe58a19bb24764f32246bd9fb4c1c337f9beec",
+    "run_id": 37654104577,
+    "attempt": 1,
+    "job_id": 112904709384,
+    "artifact_id": 11497532752,
+    "artifact_zip_sha256": "68253f27c09f12713087e3554b2974699cdf58f3ff452728c2c25966b19c6ebe",
+    "subject_pr490_http_status": 200,
+    "frozen_pr487_http_status": 200,
+    "frozen_pr487_legacy_command_exit": 0,
+    "frozen_pr487_head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+    "failure_stage": "AUTHORITY_READBACK",
+    "authority_ref_http_status": 404,
+    "authority_repository_probe_http_status": 404,
+    "disposition": "HOLD",
+    "fresh_evidence_for_corrected_candidate_head": false
+  }
+}
