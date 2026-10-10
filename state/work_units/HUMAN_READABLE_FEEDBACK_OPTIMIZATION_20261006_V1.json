@@ -1,0 +1,86 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0"
+  },
+  "schema": "qikvrt-work-unit/v1",
+  "work_unit_id": "HUMAN_READABLE_FEEDBACK_OPTIMIZATION_20261006_V1",
+  "objective_id": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
+  "state": "FIRST_HTML_MONITOR_CANDIDATE_IMPLEMENTED_HUMAN_COMPREHENSION_OPEN",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+  "source_tree": "902e40345041fb857e2483ef0da186a701d7e26f",
+  "human_contribution": {
+    "name": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "directive": "Insgesamt werden wir die Fehlermeldungen und die an der Oberfläche sichtbaren Rückmeldungen im Allgemeinen fortlaufend menschenlesbarer gestalten.",
+    "persistence_authorization": "Ja, dann schreib das nochmal als Optimierungsziel persistent an alle dafür notwendigen Stellen.",
+    "authorized_at": "2026-10-06T08:50:57+02:00"
+  },
+  "artificial_cognitive_contribution": {
+    "provider": "OpenAI",
+    "role": "Codex policy and documentation implementation",
+    "model_build": "UNAVAILABLE",
+    "scope": "Extend existing entrypoints, policies, human contracts, evaluation matrix and roadmap; preserve technical state and authority semantics."
+  },
+  "paths": [
+    "AI",
+    "AI_CONTEXT.json",
+    "AGENTS.md",
+    "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
+    "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+    "policy/HUMAN_MACHINE_COLLECTIVE_COGNITION_V1.json",
+    "state/interface_adaptation/EVALUATION_MATRIX.json",
+    "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+    "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md",
+    "docs/HUMAN_MACHINE_COLLECTIVE_COGNITION_ARCHITECTURE.md",
+    "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+    "browser/firefox/qikvrt-terminal/README.md",
+    "state/work_units/HUMAN_READABLE_FEEDBACK_OPTIMIZATION_20261006_V1.json"
+  ],
+  "reuse_basis": [
+    "existing interface adaptation policy",
+    "existing progress contracts and machine policy",
+    "existing collective cognition architecture",
+    "existing evaluation matrix",
+    "existing product roadmap",
+    "existing Firefox client documentation"
+  ],
+  "verification": {
+    "repository_integrity": "LOCAL_VERIFIED; REMOTE_EXACT_HEAD_GATE_PENDING",
+    "existing_focused_tests": "LOCAL_PASS_15_TESTS; REMOTE_EXACT_HEAD_GATE_PENDING",
+    "full_repository_suite": "LOCAL_PASS_MAKE_TEST_BEFORE_THIS_RECEIPT_METADATA_UPDATE; REMOTE_EXACT_HEAD_GATE_PENDING",
+    "runtime_readability_measurements": "AUTOMATED_EXPLANATION_FIELD_COMPARISON_RECORDED; HUMAN_COMPREHENSION_NOT_MEASURED",
+    "local_test_log_sha256": "90ab5bfbb3be377bf555edeaa7f2ebad9a2dd768d3877f36db02569d3222d906",
+    "local_test_scope": "Documentation/policy candidate at source base; this receipt update does not claim execution for the final remote commit.",
+    "local_recovery": "Fetched required historical source commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 after the existing isolated-worktree test encountered a missing Git object.",
+    "current_implementation_record": "state/work_units/MONITOR_HTTP404_HUMAN_FEEDBACK_20261006_V1.json"
+  },
+  "propagation": {
+    "Goldkelch/qik-vrt": "BLOCKED_CONTENT_READ_HTTP_404",
+    "existing_and_future_nodes": "DECLARED_REQUIREMENT_ONLY; EACH_NODE_ADOPTION_REQUIRES_READBACK"
+  },
+  "boundaries": {
+    "runtime_feedback_changes_implemented": true,
+    "comprehension_improvement_measured": false,
+    "all_nodes_persisted": false,
+    "predecessor_evidence_transfer": false,
+    "merge": false,
+    "deployment": false,
+    "EFFECT_ACK_DONE": false,
+    "runtime_change_scope": "docs/monitor/index.html candidate only; no deployed or all-node claim"
+  },
+  "historical_policy_only_boundaries": {
+    "runtime_feedback_changes_implemented": false,
+    "comprehension_improvement_measured": false,
+    "all_nodes_persisted": false,
+    "predecessor_evidence_transfer": false,
+    "merge": false,
+    "deployment": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "implementation_successor": "state/work_units/MONITOR_HTTP404_HUMAN_FEEDBACK_20261006_V1.json"
+}

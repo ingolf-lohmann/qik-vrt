@@ -121,6 +121,19 @@ Repeated use SHOULD make the interaction faster, clearer and less repetitive wit
 
 Cached output is never proof authority. A warm path MUST preserve the same mandatory checks as a cold path. Cache invalidation follows source, repository, tool/model, policy, normalization and human-correction changes.
 
+CONTINUOUS HUMAN-READABLE FEEDBACK
+
+Product Owner Ingolf Lohmann requires progressive improvement of errors and all
+user-visible feedback across the Universales Raumzeit-Terminal, monitors,
+Firefox, CLI and human API projections on every Mesh node and client.
+Apply `HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT` in
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json` and the existing
+`docs/HUMAN_MACHINE_PROGRESS_STANDARD.md`. Explain the observed state, impact,
+evidenced cause or uncertainty, next action and actual repair progress in plain
+localized language. Preserve machine states, authority boundaries and exact
+technical evidence in accessible details. A persisted objective is not a
+verified runtime rollout or measured usability improvement.
+
 PUBLICATION AND REFERENCE OVERVIEW
 
 Human-readable canonical URL:

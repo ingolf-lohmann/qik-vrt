@@ -30,7 +30,10 @@
     "higher task_reuse_rate",
     "lower avoidable_tool_invocations",
     "lower duplicate_repository_reads",
-    "preserve_or_improve verification_quality"
+    "preserve_or_improve verification_quality",
+    "higher_human_understanding_of_feedback",
+    "lower_clarification_requests_for_errors_and_status",
+    "higher_visibility_of_actual_repair_progress"
   ],
   "never_optimize_by": [
     "skipping mandatory gates",
@@ -47,26 +50,48 @@
     {
       "id": "L0_SESSION",
       "scope": "current_run",
-      "examples": ["parsed repository files", "resolved refs", "tool capability probes", "derived matrices"],
+      "examples": [
+        "parsed repository files",
+        "resolved refs",
+        "tool capability probes",
+        "derived matrices"
+      ],
       "authority": false
     },
     {
       "id": "L1_PERSONAL_WORKING_MEMORY",
       "scope": "personal_origin_or_local_copy",
-      "examples": ["stable user choices", "approved terminology", "validated work-unit summaries", "artifact digests", "transcript bindings"],
+      "examples": [
+        "stable user choices",
+        "approved terminology",
+        "validated work-unit summaries",
+        "artifact digests",
+        "transcript bindings"
+      ],
       "authority": "repository_evidence_only"
     },
     {
       "id": "L2_RUNTIME_TOOLCHAIN",
       "scope": "content_addressed_runtime_cache",
-      "examples": ["locked tools", "verified archives", "wheelhouses", "derived environments"],
+      "examples": [
+        "locked tools",
+        "verified archives",
+        "wheelhouses",
+        "derived environments"
+      ],
       "authority": false,
       "policy": "runtime/CACHE_POLICY.md"
     },
     {
       "id": "L3_DERIVED_KNOWLEDGE",
       "scope": "hash_bound_recomputable_derivatives",
-      "examples": ["semantic indexes", "artifact summaries", "claim-to-source matrices", "audio feature indexes", "transcription chunks when verified"],
+      "examples": [
+        "semantic indexes",
+        "artifact summaries",
+        "claim-to-source matrices",
+        "audio feature indexes",
+        "transcription chunks when verified"
+      ],
       "authority": false
     }
   ],
@@ -177,5 +202,66 @@
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
+  },
+  "human_readable_feedback": {
+    "objective_id": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
+    "state": "FIRST_HTML_MONITOR_CANDIDATE_IMPLEMENTED_HUMAN_MEASUREMENT_OPEN",
+    "owner": "Ingolf Lohmann, Product Owner",
+    "directive": "Insgesamt werden wir die Fehlermeldungen und die an der Oberfläche sichtbaren Rückmeldungen im Allgemeinen fortlaufend menschenlesbarer gestalten.",
+    "human_contract": "docs/HUMAN_MACHINE_PROGRESS_STANDARD.md#continuous-human-readable-feedback",
+    "work_unit": "state/work_units/HUMAN_READABLE_FEEDBACK_OPTIMIZATION_20261006_V1.json",
+    "scope": [
+      "all_user_visible_errors",
+      "status_and_progress",
+      "repair_and_recovery",
+      "admission_and_governance",
+      "publication_and_deployment",
+      "Universal_Raumzeit_Terminal",
+      "React_HTML_monitor",
+      "Firefox",
+      "CLI",
+      "API_human_projection",
+      "all_mesh_nodes_and_clients"
+    ],
+    "message_requirements": [
+      "plain_localizable_language",
+      "observed_state_and_impact_first",
+      "evidenced_cause_or_explicit_unknown",
+      "smallest_available_next_action_and_responsible_actor",
+      "repair_planned_started_completed_or_blocked_explicitly_bound_to_evidence",
+      "technical_codes_and_repository_head_tree_run_receipt_bindings_retained_in_accessible_details",
+      "accessible_progressive_disclosure_and_copyable_diagnostics",
+      "secrets_and_private_content_redacted",
+      "material_transitions_deduplicated_without_hiding_failures"
+    ],
+    "invariants": [
+      "machine_state_values_unchanged",
+      "UNKNOWN_not_PASS",
+      "observer_success_not_native_approval",
+      "transport_ACK_not_EFFECT_ACK",
+      "PREDECESSOR_EVIDENCE_TRANSFER=false",
+      "no_gate_or_authority_weakening",
+      "no_claim_of_active_repair_without_execution_evidence"
+    ],
+    "continuous_loop": [
+      "OBSERVE",
+      "MEASURE",
+      "DIAGNOSE",
+      "ADAPT",
+      "VALIDATE",
+      "COMPARE",
+      "LEARN"
+    ],
+    "acceptance": [
+      "comparable_before_after_messages_for_real_user_visible_cases",
+      "human_can_identify_state_impact_and_next_action",
+      "repair_progress_matches_bound_execution",
+      "machine_readable_state_and_evidence_remain_identical_in_meaning",
+      "accessibility_localization_privacy_and_existing_mandatory_gates_pass"
+    ],
+    "measurement_state": "AUTOMATED_FIELD_COVERAGE_RECORDED_HUMAN_COMPREHENSION_NOT_MEASURED",
+    "runtime_rollout_verified": false,
+    "implementation_work_unit": "state/work_units/MONITOR_HTTP404_HUMAN_FEEDBACK_20261006_V1.json",
+    "runtime_implementation_scope": "docs/monitor/index.html candidate; public deployment and other surfaces remain unverified"
   }
 }

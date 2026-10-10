@@ -91,7 +91,9 @@
     "minimum_comparable_observations_before_preference": 3,
     "quality_regression_allowed": false,
     "mandatory_gate_reduction_allowed": false,
-    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries."
+    "rule": "Repeated use should become faster and clearer through exact-key caching, incremental processing, stable preference reuse, comparable evaluation matrices and reviewed optimization, never by weakening evidence, provenance, authorization or scientific boundaries.",
+    "human_readable_feedback_objective": "HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT",
+    "human_readable_feedback_work_unit": "state/work_units/HUMAN_READABLE_FEEDBACK_OPTIMIZATION_20261006_V1.json"
   },
   "project": {
     "name": "QIK-VRT",

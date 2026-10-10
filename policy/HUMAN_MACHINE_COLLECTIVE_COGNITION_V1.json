@@ -10,11 +10,13 @@
     "make uncertainty and effect state visible",
     "enable durable cross-session handoff",
     "support reversible and previewable actions",
-    "keep consequential external effects human-authorized"
+    "keep consequential external effects human-authorized",
+    "continuously improve human understanding of errors and all visible feedback"
   ],
   "modalities": ["text","audio","image","document","structured_data"],
   "interface_capabilities": {
     "progressive_disclosure": true,
+    "human_readable_feedback_policy": "policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json",
     "interruptible_voice_interaction": true,
     "captions_and_transcripts": true,
     "keyboard_and_screen_reader_semantics": true,

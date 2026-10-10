@@ -45,6 +45,16 @@ A GitHub action includes every connector/API mutation or read that advances the 
 13. **Continuation is the default after a non-terminal observation.** The round trip is `OBSERVE -> DIAGNOSE -> ACT -> OBSERVE EFFECT -> VERIFY READBACK -> CONTINUE` until a scope-bound terminal state is actually established. A snapshot is admissible only when no executable successor remains for the owned scope, a concrete blocker requires external authority/input, or an explicitly bounded observation window has ended.
 14. Observation frequency MUST be event- and workload-sensitive rather than a fixed polling ritual. New input, active effects, unresolved causal defects, expected receipts, or successor-carrier movement increase observation pressure; unchanged stable state is deduplicated. Monitoring activity alone is not progress.
 
+## Human-readable feedback objective
+
+All visible errors and status feedback follow the continuous objective
+`HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT` in
+`policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json`. Apply the requirements and
+acceptance method in the existing [progress standard](HUMAN_MACHINE_PROGRESS_STANDARD.md#continuous-human-readable-feedback).
+A human-facing explanation supplements the exact machine state and progress
+evidence. It identifies impact, cause or uncertainty, next action and whether
+the actual repair is planned, started, completed or blocked.
+
 ## Repository runtime objective
 
 The repository is the durable runtime authority. Chat sessions are disposable transport surfaces. Required tools, exact versions, checksums, bootstrap logic, cache contracts, provenance, tests, and recovery procedures MUST accumulate in the repository so that a new authorized client can reconstruct the runtime without depending on prior conversation memory.

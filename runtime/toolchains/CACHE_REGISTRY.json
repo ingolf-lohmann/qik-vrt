@@ -132,7 +132,10 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "Makefile",
+        "tests/test_human_machine_interface_adaptation.py",
+        ".github/workflows/qikvrt_ci.yml"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -140,6 +143,7 @@
         "github-actions-cache:npm"
       ],
       "profiles": [
+        "core",
         "formal",
         "audio",
         "all"
@@ -150,7 +154,8 @@
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution"
+        "test execution",
+        "monitor emitter replay without npm packages"
       ],
       "version": "24.x"
     },

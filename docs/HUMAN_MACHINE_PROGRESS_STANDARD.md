@@ -110,3 +110,44 @@ A cold cache and a warm cache MUST preserve the same correctness semantics. Miss
 ## Terminal semantics
 
 `PASS` is scope-bound and requires referenced evidence. Terminal `PASS` is forbidden while any required gate remains pending, running, failed, blocked, or unverified. A concrete repairable failure remains an active persistence run; the client continues repair rather than returning explanatory prose as a substitute for execution.
+
+## Continuous human-readable feedback
+
+Product Owner Ingolf Lohmann establishes
+`HUMAN_READABLE_FEEDBACK_CONTINUOUS_IMPROVEMENT` as a continuous optimization
+objective for errors and all visible feedback. The machine contract is
+[HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json](../policy/HUMAN_MACHINE_INTERFACE_ADAPTATION_V1.json);
+the work unit is [HUMAN_READABLE_FEEDBACK_OPTIMIZATION_20261006_V1.json](../state/work_units/HUMAN_READABLE_FEEDBACK_OPTIMIZATION_20261006_V1.json).
+It applies to the Universales Raumzeit-Terminal, React/HTML monitors, Firefox,
+CLI and human-facing API projections on all current and future nodes/clients.
+Historical snapshots remain immutable; node adoption needs its own readback.
+
+Every message MUST first explain in plain, localizable language what happened
+and its impact. State the established cause, or explicitly mark it unknown.
+Name the smallest available next action and its responsible actor. For repair
+or continuation, distinguish planned, started, completed and blocked using
+actual execution evidence. A queued repair is not started; a green observer
+is not native approval; an unchanged blocker is not new progress.
+
+Keep technical error codes, machine states, exact repository/HEAD/TREE/run and
+receipt bindings available in accessible, copyable details. Visual surfaces
+use progressive disclosure with keyboard and screenreader semantics; text
+surfaces retain a concise explanation followed by diagnostic details. Redact
+secrets and private content. Deduplicate unchanged feedback without hiding
+failures. Localization must preserve the technical meaning and uncertainty.
+
+Example: “Die Veröffentlichung wartet auf die GitHub-Freigabe. Das Paket ist
+geprüft; veröffentlicht wurde es noch nicht.” This wording is valid only when
+those three scoped facts are observed. If repair is active, name its evidenced
+step. If it is blocked, state what is missing and what can proceed.
+
+Use OBSERVE → MEASURE → DIAGNOSE → ADAPT → VALIDATE → COMPARE → LEARN with
+existing emitters and review paths. Evaluate equivalent real before/after
+error and status cases: can the human identify state, impact and next action?
+Record language, sample, review method, comprehension/clarification measures,
+repair-state accuracy and retained diagnostics in the existing interface
+evaluation matrix. Automated wording checks do not establish comprehension.
+No quality, accessibility, privacy, evidence or mandatory-gate regression is
+allowed. Policy persistence alone does not prove implementation, rollout or
+measured improvement. Machine states and `PREDECESSOR_EVIDENCE_TRANSFER=false`
+remain unchanged.
