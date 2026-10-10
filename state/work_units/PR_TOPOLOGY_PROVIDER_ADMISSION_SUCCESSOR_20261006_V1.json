@@ -1,0 +1,282 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "PR_TOPOLOGY_PROVIDER_ADMISSION_SUCCESSOR_20261006_V1",
+  "created_at": "2026-10-06T09:59:00.957225+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "79ddba3b6d0970203053b2719c41e9410276741c",
+  "source_tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "build_id": "UNAVAILABLE",
+    "session_id": "01a110a1-61d3-7173-ae36-6c288c98b07f",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "git",
+      "Python",
+      "Node",
+      "make"
+    ],
+    "identity_limit": "Platform identity and attribution are metadata; no biometric identity claim."
+  },
+  "human_contributions": [
+    "Require topology repair for #469, #470 and #473 without weakening any gate.",
+    "Repair the proven non-main base of #473 first.",
+    "Require minimum genuine dependencies, explicit integration order, fresh Code Owner observer and Exact-Head gates, and no transfer of predecessor evidence or HEAD-bound approvals."
+  ],
+  "artificial_cognitive_contributions": [
+    "Reobserve #469/#470 as closed and superseded by existing main-based #474; reuse instead of creating duplicate storage PRs.",
+    "Verify #474 source and current terminal runs; its results remain exclusive to its HEAD/TREE.",
+    "Reapply only provider source, contracts, test and cache changes from #473 to #474; discard predecessor local evidence and predecessor work-unit receipt from the successor patch.",
+    "Resolve Makefile by retaining storage and provider controls; resolve package version to 1.11.0 without rollback.",
+    "Create a new main-based draft with explicit unmerged storage dependency and separate pending acceptance."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "kind": "SOURCE_ONLY",
+      "pull_request": 473,
+      "head": "caa09f89917ee25425a4371ff63df8c06901f3c5",
+      "tree": "9dc6a9443dd4816ca49162dde4010b32f4cd8de4",
+      "original_base": "work/open-node-seed-lookup-20261006",
+      "observer_run": 37444005266,
+      "observed_error": "BLOCK: pull request is not based on main",
+      "predecessor_evidence_transfer": false
+    },
+    {
+      "kind": "PREREQUISITE_SOURCE_ONLY",
+      "pull_request": 474,
+      "head": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
+      "tree": "1b96726a258cd5efdf8cc0512013d245328167e5",
+      "base": "main",
+      "unmerged": true,
+      "supersedes": [
+        469,
+        470
+      ],
+      "predecessor_evidence_transfer": false
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 12980,
+      "sha256": "5d4d0ee5a83067be6065e76ee812a76478ed880e38e2f8260f6e7495395cc89f",
+      "git_blob_sha1": "874ec7635807d92a8ede054ce1bb0e767af9841b"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 5732,
+      "sha256": "be70ff795dfb5d8d474f88b471cfa8c1d50870ffc5882cf8c257fe4a78f8eaab",
+      "git_blob_sha1": "c4849772b8dd04a1a87351c23910142d557dab3d"
+    },
+    {
+      "path": "runtime/self-host/PROVIDER_ADMISSION.md",
+      "bytes": 11332,
+      "sha256": "3eb644411e8bd116fd0fc292983575d7505d44e76eb98dec1bb29d53f0ffb64d",
+      "git_blob_sha1": "f8c4b41e52ce3d78cb682bbddef15bcfe5e5cc88"
+    },
+    {
+      "path": "runtime/self-host/PROVIDER_AUTHORIZATION.example.json",
+      "bytes": 352,
+      "sha256": "27f51574b621b3b2539314d9587ab902eb0ffad92fcb6901c41cb46cd113898a",
+      "git_blob_sha1": "aacd55c9ab345b0a5dc0f13555c25133cd6222a3"
+    },
+    {
+      "path": "runtime/self-host/PROVIDER_BINDING.example.json",
+      "bytes": 83,
+      "sha256": "12dd16baf8cb8a8f138959051b1931825115b498a5df4c2e3e397f24e60e6a41",
+      "git_blob_sha1": "ac403069bc4259c6659cc768711243890dd2920a"
+    },
+    {
+      "path": "runtime/self-host/PROVIDER_REQUEST.example.json",
+      "bytes": 458,
+      "sha256": "a6c2d2af7b8abd4bee7ea78de1151e678d1fb58435e66dfe5653f87138ad89ff",
+      "git_blob_sha1": "5d78d75ba7a9aaf5655c50e37d17ac7b8d5e1f80"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 52425,
+      "sha256": "009b863d9f88eaba683e0f3a22082c57a282547f5a53f1ea8af0f8fc36353d81",
+      "git_blob_sha1": "a6034611cc8269eca8c9ebee2e58860c2f9acfd0"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 6297,
+      "sha256": "479097c21863adb345f82a3227b282149e64209d5b8e1da0540b8622beaebff1",
+      "git_blob_sha1": "0cfbf343241236077f6397d7d7810f949cc5c2f9"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 25465,
+      "sha256": "a44ca28d2c2d106b81d52211b7c3a1cd28e035453eaf02a1aa958c3b6010f872",
+      "git_blob_sha1": "77bf274937dedd072b8c58e1f67d44413915e973"
+    },
+    {
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "bytes": 16460,
+      "sha256": "b3c6539095a2e05a2276fe878a921031d6faf413bb01febf9bf369457241dd78",
+      "git_blob_sha1": "b42617c4660052754e84afd7b9e5c32666b20285"
+    },
+    {
+      "path": "tests/test_self_host_provider.py",
+      "bytes": 27335,
+      "sha256": "5888f90bd5da8e55b20852bf5dcc770a24b999a62d2616b190e66eabe1c6b943",
+      "git_blob_sha1": "9dc2eab6d5f3133c39981c39268e0e3a4b313161"
+    },
+    {
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "bytes": 11791,
+      "sha256": "055d4e7412ced34480ccc3c776a0bfd34838f81d07c7ccfe4467f6b196bc3d0c",
+      "git_blob_sha1": "5b70f556f181aa49ecf26d2b9e583439d7b1da29"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 140546,
+      "sha256": "d477dadb488d1559f01af4fcb498eab426038a68148b3c6cd2c88ad4acb17443",
+      "git_blob_sha1": "c9615ca5a37b3aa6b47374d8b79f12553cb24145"
+    },
+    {
+      "path": "tools/qikvrt_self_host_provider.py",
+      "bytes": 51685,
+      "sha256": "eafe029a3b0fd966469c20e12bb7e5918ac3afcea23cb50a3f9ad20394bce95b",
+      "git_blob_sha1": "4f6f3b3cebf4fbc8e9faa76954b7f6e1b2c2eff2"
+    }
+  ],
+  "git_history": {
+    "branch": "work/provider-admission-main-successor-20261006",
+    "pull_request_base": "main",
+    "source_parent": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
+    "verified_main_ancestor": "79ddba3b6d0970203053b2719c41e9410276741c",
+    "history_rewrite": false,
+    "force_push": false,
+    "successor_identity_binding": "The new remote commit and tree are bound independently by the PR, CI logs and readback; this file does not self-assert its enclosing commit."
+  },
+  "dependency_analysis": {
+    "integration_order": [
+      {
+        "pull_request": 474,
+        "purpose": "Canonical SQLite/S1 prerequisite incorporating #457, #469 and #470 sources; independent fresh storage candidate."
+      },
+      {
+        "pull_request": "THIS_SUCCESSOR",
+        "purpose": "Provider admission only after #474 is merged into main and base/head/gates are freshly reobserved."
+      }
+    ],
+    "direct_unmerged_prerequisites": [
+      474
+    ],
+    "actual_runtime_edges": [
+      {
+        "consumer": "tools/qikvrt_self_host_provider.py",
+        "provider": "tools/qikvrt_self_host.py",
+        "symbols": [
+          "raw_json",
+          "private_path",
+          "private_output",
+          "synced_private_file",
+          "sync_directory",
+          "verify"
+        ],
+        "source_carrier_pr": 474
+      },
+      {
+        "consumer": "tools/qikvrt_self_host_provider.py",
+        "provider": "tools/qikvrt_mesh_monitor_readback.mjs",
+        "interface": "Existing --self-host independent verifier; extend with optional IPv4 pin.",
+        "source_carrier_pr": 474
+      },
+      {
+        "consumer": "tools/qikvrt_self_host_provider.py",
+        "provider": "tools/qikvrt_subprocess.py",
+        "symbols": [
+          "run_bounded"
+        ],
+        "source_carrier_pr": "ALREADY_MAIN"
+      }
+    ],
+    "not_required": [
+      {
+        "pull_request": 471,
+        "reason": "Open invitation, seed lookup, new-project/domain/public-observer evidence have no provider admission call edge and are not imported."
+      }
+    ],
+    "storage_predecessor_dependency": {
+      "pull_requests": [
+        469,
+        470
+      ],
+      "original_base_pr": 457,
+      "successor": 474,
+      "state": "Already main-based with prerequisite source closure; no second storage successor is created."
+    },
+    "merge_boundary": "HOLD_UNMERGED_STORAGE_PREREQUISITE_AND_FRESH_CANDIDATE_CODE_OWNER_ACCEPTANCE",
+    "after_storage_merge": "Reobserve main and successor HEAD/TREE; reconcile changed base if necessary using a new commit, then execute all applicable gates fresh. No predecessor or previous-base evidence is promoted.",
+    "existing_storage_native_gate_boundary": {
+      "pull_request": 474,
+      "head": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
+      "observer_run": 37444675939,
+      "observer_selector": "SUCCESS_MAIN_BASE",
+      "required_review_run": 37444690605,
+      "gate_status": "failure",
+      "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "native_reviews_observed": 0,
+      "scope": "This is a current #474 observation, not successor acceptance. It explains why the prerequisite cannot be merged through an unchanged gate."
+    }
+  },
+  "verification": {
+    "local_focused_provider_controls": {
+      "state": "PASS_ON_PRECOMMIT_BYTES_ONLY",
+      "tests": 25,
+      "command": "python3 -B -m unittest -v tests.test_self_host_provider"
+    },
+    "tool_cache": {
+      "state": "PASS_ON_PRECOMMIT_BYTES_ONLY",
+      "declared": 28,
+      "covered": 28
+    },
+    "published_exact_head_gates": "PENDING_NEW_HEAD_EXECUTION",
+    "code_owner_observer": "PENDING_NEW_PR_EXECUTION",
+    "native_code_owner_review": "PENDING_NEW_CANDIDATE_REVIEW",
+    "predecessor_evidence_transfer": false,
+    "full_local_and_native_gates": {
+      "state": "LOCAL_ENVIRONMENT_BOUNDARY_REMOTE_EXACT_HEAD_REQUIRED",
+      "command": "make test repository-monitor-test self-host-test origin-adapter-test",
+      "observed_local_error": "AF_UNIX bind: PermissionError [Errno 1] Operation not permitted",
+      "independent_environment_probe": "A minimal AF_UNIX bind in a new temporary directory returned the same PermissionError.",
+      "shallow_history_input_repair": {
+        "commit_fetched": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "original_failure": "Missing historical object required by existing isolated-worktree test.",
+        "reobserved_test": "tests.test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_write_then_committed_descendant_check_is_local_only",
+        "result": "PASS_AFTER_OBJECT_FETCH_NO_SOURCE_CHANGE"
+      },
+      "remote_acceptance": "PENDING_NEW_HEAD_EXECUTION_WITHOUT_SOCKET_SKIP_OR_GATE_CHANGE"
+    }
+  },
+  "human_decision": "Implementation and draft creation authorized by current task; this successor-specific acceptance and native Code Owner review remain PENDING.",
+  "external_effects": {
+    "authorized_scope": "New review branch, main-based draft, fresh checks and historical predecessor supersession; no merge, release, deployment, server creation, payment or terms action.",
+    "effects_executed": "Publication follows this frozen source record; the new PR, exact remote commit/tree and CI artifacts separately bind every resulting effect."
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "merge": false,
+    "deployment": false
+  }
+}

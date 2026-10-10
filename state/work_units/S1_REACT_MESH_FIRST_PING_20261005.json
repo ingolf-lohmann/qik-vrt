@@ -1,0 +1,726 @@
+{
+  "schema": "qikvrt_personal_work_unit_v1",
+  "work_unit_id": "S1_REACT_MESH_FIRST_PING_20261005",
+  "created_at": "2026-10-05T20:48:06.985624Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_commit": "86e0ba74eb0f4784f1e302805932b8f1c532f34c",
+  "source_tree": "3946d444c2ed3eea14a6d12ec7a5696526e8d9c9",
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product and Code Owner"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; build UNAVAILABLE",
+    "session_or_run_id": "1a7221ad28fa",
+    "tools_and_adapters": [
+      "executor",
+      "GitHub connector",
+      "Railway connector",
+      "personal-context continuity lookup"
+    ],
+    "identity_and_observation_limits": "Platform binding and recorded authorization are not biometric proof; current remote refs must be reobserved."
+  },
+  "human_contributions": [
+    "Self-hosted static React document for each repository-node and Mesh",
+    "Actual internet deployment and hosting-platform CI",
+    "One first universal-Transputer ping with reception at every admitted terminal",
+    "Direct authorization to continue; prior own-host/account/billing limits preserved"
+  ],
+  "artificial_cognitive_contributions": [
+    "Fresh exact PR/main and hosting route readbacks",
+    "Reuse-before-create inspection and fail-closed bootstrap",
+    "Static React interface in existing S1 listener and immutable original-document export",
+    "Pinned production dependency source slices and full MIT notices",
+    "Existing native candidate CI extension and explicit ordered external acceptance contract",
+    "Export-process, corruption and repository regression validation"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "path": "upload/index(2).html",
+      "bytes": 19160,
+      "sha256": "141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6",
+      "origin": "USER_SUPPLIED_SOURCE_DOCUMENT"
+    },
+    {
+      "path": "runtime/self-host/REACT_LOCK.json",
+      "origin": "Already installed Site dependency sources; complete MIT notices and each actual source slice independently read"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "bytes": 9989,
+      "sha256": "92a11c4ab0a0e188d265faa1132aee258527b1f2241daf029dc44cd5810ee33d",
+      "git_blob_sha1": "1453f5f70f690d8828604379c0096cfdc7aec7dc"
+    },
+    {
+      "path": "docs/monitor/REACT_LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "git_blob_sha1": "b93be90515ccd0b9daedaa589e42bf5929693f1f"
+    },
+    {
+      "path": "docs/monitor/index-react.html",
+      "bytes": 835,
+      "sha256": "740f52f57fd5810fcc63fbb9003b8ee9d7400318a592cef3591076ea0845d939",
+      "git_blob_sha1": "94e4bb2efea19f30cf959b5a62aea8097dc1cf1c"
+    },
+    {
+      "path": "docs/monitor/mesh-react.css",
+      "bytes": 1839,
+      "sha256": "0add9bc7f3c4a3980c7079f017e35bf889c657853e7b98350054b7f1eaa505da",
+      "git_blob_sha1": "6368921c99ea10de5bdbc2ba53f92e5fbdbf85d0"
+    },
+    {
+      "path": "docs/monitor/mesh-react.js",
+      "bytes": 7805,
+      "sha256": "b5e9ec8102b7ff85bc16aea74dbfd5d04e35d62e83bb8da8a668e973baae60a9",
+      "git_blob_sha1": "952ec9e0158d3242ead05fa08c482229e6ba2a9e"
+    },
+    {
+      "path": "docs/monitor/react-runtime.js",
+      "bytes": 571915,
+      "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca",
+      "git_blob_sha1": "4f495e10784d2d89c4e5c4e33dcd904bcd0f0927"
+    },
+    {
+      "path": "docs/monitor/scheibenhard-original.html",
+      "bytes": 19160,
+      "sha256": "141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6",
+      "git_blob_sha1": "10a07a97605a64558498921d69592f528bd9020d"
+    },
+    {
+      "path": "docs/monitor/self-host.mjs",
+      "bytes": 10375,
+      "sha256": "85a35d5ad60f0c670b5743a7021a0c96df60012fc95438b34d93402b9696a489",
+      "git_blob_sha1": "b9c8d057bac21d6586db6725f443e67bbdea6471"
+    },
+    {
+      "path": "runtime/self-host/MESH_ACTIVATION.json",
+      "bytes": 4628,
+      "sha256": "fb0601ab43661f558ddef0ea18cb3cb877888432c40e17a4dd0b81d8b3197e32",
+      "git_blob_sha1": "9d24a9ca228f3a6d7677adb712bef79e730c88c8"
+    },
+    {
+      "path": "runtime/self-host/PACKAGE.json",
+      "bytes": 4561,
+      "sha256": "1a85a6ff7beaa0d628d6bb3b55e99cd51385394179f987138efb3b9b50340ee9",
+      "git_blob_sha1": "6bcf169b42cdf75b6a9b70f1281b23d75ad0e858"
+    },
+    {
+      "path": "runtime/self-host/REACT_LOCK.json",
+      "bytes": 2286,
+      "sha256": "96f126867217cd7addef20c2a3169cc9cce01492c5b544f0fc656eb996c3ee7f",
+      "git_blob_sha1": "4480fea34c358b610ea93fc70709bbc12374c3fe"
+    },
+    {
+      "path": "runtime/self-host/README.md",
+      "bytes": 26175,
+      "sha256": "32b85df409f995611fd476c564ceba336a0ec4e6ab3765a60dd00e4dcba3c5ec",
+      "git_blob_sha1": "4e110e347f2f0bed60b8f9e2f8df95cf4efd76b3"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 5902,
+      "sha256": "0165cb7889c0313df3bf12e06dd94e12cd1974d38abfad1c59e02beef16e7a4c",
+      "git_blob_sha1": "03c6f7c95ec8a33920ed53c28192289c5a1420e2"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 22809,
+      "sha256": "8c35aa0700b5e471e0065a058dc1b102c7c812422ddffd5db7ae0bd7304c0288",
+      "git_blob_sha1": "351c579b3841539ccb4ba701b03fa9e60519802c"
+    },
+    {
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "bytes": 13735,
+      "sha256": "f74900553c832a3a5d5bb80ceee7cc9323ba0445e2b94bac32d2d413ccc05071",
+      "git_blob_sha1": "9774063fe5e7022b7a5178a52bde9220e1af0ab6"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 4484,
+      "sha256": "707e939a754db2bfcc56f44834107f98536d1139548e5588698c80746c960020",
+      "git_blob_sha1": "5a1329d60f0f4f51b4760be30f01d58f23aa5f51"
+    },
+    {
+      "path": "tests/test_self_host.py",
+      "bytes": 34604,
+      "sha256": "a35eaddc639661212093dfa95b0a18af5d6d84b286de2ec2f8db93030431b6cf",
+      "git_blob_sha1": "c6c33bd32c058ec181f5df3ca545e625764bc4d0"
+    },
+    {
+      "path": "tools/qikvrt_self_host.py",
+      "bytes": 62206,
+      "sha256": "eb80a33bbc0108cab517d4339cf41ea38c50beb1547b41c73843599997aaaf5d",
+      "git_blob_sha1": "6e207286f5c5186e91a2dfaee6e21d493fcb6162"
+    }
+  ],
+  "git_history": {
+    "parent": "86e0ba74eb0f4784f1e302805932b8f1c532f34c",
+    "remote_branch": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "method": "Non-force, expected-head-bound successor through existing draft PR457",
+    "main_promotion": false,
+    "force_push": false
+  },
+  "reuse_evidence": {
+    "extended": [
+      "docs/monitor/self-host.mjs",
+      "docs/monitor/client-replica.js",
+      "tools/qikvrt_self_host.py",
+      ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "runtime/self-host/PACKAGE.json"
+    ],
+    "new_components_necessity": "Existing vanilla monitor supplies verified state/stream but no static React document. Only the client document/dependency assets and explicit activation record are added; no parallel monitor, ledger, executor, migration or hosting service."
+  },
+  "verification": {
+    "local_bootstrap": "CONTINUE; required read order and integrity passed; optional unrelated toolchains absent; verified origin/upstream metadata supplied as scoped Git configuration",
+    "tool_cache": "26/26 = 100%",
+    "source_originals_preserved": 44,
+    "make_test_repository_monitor_test": {
+      "exit_code": 0,
+      "python_test_executions": 527,
+      "monitor_tests": 24,
+      "failures": 0,
+      "skips": 0
+    },
+    "standalone_reference_and_react_tests": {
+      "command": "python3 -B -m unittest -v tests.test_self_host",
+      "exit_code": 0,
+      "tests": 26,
+      "failures": 0,
+      "skips": 0
+    },
+    "native_local_limit": {
+      "operation": "Original owner Unix ingress creation",
+      "class": "PermissionError",
+      "errno": 1,
+      "message": "Operation not permitted",
+      "consequence": "Executor sandbox does not admit AF_UNIX. Native S1/TEMDD/Firefox/systemd gates remain mandatory on exact-head CI; no skip or substitute positive result."
+    },
+    "fresh_remote_ci": "NOT_YET_OBSERVED; predecessor passes are not transferred",
+    "logs": [
+      {
+        "name": "mesh-react-reference-tests.log",
+        "bytes": 5324,
+        "sha256": "92f285188a77b98d6831118c441655fe67a048855b3943321648e428ab4a35b5",
+        "retention": "METADATA_ONLY; local derivable log not published"
+      },
+      {
+        "name": "mesh-local-tests.log",
+        "bytes": 108431,
+        "sha256": "4be8f5490412f348a8d595dcd96b736d24e9a46342fc20a86990bcf27bf913c3",
+        "retention": "METADATA_ONLY; local derivable log not published"
+      }
+    ],
+    "react_browser_rendering": "NOT_YET_OBSERVED; HTTP/static-source/API loading controls only"
+  },
+  "human_decision": "TASK_SCOPE_AUTHORIZED; IMPLEMENTATION_REVIEW_PENDING",
+  "external_effects": {
+    "repository_candidate_write": "AUTHORIZED_PENDING_READBACK",
+    "own_host_provisioning": false,
+    "hosting_platform_pipeline_instantiated": false,
+    "public_self_host_deployment": false,
+    "native_first_mesh_ping": false,
+    "terminal_receipts_observed": false,
+    "railway_mutation": false
+  },
+  "route_observations": {
+    "authority_main": "HTTP404",
+    "mirror_main_head": "a317625810c1a7a2aee7d3109fa265209bac70a2",
+    "mirror_main_tree": "48212bdf4e5e42f5d38cd7d55118af9d0dcbdd23",
+    "railway": {
+      "project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+      "service_id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+      "deployment_id": "d74053cf-7753-4d41-8d61-eab36b65c678",
+      "deployment_status": "SUCCESS",
+      "staged_patch": "9d4860c4-5003-48ef-a07f-d383f303b539",
+      "staged_count": 22,
+      "staged_changes_applied": false,
+      "privileged_exec_or_private_transfer_route": false
+    },
+    "hostinger_hosting_tool_available": false,
+    "own_host_available": false,
+    "continuity": "Latest account/identity/billing gates are constraints, not new deployment evidence; no DigitalOcean mutation retry or account substitution."
+  },
+  "first_causal_blocker": "AUTHENTICATED_OWN_HOST_PROVISIONING_AND_EXECUTOR_UNAVAILABLE",
+  "next_action": "Close the existing provider-native account/identity/billing handoff; bind actual host/storage/public HTTPS and hosting executor; follow runtime/self-host/MESH_ACTIVATION.json in order. No repeated generic authorization question.",
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "ordinary_release": false,
+    "S1_DONE": false
+  },
+  "successor_requirement": {
+    "received_at": "2026-10-05T23:47:47+02:00",
+    "recorded_at": "2026-10-05T21:54:32.806Z",
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Require the linked Scheibenhard capability surface from every repository node.",
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6; build UNAVAILABLE",
+      "session_or_run_id": "363978c2a270"
+    },
+    "artificial_cognitive_contribution": "Exact source/metadata read; extend existing S1 activation contract, node URL directory and documentation. No runtime/source implementation is changed.",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "source_commit": "daa560b42030b03f185d7bb893b1b41b1a4406d8",
+    "source_tree": "588b7d307ec7914616fd20153d7ab3c04623b371",
+    "reference_source": {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "version": 2,
+      "source_head": "047bb8fd4a45b0db67288bda1945dd5a280a6ee2",
+      "source_tree": "13bf0d42a410f6287563cbe5bb569699ab2e48d8",
+      "source_files": [
+        {
+          "path": "lib/evidence-core.ts",
+          "sha256": "4d247725a74f34ffc73f393b09464dac1456dce26422dc4b4ca2fb950e0545fc"
+        },
+        {
+          "path": "lib/evidence-store.ts",
+          "sha256": "df2bae99d915780a96548a0ede7aab521c6db7f1abf25d7dc9086a0a5104b983"
+        },
+        {
+          "path": "app/page.tsx",
+          "sha256": "c00c9bb50bdf483dff50789d8e1c18774547fa21df2c612120a7e88267020e2e"
+        },
+        {
+          "path": "state/UPDATE_CONTRACT.json",
+          "sha256": "b804e187b8bce80a5eb00fde742a4ae82ec7efafa73696d6a3685b901fa0eca1"
+        }
+      ],
+      "observation_scope": "SITES_METADATA_AND_EXACT_SOURCE_READ; NOT_A_FRESH_PUBLIC_HTTP_OR_NATIVE_RUNTIME_WITNESS"
+    },
+    "changed_source_paths": [
+      "runtime/self-host/MESH_ACTIVATION.json",
+      "runtime/self-host/README.md",
+      "docs/monitor/URL_DIRECTORY.json",
+      "state/work_units/S1_REACT_MESH_FIRST_PING_20261005.json"
+    ],
+    "verification_scope": "JSON/documentary successor and canonical integrity metadata only; all parent tests and runtime observations remain historical. Fresh exact-head CI must be reobserved.",
+    "source_bootloader": "FULL_CURRENT_REPOSITORY_BOOT_NOT_EXECUTED_IN_THIS_SESSION; API-bound selected-file fixture only, not a complete clone.",
+    "first_causal_blocker": "AUTHENTICATED_OWN_HOST_PROVISIONING_AND_EXECUTOR_UNAVAILABLE",
+    "implementation_review": "PENDING",
+    "next_action": "Bind authenticated own host, carry and test the required capabilities through the existing S1 runtime, then publish and independently read back every fresh node/mesh receipt without weakening native ping/restart gates.",
+    "predecessor_evidence_transfer": false,
+    "all_node_surfaces_verified": false,
+    "native_runtime_executed": false,
+    "own_host_deployed": false,
+    "hosting_ci_instantiated": false,
+    "effect_ack_done": false,
+    "ordinary_release": false,
+    "verification": {
+      "tool_cache_metadata": "26/26 declared cache/provision strategies verified in the selected-file fixture; not installed runtime verification.",
+      "contract": "Valid JSON; scope current/future nodes and Mesh; all ten pre-existing ordered native/public/restart gates retained; false effect/ordinary-release claims preserved.",
+      "integrity": "Base manifest Git blob and canonical index authenticated; inventory matches full API tree; 34 unchanged Windows Git blobs and checkout CRLF SHA-256 bindings independently verified under .gitattributes; changed bytes will regenerate the existing canonical integrity trio.",
+      "full_repository_suite": "NOT_EXECUTED_LOCALLY; SELECTED_FILE_FIXTURE_ONLY",
+      "successor_native_ci": "NOT_YET_OBSERVED; no predecessor result transfer"
+    }
+  },
+  "node_bus_successor": {
+    "requirement_id": "EVERY_NODE_UNIVERSAL_TRANSPUTER_UNIVERSAL_TERMINAL_FAULT_TOLERANT_BUS_20261006",
+    "received_at": "2026-10-06T07:41:48+02:00",
+    "recorded_at": "2026-10-06T06:00:11.070154+00:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "source_commit": "aab3aa6b279e0a383d91475a6019b44e5ce84ff7",
+    "source_tree": "31f19fc9a20813a8b25b6b5037fd4449707c48ea",
+    "human_actor": {
+      "identifier": "Ingolf Lohmann",
+      "role": "Product and Code Owner"
+    },
+    "human_contributions": [
+      "Every Authority, Mirror and future repository node implements a universal Transputer and a universal Terminal.",
+      "Fault-tolerant bus objective: compensate single-node loss with ordinarily unnoticed continuity."
+    ],
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "model_or_build": "GPT-6; build UNAVAILABLE",
+      "session_or_run_id": "01a10fbb-75fc-73a2-8968-ef5662a9404f"
+    },
+    "artificial_cognitive_contributions": [
+      "Existing S1 package/launcher/verification extended; no parallel ledger, scheduler, executor or monitor.",
+      "Role-independent source admission gate, package manifest contract digest and 21 new regression tests.",
+      "Native-effect preservation, single fenced writer, lost-ACK readback, safe partition and original-byte rejoin obligations; workload-bound measured transparency.",
+      "Source/provider and real-runtime limits remain separately open.",
+      "Extend the existing read-only native S1/Firefox workflow with the same path-filtered push trigger; PR-only registration did not expose a current native run through the available initial-dispatch capability."
+    ],
+    "evidence_retention": "METADATA_ONLY",
+    "joint_components": [],
+    "unresolved_origin": [],
+    "outputs": [
+      {
+        "path": "AGENTS.md",
+        "bytes": 9483,
+        "sha256": "ccdd7f4f65598a0a58d6683863f746f65ac0f30054e5a6a0b34533c0a5bbc2ff",
+        "git_blob_sha1": "8ab379fd2fb2c2b76c4ad56e4aed1b158011c2d6"
+      },
+      {
+        "path": "tools/qikvrt_self_host.py",
+        "bytes": 67446,
+        "sha256": "5cab410e0e7ccda8a8c8a5c5eb67f758a6995d4e6949f42b3477a07209cbe19b",
+        "git_blob_sha1": "47d42238628b001b5a7ee06b339143901a85e5e0"
+      },
+      {
+        "path": "tests/test_self_host.py",
+        "bytes": 44643,
+        "sha256": "0f93705b9502ccf09f7e9a020109b2aed81311b213d2005f5cb2938b36b4055c",
+        "git_blob_sha1": "8361b65ba281d860676dfea03bac38c0d03c82e3"
+      },
+      {
+        "path": "runtime/self-host/MESH_ACTIVATION.json",
+        "bytes": 15493,
+        "sha256": "78176e254b52a06e62fc8ff18d39e3797e520699358ca3362861b2492aca0e64",
+        "git_blob_sha1": "09756b5f87141899f238ff6937a583ff4d9fbd96"
+      },
+      {
+        "path": "runtime/self-host/PACKAGE.json",
+        "bytes": 4561,
+        "sha256": "810bda66fee70035d5293f951cc4b8288909109ad850bba95b7814445ca2e93c",
+        "git_blob_sha1": "60ef21ff3567eeacf357ce2a48d1473e5cc40b07"
+      },
+      {
+        "path": "runtime/self-host/README.md",
+        "bytes": 30920,
+        "sha256": "eb4b7d578e1b5235a8e2c6dab4f5009626bced32d0b21b003c1d968562632c7d",
+        "git_blob_sha1": "142c9fee88cfcd67f222fe0532e268744a38333c"
+      },
+      {
+        "path": "docs/monitor/URL_DIRECTORY.json",
+        "bytes": 3500,
+        "sha256": "6690a93648b82b0c8ffc327dfe0fc2439654a78f1bfce70b13f579e1b4604a33",
+        "git_blob_sha1": "f56501f57d414fee4b605a0cd29152c2da79b486"
+      },
+      {
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        "bytes": 10986,
+        "sha256": "707135d83aed5cbd794982d4239d0fb98fbe563b19d50b4b5fc07927b46245df",
+        "git_blob_sha1": "2bf14b25241638538801ecbfbc494b6ef61b923d"
+      }
+    ],
+    "self_binding": "This record is authenticated by the canonical repository integrity manifest; no self-digest cycle.",
+    "verification": {
+      "fixture": "Exact API-bound selected source files; no complete clone/history closure or full all-profile bootloader claim.",
+      "self_host_suite": {
+        "command": "python3 -B -m unittest -v tests.test_self_host",
+        "exit_code": 0,
+        "tests": 47,
+        "failures": 0,
+        "skips": 0,
+        "new_tests": 21,
+        "log_bytes": 8604,
+        "log_sha256": "0d07afe2b4ad1eefa2d65128ffa8ff08a56fdd57f48a4a852aa83ab750388ece"
+      },
+      "monitor_suite": {
+        "command": "node --test docs/monitor/monitor.test.mjs docs/monitor/observer.test.mjs",
+        "exit_code": 0,
+        "tests": 25,
+        "failures": 0,
+        "skips": 0,
+        "scope": "Local two-process monitor read-replication, writer SIGKILL, four clients and 32 original events, journal/restart/lost-response/partition controls. Not native TEMDD effect replication, write takeover, deployment, independent hosts or an application-interruption SLO."
+      },
+      "source_original_bytes": "Every materialized unchanged source matches its API-tree Git blob. The user-supplied original has SHA-256 141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6 and remains unchanged.",
+      "tool_cache": "26/26 declared cache/provision contracts; 100%; no installed-all-profiles inference.",
+      "native_local_attempt": {
+        "command": "python3 -B -m unittest -v tests.test_self_host_temdd",
+        "result": "FAILED; native Unix carrier did not start with EPERM. Complete source-history check additionally unavailable in the partial API fixture. Initial missing helper authority/original final-newline materialization faults were repaired and the separate final 47-test source/standalone suite passed. Native results are not promoted.",
+        "boundary": "A separate direct AF_UNIX socket creation also returned PermissionError errno=1 before bind; environment capability is unavailable. No skip, substitute HTTP writer or downgrade."
+      },
+      "full_repository_suite": "NOT_EXECUTED_LOCALLY",
+      "successor_native_ci": "NOT_YET_OBSERVED; freshly registered by this source successor, no earlier gate transfer.",
+      "integrity": "Authenticated source manifest/index and complete API blob inventory; two changed semantic files regenerate the existing canonical projections incrementally. Not a full historical object closure.",
+      "local_fixture_semantics": "Local tests retain exact tested source-byte scope; they are not current-head native gate receipts. Current successor CI must execute its own gates.",
+      "workflow_adapter": {
+        "change": "Same existing pull-request path allowlist for push; contents permission remains read; no external deployment or rerun API.",
+        "tests": "Existing two WorkflowRuntimeTests succeeded; cache coverage 26/26.",
+        "source_workflow_readback": "On aab3aa6b only ordinary push CI and ontology were registered; native S1 workflow had pull_request/workflow_dispatch triggers only."
+      }
+    },
+    "implementation_status": {
+      "per_node_obligations_and_source_gate": "IMPLEMENTED_IN_REVIEW_CANDIDATE",
+      "native_single_node_carrier": "EXISTING_REUSED_SOURCE; THIS_LOCAL_ENVIRONMENT_BLOCKED",
+      "monitor_read_replica": "LOCAL_EXISTING_PATH_TESTED",
+      "native_effect_cross_node_replication": "NOT_IMPLEMENTED_IN_EXISTING_S1",
+      "fenced_write_takeover": "NOT_IMPLEMENTED_IN_EXISTING_S1",
+      "live_mesh_transparency": "NOT_ESTABLISHED"
+    },
+    "human_decision": "TASK_SCOPE_AUTHORIZED; IMPLEMENTATION_REVIEW_PENDING",
+    "external_effects": {
+      "candidate_successor": "AUTHORIZED_PENDING_READBACK",
+      "main_merge": false,
+      "ruleset_change": false,
+      "deployment": false,
+      "fault_injection_on_live_nodes": false,
+      "publication": false
+    },
+    "first_causal_blocker": "LIVE_NODE_INVENTORY_PRIVILEGED_EXECUTION_AND_PRIVATE_TRANSFER_UNAVAILABLE",
+    "retry_condition": "A real authenticated admitted node execution/private-transfer route and independent persistent hosting domain become available; reobserve source and use existing S1 admission path.",
+    "next_action": "Observe exact successor CI; retain native Unix/systemd/Firefox gates. On admitted own hosts, extend the existing native journal with authenticated replication/enforced fences using the fresh node/workload bindings, then exercise all eight failure cases and record numerical RTO/SLO, original event receipts and public readbacks for every node. No terminal acceptance until every gate is closed.",
+    "predecessor_evidence_transfer": false,
+    "all_node_runtime_verified": false,
+    "native_effect_replication_verified": false,
+    "write_failover_verified": false,
+    "application_transparency_verified": false,
+    "effect_ack_done": false,
+    "ordinary_release": false,
+    "prior_source_gate_commit": "aab3aa6b279e0a383d91475a6019b44e5ce84ff7"
+  },
+  "local_cache_idle_batch_successor": {
+    "schema": "qikvrt-source-bound-contribution/v1",
+    "requirement_id": "OWNER_LOCAL_REPOSITORY_CACHE_STABLE_IDLE_BATCH_20261006",
+    "received_at": "2026-10-06T08:25:31+02:00",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_parent_head": "71990a322187072dc847fa03d0a7923efc047d58",
+    "source_parent_tree": "72d93b5c9e3f9b65d0cd25ce9608798d50bfa2e8",
+    "candidate_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+    "pull_request": 457,
+    "human_contribution": {
+      "identifier": "Ingolf Lohmann",
+      "role": "Product and Code Owner",
+      "scope": "Local repository Mesh-storage copy/cache; stable repeatable idle; one bounded transfer of validated work; lower traffic and workload distribution; authorization explicitly granted."
+    },
+    "artificial_cognitive_contribution": {
+      "provider": "OpenAI",
+      "client": "Codex",
+      "model_family": "GPT-6",
+      "build": "UNAVAILABLE",
+      "scope": "Protocol, implementation in existing launcher/MonitorStore, tests and evidence-bound delivery; no product-wide idle/performance/optimality claim."
+    },
+    "retention": "METADATA_ONLY",
+    "outputs": {
+      "AGENTS.md": {
+        "bytes": 10313,
+        "sha256": "1036063df3fc5c71752fb3ac0b2efa8c34bac0cbb051523ae087e9bb6b9e09cc"
+      },
+      "tools/qikvrt_self_host.py": {
+        "bytes": 89716,
+        "sha256": "3768ee58e6c38c99d21bc65e1bb3a83ee79bee118c8fdf634316bc8351672ba8"
+      },
+      "tests/test_self_host.py": {
+        "bytes": 67707,
+        "sha256": "bf37d491ac1bf5e734e4e03af7c945d0a5becc3e4e5f8e8488d535f4812bfcf3"
+      },
+      "docs/monitor/server.mjs": {
+        "bytes": 46570,
+        "sha256": "d75fbefb52da2b1f5fb62cdbae899bd3503d5afa0abfba4b2dc2d3c1faa93264"
+      },
+      "docs/monitor/self-host.mjs": {
+        "bytes": 10446,
+        "sha256": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db"
+      },
+      "runtime/self-host/MESH_ACTIVATION.json": {
+        "bytes": 17705,
+        "sha256": "77b8501e4b179910191368a662259140e2a9b24e0349e33889de49c6acaa9838"
+      },
+      "runtime/self-host/PACKAGE.json": {
+        "bytes": 4561,
+        "sha256": "eb69d03c8f12e2ad0052ae3d67146b95f79801570b2b3177f4b78ac417783194"
+      },
+      "runtime/self-host/README.md": {
+        "bytes": 35860,
+        "sha256": "19b9d36f54b44211134f58acba9e3b2b2a2cb7a2fd11b10f855dab71829e02f5"
+      },
+      ".github/workflows/qikvrt_effect_ack_http_terminal.yml": {
+        "bytes": 11078,
+        "sha256": "af89370f43d37b7d35905cea3d40971455083b89a56453d0b46d713042b596ae"
+      }
+    },
+    "verification": {
+      "local_self_host_tests": 72,
+      "local_self_host_tests_exit": 0,
+      "monitor_and_observer_tests": 25,
+      "monitor_and_observer_tests_exit": 0,
+      "test_logs": {
+        "cache_full_tests.log": {
+          "bytes": 13249,
+          "sha256": "ccff6bda1badf840677b89fab7aa4177f641055a89ef5c8f64880e29e5e874c7"
+        },
+        "cache_monitor_tests.log": {
+          "bytes": 5242,
+          "sha256": "0147a93bbad83e235c8ed3a4f8712067fdff6352d2815f182fef3590ff312d91"
+        }
+      },
+      "traffic_measurement": {
+        "baseline_payload_posts": 32,
+        "baseline_payload_wire_bytes": 2850829,
+        "effect_ack_done": false,
+        "fixture_head": "511720e83bbf302be4575a34221fb977b3665db3",
+        "fixture_tree": "1cc79111c6b81e57acee46accb46df9901fea735",
+        "metadata_readbacks": 1,
+        "network_scope": "LOOPBACK_PYTHON_TO_NODE",
+        "payload_posts": 1,
+        "per_update_source_bytes": 2097206,
+        "run_id": null,
+        "runtime_component_sha256": {
+          "docs/monitor/self-host.mjs": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db",
+          "docs/monitor/server.mjs": "d75fbefb52da2b1f5fb62cdbae899bd3503d5afa0abfba4b2dc2d3c1faa93264",
+          "tools/qikvrt_self_host.py": "3768ee58e6c38c99d21bc65e1bb3a83ee79bee118c8fdf634316bc8351672ba8"
+        },
+        "schema": "qikvrt-local-mesh-work-measurement/v1",
+        "single_batch_wire_bytes": 102440,
+        "source_binding_scope": "SELECTED_API_FILES_ONLY",
+        "source_head": null,
+        "source_tree": null,
+        "whole_mesh_performance_verified": false,
+        "work_units": 32
+      },
+      "measurement_scope": "Two real loopback Node receivers, same 32 committed source updates and original work instructions; 32 baseline POSTs versus 1 batched POST; separate authenticated GET readbacks. Not public independent-host performance.",
+      "boot_scope": "Selected API-materialized files, not a complete Git clone or full local bootstrap/history acceptance. Fresh exact-head hosted CI remains separate."
+    },
+    "safety": {
+      "native_effect_replication_deferred": false,
+      "proposals_executed": false,
+      "external_credentials_cached": false,
+      "all_node_runtime_verified": false,
+      "whole_node_idle_verified": false,
+      "whole_mesh_performance_verified": false,
+      "optimal_distribution_verified": false,
+      "effect_ack_done": false
+    },
+    "open_work": [
+      "Complete work/executor inventory and independently admitted persistent host/peer/key/own-host execution and private capture/transfer path.",
+      "Actual complete-node idle, numeric workload latency/throughput and queue age/backpressure, independent failure domains and public HTTPS readbacks.",
+      "Original native effect replication and enforced cross-node writer takeover remain open; deferred proposal batching cannot substitute for them."
+    ],
+    "resume": "Reobserve PR 457 HEAD/TREE and exact-source CI/artifacts. Use existing mesh-cache-stage/idle/send on an admitted owner-selected exportable workload; preserve failed/ambiguous outboxes. Do not deploy uncaptured native private state, apply unrelated staged changes, merge or publish from this receipt."
+  },
+  "local_cache_object_identity_repair": {
+    "source_parent_head": "f91071a114f38d4a25a4d70becf55076ea73f6a7",
+    "source_parent_tree": "1da32581b3a5181f36a50987d0919adfc9a81b7d",
+    "cause": "JavaScript object prototype names are not safe Work Unit identifiers: assigning __proto__ could omit that unit from the durable own-key inventory.",
+    "repair": "Reject __proto__, constructor and prototype as node and Work Unit IDs in the existing local cache and receiver; add direct local and authenticated real HTTP rejection controls.",
+    "human_contribution": "Ingolf Lohmann: original Mesh/cache/idle requirements and authorization.",
+    "artificial_cognitive_contribution": "OpenAI Codex GPT-6; build UNAVAILABLE: bounded protocol correctness repair, implementation and verification.",
+    "retention": "METADATA_ONLY",
+    "outputs": {
+      "tools/qikvrt_self_host.py": {
+        "bytes": 89788,
+        "sha256": "9e9da4d9550742df09e891faa4bf6ee2d88dfc25b42ef3707b82d1f1508c1234"
+      },
+      "docs/monitor/server.mjs": {
+        "bytes": 46630,
+        "sha256": "a2e8d66c81c7afa89b9ddfa81caf2f2e7d6f491da153df726b88fe08177090b8"
+      },
+      "tests/test_self_host.py": {
+        "bytes": 68114,
+        "sha256": "ce2e678a027c9cd6ab882d20c093f14b75acf1de57698693570fb30cec94d245"
+      }
+    },
+    "tests": {
+      "self_host": 73,
+      "monitor_observer": 25,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": {
+        "cache_full_tests.log": {
+          "bytes": 13442,
+          "sha256": "93e22646f0639419c234ee6e12c1a18ed917fcfbd7f249be4ad471513c45c54f"
+        },
+        "cache_monitor_tests.log": {
+          "bytes": 5241,
+          "sha256": "d0cf1044bad61bc9e5746640865a4fc140ed489774153533b58ca6b3ac70af28"
+        }
+      }
+    },
+    "traffic_measurement": {
+      "baseline_payload_posts": 32,
+      "baseline_payload_wire_bytes": 2850829,
+      "effect_ack_done": false,
+      "fixture_head": "edccdd7ae23731609ef7f458f3d5c3c14c228e04",
+      "fixture_tree": "1cc79111c6b81e57acee46accb46df9901fea735",
+      "metadata_readbacks": 1,
+      "network_scope": "LOOPBACK_PYTHON_TO_NODE",
+      "payload_posts": 1,
+      "per_update_source_bytes": 2097206,
+      "run_id": null,
+      "runtime_component_sha256": {
+        "docs/monitor/self-host.mjs": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db",
+        "docs/monitor/server.mjs": "a2e8d66c81c7afa89b9ddfa81caf2f2e7d6f491da153df726b88fe08177090b8",
+        "tools/qikvrt_self_host.py": "9e9da4d9550742df09e891faa4bf6ee2d88dfc25b42ef3707b82d1f1508c1234"
+      },
+      "schema": "qikvrt-local-mesh-work-measurement/v1",
+      "single_batch_wire_bytes": 102440,
+      "source_binding_scope": "SELECTED_API_FILES_ONLY",
+      "source_head": null,
+      "source_tree": null,
+      "whole_mesh_performance_verified": false,
+      "work_units": 32
+    },
+    "parent_exported_receiver_readback": {
+      "all_node_runtime_verified": false,
+      "candidate_source_head": "f91071a114f38d4a25a4d70becf55076ea73f6a7",
+      "candidate_source_tree": "1da32581b3a5181f36a50987d0919adfc9a81b7d",
+      "delivered": {
+        "batch_id": "8e258efc314910a7ac227a0c09469cb182e669752c4f202df7600513cf5f5f97",
+        "effect_ack_done": false,
+        "local_idle_state": "IDLE_STABLE_VALIDATED",
+        "proposal_execution": "NOT_EXECUTED",
+        "state": "MESH_WORK_BATCH_READBACK_CONFIRMED",
+        "whole_mesh_distribution_verified": false
+      },
+      "effect_ack_done": false,
+      "export_fixture_head": "d23d766ddbb1342fa068b504f66ef143b0e3ab9a",
+      "export_fixture_tree": "25b5ecda29d9af67d170e62cec0518f463f508f0",
+      "export_manifest_sha256": "0f4adf7ada5d80d6317b1ee3dd08d37a0096d2f04b036a6864123e4bb20e3293",
+      "frozen": {
+        "batch_id": "8e258efc314910a7ac227a0c09469cb182e669752c4f202df7600513cf5f5f97",
+        "effect_ack_done": false,
+        "state": "MESH_WORK_IDLE_BATCH_FROZEN",
+        "transferred_objects": 2,
+        "whole_node_idle_verified": false,
+        "wire_bytes": 29208,
+        "work_units": 1
+      },
+      "provider_apis_unavailable": true,
+      "public_readback_verified": false,
+      "receipt": {
+        "batch_id": "8e258efc314910a7ac227a0c09469cb182e669752c4f202df7600513cf5f5f97",
+        "effect_ack_done": false,
+        "entries_sha256": "0e20ffbce9d65253b4e601c2e51106d7f32290f7c236da408188941580a7a427",
+        "node_id": "local:export-fixture",
+        "proposal_execution": "NOT_EXECUTED",
+        "receipt_sha256": "a5d2935435e34f521b0a1e275a6eadd603fa8c37be6f3ab571830c70ec76e7ef",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "revision": 1,
+        "schema": "qikvrt-repository-work-receipt/v1",
+        "scope": "OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES",
+        "serving_node_id": "fixture:standalone",
+        "source_head": "d23d766ddbb1342fa068b504f66ef143b0e3ab9a",
+        "source_tree": "25b5ecda29d9af67d170e62cec0518f463f508f0"
+      },
+      "runtime_component_sha256": {
+        "docs/monitor/self-host.mjs": "a48fd75e9470bd580d218ac930210dfaa10ffd6b4de7987743227f83fec8c0db",
+        "docs/monitor/server.mjs": "d75fbefb52da2b1f5fb62cdbae899bd3503d5afa0abfba4b2dc2d3c1faa93264",
+        "tools/qikvrt_self_host.py": "3768ee58e6c38c99d21bc65e1bb3a83ee79bee118c8fdf634316bc8351672ba8"
+      },
+      "runtime_profile": "REFERENCE_ONLY_LOCAL_PROCESS; NOT_NATIVE_NODE_ADMISSION",
+      "schema": "qikvrt-exported-mesh-work-readback/v1",
+      "staged": {
+        "cache_hits": 0,
+        "cached_objects": 2,
+        "cloud_requests": 0,
+        "effect_ack_done": false,
+        "revision": 1,
+        "state": "MESH_WORK_LOCALLY_STAGED"
+      },
+      "state": "EXPORTED_S1_BATCH_AND_RESTART_VERIFIED"
+    },
+    "parent_readback_scope": "Exact f91071a1 export fixture and receiver/config wiring; historical source evidence, not a successor runtime receipt.",
+    "all_node_runtime_verified": false,
+    "whole_node_idle_verified": false,
+    "whole_mesh_performance_verified": false,
+    "effect_ack_done": false,
+    "next_action": "Reobserve the successor exact HEAD/TREE and native CI. Complete full work inventory and admitted own-host execution/capture/transfer before real all-node idle/failover/performance acceptance."
+  }
+}

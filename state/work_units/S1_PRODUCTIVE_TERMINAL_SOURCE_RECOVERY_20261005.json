@@ -1,0 +1,609 @@
+{
+  "artificial_contributor": {
+    "identity": "OpenAI Codex",
+    "model_family": "GPT-6",
+    "model_or_build_identity": "UNAVAILABLE",
+    "retention": "METADATA_ONLY",
+    "role": "history/ref/PR/artifact search, exact original-source recovery, sealed-source/start adapters, runtime tests and candidate verification"
+  },
+  "authorization": {
+    "candidate_implementation_and_push": "CURRENT_OWNER_DIRECTIVE",
+    "hosting_account_creation_or_spending": false,
+    "main_merge": "NOT_PERFORMED; MAIN_HISTORY_ONLY_MERGED_INTO_CANDIDATE",
+    "platform_account_or_protection_changes": false
+  },
+  "boundaries": {
+    "authority_effect": false,
+    "complete_original_repository_restoration": false,
+    "deployment_performed": false,
+    "effect_ack_done": false,
+    "historical_snapshot_path_equality": true,
+    "host_persistence_attested": false,
+    "host_restart_verified": false,
+    "ordinary_release": false,
+    "predecessor_evidence_transfer": false,
+    "provider_independent_public_runtime_verified": false,
+    "public_readback_verified": false,
+    "public_url": null,
+    "source_recovery_proved_unrecoverable": false
+  },
+  "deployment_hold": {
+    "authorized_deployment_identity": null,
+    "bound_persistent_mount_or_device": null,
+    "callable_own_host_operation": null,
+    "code": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "public_route": null,
+    "retry_condition": "Authorized callable host, exact identity, persistent device and authenticated public HTTPS, then exact install/use/readback/deployed restart"
+  },
+  "exact_head_gates": {
+    "firefox_runtime_command": "docker run --network none ... python3 -B -m unittest -v tests.test_self_host_firefox",
+    "readback_artifact": "qikvrt-productive-terminal-readback-<actual-candidate-head>",
+    "run_binding_location": "Native GitHub Actions metadata/checks and exact-head readback artifacts; no self-reference of containing commit",
+    "skipping_or_gate_weakening": false,
+    "state": "REQUIRED_FRESH_ON_COMMITTED_SUCCESSOR; NO_INHERITED_PASS",
+    "test_command": "make test repository-monitor-test self-host-test"
+  },
+  "human_principal": {
+    "instruction_date": "2026-10-05",
+    "instruction_source": "CURRENT_USER_ACTION",
+    "name": "Ingolf Lohmann",
+    "purpose": "Search all reachable source history; recover original productive TEMDD/Firefox/noVNC blobs with provenance or explicitly reconstruct only if unavailable; validate provider-independent start; no deployment or EFFECT_ACK_DONE without fresh runtime readback.",
+    "roles": [
+      "creator",
+      "product_owner",
+      "code_owner"
+    ]
+  },
+  "implementation_files": [
+    {
+      "bytes": 8111,
+      "git_blob_sha1": "2e1cf1b67fc740681e7cd7a4e348f6da299f974c",
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "eede5fcbc774baf03a7188261776651416b5c3cab51efcee6426ad8ecd87925c"
+    },
+    {
+      "bytes": 3058,
+      "git_blob_sha1": "cffcb872da82ac29d6b6f312d255d7a38948506f",
+      "path": ".github/workflows/qikvrt_temdd.yml",
+      "sha256": "90278614a3befd6353181998cd97a55b5102c1f863e4633706088354cf14b653"
+    },
+    {
+      "bytes": 11818,
+      "git_blob_sha1": "fcd50c15f4e882913370a41d8fcd841c5e2b4a66",
+      "path": "Makefile",
+      "sha256": "3ebd7151ba55dd2b5a39380403054481a9c04292d573e62fa7db82633fd6530a"
+    },
+    {
+      "bytes": 4957,
+      "git_blob_sha1": "b793a5ba0cb966520f681399d8f2a61ceb5fe883",
+      "path": "deploy/universal-terminal/Dockerfile",
+      "sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7"
+    },
+    {
+      "bytes": 5001,
+      "git_blob_sha1": "c2099bf301108389192c72497a3637acae392d7a",
+      "path": "deploy/universal-terminal/cloud-entrypoint.sh",
+      "sha256": "97b2507ed2ac3955ed80682403ed482334201511849285c881e5c8739bfc6b9c"
+    },
+    {
+      "bytes": 5661,
+      "git_blob_sha1": "f807391adabc9046fa37ba847f572acbd1709e46",
+      "path": "deploy/universal-terminal/compose.yaml",
+      "sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1"
+    },
+    {
+      "bytes": 314,
+      "git_blob_sha1": "1411d7f9ab41a18fd28b1209683ac9a1e232066f",
+      "path": "deploy/universal-terminal/db.qik-vrt.mesh",
+      "sha256": "2b76539a1a5828fead91905b46dd62113b0a3e97985c5339d0e2077f95a28f95"
+    },
+    {
+      "bytes": 7470,
+      "git_blob_sha1": "3db27a8487e67b2beac596e1f576afe1cf95b21e",
+      "path": "deploy/universal-terminal/entrypoint.sh",
+      "sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b"
+    },
+    {
+      "bytes": 1604,
+      "git_blob_sha1": "9b980bdf846cdfe2f96e50f9ec9c349c3198ef50",
+      "path": "deploy/universal-terminal/mesh-index.html",
+      "sha256": "f1d52c2edee53ebcb546803eb549aa0027121dc7b43fd3f861827612f0f162c6"
+    },
+    {
+      "bytes": 1900,
+      "git_blob_sha1": "1a778891a805825bb82d7e475c97d9b02c3e6a6e",
+      "path": "deploy/universal-terminal/mirror-bootstrap.sh",
+      "sha256": "f6889cda54e74b6fa3bc2faf9f73fbe9aca48c394d461769d1f91e5a24202edc"
+    },
+    {
+      "bytes": 357,
+      "git_blob_sha1": "17b250ab096a70c188913d9368e0493c6ffd0b87",
+      "path": "deploy/universal-terminal/named.conf",
+      "sha256": "5df23f5a9d0217cbd38a1d86dd6b661f9cbeea72489a577ef1349948165c6d90"
+    },
+    {
+      "bytes": 4026,
+      "git_blob_sha1": "4e13a623d72896cae563d57b710766af3744a27a",
+      "path": "deploy/universal-terminal/nginx.conf",
+      "sha256": "583491a285112a900cedb5b1e4dc001ddc1df1efd90d13f1f234127f0758489b"
+    },
+    {
+      "bytes": 3992,
+      "git_blob_sha1": "06a952c1e61ce94d1b569d6171b1853e37dc30dc",
+      "path": "deploy/universal-terminal/qikvrt_ip_bootstrap.c",
+      "sha256": "73c9c63e410e4e3f0802627473eac9ae19d6c89ca85a07e75a0bd63136482a0e"
+    },
+    {
+      "bytes": 4396,
+      "git_blob_sha1": "454606e89d09f845ed7470b9aed764dfb1ba884e",
+      "path": "deploy/universal-terminal/qikvrt_smtpd.py",
+      "sha256": "9b68ef0b402ac269418571eebfc9aee5fd33eece849dbe259bd69b73a1e3ce29"
+    },
+    {
+      "bytes": 1548,
+      "git_blob_sha1": "3bec1909edc484bb15116a0a23c27f5b4e20a3e9",
+      "path": "deploy/universal-terminal/runtime-health.sh",
+      "sha256": "731d9e2adddf83999623424f9a306a6dd1ff2b142ec6a179cfd2c9ae12f13bf3"
+    },
+    {
+      "bytes": 5285,
+      "git_blob_sha1": "54c672e48c52b3d5b94a47d73a76137e67fb4662",
+      "path": "deploy/universal-terminal/service-entrypoint.sh",
+      "sha256": "57c34784cf4a82a93a7639cf7917f37bb75e1a4b404e41243f890c5a85f06054"
+    },
+    {
+      "bytes": 151,
+      "git_blob_sha1": "bd555a057536c9f913fbdcc2a1a9ad3b42da28ab",
+      "path": "deploy/universal-terminal/snmpd.conf",
+      "sha256": "3d7caeb6b2f8e0a75f6c66a01b6520ba2403c5ac0b9f64837a11ee2e61e17528"
+    },
+    {
+      "bytes": 468,
+      "git_blob_sha1": "e06dd174e059b3e81c0706278cfb5c269dbb380c",
+      "path": "deploy/universal-terminal/sshd_config",
+      "sha256": "2effb563d95bdb35c9cb22ed144b718dd5ba6df509c70e3db8c4cb44f9b839b3"
+    },
+    {
+      "bytes": 12482,
+      "git_blob_sha1": "919b735bfee5dfa68b94725453a397c7439a882e",
+      "path": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+      "sha256": "cd8a7ce888ab768fa0e659a59c1f38cc0afce8a3d5618bf519e10af00a3eb430"
+    },
+    {
+      "bytes": 11922,
+      "git_blob_sha1": "b1e06afc86a04d9989150b3c1690389ac5723631",
+      "path": "docs/monitor/README.md",
+      "sha256": "5afc63b464462d7f6eb094e23d59adf328df22de937a03ddfcf8bd884bbf01f0"
+    },
+    {
+      "bytes": 9774,
+      "git_blob_sha1": "afb34dc921ae63fc3c1bd1c24d775b4ad7312bf9",
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "5620d5840849f6e96f97a04bf5b631be4a534c2b4ccaead0767442f254cd845f"
+    },
+    {
+      "bytes": 10647,
+      "git_blob_sha1": "2c32118f30c37d8393ae174b06aedb3ece1fe4c0",
+      "path": "docs/terminal/temdd/index.html",
+      "sha256": "847109600bdc487b3ba18d92393aa03370386780d8fdca2bd4529a7269d55819"
+    },
+    {
+      "bytes": 241,
+      "git_blob_sha1": "fa01b335fe878c663475c441e4a5fd8d8e938c20",
+      "path": "evidence/node_health/37235824372-1.json",
+      "sha256": "0be70fd732958190edaab039617b00a26e244ff0d34f88931d240b9e204f69d6"
+    },
+    {
+      "bytes": 241,
+      "git_blob_sha1": "fa01b335fe878c663475c441e4a5fd8d8e938c20",
+      "path": "evidence/node_health/LATEST.json",
+      "sha256": "0be70fd732958190edaab039617b00a26e244ff0d34f88931d240b9e204f69d6"
+    },
+    {
+      "bytes": 262,
+      "git_blob_sha1": "c872f704c36085ddffe8b2539675463bb6fa3b26",
+      "path": "evidence/node_registration_renewal/37235824372-1.json",
+      "sha256": "893f5c4388631bd4ea2ac2c3f247b2060f2c2701fc123a9c56b5486909655c40"
+    },
+    {
+      "bytes": 262,
+      "git_blob_sha1": "c872f704c36085ddffe8b2539675463bb6fa3b26",
+      "path": "evidence/node_registration_renewal/LATEST.json",
+      "sha256": "893f5c4388631bd4ea2ac2c3f247b2060f2c2701fc123a9c56b5486909655c40"
+    },
+    {
+      "bytes": 120508,
+      "git_blob_sha1": "dfe1c78ead2edff550895e3fb32200e8892bce5d",
+      "path": "evidence/self_host/SOURCE_RECOVERY_20261005.json",
+      "sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e"
+    },
+    {
+      "bytes": 2366,
+      "git_blob_sha1": "87d19ab6bee748a222c64df164f59c2df928c4df",
+      "path": "evidence/self_host/SOURCE_RECOVERY_LOCAL_20261005.json",
+      "sha256": "c829c61c6f6ec6f9dfe2261b6cf1ca24ac46afc9a0ea0e31085109ab5981e78c"
+    },
+    {
+      "bytes": 563,
+      "git_blob_sha1": "93da558c120c34ca4ba6925c932e77017f519566",
+      "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "sha256": "01bbc8663e865f4fbdb2dfc97b73e82ec1b14a5e5e8ffa559ebf1bff1a2b01f3"
+    },
+    {
+      "bytes": 542,
+      "git_blob_sha1": "c34906996cbeda09c41b9c58da7dff17c21d7c30",
+      "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "sha256": "88d1cb6956b40414fcdcc546751fbf88d93ae7f43987d8e3be032f9b8843797c"
+    },
+    {
+      "bytes": 422,
+      "git_blob_sha1": "eb661b8dfcaf696f129070f8a0429d1a4ce57446",
+      "path": "runtime/self-host/CONFIG.example.json",
+      "sha256": "c9ce35bb8897d8ccd3e5b726422b2e09bb534ef6519ddf90f0fe6dbce3ffb424"
+    },
+    {
+      "bytes": 1208,
+      "git_blob_sha1": "08a0a094ecdbec08bf60ea4ec13dfec0f1dde34e",
+      "path": "runtime/self-host/Dockerfile",
+      "sha256": "d393d3eb7eaae2c1dcd4404ef6cf86600ea794a068ff32cf3a793d3abb0fec3b"
+    },
+    {
+      "bytes": 3910,
+      "git_blob_sha1": "bff9c80bc29d276b9ce8e050093646c6fc6aaedf",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "44b675f6fcf1abb653dafd79197da9f77a2077a7e3fe7fd658503208a878fb91"
+    },
+    {
+      "bytes": 8829,
+      "git_blob_sha1": "0f7fff71870dd68707e75325ae7acbd56901842a",
+      "path": "runtime/self-host/README.md",
+      "sha256": "862acc5d841f76be8dc587a1dfa0f1610ef274717c5e0696f8d324a7a05aed35"
+    },
+    {
+      "bytes": 5569,
+      "git_blob_sha1": "43b677d3044a71cccc2a0b9a19a1fd2741191a69",
+      "path": "runtime/self-host/RECOVERED_TERMINAL.md",
+      "sha256": "17cce25cdc39af59608f1bfe872c2b0a9f766a56ffd146b31ea84baf274456d4"
+    },
+    {
+      "bytes": 6577,
+      "git_blob_sha1": "1eefd2549e6866fe0e2187174c55060b2f115ca3",
+      "path": "runtime/self-host/original-firefox/README.md",
+      "sha256": "f71fbf101d2d3a365fc094cd5697493826459688b377a67ca575f01499d2d9c6"
+    },
+    {
+      "bytes": 3955,
+      "git_blob_sha1": "6e3d44df2928052e4239c6cd53163455d23453a4",
+      "path": "runtime/self-host/original-firefox/_locales/ar/messages.json",
+      "sha256": "42ec0581a07b76d2c25d227c39151af2caaba7b8883551840db9497207a1672c"
+    },
+    {
+      "bytes": 3670,
+      "git_blob_sha1": "11fd70240efd73878f652ab3c212bfe8dcf910f5",
+      "path": "runtime/self-host/original-firefox/_locales/de/messages.json",
+      "sha256": "56986ec3e64d8e2a6f070bc438bd4c4e0cba1c3b53ccb8e6dc7f453a01abb4cb"
+    },
+    {
+      "bytes": 3411,
+      "git_blob_sha1": "50b8040e5ec48b17ddfa702c4aab61da23086b32",
+      "path": "runtime/self-host/original-firefox/_locales/en/messages.json",
+      "sha256": "ad4403073b812bce47d215ea936b010df68cd8cedaab9f7cc74fddf44c659a6d"
+    },
+    {
+      "bytes": 3639,
+      "git_blob_sha1": "d3e32c91067f40a7a66e1e1bbf22293d54f6fb7f",
+      "path": "runtime/self-host/original-firefox/_locales/es/messages.json",
+      "sha256": "1e3037677d0abf91dfc9fb33c81fe81313e745f891e2143e46351e5886246090"
+    },
+    {
+      "bytes": 3765,
+      "git_blob_sha1": "de4d3108fea6ae9a9f4a843e9795dd594a9be0e3",
+      "path": "runtime/self-host/original-firefox/_locales/fr/messages.json",
+      "sha256": "4d2265145bcc645b899b9d43b73e9fd002133ce99a80e78def9792c990fcf225"
+    },
+    {
+      "bytes": 5834,
+      "git_blob_sha1": "34baa5c2a8312e3a5f47d08f1190ec9246c970d9",
+      "path": "runtime/self-host/original-firefox/_locales/hi/messages.json",
+      "sha256": "231458fdd2cd0a8d43da6382e304a12e548da389767de53f9eb1e4c2b7f13eb0"
+    },
+    {
+      "bytes": 3542,
+      "git_blob_sha1": "ad54ebfde1856ddd1bddd6507b1edddd55e633b8",
+      "path": "runtime/self-host/original-firefox/_locales/id/messages.json",
+      "sha256": "09fb19851b9e9370524244db6bbc84931a354d942325ac49a6660a4e15f12d95"
+    },
+    {
+      "bytes": 3716,
+      "git_blob_sha1": "18ddf3373a94b8562778cecea654d113a6d3ce28",
+      "path": "runtime/self-host/original-firefox/_locales/it/messages.json",
+      "sha256": "499086963505889846a271b5f0415d9b52a5884028634086019b88dc6cc10d34"
+    },
+    {
+      "bytes": 4021,
+      "git_blob_sha1": "11bce6bf298aaa2e4a5ed95392ea3b5afb721ef0",
+      "path": "runtime/self-host/original-firefox/_locales/ja/messages.json",
+      "sha256": "9e38ac2cdcf822cd21b0d7fdc9c3b915b94aa6770272780450d4a871bdf7ce3b"
+    },
+    {
+      "bytes": 3787,
+      "git_blob_sha1": "f6b1d88576b2ccdc8d44bb21f27fd5d35b7acd1f",
+      "path": "runtime/self-host/original-firefox/_locales/ko/messages.json",
+      "sha256": "5dbfbf3ec9a2a2f7b9ebb217ad26221bbef89ebb203bf7c95be5c88646ca37c3"
+    },
+    {
+      "bytes": 3629,
+      "git_blob_sha1": "2d5d1c499251a3f75346b8b2b649e3d88df929ab",
+      "path": "runtime/self-host/original-firefox/_locales/pt_BR/messages.json",
+      "sha256": "f6c849089370d4a13b73cef843fcb39a43c7fa7a402dbfbc16fbd7a8a572b3e5"
+    },
+    {
+      "bytes": 4706,
+      "git_blob_sha1": "7aee4bec673294353d2276d77723767611a5a587",
+      "path": "runtime/self-host/original-firefox/_locales/ru/messages.json",
+      "sha256": "f006010304185d32003f0bed98ff42a76a3ad4d5f97b38371b4cb524ab10aea2"
+    },
+    {
+      "bytes": 3513,
+      "git_blob_sha1": "d72d5265e778cb265bf266c06e3816085ab86c59",
+      "path": "runtime/self-host/original-firefox/_locales/tr/messages.json",
+      "sha256": "6f442192d324f983ede84f9735ae681e51e6235a6ab7b4dd61cdd9a53daf8775"
+    },
+    {
+      "bytes": 3350,
+      "git_blob_sha1": "602cb0c77a192d8de51f8cba8161209516295eaa",
+      "path": "runtime/self-host/original-firefox/_locales/zh_CN/messages.json",
+      "sha256": "e71fa8c582e6f67de441d2128ab4e63d8ad9a2e12c896837010bc618d9c0d8d4"
+    },
+    {
+      "bytes": 15796,
+      "git_blob_sha1": "7900e7c9f89a870772471dcd5be22aef171cbc75",
+      "path": "runtime/self-host/original-firefox/authenticated_delivery.js",
+      "sha256": "8b62b0dd7beadc24b5d037102d10b3590714e446298e833a5ae41eeeea74ff26"
+    },
+    {
+      "bytes": 15060,
+      "git_blob_sha1": "96831eafc0182599400bf2af3497ded47376d16d",
+      "path": "runtime/self-host/original-firefox/background.js",
+      "sha256": "d76e058245d216d28c78065031006377b80e6396f102356c3c359e3635961cc3"
+    },
+    {
+      "bytes": 9424,
+      "git_blob_sha1": "dc3bc7d525a762f318174b1e8854b5c6df3050e8",
+      "path": "runtime/self-host/original-firefox/content.js",
+      "sha256": "f41f930c6e0600956d1436e7f25c100c8d55200ca6b20e3581bf3aab4f4bcbae"
+    },
+    {
+      "bytes": 1578,
+      "git_blob_sha1": "5af919973660056c11d1cb94dcfa2092956d4192",
+      "path": "runtime/self-host/original-firefox/manifest.json",
+      "sha256": "f17889e6922a1c0eb84f949c49c1ef20ba73e80f10ca8e36c0c23f585d0bed65"
+    },
+    {
+      "bytes": 1634,
+      "git_blob_sha1": "71a869d548cdfec3f546b905246d67811e3ee601",
+      "path": "runtime/self-host/original-firefox/options.html",
+      "sha256": "5c972e6528d43608f5ecf754054ddaa22992e53d9a49d93c3d258b0b7e88c5b3"
+    },
+    {
+      "bytes": 1154,
+      "git_blob_sha1": "92bdd1cb494267b69d4fa43ec97a8025d9da26fa",
+      "path": "runtime/self-host/original-firefox/options.js",
+      "sha256": "a20467bc0d329369b562a02909412bbbc6596cd9e5e3f27530fcfa4373669f4d"
+    },
+    {
+      "bytes": 5377,
+      "git_blob_sha1": "03da429fe609603783f4829bb952ffd3c21dce6a",
+      "path": "runtime/self-host/original-firefox/review_effect.js",
+      "sha256": "a905219e62db17e5a9f355bbcb10e64efdeb9c02472572967cb53dafa0e114be"
+    },
+    {
+      "bytes": 3536,
+      "git_blob_sha1": "abf1f6ffae3a4760652214e73b46b4ed107ad521",
+      "path": "runtime/self-host/original-firefox/terminal.css",
+      "sha256": "769dffd97cb95d995a4b72b073cbef669391421b0c4acabf07f9ef79cb1f99ed"
+    },
+    {
+      "bytes": 13389,
+      "git_blob_sha1": "c0dbf5d880d146c23645d8de971c34ae64da6906",
+      "path": "runtime/self-host/original-workflows/qikvrt_temdd.yml",
+      "sha256": "5ecd9a8470f02da7e32da16812fe61f2fe42e214b00bec2d08ee139daa5e99c8"
+    },
+    {
+      "bytes": 5414,
+      "git_blob_sha1": "302786ada70bf9f11a9a1d1acaa12a94f9e95cb5",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "f1968265f61fcb42e38ea43777fdb782ec741d08f744f0e520c2a315db2bd0b7"
+    },
+    {
+      "bytes": 19032,
+      "git_blob_sha1": "f094577ae3012a157e930600aeada09e65c9443f",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "37c36e12e675290fee02c2e5bcc992ac22f4254eb9bba17b95d6167144d507ee"
+    },
+    {
+      "bytes": 9805,
+      "git_blob_sha1": "514f7011120ff6c2c82d27da0e886497375ac96e",
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "sha256": "a410c5c4a29a5f16a66c9dd6633c9d18fa9bd9ff3f63f78e70cdd4aa7699f3cc"
+    },
+    {
+      "bytes": 4169,
+      "git_blob_sha1": "b350a1977a9779aad3b811da06dd730216e9fcd5",
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "sha256": "d852c87a440cc1185ebe54829c8a36cae275dd91c880eb9871e40d529d08acdb"
+    },
+    {
+      "bytes": 30823,
+      "git_blob_sha1": "30ff5f58318a54f06efb86f437dea1f7239c9c00",
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "039b7c34fe4ae8766ae0b141734ef91131377e5e58fedb7746320242543da2d8"
+    },
+    {
+      "bytes": 21653,
+      "git_blob_sha1": "6322bd45edb9de7d2aa07dee6fbc12307148475c",
+      "path": "src/qikvrt_temdd_event_ledger.py",
+      "sha256": "94908e6a50ce107a79965055f3ecabae10e7589d96f7a26496d2a4956b068b13"
+    },
+    {
+      "bytes": 5812,
+      "git_blob_sha1": "4ddea0669f9a420b9664301cf025ef6e579abdc6",
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "sha256": "e4cdc28dbc9886fa5cdb9100b5d340a2b0c6f5f014bc6a467d155d312c90e6ea"
+    },
+    {
+      "bytes": 27261,
+      "git_blob_sha1": "f92602d4a8698c7d3b0547c585b0144e39fea8ab",
+      "path": "state/work_units/SELF_HOSTED_NODE_PACKAGE_S1_20261004.json",
+      "sha256": "60a326d5ebe23f5fce93320e3de39d325b0cecadbf3050adb111f5a41d5c0e53"
+    },
+    {
+      "bytes": 8652,
+      "git_blob_sha1": "1891b1e2edcdbb2b0c5ebeb73c787e3d7ab15564",
+      "path": "tests/test_qikvrt_temdd_public_proxy.py",
+      "sha256": "505d1608109f75caac698e2af97278a58431b7a2235f8f2ce03ed98cb3a962ee"
+    },
+    {
+      "bytes": 20746,
+      "git_blob_sha1": "68b5aac5419c0c99fd19c73595f6c8edf05a933c",
+      "path": "tests/test_self_host.py",
+      "sha256": "372d2265978332beb02da44bd277d0d78924f418fe0a369a94b99844a1f15e22"
+    },
+    {
+      "bytes": 10825,
+      "git_blob_sha1": "286a15030c9a7bd8c1c04b9493264c0a9edcb5ab",
+      "path": "tests/test_self_host_firefox.py",
+      "sha256": "f4365f8c37b776be987e0f6cf08badec013c39e18751d42af24d659769a8fc29"
+    },
+    {
+      "bytes": 10400,
+      "git_blob_sha1": "0d444ae11b84baf790e00be062268346002b9ded",
+      "path": "tests/test_self_host_temdd.py",
+      "sha256": "eaabaa8149736bf638741168e26e7c3fbb8feec48c7391edeac04556d90c160b"
+    },
+    {
+      "bytes": 21663,
+      "git_blob_sha1": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
+      "path": "tests/test_temdd_event_ledger.py",
+      "sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966"
+    },
+    {
+      "bytes": 3806,
+      "git_blob_sha1": "58f5af0d026dfa9319f99b3beb8dcd6e30aec18d",
+      "path": "tests/test_temdd_runtime_subject_binding.py",
+      "sha256": "e6c1c98665c50fdf2c5de1ac29f17f5ccf78aefdcdbd9abb4e700aeb5ac6bc4a"
+    },
+    {
+      "bytes": 14890,
+      "git_blob_sha1": "171d755a36e273154625fbed6512fc79c998001b",
+      "path": "tools/ai_runtime_bootloader.py",
+      "sha256": "e15aaf5f416ff53098d677fb8286feb75fe1d20d58d52332a9d0d1550d217317"
+    },
+    {
+      "bytes": 24266,
+      "git_blob_sha1": "b6d8600b7894920971890ce06d7d2ec9da510668",
+      "path": "tools/bootstrap-runtime.ps1",
+      "sha256": "a304946b15f0a421de4247a36698091298e5fa68965e87f9c5d35031c13f7328"
+    },
+    {
+      "bytes": 18480,
+      "git_blob_sha1": "7f84753d3e9d258a68e98f25010d42710594a94d",
+      "path": "tools/bootstrap-runtime.sh",
+      "sha256": "4943adc0ff18dd83b507d64b29204452c46f7e6d3c483c31e88926a978a00d52"
+    },
+    {
+      "bytes": 10198,
+      "git_blob_sha1": "94f553fe54038389c19bc8b95a0a69c86961a9bf",
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "sha256": "e2c674f221255e9ed2cf495bb897181a8352420acb656bd7fb7e0e8193ced1dd"
+    },
+    {
+      "bytes": 28982,
+      "git_blob_sha1": "1788bab299d3fcaf07af99c57a2d1f2471636d99",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "75d334b48eefb837ad02b285765764b5a0912d6b0bc2596284a7ae2ba02c1345"
+    }
+  ],
+  "local_validation": {
+    "bytes": 2366,
+    "git_blob_sha1": "87d19ab6bee748a222c64df164f59c2df928c4df",
+    "path": "evidence/self_host/SOURCE_RECOVERY_LOCAL_20261005.json",
+    "sha256": "c829c61c6f6ec6f9dfe2261b6cf1ca24ac46afc9a0ea0e31085109ab5981e78c"
+  },
+  "main_continuation_parent": "0a44160d16c3937dc5888652791f4bd1a7136af7",
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "pr": 457,
+  "reuse_evidence": {
+    "bytes": 120508,
+    "git_blob_sha1": "dfe1c78ead2edff550895e3fb32200e8892bce5d",
+    "path": "evidence/self_host/SOURCE_RECOVERY_20261005.json",
+    "sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e"
+  },
+  "runtime_gate_repairs": [
+    {
+      "effect_ack_done": false,
+      "executed_scope": "55 native/source/original-subject tests executed; single original Makefile-admission failure; GUI not started",
+      "failed_head": "ccf46e64ebd54fcdb1e064cc4c04d4fe0cbb8b47",
+      "failed_tree": "ebc16c3b12864b917a6de715b7d7347969513546",
+      "failure": "Original test_repository_entrypoint_and_test_admission requires real Makefile test: temdd-event-ledger-test dependency",
+      "focused_local_regression": {
+        "command": "python3 -B -m unittest -v tests.test_self_host tests.test_self_host_temdd.SourceRecoveryTests tests.test_temdd_runtime_subject_binding tests.test_temdd_event_ledger.ProducerTests.test_repository_entrypoint_and_test_admission",
+        "exit_code": 0,
+        "scope": "LOCAL_FIXTURE_AND_ORIGINAL_ADMISSION; NATIVE_GUI_READBACK_STILL_REQUIRED_ON_SUCCESSOR",
+        "tests": 25
+      },
+      "fresh_runtime_gates": "REQUIRED_ON_SUCCESSOR; NO_INHERITED_PASS",
+      "job_id": 111591981593,
+      "repair": "Restore the original named test target as an unconditional dependency of self-host-test and an explicit S1-profile dependency of make test; original tests remain byte-identical; preserve generic portable platform contract; preserve original broad TEMDD workflow unchanged as archived source and add a real focused S1 native workflow instead of invoking the unavailable historical compiler/backend closure",
+      "run_id": 37255635654
+    },
+    {
+      "cause_inference": "The launcher inherits the deliberately dead HTTP_PROXY fixture; its default urllib opener routes the loopback noVNC startup read through that proxy although child browser env is clean",
+      "effect_ack_done": false,
+      "failed_head": "fe06b23d43b08a9da6c6f22bc2d8c20f8fc9d799",
+      "failed_tree": "f6291fdb27492cff65b8d1dca0cfb80b0275dd56",
+      "failure": "BROWSER_STARTUP_READBACK_TIMEOUT; seven actual Firefox positive-start cases fail; native cases pass; no positive browser runtime receipt",
+      "fresh_runtime_gates": "REQUIRED_ON_SUCCESSOR; NO_INHERITED_PASS",
+      "job_id": 111593667702,
+      "local_causal_regression": {
+        "actual_control": "Default opener fails against the dead inherited proxy; explicit no-proxy opener returns byte-exact actual loopback HTTP and rejects different local asset bytes",
+        "command": "python3 -B -m unittest -v tests.test_self_host_temdd.SourceRecoveryTests",
+        "exit_code": 0,
+        "tests": 3
+      },
+      "repair": "Explicit no-proxy loopback noVNC opener; name each readiness edge; retain bounded synthetic CI component failure logs; no readiness timeout enlargement or gate removal",
+      "run_id": 37256188418
+    },
+    {
+      "effect_ack_done": false,
+      "exact_artifact": {
+        "downloaded_and_hash_verified": true,
+        "id": 11323107645,
+        "sha256": "ce06993d25efc019d582c0f8f46050e1b0643bdcb284efa540fece8091f54e74"
+      },
+      "failed_head": "799b46c37a31e88204dd3ab76e873a6cb84fa6bd",
+      "failed_tree": "97631ef4ad91fa149ca7862b16de64e4712d7b4c",
+      "failure": "Cold Firefox/native/noVNC readback passes; browser crash restart and later cases fail BROWSER_CHILD_EXITED",
+      "fresh_runtime_gates": "REQUIRED_ON_SUCCESSOR; PREDECESSOR_COLD_START_NOT_TRANSFERRED",
+      "job_id": 111595645773,
+      "observed_additional_socket_boundary": "LibVNCServer logs an undeclared default IPv6 listener on 5900 even with configured IPv4 port; disable both x11vnc IPv6 and library IPv6 default; assert actual kernel listeners equal the four declared IPv4 loopback ports",
+      "observed_cause": "xvfb.log reports Server is already active for display 101 and /tmp/.X101-lock after process-group SIGKILL; test Python was namespace PID1 without an orphan reaper",
+      "repair": "Use Docker platform --init, bind the actual reaper executable and engine version, assert old Xvfb PID removal and fresh acknowledged profile/SQLite readback",
+      "run_id": 37256843587
+    }
+  ],
+  "schema": "qikvrt-attributable-work-unit/v1",
+  "source_classification": {
+    "authority_origin_commit_directly_retrieved": false,
+    "latest_railway_production_equality": "UNVERIFIED",
+    "new_code": "S1_PACKAGE_BINDING_AND_PORTABLE_BROWSER_START_ADAPTER; NOT_RESTORED_ORIGINAL_SOURCE",
+    "originals": "44 BYTE_EXACT_HISTORICAL_FILES; SEE SOURCE_RECOVERY",
+    "reconstructed_daemon": false
+  },
+  "source_parent_head": "dfddd74b031867c5113827780ad937379c85914f",
+  "source_parent_tree": "480a1275729bc96e3b71566b24fbaca41e948787",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "state": "ORIGINAL_SOURCE_RECOVERED_AND_S1_ADAPTER_IMPLEMENTED; FRESH_RUNTIME_GATES_REQUIRED",
+  "work_unit_id": "S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005"
+}

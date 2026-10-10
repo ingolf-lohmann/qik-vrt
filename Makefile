@@ -120,3 +120,36 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: repository-monitor-test self-host-test
+repository-monitor-test:
+	node docs/monitor/observer.test.mjs
+	node --test docs/monitor/monitor.test.mjs
+	node --test docs/monitor/mesh-file.test.mjs
+
+.PHONY: temdd-event-ledger-test
+temdd-event-ledger-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests/test_temdd_event_ledger.py tests/test_temdd_runtime_subject_binding.py
+
+# The historical admission target is part of explicitly selected S1 runtimes.
+# Generic portable callers retain their existing platform contract.
+ifneq ($(filter self-host self-host-firefox self-host-systemd,$(QIKVRT_RUNTIME_PROFILE)),)
+test: temdd-event-ledger-test
+endif
+
+self-host-test: tool-cache-contract temdd-event-ledger-test
+	node --test docs/monitor/mesh-file.test.mjs
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_provider
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_temdd
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_migration
+	node --check docs/monitor/self-host.mjs
+	node --check tools/qikvrt_mesh_monitor_readback.mjs
+
+.PHONY: origin-adapter-test origin-adapter-browser-test
+origin-adapter-test: tool-cache-contract
+	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" $(PYTHON) -B -m unittest -v tests.test_self_host_temdd.OriginExportTests
+	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.test.mjs
+
+origin-adapter-browser-test: origin-adapter-test
+	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.browser.test.mjs
