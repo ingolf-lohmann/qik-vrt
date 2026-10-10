@@ -1,0 +1,102 @@
+{
+  "_license": {
+    "classification": "machine_readable_prepublication_return_receipt_draft",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "candidate_files": [
+    {
+      "bytes": 85875,
+      "git_blob_sha1": "df26b27615e4240d70c015c4658f3bbc129220d5",
+      "path": "QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.pdf",
+      "sha256": "c578e780ec85eb4e8768ef8b30ee65357a1ec5c1355c5adc14c2dfdd91a1db49"
+    },
+    {
+      "bytes": 25088,
+      "git_blob_sha1": "bbd854246f4b3fe8e211aca01679fc294cf178f4",
+      "path": "QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.tex",
+      "sha256": "8edf0db8896e302e3eefa06a20e60ff47bdb67cad68de35118ca4255b7e07f1c"
+    },
+    {
+      "bytes": 12554,
+      "git_blob_sha1": "79f8a380f0d0824bc433b2ee639b385aee6fabf1",
+      "path": "QIK-VRT_Brief_2610_Vorlesefassung_DE.md",
+      "sha256": "5902d70059e3703940408b960d40de26f68049d86b4442347fab736757b9894e"
+    },
+    {
+      "bytes": 8059,
+      "git_blob_sha1": "f7178385a822c0d55c94391a04f6ded334b8cea3",
+      "path": "QIKVRT_FUTURE_EFFECT_CAPSULE_V1.json",
+      "sha256": "da0a50ef230ea16f37266e5e3f3ada59044cc34bacdefe4644e13a493c1d53ca"
+    },
+    {
+      "bytes": 3992,
+      "git_blob_sha1": "417d542b4880779994cc48d0a128c41242a2c6d2",
+      "path": "verify_future_effect_capsule.py",
+      "sha256": "307defa8f9c0fa0fb77683da32da1a588a3963f2d95714279005b8e2de981e6b"
+    },
+    {
+      "bytes": 11504,
+      "git_blob_sha1": "04f38091fed7357cd1667f3bc643aad582dccb95",
+      "path": "CLAIM_MATRIX.json",
+      "sha256": "2be9cef8b9c70482ce3ebaa677a56f414d88bd232cdbe0e8f6167a17ef97f414"
+    },
+    {
+      "bytes": 5012,
+      "git_blob_sha1": "632c325bdfa8c39c95c834ab6151a492e9d4a4b8",
+      "path": "SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "a04bf8813fa086181a1a3fa4d4f89d368d54b57eab09019a340b33730cd455da"
+    },
+    {
+      "bytes": 740,
+      "git_blob_sha1": "3599562b36fd527ec523a25c8f58897eb053fb4c",
+      "path": "CITATION.cff",
+      "sha256": "e2ca33cd99e7f9c953dc945decb9028d563f002100c1f80ab6ef41608f3295d2"
+    },
+    {
+      "bytes": 904,
+      "git_blob_sha1": "9333ef1639fe9aee897ba1d9f84dcfb0611f9423",
+      "path": "ZENODO_LICENSE_NOTICE.md",
+      "sha256": "b04976212352ff62c5a682e799032fb6bd2cea70394237d7a3e0822371f13476"
+    },
+    {
+      "bytes": 19127,
+      "git_blob_sha1": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "path": "CC-BY-NC-ND-4.0.txt",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "bytes": 4563,
+      "git_blob_sha1": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "path": "PolyForm-Noncommercial-1.0.0.txt",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    }
+  ],
+  "candidate_freeze": {
+    "bytes": 5265,
+    "git_blob_sha1": "3173174411e3491769624d72d35569becb4e372b",
+    "path": "FROZEN_UPLOAD_CANDIDATE.json",
+    "sha256": "a4ee91b2df7ab12f7bd3ee3e9c56d3c9ba949b7bdde80007cb499b770e40a643"
+  },
+  "change_notice_path": null,
+  "change_reasons": [],
+  "changed_claim_ids": [],
+  "content_changed": false,
+  "not_a_v2_receipt": true,
+  "original_files": [],
+  "owner_authorization_outstanding": "AUTHORIZE_EXACT_UPLOAD",
+  "publication_id": "qikvrt-brief-an-das-jahr-2610-v1",
+  "return_event": {
+    "candidate_returned_to_owner": true,
+    "owner_name": "Ingolf Lohmann",
+    "owner_type": "NATURAL_PERSON",
+    "return_channel": "Claude session file delivery to Ingolf Lohmann",
+    "returned_at": "2026-10-10T00:20:00Z",
+    "visible_change_notice_returned": false
+  },
+  "schema": "qikvrt_prepublication_return_receipt_draft_v1",
+  "status": "AWAITING_CANONICAL_EXACT_UPLOAD_AUTHORIZATION",
+  "target_canonical_schema": "qikvrt_prepublication_return_receipt_v2"
+}

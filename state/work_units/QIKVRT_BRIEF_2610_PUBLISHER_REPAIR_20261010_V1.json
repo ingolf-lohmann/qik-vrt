@@ -1,0 +1,135 @@
+{
+  "_license": {
+    "classification": "machine_readable_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "contribution": "Contract inspection, policy-based publisher repair, effect-free adapter and local regressions",
+    "exact_build": "UNAVAILABLE",
+    "model_family": "GPT-6",
+    "provider": "OpenAI",
+    "system_family": "Codex"
+  },
+  "effect_boundary": {
+    "EFFECT_ACK_DONE": false,
+    "main_activation_verified": false,
+    "predecessor_gate_evidence_transfer": false,
+    "public_doi_and_bytes_verified": false,
+    "remote_consumption_ref_created": false,
+    "zenodo_api_mutation_attempted": false,
+    "zenodo_upload_performed": false
+  },
+  "execution_blockers": [
+    {
+      "code": "COMPACT_AUTHORIZATION_NOT_EFFECT_ATTESTATION",
+      "detail": "Existing compact approval lacks exact active-v2 metadata, return, proof, repository/source and single-use decision bindings. No new Owner attestation may be generated.",
+      "missing_bindings": [
+        "authorization_id/nonce/single_use/single_use_scope",
+        "repository/source_head",
+        "candidate_return_receipt",
+        "canonical_metadata_sha256",
+        "machine_proof",
+        "exact uploads including the mandatory public proof bundle",
+        "authorized_effects/publication_evidence_path",
+        "canonical authorization_event"
+      ]
+    },
+    {
+      "code": "BRIEF_V2_PROOF_AND_RETURN_NOT_FINALIZED",
+      "detail": "Original delivery contains a return draft and pending proof controls; no final v2 bundle or canonical v2 receipt for this brief was observed."
+    },
+    {
+      "code": "AUTHORITY_ROLE_BINDING_NOT_ACTIVE",
+      "detail": "New role policy is on unmerged draft PR #515, not current Main."
+    },
+    {
+      "code": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "detail": "Main unprotected, rulesets empty, independent reviews absent. No governance bypass or merge performed."
+    },
+    {
+      "code": "REST_INITIAL_WORKFLOW_APPROVAL_OPERATION_NOT_EXPOSED",
+      "detail": "Exact #518 CI run 38014995005 is action_required, attempt 1, zero jobs; no initial approval capability exposed."
+    },
+    {
+      "code": "PUBLISHER_NETWORK_CAPABILITIES_UNAVAILABLE",
+      "detail": "No local GITHUB_TOKEN/GH_TOKEN/ZENODO_ACCESS_TOKEN/ZENODO_TOKEN; connector credentials are not exported publisher capabilities. Secret values in other runtimes were not inferred."
+    }
+  ],
+  "existing_components_reused": [
+    "tools/qikvrt_workflow_executor.py",
+    "tools/qikvrt_zenodo_publish.py",
+    "tools/qikvrt_zenodo_actions.py",
+    "tools/qikvrt_zenodo_machine_proof.py",
+    "tools/qikvrt_integrity.py"
+  ],
+  "generation_0_receipt": {
+    "bytes": 2355,
+    "git_blob_sha": "dbd0b90740369cc0989b1910d6c694508b020187",
+    "path": "release/BRIEF_2610_GENERATION_0_SEAL_RECEIPT.json",
+    "sha256": "e0ff5c89e62135ff25f260887af59535b0e9374272b8c5cbcb3a293d68f23e61"
+  },
+  "human_actor": {
+    "contribution": "Original article and explicit exact-content publication authorization",
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "next_permitted_actions": [
+    "Exact candidate native regressions and independent code-owner review through the existing governed integration route",
+    "Activate the existing PR #515 Authority policy through enforced governance",
+    "Resolve the compact-grant/full-attestation contract without silently rewriting owner consent or changing frozen proof policy",
+    "Only after exact v2 artifacts, existing valid effect authorization and credentials are present: run existing publisher and perform independent public DOI/original-byte readback"
+  ],
+  "next_reseal_must_precede": "2051-10-09",
+  "observed_at": "2026-10-10T07:59:33Z",
+  "observed_main": {
+    "commit": "d8775f200be50b0ec261fe4c8093ce64020d0d0e",
+    "protected": false,
+    "role_activation_verified": false,
+    "rulesets": [],
+    "tree": "62add326edf6cd5b46068e92f2fe5af71b199145"
+  },
+  "original_content_files_unchanged": true,
+  "owner_authorization_provenance": {
+    "commit": "f614cb5585264df3220355687a5a8096d76385e4",
+    "identity": {
+      "bytes": 1766,
+      "git_blob_sha": "246fe7274e89cc657b5dab61f1e3bc9214467868",
+      "path": "release/OWNER_ZENODO_AUTHORIZATION_brief-2610.json",
+      "sha256": "7549c399ded3358cb93bec13be7128ffc98be709e3d920be506e14e0a1cee13e"
+    },
+    "new_owner_authorization_created": false,
+    "original_event_unchanged": true,
+    "pr": 518
+  },
+  "publication_inferred_from_seal": false,
+  "regressions": {
+    "cache_coverage": {
+      "covered": 14,
+      "declared": 14,
+      "result": "PASS"
+    },
+    "command": "python3 -B -m unittest discover -s tests -p 'test_zenodo_*.py' -q",
+    "complete_native_ci_verified": false,
+    "new_adapter_tests": 9,
+    "result": "PASS",
+    "tests": 96
+  },
+  "schema": "qikvrt_brief_2610_publisher_repair_work_unit_v1",
+  "scientific_source_boundary": "This is technical preflight evidence, not a Zenodo-published scientific reference or final publication claim.",
+  "scope": {
+    "aggregate_sha256": "830e6df6153c901890669a0cd2d2af650ad84f36cf46726854c4314e88ab8ddd",
+    "content_file_count": 11,
+    "content_total_bytes": 177418
+  },
+  "source_commit": "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "d04b96dcd35a485f1961b7e2699760a8fce70dce",
+  "state": "CANDIDATE_PREPARED_PUBLICATION_BLOCKED",
+  "supplied_compact_publisher_not_used_for_effects": {
+    "reason": "No repository-global create-only consumption lock or hardened recovery; incomplete v2 proof gate"
+  },
+  "work_unit_id": "QIKVRT_BRIEF_2610_PUBLISHER_REPAIR_20261010_V1"
+}

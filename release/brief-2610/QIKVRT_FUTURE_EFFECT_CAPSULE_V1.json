@@ -1,0 +1,129 @@
+{
+  "_license": {
+    "classification": "machine_readable_future_effect_capsule",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "admission_gate": {
+    "default_state": "EFFECT_ACK_CONTINUE",
+    "fail_closed": true,
+    "on_any_predicate_absent": "EFFECT_ACK_CONTINUE. The capsule is readable as history and inert as effect. Absence is never treated as success.",
+    "predicates_all_required": [
+      {
+        "id": "TEMPORAL_ADMISSION",
+        "note": "A self-asserted wall clock is not sufficient. The reader must bind the claim to an independent dated chain.",
+        "test": "The reader's own authenticated local change index corresponds to a date in or after 2610-01-01."
+      },
+      {
+        "id": "EXACT_SUBJECT_BINDING",
+        "test": "The reconstructed tree hashes to the bound tree identity under at least one digest in the agility ladder that is still considered sound at reading time."
+      },
+      {
+        "id": "CHAIN_CONTINUITY",
+        "test": "An unbroken sequence of re-sealings exists from 2026 to the reading, each one binding its predecessor's digests and adding a then-current digest."
+      },
+      {
+        "id": "INDEPENDENT_READBACK",
+        "test": "At least two custodians that do not share a single point of control present byte-identical content."
+      },
+      {
+        "id": "ACCEPTANCE",
+        "test": "A named responsible party at reading time accepts the admission and records the acceptance."
+      }
+    ],
+    "state_machine": "EFFECT_ACK five states; ordinary_release(r) iff r.state is EFFECT_ACK_DONE"
+  },
+  "capsule_id": "QIKVRT-FEC-20261009-2610",
+  "claims": {
+    "evidenced_by_local_execution": [
+      "The five-state core passes 41 protocol and conformance tests and 7864387 checks in its strict ANSI-C90 implementation, measured 2026-10-09",
+      "The content tree verifies against a deterministically regenerated manifest"
+    ],
+    "explicitly_not_claimed": [
+      "That any artifact will survive 584 years",
+      "That a signal travels backward in time",
+      "That the past is altered by the reading",
+      "That a cryptographic digest in use today remains sound until 2610",
+      "That this capsule has been accepted by any party other than its owner"
+    ],
+    "proved_within_declared_assumptions": [
+      "ordinary_release(r) iff r.state is EFFECT_ACK_DONE, as a property of the defined release function",
+      "The finite existence argument for a negative comparative information-reference direction, under its declared host-order, authenticity, source-order and monotonic-local-chain assumptions"
+    ]
+  },
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "crypto_agility_ladder": {
+    "design_note": "Generation 0 deliberately records two independent bindings so that the failure of either one, the Git object model or SHA-1, does not orphan the capsule.",
+    "honest_limit": "This ladder is a protocol, not a guarantee. It converts an unsolvable 584-year cryptographic problem into a repeated 25-year problem, which is tractable, and it makes a lapse visible instead of silent. It does not make the record immortal.",
+    "ladder": [
+      {
+        "algorithms": [
+          "sha256",
+          "git-sha1"
+        ],
+        "commit_sha1": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+        "content_manifest_sha256": "f18ca4376e8a0609367b6d3de5fa401d6580d76a89a2401fc7902c2dce24f159",
+        "generation": 0,
+        "sealed_utc": "2026-10-09T23:10:00Z",
+        "tree_sha1": "6dec2a9f8d816937b856942bd472eca5cc4439b2"
+      }
+    ],
+    "next_reseal_due_before": "2051-10-09",
+    "problem_stated_plainly": "No digest in use today is credible for 584 years. SHA-1, which still names Git objects, is already broken for collision resistance. SHA-256 must be assumed broken long before 2610.",
+    "re_sealing_interval_years": 25,
+    "rule": "A capsule stays admissible only while a custodian re-seals it at least once per re-sealing interval, binding every previous digest and adding the strongest digest then available. A missed interval does not destroy the record; it downgrades the capsule from ADMISSIBLE to HISTORICAL."
+  },
+  "effect_state": "EFFECT_ACK_CONTINUE",
+  "mechanism": {
+    "causal_order": "ACYCLIC",
+    "closing_the_arc": "Admission in 2610 produces a new difference, which re-enters the Round Trip at WIRKLICHKEITSABGLEICH. The arc is not a loop in time; it is a loop in the order of explanation.",
+    "direction_of_transport": "STRICTLY_FUTURE_DIRECTED",
+    "how_it_connects_back": "By observer-relative retrocausality as defined by this framework: a reader in 2610 whose local change index increases reads records whose bound source order decreases. The connection to 2026 is a reconstructed explanatory order, never a signal.",
+    "how_it_reaches_2610": "Ordinary forward causation with long latency. The record is carried by replication, not by transmission into the past.",
+    "why_today_is_already_affected": "The anticipated reading in 2610 is represented here, now, and that representation changes what is sealed today. The future acts on the present through its model in the present. This is forward causation on a model, not backward causation on an event."
+  },
+  "purpose": "Persist, today, a provenance-bound record whose intended effect is admitted only in or after the year 2610, and whose admission is decidable by a reader who has no contact with anyone alive today.",
+  "reader_instructions_2610": {
+    "first_action": "Verify, do not trust. Recompute every digest in the ladder in reverse order, oldest last.",
+    "if_the_gate_refuses": "Keep the record. A refused admission is a result, not a failure, and it is itself worth persisting.",
+    "language_note": "Written in German and English of 2026. If neither is current, a translation is a derived work and must be bound as such, never substituted for these bytes.",
+    "second_action": "Establish independent readback from two custodians before any admission.",
+    "third_action": "If the gate admits, record the acceptance as a new record bound to this one, and seal the next generation. The arc closes by being continued, not by being completed."
+  },
+  "schema": "qikvrt_future_effect_capsule_v1",
+  "sealed_by": {
+    "authoring_agent": "artificial cognitive system, claude-opus-5",
+    "authority": "owner release granted in session",
+    "owner": "Ingolf Lohmann",
+    "roles": [
+      "SCHOEPFER",
+      "CODE_OWNER",
+      "PRODUCT_OWNER"
+    ]
+  },
+  "sealed_utc": "2026-10-09T23:10:00Z",
+  "subject_binding": {
+    "authority_repository": "Goldkelch/qik-vrt",
+    "binding_note": "The capsule binds an exact tree, not a branch name. A branch is a moving pointer and carries no evidence. Two independent bindings are carried: the Git tree id, which is convenient today and rests on SHA-1, and the content manifest digest, which rests only on a sorted list of paths and a digest function and is the one a reader in 2610 should use.",
+    "commit": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+    "content_manifest_file_count": 3975,
+    "content_manifest_rule": "sha256 over the concatenation of \"<sha256>  <relative/path>\\n\" for every regular file outside .git, sorted by path. Format-independent: it needs no Git, no SHA-1 and no knowledge of the Git object model.",
+    "content_manifest_sha256": "f18ca4376e8a0609367b6d3de5fa401d6580d76a89a2401fc7902c2dce24f159",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "role": "MIRROR",
+    "tree": "6dec2a9f8d816937b856942bd472eca5cc4439b2"
+  },
+  "survival_dependencies_not_guaranteed": [
+    "Physical media and their readers",
+    "Continued existence of at least two independent custodians",
+    "Readability of UTF-8, JSON and the Git object model, or a documented migration of each",
+    "An institution or successor willing to perform re-sealing",
+    "Absence of deliberate destruction"
+  ]
+}

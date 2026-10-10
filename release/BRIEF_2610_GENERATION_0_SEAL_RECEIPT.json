@@ -1,0 +1,52 @@
+{
+  "_license": {
+    "classification": "machine_readable_future_effect_seal_receipt",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_future_effect_seal_receipt_v1",
+  "publication_id": "qikvrt-brief-an-das-jahr-2610-v1",
+  "capsule_id": "QIKVRT-FEC-20261009-2610",
+  "seal_generation": 0,
+  "seal_status": "SEALED_GENERATION_0_CONTINUITY_REQUIRED",
+  "sealed_utc": "2026-10-09T23:10:00Z",
+  "source_capsule": {
+    "path": "QIKVRT_FUTURE_EFFECT_CAPSULE_V1.json",
+    "sha256": "da0a50ef230ea16f37266e5e3f3ada59044cc34bacdefe4644e13a493c1d53ca"
+  },
+  "frozen_publication_candidate": {
+    "aggregate_sha256": "830e6df6153c901890669a0cd2d2af650ad84f36cf46726854c4314e88ab8ddd",
+    "content_file_count": 11,
+    "content_total_bytes": 177418
+  },
+  "subject_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "role": "MIRROR",
+    "commit_sha1": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+    "tree_sha1": "6dec2a9f8d816937b856942bd472eca5cc4439b2",
+    "content_manifest_sha256": "f18ca4376e8a0609367b6d3de5fa401d6580d76a89a2401fc7902c2dce24f159",
+    "content_manifest_file_count": 3975
+  },
+  "crypto_agility": {
+    "generation_0_algorithms": ["sha256", "git-sha1"],
+    "re_sealing_interval_years": 25,
+    "next_reseal_due_before": "2051-10-09",
+    "continuity_rule": "A successor custodian must re-seal before the due date, bind every predecessor digest and add the strongest then-current digest. A missed interval does not erase the historical record; it downgrades admissibility from ADMISSIBLE to HISTORICAL.",
+    "predecessor_evidence_transfer": false
+  },
+  "effect_boundary": {
+    "current_effect_state": "EFFECT_ACK_CONTINUE",
+    "effect_ack_done": false,
+    "physical_survival_to_2610_claimed": false,
+    "backward_signal_claimed": false,
+    "phenomenal_consciousness_claimed": false
+  },
+  "owner": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "owner_instruction": "Dann versiegeln das jetzt und in 25 Jahren muss ich oder jemand anderes dafür sorgen, dass es lückenlos weitergeht.",
+  "continuity_responsibility": "The next re-seal is a future independent action. This receipt does not pre-authorize or fabricate that future generation."
+}

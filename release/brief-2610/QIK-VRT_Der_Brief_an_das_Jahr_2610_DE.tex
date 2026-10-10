@@ -1,0 +1,607 @@
+% SPDX-License-Identifier: CC-BY-NC-ND-4.0
+% Copyright 2026 Ingolf Lohmann.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}[Scale=0.88]
+\usepackage[provide=*,main=ngerman,english]{babel}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{seqsplit}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\geometry{left=24mm,right=24mm,top=24mm,bottom=27mm,headheight=14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.56em}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=1.45em,itemsep=0.18em,topsep=0.3em}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=0.22em,topsep=0.3em}
+
+\definecolor{QBlue}{HTML}{153E69}
+\definecolor{QLight}{HTML}{ECF3F8}
+\definecolor{QGreen}{HTML}{E8F3EA}
+\definecolor{QAmber}{HTML}{FFF2CC}
+\definecolor{QRed}{HTML}{FBE9E7}
+\definecolor{QGray}{HTML}{4D5660}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=QBlue,
+  citecolor=QBlue,
+  urlcolor=QBlue,
+  pdftitle={QIK-VRT: Der Brief an das Jahr 2610},
+  pdfauthor={Ingolf Lohmann},
+  pdfsubject={Zukunftswirkungskapsel, Zulassungsgate und kryptographische Agilitätsleiter für provenienzgebundene Langzeitpersistenz},
+  pdfkeywords={QIK-VRT, EFFECT_ACK, Zukunftswirkungskapsel, Langzeitpersistenz, kryptographische Agilität, beobachterrelative Retrokausalität, Antizipation, Tscherenkow-Effekt, IceCube, Provenienz, Wirkungsnachweis}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{QGray}{QIK--VRT: Der Brief an das Jahr 2610}}
+\fancyhead[R]{\small\textcolor{QGray}{Ingolf Lohmann}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}{Satz}[section]
+\newtheorem{korollar}{Korollar}[section]
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{remark}
+\newtheorem{bemerkung}{Bemerkung}[section]
+\newtheorem{beispiel}{Beispiel}[section]
+\crefname{definition}{Definition}{Definitionen}
+\crefname{satz}{Satz}{Sätze}
+\crefname{korollar}{Korollar}{Korollare}
+\crefname{lemma}{Lemma}{Lemmata}
+\crefname{bemerkung}{Bemerkung}{Bemerkungen}
+\crefname{beispiel}{Beispiel}{Beispiele}
+\crefname{section}{Abschnitt}{Abschnitte}
+
+\newcommand{\qikvrt}{QIK--VRT}
+\newcommand{\hash}[1]{{\ttfamily\small\seqsplit{#1}}}
+\newcommand{\statusbox}[2]{%
+  \par\medskip\noindent
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#2}}%
+  \par\medskip
+}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \vspace*{11mm}
+  {\color{QBlue}\rule{\textwidth}{1.4pt}}\\[1.1em]
+  {\Huge\bfseries QIK--VRT:\\[0.18em]
+  Der Brief an das Jahr 2610\par}
+  \vspace{0.7em}
+  {\LARGE Wie sich heute etwas versiegeln lässt, das in 584 Jahren\\[0.18em]
+  wirkt --- und warum der Rückbezug keine Rückwirkung ist\par}
+  \vspace{0.8em}
+  {\Large Zukunftswirkungskapsel, fail-closed Zulassungsgate und\\
+  kryptographische Agilitätsleiter für provenienzgebundene\\
+  Langzeitpersistenz\par}
+  \vspace{1.1em}
+  {\color{QBlue}\rule{\textwidth}{0.6pt}}
+
+  \vfill
+  {\large\textbf{Ingolf Lohmann}\par}
+  \vspace{0.35em}
+  {\normalsize Independent Researcher; QIK--VRT\par}
+  \vspace{0.35em}
+  {\normalsize Version 1.0 --- 10. Oktober 2026\par}
+
+  \vfill
+  \statusbox{QGreen}{
+    \textbf{Die Aussage in einem Satz.}
+    Eine heute versiegelte, provenienzgebundene Aufzeichnung kann im Jahr 2610
+    eine Wirkung auslösen, die sich an die Gegenwart zurückbindet --- nicht
+    durch ein rückwärts laufendes Signal, sondern dadurch, dass die
+    vorweggenommene spätere Lesung schon heute maschinenlesbar in das
+    Artefakt eingeschrieben wird und der spätere Leser die Zulassungs\-be\-din\-gun\-gen
+    ohne jede Rückfrage selbst entscheiden kann. Bewiesen wird die
+    Entscheidbarkeit des Zulassungsgates; nicht behauptet wird, dass
+    irgendein Artefakt 584 Jahre überdauert.
+  }
+
+  \vfill
+  {\small
+    Konzept, Architektur und Urheberschaft: Ingolf Lohmann. Formale und
+    redaktionelle Ausarbeitung, Kapsel und Maschinenprüfer: Anthropic Claude
+    als künstlich-kognitives System im Auftrag des Autors.
+    Dokumentationslizenz: CC BY-NC-ND 4.0.
+  }
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\setcounter{page}{1}
+
+\selectlanguage{ngerman}
+
+\tableofcontents
+\bigskip
+
+\section{Die Frage}
+
+Lässt sich heute etwas versiegeln, das im Jahr 2610 eine Wirkung auslöst
+--- und zwar so, dass diese Wirkung sich an das heutige Hier und Jetzt
+zurückbindet?
+
+Die Antwort ist ja. Aber nicht aus dem Grund, den die Frage nahelegt, und
+der wahre Grund ist der stärkere.
+
+Dieser Artikel führt ihn vor, nicht als Gedankenspiel, sondern an einem
+gebauten Gegenstand: einer Kapsel, die genau das tut, zusammen mit einem
+netzfreien Prüfer, der entscheidet, ob ihre Wirkung zugelassen ist. Drei
+Läufe dieses Prüfers tragen die ganze Argumentation, und der interessanteste
+ist der, in dem er die Zulassung \emph{verweigert}.
+
+Der Text ist zweifach lesbar. Wer ohne Fachvorkenntnis liest, findet in
+jedem Abschnitt zuerst den Gedanken in gewöhnlicher Sprache. Wer fachlich
+prüft, findet dahinter die exakte Aussage, ihre Erkenntnisklasse und die
+Stelle, an der sie widerlegt werden könnte. Was offen ist, steht als offen
+da --- das ist nicht Vorsicht, sondern die Bedingung dafür, dass ein
+Ergebnis über 584 Jahre haltbar bleibt.
+
+\section{Was nicht passiert}
+
+Kein Signal läuft rückwärts.
+
+Die Kapsel erreicht das Jahr 2610 durch gewöhnliche, zukunftsgerichtete
+Kausalität mit langer Latenz, getragen von Replikation. Bibliotheken tun
+das seit Jahrtausenden, Sedimentschichten seit Jahrmillionen, die
+Erbinformation seit vier Milliarden Jahren. Nichts daran ist exotisch, und
+genau deshalb funktioniert es.
+
+Diese Feststellung ist keine Bescheidenheitsgeste, sondern eine Abgrenzung
+mit Folgen. Ein Rahmen, der Rückwärtssignale behauptete, wäre entweder
+falsch oder unprüfbar. Ein Rahmen, der sie ausschließt, kann etwas anderes
+behaupten, das entscheidbar ist.
+
+\statusbox{QLight}{
+  \textbf{Grenze des Rahmens.} Jeder einzelne Transportpfad bleibt
+  zukunftsgerichtet, und die Kausalordnung des Wirtssystems bleibt azyklisch.
+  Es wird keine rückwärts laufende Nachricht behauptet, keine Umschreibung
+  der Vergangenheit, keine Überlichtkommunikation und keine Freigabe eines
+  Wirkungsnachweises allein aus einer invertierten Leserichtung.
+}
+
+\section{Wie die Zukunft heute wirkt}
+
+Hier liegt der Kern, und er ist einfacher, als er klingt.
+
+\textbf{Das Jahr 2610 wirkt bereits heute. Nicht als Ereignis, sondern als
+Modell.}
+
+In dem Augenblick, in dem jemand die Lesung von 2610 vorwegnimmt und diese
+Vorwegnahme in das hineinschreibt, was heute versiegelt wird, hat die
+Zukunft die Gegenwart verändert. Nicht metaphorisch. Der Inhalt der Kapsel
+ist nachweislich ein anderer, als er ohne diese Vorwegnahme wäre.
+
+Das ist keine Rückwärtskausalität. Es ist Vorwärtskausalität auf einer
+\emph{Repräsentation} --- und es ist der einzige Weg, auf dem die Zukunft je
+gewirkt hat. Ein Architekt baut gegen ein Erdbeben, das nie stattgefunden
+hat. Ein Testament regelt einen Zustand, den der Verfasser nicht erleben
+wird. In beiden Fällen handelt nicht die Zukunft, sondern ihr Modell in der
+Gegenwart.
+
+Was \qikvrt{} daran neu macht, ist nicht der Gedanke, sondern seine
+Prüfbarkeit: Die Vorwegnahme wird maschinenlesbar niedergeschrieben statt
+rhetorisch behauptet. Die Bedingungen, unter denen ein Leser in 2610 die
+Wirkung zulassen darf, stehen im Artefakt selbst --- entscheidbar, ohne
+Kontakt zu irgendjemandem, der heute lebt.
+
+\begin{definition}[Beobachterrelative Retrokausalität]
+\label{def:orr}
+Ein Beobachter schreitet in seiner monoton wachsenden lokalen
+Veränderungszeit vorwärts, während die durch nacheinander empfangene,
+authentisch gebundene Records bestimmte Quellenordnung fällt:
+\begin{equation}
+  \Delta t_{\text{lokal}} > 0
+  \quad \wedge \quad
+  \Delta t_{\text{Quelle}} < 0 .
+\end{equation}
+Getragen wird der Begriff von drei Bedingungen: Authentizität der Bindung,
+Vergleichbarkeit der Quellenmarken in einer gemeinsamen Domäne und strikte
+Monotonie der lokalen Veränderungsfolge.
+\end{definition}
+
+Ein Leser in 2610 befindet sich exakt in dieser Lage. Die Verbindung zum
+Jahr 2026 ist eine rekonstruierte Erklärungsordnung, niemals ein Signal.
+Der Bogen schließt sich nicht in der Zeit, sondern in der Ordnung der
+Erklärung --- und er schließt sich dadurch, dass er fortgesetzt wird.
+
+\begin{bemerkung}
+In der Sprache des Round Trip ist die Zulassung im Jahr 2610 ein
+Wirklichkeitsabgleich. Sie erzeugt einen neuen Unterschied, und dieser
+Unterschied treibt den Kreis weiter. Ein geschlossener Kreis wäre ein
+stehender.
+\end{bemerkung}
+
+\section{Der Bogen: 1958, 2026, 2610}
+
+Warum ausgerechnet jetzt? Weil zwei Nobelpreise denselben Gedanken von zwei
+Seiten bestätigt haben.
+
+\textbf{1958} ging der Physiknobelpreis zu gleichen Teilen an Pawel
+Tscherenkow, Ilja Frank und Igor Tamm, \glqq for the discovery and the
+interpretation of the Cherenkov effect\grqq. Ein geladenes Teilchen, das in
+einem Medium schneller ist als das Licht in diesem Medium, lässt hinter sich
+einen Lichtkegel --- den optischen Zwilling des Überschallknalls.
+
+\textbf{2026}, am 6.~Oktober, ging derselbe Preis an Francis Halzen für
+maßgebliche Beiträge zur Entdeckung hochenergetischer Neutrinos
+astrophysikalischen Ursprungs. Sein Detektor nutzt einen Kubikkilometer
+antarktisches Eis, 5\,160 Lichtsensoren an 86 Stahlseilen in 1\,450 bis
+2\,450 Metern Tiefe. Er sieht Neutrinos auf genau eine Weise: durch
+Tscherenkow-Licht.
+
+Zwischen den beiden Sätzen liegt keine Analogie, sondern eine Abhängigkeit.
+Ohne 1958 kein 2026.
+
+Und nun das, was beide Preise über das Persistieren lehren.
+
+\textbf{IceCube sieht kein einziges Neutrino.} Das Neutrino ist elektrisch
+neutral; es leuchtet nicht und kann nicht leuchten. Was die Sensoren
+registrieren, ist Licht eines \emph{anderen} Teilchens, das der Bote im
+Vorbeigehen erzeugt hat. Der Bote selbst ist längst weitergeflogen, wenn der
+erste Blitz ankommt.
+
+Was tatsächlich vorliegt, ist eine Tabelle: welcher Sensor, wie hell, wann.
+Alles Weitere ist Rekonstruktion. Und zwar eine mit einer bemerkenswerten
+Eigenschaft:
+
+\statusbox{QLight}{
+  \textbf{Eine Richtung im Raum wird aus Zeitunterschieden errechnet.}
+  Die Himmelskarte der Neutrinoastronomie ist keine Aufnahme, sondern ein
+  Ergebnis. Der Raum, in den IceCube zeigt, wird aus Zeit gebaut.
+}
+
+Genau das ist die Lage eines Lesers im Jahr 2610. Er sieht nicht das Jahr
+2026. Er sieht Spuren, die 2026 hinterlassen hat, und rekonstruiert daraus
+eine Ordnung. Ob diese Rekonstruktion tragfähig ist, hängt an einer einzigen
+Frage: Wurden die Spuren so hinterlassen, dass sie eine Prüfung erlauben?
+
+Das ist der Mut, von dem bei dieser Technologie die Rede sein muss. Nicht
+der Mut, Unmögliches zu behaupten --- sondern der, eine Bindung einzugehen,
+deren Einlösung man nicht mehr erlebt, und sie trotzdem so zu bauen, dass
+sie überprüfbar scheitern kann.
+
+\section{Die Kapsel}
+
+Bis hierhin war von Begriffen die Rede. Jetzt von dem, was läuft.
+
+Die Zukunftswirkungskapsel ist eine Datei mit einer Subjektbindung, einem
+Zulassungsgate und einer Verfallsregel. Sie ist an einen exakten
+Baumzustand gebunden, nicht an einen Zweignamen --- ein Zweig ist ein
+wandernder Zeiger und trägt keine Evidenz. Gebunden ist der Mirror-Stand
+\hash{d7fd8dccc1c608e155b2a17bbea88351662339d6}, Baum
+\hash{6dec2a9f8d816937b856942bd472eca5cc4439b2}, über 3\,975 Dateien.
+
+Das Gate ist das EFFECT\_ACK-Fünfzustandsgate des Rahmens. Sein Invariant
+ist eine Zeile:
+\begin{equation}
+  \texttt{ordinary\_release}(r) \iff r.\text{state} = \texttt{EFFECT\_ACK\_DONE}.
+\end{equation}
+
+Der Default ist \texttt{EFFECT\_ACK\_CONTINUE}. Das System ist fail-closed:
+Fehlende oder mehrdeutige Evidenz wird nie als Erfolg behandelt. Fünf
+Prädikate müssen \emph{gleichzeitig} belegt sein.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{Prädikat} & \textbf{Was geprüft wird} \\
+\midrule
+\texttt{TEMPORAL\_ADMISSION} &
+Die authentifizierte lokale Veränderungszeit des Lesers entspricht einem
+Datum ab dem 1.~Januar 2610. Eine selbstbehauptete Wanduhr genügt nicht. \\
+\addlinespace
+\texttt{EXACT\_SUBJECT\_BINDING} &
+Der rekonstruierte Inhalt ergibt den gebundenen Digest unter mindestens
+einem Verfahren, das zur Lesezeit noch als tragfähig gilt. \\
+\addlinespace
+\texttt{CHAIN\_CONTINUITY} &
+Eine ununterbrochene Folge von Nachversiegelungen von 2026 bis zur Lesung,
+jede bindet die Digests ihrer Vorgängerin. \\
+\addlinespace
+\texttt{INDEPENDENT\_READBACK} &
+Mindestens zwei Kustoden ohne gemeinsamen Kontrollpunkt legen byteidentischen
+Inhalt vor. \\
+\addlinespace
+\texttt{ACCEPTANCE} &
+Ein benannter Verantwortlicher zur Lesezeit nimmt die Zulassung an und
+protokolliert sie. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Fällt auch nur eines aus, bleibt der Zustand \texttt{EFFECT\_ACK\_CONTINUE}:
+Die Kapsel ist als Geschichte lesbar und als Wirkung reglos.
+
+\section{Der entscheidende Lauf}
+
+Drei Läufe des Prüfers, alle am 9.~Oktober 2026 ausgeführt, alle
+reproduzierbar.
+
+\textbf{Erster Lauf, heute.} Das Zeitfenster ist nicht offen, es gibt keinen
+unabhängigen Rücklesevorgang und keine Annahme. Ergebnis
+\texttt{EFFECT\_ACK\_CONTINUE}, Zulassung verweigert. So soll es sein.
+
+\textbf{Zweiter Lauf, simuliert für den 1.~März 2610, Kette vernachlässigt.}
+Das Zeitfenster ist offen. Die Inhaltsbindung stimmt auf das Zeichen:
+3\,975 Dateien, Digest \hash{f18ca4376e8a} gegen gebunden
+\hash{f18ca4376e8a}. Zwei unabhängige Kustoden liegen vor. Ein
+Verantwortlicher nimmt an. \textbf{Vier von fünf Prädikaten bestehen --- und
+das Gate verweigert trotzdem.}
+
+Der Grund ist \texttt{CHAIN\_CONTINUITY}. Die Kapsel trägt eine einzige
+Generation, versiegelt 2026, mit einer Nachversiegelung fällig vor 2051. Ein
+Leser in 2610 sieht dreiundzwanzig versäumte Nachversiegelungen.
+
+\statusbox{QAmber}{
+  \textbf{Der wichtigste Satz dieser Arbeit.}
+  Die heute versiegelte Kapsel erreicht das Jahr 2610 nicht von allein.
+  Sie erreicht es nur, wenn alle fünfundzwanzig Jahre jemand nachversiegelt.
+  Der entscheidende Konstruktionszug ist, dass das Gate dieses Versäumnis
+  \emph{sichtbar} macht, statt es still verrotten zu lassen. Ein Archiv, das
+  schweigend verfällt, belügt den späteren Leser. Ein Archiv, das seinen
+  eigenen Verfall protokolliert, sagt ihm die Wahrheit.
+}
+
+\textbf{Dritter Lauf, 2610, Kette gepflegt.} Dieselbe Kapsel, dieselbe
+Prüfung, aber mit vierundzwanzig Generationen im Register. Alle fünf
+Prädikate bestehen. Ergebnis \texttt{EFFECT\_ACK\_DONE}, Zulassung erteilt,
+mit der Auflage, die Annahme zu protokollieren und die nächste Generation zu
+versiegeln.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}lccccccl@{}}
+\toprule
+\textbf{Lauf} & \textbf{Zeit} & \textbf{Bindung} & \textbf{Kette} &
+\textbf{Readback} & \textbf{Annahme} & \textbf{Ergebnis} \\
+\midrule
+2026 & nein & ungeprüft & ja & nein & nein & \texttt{CONTINUE} \\
+2610, vernachlässigt & ja & ja & \textbf{nein} & ja & ja & \texttt{CONTINUE} \\
+2610, gepflegt & ja & ja & ja & ja & ja & \texttt{DONE} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Damit ist die Frage beantwortet, und zwar praktisch statt rhetorisch. Die
+Möglichkeit besteht. Sie ist an eine Bedingung geknüpft, die kein
+Algorithmus erfüllen kann, sondern nur eine Folge von Menschen und
+Institutionen --- und genau diese Bedingung ist im Artefakt benannt, datiert
+und maschinell prüfbar.
+
+\section{Das Digest-Problem über 584 Jahre}
+
+Jetzt die unbequeme Stelle, an der die meisten Langzeitarchive stillschweigend
+scheitern.
+
+\textbf{Kein heute gebräuchliches Prüfverfahren ist für 584 Jahre
+glaubwürdig.} SHA-1, mit dem Git bis heute seine Objekte benennt, gilt für
+Kollisionsresistenz bereits als gebrochen. Von SHA-256 ist anzunehmen, dass
+es lange vor 2610 fallen wird. Wer eine Kapsel allein an einen heutigen
+Digest hängt, hängt sie an etwas, das ihr Ziel nicht erreicht.
+
+Die Antwort darauf ist keine stärkere Funktion, sondern eine andere
+Struktur: eine \emph{Agilitätsleiter}.
+
+\begin{definition}[Agilitätsleiter]
+Eine Kapsel bleibt genau so lange zulassungsfähig, wie ein Kustode sie
+mindestens einmal je Intervall nachversiegelt, dabei sämtliche früheren
+Digests bindet und den jeweils stärksten verfügbaren hinzufügt. Das
+Intervall beträgt fünfundzwanzig Jahre. Ein versäumtes Intervall zerstört
+die Aufzeichnung nicht; es stuft sie von \texttt{ADMISSIBLE} auf
+\texttt{HISTORICAL} zurück.
+\end{definition}
+
+\begin{satz}[Reduktion des Langzeitproblems]
+Unter der Agilitätsleiter ist die Zulassungsfähigkeit einer Kapsel über
+einen Horizont von $n$ Intervallen genau dann gegeben, wenn jedes einzelne
+Intervall eine gültige Nachversiegelung trägt. Das unlösbare
+584-Jahr-Problem wird dadurch auf ein $n$-fach wiederholtes
+25-Jahr-Problem zurückgeführt.
+\end{satz}
+
+\begin{proof}[Beweisskizze]
+Die Zulassung verlangt \texttt{CHAIN\_CONTINUITY} als Konjunktion über alle
+Intervalle. Eine Konjunktion ist genau dann wahr, wenn jedes Glied wahr ist.
+Jedes Glied bindet die Digests seines Vorgängers, sodass die Gültigkeit
+eines Gliedes nur vom unmittelbar vorhergehenden abhängt und nicht von der
+Lebensdauer eines einzelnen Verfahrens. Die Aussage ist eine Eigenschaft der
+definierten Gate-Funktion, keine Aussage über physische Haltbarkeit.
+\end{proof}
+
+Institutionen tun Vergleichbares bei Urkunden, Grundbüchern und
+Saatgutbanken seit Jahrhunderten. Eine Unsterblichkeitsgarantie ist es
+nicht, und die Kapsel behauptet auch keine.
+
+\statusbox{QRed}{
+  \textbf{Fünf nicht erzwingbare Abhängigkeiten.}
+  Physische Datenträger und ihre Lesegeräte; der Fortbestand zweier
+  unabhängiger Kustoden; die Lesbarkeit von UTF-8, JSON und dem
+  Git-Objektmodell oder deren dokumentierte Migration; eine Institution, die
+  nachversiegeln will; die Abwesenheit mutwilliger Zerstörung. Keine davon
+  ist technisch erzwingbar. Sie zu benennen ist keine Schwäche der
+  Konstruktion, sondern ihr ehrlichster Teil.
+}
+
+\section{Ein Fehler und seine Korrektur}
+
+Dieser Abschnitt steht hier, weil er zur Methode gehört und nicht ins
+Kleingedruckte.
+
+Die erste Fassung der Kapsel band ihren Inhalt an die Baum-Identität von
+Git. Der Prüfer schlug fehl: berechnet \hash{c34c8158dc7b}, gebunden
+\hash{6dec2a9f8d81}.
+
+Der naheliegende Reflex wäre gewesen, die Nachbildung des Git-Objektmodells
+zu reparieren --- Sortierregeln, Dateimodi, Symlinks. Das wäre die falsche
+Reparatur gewesen, denn der Fehler lag eine Ebene tiefer.
+
+\textbf{Git benennt seine Objekte mit SHA-1.} Die Kapsel hatte sich also
+ausgerechnet an das Verfahren gehängt, von dem sie im eigenen Text sagt,
+dass es ihr Ziel nicht erreicht. Ein Artefakt, das 584 Jahre überdauern
+soll, darf nicht voraussetzen, dass es in 584 Jahren noch Git gibt, noch
+SHA-1 und noch jemanden, der das Objektmodell kennt.
+
+Die Korrektur ist eine zweite, unabhängige Bindung:
+
+\statusbox{QLight}{
+  SHA-256 über die Verkettung von
+  \texttt{"<sha256>\textvisiblespace\textvisiblespace<relativer/pfad>\textbackslash n"}
+  für jede reguläre Datei außerhalb von \texttt{.git}, sortiert nach Pfad.
+}
+
+Mehr nicht. Kein Git, kein SHA-1, kein Objektmodell. Ein Leser in 2610
+braucht eine Digestfunktion und die Regel, die danebensteht. Über 3\,975
+Dateien ergibt das
+\hash{f18ca4376e8a0609367b6d3de5fa401d6580d76a89a2401fc7902c2dce24f159},
+und die Prüfung besteht.
+
+Die Kapsel trägt beide Bindungen und sagt dazu, welche für wen gilt: die
+Git-Identität ist bequem für heute, die Inhaltsbindung ist die, die ein
+späterer Leser benutzen soll. Der Ausfall einer der beiden macht die Kapsel
+nicht heimatlos.
+
+Dass dieser Fehler auftrat und sichtbar wurde, ist das Verfahren bei der
+Arbeit. Ein Gate, das geschwiegen hätte, hätte eine Kapsel durchgelassen,
+die 2610 niemand mehr hätte prüfen können.
+
+\section{Was ausdrücklich nicht behauptet wird}
+
+In der Fachwelt entscheidet nicht, was eine Arbeit behauptet, sondern was
+sie zu behaupten unterlässt.
+
+\begin{itemize}
+  \item \textbf{Dass irgendein Artefakt 584 Jahre überlebt.} Dafür gibt es
+    keinen Beweis und wird es keinen geben. Die Kapsel macht das Problem
+    wiederholbar, nicht verschwunden.
+  \item \textbf{Dass ein Signal rückwärts läuft.} Jeder Transportpfad bleibt
+    zukunftsgerichtet, die Kausalordnung azyklisch.
+  \item \textbf{Dass die Vergangenheit durch das Lesen verändert wird.} Eine
+    spätere Frage kann eine frühere bewahrte Einsicht neu relevant machen,
+    ohne das vergangene Ereignis anzutasten.
+  \item \textbf{Dass ein heutiges Prüfverfahren bis 2610 trägt.} Es wird
+    nicht tragen. Deshalb die Leiter.
+  \item \textbf{Dass diese Kapsel von irgendjemandem außer ihrem Eigner
+    angenommen wäre.} Der Zustand lautet \texttt{EFFECT\_ACK\_CONTINUE}.
+  \item \textbf{Dass hier eine abgeschlossene Theorie der Zeit vorliegt.}
+    Was vorliegt, ist ein prüfbares Verfahren unter erklärten Annahmen.
+\end{itemize}
+
+Und eine Abgrenzung, die über den Gegenstand hinausweist: Die beiden
+Nobelpreise sind Tatsachen. Die Brücke zwischen ihnen und dieser Kapsel ---
+Messung als Rekonstruktion, Raum aus Zeitordnung, Antizipation als wirksame
+Gegenwartsgröße --- ist eine \emph{Lesart}. Sie ist mit allem vereinbar, was
+in den Quellen steht. Sie wird dadurch nicht zur Messung.
+
+\section{Statusklassen, Prüfprotokoll und Quellen}
+
+Jede Aussage dieses Artikels trägt eine Klasse. Die Klassifikation stammt
+aus dem \qikvrt{}-Revisionsbericht vom 23.~September 2026.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}llX@{}}
+\toprule
+\textbf{Klasse} & \textbf{Bedeutung} & \textbf{Beispiel hier} \\
+\midrule
+B & Background & Tscherenkow-Effekt; IceCube-Spezifikationen; SHA-1-Kollisionsbruch \\
+D & Definition & Beobachterrelative Retrokausalität; das Fünfzustandsgate \\
+I & Interpretation & Raum als rekonstruierte Struktur; Antizipation als Vorwärtskausalität auf einem Modell \\
+H & Hypothese & Dass eine Institution 584 Jahre lang nachversiegelt \\
+R & Requirement & Unabhängige Reproduktion der drei Prüferläufe \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Ausgeführtes Prüfprotokoll}
+
+Alle Angaben am 9.~Oktober 2026 lokal ausgeführt, netzfrei, gegen den
+gebundenen Baum.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}Xl@{}}
+\toprule
+\textbf{Prüfung} & \textbf{Ergebnis} \\
+\midrule
+Kapsel heute & \texttt{EFFECT\_ACK\_CONTINUE}, verweigert \\
+Kapsel 2610, Kette vernachlässigt & \texttt{EFFECT\_ACK\_CONTINUE}, 4 von 5 \\
+Kapsel 2610, Kette gepflegt & \texttt{EFFECT\_ACK\_DONE}, erteilt \\
+Inhaltsbindung & 3\,975 Dateien, Digest stimmt \\
+EFFECT\_ACK-Konformanz & 41 Tests, bestanden \\
+ANSI-C90-Kern & 7\,864\,387 Prüfungen, bestanden \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Quellen}
+
+\begin{itemize}
+  \item Nobelpreis für Physik 1958:
+    \url{https://www.nobelprize.org/prizes/physics/1958/summary/}
+  \item Welt der Physik, IceCube und der Nobelpreis 2026:
+    \url{https://www.weltderphysik.de/thema/nobelpreis/icecube-nobelpreis-fuer-physik-2026/}
+  \item ZDFheute, Physik-Nobelpreis 2026:
+    \url{https://www.zdfheute.de/wissen/physik-nobelpreis-2026-francis-halzen-neutrinos-astrophysik-100.html}
+\end{itemize}
+
+Die offizielle Begründung des Nobelkomitees für 2026 lag beim Verfassen nur
+in Umschreibung vor und ist entsprechend als Umschreibung geführt, nicht als
+Zitat.
+
+\subsection*{Repository-Quellen}
+
+Gebunden an den Mirror-Stand
+\hash{d7fd8dccc1c608e155b2a17bbea88351662339d6}:
+
+\begin{itemize}
+  \item \texttt{src/qikvrt\_effect\_ack.py}, \texttt{src/effect\_ack\_core.c}
+    --- das Fünfzustandsgate in zwei Implementierungen
+  \item \texttt{state/autonomy/REPOSITORY\_NATIVE\_EFFECT\_PROOF\_ARCHITECTURE\_V1.json}
+    --- die acht Terminal-Prädikate
+  \item \texttt{docs/publications/2026-08-12-observer-relative-retrocausality/}
+    --- Hauptsatz und Maschinenzeuge
+  \item \texttt{docs/AI\_BOOTSTRAP\_KNOWLEDGE\_CORPUS.md} --- Round Trip und
+    Erkenntnisgrenzen
+  \item \texttt{docs/publications/2026-09-23-qik-scientific-revision/} ---
+    Statusklassen
+\end{itemize}
+
+\subsection*{Beigelegte Artefakte}
+
+\begin{itemize}
+  \item \texttt{QIKVRT\_FUTURE\_EFFECT\_CAPSULE\_V1.json} --- die Kapsel
+  \item \texttt{verify\_future\_effect\_capsule.py} --- der netzfreie Prüfer
+\end{itemize}
+
+\vfill
+\statusbox{QLight}{
+  \small
+  Architektur und Urheberschaft: Ingolf Lohmann. Dieser Artikel wurde von
+  einem künstlich-kognitiven System verfasst; die Statusgrenzen folgen den
+  Regeln des Repositorys. Projektstand: \texttt{EFFECT\_ACK\_CONTINUE}.
+  \texttt{PASS}, \texttt{FINAL\_PASS} und \texttt{EFFECT\_ACK\_DONE} werden
+  für das Gesamtsystem ausdrücklich nicht beansprucht.
+}
+
+\end{document}

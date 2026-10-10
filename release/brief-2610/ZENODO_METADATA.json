@@ -1,0 +1,78 @@
+{
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Lohmann, Ingolf"
+    }
+  ],
+  "description": "<p>Lässt sich heute eine Aufzeichnung versiegeln, deren Wirkung erst im Jahr 2610 zugelassen wird und die sich an die Gegenwart zurückbindet? Diese Arbeit beantwortet die Frage praktisch statt rhetorisch, an einer ausführbaren Zukunftswirkungskapsel mit netzfreiem Zulassungsprüfer.</p><p>Kein Signal läuft rückwärts. Die Kapsel erreicht 2610 durch zukunftsgerichtete Kausalität mit langer Latenz. Der Rückbezug entsteht dadurch, dass die vorweggenommene spätere Lesung bereits heute maschinenlesbar in das Artefakt eingeschrieben wird: Vorwärtskausalität auf einer Repräsentation. Ein Leser in 2610 schreitet in wachsender lokaler Veränderungszeit voran und liest Records fallender authentisch gebundener Quellenordnung.</p><p>Das Zulassungsgate verlangt fünf gleichzeitig belegte Prädikate und ist fail-closed. Drei dokumentierte Prüfläufe tragen die Argumentation. Der aufschlussreichste verweigert: Für 2610 bestehen vier von fünf Prädikaten, und das Gate sperrt trotzdem, weil dreiundzwanzig Nachversiegelungen fehlen. Die heute versiegelte Kapsel erreicht 2610 nicht von allein.</p><p>Eine kryptographische Agilitätsleiter führt das unlösbare 584-Jahr-Problem auf ein wiederholtes 25-Jahr-Problem zurück. Dokumentiert ist auch ein Konstruktionsfehler und seine Korrektur: Die erste Fassung band den Inhalt an die Git-Baumidentität und damit an SHA-1, dessen Kollisionsresistenz seit 2017 gebrochen ist.</p><p>Ausdrücklich nicht behauptet werden: Rückwärts-Signalübertragung, Veränderung der Vergangenheit, 584-jährige Haltbarkeit eines Artefakts, ein bis 2610 tragendes Prüfverfahren oder eine Annahme durch Dritte. Beigelegt sind eine Claim-Matrix mit sechzehn klassifizierten Aussagen, zehn vollständig aufgelöste Quellenbindungen, die Kapsel, der Prüfer und eine Vorlesefassung.</p>",
+  "keywords": [
+    "QIK-VRT",
+    "EFFECT_ACK",
+    "Langzeitpersistenz",
+    "digital preservation",
+    "kryptographische Agilität",
+    "crypto agility",
+    "Zukunftswirkungskapsel",
+    "Provenienz",
+    "provenance",
+    "beobachterrelative Retrokausalität",
+    "Antizipation",
+    "Tscherenkow-Effekt",
+    "Cherenkov effect",
+    "IceCube",
+    "Neutrinoastronomie",
+    "Wirkungsnachweis",
+    "fail-closed",
+    "SHA-1",
+    "Claim-Matrix",
+    "Statusklassen"
+  ],
+  "language": "deu",
+  "license": "cc-by-nc-nd-4.0",
+  "notes": "Gemischte Lizenzgrenze: Dokumentation und Evidenzartefakte unter CC BY-NC-ND 4.0; der enthaltene Python-Prüfer unter PolyForm Noncommercial 1.0.0. Working Paper. Zenodo-Persistenz belegt veröffentlichte Byteidentität, nicht Fachbegutachtung, wissenschaftlichen Konsens oder unabhängige Reproduktion. Statusstand: EFFECT_ACK_CONTINUE.",
+  "prereserve_doi": true,
+  "publication_date": "2026-10-10",
+  "publication_type": "workingpaper",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21947141",
+      "relation": "continues",
+      "resource_type": "publication-workingpaper",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21888130",
+      "relation": "isDerivedFrom",
+      "resource_type": "publication-workingpaper",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21515074",
+      "relation": "references",
+      "resource_type": "publication-workingpaper",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21498773",
+      "relation": "references",
+      "resource_type": "publication-workingpaper",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20712301",
+      "relation": "references",
+      "resource_type": "software",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://github.com/ingolf-lohmann/qik-vrt",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "title": "QIK-VRT: Der Brief an das Jahr 2610",
+  "upload_type": "publication",
+  "version": "1.0.0"
+}
