@@ -13,6 +13,7 @@ from collections.abc import Sequence
 from typing import Any
 
 from tools import qikvrt_autonomous_self_heal as self_heal
+from tools import qikvrt_workflow_executor as role_resolver
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 POLICY = ROOT / "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json"
@@ -96,6 +97,12 @@ def _canonical_source_remote() -> str:
     canonical = policy.get("personal_working_memory", {}).get("canonical_source_remote", {})
     expected_name = canonical.get("name")
     expected_url = canonical.get("url")
+    try:
+        authority = role_resolver.load_repository_roles(ROOT)["AUTHORITY"]
+    except role_resolver.ExecutorBlock as exc:
+        raise PreEffectBlock(str(exc)) from exc
+    if expected_url != f"https://github.com/{authority}.git":
+        raise PreEffectBlock("personal-origin and canonical role policies disagree")
     if expected_name != "upstream" or not isinstance(expected_url, str):
         raise PreEffectBlock("canonical source remote contract mismatch")
 
@@ -125,6 +132,10 @@ def _execution_source_remote() -> str:
         raise PreEffectBlock("repository remote role policy cannot be loaded") from exc
     if not isinstance(policy, dict) or policy.get("schema") != "qikvrt_canonical_upstream_remote_v1":
         raise PreEffectBlock("repository remote role policy schema mismatch")
+    try:
+        role_resolver.resolve_repository_roles(policy)
+    except role_resolver.ExecutorBlock as exc:
+        raise PreEffectBlock(str(exc)) from exc
     expected_urls = set()
     for key, role in (("canonical_upstream", "AUTHORITY"), ("mirror", "MIRROR")):
         binding = policy.get(key, {})

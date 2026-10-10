@@ -255,6 +255,11 @@ def ruleset_run_binding(run, run_id, expected_sha):
 
 def ruleset_authority_operation(args, token):
     """One bounded POST or independent GETs; never retry or grant a review."""
+    # The pinned operation carrier cannot assign a second Authority.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from tools.qikvrt_workflow_executor import load_repository_roles
+    if RULESET_REPOSITORY != load_repository_roles()["AUTHORITY"]:
+        raise ValueError("Ruleset carrier and canonical Authority policy disagree")
     opener = urllib.request.build_opener(NoRedirectHandler())
     get = lambda path: ruleset_json_get(opener, token, path)
     body = b'{"ref":"main"}'

@@ -39,7 +39,7 @@ from tools.qikvrt_seed_common import (
 
 GUID = "a84f157a-cef2-4c47-bca9-8f407085bdbe"
 SOURCE = "example/node"
-SEED = "Goldkelch/qik-vrt"
+SEED = "ingolf-lohmann/qik-vrt"
 REQUEST_URL = (
     "https://raw.githubusercontent.com/example/node/refs/tags/v1/"
     "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
@@ -183,6 +183,9 @@ class SeedWorkflowTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
+        policy_path = self.root / workflow_executor.ROLE_POLICY_PATH
+        policy_path.parent.mkdir(parents=True)
+        shutil.copyfile(workflow_executor.ROOT / workflow_executor.ROLE_POLICY_PATH, policy_path)
         (self.root / "registry/node_request_queue").mkdir(parents=True)
         (self.root / "registry/KNOWN_NODE_REQUESTS.tsv").write_text(
             "# guid\tsource_repo\tseed_repo\trequest_url\tnode_branch\theartbeat_ttl_minutes\tlifecycle_policy\n"
@@ -288,7 +291,7 @@ class SeedWorkflowTests(unittest.TestCase):
         path = self.root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
         original = path.read_text()
         path.write_text(original.replace("\t" + SEED + "\t", "\tnew/seed\t"))
-        with self.assertRaisesRegex(SeedError, "URL"):
+        with self.assertRaisesRegex(SeedError, "canonical Authority"):
             validate_local_handshake(self.root)
         path.write_text(original + original)
         repository = Path(__file__).resolve().parents[1]
@@ -330,7 +333,7 @@ class SeedWorkflowTests(unittest.TestCase):
         acknowledgement = self.root / "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
         original = b'{"status":"PENDING_SEED_ACCEPTANCE"}\n'
         acknowledgement.write_bytes(original)
-        with self.assertRaisesRegex(SeedError, "seed repository is outside the configured allowlist"):
+        with self.assertRaisesRegex(SeedError, "canonical Authority"):
             run_acceptance(self.root, "unknown-seed", fetch, seed_repository="unapproved/seed", now=NOW)
         self.assertEqual([], fetch.calls)
         self.assertEqual(original, acknowledgement.read_bytes())
@@ -591,6 +594,7 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
             "tools/qikvrt_workflow_executor.py",
             "tools/qikvrt_subprocess.py",
             "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+            "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
         ):
             target = self.root / path
             target.parent.mkdir(parents=True, exist_ok=True)

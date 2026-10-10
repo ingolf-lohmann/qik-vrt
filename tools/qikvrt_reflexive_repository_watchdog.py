@@ -121,6 +121,14 @@ def load_contract(root: Path = ROOT) -> dict[str, Any]:
     contract = dict(_mapping(value, "workflow executor contract"))
     if contract.get("schema") != "qikvrt_workflow_executor_mesh_contract_v1":
         raise ReflexiveWatchdogBlock("workflow executor contract schema is not v1")
+    try:
+        try:
+            from tools.qikvrt_workflow_executor import authority_repository, ExecutorBlock
+        except ModuleNotFoundError:
+            from qikvrt_workflow_executor import authority_repository, ExecutorBlock
+        authority_repository(contract, root)
+    except ExecutorBlock as exc:
+        raise ReflexiveWatchdogBlock(str(exc)) from exc
     prevention = _mapping(
         contract.get("reflexive_deadlock_prevention"),
         "reflexive deadlock prevention contract",
@@ -177,7 +185,13 @@ def load_contract(root: Path = ROOT) -> dict[str, Any]:
         record_path = _relative_path(liveness.get(key), f"node liveness {key}")
         if record_path.parent != records_root:
             raise ReflexiveWatchdogBlock(f"node liveness {key} is outside the records root")
-    _string(liveness.get("authority_repository"), "node liveness authority repository")
+    declared_authority = _mapping(contract.get("authority"), "contract authority")
+    authority_repository = _string(declared_authority.get("repository"), "authority repository")
+    if liveness.get("authority_repository") != authority_repository:
+        raise ReflexiveWatchdogBlock("node liveness and executor Authority repositories disagree")
+    mirrors = _string_list(declared_authority.get("mirror_repositories"), "mirror repositories")
+    if authority_repository.casefold() in {item.casefold() for item in mirrors}:
+        raise ReflexiveWatchdogBlock("Authority and Mirror repositories must be distinct")
     _positive_int(liveness.get("warning_seconds"), "node liveness warning seconds")
     if liveness.get("all_records_absent_state") != "NOT_APPLICABLE":
         raise ReflexiveWatchdogBlock("node liveness all-records-absent state must be NOT_APPLICABLE")
@@ -537,7 +551,14 @@ def _node_liveness_observation(
     warning_seconds = _positive_int(profile["warning_seconds"], "node liveness warning seconds")
     blocking: list[dict[str, str]] = []
 
-    if authority_head is None:
+    # Equal Git commits across repositories do not establish equal roles.
+    # Keep historical Seed receipts unchanged and reject their stale role binding.
+    receipt_repositories = [acceptance[key] for key in ("authority_repository", "seed_repository") if key in acceptance]
+    if not receipt_repositories or any(item != profile["authority_repository"] for item in receipt_repositories):
+        acceptance_metadata["state"] = "UNTRUSTED"
+        acceptance_metadata["reason"] = "SEED_ACCEPTANCE_AUTHORITY_REPOSITORY_MISMATCH"
+        blocking.append({"record": "seed_acceptance", "reason": "SEED_ACCEPTANCE_AUTHORITY_REPOSITORY_MISMATCH"})
+    elif authority_head is None:
         acceptance_metadata["state"] = "UNTRUSTED"
         acceptance_metadata["reason"] = "AUTHORITY_HEAD_UNOBSERVED"
         blocking.append({"record": "seed_acceptance", "reason": "AUTHORITY_HEAD_UNOBSERVED"})

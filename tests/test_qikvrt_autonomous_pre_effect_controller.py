@@ -68,7 +68,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                 return self.command_result(command, "origin\nupstream\n")
             if command == ("git", "remote", "get-url", "upstream"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             raise AssertionError(command)
 
@@ -83,7 +83,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                 return self.command_result(command, "origin\n")
             if command == ("git", "remote", "get-url", "origin"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             raise AssertionError(command)
 
@@ -140,7 +140,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
         for urls, returncode in (
             ("https://github.com/example/qik-vrt.git\n", 0),
             ("https://github.com/ingolf-lohmann/qik-vrt.git.evil\n", 0),
-            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/Goldkelch/qik-vrt.git\n", 0),
+            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/ingolf-lohmann/qik-vrt.git\n", 0),
             ("", 1),
         ):
             with self.subTest(urls=urls, returncode=returncode):

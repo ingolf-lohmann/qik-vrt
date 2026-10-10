@@ -39,7 +39,7 @@ except ModuleNotFoundError:  # Script execution keeps tools/ as sys.path[0].
 
 MAX_INPUT_BYTES = 1_048_576
 MAX_NODE_ROWS = 10_000
-DEFAULT_SEED_REPOSITORY = "Goldkelch/qik-vrt"
+DEFAULT_SEED_REPOSITORY = workflow_executor.load_repository_roles()["AUTHORITY"]
 REPOSITORY_RE = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 BRANCH_RE = re.compile(r"[A-Za-z0-9._~/-]+\Z")
 RUN_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
@@ -355,6 +355,11 @@ def load_handshake(root: Path) -> NodeRecord:
     _validate_guid(guid)
     _validate_repository(source, "handshake source")
     _validate_repository(seed, "handshake Seed")
+    try:
+        if seed != workflow_executor.load_repository_roles(root)["AUTHORITY"]:
+            raise SeedError("handshake Seed and canonical Authority repositories disagree")
+    except workflow_executor.ExecutorBlock as exc:
+        raise SeedError(str(exc)) from exc
     _validate_branch(branch)
     if not ttl_text.isdecimal() or not 1 <= int(ttl_text) <= 10080:
         raise SeedError("handshake TTL must be between 1 and 10080 minutes")
@@ -458,6 +463,11 @@ def _registry_tsv_paths(root: Path) -> list[Path]:
 
 def load_nodes(root: Path, seed_repository: str) -> tuple[list[NodeRecord], dict[str, PolicyRecord]]:
     _validate_repository(seed_repository, "configured seed repository")
+    try:
+        if seed_repository != workflow_executor.load_repository_roles(root)["AUTHORITY"]:
+            raise SeedError("configured Seed and canonical Authority repositories disagree")
+    except workflow_executor.ExecutorBlock as exc:
+        raise SeedError(str(exc)) from exc
     policies = load_policies(root)
     nodes: list[NodeRecord] = []
     seen: set[str] = set()

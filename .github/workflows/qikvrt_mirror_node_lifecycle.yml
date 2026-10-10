@@ -44,6 +44,13 @@ jobs:
             (.terminal_conjunction | length == 8)
           ' "$contract" >/dev/null
 
+      - name: Validate lifecycle roles against the canonical policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_workflow_executor.py roles --json
+          python3 -B tools/qikvrt_seed_common.py config-check --root .
+
       - name: Materialize fresh mirror lifecycle evidence
         shell: bash
         run: |

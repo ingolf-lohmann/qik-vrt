@@ -1,0 +1,145 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_CANONICAL_ROLE_RECONCILIATION_20261010_V1",
+  "created_at": "2026-10-10T03:00:00Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/integration/seed-mcp-governance-512-513-20261009-14c71097",
+  "source_commit": "2baedd65576034a03dff668b551b3a280713f68f",
+  "source_tree": "227767bf165fa7c495d7c07c4894059fe64ad87d",
+  "scope": "Reconcile the Owner-confirmed repository roles in the existing PR515 implementation; require fresh native execution and independent readback before activation.",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "identity_proof_boundary": "Owner instruction attribution; GitHub principal is not biometric proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "799f1a82fe77",
+    "tools_and_adapters": [
+      "authenticated GitHub REST connector",
+      "exact Git blob materialization and local declared runtime",
+      "Sites provider domain readback"
+    ],
+    "identity_and_observation_limits": "No independent human approval or native role activation inferred."
+  },
+  "human_contributions": [
+    {
+      "type": "AUTHORIZATION",
+      "description": "Current Owner task explicitly confirms Authority ingolf-lohmann/qik-vrt and Mirror Goldkelch/qik-vrt, authorizes consistent repair of existing native contracts and requires all safeguards."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "CAUSAL_DIAGNOSIS",
+      "description": "PR515 CODEOWNERS and review policy already bind Ingolf; canonical upstream, executor and origin/Seed consumer defaults retain the former Authority. Native watchdog read the old projected repository and failed HTTP404."
+    },
+    {
+      "type": "REUSE",
+      "description": "Reuse the role/readback and independent receipt checks from PR491 inside PR515 existing executor and watchdog; retain PR515 REST2.3.0, generator3.2, lifecycle, review and promotion components."
+    },
+    {
+      "type": "REPAIR",
+      "description": "Make the existing canonical upstream policy the sole normative role source, validate live projections, independently read native Main policies/CODEOWNERS and suppress unchanged403/404 retries. Replace legacy independent issue merge/Mirror writer with a read-only handoff to existing native review/promotion. Guard historical exact-artifact workflow requests against current-role disagreement."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "owner_authorization_sources": {
+    "original_owner_correction": {
+      "user_message_at": "2026-10-06T21:56:07Z",
+      "quote": "Falsch. Die Authority ist mittlerweile bei uns.",
+      "application_user_message_at": "2026-10-06T21:58:36Z",
+      "repository_carrier_timestamps_are_separate": true
+    },
+    "existing_policy_carrier": {
+      "pr": 484,
+      "head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+      "tree": "3af7d383933a8972469f48928a800aa6c06031d4",
+      "policy_blob": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382",
+      "source_url": "https://github.com/ingolf-lohmann/qik-vrt/blob/ad47e6386536abdca5d5ba025832b27718ee66dd/policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
+    },
+    "monitor": "https://github.com/ingolf-lohmann/qik-vrt/blob/2baedd65576034a03dff668b551b3a280713f68f/evidence/claude-mcp-connector/2026-10-09/LIVE_MCP_READBACK.json",
+    "monitor_is_owner_authorization": false,
+    "monitor_native_activation_verified": false
+  },
+  "reused_source": {
+    "pr": 491,
+    "head": "a879821845cb2aba6e841aa094d12d7a52d3a79b",
+    "tree": "8f35adf18c048b21ff6b2411d7b8b73318d0f89d",
+    "source_url": "https://github.com/ingolf-lohmann/qik-vrt/pull/491",
+    "existing_source_contributions_retained": true,
+    "historical_tests_transferred": false
+  },
+  "normative_role_source": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+  "role_consistency_scope": [
+    "executor and native reflexive watchdog",
+    "personal working-memory origin and bootstrap corpus",
+    "HTTP terminal entrypoint and reciprocal digital-twin projection",
+    "Seed allowlist/handshake/default and node continuity/liveness",
+    "native Code Owner resolver and REST Ruleset operation carrier",
+    "existing issue lifecycle and promotion handoff",
+    "checked-out legacy publication/tag request projections",
+    "AI context and agent handoff"
+  ],
+  "historical_scope": {
+    "immutable_evidence_and_requests": "Original repository identities, exact tags, source commits, archives, historical work units and scientific publication schemas remain frozen. They do not resolve current repository roles.",
+    "historical_global_completion_tag": "v2026.07.28-authority-mirror-zenodo-equality-1.0.0",
+    "projection_guard": "HISTORICAL_ROLE_REQUEST_NOT_CURRENT before every checked-out legacy effect job",
+    "rights_and_authorization_not_expanded": true
+  },
+  "access_denial": {
+    "observed_mirror_access": "HTTP404; UNKNOWN current Mirror head/tree/access cause; no unchanged retry",
+    "native_previous_run": 38007868641,
+    "readback_causal_binding": "Canonical role policy, projected Authority and reviewed native token/transport carriers; unrelated Head/timestamp/lifecycle progress cannot permit denied retry.",
+    "fallback": "NONE"
+  },
+  "validation": {
+    "source_preflight": "254 focused regressions passed; local working-source result only",
+    "exact_candidate_head_tests": "REQUIRED_NEW_EXECUTION",
+    "native_candidate_head_tests": "REQUIRED_NEW_EXECUTION",
+    "independent_complete_rest_tree_readback": "REQUIRED_AFTER_WRITE",
+    "predecessor_evidence_transfer": false,
+    "integrity_generator": "Existing3.2 unchanged"
+  },
+  "governance": {
+    "independent_exact_head_code_owner_review": "REQUIRED",
+    "native_main_enforcement": "REQUIRED",
+    "main_write": false,
+    "ruleset_write": false,
+    "self_approval": false,
+    "force_push": false,
+    "production_effect": false,
+    "ruleset_lifecycle_writer_blob": "ab47a8ec98c39b39bda420050cb7c970a9da6165"
+  },
+  "domain_readback": {
+    "hostname": "raumzeitterminal.de",
+    "site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "custom_domain_id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+    "provider_refreshed_at": "2026-10-10T02:57:08.131794+00:00",
+    "status": "pending",
+    "provider_status": "pending",
+    "ssl_status": "pending_validation",
+    "delivery_state": "NOT_ESTABLISHED",
+    "directory": "evidence/native-runtime-acceptance/",
+    "registration_or_reachability_inferred": false
+  },
+  "completion_boundary": {
+    "candidate_persistence": "REQUIRED_WITH_EXPECTED_SHA_LEASE",
+    "candidate_head_tree_binding": "IN_INDEPENDENT_REST_READBACK_AND_PR_BODY; no content-addressed self-reference",
+    "trusted_main_role_activation": false,
+    "native_activation_verified": false,
+    "authority_mirror_equality": false,
+    "delivery_raumzeitterminal_de": false,
+    "completion_claims": {
+      "PASS": false,
+      "FINAL_PASS": false,
+      "EFFECT_ACK_DONE": false
+    }
+  },
+  "github_route": "REST_API_ONLY",
+  "optimization_admitted": false
+}

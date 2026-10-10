@@ -1,23 +1,23 @@
 {
   "schema": "qikvrt_canonical_upstream_remote_v1",
-  "version": "1.0",
+  "version": "1.1",
   "status": "NORMATIVE",
   "smallest_action": "MATERIALIZE_POLICY_BOUND_CANONICAL_UPSTREAM_REMOTE",
   "canonical_upstream": {
-    "repository": "Goldkelch/qik-vrt",
+    "repository": "ingolf-lohmann/qik-vrt",
     "role": "AUTHORITY",
     "canonical_remote_name": "authority",
-    "canonical_https_url": "https://github.com/Goldkelch/qik-vrt.git",
-    "canonical_api_repository": "https://api.github.com/repos/Goldkelch/qik-vrt",
+    "canonical_https_url": "https://github.com/ingolf-lohmann/qik-vrt.git",
+    "canonical_api_repository": "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
     "canonical_entrypoint": "/AI",
     "default_branch": "main"
   },
   "mirror": {
-    "repository": "ingolf-lohmann/qik-vrt",
+    "repository": "Goldkelch/qik-vrt",
     "role": "MIRROR",
     "canonical_remote_name": "mirror",
-    "canonical_https_url": "https://github.com/ingolf-lohmann/qik-vrt.git",
-    "canonical_api_repository": "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
+    "canonical_https_url": "https://github.com/Goldkelch/qik-vrt.git",
+    "canonical_api_repository": "https://api.github.com/repos/Goldkelch/qik-vrt",
     "canonical_entrypoint": "/AI",
     "default_branch": "main"
   },
@@ -26,7 +26,8 @@
     "policy_over_local_git_config": true,
     "policy_over_remote_name_heuristics": true,
     "policy_over_personal_origin": true,
-    "ambiguous_or_missing_binding": "HOLD"
+    "ambiguous_or_missing_binding": "HOLD",
+    "derived_contracts_must_agree": true
   },
   "exact_head_contract": {
     "bind_current_authority_main_before_use": true,
@@ -54,5 +55,16 @@
     "Sequenz ist Ordnung.",
     "Kausalität ist Verantwortung.",
     "Eins und nicht keins."
-  ]
+  ],
+  "owner_role_authorization": {
+    "source": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json#/mesh_authority/owner_directive",
+    "source_candidate": {
+      "repository": "ingolf-lohmann/qik-vrt",
+      "pr": 484,
+      "head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+      "policy_blob": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382"
+    },
+    "native_activation_inferred": false,
+    "monitor_observation_is_authorization": false
+  }
 }

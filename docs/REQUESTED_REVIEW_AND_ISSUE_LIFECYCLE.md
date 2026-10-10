@@ -18,7 +18,10 @@ roles: Ingolf Lohmann is the human Product Owner and Code Owner; the QIK-VRT
 executing instance carries out authorized tested work; the repository retains
 its durable working memory. The current authority is this Mesh constellation.
 `Goldkelch/qik-vrt` remains a historical source, not a superior permission issuer
-for this repository. The binding is in the existing policy's `mesh_authority`.
+for this repository. The human/executor/storage binding is in the existing policy's `mesh_authority`.
+Repository Authority/Mirror names are resolved solely from
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`; governance must agree with that
+source and cannot create another role definition.
 
 The existing gate resolves the human login from that trusted policy and verifies
 all CODEOWNERS entries. Publisher, technical executor, Ruleset writer and both
@@ -181,3 +184,20 @@ Report only material changes: a new disposition, a resolved or newly evidenced b
 ## Machine authority
 
 The normative machine-readable policy is `policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`. The natural-person delegation is `state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json`.
+
+## Legacy issue and exact-artifact handoffs
+
+`issue-agent-autofinish.yml` now resolves roles from trusted Main and reuses the
+existing REST inventory and native review gate. Its artifact hands candidates
+to `qikvrt_expected_head_promotion.yml` and the existing lifecycle policy.
+It performs no independent merge, Mirror push, tag, review or issue closure.
+Terminal issue evidence does not replace native governance or authorize a
+second repository writer.
+
+Historical publication schemas, inactive requests, exact-tag identities and
+scientific evidence retain their original bytes and scopes. Their checked-out
+workflow jobs validate the request's role projection through the shared
+resolver before an effect. A historical role assignment fails
+`HISTORICAL_ROLE_REQUEST_NOT_CURRENT`; it cannot grant a current publication,
+tag or Authority change. New effects still require their separately reviewed
+exact-artifact contracts and all existing native approvals.

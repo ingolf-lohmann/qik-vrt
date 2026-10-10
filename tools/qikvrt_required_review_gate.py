@@ -47,6 +47,15 @@ def resolve_required_code_owner(repository: str, *, policy: Mapping[str, Any] | 
         raise ReviewGateInputError("Mesh Authority must retain human, executor and repository roles")
     if repository != memory.get("full_name") or repository != authority.get("authority_repository"):
         raise ReviewGateInputError("repository is outside the current Mesh Authority binding")
+    try:
+        try:
+            from tools.qikvrt_workflow_executor import load_repository_roles, ExecutorBlock
+        except ModuleNotFoundError:
+            from qikvrt_workflow_executor import load_repository_roles, ExecutorBlock
+        if repository != load_repository_roles(root)["AUTHORITY"]:
+            raise ReviewGateInputError("governance and canonical Authority policies disagree")
+    except ExecutorBlock as exc:
+        raise ReviewGateInputError(str(exc)) from exc
     owner = _login(human.get("github_login"), "Mesh Authority human login")
     if human.get("type") != "NATURAL_PERSON" or owner.casefold().endswith("[bot]"):
         raise ReviewGateInputError("native Code Owner must be a human principal")

@@ -1,7 +1,7 @@
 # QIK-VRT Repository Status and Stall-Detection Policy v1
 
 Status: normative repository policy
-Authority repository: `Goldkelch/qik-vrt`
+Authority repository: resolved from `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` (`ingolf-lohmann/qik-vrt`)
 Mirror repository: `ingolf-lohmann/qik-vrt`
 
 ## Purpose
