@@ -1,0 +1,62 @@
+{
+  "assembly": "CommonJS production modules in sources order; frozen factories/cache require wrapper; React and ReactDOM client only. No CDN, npm, JSX compiler or server renderer at runtime.",
+  "bundle": {
+    "bytes": 571915,
+    "path": "docs/monitor/offline/vendor/react-runtime.js",
+    "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"
+  },
+  "license": {
+    "path": "docs/monitor/offline/vendor/REACT_LICENSE.txt",
+    "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+  },
+  "origin": "Already installed, pnpm-lock-bound Sites source dependencies; actual production-source bytes and licenses independently read. Npm archive URLs are reproduction locators, not an assertion of redownload.",
+  "reuse_source_commit": "53040b450853b0ab5a3d59765b86030b3bd0c978",
+  "schema": "qikvrt-static-react-lock/v1",
+  "sources": [
+    {
+      "bytes": 17217,
+      "license": "MIT",
+      "module": "react",
+      "package": "react",
+      "path": "cjs/react.production.js",
+      "sha256": "f4860eb156f9cab3878103a196822083db8fe6e7a1bba701acbd372c9a75b92c",
+      "source": "https://registry.npmjs.org/react/-/react-19.2.6.tgz",
+      "version": "19.2.6"
+    },
+    {
+      "bytes": 6655,
+      "license": "MIT",
+      "module": "react-dom",
+      "package": "react-dom",
+      "path": "cjs/react-dom.production.js",
+      "sha256": "ec8130a495522e7b601a112d6344fc387c0d081fc927b6a9bd7cc3eced3f72dd",
+      "source": "https://registry.npmjs.org/react-dom/-/react-dom-19.2.6.tgz",
+      "version": "19.2.6"
+    },
+    {
+      "bytes": 10181,
+      "license": "MIT",
+      "module": "scheduler",
+      "package": "scheduler",
+      "path": "cjs/scheduler.production.js",
+      "sha256": "679adff761d31e9426604f80c0e99be44a3e6f4c6834b0218ecf0312a67c171f",
+      "source": "https://registry.npmjs.org/scheduler/-/scheduler-0.27.0.tgz",
+      "version": "0.27.0"
+    },
+    {
+      "bytes": 536016,
+      "license": "MIT",
+      "module": "react-dom/client",
+      "package": "react-dom",
+      "path": "cjs/react-dom-client.production.js",
+      "sha256": "e7e8275ddedd11991183aec736095ba33e90fd4ce04a8dbb413efce1dae6050b",
+      "source": "https://registry.npmjs.org/react-dom/-/react-dom-19.2.6.tgz",
+      "version": "19.2.6"
+    }
+  ],
+  "versions": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "scheduler": "0.27.0"
+  }
+}

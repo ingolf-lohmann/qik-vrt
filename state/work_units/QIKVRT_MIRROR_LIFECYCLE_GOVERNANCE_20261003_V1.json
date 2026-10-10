@@ -1,0 +1,603 @@
+{
+  "acceptance_remaining": [
+    "Fresh successor native full repository checks and execution admission",
+    "Native Main enforcement with current independent Code Owner review before migration promotion",
+    "Actual first admitted successor lifecycle run/artifact readback after adoption"
+  ],
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex / GPT-6",
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "model_build": "UNAVAILABLE",
+    "scope": [
+      "Fresh repository/API observation",
+      "Reuse existing self-heal candidate identity and native Code Owner gate",
+      "Workflow repair and executable positive/negative transport controls",
+      "Source-bound integrity projection and draft review carrier"
+    ]
+  },
+  "candidate_outputs": [
+    {
+      "bytes": 11178,
+      "git_blob_sha1": "ad7e1912055c2bce54243a007d4ca75fd3f11840",
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
+    },
+    {
+      "bytes": 29049,
+      "git_blob_sha1": "289d5ad169fae3d88e497d0868ca9adacaa2ac9e",
+      "path": "tests/test_seed_workflows.py",
+      "sha256": "97f004a6a6a3f9b2bd372a22a2184129a546f8036045880ec122ffad9b1042e5"
+    }
+  ],
+  "completion": {
+    "candidate_prepared": true,
+    "effect_ack_done": false,
+    "live_new_lifecycle_persistence_observed": false,
+    "main_adoption": false,
+    "predecessor_evidence_transfer": false
+  },
+  "created_utc": "2026-10-03T12:38:32.948608+00:00",
+  "evidence_retention": "METADATA_ONLY",
+  "governance_signal_repairs": [
+    {
+      "acceptance_remaining": [
+        "Native active Main enforcement using separately available administrative authority",
+        "Independent Code Owner native APPROVED review on the then-current exact HEAD",
+        "Trusted-main adoption and fresh native readback before any promotion"
+      ],
+      "artificial_cognitive_contribution": {
+        "actor": "OpenAI Codex / GPT-6",
+        "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+        "model_build": "UNAVAILABLE",
+        "scope": [
+          "Fresh native readback and source/log diagnosis",
+          "Separate native and technical status writers",
+          "Reuse existing native evaluator for live projection and promotion",
+          "Execute regression controls and integrity preparation"
+        ]
+      },
+      "candidate_outputs": [
+        {
+          "bytes": 1749,
+          "git_blob_sha1": "efd13271fec4584ec1f6057b743a2b6c5aaf3057",
+          "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+          "sha256": "6d6975b55c358fdeebdf125aae6ed855f75bfec06164b6b47cac15bd27de4fd0"
+        },
+        {
+          "bytes": 14026,
+          "git_blob_sha1": "8074bb5811678ab22b1ddc2a3c89fdaa8b5e312b",
+          "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+          "sha256": "cfa2d9652064645536e951eee1a51930e1492b913a118c7f9d65154921754dc9"
+        },
+        {
+          "bytes": 10844,
+          "git_blob_sha1": "012651c1a0d61dc4458087ebd46e652aad91b792",
+          "path": ".github/workflows/qikvrt_live_status_watch.yml",
+          "sha256": "7ce8cf6fcc51d054ced52e28d5ce43f76b87d95c3b6a3f9ac70eeb8b609ff276"
+        },
+        {
+          "bytes": 3816,
+          "git_blob_sha1": "9603b8bba4ef899d3b84013dbaa6391a10f08a08",
+          "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+          "sha256": "e171956c461fd551f94e553ae27ae426baccd61c1b883d2f9391ad797c920609"
+        },
+        {
+          "bytes": 12871,
+          "git_blob_sha1": "3a0a503a43a6e7f0839e4a4d89c0ceac38ca37ee",
+          "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+          "sha256": "cb97cb253cbcdf91a25089da9aa86986f8fffa29e769e83191e0dbeb492a6a5d"
+        },
+        {
+          "bytes": 4890,
+          "git_blob_sha1": "b1ad7bba294809f89079533354835250a207f02a",
+          "path": ".github/workflows/qikvrt_required_review_gate.yml",
+          "sha256": "8e0587ad6ffa338eb8e3a53185e019f55314ea51a11de31faffaa34bcc3147ea"
+        },
+        {
+          "bytes": 10954,
+          "git_blob_sha1": "f66f887c2b8e46cc4767debbd49d0f2edd53f086",
+          "path": "Makefile",
+          "sha256": "092b9a233f3632d25a76b81de5ddd6e4c633189e23a77ab757007a5a45ba4b64"
+        },
+        {
+          "bytes": 6759,
+          "git_blob_sha1": "ded6ee4d188afa696c3587ad8a83d05ce79d1b7b",
+          "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+          "sha256": "56e85353cd2559e146867129bd4b6a00c08ff11b9a158df01d41f8be2070e4f9"
+        },
+        {
+          "bytes": 6114,
+          "git_blob_sha1": "404d172f138fda2028d56f334e400cfce6be89fa",
+          "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+          "sha256": "69015bd9b943fddf914922a1b03430136c7ced137c4ad351b73947b2e91e2c0a"
+        },
+        {
+          "bytes": 10840,
+          "git_blob_sha1": "0b4f7c1e40a59ddde28da4f239168f8fafc4687b",
+          "path": "tests/test_qikvrt_expected_head_promotion.py",
+          "sha256": "ac6e62350f60177d3dc5ff8a3fe3e9e42349c8b155e647b1a8920be0f6ab3caa"
+        },
+        {
+          "bytes": 7614,
+          "git_blob_sha1": "86af8d14df583a79a42b2c71b8dd2bd735374b2a",
+          "path": "tests/test_qikvrt_requested_review_executor.py",
+          "sha256": "7010365eddefac000a7f698091e070cc3695d7a95e7bf4a3feaabcd487115eb3"
+        },
+        {
+          "bytes": 10778,
+          "git_blob_sha1": "db27e61326070ab281d1e009f495adda6b1388d6",
+          "path": "tests/test_qikvrt_required_review_gate.py",
+          "sha256": "69e2441b6ea85163290fb1189c67a527fa501d391a6ce5d684bdc1a6ea091959"
+        },
+        {
+          "bytes": 9545,
+          "git_blob_sha1": "78acc8c7b32b15e0416b76c3ed1b191b656b073b",
+          "path": "tools/qikvrt_expected_head_promotion.py",
+          "sha256": "c29b63736380550137a8f1aec2f4a36eec0d6301f869451909fd016c02618279"
+        },
+        {
+          "bytes": 7767,
+          "git_blob_sha1": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+          "path": "tools/qikvrt_requested_review_executor.py",
+          "sha256": "4a70a452b9642ea480e14c312d34ff6e26b648584e4dc1d396adeb83c5b65117"
+        },
+        {
+          "bytes": 11438,
+          "git_blob_sha1": "b13137027ce57c0798f7bc6b990c06dd5c17dc2a",
+          "path": "tools/qikvrt_required_review_gate.py",
+          "sha256": "74a272ec1a26979ca4f8fc95ebe00949eea8cc426ee688f4e4e128c3ca636c8f"
+        }
+      ],
+      "causal_diagnosis": [
+        {
+          "effect": "EVENT_OBSERVED_ONLY",
+          "job_id": 111712102921,
+          "observed_conclusion": "success",
+          "run_id": 37294401698,
+          "scope": "Valid event selector; no native rules or reviews read"
+        },
+        {
+          "effect": "NOOP",
+          "job_id": 111712103795,
+          "observed_conclusion": "success",
+          "run_id": 37294401501,
+          "scope": "No active requested reviewer; substantive review step not executed"
+        },
+        {
+          "effect": "Published failure CODE_OWNER_RULE_NOT_ENFORCED on the exact head",
+          "job_id": 111712242414,
+          "observed_conclusion": "success",
+          "run_id": 37294443676,
+          "scope": "Status transport succeeded; native prerequisite failed"
+        },
+        {
+          "defect": "Technical review executor and native gate publisher share QIKVRT requested review execution; promotion consumes that status; branch watcher displays execution conclusions without native acceptance."
+        }
+      ],
+      "current_main": "86d7062f25f174039da0a5df8a856127553036f1",
+      "effect_boundary": {
+        "effect_ack_done": false,
+        "main_adoption": false,
+        "native_review_mutation": false,
+        "predecessor_evidence_transfer": false,
+        "pull_request_merge": false,
+        "ruleset_mutation": false,
+        "self_approval": false
+      },
+      "full_repository_verification_contract": "make test on the frozen successor; exact head/tree/run results remain in the PR and native CI evidence",
+      "human_acceptance_of_generated_repair": "PENDING",
+      "human_contribution": {
+        "actor": "Ingolf Lohmann",
+        "class": "HUMAN",
+        "scope": "Resolve PR #449 governance signals to one fail-closed meaning; reobserve native rules, requested/submitted reviews and checks; repair status/acceptance projections; no self-approval or merge while native prerequisites are missing."
+      },
+      "local_governance_verification": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest -v tests.test_qikvrt_required_review_gate tests.test_qikvrt_requested_review_executor tests.test_qikvrt_expected_head_promotion",
+        "exit_code": 0,
+        "log_sha256": "cb33822a411c7eee9f883124bf4b83b16ac2d027bb449f4fc5b694ba04ed64d8",
+        "scope": "Candidate decision cores and actual embedded publisher, live projection, review persistence and pre-promotion guard using bounded API fixtures; no live enforcement or review effect",
+        "tests": 42
+      },
+      "log_bindings": {
+        "executor_logs": {
+          "bytes": 25050,
+          "sha256": "80c78edc4cd67a216ef721a5479597a586a9bc2939f466dfd2217e70f8730bfc"
+        },
+        "native_gate_logs": {
+          "bytes": 22877,
+          "sha256": "f8ea028f8fbda4579471ce6c984d11adaf0807c205b7930f267094c4318dd0f5"
+        },
+        "observer_logs": {
+          "bytes": 3072,
+          "sha256": "afe1fab0f75d12fff33c4db0417a73ca57c6531cb2262e58224199572a77013e"
+        }
+      },
+      "native_readback": {
+        "branch_protection_read": "403 Resource not accessible by integration",
+        "combined_status": "failure",
+        "effective_rules_connector_read": "unsupported endpoint; existing native gate receipt reports CODE_OWNER_RULE_NOT_ENFORCED",
+        "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+        "main_protected": false,
+        "requested_reviewers": {
+          "teams": [],
+          "users": []
+        },
+        "rulesets": [],
+        "source_receipts": {
+          "before_main": {
+            "is_error": false,
+            "response_bytes": 4109,
+            "response_sha256": "6933b024f854bce386d29fd1020c3784a7ac6517fdd5b1cd6d3c761b25949c7d",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/branches/main"
+          },
+          "before_pr": {
+            "is_error": false,
+            "response_bytes": 19670,
+            "response_sha256": "b5249249606ebc9b71b2cd65428830e62cc153cfaba8d9f8a515f74116f8a4c7",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/449"
+          },
+          "before_requested": {
+            "is_error": false,
+            "response_bytes": 23,
+            "response_sha256": "b051454398702595b123890ac96e6fbcdfabf78a76e33fec077c9f995f5c6267",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/449/requested_reviewers"
+          },
+          "before_reviews": {
+            "is_error": false,
+            "response_bytes": 2,
+            "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/pulls/449/reviews?per_page=100"
+          },
+          "before_rulesets": {
+            "is_error": false,
+            "response_bytes": 2,
+            "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/rulesets?includes_parents=true"
+          },
+          "before_status": {
+            "is_error": false,
+            "response_bytes": 5159,
+            "response_sha256": "9d181cfdfcca4a22ce223851af01435afd1a42af28084fc036debb2a915d9cee",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/dc834c5e3171fce41a0ae12d4a399ddb6a42b991/status?per_page=100"
+          },
+          "checks": {
+            "is_error": false,
+            "response_bytes": 49885,
+            "response_sha256": "c5761d40b8da177c5970a7f86d1b31e96b1443d308512f8a4cf2cdd07c51dcaa",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/dc834c5e3171fce41a0ae12d4a399ddb6a42b991/check-runs?per_page=100"
+          },
+          "protection": {
+            "is_error": true,
+            "response_bytes": 419,
+            "response_sha256": "f280fe0302cebe9d9fe2b778599ba9191fec5a5bfedc5e571b608e2ebd28da6b",
+            "source_url": null
+          },
+          "rules_main": {
+            "is_error": true,
+            "response_bytes": 156,
+            "response_sha256": "88192edc8ce3b84943535216f9687f6a11440ec491b0aa119a3ec0eed8a18ac7",
+            "source_url": null
+          }
+        },
+        "status_context": "QIKVRT requested review execution",
+        "status_id": 55591110801,
+        "submitted_reviews": []
+      },
+      "readback_collection_closed_utc": "2026-10-05T11:47:13.464679+00:00",
+      "repair_id": "QIKVRT_PR449_GOVERNANCE_SIGNAL_SEMANTICS_20261005_V1",
+      "source_commit": "dc834c5e3171fce41a0ae12d4a399ddb6a42b991",
+      "source_ref": "work/mirror-lifecycle-governance-20261003-8153c4e6",
+      "source_repository": "ingolf-lohmann/qik-vrt",
+      "source_tree": "70f3cfce9ae1d94333822b9faec6aa069ce4acd1"
+    }
+  ],
+  "human_acceptance_of_generated_candidate": "PENDING",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "role": "Product and Code Owner",
+    "scope": "Replace direct lifecycle Main writes with the existing branch/draft-PR/expected-head governance path; preserve Cron, Concurrency, Health TTL, Registration Renewal and deterministic readbacks; no second scheduler, force-push or bypass."
+  },
+  "integrity_preparation": {
+    "inherited_drift_paths": [
+      ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "evidence/node_health/36821646859-1.json",
+      "evidence/node_health/36866747092-1.json",
+      "evidence/node_health/36936407695-1.json",
+      "evidence/node_health/36969534310-1.json",
+      "evidence/node_health/37007190339-1.json",
+      "evidence/node_health/37071181171-1.json",
+      "evidence/node_health/37099282397-1.json",
+      "evidence/node_health/37120239456-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/36821646859-1.json",
+      "evidence/node_registration_renewal/36866747092-1.json",
+      "evidence/node_registration_renewal/36936407695-1.json",
+      "evidence/node_registration_renewal/36969534310-1.json",
+      "evidence/node_registration_renewal/37007190339-1.json",
+      "evidence/node_registration_renewal/37071181171-1.json",
+      "evidence/node_registration_renewal/37099282397-1.json",
+      "evidence/node_registration_renewal/37120239456-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "tests/test_ruleset_authority_token_route.py"
+    ],
+    "manifest_last_writer_head": "25aa815551ce27c82070f44c93492061b2398d72",
+    "method": "Reconstruct canonical projections with original generator classification/content-tree functions, exact current delta bytes, complete current Git inventory and unchanged baseline manifest digest commitments. Full repository payload verification is required on the successor native checkout.",
+    "unchanged_repository_paths_preserved": true
+  },
+  "local_verification": {
+    "command": "python3 -B -m unittest -v tests.test_seed_workflows tests.test_qikvrt_expected_head_promotion",
+    "direct_main_push_present": false,
+    "exit_code": 0,
+    "full_make_test_executed": false,
+    "log_sha256": "303ae357ff3303ccfea70eb8d2eeb73e652b6e56ab876fdd2a5a0c3431492b44",
+    "scope": "Exact fetched sources and original commit/tree inventory in partial API materialization; ten controls execute the actual candidate persistence shell against local Git and simulated GitHub API. Fixture integrity outputs do not prove full payload generation or live GitHub persistence.",
+    "shell_syntax": "PASS",
+    "sparse_boundary_control": "All 35 tests were re-executed with the productive NODE_HANDSHAKE_CONFIG.tsv absent; fixture configuration is explicit and isolated.",
+    "tests": 35,
+    "yaml_parse": "PASS"
+  },
+  "main_integrations": [
+    {
+      "actual_main_delta": [
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/37154289864-1.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 241,
+          "git_blob_sha1": "5712836051f5b4e8c04e53a50658b301001fdbd2",
+          "path": "evidence/node_health/LATEST.json",
+          "sha256": "ccb6f2b9b55ed8ac76db5842132feb0ba0f1c59dfea5ab90bb434287546fdfb3"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/37154289864-1.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 262,
+          "git_blob_sha1": "1983c4d66edfdfffaabd6a6afc13b1a16d4a9053",
+          "path": "evidence/node_registration_renewal/LATEST.json",
+          "sha256": "6f7c98cd175d7cf90d3b384cfbd44014a34ea761533523c178b089a5f61332a2"
+        },
+        {
+          "bytes": 563,
+          "git_blob_sha1": "b4de5744585498f43ec6d02a50222eb4a3950bd5",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+          "sha256": "db7c1a20ae34dcc9d7549938a190e050d37657d42019079c7689e92a8f5bdfdd"
+        },
+        {
+          "bytes": 542,
+          "git_blob_sha1": "7709951570d8ba930e789b8c40582b9fe7dc7d9f",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+          "sha256": "a33cd9d21ff29a800b169537db8164600090b3d0eafb20dcb45dc4cf6e323ac6"
+        }
+      ],
+      "artificial_cognitive_contribution": {
+        "actor": "OpenAI Codex / GPT-6",
+        "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+        "model_build": "UNAVAILABLE",
+        "scope": [
+          "Fresh REST observation",
+          "Exact six-file Main delta integration",
+          "Existing work-unit extension",
+          "Canonical source-bound integrity projection",
+          "Successor exact-head validation and readback"
+        ]
+      },
+      "branch": "work/mirror-lifecycle-governance-20261003-8153c4e6",
+      "effect_boundary": {
+        "effect_ack_done": false,
+        "force_push": false,
+        "live_lifecycle_run": false,
+        "main_write": false,
+        "predecessor_evidence_transfer": false,
+        "promotion": false,
+        "pull_request_merge": false
+      },
+      "first_parent_candidate": "c639acafcc8e58af5637f736d968e175855e944d",
+      "first_parent_tree": "148630e0f9d24102d95cf61923bdd78c5a553e17",
+      "human_acceptance_of_generated_candidate": "PENDING",
+      "human_contribution": {
+        "actor": "Ingolf Lohmann",
+        "class": "HUMAN",
+        "scope": "Integrate the actual current Main delta into existing PR #449 preserving history and the verified removal of the direct Main writer; regenerate only necessary integrity and work-unit bindings; fully validate the successor exact head; no promotion, PR merge or direct Main test write."
+      },
+      "integrity_method": "Reuse original generator classification and immutable content-tree functions, complete exact Git inventory and unchanged baseline commitments. Recompute all changed bytes. Full payload verification and the complete repository test suite must execute on the native successor checkout.",
+      "merge_base": "6105892b1c6992f6be19e0f29fe0530e319eaaf1",
+      "native_successor_validation": "REQUIRED_ON_NEW_EXACT_HEAD; predecessor results are historical only",
+      "operation": "MAIN_HISTORY_PRESERVING_INTEGRATION_AND_EXACT_HEAD_VALIDATION_ONLY",
+      "prepared_utc": "2026-10-03T23:45:35.585811+00:00",
+      "pull_request": 449,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "second_parent_main": "8658b113979ab2bcc6e01a36e7931c21de5ea730",
+      "second_parent_tree": "19009f21ecbd59fa13def19e96e6b6374bae0276",
+      "unchanged_lifecycle_workflow": {
+        "bytes": 11178,
+        "git_blob_sha1": "ad7e1912055c2bce54243a007d4ca75fd3f11840",
+        "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+        "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
+      }
+    },
+    {
+      "date": "2026-10-04",
+      "integrated_main": "93be182a277f29fcb1ffb5d4ace0483f6c29dc58",
+      "main_tree": "25e36016536b45701abdc699c586394f53c69aa6",
+      "method": "history-preserving two-parent successor; six non-overlapping current Main lifecycle blobs reused exactly",
+      "paths": [
+        {
+          "git_blob_sha": "7296d8c386b1389cee3d970c1fc5d54d484bc7b1",
+          "path": "evidence/node_health/37180998634-1.json"
+        },
+        {
+          "git_blob_sha": "7296d8c386b1389cee3d970c1fc5d54d484bc7b1",
+          "path": "evidence/node_health/LATEST.json"
+        },
+        {
+          "git_blob_sha": "db4ea7ecd4b26c2025be6cb6dc3a3dba47c859bd",
+          "path": "evidence/node_registration_renewal/37180998634-1.json"
+        },
+        {
+          "git_blob_sha": "db4ea7ecd4b26c2025be6cb6dc3a3dba47c859bd",
+          "path": "evidence/node_registration_renewal/LATEST.json"
+        },
+        {
+          "git_blob_sha": "5d3687bdbb86aced0d185e7588d0f8e040271d4d",
+          "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json"
+        },
+        {
+          "git_blob_sha": "93586c23f15716a25c1ca8dcad1e6af25f6bfa92",
+          "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+        }
+      ],
+      "previous_checks_are_historical": true,
+      "promotion": false,
+      "retained_candidate": "9a714f44d87e5754068b99eef423ac533b7a3864",
+      "scope": "integration and exact-head validation only",
+      "successor_validation": "PENDING_FRESH_NATIVE_GATES"
+    }
+  ],
+  "maintenance_context_repair": {
+    "contribution": {
+      "artificial_cognitive": "OpenAI Codex: context diagnosis, minimal source correction, verification and persistence",
+      "human": "Ingolf Lohmann: existing task authorization and maintain instruction"
+    },
+    "diagnosis": {
+      "documentary_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts",
+      "documented_invalid_expression": "runner.temp in jobs.renew.env",
+      "job_env_runner_context_allowed": false,
+      "provider_compiler_annotation_readback": "NOT_EXPOSED_BY_CONNECTOR",
+      "step_env_runner_context_allowed": true,
+      "zero_job_failure_is_consistent_with_expression_error": true
+    },
+    "effect_ack_done": false,
+    "local_validation": {
+      "bash_syntax": "PASS",
+      "command": "python3 -B -m unittest -v tests.test_seed_workflows tests.test_qikvrt_expected_head_promotion",
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "full_make_test_executed_locally": false,
+      "log_sha256": "b0288de47bc122bd7e215b0c335c8dfc465d6e50715e916273205e646ed72fed",
+      "python_version": "3.12.14",
+      "scope": "Exact fetched source blobs and reconstructed verified base commit/tree metadata in a partial API materialization. Lifecycle transport controls use isolated local Git and simulated GitHub API; unavailable full repository payloads and a live lifecycle run are not represented as verified.",
+      "tests": 35,
+      "tool_cache": "PASS 14/14 (100%)",
+      "yaml_parse": "PASS"
+    },
+    "main_promoted": false,
+    "mandatory_successor_readback": [
+      "Fresh native complete repository suite on the successor",
+      "Fresh exact HEAD/TREE/ref/parent/diff readback",
+      "Native governance and independent review before Main promotion",
+      "Actual post-adoption scheduled lifecycle effect/readback"
+    ],
+    "native_lifecycle_execution_observed": false,
+    "observed_native_failures": [
+      {
+        "conclusion": "failure",
+        "head": "2ef03f7b8cf31252f02fd26eafd18c08a54730a8",
+        "jobs": 0,
+        "run_id": 37123711830
+      },
+      {
+        "conclusion": "failure",
+        "head": "bb955918323081a6411ca63033191e25b4e9f861",
+        "jobs": 0,
+        "run_id": 37124141699
+      }
+    ],
+    "parent_subject": {
+      "base": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+      "head": "bb955918323081a6411ca63033191e25b4e9f861",
+      "pull_request": 449,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "bf7dd2458e10ef2cc402c6a25301b8af1bd8b100"
+    },
+    "predecessor_evidence_transfer": false,
+    "prepared_utc": "2026-10-03T13:07:40.880748+00:00",
+    "received_utc": "2026-10-03T12:43:07Z",
+    "repair": "Move LIFECYCLE_RECEIPT_DIR unchanged into the existing persistence step env. No execution trigger, permission, schedule, concurrency, source materializer or governance boundary changes.",
+    "task_input": "maintain"
+  },
+  "native_counterexample_and_repair": {
+    "causal_scope": "New test setUp unnecessarily copied productive node configuration; it is absent in the watchdog sparse checkout.",
+    "failed_step": "Execute executor, reflexive prevention, and future-node acceptance tests",
+    "job": 111204846274,
+    "local_original_failure_boundary_verified": true,
+    "observed_error": "FileNotFoundError: productive qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv is absent in the existing sparse checkout",
+    "predecessor_candidate_head": "2ef03f7b8cf31252f02fd26eafd18c08a54730a8",
+    "predecessor_gate_transfer": false,
+    "repair": "Use an explicit isolated seven-column node fixture, retain all controls and sparse checkout. Productive configuration/materializer bytes are unchanged.",
+    "successor_native_reobservation_required": true,
+    "workflow_run": 37123757890
+  },
+  "native_governance_observation": {
+    "first_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "main_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "native_rules_endpoint_in_connector": "NOT_EXPOSED; rulesets and branch protection state were read separately",
+    "protected": false,
+    "repository_rulesets": [],
+    "ruleset_admin_mutation_capability": "NOT_EXPOSED"
+  },
+  "next_persistence_contract": {
+    "accepted_state": "PR_PENDING_EXPECTED_HEAD_GOVERNANCE",
+    "artifact": "qikvrt-mirror-lifecycle-<run>-<attempt>",
+    "branch_write_failure": "LIFECYCLE_REVIEW_BRANCH_WRITE_UNAVAILABLE",
+    "expected_head_executor_is_separate": true,
+    "main_mutation_in_lifecycle_workflow": false,
+    "native_owner_rule_absence": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "native_rule_read_failure": "LIFECYCLE_NATIVE_RULE_READ_UNAVAILABLE",
+    "pr_creation_denial_or_ambiguous_response": "LIFECYCLE_WORKFLOW_TOKEN_PR_CREATE_UNAVAILABLE_OR_AMBIGUOUS",
+    "receipt": "runner.temp/qikvrt-mirror-lifecycle/PERSISTENCE.json",
+    "single_pr_attempt": true
+  },
+  "original_defect": {
+    "effect_timestamp_utc": "2026-10-03T11:37:34Z",
+    "main_writer": "git push origin HEAD:main",
+    "observed_effect_head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "observed_main_writer_run": 37120239456,
+    "run_attempt": 1,
+    "run_source_head": "8704969da54ed9c0ad08d4540ea89aee15d85ae2",
+    "workflow_blob": "e1a9e3865d7136080cbc1212be011fd0bd2c71ad"
+  },
+  "preserved": {
+    "cancel_in_progress": false,
+    "concurrency_group": "qikvrt-mirror-node-lifecycle",
+    "cron": "17 */6 * * *",
+    "force_push": false,
+    "governance_bypass": false,
+    "health_ttl_and_registration_renewal": "UNCHANGED_SOURCE_BYTES",
+    "lifecycle_materializer": {
+      "bytes": 2589,
+      "git_blob_sha1": "f4dc5fb44bba4686e1d8cda4a39a78fe85d7ee44",
+      "path": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "sha256": "5d8caaf882d1fe33df20b25486cf839fd4f281a1524c85bf8b83b47304314bce"
+    },
+    "second_scheduler": false
+  },
+  "retry_condition": "The authorized native Main governance carrier establishes effective rules and exact-head independent review, required checks execute freshly, and the existing expected-head promotion can accept this subject without overlap or drift.",
+  "reused_components": [
+    "tools/qikvrt_mirror_node_lifecycle.sh",
+    "tools/qikvrt_autonomous_self_heal.py:candidate_identity,semantic_fingerprint",
+    "tools/qikvrt_required_review_gate.py:native_code_owner_rule_is_enforced",
+    "tools/qikvrt_integrity.py",
+    ".github/workflows/qikvrt_autonomous_self_heal.yml:review-branch/draft-PR pattern",
+    ".github/workflows/qikvrt_expected_head_promotion.yml",
+    "tests/test_seed_workflows.py"
+  ],
+  "schema": "qikvrt_work_unit_v1",
+  "source": {
+    "head": "8153c4e69a6245aadf67f0741fb50d9707c19e34",
+    "ref": "main",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "034bbaf55c9c31364b6d160c553cd507fb7c04c5"
+  },
+  "work_unit_id": "QIKVRT_MIRROR_LIFECYCLE_GOVERNANCE_20261003_V1"
+}

@@ -1,0 +1,371 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "identity_limit": "Platform Git attribution does not prove a natural person or model identity.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "lifecycle-governance-successor-20261006-71f8c153",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub connector REST",
+      "Git",
+      "Python standard library",
+      "repository-native integrity and tests"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh native source and governance observations.",
+    "History-preserving merge of current Main with #449, including its necessary native-review/promotion separation.",
+    "Extend existing real-Git fixture controls to record every lifecycle push and inventory active callers.",
+    "Extend the existing requested-review contract to execute lifecycle controls.",
+    "Regenerate the canonical integrity trio and perform fresh candidate verification."
+  ],
+  "created_at": "2026-10-06T19:20:13.128306Z",
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "authorized": "Review-branch candidate and draft PR only.",
+    "deployment": false,
+    "lifecycle_dispatch": false,
+    "main_write": false,
+    "merge": false,
+    "publication": false,
+    "release": false,
+    "ruleset_change": false
+  },
+  "git_history": {
+    "branch": "work/mirror-lifecycle-governance-successor-20261006-71f8c153",
+    "force_push": false,
+    "history_preserved": true,
+    "ordered_parents": [
+      "71f8c15319bf79456ac177d80941b4f59d372996",
+      "a0c75916a13cca54b75044748c76ca3400c94428"
+    ],
+    "predecessor_evidence_transfer": false,
+    "preserved_main_lifecycle_paths": [
+      "evidence/node_health/36255181444-1.json",
+      "evidence/node_health/36271908222-1.json",
+      "evidence/node_health/36296732922-1.json",
+      "evidence/node_health/36317511514-1.json",
+      "evidence/node_health/36335098554-1.json",
+      "evidence/node_health/36351304656-1.json",
+      "evidence/node_health/36381537034-1.json",
+      "evidence/node_health/36431575840-1.json",
+      "evidence/node_health/36496986601-1.json",
+      "evidence/node_health/36527386703-1.json",
+      "evidence/node_health/36570784302-1.json",
+      "evidence/node_health/36638284271-1.json",
+      "evidence/node_health/36673717198-1.json",
+      "evidence/node_health/36715333877-1.json",
+      "evidence/node_health/36784342979-1.json",
+      "evidence/node_health/36821646859-1.json",
+      "evidence/node_health/36866747092-1.json",
+      "evidence/node_health/36936407695-1.json",
+      "evidence/node_health/36969534310-1.json",
+      "evidence/node_health/37007190339-1.json",
+      "evidence/node_health/37071181171-1.json",
+      "evidence/node_health/37099282397-1.json",
+      "evidence/node_health/37120239456-1.json",
+      "evidence/node_health/37136228467-1.json",
+      "evidence/node_health/37154289864-1.json",
+      "evidence/node_health/37180998634-1.json",
+      "evidence/node_health/37201684625-1.json",
+      "evidence/node_health/37235824372-1.json",
+      "evidence/node_health/37268524250-1.json",
+      "evidence/node_health/37325712969-1.json",
+      "evidence/node_health/37391781257-1.json",
+      "evidence/node_health/37422938516-1.json",
+      "evidence/node_health/37510511694-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/36255181444-1.json",
+      "evidence/node_registration_renewal/36271908222-1.json",
+      "evidence/node_registration_renewal/36296732922-1.json",
+      "evidence/node_registration_renewal/36317511514-1.json",
+      "evidence/node_registration_renewal/36335098554-1.json",
+      "evidence/node_registration_renewal/36351304656-1.json",
+      "evidence/node_registration_renewal/36381537034-1.json",
+      "evidence/node_registration_renewal/36431575840-1.json",
+      "evidence/node_registration_renewal/36496986601-1.json",
+      "evidence/node_registration_renewal/36527386703-1.json",
+      "evidence/node_registration_renewal/36570784302-1.json",
+      "evidence/node_registration_renewal/36638284271-1.json",
+      "evidence/node_registration_renewal/36673717198-1.json",
+      "evidence/node_registration_renewal/36715333877-1.json",
+      "evidence/node_registration_renewal/36784342979-1.json",
+      "evidence/node_registration_renewal/36821646859-1.json",
+      "evidence/node_registration_renewal/36866747092-1.json",
+      "evidence/node_registration_renewal/36936407695-1.json",
+      "evidence/node_registration_renewal/36969534310-1.json",
+      "evidence/node_registration_renewal/37007190339-1.json",
+      "evidence/node_registration_renewal/37071181171-1.json",
+      "evidence/node_registration_renewal/37099282397-1.json",
+      "evidence/node_registration_renewal/37120239456-1.json",
+      "evidence/node_registration_renewal/37136228467-1.json",
+      "evidence/node_registration_renewal/37154289864-1.json",
+      "evidence/node_registration_renewal/37180998634-1.json",
+      "evidence/node_registration_renewal/37201684625-1.json",
+      "evidence/node_registration_renewal/37235824372-1.json",
+      "evidence/node_registration_renewal/37268524250-1.json",
+      "evidence/node_registration_renewal/37325712969-1.json",
+      "evidence/node_registration_renewal/37391781257-1.json",
+      "evidence/node_registration_renewal/37422938516-1.json",
+      "evidence/node_registration_renewal/37510511694-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+    ],
+    "strategy": "MERGE_CURRENT_MAIN_AND_PR449_NO_REWRITE",
+    "subject_resolution": "Resolve the containing commit and tree; fresh run evidence binds that subject separately.",
+    "unrelated_current_main_changes_preserved": true
+  },
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "role": "Product Owner / Code Owner"
+  },
+  "human_contributions": [
+    "Create a history-preserving current-main successor of the relevant #449 repair.",
+    "Remove lifecycle HEAD:main and route lifecycle deltas through the existing review-branch/draft-PR path.",
+    "Preserve schedule, concurrency, health TTL and registration renewal; regenerate integrity; execute fresh exact-head tests.",
+    "Do not weaken any review or ruleset requirement."
+  ],
+  "human_decision": {
+    "candidate_acceptance": "PENDING",
+    "implementation_task": "AUTHORIZED_BY_CURRENT_REQUEST",
+    "native_review": "NOT_INFERRED"
+  },
+  "inputs": [
+    {
+      "bytes": 2298,
+      "git_blob_sha1": "e1a9e3865d7136080cbc1212be011fd0bd2c71ad",
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "202c0281f35a98d022c491040b55786f1dce78d3c49fad22ae8b25584a37bdc5"
+    },
+    {
+      "bytes": 2589,
+      "git_blob_sha1": "f4dc5fb44bba4686e1d8cda4a39a78fe85d7ee44",
+      "path": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "sha256": "5d8caaf882d1fe33df20b25486cf839fd4f281a1524c85bf8b83b47304314bce"
+    },
+    {
+      "bytes": 386,
+      "git_blob_sha1": "86a4f2b3179d29227d3726d29a867c581b5c9303",
+      "path": "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv",
+      "sha256": "eb2a452936b4299b69d38c18be85e66b36d0954eff5f94d4803c6bce1c4bfce1"
+    },
+    {
+      "head": "a0c75916a13cca54b75044748c76ca3400c94428",
+      "pull_request": 449,
+      "repository": "ingolf-lohmann/qik-vrt",
+      "semantics": "SOURCE_ONLY_NO_PREDECESSOR_EVIDENCE_TRANSFER",
+      "tree": "ecc785254bfe638ac70cbc91d617bc9fe754ec61"
+    },
+    {
+      "bytes": 28995,
+      "git_blob_sha1": "c28153edb87d9d694a85cbb251035bd79e27273a",
+      "path": "state/work_units/QIKVRT_MIRROR_LIFECYCLE_GOVERNANCE_20261003_V1.json",
+      "sha256": "66d7cb4ed74c090e2cdddd1b792894046a9140b4c5dcd6c4013e72066083a5cd"
+    }
+  ],
+  "joint_components": [],
+  "native_governance": {
+    "dismiss_stale_reviews_on_push": true,
+    "main_protected_observed": false,
+    "observation_source": "Fresh GitHub REST reads in this execution before candidate creation",
+    "prepromotion_fresh_native_readback": true,
+    "require_code_owner_review": true,
+    "require_last_push_approval": true,
+    "required_approving_review_count_minimum": 1,
+    "required_code_owner": "Goldkelch",
+    "requirements_weakened": false,
+    "review_context": "QIKVRT required code-owner review",
+    "ruleset_mutation_performed": false,
+    "rulesets_observed": [],
+    "state": "BLOCKED_CODE_OWNER_RULE_NOT_ENFORCED"
+  },
+  "next_action": "Commit with the declared parents; freshly verify the containing exact HEAD/TREE; open the Draft PR; observe applicable native gates and retain the independent enforcement/review boundary.",
+  "no_direct_main_lifecycle_write": {
+    "behavioral_witness": "MirrorLifecycleGovernanceTests executes the actual embedded shell, observes every push argument, delegates the sole permitted review-branch push to real local Git, reads all remote refs and verifies Main remains unchanged. REST uses bounded fixtures; this is not a production lifecycle run.",
+    "branch_domain": "automation/mirror-lifecycle-<24 hex base-and-semantic-fingerprint identity>",
+    "controls": [
+      "One exact review-branch push and one draft PR POST on success.",
+      "Missing native governance, token, base drift or non-allowlisted delta causes no branch/PR write.",
+      "Branch/TREE/PR subject mismatch fails closed.",
+      "PR denial or ambiguous response preserves its receipt and is not retried.",
+      "Schedule/concurrency preserved; actual materializer retains TTL and 24-hour renewal semantics."
+    ],
+    "generator_and_config_byte_identical_to_main": true,
+    "generator_callers": [
+      ".github/workflows/qikvrt_mirror_node_lifecycle.yml"
+    ],
+    "generator_references": [
+      ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      ".github/workflows/qikvrt_requested_review_contract.yml"
+    ],
+    "inspected_source_count": 168,
+    "lifecycle_direct_main_push_count": 0,
+    "lifecycle_merges_performed": false,
+    "lifecycle_pushes": [
+      "git push origin \"HEAD:refs/heads/$CANDIDATE_BRANCH\""
+    ],
+    "reference_classification": {
+      ".github/workflows/qikvrt_mirror_node_lifecycle.yml": "sole generator invocation",
+      ".github/workflows/qikvrt_requested_review_contract.yml": "path-filter trigger only"
+    },
+    "scope": "Active root workflows, composite actions and tool sources of this candidate; immutable incoming packages and historical objects are retained.",
+    "workflow_inventory_count": 77,
+    "workflow_inventory_sha256": "aa3e0b24e4608fe9fd2e85327e311400d0b38f8cb694df67b30c2003c3248f46"
+  },
+  "observed_defect": {
+    "actor": "github-actions[bot]",
+    "baseline_bootloader": "BLOCK repository manifest differs from deterministic regeneration",
+    "baseline_push": "git push origin HEAD:main",
+    "cause_scope": "The active lifecycle step staged six outputs and pushed Main without regenerating repository integrity. Broader platform or identity causes are not inferred.",
+    "commit_time": "2026-10-06T18:20:30Z",
+    "direct_main_commit": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "message": "chore(mesh): renew mirror node lifecycle",
+    "run_attempt": 1,
+    "run_conclusion": "success",
+    "run_event": "schedule",
+    "run_head": "79ddba3b6d0970203053b2719c41e9410276741c",
+    "run_id": 37510511694
+  },
+  "outputs": [
+    {
+      "bytes": 1749,
+      "git_blob_sha1": "efd13271fec4584ec1f6057b743a2b6c5aaf3057",
+      "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+      "sha256": "6d6975b55c358fdeebdf125aae6ed855f75bfec06164b6b47cac15bd27de4fd0"
+    },
+    {
+      "bytes": 14026,
+      "git_blob_sha1": "8074bb5811678ab22b1ddc2a3c89fdaa8b5e312b",
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "cfa2d9652064645536e951eee1a51930e1492b913a118c7f9d65154921754dc9"
+    },
+    {
+      "bytes": 10844,
+      "git_blob_sha1": "012651c1a0d61dc4458087ebd46e652aad91b792",
+      "path": ".github/workflows/qikvrt_live_status_watch.yml",
+      "sha256": "7ce8cf6fcc51d054ced52e28d5ce43f76b87d95c3b6a3f9ac70eeb8b609ff276"
+    },
+    {
+      "bytes": 11178,
+      "git_blob_sha1": "ad7e1912055c2bce54243a007d4ca75fd3f11840",
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
+    },
+    {
+      "bytes": 4035,
+      "git_blob_sha1": "f926d0fc78134ffedfb780e4abcea9d4b52c2527",
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "3e07be99c979ff0f7ea5c910f3fbb82305a443456b59df69ba49ab82871caac1"
+    },
+    {
+      "bytes": 12871,
+      "git_blob_sha1": "3a0a503a43a6e7f0839e4a4d89c0ceac38ca37ee",
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "cb97cb253cbcdf91a25089da9aa86986f8fffa29e769e83191e0dbeb492a6a5d"
+    },
+    {
+      "bytes": 4890,
+      "git_blob_sha1": "b1ad7bba294809f89079533354835250a207f02a",
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "sha256": "8e0587ad6ffa338eb8e3a53185e019f55314ea51a11de31faffaa34bcc3147ea"
+    },
+    {
+      "bytes": 11237,
+      "git_blob_sha1": "32c3da9e57231fb652b9f20504763e6b1149f01c",
+      "path": "Makefile",
+      "sha256": "776bc29f831a0dd9f6e316f86e8580a5ef4080034a9feb5bc1b14d504a2bde43"
+    },
+    {
+      "bytes": 6759,
+      "git_blob_sha1": "ded6ee4d188afa696c3587ad8a83d05ce79d1b7b",
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "sha256": "56e85353cd2559e146867129bd4b6a00c08ff11b9a158df01d41f8be2070e4f9"
+    },
+    {
+      "bytes": 6114,
+      "git_blob_sha1": "404d172f138fda2028d56f334e400cfce6be89fa",
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "sha256": "69015bd9b943fddf914922a1b03430136c7ced137c4ad351b73947b2e91e2c0a"
+    },
+    {
+      "bytes": 28995,
+      "git_blob_sha1": "c28153edb87d9d694a85cbb251035bd79e27273a",
+      "path": "state/work_units/QIKVRT_MIRROR_LIFECYCLE_GOVERNANCE_20261003_V1.json",
+      "sha256": "66d7cb4ed74c090e2cdddd1b792894046a9140b4c5dcd6c4013e72066083a5cd"
+    },
+    {
+      "bytes": 10840,
+      "git_blob_sha1": "0b4f7c1e40a59ddde28da4f239168f8fafc4687b",
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "sha256": "ac6e62350f60177d3dc5ff8a3fe3e9e42349c8b155e647b1a8920be0f6ab3caa"
+    },
+    {
+      "bytes": 7614,
+      "git_blob_sha1": "86af8d14df583a79a42b2c71b8dd2bd735374b2a",
+      "path": "tests/test_qikvrt_requested_review_executor.py",
+      "sha256": "7010365eddefac000a7f698091e070cc3695d7a95e7bf4a3feaabcd487115eb3"
+    },
+    {
+      "bytes": 10778,
+      "git_blob_sha1": "db27e61326070ab281d1e009f495adda6b1388d6",
+      "path": "tests/test_qikvrt_required_review_gate.py",
+      "sha256": "69e2441b6ea85163290fb1189c67a527fa501d391a6ce5d684bdc1a6ea091959"
+    },
+    {
+      "bytes": 32734,
+      "git_blob_sha1": "7cd2844fc97858de20581d8451cb3c745d95e0cf",
+      "path": "tests/test_seed_workflows.py",
+      "sha256": "a73fd8e1f66a793881f380beb73a2bf49042f7a98e0f560c6489265c56040147"
+    },
+    {
+      "bytes": 9545,
+      "git_blob_sha1": "78acc8c7b32b15e0416b76c3ed1b191b656b073b",
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "sha256": "c29b63736380550137a8f1aec2f4a36eec0d6301f869451909fd016c02618279"
+    },
+    {
+      "bytes": 7767,
+      "git_blob_sha1": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+      "path": "tools/qikvrt_requested_review_executor.py",
+      "sha256": "4a70a452b9642ea480e14c312d34ff6e26b648584e4dc1d396adeb83c5b65117"
+    },
+    {
+      "bytes": 11438,
+      "git_blob_sha1": "b13137027ce57c0798f7bc6b990c06dd5c17dc2a",
+      "path": "tools/qikvrt_required_review_gate.py",
+      "sha256": "74a272ec1a26979ca4f8fc95ebe00949eea8cc426ee688f4e4e128c3ca636c8f"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "SYMMETRIC_CANONICALITY": false
+  },
+  "schema": "qikvrt_ai_contribution_record_v1",
+  "source_commit": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+  "unresolved_origin": [],
+  "verification": {
+    "containing_commit_full_suite": "REQUIRED_FRESH_AFTER_COMMIT",
+    "integrity": "Regenerate and verify existing canonical trio; no predecessor checksum transfer.",
+    "precommit_targeted": {
+      "command": "python3 -B -m unittest -v tests.test_seed_workflows.MirrorLifecycleGovernanceTests tests.test_qikvrt_required_review_gate tests.test_qikvrt_requested_review_executor tests.test_qikvrt_expected_head_promotion",
+      "log_bytes": 10895,
+      "log_sha256": "f7f9ea675204e67de33f28f177c566a84d6a08e8330630158503f6ed1fe9b7eb",
+      "result": "53 TESTS PASSED",
+      "scope": "Precommit source validation; this historical local result is not containing-commit execution evidence."
+    },
+    "remote_exact_head_checks": "REQUIRED_FRESH_AFTER_DRAFT_PR_CREATION"
+  },
+  "work_unit_id": "QIKVRT_MIRROR_LIFECYCLE_GOVERNANCE_SUCCESSOR_20261006_V1"
+}
