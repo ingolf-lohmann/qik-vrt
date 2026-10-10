@@ -9,6 +9,15 @@ ChatGPT-Automation anlegen. Diese Regel gilt für künftige Erinnerungsaufträge
 solange Ingolf Lohmann nichts anderes bestimmt; bestehende fremde Aufgaben
 werden dadurch nicht geändert oder übernommen.
 
+Klarstellung vom 6. Oktober: Eingangsprüfungen für Dokumente und vergleichbare
+Mail-Aufgaben werden ereignisgesteuert über Repository-Webhooks ausgeführt.
+Keine clientseitige Zeitsteuerung dafür anlegen, erweitern oder wieder starten.
+Der bestehende REST-/Ingest-Pfad und seine private Anbindung sind in
+`docs/GRAPH_MAIL_WEBHOOK.md` beschrieben. Ein vorbereiteter Webhook ist erst
+nach Host-, Subscription-, Worker- und Wirkungs-Readback aktiv. Die vorhandenen
+Repository-Erinnerungen mit ausdrücklich gebundenen Fälligkeitszeiten behalten
+ihren gesonderten Auftrag.
+
 `OWNER_REMINDERS_V1.json` ist die versionierte Auftragsquelle. Der bestehende
 `.github/workflows/qikvrt_workflow_executor.yml` ruft den kleinen Reminder-Adapter
 auf. Ein GitHub-Kommentar mit Owner-Erwähnung ist der Benachrichtigungskanal;
@@ -79,3 +88,17 @@ Bestehende Einträge ohne `expires` behalten ihre bisherigen Hashes,
 Idempotenz- und Nachlaufregeln. Die neuen Endgrenzen sind Teil des gebundenen
 Auftrags und seiner Inhaltsidentität. Zustellung bleibt ein separat
 zurückzulesender GitHub-Kommentar, kein Nachweis menschlichen Lesens.
+
+## Privater ereignisgesteuerter Mail-Eingang
+
+Der bestehende Adapter `tools/qikvrt_owner_reminders.py` verarbeitet zusätzlich
+quellengebundene private Mail-Aufgaben über `project_private_mail_plan`. Der
+Graph-Consumer ruft diesen Pfad im bestehenden REST-Wakeup/Wiederanlauf auf;
+kein weiterer Scheduler wird angelegt. Erkennbare direkte Anfragen privat
+klassifizierter menschlicher Kontakte können eine Aufgabe begründen; wichtige
+oder dringliche Informationen bleiben ohne abgeleitete Handlung im Hinweis-
+pfad. Fälligkeiten werden nicht erfunden. Aufgabenstatus und Tagesplan werden
+gemeinsam im privaten nativen Checkpoint gespeichert, nicht in dieser
+öffentlichen Registry oder in Actions-Artefakten. Mail-Löschung bedeutet keine
+Erledigung. Tatsächliche private Benachrichtigung bleibt ein eigener Effekt.
+Bindung, Begrenzungen und Prüfungen: `docs/GRAPH_MAIL_WEBHOOK.md`.

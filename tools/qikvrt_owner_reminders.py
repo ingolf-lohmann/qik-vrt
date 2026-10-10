@@ -33,6 +33,126 @@ OWNER = "ingolf-lohmann"
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 MAX_BYTES = 1_048_576
 CONFIG = "personal/ingolf-lohmann/reminders/OWNER_REMINDERS_V1.json"
+MAIL_TASK_SCOPE = "PRIVATE_MAIL_CLASSIFICATION_AND_TASK_PLAN_ONLY"
+MAIL_RULES = (
+    ("DE_EXPLICIT_REQUEST", re.compile(
+        r"\b(?:bitte|kannst du|könntest du|können sie|könnten sie)\b[^.!?\n]{0,100}"
+        r"\b(?:prüfen|prüfe|senden|sende|schicken|schicke|antworten|antworte|bestätigen|bestätige|"
+        r"unterschreiben|unterschreibe|mitbringen|vereinbaren|bezahlen|überweisen)\b", re.I)),
+    ("EN_EXPLICIT_REQUEST", re.compile(
+        r"\b(?:please|can you|could you|would you)\b[^.!?\n]{0,100}"
+        r"\b(?:review|send|reply|confirm|sign|bring|schedule|pay|transfer)\b", re.I)),
+    ("FR_EXPLICIT_REQUEST", re.compile(
+        r"\b(?:merci de|pouvez-vous|pourriez-vous|veuillez)\b[^.!?\n]{0,100}"
+        r"\b(?:vérifier|envoyer|répondre|confirmer|signer|apporter|payer|virer)\b", re.I)),
+)
+
+
+def mail_address(value):
+    if not isinstance(value, str) or not re.fullmatch(r"[^\s@<>]{1,64}@[^\s@<>]{1,190}", value):
+        raise ReminderError("bounded private mail address required")
+    return value.casefold()
+
+
+def classify_private_mail(message, *, owner_addresses, human_senders):
+    """Bounded rule evidence, never sender authentication or executable content.
+
+    Only selected current uniqueBody text can derive a request. bodyPreview is
+    truncated; subjects, quotes, automated senders and importance alone cannot
+    invent a task. Unknown senders retain an explicit owner-review disposition.
+    """
+    owners = {mail_address(a) for a in owner_addresses}
+    humans = {mail_address(a) for a in human_senders}
+    sender = message.get("from") or {}
+    address = sender.get("emailAddress", {}).get("address")
+    address = mail_address(address) if address else None
+    recipients = message.get("toRecipients")
+    complete = (isinstance(recipients, list) and isinstance(message.get("isDraft"), bool)
+                and isinstance(message.get("internetMessageHeaders"), list)
+                and isinstance(message.get("uniqueBody"), dict))
+    direct = bool(complete and any(
+        mail_address(r["emailAddress"]["address"]) in owners for r in recipients))
+    automated = bool(address and re.search(r"(?:no[-_]?reply|do[-_]?not[-_]?reply|mailer-daemon)",
+                                          address.split("@", 1)[0], re.I))
+    for header in message.get("internetMessageHeaders", []):
+        name, value = header["name"].casefold(), header["value"].strip().casefold()
+        if (name == "list-id" or name == "auto-submitted" and value != "no"
+                or name == "precedence" and value in {"bulk", "list", "junk"}):
+            automated = True
+    unique = message.get("uniqueBody") or {}
+    text = unique.get("content", "") if unique.get("contentType", "").casefold() == "text" else ""
+    lines = []
+    for line in text.splitlines():
+        if re.match(r"\s*(?:[-_]{2,}\s*(?:original|forwarded)|from:|von:|de :)|.*wrote:$", line, re.I):
+            break
+        if not line.lstrip().startswith(">"):
+            lines.append(line)
+    text = "\n".join(lines)
+    rule, excerpt = None, None
+    for sentence in re.split(r"[.!?\n]", text):
+        # Conservative: a negated sentence cannot become an action.
+        if re.search(r"\b(?:nicht|kein|keine|don't|do not|not|pas)\b", sentence, re.I):
+            continue
+        for name, pattern in MAIL_RULES:
+            if pattern.search(sentence):
+                rule, excerpt = name, sentence.strip()[:512]
+                break
+        if rule:
+            break
+    urgency_text = message.get("subject", "") + "\n" + text
+    negated = re.search(r"\b(?:nicht dringend|not urgent|pas urgent|sans urgence)\b", urgency_text, re.I)
+    urgent = bool(not negated and re.search(r"\b(?:dringend|urgent|urgence|asap)\b", urgency_text, re.I))
+    human_request = bool(complete and direct and rule and address in humans and address not in owners
+                         and not automated and message["isDraft"] is False)
+    important = message.get("importance") == "high" or human_request
+    category = ("AUTOMATED_OR_BULK" if automated else "INSUFFICIENT_PROJECTION" if not complete
+                else "DIRECT_HUMAN_REQUEST" if human_request
+                else "DIRECT_REQUEST_SENDER_UNVERIFIED" if direct and rule and address not in owners
+                and message["isDraft"] is False else "URGENT" if urgent
+                else "IMPORTANT" if important else "INFORMATION")
+    return {"category": category, "urgent": urgent, "important": important,
+            "direct_to_owner": direct, "request_rule": rule, "request_excerpt": excerpt,
+            "task_derivable": human_request,
+            "human_sender_basis": "PRIVATE_CONTACT_CLASSIFICATION_NOT_IDENTITY_ATTESTATION",
+            "coverage": "SELECTED_CURRENT_UNIQUE_BODY_RULES_ONLY"}
+
+
+def project_private_mail_plan(mail, tasks, lifecycle, *, owner, timezone, observed_at):
+    """Existing reminder/day-plan adapter's event-native, entirely private lane.
+
+    No public registry mutation, library-ID fabrication, scheduler, notification
+    send or provider effect. Only source-derived tasks enter the task lane;
+    important/urgent messages without an action remain attention items.
+    """
+    if (not isinstance(owner, str) or not 1 <= len(owner) <= 256
+            or not isinstance(mail, dict) or not isinstance(tasks, dict)
+            or max(len(mail), len(tasks)) > 10000):
+        raise ReminderError("bounded private mail/task input required")
+    local_date = instant(observed_at).astimezone(ZoneInfo(timezone)).date().isoformat()
+    for key, task in tasks.items():
+        if (task.get("id") != key or task.get("kind") != "REVIEW_AND_HANDLE_EXPLICIT_MAIL_REQUEST"
+                or task.get("source_message_id") not in mail
+                or not task.get("request_excerpt") or task.get("request_rule") not in dict(MAIL_RULES)
+                or task.get("due") is not None
+                or task.get("state") not in {"OPEN", "COMPLETED", "CANCELLED",
+                    "SOURCE_UNAVAILABLE_REVIEW_REQUIRED", "SOURCE_CHANGED_REVIEW_REQUIRED"}):
+            raise ReminderError("only evidence-derived private tasks may enter the plan")
+    def priority(item):
+        return (not item["urgent"], not item["important"], item["id"])
+    attention = [{"id": key, "category": item["classification"]["category"],
+                  "urgent": item["classification"]["urgent"],
+                  "important": item["classification"]["important"],
+                  "source_observation_key": item["source_observation_key"],
+                  "notification": "PRIVATE_OWNER_REVIEW_PENDING"}
+                 for key, item in mail.items() if item["folders"] and (
+                     item["classification"]["urgent"] or item["classification"]["important"]
+                     or item["classification"]["category"] == "DIRECT_REQUEST_SENDER_UNVERIFIED")]
+    active = [dict(t) for t in tasks.values() if t["state"] not in {"COMPLETED", "CANCELLED"}]
+    return {"schema": "qikvrt_private_mail_day_plan_v1", "effect_scope": MAIL_TASK_SCOPE,
+            "owner": owner, "timezone": timezone, "local_date": local_date,
+            "tasks": sorted(active, key=priority), "attention": sorted(attention, key=priority),
+            "lifecycle_signals": sorted(set(lifecycle)), "due_times_inferred": False,
+            "notification_sent": False, "task_completion_proven": False, "effect_ack_done": False}
 
 
 class ReminderError(RuntimeError):
