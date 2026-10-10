@@ -1,0 +1,300 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_ai_work_unit_v1",
+  "work_unit_id": "IONOS_REPOSITORY_READONLY_BINDING_20261006_V1",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/provider-admission-main-successor-20261006",
+  "source_commit": "92b2b3189743c3b81b4a18b6ad10f69ca063b79b",
+  "source_tree": "a92a1049e7fab63e067ba880ff45c2f0ea612bf2",
+  "human_actor": {
+    "class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "build_id": "UNAVAILABLE",
+    "session_id": "UNAVAILABLE",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "Python",
+      "apply_patch"
+    ],
+    "identity_limit": "Attribution metadata, not proof of a natural person or a model build."
+  },
+  "human_contributions": [
+    "Bind existing IONOS provider-inventory and provider-classify repository-side and REST-only.",
+    "Reuse existing credential/principal carriers; fail closed with exact missing bindings.",
+    "Persist only permitted receipt/inventory metadata and freshly read it back.",
+    "Exclude server creation, payment, terms acceptance and Browser/Cloud-UI fallback; keep #474 and separate governance evidence fresh."
+  ],
+  "artificial_cognitive_contributions": [
+    "Read exact #475/#474/main identities and reuse existing executor, provider operations, S1 private-file/fsync primitives and binding schema.",
+    "Extend the existing workflow with a manual, main-only mode that isolates both GET operations from reminders and watchdog dispatch.",
+    "Add a GET-only IONOS capability with exact contract-response matching and bounded artifact redaction.",
+    "Verify 33 fake-control-plane provider controls, source/inline syntax and 28/28 declared-tool coverage.",
+    "Keep execution admission, secret existence/delivery, principal evidence and live IONOS observation unclaimed."
+  ],
+  "evidence_retention": "METADATA_ONLY",
+  "inputs": [
+    {
+      "path": "tools/qikvrt_self_host_provider.py",
+      "git_blob_sha1": "4f6f3b3cebf4fbc8e9faa76954b7f6e1b2c2eff2",
+      "source_only": true
+    },
+    {
+      "path": "runtime/self-host/PROVIDER_BINDING.example.json",
+      "git_blob_sha1": "ac403069bc4259c6659cc768711243890dd2920a",
+      "observed": {
+        "product": null,
+        "principal_id": null,
+        "principal_evidence_sha256": null
+      },
+      "grants_authority": false
+    },
+    {
+      "path": ".github/workflows/qikvrt_workflow_executor.yml",
+      "git_blob_sha1": "d21481ff56208868b3849ac6bc171e0cb1d76a99",
+      "source_only": true
+    },
+    {
+      "path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+      "existing_dispatch_allowlist": "qikvrt_workflow_executor_watchdog.yml only",
+      "ionos_dispatch_already_authorized_by_contract": false,
+      "contract_modified": false
+    }
+  ],
+  "fresh_prewrite_subjects": {
+    "pr475": {
+      "head": "92b2b3189743c3b81b4a18b6ad10f69ca063b79b",
+      "tree": "a92a1049e7fab63e067ba880ff45c2f0ea612bf2",
+      "ref": "work/provider-admission-main-successor-20261006",
+      "base": "main"
+    },
+    "pr474": {
+      "head": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
+      "tree": "1b96726a258cd5efdf8cc0512013d245328167e5",
+      "merged": false
+    },
+    "main": {
+      "head": "79ddba3b6d0970203053b2719c41e9410276741c",
+      "tree": "a6965a596bf467084b6c0d20fc46db6b48433bd2"
+    }
+  },
+  "reuse_assessment": {
+    "new_workflow": false,
+    "new_provider_adapter": false,
+    "new_credential_store": false,
+    "existing_sources": [
+      ".github/workflows/qikvrt_workflow_executor.yml",
+      "tools/qikvrt_self_host_provider.py",
+      "tools/qikvrt_self_host.py",
+      "runtime/self-host/PROVIDER_BINDING.example.json"
+    ],
+    "insufficiency": "Existing provider inventory/classification had no workflow consumer or secrets.IONOS_TOKEN delivery. The generic automatic executor allowlist only admits the no-effect watchdog. Extend its manual mode without broadening autonomous dispatch."
+  },
+  "implementation": {
+    "task_mode": "ionos-inventory-classify",
+    "workflow_path": ".github/workflows/qikvrt_workflow_executor.yml",
+    "allowed_ref": "refs/heads/main",
+    "provider_origin": "https://api.ionos.com/cloudapi/v6",
+    "operations": [
+      "provider-inventory",
+      "provider-classify"
+    ],
+    "repository_permissions": "contents: read only for provider job",
+    "secret_delivery": "single provider step after fresh exact main/head/tree REST and local Git readback",
+    "existing_token_secret": "IONOS_TOKEN",
+    "private_binding_carrier": "Name of an existing repository secret supplied as ionos_binding_secret; no secret created, renamed or copied.",
+    "private_binding_independent_pin": "ionos_binding_sha256",
+    "contract_response_check": "Exactly one items[].properties.contractNumber equals pinned principal_id",
+    "public_metadata": [
+      "source/run subject",
+      "UTC interval",
+      "binding/inventory/contract-response SHA-256",
+      "collection counts",
+      "classification",
+      "bounded failure code and HTTP status"
+    ],
+    "excluded_private_metadata": [
+      "credential/token bytes or digests",
+      "principal number",
+      "owner/name/address/IP",
+      "raw nested resource paths and IDs",
+      "full inventory/response/binding bytes"
+    ],
+    "private_temporary_cleanup": "Context-managed, including handled exceptions; no SIGKILL or runner-loss cleanup claim.",
+    "artifact_retention_days": 7,
+    "ordinary_release": false,
+    "effect_ack_done": false
+  },
+  "verification": {
+    "scope": "LOCAL_MODIFIED_SOURCE_BYTES_WITH_EXPLICIT_FAKE_IONOS_WIRE",
+    "provider_tests": {
+      "command": "python3 -B -m unittest tests.test_self_host_provider",
+      "tests": 33,
+      "original_controls": 25,
+      "new_controls": 8,
+      "exit_code": 0,
+      "live_ionos": false
+    },
+    "tool_cache": {
+      "command": "python3 -B tools/qikvrt_tool_cache.py verify",
+      "declared": 28,
+      "covered": 28,
+      "exit_code": 0
+    },
+    "python_syntax": {
+      "edited_modules": 2,
+      "inline_workflow_programs": 2,
+      "state": "VALID"
+    },
+    "full_repository_test_suite": "NOT_EXECUTED_LOCALLY; partial source projection, not a clone",
+    "bootstrap": {
+      "state": "BLOCK",
+      "first_blocker": "git config --get remote.origin.url: exit 1",
+      "scope": "No claim of full repository boot readiness from selected connector-fetched files."
+    },
+    "new_head_native_gates": "PENDING_NEW_HEAD_EXECUTION",
+    "new_head_native_reviews": "PENDING_FRESH_READBACK",
+    "predecessor_evidence_transfer": false,
+    "integrity_metadata_local_scope": "Incremental metadata derivation from the exact unchanged remote blob set; full containing-tree byte verification is required in fresh native CI."
+  },
+  "live_execution": {
+    "state": "HOLD",
+    "first_binding_blocker": "HOLD_EXACT_PROVIDER_PRODUCT_AND_PRINCIPAL_BINDING_REQUIRED",
+    "actual_bound_private_principal_carrier_available_in_client": false,
+    "missing_bindings": [
+      "Existing secret carrier containing product=ionos-cloud-v6, actual Cloud contract principal_id and principal_evidence_sha256",
+      "Independent SHA-256 pin of its exact original bytes",
+      "Verified secrets.IONOS_TOKEN delivery to this admitted job",
+      "Callable initial workflow_dispatch path for the exact trusted source"
+    ],
+    "repository_secret_existence": "UNKNOWN; exposed GitHub GET tool excludes secret APIs; no secret-list/write tool",
+    "local_IONOS_TOKEN_available": false,
+    "initial_dispatch_tool_available": false,
+    "repository_mesh_executor_ionos_auto_dispatch": false,
+    "trusted_main_source_available": false,
+    "trusted_main_blocker": "Existing #474 storage prerequisite and #475 provider source are unmerged; no candidate source is executed with secrets.",
+    "workflow_dispatch_count": 0,
+    "live_provider_requests": 0,
+    "live_inventory": null,
+    "live_classification": null,
+    "browser_fallback": false
+  },
+  "source_documentation": [
+    {
+      "url": "https://docs.ionos.com/nodejs-sdk/api/contractresourcesapi",
+      "scope": "GET /contracts and CloudAPI v6 origin"
+    },
+    {
+      "url": "https://docs.ionos.com/nodejs-sdk/models/contracts",
+      "scope": "items collection shape"
+    },
+    {
+      "url": "https://docs.ionos.com/nodejs-sdk/models/contractproperties",
+      "scope": "properties.contractNumber field"
+    }
+  ],
+  "continuation": {
+    "retry_condition": "Actual independently pinned existing Cloud-principal carrier and verified IONOS_TOKEN delivery, admitted initial REST dispatch and reviewed integrated exact main source.",
+    "next_action": "Reobserve #474/#475/main HEAD/TREE, source and native gates; preserve integration order. Use the existing secret names and exact main/binding inputs for one explicit REST workflow dispatch; read the resulting metadata receipt from that run, verify its source/digests/classification and do not create any provider resource.",
+    "integration_order": [
+      474,
+      475
+    ],
+    "native_governance_separate": true,
+    "approval_transfer": false
+  },
+  "git_history": {
+    "candidate_branch": "work/provider-admission-main-successor-20261006",
+    "parent": "36f5b26c1f17e2d38eaa1a979f0b1bbd80d76642",
+    "expected_remote_head": "36f5b26c1f17e2d38eaa1a979f0b1bbd80d76642",
+    "force_push": false,
+    "history_rewrite": false,
+    "resulting_identity": "Independently bound by new remote commit/tree and readback; no self-referential hash in this record."
+  },
+  "human_decision": "Implementation authorized by this task; candidate acceptance and Code Owner review remain pending.",
+  "external_effects": {
+    "provider_create": false,
+    "payment": false,
+    "terms_acceptance": false,
+    "account_creation": false,
+    "secret_creation_or_mutation": false,
+    "workflow_dispatch": false,
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "browser_or_cloud_ui": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "created_at": "2026-10-06T17:30:41.287385+00:00",
+  "outputs": [
+    {
+      "path": "tools/qikvrt_self_host_provider.py",
+      "bytes": 61561,
+      "sha256": "09b46d0bbdd21f424277ea6b4c9bb8317878001f53d12ee3f34827644da30797",
+      "git_blob_sha1": "1595d95c26a854963758df1ed34e2a5fb7835cb2"
+    },
+    {
+      "path": "tests/test_self_host_provider.py",
+      "bytes": 36872,
+      "sha256": "7be7dcf6d348e00d87896368efa8156a9988bdba21483db1aae5b8e54d433996",
+      "git_blob_sha1": "9bbd77c5ffc5c9cb21b379ec8f87f0a67137aed6"
+    },
+    {
+      "path": ".github/workflows/qikvrt_workflow_executor.yml",
+      "bytes": 14060,
+      "sha256": "851777d6dd7b7170fd187cc492c976aa3b35fa9f00f01005fb18dddad165d613",
+      "git_blob_sha1": "79b6b14ee36cf2bca8adfaf27ef2c54f5a7e7b98"
+    },
+    {
+      "path": "runtime/self-host/PROVIDER_ADMISSION.md",
+      "bytes": 14464,
+      "sha256": "8000b85154a58d8c26af3a99f87bd1ebe7f6a59fcba4a08335b768097fb72842",
+      "git_blob_sha1": "465aa50d2d1d087a55e50bfe3948f807ab29962a"
+    }
+  ],
+  "integrity_materialization": {
+    "state": "REPAIRED_CANDIDATE_PENDING_FRESH_NATIVE_VERIFY",
+    "failed_head": "8d5b3088277c96d98f9e7b5783971247a6e8fab2",
+    "failed_tree": "c7381b500004636ea97acc46fec4a84104de919d",
+    "cause": "The first source commit omitted deterministic regeneration of all three integrity authorities after five source/Work Unit changes.",
+    "observed_error": "BLOCK repository manifest differs from deterministic regeneration",
+    "observed_runs": [
+      37504259545,
+      37504267426,
+      37504267562,
+      37504267470
+    ],
+    "repair": "Regenerate REPOSITORY_FILE_MANIFEST.json, SHA256SUMS.txt and detached digest using unchanged source-blob metadata plus exact newly hashed file bytes; native verifier must independently rehash the whole containing successor.",
+    "no_gate_weakening": true,
+    "first_native_failed_tree_is_not_accepted": true,
+    "incremental_source_metadata_is_not_current_head_test_evidence": true,
+    "repeat_prevention": "Add unchanged canonical integrity verify to the read-only provider preflight before IONOS secret delivery.",
+    "native_repository_repair": {
+      "head": "36f5b26c1f17e2d38eaa1a979f0b1bbd80d76642",
+      "tree": "2e716f3a742e7769b71ce76d4830926e62e4cd03",
+      "parent": "8d5b3088277c96d98f9e7b5783971247a6e8fab2",
+      "paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "SHA256SUMS.txt",
+        "REPOSITORY_FILE_MANIFEST.json.sha256"
+      ],
+      "reused_not_overwritten": true,
+      "source_changes": false,
+      "source_new_PR_run_admission": "action_required"
+    }
+  }
+}

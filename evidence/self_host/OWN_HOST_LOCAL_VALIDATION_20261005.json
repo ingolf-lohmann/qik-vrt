@@ -1,0 +1,103 @@
+{
+  "admission_without_host": {
+    "cause": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "command": "reviewed successor tool admit --root exact-original-package --manifest-sha256 independently-pinned-manifest",
+    "effect_ack_done": false,
+    "exit_code": 2,
+    "state": "HOLD"
+  },
+  "archive_sha256": "8c7a4be40e96bfef69e6839bc9dce6f8ec54e708307357fa36bb4d96e6d504ba",
+  "candidate_validation": {
+    "combined_local_success_claimed": false,
+    "initial_combined_command": "make test repository-monitor-test self-host-test",
+    "native_local_execution": {
+      "errno": 1,
+      "exception": "PermissionError",
+      "original_tests_modified": false,
+      "remote_exact_head_gate_required": true,
+      "result": "BLOCK_LOCAL_EXECUTOR_UNIX_SOCKET_BIND"
+    },
+    "new_admission_controls": [
+      "missing host returns exact HOLD and creates no volume binding",
+      "pinned declaration emits original verify/run/readback argv with no service execution or completion",
+      "wrong declaration pin, exact subject, HTTPS origin, identity, mount and evidence binding rejected",
+      "overlay mount refused as persistence"
+    ],
+    "portable_and_monitor_log_sha256": "74244f582ada375c8c3ad3c3e1739ace3784c8adf7d6c5edfbe9c691082732df",
+    "portable_make_test": "PASS_BEFORE_NATIVE_TARGET",
+    "repository_monitor_tests": {
+      "node_tests": 24,
+      "result": "PASS"
+    },
+    "standalone_log_sha256": "3b52ae9445f31871f503f61a98c84a5d71bc2eda94746b44169a090f6acb7f0c",
+    "standalone_tests": {
+      "command": "python3 -B -m unittest -v tests.test_self_host",
+      "result": "PASS",
+      "tests": 19
+    },
+    "test_scope": "SYNTHETIC_LOCAL_FIXTURES; NOT_OWN_HOST_ACCEPTANCE"
+  },
+  "continuation_runtime_recovery": {
+    "candidate_contents": "CONTAINING_COMMIT",
+    "deployed_restart_verified": false,
+    "effect_ack_done": false,
+    "local_native_systemd_execution": "NOT_PERFORMED; native CI runner required",
+    "local_systemd_preflight": "BLOCK_MALFORMED_SYSTEMCTL_VERSION; /usr/local/bin/systemctl is a container placeholder, not an active supervisor",
+    "public_readback_verified": false,
+    "public_url": null,
+    "repository_gates": {
+      "command": "make test repository-monitor-test",
+      "log_sha256": "f837209b0174b29aaab1bc7d6845e8553ca6775c0b51401bfebf65e5f32dd549",
+      "monitor_tests": 24,
+      "result": "PASS"
+    },
+    "source_head": "34c74ae770378cad8febeb2a559bf0db13aad3b0",
+    "standalone_tests": {
+      "log_sha256": "80c692edfd2ededfe8ec9e2852521b80a46e1b0901ff26b3ac218d12c5d7c246",
+      "result": "PASS",
+      "tests": 24
+    },
+    "tool_cache_coverage": {
+      "covered": 25,
+      "declared": 25,
+      "percent": 100
+    },
+    "unit_syntax": {
+      "result": "PASS",
+      "scope": "SYNTHETIC_ROOT_MOUNT_DECLARATION; NO_ACTIVE_SUPERVISOR",
+      "tool": "/usr/bin/systemd-analyze 255"
+    }
+  },
+  "deployed_restart_verified": false,
+  "deployment_performed": false,
+  "effect_ack_done": false,
+  "host_admission_verified": false,
+  "independent_verify": {
+    "effect_ack_done": false,
+    "method": "Separate Python process executing original exact exported verifier",
+    "result": "EXACT_PACKAGE_RUNTIME_VERIFIED"
+  },
+  "manifest_sha256": "d040cfa41800147fc30affac669ecb88f08e0f4c60955bd92c07a0b8adc7788a",
+  "observed_at": "2026-10-05T05:40:52.942657+00:00",
+  "pack_result": "PACKAGE_FROZEN_LOCAL_ONLY",
+  "package_file_count": 77,
+  "public_readback_verified": false,
+  "public_url": null,
+  "review_governance_satisfied": false,
+  "runtime": {
+    "node": {
+      "executable_sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+      "version": "v24.19.0"
+    },
+    "platform": "x86_64",
+    "python": {
+      "executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+      "version": "Python 3.12.14"
+    },
+    "system": "linux"
+  },
+  "schema": "qikvrt-own-host-local-validation/v1",
+  "source_head": "3bf52747bc94de847d390ffacabecae183aee588",
+  "source_tree": "96c7bb691675dcd15bb5045871201adb400074f0",
+  "verification_scope": "EXACT_ORIGINAL_PACKAGE_BYTES_AND_LOCAL_EXECUTABLE_RUNTIME; NOT_DEPLOYED_HOST"
+}

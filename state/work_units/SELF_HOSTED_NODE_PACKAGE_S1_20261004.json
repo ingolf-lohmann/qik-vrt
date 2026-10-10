@@ -1,0 +1,599 @@
+{
+  "artificial_contributor": {
+    "identity": "OpenAI Codex",
+    "model_family": "GPT-6",
+    "model_or_build_identity": "UNAVAILABLE",
+    "retention": "METADATA_ONLY",
+    "role": "reuse inventory, source-bound integration, implementation, negative/restart tests and fresh candidate verification"
+  },
+  "authorization": {
+    "candidate_implementation_and_push": "CURRENT_OWNER_DIRECTIVE",
+    "hosting_account_creation_or_spending": false,
+    "main_merge": "NOT_PERFORMED",
+    "platform_account_or_protection_changes": false,
+    "private_mail_or_credentials_publication": false
+  },
+  "boundaries": {
+    "authority_effect": false,
+    "effect_ack_done": false,
+    "host_persistence_attested": false,
+    "host_restart_verified": false,
+    "local_export_process_restart_verified": true,
+    "multi_node_replication_verified": false,
+    "native_productive_terminal_included": false,
+    "ordinary_release": false,
+    "power_loss_verified": false,
+    "predecessor_evidence_transfer": false,
+    "provider_independent_public_runtime_verified": false,
+    "public_readback_verified": false,
+    "public_url": null
+  },
+  "deployment_hold": {
+    "authorized_deployment_identity": null,
+    "bound_persistent_mount_or_device": null,
+    "callable_own_host_operation": null,
+    "code": "HOLD_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "observations": [
+      "Current exposed tool inventory has no own-host SSH/container exec or Mesh deployment operation",
+      "Current checkout/local fixture has no admitted host subject, mount identity or public route",
+      "Railway managed build/config capabilities do not establish an independent own host"
+    ],
+    "public_route": null,
+    "retry_condition": "Actually callable authorized own-host operation, exact identity, verified persistent mount/device and HTTPS route; install exact complete package, use/read back public monitor and terminal, restart deployed carrier and compare confirmed data",
+    "scope": "CURRENT_TASK_CAPABILITY_SET_AND_BOUND_RESOURCES"
+  },
+  "exact_head_gates": {
+    "final_run_binding_location": "PR457 metadata and native workflow artifacts/checks; work unit does not self-reference its containing commit",
+    "package_artifact": "Existing EFFECT_ACK HTTP Firefox workflow freezes exact checkout HEAD/tree and uploads deterministic archive, manifest and build receipt",
+    "state": "REQUIRED_FRESH_ON_COMMITTED_SUCCESSOR; NOT_INHERITED_FROM_ROADMAP_OR_DONORS",
+    "terminal_module_requirement": "31 unmodified native Unix/HTTP controls plus 14 standalone cases and one Batch-003 runtime/gate wiring regression; no fixture daemon admitted as productive runtime",
+    "test_command": "make test repository-monitor-test self-host-test",
+    "workflows": [
+      "QIKVRT CI",
+      "QIKVRT repository evidence materialization",
+      "QIK-VRT global claim completion",
+      "QIKVRT Collective Proposal Review",
+      "QIKVRT EFFECT_ACK HTTP Firefox terminal",
+      "QIKVRT Batch-003 remaining subject disposition"
+    ]
+  },
+  "history_continuation": {
+    "cause": "Batch-003 remaining subject workflow exposed new Linux-only tests globally coupled to make test without S1 runtime provisioning",
+    "exact_head_gates": "REQUIRED_FRESH_ON_SUCCESSOR",
+    "failed_observation": {
+      "error": "LINUX_NODE24_PYTHON312_REQUIRED",
+      "head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+      "inherited_success": false,
+      "job_id": 111495221925,
+      "run_id": 37222399657
+    },
+    "kernel_lock_lifetime": "Pass the same flock file description to the existing Node monitor; isolated launcher SIGKILL cannot admit a second writer while the original monitor survives. An executable 13th case verifies exclusion, termination and unchanged acknowledged bytes after restart.",
+    "parent_head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+    "parent_tree": "510666384f4a0b6b92c8d0a8285b3fff09fc1958",
+    "repair": "Keep the original portable make test suite intact and explicitly require original full suite plus repository-monitor-test and self-host-test in every S1 exact-head gate",
+    "workflow_or_test_removed": false
+  },
+  "human_principal": {
+    "instruction_date": "2026-10-04",
+    "instruction_source": "CURRENT_USER_ACTION",
+    "name": "Ingolf Lohmann",
+    "purpose": "Smallest history-preserving self-host successor of PR457: conditional GitHub CLI, existing carriers, exact start/runtime/volume/auth/readback, executable negative/restart controls; precise deployment HOLD if own host absent.",
+    "roles": [
+      "creator",
+      "product_owner",
+      "code_owner"
+    ]
+  },
+  "implementation_files": [
+    {
+      "bytes": 5388,
+      "git_blob_sha1": "b8af272b498918fbc5337a663193c55e48d0779e",
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "sha256": "8b587bf2d5f0b69dbe057bdd3b383bf12e2378ddac15e393b121914831fb919a"
+    },
+    {
+      "bytes": 18139,
+      "git_blob_sha1": "0c821263b5cc34a75ad609988d7d2f3cbf8e57bd",
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "6a476402efacd778a81f2620ef20ebda3074a8d457b7b3ec51d727362e8cb6fd"
+    },
+    {
+      "bytes": 8225,
+      "git_blob_sha1": "4f19b83776f44cb42122f49525e822ec7707d2e5",
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "sha256": "4d83b511016a533aaafa8aa1afa3dce50fcf6e859b90ad02ccd9c67fb0bed807"
+    },
+    {
+      "bytes": 11058,
+      "git_blob_sha1": "7bbfc4d74009bb1b787101fcfdbfb969b9a96df1",
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "sha256": "4f9da69d9f79dcddf348e85ea4b6fb2498a53632e16949652526cf0453068e16"
+    },
+    {
+      "bytes": 6293,
+      "git_blob_sha1": "8b91ac4cf2cc58d3a4bcd695d703bd4465018da8",
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "bbc36ef7efd8c56a181b5e78df496b67d0144e285c54318c8a9224215f13c872"
+    },
+    {
+      "bytes": 8940,
+      "git_blob_sha1": "027412fd92bbe058d5bddf8fbe74796b3de8ecf1",
+      "path": ".github/workflows/qikvrt_global_completion.yml",
+      "sha256": "09cfe53cd2aa94caff88dd59e0bf1bc2d458fe903014bda4f37f887657d63e2c"
+    },
+    {
+      "bytes": 11208,
+      "git_blob_sha1": "ba248a75310c7af00595ca265ea8567142f77165",
+      "path": "Makefile",
+      "sha256": "d24d98664b2f03f68c664622ea6787cffa8183dcb8374cd9fb71ff57dbec0069"
+    },
+    {
+      "bytes": 11244,
+      "git_blob_sha1": "4f73ff5c49be8a7aa5adc1ad0c3ece0cddbbe0ea",
+      "path": "docs/QIKVRT_PRODUCTIZATION_ROADMAP.md",
+      "sha256": "9764abcc81d6d6f2ba9524de6233dc6c4a99d50138bdacc27d07fcfccda41ba4"
+    },
+    {
+      "bytes": 22310,
+      "git_blob_sha1": "6b631b51572a2b4ab4df4a32787671ec289d3bf5",
+      "path": "docs/assets/js/qikvrt-repository-terminal.js",
+      "sha256": "30296c535826da2e9e49c528b1d53fd1fa87454883da347a428870c659c9ddb0"
+    },
+    {
+      "bytes": 11806,
+      "git_blob_sha1": "07f3d11967c70b93b9eb2c10d2cc64be5e12c6f9",
+      "path": "docs/monitor/README.md",
+      "sha256": "add9ed045c5c37fc66f72281969fed4a81c1abb28fdacea8d57927d9115f7497"
+    },
+    {
+      "bytes": 2162,
+      "git_blob_sha1": "0bf0e7ecaab0b0e55cfb4ba76f7235a37ae7097a",
+      "path": "docs/monitor/URL_DIRECTORY.json",
+      "sha256": "8b554272fffe33b94da653e584c368633a2afce426315f71c74add69e33e94a4"
+    },
+    {
+      "bytes": 8342,
+      "git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b",
+      "path": "docs/monitor/client-replica.js",
+      "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+    },
+    {
+      "bytes": 5299,
+      "git_blob_sha1": "c89f5b72c07b83522ebd8288b3432e85deaed2c1",
+      "path": "docs/monitor/health-projection.js",
+      "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee"
+    },
+    {
+      "bytes": 47320,
+      "git_blob_sha1": "30e46aa6f396e4d6efdb3b386c26281626f7abf4",
+      "path": "docs/monitor/index.html",
+      "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231"
+    },
+    {
+      "bytes": 33125,
+      "git_blob_sha1": "451483496eca8bcf37f45616a49d82eb1b5279c3",
+      "path": "docs/monitor/monitor.test.mjs",
+      "sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76"
+    },
+    {
+      "bytes": 16128,
+      "git_blob_sha1": "da889a5927330e8d0a86615f230fc77656b2faf9",
+      "path": "docs/monitor/observer.mjs",
+      "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596"
+    },
+    {
+      "bytes": 11309,
+      "git_blob_sha1": "7ccc7995f3f3c00c236b8e40a54da9601f1f93a7",
+      "path": "docs/monitor/observer.test.mjs",
+      "sha256": "6cca13a3c7b65b0d80dfae343e25c86ab5150dddf284505538c137f2084c4b4e"
+    },
+    {
+      "bytes": 267,
+      "git_blob_sha1": "9639ca9f0fb15ac4a570b15dce1d61cc049e8134",
+      "path": "docs/monitor/package.json",
+      "sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428"
+    },
+    {
+      "bytes": 8479,
+      "git_blob_sha1": "0c7fe64b9bfc36ff04fa40f43042da341e343391",
+      "path": "docs/monitor/self-host.mjs",
+      "sha256": "ec176ea902dd2bb13ca478cb0462c9c5491e5380136de63340396e36c9b2954e"
+    },
+    {
+      "bytes": 34422,
+      "git_blob_sha1": "7a8286ad3ddbe59fba4322ee6222169382833f30",
+      "path": "docs/monitor/server.mjs",
+      "sha256": "487f556318a0417b20f5c58b9d28517e1338a4886fbf114dade86c144842655e"
+    },
+    {
+      "bytes": 6745,
+      "git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
+      "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+      "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+    },
+    {
+      "bytes": 14845,
+      "git_blob_sha1": "e0a4238d2f67a860ab463d28c0544ca7b298b2c6",
+      "path": "docs/terminal/index.html",
+      "sha256": "062aadcff3fa771a9a9233cfe4a74aa2b38ff2fbfb0e9a6b986e0c4ea17b4c2c"
+    },
+    {
+      "bytes": 321,
+      "git_blob_sha1": "ad283e40abc5e8f0f359b09ca60b011f6dc91b06",
+      "path": "runtime/self-host/CONFIG.example.json",
+      "sha256": "37ab72095c2d02a752303119fa148a565ef5c3054523439b266ff693e980f6da"
+    },
+    {
+      "bytes": 1440,
+      "git_blob_sha1": "f13f4c5fba7ab2e00d68b5cd2465c14d59cf22cc",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "a6bf60f8f643d8a5a21ba1545a851370f2300307513f0a1b20e6261a2b6130cb"
+    },
+    {
+      "bytes": 8007,
+      "git_blob_sha1": "c81a0389ad849a1577d9305b9f11ede880b7f7ac",
+      "path": "runtime/self-host/README.md",
+      "sha256": "149470e0e2c877c809a7c4dd495d6d484fe7d1e840c443c187d083bec32f8db2"
+    },
+    {
+      "bytes": 3475,
+      "git_blob_sha1": "d49220a1fd3bee3742d7cb18c9bc4cad84824f85",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "d3f678acfad6389cf19124063937863741dac9f689038b82efcb967e0ee68ecf"
+    },
+    {
+      "bytes": 12222,
+      "git_blob_sha1": "9ce37bd0d9dba2914ffd2a92f3e3b38964cc7777",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "f54dc9c74271aaa1a26954e7654eadc51652bd193bc23b48207b2dd17a6478d4"
+    },
+    {
+      "bytes": 7194,
+      "git_blob_sha1": "98a8bf3a5f2e5d8793c2ccd479ff09bc6545b869",
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "sha256": "b03854e8692db5fc958951ca96b93aeacf625bd6c09f4c475ae73b7fcc3b1ca6"
+    },
+    {
+      "bytes": 2902,
+      "git_blob_sha1": "c2ab9c6a3dd4836741b7955c5f4382776cbb78f9",
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "sha256": "4e03bdf41637bbf9f9f70b1a62df0abac79f5eb059e4dee26bc896700ed20928"
+    },
+    {
+      "bytes": 30091,
+      "git_blob_sha1": "8f04064d8dbfea5a9624162046f8b3f0916894e5",
+      "path": "src/qikvrt_effect_ack_http_terminal.py",
+      "sha256": "0ca66598e0400d91c5093615e983085d2f681d3ac7abae159b046c2b2c502cbb"
+    },
+    {
+      "bytes": 5527,
+      "git_blob_sha1": "dc37a723f491bc4343a998d5067bea731c55c068",
+      "path": "state/work_units/PROVIDER_INDEPENDENT_MESH_ROADMAP_20261004.json",
+      "sha256": "19032adb45e8423e1bceebc3c910cbdaa212b686530542c150ae6421c6ce5b68"
+    },
+    {
+      "bytes": 26955,
+      "git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+      "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+      "sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143"
+    },
+    {
+      "bytes": 20714,
+      "git_blob_sha1": "d9c363ee4ac2afecd17ab42b95fbac46355960b8",
+      "path": "tests/test_self_host.py",
+      "sha256": "c53181aaa2991014314f993e7c23eb55a9990c323271aaa58ea4dbe242427987"
+    },
+    {
+      "bytes": 14869,
+      "git_blob_sha1": "ed848f2030fb4c9bf02febfa253c09631bfec0f7",
+      "path": "tools/ai_runtime_bootloader.py",
+      "sha256": "cc806fa77566bcf0a1be80b24dd27b2d945a144a20d57776aff372a7ada873c4"
+    },
+    {
+      "bytes": 22974,
+      "git_blob_sha1": "1acada0ff620ffb7683dc43b7938e102e702ebe9",
+      "path": "tools/bootstrap-runtime.ps1",
+      "sha256": "7ce2c465d76f4def824cd0ed4c5f392fa93121beec9e48f4cf302c1bd9cb9ae6"
+    },
+    {
+      "bytes": 17810,
+      "git_blob_sha1": "4d8e2217d0dec6465410a1aafbfb0a117be0037f",
+      "path": "tools/bootstrap-runtime.sh",
+      "sha256": "2bde15087d814c24b31dabe7f6683f76a0868f0890e38c17db704c6c452e8803"
+    },
+    {
+      "bytes": 9480,
+      "git_blob_sha1": "87f6dd86a6eb02d7ec2ca86f730324052d927aa2",
+      "path": "tools/qikvrt_mesh_monitor_readback.mjs",
+      "sha256": "60380776aee3b33272ab395320c25fb327fd72bfd778bf83a11ce7ea42fba35a"
+    },
+    {
+      "bytes": 13615,
+      "git_blob_sha1": "9c59f349d4013085bde6dc82e91706d2a2da619a",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "bdc4be4fad8a7faa6c595eb1342a035290291237aa34aceb9dddaa615e3bb2d0"
+    }
+  ],
+  "implemented_contracts": [
+    "self-host adapter none avoids gh; explicit github retains locked gh; all existing profiles still require github",
+    "committed allowlisted blobs, deterministic tar independent of umask, exact HEAD/tree/manifest/runtime executable hashes",
+    "private deterministic config and separate node-bound persistent volume layout with kernel single-writer lock",
+    "existing loopback HTTP reference terminal with private bearer auth; public read-only sanitized terminal and exported repository documents",
+    "existing monitor only, Railway/provider negative control before transport, local source adapter without remote polling",
+    "existing independent replica client checks exact runtime/config/source/assets and durable event digest chain",
+    "SIGKILL entire runtime group and restart compare acknowledged original bytes and final independent readback; reject wrong source/runtime/config/volume binding"
+  ],
+  "local_validation": {
+    "bytes": 3233,
+    "git_blob_sha1": "7bc2f8f204f7dd4c400e733702f06b7949d586c2",
+    "path": "evidence/self_host/SELF_HOST_LOCAL_20261004.json",
+    "sha256": "8280077ded3ecbbdc5257505beb731218a249d5445431c7561b5f74d8883cbed"
+  },
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "package_definition": {
+    "bytes": 1440,
+    "git_blob_sha1": "f13f4c5fba7ab2e00d68b5cd2465c14d59cf22cc",
+    "path": "runtime/self-host/PACKAGE.json",
+    "sha256": "a6bf60f8f643d8a5a21ba1545a851370f2300307513f0a1b20e6261a2b6130cb"
+  },
+  "pr": 457,
+  "productive_terminal_source_hold": {
+    "code": "HOLD_PRODUCTIVE_TERMINAL_SOURCE_UNAVAILABLE",
+    "included_scope": "Existing HTTP reference carrier, read-only repository terminal and existing owner Unix client; reference HTTP input remains process-local",
+    "missing": [
+      "existing productive TEMDD daemon bytes",
+      "existing Firefox/noVNC deployment sources and exact startup/runtime contract"
+    ],
+    "retry_condition": "Byte-exact complete source delivery with verified existing carrier identity, then extend this package without adding a second daemon or executor"
+  },
+  "reuse_evidence": {
+    "independent_readback": {
+      "operation": "EXTEND_EXISTING_REPLICA_READBACK_WITH_EXPLICIT_SELF_HOST_BINDINGS",
+      "source_git_blob_sha1": "329bb260a565fbdbaee35819d6e457d3dbbe57cc",
+      "source_head": "14fc43ec8263d7d278c54975ac0338130e0de716",
+      "source_path": "tools/qikvrt_mesh_monitor_readback.mjs"
+    },
+    "monitor_pr456": {
+      "files": [
+        {
+          "current_binding": {
+            "bytes": 11806,
+            "git_blob_sha1": "07f3d11967c70b93b9eb2c10d2cc64be5e12c6f9",
+            "sha256": "add9ed045c5c37fc66f72281969fed4a81c1abb28fdacea8d57927d9115f7497"
+          },
+          "path": "docs/monitor/README.md",
+          "source_git_blob_sha1": "8fdfafc5dfc9dd0045dcb59da36d5fde561c83f9",
+          "source_sha256": "c88c528fe9e9267b74634defecfdf590e7dc66546fcd0043e765e4423007b38e"
+        },
+        {
+          "current_binding": {
+            "bytes": 2162,
+            "git_blob_sha1": "0bf0e7ecaab0b0e55cfb4ba76f7235a37ae7097a",
+            "sha256": "8b554272fffe33b94da653e584c368633a2afce426315f71c74add69e33e94a4"
+          },
+          "path": "docs/monitor/URL_DIRECTORY.json",
+          "source_git_blob_sha1": "0bf0e7ecaab0b0e55cfb4ba76f7235a37ae7097a",
+          "source_sha256": "8b554272fffe33b94da653e584c368633a2afce426315f71c74add69e33e94a4"
+        },
+        {
+          "current_binding": {
+            "bytes": 8342,
+            "git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b",
+            "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+          },
+          "path": "docs/monitor/client-replica.js",
+          "source_git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b",
+          "source_sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472"
+        },
+        {
+          "current_binding": {
+            "bytes": 5299,
+            "git_blob_sha1": "c89f5b72c07b83522ebd8288b3432e85deaed2c1",
+            "sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee"
+          },
+          "path": "docs/monitor/health-projection.js",
+          "source_git_blob_sha1": "c89f5b72c07b83522ebd8288b3432e85deaed2c1",
+          "source_sha256": "66b3a50734bb7df3b5742892b8683a746e957beaddf3d95590ee627e681ccaee"
+        },
+        {
+          "current_binding": {
+            "bytes": 47320,
+            "git_blob_sha1": "30e46aa6f396e4d6efdb3b386c26281626f7abf4",
+            "sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231"
+          },
+          "path": "docs/monitor/index.html",
+          "source_git_blob_sha1": "30e46aa6f396e4d6efdb3b386c26281626f7abf4",
+          "source_sha256": "e36025a677a13380fcf7afcd9a2fb0420837e4e10c4e5626c2ce05f401999231"
+        },
+        {
+          "current_binding": {
+            "bytes": 33125,
+            "git_blob_sha1": "451483496eca8bcf37f45616a49d82eb1b5279c3",
+            "sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76"
+          },
+          "path": "docs/monitor/monitor.test.mjs",
+          "source_git_blob_sha1": "451483496eca8bcf37f45616a49d82eb1b5279c3",
+          "source_sha256": "e8474e0f89ef1c437f0b169604977733a4f739c3840c8d74bbb2b7d763afaa76"
+        },
+        {
+          "current_binding": {
+            "bytes": 16128,
+            "git_blob_sha1": "da889a5927330e8d0a86615f230fc77656b2faf9",
+            "sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596"
+          },
+          "path": "docs/monitor/observer.mjs",
+          "source_git_blob_sha1": "da889a5927330e8d0a86615f230fc77656b2faf9",
+          "source_sha256": "264e47bc7fddf79ae466693630caeecadb9ddc9a8a39edd98efb877087450596"
+        },
+        {
+          "current_binding": {
+            "bytes": 11309,
+            "git_blob_sha1": "7ccc7995f3f3c00c236b8e40a54da9601f1f93a7",
+            "sha256": "6cca13a3c7b65b0d80dfae343e25c86ab5150dddf284505538c137f2084c4b4e"
+          },
+          "path": "docs/monitor/observer.test.mjs",
+          "source_git_blob_sha1": "7ccc7995f3f3c00c236b8e40a54da9601f1f93a7",
+          "source_sha256": "6cca13a3c7b65b0d80dfae343e25c86ab5150dddf284505538c137f2084c4b4e"
+        },
+        {
+          "current_binding": {
+            "bytes": 267,
+            "git_blob_sha1": "9639ca9f0fb15ac4a570b15dce1d61cc049e8134",
+            "sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428"
+          },
+          "path": "docs/monitor/package.json",
+          "source_git_blob_sha1": "9639ca9f0fb15ac4a570b15dce1d61cc049e8134",
+          "source_sha256": "3428b9ecd45807e84f1a0e592ad237b6abe7a0e39beb18942db8dbfd7184a428"
+        },
+        {
+          "current_binding": {
+            "bytes": 34422,
+            "git_blob_sha1": "7a8286ad3ddbe59fba4322ee6222169382833f30",
+            "sha256": "487f556318a0417b20f5c58b9d28517e1338a4886fbf114dade86c144842655e"
+          },
+          "path": "docs/monitor/server.mjs",
+          "source_git_blob_sha1": "081dc5e82a071b97766b8cc578c07e37801888df",
+          "source_sha256": "bd5dcc12ae6589275d9ff4e317001ccffafc689fadb5c16bef1f8f81a11a9a05"
+        }
+      ],
+      "import": "SELECTIVE_BLOB_REUSE_NOT_FULL_BRANCH_MERGE",
+      "source_head": "14fc43ec8263d7d278c54975ac0338130e0de716",
+      "source_tree": "31395a8a383e6feb10d4195d6fadcd1d78b644e7"
+    },
+    "productive_source_search": {
+      "donor_heads": [
+        "14fc43ec8263d7d278c54975ac0338130e0de716",
+        "c1424d4d53b03402c8284728d7a47e03c9de1b1c"
+      ],
+      "goldkelch_repository_read": "CURRENT_CONNECTION_GITHUB_API_404; GIT_ROUTE_NOT_READABLE",
+      "mirror_parent_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
+      "permission_claim": "NO_CLAIM_ABOUT_GLOBAL_REPOSITORY_EXISTENCE_OR_OTHER_PRINCIPALS",
+      "result": "NO_PRODUCTIVE_TEMDD_DAEMON_OR_FIREFOX_NOVNC_DEPLOYMENT_SOURCE",
+      "retained_checkpoint_head": "f77bc1183b25cd7a1fdb605bc39ee5ea27953d95"
+    },
+    "terminal_pr454": {
+      "files": [
+        {
+          "current_binding": {
+            "bytes": 30091,
+            "git_blob_sha1": "8f04064d8dbfea5a9624162046f8b3f0916894e5",
+            "sha256": "0ca66598e0400d91c5093615e983085d2f681d3ac7abae159b046c2b2c502cbb"
+          },
+          "path": "src/qikvrt_effect_ack_http_terminal.py",
+          "source_git_blob_sha1": "2668959d315f39f0d686350960282dd30218ca59",
+          "source_sha256": "ae5c7dbeca725f2c925b53f7d8c1f4e5f04aaa27a29d7d347d2f9c0bf4134179"
+        },
+        {
+          "current_binding": {
+            "bytes": 26955,
+            "git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+            "sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143"
+          },
+          "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+          "source_git_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+          "source_sha256": "6a64163f69258bd53b711a8a764a893ddd70ae48cb7a2facd1941d8ad4689143"
+        },
+        {
+          "current_binding": {
+            "bytes": 6745,
+            "git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
+            "sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+          },
+          "path": "docs/terminal/OWNER_UNIX_DURABLE_TERMINAL_V1.md",
+          "source_git_blob_sha1": "642506a8e0dfdba401d136fbccc1528b380f1c7d",
+          "source_sha256": "f1e582ab7a011a163a60efa35b34f1ecf3d321d6fc55dccfc5e3b67bcf1c0047"
+        }
+      ],
+      "import": "SELECTIVE_BLOB_REUSE_NOT_FULL_BRANCH_MERGE",
+      "source_head": "c1424d4d53b03402c8284728d7a47e03c9de1b1c",
+      "source_tree": "29f2159e0a5906e3decc0ad7f545f0434d3f4e31"
+    }
+  },
+  "reuse_insufficiency": "The roadmap alone has no portable runtime package. The terminal donor contains the existing HTTP reference carrier and owner Unix ingress client, but explicitly lacks productive TEMDD/deployment sources. Reuse and bind the available carriers; do not invent a substitute daemon, executor, ledger or deployment source.",
+  "runtime_gate_repair": {
+    "concurrent_successor_observation": {
+      "batch_run_id": 37223855259,
+      "conclusion": "success",
+      "head": "e040698ea0b092367f35103bfb825889e99769ac",
+      "scope": "Portable make test only; explicit S1 targets not called by that Batch-003 workflow; not S1 runtime/test evidence"
+    },
+    "effect_ack_done": false,
+    "exact_head_run_binding_location": "Native successor GitHub Actions/checks and PR457 metadata; no self-referential source commit or inherited run success",
+    "instruction_source": "CURRENT_OWNER_ACTION_20261004",
+    "local_self_host_module_tests": {
+      "command": "python3 -B -m unittest -v tests.test_self_host",
+      "count": 15,
+      "exit_code": 0,
+      "scope": "WORKTREE_AND_LOCAL_FIXTURE; FRESH_COMMITTED_GATE_EVIDENCE_REQUIRED"
+    },
+    "original_failure": {
+      "error": "LINUX_NODE24_PYTHON312_REQUIRED",
+      "head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+      "job_id": 111495221925,
+      "run_id": 37222399657,
+      "self_host_tests_executed": 0,
+      "step": "Run complete repository gates",
+      "tree": "510666384f4a0b6b92c8d0a8285b3fff09fc1958"
+    },
+    "parent_head": "e040698ea0b092367f35103bfb825889e99769ac",
+    "parent_tree": "3f8ce83d74ac6737af50e37b2a10538d2aefa5f0",
+    "predecessor_evidence_transfer": false,
+    "regression": {
+      "method": "Synthetic executable version fixtures on child PATH, not installed alternate runtimes; existing bootstrap must return CONTINUE 20, pack CLI must reject with LINUX_NODE24_PYTHON312_REQUIRED and leave no export/archive",
+      "negative_node_version_fixtures": [
+        "v20.19.0",
+        "v22.19.0",
+        "v25.0.0",
+        "v240.0.0"
+      ],
+      "workflow_control": "Batch-003 requires immutable event-head checkout, Node 24/Python 3.12 setup and runtime preflight before all three required Make targets and before persistence"
+    },
+    "repair": "Reuse pinned setup-node action with node-version 24 after Python 3.12 setup. Check actual PATH through the existing self-host bootstrap and actual python3 Linux/3.12 check; run make test repository-monitor-test self-host-test before persistence on the immutable event head.",
+    "s1_runtime_requirement_weakened": false,
+    "self_host_tests_skipped": false,
+    "state": "IMPLEMENTED_REQUIRES_FRESH_COMMITTED_SUCCESSOR_GATES"
+  },
+  "runtime_image_delivery_successor": {
+    "archive_round_trip_scope": "Same CI Docker engine; not a clean-host restore or deployed acceptance.",
+    "artificial_cognitive_contribution": "OpenAI Codex: extend the existing terminal workflow to retain the runtime image and an executable-bound Firefox/noVNC source package.",
+    "candidate_verification": "Fresh successor CI required; predecessor checks are historical only.",
+    "deployment_hold": "HOST_AND_DNS_WRITER_ADMISSION_NOT_ESTABLISHED",
+    "effect_ack_done": false,
+    "human_contribution": "Ingolf Lohmann: complete the existing Linux Docker/Firefox terminal delivery and commissioned permanent raumzeitterminal.de operation.",
+    "observed_gap": "Prior productive-terminal artifact retains image ID and browser readback, but not the complete loadable image.",
+    "original_delivery_failure": {
+      "ci_required": "Fresh exact-successor full workflow; predecessor browser tests remain historical.",
+      "error": "PermissionError: host cannot read container-owned 0700 package/MANIFEST.json",
+      "head": "d95366905d357359d2b1c92efce94710df7d8c16",
+      "job_id": 113091691811,
+      "repair": "Read MANIFEST.json from the already frozen public package.tar; retain private directory mode and ownership.",
+      "run_id": 37709465648,
+      "step": "Freeze matching Firefox package and archive runtime image",
+      "tree": "c38aec9102349075c37afcea802902efe853885e",
+      "verified_before_failure": "Runtime-target pack verification and compressed docker-load succeeded before receipt generation; no delivery artifact uploaded."
+    },
+    "reuse": "Existing Docker runtime/test targets, exact-head pack/verify, native Firefox suite, and artifact upload.",
+    "source_parent_head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
+    "source_parent_tree": "1e0d6ee3f8c290dd63774084cbc40ea13f6cc41e",
+    "state": "REVIEW_CANDIDATE_REQUIRES_EXACT_HEAD_NATIVE_CI"
+  },
+  "schema": "qikvrt-attributable-work-unit/v1",
+  "source_base_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "source_base_tree": "fbb8c2f473add7a3370d7557d97cf86fdbf1c1a4",
+  "source_parent_head": "4f53f56014584cf8effbbad8cc15d199aaed4608",
+  "source_parent_tree": "486ed9d95c3eb312a10d50dbfd11668004fa113b",
+  "source_recovery_successor": {
+    "deployment_hold": "UNCHANGED_OWN_HOST_IDENTITY_STORAGE_ROUTING_UNAVAILABLE",
+    "effect_ack_done": false,
+    "fresh_runtime_acceptance": "REQUIRED_ON_COMMITTED_SUCCESSOR; NOT_INHERITED",
+    "historical_source_gap": "RESOLVED_FOR_VERIFIED_SNAPSHOT_C6A53E2",
+    "prior_implementation_bindings": "HISTORICAL_BINDINGS; SUCCESSOR_BYTES_ARE_BOUND_IN_NEW_WORK_UNIT",
+    "prior_productive_terminal_source_hold": "RETAINED_ABOVE_AS_HISTORICAL_PREDECESSOR_OBSERVATION",
+    "source_parent_head": "dfddd74b031867c5113827780ad937379c85914f",
+    "work_unit_path": "state/work_units/S1_PRODUCTIVE_TERMINAL_SOURCE_RECOVERY_20261005.json"
+  },
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "state": "S1_PACKAGE_CANDIDATE_WITH_EXTERNAL_ACCEPTANCE_HOLDS",
+  "work_unit_id": "SELF_HOSTED_NODE_PACKAGE_S1_20261004"
+}
