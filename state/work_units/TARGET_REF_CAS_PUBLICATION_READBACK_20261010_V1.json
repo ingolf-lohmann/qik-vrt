@@ -1,0 +1,165 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "TARGET_REF_CAS_PUBLICATION_READBACK_20261010_V1",
+  "created_at": "2026-10-10T08:20:35Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "d8775f200be50b0ec261fe4c8093ce64020d0d0e",
+  "source_tree": "62add326edf6cd5b46068e92f2fe5af71b199145",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Instruction to apply the 2026-10-10 expected-HEAD CAS and fresh published HEAD/TREE readback architecture decision",
+    "Owner repository-role reassignment of 2026-10-07"
+  ],
+  "artificial_cognitive_contributions": [
+    "Inspected the existing promotion core and workflow against current REST semantics",
+    "Added a fail-closed target-ref CAS boundary, immutable merge-commit TREE/parent binding and two fresh ref reads",
+    "Implemented negative regression controls and preserved this bounded handoff"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "repository_roles": {
+    "owner_designated_authority": "ingolf-lohmann/qik-vrt",
+    "owner_designated_mirror": "Goldkelch/qik-vrt",
+    "owner_assignment_date": "2026-10-07",
+    "native_activation": "NOT_VERIFIED",
+    "existing_role_repair": "https://github.com/ingolf-lohmann/qik-vrt/pull/491",
+    "predecessor_evidence_transfer": false
+  },
+  "decision_source": {
+    "title": "Building Git infrastructure for agent-scale development",
+    "author": "Brian Celenza",
+    "organization": "GitHub",
+    "canonical_url": "https://github.blog/engineering/architecture-optimization/building-git-infrastructure-for-agent-scale-development/",
+    "published": "2026-10-06",
+    "updated": "2026-10-07",
+    "update_substantiality": "NOT_ESTABLISHED",
+    "scope": "Engineering recommendation; not repository implementation evidence"
+  },
+  "primary_api_sources": [
+    "https://docs.github.com/en/rest/git/refs#update-a-reference",
+    "https://docs.github.com/en/rest/pulls/pulls#merge-a-pull-request"
+  ],
+  "outputs": [
+    {
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "bytes": 14433,
+      "sha256": "464f0348561c3a184f5abc1c36702fcd8b519e4d83938e97a4378fa31401ac4d",
+      "git_blob_sha1": "c91374eba18e832ebb820384042ceaffcf97a96e"
+    },
+    {
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "bytes": 14424,
+      "sha256": "3d4725bc08accecd6f937b6168cdc3cb43971c64ca07487af59448cc7c27a84b",
+      "git_blob_sha1": "5982963a0ba31a5173bdf1159d08a793969378bc"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "bytes": 11356,
+      "sha256": "621551f4f424a1a194c290b7d7c115827fdfc875c4755228fd29a7f968024a65",
+      "git_blob_sha1": "ac65a37f961fabf21b6e39364d1cb3cfaffaed66"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "bytes": 4406,
+      "sha256": "c8ae9f9cf8d36e27b81a6728beafb815063d53edf20a3718e11b7a5ba187578f",
+      "git_blob_sha1": "2beed7e756fed9cc95f2853f99756ff213061c4b"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 7777,
+      "sha256": "8538816c64443e0dfb2be7faf30f9c1a9fd62996c9498ea1a7b0a90631591f4e",
+      "git_blob_sha1": "eb383a0eb83e69c540392c2042a02f22c503a820"
+    },
+    {
+      "path": "docs/operations/EXPECTED_HEAD_PROMOTION.md",
+      "bytes": 4490,
+      "sha256": "0083445f6cc1eac6087be51b72dea7050add1984f3625d192b7471798ff347ad",
+      "git_blob_sha1": "68bb583819ff087788d18edb94099f18f74e87ee"
+    }
+  ],
+  "verification": {
+    "focused_tests": {
+      "count": 33,
+      "result": "PASS",
+      "scope": "Local promotion, publication-readback, contract and existing requested-review regression tests; simulated verified-CAS fixtures are not live capability evidence",
+      "runtime": "Python 3.12.14"
+    },
+    "embedded_python_blocks": {
+      "count": 5,
+      "result": "COMPILED"
+    },
+    "tool_cache_contract": {
+      "declared_tools": 14,
+      "coverage_percent": 100,
+      "result": "PASS",
+      "scope": "Declared cache strategy metadata; not installed-tool validation"
+    },
+    "full_repository_bootstrap": "NOT_VERIFIED_IN_PARTIAL_SOURCE_SNAPSHOT",
+    "full_integrity_materialization": "NOT_VERIFIED",
+    "native_workflow_execution": "NOT_OBSERVED",
+    "native_independent_code_owner_approval": "NOT_ESTABLISHED",
+    "main_integration": "NOT_PERFORMED"
+  },
+  "live_observations": {
+    "connected_main": {
+      "head": "d8775f200be50b0ec261fe4c8093ce64020d0d0e",
+      "tree": "62add326edf6cd5b46068e92f2fe5af71b199145"
+    },
+    "main_protected": false,
+    "rulesets": [],
+    "mesh_snapshot": {
+      "id": "c263418c-289d-416b-80aa-712ecac87678",
+      "sha256": "ba2ead7d1861f4dfe1699019bdbcd544c2bc5be6149eba6ebf53f4bb83f70651",
+      "byte_verified": true,
+      "observed_at": "2026-10-10T08:16:45.669Z",
+      "public_http_runtime": "UNKNOWN_RATE_LIMITED",
+      "establishes_native_execution": false
+    },
+    "domain_delivery": {
+      "hostname": "raumzeitterminal.de",
+      "state": "UNKNOWN",
+      "method": "EXACT_HOST_HTTPS_OPEN",
+      "observation": "URL not accessible via the research tool; not evidence that the host is down",
+      "native_delivery_verified": false
+    }
+  },
+  "continuation": {
+    "state": "HOLD",
+    "first_blocker": "ATOMIC_TARGET_REF_CAS_UNVERIFIED",
+    "native_activation_blocker": "AUTHORITY_ROLE_BINDING_NOT_ACTIVE",
+    "independent_governance_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "next_action": "Keep the isolated draft; verify a genuinely server-atomic, expected-old-target-ref REST operation and independently enforced Code Owner/Ruleset prerequisites before any protected integration. Reobserve exact candidate HEAD/TREE and native materialization evidence; no blind retry, rerun or substitute dispatch.",
+    "force_push": false,
+    "workflow_dispatch": false,
+    "protected_policy_change": false,
+    "automatic_promotion_opt_in": false,
+    "covers_other_writers": false
+  },
+  "human_decision": {
+    "prepare_reviewable_application": "AUTHORIZED",
+    "native_review": "NOT_INFERRED"
+  },
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "subject_binding": "Containing Git commit and tree; output digests bind the six preceding changed paths without self-reference"
+  },
+  "external_effects": {
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}

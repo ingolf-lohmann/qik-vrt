@@ -145,6 +145,7 @@ jobs:
           pr=gh_json(f'repos/{repo}/pulls/{pr_number}')
           current_main=gh_json(f'repos/{repo}/commits/main')['sha']
           head=pr['head']['sha']
+          expected_tree=gh_json(f'repos/{repo}/git/commits/{head}')['tree']['sha']
           runs=gh_runs(f'repos/{repo}/actions/runs?head_sha={head}&event=pull_request&per_page=100')
           workflow_runs=[
               {'name':r.get('name'),'status':r.get('status'),'conclusion':r.get('conclusion'),'run_number':r.get('run_number')}
@@ -174,6 +175,22 @@ jobs:
 
           print(json.dumps({
               'pr_number':pr_number,
+              'repository':repo,
+              'expected_tree_sha':expected_tree,
+              # This trusted adapter compares the PR head, not the old Main ref.
+              # Never import a capability declaration from candidate files/comments.
+              'target_ref_cas': {
+                  'state':'UNAVAILABLE',
+                  'repository':repo,
+                  'ref':'refs/heads/main',
+                  'operation':'GITHUB_PULL_MERGE_REST_SHA_PRECONDITION',
+                  'comparison_scope':'PR_HEAD',
+                  'expected_old_sha':current_main,
+                  'candidate_head_sha':head,
+                  'server_atomic_compare_and_update':False,
+                  'force_update':False,
+                  'evidence_sha256':None,
+              },
               'current_main_sha':current_main,
               'base_sha':pr['base']['sha'],
               'expected_head_sha':head,
@@ -236,10 +253,35 @@ jobs:
           gh api --method PUT "repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge" \
             -f merge_method=merge -f sha="$EXPECTED_HEAD" > /tmp/qikvrt-promotion-merge.json
           cat /tmp/qikvrt-promotion-merge.json
-          test "$(python3 -c 'import json; print(str(json.load(open("/tmp/qikvrt-promotion-merge.json"))["merged"]).lower())')" = true
-          promoted_main="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
-          test "$promoted_main" != "$EXPECTED_BASE"
-          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Expected-head promotion completed by repository-native executor. Source head: \`$EXPECTED_HEAD\`; previous main: \`$EXPECTED_BASE\`; promoted main: \`$promoted_main\`. Requested-review execution was exact-head bound. No Zenodo/IETF/release/PASS/FINAL_PASS/EFFECT_ACK_DONE effect is implied."
+          python3 -B - <<'PY' > /tmp/qikvrt-promotion-publication-input.json
+          import json
+          value=json.load(open('/tmp/qikvrt-promotion-snapshot.json'))
+          value['merge_response']=json.load(open('/tmp/qikvrt-promotion-merge.json'))
+          print(json.dumps(value, sort_keys=True))
+          PY
+          # Ref -> exact returned commit/TREE/parents -> ref. A lost response is
+          # HOLD with the recorded effect identity, never a blind merge retry.
+          python3 -B tools/qikvrt_expected_head_promotion.py verify-publication \
+            --input /tmp/qikvrt-promotion-publication-input.json \
+            > /tmp/qikvrt-promotion-readback.json
+          cat /tmp/qikvrt-promotion-readback.json
+          promoted_main="$(python3 -c 'import json; print(json.load(open("/tmp/qikvrt-promotion-readback.json"))["published_head_sha"])')"
+          gh api --method POST "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" \
+            -f body="Exact ref publication readback verified. Source head: ${EXPECTED_HEAD}; previous main: ${EXPECTED_BASE}; published main: ${promoted_main}. No broader approval, PASS, FINAL_PASS, deployment or EFFECT_ACK_DONE is established."
+
+      - name: Preserve promotion and readback evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-ref-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/qikvrt-promotion-candidate.json
+            /tmp/qikvrt-promotion-snapshot.json
+            /tmp/qikvrt-promotion-decision.json
+            /tmp/qikvrt-promotion-merge.json
+            /tmp/qikvrt-promotion-publication-input.json
+            /tmp/qikvrt-promotion-readback.json
+          if-no-files-found: warn
 
       - name: Persist bounded decision summary
         if: always()
@@ -254,6 +296,9 @@ jobs:
               echo '```json'; cat /tmp/qikvrt-promotion-candidate.json; echo '```'
             else
               echo "No promotion snapshot was materialized."
+            fi
+            if [ -f /tmp/qikvrt-promotion-readback.json ]; then
+              echo '```json'; cat /tmp/qikvrt-promotion-readback.json; echo '```'
             fi
             echo
             echo "Requested-review execution and external effects remain fail-closed."

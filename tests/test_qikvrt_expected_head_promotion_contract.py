@@ -55,8 +55,21 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn('exit 0', workflow)
         self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
         self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
-        self.assertIn("if other.get('base', {}).get('sha') != current_main", workflow)
-        self.assertIn("if other.get('head', {}).get('sha') == head", workflow)
+        self.assertIn("other.get('base',{}).get('sha') != current_main", workflow)
+        self.assertIn("other.get('head',{}).get('sha') == head", workflow)
+
+    def test_missing_main_ref_cas_is_an_explicit_hold_boundary(self) -> None:
+        contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        boundary = contract["promotion_executor"]["target_ref_publication"]
+        self.assertTrue(boundary["atomic_expected_old_head_required"])
+        self.assertEqual(boundary["current_target_ref_cas_capability"], "UNAVAILABLE")
+        self.assertEqual(boundary["unverified_cas_disposition"], "HOLD")
+        self.assertFalse(boundary["covers_other_writers"])
+        workflow = PROMOTION_WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("'server_atomic_compare_and_update':False", workflow)
+        self.assertIn("'comparison_scope':'PR_HEAD'", workflow)
+        self.assertIn("verify-publication", workflow)
+        self.assertNotIn('test "$promoted_main" != "$EXPECTED_BASE"', workflow)
 
     def test_external_effect_claims_remain_fail_closed(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
