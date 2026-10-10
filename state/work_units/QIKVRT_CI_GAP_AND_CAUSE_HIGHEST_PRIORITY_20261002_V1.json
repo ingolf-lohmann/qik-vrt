@@ -1,0 +1,130 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "work_unit_json"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_20261002_V1",
+  "priority": "OWNER_HIGHEST",
+  "authorization": {
+    "issuer": "Ingolf Lohmann",
+    "received_at_utc": "2026-10-02T00:07:15Z",
+    "source": "direct Product Owner instruction",
+    "statement": "CI bedeutet: Lücken sind höchstprior zu schließen und die Ursache für das Entstehen jeglicher Lücke ebenso! Freigabe erteilt."
+  },
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 437,
+    "input_head": "2a4d587ea799d57ae569a011551a61123850fb1b",
+    "input_tree": "cc096583f70bcc9644d7758ee101756c52dcd240",
+    "observed_main": "6e085ab1e2b68e0cdf8e014c8400824f0502f11c"
+  },
+  "reused_paths": [
+    "AI",
+    "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+    "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+    "tools/qikvrt_autonomous_self_heal.py",
+    "tests/test_qikvrt_autonomous_self_heal.py",
+    "tests/test_effect_ack_release_workflows.py",
+    "canonical/SHIFT_LEFT_ROOT_CAUSE_REGRESSION_POLICY_V25.json"
+  ],
+  "rule_id": "QIKVRT_CI_GAP_AND_CAUSE_HIGHEST_PRIORITY_V1",
+  "cause": {
+    "established_scope": "repair_handler false symptom closure after successful repair command",
+    "source_bound_cause": "Absent post-repair original probe and unconditional REPAIRED return. A zero-exit repair command alone cannot establish the original operation succeeds.",
+    "historical_development_motive": "UNESTABLISHED",
+    "controlled_comparison": {
+      "source_head": "2a4d587ea799d57ae569a011551a61123850fb1b",
+      "source_sha256": "2f5ffb0dd635d78d87d277e679689b8ad8b59043db64d13f463e105c8a948056",
+      "baseline_controller_result": {
+        "failure_class": "PUBLICATION_OVERVIEW_DRIFT",
+        "state": "REPAIRED"
+      },
+      "original_operation_exit": 2,
+      "successor_result": {
+        "state": "BLOCK",
+        "reason": "original operation still fails after repair for PUBLICATION_OVERVIEW_DRIFT; gap and cause remain OWNER_HIGHEST open obligations"
+      },
+      "evidence_class": "SOURCE_BOUND_REAL_SUBPROCESS_REGRESSION",
+      "historical_development_motive": "UNESTABLISHED"
+    }
+  },
+  "implementation": {
+    "post_repair_identical_probe_required": true,
+    "failed_post_probe_blocks_candidate": true,
+    "successful_probe_is_scoped_symptom_evidence_only": true,
+    "unknown_causes_remain_open": true,
+    "both_priorities": "OWNER_HIGHEST",
+    "native_ci_receipt_carries_bound_owner_rule": true,
+    "existing_consumer_carries_separate_open_obligations": true,
+    "weak_or_missing_rule_rejected": true,
+    "new_executor": false
+  },
+  "verification": {
+    "actual_failing_operation_and_noop_repair_subprocess_control": true,
+    "actual_fixed_operation_subprocess_positive_control": true,
+    "real_ci_cli_missing_rule_and_weakened_cause_controls": true,
+    "full_repository_suite": "LOCAL_BLOCK_NO_SPACE_LEFT_ON_DEVICE; HOSTED_EXACT_HEAD_REQUIRED",
+    "productive_main_activation": "NOT_OBSERVED",
+    "predecessor_evidence_transfer": false,
+    "effect_ack_done": false,
+    "local_focused_tests_passed": 52,
+    "local_focused_log_sha256": "fb84ce335bf13d1ff7e8e9bc665dcfaf8c9c01e72d0aeb0a690fe1160aeb39a7",
+    "full_suite_attempt_log_sha256": "2395ca9f6e4abee83f2322a1f3b6730eacafe6a5dbb5b386090df522719161b9",
+    "local_environment_block": {
+      "operation": "historical isolated Git worktree checkout",
+      "source_head": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "direct_observation": "fatal: cannot create directory: No space left on device",
+      "filesystem_available_bytes": 0,
+      "historical_source_objects_now_verified": true,
+      "only_this_turn_duplicate_packs_removed": true,
+      "resource_repair_effect": "capacity not restored; do not claim local full suite success",
+      "next_action": "native exact-head CI on independent GitHub runner"
+    }
+  },
+  "source_outputs": [
+    {
+      "path": "AI",
+      "bytes": 20702,
+      "sha256": "5d7e151b31c7253df7b093ce71c4492a35598574935c6a39b25c4db560823376"
+    },
+    {
+      "path": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+      "bytes": 14772,
+      "sha256": "e44e2b3a454d728ad6c16481543594d35de85f7cc94a85bd256ba140e3a5e795"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 12736,
+      "sha256": "993d1cb408342b33b208fff818b4039444dee47923eac10c7d02f6a9e2f82588"
+    },
+    {
+      "path": "tools/qikvrt_autonomous_self_heal.py",
+      "bytes": 40403,
+      "sha256": "ed83c88386a5e20baa65605e7b96a40c73fba68dc409d3855db691433c157f58"
+    },
+    {
+      "path": "tests/test_qikvrt_autonomous_self_heal.py",
+      "bytes": 18944,
+      "sha256": "3c1fa650d668209b991656649692c4e450f90cd22ee0c6b8fc23320a1a6267d0"
+    },
+    {
+      "path": "tests/test_effect_ack_release_workflows.py",
+      "bytes": 35333,
+      "sha256": "965c8ad25456224ba30b0bb8497657cda5fc5ec30142d96c5a3d2405bc9436e6"
+    }
+  ],
+  "open_boundaries": [
+    "INDEPENDENT_NATIVE_REVIEW_AND_MAIN_ADMISSION",
+    "FRESH_NATIVE_EXACT_HEAD_GATE_EXECUTION",
+    "PRODUCTIVE_FOUND_ERROR_AND_CONSUMER_READBACK",
+    "OTHER_UNESTABLISHED_CAUSES_REMAIN_HIGHEST_PRIORITY"
+  ],
+  "provenance": {
+    "human": "Ingolf Lohmann supplied the general CI priority rule and authorized gap/cause repair.",
+    "artificial_cognitive_system": "OpenAI Codex implemented the bounded existing-controller repair and verified the controlled subprocess comparison."
+  }
+}

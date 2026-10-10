@@ -1,0 +1,208 @@
+{
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "identity_limits": [
+      "Session declaration is not cryptographic person/model authentication"
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "1b76f273302e",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "API readback of PR/head, workflow source and failing native run/job",
+    "Reconstructed and independently rehashed missing local Git blobs",
+    "Moved both existing output paths to quoted RUNNER_TEMP paths",
+    "Executed original and corrected workflow shell blocks with hash-verified official Lean/Lake 4.19.0 and the existing local executable-path compatibility source",
+    "Verified unchanged package bytes and recorded bounded evidence; regenerate existing repository integrity trio",
+    "Disclosed and recorded the erroneous inclusion of two local Lake cache outputs in the first global inventory and independently verified the existing native CI correction"
+  ],
+  "created_at": "2026-10-04T10:44:39.504900+00:00",
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "authorized_scope": "Forward update of existing PR 437 and fresh technical verification",
+    "deployment": false,
+    "main_merge": false,
+    "permission_expansion": false,
+    "publication": false,
+    "release": false,
+    "review_approval": false
+  },
+  "git_history": {
+    "branch": "work/meta-transistor-feedback-20261001-7e5a588d",
+    "candidate_head": "BOUND_BY_CONTAINING_COMMIT",
+    "candidate_tree": "BOUND_BY_CONTAINING_COMMIT",
+    "changed_paths": [
+      ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "state/work_units/QIKVRT_PR437_QCE_TEMP_OUTPUT_REPAIR_20261004_V1.json",
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "correction_method": "FORWARD_HISTORY_PRESERVING_COMMITS_NO_FORCE",
+    "intermediate_commits": [
+      "d2c6d054733f1c59bd9d030bbfe069086d49df55",
+      "31de9f4463d64b3e0194ff02bac9fd14466f8809"
+    ],
+    "parent_commit": "31de9f4463d64b3e0194ff02bac9fd14466f8809",
+    "pull_request": 437
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "role": "Product and Code Owner"
+  },
+  "human_contributions": [
+    "Identified the pre-process shell redirection as the package-inventory cause on the exact source head",
+    "Authorized a minimal forward workflow correction and fresh QCE/exact-head gates",
+    "Required unchanged QCE verifier and manifest; excluded merge, release and publication"
+  ],
+  "human_decision": {
+    "exact_generated_candidate_acceptance": "PENDING_RESPONSIBLE_REVIEW",
+    "implementation_authorization": "GRANTED_BY_CURRENT_TASK"
+  },
+  "inputs": [
+    {
+      "commit": "bc11dd92bef0564e92a527b9ae753873840b4fdf",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "27aaa02ba050ad91329cc6ee8c267adde3a3b410"
+    },
+    {
+      "actual_checked_out_head": "bc11dd92bef0564e92a527b9ae753873840b4fdf",
+      "failing_step": "Re-execute QCE finite formal model when present",
+      "native_job_id": 111399786242,
+      "native_run_id": 37189922459,
+      "observed_error": "BLOCK: manifest file inventory mismatch"
+    },
+    {
+      "bytes": 15945,
+      "git_blob_sha1": "8eebae8dd632512cb3903d87fa99bb1eaea3e182",
+      "path": "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/verify_qce_package.py",
+      "sha256": "2562ed3938f02566a1484af440530a5b7fd1c0d4e50de7b9027755c87bb2aaf8"
+    },
+    {
+      "bytes": 8673,
+      "git_blob_sha1": "66d963f10dc77f26f62a0861a44af4a587fe8764",
+      "path": "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/MANIFEST.json",
+      "sha256": "a8cc6d19adbd12c9ae4c20da5efbdad69f708e10e2838d0370592c3bf110167c"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    {
+      "bytes": 7221,
+      "git_blob_sha1": "b37c68196ba4fccc0ff8412629eb267d32fb2895",
+      "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+      "sha256": "56ddfc48018706d4ec009d6f9cbb15141ec1147e58291f78b1b9b7c69fea2e27"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false,
+    "physical_correspondence": false
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "bc11dd92bef0564e92a527b9ae753873840b4fdf",
+  "source_ref": "work/meta-transistor-feedback-20261001-7e5a588d",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "27aaa02ba050ad91329cc6ee8c267adde3a3b410",
+  "unresolved_origin": [],
+  "updated_at": "2026-10-04T11:01:15.400712+00:00",
+  "verification": {
+    "causal_control": {
+      "added_files": [
+        "qce-autonomous-verification.json"
+      ],
+      "changed_files": [],
+      "error": "BLOCK: manifest file inventory mismatch",
+      "exit_code": 1,
+      "log_sha256": "3110f738f433d494324209e8a52355e2239d42703223898ca9e3d6709b4c9d3b",
+      "manifest_inventory_equal_before_execution": true,
+      "relevant_files_after": 36,
+      "relevant_files_before": 35,
+      "scope": "Fresh local execution of the original workflow shell block on an isolated byte-identical QCE package copy",
+      "subject": "bc11dd92bef0564e92a527b9ae753873840b4fdf"
+    },
+    "corrected_candidate_tree": {
+      "added_files": [],
+      "changed_files": [],
+      "exit_code": 0,
+      "files": {
+        "qce-autonomous-axiom-output.txt": {
+          "bytes": 3032,
+          "sha256": "e9f2eac824158e6e65dbd636b4fa6f3d89a703c54c718dee671a62d3e006df65"
+        },
+        "qce-autonomous-verification.json": {
+          "bytes": 3187,
+          "sha256": "8087bec4d0e0e18823ab65a5f16d153c21988bc282488382747672e8541a8e23"
+        }
+      },
+      "log_sha256": "a30d6eefe7ccec7803482bd446c3d48f7cc46ed86ba99cb839fca134dd7a5a3d",
+      "relevant_files_after": 35,
+      "relevant_files_before": 35
+    },
+    "corrected_shell_uses_quoted_runner_temp_with_space_witness": true,
+    "fresh_accepted_theorems": 36,
+    "fresh_axiom_audit_directives": 36,
+    "fresh_lean_version": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+    "initial_global_inventory_correction": {
+      "cause": "The local first materialization incorrectly inventoried two untracked Lake cache outputs; they were absent from the committed tree",
+      "classified_entries_after_correction": 3980,
+      "fresh_subject_test_exit_status": 0,
+      "immutable_digests_after_correction": 3971,
+      "independently_calculated_tree_matches": true,
+      "native_changed_paths": [
+        "REPOSITORY_FILE_MANIFEST.json",
+        "REPOSITORY_FILE_MANIFEST.json.sha256",
+        "SHA256SUMS.txt"
+      ],
+      "native_corrected_head": "31de9f4463d64b3e0194ff02bac9fd14466f8809",
+      "native_corrected_tree": "63403dad9a0acce8dcd261e7611170946a99b533",
+      "native_reentry_iteration": 1,
+      "native_reentry_terminal_result": "PASS_MODE_TESTED_FIXPOINT",
+      "native_repair_job_id": 111420473719,
+      "native_repair_run_id": 37196870374,
+      "native_terminal_at_utc": "2026-10-04T11:00:52Z",
+      "rejected_head": "d2c6d054733f1c59bd9d030bbfe069086d49df55",
+      "removed_paths": [
+        "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/.lake/lakefile.olean",
+        "docs/publications/2026-08-05-qik-vrt-quantum-causal-emergence/.lake/lakefile.olean.trace"
+      ],
+      "responsible_contribution": "OpenAI Codex local materialization",
+      "scope": "Global integrity materialization only; original QCE verifier and package manifest unchanged"
+    },
+    "original_qce_package_tree": "0bf608170ceb39b62daf404284d943eb953476b0",
+    "original_verifier_mutated": false,
+    "predecessor_evidence_transfer": false,
+    "qce_manifest_mutated": false,
+    "qce_package_mutated": false,
+    "qce_result": {
+      "EFFECT_ACK_DONE": false,
+      "FINAL_PASS": false,
+      "PASS": false,
+      "effect_state": "EFFECT_ACK_CONTINUE",
+      "pdf": {
+        "a4": true,
+        "pages": 16,
+        "unicode_replacement": false
+      },
+      "physical_correspondence": "OPEN_CANDIDATE",
+      "publication_id": "qikvrt-quantum-causal-emergence-v1",
+      "python_tests": "10/10",
+      "result": "FORMAL_MODEL_VERIFIED",
+      "sha256_entries": 36,
+      "theorem_sources": 36
+    },
+    "remaining_final_subject_gates": "Execute after commit materialization; final exact-head run/job/readback recorded in PR conversation without changing the tested subject",
+    "runtime": {
+      "binaries_and_archive_rehashed": true,
+      "compatibility_binary_sha256": "5e6c3e1cc676d21064ac242e0df4c97d55bd352d9216799605474f798b4e3f64",
+      "compatibility_source_sha256": "5b797bcf5673e81099b2f675f42211b0af92bef2c4553701e82d02035bc08f4d",
+      "lean_version": "4.19.0",
+      "local_compatibility_source": "docs/publications/2026-08-02-causality-is-relation-vrtcore/lean_selfexe_compat.c",
+      "scope": "Current process executable path alias only; official Lean/Lake binaries unchanged"
+    }
+  },
+  "work_unit_id": "QIKVRT_PR437_QCE_TEMP_OUTPUT_REPAIR_20261004_V1"
+}
