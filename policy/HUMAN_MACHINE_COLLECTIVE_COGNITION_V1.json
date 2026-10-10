@@ -1,6 +1,6 @@
 {
   "schema": "qikvrt_human_machine_collective_cognition_v1",
-  "version": "1.0",
+  "version": "1.2",
   "human_contract": "docs/HUMAN_MACHINE_COLLECTIVE_COGNITION_ARCHITECTURE.md",
   "objectives": [
     "maximize verified useful cognition per human intervention",
@@ -32,7 +32,75 @@
     "actor_identity_separation_required": true,
     "majority_vote_is_not_truth": true,
     "conflicts_resolved_by": ["source evidence","countermodels","formal checks","tests","human normative decision when still required"],
-    "human_acceptance_does_not_reclassify_ai_origin": true
+    "human_acceptance_does_not_reclassify_ai_origin": true,
+    "shared_mesh_goal_authorization": "state/authorization/delegations/OWNER_MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_V1.json"
+  },
+  "shared_mesh_goal_execution": {
+    "status": "OWNER_AUTHORIZED_NORMATIVE_CONTRACT",
+    "all_admitted_participants_eligible": true,
+    "common_goal_and_scope_binding_required": true,
+    "participant_permissions_and_resource_admission_required": true,
+    "independent_work_parallelization_allowed": true,
+    "dependency_order_and_writer_fencing_required": true,
+    "scaling_must_preserve_acceptance_invariants": true,
+    "existing_executors_ledgers_and_transceivers_required": true,
+    "terminal_role": "PASSIVE_OBSERVER_AND_AUTHORIZED_INPUT_SURFACE",
+    "required_result_preservation": [
+      "original_result_bytes_and_sha256",
+      "goal_work_unit_and_participant_identity",
+      "exact_source_head_tree_or_monolith_snapshot",
+      "human_and_artificial_contribution_provenance",
+      "dependency_and_parent_successor_relations",
+      "supporting_and_contradicting_evidence",
+      "uncertainty_failures_and_open_obligations",
+      "rights_and_license_metadata",
+      "durable_effect_and_fresh_readback_receipts"
+    ],
+    "consolidation_acceptance": [
+      "complete_expected_result_manifest",
+      "all_original_result_bytes_reconstructable",
+      "every_expected_work_unit_has_result_or_explicit_open_failure_disposition",
+      "no_silent_overwrite_or_conflict_erasure",
+      "no_duplicate_effect_on_replay_or_recovery",
+      "fresh_exact_subject_readback"
+    ],
+    "duplicate_result_handling": "CONTENT_REUSE_WITH_EVERY_ORIGINAL_CONTRIBUTION_RECEIPT_PRESERVED",
+    "partition_or_ambiguous_effect_handling": "PRESERVE_DURABLE_PENDING_WORK_AND_REOBSERVE_BEFORE_RETRY",
+    "goal_done_requires_all_completion_criteria": true,
+    "performance_claim_requires_comparable_measurement": true,
+    "all_node_runtime_verified": false,
+    "whole_mesh_lossless_consolidation_verified": false,
+    "effect_ack_done": false
+  },
+  "universal_terminal_entry": {
+    "status": "OWNER_DEFINED_PRODUCT_TARGET_NOT_DEPLOYMENT_RECEIPT",
+    "public_entry_url": "https://raumzeitterminal.de/",
+    "root_document": "index.html",
+    "frontend": "REACT_UNIVERSAL_TERMINAL",
+    "mesh_system": "QIK-VRT",
+    "same_terminal_for_onboarding_and_personal_use": true,
+    "entry_purpose": [
+      "ONBOARDING",
+      "PERSONALIZED_DURABLE_MESH_ENTRY"
+    ],
+    "terminal_role": "PASSIVE_OBSERVER_AND_AUTHORIZED_INPUT_SURFACE",
+    "execution_owner": "BOUND_MESH_REPOSITORY_RUNTIME",
+    "onboarding_policy": "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+    "reuse_existing_answers_and_personal_origin": true,
+    "returning_user_repeats_onboarding": false,
+    "personalization": "AUTHORIZED_PROFILE_AND_PERSONAL_ORIGIN_BOUND_TO_AUTHENTICATED_CONTEXT",
+    "cross_user_private_data_access": "FORBIDDEN",
+    "onboarding_creates_accounts_or_external_resources_without_authorization": false,
+    "runtime_components": "REUSE_EXISTING_TERMINAL_MONOLITH_LEDGER_AND_TRANSCEIVER_PATHS",
+    "availability_target": "CONTINUOUS_PERSONAL_USE_ACROSS_SUPPORTED_CLIENTS_AND_CONNECTIVITY_STATES",
+    "offline_requirement": "LAST_VERIFIED_LOCAL_TERMINAL_AND_PERSONAL_MESH_STATE_WITH_DURABLE_PENDING_WORK",
+    "reconnection_requirement": "IDEMPOTENT_LOSSLESS_CONSOLIDATION_WITH_FRESH_READBACK",
+    "claim_boundary": "ENTRY_HTML_OR_AUTHORIZATION_ALONE_DOES_NOT_PROVE_SERVICE_AVAILABILITY_OR_EFFECT_COMPLETION",
+    "domain_control_verified": false,
+    "secure_origin_deployment_verified": false,
+    "continuous_availability_verified": false,
+    "personalized_end_to_end_onboarding_verified": false,
+    "effect_ack_done": false
   },
   "reality_model_contract": {
     "suitable_model_can_describe_reality": true,

@@ -57,6 +57,36 @@ Mehrere künstlich-kognitive Systeme dürfen parallel Vorschläge erzeugen, müs
 
 Werkzeug- und Kontextinteroperabilität soll über offene, lizenzkompatible Adapter erfolgen. Referenzprojekte werden nicht ungeprüft vendort. QIK-VRT bindet ihre Lizenz, Version, Integrationsart und den Umfang der tatsächlich übernommenen Teile.
 
+## Gemeinsame Ziele, Parallelisierung und verlustfreie Konsolidierung
+
+Die Owner-Freigabe von Ingolf Lohmann vom 6. Oktober 2026 ist in
+`state/authorization/delegations/OWNER_MESH_SHARED_GOALS_AND_LOSSLESS_SCALE_V1.json`
+gebunden. Alle zugelassenen Teilnehmer des QIK-VRT-Mesh dürfen unter den
+geltenden Regeln an gemeinsamen Zielen zusammenarbeiten und freigegebene
+Ressourcen parallelisieren und skalieren. Jeder Auftrag bindet Ziel und Umfang,
+Teilnehmer, Berechtigungen, Work Units, Abhängigkeiten, den exakten
+Repository-Stand beziehungsweise Monolith-Snapshot und seine Abnahmekriterien.
+Unabhängige Teilaufgaben dürfen parallel laufen; abhängige Schritte und
+konkurrierende Schreiber behalten Reihenfolge und Fencing. Die bestehenden
+Executor-, Ledger- und Transceiver-Pfade werden wiederverwendet.
+
+Eine Konsolidierung erhält sämtliche ursprünglichen Ergebnisbytes mit Digests,
+Beitragsidentitäten, Provenienz, Gegenbelegen, Unsicherheiten, Fehlern, offenen
+Arbeiten und Wirkungs-/Readback-Receipts. Identische Inhalte dürfen gemeinsam
+gespeichert werden; alle ursprünglichen Beitragsbelege bleiben erhalten.
+Widersprüche werden explizit geführt. Ein vollständiges Soll-Ergebnismanifest
+macht fehlende oder gescheiterte Work Units sichtbar. Erst wenn sämtliche
+Zielkriterien erfüllt und die Ergebnisse am exakten Gegenstand frisch
+zurückgelesen sind, darf das gemeinsame Ziel als abgeschlossen gelten.
+
+Partition, Neustart und unklare Zustellung erhalten dauerhafte offene Arbeit.
+Vor einer Wiederholung wird die vorhandene Wirkung über den bestehenden
+idempotenten Pfad geprüft. Das Universale Raumzeit-Terminal beobachtet diese
+Aktivitäten passiv; parallele Arbeit begründet keinen zweiten Effektledger.
+Die Freigabe beschreibt eine verbindliche Arbeitsregel. Tatsächliche
+Gesamt-Mesh-Ausführung, Verlustfreiheit im Betrieb, Skalierungsleistung und
+`EFFECT_ACK_DONE` benötigen weiterhin eigene aktuelle Nachweise.
+
 ## Open-Source-Anschlussstellen
 
 Der zugehörige Registry-Vertrag führt insbesondere folgende Anschlussstellen als nicht-vendorte Referenzen:
@@ -72,3 +102,34 @@ Eine Referenz in dieser Architektur ist keine automatische Abhängigkeit und kei
 ## Qualitätsregel
 
 Die optimale Mensch–Maschine-Schnittstelle maximiert nicht die Anzahl der Antworten, sondern die Zahl belastbarer Erkenntnisfortschritte pro menschlichem Eingriff. Geschwindigkeit darf niemals durch Weglassen von Provenienz, Unsicherheit, Pflichtprüfungen oder menschlicher Autorität bei externen Effekten erkauft werden.
+
+## RaumzeitTerminal.de: gemeinsamer persönlicher Einstieg
+
+Die Owner-Festlegung vom 6. Oktober 2026 bindet
+`https://raumzeitterminal.de/` mit dem Root-Dokument `index.html` an das
+React-basierte Universale Terminal des QIK-VRT Mesh Repository. Dieser
+Einstieg dient sowohl dem Onboarding als auch dem dauerhaften,
+personalisierbaren persönlichen Zugang. Das gleiche Terminal führt neue
+Nutzer durch den bestehenden Personal-Origin-Vertrag und nimmt bei bestehenden
+Nutzern den bereits gebundenen persönlichen Kontext wieder auf. Vorhandene
+Antworten werden übernommen; es bleiben höchstens die drei bereits
+festgelegten Onboarding-Fragen.
+
+Das Terminal bleibt passiver Beobachter und autorisierte Eingabeoberfläche.
+Ausführung, Persistenz und Wirkungsnachweise gehören zum gebundenen
+Mesh-Runtime-, Ledger- und Transceiver-Pfad. Die öffentliche Einstiegsadresse
+eröffnet keinen Zugriff auf private Kontexte anderer Nutzer. Profil,
+Authentifizierung, persönlicher Ursprung, Rechte und Einwilligungen bleiben
+gebunden; Onboarding erzeugt keine zusätzlichen externen Ressourcen ohne
+entsprechende Autorisierung. Bestehende Terminal- und Monolith-Kandidaten
+werden wiederverwendet.
+
+Die überall und dauerhaft nutzbare persönliche Variante ist ein Produktziel:
+Bei fehlender Netzverbindung muss der zuletzt verifizierte lokale Terminal-
+und Mesh-Zustand nutzbar bleiben, ausstehende Arbeit dauerhaft erhalten und
+nach Wiederanbindung idempotent sowie verlustfrei konsolidiert werden.
+Eine vorhandene HTML-Datei belegt diese Verfügbarkeit nicht. Domainkontrolle,
+sicherer Origin, persönliche Ende-zu-Ende-Einrichtung und tatsächliche
+Verfügbarkeit benötigen jeweils Ausführung und frischen Readback. Der
+normative maschinenlesbare Vertrag steht unter `universal_terminal_entry` in
+`policy/HUMAN_MACHINE_COLLECTIVE_COGNITION_V1.json`.
