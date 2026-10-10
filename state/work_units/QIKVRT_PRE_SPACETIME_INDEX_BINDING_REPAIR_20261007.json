@@ -1,0 +1,243 @@
+{
+  "_license": {
+    "classification": "machine_readable_bounded_repair_work_unit",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "Tool and account identities do not authenticate a natural person. No current Authority/Mirror equality is inferred.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "e7ec0a1d1faf",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "Git",
+      "Python standard library",
+      "GitHub connector"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserve Main and #487 and verify all five relevant input blob identities match.",
+    "Trace receipt/test introduction and the single later index append.",
+    "Correct only the test comparison: read the exact historical index from its receipt-bound Mirror commit, verify the existing historical hash, and require the current index to preserve that snapshot as an unchanged ordered prefix.",
+    "Add positive and negative controls; regenerate the existing canonical integrity trio without hand editing."
+  ],
+  "boundaries": [
+    "The publication receipt, reciprocal receipt, current index and scoped Effect-ACK receipt remain byte-identical.",
+    "The test requires the historical Mirror commit/index blob locally; the existing workflow fetches full history and missing objects fail closed without lazy fetch.",
+    "This scope verifies the historical prefix, not the scientific validity of publications or blanket acceptance of later receipts.",
+    "No fresh public Zenodo re-download or publication was performed.",
+    "The historical Authority/Mirror equality statement is preserved for its bound old commits; no current cross-repository equality is claimed.",
+    "Native review and protected policy remain separate required merge gates."
+  ],
+  "created_at": "2026-10-07T16:25:36.770948Z",
+  "diagnosis": {
+    "failing_native_job": 112799808589,
+    "failing_native_run": 37623637497,
+    "failure": "Current whole-index hash was compared with a historical snapshot hash.",
+    "historical_entry_count": 19,
+    "historical_rows_unchanged": true,
+    "historical_snapshots": [
+      {
+        "bytes": 18175,
+        "commit": "de61bb20e64f1689fa78980f8b90c65ec3bdf513",
+        "git_blob_sha1": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+        "historical_role": "authority",
+        "path": "evidence/receipts/index.json",
+        "repository": "Goldkelch/qik-vrt",
+        "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545"
+      },
+      {
+        "bytes": 18175,
+        "commit": "17f66b5ae7a2b1121141c6a0775da361415d58ff",
+        "git_blob_sha1": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+        "historical_role": "mirror",
+        "path": "evidence/receipts/index.json",
+        "repository": "ingolf-lohmann/qik-vrt",
+        "sha256": "1fab9f8f78207eb519dded657b825ec0b530b398bc4a664cbe58ee661271f545"
+      }
+    ],
+    "index_metadata_unchanged_in_observed_append": true,
+    "inherited_integrity_staleness": {
+      "added_files_not_in_stored_manifest": [
+        "evidence/node_health/37510511694-1.json",
+        "evidence/node_health/37578851517-1.json",
+        "evidence/node_health/37627620170-1.json",
+        "evidence/node_registration_renewal/37510511694-1.json",
+        "evidence/node_registration_renewal/37578851517-1.json",
+        "evidence/node_registration_renewal/37627620170-1.json"
+      ],
+      "changed_lifecycle_bindings": [
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+      ],
+      "repair": "Regenerate only REPOSITORY_FILE_MANIFEST.json, REPOSITORY_FILE_MANIFEST.json.sha256 and SHA256SUMS.txt with the existing deterministic generator."
+    },
+    "intended_invariant": "The receipt binds the publication-time snapshot. Later append-only receipt entries do not rewrite that snapshot or require reissuing the publication Effect-ACK.",
+    "later_append_commit": "6ce50474b0235fa4f003e99a7635af200341ad7e",
+    "main_and_pr487_inputs_identical": true,
+    "main_drift_since_pr487_base": "Six node-lifecycle/registration paths only; no overlap with scoped receipt/test inputs.",
+    "minimal_repair": "Fix the stale validation of the historical binding against the moving current index; do not replace the historical hash or byte-identical-on-bound-mains statement.",
+    "observed_current_entry_count": 20,
+    "pr487": {
+      "changed_by_this_repair": false,
+      "head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+      "tree": "24365dc44d6ccfde4384b551b9be95d1d4a31ad4"
+    },
+    "receipt_and_test_introduction_commit": "1af49632ba91adb9ed448ce5e6d50c3fd9735d63"
+  },
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "deployment": false,
+    "ietf_mutation": false,
+    "merge": false,
+    "planned": [
+      "publish separate review branch",
+      "open separate draft PR to trigger existing scoped no-publication verification workflow"
+    ],
+    "release": false,
+    "review_bypass": false,
+    "zenodo_mutation": false
+  },
+  "git_history": {
+    "branch": "work/pre-spacetime-index-binding-20261007",
+    "candidate_identity": "Resolve the enclosing Git commit and tree; no self-referential commit hash is serialized.",
+    "force_push": false,
+    "history_rewrite": false,
+    "ordered_parent_commits": [
+      "46e0adee5c4d85e479f3f552bf6890614afa22fc"
+    ]
+  },
+  "historical_scoped_effect_ack": {
+    "newly_issued": false,
+    "receipt_git_blob_sha1": "c108def89017820a5e27bb505446aa4a0331da60",
+    "reinterpreted": false,
+    "scope_id": "pre-spacetime-ontology-zenodo-publication-20260805-v1",
+    "state": "EFFECT_ACK_DONE"
+  },
+  "human_actor": {
+    "identifier": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "human_contributions": [
+    "Authorize reobservation, history diagnosis, minimal receipt-binding repair, affected unit test and fresh scoped workflow on the new exact head.",
+    "Require preservation of historical publication facts, existing scoped EFFECT_ACK_DONE and separate Node-24 PR scope."
+  ],
+  "human_decision": {
+    "generated_candidate_acceptance": "PENDING_NATIVE_REVIEW",
+    "task_implementation": "AUTHORIZED_BY_CURRENT_REQUEST"
+  },
+  "inputs": [
+    {
+      "bytes": 7015,
+      "commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+      "git_blob_sha1": "c108def89017820a5e27bb505446aa4a0331da60",
+      "path": "receipts/effects/pre-spacetime-ontology-zenodo-publication-v1.json",
+      "sha256": "75a8b97229fd4dedead3a5f6f2be43542744d55cfb61f6a8b7844112c9ce61a1"
+    },
+    {
+      "bytes": 19078,
+      "commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+      "git_blob_sha1": "3bade853befd7a74bfccffb3872ef6ad2c36d5d4",
+      "path": "evidence/receipts/index.json",
+      "sha256": "d805b0949fda107d69b624b5f778769192c8723986d08ce1efb0f11ee3c2fca7"
+    },
+    {
+      "bytes": 1636,
+      "commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+      "git_blob_sha1": "63cc2a77d61e67ca836ca09b0f41e94a26e8d9b7",
+      "path": "evidence/receipts/zenodo/pre-spacetime-ontology-2026-08-05-publication.json",
+      "sha256": "bc38d8beb7741447a40022da7657e5b9db074458714689b701d506eb9b574216"
+    },
+    {
+      "bytes": 5183,
+      "commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+      "git_blob_sha1": "8d516607f45bc4d60df3cafecbacca070a9a1add",
+      "path": "evidence/receipts/authority-mirror-equality-2026-08-05-pre-spacetime-ontology-zenodo-pr389-pr225.json",
+      "sha256": "69cc9ee4c2471148731db12ff276080bd7faf578efecdb4e942e6187cf43ea43"
+    },
+    {
+      "bytes": 5531,
+      "commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+      "git_blob_sha1": "def6c33c958498faee575e6bde798b4cea71f5ff",
+      "path": "tests/test_pre_spacetime_ontology_zenodo_effect_ack.py",
+      "sha256": "3a000cb12264686bb1b09673c524d29e49cf01dd77b44f3c5cac9c826471e602"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    {
+      "bytes": 9121,
+      "git_blob_sha1": "0fe876d79a3cafbe989c4e4f007c13f9f0bef31e",
+      "path": "tests/test_pre_spacetime_ontology_zenodo_effect_ack.py",
+      "sha256": "913101b93ffec0c4e7be8a6a67abd8638bde76d94fc252f08fd0e5ac159c8c82"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_human_ai_work_unit_v1",
+  "source_commit": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "22794901b7e69d948508943b38b4c850dfc7c2c5",
+  "unresolved_origin": [],
+  "verification": {
+    "baseline": {
+      "command": "python3 -B -m unittest -v tests.test_pre_spacetime_ontology_zenodo_effect_ack",
+      "current_blob": "3bade853befd7a74bfccffb3872ef6ad2c36d5d4",
+      "expected_blob": "e167e4d523f1abfa3ddf89d1184d942180b16b70",
+      "failures": 1,
+      "phase": "EXACT_MAIN_BEFORE_REPAIR",
+      "result": "FAIL",
+      "tests": 6
+    },
+    "bootstrap": {
+      "collective_bootstrap": "CONTINUE_BOUND_AUDIO_PENDING",
+      "prepared_repository_integrity": "PASS",
+      "runtime_profile": "CONTINUE_OPTIONAL_XML_FORMAL_AUDIO_COMPONENTS_ABSENT",
+      "tool_cache_coverage": "PASS_14_OF_14",
+      "unrelated_optimization": "NOOP before tracked preparation; HOLD on dirty candidate, no additional repair applied"
+    },
+    "candidate_source": {
+      "command": "python3 -B -m unittest -v tests.test_pre_spacetime_ontology_zenodo_effect_ack tests.test_authority_mirror_equality_receipt",
+      "covered_negatives": [
+        "historical row rewritten",
+        "historical row deleted",
+        "historical rows reordered",
+        "historical snapshot byte drift",
+        "index contract/schema drift"
+      ],
+      "phase": "PRE_COMMIT_SOURCE_BYTES",
+      "result": "PASS",
+      "tested_test_source": {
+        "bytes": 9121,
+        "git_blob_sha1": "0fe876d79a3cafbe989c4e4f007c13f9f0bef31e",
+        "path": "tests/test_pre_spacetime_ontology_zenodo_effect_ack.py",
+        "sha256": "913101b93ffec0c4e7be8a6a67abd8638bde76d94fc252f08fd0e5ac159c8c82"
+      },
+      "tests": 15
+    },
+    "missing_history_control": {
+      "environment": "empty local Git repository; GIT_NO_LAZY_FETCH=1; no evidence fallback",
+      "git_exit_code": 128,
+      "result": "FAIL_CLOSED_AS_REQUIRED"
+    },
+    "required_after_commit": [
+      "Affected unit test on the exact committed head",
+      "make test on the exact committed head",
+      "Fresh native scoped workflow triggered by opening the separate PR, with full-history exact-head checkout",
+      "Read back run, job/log, current PR HEAD/TREE, unchanged receipt/index and unchanged #487"
+    ],
+    "result_location_after_native_execution": "The separate PR body records exact candidate head/tree, native run/job/log and material remaining gates; predecessor run evidence is not transferred."
+  },
+  "work_unit_id": "QIKVRT_PRE_SPACETIME_INDEX_BINDING_REPAIR_20261007"
+}
