@@ -1,0 +1,323 @@
+{
+  "_license": {
+    "license": "CC-BY-NC-ND-4.0",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "classification": "work_unit_provenance"
+  },
+  "schema": "qikvrt_react_feedback_main_integration_v1",
+  "work_unit_id": "REACT_FEEDBACK_MAIN_INTEGRATION_20261007_V1",
+  "created_at": "2026-10-06T23:12:23.594157Z",
+  "state": "MAIN_BASED_CANDIDATE_SOURCE_VERIFIED_REMOTE_GATES_PENDING",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "source_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+  "human_actor": "Ingolf Lohmann",
+  "human_contributions": [
+    "Requested a history-preserving main-based successor of #482; minimal evidenced prerequisites, exact fixture, explanations, alert, copyable raw diagnostics, fresh gates."
+  ],
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system": "Codex",
+    "model_family": "GPT-6",
+    "exact_build": "UNAVAILABLE"
+  },
+  "artificial_cognitive_contributions": [
+    "dependency inspection",
+    "monitor-only source extraction",
+    "fresh integrity generation",
+    "verification and main-based draft preparation"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "original_sources": {
+    "pr476": {
+      "head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+      "tree": "29f40e2318869f107d4688d3b5401a2e5c1b0633"
+    },
+    "pr482": {
+      "head": "53040b450853b0ab5a3d59765b86030b3bd0c978",
+      "tree": "7e919c54e44c8cbf40ff67d381726c9256a66e2a",
+      "commits": [
+        "53f3807d5414699cc52dcb6c654983c080cbb40a",
+        "53040b450853b0ab5a3d59765b86030b3bd0c978"
+      ]
+    }
+  },
+  "git_history": {
+    "branch": "work/react-feedback-main-71f8c153-20261007",
+    "parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "method": "New linear commits; explicit source references; no old branch merge, retarget, force push or rewrite. Containing commits bind outputs."
+  },
+  "dependency_scope": {
+    "required": [
+      "React/ReactDOM/Scheduler production bundle and MIT license/lock",
+      "existing client-replica digest/event validation",
+      "monitor App subset of #476, CSS subset and static shell",
+      "fresh replay and browser checks"
+    ],
+    "excluded": [
+      "Self-Host packaging/providers/supervisors",
+      "native terminal/Unix/SQLite runtime",
+      "mesh-file store/codec/client/view",
+      "Origin/sqljs/onboarding and file-reading surfaces",
+      "historical #476/#482 work units and check/receipt bytes"
+    ],
+    "static_entry": "docs/monitor/index-react.html?view=mesh or view=node; also recognizes existing /mesh and /node host routes",
+    "api_contract": [
+      "/api/activity",
+      "/api/runtime",
+      "/api/terminal",
+      "/api/stream"
+    ],
+    "api_host_added": false,
+    "old_main_monitor_replaced": false,
+    "old_main_monitor_link_added": true
+  },
+  "inputs": [
+    {
+      "head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+      "path": "evidence/monitor-feedback/react/baseline-mesh-react.js",
+      "bytes": 17603,
+      "sha256": "8e250ad9c3c256ab5ab154bdc055b70ee0f33e300d5650ca16a1c6900c80bfe9",
+      "git_blob_sha1": "d0a3232ec1353a4a00e8a4ae958470985120637e",
+      "role": "EXACT_HISTORICAL_REACT_SOURCE_INPUT_INERT_STORAGE_SURFACE"
+    },
+    {
+      "head": "a4dc05c1fcef9390538a664eba75899f3a649582",
+      "path": "evidence/monitor-feedback/react/authority-404-observation.json",
+      "bytes": 809,
+      "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+      "git_blob_sha1": "d2263805ead86bc88192a502ed85b6462c435413",
+      "role": "CAPTURED_OBSERVATION_INPUT_NOT_SUCCESSOR_RECEIPT"
+    }
+  ],
+  "outputs": [
+    {
+      "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+      "bytes": 25216,
+      "sha256": "90c61de320ecb6433189f60fcbc8d253f9fb8fc49cbe347386f7006ef95404ae",
+      "git_blob_sha1": "056132364a11d2549dad24b4b3e53122532b92a8"
+    },
+    {
+      "path": ".github/workflows/qikvrt_ci.yml",
+      "bytes": 7961,
+      "sha256": "c7d45aa404a614f925650d544c9a563e76dc1a8e1a24831bea58a2a231b6bd05",
+      "git_blob_sha1": "2b82f6e305bd19c615852e052ff7c9b64fca2b6e"
+    },
+    {
+      "path": ".github/workflows/qikvrt_collective_review.yml",
+      "bytes": 10834,
+      "sha256": "8e4eeb439854b49020251f359163e168c7553eb1d6068174e10c82d831cc8b52",
+      "git_blob_sha1": "e782771df1cfd7b57e3b8dc7ec3d83df5ed6dc01"
+    },
+    {
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "bytes": 8315,
+      "sha256": "db7d00bd518f90b66c6873553d646b6e4e55efd24d2083f913d4e8946c99078e",
+      "git_blob_sha1": "5bdd0ba5ba66f18ecb44540c3344832dcad88175"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11324,
+      "sha256": "bda5ff0e725b2769c24486222cdd70a496c410947259e0220c5c36a9f2d5b607",
+      "git_blob_sha1": "4a92d99a010a3232c567d442e6ec35b4334c74ec"
+    },
+    {
+      "path": "docs/monitor/REACT_LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+      "git_blob_sha1": "b93be90515ccd0b9daedaa589e42bf5929693f1f"
+    },
+    {
+      "path": "docs/monitor/REACT_LOCK.json",
+      "bytes": 2286,
+      "sha256": "96f126867217cd7addef20c2a3169cc9cce01492c5b544f0fc656eb996c3ee7f",
+      "git_blob_sha1": "4480fea34c358b610ea93fc70709bbc12374c3fe"
+    },
+    {
+      "path": "docs/monitor/README.md",
+      "bytes": 3770,
+      "sha256": "50d24c0b27e8319c936f9888a31ed093524539ad8ea245480bc0e2afdf87ab9f",
+      "git_blob_sha1": "013c33593c301613acc04999a011309f89c27917"
+    },
+    {
+      "path": "docs/monitor/browser-tests/BROWSER_LOCK.json",
+      "bytes": 628,
+      "sha256": "be1404fbc731f9be00b1dce1487cfbd43ec1deddb3ec04d69611783d2aa4ff05",
+      "git_blob_sha1": "3d26a7487c117344c3abd652b90395261a107735"
+    },
+    {
+      "path": "docs/monitor/browser-tests/package-lock.json",
+      "bytes": 1817,
+      "sha256": "5caf98c5d144d196264baf42756aa84110d0bc22381daa22aa8acb4bd5830ee2",
+      "git_blob_sha1": "9901ed226dc41c59c2771652a3621c21e41f0cdc"
+    },
+    {
+      "path": "docs/monitor/browser-tests/package.json",
+      "bytes": 228,
+      "sha256": "b8456604aff6e29ed5d9fd1dd1dab813404890f7b80d012ea02793b07592db49",
+      "git_blob_sha1": "bdff458c1b92a53bd12c76f426110149154d4f86"
+    },
+    {
+      "path": "docs/monitor/client-replica.js",
+      "bytes": 8342,
+      "sha256": "e0a22a465f2b30c5dce221a0415a04d101e1174072e17e108955db1b4a3ea472",
+      "git_blob_sha1": "c16d58cb51ed5e3483e4e03bfe7ab68ef5728b1b"
+    },
+    {
+      "path": "docs/monitor/index-react.html",
+      "bytes": 870,
+      "sha256": "09cd7f0097ecb4beeec2984b4f08d9edab75c1d10d505c9f0e2339fb3ef2251b",
+      "git_blob_sha1": "11c19e23f8ac642d6af697c6acaea8a62b9b9024"
+    },
+    {
+      "path": "docs/monitor/index.html",
+      "bytes": 5138,
+      "sha256": "fcc16d4326d1dc7e07584841ae968ebac2704fdd2878d050dc2414e686747097",
+      "git_blob_sha1": "1b595524c6661c704388caf48038158d9f93d464"
+    },
+    {
+      "path": "docs/monitor/mesh-react.css",
+      "bytes": 2360,
+      "sha256": "11801e7e6a4e05f677ec19993b3a55a8a884faaf3d7d978173e65f66d3ab7bf1",
+      "git_blob_sha1": "ab359bbd3d2f53ce567a324d60e518ed8d652819"
+    },
+    {
+      "path": "docs/monitor/mesh-react.js",
+      "bytes": 16013,
+      "sha256": "0ffd733c1407c0f961380fdb4a06bd6bf7aa8eee09aa43bb0ba815c900e1b45b",
+      "git_blob_sha1": "877a138b130605d22c9ac77056be07930431c189"
+    },
+    {
+      "path": "docs/monitor/package.json",
+      "bytes": 283,
+      "sha256": "46770ffbd9af2ae036b9c10fb8bc424073a846df8a7037ffae82cfa67dd8b290",
+      "git_blob_sha1": "74fb1e3726aa692e918520b62125d72fcfae65f0"
+    },
+    {
+      "path": "docs/monitor/react-feedback.browser.test.mjs",
+      "bytes": 8018,
+      "sha256": "ef567126e711228e91434a23f8e6dca24f822be6081943ca4a821d4402dfa68c",
+      "git_blob_sha1": "2d82b229ea27843521bf3b42a738d51d64b632a5"
+    },
+    {
+      "path": "docs/monitor/react-feedback.test.mjs",
+      "bytes": 20964,
+      "sha256": "874f4d7455758f8c850d85a5a7b707647dfd7ce8a5b43a422b7c02c873cdf1ed",
+      "git_blob_sha1": "f264a03afaea9b09cf1352594b6ed4b3d0fb8dae"
+    },
+    {
+      "path": "docs/monitor/react-runtime.js",
+      "bytes": 571915,
+      "sha256": "fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca",
+      "git_blob_sha1": "4f495e10784d2d89c4e5c4e33dcd904bcd0f0927"
+    },
+    {
+      "path": "evidence/monitor-feedback/react/README.md",
+      "bytes": 2479,
+      "sha256": "3d47bbcfb1bba62090e3f500712ef9fa22bc36f0bfa24ffc1b99b614887d89ba",
+      "git_blob_sha1": "1fc6d9b1b0c7c98b937005c7e5d75bffe56cb588"
+    },
+    {
+      "path": "evidence/monitor-feedback/react/authority-404-before-after.json",
+      "bytes": 4819,
+      "sha256": "fbb4b0f618f5a672dbc05063a45107e4b559906b8d7ea474839a49fc3709983d",
+      "git_blob_sha1": "39e8a0196e87b51ae8d4c29488173e750059e75b"
+    },
+    {
+      "path": "evidence/monitor-feedback/react/authority-404-observation.json",
+      "bytes": 809,
+      "sha256": "7fe62ee41e0fa286ce515dca1bd0decb48fe2f8315c0d8f3c30c03285f488eec",
+      "git_blob_sha1": "d2263805ead86bc88192a502ed85b6462c435413"
+    },
+    {
+      "path": "evidence/monitor-feedback/react/baseline-mesh-react.js",
+      "bytes": 17603,
+      "sha256": "8e250ad9c3c256ab5ab154bdc055b70ee0f33e300d5650ca16a1c6900c80bfe9",
+      "git_blob_sha1": "d0a3232ec1353a4a00e8a4ae958470985120637e"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "bytes": 3500,
+      "sha256": "00219979111d5d2f886279a798d1c1b3944026c6b188ef640cc1af62a9736f88",
+      "git_blob_sha1": "eda784acd3400fb45488349d7b06032ab2c400ff"
+    },
+    {
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "bytes": 12427,
+      "sha256": "7cad8b1920701c1e43a7d61ff023627e7b5b86af43c1976b233e9ae1bfd535b5",
+      "git_blob_sha1": "9371771c5200bafab930c64745d554d64174c923"
+    },
+    {
+      "path": "runtime/toolchains/TOOLCHAIN.lock.tsv",
+      "bytes": 2908,
+      "sha256": "980e9acf83fb4d952f5f929833daa92d44d58bbe1b1bb1f49f24dae4feb70653",
+      "git_blob_sha1": "a2f5b17c197ea9d865b7e526396b1fadd9af1490"
+    }
+  ],
+  "verification": {
+    "fresh_exact_head_required": true,
+    "predecessor_evidence_transfer": false,
+    "local_boot_integrity_initially": "BLOCK: main lifecycle writer had not regenerated integrity; existing controller regenerated current bytes",
+    "portable_capsule": "13 exact verified historical Git objects hydrated locally; this is input closure, not transferred test acceptance",
+    "focused_command": "node --test docs/monitor/react-feedback.test.mjs",
+    "focused_tests": 16,
+    "original_feedback_controls": 14,
+    "browser_command": "node --test docs/monitor/react-feedback.browser.test.mjs",
+    "applicable_remote_gates": [
+      "QIKVRT CI (push/PR and tested fixpoint)",
+      "QIKVRT Collective Proposal Review (exact candidate checkout)",
+      "QIKVRT adaptive runtime (triggered by toolchain and Makefile)",
+      "QIKVRT EFFECT_ACK HTTP Firefox terminal (existing lane plus focused ReactDOM monitor job)",
+      "QIKVRT code-owner review observer (unchanged main selector)",
+      "trusted main required-review executor/native rules-and-review readback"
+    ],
+    "nonapplicable": [
+      "S1, SQLite storage, Origin browser persistence and own-host provider lanes: their source is excluded from this delta"
+    ],
+    "fixture": "EXACT_CAPTURED_OBSERVATION_INPUT_NOT_CURRENT_PROVIDER_READBACK",
+    "report": "REGENERATED_FROM_THIS_MONITOR_SUBSET_NOT_PREDECESSOR_REPORT",
+    "local_focused_result": {
+      "passed": 16,
+      "failed": 0,
+      "scope": "CURRENT_CANDIDATE_BYTES_BEFORE_COMMIT_FRESH_EXACT_HEAD_RUN_REQUIRED"
+    },
+    "explanation_before": 0,
+    "explanation_after": 5,
+    "explanation_total": 5,
+    "local_full_suite": {
+      "command": "make test",
+      "exit_code": 0,
+      "scope": "CURRENT_IMPLEMENTATION_AND_BEFORE_FINAL_DOCUMENTATION_COMMIT; REMOTE_EXACT_HEAD_SUITE_REQUIRED"
+    },
+    "local_browser_start": {
+      "state": "BLOCK_LOCAL_RUNTIME",
+      "browser_archive_bytes_verified": true,
+      "browser_archive_sha256_verified": true,
+      "browser_launch": "socket() failed: Operation not permitted (1), Chrome process_singleton_posix.cc:297",
+      "scope": "Local runtime Unix-socket restriction prevented browser initialization; no ReactDOM result or screenshot established. Fresh native CI browser execution remains required."
+    },
+    "exact_candidate_checkout_workflows": [
+      "qikvrt_ci.yml",
+      "qikvrt_collective_review.yml",
+      "qikvrt_adaptive_runtime.yml",
+      "qikvrt_effect_ack_http_terminal.yml"
+    ]
+  },
+  "human_decision": "IMPLEMENTATION_AUTHORIZED_FINAL_NATIVE_REVIEW_NOT_INFERRED",
+  "external_effects": {
+    "draft_pr": "PENDING",
+    "main_merge": false,
+    "deployment": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "human_comprehension": {
+    "state": "NOT_MEASURED",
+    "participants": 0
+  }
+}
