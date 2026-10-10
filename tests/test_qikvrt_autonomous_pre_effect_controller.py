@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import pathlib
 import sys
 import unittest
@@ -67,7 +68,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                 return self.command_result(command, "origin\nupstream\n")
             if command == ("git", "remote", "get-url", "upstream"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             raise AssertionError(command)
 
@@ -82,7 +83,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                 return self.command_result(command, "origin\n")
             if command == ("git", "remote", "get-url", "origin"):
                 return self.command_result(
-                    command, "https://github.com/Goldkelch/qik-vrt.git\n"
+                    command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             raise AssertionError(command)
 
@@ -118,9 +119,10 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
                     command, "https://github.com/ingolf-lohmann/qik-vrt.git\n"
                 )
             if command == (
-                "git", "ls-remote", "--heads", "origin", "refs/heads/main"
+                "gh", "api", "--hostname", "github.com", "--method", "GET",
+                "repos/ingolf-lohmann/qik-vrt/git/ref/heads/main"
             ):
-                return self.command_result(command, f"{expected}\trefs/heads/main\n")
+                return self.command_result(command, json.dumps({"object": {"sha": expected, "type": "commit"}}))
             raise AssertionError(command)
 
         with mock.patch.object(MODULE.self_heal, "run", side_effect=fake_run):
@@ -138,7 +140,7 @@ class AutonomousPreEffectControllerTests(unittest.TestCase):
         for urls, returncode in (
             ("https://github.com/example/qik-vrt.git\n", 0),
             ("https://github.com/ingolf-lohmann/qik-vrt.git.evil\n", 0),
-            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/Goldkelch/qik-vrt.git\n", 0),
+            ("https://github.com/ingolf-lohmann/qik-vrt.git\nhttps://github.com/ingolf-lohmann/qik-vrt.git\n", 0),
             ("", 1),
         ):
             with self.subTest(urls=urls, returncode=returncode):

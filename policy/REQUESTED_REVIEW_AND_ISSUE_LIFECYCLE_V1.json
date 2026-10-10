@@ -67,13 +67,30 @@
       "workflow_run.completed"
     ],
     "recovery_schedule": "*/5 * * * *",
-    "exact_head_status_context": "QIKVRT requested review execution",
+    "exact_head_status_context": "QIKVRT requested review disposition",
+    "status_scope": "TECHNICAL_DISPOSITION_ONLY",
+    "native_governance_status_context": "QIKVRT required code-owner review",
+    "legacy_native_governance_status_alias": "QIKVRT requested review execution",
+    "native_status_sole_writer": ".github/workflows/qikvrt_required_review_gate.yml",
+    "execution_success_implies_enforcement_or_independent_approval": false,
     "promotion_workflow": ".github/workflows/qikvrt_expected_head_promotion.yml",
     "promotion_requires_successful_review_status": true,
+    "promotion_requires_fresh_native_rules_and_exact_head_independent_review": true,
     "duplicate_exact_head_review": "FORBIDDEN",
     "head_tree_or_scope_drift_invalidates_review": true,
-    "platform_approval_fallback": "PERSIST_SUBSTANTIVE_DISPOSITION_AS_COMMENT_WITH_EXACT_PLATFORM_LIMITATION",
-    "independent_code_owner_approval_may_be_inferred": false
+    "platform_approval_fallback": "AUTOMATED_APPROVE_DISPOSITION_IS_ALWAYS_COMMENT_ONLY",
+    "independent_code_owner_approval_may_be_inferred": false,
+    "required_check_binding": {
+      "context_source": "review_executor.native_governance_status_context",
+      "ruleset_writer": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "native_review_gate": ".github/workflows/qikvrt_required_review_gate.yml",
+      "trusted_status_integration_id": 15368,
+      "workflow_execution_success_satisfies_governance": false,
+      "legacy_alias_is_acceptance_substitute": false,
+      "technical_disposition_is_acceptance_substitute": false,
+      "native_code_owner_approval_still_required": true,
+      "administrative_ruleset_activation": "SEPARATE_EFFECT"
+    }
   },
   "issue_lifecycle": {
     "unclassified_open_issue": "FORBIDDEN",
@@ -131,5 +148,37 @@
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false,
     "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false
+  },
+  "mesh_authority": {
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "human": {
+      "name": "Ingolf Lohmann",
+      "type": "NATURAL_PERSON",
+      "github_login": "ingolf-lohmann",
+      "roles": [
+        "Product Owner",
+        "Code Owner"
+      ]
+    },
+    "executor": {
+      "name": "QIK-VRT executing instance",
+      "role": "TESTED_EVENT_MODEL_DRIVEN_EXECUTION",
+      "may_submit_native_approve": false
+    },
+    "repository": {
+      "full_name": "ingolf-lohmann/qik-vrt",
+      "role": "DURABLE_WORKING_MEMORY",
+      "may_submit_native_approve": false
+    },
+    "independent_native_code_owner_review_required": true,
+    "former_authority_repository": "Goldkelch/qik-vrt",
+    "former_authority_permission_required": false,
+    "owner_directive": {
+      "submitted_at": "2026-10-06T21:56:08Z",
+      "text": "Falsch. Die Authority ist mittlerweile bei uns.",
+      "application_authorized_at": "2026-10-06T21:58:40Z"
+    },
+    "github_platform_effects_are_separate": true,
+    "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
   }
 }

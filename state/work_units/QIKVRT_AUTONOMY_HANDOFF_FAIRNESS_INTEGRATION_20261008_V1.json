@@ -1,0 +1,110 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "work_unit_json"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_AUTONOMY_HANDOFF_FAIRNESS_INTEGRATION_20261008_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "state": "INTEGRATION_CANDIDATE_REQUIRES_FRESH_EXACT_HEAD_GATES",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner",
+    "contribution": "Requested integration of PR #499 and #500, preservation of both functions, predecessor heads, regression tests, governance and independent REST readbacks.",
+    "authorization_scope": "Separate independently reviewable integration candidate; no automatic Main activation without native gates."
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "model": "GPT-6",
+    "build": "NOT_EXPOSED",
+    "contribution": "Fresh REST observation, semantic contract and Makefile integration, five combined behavior regressions, integrity assembly, candidate publication and exact-subject readback."
+  },
+  "joint_contribution": "Owner requirements and authorized scope combined with attributed machine implementation; human acceptance does not relabel implementation origin.",
+  "source_binding": {
+    "current_main": "dba1f518b6c074527b20c2d9fdfb45ec1bfdeddf",
+    "current_main_tree": "4910c76d1d4b08266bdbbc724c3b2c575baa5026",
+    "original_common_main": "512ec968f0ee4c0b9154ffe56848ff1ce6dafa7d",
+    "main_delta": "One independent Mesh lifecycle commit, six node health/renewal files; preserved in integration.",
+    "predecessors": [
+      {
+        "pull_request": 499,
+        "head": "d5e19ce27317c2c5bb359c24502057cf35870425",
+        "tree": "5a97a96b7a90e279dda0422365c3a340b3bc4e71",
+        "function": "Idempotent materialization and resumption of an existing self-heal branch's PR handoff",
+        "branch": "fix/self-heal-rest-handoff-20261008-512ec968"
+      },
+      {
+        "pull_request": 500,
+        "head": "2be42d8b0f24200a0491a7e9bbfe3e48f7be1b3b",
+        "tree": "a63e21a1b50aefe37180ca7f17077d251b4394f6",
+        "function": "Fair processing-turn rotation and create-only fencing of duplicate continuation effects",
+        "branch": "fix/autonomous-pr-fairness-20261008-2be42d8b"
+      }
+    ],
+    "integration_parents_in_order": [
+      "dba1f518b6c074527b20c2d9fdfb45ec1bfdeddf",
+      "d5e19ce27317c2c5bb359c24502057cf35870425",
+      "2be42d8b0f24200a0491a7e9bbfe3e48f7be1b3b"
+    ],
+    "predecessor_refs": "No mutation; preserved source heads are integration parents. Predecessor test receipts are historical only."
+  },
+  "integration": {
+    "reuse_before_create": true,
+    "new_controller_or_scheduler": false,
+    "contract_merge": "Recursive three-way union of independent extensions; original fields and all promotion/allowlist boundaries preserved.",
+    "makefile_merge": "Preserve both mandatory test targets under make test and include existing expected-head-promotion regressions.",
+    "implementation_preservation": "Both predecessor workflows and implementation functions are preserved. The materializer and its test lose only an inherited extra blank line at EOF so staged git diff --check passes; all other implementation source blobs are byte-identical to the bound predecessors.",
+    "test_extension": "Extend existing tests/test_qikvrt_autonomous_pr_continuation.py with five behavior tests. Preserve materializer regressions with only final newline normalization; add existing expected-head-promotion tests to the continuation Makefile target so all 118 focused tests are mandatory under make test.",
+    "combined_cases": [
+      "Missing self-heal PR materialized once, then read-only resume without resetting fair rotation or manufacturing continuation opt-in",
+      "Denied PR creation yields HOLD while next eligible PR receives its turn; later authorized recovery reuses the same branch/head",
+      "Lost POST response recovered by independent GET; repeated materializer and replayed run produce no duplicate effect",
+      "Existing explicitly opted-in self-heal PR retains its service age after materializer NOOP, allowing every eligible PR a turn",
+      "Shared Main drift blocks both lanes before post-claim handoff effects, without PR/ref overwrite or implied activation"
+    ]
+  },
+  "verification": {
+    "focused_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 python3 -B -m unittest -v tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_self_heal_pr_materializer tests.test_qikvrt_autonomous_pre_effect_controller tests.test_qikvrt_continuous_auto_repair tests.test_qikvrt_autonomous_self_heal tests.test_qikvrt_expected_head_promotion",
+    "focused_source_byte_bound_tests": 118,
+    "focused_source_byte_bound_result": "PASS_LOCAL; not yet an exact-commit or native result",
+    "new_combined_tests": 5,
+    "tool_cache": "PASS_LOCAL: 14/14 declared components, 100 percent",
+    "local_snapshot_limit": "Exact REST trees and fetched Git blobs are hash-verified. Large binary transport is not exposed, so this local snapshot cannot establish a full repository integrity PASS or full make test PASS. No missing file is replaced with a fabricated payload.",
+    "integrity_assembly": "Rehash actual available working-tree bytes using repository gitattributes. Reuse an unavailable unchanged file's digest only when both predecessor manifests agree and its exact Git blob is unchanged. Full native byte verification remains required.",
+    "required_after_publication": [
+      "Complete native make test on actual candidate HEAD/TREE with canonical integrity verification",
+      "All 118 focused regressions on actual candidate HEAD/TREE",
+      "REST branch, commit parents, full tree, manifest, detached digest and SHA256 index readbacks",
+      "REST readback of original #499/#500 heads and current Main",
+      "Complete exact-head run/status/review inventory, distinguishing observer success from actual governance enforcement"
+    ],
+    "final_evidence_destination": "Separate integration PR description and native run/job logs; own commit SHA is not embedded in tracked bytes to avoid an integrity cycle.",
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  },
+  "governance": {
+    "ruleset_mutation": false,
+    "permission_change": false,
+    "codeowners_change": false,
+    "repair_allowlist_expansion": false,
+    "promotion_policy_change": false,
+    "self_approval": false,
+    "native_code_owner_review": "REQUIRED_AND_NOT_INFERRED",
+    "contribution_terms": "Existing CONTRIBUTING.md remains applicable; no new rights grant is inferred.",
+    "automatic_main_activation": false
+  },
+  "effect_boundary": {
+    "github_route": "REST_API_ONLY",
+    "candidate_delivery": "SEPARATE_DRAFT_PULL_REQUEST",
+    "test_and_simulation_scope": "Technical behavior under stated fixtures; not proof of active production scheduler or writer behavior.",
+    "technical_integration_success": "Requires fresh native exact-head test and integrity readbacks",
+    "productive_activation": "Requires effective native governance, independent current-head review and governed Main incorporation",
+    "production_outside_effect": "Requires fresh native processing/handoff readback after activation",
+    "merge": false,
+    "deployment": false,
+    "publication": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

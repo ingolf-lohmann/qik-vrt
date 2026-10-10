@@ -1,0 +1,206 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "MESH_LIVENESS_OUTSIDE_INTEGRITY_MANIFEST_20261009_V1",
+  "created_at": "2026-10-09T08:05:59Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "502229de5259080939b54ec99dd131a7c96f476c",
+  "source_tree": "4c60f64a2646f77403587c16fda4173833fcb03b",
+  "scope": "Stop the scheduled Mirror node lifecycle from invalidating the committed integrity trio, without regenerating the trio on every renewal.",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner",
+    "identity_proof_boundary": "Attribution follows the repository owner context stated in the chat session; the session provides no independent identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "Anthropic",
+    "system_family": "Claude",
+    "model_or_build": "claude-opus-5-5 (configured identifier; the serving model may differ)",
+    "session_or_run_id": "session_01H33M4wrA95BSxCCCp3pExH",
+    "tools_and_adapters": [
+      "anonymous Git read of the public repository",
+      "local shell in an isolated cloud container"
+    ],
+    "observed_at": "2026-10-09T08:05:59Z",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "refs/heads/main",
+    "source_commit": "502229de5259080939b54ec99dd131a7c96f476c",
+    "identity_and_observation_limits": "Self-declared runtime identity. GitHub Actions runs, the GitHub API and Goldkelch/qik-vrt were not readable from this session."
+  },
+  "human_contributions": [
+    {
+      "type": "DIRECTIVE",
+      "description": "Bring the Mesh to its Definition of Done; choose the lifecycle fix that creates no merge conflicts and is otherwise optimal; bring the result to main."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "DIAGNOSIS",
+      "description": "Reproduced on 502229de that tools/qikvrt_integrity.py verify BLOCKs: four lifecycle-written files differ from SHA256SUMS.txt and per-run receipts are not inventoried, because .github/workflows/qikvrt_mirror_node_lifecycle.yml pushes renewals without rematerializing the trio."
+    },
+    {
+      "type": "DESIGN_DECISION",
+      "description": "Rejected regenerating the trio inside the lifecycle workflow: it would rewrite the trio on every renewal and make every open pull request conflict with main. Chosen instead: the two rewritten node records are listed without digest, the append-only per-run receipts are not inventoried."
+    },
+    {
+      "type": "REPOSITORY_MUTATION",
+      "description": "Changed tools/qikvrt_integrity.py (generator 3.2), added a regression test, rematerialized the trio, added this work unit."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "raw_transcript_persisted": false,
+    "observed_failure": {
+      "command": "python3 -B tools/qikvrt_integrity.py verify",
+      "head": "502229de5259080939b54ec99dd131a7c96f476c",
+      "result": "BLOCK repository manifest differs from deterministic regeneration"
+    }
+  },
+  "outputs": [
+    "tools/qikvrt_integrity.py",
+    "tests/test_integrity.py",
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt",
+    "state/work_units/MESH_LIVENESS_OUTSIDE_INTEGRITY_MANIFEST_20261009_V1.json"
+  ],
+  "output_blobs": {
+    "tools/qikvrt_integrity.py": "15b5eb5089b0753ee52ee6bf3a27020b449ca2cd",
+    "tests/test_integrity.py": "9bb2b6c51329d6caf13dac89fa83868a99bd0828"
+  },
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "strategy": "Single successor of main on a review branch; lifecycle workflow and script unchanged."
+  },
+  "verification": {
+    "environment": "Local container, Python 3.13; not GitHub Actions.",
+    "make_test": {
+      "result": "PASS",
+      "note": "Required fetching historical commit 56127a6f, which a shallow clone lacks."
+    },
+    "integrity_verify_after_generate": "PASS",
+    "simulated_lifecycle_renewal": "tools/qikvrt_mirror_node_lifecycle.sh run on the changed tree; verify stayed PASS and the trio bytes were unchanged.",
+    "hosted_ci_on_this_subject": "NOT_OBSERVED"
+  },
+  "coverage_change": {
+    "no_longer_digest_bound": [
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+    ],
+    "no_longer_inventoried_prefixes": [
+      "evidence/node_health/",
+      "evidence/node_registration_renewal/"
+    ],
+    "still_digest_bound": [
+      "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
+    ],
+    "remaining_record": "Git history"
+  },
+  "human_decision": {
+    "variant_without_conflicts": "DIRECTED",
+    "merge_to_main": "DIRECTED",
+    "native_review": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "push": "NOT_PERFORMED_AT_COMMIT_TIME",
+    "pull_request": "NOT_PERFORMED_AT_COMMIT_TIME",
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "ruleset_change": false,
+    "credential_provisioning": false
+  },
+  "predecessor_evidence_transfer": false,
+  "retained_frontiers": [
+    "Authority read path: Goldkelch/qik-vrt is not readable; cause not established.",
+    "Authority takeover exists only in draft PR #428 and is blocked by BROKER_CAPABILITY_NOT_PROVISIONED.",
+    "Lifecycle renewals still move main every few hours and still report ACTIVE/PASS without a check."
+  ],
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  },
+  "codex_independent_validation_and_rest_handoff_20261009": {
+    "human_actor": "Ingolf Lohmann",
+    "artificial_cognitive_actor": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "identity_bound_to_platform_session_only": true
+    },
+    "observed_at": "2026-10-09T20:48:40.207210+00:00",
+    "base_commit": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "base_tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+    "reused_submission_id": "integrity-liveness",
+    "original_work_unit_sha256": "c2ea80163f2eb946858909536e8b588c4e4d4506943cccfed54d39b437a8a5cc",
+    "original_work_unit_claims": "HISTORICAL_DECLARED; original source and execution reports are preserved, not promoted to this candidate evidence",
+    "current_diagnosis": {
+      "manifest_last_changed_commit": "79ddba3b6d0970203053b2719c41e9410276741c",
+      "manifest_git_blob": "6d5901356f97e1bcc4cace11a6bc094745232d03",
+      "git_tree_delta_since_manifest": "22 paths: 18 appended run receipts, 2 LATEST receipts, 2 current node records; no other blob changed or removed",
+      "independent_delta_method": "Git REST object trees plus recomputed Git blob SHA-1 and SHA-256 of all 22 changed files; the unchanged manifest entries are historical digest bindings, not a new full-tree verification",
+      "sha256_index_line_delta": 26
+    },
+    "local_validation": {
+      "environment": "Codex host, Python 3.12; sparse REST-acquired source closure, not the full repository",
+      "cache_contract": "PASS 14/14 declared tools (100%)",
+      "integrity_test_module": "PASS 6 tests; embedded source capsule validation included; cross-check against local historical Git objects not performed because the historical source commit is absent",
+      "real_lifecycle_regression": [
+        {
+          "subject": "main_generator_3.1",
+          "before_generate": "PASS",
+          "after_real_lifecycle_script": "BLOCK",
+          "message": "repository manifest differs from deterministic regeneration",
+          "run_receipts_added": 2,
+          "latest_and_records_rewritten": 4
+        },
+        {
+          "subject": "candidate_generator_3.2",
+          "before_generate": "PASS",
+          "after_real_lifecycle_script": "PASS",
+          "message": "verified 9 classified entries and 4 immutable digests",
+          "run_receipts_added": 2,
+          "latest_and_records_rewritten": 4,
+          "trio_byte_unchanged": true,
+          "outside_scope_tamper_detected": true
+        }
+      ],
+      "whole_repository_make_test": "NOT_EXECUTED_LOCALLY",
+      "main_integrity_verify": "NOT_EXECUTED_ON_A_FULL_LOCAL_CHECKOUT; stale index and lifecycle cause independently reproduced"
+    },
+    "readback_limits": {
+      "branch_api_observation": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+      "transport_cache_headers_exposed": false,
+      "tool_cache_15_minutes": "USER_REPORTED_NOT_INDEPENDENTLY_OBSERVED",
+      "previously_unused_ref_spelling_proves_uncached": false,
+      "immutable_blob_binding_proves_current_mutable_ref_freshness": false,
+      "fresh_independent_repository_readback": "NOT_ESTABLISHED",
+      "independent_monitor_repository_observation": "RATE_LIMITED, request_attempted=false; historical observation, not a current head readback",
+      "required_freshness_evidence": "An actual provider read or documented revalidation with transport provenance; absent evidence remains UNKNOWN/HOLD"
+    },
+    "native_continuation": {
+      "reuse": "Existing QIKVRT CI tested-fixpoint and repository evidence materializer on same-repository draft PR",
+      "initial_integrity_trio": "The supplied submission contains only source, test and work unit. The existing native runner must regenerate and commit the trio, re-test that successor, and read it back.",
+      "required_terminal_checks": [
+        "full make test on the unchanged final successor",
+        "canonical integrity verification",
+        "exact candidate head/tree and remote readback",
+        "applicable rights, security and code-owner governance"
+      ],
+      "predecessor_evidence_transfer": false
+    },
+    "effect_boundary": {
+      "draft_candidate_is_main_activation": false,
+      "code_owner_approval_inferred": false,
+      "main_mutation_by_this_agent": false,
+      "release_deployment_zenodo_ietf_mutation": false,
+      "EFFECT_ACK_DONE": false
+    }
+  }
+}

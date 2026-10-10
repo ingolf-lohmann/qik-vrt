@@ -9,7 +9,8 @@
     "observation": "scheduled_or_manual",
     "mutation": "review_branch_only",
     "promotion": "expected_head_bound_only",
-    "unchanged_semantic_fingerprint": "NOOP"
+    "unchanged_semantic_fingerprint": "NOOP",
+    "unchanged_semantic_fingerprint_scope": "CANDIDATE_BYTES_ONLY_NOT_PENDING_MATERIALIZATION"
   },
   "promotion_policy": {
     "unconditional_automatic_merge": "FORBIDDEN",
@@ -76,7 +77,21 @@
       "IDENTIFIED_HUMAN_PHYSICS_REVIEW_WHEN_REQUIRED",
       "SEPARATE_EXPLICIT_ZENODO_AUTHORIZATION"
     ],
-    "automatic_promotion": "TWO_PHASE_EXPECTED_HEAD_BOUND_ONLY"
+    "automatic_promotion": "TWO_PHASE_EXPECTED_HEAD_BOUND_ONLY",
+    "selection_strategy": "LEAST_RECENTLY_ATTEMPTED_THEN_PR_NUMBER",
+    "selection_identity": "PULL_REQUEST_NUMBER_INDEPENDENT_OF_HEAD",
+    "selection_receipt_namespace": "refs/qikvrt/pr-continuation/",
+    "selection_advances_on": [
+      "NOOP",
+      "FAILED_REPAIR",
+      "FAILED_HANDOFF",
+      "SUCCESSOR"
+    ],
+    "concurrency": "ONE_NATIVE_REPOSITORY_GROUP_WITH_CREATE_ONLY_TURN_AND_RUN_CLAIMS",
+    "github_route": "REST_API_ONLY",
+    "ambiguous_effect_retry": "FORBIDDEN_PENDING_INDEPENDENT_READBACK",
+    "unchanged_tree": "NO_COMMIT",
+    "admission_bypass": false
   },
   "workflow_executor_mesh_continuity": {
     "contract_path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
@@ -209,7 +224,24 @@
     "no_diff": "NOOP",
     "all_paths_must_be_allowlisted": true,
     "proposal_workflow_may_merge": false,
-    "promotion_executor_may_merge": "ONLY_AFTER_TWO_PHASE_EXACT_HEAD_REOBSERVATION"
+    "promotion_executor_may_merge": "ONLY_AFTER_TWO_PHASE_EXACT_HEAD_REOBSERVATION",
+    "materialization": {
+      "implementation": "tools/qikvrt_self_heal_pr_materializer.py",
+      "test_path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "completion_predicate": "EXACT_CURRENT_BASE_HEAD_TREE_PR_READBACK",
+      "github_route": "REST_API_ONLY",
+      "branch_and_pr_deduplication": "INDEPENDENT",
+      "existing_exact_pr": "READ_ONLY_NOOP",
+      "existing_branch_without_pr": "CREATE_DRAFT_ONCE_THEN_INDEPENDENT_GET",
+      "head_or_base_drift": "HOLD_NO_OVERWRITE",
+      "ambiguous_post": "READBACK_WITHOUT_BLIND_RETRY",
+      "closed_or_duplicate_pr": "HOLD_NO_REOPEN_OR_DUPLICATE",
+      "automatic_permission_change": false,
+      "self_approval": false,
+      "code_owner_approval_implied": false,
+      "main_activation_implied": false,
+      "requires_repeated_chat_authorization": false
+    }
   },
   "completion_claims": {
     "PASS": false,
