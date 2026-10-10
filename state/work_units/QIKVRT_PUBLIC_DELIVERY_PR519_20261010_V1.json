@@ -1,0 +1,381 @@
+{
+  "schema": "qikvrt_public_delivery_work_unit_v1",
+  "work_unit_id": "QIKVRT_PUBLIC_DELIVERY_PR519_20261010_V1",
+  "observed_at": "2026-10-10T07:46:16.227Z",
+  "human_actor": "Ingolf Lohmann",
+  "ai_actor": "OpenAI Codex / GPT-6",
+  "human_contributions": [
+    "Editorial publication authorization for PR519, including six languages and full/short variants",
+    "Explicit instruction to execute the existing publication path on raumzeitterminal.de with current governance and independent readback"
+  ],
+  "ai_contributions": [
+    "Current REST repository/PR and hosting inspection",
+    "Technical origin, sitemap, robots and Site-integration repair preparation",
+    "Exact source-byte hashing and bounded validation"
+  ],
+  "evidence_retention": "METADATA_ONLY",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "subject_pr": 519,
+  "baseline_head": "db5f2538245e36a50646a6e319dad79b61c49eac",
+  "baseline_tree": "43a34489580a06956e9675a25c9da542bfa3fab3",
+  "observed_main": {
+    "head": "d8775f200be50b0ec261fe4c8093ce64020d0d0e",
+    "tree": "62add326edf6cd5b46068e92f2fe5af71b199145",
+    "protected": false
+  },
+  "editorial_authorization": {
+    "status": "GRANTED",
+    "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/519#issuecomment-6092545422",
+    "content_re_review_required": false
+  },
+  "hosting": {
+    "provider": "ChatGPT Sites / Cloudflare Worker",
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "existing_audience": "public",
+    "source_base_commit": "b2d6a25b00abe9b4b0e1301dc08b9504b3e61147",
+    "hostname": "raumzeitterminal.de",
+    "article_url": "https://raumzeitterminal.de/news/physics-nobel-2026-decay-continuity/",
+    "github_pages_target_is_product_origin": false,
+    "new_site_created": false,
+    "domain_rebinding_performed": false,
+    "site_source_preparation": "Local existing-Site successor; production publish held for technical gates"
+  },
+  "domain": {
+    "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "hostname": "raumzeitterminal.de",
+    "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+    "status": "pending",
+    "provider_status": "pending",
+    "ssl_status": "pending_validation",
+    "cname_target": "custom-domains.chatgpt.site.",
+    "apex_proxy_ipv4_targets": [
+      "162.159.143.30",
+      "172.66.3.26"
+    ],
+    "validation_records": [
+      {
+        "record_type": "TXT",
+        "name": "_openai-site-verification.raumzeitterminal.de",
+        "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+      },
+      {
+        "record_type": null,
+        "name": null,
+        "value": null
+      },
+      {
+        "record_type": "TXT",
+        "name": "_cf-custom-hostname.raumzeitterminal.de",
+        "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+      }
+    ],
+    "last_error": null,
+    "created_at": "2026-10-06T08:42:49.739821+00:00",
+    "updated_at": "2026-10-10T07:43:24.169168+00:00"
+  },
+  "role_binding": {
+    "requested_authority": "ingolf-lohmann/qik-vrt",
+    "requested_mirror": "Goldkelch/qik-vrt",
+    "main_policy_still_designates_authority": "Goldkelch/qik-vrt",
+    "role_repair_pr": 515,
+    "role_repair_head": "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+    "native_activation_verified": false
+  },
+  "native_gates": {
+    "reviews_at_baseline_head": 0,
+    "status": "failure: CODE_OWNER_RULE_NOT_ENFORCED",
+    "rulesets": [],
+    "ci": {
+      "run_id": 38015596859,
+      "head": "db5f2538245e36a50646a6e319dad79b61c49eac",
+      "conclusion": "action_required",
+      "jobs": 0
+    },
+    "initial_admission_callable": false,
+    "administrative_ruleset_writer_callable": false
+  },
+  "public_observation": {
+    "observed_at": "2026-10-10T07:39:21.924881+00:00",
+    "hostname": "raumzeitterminal.de",
+    "requests": [
+      {
+        "url": "https://raumzeitterminal.de/",
+        "method": "GET",
+        "tls_verification_required": true,
+        "attempt_count": 1,
+        "error": {
+          "type": "HTTPError",
+          "message": "HTTP Error 502: Bad Gateway"
+        }
+      },
+      {
+        "url": "https://raumzeitterminal.de/news/physics-nobel-2026-decay-continuity/",
+        "method": "GET",
+        "tls_verification_required": true,
+        "attempt_count": 1,
+        "error": {
+          "type": "HTTPError",
+          "message": "HTTP Error 502: Bad Gateway"
+        }
+      },
+      {
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/physics-nobel-2026-decay-continuity/",
+        "method": "GET",
+        "tls_verification_required": true,
+        "attempt_count": 1,
+        "error": {
+          "type": "HTTPError",
+          "message": "HTTP Error 404: Not Found"
+        }
+      }
+    ],
+    "local_resolver_error": {
+      "type": "gaierror",
+      "message": "[Errno -3] Temporary failure in name resolution"
+    }
+  },
+  "observations_boundaries": [
+    "HTTP 502 and local resolver failure in this client do not prove authoritative DNS, registration or upstream TLS failure.",
+    "Generated Site article path returned HTTP 404 before source integration.",
+    "Vercel domain lookup returned scope-bound 404; this does not prove absence of registration.",
+    "Canonical production URLs in prepared sources are intended targets, not public-delivery evidence.",
+    "Inherited integrity records may be reused only for Git-tree-proven unchanged objects; exact-successor native verification remains mandatory."
+  ],
+  "retry_policy": {
+    "unchanged_failed_accesses": "NOOP",
+    "domain_retry_condition": "Confirmed authoritative delegation/routing and provider validation records become publicly resolvable; fresh provider domain/TLS status follows.",
+    "native_retry_condition": "Supported applicable initial CI-admission and administrative governance capabilities, or independent new exact-head native execution"
+  },
+  "smallest_continuations": [
+    "Complete technical candidate integrity/native CI and independent Code-Owner requirements; preserve role activation HOLD until governed PR515 integration.",
+    "With the existing Sites project and public audience, deploy the matching accepted publication successor.",
+    "Configure the existing bound hostname's provider-supplied apex routing and TXT validation records through its actual authoritative DNS account; do not create another hostname binding.",
+    "After new routing/TLS evidence, independently fetch exact target host, article, metadata, stylesheet and compare the accepted artifact bytes."
+  ],
+  "effect_boundaries": {
+    "PUBLIC_DELIVERY_EFFECT_ACK": false,
+    "PUBLICATION_CONTENT_AUTHORIZATION_GRANTED": true,
+    "PUBLICATION_RE_REVIEW_REQUESTED": false,
+    "native_role_activation": false,
+    "main_merge_performed": false,
+    "site_deployment_performed": false,
+    "DNS_write_performed": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "ordinary_release": false
+  },
+  "technical_source_changes": [
+    "docs/sitemap.xml",
+    "docs/robots.txt",
+    "docs/news/index.html",
+    "docs/news/physics-nobel-2026-decay-continuity/index.html",
+    "docs/news/physics-nobel-2026-decay-continuity/index.json"
+  ],
+  "existing_site_successor": {
+    "source_base_commit": "b2d6a25b00abe9b4b0e1301dc08b9504b3e61147",
+    "patch_path": "release/publication-pr519-sites/SITE_SOURCE.patch",
+    "binding_path": "release/publication-pr519-sites/SOURCE_BINDING.json",
+    "patch_sha256": "54b3246c4ce3bcf261774ddc365d90ecca5dab72df5d8be44454c3baa999a9e5",
+    "state": "PREPARED_NOT_DEPLOYED"
+  },
+  "sitemap_scope": {
+    "origin": "https://raumzeitterminal.de",
+    "routes": [
+      "/",
+      "/news/",
+      "/news/physics-nobel-2026-decay-continuity/"
+    ],
+    "omitted_unsupported_production_routes": [
+      "/publications/",
+      "/terminal/"
+    ],
+    "historical_documentary_source_urls_unchanged": true
+  },
+  "validation": {
+    "scope": "CANONICAL_URLS_AND_EXACT_STATIC_CONTENT_PREPARATION",
+    "PASS": true,
+    "article_body_sha256": "3de205930ba0525536efdc45123ecdd6e70baf6a27e541cf311a4b3ec98969d3",
+    "all_six_languages_and_both_variants_retained": true,
+    "site_copy_matches_candidate": true,
+    "native_ci_or_domain_delivery_implied": false,
+    "static_files": {
+      "news/index.html": {
+        "bytes": 896,
+        "sha256": "3b4773253b382b8cf564c1d5322e1fba2b2d18092a0ae3257b0c5d27f10d5677"
+      },
+      "news/physics-nobel-2026-decay-continuity/index.html": {
+        "bytes": 31266,
+        "sha256": "ccd12270a3f3d1ba5a3972b9456d99c298255b5bf253333c020d1c0292fad4be"
+      },
+      "news/physics-nobel-2026-decay-continuity/index.json": {
+        "bytes": 1479,
+        "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817"
+      },
+      "assets/css/qikvrt.css": {
+        "bytes": 6360,
+        "sha256": "2825eb34d67fd3097fc5ebf492089ac94eb8c8f6045a76ea7902b7a2c0cc272d"
+      },
+      "sitemap.xml": {
+        "bytes": 339,
+        "sha256": "9dbdc351d9740cd2d60a79a08c010851110b818cd9162814a9d0614f9a33c61d"
+      },
+      "robots.txt": {
+        "bytes": 73,
+        "sha256": "522e34e3421636ba4c977183515bd5c68d7b6a51e3dc24096451cc075d62103b"
+      }
+    },
+    "existing_site_build_completed": true,
+    "built_static_files_match_sources": 6,
+    "existing_evidence_regressions_passed": true,
+    "site_typescript_check_passed": true
+  },
+  "public_dns_observations": [
+    {
+      "observed_at": "2026-10-10T07:49:01.268247+00:00",
+      "method": "Google Public DNS HTTPS JSON GET; normalized record",
+      "queries": [
+        {
+          "name": "raumzeitterminal.de",
+          "type": "NS",
+          "url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+          "rcode": 3,
+          "meaning": "NXDOMAIN",
+          "authority": {
+            "name": "de.",
+            "type": 6,
+            "ttl": 1800,
+            "data": "f.nic.de. dns-operations.denic.de. 1791618507 7200 7200 3600000 7200"
+          },
+          "responding_address": "2001:67c:1011:1::53"
+        },
+        {
+          "name": "raumzeitterminal.de",
+          "type": "A",
+          "url": "https://dns.google/resolve?name=raumzeitterminal.de&type=A",
+          "rcode": 3,
+          "meaning": "NXDOMAIN",
+          "authority": {
+            "name": "de.",
+            "type": 6,
+            "ttl": 1800,
+            "data": "f.nic.de. dns-operations.denic.de. 1791618507 7200 7200 3600000 7200"
+          },
+          "responding_address": "2a02:568:fe02::de"
+        },
+        {
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "type": "TXT",
+          "url": "https://dns.google/resolve?name=_openai-site-verification.raumzeitterminal.de&type=TXT",
+          "rcode": 3,
+          "meaning": "NXDOMAIN",
+          "authority": {
+            "name": "de.",
+            "type": 6,
+            "ttl": 1800,
+            "data": "f.nic.de. dns-operations.denic.de. 1791618507 7200 7200 3600000 7200"
+          },
+          "responding_address": "2001:67c:1011:1::53"
+        },
+        {
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "type": "TXT",
+          "url": "https://dns.google/resolve?name=_cf-custom-hostname.raumzeitterminal.de&type=TXT",
+          "rcode": 3,
+          "meaning": "NXDOMAIN",
+          "authority": {
+            "name": "de.",
+            "type": 6,
+            "ttl": 1800,
+            "data": "f.nic.de. dns-operations.denic.de. 1791618531 7200 7200 3600000 7200"
+          },
+          "responding_address": "2a02:568:fe02::de"
+        }
+      ],
+      "boundary": "These resolver responses establish non-resolution within their observation scope; they do not independently establish domain-registration or account ownership."
+    },
+    {
+      "observed_at": "2026-10-10T07:51:15.743843+00:00",
+      "method": "Cloudflare 1.1.1.1 HTTPS DNS JSON GET; normalized record",
+      "queries": [
+        {
+          "name": "raumzeitterminal.de",
+          "type": "NS",
+          "url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=NS",
+          "rcode": 3,
+          "meaning": "NXDOMAIN",
+          "authority": {
+            "name": "de",
+            "type": 6,
+            "ttl": 7200,
+            "data": "f.nic.de. dns-operations.denic.de. 1791618656 7200 7200 3600000 7200"
+          }
+        },
+        {
+          "name": "raumzeitterminal.de",
+          "type": "A",
+          "url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A",
+          "rcode": 3,
+          "meaning": "NXDOMAIN",
+          "authority": {
+            "name": "de",
+            "type": 6,
+            "ttl": 6494,
+            "data": "f.nic.de. dns-operations.denic.de. 1791617941 7200 7200 3600000 7200"
+          }
+        }
+      ]
+    }
+  ],
+  "integrity_method": {
+    "name": "GENERATOR_3_1_DELTA_DERIVATION_WITH_UNCHANGED_GIT_BLOB_BINDINGS",
+    "base_manifest_sha256": "32af78b8c3252c2098cff7daaeb54d79f2c8bec6a45aeecd568242310291e5ed",
+    "full_repository_bytes_independently_rehashed": false,
+    "exact_successor_native_full_verification_required": true,
+    "transient_git_paths_excluded": 4,
+    "inherited_crlf_checkout_digest_paths": [
+      "DRY_RUN_VERIFY_ONLY.cmd",
+      "GITHUB_AUTH_PREFLIGHT_ONLY.cmd",
+      "GITHUB_DRY_RUN_VERIFY_ONLY.cmd",
+      "GITHUB_ZENODO_UPLOAD_AND_PUBLISH.cmd",
+      "GIT_INVOCATION_SELFTEST.cmd",
+      "POWERSHELL_PARSE_CHECK_ONLY.cmd",
+      "QIKVRT_V45_11_BUILD_ZIP_AND_HASH.cmd",
+      "QIKVRT_V45_11_REAL_GITHUB_RELEASE.cmd",
+      "QIKVRT_V45_11_RUN_LOCAL_VERIFY.cmd",
+      "QIKVRT_V45_11_RUN_PYTHON_VERIFY_OPTIONAL.cmd",
+      "QIKVRT_V45_12_BUILD_ZIP_AND_HASH.cmd",
+      "QIKVRT_V45_12_REAL_GITHUB_RELEASE.cmd",
+      "QIKVRT_V45_12_RUN_LOCAL_VERIFY.cmd",
+      "QIKVRT_V45_12_RUN_PYTHON_VERIFY_OPTIONAL.cmd",
+      "QIKVRT_V45_16_REAL_GITHUB_RELEASE.cmd",
+      "QIKVRT_V45_16_RUN_LOCAL_VERIFY.cmd",
+      "QIKVRT_V45_19_REAL_GITHUB_RELEASE.cmd",
+      "QIKVRT_V45_19_RUN_LOCAL_VERIFY.cmd",
+      "QIKVRT_V45_20_REAL_GITHUB_RELEASE.cmd",
+      "QIKVRT_V45_20_RUN_LOCAL_VERIFY.cmd",
+      "incoming/qikvrt_payloads/20260708T152348Z/payload/QIKVRT_V2_13_4AO_GENERIC_PAYLOAD_UPLOAD_KIT_WSH_NO_PS_NO_GIT/START_HIER_QIKVRT_UPLOAD.cmd",
+      "incoming/qikvrt_payloads/20260708T164042Z/payload/QIKVRT_V2_13_4AT_AUTONOMOUS_MESH_ONE_COMMAND_HIDDEN_TOKEN_INSTALLER/START_HIER_AUTONOMOUS_MESH_INSTALL.cmd",
+      "incoming/qikvrt_payloads/20260708T171119Z/payload/QIKVRT_V2_13_4AU1_PRODUCTIZATION_HARDENING_AUDIT_PUSHFIX_ONE_COMMAND_INSTALLER/START_HIER_PRODUCTIZATION_HARDENING_INSTALL.cmd",
+      "incoming/qikvrt_payloads/20260708T172711Z/payload/QIKVRT_V2_13_4AU2_PRODUCTIZATION_RELEASE_FREEZE_ONE_COMMAND_INSTALLER/START_HIER_RELEASE_FREEZE_INSTALL.cmd",
+      "incoming/qikvrt_payloads/20260708T174539Z/payload/QIKVRT_V2_13_4AV1_OPEN_MULTI_NODE_REGISTRY_REVALIDATION_ONE_COMMAND_INSTALLER/START_HIER_OPEN_MULTI_NODE_REVALIDATION_INSTALL.cmd",
+      "incoming/qikvrt_payloads/20260708T180204Z/payload/QIKVRT_V2_13_4AV2A_OPEN_MULTI_NODE_RELEASE_FREEZE_HTA_TOKEN_FIX_ONE_COMMAND_INSTALLER/qv2134av2a_work/START_HIER_RELEASE_FREEZE_INSTALL.cmd",
+      "incoming/qikvrt_payloads/20260708T182401Z/payload/QIKVRT_V2_13_4AW_COMMERCIAL_READINESS_PACK_ONE_COMMAND_INSTALLER/qv2134aw_work/START_HIER_COMMERCIAL_READINESS_UPLOAD.cmd",
+      "qikvrt.ps1",
+      "runtime/download_python_runtime.ps1",
+      "tools/bootstrap-gh.ps1",
+      "tools/bootstrap-runtime.ps1",
+      "tools/git_invocation_selftest.ps1",
+      "tools/github_zenodo_release_publish.ps1",
+      "tools/powershell_parse_check.ps1"
+    ],
+    "attribute_binding": {
+      "path": ".gitattributes",
+      "blob_sha": "cd3c4eb255f0e79d592aae03aeab4c39b2b2fff7",
+      "rules": [
+        "*.cmd text eol=crlf",
+        "qikvrt.cmd text eol=lf",
+        "*.ps1 text eol=crlf"
+      ]
+    }
+  }
+}
