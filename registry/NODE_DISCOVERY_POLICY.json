@@ -2,7 +2,10 @@
   "qikvrt_event": "OPEN_MULTI_NODE_DISCOVERY_POLICY_4AV1",
   "fixed_node_count": false,
   "node_count_prompt": false,
-  "discovery_scope": ["registry/KNOWN_NODE_REQUESTS.tsv", "registry/node_request_queue/*.tsv"],
+  "discovery_scope": [
+    "registry/KNOWN_NODE_REQUESTS.tsv",
+    "registry/node_request_queue/*.tsv"
+  ],
   "no_global_scanning": true,
   "seed_writes_only_to_seed_repository": true,
   "future_nodes_added_by_queue_rows": true,
@@ -24,5 +27,9 @@
     "node_liveness": "EXACT_NODE_RECORDS_OR_NOT_APPLICABLE",
     "admission_policy": "PREEMPTIVE_HOLD_BEFORE_SECOND_WRITER",
     "seed_validation": "EXACT_REFLEXIVE_WATCHDOG_CONTRACT_REQUIRED"
+  },
+  "owner_seal_acceptance": {
+    "path": "state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V2.json",
+    "sha256": "95ca97821bc4e529aea044f20ba17f85d5d52806f568a040f318bd95a3e0f57b"
   }
 }

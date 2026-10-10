@@ -3,10 +3,16 @@
 # Copyright 2026 Ingolf Lohmann.
 from __future__ import annotations
 
+import ast
 import datetime as dt
 import hashlib
 import json
 import os
+import re
+import shutil
+import textwrap
+import copy
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -26,6 +32,8 @@ from tools.qikvrt_seed_common import (
     run_maintenance,
     run_revalidation,
     validate_raw_request_url,
+    validate_local_handshake,
+    run_acknowledgement,
 )
 
 
@@ -37,6 +45,57 @@ REQUEST_URL = (
     "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
 )
 NOW = dt.datetime(2026, 7, 20, 12, 0, 0, tzinfo=dt.timezone.utc)
+
+
+def active_lifecycle_reference(source: str, suffix: str) -> bool:
+    """Keep Python comments/docstrings out of the active-source allowlist."""
+    script = "qikvrt_mirror_node_lifecycle.sh"
+    if suffix != ".py":
+        return script in source
+    tree = ast.parse(source)
+    docstrings = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef,
+                             ast.AsyncFunctionDef)) and node.body:
+            first = node.body[0]
+            if (isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant)
+                    and isinstance(first.value.value, str)):
+                docstrings.add(id(first.value))
+    return any(
+        isinstance(node, ast.Constant) and isinstance(node.value, str)
+        and id(node) not in docstrings and script in node.value
+        for node in ast.walk(tree)
+    )
+
+
+class LifecycleReferenceScanTests(unittest.TestCase):
+    def test_python_comment_is_not_an_active_reference(self) -> None:
+        source = "# writer: tools/qikvrt_mirror_node_lifecycle.sh\nVALUE = 1\n"
+        self.assertFalse(active_lifecycle_reference(source, ".py"))
+
+    def test_module_function_and_class_docstrings_are_not_active_references(self) -> None:
+        source = '''"""See tools/qikvrt_mirror_node_lifecycle.sh."""
+class Example:
+    """See tools/qikvrt_mirror_node_lifecycle.sh."""
+    def method(self):
+        """See tools/qikvrt_mirror_node_lifecycle.sh."""
+        return 1
+'''
+        self.assertFalse(active_lifecycle_reference(source, ".py"))
+
+    def test_python_command_and_composed_path_still_require_the_allowlist(self) -> None:
+        for source in (
+            'subprocess.run(["bash", "tools/qikvrt_mirror_node_lifecycle.sh"])',
+            'subprocess.run(["bash", str(ROOT / "tools" / "qikvrt_mirror_node_lifecycle.sh")])',
+        ):
+            with self.subTest(source=source):
+                self.assertTrue(active_lifecycle_reference(source, ".py"))
+
+    def test_non_python_reference_guard_is_preserved(self) -> None:
+        for suffix in (".yml", ".yaml", ".sh", ".ps1"):
+            with self.subTest(suffix=suffix):
+                self.assertTrue(active_lifecycle_reference(
+                    "bash tools/qikvrt_mirror_node_lifecycle.sh", suffix))
 
 
 def continuity_declaration() -> dict[str, object]:
@@ -137,15 +196,152 @@ class SeedWorkflowTests(unittest.TestCase):
         (self.root / "registry/node_request_queue/OPEN_NODE_REQUESTS.tsv").write_text(
             "# empty queue\n", encoding="utf-8"
         )
+        onboarding = self.root / "qikvrt/runtime/onboarding"
+        onboarding.mkdir(parents=True)
+        (onboarding / "NODE_HANDSHAKE_CONFIG.tsv").write_text(
+            f"{GUID}\t{SOURCE}\t{SEED}\thttps://raw.githubusercontent.com/{SEED}/main/registry/NODEMESH_INDEX.json"
+            f"\thttps://raw.githubusercontent.com/{SEED}/main/registry/nodes/{GUID}.json\tmain\t1500\n")
+        (onboarding / "SEED_REGISTRATION_REQUEST.json").write_bytes(canonical_json_bytes(request_document()))
+
+    def documents(self):
+        documents = remote_documents()
+        entry = self.root / f"registry/nodes/{GUID}.json"
+        if entry.exists():
+            ack = documents[f"https://raw.githubusercontent.com/{SOURCE}/main/qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"]
+            ack.update(schema="qikvrt_node_seed_acknowledgement_v2",
+                       seed_entry_sha256=hashlib.sha256(entry.read_bytes()).hexdigest(),
+                       seed_index_sha256="1" * 64,
+                       seed_acceptance_run_id=read_json(entry)["last_acceptance_run_id"])
+        return documents
+
+    def acknowledgement_fetcher(self):
+        self.accept()
+        run_maintenance(self.root, "maint-ack", FakeFetcher(self.documents()), now=NOW)
+        head = "1" * 40
+        prefix = f"https://raw.githubusercontent.com/{SEED}/{head}/registry/"
+        values = {prefix + "NODEMESH_INDEX.json": read_json(self.root / "registry/NODEMESH_INDEX.json"),
+                  prefix + f"nodes/{GUID}.json": read_json(self.root / f"registry/nodes/{GUID}.json"),
+                  f"https://api.github.com/repos/{SEED}/git/ref/heads/main":
+                      {"ref": "refs/heads/main", "object": {"type": "commit", "sha": head}}}
+        return FakeFetcher(values)
+
+    def test_acknowledgement_reads_one_fresh_seed_commit_and_binds_exact_hashes(self):
+        fetch = self.acknowledgement_fetcher()
+        result = run_acknowledgement(self.root, "ack-1", fetch, now=NOW)
+        ack = result["acknowledgement"]
+        self.assertEqual("ACCEPTED_BY_SEED", ack["status"])
+        self.assertEqual("1" * 40, ack["observed_authority_commit"])
+        self.assertEqual(fetch.calls[0], fetch.calls[-1])
+        self.assertIn("/" + "1" * 40 + "/", fetch.calls[1])
+        self.assertEqual(hashlib.sha256((self.root / f"registry/nodes/{GUID}.json").read_bytes()).hexdigest(), ack["seed_entry_sha256"])
+
+    def test_historical_copied_mismatched_and_stale_acceptance_never_overwrites_ack(self):
+        original = self.acknowledgement_fetcher().documents
+        entry_url = next(u for u in original if f"nodes/{GUID}" in u)
+        mutations = [{"seed_repository": "other/seed"}, {"schema": "historical"},
+                     {"repository": "other/node"}, {"guid": "b84f157a-cef2-4c47-bca9-8f407085bdbe"},
+                     {"policy_status": "REVOKED"}, {"node_request_sha256": "0" * 64},
+                     {"accepted_utc": "2026-07-01T00:00:00Z"},
+                     {"accepted_utc": "2026-07-21T00:00:00Z"}, {"last_acceptance_run_id": None}]
+        ack_path = self.root / "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
+        ack_path.write_bytes(b'{"status":"PENDING_SEED_ACCEPTANCE"}\n')
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                values = copy.deepcopy(original)
+                values[entry_url].update(mutation)
+                with self.assertRaises(SeedError):
+                    run_acknowledgement(self.root, "ack-blocked", FakeFetcher(values), now=NOW)
+                self.assertEqual(b'{"status":"PENDING_SEED_ACCEPTANCE"}\n', ack_path.read_bytes())
+
+    def test_seed_ref_drift_and_duplicate_index_node_are_rejected(self):
+        fetch = self.acknowledgement_fetcher()
+        base = fetch.documents
+        ref_url = next(u for u in base if u.startswith("https://api.github.com"))
+        def drift(url):
+            value = fetch(url)
+            if url == ref_url and len(fetch.calls) > 1:
+                changed = copy.deepcopy(value.value)
+                changed["object"]["sha"] = "2" * 40
+                return FetchedJson(changed, "0" * 64)
+            return value
+        with self.assertRaisesRegex(SeedError, "changed"):
+            run_acknowledgement(self.root, "ack-drift", drift, now=NOW)
+        values = copy.deepcopy(base)
+        index = values[next(u for u in values if u.endswith("NODEMESH_INDEX.json"))]
+        index["nodes"].append(copy.deepcopy(index["nodes"][0]))
+        index["node_count"] = 2
+        with self.assertRaisesRegex(SeedError, "exactly one"):
+            run_acknowledgement(self.root, "ack-duplicate", FakeFetcher(values), now=NOW)
+
+    def test_relabelled_ack_and_wrong_acceptance_hash_are_not_active(self):
+        self.accept()
+        for key, value in (("schema", "historical"), ("seed_entry_sha256", "0" * 64),
+                           ("seed_acceptance_run_id", "invented")):
+            documents = self.documents()
+            ack = documents[next(u for u in documents if u.endswith("SEED_ACCEPTANCE_STATUS.json"))]
+            ack[key] = value
+            result = run_maintenance(self.root, "maint-relabelled", FakeFetcher(documents), now=NOW)
+            self.assertEqual(0, result["active_count"])
+            self.assertEqual("CONTINUE", result["status"])
+
+    def test_partial_repoint_and_extra_handshake_row_block_before_lifecycle_writes(self):
+        path = self.root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+        original = path.read_text()
+        path.write_text(original.replace("\t" + SEED + "\t", "\tnew/seed\t"))
+        with self.assertRaisesRegex(SeedError, "URL"):
+            validate_local_handshake(self.root)
+        path.write_text(original + original)
+        repository = Path(__file__).resolve().parents[1]
+        (self.root / "tools").mkdir()
+        for source in repository.joinpath("tools").glob("*.py"):
+            (self.root / "tools" / source.name).write_bytes(source.read_bytes())
+        result = subprocess.run(["sh", str(repository / "tools/qikvrt_mirror_node_lifecycle.sh")],
+                                cwd=self.root, capture_output=True, text=True)
+        self.assertNotEqual(0, result.returncode)
+        self.assertFalse((self.root / "qikvrt/runtime/onboarding/NODE_HEALTH.json").exists())
+        self.assertFalse((self.root / "evidence/node_health").exists())
+
+    def test_seed_workflow_uses_executing_repository_and_local_migration_is_coherent(self):
+        repository = Path(__file__).resolve().parents[1]
+        # Watchdogs deliberately remove role-local onboarding files. Exercise
+        # the validator with a real isolated fixture, independent of that state.
+        source = SEED
+        path = self.root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+        path.write_text(path.read_text().replace("\t" + SOURCE + "\t", "\t" + source + "\t"))
+        path = self.root / "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
+        request = read_json(path); request["source_repository"] = source
+        path.write_bytes(canonical_json_bytes(request))
+        path = self.root / "registry/KNOWN_NODE_REQUESTS.tsv"
+        path.write_text(path.read_text().replace("\t" + SOURCE + "\t", "\t" + source + "\t")
+                        .replace("raw.githubusercontent.com/" + SOURCE + "/", "raw.githubusercontent.com/" + source + "/"))
+        node = validate_local_handshake(self.root, source)
+        self.assertEqual(node.source_repository, node.seed_repository)
+        path.write_text(path.read_text().replace("\t" + SEED + "\t", "\tother/seed\t", 1))
+        with self.assertRaises(SeedError):
+            validate_local_handshake(self.root, source)
+        for workflow in repository.joinpath(".github/workflows").glob("qikvrt_seed_*.yml"):
+            self.assertIn("QIKVRT_SEED_REPOSITORY: ${{ github.repository }}", workflow.read_text())
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_unknown_seed_cannot_register_or_replace_pending_acknowledgement(self) -> None:
+        fetch = FakeFetcher(self.documents())
+        acknowledgement = self.root / "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"
+        original = b'{"status":"PENDING_SEED_ACCEPTANCE"}\n'
+        acknowledgement.write_bytes(original)
+        with self.assertRaisesRegex(SeedError, "seed repository is outside the configured allowlist"):
+            run_acceptance(self.root, "unknown-seed", fetch, seed_repository="unapproved/seed", now=NOW)
+        self.assertEqual([], fetch.calls)
+        self.assertEqual(original, acknowledgement.read_bytes())
+        self.assertFalse((self.root / f"registry/nodes/{GUID}.json").exists())
+        self.assertFalse((self.root / "ledger/NODE_REGISTRATION_LEDGER.jsonl").exists())
 
     def accept(self) -> None:
         result = run_acceptance(
             self.root,
             "accept-1",
-            FakeFetcher(remote_documents()),
+            FakeFetcher(self.documents()),
             now=NOW,
         )
         self.assertEqual("PASS", result["status"])
@@ -208,7 +404,7 @@ class SeedWorkflowTests(unittest.TestCase):
             )
 
     def test_acceptance_is_transactional_and_counts_validation_failure(self) -> None:
-        documents = remote_documents()
+        documents = self.documents()
         documents[REQUEST_URL] = {**request_document(), "no_global_scanning": "true"}
         result = run_acceptance(
             self.root,
@@ -237,7 +433,7 @@ class SeedWorkflowTests(unittest.TestCase):
         result = run_acceptance(
             self.root,
             "continuity-1",
-            FakeFetcher(remote_documents()),
+            FakeFetcher(self.documents()),
             now=NOW,
         )
         self.assertEqual("PASS", result["status"])
@@ -252,7 +448,7 @@ class SeedWorkflowTests(unittest.TestCase):
 
     def test_future_queue_node_without_continuity_declaration_is_blocked(self) -> None:
         self.move_node_to_future_queue()
-        documents = remote_documents()
+        documents = self.documents()
         request = dict(documents[REQUEST_URL])
         del request["workflow_executor_continuity"]
         documents[REQUEST_URL] = request
@@ -269,7 +465,7 @@ class SeedWorkflowTests(unittest.TestCase):
             run_acceptance(
                 self.root,
                 "corrupt-ledger",
-                FakeFetcher(remote_documents()),
+                FakeFetcher(self.documents()),
                 now=NOW,
             )
         self.assertFalse((self.root / f"registry/nodes/{GUID}.json").exists())
@@ -279,7 +475,7 @@ class SeedWorkflowTests(unittest.TestCase):
             run_acceptance(
                 self.root,
                 "oversized-ledger",
-                FakeFetcher(remote_documents()),
+                FakeFetcher(self.documents()),
                 now=NOW,
             )
         self.assertFalse((self.root / f"registry/nodes/{GUID}.json").exists())
@@ -289,7 +485,7 @@ class SeedWorkflowTests(unittest.TestCase):
         result = run_maintenance(
             self.root,
             "maint-1",
-            FakeFetcher(remote_documents()),
+            FakeFetcher(self.documents()),
             now=NOW,
         )
         self.assertEqual("PASS", result["status"])
@@ -304,7 +500,7 @@ class SeedWorkflowTests(unittest.TestCase):
 
     def test_missing_ack_is_visible_and_never_reported_as_pass(self) -> None:
         self.accept()
-        documents = remote_documents()
+        documents = self.documents()
         ack_url = next(url for url in documents if url.endswith("SEED_ACCEPTANCE_STATUS.json"))
         del documents[ack_url]
         result = run_maintenance(
@@ -321,7 +517,7 @@ class SeedWorkflowTests(unittest.TestCase):
 
     def test_revalidation_detects_counter_tampering(self) -> None:
         self.accept()
-        run_maintenance(self.root, "maint-2", FakeFetcher(remote_documents()), now=NOW)
+        run_maintenance(self.root, "maint-2", FakeFetcher(self.documents()), now=NOW)
         status_path = self.root / "registry/NODEMESH_STATUS.json"
         status = read_json(status_path)
         status["active_count"] = 999
@@ -331,7 +527,7 @@ class SeedWorkflowTests(unittest.TestCase):
 
     def test_dashboard_and_audit_require_current_pass_revalidation(self) -> None:
         self.accept()
-        run_maintenance(self.root, "maint-3", FakeFetcher(remote_documents()), now=NOW)
+        run_maintenance(self.root, "maint-3", FakeFetcher(self.documents()), now=NOW)
         run_revalidation(self.root, "revalidate-3", now=NOW)
         dashboard = run_dashboard(self.root, "dashboard-3", now=NOW)
         audit = run_audit_export(self.root, "audit-3", now=NOW)
@@ -363,11 +559,334 @@ class SeedWorkflowTests(unittest.TestCase):
         for workflow in sorted((repository / ".github/workflows").glob("qikvrt_seed_*.yml")):
             text = workflow.read_text(encoding="utf-8")
             self.assertIn("contents: read", text, workflow.name)
-            self.assertNotIn("contents: write", text, workflow.name)
+            if workflow.name == "qikvrt_seed_registry_acceptance.yml":
+                self.assertIn("tools.qikvrt_mirror_node_lifecycle seed-review", text)
+                self.assertIn("pull-requests: write", text)
+            else:
+                self.assertNotIn("contents: write", text, workflow.name)
             self.assertIn("persist-credentials: false", text, workflow.name)
             self.assertNotRegex(text, r"actions/(?:checkout|upload-artifact)@v\d")
             self.assertNotRegex(text, r"\bgit (?:push|pull|commit)\b")
 
+
+
+class MirrorLifecycleGovernanceTests(unittest.TestCase):
+    """Execute the actual persistence shell against local Git and a bounded API fixture."""
+
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.container = Path(self.temporary.name)
+        self.root = self.container / "node"
+        self.root.mkdir()
+        self.repository = Path(__file__).resolve().parents[1]
+        self.remote = self.container / "remote.git"
+        self.receipts = self.container / "receipts"
+        self.bin = self.container / "bin"
+        self.bin.mkdir()
+        for path in (
+            "tools/qikvrt_autonomous_self_heal.py",
+            "tools/qikvrt_required_review_gate.py",
+            "tools/qikvrt_seed_common.py",
+            "tools/qikvrt_workflow_executor.py",
+            "tools/qikvrt_subprocess.py",
+            "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+        ):
+            target = self.root / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(self.repository / path, target)
+        # The existing watchdog deliberately has a sparse checkout. Use a
+        # declared fixture configuration, without requiring productive node state.
+        config = self.root / "qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
+        config.parent.mkdir(parents=True, exist_ok=True)
+        config.write_text(
+            f"{GUID}\t{SOURCE}\t{SEED}\thttps://raw.githubusercontent.com/{SEED}/main/registry/NODEMESH_INDEX.json"
+            f"\thttps://raw.githubusercontent.com/{SEED}/main/registry/nodes/{GUID}.json\tmain\t1500\n",
+            encoding="utf-8",
+        )
+        (config.parent / "SEED_REGISTRATION_REQUEST.json").write_bytes(canonical_json_bytes(request_document()))
+        # Only transport is simulated here; these fixture projections are not
+        # evidence that the complete repository integrity generator executed.
+        (self.root / "tools/qikvrt_integrity.py").write_text(
+            "import pathlib,sys\n"
+            "if sys.argv[1] == 'generate':\n"
+            " for p in ('REPOSITORY_FILE_MANIFEST.json','REPOSITORY_FILE_MANIFEST.json.sha256','SHA256SUMS.txt'):\n"
+            "  pathlib.Path(p).write_text('fixture successor\\n')\n",
+            encoding="utf-8",
+        )
+        (self.root / "tools/qikvrt_mirror_node_lifecycle.py").write_text(
+            "import os,subprocess,json\n"
+            "head=os.environ['CANDIDATE_HEAD']; branch=os.environ['CANDIDATE_BRANCH']\n"
+            "payload=json.dumps({'ref':'refs/heads/'+branch,'sha':head})\n"
+            "subprocess.run(['gh','api','--method','POST','repos/'+os.environ['GITHUB_REPOSITORY']+'/git/refs','--input','-'],input=payload,text=True,check=True,capture_output=True)\n"
+            "print(head)\n", encoding="utf-8")
+        self.env = {
+            **os.environ,
+            "REAL_GIT": shutil.which("git") or "git",
+            "PATH": str(self.bin) + os.pathsep + os.environ["PATH"],
+            "GH_TOKEN": "fixture-token",
+            "GITHUB_REPOSITORY": SOURCE,
+            "QIKVRT_RUN_ID": "governance-case-1",
+            "LIFECYCLE_RECEIPT_DIR": str(self.receipts),
+            "MOCK_ORIGIN": str(self.remote),
+            "MOCK_LOG": str(self.container / "api-calls.jsonl"),
+            "PUSH_LOG": str(self.container / "git-push-calls.jsonl"),
+            "MOCK_MODE": "success",
+        }
+        self.git("init", "-b", "main")
+        self.git("config", "user.name", "fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("config", "commit.gpgsign", "false")
+        self.materialize("initial-1")
+        for path in ("REPOSITORY_FILE_MANIFEST.json", "REPOSITORY_FILE_MANIFEST.json.sha256", "SHA256SUMS.txt"):
+            (self.root / path).write_text("fixture base\n", encoding="utf-8")
+        self.git("add", ".")
+        self.git("commit", "-m", "fixture base")
+        subprocess.run(["git", "init", "--bare", str(self.remote)], check=True, capture_output=True)
+        self.git("remote", "add", "origin", str(self.remote))
+        self.git("push", "origin", "refs/heads/main:refs/heads/main")
+        self.base = self.git("rev-parse", "HEAD")
+        self.materialize(self.env["QIKVRT_RUN_ID"])
+        (self.remote / 'objects/info/alternates').write_text(str(self.root / '.git/objects') + '\n')
+        mock = self.bin / "gh"
+        mock.write_text(textwrap.dedent('''\
+            #!/usr/bin/env python3
+            import json,os,pathlib,subprocess,sys
+            args=sys.argv[1:]
+            mode=os.environ['MOCK_MODE']
+            log=pathlib.Path(os.environ['MOCK_LOG'])
+            with log.open('a') as f: f.write(json.dumps(args)+'\\n')
+            path=next(a for a in args if a.startswith('repos/'))
+            def rev(ref):
+                return subprocess.check_output(['git','--git-dir',os.environ['MOCK_ORIGIN'],'rev-parse',ref],text=True).strip()
+            if path.endswith('/rules/branches/main'):
+                out=[] if mode=='native_missing' else [{'type':'pull_request','parameters':{
+                    'required_approving_review_count':1,'require_code_owner_review':True,
+                    'dismiss_stale_reviews_on_push':True,'require_last_push_approval':True}}]
+            elif '/git/ref/heads/' in path:
+                ref=path.split('/git/ref/heads/',1)[1]
+                out=rev('refs/heads/'+ref)
+                calls=[json.loads(s) for s in log.read_text().splitlines()]
+                count=sum(path in c for c in calls)
+                if (mode=='base_drift' and ref=='main' and count==2) or (mode=='branch_drift' and ref!='main'): out='a'*40
+            elif path.endswith('/git/refs'):
+                payload=json.load(sys.stdin)
+                if mode=='branch_denied': sys.exit(1)
+                subprocess.run(['git','--git-dir',os.environ['MOCK_ORIGIN'],'update-ref',payload['ref'],payload['sha']],check=True)
+                out={'object':{'sha':payload['sha']}}
+            elif '/git/commits/' in path:
+                out=rev(path.rsplit('/',1)[1]+'^{tree}')
+            elif '/pulls?' in path:
+                existing=pathlib.Path(os.environ['LIFECYCLE_RECEIPT_DIR'],'fixture-pr.json')
+                out=[json.loads(existing.read_text())] if existing.exists() else []
+            elif path.endswith('/pulls'):
+                if mode=='pr_denied':
+                    print('GitHub Actions is not permitted to create pull requests',file=sys.stderr)
+                    sys.exit(1)
+                payload=json.loads(pathlib.Path(args[args.index('--input')+1]).read_text())
+                pr={'number':7,'state':'open','draft':payload['draft'],
+                    'base':{'ref':payload['base'],'sha':rev('refs/heads/main')},
+                    'head':{'ref':payload['head'],'sha':rev('refs/heads/'+payload['head']),
+                            'repo':{'full_name':os.environ['GITHUB_REPOSITORY']}}}
+                pathlib.Path(os.environ['LIFECYCLE_RECEIPT_DIR'],'fixture-pr.json').write_text(json.dumps(pr))
+                if mode=='ambiguous': sys.exit(1)
+                out={'number':7}
+            elif path.endswith('/pulls/7'):
+                out=json.loads(pathlib.Path(os.environ['LIFECYCLE_RECEIPT_DIR'],'fixture-pr.json').read_text())
+                if mode=='pr_drift': out['head']['sha']='b'*40
+            else:
+                raise SystemExit('unsupported fixture API: '+path)
+            print(out if isinstance(out,str) else json.dumps(out))
+            '''), encoding="utf-8")
+        mock.chmod(0o755)
+        # Observe actual Git transport arguments after fixture initialization.
+        # Reject implicit destinations, Main and force options before delegating
+        # the single allowed review-branch push to the real local Git transport.
+        git_spy = self.bin / "git"
+        git_spy.write_text(textwrap.dedent('''\
+            #!/usr/bin/env python3
+            import json,os,pathlib,re,sys
+            args=sys.argv[1:]
+            if 'push' in args:
+                with pathlib.Path(os.environ['PUSH_LOG']).open('a') as f:
+                    f.write(json.dumps(args)+'\\n')
+                if not (len(args)==3 and args[:2]==['push','origin'] and
+                        re.fullmatch(r'HEAD:refs/heads/automation/mirror-lifecycle-[0-9a-f]{24}',args[2])):
+                    raise SystemExit('BLOCK: lifecycle push outside the review branch')
+            os.execv(os.environ['REAL_GIT'],['git',*args])
+            '''), encoding="utf-8")
+        git_spy.chmod(0o755)
+
+    def git(self, *args: str) -> str:
+        return subprocess.check_output(["git", *args], cwd=self.root, env=self.env, text=True, stderr=subprocess.DEVNULL).strip()
+
+    def materialize(self, run_id: str) -> None:
+        subprocess.run(
+            ["sh", str(self.repository / "tools/qikvrt_mirror_node_lifecycle.sh")],
+            cwd=self.root, env={**self.env, "QIKVRT_RUN_ID": run_id}, check=True, capture_output=True,
+        )
+        # The shell under test is the persistence step. The preceding fresh
+        # acknowledgement step is modeled as explicit fixture bytes here.
+        acknowledgement = canonical_json_bytes({
+            "schema": "qikvrt_node_seed_acknowledgement_v2", "guid": GUID,
+            "repository": SOURCE, "seed_repository": SEED,
+            "status": "ACCEPTED_BY_SEED", "run_id": run_id,
+            "seed_entry_sha256": "1" * 64, "seed_index_sha256": "2" * 64,
+            "seed_acceptance_run_id": "fixture-acceptance",
+        })
+        (self.root / "qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json").write_bytes(acknowledgement)
+        directory = self.root / "evidence/node_seed_acknowledgement"
+        (directory / "runs").mkdir(parents=True, exist_ok=True)
+        (directory / "runs" / (run_id + ".json")).write_bytes(acknowledgement)
+        (directory / "LATEST.json").write_bytes(acknowledgement)
+
+    def execute(self, mode: str = "success") -> tuple[subprocess.CompletedProcess[str], dict[str, object]]:
+        workflow = (self.repository / ".github/workflows/qikvrt_mirror_node_lifecycle.yml").read_text()
+        section = workflow.split("      - name: Propose lifecycle successor through existing expected-head governance\n", 1)[1]
+        script = textwrap.dedent(section.split("        run: |\n", 1)[1].split("      - name:", 1)[0])
+        result = subprocess.run(["bash", "-c", script], cwd=self.root, env={**self.env, "MOCK_MODE": mode}, text=True, capture_output=True, timeout=30)
+        receipt = json.loads((self.receipts / "PERSISTENCE.json").read_text())
+        remote_main = subprocess.check_output(["git", "--git-dir", str(self.remote), "rev-parse", "refs/heads/main"], text=True).strip()
+        self.assertEqual(self.base, remote_main, result.stdout + result.stderr)
+        self.assertFalse(receipt["main_persisted"])
+        self.assertFalse(receipt["effect_ack_done"])
+        pushes = self.container / "git-push-calls.jsonl"
+        self.pushes = [json.loads(line) for line in pushes.read_text().splitlines()] if pushes.exists() else []
+        for push in self.pushes:
+            self.assertEqual(["push", "origin", "HEAD:refs/heads/" + str(receipt["candidate_branch"])], push)
+        return result, receipt
+
+    def api_calls(self) -> list[list[str]]:
+        path = self.container / "api-calls.jsonl"
+        return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+    def assert_no_pr_write(self) -> None:
+        self.assertFalse(any("POST" in c and c[-1:] != ["-"] and any(a.endswith("/pulls") for a in c) for c in self.api_calls()))
+
+    def test_success_is_a_readback_bound_draft_and_never_main_persistence(self) -> None:
+        result, receipt = self.execute()
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertEqual("PR_PENDING_EXPECTED_HEAD_GOVERNANCE", receipt["state"])
+        self.assertIsNone(receipt["first_blocker"])
+        self.assertEqual(self.base, receipt["base_head"])
+        self.assertEqual(self.git("rev-parse", "HEAD^{tree}"), receipt["candidate_tree"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), receipt["candidate_head"])
+        request = json.loads((self.receipts / "pr-request.json").read_text())
+        self.assertTrue(request["draft"])
+        self.assertIn("qikvrt-expected-head-promotion:enabled external_effect=NONE", request["body"])
+        self.assertEqual(1, sum("POST" in c and any(a.endswith("/pulls") for a in c) for c in self.api_calls()))
+        self.assertEqual(0, len(self.pushes))
+        remote_refs = subprocess.check_output(
+            ["git", "--git-dir", str(self.remote), "for-each-ref", "--format=%(refname)"], text=True,
+        ).splitlines()
+        self.assertEqual(sorted(["refs/heads/main", "refs/heads/" + str(receipt["candidate_branch"])]), remote_refs)
+
+    def test_missing_native_governance_blocks_before_any_branch_or_pr(self) -> None:
+        result, receipt = self.execute("native_missing")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("CODE_OWNER_RULE_NOT_ENFORCED", receipt["first_blocker"])
+        self.assertEqual("", receipt["candidate_head"])
+        self.assert_no_pr_write()
+        self.assertEqual([], self.pushes)
+
+    def test_base_drift_blocks_before_branch_write(self) -> None:
+        result, receipt = self.execute("base_drift")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_BASE_DRIFT", receipt["first_blocker"])
+        self.assert_no_pr_write()
+        self.assertEqual([], self.pushes)
+        remote_refs = subprocess.check_output(["git", "--git-dir", str(self.remote), "for-each-ref", "--format=%(refname)"], text=True).splitlines()
+        self.assertEqual(["refs/heads/main"], remote_refs)
+
+    def test_wrong_branch_readback_blocks_before_pr(self) -> None:
+        result, receipt = self.execute("branch_drift")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_BRANCH_READBACK_MISMATCH", receipt["first_blocker"])
+        self.assert_no_pr_write()
+
+    def test_workflow_token_pr_denial_preserves_branch_and_capability_receipt(self) -> None:
+        result, receipt = self.execute("pr_denied")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_WORKFLOW_TOKEN_PR_CREATE_UNAVAILABLE_OR_AMBIGUOUS", receipt["first_blocker"])
+        self.assertEqual(1, sum("POST" in c and any(a.endswith("/pulls") for a in c) for c in self.api_calls()))
+        self.assertEqual(receipt["candidate_head"], subprocess.check_output(["git", "--git-dir", str(self.remote), "rev-parse", "refs/heads/" + str(receipt["candidate_branch"])], text=True).strip())
+
+    def test_ambiguous_pr_response_is_not_retried(self) -> None:
+        result, receipt = self.execute("ambiguous")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_WORKFLOW_TOKEN_PR_CREATE_UNAVAILABLE_OR_AMBIGUOUS", receipt["first_blocker"])
+        self.assertEqual(1, sum("POST" in c and any(a.endswith("/pulls") for a in c) for c in self.api_calls()))
+
+    def test_pr_subject_drift_is_not_accepted(self) -> None:
+        result, receipt = self.execute("pr_drift")
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_PR_SUBJECT_READBACK_MISMATCH", receipt["first_blocker"])
+
+    def test_non_allowlisted_staged_path_blocks_before_branch_write(self) -> None:
+        (self.root / "unexpected.py").write_text("forbidden fixture delta\n")
+        self.git("add", "unexpected.py")
+        result, receipt = self.execute()
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_NON_ALLOWLISTED_DELTA", receipt["first_blocker"])
+        self.assert_no_pr_write()
+        self.assertEqual([], self.pushes)
+
+    def test_missing_token_blocks_without_an_api_effect(self) -> None:
+        self.env["GH_TOKEN"] = ""
+        result, receipt = self.execute()
+        self.assertNotEqual(0, result.returncode)
+        self.assertEqual("LIFECYCLE_TOKEN_UNAVAILABLE", receipt["first_blocker"])
+        self.assertEqual([], self.api_calls())
+        self.assertEqual([], self.pushes)
+
+    def test_active_lifecycle_callers_use_only_the_review_workflow(self) -> None:
+        # Active workflow/tool sources are the scope; immutable incoming
+        # packages and historical Git objects are deliberately not rewritten.
+        sources = [
+            path for directory in (".github/workflows", ".github/actions", "tools")
+            for path in (self.repository / directory).rglob("*")
+            if path.is_file() and path.suffix in {".yml", ".yaml", ".sh", ".py", ".ps1"}
+        ]
+        references = sorted(
+            path.relative_to(self.repository).as_posix() for path in sources
+            if active_lifecycle_reference(path.read_text(encoding="utf-8"), path.suffix)
+        )
+        self.assertEqual([
+            ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+            ".github/workflows/qikvrt_requested_review_contract.yml",
+            "tools/qikvrt_mirror_node_lifecycle.py",
+        ], references)
+        callers = sorted(
+            path.relative_to(self.repository).as_posix() for path in sources
+            if re.search(r"^\s*(?:sh|bash)\s+tools/qikvrt_mirror_node_lifecycle\.sh\s*$", path.read_text(encoding="utf-8"), re.MULTILINE)
+        )
+        self.assertEqual([".github/workflows/qikvrt_mirror_node_lifecycle.yml"], callers)
+        workflow = (self.repository / callers[0]).read_text(encoding="utf-8")
+        pushes = [line.strip() for line in workflow.splitlines() if "git push" in line]
+        self.assertEqual([], pushes)
+        self.assertIn('tools.qikvrt_mirror_node_lifecycle candidate', workflow)
+        self.assertIn("print(f'automation/mirror-lifecycle-{identity[:24]}')", workflow)
+        self.assertNotIn("Persist lifecycle successor on mirror main", workflow)
+        self.assertIn("'base': 'main'", workflow)
+        self.assertIn("'draft': True", workflow)
+
+    def test_scheduler_concurrency_ttl_and_renewal_semantics_are_preserved(self) -> None:
+        workflow = (self.repository / ".github/workflows/qikvrt_mirror_node_lifecycle.yml").read_text()
+        self.assertEqual(1, workflow.count("cron:"))
+        self.assertIn('cron: "17 */6 * * *"', workflow)
+        self.assertIn("group: qikvrt-mirror-node-lifecycle", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertNotRegex(workflow, r"\bgit\s+push[^\n]*(?:HEAD:|refs/heads/)main\b")
+        self.assertNotIn("--force", workflow)
+        self.assertNotIn("/merge", workflow)
+        health = json.loads((self.root / "qikvrt/runtime/onboarding/NODE_HEALTH.json").read_text())
+        renewal = json.loads((self.root / "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json").read_text())
+        timestamp = lambda value: dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        # The preserved materializer uses separate wall-clock reads.
+        self.assertAlmostEqual(60 * health["heartbeat_ttl_minutes"], (timestamp(health["expires_utc"]) - timestamp(health["heartbeat_utc"])).total_seconds(), delta=2)
+        self.assertAlmostEqual(24 * 3600, (timestamp(renewal["next_renewal_due_utc"]) - timestamp(renewal["renewed_utc"])).total_seconds(), delta=2)
+        for directory in ("node_health", "node_registration_renewal"):
+            self.assertEqual((self.root / f"evidence/{directory}/LATEST.json").read_bytes(), (self.root / f"evidence/{directory}/{self.env['QIKVRT_RUN_ID']}.json").read_bytes())
 
 if __name__ == "__main__":
     unittest.main()

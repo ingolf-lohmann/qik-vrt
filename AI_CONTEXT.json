@@ -210,5 +210,9 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "owner_seal_acceptance": {
+    "path": "state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V2.json",
+    "sha256": "95ca97821bc4e529aea044f20ba17f85d5d52806f568a040f318bd95a3e0f57b"
   }
 }

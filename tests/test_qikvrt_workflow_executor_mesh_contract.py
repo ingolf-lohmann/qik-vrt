@@ -30,6 +30,18 @@ SPEC.loader.exec_module(MODULE)
 
 
 class WorkflowExecutorMeshContractTests(unittest.TestCase):
+    def test_seed_node_receipt_must_carry_the_exact_owner_seal_binding(self) -> None:
+        receipt = MODULE.build_node_receipt('tests/node', 'main', ROOT)
+        self.assertEqual(MODULE.validate_node_receipt(receipt, 'tests/node', 'main', ROOT)['first_blocker'], None)
+        for binding in (None, {}, dict(receipt['owner_seal_acceptance'], sha256='0' * 64)):
+            damaged = copy.deepcopy(receipt)
+            if binding is None:
+                damaged.pop('owner_seal_acceptance')
+            else:
+                damaged['owner_seal_acceptance'] = binding
+            with self.subTest(binding=binding), self.assertRaises(MODULE.ExecutorBlock):
+                MODULE.validate_node_receipt(damaged, 'tests/node', 'main', ROOT)
+
     def test_contract_is_authority_first_and_effect_bounded(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(contract["schema"], "qikvrt_workflow_executor_mesh_contract_v1")

@@ -1,0 +1,74 @@
+{
+  "schema": "qikvrt_versioned_owner_seal_acceptance_v1",
+  "status": "ACCEPTED",
+  "accepted_by": "Ingolf Lohmann",
+  "roles": [
+    "CREATOR",
+    "CODE_OWNER",
+    "PRODUCT_OWNER"
+  ],
+  "evidence_kind": "ATTRIBUTED_USER_DECLARATION",
+  "statement": "Annahme bestätigt!",
+  "persistence_authorization": "Du musst es natürlich in jede Schicht des QIKVT Mesh Repositories persistieren, sodass alles interoperabel ist, was an den universalen Transpuder angeschlossen ist. Freigabe erteilt.",
+  "recorded_at_utc": "2026-10-10T00:54:07.046648+00:00",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pull_request": 517,
+    "head": "831ee2f18c84198e3bbaba9e724eca0fb5b3012e",
+    "tree": "f24a70a209ff9cc44f4575334e5b0b680eea7ec2"
+  },
+  "persistence_base": {
+    "head": "831ee2f18c84198e3bbaba9e724eca0fb5b3012e",
+    "tree": "f24a70a209ff9cc44f4575334e5b0b680eea7ec2"
+  },
+  "provenance": {
+    "human": "Ingolf Lohmann: exact-subject confirmation after successful full tests and fresh readback; prior role declaration preserved",
+    "ai": "OpenAI Codex: serialization, interoperability wiring and tests",
+    "identity_authentication": "NOT_ATTESTED_BY_THIS_RECORD"
+  },
+  "layer_bindings": [
+    "AI_CONTEXT.json",
+    "AI_ADAPTERS.json",
+    ".well-known/qik-vrt-self-disclosure.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "registry/NODE_DISCOVERY_POLICY.json"
+  ],
+  "consumers": {
+    "ai": "tools/ai_handoff.py",
+    "runtime": "tools/ai_runtime_bootloader.py",
+    "discovery": "tools/qikvrt_self_disclosure.py owner-seal",
+    "rest_mcp": "qikvrt_capabilities via src/qikvrt_github_api_shim.py /mcp",
+    "seed": "tools/qikvrt_seed_common.py existing continuity validation",
+    "mesh": "tools/qikvrt_workflow_executor.py build_node_receipt / validate_node_receipt",
+    "governance": "Existing independent review and native enforcement requirements remain required",
+    "integrity": "tools/qikvrt_integrity.py existing immutable manifest generator",
+    "ci": "make test; existing tests.test_qikvrt_self_disclosure and tests.test_qikvrt_mcp_adapter"
+  },
+  "claims": {
+    "independent_review": false,
+    "native_code_owner_enforcement": false,
+    "successor_acceptance": false,
+    "main_merge": false,
+    "mesh_activation": false,
+    "delivery_verified": false,
+    "effect_ack_done": false
+  },
+  "continuation": {
+    "promotion": "Independent exact-head review, native code-owner enforcement and current-head tests required",
+    "remote_nodes": "Receipt availability does not prove node synchronization or execution",
+    "delivery": "Fresh exact-head delivery evidence and independent readback required for raumzeitterminal.de"
+  },
+  "previous_acceptance": {
+    "path": "state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V1.json",
+    "sha256": "8d44ceff353b39e084a6b34d44df4091b6cd94d02205c4879adc76135af6cc72",
+    "historical_record_unchanged": true
+  },
+  "native_test_evidence": {
+    "head": "831ee2f18c84198e3bbaba9e724eca0fb5b3012e",
+    "tree": "f24a70a209ff9cc44f4575334e5b0b680eea7ec2",
+    "push_ci_run": 38010089178,
+    "pr_ci_run": 38010092183,
+    "evidence_materialization_run": 38010092189,
+    "predecessor_evidence_transfer": false
+  }
+}

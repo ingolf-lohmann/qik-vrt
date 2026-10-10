@@ -258,5 +258,9 @@
     "EFFECT_ACK_DONE": false,
     "AUTHORITY_MIRROR_EQUALITY": false,
     "EXTERNAL_EFFECT": false
+  },
+  "owner_seal_acceptance": {
+    "path": "state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V2.json",
+    "sha256": "95ca97821bc4e529aea044f20ba17f85d5d52806f568a040f318bd95a3e0f57b"
   }
 }

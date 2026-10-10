@@ -3,13 +3,32 @@
   "service": "QIK-VRT repository capability self-disclosure",
   "state": "AVAILABLE",
   "discovery_path": ".well-known/qik-vrt-self-disclosure.json",
-  "cli": "python3 tools/qikvrt_self_disclosure.py {show|capabilities|status}",
+  "cli": "python3 tools/qikvrt_self_disclosure.py {show|capabilities|status|owner-seal}",
   "capabilities": [
-    {"id":"repository_state_read","machine_readable":true},
-    {"id":"transactional_workflow_verification","machine_readable":true},
-    {"id":"content_disposition_evidence","machine_readable":true},
-    {"id":"authority_mirror_traceability","machine_readable":true},
-    {"id":"publication_overview_discovery","machine_readable":true}
+    {
+      "id": "repository_state_read",
+      "machine_readable": true
+    },
+    {
+      "id": "transactional_workflow_verification",
+      "machine_readable": true
+    },
+    {
+      "id": "content_disposition_evidence",
+      "machine_readable": true
+    },
+    {
+      "id": "authority_mirror_traceability",
+      "machine_readable": true
+    },
+    {
+      "id": "publication_overview_discovery",
+      "machine_readable": true
+    },
+    {
+      "id": "versioned_owner_seal_acceptance_read",
+      "machine_readable": true
+    }
   ],
   "bindings": {
     "batch_002_evidence_head": "e594ce89c4a4efb7b2d8eeff82eb9ef40ec03328",
@@ -19,7 +38,15 @@
       "human_index_path": "docs/publications/index.html",
       "machine_index_path": "docs/publications/index.json",
       "maintenance_test": "python3 -B -m unittest -v tests.test_qikvrt_self_disclosure"
+    },
+    "owner_seal_acceptance": {
+      "path": "state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V2.json",
+      "sha256": "95ca97821bc4e529aea044f20ba17f85d5d52806f568a040f318bd95a3e0f57b"
     }
   },
-  "completion_claims": {"pass":false,"final_pass":false,"effect_ack_done":false}
+  "completion_claims": {
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
 }

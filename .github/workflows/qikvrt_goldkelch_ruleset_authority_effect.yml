@@ -1,4 +1,4 @@
-name: QIKVRT Goldkelch ruleset authority effect
+name: QIKVRT Mesh ruleset authority effect
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: qikvrt-goldkelch-ruleset-authority-effect-19344903
+  group: qikvrt-mesh-ruleset-authority-effect-${{ github.repository }}
   cancel-in-progress: false
 
 jobs:
@@ -29,6 +29,24 @@ jobs:
       RULESET_APP_PRIVATE_KEY: ${{ secrets.QIKVRT_RULESET_APP_PRIVATE_KEY }}
 
     steps:
+      - name: Check out trusted main authority binding
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Validate current Mesh Authority roles before administration
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B - <<'PY'
+          import os
+          from tools.qikvrt_required_review_gate import resolve_required_code_owner
+          owner = resolve_required_code_owner(os.environ['TARGET_REPOSITORY'])
+          print(f'MESH_AUTHORITY_BOUND: human={owner}; administration effect NOT_EXECUTED')
+          PY
+
       - name: Resolve least-privilege authority route
         id: authority
         shell: bash
@@ -116,6 +134,7 @@ jobs:
                           "do_not_enforce_on_create": False,
                           "required_status_checks": [
                               {
+                                  # Canonical native prerequisite: review_executor.native_governance_status_context.
                                   "context": "QIKVRT required code-owner review",
                                   "integration_id": 15368,
                               },

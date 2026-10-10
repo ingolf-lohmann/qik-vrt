@@ -6,6 +6,8 @@ import json
 import pathlib
 import unittest
 
+from tools import qikvrt_self_heal_pr_materializer as materializer
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
 PROMOTION_WORKFLOW = ROOT / ".github/workflows/qikvrt_expected_head_promotion.yml"
@@ -43,9 +45,14 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
 
     def test_self_heal_candidates_opt_in_to_executor(self) -> None:
         workflow = SELF_HEAL_WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn(MARKER, workflow)
+        # #502 moved PR body construction from inline YAML into the existing
+        # REST materializer. Bind the active producer; the behavioral suite
+        # separately checks the actual newly created Draft PR body.
+        self.assertEqual(materializer.MARKER, MARKER)
+        self.assertIn("python3 -B -m tools.qikvrt_self_heal_pr_materializer", workflow)
         self.assertIn("tests.test_qikvrt_expected_head_promotion", workflow)
-        self.assertIn("This proposal workflow never merges", workflow)
+        self.assertIn("tests.test_qikvrt_self_heal_pr_materializer", workflow)
+        self.assertIn("It never merges, approves", materializer.__doc__)
 
     def test_executor_is_bounded_and_sha_bound(self) -> None:
         workflow = PROMOTION_WORKFLOW.read_text(encoding="utf-8")
@@ -55,8 +62,8 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn('exit 0', workflow)
         self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
         self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
-        self.assertIn("if other.get('base', {}).get('sha') != current_main", workflow)
-        self.assertIn("if other.get('head', {}).get('sha') == head", workflow)
+        self.assertIn("other.get('base',{}).get('sha') != current_main", workflow)
+        self.assertIn("other.get('head',{}).get('sha') == head", workflow)
 
     def test_external_effect_claims_remain_fail_closed(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
