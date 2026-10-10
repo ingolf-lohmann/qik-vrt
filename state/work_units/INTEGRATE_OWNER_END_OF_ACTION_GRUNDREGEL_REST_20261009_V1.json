@@ -1,0 +1,164 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "INTEGRATE_OWNER_END_OF_ACTION_GRUNDREGEL_REST_20261009_V1",
+  "created_at": "2026-10-09T09:47:37.078551Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/main",
+  "source_commit": "502229de5259080939b54ec99dd131a7c96f476c",
+  "source_tree": "4c60f64a2646f77403587c16fda4173833fcb03b",
+  "scope": "Apply the owner-supplied hash-bound Grundregel patch through the authenticated REST review path, repair the evidenced stale bootstrap assertion using the current audio contract, regenerate native integrity, verify and freshly read back the result.",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product Owner and Code Owner",
+    "identity_proof_boundary": "Owner attribution comes from this session; no independent natural-person identity proof."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; serving build unavailable",
+    "session_or_run_id": "UNAVAILABLE",
+    "tools_and_adapters": [
+      "Authenticated GitHub REST connector",
+      "GitHub REST tarball materialization",
+      "Local Python 3.12.14 and offline Git object verification"
+    ],
+    "observed_at": "2026-10-09T09:47:37.078551Z",
+    "source_repository": "ingolf-lohmann/qik-vrt",
+    "source_ref": "refs/heads/main",
+    "source_commit": "502229de5259080939b54ec99dd131a7c96f476c",
+    "identity_and_observation_limits": "Self-declared runtime identity; connector credentials are reused without copying. No dispatch POST, domain write, merge, hosted CI or delivery is inferred."
+  },
+  "human_contributions": [
+    {
+      "type": "OWNER_REQUEST",
+      "description": "Apply the supplied patch and deliver verified work without renewed routine approval."
+    },
+    {
+      "type": "SUPPLIED_ARTIFACT",
+      "description": "The exact four-file patch and its original Claude work-unit provenance."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "BYTE_IDENTITY_VERIFICATION",
+      "description": "All three component size/SHA256/Git-blob bindings match; imported work-unit blob is 4fcf311ce76edfebc02d705153e167ffba2ebe36."
+    },
+    {
+      "type": "CAUSAL_REPAIR",
+      "description": "Reproduced the bootstrap assertion failure on exact unchanged Main. Current USER_SUPPLIED_AUDIO_TRANSCRIPTION_REQUEST_V1 state_machine starts at BOUND_PENDING_ASR. Align the test with that owner-bound contract and retain an explicit no-transcript-from-filename assertion. Historical corpus UNTRANSCRIBED status and entrypoint bytes are preserved."
+    },
+    {
+      "type": "REUSE",
+      "description": "Reuse tools/qikvrt_integrity.py generate/verify, the existing Makefile and native CI. No new workflow or dispatch substitute."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "raw_transcript_persisted": false,
+    "imported_artifact": {
+      "path": "state/work_units/PERSIST_OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_20261009_V1.json",
+      "bytes": 5653,
+      "sha256": "3bed4945da397df978f00315ea4173f3a575148f23999e45ed4a39e0e613f565",
+      "git_blob_sha1": "4fcf311ce76edfebc02d705153e167ffba2ebe36"
+    },
+    "imported_verification_class": "USER_SUPPLIED_PRIOR_RUN_REPORT; original Claude make_test claims are retained as historical provenance and are not inherited as current checks",
+    "decision_source": "state/audio/USER_SUPPLIED_AUDIO_TRANSCRIPTION_REQUEST_V1.json"
+  },
+  "outputs": [
+    "AGENTS.md",
+    "AI_CONTEXT.json",
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "state/work_units/PERSIST_OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_20261009_V1.json",
+    "tests/test_ai_bootstrap_knowledge_corpus.py",
+    "evidence/native-runtime-acceptance/GRUNDREGEL_DELIVERY_EVIDENCE_ABSENCE_20261009_V1.json",
+    "state/work_units/INTEGRATE_OWNER_END_OF_ACTION_GRUNDREGEL_REST_20261009_V1.json",
+    "REPOSITORY_FILE_MANIFEST.json",
+    "SHA256SUMS.txt",
+    "REPOSITORY_FILE_MANIFEST.json.sha256"
+  ],
+  "components": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 9481,
+      "sha256": "6cc3aa1be65b5b55b18780f923a1d4d1a0871eb77fa6fc71090ae77294297904",
+      "git_blob_sha1": "fc3467af9d6f9e434f4f0816a83f63af22e53bf9"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 12271,
+      "sha256": "027083638b5136cb3ac2ae059cc275d68cc5ae12a9e8c712d70b6615cb10a2fb",
+      "git_blob_sha1": "df22c279f3d98e7b5609037f7aa06c9e7efe2ef3"
+    },
+    {
+      "path": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+      "bytes": 3191,
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+      "git_blob_sha1": "0cda572c33f46216bab7d569a2e61569a61f6722"
+    },
+    {
+      "path": "state/work_units/PERSIST_OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_20261009_V1.json",
+      "bytes": 5653,
+      "sha256": "3bed4945da397df978f00315ea4173f3a575148f23999e45ed4a39e0e613f565",
+      "git_blob_sha1": "4fcf311ce76edfebc02d705153e167ffba2ebe36"
+    },
+    {
+      "path": "tests/test_ai_bootstrap_knowledge_corpus.py",
+      "bytes": 3634,
+      "sha256": "a25cd559d64df4be1a1013aea5fce64a78b4cb894a73ee42d1cf73e4882c7b3a",
+      "git_blob_sha1": "7a3c6101a509d491e157357c26022f134d1c4918"
+    },
+    {
+      "path": "evidence/native-runtime-acceptance/GRUNDREGEL_DELIVERY_EVIDENCE_ABSENCE_20261009_V1.json",
+      "bytes": 1637,
+      "sha256": "3ca0461e269ee211c33636928b7c260d4698575572e61e7a25216c5a3fa12d25",
+      "git_blob_sha1": "a92e4e2cb104aa14ddda5e38f8d84dda5a1b8c4a"
+    }
+  ],
+  "git_history": {
+    "force_push": false,
+    "history_rewrite": false,
+    "branch": "work/owner-end-of-action-grundregel-20261009-v1",
+    "strategy": "One history-preserving review successor of exact Main; remote writes use REST only."
+  },
+  "verification": {
+    "source_head_and_tree_reconstructed_exactly": true,
+    "source_archive_sha256": "30b5b34c0c2c995b884feccd72bc4f60d2a57bc1c6eaae2019f9ac48a3dabee0",
+    "source_tree_files": 3970,
+    "supplied_patch_byte_identity": "MATCH",
+    "unchanged_source_bootstrap_test": "6 tests; 1 stale entrypoint-token assertion failure",
+    "repaired_bootstrap_test": "6 tests pass on the bound components",
+    "tool_cache": "14/14; 100 percent; independently verified",
+    "preexisting_main_boot": "BLOCK: stored repository manifest differs from native deterministic regeneration",
+    "required_before_promotion": [
+      "Native integrity generate and verify",
+      "make test on final candidate",
+      "Repaired bootstrap suite on final candidate",
+      "Native exact-HEAD checks and governance",
+      "Fresh remote HEAD/TREE and delivery evidence readback"
+    ],
+    "full_repository_tests_on_final_candidate": "NOT_YET_OBSERVED_AT_RECORD_CREATION",
+    "hosted_ci": "NOT_OBSERVED_AT_RECORD_CREATION"
+  },
+  "human_decision": {
+    "state": "AUTHORIZED_REPOSITORY_INTERNAL_CONTINUATION",
+    "source": "Current owner request and existing standing delegation; no new owner interaction requested."
+  },
+  "external_effects": {
+    "record_phase": "PRE_REMOTE_WRITE",
+    "planned": "Review branch and draft PR through REST; independent receipts remain separate from this immutable creation record.",
+    "merge": false,
+    "release": false,
+    "deployment": false,
+    "publication": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "predecessor_evidence_transfer": false
+}

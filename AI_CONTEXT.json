@@ -135,7 +135,8 @@
     "STATUS.md",
     "docs/CURRENT_AUTHORITY.md",
     "docs/COLLECTIVE_ADAPTIVE_COGNITION.md",
-    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json"
+    "policy/COLLECTIVE_ADAPTIVE_COGNITION.json",
+    "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json"
   ],
   "session_protocol": {
     "startup": [
@@ -210,5 +211,15 @@
     "required_for_conforming_nodes": true,
     "mesh_propagation": "Every current or future QIK-VRT node, mesh instance, agent adapter or runtime claiming charter conformance resolves the exact charter through required_read_order; historical snapshots remain immutable.",
     "rule": "Separate evidence forms; preserve provenance and reproducibility; revise status without erasing history; never claim PASS, DONE, publication, equality or EFFECT_ACK_DONE without verifying the evidence required for that exact claim."
+  },
+  "end_of_action_verification": {
+    "delegation": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+    "state": "ACTIVE",
+    "duties": [
+      "REOBSERVE_REPOSITORY_STATE",
+      "REOBSERVE_RAUMZEITTERMINAL_DELIVERY_EVIDENCE"
+    ],
+    "new_change": "FOLLOW_THROUGH_TO_A_FRESH_READBACK",
+    "unchanged_error": "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT"
   }
 }

@@ -1,0 +1,37 @@
+{
+  "schema": "qikvrt_native_runtime_acceptance_evidence_disposition_v1",
+  "observed_at": "2026-10-09T09:47:37.078551Z",
+  "domain": "raumzeitterminal.de",
+  "source_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "refs/heads/main",
+    "head": "502229de5259080939b54ec99dd131a7c96f476c",
+    "tree": "4c60f64a2646f77403587c16fda4173833fcb03b"
+  },
+  "observation": {
+    "method": "Complete recursive GitHub REST tree read; untruncated 4424-entry tree; REST source archive independently reconstructed to exact Git HEAD and TREE",
+    "evidence_root": "evidence/native-runtime-acceptance/",
+    "evidence_root_present_in_source_tree": false,
+    "delivery_proof_files_in_source_tree": 0,
+    "disposition": "ABSENCE_OF_REPOSITORY_DELIVERY_PROOF"
+  },
+  "boundaries": {
+    "this_document_is_delivery_proof": false,
+    "delivery_proved": false,
+    "domain_registry_or_dns_state_inferred": false,
+    "client_resolution_failure_is_registry_evidence": false,
+    "unobservable_evidence_is_negative_evidence": false,
+    "this_is_historical_source_observation_not_future_current_ref": true
+  },
+  "continuation": {
+    "repository_patch": "REVIEW_CANDIDATE_BEING_PREPARED",
+    "unchanged_dispatch_or_domain_write_failure": "NO_RETRY_WITHOUT_MATERIALLY_NEW_EVIDENCE",
+    "post_effect_requirement": "Reobserve the remote candidate HEAD/TREE and all entries under evidence/native-runtime-acceptance/ after the write; an absence disposition remains non-delivery evidence."
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "predecessor_evidence_transfer": false
+}
