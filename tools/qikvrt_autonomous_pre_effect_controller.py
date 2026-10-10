@@ -149,15 +149,24 @@ def _execution_source_remote() -> str:
 
 def _remote_main_revision() -> str | None:
     remote = _execution_source_remote()
+    origin = self_heal.run(("git", "remote", "get-url", "--all", remote), timeout=60)
+    repository = origin.stdout.strip().removesuffix(".git").removeprefix("https://github.com/")
+    if origin.returncode or re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository) is None:
+        return None
     result = self_heal.run((
-        "git", "ls-remote", "--heads", remote, "refs/heads/main",
+        "gh", "api", "--hostname", "github.com", "--method", "GET",
+        f"repos/{repository}/git/ref/heads/main",
     ), timeout=60)
     if result.returncode:
         return None
-    fields = result.stdout.split()
-    if len(fields) != 2 or not SHA1.fullmatch(fields[0]):
+    try:
+        value = json.loads(result.stdout)["object"]
+        head = value["sha"]
+        if value["type"] != "commit" or not isinstance(head, str) or not SHA1.fullmatch(head):
+            return None
+    except (ValueError, KeyError, TypeError):
         return None
-    return fields[0]
+    return head
 
 
 def observe_preconditions() -> dict[str, bool]:
