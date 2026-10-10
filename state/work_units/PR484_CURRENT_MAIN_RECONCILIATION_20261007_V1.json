@@ -1,0 +1,283 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "identity_and_observation_limits": "Account attribution is not proof of a natural person or independent native approval. No physical iPhone witness is inferred.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "pr484-current-main-reconciliation-20261007",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub connector",
+      "Git 2.51.1",
+      "Python 3.12.14",
+      "Node 24.19.0",
+      "repository-native integrity and test entrypoints"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserve exact remote Main and candidate objects, checks, reviews and rulesets.",
+    "Verify all six drift paths and exact Git blob bytes, modes, sizes and SHA256 identities against base, Main and predecessor.",
+    "Prove zero direct overlap and byte-identical native raw candidate diff after a virtual merge.",
+    "Reproduce the naive merge integrity failure; regenerate only the existing integrity trio plus this bounded provenance record.",
+    "Require fresh successor-bound tests and native offline/governance contract gates; preserve failed live governance acceptance."
+  ],
+  "basis_gate_contract": {
+    "current_main_required_by": [
+      "tools/qikvrt_requested_review_executor.py: evaluate base_sha == current_main_sha",
+      "tools/qikvrt_expected_head_promotion.py: evaluate_promotion base_sha == current_main_sha",
+      ".github/workflows/qikvrt_expected_head_promotion.yml: current-base selector and fresh base/head reread"
+    ],
+    "not_a_merge_authorization": true,
+    "observed_pr_base_before_repair": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "state_before_repair": "BASE_DRIFT"
+  },
+  "causal_integrity_boundary": {
+    "claimed_cause": "The naive merged tree contains four new immutable blob contents and two new evidence paths but retains predecessor integrity metadata.",
+    "exact_subject_tree": "6859124f486c81a8ee634c76e7556481b32dbd55",
+    "four_existing_manifest_digests_stale": true,
+    "observed_operation": "python3 -B tools/qikvrt_integrity.py verify",
+    "observed_result": "BLOCK repository manifest differs from deterministic regeneration",
+    "required_repair": "Regenerate existing REPOSITORY_FILE_MANIFEST.json, SHA256SUMS.txt and detached manifest digest; preserve all source and policy bytes.",
+    "source_classifier": "tools/qikvrt_integrity.py: classification and verify",
+    "two_new_paths_absent_from_manifest": true
+  },
+  "completion": {
+    "general_EFFECT_ACK_DONE": false,
+    "predecessor_evidence_transfer": false,
+    "scope": "Current-Main candidate integration and fresh bounded verification only"
+  },
+  "current_main": {
+    "head": "3d6148513b289005e71c73bae12de26f5f42f445",
+    "new_commits": 1,
+    "subject": "chore(mesh): renew mirror node lifecycle",
+    "tree": "712f0a997e201f66c912c2682d4ee5fa67c0b8d1"
+  },
+  "drift": {
+    "candidate_changed_paths": 56,
+    "direct_path_overlap": [],
+    "paths": [
+      {
+        "current_main": {
+          "bytes": 241,
+          "git_blob_sha1": "5476abbe880dda379a5db4b25817aeb347d65bfe",
+          "present": true,
+          "sha256": "2c8b892761ab14e79979e0e84e9d214245d812cd5e1c1c498cf7385f00b80a54"
+        },
+        "historical_base": {
+          "present": false
+        },
+        "mode": "100644",
+        "path": "evidence/node_health/37578851517-1.json",
+        "predecessor_candidate": {
+          "present": false
+        }
+      },
+      {
+        "current_main": {
+          "bytes": 241,
+          "git_blob_sha1": "5476abbe880dda379a5db4b25817aeb347d65bfe",
+          "present": true,
+          "sha256": "2c8b892761ab14e79979e0e84e9d214245d812cd5e1c1c498cf7385f00b80a54"
+        },
+        "historical_base": {
+          "bytes": 241,
+          "git_blob_sha1": "795cbaf12c5252d54edc0bec275cf4687ebe6c11",
+          "present": true,
+          "sha256": "afdddf385c000ce39e2f330ee96e01d31c1a1c832734c8ceb07fda5bd63d04f0"
+        },
+        "mode": "100644",
+        "path": "evidence/node_health/LATEST.json",
+        "predecessor_candidate": {
+          "bytes": 241,
+          "git_blob_sha1": "795cbaf12c5252d54edc0bec275cf4687ebe6c11",
+          "present": true,
+          "sha256": "afdddf385c000ce39e2f330ee96e01d31c1a1c832734c8ceb07fda5bd63d04f0"
+        }
+      },
+      {
+        "current_main": {
+          "bytes": 262,
+          "git_blob_sha1": "11c07cb1b5b9674a74e240af2053203ec84b213c",
+          "present": true,
+          "sha256": "8f26000137d1a862f0a476450b9e24b4c3b73401563c08a0d6eee026e73ee1da"
+        },
+        "historical_base": {
+          "present": false
+        },
+        "mode": "100644",
+        "path": "evidence/node_registration_renewal/37578851517-1.json",
+        "predecessor_candidate": {
+          "present": false
+        }
+      },
+      {
+        "current_main": {
+          "bytes": 262,
+          "git_blob_sha1": "11c07cb1b5b9674a74e240af2053203ec84b213c",
+          "present": true,
+          "sha256": "8f26000137d1a862f0a476450b9e24b4c3b73401563c08a0d6eee026e73ee1da"
+        },
+        "historical_base": {
+          "bytes": 262,
+          "git_blob_sha1": "c82daccbf4c228421ef2b1b8abf3282c8b89e1cc",
+          "present": true,
+          "sha256": "c1d6e2083eec4c2122b0c0a2705a65c33294b0c9458639e9c2875303a5dc35f0"
+        },
+        "mode": "100644",
+        "path": "evidence/node_registration_renewal/LATEST.json",
+        "predecessor_candidate": {
+          "bytes": 262,
+          "git_blob_sha1": "c82daccbf4c228421ef2b1b8abf3282c8b89e1cc",
+          "present": true,
+          "sha256": "c1d6e2083eec4c2122b0c0a2705a65c33294b0c9458639e9c2875303a5dc35f0"
+        }
+      },
+      {
+        "current_main": {
+          "bytes": 563,
+          "git_blob_sha1": "e2300370ff0a34572a89579121792649d5268174",
+          "present": true,
+          "sha256": "927409fe38eb29063031aadaf4e1c849e715d4b2323dcb102c1fd39a1e998574"
+        },
+        "historical_base": {
+          "bytes": 563,
+          "git_blob_sha1": "3f0c97d0947339b9e320d2f6d0722ae21c308710",
+          "present": true,
+          "sha256": "b76a09a752174147f780e46cd96e50336ddb92b2ec987994b3ec2ea92edc762d"
+        },
+        "mode": "100644",
+        "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "predecessor_candidate": {
+          "bytes": 563,
+          "git_blob_sha1": "3f0c97d0947339b9e320d2f6d0722ae21c308710",
+          "present": true,
+          "sha256": "b76a09a752174147f780e46cd96e50336ddb92b2ec987994b3ec2ea92edc762d"
+        }
+      },
+      {
+        "current_main": {
+          "bytes": 542,
+          "git_blob_sha1": "4f9082ebdae5f4be6f4d4e749e3527cb10637393",
+          "present": true,
+          "sha256": "8f8ef9b9736f4c9fcf9a94dea4e3ca48e721629b62483d164c823bfeaaf4e9ce"
+        },
+        "historical_base": {
+          "bytes": 542,
+          "git_blob_sha1": "dd11ab3943b03a8b759ef026f0b563105527f24e",
+          "present": true,
+          "sha256": "7a1a67aa3dc17c991b40c298927ea80ce592475b8218d782d09a8555f4022b41"
+        },
+        "mode": "100644",
+        "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+        "predecessor_candidate": {
+          "bytes": 542,
+          "git_blob_sha1": "dd11ab3943b03a8b759ef026f0b563105527f24e",
+          "present": true,
+          "sha256": "7a1a67aa3dc17c991b40c298927ea80ce592475b8218d782d09a8555f4022b41"
+        }
+      }
+    ],
+    "semantic_delta": "Only heartbeat/renewal times, expiry/due times and run identities change; two run-bound evidence files are added. Source, workflows, protections and Authority roles are unchanged by Main drift."
+  },
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "authorized": "Bounded history-preserving candidate branch update, fresh native gates and candidate evidence metadata",
+    "deployment": false,
+    "main_write": false,
+    "merge_to_main": false,
+    "native_review_submission": false,
+    "publication": false,
+    "ruleset_change": false,
+    "unrelated_pr486_changes": false
+  },
+  "git_history": {
+    "allowed_delta_vs_predecessor": [
+      "evidence/node_health/37578851517-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/37578851517-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt",
+      "state/work_units/PR484_CURRENT_MAIN_RECONCILIATION_20261007_V1.json"
+    ],
+    "branch": "work/offline-iphone-repository-20261007",
+    "candidate_head_binding": "Successor commit/tree are bound by immutable native commit object and fresh PR evidence; no circular self-reference.",
+    "force_push": false,
+    "history_preserved": true,
+    "ordered_parents": [
+      "0068a61760737bd91dc3d94e7ce0ee759289c189",
+      "3d6148513b289005e71c73bae12de26f5f42f445"
+    ]
+  },
+  "historical_base": {
+    "head": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45"
+  },
+  "human_actor": {
+    "contribution_class": "HUMAN",
+    "id": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "human_contributions": [
+    "Request fresh Main and PR484 observations and path/content-exact drift comparison.",
+    "Require predecessor HEAD preservation when merge equivalence and applicable basis gates permit it.",
+    "Authorize the smallest history-preserving Current-Main successor when integration is necessary; exclude unrelated PR486 changes."
+  ],
+  "human_decision": {
+    "acceptance_of_generated_result": "PENDING",
+    "task_execution": "AUTHORIZED_BY_CURRENT_REQUEST"
+  },
+  "joint_components": [],
+  "merge_equivalence": {
+    "conflict_free": true,
+    "equivalence_scope": "Exact original 56-path delta before necessary integrity/provenance repair; virtual merged tree is not claimed to pass integrity.",
+    "git_command": "git merge-tree --write-tree --merge-base=71f8c15319bf79456ac177d80941b4f59d372996 0068a61760737bd91dc3d94e7ce0ee759289c189 3d6148513b289005e71c73bae12de26f5f42f445",
+    "native_virtual_merge_tree": "6859124f486c81a8ee634c76e7556481b32dbd55",
+    "raw_candidate_diff_equals_current_main_to_virtual_merge_diff": true,
+    "raw_diff_sha256": "774658e7f2000aa38a6542f84b6e8ac772272136704a94d095ce721051a7ffed"
+  },
+  "next_action": "Freeze successor tree, create the two-parent candidate, verify its exact HEAD freshly, update existing branch by non-force expected-head lease, reobserve native gates and refresh PR484 body with fresh evidence.",
+  "reported_utc": "2026-10-07T12:52:21.528466+00:00",
+  "reuse_before_create": {
+    "implementation_reused": [
+      "tools/qikvrt_integrity.py generate/verify",
+      "Makefile make test",
+      ".github/workflows/qikvrt_offline_repository.yml",
+      ".github/workflows/qikvrt_requested_review_contract.yml"
+    ],
+    "new_implementation": false,
+    "provenance_record_reason": "This is a separate current-main integration subject. The predecessor offline work unit and its historical tests remain immutable."
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "0068a61760737bd91dc3d94e7ce0ee759289c189",
+  "source_ref": "work/offline-iphone-repository-20261007",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "dcb0477303a43ccc91e377b026575a058beb9938",
+  "unresolved_origin": [],
+  "verification": {
+    "actual_iphone_readback": false,
+    "current_main_merged_snapshot_required_after_promotion": true,
+    "fresh_successor_gates_required": [
+      "make test",
+      "python3 -B tools/qikvrt_tool_cache.py verify",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "requested-review contract",
+      "native complete offline transfer plus Chromium and WebKit controls"
+    ],
+    "live_native_enforcement_and_independent_approval": "SEPARATE_REQUIRED_BOUNDARY",
+    "predecessor_evidence_transfer": false,
+    "record_scope": "PRE_EFFECT_PROVENANCE_ONLY"
+  },
+  "work_unit_id": "PR484_CURRENT_MAIN_RECONCILIATION_20261007_V1"
+}

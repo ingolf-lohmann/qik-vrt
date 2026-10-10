@@ -1,0 +1,52 @@
+{
+  "schema": "qikvrt_ruleset_authority_execution_diagnosis_v1",
+  "input_head": "33ceac7115b9df923756b4d0efc867ac8bc35f14",
+  "input_tree": "76cf783ce5f31b192d96da8562cc9fb9bf1f54f7",
+  "main": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "owner_authorization": "Product Owner and Code Owner explicitly authorized governance problem repair on 2026-10-06",
+  "execution_mode": "SYNCHRONOUS_REPAIR_READBACK_NEXT_TASK",
+  "polling_opt_in": false,
+  "workflow_path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+  "workflow_blob": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+  "historical_execution": {
+    "run_id": 36847427445,
+    "job_id": 111468119495,
+    "head": "984ec07fbb854d87e756a03c90ef2d3f161180b8",
+    "workflow_blob": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+    "same_workflow_bytes": true,
+    "failure_step": "Resolve least-privilege authority route",
+    "observed_error": "No repository-provided authority credential route is configured.",
+    "exit_code": 2,
+    "is_current_credential_probe": false
+  },
+  "current_client": {
+    "workflow_dispatch_callable": false,
+    "ruleset_administration_callable": false,
+    "credential_environment_carrier_present": false,
+    "git_credential_helper_present": false,
+    "gh_installed": false
+  },
+  "mesh_dispatch_allowlist": [
+    "qikvrt_workflow_executor_watchdog.yml"
+  ],
+  "repair": {
+    "observed_failure": "obsolete pre_hash != expected_pre literal expectation fails on current executor",
+    "preserved_protection": "Code owner review, last-push approval, stale dismissal, minimum one approval, required test and dedicated governance check, no bypass, non-fast-forward protection",
+    "behavioral_controls": [
+      "changed preimage refuses mutation",
+      "missing ETag refuses mutation",
+      "PUT uses reobserved ETag",
+      "exact protected postimage required before effect claim"
+    ],
+    "full_suite_integration": "make test includes ruleset-authority-test",
+    "containing_commit_validation": "PENDING_FRESH_REMOTE_HEAD"
+  },
+  "integration_state": "BLOCKED_EXECUTABLE_ADMINISTRATION_ROUTE_AND_NATIVE_REVIEW",
+  "next_action": "Bind an actually callable administration-capable route to the existing exact ruleset writer; execute and verify native ruleset before governed integration.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false,
+  "contributions": {
+    "requirements": "Ingolf Lohmann",
+    "implementation": "OpenAI Codex / GPT-6; build UNAVAILABLE; metadata only"
+  }
+}

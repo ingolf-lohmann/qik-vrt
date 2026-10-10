@@ -1,0 +1,339 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "identity_and_observation_limits": "GitHub attribution does not attest natural-person/model identity or independent native approval.",
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "governance-reconcile-20261006",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "GitHub connector REST",
+      "Git",
+      "Python standard library",
+      "repository-native tests and integrity"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh Main and PR subject/review/ruleset observations.",
+    "Reconcile using current #479 native governance model and current #478 generated-context controls.",
+    "Execute real embedded writer/gate/promotion Python and executor/lifecycle shell controls against intercepted bounded fixtures.",
+    "Generate provenance/integrity and persist reviewable Draft successor with fresh checks."
+  ],
+  "authority_application_successor": {
+    "application_authorized_at": "2026-10-06T21:58:40Z",
+    "bootstrap_transition_repair": {
+      "cause": "Candidate live workflow imports old trusted-Main gate without resolve_required_code_owner; unhandled AttributeError",
+      "native_failure_job": 112524773874,
+      "native_failure_run": 37538303325,
+      "old_results": "Historical only; fresh tests required on this successor",
+      "parent_head": "c2b5f3740159476e338ecd1c9948c912ca992b8e",
+      "parent_tree": "baeef6e48341abbf05d7bf5742aa5617d2159d6b",
+      "repair": "Explicit AUTHORITY_BINDING_NOT_PROMOTED blocked projection; technical executor activation remains bootstrap NOOP until trusted role binding exists",
+      "scope": "No fallback to former authority or relaxation of native approval"
+    },
+    "candidate_head_tree_binding": "Native commit/PR and fresh exact-head verifier; no self-reference",
+    "current_main": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "independent_native_review_and_all_ruleset_protections": "PRESERVED",
+    "lifecycle_workflow_and_shell": "UNCHANGED_FROM_PARENT",
+    "live_ruleset_activation": false,
+    "merge": false,
+    "native_approve_fabricated": false,
+    "old_owner_approval_scope": "Previous exact HEAD only; not a native review or acceptance of this successor",
+    "owner_correction_at": "2026-10-06T21:56:08Z",
+    "owner_correction_text": "Falsch. Die Authority ist mittlerweile bei uns.",
+    "parent_head": "f178581d6e283aba3ae54704c655d893859179fb",
+    "parent_tree": "4fa4d7666ec26fbae2b476e1dc61886737d2cca7",
+    "predecessor_evidence_transfer": false,
+    "roles": {
+      "authority_repository": "ingolf-lohmann/qik-vrt",
+      "executor": {
+        "may_submit_native_approve": false,
+        "name": "QIK-VRT executing instance",
+        "role": "TESTED_EVENT_MODEL_DRIVEN_EXECUTION"
+      },
+      "former_authority_permission_required": false,
+      "former_authority_repository": "Goldkelch/qik-vrt",
+      "github_platform_effects_are_separate": true,
+      "human": {
+        "github_login": "ingolf-lohmann",
+        "name": "Ingolf Lohmann",
+        "roles": [
+          "Product Owner",
+          "Code Owner"
+        ],
+        "type": "NATURAL_PERSON"
+      },
+      "independent_native_code_owner_review_required": true,
+      "owner_directive": {
+        "application_authorized_at": "2026-10-06T21:58:40Z",
+        "submitted_at": "2026-10-06T21:56:08Z",
+        "text": "Falsch. Die Authority ist mittlerweile bei uns."
+      },
+      "repository": {
+        "full_name": "ingolf-lohmann/qik-vrt",
+        "may_submit_native_approve": false,
+        "role": "DURABLE_WORKING_MEMORY"
+      }
+    },
+    "schema": "qikvrt_mesh_authority_application_v1",
+    "task_scope": "Apply current Mesh Authority to existing Ruleset writer, native publisher, technical executor, promotion, live projection and CODEOWNERS",
+    "tests": "Fresh exact-head actual workflow steps and full make test required; earlier results historical only"
+  },
+  "created_at": "2026-10-06T21:11:08.406766+00:00",
+  "evidence_retention": "METADATA_ONLY",
+  "external_effects": {
+    "authorized": "New review branch and Draft successor, with fresh readback.",
+    "deployment": false,
+    "main_write": false,
+    "merge": false,
+    "native_review_submission": false,
+    "publication": false,
+    "release": false,
+    "ruleset_change": false
+  },
+  "git_history": {
+    "branch": "work/governance-reconcile-20261006",
+    "candidate_head_binding": "Final native commit/PR/workflow readback; not self-referential.",
+    "force_push": false,
+    "history_preserved": true,
+    "ordered_parents": [
+      "7292c9592822e95c794489183ea29893a9a0336d",
+      "01248b7b5a6f4eba9397de7c5f84af4e0391827c"
+    ],
+    "predecessor_evidence_transfer": false,
+    "target_base": "main"
+  },
+  "governance_roles": {
+    "administrative_effect": "SEPARATE_NOT_EXECUTED",
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "legacy_alias": "QIKVRT requested review execution",
+    "native_status_sole_writer": ".github/workflows/qikvrt_required_review_gate.yml",
+    "promotion": "Fresh native rules, independent current-head review, canonical native status and all other gates; legacy/technical/workflow success cannot substitute.",
+    "required_human_code_owner": "ingolf-lohmann",
+    "ruleset_required_context": "QIKVRT required code-owner review",
+    "technical_disposition_context": "QIKVRT requested review disposition",
+    "technical_native_approve_mutation": "FORBIDDEN; APPROVE disposition always submits COMMENT"
+  },
+  "human_actor": {
+    "contribution_class": "HUMAN",
+    "id": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ]
+  },
+  "human_contributions": [
+    "Authorize a history-preserving consolidated successor of #478 and #479.",
+    "Require exactly one consistent roles/status model without weakened independent Code Owner approval or native safeguards.",
+    "Require the #479 Lifecycle direct-writer repair, regenerated integrity and fresh exact-head tests with no predecessor evidence transfer."
+  ],
+  "human_decision": {
+    "authority_application": "AUTHORIZED_BY_OWNER_2026-10-06T21:58:40Z",
+    "candidate_acceptance": "NEW_SUCCESSOR_REQUIRES_ITS_OWN_EXACT_HEAD_ACCEPTANCE",
+    "task_execution": "AUTHORIZED_BY_CURRENT_REQUEST"
+  },
+  "inputs": [
+    {
+      "evidence_scope": "SOURCE_BYTES_AND_HISTORY_ONLY",
+      "head": "7292c9592822e95c794489183ea29893a9a0336d",
+      "pr": 479,
+      "tree": "21e226b78431c79dc32c36c511d48a090eeaae0b"
+    },
+    {
+      "evidence_scope": "SOURCE_BYTES_AND_HISTORY_ONLY",
+      "head": "01248b7b5a6f4eba9397de7c5f84af4e0391827c",
+      "pr": 478,
+      "tree": "5d875603dff7a9e5aeffc8e6d541b11c7ed1ca2d"
+    }
+  ],
+  "joint_components": [],
+  "lifecycle": {
+    "candidate_matches_source": true,
+    "draft_pr_readback_required": true,
+    "main_push_or_merge": false,
+    "schedule_concurrency_ttl_renewal_semantics": "PRESERVED_EXACT_SOURCE",
+    "sole_push": "fingerprint-bound review branch",
+    "source_head": "7292c9592822e95c794489183ea29893a9a0336d",
+    "workflow_git_blob": "ad7e1912055c2bce54243a007d4ca75fd3f11840"
+  },
+  "next_action": "Regenerate canonical integrity, freeze combined tree with both current PR heads as parents, execute fresh exact-head controls/CI and persist native readback.",
+  "outputs": [
+    {
+      "bytes": 2148,
+      "git_blob_sha1": "d8cfd8ebf2d02bffbf0188f8f9ea2a7ad18539f9",
+      "path": ".github/CODEOWNERS",
+      "sha256": "b7641aac1b1d611a27d1f34bc6c85b7c8c140736bcbd065ee680f2880683984b"
+    },
+    {
+      "bytes": 1749,
+      "git_blob_sha1": "efd13271fec4584ec1f6057b743a2b6c5aaf3057",
+      "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+      "sha256": "6d6975b55c358fdeebdf125aae6ed855f75bfec06164b6b47cac15bd27de4fd0"
+    },
+    {
+      "bytes": 14194,
+      "git_blob_sha1": "15e4bc87864608d2fec1cd77fcdb96cacce855ab",
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "sha256": "46386356f365d1c61fb1e9c3707f9c29d162969b27a1f2c3560e8ac636a0f192"
+    },
+    {
+      "bytes": 12056,
+      "git_blob_sha1": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "sha256": "bfe554a15c993d0b46d33100682a0c8dd38718988d54c495082256a9fe8c260d"
+    },
+    {
+      "bytes": 10997,
+      "git_blob_sha1": "ca66f83148125ea7f5cacd8386f0df034cca5ded",
+      "path": ".github/workflows/qikvrt_live_status_watch.yml",
+      "sha256": "bdd5e54a7ccc73384121f3d13c6abd5d8ff7a0ef6640493d41ba2590be5f3c22"
+    },
+    {
+      "bytes": 11178,
+      "git_blob_sha1": "ad7e1912055c2bce54243a007d4ca75fd3f11840",
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "sha256": "a64139f3f17bc4475747b6fbac10bf92c1449708533b742d4cbb0e939b89c480"
+    },
+    {
+      "bytes": 6324,
+      "git_blob_sha1": "3c375d92f8bf87f0770b54ac22bf0b5c06e12e27",
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "4f77cd53d4e55f3d73d0811dee5e2288ae796410d035d06fd7c13f9c62773e87"
+    },
+    {
+      "bytes": 13609,
+      "git_blob_sha1": "e32a2947c2d266de3763c0efb410d9b78e75fe5a",
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "91ae244aa9d82731a406a9cc15ab51e12eca5b034a748927fe65157de6fd2934"
+    },
+    {
+      "bytes": 4882,
+      "git_blob_sha1": "7125c55a543bf7e144bb5b51c47d17bf9b5ebfb9",
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "sha256": "9f67e34b70834f6c4e9054a4def9d5c9852151cc5a828f7d8b4f9ede86085740"
+    },
+    {
+      "bytes": 11438,
+      "git_blob_sha1": "477054793b244cc9bd5ab47c10046fa0cece5fdd",
+      "path": "Makefile",
+      "sha256": "b0bce3cf627b6f65b4ddf99642cb19e5668a7689f586f95baafc161e0c8e735d"
+    },
+    {
+      "bytes": 9317,
+      "git_blob_sha1": "b4b9ec371f4bf5c27eea039afddba81788609d7c",
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "sha256": "02417789ca918c0e395a629ad74ac9895134c9b056892192624ec10a7ce09671"
+    },
+    {
+      "bytes": 7756,
+      "git_blob_sha1": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382",
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "sha256": "e1d9f659ae8ecf828db193c77775fe0b0ebee5c9d378ba56d880f8b23265959f"
+    },
+    {
+      "bytes": 10852,
+      "git_blob_sha1": "38216b3e5d37b9755612d3ab4b9dc3a3cd1d81d2",
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "sha256": "7ffcf31cc12217ef77511d35c85f9102fe30e8549bec01d2a18dba3adda55d4a"
+    },
+    {
+      "bytes": 3553,
+      "git_blob_sha1": "9c140805f9336b8ca5c73d7b9ba2dcf0ec81a399",
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "sha256": "68da294d5f51cb5039156b1452da8f5bccdb003ae6f4d7760059d5e2fcc35c19"
+    },
+    {
+      "bytes": 7640,
+      "git_blob_sha1": "3772d9e8124a8c3961c9f27942e3429a882601e9",
+      "path": "tests/test_qikvrt_requested_review_executor.py",
+      "sha256": "14661083ff0617ecc8c7c263c4448d6aec72e5a3aae6f4f1ab7043d1c7c79845"
+    },
+    {
+      "bytes": 18732,
+      "git_blob_sha1": "e88693e9e0a9e4d10a8ba43c52bf3cb80b807783",
+      "path": "tests/test_qikvrt_required_review_gate.py",
+      "sha256": "dbca4480c3805d3251a43c82ffa0037b9c115d3fe2c9fd379f60266709f847ae"
+    },
+    {
+      "bytes": 26067,
+      "git_blob_sha1": "d70a18a296f0a5b10dd2ad6ecbd4af6e59456793",
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "sha256": "87ce7e80ef3f24e8c00de350d534cdcbbde95b34105c2775c4487529035492d9"
+    },
+    {
+      "bytes": 32734,
+      "git_blob_sha1": "7cd2844fc97858de20581d8451cb3c745d95e0cf",
+      "path": "tests/test_seed_workflows.py",
+      "sha256": "a73fd8e1f66a793881f380beb73a2bf49042f7a98e0f560c6489265c56040147"
+    },
+    {
+      "bytes": 9545,
+      "git_blob_sha1": "78acc8c7b32b15e0416b76c3ed1b191b656b073b",
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "sha256": "c29b63736380550137a8f1aec2f4a36eec0d6301f869451909fd016c02618279"
+    },
+    {
+      "bytes": 2589,
+      "git_blob_sha1": "f4dc5fb44bba4686e1d8cda4a39a78fe85d7ee44",
+      "path": "tools/qikvrt_mirror_node_lifecycle.sh",
+      "sha256": "5d8caaf882d1fe33df20b25486cf839fd4f281a1524c85bf8b83b47304314bce"
+    },
+    {
+      "bytes": 7767,
+      "git_blob_sha1": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+      "path": "tools/qikvrt_requested_review_executor.py",
+      "sha256": "4a70a452b9642ea480e14c312d34ff6e26b648584e4dc1d396adeb83c5b65117"
+    },
+    {
+      "bytes": 13975,
+      "git_blob_sha1": "1463ec8103b315c6489201c5876d64b77af8b1f6",
+      "path": "tools/qikvrt_required_review_gate.py",
+      "sha256": "4acb1cc39e7af168db64f0eb7e66b8f712596bf8bfc52efa1b08020cddf1c9f6"
+    }
+  ],
+  "preserved_protections": [
+    "Independent Code Owner native approval count >=1",
+    "Dismiss stale reviews",
+    "Last-push approval",
+    "Unattributed-change approval",
+    "Resolve review threads",
+    "Strict test and canonical native governance check, App 15368",
+    "Non-fast-forward and deletion protection",
+    "No bypass actors",
+    "Conditional If-Match, planned preimage and exact postimage checks",
+    "Two-phase expected-head promotion, current Main/HEAD checks and competing writer blocking"
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "INDEPENDENT_CODE_OWNER_APPROVAL": false,
+    "NATIVE_RULE_ENFORCEMENT": false,
+    "PASS": false
+  },
+  "schema": "qikvrt_personal_work_unit_v1",
+  "source_commit": "71f8c15319bf79456ac177d80941b4f59d372996",
+  "source_drift": {
+    "meaning": "Fresh source observation supersedes requested older head; no old validation is transferred.",
+    "reobserved_pr479_head": "7292c9592822e95c794489183ea29893a9a0336d",
+    "requested_pr479_head": "33ceac7115b9df923756b4d0efc867ac8bc35f14"
+  },
+  "source_ref": "main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+  "unresolved_origin": [],
+  "verification": {
+    "affected_exact_head_command": "python3 -B -m unittest -v tests.test_qikvrt_requested_review_executor tests.test_qikvrt_required_review_gate tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_ruleset_authority_token_route tests.test_seed_workflows.MirrorLifecycleGovernanceTests",
+    "full_suite_command": "make test",
+    "integrity_command": "python3 -B tools/qikvrt_integrity.py verify",
+    "native_contract": ".github/workflows/qikvrt_requested_review_contract.yml",
+    "predecessor_evidence_transfer": false,
+    "receipt_binding": "Final commit/PR native run IDs and exact HEAD/TREE witness; no check/review from parents is accepted.",
+    "record_scope": "PRE_EFFECT_PROVENANCE_ONLY; finalized successor tests must run freshly."
+  },
+  "work_unit_id": "GOVERNANCE_478_479_CONSOLIDATED_SUCCESSOR_20261006_V1"
+}
