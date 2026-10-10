@@ -4,8 +4,10 @@
 """Static security and accessibility regression checks for the Pages terminal."""
 from __future__ import annotations
 
+import json
 import pathlib
 import unittest
+import xml.etree.ElementTree as ET
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -20,11 +22,19 @@ class RepositoryTerminalTests(unittest.TestCase):
         self.script = SCRIPT.read_text(encoding="utf-8")
         self.style = STYLE.read_text(encoding="utf-8")
 
-    def test_page_is_linked_from_pages_navigation_and_sitemap(self) -> None:
+    def test_pages_navigation_and_production_sitemap_scope(self) -> None:
         homepage = (ROOT / "docs/index.html").read_text(encoding="utf-8")
-        sitemap = (ROOT / "docs/sitemap.xml").read_text(encoding="utf-8")
         self.assertIn('href="terminal/"', homepage)
-        self.assertIn("https://goldkelch.github.io/qik-vrt/terminal/", sitemap)
+        disclosure = json.loads((ROOT / ".well-known/qik-vrt-self-disclosure.json").read_text(encoding="utf-8"))
+        delivery = disclosure["bindings"]["public_delivery"]
+        sitemap = ET.parse(ROOT / delivery["sitemap_path"])
+        urls = [node.text for node in sitemap.findall(".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")]
+        self.assertEqual(urls, delivery["sitemap_urls"])
+        self.assertIn(delivery["canonical_origin"] + delivery["article_path"], urls)
+        # The historical Pages terminal remains linked in its own source tree.
+        # It is not a prepared route of the separately bound production Site.
+        self.assertNotIn("https://goldkelch.github.io/qik-vrt/terminal/", urls)
+        self.assertNotIn(delivery["canonical_origin"] + "/terminal/", urls)
 
     def test_page_has_bilingual_accessible_terminal_controls(self) -> None:
         for marker in (
