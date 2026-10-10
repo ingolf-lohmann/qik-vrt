@@ -1,0 +1,29 @@
+{
+  "_license": {
+    "classification": "machine_readable_owner_zenodo_authorization",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "schema": "qikvrt_owner_zenodo_authorization_v1",
+  "publication_id": "qikvrt-brief-an-das-jahr-2610-v1",
+  "authorization_decision": "AUTHORIZE_EXACT_UPLOAD",
+  "canonical_statement": "Ich, Ingolf Lohmann, Schoepfer, Code Owner und Product Owner des QIK-VRT-Repositorys, autorisiere den Upload genau dieser Bytes nach Zenodo: Publikation qikvrt-brief-an-das-jahr-2610-v1, Aggregat-SHA-256 830e6df6153c901890669a0cd2d2af650ad84f36cf46726854c4314e88ab8ddd, 11 Inhaltsdateien, 177418 Bytes. AUTHORIZE_EXACT_UPLOAD.",
+  "owner_statement_verbatim": "Einverstanden und ich denke, diese Abgrenzung ist auch Sinn und Zweck der Arbeit, die ich hier als Mensch vollbringe und im QIKVRT Mesh Repository persistiere. Freigabe erteilt.",
+  "authorization_context": "Explicit current-chat approval given immediately after the exact brief-2610 candidate, aggregate, file count, byte count, active-policy binding, and remaining canonical-owner-decision gate were reported.",
+  "exact_bytes": {
+    "aggregate_sha256": "830e6df6153c901890669a0cd2d2af650ad84f36cf46726854c4314e88ab8ddd",
+    "content_file_count": 11,
+    "content_total_bytes": 177418
+  },
+  "owner": {
+    "name": "Ingolf Lohmann",
+    "type": "NATURAL_PERSON"
+  },
+  "authorized_at_utc": "2026-10-10T01:44:00Z",
+  "timestamp_precision": "minute_from_current_interactive_session",
+  "owner_authorization_is_repository_side_not_uploaded": true,
+  "authorization_event_follows_candidate_return": true,
+  "predecessor_evidence_transfer": false
+}
