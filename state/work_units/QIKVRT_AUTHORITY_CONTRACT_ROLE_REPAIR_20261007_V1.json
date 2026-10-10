@@ -1,0 +1,155 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann",
+    "classification": "bounded_repository_repair_work_unit"
+  },
+  "schema": "qikvrt_authority_contract_role_repair_work_unit_v1",
+  "task_id": "authority-contract-role-repair-20261007-v1",
+  "status": "REVIEW_CANDIDATE_MAIN_ACTIVATION_PENDING",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "base": {
+    "main_head": "46e0adee5c4d85e479f3f552bf6890614afa22fc",
+    "main_tree": "22794901b7e69d948508943b38b4c850dfc7c2c5",
+    "independent_main_based_successor": true
+  },
+  "frozen_related_subjects": {
+    "role_carrier": {
+      "pull_request": 484,
+      "head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+      "tree": "3af7d383933a8972469f48928a800aa6c06031d4",
+      "main_activation_verified": false
+    },
+    "diagnostic_carrier": {
+      "pull_request": 490,
+      "head": "7d8f24f85517bc8ec7e9abc1220467f5ce9c78c1",
+      "tree": "febe58a19bb24764f32246bd9fb4c1c337f9beec",
+      "native_run": 37654104577,
+      "native_job": 112904709384,
+      "run_attempt": 1,
+      "observed_failure_stage": "AUTHORITY_READBACK",
+      "observed_http_status": 404,
+      "original_pr_487_job_token_readback_http_status": 200,
+      "watchdog_disposition": "HOLD",
+      "historical_underlying_404_cause": "UNESTABLISHED"
+    },
+    "existing_pr_heads_may_change_in_this_work_unit": false,
+    "predecessor_evidence_transfer": false
+  },
+  "owner_role_decision": {
+    "human": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ],
+    "authority_repository": "ingolf-lohmann/qik-vrt",
+    "mirror_repository": "Goldkelch/qik-vrt",
+    "repository_carrier": "PR #484 policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json mesh_authority",
+    "declaration_is_not_main_activation": true,
+    "mirror_reintegration_verified": false
+  },
+  "established_defect": {
+    "contract_path": "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
+    "incorrect_fields": [
+      "authority.repository",
+      "reflexive_deadlock_prevention.gatewatch.node_liveness.authority_repository"
+    ],
+    "main_and_pr484_contract_target": "Goldkelch/qik-vrt",
+    "additional_consumer_defects": [
+      "Executor structural validation hard-coded the former Authority.",
+      "Liveness acceptance compared a Git commit without binding the receipt's Authority repository."
+    ],
+    "fix_is_not_provider_404_causal_diagnosis": true
+  },
+  "reuse_and_consumer_scope": {
+    "reused_controller": "tools/qikvrt_workflow_executor.py",
+    "consumers": [
+      "tools/qikvrt_reflexive_repository_watchdog.py",
+      ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+      ".github/workflows/qikvrt_workflow_executor.yml",
+      ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+      "tools/qikvrt_seed_common.py node continuity acceptance"
+    ],
+    "no_new_workflow_or_parallel_authority_policy": true,
+    "snapshot_and_node_receipt_remain_structural_declarations": true,
+    "historical_receipts_are_not_rewritten": true,
+    "new_contract_digest_requires_fresh_node_acceptance": true,
+    "unrelated_publication_and_historical_role_bindings_unchanged": true
+  },
+  "activation_and_integration": {
+    "required_effect": "Reviewed activation of the Owner's role binding on Authority Main, carried separately by #484 or an independently reviewed exact successor.",
+    "candidate_does_not_import_role_policy_or_codeowners_from_pr484": true,
+    "before_activation": "Authority Main GET may return 200; missing active mesh_authority remains AUTHORITY_ROLE_BINDING_NOT_ACTIVE and HOLD.",
+    "after_activation": "Reobserve exact Authority Main and policy bytes with the same job token, reobserve Main again, then execute all affected gates on the resulting new Head/Tree.",
+    "pr490_integration": "The overlapping AUTHORITY_READBACK workflow hunk needs explicit reconciliation if #490 is integrated. Preserve its SUBJECT_READBACK diagnostics and exact subject guards; use this controller for role-validated Authority readback. Regenerate integrity and run fresh tests on the integrated head.",
+    "native_code_owner_review_and_ruleset_enforcement_remain_required": true,
+    "no_merge_or_main_write_in_this_work_unit": true
+  },
+  "verification_requirements": [
+    "tests.test_qikvrt_workflow_executor_mesh_contract",
+    "tests.test_qikvrt_reflexive_repository_watchdog",
+    "tests.test_seed_workflows",
+    "make test",
+    "tools/qikvrt_integrity.py verify",
+    "Fresh native workflow-executor watchdog snapshot/tests bound to the new candidate Head/Tree.",
+    "Fresh reflexive native run: preserve failure/HOLD until active Authority Main role policy and all other gates are evidenced."
+  ],
+  "integrity_regeneration": {
+    "required_authorities": [
+      "REPOSITORY_FILE_MANIFEST.json",
+      "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "SHA256SUMS.txt"
+    ],
+    "also_recovers_base_manifest_omissions": [
+      "evidence/node_health/37510511694-1.json",
+      "evidence/node_health/37578851517-1.json",
+      "evidence/node_health/37627620170-1.json",
+      "evidence/node_registration_renewal/37510511694-1.json",
+      "evidence/node_registration_renewal/37578851517-1.json",
+      "evidence/node_registration_renewal/37627620170-1.json"
+    ],
+    "existing_main_lifecycle_bytes_unchanged": true,
+    "four_existing_lifecycle_digests_refreshed_to_actual_base_bytes": true
+  },
+  "regression_scope": [
+    "Explicit same-job-token Authority GET, exact Main policy blob and repeated ref binding.",
+    "403/404 on the ref or policy has no Mirror or anonymous fallback.",
+    "200 without active roles, missing token, malformed bytes, timeout and head drift fail closed.",
+    "Mixed Authority contract fields and Authority/Mirror overlap are rejected.",
+    "Mirror or unidentified Acceptance receipts cannot satisfy liveness even at the same Git commit.",
+    "Native independent review and platform protection boundaries cannot be weakened."
+  ],
+  "sources": [
+    "https://github.com/ingolf-lohmann/qik-vrt/pull/484",
+    "https://github.com/ingolf-lohmann/qik-vrt/pull/490",
+    "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37654104577",
+    "https://github.com/ingolf-lohmann/qik-vrt/blob/46e0adee5c4d85e479f3f552bf6890614afa22fc/state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+  ],
+  "contribution_provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Authority/Mirror role decision, bounded repair request and authorization.",
+    "ai_actor": "OpenAI Codex / GPT-6",
+    "ai_contribution": "Current-state reads, consumer diagnosis, implementation, regression tests and verification.",
+    "human_acceptance_of_generated_candidate": "PENDING",
+    "third_party_code_added": false
+  },
+  "completion_claims": {
+    "MAIN_ACTIVATION_VERIFIED": false,
+    "NATIVE_CODE_OWNER_APPROVAL": false,
+    "WATCHDOG_PASS": false,
+    "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false,
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "current_main_reconciliation": {
+    "main_head": "512ec968f0ee4c0b9154ffe56848ff1ce6dafa7d",
+    "main_tree": "726d722713d7dfd84b4bf0dee86fb43b5bca8d35",
+    "retained_candidate_parent": "2c153f1e40271ecc64383001e577ae4f35c02a5f",
+    "method": "History-preserving merge of two Main lifecycle commits; no source conflicts. Regenerate integrity for actual merged bytes.",
+    "owner_requirement": "Every unfinished work unit must have an admitted productive continuation or an explicit causal blocker with event-bound durable resumption. Suppress unchanged failing retries; preserve productive writers.",
+    "role_activation": "NOT_ESTABLISHED",
+    "predecessor_evidence_transfer": false
+  }
+}

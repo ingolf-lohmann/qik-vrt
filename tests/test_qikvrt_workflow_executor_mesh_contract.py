@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import copy
+import base64
+import hashlib
 import importlib.util
 import json
 import pathlib
 import subprocess
 import sys
 import unittest
+from unittest import mock
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -29,11 +32,29 @@ sys.modules[SPEC.name] = MODULE
 SPEC.loader.exec_module(MODULE)
 
 
+def active_role_policy() -> dict:
+    return {
+        "schema": "qikvrt_requested_review_and_issue_lifecycle_policy_v1",
+        "status": "ACTIVE",
+        "mandatory_boundaries": {"github_platform_protections_may_be_bypassed": False},
+        "mesh_authority": {
+            "authority_repository": "ingolf-lohmann/qik-vrt",
+            "repository": {"full_name": "ingolf-lohmann/qik-vrt", "may_submit_native_approve": False},
+            "executor": {"may_submit_native_approve": False},
+            "former_authority_repository": "Goldkelch/qik-vrt",
+            "former_authority_permission_required": False,
+            "independent_native_code_owner_review_required": True,
+            "github_platform_effects_are_separate": True,
+        },
+    }
+
+
 class WorkflowExecutorMeshContractTests(unittest.TestCase):
     def test_contract_is_authority_first_and_effect_bounded(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
         self.assertEqual(contract["schema"], "qikvrt_workflow_executor_mesh_contract_v1")
-        self.assertEqual(contract["authority"]["repository"], "Goldkelch/qik-vrt")
+        self.assertEqual(contract["authority"]["repository"], "ingolf-lohmann/qik-vrt")
+        self.assertEqual(contract["authority"]["mirror_repositories"], ["Goldkelch/qik-vrt"])
         self.assertEqual(contract["authority"]["entrypoint"], "AI")
         self.assertEqual(
             contract["executor"]["single_writer_order"],
@@ -118,7 +139,8 @@ class WorkflowExecutorMeshContractTests(unittest.TestCase):
         self.assertEqual(delta["removed"], [])
         self.assertEqual(sorted(delta["changed"]), sorted(paths))
 
-    def test_plan_is_exact_head_deduplicated_and_writer_serialized(self) -> None:
+    @mock.patch.object(MODULE, "_read_json_file", return_value=active_role_policy())
+    def test_plan_is_exact_head_deduplicated_and_writer_serialized(self, _read_policy) -> None:
         snapshot = MODULE.snapshot(ROOT)
         empty_plan = MODULE.dispatch_plan(snapshot, {"workflow_runs": []}, "main")
         candidate = empty_plan["candidates"][0]
@@ -163,6 +185,35 @@ class WorkflowExecutorMeshContractTests(unittest.TestCase):
             "main",
         )
         self.assertEqual(writer["candidates"][0]["first_blocker"], "COMPETING_WRITER_ACTIVE")
+
+    def test_pending_role_policy_prevents_dispatch(self) -> None:
+        with mock.patch.object(MODULE, "_read_json_file", return_value={"status": "ACTIVE"}):
+            value = MODULE.dispatch_plan(MODULE.snapshot(ROOT), {"workflow_runs": []}, "main")
+        self.assertEqual(value["state"], "HOLD")
+        self.assertEqual(value["candidates"][0]["first_blocker"], "AUTHORITY_ROLE_BINDING_NOT_ACTIVE")
+
+    def test_dispatch_wrapper_reads_authority_with_the_mandatory_job_token_before_planning(self) -> None:
+        step = EXECUTOR_WORKFLOW.read_text().split("      - name: Build exact-head dispatch plan\n", 1)[1].split("\n      - name:", 1)[0]
+        self.assertIn("GH_TOKEN: ${{ github.token }}", step)
+        self.assertLess(step.index("authority-readback --json"), step.index("args=(plan"))
+
+    def test_authority_targets_must_agree_and_mirror_is_never_authority(self) -> None:
+        contract = MODULE.load_contract(ROOT)
+        for change in ("liveness", "mirror"):
+            damaged = copy.deepcopy(contract)
+            if change == "liveness":
+                damaged["reflexive_deadlock_prevention"]["gatewatch"]["node_liveness"]["authority_repository"] = "Goldkelch/qik-vrt"
+            else:
+                damaged["authority"]["mirror_repositories"].append("INGOLF-LOHMANN/QIK-VRT")
+            with self.subTest(change=change), self.assertRaises(MODULE.ExecutorBlock):
+                MODULE._validate_contract_shape(damaged, ROOT)
+
+    def test_mirror_receipt_with_equal_head_cannot_supply_authority_continuity(self) -> None:
+        receipt = MODULE.build_node_receipt("example/node", "main", ROOT)
+        receipt["authority"]["repository"] = "Goldkelch/qik-vrt"
+        with self.assertRaisesRegex(MODULE.ExecutorBlock, "authority binding"):
+            MODULE.validate_node_receipt(receipt, "example/node", "main", ROOT)
+
 
     def test_node_receipt_requires_the_declared_acceptance_order(self) -> None:
         receipt = MODULE.build_node_receipt("example/node", "main", ROOT)
@@ -210,6 +261,108 @@ class WorkflowExecutorMeshContractTests(unittest.TestCase):
         self.assertIn('test "$head" = "$EXPECTED_HEAD"', watchdog)
         self.assertIn('snapshot --expect-head "$EXPECTED_HEAD"', watchdog)
         self.assertNotIn('snapshot --expect-head "$head"', watchdog)
+
+
+
+class AuthorityReadbackTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.calls = []
+        self.head = "a" * 40
+        self.ref = {
+            "ref": "refs/heads/main",
+            "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/refs/heads/main",
+            "object": {"type": "commit", "sha": self.head,
+                       "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/commits/" + self.head},
+        }
+        self.policy = active_role_policy()
+        self.environment = mock.patch.dict(MODULE.os.environ, {"GH_TOKEN": "test-job-token"})
+        self.environment.start()
+        self.addCleanup(self.environment.stop)
+
+    def get(self, argv, **kwargs):
+        self.calls.append(argv)
+        self.assertEqual(argv[:6], ["gh", "api", "--hostname", "github.com", "--method", "GET"])
+        self.assertTrue(argv[-1].startswith("repos/ingolf-lohmann/qik-vrt/"))
+        if "/contents/" in argv[-1]:
+            self.assertTrue(argv[-1].endswith("?ref=" + self.head))
+            raw = json.dumps(self.policy).encode()
+            value = {"path": MODULE.ROLE_POLICY_PATH, "type": "file", "encoding": "base64",
+                     "content": base64.b64encode(raw).decode(),
+                     "sha": hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()}
+        else:
+            value = self.ref
+        return subprocess.CompletedProcess(argv, 0, json.dumps(value), "")
+
+    def test_exact_authority_main_readback_checks_policy_and_reobserves_head(self) -> None:
+        with mock.patch.object(MODULE.subprocess, "run", side_effect=self.get):
+            value = MODULE.read_authority_main(ROOT)
+        self.assertEqual(value["repository"], "ingolf-lohmann/qik-vrt")
+        self.assertEqual(value["main_head"], self.head)
+        self.assertEqual(value["state"], "AUTHORITY_MAIN_ROLE_POLICY_REOBSERVED")
+        self.assertEqual(len(self.calls), 3)
+        self.assertEqual(self.calls[0], self.calls[2])
+        self.assertFalse(any(value["completion_claims"].values()))
+
+    def test_ref_and_policy_access_denials_have_no_mirror_or_anonymous_fallback(self) -> None:
+        for status in (403, 404):
+            for denied_call in (1, 2):
+                self.calls = []
+                def denied(argv, **kwargs):
+                    if len(self.calls) + 1 == denied_call:
+                        self.calls.append(argv)
+                        return subprocess.CompletedProcess(argv, 1, "", f"gh: Forbidden (HTTP {status})")
+                    return self.get(argv, **kwargs)
+                with self.subTest(status=status, call=denied_call), mock.patch.object(MODULE.subprocess, "run", side_effect=denied):
+                    with self.assertRaisesRegex(MODULE.ExecutorBlock, f"AUTHORITY_READBACK_DENIED HTTP_{status}"):
+                        MODULE.read_authority_main(ROOT)
+                self.assertEqual(len(self.calls), denied_call)
+                self.assertTrue(all("Goldkelch" not in call[-1] for call in self.calls))
+
+    def test_http_200_without_main_role_activation_remains_hold(self) -> None:
+        self.policy.pop("mesh_authority")
+        with mock.patch.object(MODULE.subprocess, "run", side_effect=self.get):
+            with self.assertRaisesRegex(MODULE.ExecutorBlock, "AUTHORITY_ROLE_BINDING_NOT_ACTIVE"):
+                MODULE.read_authority_main(ROOT)
+        self.assertEqual(len(self.calls), 2)
+
+    def test_missing_job_token_never_attempts_a_get(self) -> None:
+        with mock.patch.dict(MODULE.os.environ, {"GH_TOKEN": ""}), mock.patch.object(MODULE.subprocess, "run") as api:
+            with self.assertRaisesRegex(MODULE.ExecutorBlock, "JOB_TOKEN_REQUIRED"):
+                MODULE.read_authority_main(ROOT)
+        api.assert_not_called()
+
+    def test_native_review_requirement_cannot_be_downgraded(self) -> None:
+        self.policy["mesh_authority"]["independent_native_code_owner_review_required"] = False
+        with mock.patch.object(MODULE.subprocess, "run", side_effect=self.get):
+            with self.assertRaisesRegex(MODULE.ExecutorBlock, "PROTECTION_BOUNDARY_INVALID"):
+                MODULE.read_authority_main(ROOT)
+
+    def test_timeout_and_invalid_response_are_fail_closed(self) -> None:
+        for response in (subprocess.TimeoutExpired("gh", 30), subprocess.CompletedProcess([], 0, "not JSON", "")):
+            with self.subTest(response=type(response).__name__), mock.patch.object(MODULE.subprocess, "run", side_effect=response if isinstance(response, Exception) else None, return_value=response):
+                with self.assertRaises(MODULE.ExecutorBlock):
+                    MODULE.read_authority_main(ROOT)
+
+    def test_policy_blob_and_main_head_drift_are_rejected(self) -> None:
+        for fault in ("blob", "head", "ref", "mirror_repository"):
+            self.calls = []
+            def damaged(argv, **kwargs):
+                response = self.get(argv, **kwargs)
+                value = json.loads(response.stdout)
+                if fault == "blob" and "/contents/" in argv[-1]:
+                    value["sha"] = "b" * 40
+                elif fault == "head" and len(self.calls) == 3:
+                    value["object"]["sha"] = "b" * 40
+                    value["object"]["url"] = value["object"]["url"].replace(self.head, "b" * 40)
+                elif fault == "ref" and "/contents/" not in argv[-1]:
+                    value["ref"] = "refs/heads/mirror"
+                elif fault == "mirror_repository" and "/contents/" not in argv[-1]:
+                    value["url"] = value["url"].replace("ingolf-lohmann", "Goldkelch")
+                return subprocess.CompletedProcess(argv, 0, json.dumps(value), "")
+            with self.subTest(fault=fault), mock.patch.object(MODULE.subprocess, "run", side_effect=damaged):
+                with self.assertRaises(MODULE.ExecutorBlock):
+                    MODULE.read_authority_main(ROOT)
+
 
 
 if __name__ == "__main__":

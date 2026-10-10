@@ -16,6 +16,7 @@ on:
       - "AI"
       - "Makefile"
       - "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
+      - "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
       - "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
       - "tools/qikvrt_workflow_executor.py"
       - "tools/qikvrt_seed_common.py"
@@ -117,10 +118,15 @@ jobs:
           fi
 
       - name: Build exact-head dispatch plan
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           head="$(cat .qikvrt/workflow-executor/observed-main-head.txt)"
+          # A locally mirrored declaration cannot prove active Authority Main.
+          python3 -B tools/qikvrt_workflow_executor.py authority-readback --json \
+            > .qikvrt/workflow-executor/authority-role-readback.json
           args=(plan --runs-file .qikvrt/workflow-executor/current-runs.json --expect-head "$head" --ref main --json)
           if test -s .qikvrt/workflow-executor/previous-snapshot.json; then
             args+=(--baseline .qikvrt/workflow-executor/previous-snapshot.json)

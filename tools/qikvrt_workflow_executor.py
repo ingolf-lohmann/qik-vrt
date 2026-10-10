@@ -3,19 +3,23 @@
 # Copyright 2026 Ingolf Lohmann.
 """Exact-head workflow-executor planning and mesh-node continuity checks.
 
-The controller is deliberately repository-local.  It observes Git state and
+The planning controller is deliberately repository-local. It observes Git state and
 workflow metadata supplied by the caller, creates a deterministic dispatch
 plan, and validates a node-split continuity receipt.  It never calls GitHub,
 dispatches a workflow, writes a repository file, or treats a terminal watcher
 as a successful gate.  The narrowly authorised Action wrapper performs the
 single REST dispatch only after this controller has produced a candidate.
+The separate authority-readback command performs bounded, authenticated GETs;
+it never substitutes a Mirror response or candidate policy for active Main.
 """
 
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -28,10 +32,123 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_RELATIVE_PATH = "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 ACTIVE_RUN_STATUSES = frozenset({"queued", "in_progress", "waiting", "requested", "pending"})
+ROLE_POLICY_PATH = "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
 
 
 class ExecutorBlock(RuntimeError):
     """A fail-closed executor or continuity validation error."""
+
+
+def authority_repository(contract: Mapping[str, Any]) -> str:
+    """Resolve one declared Authority without treating its declaration as activation."""
+    authority = _mapping(contract.get("authority"), "contract authority")
+    repository = _string(authority.get("repository"), "authority repository")
+    mirrors = _string_list(authority.get("mirror_repositories"), "mirror repositories")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+        raise ExecutorBlock("contract authority repository is invalid")
+    if (not mirrors or any(not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", item) for item in mirrors)
+            or repository.casefold() in {item.casefold() for item in mirrors}):
+        raise ExecutorBlock("Authority and Mirror repositories must be distinct")
+    if authority.get("entrypoint") != "AI" or authority.get("role_policy_path") != ROLE_POLICY_PATH:
+        raise ExecutorBlock("contract authority policy binding is invalid")
+    if authority.get("activation") != "FRESH_AUTHORITY_MAIN_POLICY_READBACK_REQUIRED":
+        raise ExecutorBlock("contract authority activation is not fail-closed")
+    prevention = _mapping(contract.get("reflexive_deadlock_prevention"), "reflexive prevention")
+    gatewatch = _mapping(prevention.get("gatewatch"), "reflexive gatewatch")
+    liveness = _mapping(gatewatch.get("node_liveness"), "node liveness")
+    if liveness.get("authority_repository") != repository:
+        raise ExecutorBlock("node liveness and executor Authority repositories disagree")
+    return repository
+
+
+def validate_authority_policy(contract: Mapping[str, Any], policy: Mapping[str, Any]) -> str:
+    repository = authority_repository(contract)
+    role = policy.get("mesh_authority")
+    if (policy.get("schema") != "qikvrt_requested_review_and_issue_lifecycle_policy_v1"
+            or policy.get("status") != "ACTIVE" or not isinstance(role, Mapping)
+            or role.get("authority_repository") != repository
+            or not isinstance(role.get("repository"), Mapping)
+            or role["repository"].get("full_name") != repository):
+        raise ExecutorBlock("AUTHORITY_ROLE_BINDING_NOT_ACTIVE")
+    mirrors = contract["authority"]["mirror_repositories"]
+    if (role.get("former_authority_repository") not in mirrors
+            or role.get("former_authority_permission_required") is not False
+            or role.get("independent_native_code_owner_review_required") is not True
+            or role.get("github_platform_effects_are_separate") is not True
+            or role["repository"].get("may_submit_native_approve") is not False
+            or not isinstance(role.get("executor"), Mapping)
+            or role["executor"].get("may_submit_native_approve") is not False
+            or not isinstance(policy.get("mandatory_boundaries"), Mapping)
+            or policy["mandatory_boundaries"].get("github_platform_protections_may_be_bypassed") is not False):
+        raise ExecutorBlock("AUTHORITY_ROLE_POLICY_PROTECTION_BOUNDARY_INVALID")
+    return repository
+
+
+def read_authority_main(root: Path = ROOT) -> dict[str, Any]:
+    """Read the declared Authority and its policy with the mandatory job token."""
+    contract = load_contract(root)
+    repository = authority_repository(contract)
+    if not os.environ.get("GH_TOKEN"):
+        raise ExecutorBlock("AUTHORITY_READBACK_JOB_TOKEN_REQUIRED")
+
+    def get(endpoint: str) -> Mapping[str, Any]:
+        try:
+            response = subprocess.run(
+                ["gh", "api", "--hostname", "github.com", "--method", "GET", endpoint],
+                cwd=root, capture_output=True, text=True, check=False, timeout=30,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise ExecutorBlock("AUTHORITY_READBACK_TRANSPORT_UNAVAILABLE") from exc
+        if response.returncode:
+            # Preserve the failure class only, never arbitrary response bodies or tokens.
+            status = re.search(r"HTTP (\d{3})", response.stderr)
+            detail = f"HTTP_{status.group(1)}" if status else f"CLI_EXIT_{response.returncode}"
+            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}")
+        try:
+            return _mapping(json.loads(response.stdout), "Authority GET response")
+        except json.JSONDecodeError as exc:
+            raise ExecutorBlock("AUTHORITY_READBACK_INVALID_JSON") from exc
+
+    endpoint = f"repos/{repository}/git/ref/heads/main"
+
+    def head() -> str:
+        value = get(endpoint)
+        object_ref = _mapping(value.get("object"), "Authority main ref object")
+        if value.get("ref") != "refs/heads/main" or object_ref.get("type") != "commit":
+            raise ExecutorBlock("AUTHORITY_MAIN_REF_IDENTITY_INVALID")
+        sha = _sha(object_ref.get("sha"), "Authority main head")
+        api_root = f"https://api.github.com/repos/{repository}/git"
+        if (value.get("url") != f"{api_root}/refs/heads/main"
+                or object_ref.get("url") != f"{api_root}/commits/{sha}"):
+            raise ExecutorBlock("AUTHORITY_MAIN_REPOSITORY_IDENTITY_INVALID")
+        return sha
+
+    main_head = head()
+    policy_response = get(f"repos/{repository}/contents/{ROLE_POLICY_PATH}?ref={main_head}")
+    if (policy_response.get("type") != "file" or policy_response.get("path") != ROLE_POLICY_PATH
+            or policy_response.get("encoding") != "base64"):
+        raise ExecutorBlock("AUTHORITY_ROLE_POLICY_READBACK_IDENTITY_INVALID")
+    try:
+        encoded = _string(policy_response.get("content"), "Authority policy content")
+        raw = base64.b64decode("".join(encoded.split()), validate=True)
+        policy = _mapping(json.loads(raw.decode("utf-8")), "Authority Main policy")
+    except (ValueError, UnicodeError) as exc:
+        raise ExecutorBlock("AUTHORITY_ROLE_POLICY_READBACK_BYTES_INVALID") from exc
+    blob_sha = hashlib.sha1(f"blob {len(raw)}\0".encode("ascii") + raw).hexdigest()
+    if policy_response.get("sha") != blob_sha:
+        raise ExecutorBlock("AUTHORITY_ROLE_POLICY_BLOB_MISMATCH")
+    validate_authority_policy(contract, policy)
+    if head() != main_head:
+        raise ExecutorBlock("AUTHORITY_MAIN_HEAD_DRIFT")
+    return {
+        "schema": "qikvrt_workflow_executor_authority_readback_v1",
+        "state": "AUTHORITY_MAIN_ROLE_POLICY_REOBSERVED",
+        "repository": repository, "main_head": main_head,
+        "role_policy_path": ROLE_POLICY_PATH, "role_policy_blob_sha": blob_sha,
+        "contract_sha256": _contract_sha256(root),
+        "credential": "MANDATORY_GITHUB_JOB_TOKEN", "first_blocker": None,
+        "completion_claims": {"PASS": False, "FINAL_PASS": False, "EFFECT_ACK_DONE": False},
+    }
 
 
 def canonical_json_bytes(value: Any) -> bytes:
@@ -131,9 +248,7 @@ def _workflow_inventory(root: Path, revision: str) -> list[dict[str, str]]:
 
 
 def _validate_contract_shape(contract: Mapping[str, Any], root: Path) -> None:
-    authority = _mapping(contract.get("authority"), "contract authority")
-    if authority.get("repository") != "Goldkelch/qik-vrt" or authority.get("entrypoint") != "AI":
-        raise ExecutorBlock("contract authority binding is not canonical")
+    authority_repository(contract)
     executor = _mapping(contract.get("executor"), "contract executor")
     for key in ("controller_path", "workflow_path", "watchdog_workflow_path", "monitor_workflow_path"):
         relative_path = _string(executor.get(key), f"contract executor.{key}")
@@ -264,6 +379,12 @@ def _runs(value: Mapping[str, Any] | Sequence[Any]) -> list[Mapping[str, Any]]:
 
 def dispatch_plan(snapshot_value: Mapping[str, Any], runs_value: Mapping[str, Any] | Sequence[Any], ref: str) -> dict[str, Any]:
     contract = load_contract()
+    role_blocker = None
+    try:
+        role_policy = _read_json_file(ROOT / ROLE_POLICY_PATH, "local exact-head role policy")
+        validate_authority_policy(contract, _mapping(role_policy, "local exact-head role policy"))
+    except ExecutorBlock as exc:
+        role_blocker = str(exc)
     policy = _mapping(contract["dispatch_policy"], "dispatch policy")
     if ref != policy["dispatch_ref"]:
         raise ExecutorBlock(f"dispatch ref {ref!r} is not the authorised ref {policy['dispatch_ref']!r}")
@@ -305,7 +426,9 @@ def dispatch_plan(snapshot_value: Mapping[str, Any], runs_value: Mapping[str, An
             "external_effect": authorized["external_effect"],
             "required_artifact_prefix": authorized["required_artifact_prefix"],
         }
-        if candidate["workflow_blob_sha"] is None:
+        if role_blocker is not None:
+            candidate.update({"disposition": "HOLD", "first_blocker": role_blocker})
+        elif candidate["workflow_blob_sha"] is None:
             candidate.update({"disposition": "HOLD", "first_blocker": "WORKFLOW_ABSENT_FROM_EXACT_TREE"})
         elif active_writers:
             candidate.update({"disposition": "HOLD", "first_blocker": "COMPETING_WRITER_ACTIVE"})
@@ -483,6 +606,8 @@ def _emit(value: Mapping[str, Any], as_json: bool) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    authority = subcommands.add_parser("authority-readback")
+    authority.add_argument("--json", action="store_true")
     for name in ("snapshot", "check"):
         command = subcommands.add_parser(name)
         command.add_argument("--baseline", type=Path)
@@ -509,7 +634,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command in {"snapshot", "check", "plan"}:
+        if arguments.command == "authority-readback":
+            value = read_authority_main()
+        elif arguments.command in {"snapshot", "check", "plan"}:
             baseline = _read_json_file(arguments.baseline, "baseline") if arguments.baseline else None
             value = snapshot(baseline=baseline if isinstance(baseline, Mapping) else None)
             if arguments.expect_head is not None and value["head_sha"] != arguments.expect_head:
@@ -527,6 +654,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         _emit(value, arguments.json)
         return 0
     except ExecutorBlock as exc:
+        if arguments.command == "authority-readback" and arguments.json:
+            _emit({"schema": "qikvrt_workflow_executor_authority_readback_v1",
+                   "state": "HOLD", "first_blocker": str(exc),
+                   "completion_claims": {"PASS": False, "FINAL_PASS": False, "EFFECT_ACK_DONE": False}}, True)
         print(f"BLOCK WORKFLOW_EXECUTOR {exc}", file=sys.stderr)
         return 2
 
