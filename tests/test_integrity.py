@@ -159,6 +159,63 @@ class IntegrityGenerationTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
                     integrity.generate(root)
 
+    def test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            self._repository(root)
+            onboarding = root / "qikvrt/runtime/onboarding"
+            onboarding.mkdir(parents=True)
+            for name in (
+                "NODE_HEALTH.json",
+                "NODE_REGISTRATION_RENEWAL.json",
+                "SEED_ACCEPTANCE_STATUS.json",
+            ):
+                (onboarding / name).write_text('{"run_id": "run-1"}\n', encoding="utf-8")
+            for receipts in ("evidence/node_health", "evidence/node_registration_renewal"):
+                (root / receipts).mkdir(parents=True)
+                (root / receipts / "run-1.json").write_text('{"run_id": "run-1"}\n', encoding="utf-8")
+                (root / receipts / "LATEST.json").write_text('{"run_id": "run-1"}\n', encoding="utf-8")
+            (root / "evidence/other").mkdir()
+            (root / "evidence/other/receipt.json").write_text("{}\n", encoding="utf-8")
+
+            self.assertTrue(integrity.generate(root).ok)
+            trio = (integrity.MANIFEST_NAME, integrity.INDEX_NAME, integrity.DETACHED_NAME)
+            before = {name: (root / name).read_bytes() for name in trio}
+            manifest = json.loads(before[integrity.MANIFEST_NAME].decode("utf-8"))
+            entries = {entry["path"]: entry for entry in manifest["files"]}
+
+            for name in ("NODE_HEALTH.json", "NODE_REGISTRATION_RENEWAL.json"):
+                entry = entries[f"qikvrt/runtime/onboarding/{name}"]
+                self.assertEqual(entry["classification"], "role_local_liveness_state")
+                self.assertFalse(entry["immutable"])
+                self.assertNotIn("sha256", entry)
+            # The Seed acceptance binds an observed Authority head and other
+            # evidence is unaffected: both stay digest-bound.
+            self.assertTrue(entries["qikvrt/runtime/onboarding/SEED_ACCEPTANCE_STATUS.json"]["immutable"])
+            self.assertTrue(entries["evidence/other/receipt.json"]["immutable"])
+            self.assertFalse(any(path.startswith("evidence/node_health/") for path in entries))
+            self.assertFalse(
+                any(path.startswith("evidence/node_registration_renewal/") for path in entries)
+            )
+
+            # One renewal exactly as tools/qikvrt_mirror_node_lifecycle.sh
+            # performs it: rewrite both records and LATEST, append receipts.
+            for name in ("NODE_HEALTH.json", "NODE_REGISTRATION_RENEWAL.json"):
+                (onboarding / name).write_text('{"run_id": "run-2"}\n', encoding="utf-8")
+            for receipts in ("evidence/node_health", "evidence/node_registration_renewal"):
+                (root / receipts / "run-2.json").write_text('{"run_id": "run-2"}\n', encoding="utf-8")
+                (root / receipts / "LATEST.json").write_text('{"run_id": "run-2"}\n', encoding="utf-8")
+
+            self.assertTrue(integrity.verify(root).ok)
+            self.assertTrue(integrity.generate(root).ok)
+            self.assertEqual(before, {name: (root / name).read_bytes() for name in trio})
+
+            # Everything outside that narrow scope is still caught.
+            (onboarding / "SEED_ACCEPTANCE_STATUS.json").write_text(
+                '{"run_id": "tampered"}\n', encoding="utf-8"
+            )
+            self.assertFalse(integrity.verify(root).ok)
+
     def test_portable_git_source_capsule_proves_exact_selected_closure(self) -> None:
         relative = self.CAPSULE.relative_to(REPOSITORY_ROOT).as_posix()
         capsule = integrity.load_portable_git_source_capsule(
