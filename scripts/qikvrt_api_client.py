@@ -69,6 +69,44 @@ def read_response(response) -> str:
         raise ValueError("API response exceeds the 2 MiB client limit")
     return data.decode("utf-8")
 
+
+def github_json_get(repository: str, path: str, *, token: str = "", opener=None) -> dict:
+    """Bounded GET-only readback; reuse this client's no-redirect transport.
+
+    Paths are supplied by trusted adapters, never an arbitrary client URL.
+    The digest binds the exact received UTF-8 bytes, not reserialized JSON.
+    """
+    if len(repository.split("/")) != 2 or not all(
+        SAFE_REPOSITORY_COMPONENT.fullmatch(part) and part not in (".", "..") for part in repository.split("/")
+    ):
+        raise ValueError("unsafe repository scope")
+    if not re.fullmatch(r"(?:commits/[A-Za-z0-9_.-]+|git/(?:trees|blobs)/[0-9a-f]{40})(?:\?recursive=1)?", path):
+        raise ValueError("readback path outside the bounded GitHub GET contract")
+    if path.startswith("commits/") and ".." in path:
+        raise ValueError("unsafe commit ref")
+    headers = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    url = f"https://api.github.com/repos/{repository}/{path}"
+    request = urllib.request.Request(url, headers=headers, method="GET")
+    with (opener or urllib.request.build_opener(NoRedirectHandler())).open(request, timeout=10) as response:
+        if response.status != 200:
+            raise ValueError("readback requires HTTP 200")
+        raw = read_response(response)
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("duplicate readback JSON member")
+            result[key] = value
+        return result
+    def reject_constant(_value):
+        raise ValueError("non-finite readback JSON value")
+    document = json.loads(raw, object_pairs_hook=unique, parse_constant=reject_constant)
+    if not isinstance(document, dict):
+        raise ValueError("readback must be a JSON object")
+    return {"document": document, "url": url, "response_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest()}
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base-url", default="http://127.0.0.1:8766")

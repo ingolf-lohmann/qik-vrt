@@ -3,7 +3,7 @@
 openapi: 3.0.3
 info:
   title: QIKVRT GitHub Dispatch Adapter API
-  version: 2.0.0
+  version: 2.0.1
   description: >
     The local adapter exposes GitHub-shaped dispatch paths but evaluates the
     request synchronously and returns a QIK-VRT EFFECT_ACK body. GitHub's real
@@ -16,6 +16,53 @@ servers:
   - url: https://api.github.com
     description: GitHub asynchronous REST dispatch API
 paths:
+  /mcp:
+    servers:
+      - url: http://127.0.0.1:8766
+        description: Existing adapter, with opt-in MCP; public hosting requires HTTPS.
+    post:
+      operationId: mcpReadback
+      summary: Opt-in read-only MCP facade; never a GitHub dispatch endpoint.
+      description: >
+        Streamable HTTP JSON responses. MCP 2026-07-28 supports server/discover
+        and per-request metadata; 2025-11-25, 2025-06-18 and 2025-03-26 support
+        initialize. Tools are qikvrt_repository_state, qikvrt_capabilities and
+        qikvrt_effect_ack_result. Capability and receipt reads require an exact
+        expected_head; receipt reads also require an exact expected_sha256.
+        Credentials are separate from the existing write and attestation keys.
+        The caller cannot supply a repository, URL, operation or effect grant.
+      security:
+        - McpReadBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [jsonrpc, method]
+              properties:
+                jsonrpc: { type: string, enum: ['2.0'] }
+                id: { oneOf: [{ type: string, maxLength: 128 }, { type: integer }] }
+                method: { type: string }
+                params: { type: object }
+      responses:
+        '200': { description: Inspect JSON-RPC result/error and tools/call isError; HTTP success grants no effect. }
+        '202': { description: Accepted legacy notification, with an empty body. }
+        '400': { description: Invalid JSON-RPC, version, bounded arguments or header/body mismatch. }
+        '401': { description: Missing, invalid, expired or inappropriately shared read credential. }
+        '403': { description: Origin refused. }
+        '404': { description: MCP disabled or modern RPC method not implemented. }
+        '406': { description: Missing required Accept media types. }
+        '429': { description: Existing adapter rate limit exceeded. }
+        '500': { description: Safe internal failure; no effect granted. }
+    get:
+      security:
+        - McpReadBearer: []
+      responses:
+        '405': { description: Standalone SSE is not offered. }
+        '401': { description: Read credential required. }
+        '404': { description: MCP is disabled. }
   /health:
     get:
       operationId: health
@@ -125,6 +172,10 @@ components:
         state_run_id: { type: string, pattern: '^[0-9]{1,32}$' }
         remote_evidence_b64: { type: string, description: HMAC-authenticated qikvrt_remote_release_attestation_v1 JSON encoded as base64. }
   securitySchemes:
+    McpReadBearer:
+      type: http
+      scheme: bearer
+      description: Dedicated expiring credential with explicit configured read scopes; this profile does not implement OAuth.
     bearerToken:
       type: http
       scheme: bearer

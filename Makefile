@@ -120,3 +120,9 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: mcp-readback-test
+mcp-readback-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest discover -s tests -p test_qikvrt_mcp_adapter.py -v
+
+test: mcp-readback-test
