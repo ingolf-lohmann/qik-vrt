@@ -76,6 +76,29 @@
     "name": "Ingolf Lohmann",
     "type": "NATURAL_PERSON"
   },
+  "integration_route": {
+    "draft": true,
+    "inherits_candidate": {
+      "head": "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+      "pr": 515
+    },
+    "main_write_performed": false,
+    "pull_request": 520,
+    "reason": "Native review observer requires a Main-based PR; inherited #515 changes are part of the reviewed candidate, not inferred activation.",
+    "target": "main"
+  },
+  "native_predecessor_readback": {
+    "ci_run": 38036940288,
+    "classified_entries": 3939,
+    "complete_ci_pass": false,
+    "failure_cause": "metadata editor imported removed historical compatibility export; export restored, publisher effect paths remain policy-resolved",
+    "head": "2d4262163ed671b5c873e1d9eaa80d18821e990d",
+    "immutable_digests": 3928,
+    "integrity_verified": true,
+    "job": 114169223865,
+    "predecessor_evidence_transfer": false,
+    "tree": "071bfaea77ec93747d63d0d20c3ccfeabec448ce"
+  },
   "next_permitted_actions": [
     "Exact candidate native regressions and independent code-owner review through the existing governed integration route",
     "Activate the existing PR #515 Authority policy through enforced governance",
@@ -111,11 +134,12 @@
       "declared": 14,
       "result": "PASS"
     },
-    "command": "python3 -B -m unittest discover -s tests -p 'test_zenodo_*.py' -q",
+    "command": "python3 -B -m unittest discover -s tests -p 'test_zenodo_*.py' -q && python3 -B -m unittest discover -s tests -p 'test_qikvrt_zenodo_metadata_edit.py' -q",
+    "compatibility_consumer_tests": 9,
     "complete_native_ci_verified": false,
     "new_adapter_tests": 9,
     "result": "PASS",
-    "tests": 96
+    "tests": 112
   },
   "schema": "qikvrt_brief_2610_publisher_repair_work_unit_v1",
   "scientific_source_boundary": "This is technical preflight evidence, not a Zenodo-published scientific reference or final publication claim.",

@@ -51,6 +51,9 @@ EVIDENCE_SCHEMA = "qikvrt_zenodo_publication_evidence_v1"
 EVIDENCE_SCHEMA_V2 = "qikvrt_zenodo_publication_evidence_v2"
 OWNER_AUTHORIZATION_SCHEMA = "qikvrt_zenodo_owner_authorization_v1"
 COMPACT_OWNER_AUTHORIZATION_SCHEMA = "qikvrt_owner_zenodo_authorization_v1"
+# Compatibility export for historical metadata-control fixtures and consumers.
+# It never selects this publisher's effect repository; that comes from policy.
+PRODUCTION_REPOSITORY = "Goldkelch/qik-vrt"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 ZENODO_DOI = re.compile(r"^10\.5281/zenodo\.[1-9][0-9]*$")
@@ -1227,7 +1230,7 @@ def _validated_network_secrets() -> dict[str, str]:
     }
 
 
-def _origin_repository_identity(raw: str, repository: str) -> str:
+def _origin_repository_identity(raw: str, repository: str = PRODUCTION_REPOSITORY) -> str:
     """Accept only the pinned GitHub HTTPS/SSH authority origin."""
     if (
         not isinstance(raw, str)
@@ -1375,7 +1378,7 @@ def _github_api_request(
     return status, value
 
 
-def _github_ref_path(ref: str, repository: str) -> str:
+def _github_ref_path(ref: str, repository: str = PRODUCTION_REPOSITORY) -> str:
     if not ref.startswith("refs/tags/"):
         _fail("remote authorization consumption ref is not a tag ref")
     suffix = ref.removeprefix("refs/")

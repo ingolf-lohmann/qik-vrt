@@ -116,6 +116,8 @@ class ZenodoAuthorityAdapterTests(unittest.TestCase):
             client.assert_not_called()
 
     def test_current_policy_binds_origin_and_prevents_historical_role_transfer(self) -> None:
+        # Historical consumers keep their import; it cannot select production.
+        self.assertEqual(publisher.PRODUCTION_REPOSITORY, "Goldkelch/qik-vrt")
         self.assertEqual(publisher._production_authority(ROOT), "ingolf-lohmann/qik-vrt")
         with mock.patch.object(publisher, "_git", return_value=(0, "https://github.com/ingolf-lohmann/qik-vrt.git")):
             publisher._validate_origin_repository(ROOT, "ingolf-lohmann/qik-vrt")

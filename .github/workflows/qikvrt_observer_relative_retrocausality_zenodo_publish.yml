@@ -232,12 +232,16 @@ jobs:
 
           from tools import qikvrt_zenodo_publish as publish
 
-          if os.environ["GITHUB_REPOSITORY"] != publish.PRODUCTION_REPOSITORY:
+          from pathlib import Path
+
+          repository = publish._production_authority(Path.cwd().resolve())
+          if os.environ["GITHUB_REPOSITORY"] != repository:
               raise SystemExit("BLOCK: receipt repository differs")
           publish._github_api_request(
               "POST",
-              "/repos/Goldkelch/qik-vrt/pulls",
+              f"/repos/{repository}/pulls",
               os.environ["GITHUB_TOKEN"],
+              repository=repository,
               payload={
                   "title": "Persist observer-relative retrocausality Zenodo receipt",
                   "head": os.environ["RECEIPT_BRANCH"],
