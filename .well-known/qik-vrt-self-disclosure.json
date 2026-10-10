@@ -5,11 +5,26 @@
   "discovery_path": ".well-known/qik-vrt-self-disclosure.json",
   "cli": "python3 tools/qikvrt_self_disclosure.py {show|capabilities|status}",
   "capabilities": [
-    {"id":"repository_state_read","machine_readable":true},
-    {"id":"transactional_workflow_verification","machine_readable":true},
-    {"id":"content_disposition_evidence","machine_readable":true},
-    {"id":"authority_mirror_traceability","machine_readable":true},
-    {"id":"publication_overview_discovery","machine_readable":true}
+    {
+      "id": "repository_state_read",
+      "machine_readable": true
+    },
+    {
+      "id": "transactional_workflow_verification",
+      "machine_readable": true
+    },
+    {
+      "id": "content_disposition_evidence",
+      "machine_readable": true
+    },
+    {
+      "id": "authority_mirror_traceability",
+      "machine_readable": true
+    },
+    {
+      "id": "publication_overview_discovery",
+      "machine_readable": true
+    }
   ],
   "bindings": {
     "batch_002_evidence_head": "e594ce89c4a4efb7b2d8eeff82eb9ef40ec03328",
@@ -19,7 +34,29 @@
       "human_index_path": "docs/publications/index.html",
       "machine_index_path": "docs/publications/index.json",
       "maintenance_test": "python3 -B -m unittest -v tests.test_qikvrt_self_disclosure"
+    },
+    "public_delivery": {
+      "provider": "ChatGPT Sites / Cloudflare Worker",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "canonical_origin": "https://raumzeitterminal.de",
+      "article_path": "/news/physics-nobel-2026-decay-continuity/",
+      "sitemap_path": "docs/sitemap.xml",
+      "robots_path": "docs/robots.txt",
+      "sitemap_urls": [
+        "https://raumzeitterminal.de/",
+        "https://raumzeitterminal.de/news/",
+        "https://raumzeitterminal.de/news/physics-nobel-2026-decay-continuity/"
+      ],
+      "source_binding_path": "release/publication-pr519-sites/SOURCE_BINDING.json",
+      "work_unit_path": "state/work_units/QIKVRT_PUBLIC_DELIVERY_PR519_20261010_V1.json",
+      "state": "PREPARED_NOT_DEPLOYED",
+      "public_delivery_effect_ack": false,
+      "boundary": "Historical publication-overview source locators remain unchanged. These production URLs bind only the prepared routes of the existing Site; they do not prove public delivery."
     }
   },
-  "completion_claims": {"pass":false,"final_pass":false,"effect_ack_done":false}
+  "completion_claims": {
+    "pass": false,
+    "final_pass": false,
+    "effect_ack_done": false
+  }
 }
