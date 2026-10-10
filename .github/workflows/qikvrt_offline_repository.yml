@@ -1,0 +1,121 @@
+name: QIKVRT offline repository
+on:
+  push:
+    branches: ['work/offline-iphone-repository-*']
+  pull_request:
+    paths:
+      - docs/monitor/offline/**
+      - tools/qikvrt_offline_repository.py
+      - tests/test_offline_repository.py
+      - runtime/offline/**
+      - .github/workflows/qikvrt_offline_repository.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: qikvrt-offline-repository-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  browser:
+    needs: transfer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: runtime/offline/browser-tests/package-lock.json
+      - name: Verify cache, integrity and dependency lock
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          npm ci --ignore-scripts --prefix runtime/offline/browser-tests
+          node --input-type=module - <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const lock=JSON.parse(fs.readFileSync('runtime/offline/BROWSER_LOCK.json'));
+          const pkg=JSON.parse(fs.readFileSync('runtime/offline/browser-tests/node_modules/playwright/package.json'));
+          const browsers=JSON.parse(fs.readFileSync('runtime/offline/browser-tests/node_modules/playwright-core/browsers.json'));
+          assert.equal(pkg.version,lock.playwright);
+          for(const expected of lock.browsers)assert.deepEqual(browsers.browsers.find(b=>b.name===expected.name),expected);
+          JS
+      - name: Install exact package-bound browser
+        run: runtime/offline/browser-tests/node_modules/.bin/playwright install --with-deps ${{ matrix.engine }}
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: qikvrt-complete-offline-repository-${{ github.sha }}
+          path: ${{ runner.temp }}/complete-source
+      - name: Fresh offline repository controls
+        env:
+          QIKVRT_PLAYWRIGHT_MODULE: ${{ github.workspace }}/runtime/offline/browser-tests/node_modules/playwright
+          QIKVRT_COMPLETE_REPOSITORY: ${{ runner.temp }}/complete-source/repository.qikvrt.gz
+          QIKVRT_OFFLINE_ENGINE: ${{ matrix.engine }}
+          QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
+          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt"
+          make offline-repository-test
+          node docs/monitor/offline/browser.test.mjs
+          git status --porcelain --untracked-files=no > "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
+          test ! -s "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: qikvrt-offline-browser-${{ matrix.engine }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/browser-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-failure.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/update-failure.png
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/iphone-layout.png
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/complete-repository-iphone-layout.png
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.png
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/SUBJECT.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/TRACKED_STATUS.txt
+          retention-days: 30
+  transfer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Build complete source-bound iPhone transfer
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qikvrt-offline-transfer"
+          python3 -B tools/qikvrt_integrity.py verify
+          python3 -B tools/qikvrt_offline_repository.py pack --ref HEAD --output "$RUNNER_TEMP/qikvrt-offline-transfer/repository.qikvrt.gz" > "$RUNNER_TEMP/qikvrt-offline-transfer/RECEIPT.json"
+          python3 -B tools/qikvrt_offline_repository.py client --ref HEAD --output "$RUNNER_TEMP/qikvrt-offline-transfer/offline-client.zip" > "$RUNNER_TEMP/qikvrt-offline-transfer/CLIENT_RECEIPT.json"
+          cp docs/monitor/offline/README.md "$RUNNER_TEMP/qikvrt-offline-transfer/README.md"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/qikvrt-offline-transfer/SUBJECT.txt"
+          git status --porcelain --untracked-files=no > "$RUNNER_TEMP/qikvrt-offline-transfer/TRACKED_STATUS.txt"
+          test ! -s "$RUNNER_TEMP/qikvrt-offline-transfer/TRACKED_STATUS.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-complete-offline-repository-${{ github.sha }}
+          path: ${{ runner.temp }}/qikvrt-offline-transfer
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: qikvrt-static-offline-client-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/qikvrt-offline-transfer/offline-client.zip
+            ${{ runner.temp }}/qikvrt-offline-transfer/CLIENT_RECEIPT.json
+            ${{ runner.temp }}/qikvrt-offline-transfer/SUBJECT.txt
+          retention-days: 30

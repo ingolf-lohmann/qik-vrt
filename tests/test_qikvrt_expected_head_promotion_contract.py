@@ -55,8 +55,8 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn('exit 0', workflow)
         self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
         self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
-        self.assertIn("if other.get('base', {}).get('sha') != current_main", workflow)
-        self.assertIn("if other.get('head', {}).get('sha') == head", workflow)
+        self.assertIn("other.get('base',{}).get('sha') != current_main", workflow)
+        self.assertIn("other.get('head',{}).get('sha') == head", workflow)
 
     def test_external_effect_claims_remain_fail_closed(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))

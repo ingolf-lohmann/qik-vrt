@@ -25,6 +25,12 @@
       "version": "2.96.0"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "git",
+      "provider": "Git CLI in pinned hosted runner",
+      "version": "read-only-object-export"
+    },
+    {
       "cache_class": "build-cache",
       "component": "lean",
       "provider": "leanprover/lean-action+actions/cache",
@@ -35,6 +41,12 @@
       "component": "node",
       "provider": "actions/setup-node",
       "version": "24.x"
+    },
+    {
+      "cache_class": "ecosystem-cache",
+      "component": "playwright-offline-tests",
+      "provider": "npm integrity-bound package and browser artifacts",
+      "version": "1.62.1"
     },
     {
       "cache_class": "runner-image-layer",
@@ -59,6 +71,12 @@
       "component": "python",
       "provider": "actions/setup-python",
       "version": "3.12.13"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "react-browser",
+      "provider": "source-bound local production bundle",
+      "version": "19.2.6+0.27.0"
     },
     {
       "cache_class": "ecosystem-cache",
@@ -87,10 +105,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 14,
-  "declared_components": 14,
-  "lock_sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69",
-  "registry_sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6",
+  "covered_components": 17,
+  "declared_components": 17,
+  "lock_sha256": "f16be76adae476ae2066510048670f12ab09c18badfb0017e0baea90aae565f4",
+  "registry_sha256": "9a9431d1c31a7b9289f3aaa1488f0526f0a7f1dfcdedeb8d3f89934f31cd8e5b",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

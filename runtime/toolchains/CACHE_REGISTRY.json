@@ -101,6 +101,28 @@
       ],
       "version": "2.96.0"
     },
+    "git": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_offline_repository.yml",
+        "tools/qikvrt_offline_repository.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "profiles": [
+        "offline-repository"
+      ],
+      "provider": "Git CLI in pinned hosted runner",
+      "trusted_save": false,
+      "verification": [
+        "native Git blob SHA-1",
+        "complete native Git tree equality",
+        "full browser import readback"
+      ],
+      "version": "read-only-object-export"
+    },
     "lean": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -132,7 +154,9 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "runtime/offline/browser-tests/package-lock.json",
+        ".github/workflows/qikvrt_offline_repository.yml"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
@@ -142,7 +166,8 @@
       "profiles": [
         "formal",
         "audio",
-        "all"
+        "all",
+        "offline-repository"
       ],
       "provider": "actions/setup-node",
       "trusted_save": false,
@@ -153,6 +178,30 @@
         "test execution"
       ],
       "version": "24.x"
+    },
+    "playwright-offline-tests": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_offline_repository.yml",
+        "runtime/offline/browser-tests/package-lock.json",
+        "runtime/offline/BROWSER_LOCK.json"
+      ],
+      "cache_class": "ecosystem-cache",
+      "cache_locations": [
+        "github-actions-cache:npm",
+        "package-bound-playwright-browser-cache"
+      ],
+      "profiles": [
+        "offline-repository"
+      ],
+      "provider": "npm integrity-bound package and browser artifacts",
+      "trusted_save": false,
+      "verification": [
+        "npm ci integrity lock",
+        "browser revision and version lock",
+        "real Chromium and WebKit execution"
+      ],
+      "version": "1.62.1"
     },
     "poppler": {
       "authority_files": [
@@ -258,6 +307,29 @@
         "runtime execution"
       ],
       "version": "3.12.13"
+    },
+    "react-browser": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_offline_repository.yml",
+        "runtime/offline/REACT_LOCK.json",
+        "docs/monitor/offline/vendor/REACT_LICENSE.txt"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "docs/monitor/offline/vendor"
+      ],
+      "profiles": [
+        "offline-repository"
+      ],
+      "provider": "source-bound local production bundle",
+      "trusted_save": false,
+      "verification": [
+        "exact production bundle SHA-256",
+        "MIT license SHA-256",
+        "offline browser execution"
+      ],
+      "version": "19.2.6+0.27.0"
     },
     "sherpa-onnx-node": {
       "authority_files": [
