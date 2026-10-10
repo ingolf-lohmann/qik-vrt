@@ -49,6 +49,10 @@
     {
       "type": "INTEGRATION",
       "description": "Extend existing draft #515 by a history-preserving merge commit with parents current #515 and exact #514; keep all #515 non-integrity content and current Main lifecycle blobs, reuse the three #514 source/evidence blobs, and derive canonical integrity metadata for the combined inputs. New-subject native gates remain mandatory."
+    },
+    {
+      "type": "CAUSAL_INTEGRATION_REPAIR",
+      "description": "Native push CI 38007301318, requested-review contract 38007304761 and workflow-executor watchdog 38007304762 all failed on the same Seed lifecycle reference allowlist: a documentary Python comment in generator 3.2 was counted as an active script reference. Extend the existing test scanner to distinguish Python comments/docstrings from executable string references; retain all non-Python guards and the exact caller allowlist. Four meaningful negative/positive regression tests cover this boundary."
     }
   ],
   "joint_components": [],
@@ -96,17 +100,19 @@
     "state/work_units/QIKVRT_REFLEXIVE_SELF_APPLICATION_INTEGRATION_20261009_V1.json",
     "REPOSITORY_FILE_MANIFEST.json",
     "REPOSITORY_FILE_MANIFEST.json.sha256",
-    "SHA256SUMS.txt"
+    "SHA256SUMS.txt",
+    "tests/test_seed_workflows.py"
   ],
   "git_history": {
-    "strategy": "MERGE_COMMIT_ON_EXISTING_DRAFT_BRANCH",
+    "strategy": "INITIAL_TWO_PARENT_MERGE_THEN_APPEND_ONLY_CAUSAL_TEST_REPAIR",
     "parents": [
       "14c710978462178546974c5aa18c1236914f916e",
       "e23a8185bbef669cead4c8d2c15b3e66ec189eb3"
     ],
     "force_push": false,
     "history_rewrite": false,
-    "ref_write": "FAST_FORWARD_EXPECTED_SHA_LEASE_ONLY"
+    "ref_write": "FAST_FORWARD_EXPECTED_SHA_LEASE_ONLY",
+    "corrective_commit_parent": "94c0b880a7250e2d91f38c7a5e5192003692a1cb"
   },
   "verification": {
     "native_tests_on_new_combined_subject": "REQUIRED_NOT_YET_EXECUTED_AT_COMMIT_TIME",
@@ -120,7 +126,25 @@
       "existing lifecycle and Seed/MCP/Governance regressions",
       "exact unchanged candidate head/tree fresh readback",
       "native Code-Owner governance and independent review before Main activation"
-    ]
+    ],
+    "retained_first_combined_subject_failure": {
+      "head": "94c0b880a7250e2d91f38c7a5e5192003692a1cb",
+      "tree": "232a6202ba1d5c103723f1b60afd7e50e0c81ec7",
+      "native_runs": [
+        38007301318,
+        38007304761,
+        38007304762
+      ],
+      "test": "tests.test_seed_workflows.MirrorLifecycleGovernanceTests.test_active_lifecycle_callers_use_only_the_review_workflow",
+      "cause": "Raw substring matching counted a Python comment as an active reference; three separate native gate executions reproduce the same assertion.",
+      "manifest_derivation": "No delta; immutable metadata on the first combined candidate is byte-current."
+    },
+    "local_reference_regressions": {
+      "count": 4,
+      "result": "PASS_FOR_SELECTED_SCANNER_CLOSURE",
+      "actual_generator_negative_control": "VERIFIED",
+      "whole_module_execution": "REQUIRED_NATIVE"
+    }
   },
   "human_decision": {
     "repair_and_reviewable_integration": "AUTHORIZED",

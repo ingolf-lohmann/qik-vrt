@@ -3,6 +3,7 @@
 # Copyright 2026 Ingolf Lohmann.
 from __future__ import annotations
 
+import ast
 import datetime as dt
 import hashlib
 import json
@@ -44,6 +45,57 @@ REQUEST_URL = (
     "qikvrt/runtime/onboarding/SEED_REGISTRATION_REQUEST.json"
 )
 NOW = dt.datetime(2026, 7, 20, 12, 0, 0, tzinfo=dt.timezone.utc)
+
+
+def active_lifecycle_reference(source: str, suffix: str) -> bool:
+    """Keep Python comments/docstrings out of the active-source allowlist."""
+    script = "qikvrt_mirror_node_lifecycle.sh"
+    if suffix != ".py":
+        return script in source
+    tree = ast.parse(source)
+    docstrings = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef,
+                             ast.AsyncFunctionDef)) and node.body:
+            first = node.body[0]
+            if (isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant)
+                    and isinstance(first.value.value, str)):
+                docstrings.add(id(first.value))
+    return any(
+        isinstance(node, ast.Constant) and isinstance(node.value, str)
+        and id(node) not in docstrings and script in node.value
+        for node in ast.walk(tree)
+    )
+
+
+class LifecycleReferenceScanTests(unittest.TestCase):
+    def test_python_comment_is_not_an_active_reference(self) -> None:
+        source = "# writer: tools/qikvrt_mirror_node_lifecycle.sh\nVALUE = 1\n"
+        self.assertFalse(active_lifecycle_reference(source, ".py"))
+
+    def test_module_function_and_class_docstrings_are_not_active_references(self) -> None:
+        source = '''"""See tools/qikvrt_mirror_node_lifecycle.sh."""
+class Example:
+    """See tools/qikvrt_mirror_node_lifecycle.sh."""
+    def method(self):
+        """See tools/qikvrt_mirror_node_lifecycle.sh."""
+        return 1
+'''
+        self.assertFalse(active_lifecycle_reference(source, ".py"))
+
+    def test_python_command_and_composed_path_still_require_the_allowlist(self) -> None:
+        for source in (
+            'subprocess.run(["bash", "tools/qikvrt_mirror_node_lifecycle.sh"])',
+            'subprocess.run(["bash", str(ROOT / "tools" / "qikvrt_mirror_node_lifecycle.sh")])',
+        ):
+            with self.subTest(source=source):
+                self.assertTrue(active_lifecycle_reference(source, ".py"))
+
+    def test_non_python_reference_guard_is_preserved(self) -> None:
+        for suffix in (".yml", ".yaml", ".sh", ".ps1"):
+            with self.subTest(suffix=suffix):
+                self.assertTrue(active_lifecycle_reference(
+                    "bash tools/qikvrt_mirror_node_lifecycle.sh", suffix))
 
 
 def continuity_declaration() -> dict[str, object]:
@@ -797,7 +849,7 @@ class MirrorLifecycleGovernanceTests(unittest.TestCase):
         ]
         references = sorted(
             path.relative_to(self.repository).as_posix() for path in sources
-            if "qikvrt_mirror_node_lifecycle.sh" in path.read_text(encoding="utf-8")
+            if active_lifecycle_reference(path.read_text(encoding="utf-8"), path.suffix)
         )
         self.assertEqual([
             ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
