@@ -40,6 +40,22 @@
       "EXPECTED_HEAD_BOUND_MERGE"
     ],
     "merge_binding": "GITHUB_PULL_MERGE_REST_SHA_PRECONDITION",
+    "target_ref_publication": {
+      "decision_core": "tools/qikvrt_expected_head_promotion.py",
+      "human_contract": "docs/operations/EXPECTED_HEAD_PROMOTION.md",
+      "target_ref": "refs/heads/main",
+      "atomic_expected_old_head_required": true,
+      "current_merge_rest_comparison_scope": "PR_HEAD",
+      "current_target_ref_cas_capability": "UNAVAILABLE",
+      "capability_source": "TRUSTED_EXECUTOR_NOT_CANDIDATE_CONTENT",
+      "unverified_cas_disposition": "HOLD",
+      "readback_order": ["TARGET_REF", "EXACT_PUBLISHED_COMMIT_TREE_AND_PARENTS", "TARGET_REF"],
+      "continue_scope": "EXACT_REF_PUBLICATION_ONLY",
+      "readback_failure_disposition": "HOLD_RECONCILE_RECORDED_EFFECT_NO_BLIND_RETRY",
+      "evidence_storage": "WORKFLOW_ARTIFACT_BOUND_TO_RUN_ID_AND_ATTEMPT",
+      "covers_other_writers": false,
+      "changes_live_rulesets": false
+    },
     "old_action_required_may_be_superseded_by_newer_same_workflow_success": true,
     "same_head_verification_proxy_is_competing_writer": false,
     "stale_base_pull_request_is_current_competing_writer": false,
