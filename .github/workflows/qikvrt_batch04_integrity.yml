@@ -63,6 +63,10 @@ jobs:
       TARGET_REF: ${{ github.event_name == 'pull_request' && github.head_ref || github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || inputs.target_ref || github.ref_name }}
       EXPECTED_HEAD: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || inputs.expected_head || github.event.pull_request.head.sha || github.sha }}
     steps:
+      - name: Set up standalone Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.EXPECTED_HEAD }}
@@ -272,7 +276,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          make test
+          make test repository-monitor-test self-host-test
           python3 tools/qikvrt_integrity.py verify
       - name: Commit materialized repository evidence
         shell: bash

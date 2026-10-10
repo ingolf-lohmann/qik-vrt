@@ -8,6 +8,29 @@
     "runner-image-layer"
   ],
   "components": {
+    "Xvfb": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
     "cc": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -29,6 +52,31 @@
         "core execution tests"
       ],
       "version": "ansi-c90"
+    },
+    "docker": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "build-cache",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "docker build plus docker run --network none; actual image/dependency readback",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls",
+        "Docker --init platform reaper PID1/executable readback and actual crash orphan reaping",
+        "Actual kernel TCP listener readback: only the four declared loopback IPv4 ports"
+      ],
+      "version": "OCI-build-and-isolated-runtime-contract"
     },
     "ffmpeg": {
       "authority_files": [
@@ -72,6 +120,29 @@
       ],
       "version": "same-as-ffmpeg"
     },
+    "firefox-esr": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
     "gh": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -89,7 +160,8 @@
         "formal",
         "audio",
         "publication",
-        "all"
+        "all",
+        "self-host:github"
       ],
       "provider": "tools/bootstrap-gh.sh|tools/bootstrap-gh.ps1",
       "trusted_save": true,
@@ -100,6 +172,33 @@
         "execution self-test"
       ],
       "version": "2.96.0"
+    },
+    "git": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/PACKAGE.json",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py",
+        "runtime/self-host/CAPTURE.md",
+        "deploy/universal-terminal/railway-capture-hook.sh",
+        "tests/test_self_host_capture.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned:exact-executable-or-behavioral-contract"
+      ],
+      "profiles": [
+        "self-host-build"
+      ],
+      "provider": "source builder and existing owner terminal subject reader",
+      "trusted_save": false,
+      "verification": [
+        "exact committed-source export",
+        "version and SHA-256 where runtime-bound",
+        "positive, negative and restart tests",
+        "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred"
+      ],
+      "version": "read-only-object-export"
     },
     "lean": {
       "authority_files": [
@@ -132,27 +231,87 @@
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
         "formalization/QIKVRT_Formalization_v1.0/package-lock.json",
         "tools/offline-audio-transcription/package-lock.json",
-        ".github/workflows/qikvrt_formalization_and_audio.yml"
+        ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "runtime/self-host/PACKAGE.json",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py",
+        "tools/qikvrt_self_host_migration.py",
+        "tests/test_self_host_migration.py",
+        "runtime/self-host/MIGRATION.md"
       ],
       "cache_class": "hosted-toolcache",
       "cache_locations": [
         "github-hosted-toolcache:Node/24",
-        "github-actions-cache:npm"
+        "github-actions-cache:npm",
+        "operator-provisioned:manifest-bound-node24"
       ],
       "profiles": [
         "formal",
         "audio",
-        "all"
+        "all",
+        "self-host"
       ],
-      "provider": "actions/setup-node",
+      "provider": "actions/setup-node or operator-provisioned exact executable",
       "trusted_save": false,
       "verification": [
         "Node major-version contract",
         "npm ci",
         "package-lock digest",
-        "test execution"
+        "test execution",
+        "self-host manifest version and executable SHA-256 with offline execution tests",
+        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls"
       ],
       "version": "24.x"
+    },
+    "novnc": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "all exported noVNC source sizes/SHA-256 and inventory",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "reported-version-and-exact-package-digest"
+    },
+    "playwright-origin-tests": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "docs/monitor/origin/origin.browser.test.mjs",
+        "runtime/self-host/ORIGIN_BROWSER_TEST_LOCK.json",
+        "runtime/self-host/origin-tests/package.json",
+        "runtime/self-host/origin-tests/package-lock.json",
+        ".github/workflows/qikvrt_temdd.yml"
+      ],
+      "cache_class": "hosted-toolcache",
+      "cache_locations": [
+        "npm-integrity-locked Playwright 1.62.1 package",
+        "SHA256-locked official Chrome for Testing 151.0.7922.34 archive"
+      ],
+      "profiles": [
+        "self-host-origin-tests"
+      ],
+      "provider": "https://github.com/microsoft/playwright/tree/v1.62.1",
+      "trusted_save": false,
+      "verification": [
+        "npm ci SRI locks; browser archive SHA-256 and byte count; exact executable --version",
+        "desktop persistent-context close/relaunch; offline and negative controls",
+        "device emulation or desktop WebKit never counted as Android or iOS witness"
+      ],
+      "version": "1.62.1"
     },
     "poppler": {
       "authority_files": [
@@ -259,6 +418,62 @@
       ],
       "version": "3.12.13"
     },
+    "python-selfhost": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/PACKAGE.json",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py",
+        "tools/qikvrt_self_host_migration.py",
+        "tests/test_self_host_migration.py",
+        "runtime/self-host/MIGRATION.md",
+        "runtime/self-host/CAPTURE.md",
+        "deploy/universal-terminal/railway-capture-hook.sh",
+        "tests/test_self_host_capture.py"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned:exact-executable-or-behavioral-contract"
+      ],
+      "profiles": [
+        "self-host"
+      ],
+      "provider": "package-bound operator interpreter",
+      "trusted_save": false,
+      "verification": [
+        "exact committed-source export",
+        "version and SHA-256 where runtime-bound",
+        "positive, negative and restart tests",
+        "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls",
+        "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred"
+      ],
+      "version": "3.12.x"
+    },
+    "react-browser": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/REACT_LOCK.json",
+        "docs/monitor/react-runtime.js",
+        "docs/monitor/REACT_LICENSE.txt",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "docs/monitor/react-runtime.js"
+      ],
+      "profiles": [
+        "self-host"
+      ],
+      "provider": "Pinned React 19.2.6, React DOM 19.2.6 and Scheduler 0.27.0 production CommonJS source bytes; MIT",
+      "trusted_save": false,
+      "verification": [
+        "Static bundle size/SHA-256 and each original production-source slice digest plus complete MIT license",
+        "Node VM loads actual React version and ReactDOM createRoot; exported public HTTP assets/version/immutable original-file readback",
+        "Existing hash-checked client replica handles event snapshots; no CDN, npm install or server renderer at startup; missing or changed static bytes fail closed"
+      ],
+      "version": "19.2.6+0.27.0"
+    },
     "sherpa-onnx-node": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -281,6 +496,125 @@
         "offline audio tests"
       ],
       "version": "1.13.4"
+    },
+    "sqljs-browser": {
+      "authority_files": [
+        "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "repo-managed-archive",
+      "cache_locations": [
+        "docs/monitor/origin/vendor"
+      ],
+      "profiles": [
+        "self-host-origin"
+      ],
+      "provider": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
+      "trusted_save": false,
+      "verification": [
+        "archive SHA-512 integrity; every vendored file size and SHA-256",
+        "actual original SQLite carrier validation; corrupt-byte and identity refusal",
+        "offline Service Worker cache hashes; fail closed and preserve previous store on error"
+      ],
+      "version": "1.14.2"
+    },
+    "systemd": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/toolchains/PROVENANCE.md",
+        "tools/bootstrap-runtime.sh",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host.py",
+        "tests/test_self_host_systemd.py",
+        ".github/workflows/qikvrt_effect_ack_http_terminal.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "operator-provisioned-systemd:distribution-managed-host-layer",
+        "github-hosted-runner-image:ubuntu-24.04"
+      ],
+      "profiles": [
+        "self-host-systemd"
+      ],
+      "provider": "operator-managed Linux host or Ubuntu 24.04 native CI systemd; no installation at startup",
+      "trusted_save": false,
+      "verification": [
+        "systemctl/systemd-analyze version >=252; generated service/path verify without unknown directives",
+        "native CI real systemd MainPID-only SIGKILL; cgroup orphan cleanup, new invocation and unchanged native SQLite/journal bytes",
+        "HOLD 78 does not retry; restoring exact pinned admission bytes triggers event-based recovery; no public host acceptance",
+        "Actual systemd PID1/version and manager MainPID/InvocationID must match the guarded launcher process; env self-report insufficient"
+      ],
+      "version": "252-or-newer-unit-contract"
+    },
+    "websockify": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
+    "x11vnc": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
+    },
+    "xdpyinfo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
     },
     "xelatex": {
       "authority_files": [
@@ -329,6 +663,29 @@
         "renderer self-test"
       ],
       "version": "3.34.0"
+    },
+    "xwininfo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "trusted_save": false,
+      "verification": [
+        "exact executable SHA-256 in manifest",
+        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+      ],
+      "version": "exact-executable-binding"
     },
     "zod": {
       "authority_files": [

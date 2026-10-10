@@ -2,9 +2,21 @@
   "components": [
     {
       "cache_class": "runner-image-layer",
+      "component": "Xvfb",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "cc",
       "provider": "pinned GitHub-hosted runner image",
       "version": "ansi-c90"
+    },
+    {
+      "cache_class": "build-cache",
+      "component": "docker",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "OCI-build-and-isolated-runtime-contract"
     },
     {
       "cache_class": "runner-image-layer",
@@ -19,10 +31,22 @@
       "version": "same-as-ffmpeg"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "firefox-esr",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
       "cache_class": "repo-managed-archive",
       "component": "gh",
       "provider": "tools/bootstrap-gh.sh|tools/bootstrap-gh.ps1",
       "version": "2.96.0"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "git",
+      "provider": "source builder and existing owner terminal subject reader",
+      "version": "read-only-object-export"
     },
     {
       "cache_class": "build-cache",
@@ -33,8 +57,20 @@
     {
       "cache_class": "hosted-toolcache",
       "component": "node",
-      "provider": "actions/setup-node",
+      "provider": "actions/setup-node or operator-provisioned exact executable",
       "version": "24.x"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "novnc",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "reported-version-and-exact-package-digest"
+    },
+    {
+      "cache_class": "hosted-toolcache",
+      "component": "playwright-origin-tests",
+      "provider": "https://github.com/microsoft/playwright/tree/v1.62.1",
+      "version": "1.62.1"
     },
     {
       "cache_class": "runner-image-layer",
@@ -61,10 +97,52 @@
       "version": "3.12.13"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "python-selfhost",
+      "provider": "package-bound operator interpreter",
+      "version": "3.12.x"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "react-browser",
+      "provider": "Pinned React 19.2.6, React DOM 19.2.6 and Scheduler 0.27.0 production CommonJS source bytes; MIT",
+      "version": "19.2.6+0.27.0"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "sherpa-onnx-node",
       "provider": "actions/setup-node:npm",
       "version": "1.13.4"
+    },
+    {
+      "cache_class": "repo-managed-archive",
+      "component": "sqljs-browser",
+      "provider": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
+      "version": "1.14.2"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "systemd",
+      "provider": "operator-managed Linux host or Ubuntu 24.04 native CI systemd; no installation at startup",
+      "version": "252-or-newer-unit-contract"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "websockify",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "x11vnc",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "xdpyinfo",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
     },
     {
       "cache_class": "runner-image-layer",
@@ -79,6 +157,12 @@
       "version": "3.34.0"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "xwininfo",
+      "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
+      "version": "exact-executable-binding"
+    },
+    {
       "cache_class": "ecosystem-cache",
       "component": "zod",
       "provider": "actions/setup-node:npm",
@@ -87,10 +171,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 14,
-  "declared_components": 14,
-  "lock_sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69",
-  "registry_sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6",
+  "covered_components": 28,
+  "declared_components": 28,
+  "lock_sha256": "2b1a20ddadd56bb677e99fc9b1d8097997eec39d0f67cd7db8311589a86eb565",
+  "registry_sha256": "d72f1257eedfbd1ddd778b70b3e5fbe326e3da974ab96e34c6dd05de992bc506",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,
