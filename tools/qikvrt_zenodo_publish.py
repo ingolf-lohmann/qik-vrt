@@ -39,15 +39,21 @@ from typing import Any, NoReturn
 try:
     from tools import qikvrt_zenodo_actions as zenodo
     from tools import qikvrt_zenodo_machine_proof as machine_proof
+    from tools import qikvrt_workflow_executor as role_resolver
 except ModuleNotFoundError:
     import qikvrt_zenodo_actions as zenodo  # type: ignore[no-redef]
     import qikvrt_zenodo_machine_proof as machine_proof  # type: ignore[no-redef]
+    import qikvrt_workflow_executor as role_resolver  # type: ignore[no-redef]
 
 SCHEMA = "qikvrt_zenodo_publication_manifest_v1"
 SCHEMA_V2 = "qikvrt_zenodo_publication_manifest_v2"
 EVIDENCE_SCHEMA = "qikvrt_zenodo_publication_evidence_v1"
 EVIDENCE_SCHEMA_V2 = "qikvrt_zenodo_publication_evidence_v2"
 OWNER_AUTHORIZATION_SCHEMA = "qikvrt_zenodo_owner_authorization_v1"
+COMPACT_OWNER_AUTHORIZATION_SCHEMA = "qikvrt_owner_zenodo_authorization_v1"
+# Compatibility export for historical metadata-control fixtures and consumers.
+# It never selects this publisher's effect repository; that comes from policy.
+PRODUCTION_REPOSITORY = "Goldkelch/qik-vrt"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 ZENODO_DOI = re.compile(r"^10\.5281/zenodo\.[1-9][0-9]*$")
@@ -60,7 +66,7 @@ CONSUMPTION_STATE = "EFFECT_RELEASED/AWAITING_REMOTE_RECONCILIATION"
 SINGLE_USE_SCOPE = "AUTHORITY_REPOSITORY_GLOBAL_FAIL_CLOSED"
 CONSUMPTION_REF_PREFIX = "refs/tags/qikvrt-zenodo-auth/"
 CONSUMPTION_KEY_SCHEMA = "qikvrt_zenodo_authorization_consumption_key_v2"
-PRODUCTION_REPOSITORY = "Goldkelch/qik-vrt"
+SAFE_REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 PRODUCTION_GITHUB_HOST = "github.com"
 GITHUB_API_BASE = "https://api.github.com"
 GITHUB_TOKEN_ENVIRONMENT_VARIABLE = "GITHUB_TOKEN"
@@ -102,6 +108,22 @@ REQUIRED_METADATA = frozenset(
 
 def _fail(message: str) -> NoReturn:
     raise zenodo.ZenodoError(message)
+
+
+def _production_authority(root: pathlib.Path) -> str:
+    """Reuse the canonical resolver; candidate policy does not prove activation."""
+    try:
+        return role_resolver.load_repository_roles(root)["AUTHORITY"]
+    except (role_resolver.ExecutorBlock, OSError, ValueError, KeyError):
+        _fail("production authority policy is missing or invalid")
+
+
+def _repository_prefix(repository: str) -> str:
+    if not isinstance(repository, str) or SAFE_REPOSITORY.fullmatch(repository) is None:
+        _fail("production repository identity is unsafe")
+    if any(part in {".", ".."} for part in repository.split("/")):
+        _fail("production repository identity is unsafe")
+    return f"/repos/{repository}/"
 
 
 def _secret_label(name: str) -> str:
@@ -171,8 +193,7 @@ def _authorization_consumption_key(
     select the repository-global lock. Replacing only that nonce therefore
     cannot mint a second effect-bearing identity for the same decision.
     """
-    if repository != PRODUCTION_REPOSITORY:
-        _fail("authorization consumption key repository is not the pinned authority")
+    _repository_prefix(repository)
     if SAFE_AUTHORIZATION_ID.fullmatch(authorization_id) is None:
         _fail("authorization consumption key authorization_id is unsafe")
     if not isinstance(publication_id, str) or not publication_id:
@@ -1089,6 +1110,15 @@ def _validate_repository_source_head(
     if len(control_blobs) != 6:
         _fail("machine-proof execution controls must contain six distinct paths")
 
+    # Authority selection is an execution control, not an upload or an
+    # authorization. Require the selected policy to be committed and clean too.
+    role_path = _safe_relative(
+        root, role_resolver.ROLE_POLICY_PATH, "authority role policy", must_exist=True
+    )
+    control_blobs[role_resolver.ROLE_POLICY_PATH] = _git_blob_sha(
+        zenodo.read_regular_file(role_path, zenodo.MAX_JSON_BYTES)
+    )
+
     execution_blobs = _execution_scope_blobs(
         manifest_relative,
         manifest_raw,
@@ -1200,7 +1230,7 @@ def _validated_network_secrets() -> dict[str, str]:
     }
 
 
-def _origin_repository_identity(raw: str) -> str:
+def _origin_repository_identity(raw: str, repository: str = PRODUCTION_REPOSITORY) -> str:
     """Accept only the pinned GitHub HTTPS/SSH authority origin."""
     if (
         not isinstance(raw, str)
@@ -1209,12 +1239,13 @@ def _origin_repository_identity(raw: str) -> str:
         or any(character in raw for character in ("\x00", "\r", "\n"))
     ):
         _fail("origin push URL is structurally invalid")
-    expected_path = "/Goldkelch/qik-vrt"
+    _repository_prefix(repository)
+    expected_path = "/" + repository
     if raw in {
-        "git@github.com:Goldkelch/qik-vrt",
-        "git@github.com:Goldkelch/qik-vrt.git",
+        f"git@github.com:{repository}",
+        f"git@github.com:{repository}.git",
     }:
-        return PRODUCTION_REPOSITORY
+        return repository
     if "://" in raw:
         parsed = urllib.parse.urlsplit(raw)
         try:
@@ -1234,7 +1265,7 @@ def _origin_repository_identity(raw: str) -> str:
             and parsed.password is None
             and port is None
         ):
-            return PRODUCTION_REPOSITORY
+            return repository
         if (
             parsed.scheme == "ssh"
             and parsed.netloc == "git@" + PRODUCTION_GITHUB_HOST
@@ -1242,12 +1273,12 @@ def _origin_repository_identity(raw: str) -> str:
             and parsed.password is None
             and port is None
         ):
-            return PRODUCTION_REPOSITORY
-    _fail("origin must be exact GitHub HTTPS or SSH for Goldkelch/qik-vrt")
+            return repository
+    _fail("origin must be exact GitHub HTTPS or SSH for the policy-bound authority")
 
 
 def _validate_origin_repository(root: pathlib.Path, repository: str) -> None:
-    if repository != PRODUCTION_REPOSITORY:
+    if repository != _production_authority(root):
         _fail("manifest repository is not the pinned production authority")
     _status, raw_urls = _git(
         root,
@@ -1260,7 +1291,7 @@ def _validate_origin_repository(root: pathlib.Path, repository: str) -> None:
     urls = raw_urls.splitlines()
     if len(urls) != 1:
         _fail("origin must have exactly one repository-bound push URL")
-    if _origin_repository_identity(urls[0]) != PRODUCTION_REPOSITORY:
+    if _origin_repository_identity(urls[0], repository) != repository:
         _fail("origin differs from the pinned production authority")
 
 
@@ -1284,11 +1315,12 @@ def _github_api_request(
     path: str,
     token: str,
     *,
+    repository: str,
     payload: Mapping[str, Any] | None = None,
     accept: tuple[int, ...] = (200,),
 ) -> tuple[int, dict[str, Any]]:
     """Use only the pinned GitHub Git-Data REST origin, with redacted errors."""
-    repository_prefix = "/repos/Goldkelch/qik-vrt/"
+    repository_prefix = _repository_prefix(repository)
     if not path.startswith(repository_prefix) or any(
         character in path for character in ("\x00", "\r", "\n", "?", "#")
     ):
@@ -1346,14 +1378,33 @@ def _github_api_request(
     return status, value
 
 
-def _github_ref_path(ref: str) -> str:
+def _github_ref_path(ref: str, repository: str = PRODUCTION_REPOSITORY) -> str:
     if not ref.startswith("refs/tags/"):
         _fail("remote authorization consumption ref is not a tag ref")
     suffix = ref.removeprefix("refs/")
-    return "/repos/Goldkelch/qik-vrt/git/ref/" + urllib.parse.quote(
+    return _repository_prefix(repository) + "git/ref/" + urllib.parse.quote(
         suffix,
         safe="/",
     )
+
+
+def _validate_active_authority(
+    root: pathlib.Path, repository: str, execution_head: str, github_token: str
+) -> dict[str, str]:
+    """Require fresh exact Main head/tree; a candidate role swap cannot publish."""
+    if repository != _production_authority(root):
+        _fail("production authority changed during validation")
+    _status, value = _github_api_request(
+        "GET", _repository_prefix(repository) + "commits/main", github_token,
+        repository=repository,
+    )
+    commit = value.get("commit")
+    tree = commit.get("tree") if isinstance(commit, dict) else None
+    _git_status, local_tree = _git(root, "rev-parse", "HEAD^{tree}")
+    if (value.get("sha") != execution_head or not isinstance(tree, dict)
+            or tree.get("sha") != local_tree or HEX40.fullmatch(local_tree) is None):
+        _fail("AUTHORITY_ROLE_BINDING_NOT_ACTIVE: execution head/tree is not current Main")
+    return {"repository": repository, "head": execution_head, "tree": local_tree}
 
 
 def _validate_github_ref_response(
@@ -1447,8 +1498,9 @@ def _read_exact_existing_consumption_lock(
     _validate_github_ref_response(ref_value, ref, tag_object)
     status, tag_value = _github_api_request(
         "GET",
-        "/repos/Goldkelch/qik-vrt/git/tags/" + tag_object,
+        _repository_prefix(manifest["repository"]) + "git/tags/" + tag_object,
         github_token,
+        repository=manifest["repository"],
         accept=(200, 404),
     )
     if status != 200:
@@ -1485,11 +1537,12 @@ def _acquire_remote_consumption_lock(
     if ref != _remote_consumption_ref(consumption_key["value"]):
         _fail("normalized owner authorization remote consumption ref differs")
     _validate_origin_repository(root, repository)
-    ref_path = _github_ref_path(ref)
+    ref_path = _github_ref_path(ref, repository)
     existing_status, existing = _github_api_request(
         "GET",
         ref_path,
         github_token,
+        repository=repository,
         accept=(200, 404),
     )
     if existing_status == 200:
@@ -1503,8 +1556,9 @@ def _acquire_remote_consumption_lock(
     expected_tag = _expected_consumption_tag(manifest, execution_head)
     tag_status, tag_value = _github_api_request(
         "POST",
-        "/repos/Goldkelch/qik-vrt/git/tags",
+        _repository_prefix(repository) + "git/tags",
         github_token,
+        repository=repository,
         payload=expected_tag,
         accept=(201,),
     )
@@ -1517,8 +1571,9 @@ def _acquire_remote_consumption_lock(
 
     create_status, created = _github_api_request(
         "POST",
-        "/repos/Goldkelch/qik-vrt/git/refs",
+        _repository_prefix(repository) + "git/refs",
         github_token,
+        repository=repository,
         payload={"ref": ref, "sha": tag_object},
         accept=(201, 422),
     )
@@ -1527,6 +1582,7 @@ def _acquire_remote_consumption_lock(
             "GET",
             ref_path,
             github_token,
+            repository=repository,
             accept=(200, 404),
         )
         if raced_status != 200:
@@ -1545,6 +1601,7 @@ def _acquire_remote_consumption_lock(
         "GET",
         ref_path,
         github_token,
+        repository=repository,
         accept=(200,),
     )
     if observed_status != 200:
@@ -1935,7 +1992,7 @@ def _validate_recovery_evidence(
     if (
         remote["remote"] != "github_git_data_api"
         or remote["api_origin"] != GITHUB_API_BASE
-        or remote["repository"] != PRODUCTION_REPOSITORY
+        or remote["repository"] != manifest["repository"]
         or remote["ref"] != authorization["remote_consumption_ref"]
         or not isinstance(remote["tag_object"], str)
         or HEX40.fullmatch(remote["tag_object"]) is None
@@ -1992,8 +2049,9 @@ def _verify_remote_consumption_lock(
 ) -> None:
     status, observed = _github_api_request(
         "GET",
-        _github_ref_path(remote["ref"]),
+        _github_ref_path(remote["ref"], manifest["repository"]),
         github_token,
+        repository=manifest["repository"],
         accept=(200, 404),
     )
     if status != 200:
@@ -2468,10 +2526,9 @@ def publish(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
             "NO_MACHINE_PROOF_NO_ZENODO_UPLOAD: legacy v1 manifests are read-only "
             "and may not start a new production mutation"
         )
-    if (
-        manifest["repository"] != PRODUCTION_REPOSITORY
-        or os.environ.get("GITHUB_REPOSITORY") != PRODUCTION_REPOSITORY
-    ):
+    authority = _production_authority(root)
+    if (manifest["repository"] != authority
+            or os.environ.get("GITHUB_REPOSITORY") != authority):
         _fail("production publisher repository identity is missing or mismatched")
     secrets_by_name = _validated_network_secrets()
     zenodo_token = secrets_by_name[zenodo.TOKEN_ENVIRONMENT_VARIABLE]
@@ -2496,6 +2553,7 @@ def publish(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
         verified,
         secrets_by_name,
     )
+    _validate_active_authority(root, authority, execution_head, github_token)
     if evidence_path.exists():
         evidence_value, _raw = _load_evidence_without_secrets(
             evidence_path,
@@ -2561,16 +2619,141 @@ def publish(manifest_path: pathlib.Path, root: pathlib.Path) -> dict[str, Any]:
     )
 
 
+def inspect_compact_authorization(
+    authorization_path: pathlib.Path, frozen_path: pathlib.Path, root: pathlib.Path
+) -> dict[str, Any]:
+    """Read-only schema adapter: verify the grant without inventing v2 consent.
+
+    The compact aggregate grant and the effect-bearing attestation are different
+    contracts. In particular, their schema names are never accepted as aliases.
+    This adapter creates neither an authorization nor a consumption identity.
+    """
+    authorization_path = _manifest_path(root, authorization_path)
+    frozen_path = _manifest_path(root, frozen_path)
+    authorization, authorization_raw = zenodo._load_json_file(authorization_path)
+    frozen, _frozen_raw = zenodo._load_json_file(frozen_path)
+    zenodo._check_exact_keys(authorization, {
+        "_license", "schema", "publication_id", "authorization_decision",
+        "canonical_statement", "owner_statement_verbatim", "authorization_context",
+        "exact_bytes", "owner", "authorized_at_utc", "timestamp_precision",
+        "owner_authorization_is_repository_side_not_uploaded",
+        "authorization_event_follows_candidate_return", "predecessor_evidence_transfer",
+    }, "compact owner authorization")
+    if authorization["schema"] != COMPACT_OWNER_AUTHORIZATION_SCHEMA:
+        _fail("unsupported compact owner authorization schema")
+    machine_proof.validate_license(
+        authorization["_license"], "compact owner authorization._license",
+        classification="machine_readable_owner_zenodo_authorization",
+    )
+    machine_proof.validate_active_policy(root, {
+        "id": machine_proof.POLICY_ID, "path": machine_proof.POLICY_PATH,
+        "version": machine_proof.POLICY_VERSION, "sha256": machine_proof.POLICY_SHA256,
+        "git_blob_sha1": machine_proof.POLICY_GIT_BLOB_SHA1,
+    })
+    if (authorization["owner"] != {"name": "Ingolf Lohmann", "type": "NATURAL_PERSON"}
+            or authorization["authorization_decision"] != "AUTHORIZE_EXACT_UPLOAD"
+            or authorization["owner_authorization_is_repository_side_not_uploaded"] is not True
+            or authorization["authorization_event_follows_candidate_return"] is not True
+            or authorization["predecessor_evidence_transfer"] is not False):
+        _fail("compact authorization principal/decision/boundaries differ")
+    timestamp = authorization["authorized_at_utc"]
+    if not isinstance(timestamp, str) or RFC3339.fullmatch(timestamp) is None:
+        _fail("compact authorization timestamp is invalid")
+    try:
+        datetime.datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+    except ValueError:
+        _fail("compact authorization timestamp is invalid")
+    for key in ("canonical_statement", "owner_statement_verbatim", "authorization_context"):
+        _bounded_text(authorization[key], "compact authorization." + key, 16384)
+    if (frozen.get("schema") != "qikvrt_frozen_upload_candidate_v1"
+            or frozen.get("publication_id") != authorization["publication_id"]
+            or frozen.get("upload_set_is_exact") is not True):
+        _fail("compact authorization is not bound to this exact frozen candidate")
+    entries = frozen.get("files")
+    if not isinstance(entries, list) or not entries:
+        _fail("frozen candidate files are missing")
+    names: set[str] = set()
+    paths: set[str] = set()
+    observed: list[dict[str, Any]] = []
+    candidate_base = frozen_path.parent.relative_to(root).as_posix()
+    for entry in entries:
+        if not isinstance(entry, dict):
+            _fail("frozen candidate file must be an object")
+        name, path = entry.get("name"), entry.get("path")
+        if (not isinstance(name, str) or not name or "/" in name or "\\" in name
+                or name in {".", ".."} or name in names
+                or not isinstance(path, str) or path in paths):
+            _fail("frozen candidate filename/path is unsafe or duplicated")
+        names.add(name)
+        paths.add(path)
+        relative = (pathlib.PurePosixPath(candidate_base) / path).as_posix()
+        file_path = _safe_relative(root, relative, "frozen candidate file", must_exist=True)
+        data = zenodo.read_regular_file(file_path, zenodo.MAX_UPLOAD_BYTES)
+        expected_size = entry.get("bytes")
+        if (isinstance(expected_size, bool) or not isinstance(expected_size, int)
+                or len(data) != expected_size
+                or hashlib.sha256(data).hexdigest() != entry.get("sha256")
+                or _git_blob_sha(data) != entry.get("git_blob_sha1")):
+            _fail("frozen candidate byte identity differs for " + name)
+        if file_path == authorization_path:
+            _fail("owner authorization must remain repository-side, outside the upload set")
+        observed.append({"name": name, **_identity(relative, data)})
+    aggregate = hashlib.sha256("".join(
+        f"{entry['name']}\0{entry['sha256']}\n"
+        for entry in sorted(observed, key=lambda item: item["name"])
+    ).encode("utf-8")).hexdigest()
+    exact = {"aggregate_sha256": aggregate, "content_file_count": len(observed),
+             "content_total_bytes": sum(entry["bytes"] for entry in observed)}
+    if (authorization["exact_bytes"] != exact
+            or any(frozen.get(key) != value for key, value in exact.items())):
+        _fail("compact authorization aggregate/count/byte total differs")
+    statement = authorization["canonical_statement"]
+    if any(str(value) not in statement for value in (
+            authorization["publication_id"], aggregate, exact["content_file_count"],
+            exact["content_total_bytes"], "AUTHORIZE_EXACT_UPLOAD")):
+        _fail("compact authorization statement lacks its exact candidate identity")
+    return {
+        "schema": "qikvrt_compact_zenodo_authorization_inspection_v1",
+        "state": "BLOCK", "first_blocker": "COMPACT_AUTHORIZATION_NOT_EFFECT_ATTESTATION",
+        "publication_id": authorization["publication_id"],
+        "authority_candidate": _production_authority(root),
+        "authority_main_activation_verified": False,
+        "original_authorization": _identity(authorization_path.relative_to(root).as_posix(), authorization_raw),
+        "original_schema": COMPACT_OWNER_AUTHORIZATION_SCHEMA,
+        "required_effect_schema": OWNER_AUTHORIZATION_SCHEMA,
+        "content_bytes_verified": True, "exact_bytes": exact, "files": observed,
+        "missing_effect_bindings": [
+            "authorization_id/nonce/single_use/single_use_scope", "repository/source_head",
+            "candidate_return_receipt", "canonical_metadata_sha256", "machine_proof",
+            "exact uploads including the mandatory public proof bundle",
+            "authorized_effects/publication_evidence_path", "canonical authorization_event",
+        ],
+        "owner_authorization_created": False, "single_use_lock_acquired": False,
+        "zenodo_mutation_attempted": False, "publication_verified": False,
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Publish a Git-blob-bound, machine-proved repository manifest to Zenodo"
     )
-    parser.add_argument(
-        "--manifest", required=True, help="repository-relative publication manifest"
-    )
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--manifest", help="repository-relative publication manifest")
+    mode.add_argument("--inspect-authorization", help="read-only compact owner authorization")
+    parser.add_argument("--frozen-candidate", help="frozen candidate for read-only inspection")
     args = parser.parse_args(argv)
     root = pathlib.Path.cwd().resolve()
     try:
+        if args.inspect_authorization:
+            if not args.frozen_candidate:
+                _fail("--inspect-authorization requires --frozen-candidate")
+            inspection = inspect_compact_authorization(
+                pathlib.Path(args.inspect_authorization), pathlib.Path(args.frozen_candidate), root
+            )
+            print(json.dumps(inspection, ensure_ascii=False, sort_keys=True))
+            return 2
+        if args.frozen_candidate:
+            _fail("--frozen-candidate is only valid with --inspect-authorization")
         manifest_path = _safe_relative(root, args.manifest, "--manifest", must_exist=True)
         evidence = publish(manifest_path, root)
         print("ZENODO_PUBLICATION_STATE=published")

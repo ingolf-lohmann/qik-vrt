@@ -105,7 +105,8 @@ def expected_consumption_ref(
 
 
 class FakeGitHubGitData:
-    def __init__(self) -> None:
+    def __init__(self, root: pathlib.Path) -> None:
+        self.root = root
         self.refs: dict[str, str] = {}
         self.tags: dict[str, dict[str, Any]] = {}
         self.lock = threading.Lock()
@@ -124,12 +125,18 @@ class FakeGitHubGitData:
         path: str,
         token: str,
         *,
+        repository: str,
         payload: Mapping[str, Any] | None = None,
         accept: tuple[int, ...] = (200,),
     ) -> tuple[int, dict[str, Any]]:
         self.calls.append((method, path))
         if token != TEST_GITHUB_TOKEN:
             raise AssertionError("unexpected GitHub token")
+        if not path.startswith(f"/repos/{repository}/"):
+            raise AssertionError("GitHub API escaped the resolved repository")
+        if method == "GET" and path.endswith("/commits/main"):
+            return 200, {"sha": run_git(self.root, "rev-parse", "HEAD"),
+                         "commit": {"tree": {"sha": run_git(self.root, "rev-parse", "HEAD^{tree}")}}}
         if method == "GET" and "/git/ref/" in path:
             ref = "refs/" + urllib.parse.unquote(path.split("/git/ref/", 1)[1])
             with self.lock:
@@ -935,6 +942,15 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
     maxDiff = None
 
     def fixture(self, root: pathlib.Path) -> tuple[pathlib.Path, pathlib.Path]:
+        # These historical lock/recovery regressions retain the old role binding.
+        # Production resolves the repository's policy, never this fixture choice.
+        role_policy = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text())
+        for key, repository in (("canonical_upstream", "Goldkelch/qik-vrt"),
+                                ("mirror", "ingolf-lohmann/qik-vrt")):
+            role_policy[key]["repository"] = repository
+            role_policy[key]["canonical_https_url"] = f"https://github.com/{repository}.git"
+            role_policy[key]["canonical_api_repository"] = f"https://api.github.com/repos/{repository}"
+        write(root, "policy/CANONICAL_UPSTREAM_REMOTE_V1.json", zenodo._json_bytes(role_policy))
         contract_paths = (
             proof.POLICY_PATH,
             proof.BUNDLE_SCHEMA_PATH,
@@ -1455,7 +1471,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             _, manifest_path = self.fixture(root)
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY},
+                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
                 clear=True,
             ):
                 before = publish.load_manifest(manifest_path, root)[
@@ -1468,7 +1484,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             )
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY},
+                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
                 clear=True,
             ):
                 after = publish.load_manifest(manifest_path, root)[
@@ -1491,8 +1507,8 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
         for origin in accepted:
             with self.subTest(origin=origin):
                 self.assertEqual(
-                    publish._origin_repository_identity(origin),
-                    publish.PRODUCTION_REPOSITORY,
+                    publish._origin_repository_identity(origin, "Goldkelch/qik-vrt"),
+                    "Goldkelch/qik-vrt",
                 )
         rejected = (
             "https://github.com.evil/Goldkelch/qik-vrt.git",
@@ -1507,7 +1523,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
         for origin in rejected:
             with self.subTest(origin=origin):
                 with self.assertRaises(zenodo.ZenodoError):
-                    publish._origin_repository_identity(origin)
+                    publish._origin_repository_identity(origin, "Goldkelch/qik-vrt")
 
     def test_git_subprocess_receives_no_workflow_secret(self) -> None:
         result = mock.Mock(returncode=0, stdout="ok\n", stderr="")
@@ -2606,7 +2622,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                 zenodo.TOKEN_ENVIRONMENT_VARIABLE: token,
             }
-            github = FakeGitHubGitData()
+            github = FakeGitHubGitData(root)
             with mock.patch.dict(os.environ, environment, clear=True):
                 with mock.patch.object(
                     publish,
@@ -2703,7 +2719,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 return published
 
             token = "z" * 32
-            github = FakeGitHubGitData()
+            github = FakeGitHubGitData(root)
             with mock.patch.dict(
                 os.environ,
                 {
@@ -2766,7 +2782,7 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             tampered["record_url"] = "https://zenodo.org.evil/records/123"
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY},
+                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
                 clear=True,
             ):
                 manifest = publish.load_manifest(manifest_path, root)
@@ -2794,13 +2810,13 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             )
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY},
+                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
                 clear=True,
             ):
                 manifest = publish.load_manifest(manifest_path, root)
             expected_ref = expected_consumption_ref(root, manifest_path)
             start_barrier = threading.Barrier(2)
-            github = FakeGitHubGitData()
+            github = FakeGitHubGitData(root)
 
             def attempt() -> dict[str, str]:
                 start_barrier.wait(timeout=10)
@@ -2840,11 +2856,11 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
             )
             with mock.patch.dict(
                 os.environ,
-                {"GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY},
+                {"GITHUB_REPOSITORY": "Goldkelch/qik-vrt"},
                 clear=True,
             ):
                 manifest = publish.load_manifest(manifest_path, root)
-            github = FakeGitHubGitData()
+            github = FakeGitHubGitData(root)
             with mock.patch.object(
                 publish,
                 "_github_api_request",
@@ -2876,9 +2892,9 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 root,
                 manifest_path,
             )
-            github = FakeGitHubGitData()
+            github = FakeGitHubGitData(root)
             environment = {
-                "GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY,
+                "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
                 "GITHUB_SHA": execution_head,
                 publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                 zenodo.TOKEN_ENVIRONMENT_VARIABLE: "z" * 32,
@@ -2932,9 +2948,9 @@ class MachineProofBeforeZenodoTests(unittest.TestCase):
                 root,
                 manifest_path,
             )
-            github = FakeGitHubGitData()
+            github = FakeGitHubGitData(root)
             environment = {
-                "GITHUB_REPOSITORY": publish.PRODUCTION_REPOSITORY,
+                "GITHUB_REPOSITORY": "Goldkelch/qik-vrt",
                 "GITHUB_SHA": execution_head,
                 publish.GITHUB_TOKEN_ENVIRONMENT_VARIABLE: TEST_GITHUB_TOKEN,
                 zenodo.TOKEN_ENVIRONMENT_VARIABLE: "z" * 32,

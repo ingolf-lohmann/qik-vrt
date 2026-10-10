@@ -1,0 +1,250 @@
+{
+  "_license": {
+    "classification": "machine_readable_claim_matrix",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "bidirectional_completeness": {
+    "every_article_assertion_has_a_claim_id": true,
+    "every_claim_id_occurs_in_the_article": true,
+    "method": "Abschnittsweise Inventur des Fachartikels; jeder Abschnitt traegt mindestens eine Claim-ID, und jede Claim-ID nennt ihren Abschnitt."
+  },
+  "claim_count": 16,
+  "claims": [
+    {
+      "boundary": "Normative Abgrenzung des Rahmens, keine physikalische Messung. Es wird kein Rueckwaertssignal, keine Umschreibung der Vergangenheit und keine Ueberlichtkommunikation behauptet.",
+      "claim_id": "B2610-001",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "section": "Was nicht passiert",
+      "sources": [
+        "SRC-ARTIKEL",
+        "SRC-ORR-PAPER"
+      ],
+      "statement": "Die Kapsel erreicht das Jahr 2610 durch zukunftsgerichtete Kausalitaet mit langer Latenz; jeder Transportpfad bleibt zukunftsgerichtet und die Kausalordnung azyklisch.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Eine Lesart, die mit etablierter Kausalitaetsauffassung vereinbar ist. Sie ist nicht aus ihr ableitbar und beansprucht keine Neuheit des Gedankens, sondern seine maschinelle Pruefbarkeit.",
+      "claim_id": "B2610-002",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "section": "Wie die Zukunft heute wirkt",
+      "sources": [
+        "SRC-ARTIKEL"
+      ],
+      "statement": "Die vorweggenommene spaetere Lesung veraendert bereits heute den Inhalt des Versiegelten; das ist Vorwaertskausalitaet auf einer Repraesentation, nicht Rueckwaertskausalitaet.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Autorale operative Definition, keine metrische relativistische Eigenzeitkalibrierung und keine physikalische Entdeckung.",
+      "claim_id": "B2610-003",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Wie die Zukunft heute wirkt",
+      "sources": [
+        "SRC-ORR-PAPER"
+      ],
+      "statement": "Beobachterrelative Retrokausalitaet ist definiert als wachsende lokale Veraenderungszeit bei fallender authentisch gebundener Quellenordnung, getragen von Authentizitaet, Vergleichbarkeit und Monotonie.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Woertlich der offiziellen Begruendung entnommen.",
+      "claim_id": "B2610-004",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Der Bogen",
+      "sources": [
+        "SRC-NOBEL-1958"
+      ],
+      "statement": "Der Physiknobelpreis 1958 ging zu gleichen Teilen an Pawel Tscherenkow, Ilja Frank und Igor Tamm fuer die Entdeckung und die Deutung des Tscherenkow-Effekts.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Die offizielle Komiteebegruendung lag nur in Umschreibung vor und ist als Umschreibung gefuehrt, nicht als Zitat.",
+      "claim_id": "B2610-005",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Der Bogen",
+      "sources": [
+        "SRC-WDP-ICECUBE",
+        "SRC-ZDF-NOBEL-2026"
+      ],
+      "statement": "Der Physiknobelpreis 2026 ging am 6. Oktober an Francis Halzen fuer massgebliche Beitraege zur Entdeckung hochenergetischer Neutrinos astrophysikalischen Ursprungs; IceCube nutzt rund einen Kubikkilometer Eis mit 5160 Sensoren an 86 Seilen in 1450 bis 2450 Metern Tiefe.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Messpraxis. Die weitergehende Lesart, Raum sei generell rekonstruierte Struktur, ist Interpretation und als B2610-007 gefuehrt.",
+      "claim_id": "B2610-006",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Der Bogen",
+      "sources": [
+        "SRC-WDP-ICECUBE"
+      ],
+      "statement": "IceCube registriert nie das Neutrino selbst, sondern Tscherenkow-Licht eines geladenen Sekundaerteilchens; die Richtung am Himmel wird aus Ankunftszeitdifferenzen rekonstruiert.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Mit etablierter Theorie vereinbare Lesart, nicht aus ihr ableitbar. Eine fundamentale lokale Endlichkeit wird nicht behauptet.",
+      "claim_id": "B2610-007",
+      "classification": "INTERPRETATIVE",
+      "proof_refs": [],
+      "publication_wording": "INTERPRETATIVE_DECLARATION",
+      "section": "Der Bogen",
+      "sources": [
+        "SRC-ARTIKEL",
+        "SRC-PRESPACETIME"
+      ],
+      "statement": "Raum erscheint in diesem Rahmen als abgeleitete Struktur und Zeit als Ordnung der Erklaerungsabhaengigkeit.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Normativer Invariant der Referenzimplementierung. Fehlende oder mehrdeutige Evidenz wird nie als Erfolg behandelt.",
+      "claim_id": "B2610-008",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "section": "Die Kapsel",
+      "sources": [
+        "SRC-KAPSEL",
+        "SRC-EFFECT-ACK-PY"
+      ],
+      "statement": "Das Zulassungsgate verlangt fuenf gleichzeitig belegte Praedikate und ist fail-closed; die ordentliche Freigabe gilt genau dann, wenn der Zustand EFFECT_ACK_DONE ist.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Lokale, netzfreie Ausfuehrung am 9. Oktober 2026 gegen den gebundenen Baum. Der dritte Lauf verwendet eine simulierte Generationenkette und ist als Simulation gekennzeichnet; er belegt das Verhalten des Gates, nicht den Fortbestand einer Institution.",
+      "claim_id": "B2610-009",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Der entscheidende Lauf",
+      "sources": [
+        "SRC-KAPSEL",
+        "SRC-VERIFIER"
+      ],
+      "statement": "Drei ausgefuehrte Pruefläufe ergaben: heute verweigert, 2610 mit vernachlaessigter Kette verweigert bei vier von fuenf bestandenen Praedikaten, 2610 mit gepflegter Kette zugelassen.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Die Regel setzt nur eine sortierte Pfadliste und eine Digestfunktion voraus; sie setzt weder Git noch SHA-1 noch ein Objektmodell voraus.",
+      "claim_id": "B2610-010",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Ein Fehler und seine Korrektur",
+      "sources": [
+        "SRC-KAPSEL",
+        "SRC-VERIFIER"
+      ],
+      "statement": "Die Inhaltsbindung ueber 3975 Dateien ergibt f18ca4376e8a0609367b6d3de5fa401d6580d76a89a2401fc7902c2dce24f159 und ist formatunabhaengig definiert.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Eine Eigenschaft der definierten Gate-Funktion, als Beweisskizze im Artikel gefuehrt. Es liegt KEIN Lean-Kernel-Receipt vor, deshalb ist die Aussage nicht als FORMAL_PROVED klassifiziert, und sie sagt nichts ueber physische Haltbarkeit.",
+      "claim_id": "B2610-011",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Das Digest-Problem",
+      "sources": [
+        "SRC-ARTIKEL",
+        "SRC-KAPSEL"
+      ],
+      "statement": "Unter der Agilitaetsleiter ist die Zulassungsfaehigkeit ueber n Intervalle genau dann gegeben, wenn jedes Intervall eine gueltige Nachversiegelung traegt.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Belegt die gebrochene Kollisionsresistenz von SHA-1. Ueber die kuenftige Haltbarkeit von SHA-256 wird damit nichts bewiesen; die Annahme, es falle vor 2610, ist als B2610-015 offen gefuehrt.",
+      "claim_id": "B2610-012",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Das Digest-Problem",
+      "sources": [
+        "SRC-SHATTERED"
+      ],
+      "statement": "Fuer SHA-1 wurde 2017 von Forschern des CWI Amsterdam und von Google die erste echte Kollision demonstriert.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Ausdrueckliche Offenlegung der Grenzen der Konstruktion.",
+      "claim_id": "B2610-013",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "section": "Das Digest-Problem",
+      "sources": [
+        "SRC-KAPSEL"
+      ],
+      "statement": "Fuenf Abhaengigkeiten der Kapsel sind technisch nicht erzwingbar: Datentraeger und Lesegeraete, zwei unabhaengige Kustoden, Lesbarkeit der Formate, eine nachversiegelnde Institution und die Abwesenheit mutwilliger Zerstoerung.",
+      "status": "DECLARED"
+    },
+    {
+      "boundary": "Protokollierter Verlauf der Erstellung. Die Kapsel traegt seither beide Bindungen.",
+      "claim_id": "B2610-014",
+      "classification": "SOURCE_BOUND",
+      "proof_refs": [],
+      "publication_wording": "SOURCE_ATTRIBUTED",
+      "section": "Ein Fehler und seine Korrektur",
+      "sources": [
+        "SRC-KAPSEL",
+        "SRC-VERIFIER"
+      ],
+      "statement": "Die erste Fassung der Kapsel band ihren Inhalt an die Git-Baumidentitaet und damit an SHA-1; der Pruefer schlug fehl und die Bindung wurde durch eine zweite, formatunabhaengige ersetzt.",
+      "status": "BOUND"
+    },
+    {
+      "boundary": "Offen gefuehrt. Es gibt dafuer keinen Beweis, und die Kapsel behauptet keine Unsterblichkeit; sie macht das Versaeumnis nur sichtbar.",
+      "claim_id": "B2610-015",
+      "classification": "OPEN",
+      "proof_refs": [],
+      "publication_wording": "EXPLICITLY_OPEN",
+      "section": "Was ausdruecklich nicht behauptet wird",
+      "sources": [
+        "SRC-ARTIKEL"
+      ],
+      "statement": "Dass eine Institution ueber 584 Jahre hinweg alle 25 Jahre nachversiegelt, ist eine Annahme.",
+      "status": "OPEN"
+    },
+    {
+      "boundary": "Die Liste der Nichtbehauptungen. Der Projektstand lautet EFFECT_ACK_CONTINUE.",
+      "claim_id": "B2610-016",
+      "classification": "NORMATIVE",
+      "proof_refs": [],
+      "publication_wording": "NORMATIVE_DECLARATION",
+      "section": "Was ausdruecklich nicht behauptet wird",
+      "sources": [
+        "SRC-ARTIKEL",
+        "SRC-KAPSEL"
+      ],
+      "statement": "Es wird kein Rueckwaertssignal, keine Veraenderung der Vergangenheit, keine 584-jaehrige Haltbarkeit eines Artefakts, kein bis 2610 tragendes Pruefverfahren und keine Annahme durch Dritte behauptet.",
+      "status": "DECLARED"
+    }
+  ],
+  "classification_note": "Keine Aussage ist als FORMAL_PROVED klassifiziert. Der Satz zur Reduktion des Langzeitproblems liegt als Beweisskizze im Artikel und ist SOURCE_BOUND gefuehrt, weil kein Lean-Kernel-Receipt dafuer existiert.",
+  "publication_id": "qikvrt-brief-an-das-jahr-2610-v1",
+  "schema": "qikvrt_zenodo_v2_claim_matrix_v1",
+  "status_distribution": {
+    "BOUND": 9,
+    "DECLARED": 6,
+    "EVIDENCED": 0,
+    "OPEN": 1,
+    "PROVED": 0
+  },
+  "subject_binding": {
+    "commit": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "role": "MIRROR",
+    "tree": "6dec2a9f8d816937b856942bd472eca5cc4439b2"
+  }
+}

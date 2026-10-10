@@ -31,7 +31,7 @@ INDEX_NAME = "SHA256SUMS.txt"
 DETACHED_NAME = "REPOSITORY_FILE_MANIFEST.json.sha256"
 LOCK_NAME = ".qikvrt-integrity.lock"
 SCHEMA = "qikvrt_repository_integrity_manifest_v3"
-GENERATOR_VERSION = "3.1"
+GENERATOR_VERSION = "3.2"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 INTEGRITY_PATHS = {MANIFEST_NAME, INDEX_NAME, DETACHED_NAME}
@@ -83,6 +83,23 @@ TRANSIENT_PREFIXES = (
     ".qikvrt/toolchains/",
     ".qikvrt/cache/",
     ".qikvrt/release/",
+)
+# Role-local node liveness is rewritten on a schedule by the node's own
+# lifecycle writer (tools/qikvrt_mirror_node_lifecycle.sh).  It reports that a
+# node is alive; it is not release content.  Binding it into the manifest made
+# every renewal invalidate the committed integrity trio, and regenerating the
+# trio on every renewal would make every open pull request conflict with main.
+# The two current records stay listed without a digest; the append-only
+# per-run receipts are not part of the manifest inventory.  Git history remains
+# the record of both.  SEED_ACCEPTANCE_STATUS.json is deliberately not listed
+# here: it binds an observed Authority head and stays digest-bound.
+ROLE_LOCAL_LIVENESS_STATE = {
+    "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+    "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+}
+ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES = (
+    "evidence/node_health/",
+    "evidence/node_registration_renewal/",
 )
 MAX_IMMUTABLE_FILE_BYTES = 256 * 1024 * 1024
 MAX_INTEGRITY_METADATA_BYTES = 64 * 1024 * 1024
@@ -745,6 +762,10 @@ def is_transient(relative: str) -> bool:
     )
 
 
+def is_role_local_liveness_receipt(relative: str) -> bool:
+    return any(relative.startswith(prefix) for prefix in ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES)
+
+
 def collect_paths(root: pathlib.Path = ROOT) -> list[str]:
     """Collect tracked plus deliberate untracked sources via git, never caches."""
     output = _git(root, "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ".")
@@ -752,7 +773,13 @@ def collect_paths(root: pathlib.Path = ROOT) -> list[str]:
     deleted = {os.fsdecode(item) for item in deleted_output.split(b"\0") if item}
     decoded = [os.fsdecode(item) for item in output.split(b"\0") if item]
     paths = sorted(
-        {_safe_path(item) for item in decoded if item not in deleted and not is_transient(item)}
+        {
+            _safe_path(item)
+            for item in decoded
+            if item not in deleted
+            and not is_transient(item)
+            and not is_role_local_liveness_receipt(item)
+        }
     )
     return paths
 
@@ -761,6 +788,12 @@ def classification(relative: str) -> tuple[str, bool, str]:
     """Return classification, immutable flag and exclusion reason."""
     if relative in INTEGRITY_PATHS:
         return "integrity_metadata", False, "cycle_prevention"
+    if relative in ROLE_LOCAL_LIVENESS_STATE:
+        return (
+            "role_local_liveness_state",
+            False,
+            "role_local_liveness_is_rewritten_by_the_scheduled_node_lifecycle",
+        )
     if relative in TRACKED_RUNTIME_STATE or any(
         relative.startswith(prefix)
         for prefix in (
@@ -925,6 +958,10 @@ def build_outputs(root: pathlib.Path = ROOT) -> tuple[bytes, bytes, bytes, dict[
             LOCK_NAME,
             "*.qikvrt-integrity.tmp",
         ],
+        "role_local_liveness_exclusion_rules": {
+            "listed_without_digest": sorted(ROLE_LOCAL_LIVENESS_STATE),
+            "not_inventoried_prefixes": list(ROLE_LOCAL_LIVENESS_RECEIPT_PREFIXES),
+        },
         "files": entries,
     }
     # Keep the complete repository inventory in one deterministic Git blob

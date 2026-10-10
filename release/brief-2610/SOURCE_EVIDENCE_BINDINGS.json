@@ -1,0 +1,148 @@
+{
+  "_license": {
+    "classification": "machine_readable_source_evidence_bindings",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "binding_count": 10,
+  "bindings": [
+    {
+      "bytes": 85875,
+      "claim_ids": [
+        "B2610-001",
+        "B2610-002",
+        "B2610-007",
+        "B2610-011",
+        "B2610-015",
+        "B2610-016"
+      ],
+      "description": "Der Fachartikel selbst, fuer die von ihm gesetzten Lesarten und Abgrenzungen.",
+      "git_blob_sha1": "df26b27615e4240d70c015c4658f3bbc129220d5",
+      "path": "candidate:QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.pdf",
+      "resolved": true,
+      "sha256": "c578e780ec85eb4e8768ef8b30ee65357a1ec5c1355c5adc14c2dfdd91a1db49",
+      "source_id": "SRC-ARTIKEL"
+    },
+    {
+      "bytes": 8059,
+      "claim_ids": [
+        "B2610-008",
+        "B2610-009",
+        "B2610-010",
+        "B2610-013",
+        "B2610-014",
+        "B2610-016",
+        "B2610-011"
+      ],
+      "description": "Die Zukunftswirkungskapsel mit Zulassungsgate, Agilitaetsleiter und Nichtbehauptungen.",
+      "git_blob_sha1": "f7178385a822c0d55c94391a04f6ded334b8cea3",
+      "path": "candidate:QIKVRT_FUTURE_EFFECT_CAPSULE_V1.json",
+      "resolved": true,
+      "sha256": "da0a50ef230ea16f37266e5e3f3ada59044cc34bacdefe4644e13a493c1d53ca",
+      "source_id": "SRC-KAPSEL"
+    },
+    {
+      "bytes": 3992,
+      "claim_ids": [
+        "B2610-009",
+        "B2610-010",
+        "B2610-014"
+      ],
+      "description": "Der netzfreie Pruefer, der die drei Laeufe ausgefuehrt hat.",
+      "git_blob_sha1": "417d542b4880779994cc48d0a128c41242a2c6d2",
+      "path": "candidate:verify_future_effect_capsule.py",
+      "resolved": true,
+      "sha256": "307defa8f9c0fa0fb77683da32da1a588a3963f2d95714279005b8e2de981e6b",
+      "source_id": "SRC-VERIFIER"
+    },
+    {
+      "bytes": 46794,
+      "claim_ids": [
+        "B2610-001",
+        "B2610-003"
+      ],
+      "description": "Operative Definition der beobachterrelativen Retrokausalitaet und ihrer drei Bedingungen.",
+      "git_blob_sha1": "b5211a335ec61816ec3dc88f3a4555fddec2f1ba",
+      "path": "docs/publications/2026-08-12-observer-relative-retrocausality/QIK-VRT_Beobachterrelative_Retrokausalitaet_DE.tex",
+      "resolved": true,
+      "sha256": "9f0b3c2d53e130a2891a9797715d3f3c696e54409e38dcd03e69606aea5fbfd2",
+      "source_id": "SRC-ORR-PAPER"
+    },
+    {
+      "bytes": 9029,
+      "claim_ids": [
+        "B2610-007"
+      ],
+      "description": "Praeraumzeitliche Ordnung der Erklaerungsabhaengigkeit.",
+      "git_blob_sha1": "6801dd5644af5ff6b18b457e77e1049d5fb5e4e1",
+      "path": "docs/publications/2026-08-04-pre-spacetime-ontology/PAPER.tex",
+      "resolved": true,
+      "sha256": "003b22480dd598669939bf65598ea12470510f5612ad456057d26664ce38990f",
+      "source_id": "SRC-PRESPACETIME"
+    },
+    {
+      "bytes": 40709,
+      "claim_ids": [
+        "B2610-008"
+      ],
+      "description": "Referenzimplementierung des Fuenfzustandsgates.",
+      "git_blob_sha1": "ee0e2c2d38f130b98553d0d884edc2b79865fc50",
+      "path": "src/qikvrt_effect_ack.py",
+      "resolved": true,
+      "sha256": "046e8703d425f97bab5533b187cfd661df99567c61d395f5f61d5df8e2b7c038",
+      "source_id": "SRC-EFFECT-ACK-PY"
+    },
+    {
+      "claim_ids": [
+        "B2610-004"
+      ],
+      "description": "Offizielle Zusammenfassung des Physiknobelpreises 1958.",
+      "resolved": true,
+      "source_id": "SRC-NOBEL-1958",
+      "url": "https://www.nobelprize.org/prizes/physics/1958/summary/"
+    },
+    {
+      "claim_ids": [
+        "B2610-005",
+        "B2610-006"
+      ],
+      "description": "Welt der Physik zum IceCube-Nobelpreis 2026: Detektordaten und Messprinzip.",
+      "resolved": true,
+      "source_id": "SRC-WDP-ICECUBE",
+      "url": "https://www.weltderphysik.de/thema/nobelpreis/icecube-nobelpreis-fuer-physik-2026/"
+    },
+    {
+      "claim_ids": [
+        "B2610-005"
+      ],
+      "description": "ZDFheute: Francis Halzen als alleiniger Preistraeger.",
+      "resolved": true,
+      "source_id": "SRC-ZDF-NOBEL-2026",
+      "url": "https://www.zdfheute.de/wissen/physik-nobelpreis-2026-francis-halzen-neutrinos-astrophysik-100.html"
+    },
+    {
+      "claim_ids": [
+        "B2610-012"
+      ],
+      "description": "SHAttered: erste echte SHA-1-Kollision, CWI Amsterdam und Google, 2017.",
+      "resolved": true,
+      "source_id": "SRC-SHATTERED",
+      "url": "https://shattered.io/"
+    }
+  ],
+  "publication_id": "qikvrt-brief-an-das-jahr-2610-v1",
+  "resolution_summary": {
+    "all_references_resolve": true,
+    "resolved_sources": 10,
+    "unresolved_sources": 0
+  },
+  "schema": "qikvrt_source_evidence_bindings_v1",
+  "subject_binding": {
+    "commit": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+    "repository": "ingolf-lohmann/qik-vrt",
+    "role": "MIRROR",
+    "tree": "6dec2a9f8d816937b856942bd472eca5cc4439b2"
+  }
+}

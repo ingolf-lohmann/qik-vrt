@@ -15,6 +15,9 @@ import json
 import pathlib
 import sys
 from typing import Any, Iterable, Mapping, Sequence
+if __package__ in (None, ""):
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+from tools.qikvrt_required_review_gate import GOVERNANCE_STATUS_CONTEXT, SCHEMA as REVIEW_GATE_SCHEMA
 
 PROMOTION_MARKER = "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
 SUCCESS_CONCLUSIONS = {"success"}
@@ -103,6 +106,25 @@ def evaluate_promotion(snapshot: Mapping[str, Any]) -> dict[str, Any]:
         raise PromotionBlock("competing_writer_overlaps must be a list")
     if overlaps:
         return _blocked(snapshot, "COMPETING_WRITER_OVERLAP", f"overlapping open writer(s): {overlaps}")
+
+    governance = snapshot.get("governance_projection")
+    if not isinstance(governance, Mapping):
+        return _blocked(snapshot, "NATIVE_GOVERNANCE_EVIDENCE_MISSING", "execution checks cannot substitute for fresh native rules and reviews")
+    native = governance.get("native_review_gate")
+    if (
+        governance.get("schema") != "qikvrt_governance_projection_v1"
+        or governance.get("head_sha") != expected_head
+        or governance.get("base_sha") != base
+        or governance.get("pr_number") != snapshot.get("pr_number")
+        or governance.get("status_context") != GOVERNANCE_STATUS_CONTEXT
+        or not isinstance(native, Mapping)
+        or native.get("schema") != REVIEW_GATE_SCHEMA
+        or native.get("head_sha") != expected_head
+        or native.get("pr_number") != snapshot.get("pr_number")
+    ):
+        return _blocked(snapshot, "NATIVE_GOVERNANCE_EVIDENCE_MISMATCH", "native governance evidence is not bound to this PR, head, base and status context")
+    if governance.get("gate_state") != "success" or native.get("gate_state") != "success" or governance.get("acceptance") != "NATIVE_GOVERNANCE_SATISFIED":
+        return _blocked(snapshot, governance.get("first_blocker") or "NATIVE_GOVERNANCE_NOT_SATISFIED", "native enforcement and an independent current-head Code Owner approval are required")
 
     required = snapshot.get("required_gates")
     if not isinstance(required, list) or not required or not all(

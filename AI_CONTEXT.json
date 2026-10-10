@@ -105,6 +105,11 @@
       "equivalence_rule": "Symmetric canonicality is valid only for the scope whose exact bytes and declared state have been verified equivalent.",
       "chat_memory_authority": false,
       "repository_evidence_overrides_conversation": true
+    },
+    "repository_roles": {
+      "source_of_truth": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+      "projections_must_agree": true,
+      "activation": "FRESH_NATIVE_EXECUTION_AND_INDEPENDENT_MAIN_READBACK_REQUIRED"
     }
   },
   "required_read_order": [
@@ -115,6 +120,9 @@
     "state/charter/CHARTER_ADOPTION_V1.json",
     "AI_ADAPTERS.json",
     "AGENTS.md",
+    "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json",
     "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
     "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
     "docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md",

@@ -1,0 +1,122 @@
+{
+  "_license": {
+    "classification": "machine_readable_publication_preflight",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "authority_candidate": "ingolf-lohmann/qik-vrt",
+  "authority_main_activation_verified": false,
+  "content_bytes_verified": true,
+  "exact_bytes": {
+    "aggregate_sha256": "830e6df6153c901890669a0cd2d2af650ad84f36cf46726854c4314e88ab8ddd",
+    "content_file_count": 11,
+    "content_total_bytes": 177418
+  },
+  "files": [
+    {
+      "bytes": 85875,
+      "git_blob_sha": "df26b27615e4240d70c015c4658f3bbc129220d5",
+      "name": "QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.pdf",
+      "path": "release/brief-2610/QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.pdf",
+      "sha256": "c578e780ec85eb4e8768ef8b30ee65357a1ec5c1355c5adc14c2dfdd91a1db49"
+    },
+    {
+      "bytes": 25088,
+      "git_blob_sha": "bbd854246f4b3fe8e211aca01679fc294cf178f4",
+      "name": "QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.tex",
+      "path": "release/brief-2610/QIK-VRT_Der_Brief_an_das_Jahr_2610_DE.tex",
+      "sha256": "8edf0db8896e302e3eefa06a20e60ff47bdb67cad68de35118ca4255b7e07f1c"
+    },
+    {
+      "bytes": 12554,
+      "git_blob_sha": "79f8a380f0d0824bc433b2ee639b385aee6fabf1",
+      "name": "QIK-VRT_Brief_2610_Vorlesefassung_DE.md",
+      "path": "release/brief-2610/QIK-VRT_Brief_2610_Vorlesefassung_DE.md",
+      "sha256": "5902d70059e3703940408b960d40de26f68049d86b4442347fab736757b9894e"
+    },
+    {
+      "bytes": 8059,
+      "git_blob_sha": "f7178385a822c0d55c94391a04f6ded334b8cea3",
+      "name": "QIKVRT_FUTURE_EFFECT_CAPSULE_V1.json",
+      "path": "release/brief-2610/QIKVRT_FUTURE_EFFECT_CAPSULE_V1.json",
+      "sha256": "da0a50ef230ea16f37266e5e3f3ada59044cc34bacdefe4644e13a493c1d53ca"
+    },
+    {
+      "bytes": 3992,
+      "git_blob_sha": "417d542b4880779994cc48d0a128c41242a2c6d2",
+      "name": "verify_future_effect_capsule.py",
+      "path": "release/brief-2610/verify_future_effect_capsule.py",
+      "sha256": "307defa8f9c0fa0fb77683da32da1a588a3963f2d95714279005b8e2de981e6b"
+    },
+    {
+      "bytes": 11504,
+      "git_blob_sha": "04f38091fed7357cd1667f3bc643aad582dccb95",
+      "name": "CLAIM_MATRIX.json",
+      "path": "release/brief-2610/CLAIM_MATRIX.json",
+      "sha256": "2be9cef8b9c70482ce3ebaa677a56f414d88bd232cdbe0e8f6167a17ef97f414"
+    },
+    {
+      "bytes": 5012,
+      "git_blob_sha": "632c325bdfa8c39c95c834ab6151a492e9d4a4b8",
+      "name": "SOURCE_EVIDENCE_BINDINGS.json",
+      "path": "release/brief-2610/SOURCE_EVIDENCE_BINDINGS.json",
+      "sha256": "a04bf8813fa086181a1a3fa4d4f89d368d54b57eab09019a340b33730cd455da"
+    },
+    {
+      "bytes": 740,
+      "git_blob_sha": "3599562b36fd527ec523a25c8f58897eb053fb4c",
+      "name": "CITATION.cff",
+      "path": "release/brief-2610/CITATION.cff",
+      "sha256": "e2ca33cd99e7f9c953dc945decb9028d563f002100c1f80ab6ef41608f3295d2"
+    },
+    {
+      "bytes": 904,
+      "git_blob_sha": "9333ef1639fe9aee897ba1d9f84dcfb0611f9423",
+      "name": "ZENODO_LICENSE_NOTICE.md",
+      "path": "release/brief-2610/ZENODO_LICENSE_NOTICE.md",
+      "sha256": "b04976212352ff62c5a682e799032fb6bd2cea70394237d7a3e0822371f13476"
+    },
+    {
+      "bytes": 19127,
+      "git_blob_sha": "cfe676c541842bd2b766787b1f6983e063a1eee2",
+      "name": "CC-BY-NC-ND-4.0.txt",
+      "path": "release/brief-2610/CC-BY-NC-ND-4.0.txt",
+      "sha256": "38762e3777f4ec00a6f769062a7c3f704fb78ce08303ecff88558da4c49cf9ea"
+    },
+    {
+      "bytes": 4563,
+      "git_blob_sha": "1a71cb64397535482ff19542d1093c0d4a6442d0",
+      "name": "PolyForm-Noncommercial-1.0.0.txt",
+      "path": "release/brief-2610/PolyForm-Noncommercial-1.0.0.txt",
+      "sha256": "ffcca38841adb694b6f380647e15f17c446a4d1656fed51a1e2041d064c94cc8"
+    }
+  ],
+  "first_blocker": "COMPACT_AUTHORIZATION_NOT_EFFECT_ATTESTATION",
+  "missing_effect_bindings": [
+    "authorization_id/nonce/single_use/single_use_scope",
+    "repository/source_head",
+    "candidate_return_receipt",
+    "canonical_metadata_sha256",
+    "machine_proof",
+    "exact uploads including the mandatory public proof bundle",
+    "authorized_effects/publication_evidence_path",
+    "canonical authorization_event"
+  ],
+  "original_authorization": {
+    "bytes": 1766,
+    "git_blob_sha": "246fe7274e89cc657b5dab61f1e3bc9214467868",
+    "path": "release/OWNER_ZENODO_AUTHORIZATION_brief-2610.json",
+    "sha256": "7549c399ded3358cb93bec13be7128ffc98be709e3d920be506e14e0a1cee13e"
+  },
+  "original_schema": "qikvrt_owner_zenodo_authorization_v1",
+  "owner_authorization_created": false,
+  "publication_id": "qikvrt-brief-an-das-jahr-2610-v1",
+  "publication_verified": false,
+  "required_effect_schema": "qikvrt_zenodo_owner_authorization_v1",
+  "schema": "qikvrt_compact_zenodo_authorization_inspection_v1",
+  "single_use_lock_acquired": false,
+  "state": "BLOCK",
+  "zenodo_mutation_attempted": false
+}

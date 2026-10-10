@@ -194,6 +194,17 @@ The repository-native workflow executor is bound by:
 - .github/workflows/qikvrt_workflow_executor_watchdog.yml
 - .github/workflows/qikvrt_live_status_watch.yml
 
+Repository roles have exactly one normative source:
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. The executor contract, personal
+origin, Seed configuration, digital-twin projection and governance policy are
+validated projections of that source. `tools/qikvrt_workflow_executor.py roles`
+resolves both roles and rejects disagreement; repository names, local remotes,
+monitor availability and historical publication/tag bindings cannot override it.
+An Owner role decision and a candidate policy do not activate trusted Main.
+`authority-readback` requires the native job token, independently reads the
+Authority Main ref/commit/tree, both policies and CODEOWNERS, and reobserves the
+ref. Native protection and independent exact-head review remain separate gates.
+
 It reobserves the exact `main` head and tree, inventories every workflow blob under `.github/workflows`, compares a prior executor snapshot artifact when one is available, and plans at most the contract-authorized, no-effect dispatch. It must bind its plan to workflow path, workflow blob, ref, exact commit and tree. It may not duplicate an active or terminal exact-head run, bypass a competing Authority writer, treat `action_required`, a zero-job run, or watchdog terminality as trusted gate success, or use a rerun endpoint as a substitute for an initial dispatch.
 
 The executor controller is read-only; its Action wrapper may only issue the narrow contract-authorized dispatch and persist Action artifacts. Repository content, pull requests, merges, releases, deployments, Zenodo/DOI/IETF actions and other external or irreversible effects remain outside this authority unless separately exact-artifact-authorized.
