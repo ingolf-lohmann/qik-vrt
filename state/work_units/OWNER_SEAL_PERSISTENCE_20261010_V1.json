@@ -1,0 +1,53 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "OWNER_SEAL_PERSISTENCE_20261010_V1",
+  "human_authorization": {
+    "actor": "Ingolf Lohmann",
+    "scope": "Persist the confirmed exact-subject seal acceptance across existing repository layers",
+    "source": "USER_DECLARATION"
+  },
+  "ai_actor": "OpenAI Codex",
+  "receipt_path": "state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V1.json",
+  "accepted_subject_head": "14c710978462178546974c5aa18c1236914f916e",
+  "accepted_subject_tree": "c08d110c030c99e5a743104a4071f6da69d5e5bc",
+  "preserved_persistence_base_head": "2baedd65576034a03dff668b551b3a280713f68f",
+  "preserved_persistence_base_tree": "227767bf165fa7c495d7c07c4894059fe64ad87d",
+  "candidate_pull_request": 517,
+  "failed_predecessor": {
+    "head": "6ec5a830ec190db65343e435c406c4e589e03936",
+    "tree": "8e0b3aea6d68d53100f6aab98a46f81f4c8d56e3",
+    "local_full_test_exit": 2,
+    "local_full_test_log_sha256": "834133411a6a3d56c21c0c08957f8e264b2e7b649d00b89c4a999452baece67c",
+    "failed_native_push_ci_run": 38009808429,
+    "failure": "Independent MCP E2E client bound six sources while the server additionally bound the reused owner receipt validator",
+    "repair": "Add tools/qikvrt_self_disclosure.py to the independently calculated test source binding; preserve authentication and readback checks"
+  },
+  "governance_observations": {
+    "initial_stacked_base_selector_failure_run": 38009810897,
+    "causal_repair": "Retarget the same Draft PR to main; fresh reopened event validates the unchanged native selector",
+    "fresh_main_selector_success_run": 38009920702,
+    "reflexive_http_404_hold_run": 38009810877,
+    "independent_reviews": "REQUIRE_FRESH_READBACK",
+    "native_code_owner_enforcement": "NOT_ESTABLISHED",
+    "self_approval": false
+  },
+  "continuation": {
+    "required_test": "make test on the repair commit's actual HEAD and TREE",
+    "predecessor_evidence_transfer": false,
+    "integrity": "Regenerate and verify the existing canonical manifest trio",
+    "readback": "Fresh REST branch, PR, Git tree, receipt blob and native CI logs",
+    "main_promotion": "Independent exact-head reviews and enforced native governance required",
+    "mirror_access": "Unchanged Goldkelch/qik-vrt access block; do not retry without a causal prerequisite change",
+    "delivery_hostname": "raumzeitterminal.de",
+    "delivery_evidence_path": "evidence/native-runtime-acceptance/",
+    "delivery": "Exact-version native runtime receipt and independent public readback required"
+  },
+  "completion_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "MAIN_MERGED": false,
+    "MESH_ACTIVATED": false,
+    "DELIVERY_VERIFIED": false
+  }
+}

@@ -41,7 +41,8 @@ class McpEndToEndTests(unittest.TestCase):
             p: hashlib.sha256((REPOSITORY_ROOT / p).read_bytes()).hexdigest()
             for p in ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
                       "src/qikvrt_effect_ack.py", "src/qikvrt_github_api_shim.py",
-                      "src/qikvrt_mcp_adapter.py", "api/qikvrt_github_api.openapi.yaml")
+                      "src/qikvrt_mcp_adapter.py", "api/qikvrt_github_api.openapi.yaml",
+                      "tools/qikvrt_self_disclosure.py")
         }
         self.binding = hashlib.sha256(json.dumps(self.binding_files, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         self.payload = b"Authorized QIK-VRT MCP conformance bytes\n\x00\xff"
