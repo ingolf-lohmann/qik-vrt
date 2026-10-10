@@ -169,7 +169,15 @@
     "docs/robots.txt",
     "docs/news/index.html",
     "docs/news/physics-nobel-2026-decay-continuity/index.html",
-    "docs/news/physics-nobel-2026-decay-continuity/index.json"
+    "docs/news/physics-nobel-2026-decay-continuity/index.json",
+    "tests/test_qikvrt_self_disclosure.py",
+    ".well-known/qik-vrt-self-disclosure.json",
+    "evidence/node_health/38028824881-1.json",
+    "evidence/node_health/LATEST.json",
+    "evidence/node_registration_renewal/38028824881-1.json",
+    "evidence/node_registration_renewal/LATEST.json",
+    "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+    "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
   ],
   "existing_site_successor": {
     "source_base_commit": "b2d6a25b00abe9b4b0e1301dc08b9504b3e61147",
@@ -377,5 +385,36 @@
         "*.ps1 text eol=crlf"
       ]
     }
+  },
+  "technical_followup": {
+    "predecessor_candidate_head": "5ea55e6ac5a47c0610a03a2f87b45624d5b4edb4",
+    "predecessor_candidate_tree": "7db7bb70a80facd0dceb8cb35c38f9c6c7127a76",
+    "predecessor_native_ci_run_id": 38036058573,
+    "predecessor_native_ci_conclusion": "failure",
+    "predecessor_exact_head_integrity_observation": {
+      "entries": 3976,
+      "immutable": 3967,
+      "scope": "HISTORICAL_PREDECESSOR_CHECK_ONLY_NO_SUCCESSOR_PASS_TRANSFER"
+    },
+    "verified_causal_failures": [
+      "The publication-discovery test still requires the old GitHub Pages origin in sitemap and robots.",
+      "Default merge-checkout workflows combine the candidate with renewed main lifecycle evidence whose bytes are absent from the candidate integrity manifest."
+    ],
+    "repairs": [
+      "Bind production discovery to the existing Site, desired origin and prepared routes while retaining historical publication-overview source and bundle checks.",
+      "Reconcile the six exact lifecycle files from current main with a history-preserving second parent and regenerate canonical integrity metadata."
+    ],
+    "main_parent": "d8775f200be50b0ec261fe4c8093ce64020d0d0e",
+    "main_tree": "62add326edf6cd5b46068e92f2fe5af71b199145",
+    "main_delta_git_blob_bindings": {
+      "evidence/node_health/38028824881-1.json": "ed6f10e59afe675d782a345397c059bce3877d02",
+      "evidence/node_health/LATEST.json": "ed6f10e59afe675d782a345397c059bce3877d02",
+      "evidence/node_registration_renewal/38028824881-1.json": "90c4b7a5a402c24d4da674f336ed5df3bf3a51f8",
+      "evidence/node_registration_renewal/LATEST.json": "90c4b7a5a402c24d4da674f336ed5df3bf3a51f8",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json": "bf9ca28a1de69f47c44cdb9a873eee76c864ac18",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json": "a599bdbc113ba70a5473bbe71a9f047dace97cfe"
+    },
+    "successor_native_ci_pass_claimed": false,
+    "PUBLIC_DELIVERY_EFFECT_ACK": false
   }
 }
