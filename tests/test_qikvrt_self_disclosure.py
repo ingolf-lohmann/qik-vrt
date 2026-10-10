@@ -28,6 +28,15 @@ def sha256(path):
 
 
 class SelfDisclosureTests(unittest.TestCase):
+    def test_previous_owner_acceptance_keeps_its_original_subject(self):
+        seal = owner_seal(ROOT)
+        previous = seal['receipt']['previous_acceptance']
+        raw = (ROOT / previous['path']).read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), previous['sha256'])
+        self.assertEqual(previous['sha256'], '8d44ceff353b39e084a6b34d44df4091b6cd94d02205c4879adc76135af6cc72')
+        self.assertEqual(json.loads(raw)['subject']['head'], '14c710978462178546974c5aa18c1236914f916e')
+        self.assertFalse(seal['receipt']['claims']['successor_acceptance'])
+
     def test_seal_is_one_exact_binding_across_all_repository_layers(self):
         seal = owner_seal(ROOT)
         receipt = seal['receipt']
@@ -35,8 +44,8 @@ class SelfDisclosureTests(unittest.TestCase):
             document = read_json(ROOT / path)
             binding = document['bindings']['owner_seal_acceptance'] if path == '.well-known/qik-vrt-self-disclosure.json' else document['owner_seal_acceptance']
             self.assertEqual(binding, seal['binding'], path)
-        self.assertEqual(receipt['subject']['head'], '14c710978462178546974c5aa18c1236914f916e')
-        self.assertEqual(receipt['subject']['tree'], 'c08d110c030c99e5a743104a4071f6da69d5e5bc')
+        self.assertEqual(receipt['subject']['head'], '831ee2f18c84198e3bbaba9e724eca0fb5b3012e')
+        self.assertEqual(receipt['subject']['tree'], 'f24a70a209ff9cc44f4575334e5b0b680eea7ec2')
         self.assertEqual(receipt['accepted_by'], 'Ingolf Lohmann')
 
     def test_seal_changes_and_path_substitution_fail_closed(self):

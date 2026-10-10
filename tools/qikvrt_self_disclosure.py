@@ -11,7 +11,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DOC = ROOT / '.well-known' / 'qik-vrt-self-disclosure.json'
-SEAL_PATH = 'state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V1.json'
+SEAL_PATH = 'state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V2.json'
 NON_CLAIMS = ('independent_review', 'native_code_owner_enforcement',
               'successor_acceptance', 'main_merge', 'mesh_activation',
               'delivery_verified', 'effect_ack_done')
