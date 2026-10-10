@@ -7,15 +7,15 @@
   const REPOSITORIES = Object.freeze({
     authority: Object.freeze({
       label: "Authority",
-      name: "Goldkelch/qik-vrt",
-      branch: "main",
-      endpoint: "https://api.github.com/repos/Goldkelch/qik-vrt",
-    }),
-    mirror: Object.freeze({
-      label: "Mirror",
       name: "ingolf-lohmann/qik-vrt",
       branch: "main",
       endpoint: "https://api.github.com/repos/ingolf-lohmann/qik-vrt",
+    }),
+    mirror: Object.freeze({
+      label: "Mirror",
+      name: null,
+      branch: "main",
+      endpoint: null,
     }),
   });
 
@@ -200,6 +200,9 @@
   }
 
   async function publicGet(repository, path) {
+    if (!repository || !repository.endpoint) {
+      throw new Error("HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY");
+    }
     const response = await fetch(`${repository.endpoint}${path}`, {
       method: "GET",
       credentials: "omit",
@@ -209,6 +212,13 @@
       throw new Error(`HTTP ${response.status}`);
     }
     return response.json();
+  }
+
+  function repositoryAvailable(repository) {
+    if (repository && repository.endpoint) return true;
+    appendEntry("hold", "HOLD", "HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY");
+    setConnectionState("HOLD");
+    return false;
   }
 
   function decodeContent(content) {
@@ -243,6 +253,7 @@
       return;
     }
     const repository = REPOSITORIES[key];
+    if (!repositoryAvailable(repository)) return;
     setConnectionState("PUBLIC_READ_PENDING");
     appendEntry("command", message("command"), `${message("loading")}\n${repository.name}`);
     try {
@@ -279,6 +290,7 @@
       return;
     }
     const repository = REPOSITORIES[key];
+    if (!repositoryAvailable(repository)) return;
     const path = ".well-known/qik-vrt-self-disclosure.json";
     setConnectionState("PUBLIC_READ_PENDING");
     try {
@@ -315,6 +327,7 @@
       return;
     }
     const repository = currentRepository();
+    if (!repositoryAvailable(repository)) return;
     setConnectionState("PUBLIC_READ_PENDING");
     try {
       const payload = await publicGet(repository, `/contents/${source.path}?ref=${repository.branch}`);

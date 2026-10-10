@@ -29,6 +29,18 @@ QIK-VRT AI RUNTIME ENTRYPOINT
 
 Repository evidence is canonical. Chat and model memory are non-authoritative transport context.
 
+CURRENT REPOSITORY ROLES — AUTHORITY SUCCESSION REVIEW CANDIDATE
+
+Current routing binds ingolf-lohmann/qik-vrt as Authority under
+policy/CANONICAL_UPSTREAM_REMOTE_V1.json. The new Mirror is unbound under
+state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json:
+HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY.
+Main promotion and operational cutover completion remain unexecuted.
+AUTHORITY_CUTOVER_COMPLETED=false. Historical role identities, URLs and receipts
+retain their original subjects; PREDECESSOR_EVIDENCE_TRANSFER=false.
+Bootstrap corpus audio marked UNTRANSCRIBED remains pending exact transcript
+binding and human acoustic review; repository succession supplies no audio proof.
+
 PERSONAL WORKING-MEMORY ORIGIN AND CONTRIBUTION DISCLOSURE
 
 Before substantive work, read and apply:
@@ -123,7 +135,11 @@ Cached output is never proof authority. A warm path MUST preserve the same manda
 
 PUBLICATION AND REFERENCE OVERVIEW
 
-Human-readable canonical URL:
+Current Authority sources:
+
+   https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html
+
+Historical published overview (deployment not rebound by role succession):
 
    https://goldkelch.github.io/qik-vrt/publications/
 

@@ -6,6 +6,18 @@
 The current registry scope is `qikvrt-global-claim-scope-v1` with 92 terminally classified claims. The scoped completion receipt grants `PASS`, `FINAL_PASS`, and transaction-bound `EFFECT_ACK_DONE`. This supersedes older progress percentages for current completion status; historical snapshot evidence below remains retained.
 <!-- qikvrt-global-completion-status:end -->
 
+## Authority succession candidate, 2026-10-04
+
+Current routing and default bindings designate `ingolf-lohmann/qik-vrt` as
+Authority in `policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. Main promotion and
+operational completion are unexecuted: `AUTHORITY_CUTOVER_COMPLETED=false`.
+The separate new Mirror bootstrap contract has no target identity and the
+executing API client has no repository creation operation:
+`HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY`. This candidate neither
+transfers predecessor gate evidence nor changes independent review governance.
+The scoped completion receipt above and snapshot below retain their historical
+subjects; they do not establish completion of this succession.
+
 **Snapshot date:** 2026-07-24
 
 **Scientific release identity:** annotated tag

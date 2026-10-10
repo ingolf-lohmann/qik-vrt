@@ -39,7 +39,9 @@ class SelfDisclosureTests(unittest.TestCase):
         capabilities = {entry['id'] for entry in self.disclosure['capabilities']}
         self.assertIn('publication_overview_discovery', capabilities)
         binding = self.disclosure['bindings']['publication_overview']
-        self.assertEqual(binding['canonical_url'], CANONICAL_URL)
+        self.assertEqual(binding['canonical_url'], 'https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html')
+        self.assertEqual(binding['historical_canonical_url'], CANONICAL_URL)
+        self.assertFalse(binding['deployment_rebound_or_verified'])
         self.assertEqual(binding['human_index_path'], 'docs/publications/index.html')
         self.assertEqual(binding['machine_index_path'], 'docs/publications/index.json')
 

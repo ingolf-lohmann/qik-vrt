@@ -133,7 +133,7 @@ Ziel:
 ```text
 Alle Plattformskripte laufen vollautomatisch.
 Nur der GitHub-Token wird abgefragt.
-Zielrepository: Goldkelch/qik-vrt
+Zielrepository: ingolf-lohmann/qik-vrt
 Branch: main
 ```
 

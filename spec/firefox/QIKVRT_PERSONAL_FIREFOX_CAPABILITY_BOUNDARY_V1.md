@@ -4,16 +4,16 @@ Status: normative candidate
 
 ## Product split
 
-- `Goldkelch/qik-vrt` is the public standard product baseline.
+- `ingolf-lohmann/qik-vrt` is the current public Authority source for the standard package. Edition separation is enforced by package and capability-manifest scope; the repository owner name does not imply personal payload.
 - `ingolf-lohmann/qik-vrt` is the Ingolf Lohmann Personal Edition.
 - Standard capabilities may flow into the Personal Edition only through an explicit, provenance-bound update.
-- Personal capabilities, personal state, personal prompts/policies, personal psychological/cognitive adaptation, and personal agent configuration MUST NOT flow into the Goldkelch standard download by default.
+- Personal capabilities, personal state, personal prompts/policies, personal psychological/cognitive adaptation, and personal agent configuration MUST NOT flow into the standard download by default.
 
 ## Firefox editions
 
 ### Standard Firefox edition
 
-The Goldkelch Firefox distribution MUST be buildable and testable without any Ingolf-specific payload. It MUST NOT contain personal profiles, personal cognitive/psychological adaptation, personal development-agent configuration, personal credentials, tokens, account state, or personal evidence.
+The standard Firefox distribution MUST be buildable and testable without any Ingolf-specific payload. It MUST NOT contain personal profiles, personal cognitive/psychological adaptation, personal development-agent configuration, personal credentials, tokens, account state, or personal evidence.
 
 ### Ingolf Personal Firefox edition
 

@@ -22,7 +22,7 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
     head = "b" * 40
 
     def pr(self, **overrides):
-        value = {"number": 641, "head": {"sha": self.head}, "user": {"login": "integration-author"}}
+        value = {"number": 641, "head": {"sha": self.head}, "user": {"login": "integration-author", "id": 1, "type": "User"}}
         value.update(overrides)
         return value
 
@@ -40,7 +40,7 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
             "submitted_at": "2026-08-16T16:00:00Z",
             "state": "APPROVED",
             "commit_id": self.head,
-            "user": {"login": "Goldkelch"},
+            "user": {"login": "Goldkelch", "id": 2, "type": "User"},
         }
         value.update(overrides)
         return value
@@ -96,6 +96,16 @@ class RequiredCodeOwnerReviewGateTests(unittest.TestCase):
     def test_pr_author_cannot_satisfy_independent_gate(self):
         result = self.evaluate([self.approval()], pr=self.pr(user={"login": "Goldkelch"}))
         self.assertEqual((result["gate_state"], result["first_blocker"]), ("failure", "CODE_OWNER_REVIEW_SELF_APPROVAL"))
+
+    def test_different_logins_with_same_stable_id_are_self_approval(self):
+        result = self.evaluate([self.approval(user={"login":"Goldkelch","id":1,"type":"User"})])
+        self.assertEqual(result["first_blocker"], "CODE_OWNER_REVIEW_SELF_APPROVAL")
+
+    def test_missing_identity_and_bot_cannot_satisfy_independent_gate(self):
+        for user in ({"login":"Goldkelch"}, {"login":"Goldkelch","id":2,"type":"Bot"}, {"login":"Goldkelch","id":True,"type":"User"}):
+            with self.subTest(user=user):
+                result = self.evaluate([self.approval(user=user)])
+                self.assertEqual(result["first_blocker"], "CODE_OWNER_REVIEW_IDENTITY_UNVERIFIED")
 
 
 if __name__ == "__main__":

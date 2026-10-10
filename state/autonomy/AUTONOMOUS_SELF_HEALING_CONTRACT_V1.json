@@ -9,7 +9,8 @@
     "observation": "scheduled_or_manual",
     "mutation": "review_branch_only",
     "promotion": "expected_head_bound_only",
-    "unchanged_semantic_fingerprint": "NOOP"
+    "unchanged_semantic_fingerprint": "NOOP",
+    "unchanged_semantic_fingerprint_scope": "CANDIDATE_BYTES_ONLY_NOT_PENDING_MATERIALIZATION"
   },
   "promotion_policy": {
     "unconditional_automatic_merge": "FORBIDDEN",
@@ -209,7 +210,29 @@
     "no_diff": "NOOP",
     "all_paths_must_be_allowlisted": true,
     "proposal_workflow_may_merge": false,
-    "promotion_executor_may_merge": "ONLY_AFTER_TWO_PHASE_EXACT_HEAD_REOBSERVATION"
+    "promotion_executor_may_merge": "ONLY_AFTER_TWO_PHASE_EXACT_HEAD_REOBSERVATION",
+    "materialization": {
+      "implementation": "tools/qikvrt_self_heal_pr_materializer.py",
+      "test": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "completion_predicate": "EXACT_CURRENT_BASE_HEAD_TREE_PR_READBACK",
+      "existing_branch_without_pr": "RESUME_MISSING_POSTCONDITION",
+      "existing_exact_open_pr": "READ_ONLY_NOOP",
+      "closed_duplicate_or_mismatched_pr": "HOLD_WITHOUT_REOPEN_OR_REPLACEMENT",
+      "ref_creation": "REST_CREATE_ONLY",
+      "ambiguous_write": "REOBSERVE_WITHOUT_BLIND_RETRY",
+      "maximum_pr_create_attempts_per_run": 1,
+      "credential_route": "EXISTING_QIKVRT_MESH_TOKEN_OR_GITHUB_TOKEN",
+      "automatic_permission_change": false,
+      "self_approval": false,
+      "unchanged_blocker_notification": "SUPPRESS_BY_TRANSITION_FINGERPRINT",
+      "completion_claims": {
+        "PREDECESSOR_EVIDENCE_TRANSFER": false,
+        "EFFECT_ACK_DONE": false
+      },
+      "draft_continuation_opt_in": "<!-- qikvrt-autonomous-self-heal:enabled -->",
+      "requires_repeated_chat_authorization": false,
+      "legacy_draft_handoff_repair": "ONE_BODY_ONLY_PATCH_ON_VERIFIED_EXACT_INTERNAL_CANDIDATE_WITH_FRESH_READBACK"
+    }
   },
   "completion_claims": {
     "PASS": false,
@@ -217,5 +240,57 @@
     "EFFECT_ACK_DONE": false,
     "FULL_SYNC": false,
     "SYMMETRIC_CANONICALITY": false
+  },
+  "same_repository_writer_postconditions": {
+    "implementation": "tools/qikvrt_pipeline_contracts.py",
+    "workflow_paths": [
+      ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      ".github/workflows/qikvrt_ci.yml",
+      ".github/workflows/qikvrt_batch04_integrity.yml",
+      ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+      ".github/workflows/qikvrt_global_completion.yml",
+      ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+      ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+      ".github/workflows/qikvrt_escape_stages_integrity.yml",
+      ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+      ".github/workflows/issue-autonomous-processing.yml"
+    ],
+    "chain": [
+      "OBSERVE_EXACT_SOURCE_AND_BASE",
+      "NON_FORCE_BRANCH_WRITE_AND_READBACK",
+      "EXACT_OPEN_DRAFT_PR_READBACK",
+      "EXISTING_EXACT_HEAD_VERIFIER_RUN_READBACK"
+    ],
+    "helpers": [
+      "observe_writer",
+      "push_postcondition",
+      "draft_postcondition",
+      "candidate_postcondition",
+      "publish_writer",
+      "resume"
+    ],
+    "staging_base": "PRESERVE_EXACT_NATIVE_TARGET_VERIFY_READ_ONLY_NO_MAIN_CONTINUATION_OPT_IN",
+    "main_writer": "ISOLATE_CHANGED_BYTES_ON_BASE_TREE_BOUND_REVIEW_BRANCH",
+    "byte_noop": "RESUME_MISSING_PR_OR_VERIFIER_POSTCONDITION_ON_EXISTING_REVIEW_BRANCH",
+    "write_transport": "INDEPENDENT_READBACK_AFTER_DENIAL_LOSS_MALFORMED_OR_MISLEADING_RESPONSE",
+    "ready_closed_foreign_mismatched_or_competing_candidate": "HOLD_NO_WRITE",
+    "attempt_bounds": {
+      "branch_push": 1,
+      "pr_create": 1,
+      "body_patch": 1,
+      "verifier_dispatch": 1
+    },
+    "new_scheduler": false,
+    "new_executor": false,
+    "automatic_permission_change": false,
+    "self_approval": false,
+    "promotion_marker_added_by_generic_writers": false,
+    "required_acceptance": "NATIVE_REVIEW_GOVERNANCE_AND_EXTERNAL_EFFECT_GATES_UNCHANGED",
+    "notification": "DEDUPLICATE_SEMANTIC_TRANSITION_FINGERPRINT",
+    "exactly_once_under_arbitrary_concurrency_or_visibility_delays_claimed": false,
+    "EFFECT_ACK_DONE": false,
+    "trusted_main_verifier_protocol": "Exact trusted-Main workflow blob and subject-bound run title are required before dispatch; staging also requires base-ref support. Legacy/absent/corrupt/unreadable/drifted carriers HOLD without dispatch and resume after independently reviewed Main activation."
   }
 }

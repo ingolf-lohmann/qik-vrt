@@ -116,7 +116,7 @@ class AphorismCorpusV2Tests(unittest.TestCase):
             "BLOCK: target ref advanced before repository evidence persistence",
             "remote_head_after_commit",
             "BLOCK: target ref advanced while repository evidence was materialized",
-            'git push origin "HEAD:$TARGET_REF"',
+            'tools/qikvrt_pipeline_contracts.py publish-writer',
         ):
             self.assertIn(token, block)
         self.assertLess(
@@ -125,7 +125,7 @@ class AphorismCorpusV2Tests(unittest.TestCase):
         )
         self.assertLess(
             block.index("remote_head_after_commit"),
-            block.index('git push origin "HEAD:$TARGET_REF"'),
+            block.index('tools/qikvrt_pipeline_contracts.py publish-writer'),
         )
 
     def test_materialized_bundle_when_present(self) -> None:

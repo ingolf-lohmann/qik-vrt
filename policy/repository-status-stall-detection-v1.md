@@ -1,8 +1,11 @@
 # QIK-VRT Repository Status and Stall-Detection Policy v1
 
 Status: normative repository policy
-Authority repository: `Goldkelch/qik-vrt`
-Mirror repository: `ingolf-lohmann/qik-vrt`
+Authority repository: `ingolf-lohmann/qik-vrt` (review candidate).
+Mirror repository: unbound, `HOLD_NEW_MIRROR_IDENTITY_AND_API_CREATION_CAPABILITY`.
+Current role contract: `policy/CANONICAL_UPSTREAM_REMOTE_V1.json`.
+Historical roles: Authority `Goldkelch/qik-vrt`, Mirror `ingolf-lohmann/qik-vrt`;
+their receipts remain scoped to their original subjects.
 
 ## Purpose
 

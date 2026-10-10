@@ -1,0 +1,51 @@
+{
+  "schema": "qikvrt_owner_authority_succession_directive_v1",
+  "directive_id": "OWNER_AUTHORITY_SUCCESSION_AND_NEW_MIRROR_20261004_V1",
+  "owner": "Ingolf Lohmann",
+  "owner_message_at": "2026-10-04T17:26:04+02:00",
+  "contribution_class": "HUMAN",
+  "instruction": "Jetzt ist der Zeitpunkt gekommen, wo aus dem ehemaligen Mirror die neue Authority wird und dann zugleich ein neuer Mirror angelegt wird.",
+  "new_authority_repository": "ingolf-lohmann/qik-vrt",
+  "previous_authority_repository": "Goldkelch/qik-vrt",
+  "new_mirror_repository": null,
+  "new_mirror_target_state": "OWNER_TARGET_NOT_YET_SPECIFIED",
+  "authorization_scope": [
+    "Promote the former Mirror to the new Authority through a history-preserving, evidence-bound role succession",
+    "Create and initialize a new Mirror after its account/node target is resolved",
+    "Retain historical Authority provenance, release bindings, receipts and immutable archives"
+  ],
+  "operational_state": "OWNER_DIRECTED_SUCCESSION_PENDING_NATIVE_EFFECT_READBACK",
+  "source_observation": {
+    "new_authority_main_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+    "new_authority_owner_login": "ingolf-lohmann",
+    "new_authority_owner_id": 294949349,
+    "connected_user_id": 294949349,
+    "connected_repository_permission": "admin",
+    "previous_authority_repository_read_http_status": 404,
+    "previous_authority_user_resolution_http_status": 404,
+    "account_deletion_or_suspension_cause": "UNESTABLISHED",
+    "previous_authority_retained_installation_account_id": 293941403,
+    "previous_authority_stable_user_id_resolution_http_status": 404
+  },
+  "implementation_boundaries": {
+    "declaration_is_not_operational_cutover": true,
+    "new_mirror_exists": false,
+    "repository_creation_callable_in_current_connector": false,
+    "repository_creation_effect_count": 0,
+    "independent_review_and_enforced_governance_required": true,
+    "self_approval": "FORBIDDEN",
+    "ruleset_weakening": "FORBIDDEN",
+    "force_push_or_historical_rewrite": "FORBIDDEN",
+    "old_receipts_may_be_relabelled_as_new_authority_evidence": false,
+    "same_account_or_host_mirror_proves_independent_failure_domain": false,
+    "publication_or_deployment_authorized_by_role_succession": false
+  },
+  "remaining_inputs": [
+    "New Mirror target account or Git node and repository URL/name",
+    "A callable native repository-creation/initialization route with verified target permission",
+    "Reviewed rebinding of active role consumers, exact-head validation and independent live readback"
+  ],
+  "next_action": "Resolve the new Mirror destination, then reuse the existing Seed registration and Mesh synchronization paths with a fresh succession epoch; preserve old records as historical provenance.",
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "EFFECT_ACK_DONE": false
+}

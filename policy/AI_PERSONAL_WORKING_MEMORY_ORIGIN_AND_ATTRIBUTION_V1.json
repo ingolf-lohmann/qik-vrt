@@ -11,8 +11,8 @@
   "effective_date": "2026-08-07",
   "canonical_entrypoint": "AI",
   "human_contract": "docs/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION.md",
-  "authority_repository": "Goldkelch/qik-vrt",
-  "authority_base_commit": "8a7e94c08eebd6d385a144a0d1df9c473de667b2",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "authority_base_commit": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
   "purpose": "Enable an artificial-cognitive system to establish a personal QIK-VRT working-memory origin with no more than three human questions while preserving separable human and artificial-cognitive contribution provenance.",
   "repository_evidence_overrides_chat_memory": true,
   "max_human_questions": 3,
@@ -107,7 +107,7 @@
   "personal_working_memory": {
     "canonical_source_remote": {
       "name": "upstream",
-      "url": "https://github.com/Goldkelch/qik-vrt.git"
+      "url": "https://github.com/ingolf-lohmann/qik-vrt.git"
     },
     "personal_remote": {
       "name": "origin",
@@ -241,5 +241,10 @@
     "PASS": false,
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false
-  }
+  },
+  "historical_authority_source": {
+    "repository": "Goldkelch/qik-vrt",
+    "base_commit": "8a7e94c08eebd6d385a144a0d1df9c473de667b2"
+  },
+  "authority_binding_contract": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
 }

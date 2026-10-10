@@ -46,7 +46,8 @@ interaction-archive-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_interaction_archive.py --help >/dev/null
 
 release-automation:
-	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
+	@set -eu; scratch=$$(mktemp -d); trap 'rm -rf "$$scratch"' EXIT; \
+	RUNNER_TEMP="$$scratch" PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_effect_ack_release_workflows tests.test_formalization_v2_release_workflow tests.test_formalization_v2_zenodo tests.test_status_release_workflows tests.test_zenodo_actions tests.test_zenodo_metadata_clarification_candidates tests.test_qikvrt_zenodo_metadata_edit tests.test_status_zenodo tests.test_zenodo_manifest_builder tests.test_status_clarification_bundle tests.test_global_completion tests.test_content_disposition_batch_002_terminal tests.test_content_disposition_batch_002_corrected_candidate tests.test_content_disposition_batch_002_owner_acceptance tests.test_content_disposition_status_after_batch_002_acceptance tests.test_content_disposition_batch_003_dispatch tests.test_transactional_workflow_trigger
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_content_disposition_batch_001.py
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_zenodo_union_disposition.py
 
@@ -95,7 +96,7 @@ seed:
 e2e:
 	$(PYTHON) tests/test_tcpip_e2e.py
 
-test: compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
+test: pipeline-contract-test compile integrity effect-ack-core-test scientific-bundle-test adaptive-cognition-test anticipation-contract runtime-contract ai-runtime-contract interaction-archive-test release-automation evidence-contract-test workflow-executor-mesh-contract repository-terminal-test launcher conformance unit security license seed e2e
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_integrity.py verify
 
 run-api:
@@ -120,3 +121,8 @@ machine-verifiable-science-charter-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tests/test_machine_verifiable_science_charter.py
 
 test: machine-verifiable-science-charter-test
+
+.PHONY: pipeline-contract-test
+pipeline-contract-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_contract_test_runner.py
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -O -B tools/qikvrt_contract_test_runner.py

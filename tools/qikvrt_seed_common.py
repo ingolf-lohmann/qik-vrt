@@ -39,7 +39,7 @@ except ModuleNotFoundError:  # Script execution keeps tools/ as sys.path[0].
 
 MAX_INPUT_BYTES = 1_048_576
 MAX_NODE_ROWS = 10_000
-DEFAULT_SEED_REPOSITORY = "Goldkelch/qik-vrt"
+DEFAULT_SEED_REPOSITORY = "ingolf-lohmann/qik-vrt"
 REPOSITORY_RE = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 BRANCH_RE = re.compile(r"[A-Za-z0-9._~/-]+\Z")
 RUN_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
@@ -358,6 +358,17 @@ def _registry_tsv_paths(root: Path) -> list[Path]:
 
 def load_nodes(root: Path, seed_repository: str) -> tuple[list[NodeRecord], dict[str, PolicyRecord]]:
     _validate_repository(seed_repository, "configured seed repository")
+    # Retained predecessor registry/receipts are not new-epoch admissions.
+    # Bootstrap must first supply a target and initialize fresh registration.
+    if (root / workflow_executor.MIRROR_BOOTSTRAP_PATH).is_file():
+        try:
+            bootstrap = workflow_executor.mirror_bootstrap_status(root)
+        except workflow_executor.ExecutorBlock as exc:
+            raise SeedError(str(exc)) from exc
+        if seed_repository != bootstrap["authority_repository"]:
+            raise SeedError("configured Seed is outside the current Authority epoch")
+        if bootstrap["state"] == "HOLD":
+            raise SeedError(str(bootstrap["hold"]))
     policies = load_policies(root)
     nodes: list[NodeRecord] = []
     seen: set[str] = set()

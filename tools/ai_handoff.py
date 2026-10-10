@@ -171,10 +171,16 @@ def validate_progress(context: dict[str, Any]) -> str:
         .get("canonicality", {})
         .get("repositories", [])
     )
-    if (
-        not canonical_repositories
-        or evidence.get("source_repository") != canonical_repositories[0]
-    ):
+    historical_projection = protocol.get("historical_projection_source")
+    if historical_projection is not None:
+        if not isinstance(historical_projection, dict) or any(
+            historical_projection.get(key) != evidence.get(key)
+            for key in ("source_repository", "commit", "root_tree", "ref_name")
+        ):
+            fail("AI progress historical projection source binding drift")
+        if historical_projection.get("is_current_authority_evidence") is not False:
+            fail("AI progress historical projection cannot become current Authority evidence")
+    elif not canonical_repositories or evidence.get("source_repository") != canonical_repositories[0]:
         fail("AI progress portable source repository is not the Authority")
     scopes = require(progress, "scopes", dict)
     if not scopes:

@@ -6,7 +6,8 @@ Copyright (c) 2026 Ingolf Lohmann.
 # Governance
 
 QIK-VRT is currently an author-led research project maintained by Ingolf
-Lohmann through the `Goldkelch` repository account.
+Lohmann through the `ingolf-lohmann` repository account. The role succession
+does not reassign CODEOWNERS, grant independent review, or weaken governance.
 
 ## Decision authority
 

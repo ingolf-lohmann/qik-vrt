@@ -1,0 +1,250 @@
+{
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contribution": [
+      "Inspected native GitHub metadata and the existing Requested-Review/CODEOWNERS path",
+      "Implemented native identity, collaborator, team and accepted-request admission checks",
+      "Reused the bounded subprocess adapter and existing review workflow; added no parallel controller",
+      "Executed deterministic REST fault-model regressions and syntax checks",
+      "Preserved a reviewable history-successor candidate and a separate owner succession directive"
+    ],
+    "model_or_build": "GPT-6",
+    "provider": "OpenAI",
+    "session_or_run_id": "UNAVAILABLE",
+    "system_family": "Codex"
+  },
+  "correction": [
+    "Base CODEOWNERS precedence and byte identity are verified; no candidate owner substitution",
+    "Resolvable stable identity, native collaborator check and identity-bound write permission required",
+    "Visible organization teams require explicit team write grant and complete independent membership observation",
+    "Actual current accepted native request required for each changed ownership scope before reachability is claimed",
+    "Missing or contradictory metadata produces a precise receipt and failing status, not a hidden NOOP or request retry",
+    "Stable identity prevents alias self approval in both carrier and native Code Owner gate",
+    "Fresh prewrite base/head/tree/scope/signer/admission checks; one POST maximum",
+    "Independent post-readback after transport loss; no COMMENT retry and no false successful rejected approval",
+    "Unchanged native rejection fingerprint suppresses later identical effect attempts",
+    "Existing trusted-main execution and independent review protections retained",
+    "Trusted-Main API compatibility is checked before import; inactive rollout produces exact-head HOLD and independent native status readback, not ImportError or bootstrap success"
+  ],
+  "external_effects": {
+    "deployment": false,
+    "merge": false,
+    "new_mirror_creation": false,
+    "permissions_or_ruleset_writes": 0,
+    "publication": false,
+    "review_posts": 0,
+    "reviewer_request_posts": 0
+  },
+  "history": {
+    "candidate_head_tree": "Resolve from containing commit and fresh remote PR readback",
+    "method": "SINGLE_PARENT_NON_FORCE_REVIEW_SUCCESSOR",
+    "parent": "c5b4023ec39557a0517f7a23434a564c4981a34a",
+    "prior_candidate": {
+      "head": "c5b4023ec39557a0517f7a23434a564c4981a34a",
+      "scope": "Initial native persistence and rollout diagnosis; not current candidate verification",
+      "tree": "94687e6ca037dfd0e6a6c3bd25e51f4c018a94e4"
+    }
+  },
+  "human_actor": {
+    "class": "HUMAN",
+    "contribution": "Requested exact reviewer-identity diagnosis, native fail-closed repair and fresh regression tests without self approval or weaker governance.",
+    "name": "Ingolf Lohmann"
+  },
+  "human_decision": "IMPLEMENTATION_AUTHORIZED_FINAL_REVIEW_PENDING",
+  "next_action": "Recover the native CODEOWNER identity or explicitly designate an actual independently reviewable CODEOWNER through the enforced reviewed route; do not substitute the PR author. Continue the separately authorized Authority succession after the new Mirror target is resolved.",
+  "observations": [
+    {
+      "class": "FRESH_NATIVE_CONNECTOR_READ",
+      "limit": "The callable projection omits stable identity and proves no accepted review request.",
+      "operation": "repository collaborator permission for Goldkelch",
+      "result": {
+        "permission": "write"
+      }
+    },
+    {
+      "class": "USER_SUPPLIED_PREVIOUS_NATIVE_RESULT",
+      "fresh_retry_executed": false,
+      "http_status": 422,
+      "message": "At least one of the specified users is not a collaborator of this repository.",
+      "operation": "POST requested_reviewers: Goldkelch"
+    },
+    {
+      "authenticated": false,
+      "class": "FRESH_PUBLIC_NATIVE_REST_READ",
+      "http_status": 404,
+      "limit": "Unresolvable through this public endpoint; account deletion or suspension is not diagnosed.",
+      "operation": "GET /users/Goldkelch"
+    },
+    {
+      "class": "FRESH_NATIVE_CONNECTOR_READ",
+      "http_status": 404,
+      "operation": "GET Goldkelch/qik-vrt"
+    },
+    {
+      "class": "FRESH_NATIVE_CONNECTOR_READ",
+      "limit": "Installation inventory is another projection, not identity or requestability proof.",
+      "operation": "installed accounts",
+      "result": [
+        "ingolf-lohmann",
+        "Goldkelch"
+      ]
+    },
+    {
+      "class": "FRESH_PUBLIC_NATIVE_REST_READ",
+      "limit": "No listed errors does not overrule user-resolution failure or establish active requestability.",
+      "operation": "GET current base CODEOWNERS errors",
+      "result": {
+        "errors": []
+      }
+    },
+    {
+      "class": "FRESH_PUBLIC_NATIVE_REST_AND_CONNECTOR_READ",
+      "operation": "PR 455 requested reviewers and reviews",
+      "result": {
+        "reviews": [],
+        "teams": [],
+        "users": []
+      }
+    },
+    {
+      "class": "AUTHENTICATION_CAPABILITY_LIMIT",
+      "operation": "Full collaborator/permission/team metadata",
+      "result": "Authenticated generic connector endpoint not exposed; unauthenticated native calls return 401. These responses are not treated as proof of no collaboration."
+    },
+    {
+      "class": "EXACT_SOURCE_READ",
+      "operation": "CODEOWNERS on candidate and current Main",
+      "result": "All rules name @Goldkelch; no independent alternative owner is designated. Repository owner ingolf-lohmann is also PR author (stable ID 294949349); repository owner type User."
+    },
+    {
+      "class": "FRESH_NATIVE_CONNECTOR_INSTALLATION_RECORD",
+      "limit": "Retained installation projection; not proof of a currently resolvable account",
+      "operation": "List GitHub App installations",
+      "result": {
+        "account_id": 293941403,
+        "account_login": "Goldkelch",
+        "account_type": "User",
+        "installation_id": 147849532
+      }
+    },
+    {
+      "authenticated": false,
+      "class": "FRESH_PUBLIC_NATIVE_REST_READ",
+      "http_status": 404,
+      "limit": "Both the retained stable account ID and login are publicly unresolvable; deletion, suspension and managed visibility causes remain unestablished",
+      "operation": "GET /user/293941403"
+    },
+    {
+      "class": "FRESH_PUBLIC_NATIVE_REST_POSITIVE_CONTROL",
+      "http_status": 200,
+      "operation": "GET /users/ingolf-lohmann",
+      "result": {
+        "id": 294949349,
+        "login": "ingolf-lohmann",
+        "type": "User"
+      }
+    },
+    {
+      "cause": "Activation checked file existence rather than availability of the required admission API",
+      "class": "NATIVE_ROLLOUT_DIAGNOSIS",
+      "executor_run_id": 37215264160,
+      "head": "c5b4023ec39557a0517f7a23434a564c4981a34a",
+      "job_id": 111474360460,
+      "observed_error": "ImportError: GitHubRest absent from checked-out trusted Main",
+      "repair": "Detect required Main API definitions before any import; materialize bound HOLD/native failing status when unavailable, preserve receipt and never run candidate code for review writes",
+      "source_run_results_do_not_transfer_to_successor": true,
+      "tree": "94687e6ca037dfd0e6a6c3bd25e51f4c018a94e4"
+    }
+  ],
+  "outputs": [
+    {
+      "bytes": 33350,
+      "git_blob_sha1": "928748e8cf1847e2d6f249a88cf48c3b185da20d",
+      "path": "tools/qikvrt_requested_review_executor.py",
+      "sha256": "a94f3f362455a6ec5f94accc50ffd4e1b4d5859033878a0a6eaa802b0b2832dc"
+    },
+    {
+      "bytes": 9152,
+      "git_blob_sha1": "278eb58fb456ecbaf7d835a58f09e3acd1bdab2b",
+      "path": "tools/qikvrt_required_review_gate.py",
+      "sha256": "c06e5399271276155472cda218755760fdb134fd48840f6f01d093d9d61ee6b4"
+    },
+    {
+      "bytes": 28366,
+      "git_blob_sha1": "12733c6a080ecfea9754ac4ff30190a5aa0780e5",
+      "path": "tests/test_qikvrt_requested_review_executor.py",
+      "sha256": "97c71e8c8c48b2ba5ab200b87a7e6c3c4709c7af5f741280657949fcedfa63d3"
+    },
+    {
+      "bytes": 4968,
+      "git_blob_sha1": "b8a9702bf3ebc6701703a4f77d431e00e922c547",
+      "path": "tests/test_qikvrt_required_review_gate.py",
+      "sha256": "3f39a72456afffa886680853af30c54d7a0628785789b6f1678c711b0aed61bd"
+    },
+    {
+      "bytes": 19380,
+      "git_blob_sha1": "f90b34e3e77794084c80fc10f6ae299a3fa36f29",
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "sha256": "8e943dab833fbac1237a89f177e541f957691671e77abc9fac04ec2c1e6bcadc"
+    },
+    {
+      "bytes": 3716,
+      "git_blob_sha1": "bb4e82ee68b0f6dd4477bdf82250930762e9f119",
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "sha256": "b79492438b5dc8f639533200229ae158c4be8f9882b19354696e3264d396b4eb"
+    },
+    {
+      "bytes": 6839,
+      "git_blob_sha1": "c78871298eda24f3f11773f928c5442e54efda0e",
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "sha256": "7d23dd24834a38dc38a03ac3d93ec743fbc693425246d7db589f3fb484805c79"
+    },
+    {
+      "bytes": 7176,
+      "git_blob_sha1": "be02a9b45df6b4f219e708a3623ca0a88d0e097f",
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "sha256": "6636847d3926f25131c82e3233a9f4995eb29905c7df67702157e43365e2d875"
+    }
+  ],
+  "pr_number": 455,
+  "recorded_at": "2026-10-04T15:43:59.183543+00:00",
+  "release_claims": {
+    "AUTHORITY_CUTOVER_COMPLETED": false,
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "INDEPENDENT_CODE_OWNER_APPROVAL": false,
+    "PASS": false
+  },
+  "retry_condition": "A current resolvable independent CODEOWNER identity, native collaborator/identity-bound write metadata and accepted current review request must be established for a freshly bound candidate; approval governance and workflow admission remain mandatory.",
+  "root_cause": {
+    "external_account_lifecycle_cause": "UNESTABLISHED",
+    "first_live_blocker": "CODEOWNER_IDENTITY_UNRESOLVABLE",
+    "governance_rule_not_enforced_is_separate": true,
+    "verified_software_mechanism": "The carrier selected only existing reviewer requests and treated an absent request as a silent NOOP. It evaluated gates without resolving the CODEOWNER identity, native collaborator membership, identity-bound permission or accepted native request. Failed review writes were retried as COMMENT and an APPROVE disposition could still publish success after platform rejection.",
+    "workflow_initial_admission_action_required_is_separate": true
+  },
+  "schema": "qikvrt_native_reviewer_admission_repair_work_unit_v1",
+  "source_commit": "0cb3e420a6273819e5866a897c116f55ee555084",
+  "source_main_head": "223d9cd851ab2b3753b40468b540b2fcc776f5b0",
+  "source_ref": "fix/self-heal-pr-postcondition-20261004-93be182a",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "ab758e853695922fea31691b533a4b3958f20763",
+  "state": "IMPLEMENTED_LOCAL_REGRESSIONS_VERIFIED_LIVE_REVIEW_ADMISSION_HOLD",
+  "verification": {
+    "aggregate_log_scope": "Local full checkout, with the one required historical Git commit fetched explicitly; no native CI or independent review inferred",
+    "aggregate_make_test": "PASS; complete make test executed after final trusted-Main activation/bootstrap, carrier and workflow changes",
+    "commands": [
+      "python3 -B -m unittest tests.test_qikvrt_requested_review_executor tests.test_qikvrt_required_review_gate tests.test_qikvrt_expected_head_promotion",
+      "python3 -O -B -m unittest tests.test_qikvrt_requested_review_executor tests.test_qikvrt_required_review_gate tests.test_qikvrt_expected_head_promotion"
+    ],
+    "focused_unique_tests": 71,
+    "historical_worktree_dependency": "Fetched exact commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2; original shallow-checkout failure passed after the missing object was supplied",
+    "new_unique_tests": 44,
+    "normal_python": "PASS",
+    "optimized_python": "PASS",
+    "python": "3.12.14",
+    "scope": "Local candidate code with native REST fault models and real workflow activation/bootstrap execution. Normal and optimized Python passed; workflow shell and embedded Python syntax checked. No live approval or reviewer-request acceptance inferred."
+  },
+  "work_unit_id": "QIKVRT_NATIVE_REVIEWER_ADMISSION_REPAIR_20261004_V1"
+}

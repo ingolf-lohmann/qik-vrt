@@ -35,7 +35,7 @@ class AutonomousPRContinuationTests(unittest.TestCase):
         source = CONTINUATION.read_text(encoding="utf-8")
         self.assertIn("git merge --no-ff --no-edit", source)
         self.assertIn("live_head_before_push", source)
-        self.assertIn("refs/heads/${HEAD_REF}", source)
+        self.assertIn('qikvrt-pipeline-contracts.py" push-readback', source)
         self.assertNotIn("git push --force", source)
         self.assertNotIn("git push -f", source)
         self.assertNotIn("gh pr merge", source)

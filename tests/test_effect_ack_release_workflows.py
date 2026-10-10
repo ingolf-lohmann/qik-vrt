@@ -500,6 +500,14 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
                 '    return None, None, None, {"files": []}\n',
                 encoding="utf-8",
             )
+            # Bind observation without network so the production fixpoint reaches
+            # the injected real make failure rather than failing on missing I/O.
+            (root / "tools/qikvrt_pipeline_contracts.py").write_text(
+                'import json,pathlib,sys\n'
+                'assert sys.argv[1] == "observe-writer"\n'
+                'pathlib.Path(sys.argv[sys.argv.index("--output")+1]).write_text(json.dumps({"base":"a"*40}))\n',
+                encoding="utf-8",
+            )
             run_git(root, "add", ".")
             run_git(root, "commit", "-m", "test fixture")
             subject = run_git(root, "rev-parse", "HEAD")

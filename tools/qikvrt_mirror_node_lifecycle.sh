@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 
+# A copied predecessor handshake is not a fresh Mirror identity.
+python3 -B tools/qikvrt_workflow_executor.py mirror-bootstrap-status --require-ready --json
+
 CONFIG="qikvrt/runtime/onboarding/NODE_HANDSHAKE_CONFIG.tsv"
 [ -f "$CONFIG" ] || { echo "BLOCK missing $CONFIG"; exit 2; }
 

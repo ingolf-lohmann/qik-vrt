@@ -21,7 +21,7 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
         )
         self.assertEqual(
             self.policy["source_subject"]["standard_repository"],
-            "Goldkelch/qik-vrt",
+            "ingolf-lohmann/qik-vrt",
         )
         self.assertEqual(
             self.policy["source_subject"]["personal_repository"],
@@ -71,8 +71,9 @@ class PersonalFirefoxCapabilityBoundaryTests(unittest.TestCase):
             ).read_text(encoding="utf-8")
         )
         serialized = json.dumps(manifest, sort_keys=True)
-        self.assertIn("https://github.com/Goldkelch/qik-vrt/*", serialized)
-        self.assertNotIn("ingolf-lohmann", serialized)
+        self.assertIn("https://github.com/ingolf-lohmann/qik-vrt/*", serialized)
+        self.assertNotIn("personal/ingolf-lohmann", serialized)
+        self.assertNotIn("PERSONAL_CAPABILITY_MANIFEST", serialized)
         self.assertNotIn("chatgpt.com", serialized)
         self.assertNotIn("openai.com", serialized)
 

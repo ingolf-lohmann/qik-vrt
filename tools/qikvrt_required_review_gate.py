@@ -142,6 +142,14 @@ def evaluate_required_review(pr: Mapping[str, Any], rules: Sequence[Mapping[str,
         raise ReviewGateInputError(f"unsupported decisive review state: {latest_state}")
     if author_login.casefold() == owner_login.casefold():
         return _block(gate_state=FAILURE, blocker="CODE_OWNER_REVIEW_SELF_APPROVAL", detail="the pull-request author cannot satisfy the independent Code Owner review gate", pr_number=pr_number, head_sha=head_sha, required_code_owner=owner_login)
+    reviewer = latest["user"]
+    author_id, reviewer_id = author.get("id"), reviewer.get("id")
+    if (not isinstance(author_id, int) or isinstance(author_id, bool) or author_id <= 0
+            or not isinstance(reviewer_id, int) or isinstance(reviewer_id, bool) or reviewer_id <= 0
+            or reviewer.get("type") != "User"):
+        return _block(gate_state=FAILURE, blocker="CODE_OWNER_REVIEW_IDENTITY_UNVERIFIED", detail="stable native author and human-account reviewer identities are required", pr_number=pr_number, head_sha=head_sha, required_code_owner=owner_login)
+    if author_id == reviewer_id:
+        return _block(gate_state=FAILURE, blocker="CODE_OWNER_REVIEW_SELF_APPROVAL", detail="renamed or aliased logins share the PR author's native identity", pr_number=pr_number, head_sha=head_sha, required_code_owner=owner_login)
 
     return {
         "schema": SCHEMA,

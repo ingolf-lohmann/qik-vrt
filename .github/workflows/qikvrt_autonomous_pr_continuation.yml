@@ -16,6 +16,10 @@ on:
       - ".github/workflows/qikvrt_workflow_executor_watchdog.yml"
       - ".github/workflows/qikvrt_live_status_watch.yml"
       - "tools/qikvrt_autonomous_self_heal.py"
+      - "tools/qikvrt_pipeline_contracts.py"
+      - "tools/qikvrt_contract_test_runner.py"
+      - "tests/test_qikvrt_pipeline_contracts.py"
+      - "state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json"
       - "tools/qikvrt_workflow_executor.py"
       - "tools/qikvrt_seed_common.py"
       - "tools/qikvrt_publication_overview.py"
@@ -25,6 +29,7 @@ on:
       - "tests/test_seed_workflows.py"
 
 permissions:
+  actions: read
   contents: write
   pull-requests: write
   statuses: write
@@ -59,38 +64,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh api --paginate --slurp \
-            "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" \
-            > /tmp/qikvrt-open-pr-pages.json
-          python3 -B - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
-          import os
-          pages = json.load(open('/tmp/qikvrt-open-pr-pages.json', encoding='utf-8'))
-          marker = os.environ['OPT_IN_MARKER']
-          repo = os.environ['GITHUB_REPOSITORY']
-          candidates = []
-          for page in pages:
-              for pr in page:
-                  head_repo = ((pr.get('head') or {}).get('repo') or {}).get('full_name')
-                  if pr.get('draft') is not True or head_repo != repo:
-                      continue
-                  if marker not in (pr.get('body') or ''):
-                      continue
-                  candidates.append(pr)
-          candidates.sort(key=lambda item: int(item['number']))
-          if not candidates:
-              print('found=false')
-          else:
-              pr = candidates[0]
-              print('found=true')
-              print(f"pr_number={pr['number']}")
-              print(f"head_ref={pr['head']['ref']}")
-              print(f"head_sha={pr['head']['sha']}")
-              print(f"base_ref={pr['base']['ref']}")
-              print(f"base_sha={pr['base']['sha']}")
-          PY
+          cp tools/qikvrt_pipeline_contracts.py "$RUNNER_TEMP/qikvrt-pipeline-contracts.py"
+          python3 -B "$RUNNER_TEMP/qikvrt-pipeline-contracts.py" select \
+            --output "$RUNNER_TEMP/qikvrt-continuation/select.json"
 
       - name: Continue exact draft head through deterministic repairs
+        id: continue
         if: steps.select.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -102,6 +81,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/qikvrt-continuation"
+          phase=REOBSERVE_SELECTED_SUBJECT
+          trap 'rc=$?; if test "$rc" -ne 0; then printf "{\"state\":\"HOLD\",\"first_blocker\":\"%s\",\"exit_code\":%s,\"EFFECT_ACK_DONE\":false}\n" "$phase" "$rc" > "$RUNNER_TEMP/qikvrt-continuation/early-failure.json"; fi; exit "$rc"' EXIT
           test "$BASE_REF" = "main"
           checked_main="$(git rev-parse --verify HEAD^{commit})"
           live_main="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
@@ -115,6 +97,7 @@ jobs:
           git switch -C "$HEAD_REF" "$EXPECTED_HEAD"
           test "$(git rev-parse --verify HEAD^{commit})" = "$EXPECTED_HEAD"
 
+          phase=MERGE_CURRENT_BASE
           merge_created=false
           if ! git merge-base --is-ancestor "$live_main" HEAD; then
             if git merge --no-ff --no-edit "$live_main"; then
@@ -150,6 +133,7 @@ jobs:
             fi
           fi
 
+          phase=REPAIR_GENERATED_PROJECTIONS
           python3 -B tools/qikvrt_autonomous_self_heal.py apply > /tmp/qikvrt-pr-self-heal.json
           cat /tmp/qikvrt-pr-self-heal.json
           python3 -B - <<'PY' > /tmp/qikvrt-pr-self-heal-paths
@@ -175,59 +159,42 @@ jobs:
             git commit -m "fix(autonomy): repair exact PR ${PR_NUMBER} repository projections"
           fi
 
+          # Byte-NOOP and transaction-NOOP are different predicates.
           if test "$merge_created" = false && ! test -s /tmp/qikvrt-pr-self-heal-paths; then
             test -z "$(git status --porcelain=v1 --untracked-files=all)"
-            exit 0
+          else
+            phase=VERIFY_SUCCESSOR
+            make test
+            phase=PERSIST_SUCCESSOR
+            live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
+            test "$live_head_before_push" = "$EXPECTED_HEAD"
+            test "$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')" = "$live_main"
+            export TARGET_REF="$HEAD_REF" PREDECESSOR_HEAD="$EXPECTED_HEAD"
+            export CURRENT_BASE="$live_main"
+            export CANDIDATE_HEAD="$(git rev-parse HEAD)" CANDIDATE_TREE="$(git rev-parse HEAD^{tree})"
+            python3 -B "$RUNNER_TEMP/qikvrt-pipeline-contracts.py" push-readback \
+              --output "$RUNNER_TEMP/qikvrt-continuation/branch-write.json"
           fi
 
-          make test
-          candidate_head="$(git rev-parse --verify HEAD^{commit})"
-          live_head_before_push="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
-          test "$live_head_before_push" = "$EXPECTED_HEAD"
-          git push origin "HEAD:refs/heads/${HEAD_REF}"
-
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${candidate_head}" \
-            -f state=pending \
-            -f context='QIKVRT autonomous exact-head verification' \
-            -f description='Exact repaired head awaits repository-dispatch re-verification' \
-            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-
-          python3 -B - <<PY > /tmp/qikvrt-autonomous-dispatch.json
-          import json
-          print(json.dumps({
-              'event_type': 'qikvrt_autonomous_exact_head_verify',
-              'client_payload': {
-                  'repository': '${GITHUB_REPOSITORY}',
-                  'pull_request': int('${PR_NUMBER}'),
-                  'head_ref': '${HEAD_REF}',
-                  'head_sha': '${candidate_head}',
-                  'source_head_sha': '${EXPECTED_HEAD}',
-                  'base_sha': '${live_main}',
-              },
-          }))
-          PY
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" \
-            --input /tmp/qikvrt-autonomous-dispatch.json
-
-          conflict_summary=none
-          if test -s /tmp/qikvrt-merge-conflicts.txt; then
-            conflict_summary="$(tr '\n' ',' < /tmp/qikvrt-merge-conflicts.txt | sed 's/,$//')"
-          fi
-          cat > /tmp/qikvrt-autonomous-pr-comment.md <<EOF
-          <!-- qikvrt-autonomous-pr-continuation -->
-          Autonomous deterministic continuation materialized a history-preserving successor.
-
-          - previous exact head: \`${EXPECTED_HEAD}\`
-          - current candidate head: \`${candidate_head}\`
-          - current main merged: \`${live_main}\`
-          - deterministic generated-output conflicts reset before regeneration: \`${conflict_summary}\`
-          - external effects: none
-          - next state: exact-head repository-dispatch verification
-
-          Human scientific review and any separately authorized publication effect remain independent downstream gates. No repository-wide PASS, FINAL_PASS, or EFFECT_ACK_DONE is claimed.
-          EOF
-          gh pr comment "$PR_NUMBER" --body-file /tmp/qikvrt-autonomous-pr-comment.md
+          # Resume qikvrt_autonomous_exact_head_verify even with unchanged bytes.
+          # No status publication is a prerequisite of dispatch. A completed
+          # native run suppresses retries; a 204 response is not execution evidence.
+          phase=RESUME_VERIFIER_POSTCONDITION
+          export CANDIDATE_HEAD="$(git rev-parse --verify HEAD^{commit})"
+          export CANDIDATE_TREE="$(git rev-parse --verify HEAD^{tree})"
+          export CURRENT_BASE="$live_main"
+          python3 -B "$RUNNER_TEMP/qikvrt-pipeline-contracts.py" resume \
+            --output "$RUNNER_TEMP/qikvrt-continuation/resume.json"
 
       - name: Confirm no eligible work is a strict NOOP
         if: steps.select.outputs.found != 'true'
         run: echo 'No opted-in same-repository draft PR requires continuation.'
+
+      - name: Preserve selection and postcondition evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-continuation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-continuation/
+          if-no-files-found: error
+          retention-days: 30

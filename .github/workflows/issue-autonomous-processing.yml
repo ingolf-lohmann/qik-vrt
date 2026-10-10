@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright 2026 Ingolf Lohmann.
 name: Autonomous issue processing
 
 on:
@@ -12,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
   issues: write
   pull-requests: write
   models: read
@@ -40,11 +43,33 @@ jobs:
           set -euo pipefail
           number="$EVENT_ISSUE_NUMBER"
           if [ "$EVENT_NAME" = "workflow_dispatch" ]; then number="$INPUT_ISSUE_NUMBER"; fi
-          test -n "$number"
-          gh api "repos/$REPOSITORY/issues/$number" > issue.json
-          jq -e '.pull_request | not' issue.json >/dev/null
+          [[ "$number" =~ ^[1-9][0-9]*$ ]]
+          # Transport input is not a repository artifact or integrity input.
+          gh api "repos/$REPOSITORY/issues/$number" > "$RUNNER_TEMP/qikvrt-issue-input.json"
+          jq -e '.pull_request | not' "$RUNNER_TEMP/qikvrt-issue-input.json" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
+      - name: Bind resumable issue work branch without history rewrite
+        env:
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$ISSUE_NUMBER" =~ ^[1-9][0-9]*$ ]]
+          # Reuse the continuation's trusted-Main reporter across checkout.
+          cp tools/qikvrt_pipeline_contracts.py "$RUNNER_TEMP/qikvrt-issue-pipeline-contracts.py"
+          export TARGET_REF="issue-agent/$ISSUE_NUMBER"
+          remote="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+          if test -n "$remote"; then
+            git fetch --no-tags origin "$TARGET_REF"
+            test "$(git rev-parse FETCH_HEAD)" = "$remote"
+            git switch -c "$TARGET_REF" "$remote"
+          else
+            git switch -c "$TARGET_REF"
+          fi
+          python3 -B "$RUNNER_TEMP/qikvrt-issue-pipeline-contracts.py" observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-issue-writer-input.json"
       - name: Materialize request and repository context
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
@@ -52,7 +77,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/issue_agent/materialize.py \
-            --issue issue.json \
+            --issue "$RUNNER_TEMP/qikvrt-issue-input.json" \
             --repository "$REPOSITORY" \
             --output-dir "evidence/issues/$ISSUE_NUMBER"
 
@@ -65,7 +90,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/issue_agent/infer.py \
-            --issue issue.json \
+            --issue "$RUNNER_TEMP/qikvrt-issue-input.json" \
             --context "evidence/issues/$ISSUE_NUMBER/CONTEXT.md" \
             --output "evidence/issues/$ISSUE_NUMBER/ANSWER.md" \
             --model "openai/gpt-4.1"
@@ -92,29 +117,43 @@ jobs:
 
       - name: Create or update issue work branch and pull request
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
           branch="issue-agent/$ISSUE_NUMBER"
           git config user.name "qik-vrt-issue-agent[bot]"
           git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
-          git checkout -B "$branch"
-          git add "evidence/issues/$ISSUE_NUMBER"
+          # Bind the entire generated bundle to the canonical integrity trio.
+          # Both guards run before any commit or remote postcondition effect.
+          python3 -B tools/qikvrt_integrity.py generate
+          python3 -B tools/qikvrt_integrity.py verify
+          git add -- "evidence/issues/$ISSUE_NUMBER" \
+            REPOSITORY_FILE_MANIFEST.json \
+            REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
+          # Verification of a worktree is insufficient if its bytes are omitted
+          # from the staged successor. Reject unstaged and untracked inputs.
+          git diff --exit-code
+          test -z "$(git ls-files --others --exclude-standard)"
           if ! git diff --cached --quiet; then
             git commit -m "issue-agent: process issue #$ISSUE_NUMBER"
-            git push --force-with-lease origin "$branch"
+            # Non-force branch/PR/verifier handoff follows below.
           fi
 
-          pr_number="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')"
-          if [ -z "$pr_number" ]; then
-            gh pr create \
-              --base main \
-              --head "$branch" \
-              --title "Issue agent: process #$ISSUE_NUMBER" \
-              --body "Repository-native processing artifacts for #$ISSUE_NUMBER.\n\nThe resumable auto-finish workflow may merge this PR only after EFFECT_ACK_DONE and successful repository checks. It then synchronizes the mirror, creates the common tag, and closes the issue."
-          fi
-
-          pr_url="$(gh pr list --head "$branch" --state open --json url --jq '.[0].url')"
+          python3 -B "$RUNNER_TEMP/qikvrt-issue-pipeline-contracts.py" publish-writer \
+            --input "$RUNNER_TEMP/qikvrt-issue-writer-input.json" \
+            --output "$RUNNER_TEMP/qikvrt-issue-writer-postcondition.json"
+          pr_number="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["pr_number"])' "$RUNNER_TEMP/qikvrt-issue-writer-postcondition.json")"
+          pr_url="https://github.com/$GITHUB_REPOSITORY/pull/$pr_number"
           status="$(jq -r '.status' "evidence/issues/$ISSUE_NUMBER/STATUS.json")"
           gh issue comment "$ISSUE_NUMBER" --body "Repository processing status: **$status**\n\nWork product: $pr_url\n\nThe repository auto-finish transaction now owns merge, mirror synchronization, common tagging, and issue closure. Any failed gate remains BLOCK."
+      - name: Preserve issue writer postcondition or causal blockade
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-issue-writer-postcondition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/qikvrt-issue-writer-input.json
+            ${{ runner.temp }}/qikvrt-issue-writer-postcondition.json
+          if-no-files-found: error
+          retention-days: 30

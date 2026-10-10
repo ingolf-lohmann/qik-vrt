@@ -13,6 +13,7 @@ from collections.abc import Sequence
 from typing import Any
 
 from tools import qikvrt_autonomous_self_heal as self_heal
+from tools import qikvrt_workflow_executor as workflow_executor
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 POLICY = ROOT / "state/autonomy/AUTONOMOUS_PRE_EFFECT_POLICY_V1.json"
@@ -125,12 +126,28 @@ def _execution_source_remote() -> str:
         raise PreEffectBlock("repository remote role policy cannot be loaded") from exc
     if not isinstance(policy, dict) or policy.get("schema") != "qikvrt_canonical_upstream_remote_v1":
         raise PreEffectBlock("repository remote role policy schema mismatch")
+    try:
+        bootstrap = workflow_executor.mirror_bootstrap_status(ROOT)
+    except workflow_executor.ExecutorBlock as exc:
+        raise PreEffectBlock("repository Mirror bootstrap binding mismatch") from exc
     expected_urls = set()
     for key, role in (("canonical_upstream", "AUTHORITY"), ("mirror", "MIRROR")):
         binding = policy.get(key, {})
         if not isinstance(binding, dict):
             raise PreEffectBlock("repository remote role binding mismatch")
         repository = binding.get("repository")
+        if key == "mirror" and repository is None:
+            if (
+                binding.get("role") != role
+                or binding.get("default_branch") != "main"
+                or binding.get("state") != "HOLD"
+                or binding.get("canonical_https_url") is not None
+                or binding.get("canonical_api_repository") is not None
+                or bootstrap["mirror_repository"] is not None
+                or bootstrap["state"] != "HOLD"
+            ):
+                raise PreEffectBlock("repository unbound Mirror role mismatch")
+            continue
         if (
             not isinstance(repository, str)
             or re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository) is None
@@ -139,6 +156,12 @@ def _execution_source_remote() -> str:
             or binding.get("canonical_https_url") != f"https://github.com/{repository}.git"
         ):
             raise PreEffectBlock("repository remote role binding mismatch")
+        if key == "canonical_upstream" and repository != bootstrap["authority_repository"]:
+            raise PreEffectBlock("repository Authority binding drift")
+        if key == "mirror" and (
+            repository != bootstrap["mirror_repository"] or bootstrap["state"] == "HOLD"
+        ):
+            raise PreEffectBlock(bootstrap["hold"] or "repository Mirror binding drift")
         expected_urls.update((f"https://github.com/{repository}", f"https://github.com/{repository}.git"))
     result = self_heal.run(("git", "remote", "get-url", "--all", "origin"), timeout=60)
     urls = result.stdout.splitlines()

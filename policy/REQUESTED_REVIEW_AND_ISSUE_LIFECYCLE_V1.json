@@ -15,7 +15,6 @@
     "type": "NATURAL_PERSON"
   },
   "repositories": [
-    "Goldkelch/qik-vrt",
     "ingolf-lohmann/qik-vrt"
   ],
   "owner_delegation": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
@@ -72,7 +71,22 @@
     "promotion_requires_successful_review_status": true,
     "duplicate_exact_head_review": "FORBIDDEN",
     "head_tree_or_scope_drift_invalidates_review": true,
-    "platform_approval_fallback": "PERSIST_SUBSTANTIVE_DISPOSITION_AS_COMMENT_WITH_EXACT_PLATFORM_LIMITATION",
+    "platform_approval_fallback": "READ_NATIVE_REVIEWS_THEN_PERSIST_HOLD_RECEIPT_WITHOUT_ANOTHER_REVIEW_POST",
+    "reviewer_admission": {
+      "base_branch_codeowners_and_native_errors_required": true,
+      "stable_user_or_team_identity_required": true,
+      "native_collaborator_and_identity_bound_write_permission_required": true,
+      "permission_projection_alone_is_requestability": false,
+      "accepted_native_request_required_for_reachable_reviewer": true,
+      "no_active_request_may_hide_an_unrequestable_codeowner_as_noop": false,
+      "self_review_by_stable_identity_or_alias": "FORBIDDEN",
+      "unverified_or_unrequestable_codeowner": "HOLD_WITH_CAUSAL_BLOCKER",
+      "substitute_reviewer_or_governance_weakening": "FORBIDDEN",
+      "prewrite_admission_and_head_tree_scope_reobservation_required": true,
+      "review_post_limit_per_invocation": 1,
+      "rejected_approval_may_be_reported_as_success": false,
+      "receipt_artifact": "qikvrt-reviewer-admission-<run_id>-<run_attempt>"
+    },
     "independent_code_owner_approval_may_be_inferred": false
   },
   "issue_lifecycle": {
@@ -106,7 +120,13 @@
       "next_action",
       "disposition_reason",
       "no_false_pass"
-    ]
+    ],
+    "autofinish_postconditions": {
+      "empty_check_rollup_is_success": false,
+      "minimum_successful_check_before_merge": 1,
+      "authority_and_mirror_checks_are_independent": true,
+      "effect_ack_comment_requires_closed_readback": true
+    }
   },
   "standing_internal_authority": {
     "substantive_review_execution": true,
@@ -131,5 +151,11 @@
     "FINAL_PASS": false,
     "EFFECT_ACK_DONE": false,
     "FULL_AUTHORITY_MIRROR_SYNCHRONIZATION": false
-  }
+  },
+  "historical_repositories": [
+    "Goldkelch/qik-vrt",
+    "ingolf-lohmann/qik-vrt"
+  ],
+  "role_binding_contract": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+  "new_mirror_bootstrap_contract": "state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"
 }

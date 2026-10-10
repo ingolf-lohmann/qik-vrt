@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: write
+  actions: read
+  pull-requests: write
 
 jobs:
   test:
@@ -25,6 +27,8 @@ jobs:
           fetch-depth: 0
       - name: Full compile, launcher, protocol, handler, security and TCP/IP tests
         id: full_test
+        env:
+          QIKVRT_CONTRACT_EVIDENCE_DIR: ${{ runner.temp }}/qikvrt-ci-final/tests
         continue-on-error: true
         shell: bash
         run: |
@@ -66,12 +70,15 @@ jobs:
           cp "$diagnostics/MAKE_TEST_DIAGNOSTICS.log" \
             audit/ci-diagnostics/MAKE_TEST_DIAGNOSTICS.log
           cat "$diagnostics/MAKE_TEST_DIAGNOSTICS.log"
+          mkdir -p "${RUNNER_TEMP:-/tmp}/qikvrt-ci-final/preliminary"
+          cp "$diagnostics/MAKE_TEST_FULL.log" "$diagnostics/MAKE_TEST_DIAGNOSTICS.log" \
+            "${RUNNER_TEMP:-/tmp}/qikvrt-ci-final/preliminary/"
           exit "$status"
-      - name: Upload audit
+      - name: Upload preliminary diagnostics and explicitly historical audit
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: qikvrt-ci-audit
+          name: qikvrt-ci-preliminary-audit
           retention-days: 30
           path: |
             audit/**
@@ -82,16 +89,23 @@ jobs:
         id: fixpoint
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
+          QIKVRT_CONTRACT_EVIDENCE_DIR: ${{ runner.temp }}/qikvrt-ci-final/tests
           TARGET_REF: ${{ github.head_ref }}
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           MAX_SUCCESSORS: "4"
+          GH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN || github.token }}
         shell: bash
         run: |
           set -euo pipefail
 
+          mkdir -p "$RUNNER_TEMP/qikvrt-ci-final"
           subject="$(git rev-parse --verify HEAD^{commit})"
           test "$subject" = "$EXPECTED_HEAD"
 
+          python3 -B tools/qikvrt_pipeline_contracts.py observe-writer \
+            --output "$RUNNER_TEMP/qikvrt-ci-final/writer-input.json"
+          current_base="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["base"])' "$RUNNER_TEMP/qikvrt-ci-final/writer-input.json")"
           for iteration in $(seq 0 "$MAX_SUCCESSORS"); do
             subject="$(git rev-parse --verify HEAD^{commit})"
             tree="$(git rev-parse --verify HEAD^{tree})"
@@ -102,7 +116,7 @@ jobs:
             # Test the exact active subject. Integrity staleness is the only
             # expected pre-materialization failure and is repaired below.
             set +e
-            make test > ".qikvrt-fixpoint-test-$iteration.log" 2>&1
+            make test > "$RUNNER_TEMP/qikvrt-ci-final/fixpoint-test-$iteration.log" 2>&1
             test_status=$?
             set -e
 
@@ -112,7 +126,12 @@ jobs:
             # Re-run the complete gates against the regenerated state. Any
             # remaining failure is a real successor failure, not predecessor
             # evidence and must stop the writer fail-closed.
-            make test
+            set +e
+            make test > "$RUNNER_TEMP/qikvrt-ci-final/final-make.log" 2>&1
+            final_make_status=$?
+            set -e
+            cat "$RUNNER_TEMP/qikvrt-ci-final/final-make.log"
+            test "$final_make_status" -eq 0
             python3 tools/qikvrt_integrity.py verify
 
             git config user.name "github-actions[bot]"
@@ -120,6 +139,16 @@ jobs:
             git add REPOSITORY_FILE_MANIFEST.json REPOSITORY_FILE_MANIFEST.json.sha256 SHA256SUMS.txt
 
             if git diff --cached --quiet; then
+              # Tests may race another writer even when local bytes are unchanged.
+              remote_final="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
+              test "$remote_final" = "$subject"
+              test "$(git rev-parse --verify HEAD^{tree})" = "$tree"
+              git diff --quiet
+              if test "$subject" != "$EXPECTED_HEAD"; then
+                python3 -B tools/qikvrt_pipeline_contracts.py publish-writer \
+                  --input "$RUNNER_TEMP/qikvrt-ci-final/writer-input.json" \
+                  --output "$RUNNER_TEMP/qikvrt-ci-final/writer-postcondition.json"
+              fi
               echo "QIKVRT_FIXPOINT_REACHED iteration=$iteration head=$subject tree=$tree predecessor_test_status=$test_status"
               exit 0
             fi
@@ -131,7 +160,10 @@ jobs:
             git commit -m "ci: materialize exact-subject repository integrity"
             successor="$(git rev-parse --verify HEAD^{commit})"
             successor_tree="$(git rev-parse --verify HEAD^{tree})"
-            git push origin "HEAD:$TARGET_REF"
+            PREDECESSOR_HEAD="$subject" CURRENT_BASE="$current_base" \
+              CANDIDATE_HEAD="$successor" CANDIDATE_TREE="$successor_tree" \
+              python3 -B tools/qikvrt_pipeline_contracts.py push-readback \
+                --output "$RUNNER_TEMP/qikvrt-ci-final/branch-write-$iteration.json"
 
             remote_after="$(git ls-remote --heads origin "refs/heads/$TARGET_REF" | awk 'NR == 1 { print $1 }')"
             test "$remote_after" = "$successor"
@@ -150,6 +182,32 @@ jobs:
 
           echo "BLOCK successor fixpoint not reached within $MAX_SUCCESSORS mutations" >&2
           exit 2
+
+      - name: Bind final executed tests and current remote HEAD TREE
+        id: final_evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INITIAL_SUBJECT_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          SUBJECT_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          SUBJECT_REF: ${{ github.event_name == 'pull_request' && format('refs/heads/{0}', github.head_ref) || github.ref }}
+          FIXPOINT_REQUIRED: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+          FULL_TEST_OUTCOME: ${{ steps.full_test.outcome }}
+          FIXPOINT_OUTCOME: ${{ steps.fixpoint.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_pipeline_contracts.py ci-final \
+            --output "$RUNNER_TEMP/qikvrt-ci-final/FINAL_EVIDENCE.json"
+
+      - name: Preserve final exact-subject evidence after tests and readback
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-ci-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/qikvrt-ci-final/
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Enforce terminal tested-fixpoint disposition
         if: always()

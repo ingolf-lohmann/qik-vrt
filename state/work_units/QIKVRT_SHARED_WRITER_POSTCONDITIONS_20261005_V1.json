@@ -1,0 +1,1699 @@
+{
+  "schema": "qikvrt_shared_writer_postconditions_work_unit_v1",
+  "work_unit_id": "QIKVRT_SHARED_WRITER_POSTCONDITIONS_20261005_V1",
+  "state": "CANDIDATE_PENDING_EXACT_COMMITTED_TESTS_AND_NATIVE_GATES",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "fix/self-heal-pr-postcondition-20261004-93be182a",
+  "source_commit": "ca2678839c4170871d2624e21df614b295f55477",
+  "source_tree": "d411ea95cdb8b66d2f35f7b589ebbbb17c233766",
+  "observed_main": "86d7062f25f174039da0a5df8a856127553036f1",
+  "human_actor": {
+    "class": "HUMAN",
+    "name": "Ingolf Lohmann",
+    "contribution": "Authorize auditing all active same-repository self-heal/repair/materializer writers and share a resumable Branch Draft-PR Exact-Head verifier postcondition with failure regressions and unchanged native gates."
+  },
+  "artificial_cognitive_actor": {
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system": "Codex",
+    "model": "GPT-6",
+    "session_id": "775c449e9a62",
+    "identity_proof": "PLATFORM_LABEL_NOT_NATURAL_PERSON_OR_CRYPTOGRAPHIC_MODEL_PROOF"
+  },
+  "artificial_cognitive_contributions": [
+    "Inventory exact source and native workflow registrations",
+    "Extend existing pipeline helper and twelve existing writer carriers",
+    "Add controlled response-loss/denial/malformed/false-success tests and real Git transaction tests",
+    "Retain independent review, governance, source attribution and external-effect boundaries"
+  ],
+  "retention": "METADATA_ONLY",
+  "human_candidate_acceptance": "PENDING",
+  "production_defect": {
+    "repair_pr": 459,
+    "head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+    "class": "PARTIAL_BRANCH_PR_TRANSACTION_STRANDED_AFTER_BRANCH_WRITE",
+    "evidence_scope": "Native PR readback plus exact local source reproduction; existing checks are historical to their own heads."
+  },
+  "reuse": {
+    "helper": "tools/qikvrt_pipeline_contracts.py",
+    "verifier": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+    "same_schedulers_and_executors": true
+  },
+  "inventory": {
+    "registered_workflow_count": 185,
+    "read_workflow_count": 185,
+    "registration_is_current_source_or_execution_proof": false,
+    "registered_workflows": [
+      {
+        "id": 330777098,
+        "path": ".github/workflows/_materialize_authority_pr568_workflow_executor_mesh_port.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331345390,
+        "path": ".github/workflows/_materialize_authority_pr582_reflexive_watchdog_port.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331354231,
+        "path": ".github/workflows/_materialize_authority_pr582_reflexive_watchdog_port_v2.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331353571,
+        "path": ".github/workflows/_recover_authority_pr582_reflexive_watchdog_port.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 335822073,
+        "path": ".github/workflows/authority-exact-tree-materialize-4211d774.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321697440,
+        "path": ".github/workflows/issue-agent-autofinish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 321697441,
+        "path": ".github/workflows/issue-agent-backlog-resume.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 321697442,
+        "path": ".github/workflows/issue-autonomous-processing.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 359578420,
+        "path": ".github/workflows/pr381_integrity_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321697443,
+        "path": ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318401853,
+        "path": ".github/workflows/qikvrt_adaptive_runtime.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 365025928,
+        "path": ".github/workflows/qikvrt_admin_admit_pr1173_24c4a886.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 318843388,
+        "path": ".github/workflows/qikvrt_ai_handoff_integrity.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319798884,
+        "path": ".github/workflows/qikvrt_audio_request.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 331538760,
+        "path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 331065656,
+        "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 328194214,
+        "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 323573046,
+        "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 323572988,
+        "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 323572989,
+        "path": ".github/workflows/qikvrt_batch003_subject_172dd_public_probe.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318892377,
+        "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335842577,
+        "path": ".github/workflows/qikvrt_bootstrap_authority_041fb501.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 324183966,
+        "path": ".github/workflows/qikvrt_bootstrap_mirror_sync_944438bd.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 324237753,
+        "path": ".github/workflows/qikvrt_bootstrap_reciprocal_equality_pr278_pr163.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 328535593,
+        "path": ".github/workflows/qikvrt_bootstrap_self_healing_repository_collective_intelligence.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 324193686,
+        "path": ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 302512331,
+        "path": ".github/workflows/qikvrt_ci.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335843450,
+        "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318402256,
+        "path": ".github/workflows/qikvrt_collective_review.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 322451029,
+        "path": ".github/workflows/qikvrt_combined_batch_002_promotion_head.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 321789564,
+        "path": ".github/workflows/qikvrt_common_post_publication_tag.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323302195,
+        "path": ".github/workflows/qikvrt_construct_accepted_corrected_batch002_mirror_524fabd5_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323560463,
+        "path": ".github/workflows/qikvrt_construct_mirror_authority_7d87_from_afcd.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323537516,
+        "path": ".github/workflows/qikvrt_construct_mirror_candidate_pr240.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323571516,
+        "path": ".github/workflows/qikvrt_construct_mirror_candidate_pr249_current_main.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323550295,
+        "path": ".github/workflows/qikvrt_construct_mirror_pr249_candidate.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323559551,
+        "path": ".github/workflows/qikvrt_construct_mirror_pr249_clean.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323323396,
+        "path": ".github/workflows/qikvrt_construct_post_acceptance_status_mirror_191bee0e_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 329722909,
+        "path": ".github/workflows/qikvrt_corpus_closure_overlay.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329571860,
+        "path": ".github/workflows/qikvrt_corpus_status_temporal_precedence.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 349291730,
+        "path": ".github/workflows/qikvrt_cross_repository_mesh_review.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319801997,
+        "path": ".github/workflows/qikvrt_diagnose_common_repository_mesh_tag.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321910581,
+        "path": ".github/workflows/qikvrt_dispatch_manuscript_proof_c3931554_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 318423686,
+        "path": ".github/workflows/qikvrt_effect_ack_finalize.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335823202,
+        "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 321698756,
+        "path": ".github/workflows/qikvrt_equality_receipt_49850f_7ebe2b.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319173352,
+        "path": ".github/workflows/qikvrt_escape_stages_integrity.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 322435164,
+        "path": ".github/workflows/qikvrt_execute_authority_batch002_combined_sync.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331538762,
+        "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319312053,
+        "path": ".github/workflows/qikvrt_finalize_formalization_v2_publication_mirror.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 318071672,
+        "path": ".github/workflows/qikvrt_formalization_and_audio.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319492101,
+        "path": ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319173353,
+        "path": ".github/workflows/qikvrt_formalization_v2_inspect.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319173355,
+        "path": ".github/workflows/qikvrt_formalization_v2_inventory.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319173357,
+        "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319173359,
+        "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 321822263,
+        "path": ".github/workflows/qikvrt_global_completion.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 361275999,
+        "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 323383671,
+        "path": ".github/workflows/qikvrt_history_preserving_mirror_sync_pr225.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323328515,
+        "path": ".github/workflows/qikvrt_history_preserving_mirror_sync_v2.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319972764,
+        "path": ".github/workflows/qikvrt_import_audio_runtime_authority.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321692391,
+        "path": ".github/workflows/qikvrt_import_authority_tree_49850f649283.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321693417,
+        "path": ".github/workflows/qikvrt_import_authority_tree_49850f649283_v2.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321694281,
+        "path": ".github/workflows/qikvrt_import_authority_tree_49850f649283_v3.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319544298,
+        "path": ".github/workflows/qikvrt_import_dependency_authority.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319798167,
+        "path": ".github/workflows/qikvrt_import_final_repository_mesh.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319798525,
+        "path": ".github/workflows/qikvrt_import_final_repository_mesh_authority.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 373846273,
+        "path": ".github/workflows/qikvrt_live_authority_mirror_ab.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 318900449,
+        "path": ".github/workflows/qikvrt_live_status_watch.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329101285,
+        "path": ".github/workflows/qikvrt_mandelbrot_42_proof_reproduction.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318534794,
+        "path": ".github/workflows/qikvrt_manuscript_proof.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 323114304,
+        "path": ".github/workflows/qikvrt_materialize_mirror_authority_0ab86d6f_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331633514,
+        "path": ".github/workflows/qikvrt_materialize_node_liveness_test_git_maintenance_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 325626564,
+        "path": ".github/workflows/qikvrt_materialize_pr323_pr197_receipt_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326670473,
+        "path": ".github/workflows/qikvrt_materialize_pr356_pr204_receipt_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327562612,
+        "path": ".github/workflows/qikvrt_materialize_pr368_pr214_receipt_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327722157,
+        "path": ".github/workflows/qikvrt_materialize_pre_spacetime_zenodo_receipt_equality_mirror_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 328040798,
+        "path": ".github/workflows/qikvrt_materialize_r11_v2_mirror_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 324221722,
+        "path": ".github/workflows/qikvrt_materialize_reciprocal_receipt_pr278_pr163.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327914915,
+        "path": ".github/workflows/qikvrt_materialize_scoped_zenodo_effect_ack_equality_mirror_v1.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 329509746,
+        "path": ".github/workflows/qikvrt_measurement_derived_dimensions.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 334888930,
+        "path": ".github/workflows/qikvrt_measurement_independence_formalization.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 302512332,
+        "path": ".github/workflows/qikvrt_mesh_api.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 358938565,
+        "path": ".github/workflows/qikvrt_mesh_authority_edge.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 374698806,
+        "path": ".github/workflows/qikvrt_mesh_monitor_deploy.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326634766,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_bootstrap.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326639247,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_boundary_target_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326649844,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326650998,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_candidate_bytes_transport_v2.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326637622,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_carrier_boundary_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326632866,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_corpus_port_carrier.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326643867,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_corpus_port_v3.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326650270,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326651023,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair_v2.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326651549,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_final_executor_syntax_repair_v3.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326647626,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_final_target_executor.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 326643394,
+        "path": ".github/workflows/qikvrt_mirror_aphorism_port_target_executor.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319511842,
+        "path": ".github/workflows/qikvrt_mirror_charter_authority.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 367589133,
+        "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 309060864,
+        "path": ".github/workflows/qikvrt_node_release.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 335455599,
+        "path": ".github/workflows/qikvrt_observer_relative_retrocausality_zenodo_publish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 326720731,
+        "path": ".github/workflows/qikvrt_paired_anticipation_refresh_pr366_pr211.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327566826,
+        "path": ".github/workflows/qikvrt_paired_anticipation_refresh_pr368_pr214.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327576621,
+        "path": ".github/workflows/qikvrt_paired_anticipation_refresh_pr382_pr217.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 339516603,
+        "path": ".github/workflows/qikvrt_perfect_optimum_self_application.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321908794,
+        "path": ".github/workflows/qikvrt_persist_canonical_status_article_b47d_tree_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 368382768,
+        "path": ".github/workflows/qikvrt_personal_firefox_capability_boundary.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 319173362,
+        "path": ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 325452432,
+        "path": ".github/workflows/qikvrt_port_vrtcore_h3_from_authority_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 325590565,
+        "path": ".github/workflows/qikvrt_port_vrtcore_h56_from_authority_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327577648,
+        "path": ".github/workflows/qikvrt_post_pr382_pr217_anticipation_refresh.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319165984,
+        "path": ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329494262,
+        "path": ".github/workflows/qikvrt_pr516_qce_mirror_port_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 364955624,
+        "path": ".github/workflows/qikvrt_pr_closure_engine.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327850544,
+        "path": ".github/workflows/qikvrt_pre_spacetime_zenodo_scoped_effect_ack.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318876477,
+        "path": ".github/workflows/qikvrt_progress_protocol_integrity.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327904072,
+        "path": ".github/workflows/qikvrt_promote_mirror_pr228_after_materializer_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319173366,
+        "path": ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 327241619,
+        "path": ".github/workflows/qikvrt_publication_router.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329509744,
+        "path": ".github/workflows/qikvrt_qce_c_measurement_binding.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 328657111,
+        "path": ".github/workflows/qikvrt_qce_candidate.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329509745,
+        "path": ".github/workflows/qikvrt_qce_causal_axis_bridge.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329509748,
+        "path": ".github/workflows/qikvrt_qce_causal_axis_selection.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 328649513,
+        "path": ".github/workflows/qikvrt_qce_mirror_port_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 329509749,
+        "path": ".github/workflows/qikvrt_qce_now_serialization.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329509750,
+        "path": ".github/workflows/qikvrt_qce_null_calibration_ratio.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 364693260,
+        "path": ".github/workflows/qikvrt_qik_revision_integrity_persist.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 371086247,
+        "path": ".github/workflows/qikvrt_real_mesh.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 371086248,
+        "path": ".github/workflows/qikvrt_real_mesh_system_verification.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331615079,
+        "path": ".github/workflows/qikvrt_recover_pr309_exact_verifier_dispatch.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331627454,
+        "path": ".github/workflows/qikvrt_recover_pr313_exact_verifier_dispatch.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331355883,
+        "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 327901317,
+        "path": ".github/workflows/qikvrt_repair_mirror_pr228_materializer_timeout.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 328548295,
+        "path": ".github/workflows/qikvrt_repair_self_healing_repository_publication_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319799683,
+        "path": ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 368883149,
+        "path": ".github/workflows/qikvrt_repository_selftest.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 335843449,
+        "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335843456,
+        "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335844914,
+        "path": ".github/workflows/qikvrt_required_review_gate.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329585275,
+        "path": ".github/workflows/qikvrt_round_trip_final_byte_freeze.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 329641476,
+        "path": ".github/workflows/qikvrt_round_trip_prepublication_return.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 330264369,
+        "path": ".github/workflows/qikvrt_round_trip_zenodo_bundle_freeze.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335455601,
+        "path": ".github/workflows/qikvrt_round_trip_zenodo_publish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 362815781,
+        "path": ".github/workflows/qikvrt_roundtrip_publication.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331577287,
+        "path": ".github/workflows/qikvrt_seed_acceptance_probe_json_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323340447,
+        "path": ".github/workflows/qikvrt_seed_batch003_authority_objects.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 317040839,
+        "path": ".github/workflows/qikvrt_seed_dashboard_publish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 317040840,
+        "path": ".github/workflows/qikvrt_seed_mesh_audit_export.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 317040842,
+        "path": ".github/workflows/qikvrt_seed_mesh_maintenance.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 317040843,
+        "path": ".github/workflows/qikvrt_seed_node_revalidation.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 317040844,
+        "path": ".github/workflows/qikvrt_seed_registry_acceptance.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 328198966,
+        "path": ".github/workflows/qikvrt_slack_update.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 318487445,
+        "path": ".github/workflows/qikvrt_status_report_finalize.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318487447,
+        "path": ".github/workflows/qikvrt_status_report_reserve.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 324474465,
+        "path": ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 321819487,
+        "path": ".github/workflows/qikvrt_sync_authority_599866_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321907249,
+        "path": ".github/workflows/qikvrt_sync_canonical_status_article_b47d_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322256311,
+        "path": ".github/workflows/qikvrt_sync_canonical_zenodo_union_4892e744_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322259206,
+        "path": ".github/workflows/qikvrt_sync_canonical_zenodo_union_4892e744_v2_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322313669,
+        "path": ".github/workflows/qikvrt_sync_content_disposition_batch_001_98194f45_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322319054,
+        "path": ".github/workflows/qikvrt_sync_content_disposition_batch_001_98194f45_v2_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322441594,
+        "path": ".github/workflows/qikvrt_sync_content_disposition_batch_002_3ba298e0_v1_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321819739,
+        "path": ".github/workflows/qikvrt_sync_global_completion_599866_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 321830354,
+        "path": ".github/workflows/qikvrt_sync_global_finalization_b771_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322024094,
+        "path": ".github/workflows/qikvrt_sync_quantum_classical_runtime_article_3a186_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 322032620,
+        "path": ".github/workflows/qikvrt_sync_runtime_article_exact_tree_from_0698e_once.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331581152,
+        "path": ".github/workflows/qikvrt_targeted_json_repair.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 363249763,
+        "path": ".github/workflows/qikvrt_temdd.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 333450059,
+        "path": ".github/workflows/qikvrt_trusted_pr334_exact_dispatch.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 334888931,
+        "path": ".github/workflows/qikvrt_universal_ontology_formalization.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335455604,
+        "path": ".github/workflows/qikvrt_universal_ontology_shell_fallback.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 362192505,
+        "path": ".github/workflows/qikvrt_universales_universalprinzip_zenodo_publish.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 319801227,
+        "path": ".github/workflows/qikvrt_verify_common_repository_mesh_tag.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 327856196,
+        "path": ".github/workflows/qikvrt_verify_mirror_pre_spacetime_zenodo_effect_ack_098ef9f.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 323580016,
+        "path": ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 335455605,
+        "path": ".github/workflows/qikvrt_vrtcore_h3_e1_recovery.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 320466225,
+        "path": ".github/workflows/qikvrt_wirkungsquadrat_bootstrap.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 331065657,
+        "path": ".github/workflows/qikvrt_workflow_executor.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 330955100,
+        "path": ".github/workflows/qikvrt_workflow_executor_watchdog.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 318423687,
+        "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
+        "state": "active",
+        "present_on_main": true,
+        "present_on_candidate_source": true
+      },
+      {
+        "id": 365514203,
+        "path": ".github/workflows/qikvrt_zenodo_successor_closure_guard.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 365514187,
+        "path": ".github/workflows/qikvrt_zenodo_successor_publish.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 325253611,
+        "path": ".github/workflows/temporary-anticipation-materialize-pr307-pr179.yml",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 355164152,
+        "path": "dynamic/copilot-swe-agent/copilot",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      },
+      {
+        "id": 318423737,
+        "path": "dynamic/dependabot/dependabot-updates",
+        "state": "active",
+        "present_on_main": false,
+        "present_on_candidate_source": false
+      }
+    ],
+    "internal_writer_paths": [
+      ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      ".github/workflows/qikvrt_ci.yml",
+      ".github/workflows/qikvrt_batch04_integrity.yml",
+      ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      ".github/workflows/qikvrt_versioned_corrected_candidates.yml",
+      ".github/workflows/qikvrt_global_completion.yml",
+      ".github/workflows/qikvrt_pr18_integrity_repair.yml",
+      ".github/workflows/qikvrt_proof_persistence_integrity.yml",
+      ".github/workflows/qikvrt_escape_stages_integrity.yml",
+      ".github/workflows/qikvrt_physics_bridge_integrity.yml",
+      ".github/workflows/issue-autonomous-processing.yml"
+    ],
+    "other_write_carriers": [
+      {
+        "path": ".github/workflows/qikvrt_canonical_temporal_memory_zenodo_publish.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "a32ce95f4e6b252fb59399e547b1a476ddca037dae46b76731c3199c98200ffb",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_status_report_finalize.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "251e35883e738e64c0e67a0059552ddf7b84ba8d90ae82b48e5128806521d82c",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/issue-agent-autofinish.yml",
+        "disposition": "CROSS_REPOSITORY_SYNCHRONIZATION_OR_TAG_EFFECT",
+        "source_sha256": "1ba356b7b8980d45504639b5972c4ecf06e512c2046e006df86cdc5d26d56681",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_v2_zenodo.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "00edd543538167fcce4ecf8a69a9485ee16c409380a299bad91c7d8e21c0981f",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_status_report_reserve.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "66a45717a4bf25ef0d8040af34a3670190060c3b926d34c5c9dd451701d78fb4",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_round_trip_zenodo_publish.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "adeeee0612d8f426d1b36e04f50259d15d60ac46cc9156a657a6edd5ad9cf6f2",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_effect_ack_finalize.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "fc2bc054cafef169ef6b4d9dfcb26f7dd6eb67528c8ba6f36cd62b42dfb02f90",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/publish_ontology_difference_article_zenodo_v3.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "5c953258a22ad855499765be43441ce192d72999505a0ae20ad19cce77f1e435",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_v2_alpha3_publish.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "13632ff4c53f5065bea3e79b83a6f4e26f31740a85fdf4ccb80f7baf6a9ba432",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_formalization_v2_zenodo_finalize.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "968a2f12bd0c0dd9d1adc7e04fd2080c31667f1cc2285e6aa82cc7c110c72cd8",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+        "disposition": "NODE_LIVENESS_LEASE_WRITER_NOT_REPAIR_CANDIDATE",
+        "source_sha256": "30d36246a05ee6463228a6ab3117602558c2b6d4daecdbc0962af457ff2771d5",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_zenodo_reserve.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "69248103773de20a670ee980678748bbf2fe17d2c2c3dcc0bdaeb85985d93a91",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_repository_mesh_sync_tag.yml",
+        "disposition": "CROSS_REPOSITORY_SYNCHRONIZATION_OR_TAG_EFFECT",
+        "source_sha256": "84c34a4ec0984079a31d130ade9aaf119fc8bbd43dd3745196d41bc1070ffeda",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": ".github/workflows/qikvrt_survival_connectability_zenodo_publish.yml",
+        "disposition": "SEPARATELY_AUTHORIZED_PUBLICATION_OR_EXTERNAL_EFFECT_PERSISTENCE",
+        "source_sha256": "4c245ea026df631105c6eec83868c68a597d539acaf70ee8a5a4753b8b762bd5",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": "tools/qikvrt_cicd_publish.py",
+        "disposition": "SEPARATELY_AUTHORIZED_RELEASE_ARCHIVE_OR_PUBLICATION_EFFECT",
+        "source_sha256": "6ff10abda9af7f8f2fcd50464e03637bdc84eaf1d2148be599203e713b41dfe9",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": "tools/qikvrt_vrtcore_h3_e1_recovery.py",
+        "disposition": "SEPARATELY_AUTHORIZED_RELEASE_ARCHIVE_OR_PUBLICATION_EFFECT",
+        "source_sha256": "420de328bcb5ab63586ccc1dfa12c34726d0d668638a271f5f44daa8edab1201",
+        "must_remain_byte_identical": true
+      },
+      {
+        "path": "tools/qikvrt_zenodo_publish.py",
+        "disposition": "SEPARATELY_AUTHORIZED_RELEASE_ARCHIVE_OR_PUBLICATION_EFFECT",
+        "source_sha256": "1a914cf04d97ef646a19324a86bfb377355fc5a93f4e7eabe1e600ef93b6e707",
+        "must_remain_byte_identical": true
+      }
+    ],
+    "queued_runs_at_observation": [
+      {
+        "id": 37009764118,
+        "name": "QIKVRT reflexive repository watchdog",
+        "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+        "event": "workflow_run",
+        "head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+        "branch": "main",
+        "status": "queued"
+      },
+      {
+        "id": 37009756390,
+        "name": "QIK-VRT expected-head promotion executor",
+        "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+        "event": "workflow_run",
+        "head": "ba3509a49d2e1b99af325b9cd77aab65a2975497",
+        "branch": "main",
+        "status": "queued"
+      },
+      {
+        "id": 34749586778,
+        "name": "QIKVRT reflexive repository watchdog",
+        "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+        "event": "workflow_run",
+        "head": "25c4df4caf063d0545621f9958941c3cd0dfd5fa",
+        "branch": "main",
+        "status": "queued"
+      },
+      {
+        "id": 34749525156,
+        "name": "QIKVRT reflexive repository watchdog",
+        "path": ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+        "event": "workflow_run",
+        "head": "25c4df4caf063d0545621f9958941c3cd0dfd5fa",
+        "branch": "main",
+        "status": "queued"
+      },
+      {
+        "id": 31117823273,
+        "name": "QIKVRT repository evidence materialization",
+        "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+        "event": "pull_request",
+        "head": "e1941ce7760902c24651acd23217148cb56ff63e",
+        "branch": "automation/pr245-exact-head-verification-e1941ce7-v1",
+        "status": "queued"
+      },
+      {
+        "id": 31117823806,
+        "name": "QIKVRT Collective Proposal Review",
+        "path": ".github/workflows/qikvrt_collective_review.yml",
+        "event": "pull_request",
+        "head": "e1941ce7760902c24651acd23217148cb56ff63e",
+        "branch": "automation/pr245-exact-head-verification-e1941ce7-v1",
+        "status": "queued"
+      }
+    ],
+    "in_progress_count": 0,
+    "waiting_count": 0,
+    "historical_registration_without_current_source": "HISTORICAL_REGISTRATION_NOT_CURRENT_DEFAULT_BRANCH_EXECUTOR; no source resurrection, dispatch or historical rewrite"
+  },
+  "verification": {
+    "commands": [
+      "make pipeline-contract-test",
+      "make test",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "git diff --check"
+    ],
+    "receipt_location": "NATIVE_EXACT_HEAD_RUN_LOGS_AND_FINAL_EVIDENCE_ARTIFACTS",
+    "committed_subject": "RESOLVE_FROM_CONTAINING_COMMIT_NOT_SELF_REFERENTIAL_HASH",
+    "native_ci": "PENDING_FRESH_READBACK"
+  },
+  "limitations": [
+    "GitHub metadata writes are not atomic compare-and-swap",
+    "No exactly-once claim against arbitrary concurrent external writers or unbounded API visibility delays",
+    "Native Main activation requires enforced governance and independent review"
+  ],
+  "external_effects": {
+    "candidate_branch_and_draft_pr": "AUTHORIZED_REVIEW_CANDIDATE_ONLY",
+    "main_promoted": false,
+    "review_approved": false,
+    "external_system_mutation": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "PREDECESSOR_EVIDENCE_TRANSFER": false
+  },
+  "created_at": "2026-10-05T09:02:14.561749+00:00",
+  "operational_writer_successor": {
+    "path": ".github/workflows/qikvrt_global_completion.yml",
+    "source_commit": "ca2678839c4170871d2624e21df614b295f55477",
+    "historical_source_commit": "410dbaba6098074f05e2a5b4da7ca94d7edb90a3",
+    "predecessor_sha256": "2be1dd6a405364e6015eab05583dd4cca650cb10f63b319a3fe98a93d778dfd4",
+    "predecessor_git_blob_sha1": "a8a03ba7ac496a51fb17004a5103103a1e78ac34",
+    "successor_sha256": "fc6e776216b46446c2fa65289e40bd35fc0957d7004caeaef722e39712225263",
+    "reason": "Explicitly authorized forward repair of the active same-repository materializer; original Authority reference classifications and all source bindings remain unchanged. The existing verification job, schedule, concurrency and historical Goldkelch tag scope remain identical.",
+    "preservation_rule": "The old classified workflow bytes resolve through the retained source commit. Exactly this operational path may have the bound successor bytes; the mandatory regression compares the unchanged verification job and triggers and rejects an unbound path, digest, liveness claim or changed scheduler/verifier.",
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "current_authority_liveness_proof": false
+  },
+  "issue_writer_integrity_successor": {
+    "state": "CANDIDATE_IMPLEMENTED_PENDING_FRESH_COMMITTED_TESTS_AND_NATIVE_ACTIVATION",
+    "human_actor": "Ingolf Lohmann",
+    "human_authorization": "Ja, dann wissen wir ja, wo unter anderem eine Differenz zu finden und zu schließen ist, Freigabe erteilt.",
+    "implementation_actor": "Codex / OpenAI artificial cognitive system",
+    "repair_pr": 455,
+    "candidate_predecessor_head": "9ecedf844db854fca23ecde3acdf797fab7e9e14",
+    "candidate_predecessor_tree": "7c128b4ce9b5291c3c87a097eca65642c1b91a34",
+    "observed_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
+    "observed_main_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+    "affected_issue_pr": 467,
+    "affected_issue_head": "6619d3ae99c72a3118276520db95ec98a3249c6f",
+    "affected_issue_tree": "eb1ad5b8403e36658181a90f6d9da5c629edbce8",
+    "observed_failure": "Active Main stages only the issue evidence directory and force-replaces its branch. PR #455 already preserves branch history, but still omits the canonical integrity trio. A later writer therefore regenerates an integrity-invalid commit and can supersede a manually repaired tree.",
+    "reuse": "Extend the existing issue writer, canonical integrity generator/verifier, shared postcondition reporter, existing issue tests and required contract runner. No new scheduler, executor, repair PR or governance bypass.",
+    "change": [
+      "Resolve raw issue API input in RUNNER_TEMP, outside repository integrity inputs",
+      "Carry the existing trusted-Main shared reporter across checkout of an older issue branch",
+      "Generate and verify the canonical integrity trio before any commit or remote postcondition effect",
+      "Stage the issue bundle and all three integrity authorities together",
+      "Reject unstaged or untracked integrity inputs rather than committing a worktree-only verification result",
+      "Retain non-force history-preserving shared writer postconditions"
+    ],
+    "acceptance_requirement": "ISSUE_WRITER_COMMITTED_INTEGRITY in state/autonomy/PIPELINE_CONTRACT_TESTS_V1.json",
+    "current_main_integration": {
+      "tested_issue_repair_commit": "4ff3b6a27a9c783d1c5dd4f22acb1da71544d848",
+      "main_parent": "71f8c15319bf79456ac177d80941b4f59d372996",
+      "method": "Preserve both ordered parents, import existing Main changes, and regenerate the canonical integrity trio for the combined tree",
+      "conflicts": "Only the three generated integrity authorities conflicted; no hand-authored Main or candidate source conflict",
+      "main_changes_are_existing_evidence_not_new_effects": true,
+      "fresh_combined_subject_tests_required": true,
+      "lifecycle_projection_successor": {
+        "source_main_head": "71f8c15319bf79456ac177d80941b4f59d372996",
+        "source_main_tree": "bdbf5c1b659a9cb0155ebf56dbd6ae4acfc27d45",
+        "predecessor_main_head": "86d7062f25f174039da0a5df8a856127553036f1",
+        "main_projection_bindings": [
+          {
+            "path": "evidence/node_health/37325712969-1.json",
+            "bytes": 241,
+            "sha256": "232183086aa6f1afce00946a53e0a80081fbaee4f24cbe743ea5d2aa81597edc",
+            "git_blob_sha1": "a3ac1152770b7e580062d48d67a6030412a3ebca"
+          },
+          {
+            "path": "evidence/node_health/37391781257-1.json",
+            "bytes": 241,
+            "sha256": "a71f36ada66503c485b9e563ab512468623f5f2f0b47b4d22354c0ec4614ee2e",
+            "git_blob_sha1": "5385b1aee5d3b5804b68817160c3e26ca4fc3de0"
+          },
+          {
+            "path": "evidence/node_health/37422938516-1.json",
+            "bytes": 241,
+            "sha256": "383b76789e8296664a8aa87bffaeb672e5044dedba4a0ae54536013826348ac0",
+            "git_blob_sha1": "1a2a538ed5b9a45ade40567fcc40c961d1b3b635"
+          },
+          {
+            "path": "evidence/node_health/37510511694-1.json",
+            "bytes": 241,
+            "sha256": "afdddf385c000ce39e2f330ee96e01d31c1a1c832734c8ceb07fda5bd63d04f0",
+            "git_blob_sha1": "795cbaf12c5252d54edc0bec275cf4687ebe6c11"
+          },
+          {
+            "path": "evidence/node_health/LATEST.json",
+            "bytes": 241,
+            "sha256": "afdddf385c000ce39e2f330ee96e01d31c1a1c832734c8ceb07fda5bd63d04f0",
+            "git_blob_sha1": "795cbaf12c5252d54edc0bec275cf4687ebe6c11"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37325712969-1.json",
+            "bytes": 262,
+            "sha256": "101f9fbaded98fec7e2a6a843b53f73e6e0bce09101b2d17b14ac761076c9502",
+            "git_blob_sha1": "04254af28c7e63ceea4989016ca34d0c1682a9d1"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37391781257-1.json",
+            "bytes": 262,
+            "sha256": "4a35c54033bb2ce8609f4a24971a0b0481ea375927faf66f4fbebc419d8a14de",
+            "git_blob_sha1": "36709cf8626ddfe881692c8ff71376c2381bc64c"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37422938516-1.json",
+            "bytes": 262,
+            "sha256": "94631147e90dfdfc33090a0829f08355041c2d37707edaa0898989479a612278",
+            "git_blob_sha1": "7dbde8dbbfc4c6f216c46876881124cc9d7f8ff0"
+          },
+          {
+            "path": "evidence/node_registration_renewal/37510511694-1.json",
+            "bytes": 262,
+            "sha256": "c1d6e2083eec4c2122b0c0a2705a65c33294b0c9458639e9c2875303a5dc35f0",
+            "git_blob_sha1": "c82daccbf4c228421ef2b1b8abf3282c8b89e1cc"
+          },
+          {
+            "path": "evidence/node_registration_renewal/LATEST.json",
+            "bytes": 262,
+            "sha256": "c1d6e2083eec4c2122b0c0a2705a65c33294b0c9458639e9c2875303a5dc35f0",
+            "git_blob_sha1": "c82daccbf4c228421ef2b1b8abf3282c8b89e1cc"
+          },
+          {
+            "path": "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+            "bytes": 563,
+            "sha256": "b76a09a752174147f780e46cd96e50336ddb92b2ec987994b3ec2ea92edc762d",
+            "git_blob_sha1": "3f0c97d0947339b9e320d2f6d0722ae21c308710"
+          },
+          {
+            "path": "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json",
+            "bytes": 542,
+            "sha256": "7a1a67aa3dc17c991b40c298927ea80ce592475b8218d782d09a8555f4022b41",
+            "git_blob_sha1": "dd11ab3943b03a8b759ef026f0b563105527f24e"
+          }
+        ],
+        "current_authority_liveness_proof": false,
+        "PREDECESSOR_EVIDENCE_TRANSFER": false
+      },
+      "PREDECESSOR_EVIDENCE_TRANSFER": false
+    },
+    "tests": "Production shell, canonical integrity tool, real temporary Git and bare remotes: legacy omission reproduction, exact committed readback, successive/manual history preservation, unsafe generation, post-generation corruption, omitted staged inputs, transport-input isolation and older-branch reporter binding.",
+    "activation_boundary": "Fresh exact-commit tests and native checks are required. This candidate is not active Main; governance, independent native review and actual issue executor effects remain distinct obligations.",
+    "request_execution_scope": "Review candidate update only; no inference-capability fix, Main promotion, forced branch reset, duplicate dispatch, rerun, deployment or publication.",
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false
+  },
+  "trusted_main_verifier_protocol_gap": {
+    "observed_main": "86d7062f25f174039da0a5df8a856127553036f1",
+    "source_blob": "99056f8a4cec9a7fce688e95379b5c6c38df65b0",
+    "source_path": ".github/workflows/qikvrt_autonomous_exact_head_verify.yml",
+    "diagnostic_candidate": "fdc97668e812efad469a227867a99cd6b3cdc45a",
+    "legacy_dispatch_runs": [
+      37290053392,
+      37290162174
+    ],
+    "native_display_title": "qikvrt_autonomous_exact_head_verify",
+    "classification": "LEGACY_RUNS_NOT_ADMITTED_AS_EXACT_SUBJECT_SUCCESS_OR_EXACT_RESUME_IDENTITY",
+    "repair": "Read the trusted-Main carrier and its Git blob before dispatch; HOLD before write until exact run-title binding and, when needed, staging base-ref support are present.",
+    "first_blocker": "TRUSTED_MAIN_VERIFIER_PROTOCOL_UNAVAILABLE",
+    "resume_after": "Independently reviewed Main activation through the existing native gates; no further ChatGPT approval, candidate self-promotion or new executor.",
+    "PREDECESSOR_EVIDENCE_TRANSFER": false,
+    "EFFECT_ACK_DONE": false
+  }
+}

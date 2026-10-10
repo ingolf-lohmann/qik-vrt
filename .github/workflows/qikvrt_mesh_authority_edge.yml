@@ -8,7 +8,7 @@ on:
       repository:
         description: Exact target repository
         required: true
-        default: Goldkelch/qik-vrt
+        default: ingolf-lohmann/qik-vrt
       run_id:
         description: Exact ACTION_REQUIRED workflow run id
         required: true
@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$TARGET_REPOSITORY" = "Goldkelch/qik-vrt"
+          test "$TARGET_REPOSITORY" = "ingolf-lohmann/qik-vrt"
           test "$EXPECTED_HEAD" != ""
           test "$TARGET_RUN_ID" != ""
           test "$ADMIN_TOKEN" != ""

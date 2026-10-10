@@ -24,8 +24,8 @@ jobs:
   finish:
     runs-on: ubuntu-latest
     env:
-      AUTHORITY_REPOSITORY: Goldkelch/qik-vrt
-      MIRROR_REPOSITORY: ingolf-lohmann/qik-vrt
+      AUTHORITY_REPOSITORY: ingolf-lohmann/qik-vrt
+      MIRROR_REPOSITORY: ''
       MESH_TOKEN: ${{ secrets.QIKVRT_MESH_TOKEN }}
       REQUESTED_ISSUE: ${{ inputs.issue_number }}
       GH_TOKEN: ${{ github.token }}
@@ -33,6 +33,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Bind the new Mirror before any transaction effect
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_workflow_executor.py mirror-bootstrap-status --require-ready --json
+          mirror="$(python3 -c 'import json; print(json.load(open("state/autonomy/NEW_MIRROR_BOOTSTRAP_CONTRACT_V1.json"))["target"]["repository"])')"
+          test "$mirror" != "$AUTHORITY_REPOSITORY"
+          printf 'MIRROR_REPOSITORY=%s\n' "$mirror" >> "$GITHUB_ENV"
 
       - name: Resume all eligible issue-agent transactions
         shell: bash
@@ -60,8 +69,14 @@ jobs:
                 continue
               fi
               checks="$(gh pr view "$authority_pr" --repo "$AUTHORITY_REPOSITORY" --json statusCheckRollup)"
+              check_count="$(printf '%s' "$checks" | jq '[.statusCheckRollup[]?] | length')"
+              successful="$(printf '%s' "$checks" | jq '[.statusCheckRollup[]? | select(.conclusion == "SUCCESS")] | length')"
               failed="$(printf '%s' "$checks" | jq '[.statusCheckRollup[]? | select((.conclusion // "") != "" and (.conclusion != "SUCCESS" and .conclusion != "NEUTRAL" and .conclusion != "SKIPPED"))] | length')"
               pending="$(printf '%s' "$checks" | jq '[.statusCheckRollup[]? | select((.status // "") != "COMPLETED")] | length')"
+              if [ "$check_count" -eq 0 ] || [ "$successful" -eq 0 ]; then
+                gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: **BLOCK**. Authority checks are empty or contain no successful check; no merge was performed."
+                continue
+              fi
               if [ "$failed" -gt 0 ]; then
                 gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: **BLOCK**. At least one authority check failed."
                 continue
@@ -88,7 +103,7 @@ jobs:
 
             mirror_pr="$(GH_TOKEN="$MESH_TOKEN" gh pr list --repo "$MIRROR_REPOSITORY" --state all --head "$sync_branch" --limit 1 --json number --jq '.[0].number // empty')"
             if [ -z "$mirror_pr" ]; then
-              GH_TOKEN="$MESH_TOKEN" gh pr create --repo "$MIRROR_REPOSITORY" --base main --head "$sync_branch" --title "Synchronize completed issue #$issue" --body "Byte-content synchronization from authority after autonomous completion of Goldkelch/qik-vrt#$issue."
+              GH_TOKEN="$MESH_TOKEN" gh pr create --repo "$MIRROR_REPOSITORY" --base main --head "$sync_branch" --title "Synchronize completed issue #$issue" --body "Byte-content synchronization from authority after autonomous completion of ingolf-lohmann/qik-vrt#$issue."
               mirror_pr="$(GH_TOKEN="$MESH_TOKEN" gh pr list --repo "$MIRROR_REPOSITORY" --state open --head "$sync_branch" --limit 1 --json number --jq '.[0].number')"
             fi
 
@@ -96,8 +111,14 @@ jobs:
             mirror_merged="$(GH_TOKEN="$MESH_TOKEN" gh pr view "$mirror_pr" --repo "$MIRROR_REPOSITORY" --json mergedAt --jq '.mergedAt // empty')"
             if [ "$mirror_state" = "OPEN" ]; then
               mirror_checks="$(GH_TOKEN="$MESH_TOKEN" gh pr view "$mirror_pr" --repo "$MIRROR_REPOSITORY" --json statusCheckRollup)"
+              mirror_check_count="$(printf '%s' "$mirror_checks" | jq '[.statusCheckRollup[]?] | length')"
+              mirror_successful="$(printf '%s' "$mirror_checks" | jq '[.statusCheckRollup[]? | select(.conclusion == "SUCCESS")] | length')"
               mirror_failed="$(printf '%s' "$mirror_checks" | jq '[.statusCheckRollup[]? | select((.conclusion // "") != "" and (.conclusion != "SUCCESS" and .conclusion != "NEUTRAL" and .conclusion != "SKIPPED"))] | length')"
               mirror_pending="$(printf '%s' "$mirror_checks" | jq '[.statusCheckRollup[]? | select((.status // "") != "COMPLETED")] | length')"
+              if [ "$mirror_check_count" -eq 0 ] || [ "$mirror_successful" -eq 0 ]; then
+                gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: mirror synchronization PR #$mirror_pr is **BLOCKED** because checks are empty or contain no successful check."
+                continue
+              fi
               if [ "$mirror_failed" -gt 0 ]; then
                 gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: mirror synchronization PR #$mirror_pr is **BLOCKED** by failed checks."
                 continue
@@ -112,6 +133,11 @@ jobs:
             mirror_sha="$(GH_TOKEN="$MESH_TOKEN" gh api "repos/$MIRROR_REPOSITORY/commits/main" --jq '.sha')"
             gh api --method POST "repos/$AUTHORITY_REPOSITORY/git/refs" -f ref="refs/tags/$tag" -f sha="$authority_sha" 2>/dev/null || test "$(gh api "repos/$AUTHORITY_REPOSITORY/git/ref/tags/$tag" --jq '.object.sha')" = "$authority_sha"
             GH_TOKEN="$MESH_TOKEN" gh api --method POST "repos/$MIRROR_REPOSITORY/git/refs" -f ref="refs/tags/$tag" -f sha="$mirror_sha" 2>/dev/null || test "$(GH_TOKEN="$MESH_TOKEN" gh api "repos/$MIRROR_REPOSITORY/git/ref/tags/$tag" --jq '.object.sha')" = "$mirror_sha"
-            gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: **EFFECT_ACK_DONE**\n\n- authority PR #$authority_pr merged\n- mirror PR #$mirror_pr merged\n- common tag \`$tag\` created in both repositories\n- issue closed automatically"
             gh issue close "$issue" --repo "$AUTHORITY_REPOSITORY" --reason completed
+            issue_state="$(gh issue view "$issue" --repo "$AUTHORITY_REPOSITORY" --json state --jq '.state')"
+            if [ "$issue_state" != "CLOSED" ]; then
+              gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: **BLOCK**. The issue close operation was not read back as CLOSED; EFFECT_ACK_DONE was not emitted."
+              continue
+            fi
+            gh issue comment "$issue" --repo "$AUTHORITY_REPOSITORY" --body "Repository auto-finish: **EFFECT_ACK_DONE**\n\n- authority PR #$authority_pr merged\n- mirror PR #$mirror_pr merged\n- common tag \`$tag\` created in both repositories\n- issue closed automatically"
           done
