@@ -1,0 +1,112 @@
+{
+  "schema": "qikvrt_ietf_render_validation_v1",
+  "state": "RENDER_VERIFIED_ZERO_WARNINGS_AUTHOR_REVIEW_REQUIRED",
+  "observed_utc": "2026-10-05T15:17:02.054937+00:00",
+  "source_date": "2026-10-05",
+  "renderer_date": "2026-10-05",
+  "source_xml": {
+    "path": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+    "bytes": 13386,
+    "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866"
+  },
+  "source_xml_byte_identical": false,
+  "frozen_source_preserved": true,
+  "declared_derivation_verified": true,
+  "toolchain": {
+    "xml2rfc": "3.34.0",
+    "python_observed": "3.12.14",
+    "python_historical_lock": "3.12.13",
+    "historical_python_patch_reproduced": false,
+    "python_patch_boundary": "Local reproducibility is verified on the recorded interpreter. The frozen full-runtime patch pin is not promoted to reproduced when different.",
+    "packages": {
+      "certifi": "2026.7.22",
+      "charset-normalizer": "3.4.9",
+      "configargparse": "1.7.5",
+      "google-i18n-address": "3.1.1",
+      "idna": "3.18",
+      "intervaltree": "3.2.1",
+      "jinja2": "3.1.6",
+      "lxml": "6.1.1",
+      "markupsafe": "3.0.3",
+      "natsort": "8.4.0",
+      "platformdirs": "4.11.0",
+      "pycountry": "26.2.16",
+      "pypdf": "6.15.0",
+      "pyyaml": "6.0.3",
+      "requests": "2.34.2",
+      "sortedcontainers": "2.4.0",
+      "urllib3": "2.7.0",
+      "wcwidth": "0.8.2",
+      "xml2rfc": "3.34.0"
+    },
+    "requirements": {
+      "path": "requirements-xml2rfc-3.34.0.txt",
+      "bytes": 3075,
+      "sha256": "cd8473b443cc337670f0eec920913f2cabe07d38d497eaff2d140319b393b565"
+    },
+    "requirements_hash_locked_install": true,
+    "network_access_during_render": false,
+    "configuration_files_skipped": true,
+    "isolated_caches_per_run_and_mode": true
+  },
+  "bibliography_inputs": [
+    {
+      "path": "bibxml/reference.RFC.2119.xml",
+      "bytes": 910,
+      "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+      "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111",
+      "source_url": "https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml",
+      "acquisition": "read-only HTTP GET for initial reference resolution; all acceptance renders offline"
+    },
+    {
+      "path": "bibxml/reference.RFC.8174.xml",
+      "bytes": 751,
+      "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+      "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b",
+      "source_url": "https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml",
+      "acquisition": "read-only HTTP GET for initial reference resolution; all acceptance renders offline"
+    }
+  ],
+  "validation": {
+    "rfcxml_v3_schema_and_preptool": "SUCCESS_BY_XML2RFC",
+    "txt": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "bytes": 15309,
+      "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+      "repeat_render_byte_identical": true
+    },
+    "html": {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "bytes": 56690,
+      "sha256": "3a7ad5bc02ecb299ccbe8c00212be8424f478fa074ee6063ce68fdb0dac455d8",
+      "repeat_render_byte_identical": true
+    },
+    "diagnostics": {
+      "text": {
+        "warnings": [],
+        "warning_count": 0,
+        "errors": 0
+      },
+      "html": {
+        "warnings": [],
+        "warning_count": 0,
+        "errors": 0
+      }
+    },
+    "expected_warning_ids": [],
+    "txt_max_line_width": 72,
+    "txt_page_count": 7,
+    "html_parse": "PASS",
+    "seven_statuses_present_in_both_outputs": true,
+    "prepped_xml_digest_claimed": false,
+    "semantic_profile_validation_or_interoperability_claimed": false
+  },
+  "warning_disposition": "Explicit normative RFC xrefs remove both unused-reference causes. No diagnostics are suppressed; zero warnings and errors are required.",
+  "submission_performed": false,
+  "upload_authorization_consumed": false,
+  "reused_version_identity_parser_primitives": {
+    "path": "tools/materialize_ietf_current_synthesis_candidate.py",
+    "bytes": 15232,
+    "sha256": "0dcd04029ffa096ad1c4fbf9f7730e4d800e94a8b8be8463181e892f028f5cc0"
+  }
+}

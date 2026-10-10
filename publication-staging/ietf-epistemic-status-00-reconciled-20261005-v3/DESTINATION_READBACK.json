@@ -1,0 +1,27 @@
+{
+  "schema": "qikvrt_ietf_destination_readback_v1",
+  "observed_utc": "2026-10-05T15:24:32.573332+00:00",
+  "destination": "https://datatracker.ietf.org/submit/",
+  "submit_form_observed": true,
+  "signed_in_signal_observed": false,
+  "authenticated_principal_established": false,
+  "account_login_route_observed": "https://datatracker.ietf.org/accounts/login/?next=/submit/",
+  "login_state": "CLOUDFLARE_SECURITY_CHECK_PERSISTS_AFTER_ONE_RELOAD",
+  "visible_security_check": "Diese Website nutzt einen Sicherheitsservice, um sich vor böswilligen Bots zu schützen.",
+  "authentication_attempt_count": 0,
+  "credential_values_accessed": false,
+  "credential_registry_update_triggered": false,
+  "publication_mutation_count": 0,
+  "datatracker_submission_performed": false,
+  "submission_identifier": null,
+  "submitted": false,
+  "published": false,
+  "terms_notice_observed": "By submitting your I-D, you are granting some rights to the IETF Trust.",
+  "terms_sources": [
+    "https://www.ietf.org/about/note-well/",
+    "https://www.rfc-editor.org/rfc/rfc5378.html"
+  ],
+  "terms_accepted": false,
+  "exact_author_decision": "ABSENT",
+  "next_action": "Return the exact review candidate. Resume authenticated submission only after candidate-specific author acceptance and an admitted authorized destination route."
+}

@@ -66,6 +66,12 @@ owner-reminders-test:
 
 test: owner-reminders-test
 
+.PHONY: ietf-epistemic-main-successor-test
+ietf-epistemic-main-successor-test:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B external/ietf/epistemic-status-00-main-successor-20261006-v1/verify_successor.py --negative-controls
+
+test: ietf-epistemic-main-successor-test
+
 repository-terminal-test:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_qikvrt_repository_terminal
 

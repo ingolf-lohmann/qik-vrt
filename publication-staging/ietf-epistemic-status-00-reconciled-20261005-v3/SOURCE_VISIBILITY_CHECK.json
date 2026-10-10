@@ -1,0 +1,18 @@
+{
+  "schema": "QIKVRT_VISIBLE_SOURCES_CHECK_V1",
+  "status": "PASS",
+  "source_count": 3,
+  "manifest_sha256": "922eab47aae5e58863143c43b8c98b0a7793a4e059b7de9cd89c47927f649156",
+  "network_reachability_checked": false,
+  "claim_support_checked_automatically": false,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+      "pages": null,
+      "status": "PASS",
+      "errors": []
+    }
+  ]
+}

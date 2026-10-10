@@ -1,0 +1,454 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "json_non_source",
+    "boundary": "Receipt metadata only. Archived IETF document bytes retain their existing IETF Trust notices; no relicensing of third-party material is implied."
+  },
+  "schema": "qikvrt_ietf_datatracker_publication_receipt_v1",
+  "receipt_kind": "POST_EFFECT",
+  "receipt_id": "PR452-IETF169906-POST-EFFECT-20261006-V1",
+  "public_state": "POSTED_INDIVIDUAL_INTERNET_DRAFT",
+  "state": "POST_EFFECT_PUBLICATION_READBACK_CONFIRMED",
+  "internet_draft": "draft-lohmann-qikvrt-epistemic-status-00",
+  "revision": "00",
+  "observed_utc": "2026-10-06T18:41:50.837577Z",
+  "submitted": true,
+  "published": true,
+  "publication_event_timestamp_utc": null,
+  "timestamp_boundary": "These timestamps bind completed public GET observations, not the original posting or private confirmation event.",
+  "repository_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "repository_role": "MIRROR_PERSONAL_WORKING_MEMORY",
+    "branch": "staging/ietf-epistemic-status-00-a2dbd3ac-v1",
+    "pr": 452,
+    "parent_head": "08e3dee1cb7c45948197240aa02da43886041fcf",
+    "parent_tree": "8f80b27e223b8929c4c99b9c75a7857220890abf",
+    "candidate_head": "08e3dee1cb7c45948197240aa02da43886041fcf",
+    "candidate_tree": "8f80b27e223b8929c4c99b9c75a7857220890abf",
+    "candidate_package": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3",
+    "receipt_path": "external/ietf/epistemic-status-00-post-effect-169906-20261006-v1/POST_EFFECT_RECEIPT.json",
+    "successor_head_tree_binding": "The containing Git commit/tree bind this new receipt; no self-referential commit identity is embedded.",
+    "force_push": false,
+    "predecessor_evidence_transfer": false
+  },
+  "submission": {
+    "id": 169906,
+    "state": "posted",
+    "state_desc": "Posted",
+    "status_url": "https://datatracker.ietf.org/api/submission/169906/status",
+    "http_observation": {
+      "method": "GET",
+      "url": "https://datatracker.ietf.org/api/submission/169906/status",
+      "final_url": "https://datatracker.ietf.org/api/submission/169906/status",
+      "http_status": 200,
+      "started_at_utc": "2026-10-06T18:41:43.439595Z",
+      "completed_at_utc": "2026-10-06T18:41:49.674000Z",
+      "bytes": 59,
+      "sha256": "15d72d76867e77580d42b50e3101fc148990940da08379cb1045a2eeee5a432d",
+      "content_type": "application/json",
+      "response_date": "Tue, 06 Oct 2026 18:41:49 GMT",
+      "local_name": "submission-status.json"
+    },
+    "raw_response": {
+      "path": "external/ietf/epistemic-status-00-post-effect-169906-20261006-v1/public/submission-status.json",
+      "bytes": 59,
+      "sha256": "15d72d76867e77580d42b50e3101fc148990940da08379cb1045a2eeee5a432d",
+      "git_blob_sha1": "ba4d86610446b984b150f94fb9e346efe735f47b"
+    },
+    "submitted_state_inferred_from_public_posted_status": true,
+    "original_submission_execution_reperformed": false
+  },
+  "datatracker": {
+    "url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-epistemic-status/",
+    "revision_url": "https://datatracker.ietf.org/doc/draft-lohmann-qikvrt-epistemic-status/00/",
+    "document_type": "INTERNET_DRAFT",
+    "submission_scope": "INDIVIDUAL",
+    "locators_are_not_private_access_or_confirmation_links": true
+  },
+  "successor_of": {
+    "type": "ADDITIVE_POST_EFFECT_RECEIPT",
+    "historical_manifest": {
+      "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SUBMISSION_MANIFEST.json",
+      "bytes": 13798,
+      "sha256": "3d63d6574a32a869add077db0adf78c186726f773bc8a3b7130356ae11f4439d",
+      "git_blob_sha1": "b6f4ae4168a455d5a49057527540d277d59a4f62",
+      "state_at_freeze": "PREPARED_REVIEW_REQUIRED_NOT_SUBMITTED"
+    },
+    "historical_destination_readback": {
+      "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/DESTINATION_READBACK.json",
+      "bytes": 1322,
+      "sha256": "fdaac801b67c7680397861c9afcc14798cbed679d03ec87f3a947e0f73f028e8",
+      "git_blob_sha1": "cfd3f05871c6b972d6f332a3595554f6a6c9a196",
+      "observed_utc": "2026-10-05T15:24:32.573332+00:00",
+      "submitted_at_freeze": false,
+      "published_at_freeze": false
+    },
+    "historical_pending_fields_preserved": true,
+    "supersedes_current_publication_status_only": true,
+    "does_not_rewrite_historical_authorization_or_execution_state": true,
+    "preserved_candidate_package": [
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/.gitattributes",
+        "bytes": 8,
+        "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+        "git_blob_sha1": "fa1385d99a319b43c06f5309d1aae9fdd3adea46"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/CHANGE_NOTICE.md",
+        "bytes": 1391,
+        "sha256": "0028869c9b85eb43fbdec6d69d8a34a182ebba305763c4782da73ae1a1358db1",
+        "git_blob_sha1": "227829d32e40e018b9239f5a812c6793daf0de3d"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/CONTENT_VALIDATION.json",
+        "bytes": 4550,
+        "sha256": "0a826badb78a719deab0cb46ff4737c704226411863bc5646d65032bc2b10ea9",
+        "git_blob_sha1": "3db75391e488ba63dc77db05e9242d19c9ffb779"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/DERIVATION_MAP.json",
+        "bytes": 11086,
+        "sha256": "4ea7a8e7cb22ce23af182d2c00f27b3f573e6419666f87425496299b4502f533",
+        "git_blob_sha1": "a8ba19ce1fb8db6060fc5d6e4b53e7babfd0e34e"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/DESTINATION_READBACK.json",
+        "bytes": 1322,
+        "sha256": "fdaac801b67c7680397861c9afcc14798cbed679d03ec87f3a947e0f73f028e8",
+        "git_blob_sha1": "cfd3f05871c6b972d6f332a3595554f6a6c9a196"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/EXACT_ARTIFACT_AUTHORIZATION_DRAFT.md",
+        "bytes": 1536,
+        "sha256": "758f3eb0561c201056de865a202f7f2eea151b0c5d9a0bca2a503df3a5fdd2ef",
+        "git_blob_sha1": "6c4bdce1891e5d6ad812c78546b841f0fa023e39"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/NORMATIVE_DELTA_CLAIMS.json",
+        "bytes": 2913,
+        "sha256": "1b593af2d50088f6bcb232a5ea51be9ded8a05d3316e8c0a6151c32fa690ed95",
+        "git_blob_sha1": "a759b9228f84d71789813e0579d6e7db0c2cd66c"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/RENDER_VALIDATION.json",
+        "bytes": 4190,
+        "sha256": "c6a9a893bd3e6dfb700a4d7cd21cf1e0629c8386c62fd6867f2f90290ca74b2d",
+        "git_blob_sha1": "777b61b3a9303d8aab0590095f15b001935b4c02"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SCOPE_RECONCILIATION.json",
+        "bytes": 4256,
+        "sha256": "3e25321bbe37751a3150a4133935c9b29281bfa2efc16f3e77eeccff63095969",
+        "git_blob_sha1": "7d1d4ed05b84a1d582faf1f91af23587adb07fdf"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SHA256SUMS",
+        "bytes": 2311,
+        "sha256": "fb793e27f54200fa94976bc169caf2b7428c8a0000e0e145db2d72fd3ca5e752",
+        "git_blob_sha1": "437a3471f1d95dde3f74239776f21244c81697e9"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SOURCE_GIT_CAPSULE.json",
+        "bytes": 63964,
+        "sha256": "6543e024c45da6f594bcf208d706b22dd554007ae0ed71466fc5184ba37cca45",
+        "git_blob_sha1": "40f333e2398f886f0ad454c50bff5d822edc68f1"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SOURCE_PROVENANCE.json",
+        "bytes": 6794,
+        "sha256": "01c40d8f689749ace51a6ff7dfaa4a2baa4d70ef254d5f81c7b02aaa3355df33",
+        "git_blob_sha1": "c4238598aec67976a03adc8c3da9a30d0234eb5a"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SOURCE_VISIBILITY_CHECK.json",
+        "bytes": 529,
+        "sha256": "b0367ae39fd577e31f9b426e9a02b973cf6f5801d71e16523bfeb86ad457cbc4",
+        "git_blob_sha1": "24b30a68971d89fda0af4b94484a88f4216753ac"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SOURCE_VISIBILITY_MANIFEST.json",
+        "bytes": 693,
+        "sha256": "922eab47aae5e58863143c43b8c98b0a7793a4e059b7de9cd89c47927f649156",
+        "git_blob_sha1": "abd02e8d2022c926a54b40a447c041240311772e"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/STAGING_README.md",
+        "bytes": 910,
+        "sha256": "62fe66726417ec1f781cadf12846ec6b3b144ab2b5611022a41fe3823ef9c675",
+        "git_blob_sha1": "7571b93f6ea9320e0a499c74a079ac7c17f13561"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/STAGING_RETURN_RECEIPT.json",
+        "bytes": 8425,
+        "sha256": "17953945b4b2597765d3ba8f3688975d2aa8a1462ddf016b0ed661db33cc4a89",
+        "git_blob_sha1": "f3ea57fd606aaee7925e3ada0a5d98ae46f66577"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/SUBMISSION_MANIFEST.json",
+        "bytes": 13798,
+        "sha256": "3d63d6574a32a869add077db0adf78c186726f773bc8a3b7130356ae11f4439d",
+        "git_blob_sha1": "b6f4ae4168a455d5a49057527540d277d59a4f62"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/XML2RFC_HTML_LOG.txt",
+        "bytes": 556,
+        "sha256": "dfcf91ca62d6bde5775205ee3a0698535d8305b9faef51383c991dd1a93a6a94",
+        "git_blob_sha1": "e5a7bfbdf45cbf82ee20b9e17cf04131a6313d90"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/XML2RFC_TEXT_LOG.txt",
+        "bytes": 555,
+        "sha256": "358e6293da944493166c31186e550c31b411253afae3030e7edba4fa4e57b40b",
+        "git_blob_sha1": "e1dff31721a4014b87f4a35c4210a9886e82532e"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/bibxml/reference.RFC.2119.xml",
+        "bytes": 910,
+        "sha256": "cb34e7076add659b8dd3b8e52343bb15e1e7884ecdd5c7b0d3e73c6bfa418552",
+        "git_blob_sha1": "c46cbba9132f399b71a5f905f287f942b060f111"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/bibxml/reference.RFC.8174.xml",
+        "bytes": 751,
+        "sha256": "8e88897ab525a8415b7df924da5b26481d0599eaa8e74b8f70c11b6820bdf1bc",
+        "git_blob_sha1": "fc8ae744afaa4808c7711540a3615774d6d9f66b"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/build.py",
+        "bytes": 8741,
+        "sha256": "74571186d1cbaa44b91fde8f42b3c49726a2974173922fe1b3a85efbbef20d4d",
+        "git_blob_sha1": "51217e860b0d0328043692aeb9a4d91df3b61296"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/draft-lohmann-qikvrt-epistemic-status-00.html",
+        "bytes": 56690,
+        "sha256": "3a7ad5bc02ecb299ccbe8c00212be8424f478fa074ee6063ce68fdb0dac455d8",
+        "git_blob_sha1": "5ffcea2cb663234af0dcb8a263411898d0cbb932"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/draft-lohmann-qikvrt-epistemic-status-00.txt",
+        "bytes": 15309,
+        "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+        "git_blob_sha1": "21131cafd954f9d9f494ec42e7d4aec99740ff0e"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/draft-lohmann-qikvrt-epistemic-status-00.xml",
+        "bytes": 13386,
+        "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+        "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+      },
+      {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/verify_staging.py",
+        "bytes": 16788,
+        "sha256": "88346d1351970d5bc70ec22fe6b1bfe6153e4d94705de021caf421cc5c47aa21",
+        "git_blob_sha1": "e140288db5632c0c66cbc7ced413baa41c0da7a8"
+      }
+    ],
+    "all_existing_publication_staging_paths_unchanged": true
+  },
+  "prior_documentary_readback": {
+    "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/452",
+    "evidence_class": "PR_REPORTED_PUBLIC_READBACK",
+    "reported_observed_utc": "2026-10-06T17:10:50.179813Z",
+    "reported_submission": 169906,
+    "reported_state": "posted",
+    "used_as_current_public_byte_evidence": false
+  },
+  "artifacts": {
+    "xml": {
+      "filename": "draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.xml",
+      "local": {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/draft-lohmann-qikvrt-epistemic-status-00.xml",
+        "bytes": 13386,
+        "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+        "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+      },
+      "public": {
+        "path": "external/ietf/epistemic-status-00-post-effect-169906-20261006-v1/public/draft-lohmann-qikvrt-epistemic-status-00.xml",
+        "bytes": 13386,
+        "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+        "git_blob_sha1": "71e20552c648a04ebb4f9e9fe9d3a7afe3e3745d"
+      },
+      "http_observation": {
+        "method": "GET",
+        "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.xml",
+        "final_url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.xml",
+        "http_status": 200,
+        "started_at_utc": "2026-10-06T18:41:43.440890Z",
+        "completed_at_utc": "2026-10-06T18:41:50.837577Z",
+        "bytes": 13386,
+        "sha256": "4527bea561c585ed233c4ad4aa6cf6053fd60ad8d975a5af73b91070403c2866",
+        "content_type": "text/xml; charset=utf-8",
+        "response_date": "Tue, 06 Oct 2026 18:41:50 GMT",
+        "local_name": "draft-lohmann-qikvrt-epistemic-status-00.xml"
+      },
+      "byte_identical_to_local": true
+    },
+    "txt": {
+      "filename": "draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt",
+      "local": {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/draft-lohmann-qikvrt-epistemic-status-00.txt",
+        "bytes": 15309,
+        "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+        "git_blob_sha1": "21131cafd954f9d9f494ec42e7d4aec99740ff0e"
+      },
+      "public": {
+        "path": "external/ietf/epistemic-status-00-post-effect-169906-20261006-v1/public/draft-lohmann-qikvrt-epistemic-status-00.txt",
+        "bytes": 15309,
+        "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+        "git_blob_sha1": "21131cafd954f9d9f494ec42e7d4aec99740ff0e"
+      },
+      "http_observation": {
+        "method": "GET",
+        "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt",
+        "final_url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.txt",
+        "http_status": 200,
+        "started_at_utc": "2026-10-06T18:41:43.441573Z",
+        "completed_at_utc": "2026-10-06T18:41:50.595851Z",
+        "bytes": 15309,
+        "sha256": "ba9c16369f61f4282017bd253c4514262d1990ce8e0f89e62c58ae8ac0b9edb0",
+        "content_type": "text/plain; charset=utf-8",
+        "response_date": "Tue, 06 Oct 2026 18:41:50 GMT",
+        "local_name": "draft-lohmann-qikvrt-epistemic-status-00.txt"
+      },
+      "byte_identical_to_local": true
+    },
+    "html": {
+      "filename": "draft-lohmann-qikvrt-epistemic-status-00.html",
+      "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.html",
+      "local": {
+        "path": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/draft-lohmann-qikvrt-epistemic-status-00.html",
+        "bytes": 56690,
+        "sha256": "3a7ad5bc02ecb299ccbe8c00212be8424f478fa074ee6063ce68fdb0dac455d8",
+        "git_blob_sha1": "5ffcea2cb663234af0dcb8a263411898d0cbb932"
+      },
+      "public": {
+        "path": "external/ietf/epistemic-status-00-post-effect-169906-20261006-v1/public/draft-lohmann-qikvrt-epistemic-status-00.html",
+        "bytes": 56772,
+        "sha256": "af1d543d0e561a0420eb099687c4f25a5a018577fbdf7dd6f6a14d9f90920f0f",
+        "git_blob_sha1": "2fa8f769d42805f67f374484e625c07d138573f0"
+      },
+      "http_observation": {
+        "method": "GET",
+        "url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.html",
+        "final_url": "https://www.ietf.org/archive/id/draft-lohmann-qikvrt-epistemic-status-00.html",
+        "http_status": 200,
+        "started_at_utc": "2026-10-06T18:41:43.442020Z",
+        "completed_at_utc": "2026-10-06T18:41:50.695645Z",
+        "bytes": 56772,
+        "sha256": "af1d543d0e561a0420eb099687c4f25a5a018577fbdf7dd6f6a14d9f90920f0f",
+        "content_type": "text/html; charset=utf-8",
+        "response_date": "Tue, 06 Oct 2026 18:41:50 GMT",
+        "local_name": "draft-lohmann-qikvrt-epistemic-status-00.html"
+      },
+      "byte_identical_to_local": false
+    }
+  },
+  "comparison": {
+    "exact_kinds": [
+      "xml",
+      "txt"
+    ],
+    "divergent_kinds": [
+      "html"
+    ],
+    "all_public_bytes_equal_local": false,
+    "local_artifacts_mutated": false,
+    "server_html": {
+      "derivation_role": "IETF_SERVER_XML2RFC_DERIVATION",
+      "local_generator": "xml2rfc 3.34.0",
+      "public_generator": "xml2rfc 3.34.1",
+      "generator_identity_basis": "Generator metadata embedded in the compared HTML bytes; server execution itself was not reproduced.",
+      "size_delta_bytes": 82,
+      "entire_body": {
+        "bytes": 28263,
+        "sha256": "5a2cb214e9d282d1b227065f059e7159658bc02d69612d522572680379e13191",
+        "git_blob_sha1": "bde12d1cb42f142437cb1082638dade6cf27ae3f",
+        "byte_identical": true,
+        "extraction": "re.search(rb'<body\\b[^>]*>.*?</body>', html_bytes, re.S).group(0)"
+      },
+      "everything_after_closing_head_byte_identical": true,
+      "difference_scope": "Only generator/dependency metadata and head CSS; complete HTML byte identity is false.",
+      "head_css_changes": [
+        "sub/sup white-space: nowrap",
+        "print table page-break-inside: avoid"
+      ],
+      "exact_difference": {
+        "path": "external/ietf/epistemic-status-00-post-effect-169906-20261006-v1/SERVER_HTML_DIFF.patch",
+        "bytes": 2132,
+        "sha256": "841366704cb23878a7a09e77e5d1e82789260a896be1d4a5107ab082a5275ee2",
+        "git_blob_sha1": "6df9d2f326a0bbbd80c99590bc45b8e04ef0cb1e"
+      },
+      "accepted_local_html_replaced": false
+    }
+  },
+  "observation": {
+    "read_only": true,
+    "transport": "HTTPS_GET",
+    "accept_encoding": "identity",
+    "cache_control": "no-cache",
+    "remote_mutation_performed": false,
+    "datatracker_submission_performed_by_this_observation": false,
+    "private_confirmation_links_stored": false,
+    "tokens_stored": false,
+    "cookies_stored": false,
+    "request_or_response_credentials_stored": false,
+    "raw_authenticated_mail_or_private_response_stored": false,
+    "response_header_persistence": "Only public Content-Type and Date observations; no Set-Cookie or authentication headers.",
+    "credential_registry_change": "NOT_TRIGGERED_NO_AUTHENTICATION_EVENT"
+  },
+  "immutability": {
+    "creation_policy": "CREATE_ONLY_NEW_PATH",
+    "future_correction": "ADD_ANOTHER_BACK_LINKED_SUCCESSOR_DO_NOT_OVERWRITE",
+    "anchors": [
+      "Containing Git commit/tree/blob identities",
+      "Scoped SHA256SUMS",
+      "REPOSITORY_FILE_MANIFEST.json",
+      "SHA256SUMS.txt",
+      "REPOSITORY_FILE_MANIFEST.json.sha256"
+    ],
+    "boundary": "Content-addressed Git and digest verification; this is not a claim that privileged users cannot later move a branch ref."
+  },
+  "reuse": {
+    "receipt_schema_and_comparison_convention": "external/ietf/draft-lohmann-qikvrt-effect-ack-03.PUBLICATION_RECEIPT.json",
+    "integrity_generator": "tools/qikvrt_integrity.py",
+    "candidate_validator": "publication-staging/ietf-epistemic-status-00-reconciled-20261005-v3/verify_staging.py",
+    "new_publisher_executor_or_workflow_created": false
+  },
+  "truth_boundaries": {
+    "internet_draft_publication_verified": true,
+    "exact_xml_txt_publication_verified": true,
+    "complete_public_html_byte_identity": false,
+    "private_author_confirmation_event_reverified": false,
+    "ietf_consensus_claimed": false,
+    "ietf_endorsement_claimed": false,
+    "ietf_standard_claimed": false,
+    "rfc_claimed": false,
+    "working_group_adoption_claimed": false,
+    "independent_interoperability_complete": false,
+    "merge_claimed": false,
+    "main_promotion_claimed": false,
+    "authority_mirror_equality_claimed": false,
+    "system_wide_completion": "UNCLAIMED"
+  },
+  "provenance": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Current explicit request to persist the observed public publication effect as an additive successor while preserving candidates and historical pending manifests.",
+    "artificial_cognitive_actor": "OpenAI Codex / GPT-6 family",
+    "artificial_cognitive_contributions": [
+      "Fresh public HTTPS GETs",
+      "Exact candidate/public byte comparison",
+      "HTML body and head-difference verification",
+      "Receipt and integrity materialization"
+    ],
+    "exact_model_build": "UNAVAILABLE",
+    "exact_session_or_run_id": "UNAVAILABLE",
+    "evidence_retention": "METADATA_ONLY_WITH_PUBLIC_ARTIFACT_BYTES",
+    "platform_actor_is_not_person_or_model_identity_proof": true
+  }
+}
