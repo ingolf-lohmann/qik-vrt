@@ -42,7 +42,7 @@ jobs:
           persist-credentials: false
 
       - name: Bind validator interpreter to CPython 3.12.13 x64
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12.13"
           architecture: x64
@@ -367,7 +367,7 @@ jobs:
           persist-credentials: false
 
       - name: Bind tag verifier to CPython 3.12.13 x64
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12.13"
           architecture: x64
@@ -596,7 +596,7 @@ jobs:
           persist-credentials: false
 
       - name: Bind Zenodo client interpreter to CPython 3.12.13 x64
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5, resolved 2026-07-22
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12.13"
           architecture: x64
