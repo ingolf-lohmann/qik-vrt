@@ -404,6 +404,7 @@ def build_node_receipt(node_repository: str, node_branch: str, root: Path = ROOT
             "status": "DECLARED_NOT_EXECUTION_EVIDENCE",
         },
         "external_effect": "NONE",
+        "owner_seal_acceptance": contract["owner_seal_acceptance"],
         "completion_claims": contract["completion_claims"],
     }
 
@@ -414,6 +415,8 @@ def validate_node_receipt(
     contract = load_contract(root)
     continuity = _mapping(contract["mesh_node_split_acceptance"], "mesh node split acceptance")
     receipt = _mapping(receipt, "node continuity receipt")
+    if receipt.get("owner_seal_acceptance") != contract["owner_seal_acceptance"]:
+        raise ExecutorBlock("node owner seal acceptance binding differs from the authority contract")
     if receipt.get("schema") != continuity["receipt_schema"]:
         raise ExecutorBlock("node continuity receipt schema is invalid")
     if receipt.get("qikvrt_event") != "QIKVRT_WORKFLOW_EXECUTOR_MESH_NODE_CONTINUITY":

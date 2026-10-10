@@ -29,14 +29,18 @@ from qikvrt_effect_ack import (
 )
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from qikvrt_api_client import github_json_get
+from tools.qikvrt_self_disclosure import SEAL_PATH, validate_owner_seal
 
 VERSIONS = ("2026-07-28", "2025-11-25", "2025-06-18", "2025-03-26")
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_PATHS = ("api/qikvrt_github_api.openapi.yaml", "scripts/qikvrt_api_client.py",
                 "src/qikvrt_api_handler.py", "src/qikvrt_effect_ack.py",
-                "src/qikvrt_github_api_shim.py", "src/qikvrt_mcp_adapter.py")
+                "src/qikvrt_github_api_shim.py", "src/qikvrt_mcp_adapter.py",
+                ".well-known/qik-vrt-self-disclosure.json", SEAL_PATH,
+                "tools/qikvrt_self_disclosure.py")
 SCOPES = {
     "qikvrt_repository_state": "repository:read",
     "qikvrt_capabilities": "capability:read",
@@ -130,12 +134,13 @@ def _head(config: dict) -> dict:
             "source_url": source["url"], "response_sha256": source["response_sha256"], "observed_at": utc_now()}
 
 
-def _sources(config: dict, state: dict) -> list[dict]:
+def _sources(config: dict, state: dict) -> tuple[list[dict], dict]:
     tree = _get(config, "git/trees/" + state["tree"] + "?recursive=1")["document"]
     if tree.get("sha") != state["tree"] or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
         raise ReadFailure("INCOMPLETE_SOURCE_TREE", isolate=True)
     entries = {item["path"]: item for item in tree["tree"]}
     result = []
+    seal_bytes = {}
     for path in SOURCE_PATHS:
         entry = entries.get(path, {})
         blob_sha = entry.get("sha", "")
@@ -153,7 +158,17 @@ def _sources(config: dict, state: dict) -> list[dict]:
         if path.endswith(".yaml"):
             item["documented_operation_ids"] = re.findall(r"^\s+operationId:\s*([A-Za-z0-9_]+)\s*$", raw.decode("utf-8"), re.M)
         result.append(item)
-    return result
+        if path in (SEAL_PATH, ".well-known/qik-vrt-self-disclosure.json"):
+            seal_bytes[path] = raw
+    try:
+        binding = _strict_json_loads(seal_bytes[".well-known/qik-vrt-self-disclosure.json"])["bindings"]["owner_seal_acceptance"]
+        receipt = validate_owner_seal(seal_bytes[SEAL_PATH], binding)
+    except (ValueError, KeyError, TypeError):
+        raise ReadFailure("OWNER_SEAL_READBACK_INVALID", isolate=True)
+    subject = receipt["subject"]
+    seal = {"binding": binding, "receipt": receipt,
+            "observed_subject_accepted": (config["repository"], state["head"], state["tree"]) == (subject["repository"], subject["head"], subject["tree"])}
+    return result, seal
 
 
 def _receipt(root: Path, config: dict, args: dict) -> dict:
@@ -226,7 +241,9 @@ def call_tool(config: dict, name: str, args: dict) -> dict:
                 raise ReadFailure("STALE_REPOSITORY_HEAD")
             data = {"repository_state": state, "replayed": replayed, "external_effect": "NONE"}
             if name == "qikvrt_capabilities":
-                data.update({"sources": _sources(config, state), "mcp_tools": tools(config), "writes_exposed": False})
+                sources, seal = _sources(config, state)
+                data.update({"sources": sources, "owner_seal_acceptance": seal,
+                             "mcp_tools": tools(config), "writes_exposed": False})
             elif name == "qikvrt_effect_ack_result":
                 data["effect_receipt"] = _receipt(root, config, args)
             after = _head(config)

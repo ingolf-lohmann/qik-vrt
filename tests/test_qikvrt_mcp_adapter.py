@@ -158,6 +158,42 @@ class McpHTTPTests(unittest.TestCase):
         self.assertEqual(source["sha256"], hashlib.sha256((ROOT / mcp.SOURCE_PATHS[0]).read_bytes()).hexdigest())
         self.assertIn("workflowDispatch", source["documented_operation_ids"])
         self.assertIn(HEAD, source["commit_url"])
+        seal = data['owner_seal_acceptance']
+        self.assertEqual(seal['receipt']['accepted_by'], 'Ingolf Lohmann')
+        self.assertFalse(seal['observed_subject_accepted'])
+        self.assertFalse(seal['receipt']['claims']['successor_acceptance'])
+
+    def test_owner_seal_capability_reads_are_independent_of_local_receipts(self):
+        local = self.root / mcp.SEAL_PATH
+        local.parent.mkdir(parents=True)
+        local.write_text('{"status":"ACCEPTED","claims":{"effect_ack_done":true}}')
+        data = self.data(self.call('qikvrt_capabilities'))
+        self.assertFalse(data['owner_seal_acceptance']['receipt']['claims']['effect_ack_done'])
+        self.assertEqual(self.paths[-1], 'commits/main')
+        self.assertFalse(data['writes_exposed'])
+
+    def test_changed_receipt_with_valid_git_blob_still_requires_receipt_digest(self):
+        tree = self.documents['git/trees/' + TREE + '?recursive=1']
+        entry = next(item for item in tree['tree'] if item['path'] == mcp.SEAL_PATH)
+        raw = b'{"status":"ACCEPTED"}'
+        sha = hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest()
+        entry['sha'] = sha
+        self.documents['git/blobs/' + sha] = {'sha': sha, 'size': len(raw), 'encoding': 'base64', 'content': base64.b64encode(raw).decode()}
+        data = self.data(self.call('qikvrt_capabilities'))
+        self.assertEqual(data['error'], 'OWNER_SEAL_READBACK_INVALID')
+        self.assertEqual(data['effect_ack']['state'], 'EFFECT_ACK_ISOLATE')
+
+    def test_seal_read_does_not_accept_a_mid_read_head_change(self):
+        def changed(config, path):
+            result = self.get_fixture(config, path)
+            if path == 'commits/main' and self.paths.count(path) == 2:
+                result = dict(result, document={'sha': 'c' * 40, 'commit': {'tree': {'sha': TREE}}})
+            return result
+        self.get_patch.stop()
+        with patch.object(mcp, '_get', side_effect=changed):
+            data = self.data(self.call('qikvrt_capabilities'))
+        self.assertEqual(data['error'], 'REPOSITORY_CHANGED_DURING_READ')
+        self.assertNotIn('owner_seal_acceptance', data)
 
     def test_anonymous_and_wrong_token_denied_before_any_read(self):
         self.assertEqual(self.call(token=False)[0], 401)

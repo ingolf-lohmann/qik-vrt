@@ -359,6 +359,8 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
         fail("unsupported AI adapter registry schema")
     if require(registry, "canonical_entrypoint", str) != "AI":
         fail("AI adapter registry must bind canonical entrypoint AI")
+    if registry.get("owner_seal_acceptance") != context.get("owner_seal_acceptance"):
+        fail("AI adapter registry owner seal binding differs from the canonical context")
     adapters = require(registry, "adapters", list)
     if not adapters:
         fail("AI adapter registry must contain at least one adapter")
@@ -397,6 +399,13 @@ def main() -> int:
 
     registry_name, adapter_count = validate_adapters(context)
     projection_check = validate_progress(context)
+    from tools.qikvrt_self_disclosure import owner_seal
+    try:
+        seal = owner_seal(ROOT)
+        if context.get("owner_seal_acceptance") != seal["binding"]:
+            fail("owner seal acceptance handoff binding differs from discovery")
+    except (OSError, ValueError, KeyError, TypeError):
+        fail("owner seal acceptance readback is invalid")
 
     licensing = require(context, "licensing_policy", dict)
     architecture = require(licensing, "architecture", dict)
@@ -413,6 +422,9 @@ def main() -> int:
     print(f"AI_ADAPTER_REGISTRY={registry_name}")
     print(f"AI_ADAPTER_COUNT={adapter_count}")
     print(f"AI_PROGRESS_CHECK={projection_check}")
+    print("OWNER_SEAL_ACCEPTED_SUBJECT=" + seal["receipt"]["subject"]["head"])
+    print("OWNER_SEAL_RECEIPT_SHA256=" + seal["binding"]["sha256"])
+    print("OWNER_SEAL_SUCCESSOR_ACCEPTANCE=NOT_INFERRED")
     print("ARCHITECTURE_POLICY=" + str(architecture.get("intent", "unknown")))
     print("IMPLEMENTATION_POLICY=" + str(implementation.get("intent", "unknown")))
     print("NEXT_ACTION=Read required files, inspect task-relevant verified state, then continue without relying on chat memory.")

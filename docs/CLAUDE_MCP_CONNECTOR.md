@@ -204,3 +204,15 @@ Primary specifications, retrieved 2026-10-09:
 - https://modelcontextprotocol.io/specification/2026-07-28/server/discover
 - https://modelcontextprotocol.io/specification/2026-07-28/server/tools
 - https://modelcontextprotocol.io/specification/2025-11-25/basic/transports
+
+## Versioned owner seal readback
+
+The read-only `qikvrt_capabilities` result includes `owner_seal_acceptance`.
+Discovery and receipt bytes come from Git blobs in the observed exact tree,
+with Git SHA-1 and receipt SHA-256 verification and a fresh closing HEAD/TREE
+readback. `observed_subject_accepted` is true only for the receipt's repository,
+HEAD and TREE together. Local acceptance files do not substitute for remote
+readback. The `capability:read` permission grants no writes or lifecycle effects.
+The Owner declaration is attributed evidence; independent review, native code
+owner enforcement, successor acceptance, Main merge, Mesh activation and
+delivery require their own evidence.

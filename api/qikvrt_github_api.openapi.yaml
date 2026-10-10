@@ -26,6 +26,13 @@ paths:
       operationId: optionalMcpFacade
       summary: Optional authenticated MCP facade over the existing local handler.
       description: >
+        qikvrt_capabilities independently reads the versioned Owner seal receipt
+        and discovery binding from the exact remote tree, verifies their bytes,
+        and closes with a fresh HEAD/TREE readback. The returned
+        owner_seal_acceptance identifies its accepted predecessor subject;
+        observed_subject_accepted requires repository, HEAD and TREE equality.
+        Attribution grants no independent review, successor acceptance,
+        native code-owner enforcement, Main merge, Mesh activation or delivery.
         Enabled only by QIKVRT_MCP_ENABLED=1. One transport reuses the three
         evidence tools from PR 509 and two data tools from PR 511.
         QIKVRT_MCP_TOKEN is an expiring evidence-read credential, distinct from

@@ -7,6 +7,8 @@ import re
 import subprocess
 import sys
 import unittest
+import copy
+from tools.qikvrt_self_disclosure import owner_seal, validate_owner_seal, SEAL_PATH, NON_CLAIMS
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -26,6 +28,43 @@ def sha256(path):
 
 
 class SelfDisclosureTests(unittest.TestCase):
+    def test_seal_is_one_exact_binding_across_all_repository_layers(self):
+        seal = owner_seal(ROOT)
+        receipt = seal['receipt']
+        for path in receipt['layer_bindings']:
+            document = read_json(ROOT / path)
+            binding = document['bindings']['owner_seal_acceptance'] if path == '.well-known/qik-vrt-self-disclosure.json' else document['owner_seal_acceptance']
+            self.assertEqual(binding, seal['binding'], path)
+        self.assertEqual(receipt['subject']['head'], '14c710978462178546974c5aa18c1236914f916e')
+        self.assertEqual(receipt['subject']['tree'], 'c08d110c030c99e5a743104a4071f6da69d5e5bc')
+        self.assertEqual(receipt['accepted_by'], 'Ingolf Lohmann')
+
+    def test_seal_changes_and_path_substitution_fail_closed(self):
+        seal = owner_seal(ROOT)
+        raw = (ROOT / SEAL_PATH).read_bytes()
+        for changed in (raw + b' ', raw[:-1], b'{}'):
+            with self.assertRaises(ValueError):
+                validate_owner_seal(changed, seal['binding'])
+        binding = dict(seal['binding'], path='../owner.json')
+        with self.assertRaises(ValueError):
+            validate_owner_seal(raw, binding)
+
+    def test_owner_acceptance_never_grants_reviews_successors_or_effects(self):
+        seal = owner_seal(ROOT)
+        for key in NON_CLAIMS:
+            for false_claim in (True, 0, None, 'false'):
+                forged = copy.deepcopy(seal['receipt'])
+                forged['claims'][key] = false_claim
+                raw = json.dumps(forged).encode()
+                binding = dict(seal['binding'], sha256=hashlib.sha256(raw).hexdigest())
+                with self.subTest(claim=key, value=false_claim), self.assertRaises(ValueError):
+                    validate_owner_seal(raw, binding)
+
+    def test_duplicate_fields_do_not_create_an_acceptance(self):
+        raw = b'{"status":"ACCEPTED","status":"ACCEPTED"}'
+        with self.assertRaises(ValueError):
+            validate_owner_seal(raw, {'path': SEAL_PATH, 'sha256': hashlib.sha256(raw).hexdigest()})
+
     @classmethod
     def setUpClass(cls):
         cls.disclosure = read_json(DISCLOSURE)
@@ -44,7 +83,7 @@ class SelfDisclosureTests(unittest.TestCase):
         self.assertEqual(binding['machine_index_path'], 'docs/publications/index.json')
 
     def test_machine_interaction(self):
-        for command in ('show', 'capabilities', 'status'):
+        for command in ('show', 'capabilities', 'status', 'owner-seal'):
             process = subprocess.run(
                 [sys.executable, str(TOOL), command],
                 text=True,

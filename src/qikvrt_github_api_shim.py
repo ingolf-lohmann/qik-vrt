@@ -33,7 +33,8 @@ MCP_VERSIONS = ("2025-11-25", "2026-07-28")
 MCP_MAX_PAYLOAD_BYTES = 256 * 1024
 MCP_SOURCE_PATHS = ("scripts/qikvrt_api_client.py", "src/qikvrt_api_handler.py",
                     "src/qikvrt_effect_ack.py", "src/qikvrt_github_api_shim.py",
-                    "src/qikvrt_mcp_adapter.py", "api/qikvrt_github_api.openapi.yaml")
+                    "src/qikvrt_mcp_adapter.py", "api/qikvrt_github_api.openapi.yaml",
+                    "tools/qikvrt_self_disclosure.py")
 MAX_REQUEST_BYTES = 1024 * 1024
 _RATE_LOCK = threading.Lock()
 _RATE_WINDOWS: dict[str, tuple[int, int]] = {}

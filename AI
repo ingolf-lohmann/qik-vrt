@@ -230,3 +230,18 @@ Competitiveness loop: identical reproducible workload and conditions -> QIK-VRT 
 Prioritize the first causal defect on the real end-user path over cosmetic CI activity or additional green infrastructure. The canonical end-user distribution path is public download -> exact bytes -> firmware/standard-platform boot -> Linux -> Mega-ST/MC68000 -> Metatransputer/Cloud Transputer -> Universal Terminal -> Firefox -> TEMDD -> Effect-Acknowledgement -> useful human task. Repair the first failing edge, create a successor subject, and restart fresh validation; never hide it behind unrelated successful lanes.
 
 Release acceptance remains finite and evidence-bound under canonical TEMDD T1-T16, including DONE only from Working Software AND publicly reachable URL AND fresh readback of that URL. Continuous improvement does not terminate when a release reaches DONE: Release_n = DONE does not imply Improvement = DONE.
+
+
+## Versioned owner seal acceptance
+
+Read `state/owner_acceptance/SEED_MCP_GOVERNANCE_SEAL_20261010_V1.json` through
+the SHA-256 binding in `AI_CONTEXT.json` and repository self-disclosure. Use
+`python3 -B tools/qikvrt_self_disclosure.py owner-seal` for byte-verified readback.
+This is Ingolf Lohmann's attributed acceptance of HEAD
+`14c710978462178546974c5aa18c1236914f916e`, TREE
+`c08d110c030c99e5a743104a4071f6da69d5e5bc`. It is not successor acceptance,
+an independent native review, enforced code-owner approval, Main promotion,
+remote Mesh activation or verified delivery. All adapters use the same `/AI`
+handoff. Future Mesh node continuity receipts carry the identical binding;
+missing or different bindings block structural Seed acceptance. Existing Seed
+freshness, lifecycle and independent code-owner gates remain mandatory.
