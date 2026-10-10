@@ -1,0 +1,174 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_REFLEXIVE_SELF_APPLICATION_INTEGRATION_20261009_V1",
+  "created_at": "2026-10-09T23:58:42.406Z",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "refs/heads/integration/seed-mcp-governance-512-513-20261009-14c71097",
+  "source_commit": "14c710978462178546974c5aa18c1236914f916e",
+  "source_tree": "c08d110c030c99e5a743104a4071f6da69d5e5bc",
+  "scope": "Complete the existing self-heal work: recover its missing draft-PR handoff and integrate the already implemented lifecycle/content-manifest separation into the existing Seed/MCP/Governance candidate.",
+  "human_actor": {
+    "actor_class": "HUMAN",
+    "attribution_id": "Ingolf Lohmann",
+    "role": "Product and Code Owner",
+    "identity_proof_boundary": "Attribution from the user instruction; the authenticated GitHub principal is not biometric proof of a natural person."
+  },
+  "artificial_cognitive_actor": {
+    "actor_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; exact build UNAVAILABLE",
+    "session_or_run_id": "eee399bb682d",
+    "tools_and_adapters": [
+      "authenticated GitHub REST connector",
+      "QIK-VRT Mesh Monitor REST observation and independent persistent readback",
+      "local metadata derivation from immutable Git blobs"
+    ],
+    "observed_at": "2026-10-09T23:58:42.406Z",
+    "identity_and_observation_limits": "Platform/session identity only; no independent code-owner review, native Authority-role activation, or public domain delivery inferred."
+  },
+  "human_contributions": [
+    {
+      "type": "AUTHORIZATION",
+      "description": "Beginn der Reflexiven Selbstanwendung Freigabe erteilt."
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    {
+      "type": "CAUSAL_DIAGNOSIS",
+      "description": "Current Main self-heal workflow exits zero when a repair branch exists, without requiring an open PR. Native run 38003943963 created commit 62fb6a03 and failed PR creation; run 38005153393 returned success on the existing ref. Complete all-state REST enumeration found no PR."
+    },
+    {
+      "type": "VERIFIED_BOUNDED_EFFECT",
+      "description": "Exactly one draft PR #516 was created for the unchanged existing branch through the supported authenticated REST operation. Independent PR collection and complete PR reads confirmed exact base/head/repository/body. Full native CI 38006627525 reached iteration-0 tested fixpoint on 62fb6a03a75fef0e2d03f8468dc0f262e8fdef82/c31090d066edc5bce987da330bcd42f0d69b958e."
+    },
+    {
+      "type": "REUSE",
+      "description": "PR #515 already contains the durable REST PR-postcondition fix from #499. Reuse PR #514's exact generator 3.2, integrity tests, and separately attributed work unit to stop lifecycle renewals invalidating the immutable content manifest. No duplicate controller or workflow is created."
+    },
+    {
+      "type": "INTEGRATION",
+      "description": "Extend existing draft #515 by a history-preserving merge commit with parents current #515 and exact #514; keep all #515 non-integrity content and current Main lifecycle blobs, reuse the three #514 source/evidence blobs, and derive canonical integrity metadata for the combined inputs. New-subject native gates remain mandatory."
+    }
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": {
+    "retention_mode": "METADATA_ONLY",
+    "raw_transcript_persisted": false,
+    "source_prs": [
+      {
+        "number": 515,
+        "head": "14c710978462178546974c5aa18c1236914f916e",
+        "tree": "c08d110c030c99e5a743104a4071f6da69d5e5bc"
+      },
+      {
+        "number": 514,
+        "head": "e23a8185bbef669cead4c8d2c15b3e66ec189eb3",
+        "tree": "6dc9ff2430e59114e78ea82a7686348712fbbdf0"
+      }
+    ],
+    "observed_main": {
+      "head": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+      "tree": "6dec2a9f8d816937b856942bd472eca5cc4439b2"
+    },
+    "reused_exact_blobs": [
+      {
+        "path": "state/work_units/MESH_LIVENESS_OUTSIDE_INTEGRITY_MANIFEST_20261009_V1.json",
+        "git_blob_sha1": "62a757b05dc3f37998bd721ae6295363d81e519c"
+      },
+      {
+        "path": "tests/test_integrity.py",
+        "git_blob_sha1": "9bb2b6c51329d6caf13dac89fa83868a99bd0828"
+      },
+      {
+        "path": "tools/qikvrt_integrity.py",
+        "git_blob_sha1": "15b5eb5089b0753ee52ee6bf3a27020b449ca2cd"
+      }
+    ],
+    "base_manifest_blob": "c19f25d8c6b24a05ef6f94695dfc7a332a2ab3ac",
+    "base_manifest_digest_reuse": "INPUT_METADATA_ONLY; unchanged immutable paths must remain bound to the exact same Git blob and mode. Native full-tree verification establishes candidate status, not the source metadata or predecessor tests."
+  },
+  "outputs": [
+    "tools/qikvrt_integrity.py",
+    "tests/test_integrity.py",
+    "state/work_units/MESH_LIVENESS_OUTSIDE_INTEGRITY_MANIFEST_20261009_V1.json",
+    "state/work_units/QIKVRT_REFLEXIVE_SELF_APPLICATION_INTEGRATION_20261009_V1.json",
+    "REPOSITORY_FILE_MANIFEST.json",
+    "REPOSITORY_FILE_MANIFEST.json.sha256",
+    "SHA256SUMS.txt"
+  ],
+  "git_history": {
+    "strategy": "MERGE_COMMIT_ON_EXISTING_DRAFT_BRANCH",
+    "parents": [
+      "14c710978462178546974c5aa18c1236914f916e",
+      "e23a8185bbef669cead4c8d2c15b3e66ec189eb3"
+    ],
+    "force_push": false,
+    "history_rewrite": false,
+    "ref_write": "FAST_FORWARD_EXPECTED_SHA_LEASE_ONLY"
+  },
+  "verification": {
+    "native_tests_on_new_combined_subject": "REQUIRED_NOT_YET_EXECUTED_AT_COMMIT_TIME",
+    "source_pr_test_transfer": false,
+    "full_local_checkout": false,
+    "local_full_make_test": "NOT_EXECUTED",
+    "local_metadata_scope": "Immutable Git-blob authentication, exact source reuse, classified path-set reconciliation, and deterministic metadata derivation only.",
+    "required_gates": [
+      "complete make test",
+      "canonical integrity regeneration and verification",
+      "existing lifecycle and Seed/MCP/Governance regressions",
+      "exact unchanged candidate head/tree fresh readback",
+      "native Code-Owner governance and independent review before Main activation"
+    ]
+  },
+  "human_decision": {
+    "repair_and_reviewable_integration": "AUTHORIZED",
+    "candidate_review": "NOT_INFERRED",
+    "merge_approval": "NOT_INFERRED"
+  },
+  "external_effects": {
+    "draft_pr_recovery": {
+      "number": 516,
+      "source_commit": "62fb6a03a75fef0e2d03f8468dc0f262e8fdef82",
+      "verified": true
+    },
+    "main_mutation": false,
+    "ruleset_change": false,
+    "review_or_merge": false,
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "credential_provisioning": false
+  },
+  "blockers": [
+    {
+      "code": "CODE_OWNER_RULE_NOT_ENFORCED",
+      "evidence": "Current Main unprotected, rulesets empty, native requested-review commit status failure.",
+      "retry_condition": "A supported authorized administrative REST writer enforces the required rule and an independent native review is bound to the exact candidate."
+    },
+    {
+      "code": "DOMAIN_DELIVERY_HOLD_UNVERIFIED",
+      "hostname": "raumzeitterminal.de",
+      "provider_state": "pending",
+      "tls_state": "pending_validation",
+      "repository_evidence_path": "evidence/native-runtime-acceptance/",
+      "repository_delivery_records": 0
+    }
+  ],
+  "role_boundary": {
+    "owner_designated_authority": "ingolf-lohmann/qik-vrt",
+    "owner_designated_mirror": "Goldkelch/qik-vrt",
+    "native_activation_verified": false,
+    "upstream_access_denial_retried": false
+  },
+  "optimization_admitted": false,
+  "github_route": "REST_API_ONLY",
+  "predecessor_evidence_transfer": false,
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  }
+}
