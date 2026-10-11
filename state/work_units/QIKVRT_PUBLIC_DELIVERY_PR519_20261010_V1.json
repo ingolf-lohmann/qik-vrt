@@ -442,5 +442,177 @@
     ],
     "repository_code_search_incomplete": false,
     "PUBLIC_DELIVERY_EFFECT_ACK": false
-  }
+  },
+  "terminal_role_followups": [
+    {
+      "observed_at_utc": "2026-10-11T17:58:03.005183+00:00",
+      "human_actor": "Ingolf Lohmann",
+      "ai_actor": "OpenAI Codex / GPT-6; exact build unavailable",
+      "authorization": "Current user instruction: repair the existing terminal roles, reuse Web corrections, submit through authorized repository/publication routes, preserve gates, update only the existing public Site, do not change DNS.",
+      "main_source": {
+        "head": "66974aa881c0829e03d48c4146ff2d335646d8c6",
+        "tree": "bd9a5387adc3f583ff6197cc7e18790a3e5238e6"
+      },
+      "prior_pr_head": "592785ed851b6d6a3e6f4212661397b809d47514",
+      "reuse_source": {
+        "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+        "version": 21,
+        "head": "2ffa5f753eef50529b9e1750e3a725820f2386ee",
+        "tree": "17a53dd7f15deeb93680ec12cf8b6fea509d6672",
+        "scope": "Existing HTML, timeline and already-corrected JavaScript. PR519 article section and discovery retained. No new Site or competing Web PR.",
+        "repository_route_adaptation": "Repository homepage retains the existing local publications/ and publications/index.json discovery paths; the hosted Site21 external GitHub publication links remain unchanged because that Site does not deploy the repository publication atlas."
+      },
+      "roles": {
+        "authority": "ingolf-lohmann/qik-vrt",
+        "mirror": "Goldkelch/qik-vrt",
+        "basis": "OWNER_ROLE_ASSIGNMENT",
+        "native_activation_verified": false
+      },
+      "changes": [
+        "Reuse existing published roles and endpoint contract on repository branch",
+        "Reuse current status/navigation links, dated evidence and timeline",
+        "Display read-context role for capabilities, documents and publications",
+        "Show exact GET URL on HTTP failure; no Mirror fallback",
+        "Extend existing terminal tests with actual JS DOM-event routing regression"
+      ],
+      "routing_tests": {
+        "result": "PASS",
+        "terminal_suite_tests": 7,
+        "subjects": "Corrected repository and Site JavaScript",
+        "original_main_negative_control": "FAIL_AS_EXPECTED: Authority routed to Goldkelch",
+        "scope": "Deterministic fixture HTTP; live browser reads remain separate"
+      },
+      "existing_main_integrity_drift": "Lifecycle evidence and onboarding liveness files differ from deterministic manifest regeneration; repair only canonical integrity trio in this candidate; existing PR514 remains separate",
+      "review_boundary": {
+        "main_protected": false,
+        "rulesets": [],
+        "merge_allowed": false,
+        "blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+        "administrative_writer_exposed": false,
+        "independent_review_not_fabricated": true
+      },
+      "client_continuation_gate": "tools/ai_handoff.py --client-receipt NOT_INTEGRATED_IN_OBSERVED_MAIN_OR_THIS_PR; standing rule applied directly",
+      "outputs": [
+        {
+          "path": "docs/index.html",
+          "bytes": 16856,
+          "sha256": "e7ce1463cbc5191aa632170677fd7b7e005117103a54b1c5ffd73f0399aceb5d",
+          "git_blob_sha1": "84fded971b55ca8e771379439e1b07c9b4d675e7"
+        },
+        {
+          "path": "docs/terminal/index.html",
+          "bytes": 16137,
+          "sha256": "6cb665d5feb3e5716a457beb85d507646daaa37d96ace49cdc8e14ea18a92fb8",
+          "git_blob_sha1": "a256e188a77f6ea1f98a7ae9cb33e15c82156ade"
+        },
+        {
+          "path": "docs/assets/js/qikvrt-repository-terminal.js",
+          "bytes": 22215,
+          "sha256": "d44dcedec35e62df716a7c7b9cf222f967a86ae8ea92336f935881dc09fec5c4",
+          "git_blob_sha1": "e7bdf31fe1585d43fa1c360f3fa16169a9cb8020"
+        },
+        {
+          "path": "docs/assets/data/qikvrt_timeline.json",
+          "bytes": 1522,
+          "sha256": "8345882c175c0f7070fc56718bd1d34a1a87ef9329a9895ab01ae0d67b0617e0",
+          "git_blob_sha1": "1a995fd3f34a533fc9497a2b952e72b1f0311794"
+        },
+        {
+          "path": "tests/test_qikvrt_repository_terminal.py",
+          "bytes": 11627,
+          "sha256": "ffbe005ea73a027fd8f0e62edbab427ceb3d16e8e9ce4f94a305ef0d169fe219",
+          "git_blob_sha1": "993e3c8005273c639328b5718b039f0d168f521a"
+        }
+      ],
+      "historical_article_and_evidence_preserved": true,
+      "publication": "SITE22_DEPLOYED_BROWSER_ROUTING_READBACK_VERIFIED; MAIN_MERGE_BLOCKED_SEPARATELY; EXACT_DOMAIN_DELIVERY_UNVERIFIED",
+      "main_merge_performed": false,
+      "dns_mutated": false,
+      "PREDECESSOR_EVIDENCE_TRANSFER": false,
+      "effect_ack_done": false,
+      "local_object_cache_repair": {
+        "original_full_test_error": "Missing Git blob 115310e37266403e8b596507ccf1daa2e2ebbf03 in partial clone; historic capsule commit was present",
+        "repair": "Materialize existing validated 13-object portable source capsule into local object database and cross-check exact bytes",
+        "source_changed": false,
+        "mandatory_test_preserved": true
+      },
+      "validation_repair": "Full make test detected missing local publication discovery href after Site homepage reuse. Restored the existing repository publication route; no test weakened or removed.",
+      "site_successor": {
+        "version": 22,
+        "source_head": "80268c87e21babfec1ca1ee2bf675e3b59e4e58e",
+        "source_tree": "358be83f6a04c90694ca1ed21dba84b325303055",
+        "deployment_id": "appgdep_6acbcfe2d1e08191ad2c2e7d69f5d774",
+        "status": "succeeded",
+        "published_at_utc": "2026-10-11T18:05:55.520710+00:00",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+        "browser_readback": "VERIFIED_ROUTING_AND_HTML; PUBLIC_ASSET_BYTE_READBACK_BLOCKED_IN_THIS_BROWSER"
+      },
+      "last_updated_at_utc": "2026-10-11T18:11:34.088646+00:00",
+      "browser_readback": {
+        "observed_at_utc": "2026-10-11T18:09:55.320Z",
+        "browser": "independent Cloud Chrome",
+        "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/terminal/",
+        "authority": {
+          "repository": "ingolf-lohmann/qik-vrt",
+          "role": "Authority (OWNER_ROLE_ASSIGNMENT; native activation unverified)",
+          "head": "66974aa881c0829e03d48c4146ff2d335646d8c6",
+          "tree": "bd9a5387adc3f583ff6197cc7e18790a3e5238e6",
+          "status": "PUBLIC_READ_COMPLETE",
+          "read_mode": "PUBLIC_GET_ONLY",
+          "effect": "EFFECT_ACK_CONTINUE"
+        },
+        "mirror": {
+          "selection": "mirror",
+          "repository": "Goldkelch/qik-vrt",
+          "status": "CONTINUE",
+          "http": 404,
+          "attempted_get": "https://api.github.com/repos/Goldkelch/qik-vrt",
+          "read_status_attempted_get": "https://api.github.com/repos/Goldkelch/qik-vrt/contents/STATUS.md?ref=main",
+          "silent_fallback_observed": false,
+          "scope": "Public Mirror reads returned 404; Mirror availability and native runtime identity remain unverified"
+        },
+        "explicit_target": {
+          "command": "capabilities authority",
+          "repository": "ingolf-lohmann/qik-vrt",
+          "state": "AVAILABLE",
+          "schema": "qikvrt_repository_self_disclosure_v1",
+          "selection_after_override": "mirror"
+        },
+        "publications": {
+          "command": "publications",
+          "selected_role": "authority",
+          "repository": "ingolf-lohmann/qik-vrt",
+          "entries": 23,
+          "source": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.json",
+          "status": "PUBLIC_READ_COMPLETE"
+        },
+        "html": {
+          "authority_option": "Authority (Owner-Zuweisung) — ingolf-lohmann/qik-vrt",
+          "mirror_option": "Mirror (Owner-Zuweisung) — Goldkelch/qik-vrt",
+          "disclaimer": "Die Owner-Rollenzuweisung vom 7. Oktober 2026 ist kein Nachweis ihrer nativen Repository-Aktivierung.",
+          "status_link": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/STATUS.md",
+          "home_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+          "client_script_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/assets/js/qikvrt-repository-terminal.js"
+        },
+        "public_asset_byte_readback": {
+          "verified": false,
+          "browser_error": "net::ERR_BLOCKED_BY_CLIENT",
+          "scope": "Direct browser navigation to the script asset was blocked. Executed browser behaviour and source/archive byte equality are separate evidence; no public-asset byte digest claimed."
+        },
+        "native_authority_activation_verified": false
+      },
+      "full_make_test_before_receipt_update": {
+        "result": "PASS",
+        "exit_code": 0,
+        "unittest_executions_reported": 545,
+        "unittest_groups": 18,
+        "scope": "Full unchanged Makefile test gate, after restoring local repository publication discovery; no waived failure."
+      },
+      "integrity": {
+        "classified_entries": 3986,
+        "immutable_digests": 3977,
+        "result": "PASS_CANONICAL_REGENERATION_AND_VERIFY"
+      }
+    }
+  ]
 }

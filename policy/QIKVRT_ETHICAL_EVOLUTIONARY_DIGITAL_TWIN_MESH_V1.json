@@ -48,12 +48,12 @@
     "audit_failure_does_not_authorize_gate_bypass": true
   },
   "stop_conditions": [
-    "SCOPED_EFFECT_ACK_DONE",
     "AUTHORITY_BOUNDARY",
     "RIGHTS_HOLD",
     "SECURITY_HOLD",
     "PROVENANCE_HOLD",
     "SCIENTIFIC_CLAIM_HOLD"
   ],
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "scoped_effect_ack_done_disposition": "EFFECT_ACK_CONTINUE"
 }

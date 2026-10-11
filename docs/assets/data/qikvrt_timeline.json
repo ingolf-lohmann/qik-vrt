@@ -1,19 +1,22 @@
 [
   {
-    "phase": "Lokal nachgewiesen",
+    "phase": "Technisch geprüft",
     "title": "Wirkungshaltepunkt und Referenzpfade",
     "items": [
       "Fuenf normative EFFECT_ACK-Zustaende",
       "DONE als einzige gewoehnliche Freigabe",
       "Hash-, Replay-, Audit- und Attestierungspruefungen",
-      "Fail-closed Seed-/Node-Referenzworkflows"
+      "Fail-closed Seed-/Node-Referenzworkflows",
+      "Firefox-A/B: 51 fokussierte technische Tests bestanden",
+      "Native CI zu PR #496 am gebundenen Quellstand erfolgreich"
     ]
   },
   {
     "phase": "Offene Verifikation",
-    "title": "Unabhaengige Reproduktion und Feldtest",
+    "title": "Produktsitzung und Feldtest",
     "items": [
-      "Live-GitHub-Actions-Lauf",
+      "Firefox-A/B: 0 von 24 Produktversuchen ausgeführt",
+      "Authentifizierte Firefox-Laufzeit und unabhängiger Ergebnis-Readback",
       "Mehrknoten-Langzeittest",
       "Bedrohungsmodell und unabhaengiges Sicherheitsaudit",
       "Messbare Akzeptanzkriterien je Einsatzfall"
