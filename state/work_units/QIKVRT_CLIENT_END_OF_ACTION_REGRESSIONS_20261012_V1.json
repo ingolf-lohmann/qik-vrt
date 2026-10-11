@@ -25,6 +25,14 @@
       "rule_blob": "0cda572c33f46216bab7d569a2e61569a61f6722",
       "bytes": 3191,
       "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8"
+    },
+    "client_candidate_before_integrity_successor": {
+      "head": "ab72f304b9aee7beeeac9c70c8b07f2ffbe482f2",
+      "tree": "8ff009497081d74179a9861af308758e175b0d25"
+    },
+    "current_main_for_integration": {
+      "head": "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e",
+      "tree": "9ac44e192a34c4352005ca0761809a618086a85f"
     }
   },
   "reuse": {
@@ -48,47 +56,6 @@
     "ambiguous effects and existing governance predicates retained",
     "shared CLI exercised with connector, CLI and Mesh route fixtures"
   ],
-  "test_evidence": {
-    "unmodified_gate_original_tests": {
-      "tests": 30,
-      "exit": 0,
-      "scope": "PR486 gate, separately observed"
-    },
-    "red_control": {
-      "command": "python3 -B -m unittest -v tests.test_ai_runtime_bootloader.ClientContinuationRegressionTests",
-      "old_runtime_blob": "aa787d82ce67f59d534c17174ec692da15ba7e5a",
-      "methods": 48,
-      "exit": 1,
-      "failure_subtests": 50,
-      "errors": 1,
-      "error_boundary": "missing existing policy binding before exact PR507 rule reuse",
-      "log_sha256": "56a7dc9c91c82c8d8ab69dc7fe49ae7c0a08319e86ebeb72e77e850fefdc92a3"
-    },
-    "candidate_gate": {
-      "client_methods": 50,
-      "new_client_methods": 20,
-      "runtime_contract_methods": 58,
-      "command": "make ai-runtime-contract",
-      "exit": 0,
-      "log_sha256": "39e3afd1a3d5f3b88c48d0ab593c935eff8bb7621292e82eaee80646f15eb21d"
-    },
-    "other_existing_client_tests": {
-      "command": "python3 -B -m unittest -v tests.test_api_client tests.test_qikvrt_repository_terminal tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_personal_firefox_capability_boundary tests.issue_agent.test_processing tests.issue_agent.test_validate",
-      "passed": 69,
-      "import_errors": 1,
-      "unavailable_module": "src.qikvrt_siemens_reference_integration",
-      "scope": "transport, static web, loopback HTTP terminal, Firefox boundary, processor fixtures; no deployed client adoption",
-      "log_sha256": "f42573a7693cd83f59263f2623a154a9cdc16d7e89a57319c4f96a7df39d14d0"
-    },
-    "full_local_suite": {
-      "command": "make test",
-      "exit": 2,
-      "blocker": "historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 missing from shallow local Git object closure; historical worktree/finalizer tests cannot complete",
-      "not_fixed_by_weakening_tests": true,
-      "native_successor": "unchanged existing QIKVRT CI uses fetch-depth: 0, must run on submitted candidate HEAD/TREE",
-      "log_sha256": "61b701bc3633676968f7f36a477b2358336bcfe7d9dc98ef6f397de609a20945"
-    }
-  },
   "changed_payloads": {
     "AGENTS.md": {
       "bytes": 11345,
@@ -135,7 +102,7 @@
     "main_integration": "NOT_ESTABLISHED",
     "code_owner_ruleset": "NOT_ENFORCED",
     "independent_reviews": "ABSENT",
-    "smallest_continuation": "existing target-bound administration REST writer must enforce Main ruleset; independent exact-head Code Owner review and all exact-head checks remain required before protected promotion"
+    "smallest_continuation": "Test this new candidate through the existing exact-head CI; preserve current Main/PR514/PR507 references; required independent Code Owner admission and verified target-bound administration remain separate protected prerequisites."
   },
   "public_effect": {
     "hostname": "raumzeitterminal.de",
@@ -152,5 +119,202 @@
     "vendor_runtime_adoption": false,
     "public_effect": false,
     "EFFECT_ACK_DONE": false
+  },
+  "revision": 2,
+  "updated_at": "2026-10-11T23:20:30.477589+00:00",
+  "historical_test_evidence": {
+    "unmodified_gate_original_tests": {
+      "tests": 30,
+      "exit": 0,
+      "scope": "PR486 gate, separately observed"
+    },
+    "red_control": {
+      "command": "python3 -B -m unittest -v tests.test_ai_runtime_bootloader.ClientContinuationRegressionTests",
+      "old_runtime_blob": "aa787d82ce67f59d534c17174ec692da15ba7e5a",
+      "methods": 48,
+      "exit": 1,
+      "failure_subtests": 50,
+      "errors": 1,
+      "error_boundary": "missing existing policy binding before exact PR507 rule reuse",
+      "log_sha256": "56a7dc9c91c82c8d8ab69dc7fe49ae7c0a08319e86ebeb72e77e850fefdc92a3"
+    },
+    "candidate_gate": {
+      "client_methods": 50,
+      "new_client_methods": 20,
+      "runtime_contract_methods": 58,
+      "command": "make ai-runtime-contract",
+      "exit": 0,
+      "log_sha256": "39e3afd1a3d5f3b88c48d0ab593c935eff8bb7621292e82eaee80646f15eb21d"
+    },
+    "other_existing_client_tests": {
+      "command": "python3 -B -m unittest -v tests.test_api_client tests.test_qikvrt_repository_terminal tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_digital_twin_rest tests.test_qikvrt_personal_firefox_capability_boundary tests.issue_agent.test_processing tests.issue_agent.test_validate",
+      "passed": 69,
+      "import_errors": 1,
+      "unavailable_module": "src.qikvrt_siemens_reference_integration",
+      "scope": "transport, static web, loopback HTTP terminal, Firefox boundary, processor fixtures; no deployed client adoption",
+      "log_sha256": "f42573a7693cd83f59263f2623a154a9cdc16d7e89a57319c4f96a7df39d14d0"
+    },
+    "full_local_suite": {
+      "command": "make test",
+      "exit": 2,
+      "blocker": "historical commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 missing from shallow local Git object closure; historical worktree/finalizer tests cannot complete",
+      "not_fixed_by_weakening_tests": true,
+      "native_successor": "unchanged existing QIKVRT CI uses fetch-depth: 0, must run on submitted candidate HEAD/TREE",
+      "log_sha256": "61b701bc3633676968f7f36a477b2358336bcfe7d9dc98ef6f397de609a20945"
+    }
+  },
+  "historical_test_evidence_scope": "Original client candidate ab72f304b9aee7beeeac9c70c8b07f2ffbe482f2 / 8ff009497081d74179a9861af308758e175b0d25 only. Source files of those client cases remain unchanged; no test transfer to a successor is implied.",
+  "test_evidence": {
+    "integrity_old_runtime_red_control": {
+      "old_runtime_blob": "bd69412866bc8bed020246ef60e3ece6a8222b07",
+      "command": "python3 -B -m unittest -v tests.test_integrity.IntegrityGenerationTests.test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio",
+      "exit": 1,
+      "log_sha256": "681da96d5b693f7a7259b19a8dbdd96d0c97f6c0a7fb6ef6434c66ec7c850d56",
+      "stderr_excerpt": "test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio (tests.test_integrity.IntegrityGenerationTests.test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio) ... FAIL\n\n======================================================================\nFAIL: test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio (tests.test_integrity.IntegrityGenerationTests.test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/c72892dc2544/qikvrt-client-integrity-successor-4k6oigjb/tests/test_integrity.py\", line 269, in test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio\n    self.assertEqual(entry[\"classification\"], \"role_local_liveness_state\")\nAssertionError: 'repository_content' != 'role_local_liveness_state'\n- repository_content\n+ role_local_liveness_state\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.021s\n\nFAILED (failures=1)\n"
+    },
+    "containing_successor_required_tests": {
+      "command": "python3 -B -m unittest -v tests.test_ai_runtime_bootloader tests.test_integrity",
+      "expected_client_cases": 50,
+      "expected_runtime_client_cases": 58,
+      "expected_integrity_cases": 11,
+      "state": "REQUIRED_EXACT_CONTAINING_HEAD_EXECUTION"
+    },
+    "native_full_suite": "REQUIRED_EXISTING_QIKVRT_CI_ON_NEW_HEAD; do not repeat the unchanged shallow-history local failure."
+  },
+  "integration_successor": {
+    "goal": "Remove the known candidate merge-integrity blocker by reusing existing reviewed PR514 source, not creating a parallel integrity or governance implementation.",
+    "existing_source_pr": 514,
+    "source_head": "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
+    "source_tree": "26235bbba0594eeb355cbe3d30d5c093c6e7b70d",
+    "byte_exact_imports": [
+      {
+        "path": "tools/qikvrt_integrity.py",
+        "git_blob": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9",
+        "sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a"
+      },
+      {
+        "path": "tests/test_integrity.py",
+        "git_blob": "58cc8240c89a8e8bf17c3c2c0a7cf410b74c4160",
+        "sha256": "0be2f496b9b992bb7e3de353a3116c44aa34d79b6d0ee016bed99e248ac45dcb"
+      }
+    ],
+    "unimported_pr514_scope": "Public article, routing, self-disclosure and publication payload changes remain in their existing independent PR path.",
+    "main_lifecycle_source_head": "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e",
+    "main_lifecycle_source_tree": "9ac44e192a34c4352005ca0761809a618086a85f",
+    "main_lifecycle_materialized_paths": [
+      "evidence/node_health/36255181444-1.json",
+      "evidence/node_health/36271908222-1.json",
+      "evidence/node_health/36296732922-1.json",
+      "evidence/node_health/36317511514-1.json",
+      "evidence/node_health/36335098554-1.json",
+      "evidence/node_health/36351304656-1.json",
+      "evidence/node_health/36381537034-1.json",
+      "evidence/node_health/36431575840-1.json",
+      "evidence/node_health/36496986601-1.json",
+      "evidence/node_health/36527386703-1.json",
+      "evidence/node_health/36570784302-1.json",
+      "evidence/node_health/36638284271-1.json",
+      "evidence/node_health/36673717198-1.json",
+      "evidence/node_health/36715333877-1.json",
+      "evidence/node_health/36784342979-1.json",
+      "evidence/node_health/36821646859-1.json",
+      "evidence/node_health/36866747092-1.json",
+      "evidence/node_health/36936407695-1.json",
+      "evidence/node_health/36969534310-1.json",
+      "evidence/node_health/37007190339-1.json",
+      "evidence/node_health/37071181171-1.json",
+      "evidence/node_health/37099282397-1.json",
+      "evidence/node_health/37120239456-1.json",
+      "evidence/node_health/37136228467-1.json",
+      "evidence/node_health/37154289864-1.json",
+      "evidence/node_health/37180998634-1.json",
+      "evidence/node_health/37201684625-1.json",
+      "evidence/node_health/37235824372-1.json",
+      "evidence/node_health/37268524250-1.json",
+      "evidence/node_health/37325712969-1.json",
+      "evidence/node_health/37391781257-1.json",
+      "evidence/node_health/37422938516-1.json",
+      "evidence/node_health/37510511694-1.json",
+      "evidence/node_health/37578851517-1.json",
+      "evidence/node_health/37627620170-1.json",
+      "evidence/node_health/37700043589-1.json",
+      "evidence/node_health/37735306285-1.json",
+      "evidence/node_health/37784306314-1.json",
+      "evidence/node_health/37858780720-1.json",
+      "evidence/node_health/37891779786-1.json",
+      "evidence/node_health/37935383486-1.json",
+      "evidence/node_health/38000153926-1.json",
+      "evidence/node_health/38028824881-1.json",
+      "evidence/node_health/38052128243-1.json",
+      "evidence/node_health/38088608075-1.json",
+      "evidence/node_health/38115721714-1.json",
+      "evidence/node_health/38140562184-1.json",
+      "evidence/node_health/38178388272-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/36255181444-1.json",
+      "evidence/node_registration_renewal/36271908222-1.json",
+      "evidence/node_registration_renewal/36296732922-1.json",
+      "evidence/node_registration_renewal/36317511514-1.json",
+      "evidence/node_registration_renewal/36335098554-1.json",
+      "evidence/node_registration_renewal/36351304656-1.json",
+      "evidence/node_registration_renewal/36381537034-1.json",
+      "evidence/node_registration_renewal/36431575840-1.json",
+      "evidence/node_registration_renewal/36496986601-1.json",
+      "evidence/node_registration_renewal/36527386703-1.json",
+      "evidence/node_registration_renewal/36570784302-1.json",
+      "evidence/node_registration_renewal/36638284271-1.json",
+      "evidence/node_registration_renewal/36673717198-1.json",
+      "evidence/node_registration_renewal/36715333877-1.json",
+      "evidence/node_registration_renewal/36784342979-1.json",
+      "evidence/node_registration_renewal/36821646859-1.json",
+      "evidence/node_registration_renewal/36866747092-1.json",
+      "evidence/node_registration_renewal/36936407695-1.json",
+      "evidence/node_registration_renewal/36969534310-1.json",
+      "evidence/node_registration_renewal/37007190339-1.json",
+      "evidence/node_registration_renewal/37071181171-1.json",
+      "evidence/node_registration_renewal/37099282397-1.json",
+      "evidence/node_registration_renewal/37120239456-1.json",
+      "evidence/node_registration_renewal/37136228467-1.json",
+      "evidence/node_registration_renewal/37154289864-1.json",
+      "evidence/node_registration_renewal/37180998634-1.json",
+      "evidence/node_registration_renewal/37201684625-1.json",
+      "evidence/node_registration_renewal/37235824372-1.json",
+      "evidence/node_registration_renewal/37268524250-1.json",
+      "evidence/node_registration_renewal/37325712969-1.json",
+      "evidence/node_registration_renewal/37391781257-1.json",
+      "evidence/node_registration_renewal/37422938516-1.json",
+      "evidence/node_registration_renewal/37510511694-1.json",
+      "evidence/node_registration_renewal/37578851517-1.json",
+      "evidence/node_registration_renewal/37627620170-1.json",
+      "evidence/node_registration_renewal/37700043589-1.json",
+      "evidence/node_registration_renewal/37735306285-1.json",
+      "evidence/node_registration_renewal/37784306314-1.json",
+      "evidence/node_registration_renewal/37858780720-1.json",
+      "evidence/node_registration_renewal/37891779786-1.json",
+      "evidence/node_registration_renewal/37935383486-1.json",
+      "evidence/node_registration_renewal/38000153926-1.json",
+      "evidence/node_registration_renewal/38028824881-1.json",
+      "evidence/node_registration_renewal/38052128243-1.json",
+      "evidence/node_registration_renewal/38088608075-1.json",
+      "evidence/node_registration_renewal/38115721714-1.json",
+      "evidence/node_registration_renewal/38140562184-1.json",
+      "evidence/node_registration_renewal/38178388272-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+    ],
+    "parents": [
+      "ab72f304b9aee7beeeac9c70c8b07f2ffbe482f2",
+      "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e"
+    ],
+    "pr514_ref_mutated": false,
+    "new_workflow": false,
+    "new_governance": false,
+    "force_push": false,
+    "native_workflow_cancellation": false,
+    "test_weakening": false,
+    "independent_review_and_current_main_rules_still_required": true,
+    "Main_integration_claim": false,
+    "public_effect_claim": false
   }
 }
