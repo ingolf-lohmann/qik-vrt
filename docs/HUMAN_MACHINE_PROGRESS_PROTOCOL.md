@@ -66,7 +66,7 @@ Before a terminal handoff, run the existing read-only validator:
 `python3 -B tools/ai_handoff.py --client-receipt <receipt.json>`.
 Its `qikvrt-client-continuation/1` receipt contains:
 
-- `subject`: exact `repository`, `head` and `tree`; `authorization`: `granted`
+- `subject`: exact `repository`, bound `ref`, `head` and `tree`; `authorization`: `granted`
   and its non-secret `source`; `requested_authorization_again: false`.
 - `inventory`: non-empty evidence locators or concrete absence/denial receipts
   for `repository`, `connector`, `cli` and `mesh`. Inspect only relevant existing
@@ -86,9 +86,23 @@ Its `qikvrt-client-continuation/1` receipt contains:
   and unrelated lifecycle commits are excluded. Identical failure evidence
   requires zero effects. Materially changed evidence alone does not authorize
   an effect; all action predicates must still hold.
-- `readback.repository`: current `repository`, `ref`, `head`, `tree`, `source`;
+- `action_window`: nonempty `id`, timezone-aware `completed_at` and `closed_at`.
+  Both closing observations must bind this `action_id` and an `observed_at`
+  strictly after completion and no later than closure. Earlier session reads
+  and another action's observations cannot close this work unit. Every
+  effectful `attempt` requires its own window and repository/delivery readback;
+  a fresh final receipt cannot conceal an unchecked earlier action.
+- `readback.repository`: current `repository`, `ref`, `head`, `tree`, `source`,
+  `action_id`, `observed_at`. All subject fields must match the acting branch's
+  newly bound subject. If a new HEAD/TREE is observed, follow it and update the
+  subject and applicable checks before attempting closure.
   `readback.delivery`: exact `hostname: raumzeitterminal.de`, `source` and
-  `state` (`UNKNOWN`, `PENDING`, `VERIFIED`). Missing access stays explicit.
+  `state` (`UNKNOWN`, `PENDING`, `VERIFIED`), `action_id`, `observed_at`, public
+  HTTPS `url` and read-only `method: GET`. VERIFIED additionally needs an
+  integer `http_status: 200`, exact-origin `final_url` and the observed body
+  `response_sha256`. A redirect to another origin is not delivery on this host.
+  Missing access stays UNKNOWN; observed absence can stay PENDING. Neither is
+  a delivery proof or a negative conclusion about DNS/registry state.
 - `state`: `CONTINUE`, `BLOCK`, `DONE` or `OWNER_CHOICE`. An externally pending
   execution can retain `CONTINUE` with its `pending_execution` evidence. BLOCK
   requires a concrete `blocker` with `operation`, `reason`, `evidence`,
@@ -104,6 +118,20 @@ tests do not establish a live effect. Independently read back the relevant
 provider results and exact HEAD/TREE. Persisting the rule does not establish
 Main integration, adoption by another client or deployment. Regression cases
 run in the existing `make ai-runtime-contract` gate without network or secrets.
+
+The existing policy binds the unchanged Owner rule from PR #507 at
+`state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json`.
+The read-only handoff validator derives its delivery domain from that contract
+and verifies the bound bytes. This adds behavioral coverage to the existing
+client gate; it creates no second governance implementation or remote writer.
+The original 30 regressions remain, with action-time, HEAD/TREE, per-attempt and
+HTTP-proof negative controls added. The shared CLI is exercised for connector,
+CLI and Mesh route receipts. Registered AI adapter shims reuse AI/AGENTS;
+their presence is not an executed Claude/Codex/Copilot session witness. The
+HTTP transport client, read-only web terminal, personal terminal and Firefox
+remain separately scoped clients whose existing tests do not prove automatic
+use of this gate. Actual adoption requires their own emitted receipts and an
+independent live readback. No successful fixture substitutes for those witnesses.
 
 ## Repository runtime objective
 

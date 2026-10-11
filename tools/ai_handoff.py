@@ -17,6 +17,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Any, NoReturn
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_STR = str(ROOT)
@@ -116,6 +117,100 @@ def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> b
     return all(action[key] for key in predicates)
 
 
+def client_end_of_action_domain() -> str:
+    """Reuse the exact Owner contract, not a second client governance policy."""
+    policy = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+    binding = policy.get("client_continuation", {}).get("end_of_action_rule", {})
+    path = binding.get("path")
+    if (not isinstance(path, str) or Path(path).is_absolute()
+        or ".." in Path(path).parts):
+        fail("CLIENT_OWNER_CLOSING_RULE_BINDING_INVALID")
+    try:
+        raw = (ROOT / path).read_bytes()
+    except OSError:
+        fail("CLIENT_OWNER_CLOSING_RULE_UNAVAILABLE")
+    if hashlib.sha256(raw).hexdigest() != binding.get("sha256"):
+        fail("CLIENT_OWNER_CLOSING_RULE_DIGEST_DRIFT")
+    rule = load_json(ROOT / path)
+    if (rule.get("delegation_id") != "OWNER-END-OF-ACTION-VERIFICATION-GRUNDREGEL-V1"
+        or rule.get("state") != "ACTIVE"):
+        fail("CLIENT_OWNER_CLOSING_RULE_INACTIVE")
+    for duty in require(rule, "duties_at_end_of_every_action", list):
+        if isinstance(duty, dict) and duty.get("id") == "REOBSERVE_RAUMZEITTERMINAL_DELIVERY_EVIDENCE":
+            return require(duty, "domain", str)
+    fail("CLIENT_OWNER_CLOSING_RULE_DOMAIN_MISSING")
+
+
+def client_time(value: Any, code: str) -> dt.datetime:
+    if not isinstance(value, str):
+        fail(code)
+    try:
+        result = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        fail(code)
+    if result.utcoffset() is None:
+        fail(code)
+    return result
+
+
+def client_public_url(value: Any, hostname: str) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = urlsplit(value)
+        return (parsed.scheme == "https" and parsed.hostname == hostname
+                and parsed.port in (None, 443) and parsed.username is None
+                and parsed.password is None)
+    except ValueError:
+        return False
+
+
+def validate_client_readback(readback: Any, subject: dict[str, Any], window: Any) -> None:
+    """Check action-bound chronology; supplied receipts still need live verification."""
+    if (not isinstance(window, dict) or not isinstance(window.get("id"), str)
+        or not window["id"].strip()):
+        fail("CLIENT_ACTION_WINDOW_INVALID")
+    completed = client_time(window.get("completed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    closed = client_time(window.get("closed_at"), "CLIENT_ACTION_WINDOW_INVALID")
+    if closed <= completed:
+        fail("CLIENT_ACTION_WINDOW_INVALID")
+    if not isinstance(readback, dict):
+        fail("CLIENT_CLOSING_READBACK_MISSING")
+    repository = require(readback, "repository", dict)
+    source = repository.get("source")
+    if (repository.get("repository") != subject["repository"]
+        or not isinstance(source, str) or not source.strip()):
+        fail("CLIENT_REPOSITORY_READBACK_MISSING")
+    for key in ("head", "tree"):
+        if not re.fullmatch(r"[0-9a-f]{40}", str(repository.get(key, ""))):
+            fail("CLIENT_REPOSITORY_READBACK_INVALID")
+    if any(repository.get(key) != subject[key] for key in ("ref", "head", "tree")):
+        fail("CLIENT_REPOSITORY_READBACK_SUBJECT_DRIFT")
+    delivery = require(readback, "delivery", dict)
+    hostname = client_end_of_action_domain()
+    source = delivery.get("source")
+    if (delivery.get("hostname") != hostname
+        or not isinstance(source, str) or not source.strip()):
+        fail("CLIENT_EXACT_HOST_READBACK_MISSING")
+    if delivery.get("state") not in ("UNKNOWN", "PENDING", "VERIFIED"):
+        fail("CLIENT_DELIVERY_READBACK_INVALID")
+    if delivery.get("method") != "GET" or not client_public_url(delivery.get("url"), hostname):
+        fail("CLIENT_PUBLIC_DELIVERY_URL_INVALID")
+    for kind in ("repository", "delivery"):
+        observation = readback[kind]
+        if observation.get("action_id") != window["id"]:
+            fail("CLIENT_READBACK_ACTION_DRIFT:" + kind)
+        observed = client_time(observation.get("observed_at"), "CLIENT_READBACK_TIME_INVALID:" + kind)
+        if not completed < observed <= closed:
+            fail("CLIENT_READBACK_NOT_FRESH:" + kind)
+    if delivery["state"] == "VERIFIED":
+        if (type(delivery.get("http_status")) is not int or delivery["http_status"] != 200
+            or not isinstance(delivery.get("response_sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", delivery["response_sha256"])
+            or not client_public_url(delivery.get("final_url"), hostname)):
+            fail("CLIENT_PUBLIC_DELIVERY_PROOF_INCOMPLETE")
+
+
 def validate_client_receipt(receipt: dict[str, Any]) -> str:
     """Validate consistency; never authenticate a client or prove live effects."""
     if receipt.get("schema") != "qikvrt-client-continuation/1":
@@ -126,6 +221,8 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     for key in ("head", "tree"):
         if not re.fullmatch(r"[0-9a-f]{40}", str(subject.get(key, ""))):
             fail("CLIENT_SUBJECT_INVALID")
+    if not isinstance(subject.get("ref"), str) or not subject["ref"].strip():
+        fail("CLIENT_SUBJECT_INVALID")
     authorization = require(receipt, "authorization", dict)
     if (authorization.get("granted") is not True
         or not isinstance(authorization.get("source"), str)
@@ -139,6 +236,7 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
             fail("CLIENT_EXISTING_ROUTE_NOT_INSPECTED:" + kind)
     attempts = require(receipt, "attempts", list)
     executed_keys: set[str] = set()
+    closed_actions: set[str] = set()
     for attempt in attempts:
         if not isinstance(attempt, dict):
             fail("CLIENT_ATTEMPT_INVALID")
@@ -164,22 +262,19 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
             if current in executed_keys:
                 fail("CLIENT_DUPLICATE_CAUSAL_ATTEMPT")
             executed_keys.add(current)
+            validate_client_readback(attempt.get("readback"), subject, attempt.get("action_window"))
+            action_id = attempt["action_window"]["id"]
+            if action_id in closed_actions:
+                fail("CLIENT_CLOSING_ACTION_REUSED")
+            closed_actions.add(action_id)
     actions = require(receipt, "next_actions", list)
     executable = False
     for action in actions:
         executable |= validate_client_action(action, subject)
-    readback = require(receipt, "readback", dict)
-    repository = require(readback, "repository", dict)
-    if repository.get("repository") != subject["repository"] or not repository.get("source"):
-        fail("CLIENT_REPOSITORY_READBACK_MISSING")
-    for key in ("head", "tree"):
-        if not re.fullmatch(r"[0-9a-f]{40}", str(repository.get(key, ""))):
-            fail("CLIENT_REPOSITORY_READBACK_INVALID")
-    delivery = require(readback, "delivery", dict)
-    if delivery.get("hostname") != "raumzeitterminal.de" or not delivery.get("source"):
-        fail("CLIENT_EXACT_HOST_READBACK_MISSING")
-    if delivery.get("state") not in ("UNKNOWN", "PENDING", "VERIFIED"):
-        fail("CLIENT_DELIVERY_READBACK_INVALID")
+    readback = receipt.get("readback")
+    validate_client_readback(readback, subject, receipt.get("action_window"))
+    repository = readback["repository"]
+    delivery = readback["delivery"]
     state = receipt.get("state")
     if state not in ("CONTINUE", "BLOCK", "DONE", "OWNER_CHOICE"):
         fail("CLIENT_RETURN_STATE_INVALID")

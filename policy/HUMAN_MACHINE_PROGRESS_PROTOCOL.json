@@ -122,14 +122,31 @@
     "regression_gate": "make ai-runtime-contract",
     "preserve_existing_authorization": true,
     "preserve_original_goal_across_handoffs": true,
-    "inspect_existing_routes": ["repository", "connector", "cli", "mesh"],
+    "inspect_existing_routes": [
+      "repository",
+      "connector",
+      "cli",
+      "mesh"
+    ],
     "github_route": "REST_API_ONLY",
     "execute_safe_deterministic_authorized_successors": true,
     "unchanged_causal_failure": "NOOP",
     "ambiguous_effect_requires_readback_before_retry": true,
-    "closing_readback": ["current_repository_HEAD_TREE", "raumzeitterminal.de"],
+    "closing_readback": [
+      "current_repository_HEAD_TREE",
+      "raumzeitterminal.de"
+    ],
     "receipt_consistency_proves_live_effect": false,
-    "persisted_rule_proves_other_client_adoption": false
+    "persisted_rule_proves_other_client_adoption": false,
+    "end_of_action_rule": {
+      "path": "state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json",
+      "sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+      "source_head": "42008f98a94c28e9bfc1ae902fb190296c6ac5a6",
+      "source_pr": 507,
+      "git_blob_sha1": "0cda572c33f46216bab7d569a2e61569a61f6722"
+    },
+    "closing_readback_after_each_effectful_action": true,
+    "closing_readback_requires_action_id_and_observation_times": true
   },
   "continuation_semantics": {
     "roundtrip": [

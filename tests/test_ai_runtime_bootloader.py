@@ -171,7 +171,8 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         from tools import ai_handoff
         self.handoff = ai_handoff
         self.subject = {
-            "repository": "ingolf-lohmann/qik-vrt", "head": "a" * 40, "tree": "b" * 40,
+            "repository": "ingolf-lohmann/qik-vrt", "ref": "main",
+            "head": "a" * 40, "tree": "b" * 40,
         }
         self.receipt = {
             "schema": "qikvrt-client-continuation/1",
@@ -191,10 +192,18 @@ class ClientContinuationRegressionTests(unittest.TestCase):
                                         "authenticated", "permitted", "admitted")},
             }],
             "state": "CONTINUE",
+            "action_window": {"id": "fixture:action-1",
+                              "completed_at": "2026-10-11T10:00:00Z",
+                              "closed_at": "2026-10-11T10:00:03Z"},
             "readback": {
-                "repository": {**self.subject, "ref": "main", "source": "fixture:fresh-rest-read"},
+                "repository": {**self.subject, "source": "fixture:fresh-rest-read",
+                               "action_id": "fixture:action-1",
+                               "observed_at": "2026-10-11T10:00:01Z"},
                 "delivery": {"hostname": "raumzeitterminal.de", "state": "UNKNOWN",
-                             "source": "fixture:exact-host-access-unavailable"},
+                             "source": "fixture:exact-host-access-unavailable",
+                             "url": "https://raumzeitterminal.de/", "method": "GET",
+                             "action_id": "fixture:action-1",
+                             "observed_at": "2026-10-11T10:00:02Z"},
             },
         }
 
@@ -225,6 +234,8 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         current = dict(previous, cause="5" * 64) if changed else dict(previous)
         return {"previous": previous, "current": current, "effect_count": count,
                 "action": copy.deepcopy(self.receipt["next_actions"][0]),
+                "action_window": copy.deepcopy(self.receipt["action_window"]),
+                "readback": copy.deepcopy(self.receipt["readback"]),
                 "ambiguous_effect": False, "readback_before_effect": False}
 
     def done(self) -> None:
@@ -232,6 +243,8 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["next_actions"] = []
         self.receipt["readback"]["delivery"].update(
             state="VERIFIED", working_software=True, tls=True, independent=True,
+            http_status=200, final_url="https://raumzeitterminal.de/",
+            response_sha256="6" * 64,
             head=self.subject["head"], tree=self.subject["tree"])
 
     def test_existing_grant_and_callable_successor_continue(self) -> None:
@@ -370,7 +383,7 @@ class ClientContinuationRegressionTests(unittest.TestCase):
     def test_candidate_tests_do_not_establish_main_integration(self) -> None:
         self.done()
         self.receipt["readback"]["repository"]["ref"] = "work/repair"
-        self.rejected("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+        self.rejected("CLIENT_REPOSITORY_READBACK_SUBJECT_DRIFT")
 
     def test_pending_execution_retains_goal_without_permission_question(self) -> None:
         self.receipt["next_actions"] = []
@@ -401,6 +414,192 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.assertIn("CLIENT_HANDOFF_CONSISTENCY=VALID", result.stdout)
         self.assertIn("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED", result.stdout)
         self.assertNotIn("FINAL_PASS", result.stdout)
+
+    def test_missing_closing_head_or_tree_is_rejected_in_every_state(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for state in ("CONTINUE", "BLOCK", "DONE"):
+            for key in ("head", "tree"):
+                with self.subTest(state=state, key=key):
+                    self.receipt = copy.deepcopy(valid)
+                    if state == "BLOCK":
+                        self.block()
+                    elif state == "DONE":
+                        self.done()
+                    del self.receipt["readback"]["repository"][key]
+                    self.rejected("CLIENT_REPOSITORY_READBACK_INVALID")
+
+    def test_predecessor_head_tree_or_wrong_ref_cannot_close_action(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for key, wrong in (("head", "c" * 40), ("tree", "d" * 40),
+                           ("ref", "work/other")):
+            with self.subTest(key=key):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["repository"][key] = wrong
+                self.rejected("CLIENT_REPOSITORY_READBACK_SUBJECT_DRIFT")
+
+    def test_readback_before_or_at_action_completion_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            for timestamp in ("2026-10-11T09:59:59Z", "2026-10-11T10:00:00Z"):
+                with self.subTest(kind=kind, timestamp=timestamp):
+                    self.receipt = copy.deepcopy(valid)
+                    self.receipt["readback"][kind]["observed_at"] = timestamp
+                    self.rejected("CLIENT_READBACK_NOT_FRESH:" + kind)
+
+    def test_readback_after_receipt_closure_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            with self.subTest(kind=kind):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"][kind]["observed_at"] = "2026-10-11T10:00:04Z"
+                self.rejected("CLIENT_READBACK_NOT_FRESH:" + kind)
+
+    def test_missing_naive_or_invalid_observation_time_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            for wrong in (None, "", "yesterday", "2026-10-11T10:00:01", True):
+                with self.subTest(kind=kind, value=wrong):
+                    self.receipt = copy.deepcopy(valid)
+                    self.receipt["readback"][kind]["observed_at"] = wrong
+                    self.rejected("CLIENT_READBACK_TIME_INVALID:" + kind)
+
+    def test_readback_from_another_action_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            with self.subTest(kind=kind):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"][kind]["action_id"] = "fixture:predecessor-action"
+                self.rejected("CLIENT_READBACK_ACTION_DRIFT:" + kind)
+
+    def test_invalid_or_missing_action_window_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for wrong in (None, {}, {"id": "fixture:action-1", "completed_at": "bad",
+                                 "closed_at": "2026-10-11T10:00:03Z"},
+                      {"id": "fixture:action-1", "completed_at": "2026-10-11T10:00:04Z",
+                       "closed_at": "2026-10-11T10:00:03Z"}):
+            with self.subTest(window=wrong):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["action_window"] = wrong
+                self.rejected("CLIENT_ACTION_WINDOW_INVALID")
+
+    def test_empty_or_nonstring_readback_sources_are_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind, code in (("repository", "CLIENT_REPOSITORY_READBACK_MISSING"),
+                           ("delivery", "CLIENT_EXACT_HOST_READBACK_MISSING")):
+            for wrong in (" ", True, 1):
+                with self.subTest(kind=kind, source=wrong):
+                    self.receipt = copy.deepcopy(valid)
+                    self.receipt["readback"][kind]["source"] = wrong
+                    self.rejected(code)
+
+    def test_public_delivery_url_cannot_substitute_another_origin(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for wrong in ("https://other.example/", "http://raumzeitterminal.de/",
+                      "https://raumzeitterminal.de.other.example/",
+                      "https://user:password@raumzeitterminal.de/",
+                      "https://raumzeitterminal.de:444/", "https://[", None):
+            with self.subTest(url=wrong):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["delivery"]["url"] = wrong
+                self.rejected("CLIENT_PUBLIC_DELIVERY_URL_INVALID")
+
+    def test_public_delivery_observation_must_be_read_only(self) -> None:
+        self.receipt["readback"]["delivery"]["method"] = "POST"
+        self.rejected("CLIENT_PUBLIC_DELIVERY_URL_INVALID")
+
+    def test_verified_delivery_requires_http_body_and_exact_final_origin(self) -> None:
+        self.done()
+        valid = copy.deepcopy(self.receipt)
+        for key, wrong in (("http_status", 404), ("http_status", "200"),
+                           ("response_sha256", ""), ("response_sha256", True),
+                           ("final_url", "https://other.example/"),
+                           ("final_url", "http://raumzeitterminal.de/")):
+            with self.subTest(key=key, value=wrong):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["delivery"][key] = wrong
+                self.rejected("CLIENT_PUBLIC_DELIVERY_PROOF_INCOMPLETE")
+
+    def test_fresh_unobservable_delivery_is_unknown_and_never_done(self) -> None:
+        self.block()
+        self.receipt["readback"]["delivery"].update(
+            diagnostic="fixture:client-DNS-unavailable", state="UNKNOWN")
+        self.assertEqual(self.check(), "BLOCK")
+        self.done()
+        self.receipt["readback"]["delivery"]["state"] = "UNKNOWN"
+        self.rejected("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+
+    def test_every_effectful_attempt_requires_its_own_closing_readback(self) -> None:
+        attempt = self.attempt(changed=True)
+        self.receipt["attempts"] = [attempt]
+        del attempt["readback"]
+        self.rejected("CLIENT_CLOSING_READBACK_MISSING")
+
+    def test_terminal_readback_cannot_hide_stale_attempt_readback(self) -> None:
+        attempt = self.attempt(changed=True)
+        self.receipt["attempts"] = [attempt]
+        attempt["readback"]["repository"]["observed_at"] = "2026-10-11T09:59:59Z"
+        self.rejected("CLIENT_READBACK_NOT_FRESH:repository")
+
+    def test_three_existing_routes_obey_same_closing_gate_through_cli(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "client.json"
+            for route in ("connector", "cli", "mesh"):
+                for fresh in (True, False):
+                    with self.subTest(route=route, fresh=fresh):
+                        receipt = copy.deepcopy(valid)
+                        receipt["next_actions"][0]["route"] = route
+                        if not fresh:
+                            receipt["readback"]["repository"]["observed_at"] = "2026-10-11T09:59:59Z"
+                        path.write_text(json.dumps(receipt))
+                        result = subprocess.run(
+                            [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                            cwd=ROOT, capture_output=True, text=True, timeout=10)
+                        self.assertEqual(result.returncode, 0 if fresh else 2, result.stderr)
+                        self.assertNotIn("Traceback", result.stderr)
+
+    def test_changing_only_delivery_clock_does_not_admit_failed_action_retry(self) -> None:
+        self.receipt["readback"]["delivery"]["observed_at"] = "2026-10-11T10:00:03Z"
+        self.receipt["attempts"] = [self.attempt()]
+        self.rejected("CLIENT_UNCHANGED_FAILURE_RETRIED")
+
+    def test_separate_effectful_actions_cannot_reuse_one_observation_pair(self) -> None:
+        first = self.attempt(changed=True)
+        second = copy.deepcopy(first)
+        second["current"]["cause"] = "6" * 64
+        self.receipt["attempts"] = [first, second]
+        self.rejected("CLIENT_CLOSING_ACTION_REUSED")
+        second["action_window"]["id"] = "fixture:action-2"
+        for kind in ("repository", "delivery"):
+            second["readback"][kind]["action_id"] = "fixture:action-2"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_timezone_offsets_are_compared_as_instants(self) -> None:
+        self.receipt["readback"]["repository"]["observed_at"] = "2026-10-11T13:00:01+03:00"
+        self.receipt["readback"]["delivery"]["observed_at"] = "2026-10-11T12:00:02+02:00"
+        self.assertEqual(self.check(), "CONTINUE")
+        self.receipt["readback"]["delivery"]["observed_at"] = "2026-10-11T13:00:00+03:00"
+        self.rejected("CLIENT_READBACK_NOT_FRESH:delivery")
+
+    def test_registered_adapters_share_authority_but_are_not_live_client_witnesses(self) -> None:
+        registry = json.loads((ROOT / "AI_ADAPTERS.json").read_text())
+        self.assertEqual(registry["canonical_entrypoint"], "AI")
+        self.assertIn("compatibility shims only", registry["rule"])
+        context = json.loads((ROOT / "AI_CONTEXT.json").read_text())
+        _, count = self.handoff.validate_adapters(context)
+        self.assertEqual(count, len(registry["adapters"]))
+
+    def test_regression_contract_reuses_exact_owner_rule_from_pr507(self) -> None:
+        import hashlib
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        binding = policy["client_continuation"]["end_of_action_rule"]
+        path = ROOT / binding["path"]
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), binding["sha256"])
+        self.assertEqual(binding["source_head"], "42008f98a94c28e9bfc1ae902fb190296c6ac5a6")
+        rule = json.loads(path.read_text())
+        self.assertEqual(rule["delegation_id"], "OWNER-END-OF-ACTION-VERIFICATION-GRUNDREGEL-V1")
+        self.assertTrue(rule["boundaries"]["readback_is_not_effect_ack"])
+        self.assertEqual(rule["continuation_rules"]["unchanged_error"], "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT")
 
 
 if __name__ == "__main__":
