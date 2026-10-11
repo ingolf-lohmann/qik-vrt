@@ -270,5 +270,97 @@
     "predecessor_evidence_transfer": false,
     "effect_ack_done": false,
     "ordinary_release": false
+  },
+  "main_consistent_pr519_successor_20261011": {
+    "authorized_by": "Ingolf Lohmann",
+    "prepared_by": {
+      "provider": "OpenAI",
+      "system": "Codex",
+      "model_family": "GPT-6"
+    },
+    "scope": "Reuse PR514 generator3.2 and original regression tests, preserve current Main lifecycle evidence and all PR519 non-manifest corrections, regenerate the shared canonical integrity trio.",
+    "inputs": {
+      "main": {
+        "head": "66974aa881c0829e03d48c4146ff2d335646d8c6",
+        "tree": "bd9a5387adc3f583ff6197cc7e18790a3e5238e6"
+      },
+      "pr514": {
+        "head": "c6dcc17bb638eed00d6d8a16eb45fb5121f97e1f",
+        "tree": "b4d858313364b1dd49f087613b8cedb2e0124bdb"
+      },
+      "pr519": {
+        "head": "1e3c0af8c841813188754e682f852b7b5c15934f",
+        "tree": "2c94433a457246ba24ef6aa0ad0e39e08114ba01"
+      }
+    },
+    "baseline_drift": {
+      "generator": "3.1",
+      "verify": "BLOCK repository manifest differs from deterministic regeneration",
+      "changed_entries": 10,
+      "paths": [
+        "evidence/node_health/38088608075-1.json",
+        "evidence/node_health/38115721714-1.json",
+        "evidence/node_health/38140562184-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/38088608075-1.json",
+        "evidence/node_registration_renewal/38115721714-1.json",
+        "evidence/node_registration_renewal/38140562184-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+      ]
+    },
+    "preservation": {
+      "main_non_manifest_blobs": "All retained except the explicit existing PR514/PR519 contribution paths. No removals. Newer lifecycle records and current NODE_* bytes retained.",
+      "pr519_non_manifest_blobs": "All fifteen retained byte-for-byte, including six article language versions and Site22 terminal JS/HTML.",
+      "pr514_implementation_and_tests": "Exact existing bytes; no new generator or exclusions, and no altered regression tests."
+    },
+    "required_verification": [
+      "make test on this successor source tree",
+      "integrity verify and byte-stable regeneration",
+      "existing lifecycle add/change/removal regression and immutable tamper rejection",
+      "independent native exact-head CI and materializer readback",
+      "native code-owner enforcement and independent native review before Main merge",
+      "independent repository HEAD/TREE and existing public Site22 readback"
+    ],
+    "governance_observation": {
+      "main_protected": false,
+      "effective_rulesets": [],
+      "native_reviews": [],
+      "state": "HOLD_CODE_OWNER_RULE_NOT_ENFORCED_AND_INDEPENDENT_REVIEW_ABSENT",
+      "remedy": "Use existing administrative ruleset writer with its properly scoped credential; independently review the new candidate HEAD after native tests. No bypass, self-approval or Main write."
+    },
+    "effect_boundary": {
+      "main_integrated": false,
+      "public_site_mutation": false,
+      "target_domain_delivery_claimed": false,
+      "predecessor_evidence_transfer": false,
+      "native_checks_for_this_successor": "REQUIRED_NOT_YET_OBSERVED"
+    },
+    "route": "REST_API_ONLY",
+    "return_evidence": "Exact successor HEAD/TREE, tests, native gate dispositions and public Site/domain observations must be bound in the existing PR discussion after persistence.",
+    "local_verification": {
+      "focused_integrity_and_terminal_tests": {
+        "tests": 18,
+        "result": "PASS",
+        "failures": 0,
+        "skips": 0
+      },
+      "tool_cache_contract": {
+        "result": "PASS",
+        "coverage": "14/14 (100%)"
+      },
+      "full_make_test_archive_attempt": {
+        "result": "BLOCK_LOCAL_HISTORY_INCOMPLETE",
+        "exit_code": 2,
+        "failing_gate": "evidence-contract-test",
+        "missing_existing_historical_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "classification": "Local archive/index supplies exact source snapshot, not complete Git parent-history and historical worktree closure. Existing tests remain unchanged. The successor must run full make test through existing native CI with fetch-depth 0."
+      },
+      "client_continuation_gate": {
+        "main_supports_client_receipt": false,
+        "rule_applied_directly": true
+      }
+    }
   }
 }
