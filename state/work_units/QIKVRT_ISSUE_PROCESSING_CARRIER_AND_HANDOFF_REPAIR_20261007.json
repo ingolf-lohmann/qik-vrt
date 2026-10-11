@@ -1,0 +1,286 @@
+{
+  "artificial_cognitive_actor": {
+    "identity_and_observation_limits": "Platform identity is not natural-person or model authentication.",
+    "model_or_build": "GPT-6; build UNAVAILABLE",
+    "provider": "OpenAI",
+    "session_or_run_id": "ec951f4ca195",
+    "system_family": "Codex",
+    "tools_and_adapters": [
+      "Git",
+      "GitHub connector",
+      "Python 3.12.14",
+      "repository issue_agent and integrity tools"
+    ]
+  },
+  "artificial_cognitive_contributions": [
+    "Fresh Main/PR/run/source inspection",
+    "Reuse of existing deterministic compiler and proposal guards from #379",
+    "Refactor existing gh review handoff into bounded readback/notification helper",
+    "History-preserving publication and exact artifact binding",
+    "Regression implementation and local verification"
+  ],
+  "carrier": {
+    "capability_gap": "NO_REVIEWED_EFFECTING_HANDLER_OR_AUTHORIZED_INFERENCE_CARRIER",
+    "effecting_handler": null,
+    "external_inference_used": false,
+    "fallback": "BLOCK / UNSUPPORTED_DETERMINISTIC_WORK_UNIT",
+    "name": "repository-local-deterministic-compiler",
+    "retirement_primary_source": "https://github.blog/changelog/2026-07-30-github-models-is-now-retired/",
+    "search_scope": "All tracked Main files including hidden adapters; relevant open issue-processor candidates including #379 and #485. OPENAI_API_KEY occurred only as a personal-capability boundary marker, not an admitted inference carrier."
+  },
+  "correction_history": [
+    {
+      "correction": "Export processor paths from RUNNER_TEMP through GITHUB_ENV in a setup step; execute that step in the added regression.",
+      "diagnosis": "runner.temp is unavailable in jobs.<job_id>.env; GitHub Contexts reference confirms step scope is required.",
+      "diagnosis_source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts",
+      "native_run": 37589722884,
+      "native_validation_observation": {
+        "conclusion": "failure",
+        "event": "push",
+        "jobs": 0,
+        "status": "completed"
+      },
+      "predecessor_commit": "3c4b73f1d0c4ca4fa516944230f8463b3f791412",
+      "predecessor_make_test_log_sha256": "aae724dd23b220e95af8ac070a91bca126f7a345f2061f3d55c87c4102c5c8c4",
+      "predecessor_results_transferred": false,
+      "predecessor_tree": "6256186ef8adb91613e4e3eb2e742cdcee52a201",
+      "predecessor_verification": {
+        "actual_local_python": "3.12.14",
+        "exact_committed_subject_tests": "REQUIRED_AFTER_COMMIT; read back in PR evidence",
+        "issue_agent_regressions": 24,
+        "local_preflight_make_test": "PASS",
+        "preflight_log_sha256": "f7ac9896ade4da33cb777ac7ee973dff503adc2626a488cd09ee11d5ea85f485",
+        "provider_test_boundary": "Git transactions and workflow branch/push shells are real local executions; GitHub PR/comment responses are fixtures, not live provider effects.",
+        "startup_notes": {
+          "base_integrity_stale_before_task_edits": true,
+          "bounded_optimization_apply": "HOLD because task edits make worktree dirty; no unrelated optimization performed",
+          "candidate_integrity_regenerated": true,
+          "optional_runtime_profile_state": "CONTINUE",
+          "partial_clone_historical_source_blobs_prefetched": true
+        },
+        "tool_cache": "14/14 (100%)",
+        "workflow_shell_blocks": 9
+      }
+    }
+  ],
+  "created_at": "2026-10-07T07:44:04.137263+00:00",
+  "external_effects": {
+    "authorized_scope": "Reviewable repair branch and draft PR only; no Main merge, approval, ruleset change, issue closure, deployment or publication."
+  },
+  "fresh_observations": {
+    "failed_run": {
+      "attempt": 1,
+      "branch_push_then_abort_observed": true,
+      "handoff_error": "GitHub Actions is not permitted to create or approve pull requests",
+      "head": "71f8c15319bf79456ac177d80941b4f59d372996",
+      "id": 37561095104,
+      "inference_error": "JSONDecodeError",
+      "job": 112598287306
+    },
+    "main": {
+      "head": "3d6148513b289005e71c73bae12de26f5f42f445",
+      "protected": false,
+      "tree": "712f0a997e201f66c912c2682d4ee5fa67c0b8d1"
+    },
+    "pr485": {
+      "branch": "issue-agent/458",
+      "branch_modified_by_this_task": false,
+      "draft": true,
+      "first_head": "13211cb3e9f58574a88e08c3c99608573a207eb7",
+      "latest_observed_head": "3238ad7e65959727ecf55cedd4cd6db136e35a60",
+      "latest_observed_tree": "6538e841f6b4cd2de04ac7da0136cca1847408ee",
+      "latest_parent": "3d6148513b289005e71c73bae12de26f5f42f445",
+      "legacy_writer_replaced_prior_branch_head": true,
+      "processing_sources_unchanged_in_latest_compare": true,
+      "state": "open"
+    }
+  },
+  "git_history": {
+    "branch": "work/issue-processing-repair-20261007-3d614851",
+    "correction_parent": "3c4b73f1d0c4ca4fa516944230f8463b3f791412",
+    "force_push": false,
+    "main_mutation": false,
+    "parent": "3d6148513b289005e71c73bae12de26f5f42f445"
+  },
+  "handoff_contract": {
+    "artifact_retained_on_handoff_failure": true,
+    "automatic_issue_close": false,
+    "automatic_merge": false,
+    "create_attempt_limit": 1,
+    "draft_create": true,
+    "exact_subject": [
+      "branch",
+      "commit",
+      "root_tree",
+      "five artifact byte counts/SHA256/Git blobs",
+      "workflow source commit/tree",
+      "run id/attempt"
+    ],
+    "failed_create_followed_by_readback": true,
+    "issue_comment_readback_required": true,
+    "issue_notification_independent_of_pr_create": true
+  },
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Task scope, causal diagnosis, repair authorization, required negative/success regressions, preservation of automatic_merge=false and automatic_issue_close=false."
+  ],
+  "human_decision": {
+    "exact_generated_candidate_acceptance": "PENDING",
+    "implementation_authorized": true
+  },
+  "inputs": [
+    {
+      "bytes": 2229,
+      "commit": "695bb4202a883a70893a50dd101bdc588f696e68",
+      "git_blob_sha1": "b514a86b2f05580bc16fe27d2f26af9c5a44c710",
+      "path": "scripts/issue_agent/compile.py",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "sha256": "94c72f75e84ced04ae0b4adf7b29f428b7854c081a25932da4593d67f87a3c18"
+    },
+    {
+      "bytes": 3764,
+      "commit": "695bb4202a883a70893a50dd101bdc588f696e68",
+      "git_blob_sha1": "d570d6c28777d1b1c002d64b9e6dd2930f968936",
+      "path": "scripts/issue_agent/finalize.py",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "sha256": "759242813b29d9f2a1d8526f7d20de6e8c382812e5c757f098812ba8ef6b7cc7"
+    },
+    {
+      "bytes": 3670,
+      "commit": "695bb4202a883a70893a50dd101bdc588f696e68",
+      "git_blob_sha1": "66c8eb3e51badf17dc5e6b8ff3b72adbfc537136",
+      "path": "scripts/issue_agent/promote.py",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "sha256": "a17a69a57ca7cd22f846978d2849f4d3b2aafebc98c6018155ee92d2bed4dbaf"
+    },
+    {
+      "bytes": 3296,
+      "commit": "695bb4202a883a70893a50dd101bdc588f696e68",
+      "git_blob_sha1": "c5e0d9dd7378968c8367c92ce04011234c6bc3a3",
+      "path": "scripts/issue_agent/validate.py",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "sha256": "b5728d1304221b9aaf0e47e802f43829d21f57031595e070e09019add28b2859"
+    }
+  ],
+  "joint_components": [],
+  "outputs": [
+    {
+      "bytes": 7315,
+      "git_blob_sha1": "39f515e8535b7cea93ad6c9baffa9da7c278abcc",
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "sha256": "44a71307b1f86506de3a9cda5f86bed64f217b760b7152d2b7e08ddeb001290b"
+    },
+    {
+      "bytes": 11292,
+      "git_blob_sha1": "0b38c0ad8700765cbc17f2fda23574b7e25d04aa",
+      "path": "Makefile",
+      "sha256": "7342b1ff5e7e56228cdbea52f8c95195fcb4906c12cc378415e488960feb1527"
+    },
+    {
+      "bytes": 6346,
+      "git_blob_sha1": "504a50f43a522271e4c760bab27acbc3bf52aecc",
+      "path": "docs/ISSUE_AUTONOMOUS_PROCESSING.md",
+      "sha256": "1f1d8f09b148898d1cc5accb0980fc7bc3a241cd1923f1654a059d5231fc955a"
+    },
+    {
+      "bytes": 2229,
+      "git_blob_sha1": "b514a86b2f05580bc16fe27d2f26af9c5a44c710",
+      "path": "scripts/issue_agent/compile.py",
+      "sha256": "94c72f75e84ced04ae0b4adf7b29f428b7854c081a25932da4593d67f87a3c18"
+    },
+    {
+      "bytes": 4694,
+      "git_blob_sha1": "6b16e14f18580a07eb14dc47161b5cf84d425357",
+      "path": "scripts/issue_agent/finalize.py",
+      "sha256": "715ff6c0d3c2f0c64910864e8b8f8d7b9dbecbd19173a8b6a55aef1a5cd3d0d3"
+    },
+    {
+      "bytes": 3670,
+      "git_blob_sha1": "66c8eb3e51badf17dc5e6b8ff3b72adbfc537136",
+      "path": "scripts/issue_agent/promote.py",
+      "sha256": "a17a69a57ca7cd22f846978d2849f4d3b2aafebc98c6018155ee92d2bed4dbaf"
+    },
+    {
+      "bytes": 3728,
+      "git_blob_sha1": "cb8ebc788113780d92486a4ab479c3c9fbdfcab5",
+      "path": "scripts/issue_agent/validate.py",
+      "sha256": "060c75a19a2696cd6ba5c4e9a23a230cc7196bc274f97aa6225749389e616f4c"
+    },
+    {
+      "bytes": 15418,
+      "git_blob_sha1": "6e79d84ab29a26e457e886661a30ac94e9582a2d",
+      "path": "scripts/issue_agent/handoff.py",
+      "sha256": "8fea3f475483a936af134d8348b78087a830ed2e99be6525d0e2bd06e0c57b45"
+    },
+    {
+      "bytes": 9938,
+      "git_blob_sha1": "c3817067c1c223858974e2dd39d80226938f6fcc",
+      "path": "tests/issue_agent/test_validate.py",
+      "sha256": "6d6400b7eed4318c747a0cf13b9136e572de074b9f5d9fff23121d7f68b1ab2e"
+    },
+    {
+      "bytes": 16818,
+      "git_blob_sha1": "59b4e566aadae1fef9a91e25d572b4f4b70d4bd7",
+      "path": "tests/issue_agent/test_processing.py",
+      "sha256": "1cef45bb4e08c898bfb31ece5d3c5d4723db6435e3f36bfc32e0d460acf2c516"
+    }
+  ],
+  "predecessor_evidence_transfer": false,
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "FINAL_PASS": false,
+    "PASS": false
+  },
+  "remaining_frontier": [
+    "Governed Main adoption and a fresh admitted execution of the changed issue workflow are not performed by this candidate.",
+    "Native GITHUB_TOKEN PR creation may remain denied by repository settings; denial is recorded and the issue is notified without changing permissions.",
+    "Deterministic carrier has no effecting handler; business issue repair remains BLOCK."
+  ],
+  "reuse": {
+    "adopted_components": [
+      "scripts/issue_agent/compile.py",
+      "scripts/issue_agent/finalize.py",
+      "scripts/issue_agent/promote.py",
+      "scripts/issue_agent/validate.py"
+    ],
+    "excluded_components": [
+      "issue-agent-autofinish workflow",
+      "review-context policies/workflows",
+      "unrelated source tests and integrity snapshots"
+    ],
+    "pr": 379,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "source_commit": "695bb4202a883a70893a50dd101bdc588f696e68",
+    "source_tests_transferred": false
+  },
+  "schema": "qikvrt_human_ai_work_unit_v1",
+  "source_commit": "3d6148513b289005e71c73bae12de26f5f42f445",
+  "source_ref": "refs/heads/main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "712f0a997e201f66c912c2682d4ee5fa67c0b8d1",
+  "unresolved_origin": [],
+  "verification": {
+    "actual_local_python": "3.12.14",
+    "complete_make_test": "REQUIRED_AFTER_SUCCESSOR_COMMIT; read back in PR evidence",
+    "exact_committed_subject_tests": "REQUIRED_AFTER_COMMIT; read back in PR evidence",
+    "issue_agent_regression_result": "PASS on successor source bytes; full exact-commit checks required afterward",
+    "issue_agent_regressions": 25,
+    "local_preflight_make_test": "PASS on successor candidate before final evidence receipt materialization",
+    "native_workflow_validation": "REQUIRED_AFTER_SUCCESSOR_PUBLICATION; no live workflow execution claimed",
+    "preflight_log_sha256": "07a69be007068f2abc4957214f373eaac851c18eb2f9319c2fab2bf28b2a911c",
+    "provider_test_boundary": "Git transactions and workflow branch/push shells are real local executions; GitHub PR/comment responses are fixtures, not live provider effects.",
+    "startup_notes": {
+      "base_integrity_stale_before_task_edits": true,
+      "bounded_optimization_apply": "HOLD because task edits make worktree dirty; no unrelated optimization performed",
+      "candidate_integrity_regenerated": true,
+      "optional_runtime_profile_state": "CONTINUE",
+      "partial_clone_historical_source_blobs_prefetched": true
+    },
+    "tool_cache": "14/14 (100%)",
+    "workflow_shell_blocks": 10,
+    "workflow_shell_syntax_result": "PASS"
+  },
+  "work_unit_id": "QIKVRT_ISSUE_PROCESSING_CARRIER_AND_HANDOFF_REPAIR_20261007"
+}
