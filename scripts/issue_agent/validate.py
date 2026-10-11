@@ -80,6 +80,23 @@ def validate(directory: Path) -> None:
     if not answer:
         raise SystemExit("EMPTY_ANSWER")
 
+    attempt_path = directory / 'ATTEMPT.json'
+    if attempt_path.exists():
+        try:
+            attempt = json.loads(attempt_path.read_text())
+            if (attempt.get('schema') != 'qikvrt_issue_causal_attempt_v1'
+                or attempt.get('recorded') is not True
+                or attempt.get('issue_number') != number
+                or attempt.get('repository') != request_data.get('repository')
+                or hashlib.sha256(json.dumps(attempt['inputs'], sort_keys=True,
+                    separators=(',', ':')).encode()).hexdigest() != attempt['fingerprint']):
+                raise ValueError()
+            for name in REQUIRED:
+                if attempt['artifacts'][name] != hashlib.sha256((directory / name).read_bytes()).hexdigest():
+                    raise ValueError()
+        except (ValueError, KeyError, TypeError):
+            raise SystemExit('ATTEMPT_INPUT_OR_OUTPUT_MISMATCH') from None
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

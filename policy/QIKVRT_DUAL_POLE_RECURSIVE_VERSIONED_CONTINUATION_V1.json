@@ -45,7 +45,8 @@
     "relation": "OBSERVE_BOTH -> CLASSIFY_GAP -> ADMIT_EXISTING_AUTHORITY_ACTION -> MATERIALIZE_SUCCESSOR -> EXECUTE_BOTH -> READBACK_BOTH -> COMPARE -> BIND -> REPEAT",
     "first_success_terminal": false,
     "first_failure_terminal": false,
-    "stop_only_on": "DECLARED_SCOPED_EFFECT_ACK_DONE_OR_HARD_AUTHORITY_BOUNDARY"
+    "stop_only_on": "HARD_AUTHORITY_BOUNDARY",
+    "after_scoped_effect_ack_done": "EFFECT_ACK_CONTINUE"
   },
   "universality_claim_boundary": {
     "cloud_transputer_universal_functionality": "TARGET_REQUIRES_CONNECTABILITY_EVIDENCE_ACROSS_DECLARED_INTERFACES",

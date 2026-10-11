@@ -1,0 +1,155 @@
+{
+  "EFFECT_ACK_DONE": false,
+  "PREDECESSOR_EVIDENCE_TRANSFER": false,
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "contribution_class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "contributions": [
+      "Current REST source and job-log inspection",
+      "Adapt PR 486 to current Main",
+      "Shared causal admission, preserved history, REST handoff and idempotent resume",
+      "Fresh regression execution and candidate preparation"
+    ],
+    "model_or_build": "UNAVAILABLE"
+  },
+  "automatic_issue_close": false,
+  "automatic_merge": false,
+  "causal_scope": {
+    "observed": "The external inference parser raises on non-JSON response; continue-on-error permits repeated BLOCK evidence writes and successful workflow conclusion. The backlog dispatcher previously admitted solely by age.",
+    "provider_response_bytes": "UNKNOWN",
+    "provider_side_cause": "NOT_ESTABLISHED",
+    "repair": "Remove external inference; persist exact causal attempt inputs; shared pre-dispatch/pre-process NOOP; preserve previous evidence; controlled REST handoff."
+  },
+  "deletions": [
+    "scripts/issue_agent/infer.py"
+  ],
+  "effect_state": "EFFECT_ACK_CONTINUE",
+  "error_observations": [
+    {
+      "error": "JSONDecodeError at json.load(response)",
+      "issue": 466,
+      "job": 114319171479,
+      "run": 38088244627
+    },
+    {
+      "error": "JSONDecodeError at json.load(response)",
+      "issue": 458,
+      "job": 114319166207,
+      "run": 38088242275
+    },
+    {
+      "error": "JSONDecodeError at json.load(response)",
+      "issue": 503,
+      "job": 114319159525,
+      "run": 38088239772
+    }
+  ],
+  "governance": {
+    "independent_reviews_at_observation": 0,
+    "main_merge_authorized_only_after_existing_gates": true,
+    "native_gate_failure": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "permissions_expanded": false,
+    "rulesets_at_observation": []
+  },
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "contribution_class": "HUMAN",
+    "contributions": [
+      "Current task scope and authorization",
+      "Preserve issue evidence and governance; suppress unchanged failing attempts; verify exact candidate"
+    ]
+  },
+  "observed_at_utc": "2026-10-11T00:00:40.488089+00:00",
+  "output_bindings": [
+    {
+      "bytes": 11377,
+      "path": ".github/workflows/issue-autonomous-processing.yml",
+      "sha256": "bd86991d0347159d79169ad8ccb7273579b584360d859a1147774979d967174c"
+    },
+    {
+      "bytes": 4316,
+      "path": ".github/workflows/issue-agent-backlog-resume.yml",
+      "sha256": "f45ac3b13f8059f51030c50a454d5af78d9b9bda08e9cd0769132fc243fef333"
+    },
+    {
+      "bytes": 11292,
+      "path": "Makefile",
+      "sha256": "7342b1ff5e7e56228cdbea52f8c95195fcb4906c12cc378415e488960feb1527"
+    },
+    {
+      "bytes": 8528,
+      "path": "docs/ISSUE_AUTONOMOUS_PROCESSING.md",
+      "sha256": "d83ffed7334c5c84498004a04bc5529ac3838642c867c67b205b0292f92e370e"
+    },
+    {
+      "bytes": 10826,
+      "path": "scripts/issue_agent/compile.py",
+      "sha256": "5ced441f5e1f309e1ccf42e7749ffc275709a5c6b75f197bc4572a20d79dc6fd"
+    },
+    {
+      "bytes": 4717,
+      "path": "scripts/issue_agent/finalize.py",
+      "sha256": "d3165683c6441f5c13ae97da3168bc5e3e5768e8e54ce564a425a28aae66b13a"
+    },
+    {
+      "bytes": 18103,
+      "path": "scripts/issue_agent/handoff.py",
+      "sha256": "b22b8300a4bec1d60e6de8292e41e97c25bfe63372f5d851304eedfd909d0920"
+    },
+    {
+      "bytes": 3670,
+      "path": "scripts/issue_agent/promote.py",
+      "sha256": "a17a69a57ca7cd22f846978d2849f4d3b2aafebc98c6018155ee92d2bed4dbaf"
+    },
+    {
+      "bytes": 4658,
+      "path": "scripts/issue_agent/validate.py",
+      "sha256": "612d4f2cd89874166a2cd0c22565d2abd1db609ab93b8fc47ba85193b55c6359"
+    },
+    {
+      "bytes": 33429,
+      "path": "tests/issue_agent/test_processing.py",
+      "sha256": "0ae83abaf7ca344a791b696e76d3bd2f1591cd89f4405395b5cf5c119cd5d5bb"
+    },
+    {
+      "bytes": 9938,
+      "path": "tests/issue_agent/test_validate.py",
+      "sha256": "6d6400b7eed4318c747a0cf13b9136e572de074b9f5d9fff23121d7f68b1ab2e"
+    },
+    {
+      "bytes": 12457,
+      "path": "state/work_units/QIKVRT_ISSUE_PROCESSING_CARRIER_AND_HANDOFF_REPAIR_20261007.json",
+      "sha256": "5aa416b3113a085f38a60b61419d44c8977028c22b16c2d1354b11720cdc45a7"
+    }
+  ],
+  "remaining_boundary": [
+    "Independent exact-head Code Owner approval and enforced native governance",
+    "Full repository test and integrity gate on the final native checkout",
+    "Fresh processing of issues 466/458/503 on integrated successor; repeat unchanged fingerprints must NOOP",
+    "No reviewed effecting handler: business issues remain BLOCK, not completed"
+  ],
+  "reuse": {
+    "head": "c622abf3c6be9eee10d4862b511a6fd3fe001585",
+    "historical_work_unit_retained": true,
+    "pull_request": 486,
+    "source_tests_transferred": false
+  },
+  "schema": "qikvrt_human_ai_work_unit_v1",
+  "source_commit": "a639a3b3d6b03322de91bfeb3eb7327d24da24ed",
+  "source_ref": "refs/heads/main",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "c60640d124c0ecf390858c9c20f3e9b22e284120",
+  "verification": {
+    "command": "make issue-agent-test",
+    "complete_make_test": "NOT_RUN_IN_SPARSE_LOCAL_SNAPSHOT; native full checkout gate required",
+    "log_sha256": "5a5f43b10ec3d614825978e308187d07567f4b22ad27f023290c0a26ef77dde7",
+    "native_processing": "NOT_EXECUTED",
+    "provider_boundary": "Temporary Git repositories and actual shell executions are real; PR and comment provider responses are controlled fixtures.",
+    "regressions": 48,
+    "result": "PASS",
+    "tool_cache": "PASS 14/14",
+    "workflow_shell_blocks": 12,
+    "workflow_shell_syntax": "PASS"
+  },
+  "work_unit_id": "QIKVRT_ISSUE_PROCESSOR_CAUSAL_REPAIR_20261011"
+}

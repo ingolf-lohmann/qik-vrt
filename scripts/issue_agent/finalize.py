@@ -50,7 +50,7 @@ def main() -> None:
     compilation_succeeded = (
         args.processing_outcome == "success"
         and answer.exists()
-        and answer.stat().st_size > 0
+        and bool(answer.read_text(encoding='utf-8').strip())
     )
     if not compilation_succeeded:
         reason = "MODEL_INFERENCE_UNAVAILABLE" if args.inference_outcome is not None else "DETERMINISTIC_COMPILER_FAILED"

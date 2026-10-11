@@ -35,6 +35,7 @@ jobs:
           echo "ISSUE_JSON=$RUNNER_TEMP/qikvrt-issue.json" >> "$GITHUB_ENV"
           echo "TRUSTED_PROCESSOR_ROOT=$RUNNER_TEMP/qikvrt-issue-processor" >> "$GITHUB_ENV"
           echo "HANDOFF_DIRECTORY=$RUNNER_TEMP/qikvrt-issue-handoff" >> "$GITHUB_ENV"
+          echo "PREPARED_INPUT_DIRECTORY=$RUNNER_TEMP/qikvrt-issue-input" >> "$GITHUB_ENV"
 
       - name: Validate and retain trusted processor
         run: |
@@ -44,6 +45,10 @@ jobs:
           mkdir -p "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent" "$TRUSTED_PROCESSOR_ROOT/tools"
           cp scripts/issue_agent/*.py "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/"
           cp tools/qikvrt_subprocess.py tools/qikvrt_integrity.py "$TRUSTED_PROCESSOR_ROOT/tools/"
+          mkdir -p "$TRUSTED_PROCESSOR_ROOT/.github/workflows" "$TRUSTED_PROCESSOR_ROOT/policy"
+          cp .github/workflows/issue-autonomous-processing.yml .github/workflows/issue-agent-backlog-resume.yml \
+            "$TRUSTED_PROCESSOR_ROOT/.github/workflows/"
+          cp policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json "$TRUSTED_PROCESSOR_ROOT/policy/"
           touch "$TRUSTED_PROCESSOR_ROOT/scripts/__init__.py" \
             "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/__init__.py" \
             "$TRUSTED_PROCESSOR_ROOT/tools/__init__.py"
@@ -65,35 +70,86 @@ jobs:
           jq -e --argjson number "$number" '(.pull_request | not) and .number == $number' "$ISSUE_JSON" >/dev/null
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
-      - name: Prepare history-preserving issue branch
-        env:
-          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
-        run: |
-          set -euo pipefail
-          branch="issue-agent/$ISSUE_NUMBER"
-          git config user.name "qik-vrt-issue-agent[bot]"
-          git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
-          remote="$(git ls-remote --heads origin "refs/heads/$branch")"
-          if [ -n "$remote" ]; then
-            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
-            git checkout -b "$branch" --track "origin/$branch"
-            git merge --no-edit "$GITHUB_SHA"
-          else
-            git checkout -b "$branch" "$GITHUB_SHA"
-          fi
-
-      - name: Materialize request and repository context
+      - name: Evaluate causal retry admission
+        id: admission
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
           python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/materialize.py" \
-            --issue "$ISSUE_JSON" \
-            --repository "$REPOSITORY" \
-            --output-dir "evidence/issues/$ISSUE_NUMBER"
+            --issue "$ISSUE_JSON" --repository "$REPOSITORY" --output-dir "$PREPARED_INPUT_DIRECTORY"
+          branch="issue-agent/$ISSUE_NUMBER"
+          previous_args=()
+          remote="$(git ls-remote --heads origin "refs/heads/$branch")"
+          if [ -n "$remote" ]; then
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            previous_args=(--previous-ref "refs/remotes/origin/$branch")
+          fi
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/compile.py" \
+            --check-admission --issue "$ISSUE_JSON" --repository "$REPOSITORY" \
+            --context "$PREPARED_INPUT_DIRECTORY/CONTEXT.md" \
+            --output "$HANDOFF_DIRECTORY/ADMISSION.json" "${previous_args[@]}"
+          echo "execute=$(jq -r '.execute' "$HANDOFF_DIRECTORY/ADMISSION.json")" >> "$GITHUB_OUTPUT"
+          echo "previous_branch_head=$(jq -r '.previous_branch_head // ""' "$HANDOFF_DIRECTORY/ADMISSION.json")" >> "$GITHUB_OUTPUT"
+          jq -r '.reason' "$HANDOFF_DIRECTORY/ADMISSION.json" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Prepare history-preserving issue branch
+        if: steps.admission.outputs.execute == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          PREVIOUS_BRANCH_HEAD: ${{ steps.admission.outputs.previous_branch_head }}
+        run: |
+          set -euo pipefail
+          branch="issue-agent/$ISSUE_NUMBER"
+          git config user.name "qik-vrt-issue-agent[bot]"
+          git config user.email "qik-vrt-issue-agent[bot]@users.noreply.github.com"
+          remote="$(git ls-remote --heads origin "refs/heads/$branch")"
+          if [ "${PREVIOUS_BRANCH_HEAD+x}" = x ]; then
+            observed="${remote%%[[:space:]]*}"
+            test "$observed" = "$PREVIOUS_BRANCH_HEAD" || { echo "ISSUE_BRANCH_CHANGED_AFTER_ADMISSION" >&2; exit 1; }
+          fi
+          if [ -n "$remote" ]; then
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            git checkout -b "$branch" --track "origin/$branch"
+            if ! git merge --no-commit --no-ff "$GITHUB_SHA"; then
+              # Only generated integrity projections may be resolved mechanically.
+              # Other conflicts retain the branch and require new causal information.
+              while IFS= read -r path; do
+                case "$path" in
+                  REPOSITORY_FILE_MANIFEST.json|REPOSITORY_FILE_MANIFEST.json.sha256|SHA256SUMS.txt)
+                    git checkout --ours -- "$path"; git add "$path" ;;
+                  *) echo "ISSUE_BRANCH_CONFLICT:$path" >&2; exit 1 ;;
+                esac
+              done < <(git diff --name-only --diff-filter=U)
+              test -z "$(git diff --name-only --diff-filter=U)"
+            fi
+          else
+            git checkout -b "$branch" "$GITHUB_SHA"
+          fi
+
+      - name: Materialize request and repository context
+        if: steps.admission.outputs.execute == 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python3 -B - "$TRUSTED_PROCESSOR_ROOT" "$PREPARED_INPUT_DIRECTORY" "$ISSUE_NUMBER" <<'PY'
+          import shutil, sys
+          from pathlib import Path
+          sys.path.insert(0, sys.argv[1])
+          from scripts.issue_agent.compile import preserve_previous
+          directory = Path('evidence/issues') / sys.argv[3]
+          directory.mkdir(parents=True, exist_ok=True)
+          preserve_previous(directory)
+          (directory / 'ATTEMPT.json').unlink(missing_ok=True)
+          for name in ('REQUEST.json', 'REQUEST.sha256', 'CONTEXT.md'):
+              shutil.copyfile(Path(sys.argv[2]) / name, directory / name)
+          PY
 
       - name: Compile deterministic repository-grounded disposition
+        if: steps.admission.outputs.execute == 'true'
         id: compilation
         continue-on-error: true
         env:
@@ -106,6 +162,7 @@ jobs:
             --output "evidence/issues/$ISSUE_NUMBER/ANSWER.md"
 
       - name: Enforce truthful status
+        if: steps.admission.outputs.execute == 'true'
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
           PROCESSING_OUTCOME: ${{ steps.compilation.outcome }}
@@ -116,12 +173,21 @@ jobs:
             --processing-outcome "$PROCESSING_OUTCOME"
 
       - name: Validate evidence and materialize canonical integrity
+        if: steps.admission.outputs.execute == 'true'
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
         run: |
           set -euo pipefail
           python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/validate.py" "evidence/issues/$ISSUE_NUMBER"
           python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/promote.py" "evidence/issues/$ISSUE_NUMBER"
+          python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/validate.py" "evidence/issues/$ISSUE_NUMBER"
+          python3 -B - "$TRUSTED_PROCESSOR_ROOT" "$HANDOFF_DIRECTORY/ADMISSION.json" "$ISSUE_NUMBER" <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, sys.argv[1])
+          from scripts.issue_agent.compile import record_attempt
+          record_attempt(Path('evidence/issues') / sys.argv[3], Path(sys.argv[2]))
+          PY
           python3 -B "$TRUSTED_PROCESSOR_ROOT/scripts/issue_agent/validate.py" "evidence/issues/$ISSUE_NUMBER"
           python3 -B - "$TRUSTED_PROCESSOR_ROOT" <<'PY'
           import sys
@@ -133,6 +199,7 @@ jobs:
           PY
 
       - name: Persist issue work branch
+        if: steps.admission.outputs.execute == 'true'
         id: publication
         env:
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}

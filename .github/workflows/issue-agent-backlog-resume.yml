@@ -28,15 +28,20 @@ jobs:
       REPOSITORY: ${{ github.repository }}
       REQUESTED_ISSUE: ${{ inputs.issue_number }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
       - name: Discover and resume stale non-final issue transactions
         shell: bash
         run: |
           set -euo pipefail
 
-          now_epoch="$(date -u +%s)"
-          minimum_age_seconds=1500
+          python3 -B tools/qikvrt_tool_cache.py verify
 
           if [ -n "${REQUESTED_ISSUE:-}" ]; then
+            [[ "$REQUESTED_ISSUE" =~ ^[1-9][0-9]*$ ]]
             issues="$REQUESTED_ISSUE"
           else
             issues="$(gh pr list \
@@ -48,11 +53,12 @@ jobs:
           fi
 
           resumed=0
-          skipped_fresh=0
+          skipped_unchanged=0
           skipped_final=0
           blocked_missing_status=0
 
           for issue in $issues; do
+            [[ "$issue" =~ ^[1-9][0-9]*$ ]]
             branch="issue-agent/$issue"
             status_url="repos/$REPOSITORY/contents/evidence/issues/$issue/STATUS.json?ref=$branch"
 
@@ -63,7 +69,6 @@ jobs:
             fi
 
             status="$(printf '%s' "$status_json" | jq -r '.status // "BLOCK"')"
-            generated_at="$(printf '%s' "$status_json" | jq -r '.generated_at // "1970-01-01T00:00:00Z"')"
 
             case "$status" in
               DONE|EFFECT_ACK_DONE)
@@ -79,19 +84,29 @@ jobs:
                 ;;
             esac
 
-            generated_epoch="$(date -u -d "$generated_at" +%s 2>/dev/null || echo 0)"
-            age=$((now_epoch - generated_epoch))
-            if [ "$age" -lt "$minimum_age_seconds" ]; then
-              echo "issue=$issue state=WAIT reason=fresh_attempt age_seconds=$age"
-              skipped_fresh=$((skipped_fresh + 1))
+            input="$RUNNER_TEMP/issue-resume/$issue"
+            mkdir -p "$input"
+            gh api "repos/$REPOSITORY/issues/$issue" > "$input/issue.json"
+            python3 -B scripts/issue_agent/materialize.py --issue "$input/issue.json" \
+              --repository "$REPOSITORY" --output-dir "$input"
+            git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch"
+            if ! python3 -B scripts/issue_agent/compile.py --check-admission \
+              --issue "$input/issue.json" --repository "$REPOSITORY" \
+              --context "$input/CONTEXT.md" --previous-ref "refs/remotes/origin/$branch" \
+              --output "$input/ADMISSION.json"; then
+              echo "issue=$issue state=BLOCK reason=causal_admission_unavailable"
+              continue
+            fi
+            if [ "$(jq -r '.execute' "$input/ADMISSION.json")" != true ]; then
+              echo "issue=$issue state=NOOP reason=unchanged_causal_input"
+              skipped_unchanged=$((skipped_unchanged + 1))
               continue
             fi
 
-            gh workflow run issue-autonomous-processing.yml \
-              --repo "$REPOSITORY" \
-              --ref main \
-              -f issue_number="$issue"
-            echo "issue=$issue state=RESUMED previous_status=$status age_seconds=$age"
+            jq -n --arg issue "$issue" '{ref:"main",inputs:{issue_number:$issue}}' > "$input/DISPATCH.json"
+            gh api --method POST "repos/$REPOSITORY/actions/workflows/issue-autonomous-processing.yml/dispatches" \
+              --input "$input/DISPATCH.json"
+            echo "issue=$issue state=RESUMED previous_status=$status reason=new_causal_input"
             resumed=$((resumed + 1))
           done
 
@@ -99,7 +114,7 @@ jobs:
             echo "## Issue-agent backlog resume"
             echo
             echo "- resumed: $resumed"
-            echo "- skipped fresh: $skipped_fresh"
+            echo "- unchanged causal inputs: $skipped_unchanged"
             echo "- final/awaiting auto-finish: $skipped_final"
             echo "- missing status blockers: $blocked_missing_status"
           } >> "$GITHUB_STEP_SUMMARY"

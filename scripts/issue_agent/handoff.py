@@ -61,7 +61,7 @@ def freeze_subject(root: Path, receipt: dict) -> None:
     request = json.loads((directory / "REQUEST.json").read_text(encoding="utf-8"))
     if request.get("repository") != receipt["repository"] or request.get("issue_number") != receipt["issue_number"]:
         raise HandoffError("REQUEST_SUBJECT_MISMATCH")
-    for name in REQUIRED:
+    for name in (*REQUIRED, *(('ATTEMPT.json',) if (directory / 'ATTEMPT.json').exists() else ())):
         path = (directory / name).relative_to(root).as_posix()
         raw = checked(["git", "rev-parse", f"{head}:{path}"], root, "ARTIFACT_BLOB_UNAVAILABLE")
         result = command(["git", "show", f"{head}:{path}"], root)
@@ -126,6 +126,8 @@ def read_pr(root: Path, receipt: dict) -> dict | None:
 def review_handoff(root: Path, output: Path, receipt: dict) -> None:
     pr = read_pr(root, receipt)
     if pr is None:
+        if receipt['pr_create_attempts']:
+            raise HandoffError('PR_CREATE_RETRY_REQUIRES_NEW_CAPABILITY_EVIDENCE')
         body = output / "PR_BODY.md"
         body.write_text(
             f"Repository-local processing proposal for #{receipt['issue_number']}.\n\n"
@@ -137,14 +139,20 @@ def review_handoff(root: Path, output: Path, receipt: dict) -> None:
         )
         receipt["pr_create_attempts"] = 1
         write_receipt(output, receipt)  # retain the attempt before the external write
+        request_path = output / 'PR_REQUEST.json'
+        request_path.write_text(json.dumps({
+            'base': 'main', 'head': receipt['branch'], 'draft': True,
+            'title': f"Issue agent: process #{receipt['issue_number']}",
+            'body': body.read_text(encoding='utf-8'),
+        }))
         result = command([
-            "gh", "pr", "create", "--repo", receipt["repository"], "--base", "main",
-            "--head", receipt["branch"], "--draft", "--title",
-            f"Issue agent: process #{receipt['issue_number']}", "--body-file", str(body),
+            'gh', 'api', '--method', 'POST', f"repos/{receipt['repository']}/pulls",
+            '--input', str(request_path),
         ], root)
         if result.returncode or result.timed_out or result.output_limit_exceeded:
             # Persist a bounded cause, never arbitrary provider text or tokens.
-            denied = "not permitted to create or approve pull requests" in result.stderr.lower()
+            denied = any(s in result.stderr.lower() for s in (
+                'not permitted to create or approve pull requests', 'resource not accessible by integration', 'http 403'))
             receipt["pr_create_error"] = "PR_CREATION_NOT_PERMITTED" if denied else "PR_CREATE_FAILED_OR_AMBIGUOUS"
             receipt["pr_create_exit_code"] = result.returncode
         # One authoritative read after success OR an ambiguous/denied response;
@@ -165,7 +173,7 @@ def review_handoff(root: Path, output: Path, receipt: dict) -> None:
 def comment_body(receipt: dict) -> str:
     repo, issue, head = receipt["repository"], receipt["issue_number"], receipt["commit"]
     lines = [
-        f"<!-- qikvrt-issue-handoff:{issue}:{head}:{receipt['run_id']}:{receipt['run_attempt']} -->",
+        f"<!-- qikvrt-issue-handoff:{issue}:{head} -->",
         f"Repository processing status: **{receipt['processing_status']}**",
         f"Review handoff status: **{receipt['handoff_status']}**", "",
         f"Branch: `{receipt['branch']}`", f"Commit: `{head}`", f"Root tree: `{receipt['tree']}`",
@@ -194,13 +202,43 @@ def notify_issue(root: Path, output: Path, receipt: dict) -> None:
     body_path = output / "ISSUE_COMMENT.md"
     body_path.write_text(body, encoding="utf-8")
     receipt["issue_comment_sha256"] = hashlib.sha256(body.encode("utf-8")).hexdigest()
-    receipt["issue_comment_attempts"] = 1
-    receipt["notification_status"] = "ATTEMPTED"
-    write_receipt(output, receipt)
-    url = checked([
-        "gh", "issue", "comment", str(receipt["issue_number"]), "--repo", receipt["repository"],
-        "--body-file", str(body_path),
-    ], root, "ISSUE_NOTIFICATION_FAILED_OR_AMBIGUOUS")
+    marker = body.splitlines()[0]
+    def existing_comment():
+        matches = []
+        for page in range(1, 101):
+            rows = json.loads(checked([
+                'gh', 'api', f"repos/{receipt['repository']}/issues/{receipt['issue_number']}/comments?per_page=100&page={page}",
+            ], root, 'ISSUE_NOTIFICATION_LOOKUP_UNAVAILABLE'))
+            if not isinstance(rows, list):
+                raise HandoffError('ISSUE_NOTIFICATION_RESPONSE_INVALID')
+            matches.extend(row for row in rows if isinstance(row, dict) and marker in (row.get('body') or ''))
+            if len(rows) < 100:
+                break
+        else:
+            raise HandoffError('ISSUE_NOTIFICATION_INVENTORY_INCOMPLETE')
+        if len(matches) > 1:
+            raise HandoffError('ISSUE_NOTIFICATION_AMBIGUOUS')
+        if matches and matches[0].get('body') != body:
+            raise HandoffError('ISSUE_NOTIFICATION_EXISTING_BODY_MISMATCH')
+        return matches[0]['html_url'] if matches else None
+    url = existing_comment()
+    if url is None:
+        if receipt['issue_comment_attempts']:
+            raise HandoffError('ISSUE_NOTIFICATION_RETRY_REQUIRES_NEW_CAPABILITY_EVIDENCE')
+        receipt['issue_comment_attempts'] = 1
+        receipt['notification_status'] = 'ATTEMPTED'
+        write_receipt(output, receipt)
+        request_path = output / 'COMMENT_REQUEST.json'
+        request_path.write_text(json.dumps({'body': body}))
+        result = command([
+            'gh', 'api', '--method', 'POST',
+            f"repos/{receipt['repository']}/issues/{receipt['issue_number']}/comments",
+            '--input', str(request_path),
+        ], root)
+        # Even a connection loss can follow a successful write; observe first.
+        url = existing_comment()
+        if url is None:
+            raise HandoffError('ISSUE_NOTIFICATION_FAILED_OR_AMBIGUOUS')
     match = re.fullmatch(
         rf"https://github\.com/{re.escape(receipt['repository'])}/issues/{receipt['issue_number']}#issuecomment-([0-9]+)", url
     )
@@ -225,6 +263,17 @@ def handoff(*, root: Path, output: Path, repository: str, issue_number: int,
         or any(not re.fullmatch(r"[1-9][0-9]*", value) for value in (run_id, run_attempt))):
         raise HandoffError("INVALID_HANDOFF_SUBJECT")
     output.mkdir(parents=True, exist_ok=True)
+    previous_path = output / 'HANDOFF.json'
+    try:
+        previous = json.loads(previous_path.read_text()) if previous_path.exists() else {}
+        if not isinstance(previous, dict):
+            raise ValueError()
+    except (ValueError, OSError):
+        raise HandoffError('RESUME_RECEIPT_INVALID') from None
+    if previous and any(previous.get(key) != value for key, value in (
+        ('repository', repository), ('issue_number', issue_number), ('commit', commit),
+        ('tree', tree), ('source_commit', source_commit))):
+        raise HandoffError('RESUME_SUBJECT_MISMATCH')
     receipt = {
         "schema": "qikvrt_issue_review_handoff_v1", "repository": repository,
         "issue_number": issue_number, "branch": f"issue-agent/{issue_number}",
@@ -238,6 +287,9 @@ def handoff(*, root: Path, output: Path, repository: str, issue_number: int,
         "automatic_merge": False, "automatic_issue_close": False, "EFFECT_ACK_DONE": False,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
+    for key in ('pr_create_attempts', 'issue_comment_attempts'):
+        if previous:
+            receipt[key] = previous[key]
     write_receipt(output, receipt)
     try:
         freeze_subject(root, receipt)

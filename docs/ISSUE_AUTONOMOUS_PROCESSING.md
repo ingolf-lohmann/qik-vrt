@@ -45,9 +45,10 @@ remains `BLOCK / MODEL_INFERENCE_UNAVAILABLE`; a legacy success cannot authorize
 an answer or an effect. `STATUS.json.work_unit` binds the exact request,
 context and answer SHA-256 values and records the remaining capability gap.
 
-The previous endpoint was retired with GitHub Models on 2026-07-30:
-https://github.blog/changelog/2026-07-30-github-models-is-now-retired/
-The executable inference client and the `models: read` permission are removed.
+The native jobs 114319171479, 114319166207 and 114319159525 on 2026-10-10
+observed `JSONDecodeError` at `json.load(response)`. The response bytes and the
+provider-side cause were not established by those traces. The executable
+inference client and the `models: read` permission are removed.
 No current external inference carrier was found in the inspected Main or the
 relevant open issue-processor candidates. A future carrier requires a reviewed
 repository binding and authorized runtime credentials; a mentioned secret name
@@ -61,9 +62,9 @@ existing issue branch is fetched and merged. Request transport remains in
 together. An ordinary push preserves history and rejects a competing writer;
 neither a branch reset nor force-push is used.
 
-`scripts/issue_agent/handoff.py` refactors the existing `gh pr create` and
-`gh issue comment` operations. It verifies the remote branch with `ls-remote`
-and a fresh fetch, and checks all five evidence files against the published
+`scripts/issue_agent/handoff.py` uses GitHub REST POSTs for the existing PR
+and issue-comment operations. It verifies the remote branch with `ls-remote`
+and a fresh fetch, and checks all five evidence files and the attempt ledger against the published
 Git blobs. It validates a PR's repository, base, branch and exact head, and
 rechecks the branch after admission. It never approves, merges, closes,
 dispatches a completion workflow, synchronizes another repository or tags.
@@ -76,12 +77,14 @@ dispatches a completion workflow, synchronizes another repository or tags.
 When GitHub refuses creation, the receipt records
 `PR_CREATION_NOT_PERMITTED`; the issue receives the bound branch, commit, tree,
 artifact sizes/digests, exact comparison URL and required carrier action.
-There is at most one create attempt. After either success or a failed/ambiguous
+There is at most one create attempt per bound subject and retained receipt. After either success or a failed/ambiguous
 response, one read determines whether a matching PR actually exists. No blind
 retry or permission change occurs.
 
 The issue comment is separately read back byte-for-byte. A refused or ambiguous
-comment write becomes `ISSUE_NOTIFICATION_BLOCKED` and is not retried.
+comment write is followed by a paginated independent read before deciding its
+result. A matching comment is reused; no duplicate is posted. A remaining
+refusal or ambiguity becomes `ISSUE_NOTIFICATION_BLOCKED` and is not retried.
 `HANDOFF.json`, `ISSUE_COMMENT.md` and, when needed, `PR_BODY.md` remain in the
 run artifact `issue-agent-handoff-<issue>-<run>-<attempt>` for 30 days, including
 when the handoff step exits nonzero. The run's step summary reports notification
@@ -101,6 +104,37 @@ provider attestation. Coverage includes inference/compiler failure, denied and
 successful PR creation, ambiguous writes, existing-PR reuse, head/byte mismatch,
 notification denial/readback, branch history and concurrent-writer rejection.
 This target is included in `make test`.
+
+## Causal retry admission and preservation
+
+The processor and the existing backlog-resume workflow both call the same
+read-only admission function in `compile.py` before processing or dispatch.
+Its fingerprint binds the issue number/repository/title/body, the bounded
+context bytes, the processor/workflow bytes and the relevant lifecycle policy.
+Run IDs, issue timestamps, age and unrelated Main HEAD changes are excluded.
+
+`ATTEMPT.json` binds each recorded attempt to these inputs and the exact five
+evidence artifacts. An unchanged fingerprint produces
+`NOOP_UNCHANGED_CAUSAL_INPUT`: no compilation, branch merge, commit, push, PR
+creation or issue notification. The backlog dispatcher also skips the POST.
+Corrupt or unavailable prior evidence fails closed and retains a diagnostic
+receipt. Old inference evidence without a ledger admits one migration because
+this reviewed processor replaces the failing carrier; its successor ledger
+then prevents repeated execution of that failure state.
+
+Before replacing current evidence, the processor retains the previous files
+under `history/<content-digest>/`, byte-for-byte and without following symlinks.
+It verifies the issue branch head again after admission. Generated integrity
+conflicts may be regenerated; any other merge conflict stops the transaction.
+An ordinary push rejects competing changes. Existing issue PRs remain separate
+unresolved work items; this repair does not implement their requested features.
+
+PR-creation recovery needs a newly verified capability or an independently
+created matching PR. Reusing a saved handoff receipt does not repeat a denied
+create. The scheduled processor cannot observe a private credential change
+merely from a timestamp; that change must be supplied through a verified
+authorized executor. Native Main adoption and a fresh native processing run
+remain separate acceptance requirements.
 
 ## Processing an existing issue
 
