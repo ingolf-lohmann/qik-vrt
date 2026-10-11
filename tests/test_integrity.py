@@ -159,6 +159,86 @@ class IntegrityGenerationTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
                     integrity.generate(root)
 
+    def test_streaming_digest_matches_exact_bytes_at_block_boundaries(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            block = bytes(range(256)) * 4096
+            for size in (0, 1, len(block) - 1, len(block), len(block) + 1, 3 * len(block) + 7):
+                with self.subTest(size=size):
+                    data = (block * 4)[:size]
+                    (root / "payload").write_bytes(data)
+                    self.assertEqual(integrity._regular_file_digest(root, "payload"),
+                                     (size, hashlib.sha256(data).hexdigest()))
+                    self.assertEqual(integrity._regular_file_bytes(root, "payload"), data)
+
+    def test_streaming_manifest_is_byte_identical_to_materialized_reader(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            self._repository(root)
+            (root / "large.bin").write_bytes(bytes(range(256)) * 8193)
+            streamed = integrity.build_outputs(root)
+            def materialized(root, relative):
+                data = integrity._regular_file_bytes(root, relative)
+                return len(data), hashlib.sha256(data).hexdigest()
+            with mock.patch.object(integrity, "_regular_file_digest", side_effect=materialized):
+                self.assertEqual(streamed, integrity.build_outputs(root))
+
+    def test_streaming_digest_rejects_bounds_and_symlink_components(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "payload").write_bytes(b"1234")
+            self.assertEqual(integrity._regular_file_digest(root, "payload", max_bytes=4),
+                             (4, hashlib.sha256(b"1234").hexdigest()))
+            with self.assertRaisesRegex(RuntimeError, "integrity bound"):
+                integrity._regular_file_digest(root, "payload", max_bytes=3)
+            (root / "link").symlink_to(root / "payload")
+            with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
+                integrity._regular_file_digest(root, "link")
+            (root / "parent").symlink_to(root, target_is_directory=True)
+            with self.assertRaisesRegex(RuntimeError, "must not be a symlink"):
+                integrity._regular_file_digest(root, "parent/payload")
+
+    def test_streaming_digest_rejects_inflight_changes(self) -> None:
+        original_read = integrity.os.read
+        for mutation in ("grow", "truncate", "same_size"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as directory:
+                root = pathlib.Path(directory)
+                path = root / "payload"
+                path.write_bytes(b"original bytes")
+                changed = False
+                def read(descriptor, size):
+                    nonlocal changed
+                    data = original_read(descriptor, size)
+                    if data and not changed:
+                        changed = True
+                        before = path.stat()
+                        path.write_bytes({"grow": b"original bytes plus extra",
+                                          "truncate": b"short", "same_size": b"modified bytes"}[mutation])
+                        os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns + 1000000000))
+                    return data
+                with mock.patch.object(integrity.os, "read", side_effect=read):
+                    with self.assertRaisesRegex(RuntimeError, "changed"):
+                        integrity._regular_file_digest(root, "payload")
+
+    def test_streaming_digest_handles_short_reads_and_closes_on_error(self) -> None:
+        original_read = integrity.os.read
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            data = b"short reads still include every byte"
+            (root / "payload").write_bytes(data)
+            with mock.patch.object(integrity.os, "read", side_effect=lambda fd, size: original_read(fd, min(size, 3))):
+                self.assertEqual(integrity._regular_file_digest(root, "payload"),
+                                 (len(data), hashlib.sha256(data).hexdigest()))
+            captured = []
+            def failed_read(fd, size):
+                captured.append(fd)
+                raise OSError("injected read failure")
+            with mock.patch.object(integrity.os, "read", side_effect=failed_read):
+                with self.assertRaisesRegex(OSError, "injected"):
+                    integrity._regular_file_digest(root, "payload")
+            with self.assertRaises(OSError):
+                os.fstat(captured[0])
+
     def test_node_lifecycle_renewal_does_not_invalidate_the_integrity_trio(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)

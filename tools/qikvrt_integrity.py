@@ -17,7 +17,7 @@ import re
 import stat
 import sys
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ROOT_STR = str(ROOT)
@@ -131,13 +131,14 @@ def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _regular_file_bytes(
+def _read_regular_file(
     root: pathlib.Path,
     relative: str,
+    consume: Callable[[bytes], object],
     *,
     max_bytes: int = MAX_IMMUTABLE_FILE_BYTES,
-) -> bytes:
-    """Read one stable in-tree regular file without following symlinks."""
+) -> int:
+    """Consume bounded blocks through the single no-follow, stable-file reader."""
     safe_relative = _safe_path(relative)
     if root.is_symlink() or not root.is_dir():
         raise RuntimeError(f"repository root must be a real directory: {root}")
@@ -165,17 +166,17 @@ def _regular_file_bytes(
             raise RuntimeError(
                 f"repository path exceeds the {max_bytes}-byte integrity bound: {safe_relative}"
             )
-        chunks: list[bytes] = []
+        total_bytes = 0
         remaining = max_bytes + 1
         while remaining:
             chunk = os.read(descriptor, min(1024 * 1024, remaining))
             if not chunk:
                 break
-            chunks.append(chunk)
+            consume(chunk)
+            total_bytes += len(chunk)
             remaining -= len(chunk)
-        data = b"".join(chunks)
         after = os.fstat(descriptor)
-        if len(data) > max_bytes or len(data) != before.st_size:
+        if total_bytes > max_bytes or total_bytes != before.st_size:
             raise RuntimeError(f"repository path changed size while hashing: {safe_relative}")
         if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) != (
             after.st_dev,
@@ -184,9 +185,33 @@ def _regular_file_bytes(
             after.st_mtime_ns,
         ):
             raise RuntimeError(f"repository path changed while hashing: {safe_relative}")
-        return data
+        return total_bytes
     finally:
         os.close(descriptor)
+
+
+def _regular_file_bytes(
+    root: pathlib.Path,
+    relative: str,
+    *,
+    max_bytes: int = MAX_IMMUTABLE_FILE_BYTES,
+) -> bytes:
+    """Retain exact bytes for bounded metadata and portable source capsules."""
+    chunks: list[bytes] = []
+    _read_regular_file(root, relative, chunks.append, max_bytes=max_bytes)
+    return b"".join(chunks)
+
+
+def _regular_file_digest(
+    root: pathlib.Path,
+    relative: str,
+    *,
+    max_bytes: int = MAX_IMMUTABLE_FILE_BYTES,
+) -> tuple[int, str]:
+    """Hash every byte without retaining or joining the complete payload."""
+    digest = hashlib.sha256()
+    size = _read_regular_file(root, relative, digest.update, max_bytes=max_bytes)
+    return size, digest.hexdigest()
 
 
 def _safe_path(raw: str) -> str:
@@ -906,10 +931,9 @@ def build_outputs(root: pathlib.Path = ROOT) -> tuple[bytes, bytes, bytes, dict[
                 )
             if not path.is_file():
                 raise RuntimeError(f"repository path is not a file: {relative}")
-            data = _regular_file_bytes(root, relative)
-            digest = _sha256_bytes(data)
+            size, digest = _regular_file_digest(root, relative)
             entry.update({
-                "bytes": len(data),
+                "bytes": size,
                 "sha256": digest,
                 "file_type": "regular",
             })
