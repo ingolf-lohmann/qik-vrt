@@ -59,7 +59,21 @@
       "Preserve issue evidence and governance; suppress unchanged failing attempts; verify exact candidate"
     ]
   },
-  "observed_at_utc": "2026-10-11T00:00:40.488089+00:00",
+  "integration_refresh": {
+    "concurrent_main_paths": [
+      "evidence/node_health/38115721714-1.json",
+      "evidence/node_health/LATEST.json",
+      "evidence/node_registration_renewal/38115721714-1.json",
+      "evidence/node_registration_renewal/LATEST.json",
+      "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+      "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+    ],
+    "previous_candidate_head": "658b8a39de11fb8623fd2a5f390e39a19f3d7994",
+    "previous_candidate_tree": "766ab78af939227b9fea879ea8d4986af3c0a890",
+    "previous_test_results_transferred": false,
+    "reason": "Concurrent Main node lifecycle renewal; merge the current Main without replacing its evidence."
+  },
+  "observed_at_utc": "2026-10-11T05:52:12.723399+00:00",
   "output_bindings": [
     {
       "bytes": 11377,
@@ -135,16 +149,17 @@
     "source_tests_transferred": false
   },
   "schema": "qikvrt_human_ai_work_unit_v1",
-  "source_commit": "a639a3b3d6b03322de91bfeb3eb7327d24da24ed",
+  "source_commit": "cb6807675f4b80cc67359627b4e68073461eb7d7",
   "source_ref": "refs/heads/main",
   "source_repository": "ingolf-lohmann/qik-vrt",
-  "source_tree": "c60640d124c0ecf390858c9c20f3e9b22e284120",
+  "source_tree": "39ed868c20a1cf9a479ea17bd41edfcfc28e01d2",
   "verification": {
     "command": "make issue-agent-test",
     "complete_make_test": "NOT_RUN_IN_SPARSE_LOCAL_SNAPSHOT; native full checkout gate required",
-    "log_sha256": "5a5f43b10ec3d614825978e308187d07567f4b22ad27f023290c0a26ef77dde7",
+    "elapsed_seconds": 11.911,
     "native_processing": "NOT_EXECUTED",
     "provider_boundary": "Temporary Git repositories and actual shell executions are real; PR and comment provider responses are controlled fixtures.",
+    "receipt": "Fresh make issue-agent-test on current Main materialization; test execution returned exit 0 / Ran 48 tests / OK.",
     "regressions": 48,
     "result": "PASS",
     "tool_cache": "PASS 14/14",
