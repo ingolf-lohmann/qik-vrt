@@ -7,6 +7,7 @@ state and performs no network access.
 
 from __future__ import annotations
 
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -79,6 +80,133 @@ def git_value(*args: str) -> str:
     except (OSError, subprocess.SubprocessError):
         return "unavailable"
     return proc.stdout.strip() or "unavailable"
+
+
+def client_causal_key(value: dict[str, Any]) -> str:
+    """Exclude observation clocks and unrelated repository lifecycle changes."""
+    parts = {key: value.get(key) for key in ("subject", "error", "cause", "capability")}
+    if any(not isinstance(v, str) or not re.fullmatch(r"[0-9a-f]{64}", v)
+           for v in parts.values()):
+        fail("CLIENT_CAUSAL_EVIDENCE_INCOMPLETE")
+    return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()
+
+
+def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> bool:
+    if not isinstance(action, dict) or action.get("subject") != subject:
+        fail("CLIENT_ACTION_SUBJECT_DRIFT")
+    if action.get("route") not in ("connector", "cli", "mesh"):
+        fail("CLIENT_ACTION_ROUTE_INVALID")
+    if action.get("method") not in ("GET", "POST", "PUT", "PATCH", "DELETE"):
+        fail("CLIENT_ACTION_METHOD_INVALID")
+    if action.get("service") == "github" and action.get("transport") != "REST_API_ONLY":
+        fail("CLIENT_GITHUB_ROUTE_FORBIDDEN")
+    for key in ("operation", "evidence"):
+        if not isinstance(action.get(key), str) or not action[key].strip():
+            fail("CLIENT_ACTION_" + key.upper() + "_MISSING")
+    predicates = ("authorized", "safe", "deterministic", "callable",
+                  "authenticated", "permitted", "admitted")
+    if any(type(action.get(key)) is not bool for key in predicates):
+        fail("CLIENT_ACTION_PREDICATE_INVALID")
+    if action["callable"] and (
+        action.get("observed_method") != action["method"]
+        or action.get("observed_operation") != action["operation"]
+        or action.get("observed_repository") != subject["repository"]
+    ):
+        fail("CLIENT_CALLABLE_OPERATION_BINDING_MISMATCH")
+    return all(action[key] for key in predicates)
+
+
+def validate_client_receipt(receipt: dict[str, Any]) -> str:
+    """Validate consistency; never authenticate a client or prove live effects."""
+    if receipt.get("schema") != "qikvrt-client-continuation/1":
+        fail("CLIENT_RECEIPT_SCHEMA_INVALID")
+    subject = require(receipt, "subject", dict)
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", str(subject.get("repository", ""))):
+        fail("CLIENT_SUBJECT_INVALID")
+    for key in ("head", "tree"):
+        if not re.fullmatch(r"[0-9a-f]{40}", str(subject.get(key, ""))):
+            fail("CLIENT_SUBJECT_INVALID")
+    authorization = require(receipt, "authorization", dict)
+    if (authorization.get("granted") is not True
+        or not isinstance(authorization.get("source"), str)
+        or not authorization["source"].strip()):
+        fail("CLIENT_OWNER_AUTHORIZATION_MISSING")
+    if receipt.get("requested_authorization_again") is not False:
+        fail("CLIENT_REPEATED_AUTHORIZATION_REQUEST")
+    inventory = require(receipt, "inventory", dict)
+    for kind in ("repository", "connector", "cli", "mesh"):
+        if not isinstance(inventory.get(kind), str) or not inventory[kind].strip():
+            fail("CLIENT_EXISTING_ROUTE_NOT_INSPECTED:" + kind)
+    attempts = require(receipt, "attempts", list)
+    executed_keys: set[str] = set()
+    for attempt in attempts:
+        if not isinstance(attempt, dict):
+            fail("CLIENT_ATTEMPT_INVALID")
+        count = attempt.get("effect_count")
+        if isinstance(count, bool) or not isinstance(count, int) or count not in (0, 1):
+            fail("CLIENT_EFFECT_COUNT_INVALID")
+        if any(type(attempt.get(key)) is not bool
+               for key in ("ambiguous_effect", "readback_before_effect")):
+            fail("CLIENT_ATTEMPT_PREDICATE_INVALID")
+        current = client_causal_key(require(attempt, "current", dict))
+        previous = attempt.get("previous")
+        if previous is not None:
+            if not isinstance(previous, dict):
+                fail("CLIENT_ATTEMPT_INVALID")
+            if current == client_causal_key(previous) and count:
+                fail("CLIENT_UNCHANGED_FAILURE_RETRIED")
+        if attempt.get("ambiguous_effect") is not False:
+            if attempt.get("readback_before_effect") is not True and count:
+                fail("CLIENT_AMBIGUOUS_EFFECT_RETRIED_WITHOUT_READBACK")
+        if count:
+            if not validate_client_action(require(attempt, "action", dict), subject):
+                fail("CLIENT_EFFECT_WITHOUT_ADMISSION")
+            if current in executed_keys:
+                fail("CLIENT_DUPLICATE_CAUSAL_ATTEMPT")
+            executed_keys.add(current)
+    actions = require(receipt, "next_actions", list)
+    executable = False
+    for action in actions:
+        executable |= validate_client_action(action, subject)
+    readback = require(receipt, "readback", dict)
+    repository = require(readback, "repository", dict)
+    if repository.get("repository") != subject["repository"] or not repository.get("source"):
+        fail("CLIENT_REPOSITORY_READBACK_MISSING")
+    for key in ("head", "tree"):
+        if not re.fullmatch(r"[0-9a-f]{40}", str(repository.get(key, ""))):
+            fail("CLIENT_REPOSITORY_READBACK_INVALID")
+    delivery = require(readback, "delivery", dict)
+    if delivery.get("hostname") != "raumzeitterminal.de" or not delivery.get("source"):
+        fail("CLIENT_EXACT_HOST_READBACK_MISSING")
+    if delivery.get("state") not in ("UNKNOWN", "PENDING", "VERIFIED"):
+        fail("CLIENT_DELIVERY_READBACK_INVALID")
+    state = receipt.get("state")
+    if state not in ("CONTINUE", "BLOCK", "DONE", "OWNER_CHOICE"):
+        fail("CLIENT_RETURN_STATE_INVALID")
+    if executable and state != "CONTINUE":
+        fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+    pending = receipt.get("pending_execution")
+    if state == "CONTINUE" and not executable and (
+        not isinstance(pending, str) or not pending.strip()
+    ):
+        fail("CLIENT_CONTINUATION_WITHOUT_SUCCESSOR_OR_EXECUTION")
+    if state == "BLOCK":
+        blocker = require(receipt, "blocker", dict)
+        for key in ("operation", "reason", "evidence", "retry_condition", "next_action"):
+            if not isinstance(blocker.get(key), str) or not blocker[key].strip():
+                fail("CLIENT_BLOCKER_NOT_CONCRETE:" + key)
+    if state == "OWNER_CHOICE":
+        choices = require(receipt, "owner_choices", list)
+        if len(choices) < 2 or any(not isinstance(c, str) or not c.strip() for c in choices) or len(set(choices)) != len(choices):
+            fail("CLIENT_OWNER_CHOICE_INVALID")
+    if state == "DONE":
+        if (repository.get("ref") != "main"
+            or any(repository.get(key) != subject[key] for key in ("head", "tree"))
+            or delivery.get("state") != "VERIFIED"
+            or any(delivery.get(key) is not True for key in ("working_software", "tls", "independent"))
+            or any(delivery.get(key) != subject[key] for key in ("head", "tree"))):
+            fail("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+    return state
 
 def validate_bound_file(
     receipt: dict[str, Any],
@@ -375,6 +503,16 @@ def validate_adapters(context: dict[str, Any]) -> tuple[str, int]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--client-receipt", type=Path,
+                        help="Validate a non-secret client continuation receipt; no live-effect proof")
+    args = parser.parse_args()
+    if args.client_receipt is not None:
+        state = validate_client_receipt(load_json(args.client_receipt))
+        print("CLIENT_HANDOFF_CONSISTENCY=VALID")
+        print("CLIENT_STATE=" + state)
+        print("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED")
+        return 0
     context = load_json(CONTEXT_PATH)
     schema = require(context, "schema", str)
     if schema not in SUPPORTED_CONTEXT_SCHEMAS:

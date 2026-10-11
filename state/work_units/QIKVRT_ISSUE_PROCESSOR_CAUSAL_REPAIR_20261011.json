@@ -8,7 +8,8 @@
       "Current REST source and job-log inspection",
       "Adapt PR 486 to current Main",
       "Shared causal admission, preserved history, REST handoff and idempotent resume",
-      "Fresh regression execution and candidate preparation"
+      "Fresh regression execution and candidate preparation",
+      "Extend existing client handoff validator, policy and adapters; 30 fresh semantic client regressions; persist installed skill"
     ],
     "model_or_build": "UNAVAILABLE"
   },
@@ -19,6 +20,23 @@
     "provider_response_bytes": "UNKNOWN",
     "provider_side_cause": "NOT_ESTABLISHED",
     "repair": "Remove external inference; persist exact causal attempt inputs; shared pre-dispatch/pre-process NOOP; preserve previous evidence; controlled REST handoff."
+  },
+  "client_procedure": {
+    "binding_for_all_clients": true,
+    "installed_skill_commit": "a081f8c6f39892da91d2ca813057c35306abb87c",
+    "installed_skill_persistence": "git push succeeded; independent remote-ref and committed-byte readback",
+    "installed_skill_sha256": "b90ede9735caa30c799d8b56985c020ad94223cd0f816713d12ce62b4ccf07cb",
+    "live_effect_verification_by_receipt_validator": false,
+    "local_client_regressions": "PASS; 30 tests; fixtures do not establish live effects",
+    "main_adoption_established": false,
+    "new_client_regressions": 30,
+    "other_client_adoption_established": false,
+    "owner_instruction": "Ingolf Lohmann, 2026-10-11: use existing rights/data/execution routes; persist the procedure as binding client rules",
+    "receipt_schema": "qikvrt-client-continuation/1",
+    "regression_gate": "make ai-runtime-contract",
+    "reused_policy": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation",
+    "reused_validator": "tools/ai_handoff.py --client-receipt",
+    "skill_forward_test": "six bounded read-only behavioral scenarios; no effect execution"
   },
   "deletions": [
     "scripts/issue_agent/infer.py"
@@ -56,7 +74,8 @@
     "contribution_class": "HUMAN",
     "contributions": [
       "Current task scope and authorization",
-      "Preserve issue evidence and governance; suppress unchanged failing attempts; verify exact candidate"
+      "Preserve issue evidence and governance; suppress unchanged failing attempts; verify exact candidate",
+      "Binding continuation procedure for repository clients and client regression conformance"
     ]
   },
   "integration_refresh": {
@@ -68,12 +87,12 @@
       "qikvrt/runtime/onboarding/NODE_HEALTH.json",
       "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
     ],
-    "previous_candidate_head": "658b8a39de11fb8623fd2a5f390e39a19f3d7994",
-    "previous_candidate_tree": "766ab78af939227b9fea879ea8d4986af3c0a890",
+    "previous_candidate_head": "1824befb8a902366ab6fca8f3fccf8e49966dc6b",
+    "previous_candidate_tree": "d19469544a386cb312ea51db26547a6778fd531a",
     "previous_test_results_transferred": false,
-    "reason": "Concurrent Main node lifecycle renewal; merge the current Main without replacing its evidence."
+    "reason": "Owner requires binding client continuation procedure; reuse existing AI handoff, policy and native regression gate on the repair candidate."
   },
-  "observed_at_utc": "2026-10-11T05:52:12.723399+00:00",
+  "observed_at_utc": "2026-10-11T06:27:56.678563+00:00",
   "output_bindings": [
     {
       "bytes": 11377,
@@ -134,6 +153,36 @@
       "bytes": 12457,
       "path": "state/work_units/QIKVRT_ISSUE_PROCESSING_CARRIER_AND_HANDOFF_REPAIR_20261007.json",
       "sha256": "5aa416b3113a085f38a60b61419d44c8977028c22b16c2d1354b11720cdc45a7"
+    },
+    {
+      "bytes": 19181,
+      "path": "AI",
+      "sha256": "432128e3755a640488cbb8f86ba67be8ed44654c3baec8a99ab86f7c2affe245"
+    },
+    {
+      "bytes": 10454,
+      "path": "AGENTS.md",
+      "sha256": "8673c2192c117c257ce76b9eac11e35afa117322ccd46f55a9ad428b32129d11"
+    },
+    {
+      "bytes": 11932,
+      "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "sha256": "c9470929f650de694bfc0a45fba9ef2bcee2cba0bce2718c01d1c85b6a334425"
+    },
+    {
+      "bytes": 5216,
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "sha256": "05e6b0b97015c604415941b2bac91900e6fc822db126a8685c82c18a9369f59c"
+    },
+    {
+      "bytes": 25186,
+      "path": "tools/ai_handoff.py",
+      "sha256": "22123e97e1173c040fe4423429059be36a0bc368be4065ceb8e058a89d5e8de0"
+    },
+    {
+      "bytes": 18589,
+      "path": "tests/test_ai_runtime_bootloader.py",
+      "sha256": "2d3bbc054055c2cd59fa467384494fc1fe02eac386b5a680871f07c5b24b328c"
     }
   ],
   "remaining_boundary": [
@@ -156,10 +205,10 @@
   "verification": {
     "command": "make issue-agent-test",
     "complete_make_test": "NOT_RUN_IN_SPARSE_LOCAL_SNAPSHOT; native full checkout gate required",
-    "elapsed_seconds": 11.911,
+    "elapsed_seconds": 13.088,
     "native_processing": "NOT_EXECUTED",
     "provider_boundary": "Temporary Git repositories and actual shell executions are real; PR and comment provider responses are controlled fixtures.",
-    "receipt": "Fresh make issue-agent-test on current Main materialization; test execution returned exit 0 / Ran 48 tests / OK.",
+    "receipt": "Fresh make issue-agent-test on the expanded client-procedure candidate: exit 0 / Ran 48 tests / OK. Native full checkout still required.",
     "regressions": 48,
     "result": "PASS",
     "tool_cache": "PASS 14/14",

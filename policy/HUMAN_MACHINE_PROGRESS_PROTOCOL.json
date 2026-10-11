@@ -114,6 +114,23 @@
       "evidence"
     ]
   },
+  "client_continuation": {
+    "owner_instruction": "Ingolf Lohmann, 2026-10-11",
+    "binding_for_all_clients": true,
+    "receipt_schema": "qikvrt-client-continuation/1",
+    "validator": "tools/ai_handoff.py --client-receipt",
+    "regression_gate": "make ai-runtime-contract",
+    "preserve_existing_authorization": true,
+    "preserve_original_goal_across_handoffs": true,
+    "inspect_existing_routes": ["repository", "connector", "cli", "mesh"],
+    "github_route": "REST_API_ONLY",
+    "execute_safe_deterministic_authorized_successors": true,
+    "unchanged_causal_failure": "NOOP",
+    "ambiguous_effect_requires_readback_before_retry": true,
+    "closing_readback": ["current_repository_HEAD_TREE", "raumzeitterminal.de"],
+    "receipt_consistency_proves_live_effect": false,
+    "persisted_rule_proves_other_client_adoption": false
+  },
   "continuation_semantics": {
     "roundtrip": [
       "OBSERVE",

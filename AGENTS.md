@@ -29,6 +29,36 @@ specifications do not automatically grant an open-source license for the
 concrete implementation. No rights may be inferred beyond explicit license
 texts.
 
+## Binding client continuation procedure
+
+Ingolf Lohmann's instructions of 2026-10-11 are mandatory for every client.
+Preserve the authorized repair, integration and delivery goal across handoffs,
+status questions and context compaction. Preserve existing authorization; do
+not request the same task permission again. Inspect the current repository
+entrypoint and applicable existing connector, CLI and Mesh routes before
+declaring execution unavailable. Match method, operation, target/account,
+authentication, permission and governance admission separately. An empty
+repository-URL filter or an absent local CLI does not establish that the
+repository's existing authorized executor is unavailable.
+
+Execute each safe deterministic authorized successor and complete useful
+authorized preparation and persistence while other effects are blocked.
+Preserve `GITHUB_ROUTE=REST_API_ONLY`, credentials, Authority/Mirror roles and
+protected governance. Do not create proxy executors, synthetic triggers or
+new permission scopes to replace a missing operation. Preserve original
+evidence; unchanged causal failures admit NOOP, and ambiguous effects require
+readback before another effectful attempt.
+
+Before a terminal handoff, validate the non-secret client receipt with
+`python3 -B tools/ai_handoff.py --client-receipt <receipt.json>` according to
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation` and
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md`. Read back current HEAD/TREE and
+delivery evidence for the exact host `raumzeitterminal.de`. Return only for
+verified completion, a concrete blocker with no safe authorized successor,
+or a real owner choice. The gate checks receipt consistency; it neither
+authenticates a client nor proves live effects or adoption by another client.
+Regression tests run inside the existing `make ai-runtime-contract` gate.
+
 ## Mandatory human-machine progress behavior
 
 For every repository, build, verification, publication, deployment, or GitHub
