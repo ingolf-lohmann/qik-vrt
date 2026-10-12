@@ -122,7 +122,7 @@
     "EFFECT_ACK_DONE": false
   },
   "revision": "3-transport-client-repair",
-  "updated_at": "2026-10-12T06:26:57.530311+00:00",
+  "updated_at": "2026-10-12T07:03:10.172961+00:00",
   "historical_test_evidence": {
     "unmodified_gate_original_tests": {
       "tests": 30,
@@ -495,6 +495,40 @@
       "artificial_cognitive": "Codex: successor reconciliation, task inheritance, shared gate and regression implementation, metadata and REST review candidate",
       "limit": "Attribution is not biometric or specific-model-build proof"
     },
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "ordinary_release": false
+  },
+  "terminal_decoder_failure_successor": {
+    "source_head": "0cf4c257220590be37ece749e297259cb7519fb6",
+    "source_tree": "2785b304644d9b62278a1e783343843a6f2ab0d9",
+    "reconciliation": "Reused the concurrent e3ae/0cf4 repair, its durable journal, task inheritance, Owner contract and shared validator. Earlier alternative preparation was not submitted or substituted.",
+    "repair": "Catch decoder RecursionError in the existing POST and closing repository read paths so a parser resource failure cannot skip the exact-host public GET or escape as an unhandled traceback.",
+    "red_control": {
+      "source_head": "0cf4c257220590be37ece749e297259cb7519fb6",
+      "ordinary_test_errors": 1,
+      "method": "Deterministic decoder resource-failure injection in the actual CLI; Python-build-dependent deep JSON was not claimed as a native production failure.",
+      "log_sha256": "4b6946970484b962a661fd3639f2fc5097c04db582b4edf42908bf92b9492552"
+    },
+    "fresh_tests": {
+      "command": "python3 -B -m unittest -v tests.test_api_client tests.test_ai_runtime_bootloader tests.test_integrity",
+      "count": 99,
+      "exit": 0,
+      "expected_failures": 0,
+      "log_sha256": "6b3d24232f516c98b271515da6d1b6e3fd352f034d8e546e739606a1db945fe1"
+    },
+    "original_four_regressions": "Ordinary assertions PASS; expectedFailure remains absent. OPEN assertion-message prefixes removed only after verified passing execution.",
+    "Owner_rule_sha256": "598d99efe1605ef7fa5deab70a04fbb5cdc756bd4b368e3394d7c833be58a9d8",
+    "shared_validator_modified": false,
+    "new_policy": false,
+    "new_executor": false,
+    "workflow_changes": false,
+    "native_full_suite": "PENDING_ON_NEW_EXACT_HEAD; 0cf4 CI not transferred",
+    "local_full_suite_boundary": "Previous full local make test was blocked by missing historical Git object 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 in the REST archive object closure; no unrelated history or tests rewritten.",
+    "provenance": {
+      "human": "Ingolf Lohmann: task, acceptance conditions, standing rule and existing authorization",
+      "artificial_cognitive": "Codex: current-subject reconciliation, bounded decoder exception repair, additional negative control and regression execution"
+    },
+    "scope": "Current actual CLI under deterministic HTTP/decoder fixtures. Main integration, real vendor-session adoption and exact-host public working-software effect remain separate.",
     "effect_state": "EFFECT_ACK_CONTINUE",
     "ordinary_release": false
   }

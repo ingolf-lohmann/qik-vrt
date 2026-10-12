@@ -154,7 +154,7 @@ def closing_readback(opener, args, *, action_id: str, completed_at: str, token: 
                     # bound to this HEAD/TREE is not proved by a page GET.
                     observation.update(state="PENDING", tls=True)
         except (urllib.error.URLError, TimeoutError, OSError, UnicodeError,
-                ValueError, AttributeError, TypeError) as exc:
+                ValueError, AttributeError, TypeError, RecursionError) as exc:
             observation["error_category"] = type(exc).__name__
             if isinstance(exc, urllib.error.HTTPError):
                 observation["http_status"] = exc.code
@@ -330,7 +330,7 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
             record["status"] = "failed" if exc.code in (400, 401, 403, 404, 405, 422, 429) else "ambiguous"
             print(f"BLOCK API request failed: HTTP {exc.code}", file=sys.stderr)
         except (urllib.error.URLError, TimeoutError, OSError, UnicodeError,
-                ValueError, AttributeError, TypeError) as exc:
+                ValueError, AttributeError, TypeError, RecursionError) as exc:
             receipt["error_category"] = type(exc).__name__
             record["status"] = "ambiguous"
             print(f"BLOCK API request failed: {type(exc).__name__}", file=sys.stderr)

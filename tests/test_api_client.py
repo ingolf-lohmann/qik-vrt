@@ -161,12 +161,12 @@ class ApiClientEndOfActionConformanceTests(unittest.TestCase):
                             and request.full_url ==
                             "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main"]
         if repository:
-            self.assertTrue(repository_reads, "OPEN: no fresh repository HEAD/TREE read after action")
+            self.assertTrue(repository_reads, "no fresh repository HEAD/TREE read after action")
         public_url = "https://" + client_end_of_action_domain() + "/"
         self.assertTrue(
             any(request.get_method() == "GET" and request.full_url == public_url
                 for request in closing),
-            "OPEN: no fresh exact-host public delivery read after action",
+            "no fresh exact-host public delivery read after action",
         )
         for request in closing:
             if request.full_url == public_url:
@@ -196,7 +196,33 @@ class ApiClientEndOfActionConformanceTests(unittest.TestCase):
             self.assertEqual(self.invoke_actual_client(), 1)
             self.assertEqual(self.invoke_actual_client(), 1)
         posts = [request for request in requests if request.get_method() == "POST"]
-        self.assertEqual(len(posts), 1, "OPEN: unchanged failure submitted twice without new cause")
+        self.assertEqual(len(posts), 1, "unchanged failure submitted twice without new cause")
+
+    def test_repository_parser_recursion_failure_cannot_skip_public_closing_readback(self) -> None:
+        opener, requests = self.transport()
+        original = opener.open.side_effect
+
+        def deeply_nested_repository(request, **kwargs):
+            response = original(request, **kwargs)
+            if request.full_url.startswith("https://api.github.com/"):
+                response.raw = b'[' * 2500 + b'0' + b']' * 2500
+            return response
+
+        opener.open.side_effect = deeply_nested_repository
+        parse = client.unique_json
+
+        def exhausted_decoder(raw):
+            if raw.startswith(b'['):
+                raise RecursionError("fixture: decoder recursion limit")
+            return parse(raw)
+
+        # Decoder limits vary between supported Python builds. Inject the
+        # parser's resource failure to verify the actual closing control path.
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener), \
+                mock.patch.object(client, "unique_json", side_effect=exhausted_decoder):
+            self.assertEqual(self.invoke_actual_client(), 1)
+        self.assert_closing_reads(requests)
+        self.assertEqual(sum(request.get_method() == "GET" for request in requests), 2)
 
     def test_scoped_done_remains_continue_and_reuses_shared_closure_validator(self) -> None:
         opener, requests = self.transport()
