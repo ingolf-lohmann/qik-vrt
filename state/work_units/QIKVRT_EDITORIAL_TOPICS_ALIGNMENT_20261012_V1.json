@@ -43,16 +43,16 @@
       "bytes": 31779
     },
     "news/universaler-transputer/article.txt": {
-      "sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
-      "bytes": 1903
+      "sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
+      "bytes": 3744
     },
     "news/universaler-transputer/index.json": {
-      "sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a",
-      "bytes": 3354
+      "sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+      "bytes": 4131
     },
     "news/universaler-transputer/index.html": {
-      "sha256": "58c27c1be12c31e5aff4957e8f0024f227c67ba996f00a56b5cad1dc3c98c808",
-      "bytes": 4335
+      "sha256": "1707f52e9ad9b720d1e37e3ca5df8e42354fc2e8931679a7a3934addb22a28f9",
+      "bytes": 6953
     }
   },
   "scope": "Navigation, Nachweiszuordnung und bestehende Publikationsstruktur; keine Änderung wissenschaftlich eingefrorener Originale.",
@@ -412,5 +412,81 @@
     "exact_host": "NXDOMAIN",
     "required_continuation": "Admit independently reviewed native-governance-bound PR519 promotion; restore the existing exact-domain registrar/DNS writer for domain activation.",
     "global_effect_ack_done": false
-  }
+  },
+  "authorized_editorial_revisions": [
+    {
+      "owner": "Ingolf Lohmann",
+      "owner_authorization": "2026-10-13: add exact proof binding, persist at intended destinations, publish suitable journalistic presentation on raumzeitterminal.de.",
+      "observed_at": "2026-10-13T00:51:45+03:00",
+      "baseline_site_version": 26,
+      "baseline_site_source": "a769ee17e76fe6ff38a20ed334d963d8e2a354fc",
+      "prior_frozen_article_files": {
+        "news/physics-nobel-2026-decay-continuity/index.json": {
+          "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817",
+          "bytes": 1479
+        },
+        "news/physics-nobel-2026-decay-continuity/index.html": {
+          "sha256": "ccd3145febe973b2797209a0c51937afebcb7967291054de7d9b9bbdce40b01e",
+          "bytes": 31779
+        },
+        "news/universaler-transputer/article.txt": {
+          "sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+          "bytes": 1903
+        },
+        "news/universaler-transputer/index.json": {
+          "sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a",
+          "bytes": 3354
+        },
+        "news/universaler-transputer/index.html": {
+          "sha256": "58c27c1be12c31e5aff4957e8f0024f227c67ba996f00a56b5cad1dc3c98c808",
+          "bytes": 4335
+        }
+      },
+      "original_statement_prefix_sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+      "original_statement_prefix_bytes": 1903,
+      "original_statement_prefix_retained": true,
+      "new_evidence_class": "SOURCE_BOUND_EDITORIAL_CLARIFICATION",
+      "new_physical_proof_claimed": false,
+      "changed_files": {
+        "news/universaler-transputer/article.txt": {
+          "sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
+          "bytes": 3744
+        },
+        "news/universaler-transputer/index.json": {
+          "sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+          "bytes": 4131
+        },
+        "news/universaler-transputer/index.html": {
+          "sha256": "1707f52e9ad9b720d1e37e3ca5df8e42354fc2e8931679a7a3934addb22a28f9",
+          "bytes": 6953
+        }
+      },
+      "native_publication": {
+        "site_version": 27,
+        "site_version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_67a44e90991881918228cbf58f989816",
+        "site_source": "b116ae0887cb688404aeeb66a68c3b2f59ad9a6a",
+        "deployment": "appgdep_6acd576cc0e4819190894b390d52765b",
+        "site_origin": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+        "archive": {
+          "archive_format": "tar",
+          "sediment_file_id": "file_00000000c544820a8370c0cb58cc203b",
+          "content_hash": "sha256:e38b7abf47ae39f18ece5f1ab3f22f205a22e6f05a7390ab48d3a38fa215d404",
+          "size_bytes": 123217920,
+          "file_count": 163
+        }
+      },
+      "verification": {
+        "editorial_navigation_tests": 10,
+        "editorial_navigation_exit": 0,
+        "source_visibility_gate": "PASS",
+        "original_statement_html_and_text_preserved": true,
+        "site_build_exit": 0,
+        "built_assets_equal_to_source": true,
+        "fresh_lean_execution": false,
+        "complete_local_qikvrt_repository_tests": false,
+        "native_successor_tests": "PENDING_FRESH_EXACT_HEAD_EXECUTION"
+      }
+    }
+  ],
+  "freeze_scope": "Current authorized article revision; prior freeze identities retained in authorized_editorial_revisions. Other article bytes remain unchanged."
 }

@@ -13,7 +13,7 @@
   "author": "Ingolf Lohmann",
   "canonical_url": "https://raumzeitterminal.de/news/universaler-transputer/",
   "text_url": "article.txt",
-  "text_sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+  "text_sha256": "bea2ce79c5998ccc8f085ec2cfe0ea4810bdc9c3c984719050549ab15bd790f1",
   "author_accepted": true,
   "publication_authorized": true,
   "provenance": {
@@ -89,5 +89,19 @@
       "status": "ARCHIVED_SOURCE_AND_KERNEL_RECEIPT_VERIFIED",
       "boundary": "Keine Aussage zur Wahrheit beliebiger Claims, zur Totalbeantwortbarkeit oder zur kosmologischen Unvergänglichkeit."
     }
-  ]
+  ],
+  "original_statement_sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
+  "author_acceptance_scope": "Original statement of 2026-10-12; the owner authorized the source-bound editorial addition and deployment on 2026-10-13.",
+  "updated_at": "2026-10-13T00:51:45+03:00",
+  "editorial_revision": {
+    "date": "2026-10-13",
+    "kind": "SOURCE_BOUND_CLARIFICATION",
+    "source_claim": "SFG-009",
+    "proof_constant": "QIKVRT.V2.Knowledge.answerability_mono",
+    "physical_scope_claim": "RT-OPEN-PHYSICAL-CORRESPONDENCE-001",
+    "physical_scope_state": "OPEN",
+    "original_statement_preserved": true,
+    "original_statement_bytes": 1903,
+    "history": "Prior Site and Git versions retained; no retroactive rewrite of scientific originals."
+  }
 }
