@@ -504,5 +504,17 @@
       "docs/CURRENT_AUTHORITY.md"
     ],
     "verification_test": "python3 -B -m unittest -v tests.test_qikvrt_self_disclosure"
+  },
+  "editorial_navigation": {
+    "topics_path": "docs/news/topics.json",
+    "index_path": "docs/news/index.html",
+    "canonical_url": "https://raumzeitterminal.de/news/",
+    "reachable_site_origin_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/news/",
+    "topic_ids": [
+      "zutrittskontrolle",
+      "kuenstliche-intelligenz",
+      "physik"
+    ],
+    "boundary": "Thematische Navigation; archivierte Originalfassungen und bestehende Eintragsmetadaten bleiben erhalten. Kein Nachweis der Auslieferung auf der Produktdomain."
   }
 }
