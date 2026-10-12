@@ -1,0 +1,211 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "GRAPHQL_TARGET_REF_CAS_INTEGRATION_20261012_V1",
+  "created_at": "2026-10-12T17:48:52.907751+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "work/ref-cas-readback-20261010-d8775f20",
+  "source_commit": "45b601ace7190f25072de343dc7fe1560f835182",
+  "source_tree": "1321ba6a0856edf7a798ad4a8c2e76c08d8bdded",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "UNAVAILABLE",
+    "session_or_run_id": "UNAVAILABLE"
+  },
+  "human_contributions": [
+    "Implement the existing Promotion Executor GraphQL CAS adapter with exact repository/B/H/T/M binding",
+    "Preserve native Code Owner and independent reviews; do not activate Main promotion without independent server and Governance qualification"
+  ],
+  "artificial_cognitive_contributions": [
+    "Extended the existing decision core, workflow, regression files and promotion contract",
+    "Implemented one-shot updateRefs and durable create-only intent with GET-only reconciliation",
+    "Reused the native required-review gate and preserved all predecessor evidence",
+    "Executed focused regressions, full make test and integrity verification"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "repository_roles": {
+    "owner_designated_authority": "ingolf-lohmann/qik-vrt",
+    "owner_designated_mirror": "Goldkelch/qik-vrt",
+    "native_activation": "NOT_VERIFIED",
+    "predecessor_evidence_transfer": false
+  },
+  "outputs": [
+    {
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "bytes": 37804,
+      "sha256": "315c89b52ad582a21132fb0863424674cb0c01d1419331f547b416f9442e2d2a",
+      "git_blob_sha1": "5a973ad55dc6d56f954b4fa99ed5ff40b3c00e39"
+    },
+    {
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "bytes": 14216,
+      "sha256": "c5e039cc6f5027a1c57e0786db5aca202ecf21c08c3a32da36adaba56240fdc5",
+      "git_blob_sha1": "1f1515c3c4cbfbd05f4a13f5504a835906a990e8"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "bytes": 31865,
+      "sha256": "52234ccb397ece54a7ff1ebb99611ff5baed61b5aecba9a57c88879c36667f4a",
+      "git_blob_sha1": "da0449413dd0063d2283465e248384732f8443e9"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "bytes": 7338,
+      "sha256": "c7e78119370cf2e5d559d1572809ad997e9590763458276518a2277f834bee13",
+      "git_blob_sha1": "dea77027fa75e243d259c892f08fe29d8fc58840"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 8267,
+      "sha256": "1f6c79ce2974d35508b54d78edeb65cac0a25e554bd75cedf35003dfaa3a448b",
+      "git_blob_sha1": "87bac067cb8606b80f5e390ff7b6595799a86907"
+    },
+    {
+      "path": "state/autonomy/TARGET_REF_CAS_QUALIFICATION_V1.json",
+      "bytes": 797,
+      "sha256": "4bbfab1e85a40121c32f03641ac4f029994a4a366147d14903ec9a2477262849",
+      "git_blob_sha1": "04959b8d946c5b6692183b9bf7684233c5c09818"
+    },
+    {
+      "path": "docs/operations/EXPECTED_HEAD_PROMOTION.md",
+      "bytes": 11151,
+      "sha256": "ef9984e0ee5d91869297851b72e8541332c944ccc6ee64f12878c1a62817ae70",
+      "git_blob_sha1": "18c048a162ae90f430c0eadac54353abab4a0eb1"
+    }
+  ],
+  "verification": {
+    "focused_tests": {
+      "command": "python3 -B -m unittest -q tests.test_qikvrt_expected_head_promotion tests.test_qikvrt_expected_head_promotion_contract tests.test_qikvrt_required_review_gate tests.test_qikvrt_requested_review_executor",
+      "count": 65,
+      "result": "PASS",
+      "runtime": "Python 3.12.14",
+      "scope": "Local regression and simulated qualification only; no live server effect"
+    },
+    "full_repository_tests": {
+      "command": "make test",
+      "exit_code": 0,
+      "result": "PASS",
+      "unittest_invocations": 18,
+      "summed_unittest_executions": 543,
+      "scope": "Full Makefile including shell, C90 and Python gates; counts include repeated test executions and are not distinct test counts",
+      "log_sha256": "a7e10a58ed947f01630040ac9b0e628c847789a3f4bbc5870250616f396a723f",
+      "current_main_reconciled_subject": true
+    },
+    "embedded_workflow_python": {
+      "count": 4,
+      "result": "COMPILED",
+      "snapshot_block": "EXECUTED_WITH_MOCKED_REST_AND_REAL_UNAVAILABLE_QUALIFICATION"
+    },
+    "tool_cache": {
+      "result": "PASS",
+      "coverage_percent": 100,
+      "declared_tools": 14
+    },
+    "bootloader": {
+      "state": "CONTINUE",
+      "scope": "Main subject predecessor full integrity and handoff passed; optional installed gh/Lean/Lake/rendering/npm tools incomplete; no install or downgrade"
+    },
+    "live_graphql_cas": "NOT_EXECUTED",
+    "native_code_owner_review": "NOT_ESTABLISHED",
+    "main_integration": "NOT_PERFORMED",
+    "integrity": {
+      "command": "python3 -B tools/qikvrt_integrity.py verify",
+      "result": "PASS",
+      "immutable_digests": 3981,
+      "entries": 3990,
+      "scope": "Exact content classification/digests; generated metadata is rematerialized after this record without changing code or test inputs."
+    },
+    "default_qualification_cli": {
+      "command": "prepare-graphql",
+      "state": "HOLD",
+      "first_blocker": "ATOMIC_TARGET_REF_CAS_UNVERIFIED",
+      "exit_code": 20,
+      "network_or_graphql_call": false
+    },
+    "local_clone_repair": {
+      "operation": "Explicitly fetched historical source 4fd73232cc8d2189e14c950b376bb72ffcaf744e without a blob filter before integrity cross-check",
+      "test_or_runtime_guard_weakened": false,
+      "historical_capsule_bytes_changed": false
+    }
+  },
+  "live_observations": {
+    "observed_main_head": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+    "observed_main_tree": "e436ca6f80185d9fe264f1491d2bce232ae68b11",
+    "main_protected": false,
+    "rulesets": [],
+    "pr_reviews": [],
+    "protected_branches": [],
+    "current_pr_521_exact_head_runs": {
+      "count": 13,
+      "conclusions": [
+        "action_required"
+      ],
+      "head_sha": "45b601ace7190f25072de343dc7fe1560f835182"
+    },
+    "get_applied_rules_via_connector": {
+      "method": "GET",
+      "path": "/repos/ingolf-lohmann/qik-vrt/rules/branches/main",
+      "error": "GitHub Fetch URL is not an allowed public GitHub repository or search endpoint",
+      "not_executed": true
+    },
+    "credential_and_operation_availability": {
+      "authenticated_connection_login": "ingolf-lohmann",
+      "generic_authenticated_graphql_post_exposed": false,
+      "local_graphql_credential_delivered": false,
+      "protected_equivalent_test_reference_available": false,
+      "bound_mesh_contract": "api/qikvrt_github_api.openapi.yaml",
+      "local_mesh_credential_available": false,
+      "mesh_execution": "NOT_ESTABLISHED"
+    },
+    "domain_delivery": {
+      "hostname": "raumzeitterminal.de",
+      "observed_at": "2026-10-12T17:44:51.960980+00:00",
+      "method": "LOCAL_RESOLVER_AND_EXACT_HTTPS",
+      "resolver_error": {
+        "type": "gaierror",
+        "errno": -3,
+        "message": "[Errno -3] Temporary failure in name resolution"
+      },
+      "https_error": "HTTP Error 502: Bad Gateway",
+      "delivery_verified": false
+    }
+  },
+  "continuation": {
+    "state": "HOLD",
+    "first_blocker": "AUTHENTICATED_GRAPHQL_CAS_QUALIFICATION_NOT_AVAILABLE",
+    "native_governance_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "automatic_main_promotion_enabled": false,
+    "next_action": "Use an actually authorized updateRefs transport on an independently protected equivalent test reference, retain raw receipts for all ten qualification cases and exact publication, then obtain separate independent adapter/governance review. Complete durable cross-run journal restoration before any later automation activation.",
+    "force_push": false,
+    "history_rewrite": false,
+    "review_approval": false,
+    "workflow_dispatch_or_rerun": false,
+    "native_policy_change": false,
+    "main_promotion": false,
+    "automatic_promotion_opt_in": false
+  },
+  "primary_sources": [
+    "https://docs.github.com/en/graphql/reference/git",
+    "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches"
+  ],
+  "git_history": {
+    "subject_binding": "Containing commit/tree and exact output digests; no self-reference"
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "AUTHORITY_MIRROR_EQUALITY": false
+  },
+  "current_main_reconciliation": {
+    "head": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+    "tree": "e436ca6f80185d9fe264f1491d2bce232ae68b11",
+    "source_base": "d8775f200be50b0ec261fe4c8093ce64020d0d0e",
+    "commits": 8,
+    "non_integrity_paths": 20,
+    "mode": "NON_FORCE_PR_BRANCH_COMMIT_WITH_BOTH_EXISTING_PR_AND_CURRENT_MAIN_PARENTS",
+    "policy_and_lifecycle_evidence_preserved": true
+  }
+}

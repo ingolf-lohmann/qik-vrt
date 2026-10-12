@@ -6,7 +6,10 @@ import importlib.util
 import copy
 import pathlib
 import sys
+import tempfile
 import unittest
+import json
+from unittest import mock
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -33,6 +36,7 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
                 "comparison_scope": "TARGET_REF",
                 "expected_old_sha": "a" * 40,
                 "candidate_head_sha": "b" * 40,
+                "candidate_tree_sha": "d" * 40,
                 "server_atomic_compare_and_update": True,
                 "force_update": False,
                 "evidence_sha256": "e" * 64,
@@ -146,6 +150,7 @@ class ExpectedHeadPromotionTests(unittest.TestCase):
     def test_cas_subject_capability_and_evidence_must_all_match(self) -> None:
         for key, wrong in [("repository", "Goldkelch/qik-vrt"), ("ref", "refs/heads/other"),
                            ("expected_old_sha", "f" * 40), ("candidate_head_sha", "f" * 40),
+                           ("candidate_tree_sha", "f" * 40),
                            ("server_atomic_compare_and_update", False), ("force_update", True),
                            ("evidence_sha256", None), ("state", "UNAVAILABLE")]:
             with self.subTest(key=key):
@@ -236,6 +241,348 @@ class PublicationReadbackTests(unittest.TestCase):
     def test_malformed_provider_readback_holds(self) -> None:
         result, _ = self.verify([None, {}, {}])
         self.assertEqual(result["state"], "HOLD")
+
+
+class GraphqlCasIntegrationTests(unittest.TestCase):
+    """Local simulated qualification only; never a live server/Governance receipt."""
+
+    def setUp(self):
+        self.snapshot = ExpectedHeadPromotionTests().snapshot(draft=False)
+        self.rules = [
+            {"type": "pull_request", "ruleset_id": 1, "parameters": {
+                "required_approving_review_count": 1, "require_code_owner_review": True,
+                "dismiss_stale_reviews_on_push": True, "require_last_push_approval": True}},
+            {"type": "non_fast_forward", "ruleset_id": 1},
+            {"type": "required_status_checks", "ruleset_id": 1, "parameters": {
+                "required_status_checks": [{"context": "test", "integration_id": 10},
+                                           {"context": "QIKVRT required code-owner review", "integration_id": 10}]}}
+        ]
+        self.rulesets = [{"id": 1, "enforcement": "active", "target": "branch", "bypass_actors": []}]
+        self.reviews = [{"id": 1, "user": {"login": "Goldkelch"}, "commit_id": "b" * 40,
+                         "state": "APPROVED", "submitted_at": "2026-10-12T17:00:00Z"}]
+        self.pr = {"number": 459, "state": "open", "draft": False, "merged": False,
+                   "mergeable": True, "merge_commit_sha": "c" * 40,
+                   "user": {"login": "ingolf-lohmann"},
+                   "base": {"sha": "a" * 40, "ref": "main", "repo": {"full_name": "ingolf-lohmann/qik-vrt"}},
+                   "head": {"sha": "b" * 40, "repo": {"full_name": "ingolf-lohmann/qik-vrt"}}}
+        self.commit = {"sha": "c" * 40, "tree": {"sha": "d" * 40},
+                       "parents": [{"sha": "a" * 40}, {"sha": "b" * 40}]}
+        self.qualification = {
+            "schema": "qikvrt_graphql_ref_cas_qualification_v1", "state": "VERIFIED",
+            "repository": "ingolf-lohmann/qik-vrt", "repository_node_id": "R_fixture",
+            "target_ref": "refs/heads/main", "endpoint": "https://api.github.com/graphql",
+            "adapter_sha256": MODULE.hashlib.sha256(pathlib.Path(MODULE.__file__).read_bytes()).hexdigest(),
+            "protected_test_ref": "refs/heads/fixture-qualified-target", "executor_login": "fixture-bot",
+            "independent_verifier": "fixture-independent-reviewer", "executor_bypass": False,
+            "native_governance_independently_verified": True,
+            "effective_rules_sha256": MODULE._digest(self.rules), "rulesets_sha256": MODULE._digest(self.rulesets),
+            "test_policy_sha256": MODULE._digest(self.rules), "evidence_sha256": "e" * 64,
+            "cases": {name: {"result": "PASS", "repository": "ingolf-lohmann/qik-vrt",
+                             "ref": "refs/heads/fixture-qualified-target", "ref_unchanged": True,
+                             "receipt_sha256": "e" * 64, "receipt_url": "https://example.invalid/fixture"}
+                      for name in MODULE.CAS_QUALIFICATION_CASES},
+        }
+        self.main = "a" * 40
+        self.requests = []
+        self.reads = []
+        self.check_state = "success"
+        self.check_missing = False
+        self.check_wrong_head = False
+        self.source_id = 10
+        self.transport_mode = "success"
+        self.readback_outage = False
+
+    def read(self, path):
+        self.reads.append(path)
+        prefix = "repos/ingolf-lohmann/qik-vrt"
+        if path == prefix:
+            return {"node_id": "R_fixture", "full_name": "ingolf-lohmann/qik-vrt"}
+        if path == prefix + "/pulls/459":
+            return copy.deepcopy(self.pr)
+        if path == prefix + "/rules/branches/main":
+            return copy.deepcopy(self.rules)
+        if path == prefix + "/rulesets/1":
+            return copy.deepcopy(self.rulesets[0])
+        if path == prefix + "/pulls/459/reviews?per_page=100":
+            return copy.deepcopy(self.reviews)
+        if "/statuses?" in path:
+            return []
+        if "/check-runs?" in path:
+            sha = path.split("/commits/")[1].split("/")[0]
+            checks = [{"id": 1, "name": context, "head_sha": "f" * 40 if self.check_wrong_head else sha,
+                       "status": "completed", "conclusion": self.check_state, "app": {"id": self.source_id}}
+                      for context in ("test", "QIKVRT required code-owner review")]
+            if self.check_missing:
+                checks.pop()
+            return {"total_count": len(checks), "check_runs": checks}
+        if path == prefix + "/git/ref/pull/459/merge":
+            return {"ref": "refs/pull/459/merge", "object": {"type": "commit", "sha": "c" * 40}}
+        if path == prefix + "/git/commits/" + "c" * 40:
+            return copy.deepcopy(self.commit)
+        if path == prefix + "/git/ref/heads/main":
+            if self.readback_outage and self.requests:
+                raise TimeoutError("simulated lost readback")
+            return {"ref": "refs/heads/main", "object": {"type": "commit", "sha": self.main}}
+        raise AssertionError("unexpected GET " + path)
+
+    def graphql(self, request):
+        if request["query"].startswith("query "):
+            return {"data": {"viewer": {"login": "fixture-bot"}}}
+        self.requests.append(copy.deepcopy(request))
+        inputs = request["variables"]["input"]
+        update = inputs["refUpdates"][0]
+        if self.transport_mode == "race":
+            self.main = "f" * 40  # Competing Main writer after every pre-effect GET.
+        if update["beforeOid"] != self.main:
+            return {"errors": [{"type": "STALE_DATA", "message": "beforeOid does not match"}], "data": {"updateRefs": None}}
+        if self.transport_mode == "server_rejection":
+            return {"errors": [{"type": "FORBIDDEN", "message": "native review/check/NFF rejected"}]}
+        if self.transport_mode == "lost_before_effect":
+            raise TimeoutError("simulated transport failure")
+        self.main = update["afterOid"]
+        if self.transport_mode == "lost_after_effect":
+            raise TimeoutError("simulated lost response")
+        if self.transport_mode == "empty":
+            return {}
+        if self.transport_mode == "raw":
+            return "unparseable response"
+        if self.transport_mode == "partial_error":
+            return {"errors": [{"message": "ambiguous"}], "data": {"updateRefs": {"clientMutationId": inputs["clientMutationId"]}}}
+        return {"data": {"updateRefs": {"clientMutationId": inputs["clientMutationId"]}}}
+
+    def prepare(self):
+        return MODULE.prepare_graphql_promotion(self.snapshot, self.qualification, self.read)
+
+    def execute(self, journal):
+        return MODULE.execute_graphql_promotion(self.snapshot, self.qualification, journal, self.read, self.graphql)
+
+    def test_exact_request_binds_repository_main_old_new_head_candidate_tree_and_parents(self):
+        prepared = self.prepare()
+        self.assertEqual(prepared["state"], "PREPARED")
+        inputs = prepared["request"]["variables"]["input"]
+        self.assertEqual(inputs["repositoryId"], "R_fixture")
+        self.assertEqual(inputs["refUpdates"], [{"name": "refs/heads/main", "beforeOid": "a" * 40,
+                                               "afterOid": "c" * 40, "force": False}])
+        self.assertEqual(prepared["snapshot"]["ref_publication"]["candidate_head_sha"], "b" * 40)
+        self.assertEqual(prepared["snapshot"]["ref_publication"]["tree_sha"], "d" * 40)
+
+    def test_documentation_or_incomplete_or_wrongly_bound_qualification_cannot_admit(self):
+        for key, wrong in [("state", "DOCUMENTED"), ("adapter_sha256", "f" * 64),
+                           ("repository", "Goldkelch/qik-vrt"), ("target_ref", "refs/heads/other"),
+                           ("protected_test_ref", "refs/heads/main"), ("endpoint", "https://example.invalid/graphql"),
+                           ("executor_bypass", True), ("independent_verifier", "fixture-bot"),
+                           ("native_governance_independently_verified", False), ("cases", {}),
+                           ("test_policy_sha256", "f" * 64)]:
+            with self.subTest(key=key):
+                q = copy.deepcopy(self.qualification)
+                q[key] = wrong
+                result = MODULE.prepare_graphql_promotion(self.snapshot, q, self.read)
+                self.assertEqual(result["state"], "HOLD")
+                self.assertEqual(self.requests, [])
+        self.assertEqual(self.reads, [])
+
+    def test_stale_missing_withdrawn_changed_and_self_reviews_block_without_a_post(self):
+        for state in ("STALE", "MISSING", "DISMISSED", "CHANGES_REQUESTED", "SELF"):
+            with self.subTest(state=state):
+                self.setUp()
+                if state == "STALE": self.reviews[0]["commit_id"] = "f" * 40
+                elif state == "MISSING": self.reviews = []
+                elif state == "SELF": self.pr["user"]["login"] = "Goldkelch"
+                else: self.reviews[0]["state"] = state
+                self.assertEqual(self.prepare()["state"], "HOLD")
+                self.assertEqual(self.requests, [])
+
+    def test_failed_missing_wrong_subject_or_wrong_source_checks_block(self):
+        for mode in ("failure", "missing", "wrong_head", "wrong_source"):
+            with self.subTest(mode=mode):
+                self.setUp()
+                if mode == "failure": self.check_state = "failure"
+                if mode == "missing": self.check_missing = True
+                if mode == "wrong_head": self.check_wrong_head = True
+                if mode == "wrong_source": self.source_id = 99
+                self.assertEqual(self.prepare()["state"], "HOLD")
+                self.assertEqual(self.requests, [])
+
+    def test_native_policy_change_bypass_or_missing_nff_blocks(self):
+        for mode in ("bypass", "disabled", "no_nff", "drift", "empty"):
+            with self.subTest(mode=mode):
+                self.setUp()
+                if mode == "bypass": self.rulesets[0]["bypass_actors"] = [{"actor_id": 1}]
+                if mode == "disabled": self.rulesets[0]["enforcement"] = "disabled"
+                if mode == "no_nff": self.rules = [r for r in self.rules if r["type"] != "non_fast_forward"]
+                if mode == "drift": self.rules[0]["parameters"]["require_last_push_approval"] = False
+                if mode == "empty": self.rules = []
+                self.assertEqual(self.prepare()["state"], "HOLD")
+
+    def test_wrong_repository_node_and_changed_pr_head_hold(self):
+        self.qualification["repository_node_id"] = "wrong"
+        self.assertEqual(self.prepare()["state"], "HOLD")
+        self.setUp()
+        self.pr["head"]["sha"] = "f" * 40
+        self.assertEqual(self.prepare()["state"], "HOLD")
+
+    def test_wrong_tree_and_non_ff_reversed_or_third_parent_hold(self):
+        for mode in ("tree", "non_ff", "reverse", "third", "zero"):
+            with self.subTest(mode=mode):
+                self.setUp()
+                if mode == "tree": self.commit["tree"]["sha"] = "f" * 40
+                if mode == "non_ff": self.commit["parents"][0]["sha"] = "f" * 40
+                if mode == "reverse": self.commit["parents"].reverse()
+                if mode == "third": self.commit["parents"].append({"sha": "f" * 40})
+                if mode == "zero": self.pr["merge_commit_sha"] = "0" * 40
+                self.assertEqual(self.prepare()["state"], "HOLD")
+                self.assertEqual(self.requests, [])
+
+    def test_fsync_intent_precedes_single_mutation_and_exact_ref_readback_does_not_claim_pr_merge(self):
+        with tempfile.TemporaryDirectory() as directory:
+            journal = pathlib.Path(directory) / "attempt.json"
+            def guarded(request):
+                if request["query"].startswith("mutation "):
+                    saved = json.loads(journal.read_text())
+                    self.assertEqual(saved["request"], request)
+                return self.graphql(request)
+            result = MODULE.execute_graphql_promotion(self.snapshot, self.qualification, journal, self.read, guarded)
+            self.assertEqual(result["state"], "CONTINUE")
+            self.assertEqual(len(self.requests), 1)
+            self.assertEqual(result["pr_merge_state"], "NOT_INFERRED")
+            self.assertFalse(result["automatic_retry"])
+            self.assertFalse(result["completion_claims"]["EFFECT_ACK_DONE"])
+            self.assertNotIn("merge_response", json.loads(journal.read_text())["snapshot"])
+
+    def test_concurrent_main_change_rejects_cas_after_client_preflight(self):
+        self.transport_mode = "race"
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.execute(pathlib.Path(directory) / "attempt.json")
+            self.assertEqual(result["state"], "HOLD")
+            self.assertEqual(self.main, "f" * 40)
+            self.assertEqual(len(self.requests), 1)
+
+    def test_server_rejects_after_review_or_checks_change_during_race(self):
+        self.transport_mode = "server_rejection"
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.execute(pathlib.Path(directory) / "attempt.json")
+            self.assertEqual(result["state"], "HOLD")
+            self.assertEqual(self.main, "a" * 40)
+
+    def test_ambiguous_responses_always_reconcile_and_never_replay(self):
+        for mode in ("lost_before_effect", "lost_after_effect", "empty", "raw", "partial_error"):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
+                self.setUp()
+                self.transport_mode = mode
+                journal = pathlib.Path(directory) / "attempt.json"
+                result = self.execute(journal)
+                self.assertEqual(result["state"], "HOLD")
+                self.assertEqual(result["published_head_sha"], "c" * 40)
+                self.assertTrue(any("git/commits/" in p for p in result["readback"].get("read_paths", []) ) or result["readback"]["state"] == "HOLD")
+                self.assertEqual(self.execute(journal)["first_blocker"], "CAS_ATTEMPT_ALREADY_RECORDED")
+                self.assertEqual(len(self.requests), 1)
+                if mode != "lost_before_effect":
+                    reconciled = MODULE.reconcile_graphql_attempt(json.loads(journal.read_text()), self.qualification, self.read)
+                    self.assertEqual(reconciled["state"], "CONTINUE")
+                    self.assertEqual(len(self.requests), 1)
+
+    def test_lost_readback_preserves_exact_merge_and_request_digest(self):
+        self.readback_outage = True
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.execute(pathlib.Path(directory) / "attempt.json")
+            self.assertEqual(result["state"], "HOLD")
+            self.assertEqual(result["published_head_sha"], "c" * 40)
+            self.assertEqual(len(result["request_sha256"]), 64)
+            self.assertEqual(len(self.requests), 1)
+
+    def test_existing_or_unwritable_journal_and_wrong_identity_cannot_mutate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            journal = pathlib.Path(directory) / "missing" / "attempt.json"
+            self.assertEqual(self.execute(journal)["state"], "HOLD")
+            self.assertEqual(self.requests, [])
+            result = MODULE.execute_graphql_promotion(self.snapshot, self.qualification,
+                pathlib.Path(directory) / "attempt.json", self.read,
+                lambda request: {"data": {"viewer": {"login": "wrong-executor"}}})
+            self.assertEqual(result["first_blocker"], "GRAPHQL_EXECUTOR_IDENTITY_UNVERIFIED")
+
+    def test_tampered_journal_reconciliation_rejects_without_reads_or_writes(self):
+        attempt = self.prepare()
+        attempt["request"]["variables"]["input"]["refUpdates"][0]["force"] = True
+        self.reads.clear()
+        result = MODULE.reconcile_graphql_attempt(attempt, self.qualification, self.read)
+        self.assertEqual(result["first_blocker"], "CAS_ATTEMPT_REQUEST_MISMATCH")
+        self.assertEqual(self.reads, [])
+        self.assertEqual(self.requests, [])
+
+    def test_transport_is_one_pinned_graphql_post_with_structured_stdin(self):
+        request = self.prepare()["request"]
+        with mock.patch.object(MODULE.subprocess, "check_output", return_value='{"data":{}}') as run:
+            MODULE._gh_graphql(request)
+        args, kwargs = run.call_args
+        self.assertEqual(args[0], ["gh", "api", "--hostname", "github.com", "--method", "POST", "graphql", "--input", "-"])
+        self.assertEqual(json.loads(kwargs["input"]), request)
+        self.assertEqual(run.call_count, 1)
+
+    def test_wrong_correlation_id_cannot_close_even_with_matching_ref(self):
+        with tempfile.TemporaryDirectory() as directory:
+            def wrong_id(request):
+                response = self.graphql(request)
+                if request["query"].startswith("mutation "):
+                    response["data"]["updateRefs"]["clientMutationId"] = "wrong"
+                return response
+            result = MODULE.execute_graphql_promotion(self.snapshot, self.qualification,
+                pathlib.Path(directory) / "attempt.json", self.read, wrong_id)
+            self.assertEqual(result["state"], "HOLD")
+            self.assertEqual(result["readback"]["state"], "CONTINUE")
+            self.assertEqual(len(self.requests), 1)
+
+    def test_merge_result_checks_cannot_be_inherited_from_reviewed_head(self):
+        def missing_merge_checks(path):
+            value = self.read(path)
+            if "/commits/" + "c" * 40 + "/check-runs?" in path:
+                return {"total_count": 0, "check_runs": []}
+            return value
+        result = MODULE.prepare_graphql_promotion(self.snapshot, self.qualification, missing_merge_checks)
+        self.assertIn("MERGE_RESULT_REQUIRED_CHECKS_NOT_GREEN", result["detail"])
+        self.assertEqual(self.requests, [])
+
+    def test_review_withdrawal_during_viewer_read_is_reobserved_before_mutation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            def withdrawing_viewer(request):
+                self.reviews[0]["state"] = "DISMISSED"
+                return {"data": {"viewer": {"login": "fixture-bot"}}}
+            result = MODULE.execute_graphql_promotion(self.snapshot, self.qualification,
+                pathlib.Path(directory) / "attempt.json", self.read, withdrawing_viewer)
+            self.assertEqual(result["state"], "HOLD")
+            self.assertEqual(self.requests, [])
+
+    def test_malformed_http_json_preserves_raw_bytes_and_reconciles(self):
+        with tempfile.TemporaryDirectory() as directory:
+            def malformed(request):
+                if request["query"].startswith("query "):
+                    return self.graphql(request)
+                self.requests.append(request)
+                self.main = "c" * 40
+                return json.loads("{invalid-json")
+            result = MODULE.execute_graphql_promotion(self.snapshot, self.qualification,
+                pathlib.Path(directory) / "attempt.json", self.read, malformed)
+            self.assertEqual(result["graphql_response"], "{invalid-json")
+            self.assertEqual(result["state"], "HOLD")
+            self.assertEqual(result["readback"]["state"], "CONTINUE")
+
+    def test_zero_oid_cannot_be_used_for_create_or_delete(self):
+        for key in ("current_main_sha", "base_sha", "expected_head_sha", "current_head_sha", "expected_tree_sha"):
+            with self.subTest(key=key):
+                value = copy.deepcopy(self.snapshot)
+                value[key] = "0" * 40
+                value["target_ref_cas"]["candidate_tree_sha"] = value["expected_tree_sha"]
+                value["target_ref_cas"]["candidate_head_sha"] = value["expected_head_sha"]
+                value["target_ref_cas"]["expected_old_sha"] = value["base_sha"]
+                with self.assertRaises(MODULE.PromotionBlock):
+                    MODULE.evaluate_promotion(value)
+
+    def test_duplicate_nonfinite_and_nonobject_json_are_retained_as_ambiguous(self):
+        request = self.prepare()["request"]
+        for raw in ('{"data":{},"data":{"updateRefs":{}}}', '{"data":NaN}', '[]', '{'):
+            with self.subTest(raw=raw), mock.patch.object(MODULE.subprocess, "check_output", return_value=raw):
+                response = MODULE._gh_graphql(request)
+                self.assertEqual(response["raw_response"], raw)
+                self.assertNotIn("data", response)
 
 
 if __name__ == "__main__":

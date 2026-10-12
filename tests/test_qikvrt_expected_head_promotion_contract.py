@@ -3,8 +3,13 @@
 from __future__ import annotations
 
 import json
+import contextlib
+import io
+import os
 import pathlib
+import subprocess
 import unittest
+from unittest import mock
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json"
@@ -34,7 +39,7 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         )
         self.assertEqual(
             executor["merge_binding"],
-            "GITHUB_PULL_MERGE_REST_SHA_PRECONDITION",
+            "GITHUB_GRAPHQL_UPDATE_REFS_BEFORE_OID",
         )
         self.assertFalse(executor["same_head_verification_proxy_is_competing_writer"])
         self.assertFalse(executor["stale_base_pull_request_is_current_competing_writer"])
@@ -53,8 +58,10 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn("cancel-in-progress: false", workflow)
         self.assertIn("READY_RECLASSIFIED_REOBSERVATION_REQUIRED", workflow)
         self.assertIn('exit 0', workflow)
-        self.assertIn('-f sha="$EXPECTED_HEAD"', workflow)
-        self.assertIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
+        self.assertIn("publish-graphql", workflow)
+        self.assertIn("--attempt-file /tmp/qikvrt-promotion-cas-attempt.json", workflow)
+        self.assertNotIn("repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge", workflow)
+        self.assertNotIn("--method PUT", workflow)
         self.assertIn("other.get('base',{}).get('sha') != current_main", workflow)
         self.assertIn("other.get('head',{}).get('sha') == head", workflow)
 
@@ -66,9 +73,13 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertEqual(boundary["unverified_cas_disposition"], "HOLD")
         self.assertFalse(boundary["covers_other_writers"])
         workflow = PROMOTION_WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("'server_atomic_compare_and_update':False", workflow)
-        self.assertIn("'comparison_scope':'PR_HEAD'", workflow)
-        self.assertIn("verify-publication", workflow)
+        self.assertIn("qualify_target_ref_cas(snapshot,qualification)", workflow)
+        self.assertIn('CAS_AUTOMATIC_MAIN_PROMOTION: "false"', workflow)
+        self.assertIn("env.CAS_AUTOMATIC_MAIN_PROMOTION == 'true'", workflow)
+        self.assertFalse(contract["promotion_executor"]["automatic_main_promotion_enabled"])
+        qualification = json.loads((ROOT / boundary["qualification_path"]).read_text())
+        self.assertEqual(qualification["state"], "UNAVAILABLE")
+        self.assertFalse(qualification["native_governance_independently_verified"])
         self.assertNotIn('test "$promoted_main" != "$EXPECTED_BASE"', workflow)
 
     def test_external_effect_claims_remain_fail_closed(self) -> None:
@@ -82,6 +93,52 @@ class ExpectedHeadPromotionContractTests(unittest.TestCase):
         self.assertIn("zenodo_mutation", forbidden)
         self.assertIn("ietf_mutation", forbidden)
         self.assertIn("credentialed_external_write", forbidden)
+
+    def embedded_python(self):
+        lines = PROMOTION_WORKFLOW.read_text().splitlines()
+        blocks = []
+        current = None
+        for line in lines:
+            if "<<'PY'" in line:
+                current = []
+            elif current is not None and line.strip() == "PY":
+                blocks.append("\n".join(x[10:] for x in current) + "\n")
+                current = None
+            elif current is not None:
+                current.append(line)
+        self.assertIsNone(current)
+        return blocks
+
+    def test_every_embedded_workflow_python_block_compiles(self):
+        blocks = self.embedded_python()
+        self.assertEqual(len(blocks), 4)
+        for index, code in enumerate(blocks):
+            compile(code, f"workflow-block-{index}", "exec")
+
+    def test_workflow_snapshot_executes_with_unavailable_trusted_qualification(self):
+        code = next(c for c in self.embedded_python() if "snapshot={" in c)
+        pr = {"number": 459, "head": {"sha": "b" * 40}, "base": {"sha": "a" * 40},
+              "draft": True, "mergeable": True}
+        def read(command, **kwargs):
+            path = command[-1]
+            if "--paginate" in command:
+                return json.dumps([{"workflow_runs": []}] if "/actions/runs?" in path else [[]])
+            if path.endswith("/pulls/459"):
+                return json.dumps(pr)
+            if path.endswith("/commits/main"):
+                return json.dumps({"sha": "a" * 40})
+            if "/git/commits/" in path:
+                return json.dumps({"tree": {"sha": "d" * 40}})
+            raise AssertionError("unexpected snapshot read " + path)
+        output = io.StringIO()
+        with mock.patch.dict(os.environ, {"REPOSITORY": "ingolf-lohmann/qik-vrt", "PR_NUMBER": "459",
+                "REQUIRED_GATES_JSON": '["QIKVRT CI"]', "REVIEW_STATUS_CONTEXT": "QIKVRT requested review execution"}), \
+                mock.patch.object(subprocess, "check_output", side_effect=read), contextlib.redirect_stdout(output):
+            exec(compile(code, "workflow-snapshot", "exec"), {})
+        snapshot = json.loads(output.getvalue())
+        self.assertEqual(snapshot["target_ref_cas"]["state"], "UNAVAILABLE")
+        self.assertEqual(snapshot["expected_tree_sha"], "d" * 40)
+        self.assertFalse(snapshot["target_ref_cas"]["server_atomic_compare_and_update"])
 
 
 if __name__ == "__main__":

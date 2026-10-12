@@ -44,6 +44,9 @@ jobs:
       REPOSITORY: ${{ github.repository }}
       PROMOTION_MARKER: "<!-- qikvrt-expected-head-promotion:enabled external_effect=NONE -->"
       REVIEW_STATUS_CONTEXT: "QIKVRT requested review execution"
+      # Deliberately disabled until independent CAS/governance qualification,
+      # review of this adapter, and durable cross-run attempt retention.
+      CAS_AUTOMATIC_MAIN_PROMOTION: "false"
       REQUIRED_GATES_JSON: >-
         ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion","QIKVRT requested review execution"]
     steps:
@@ -60,6 +63,8 @@ jobs:
           set -euo pipefail
           python3 -B -m unittest -v \
             tests.test_qikvrt_expected_head_promotion \
+            tests.test_qikvrt_expected_head_promotion_contract \
+            tests.test_qikvrt_required_review_gate \
             tests.test_qikvrt_requested_review_executor
 
       - name: Discover one marked current-base candidate
@@ -122,6 +127,7 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-promotion-snapshot.json
           import json, os, subprocess
+          from tools.qikvrt_expected_head_promotion import QUALIFICATION_PATH, qualify_target_ref_cas
           repo=os.environ['REPOSITORY']
           pr_number=int(os.environ['PR_NUMBER'])
           required=json.loads(os.environ['REQUIRED_GATES_JSON'])
@@ -173,24 +179,10 @@ jobs:
               common=sorted(candidate_files & other_files)
               if common: overlaps.append({'pr_number':other['number'],'paths':common})
 
-          print(json.dumps({
+          snapshot={
               'pr_number':pr_number,
               'repository':repo,
               'expected_tree_sha':expected_tree,
-              # This trusted adapter compares the PR head, not the old Main ref.
-              # Never import a capability declaration from candidate files/comments.
-              'target_ref_cas': {
-                  'state':'UNAVAILABLE',
-                  'repository':repo,
-                  'ref':'refs/heads/main',
-                  'operation':'GITHUB_PULL_MERGE_REST_SHA_PRECONDITION',
-                  'comparison_scope':'PR_HEAD',
-                  'expected_old_sha':current_main,
-                  'candidate_head_sha':head,
-                  'server_atomic_compare_and_update':False,
-                  'force_update':False,
-                  'evidence_sha256':None,
-              },
               'current_main_sha':current_main,
               'base_sha':pr['base']['sha'],
               'expected_head_sha':head,
@@ -201,7 +193,12 @@ jobs:
               'required_gates':required,
               'workflow_runs':workflow_runs,
               'competing_writer_overlaps':overlaps,
-          }, sort_keys=True))
+          }
+          # This file and adapter come from the trusted MAIN checkout above.
+          # No PR file, comment, workflow artifact or environment enables CAS.
+          qualification=json.loads(QUALIFICATION_PATH.read_text())
+          snapshot['target_ref_cas']=qualify_target_ref_cas(snapshot,qualification)
+          print(json.dumps(snapshot, sort_keys=True))
           PY
 
           set +e
@@ -219,7 +216,7 @@ jobs:
           exit 0
 
       - name: Reobserve exact unchanged head and advance one promotion phase
-        if: steps.decision.outputs.state == 'PROMOTABLE'
+        if: steps.decision.outputs.state == 'PROMOTABLE' && env.CAS_AUTOMATIC_MAIN_PROMOTION == 'true'
         env:
           PR_NUMBER: ${{ steps.candidate.outputs.pr }}
           EXPECTED_HEAD: ${{ steps.decision.outputs.head }}
@@ -250,19 +247,14 @@ jobs:
           test "$current_base" = "$EXPECTED_BASE"
           test "$current_head" = "$EXPECTED_HEAD"
 
-          gh api --method PUT "repos/${REPOSITORY}/pulls/${PR_NUMBER}/merge" \
-            -f merge_method=merge -f sha="$EXPECTED_HEAD" > /tmp/qikvrt-promotion-merge.json
-          cat /tmp/qikvrt-promotion-merge.json
-          python3 -B - <<'PY' > /tmp/qikvrt-promotion-publication-input.json
-          import json
-          value=json.load(open('/tmp/qikvrt-promotion-snapshot.json'))
-          value['merge_response']=json.load(open('/tmp/qikvrt-promotion-merge.json'))
-          print(json.dumps(value, sort_keys=True))
-          PY
-          # Ref -> exact returned commit/TREE/parents -> ref. A lost response is
-          # HOLD with the recorded effect identity, never a blind merge retry.
-          python3 -B tools/qikvrt_expected_head_promotion.py verify-publication \
-            --input /tmp/qikvrt-promotion-publication-input.json \
+          # One updateRefs, beforeOid=B, afterOid=M, force=false. No REST fallback.
+          # Preserve the intent before POST even if the runner/response is lost.
+          # Before enabling this phase, restore a durable same-subject journal
+          # from earlier attempts; the current disabled workflow cannot certify
+          # cross-run replay suppression by a fresh /tmp file.
+          python3 -B tools/qikvrt_expected_head_promotion.py publish-graphql \
+            --input /tmp/qikvrt-promotion-snapshot.json \
+            --attempt-file /tmp/qikvrt-promotion-cas-attempt.json \
             > /tmp/qikvrt-promotion-readback.json
           cat /tmp/qikvrt-promotion-readback.json
           promoted_main="$(python3 -c 'import json; print(json.load(open("/tmp/qikvrt-promotion-readback.json"))["published_head_sha"])')"
@@ -278,8 +270,7 @@ jobs:
             /tmp/qikvrt-promotion-candidate.json
             /tmp/qikvrt-promotion-snapshot.json
             /tmp/qikvrt-promotion-decision.json
-            /tmp/qikvrt-promotion-merge.json
-            /tmp/qikvrt-promotion-publication-input.json
+            /tmp/qikvrt-promotion-cas-attempt.json
             /tmp/qikvrt-promotion-readback.json
           if-no-files-found: warn
 

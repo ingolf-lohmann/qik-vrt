@@ -1,0 +1,20 @@
+{
+  "schema": "qikvrt_graphql_ref_cas_qualification_v1",
+  "state": "UNAVAILABLE",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "repository_node_id": "R_kgDOS-xnUw",
+  "endpoint": "https://api.github.com/graphql",
+  "target_ref": "refs/heads/main",
+  "protected_test_ref": null,
+  "executor_login": null,
+  "independent_verifier": null,
+  "adapter_sha256": null,
+  "effective_rules_sha256": null,
+  "rulesets_sha256": null,
+  "test_policy_sha256": null,
+  "evidence_sha256": null,
+  "cases": {},
+  "native_governance_independently_verified": false,
+  "executor_bypass": false,
+  "reason": "Authenticated updateRefs transport and equivalent protected test reference not available; native Main is unprotected, rulesets and reviews empty on 2026-10-12. Local tests must never upgrade this receipt."
+}
