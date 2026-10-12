@@ -169,7 +169,26 @@ does not establish peer review, empirical confirmation, or field-wide adoption.
 - `src/qikvrt_github_api_shim.py` — authenticated, repository-scoped local
   GitHub-shaped HTTP adapter.
 - `scripts/qikvrt_api_client.py` — validating client; cleartext bearer tokens
-  are permitted only on loopback endpoints.
+  are permitted only on loopback endpoints. Every attempted dispatch closes
+  with fresh branch HEAD/TREE and `https://raumzeitterminal.de/` GET observations,
+  including errors and suppressed retries. Redirects are never followed; an
+  adapter token is not forwarded to GitHub or the public delivery origin.
+  The shared PR507 Owner rule and `tools/ai_handoff.py` readback/causal validators
+  remain authoritative. A scoped handler DONE is reported separately; this
+  transport cannot prove working-software delivery and returns CONTINUE (20)
+  for accepted/scoped-success responses, or blocking exit 1 on failure.
+  Private metadata under `~/.local/state/qikvrt/api-client` (override with
+  `QIKVRT_API_CLIENT_STATE_DIR` or `--state-dir`) preserves failed and in-flight
+  requests across process restarts without storing tokens, payloads or response
+  bodies. A different request ID, observation clock or lifecycle HEAD does not
+  permit another POST. `--retry-evidence-file` consumes the existing causal
+  fields `subject`, `error`, `cause`, `capability` as SHA-256 digests: bind
+  subject/error to the recorded failure and supply materially new, relevant
+  cause/capability evidence. Digest consistency is not independent proof of
+  those claims and grants no authorization or governance bypass. Ambiguous,
+  in-flight and asynchronous outcomes require operation-scoped observation
+  through the existing executor before another effect; they are not retried
+  merely because a new causal digest was supplied.
 - `qikvrt.py` — authorization-before-effect launcher for the master gate and the
   explicitly confirmed publication planner.
 - `tools/qikvrt_subprocess.py` — subprocess runner with hard time and captured-
