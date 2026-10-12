@@ -90,3 +90,54 @@ Der Review-Observer lehnt gestapelte PRs gegen Integrationsbranches ab; deshalb
 ist #520 nun eine Main-basierte Erweiterung des unveraendert enthaltenen #515-
 Kandidaten. Ein Review-, Merge- oder neuer native-CI-PASS wird daraus nicht
 abgeleitet. Die native Evidenz des Vorgaengers gilt nur fuer dessen exakten Head.
+
+
+## Gebundene v2-Prüfung vom 12. Oktober 2026
+
+Die elf Originaldateien, die kompakte Owner-Entscheidung, der Generation-0-Beleg,
+der Publisher, die Policy, beide v2-Schemas und alle Regressionstests bleiben
+unverändert. 119 vorhandene Zenodo-Tests und neun Metadaten-Tests bestanden.
+Die vollständige Basisinventur besteht mit 3939 Einträgen / 3928 Digests.
+
+Unter `release/brief-2610/v2-preparation/` stehen ausschließlich Vorbereitungen:
+`MACHINE_PROOF_BUNDLE_DRAFT.json`, `PREPUBLICATION_RETURN_RECEIPT.json` und
+`publish-request.json`. Das Bundle projiziert die 16 vorhandenen Matrix-Aussagen
+und bindet exakt die ursprünglichen Quellen-IDs. Es beansprucht keine neue
+formale oder empirische Bestätigung. Die v2-Rückgabequittung normalisiert die
+dokumentierte Rückgabe vom 10.10.2026 für acht unveränderte Kandidatenpfade;
+die weiteren drei Original-Uploads sind im disjunkten v2-Vertrag Artefakte.
+Sie erfindet keine neue Rückgabe der zusätzlichen Kontrollbytes.
+
+Der vorgeschlagene Satz enthält die elf Originale plus Proof und Receipt,
+also 13 Dateien. Die Freigabe für 11 Dateien / 177418 Bytes deckt diese
+zusätzlichen Bytes nicht. Eine neue exakte, natürliche Owner-Entscheidung
+für den vollständigen finalen Satz einschließlich Metadaten-/Proof-/Return-
+und Einmalverwendungsbindungen ist erforderlich. Die bestehenden
+Owner- und Freeze-Dateien werden weder erweitert noch umgedeutet.
+
+Das Original der Claim-Matrix behauptet, jede Claim-ID komme im Artikel vor.
+Keine der 16 IDs steht im PDF oder im TeX-Original. Die maschinelle Projektion
+der Matrix besteht, doch damit ist die behauptete vollständige Zuordnung des
+Artikelinhalts nicht belegt. Dieser Befund wird nicht durch Änderung der
+freigegebenen Originale oder durch ein unbelegtes Vollständigkeitsflag kaschiert.
+
+Die konstante v2-Schemaforderung `zenodo_upload_authorized=true` ist derzeit
+nicht faktisch erfüllt. Das Draft-Bundle bewahrt die tatsächlichen false-Werte;
+der bestehende Proof-Gate blockiert es. Das Manifest bleibt `state=prepare`
+mit `confirm=OWNER_DECISION_REQUIRED`; der bestehende Publisher blockiert es
+ebenfalls. Diese Dateien dürfen nicht als finale freigegebene Upload-Bytes
+interpretiert werden. Der vollständige Prüfbefund und die exakten Draft-Digests
+stehen in `evidence/zenodo/brief-2610/V2_CONFORMITY_20261012.json`.
+
+Main ist weiterhin ungeschützt; native Rollenaktivierung und unabhängige
+Reviews sind nicht belegt. Der autorisierte Main-Writer bleibt vorhanden,
+sein POST ist im aktuellen Client nicht exponiert. Publisher-Credentials in
+anderen Laufzeiten bleiben unbekannt. Es gab keinen Zenodo-Effekt und keinen
+Sperrverbrauch. Öffentliche DOI- und Download-Verifikation bleiben erforderlich.
+
+Der vollständige lokale `make test`-Lauf der Vorbereitung besteht ebenfalls:
+960 Fälle in 23 unittest-Gruppen sowie 7.864.387 C90-Kernprüfungen. Das historische
+Test-Subject `56127a6fd7dadea331fea98ed6cba19b4b96c6b2` wurde über den REST-
+Lesepfad bytegenau nachgeladen; der anfängliche Worktree-Fehler war eine lokale
+Objektlücke. Weder Tests noch Implementierung wurden dafür verändert.
+Native Gates eines neuen PR-HEADs sind separat zu beobachten.
