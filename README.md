@@ -196,6 +196,11 @@ does not establish peer review, empirical confirmation, or field-wide adoption.
   semantic subject are retained within the 16 KiB journal limit; reaching the
   bound blocks new dispatches rather than forgetting old IDs. A remembered
   completion never closes a later unresolved request for that subject.
+  Before reserving an admitted successor, the original attempt journal is
+  checkpointed by its source digest in the same private work-history namespace,
+  including legacy attempts whose work cursor or history is missing. The
+  per-run work receipt also retains its attempt metadata. A checkpoint failure
+  blocks the new POST; original evidence is never overwritten to admit it.
 - `qikvrt.py` — authorization-before-effect launcher for the master gate and the
   explicitly confirmed publication planner.
 - `tools/qikvrt_subprocess.py` — subprocess runner with hard time and captured-

@@ -286,6 +286,39 @@ def recover_journal_work(root: Path, previous: dict | None, domain: str) -> dict
     return recovered
 
 
+def preserve_attempt_evidence(root: Path, record: dict, raw: bytes) -> None:
+    """Checkpoint the original journal before reserving an admitted successor.
+
+    Reuse the private work-history namespace. These are original non-secret
+    attempt bytes, not a new dispatch, effect witness or last-work cursor.
+    """
+    source_digest = hashlib.sha256(raw).hexdigest()
+    identifier = record.get("execution_id")
+    if not isinstance(identifier, str) or not identifier.strip():
+        identifier = "legacy-durable-attempt:" + source_digest
+    task = {"id": "api:" + record["subject_key"],
+            "state": "VERIFIED" if record["status"] == "completed" else "OPEN",
+            "evidence": record.get("response_sha256", "") if record["status"] == "completed" else "",
+            "next_action": "Resolve the preserved original attempt before any further effect"}
+    checkpoint = {"schema": WORK_SCHEMA, "execution_id": identifier,
+                  "state": "CONTINUE", "work": [task], "attempt_record": record,
+                  "source_journal_sha256": source_digest,
+                  "source_journal_json": raw.decode("utf-8"),
+                  "scope": "ORIGINAL_ATTEMPT_METADATA_NOT_NEW_EFFECT_PROOF"}
+    validate_client_work(checkpoint)
+    encoded = json.dumps(checkpoint, sort_keys=True).encode("utf-8")
+    if len(encoded) > MAX_WORK_BYTES:
+        raise ValueError("attempt checkpoint exceeds bounded state; no original discarded")
+    identity = hashlib.sha256(("original-attempt:" + source_digest).encode()).hexdigest()
+    path = root / ("work-" + identity + ".data")
+    _assert_safe_target(path)
+    if path.exists():
+        if path.stat().st_nlink != 1 or read_regular_file(path, max_bytes=MAX_WORK_BYTES) != encoded:
+            raise ValueError("original attempt checkpoint drift")
+        return
+    atomic_write_bytes(path, encoded)
+
+
 def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
                            closure: dict, action_id: str, domain: str,
                            previous: dict | None) -> dict:
@@ -318,7 +351,7 @@ def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
     successor = {"schema": WORK_SCHEMA, "execution_id": action_id, "state": "CONTINUE",
                  "work": list(work.values()), "action_window": closure["action_window"],
                  "readback": closure["readback"], "effect_state": "EFFECT_ACK_CONTINUE",
-                 "ordinary_release": False}
+                 "ordinary_release": False, "attempt_record": record}
     if previous:
         successor["previous_run"] = {"execution_id": previous["execution_id"],
                                      "open_work": [task["id"] for task in previous["work"] if task["state"] == "OPEN"]}
@@ -352,10 +385,12 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
     with _exclusive_integrity_lock(root):
         previous_work = recover_journal_work(root, load_previous_work(root), domain)
         previous = None
+        previous_raw = None
         if path.exists():
             if path.stat().st_nlink != 1:
                 raise OSError("client state must be a single-link regular file")
-            previous = unique_json(read_regular_file(path, max_bytes=MAX_JOURNAL_BYTES))
+            previous_raw = read_regular_file(path, max_bytes=MAX_JOURNAL_BYTES)
+            previous = unique_json(previous_raw)
             if (not isinstance(previous, dict) or previous.get("schema") != JOURNAL_SCHEMA
                     or previous.get("subject_key") != subject_key
                     or previous.get("status") not in ("in_flight", "failed", "ambiguous", "completed", "pending")):
@@ -402,6 +437,8 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                     root, args, subject_key=subject_key, record=previous,
                     closure=closure, action_id=action_id, domain=domain, previous=previous_work)
                 return 1
+        if previous is not None:
+            preserve_attempt_evidence(root, previous, previous_raw)
         record = {"schema": JOURNAL_SCHEMA, "subject_key": subject_key,
                   "current": current, "status": "in_flight",
                   "request_id": args.request_id, "execution_id": action_id,

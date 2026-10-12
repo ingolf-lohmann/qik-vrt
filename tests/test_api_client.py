@@ -488,6 +488,45 @@ print(json.dumps({"exit": result, "posts": sum(r.get_method() == "POST" for r in
     def continuation_work(self) -> dict:
         return json.loads((Path(self.state_dir) / "CONTINUATION.data").read_text())
 
+    def assert_original_attempt_is_retained(self, original: dict) -> None:
+        def dictionaries(value):
+            if isinstance(value, dict):
+                yield value
+                for child in value.values():
+                    yield from dictionaries(child)
+            elif isinstance(value, list):
+                for child in value:
+                    yield from dictionaries(child)
+
+        histories = [json.loads(path.read_text()) for path in Path(self.state_dir).glob("work-*.data")]
+        self.assertTrue(any(item == original for history in histories for item in dictionaries(history)),
+                        "admitted successor erased the original durable failure metadata")
+
+    def test_admitted_retry_retains_original_failure_evidence(self) -> None:
+        opener, requests = self.transport(failure=True)
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(self.invoke_actual_client(), 1)
+            original = json.loads(next(Path(self.state_dir).glob("*.json")).read_text())
+            evidence = Path(self.state_dir) / "retry-evidence.data"
+            evidence.write_text(json.dumps(dict(original["current"], cause="f" * 64)))
+            self.assertEqual(self.invoke_actual_client("--retry-evidence-file", str(evidence)), 1)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2)
+        self.assert_original_attempt_is_retained(original)
+
+    def test_legacy_retry_without_work_history_preserves_original_attempt(self) -> None:
+        opener, requests = self.transport(failure=True)
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(self.invoke_actual_client(), 1)
+            original = json.loads(next(Path(self.state_dir).glob("*.json")).read_text())
+            (Path(self.state_dir) / "CONTINUATION.data").unlink()
+            for path in Path(self.state_dir).glob("work-*.data"):
+                path.unlink()
+            evidence = Path(self.state_dir) / "retry-evidence.data"
+            evidence.write_text(json.dumps(dict(original["current"], capability="e" * 64)))
+            self.assertEqual(self.invoke_actual_client("--retry-evidence-file", str(evidence)), 1)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2)
+        self.assert_original_attempt_is_retained(original)
+
     def test_interrupted_intent_is_inherited_even_when_next_request_changes(self) -> None:
         opener, requests = self.transport()
         original = opener.open.side_effect

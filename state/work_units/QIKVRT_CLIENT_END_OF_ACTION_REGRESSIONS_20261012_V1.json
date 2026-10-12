@@ -122,7 +122,7 @@
     "EFFECT_ACK_DONE": false
   },
   "revision": "3-transport-client-repair",
-  "updated_at": "2026-10-12T08:25:33.982697+00:00",
+  "updated_at": "2026-10-12T08:55:06.122296+00:00",
   "historical_test_evidence": {
     "unmodified_gate_original_tests": {
       "tests": 30,
@@ -629,7 +629,18 @@
       "sha256": "9fa8445faf50c37b83ae5ab02c0c2d5e490f2d5c5637c93debca2aaaa2e4c4b7",
       "scope": "Actual CLI deterministic transport fixtures and existing shared receipt gate; not productive vendor sessions or delivery"
     },
-    "native_validation": "PENDING_ON_NEW_SUBJECT_NOT_PREDECESSOR_PASS",
+    "native_validation": {
+      "head": "b8333a214d243373ff9948b7f477ce0c58290ae4",
+      "tree": "0256a429d73bcd21702be7ef669724183635cc47",
+      "push_run": 38223576546,
+      "pr_run": 38223583698,
+      "full_make_test": "PASS",
+      "MAKE_TEST_EXIT": 0,
+      "iteration_0_fixpoint": true,
+      "evidence_materialization_run": 38223583759,
+      "evidence_materialization": "success",
+      "predecessor_evidence_transfer": false
+    },
     "required_open_work": [
       "protected-main-promotion",
       "exact-host-delivery",
@@ -639,6 +650,52 @@
       "human": "Ingolf Lohmann: continuing repair/integration/delivery grant and explicit repetition instruction",
       "artificial_cognitive": "Codex: causal CLI counterexamples, existing-journal repair and validation",
       "joint": "Owner requirements and machine-authored reviewable implementation remain separately attributable"
+    }
+  },
+  "original_attempt_evidence_retention": {
+    "source_head": "b8333a214d243373ff9948b7f477ce0c58290ae4",
+    "source_tree": "0256a429d73bcd21702be7ef669724183635cc47",
+    "observed_defect": "An admitted retry overwrote the original failure record while prior work receipts did not retain it; the same loss occurred for a legacy journal without a work cursor/history.",
+    "red": {
+      "total": 34,
+      "ordinary_failures": 2,
+      "expected_failures": 0,
+      "bytes": 8428,
+      "sha256": "6d6ff27274a72415d86e3509253bae77b215bad8729227471b5810231f6e0cec"
+    },
+    "repair": "Before a new intent overwrites a prior journal, atomically preserve the original parsed metadata and exact journal JSON/digest in the existing work-history namespace. Content-addressed checkpoints are repeat-safe and drift fails closed. Per-run work receipts also retain attempt metadata. Missing legacy history is reconstructed before POST.",
+    "limits": {
+      "source_journal_bytes": 16384,
+      "checkpoint_bytes": 131072,
+      "checkpoint_failure": "BLOCK_BEFORE_NEW_POST"
+    },
+    "new_executor": false,
+    "new_workflow": false,
+    "new_trigger": false,
+    "local_validation": {
+      "transport": 34,
+      "shared_client_receipt": 55,
+      "total": 89,
+      "status": "PASS",
+      "expected_failures": 0,
+      "bytes": 16705,
+      "sha256": "b266eb3ae900dc68fcdc0c74ca6fba875ab3ca389aa3e7ccdd6de3f549cb341b",
+      "scope": "Actual CLI deterministic transport fixtures and shared gate; not productive vendor sessions"
+    },
+    "native_validation": "PENDING_ON_NEW_SUBJECT_NOT_PREDECESSOR_PASS",
+    "required_open_work": [
+      "protected-main-promotion",
+      "exact-host-delivery",
+      "actual-vendor-session-adoption",
+      "native-fair-rest-continuation-integration"
+    ],
+    "reuse_existing_fair_continuation_candidates": [
+      500,
+      501
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: continuing repair/integration/delivery grant and repetition instruction",
+      "artificial_cognitive": "Codex: causal original-evidence counterexamples, existing history checkpoint repair and verification"
     }
   }
 }
