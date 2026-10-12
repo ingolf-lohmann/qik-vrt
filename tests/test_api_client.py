@@ -198,6 +198,81 @@ class ApiClientEndOfActionConformanceTests(unittest.TestCase):
         posts = [request for request in requests if request.get_method() == "POST"]
         self.assertEqual(len(posts), 1, "unchanged failure submitted twice without new cause")
 
+    def test_same_completed_request_closes_freshly_without_repeating_post(self) -> None:
+        opener, requests = self.transport()
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(self.invoke_actual_client(), 20)
+            first_count = len(requests)
+            self.assertEqual(self.invoke_actual_client(), 20)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 1,
+                         "the same completed stable request was submitted twice")
+        repeated = requests[first_count:]
+        self.assertEqual([request.get_method() for request in repeated], ["GET", "GET"])
+        work = json.loads((Path(self.state_dir) / "CONTINUATION.data").read_text())
+        api = [task for task in work["work"] if task["id"].startswith("api:")]
+        self.assertEqual(len(api), 1)
+        self.assertEqual(api[0]["state"], "VERIFIED")
+        self.assertTrue(api[0]["evidence"])
+        self.assertEqual(work["effect_state"], "EFFECT_ACK_CONTINUE")
+
+    def test_completed_request_cannot_repost_after_lost_work_cursor(self) -> None:
+        opener, requests = self.transport()
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(self.invoke_actual_client(), 20)
+            journal_path = next(Path(self.state_dir).glob("*.json"))
+            legacy = json.loads(journal_path.read_text())
+            legacy.pop("completed_requests")
+            journal_path.write_text(json.dumps(legacy))
+            (Path(self.state_dir) / "CONTINUATION.data").unlink()
+            self.assertEqual(self.invoke_actual_client(), 20)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 1,
+                         "completed journal was replayed after losing the projection")
+
+    def test_completed_request_is_not_forgotten_after_another_completed_id(self) -> None:
+        opener, requests = self.transport()
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(self.invoke_actual_client("--request-id", "first-completed"), 20)
+            self.assertEqual(self.invoke_actual_client("--request-id", "second-completed"), 20)
+            self.assertEqual(self.invoke_actual_client("--request-id", "first-completed"), 20)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2,
+                         "a later completed ID erased the earlier idempotency witness")
+
+    def test_old_completion_does_not_close_a_later_failed_request(self) -> None:
+        opener, requests = self.transport()
+        original = opener.open.side_effect
+
+        def fail_later_request(request, **kwargs):
+            if (request.get_method() == "POST"
+                    and json.loads(request.data)["inputs"]["request_id"] == "later-failed"):
+                requests.append(request)
+                raise urllib.error.HTTPError(request.full_url, 403, "Forbidden", {}, io.BytesIO(b"denied"))
+            return original(request, **kwargs)
+
+        opener.open.side_effect = fail_later_request
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(self.invoke_actual_client("--request-id", "earlier-completed"), 20)
+            self.assertEqual(self.invoke_actual_client("--request-id", "later-failed"), 1)
+            journal_path = next(Path(self.state_dir).glob("*.json"))
+            before = journal_path.read_bytes()
+            self.assertEqual(self.invoke_actual_client("--request-id", "earlier-completed"), 20)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2)
+        self.assertEqual(journal_path.read_bytes(), before)
+        api = [task for task in self.continuation_work()["work"] if task["id"].startswith("api:")]
+        self.assertEqual(len(api), 1)
+        self.assertEqual(api[0]["state"], "OPEN")
+
+    def test_full_completion_memory_blocks_new_post_without_forgetting_old_ids(self) -> None:
+        opener, requests = self.transport()
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener), \
+                mock.patch.object(client, "MAX_COMPLETED_REQUESTS", 2):
+            self.assertEqual(self.invoke_actual_client("--request-id", "first-completed"), 20)
+            self.assertEqual(self.invoke_actual_client("--request-id", "second-completed"), 20)
+            self.assertEqual(self.invoke_actual_client("--request-id", "third-unreserved"), 1)
+            self.assertEqual(self.invoke_actual_client("--request-id", "first-completed"), 20)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2)
+        journal = json.loads(next(Path(self.state_dir).glob("*.json")).read_text())
+        self.assertEqual(set(journal["completed_requests"]), {"first-completed", "second-completed"})
+
     def test_repository_parser_recursion_failure_cannot_skip_public_closing_readback(self) -> None:
         opener, requests = self.transport()
         original = opener.open.side_effect
@@ -271,7 +346,7 @@ class ApiClientEndOfActionConformanceTests(unittest.TestCase):
 
                 opener.open.side_effect = invalid_readback
                 with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
-                    self.assertEqual(self.invoke_actual_client(), 1)
+                    self.assertEqual(self.invoke_actual_client("--artifact-id", "invalid-closure-" + kind), 1)
                 self.assert_closing_reads(requests)
 
     def test_adapter_token_is_never_forwarded_to_closing_origins(self) -> None:
@@ -329,7 +404,8 @@ print(json.dumps({"exit": result, "posts": sum(r.get_method() == "POST" for r in
                 opener, requests = self.transport(failure=failure)
                 with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
                     self.invoke_actual_client("--artifact-id", "first" + str(failure))
-                    arguments = ("--artifact-id", "second" + str(failure)) if failure else ("--artifact-id", "firstFalse")
+                    arguments = (("--artifact-id", "second" + str(failure)) if failure
+                                 else ("--artifact-id", "firstFalse", "--request-id", "new-accepted-request"))
                     self.invoke_actual_client(*arguments)
                 self.assertEqual(sum(r.get_method() == "POST" for r in requests), 2)
 

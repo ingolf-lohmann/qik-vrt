@@ -122,7 +122,7 @@
     "EFFECT_ACK_DONE": false
   },
   "revision": "3-transport-client-repair",
-  "updated_at": "2026-10-12T07:03:10.172961+00:00",
+  "updated_at": "2026-10-12T08:25:33.982697+00:00",
   "historical_test_evidence": {
     "unmodified_gate_original_tests": {
       "tests": 30,
@@ -590,6 +590,55 @@
     "provenance": {
       "human": "Ingolf Lohmann: continuing Owner rule and existing authorization",
       "artificial_cognitive": "Codex: two ordinary red counterexamples, bounded recovery in existing client, regression execution and exact REST successor"
+    }
+  },
+  "completed_request_replay_repair": {
+    "source_head": "7c8f125c408f3ab5e7351ab867934677d611a36f",
+    "source_tree": "9e1f2c849ce0c45b720c052a47d5e1efb97526e6",
+    "owner_instruction": "Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich die Aufgaben des automatisch daran anschließenden Laufs, denn alles andere bleibt inakzeptabel. Wiederhole den Vorgang, bis es keine Fehler, Versäumnisse und Lücken mehr gibt. Freigabe erteilt.",
+    "observed_defect": "The same stable completed request is POSTed again, including after loss of CONTINUATION.data and after another completed ID overwrites the latest request_id.",
+    "red": {
+      "total": 30,
+      "ordinary_failures": 3,
+      "expected_failures": 0,
+      "bytes": 7948,
+      "sha256": "997b3399167edcdae4df7f113eb18b6066a1eb9fc99dff8f85aa6d578bcc9b31"
+    },
+    "repair": "Retain bounded stable request-ID/response-digest completion witnesses in the existing locked semantic journal. Known completions close with fresh reads and zero POSTs. Historical completion cannot close a later unresolved attempt. Legacy journals remain readable. New accepted IDs still represent new work after completion.",
+    "reuse": {
+      "existing_client": true,
+      "existing_private_journal": true,
+      "existing_shared_validator": true,
+      "new_executor": false,
+      "new_workflow": false,
+      "new_trigger": false,
+      "credential_persistence": false
+    },
+    "bounds": {
+      "completed_ids_per_semantic_subject": 32,
+      "journal_bytes": 16384,
+      "on_full": "BLOCK_BEFORE_POST_WITHOUT_EVICTION"
+    },
+    "local_validation": {
+      "transport": 32,
+      "shared_client_receipt": 55,
+      "total": 87,
+      "status": "PASS",
+      "expected_failures": 0,
+      "bytes": 16329,
+      "sha256": "9fa8445faf50c37b83ae5ab02c0c2d5e490f2d5c5637c93debca2aaaa2e4c4b7",
+      "scope": "Actual CLI deterministic transport fixtures and existing shared receipt gate; not productive vendor sessions or delivery"
+    },
+    "native_validation": "PENDING_ON_NEW_SUBJECT_NOT_PREDECESSOR_PASS",
+    "required_open_work": [
+      "protected-main-promotion",
+      "exact-host-delivery",
+      "actual-vendor-session-adoption"
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: continuing repair/integration/delivery grant and explicit repetition instruction",
+      "artificial_cognitive": "Codex: causal CLI counterexamples, existing-journal repair and validation",
+      "joint": "Owner requirements and machine-authored reviewable implementation remain separately attributable"
     }
   }
 }

@@ -189,6 +189,13 @@ does not establish peer review, empirical confirmation, or field-wide adoption.
   in-flight and asynchronous outcomes require operation-scoped observation
   through the existing executor before another effect; they are not retried
   merely because a new causal digest was supplied.
+  Completed stable request IDs are also retained in the existing journal;
+  repeating one performs fresh closing reads without another POST, including
+  after a lost work cursor or another completed request. A new accepted ID can
+  represent new work after completion. Up to 32 completion witnesses per
+  semantic subject are retained within the 16 KiB journal limit; reaching the
+  bound blocks new dispatches rather than forgetting old IDs. A remembered
+  completion never closes a later unresolved request for that subject.
 - `qikvrt.py` — authorization-before-effect launcher for the master gate and the
   explicitly confirmed publication planner.
 - `tools/qikvrt_subprocess.py` — subprocess runner with hard time and captured-

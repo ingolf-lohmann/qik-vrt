@@ -39,6 +39,8 @@ JOURNAL_SCHEMA = "qikvrt-api-client-attempt/1"
 WORK_SCHEMA = "qikvrt-api-client-work/1"
 MAX_WORK_BYTES = 128 * 1024
 MAX_RECOVERY_JOURNALS = 256
+MAX_COMPLETED_REQUESTS = 32
+MAX_JOURNAL_BYTES = 16 * 1024
 
 
 class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -189,6 +191,28 @@ def load_previous_work(root: Path) -> dict | None:
     return previous
 
 
+def completed_request_evidence(record: dict) -> dict:
+    """Retain stable completion witnesses in the existing bounded journal."""
+    completed = record.get("completed_requests", {})
+    if (not isinstance(completed, dict) or len(completed) > MAX_COMPLETED_REQUESTS
+            or any(not isinstance(key, str) or not SAFE_ID.fullmatch(key)
+                   or not isinstance(value, str) or not SHA256_HEX.fullmatch(value)
+                   for key, value in completed.items())):
+        raise ValueError("invalid completed-request evidence")
+    completed = dict(completed)
+    if record["status"] == "completed":
+        identifier, evidence = record.get("request_id"), record.get("response_sha256")
+        if (not isinstance(identifier, str) or not SAFE_ID.fullmatch(identifier)
+                or not isinstance(evidence, str) or not SHA256_HEX.fullmatch(evidence)):
+            raise ValueError("completed journal lacks its stable response binding")
+        if identifier in completed and completed[identifier] != evidence:
+            raise ValueError("completed-request evidence drift")
+        completed[identifier] = evidence
+    if len(completed) > MAX_COMPLETED_REQUESTS:
+        raise ValueError("completion evidence limit exceeded; no witness discarded")
+    return completed
+
+
 def recover_journal_work(root: Path, previous: dict | None, domain: str) -> dict | None:
     """Recover open duties even if a crash prevented the last-work cursor.
 
@@ -206,7 +230,7 @@ def recover_journal_work(root: Path, previous: dict | None, domain: str) -> dict
         _assert_safe_target(path)
         if path.stat().st_nlink != 1:
             raise OSError("recovery journal must be a single-link regular file")
-        raw = read_regular_file(path, max_bytes=16 * 1024)
+        raw = read_regular_file(path, max_bytes=MAX_JOURNAL_BYTES)
         try:
             record = unique_json(raw)
         except RecursionError as exc:
@@ -218,6 +242,7 @@ def recover_journal_work(root: Path, previous: dict | None, domain: str) -> dict
                 or record["current"].get("subject") != path.stem):
             raise ValueError("invalid recovery journal binding")
         client_causal_key(record["current"])
+        completed_request_evidence(record)
         source = {"state_file": path.name, "sha256": hashlib.sha256(raw).hexdigest(),
                   "status": record["status"]}
         sources.append(source)
@@ -330,12 +355,28 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
         if path.exists():
             if path.stat().st_nlink != 1:
                 raise OSError("client state must be a single-link regular file")
-            previous = unique_json(read_regular_file(path, max_bytes=16 * 1024))
+            previous = unique_json(read_regular_file(path, max_bytes=MAX_JOURNAL_BYTES))
             if (not isinstance(previous, dict) or previous.get("schema") != JOURNAL_SCHEMA
                     or previous.get("subject_key") != subject_key
                     or previous.get("status") not in ("in_flight", "failed", "ambiguous", "completed", "pending")):
                 raise ValueError("invalid persisted client attempt")
             client_causal_key(previous["current"])
+        completed = completed_request_evidence(previous) if previous else {}
+        if args.request_id in completed:
+            receipt.update(dispatch_count=0, state="NOOP",
+                           reason="COMPLETED_STABLE_REQUEST_ALREADY_RECORDED",
+                           recorded_response_sha256=completed[args.request_id],
+                           previous_status=previous["status"])
+            closure.update(closing_readback(opener, args, action_id=action_id,
+                                           completed_at=utc_now(), token=token, domain=domain))
+            # A historical completion does not close a later unresolved attempt
+            # for the same semantic subject. Preserve the current durable state.
+            receipt["continuation_work"] = persist_successor_work(
+                root, args, subject_key=subject_key, record=previous,
+                closure=closure, action_id=action_id, domain=domain, previous=previous_work)
+            return 20
+        if len(completed) == MAX_COMPLETED_REQUESTS:
+            raise ValueError("completion evidence limit reached; no request replay admitted")
         current = {"subject": subject_key, "error": digest("no previous failure"),
                    "cause": digest("no new causal evidence"),
                    "capability": digest({"url": request.full_url, "method": "POST"})}
@@ -364,11 +405,15 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
         record = {"schema": JOURNAL_SCHEMA, "subject_key": subject_key,
                   "current": current, "status": "in_flight",
                   "request_id": args.request_id, "execution_id": action_id,
+                  "completed_requests": completed,
                   "request_metadata": {"repository": f"{args.owner}/{args.repo}", "ref": args.ref,
                                        "operation": args.operation, "artifact_id": args.artifact_id}}
 
         def save():
-            atomic_write_bytes(path, json.dumps(record, sort_keys=True).encode("utf-8"))
+            raw = json.dumps(record, sort_keys=True).encode("utf-8")
+            if len(raw) > MAX_JOURNAL_BYTES:
+                raise ValueError("journal exceeds its bounded state limit; no witness discarded")
+            atomic_write_bytes(path, raw)
 
         save()  # Crash or timeout after this point must never silently redispatch.
         receipt["dispatch_count"] = 1
@@ -416,6 +461,8 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
         record["closing_verification"] = closure
         if "response_sha256" in receipt:
             record["response_sha256"] = receipt["response_sha256"]
+        if record["status"] == "completed":
+            record["completed_requests"][args.request_id] = record["response_sha256"]
         save()  # Keep the lock through closure; a crash retains in-flight intent.
         receipt["continuation_work"] = persist_successor_work(
             root, args, subject_key=subject_key, record=record,
