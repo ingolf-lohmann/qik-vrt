@@ -91,7 +91,8 @@
     "vendor_session_witnesses": "NOT_ESTABLISHED",
     "shared_receipt_gate_is_consistency_only": true,
     "transport_client_and_read_only_web_terminal_do_not_emit_session_receipts": true,
-    "live_head_tree_and_application_effect_require_independent_readback": true
+    "live_head_tree_and_application_effect_require_independent_readback": true,
+    "transport_client_direct_counterexamples": "4 executable OPEN/expected-failure cases; not passed behavioral conformance"
   },
   "integration": {
     "isolated_successor_of_pr486": true,
@@ -120,7 +121,7 @@
     "public_effect": false,
     "EFFECT_ACK_DONE": false
   },
-  "revision": 2,
+  "revision": 3,
   "updated_at": "2026-10-11T23:20:30.477589+00:00",
   "historical_test_evidence": {
     "unmodified_gate_original_tests": {
@@ -316,5 +317,43 @@
     "independent_review_and_current_main_rules_still_required": true,
     "Main_integration_claim": false,
     "public_effect_claim": false
+  },
+  "direct_transport_client_conformance": {
+    "framework": "Existing tests/test_api_client.py in the unchanged make test target",
+    "class": "ApiClientEndOfActionConformanceTests",
+    "source_candidate_head": "d5c168d5282c21368bbd121dd11df6190e6a7f42",
+    "source_candidate_tree": "a81a005e411110dc0c1f74dfbe3a4ea839c4358b",
+    "client_source_sha256": "bbd5e04067a08163213fc4b79b0e0421bb7717f14bafbc01d41cd956cb5b45bf",
+    "raw_counterexample_result": {
+      "command": "python3 -B -m unittest -v tests.test_api_client.ApiClientEndOfActionConformanceTests",
+      "exit": 1,
+      "result": "4 ordinary assertion failures; actual transport client closing conformance is OPEN",
+      "client_source_head": "d5c168d5282c21368bbd121dd11df6190e6a7f42",
+      "client_source_tree": "a81a005e411110dc0c1f74dfbe3a4ea839c4358b",
+      "client_source_sha256": "bbd5e04067a08163213fc4b79b0e0421bb7717f14bafbc01d41cd956cb5b45bf",
+      "unmarked_test_source_sha256": "0585ba41daa04804a108b88731cc6ab9965d1ec564d5a08af27f12a77b728fbf",
+      "log_sha256": "bfab10594a14d424de17c65848c054d31480269346ea43978989ec66f5c0edaf",
+      "completed_at": "2026-10-12T00:45:23.153908+00:00",
+      "scope": "Executed real client.main with deterministic mocked HTTP transport; no actual external effect or vendor session"
+    },
+    "cases": [
+      "Fresh repository HEAD/TREE GET after scoped handler DONE",
+      "Fresh repository/public GETs after HTTP403",
+      "Fresh exact-origin raumzeitterminal.de public GET after success",
+      "Identical failing invocation with no new causal evidence does not POST twice"
+    ],
+    "ordinary_assertion_failures": 4,
+    "expected_failure_markers": 4,
+    "disposition": "OPEN_CLIENT_CONFORMANCE_GAP",
+    "expected_failure_is_client_pass": false,
+    "successful_transport_ack_is_public_delivery": false,
+    "actual_client_main_executed": true,
+    "network_transport": "Deterministic mocked opener; no production DNS or provider write",
+    "vendor_session_execution": "NOT_ESTABLISHED",
+    "runtime_driver_modified": false,
+    "new_governance_implementation": false,
+    "integration_boundary": "Expected failures remain explicit in unittest output. Unexpected success fails the standard suite, requiring removal of the OPEN marker and deliberate review after actual client repair.",
+    "next_causal_repair": "Bind the transport client's action lifecycle to the existing shared Owner closing contract and causal receipt mechanism. Reuse the current validator; do not add a parallel governance policy.",
+    "test_evidence_transfer": "Raw counterexamples bind unchanged client source and the explicitly hashed unmarked test file. Successor suites must be executed afresh."
   }
 }
