@@ -156,7 +156,10 @@ class ArchiveJournal:
    cause=digest({'kind':'INPUT_CHANGED','input_key':input_key})
   current={'subject':resource,'error':err,'cause':cause,'capability':input_key}
   key=client_causal_key(current)
-  if any(x['intent']['causal_key']==key and (x['result'] is None or x['result']['state']!='success') for x in attempts):
+  # A successful HTTP recovery closes earlier access failures for this input.
+  # A later failure still cannot reuse a causal observation already consumed,
+  # even when that earlier observation once led to a successful GET.
+  if blocked and any(x['intent']['causal_key']==key for x in attempts):
    fail('NOOP_CAUSAL_INFORMATION_ALREADY_CONSUMED')
   if attempts and attempts[-1]['result'] is None:fail('ARCHIVE_JOURNAL_UNRESOLVED_PREDECESSOR')
   return current,key

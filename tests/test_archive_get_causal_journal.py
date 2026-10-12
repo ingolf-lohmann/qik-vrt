@@ -152,6 +152,21 @@ class ArchiveCausalJournalTests(unittest.TestCase):
             with self.assertRaisesRegex(probe.E,'NOOP'):self.fetch(opener,input_key=changed)
             with self.assertRaisesRegex(probe.E,'NOOP'):self.fetch(opener,input_key=INPUT)
             self.assertEqual(opener.call_count,1)
+    def test_recovery_allows_fresh_verification_but_old_response_cannot_regrant_a_later_failure(self):
+        self.fail_once()
+        path=self.retry()
+        with patch.object(probe.urllib.request,'urlopen',return_value=Response(b'recovered')) as opener:
+            self.assertEqual(self.fetch(opener),b'recovered')
+            self.assertEqual(opener.call_count,1)
+        os.environ['QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE']=''
+        with patch.object(probe.urllib.request,'urlopen',side_effect=self.failure()) as opener:
+            with self.assertRaisesRegex(probe.E,'HTTP 504'):self.fetch(opener)
+            self.assertEqual(opener.call_count,1)
+        os.environ['QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE']=str(path)
+        with patch.object(probe.urllib.request,'urlopen') as opener:
+            with self.assertRaisesRegex(probe.E,'ALREADY_CONSUMED'):self.fetch(opener)
+            opener.assert_not_called()
+        self.assertEqual(len(self.history()),3)
     def test_wrong_original_error_input_or_url_cannot_authorize_retry(self):
         self.fail_once()
         for change in ({'previous_error_key':'0'*64},{'input_key':'0'*64},{'url':URL+'/other'}):
