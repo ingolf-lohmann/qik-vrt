@@ -26,6 +26,60 @@
     "status": "PASS",
     "tests": 20
   },
+  "native_evidence": {
+    "current_head_admission": "99f445 automatic PR checks are action_required with zero jobs. No rerun substitutes for initial approval.",
+    "independent_noop_artifacts": {
+      "artifact_ids": [
+        11743111053,
+        11742716921
+      ],
+      "byte_verified_download": true,
+      "code_unchanged_at_successor": true,
+      "event_head": "424cd529e381d7f7d49491dfc6e8a018d17d5d37",
+      "payloads": "evidence/zenodo_access/20261012/NATIVE_NOOP_READBACK.json",
+      "runs": [
+        38239970342,
+        38239970304
+      ]
+    },
+    "integrity_materialization": {
+      "local_full_repository_verify": false,
+      "required_next_check": "Fresh complete native make test on this evidence successor; predecessor proof does not transfer",
+      "source": "Native verified manifest blob 25cf38e862153354642719f83f5eeec3f369dbc3 at 99f445; existing generator classification and canonical serialization"
+    },
+    "native_ci": {
+      "conclusion": "success",
+      "event_head": "424cd529e381d7f7d49491dfc6e8a018d17d5d37",
+      "facts": [
+        "2026-10-12T11:02:05.7111731Z Ran 20 tests in 0.162s",
+        "2026-10-12T11:02:28.1851993Z PASS verified 3896 classified entries and 3885 immutable digests",
+        "2026-10-12T11:02:28.9431734Z PASS verified 3896 classified entries and 3885 immutable digests",
+        "2026-10-12T11:02:31.3550856Z QIKVRT_SUCCESSOR_REENTRY iteration=0 predecessor=424cd529e381d7f7d49491dfc6e8a018d17d5d37 successor=99f44561c5dfcebdbf45cdb5528bab0985c6012f successor_tree=df5b089be8b749a419ef49bc787efbb7febfb59a readback_head=99f44561c5dfcebdbf45cdb5528bab0985c6012f readback_tree=df5b089be8b749a419ef49bc787efbb7febfb59a",
+        "2026-10-12T11:03:19.3176232Z PASS verified 3896 classified entries and 3885 immutable digests",
+        "2026-10-12T11:03:20.7574185Z PASS verified 3896 classified entries and 3885 immutable digests",
+        "2026-10-12T11:03:43.0893845Z Ran 20 tests in 0.162s",
+        "2026-10-12T11:04:03.3622300Z PASS verified 3896 classified entries and 3885 immutable digests",
+        "2026-10-12T11:04:04.1211524Z PASS verified 3896 classified entries and 3885 immutable digests",
+        "2026-10-12T11:04:04.1393287Z QIKVRT_FIXPOINT_REACHED iteration=1 head=99f44561c5dfcebdbf45cdb5528bab0985c6012f tree=df5b089be8b749a419ef49bc787efbb7febfb59a predecessor_test_status=0"
+      ],
+      "job_id": 114779854968,
+      "run_id": 38239970198,
+      "scope": "Existing admitted writer regenerated integrity and fully tested the freshly read-back 99f445 successor. Event/check status belongs to 424cd predecessor; no exact-successor status is inferred.",
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38239970198"
+    },
+    "public_delivery": {
+      "http_observation": 502,
+      "origin_state_established": false,
+      "state": "UNKNOWN",
+      "url": "https://raumzeitterminal.de/",
+      "working_software": false
+    },
+    "tested_subject": {
+      "head": "99f44561c5dfcebdbf45cdb5528bab0985c6012f",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "tree": "df5b089be8b749a419ef49bc787efbb7febfb59a"
+    }
+  },
   "native_test_path": "Existing make evidence-contract-test inside make test and existing same-writer CI materialization/fixpoint path; fresh run evidence must be bound separately",
   "open_work": [
     {
@@ -166,6 +220,13 @@
       "md5": "3b9da6e4df41409963af32d438609864",
       "path": "evidence/zenodo_access/20261012/README.md",
       "sha256": "fdc5ea91725cbb81296634de7c421461c398fdea10c6dc33baf8a03a5053a23b"
+    },
+    {
+      "bytes": 5755,
+      "git_blob_sha1": "98db450f366f520ead19d7bf6004de7a6667169f",
+      "md5": "fe2d88b7489839034c5f4b3863ab559c",
+      "path": "evidence/zenodo_access/20261012/NATIVE_NOOP_READBACK.json",
+      "sha256": "09c0fb32401f75dee0e442c6e9a705709bf4a1e0a669c90535bcc375b2478dbb"
     }
   ],
   "task_id": "QIKVRT_ARCHIVE_CAUSAL_CONTINUATION_20261012_V1"
