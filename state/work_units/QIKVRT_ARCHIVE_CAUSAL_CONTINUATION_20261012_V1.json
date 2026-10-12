@@ -1,0 +1,172 @@
+{
+  "artificial_cognitive_contribution": {
+    "contribution": "Source diagnosis, original-log binding, causal journal/fence adaptation, executable regressions, REST candidate persistence and readback",
+    "system": "OpenAI Codex"
+  },
+  "completion_claims": {
+    "all_archive_bytes_recovered": false,
+    "effect_ack_done": false,
+    "final_pass": false,
+    "merged_into_main": false,
+    "native_current_head_pass": false,
+    "public_product_delivered": false,
+    "publication_chain_complete": false,
+    "scientific_claims_confirmed": false,
+    "technical_local_test_pass": true
+  },
+  "human_contribution": {
+    "contribution": "Authorized repair, evidence retention, material-cause continuation and archive/scientific boundary requirements",
+    "name": "Ingolf Lohmann"
+  },
+  "local_tests": {
+    "command": "python3 -B -m unittest -v tests.test_archive_get_causal_journal",
+    "expected_failures": 0,
+    "log_sha256": "501344d8733f38419b5a488700d8ecf02f4cceb42998a5c0968e747661709944",
+    "native_git_data": "DETERMINISTIC_FIXTURE_NOT_LIVE_PROVIDER_RECOVERY",
+    "status": "PASS",
+    "tests": 20
+  },
+  "native_test_path": "Existing make evidence-contract-test inside make test and existing same-writer CI materialization/fixpoint path; fresh run evidence must be bound separately",
+  "open_work": [
+    {
+      "id": "protected-main-integration",
+      "next_action": "Use existing native enforced Code Owner protection and independent exact-head review before promotion",
+      "state": "OPEN"
+    },
+    {
+      "id": "native-provider-recovery",
+      "next_action": "Supply genuinely changed, original-failure-bound source response bytes or materially changed expected input; no unchanged Zenodo rerun",
+      "state": "OPEN"
+    },
+    {
+      "id": "exact-host-delivery",
+      "next_action": "Independently inspect raumzeitterminal.de and current repository delivery evidence; use existing authorized secured origin/DNS route when its operation is available",
+      "state": "OPEN"
+    }
+  ],
+  "original_counterexample": {
+    "component": "actual original archive GET",
+    "network": "MOCKED_NO_LIVE_EXTERNAL_ACCESS",
+    "observed_GET_count": 10,
+    "ordinary_counterexample": "two unchanged HTTP504 invocations must issue at most one GET",
+    "predecessor_regression": "RED",
+    "required_GET_count": 1,
+    "subject_head": "8f9740018e1a864605a9fd0babff01454df4e1cc"
+  },
+  "resumption": {
+    "ambiguous_native_intent": "GET-only journal observation; no external GET",
+    "clock_head_run_workflow_source_change_only": "NOOP",
+    "new_cause": "Exact failed-input/error binding plus differing HTTP status and byte-verified original external response",
+    "new_input": "One controlled GET, preserving old-input failures",
+    "unchanged_failure": "NOOP, zero external GETs"
+  },
+  "retention": {
+    "bounds": "64 attempts; 128 KiB; fail closed without eviction",
+    "cross_workflow": "Immutable create-only intent/result refs bound to resource/input/current cause; artifacts are diagnostics only",
+    "original_logs": "Complete decoded UTF-8 logs with SHA-256 and original failure lines"
+  },
+  "reuse": {
+    "archive_reader": "tools/qikvrt_batch003_remaining_archive_probe.py",
+    "causal_key": "tools/ai_handoff.py:client_causal_key",
+    "history_rewritten": false,
+    "native_fence_transport": "tools/qikvrt_zenodo_publish.py:_github_api_request; existing create-only Git-Data intent primitive",
+    "new_scheduler": false,
+    "new_workflows": 0,
+    "private_writer": "src/qikvrt_api_handler.py:atomic_write_bytes",
+    "process_lock": "tools/qikvrt_integrity.py:_exclusive_integrity_lock",
+    "publication_default_changed": false,
+    "second_archive_implementation": false
+  },
+  "runtime_cache": {
+    "components": 14,
+    "coverage_percent": 100,
+    "status": "PASS"
+  },
+  "schema": "qikvrt_archive_workflow_causal_continuation_work_unit_v1",
+  "source": {
+    "head": "8f9740018e1a864605a9fd0babff01454df4e1cc",
+    "pr": 522,
+    "repository": "ingolf-lohmann/qik-vrt",
+    "tree": "097927c2fe98ee075d1034778f25ecc8638a7dae"
+  },
+  "source_bindings": [
+    {
+      "bytes": 11405,
+      "git_blob_sha1": "a6f9dcb4508c13be1d57042ceb5991ebcc7a6d29",
+      "md5": "0d4197eba9c0193260df5390c15735e4",
+      "path": "Makefile",
+      "sha256": "44873b645f7fd00ac614cae49c3e39279b641ea84af6c831ab3bc19cb71f2ff0"
+    },
+    {
+      "bytes": 26470,
+      "git_blob_sha1": "3064efa2cf29b5f77babdf49a105a5034f5659c2",
+      "md5": "41c0724d2296ed72b5cad61cefd87c28",
+      "path": "tools/qikvrt_batch003_remaining_archive_probe.py",
+      "sha256": "359a247e1038d908a793aac2faf8d3d751ec3402ecf20b2afc4fde87662d274a"
+    },
+    {
+      "bytes": 92535,
+      "git_blob_sha1": "68b48a05dc837a6e73d9d139eceaa6ef14bd83c1",
+      "md5": "b2d1344a4b38927f29a11f7edfb9d113",
+      "path": "tools/qikvrt_zenodo_publish.py",
+      "sha256": "48a5a4eb76c494bce95d1e01e76d9a53104c266b8b9214344de2ffc52b53c6e3"
+    },
+    {
+      "bytes": 17595,
+      "git_blob_sha1": "7d85b7114b72e46b38d9570784732145ff71db6b",
+      "md5": "ba1f1c603a6dfcde21de049b3b46b700",
+      "path": "tests/test_archive_get_causal_journal.py",
+      "sha256": "c59c3faf2cd0ad230805084d9f6b149355ffb9b219bee808ad213a54a5130a38"
+    },
+    {
+      "bytes": 3190,
+      "git_blob_sha1": "d681c544aac5296e5081fc3bf155e4f5d519d49f",
+      "md5": "deabefb97f1ed32e3f34c064d2a37f4a",
+      "path": ".github/workflows/qikvrt_batch003_remaining_archive_probe.yml",
+      "sha256": "a719700765bdc3ab6af0dddf8e96a8174c5e8b65ef20dc7bdb5387706a9316cc"
+    },
+    {
+      "bytes": 5463,
+      "git_blob_sha1": "562220c906fb6e4b20b63088f2d83116e0bdce05",
+      "md5": "14303cab113291adef97b057aa58ce67",
+      "path": ".github/workflows/qikvrt_batch003_remaining_disposition.yml",
+      "sha256": "3b89bb6cfc70fa5ef69432fb2ba9bc8bb7c8d5bd3e109fad2e7b8c3fa191ad6f"
+    },
+    {
+      "bytes": 18938,
+      "git_blob_sha1": "941626f4101134f0f0c13237e5dfb4dba83ca493",
+      "md5": "78ded92901fbe6467384acf04b48181c",
+      "path": ".github/workflows/qikvrt_batch04_integrity.yml",
+      "sha256": "e04bedfeaebfd6e2b35ad76103dff39fbc0b7458eba799d437a8a5fd80f3f0b6"
+    },
+    {
+      "bytes": 2155,
+      "git_blob_sha1": "ec89d9baa99034a1db094690cfec07f5f79b97f7",
+      "md5": "5684bc637d1276e5e7fa1f8fe67f45c8",
+      "path": "release/zenodo-corpus-proof-2026-07-28/ZENODO_EXTERNAL_GET_FAILURE_JOURNAL.json",
+      "sha256": "ca599045f064952efe9d488802e6a0e5ba223f7188a39c963991834540aedc8f"
+    },
+    {
+      "bytes": 136526,
+      "git_blob_sha1": "d305a50139c1b0334b7b1423b7aa4be6ee50a9d8",
+      "md5": "eb73974e6f41dd065f2837730e131904",
+      "path": "evidence/zenodo_access/20261012/JOB_114735629033_ORIGINAL.log",
+      "sha256": "1ff8bf2d67154309487124adc60a2e478a3bf920f5ccd76767ce2b5bc68af06d"
+    },
+    {
+      "bytes": 123125,
+      "git_blob_sha1": "d0c5c3a4078ca338cb6a29707aa534e70aed7f7a",
+      "md5": "b44609e7510bbb6af32ee1863f53bebd",
+      "path": "evidence/zenodo_access/20261012/JOB_114735625164_ORIGINAL.log",
+      "sha256": "dd93bba6bd40f812fefa662ad5471c12c42d128ef24b7d034c27b489ffd03543"
+    },
+    {
+      "bytes": 4009,
+      "git_blob_sha1": "2986cacabeba2e7e02f491aa8c2ee28a6bce4522",
+      "md5": "3b9da6e4df41409963af32d438609864",
+      "path": "evidence/zenodo_access/20261012/README.md",
+      "sha256": "fdc5ea91725cbb81296634de7c421461c398fdea10c6dc33baf8a03a5053a23b"
+    }
+  ],
+  "task_id": "QIKVRT_ARCHIVE_CAUSAL_CONTINUATION_20261012_V1"
+}

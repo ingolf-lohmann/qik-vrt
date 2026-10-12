@@ -28,6 +28,10 @@ on:
         description: Exact head to bind
         required: false
         default: ""
+      archive_retry_evidence_path:
+        description: Versioned, original-failure-bound external response evidence
+        required: false
+        default: ""
 
 permissions:
   actions: write
@@ -62,6 +66,10 @@ jobs:
     env:
       TARGET_REF: ${{ github.event_name == 'pull_request' && github.head_ref || github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || inputs.target_ref || github.ref_name }}
       EXPECTED_HEAD: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || inputs.expected_head || github.event.pull_request.head.sha || github.sha }}
+      QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ${{ github.repository }}
+      QIKVRT_ARCHIVE_SOURCE_HEAD: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || inputs.expected_head || github.event.pull_request.head.sha || github.sha }}
+      QIKVRT_GITHUB_TOKEN: ${{ github.token }}
+      QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: ${{ inputs.archive_retry_evidence_path || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -198,6 +206,15 @@ jobs:
           else
             echo "No current content-disposition status projector is present on this branch."
           fi
+      - name: Preserve archive causal diagnostics even when access is blocked
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-archive-causal-journal-materialization-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: .qikvrt/runtime/archive-get-journal/**
       - name: Provision and verify aphorism publication runtime when present
         shell: bash
         run: |
@@ -362,3 +379,4 @@ jobs:
             gh api --method POST "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/rerun"
             echo "QIKVRT_SUCCESSOR_REENTRY requested run_id=$run_id head=$successor"
           done
+

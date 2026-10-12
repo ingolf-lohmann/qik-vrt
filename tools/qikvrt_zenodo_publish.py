@@ -1286,9 +1286,14 @@ def _github_api_request(
     *,
     payload: Mapping[str, Any] | None = None,
     accept: tuple[int, ...] = (200,),
-) -> tuple[int, dict[str, Any]]:
+    repository: str = PRODUCTION_REPOSITORY,
+) -> tuple[int, dict[str, Any] | list[dict[str, Any]]]:
     """Use only the pinned GitHub Git-Data REST origin, with redacted errors."""
-    repository_prefix = "/repos/Goldkelch/qik-vrt/"
+    # Reuse this pinned, no-redirect transport for non-secret archive journals.
+    # Publication callers retain their historical default and all their gates.
+    if repository not in {"Goldkelch/qik-vrt", "ingolf-lohmann/qik-vrt"}:
+        _fail("GitHub Git-Data repository binding is not allowed")
+    repository_prefix = f"/repos/{repository}/"
     if not path.startswith(repository_prefix) or any(
         character in path for character in ("\x00", "\r", "\n", "?", "#")
     ):
@@ -1338,7 +1343,11 @@ def _github_api_request(
         value = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
         _fail("GitHub Git-Data API returned invalid JSON")
-    if not isinstance(value, dict):
+    matching_refs = "/git/matching-refs/" in path and method == "GET"
+    if not isinstance(value, dict) and not (
+        matching_refs and isinstance(value, list)
+        and all(isinstance(item, dict) for item in value)
+    ):
         _fail("GitHub Git-Data API returned a non-object response")
     serialized = zenodo._json_bytes(value)
     if token.encode("utf-8") in serialized:
@@ -2584,3 +2593,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
