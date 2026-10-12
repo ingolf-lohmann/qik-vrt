@@ -211,6 +211,46 @@ def validate_client_readback(readback: Any, subject: dict[str, Any], window: Any
             fail("CLIENT_PUBLIC_DELIVERY_PROOF_INCOMPLETE")
 
 
+def validate_client_work(receipt: dict[str, Any]) -> None:
+    """An observed predecessor's open duties are work for its successor.
+
+    Historical receipts without a predecessor remain readable. An explicitly
+    supplied predecessor cannot be silently dropped; closing a carried duty
+    requires evidence. This checks consistency, not evidence authenticity.
+    """
+    previous = receipt.get("previous_run")
+    if previous is None and "work" not in receipt:
+        return
+    work = require(receipt, "work", list)
+    tasks: dict[str, dict[str, Any]] = {}
+    for task in work:
+        if not isinstance(task, dict):
+            fail("CLIENT_WORK_INVALID")
+        identifier = task.get("id")
+        if not isinstance(identifier, str) or not identifier.strip() or identifier in tasks:
+            fail("CLIENT_WORK_ID_INVALID")
+        if task.get("state") not in ("OPEN", "VERIFIED"):
+            fail("CLIENT_WORK_STATE_INVALID")
+        if task["state"] == "VERIFIED":
+            if not isinstance(task.get("evidence"), str) or not task["evidence"].strip():
+                fail("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
+        elif not isinstance(task.get("next_action"), str) or not task["next_action"].strip():
+            fail("CLIENT_OPEN_WORK_WITHOUT_SUCCESSOR")
+        tasks[identifier] = task
+    if previous is not None:
+        if not isinstance(previous, dict) or not isinstance(previous.get("execution_id"), str) or not previous["execution_id"].strip():
+            fail("CLIENT_PREVIOUS_RUN_INVALID")
+        inherited = require(previous, "open_work", list)
+        if any(not isinstance(identifier, str) or not identifier.strip() for identifier in inherited):
+            fail("CLIENT_PREVIOUS_RUN_INVALID")
+        if len(set(inherited)) != len(inherited):
+            fail("CLIENT_PREVIOUS_RUN_INVALID")
+        if not set(inherited) <= set(tasks):
+            fail("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+    if receipt.get("state") == "DONE" and any(task["state"] == "OPEN" for task in work):
+        fail("CLIENT_DONE_WITH_OPEN_WORK")
+
+
 def validate_client_receipt(receipt: dict[str, Any]) -> str:
     """Validate consistency; never authenticate a client or prove live effects."""
     if receipt.get("schema") != "qikvrt-client-continuation/1":
@@ -278,6 +318,7 @@ def validate_client_receipt(receipt: dict[str, Any]) -> str:
     state = receipt.get("state")
     if state not in ("CONTINUE", "BLOCK", "DONE", "OWNER_CHOICE"):
         fail("CLIENT_RETURN_STATE_INVALID")
+    validate_client_work(receipt)
     if executable and state != "CONTINUE":
         fail("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
     pending = receipt.get("pending_execution")

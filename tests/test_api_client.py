@@ -383,6 +383,81 @@ print(json.dumps({"exit": result, "posts": sum(r.get_method() == "POST" for r in
         self.assertEqual(sum(r.get_method() == "GET" for r in requests), 6)
         self.assertEqual(victim.read_text(), "untouched")
 
+    def continuation_work(self) -> dict:
+        return json.loads((Path(self.state_dir) / "CONTINUATION.data").read_text())
+
+    def test_failed_run_open_work_is_inherited_by_noop_successor(self) -> None:
+        opener, requests = self.transport(failure=True)
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.invoke_actual_client()
+            first = self.continuation_work()
+            self.invoke_actual_client()
+        second = self.continuation_work()
+        self.assertEqual(second["previous_run"]["execution_id"], first["execution_id"])
+        self.assertEqual(set(second["previous_run"]["open_work"]),
+                         {task["id"] for task in first["work"] if task["state"] == "OPEN"})
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 1)
+        self.assertEqual(sum(request.get_method() == "GET" for request in requests), 4)
+        self.assertEqual(len(list(Path(self.state_dir).glob("work-*.data"))), 2)
+
+    def test_changed_request_keeps_previous_unrepaired_operation(self) -> None:
+        opener, requests = self.transport(failure=True)
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.invoke_actual_client("--artifact-id", "previous-task")
+            first = self.continuation_work()
+            old_api = next(task["id"] for task in first["work"] if task["id"].startswith("api:"))
+            self.invoke_actual_client("--artifact-id", "different-task")
+        tasks = self.continuation_work()["work"]
+        self.assertEqual(next(task["state"] for task in tasks if task["id"] == old_api), "OPEN")
+        self.assertEqual(sum(task["id"].startswith("api:") for task in tasks), 2)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2)
+
+    def test_open_repository_gap_closes_only_after_fresh_readback(self) -> None:
+        opener, _ = self.transport()
+        original = opener.open.side_effect
+        broken = True
+
+        def repository_gap(request, **kwargs):
+            response = original(request, **kwargs)
+            if broken and request.full_url.startswith("https://api.github.com/"):
+                response.raw = b'{}'
+            return response
+
+        opener.open.side_effect = repository_gap
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.invoke_actual_client()
+            first = self.continuation_work()
+            identifier = "repository:ingolf-lohmann/qik-vrt@main"
+            self.assertEqual(next(task["state"] for task in first["work"] if task["id"] == identifier), "OPEN")
+            broken = False
+            self.invoke_actual_client("--artifact-id", "successor-subject")
+        second = self.continuation_work()
+        task = next(task for task in second["work"] if task["id"] == identifier)
+        self.assertEqual(task["state"], "VERIFIED")
+        self.assertTrue(task["evidence"])
+        self.assertIn(identifier, second["previous_run"]["open_work"])
+
+    def test_scoped_success_leaves_public_delivery_as_next_run_task(self) -> None:
+        opener, _ = self.transport()
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.invoke_actual_client()
+        receipt = self.continuation_work()
+        self.assertEqual(next(task["state"] for task in receipt["work"] if task["id"] == "delivery:raumzeitterminal.de"), "OPEN")
+        self.assertEqual(receipt["effect_state"], "EFFECT_ACK_CONTINUE")
+        self.assertFalse(receipt["ordinary_release"])
+        self.assertNotIn("test-token", json.dumps(receipt))
+
+    def test_corrupt_continuation_cannot_erase_previous_obligations_or_post(self) -> None:
+        opener, requests = self.transport(failure=True)
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.invoke_actual_client()
+            path = Path(self.state_dir) / "CONTINUATION.data"
+            path.write_text("corrupt")
+            self.assertEqual(self.invoke_actual_client(), 1)
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 1)
+        self.assertEqual(path.read_text(), "corrupt")
+        self.assertEqual(len(list(Path(self.state_dir).glob("work-*.data"))), 1)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

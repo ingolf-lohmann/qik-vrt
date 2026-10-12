@@ -59,6 +59,15 @@ or a real owner choice. The gate checks receipt consistency; it neither
 authenticates a client nor proves live effects or adoption by another client.
 Regression tests run inside the existing `make ai-runtime-contract` gate.
 
+Failures, omissions and open gaps of a previous run MUST become the tasks of
+the automatically adjoining run under the existing authorization. Preserve
+their execution identity and each open obligation. A successor receipt that
+declares `previous_run` MUST retain every `open_work` item in `work`, either
+OPEN with its concrete next action or VERIFIED with closing evidence. A
+status message, elapsed time or an unrelated commit does not close a task or
+admit an unchanged retry. Use the existing continuation worker and shared
+receipt gate; this rule does not itself start or prove an unattended runner.
+
 ## Mandatory human-machine progress behavior
 
 For every repository, build, verification, publication, deployment, or GitHub

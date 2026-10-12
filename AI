@@ -181,6 +181,15 @@ current HEAD/TREE and exact-host raumzeitterminal.de delivery readback. Respect
 REST_API_ONLY, credentials and protected governance. The owner's authorization
 does not convert an unavailable operation into authenticated capability.
 
+OWNER CONTINUATION CLARIFICATION — 2026-10-12
+
+Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich
+die Aufgaben des automatisch daran anschließenden Laufs.
+Carry every observed open obligation into the successor work receipt. Close
+it only with bound evidence; preserve existing authorization and unchanged
+failure NOOP. Apply AGENTS.md and the existing shared client receipt gate.
+This rule does not imply that another client or persistent runner adopted it.
+
 REPOSITORY-NATIVE AUTONOMOUS CONTINUATION
 
 The standing natural-person authorizations for bounded repository-internal continuation are persisted at:

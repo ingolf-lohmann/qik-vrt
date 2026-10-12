@@ -211,6 +211,41 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         with contextlib.redirect_stderr(io.StringIO()):
             return self.handoff.validate_client_receipt(value or self.receipt)
 
+    def inherited_work(self) -> None:
+        self.receipt["previous_run"] = {"execution_id": "fixture:previous-run",
+                                        "open_work": ["failure", "omission", "gap"]}
+        self.receipt["work"] = [{"id": task, "state": "OPEN", "evidence": "",
+                                 "next_action": "fixture:causal-repair:" + task}
+                                for task in ("failure", "omission", "gap")]
+
+    def test_failures_omissions_and_gaps_are_accepted_as_successor_work(self) -> None:
+        self.inherited_work()
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_each_predecessor_open_obligation_must_be_carried(self) -> None:
+        for identifier in ("failure", "omission", "gap"):
+            with self.subTest(obligation=identifier):
+                self.inherited_work()
+                self.receipt["work"] = [task for task in self.receipt["work"] if task["id"] != identifier]
+                self.rejected("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+
+    def test_predecessor_work_requires_evidence_to_close(self) -> None:
+        self.inherited_work()
+        self.receipt["work"][0]["state"] = "VERIFIED"
+        self.rejected("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
+        self.receipt["work"][0]["evidence"] = "fixture:exact-subject-closing-readback"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_open_predecessor_work_rejects_done_even_with_a_delivery_fixture(self) -> None:
+        self.inherited_work()
+        self.done()
+        self.rejected("CLIENT_DONE_WITH_OPEN_WORK")
+
+    def test_open_predecessor_work_requires_concrete_next_action(self) -> None:
+        self.inherited_work()
+        self.receipt["work"][0]["next_action"] = ""
+        self.rejected("CLIENT_OPEN_WORK_WITHOUT_SUCCESSOR")
+
     def rejected(self, code: str) -> None:
         stream = io.StringIO()
         with contextlib.redirect_stderr(stream), self.assertRaises(SystemExit) as exc:

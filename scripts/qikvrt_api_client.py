@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from tools.ai_handoff import (  # noqa: E402
     client_causal_key, client_end_of_action_domain, validate_client_readback,
+    validate_client_work,
 )
 from tools.qikvrt_integrity import _exclusive_integrity_lock  # noqa: E402
 from qikvrt_api_handler import (  # noqa: E402
@@ -35,6 +36,8 @@ SHA256_HEX = re.compile(r"^[0-9a-fA-F]{64}$")
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 SHA1_HEX = re.compile(r"^[0-9a-f]{40}$")
 JOURNAL_SCHEMA = "qikvrt-api-client-attempt/1"
+WORK_SCHEMA = "qikvrt-api-client-work/1"
+MAX_WORK_BYTES = 128 * 1024
 
 
 class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -169,6 +172,71 @@ def closing_readback(opener, args, *, action_id: str, completed_at: str, token: 
     return {"action_window": window, "readback": readback, "valid": valid}
 
 
+def load_previous_work(root: Path) -> dict | None:
+    path = root / "CONTINUATION.data"
+    _assert_safe_target(path)
+    if not path.exists():
+        return None
+    if path.stat().st_nlink != 1:
+        raise OSError("continuation work must be a single-link regular file")
+    previous = unique_json(read_regular_file(path, max_bytes=MAX_WORK_BYTES))
+    if (not isinstance(previous, dict) or previous.get("schema") != WORK_SCHEMA
+            or not isinstance(previous.get("execution_id"), str)
+            or not previous["execution_id"].strip()):
+        raise ValueError("invalid previous client work")
+    validate_client_work(previous)
+    return previous
+
+
+def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
+                           closure: dict, action_id: str, domain: str,
+                           previous: dict | None) -> dict:
+    """Retain every previous open duty in the same serialized client path.
+
+    Readbacks are fresh observations. A public GET does not close the delivery
+    duty, and a different request cannot close an earlier failed operation.
+    """
+    work = {task["id"]: dict(task) for task in previous["work"]
+            if task["state"] == "OPEN"} if previous else {}
+    repository = f"{args.owner}/{args.repo}"
+    repo = closure["readback"]["repository"]
+    repo_valid = (isinstance(repo.get("head"), str) and SHA1_HEX.fullmatch(repo["head"])
+                  and isinstance(repo.get("tree"), str) and SHA1_HEX.fullmatch(repo["tree"])
+                  and "error_category" not in repo)
+    current = [
+        {"id": "api:" + subject_key, "state": "VERIFIED" if record["status"] == "completed" else "OPEN",
+         "repository": repository, "ref": args.ref, "operation": args.operation,
+         "artifact_id": args.artifact_id, "state_file": subject_key + ".json",
+         "evidence": record.get("response_sha256", "") if record["status"] == "completed" else "",
+         "next_action": "Resolve " + args.operation + " for " + repository + "@" + args.ref
+                        + " artifact " + args.artifact_id + " using recorded subject " + subject_key},
+        {"id": "repository:" + repository + "@" + args.ref, "state": "VERIFIED" if repo_valid else "OPEN",
+         "evidence": digest(repo) if repo_valid else "",
+         "next_action": "Obtain fresh bound-ref HEAD/TREE through " + repo["source"]},
+        {"id": "delivery:" + domain, "state": "OPEN", "evidence": "",
+         "next_action": "Verify Working Software, TLS and exact-build delivery at https://" + domain + "/"},
+    ]
+    work.update({task["id"]: task for task in current})
+    successor = {"schema": WORK_SCHEMA, "execution_id": action_id, "state": "CONTINUE",
+                 "work": list(work.values()), "action_window": closure["action_window"],
+                 "readback": closure["readback"], "effect_state": "EFFECT_ACK_CONTINUE",
+                 "ordinary_release": False}
+    if previous:
+        successor["previous_run"] = {"execution_id": previous["execution_id"],
+                                     "open_work": [task["id"] for task in previous["work"] if task["state"] == "OPEN"]}
+    validate_client_work(successor)
+    raw = json.dumps(successor, sort_keys=True).encode("utf-8")
+    if len(raw) > MAX_WORK_BYTES:
+        raise ValueError("continuation backlog exceeds the bounded state limit; no tasks discarded")
+    # Existing private atomic writer, under the existing process lock. Retain
+    # original per-run evidence before replacing the last-run cursor.
+    history = root / ("work-" + hashlib.sha256(action_id.encode()).hexdigest() + ".data")
+    _assert_safe_target(history)
+    atomic_write_bytes(history, raw)
+    atomic_write_bytes(root / "CONTINUATION.data", raw)
+    return successor
+
+
 def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: dict,
                           closure: dict, action_id: str, token: str, domain: str):
     """Persist intent before POST; unchanged failures survive client restarts."""
@@ -184,6 +252,7 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
     path = root / (subject_key + ".json")
     _assert_safe_target(path)
     with _exclusive_integrity_lock(root):
+        previous_work = load_previous_work(root)
         previous = None
         if path.exists():
             if path.stat().st_nlink != 1:
@@ -213,6 +282,11 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                 receipt.update(dispatch_count=0, state="NOOP",
                                reason="UNCHANGED_FAILURE_OR_UNRESOLVED_DISPATCH",
                                previous_status=previous["status"])
+                closure.update(closing_readback(opener, args, action_id=action_id,
+                                               completed_at=utc_now(), token=token, domain=domain))
+                receipt["continuation_work"] = persist_successor_work(
+                    root, args, subject_key=subject_key, record=previous,
+                    closure=closure, action_id=action_id, domain=domain, previous=previous_work)
                 return 1
         record = {"schema": JOURNAL_SCHEMA, "subject_key": subject_key,
                   "current": current, "status": "in_flight",
@@ -265,7 +339,12 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
         closure.update(closing_readback(opener, args, action_id=action_id,
                                        completed_at=utc_now(), token=token, domain=domain))
         record["closing_verification"] = closure
+        if "response_sha256" in receipt:
+            record["response_sha256"] = receipt["response_sha256"]
         save()  # Keep the lock through closure; a crash retains in-flight intent.
+        receipt["continuation_work"] = persist_successor_work(
+            root, args, subject_key=subject_key, record=record,
+            closure=closure, action_id=action_id, domain=domain, previous=previous_work)
         return result
 
 def main() -> int:

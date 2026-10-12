@@ -410,5 +410,92 @@
       "next_causal_repair": "Bind the transport client's action lifecycle to the existing shared Owner closing contract and causal receipt mechanism. Reuse the current validator; do not add a parallel governance policy.",
       "test_evidence_transfer": "Raw counterexamples bind unchanged client source and the explicitly hashed unmarked test file. Successor suites must be executed afresh."
     }
-  ]
+  ],
+  "automatic_successor_task_inheritance": {
+    "owner_instruction_date": "2026-10-12",
+    "owner_instruction": "Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich die Aufgaben des automatisch daran anschließenden Laufs, denn alles andere bleibt inakzeptabel.",
+    "source_head": "e3ae7e713c22eecad996f484c05a339f4bce72a6",
+    "source_tree": "ce9170edf88e67f72dbffbde2ae9a97c111b1903",
+    "source_transport_repair": "Fresh concurrent e3ae successor was read and reused. Its repaired client, nineteen tests and README are retained. No alternative API client, executor, workflow or transport is substituted.",
+    "state": "LOCALLY_TESTED_CANDIDATE_NOT_MAIN_OR_PRODUCT_DELIVERY",
+    "changed_files": [
+      {
+        "path": "AI",
+        "bytes": 19672,
+        "sha256": "a2560330ca8649c2f04e93f471d7e4af202f88532d046493dd4bbb99477d4a7c",
+        "git_blob_sha1": "6bc7e9bc189f0ddbeecfa8cf09be29504276d1ba"
+      },
+      {
+        "path": "AGENTS.md",
+        "bytes": 11951,
+        "sha256": "e0b72036e0654b04d4286ff7db0972b04f0fff3dc23f531ff3d7fc9b436b97db",
+        "git_blob_sha1": "d47adb15b39ec1c4d9474717bd412fb456cf3726"
+      },
+      {
+        "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+        "bytes": 6285,
+        "sha256": "620aefd2020f497e3ff106b76c59d23ae9e67579e6816e781eea309b2b634463",
+        "git_blob_sha1": "9ff894e3f995ed24b59322461091b327dba242a7"
+      },
+      {
+        "path": "scripts/qikvrt_api_client.py",
+        "bytes": 24892,
+        "sha256": "a38c61fbf8db20133609b80c17d85e139e4dc06b6601b737522deea46a992313",
+        "git_blob_sha1": "67f2e60a60f9e11d89e5aacdbfa57427a78c8efc"
+      },
+      {
+        "path": "tools/ai_handoff.py",
+        "bytes": 31763,
+        "sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+        "git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d"
+      },
+      {
+        "path": "tests/test_api_client.py",
+        "bytes": 23850,
+        "sha256": "d69a49d320e24a56b80e04a054bbc66cd74c1768dafdde4318f7cf4697e6ff5a",
+        "git_blob_sha1": "17639301e0c5381dfa965b49a29f9a2c9a8e4be5"
+      },
+      {
+        "path": "tests/test_ai_runtime_bootloader.py",
+        "bytes": 31641,
+        "sha256": "1959a827f51ab28b883f76d4fcf06acebcb764633604e9af6c66f0ab2c74fee7",
+        "git_blob_sha1": "b62edb1bf349be4dd58b0c41c500cbb8b0db4a56"
+      }
+    ],
+    "shared_gate": "tools/ai_handoff.py validates previous_run.execution_id and open_work -> successor work; silent drops, unjustified closure, missing next action and DONE with open work are rejected.",
+    "actual_client": "The existing locked private state path reads CONTINUATION.data before dispatch, carries every open task across changed requests and NOOP, preserves per-run .data receipts, and closes duties only with recorded evidence. Delivery remains OPEN after a page GET.",
+    "reuse": [
+      "Existing Owner PR507 rule remains byte-identical",
+      "Existing e3ae transport repair and tests",
+      "Existing shared validator",
+      "Existing nonblocking process lock and private atomic writer",
+      "Existing Makefile and native CI unchanged"
+    ],
+    "local_tests": {
+      "count": 79,
+      "transport_tests": 24,
+      "shared_receipt_tests": 55,
+      "exit": 0,
+      "expected_failures": 0,
+      "log_filename": "local-verification.log",
+      "log_bytes": 14233,
+      "log_sha256": "1767a47fbedc6956b736833fc18cbcf1a09ec7ba4e4f857bfccc372e94fdbb5a",
+      "scope": "Actual CLI and shared validator under deterministic HTTP fixtures; restart witness inherited from existing transport tests. Not a productive vendor session or complete local Git clone."
+    },
+    "native_full_suite": "PENDING_ON_NEW_EXACT_HEAD",
+    "persistence_scope": "Same private state directory; rule presence and test receipts do not prove adoption by every other client or unattended runtime.",
+    "remaining_tasks": [
+      "Native protected Main integration and independent Code Owner review",
+      "Existing native administration operation for Ruleset enforcement",
+      "Existing secured IONOS domain operation and independent exact-host DNS/TLS/Working Software proof",
+      "Actual adoption in unobserved vendor sessions"
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: goal, Owner clarification and existing authorization",
+      "artificial_cognitive": "Codex: successor reconciliation, task inheritance, shared gate and regression implementation, metadata and REST review candidate",
+      "limit": "Attribution is not biometric or specific-model-build proof"
+    },
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "ordinary_release": false
+  }
 }
