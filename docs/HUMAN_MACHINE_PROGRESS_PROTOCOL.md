@@ -45,6 +45,94 @@ A GitHub action includes every connector/API mutation or read that advances the 
 13. **Continuation is the default after a non-terminal observation.** The round trip is `OBSERVE -> DIAGNOSE -> ACT -> OBSERVE EFFECT -> VERIFY READBACK -> CONTINUE` until a scope-bound terminal state is actually established. A snapshot is admissible only when no executable successor remains for the owned scope, a concrete blocker requires external authority/input, or an explicitly bounded observation window has ended.
 14. Observation frequency MUST be event- and workload-sensitive rather than a fixed polling ritual. New input, active effects, unresolved causal defects, expected receipts, or successor-carrier movement increase observation pressure; unchanged stable state is deduplicated. Monitoring activity alone is not progress.
 
+## Binding client continuation procedure
+
+Owner instruction: Ingolf Lohmann, 2026-10-11. This procedure is mandatory for
+all repository clients. Preserve the existing authorized repair, integration
+and exact-host delivery goal after handoffs, compaction or status questions.
+Do not ask for the same authorization again. Inspect applicable existing
+repository, connector, CLI and Mesh routes before declaring execution absent;
+retain operation, HTTP method, target/account binding and exact denial evidence.
+A locally absent CLI or empty project filter alone is insufficient.
+
+Continue each safe, deterministic, authorized successor, including useful
+preparation and persistence while an external effect is blocked. Keep GitHub
+REST-only routing, secure credentials and protected governance. Never create a
+proxy executor or synthetic trigger to manufacture capability. Preserve issue
+evidence, perform NOOP for unchanged causal failures, and read back ambiguous
+effects before another effectful attempt.
+
+Before a terminal handoff, run the existing read-only validator:
+`python3 -B tools/ai_handoff.py --client-receipt <receipt.json>`.
+Its `qikvrt-client-continuation/1` receipt contains:
+
+- `subject`: exact `repository`, bound `ref`, `head` and `tree`; `authorization`: `granted`
+  and its non-secret `source`; `requested_authorization_again: false`.
+- `inventory`: non-empty evidence locators or concrete absence/denial receipts
+  for `repository`, `connector`, `cli` and `mesh`. Inspect only relevant existing
+  routes; do not enumerate unrelated credentials or disclose secret values.
+- `next_actions`: each exact-subject action's `route` (`connector`, `cli`,
+  `mesh`), `service`, `operation`, HTTP `method`, `transport`, capability
+  `evidence`, callable binding `observed_method`, `observed_operation`,
+  `observed_repository`, and boolean `authorized`, `safe`, `deterministic`, `callable`,
+  `authenticated`, `permitted`, `admitted`. Any action satisfying all predicates
+  requires `state: CONTINUE`. Governance failure keeps `admitted: false`.
+- `attempts`: `effect_count` (zero or one per causal attempt), `current` and
+  optional `previous` causal evidence, `ambiguous_effect` and
+  `readback_before_effect`. An effectful attempt also binds its admitted `action`
+  using the same predicates and observed operation binding as `next_actions`.
+  A causal attempt cannot execute twice. Each causal evidence object binds SHA256 digests for
+  relevant `subject`, `error`, `cause` and `capability`. Observation timestamps
+  and unrelated lifecycle commits are excluded. Identical failure evidence
+  requires zero effects. Materially changed evidence alone does not authorize
+  an effect; all action predicates must still hold.
+- `action_window`: nonempty `id`, timezone-aware `completed_at` and `closed_at`.
+  Both closing observations must bind this `action_id` and an `observed_at`
+  strictly after completion and no later than closure. Earlier session reads
+  and another action's observations cannot close this work unit. Every
+  effectful `attempt` requires its own window and repository/delivery readback;
+  a fresh final receipt cannot conceal an unchecked earlier action.
+- `readback.repository`: current `repository`, `ref`, `head`, `tree`, `source`,
+  `action_id`, `observed_at`. All subject fields must match the acting branch's
+  newly bound subject. If a new HEAD/TREE is observed, follow it and update the
+  subject and applicable checks before attempting closure.
+  `readback.delivery`: exact `hostname: raumzeitterminal.de`, `source` and
+  `state` (`UNKNOWN`, `PENDING`, `VERIFIED`), `action_id`, `observed_at`, public
+  HTTPS `url` and read-only `method: GET`. VERIFIED additionally needs an
+  integer `http_status: 200`, exact-origin `final_url` and the observed body
+  `response_sha256`. A redirect to another origin is not delivery on this host.
+  Missing access stays UNKNOWN; observed absence can stay PENDING. Neither is
+  a delivery proof or a negative conclusion about DNS/registry state.
+- `state`: `CONTINUE`, `BLOCK`, `DONE` or `OWNER_CHOICE`. An externally pending
+  execution can retain `CONTINUE` with its `pending_execution` evidence. BLOCK
+  requires a concrete `blocker` with `operation`, `reason`, `evidence`,
+  `retry_condition` and `next_action`, after exhausting safe authorized work.
+  OWNER_CHOICE requires at least two distinct `owner_choices`. DONE requires
+  current Main and exact-host independent working-software/TLS readbacks bound
+  to the same subject; no open executable successor may remain.
+
+The validator checks receipt consistency only. Evidence locators and predicates
+must come from actual observations; a fabricated or stale receipt is forbidden.
+Exit zero, `CLIENT_HANDOFF_CONSISTENCY=VALID`, local fixtures and green candidate
+tests do not establish a live effect. Independently read back the relevant
+provider results and exact HEAD/TREE. Persisting the rule does not establish
+Main integration, adoption by another client or deployment. Regression cases
+run in the existing `make ai-runtime-contract` gate without network or secrets.
+
+The existing policy binds the unchanged Owner rule from PR #507 at
+`state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json`.
+The read-only handoff validator derives its delivery domain from that contract
+and verifies the bound bytes. This adds behavioral coverage to the existing
+client gate; it creates no second governance implementation or remote writer.
+The original 30 regressions remain, with action-time, HEAD/TREE, per-attempt and
+HTTP-proof negative controls added. The shared CLI is exercised for connector,
+CLI and Mesh route receipts. Registered AI adapter shims reuse AI/AGENTS;
+their presence is not an executed Claude/Codex/Copilot session witness. The
+HTTP transport client, read-only web terminal, personal terminal and Firefox
+remain separately scoped clients whose existing tests do not prove automatic
+use of this gate. Actual adoption requires their own emitted receipts and an
+independent live readback. No successful fixture substitutes for those witnesses.
+
 ## Repository runtime objective
 
 The repository is the durable runtime authority. Chat sessions are disposable transport surfaces. Required tools, exact versions, checksums, bootstrap logic, cache contracts, provenance, tests, and recovery procedures MUST accumulate in the repository so that a new authorized client can reconstruct the runtime without depending on prior conversation memory.

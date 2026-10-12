@@ -1,0 +1,16 @@
+{
+  "schema": "qikvrt_independent_mcp_byte_readback_v1",
+  "client": "Python hashlib; no MCP implementation imports",
+  "snapshot_id": "569fb70c-9ba9-4d22-9bdf-314ca388db40",
+  "sha256": "b666efd88ad324981ec672b9f5853e78f7f59ee3b0bb0ac5b0750e8fe748bb54",
+  "bytes": 5663,
+  "byte_verified": true,
+  "source": "fresh authenticated MCP readback tool result",
+  "direct_public_rest_fetch": {
+    "status": 403,
+    "classification": "CLIENT_FETCH_FAILED; origin cause unverified",
+    "retries": 0
+  },
+  "claude_connector_execution_verified": false,
+  "ordinary_release": false
+}

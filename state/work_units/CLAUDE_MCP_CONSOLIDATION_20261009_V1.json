@@ -1,0 +1,1217 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "CLAUDE_MCP_CONSOLIDATION_20261009_V1",
+  "created_at": "2026-10-09T18:55:43.404174+00:00",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "route": "REST_API_ONLY",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "class": "HUMAN",
+    "scope": "Combine the existing #509 and #511 MCP functions, retain #508 governance dependency, test and produce a reviewable integration candidate or an applicable patch",
+    "implementation_authorized": true,
+    "candidate_acceptance": "PENDING",
+    "retention": "METADATA_ONLY"
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "model_family": "GPT-6",
+    "exact_build": "NOT_EXPOSED",
+    "class": "ARTIFICIAL_COGNITIVE_SYSTEM",
+    "activities": [
+      "exact REST/Git source reconstruction",
+      "reuse existing MCP handlers in one transport",
+      "separate authentication and permission catalogs",
+      "positive and negative wire tests",
+      "candidate preparation and independent readback"
+    ],
+    "retention": "METADATA_ONLY"
+  },
+  "main_observation": {
+    "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+    "protected": false,
+    "rulesets": [],
+    "delivery_evidence_paths_under_evidence_native_runtime_acceptance": [],
+    "delivery_state": "REPOSITORY_DELIVERY_PROOF_ABSENT",
+    "registration_and_reachability_not_inferred": true
+  },
+  "sources": [
+    {
+      "pr": 508,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/508",
+      "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+      "tree": "cde054f9aa56d98cb2389df910e0e9c19fc16deb",
+      "base": "main",
+      "reviews": [],
+      "files": [
+        {
+          "path": ".github/CODEOWNERS",
+          "git_blob": "d8cfd8ebf2d02bffbf0188f8f9ea2a7ad18539f9",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+          "git_blob": "d36040bcb9219a2f1a0f27084f46a5b8d9b023a0",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+          "git_blob": "d20435593d215ce3d9a70290cc9654f1e0c8592b",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+          "git_blob": "efd13271fec4584ec1f6057b743a2b6c5aaf3057",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+          "git_blob": "15e4bc87864608d2fec1cd77fcdb96cacce855ab",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+          "git_blob": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_live_status_watch.yml",
+          "git_blob": "ca66f83148125ea7f5cacd8386f0df034cca5ded",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+          "git_blob": "0cc2db957b0e882488a7cadba8b7910f11e5a0d8",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+          "git_blob": "2ff69bac9889407a65a914619c136b2d45193d15",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+          "git_blob": "e32a2947c2d266de3763c0efb410d9b78e75fe5a",
+          "status": "modified"
+        },
+        {
+          "path": ".github/workflows/qikvrt_required_review_gate.yml",
+          "git_blob": "7125c55a543bf7e144bb5b51c47d17bf9b5ebfb9",
+          "status": "modified"
+        },
+        {
+          "path": "Makefile",
+          "git_blob": "b1e6b20966b444372997c1adb55813cae8771a01",
+          "status": "modified"
+        },
+        {
+          "path": "REPOSITORY_FILE_MANIFEST.json",
+          "git_blob": "3982ebdde75db2bcd3cb46093200dcb1840f5a44",
+          "status": "modified"
+        },
+        {
+          "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+          "git_blob": "0c3ace8ae20fbb6764a7ffc4c59af29dd6eea9b4",
+          "status": "modified"
+        },
+        {
+          "path": "SHA256SUMS.txt",
+          "git_blob": "faf88740129df51ab08f205bf29505e6a3423ef4",
+          "status": "modified"
+        },
+        {
+          "path": "api/qikvrt_github_api.openapi.yaml",
+          "git_blob": "b9a5e4aadf64835c0b6f9022aef05296dd616eb5",
+          "status": "modified"
+        },
+        {
+          "path": "docs/GITHUB_DEPLOYMENT.md",
+          "git_blob": "49f41dc522af7057f1ccd147e8effde3c1da6672",
+          "status": "modified"
+        },
+        {
+          "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+          "git_blob": "f8960058b6df7d7b0a2bb21f74649304a7f21755",
+          "status": "modified"
+        },
+        {
+          "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+          "git_blob": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382",
+          "status": "modified"
+        },
+        {
+          "path": "registry/NODE_LIFECYCLE_TRANSPORT_V1.json",
+          "git_blob": "9facd85b130ff8c52b5e91a2252b7754ff29d516",
+          "status": "added"
+        },
+        {
+          "path": "scripts/qikvrt_api_client.py",
+          "git_blob": "65a9d0243ed7b2f59ec163a608d954bbf2d18d70",
+          "status": "modified"
+        },
+        {
+          "path": "src/qikvrt_github_api_shim.py",
+          "git_blob": "551461c57c21d317cb2b0114fc47be1db9f14a65",
+          "status": "modified"
+        },
+        {
+          "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+          "git_blob": "0dec4007797ee56297bdd77e64f946cd794649a7",
+          "status": "modified"
+        },
+        {
+          "path": "state/work_units/QIKVRT_AUTONOMY_HANDOFF_FAIRNESS_INTEGRATION_20261008_V1.json",
+          "git_blob": "4c96038b9f970992b4d48b96c735a5969b74b5d5",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/QIKVRT_LIFECYCLE_GOVERNANCE_INTEGRATION_20261009_V1.json",
+          "git_blob": "17a954798ccf051d35f13c51de9eb9581a0b5a19",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/QIKVRT_PR_CONTINUATION_FAIRNESS_REPAIR_20261008_V1.json",
+          "git_blob": "67a578433987fd8db6ff3a740c8f6ba4435e494a",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/QIKVRT_REST_API_CONTINUATION_20261008_V1.json",
+          "git_blob": "ce2549e986e8d9497086726393c212487ec80ae2",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/QIKVRT_RULESET_CLIENT_DISPATCH_20261009_V1.json",
+          "git_blob": "4f25a355278b71f9de5fb9c38563bb6c2fe5eaa2",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/QIKVRT_RULESET_LIFECYCLE_CLIENT_INTEGRATION_20261009_V1.json",
+          "git_blob": "48abb1f9e0198c59cd75efacc5eb4ec623247862",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/QIKVRT_SELF_HEAL_REST_HANDOFF_REPAIR_20261008_V1.json",
+          "git_blob": "8da2cbb20a3869819a3fe734a7ddff4212cc9425",
+          "status": "added"
+        },
+        {
+          "path": "tests/fixtures/ruleset_writer_legacy_v1.yml",
+          "git_blob": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+          "status": "added"
+        },
+        {
+          "path": "tests/test_api_client.py",
+          "git_blob": "3bc8ffeac410e70a5a446879f00e0510fdb6d5f4",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_mirror_lifecycle_publication.py",
+          "git_blob": "bc743e212e2249deb351c6d42810e0087d7133cb",
+          "status": "added"
+        },
+        {
+          "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+          "git_blob": "2a30e885bf5688d3a8ef505ddef3396cad96eb41",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+          "git_blob": "532dcbc151f50c53dbf87dab8639b34947aada39",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_qikvrt_expected_head_promotion.py",
+          "git_blob": "38216b3e5d37b9755612d3ab4b9dc3a3cd1d81d2",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+          "git_blob": "03040738cfe9062cf406f3a32034132fd2ca3ddb",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_qikvrt_requested_review_executor.py",
+          "git_blob": "3772d9e8124a8c3961c9f27942e3429a882601e9",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_qikvrt_required_review_gate.py",
+          "git_blob": "e88693e9e0a9e4d10a8ba43c52bf3cb80b807783",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+          "git_blob": "596c387f50f4d202f0bbc57413603724cbc44e1d",
+          "status": "added"
+        },
+        {
+          "path": "tests/test_ruleset_authority_token_route.py",
+          "git_blob": "d70a18a296f0a5b10dd2ad6ecbd4af6e59456793",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_seed_workflows.py",
+          "git_blob": "c7dbc311456e72e66d510521951824318ee519a0",
+          "status": "modified"
+        },
+        {
+          "path": "tests/test_tcpip_e2e.py",
+          "git_blob": "d2296d01a76179a1460b56f6973b13dbe5184f84",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+          "git_blob": "c54856ecd52e5bde6bc39093a78435e986c7e2c2",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_autonomous_self_heal.py",
+          "git_blob": "6428d8e08499b8d2d717d051781f75e285b00ed2",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_expected_head_promotion.py",
+          "git_blob": "78acc8c7b32b15e0416b76c3ed1b191b656b073b",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_mirror_node_lifecycle.py",
+          "git_blob": "f8f860b19a3eb3c64cb58e742b783ac18b40d2af",
+          "status": "added"
+        },
+        {
+          "path": "tools/qikvrt_requested_review_executor.py",
+          "git_blob": "b3eccb774851dc434bd75c531216e6ed1e3096ef",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_required_review_gate.py",
+          "git_blob": "1463ec8103b315c6489201c5876d64b77af8b1f6",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_seed_common.py",
+          "git_blob": "88ad10f0d1289030937c5a43172dcac8c9299cfb",
+          "status": "modified"
+        },
+        {
+          "path": "tools/qikvrt_self_heal_pr_materializer.py",
+          "git_blob": "c180818bff6245dac48d73d368f2e46c3522530e",
+          "status": "added"
+        }
+      ],
+      "runs": [
+        {
+          "id": 37925088427,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088427",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT requested review contract",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088469,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088469",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT Collective Proposal Review",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088210,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088210",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT CI",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088184,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088184",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT live status watch",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088113,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088113",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT repository evidence materialization",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 37925088223,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088223",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT Batch-003 remaining subject disposition",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 37925088179,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088179",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT workflow executor watchdog",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088234,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088234",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT PR18 integrity repair",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37925088258,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088258",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT Batch-003 subject 172dd public archive probe",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37925088270,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088270",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT Batch-003 remaining archive probe",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37925088193,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088193",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIK-VRT autonomous bounded self-heal",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088287,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088287",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT code-owner review observer",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088119,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088119",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT Personal Firefox capability boundary",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088284,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088284",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT adaptive runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925088088,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925088088",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIK-VRT global claim completion",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925000075,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925000075",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIK-VRT universal ontology finite-model verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37924999935,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37924999935",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT adaptive runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37925000015,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37925000015",
+          "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+          "name": "QIKVRT CI",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "pr": 509,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/509",
+      "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+      "tree": "de7a9f41e3e3df62df7fd65225e3c31777ee3c58",
+      "base": "main",
+      "reviews": [],
+      "files": [
+        {
+          "path": "Makefile",
+          "git_blob": "8276c99dea00a5e4a3b55baaf8dbd49adcb894ca",
+          "status": "modified"
+        },
+        {
+          "path": "REPOSITORY_FILE_MANIFEST.json",
+          "git_blob": "cd702f78fc3acdc02a564be9efd28b278fa00f98",
+          "status": "modified"
+        },
+        {
+          "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+          "git_blob": "3d758b1e0ac9220e4c283217bd33188001f53b81",
+          "status": "modified"
+        },
+        {
+          "path": "SHA256SUMS.txt",
+          "git_blob": "f005d0cd0c805979540d80a38ca84a689b896a20",
+          "status": "modified"
+        },
+        {
+          "path": "api/qikvrt_github_api.openapi.yaml",
+          "git_blob": "d20f8df5b3018bd504bf50cded6fba30b1ebfc8f",
+          "status": "modified"
+        },
+        {
+          "path": "docs/terminal/CLAUDE_REMOTE_MCP_V1.md",
+          "git_blob": "4428802630b4f80d5766be2c025cd0b9ea558c45",
+          "status": "added"
+        },
+        {
+          "path": "evidence/mcp/REMOTE_CONNECTOR_APPLICATION_20261009_V2.json",
+          "git_blob": "f40660d938b27ea282744e47ac10e675daf6e66f",
+          "status": "added"
+        },
+        {
+          "path": "scripts/qikvrt_api_client.py",
+          "git_blob": "0affcc5efbef1a6e709caf27ab32ff402edde17b",
+          "status": "modified"
+        },
+        {
+          "path": "src/qikvrt_github_api_shim.py",
+          "git_blob": "28246b48a554c1745fe31c9c77e019121e041d1a",
+          "status": "modified"
+        },
+        {
+          "path": "src/qikvrt_mcp_adapter.py",
+          "git_blob": "7934a82d8ee8057a10d7e2c137cce64681a96be9",
+          "status": "added"
+        },
+        {
+          "path": "state/work_units/CLAUDE_REMOTE_MCP_REPOSITORY_20261009_V1.json",
+          "git_blob": "3e467e1e4f51bcb868aa7d260488c1b3e8f3e43e",
+          "status": "added"
+        },
+        {
+          "path": "tests/test_qikvrt_mcp_adapter.py",
+          "git_blob": "9aad73538811b4b7c6e6775ca5e71ee60f6da072",
+          "status": "added"
+        }
+      ],
+      "runs": [
+        {
+          "id": 37946014762,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014762",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT CI",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014675,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014675",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT live status watch",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014778,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014778",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT repository evidence materialization",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014764,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014764",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT Batch-003 remaining subject disposition",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014757,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014757",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT Personal Firefox capability boundary",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014769,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014769",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT PR18 integrity repair",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37946014747,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014747",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT code-owner review observer",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014670,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014670",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT workflow executor watchdog",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014720,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014720",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT Batch-003 remaining archive probe",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37946014805,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014805",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT Batch-003 subject 172dd public archive probe",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 37946014651,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014651",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT adaptive runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014655,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014655",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIK-VRT global claim completion",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37946014767,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37946014767",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT Collective Proposal Review",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37945944723,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37945944723",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIK-VRT universal ontology finite-model verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37945944823,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37945944823",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT CI",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37945944679,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37945944679",
+          "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+          "name": "QIKVRT adaptive runtime",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "pr": 511,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/pull/511",
+      "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+      "tree": "bfba67cdce90b4f29838e7018be5c1cbd594de4f",
+      "base": "integration/ruleset-client-lifecycle-20261009",
+      "reviews": [],
+      "files": [
+        {
+          "path": "Makefile",
+          "git_blob": "6ed72bd4a4cc752e91c412f4961e74eecae74f8c",
+          "status": "modified"
+        },
+        {
+          "path": "REPOSITORY_FILE_MANIFEST.json",
+          "git_blob": "d9fe58a760e57ef193966de78272df68f41df003",
+          "status": "modified"
+        },
+        {
+          "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+          "git_blob": "31f0840a5ef6e94f444ed8286927dab29e2b8616",
+          "status": "modified"
+        },
+        {
+          "path": "SHA256SUMS.txt",
+          "git_blob": "a0dc501141f0c5744b39b8bc0a7f56b72f991366",
+          "status": "modified"
+        },
+        {
+          "path": "api/qikvrt_github_api.openapi.yaml",
+          "git_blob": "2782f55a21a4d882e2626b2270921fe18a9af18c",
+          "status": "modified"
+        },
+        {
+          "path": "docs/CLAUDE_MCP_CONNECTOR.md",
+          "git_blob": "80d74e6dfdd582108b3c4567762097d3a8851147",
+          "status": "added"
+        },
+        {
+          "path": "evidence/claude-mcp-connector/2026-10-09/INDEPENDENT_LIVE_BYTE_CHECK.json",
+          "git_blob": "d3184b03770c7ba9c0a2f25ee28fa956883c28bf",
+          "status": "added"
+        },
+        {
+          "path": "evidence/claude-mcp-connector/2026-10-09/LIVE_MCP_READBACK.json",
+          "git_blob": "19714ce5ddd0adb21e930e3a9625748f1d54e746",
+          "status": "added"
+        },
+        {
+          "path": "scripts/qikvrt_mcp_probe.py",
+          "git_blob": "bbb59462fc200d20066cbdd6ef14727f775afdfc",
+          "status": "added"
+        },
+        {
+          "path": "src/qikvrt_api_handler.py",
+          "git_blob": "57d3f65996f75ffffadadbe40e638cd8063c61ca",
+          "status": "modified"
+        },
+        {
+          "path": "src/qikvrt_github_api_shim.py",
+          "git_blob": "cd74a7b4f79b219ad4a146c22fed2ef573cf91c8",
+          "status": "modified"
+        },
+        {
+          "path": "state/work_units/CLAUDE_REMOTE_MCP_REST_APPLICATION_20261009_V1.json",
+          "git_blob": "bde4d761a4391b1549e35759202473b2406ede9a",
+          "status": "added"
+        },
+        {
+          "path": "tests/test_mcp_e2e.py",
+          "git_blob": "95e336eaf09bcb5554c4ef14f670cabf3302b190",
+          "status": "added"
+        }
+      ],
+      "runs": [
+        {
+          "id": 37949067573,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067573",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT code-owner review observer",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 37949067652,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067652",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT Personal Firefox capability boundary",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37949067490,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067490",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT workflow executor watchdog",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37949067566,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067566",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT adaptive runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37949067621,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067621",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT Collective Proposal Review",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37949067849,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067849",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT live status watch",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37949067770,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067770",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIK-VRT global claim completion",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37949067826,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37949067826",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT CI",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37948842225,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37948842225",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIK-VRT universal ontology finite-model verification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 37948842060,
+          "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/37948842060",
+          "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+          "name": "QIKVRT CI",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "integration": {
+    "first_parent": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "additional_parents": [
+      "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+      "18d2598fdbabf4630c9fe168313686aa5743df79"
+    ],
+    "target_base": "main",
+    "dependency_pr": 508,
+    "dependency_included": true,
+    "separate_legacy_rpc_dispatcher_removed": true,
+    "new_independent_mcp_adapter": false,
+    "rest_contract_version": "2.3.0",
+    "mcp_service_version": "1.1.0",
+    "source_bindings": "six exact runtime/contract files; fresh expected-head GitHub capability read; data version and implementation SHA-256 required",
+    "read_credential": "QIKVRT_MCP_TOKEN / QIKVRT_MCP_PRINCIPAL / QIKVRT_MCP_READ_SCOPES",
+    "data_credential": "QIKVRT_API_TOKEN / QIKVRT_API_PRINCIPAL / QIKVRT_MCP_DATA_SCOPES",
+    "readback_extension": "artifact:read grants same-principal committed raw bytes without ingest permission",
+    "legacy_scopes_preserved_without_cross_domain_transfer": true,
+    "replay_and_transaction_validators_reused": true,
+    "handler_opaque_byte_done_is_not_claude_or_production_done": true
+  },
+  "outputs": [
+    {
+      "path": "Makefile",
+      "bytes": 12471,
+      "sha256": "94803cb5f5d958b42b35382dc0939f4278fd40311c50dfe035b3db02754b8785",
+      "git_blob_sha1": "e853633ad27ab8ea40d741629d9f5d812e856e55"
+    },
+    {
+      "path": "api/qikvrt_github_api.openapi.yaml",
+      "bytes": 15009,
+      "sha256": "d41bd73c4223ec2e9099a47d726f2404aefbd3c05941adf429d69498be2b1c80",
+      "git_blob_sha1": "4d4373787dde0000c967c80602a953630148a9b0"
+    },
+    {
+      "path": "docs/CLAUDE_MCP_CONNECTOR.md",
+      "bytes": 12208,
+      "sha256": "2f65af8e375538a433ab8c5a44070185ba946d71b25e96a1afb5687c7dbfa9b9",
+      "git_blob_sha1": "a87efe3eabc9c949190da8286419c37dcf3e3bc2"
+    },
+    {
+      "path": "docs/terminal/CLAUDE_REMOTE_MCP_V1.md",
+      "bytes": 9541,
+      "sha256": "b9916980d983be1f4e551556daf7bec3d3ac08eb18a2e41150853b48bf9e58ce",
+      "git_blob_sha1": "8a46e13425a58d259f556491cd7da4430f155a19"
+    },
+    {
+      "path": "scripts/qikvrt_api_client.py",
+      "bytes": 30220,
+      "sha256": "29c7de979b6a4488336ac4fefb3e4c73ea22e97cbcfaac125de37de472bef287",
+      "git_blob_sha1": "eb2ecad737557636ec6db491ab6f69ec6c2e7b7a"
+    },
+    {
+      "path": "src/qikvrt_github_api_shim.py",
+      "bytes": 39223,
+      "sha256": "3a0d4c8e5cdab500004d444c37581edfc2c31d4fdae3d4e199e1f34b0ac54463",
+      "git_blob_sha1": "0f84193a67342a39b9ca8d9d2f1a7df5cd8c449a"
+    },
+    {
+      "path": "src/qikvrt_mcp_adapter.py",
+      "bytes": 14718,
+      "sha256": "cf76ec5002b9c56459ff6e8447f83698b1108128d5cb986c8556ac3cbed5e2bd",
+      "git_blob_sha1": "aa1a5d117881b3a58a3391de83845bfb9f279020"
+    },
+    {
+      "path": "tests/test_mcp_e2e.py",
+      "bytes": 20151,
+      "sha256": "483722f3f909ba084c5f987daa745af8b64c61552e3ff3a8d43b12688f5612d3",
+      "git_blob_sha1": "f162f96906e9682b448dbec2947a0d28be2bf070"
+    },
+    {
+      "path": "tests/test_qikvrt_mcp_adapter.py",
+      "bytes": 20089,
+      "sha256": "bb0b73479aae2137d7a7065671662085d82f332f96b7ef6bc8c7b232109b5789",
+      "git_blob_sha1": "2a5b2166b270dd52b92facda5b3635cc5bf63ef9"
+    },
+    {
+      "path": "tests/test_mcp_integration.py",
+      "bytes": 9332,
+      "sha256": "17a146364d7990a889d5a132f5af1c4a3696d897d722b204470854e84c40a127",
+      "git_blob_sha1": "0ee15fc6a792f61988310b4cc1db6765a62bd5d5"
+    }
+  ],
+  "byte_exact_reused_changed_source_entries": [
+    {
+      "source_pr": 508,
+      "path": ".github/CODEOWNERS",
+      "git_blob_sha1": "d8cfd8ebf2d02bffbf0188f8f9ea2a7ad18539f9"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "git_blob_sha1": "d36040bcb9219a2f1a0f27084f46a5b8d9b023a0"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_autonomous_self_heal.yml",
+      "git_blob_sha1": "d20435593d215ce3d9a70290cc9654f1e0c8592b"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_code_owner_review_observer.yml",
+      "git_blob_sha1": "efd13271fec4584ec1f6057b743a2b6c5aaf3057"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "git_blob_sha1": "15e4bc87864608d2fec1cd77fcdb96cacce855ab"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+      "git_blob_sha1": "ab47a8ec98c39b39bda420050cb7c970a9da6165"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_live_status_watch.yml",
+      "git_blob_sha1": "ca66f83148125ea7f5cacd8386f0df034cca5ded"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_mirror_node_lifecycle.yml",
+      "git_blob_sha1": "0cc2db957b0e882488a7cadba8b7910f11e5a0d8"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_requested_review_contract.yml",
+      "git_blob_sha1": "2ff69bac9889407a65a914619c136b2d45193d15"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_requested_review_executor.yml",
+      "git_blob_sha1": "e32a2947c2d266de3763c0efb410d9b78e75fe5a"
+    },
+    {
+      "source_pr": 508,
+      "path": ".github/workflows/qikvrt_required_review_gate.yml",
+      "git_blob_sha1": "7125c55a543bf7e144bb5b51c47d17bf9b5ebfb9"
+    },
+    {
+      "source_pr": 508,
+      "path": "docs/GITHUB_DEPLOYMENT.md",
+      "git_blob_sha1": "49f41dc522af7057f1ccd147e8effde3c1da6672"
+    },
+    {
+      "source_pr": 508,
+      "path": "docs/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE.md",
+      "git_blob_sha1": "f8960058b6df7d7b0a2bb21f74649304a7f21755"
+    },
+    {
+      "source_pr": 508,
+      "path": "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "git_blob_sha1": "24dd2e644dc8fc97a9a8476aaf28f5334fcd1382"
+    },
+    {
+      "source_pr": 508,
+      "path": "registry/NODE_LIFECYCLE_TRANSPORT_V1.json",
+      "git_blob_sha1": "9facd85b130ff8c52b5e91a2252b7754ff29d516"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "git_blob_sha1": "0dec4007797ee56297bdd77e64f946cd794649a7"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_AUTONOMY_HANDOFF_FAIRNESS_INTEGRATION_20261008_V1.json",
+      "git_blob_sha1": "4c96038b9f970992b4d48b96c735a5969b74b5d5"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_LIFECYCLE_GOVERNANCE_INTEGRATION_20261009_V1.json",
+      "git_blob_sha1": "17a954798ccf051d35f13c51de9eb9581a0b5a19"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_PR_CONTINUATION_FAIRNESS_REPAIR_20261008_V1.json",
+      "git_blob_sha1": "67a578433987fd8db6ff3a740c8f6ba4435e494a"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_REST_API_CONTINUATION_20261008_V1.json",
+      "git_blob_sha1": "ce2549e986e8d9497086726393c212487ec80ae2"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_RULESET_CLIENT_DISPATCH_20261009_V1.json",
+      "git_blob_sha1": "4f25a355278b71f9de5fb9c38563bb6c2fe5eaa2"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_RULESET_LIFECYCLE_CLIENT_INTEGRATION_20261009_V1.json",
+      "git_blob_sha1": "48abb1f9e0198c59cd75efacc5eb4ec623247862"
+    },
+    {
+      "source_pr": 508,
+      "path": "state/work_units/QIKVRT_SELF_HEAL_REST_HANDOFF_REPAIR_20261008_V1.json",
+      "git_blob_sha1": "8da2cbb20a3869819a3fe734a7ddff4212cc9425"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/fixtures/ruleset_writer_legacy_v1.yml",
+      "git_blob_sha1": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_api_client.py",
+      "git_blob_sha1": "3bc8ffeac410e70a5a446879f00e0510fdb6d5f4"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_mirror_lifecycle_publication.py",
+      "git_blob_sha1": "bc743e212e2249deb351c6d42810e0087d7133cb"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+      "git_blob_sha1": "2a30e885bf5688d3a8ef505ddef3396cad96eb41"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_autonomous_pre_effect_controller.py",
+      "git_blob_sha1": "532dcbc151f50c53dbf87dab8639b34947aada39"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "git_blob_sha1": "38216b3e5d37b9755612d3ab4b9dc3a3cd1d81d2"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "git_blob_sha1": "03040738cfe9062cf406f3a32034132fd2ca3ddb"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_requested_review_executor.py",
+      "git_blob_sha1": "3772d9e8124a8c3961c9f27942e3429a882601e9"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_required_review_gate.py",
+      "git_blob_sha1": "e88693e9e0a9e4d10a8ba43c52bf3cb80b807783"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_qikvrt_self_heal_pr_materializer.py",
+      "git_blob_sha1": "596c387f50f4d202f0bbc57413603724cbc44e1d"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "git_blob_sha1": "d70a18a296f0a5b10dd2ad6ecbd4af6e59456793"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_seed_workflows.py",
+      "git_blob_sha1": "c7dbc311456e72e66d510521951824318ee519a0"
+    },
+    {
+      "source_pr": 508,
+      "path": "tests/test_tcpip_e2e.py",
+      "git_blob_sha1": "d2296d01a76179a1460b56f6973b13dbe5184f84"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_autonomous_pre_effect_controller.py",
+      "git_blob_sha1": "c54856ecd52e5bde6bc39093a78435e986c7e2c2"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_autonomous_self_heal.py",
+      "git_blob_sha1": "6428d8e08499b8d2d717d051781f75e285b00ed2"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "git_blob_sha1": "78acc8c7b32b15e0416b76c3ed1b191b656b073b"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_mirror_node_lifecycle.py",
+      "git_blob_sha1": "f8f860b19a3eb3c64cb58e742b783ac18b40d2af"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_requested_review_executor.py",
+      "git_blob_sha1": "b3eccb774851dc434bd75c531216e6ed1e3096ef"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_required_review_gate.py",
+      "git_blob_sha1": "1463ec8103b315c6489201c5876d64b77af8b1f6"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_seed_common.py",
+      "git_blob_sha1": "88ad10f0d1289030937c5a43172dcac8c9299cfb"
+    },
+    {
+      "source_pr": 508,
+      "path": "tools/qikvrt_self_heal_pr_materializer.py",
+      "git_blob_sha1": "c180818bff6245dac48d73d368f2e46c3522530e"
+    },
+    {
+      "source_pr": 509,
+      "path": "evidence/mcp/REMOTE_CONNECTOR_APPLICATION_20261009_V2.json",
+      "git_blob_sha1": "f40660d938b27ea282744e47ac10e675daf6e66f"
+    },
+    {
+      "source_pr": 509,
+      "path": "state/work_units/CLAUDE_REMOTE_MCP_REPOSITORY_20261009_V1.json",
+      "git_blob_sha1": "3e467e1e4f51bcb868aa7d260488c1b3e8f3e43e"
+    },
+    {
+      "source_pr": 511,
+      "path": "REPOSITORY_FILE_MANIFEST.json",
+      "git_blob_sha1": "d9fe58a760e57ef193966de78272df68f41df003"
+    },
+    {
+      "source_pr": 511,
+      "path": "REPOSITORY_FILE_MANIFEST.json.sha256",
+      "git_blob_sha1": "31f0840a5ef6e94f444ed8286927dab29e2b8616"
+    },
+    {
+      "source_pr": 511,
+      "path": "SHA256SUMS.txt",
+      "git_blob_sha1": "a0dc501141f0c5744b39b8bc0a7f56b72f991366"
+    },
+    {
+      "source_pr": 511,
+      "path": "evidence/claude-mcp-connector/2026-10-09/INDEPENDENT_LIVE_BYTE_CHECK.json",
+      "git_blob_sha1": "d3184b03770c7ba9c0a2f25ee28fa956883c28bf"
+    },
+    {
+      "source_pr": 511,
+      "path": "evidence/claude-mcp-connector/2026-10-09/LIVE_MCP_READBACK.json",
+      "git_blob_sha1": "19714ce5ddd0adb21e930e3a9625748f1d54e746"
+    },
+    {
+      "source_pr": 511,
+      "path": "scripts/qikvrt_mcp_probe.py",
+      "git_blob_sha1": "bbb59462fc200d20066cbdd6ef14727f775afdfc"
+    },
+    {
+      "source_pr": 511,
+      "path": "src/qikvrt_api_handler.py",
+      "git_blob_sha1": "57d3f65996f75ffffadadbe40e638cd8063c61ca"
+    },
+    {
+      "source_pr": 511,
+      "path": "state/work_units/CLAUDE_REMOTE_MCP_REST_APPLICATION_20261009_V1.json",
+      "git_blob_sha1": "bde4d761a4391b1549e35759202473b2406ede9a"
+    }
+  ],
+  "verification": {
+    "binding": "COMMIT_CONTAINING_THIS_FILE; fresh local and native execution results must identify its literal HEAD and TREE",
+    "required_commands": [
+      "make mcp-conformance-test",
+      "make test",
+      "python3 -B tools/qikvrt_integrity.py verify",
+      "git diff --check"
+    ],
+    "predecessor_evidence_transfer": false,
+    "original_tests_retained": true,
+    "adapted_original_test_assertions": "only the expanded source-file sets",
+    "joint_positive_and_negative_tests": 10,
+    "test_results_authority": "fresh exact-head local log and native CI; source-run results above are input observations only"
+  },
+  "governance": {
+    "all_508_workflow_sources_and_writer_pins_unchanged": true,
+    "native_reviews_at_observed_source_heads": {
+      "508": [],
+      "509": [],
+      "511": []
+    },
+    "code_owner_rule_not_enforced": true,
+    "rules_branch_read": "REST_GET_NOT_EXPOSED; no retry",
+    "independent_exact_head_review_required": true,
+    "contribution_terms_required": true,
+    "no_self_review": true,
+    "no_policy_weakened": true
+  },
+  "external_observation": {
+    "snapshot_id": "ee4ca73f-6a56-4b57-a058-dd96074315bb",
+    "snapshot_sha256": "937ff1c631a31120d607d380ab34e8b9a7b1e6c0e2272bbc38c594d4a833f26f",
+    "snapshot_bytes": 5666,
+    "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=ee4ca73f-6a56-4b57-a058-dd96074315bb",
+    "independent_local_sha256_verified": true,
+    "scope": "PUBLIC_HTTP_OBSERVATION_AND_PERSISTENT_READBACK",
+    "native_execution_verified": false,
+    "domain_delivery": {
+      "hostname": "raumzeitterminal.de",
+      "state": "NOT_ESTABLISHED_BY_THIS_OPERATION"
+    },
+    "candidate_remote_deployment_verified": false,
+    "claude_web_connector_execution": "UNVERIFIED"
+  },
+  "remaining_boundary": {
+    "native_exact_head_ci": "PENDING_NEW_CANDIDATE_EXECUTION",
+    "independent_code_owner_review": "PENDING",
+    "main_activation": false,
+    "approved_public_runtime": "UNVERIFIED",
+    "claude_connector_execution": "UNVERIFIED",
+    "raumzeitterminal_de_delivery": "NOT_ESTABLISHED",
+    "effect_state": "EFFECT_ACK_CONTINUE",
+    "ordinary_release": false
+  },
+  "continuation": "Review this Main-based candidate after fresh native gates. Incorporate only with legitimate exact-head Code Owner acceptance and unchanged enforced governance; deploy accepted bytes and obtain an actual Claude invocation plus independent original-byte readback before any production or Claude DONE claim."
+}

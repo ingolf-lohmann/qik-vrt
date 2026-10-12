@@ -166,6 +166,30 @@ Installation, task execution, commits, merges, releases, and publication remain 
 
 The bootstrap performs no implicit account creation, raw-audio publication, unconditional merge, release, deployment, Zenodo/IETF mutation or credentialed external write. These remain separate authorized effects.
 
+BINDING CLIENT CONTINUATION PROCEDURE — OWNER INSTRUCTION 2026-10-11
+
+Every client MUST follow AGENTS.md's binding client continuation procedure and
+policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation. Preserve the
+existing owner authorization, inspect applicable repository-native connector,
+CLI and Mesh execution routes, and execute safe deterministic successors.
+Before a terminal handoff run:
+python3 -B tools/ai_handoff.py --client-receipt <receipt.json>
+The gate rejects repeated permission requests, premature BLOCK, uninspected
+existing routes, unchanged failed retries and unverified completion claims.
+Receipt consistency is not live-effect proof. Close the action with independent
+current HEAD/TREE and exact-host raumzeitterminal.de delivery readback. Respect
+REST_API_ONLY, credentials and protected governance. The owner's authorization
+does not convert an unavailable operation into authenticated capability.
+
+OWNER CONTINUATION CLARIFICATION — 2026-10-12
+
+Die Fehler, Versäumnisse und Lücken des vorherigen Laufs sind stets zugleich
+die Aufgaben des automatisch daran anschließenden Laufs.
+Carry every observed open obligation into the successor work receipt. Close
+it only with bound evidence; preserve existing authorization and unchanged
+failure NOOP. Apply AGENTS.md and the existing shared client receipt gate.
+This rule does not imply that another client or persistent runner adopted it.
+
 REPOSITORY-NATIVE AUTONOMOUS CONTINUATION
 
 The standing natural-person authorizations for bounded repository-internal continuation are persisted at:
@@ -193,6 +217,17 @@ The repository-native workflow executor is bound by:
 - .github/workflows/qikvrt_workflow_executor.yml
 - .github/workflows/qikvrt_workflow_executor_watchdog.yml
 - .github/workflows/qikvrt_live_status_watch.yml
+
+Repository roles have exactly one normative source:
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json`. The executor contract, personal
+origin, Seed configuration, digital-twin projection and governance policy are
+validated projections of that source. `tools/qikvrt_workflow_executor.py roles`
+resolves both roles and rejects disagreement; repository names, local remotes,
+monitor availability and historical publication/tag bindings cannot override it.
+An Owner role decision and a candidate policy do not activate trusted Main.
+`authority-readback` requires the native job token, independently reads the
+Authority Main ref/commit/tree, both policies and CODEOWNERS, and reobserves the
+ref. Native protection and independent exact-head review remain separate gates.
 
 It reobserves the exact `main` head and tree, inventories every workflow blob under `.github/workflows`, compares a prior executor snapshot artifact when one is available, and plans at most the contract-authorized, no-effect dispatch. It must bind its plan to workflow path, workflow blob, ref, exact commit and tree. It may not duplicate an active or terminal exact-head run, bypass a competing Authority writer, treat `action_required`, a zero-job run, or watchdog terminality as trusted gate success, or use a rerun endpoint as a substitute for an initial dispatch.
 

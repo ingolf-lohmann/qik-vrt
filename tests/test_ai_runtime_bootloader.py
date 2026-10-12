@@ -5,6 +5,9 @@
 from __future__ import annotations
 
 import json
+import copy
+import contextlib
+import io
 import os
 import pathlib
 import subprocess
@@ -159,6 +162,479 @@ class AIRuntimeBootloaderContractTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertIn("AI_HANDOFF_STATUS=VALID", completed.stdout)
         self.assertNotIn("source commit is unavailable", completed.stderr)
+
+
+class ClientContinuationRegressionTests(unittest.TestCase):
+    """Client behavior receipts are fixtures, never productive effect evidence."""
+
+    def setUp(self) -> None:
+        from tools import ai_handoff
+        self.handoff = ai_handoff
+        self.subject = {
+            "repository": "ingolf-lohmann/qik-vrt", "ref": "main",
+            "head": "a" * 40, "tree": "b" * 40,
+        }
+        self.receipt = {
+            "schema": "qikvrt-client-continuation/1",
+            "subject": self.subject,
+            "authorization": {"granted": True, "source": "fixture:owner-authorized-task"},
+            "requested_authorization_again": False,
+            "inventory": {kind: "fixture:observed:" + kind
+                          for kind in ("repository", "connector", "cli", "mesh")},
+            "attempts": [],
+            "next_actions": [{
+                "subject": self.subject, "route": "connector", "service": "github",
+                "operation": "leased-pr-ref-update", "method": "PATCH",
+                "observed_operation": "leased-pr-ref-update", "observed_method": "PATCH",
+                "observed_repository": self.subject["repository"],
+                "transport": "REST_API_ONLY", "evidence": "fixture:callable-contract",
+                **{key: True for key in ("authorized", "safe", "deterministic", "callable",
+                                        "authenticated", "permitted", "admitted")},
+            }],
+            "state": "CONTINUE",
+            "action_window": {"id": "fixture:action-1",
+                              "completed_at": "2026-10-11T10:00:00Z",
+                              "closed_at": "2026-10-11T10:00:03Z"},
+            "readback": {
+                "repository": {**self.subject, "source": "fixture:fresh-rest-read",
+                               "action_id": "fixture:action-1",
+                               "observed_at": "2026-10-11T10:00:01Z"},
+                "delivery": {"hostname": "raumzeitterminal.de", "state": "UNKNOWN",
+                             "source": "fixture:exact-host-access-unavailable",
+                             "url": "https://raumzeitterminal.de/", "method": "GET",
+                             "action_id": "fixture:action-1",
+                             "observed_at": "2026-10-11T10:00:02Z"},
+            },
+        }
+
+    def check(self, value=None):
+        with contextlib.redirect_stderr(io.StringIO()):
+            return self.handoff.validate_client_receipt(value or self.receipt)
+
+    def inherited_work(self) -> None:
+        self.receipt["previous_run"] = {"execution_id": "fixture:previous-run",
+                                        "open_work": ["failure", "omission", "gap"]}
+        self.receipt["work"] = [{"id": task, "state": "OPEN", "evidence": "",
+                                 "next_action": "fixture:causal-repair:" + task}
+                                for task in ("failure", "omission", "gap")]
+
+    def test_failures_omissions_and_gaps_are_accepted_as_successor_work(self) -> None:
+        self.inherited_work()
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_each_predecessor_open_obligation_must_be_carried(self) -> None:
+        for identifier in ("failure", "omission", "gap"):
+            with self.subTest(obligation=identifier):
+                self.inherited_work()
+                self.receipt["work"] = [task for task in self.receipt["work"] if task["id"] != identifier]
+                self.rejected("CLIENT_PREDECESSOR_OPEN_WORK_DROPPED")
+
+    def test_predecessor_work_requires_evidence_to_close(self) -> None:
+        self.inherited_work()
+        self.receipt["work"][0]["state"] = "VERIFIED"
+        self.rejected("CLIENT_WORK_CLOSED_WITHOUT_EVIDENCE")
+        self.receipt["work"][0]["evidence"] = "fixture:exact-subject-closing-readback"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_open_predecessor_work_rejects_done_even_with_a_delivery_fixture(self) -> None:
+        self.inherited_work()
+        self.done()
+        self.rejected("CLIENT_DONE_WITH_OPEN_WORK")
+
+    def test_open_predecessor_work_requires_concrete_next_action(self) -> None:
+        self.inherited_work()
+        self.receipt["work"][0]["next_action"] = ""
+        self.rejected("CLIENT_OPEN_WORK_WITHOUT_SUCCESSOR")
+
+    def rejected(self, code: str) -> None:
+        stream = io.StringIO()
+        with contextlib.redirect_stderr(stream), self.assertRaises(SystemExit) as exc:
+            self.handoff.validate_client_receipt(self.receipt)
+        self.assertEqual(exc.exception.code, 2)
+        self.assertIn(code, stream.getvalue())
+
+    def block(self) -> None:
+        self.receipt["state"] = "BLOCK"
+        self.receipt["next_actions"][0]["callable"] = False
+        self.receipt["blocker"] = {
+            "operation": "workflow_dispatch POST", "reason": "operation not exposed",
+            "evidence": "fixture:GET-only-connector;CLI-absent;mesh-denied403",
+            "retry_condition": "supported authenticated POST operation restored",
+            "next_action": "restore the existing native operation binding",
+        }
+
+    def attempt(self, changed=False, count=1) -> dict:
+        previous = {key: str(i) * 64 for i, key in enumerate(
+            ("subject", "error", "cause", "capability"), start=1)}
+        current = dict(previous, cause="5" * 64) if changed else dict(previous)
+        return {"previous": previous, "current": current, "effect_count": count,
+                "action": copy.deepcopy(self.receipt["next_actions"][0]),
+                "action_window": copy.deepcopy(self.receipt["action_window"]),
+                "readback": copy.deepcopy(self.receipt["readback"]),
+                "ambiguous_effect": False, "readback_before_effect": False}
+
+    def done(self) -> None:
+        self.receipt["state"] = "DONE"
+        self.receipt["next_actions"] = []
+        self.receipt["readback"]["delivery"].update(
+            state="VERIFIED", working_software=True, tls=True, independent=True,
+            http_status=200, final_url="https://raumzeitterminal.de/",
+            response_sha256="6" * 64,
+            head=self.subject["head"], tree=self.subject["tree"])
+
+    def test_existing_grant_and_callable_successor_continue(self) -> None:
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_renewed_generic_permission_request_is_rejected(self) -> None:
+        self.receipt["requested_authorization_again"] = True
+        self.rejected("CLIENT_REPEATED_AUTHORIZATION_REQUEST")
+
+    def test_missing_owner_grant_is_not_invented(self) -> None:
+        self.receipt["authorization"]["granted"] = False
+        self.rejected("CLIENT_OWNER_AUTHORIZATION_MISSING")
+
+    def test_block_despite_executable_successor_is_rejected(self) -> None:
+        self.receipt["state"] = "BLOCK"
+        self.rejected("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+
+    def test_done_despite_executable_successor_is_rejected(self) -> None:
+        self.receipt["state"] = "DONE"
+        self.rejected("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+
+    def test_missing_relevant_route_inventory_is_rejected(self) -> None:
+        for kind in ("repository", "connector", "cli", "mesh"):
+            with self.subTest(kind=kind):
+                old = self.receipt["inventory"].pop(kind)
+                self.rejected("CLIENT_EXISTING_ROUTE_NOT_INSPECTED:" + kind)
+                self.receipt["inventory"][kind] = old
+
+    def test_concrete_block_after_all_existing_routes_inspected(self) -> None:
+        self.block()
+        self.assertEqual(self.check(), "BLOCK")
+
+    def test_authorization_does_not_invent_post_capability(self) -> None:
+        self.block()
+        self.receipt["next_actions"][0]["method"] = "POST"
+        self.receipt["next_actions"][0]["observed_method"] = "GET"
+        self.assertEqual(self.check(), "BLOCK")
+
+    def test_get_capability_cannot_be_declared_callable_post(self) -> None:
+        self.receipt["next_actions"][0]["observed_method"] = "GET"
+        self.rejected("CLIENT_CALLABLE_OPERATION_BINDING_MISMATCH")
+
+    def test_observed_target_cannot_be_substituted(self) -> None:
+        self.receipt["next_actions"][0]["observed_repository"] = "Goldkelch/qik-vrt"
+        self.rejected("CLIENT_CALLABLE_OPERATION_BINDING_MISMATCH")
+
+    def test_admin_permission_does_not_replace_governance_admission(self) -> None:
+        self.block()
+        self.receipt["next_actions"][0].update(callable=True, admitted=False)
+        self.assertEqual(self.check(), "BLOCK")
+
+    def test_block_without_concrete_retry_condition_is_rejected(self) -> None:
+        self.block()
+        del self.receipt["blocker"]["retry_condition"]
+        self.rejected("CLIENT_BLOCKER_NOT_CONCRETE:retry_condition")
+
+    def test_unchanged_failure_is_noop(self) -> None:
+        self.receipt["attempts"] = [self.attempt(count=0)]
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_unchanged_failure_cannot_be_retried(self) -> None:
+        self.receipt["attempts"] = [self.attempt()]
+        self.rejected("CLIENT_UNCHANGED_FAILURE_RETRIED")
+
+    def test_clocks_and_unrelated_heads_do_not_admit_retry(self) -> None:
+        attempt = self.attempt()
+        attempt["current"].update(observed_at="later", repository_head="c" * 40)
+        attempt["previous"].update(observed_at="earlier", repository_head="d" * 40)
+        self.receipt["attempts"] = [attempt]
+        self.rejected("CLIENT_UNCHANGED_FAILURE_RETRIED")
+
+    def test_materially_changed_cause_admits_single_attempt(self) -> None:
+        self.receipt["attempts"] = [self.attempt(changed=True)]
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_ambiguous_effect_requires_readback_before_retry(self) -> None:
+        attempt = self.attempt(changed=True)
+        attempt["ambiguous_effect"] = True
+        self.receipt["attempts"] = [attempt]
+        self.rejected("CLIENT_AMBIGUOUS_EFFECT_RETRIED_WITHOUT_READBACK")
+        attempt["readback_before_effect"] = True
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_multi_dispatch_and_boolean_counts_are_rejected(self) -> None:
+        for count in (2, True, -1):
+            with self.subTest(count=count):
+                self.receipt["attempts"] = [self.attempt(changed=True, count=count)]
+                self.rejected("CLIENT_EFFECT_COUNT_INVALID")
+
+    def test_changed_cause_cannot_bypass_governance(self) -> None:
+        attempt = self.attempt(changed=True)
+        attempt["action"]["admitted"] = False
+        self.receipt["attempts"] = [attempt]
+        self.rejected("CLIENT_EFFECT_WITHOUT_ADMISSION")
+
+    def test_changed_cause_cannot_replace_owner_authorization(self) -> None:
+        attempt = self.attempt(changed=True)
+        attempt["action"]["authorized"] = False
+        self.receipt["attempts"] = [attempt]
+        self.rejected("CLIENT_EFFECT_WITHOUT_ADMISSION")
+
+    def test_same_causal_attempt_cannot_execute_twice(self) -> None:
+        attempt = self.attempt(changed=True)
+        self.receipt["attempts"] = [attempt, copy.deepcopy(attempt)]
+        self.rejected("CLIENT_DUPLICATE_CAUSAL_ATTEMPT")
+
+    def test_subject_drift_is_rejected(self) -> None:
+        self.receipt["next_actions"][0]["subject"] = dict(self.subject, head="c" * 40)
+        self.rejected("CLIENT_ACTION_SUBJECT_DRIFT")
+
+    def test_browser_cannot_replace_rest_only(self) -> None:
+        self.receipt["next_actions"][0]["transport"] = "BROWSER"
+        self.rejected("CLIENT_GITHUB_ROUTE_FORBIDDEN")
+
+    def test_predicates_cannot_use_truthy_nonbooleans(self) -> None:
+        self.receipt["next_actions"][0]["admitted"] = "yes"
+        self.rejected("CLIENT_ACTION_PREDICATE_INVALID")
+
+    def test_exact_host_is_required_even_when_blocked(self) -> None:
+        self.block()
+        self.receipt["readback"]["delivery"]["hostname"] = "other.example"
+        self.rejected("CLIENT_EXACT_HOST_READBACK_MISSING")
+
+    def test_done_requires_tls_software_and_independent_same_subject_readback(self) -> None:
+        self.done()
+        valid = copy.deepcopy(self.receipt)
+        self.assertEqual(self.check(), "DONE")
+        for key, wrong in (("tls", False), ("working_software", False),
+                           ("independent", False), ("head", "c" * 40),
+                           ("tree", "d" * 40), ("state", "PENDING")):
+            with self.subTest(key=key):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["delivery"][key] = wrong
+                self.rejected("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+
+    def test_candidate_tests_do_not_establish_main_integration(self) -> None:
+        self.done()
+        self.receipt["readback"]["repository"]["ref"] = "work/repair"
+        self.rejected("CLIENT_REPOSITORY_READBACK_SUBJECT_DRIFT")
+
+    def test_pending_execution_retains_goal_without_permission_question(self) -> None:
+        self.receipt["next_actions"] = []
+        self.receipt["pending_execution"] = "fixture:admitted-native-run-id"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_receipt_cli_handles_empty_and_invalid_json(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "client.json"
+            for body in ("", "{invalid", "[]"):
+                with self.subTest(body=body):
+                    path.write_text(body)
+                    result = subprocess.run(
+                        [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                        cwd=ROOT, capture_output=True, text=True, timeout=10)
+                    self.assertEqual(result.returncode, 2)
+                    self.assertIn("AI_HANDOFF_BLOCK", result.stderr)
+                    self.assertNotIn("Traceback", result.stderr)
+
+    def test_receipt_cli_success_explicitly_does_not_claim_live_effect(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "client.json"
+            path.write_text(json.dumps(self.receipt))
+            result = subprocess.run(
+                [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                cwd=ROOT, capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("CLIENT_HANDOFF_CONSISTENCY=VALID", result.stdout)
+        self.assertIn("LIVE_EFFECT_VERIFICATION=NOT_PERFORMED", result.stdout)
+        self.assertNotIn("FINAL_PASS", result.stdout)
+
+    def test_missing_closing_head_or_tree_is_rejected_in_every_state(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for state in ("CONTINUE", "BLOCK", "DONE"):
+            for key in ("head", "tree"):
+                with self.subTest(state=state, key=key):
+                    self.receipt = copy.deepcopy(valid)
+                    if state == "BLOCK":
+                        self.block()
+                    elif state == "DONE":
+                        self.done()
+                    del self.receipt["readback"]["repository"][key]
+                    self.rejected("CLIENT_REPOSITORY_READBACK_INVALID")
+
+    def test_predecessor_head_tree_or_wrong_ref_cannot_close_action(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for key, wrong in (("head", "c" * 40), ("tree", "d" * 40),
+                           ("ref", "work/other")):
+            with self.subTest(key=key):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["repository"][key] = wrong
+                self.rejected("CLIENT_REPOSITORY_READBACK_SUBJECT_DRIFT")
+
+    def test_readback_before_or_at_action_completion_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            for timestamp in ("2026-10-11T09:59:59Z", "2026-10-11T10:00:00Z"):
+                with self.subTest(kind=kind, timestamp=timestamp):
+                    self.receipt = copy.deepcopy(valid)
+                    self.receipt["readback"][kind]["observed_at"] = timestamp
+                    self.rejected("CLIENT_READBACK_NOT_FRESH:" + kind)
+
+    def test_readback_after_receipt_closure_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            with self.subTest(kind=kind):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"][kind]["observed_at"] = "2026-10-11T10:00:04Z"
+                self.rejected("CLIENT_READBACK_NOT_FRESH:" + kind)
+
+    def test_missing_naive_or_invalid_observation_time_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            for wrong in (None, "", "yesterday", "2026-10-11T10:00:01", True):
+                with self.subTest(kind=kind, value=wrong):
+                    self.receipt = copy.deepcopy(valid)
+                    self.receipt["readback"][kind]["observed_at"] = wrong
+                    self.rejected("CLIENT_READBACK_TIME_INVALID:" + kind)
+
+    def test_readback_from_another_action_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind in ("repository", "delivery"):
+            with self.subTest(kind=kind):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"][kind]["action_id"] = "fixture:predecessor-action"
+                self.rejected("CLIENT_READBACK_ACTION_DRIFT:" + kind)
+
+    def test_invalid_or_missing_action_window_is_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for wrong in (None, {}, {"id": "fixture:action-1", "completed_at": "bad",
+                                 "closed_at": "2026-10-11T10:00:03Z"},
+                      {"id": "fixture:action-1", "completed_at": "2026-10-11T10:00:04Z",
+                       "closed_at": "2026-10-11T10:00:03Z"}):
+            with self.subTest(window=wrong):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["action_window"] = wrong
+                self.rejected("CLIENT_ACTION_WINDOW_INVALID")
+
+    def test_empty_or_nonstring_readback_sources_are_rejected(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for kind, code in (("repository", "CLIENT_REPOSITORY_READBACK_MISSING"),
+                           ("delivery", "CLIENT_EXACT_HOST_READBACK_MISSING")):
+            for wrong in (" ", True, 1):
+                with self.subTest(kind=kind, source=wrong):
+                    self.receipt = copy.deepcopy(valid)
+                    self.receipt["readback"][kind]["source"] = wrong
+                    self.rejected(code)
+
+    def test_public_delivery_url_cannot_substitute_another_origin(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        for wrong in ("https://other.example/", "http://raumzeitterminal.de/",
+                      "https://raumzeitterminal.de.other.example/",
+                      "https://user:password@raumzeitterminal.de/",
+                      "https://raumzeitterminal.de:444/", "https://[", None):
+            with self.subTest(url=wrong):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["delivery"]["url"] = wrong
+                self.rejected("CLIENT_PUBLIC_DELIVERY_URL_INVALID")
+
+    def test_public_delivery_observation_must_be_read_only(self) -> None:
+        self.receipt["readback"]["delivery"]["method"] = "POST"
+        self.rejected("CLIENT_PUBLIC_DELIVERY_URL_INVALID")
+
+    def test_verified_delivery_requires_http_body_and_exact_final_origin(self) -> None:
+        self.done()
+        valid = copy.deepcopy(self.receipt)
+        for key, wrong in (("http_status", 404), ("http_status", "200"),
+                           ("response_sha256", ""), ("response_sha256", True),
+                           ("final_url", "https://other.example/"),
+                           ("final_url", "http://raumzeitterminal.de/")):
+            with self.subTest(key=key, value=wrong):
+                self.receipt = copy.deepcopy(valid)
+                self.receipt["readback"]["delivery"][key] = wrong
+                self.rejected("CLIENT_PUBLIC_DELIVERY_PROOF_INCOMPLETE")
+
+    def test_fresh_unobservable_delivery_is_unknown_and_never_done(self) -> None:
+        self.block()
+        self.receipt["readback"]["delivery"].update(
+            diagnostic="fixture:client-DNS-unavailable", state="UNKNOWN")
+        self.assertEqual(self.check(), "BLOCK")
+        self.done()
+        self.receipt["readback"]["delivery"]["state"] = "UNKNOWN"
+        self.rejected("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+
+    def test_every_effectful_attempt_requires_its_own_closing_readback(self) -> None:
+        attempt = self.attempt(changed=True)
+        self.receipt["attempts"] = [attempt]
+        del attempt["readback"]
+        self.rejected("CLIENT_CLOSING_READBACK_MISSING")
+
+    def test_terminal_readback_cannot_hide_stale_attempt_readback(self) -> None:
+        attempt = self.attempt(changed=True)
+        self.receipt["attempts"] = [attempt]
+        attempt["readback"]["repository"]["observed_at"] = "2026-10-11T09:59:59Z"
+        self.rejected("CLIENT_READBACK_NOT_FRESH:repository")
+
+    def test_three_existing_routes_obey_same_closing_gate_through_cli(self) -> None:
+        valid = copy.deepcopy(self.receipt)
+        with tempfile.TemporaryDirectory() as directory:
+            path = pathlib.Path(directory) / "client.json"
+            for route in ("connector", "cli", "mesh"):
+                for fresh in (True, False):
+                    with self.subTest(route=route, fresh=fresh):
+                        receipt = copy.deepcopy(valid)
+                        receipt["next_actions"][0]["route"] = route
+                        if not fresh:
+                            receipt["readback"]["repository"]["observed_at"] = "2026-10-11T09:59:59Z"
+                        path.write_text(json.dumps(receipt))
+                        result = subprocess.run(
+                            [sys.executable, "-B", "tools/ai_handoff.py", "--client-receipt", str(path)],
+                            cwd=ROOT, capture_output=True, text=True, timeout=10)
+                        self.assertEqual(result.returncode, 0 if fresh else 2, result.stderr)
+                        self.assertNotIn("Traceback", result.stderr)
+
+    def test_changing_only_delivery_clock_does_not_admit_failed_action_retry(self) -> None:
+        self.receipt["readback"]["delivery"]["observed_at"] = "2026-10-11T10:00:03Z"
+        self.receipt["attempts"] = [self.attempt()]
+        self.rejected("CLIENT_UNCHANGED_FAILURE_RETRIED")
+
+    def test_separate_effectful_actions_cannot_reuse_one_observation_pair(self) -> None:
+        first = self.attempt(changed=True)
+        second = copy.deepcopy(first)
+        second["current"]["cause"] = "6" * 64
+        self.receipt["attempts"] = [first, second]
+        self.rejected("CLIENT_CLOSING_ACTION_REUSED")
+        second["action_window"]["id"] = "fixture:action-2"
+        for kind in ("repository", "delivery"):
+            second["readback"][kind]["action_id"] = "fixture:action-2"
+        self.assertEqual(self.check(), "CONTINUE")
+
+    def test_timezone_offsets_are_compared_as_instants(self) -> None:
+        self.receipt["readback"]["repository"]["observed_at"] = "2026-10-11T13:00:01+03:00"
+        self.receipt["readback"]["delivery"]["observed_at"] = "2026-10-11T12:00:02+02:00"
+        self.assertEqual(self.check(), "CONTINUE")
+        self.receipt["readback"]["delivery"]["observed_at"] = "2026-10-11T13:00:00+03:00"
+        self.rejected("CLIENT_READBACK_NOT_FRESH:delivery")
+
+    def test_registered_adapters_share_authority_but_are_not_live_client_witnesses(self) -> None:
+        registry = json.loads((ROOT / "AI_ADAPTERS.json").read_text())
+        self.assertEqual(registry["canonical_entrypoint"], "AI")
+        self.assertIn("compatibility shims only", registry["rule"])
+        context = json.loads((ROOT / "AI_CONTEXT.json").read_text())
+        _, count = self.handoff.validate_adapters(context)
+        self.assertEqual(count, len(registry["adapters"]))
+
+    def test_regression_contract_reuses_exact_owner_rule_from_pr507(self) -> None:
+        import hashlib
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        binding = policy["client_continuation"]["end_of_action_rule"]
+        path = ROOT / binding["path"]
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), binding["sha256"])
+        self.assertEqual(binding["source_head"], "42008f98a94c28e9bfc1ae902fb190296c6ac5a6")
+        rule = json.loads(path.read_text())
+        self.assertEqual(rule["delegation_id"], "OWNER-END-OF-ACTION-VERIFICATION-GRUNDREGEL-V1")
+        self.assertTrue(rule["boundaries"]["readback_is_not_effect_ack"])
+        self.assertEqual(rule["continuation_rules"]["unchanged_error"], "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT")
 
 
 if __name__ == "__main__":

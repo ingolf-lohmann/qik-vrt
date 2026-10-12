@@ -33,10 +33,15 @@ def validate(directory: Path) -> None:
         raise SystemExit("REQUEST_SHA256_MISMATCH")
 
     request_data = json.loads(request_bytes)
-    if not isinstance(request_data.get("issue_number"), int):
+    number = request_data.get("issue_number")
+    if isinstance(number, bool) or not isinstance(number, int) or number <= 0:
         raise SystemExit("INVALID_ISSUE_NUMBER")
 
     status = json.loads((directory / "STATUS.json").read_text(encoding="utf-8"))
+    if status.get("external_model_used") is not False:
+        raise SystemExit("EXTERNAL_MODEL_USE_FORBIDDEN")
+    if status.get("model_inference_completed") is not False:
+        raise SystemExit("MODEL_INFERENCE_MUST_REMAIN_FALSE")
     gate = status.get("status")
     if gate not in {"DONE", "CONTINUE", "ISOLATE", "BLOCK"}:
         raise SystemExit("INVALID_GATE_STATUS")
@@ -54,22 +59,43 @@ def validate(directory: Path) -> None:
         raise SystemExit("CLOSURE_RECOMMENDATION_MISMATCH")
 
     if gate == "DONE":
-        if status.get("automatic_merge") is not True:
-            raise SystemExit("DONE_REQUIRES_AUTOMATIC_MERGE")
-        for key in ("automatic_issue_close", "mirror_sync_required", "common_tag_required"):
-            if status.get(key) is not True:
-                raise SystemExit(f"DONE_REQUIRES_{key.upper()}")
-    else:
-        if status.get("automatic_merge") is not False:
-            raise SystemExit("NON_DONE_MUST_NOT_AUTO_MERGE")
-        if status.get("automatic_issue_close") is not False:
-            raise SystemExit("NON_DONE_MUST_NOT_AUTO_CLOSE_ISSUE")
+        raise SystemExit("PROPOSAL_IS_NOT_AN_EFFECT_RECEIPT")
+    if status.get("automatic_merge") is not False:
+        raise SystemExit("PROPOSAL_MUST_NOT_AUTO_MERGE")
+    if status.get("automatic_issue_close") is not False:
+        raise SystemExit("PROPOSAL_MUST_NOT_AUTO_CLOSE_ISSUE")
+    for key in ("mirror_sync_required", "common_tag_required"):
+        if status.get(key, False) is not False:
+            raise SystemExit("PROPOSAL_MUST_NOT_AUTHORIZE_CROSS_REPOSITORY_EFFECTS")
     if status.get("no_false_pass") is not True:
         raise SystemExit("NO_FALSE_PASS_GATE_FAILED")
+
+    if "work_unit" in status:
+        work_unit = status["work_unit"]
+        for key, name in (("request_sha256", "REQUEST.json"), ("context_sha256", "CONTEXT.md"), ("answer_sha256", "ANSWER.md")):
+            if work_unit.get(key) != hashlib.sha256((directory / name).read_bytes()).hexdigest():
+                raise SystemExit("WORK_UNIT_INPUT_OR_OUTPUT_MISMATCH")
 
     answer = (directory / "ANSWER.md").read_text(encoding="utf-8").strip()
     if not answer:
         raise SystemExit("EMPTY_ANSWER")
+
+    attempt_path = directory / 'ATTEMPT.json'
+    if attempt_path.exists():
+        try:
+            attempt = json.loads(attempt_path.read_text())
+            if (attempt.get('schema') != 'qikvrt_issue_causal_attempt_v1'
+                or attempt.get('recorded') is not True
+                or attempt.get('issue_number') != number
+                or attempt.get('repository') != request_data.get('repository')
+                or hashlib.sha256(json.dumps(attempt['inputs'], sort_keys=True,
+                    separators=(',', ':')).encode()).hexdigest() != attempt['fingerprint']):
+                raise ValueError()
+            for name in REQUIRED:
+                if attempt['artifacts'][name] != hashlib.sha256((directory / name).read_bytes()).hexdigest():
+                    raise ValueError()
+        except (ValueError, KeyError, TypeError):
+            raise SystemExit('ATTEMPT_INPUT_OR_OUTPUT_MISMATCH') from None
 
 
 if __name__ == "__main__":

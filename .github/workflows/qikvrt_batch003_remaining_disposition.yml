@@ -10,6 +10,11 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened]
   workflow_dispatch:
+    inputs:
+      archive_retry_evidence_path:
+        description: Versioned, original-failure-bound external response evidence
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -29,6 +34,10 @@ jobs:
     timeout-minutes: 60
     env:
       TARGET_REF: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+      QIKVRT_ARCHIVE_JOURNAL_REPOSITORY: ${{ github.repository }}
+      QIKVRT_ARCHIVE_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+      QIKVRT_GITHUB_TOKEN: ${{ github.token }}
+      QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: ${{ inputs.archive_retry_evidence_path || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -49,6 +58,15 @@ jobs:
           grep -F '"effect_ack_done": false' /tmp/qikvrt-remaining-disposition.log
           grep -F '"zenodo_mutation_authorized": false' /tmp/qikvrt-remaining-disposition.log
           grep -F '"proof_corpus_published_on_zenodo": false' /tmp/qikvrt-remaining-disposition.log
+      - name: Preserve archive causal diagnostics even when access is blocked
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qikvrt-archive-causal-journal-disposition-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: .qikvrt/runtime/archive-get-journal/**
       - name: Verify deterministic materialization without network
         shell: bash
         run: |
@@ -94,3 +112,4 @@ jobs:
           fi
           git commit -m 'evidence: disposition remaining Zenodo subjects and verify proof corpus'
           git push origin "HEAD:$TARGET_REF"
+

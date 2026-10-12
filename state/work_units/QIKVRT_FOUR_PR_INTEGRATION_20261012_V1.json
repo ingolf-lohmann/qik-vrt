@@ -1,0 +1,219 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_FOUR_PR_INTEGRATION_20261012_V1",
+  "created_at": "2026-10-12T21:01:20.973914+00:00",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "main",
+  "source_commit": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+  "source_tree": "e436ca6f80185d9fe264f1491d2bce232ae68b11",
+  "human_actor": "Ingolf Lohmann",
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6",
+    "session_or_run_id": "b686cf0478aa",
+    "identity_and_observation_limits": "Platform supplied assistant family; no biometric identity attestation."
+  },
+  "human_contributions": [
+    "Authorize exact four-PR consolidation with native Governance and qualified atomic Main-HEAD CAS; preserve scientific original bytes and historical evidence."
+  ],
+  "artificial_cognitive_contributions": [
+    "Read exact PR/Main commits, complete trees, actual patches and merge bases through existing authenticated GitHub REST connection.",
+    "Reuse local repository checkpoint; recover missing exact Git objects and independently verify all input HEAD/TREE and blob identities.",
+    "Perform explicit-base Git three-way merges; preserve both native Governance and CAS decisions and regression groups.",
+    "Connect existing run-receipt parser to causal attempt journal; retain pending run receipts, unchanged-retry suppression and closing readbacks.",
+    "Preserve existing original publications, historical receipts and workflow mechanisms; rematerialize canonical integrity only for the combined subject."
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "inputs": [
+    {
+      "pr": 515,
+      "head": "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+      "tree": "d04b96dcd35a485f1961b7e2699760a8fce70dce",
+      "ref": "integration/seed-mcp-governance-512-513-20261009-14c71097",
+      "merge_base": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/515"
+    },
+    {
+      "pr": 519,
+      "head": "8ad1d98147508a5a9586f714bbbeb05a1e90c344",
+      "tree": "d7311a729d8ee64569038a9edc3f095819268008",
+      "ref": "publication/raumzeitterminal-nobel-decay-20261010",
+      "merge_base": "66974aa881c0829e03d48c4146ff2d335646d8c6",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/519"
+    },
+    {
+      "pr": 521,
+      "head": "d44c48791c87dae4669036e49ce5db98e95e06eb",
+      "tree": "26c71186d1a06dc08048fe90aaef5e22b80c4ac8",
+      "ref": "work/ref-cas-readback-20261010-d8775f20",
+      "merge_base": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/521"
+    },
+    {
+      "pr": 522,
+      "head": "094d3a8c074e399085a864f2844adcdafc3de3cf",
+      "tree": "46d30bee21c64eb13423fbb1256a997e7431703d",
+      "ref": "work/client-end-of-action-regressions-20261012-v1",
+      "merge_base": "f148dfbfc1abe5b9506d9d1c4c6f7616efe6fe6e",
+      "locator": "https://github.com/ingolf-lohmann/qik-vrt/pull/522"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "tools/qikvrt_expected_head_promotion.py",
+      "bytes": 39471,
+      "sha256": "416d0228f6095e444eb64a9de18d00bce61b3301dd83ae1beaf22a46ebee02ac",
+      "git_blob_sha1": "008dc2063b66e6617a4f54cbe3949b4843c8cb33"
+    },
+    {
+      "path": ".github/workflows/qikvrt_expected_head_promotion.yml",
+      "bytes": 16147,
+      "sha256": "b9cacdcd676db9542df0993bb8a546c6ebcd471245ba8a1bd0e2ec8bd444cff1",
+      "git_blob_sha1": "218b4ff4735121febb5e5d783fd15e24e4606308"
+    },
+    {
+      "path": "scripts/qikvrt_api_client.py",
+      "bytes": 57451,
+      "sha256": "a90900c0f982783c5ea4f675d75b009de5d0ae99f78492e6130f734d427d8b77",
+      "git_blob_sha1": "fc122690e8e5b9d3ddbcf7636557568f0484c67c"
+    },
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "bytes": 46504,
+      "sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+      "git_blob_sha1": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9"
+    },
+    {
+      "path": "tools/ai_handoff.py",
+      "bytes": 31763,
+      "sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+      "git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 13092,
+      "sha256": "0af4c8dd2c8628c62c52f8f0976256b6939aa21ab6c77bc99fa9b635ac9cfefe",
+      "git_blob_sha1": "548cb81c2552a1f3b55d231e6464596fff85f60a"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion.py",
+      "bytes": 37851,
+      "sha256": "0f1c030e3e30b9fa924f15cdfd0e7510d35d4e9b9773c161be7b62b72c15dd60",
+      "git_blob_sha1": "a7fb488a1c10399f93238801cfcce44c56fcb7b7"
+    },
+    {
+      "path": "tests/test_qikvrt_expected_head_promotion_contract.py",
+      "bytes": 8053,
+      "sha256": "41d6b7176599db20025370408bbe5d9e479a222ac0b4ef542050e99eef7f7f39",
+      "git_blob_sha1": "9f252f588d4a9b6472fb91b156e41d580c2ebe3c"
+    },
+    {
+      "path": "tests/test_api_client.py",
+      "bytes": 73153,
+      "sha256": "38e3c548699ff6862c830e554db16de9d1fc7861f0fc1eba276aa5c58a0373bb",
+      "git_blob_sha1": "6a892a449e9c2fa08ef9e3474ee7b84ed775d7cb"
+    },
+    {
+      "path": "tests/test_ruleset_authority_token_route.py",
+      "bytes": 26432,
+      "sha256": "ef634d781df9a5844de47909892f5b8e2da3c1f3fe9da457aea0ddb6ca3ef752",
+      "git_blob_sha1": "d16cdc29f42bc03174625c2f7fd566442e07e89b"
+    },
+    {
+      "path": "tests/test_editorial_navigation.py",
+      "bytes": 11860,
+      "sha256": "c56dd67f72cac033dff8094be31a204c8ebfaf2ba67a389fa71999806601fd4d",
+      "git_blob_sha1": "dbab150ebf9c1eddb7bb0eb7bbfa23eeba384d9c"
+    },
+    {
+      "path": "tests/test_archive_get_causal_journal.py",
+      "bytes": 18561,
+      "sha256": "c528a291a18eb60ca56f29b462538dba79ec429519e07a6ef6f994674d96bd52",
+      "git_blob_sha1": "b9505c0da8a9977c2a2dd059aa211134660f4fae"
+    }
+  ],
+  "git_history": {
+    "method": "EXPLICIT_VERIFIED_MERGE_BASE_THREE_WAY_TREE_COMPOSITION",
+    "merge_order": [
+      515,
+      521,
+      522,
+      519
+    ],
+    "intended_parents": [
+      "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
+      "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+      "8ad1d98147508a5a9586f714bbbeb05a1e90c344",
+      "d44c48791c87dae4669036e49ce5db98e95e06eb",
+      "094d3a8c074e399085a864f2844adcdafc3de3cf"
+    ],
+    "history_rewritten": false,
+    "force_push": false,
+    "source_prs_closed": false
+  },
+  "conflict_resolution": {
+    "integrity_trio": "Never combine predecessor manifests. Regenerate with combined existing generator.",
+    "promotion_core": "Native Governance projection validation before technical and qualified CAS admission; live CAS read reuses canonical Owner resolver.",
+    "promotion_workflow": "Native status context and fresh rules/reviews plus disabled GraphQL CAS phase; no REST merge fallback.",
+    "api_client": "Keep reviewed Ruleset operations/version pins, shared run-receipt semantics and cause-bound journal/continuation.",
+    "tests": "Retain both suites; adapt older fixtures to canonical Authority Owner, fresh closure and absent CAS HOLD; add negative combined-Governance and run-receipt continuation regressions.",
+    "makefile": "Keep all Ruleset, self-heal, PR continuation, issue-agent, archive and editorial targets."
+  },
+  "verification": {
+    "input_commit_and_tree_reconstruction": "BYTE_EXACT_VERIFIED",
+    "input_trees_complete": true,
+    "historical_evidence": {
+      "scope": "Every input state/work_units and evidence blob except mutable LATEST.json",
+      "source_path_counts": {
+        "515": 493,
+        "519": 486,
+        "521": 492,
+        "522": 494
+      },
+      "different_or_missing_historical_source_blobs": 0,
+      "overlapping_counts_not_added": true
+    },
+    "scientific_originals": "No scientific archive or article rewritten during consolidation; PR519 original article bytes and pre-existing publication entries remain under original regression bindings.",
+    "focused_tests": "See exact final candidate check/run and external report; predecessor checks are not transferred.",
+    "full_local_make_test": "REQUIRED_ON_FINAL_COMMIT_NOT_YET_RUN_AT_WORK_UNIT_CREATION",
+    "native_ci": "REQUIRED_ON_FINAL_REMOTE_HEAD_NOT_YET_RUN_AT_WORK_UNIT_CREATION",
+    "remote_readback": "REQUIRED_AFTER_PERSISTENCE",
+    "live_graphql": "NOT_EXECUTED_OR_QUALIFIED",
+    "native_governance": "rulesets=[]; main.protected=false at initial authenticated readback"
+  },
+  "human_decision": {
+    "state": "AUTHORIZED_INTEGRATION_CANDIDATE_ONLY",
+    "main_promotion_requires": [
+      "EFFECTIVE_NATIVE_GOVERNANCE",
+      "INDEPENDENT_CURRENT_HEAD_CODE_OWNER_APPROVAL",
+      "QUALIFIED_SERVER_ATOMIC_MAIN_HEAD_COMPARE",
+      "DURABLE_CROSS_RUN_CAS_INTENT_RECOVERY"
+    ]
+  },
+  "external_effects": {
+    "route": "EXISTING_AUTHENTICATED_GITHUB_REST_GIT_DATA_AND_DRAFT_PR",
+    "main_written": false,
+    "publication": false,
+    "deployment": false,
+    "workflow_dispatch": false,
+    "new_execution_path": false,
+    "mesh_monitor_execution_capability": false
+  },
+  "integration_boundaries": [
+    "CODE_OWNER_RULE_NOT_ENFORCED",
+    "INDEPENDENT_CURRENT_HEAD_REVIEW_NOT_ESTABLISHED",
+    "ATOMIC_TARGET_REF_CAS_UNVERIFIED",
+    "GRAPHQL_AUTHENTICATED_POST_NOT_EXPOSED_TO_THIS_CLIENT",
+    "DURABLE_CAS_RECOVERY_NOT_LIVE_QUALIFIED"
+  ],
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "MAIN_INTEGRATED": false,
+    "NATIVE_ACTIVATION_VERIFIED": false,
+    "RAUMZEITTERMINAL_DE_DELIVERY_VERIFIED": false
+  }
+}

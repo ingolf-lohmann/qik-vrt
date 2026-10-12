@@ -1,0 +1,179 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "classification": "engineering_work_unit"
+  },
+  "schema": "qikvrt_pr_continuation_fairness_repair_v1",
+  "work_unit_id": "QIKVRT_PR_CONTINUATION_FAIRNESS_REPAIR_20261008_V1",
+  "source_binding": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "512ec968f0ee4c0b9154ffe56848ff1ce6dafa7d",
+    "tree": "726d722713d7dfd84b4bf0dee86fb43b5bca8d35",
+    "github_route": "REST_API_ONLY",
+    "local_materialization": "EXACT_TREE_SHALLOW_REST_SNAPSHOT"
+  },
+  "provenance": {
+    "human": {
+      "identifier": "Ingolf Lohmann",
+      "contributions": [
+        "repair objective",
+        "REST-only route",
+        "governance and exact-head constraints",
+        "preserve PR 459 predecessor",
+        "separate correction PR authorization"
+      ]
+    },
+    "artificial_cognitive_system": {
+      "provider": "OpenAI",
+      "system_family": "Codex",
+      "exact_model_build": "UNAVAILABLE",
+      "contributions": [
+        "causal diagnosis",
+        "existing workflow/controller repair",
+        "regression tests",
+        "local verification",
+        "REST observations"
+      ]
+    },
+    "contribution_terms_and_independent_code_owner_acceptance": "REQUIRED_BEFORE_MERGE"
+  },
+  "diagnosis": {
+    "old_selection": "smallest eligible PR number; NOOP does not advance",
+    "source_workflow_blob": "b138d57fb249f8352c8d4e856e9fc7634a5b81c4",
+    "continuously_eligible_examples": [
+      437,
+      459
+    ]
+  },
+  "implementation": {
+    "strategy": "LEAST_RECENTLY_ATTEMPTED_THEN_PR_NUMBER",
+    "service_order": "ATOMIC_TURN_SEQUENCE_NOT_RUN_ALLOCATION_TIME",
+    "identity": "PR_NUMBER_INDEPENDENT_OF_HEAD",
+    "maximum_prs_per_run": 1,
+    "receipt_namespace": "refs/qikvrt/pr-continuation/",
+    "no_commit_on_unchanged_tree": true,
+    "same_native_workflow_and_concurrency_lane": true,
+    "all_github_network_operations": "CONTINUATION_SCOPE_REST_API_ONLY",
+    "raw_object_import_requires_exact_git_hash": true,
+    "branch_update": "EXPECTED_SOURCE_READBACK_AND_FORCE_FALSE",
+    "handoff": "CREATE_ONLY_PER_PHASE_CLAIM; GET_RECOVERY; NO_AMBIGUOUS_POST_RETRY"
+  },
+  "selection_verification": {
+    "class": "EXECUTION_OF_REPAIRED_SELECTOR_ON_LIVE_REST_INPUTS",
+    "input_sha256": "60a0031e61804d229d0f47cdd5937ffe17252f9b3cd244f1f79fac7a45cd15ff",
+    "complete_open_pr_inventory": {
+      "pages": [
+        100,
+        6
+      ],
+      "total": 106
+    },
+    "ranked": [
+      {
+        "pull_request": 459,
+        "head_ref": "automation/self-heal-e4d6a939ac3074c4f50a689e",
+        "head_sha": "9c431098c4680f295a90bafe49ba747a74d288e6",
+        "base_ref": "main",
+        "rank": [
+          0,
+          0,
+          ""
+        ]
+      },
+      {
+        "pull_request": 437,
+        "head_ref": "work/meta-transistor-feedback-20261001-7e5a588d",
+        "head_sha": "b6eecebf765276852659d3f5ce3490a256afb1c4",
+        "base_ref": "main",
+        "rank": [
+          1,
+          0,
+          "2026-10-08T09:26:01Z"
+        ]
+      }
+    ],
+    "selected_pr": 459,
+    "selected_head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+    "legacy_last_native_437_comment": {
+      "id": 6056844011,
+      "created_at": "2026-10-08T09:26:01Z"
+    },
+    "native_production_scheduler_execution": "NOT_ESTABLISHED; correction requires reviewed Main activation"
+  },
+  "predecessor_preservation": {
+    "pull_request": 459,
+    "head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+    "no_branch_mutation_requested_by_validation": true,
+    "fresh_final_rest_readback_required": true
+  },
+  "validation": {
+    "focused_command": "python3 -B -m unittest -v tests.test_qikvrt_autonomous_pr_continuation tests.test_qikvrt_autonomous_self_heal",
+    "focused_tests": 43,
+    "focused_result": "PASS_LOCAL",
+    "full_gate_command": "make test",
+    "full_gate_result": "PASS_LOCAL_AFTER_DECLARED_HISTORICAL_FIXTURE_IMPORT; FINAL_CANDIDATE_HEAD_RECHECK_REQUIRED",
+    "integrity": "REGENERATE_AND_VERIFY_AFTER_THIS_RECORD",
+    "historical_fixture_transport": {
+      "source_manifest": "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/publish-request.json",
+      "source_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "tree": "10bceed0af444e5704e4c2946402355c0c957e0d",
+      "unchanged_tests": true,
+      "route": "REST_API_ONLY",
+      "result": "EXACT_COMMIT_AND_TREE_IMPORTED_WITHOUT_WORKING_HEAD_CHANGE; ORIGINAL_TEST_PASSED"
+    },
+    "checkout_semantics": "RAW_GIT_OBJECTS_VERIFIED; WORKTREE_USES_DECLARED_GITATTRIBUTES_EOLS",
+    "final_exact_head_receipt_destination": "SEPARATE_CORRECTION_PR_DESCRIPTION_AND_LOCAL_FULL_GATE_LOG"
+  },
+  "independent_boundaries": {
+    "pr437_admission": {
+      "run_id": 37756616996,
+      "head_sha": "b6eecebf765276852659d3f5ce3490a256afb1c4",
+      "conclusion": "action_required",
+      "jobs": 0
+    },
+    "rulesets": [],
+    "code_owner_rule": "CODE_OWNER_RULE_NOT_ENFORCED_AT_READBACK",
+    "native_code_owner_approval": "NOT_ESTABLISHED",
+    "main_activation": false,
+    "merge": false,
+    "publication": false,
+    "deployment": false,
+    "effect_ack_done": false
+  },
+  "acceptance_scope": {
+    "fairness": "With a finite continuously eligible set, every successfully claimed processing turn advances service age, including NOOP and repair/handoff failures; native concurrency serializes runs and atomic turn claims reject stale parallel plans.",
+    "unknown_outcomes": "A phase receipt alone never proves its POST effect. Ambiguous dispatch stays HOLD pending native exact-head evidence, without replay.",
+    "retention": "Immutable attempt/effect refs are durable control metadata, point only at existing commits and do not create artificial commits. Privileged ref deletion is outside this client guarantee.",
+    "transport": "Snapshots are exact shallow Git objects, not a complete history backup; unreconstructable raw commits block without substitute objects."
+  },
+  "files": [
+    {
+      "path": ".github/workflows/qikvrt_autonomous_pr_continuation.yml",
+      "bytes": 9829,
+      "sha256": "f5c5a146696ec902bf890c207f5535a88c5cb8666ee66df8f6aca49b64df1815"
+    },
+    {
+      "path": "tools/qikvrt_autonomous_self_heal.py",
+      "bytes": 40901,
+      "sha256": "3a55a8af6e9e52e31d9cbeae97072cad476744ebe531e7f51500375683cf0893"
+    },
+    {
+      "path": "tests/test_qikvrt_autonomous_pr_continuation.py",
+      "bytes": 34237,
+      "sha256": "45b4df82e6981eac5b63632ca5c26f77218ae7b95cf6823b562d2e8377b0a567"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 11383,
+      "sha256": "5c3839c6f09aba7c872ee0091c80893c525f34d1dec9f380fe1d58c59dde003b"
+    },
+    {
+      "path": "state/autonomy/AUTONOMOUS_SELF_HEALING_CONTRACT_V1.json",
+      "bytes": 7484,
+      "sha256": "db90d3b9f0007c91636e81adc6cbb754ad871328e09d7a91afb9fb4a97deabbc"
+    }
+  ],
+  "next_step": "Run complete gates, create one separate Draft PR through REST, independently read its HEAD/TREE and preserve PR 459. Main activation requires its existing governance gates."
+}

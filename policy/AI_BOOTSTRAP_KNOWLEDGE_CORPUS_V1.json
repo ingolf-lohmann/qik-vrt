@@ -9,8 +9,9 @@
   "corpus_id": "AI-BOOTSTRAP-KNOWLEDGE-CORPUS-2026-08-07-V1",
   "human_contract": "docs/AI_BOOTSTRAP_KNOWLEDGE_CORPUS.md",
   "canonical_entrypoint": "AI",
-  "authority_repository": "Goldkelch/qik-vrt",
-  "authority_base_commit": "8a7e94c08eebd6d385a144a0d1df9c473de667b2",
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+  "historical_origin_authority": {"repository": "Goldkelch/qik-vrt", "commit": "8a7e94c08eebd6d385a144a0d1df9c473de667b2"},
   "epistemic_rule": "SOURCE_ARTIFACT_TO_HUMAN_CLAIM_TO_FORMALIZED_REPOSITORY_CLAIM_TO_EMPIRICALLY_BOUND_CLAIM_NO_LAYER_MAY_BE_SKIPPED",
   "core_invariants": [
     "REPOSITORY_EVIDENCE_OVERRIDES_CHAT_AND_MODEL_MEMORY",

@@ -3,19 +3,23 @@
 # Copyright 2026 Ingolf Lohmann.
 """Exact-head workflow-executor planning and mesh-node continuity checks.
 
-The controller is deliberately repository-local.  It observes Git state and
+The planning controller is deliberately repository-local. It observes Git state and
 workflow metadata supplied by the caller, creates a deterministic dispatch
 plan, and validates a node-split continuity receipt.  It never calls GitHub,
 dispatches a workflow, writes a repository file, or treats a terminal watcher
 as a successful gate.  The narrowly authorised Action wrapper performs the
 single REST dispatch only after this controller has produced a candidate.
+The separate authority-readback command performs bounded, authenticated GETs;
+it never substitutes a Mirror response or candidate policy for active Main.
 """
 
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -28,10 +32,261 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_RELATIVE_PATH = "state/autonomy/WORKFLOW_EXECUTOR_MESH_CONTRACT_V1.json"
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 ACTIVE_RUN_STATUSES = frozenset({"queued", "in_progress", "waiting", "requested", "pending"})
+ROLE_POLICY_PATH = "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+GOVERNANCE_POLICY_PATH = "policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json"
 
 
 class ExecutorBlock(RuntimeError):
     """A fail-closed executor or continuity validation error."""
+
+
+def resolve_repository_roles(policy: Mapping[str, Any]) -> dict[str, str]:
+    """Resolve the existing normative policy; projections cannot assign roles."""
+    if (policy.get("schema") != "qikvrt_canonical_upstream_remote_v1"
+            or policy.get("status") != "NORMATIVE"):
+        raise ExecutorBlock("CANONICAL_ROLE_POLICY_INVALID")
+    roles: dict[str, str] = {}
+    for key, role, remote in (("canonical_upstream", "AUTHORITY", "authority"),
+                              ("mirror", "MIRROR", "mirror")):
+        binding = _mapping(policy.get(key), f"canonical {role} binding")
+        repository = _string(binding.get("repository"), f"canonical {role} repository")
+        if (not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository)
+                or binding.get("role") != role or binding.get("default_branch") != "main"
+                or binding.get("canonical_remote_name") != remote
+                or binding.get("canonical_entrypoint") != "/AI"
+                or binding.get("canonical_https_url") != f"https://github.com/{repository}.git"
+                or binding.get("canonical_api_repository") != f"https://api.github.com/repos/{repository}"):
+            raise ExecutorBlock("CANONICAL_ROLE_BINDING_INVALID")
+        roles[role] = repository
+    if roles["AUTHORITY"].casefold() == roles["MIRROR"].casefold():
+        raise ExecutorBlock("Authority and Mirror repositories must be distinct")
+    if _mapping(policy.get("selection_rule"), "canonical selection rule").get("source_of_truth") != "canonical_upstream.repository":
+        raise ExecutorBlock("CANONICAL_ROLE_SOURCE_INVALID")
+    if (_mapping(policy.get("exact_head_contract"), "canonical exact-head contract").get("predecessor_gate_evidence_transfer") is not False
+            or _mapping(policy.get("promotion_contract"), "canonical promotion contract").get("force_push") is not False):
+        raise ExecutorBlock("CANONICAL_ROLE_PROTECTION_BOUNDARY_INVALID")
+    return roles
+
+
+def load_repository_roles(root: Path = ROOT) -> dict[str, str]:
+    policy = _mapping(_read_json_file(root / ROLE_POLICY_PATH, "canonical role policy"), "canonical role policy")
+    return resolve_repository_roles(policy)
+
+
+def validate_request_roles(document: Mapping[str, Any], root: Path = ROOT) -> dict[str, str]:
+    """A historical exact-artifact grant cannot redefine the current roles."""
+    roles = load_repository_roles(root)
+    binding = _mapping(document.get("repository_policy", document), "request role projection")
+    if (binding.get("authority_repository") != roles["AUTHORITY"]
+            or binding.get("mirror_repository") != roles["MIRROR"]):
+        raise ExecutorBlock("HISTORICAL_ROLE_REQUEST_NOT_CURRENT")
+    return roles
+
+
+def validate_role_projections(root: Path = ROOT) -> dict[str, str]:
+    """Validate live configuration projections; frozen evidence is never migrated."""
+    roles = load_repository_roles(root)
+    authority_repository(load_contract(root), root)
+    for path in ("policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json",
+                 "policy/AI_BOOTSTRAP_KNOWLEDGE_CORPUS_V1.json",
+                 "policy/QIKVRT_EFFECT_ACK_HTTP_TERMINAL_V1.json"):
+        policy = _mapping(_read_json_file(root / path, "role projection"), "role projection")
+        if policy.get("authority_repository") != roles["AUTHORITY"] or policy.get("role_policy_path") != ROLE_POLICY_PATH:
+            raise ExecutorBlock(f"CANONICAL_ROLE_PROJECTION_MISMATCH {path}")
+    origin = _mapping(_read_json_file(root / "policy/AI_PERSONAL_WORKING_MEMORY_ORIGIN_AND_ATTRIBUTION_V1.json", "origin policy"), "origin policy")
+    memory = _mapping(origin.get("personal_working_memory"), "personal working memory")
+    if _mapping(memory.get("canonical_source_remote"), "personal source remote").get("url") != f"https://github.com/{roles['AUTHORITY']}.git":
+        raise ExecutorBlock("CANONICAL_ORIGIN_ROLE_MISMATCH")
+    governance = _mapping(_read_json_file(root / GOVERNANCE_POLICY_PATH, "governance policy"), "governance policy")
+    authority = _mapping(governance.get("mesh_authority"), "governance authority")
+    if (authority.get("authority_repository") != roles["AUTHORITY"]
+            or authority.get("role_policy_path") != ROLE_POLICY_PATH):
+        raise ExecutorBlock("CANONICAL_GOVERNANCE_ROLE_MISMATCH")
+    validate_governance_policy(load_contract(root), governance, root)
+    twin = _mapping(_read_json_file(root / "policy/QIKVRT_ETHICAL_EVOLUTIONARY_DIGITAL_TWIN_MESH_V1.json", "digital twin policy"), "digital twin policy")
+    reciprocal = _mapping(twin.get("reciprocal_rest"), "reciprocal REST projection")
+    if (reciprocal.get("authority_repository") != roles["AUTHORITY"]
+            or reciprocal.get("mirror_repository") != roles["MIRROR"]
+            or reciprocal.get("role_policy_path") != ROLE_POLICY_PATH):
+        raise ExecutorBlock("CANONICAL_DIGITAL_TWIN_ROLE_MISMATCH")
+    return roles
+
+
+def authority_retry_binding(root: Path = ROOT) -> str:
+    """Bind causal read prerequisites; unrelated Heads and timestamps do not admit retries."""
+    paths = (ROLE_POLICY_PATH, "tools/qikvrt_workflow_executor.py",
+             ".github/workflows/qikvrt_reflexive_repository_watchdog.yml",
+             ".github/workflows/qikvrt_workflow_executor.yml")
+    authority = _mapping(load_contract(root).get("authority"), "retry Authority binding")
+    return sha256_bytes(canonical_json_bytes({
+        "files": {path: sha256_bytes((root / path).read_bytes()) for path in paths},
+        "authority": dict(authority),
+    }))
+
+
+def authority_repository(contract: Mapping[str, Any], root: Path = ROOT) -> str:
+    """Resolve one declared Authority without treating its declaration as activation."""
+    authority = _mapping(contract.get("authority"), "contract authority")
+    repository = _string(authority.get("repository"), "authority repository")
+    mirrors = _string_list(authority.get("mirror_repositories"), "mirror repositories")
+    roles = load_repository_roles(root)
+    if repository != roles["AUTHORITY"] or mirrors != [roles["MIRROR"]]:
+        raise ExecutorBlock("AUTHORITY_CONTRACT_CANONICAL_ROLE_MISMATCH")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+        raise ExecutorBlock("contract authority repository is invalid")
+    if (not mirrors or any(not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", item) for item in mirrors)
+            or repository.casefold() in {item.casefold() for item in mirrors}):
+        raise ExecutorBlock("Authority and Mirror repositories must be distinct")
+    if authority.get("entrypoint") != "AI" or authority.get("role_policy_path") != ROLE_POLICY_PATH:
+        raise ExecutorBlock("contract authority policy binding is invalid")
+    if authority.get("activation") != "FRESH_AUTHORITY_MAIN_POLICY_READBACK_REQUIRED":
+        raise ExecutorBlock("contract authority activation is not fail-closed")
+    prevention = _mapping(contract.get("reflexive_deadlock_prevention"), "reflexive prevention")
+    gatewatch = _mapping(prevention.get("gatewatch"), "reflexive gatewatch")
+    liveness = _mapping(gatewatch.get("node_liveness"), "node liveness")
+    if liveness.get("authority_repository") != repository:
+        raise ExecutorBlock("node liveness and executor Authority repositories disagree")
+    return repository
+
+
+def validate_authority_policy(contract: Mapping[str, Any], policy: Mapping[str, Any], root: Path = ROOT) -> str:
+    repository = authority_repository(contract, root)
+    try:
+        observed = resolve_repository_roles(policy)
+    except ExecutorBlock as exc:
+        raise ExecutorBlock("AUTHORITY_ROLE_BINDING_NOT_ACTIVE") from exc
+    if observed != load_repository_roles(root):
+        raise ExecutorBlock("AUTHORITY_ROLE_BINDING_NOT_ACTIVE")
+    return repository
+
+
+def validate_governance_policy(contract: Mapping[str, Any], policy: Mapping[str, Any], root: Path = ROOT) -> str:
+    repository = authority_repository(contract, root)
+    role = policy.get("mesh_authority")
+    if (policy.get("schema") != "qikvrt_requested_review_and_issue_lifecycle_policy_v1"
+            or policy.get("status") != "ACTIVE" or not isinstance(role, Mapping)
+            or role.get("authority_repository") != repository
+            or role.get("role_policy_path") != ROLE_POLICY_PATH
+            or not isinstance(role.get("repository"), Mapping)
+            or role["repository"].get("full_name") != repository):
+        raise ExecutorBlock("AUTHORITY_ROLE_BINDING_NOT_ACTIVE")
+    mirrors = contract["authority"]["mirror_repositories"]
+    if (role.get("former_authority_repository") not in mirrors
+            or role.get("former_authority_permission_required") is not False
+            or role.get("independent_native_code_owner_review_required") is not True
+            or role.get("github_platform_effects_are_separate") is not True
+            or role["repository"].get("may_submit_native_approve") is not False
+            or not isinstance(role.get("executor"), Mapping)
+            or role["executor"].get("may_submit_native_approve") is not False
+            or not isinstance(policy.get("mandatory_boundaries"), Mapping)
+            or policy["mandatory_boundaries"].get("github_platform_protections_may_be_bypassed") is not False):
+        raise ExecutorBlock("AUTHORITY_ROLE_POLICY_PROTECTION_BOUNDARY_INVALID")
+    return repository
+
+
+def read_authority_main(root: Path = ROOT, previous: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """Read the declared Authority and its policy with the mandatory job token."""
+    contract = load_contract(root)
+    repository = authority_repository(contract, root)
+    if (previous is not None and previous.get("retry_binding_sha256") == authority_retry_binding(root)
+            and re.fullmatch(r"AUTHORITY_READBACK_DENIED HTTP_(?:403|404)", str(previous.get("first_blocker")))):
+        raise ExecutorBlock(previous["first_blocker"])
+    if not os.environ.get("GH_TOKEN"):
+        raise ExecutorBlock("AUTHORITY_READBACK_JOB_TOKEN_REQUIRED")
+
+    def get(endpoint: str) -> Mapping[str, Any]:
+        try:
+            response = subprocess.run(
+                ["gh", "api", "--hostname", "github.com", "--method", "GET", endpoint],
+                cwd=root, capture_output=True, text=True, check=False, timeout=30,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise ExecutorBlock("AUTHORITY_READBACK_TRANSPORT_UNAVAILABLE") from exc
+        if response.returncode:
+            # Preserve the failure class only, never arbitrary response bodies or tokens.
+            status = re.search(r"HTTP (\d{3})", response.stderr)
+            detail = f"HTTP_{status.group(1)}" if status else f"CLI_EXIT_{response.returncode}"
+            raise ExecutorBlock(f"AUTHORITY_READBACK_DENIED {detail}")
+        try:
+            return _mapping(json.loads(response.stdout), "Authority GET response")
+        except json.JSONDecodeError as exc:
+            raise ExecutorBlock("AUTHORITY_READBACK_INVALID_JSON") from exc
+
+    endpoint = f"repos/{repository}/git/ref/heads/main"
+
+    def head() -> str:
+        value = get(endpoint)
+        object_ref = _mapping(value.get("object"), "Authority main ref object")
+        if value.get("ref") != "refs/heads/main" or object_ref.get("type") != "commit":
+            raise ExecutorBlock("AUTHORITY_MAIN_REF_IDENTITY_INVALID")
+        sha = _sha(object_ref.get("sha"), "Authority main head")
+        api_root = f"https://api.github.com/repos/{repository}/git"
+        if (value.get("url") != f"{api_root}/refs/heads/main"
+                or object_ref.get("url") != f"{api_root}/commits/{sha}"):
+            raise ExecutorBlock("AUTHORITY_MAIN_REPOSITORY_IDENTITY_INVALID")
+        return sha
+
+    main_head = head()
+    commit = get(f"repos/{repository}/git/commits/{main_head}")
+    tree = _mapping(commit.get("tree"), "Authority Main tree")
+    main_tree = _sha(tree.get("sha"), "Authority Main tree")
+    if (commit.get("sha") != main_head
+            or tree.get("url") != f"https://api.github.com/repos/{repository}/git/trees/{main_tree}"):
+        raise ExecutorBlock("AUTHORITY_MAIN_COMMIT_IDENTITY_INVALID")
+
+    def content(path: str) -> tuple[bytes, str]:
+        response = get(f"repos/{repository}/contents/{path}?ref={main_head}")
+        if (response.get("type") != "file" or response.get("path") != path
+                or response.get("encoding") != "base64"):
+            raise ExecutorBlock("AUTHORITY_ROLE_POLICY_READBACK_IDENTITY_INVALID")
+        try:
+            encoded = _string(response.get("content"), "Authority policy content")
+            raw = base64.b64decode("".join(encoded.split()), validate=True)
+        except ValueError as exc:
+            raise ExecutorBlock("AUTHORITY_ROLE_POLICY_READBACK_BYTES_INVALID") from exc
+        if len(raw) > 1_048_576:
+            raise ExecutorBlock("AUTHORITY_ROLE_POLICY_READBACK_TOO_LARGE")
+        blob = hashlib.sha1(f"blob {len(raw)}\0".encode("ascii") + raw).hexdigest()
+        if (response.get("sha") != blob or type(response.get("size")) is not int
+                or response.get("size") != len(raw)
+                or response.get("git_url") != f"https://api.github.com/repos/{repository}/git/blobs/{blob}"):
+            raise ExecutorBlock("AUTHORITY_ROLE_POLICY_BLOB_MISMATCH")
+        return raw, blob
+
+    def document(path: str) -> tuple[Mapping[str, Any], str]:
+        raw, blob = content(path)
+        try:
+            return _mapping(json.loads(raw.decode("utf-8")), "Authority Main policy"), blob
+        except (ValueError, UnicodeError) as exc:
+            raise ExecutorBlock("AUTHORITY_ROLE_POLICY_READBACK_BYTES_INVALID") from exc
+
+    policy, blob_sha = document(ROLE_POLICY_PATH)
+    validate_authority_policy(contract, policy, root)
+    governance, governance_blob = document(GOVERNANCE_POLICY_PATH)
+    validate_governance_policy(contract, governance, root)
+    codeowners, codeowners_blob = content(".github/CODEOWNERS")
+    try:
+        try:
+            from tools.qikvrt_required_review_gate import resolve_required_code_owner
+        except ModuleNotFoundError:
+            from qikvrt_required_review_gate import resolve_required_code_owner
+        owner = resolve_required_code_owner(repository, policy=governance, codeowners=codeowners.decode("utf-8"))
+    except (ValueError, UnicodeError) as exc:
+        raise ExecutorBlock("AUTHORITY_CODE_OWNER_POLICY_MISMATCH") from exc
+    if head() != main_head:
+        raise ExecutorBlock("AUTHORITY_MAIN_HEAD_DRIFT")
+    return {
+        "schema": "qikvrt_workflow_executor_authority_readback_v1",
+        "state": "AUTHORITY_MAIN_ROLE_POLICY_REOBSERVED",
+        "repository": repository, "main_head": main_head, "main_tree": main_tree,
+        "role_policy_path": ROLE_POLICY_PATH, "role_policy_blob_sha": blob_sha,
+        "governance_policy_blob_sha": governance_blob, "codeowners_blob_sha": codeowners_blob,
+        "required_code_owner": owner, "native_activation_verified": False,
+        "native_governance_verification": "SEPARATE_REQUIRED_GATE",
+        "contract_sha256": _contract_sha256(root),
+        "credential": "MANDATORY_GITHUB_JOB_TOKEN", "first_blocker": None,
+        "completion_claims": {"PASS": False, "FINAL_PASS": False, "EFFECT_ACK_DONE": False},
+    }
 
 
 def canonical_json_bytes(value: Any) -> bytes:
@@ -131,9 +386,7 @@ def _workflow_inventory(root: Path, revision: str) -> list[dict[str, str]]:
 
 
 def _validate_contract_shape(contract: Mapping[str, Any], root: Path) -> None:
-    authority = _mapping(contract.get("authority"), "contract authority")
-    if authority.get("repository") != "Goldkelch/qik-vrt" or authority.get("entrypoint") != "AI":
-        raise ExecutorBlock("contract authority binding is not canonical")
+    authority_repository(contract, root)
     executor = _mapping(contract.get("executor"), "contract executor")
     for key in ("controller_path", "workflow_path", "watchdog_workflow_path", "monitor_workflow_path"):
         relative_path = _string(executor.get(key), f"contract executor.{key}")
@@ -264,6 +517,11 @@ def _runs(value: Mapping[str, Any] | Sequence[Any]) -> list[Mapping[str, Any]]:
 
 def dispatch_plan(snapshot_value: Mapping[str, Any], runs_value: Mapping[str, Any] | Sequence[Any], ref: str) -> dict[str, Any]:
     contract = load_contract()
+    role_blocker = None
+    try:
+        validate_role_projections()
+    except ExecutorBlock as exc:
+        role_blocker = str(exc)
     policy = _mapping(contract["dispatch_policy"], "dispatch policy")
     if ref != policy["dispatch_ref"]:
         raise ExecutorBlock(f"dispatch ref {ref!r} is not the authorised ref {policy['dispatch_ref']!r}")
@@ -305,7 +563,9 @@ def dispatch_plan(snapshot_value: Mapping[str, Any], runs_value: Mapping[str, An
             "external_effect": authorized["external_effect"],
             "required_artifact_prefix": authorized["required_artifact_prefix"],
         }
-        if candidate["workflow_blob_sha"] is None:
+        if role_blocker is not None:
+            candidate.update({"disposition": "HOLD", "first_blocker": role_blocker})
+        elif candidate["workflow_blob_sha"] is None:
             candidate.update({"disposition": "HOLD", "first_blocker": "WORKFLOW_ABSENT_FROM_EXACT_TREE"})
         elif active_writers:
             candidate.update({"disposition": "HOLD", "first_blocker": "COMPETING_WRITER_ACTIVE"})
@@ -483,6 +743,9 @@ def _emit(value: Mapping[str, Any], as_json: bool) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subcommands = parser.add_subparsers(dest="command", required=True)
+    authority = subcommands.add_parser("authority-readback")
+    authority.add_argument("--previous-readback", type=Path)
+    authority.add_argument("--json", action="store_true")
     for name in ("snapshot", "check"):
         command = subcommands.add_parser(name)
         command.add_argument("--baseline", type=Path)
@@ -498,6 +761,10 @@ def build_parser() -> argparse.ArgumentParser:
     template.add_argument("--node-repository", required=True)
     template.add_argument("--node-branch", required=True)
     template.add_argument("--json", action="store_true")
+    roles = subcommands.add_parser("roles")
+    roles.add_argument("--role", choices=("AUTHORITY", "MIRROR"))
+    roles.add_argument("--projection-file", type=Path)
+    roles.add_argument("--json", action="store_true")
     receipt = subcommands.add_parser("validate-node-receipt")
     receipt.add_argument("--receipt", type=Path, required=True)
     receipt.add_argument("--node-repository", required=True)
@@ -509,7 +776,19 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     try:
-        if arguments.command in {"snapshot", "check", "plan"}:
+        if arguments.command == "roles":
+            roles = validate_role_projections()
+            if arguments.projection_file:
+                validate_request_roles(_mapping(_read_json_file(arguments.projection_file, "request role projection"), "request role projection"))
+            if arguments.role:
+                print(roles[arguments.role])
+                return 0
+            value = {"schema": "qikvrt_repository_roles_v1", "source": ROLE_POLICY_PATH,
+                     "roles": roles, "native_activation_verified": False}
+        elif arguments.command == "authority-readback":
+            previous = _read_json_file(arguments.previous_readback, "previous Authority readback") if arguments.previous_readback else None
+            value = read_authority_main(previous=_mapping(previous, "previous Authority readback") if previous is not None else None)
+        elif arguments.command in {"snapshot", "check", "plan"}:
             baseline = _read_json_file(arguments.baseline, "baseline") if arguments.baseline else None
             value = snapshot(baseline=baseline if isinstance(baseline, Mapping) else None)
             if arguments.expect_head is not None and value["head_sha"] != arguments.expect_head:
@@ -527,6 +806,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         _emit(value, arguments.json)
         return 0
     except ExecutorBlock as exc:
+        if arguments.command == "authority-readback" and arguments.json:
+            try:
+                retry_binding = authority_retry_binding()
+            except (OSError, ExecutorBlock):
+                retry_binding = None
+            _emit({"schema": "qikvrt_workflow_executor_authority_readback_v1",
+                   "state": "HOLD", "first_blocker": str(exc),
+                   "retry_binding_sha256": retry_binding,
+                   "retry_condition": "MATERIALLY_CHANGED_ROLE_READ_PREREQUISITES_OR_INDEPENDENT_ACCESS_RECOVERY_EVIDENCE",
+                   "native_activation_verified": False,
+                   "completion_claims": {"PASS": False, "FINAL_PASS": False, "EFFECT_ACK_DONE": False}}, True)
         print(f"BLOCK WORKFLOW_EXECUTOR {exc}", file=sys.stderr)
         return 2
 

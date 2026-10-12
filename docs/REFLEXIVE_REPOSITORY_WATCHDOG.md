@@ -90,3 +90,30 @@ Conventional relational database systems already provide transaction deadlock ha
 ## Nonclaims
 
 A successful watchdog run is observation evidence, not gate success. The mechanism does not prove global deadlock freedom, repository completion, Authority–Mirror equality, empirical confirmation, scientific consensus, `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE`.
+
+## Canonical roles and independent native readback
+
+The existing `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` is the sole normative
+repository-role source. The executor/liveness contract is a checked projection.
+The shared resolver reused from the authority-repair work rejects missing,
+malformed, overlapping or contradictory Authority/Mirror assignments. A Mirror
+receipt cannot establish Authority continuity even when its commit matches.
+Historical receipts retain their original bytes and repository identity.
+
+The native wrapper uses the mandatory job token and bounded GitHub REST GETs.
+It binds Authority Main to its exact commit and tree, validates the canonical
+role policy, governance policy and CODEOWNERS bytes by Git blob identity, then
+reobserves Main. HTTP 200 without the expected active Main roles remains
+`AUTHORITY_ROLE_BINDING_NOT_ACTIVE`. HTTP 403/404 has no Mirror, anonymous,
+browser or alternate-token fallback. The latest completed observation supplies
+the prior denial receipt, including failed observations. An unchanged causal
+binding suppresses a repeated denied request. Unrelated commits, lifecycle
+progress and timestamps do not admit a retry. Changes to the role policy,
+Authority binding or reviewed token/transport carrier require one new bounded
+observation; external permission repair must be independently evidenced before
+clearing a denial receipt.
+
+A successful role readback still sets `native_activation_verified=false`:
+executed native candidate gates, trusted-Main adoption, native enforcement and
+independent current-head Code Owner approval remain separately required. No
+predecessor test or availability observation substitutes for those effects.

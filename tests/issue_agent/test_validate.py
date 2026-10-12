@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scripts.issue_agent.infer import SYSTEM_PROMPT
+from scripts.issue_agent.compile import ALLOWED_DISPOSITIONS
 from scripts.issue_agent.promote import promote
 from scripts.issue_agent.validate import validate
 
@@ -28,7 +28,9 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
         )
         (directory / "STATUS.json").write_text(json.dumps({
             "status": "CONTINUE",
-            "model_inference_completed": True,
+            "model_inference_completed": False,
+            "deterministic_compilation_completed": True,
+            "external_model_used": False,
             "issue_disposition": "EXECUTE_NOW",
             "disposition_reason": "The request is clear and actionable.",
             "next_action": "Execute the smallest bounded work unit.",
@@ -122,7 +124,7 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             self.assertFalse(promoted["automatic_issue_close"])
             validate(directory)
 
-    def test_terminal_closure_alone_promotes_to_done(self):
+    def test_terminal_closure_proposal_cannot_authorize_effects(self):
         with tempfile.TemporaryDirectory() as temp:
             directory = Path(temp)
             self.make_bundle(directory)
@@ -144,11 +146,11 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             status_path.write_text(json.dumps(status), encoding="utf-8")
             promote(directory)
             promoted = json.loads(status_path.read_text(encoding="utf-8"))
-            self.assertEqual(promoted["status"], "DONE")
-            self.assertTrue(promoted["automatic_merge"])
-            self.assertTrue(promoted["automatic_issue_close"])
-            self.assertTrue(promoted["mirror_sync_required"])
-            self.assertTrue(promoted["common_tag_required"])
+            self.assertEqual(promoted["status"], "CONTINUE")
+            self.assertFalse(promoted["automatic_merge"])
+            self.assertFalse(promoted["automatic_issue_close"])
+            self.assertFalse(promoted["mirror_sync_required"])
+            self.assertFalse(promoted["common_tag_required"])
             validate(directory)
 
     def test_policy_and_owner_delegation_are_active_and_fail_closed(self):
@@ -206,7 +208,7 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             continuation["related_delegations"],
         )
 
-    def test_issue_agent_prompt_requires_one_lifecycle_disposition(self):
+    def test_issue_agent_compiler_declares_all_lifecycle_dispositions(self):
         for token in (
             "EXECUTE_NOW",
             "CLARIFICATION_REQUIRED",
@@ -215,8 +217,7 @@ class ValidateIssueAgentBundleTest(unittest.TestCase):
             "CLOSE_NOT_PLANNED",
             "CLOSE_INVALID_OR_UNSUPPORTED",
         ):
-            self.assertIn(token, SYSTEM_PROMPT)
-        self.assertIn("Do not leave an issue in an unclassified waiting state", SYSTEM_PROMPT)
+            self.assertIn(token, ALLOWED_DISPOSITIONS)
 
 
 if __name__ == "__main__":

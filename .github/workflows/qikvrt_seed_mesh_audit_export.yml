@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      QIKVRT_SEED_REPOSITORY: ${{ github.repository }}
       QIKVRT_RUN_ID: ${{ inputs.run_id || format('{0}-{1}', github.run_id, github.run_attempt) }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

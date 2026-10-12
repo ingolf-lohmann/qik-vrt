@@ -1,44 +1,44 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright 2026 Ingolf Lohmann.
 
-* @Goldkelch
+* @ingolf-lohmann
 
 # Collective adaptive cognition is a proposal-only control boundary.
-/AGENTS.md @Goldkelch
-/docs/COLLECTIVE_ADAPTIVE_COGNITION.md @Goldkelch
-/policy/COLLECTIVE_ADAPTIVE_COGNITION.json @Goldkelch
-/tools/qikvrt_adaptive_runtime.sh @Goldkelch
-/tests/test_adaptive_runtime.sh @Goldkelch
-/.github/workflows/qikvrt_collective_review.yml @Goldkelch
-/GOVERNANCE.md @Goldkelch
-/.github/PULL_REQUEST_TEMPLATE.md @Goldkelch
+/AGENTS.md @ingolf-lohmann
+/docs/COLLECTIVE_ADAPTIVE_COGNITION.md @ingolf-lohmann
+/policy/COLLECTIVE_ADAPTIVE_COGNITION.json @ingolf-lohmann
+/tools/qikvrt_adaptive_runtime.sh @ingolf-lohmann
+/tests/test_adaptive_runtime.sh @ingolf-lohmann
+/.github/workflows/qikvrt_collective_review.yml @ingolf-lohmann
+/GOVERNANCE.md @ingolf-lohmann
+/.github/PULL_REQUEST_TEMPLATE.md @ingolf-lohmann
 
 # Runtime, executable protocol core and this scientific release stay reviewed.
-/runtime/ @Goldkelch
-/tools/bootstrap-gh.sh @Goldkelch
-/tools/bootstrap-gh.ps1 @Goldkelch
-/tools/bootstrap-runtime.sh @Goldkelch
-/tools/bootstrap-runtime.ps1 @Goldkelch
-/include/qikvrt/effect_ack.h @Goldkelch
-/src/effect_ack_core.c @Goldkelch
-/tests/test_effect_ack_core.c @Goldkelch
-/tests/test_effect_ack_core.sh @Goldkelch
-/tests/test_effect_ack_scientific_bundle.sh @Goldkelch
-/tests/test_ietf_offline_render.py @Goldkelch
-/tests/test_runtime_bootstrap.sh @Goldkelch
-/.github/dependabot.yml @Goldkelch
-/.github/workflows/qikvrt_adaptive_runtime.yml @Goldkelch
-/.github/workflows/qikvrt_formalization_and_audio.yml @Goldkelch
-/.github/workflows/qikvrt_zenodo_reserve.yml @Goldkelch
-/.github/workflows/qikvrt_effect_ack_finalize.yml @Goldkelch
-/policy/qikvrt-effect-ack-release-request.schema.json @Goldkelch
-/release/effect-ack-universality-request.json @Goldkelch
-/release/effect-ack-universality-zenodo.json @Goldkelch
-/release/DO_NOT_UPLOAD__GENERATED_SOFTWARE_ARCHIVE_REQUIRED.txt @Goldkelch
-/tools/qikvrt_zenodo_actions.py @Goldkelch
-/tools/qikvrt_build_zenodo_manifest.py @Goldkelch
-/tests/test_zenodo_actions.py @Goldkelch
-/tests/test_zenodo_manifest_builder.py @Goldkelch
-/tests/test_effect_ack_release_workflows.py @Goldkelch
-/docs/EFFECT_ACK_RELEASE_AUTOMATION.md @Goldkelch
-/docs/publications/2026-07-22-effect-ack-universal-effect-control/ @Goldkelch
+/runtime/ @ingolf-lohmann
+/tools/bootstrap-gh.sh @ingolf-lohmann
+/tools/bootstrap-gh.ps1 @ingolf-lohmann
+/tools/bootstrap-runtime.sh @ingolf-lohmann
+/tools/bootstrap-runtime.ps1 @ingolf-lohmann
+/include/qikvrt/effect_ack.h @ingolf-lohmann
+/src/effect_ack_core.c @ingolf-lohmann
+/tests/test_effect_ack_core.c @ingolf-lohmann
+/tests/test_effect_ack_core.sh @ingolf-lohmann
+/tests/test_effect_ack_scientific_bundle.sh @ingolf-lohmann
+/tests/test_ietf_offline_render.py @ingolf-lohmann
+/tests/test_runtime_bootstrap.sh @ingolf-lohmann
+/.github/dependabot.yml @ingolf-lohmann
+/.github/workflows/qikvrt_adaptive_runtime.yml @ingolf-lohmann
+/.github/workflows/qikvrt_formalization_and_audio.yml @ingolf-lohmann
+/.github/workflows/qikvrt_zenodo_reserve.yml @ingolf-lohmann
+/.github/workflows/qikvrt_effect_ack_finalize.yml @ingolf-lohmann
+/policy/qikvrt-effect-ack-release-request.schema.json @ingolf-lohmann
+/release/effect-ack-universality-request.json @ingolf-lohmann
+/release/effect-ack-universality-zenodo.json @ingolf-lohmann
+/release/DO_NOT_UPLOAD__GENERATED_SOFTWARE_ARCHIVE_REQUIRED.txt @ingolf-lohmann
+/tools/qikvrt_zenodo_actions.py @ingolf-lohmann
+/tools/qikvrt_build_zenodo_manifest.py @ingolf-lohmann
+/tests/test_zenodo_actions.py @ingolf-lohmann
+/tests/test_zenodo_manifest_builder.py @ingolf-lohmann
+/tests/test_effect_ack_release_workflows.py @ingolf-lohmann
+/docs/EFFECT_ACK_RELEASE_AUTOMATION.md @ingolf-lohmann
+/docs/publications/2026-07-22-effect-ack-universal-effect-control/ @ingolf-lohmann

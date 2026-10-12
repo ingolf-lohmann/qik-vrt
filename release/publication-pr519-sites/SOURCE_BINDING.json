@@ -1,0 +1,64 @@
+{
+  "schema": "qikvrt_existing_site_source_successor_v1",
+  "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+  "source_base_commit": "b2d6a25b00abe9b4b0e1301dc08b9504b3e61147",
+  "publication_source_baseline_repository": "ingolf-lohmann/qik-vrt",
+  "publication_source_baseline_head": "db5f2538245e36a50646a6e319dad79b61c49eac",
+  "production_origin": "https://raumzeitterminal.de",
+  "article_path": "/news/physics-nobel-2026-decay-continuity/",
+  "patch_sha256": "54b3246c4ce3bcf261774ddc365d90ecca5dab72df5d8be44454c3baa999a9e5",
+  "patch_bytes": 44642,
+  "static_source_check": {
+    "scope": "CANONICAL_URLS_AND_EXACT_STATIC_CONTENT_PREPARATION",
+    "PASS": true,
+    "article_body_sha256": "3de205930ba0525536efdc45123ecdd6e70baf6a27e541cf311a4b3ec98969d3",
+    "all_six_languages_and_both_variants_retained": true,
+    "site_copy_matches_candidate": true,
+    "native_ci_or_domain_delivery_implied": false,
+    "static_files": {
+      "news/index.html": {
+        "bytes": 896,
+        "sha256": "3b4773253b382b8cf564c1d5322e1fba2b2d18092a0ae3257b0c5d27f10d5677"
+      },
+      "news/physics-nobel-2026-decay-continuity/index.html": {
+        "bytes": 31266,
+        "sha256": "ccd12270a3f3d1ba5a3972b9456d99c298255b5bf253333c020d1c0292fad4be"
+      },
+      "news/physics-nobel-2026-decay-continuity/index.json": {
+        "bytes": 1479,
+        "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817"
+      },
+      "assets/css/qikvrt.css": {
+        "bytes": 6360,
+        "sha256": "2825eb34d67fd3097fc5ebf492089ac94eb8c8f6045a76ea7902b7a2c0cc272d"
+      },
+      "sitemap.xml": {
+        "bytes": 339,
+        "sha256": "9dbdc351d9740cd2d60a79a08c010851110b818cd9162814a9d0614f9a33c61d"
+      },
+      "robots.txt": {
+        "bytes": 73,
+        "sha256": "522e34e3421636ba4c977183515bd5c68d7b6a51e3dc24096451cc075d62103b"
+      }
+    }
+  },
+  "audience": "public",
+  "d1_and_mcp_bindings_preserved": true,
+  "site_deployment_performed": false,
+  "PUBLIC_DELIVERY_EFFECT_ACK": false,
+  "promotion_gate": "EXACT_SUCCESSOR_NATIVE_CI_AND_CODE_OWNER_REQUIREMENTS",
+  "instructions": [
+    "Use the existing Sites project and its source helper; preserve the project ID, public audience, DB and MCP bindings.",
+    "Apply SITE_SOURCE.patch only to the bound source base or perform an explicitly verified rebase.",
+    "Verify the publication candidate technical gates and regenerate/build the exact Site successor before supported save/deploy.",
+    "Do not substitute generated-origin delivery for the requested domain delivery."
+  ],
+  "validation": {
+    "existing_site_build_completed": true,
+    "built_static_files_identical": 6,
+    "existing_evidence_regressions_passed": true,
+    "typescript_no_emit_passed": true,
+    "public_browser_validation_performed": false,
+    "native_qikvrt_exact_successor_ci_passed": false
+  }
+}

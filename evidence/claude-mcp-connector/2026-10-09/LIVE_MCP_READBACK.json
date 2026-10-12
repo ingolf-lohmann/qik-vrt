@@ -1,0 +1,222 @@
+{
+  "schema": "qikvrt-mcp-readback/v1",
+  "snapshot_id": "569fb70c-9ba9-4d22-9bdf-314ca388db40",
+  "snapshot_sha256": "b666efd88ad324981ec672b9f5853e78f7f59ee3b0bb0ac5b0750e8fe748bb54",
+  "snapshot_bytes": 5663,
+  "byte_verified": true,
+  "snapshot_json": "{\"id\":\"569fb70c-9ba9-4d22-9bdf-314ca388db40\",\"started_at\":\"2026-10-09T14:35:13.703Z\",\"completed_at\":\"2026-10-09T14:35:14.374Z\",\"source\":\"request\",\"pages\":[{\"url\":\"https://goldkelch.github.io/\",\"method\":\"GET (ohne Redirect)\",\"status\":404,\"observed_at\":\"2026-10-09T14:35:13.718Z\",\"latency_ms\":15},{\"url\":\"https://goldkelch.github.io/qik-vrt/\",\"method\":\"GET (ohne Redirect)\",\"status\":404,\"observed_at\":\"2026-10-09T14:35:13.714Z\",\"latency_ms\":11},{\"url\":\"https://goldkelch.github.io/qik-vrt/mesh/live/\",\"method\":\"GET (ohne Redirect)\",\"status\":404,\"observed_at\":\"2026-10-09T14:35:13.717Z\",\"latency_ms\":14}],\"repositories\":[{\"repository\":\"ingolf-lohmann/qik-vrt\",\"role\":\"Authority\",\"status\":200,\"head\":\"468e9e42cd6194ee4ab335aa7452ba6bdee8be4a\",\"tree\":\"023c5c7c113f96363273ef383ecace28b10f65b6\",\"observed_at\":\"2026-10-09T14:35:13.976Z\",\"source_url\":\"https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main\",\"request_attempted\":true,\"observation_kind\":\"LIVE_HTTP\"},{\"repository\":\"Goldkelch/qik-vrt\",\"role\":\"Mirror\",\"status\":404,\"head\":null,\"tree\":null,\"observed_at\":\"2026-10-09T12:46:05.056Z\",\"source_url\":\"https://api.github.com/repos/Goldkelch/qik-vrt/commits/main\",\"request_attempted\":false,\"observation_kind\":\"HISTORICAL_ACCESS_BLOCK\",\"http_diagnostic\":{\"category\":\"NOT_FOUND\",\"response_sha256\":\"3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730\",\"provider_request_id\":\"9A88:A16EC:4229D6:6338D8:6AC8E20C\",\"rate_limit_remaining\":17,\"rate_limit_reset_at\":\"2026-10-09T12:50:34.000Z\",\"retry_after_seconds\":null},\"error\":\"Historischer Zugriffsfehler (HTTP 404); unverändert nicht erneut angefragt. Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.\",\"retry_condition\":\"Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.\"}],\"mesh\":{\"schema\":\"qikvrt_mesh_snapshot_v1\",\"mesh_id\":\"qik-vrt\",\"scope\":\"MESH\",\"observed_at\":\"2026-10-09T14:35:14.374Z\",\"health\":\"UNKNOWN\",\"reasons\":[\"Knotenverzeichnis derzeit nur teilweise lesbar.\",\"2 von 2 Laufzeitzuständen unbekannt.\"],\"counts\":{\"total\":2,\"healthy\":0,\"degraded\":0,\"unavailable\":0,\"unknown\":2,\"repository_readable\":1},\"coverage_percent\":0,\"median_latency_ms\":null,\"nodes\":[{\"id\":\"ingolf-lohmann/qik-vrt\",\"repository\":\"ingolf-lohmann/qik-vrt\",\"role\":\"Authority\",\"guid\":\"a84f157a-cef2-4c47-bca9-8f407085bdbe\",\"ref\":\"main\",\"registration\":\"ACTIVE\",\"heartbeat_at\":\"2026-10-09T13:14:17Z\",\"expires_at\":\"2026-10-10T14:14:17Z\",\"heartbeat_read_at\":\"2026-10-09T14:35:14.374Z\",\"repository_observation\":{\"repository\":\"ingolf-lohmann/qik-vrt\",\"role\":\"Authority\",\"status\":200,\"head\":\"468e9e42cd6194ee4ab335aa7452ba6bdee8be4a\",\"tree\":\"023c5c7c113f96363273ef383ecace28b10f65b6\",\"observed_at\":\"2026-10-09T14:35:13.976Z\",\"source_url\":\"https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main\",\"request_attempted\":true,\"observation_kind\":\"LIVE_HTTP\"},\"runtime\":{\"state\":\"UNKNOWN\",\"endpoint\":null,\"status\":null,\"latency_ms\":null,\"observed_at\":null,\"error\":\"Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.\",\"source\":\"NOT_ADVERTISED\",\"metrics\":{\"cpu_percent\":null,\"memory_percent\":null}},\"discovered_from\":[{\"repository\":\"ingolf-lohmann/qik-vrt\",\"head\":\"468e9e42cd6194ee4ab335aa7452ba6bdee8be4a\",\"tree\":\"023c5c7c113f96363273ef383ecace28b10f65b6\",\"path\":\"registry/NODEMESH_INDEX.json\",\"observed_at\":\"2026-10-09T14:35:14.182Z\",\"sha256\":\"2b82f68672663441711881687983655394b9b15019682adf222e310c03862215\",\"generated_at\":\"2026-07-20T14:41:02Z\"}]},{\"id\":\"Goldkelch/qik-vrt\",\"repository\":\"Goldkelch/qik-vrt\",\"role\":\"Mirror\",\"guid\":null,\"ref\":\"main\",\"registration\":\"CORE\",\"heartbeat_at\":null,\"expires_at\":null,\"heartbeat_read_at\":null,\"repository_observation\":{\"repository\":\"Goldkelch/qik-vrt\",\"role\":\"Mirror\",\"status\":404,\"head\":null,\"tree\":null,\"observed_at\":\"2026-10-09T12:46:05.056Z\",\"source_url\":\"https://api.github.com/repos/Goldkelch/qik-vrt/commits/main\",\"request_attempted\":false,\"observation_kind\":\"HISTORICAL_ACCESS_BLOCK\",\"http_diagnostic\":{\"category\":\"NOT_FOUND\",\"response_sha256\":\"3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730\",\"provider_request_id\":\"9A88:A16EC:4229D6:6338D8:6AC8E20C\",\"rate_limit_remaining\":17,\"rate_limit_reset_at\":\"2026-10-09T12:50:34.000Z\",\"retry_after_seconds\":null},\"error\":\"Historischer Zugriffsfehler (HTTP 404); unverändert nicht erneut angefragt. Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.\",\"retry_condition\":\"Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.\"},\"runtime\":{\"state\":\"UNKNOWN\",\"endpoint\":null,\"status\":null,\"latency_ms\":null,\"observed_at\":null,\"error\":\"Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.\",\"source\":\"NOT_ADVERTISED\",\"metrics\":{\"cpu_percent\":null,\"memory_percent\":null}},\"discovered_from\":[]}],\"registry\":{\"sources\":[{\"repository\":\"ingolf-lohmann/qik-vrt\",\"head\":\"468e9e42cd6194ee4ab335aa7452ba6bdee8be4a\",\"tree\":\"023c5c7c113f96363273ef383ecace28b10f65b6\",\"path\":\"registry/NODEMESH_INDEX.json\",\"observed_at\":\"2026-10-09T14:35:14.182Z\",\"sha256\":\"2b82f68672663441711881687983655394b9b15019682adf222e310c03862215\",\"generated_at\":\"2026-07-20T14:41:02Z\"}],\"complete\":false,\"errors\":[\"Goldkelch/qik-vrt: Node-Verzeichnis nicht lesbar\"],\"fixed_node_count\":false},\"role_assignment\":{\"authority_repository\":\"ingolf-lohmann/qik-vrt\",\"mirror_repository\":\"Goldkelch/qik-vrt\",\"assigned_by\":\"Ingolf Lohmann\",\"source\":\"OWNER_ROLE_ASSIGNMENT\",\"assigned_on\":\"2026-10-07\",\"native_activation_verified\":false},\"native_mesh_execution_verified\":false},\"native_runtime_start_observed\":false,\"effect_ack_done\":false,\"ordinary_release\":false}",
+  "snapshot": {
+    "id": "569fb70c-9ba9-4d22-9bdf-314ca388db40",
+    "started_at": "2026-10-09T14:35:13.703Z",
+    "completed_at": "2026-10-09T14:35:14.374Z",
+    "source": "request",
+    "pages": [
+      {
+        "url": "https://goldkelch.github.io/",
+        "method": "GET (ohne Redirect)",
+        "status": 404,
+        "observed_at": "2026-10-09T14:35:13.718Z",
+        "latency_ms": 15
+      },
+      {
+        "url": "https://goldkelch.github.io/qik-vrt/",
+        "method": "GET (ohne Redirect)",
+        "status": 404,
+        "observed_at": "2026-10-09T14:35:13.714Z",
+        "latency_ms": 11
+      },
+      {
+        "url": "https://goldkelch.github.io/qik-vrt/mesh/live/",
+        "method": "GET (ohne Redirect)",
+        "status": 404,
+        "observed_at": "2026-10-09T14:35:13.717Z",
+        "latency_ms": 14
+      }
+    ],
+    "repositories": [
+      {
+        "repository": "ingolf-lohmann/qik-vrt",
+        "role": "Authority",
+        "status": 200,
+        "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+        "tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+        "observed_at": "2026-10-09T14:35:13.976Z",
+        "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main",
+        "request_attempted": true,
+        "observation_kind": "LIVE_HTTP"
+      },
+      {
+        "repository": "Goldkelch/qik-vrt",
+        "role": "Mirror",
+        "status": 404,
+        "head": null,
+        "tree": null,
+        "observed_at": "2026-10-09T12:46:05.056Z",
+        "source_url": "https://api.github.com/repos/Goldkelch/qik-vrt/commits/main",
+        "request_attempted": false,
+        "observation_kind": "HISTORICAL_ACCESS_BLOCK",
+        "http_diagnostic": {
+          "category": "NOT_FOUND",
+          "response_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+          "provider_request_id": "9A88:A16EC:4229D6:6338D8:6AC8E20C",
+          "rate_limit_remaining": 17,
+          "rate_limit_reset_at": "2026-10-09T12:50:34.000Z",
+          "retry_after_seconds": null
+        },
+        "error": "Historischer Zugriffsfehler (HTTP 404); unverändert nicht erneut angefragt. Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+        "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich."
+      }
+    ],
+    "mesh": {
+      "schema": "qikvrt_mesh_snapshot_v1",
+      "mesh_id": "qik-vrt",
+      "scope": "MESH",
+      "observed_at": "2026-10-09T14:35:14.374Z",
+      "health": "UNKNOWN",
+      "reasons": [
+        "Knotenverzeichnis derzeit nur teilweise lesbar.",
+        "2 von 2 Laufzeitzuständen unbekannt."
+      ],
+      "counts": {
+        "total": 2,
+        "healthy": 0,
+        "degraded": 0,
+        "unavailable": 0,
+        "unknown": 2,
+        "repository_readable": 1
+      },
+      "coverage_percent": 0,
+      "median_latency_ms": null,
+      "nodes": [
+        {
+          "id": "ingolf-lohmann/qik-vrt",
+          "repository": "ingolf-lohmann/qik-vrt",
+          "role": "Authority",
+          "guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+          "ref": "main",
+          "registration": "ACTIVE",
+          "heartbeat_at": "2026-10-09T13:14:17Z",
+          "expires_at": "2026-10-10T14:14:17Z",
+          "heartbeat_read_at": "2026-10-09T14:35:14.374Z",
+          "repository_observation": {
+            "repository": "ingolf-lohmann/qik-vrt",
+            "role": "Authority",
+            "status": 200,
+            "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+            "tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+            "observed_at": "2026-10-09T14:35:13.976Z",
+            "source_url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/commits/main",
+            "request_attempted": true,
+            "observation_kind": "LIVE_HTTP"
+          },
+          "runtime": {
+            "state": "UNKNOWN",
+            "endpoint": null,
+            "status": null,
+            "latency_ms": null,
+            "observed_at": null,
+            "error": "Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.",
+            "source": "NOT_ADVERTISED",
+            "metrics": {
+              "cpu_percent": null,
+              "memory_percent": null
+            }
+          },
+          "discovered_from": [
+            {
+              "repository": "ingolf-lohmann/qik-vrt",
+              "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+              "tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+              "path": "registry/NODEMESH_INDEX.json",
+              "observed_at": "2026-10-09T14:35:14.182Z",
+              "sha256": "2b82f68672663441711881687983655394b9b15019682adf222e310c03862215",
+              "generated_at": "2026-07-20T14:41:02Z"
+            }
+          ]
+        },
+        {
+          "id": "Goldkelch/qik-vrt",
+          "repository": "Goldkelch/qik-vrt",
+          "role": "Mirror",
+          "guid": null,
+          "ref": "main",
+          "registration": "CORE",
+          "heartbeat_at": null,
+          "expires_at": null,
+          "heartbeat_read_at": null,
+          "repository_observation": {
+            "repository": "Goldkelch/qik-vrt",
+            "role": "Mirror",
+            "status": 404,
+            "head": null,
+            "tree": null,
+            "observed_at": "2026-10-09T12:46:05.056Z",
+            "source_url": "https://api.github.com/repos/Goldkelch/qik-vrt/commits/main",
+            "request_attempted": false,
+            "observation_kind": "HISTORICAL_ACCESS_BLOCK",
+            "http_diagnostic": {
+              "category": "NOT_FOUND",
+              "response_sha256": "3a32eab6ffbfd1cf2684b1a409bf40db46e46c5eaff44de656e499df05d92730",
+              "provider_request_id": "9A88:A16EC:4229D6:6338D8:6AC8E20C",
+              "rate_limit_remaining": 17,
+              "rate_limit_reset_at": "2026-10-09T12:50:34.000Z",
+              "retry_after_seconds": null
+            },
+            "error": "Historischer Zugriffsfehler (HTTP 404); unverändert nicht erneut angefragt. Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+            "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich."
+          },
+          "runtime": {
+            "state": "UNKNOWN",
+            "endpoint": null,
+            "status": null,
+            "latency_ms": null,
+            "observed_at": null,
+            "error": "Kein öffentlicher Runtime-Endpunkt im Node-Verzeichnis veröffentlicht.",
+            "source": "NOT_ADVERTISED",
+            "metrics": {
+              "cpu_percent": null,
+              "memory_percent": null
+            }
+          },
+          "discovered_from": []
+        }
+      ],
+      "registry": {
+        "sources": [
+          {
+            "repository": "ingolf-lohmann/qik-vrt",
+            "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+            "tree": "023c5c7c113f96363273ef383ecace28b10f65b6",
+            "path": "registry/NODEMESH_INDEX.json",
+            "observed_at": "2026-10-09T14:35:14.182Z",
+            "sha256": "2b82f68672663441711881687983655394b9b15019682adf222e310c03862215",
+            "generated_at": "2026-07-20T14:41:02Z"
+          }
+        ],
+        "complete": false,
+        "errors": [
+          "Goldkelch/qik-vrt: Node-Verzeichnis nicht lesbar"
+        ],
+        "fixed_node_count": false
+      },
+      "role_assignment": {
+        "authority_repository": "ingolf-lohmann/qik-vrt",
+        "mirror_repository": "Goldkelch/qik-vrt",
+        "assigned_by": "Ingolf Lohmann",
+        "source": "OWNER_ROLE_ASSIGNMENT",
+        "assigned_on": "2026-10-07",
+        "native_activation_verified": false
+      },
+      "native_mesh_execution_verified": false
+    },
+    "native_runtime_start_observed": false,
+    "effect_ack_done": false,
+    "ordinary_release": false
+  },
+  "scope": "PUBLIC_HTTP_OBSERVATION_AND_PERSISTENT_READBACK",
+  "native_execution_verified": false,
+  "domain_delivery": {
+    "hostname": "raumzeitterminal.de",
+    "state": "NOT_ESTABLISHED_BY_THIS_OPERATION"
+  }
+}

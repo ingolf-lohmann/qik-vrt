@@ -1,0 +1,128 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "work_unit_json"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "QIKVRT_RULESET_CLIENT_DISPATCH_20261009_V1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "state": "VERIFIED_LOCAL_CLIENT_CANDIDATE_LIVE_DISPATCH_BOUNDARY",
+  "human_contribution": {
+    "actor": "Ingolf Lohmann",
+    "role": "Product Owner / Code Owner",
+    "source": "Direct task instruction, 2026-10-09 Europe/Istanbul",
+    "scope": "Extend the existing REST client for the existing Ruleset writer; execute its previously authorized activation only through an actually available authenticated REST route; preserve Code Owner rules and PR #501 HEAD."
+  },
+  "artificial_cognitive_contribution": {
+    "actor": "OpenAI Codex",
+    "provider": "OpenAI",
+    "model_or_build": "GPT-6; precise deployed build unavailable",
+    "contribution": "Exact-head REST reconstruction, compatible client contract 2.2.0, fixed dispatch and GET-only effect readback, regression tests, unchanged-source-preserving candidate assembly and independent native verification."
+  },
+  "source_binding": {
+    "main_sha": "e4eb99ac4ece42c311bdcc060ce814c60e481b91",
+    "main_protected": false,
+    "source_pr": 501,
+    "source_head_sha": "80b68b00a20a68cd7367566276c4b915111502c5",
+    "source_tree_sha": "f85a279d592030dce9ff19582cc1a29fe5a8329c",
+    "source_branch": "integration/autonomy-handoff-fairness-20261008-d87a68c3",
+    "source_pr_head_mutation": false,
+    "delivery": "Separate stacked Draft PR based on unchanged PR #501 branch. No recomputation or recreation of the existing #499/#500 integration."
+  },
+  "diagnosis": {
+    "component": "scripts/qikvrt_api_client.py",
+    "before_contract": "2.1.0",
+    "cause": "All existing CLI operations construct only the qikvrt_mesh_api.yml dispatch URL; the already-existing Ruleset writer is unreachable through that interface.",
+    "distinct_from": "Previously repaired empty HTTP-204 interpretation.",
+    "live_observation": {
+      "rulesets": [],
+      "main_protected": false,
+      "source_pr_native_reviews": [],
+      "authentication_principal": "ingolf-lohmann",
+      "local_credential_delivered": false,
+      "workflow_dispatch_operation_exposed": false,
+      "administration_write_operation_exposed": false,
+      "secure_github_credential_store_operation_exposed": false
+    }
+  },
+  "compatible_adaptation": {
+    "contract": "2.2.0",
+    "unchanged_mesh_operations": [
+      "ingest",
+      "verify",
+      "stage",
+      "release_status"
+    ],
+    "new_operations": [
+      "ruleset_authority_dispatch",
+      "ruleset_authority_readback"
+    ],
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "workflow": ".github/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml",
+    "reviewed_workflow_blob_sha": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
+    "canonical_ruleset_post_sha256": "45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd",
+    "post": {
+      "method": "POST",
+      "url": "https://api.github.com/repos/ingolf-lohmann/qik-vrt/actions/workflows/qikvrt_goldkelch_ruleset_authority_effect.yml/dispatches",
+      "body": {
+        "ref": "main"
+      }
+    },
+    "credential_handoff": "Existing QIKVRT_API_TOKEN environment route only; no credential in arguments, files, logs, response receipts or workflow inputs.",
+    "guards": [
+      "Canonical HTTPS host, repository, ref and fixed reviewed writer",
+      "Explicit --dry-run false --accept-effect and safe local correlation identifier",
+      "Fresh expected Main SHA, writer blob and bounded complete run inventory",
+      "No active or previous exact-head writer run; fresh Main recheck before POST",
+      "At most one POST; no automatic retry, alternate trigger, redirect or permission expansion",
+      "No provider body or raw URL-error reason printed",
+      "Separate GET-only run/attempt/jobs, Ruleset detail/digest and protected Main readback",
+      "Strict bounded JSON; duplicate members and non-finite constants rejected"
+    ],
+    "request_id_scope": "LOCAL_CORRELATION_ONLY_NOT_GITHUB_IDEMPOTENCY",
+    "provider_race_boundary": "The POST accepts ref=main without an atomic expected-SHA lease. Independent run/head readback rejects a different executing SHA; this client cannot promise atomic ref binding.",
+    "collection_boundary": "100 or more items, mismatching total_count or incomplete evidence fail closed; no absence inferred from partial inventory.",
+    "local_adapter": "Existing Mesh routes only; Ruleset path is explicitly GitHub-only and grants no local administration effect."
+  },
+  "verification": {
+    "local_focused_command": "python3 -B unittest discovery: test_api_client.py, test_handler_unit.py, test_handler_security.py, test_tcpip_e2e.py",
+    "local_focused_tests": 53,
+    "local_client_tests": 28,
+    "new_ruleset_regression_tests": 16,
+    "local_result": "PASS",
+    "tool_cache": "PASS 14/14, 100 percent; no new runtime dependency",
+    "python_syntax": "PASS",
+    "native_requirement": "Fresh complete make test and canonical integrity on the new candidate HEAD/TREE; source/predecessor receipts never transfer.",
+    "native_state": "NOT_EMBEDDED: candidate SHA, current native run IDs/results and final delivery are recorded in the PR body after independent readback to avoid a self-hash cycle.",
+    "local_snapshot_limit": "Selected exact-source snapshot, not complete Git object closure or local full-repository make test.",
+    "integrity_assembly": "Reuse canonical source manifest and complete source tree inventory; rehash changed bytes and the new work unit. Keep unchanged source entries only through unchanged Git identities. Require native complete deterministic regeneration."
+  },
+  "continuation": {
+    "first_live_governance_blocker": "CODE_OWNER_RULE_NOT_ENFORCED",
+    "client_permission_boundary": "REST_WORKFLOW_DISPATCH_OPERATION_NOT_EXPOSED",
+    "writer_permission_boundary": "CONFIGURED_REPOSITORY_ADMINISTRATION_WRITE_CREDENTIAL_ROUTE_UNVERIFIED",
+    "next_action": "Deliver an authorized repository-scoped Actions-write REST executor/credential through its supported secure connection; use the fixed client operation once after fresh checks and independently read the actual run/jobs/Ruleset effect. The writer separately requires its already configured Administration-write route.",
+    "no_new_login_or_browser_handoff": true
+  },
+  "effect_boundary": {
+    "live_post_count": 0,
+    "ruleset_effect_verified": false,
+    "workflow_writer_changed": false,
+    "codeowners_changed": false,
+    "permission_expansion": false,
+    "self_approval": false,
+    "source_pr_head_changed": false,
+    "main_activation": false,
+    "merge": false,
+    "release": false,
+    "deployment": false,
+    "publication": false,
+    "ordinary_release": false,
+    "EFFECT_ACK_DONE": false,
+    "state": "EFFECT_ACK_CONTINUE"
+  }
+}

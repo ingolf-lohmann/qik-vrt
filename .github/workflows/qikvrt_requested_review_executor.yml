@@ -34,12 +34,13 @@ concurrency:
 
 jobs:
   review-one:
+    name: Requested review disposition (no independent approval)
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
       GH_TOKEN: ${{ github.token }}
       REPOSITORY: ${{ github.repository }}
-      STATUS_CONTEXT: QIKVRT requested review execution
+      STATUS_CONTEXT: QIKVRT requested review disposition
       REVIEW_MARKER: qikvrt-requested-review-executor:v1
       REQUIRED_GATES_JSON: >-
         ["QIKVRT CI","QIKVRT repository evidence materialization","QIKVRT Collective Proposal Review","QIK-VRT global claim completion"]
@@ -55,7 +56,20 @@ jobs:
         id: active
         shell: bash
         run: |
-          if test -f tools/qikvrt_requested_review_executor.py; then
+          if test -f tools/qikvrt_requested_review_executor.py && python3 -B - <<'PY'
+          import os, sys
+          from tools import qikvrt_required_review_gate as gate
+          resolver = getattr(gate, 'resolve_required_code_owner', None)
+          if not callable(resolver):
+              print('BOOTSTRAP_NOOP: current Mesh Authority binding is not yet promoted.')
+              sys.exit(2)
+          try:
+              resolver(os.environ['REPOSITORY'])
+          except (OSError, ValueError) as exc:
+              print(f'BOOTSTRAP_NOOP: Mesh Authority binding invalid: {type(exc).__name__}')
+              sys.exit(2)
+          PY
+          then
             echo 'active=true' >> "$GITHUB_OUTPUT"
           else
             echo 'active=false' >> "$GITHUB_OUTPUT"
@@ -80,6 +94,8 @@ jobs:
           set -euo pipefail
           python3 -B - <<'PY' > /tmp/qikvrt-review-selection.json
           import json, os, subprocess
+          from tools.qikvrt_required_review_gate import resolve_required_code_owner
+          resolve_required_code_owner(os.environ['REPOSITORY'])
           repo=os.environ['REPOSITORY']; requested=os.environ.get('REQUESTED_PR','').strip(); event_pr=os.environ.get('EVENT_PR','').strip(); event_head=os.environ.get('EVENT_HEAD','').strip()
           def one(path): return json.loads(subprocess.check_output(['gh','api',path],text=True))
           def pages(path):
@@ -179,7 +195,9 @@ jobs:
 
           Any head/tree/scope drift invalidates this review. No merge, release, publication, PASS, FINAL_PASS or EFFECT_ACK_DONE is implied.
           EOF
-          event="$DISPOSITION"; if [ "$event" = COMMENT_WITH_BLOCKER ]; then event=COMMENT; fi
+          # A technical APPROVE disposition is recorded as COMMENT, never as a
+          # native approval by this automated executor.
+          event="$DISPOSITION"; if [ "$event" = COMMENT_WITH_BLOCKER ] || [ "$event" = APPROVE ]; then event=COMMENT; fi
           set +e
           gh api --method POST "repos/${REPOSITORY}/pulls/${PR_NUMBER}/reviews" -f commit_id="$EXPECTED_HEAD" -f event="$event" --raw-field body="$(cat /tmp/qikvrt-review-body.md)" > /tmp/qikvrt-review-write.json 2>/tmp/qikvrt-review-write.err
           review_rc=$?
@@ -189,7 +207,7 @@ jobs:
             gh api --method POST "repos/${REPOSITORY}/pulls/${PR_NUMBER}/reviews" -f commit_id="$EXPECTED_HEAD" -f event=COMMENT --raw-field body="$(cat /tmp/qikvrt-review-body.md)\n\nPlatform limitation: requested ${event} was rejected; persisted as COMMENT." > /tmp/qikvrt-review-write.json
             platform_state=COMMENT
           fi
-          if [ "$DISPOSITION" = APPROVE ]; then status=success; description="substantive requested review executed; platform=${platform_state}"; else status=failure; description="requested review disposition=${DISPOSITION}; platform=${platform_state}"; fi
+          if [ "$DISPOSITION" = APPROVE ]; then status=success; description="technical disposition only; platform=${platform_state}; native approval NOT_IMPLIED"; else status=failure; description="technical disposition=${DISPOSITION}; platform=${platform_state}; governance NOT_IMPLIED"; fi
           gh api --method POST "repos/${REPOSITORY}/statuses/${EXPECTED_HEAD}" -f state="$status" -f context="$STATUS_CONTEXT" -f description="${description:0:140}" -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
       - name: Strict NOOP when no requested review exists
@@ -199,3 +217,17 @@ jobs:
       - name: Bootstrap NOOP before trusted-main promotion
         if: steps.active.outputs.active != 'true'
         run: echo 'Executor definition is under review; trusted main remains the only executable source.'
+
+      - name: Report execution scope without governance acceptance
+        if: always()
+        env:
+          SELECTION: ${{ steps.select.outputs.state || 'NOT_EVALUATED' }}
+          DISPOSITION: ${{ steps.decision.outputs.state || 'NOT_EVALUATED' }}
+        run: |
+          {
+            echo '## Requested review disposition only'
+            echo
+            echo "Selection: ${SELECTION}; technical disposition: ${DISPOSITION}."
+            echo 'NOOP, WAIT, COMMENT and successful workflow execution do not establish native Ruleset enforcement or independent Code Owner approval.'
+            echo 'The executor never writes the native governance status or its legacy alias and never submits an automated APPROVE review.'
+          } >> "$GITHUB_STEP_SUMMARY"

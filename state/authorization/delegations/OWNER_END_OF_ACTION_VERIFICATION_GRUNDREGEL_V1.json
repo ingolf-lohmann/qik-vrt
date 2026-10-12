@@ -1,0 +1,71 @@
+{
+ "schema": "qikvrt_owner_end_of_action_verification_rule_v1",
+ "delegation_id": "OWNER-END-OF-ACTION-VERIFICATION-GRUNDREGEL-V1",
+ "title": "QIK-VRT Grundregel: Prüfung am Ende jeder Aktion",
+ "owner": {
+  "name": "Ingolf Lohmann",
+  "role": "Product Owner and Code Owner",
+  "type": "NATURAL_PERSON"
+ },
+ "effective_at": "2026-10-09T09:18:46Z",
+ "state": "ACTIVE",
+ "source_instruction": {
+  "language": "de",
+  "text": "Prüfe am Ende jeder Aktion den aktuellen Repository-Stand und die Liefernachweise für raumzeitterminal.de. Neue Änderungen verfolge bis zum frischen Readback und löse für unveränderte Fehler keinen erneuten Versuch aus.",
+  "utf8_sha256": "3da7fe6aae9729791584a9f34ca4aaf74f01fa9c7d9aac3bb5055c9f02df84d5",
+  "confirmed_by_owner": true,
+  "confirmation_form": "Owner message and signed owner graphic, 2026-10-09"
+ },
+ "purpose": "Persist a recurring per-action verification duty in the repository so that every conforming client applies it from repository evidence instead of asking the owner to restate it.",
+ "applies_to": [
+  "EVERY_CONFORMING_ARTIFICIAL_COGNITIVE_CLIENT",
+  "AUTHORITY",
+  "MIRROR",
+  "EVERY_FUTURE_MESH_NODE"
+ ],
+ "duties_at_end_of_every_action": [
+  {
+   "id": "REOBSERVE_REPOSITORY_STATE",
+   "requirement": "Reobserve the current repository state of the acting repository, at minimum the exact head and tree of the bound branch, freshly and not from an earlier observation in the same session.",
+   "evidence": "EXACT_HEAD_AND_TREE"
+  },
+  {
+   "id": "REOBSERVE_RAUMZEITTERMINAL_DELIVERY_EVIDENCE",
+   "requirement": "Reobserve the delivery evidence for raumzeitterminal.de and report its current disposition, including the explicit absence of a delivery proof.",
+   "evidence_root": "evidence/native-runtime-acceptance/",
+   "domain": "raumzeitterminal.de",
+   "absence_is_a_result_not_a_failure": true,
+   "unobservable_from_client_is_not_a_negative_result": true
+  }
+ ],
+ "continuation_rules": {
+  "new_change": "FOLLOW_THROUGH_TO_A_FRESH_READBACK",
+  "unchanged_error": "DO_NOT_TRIGGER_A_RENEWED_ATTEMPT",
+  "unchanged_error_definition": "Same subject, same blocker, same action and no new information since the last attempt.",
+  "related_liveness_contract": "personal/ingolf-lohmann/PAYLOAD_CONTRACT_V1.json#liveness",
+  "retry_without_new_information": "FORBIDDEN_AS_PROGRESS"
+ },
+ "boundaries": {
+  "readback_is_not_effect_ack": true,
+  "absence_of_delivery_evidence_must_not_be_reported_as_delivery": true,
+  "client_side_resolution_failure_is_not_registry_evidence": true,
+  "this_rule_grants_no_new_external_effect": true
+ },
+ "relation_to_existing_delegations": [
+  "state/authorization/delegations/OWNER_QIKVRT_EVOLUTIONARY_AUTOMATION_STANDING_DELEGATION_V1.json",
+  "state/authorization/delegations/OWNER_AUTONOMOUS_REPOSITORY_CONTINUATION_V2.json"
+ ],
+ "interaction_policy": {
+  "owner_reinteraction_required_to_apply_this_rule": false,
+  "rule_is_read_from_repository_evidence": true
+ },
+ "revocation": {
+  "revocable": true,
+  "method": "A later owner decision that names this delegation_id and sets state to REVOKED."
+ },
+ "completion_claims": {
+  "PASS": false,
+  "FINAL_PASS": false,
+  "EFFECT_ACK_DONE": false
+ }
+}

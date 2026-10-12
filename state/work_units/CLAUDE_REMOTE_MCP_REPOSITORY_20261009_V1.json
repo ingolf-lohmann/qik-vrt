@@ -1,0 +1,79 @@
+{
+  "schema": "qikvrt_work_unit_v1",
+  "work_unit_id": "CLAUDE_REMOTE_MCP_REPOSITORY_20261009_V1",
+  "task": "Apply Claude Remote-MCP architecture through existing REST/OpenAPI/EFFECT_ACK components, read-only and backward compatible",
+  "origin": {
+    "human_actor": "Ingolf Lohmann",
+    "human_contribution": "Task, acceptance boundaries, Product Owner authorization dated 2026-10-09",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "artificial_cognitive_contribution": "Implementation, executable tests, causal checks, exact-byte evidence and integration candidate preparation",
+    "human_acceptance_of_generated_code": "NOT_INFERRED"
+  },
+  "authorization": {
+    "repository_candidate": "Explicitly requested separate integration candidate through available authorized REST write access",
+    "merge": false,
+    "production_deployment": false,
+    "permission_expansion": false
+  },
+  "base": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "ref": "main",
+    "head": "468e9e42cd6194ee4ab335aa7452ba6bdee8be4a",
+    "tree": "023c5c7c113f96363273ef383ecace28b10f65b6"
+  },
+  "reuse": {
+    "server": "src/qikvrt_github_api_shim.py",
+    "transport": "scripts/qikvrt_api_client.py",
+    "protective_state": "src/qikvrt_api_handler.py",
+    "effect_protocol": "src/qikvrt_effect_ack.py",
+    "parallel_server_created": false,
+    "new_dependencies": [],
+    "pr506_not_connector": true,
+    "pr508_governance_changes_not_imported": true
+  },
+  "changes": [
+    "Opt-in /mcp and three separately scoped read-only tools",
+    "Current 2026 discovery/header metadata and legacy 2025 initialize compatibility",
+    "Exact-head/TREE readback, Git/SHA-256 source binding, receipt/protocol validation",
+    "Durable immutable request-ID fingerprints; every replay reads afresh",
+    "Distinct read credential, expiry, scope/origin gates, no upstream token passthrough",
+    "Existing make test invokes the new conformance suite"
+  ],
+  "local_validation": {
+    "mcp_tests": {
+      "command": "make mcp-readback-test",
+      "passed": 24
+    },
+    "existing_regressions": {
+      "passed": 76,
+      "modules": [
+        "test_api_client (4)",
+        "test_handler_unit (6)",
+        "test_handler_security (17)",
+        "test_effect_ack_conformance (41)",
+        "test_tcpip_e2e (1)",
+        "test_qikvrt_effect_ack_http_terminal (7)"
+      ]
+    },
+    "tool_cache": {
+      "declared": 14,
+      "coverage_percent": 100,
+      "verified": true
+    },
+    "full_make_test": "NOT_RUN_LOCALLY_PARTIAL_REST_MATERIALIZATION",
+    "bootloader": "BLOCK_LOCAL_MATERIALIZATION_HAS_NO_GIT_CHECKOUT; not a product/runtime diagnosis"
+  },
+  "integrity": {
+    "original_manifest_commit": "79ddba3b6d0970203053b2719c41e9410276741c",
+    "causal_source_change": "Nine lifecycle commits left 18 additions and four changed files outside the previous integrity inventory; regenerate metadata from complete current REST tree and exact-byte changed sources",
+    "unchanged_sources_reused_by_exact_git_blob_identity": true,
+    "required_native_verification": "Fresh exact-candidate CI and full integrity verification; no predecessor check transfer"
+  },
+  "application_evidence": "evidence/mcp/REMOTE_CONNECTOR_APPLICATION_20261009_V2.json",
+  "public_python_endpoint": null,
+  "claude_account_connection_verified": false,
+  "external_effect_verified": false,
+  "ordinary_release": false,
+  "exact_continuation": "docs/terminal/CLAUDE_REMOTE_MCP_V1.md#exact-remaining-live-prerequisites",
+  "status": "TESTED_INTEGRATION_CANDIDATE_WITH_EXTERNAL_HOSTING_AND_CLAUDE_AUTH_BOUNDARY"
+}

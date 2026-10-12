@@ -29,6 +29,45 @@ specifications do not automatically grant an open-source license for the
 concrete implementation. No rights may be inferred beyond explicit license
 texts.
 
+## Binding client continuation procedure
+
+Ingolf Lohmann's instructions of 2026-10-11 are mandatory for every client.
+Preserve the authorized repair, integration and delivery goal across handoffs,
+status questions and context compaction. Preserve existing authorization; do
+not request the same task permission again. Inspect the current repository
+entrypoint and applicable existing connector, CLI and Mesh routes before
+declaring execution unavailable. Match method, operation, target/account,
+authentication, permission and governance admission separately. An empty
+repository-URL filter or an absent local CLI does not establish that the
+repository's existing authorized executor is unavailable.
+
+Execute each safe deterministic authorized successor and complete useful
+authorized preparation and persistence while other effects are blocked.
+Preserve `GITHUB_ROUTE=REST_API_ONLY`, credentials, Authority/Mirror roles and
+protected governance. Do not create proxy executors, synthetic triggers or
+new permission scopes to replace a missing operation. Preserve original
+evidence; unchanged causal failures admit NOOP, and ambiguous effects require
+readback before another effectful attempt.
+
+Before a terminal handoff, validate the non-secret client receipt with
+`python3 -B tools/ai_handoff.py --client-receipt <receipt.json>` according to
+`policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json.client_continuation` and
+`docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md`. Read back current HEAD/TREE and
+delivery evidence for the exact host `raumzeitterminal.de`. Return only for
+verified completion, a concrete blocker with no safe authorized successor,
+or a real owner choice. The gate checks receipt consistency; it neither
+authenticates a client nor proves live effects or adoption by another client.
+Regression tests run inside the existing `make ai-runtime-contract` gate.
+
+Failures, omissions and open gaps of a previous run MUST become the tasks of
+the automatically adjoining run under the existing authorization. Preserve
+their execution identity and each open obligation. A successor receipt that
+declares `previous_run` MUST retain every `open_work` item in `work`, either
+OPEN with its concrete next action or VERIFIED with closing evidence. A
+status message, elapsed time or an unrelated commit does not close a task or
+admit an unchanged retry. Use the existing continuation worker and shared
+receipt gate; this rule does not itself start or prove an unattended runner.
+
 ## Mandatory human-machine progress behavior
 
 For every repository, build, verification, publication, deployment, or GitHub
@@ -42,6 +81,22 @@ GitHub action and at every workflow, job, or step transition, and name concrete
 blockers and next actions. Persistent workflows MUST maintain `AI_PROGRESS.json`
 and `AI_STATUS.md`. Repetitive unchanged status and long explanations in place
 of executable work are prohibited.
+
+## Verification at the end of every action
+
+`END_OF_ACTION_VERIFICATION` is mandatory. At the end of every action the
+client MUST reobserve the current repository state, at minimum the exact head
+and tree of the bound branch, and MUST reobserve and report the delivery
+evidence for `raumzeitterminal.de` under `evidence/native-runtime-acceptance/`.
+The explicit absence of a delivery proof is a result and MUST be reported as
+such; it MUST NOT be reported as delivery. A client-side resolution or fetch
+failure is not registry evidence.
+
+A new change MUST be followed through to a fresh readback. An unchanged error,
+meaning the same subject, blocker and action with no new information, MUST NOT
+trigger a renewed attempt. The binding contract is
+`state/authorization/delegations/OWNER_END_OF_ACTION_VERIFICATION_GRUNDREGEL_V1.json`,
+resolved through `AI_CONTEXT.json.required_read_order`.
 
 ## Reuse before creation
 

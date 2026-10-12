@@ -5,11 +5,17 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import datetime
 import hashlib
 import json
+import os
 import pathlib
+import re
 import subprocess
 import sys
+import tarfile
+import tempfile
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
@@ -339,11 +345,474 @@ def execute(apply: bool) -> dict[str, Any]:
     }
 
 
+PR_MARKER = "<!-- qikvrt-autonomous-self-heal:enabled -->"
+CONTINUATION_MARKER = "<!-- qikvrt-autonomous-pr-continuation -->"
+CONTINUATION_REFS = "refs/qikvrt/pr-continuation/"
+SHA_PATTERN = re.compile(r"[0-9a-f]{40}\Z")
+ATTEMPT_PATTERN = re.compile(
+    re.escape(CONTINUATION_REFS)
+    + r"attempts/([1-9][0-9]*)-([1-9][0-9]*)-([0-9a-f]{40})-([0-9a-f]{40})-([1-9][0-9]*)\Z"
+)
+
+
+class GitHubREST:
+    """Use only gh api; never gh pr, Git network transport or GraphQL."""
+
+    def __init__(self, repository: str):
+        if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+            raise SelfHealBlock("invalid repository identity")
+        self.repository = repository
+        self.prefix = f"repos/{repository}/"
+
+    def call(self, method: str, path: str, payload: Any = None) -> Any:
+        command = ["gh", "api", "--method", method, self.prefix + path]
+        if payload is not None:
+            command += ["--input", "-"]
+        result = subprocess.run(command, input=None if payload is None else json.dumps(payload),
+                                text=True, capture_output=True, timeout=120, check=False)
+        if result.returncode:
+            match = re.search(r"HTTP ([0-9]{3})", result.stderr)
+            code = match.group(1) if match else "AMBIGUOUS_TRANSPORT"
+            raise SelfHealBlock(f"REST {method} {path}: {code}; no automatic retry")
+        return json.loads(result.stdout) if result.stdout.strip() else None
+
+    def pages(self, path: str) -> list[Any]:
+        result = subprocess.run(["gh", "api", "--method", "GET", "--paginate", "--slurp",
+                                 self.prefix + path], text=True, capture_output=True,
+                                timeout=120, check=False)
+        if result.returncode:
+            raise SelfHealBlock(f"complete REST inventory unavailable: {path}")
+        pages = json.loads(result.stdout)
+        if not isinstance(pages, list) or not all(isinstance(page, list) for page in pages):
+            raise SelfHealBlock(f"invalid REST page inventory: {path}")
+        return [item for page in pages for item in page]
+
+    def ref(self, ref: str) -> Any:
+        try:
+            return self.call("GET", "git/ref/" + ref.removeprefix("refs/"))
+        except SelfHealBlock as exc:
+            if ": 404;" in str(exc):
+                return None
+            raise
+
+    def create_once(self, ref: str, sha: str) -> bool:
+        """A rejected/ambiguous acquisition never grants permission to act."""
+        existing = self.ref(ref)
+        if existing is not None:
+            if existing.get("ref") != ref or existing.get("object", {}).get("sha") != sha:
+                raise SelfHealBlock("conflicting immutable continuation receipt: " + ref)
+            return False
+        try:
+            self.call("POST", "git/refs", {"ref": ref, "sha": sha})
+        except SelfHealBlock:
+            # Independent observation is safe. Even a matching ref cannot prove
+            # ownership after a timeout or a race; only a confirmed create can.
+            self.ref(ref)
+            raise
+        observed = self.ref(ref)
+        if observed is None or observed.get("ref") != ref or observed.get("object", {}).get("sha") != sha:
+            raise SelfHealBlock("immutable continuation receipt readback mismatch")
+        return True
+
+
+def eligible_pr(pr: Mapping[str, Any], repository: str) -> bool:
+    head, base = pr.get("head") or {}, pr.get("base") or {}
+    return (pr.get("state") == "open" and pr.get("draft") is True
+            and (head.get("repo") or {}).get("full_name") == repository
+            and (base.get("repo") or {}).get("full_name") == repository
+            and base.get("ref") == "main" and head.get("ref") != "main"
+            and PR_MARKER in (pr.get("body") or "")
+            and SHA_PATTERN.fullmatch(head.get("sha") or "") is not None)
+
+
+def rank_prs(prs: Sequence[Mapping[str, Any]], repository: str,
+             attempts: Sequence[Mapping[str, Any]],
+             comments: Mapping[int, Sequence[Mapping[str, Any]]]) -> list[dict[str, Any]]:
+    """Least recently attempted, then PR number. Heads never reset service age.
+
+    Native workflow concurrency serializes distinct runs. The run claim below
+    excludes duplicate attempts of the same run; per-effect claims additionally
+    fence duplicate successors and handoffs. Failed and NOOP attempts count.
+    """
+    last: dict[int, int] = {}
+    for ref in attempts:
+        match = ATTEMPT_PATTERN.fullmatch(ref.get("ref") or "")
+        if match is None or ref.get("object", {}).get("sha") != match.group(3):
+            raise SelfHealBlock("malformed immutable attempt inventory")
+        turn, number = int(match.group(1)), int(match.group(2))
+        last[number] = max(last.get(number, 0), turn)
+    result = []
+    for pr in prs:
+        if not eligible_pr(pr, repository):
+            continue
+        number = int(pr["number"])
+        legacy = [str(comment.get("created_at") or "")
+                  for comment in comments.get(number, [])
+                  if (comment.get("user") or {}).get("login") == "github-actions[bot]"
+                  and (comment.get("body") or "").startswith(CONTINUATION_MARKER + "\n")]
+        # Old native comments bootstrap the rotation without changing old PRs.
+        rank = (2, last[number], "") if number in last else ((1, 0, max(legacy)) if legacy else (0, 0, ""))
+        result.append({"pull_request": number, "head_ref": pr["head"]["ref"],
+                       "head_sha": pr["head"]["sha"], "base_ref": "main", "rank": list(rank)})
+    return sorted(result, key=lambda item: (tuple(item["rank"]), item["pull_request"]))
+
+
+def observe_pr_plan(api: GitHubREST) -> dict[str, Any]:
+    prs = api.pages("pulls?state=open&per_page=100")
+    candidates = [pr for pr in prs if eligible_pr(pr, api.repository)]
+    comments = {int(pr["number"]): api.pages(f"issues/{pr['number']}/comments?per_page=100")
+                for pr in candidates}
+    attempts = api.pages("git/matching-refs/qikvrt/pr-continuation/attempts/")
+    turns = api.pages("git/matching-refs/qikvrt/pr-continuation/turns/")
+    turn_numbers = []
+    for ref in turns:
+        match = re.fullmatch(re.escape(CONTINUATION_REFS) + r"turns/([1-9][0-9]*)", ref.get("ref") or "")
+        if match is None or SHA_PATTERN.fullmatch(ref.get("object", {}).get("sha") or "") is None:
+            raise SelfHealBlock("malformed continuation turn inventory")
+        turn_numbers.append(int(match.group(1)))
+    main_sha = api.ref("refs/heads/main")["object"]["sha"]
+    ranked = rank_prs(prs, api.repository, attempts, comments)
+    return {"schema": "qikvrt_pr_continuation_selection_v1", "repository": api.repository,
+            "base_sha": main_sha, "strategy": "LEAST_RECENTLY_ATTEMPTED_THEN_PR_NUMBER",
+            "ranked": ranked, "selected": ranked[0] if ranked else None,
+            "turn_number": max(turn_numbers, default=0) + 1,
+            "state": "READ_ONLY_PLAN", "main_activation": False}
+
+
+def reobserve_selection(api: GitHubREST, plan: Mapping[str, Any], head: str) -> dict[str, Any]:
+    selected = plan["selected"]
+    pr = api.call("GET", f"pulls/{selected['pull_request']}")
+    if (not eligible_pr(pr, api.repository) or pr["head"]["sha"] != head
+            or pr["head"]["ref"] != selected["head_ref"]
+            or api.ref("refs/heads/main")["object"]["sha"] != plan["base_sha"]):
+        raise SelfHealBlock("opt-in, exact head, branch or current main changed")
+    return pr
+
+
+def claim_pr_plan(api: GitHubREST, plan: dict[str, Any], run_id: int) -> dict[str, Any]:
+    if run_id < 1:
+        raise SelfHealBlock("native run identity is required")
+    if plan["selected"] is None:
+        return dict(plan, state="NO_ELIGIBLE_PR")
+    selected = plan["selected"]
+    reobserve_selection(api, plan, selected["head_sha"])
+    run_ref = CONTINUATION_REFS + f"runs/{run_id}"
+    if not api.create_once(run_ref, plan["base_sha"]):
+        return dict(plan, state="DUPLICATE_RUN_NOOP", selected=None)
+    if not api.create_once(CONTINUATION_REFS + f"turns/{plan['turn_number']}", selected["head_sha"]):
+        return dict(plan, state="CONTENDED_TURN_NOOP", selected=None)
+    receipt = (CONTINUATION_REFS + f"attempts/{plan['turn_number']}-{selected['pull_request']}-"
+               f"{selected['head_sha']}-{plan['base_sha']}-{run_id}")
+    if not api.create_once(receipt, selected["head_sha"]):
+        raise SelfHealBlock("attempt receipt already consumed")
+    successors = api.pages(f"git/matching-refs/qikvrt/pr-continuation/effects/{selected['pull_request']}/")
+    resume = []
+    for ref in successors:
+        match = re.fullmatch(re.escape(CONTINUATION_REFS) + rf"effects/{selected['pull_request']}/([0-9a-f]{{40}})-([0-9a-f]{{40}})/successor", ref.get("ref") or "")
+        if match and match.group(2) == plan["base_sha"] and ref.get("object", {}).get("sha") == selected["head_sha"]:
+            resume.append(match.group(1))
+    if len(resume) > 1:
+        raise SelfHealBlock("ambiguous predecessor handoff binding")
+    if resume:
+        selected = dict(selected, source_head_sha=resume[0], resume_handoff=True)
+    return dict(plan, selected=selected, state="SELECTION_CLAIMED", run_id=run_id, attempt_ref=receipt)
+
+
+def handoff_pr(api: GitHubREST, plan: Mapping[str, Any], candidate: str) -> dict[str, Any]:
+    selected = plan["selected"]
+    reobserve_selection(api, plan, candidate)
+    number = selected["pull_request"]
+    source = selected.get("source_head_sha", selected["head_sha"])
+    key = CONTINUATION_REFS + f"effects/{number}/{source}-{plan['base_sha']}/"
+    target_url = f"https://github.com/{api.repository}/actions/runs/{plan['run_id']}"
+    context = "QIKVRT autonomous exact-head verification"
+    statuses = api.pages(f"commits/{candidate}/statuses?per_page=100")
+    if not any(status.get("context") == context for status in statuses):
+        if not api.create_once(key + "status", candidate):
+            raise SelfHealBlock("STATUS_OUTCOME_UNESTABLISHED; no duplicate POST")
+        api.call("POST", f"statuses/{candidate}", {"state": "pending", "context": context,
+                 "description": "Exact repaired head awaits separate verification", "target_url": target_url})
+        if not any(s.get("context") == context for s in api.pages(f"commits/{candidate}/statuses?per_page=100")):
+            raise SelfHealBlock("status readback missing")
+    accepted = api.ref(key + "dispatch-accepted")
+    if accepted is not None and accepted.get("object", {}).get("sha") != candidate:
+        raise SelfHealBlock("dispatch acceptance binding differs")
+    if accepted is None:
+        if not api.create_once(key + "dispatch", candidate):
+            raise SelfHealBlock("DISPATCH_OUTCOME_UNESTABLISHED; native readback required, no duplicate POST")
+        api.call("POST", "dispatches", {"event_type": "qikvrt_autonomous_exact_head_verify", "client_payload": {
+            "repository": api.repository, "pull_request": number, "head_ref": selected["head_ref"],
+            "head_sha": candidate, "source_head_sha": source, "base_sha": plan["base_sha"]}})
+        api.create_once(key + "dispatch-accepted", candidate)
+    marker = f"<!-- qikvrt-pr-continuation-effect:{source}:{candidate} -->"
+    comments = api.pages(f"issues/{number}/comments?per_page=100")
+    if not any(marker in (c.get("body") or "") for c in comments):
+        if not api.create_once(key + "comment", candidate):
+            raise SelfHealBlock("COMMENT_OUTCOME_UNESTABLISHED; no duplicate POST")
+        body = (CONTINUATION_MARKER + "\n" + marker + "\n"
+                "History-preserving successor; independent exact-head verification requested.\n\n"
+                f"- previous exact head: `{source}`\n- candidate head: `{candidate}`\n"
+                f"- bound main: `{plan['base_sha']}`\n- selection receipt: `{plan['attempt_ref']}`\n\n"
+                "Dispatch acceptance is not workflow admission, Code-Owner approval, Main activation, "
+                "PASS, FINAL_PASS or EFFECT_ACK_DONE. No publication or deployment is claimed.")
+        comment = api.call("POST", f"issues/{number}/comments", {"body": body})
+        if api.call("GET", f"issues/comments/{comment['id']}").get("body") != body:
+            raise SelfHealBlock("comment exact readback mismatch")
+    return {"state": "HANDOFF_SUBMITTED", "candidate_head": candidate,
+            "workflow_admission": "UNESTABLISHED", "code_owner_approval": False, "main_activation": False}
+
+
+def local_git(root: pathlib.Path, *args: str, payload: bytes | None = None) -> bytes:
+    result = subprocess.run(["git", *args], cwd=root, input=payload,
+                            capture_output=True, timeout=120, check=False)
+    if result.returncode:
+        raise SelfHealBlock("local Git operation failed: " + " ".join(args[:2]))
+    return result.stdout
+
+
+def import_rest_commit(api: GitHubREST, root: pathlib.Path, sha: str) -> dict[str, Any]:
+    value = api.call("GET", f"git/commits/{sha}")
+    verification = value.get("verification") or {}
+    candidates = []
+    if verification.get("payload") and verification.get("signature"):
+        headers, message = verification["payload"].split("\n\n", 1)
+        for tail in ("", "\n"):
+            signature = "\n ".join((verification["signature"].rstrip("\n") + tail).split("\n"))
+            candidates.append((headers + "\ngpgsig " + signature + "\n\n" + message).encode())
+    prefix = ["tree " + value["tree"]["sha"], *["parent " + p["sha"] for p in value["parents"]]]
+    identities = {}
+    for role in ("author", "committer"):
+        identity = value[role]
+        stamp = int(datetime.datetime.fromisoformat(identity["date"].replace("Z", "+00:00")).timestamp())
+        identities[role] = f"{role} {identity['name']} <{identity['email']}> {stamp} "
+    zones = ["+0000"] + [f"{'+' if offset >= 0 else '-'}{abs(offset)//60:02d}{abs(offset)%60:02d}"
+                          for offset in range(-12 * 60, 14 * 60 + 1, 15) if offset]
+    messages = [value["message"], value["message"] + "\n"]
+    def reconstruct(author_zone: str, committer_zone: str, message: str) -> bytes:
+        lines = prefix + [identities['author'] + author_zone, identities['committer'] + committer_zone]
+        return ("\n".join(lines) + "\n\n" + message).encode()
+    def matches(raw: bytes) -> bool:
+        return hashlib.sha1(b"commit " + str(len(raw)).encode() + b"\0" + raw).hexdigest() == sha
+    raw = next((raw for raw in candidates if matches(raw)), None)
+    if raw is None:
+        raw = next((raw for zone in zones for message in messages
+                    if matches(raw := reconstruct(zone, zone, message))), None)
+    if raw is None:
+        raw = next((raw for author_zone in zones for committer_zone in zones for message in messages
+                    if matches(raw := reconstruct(author_zone, committer_zone, message))), None)
+    if raw is None:
+        raise SelfHealBlock("raw REST commit cannot be reconstructed exactly; no substitute commit")
+    actual = local_git(root, "hash-object", "-w", "-t", "commit", "--stdin", payload=raw).decode().strip()
+    if actual != sha:
+        raise SelfHealBlock("REST commit object mismatch")
+    shallow = root / ".git/shallow"
+    entries = set(shallow.read_text().splitlines()) if shallow.exists() else set()
+    shallow.write_text("\n".join(sorted(entries | {sha})) + "\n")
+    return value
+
+
+def import_rest_snapshot(api: GitHubREST, root: pathlib.Path, sha: str, checkout: bool = False) -> None:
+    """Import exact bytes via REST archive + Git data, with no Git network I/O.
+
+    Archives may apply .gitattributes line-end conversions. Repair any differing
+    blob from the raw REST blob endpoint and recompute the entire Git tree.
+    This is explicitly a shallow snapshot, never a complete-history backup.
+    """
+    if SHA_PATTERN.fullmatch(sha) is None:
+        raise SelfHealBlock("snapshot SHA is malformed")
+    root.mkdir(parents=True, exist_ok=True)
+    if not (root / ".git").exists():
+        local_git(root, "init", "-b", "main")
+    metadata = api.call("GET", f"git/commits/{sha}")
+    tree = api.call("GET", f"git/trees/{metadata['tree']['sha']}?recursive=1")
+    if tree.get("truncated"):
+        raise SelfHealBlock("REST snapshot tree inventory is incomplete")
+    with tempfile.TemporaryDirectory(prefix="qikvrt-rest-") as directory:
+        stage = pathlib.Path(directory)
+        archive = stage / "source.tar.gz"
+        with archive.open("wb") as output:
+            result = subprocess.run(["gh", "api", "--method", "GET", api.prefix + f"tarball/{sha}"],
+                                    stdout=output, stderr=subprocess.PIPE, timeout=900, check=False)
+        if result.returncode:
+            raise SelfHealBlock("REST archive download failed")
+        extracted = stage / "source"
+        extracted.mkdir()
+        with tarfile.open(archive) as bundle:
+            bundle.extractall(extracted, filter="data")
+        roots = list(extracted.iterdir())
+        if len(roots) != 1 or not roots[0].is_dir():
+            raise SelfHealBlock("REST archive root is malformed")
+        objects = {}
+        for item in tree["tree"]:
+            if item["type"] == "tree":
+                continue
+            if item["type"] != "blob":
+                raise SelfHealBlock("non-blob snapshot transport is outside this scope")
+            path = roots[0] / item["path"]
+            if pathlib.PurePosixPath(item["path"]).is_absolute() or ".." in pathlib.PurePosixPath(item["path"]).parts:
+                raise SelfHealBlock("unsafe REST tree path")
+            raw = os.readlink(path).encode() if path.is_symlink() else path.read_bytes()
+            identity = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+            if identity != item["sha"]:
+                cached = subprocess.run(["git", "cat-file", "blob", item["sha"]], cwd=root,
+                                        capture_output=True, timeout=120, check=False)
+                if cached.returncode == 0:
+                    raw = cached.stdout
+                else:
+                    blob = api.call("GET", "git/blobs/" + item["sha"])
+                    raw = base64.b64decode(blob["content"])
+            actual = local_git(root, "hash-object", "-w", "--no-filters", "--stdin", payload=raw).decode().strip()
+            if actual != item["sha"]:
+                raise SelfHealBlock("REST snapshot blob mismatch: " + item["path"])
+            objects[item["path"]] = item
+        # Build trees without touching the live index or trusting archive modes.
+        directories = {""}
+        for path in objects:
+            parent = pathlib.PurePosixPath(path).parent
+            while str(parent) != ".":
+                directories.add(str(parent)); parent = parent.parent
+        written = {}
+        for directory in sorted(directories, key=lambda p: (p.count("/"), len(p)), reverse=True):
+            entries = []
+            for path, item in objects.items():
+                parent = str(pathlib.PurePosixPath(path).parent)
+                if ("" if parent == "." else parent) == directory:
+                    entries.append((pathlib.PurePosixPath(path).name, item["mode"], "blob", item["sha"]))
+            for path, identity in written.items():
+                parent = str(pathlib.PurePosixPath(path).parent)
+                if ("" if parent == "." else parent) == directory:
+                    entries.append((pathlib.PurePosixPath(path).name, "040000", "tree", identity))
+            payload = b"".join(f"{mode} {kind} {identity}\t{name}".encode() + b"\0"
+                               for name, mode, kind, identity in entries)
+            written[directory] = local_git(root, "mktree", "-z", payload=payload).decode().strip()
+        if written[""] != metadata["tree"]["sha"]:
+            raise SelfHealBlock("REST snapshot full tree mismatch")
+    import_rest_commit(api, root, sha)
+    if checkout:
+        local_git(root, "update-ref", "refs/heads/main", sha)
+        local_git(root, "reset", "--hard", sha)
+
+
+def export_rest_successor(api: GitHubREST, root: pathlib.Path, plan: Mapping[str, Any], candidate: str) -> None:
+    source = plan["selected"]["head_sha"]
+    if candidate == source:
+        raise SelfHealBlock("NOOP cannot create an external successor")
+    commits = local_git(root, "rev-list", "--reverse", candidate, "^" + source, "^" + plan["base_sha"]).decode().splitlines()
+    if not commits or len(commits) > 2:
+        raise SelfHealBlock("successor must contain only the bounded merge and repair commits")
+    for sha in commits:
+        raw = local_git(root, "cat-file", "commit", sha).decode()
+        headers, message = raw.split("\n\n", 1)
+        parents, identities = [], {}
+        for line in headers.splitlines():
+            if line.startswith("parent "): parents.append(line.split()[1])
+            elif line.startswith(("author ", "committer ")):
+                match = re.fullmatch(r"(author|committer) (.*) <([^<>]*)> ([0-9]+) ([+-][0-9]{4})", line)
+                if match is None: raise SelfHealBlock("local successor identity is malformed")
+                role, name, email, stamp, zone = match.groups()
+                offset = (int(zone[1:3]) * 60 + int(zone[3:])) * (1 if zone[0] == "+" else -1)
+                date = datetime.datetime.fromtimestamp(int(stamp), datetime.timezone(datetime.timedelta(minutes=offset)))
+                identities[role] = {"name": name, "email": email, "date": date.isoformat()}
+        parent_tree = local_git(root, "rev-parse", parents[0] + "^{tree}").decode().strip()
+        paths = local_git(root, "diff", "--name-only", "-z", parents[0], sha).split(b"\0")
+        entries = []
+        for path_bytes in paths:
+            if not path_bytes: continue
+            path = path_bytes.decode()
+            item = local_git(root, "ls-tree", "-z", sha, "--", path).rstrip(b"\0")
+            if not item:
+                entries.append({"path": path, "mode": "100644", "type": "blob", "sha": None}); continue
+            mode, kind, identity = item.split(b"\t", 1)[0].decode().split()
+            blob = local_git(root, "cat-file", "blob", identity)
+            remote = api.call("POST", "git/blobs", {"content": base64.b64encode(blob).decode(), "encoding": "base64"})
+            if remote.get("sha") != identity: raise SelfHealBlock("outgoing blob readback mismatch")
+            entries.append({"path": path, "mode": mode, "type": kind, "sha": identity})
+        tree = api.call("POST", "git/trees", {"base_tree": parent_tree, "tree": entries})
+        expected_tree = local_git(root, "rev-parse", sha + "^{tree}").decode().strip()
+        if tree.get("sha") != expected_tree: raise SelfHealBlock("outgoing tree mismatch")
+        created = api.call("POST", "git/commits", {"tree": expected_tree, "parents": parents,
+                           "message": message.rstrip("\n"), **identities})
+        if created.get("sha") != sha: raise SelfHealBlock("outgoing commit mismatch")
+        if api.call("GET", f"git/commits/{sha}").get("tree", {}).get("sha") != expected_tree:
+            raise SelfHealBlock("outgoing commit independent readback mismatch")
+    reobserve_selection(api, plan, source)
+    selected = plan["selected"]
+    key = CONTINUATION_REFS + f"effects/{selected['pull_request']}/{source}-{plan['base_sha']}/successor"
+    if not api.create_once(key, candidate):
+        raise SelfHealBlock("successor already claimed; observe current branch before recovery")
+    try:
+        api.call("PATCH", "git/refs/heads/" + selected["head_ref"], {"sha": candidate, "force": False})
+    except SelfHealBlock:
+        # A timeout may follow a successful ref write. Never repeat the PATCH.
+        reobserve_selection(api, plan, candidate)
+    reobserve_selection(api, plan, candidate)
+
+
+def pr_cli(argv: Sequence[str]) -> int:
+    parser = argparse.ArgumentParser(description="Existing autonomous PR continuation, REST-only")
+    parser.add_argument("command", choices=("pr-plan", "pr-select", "pr-checkout", "pr-import", "pr-fixtures", "pr-publish", "pr-resume"))
+    parser.add_argument("--repository", default=os.environ.get("GITHUB_REPOSITORY"))
+    parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path.cwd())
+    parser.add_argument("--sha")
+    parser.add_argument("--selection", type=pathlib.Path)
+    parser.add_argument("--output", type=pathlib.Path)
+    args = parser.parse_args(argv)
+    api = GitHubREST(args.repository or "")
+    if args.command == "pr-checkout":
+        sha = api.ref("refs/heads/main")["object"]["sha"]
+        if args.sha != sha:
+            raise SelfHealBlock("trusted controller main binding changed before checkout")
+        import_rest_snapshot(api, args.root, sha, checkout=True)
+        result = {"state": "EXACT_SHALLOW_REST_CHECKOUT", "head_sha": sha}
+    elif args.command == "pr-import":
+        import_rest_snapshot(api, args.root, args.sha)
+        result = {"state": "EXACT_SHALLOW_REST_IMPORT", "head_sha": args.sha}
+    elif args.command == "pr-fixtures":
+        # Existing make-test fixture: its manifest chooses this historical
+        # source commit for an isolated local worktree. Import the declared
+        # source without altering the fixture, its tests or the current index.
+        manifest = args.root / "release/observer-relative-retrocausality-current-synthesis-zenodo-v2/publish-request.json"
+        if manifest.exists():
+            fixture = json.loads(manifest.read_text())["source_head"]
+            import_rest_snapshot(api, args.root, fixture)
+            result = {"state": "EXACT_HISTORICAL_TEST_FIXTURE_IMPORT", "head_sha": fixture}
+        else:
+            result = {"state": "NO_HISTORICAL_FIXTURE_REQUIRED"}
+    elif args.command in ("pr-plan", "pr-select"):
+        result = observe_pr_plan(api)
+        if args.command == "pr-select":
+            checked = local_git(args.root, "rev-parse", "HEAD").decode().strip()
+            if result["base_sha"] != checked: raise SelfHealBlock("checked main is stale")
+            result = claim_pr_plan(api, result, int(os.environ["GITHUB_RUN_ID"]))
+        if args.output: args.output.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
+        if args.command == "pr-select":
+            selected = result["selected"]
+            with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+                print("found=" + ("true" if selected else "false"), file=output)
+                if selected:
+                    for key in ("head_ref", "head_sha", "base_ref"):
+                        print(key + "=" + str(selected[key]), file=output)
+                    print("pr_number=" + str(selected["pull_request"]), file=output)
+                    print("base_sha=" + result["base_sha"], file=output)
+                    print("resume_handoff=" + ("true" if selected.get("resume_handoff") else "false"), file=output)
+    else:
+        plan = json.loads(args.selection.read_text())
+        if args.command == "pr-publish":
+            export_rest_successor(api, args.root, plan, args.sha)
+        elif not plan["selected"].get("resume_handoff") or args.sha != plan["selected"]["head_sha"]:
+            raise SelfHealBlock("resume requires an existing exact successor binding")
+        result = handoff_pr(api, plan, args.sha)
+    print(json.dumps(result, sort_keys=True, indent=2))
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("check", "apply"))
-    args = parser.parse_args(argv)
     try:
+        if argv and argv[0].startswith("pr-"):
+            return pr_cli(argv)
+        args = parser.parse_args(argv)
         result = execute(args.command == "apply")
     except (
         OSError,

@@ -1,0 +1,716 @@
+diff --git a/app/publications/route.ts b/app/publications/route.ts
+new file mode 100644
+index 0000000..40e9a22
+--- /dev/null
++++ b/app/publications/route.ts
+@@ -0,0 +1,8 @@
++// Existing article URLs retain their bytes; resolve their publication-index link.
++const PUBLICATION_INDEX_URL = "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html";
++
++export function GET() {
++  return Response.redirect(PUBLICATION_INDEX_URL, 302);
++}
++
++export const HEAD = GET;
+diff --git a/public/index.html b/public/index.html
+index 80548e8..ec6acdd 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -17,7 +17,7 @@
+   <div class="wrap nav">
+     <a class="brand" href="#top" aria-label="QIK-VRT Start"><span class="logo">Q</span><span>QIK-VRT<br><small>Trust Mesh</small></span></a>
+     <nav class="navlinks" aria-label="Hauptnavigation">
+-      <a href="#produkt">Produkt</a><a href="#audit">Audit</a><a href="#recht">Recht</a><a href="#wissenschaft">Wissenschaft</a><a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html">Publikationen</a><a href="#konsole">Konsole</a><a href="terminal/">Terminal</a><a href="#timeline">Timeline</a><a href="#kontakt">Kontakt</a>
++      <a href="#produkt">Produkt</a><a href="#audit">Audit</a><a href="#recht">Recht</a><a href="#wissenschaft">Wissenschaft</a><a href="news/">Themen</a><a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html">Publikationen</a><a href="#konsole">Konsole</a><a href="terminal/">Terminal</a><a href="#timeline">Timeline</a><a href="#kontakt">Kontakt</a>
+       <button id="themeToggle" class="btn" type="button">Hell/Dunkel</button>
+     </nav>
+   </div>
+@@ -30,7 +30,7 @@
+       <h1>Vertrauen wird <span class="grad">prüfbar</span>.</h1>
+       <p class="lead">QIK-VRT erprobt Wirkungshaltepunkte, nachvollziehbare Repository-Evidenz, begrenzte Workflows, Audit-Export und eine lokale Regelkonsole. Der nachgewiesene Stand und seine Grenzen sind ausdrücklich getrennt.</p>
+       <p class="notice"><strong>Webstufe 1:</strong> Startseite und öffentlich lesendes Repository-Terminal. Das Firefox-/Effect-Acknowledgement-MVP ist eine gesonderte, noch nicht vollständig nachgewiesene Produktstufe.</p>
+-      <div class="hero-actions"><a class="btn primary" href="terminal/">Repository-Terminal öffnen</a><a class="btn" href="/monitor/#/">Vorhandenen Mesh-Monitor öffnen</a><a class="btn" href="/news/">Vorhandene Kommentare lesen</a></div>
++      <div class="hero-actions"><a class="btn primary" href="terminal/">Repository-Terminal öffnen</a><a class="btn" href="/monitor/#/">Vorhandenen Mesh-Monitor öffnen</a><a class="btn" href="news/">Vorhandene Kommentare lesen</a></div>
+       <div class="hero-actions"><a class="btn primary" href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html">Publikationsquellen lesen</a><a class="btn" href="#konsole">Kognitionskonsole testen</a><a class="btn" href="#produkt">Produkt verstehen</a><button id="copyLink" class="btn" type="button">Seite teilen</button></div>
+     </div>
+     <aside class="card status-card" aria-label="Status">
+@@ -50,12 +50,12 @@
+     <h2>Verfolgen und reflektieren</h2>
+     <p>Unsere drei redaktionellen Ressorts verbinden aktuelle Entwicklungen mit Primärquellen, nachvollziehbarer Einordnung und konkreten Entscheidungen.</p>
+     <div class="grid three">
+-      <article class="card"><h3><a href="/news/#zutrittskontrolle">Hochsicherheits-Zutrittskontrolle</a></h3><p>Kritische Infrastruktur, Standards, Produktarchitektur sowie Safety und Security.</p></article>
+-      <article class="card"><h3><a href="/news/#kuenstliche-intelligenz">Künstliche Intelligenz</a></h3><p>KI-Browser, persönliche Assistenten, überprüfbare Fähigkeiten und verantwortbare Wirkungen.</p></article>
+-      <article class="card"><h3><a href="/news/#physik">Aktuelle physikalische Erkenntnisse</a></h3><p>Quantenfundamente, Zeit, Kausalität und experimentell prüfbare Messprotokolle.</p></article>
++      <article class="card"><h3><a href="news/#zutrittskontrolle">Hochsicherheits-Zutrittskontrolle</a></h3><p>Kritische Infrastruktur, Standards, Produktarchitektur sowie Safety und Security.</p></article>
++      <article class="card"><h3><a href="news/#kuenstliche-intelligenz">Künstliche Intelligenz</a></h3><p>KI-Browser, persönliche Assistenten, überprüfbare Fähigkeiten und verantwortbare Wirkungen.</p></article>
++      <article class="card"><h3><a href="news/#physik">Aktuelle physikalische Erkenntnisse</a></h3><p>Quantenfundamente, Zeit, Kausalität und experimentell prüfbare Messprotokolle.</p></article>
+     </div>
+-    <p><a class="btn" href="/news/universaler-transputer/">Aktueller Beitrag: Alles ist ein universaler Transputer</a></p>
+-    <p><a class="btn" href="/news/">Themen und Reflexionen lesen</a></p>
++    <p><a class="btn" href="news/universaler-transputer/">Aktueller Beitrag: Alles ist ein universaler Transputer</a></p>
++    <p><a class="btn" href="news/">Themen und Reflexionen lesen</a></p>
+   </div>
+ </section>
+ <section id="produkt" class="section">
+diff --git a/public/news/index.html b/public/news/index.html
+index caa1e78..32e7992 100644
+--- a/public/news/index.html
++++ b/public/news/index.html
+@@ -3,30 +3,72 @@
+ <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Raumzeit Terminal Verlag · Themen und Reflexionen</title><meta name="description" content="Dauerhafte Ressorts zu Hochsicherheits-Zutrittskontrolle, künstlicher Intelligenz und aktuellen physikalischen Erkenntnissen. Primärquellen, Einordnung und offene Fragen."><link rel="stylesheet" href="../assets/css/qikvrt.css"><link rel="canonical" href="https://raumzeitterminal.de/news/"></head>
+ <body>
+ <a class="skip" href="#main">Zum Inhalt springen</a>
+-<header class="topbar"><div class="wrap nav"><a class="brand" href="../">Raumzeit Terminal Verlag</a><nav class="navlinks" aria-label="Themennavigation"><a href="#zutrittskontrolle">Zutrittskontrolle</a><a href="#kuenstliche-intelligenz">Künstliche Intelligenz</a><a href="#physik">Physik</a><a href="#redaktion">Redaktioneller Maßstab</a></nav></div></header>
++<header class="topbar"><div class="wrap nav"><a class="brand" href="../">Raumzeit Terminal Verlag</a><nav class="navlinks" aria-label="Themennavigation"><a href="#zutrittskontrolle">Zutrittskontrolle</a><a href="#kuenstliche-intelligenz">Künstliche Intelligenz</a><a href="#physik">Physik</a><a href="#publikationsnachweise">Publikationsnachweise</a><a href="#redaktion">Redaktioneller Maßstab</a></nav></div></header>
+ <main id="main" class="section"><div class="wrap">
+   <span class="eyebrow">Raumzeit Terminal Verlag · Dauerhafte Themenblöcke</span>
+   <h1>Themen und Reflexionen</h1>
+   <p class="lead">Wir verfolgen Hochsicherheits-Zutrittskontrolle, künstliche Intelligenz und aktuelle physikalische Erkenntnisse als permanente redaktionelle Schwerpunkte. Wir betrachten neue Entwicklungen im Zusammenhang und fragen, welche belastbaren Erkenntnisse und praktischen Entscheidungen daraus folgen.</p>
+-  <p class="mini">Redaktionelle Themenfestlegung: Ingolf Lohmann · 12. Oktober 2026. Die Festlegung der Ressorts ist getrennt vom Veröffentlichungsdatum einzelner Beiträge.</p>
++  <p class="mini">Themenauftrag: Ingolf Lohmann · 30. September 2026. Webstruktur: 12. Oktober 2026. Die Festlegung der Ressorts ist getrennt vom Veröffentlichungsdatum einzelner Beiträge.</p>
+   <section id="zutrittskontrolle" class="section" aria-labelledby="zutritt-title">
+     <span class="eyebrow">Ressort 01 · Safety und Security</span><h2 id="zutritt-title">Hochsicherheits-Zutrittskontrolle</h2>
+     <p>Standards, regulatorische Anforderungen und Produktarchitekturen für kritische Infrastruktur: sichere Leser- und Controller-Kommunikation, Identitäten und Credentials, Schlüsselverwaltung, Firmware, Updates und nachvollziehbare Ereignisprotokolle.</p>
+     <p>Im Mittelpunkt stehen der Betrieb bei Netz- und Cloud-Ausfall, Redundanz und das Zusammenspiel von Zutrittsschutz, Fluchtwegen und Notfallbetrieb. Marktbewegungen werden danach eingeordnet, wie sie Lieferfähigkeit, Produktlebenszyklus, Abhängigkeiten und Beschaffung verändern.</p>
+     <p class="notice">Prüffrage: Welche konkret belegte Änderung beeinflusst die Architektur, die Abnahme oder eine Produktentscheidung? Herstellerwerbung und Zertifizierung mit ihrem tatsächlich geprüften Geltungsbereich werden gesondert ausgewiesen.</p>
++
++    <div class="card" aria-label="Publikationsnachweise Hochsicherheits-Zutrittskontrolle"><h3>Quellen und Nachweise</h3>
++      <p class="mini">In diesem Ressort ist noch kein eigenständiger Fachbeitrag veröffentlicht. Die folgenden Quellen dienen der Einordnung des Nachweismaßstabs.</p>
++      <article data-publication-source="zenodo-21515074" data-evidence-class="NORMATIVE_SOURCE">
++        <p class="mini"><strong>Normativer Maßstab</strong> · Ingolf Lohmann · 2026-07-23 · Version 1.0.0-2026-07-23</p>
++        <h4>Charta einer maschinenprüfbaren Wissenschaft</h4><p>Maßstab für nachvollziehbare Nachweise; keine Zertifizierung eines Zutrittskontrollprodukts.</p>
++        <p class="mini"><a href="https://zenodo.org/records/21515074">https://zenodo.org/records/21515074</a> · DOI <a href="https://doi.org/10.5281/zenodo.21515074">10.5281/zenodo.21515074</a></p>
++      </article>
++    </div>
+   </section>
+   <section id="kuenstliche-intelligenz" class="section" aria-labelledby="ki-title">
+     <span class="eyebrow">Ressort 02 · Künstliche Kognition</span><h2 id="ki-title">Künstliche Intelligenz</h2>
+     <p>KI-Browser, persönliche Assistenten, Modelle und ausführende Agenten: Wir reflektieren Fähigkeiten, Grenzen, offene Schnittstellen, Identitäts- und Berechtigungsmodelle sowie die Verantwortung für tatsächlich ausgeführte Wirkungen.</p>
+     <p>Zu den Entscheidungsthemen gehören messbarer Nutzen, Datenschutz, Sicherheit, Betrieb und Updates, Anbieterabhängigkeit sowie Änderungen an Preis, Paketierung und Lizenzmodell. Ein angekündigtes Leistungsversprechen wird anhand seines konkreten Tests oder seiner beobachteten Anwendung bewertet.</p>
+     <p class="notice">Prüffrage: Was kann die Anwendung unter benannten Bedingungen nachweislich leisten, und welche Konsequenzen hat das für Menschen, Produktgestaltung und Betrieb?</p>
++
++    <div class="card" aria-label="Publikationsnachweise Künstliche Intelligenz"><h3>Quellen und Nachweise</h3>
++      <p class="mini">In diesem Ressort ist noch kein eigenständiger Fachbeitrag veröffentlicht. Die folgenden Quellen dienen der Einordnung des Nachweismaßstabs.</p>
++      <article data-publication-source="zenodo-23008704" data-evidence-class="TECHNICAL_RESULT">
++        <p class="mini"><strong>Belegtes technisches Ergebnis</strong> · Ingolf Lohmann · 2026-09-28 · Version 0.1-20260928</p>
++        <h4>Spur halten: Quality Gates für einen portablen Universal Transputer</h4><p>Archivierte technische Tests am dort gebundenen historischen Stand; kein Nachweis eines messbaren KI-Produktnutzens.</p>
++        <p class="mini"><a href="https://zenodo.org/records/23008704">https://zenodo.org/records/23008704</a> · DOI <a href="https://doi.org/10.5281/zenodo.23008704">10.5281/zenodo.23008704</a></p>
++      </article>
++    </div>
+   </section>
+   <section id="physik" class="section" aria-labelledby="physik-title">
+     <span class="eyebrow">Ressort 03 · Physikalische Erkenntnisse</span><h2 id="physik-title">Aktuelle Physik und Quantenfundamente</h2>
+     <p>Neue physikalische Erkenntnisse, Zeitordnung, Kausalität, Quantenfundamente und Messprotokolle: Wir verfolgen Originalarbeiten und fragen nach experimentell prüfbaren Aussagen, Reproduzierbarkeit und unabhängiger Bestätigung.</p>
+     <p>Formale Modellresultate, Hypothesen, Simulationen, Messungen und wissenschaftlicher Konsens erhalten jeweils ihren eigenen Evidenzstatus. Die Verbindung zur Informatik und zu QIK-VRT wird anhand ihrer konkreten Voraussetzungen und offenen Nachweispflichten reflektiert.</p>
+-    <article class="card"><p class="mini">12. Oktober 2026 · These und Einordnung</p><h3><a href="universaler-transputer/">Alles ist ein universaler Transputer</a></h3><p>Ingolf Lohmanns Leitthese, ihre Modellgrenzen und die Beständigkeit evidenzgeschlossener Begründungspfade. Mit sichtbaren Zenodo-Quellen.</p></article>
+-    <article class="card"><p class="mini">10. Oktober 2026 · Kommentar</p><h3><a href="physics-nobel-2026-decay-continuity/">Zeit, Zerfall und Versiegelung</a></h3><p>Was radioaktiver Zerfall und eine 25-Jahres-Nachversiegelung gemeinsam haben — und warum ihre Unterschiede genauso wichtig sind. DE · EN · FR · RU · FA · ZH; Lang- und Kurzfassung.</p></article>
++    <article class="card"><p class="mini">12. Oktober 2026 · Autorenthese und redaktionelle Einordnung</p><h3><a href="universaler-transputer/">Alles ist ein universaler Transputer</a></h3><p>Ingolf Lohmanns Leitthese, ihre Modellgrenzen und die Beständigkeit evidenzgeschlossener Begründungspfade. Mit sichtbaren Zenodo-Quellen.</p></article>
++    <article class="card"><p class="mini">10. Oktober 2026 · Redaktionelle Einordnung</p><h3><a href="physics-nobel-2026-decay-continuity/">Zeit, Zerfall und Versiegelung</a></h3><p>Was radioaktiver Zerfall und eine 25-Jahres-Nachversiegelung gemeinsam haben — und warum ihre Unterschiede genauso wichtig sind. DE · EN · FR · RU · FA · ZH; Lang- und Kurzfassung.</p></article>
++
++    <div class="card" aria-label="Publikationsnachweise Aktuelle Physik und Quantenfundamente"><h3>Quellen und Nachweise</h3>
++      <article data-publication-source="zenodo-21888130" data-evidence-class="FORMAL_MODEL_RESULT">
++        <p class="mini"><strong>Formales Modellresultat</strong> · Ingolf Lohmann · 2026-08-08 · Version 1.0.0-candidate.1</p>
++        <h4>Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP</h4><p>Einstieg in den Round Trip mit benannten Modellgrenzen; physikalische Identifikation gesondert prüfen.</p>
++        <p class="mini"><a href="https://zenodo.org/records/21888130">https://zenodo.org/records/21888130</a> · DOI <a href="https://doi.org/10.5281/zenodo.21888130">10.5281/zenodo.21888130</a></p>
++      </article>
++      <article data-publication-source="zenodo-22907018" data-evidence-class="SCIENTIFIC_HYPOTHESIS">
++        <p class="mini"><strong>Wissenschaftliche Hypothese</strong> · Ingolf Lohmann · 2026-09-23 · Version 2026-09-23-qik-scientific-revision</p>
++        <h4>Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit</h4><p>Operationales Rahmenmodell; Postulate, Interpretation und offene physikalische Nachweispflichten bleiben getrennt.</p>
++        <p class="mini"><a href="https://zenodo.org/records/22907018">https://zenodo.org/records/22907018</a> · DOI <a href="https://doi.org/10.5281/zenodo.22907018">10.5281/zenodo.22907018</a></p>
++      </article>
++      <article data-publication-source="zenodo-22283396" data-evidence-class="SCIENTIFIC_HYPOTHESIS">
++        <p class="mini"><strong>Wissenschaftliche Hypothese</strong> · Ingolf Lohmann · 2026-09-03 · Version 1.0.0-candidate.1</p>
++        <h4>From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law</h4><p>Falsifizierbare Planck-Tick-Hypothese mit Modellableitung; unabhängige empirische Bestätigung bleibt offen.</p>
++        <p class="mini"><a href="https://zenodo.org/records/22283396">https://zenodo.org/records/22283396</a> · DOI <a href="https://doi.org/10.5281/zenodo.22283396">10.5281/zenodo.22283396</a></p>
++      </article>
++    </div>
++  </section>
++  <section id="publikationsnachweise" class="section" aria-labelledby="nachweise-title">
++    <span class="eyebrow">Bestand und Geltungsbereich</span><h2 id="nachweise-title">Publikationsnachweise</h2>
++    <p>Die Rubriken verbinden vorhandene Artikel mit ihren Originalmetadaten und archivierten Quellen. Technische Tests, formale Modellresultate, wissenschaftliche Hypothesen, normative Maßstäbe und redaktionelle Einordnungen werden getrennt gekennzeichnet. Ein Themenverweis beschreibt einen Leseweg; er beweist keine Abhängigkeit und bestätigt keine physikalische Aussage.</p>
++    <p><a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html">Vorhandener Repository-Publikationsatlas</a> · <a href="https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.json">Maschinenlesbarer Publikationsindex</a> · <a href="topics.json">Themen, Artikelzuordnung und Evidenzklassen</a></p>
++    <p class="mini">Die beiden veröffentlichten Artikel behalten ihre Inhalte, Sprachvarianten, Daten und kanonischen Adressen. Originalmetadaten: <a href="universaler-transputer/index.json">Alles ist ein universaler Transputer</a> · <a href="physics-nobel-2026-decay-continuity/index.json">Zeit, Zerfall und Versiegelung</a>.</p>
+   </section>
+   <section id="redaktion" class="section" aria-labelledby="redaktion-title">
+     <span class="eyebrow">Gemeinsamer redaktioneller Maßstab</span><h2 id="redaktion-title">Nachsehen, einordnen, weiterdenken</h2>
+diff --git a/public/news/topics.json b/public/news/topics.json
+index b88321d..e0d6aa8 100644
+--- a/public/news/topics.json
++++ b/public/news/topics.json
+@@ -9,9 +9,72 @@
+     "artificial_cognitive_contribution": "Ausformulierung der Ressortbeschreibungen, Redaktionskriterien und Website-Integration."
+   },
+   "topics": [
+-    {"id": "zutrittskontrolle", "title": "Hochsicherheits-Zutrittskontrolle", "href": "/news/#zutrittskontrolle", "permanent": true, "scope": ["Kritische Infrastruktur", "Standards und Regulierung", "Produktarchitektur", "Safety/Security Engineering", "Identitäten und Credentials", "Schlüsselverwaltung", "Firmware und Updates", "Ausfallbetrieb und Redundanz", "Fluchtwege und Notfallbetrieb", "Relevante Marktbewegungen"]},
+-    {"id": "kuenstliche-intelligenz", "title": "Künstliche Intelligenz", "href": "/news/#kuenstliche-intelligenz", "permanent": true, "scope": ["KI-Browser und persönliche Assistenten", "Modelle und Agenten", "Schnittstellen und Interoperabilität", "Identitäten und Berechtigungen", "Messbarer Nutzen", "Datenschutz und Sicherheit", "Anbieterabhängigkeit", "Preis, Paketierung und Lizenzmodelle"]},
+-    {"id": "physik", "title": "Aktuelle Physik und Quantenfundamente", "href": "/news/#physik", "permanent": true, "scope": ["Aktuelle physikalische Erkenntnisse", "Zeitordnung und Kausalität", "Quantenfundamente", "Experimentell prüfbare Messprotokolle", "Reproduzierbarkeit", "Unabhängige Bestätigung", "Modell- und Evidenzgrenzen"]}
++    {
++      "id": "zutrittskontrolle",
++      "title": "Hochsicherheits-Zutrittskontrolle",
++      "href": "/news/#zutrittskontrolle",
++      "permanent": true,
++      "scope": [
++        "Kritische Infrastruktur",
++        "Standards und Regulierung",
++        "Produktarchitektur",
++        "Safety/Security Engineering",
++        "Identitäten und Credentials",
++        "Schlüsselverwaltung",
++        "Firmware und Updates",
++        "Ausfallbetrieb und Redundanz",
++        "Fluchtwege und Notfallbetrieb",
++        "Relevante Marktbewegungen"
++      ],
++      "publication_source_ids": [
++        "zenodo-21515074"
++      ],
++      "article_ids": []
++    },
++    {
++      "id": "kuenstliche-intelligenz",
++      "title": "Künstliche Intelligenz",
++      "href": "/news/#kuenstliche-intelligenz",
++      "permanent": true,
++      "scope": [
++        "KI-Browser und persönliche Assistenten",
++        "Modelle und Agenten",
++        "Schnittstellen und Interoperabilität",
++        "Identitäten und Berechtigungen",
++        "Messbarer Nutzen",
++        "Datenschutz und Sicherheit",
++        "Anbieterabhängigkeit",
++        "Preis, Paketierung und Lizenzmodelle"
++      ],
++      "publication_source_ids": [
++        "zenodo-23008704"
++      ],
++      "article_ids": []
++    },
++    {
++      "id": "physik",
++      "title": "Aktuelle Physik und Quantenfundamente",
++      "href": "/news/#physik",
++      "permanent": true,
++      "scope": [
++        "Aktuelle physikalische Erkenntnisse",
++        "Zeitordnung und Kausalität",
++        "Quantenfundamente",
++        "Experimentell prüfbare Messprotokolle",
++        "Reproduzierbarkeit",
++        "Unabhängige Bestätigung",
++        "Modell- und Evidenzgrenzen"
++      ],
++      "publication_source_ids": [
++        "zenodo-21888130",
++        "zenodo-22907018",
++        "zenodo-22283396"
++      ],
++      "article_ids": [
++        "universaler-transputer",
++        "physics-nobel-2026-decay-continuity"
++      ]
++    }
+   ],
+   "editorial_requirements": {
+     "prefer_primary_sources": true,
+@@ -28,5 +91,129 @@
+     "status": "EDITORIAL_TOPICS_ESTABLISHED",
+     "automatic_article_publication_verified": false,
+     "rule": "Neue Beiträge benötigen Quellenprüfung und die für ihren Inhalt geltende Veröffentlichungsfreigabe. Die Ressortfestlegung allein belegt keine automatische Veröffentlichung."
+-  }
++  },
++  "owner_topic_decision_on": "2026-09-30",
++  "updated_on": "2026-10-12",
++  "publication_index": {
++    "html": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html",
++    "json": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.json",
++    "repository_snapshot_observed": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
++    "boundary": "Der Repository-Atlas und der vollständigere verifizierte Zenodo-Katalog haben unterschiedliche Bestände. Ein Themenverweis ist keine bewiesene Abhängigkeit.",
++    "local_alias": "/publications/",
++    "alias_resolution": "TEMPORARY_REDIRECT_TO_EXISTING_REPOSITORY_INDEX"
++  },
++  "evidence_classes": {
++    "TECHNICAL_RESULT": "Belegtes technisches Ergebnis",
++    "FORMAL_MODEL_RESULT": "Formales Modellresultat",
++    "SCIENTIFIC_HYPOTHESIS": "Wissenschaftliche Hypothese",
++    "EDITORIAL_INTERPRETATION": "Redaktionelle Einordnung",
++    "NORMATIVE_SOURCE": "Normativer Maßstab"
++  },
++  "publication_sources": [
++    {
++      "id": "zenodo-21515074",
++      "author": "Ingolf Lohmann",
++      "title": "Charta einer maschinenprüfbaren Wissenschaft",
++      "record_url": "https://zenodo.org/records/21515074",
++      "doi": "10.5281/zenodo.21515074",
++      "evidence_class": "NORMATIVE_SOURCE",
++      "scope": "Maßstab für nachvollziehbare Nachweise; keine Zertifizierung eines Zutrittskontrollprodukts.",
++      "catalog_version": "2026-10-11.1",
++      "evidence_boundary": "Die Charta setzt Anforderungen. Sie beweist nicht automatisch die Wahrheit beliebiger gespeicherter Inhalte oder die Erfüllung sämtlicher Anforderungen durch eine konkrete Plattform.",
++      "publication_date": "2026-07-23",
++      "version": "1.0.0-2026-07-23"
++    },
++    {
++      "id": "zenodo-23008704",
++      "author": "Ingolf Lohmann",
++      "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
++      "record_url": "https://zenodo.org/records/23008704",
++      "doi": "10.5281/zenodo.23008704",
++      "evidence_class": "TECHNICAL_RESULT",
++      "scope": "Archivierte technische Tests am dort gebundenen historischen Stand; kein Nachweis eines messbaren KI-Produktnutzens.",
++      "catalog_version": "2026-10-11.1",
++      "evidence_boundary": "Die zehn vollständigen Ziel-Gates sind in diesem Audit nicht geschlossen. Loopback ist kein Test getrennter Hosts; Codegröße ist keine Gesamt-RAM-, Transistor- oder Hardwarefreigabe. Distribution, Browser, vollständiger Recovery-Pfad und physische Realisierung behalten eigene Nachweispflichten.",
++      "publication_date": "2026-09-28",
++      "version": "0.1-20260928"
++    },
++    {
++      "id": "zenodo-21888130",
++      "author": "Ingolf Lohmann",
++      "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
++      "record_url": "https://zenodo.org/records/21888130",
++      "doi": "10.5281/zenodo.21888130",
++      "evidence_class": "FORMAL_MODEL_RESULT",
++      "scope": "Einstieg in den Round Trip mit benannten Modellgrenzen; physikalische Identifikation gesondert prüfen.",
++      "catalog_version": "2026-10-11.1",
++      "evidence_boundary": "Die physikalische Identifikation der Architektur, ein empirisch gebundenes c und die vollständige Ableitung bekannter Physik bleiben offen. 70.439 inventarisierte Claims sind keine 70.439 bewiesenen Theoreme; der historische Korpus führt 1.262 OPEN-Claims. Die Schließung historischer Korrekturdiagnosen schließt diese offenen Claims nicht.",
++      "publication_date": "2026-08-08",
++      "version": "1.0.0-candidate.1"
++    },
++    {
++      "id": "zenodo-22907018",
++      "author": "Ingolf Lohmann",
++      "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
++      "record_url": "https://zenodo.org/records/22907018",
++      "doi": "10.5281/zenodo.22907018",
++      "evidence_class": "SCIENTIFIC_HYPOTHESIS",
++      "scope": "Operationales Rahmenmodell; Postulate, Interpretation und offene physikalische Nachweispflichten bleiben getrennt.",
++      "catalog_version": "2026-10-11.1",
++      "evidence_boundary": "Keine abgeschlossene Quantengravitation oder Ableitung neuer Naturgesetze. Diskretheit, Planck-Auflösung, dynamischer Einstein-Grenzfall und vollständige Quantenkorrelationsstruktur bedürfen weiterer Begründung.",
++      "publication_date": "2026-09-23",
++      "version": "2026-09-23-qik-scientific-revision"
++    },
++    {
++      "id": "zenodo-22283396",
++      "author": "Ingolf Lohmann",
++      "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
++      "record_url": "https://zenodo.org/records/22283396",
++      "doi": "10.5281/zenodo.22283396",
++      "evidence_class": "SCIENTIFIC_HYPOTHESIS",
++      "scope": "Falsifizierbare Planck-Tick-Hypothese mit Modellableitung; unabhängige empirische Bestätigung bleibt offen.",
++      "catalog_version": "2026-10-11.1",
++      "evidence_boundary": "Der universelle Planck-Tick ist ein physikalisches Postulat; die Werte von c, hbar und G sind verwendete Eingaben. Die Vorhersage ist nicht empirisch bestätigt oder unabhängig reproduziert. Sie erledigt den Vorhersageteil von H5-O05 teilweise, nicht dessen experimentellen Teil.",
++      "publication_date": "2026-09-03",
++      "version": "1.0.0-candidate.1"
++    }
++  ],
++  "articles": [
++    {
++      "id": "universaler-transputer",
++      "href": "universaler-transputer/",
++      "metadata_href": "universaler-transputer/index.json",
++      "title": "Alles ist ein universaler Transputer",
++      "date": "2026-10-12",
++      "classification": "AUTHOR_THESIS_WITH_SOURCE_BOUND_MODEL_SCOPE",
++      "canonical_url": "https://raumzeitterminal.de/news/universaler-transputer/",
++      "languages": [
++        "de"
++      ],
++      "variants": [
++        "full"
++      ],
++      "metadata_sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a"
++    },
++    {
++      "id": "physics-nobel-2026-decay-continuity",
++      "href": "physics-nobel-2026-decay-continuity/",
++      "metadata_href": "physics-nobel-2026-decay-continuity/index.json",
++      "title": "Zeit, Zerfall und Versiegelung",
++      "date": "2026-10-10",
++      "classification": "COMMENTARY_ANALYSIS",
++      "canonical_url": "https://raumzeitterminal.de/news/physics-nobel-2026-decay-continuity/",
++      "languages": [
++        "de",
++        "en",
++        "fr",
++        "ru",
++        "fa",
++        "zh"
++      ],
++      "variants": [
++        "full",
++        "short"
++      ],
++      "metadata_sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817"
++    }
++  ]
+ }
+diff --git a/scripts/verify-evidence.mjs b/scripts/verify-evidence.mjs
+index c7df6d1..22840e5 100644
+--- a/scripts/verify-evidence.mjs
++++ b/scripts/verify-evidence.mjs
+@@ -271,3 +271,16 @@ const cyclic = { ...legacyView, output: { cached_output: null, originally_observ
+ assert.throws(() => localRead("read AI", null, [{ ...history[0], output: cyclic }]), /widersprüchlich/);
+ assert.throws(() => localRead("read AI", null, [{ ...history[0], output: { ...legacyView, output: { cached_output: originalDocument, originally_observed_at: "invalid" } } }]), /widersprüchlich/);
+ console.log("PASS: legacy nested readback recovery and rejection of cyclic or invalid-time provenance.");
++
++// Shared navigation/metadata/frozen-original invariants, also exercised by repository CI.
++const { execFileSync } = await import('node:child_process');
++execFileSync('python3', ['tests/test_editorial_navigation.py'], { stdio: 'inherit' });
++const redirectJs = ts.transpileModule(readFileSync('app/publications/route.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
++writeFileSync('.sites-runtime/verification/publications-route.mjs', redirectJs);
++const atlasRedirect = await import(pathToFileURL(resolve('.sites-runtime/verification/publications-route.mjs')));
++for (const handler of [atlasRedirect.GET, atlasRedirect.HEAD]) {
++  const result = handler();
++  assert.equal(result.status, 302);
++  assert.equal(result.headers.get('location'), 'https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html');
++}
++console.log('PASS: retained article atlas links resolve through bounded GET/HEAD redirects to the existing publication index.');
+diff --git a/state/work_units/QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_20261012_V1.json b/state/work_units/QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_20261012_V1.json
+new file mode 100644
+index 0000000..3ff6f34
+--- /dev/null
++++ b/state/work_units/QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_20261012_V1.json
+@@ -0,0 +1,124 @@
++{
++  "schema": "QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_V1",
++  "human_actor": "Ingolf Lohmann",
++  "human_contribution": "Drei Themenrubriken vom 30. September 2026 und aktueller Abgleich-, Navigations-, Test- und Veröffentlichungsauftrag.",
++  "artificial_cognitive_contribution": "Bestandsabgleich, Quellenverknüpfung, Metadatenzuordnung, Navigation und Konsistenztests.",
++  "source_system": "OpenAI Codex / GPT-6",
++  "existing_site_project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
++  "baseline_site_version": 24,
++  "baseline_site_source_commit": "1934454fe1e978dc0951c8b0f9c1139bf669b803",
++  "baseline_origin_news_http_status": 200,
++  "baseline_origin_news_byte_exact": true,
++  "repository": "ingolf-lohmann/qik-vrt",
++  "mirror": "Goldkelch/qik-vrt",
++  "github_route": "REST_API_ONLY",
++  "baseline_main_head": "eceb9b636b59643d40272e24a6493a4edd2a4fe2",
++  "baseline_main_tree": "e436ca6f80185d9fe264f1491d2bce232ae68b11",
++  "baseline_pr": 519,
++  "baseline_pr_head": "1e3c0af8c841813188754e682f852b7b5c15934f",
++  "baseline_pr_tree": "2c94433a457246ba24ef6aa0ad0e39e08114ba01",
++  "comparison": {
++    "site24_topics": [
++      "zutrittskontrolle",
++      "kuenstliche-intelligenz",
++      "physik"
++    ],
++    "site24_articles": [
++      "universaler-transputer",
++      "physics-nobel-2026-decay-continuity"
++    ],
++    "pr519_articles": [
++      "physics-nobel-2026-decay-continuity"
++    ],
++    "main_news_index_present": false,
++    "pr519_comment_source_visibility": "Site24 already includes three visible copyable source URLs absent from PR519. The published Site24 HTML is adopted verbatim; all six language sections and scientific originals are preserved."
++  },
++  "preserved_article_files": {
++    "news/physics-nobel-2026-decay-continuity/index.json": {
++      "sha256": "eca3d08d31faf8661ec70166bfb158f6b9d36a52b8f24bd22a23803966600817",
++      "bytes": 1479
++    },
++    "news/physics-nobel-2026-decay-continuity/index.html": {
++      "sha256": "ccd3145febe973b2797209a0c51937afebcb7967291054de7d9b9bbdce40b01e",
++      "bytes": 31779
++    },
++    "news/universaler-transputer/article.txt": {
++      "sha256": "7d80ebf647cbf0a74594659e7d44c5ba344810a6531c83fc061a4c095be51048",
++      "bytes": 1903
++    },
++    "news/universaler-transputer/index.json": {
++      "sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a",
++      "bytes": 3354
++    },
++    "news/universaler-transputer/index.html": {
++      "sha256": "58c27c1be12c31e5aff4957e8f0024f227c67ba996f00a56b5cad1dc3c98c808",
++      "bytes": 4335
++    }
++  },
++  "scope": "Navigation, Nachweiszuordnung und bestehende Publikationsstruktur; keine Änderung wissenschaftlich eingefrorener Originale.",
++  "new_site_created": false,
++  "scientific_originals_modified": false,
++  "acceptance_boundary": "Site-Veröffentlichung, unabhängiger Origin-Readback, Repository-Integration und raumzeitterminal.de-Auslieferung sind getrennte Nachweise.",
++  "zenodo_metadata_readback": {
++    "observed_at_utc": "2026-10-12T17:36:51.138549+00:00",
++    "records": [
++      {
++        "record_id": 21515074,
++        "http_status": 200,
++        "doi": "10.5281/zenodo.21515074",
++        "title": "Charta einer maschinenprüfbaren Wissenschaft",
++        "publication_date": "2026-07-23",
++        "version": "1.0.0-2026-07-23",
++        "metadata_sha256": "005edc6f4a882c256442cec4ee8b2d3a9c10924e532e1dd077fefcfacdc7e4a7",
++        "public_file_count": 1
++      },
++      {
++        "record_id": 23008704,
++        "http_status": 200,
++        "doi": "10.5281/zenodo.23008704",
++        "title": "Spur halten: Quality Gates für einen portablen Universal Transputer",
++        "publication_date": "2026-09-28",
++        "version": "0.1-20260928",
++        "metadata_sha256": "3ae9faf485cd01f61de5c8ffb437bd8846ee42bf0b80821746b618cd392343ae",
++        "public_file_count": 15
++      },
++      {
++        "record_id": 22907018,
++        "http_status": 200,
++        "doi": "10.5281/zenodo.22907018",
++        "title": "Quantität–Information–Kausalität (QIK): Ein operationales Rahmenmodell für Ereignisstruktur, Kausalordnung und emergente Raumzeit",
++        "publication_date": "2026-09-23",
++        "version": "2026-09-23-qik-scientific-revision",
++        "metadata_sha256": "fdfe33ed37314c97baac68ff9619e991a4f373b43a4abb25ed7d72dcb196616d",
++        "public_file_count": 8
++      },
++      {
++        "record_id": 22283396,
++        "http_status": 200,
++        "doi": "10.5281/zenodo.22283396",
++        "title": "From Exact Causal Binding to a Falsifiable Planck-Tick Gap Law",
++        "publication_date": "2026-09-03",
++        "version": "1.0.0-candidate.1",
++        "metadata_sha256": "d46a00f7a1186bf8f3081268adc68dd11ef2d69322eaaeaae9f238921bc38508",
++        "public_file_count": 6
++      },
++      {
++        "record_id": 21888130,
++        "http_status": 200,
++        "doi": "10.5281/zenodo.21888130",
++        "title": "Von Softwarearchitektur zur Weltformel – DAS UNIVERSUM ALS ROUND TRIP",
++        "publication_date": "2026-08-08",
++        "version": "1.0.0-candidate.1",
++        "metadata_sha256": "39e0b3192f9544ca8a0cde3773f0bee71c94df5f121dad10736b5100cf9f71f2",
++        "public_file_count": 54
++      }
++    ],
++    "fresh_local_lean_execution": false,
++    "scope": "Published metadata for navigation; the previous byte-verified catalog retains its exact original evidence scope."
++  },
++  "existing_article_navigation_repair": {
++    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/publications/",
++    "observed_final_http_status": 404,
++    "repair": "Temporary redirect to the existing repository publication index, without modifying article bytes."
++  }
++}
+diff --git a/tests/test_editorial_navigation.py b/tests/test_editorial_navigation.py
+new file mode 100644
+index 0000000..91bf2a9
+--- /dev/null
++++ b/tests/test_editorial_navigation.py
+@@ -0,0 +1,213 @@
++# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
++# Copyright 2026 Ingolf Lohmann.
++"""Validate the same permanent publication navigation in Site/public or Repo/docs."""
++from __future__ import annotations
++import hashlib
++from html.parser import HTMLParser
++import json
++import os
++from pathlib import Path
++import shutil
++import tempfile
++import unittest
++from urllib.parse import urljoin, urlsplit
++
++ROOT = Path(__file__).resolve().parents[1]
++CONTENT = Path(os.environ.get('QIKVRT_EDITORIAL_ROOT', str(ROOT / ('public' if (ROOT / 'public/news/topics.json').is_file() else 'docs')))).resolve()
++BINDING = ROOT / 'state/work_units/QIKVRT_EDITORIAL_TOPICS_ALIGNMENT_20261012_V1.json'
++EXPECTED_TOPICS = {'zutrittskontrolle', 'kuenstliche-intelligenz', 'physik'}
++CLASSES = {'TECHNICAL_RESULT', 'FORMAL_MODEL_RESULT', 'SCIENTIFIC_HYPOTHESIS', 'EDITORIAL_INTERPRETATION', 'NORMATIVE_SOURCE'}
++
++class Page(HTMLParser):
++    def __init__(self, text):
++        super().__init__()
++        self.ids, self.links, self.sources, self.canonical = [], [], {}, None
++        self.current_source = None
++        self.feed(text)
++
++    def handle_starttag(self, tag, attrs):
++        attrs = dict(attrs)
++        if attrs.get('id'):
++            self.ids.append(attrs['id'])
++        if tag == 'a':
++            self.links.append(attrs.get('href', ''))
++        if tag == 'link' and attrs.get('rel') == 'canonical':
++            self.canonical = attrs.get('href')
++        if attrs.get('data-publication-source'):
++            sid = attrs['data-publication-source']
++            assert sid not in self.sources, 'duplicate source display'
++            self.sources[sid] = {'class': attrs.get('data-evidence-class'), 'text': ''}
++            self.current_source = sid
++
++    def handle_endtag(self, tag):
++        if tag == 'article':
++            self.current_source = None
++
++    def handle_data(self, data):
++        if self.current_source:
++            self.sources[self.current_source]['text'] += data
++
++
++def validate(content: Path, binding: dict, project_root: Path = ROOT):
++    home = Page((content / 'index.html').read_text())
++    news = Page((content / 'news/index.html').read_text())
++    manifest = json.loads((content / 'news/topics.json').read_text())
++    topics = manifest['topics']
++    assert len(topics) == 3 and {t['id'] for t in topics} == EXPECTED_TOPICS
++    assert len(news.ids) == len(set(news.ids)), 'duplicate anchor'
++    assert news.canonical == 'https://raumzeitterminal.de/news/'
++    home_targets = {urlsplit(urljoin('https://example.invalid/', h)).path + ('#' + urlsplit(h).fragment if urlsplit(h).fragment else '') for h in home.links}
++    assert '/news/' in home_targets, 'missing homepage news navigation'
++    for topic in topics:
++        assert topic['permanent'] is True
++        assert topic['href'] == '/news/#' + topic['id']
++        assert topic['id'] in news.ids, 'missing topic target'
++        assert topic['href'] in home_targets, 'missing homepage topic link'
++        assert '#' + topic['id'] in news.links, 'missing topic menu link'
++    for href in news.links:
++        target = urlsplit(urljoin('https://example.invalid/news/', href))
++        if target.hostname != 'example.invalid':
++            continue
++        path = content / target.path.lstrip('/')
++        if target.path.endswith('/'):
++            path /= 'index.html'
++        assert path.is_file(), f'broken local link: {href}'
++        if target.fragment:
++            assert target.fragment in Page(path.read_text()).ids, f'broken fragment: {href}'
++    assert set(manifest['evidence_classes']) == CLASSES
++    source_ids = [s['id'] for s in manifest['publication_sources']]
++    assert len(source_ids) == len(set(source_ids)), 'duplicate publication source'
++    assert set(source_ids) == set(news.sources), 'source visibility mismatch'
++    assigned_sources = [sid for t in topics for sid in t['publication_source_ids']]
++    assert sorted(assigned_sources) == sorted(source_ids), 'missing or repeated source assignment'
++    for source in manifest['publication_sources']:
++        display = news.sources[source['id']]
++        assert source['evidence_class'] in CLASSES
++        assert display['class'] == source['evidence_class'], 'evidence class mismatch'
++        assert manifest['evidence_classes'][source['evidence_class']] in display['text'], 'hidden evidence label'
++        assert source['scope'] in display['text'], 'hidden scope boundary'
++        assert source['record_url'] in display['text'] and source['record_url'] in news.links, 'hidden source URL'
++        assert source['doi'] in display['text'] and 'https://doi.org/' + source['doi'] in news.links, 'hidden DOI'
++        assert source['evidence_boundary'], 'missing archival boundary'
++        assert source['publication_date'] in display['text'], 'hidden source publication date'
++        assert source['version'] in display['text'], 'hidden source version'
++    for key in ['html', 'json']:
++        assert manifest['publication_index'][key] in news.links, 'missing publication atlas navigation'
++    articles = manifest['articles']
++    ids = [a['id'] for a in articles]
++    assert len(ids) == len(set(ids)), 'duplicate article identity'
++    assert len({a['canonical_url'] for a in articles}) == len(articles), 'duplicate canonical article'
++    assert sorted(aid for t in topics for aid in t['article_ids']) == sorted(ids), 'inconsistent article assignment'
++    actual_metadata = {p.parent.name for p in (content / 'news').glob('*/index.json')}
++    assert actual_metadata == set(ids), 'unindexed or duplicate article page'
++    for article in articles:
++        metadata_file = content / 'news' / article['metadata_href']
++        metadata = json.loads(metadata_file.read_text())
++        assert hashlib.sha256(metadata_file.read_bytes()).hexdigest() == article['metadata_sha256'], 'article metadata changed'
++        for key in ['id', 'date', 'classification', 'canonical_url', 'languages', 'variants']:
++            assert article[key] == metadata[key], 'article index metadata drift: ' + key
++        assert article['title'] == metadata['title_de']
++        assert article['href'] in news.links and article['metadata_href'] in news.links
++        assert Page((content / 'news' / article['href'] / 'index.html').read_text()).canonical == metadata['canonical_url']
++    # Audit links from the retained articles too, including their historical atlas URL.
++    for article in articles:
++        base = 'https://example.invalid/news/' + article['href']
++        article_page = Page((content / 'news' / article['href'] / 'index.html').read_text())
++        for href in article_page.links:
++            target = urlsplit(urljoin(base, href))
++            if target.hostname != 'example.invalid':
++                continue
++            path = content / target.path.lstrip('/')
++            if target.path.endswith('/'):
++                path /= 'index.html'
++            if not path.is_file() and target.path.rstrip('/') == '/publications':
++                assert manifest['publication_index']['local_alias'] == '/publications/'
++                route = project_root / 'app/publications/route.ts'
++                assert route.is_file(), 'missing historical publication-index alias'
++                assert manifest['publication_index']['html'] in route.read_text(), 'publication alias target drift'
++                continue
++            assert path.is_file(), f'broken retained article navigation: {href}'
++            if target.fragment:
++                assert target.fragment in Page(path.read_text()).ids, 'broken retained article fragment'
++    for relative, expected in binding['preserved_article_files'].items():
++        data = (content / relative).read_bytes()
++        assert len(data) == expected['bytes'] and hashlib.sha256(data).hexdigest() == expected['sha256'], 'frozen article bytes changed: ' + relative
++    return manifest
++
++
++class EditorialNavigationTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.binding = json.loads(BINDING.read_text())
++
++    def fixture(self, directory):
++        path = Path(directory)
++        shutil.copytree(CONTENT / 'news', path / 'news')
++        shutil.copy2(CONTENT / 'index.html', path / 'index.html')
++        if (CONTENT / 'publications').is_dir():
++            shutil.copytree(CONTENT / 'publications', path / 'publications')
++        elif (ROOT / 'app/publications').is_dir():
++            shutil.copytree(ROOT / 'app/publications', path / 'app/publications')
++        if (CONTENT / 'terminal').is_dir():
++            shutil.copytree(CONTENT / 'terminal', path / 'terminal')
++        return path
++
++    def bad_manifest(self, change):
++        with tempfile.TemporaryDirectory() as directory:
++            path = self.fixture(directory)
++            file = path / 'news/topics.json'
++            manifest = json.loads(file.read_text())
++            change(manifest)
++            file.write_text(json.dumps(manifest))
++            with self.assertRaises((AssertionError, KeyError, FileNotFoundError)):
++                validate(path, self.binding, path)
++
++    def test_live_source_navigation_metadata_and_frozen_bytes(self):
++        validate(CONTENT, self.binding)
++
++    def test_missing_topic_target_rejected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = self.fixture(directory)
++            file = path / 'news/index.html'
++            file.write_text(file.read_text().replace('id="physik"', 'id="other"'))
++            with self.assertRaises(AssertionError):
++                validate(path, self.binding, path)
++
++    def test_evidence_class_inflation_rejected(self):
++        self.bad_manifest(lambda m: m['publication_sources'][0].update(evidence_class='EMPIRICALLY_CONFIRMED'))
++
++    def test_duplicate_publication_source_rejected(self):
++        self.bad_manifest(lambda m: m['publication_sources'].append(m['publication_sources'][0]))
++
++    def test_duplicate_article_identity_rejected(self):
++        self.bad_manifest(lambda m: m['articles'].append(m['articles'][0]))
++
++    def test_article_metadata_drift_rejected(self):
++        self.bad_manifest(lambda m: m['articles'][0].update(date='2000-01-01'))
++
++    def test_missing_atlas_link_rejected(self):
++        self.bad_manifest(lambda m: m['publication_index'].update(html='https://example.invalid/missing-atlas'))
++
++    def test_source_class_mismatch_rejected(self):
++        self.bad_manifest(lambda m: m['publication_sources'][1].update(evidence_class='SCIENTIFIC_HYPOTHESIS'))
++
++    def test_missing_article_atlas_destination_rejected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = self.fixture(directory)
++            for target in [path / 'publications', path / 'app/publications']:
++                if target.is_dir():
++                    shutil.rmtree(target)
++            with self.assertRaises((AssertionError, KeyError)):
++                validate(path, self.binding, path)
++
++    def test_frozen_article_mutation_rejected(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = self.fixture(directory)
++            file = path / 'news/universaler-transputer/article.txt'
++            file.write_bytes(file.read_bytes() + b'changed')
++            with self.assertRaises(AssertionError):
++                validate(path, self.binding, path)
++
++
++if __name__ == '__main__':
++    unittest.main()
