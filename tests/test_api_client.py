@@ -412,6 +412,57 @@ print(json.dumps({"exit": result, "posts": sum(r.get_method() == "POST" for r in
     def continuation_work(self) -> dict:
         return json.loads((Path(self.state_dir) / "CONTINUATION.data").read_text())
 
+    def test_interrupted_intent_is_inherited_even_when_next_request_changes(self) -> None:
+        opener, requests = self.transport()
+        original = opener.open.side_effect
+        interrupt = True
+
+        def interrupted(request, **kwargs):
+            if interrupt and request.get_method() == "POST":
+                requests.append(request)
+                raise KeyboardInterrupt()
+            return original(request, **kwargs)
+
+        opener.open.side_effect = interrupted
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            with self.assertRaises(KeyboardInterrupt):
+                self.invoke_actual_client("--artifact-id", "interrupted-task")
+            intent = next(Path(self.state_dir).glob("*.json"))
+            old_key = json.loads(intent.read_text())["subject_key"]
+            self.assertEqual(json.loads(intent.read_text())["status"], "in_flight")
+            interrupt = False
+            self.invoke_actual_client("--artifact-id", "new-task-after-interruption")
+        tasks = self.continuation_work()["work"]
+        old = next((task for task in tasks if task["id"] == "api:" + old_key), None)
+        self.assertIsNotNone(old, "Interrupted predecessor intent was silently dropped")
+        self.assertEqual(old["state"], "OPEN")
+        self.assertEqual(sum(request.get_method() == "POST" for request in requests), 2)
+        self.assertEqual(json.loads(intent.read_text())["status"], "in_flight")
+
+    def test_history_write_failure_does_not_drop_failed_work_on_changed_request(self) -> None:
+        opener, _ = self.transport(failure=True)
+        writer = client.atomic_write_bytes
+        writes = 0
+
+        def fail_history(*args, **kwargs):
+            nonlocal writes
+            writes += 1
+            if writes == 3:
+                raise OSError("fixture:history write unavailable")
+            return writer(*args, **kwargs)
+
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener), \
+                mock.patch.object(client, "atomic_write_bytes", side_effect=fail_history):
+            self.assertEqual(self.invoke_actual_client("--artifact-id", "failed-history-task"), 1)
+        record = json.loads(next(Path(self.state_dir).glob("*.json")).read_text())
+        old_key = record["subject_key"]
+        self.assertEqual(record["status"], "failed")
+        with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):
+            self.invoke_actual_client("--artifact-id", "changed-after-history-failure")
+        old = next((task for task in self.continuation_work()["work"] if task["id"] == "api:" + old_key), None)
+        self.assertIsNotNone(old, "Failed predecessor was dropped after work persistence failed")
+        self.assertEqual(old["state"], "OPEN")
+
     def test_failed_run_open_work_is_inherited_by_noop_successor(self) -> None:
         opener, requests = self.transport(failure=True)
         with mock.patch.object(client.urllib.request, "build_opener", return_value=opener):

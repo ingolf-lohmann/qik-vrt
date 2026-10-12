@@ -531,5 +531,65 @@
     "scope": "Current actual CLI under deterministic HTTP/decoder fixtures. Main integration, real vendor-session adoption and exact-host public working-software effect remain separate.",
     "effect_state": "EFFECT_ACK_CONTINUE",
     "ordinary_release": false
+  },
+  "interrupted_run_work_recovery": {
+    "owner_rule": "Predecessor failures, omissions and gaps become successor tasks",
+    "source_head": "13a1a3bce2e3dd6c2cde018d4a58a67a6fc926bf",
+    "source_tree": "f4dec871cd089a02910c9716df71f06128351d30",
+    "observed_gap": "A pre-POST intent or failed journal can exist without CONTINUATION.data after interruption or a work-history write failure. A changed next request previously omitted that open predecessor.",
+    "red_regression": {
+      "tests": 27,
+      "failures": 2,
+      "expected_failures": 0,
+      "filename": "resume-red-regressions.log",
+      "bytes": 6546,
+      "sha256": "854c324fad7b83dcd8d6dad2d6312f45f9da93b533585e46253736e32555d5f4"
+    },
+    "repair": "Recover the existing digest-named durable journals under the existing lock before dispatch; retain unresolved intent and missing repository duties, keep exact-host delivery OPEN, bind each recovered journal digest and preserve no-repeat/ambiguous-effect controls. Add non-secret request metadata to the existing reservation.",
+    "reuse": [
+      "Existing API client and journal schema",
+      "Existing no-follow file reads and private atomic writer",
+      "Existing process lock and shared work validator",
+      "Existing unittest/Makefile/native workflows"
+    ],
+    "new_executor": false,
+    "new_workflow": false,
+    "new_trigger": false,
+    "force_push": false,
+    "ordinary_release": false,
+    "local_tests": {
+      "tests": 82,
+      "transport_tests": 27,
+      "shared_receipt_tests": 55,
+      "failures": 0,
+      "expected_failures": 0,
+      "filename": "resume-scoped-tests.log",
+      "bytes": 14853,
+      "sha256": "772cd1d3843a9ffd0ee297f9cd5f4ea67bc32fe15bf9d7d1ba1b292e2b208ca2"
+    },
+    "native_exact_successor_suite": "PENDING",
+    "source_bindings": [
+      {
+        "path": "scripts/qikvrt_api_client.py",
+        "bytes": 29914,
+        "sha256": "75457af2017cd3dab7c6e8df744dbe7f2bbf190a31e86163f8a394b76721e051",
+        "git_blob_sha1": "1bff5b7feb4de77e11e27b7aa8fd05e4af8c059b"
+      },
+      {
+        "path": "tests/test_api_client.py",
+        "bytes": 27916,
+        "sha256": "cf88c278a4eb7483b02aae417a1e79fc5737c9e08a61fb6c0e17ce4ae9c17dc4",
+        "git_blob_sha1": "e779fae80d23322f52704c38bfa6fbeb7c3c41f0"
+      }
+    ],
+    "limits": [
+      "Deterministic actual-CLI fixtures, not productive vendor sessions",
+      "Private state directory scope; metadata reconstruction is not native effect proof",
+      "Protected Main and exact-host delivery remain OPEN"
+    ],
+    "provenance": {
+      "human": "Ingolf Lohmann: continuing Owner rule and existing authorization",
+      "artificial_cognitive": "Codex: two ordinary red counterexamples, bounded recovery in existing client, regression execution and exact REST successor"
+    }
   }
 }

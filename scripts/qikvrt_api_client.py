@@ -38,6 +38,7 @@ SHA1_HEX = re.compile(r"^[0-9a-f]{40}$")
 JOURNAL_SCHEMA = "qikvrt-api-client-attempt/1"
 WORK_SCHEMA = "qikvrt-api-client-work/1"
 MAX_WORK_BYTES = 128 * 1024
+MAX_RECOVERY_JOURNALS = 256
 
 
 class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -188,6 +189,78 @@ def load_previous_work(root: Path) -> dict | None:
     return previous
 
 
+def recover_journal_work(root: Path, previous: dict | None, domain: str) -> dict | None:
+    """Recover open duties even if a crash prevented the last-work cursor.
+
+    The pre-POST journal is the durable authority for unresolved intent. A
+    missing work projection is never permission to forget it or redispatch it.
+    This reads only the existing digest-named journal namespace under its lock.
+    """
+    work = {task["id"]: dict(task) for task in previous["work"]} if previous else {}
+    sources = []
+    for path in sorted(root.glob("*.json")):
+        if not SHA256_HEX.fullmatch(path.stem):
+            continue
+        if len(sources) >= MAX_RECOVERY_JOURNALS:
+            raise ValueError("journal recovery limit exceeded; no predecessor discarded")
+        _assert_safe_target(path)
+        if path.stat().st_nlink != 1:
+            raise OSError("recovery journal must be a single-link regular file")
+        raw = read_regular_file(path, max_bytes=16 * 1024)
+        try:
+            record = unique_json(raw)
+        except RecursionError as exc:
+            raise ValueError("recovery journal JSON nesting exceeds the decoder limit") from exc
+        if (not isinstance(record, dict) or record.get("schema") != JOURNAL_SCHEMA
+                or record.get("subject_key") != path.stem
+                or record.get("status") not in ("in_flight", "failed", "ambiguous", "completed", "pending")
+                or not isinstance(record.get("current"), dict)
+                or record["current"].get("subject") != path.stem):
+            raise ValueError("invalid recovery journal binding")
+        client_causal_key(record["current"])
+        source = {"state_file": path.name, "sha256": hashlib.sha256(raw).hexdigest(),
+                  "status": record["status"]}
+        sources.append(source)
+        if record["status"] != "completed":
+            identifier = "api:" + path.stem
+            task = dict(work.get(identifier, {}))
+            task.update(id=identifier, state="OPEN", evidence="", state_file=path.name,
+                        source_record_sha256=source["sha256"], source_status=record["status"],
+                        next_action="Resolve the original durable intent or failure in " + path.name
+                                    + "; observe its effect before any admitted retry")
+            work[identifier] = task
+        closing_receipt = record.get("closing_verification", {})
+        if not isinstance(closing_receipt, dict) or not isinstance(closing_receipt.get("readback", {}), dict):
+            raise ValueError("invalid recovery closing receipt")
+        closing = closing_receipt.get("readback", {}).get("repository", {})
+        metadata = record.get("request_metadata", {})
+        if not isinstance(closing, dict) or not isinstance(metadata, dict):
+            raise ValueError("invalid recovery repository or request metadata")
+        repository, ref = closing.get("repository", metadata.get("repository")), closing.get("ref", metadata.get("ref"))
+        exact = (isinstance(closing.get("head"), str) and SHA1_HEX.fullmatch(closing["head"])
+                 and isinstance(closing.get("tree"), str) and SHA1_HEX.fullmatch(closing["tree"])
+                 and "error_category" not in closing)
+        if not exact:
+            known = (isinstance(repository, str) and isinstance(ref, str) and repository and ref)
+            identifier = "repository:" + repository + "@" + ref if known else "repository-intent:" + path.stem
+            work[identifier] = {"id": identifier, "state": "OPEN", "evidence": "",
+                                "state_file": path.name, "source_record_sha256": source["sha256"],
+                                "next_action": "Recover the original repository/ref and obtain its missing fresh HEAD/TREE readback using " + path.name}
+    if not sources:
+        return previous
+    work["delivery:" + domain] = {"id": "delivery:" + domain, "state": "OPEN", "evidence": "",
+                                   "next_action": "Verify Working Software, TLS and exact-build delivery at https://" + domain + "/"}
+    recovered = dict(previous) if previous else {"schema": WORK_SCHEMA, "state": "CONTINUE",
+                                                "execution_id": "durable-intents:" + digest(sources)}
+    recovered["work"] = list(work.values())
+    recovered["recovery_sources"] = sources
+    recovered["recovery_scope"] = "DURABLE_METADATA_RECONSTRUCTION_NOT_EFFECT_PROOF"
+    validate_client_work(recovered)
+    if len(json.dumps(recovered, sort_keys=True).encode("utf-8")) > MAX_WORK_BYTES:
+        raise ValueError("recovered work exceeds the bounded state limit; no tasks discarded")
+    return recovered
+
+
 def persist_successor_work(root: Path, args, *, subject_key: str, record: dict,
                            closure: dict, action_id: str, domain: str,
                            previous: dict | None) -> dict:
@@ -252,7 +325,7 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
     path = root / (subject_key + ".json")
     _assert_safe_target(path)
     with _exclusive_integrity_lock(root):
-        previous_work = load_previous_work(root)
+        previous_work = recover_journal_work(root, load_previous_work(root), domain)
         previous = None
         if path.exists():
             if path.stat().st_nlink != 1:
@@ -290,7 +363,9 @@ def dispatch_with_journal(opener, request, args, *, subject_key: str, receipt: d
                 return 1
         record = {"schema": JOURNAL_SCHEMA, "subject_key": subject_key,
                   "current": current, "status": "in_flight",
-                  "request_id": args.request_id}
+                  "request_id": args.request_id, "execution_id": action_id,
+                  "request_metadata": {"repository": f"{args.owner}/{args.repo}", "ref": args.ref,
+                                       "operation": args.operation, "artifact_id": args.artifact_id}}
 
         def save():
             atomic_write_bytes(path, json.dumps(record, sort_keys=True).encode("utf-8"))
