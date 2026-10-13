@@ -27,6 +27,7 @@ import urllib.request
 import uuid
 import zipfile
 import io
+import ipaddress
 
 REPOSITORY = "ingolf-lohmann/qik-vrt"
 IMAGE = "ghcr.io/ingolf-lohmann/qik-vrt-s1"
@@ -545,6 +546,22 @@ def public_readback(value, package):
             "native_multi_node_acceptance": False}
 
 
+def smoke_origin(inspected, network):
+    """Use the running fixture's isolated bridge address, never a public route."""
+    require(inspected.get("State", {}).get("Running") is True, "SMOKE_CONTAINER_EXITED")
+    require(inspected.get("HostConfig", {}).get("NetworkMode") == network,
+            "EXACT_INTERNAL_FIXTURE_NETWORK_REQUIRED")
+    address = inspected.get("NetworkSettings", {}).get("Networks", {}).get(network, {}).get("IPAddress", "")
+    try:
+        value = ipaddress.IPv4Address(address)
+    except ipaddress.AddressValueError:
+        raise ValueError("INTERNAL_FIXTURE_IPV4_REQUIRED") from None
+    require(any(value in ipaddress.IPv4Network(block) for block in
+                ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16")),
+            "PRIVATE_INTERNAL_FIXTURE_ADDRESS_REQUIRED")
+    return "http://" + str(value) + ":8080"
+
+
 def smoke(image, output):
     """Real unprivileged container, independent S1 readback and durable restart."""
     output = Path(output).absolute()
@@ -580,10 +597,16 @@ def smoke(image, output):
                 "--shm-size", "256m", "--tmpfs", "/tmp:rw,noexec,nosuid,size=768m,mode=1777",
                 "--mount", "type=volume,source=" + config_volume + ",target=/run/qikvrt,readonly",
                 "--mount", "type=volume,source=" + state_volume + ",target=/var/lib/qikvrt/node",
-                "-p", "127.0.0.1::8080", image, "--config", "/run/qikvrt/config.json", "--manifest-sha256", pin)
+                image, "--config", "/run/qikvrt/config.json", "--manifest-sha256", pin)
         inspected = json.loads(command("docker", "inspect", name))[0]
-        port = inspected["NetworkSettings"]["Ports"]["8080/tcp"][0]["HostPort"]
-        origin = "http://127.0.0.1:" + port
+        write_receipt(output / "smoke-fixture-network.json", {
+            "state":"ISOLATED_FIXTURE_NETWORK_OBSERVED", "running":inspected.get("State", {}).get("Running"),
+            "network_mode":inspected.get("HostConfig", {}).get("NetworkMode"),
+            "ports":inspected.get("NetworkSettings", {}).get("Ports"),
+            "networks":{key:{"IPAddress":value.get("IPAddress")} for key,value in
+                        inspected.get("NetworkSettings", {}).get("Networks", {}).items()},
+            "scope":"DISPOSABLE_CI_FIXTURE_ONLY", "public_production_verified":False})
+        origin = smoke_origin(inspected, network)
         def ready():
             for attempt in range(60):
                 state = json.loads(command("docker", "inspect", name))[0]["State"]

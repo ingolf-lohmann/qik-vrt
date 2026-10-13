@@ -51,6 +51,17 @@ def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", lay
 
 
 class ContainerControls(unittest.TestCase):
+    def test_isolated_smoke_uses_exact_running_private_bridge_without_port_publication(self):
+        network="disposable-ci-net"
+        def metadata(address="172.20.0.2", running=True, mode=network):
+            return {"State":{"Running":running}, "HostConfig":{"NetworkMode":mode},
+                    "NetworkSettings":{"Ports":{}, "Networks":{network:{"IPAddress":address}}}}
+        self.assertEqual(c.smoke_origin(metadata(), network), "http://172.20.0.2:8080")
+        for value in (metadata(running=False), metadata(mode="host"), metadata(address="8.8.8.8"),
+                      metadata(address="127.0.0.1"), metadata(address=""), metadata(address="169.254.1.1")):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                c.smoke_origin(value, network)
+
     def test_oci_checks_all_layers(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "image.tar"

@@ -68,6 +68,22 @@
       "source_tree": "8bc7f9b3352f2b352e6b65fffee275fc4ecde08c",
       "validation": "Affected Bash/YAML and exact UID/GID argument plus restrictive guards verified; existing load identity tests unchanged. Native successor REQUIRED."
     },
+    "oci_converter_read_only_temp_38434640140": {
+      "actual_failure": "initializing source oci-archive:/input.oci.tar: mkdir /var/tmp/container_images_oci2679897582: read-only file system",
+      "causal_fix": "Provide bounded 2GiB /var/tmp and 128MiB /tmp tmpfs mounts in both existing pinned Skopeo invocations. Retain root read-only, runner UID/GID, dropped capabilities, no-new-privileges, original OCI pins, smoke network isolation and protected native publication gates.",
+      "effect_ack_done": false,
+      "job_id": 115427051106,
+      "local_validation": "YAML and complete affected Bash heredocs checked; exact temp paths and bounds asserted. Load identity tests and runtime helper unchanged.",
+      "native_successor": "REQUIRED",
+      "observed_delta": "Output-owner failure is passed; Skopeo's OCI archive source uses /var/tmp. Both local smoke converter and protected publisher use this same pinned source transport.",
+      "protected_publication_executed": false,
+      "public_production_verified": false,
+      "run_id": 38434640140,
+      "source_head": "f9f6f0c7ef731a104af3b24dce8318e73c80843b",
+      "source_parent_head": "40c2c9a4019ca9889804a57651672f414f98cf90",
+      "source_parent_tree": "229aa22c1fb43ba2b18dafde03bd5868d169beaf",
+      "source_tree": "44e0a778b47f37b119b947c786e4a50cdd37e381"
+    },
     "oci_docker_load_format_38431347362": {
       "actual_failure": "docker load: open /var/lib/docker/tmp/docker-import-452906887/blobs/json: no such file or directory",
       "effect_ack_done": false,
@@ -134,22 +150,6 @@
       "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
       "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
       "unchanged_errors_retried": false
-    },
-    "oci_converter_read_only_temp_38434640140": {
-      "run_id": 38434640140,
-      "job_id": 115427051106,
-      "source_head": "f9f6f0c7ef731a104af3b24dce8318e73c80843b",
-      "source_tree": "44e0a778b47f37b119b947c786e4a50cdd37e381",
-      "actual_failure": "initializing source oci-archive:/input.oci.tar: mkdir /var/tmp/container_images_oci2679897582: read-only file system",
-      "observed_delta": "Output-owner failure is passed; Skopeo's OCI archive source uses /var/tmp. Both local smoke converter and protected publisher use this same pinned source transport.",
-      "causal_fix": "Provide bounded 2GiB /var/tmp and 128MiB /tmp tmpfs mounts in both existing pinned Skopeo invocations. Retain root read-only, runner UID/GID, dropped capabilities, no-new-privileges, original OCI pins, smoke network isolation and protected native publication gates.",
-      "source_parent_head": "40c2c9a4019ca9889804a57651672f414f98cf90",
-      "source_parent_tree": "229aa22c1fb43ba2b18dafde03bd5868d169beaf",
-      "local_validation": "YAML and complete affected Bash heredocs checked; exact temp paths and bounds asserted. Load identity tests and runtime helper unchanged.",
-      "native_successor": "REQUIRED",
-      "protected_publication_executed": false,
-      "effect_ack_done": false,
-      "public_production_verified": false
     }
   },
   "domain_observation": {
@@ -218,6 +218,26 @@
       "licensor"
     ]
   },
+  "isolated_fixture_bridge_readback_repair": {
+    "actual_error": "'8080/tcp'",
+    "job_id": 115432977331,
+    "local_zip_original_bytes_verified": true,
+    "native_scope": "The loaded config/digest and ordered filesystem layers were verified; accessing NetworkSettings.Ports[8080/tcp] then failed. No successful native health/terminal/restart acceptance is inferred.",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "negative_controls": "Wrong network, stopped process, missing address, public, loopback and link-local IPs rejected.",
+    "original_artifact_id": 11833357409,
+    "original_fixture_log_bytes": 0,
+    "original_zip_bytes": 389877303,
+    "original_zip_sha256": "028520aff282398ad29dbb7b183834e710306bc8da02b7d31ffedfd952d2117e",
+    "permission_expansion": false,
+    "primary_documentation": "https://docs.docker.com/engine/network/port-publishing/",
+    "public_production_verified": false,
+    "repair": "Read the running fixture's exact private RFC1918 IPv4 address on its already isolated internal bridge. Host-origin readback uses that observed address rather than assuming a published host-port map. Keep internal network, remove unnecessary host port publication, and retain read-only root, user10001, dropped capabilities, no-new-privileges, real native terminal/Firefox and restart controls. Preserve nonsecret actual state/network metadata before admission. Production host deployment routing remains its separate protected contract.",
+    "run_id": 38436396721,
+    "source_parent_head": "34144622585660d4c28776b26ba2c17381b1b44f",
+    "source_parent_tree": "dc288ac41475cc745127b79e967606e883be7dc4",
+    "third_party_report_not_native_diagnosis": true
+  },
   "open_work": [
     {
       "id": "REVIEW_AND_MAIN",
@@ -252,7 +272,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
