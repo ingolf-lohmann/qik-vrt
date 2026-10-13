@@ -10,7 +10,11 @@ import io
 import json
 import os
 import pathlib
+import re
+import subprocess
+import sys
 import tempfile
+import textwrap
 import unittest
 import urllib.error
 import zipfile
@@ -297,5 +301,222 @@ class ArchiveCausalJournalTests(unittest.TestCase):
         with patch.object(probe,'_JOURNAL',None),patch.dict(os.environ,{'GITHUB_ACTIONS':'true','QIKVRT_ARCHIVE_JOURNAL_REPOSITORY':''}),patch.object(probe.urllib.request,'urlopen') as opener:
             with self.assertRaisesRegex(probe.E,'SHARED_JOURNAL_BINDING_MISSING'):probe.get(URL,'application/json',1024)
             opener.assert_not_called()
+
+class ArchiveWorkflowContinuationTests(unittest.TestCase):
+    """Execute existing shell steps; model only their bounded Actions conditions.
+
+    Status-function semantics: https://docs.github.com/en/actions/reference/
+    workflows-and-actions/expressions#status-check-functions
+    Native exact-head job/step readback remains a separate execution witness.
+    """
+    WORKFLOWS = (
+        probe.ROOT / '.github/workflows/qikvrt_batch04_integrity.yml',
+        probe.ROOT / '.github/workflows/qikvrt_batch003_remaining_disposition.yml',
+    )
+    LOCAL_IDS = ('offline_disposition', 'repository_integrity', 'repository_gates')
+
+    @staticmethod
+    def steps(path):
+        text = path.read_text(encoding='utf-8')
+        starts = list(re.finditer(r'^      - ', text, re.M))
+        result = {}
+        for index, match in enumerate(starts):
+            end = starts[index + 1].start() if index + 1 < len(starts) else len(text)
+            block = text[match.start():end]
+            identity = re.search(r'^        id: ([a-z_]+)$', block, re.M)
+            name = block.splitlines()[0].removeprefix('      - name: ')
+            result[identity.group(1) if identity else name] = block
+        return result
+
+    @staticmethod
+    def condition(block):
+        lines = block.splitlines()
+        for index, line in enumerate(lines):
+            if line.startswith('        if: '):
+                value = line.removeprefix('        if: ')
+                if value == '>-':
+                    values = []
+                    for following in lines[index + 1:]:
+                        if not following.startswith('          '):
+                            break
+                        values.append(following.strip())
+                    value = ' '.join(values)
+                return value.removeprefix('${{').removesuffix('}}').strip()
+        return 'success()'
+
+    @classmethod
+    def admitted(cls, block, outcomes, *, cancelled=False):
+        expression = cls.condition(block)
+        success = not cancelled and not any(x == 'failure' for x in outcomes.values())
+        if not re.search(r'\b(?:success|failure|always|cancelled)\(\)', expression) and not success:
+            return False  # GitHub's implicit success() is the original defect.
+        values = []
+        for clause in expression.split(' && '):
+            if clause == '!cancelled()':
+                values.append(not cancelled)
+            elif clause == 'always()':
+                values.append(True)
+            elif clause == 'success()':
+                values.append(success)
+            else:
+                match = re.fullmatch(r"steps\.([a-z_]+)\.outcome == 'success'", clause)
+                if match is None:
+                    raise AssertionError('Unmodelled workflow condition: ' + clause)
+                values.append(outcomes.get(match.group(1)) == 'success')
+        return all(values)
+
+    @staticmethod
+    def shell(block):
+        lines = block.split('        run: |\n', 1)[1].splitlines()
+        body = []
+        for line in lines:
+            if line and not line.startswith('          '):
+                break
+            body.append(line[10:] if line else '')
+        return '\n'.join(body) + '\n'
+
+    def outcomes(self, steps):
+        return {key: 'success' for key in ('checkout', 'target_binding', 'python') if key in steps}
+
+    def run_shell(self, block, root, *, real_python=False, **exits):
+        binaries = root / 'bin'
+        binaries.mkdir(exist_ok=True)
+        if real_python:
+            python = f'#!{sys.executable}\n' + textwrap.dedent('''\
+                import os, runpy, sys, urllib.request
+                sys.path.insert(0, os.getcwd())
+                def no_network(*args, **kwargs):
+                    raise AssertionError('unexpected network in offline/NOOP regression')
+                urllib.request.urlopen = no_network
+                args = sys.argv[1:]
+                if args[0] == '-B':
+                    args.pop(0)
+                if args[0] == '-m':
+                    sys.argv = args[1:]
+                    runpy.run_module(args[1], run_name='__main__')
+                else:
+                    sys.argv = args
+                    runpy.run_path(args[0], run_name='__main__')
+            ''')
+        else:
+            python = '''#!/bin/sh
+printf 'python3 %s\n' "$*" >> "$CALLS"
+case "$*" in
+  *qikvrt_integrity.py*generate*) exit "$GENERATE_EXIT" ;;
+  *qikvrt_integrity.py*verify*) exit "$VERIFY_EXIT" ;;
+  *) exit "$OFFLINE_EXIT" ;;
+esac
+'''
+        for name, source in (
+            ('python3', python),
+            ('make', '#!/bin/sh\nprintf "make %s\\n" "$*" >> "$CALLS"\nexit "$MAKE_EXIT"\n'),
+        ):
+            path = binaries / name
+            path.write_text(source, encoding='utf-8')
+            path.chmod(0o700)
+        env = dict(os.environ, PATH=str(binaries) + os.pathsep + os.environ['PATH'],
+                   RUNNER_TEMP=str(root), CALLS=str(root / 'calls.log'),
+                   GENERATE_EXIT='0', VERIFY_EXIT='0', OFFLINE_EXIT='0', MAKE_EXIT='0',
+                   GITHUB_ACTIONS='false', QIKVRT_ARCHIVE_JOURNAL_REPOSITORY='',
+                   QIKVRT_GITHUB_TOKEN='', QIKVRT_ARCHIVE_SOURCE_HEAD=HEAD,
+                   QIKVRT_ARCHIVE_JOURNAL_DIR=str(root / 'journal'),
+                   QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE='')
+        env.update({key: str(value) for key, value in exits.items()})
+        return subprocess.run(['bash', '-c', self.shell(block)], cwd=probe.ROOT,
+                              env=env, text=True, capture_output=True, timeout=45)
+
+    def test_noop_runs_local_checks_but_never_admits_persistence(self):
+        for path in self.WORKFLOWS:
+            with self.subTest(workflow=path.name):
+                steps = self.steps(path)
+                outcomes = self.outcomes(steps)
+                outcomes['archive_materialization'] = 'failure'
+                archive = steps['archive_materialization']
+                self.assertNotIn('continue-on-error:', archive)
+                self.assertNotRegex(self.shell(archive), r'\|\|\s*(?:true|:)')
+                for identity in self.LOCAL_IDS:
+                    self.assertTrue(self.admitted(steps[identity], outcomes))
+                    outcomes[identity] = 'success'
+                persistence = next(block for name, block in steps.items()
+                                   if name in ('Commit materialized repository evidence', 'Persist exact evidence head'))
+                self.assertFalse(self.admitted(persistence, outcomes))
+                self.assertIn('failure', outcomes.values())
+                # Negative control: the predecessor's default condition skips.
+                self.assertFalse(self.admitted('      - name: predecessor\n', outcomes))
+                outcomes['archive_materialization'] = 'success'
+                self.assertTrue(self.admitted(persistence, outcomes))
+
+    def test_missing_prerequisite_or_cancellation_blocks_local_execution(self):
+        for path in self.WORKFLOWS:
+            steps = self.steps(path)
+            ready = self.outcomes(steps)
+            for identity in self.LOCAL_IDS:
+                for required in ready:
+                    for outcome in ('failure', 'skipped', 'cancelled', '', 'unknown'):
+                        with self.subTest(workflow=path.name, gate=identity, required=required, outcome=outcome):
+                            self.assertFalse(self.admitted(steps[identity], {**ready, required: outcome}))
+                self.assertFalse(self.admitted(steps[identity], ready, cancelled=True))
+
+    def test_other_local_failure_does_not_skip_independent_integrity_or_regressions(self):
+        for path in self.WORKFLOWS:
+            steps = self.steps(path)
+            outcomes = {**self.outcomes(steps), 'archive_materialization': 'failure',
+                        'offline_disposition': 'failure'}
+            self.assertTrue(self.admitted(steps['repository_integrity'], outcomes))
+            outcomes['repository_integrity'] = 'failure'
+            self.assertTrue(self.admitted(steps['repository_gates'], outcomes))
+
+    def test_real_materialization_noop_and_offline_checks_preserve_original_evidence(self):
+        original_paths = [probe.JOURNAL_SEED]
+        seed = json.loads(probe.JOURNAL_SEED.read_bytes())
+        original_paths.extend(probe.ROOT / row['path'] for failure in seed['original_failures']
+                              for row in failure['original_logs'])
+        original = {path: path.read_bytes() for path in original_paths}
+        for path in self.WORKFLOWS:
+            steps = self.steps(path)
+            with tempfile.TemporaryDirectory() as tmp:
+                root = pathlib.Path(tmp)
+                result = self.run_shell(steps['archive_materialization'], root, real_python=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('NOOP_UNCHANGED_ZENODO_FAILURE_OR_UNRESOLVED_GET', result.stdout + result.stderr)
+                observed = json.loads((root / 'journal/OBSERVATION.json').read_bytes())
+                self.assertEqual(observed['external_get_count'], 0)
+                self.assertIs(observed['effect_ack_done'], False)
+                journal_before = {p: p.read_bytes() for p in (root / 'journal').rglob('*') if p.is_file()}
+                checked = self.run_shell(steps['offline_disposition'], root, real_python=True)
+                self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+                for key in ('pass', 'final_pass', 'effect_ack_done',
+                            'zenodo_mutation_authorized', 'proof_corpus_published_on_zenodo'):
+                    self.assertIn('"' + key + '": false', checked.stdout)
+                self.assertEqual(journal_before, {p: p.read_bytes() for p in (root / 'journal').rglob('*') if p.is_file()})
+        self.assertEqual(original, {path: path.read_bytes() for path in original})
+
+    def test_local_shell_failures_propagate_without_status_rewrite(self):
+        cases = (('offline_disposition', 'OFFLINE_EXIT', 17),
+                 ('repository_integrity', 'GENERATE_EXIT', 19),
+                 ('repository_integrity', 'VERIFY_EXIT', 23),
+                 ('repository_gates', 'MAKE_EXIT', 29))
+        for path in self.WORKFLOWS:
+            steps = self.steps(path)
+            for identity, variable, code in cases:
+                with self.subTest(workflow=path.name, gate=identity, failure=variable):
+                    with tempfile.TemporaryDirectory() as tmp:
+                        root = pathlib.Path(tmp)
+                        result = self.run_shell(steps[identity], root, **{variable: code})
+                        self.assertEqual(result.returncode, code, result.stdout + result.stderr)
+                        if variable in ('GENERATE_EXIT', 'MAKE_EXIT'):
+                            self.assertNotIn('qikvrt_integrity.py verify', (root / 'calls.log').read_text())
+
+    def test_diagnostics_remain_always_and_checkout_is_exact_source_bound(self):
+        for path in self.WORKFLOWS:
+            steps = self.steps(path)
+            diagnostics = steps['Preserve archive causal diagnostics even when access is blocked']
+            self.assertTrue(self.admitted(diagnostics, {'checkout': 'failure'}, cancelled=True))
+            self.assertIn('path: .qikvrt/runtime/archive-get-journal/**', diagnostics)
+            self.assertIn('include-hidden-files: true', diagnostics)
+            checkout = steps['checkout']
+            source = 'EXPECTED_HEAD' if path.name == 'qikvrt_batch04_integrity.yml' else 'QIKVRT_ARCHIVE_SOURCE_HEAD'
+            self.assertIn('ref: ${{ env.' + source + ' }}', checkout)
+
 
 if __name__=='__main__':unittest.main()

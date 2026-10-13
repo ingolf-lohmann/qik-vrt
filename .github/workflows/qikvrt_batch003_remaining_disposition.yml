@@ -40,13 +40,16 @@ jobs:
       QIKVRT_ARCHIVE_RETRY_EVIDENCE_FILE: ${{ inputs.archive_retry_evidence_path || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        id: checkout
         with:
-          ref: ${{ env.TARGET_REF }}
+          ref: ${{ env.QIKVRT_ARCHIVE_SOURCE_HEAD }}
           fetch-depth: 0
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        id: python
         with:
           python-version: '3.12'
       - name: Materialize all remaining subject dispositions read-only
+        id: archive_materialization
         shell: bash
         run: |
           set -euo pipefail
@@ -68,24 +71,36 @@ jobs:
           include-hidden-files: true
           path: .qikvrt/runtime/archive-get-journal/**
       - name: Verify deterministic materialization without network
+        id: offline_disposition
+        # Verify committed evidence even after archive HOLD; never claim a new
+        # public readback or hide drift/partial materialization behind success.
+        if: >-
+          !cancelled() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
           python3 -B -m tools.qikvrt_content_disposition_batch_003_remaining_archives --check --json
           python3 -B tools/qikvrt_content_disposition_batch_003_dispatch.py --check-status-projection --json
       - name: Regenerate and verify repository integrity
+        id: repository_integrity
+        if: >-
+          !cancelled() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
           python3 tools/qikvrt_integrity.py generate
           python3 tools/qikvrt_integrity.py verify
       - name: Run complete repository gates
+        id: repository_gates
+        if: >-
+          !cancelled() && steps.checkout.outcome == 'success' && steps.python.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
           make test
           python3 tools/qikvrt_integrity.py verify
       - name: Persist exact evidence head
+        if: ${{ success() }}
         shell: bash
         run: |
           set -euo pipefail
