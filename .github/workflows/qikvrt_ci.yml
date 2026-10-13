@@ -276,7 +276,7 @@ jobs:
           trap 'rm -rf "$load_dir"' EXIT
           docker pull "$loader"
           docker run --rm --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
-            --tmpfs /tmp:rw,nosuid,size=2g \
+            --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
             --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
             --mount "type=bind,source=$load_dir,target=/output" \
             "$loader" copy --format v2s2 oci-archive:/input.oci.tar \
@@ -424,7 +424,7 @@ jobs:
               python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
               docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
                 --user "$(id -u):$(id -g)" --env HOME=/tmp \
-                --tmpfs /tmp:rw,nosuid,size=128m \
+                --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
                 --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
                 --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/image.oci.tar,readonly" \
                 "$publisher" copy --preserve-digests --dest-authfile /auth/config.json \

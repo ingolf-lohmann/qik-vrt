@@ -134,6 +134,22 @@
       "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
       "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
       "unchanged_errors_retried": false
+    },
+    "oci_converter_read_only_temp_38434640140": {
+      "run_id": 38434640140,
+      "job_id": 115427051106,
+      "source_head": "f9f6f0c7ef731a104af3b24dce8318e73c80843b",
+      "source_tree": "44e0a778b47f37b119b947c786e4a50cdd37e381",
+      "actual_failure": "initializing source oci-archive:/input.oci.tar: mkdir /var/tmp/container_images_oci2679897582: read-only file system",
+      "observed_delta": "Output-owner failure is passed; Skopeo's OCI archive source uses /var/tmp. Both local smoke converter and protected publisher use this same pinned source transport.",
+      "causal_fix": "Provide bounded 2GiB /var/tmp and 128MiB /tmp tmpfs mounts in both existing pinned Skopeo invocations. Retain root read-only, runner UID/GID, dropped capabilities, no-new-privileges, original OCI pins, smoke network isolation and protected native publication gates.",
+      "source_parent_head": "40c2c9a4019ca9889804a57651672f414f98cf90",
+      "source_parent_tree": "229aa22c1fb43ba2b18dafde03bd5868d169beaf",
+      "local_validation": "YAML and complete affected Bash heredocs checked; exact temp paths and bounds asserted. Load identity tests and runtime helper unchanged.",
+      "native_successor": "REQUIRED",
+      "protected_publication_executed": false,
+      "effect_ack_done": false,
+      "public_production_verified": false
     }
   },
   "domain_observation": {
@@ -236,7 +252,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
