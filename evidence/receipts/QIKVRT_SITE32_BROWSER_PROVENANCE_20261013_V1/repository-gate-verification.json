@@ -1,0 +1,57 @@
+{
+  "schema": "qikvrt_site32_repository_gate_verification_v1",
+  "verified_at_utc": "2026-10-13T07:44:10.571396+00:00",
+  "exact_gate_inputs": [
+    {
+      "path": "tools/ai_handoff.py",
+      "bytes": 31763,
+      "sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+      "git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d"
+    },
+    {
+      "path": "tests/test_ai_runtime_bootloader.py",
+      "bytes": 31641,
+      "sha256": "1959a827f51ab28b883f76d4fcf06acebcb764633604e9af6c66f0ab2c74fee7",
+      "git_blob_sha1": "b62edb1bf349be4dd58b0c41c500cbb8b0db4a56"
+    },
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "bytes": 46504,
+      "sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+      "git_blob_sha1": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9"
+    },
+    {
+      "path": "tests/test_integrity.py",
+      "bytes": 23990,
+      "sha256": "96b443d26094d87a0937b8c6532115136b84ff26809ef299b0825fe50659ab06",
+      "git_blob_sha1": "2b5545c66a06a98a6bf3e401ae8e43691c50f6c1"
+    }
+  ],
+  "checks": [
+    {
+      "command": "make ai-runtime-contract",
+      "exit_code": 0,
+      "tests": 63,
+      "result": "PASS",
+      "log": {
+        "path": "evidence/receipts/QIKVRT_SITE32_BROWSER_PROVENANCE_20261013_V1/ai-runtime-contract.txt",
+        "bytes": 11866,
+        "sha256": "ecebe1209dac0c9b4ab30b5a3255da9bc399eb1d3b21b65389845ba88408e7d3",
+        "git_blob_sha1": "a0efcbf41fb00248868cde42375e144af9275b11"
+      }
+    },
+    {
+      "command": "make integrity",
+      "exit_code": 0,
+      "contract_tests": 11,
+      "result": "PASS",
+      "log": {
+        "path": "evidence/receipts/QIKVRT_SITE32_BROWSER_PROVENANCE_20261013_V1/integrity.txt",
+        "bytes": 344,
+        "sha256": "791104f531408ef66dfb68c747bfd171f75af417c090164b8ec2f8e048710268",
+        "git_blob_sha1": "ce08704761c055da78cf30120189bcffaa38a844"
+      }
+    }
+  ],
+  "scope": "Existing candidate contracts before final evidentiary metadata freeze; final deterministic integrity regeneration follows. Browser/provider results are separately source-bound; no native or offline-process-restart PASS."
+}

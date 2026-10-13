@@ -1,0 +1,203 @@
+diff --git a/lib/offline-client-hosting.ts b/lib/offline-client-hosting.ts
+index 6742a9a..a631f9d 100644
+--- a/lib/offline-client-hosting.ts
++++ b/lib/offline-client-hosting.ts
+@@ -1,7 +1,8 @@
+ /// <reference types="vite/client" />
+ // SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+ // Copyright 2026 Ingolf Lohmann. Hosting adapter: OpenAI Codex.
+-// Reuse unchanged client bytes from GitHub artifact 11483896058.
++// Reuse the client from GitHub artifact 11483896058. SOURCE.json separately
++// binds the readiness successor; upstream browser results do not transfer.
+ import readme from "../public/offline/README.md?raw";
+ import source from "../public/offline/SOURCE.json?raw";
+ import client from "../public/offline/client.js?raw";
+diff --git a/public/offline/README.md b/public/offline/README.md
+index 327355a..2c592aa 100644
+--- a/public/offline/README.md
++++ b/public/offline/README.md
+@@ -6,6 +6,13 @@ Die Produktion benötigt keinen CDN, Server-Speicher, Token oder Scheduler.
+ GitHub wird nur nach ausdrücklichem Klick lesend beobachtet. Offline-Beobachtungen
+ behalten ihren Zeitpunkt; sie werden nie als frischer Live-Status ausgegeben.
+ 
++Der Hosting-Nachfolger vom 13. Oktober 2026 bindet die Offline-Bereitschaft an
++den Worker der tatsächlich registrierten Offline-Shell. Ein zuvor aktiver
++Mesh-Monitor-Worker darf diese Prüfung nicht übernehmen. `SOURCE.json` trennt
++den unveränderten nativen Vorgänger von den geänderten Client- und Cachebytes.
++Die nativen Chromium-/WebKit-Ergebnisse des Vorgängers gelten weiter nur für
++seine Originalbytes; der Nachfolger benötigt seine eigene Browserprüfung.
++
+ ## Einrichtung
+ 
+ 1. Den bereitgestellten HTTPS-Einstieg auf jedem iPhone in Safari öffnen.
+diff --git a/public/offline/SOURCE.json b/public/offline/SOURCE.json
+index f020c97..1dfa20d 100644
+--- a/public/offline/SOURCE.json
++++ b/public/offline/SOURCE.json
+@@ -1 +1 @@
+-{"actual_iphone_devices_tested":false,"files":{"README.md":{"bytes":7824,"sha256":"2153e2b7d035a9321af746328a5fe9c0617f8287036b45e3a94eb239eaa4e4b8"},"client.js":{"bytes":16603,"sha256":"08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211"},"git-hash.js":{"bytes":3134,"sha256":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"},"icon.svg":{"bytes":332,"sha256":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"},"index.html":{"bytes":1043,"sha256":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"},"manifest.webmanifest":{"bytes":262,"sha256":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"},"package.json":{"bytes":145,"sha256":"f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8"},"repository.js":{"bytes":16647,"sha256":"cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"},"service-worker.js":{"bytes":2858,"sha256":"959b6c051f67a921a0796d67eb5cf73ac858b229c80deb917501cf83367dd947"},"static-server.mjs":{"bytes":1565,"sha256":"b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca"},"style.css":{"bytes":2455,"sha256":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"},"vendor/REACT_LICENSE.txt":{"bytes":1088,"sha256":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"},"vendor/react-runtime.js":{"bytes":571915,"sha256":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"}},"first_install_requires_https":true,"main_effect":false,"native_review":false,"repository":"ingolf-lohmann/qik-vrt","schema":"qikvrt-offline-client-source/v1","source_head":"ad47e6386536abdca5d5ba025832b27718ee66dd","source_tree":"3af7d383933a8972469f48928a800aa6c06031d4"}
++{"actual_iphone_devices_tested":false,"derivation":{"changed_files":["README.md","client.js","service-worker.js"],"id":"PERSONAL_OFFLINE_REGISTERED_WORKER_READINESS_20261013","implementation_contribution":"OpenAI Codex","native_browser_pass_transfer":false,"requirements_and_authorization":"Ingolf Lohmann","scope":"REGISTERED_WORKER_ACTIVATION_AND_INTEGRITY_READINESS; NO_STORAGE_SCHEMA_CHANGE"},"files":{"README.md":{"bytes":8296,"sha256":"9d6a65da1aced1d24a3822e45c62587727476d13c44c21138c74a3f1d248f9c9"},"client.js":{"bytes":17031,"sha256":"6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3"},"git-hash.js":{"bytes":3134,"sha256":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"},"icon.svg":{"bytes":332,"sha256":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"},"index.html":{"bytes":1043,"sha256":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"},"manifest.webmanifest":{"bytes":262,"sha256":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"},"package.json":{"bytes":145,"sha256":"f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8"},"repository.js":{"bytes":16647,"sha256":"cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"},"service-worker.js":{"bytes":2858,"sha256":"8bf7706b8a2600a58808886ddfc99302453f73ad6e1d83ad002e782b372ee151"},"static-server.mjs":{"bytes":1565,"sha256":"b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca"},"style.css":{"bytes":2455,"sha256":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"},"vendor/REACT_LICENSE.txt":{"bytes":1088,"sha256":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"},"vendor/react-runtime.js":{"bytes":571915,"sha256":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"}},"first_install_requires_https":true,"main_effect":false,"native_review":false,"repository":"ingolf-lohmann/qik-vrt","schema":"qikvrt-offline-client-derived-source/v1","site_source_parent":"4179d18907e71da125ba51a1a7250dfea82590e6","upstream":{"original_files":{"README.md":{"bytes":7824,"sha256":"2153e2b7d035a9321af746328a5fe9c0617f8287036b45e3a94eb239eaa4e4b8"},"client.js":{"bytes":16603,"sha256":"08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211"},"git-hash.js":{"bytes":3134,"sha256":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb"},"icon.svg":{"bytes":332,"sha256":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53"},"index.html":{"bytes":1043,"sha256":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3"},"manifest.webmanifest":{"bytes":262,"sha256":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad"},"package.json":{"bytes":145,"sha256":"f7e988855ba0859e142c6a19bb9b84a2d7a2d62aa0d726e72e8f30fa11d361a8"},"repository.js":{"bytes":16647,"sha256":"cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c"},"service-worker.js":{"bytes":2858,"sha256":"959b6c051f67a921a0796d67eb5cf73ac858b229c80deb917501cf83367dd947"},"static-server.mjs":{"bytes":1565,"sha256":"b6e14d3eca626d93f74f55fcdf96842777ed0720152c299bc7b3d238e6006aca"},"style.css":{"bytes":2455,"sha256":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6"},"vendor/REACT_LICENSE.txt":{"bytes":1088,"sha256":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"},"vendor/react-runtime.js":{"bytes":571915,"sha256":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"}},"original_source_json_sha256":"246ec794f705b7b66f679dce057c91fd68b0b0ead51c21c81e2eeb0e898ec67e","repository":"ingolf-lohmann/qik-vrt","source_head":"ad47e6386536abdca5d5ba025832b27718ee66dd","source_tree":"3af7d383933a8972469f48928a800aa6c06031d4"}}
+diff --git a/public/offline/client.js b/public/offline/client.js
+index 460f254..7bb0296 100644
+--- a/public/offline/client.js
++++ b/public/offline/client.js
+@@ -5,9 +5,13 @@ const {React,ReactDOM}=globalThis.QikvrtReact,h=React.createElement;
+ const messages={CONCURRENT_REPOSITORY_CHANGE:'Ein anderer Tab hat den Arbeitsstand verändert. Lade den aktuellen Stand erneut; dein Text bleibt hier erhalten.',ARCHIVE_CONTENT_DIGEST_MISMATCH:'Die übertragenen Inhaltsbytes stimmen nicht mit ihrer Prüfsumme überein. Der aktuelle Arbeitsstand bleibt erhalten.',INCOMPLETE_ARCHIVE:'Die Übertragung ist unvollständig. Der aktuelle Arbeitsstand bleibt erhalten.',REPOSITORY_IDENTITY_MISMATCH:'Diese Datei gehört zu einem anderen Repository. Sie ersetzt diesen Arbeitsraum nicht.',OFFLINE_STORAGE_QUOTA:'Der Browser hat nicht genügend lokalen Speicher freigegeben. Der letzte bestätigte Arbeitsstand bleibt erhalten.',SECURE_BROWSER_STORAGE_REQUIRED:'Öffne diesen Client über HTTPS. Für die erste Einrichtung werden ein sicherer Origin und Browser-Speicher benötigt.',MERGE_CONFLICT_REQUIRES_DECISION:'Wähle für jede widersprüchliche Datei den zu bewahrenden Stand.',NO_COMMON_ANCESTOR:'Die Gerätestände haben keinen gemeinsamen Vorfahren. Exportiere beide getrennt; es erfolgt kein Überschreiben.'};
+ const explain=e=>messages[e.message]||'Vorgang angehalten: '+e.message+'. Der zuletzt bestätigte Arbeitsstand bleibt erhalten.';
+ const bytes=n=>new Intl.NumberFormat('de',{maximumFractionDigits:1}).format(n/1048576)+' MiB';
+-async function shell(){if(!isSecureContext||!navigator.serviceWorker)throw Error('SECURE_BROWSER_STORAGE_REQUIRED');await navigator.serviceWorker.register('./service-worker.js',{scope:'./',updateViaCache:'none'});await navigator.serviceWorker.ready;
+-  if(!navigator.serviceWorker.controller)await Promise.race([new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true})),new Promise((_,reject)=>setTimeout(()=>reject(Error('OFFLINE_SHELL_NOT_READY')),15000))]);
+-  await new Promise((resolve,reject)=>{const channel=new MessageChannel(),timer=setTimeout(()=>reject(Error('OFFLINE_SHELL_NOT_READY')),10000);channel.port1.onmessage=({data})=>{clearTimeout(timer);channel.port1.close();data?.ready===true?resolve():reject(Error('OFFLINE_SHELL_NOT_READY'));};navigator.serviceWorker.controller.postMessage({type:'QIKVRT_OFFLINE_READY'},[channel.port2]);});
++async function shell(){if(!isSecureContext||!navigator.serviceWorker)throw Error('SECURE_BROWSER_STORAGE_REQUIRED');const registration=await navigator.serviceWorker.register('./service-worker.js',{scope:'./',updateViaCache:'none'});
++  // A prior monitor worker can still control this document while our narrower
++  // registration installs. Bind readiness to this registration's worker.
++  const worker=registration.installing||registration.waiting||registration.active;
++  if(!worker)throw Error('OFFLINE_SHELL_NOT_READY');
++  await new Promise((resolve,reject)=>{const finish=error=>{clearTimeout(timer);worker.removeEventListener('statechange',check);error?reject(error):resolve();},check=()=>{if(worker.state==='activated')finish();else if(worker.state==='redundant')finish(Error('OFFLINE_SHELL_NOT_READY'));},timer=setTimeout(()=>finish(Error('OFFLINE_SHELL_NOT_READY')),15000);worker.addEventListener('statechange',check);check();});
++  await new Promise((resolve,reject)=>{const channel=new MessageChannel(),timer=setTimeout(()=>{channel.port1.close();reject(Error('OFFLINE_SHELL_NOT_READY'));},10000);channel.port1.onmessage=({data})=>{clearTimeout(timer);channel.port1.close();data?.ready===true?resolve():reject(Error('OFFLINE_SHELL_NOT_READY'));};worker.postMessage({type:'QIKVRT_OFFLINE_READY'},[channel.port2]);});
+ }
+ function App(){const [store,setStore]=React.useState(null),[head,setHead]=React.useState(null),[error,setError]=React.useState(''),[notice,setNotice]=React.useState(''),[busy,setBusy]=React.useState(false),[ready,setReady]=React.useState(false),[online,setOnline]=React.useState(navigator.onLine),[persistent,setPersistent]=React.useState(false),[quota,setQuota]=React.useState(null),[path,setPath]=React.useState('personal/arbeitsnotiz.md'),[text,setText]=React.useState(''),[filter,setFilter]=React.useState(''),[incoming,setIncoming]=React.useState([]),[plan,setPlan]=React.useState(null),[choices,setChoices]=React.useState({}),[monitor,setMonitor]=React.useState(null),[report,setReport]=React.useState(null),[prepared,setPrepared]=React.useState(null),[history,setHistory]=React.useState([]);
+   async function refresh(adapter=store){if(!adapter)return;const next=await adapter.head();setHead(next);setHistory(await adapter.history());setIncoming(await adapter.incoming());setPersistent(await navigator.storage?.persisted?.()===true);setQuota(await navigator.storage?.estimate?.());if(next?.snapshot.files.some(f=>f.path==='monitor/observation.json')){const file=await adapter.file('monitor/observation.json');setMonitor(JSON.parse(await file.text()));}}
+diff --git a/public/offline/service-worker.js b/public/offline/service-worker.js
+index dd1f5a9..68830cd 100644
+--- a/public/offline/service-worker.js
++++ b/public/offline/service-worker.js
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0; Copyright 2026 Ingolf Lohmann.
+-const CACHE='qikvrt-offline-07eb6aa705da716694f109cf1fd2891fff3472d20170f4785204f6f366d3e115',ASSETS={"client.js":"08e561d76da139cce8cb87adb43ef2a6960bd86ef80c73462d2ed9c2f228b211","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
++const CACHE='qikvrt-offline-3155c08833f64824e3a203c2d3d805e6a0ce95555a46345ea101de2bb67e2df4',ASSETS={"client.js":"6231048662f51271fc5e0ee23bf33b525cbf17290002ecdd4d0ae1b315796cf3","git-hash.js":"308dbe4365f71a37c900175ccc619b370863b6505236c4fb4f3e3001baabd8bb","icon.svg":"dc09b8a107eb3919dc203253cba602fe39bd1723adcf679b9cc9b68e8035da53","index.html":"2281a5a5cabacad9f2278b34fa4d978d8c2669b13fbb3bd4c2e05aafe43940b3","manifest.webmanifest":"419262c911585c4dcc0edcf71497319fb3200b55c704c87029102b43900a99ad","repository.js":"cd938eddc0f4a13ed35450a30690a19b7959230471b49fff64710532300adc7c","style.css":"c2e106dbb8afcd8b4a684a73f067fbc43bfdbfaf89257685d749c766945f2aa6","vendor/REACT_LICENSE.txt":"da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93","vendor/react-runtime.js":"fb03ce4c32ffbcacd04d55efb547e85610805571ee8025636bd7992c80db9cca"};
+ const hex=b=>[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
+ async function valid(response,sha){return response?.ok&&!response.redirected&&hex(await crypto.subtle.digest('SHA-256',await response.clone().arrayBuffer()))===sha;}
+ self.addEventListener('install',event=>event.waitUntil((async()=>{const present=await caches.has(CACHE);try{const rows=[];for(const [path,sha]of Object.entries(ASSETS)){const url=new URL(path,self.registration.scope),response=await fetch(url,{cache:'no-store',credentials:'same-origin'});if(new URL(response.url).origin!==self.location.origin||!await valid(response,sha))throw Error('OFFLINE_SHELL_DIGEST_MISMATCH');rows.push([url,response]);}const cache=await caches.open(CACHE);for(const [url,response]of rows)await cache.put(url,response);await self.skipWaiting();}catch(e){if(!present)await caches.delete(CACHE);throw e;}})()));
+diff --git a/scripts/verify-offline.mjs b/scripts/verify-offline.mjs
+index 1ac6535..b1980eb 100644
+--- a/scripts/verify-offline.mjs
++++ b/scripts/verify-offline.mjs
+@@ -1,6 +1,7 @@
+ import assert from "node:assert/strict";
+ import { readFileSync } from "node:fs";
+ import vm from "node:vm";
++import { createHash } from "node:crypto";
+ const handlers = new Map(), buckets = new Map(), revision = "a".repeat(64);
+ let offline = false, claimed = false;
+ const fetcher = async request => {
+@@ -47,4 +48,54 @@ for (const path of ["/terminal/", "/onboarding", "/news/"]) {
+   handlers.get("fetch")({ request: { method: "GET", mode: "navigate", url: "https://mesh.example.com" + path }, respondWith: () => { intercepted = true; } });
+   assert.equal(intercepted, false, "Uninstalled pages must not receive an unrelated cached shell");
+ }
++// Reproduce the actual monitor -> personal-client handoff without treating
++// this deterministic controller fixture as rendered-browser acceptance.
++const personalSource = readFileSync("public/offline/client.js", "utf8");
++const shellSource = personalSource.slice(personalSource.indexOf("async function shell()"), personalSource.indexOf("\nfunction App()"));
++assert.ok(shellSource.startsWith("async function shell()"));
++async function personalReady(existingController, activationFails = false) {
++  const timers = new Map(); let nextTimer = 0; const contacted = [];
++  const own = { scriptURL: "https://mesh.example.com/offline/service-worker.js", state: "activated", postMessage(message, ports) {
++    contacted.push("personal"); assert.equal(message.type, "QIKVRT_OFFLINE_READY");
++    ports[0].peer.onmessage?.({ data: { ready: true } });
++  }, addEventListener() {}, removeEventListener() {} };
++  if (activationFails) own.state = "redundant";
++  const foreign = { scriptURL: "https://mesh.example.com/mesh-sw.js", postMessage() { contacted.push("monitor"); } };
++  const container = {
++    controller: existingController ? foreign : own,
++    register: async (path, options) => {
++      assert.equal(path, "./service-worker.js"); assert.equal(options.scope, "./");
++      return { active: own, installing: null, waiting: null };
++    }, ready: Promise.resolve({ active: existingController ? foreign : own }),
++    addEventListener() {}, removeEventListener() {}
++  };
++  class Channel { constructor() { this.port1 = { onmessage: null, close() {} }; this.port2 = { peer: this.port1 }; } }
++  const personalContext = vm.createContext({ isSecureContext: true, navigator: { serviceWorker: container }, MessageChannel: Channel,
++    setTimeout(fn) { const id = ++nextTimer; timers.set(id, fn); return id; }, clearTimeout(id) { timers.delete(id); } });
++  vm.runInContext(shellSource + "\nglobalThis.readyResult = shell();", personalContext);
++  let settled = false, error;
++  personalContext.readyResult.then(() => { settled = true; }, e => { settled = true; error = e; });
++  for (let i = 0; i < 12 && !settled; i++) await Promise.resolve();
++  if (!settled) for (const fn of timers.values()) fn();
++  await personalContext.readyResult.catch(e => { error = e; });
++  return { error, contacted };
++}
++assert.equal((await personalReady(false)).error, undefined, "First install with its own controller must still work");
++const handoff = await personalReady(true);
++assert.equal(handoff.error, undefined, "A prior monitor controller must not block the registered personal worker's readiness");
++assert.deepEqual(handoff.contacted, ["personal"], "Readiness must come from the selected personal worker, never the unrelated monitor worker");
++assert.match((await personalReady(true, true)).error?.message ?? "", /OFFLINE_SHELL_NOT_READY/, "Failed activation must remain blocked");
++const clientBinding = JSON.parse(readFileSync("public/offline/SOURCE.json", "utf8"));
++for (const [path, binding] of Object.entries(clientBinding.files)) {
++  const raw = readFileSync("public/offline/" + path);
++  assert.equal(raw.length, binding.bytes, "Current client size drift: " + path);
++  assert.equal(createHash("sha256").update(raw).digest("hex"), binding.sha256, "Current client digest drift: " + path);
++}
++const personalWorker = readFileSync("public/offline/service-worker.js", "utf8");
++const shellDigests = JSON.parse(personalWorker.match(/ASSETS=(\{.*?\});/)[1]);
++for (const [path, sha] of Object.entries(shellDigests)) assert.equal(sha, clientBinding.files[path].sha256, "Personal cache digest must select the current client bytes: " + path);
++assert.equal(clientBinding.derivation.native_browser_pass_transfer, false);
++assert.notEqual(clientBinding.files["client.js"].sha256, clientBinding.upstream.original_files["client.js"].sha256);
++assert.equal(clientBinding.files["repository.js"].sha256, clientBinding.upstream.original_files["repository.js"].sha256, "The durable repository implementation is preserved");
++console.log("PASS: registered personal-worker readiness succeeds after a prior monitor controller and fails closed on unsuccessful activation; frozen original application bytes remain separately bound.");
+ console.log("PASS: homepage and React monitor recover their own installed shells after network loss; assets recover, live APIs and sign-in bypass the cache, and unrelated pages are not replaced.");
+diff --git a/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json b/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json
+index 23e59d9..f879115 100644
+--- a/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json
++++ b/state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json
+@@ -724,5 +724,60 @@
+     "effect_ack_done": false,
+     "ordinary_release": false,
+     "predecessor_pass_transfer": false
++  },
++  "browser_handoff_successor_20261013": {
++    "classification": "OPERATIONAL_BROWSER_REPAIR_NOT_SCIENTIFIC_PUBLICATION",
++    "predecessor_site_source": "4179d18907e71da125ba51a1a7250dfea82590e6",
++    "browser_executor": "TinyFish",
++    "browser_run_id": "d130d0fd-1621-42ce-9f65-cc95d435b22e",
++    "browser_run_url": "https://agent.tinyfish.ai/runs/d130d0fd-1621-42ce-9f65-cc95d435b22e",
++    "browser_scope": "LIVE_PUBLISHED_SITE31_EPHEMERAL_CHROMIUM; NO_PHYSICAL_IPHONE_OR_NATIVE_EXECUTION",
++    "baseline_observations": {
++      "home_monitor_navigation": "BROWSER_OBSERVED",
++      "terminal_commands": [
++        "status",
++        "nodes",
++        "help"
++      ],
++      "evidence_view": "BROWSER_OBSERVED",
++      "AI_inline_text": "BROWSER_OBSERVED",
++      "AI_monitor_evidence_link_follow": "NOT_EXECUTED_BY_FIRST_RUN",
++      "offline_setup_error": "OFFLINE_SHELL_NOT_READY",
++      "personal_working_copy_created": false
++    },
++    "independent_original_byte_readback": {
++      "snapshot_id": "ac7db343-7df2-4613-b37b-7c23519c3dda",
++      "sha256": "5035b08c42d9ab24f4f525ea13b79e4384a1906a98b6e022b51419b0b601c1d6",
++      "bytes": 12512,
++      "external_sha256_match": true,
++      "parent_id": "375273be-162c-4bcb-b957-6fceea7b6e5e",
++      "parent_sha256": "484a19cee2d73d436d8517243c4575c763c04edd3208f6caa86b7de8918c16ee",
++      "parent_independent_readback_match": true
++    },
++    "diagnosis": {
++      "observed": "Personal client fails readiness after the monitor visit",
++      "fixture_reproduction": "Unchanged original shell contacts the prior unrelated monitor controller and times out with OFFLINE_SHELL_NOT_READY",
++      "live_causal_confirmation": "PENDING_SUCCESSOR_BROWSER_REOBSERVATION"
++    },
++    "repair": "Bind readiness to the installing/waiting/active worker returned by the personal client registration; wait for its activation and ask that worker to verify its cache. Preserve monitor/homepage caching, local storage schema and all working state. Rebind changed client/cache bytes in SOURCE.json with explicitly separate upstream originals.",
++    "checks": {
++      "failing_original_regression": "CONFIRMED_BEFORE_PRODUCT_MUTATION",
++      "registered_worker_regression": "PASS",
++      "failed_activation_negative_control": "PASS",
++      "current_client_size_and_SHA256_bindings": "PASS",
++      "unchanged_monitor_homepage_cache_regressions": "PASS",
++      "evidence_and_editorial_regressions": "PASS",
++      "mcp_regressions": "PASS",
++      "typescript": "PASS",
++      "successor_live_browser": "PENDING"
++    },
++    "upstream_native_browser_PASS_transfer": false,
++    "source_originals_preserved": "Exact Site31 Git predecessor and original SOURCE manifest file bindings retained; current derived client is explicitly a changed subject.",
++    "human_contribution": "Ingolf Lohmann: requirements, standing continuation and repair/publication authorization",
++    "artificial_cognitive_contribution": "OpenAI Codex: diagnosis, regression, source and provenance successor; TinyFish: rendered-browser observation",
++    "native_execution_verified": false,
++    "domain_dns_repair_scope": false,
++    "effect_ack_done": false,
++    "ordinary_release": false
+   }
+ }

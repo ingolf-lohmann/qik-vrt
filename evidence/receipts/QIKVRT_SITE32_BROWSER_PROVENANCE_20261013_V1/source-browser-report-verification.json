@@ -1,0 +1,68 @@
+{
+  "schema": "qikvrt_site32_source_browser_report_verification_v1",
+  "verified_at_utc": "2026-10-13T07:43:03.452290+00:00",
+  "report": {
+    "path": "evidence/receipts/QIKVRT_SITE32_BROWSER_PROVENANCE_20261013_V1/QIKVRT_Site32_LiveBrowser_Original_20261013.json",
+    "bytes": 807848,
+    "sha256": "6bcf451fcee6f23d1eb2d066a62bc02f360e1147d175ce6900c0680aefa4d6af",
+    "git_blob_sha1": "15de284153bd9417df4dfc0c65bd0870e22165de"
+  },
+  "site_source_head": "17fb5f3ff3904bbdc389a85d10a72c06eb7f5395",
+  "site_source_tree": "2f3440e0e441f8da3e6624688d57f699ac2d7f83",
+  "changed_source_files": 7,
+  "source_delta_reproduces_exact_tree": true,
+  "fourteen_recorded_live_client_file_digests_match_exact_git_bytes": true,
+  "recorded_browser_local_fixture_independent_bytes": {
+    "bytes": 42,
+    "sha256": "e1bc337f3ce0605ece250eaf5748b3acc8f70ce8847b863df48172741b63a6db",
+    "git_blob_sha1": "638d1b19598c3077b89f3a954d2974baca2c3117",
+    "git_tree_sha1": "99b939da0bc046ab0f7a362b1d83ed596254d949"
+  },
+  "preserved_original_snapshot_json_checks": [
+    {
+      "locator": "$.independent_mcp.successor_readback",
+      "sha256": "dfab516d7dde851a8672512882922371c49bc9ddf80c2deb9d4e10ca6f50e370",
+      "bytes": 12754
+    },
+    {
+      "locator": "$.independent_successor_readback.connected_mcp_original_byte_readback",
+      "sha256": "029c79875e5623d7fed3ff65eacb012c14484933f651b3544bfc87e219d90190",
+      "bytes": 12754
+    },
+    {
+      "locator": "$.independent_successor_readback.final_closing_readback.readback",
+      "sha256": "b10c079ccec3c8b67e9faf2d95e8fd51514c3b278b74ef46cbe2bb066a57d56e",
+      "bytes": 12754
+    },
+    {
+      "locator": "$.browser_execution_route_continuation_20261013.closing_repository_and_delivery_readback.closure.readback",
+      "sha256": "484a19cee2d73d436d8517243c4575c763c04edd3208f6caa86b7de8918c16ee",
+      "bytes": 12726
+    },
+    {
+      "locator": "$.live_browser_successor_20261013.closing_repository_and_delivery.browser_snapshot_readback.result.structuredContent",
+      "sha256": "52a00813d58515ce3c2752026106addae89911ec0a1f97de330e12bdbe6eba27",
+      "bytes": 12752
+    },
+    {
+      "locator": "$.live_browser_successor_20261013.closing_repository_and_delivery.closing_snapshot_readback.structuredContent",
+      "sha256": "b52a0d54b55038d9da5d07039d2f6c2821958f5c6e3afe6043d885ad9dc5a1f3",
+      "bytes": 12752
+    },
+    {
+      "locator": "fresh_independent_browser_snapshot_readback",
+      "sha256": "52a00813d58515ce3c2752026106addae89911ec0a1f97de330e12bdbe6eba27",
+      "bytes": 12752
+    }
+  ],
+  "native_saved_version_and_deployment_match": true,
+  "provider_raw_reports_preserved_without_new_browser_execution": true,
+  "current_origin_network_loss_process_restart_physical_device_native_runtime_not_executed": true,
+  "unpaired_browser_digest_preserved_without_assignment": {
+    "unpaired_reported_digest": "291ffc682f23956b9f5e17f29223c52bade78766f9c51e5a60e88e565e88f19d",
+    "association_with_04f903dd": "NOT_ESTABLISHED",
+    "verified_for_04f903dd": "52a00813d58515ce3c2752026106addae89911ec0a1f97de330e12bdbe6eba27",
+    "classification": "Provider report lists a second digest without a bound snapshot ID. Preserve it; do not invent UI fault or transfer another observation digest."
+  },
+  "effect_ack_done": false
+}
