@@ -9,10 +9,12 @@ import io
 import json
 import os
 from pathlib import Path
+import re
 import socket
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from unittest import mock
 import urllib.error
@@ -442,6 +444,65 @@ class RepositoryIONOSReadonlyTests(unittest.TestCase):
         with mock.patch.dict(os.environ, self.environment if environment is None else environment, clear=True), \
                 mock.patch.object(provider.urllib.request, 'build_opener', return_value=opener):
             return provider.repository_readonly(self.directory, self.subject)
+
+    def workflow_job(self):
+        workflow = (ROOT / '.github/workflows/qikvrt_workflow_executor.yml').read_text()
+        self.assertIn('\n  ionos-readonly:\n', workflow, 'existing provider has no protected workflow consumer')
+        return workflow, workflow.split('\n  ionos-readonly:\n', 1)[1]
+
+    def test_workflow_binds_existing_secret_only_after_trusted_main_preflight(self):
+        workflow, job = self.workflow_job()
+        self.assertIn('options: [executor, ionos-inventory-classify]', workflow)
+        self.assertIn("github.repository == 'ingolf-lohmann/qik-vrt' && github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.task_mode == 'ionos-inventory-classify'", job)
+        self.assertIn('permissions:\n      contents: read', job)
+        self.assertIn('ref: ${{ github.sha }}', job)
+        self.assertIn('persist-credentials: false', job)
+        before, delivery = job.split('      - name: Existing IONOS GET inventory and classify with private fresh readback\n', 1)
+        self.assertNotIn('secrets.', before)
+        self.assertIn('tools/qikvrt_integrity.py verify', before)
+        self.assertIn("get('git/ref/heads/main')['object']['sha'] == head", before)
+        self.assertIn("get('git/commits/' + head)['tree']['sha'] == tree", before)
+        self.assertEqual(workflow.count('IONOS_TOKEN: ${{ secrets.IONOS_TOKEN }}'), 1)
+        self.assertIn('IONOS_BINDING_JSON: ${{ secrets[inputs.ionos_binding_secret] }}', delivery)
+        self.assertIn('IONOS_BINDING_SHA256: ${{ inputs.ionos_binding_sha256 }}', delivery)
+        self.assertIn('receipt = provider.repository_readonly(directory, subject)', delivery)
+        self.assertIn("inputs.task_mode == 'executor'", workflow.split('\n  ionos-readonly:\n', 1)[0])
+        artifact = delivery.split('      - name: Persist only bounded IONOS receipt metadata\n', 1)[1]
+        self.assertIn('path: ${{ runner.temp }}/qikvrt-ionos-readonly/receipt.json', artifact)
+        self.assertNotIn('IONOS_BINDING_JSON', artifact)
+
+    def test_workflow_preflight_rejects_changed_main_before_provider_delivery(self):
+        _, job = self.workflow_job()
+        programs = re.findall(r"          python3 -B - <<'PY'\n(.*?)\n          PY(?:\n|$)", job, re.S)
+        self.assertEqual(len(programs), 2)
+        program = compile(textwrap.dedent(programs[0]), '<ionos-trusted-main-preflight>', 'exec')
+        environment = {'EXPECTED_MAIN_HEAD': 'a' * 40, 'EXPECTED_MAIN_TREE': 'b' * 40,
+            'GITHUB_REPOSITORY': 'ingolf-lohmann/qik-vrt', 'GITHUB_REF': 'refs/heads/main',
+            'GITHUB_SHA': 'a' * 40, 'GH_TOKEN': 'fixture-github-read-only',
+            'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '1', 'RUNNER_TEMP': self.temporary.name}
+        def git_read(command, **_):
+            return ('b' if command[-1] == 'HEAD^{tree}' else 'a') * 40 + '\n'
+        def changed_ref(request, timeout):
+            self.assertEqual(request.get_method(), 'GET')
+            self.assertEqual(request.full_url, 'https://api.github.com/repos/ingolf-lohmann/qik-vrt/git/ref/heads/main')
+            class Response(io.BytesIO):
+                status = 200
+                def geturl(self): return request.full_url
+            return Response(provider.wire({'object': {'sha': 'c' * 40}}))
+        for change in [{'GITHUB_REF': 'refs/heads/candidate'}, {'GITHUB_SHA': 'c' * 40},
+                       {'EXPECTED_MAIN_TREE': 'bad-pin'}, {}]:
+            with self.subTest(change=change):
+                opener = mock.Mock()
+                opener.open.side_effect = changed_ref
+                with mock.patch.dict(os.environ, dict(environment, **change), clear=True), \
+                        mock.patch.object(subprocess, 'check_output', side_effect=git_read), \
+                        mock.patch.object(urllib.request, 'build_opener', return_value=opener), \
+                        mock.patch.object(provider, 'repository_readonly') as delivered:
+                    with self.assertRaisesRegex(SystemExit, 'HOLD_IONOS_EXACT_MAIN_BINDING_REQUIRED'):
+                        exec(program, {})
+                    delivered.assert_not_called()
+                    self.assertEqual(opener.open.call_count, 0 if change else 1)
+                self.assertFalse((Path(self.temporary.name) / 'qikvrt-ionos-readonly').exists())
 
     def test_missing_deliveries_name_every_binding_without_any_network(self):
         result = self.observe({})
