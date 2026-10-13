@@ -2,7 +2,7 @@
   "schema": "qikvrt_work_unit_v1",
   "work_unit_id": "QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1",
   "created_at_utc": "2026-10-13T11:39:29.508Z",
-  "classification": "EXECUTABLE_SOFTWARE_REGRESSION_PATCH_NOT_BROWSER_ACCEPTANCE",
+  "classification": "SOFTWARE_BROWSER_REGRESSIONS_EXECUTED_AND_INDEPENDENTLY_VERIFIED",
   "authority_repository": "ingolf-lohmann/qik-vrt",
   "mirror_repository": "Goldkelch/qik-vrt",
   "source_pr": 523,
@@ -189,6 +189,26 @@
       "repair": "Wait for the actual file-loaded status before reading the editor in both offline reload and cold process restart controls.",
       "browser_acceptance": false,
       "product_fault_established": false
+    },
+    "verified_browser_jobs": {
+      "source_head": "497b60de519902bca12d9ef0a4b0570619d7ae8b",
+      "source_tree": "cb7450a49dc169cb921d6bb24adc1432fd0aae43",
+      "run_id": 38396121370,
+      "jobs": {
+        "chromium": 115291664197,
+        "webkit": 115291664263
+      },
+      "result": "PASS_BOTH_BROWSER_JOBS",
+      "receipt": "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/independent-browser-acceptance.json",
+      "receipt_sha256": "66bdc21a35a5c0bcf264d1fcc48f9f903d422e4b089ac6b4b6cb9bda857f7fc2",
+      "global_native_ci": {
+        "push_run": 38396115934,
+        "pull_request_run": 38396121370,
+        "source_head": "497b60de519902bca12d9ef0a4b0570619d7ae8b",
+        "source_tree": "cb7450a49dc169cb921d6bb24adc1432fd0aae43",
+        "state": "COMPLETED_SUCCESS_BOTH_RUNS",
+        "scope": "General repository gates and both engine jobs at this exact executed source; no main integration."
+      }
     }
   },
   "inherited_open_obligations": [
@@ -365,7 +385,7 @@
       "state": "OPEN",
       "next_action": "Use an already admitted browser/device path exposing real network interruption, an uncached negative control and profile-preserving process restart for the exact derived Site32 client; independently bind original bytes and recorded behaviour.",
       "source_predecessor": "original_report#independent_successor_readback.client_continuation.work",
-      "partial_verified_scope": "Site32 public React navigation and local first-visit create/save/normal-reload/reopen/verify are recorded. The original broader obligation stays OPEN for actual network loss, uncached negative control and durable process restart; console/engine/physical-device limits are not erased."
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
     },
     {
       "id": "NATIVE_GOVERNANCE_AND_PR523_MAIN_INTEGRATION",
@@ -380,19 +400,22 @@
     {
       "id": "SITE32_CURRENT_DERIVED_CLIENT_NETWORK_LOSS_AND_PROCESS_RESTART",
       "state": "OPEN",
-      "next_action": "Perform true network interruption, uncached negative control and persistent browser-process restart on exact changed client32 bytes when an admitted controller exposes these controls."
+      "next_action": "Perform true network interruption, uncached negative control and persistent browser-process restart on exact changed client32 bytes when an admitted controller exposes these controls.",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
     },
     {
       "id": "SITE32_PHYSICAL_IPHONE_AND_DIAGNOSTIC_COVERAGE",
       "state": "OPEN",
-      "next_action": "Actual iPhone/device, engine/viewport and console/network observations require their own supported acceptance path; do not infer them from configured lite mode or normal reload."
+      "next_action": "Actual iPhone/device, engine/viewport and console/network observations require their own supported acceptance path; do not infer them from configured lite mode or normal reload.",
+      "partial_verified_scope": "Derived Site32 software tested in real Chromium/WebKit against a stopped controlled static origin; live production-origin, whole-device network, physical iPhone and authenticated native runtime acceptance are not inferred."
     }
   ],
   "evidence_outputs": [
     "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/site32-offline-browser.patch",
     "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/local-browser-failure.json",
     "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/local-precheck.log",
-    "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/local-site32-deterministic.log"
+    "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/local-site32-deterministic.log",
+    "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/independent-browser-acceptance.json"
   ],
   "exact_delivery_url": "https://raumzeitterminal.de/",
   "effect_ack_done": false,
@@ -400,5 +423,13 @@
   "native_runtime_acceptance": false,
   "physical_iphone_acceptance": false,
   "exact_domain_delivery": false,
-  "main_integration": false
+  "main_integration": false,
+  "verified_subobligations": [
+    {
+      "id": "SITE32_CONTROLLED_ORIGIN_BROWSER_REGRESSIONS",
+      "state": "VERIFIED",
+      "evidence": "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/independent-browser-acceptance.json",
+      "scope": "CONTROLLED_TCP_ORIGIN_OUTAGE_OFFLINE_CACHE_AND_SAME_PROFILE_FULL_BROWSER_PROCESS_RESTART"
+    }
+  ]
 }
