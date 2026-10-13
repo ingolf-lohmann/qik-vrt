@@ -38,6 +38,67 @@
       "skipped_test_added": false,
       "trace_sha256": "379c3df3d62675ccbf4d54dc20895770b20956ac749985485b7fc8c5eef06881"
     },
+    "oci_archive_retrieval_limit_38429796715": {
+      "actual_error": "InvalidInputException: Artifact exceeds max size of 536870912 bytes: 774962841 bytes.",
+      "artifact_bytes": 774962841,
+      "artifact_id": 11831465528,
+      "artifact_payload_downloaded": false,
+      "artifact_sha256": "0056d6312decd7888ed2a1e50aec727be8c0b0ae2bb5f35299964019f6f86231",
+      "effect_ack_done": false,
+      "head": "74606b8c3c59f0d93bed8d09dd2b72a7c32235db",
+      "local_verification": "Separate artifact names/paths, metadata exclusion, failure admission and YAML/Bash syntax verified. Runtime helper and tests unchanged from 020ee4c7.",
+      "native_OCI_nondeterminism_cause": "UNKNOWN",
+      "native_successor_execution": "REQUIRED",
+      "repair": "Use the existing pinned upload action for separate original OCI archives; exclude those failed archive files from the existing small metadata artifact. Retain the other client's frozen PR494 carrier successor unchanged.",
+      "run_id": 38429796715,
+      "source_parent_head": "020ee4c72114163924b980b7d408a7524119c625",
+      "source_parent_tree": "afde795df799130b9e919e815419d649d17b8cb9",
+      "strict_digest_equality_weakened": false
+    },
+    "oci_converter_output_owner_38433471240": {
+      "actual_error": "opening file /output/image.docker.tar: permission denied",
+      "causal_fix": "Bind converter process --user to actual CI runner id -u:id -g. Retain private directory, read-only root, no network, dropped capabilities and no-new-privileges; no broad chmod.",
+      "effect_ack_done": false,
+      "job_id": 115422938193,
+      "observed_setup": "CI output directory is freshly mktemp-created with private permissions; converter uses image-default UID without runner UID/GID binding.",
+      "public_production_verified": false,
+      "run_id": 38433471240,
+      "source_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
+      "source_parent_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
+      "source_tree": "8bc7f9b3352f2b352e6b65fffee275fc4ecde08c",
+      "validation": "Affected Bash/YAML and exact UID/GID argument plus restrictive guards verified; existing load identity tests unchanged. Native successor REQUIRED."
+    },
+    "oci_docker_load_format_38431347362": {
+      "actual_failure": "docker load: open /var/lib/docker/tmp/docker-import-452906887/blobs/json: no such file or directory",
+      "effect_ack_done": false,
+      "image_digest": "sha256:2e915743cfad81554d0a29875bca0c29c32b45cafdde464a229ef3a91fa46a08",
+      "independent_OCI_manifest_equality": true,
+      "job_id": 115415261860,
+      "local_validation": {
+        "container_controls": 16,
+        "five_load_guard_cases": [
+          "valid",
+          "wrong_config_id",
+          "wrong_layers",
+          "wrong_source",
+          "changed_original_archive"
+        ],
+        "local_Docker_execution": false,
+        "native_successor": "REQUIRED",
+        "result": "PASS",
+        "workflow_yaml_and_affected_bash": "PASS"
+      },
+      "pinned_converter": "quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9",
+      "primary_documentation": "https://github.com/podman-container-tools/skopeo/blob/main/docs/skopeo-copy.1.md",
+      "public_production_verified": false,
+      "repair": "Reuse existing pinned Skopeo to convert OCI archive to Docker-load archive for this CI fixture only; compare unchanged original OCI file hash, exact image-config digest, ordered DiffIDs and source labels after native load. Registry publication keeps original OCI archive/digest.",
+      "run_id": 38431347362,
+      "smoke_started": false,
+      "source_head": "020ee4c72114163924b980b7d408a7524119c625",
+      "source_parent_head": "d12362727d2e53dce9400932b02f590758ef04bb",
+      "source_parent_tree": "ca4a63b3fade2e6536dfb61f2716392f748c8d5f",
+      "source_tree": "afde795df799130b9e919e815419d649d17b8cb9"
+    },
     "oci_rebuild_failure_38425046696": {
       "artifact_bytes": 1031,
       "artifact_id": 11829635147,
@@ -73,67 +134,6 @@
       "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
       "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
       "unchanged_errors_retried": false
-    },
-    "oci_archive_retrieval_limit_38429796715": {
-      "run_id": 38429796715,
-      "head": "74606b8c3c59f0d93bed8d09dd2b72a7c32235db",
-      "artifact_id": 11831465528,
-      "artifact_bytes": 774962841,
-      "artifact_sha256": "0056d6312decd7888ed2a1e50aec727be8c0b0ae2bb5f35299964019f6f86231",
-      "artifact_payload_downloaded": false,
-      "actual_error": "InvalidInputException: Artifact exceeds max size of 536870912 bytes: 774962841 bytes.",
-      "repair": "Use the existing pinned upload action for separate original OCI archives; exclude those failed archive files from the existing small metadata artifact. Retain the other client's frozen PR494 carrier successor unchanged.",
-      "source_parent_head": "020ee4c72114163924b980b7d408a7524119c625",
-      "source_parent_tree": "afde795df799130b9e919e815419d649d17b8cb9",
-      "native_OCI_nondeterminism_cause": "UNKNOWN",
-      "strict_digest_equality_weakened": false,
-      "local_verification": "Separate artifact names/paths, metadata exclusion, failure admission and YAML/Bash syntax verified. Runtime helper and tests unchanged from 020ee4c7.",
-      "native_successor_execution": "REQUIRED",
-      "effect_ack_done": false
-    },
-    "oci_docker_load_format_38431347362": {
-      "source_head": "020ee4c72114163924b980b7d408a7524119c625",
-      "source_tree": "afde795df799130b9e919e815419d649d17b8cb9",
-      "run_id": 38431347362,
-      "job_id": 115415261860,
-      "independent_OCI_manifest_equality": true,
-      "image_digest": "sha256:2e915743cfad81554d0a29875bca0c29c32b45cafdde464a229ef3a91fa46a08",
-      "actual_failure": "docker load: open /var/lib/docker/tmp/docker-import-452906887/blobs/json: no such file or directory",
-      "smoke_started": false,
-      "repair": "Reuse existing pinned Skopeo to convert OCI archive to Docker-load archive for this CI fixture only; compare unchanged original OCI file hash, exact image-config digest, ordered DiffIDs and source labels after native load. Registry publication keeps original OCI archive/digest.",
-      "pinned_converter": "quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9",
-      "primary_documentation": "https://github.com/podman-container-tools/skopeo/blob/main/docs/skopeo-copy.1.md",
-      "local_validation": {
-        "container_controls": 16,
-        "result": "PASS",
-        "five_load_guard_cases": [
-          "valid",
-          "wrong_config_id",
-          "wrong_layers",
-          "wrong_source",
-          "changed_original_archive"
-        ],
-        "workflow_yaml_and_affected_bash": "PASS",
-        "local_Docker_execution": false,
-        "native_successor": "REQUIRED"
-      },
-      "source_parent_head": "d12362727d2e53dce9400932b02f590758ef04bb",
-      "source_parent_tree": "ca4a63b3fade2e6536dfb61f2716392f748c8d5f",
-      "effect_ack_done": false,
-      "public_production_verified": false
-    },
-    "oci_converter_output_owner_38433471240": {
-      "run_id": 38433471240,
-      "job_id": 115422938193,
-      "source_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
-      "source_tree": "8bc7f9b3352f2b352e6b65fffee275fc4ecde08c",
-      "actual_error": "opening file /output/image.docker.tar: permission denied",
-      "observed_setup": "CI output directory is freshly mktemp-created with private permissions; converter uses image-default UID without runner UID/GID binding.",
-      "causal_fix": "Bind converter process --user to actual CI runner id -u:id -g. Retain private directory, read-only root, no network, dropped capabilities and no-new-privileges; no broad chmod.",
-      "validation": "Affected Bash/YAML and exact UID/GID argument plus restrictive guards verified; existing load identity tests unchanged. Native successor REQUIRED.",
-      "source_parent_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
-      "effect_ack_done": false,
-      "public_production_verified": false
     }
   },
   "domain_observation": {
@@ -236,7 +236,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
@@ -258,6 +258,18 @@
     "workflow_dispatch_POST_exposed": false
   },
   "public_productivization_verified": false,
+  "publisher_private_auth_owner_binding": {
+    "causal_claim_boundary": "Ownership mechanism is observed in converter. No registry authentication failure or successful publication is claimed for this still-protected publisher.",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "new_permission_scope": false,
+    "publisher_scope": "The protected publisher reads the CI-owned Docker authentication directory. Bind its Skopeo process to the same actual runner UID/GID, retaining restrictive modes, read-only mount/root, capability drop and no-new-privileges. HOME is disposable tmpfs. No credential value enters the repository or evidence.",
+    "registry_operation_executed": false,
+    "related_native_failure_job": 115422938193,
+    "related_native_failure_run": 38433471240,
+    "related_observation": "Skopeo with dropped capabilities cannot write the private CI directory without its actual owner UID/GID; converter successor binds that identity.",
+    "source_parent_head": "f9f6f0c7ef731a104af3b24dce8318e73c80843b",
+    "source_parent_tree": "44e0a778b47f37b119b947c786e4a50cdd37e381"
+  },
   "registration_after_verified_DENIC_recovery": {
     "cloudflare_a": {
       "body": "",

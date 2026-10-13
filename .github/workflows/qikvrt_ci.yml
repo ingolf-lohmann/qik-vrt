@@ -423,6 +423,7 @@ jobs:
             else
               python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
               docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+                --user "$(id -u):$(id -g)" --env HOME=/tmp \
                 --tmpfs /tmp:rw,nosuid,size=128m \
                 --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
                 --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/image.oci.tar,readonly" \
