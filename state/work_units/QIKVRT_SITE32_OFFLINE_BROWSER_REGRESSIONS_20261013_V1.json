@@ -114,12 +114,30 @@
       "state": "HOLD_INCOMPLETE_LOCAL_GIT_HISTORY",
       "reason": "REST-materialized exact source has no complete parent/historical object closure. Five finalizer cases cannot run git show/worktree at required ancestors; product code and those gates were not weakened.",
       "first_ci_parser_failure_preserved": true
+    },
+    "ci_terminal_and_context_regressions": {
+      "command": "python3 -B -m unittest -v tests.test_effect_ack_release_workflows",
+      "state": "PASS",
+      "exit_code": 0,
+      "tests": 19
     }
   },
   "native_ci": {
     "state": "PENDING_EXACT_CHANGED_HEAD_EXECUTION",
     "automatic_path": "Existing QIKVRT CI push/pull_request event; no workflow_dispatch, rerun or proxy trigger",
-    "acceptance": "Actual admitted Chromium/WebKit job logs and source-bound browser-readback.json; no transport or precheck PASS substitution"
+    "acceptance": "Actual admitted Chromium/WebKit job logs and source-bound browser-readback.json; no transport or precheck PASS substitution",
+    "preserved_predecessor_failure": {
+      "head": "79a95c32358f8596ec2a6d598774913dbfa70e8c",
+      "tree": "846108517be989adb724fbe814aa5b67ac50f3ee",
+      "run_id": 38392078686,
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": 0,
+      "url": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38392078686",
+      "diagnosis": "Job-level runner.temp context is not permitted by GitHub context availability; native error annotation was not exposed by the available REST route.",
+      "repair": "Moved runner.temp to step env; no rerun of unchanged source.",
+      "source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts"
+    }
   },
   "inherited_open_obligations": [
     {
@@ -128,25 +146,25 @@
       "target": "raumzeitterminal.de",
       "label": "Produktdomain in Betrieb nehmen",
       "reason": "EXACT_HOST_NXDOMAIN_HTTP_530",
-      "acceptance": "DNS und TLS für raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback bestätigen.",
+      "acceptance": "DNS und TLS f\u00fcr raumzeitterminal.de, gebundene Anwendung und frischer Nutzpfad-Readback best\u00e4tigen.",
       "subject": {
         "url": "https://raumzeitterminal.de/"
       },
       "semantic_sha256": "5afbeef30fbb021c40ac673f137ee417af2ded95b522e5ace2167e1f07af92cc",
       "state": "OPEN",
       "transition": "CHANGED_OBSERVATION",
-      "retry_condition": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "retry_condition": "Material ge\u00e4nderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang f\u00fcr genau diese Domain; danach die urspr\u00fcngliche Auslieferung pr\u00fcfen.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Material geänderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang für genau diese Domain; danach die ursprüngliche Auslieferung prüfen.",
+      "next_action": "Material ge\u00e4nderte Domain-/DNS-/TLS-Evidenz oder ein authentifizierter Schreibzugang f\u00fcr genau diese Domain; danach die urspr\u00fcngliche Auslieferung pr\u00fcfen.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {
       "id": "governance:qik-vrt",
       "layer": "GOVERNANCE",
       "target": "ingolf-lohmann/qik-vrt",
-      "label": "Native Authority-Bindung bestätigen",
+      "label": "Native Authority-Bindung best\u00e4tigen",
       "reason": "NATIVE_AUTHORITY_BINDING_NOT_VERIFIED",
-      "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabhängig zurücklesen.",
+      "acceptance": "Aktuelle Authority-Bindung, Governance und zugelassene Operation am exakten Gegenstand unabh\u00e4ngig zur\u00fccklesen.",
       "subject": {},
       "semantic_sha256": "3ce3d30b4a258ec59bfb8e6d5569ac84138276bb0748486f49d93017496e4b8e",
       "state": "OPEN",
@@ -160,32 +178,32 @@
       "id": "native:qik-vrt",
       "layer": "RUNTIME",
       "target": "qik-vrt",
-      "label": "Native Terminal-Ausführung abnehmen",
+      "label": "Native Terminal-Ausf\u00fchrung abnehmen",
       "reason": "AUTHENTICATED_NATIVE_EXECUTION_NOT_ACCEPTED",
-      "acceptance": "Identitätsgebundene Ausführung und unabhängigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
+      "acceptance": "Identit\u00e4tsgebundene Ausf\u00fchrung und unabh\u00e4ngigen Effect-Readback am freigegebenen Runtime-Host nachweisen.",
       "subject": {},
       "semantic_sha256": "acfd89257d2e10c21f95ccb4d111bc45b9e8f64f748fb60471aaf860085dcdea",
       "state": "OPEN",
       "transition": "UNCHANGED",
-      "retry_condition": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "retry_condition": "Ein authentifizierter, identit\u00e4tsgebundener Ausf\u00fchrungsweg ist tats\u00e4chlich verf\u00fcgbar und f\u00fcr den konkreten Auftrag zugelassen.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Ein authentifizierter, identitätsgebundener Ausführungsweg ist tatsächlich verfügbar und für den konkreten Auftrag zugelassen.",
+      "next_action": "Ein authentifizierter, identit\u00e4tsgebundener Ausf\u00fchrungsweg ist tats\u00e4chlich verf\u00fcgbar und f\u00fcr den konkreten Auftrag zugelassen.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {
       "id": "registry:qik-vrt",
       "layer": "REGISTRY",
       "target": "qik-vrt",
-      "label": "Knotenverzeichnis vollständig zurücklesen",
+      "label": "Knotenverzeichnis vollst\u00e4ndig zur\u00fccklesen",
       "reason": "REGISTRY_DISCOVERY_INCOMPLETE",
-      "acceptance": "Vollständige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
+      "acceptance": "Vollst\u00e4ndige Quellen mit aktuellen HEAD/TREE-Bindungen lesen.",
       "subject": {},
       "semantic_sha256": "f9892acb87572ca11e0986104ebf6a04a0438fbdcb89ad0843b6662d4e5607ca",
       "state": "OPEN",
       "transition": "UNCHANGED",
-      "retry_condition": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "retry_condition": "Ge\u00e4nderte Quellen-/Zugriffsevidenz f\u00fcr die betroffenen Verzeichnisquellen.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Geänderte Quellen-/Zugriffsevidenz für die betroffenen Verzeichnisquellen.",
+      "next_action": "Ge\u00e4nderte Quellen-/Zugriffsevidenz f\u00fcr die betroffenen Verzeichnisquellen.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {
@@ -194,7 +212,7 @@
       "target": "Goldkelch/qik-vrt",
       "label": "Aktuellen Repository-Gegenstand lesen",
       "reason": "REPOSITORY_NOT_FOUND",
-      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "acceptance": "Aktuellen HEAD und TREE \u00fcber den erlaubten REST-Pfad zur\u00fccklesen.",
       "subject": {
         "repository": "Goldkelch/qik-vrt",
         "head": null,
@@ -203,9 +221,9 @@
       "semantic_sha256": "a7bb27dcba97eea2252cf151e48b26e74415019d93f90d22e15c5bacd75352b0",
       "state": "OPEN",
       "transition": "UNCHANGED",
-      "retry_condition": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "retry_condition": "Neue, unabh\u00e4ngig best\u00e4tigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Neue, unabhängig bestätigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
+      "next_action": "Neue, unabh\u00e4ngig best\u00e4tigte Quellenbindung oder wiederhergestellter Zugriff erforderlich.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {
@@ -214,7 +232,7 @@
       "target": "ingolf-lohmann/qik-vrt",
       "label": "Aktuellen Repository-Gegenstand lesen",
       "reason": "REPOSITORY_RATE_LIMITED",
-      "acceptance": "Aktuellen HEAD und TREE über den erlaubten REST-Pfad zurücklesen.",
+      "acceptance": "Aktuellen HEAD und TREE \u00fcber den erlaubten REST-Pfad zur\u00fccklesen.",
       "subject": {
         "repository": "ingolf-lohmann/qik-vrt",
         "head": null,
@@ -223,18 +241,18 @@
       "semantic_sha256": "452e066819947d286f891b27aa36018c470d5ac423615123741d50e7df73386f",
       "state": "OPEN",
       "transition": "UNCHANGED",
-      "retry_condition": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "retry_condition": "Material ge\u00e4nderte Zugriffs- oder Quellenbindung; unver\u00e4nderte Zugriffssperren bleiben NOOP.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Material geänderte Zugriffs- oder Quellenbindung; unveränderte Zugriffssperren bleiben NOOP.",
+      "next_action": "Material ge\u00e4nderte Zugriffs- oder Quellenbindung; unver\u00e4nderte Zugriffssperren bleiben NOOP.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {
       "id": "runtime:Goldkelch/qik-vrt",
       "layer": "RUNTIME",
       "target": "Goldkelch/qik-vrt",
-      "label": "Knoten-Runtime anschließen",
+      "label": "Knoten-Runtime anschlie\u00dfen",
       "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
-      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "acceptance": "Frischen, identit\u00e4tsgebundenen Runtime-Befund am angek\u00fcndigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
       "subject": {
         "repository": "Goldkelch/qik-vrt",
         "head": null,
@@ -243,18 +261,18 @@
       "semantic_sha256": "470f253ac5e04fdacbf4262d1f03ccee465c8822e89312675cb46cc3f5549ed1",
       "state": "OPEN",
       "transition": "UNCHANGED",
-      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "retry_condition": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "next_action": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {
       "id": "runtime:ingolf-lohmann/qik-vrt",
       "layer": "RUNTIME",
       "target": "ingolf-lohmann/qik-vrt",
-      "label": "Knoten-Runtime anschließen",
+      "label": "Knoten-Runtime anschlie\u00dfen",
       "reason": "RUNTIME_ENDPOINT_NOT_ADVERTISED",
-      "acceptance": "Frischen, identitätsgebundenen Runtime-Befund am angekündigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
+      "acceptance": "Frischen, identit\u00e4tsgebundenen Runtime-Befund am angek\u00fcndigten Endpunkt lesen; dies ersetzt keine native Effektabnahme.",
       "subject": {
         "repository": "ingolf-lohmann/qik-vrt",
         "head": null,
@@ -263,9 +281,9 @@
       "semantic_sha256": "a3af1fe781dd9e39f1eeefe027123bfaceb723b890f7af5ed82603b3737e7bdc",
       "state": "OPEN",
       "transition": "UNCHANGED",
-      "retry_condition": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "retry_condition": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
       "failed_operation_retry": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
-      "next_action": "Material geänderter Runtime-Endpunkt, Zugriff oder identitätsgebundener Runtime-Befund.",
+      "next_action": "Material ge\u00e4nderter Runtime-Endpunkt, Zugriff oder identit\u00e4tsgebundener Runtime-Befund.",
       "source_predecessor": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
     },
     {

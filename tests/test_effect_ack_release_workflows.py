@@ -580,6 +580,17 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
         self.assertIn("FIXPOINT_OUTCOME: ${{ steps.fixpoint.outcome }}", terminal)
         self.assertNotIn(".conclusion", terminal)
 
+    def test_offline_browser_runner_paths_are_bound_inside_steps(self):
+        workflow = GENERAL_CI.read_text(encoding="utf-8")
+        browser = workflow.split("\n  offline_browser:\n", 1)[1]
+        job_metadata, steps = browser.split("    steps:\n", 1)
+        self.assertNotRegex(job_metadata, r"\$\{\{\s*runner\.")
+        self.assertEqual(
+            steps.count("QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}"),
+            2,
+        )
+        self.assertNotIn("continue-on-error:", browser)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
