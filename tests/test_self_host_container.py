@@ -11,6 +11,7 @@ import tarfile
 import tempfile
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 from tools import qikvrt_self_host_container as c
 
@@ -27,7 +28,7 @@ def declaration():
         "image_digest": "sha256:" + "e" * 64}
 
 
-def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001"):
+def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", layer_value=True):
     blobs = {}
     def add(value):
         raw = json.dumps(value, sort_keys=True).encode()
@@ -36,7 +37,7 @@ def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001"):
         return {"digest": "sha256:" + digest, "size": len(raw)}
     config = add({"architecture": "amd64", "os": "linux", "config": {"User": user,
         "Labels": {"org.opencontainers.image.revision": head, "de.qikvrt.source-tree": tree}}})
-    layer = add({"test-layer": True})
+    layer = add({"test-layer": layer_value})
     manifest = add({"config": config, "layers": [layer]})
     blobs["oci-layout"] = b'{"imageLayoutVersion":"1.0.0"}'
     blobs["index.json"] = json.dumps({"manifests": [manifest]}).encode()
@@ -74,6 +75,48 @@ class ContainerControls(unittest.TestCase):
             a, b = Path(tmp) / "a.tar", Path(tmp) / "b.tar"
             archive(a); archive(b)
             self.assertEqual(c.oci(a, HEAD, TREE)["image_digest"], c.oci(b, HEAD, TREE)["image_digest"])
+
+
+    def test_rebuild_mismatch_retains_verified_pairs_before_raising(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            a, b, receipt = [Path(tmp) / name for name in ("a.tar", "b.tar", "oci.json")]
+            archive(a); archive(b, layer_value=False)
+            args = SimpleNamespace(operation="container-oci-check", oci_archive=a,
+                second_oci_archive=b, expected_head=HEAD, expected_tree=TREE, receipt=receipt)
+            with self.assertRaisesRegex(ValueError, "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH"):
+                c.execute(args)
+            value = json.loads(receipt.read_bytes())
+            self.assertEqual(value["state"], "HOLD")
+            self.assertFalse(value["independent_rebuild_digest_equal"])
+            self.assertFalse(value["effect_ack_done"])
+            self.assertFalse(value["public_production_verified"])
+            self.assertEqual(value["first_build"], c.oci(a, HEAD, TREE))
+            self.assertEqual(value["second_build"], c.oci(b, HEAD, TREE))
+            self.assertIn("layer_digests", value["differing_fields"])
+            self.assertNotEqual(value["first_build"]["layer_digests"], value["second_build"]["layer_digests"])
+            self.assertTrue(a.is_file() and b.is_file())
+
+    def test_equal_independent_builds_keep_strict_success(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            a, b, receipt = [Path(tmp) / name for name in ("a.tar", "b.tar", "oci.json")]
+            archive(a); archive(b)
+            args = SimpleNamespace(operation="container-oci-check", oci_archive=a,
+                second_oci_archive=b, expected_head=HEAD, expected_tree=TREE, receipt=receipt)
+            result = c.execute(args)
+            self.assertTrue(result["independent_rebuild_digest_equal"])
+            self.assertEqual(result["state"], "OCI_BYTES_VERIFIED")
+            self.assertFalse(result["effect_ack_done"])
+            self.assertEqual(json.loads(receipt.read_bytes()), result)
+
+    def test_corrupt_second_build_cannot_get_verified_pair_receipt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            a, b, receipt = [Path(tmp) / name for name in ("a.tar", "b.tar", "oci.json")]
+            archive(a); archive(b, tamper=True)
+            args = SimpleNamespace(operation="container-oci-check", oci_archive=a,
+                second_oci_archive=b, expected_head=HEAD, expected_tree=TREE, receipt=receipt)
+            with self.assertRaisesRegex(ValueError, "OCI_BLOB_INTEGRITY_MISMATCH"):
+                c.execute(args)
+            self.assertFalse(receipt.exists())
 
     def test_context_excludes_git_auth_and_untracked_private_state(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -171,3 +214,4 @@ class ContainerControls(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

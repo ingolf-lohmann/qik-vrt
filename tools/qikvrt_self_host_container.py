@@ -130,7 +130,12 @@ def oci(path, head, tree):
                 labels.get("de.qikvrt.source-tree") == tree, "OCI_SOURCE_BINDING_MISMATCH")
         require(config["config"].get("User") == "10001:10001", "UNPRIVILEGED_IMAGE_REQUIRED")
         return {"state": "OCI_BYTES_VERIFIED", "source_head": head, "source_tree": tree,
-                "image_digest": descriptor["digest"], "oci_archive_sha256": sha(Path(path).read_bytes())}
+                "image_digest": descriptor["digest"], "oci_archive_sha256": sha(Path(path).read_bytes()),
+                "image_config_digest": manifest["config"]["digest"],
+                "layer_digests": [layer["digest"] for layer in manifest["layers"]],
+                "rootfs_diff_ids": config.get("rootfs", {}).get("diff_ids", []),
+                "created": config.get("created"),
+                "history_created": [item.get("created") for item in config.get("history", [])]}
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -482,7 +487,18 @@ def execute(args):
         result = oci(args.oci_archive, args.expected_head, args.expected_tree)
         if args.second_oci_archive:
             second = oci(args.second_oci_archive, args.expected_head, args.expected_tree)
-            require(result["image_digest"] == second["image_digest"], "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH")
+            if result["image_digest"] != second["image_digest"]:
+                # Preserve both verified subjects before failing the strict gate.
+                # These are build identities only, never a deployment receipt.
+                write_receipt(args.receipt, {
+                    "state": "HOLD", "cause": "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH",
+                    "source_head": args.expected_head, "source_tree": args.expected_tree,
+                    "independent_rebuild_digest_equal": False,
+                    "first_build": result, "second_build": second,
+                    "differing_fields": sorted(key for key in result if result[key] != second.get(key)),
+                    "public_production_verified": False,
+                })
+                raise ValueError("INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH")
             result["independent_rebuild_digest_equal"] = True
     elif operation == "smoke":
         result = smoke(args.image, args.output)
@@ -497,3 +513,4 @@ def execute(args):
     else:
         raise ValueError("UNKNOWN_CONTAINER_OPERATION")
     return write_receipt(args.receipt, result)
+

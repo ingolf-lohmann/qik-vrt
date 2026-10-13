@@ -233,6 +233,7 @@ jobs:
           docker version > "$RUNNER_TEMP/container-evidence/docker-version.txt"
           docker buildx version > "$RUNNER_TEMP/container-evidence/buildx-version.txt"
       - name: Two independent snapshot-bound Linux OCI builds
+        id: independent-builds
         run: |
           set -euo pipefail
           head="$(git rev-parse HEAD)"
@@ -253,6 +254,16 @@ jobs:
             --expected-head "$head" --expected-tree "$tree" \
             --receipt "$RUNNER_TEMP/container-evidence/oci.json"
           mv "$RUNNER_TEMP/s1-1.tar" "$RUNNER_TEMP/container-evidence/image.oci.tar"
+      - name: Preserve original OCI archives when independent builds fail
+        if: ${{ always() && steps.independent-builds.outcome == 'failure' }}
+        run: |
+          set -euo pipefail
+          for build in 1 2; do
+            archive="$RUNNER_TEMP/s1-$build.tar"
+            if test -f "$archive"; then
+              cp "$archive" "$RUNNER_TEMP/container-evidence/failed-build-$build.oci.tar"
+            fi
+          done
       - name: Real unprivileged Firefox/terminal container and durable restart
         run: |
           set -euo pipefail
@@ -483,3 +494,4 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
+

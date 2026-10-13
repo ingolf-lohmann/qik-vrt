@@ -37,6 +37,42 @@
       "retry_condition": "A Linux executor admitting AF_UNIX is available; run unchanged native tests on exact successor through existing GitHub CI.",
       "skipped_test_added": false,
       "trace_sha256": "379c3df3d62675ccbf4d54dc20895770b20956ac749985485b7fc8c5eef06881"
+    },
+    "oci_rebuild_failure_38425046696": {
+      "scope": "Existing OCI reproducibility gate diagnosis; underlying byte nondeterminism remains unproven until original archives are compared.",
+      "run_id": 38425046696,
+      "job_id": 115393724849,
+      "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
+      "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
+      "cause": "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH",
+      "first_image_digest": "sha256:4ac5224421a02e6760cd2b64d87a1ea0023f68382490f04a90b981fa08f244a1",
+      "second_image_digest": "sha256:f9a7cd26a6ef0902aefa02fd7a7099c15f14f71dbc10c81bd3c5b8260903631a",
+      "artifact_id": 11829635147,
+      "artifact_bytes": 1031,
+      "artifact_sha256": "dda711e5831cfc3244565894f467ffa4455af89ff90b883da43efe18c1ad4b6f",
+      "artifact_original_bytes_verified": true,
+      "retained_files": [
+        "buildx-version.txt",
+        "docker-version.txt",
+        "context.json"
+      ],
+      "repair": "Preserve both validated OCI subjects and changed diagnostic fields before strict rejection; retain both original archives through existing always-upload step.",
+      "local_validation": {
+        "focused_oci_tests": 6,
+        "result": "PASS",
+        "evidence_class": "TECHNICAL_SYNTHETIC_OCI_ARCHIVE_CONTROLS",
+        "workflow_yaml_and_affected_bash_syntax": "PASS",
+        "local_docker_execution": false,
+        "native_successor_execution": "REQUIRED",
+        "complete_container_control_tests": 15,
+        "tool_cache_contract": "PASS 27/27",
+        "partial_checkout_missing_review_helper": "Observed then repaired by materializing unchanged exact-source tools/qikvrt_required_review_gate.py; no test bypass"
+      },
+      "unchanged_errors_retried": false,
+      "full_original_work_unit_preserved": true,
+      "effect_ack_done": false,
+      "public_production_verified": false,
+      "next_action": "Native successor build: read failing pair receipt, compare retained image config/history/layers and original layer filesystem contents; repair observed changed bytes without weakening equality."
     }
   },
   "domain_observation": {
