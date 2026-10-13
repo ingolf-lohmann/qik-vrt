@@ -1,0 +1,15 @@
+{
+  "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\\n'\n",
+  "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\\n'\n\n    at file:///home/runner/work/qik-vrt/qik-vrt/runtime/offline/browser-tests/browser.test.mjs:108:90",
+  "checks": [
+    "390px layout has no horizontal overflow",
+    "UI edit commits and reads back real IndexedDB bytes"
+  ],
+  "console_errors": [],
+  "state": {
+    "url": "http://127.0.0.1:8765/",
+    "online_hint": true,
+    "controlled": true,
+    "text": "Zum Arbeitsraum\n\nQIK-VRT · UNIVERSALES RAUMZEIT-TERMINAL\n\nDeine Arbeit bleibt anschlussfähig.\n\nDateien, Entscheidungen und Repository-Kontext lokal bearbeiten — auch ohne Netz.\n\nBrowser meldet Netz · Erreichbarkeit erst beim Abruf geprüft.\n\nArbeitskopie anlegen\nSicherung vorbereiten\nRepository-Stand vom anderen iPhone übernehmen\nDein Repository\n\ningolf-lohmann/qik-vrt\n\n1 Dateien · 0 MiB\n\nDatei suchen\nqikvrt-browser-acceptance.txt\n42 Bytes · 100644\nWeitere Dateien lokal übernehmen\nArbeitsstand bearbeiten\nRepository-Pfad\nText / Entscheidung / Quellcode\nNeuen Stand speichern\nDatei exportieren\nDatei entfernen\nFrühere Arbeitsstände\n\nWiederherstellen erzeugt eine neue Revision und bewahrt die bisherige Historie.\n\nOffline-Arbeitskopie angelegt · d81226cfe835\nRepository-Monitor\n\nGespeicherte Beobachtung, kein Offline-Live-Status und keine Freigabe- oder Merge-Behauptung.\n\nGitHub einmal beobachten\n\nNoch keine Repository-Beobachtung gespeichert. Lokale Arbeit ist davon unabhängig.\n\nOffline-Bereitschaft und Sicherung\n\nClient vollständig im Offline-Cache geprüft.\n\nSpeicherung nach Browser-Richtlinie. Sichere wichtige Stände zusätzlich als Datei.\n\nBrowser-Speicher: 1 MiB genutzt, Kontingent 10.241 MiB\n\nPersistenten Speicher anfordern\nGespeicherten Stand prüfen\nBindung und Quellen\nAuf beiden iPhones verwenden\n\nIngolf Lohmann · Product Owner und Code Owner. Keine automatische Synchronisation, kein Polling, keine native Befehlsausführung."
+  }
+}

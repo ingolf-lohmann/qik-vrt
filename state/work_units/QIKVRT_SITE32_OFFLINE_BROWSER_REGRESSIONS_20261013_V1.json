@@ -169,6 +169,26 @@
         "tree": "be27ea900b39a06f2c318f123509203dbbee1634",
         "scope": "General repository test job only; initial browser jobs failed before engine installation."
       }
+    },
+    "real_engine_predecessor": {
+      "head": "30c91fd92b78544120513984f55c852bd405d126",
+      "tree": "f41383eb4eb7122e47ba0bcde9e6609a37b4978c",
+      "run_ids": [
+        38394052399,
+        38394061915
+      ],
+      "engines": {
+        "chromium": "151.0.7922.34 / revision 1234",
+        "webkit": "26.5 / revision 2336"
+      },
+      "browser_execution": true,
+      "result": "FAIL_EDITOR_READBACK_BEFORE_ASYNC_OPEN_COMPLETED",
+      "failure_location": "browser.test.mjs:108",
+      "actual_editor_value": "",
+      "expected_editor_value": "QIKVRT_SITE31_BROWSER_ACCEPTANCE_20261013\n",
+      "repair": "Wait for the actual file-loaded status before reading the editor in both offline reload and cold process restart controls.",
+      "browser_acceptance": false,
+      "product_fault_established": false
     }
   },
   "inherited_open_obligations": [
