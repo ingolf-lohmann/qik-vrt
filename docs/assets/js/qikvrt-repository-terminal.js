@@ -4,6 +4,8 @@
 (function () {
   "use strict";
 
+  const NODE_SOURCE = document.documentElement.dataset.qikvrtSource === "node";
+
   const REPOSITORIES = Object.freeze({
     authority: Object.freeze({
       label: "Authority (OWNER_ROLE_ASSIGNMENT; native activation unverified)",
@@ -200,13 +202,16 @@
   }
 
   async function publicGet(repository, path) {
-    const response = await fetch(`${repository.endpoint}${path}`, {
+    const endpoint = NODE_SOURCE
+      ? `/api/repository?repository=${encodeURIComponent(repository.name)}&path=${encodeURIComponent(path)}`
+      : `${repository.endpoint}${path}`;
+    const response = await fetch(endpoint, {
       method: "GET",
       credentials: "omit",
       headers: { Accept: "application/vnd.github+json" },
     });
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status} — GET ${repository.endpoint}${path}`);
+      throw new Error(`HTTP ${response.status} — GET ${endpoint}`);
     }
     return response.json();
   }
@@ -256,7 +261,7 @@
       const output = [
         `Repository: ${repository.name}`,
         `Role: ${repository.label}`,
-        `Ref: ${repository.branch}`,
+        `Ref: ${NODE_SOURCE ? "immutable packaged source" : repository.branch}`,
         `Commit: ${commit.sha || "UNAVAILABLE"}`,
         `Tree: ${tree}`,
         `Visibility: ${metadata.visibility || "UNAVAILABLE"}`,
@@ -323,7 +328,7 @@
       const output = [
         `Repository: ${repository.name}`,
         `Role: ${repository.label}`,
-        `Ref: ${repository.branch}`,
+        `Ref: ${NODE_SOURCE ? "immutable packaged source" : repository.branch}`,
         `Path: ${source.path}`,
         `Blob: ${payload.sha || "UNAVAILABLE"}`,
         "",

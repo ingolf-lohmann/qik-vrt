@@ -247,7 +247,8 @@
     "original_artifact_bytes": 382994793,
     "original_artifact_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
     "image_layers": 7,
-    "tool_cache_coverage": "29/29"
+    "tool_cache_coverage": "29/29",
+    "current_repository_terminal_tests": 7
   },
   "environment_limits": {
     "docker_executable": false,
@@ -317,6 +318,9 @@
     "terminal_outcome": "failure",
     "diagnosis": "Historical separate TEMDD workflow missing; bind structural admission test to existing terminal workflow and Makefile dependency. No second workflow restored.",
     "successor_native_proof": "PENDING_NEW_CODE_EXECUTION",
-    "artifact_redirect": "Authorization removed on signed artifact-storage redirect"
+    "artifact_redirect": "Authorization removed on signed artifact-storage redirect",
+    "second_source_head": "57089d0eb1976d645c681a9989fba9e04b6b26bb",
+    "second_terminal_run": 38429717882,
+    "second_diagnosis": "Native ledger: 33 passed; S1 suite: two failures. Current terminal HTML has no old source attribute; derive node attribute and restore local GET routing in current client without reverting role/owner data. Fix undefined root/join in new owner-readback addition. Keep both original failure logs."
   }
 }

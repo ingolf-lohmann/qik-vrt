@@ -46,7 +46,7 @@ const files = new Map([
   ['/publications/index.json', ['docs/publications/index.json', 'application/json']],
 ]);
 const documents = new Set(['AI','STATUS.md','README.md','docs/ARCHITECTURE.md','docs/BOUNDARIES.md',
-  'docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md','.well-known/qik-vrt-self-disclosure.json']);
+  'docs/PRIVACY_PRESERVING_INTERACTION_ARCHIVE.md','.well-known/qik-vrt-self-disclosure.json','docs/publications/index.json']);
 function reply(response, code, body, type = 'application/json', method = 'GET') {
   response.writeHead(code, {'content-type': type + '; charset=utf-8', 'cache-control': 'no-store',
     'x-content-type-options': 'nosniff', 'content-security-policy': "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'"});
@@ -125,7 +125,8 @@ async function routes(request, response, url) {
     const [path,type] = files.get(url.pathname);
     reply(response,200,readFileSync(join(root,path)),type,request.method);
   } else {
-    const html = readFileSync(join(root,'docs/terminal/index.html'),'utf8').replace('data-qikvrt-source="github"','data-qikvrt-source="node"');
+    const html = readFileSync(join(root,'docs/terminal/index.html'),'utf8').replace(/<html\b([^>]*)>/i,
+      (_,attributes)=>'<html'+attributes.replace(/\sdata-qikvrt-source="[^"]*"/g,'')+' data-qikvrt-source="node">');
     reply(response,200,html,'text/html',request.method);
   }
   return true;

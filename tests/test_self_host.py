@@ -17,6 +17,7 @@ import time
 import unittest
 from unittest import mock
 import urllib.error
+import urllib.parse
 import urllib.request
 import hmac
 import base64
@@ -911,6 +912,9 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
         self.assertEqual(self.get('/api/terminal',method='POST')[0],405)
         page=self.get('/AI/')[1]
         self.assertIn('data-qikvrt-source="node"',page)
+        publications=self.get('/api/repository?repository=ingolf-lohmann/qik-vrt&path='+urllib.parse.quote('/contents/docs/publications/index.json?ref=main',safe=''))
+        self.assertEqual(publications[0],200)
+        self.assertEqual(base64.b64decode(publications[1]['content']),(self.export/'docs/publications/index.json').read_bytes())
         self.assertEqual(self.get('/assets/js/qikvrt-local-engine.js')[0],200)
         self.assertEqual(self.get('/api/repository?repository=other/x&path=')[0],409)
         self.assertEqual(self.get('/api/repository?repository=ingolf-lohmann/qik-vrt&path=%2Fcontents%2F..%2Fterminal.token%3Fref%3Dmain')[0],404)

@@ -168,7 +168,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
           roles.canonical_upstream.repository===m.source_repository,'HOLD_ROLE_POLICY_CONTRACT');
         plan.repository_roles={authority_repository:roles.canonical_upstream.repository,mirror_repository:roles.mirror.repository,
           role_policy_sha256:sha(bytes),native_activation_inferred:false};
-        const ownerBytes=readFileSync(join(root,'policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json'));
+        const ownerBytes=readFileSync(resolve(packageRoot,'policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json'));
         require(sha(ownerBytes)===m.files['policy/REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json'].sha256,'HOLD_OWNER_POLICY_BYTES');
         const owner=JSON.parse(ownerBytes).mesh_authority;
         require(owner.authority_repository===roles.canonical_upstream.repository,'HOLD_OWNER_ROLE_PROJECTION');
@@ -177,5 +177,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     }
     console.log(JSON.stringify(await verifyClient(plan, request)));
   }
-  catch (_) { console.log(JSON.stringify({state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',effect_ack_done:false})); process.exitCode=20; }
+  catch (error) { console.log(JSON.stringify({state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',
+    reason:/^[A-Z][A-Z0-9_]{1,120}$/.test(error.message || '') ? error.message : 'INDEPENDENT_READBACK_EXECUTION_ERROR',
+    effect_ack_done:false})); process.exitCode=20; }
 }
