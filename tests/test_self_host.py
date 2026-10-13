@@ -229,7 +229,7 @@ class DockerDeliveryCycleTests(unittest.TestCase):
             with tarfile.open(delivery/"package.tar") as archive:archive.extractall(package,filter="data")
             state=root/"state";state.mkdir(mode=0o700)
             token=root/"terminal.token";password=root/"browser.password"
-            for path,text in ((token,"synthetic-terminal-token-docker-cycle-32"),(password,"fixture-vnc")):
+            for path,text in ((token,"synthetic-terminal-token-docker-cycle-32"),(password,"qikvrt26")):
                 path.write_text(text);path.chmod(0o600)
             config={"schema":"qikvrt-self-host-config/v1","node_id":"fixture:docker-delivery","adapter":"none",
                 "host":"127.0.0.1","port":33001,"terminal_port":33002,"novnc_port":33003,"vnc_port":33004,

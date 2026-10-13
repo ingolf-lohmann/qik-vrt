@@ -328,6 +328,233 @@
     "fourth_source_head": "59716ff472769974133dc34f8bf9c0a6d4441275",
     "fourth_terminal_run": 38431655116,
     "fourth_diagnosis": "All S1, systemd, original-image load, isolated Firefox/noVNC and current-source delivery freeze passed. New Docker cycle held on a fixture-only wrong novnc_port field; fix field and retain the observed failure. Existing dependency runtime image remains exactly sha256:8c7bc142ae52acb0e3dd73b994734580697cdc21762a1d277f790c502d425fdb.",
-    "host_binding_review": "Current private Owner/peer/webhook files mounted readonly at their existing exact paths. Config digest reread before restart; public readback uses the same validated adapter. No new credentials."
+    "host_binding_review": "Current private Owner/peer/webhook files mounted readonly at their existing exact paths. Config digest reread before restart; public readback uses the same validated adapter. No new credentials.",
+    "fifth_source_head": "2895efa3a315185482c62b9f6a81b7718f8b44f7",
+    "fifth_terminal_run": 38433594621,
+    "fifth_diagnosis": "Eight-ASCII-byte VNC password guard rejects the new eleven-byte Docker-cycle fixture before runtime. Correct fixture only; guard unchanged. S1, systemd, isolated Firefox/noVNC and package/image freeze passed. Three original native artifacts independently downloaded and SHA-256 verified.",
+    "independently_verified_artifacts": [
+      {
+        "id": 11832835414,
+        "bytes": 20463,
+        "sha256": "9f45125c0fdf5eb54f73616a5dbbf36d914dc57c511408627a7d02ad0cd222f3",
+        "verified": true,
+        "files": [
+          "DISTRIBUTION_PACKAGES.tsv",
+          "DOCKER_ENGINE_VERSION.json",
+          "FIREFOX_NATIVE_READBACK.json",
+          "FIREFOX_NATIVE_RESTART_READBACK.json",
+          "MANIFEST.json",
+          "OCI_IMAGE_ID.json"
+        ],
+        "json_receipts": [
+          {
+            "path": "11832835414/OCI_IMAGE_ID.json",
+            "kind": "str"
+          },
+          {
+            "path": "11832835414/DOCKER_ENGINE_VERSION.json",
+            "kind": "str"
+          },
+          {
+            "path": "11832835414/FIREFOX_NATIVE_READBACK.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-firefox-runtime-readback/v1",
+            "state": null,
+            "keys": [
+              "browser_executables",
+              "config_sha256",
+              "container_init",
+              "deployment_performed",
+              "effect_ack_done",
+              "firefox_navigator_window_observed",
+              "firefox_version",
+              "gh_in_runtime_path",
+              "git_in_runtime_path",
+              "independent_host_identity_verified",
+              "ledger_id",
+              "manifest_sha256",
+              "native_durable_event",
+              "native_subject"
+            ]
+          },
+          {
+            "path": "11832835414/FIREFOX_NATIVE_RESTART_READBACK.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-firefox-restart-readback/v1",
+            "state": null,
+            "keys": [
+              "crashed_xvfb_pids",
+              "crashed_xvfb_reaped",
+              "effect_ack_done",
+              "manifest_sha256",
+              "native_durable_event",
+              "native_original_rows_preserved",
+              "observed_listeners_after_restart",
+              "profile_marker_preserved",
+              "public_https_readback_verified",
+              "schema",
+              "source_head",
+              "source_tree"
+            ]
+          },
+          {
+            "path": "11832835414/MANIFEST.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-package/v1",
+            "state": null,
+            "keys": [
+              "browser_runtime",
+              "effect_ack_done",
+              "files",
+              "mesh_node_contract_sha256",
+              "native_terminal_daemon_included",
+              "package_version",
+              "runtime",
+              "schema",
+              "source_head",
+              "source_repository",
+              "source_tree",
+              "terminal_scope"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11832730055,
+        "bytes": 1190,
+        "sha256": "0687e4d47e014591ac90c433e67c651cf087941fcef6860b0c73eb34b2701214",
+        "verified": true,
+        "files": [
+          "RECOVERY.json",
+          "SYSTEMD_VERSION.txt"
+        ],
+        "json_receipts": [
+          {
+            "path": "11832730055/RECOVERY.json",
+            "kind": "dict",
+            "schema": "qikvrt-systemd-recovery-test/v1",
+            "state": null,
+            "keys": [
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "exact_admission_restoration_automatically_restarted",
+              "fixture_head",
+              "fixture_tree",
+              "hold_exit_status",
+              "host_admission_verified",
+              "invocations",
+              "journal_readback_preserved",
+              "mainpid_only_sigkill_cgroup_cleanup",
+              "manifest_sha256",
+              "native_sqlite_original_bytes_preserved",
+              "path_unit_sha256",
+              "public_readback_verified"
+            ]
+          }
+        ]
+      },
+      {
+        "id": 11831159408,
+        "bytes": 3390,
+        "sha256": "831a495f922477666e8b10d6d707f3bdbf8d1bc375d64a0d85f1617f0323e2cf",
+        "verified": true,
+        "files": [
+          "MIGRATION_NATIVE_OWNER_READBACK.json",
+          "NATIVE_OWNER_STATE_RECOVERY.json",
+          "LOCAL_WORK_BATCH.json",
+          "ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json"
+        ],
+        "json_receipts": [
+          {
+            "path": "11831159408/MIGRATION_NATIVE_OWNER_READBACK.json",
+            "kind": "dict",
+            "schema": "qikvrt-railway-migration-native-readback/v1",
+            "state": null,
+            "keys": [
+              "acknowledged_row_count",
+              "acknowledged_rows_sha256",
+              "actual_owner_unix_prepare_commit_and_daemon_restart",
+              "completion_sha256",
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "export_sha256",
+              "fixture_head",
+              "fixture_tree",
+              "historical_monitor_events_sha256",
+              "historical_row_count",
+              "historical_rows_and_monitor_events_preserved",
+              "historical_rows_sha256",
+              "host_admission_verified"
+            ]
+          },
+          {
+            "path": "11831159408/ORIGINAL_SQLITE_BACKEND_STATE_RECOVERY.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-state-recovery-readback/v1",
+            "state": null,
+            "keys": [
+              "actual_owner_unix_prepare_commit_and_daemon_restart",
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "fixture_head",
+              "fixture_tree",
+              "fresh_original_ledger_readback_verified",
+              "host_admission_verified",
+              "monitor_event_count",
+              "monitor_events_sha256",
+              "native_event_count",
+              "native_events_sha256",
+              "original_state_bytes_preserved",
+              "package_manifest_sha256",
+              "private_state_snapshot_uploaded"
+            ]
+          },
+          {
+            "path": "11831159408/LOCAL_WORK_BATCH.json",
+            "kind": "dict",
+            "schema": "qikvrt-local-mesh-work-measurement/v1",
+            "state": null,
+            "keys": [
+              "baseline_payload_posts",
+              "baseline_payload_wire_bytes",
+              "effect_ack_done",
+              "fixture_head",
+              "fixture_tree",
+              "metadata_readbacks",
+              "network_scope",
+              "payload_posts",
+              "per_update_source_bytes",
+              "run_id",
+              "runtime_component_sha256",
+              "schema",
+              "single_batch_wire_bytes",
+              "source_binding_scope"
+            ]
+          },
+          {
+            "path": "11831159408/NATIVE_OWNER_STATE_RECOVERY.json",
+            "kind": "dict",
+            "schema": "qikvrt-self-host-state-recovery-readback/v1",
+            "state": null,
+            "keys": [
+              "actual_owner_unix_prepare_commit_and_daemon_restart",
+              "deployed_restart_verified",
+              "effect_ack_done",
+              "fixture_head",
+              "fixture_tree",
+              "fresh_original_ledger_readback_verified",
+              "host_admission_verified",
+              "monitor_event_count",
+              "monitor_events_sha256",
+              "native_event_count",
+              "native_events_sha256",
+              "original_state_bytes_preserved",
+              "package_manifest_sha256",
+              "private_state_snapshot_uploaded"
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
