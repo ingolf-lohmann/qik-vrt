@@ -196,6 +196,7 @@ jobs:
     timeout-minutes: 35
     permissions:
       contents: read
+      actions: read
     outputs:
       head: ${{ steps.receipt.outputs.head }}
       tree: ${{ steps.receipt.outputs.tree }}
@@ -232,7 +233,15 @@ jobs:
             --output "$RUNNER_TEMP/s1-context" --receipt "$RUNNER_TEMP/container-evidence/context.json"
           docker version > "$RUNNER_TEMP/container-evidence/docker-version.txt"
           docker buildx version > "$RUNNER_TEMP/container-evidence/buildx-version.txt"
-      - name: Two independent snapshot-bound Linux OCI builds
+      - name: Verify and reuse original PR494 Docker carrier
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_self_host.py container-carrier --root . \
+            --output "$RUNNER_TEMP/frozen-carrier" \
+            --receipt "$RUNNER_TEMP/container-evidence/carrier.json"
+      - name: Two independent Linux OCI builds from original frozen carrier
         id: independent-builds
         run: |
           set -euo pipefail
@@ -243,27 +252,21 @@ jobs:
             docker buildx build --no-cache --platform linux/amd64 --target production \
               --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" \
               --provenance=false --sbom=false \
+              --build-context "qikvrt-frozen-carrier=oci-layout://$RUNNER_TEMP/frozen-carrier@sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9" \
+              --build-arg RUNTIME_CARRIER=qikvrt-frozen-carrier \
               --build-arg "SOURCE_DATE_EPOCH=$epoch" \
               --build-arg "QIKVRT_SOURCE_HEAD=$head" --build-arg "QIKVRT_SOURCE_TREE=$tree" \
               --tag "qikvrt-s1:sha-$head" \
-              --output "type=oci,dest=$RUNNER_TEMP/s1-$build.tar,compression=gzip,compression-level=9,rewrite-timestamp=true" \
+              --output "type=oci,dest=$RUNNER_TEMP/container-evidence/s1-$build.oci.tar,compression=gzip,compression-level=9,rewrite-timestamp=true" \
               "$RUNNER_TEMP/s1-context"
           done
           python3 -B tools/qikvrt_self_host.py container-oci-check \
-            --oci-archive "$RUNNER_TEMP/s1-1.tar" --second-oci-archive "$RUNNER_TEMP/s1-2.tar" \
+            --oci-archive "$RUNNER_TEMP/container-evidence/s1-1.oci.tar" \
+            --second-oci-archive "$RUNNER_TEMP/container-evidence/s1-2.oci.tar" \
             --expected-head "$head" --expected-tree "$tree" \
             --receipt "$RUNNER_TEMP/container-evidence/oci.json"
-          mv "$RUNNER_TEMP/s1-1.tar" "$RUNNER_TEMP/container-evidence/image.oci.tar"
-      - name: Preserve original OCI archives when independent builds fail
-        if: ${{ always() && steps.independent-builds.outcome == 'failure' }}
-        run: |
-          set -euo pipefail
-          for build in 1 2; do
-            archive="$RUNNER_TEMP/s1-$build.tar"
-            if test -f "$archive"; then
-              cp "$archive" "$RUNNER_TEMP/container-evidence/failed-build-$build.oci.tar"
-            fi
-          done
+          mv "$RUNNER_TEMP/container-evidence/s1-1.oci.tar" "$RUNNER_TEMP/container-evidence/image.oci.tar"
+          rm "$RUNNER_TEMP/container-evidence/s1-2.oci.tar"
       - name: Real unprivileged Firefox/terminal container and durable restart
         run: |
           set -euo pipefail
@@ -494,4 +497,3 @@ jobs:
           path: ${{ runner.temp }}/public-delivery.json
           if-no-files-found: error
           retention-days: 30
-

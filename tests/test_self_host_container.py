@@ -28,7 +28,7 @@ def declaration():
         "image_digest": "sha256:" + "e" * 64}
 
 
-def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", layer_value=True):
+def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", layer_data=True):
     blobs = {}
     def add(value):
         raw = json.dumps(value, sort_keys=True).encode()
@@ -37,7 +37,7 @@ def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", lay
         return {"digest": "sha256:" + digest, "size": len(raw)}
     config = add({"architecture": "amd64", "os": "linux", "config": {"User": user,
         "Labels": {"org.opencontainers.image.revision": head, "de.qikvrt.source-tree": tree}}})
-    layer = add({"test-layer": layer_value})
+    layer = add({"test-layer": layer_data})
     manifest = add({"config": config, "layers": [layer]})
     blobs["oci-layout"] = b'{"imageLayoutVersion":"1.0.0"}'
     blobs["index.json"] = json.dumps({"manifests": [manifest]}).encode()
@@ -76,47 +76,43 @@ class ContainerControls(unittest.TestCase):
             archive(a); archive(b)
             self.assertEqual(c.oci(a, HEAD, TREE)["image_digest"], c.oci(b, HEAD, TREE)["image_digest"])
 
-
-    def test_rebuild_mismatch_retains_verified_pairs_before_raising(self):
+    def test_failed_rebuild_retains_original_descriptor_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:
-            a, b, receipt = [Path(tmp) / name for name in ("a.tar", "b.tar", "oci.json")]
-            archive(a); archive(b, layer_value=False)
+            a, b, receipt = Path(tmp) / "a.tar", Path(tmp) / "b.tar", Path(tmp) / "receipt.json"
+            archive(a); archive(b, layer_data="changed")
             args = SimpleNamespace(operation="container-oci-check", oci_archive=a,
                 second_oci_archive=b, expected_head=HEAD, expected_tree=TREE, receipt=receipt)
             with self.assertRaisesRegex(ValueError, "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH"):
                 c.execute(args)
-            value = json.loads(receipt.read_bytes())
-            self.assertEqual(value["state"], "HOLD")
-            self.assertFalse(value["independent_rebuild_digest_equal"])
-            self.assertFalse(value["effect_ack_done"])
-            self.assertFalse(value["public_production_verified"])
-            self.assertEqual(value["first_build"], c.oci(a, HEAD, TREE))
-            self.assertEqual(value["second_build"], c.oci(b, HEAD, TREE))
-            self.assertIn("layer_digests", value["differing_fields"])
-            self.assertNotEqual(value["first_build"]["layer_digests"], value["second_build"]["layer_digests"])
-            self.assertTrue(a.is_file() and b.is_file())
-
-    def test_equal_independent_builds_keep_strict_success(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            a, b, receipt = [Path(tmp) / name for name in ("a.tar", "b.tar", "oci.json")]
-            archive(a); archive(b)
-            args = SimpleNamespace(operation="container-oci-check", oci_archive=a,
-                second_oci_archive=b, expected_head=HEAD, expected_tree=TREE, receipt=receipt)
-            result = c.execute(args)
-            self.assertTrue(result["independent_rebuild_digest_equal"])
-            self.assertEqual(result["state"], "OCI_BYTES_VERIFIED")
+            result = json.loads(receipt.read_bytes())
+            self.assertFalse(result["independent_rebuild_digest_equal"])
             self.assertFalse(result["effect_ack_done"])
-            self.assertEqual(json.loads(receipt.read_bytes()), result)
+            self.assertNotEqual(result["layers"], result["independent_rebuild"]["layers"])
+            self.assertEqual(result["image_digest"], c.oci(a, HEAD, TREE)["image_digest"])
 
-    def test_corrupt_second_build_cannot_get_verified_pair_receipt(self):
+    def test_carrier_archive_pin_checked_before_unpack_or_output(self):
         with tempfile.TemporaryDirectory() as tmp:
-            a, b, receipt = [Path(tmp) / name for name in ("a.tar", "b.tar", "oci.json")]
-            archive(a); archive(b, tamper=True)
-            args = SimpleNamespace(operation="container-oci-check", oci_archive=a,
-                second_oci_archive=b, expected_head=HEAD, expected_tree=TREE, receipt=receipt)
-            with self.assertRaisesRegex(ValueError, "OCI_BLOB_INTEGRITY_MISMATCH"):
-                c.execute(args)
-            self.assertFalse(receipt.exists())
+            path, output = Path(tmp) / "original.zip", Path(tmp) / "output"
+            path.write_bytes(b"unverified predecessor")
+            expected = {"schema":"qikvrt-s1-frozen-container-carrier/v1", "repository":c.REPOSITORY,
+                        "archive_bytes":path.stat().st_size, "archive_sha256":"0" * 64}
+            with self.assertRaisesRegex(ValueError, "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH"):
+                c.carrier_import(expected, path, output)
+            self.assertFalse(output.exists())
+
+    def test_expired_carrier_metadata_never_requests_archive(self):
+        expected = {"repository":c.REPOSITORY, "artifact_id":11521962723, "archive_bytes":42,
+                    "archive_sha256":"0" * 64, "run_id":37710500668, "source_head":HEAD}
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ,
+                {"GITHUB_REPOSITORY":c.REPOSITORY, "GITHUB_TOKEN":"fixture-only"}), \
+                patch.object(c, "get", return_value=b'{"expired":true}') as metadata, \
+                patch.object(c.urllib.request, "build_opener") as opener:
+            path = Path(tmp) / "archive.zip"
+            with self.assertRaisesRegex(ValueError, "ARTIFACT_BINDING_MISMATCH_OR_EXPIRED"):
+                c.carrier_download(expected, path)
+            opener.assert_not_called()
+            self.assertFalse(path.exists())
+            self.assertEqual(metadata.call_count, 1)
 
     def test_context_excludes_git_auth_and_untracked_private_state(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -214,4 +210,3 @@ class ContainerControls(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

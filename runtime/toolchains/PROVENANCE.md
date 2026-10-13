@@ -246,3 +246,5 @@ Primary sources: https://github.com/docker/buildx/releases/tag/v0.38.0 ,
 https://github.com/moby/buildkit/releases/tag/v0.34.0 ,
 https://github.com/containers/skopeo , https://quay.io/repository/skopeo/stable ,
 https://docs.docker.com/build/ci/github-actions/reproducible-builds/ .
+
+Frozen production carrier: existing PR494, run 37710500668, artifact11521962723; exact source, ZIP, delivery, sealed package and OCI/config pins are in runtime/self-host/CONTAINER_CARRIER.json. Original seven ordered layer bytes are reused through Buildx named OCI context, independently checked before use. Original 223 sealed package files were locally byte-verified. Production application acceptance is always new-source evidence. The build-only Git/Make provisioning layer is excluded from the runtime image. The original artifact expires 2026-11-07; an unavailable original holds, never silently rebuilds. Primary source: https://github.com/ingolf-lohmann/qik-vrt/pull/494 ; named contexts: https://docs.docker.com/reference/cli/docker/buildx/build/ .

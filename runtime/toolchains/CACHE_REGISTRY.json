@@ -62,11 +62,13 @@
         "runtime/toolchains/PROVENANCE.md",
         "tools/qikvrt_self_host_container.py",
         "tests/test_self_host_container.py",
-        ".github/workflows/qikvrt_ci.yml"
+        ".github/workflows/qikvrt_ci.yml",
+        "runtime/self-host/CONTAINER_CARRIER.json"
       ],
       "cache_class": "build-cache",
       "cache_locations": [
-        "runtime/self-host/Dockerfile:versioned OCI dependency image"
+        "runtime/self-host/Dockerfile:versioned OCI dependency image",
+        "GitHub Actions original artifact 11521962723; verified exact-byte OCI context; expiry holds until admitted durable byte source"
       ],
       "profiles": [
         "self-host-firefox",
@@ -82,7 +84,8 @@
         "Buildx v0.38.0 with SHA-256-pinned BuildKit v0.34.0; Debian snapshot 20261013T000000Z; SOURCE_DATE_EPOCH and rewrite-timestamp",
         "Two independent no-cache OCI production builds; every config/layer verified and image descriptor equality required",
         "Protected main and independent production Environment review; mutual-TLS existing Linux Docker Engine REST only; create-only deployment",
-        "Independent exact-host TLS/terminal/manifest readback; no registry credentials in context or artifacts"
+        "Independent exact-host TLS/terminal/manifest readback; no registry credentials in context or artifacts",
+        "Original PR494 archive, delivery/package pins, every image blob and ordered uncompressed DiffID verified before named OCI carrier import; no predecessor application acceptance transfer"
       ],
       "version": "OCI-build-and-isolated-runtime-contract"
     },

@@ -39,40 +39,40 @@
       "trace_sha256": "379c3df3d62675ccbf4d54dc20895770b20956ac749985485b7fc8c5eef06881"
     },
     "oci_rebuild_failure_38425046696": {
-      "scope": "Existing OCI reproducibility gate diagnosis; underlying byte nondeterminism remains unproven until original archives are compared.",
-      "run_id": 38425046696,
-      "job_id": 115393724849,
-      "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
-      "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
-      "cause": "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH",
-      "first_image_digest": "sha256:4ac5224421a02e6760cd2b64d87a1ea0023f68382490f04a90b981fa08f244a1",
-      "second_image_digest": "sha256:f9a7cd26a6ef0902aefa02fd7a7099c15f14f71dbc10c81bd3c5b8260903631a",
-      "artifact_id": 11829635147,
       "artifact_bytes": 1031,
-      "artifact_sha256": "dda711e5831cfc3244565894f467ffa4455af89ff90b883da43efe18c1ad4b6f",
+      "artifact_id": 11829635147,
       "artifact_original_bytes_verified": true,
+      "artifact_sha256": "dda711e5831cfc3244565894f467ffa4455af89ff90b883da43efe18c1ad4b6f",
+      "cause": "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH",
+      "effect_ack_done": false,
+      "first_image_digest": "sha256:4ac5224421a02e6760cd2b64d87a1ea0023f68382490f04a90b981fa08f244a1",
+      "full_original_work_unit_preserved": true,
+      "job_id": 115393724849,
+      "local_validation": {
+        "complete_container_control_tests": 15,
+        "evidence_class": "TECHNICAL_SYNTHETIC_OCI_ARCHIVE_CONTROLS",
+        "focused_oci_tests": 6,
+        "local_docker_execution": false,
+        "native_successor_execution": "REQUIRED",
+        "partial_checkout_missing_review_helper": "Observed then repaired by materializing unchanged exact-source tools/qikvrt_required_review_gate.py; no test bypass",
+        "result": "PASS",
+        "tool_cache_contract": "PASS 27/27",
+        "workflow_yaml_and_affected_bash_syntax": "PASS"
+      },
+      "next_action": "Native successor build: read failing pair receipt, compare retained image config/history/layers and original layer filesystem contents; repair observed changed bytes without weakening equality.",
+      "public_production_verified": false,
+      "repair": "Preserve both validated OCI subjects and changed diagnostic fields before strict rejection; retain both original archives through existing always-upload step.",
       "retained_files": [
         "buildx-version.txt",
         "docker-version.txt",
         "context.json"
       ],
-      "repair": "Preserve both validated OCI subjects and changed diagnostic fields before strict rejection; retain both original archives through existing always-upload step.",
-      "local_validation": {
-        "focused_oci_tests": 6,
-        "result": "PASS",
-        "evidence_class": "TECHNICAL_SYNTHETIC_OCI_ARCHIVE_CONTROLS",
-        "workflow_yaml_and_affected_bash_syntax": "PASS",
-        "local_docker_execution": false,
-        "native_successor_execution": "REQUIRED",
-        "complete_container_control_tests": 15,
-        "tool_cache_contract": "PASS 27/27",
-        "partial_checkout_missing_review_helper": "Observed then repaired by materializing unchanged exact-source tools/qikvrt_required_review_gate.py; no test bypass"
-      },
-      "unchanged_errors_retried": false,
-      "full_original_work_unit_preserved": true,
-      "effect_ack_done": false,
-      "public_production_verified": false,
-      "next_action": "Native successor build: read failing pair receipt, compare retained image config/history/layers and original layer filesystem contents; repair observed changed bytes without weakening equality."
+      "run_id": 38425046696,
+      "scope": "Existing OCI reproducibility gate diagnosis; underlying byte nondeterminism remains unproven until original archives are compared.",
+      "second_image_digest": "sha256:f9a7cd26a6ef0902aefa02fd7a7099c15f14f71dbc10c81bd3c5b8260903631a",
+      "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
+      "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
+      "unchanged_errors_retried": false
     }
   },
   "domain_observation": {
@@ -91,6 +91,38 @@
     "observed_at": "2026-10-13T14:44:00.626883+00:00"
   },
   "effect_ack_done": false,
+  "frozen_carrier_reuse_successor": {
+    "artifact_expiry_boundary": "2026-11-07T01:08:00Z; no silent substitute on expiry",
+    "authority": "ingolf-lohmann/qik-vrt",
+    "causal_scope": "Prior unequal OCI manifest/config descriptors are verified. Attribution to a particular Debian-generated cache remains unproven. Frozen carrier reuse removes runtime re-provisioning from the production build input; fresh native successor acceptance remains required.",
+    "change": "Use the original PR494 OCI bytes as the production dependency carrier; do not regenerate the already finished Firefox/Python/Node runtime. Only freeze current committed S1 sources with the original exporter. Keep independent no-cache digest equality, native tests, protected publication/deployment and all prior failure evidence.",
+    "compose_pr494": "Original deploy/universal-terminal/compose.yaml authority reversal is outside this reused dependency image; this lane binds authority through existing S1 PACKAGE.json and production host contract.",
+    "input_contract": "runtime/self-host/CONTAINER_CARRIER.json",
+    "local_controls": "PASS_15_CONTAINER_SECURITY_AND_INTEGRITY_CONTROLS; PASS_18_EXISTING_RELEASE_WORKFLOW_CONTROLS",
+    "mirror": "Goldkelch/qik-vrt",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "original_delivery": {
+      "archive_bytes": 382994793,
+      "archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "artifact_id": 11521962723,
+      "effect_ack_done": false,
+      "image_config_digest": "sha256:8c7bc142ae52acb0e3dd73b994734580697cdc21762a1d277f790c502d425fdb",
+      "image_digest": "sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9",
+      "ordered_layers": 7,
+      "ordinary_release": false,
+      "predecessor_acceptance_transferred": false,
+      "predecessor_source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+      "predecessor_source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3",
+      "public_production_verified": false,
+      "run_id": 37710500668,
+      "schema": "qikvrt-s1-container-receipt/v1",
+      "scope": "DEPENDENCY_IMAGE_ONLY",
+      "sealed_files_verified": 223,
+      "state": "ORIGINAL_FROZEN_CARRIER_VERIFIED"
+    },
+    "parent_head": "74606b8c3c59f0d93bed8d09dd2b72a7c32235db",
+    "parent_tree": "2b759bbd0f19724cb9eb7e31538fa0c9f42cd8f1"
+  },
   "governance_at_open": {
     "PR457_reviews": [],
     "main_head": "52e1cf424699d5f624b0f32ecffb7f00001d974e",
@@ -138,6 +170,17 @@
   ],
   "ordinary_release": false,
   "predecessor_evidence_transfer": false,
+  "protected_existing_session_route": {
+    "budget_monthly_eur": 150,
+    "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
+    "new_secret_or_password_requested": false,
+    "nonsecret_exact_item_reference": null,
+    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
+    "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
+    "supported_reader_or_native_use_operation_exposed": false,
+    "task_authorization_already_granted": true,
+    "version": 17
+  },
   "provider_capability": {
     "DigitalOcean_REST_authenticated": true,
     "DigitalOcean_account_warning": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel.",
@@ -154,6 +197,53 @@
     "workflow_dispatch_POST_exposed": false
   },
   "public_productivization_verified": false,
+  "registration_after_verified_DENIC_recovery": {
+    "cloudflare_a": {
+      "body": "",
+      "bytes": 0,
+      "completed_at": "2026-10-13T16:15:51.930570+00:00",
+      "date": "Tue, 13 Oct 2026 16:15:51 GMT",
+      "final_url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A",
+      "http_status": 400,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-10-13T16:15:45.208164+00:00",
+      "url": "https://cloudflare-dns.com/dns-query?name=raumzeitterminal.de&type=A"
+    },
+    "denic": {
+      "body": "{\"errorCode\":404,\"title\":\"No such domain.\",\"description\":[]}",
+      "bytes": 60,
+      "completed_at": "2026-10-13T16:15:52.420375+00:00",
+      "date": "Tue, 13 Oct 2026 16:15:52 GMT",
+      "final_url": "https://rdap.denic.de/domain/raumzeitterminal.de",
+      "http_status": 404,
+      "sha256": "a07fc609c8ce092b1e7a5113e4ea0a69c48a7ac26183c88b5df5565a40f0f5f7",
+      "started_at": "2026-10-13T16:15:45.201954+00:00",
+      "url": "https://rdap.denic.de/domain/raumzeitterminal.de"
+    },
+    "google_ns": {
+      "body": "{\"Status\":3,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"raumzeitterminal.de.\",\"type\":2}],\"Authority\":[{\"name\":\"de.\",\"type\":6,\"TTL\":1800,\"data\":\"f.nic.de. dns-operations.denic.de. 1791908122 7200 7200 3600000 7200\"}],\"Comment\":\"Response from 194.246.96.1.\"}",
+      "bytes": 286,
+      "completed_at": "2026-10-13T16:15:53.214978+00:00",
+      "date": "Tue, 13 Oct 2026 16:15:53 GMT",
+      "final_url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS",
+      "http_status": 200,
+      "sha256": "02087ab052f3d61e4ce02ad1552a79c951fc446824b8ef2f722c8f4f42d9ad91",
+      "started_at": "2026-10-13T16:15:45.205668+00:00",
+      "url": "https://dns.google/resolve?name=raumzeitterminal.de&type=NS"
+    },
+    "rdap_retry_prerequisite": "DENIC status freshly reports All Systems Operational, 0 Active Maintenances, RDAP Operational; earlier maintenance bound observations retained separately.",
+    "tls_health": {
+      "body": "<html>\n<head>\n    <title>502 Bad Gateway</title>\n</head>\n<body>\n    <h1>502 Bad Gateway</h1>\n    <p>[Errno 111] Connection refused</p>\n</body>\n</html>",
+      "bytes": 150,
+      "completed_at": "2026-10-13T16:15:52.557483+00:00",
+      "date": null,
+      "final_url": "https://raumzeitterminal.de/health",
+      "http_status": 502,
+      "sha256": "81074a9c8dfb24290e8fc4af14d20f67f5304618d27ac713628b1126e41dbd8e",
+      "started_at": "2026-10-13T16:15:45.209225+00:00",
+      "url": "https://raumzeitterminal.de/health"
+    }
+  },
   "release_inventory": {
     "OCI_image_asset_found": false,
     "S1_current_recipe": "runtime/self-host/Dockerfile",

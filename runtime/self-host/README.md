@@ -598,12 +598,28 @@ integrated on Main and does not establish a productive host or domain.
 
 The existing `runtime/self-host/Dockerfile` now has a `production` target that
 freezes the original S1 package using the original exporter. Its existing
-Python/Node OCI base pins are preserved. Debian inputs come from the fixed
-20261013T000000Z signed snapshot. Buildx 0.38.0 and BuildKit 0.34.0 are bound to
+Python/Node OCI base pins are preserved for original standalone tests. The CI
+production lane reuses the already completed PR #494 dependency container:
+Actions run 37710500668, artifact 11521962723, original ZIP SHA-256
+`5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695`.
+`CONTAINER_CARRIER.json` pins that original source, image configuration, OCI
+manifest and matching sealed package. Every delivery file, package file and
+content-addressed image blob is verified before its original OCI bytes enter
+Buildx as a named context. No Firefox/Python/Node runtime is rebuilt or replaced.
+The build-only Git/Make stage uses signed Debian snapshot 20261013T000000Z;
+its apt caches/logs do not enter the production image. The original artifact
+expires on 7 November: absence/expiry holds the build until an admitted durable
+exact-byte source is bound; a fresh dependency build is never silently substituted.
+Buildx 0.38.0 and BuildKit 0.34.0 are bound to
 reviewed upstream identities; commit time and rewritten layer timestamps are
 fixed. The existing `.github/workflows/qikvrt_ci.yml` retains its full tests and
 adds two independent no-cache Linux/amd64 OCI builds. Every referenced blob and
 source label is verified, and differing manifest digests refuse publication.
+Mismatch receipts and both OCI archives are retained before refusal. The first
+native attempt on `c5ce2be0e0d23bb0dad49f00ca012757862c030f` passed full S1
+and Firefox tests but produced unequal image descriptors. Reusing the frozen
+carrier changes the build input; that failed attempt is not retried unchanged,
+and its application success is not transferred to a successor.
 
 The same production image runs as UID/GID 10001 with read-only root, dropped
 capabilities and no new privileges. The smoke lane uses private disposable

@@ -25,6 +25,8 @@ import time
 import urllib.parse
 import urllib.request
 import uuid
+import zipfile
+import io
 
 REPOSITORY = "ingolf-lohmann/qik-vrt"
 IMAGE = "ghcr.io/ingolf-lohmann/qik-vrt-s1"
@@ -130,12 +132,156 @@ def oci(path, head, tree):
                 labels.get("de.qikvrt.source-tree") == tree, "OCI_SOURCE_BINDING_MISMATCH")
         require(config["config"].get("User") == "10001:10001", "UNPRIVILEGED_IMAGE_REQUIRED")
         return {"state": "OCI_BYTES_VERIFIED", "source_head": head, "source_tree": tree,
-                "image_digest": descriptor["digest"], "oci_archive_sha256": sha(Path(path).read_bytes()),
+                "image_digest": descriptor["digest"], "config_digest": manifest["config"]["digest"],
+                "layers": manifest["layers"], "diff_ids": config.get("rootfs", {}).get("diff_ids", []),
                 "image_config_digest": manifest["config"]["digest"],
                 "layer_digests": [layer["digest"] for layer in manifest["layers"]],
                 "rootfs_diff_ids": config.get("rootfs", {}).get("diff_ids", []),
                 "created": config.get("created"),
-                "history_created": [item.get("created") for item in config.get("history", [])]}
+                "history_created": [item.get("created") for item in config.get("history", [])],
+                "oci_archive_sha256": sha(Path(path).read_bytes())}
+
+
+def carrier_download(expected, path):
+    """Read original Actions artifact; never forward API auth to blob storage."""
+    require(expected["repository"] == REPOSITORY and
+            os.environ.get("GITHUB_REPOSITORY") == REPOSITORY, "CARRIER_AUTHORITY_REQUIRED")
+    token = os.environ.get("GITHUB_TOKEN")
+    require(bool(token), "ACTIONS_READ_BINDING_REQUIRED")
+    base = "https://api.github.com/repos/" + REPOSITORY + "/actions/artifacts/" + str(expected["artifact_id"])
+    metadata = json.loads(get(base, token))
+    require(metadata.get("expired") is False and
+            metadata.get("size_in_bytes") == expected["archive_bytes"] and
+            metadata.get("digest") == "sha256:" + expected["archive_sha256"] and
+            metadata.get("workflow_run", {}).get("id") == expected["run_id"] and
+            metadata.get("workflow_run", {}).get("head_sha") == expected["source_head"],
+            "ORIGINAL_CARRIER_ARTIFACT_BINDING_MISMATCH_OR_EXPIRED")
+    class CaptureRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *args, **kwargs):
+            return None
+    request = urllib.request.Request(base + "/zip", headers={"Authorization": "Bearer " + token,
+        "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"})
+    try:
+        try:
+            urllib.request.build_opener(CaptureRedirect()).open(request, timeout=30)
+        except urllib.error.HTTPError as response:
+            require(response.code == 302, "ORIGINAL_ACTIONS_ARCHIVE_REDIRECT_REQUIRED")
+            location = response.headers.get("Location", "")
+        else:
+            raise ValueError("ORIGINAL_ACTIONS_ARCHIVE_REDIRECT_REQUIRED")
+        target = urllib.parse.urlsplit(location)
+        require(target.scheme == "https" and target.hostname and not target.username and
+                target.hostname.endswith((".blob.core.windows.net", ".actions.githubusercontent.com",
+                                          ".githubusercontent.com", ".s3.amazonaws.com")),
+                "ORIGINAL_ACTIONS_BLOB_ORIGIN_REQUIRED")
+        # Signed location stays in memory. No Authorization header on this GET.
+        with urllib.request.build_opener(NoRedirect()).open(location, timeout=90) as response, Path(path).open("xb") as output:
+            remaining = expected["archive_bytes"]
+            while remaining:
+                raw = response.read(min(1024**2, remaining))
+                require(bool(raw), "CARRIER_ARCHIVE_TRUNCATED")
+                output.write(raw); remaining -= len(raw)
+            require(not response.read(1), "CARRIER_ARCHIVE_TOO_LARGE")
+    except (OSError, urllib.error.URLError):
+        raise ValueError("PINNED_CARRIER_FETCH_NOT_ADMITTED") from None
+
+
+def carrier_import(expected, path, output):
+    """Verify original ZIP, sealed source and every image blob; copy OCI bytes."""
+    require(expected.get("schema") == "qikvrt-s1-frozen-container-carrier/v1" and
+            expected.get("repository") == REPOSITORY, "FROZEN_CARRIER_CONTRACT_REQUIRED")
+    path, output = Path(path), Path(output)
+    require(not output.exists(), "CREATE_ONLY_CARRIER_OUTPUT_REQUIRED")
+    with path.open("rb") as source:
+        digest = hashlib.file_digest(source, "sha256").hexdigest()
+    require(path.stat().st_size == expected["archive_bytes"] and
+            digest == expected["archive_sha256"], "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH")
+    with zipfile.ZipFile(path) as archive:
+        names = archive.namelist()
+        require(len(names) == len(set(names)) and all("/" not in n and "\\" not in n for n in names),
+                "REGULAR_UNIQUE_DELIVERY_FILES_REQUIRED")
+        raw_delivery = archive.read("DELIVERY.json")
+        require(sha(raw_delivery) == expected["delivery_sha256"], "CARRIER_DELIVERY_PIN_MISMATCH")
+        delivery = json.loads(raw_delivery)
+        require(delivery["schema"] == "qikvrt-firefox-runtime-delivery/v1" and
+                delivery["source_head"] == expected["source_head"] and
+                delivery["source_tree"] == expected["source_tree"] and
+                delivery["runtime_image_id"] == expected["image_config_digest"] and
+                delivery["manifest_sha256"] == expected["package_manifest_sha256"] and
+                (delivery["os"], delivery["architecture"]) == ("linux", "amd64") and
+                set(names) == set(delivery["files"]) | {"DELIVERY.json"}, "CARRIER_DELIVERY_SOURCE_MISMATCH")
+        for name, pin in delivery["files"].items():
+            with archive.open(name) as source:
+                actual = hashlib.file_digest(source, "sha256").hexdigest()
+            require(archive.getinfo(name).file_size == pin["bytes"] and actual == pin["sha256"],
+                    "CARRIER_DELIVERY_FILE_INTEGRITY_MISMATCH")
+        with tarfile.open(fileobj=io.BytesIO(archive.read("package.tar")), mode="r:") as package:
+            entries = package.getmembers()
+            require(all(e.isfile() and not Path(e.name).is_absolute() and ".." not in Path(e.name).parts
+                        for e in entries) and len(entries) == len({e.name for e in entries}),
+                    "REGULAR_SEALED_PACKAGE_REQUIRED")
+            manifest_raw = package.extractfile("MANIFEST.json").read()
+            require(sha(manifest_raw) == expected["package_manifest_sha256"], "CARRIER_PACKAGE_PIN_MISMATCH")
+            manifest = json.loads(manifest_raw)
+            require((manifest["source_head"], manifest["source_tree"], manifest["source_repository"]) ==
+                    (expected["source_head"], expected["source_tree"], REPOSITORY) and
+                    "browser_runtime" in manifest and
+                    set(e.name for e in entries) == set(manifest["files"]) | {"MANIFEST.json"},
+                    "CARRIER_SEALED_SOURCE_MISMATCH")
+            for name, pin in manifest["files"].items():
+                entry = package.getmember(name)
+                raw = package.extractfile(entry).read()
+                require(len(raw) == pin["bytes"] and sha(raw) == pin["sha256"] and
+                        entry.mode == (0o755 if pin["mode"] == "100755" else 0o644),
+                        "CARRIER_SEALED_FILE_INTEGRITY_MISMATCH")
+        output.mkdir(parents=True)
+        sizes, seen = {}, set()
+        with archive.open("runtime-image.tar.gz") as compressed, tarfile.open(fileobj=compressed, mode="r|gz") as image:
+            for entry in image:
+                name = entry.name.removeprefix("./")
+                require(name not in seen and (entry.isfile() or entry.isdir()) and
+                        not Path(name).is_absolute() and ".." not in Path(name).parts and
+                        entry.size <= 2 * 1024**3, "REGULAR_BOUNDED_CARRIER_IMAGE_REQUIRED")
+                seen.add(name)
+                if not entry.isfile():
+                    continue
+                require(name in ("index.json", "oci-layout", "manifest.json", "repositories") or
+                        re.fullmatch(r"blobs/sha256/[a-f0-9]{64}", name), "CARRIER_IMAGE_PATH_REFUSED")
+                if name in ("manifest.json", "repositories"):
+                    continue
+                dest = output / name; dest.parent.mkdir(parents=True, exist_ok=True)
+                hasher = hashlib.sha256()
+                with image.extractfile(entry) as source, dest.open("xb") as target:
+                    while raw := source.read(1024**2):
+                        hasher.update(raw); target.write(raw)
+                sizes[name] = entry.size
+                if name.startswith("blobs/"):
+                    require(hasher.hexdigest() == name.rsplit("/", 1)[-1], "CARRIER_IMAGE_BLOB_MISMATCH")
+        require(json.loads((output / "oci-layout").read_bytes())["imageLayoutVersion"] == "1.0.0",
+                "CARRIER_OCI_LAYOUT_REQUIRED")
+        index = json.loads((output / "index.json").read_bytes())
+        require(len(index["manifests"]) == 1 and
+                index["manifests"][0]["digest"] == expected["oci_manifest_digest"], "CARRIER_MANIFEST_PIN_MISMATCH")
+        def descriptor(value):
+            name = "blobs/sha256/" + value["digest"].removeprefix("sha256:")
+            require(name in sizes and sizes[name] == value["size"], "CARRIER_DESCRIPTOR_BINDING_MISMATCH")
+            return output / name
+        image_manifest = json.loads(descriptor(index["manifests"][0]).read_bytes())
+        config = json.loads(descriptor(image_manifest["config"]).read_bytes())
+        require(image_manifest["config"]["digest"] == expected["image_config_digest"] and
+                (config["os"], config["architecture"]) == ("linux", "amd64") and
+                config["rootfs"]["diff_ids"] == [layer["digest"] for layer in image_manifest["layers"]],
+                "CARRIER_CONFIG_OR_ORDERED_DIFFID_MISMATCH")
+        for layer in image_manifest["layers"]:
+            require(layer["mediaType"] == "application/vnd.oci.image.layer.v1.tar", "ORIGINAL_UNCOMPRESSED_CARRIER_LAYER_REQUIRED")
+            descriptor(layer)
+        return {"state": "ORIGINAL_FROZEN_CARRIER_VERIFIED", "scope": "DEPENDENCY_IMAGE_ONLY",
+                "artifact_id": expected["artifact_id"], "run_id": expected["run_id"],
+                "predecessor_source_head": expected["source_head"], "predecessor_source_tree": expected["source_tree"],
+                "archive_bytes": expected["archive_bytes"], "archive_sha256": digest,
+                "image_digest": expected["oci_manifest_digest"], "image_config_digest": expected["image_config_digest"],
+                "ordered_layers": len(image_manifest["layers"]), "sealed_files_verified": len(manifest["files"]),
+                "predecessor_acceptance_transferred": False, "public_production_verified": False}
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -483,23 +629,28 @@ def execute(args):
     operation = args.operation.removeprefix("container-")
     if operation == "context":
         result = context(args.root, args.output)
+    elif operation == "carrier":
+        expected = json.loads((args.root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+        with tempfile.TemporaryDirectory() as temporary:
+            archive = args.carrier_archive or Path(temporary) / "original-delivery.zip"
+            if not args.carrier_archive:
+                carrier_download(expected, archive)
+            result = carrier_import(expected, archive, args.output)
     elif operation == "oci-check":
         result = oci(args.oci_archive, args.expected_head, args.expected_tree)
         if args.second_oci_archive:
             second = oci(args.second_oci_archive, args.expected_head, args.expected_tree)
-            if result["image_digest"] != second["image_digest"]:
-                # Preserve both verified subjects before failing the strict gate.
-                # These are build identities only, never a deployment receipt.
-                write_receipt(args.receipt, {
-                    "state": "HOLD", "cause": "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH",
-                    "source_head": args.expected_head, "source_tree": args.expected_tree,
-                    "independent_rebuild_digest_equal": False,
-                    "first_build": result, "second_build": second,
-                    "differing_fields": sorted(key for key in result if result[key] != second.get(key)),
-                    "public_production_verified": False,
-                })
+            result["independent_rebuild_digest_equal"] = result["image_digest"] == second["image_digest"]
+            result["independent_rebuild"] = second
+            if not result["independent_rebuild_digest_equal"]:
+                result["state"] = "HOLD_INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH"
+                result["cause"] = "INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH"
+                first = dict(result)
+                result["first_build"], result["second_build"] = first, second
+                result["differing_fields"] = sorted(key for key in second if first.get(key) != second[key])
+                result["public_production_verified"] = False
+                write_receipt(args.receipt, result)
                 raise ValueError("INDEPENDENT_OCI_REBUILD_DIGEST_MISMATCH")
-            result["independent_rebuild_digest_equal"] = True
     elif operation == "smoke":
         result = smoke(args.image, args.output)
     elif operation == "production-gate":
@@ -513,4 +664,3 @@ def execute(args):
     else:
         raise ValueError("UNKNOWN_CONTAINER_OPERATION")
     return write_receipt(args.receipt, result)
-

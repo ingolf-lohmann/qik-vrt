@@ -1,0 +1,18 @@
+{
+  "schema": "qikvrt-s1-frozen-container-carrier/v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "source_pr": 494,
+  "source_head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+  "source_tree": "05e1a0b0605bcf2c2c177ceda98f112552fe02a3",
+  "run_id": 37710500668,
+  "artifact_id": 11521962723,
+  "archive_bytes": 382994793,
+  "archive_sha256": "5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+  "delivery_sha256": "acd196b0c46318482fdcf23c63291b0cd4fef5168f49c72bcd9f6cb60ad747a5",
+  "image_config_digest": "sha256:8c7bc142ae52acb0e3dd73b994734580697cdc21762a1d277f790c502d425fdb",
+  "oci_manifest_digest": "sha256:b2c5d065f9e9253d9f9eb454a86614e94592e6a8a251b8c9b44f26295ffb59b9",
+  "package_manifest_sha256": "6160a6fec7ec9a5f002bdc537fb8693f6c766a6891989d05af8e239b79cf7f4e",
+  "artifact_expires_at": "2026-11-07T01:08:00Z",
+  "scope": "Reuse original dependency image bytes, not predecessor application acceptance. After expiry an admitted durable exact-byte source is required; never silently rebuild or select a different artifact.",
+  "attribution": "Ingolf Lohmann: existing implementation and authorized product requirement; OpenAI Codex: original-byte verification and CI connection"
+}
