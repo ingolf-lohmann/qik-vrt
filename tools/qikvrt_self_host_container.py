@@ -524,7 +524,8 @@ def deploy(value, image, engine):
 def public_readback(value, package):
     require(value["origin"] == ORIGIN, "EXACT_PRODUCT_ORIGIN_REQUIRED")
     observed = {}
-    for path in ("/health", "/api/runtime", "/api/terminal", "/AI/"):
+    # Reuse the original observation GET before validating fresh durable state.
+    for path in ("/api/activity", "/health", "/api/runtime", "/api/terminal", "/AI/"):
         raw = get(ORIGIN + path)
         observed[path] = {"status": 200, "sha256": sha(raw), "bytes": len(raw)}
         if path == "/api/runtime":
@@ -620,6 +621,12 @@ def smoke(image, output):
                 time.sleep(1)
             raise ValueError("SMOKE_READINESS_TIMEOUT")
         before = ready()
+        observation = get(origin + "/api/activity")
+        observed = json.loads(observation)
+        require(observed.get("replication", {}).get("source_head") == manifest["source_head"] and
+                observed.get("replication", {}).get("source_tree") == manifest["source_tree"],
+                "INITIAL_OBSERVATION_SOURCE_BINDING_REQUIRED")
+        (output / "smoke-initial-observation.json").write_bytes(observation)
         package = output / "public-package"
         command("docker", "cp", name + ":/opt/qikvrt", str(package))
         def readback(phase):

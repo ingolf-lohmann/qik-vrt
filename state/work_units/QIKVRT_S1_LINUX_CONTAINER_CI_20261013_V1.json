@@ -168,6 +168,23 @@
     "observed_at": "2026-10-13T14:44:00.626883+00:00"
   },
   "effect_ack_done": false,
+  "fresh_fixture_durable_observation_and_readback_diagnostic": {
+    "causal_claim_boundary": "This omitted initial observation is source-derived and matches the failing fresh-fixture contract; its exact native assertion cause awaits the now-safe constant-code diagnostic. No underlying health requirement is weakened.",
+    "job_id": 115442319799,
+    "local_original_zip_verified": true,
+    "native_artifact_id": 11835280488,
+    "native_observed": "Fixture running on observed private internal bridge; actual SELF_HOST_NATIVE_READY with exact source, manifest and config pins; original Node independent client returned generic exit20. Full assertion cause was redacted by its previous catch-all.",
+    "native_successor": "PENDING_EXACT_HEAD_CI",
+    "predecessor_acceptance_transferred": false,
+    "public_production_verified": false,
+    "repair": "Use original GET /api/activity once before first standalone readback, also before public acceptance of fresh state. Preserve original snapshot bytes and before/after independent client bytes. Original client exposes only fixed HOLD assertion codes and redacts dynamic transport/file messages; all predicates and exit20 remain unchanged.",
+    "run_id": 38439078193,
+    "source_diagnosis": "Fresh empty volume has no monitor snapshot. Standalone self-host.mjs advertises readiness without startup observeLatest; server.mjs metadata requires visible.snapshot for snapshot_durable. Original client checks that health contract before its later GET /api/activity. Existing standalone readback tests seed acknowledged durable state first.",
+    "source_parent_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+    "source_parent_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b",
+    "zip_bytes": 390690684,
+    "zip_sha256": "07265f82ba555062311ed330df743c2c22982f69b129b6acbfdf39bfceeb26ea"
+  },
   "frozen_carrier_reuse_successor": {
     "artifact_expiry_boundary": "2026-11-07T01:08:00Z; no silent substitute on expiry",
     "authority": "ingolf-lohmann/qik-vrt",
@@ -288,7 +305,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
