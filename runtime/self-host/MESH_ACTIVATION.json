@@ -1,0 +1,403 @@
+{
+  "schema": "qikvrt-self-host-mesh-activation/v1",
+  "work_unit_id": "S1_REACT_MESH_FIRST_PING_20261005",
+  "owner": "Ingolf Lohmann",
+  "authorization": "CURRENT_DIRECT_OWNER_REQUEST_SELF_HOST_EACH_REPOSITORY_NODE_MESH_HOSTING_CI_AND_FIRST_TRANSPUTER_PING",
+  "observed_at": "2026-10-05T20:40:27.425673Z",
+  "source_candidate": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 457,
+    "base_head": "86e0ba74eb0f4784f1e302805932b8f1c532f34c",
+    "base_tree": "3946d444c2ed3eea14a6d12ec7a5696526e8d9c9"
+  },
+  "reuse": {
+    "launcher": "tools/qikvrt_self_host.py",
+    "monitor": "docs/monitor/self-host.mjs",
+    "native_ingress": "src/qikvrt_temdd_event_ledger.py:submit",
+    "replica": "docs/monitor/client-replica.js",
+    "candidate_ci": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+    "registry": "registry/NODEMESH_INDEX.json"
+  },
+  "static_document": {
+    "mesh_path": "/mesh",
+    "node_path": "/node?repository=<declared-repository>",
+    "client_path": "/client",
+    "runtime": "React 19.2.6 / React DOM 19.2.6 / Scheduler 0.27.0",
+    "external_cdn_required": false,
+    "source_original": {
+      "path": "docs/monitor/scheibenhard-original.html",
+      "bytes": 19160,
+      "sha256": "141035ce256549227e3a427fe0db5558a7356c530ec4d7662abddad4a0b80de6"
+    }
+  },
+  "required_acceptance_order": [
+    "Fresh complete admitted repository-node and terminal inventory; preserve known and unavailable members, no shrinking to obtain PASS",
+    "Verify an exact-source-bound native universal Transputer and universal Terminal at every inventoried node under required_node_runtime; freeze package only through the mesh-contract gate.",
+    "Bind own-host principal, privileged executor, private transfer, actual persistent mount, public IPv4/HTTPS routing and valid certificate",
+    "Exact-source candidate CI succeeds; freeze and independently verify the static React plus native S1 package for each admitted node",
+    "Instantiate the hosting-platform pipeline against exact artifact and existing admit/supervisor/run-admitted operations; retain deployment run/readback",
+    "Independently GET exact static document and assets from public HTTPS for every repository-node and the Mesh; recheck hashes and deployed source identity; verify every required_repository_surface capability via fresh node-bound immutable snapshot plus independent byte-exact readback",
+    "Open every admitted universal terminal and verify its live client identity/source/replica before emission",
+    "Submit one fresh nonce-bound ping through authenticated Owner REST Prepare/Commit or the separate owner Unix ingress, both using the original universal Transputer ledger; a substitute observer or HTTP health route is insufficient",
+    "Read back that exact native event id, ledger epoch, digest, nonce and logical ping identity at every admitted terminal; verify authenticated terminal-bound receipt and actual receive times",
+    "Preserve the same event/epoch/receipt chain after deployed restart; no receipt transfer from a predecessor source",
+    "Inject every required_node_runtime fault case on the actual public workload; verify original native-effect journal, writer fences, Work Unit/session continuity, complete node coverage and workload-bound RTO/SLO.",
+    "Persist the exact finite-scope completion receipt only after all public, native and terminal checks are closed"
+  ],
+  "simultaneous_receive": {
+    "meaning": "One shared logical ping/barrier and complete receipt set in a measured receive window",
+    "logical_ping_id_required": true,
+    "measured_receive_times_required": true,
+    "clock_uncertainty_required": true,
+    "absolute_physical_simultaneity_claimed": false
+  },
+  "coverage": {
+    "authority": "Goldkelch/qik-vrt",
+    "registered_mirror": "ingolf-lohmann/qik-vrt",
+    "mirror_guid": "a84f157a-cef2-4c47-bca9-8f407085bdbe",
+    "registry_source_is_historical": true,
+    "fresh_terminal_inventory": null,
+    "own_host_bindings": null,
+    "hosting_pipeline_run": null,
+    "first_native_ping": null,
+    "terminal_receipts": []
+  },
+  "first_causal_blocker": "AUTHENTICATED_OWN_HOST_PROVISIONING_AND_EXECUTOR_UNAVAILABLE",
+  "secondary_boundaries": [
+    "AUTHORITY_READBACK_HTTP_404",
+    "LEGACY_RAILWAY_PRIVILEGED_CAPTURE_AND_PRIVATE_TRANSFER_UNAVAILABLE",
+    "FRESH_COMPLETE_TERMINAL_INVENTORY_AND_RECEIPT_CARRIER_UNBOUND"
+  ],
+  "retry_condition": "Existing account/identity/billing gate closed and an authenticated own-host provisioning plus privileged execution/private transfer route is available; reobserve candidate before effect. Do not retry DigitalOcean mutation without changed payment admission.",
+  "smallest_next_action": "Complete the already encountered provider-native account/identity/billing handoff, then bind actual host and reuse existing S1 admit/supervisor/run-admitted. No new blanket text approval is required.",
+  "acceptance": {
+    "own_host_deployed": false,
+    "hosting_pipeline_instantiated": false,
+    "every_repository_node_public": false,
+    "mesh_public_self_host": false,
+    "native_first_ping_emitted": false,
+    "all_terminal_receipts_verified": false,
+    "s1_done": false,
+    "effect_ack_done": false,
+    "ordinary_release": false,
+    "every_repository_node_surface_verified": false,
+    "every_node_transputer_and_terminal_verified": false,
+    "native_effect_replication_verified": false,
+    "write_failover_verified": false,
+    "application_transparency_verified": false
+  },
+  "required_repository_surface": {
+    "requirement_id": "EACH_REPOSITORY_NODE_PROVIDES_SCHEIBENHARD_EVIDENCE_SURFACE",
+    "owner": "Ingolf Lohmann",
+    "received_at": "2026-10-05T23:47:47+02:00",
+    "observed_at": "2026-10-05T21:54:32.806Z",
+    "source_reference": {
+      "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "version": 2,
+      "source_head": "047bb8fd4a45b0db67288bda1945dd5a280a6ee2",
+      "source_tree": "13bf0d42a410f6287563cbe5bb569699ab2e48d8",
+      "source_files": [
+        {
+          "path": "lib/evidence-core.ts",
+          "sha256": "4d247725a74f34ffc73f393b09464dac1456dce26422dc4b4ca2fb950e0545fc"
+        },
+        {
+          "path": "lib/evidence-store.ts",
+          "sha256": "df2bae99d915780a96548a0ede7aab521c6db7f1abf25d7dc9086a0a5104b983"
+        },
+        {
+          "path": "app/page.tsx",
+          "sha256": "c00c9bb50bdf483dff50789d8e1c18774547fa21df2c612120a7e88267020e2e"
+        },
+        {
+          "path": "state/UPDATE_CONTRACT.json",
+          "sha256": "b804e187b8bce80a5eb00fde742a4ae82ec7efafa73696d6a3685b901fa0eca1"
+        }
+      ],
+      "observation_scope": "SITES_METADATA_AND_EXACT_SOURCE_READ; NOT_A_FRESH_PUBLIC_HTTP_OR_NATIVE_RUNTIME_WITNESS"
+    },
+    "normative_scope": "Every current and future admitted QIK-VRT repository node, including Authority and Personal/Mirror, plus the Mesh aggregate.",
+    "product_name": "Universales Raumzeit-Terminal",
+    "provision_rule": "Each node MUST expose its own repository-bound public HTTPS evidence surface. A central dashboard link or an unbound copy does not satisfy node provision. Node paths on a shared admitted host are allowed only with independently verifiable identity, source, artifacts, storage and readback.",
+    "required_capabilities": [
+      "Public node identity, repository and role, deployed exact HEAD/TREE/artifact binding and separately observed remote repository state; packaged source must never be labeled current remote main.",
+      "Fresh external HTTP observations with method, status or explicit unknown/error, observation time and measured latency; preserve unavailable known nodes.",
+      "Automatic refresh on opening/resume/reconnect and live changes through the existing replica/SSE path; explicit refresh; unchanged state is deduplicated.",
+      "Immutable persisted observation bytes and SHA-256 with an independent request that returns those exact bytes; original timestamps remain visible on failure.",
+      "Visible observation history and downloadable machine-readable evidence; declare and verify retention, and retain protected native effect receipts under their existing policy.",
+      "Exact source/package manifest, digest, licenses and downloadable runtime/bootstrap artifacts with download-byte verification; historical findings remain labeled historical.",
+      "Repository-owned or admitted hosting-CI background execution that works without an open client or this chat, with recorded run identity and fresh readback.",
+      "Visible separation of observation, persistence, deployed native runtime, universal-Transputer event, complete terminal receipt set and finite product acceptance."
+    ],
+    "freshness": {
+      "reference_client_refresh_seconds": 60,
+      "reference_server_max_age_seconds": 60,
+      "stale_after_seconds": 120,
+      "reference_history_retention_observations": 200,
+      "rule": "Event-driven delivery may be faster; verify declared freshness and retention for each node. Failed refresh must not rewrite an old observation's timestamp or imply fresh acceptance."
+    },
+    "privacy_and_rights": "Use only authorized public metadata and exportable licensed bytes. Standard nodes must not inherit Personal contents, credentials, private terminal input or native event bodies.",
+    "node_receipt_required_fields": [
+      "repository",
+      "role",
+      "node_id",
+      "public_url",
+      "deployed_head",
+      "deployed_tree",
+      "artifact_sha256",
+      "hosting_pipeline_run",
+      "observed_at",
+      "snapshot_id",
+      "snapshot_sha256",
+      "independent_readback_url",
+      "independent_readback_sha256",
+      "retention",
+      "freshness",
+      "capability_results",
+      "restart_readback"
+    ],
+    "reuse": "Extend docs/monitor/self-host.mjs, server.mjs, client-replica.js and the existing S1 package/hosting path. The Sites/D1 instance is a capability reference, not a substitute for each own-host deployment.",
+    "acceptance_rule": "Every inventoried node and the Mesh aggregate require fresh, complete, exact-source-bound surface receipts and all pre-existing native first-ping/terminal/restart gates. No node removal, predecessor evidence transfer or automatic product approval.",
+    "implementation_status": "REQUIREMENT_BOUND; EXISTING_STATIC_REACT_AND_MONITOR_REUSE_AVAILABLE; FULL_REFERENCE_CAPABILITY_PARITY_AND_PUBLIC_NODE_DEPLOYMENTS_NOT_VERIFIED",
+    "current_node_surface_receipts": [],
+    "every_repository_node_surface_verified": false,
+    "effect_ack_done": false
+  },
+  "required_node_runtime": {
+    "schema": "qikvrt-node-bus-contract/v1",
+    "requirement_id": "EVERY_NODE_UNIVERSAL_TRANSPUTER_UNIVERSAL_TERMINAL_FAULT_TOLERANT_BUS_20261006",
+    "received_at": "2026-10-06T07:41:48+02:00",
+    "owner": "Ingolf Lohmann",
+    "scope": "EVERY_CURRENT_AND_FUTURE_REPOSITORY_NODE",
+    "all_roles": true,
+    "role_exemptions": [],
+    "product_name": "Universales Raumzeit-Terminal",
+    "source_carriers": {
+      "universal_transputer": [
+        "src/qikvrt_temdd_event_ledger.py"
+      ],
+      "universal_terminal": [
+        "src/qikvrt_temdd_event_ledger.py",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "docs/terminal/temdd/index.html",
+        "docs/monitor/client-replica.js"
+      ]
+    },
+    "live_acceptance_required": true,
+    "implementation_obligations": [
+      "Each Authority, Mirror and future admitted node runs its own universal Transputer and universal Terminal; a source copy, central link or reference-only profile is not live node acceptance.",
+      "Expose every necessary authorized operation through documented REST/API adapters; browser remote-proxy interaction is not an execution carrier.",
+      "Preserve logical work-unit/session identity, original causal/event order, durable effect receipts and authenticated readback across serving-node changes.",
+      "Replicate the native effect journal and confirmation before positive Effect-Ack; monitor observation replication alone does not establish native-effect replication.",
+      "Use independent failure domains, authenticated peer discovery and quorum/fencing for every write takeover. Repository role does not create a permanent single execution dependency or grant promotion authority.",
+      "A returned node remains fenced until authenticated original-byte catch-up and current epoch/admission verification. An unknown effect is readback-only until resolved.",
+      "The bus may learn from attributed verified observations under existing adaptation policy; the neuronal description is an architectural analogy, not biological or autonomous authority evidence."
+    ],
+    "invariants": {
+      "same_work_unit_after_failover": true,
+      "preserve_confirmed_effects": true,
+      "no_duplicate_irreversible_effect": true,
+      "fence_previous_writer": true,
+      "replicate_before_positive_effect_ack": true,
+      "fresh_authenticated_readback": true,
+      "retain_unavailable_inventory_members": true,
+      "preserve_original_event_bytes": true,
+      "measure_user_visible_interruption": true,
+      "hold_writes_without_safe_quorum": true
+    },
+    "required_fault_cases": [
+      "PROCESS_CRASH",
+      "NODE_LOSS",
+      "NETWORK_PARTITION",
+      "PROVIDER_LOSS",
+      "LOST_EFFECT_ACK",
+      "CONCURRENT_TAKEOVER",
+      "STALE_WRITER",
+      "NODE_REJOIN"
+    ],
+    "acceptance_limits": {
+      "acknowledged_effect_loss": 0,
+      "duplicate_irreversible_effects": 0,
+      "concurrent_writers_per_effect": 1,
+      "rto_ms": null,
+      "user_visible_interruption_slo_ms": null,
+      "quorum_loss_behavior": "HOLD_WRITES_PRESERVE_CONFIRMED_READS",
+      "slo_binding": "Declare workload, topology, fault bound, independent failure domains and RTO/SLO before a live transparency claim; missing numerical limits block that claim."
+    },
+    "required_measurements": [
+      "p50_interruption_ms",
+      "p95_interruption_ms",
+      "p99_interruption_ms",
+      "maximum_interruption_ms",
+      "failed_user_requests",
+      "automatic_retries",
+      "queue_age_ms",
+      "acknowledged_effect_loss",
+      "duplicate_irreversible_effects",
+      "writer_fencing_receipts",
+      "original_journal_readback",
+      "same_session_and_work_unit_readback"
+    ],
+    "node_receipt_required_fields": [
+      "repository",
+      "role",
+      "node_id",
+      "deployed_head",
+      "deployed_tree",
+      "package_sha256",
+      "transputer_runtime_readback",
+      "terminal_runtime_readback",
+      "native_effect_replication_readback",
+      "peer_and_failure_domain_bindings",
+      "fault_injection_receipts",
+      "workload_and_slo_binding",
+      "independent_public_readback"
+    ],
+    "acceptance_rule": "Every inventoried member retains an explicit state; require fresh exact-source-bound native component and fault-injection receipts per node and for the aggregate. No inventory shrink, predecessor evidence transfer, lost confirmed effect or duplicate irreversible effect.",
+    "existing_runtime_limit": "S1 exports the native single-node ledger/owner ingress/HTTP-SSE terminal and a separate monitor read-replica. General native-effect replication, fenced writer takeover and live transparent recovery across every node are NOT_ESTABLISHED.",
+    "coverage_receipts": [],
+    "all_node_runtime_verified": false,
+    "native_effect_replication_verified": false,
+    "write_failover_verified": false,
+    "application_transparency_verified": false,
+    "effect_ack_done": false,
+    "local_repository_cache": {
+      "schema": "qikvrt-repository-work-cache-contract/v1",
+      "requirement_id": "OWNER_LOCAL_REPOSITORY_CACHE_STABLE_IDLE_BATCH_20261006",
+      "received_at": "2026-10-06T08:25:31+02:00",
+      "owner": "Ingolf Lohmann",
+      "source_carriers": [
+        "tools/qikvrt_self_host.py",
+        "docs/monitor/server.mjs",
+        "docs/monitor/self-host.mjs"
+      ],
+      "all_nodes": true,
+      "scope": "OWNER_SELECTED_EXPORTABLE_PROPOSAL_BYTES",
+      "content_addressed_original_bytes": true,
+      "fresh_checks_on_warm_path": true,
+      "source_bound_validation": true,
+      "stable_idle_before_transfer": true,
+      "single_frozen_batch": true,
+      "atomic_receiver_install": true,
+      "conditional_base_match": true,
+      "persist_ambiguous_transfer": true,
+      "readback_before_retry": true,
+      "authenticated_independent_readback": true,
+      "preserve_work_units_and_instruction_bytes": true,
+      "hold_on_capacity_or_unknown_state": true,
+      "idle_scope": "CACHE_WRITER_LOCK_AND_EXACT_SELECTED_GIT_BYTES",
+      "canonical_idle_state": "IDLE_STABLE_VALIDATED",
+      "native_effect_replication_deferred": false,
+      "received_proposals_auto_execute": false,
+      "max_batch_wire_bytes": 16777216,
+      "max_work_units_per_batch": 1024,
+      "whole_node_idle_verified": false,
+      "whole_mesh_performance_verified": false,
+      "optimal_distribution_verified": false,
+      "live_acceptance_rule": "Require a complete admitted work/executor inventory and independent exact-byte node idle/readback evidence before expanding the finite cache-writer scope. Measure actual workload latency/throughput, total transferred bytes, queue age and recovery; do not infer global speedup or optimal scheduling from fewer payload transfers.",
+      "native_safety": "Confirmed native effects retain immediate replication/fencing/Effect-Ack obligations. Deferred work proposals never become durable cross-node effect confirmation or execution authority.",
+      "implementation_scope": "Existing S1 launcher private snapshot/fsync/OS-lock primitives and existing MonitorStore/listener; no parallel scheduler, executor or native effect ledger."
+    }
+  },
+  "deployment_contract": {
+    "all_manufacturers_verified": false,
+    "app_store_required": false,
+    "authorized_at": "2026-10-06T08:31:00+02:00",
+    "cloud_sync_verified": false,
+    "effect_ack_done": false,
+    "git_required_at_runtime": false,
+    "live_acceptance_required": true,
+    "local_url_produced_by_runtime_adapter_from_embedded_carrier": true,
+    "logical_object": "ONE_MONOLITHIC_INTERACTIVE_STORE",
+    "mobile_candidate": {
+      "adapter": "SECURE_ORIGIN_SQLITE_IMAGE_ADAPTER",
+      "android_witness": "NOT_EXECUTED_NO_DEVICE_OR_RUNNER_ESTABLISHED",
+      "arbitrary_filesystem_access": false,
+      "bootstrap": "HTTPS_SAME_ORIGIN_STATIC_SHELL; LOOPBACK_ONLY_FOR_DEVELOPMENT",
+      "ios_witness": "NOT_EXECUTED_NO_DEVICE_OR_RUNNER_ESTABLISHED",
+      "native_python_execution_in_browser": false,
+      "offline_bootstrap": "SHA256_PINNED_SERVICE_WORKER_SHELL",
+      "passive_terminal": true,
+      "persistent_storage": "REQUEST_AND_REPORT_BROWSER_POLICY; NO_FSYNC_OR_EVICTION_IMMUNITY_INFERRED",
+      "public_https_and_offline_persistence_require_separate_witness": true,
+      "pure_file_start_supported": false,
+      "requires_initial_executable_bootstrap": true,
+      "standalone_file_cannot_self_execute_without_runtime": true,
+      "storage": "ORIGIN_PRIVATE_INDEXEDDB_ATOMIC_SQLITE_IMAGE",
+      "store_identity": "PRESERVE_NATIVE_META_EPOCH_AND_CARRIER_MANIFEST_PIN"
+    },
+    "mobile_runtime_verified": false,
+    "native_candidate": {
+      "adapter": "EXISTING_S1_LINUX_PYTHON_NODE",
+      "code_cache": "DISPOSABLE_EXTRACTED_SEALED_CARRIER",
+      "credentials": "PRIVATE_EXTERNAL_RUNTIME_BINDING_NOT_STORED_IN_OBJECT",
+      "existing_ledger_path": "<private-state>/temdd/events.sqlite3",
+      "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+      "portable_cut": "STOP_BOTH_EXISTING_WRITERS_AND_CHECKPOINT_BEFORE_MAIN_FILE_COPY",
+      "terminal_profile": "temdd",
+      "terminal_url": "http://127.0.0.1:<port>/client"
+    },
+    "native_runtime_verified": false,
+    "owner": "Ingolf Lohmann",
+    "role_exemptions": [],
+    "role_scope": [
+      "REPOSITORY_NODE",
+      "REPOSITORY_CLIENT"
+    ],
+    "runtime_adapter_is_not_store_authority": true,
+    "runtime_adapter_required": true,
+    "same_store_format_and_starter": true,
+    "schema": "qikvrt-node-client-monolithic-deployment/v1",
+    "source_locators": [
+      "https://www.w3.org/TR/service-workers/",
+      "https://webkit.org/blog/12257/the-file-system-access-api-with-origin-private-file-system/",
+      "https://webkit.org/blog/14403/updates-to-storage-policy/",
+      "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
+    ],
+    "terminal": "REACT_HTML_PASSIVE_INPUT_OUTPUT_OPENED_ON_DEMAND"
+  },
+  "portable_repository": {
+    "schema": "qikvrt-portable-repository-obligation/v1",
+    "single_persistent_file": true,
+    "react_html_client": true,
+    "git_and_github_optional_at_runtime": true,
+    "mobile_file_chooser_fallback_required": true,
+    "consistency_and_io_metrics_required": true,
+    "cloud_transport": "EXPLICIT_AUTHENTICATED_REST",
+    "format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+    "contract": "runtime/self-host/MESH_FILE.md",
+    "source_files": [
+      "docs/monitor/mesh-file-codec.js",
+      "docs/monitor/mesh-file-client.js",
+      "docs/monitor/mesh-file-view.js",
+      "docs/monitor/mesh-file-store.mjs"
+    ],
+    "native_effect_ledger_migration_verified": false,
+    "target_devices_verified": false,
+    "transport_format": "QIKMESH1",
+    "transport_role": "DERIVED_BYTE_EXACT_SQLITE_EXPORT_ONLY"
+  },
+  "storage_contract": {
+    "schema": "qikvrt-canonical-storage/v1",
+    "canonical_format": "SQLITE3_WITH_CARRIER_META_AND_EVENTS",
+    "canonical_file": "events.sqlite3 (native); repository.sqlite3 (distribution)",
+    "role_scope": [
+      "REPOSITORY_NODE",
+      "REPOSITORY_CLIENT"
+    ],
+    "identical_bytes_across_roles": true,
+    "source_tree_extension": "repository_files; ORIGINAL_COMMITTED_BLOB_BYTES_WITH_VIRTUAL_PATHS",
+    "transport_format": "QIKMESH1",
+    "transport_role": "DERIVED_BYTE_EXACT_SQLITE_EXPORT_ONLY",
+    "transport_entry": "canonical/store.sqlite3",
+    "transport_mutations_allowed": false,
+    "transport_import": "CREATE_ONLY; INDEPENDENT_IMAGE_AND_PACKAGE_PINS; NATIVE_SCHEMA_AND_LEDGER_VALIDATION",
+    "copy_cut": "STOP_BOTH_NATIVE_WRITERS; WAL_CHECKPOINT_TRUNCATE; DELETE_JOURNAL; FSYNC",
+    "credentials": "PRIVATE_EXTERNAL_RUNTIME_BINDING",
+    "predecessor_evidence_transfer": false,
+    "qikmesh_canonical_promotion_allowed": false,
+    "contract": "runtime/self-host/MESH_FILE.md",
+    "effect_ack_done": false
+  }
+}

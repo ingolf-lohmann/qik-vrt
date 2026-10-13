@@ -6,16 +6,26 @@ Experimental HTTP-profile demonstrator. It proves capability discovery,
 Structured-Field prepare/commit, exact-bound single-use commit, and post-effect
 reobservation without granting repository, publication, deployment, or other
 external-effect capability.
+
+The separate durable-* CLI operations are owner-local clients of the existing
+TEMDD Unix ingress. They add no HTTP writer and never infer product completion.
 """
 from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
 import hashlib
 import hmac
 import json
+import os
+from pathlib import Path
 import re
 import secrets
+import socket
+import sqlite3
+import stat
+import struct
 import subprocess
 import threading
 import time
@@ -28,6 +38,8 @@ TOKEN_TTL_SECONDS = 120
 HOST = "127.0.0.1"
 DEFAULT_PORT = 8771
 SF_KEY = re.compile(r"^[a-z*][a-z0-9_.*-]*$")
+MAX_NATIVE_EVENT = 65536
+NATIVE_SCHEMA = "qikvrt_temdd_native_event_v1"
 
 
 def canonical_json(value: Any) -> bytes:
@@ -99,6 +111,212 @@ def git_read(*args: str) -> str | None:
         return None
 
 
+class DurableHold(ValueError):
+    """The owner-local persistence effect is not verified."""
+
+
+def durable_subject(root: str, repository: str, pr: int, head: str, tree: str,
+                    manifest_pin: str | None = None) -> dict[str, Any]:
+    """Require a clean, exact checkout; never relabel the running carrier."""
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository):
+        raise DurableHold("REPOSITORY_REQUIRED")
+    if type(pr) is not int or pr < 1 or not all(re.fullmatch(r"[0-9a-f]{40}", x or "") for x in (head, tree)):
+        raise DurableHold("EXACT_SUBJECT_REQUIRED")
+    if manifest_pin is not None:
+        # Explicit sealed-export path. It neither probes Git nor changes the
+        # existing clean-checkout path when no independent pin is supplied.
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("qikvrt_owner_self_host", Path(root) / "tools/qikvrt_self_host.py")
+        adapter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(adapter)
+        return adapter.packaged_subject(Path(root), manifest_pin, repository, pr, head, tree)
+    def git(*args: str) -> str:
+        return subprocess.check_output(["git", "-C", root, *args], text=True,
+                                       stderr=subprocess.DEVNULL, timeout=5).strip()
+    try:
+        if git("rev-parse", "HEAD^{commit}") != head or git("rev-parse", head + "^{tree}") != tree:
+            raise DurableHold("EXACT_SUBJECT_MISMATCH")
+        if git("remote", "get-url", "origin") not in {f"https://github.com/{repository}", f"https://github.com/{repository}.git"}:
+            raise DurableHold("CHECKOUT_REPOSITORY_MISMATCH")
+        git("diff", "--quiet", head, "--")
+        if git("rev-parse", "HEAD^{commit}") != head:
+            raise DurableHold("EXACT_SUBJECT_CHANGED")
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise DurableHold("EXACT_SUBJECT_UNOBSERVABLE_OR_DIRTY") from exc
+    return {"repository": repository, "pr": pr, "head": head, "tree": tree}
+
+
+def _durable_directory(state_dir: str) -> Path:
+    path = Path(state_dir)
+    if ".." in path.parts:
+        raise DurableHold("UNSAFE_STATE_PATH")
+    directory = path.absolute() / "temdd"
+    for component in (*reversed(directory.parents), directory):
+        if component.is_symlink():
+            raise DurableHold("SYMLINK_STATE_PATH")
+    info = directory.lstat()
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) & 0o077:
+        raise DurableHold("LEDGER_DIRECTORY_MUST_BE_OWNER_ONLY")
+    return directory
+
+
+def _durable_file(directory: Path, name: str, *, is_socket: bool = False) -> Path:
+    path = directory / name
+    info = path.lstat()
+    valid_type = stat.S_ISSOCK(info.st_mode) if is_socket else stat.S_ISREG(info.st_mode)
+    if not valid_type or info.st_uid != os.geteuid() or info.st_mode & 0o022:
+        raise DurableHold("UNSAFE_DURABLE_PATH")
+    if is_socket and stat.S_IMODE(info.st_mode) != 0o600:
+        raise DurableHold("INGRESS_MUST_REMAIN_OWNER_ONLY_0600")
+    return path
+
+
+def _durable_read(state_dir: str, event: dict[str, Any] | None = None) -> tuple[str, dict[str, Any] | None]:
+    """Fresh read-only SQLite connection to the existing ledger, never a writer."""
+    directory = _durable_directory(state_dir)
+    database = _durable_file(directory, "events.sqlite3")
+    for name in ("events.sqlite3-wal", "events.sqlite3-shm"):
+        if (directory / name).exists() or (directory / name).is_symlink():
+            _durable_file(directory, name)
+    with contextlib.closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True, timeout=5)) as db:
+        db.execute("PRAGMA query_only=ON")
+        db.execute("BEGIN")
+        meta = dict(db.execute("SELECT key,value FROM meta"))
+        epoch = meta.get("epoch", "")
+        if meta.get("schema") != "1" or not re.fullmatch(r"[0-9a-f]{32}", epoch):
+            raise DurableHold("UNKNOWN_LEDGER_SCHEMA")
+        if event is None:
+            return epoch, None
+        provenance = event["provenance"]
+        row = db.execute("SELECT seq,binding,native_digest,body,body_digest FROM events WHERE source=? AND native_id=?",
+                         (provenance["source"], provenance["native_event_id"])).fetchone()
+        if row is None:
+            return epoch, None
+        seq, binding, native_digest, text, body_digest = row
+        body = json.loads(text)
+        if not isinstance(body, dict):
+            raise DurableHold("DURABLE_BODY_OBJECT_REQUIRED")
+        expected = dict(event, schema="qikvrt_temdd_event_v1", recorded_at=body.get("recorded_at"),
+                        payload_digest=sha256(canonical_json(event["payload"])), evidence_transfer="DENY", dod=False)
+        if (type(seq) is not int or seq < 1 or binding != sha256(canonical_json(event["subject"]))
+                or native_digest != sha256(canonical_json(event)) or canonical_json(body) != canonical_json(expected)
+                or not isinstance(body.get("recorded_at"), str)
+                or body_digest != sha256(canonical_json(body))):
+            raise DurableHold("DURABLE_READBACK_MISMATCH")
+        return epoch, dict(body, id=f"{epoch}:{seq}", ledger_digest=body_digest)
+
+
+def _durable_input(body: dict[str, Any]) -> dict[str, Any]:
+    body = json.loads(canonical_json(body))  # Freeze caller-owned objects.
+    if (not isinstance(body, dict) or body.get("schema") != "qikvrt_terminal_input_v1"
+            or set(body) - {"schema", "text", "audio", "video", "page", "submitted_at"}
+            or not isinstance(body.get("text"), str) or not 1 <= len(body["text"]) <= 4096
+            or body.get("audio") is not None or body.get("video") is not None
+            or len(canonical_json(body)) > MAX_NATIVE_EVENT // 2):
+        raise DurableHold("BOUNDED_TEXT_INPUT_REQUIRED_MEDIA_NOT_ADMITTED")
+    return body
+
+
+def durable_prepare(body: dict[str, Any], subject: dict[str, Any], state_dir: str) -> dict[str, Any]:
+    """Prepare an owner-local observation; insert no event and expose no HTTP route."""
+    body = _durable_input(body)
+    subject = json.loads(canonical_json(subject))
+    if (set(subject) != {"repository", "pr", "head", "tree"} or type(subject["pr"]) is not int or subject["pr"] < 1
+            or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", subject["repository"])
+            or not all(re.fullmatch(r"[0-9a-f]{40}", subject[x]) for x in ("head", "tree"))):
+        raise DurableHold("EXACT_SUBJECT_REQUIRED")
+    directory = _durable_directory(state_dir)
+    _durable_file(directory, "ingress.sock", is_socket=True)
+    epoch, _ = _durable_read(state_dir)
+    input_hash = "sha256:" + sha256(canonical_json(body))
+    event = {"schema": NATIVE_SCHEMA, "kind": "OBSERVE", "subject": subject,
+             "provenance": {"source": "transputer", "native_event_id": "terminal:" + secrets.token_hex(24)},
+             "observed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+             "message": "Universal Terminal: hash-bound durable input observation",
+             "payload": {"adapter": "QIKVRT_OWNER_UNIX_TERMINAL_V1", "terminal_input": body,
+                         "input_hash": input_hash, "effect_ack_done": False}}
+    plan = {"schema": "qikvrt_owner_unix_terminal_preparation_v1", "subject": subject, "event": event,
+            "input_hash": input_hash, "ledger_id": epoch, "state_directory": str(directory.parent),
+            "expires_at": int(time.time()) + TOKEN_TTL_SECONDS}
+    return {"state": "PREPARED", "preparation": plan, "prepare_hash": "sha256:" + sha256(canonical_json(plan)),
+            "ordinary_release": False, "EFFECT_ACK_DONE": False}
+
+
+def _durable_plan(prepared: dict[str, Any], expected_hash: str, body: dict[str, Any],
+                  subject: dict[str, Any], state_dir: str) -> dict[str, Any]:
+    if (set(prepared) != {"state", "preparation", "prepare_hash", "ordinary_release", "EFFECT_ACK_DONE"}
+            or prepared["state"] != "PREPARED" or prepared["ordinary_release"] is not False
+            or prepared["EFFECT_ACK_DONE"] is not False):
+        raise DurableHold("INVALID_PREPARATION")
+    plan = prepared["preparation"]
+    digest = "sha256:" + sha256(canonical_json(plan))
+    if not hmac.compare_digest(digest, expected_hash) or prepared["prepare_hash"] != digest:
+        raise DurableHold("PREPARE_HASH_MISMATCH")
+    if (set(plan) != {"schema", "subject", "event", "input_hash", "ledger_id", "state_directory", "expires_at"}
+            or plan["schema"] != "qikvrt_owner_unix_terminal_preparation_v1"
+            or canonical_json(plan["subject"]) != canonical_json(subject)
+            or plan["state_directory"] != str(_durable_directory(state_dir).parent)):
+        raise DurableHold("PREPARED_SUBJECT_OR_ROUTE_MISMATCH")
+    frozen = _durable_input(body)
+    event = plan["event"]
+    if (plan["input_hash"] != "sha256:" + sha256(canonical_json(frozen))
+            or event.get("subject") != subject or event.get("schema") != NATIVE_SCHEMA or event.get("kind") != "OBSERVE"
+            or event.get("payload") != {"adapter": "QIKVRT_OWNER_UNIX_TERMINAL_V1", "terminal_input": frozen,
+                                       "input_hash": plan["input_hash"], "effect_ack_done": False}
+            or event.get("provenance", {}).get("source") != "transputer"
+            or not re.fullmatch(r"terminal:[0-9a-f]{48}", event.get("provenance", {}).get("native_event_id", ""))
+            or len(canonical_json(event)) > MAX_NATIVE_EVENT):
+        raise DurableHold("PREPARED_INPUT_MISMATCH")
+    return plan
+
+
+def durable_readback(prepared: dict[str, Any], expected_hash: str, body: dict[str, Any],
+                     subject: dict[str, Any], state_dir: str) -> dict[str, Any]:
+    """May recover an ambiguous commit after expiry/restart, without resubmission."""
+    plan = _durable_plan(prepared, expected_hash, body, subject, state_dir)
+    epoch, event = _durable_read(state_dir, plan["event"])
+    if epoch != plan["ledger_id"] or event is None:
+        raise DurableHold("DURABLE_EVENT_NOT_OBSERVED_IN_PREPARED_LEDGER")
+    return {"state": "EFFECT_ACK_CONTINUE", "durable_persisted": True, "durable_readback": event,
+            "prepare_hash": expected_hash, "ordinary_release": False, "EFFECT_ACK_DONE": False,
+            "public_readback_verified": False, "authority_effect": False}
+
+
+def durable_commit(prepared: dict[str, Any], expected_hash: str, body: dict[str, Any],
+                   subject: dict[str, Any], state_dir: str) -> dict[str, Any]:
+    plan = _durable_plan(prepared, expected_hash, body, subject, state_dir)
+    if type(plan["expires_at"]) is not int or plan["expires_at"] < time.time():
+        raise DurableHold("EXPIRED_PREPARATION")
+    epoch, old = _durable_read(state_dir, plan["event"])
+    if epoch != plan["ledger_id"]:
+        raise DurableHold("PREPARED_LEDGER_CHANGED")
+    if old is not None:
+        raise DurableHold("PREPARATION_ALREADY_COMMITTED_USE_READBACK")
+    path = _durable_file(_durable_directory(state_dir), "ingress.sock", is_socket=True)
+    if not hasattr(socket, "SO_PEERCRED"):
+        raise DurableHold("UNIX_PEER_UID_VERIFICATION_REQUIRED")
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+        client.settimeout(5)
+        client.connect(str(path))
+        _, uid, _ = struct.unpack("3i", client.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, struct.calcsize("3i")))
+        if uid != os.geteuid():
+            raise DurableHold("INGRESS_PEER_OWNER_MISMATCH")
+        client.sendall(canonical_json(plan["event"]) + b"\n")
+        with client.makefile("rb") as response:
+            raw = response.readline(MAX_NATIVE_EVENT * 2 + 2)
+        if len(raw) > MAX_NATIVE_EVENT * 2 + 1 or not raw.endswith(b"\n"):
+            raise DurableHold("AMBIGUOUS_COMMIT_USE_READBACK_DO_NOT_RESUBMIT")
+        reply = json.loads(raw)
+    if not isinstance(reply, dict):
+        raise DurableHold("INGRESS_REPLY_OBJECT_REQUIRED_USE_READBACK")
+    if reply.get("state") != "PERSISTED" or reply.get("dod") is not False or reply.get("authority_effect") is not False:
+        raise DurableHold("INGRESS_DID_NOT_QUIT_DURABLE_EFFECT")
+    receipt = durable_readback(prepared, expected_hash, body, subject, state_dir)
+    if canonical_json(reply.get("event")) != canonical_json(receipt["durable_readback"]):
+        raise DurableHold("INGRESS_REPLY_DIFFERS_FROM_FRESH_DURABLE_READBACK")
+    return receipt
+
+
 @dataclass
 class Prepared:
     token: str
@@ -152,6 +370,17 @@ STATE = State()
 
 class Handler(BaseHTTPRequestHandler):
     server_version = "QIKVRTEffectAckTerminal/1.0"
+
+    def _authenticated(self) -> bool:
+        # The standalone launcher sets this boundary; legacy loopback tests
+        # retain their original scope. No token is emitted in state or receipts.
+        token = getattr(self.server, "terminal_auth_token", None)
+        if token is None:
+            return True
+        if hmac.compare_digest(self.headers.get("Authorization", "").encode(), ("Bearer " + token).encode()):
+            return True
+        self._json(401, {"state": "HOLD", "reason": "local terminal authentication required", "ordinary_release": False})
+        return False
 
     def _json(
         self,
@@ -211,6 +440,8 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self) -> None:
+        if not self._authenticated():
+            return
         if self.path == "/.well-known/effect-ack":
             self._json(200, {
                 "schema": "qikvrt_effect_ack_http_capability_v1",
@@ -232,6 +463,7 @@ class Handler(BaseHTTPRequestHandler):
                     "repository_head": head,
                     "repository_tree": tree,
                     "external_effects": "NONE",
+                    "runtime_binding": getattr(self.server, "runtime_binding", None),
                 }
             self._json(200, body)
             return
@@ -248,6 +480,8 @@ class Handler(BaseHTTPRequestHandler):
         self._json(404, {"state": "HOLD", "reason": "not found"})
 
     def do_POST(self) -> None:
+        if not self._authenticated():
+            return
         try:
             request_binding = parse_effect_ack_request(self.headers.get("Effect-Ack-Request"))
             body = self._read_body()
@@ -339,9 +573,48 @@ class Handler(BaseHTTPRequestHandler):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("operation", nargs="?", default="serve", choices=("serve", "durable-prepare", "durable-commit", "durable-readback"))
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument("--state-dir", default="/var/lib/qikvrt/state")
+    parser.add_argument("--root", default=".")
+    parser.add_argument("--repository")
+    parser.add_argument("--pr", type=int)
+    parser.add_argument("--expected-head")
+    parser.add_argument("--expected-tree")
+    parser.add_argument("--manifest-sha256", help="independent sealed S1 export pin; avoids Git only when explicitly supplied")
+    parser.add_argument("--input", type=Path)
+    parser.add_argument("--prepared", type=Path)
+    parser.add_argument("--prepare-hash")
     args = parser.parse_args()
+    if args.operation != "serve":
+        try:
+            if not all((args.repository, args.pr, args.expected_head, args.expected_tree, args.input)):
+                raise DurableHold("EXACT_SUBJECT_AND_INPUT_REQUIRED")
+            subject = durable_subject(args.root, args.repository, args.pr, args.expected_head, args.expected_tree, args.manifest_sha256)
+            def load(path: Path) -> dict[str, Any]:
+                with path.open("rb") as source:
+                    raw = source.read(MAX_NATIVE_EVENT * 2 + 1)
+                if len(raw) > MAX_NATIVE_EVENT * 2:
+                    raise DurableHold("BOUNDED_FILE_REQUIRED")
+                value = json.loads(raw)
+                if not isinstance(value, dict):
+                    raise DurableHold("JSON_OBJECT_REQUIRED")
+                return value
+            body = load(args.input)
+            if args.operation == "durable-prepare":
+                result = durable_prepare(body, subject, args.state_dir)
+            else:
+                if not args.prepared or not args.prepare_hash:
+                    raise DurableHold("EXACT_PREPARE_HASH_REQUIRED")
+                operation = durable_commit if args.operation == "durable-commit" else durable_readback
+                result = operation(load(args.prepared), args.prepare_hash, body, subject, args.state_dir)
+            print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+            return 0
+        except (OSError, ValueError, sqlite3.Error, TypeError, KeyError, RecursionError) as exc:
+            print(json.dumps({"state": "HOLD", "reason": str(exc), "EFFECT_ACK_DONE": False,
+                              "ordinary_release": False, "next_action": "READBACK_BEFORE_ANY_COMMIT_RETRY"}, sort_keys=True))
+            return 2
     if args.host not in {"127.0.0.1", "localhost"}:
         raise SystemExit("BLOCK: reference terminal bridge is loopback-only")
     server = ThreadingHTTPServer((args.host, args.port), Handler)

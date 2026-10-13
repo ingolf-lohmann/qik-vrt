@@ -1,0 +1,71 @@
+✔ health separates failures, stale evidence, live runtime and client phase (7.251293ms)
+✔ a snapshot does not hide a detected event gap or corrupted event (88.505129ms)
+✔ node health reports missing carrier and native-cache failure without green CI masking it (133.745514ms)
+✔ snapshot integrity, distinct client instances, versions, order and epoch fail closed (52.531519ms)
+✔ durable acknowledgment, byte-exact journal, duplicates and signature rejection (98.340041ms)
+✔ four concurrent clients receive all 32 accepted events and agree on original bytes (521.243361ms)
+✔ disconnect and node restart replay every missing event from the durable cursor (119.91429ms)
+{"at":"2026-10-13T15:46:22.148Z","stage":"MONITOR_REQUEST","cause":"SIMULATED_STORAGE_FULL"}
+✔ storage failure never acknowledges or broadcasts an event as durable (29.633171ms)
+✔ client event gaps and journal corruption are detected rather than promoted to synchrony (22.72804ms)
+✔ separate local processes: writer crash leaves four clients byte-exact replay on replica (2403.108985ms)
+{"at":"2026-10-13T15:46:24.603Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ interruption with local pending tail withholds ACK and stream until reconnect and duplicate retry (43.954082ms)
+{"at":"2026-10-13T15:46:24.630Z","stage":"MONITOR_REQUEST","cause":"LINK_INTERRUPTED"}
+✔ writer restart preserves the unacknowledged tail and reconnects without regenerating records (30.552971ms)
+{"at":"2026-10-13T15:46:24.671Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_GAP"}
+{"at":"2026-10-13T15:46:24.677Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-13T15:46:24.682Z","stage":"MONITOR_REQUEST","cause":"DURABLE_EVENT_JOURNAL_MISMATCH"}
+{"at":"2026-10-13T15:46:24.685Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-13T15:46:24.691Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+{"at":"2026-10-13T15:46:24.695Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EPOCH_CONFLICT"}
+{"at":"2026-10-13T15:46:24.699Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICATION_BINDING"}
+✔ signed append rejects missing events, reversed order, conflicting bytes and invalid checkpoints atomically (63.091571ms)
+{"at":"2026-10-13T15:46:24.731Z","stage":"MONITOR_REQUEST","cause":"REPLICA_PREFIX_CONFLICT"}
+✔ a valid conflicting replica prefix blocks the writer rather than overwriting the replica (17.829038ms)
+{"at":"2026-10-13T15:46:24.750Z","stage":"MONITOR_REQUEST","cause":"INVALID_REPLICA_READBACK_SIGNATURE"}
+✔ peer request and readback authentication failures never produce cross-node ACK (18.687564ms)
+{"at":"2026-10-13T15:46:24.766Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-FvZMAi/occupied.tmp-e13a7f76-6958-4e2c-bc4d-e310ca12b411' -> '/tmp/qikvrt-monitor-test-FvZMAi/occupied'"}
+{"at":"2026-10-13T15:46:24.766Z","stage":"MONITOR_REQUEST","cause":"EISDIR: illegal operation on a directory, rename '/tmp/qikvrt-monitor-test-FvZMAi/occupied.tmp-e13a7f76-6958-4e2c-bc4d-e310ca12b411' -> '/tmp/qikvrt-monitor-test-FvZMAi/occupied'"}
+{"at":"2026-10-13T15:46:24.772Z","stage":"MONITOR_REQUEST","cause":"STORAGE_RESTART_REQUIRED"}
+✔ replica storage failure freezes receipts, then restart restores the prefix and permits recovery (31.471629ms)
+{"at":"2026-10-13T15:46:24.825Z","stage":"MONITOR_REQUEST","cause":"SOURCE_RECEIPT_DISK_FULL"}
+✔ source receipt storage failure after peer durability requires fresh confirmation on restart (53.96352ms)
+✔ interrupted bounded suffix batches restart at the durable prefix and expose only a complete checkpoint (1723.942192ms)
+✔ replicas remain read-only, do not observe GitHub, and cannot be promoted by changing role (24.55851ms)
+✔ contradictory duplicate client record is rejected even if it repeats the claimed digest (15.269726ms)
+{"at":"2026-10-13T15:46:26.627Z","stage":"MONITOR_REQUEST","cause":"The operation was aborted due to timeout"}
+✔ peer timeout withholds the positive receipt and reconnect recovers the original pending event (37.342939ms)
+{"at":"2026-10-13T15:46:26.650Z","stage":"MONITOR_REQUEST","cause":"REPLICA_RESPONSE_LOST"}
+✔ lost peer response after durable append is recovered by exact readback without duplicate events (20.634121ms)
+{"at":"2026-10-13T15:46:26.677Z","stage":"MONITOR_REQUEST","cause":"REPLICA_EVENT_CONFLICT"}
+{"at":"2026-10-13T15:46:26.680Z","stage":"MONITOR_REQUEST","cause":"PUBLIC_REPOSITORY_SCOPE_REQUIRED"}
+{"at":"2026-10-13T15:46:26.685Z","stage":"MONITOR_REQUEST","cause":"REPLICA_CHECKPOINT_CONFLICT"}
+✔ valid conflicting overlap and private payload are rejected before any replica mutation (27.568357ms)
+✔ restart rejects a corrupt durable replica confirmation instead of serving a fabricated prefix (20.728163ms)
+evalmachine.<anonymous>:1
+const repos=['Goldkelch/qik-vrt','ingolf-lohmann/qik-vrt'],api='https://api.github.com',state={};let timer=null,token=sessionStorage.getItem('qikvrt_monitor_token')||'';document.getElementById('token').value=token;function esc(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function cls(s){return ['success','completed','clean'].includes(s)?'ok':['failure','cancelled','timed_out','action_required'].includes(s)?'bad':'run'}function interval(){return token?10000:240000}function schedule(){clearInterval(timer);timer=setInterval(refreshAll,interval());document.getElementById('mode').textContent=token?'Authentifizierter Live-Modus: 10 Sekunden. Token bleibt ausschließlich im sessionStorage dieses Tabs.':'Öffentlicher Fallback: 4 Minuten wegen GitHub-Rate-Limit. Für 10 Sekunden einen read-only Fine-grained Token eingeben.'}function activate(){token=document.getElementById('token').value.trim();token?sessionStorage.setItem('qikvrt_monitor_token',token):sessionStorage.removeItem('qikvrt_monitor_token');schedule();refreshAll()}async function get(path){const h={Accept:'application/vnd.github+json'};if(token)h.Authorization='Bearer '+token;const r=await fetch(api+path,{headers:h});if(!r.ok)throw new Error(r.status+' '+r.statusText+'; remaining='+r.headers.get('x-ratelimit-remaining'));return r.json()}function event(m){const e=document.getElementById('log');e.textContent=new Date().toISOString()+'  '+m+'\n'+e.textContent.slice(0,12000)}async function load(repo){const [meta,prs,runs,commits]=await Promise.all([get('/repos/'+repo),get('/repos/'+repo+'/pulls?state=open&per_page=20&sort=updated&direction=desc'),get('/repos/'+repo+'/actions/runs?per_page=30'),get('/repos/'+repo+'/commits?per_page=10')]);const sig=JSON.stringify({h:commits[0]?.sha,p:prs.map(x=>[x.number,x.head.sha,x.updated_at,x.draft]),r:runs.workflow_runs.map(x=>[x.id,x.status,x.conclusion,x.head_sha])});if(state[repo]&&state[repo]!==sig)event(repo+': technischer Zustand geändert');state[repo]=sig;return{repo,meta,prs,runs:runs.workflow_runs,commits}}function render(d){const a=d.runs.filter(x=>x.status!=='completed'),f=d.runs.filter(x=>['failure','cancelled','timed_out','action_required'].includes(x.conclusion));return `<section class="card"><h2>${esc(d.repo)}</h2><p>Default: <code>${esc(d.meta.default_branch)}</code><br>Head: <code>${esc(d.commits[0]?.sha)}</code></p><p>Offene PRs: <b>${d.prs.length}</b> · aktive Runs: <b class="${a.length?'run':'ok'}">${a.length}</b> · problematische Runs: <b class="${f.length?'bad':'ok'}">${f.length}</b></p><h3>Pull Requests</h3><table>${d.prs.slice(0,10).map(p=>`<tr><td><a target="_blank" href="${p.html_url}">#${p.number}</a></td><td><code>${p.head.sha.slice(0,10)}</code></td><td>${p.draft?'DRAFT':'READY'}</td></tr>`).join('')}</table><h3>Workflows</h3><table>${d.runs.slice(0,15).map(r=>`<tr><td><a target="_blank" href="${r.html_url}">${esc(r.name)}</a></td><td><code>${(r.head_sha||'').slice(0,10)}</code></td><td class="${cls(r.conclusion||r.status)}">${esc(r.status)} / ${esc(r.conclusion||'—')}</td></tr>`).join('')}</table></section>`}async function refreshAll(){document.getElementById('clock').textContent='Aktualisierung läuft …';try{const d=await Promise.all(repos.map(load));document.getElementById('repos').innerHTML=d.map(render).join('');document.getElementById('clock').textContent='Stand: '+new Date().toLocaleString()}catch(e){event('FEHLER: '+e.message);document.getElementById('clock').textContent=e.message}}schedule();refreshAll();
+                                                                                                                      ^
+
+ReferenceError: sessionStorage is not defined
+    at evalmachine.<anonymous>:1:119
+    at Script.runInContext (node:vm:149:12)
+    at Object.runInContext (node:vm:301:6)
+    at file:///workspace/scratch/b9cd5f4ee628/repo/docs/monitor/observer.test.mjs:81:348
+
+Node.js v24.19.0
+✖ docs/monitor/observer.test.mjs (393.305268ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 24
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6052.122785
+
+✖ failing tests:
+
+test at docs/monitor/observer.test.mjs:1:1
+✖ docs/monitor/observer.test.mjs (393.305268ms)
+  'test failed'
