@@ -146,7 +146,14 @@
       "git_blob_sha1": "0cda572c33f46216bab7d569a2e61569a61f6722"
     },
     "closing_readback_after_each_effectful_action": true,
-    "closing_readback_requires_action_id_and_observation_times": true
+    "closing_readback_requires_action_id_and_observation_times": true,
+    "self_application_rule": {
+      "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+      "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule",
+      "owner_instruction": "Ingolf Lohmann, 2026-10-13",
+      "reuses_existing_client_work_and_causal_gate": true,
+      "persists_observer_tasks_without_inventing_an_executor": true
+    }
   },
   "continuation_semantics": {
     "roundtrip": [

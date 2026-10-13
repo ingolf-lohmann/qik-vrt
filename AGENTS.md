@@ -100,6 +100,19 @@ resolved through `AI_CONTEXT.json.required_read_order`.
 
 ## Reuse before creation
 
+The Owner's recursive self-application rule of 2026-10-13 also applies to
+this agent protocol and the client's own work. Read
+`policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json`
+(`self_application_working_rule`) and
+`docs/operations/AUTONOMOUS_PR_CONTINUATION.md`. Carry exact-bound preceding
+results, failures, omissions and open obligations into the successor. Apply
+the same authorization, causal repair, tests and fresh readback to each
+change. Preserve unreobserved gaps and suppress unchanged failed effects.
+Keep `raumzeitterminal.de` as the delivery target; a different hostname or an
+HTTP-only observation does not establish its product acceptance. Record
+novelty or improvement only for a concrete verified delta. Preserve
+`Quod erat demonstrandum ingenium` as an attributed Owner formulation.
+
 `REUSE_BEFORE_CREATE` is mandatory. Before creating a new workflow, script,
 policy, adapter, pipeline, tool, or repository artifact, the agent MUST first
 search for an existing component that can be reused, extended, parameterized,

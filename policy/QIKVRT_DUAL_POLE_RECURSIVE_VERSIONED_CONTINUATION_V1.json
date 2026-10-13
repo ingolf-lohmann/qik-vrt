@@ -92,5 +92,65 @@
       "EFFECT_ACK"
     ],
     "generalization_boundary": "This is a QIK-VRT conformance rule. It does not assert that every non-QIK-VRT system is universally unacceptable."
+  },
+  "self_application_working_rule": {
+    "rule_id": "QIKVRT_RECURSIVE_SELF_APPLICATION_20261013",
+    "owner": "Ingolf Lohmann",
+    "authorized_at": "2026-10-13T05:16:15+03:00",
+    "classification": "OPERATIONAL_WORKING_RULE_NOT_SCIENTIFIC_PUBLICATION",
+    "attributed_formulation": "Quod erat demonstrandum ingenium.",
+    "relation": "PREVIOUS_RESULTS_ERRORS_OMISSIONS_OPEN_DUTIES -> BIND_SUCCESSOR -> ADMIT_CAUSAL_REPAIR -> EXECUTE -> TEST -> READBACK -> CONTINUE",
+    "applicable_layers": [
+      "CLIENT",
+      "ENTRYPOINT",
+      "POLICY",
+      "IMPLEMENTATION",
+      "TESTS",
+      "RUNTIME",
+      "DIGITAL_TWIN",
+      "MESH",
+      "DELIVERY",
+      "HUMAN_INTERFACE",
+      "HANDOFF"
+    ],
+    "inherited_open_duties_must_not_be_dropped": true,
+    "unreobserved_subject_is_not_repaired": true,
+    "each_changed_subject_requires_fresh_dependent_gates": true,
+    "unchanged_failed_effect": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+    "unrelated_lifecycle_change_is_retry_admission": false,
+    "delta_requirement": "Concrete verified result or improvement in its stated scope; iteration count or new bytes alone do not prove novelty.",
+    "exact_delivery_url": "https://raumzeitterminal.de/",
+    "done_condition": [
+      "WORKING_SOFTWARE",
+      "EXACT_PUBLIC_URL",
+      "FRESH_APPLICATION_READBACK"
+    ],
+    "separate_obligations": [
+      "DOMAIN_DNS",
+      "TLS",
+      "USEFUL_APPLICATION_DELIVERY",
+      "AUTHENTICATED_NATIVE_EXECUTION"
+    ],
+    "reuse": {
+      "client_gate": "tools/ai_handoff.py --client-receipt",
+      "client_work_fields": [
+        "previous_run.execution_id",
+        "previous_run.open_work",
+        "work"
+      ],
+      "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+      "site_runtime": "existing lib/evidence-core.ts / lib/evidence.ts / lib/evidence-store.ts",
+      "site_read_paths": [
+        "/api/evidence",
+        "/api/readback",
+        "/mcp"
+      ]
+    },
+    "persistence_requires_supported_write_and_readback_per_layer": true,
+    "persistence_proves_main_mirror_or_other_client_adoption": false,
+    "observer_grants_external_effect_capability": false,
+    "predecessor_evidence_transfer": false,
+    "scientific_or_universal_novelty_proof_from_owner_formulation": false,
+    "work_unit": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
   }
 }
