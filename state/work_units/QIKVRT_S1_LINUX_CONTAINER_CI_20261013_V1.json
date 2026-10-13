@@ -73,6 +73,23 @@
       "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
       "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
       "unchanged_errors_retried": false
+    },
+    "oci_archive_retrieval_limit_38429796715": {
+      "run_id": 38429796715,
+      "head": "74606b8c3c59f0d93bed8d09dd2b72a7c32235db",
+      "artifact_id": 11831465528,
+      "artifact_bytes": 774962841,
+      "artifact_sha256": "0056d6312decd7888ed2a1e50aec727be8c0b0ae2bb5f35299964019f6f86231",
+      "artifact_payload_downloaded": false,
+      "actual_error": "InvalidInputException: Artifact exceeds max size of 536870912 bytes: 774962841 bytes.",
+      "repair": "Use the existing pinned upload action for separate original OCI archives; exclude those failed archive files from the existing small metadata artifact. Retain the other client's frozen PR494 carrier successor unchanged.",
+      "source_parent_head": "020ee4c72114163924b980b7d408a7524119c625",
+      "source_parent_tree": "afde795df799130b9e919e815419d649d17b8cb9",
+      "native_OCI_nondeterminism_cause": "UNKNOWN",
+      "strict_digest_equality_weakened": false,
+      "local_verification": "Separate artifact names/paths, metadata exclusion, failure admission and YAML/Bash syntax verified. Runtime helper and tests unchanged from 020ee4c7.",
+      "native_successor_execution": "REQUIRED",
+      "effect_ack_done": false
     }
   },
   "domain_observation": {
@@ -175,7 +192,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
