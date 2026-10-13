@@ -365,11 +365,14 @@ class ProducerTests(unittest.TestCase):
         makefile = (ROOT/'Makefile').read_text()
         self.assertIn('test: temdd-event-ledger-test', makefile)
         self.assertIn('tests/test_temdd_event_ledger.py', makefile)
-        workflow = (ROOT/'.github/workflows/qikvrt_temdd.yml').read_text()
+        workflow = (ROOT/'.github/workflows/qikvrt_effect_ack_http_terminal.yml').read_text()
         self.assertIn('github.event.pull_request.head.sha || github.sha', workflow)
-        self.assertIn('make temdd-event-ledger-test', workflow)
-        self.assertIn("'REPOSITORY_FILE_MANIFEST.json.sha256'", workflow)
-        self.assertNotIn("'REPOSITORY_FILE_MANIFEST.sha256'", workflow)
+        self.assertIn('make self-host-test', workflow)
+        self.assertIn('self-host-test: tool-cache-contract temdd-event-ledger-test', makefile)
+        self.assertIn('integrity:', makefile)
+        self.assertIn('tools/qikvrt_integrity.py verify', makefile)
+        self.assertTrue((ROOT/'REPOSITORY_FILE_MANIFEST.json.sha256').is_file())
+        self.assertFalse((ROOT/'REPOSITORY_FILE_MANIFEST.sha256').exists())
 
     def test_browser_ide_is_local_editable_and_effect_free(self):
         page = (ROOT/'docs/terminal/temdd/index.html').read_text(encoding='utf-8')
