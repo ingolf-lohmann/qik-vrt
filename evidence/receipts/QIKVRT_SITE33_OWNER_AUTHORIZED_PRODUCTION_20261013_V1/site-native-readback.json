@@ -1,0 +1,102 @@
+{
+  "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+  "version": {
+    "id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_124a0603bb208191bc2ae881043e1d62",
+    "number": 33,
+    "source": {
+      "commit_sha": "c6ece66477cd7b81d114c455225bb4ab9ba54b41"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_00000000c0c882109d961555aba830c0",
+      "content_hash": "sha256:e42b54ce353499019c58aae366e6ae9cde02a66332a3291ccdc8f855a2d6ae6b",
+      "size_bytes": 123238400,
+      "file_count": 164
+    }
+  },
+  "deployment": {
+    "id": "appgdep_6ace2a2cc644819185fffac865641af9",
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "title": "QIK-VRT · Mesh Monitor · Scheibenhard",
+    "version_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea~appgver_124a0603bb208191bc2ae881043e1d62",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site",
+    "has_mcp": true,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+    "failure_message": null,
+    "env_set_revision": 8,
+    "updated_at": "2026-10-13T12:55:29.553902+00:00"
+  },
+  "domain_binding": [
+    {
+      "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "hostname": "raumzeitterminal.de",
+      "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+      "status": "pending",
+      "provider_status": "pending",
+      "ssl_status": "pending_validation",
+      "cname_target": "custom-domains.chatgpt.site.",
+      "apex_proxy_ipv4_targets": [
+        "162.159.143.30",
+        "172.66.3.26"
+      ],
+      "validation_records": [
+        {
+          "record_type": "TXT",
+          "name": "_openai-site-verification.raumzeitterminal.de",
+          "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+        },
+        {
+          "record_type": null,
+          "name": null,
+          "value": null
+        },
+        {
+          "record_type": "TXT",
+          "name": "_cf-custom-hostname.raumzeitterminal.de",
+          "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+        }
+      ],
+      "last_error": null,
+      "created_at": "2026-10-06T08:42:49.739821+00:00",
+      "updated_at": "2026-10-12T00:00:54.517817+00:00"
+    }
+  ],
+  "metadata_display_title": "QIK-VRT · Mesh Monitor · Scheibenhard",
+  "owner_authorization": {
+    "actor": "Ingolf Lohmann",
+    "date": "2026-10-13",
+    "network_name": "QIK VRT Mesh Netzwerk",
+    "roles": [
+      "Principal",
+      "Schöpfer",
+      "Code Owner",
+      "Product Owner",
+      "Lizenzgeber"
+    ],
+    "source": "Freigabe erteilt zur Produktivierung."
+  },
+  "source_head": "c6ece66477cd7b81d114c455225bb4ab9ba54b41",
+  "source_tree": "9ab38c852a82eb7ca7016b687540414e5eeb12dd",
+  "local_archive": {
+    "bytes": 120052543,
+    "sha256": "8b7348e71d4741fcfdd3e2b32300f97c28b8c2434655aa8f75f8b59913ead400",
+    "relation": "Local packaged archive; native archive_storage reports its own separately bound stored artifact."
+  },
+  "checks": {
+    "offline": "PASS",
+    "evidence": "PASS",
+    "mcp": "PASS",
+    "production_build": "PASS",
+    "browser_engine_rerun_after_publication": false
+  },
+  "non_claims": {
+    "native_runtime": false,
+    "physical_iphone": false,
+    "exact_domain_delivery": false,
+    "main_merge": false
+  }
+}

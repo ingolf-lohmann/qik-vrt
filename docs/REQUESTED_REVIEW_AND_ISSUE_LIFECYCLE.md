@@ -13,6 +13,15 @@ This contract applies to `Goldkelch/qik-vrt` and `ingolf-lohmann/qik-vrt`. It is
 
 ## Current Mesh Authority for the personal repository
 
+The network's exact name is **QIK VRT Mesh Netzwerk**. On 13 October 2026,
+Ingolf Lohmann reaffirmed that he is its Principal, Schöpfer, Code Owner,
+Product Owner and Lizenzgeber in one natural person and authorized production:
+“Freigabe erteilt zur Produktivierung.” The existing `mesh_authority` binding
+records this instruction and its production work unit. His “Quod erat
+demonstrandum” is an attributed Owner formulation. The grant is effective;
+the actual delivery, independent native review and runtime acceptance retain
+their separate evidence requirements. Existing license terms are preserved.
+
 For `ingolf-lohmann/qik-vrt`, the Owner's 6 October 2026 correction binds three
 roles: Ingolf Lohmann is the human Product Owner and Code Owner; the QIK-VRT
 executing instance carries out authorized tested work; the repository retains
