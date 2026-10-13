@@ -90,6 +90,37 @@
       "local_verification": "Separate artifact names/paths, metadata exclusion, failure admission and YAML/Bash syntax verified. Runtime helper and tests unchanged from 020ee4c7.",
       "native_successor_execution": "REQUIRED",
       "effect_ack_done": false
+    },
+    "oci_docker_load_format_38431347362": {
+      "source_head": "020ee4c72114163924b980b7d408a7524119c625",
+      "source_tree": "afde795df799130b9e919e815419d649d17b8cb9",
+      "run_id": 38431347362,
+      "job_id": 115415261860,
+      "independent_OCI_manifest_equality": true,
+      "image_digest": "sha256:2e915743cfad81554d0a29875bca0c29c32b45cafdde464a229ef3a91fa46a08",
+      "actual_failure": "docker load: open /var/lib/docker/tmp/docker-import-452906887/blobs/json: no such file or directory",
+      "smoke_started": false,
+      "repair": "Reuse existing pinned Skopeo to convert OCI archive to Docker-load archive for this CI fixture only; compare unchanged original OCI file hash, exact image-config digest, ordered DiffIDs and source labels after native load. Registry publication keeps original OCI archive/digest.",
+      "pinned_converter": "quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9",
+      "primary_documentation": "https://github.com/podman-container-tools/skopeo/blob/main/docs/skopeo-copy.1.md",
+      "local_validation": {
+        "container_controls": 16,
+        "result": "PASS",
+        "five_load_guard_cases": [
+          "valid",
+          "wrong_config_id",
+          "wrong_layers",
+          "wrong_source",
+          "changed_original_archive"
+        ],
+        "workflow_yaml_and_affected_bash": "PASS",
+        "local_Docker_execution": false,
+        "native_successor": "REQUIRED"
+      },
+      "source_parent_head": "d12362727d2e53dce9400932b02f590758ef04bb",
+      "source_parent_tree": "ca4a63b3fade2e6536dfb61f2716392f748c8d5f",
+      "effect_ack_done": false,
+      "public_production_verified": false
     }
   },
   "domain_observation": {

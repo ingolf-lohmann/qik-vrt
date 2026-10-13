@@ -270,7 +270,42 @@ jobs:
       - name: Real unprivileged Firefox/terminal container and durable restart
         run: |
           set -euo pipefail
-          docker load --input "$RUNNER_TEMP/container-evidence/image.oci.tar"
+          head="$(git rev-parse HEAD)"
+          loader="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
+          load_dir="$(mktemp -d "$RUNNER_TEMP/qikvrt-smoke-load.XXXXXX")"
+          trap 'rm -rf "$load_dir"' EXIT
+          docker pull "$loader"
+          docker run --rm --read-only --network none --cap-drop ALL --security-opt no-new-privileges:true \
+            --tmpfs /tmp:rw,nosuid,size=2g \
+            --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
+            --mount "type=bind,source=$load_dir,target=/output" \
+            "$loader" copy --format v2s2 oci-archive:/input.oci.tar \
+            "docker-archive:/output/image.docker.tar:qikvrt-s1:sha-$head"
+          docker load --input "$load_dir/image.docker.tar"
+          python3 -B - <<'PYLOAD'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'container-evidence'
+          o=json.loads((p/'oci.json').read_bytes())
+          assert o['independent_rebuild_digest_equal'] is True, 'independent OCI build gate required'
+          digest=hashlib.sha256()
+          with (p/'image.oci.tar').open('rb') as archive:
+              for block in iter(lambda:archive.read(8*1024*1024),b''):
+                  digest.update(block)
+          assert digest.hexdigest()==o['oci_archive_sha256'], 'original OCI archive changed before load'
+          image='qikvrt-s1:sha-'+o['source_head']
+          loaded=json.loads(subprocess.check_output(['docker','image','inspect',image],text=True))[0]
+          assert loaded['Id']==o['image_config_digest'], 'Docker import changed image configuration'
+          assert loaded['RootFS']['Layers']==o['diff_ids'], 'Docker import changed ordered filesystem layers'
+          labels=loaded['Config']['Labels']
+          assert (labels['org.opencontainers.image.revision'],labels['de.qikvrt.source-tree'])==(o['source_head'],o['source_tree']), 'Docker import changed source binding'
+          r={'state':'DOCKER_LOAD_EXACT_OCI_RUNTIME_VERIFIED','source_head':o['source_head'],
+             'source_tree':o['source_tree'],'original_oci_image_digest':o['image_digest'],
+             'docker_image_id':loaded['Id'],'ordered_diff_ids_verified':True,
+             'effect_ack_done':False,'public_production_verified':False}
+          (p/'load.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(r,sort_keys=True))
+          PYLOAD
           python3 -B tools/qikvrt_self_host.py container-smoke \
             --image "qikvrt-s1:sha-$(git rev-parse HEAD)" \
             --output "$RUNNER_TEMP/container-evidence" \

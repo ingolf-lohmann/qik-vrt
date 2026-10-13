@@ -114,6 +114,42 @@ class ContainerControls(unittest.TestCase):
             self.assertFalse(path.exists())
             self.assertEqual(metadata.call_count, 1)
 
+
+    def test_docker_archive_load_preserves_original_oci_binding(self):
+        from textwrap import dedent
+        code = (Path(__file__).resolve().parents[1] / ".github/workflows/qikvrt_ci.yml").read_text().split("<<'PYLOAD'\n", 1)[1].split("\n          PYLOAD", 1)[0]
+        compiled = compile(dedent(code), "<workflow-PYLOAD>", "exec")
+        for variant in ("valid", "config", "layers", "source", "archive"):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+                p = Path(tmp) / "container-evidence"; p.mkdir()
+                raw = b"TECHNICAL_TEST_ONLY_OCI_PLACEHOLDER"
+                (p / "image.oci.tar").write_bytes(raw)
+                o = {"independent_rebuild_digest_equal": True, "source_head": HEAD,
+                     "source_tree": TREE, "oci_archive_sha256": c.sha(raw),
+                     "image_digest": "sha256:" + "e" * 64,
+                     "image_config_digest": "sha256:" + "c" * 64,
+                     "diff_ids": ["sha256:" + "d" * 64]}
+                (p / "oci.json").write_text(json.dumps(o))
+                loaded = {"Id": o["image_config_digest"], "RootFS": {"Layers": o["diff_ids"]},
+                          "Config": {"Labels": {"org.opencontainers.image.revision": HEAD, "de.qikvrt.source-tree": TREE}}}
+                if variant == "config": loaded["Id"] = "sha256:" + "0" * 64
+                if variant == "layers": loaded["RootFS"]["Layers"] = ["sha256:" + "0" * 64]
+                if variant == "source": loaded["Config"]["Labels"]["de.qikvrt.source-tree"] = "0" * 40
+                if variant == "archive": (p / "image.oci.tar").write_bytes(b"CHANGED")
+                with patch.dict(os.environ, {"RUNNER_TEMP": tmp}), patch.object(subprocess, "check_output", return_value=json.dumps([loaded])) as inspect, patch("builtins.print"):
+                    if variant == "valid":
+                        exec(compiled, {})
+                        result = json.loads((p / "load.json").read_bytes())
+                        self.assertEqual(result["docker_image_id"], o["image_config_digest"])
+                        self.assertEqual(result["original_oci_image_digest"], o["image_digest"])
+                        self.assertFalse(result["public_production_verified"])
+                        self.assertFalse(result["effect_ack_done"])
+                    else:
+                        with self.assertRaises(AssertionError): exec(compiled, {})
+                        self.assertFalse((p / "load.json").exists())
+                    if variant == "archive": inspect.assert_not_called()
+
+
     def test_context_excludes_git_auth_and_untracked_private_state(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "source"; root.mkdir()
@@ -210,3 +246,4 @@ class ContainerControls(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
