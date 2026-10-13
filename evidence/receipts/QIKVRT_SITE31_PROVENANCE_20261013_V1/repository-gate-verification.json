@@ -1,0 +1,75 @@
+{
+  "schema": "qikvrt_site31_provenance_repository_gate_verification_v1",
+  "verified_at_utc": "2026-10-13T07:22:09.911338+00:00",
+  "unchanged_gate_source_bindings": [
+    {
+      "path": "tools/ai_handoff.py",
+      "bytes": 31763,
+      "sha256": "2b7f22ae426ae3a9e18069675feda107e5bc2c819e9bea06c159de26396efdf3",
+      "git_blob_sha1": "1867b9d78e250d02a3e095268c35909a0dc5595d"
+    },
+    {
+      "path": "tools/ai_runtime_bootloader.py",
+      "bytes": 14855,
+      "sha256": "054a4268d356e41c653433a439f0760f96ade851df418894d0e6cc9eb0c50e72",
+      "git_blob_sha1": "ec39dc3d21cb04d07718a06279e06c23b921bf05"
+    },
+    {
+      "path": "tests/test_ai_runtime_bootloader.py",
+      "bytes": 31641,
+      "sha256": "1959a827f51ab28b883f76d4fcf06acebcb764633604e9af6c66f0ab2c74fee7",
+      "git_blob_sha1": "b62edb1bf349be4dd58b0c41c500cbb8b0db4a56"
+    },
+    {
+      "path": "tools/qikvrt_integrity.py",
+      "bytes": 46504,
+      "sha256": "5ff3a5e0944d96a28189f378ae59c8793c11eb7e7c7766b8c1bb12301fb8f65a",
+      "git_blob_sha1": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9"
+    },
+    {
+      "path": "tests/test_integrity.py",
+      "bytes": 23990,
+      "sha256": "96b443d26094d87a0937b8c6532115136b84ff26809ef299b0825fe50659ab06",
+      "git_blob_sha1": "2b5545c66a06a98a6bf3e401ae8e43691c50f6c1"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "bytes": 7120,
+      "sha256": "d7405624adcf4d17a5b8b9cef79a685fded78f94a2fabf997802b7b78678be61",
+      "git_blob_sha1": "0992ee6809f0790034c78c15f8fd280fd126bf10"
+    },
+    {
+      "path": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+      "bytes": 8513,
+      "sha256": "24c3f7274f65606bcba715a232065746ee4b64d336e24dc954a47ccacd3ccf18",
+      "git_blob_sha1": "b961ffae6dfeca32e52802c248dc0c96e498458a"
+    }
+  ],
+  "checks": [
+    {
+      "command": "make ai-runtime-contract",
+      "exit_code": 0,
+      "tests": 63,
+      "result": "PASS",
+      "log": {
+        "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/ai-runtime-contract.log",
+        "bytes": 11866,
+        "sha256": "0ee92a1dd7f5ff3f8630f668570f94cbb63ad082b69a4564d924244c4600a3cb",
+        "git_blob_sha1": "1ed15c05319d1d4c218cf6dc42807c987f55006f"
+      }
+    },
+    {
+      "command": "make integrity",
+      "exit_code": 0,
+      "contract_tests": 11,
+      "result": "PASS",
+      "log": {
+        "path": "evidence/receipts/QIKVRT_SITE31_PROVENANCE_20261013_V1/integrity.log",
+        "bytes": 344,
+        "sha256": "c0dc329e3f29001c721cba45c82685f18ab56ea26e6bb3f0ee69d77e245512ad",
+        "git_blob_sha1": "fb9b415c2080f3746737263e0e3f6ea7fd45a344"
+      }
+    }
+  ],
+  "scope": "Existing gate contracts and evidence candidate; final metadata freeze is followed by fresh deterministic integrity regeneration and verification. No browser, Main, native-runtime or exact-domain acceptance is inferred."
+}
