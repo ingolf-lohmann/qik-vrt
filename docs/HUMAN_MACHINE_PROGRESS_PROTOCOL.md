@@ -75,10 +75,19 @@ A locally absent CLI or empty project filter alone is insufficient.
 
 Continue each safe, deterministic, authorized successor, including useful
 preparation and persistence while an external effect is blocked. Keep GitHub
-REST-only routing, secure credentials and protected governance. Never create a
+and IONOS REST-only routing, secure credentials and protected governance. Never create a
 proxy executor or synthetic trigger to manufacture capability. Preserve issue
 evidence, perform NOOP for unchanged causal failures, and read back ambiguous
 effects before another effectful attempt.
+
+On 2026-10-13 Ingolf Lohmann explicitly selected **“REST-only beibehalten”**
+for IONOS. Reuse this decision across reconnects; do not reopen the browser-login
+choice. The existing client gate enforces `client_continuation.ionos_route` for
+planned and effectful actions, including blocked actions. This route constraint
+does not establish an authenticated Hosting API key, a domain operation or a
+delivery effect. The existing Cloud-v6 GET-only inventory binding is a separate
+product and cannot serve as a Hosting domain/DNS writer. DNS, TLS and application
+delivery still require independent evidence for `raumzeitterminal.de`.
 
 Before a terminal handoff, run the existing read-only validator:
 `python3 -B tools/ai_handoff.py --client-receipt <receipt.json>`.

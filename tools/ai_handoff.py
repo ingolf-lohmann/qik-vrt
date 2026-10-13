@@ -99,8 +99,14 @@ def validate_client_action(action: dict[str, Any], subject: dict[str, Any]) -> b
         fail("CLIENT_ACTION_ROUTE_INVALID")
     if action.get("method") not in ("GET", "POST", "PUT", "PATCH", "DELETE"):
         fail("CLIENT_ACTION_METHOD_INVALID")
-    if action.get("service") == "github" and action.get("transport") != "REST_API_ONLY":
-        fail("CLIENT_GITHUB_ROUTE_FORBIDDEN")
+    service = str(action.get("service", "")).casefold()
+    if service in ("github", "ionos"):
+        policy = load_json(ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json")
+        required_route = policy.get("client_continuation", {}).get(service + "_route")
+        if required_route != "REST_API_ONLY":
+            fail("CLIENT_" + service.upper() + "_ROUTE_POLICY_INVALID")
+        if action.get("transport") != required_route:
+            fail("CLIENT_" + service.upper() + "_ROUTE_FORBIDDEN")
     for key in ("operation", "evidence"):
         if not isinstance(action.get(key), str) or not action[key].strip():
             fail("CLIENT_ACTION_" + key.upper() + "_MISSING")

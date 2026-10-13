@@ -511,7 +511,9 @@ class ReflexiveObservationFailureTests(unittest.TestCase):
                 shutil.copyfile(ROOT / target.relative_to(root), target)
             stubs = {
                 "git": f'#!/bin/bash\nif [[ "$*" == *"HEAD^{{tree}}"* ]]; then echo {TREE}; else echo {HEAD}; fi\n',
-                "jq": '#!/bin/bash\nif [[ "$1" == *"first_blocker"* ]]; then cat "${@: -1}"; fi\nexit 0\n',
+                # jq consumes its pipeline input even when the selected value is empty.
+                # An early-exiting stub races the producer into SIGPIPE under pipefail.
+                "jq": '#!/bin/bash\nif [[ "$1" == *"first_blocker"* ]]; then cat "${@: -1}"; else cat >/dev/null; fi\nexit 0\n',
                 "gh": f'#!/bin/bash\nif [[ "$2" == "repos/example/qik-vrt/git/ref/heads/main" ]]; then echo {HEAD}; elif [[ "$2" == *"/actions/workflows/"* ]]; then echo \'{{"workflow_runs":[]}}\'; else echo "gh: Not Found (HTTP 404)" >&2; exit 1; fi\n',
             }
             for name, source in stubs.items():

@@ -1,0 +1,157 @@
+{
+  "schema": "qikvrt-ionos-rest-route-readback/v1",
+  "observed_at": "2026-10-13T12:35:53.508Z",
+  "owner_instruction": {
+    "owner": "Ingolf Lohmann",
+    "exact_text": "REST-only beibehalten",
+    "date": "2026-10-13",
+    "scope": "IONOS authentication and domain/DNS for raumzeitterminal.de"
+  },
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 523,
+    "head": "cfd22e2c15258202413141354b42225d16e0c8b2",
+    "tree": "5261b557928427364e354afdbcfae0a1e8c7a397"
+  },
+  "existing_domain_binding": {
+    "source": "Sites list_custom_domains REST; exact existing project ID",
+    "id": "appgdom_6ac4b489bd548191a69f7d87618db3aa",
+    "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+    "hostname": "raumzeitterminal.de",
+    "worker_name": "site---6ac4018a3e0c8191a06187c296d6c7ea",
+    "status": "pending",
+    "provider_status": "pending",
+    "ssl_status": "pending_validation",
+    "cname_target": "custom-domains.chatgpt.site.",
+    "apex_proxy_ipv4_targets": [
+      "162.159.143.30",
+      "172.66.3.26"
+    ],
+    "validation_records": [
+      {
+        "record_type": "TXT",
+        "name": "_openai-site-verification.raumzeitterminal.de",
+        "value": "openai-site-verification=5Zw42-7lgYTNm3pmkhZcwGJu1_0UvnHSVYJcGBDONbI"
+      },
+      {
+        "record_type": null,
+        "name": null,
+        "value": null
+      },
+      {
+        "record_type": "TXT",
+        "name": "_cf-custom-hostname.raumzeitterminal.de",
+        "value": "c6e99848-baed-4087-a9fd-0d6c5b5008c8"
+      }
+    ],
+    "last_error": null,
+    "created_at": "2026-10-06T08:42:49.739821+00:00",
+    "updated_at": "2026-10-12T00:00:54.517817+00:00"
+  },
+  "route_inventory": {
+    "repository": {
+      "pr": 475,
+      "head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
+      "binding_path": "state/work_units/IONOS_REPOSITORY_READONLY_BINDING_20261006_V1.json",
+      "binding_blob_sha1": "e6fc340aa50c3fba64be476843397ecba292cecc",
+      "product": "ionos-cloud-v6",
+      "origin": "https://api.ionos.com/cloudapi/v6",
+      "methods": [
+        "GET"
+      ],
+      "operations": [
+        "provider-inventory",
+        "provider-classify"
+      ],
+      "domain_dns_write": false,
+      "merged": false
+    },
+    "connector": {
+      "ionos_callable_tools": 0,
+      "ionos_plugin_search_matches": 0,
+      "secure_credential_delivery_operation_exposed": false
+    },
+    "cli": {
+      "required_hosting_secret_delivered": false,
+      "checked_environment_presence_only": [
+        "IONOS_TOKEN",
+        "IONOS_API_KEY",
+        "IONOS_DNS_API_KEY"
+      ],
+      "secret_values_read_or_persisted": false
+    },
+    "mesh": {
+      "existing_tools": [
+        "qikvrt_mesh_status",
+        "qikvrt_observe",
+        "qikvrt_readback"
+      ],
+      "scope": "Public repository/HTTP observation and SHA-256-bound D1 persistence",
+      "native_or_domain_execution": false
+    },
+    "site_runtime": {
+      "project_id": "appgprj_6ac4018a3e0c8191a06187c296d6c7ea",
+      "environment_revision": 8,
+      "ionos_binding_entries": [],
+      "nonmatching_values_read_or_persisted": false,
+      "scope": "Bounded target-project key metadata only; no IONOS Hosting credential binding present."
+    }
+  },
+  "primary_rest_contract": {
+    "sources": [
+      "https://developer.hosting.ionos.com/docs/getstarted",
+      "https://developer.hosting.ionos.de/docs/domains",
+      "https://developer.hosting.ionos.com/docs/dns",
+      "https://github.com/ionos-developer/dns-sdk-go"
+    ],
+    "hosting_auth_header": "X-API-Key",
+    "hosting_auth_value": "publicprefix.secret (format only; no actual credential)",
+    "domains_additional_header": "X-Tenant-Id",
+    "initial_dns_read": {
+      "method": "GET",
+      "url": "https://api.hosting.ionos.com/dns/v1/zones"
+    },
+    "zone_read": {
+      "method": "GET",
+      "path": "/dns/v1/zones/{zoneId}"
+    },
+    "record_create": {
+      "method": "POST",
+      "path": "/dns/v1/zones/{zoneId}/records"
+    },
+    "record_update": {
+      "method": "PUT",
+      "path": "/dns/v1/zones/{zoneId}/records/{recordId}"
+    },
+    "record_delete": {
+      "method": "DELETE",
+      "path": "/dns/v1/zones/{zoneId}/records/{recordId}"
+    },
+    "dns_constraints": [
+      "First read owned exact zone and existing active services; no broad zone overwrite.",
+      "Preserve unrelated MX, TXT, NS and other records.",
+      "Read back an ambiguous effect before any retry.",
+      "Public DNS, TLS and exact application acceptance remain separate after API writes."
+    ],
+    "domains_scope": "Read/update existing domain data and pending provisioning information; domain order or registration was not performed."
+  },
+  "execution": {
+    "browser_setup_sessions_started": 0,
+    "authenticated_hosting_requests": 0,
+    "domain_mutations": 0,
+    "dns_mutations": 0,
+    "new_purchase": 0
+  },
+  "blocker": {
+    "code": "IONOS_HOSTING_REST_CREDENTIAL_AND_EXECUTION_BINDING_NOT_EXPOSED",
+    "operation": "Read existing IONOS domain/provisioning and owned DNS zone, then apply pre-existing Sites records.",
+    "evidence": "Inspected current GitHub binding and bounded connector/CLI/Mesh capabilities; Hosting API exists but no supported authenticated target-bound call is available.",
+    "retry_condition": "A securely delivered, admitted existing IONOS Hosting REST binding for the exact owned domain/zone becomes available.",
+    "smallest_next_action": "Use that supported protected binding for GET /dns/v1/zones and the existing domain inventory; resolve any pending registration in the existing contract before selective DNS changes."
+  },
+  "exact_domain_delivery": false,
+  "tls_verified": false,
+  "working_software_on_exact_domain": false,
+  "effect_ack_done": false,
+  "ordinary_release": false
+}

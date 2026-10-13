@@ -394,6 +394,52 @@ class ClientContinuationRegressionTests(unittest.TestCase):
         self.receipt["next_actions"][0]["transport"] = "BROWSER"
         self.rejected("CLIENT_GITHUB_ROUTE_FORBIDDEN")
 
+    def test_ionos_browser_or_missing_transport_is_rejected_before_admission(self) -> None:
+        original = copy.deepcopy(self.receipt)
+        for route in ("connector", "cli", "mesh"):
+            for service in ("ionos", "IONOS"):
+                for transport in ("BROWSER", None):
+                    with self.subTest(route=route, service=service, transport=transport):
+                        self.receipt = copy.deepcopy(original)
+                        action = self.receipt["next_actions"][0]
+                        action.update(route=route, service=service, transport=transport)
+                        # An unavailable action must not reintroduce a forbidden login route.
+                        action["authenticated"] = False
+                        self.rejected("CLIENT_IONOS_ROUTE_FORBIDDEN")
+
+    def test_effectful_ionos_attempt_cannot_hide_browser_transport(self) -> None:
+        attempt = self.attempt(changed=True)
+        attempt["action"].update(service="ionos", transport="BROWSER")
+        self.receipt["attempts"] = [attempt]
+        self.rejected("CLIENT_IONOS_ROUTE_FORBIDDEN")
+
+    def test_ready_ionos_rest_action_continues_without_another_permission_request(self) -> None:
+        action = self.receipt["next_actions"][0]
+        action.update(service="ionos", operation="dns-record-update",
+                      observed_operation="dns-record-update", method="PUT", observed_method="PUT")
+        self.assertEqual(self.check(), "CONTINUE")
+        self.receipt["state"] = "BLOCK"
+        self.rejected("CLIENT_PREMATURE_RETURN_WITH_EXECUTABLE_SUCCESSOR")
+
+    def test_rest_only_does_not_supply_missing_ionos_credentials_or_delivery(self) -> None:
+        self.block()
+        action = self.receipt["next_actions"][0]
+        action.update(service="ionos", authenticated=False)
+        self.receipt["blocker"].update(
+            operation="IONOS Hosting DNS REST write",
+            reason="No securely delivered target-bound Hosting credential",
+            retry_condition="Existing secure Hosting REST binding becomes callable and admitted")
+        self.assertEqual(self.check(), "BLOCK")
+        self.receipt["state"] = "DONE"
+        self.rejected("CLIENT_DONE_WITHOUT_EXACT_EFFECT_READBACK")
+
+    def test_ionos_route_is_bound_to_the_explicit_owner_choice(self) -> None:
+        policy = json.loads((ROOT / "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json").read_text())
+        rule = policy["client_continuation"]
+        self.assertEqual(rule["ionos_route"], "REST_API_ONLY")
+        self.assertEqual(rule["ionos_route_owner_instruction"]["exact_text"], "REST-only beibehalten")
+        self.assertFalse(rule["ionos_route_owner_instruction"]["browser_login_fallback"])
+
     def test_predicates_cannot_use_truthy_nonbooleans(self) -> None:
         self.receipt["next_actions"][0]["admitted"] = "yes"
         self.rejected("CLIENT_ACTION_PREDICATE_INVALID")

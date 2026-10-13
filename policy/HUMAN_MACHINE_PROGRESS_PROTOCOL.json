@@ -129,6 +129,14 @@
       "mesh"
     ],
     "github_route": "REST_API_ONLY",
+    "ionos_route": "REST_API_ONLY",
+    "ionos_route_owner_instruction": {
+      "owner": "Ingolf Lohmann",
+      "date": "2026-10-13",
+      "exact_text": "REST-only beibehalten",
+      "scope": "IONOS authentication and domain/DNS operations for raumzeitterminal.de",
+      "browser_login_fallback": false
+    },
     "execute_safe_deterministic_authorized_successors": true,
     "unchanged_causal_failure": "NOOP",
     "ambiguous_effect_requires_readback_before_retry": true,
