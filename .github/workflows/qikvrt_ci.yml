@@ -275,7 +275,7 @@ jobs:
           load_dir="$(mktemp -d "$RUNNER_TEMP/qikvrt-smoke-load.XXXXXX")"
           trap 'rm -rf "$load_dir"' EXIT
           docker pull "$loader"
-          docker run --rm --read-only --network none --cap-drop ALL --security-opt no-new-privileges:true \
+          docker run --rm --read-only --network none --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true \
             --tmpfs /tmp:rw,nosuid,size=2g \
             --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/input.oci.tar,readonly" \
             --mount "type=bind,source=$load_dir,target=/output" \

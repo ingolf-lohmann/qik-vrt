@@ -121,6 +121,19 @@
       "source_parent_tree": "ca4a63b3fade2e6536dfb61f2716392f748c8d5f",
       "effect_ack_done": false,
       "public_production_verified": false
+    },
+    "oci_converter_output_owner_38433471240": {
+      "run_id": 38433471240,
+      "job_id": 115422938193,
+      "source_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
+      "source_tree": "8bc7f9b3352f2b352e6b65fffee275fc4ecde08c",
+      "actual_error": "opening file /output/image.docker.tar: permission denied",
+      "observed_setup": "CI output directory is freshly mktemp-created with private permissions; converter uses image-default UID without runner UID/GID binding.",
+      "causal_fix": "Bind converter process --user to actual CI runner id -u:id -g. Retain private directory, read-only root, no network, dropped capabilities and no-new-privileges; no broad chmod.",
+      "validation": "Affected Bash/YAML and exact UID/GID argument plus restrictive guards verified; existing load identity tests unchanged. Native successor REQUIRED.",
+      "source_parent_head": "912a70516bf47117b1e8096838803ca5c66a73d0",
+      "effect_ack_done": false,
+      "public_production_verified": false
     }
   },
   "domain_observation": {
