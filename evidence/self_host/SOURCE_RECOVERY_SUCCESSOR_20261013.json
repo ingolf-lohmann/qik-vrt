@@ -1,0 +1,35 @@
+{
+  "schema": "qikvrt-historical-source-recovery-successor/v1",
+  "historical_receipt": "evidence/self_host/SOURCE_RECOVERY_20261005.json",
+  "historical_receipt_sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e",
+  "basis_head": "33224ef2bb2374077780d9f50fccd4d2dc6d584f",
+  "changed_originals": [
+    {
+      "restored_path": "deploy/universal-terminal/compose.yaml",
+      "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/compose.yaml",
+      "historical_git_blob": "f807391adabc9046fa37ba847f572acbd1709e46",
+      "historical_sha256": "4c2ca8207b24fcf0a88d55ddb46eac31117e636aaafb5a74cfbd91b078cfbaa1",
+      "successor_git_blob": "93b1b43a8d8d1cfa0bc727fe52ec65a3d69c2988",
+      "successor_sha256": "973cac9bc9b2c2886759eafd3eb4ebdd66746a4c4ac4a8ad794b3f0a258e5071"
+    },
+    {
+      "restored_path": "deploy/universal-terminal/mirror-bootstrap.sh",
+      "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/mirror-bootstrap.sh",
+      "historical_git_blob": "1a778891a805825bb82d7e475c97d9b02c3e6a6e",
+      "historical_sha256": "f6889cda54e74b6fa3bc2faf9f73fbe9aca48c394d461769d1f91e5a24202edc",
+      "successor_git_blob": "1d3e5f65ad4b7cc7fab66e776759daff5d628173",
+      "successor_sha256": "044b5d25358fdb3347ae516cf1a37a1dd975ded62d918b95dd76c6f1212527bd"
+    },
+    {
+      "restored_path": "tests/test_temdd_event_ledger.py",
+      "historical_archive_path": "evidence/self_host/original-recovered/tests/test_temdd_event_ledger.py",
+      "historical_git_blob": "187230e0bab7512811c0e9d71c4f6498be5f06ef",
+      "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
+      "successor_git_blob": "734f02a8114d4a7397b3c436f1000c9fcbc93af2",
+      "successor_sha256": "ec3436a1e7bd0687dc1216994f2c60a01ed201cb97672aa53a94dfe08b972bc3"
+    }
+  ],
+  "scope": "Preserved historical original bytes plus current role and existing-lane test corrections; not historical PASS transfer",
+  "predecessor_pass_transferred": false,
+  "effect_ack_done": false
+}

@@ -73,11 +73,24 @@ class SourceRecoveryTests(unittest.TestCase):
             finally: server.shutdown(); server.server_close(); thread.join()
 
     def test_every_recovered_source_keeps_its_original_blob_identity(self):
-        r = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_20261005.json').read_bytes())
+        receipt_bytes = (ROOT / 'evidence/self_host/SOURCE_RECOVERY_20261005.json').read_bytes()
+        r = json.loads(receipt_bytes)
+        successor = json.loads((ROOT / 'evidence/self_host/SOURCE_RECOVERY_SUCCESSOR_20261013.json').read_bytes())
+        self.assertEqual(successor['historical_receipt_sha256'], hashlib.sha256(receipt_bytes).hexdigest())
+        self.assertFalse(successor['predecessor_pass_transferred'])
+        changed = {entry['restored_path']:entry for entry in successor['changed_originals']}
+        self.assertEqual(set(changed), {f['restored_path'] for f in r['files'] if
+            hashlib.sha256((ROOT/f['restored_path']).read_bytes()).hexdigest() != f['sha256']})
         self.assertEqual(r['result'], 'EXACT_HISTORICAL_ORIGINAL_BLOBS_RECOVERED')
         self.assertFalse(r['boundaries']['effect_ack_done'])
         for f in r['files']:
-            raw = (ROOT / f['restored_path']).read_bytes()
+            current = (ROOT / f['restored_path']).read_bytes()
+            if f['restored_path'] in changed:
+                entry = changed[f['restored_path']]
+                self.assertEqual(hashlib.sha256(current).hexdigest(), entry['successor_sha256'])
+                self.assertEqual(host.git_blob_digest(current), entry['successor_git_blob'])
+                raw = (ROOT / entry['historical_archive_path']).read_bytes()
+            else: raw = current
             self.assertEqual(len(raw), f['bytes'], f['restored_path'])
             self.assertEqual(hashlib.sha256(raw).hexdigest(), f['sha256'])
             self.assertEqual(hashlib.sha1(('blob '+str(len(raw))+'\0').encode()+raw).hexdigest(), f['git_blob_sha1'])
