@@ -93,7 +93,7 @@
     "rule": "Neue Beiträge benötigen Quellenprüfung und die für ihren Inhalt geltende Veröffentlichungsfreigabe. Die Ressortfestlegung allein belegt keine automatische Veröffentlichung."
   },
   "owner_topic_decision_on": "2026-09-30",
-  "updated_on": "2026-10-12",
+  "updated_on": "2026-10-13",
   "publication_index": {
     "html": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.html",
     "json": "https://github.com/ingolf-lohmann/qik-vrt/blob/main/docs/publications/index.json",
@@ -191,7 +191,8 @@
       "variants": [
         "full"
       ],
-      "metadata_sha256": "8e71beb00056fbe7794e99ff5ee08095f0a92f466eb5ccbfeef1a98ae35ab52a"
+      "metadata_sha256": "6674e05c81588739861f1f1d6be908318138e686bfe5b696b8455a38907aed22",
+      "updated_on": "2026-10-13"
     },
     {
       "id": "physics-nobel-2026-decay-continuity",
