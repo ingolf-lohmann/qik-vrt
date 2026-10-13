@@ -1,0 +1,34 @@
+{
+  "browsers": [
+    {
+      "browserVersion": "151.0.7922.34",
+      "installByDefault": true,
+      "name": "chromium",
+      "revision": "1234",
+      "title": "Chrome for Testing"
+    },
+    {
+      "browserVersion": "151.0.7922.34",
+      "installByDefault": true,
+      "name": "chromium-headless-shell",
+      "revision": "1234",
+      "title": "Chrome Headless Shell"
+    },
+    {
+      "browserVersion": "26.5",
+      "installByDefault": true,
+      "name": "webkit",
+      "revision": "2336",
+      "revisionOverrides": {
+        "mac14": "2251",
+        "mac14-arm64": "2251",
+        "ubuntu20.04-arm64": "2092",
+        "ubuntu20.04-x64": "2092"
+      },
+      "title": "WebKit"
+    }
+  ],
+  "physical_iphone_claim_allowed": false,
+  "playwright": "1.62.1",
+  "schema": "qikvrt-offline-browser-runtime-lock/v1"
+}

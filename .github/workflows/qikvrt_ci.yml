@@ -180,3 +180,61 @@ jobs:
               ;;
           esac
           echo "QIKVRT_TERMINAL_DISPOSITION PASS mode=$mode"
+
+  offline_browser:
+    # Reuse the frozen native offline suite for the derived Site32 client.
+    # This gate has no dependence on Zenodo, a deployment or a native executor.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    env:
+      QIKVRT_OFFLINE_CLIENT_DIR: ${{ github.workspace }}/docs/monitor/offline
+      QIKVRT_PLAYWRIGHT_MODULE: ${{ github.workspace }}/runtime/offline/browser-tests/node_modules/playwright
+      QIKVRT_OFFLINE_ENGINE: ${{ matrix.engine }}
+      QIKVRT_OFFLINE_EVIDENCE_DIR: ${{ runner.temp }}/offline-${{ matrix.engine }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: runtime/offline/browser-tests/package-lock.json
+      - name: Verify exact source, tool cache and package-bound browser lock
+        run: |
+          set -euo pipefail
+          mkdir -p "$QIKVRT_OFFLINE_EVIDENCE_DIR"
+          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt"
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          npm ci --ignore-scripts --prefix runtime/offline/browser-tests
+          node runtime/offline/browser-tests/browser.test.mjs --precheck
+      - name: Install exact package-bound browser
+        run: runtime/offline/browser-tests/node_modules/.bin/playwright install --with-deps ${{ matrix.engine }}
+      - name: Fresh offline and full browser-process restart controls
+        run: |
+          set -euo pipefail
+          node runtime/offline/browser-tests/browser.test.mjs
+          git rev-parse HEAD HEAD^{tree} > "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT_AFTER.txt"
+          cmp "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT.txt" "$QIKVRT_OFFLINE_EVIDENCE_DIR/SUBJECT_AFTER.txt"
+          git status --porcelain --untracked-files=no > "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
+          test ! -s "$QIKVRT_OFFLINE_EVIDENCE_DIR/TRACKED_STATUS.txt"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: qikvrt-site32-offline-browser-${{ matrix.engine }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/browser-readback.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/failure.json
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/SUBJECT*.txt
+            ${{ runner.temp }}/offline-${{ matrix.engine }}/TRACKED_STATUS.txt
+          retention-days: 30
+          if-no-files-found: warn

@@ -30,6 +30,13 @@ anticipation-contract:
 tool-cache-contract:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B tools/qikvrt_tool_cache.py verify
 
+.PHONY: offline-browser-precheck offline-browser-test
+offline-browser-precheck: tool-cache-contract
+	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs --precheck
+
+offline-browser-test: offline-browser-precheck
+	QIKVRT_OFFLINE_CLIENT_DIR="$(CURDIR)/docs/monitor/offline" node runtime/offline/browser-tests/browser.test.mjs
+
 runtime-contract: tool-cache-contract
 	sh -n tools/bootstrap-gh.sh tools/bootstrap-runtime.sh
 	sh -n tests/test_runtime_bootstrap.sh

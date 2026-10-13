@@ -37,6 +37,12 @@
       "version": "24.x"
     },
     {
+      "cache_class": "ecosystem-cache",
+      "component": "playwright-offline-tests",
+      "provider": "npm integrity-bound package and browser artifacts",
+      "version": "1.62.1"
+    },
+    {
       "cache_class": "runner-image-layer",
       "component": "poppler",
       "provider": "ubuntu-24.04 runner image with guarded apt poppler-utils fallback",
@@ -87,10 +93,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 14,
-  "declared_components": 14,
-  "lock_sha256": "2cc8f03f1ffe0d1cb179778aca70d69d8ee1df9cb4552d47de75e26a96ed0a69",
-  "registry_sha256": "5441448d65b9bf5eb1f058a078985f8ef2b0f29a601eab42a98e317b56c8a3d6",
+  "covered_components": 15,
+  "declared_components": 15,
+  "lock_sha256": "586860b2aa591ac3a19ad16afac8da8cd9d0f27fc527c489ebc02accce000489",
+  "registry_sha256": "5ff09216675c50ad125d8a7a42d58313b4b1e9a75883e46dd43e732f5ea2c5e8",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

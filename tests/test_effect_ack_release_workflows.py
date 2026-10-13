@@ -423,6 +423,9 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
 
     def run_terminal(self, required: str, full_test: str, fixpoint: str):
         block = GENERAL_CI.read_text(encoding="utf-8").split(self.STEP, 1)[1]
+        # A later independent job is not part of this terminal shell step.
+        # Keep the original failure/success cases on the exact step bytes.
+        block = re.split(r"\n  [A-Za-z_][\w-]*:\n", block, maxsplit=1)[0]
         metadata, script = block.split("        run: |\n", 1)
         values = {
             self.SCOPE: required,
