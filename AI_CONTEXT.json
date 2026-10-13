@@ -238,5 +238,13 @@
     "client_gate": "tools/ai_handoff.py --client-receipt",
     "exact_host": "raumzeitterminal.de",
     "unobserved_adoption_inferred": false
+  },
+  "immediate_execution_principle": {
+    "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+    "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/immediate_execution_principle",
+    "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+    "client_gate": "tools/ai_handoff.py --client-receipt",
+    "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+    "unobserved_adoption_inferred": false
   }
 }

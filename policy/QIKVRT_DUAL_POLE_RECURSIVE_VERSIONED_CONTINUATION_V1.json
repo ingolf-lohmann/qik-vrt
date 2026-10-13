@@ -151,6 +151,44 @@
     "observer_grants_external_effect_capability": false,
     "predecessor_evidence_transfer": false,
     "scientific_or_universal_novelty_proof_from_owner_formulation": false,
-    "work_unit": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json"
+    "work_unit": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+    "immediate_execution_principle": {
+      "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+      "owner": "Ingolf Lohmann",
+      "submitted_at": "2026-10-13T08:23:34+03:00",
+      "classification": "NORMATIVE_REPOSITORY_WORKING_PRINCIPLE",
+      "original_wording": "Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.",
+      "original_wording_utf8_sha256": "bedcbdda69948d33077cf4599b880caa57a502743134b449678695b4e79aada9",
+      "attribution": "q.e.d.\nIngolf Lohmann",
+      "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+      "executable_means": [
+        "AUTHORIZED",
+        "SAFE",
+        "DETERMINISTIC",
+        "CALLABLE",
+        "AUTHENTICATED",
+        "PERMITTED",
+        "ADMITTED"
+      ],
+      "complete_through": [
+        "EXECUTE",
+        "APPLICABLE_TESTS",
+        "PERSIST",
+        "FRESH_EFFECT_READBACK",
+        "CONTINUE"
+      ],
+      "defer_executable_work_to_tomorrow_or_another_turn": false,
+      "status_plan_or_elapsed_time_is_completion": false,
+      "blocked_task": "PRESERVE_OPEN_WITH_CAUSAL_EVIDENCE_RETRY_CONDITION_AND_NEXT_ACTION",
+      "independent_executable_work_while_blocked": "CONTINUE_IMMEDIATELY",
+      "unchanged_failed_effect": "NOOP_UNTIL_MATERIAL_CAUSAL_CHANGE",
+      "new_external_authority_granted": false,
+      "review_or_security_bypass": false,
+      "reuse_existing_client_gate": "tools/ai_handoff.py --client-receipt",
+      "existing_regressions": "make ai-runtime-contract",
+      "human_contract": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+      "persisted_text_proves_main_mirror_or_other_client_adoption": false,
+      "work_unit": "state/work_units/QIKVRT_IMMEDIATE_EXECUTION_20261013_V1.json"
+    }
   }
 }

@@ -68,6 +68,23 @@ status message, elapsed time or an unrelated commit does not close a task or
 admit an unchanged retry. Use the existing continuation worker and shared
 receipt gate; this rule does not itself start or prove an unattended runner.
 
+## Immediate execution — Owner principle of 2026-10-13
+
+> Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
+>
+> q.e.d.
+> Ingolf Lohmann
+
+Every safe, deterministic, authorized and actually callable successor MUST
+be executed in the current work ring, through its applicable tests,
+persistence and fresh readback. An executable action MUST NOT be deferred
+to tomorrow, another chat or a later run merely to end the current turn.
+Keep the existing client-continuation gate, protected governance and causal
+NOOP rule. A real blocker preserves the task and its exact retry condition
+while other authorized executable work continues. The normative binding is
+`policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json`
+(`self_application_working_rule.immediate_execution_principle`).
+
 ## Mandatory human-machine progress behavior
 
 For every repository, build, verification, publication, deployment, or GitHub

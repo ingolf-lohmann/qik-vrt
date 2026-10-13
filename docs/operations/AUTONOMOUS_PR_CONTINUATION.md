@@ -83,6 +83,25 @@ and no Mirror or Zenodo effect is authorized by this contract.
 - Zenodo or IETF mutation;
 - repository-wide `PASS`, `FINAL_PASS`, or `EFFECT_ACK_DONE` claims.
 
+## Immediate execution — Owner principle of 2026-10-13
+
+> Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
+>
+> q.e.d.
+> Ingolf Lohmann
+
+Execute every safe, deterministic, authorized and actually callable next action
+in the current work ring, through its tests, persistence and fresh readback.
+Do not postpone executable work to another day, chat or run merely to return
+an intermediate status. Reuse `tools/ai_handoff.py --client-receipt`: it already
+rejects a terminal handoff with an executable successor. Its consistency
+result is separate from live execution evidence. A genuine external or
+protected-authority blocker keeps the task open with its exact retry condition;
+other executable work continues. Preserve causal NOOP for unchanged failed
+effects, existing authorization and review boundaries. The machine binding
+extends `self_application_working_rule.immediate_execution_principle` in the
+existing recursive policy, with no parallel controller or trigger.
+
 ## Recursive self-application — Owner rule of 2026-10-13
 
 Apply the working method to its own results, errors, omissions and open

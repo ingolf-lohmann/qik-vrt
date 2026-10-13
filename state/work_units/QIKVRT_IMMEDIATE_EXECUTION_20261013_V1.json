@@ -1,0 +1,188 @@
+{
+  "schema": "qikvrt_immediate_execution_repository_work_unit_v1",
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "operational_repository_work_unit"
+  },
+  "work_unit_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013_V1",
+  "created_at": "2026-10-13T05:38:49.777477+00:00",
+  "classification": "NORMATIVE_OPERATIONAL_POLICY_PERSISTENCE_NOT_SCIENTIFIC_PUBLICATION",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_ref": "integration/515-519-521-522-20261012-eceb9b63",
+  "source_pr": 523,
+  "source_commit": "eafd56d6994cc7e51ed107429457ba9468da5d99",
+  "source_tree": "01fe5df3b40c5632f23bfd5bb0fcc2adb8b6a137",
+  "human_actor": {
+    "attribution_id": "Ingolf Lohmann",
+    "roles": [
+      "Product Owner",
+      "Code Owner"
+    ],
+    "identity_evidence": "DIRECT_OWNER_MESSAGE_NOT_INDEPENDENT_BIOMETRIC_PROOF"
+  },
+  "artificial_cognitive_actor": {
+    "provider": "OpenAI",
+    "system_family": "Codex",
+    "model_or_build": "GPT-6; precise build unavailable",
+    "session_or_run_id": "884f5282b921",
+    "tools_and_adapters": [
+      "GitHub REST connector",
+      "Public GitHub REST read-only source retrieval",
+      "Python standard-library repository gates"
+    ],
+    "identity_and_observation_limits": "Attribution; no biometric authentication, other-client witness or native-runtime execution inferred."
+  },
+  "human_contributions": [
+    {
+      "kind": "REPOSITORY_PRINCIPLE",
+      "text": "Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.",
+      "utf8_sha256": "bedcbdda69948d33077cf4599b880caa57a502743134b449678695b4e79aada9",
+      "attribution": "q.e.d.\nIngolf Lohmann",
+      "submitted_at": "2026-10-13T08:23:34+03:00"
+    }
+  ],
+  "artificial_cognitive_contributions": [
+    "Operational binding of the exact Owner wording in existing entrypoint, client and handoff contracts",
+    "Existing regression execution, integrity materialization and REST exact-byte readback"
+  ],
+  "joint_components": [],
+  "unresolved_origin": [],
+  "human_decision": "DIRECT_OWNER_PRINCIPLE_APPLIED_UNDER_EXISTING_INTERNAL_CONTINUATION_AUTHORIZATION",
+  "inputs": [
+    {
+      "path": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "head": "eafd56d6994cc7e51ed107429457ba9468da5d99",
+      "previous_obligations_remain_open": true
+    }
+  ],
+  "outputs": [
+    {
+      "path": "AI",
+      "bytes": 22967,
+      "sha256": "cbfdb55a154e721cbc70c03cc6e9a019f8fc4428e9ab35d3b2e006fd36747d62",
+      "git_blob_sha1": "7162a5f2defeff14aa3899c15617a006b12d8fa4"
+    },
+    {
+      "path": "AI_CONTEXT.json",
+      "bytes": 13644,
+      "sha256": "9e3f42a37de3c67aa831aa1d08261cf4ffba2fb52765c2544b9613d2ec248a6e",
+      "git_blob_sha1": "de305b31a964696447bf5fdc8e6761198971758c"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 13660,
+      "sha256": "25dae02e62050f61fcf6e9f3ff3f2caaddc9bcfe3efcc0c770b7f862bc7d7c2b",
+      "git_blob_sha1": "249795e48c16f0ad9faa9a0a4ccc8254ad4f8933"
+    },
+    {
+      "path": "docs/HUMAN_MACHINE_PROGRESS_PROTOCOL.md",
+      "bytes": 14986,
+      "sha256": "0a69cb6dff107b659eeee9f3cd0dd3c72773b3bedf2a1d193cb640870745c474",
+      "git_blob_sha1": "2a40004f4a7a106f7a958dfb117a42aae9814409"
+    },
+    {
+      "path": "docs/operations/AUTONOMOUS_PR_CONTINUATION.md",
+      "bytes": 6453,
+      "sha256": "7a21fc76994573f746f2916545705235e2ff2eba74747c9e8fb04a2f6b974302",
+      "git_blob_sha1": "3fe63909c27dcb124919bbefad4902333986445a"
+    },
+    {
+      "path": "policy/HUMAN_MACHINE_PROGRESS_PROTOCOL.json",
+      "bytes": 7120,
+      "sha256": "d7405624adcf4d17a5b8b9cef79a685fded78f94a2fabf997802b7b78678be61",
+      "git_blob_sha1": "0992ee6809f0790034c78c15f8fd280fd126bf10"
+    },
+    {
+      "path": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json",
+      "bytes": 8513,
+      "sha256": "24c3f7274f65606bcba715a232065746ee4b64d336e24dc954a47ccacd3ccf18",
+      "git_blob_sha1": "b961ffae6dfeca32e52802c248dc0c96e498458a"
+    }
+  ],
+  "self_binding": "This work unit is bound by the successor integrity manifest and independently read-back Git tree; no self-referential hash is claimed.",
+  "git_history": {
+    "history_preserving_parent": "eafd56d6994cc7e51ed107429457ba9468da5d99",
+    "reuse_existing_pr": 523,
+    "force_push": false
+  },
+  "verification": {
+    "candidate_content_checks": [
+      {
+        "command": "make ai-runtime-contract",
+        "result": "PASS",
+        "tests": 63,
+        "log_sha256": "d8467c969f96fae71781a2d96d17ee2005894888f38ac6fdbaa5047282479389",
+        "scope": "Existing client continuation, causal retry, handoff and boot contracts at the seven output digests above."
+      },
+      {
+        "result": "PASS",
+        "scope": "Exact Owner wording in four human-readable contracts, SHA-256 and both machine projections."
+      }
+    ],
+    "baseline": {
+      "exact_original_head_and_tree_rest_reconstructed": true,
+      "all_source_blobs_verified": 4056,
+      "integrity": "PASS: 3950 classified entries and 3939 immutable digests",
+      "boot_readiness": "CONTINUE",
+      "boot_gates": "Knowledge corpus, interface adaptation, handoff, integrity and tool-cache PASS; runtime profile CONTINUE, exit20."
+    },
+    "successor_integrity": {
+      "generator_version": "3.2",
+      "contract_tests": 11,
+      "contract_tests_result": "PASS",
+      "contract_tests_log_sha256": "1359dd25bd957f40684e5a96ff2d49feb3386d04f7ef67e135274fb816b32df9",
+      "classified_entries": 3951,
+      "immutable_digests": 3940,
+      "final_integrity_binding": "Successor manifest, detached digest and SHA256SUMS bind this updated work unit; final original-byte readback is recorded independently after the ref update."
+    },
+    "native_successor_ci": "NOT_YET_OBSERVED",
+    "predecessor_check_transfer": false
+  },
+  "inherited_open_obligations": [
+    {
+      "id": "MAIN_GOVERNANCE_AND_INTEGRATION",
+      "state": "OPEN",
+      "source": "https://github.com/ingolf-lohmann/qik-vrt/pull/523",
+      "evidence": "Current rulesets=[], reviews=[]; requested review execution failure CODE_OWNER_RULE_NOT_ENFORCED.",
+      "next_action": "Use an admitted existing native ruleset writer and independent exact-head review before guarded Main integration."
+    },
+    {
+      "id": "EXACT_DOMAIN_DELIVERY",
+      "state": "OPEN",
+      "source": "https://raumzeitterminal.de/",
+      "next_action": "Usable target-bound authenticated registrar/DNS write, then DNS/TLS and useful application readback; unchanged denied writes remain NOOP."
+    },
+    {
+      "id": "AUTHENTICATED_NATIVE_RUNTIME",
+      "state": "OPEN",
+      "source": "state/work_units/QIKVRT_RECURSIVE_SELF_APPLICATION_20261013_V1.json",
+      "next_action": "Establish an actual identity-bound native runtime start and independent effect readback."
+    }
+  ],
+  "reuse": {
+    "new_policy_file": false,
+    "new_controller": false,
+    "new_trigger": false,
+    "new_pull_request": false,
+    "client_gate": "tools/ai_handoff.py --client-receipt",
+    "source_binding": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/immediate_execution_principle"
+  },
+  "external_effects": {
+    "requested_effect": "FAST_FORWARD_EXISTING_DRAFT_PR_523_WITH_REVIEWABLE_POLICY_AND_INTEGRITY_SUCCESSOR",
+    "github_route": "REST_API_ONLY",
+    "main_promotion": false,
+    "mirror_adoption": false,
+    "site_deployment": false,
+    "zenodo_publication": false
+  },
+  "release_claims": {
+    "PASS": false,
+    "FINAL_PASS": false,
+    "EFFECT_ACK_DONE": false,
+    "DOMAIN_DELIVERY": false,
+    "OTHER_CLIENT_ADOPTION": false
+  }
+}

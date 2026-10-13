@@ -153,6 +153,13 @@
       "owner_instruction": "Ingolf Lohmann, 2026-10-13",
       "reuses_existing_client_work_and_causal_gate": true,
       "persists_observer_tasks_without_inventing_an_executor": true
+    },
+    "immediate_execution_rule": {
+      "rule_id": "QIKVRT_IMMEDIATE_EXECUTION_20261013",
+      "policy": "policy/QIKVRT_DUAL_POLE_RECURSIVE_VERSIONED_CONTINUATION_V1.json#/self_application_working_rule/immediate_execution_principle",
+      "default_disposition": "EXECUTE_IMMEDIATELY_IN_CURRENT_WORK_RING",
+      "reuses_existing_successor_admission_and_return_gate": true,
+      "defer_executable_work_to_another_turn": false
     }
   },
   "continuation_semantics": {

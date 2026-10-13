@@ -45,6 +45,24 @@ A GitHub action includes every connector/API mutation or read that advances the 
 13. **Continuation is the default after a non-terminal observation.** The round trip is `OBSERVE -> DIAGNOSE -> ACT -> OBSERVE EFFECT -> VERIFY READBACK -> CONTINUE` until a scope-bound terminal state is actually established. A snapshot is admissible only when no executable successor remains for the owned scope, a concrete blocker requires external authority/input, or an explicitly bounded observation window has ended.
 14. Observation frequency MUST be event- and workload-sensitive rather than a fixed polling ritual. New input, active effects, unresolved causal defects, expected receipts, or successor-carrier movement increase observation pressure; unchanged stable state is deduplicated. Monitoring activity alone is not progress.
 
+## Immediate execution — Owner principle of 2026-10-13
+
+> Was du heute kannst besorgen, das verschiebe nicht auf morgen, sondern erledige es unmittelbar, denn alles andere war, ist und wird inakzeptabel sein.
+>
+> q.e.d.
+> Ingolf Lohmann
+
+Apply this principle now: execute each safe, deterministic, already authorized
+and actually callable successor within the current work ring. Complete its
+applicable tests, persistence and fresh effect readback before a handoff.
+The existing client gate rejects terminal return while an executable successor
+remains; reuse it. A concrete external or protected-authority blocker retains
+the open task, causal evidence and retry condition. Independent executable
+work continues, and unchanged failed effects remain NOOP. The principle adds
+no permission scope and proves no unattended runner or other-client adoption.
+Its normative source is the existing recursive policy's
+`self_application_working_rule.immediate_execution_principle`.
+
 ## Binding client continuation procedure
 
 Owner instruction: Ingolf Lohmann, 2026-10-11. This procedure is mandatory for
