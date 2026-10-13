@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
-# S1 standalone node package, version 1.8.0
+# S1 standalone node package, version 1.12.0
 
 Every current and future repository node, including Authority and Mirror, must
 implement and run both the universal Transputer and the universal Terminal.

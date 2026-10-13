@@ -392,6 +392,7 @@ jobs:
       manifest_pin: ${{ steps.host.outputs.manifest_pin }}
       config_pin: ${{ steps.host.outputs.config_pin }}
       node_id: ${{ steps.host.outputs.node_id }}
+      adapter: ${{ steps.host.outputs.adapter }}
     steps:
       - name: Check out admitted exact Main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -445,6 +446,9 @@ jobs:
           config=pathlib.Path(os.environ['QIKVRT_HOST_CONFIG']);admission=pathlib.Path(os.environ['QIKVRT_HOST_ADMISSION'])
           plan=host.supervisor_plan(pathlib.Path(os.environ['QIKVRT_HOST_PACKAGE']),descriptor['manifest_sha256'],
               config,admission,os.environ['QIKVRT_HOST_ADMISSION_SHA256'],expected,delivery,delivery_pin)
+          config_bytes=config.read_bytes()
+          if hashlib.sha256(config_bytes).hexdigest()!=plan['config_sha256']: raise SystemExit('HOST_CONFIG_CHANGED_BEFORE_RESTART')
+          config_document=json.loads(config_bytes)
           unit=plan['unit_name']
           installed=subprocess.check_output(['systemctl','cat',unit],timeout=15).decode()
           if plan['unit_text'].strip() not in installed: raise SystemExit('EXISTING_INSTALLED_SUPERVISOR_BINDING_MISMATCH')
@@ -455,7 +459,7 @@ jobs:
           receipt.update(state='EXISTING_SUPERVISOR_RESTARTED_PUBLIC_ACCEPTANCE_PENDING',public_readback_verified=False,effect_ack_done=False)
           (delivery/'HOST_DEPLOYMENT_READBACK.json').write_bytes(host.raw_json(receipt))
           with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-              out.write('manifest_pin='+descriptor['manifest_sha256']+'\nconfig_pin='+plan['config_sha256']+'\nnode_id='+plan['node_id']+'\n')
+              out.write('manifest_pin='+descriptor['manifest_sha256']+'\nconfig_pin='+plan['config_sha256']+'\nnode_id='+plan['node_id']+'\nadapter='+config_document['adapter']+'\n')
           PY
       - name: Preserve actual host execution receipt
         if: always()
@@ -486,13 +490,14 @@ jobs:
           MANIFEST_PIN: ${{ needs.deploy-existing-linux-host.outputs.manifest_pin }}
           CONFIG_PIN: ${{ needs.deploy-existing-linux-host.outputs.config_pin }}
           NODE_ID: ${{ needs.deploy-existing-linux-host.outputs.node_id }}
+          ADAPTER: ${{ needs.deploy-existing-linux-host.outputs.adapter }}
         shell: bash
         run: |
           set -euo pipefail
           package="$RUNNER_TEMP/qikvrt-independent-package"
           mkdir "$package"
           tar -xf "$RUNNER_TEMP/qikvrt-independent-delivery/package.tar" -C "$package"
-          node tools/qikvrt_mesh_monitor_readback.mjs --self-host "$package" https://raumzeitterminal.de "$MANIFEST_PIN" "$CONFIG_PIN" "$NODE_ID" none > "$RUNNER_TEMP/QIKVRT_PRODUCT_HTTP_READBACK.json"
+          node tools/qikvrt_mesh_monitor_readback.mjs --self-host "$package" https://raumzeitterminal.de "$MANIFEST_PIN" "$CONFIG_PIN" "$NODE_ID" "$ADAPTER" > "$RUNNER_TEMP/QIKVRT_PRODUCT_HTTP_READBACK.json"
       - name: Preserve independent exact-host HTTP result
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

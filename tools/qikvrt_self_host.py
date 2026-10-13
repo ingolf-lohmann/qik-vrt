@@ -884,7 +884,15 @@ def docker_plan(package, pin, config_path, admission_path, admission_pin, delive
         if type(config.get(port)) is not int or not 1024 <= config[port] <= 65535:
             raise ValueError("DOCKER_LOOPBACK_PORT_BINDING_REQUIRED")
     paths = [package, config_path, admission_path, Path(delivery), Path(config["state_dir"])]
-    secrets_paths = [Path(config[key]) for key in ("terminal_token_file", "browser_password_file") if config.get(key)]
+    secret_values = [config[key] for key in ("terminal_token_file", "browser_password_file", "github_webhook_secret_file") if config.get(key)]
+    for key, field in (("mesh_work_peers", "secret_file"), ("owner_rest_grants", "token_file")):
+        entries = config.get(key, [])
+        if not isinstance(entries, list) or any(not isinstance(entry, dict) or not isinstance(entry.get(field), str) for entry in entries):
+            raise ValueError("DECLARED_PRIVATE_DOCKER_MOUNT_REQUIRED")
+        secret_values += [entry[field] for entry in entries]
+    if any(not isinstance(value, str) for value in secret_values):
+        raise ValueError("DECLARED_PRIVATE_DOCKER_MOUNT_REQUIRED")
+    secrets_paths = list(dict.fromkeys(Path(value) for value in secret_values))
     for path in paths + secrets_paths:
         if not path.is_absolute() or any(c in str(path) for c in ",\r\n\x00") or ".." in path.parts:
             raise ValueError("SAFE_ABSOLUTE_DOCKER_MOUNT_REQUIRED")

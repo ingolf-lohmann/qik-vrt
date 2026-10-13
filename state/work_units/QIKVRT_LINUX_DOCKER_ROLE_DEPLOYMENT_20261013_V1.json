@@ -237,7 +237,7 @@
     "force_push": false
   },
   "verified_local": {
-    "deployment_and_negative_controls": 17,
+    "deployment_and_negative_controls": 18,
     "source_contract_selection": 39,
     "provider_contracts": 33,
     "migration_controls": 22,
@@ -324,6 +324,10 @@
     "second_diagnosis": "Native ledger: 33 passed; S1 suite: two failures. Current terminal HTML has no old source attribute; derive node attribute and restore local GET routing in current client without reverting role/owner data. Fix undefined root/join in new owner-readback addition. Keep both original failure logs.",
     "third_source_head": "33224ef2bb2374077780d9f50fccd4d2dc6d584f",
     "third_terminal_run": 38430612644,
-    "third_diagnosis": "Current-source local readback and all S1 process/owner/state controls pass. One historical source recovery check rejects deliberately changed role and test bytes; preserve exact three original files in inactive evidence archive and independently pin their current successors without replacing the historical receipt."
+    "third_diagnosis": "Current-source local readback and all S1 process/owner/state controls pass. One historical source recovery check rejects deliberately changed role and test bytes; preserve exact three original files in inactive evidence archive and independently pin their current successors without replacing the historical receipt.",
+    "fourth_source_head": "59716ff472769974133dc34f8bf9c0a6d4441275",
+    "fourth_terminal_run": 38431655116,
+    "fourth_diagnosis": "All S1, systemd, original-image load, isolated Firefox/noVNC and current-source delivery freeze passed. New Docker cycle held on a fixture-only wrong novnc_port field; fix field and retain the observed failure. Existing dependency runtime image remains exactly sha256:8c7bc142ae52acb0e3dd73b994734580697cdc21762a1d277f790c502d425fdb.",
+    "host_binding_review": "Current private Owner/peer/webhook files mounted readonly at their existing exact paths. Config digest reread before restart; public readback uses the same validated adapter. No new credentials."
   }
 }

@@ -188,6 +188,16 @@ class DockerAdmissionTests(unittest.TestCase):
             with self.subTest(field=field),self.assertRaisesRegex(ValueError,error):self.plan()
             self.admission[field]=old;self.save()
 
+    def test_declared_owner_and_peer_keys_are_read_only_mounts(self):
+        owner=self.directory/'owner.token';peer=self.directory/'peer.token'
+        for path in (owner,peer): path.write_bytes(b'synthetic-private-key-32-byte-fixture');path.chmod(0o600)
+        self.config.update(owner_rest_grants=[{'principal':'fixture:owner','token_file':str(owner),'permissions':['prepare','commit','readback']}],
+            mesh_work_peers=[{'node_id':'fixture:peer','repository':'Goldkelch/qik-vrt','secret_file':str(peer)}])
+        self.save();argv=self.plan()['run_argv']
+        for path in (owner,peer): self.assertIn('type=bind,source='+str(path)+',target='+str(path)+',readonly',argv)
+        peer.chmod(0o644)
+        with self.assertRaisesRegex(ValueError,'OWNER_ONLY_PRIVATE_PATH_REQUIRED'): self.plan()
+
     def test_invalid_port_or_unsafe_mount_never_reaches_container_start(self):
         self.config["port"]=80;self.save()
         with self.assertRaisesRegex(ValueError,"LOOPBACK_PORT_BINDING_REQUIRED"):self.plan()
@@ -222,7 +232,7 @@ class DockerDeliveryCycleTests(unittest.TestCase):
             for path,text in ((token,"synthetic-terminal-token-docker-cycle-32"),(password,"fixture-vnc")):
                 path.write_text(text);path.chmod(0o600)
             config={"schema":"qikvrt-self-host-config/v1","node_id":"fixture:docker-delivery","adapter":"none",
-                "host":"127.0.0.1","port":33001,"terminal_port":33002,"browser_port":33003,"vnc_port":33004,
+                "host":"127.0.0.1","port":33001,"terminal_port":33002,"novnc_port":33003,"vnc_port":33004,
                 "display":":197","state_dir":str(state),"source_repository":"ingolf-lohmann/qik-vrt","subject_pr":523,
                 "source_head":descriptor["source_head"],"source_tree":descriptor["source_tree"],
                 "terminal_profile":"firefox","terminal_token_file":str(token),"browser_password_file":str(password),
