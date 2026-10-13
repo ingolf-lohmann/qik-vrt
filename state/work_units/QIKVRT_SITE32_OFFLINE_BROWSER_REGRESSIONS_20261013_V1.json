@@ -18,7 +18,8 @@
     "Recovered exact Site32 source via the existing Sites source repository.",
     "Reused and extended the frozen upstream Playwright suite, dependency lock, browser revision lock and static origin fixture.",
     "Added independent SHA-256 cache readback, exact 42-byte fixture/HEAD/TREE/archive comparisons, online recovery, operating-system process observations on Chromium/Linux and real-worker cache-tamper rejection.",
-    "Extended QIKVRT CI with an independent read-only browser job and repaired its existing terminal-step test extractor to stop at a sibling job."
+    "Extended QIKVRT CI with an independent read-only browser job and repaired its existing terminal-step test extractor to stop at a sibling job.",
+    "Replaced the inherited ambiguous readiness substring with the exact successful indicator; the previous substring also matched the pending UI text. No unexecuted browser PASS is claimed."
   ],
   "joint_components": [],
   "unresolved_origin": [],
@@ -120,6 +121,11 @@
       "state": "PASS",
       "exit_code": 0,
       "tests": 19
+    },
+    "origin_fixture_precheck": {
+      "state": "PASS_ORIGIN_FIXTURE_ONLY",
+      "path": "evidence/receipts/QIKVRT_SITE32_OFFLINE_BROWSER_REGRESSIONS_20261013_V1/origin-fixture-precheck.json",
+      "browser_execution": false
     }
   },
   "native_ci": {
@@ -137,6 +143,32 @@
       "diagnosis": "Job-level runner.temp context is not permitted by GitHub context availability; native error annotation was not exposed by the available REST route.",
       "repair": "Moved runner.temp to step env; no rerun of unchanged source.",
       "source": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts"
+    },
+    "integrity_hold": {
+      "source_head": "f7975008260aaec5b533f0fefe3915437069c3f3",
+      "run_ids": [
+        38392715893,
+        38392722338
+      ],
+      "browser_execution": false,
+      "failure": "BLOCK repository manifest differs from deterministic regeneration",
+      "affected_example": {
+        "path": "tools/bootstrap-runtime.ps1",
+        "local_lf_bytes": 21739,
+        "native_crlf_bytes": 22193,
+        "local_lf_sha256": "d94535d369520a424caa20ce9ccf36ccc845c6d56dbf22fe99798aec702641cf",
+        "native_crlf_sha256": "d07a0f67e71d6b9393d00c1056659eda265674670fcd826a4b03ef687b709f95"
+      },
+      "causal_repair": "Materialize the .gitattributes-selected worktree representation from a fresh checkout prefix before generating the integrity trio; canonical Git blobs remain unchanged.",
+      "native_writer_state": "COMPLETED_SUCCESS_ON_NATIVE_TEST_JOB",
+      "native_terminal_test_job": {
+        "run": 38392722338,
+        "job": 115280221073,
+        "conclusion": "success",
+        "final_observed_head": "a0d166d5090756de6c9eaa711617fc6ba04124c2",
+        "tree": "be27ea900b39a06f2c318f123509203dbbee1634",
+        "scope": "General repository test job only; initial browser jobs failed before engine installation."
+      }
     }
   },
   "inherited_open_obligations": [
