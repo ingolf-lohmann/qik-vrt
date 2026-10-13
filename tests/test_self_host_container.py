@@ -51,6 +51,62 @@ def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", lay
 
 
 class ContainerControls(unittest.TestCase):
+    def test_smoke_keeps_unprivileged_start_and_requires_independent_persistent_restart(self):
+        # Exercise the launcher contract; actual Docker/Firefox remains required
+        # by the existing native CI lane, never inferred from these fixtures.
+        for variant in ('valid', 'changed-ledger', 'failed-readback'):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+                calls, phase = [], {'restart': False}
+                name = 'qikvrt-s1-smoke-' + '1' * 16
+                network = name + '-net'
+                manifest = json.dumps({'source_head': HEAD, 'source_tree': TREE}).encode()
+                client = json.dumps({'state': 'CLIENT_BYTE_READBACK_VERIFIED',
+                                     'source_head': HEAD, 'source_tree': TREE, 'effect_ack_done': False}).encode()
+                failed = b'{"state":"HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK","cause":"HOLD_PUBLIC_NODE_HEALTH_CONTRACT","effect_ack_done":false}\n'
+                def command(*argv, **kwargs):
+                    calls.append(argv)
+                    if argv[0] == 'node':
+                        if variant == 'failed-readback':
+                            raise subprocess.CalledProcessError(20, list(argv), output=failed)
+                        return client
+                    if argv[1] == 'inspect':
+                        return json.dumps([{'State': {'Running': True}, 'HostConfig': {'NetworkMode': network},
+                            'NetworkSettings': {'Ports': {}, 'Networks': {network: {'IPAddress': '172.20.0.2'}}}}]).encode()
+                    if argv[1] == 'restart': phase['restart'] = True
+                    if 'cat' in argv: return manifest
+                    return b''
+                def get(url):
+                    if url.endswith('/AI/'): return b'<main data-qikvrt-source="node">'
+                    if url.endswith('/api/activity'): return json.dumps({'replication': {'source_head': HEAD, 'source_tree': TREE}}).encode()
+                    ledger = 'b' * 32 if variant == 'changed-ledger' and phase['restart'] else 'a' * 32
+                    return json.dumps({'state': 'NATIVE_TEMDD_READY', 'ledger_id': ledger}).encode()
+                with patch.object(c, 'command', side_effect=command), patch.object(c, 'get', side_effect=get), \
+                     patch.object(c.uuid, 'uuid4', return_value=SimpleNamespace(hex='1' * 32)), \
+                     patch.object(c.subprocess, 'run', return_value=SimpleNamespace(stdout=b'', stderr=b'')), \
+                     patch('builtins.print'):
+                    if variant == 'valid':
+                        result = c.smoke('fixture-image', tmp)
+                        self.assertEqual(result['state'], 'CONTAINER_SMOKE_AND_RESTART_VERIFIED')
+                        self.assertTrue(result['ledger_identity_preserved'])
+                        self.assertFalse(result['public_production_verified'])
+                    elif variant == 'changed-ledger':
+                        with self.assertRaisesRegex(ValueError, 'DURABLE_LEDGER_ID_RESTART_MISMATCH'):
+                            c.smoke('fixture-image', tmp)
+                    else:
+                        with self.assertRaises(subprocess.CalledProcessError): c.smoke('fixture-image', tmp)
+                        self.assertEqual((Path(tmp)/'smoke-readback-before-restart.stdout').read_bytes(), failed)
+                        self.assertFalse(phase['restart'])
+                start = next(argv for argv in calls if argv[:3] == ('docker', 'run', '-d'))
+                self.assertEqual(start[start.index('--user') + 1], '10001:10001')
+                self.assertIn('--read-only', start)
+                self.assertEqual(start[start.index('--cap-drop') + 1], 'ALL')
+                self.assertEqual(start[start.index('--security-opt') + 1], 'no-new-privileges:true')
+                self.assertIn('type=volume,source=' + name + '-state,target=/var/lib/qikvrt/node', start)
+                if variant != 'failed-readback':
+                    self.assertIn(('docker', 'restart', name), calls)
+                    self.assertEqual((Path(tmp)/'smoke-readback-before-restart.stdout').read_bytes(), client)
+                    self.assertEqual((Path(tmp)/'smoke-readback-after-restart.stdout').read_bytes(), client)
+
     def test_isolated_smoke_uses_exact_running_private_bridge_without_port_publication(self):
         network="disposable-ci-net"
         def metadata(address="172.20.0.2", running=True, mode=network):

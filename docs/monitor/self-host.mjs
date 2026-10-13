@@ -122,6 +122,10 @@ const monitor = createMonitor({env,repositories,handleRequest:routes,
     generated_at:new Date().toISOString(),mode:'local_packaged_source',repositories:[],delivery:{periodic_polling:false},
     local_runtime:binding(),boundaries:{workflow_success_is_effect_ack_done:false,remote_repository_observed:false}})} : {}),
 });
+// A fresh volume has no durable monitor snapshot. Complete the existing
+// startup observation before exposing health or the native terminal listener;
+// independent clients keep their strict snapshot/source/health requirements.
+await monitor.observeLatest('startup');
 monitor.server.listen(config.port,config.host,() => {
   console.log(JSON.stringify({state:['temdd','firefox'].includes(config.terminal_profile)?'SELF_HOST_NATIVE_READY':'SELF_HOST_REFERENCE_READY',source_head:manifest.source_head,
     source_tree:manifest.source_tree,manifest_sha256:pin,config_sha256:hash(configBytes),node_id:config.node_id,

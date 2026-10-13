@@ -150,6 +150,51 @@
       "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
       "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
       "unchanged_errors_retried": false
+    },
+    "cold_container_readback_38439078193": {
+      "run_id": 38439078193,
+      "job_id": 115442319799,
+      "source_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+      "source_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b",
+      "native_failure": "Independent Node client exited 20 after NATIVE_TEMDD_READY; original CLI did not expose its assertion code.",
+      "original_artifact": {
+        "id": 11835280488,
+        "bytes": 390690684,
+        "sha256": "07265f82ba555062311ed330df743c2c22982f69b129b6acbfdf39bfceeb26ea",
+        "original_zip_byte_verified": true
+      },
+      "verified_native_import": {
+        "state": "DOCKER_LOAD_EXACT_OCI_RUNTIME_VERIFIED",
+        "image_config_digest": "sha256:5bcf94a66807fc5d83bfad984070cc27302a89b1ca09305faa9c9edc0f60e7c6",
+        "original_oci_image_digest": "sha256:6fee115e9de0976dbf5a1fc9c7deba63e07dbd7c483b438ebd11e20428563140",
+        "ordered_diff_ids_verified": true,
+        "independent_rebuild_digest_equal": true
+      },
+      "source_reproduction": {
+        "scope": "LOCAL_ORIGINAL_SOURCE_REFERENCE_PROFILE_NOT_NATIVE_CONTAINER",
+        "before_snapshot_durable": false,
+        "first_assertion": "HOLD_PUBLIC_NODE_HEALTH_CONTRACT",
+        "after_first_activity_read": "CLIENT_BYTE_READBACK_VERIFIED",
+        "native_cause_same_assertion": "INFERRED_FROM_EXACT_COLD_SOURCE_PENDING_NATIVE_SUCCESSOR",
+        "regression_rejects_original": true,
+        "regression_accepts_corrected": true,
+        "original_regression_trace_sha256": "f490cd4f61b7b58cdbf9d660096aa38e17fa4c771e2eacda150787d6fb1dc5eb",
+        "corrected_regression_trace_sha256": "61b1bd013abf31d1ad91d0b4501c8b14f15b04b5401816574fc18137d5c8f94b"
+      },
+      "repair": "Await the existing standalone monitor's durable startup observation before listener readiness. Preserve strict independent client gates, original OCI transport/digests and all original runtime/security obligations. Explicitly bind smoke UID/GID 10001:10001 and retain both original client receipts.",
+      "regression": "19 container controls, including original OCI import identity matrix, typed diagnostics, explicit unprivileged fixture start, two independent readbacks, changed ledger rejection and readback failure rejection; cold first-client and process-restart regression in existing standalone suite.",
+      "native_successor": "REQUIRED_EXACT_HEAD_CI",
+      "public_production_verified": false,
+      "effect_ack_done": false,
+      "concurrent_successor_preserved": {
+        "parent_head": "a0c2c338f85683b808e181368062577487280b30",
+        "parent_tree": "2047cf55995d8393669574b250ef705a95bba520",
+        "original_activity_source_gate_retained": true,
+        "original_bounded_before_after_reader_outputs_retained": true,
+        "typed_reader_diagnostics_retained_unchanged": true,
+        "existing_protected_public_readback_route_retained": true,
+        "added_scope": "Make standalone listener readiness include durable initial observation, explicitly start fixture as UID/GID10001, and add cold-client/start/restart regressions."
+      }
     }
   },
   "domain_observation": {
@@ -305,7 +350,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
@@ -418,5 +463,24 @@
     "new_admission_negative_tests": "tests/test_self_host_container.py",
     "production_enabled_or_executed": false
   },
-  "work_unit_id": "QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1"
+  "work_unit_id": "QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1",
+  "oci_import_repair_task_20261013": {
+    "owner": "Ingolf Lohmann",
+    "authorized_scope": "Repair existing PR457 OCI import and complete actual unprivileged container/restart regression through existing Linux CI using REST-only repository operations.",
+    "contribution": {
+      "human": "Exact failure report, requirements and authorization.",
+      "artificial_cognitive_system": "OpenAI Codex / GPT-6: fresh REST readback, original artifact verification, exact-source cold-start reproduction, regression and minimal continuation repair.",
+      "build_id": "UNAVAILABLE"
+    },
+    "original_failure_preserved": true,
+    "original_pinned_carrier_unchanged": true,
+    "pinned_skopeo_unchanged": true,
+    "workflow_oci_digest_gate_unchanged": true,
+    "local_full_repository_tests_claimed": false,
+    "local_native_Docker_claimed": false,
+    "registry_publication_verified": false,
+    "productive_host_deployment_verified": false,
+    "raumzeitterminal_de_delivery_verified": false,
+    "integrity_materialization": "Incremental canonical integrity update from exact original manifest and unchanged full REST tree; full current repository verification remains mandatory in existing Linux CI."
+  }
 }

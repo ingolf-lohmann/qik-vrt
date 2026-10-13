@@ -594,7 +594,7 @@ def smoke(image, output):
                 "--mount", "type=volume,source=" + config_volume + ",target=/conf",
                 "--mount", "type=volume,source=" + state_volume + ",target=/state", image, "-c", setup)
         command("docker", "run", "-d", "--name", name, "--init", "--network", network,
-                "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
+                "--user", "10001:10001", "--read-only", "--cap-drop", "ALL", "--security-opt", "no-new-privileges:true",
                 "--shm-size", "256m", "--tmpfs", "/tmp:rw,noexec,nosuid,size=768m,mode=1777",
                 "--mount", "type=volume,source=" + config_volume + ",target=/run/qikvrt,readonly",
                 "--mount", "type=volume,source=" + state_volume + ",target=/var/lib/qikvrt/node",
