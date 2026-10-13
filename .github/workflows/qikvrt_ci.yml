@@ -240,6 +240,7 @@ jobs:
           set -euo pipefail
           python3 -B tools/qikvrt_self_host.py container-carrier --root . \
             --output "$RUNNER_TEMP/frozen-carrier" \
+            --carrier-oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
             --receipt "$RUNNER_TEMP/container-evidence/carrier.json"
       - name: Two independent Linux OCI builds from original frozen carrier
         id: independent-builds
@@ -399,7 +400,7 @@ jobs:
         with:
           version: v0.38.0
           driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
-      - name: Publish only immutable source-version tags and compare registry digest
+      - name: Publish immutable application and original ZIP; independently read back both
         id: publish
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -442,6 +443,47 @@ jobs:
           p.write_bytes(raw)
           PYREGISTRY
           done
+          # Reuse this same admitted publisher/package and token scope. The
+          # original ZIP lives unchanged inside one deterministic OCI layer.
+          # This publication does not activate a durable CI download source.
+          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . \
+            --oci-archive "$RUNNER_TEMP/container-evidence/carrier-original.oci.tar" \
+            --receipt "$RUNNER_TEMP/carrier-publish-check.json"
+          carrier_digest="$(python3 -c 'import json,os; print(json.load(open(os.environ["RUNNER_TEMP"]+"/carrier-publish-check.json"))["image_digest"])')"
+          carrier_tag="$(python3 -c 'import json; print("carrier-original-"+json.load(open("runtime/self-host/CONTAINER_CARRIER.json"))["archive_sha256"])')"
+          if docker buildx imagetools inspect "$image:$carrier_tag" --raw > "$RUNNER_TEMP/carrier-registry.json" 2> "$RUNNER_TEMP/carrier-registry-error"; then
+            : # Verify an existing version; never replace it.
+          else
+            python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/carrier-registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
+            docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+              --user "$(id -u):$(id -g)" --env HOME=/tmp \
+              --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+              --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
+              --mount "type=bind,source=$RUNNER_TEMP/container-evidence/carrier-original.oci.tar,target=/carrier.oci.tar,readonly" \
+              "$publisher" copy --preserve-digests --dest-authfile /auth/config.json \
+              oci-archive:/carrier.oci.tar "docker://$image:$carrier_tag"
+            docker buildx imagetools inspect "$image:$carrier_tag" --raw > "$RUNNER_TEMP/carrier-registry.json"
+          fi
+          CARRIER_DIGEST="$carrier_digest" python3 -B - <<'PYCARRIERDIGEST'
+          import hashlib,os
+          from pathlib import Path
+          raw=(Path(os.environ['RUNNER_TEMP'])/'carrier-registry.json').read_bytes()
+          if 'sha256:'+hashlib.sha256(raw).hexdigest()!=os.environ['CARRIER_DIGEST']:
+              raw=raw.removesuffix(b'\n')
+          assert 'sha256:'+hashlib.sha256(raw).hexdigest()==os.environ['CARRIER_DIGEST'], 'immutable original archive registry digest differs'
+          PYCARRIERDIGEST
+          mkdir "$RUNNER_TEMP/carrier-registry-readback"
+          docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+            --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+            --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/carrier-registry-readback,target=/readback" \
+            "$publisher" copy --preserve-digests --src-authfile /auth/config.json \
+            "docker://$image@$carrier_digest" oci-archive:/readback/carrier.oci.tar
+          python3 -B tools/qikvrt_self_host.py container-carrier-archive-check --root . \
+            --oci-archive "$RUNNER_TEMP/carrier-registry-readback/carrier.oci.tar" \
+            --receipt "$RUNNER_TEMP/carrier-registry-readback.json"
+          printf 'carrier_archive_image=%s@%s\n' "$image" "$carrier_digest" >> "$GITHUB_OUTPUT"
           printf 'image=%s@%s\n' "$image" "$EXPECTED_DIGEST" >> "$GITHUB_OUTPUT"
           cp "$RUNNER_TEMP/production-admission.json" "$RUNNER_TEMP/container-evidence/production-admission.json"
           cp "$RUNNER_TEMP/registry.json" "$RUNNER_TEMP/container-evidence/published-manifest.json"
@@ -451,6 +493,9 @@ jobs:
           path: |
             ${{ runner.temp }}/production-admission.json
             ${{ runner.temp }}/registry.json
+            ${{ runner.temp }}/carrier-publish-check.json
+            ${{ runner.temp }}/carrier-registry.json
+            ${{ runner.temp }}/carrier-registry-readback.json
           if-no-files-found: error
           retention-days: 30
 

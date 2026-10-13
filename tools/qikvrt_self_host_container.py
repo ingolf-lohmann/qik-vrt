@@ -285,6 +285,127 @@ def carrier_import(expected, path, output):
                 "predecessor_acceptance_transferred": False, "public_production_verified": False}
 
 
+def carrier_archive_config(expected, layer_digest):
+    require(expected.get("schema") == "qikvrt-s1-frozen-container-carrier/v1" and
+            expected.get("repository") == REPOSITORY and
+            re.fullmatch(r"[a-f0-9]{64}", expected.get("archive_sha256", "")) and
+            type(expected.get("archive_bytes")) is int and
+            0 < expected["archive_bytes"] <= 2 * 1024**3,
+            "FROZEN_CARRIER_ARCHIVE_CONTRACT_REQUIRED")
+    return {"architecture": "amd64", "os": "linux", "created": "1970-01-01T00:00:00Z",
+            "config": {"User": "10001:10001", "Labels": {
+                "org.opencontainers.image.revision": expected["source_head"],
+                "de.qikvrt.source-tree": expected["source_tree"],
+                "de.qikvrt.original-archive-sha256": expected["archive_sha256"],
+                "de.qikvrt.original-artifact-id": str(expected["artifact_id"])}},
+            "rootfs": {"type": "layers", "diff_ids": [layer_digest]}}
+
+
+def carrier_archive(expected, path, output):
+    """Encapsulate the unchanged original ZIP using the existing OCI publisher."""
+    path, output = Path(path), Path(output)
+    carrier_archive_config(expected, "sha256:" + "0" * 64)
+    require(not output.exists(), "CREATE_ONLY_CARRIER_ARCHIVE_REQUIRED")
+    require(path.is_file() and not path.is_symlink() and
+            path.stat().st_size == expected["archive_bytes"], "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH")
+    def encoded(value):
+        return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    def entry(name, size):
+        item = tarfile.TarInfo(name); item.size = size; item.mode = 0o444
+        return item
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as tmp:
+        layer = Path(tmp) / "layer.tar"
+        with path.open("rb") as source:
+            require(hashlib.file_digest(source, "sha256").hexdigest() == expected["archive_sha256"],
+                    "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH")
+            source.seek(0)
+            with tarfile.open(layer, "w", format=tarfile.USTAR_FORMAT) as archive:
+                archive.addfile(entry("original-delivery.zip", expected["archive_bytes"]), source)
+        with layer.open("rb") as source:
+            layer_digest = "sha256:" + hashlib.file_digest(source, "sha256").hexdigest()
+        config = encoded(carrier_archive_config(expected, layer_digest))
+        config_digest = "sha256:" + sha(config)
+        manifest = encoded({"schemaVersion": 2, "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "config": {"mediaType": "application/vnd.oci.image.config.v1+json",
+                       "digest": config_digest, "size": len(config)},
+            "layers": [{"mediaType": "application/vnd.oci.image.layer.v1.tar",
+                        "digest": layer_digest, "size": layer.stat().st_size}]})
+        manifest_digest = "sha256:" + sha(manifest)
+        blobs = {"oci-layout": encoded({"imageLayoutVersion": "1.0.0"}),
+                 "index.json": encoded({"schemaVersion": 2, "manifests": [{
+                     "mediaType": "application/vnd.oci.image.manifest.v1+json",
+                     "digest": manifest_digest, "size": len(manifest)}]}),
+                 "blobs/sha256/" + config_digest[7:]: config,
+                 "blobs/sha256/" + manifest_digest[7:]: manifest}
+        with output.open("xb") as target, tarfile.open(fileobj=target, mode="w", format=tarfile.USTAR_FORMAT) as archive:
+            for name, raw in sorted(blobs.items()):
+                archive.addfile(entry(name, len(raw)), io.BytesIO(raw))
+            with layer.open("rb") as source:
+                archive.addfile(entry("blobs/sha256/" + layer_digest[7:], layer.stat().st_size), source)
+    return carrier_archive_check(expected, output)
+
+
+def carrier_archive_check(expected, path):
+    """Independently read OCI transport and recover/hash the exact original ZIP."""
+    carrier_archive_config(expected, "sha256:" + "0" * 64)
+    with tarfile.open(path, "r:*") as archive:
+        members = archive.getmembers()
+        require(all(e.isfile() or e.isdir() for e in members), "ARCHIVE_OCI_REGULAR_ENTRIES_REQUIRED")
+        entries = {e.name.removeprefix("./"): e for e in members if e.isfile()}
+        require(len(entries) == sum(e.isfile() for e in members), "ARCHIVE_OCI_DUPLICATE_PATH")
+        def small(name):
+            require(name in entries and entries[name].size <= 1024**2, "ARCHIVE_OCI_METADATA_REQUIRED")
+            return archive.extractfile(entries[name]).read()
+        def descriptor(value):
+            digest = value.get("digest", "")
+            require(re.fullmatch(r"sha256:[a-f0-9]{64}", digest), "ARCHIVE_OCI_DIGEST_REQUIRED")
+            name = "blobs/sha256/" + digest[7:]
+            require(name in entries and entries[name].size == value.get("size") and
+                    entries[name].size <= expected["archive_bytes"] + 1024**2,
+                    "ARCHIVE_OCI_DESCRIPTOR_MISMATCH")
+            with archive.extractfile(entries[name]) as source:
+                require(hashlib.file_digest(source, "sha256").hexdigest() == digest[7:],
+                        "ARCHIVE_OCI_BLOB_INTEGRITY_MISMATCH")
+            return name
+        require(json.loads(small("oci-layout")) == {"imageLayoutVersion": "1.0.0"}, "ARCHIVE_OCI_LAYOUT_REQUIRED")
+        index = json.loads(small("index.json"))
+        require(index.get("schemaVersion") == 2 and len(index.get("manifests", [])) == 1,
+                "SINGLE_ORIGINAL_ARCHIVE_REQUIRED")
+        manifest_descriptor = index["manifests"][0]
+        manifest_name = descriptor(manifest_descriptor)
+        manifest = json.loads(small(manifest_name))
+        require(manifest.get("schemaVersion") == 2 and
+                manifest.get("mediaType") == "application/vnd.oci.image.manifest.v1+json" and
+                manifest_descriptor.get("mediaType") == manifest["mediaType"] and
+                len(manifest.get("layers", [])) == 1, "ORIGINAL_ARCHIVE_IMAGE_REQUIRED")
+        layer = manifest["layers"][0]
+        require(layer.get("mediaType") == "application/vnd.oci.image.layer.v1.tar" and
+                manifest["config"].get("mediaType") == "application/vnd.oci.image.config.v1+json",
+                "ORIGINAL_ARCHIVE_MEDIA_TYPE_REQUIRED")
+        config_name, layer_name = descriptor(manifest["config"]), descriptor(layer)
+        require(set(entries) == {"oci-layout", "index.json", manifest_name, config_name, layer_name},
+                "ORIGINAL_ARCHIVE_FILESET_REQUIRED")
+        require(json.loads(small(config_name)) == carrier_archive_config(expected, layer["digest"]),
+                "ORIGINAL_ARCHIVE_SOURCE_BINDING_MISMATCH")
+        with archive.extractfile(entries[layer_name]) as source, tarfile.open(fileobj=source, mode="r|") as payload:
+            item = payload.next()
+            require(item is not None and item.isfile() and item.name == "original-delivery.zip" and
+                    item.size == expected["archive_bytes"] and item.mode == 0o444 and
+                    item.uid == item.gid == item.mtime == 0,
+                    "SINGLE_PINNED_ORIGINAL_ZIP_REQUIRED")
+            with payload.extractfile(item) as original:
+                require(hashlib.file_digest(original, "sha256").hexdigest() == expected["archive_sha256"],
+                        "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH")
+            require(payload.next() is None, "SINGLE_PINNED_ORIGINAL_ZIP_REQUIRED")
+    return {"state": "ORIGINAL_ARCHIVE_OCI_BYTE_READBACK_VERIFIED",
+            "scope": "ORIGINAL_ARCHIVE_BYTES_ONLY", "image_digest": manifest_descriptor["digest"],
+            "archive_bytes": expected["archive_bytes"], "archive_sha256": expected["archive_sha256"],
+            "artifact_id": expected["artifact_id"], "source_head": expected["source_head"],
+            "source_tree": expected["source_tree"], "predecessor_acceptance_transferred": False,
+            "public_production_verified": False, "durable_ci_source_activated": False}
+
+
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
         raise ValueError("REDIRECT_FORBIDDEN")
@@ -674,6 +795,11 @@ def execute(args):
             if not args.carrier_archive:
                 carrier_download(expected, archive)
             result = carrier_import(expected, archive, args.output)
+            if getattr(args, "carrier_oci_archive", None):
+                result["original_archive_oci"] = carrier_archive(expected, archive, args.carrier_oci_archive)
+    elif operation == "carrier-archive-check":
+        expected = json.loads((args.root / "runtime/self-host/CONTAINER_CARRIER.json").read_bytes())
+        result = carrier_archive_check(expected, args.oci_archive)
     elif operation == "oci-check":
         result = oci(args.oci_archive, args.expected_head, args.expected_tree)
         if args.second_oci_archive:

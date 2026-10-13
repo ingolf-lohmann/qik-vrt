@@ -9,6 +9,51 @@
   "authority_repository": "ingolf-lohmann/qik-vrt",
   "container_production_verified": false,
   "diagnostics": {
+    "cold_container_readback_38439078193": {
+      "concurrent_successor_preserved": {
+        "added_scope": "Make standalone listener readiness include durable initial observation, explicitly start fixture as UID/GID10001, and add cold-client/start/restart regressions.",
+        "existing_protected_public_readback_route_retained": true,
+        "original_activity_source_gate_retained": true,
+        "original_bounded_before_after_reader_outputs_retained": true,
+        "parent_head": "a0c2c338f85683b808e181368062577487280b30",
+        "parent_tree": "2047cf55995d8393669574b250ef705a95bba520",
+        "typed_reader_diagnostics_retained_unchanged": true
+      },
+      "effect_ack_done": false,
+      "job_id": 115442319799,
+      "native_failure": "Independent Node client exited 20 after NATIVE_TEMDD_READY; original CLI did not expose its assertion code.",
+      "native_successor": "REQUIRED_EXACT_HEAD_CI",
+      "original_artifact": {
+        "bytes": 390690684,
+        "id": 11835280488,
+        "original_zip_byte_verified": true,
+        "sha256": "07265f82ba555062311ed330df743c2c22982f69b129b6acbfdf39bfceeb26ea"
+      },
+      "public_production_verified": false,
+      "regression": "19 container controls, including original OCI import identity matrix, typed diagnostics, explicit unprivileged fixture start, two independent readbacks, changed ledger rejection and readback failure rejection; cold first-client and process-restart regression in existing standalone suite.",
+      "repair": "Await the existing standalone monitor's durable startup observation before listener readiness. Preserve strict independent client gates, original OCI transport/digests and all original runtime/security obligations. Explicitly bind smoke UID/GID 10001:10001 and retain both original client receipts.",
+      "run_id": 38439078193,
+      "source_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+      "source_reproduction": {
+        "after_first_activity_read": "CLIENT_BYTE_READBACK_VERIFIED",
+        "before_snapshot_durable": false,
+        "corrected_regression_trace_sha256": "61b1bd013abf31d1ad91d0b4501c8b14f15b04b5401816574fc18137d5c8f94b",
+        "first_assertion": "HOLD_PUBLIC_NODE_HEALTH_CONTRACT",
+        "native_cause_same_assertion": "INFERRED_FROM_EXACT_COLD_SOURCE_PENDING_NATIVE_SUCCESSOR",
+        "original_regression_trace_sha256": "f490cd4f61b7b58cdbf9d660096aa38e17fa4c771e2eacda150787d6fb1dc5eb",
+        "regression_accepts_corrected": true,
+        "regression_rejects_original": true,
+        "scope": "LOCAL_ORIGINAL_SOURCE_REFERENCE_PROFILE_NOT_NATIVE_CONTAINER"
+      },
+      "source_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b",
+      "verified_native_import": {
+        "image_config_digest": "sha256:5bcf94a66807fc5d83bfad984070cc27302a89b1ca09305faa9c9edc0f60e7c6",
+        "independent_rebuild_digest_equal": true,
+        "ordered_diff_ids_verified": true,
+        "original_oci_image_digest": "sha256:6fee115e9de0976dbf5a1fc9c7deba63e07dbd7c483b438ebd11e20428563140",
+        "state": "DOCKER_LOAD_EXACT_OCI_RUNTIME_VERIFIED"
+      }
+    },
     "initial_full_test": {
       "cause": "Old terminal-disposition fixture rendered following sibling CI jobs; 23 fixture errors with KeyError steps.receipt.outputs.head.",
       "log": "evidence/native-runtime-acceptance/s1-linux-container-20261013/full-test-initial-fixture-failure.json",
@@ -150,51 +195,6 @@
       "source_head": "c5ce2be0e0d23bb0dad49f00ca012757862c030f",
       "source_tree": "ec90f19f13ccf4934b4d5719d0d14492379da54b",
       "unchanged_errors_retried": false
-    },
-    "cold_container_readback_38439078193": {
-      "run_id": 38439078193,
-      "job_id": 115442319799,
-      "source_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
-      "source_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b",
-      "native_failure": "Independent Node client exited 20 after NATIVE_TEMDD_READY; original CLI did not expose its assertion code.",
-      "original_artifact": {
-        "id": 11835280488,
-        "bytes": 390690684,
-        "sha256": "07265f82ba555062311ed330df743c2c22982f69b129b6acbfdf39bfceeb26ea",
-        "original_zip_byte_verified": true
-      },
-      "verified_native_import": {
-        "state": "DOCKER_LOAD_EXACT_OCI_RUNTIME_VERIFIED",
-        "image_config_digest": "sha256:5bcf94a66807fc5d83bfad984070cc27302a89b1ca09305faa9c9edc0f60e7c6",
-        "original_oci_image_digest": "sha256:6fee115e9de0976dbf5a1fc9c7deba63e07dbd7c483b438ebd11e20428563140",
-        "ordered_diff_ids_verified": true,
-        "independent_rebuild_digest_equal": true
-      },
-      "source_reproduction": {
-        "scope": "LOCAL_ORIGINAL_SOURCE_REFERENCE_PROFILE_NOT_NATIVE_CONTAINER",
-        "before_snapshot_durable": false,
-        "first_assertion": "HOLD_PUBLIC_NODE_HEALTH_CONTRACT",
-        "after_first_activity_read": "CLIENT_BYTE_READBACK_VERIFIED",
-        "native_cause_same_assertion": "INFERRED_FROM_EXACT_COLD_SOURCE_PENDING_NATIVE_SUCCESSOR",
-        "regression_rejects_original": true,
-        "regression_accepts_corrected": true,
-        "original_regression_trace_sha256": "f490cd4f61b7b58cdbf9d660096aa38e17fa4c771e2eacda150787d6fb1dc5eb",
-        "corrected_regression_trace_sha256": "61b1bd013abf31d1ad91d0b4501c8b14f15b04b5401816574fc18137d5c8f94b"
-      },
-      "repair": "Await the existing standalone monitor's durable startup observation before listener readiness. Preserve strict independent client gates, original OCI transport/digests and all original runtime/security obligations. Explicitly bind smoke UID/GID 10001:10001 and retain both original client receipts.",
-      "regression": "19 container controls, including original OCI import identity matrix, typed diagnostics, explicit unprivileged fixture start, two independent readbacks, changed ledger rejection and readback failure rejection; cold first-client and process-restart regression in existing standalone suite.",
-      "native_successor": "REQUIRED_EXACT_HEAD_CI",
-      "public_production_verified": false,
-      "effect_ack_done": false,
-      "concurrent_successor_preserved": {
-        "parent_head": "a0c2c338f85683b808e181368062577487280b30",
-        "parent_tree": "2047cf55995d8393669574b250ef705a95bba520",
-        "original_activity_source_gate_retained": true,
-        "original_bounded_before_after_reader_outputs_retained": true,
-        "typed_reader_diagnostics_retained_unchanged": true,
-        "existing_protected_public_readback_route_retained": true,
-        "added_scope": "Make standalone listener readiness include durable initial observation, explicitly start fixture as UID/GID10001, and add cold-client/start/restart regressions."
-      }
     }
   },
   "domain_observation": {
@@ -316,6 +316,25 @@
     "source_parent_tree": "dc288ac41475cc745127b79e967606e883be7dc4",
     "third_party_report_not_native_diagnosis": true
   },
+  "oci_import_repair_task_20261013": {
+    "authorized_scope": "Repair existing PR457 OCI import and complete actual unprivileged container/restart regression through existing Linux CI using REST-only repository operations.",
+    "contribution": {
+      "artificial_cognitive_system": "OpenAI Codex / GPT-6: fresh REST readback, original artifact verification, exact-source cold-start reproduction, regression and minimal continuation repair.",
+      "build_id": "UNAVAILABLE",
+      "human": "Exact failure report, requirements and authorization."
+    },
+    "integrity_materialization": "Incremental canonical integrity update from exact original manifest and unchanged full REST tree; full current repository verification remains mandatory in existing Linux CI.",
+    "local_full_repository_tests_claimed": false,
+    "local_native_Docker_claimed": false,
+    "original_failure_preserved": true,
+    "original_pinned_carrier_unchanged": true,
+    "owner": "Ingolf Lohmann",
+    "pinned_skopeo_unchanged": true,
+    "productive_host_deployment_verified": false,
+    "raumzeitterminal_de_delivery_verified": false,
+    "registry_publication_verified": false,
+    "workflow_oci_digest_gate_unchanged": true
+  },
   "open_work": [
     {
       "id": "REVIEW_AND_MAIN",
@@ -341,6 +360,11 @@
       "id": "RAUMZEITTERMINAL_ACCEPTANCE",
       "next": "Independent exact-host TLS, runtime/package/image binding and real original terminal readback.",
       "state": "OPEN"
+    },
+    {
+      "id": "DURABLE_ORIGINAL_CARRIER_CI_SOURCE",
+      "next": "Admit native protected publication, verify the original ZIP from registry by digest, then update the existing downloader binding through the same review path. No CI-source switch before publication/readback.",
+      "state": "OPEN"
     }
   ],
   "ordinary_release": false,
@@ -350,7 +374,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
@@ -431,6 +455,67 @@
       "url": "https://raumzeitterminal.de/health"
     }
   },
+  "registry_archive_and_integration_successor": {
+    "attribution": {
+      "artificial": "OpenAI Codex: conflict diagnosis, archive transport implementation, fixture tests and REST candidate persistence",
+      "human": "Ingolf Lohmann: requirement, code/product/licence authority and standing authorization"
+    },
+    "effect_ack_done": false,
+    "governance": {
+      "admin_write_operation_exposed": false,
+      "current_head_reviews": [],
+      "direct_GH_TOKEN_or_GITHUB_TOKEN_available": false,
+      "main_protected": false,
+      "rulesets": []
+    },
+    "integrated_main_parent": "52e1cf424699d5f624b0f32ecffb7f00001d974e",
+    "integrity_trio": "Regenerated for the merged candidate using the existing generator format, exact original manifests and freshly hashed changed/incoming bytes. Complete native full-byte verification remains required.",
+    "local_materialization": {
+      "complete_object_closure": false,
+      "complete_worktree": false,
+      "full_bootstrap": "HOLD_INCOMPLETE_LOCAL_MATERIALIZATION; missing historical portable source capsule and other unmaterialized files",
+      "full_native_candidate_checks": "NOT_EXECUTED_YET",
+      "method": "Exact selected Git blobs and independently reconstructed full trees and unsigned source commits through authenticated GitHub REST"
+    },
+    "local_tests": {
+      "main_owner_reminder_controls": {
+        "passed": 16
+      },
+      "self_host_container_controls": {
+        "passed": 21,
+        "scope": "fixtures including corruption and coherently rehashed forged original ZIP rejection; not native runtime or registry publication"
+      },
+      "tool_cache": "27/27 PASS",
+      "workflow_syntax": "YAML, embedded Python and all Bash blocks passed"
+    },
+    "main_tree": "5246dee77c62e6634c2b69cc22e8e870f6aeb27e",
+    "observed_utc": "2026-10-13T22:02:03.206901+00:00",
+    "original_conflict": "PR457 mergeable=false, mergeable_state=dirty",
+    "public_productivization_verified": false,
+    "publisher_reuse": {
+      "additional_credential_scope": false,
+      "durable_ci_source_activated": false,
+      "guards_retained": [
+        "protected Main",
+        "native required checks",
+        "independent current-head review",
+        "qikvrt-production environment",
+        "publish enable variable"
+      ],
+      "job": "container_publish",
+      "native_registry_publication_verified": false,
+      "original_zip": "11521962723 / 382994793 bytes / sha256:5a912ccde96253bdba5f5e82cd0a36a4ff89de58dabbe57977bc1acf298d9695",
+      "package": "ghcr.io/ingolf-lohmann/qik-vrt-s1",
+      "prepared_effect": "Publish exact original ZIP in deterministic OCI transport and pull the digest back through pinned Skopeo; independently recover and rehash original ZIP.",
+      "workflow": ".github/workflows/qikvrt_ci.yml"
+    },
+    "source_parent_head": "62675ded1ec23a8fd0b11936b1c9a7eac50f1780",
+    "source_parent_tree": "bd77e5a27dd692c8fcbfa64eacb61f6769687360",
+    "three_way_merge": [
+      "AGENTS.md",
+      "Makefile"
+    ]
+  },
   "release_inventory": {
     "OCI_image_asset_found": false,
     "S1_current_recipe": "runtime/self-host/Dockerfile",
@@ -461,26 +546,8 @@
     "native_S1_local_gate": "BLOCK_AF_UNIX_SOCKET_CREATION_EPERM",
     "native_container_claimed": false,
     "new_admission_negative_tests": "tests/test_self_host_container.py",
-    "production_enabled_or_executed": false
+    "production_enabled_or_executed": false,
+    "successor_native_status": "NOT_EXECUTED_FOR_REGISTRY_ARCHIVE_AND_MAIN_INTEGRATION_SUCCESSOR"
   },
-  "work_unit_id": "QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1",
-  "oci_import_repair_task_20261013": {
-    "owner": "Ingolf Lohmann",
-    "authorized_scope": "Repair existing PR457 OCI import and complete actual unprivileged container/restart regression through existing Linux CI using REST-only repository operations.",
-    "contribution": {
-      "human": "Exact failure report, requirements and authorization.",
-      "artificial_cognitive_system": "OpenAI Codex / GPT-6: fresh REST readback, original artifact verification, exact-source cold-start reproduction, regression and minimal continuation repair.",
-      "build_id": "UNAVAILABLE"
-    },
-    "original_failure_preserved": true,
-    "original_pinned_carrier_unchanged": true,
-    "pinned_skopeo_unchanged": true,
-    "workflow_oci_digest_gate_unchanged": true,
-    "local_full_repository_tests_claimed": false,
-    "local_native_Docker_claimed": false,
-    "registry_publication_verified": false,
-    "productive_host_deployment_verified": false,
-    "raumzeitterminal_de_delivery_verified": false,
-    "integrity_materialization": "Incremental canonical integrity update from exact original manifest and unchanged full REST tree; full current repository verification remains mandatory in existing Linux CI."
-  }
+  "work_unit_id": "QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1"
 }

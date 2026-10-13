@@ -51,6 +51,67 @@ def archive(path, *, head=HEAD, tree=TREE, tamper=False, user="10001:10001", lay
 
 
 class ContainerControls(unittest.TestCase):
+    def test_original_archive_oci_is_deterministic_and_recovers_exact_pinned_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            original = Path(tmp) / "original.zip"; original.write_bytes(b"exact-original-archive-fixture")
+            expected = {"schema": "qikvrt-s1-frozen-container-carrier/v1", "repository": c.REPOSITORY,
+                "source_head": HEAD, "source_tree": TREE, "artifact_id": 11521962723,
+                "archive_bytes": original.stat().st_size, "archive_sha256": c.sha(original.read_bytes())}
+            outputs = [Path(tmp) / "first.tar", Path(tmp) / "second.tar"]
+            results = [c.carrier_archive(expected, original, output) for output in outputs]
+            self.assertEqual(outputs[0].read_bytes(), outputs[1].read_bytes())
+            self.assertEqual(results[0], c.carrier_archive_check(expected, outputs[1]))
+            self.assertEqual(results[0]["archive_sha256"], c.sha(original.read_bytes()))
+            self.assertFalse(results[0]["public_production_verified"])
+            self.assertFalse(results[0]["durable_ci_source_activated"])
+            self.assertFalse(results[0]["predecessor_acceptance_transferred"])
+            with self.assertRaisesRegex(ValueError, "CREATE_ONLY_CARRIER_ARCHIVE"):
+                c.carrier_archive(expected, original, outputs[0])
+            original.write_bytes(b"changed-original-archive-bytes")
+            with self.assertRaisesRegex(ValueError, "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH"):
+                c.carrier_archive(expected, original, Path(tmp) / "refused.tar")
+            self.assertFalse((Path(tmp) / "refused.tar").exists())
+
+    def test_original_archive_readback_rejects_corruption_and_rehashed_forged_zip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            original, output = Path(tmp) / "original.zip", Path(tmp) / "wrapper.tar"
+            original.write_bytes(b"pinned-original-archive")
+            expected = {"schema": "qikvrt-s1-frozen-container-carrier/v1", "repository": c.REPOSITORY,
+                "source_head": HEAD, "source_tree": TREE, "artifact_id": 11521962723,
+                "archive_bytes": original.stat().st_size, "archive_sha256": c.sha(original.read_bytes())}
+            c.carrier_archive(expected, original, output)
+            with tarfile.open(output) as archive:
+                blobs = {entry.name: archive.extractfile(entry).read() for entry in archive.getmembers()}
+            descriptor = json.loads(blobs["index.json"])["manifests"][0]
+            manifest_name = "blobs/sha256/" + descriptor["digest"][7:]
+            manifest = json.loads(blobs[manifest_name])
+            layer_name = "blobs/sha256/" + manifest["layers"][0]["digest"][7:]
+            changed_layer = blobs[layer_name].replace(b"pinned-original-archive", b"forged-original-archive")
+            def save(values, path):
+                with tarfile.open(path, "w") as archive:
+                    for name, raw in values.items():
+                        entry = tarfile.TarInfo(name); entry.size = len(raw); entry.mode = 0o444
+                        archive.addfile(entry, io.BytesIO(raw))
+            corrupted = Path(tmp) / "corrupt.tar"
+            save({**blobs, layer_name: changed_layer}, corrupted)
+            with self.assertRaisesRegex(ValueError, "ARCHIVE_OCI_BLOB_INTEGRITY_MISMATCH"):
+                c.carrier_archive_check(expected, corrupted)
+            def encode(value):return json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+            # Rehash every descriptor and keep the pinned original source labels.
+            # Internally coherent transport still cannot replace the original ZIP.
+            layer_digest = "sha256:" + c.sha(changed_layer)
+            config = encode(c.carrier_archive_config(expected, layer_digest))
+            manifest["config"]["digest"], manifest["config"]["size"] = "sha256:" + c.sha(config), len(config)
+            manifest["layers"][0]["digest"], manifest["layers"][0]["size"] = layer_digest, len(changed_layer)
+            raw_manifest = encode(manifest)
+            descriptor["digest"], descriptor["size"] = "sha256:" + c.sha(raw_manifest), len(raw_manifest)
+            forged = Path(tmp) / "forged.tar"
+            save({"oci-layout": blobs["oci-layout"], "index.json": encode({"schemaVersion": 2, "manifests": [descriptor]}),
+                "blobs/sha256/" + c.sha(config): config, "blobs/sha256/" + c.sha(raw_manifest): raw_manifest,
+                "blobs/sha256/" + c.sha(changed_layer): changed_layer}, forged)
+            with self.assertRaisesRegex(ValueError, "ORIGINAL_CARRIER_ZIP_INTEGRITY_MISMATCH"):
+                c.carrier_archive_check(expected, forged)
+
     def test_smoke_keeps_unprivileged_start_and_requires_independent_persistent_restart(self):
         # Exercise the launcher contract; actual Docker/Firefox remains required
         # by the existing native CI lane, never inferred from these fixtures.

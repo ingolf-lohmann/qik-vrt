@@ -1,0 +1,145 @@
+{
+  "schema": "qikvrt_owner_reminders_v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "owner": "ingolf-lohmann",
+  "reminders": [
+    {
+      "id": "prepared-payment-20261006",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T08:30:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "d52c4ddfae4345d5a3f83c9625f51790609f287a",
+      "title": "Vorbereitete Zahlung prüfen und persönlich freigeben",
+      "private_artifacts": [
+        {
+          "label": "Zahlungspaket",
+          "library_file_id": "libfile_b59341d02fec8191825a4242fb210c28",
+          "version": 0,
+          "sha256": "e8ae06e61ba79552465b8f3c6521ccb801521ef11b424dbf7412c64bf978d8f0"
+        },
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_f204e8fd2c8c8191bb0fdee8af7195c8",
+          "version": 0,
+          "sha256": "5a98574268b548917d2f6cc79923477351476df381201c77a2b62539b6456fd5"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    },
+    {
+      "id": "personal-document-20261006-1000",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T10:00:00+02:00",
+      "expires": "2026-10-06T12:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+      "title": "Persönlichen Tagesplan prüfen",
+      "private_artifacts": [
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+          "version": 0,
+          "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    },
+    {
+      "id": "personal-document-20261006-1200",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T12:00:00+02:00",
+      "expires": "2026-10-06T14:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+      "title": "Persönlichen Tagesplan prüfen",
+      "private_artifacts": [
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+          "version": 0,
+          "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    },
+    {
+      "id": "personal-document-20261006-1400",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T14:00:00+02:00",
+      "expires": "2026-10-06T16:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+      "title": "Persönlichen Tagesplan prüfen",
+      "private_artifacts": [
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+          "version": 0,
+          "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    },
+    {
+      "id": "personal-document-20261006-1600",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T16:00:00+02:00",
+      "expires": "2026-10-06T18:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+      "title": "Persönlichen Tagesplan prüfen",
+      "private_artifacts": [
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+          "version": 0,
+          "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    },
+    {
+      "id": "personal-document-20261006-1800",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T18:00:00+02:00",
+      "expires": "2026-10-06T20:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+      "title": "Persönlichen Tagesplan prüfen",
+      "private_artifacts": [
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+          "version": 0,
+          "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    },
+    {
+      "id": "personal-document-20261006-2000",
+      "version": 1,
+      "state": "OPEN",
+      "due": "2026-10-06T20:00:00+02:00",
+      "expires": "2026-10-06T21:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "anchor_sha": "68d15cbf242b0d6b6508c78ca7217518201efa43",
+      "title": "Persönlichen Tagesplan prüfen",
+      "private_artifacts": [
+        {
+          "label": "Tagesplan",
+          "library_file_id": "libfile_5c40e2b3922881919b2369df7539f0c2",
+          "version": 0,
+          "sha256": "20a6a1fd5252a9f2752c4ed2449860d210f1fa7865dae0f8a8eb03244ecbe6a7"
+        }
+      ],
+      "acceptance": "OWNER_CONFIRMS_TASK_COMPLETION_WITH_EVIDENCE"
+    }
+  ]
+}

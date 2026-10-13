@@ -667,3 +667,27 @@ registry publication, alternate hostname or generic HTTP 200 is not final
 product acceptance. CI artifacts bind HEAD/TREE, image/package/config digests,
 run/attempt and actual readbacks. Physical iPhone and native multi-node effects
 remain separate obligations. No predecessor PASS is transferred.
+
+
+## Original carrier ZIP through the admitted OCI publisher
+
+The existing container job can also emit `carrier-original.oci.tar`: a
+deterministic OCI transport containing the unchanged, SHA-256-bound original
+Actions ZIP as the sole file of one tar layer. The original dependency image,
+sealed source and ZIP pin are verified before this transport is produced.
+`container-carrier-archive-check` independently hashes the transport blobs and
+recovers the original ZIP bytes, rejecting corruption and a coherently rehashed
+replacement. This transport is an archive, not a running application.
+
+The existing `container_publish` job reuses its pinned Skopeo, package,
+`packages:write`, protected Main and `qikvrt-production` admission. Its
+`carrier-original-<full-original-ZIP-SHA256>` tag is verified when present and
+never deliberately overwritten. It pulls the published digest back into a
+separate archive and repeats the original-byte check. Candidate tests or an
+upload receipt alone do not prove that this native registry operation ran.
+
+`CONTAINER_CARRIER.json` and the active downloader retain the existing Actions
+binding. A later reviewed source change requires the actual publication receipt,
+independent original size/SHA-256 readback, a digest-bound registry locator and
+admitted download access. No durable source, publication, host execution or
+`raumzeitterminal.de` delivery is claimed by preparing this path.

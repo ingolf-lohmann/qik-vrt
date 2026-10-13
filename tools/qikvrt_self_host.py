@@ -1369,7 +1369,7 @@ def start(package, pin, config_path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
-        "container-context", "container-carrier", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
+        "container-context", "container-carrier", "container-carrier-archive-check", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -1393,6 +1393,7 @@ def main():
     parser.add_argument("--oci-archive", type=Path)
     parser.add_argument("--second-oci-archive", type=Path)
     parser.add_argument("--carrier-archive", type=Path, help="existing pinned GitHub delivery ZIP; otherwise download through original Actions REST")
+    parser.add_argument("--carrier-oci-archive", type=Path, help="create-only OCI transport preserving the verified original ZIP for the existing publisher")
     parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")
     parser.add_argument("--binding-sha256", help="independently pinned protected host binding")
     parser.add_argument("--ca-file", type=Path)
