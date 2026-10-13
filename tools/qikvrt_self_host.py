@@ -1369,6 +1369,7 @@ def start(package, pin, config_path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("pack", "verify", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+        "container-context", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -1387,6 +1388,15 @@ def main():
     parser.add_argument("--admission-sha256", help="independently obtained host declaration pin")
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
+    parser.add_argument("--image", help="local smoke tag or exact versioned production digest")
+    parser.add_argument("--receipt", type=Path, help="non-secret container evidence output")
+    parser.add_argument("--oci-archive", type=Path)
+    parser.add_argument("--second-oci-archive", type=Path)
+    parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")
+    parser.add_argument("--binding-sha256", help="independently pinned protected host binding")
+    parser.add_argument("--ca-file", type=Path)
+    parser.add_argument("--cert-file", type=Path)
+    parser.add_argument("--key-file", type=Path)
     parser.add_argument("--snapshot", type=Path, help="separately sealed offline volume copy; never a live Railway mount")
     parser.add_argument("--source-declaration", type=Path, help="private independently validated capture/layout declaration")
     parser.add_argument("--source-declaration-sha256", help="independent exact declaration pin")
@@ -1401,7 +1411,12 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="verify export and proposed binding; create no target")
     args = parser.parse_args()
     try:
-        if args.operation.startswith("mesh-cache-"):
+        if args.operation.startswith("container-"):
+            # Extend the existing launcher, never add a second Mesh executor.
+            import importlib
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+            result = importlib.import_module("tools.qikvrt_self_host_container").execute(args)
+        elif args.operation.startswith("mesh-cache-"):
             if not args.mesh_cache or not args.work_request: raise ValueError("MESH_WORK_PRIVATE_REQUEST_REQUIRED")
             private_path(args.work_request)
             work = json.loads(args.work_request.read_bytes())

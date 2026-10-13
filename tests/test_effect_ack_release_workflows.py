@@ -423,6 +423,9 @@ class GeneralCITerminalDispositionTests(unittest.TestCase):
 
     def run_terminal(self, required: str, full_test: str, fixpoint: str):
         block = GENERAL_CI.read_text(encoding="utf-8").split(self.STEP, 1)[1]
+        # The terminal step is the last step of the test job, not necessarily
+        # the last job of the workflow. Never render/execute a sibling job.
+        block = re.split(r"\n  [A-Za-z0-9_-]+:\n", block, maxsplit=1)[0]
         metadata, script = block.split("        run: |\n", 1)
         values = {
             self.SCOPE: required,

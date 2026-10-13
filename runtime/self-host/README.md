@@ -584,3 +584,70 @@ restart tests do not close the host admission condition.
 S1 remains OPEN until host admission, exact deployment,
 fresh public use/readback and deployed restart acceptance are established.
 No public URL, S1 DONE or EFFECT_ACK_DONE is asserted.
+
+
+## Linux container production through the existing CI (candidate, 2026-10-13)
+
+Owner Ingolf Lohmann, Principal, creator, Code Owner, Product Owner and licensor
+of **QIK VRT Mesh Netzwerk**, renewed production authorization on 13 October.
+The requested effect is domain registration and Linux container delivery through
+CI. This does not require forcing DNS edits, buying an unconfirmed domain,
+creating another Site, or creating a parallel Mesh controller. REST-only remains
+binding. The implementation is proposed on the existing S1 PR #457; it is not
+integrated on Main and does not establish a productive host or domain.
+
+The existing `runtime/self-host/Dockerfile` now has a `production` target that
+freezes the original S1 package using the original exporter. Its existing
+Python/Node OCI base pins are preserved. Debian inputs come from the fixed
+20261013T000000Z signed snapshot. Buildx 0.38.0 and BuildKit 0.34.0 are bound to
+reviewed upstream identities; commit time and rewritten layer timestamps are
+fixed. The existing `.github/workflows/qikvrt_ci.yml` retains its full tests and
+adds two independent no-cache Linux/amd64 OCI builds. Every referenced blob and
+source label is verified, and differing manifest digests refuse publication.
+
+The same production image runs as UID/GID 10001 with read-only root, dropped
+capabilities and no new privileges. The smoke lane uses private disposable
+volumes, an internal network, actual Firefox/native terminal start, the original
+independent S1 readback, the terminal entry and a restart preserving ledger
+identity. Existing owner-Unix/SQLite/event/restart tests remain mandatory;
+ledger identity alone is not an acknowledged-event persistence proof.
+
+The tested OCI archive is published verbatim with Skopeo `--preserve-digests`,
+using the SHA-256-pinned official publisher. It is not rebuilt after testing.
+Version tags contain the full source commit. Existing different digests cannot
+be overwritten. Registry authentication stays outside the context/artifacts.
+Publication and deployment run only on exact protected Main, after existing
+native Code Owner/required-check governance and independent required reviewers
+in the existing `qikvrt-production` Environment. An absent/unprotected Environment
+cannot admit a production effect. `QIKVRT_CONTAINER_PUBLISH_ENABLED` and
+`QIKVRT_CONTAINER_DEPLOY_ENABLED` default to disabled; enabling them is not proof
+that credentials or host admission exist.
+
+The protected Environment binds `QIKVRT_LINUX_HOST_BINDING_JSON` and its independent
+`QIKVRT_LINUX_HOST_BINDING_SHA256` to the exact image, source, manifest/config,
+existing Docker daemon, node, owner volume and existing private host config.
+See `LINUX_HOST_BINDING.example.json`; nulls are deliberate missing evidence.
+The operator must first verify the host's persistent storage and existing HTTPS
+route through the established S1 host-admission procedure. The owner volume is
+existing and labelled `de.qikvrt.repository=ingolf-lohmann/qik-vrt`; this label
+alone does not establish physical durability or ownership. Config and token
+files stay on the admitted host, owned by 10001, mode 0600. No secret values
+belong in this binding, Git, receipts, or ordinary files.
+
+Only existing protected mutual-TLS secrets `QIKVRT_LINUX_HOST_CA`,
+`QIKVRT_LINUX_HOST_CERT` and `QIKVRT_LINUX_HOST_KEY` enable the direct HTTPS Docker
+Engine REST route. CA/hostname, daemon ID, Linux identity, image digest, config
+bytes/UID/mode and source pins are checked. Only a stopped create-only initial
+container is prepared, then the original launcher starts after those checks.
+A running identical binding is NOOP. Any other existing writer is held for the
+original S1 snapshot/migration/fencing procedure; no stop, replacement, deletion,
+credential-store mutation, purchase, DNS change or route takeover is performed.
+This initial deployment lane does not implement automatic version migration.
+
+A separate runner with no host credentials checks TLS/HTTP, `/health`, exact
+`/api/runtime`, native `/api/terminal`, `/AI/`, assets and the original independent
+readback under **https://raumzeitterminal.de**. A container start, OCI build,
+registry publication, alternate hostname or generic HTTP 200 is not final
+product acceptance. CI artifacts bind HEAD/TREE, image/package/config digests,
+run/attempt and actual readbacks. Physical iPhone and native multi-node effects
+remain separate obligations. No predecessor PASS is transferred.

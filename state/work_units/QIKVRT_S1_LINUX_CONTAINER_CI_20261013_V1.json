@@ -1,0 +1,154 @@
+{
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "contribution": "Located and byte-verified existing S1 source; extended its existing Docker recipe, launcher, CI, cache authority, negative tests and protected direct REST host route.",
+    "model": "GPT-6",
+    "provider": "OpenAI",
+    "system_family": "Codex"
+  },
+  "authority_repository": "ingolf-lohmann/qik-vrt",
+  "container_production_verified": false,
+  "diagnostics": {
+    "initial_full_test": {
+      "cause": "Old terminal-disposition fixture rendered following sibling CI jobs; 23 fixture errors with KeyError steps.receipt.outputs.head.",
+      "log": "evidence/native-runtime-acceptance/s1-linux-container-20261013/full-test-initial-fixture-failure.json",
+      "original_bytes_preserved_inside_json": true,
+      "repair": "Bound the existing parser to the test job; all eight original terminal controls pass.",
+      "result": "FAIL",
+      "sha256": "db389456f9b09b0a421e9e09bebfd64ce6b719d9217101c875df7f92a77f830a"
+    },
+    "local_container_executor": {
+      "container_execution_claimed": false,
+      "continuation": "Existing native GitHub Actions Docker lane on the exact successor.",
+      "docker_or_podman_available": false,
+      "linux_effective_capabilities": "0000000000000000"
+    },
+    "local_materialization_boundary": {
+      "affected_test": "test_write_then_committed_descendant_check_is_local_only",
+      "historical_subject": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "repair": "Retrieve exact source/trees/blobs and original signed commit through REST; no old object rewritten, test removed or result downgraded.",
+      "result": "HISTORICAL_OBJECT_MISSING"
+    },
+    "native_socket_boundary": {
+      "affected_test": "tests.test_temdd_event_ledger.ProducerTests.test_ai_surface_and_subject_are_served",
+      "code_or_test_downgrade": false,
+      "error": "PermissionError [Errno 1] Operation not permitted at socket.socket(AF_UNIX)",
+      "local_full_run_exit": 130,
+      "retry_condition": "A Linux executor admitting AF_UNIX is available; run unchanged native tests on exact successor through existing GitHub CI.",
+      "skipped_test_added": false,
+      "trace_sha256": "379c3df3d62675ccbf4d54dc20895770b20956ac749985485b7fc8c5eef06881"
+    }
+  },
+  "domain_observation": {
+    "observations": [
+      {
+        "body": "{\"errorCode\":404,\"title\":\"No such domain.\",\"description\":[]}",
+        "status": 404,
+        "url": "https://rdap.denic.de/domain/raumzeitterminal.de"
+      },
+      {
+        "body": "<html>\n<head>\n    <title>502 Bad Gateway</title>\n</head>\n<body>\n    <h1>502 Bad Gateway</h1>\n    <p>[Errno 111] Connection refused</p>\n</body>\n</html>",
+        "status": 502,
+        "url": "https://raumzeitterminal.de/"
+      }
+    ],
+    "observed_at": "2026-10-13T14:44:00.626883+00:00"
+  },
+  "effect_ack_done": false,
+  "governance_at_open": {
+    "PR457_reviews": [],
+    "main_head": "52e1cf424699d5f624b0f32ecffb7f00001d974e",
+    "main_protected": false,
+    "main_tree": "5246dee77c62e6634c2b69cc22e8e870f6aeb27e",
+    "rulesets": []
+  },
+  "human_actor": {
+    "contribution": "Authorized domain registration and productive prepared-container delivery via Linux CI; REST-only; no forced DNS edits or unconfirmed purchases.",
+    "name": "Ingolf Lohmann",
+    "roles": [
+      "Principal",
+      "creator",
+      "Code Owner",
+      "Product Owner",
+      "licensor"
+    ]
+  },
+  "open_work": [
+    {
+      "id": "REVIEW_AND_MAIN",
+      "next": "Preserve native protection and independent current-head review; integrate through existing review path after applicable gates.",
+      "state": "OPEN"
+    },
+    {
+      "id": "LINUX_HOST_ADMISSION",
+      "next": "Expose existing authorized HTTPS Docker Engine REST binding and protected mutual-TLS credentials; independently validate persistent volume and HTTPS route.",
+      "state": "OPEN"
+    },
+    {
+      "id": "DOMAIN_REGISTRATION",
+      "next": "Read the existing registrar contract and exact registration quote through its authorized REST connection; purchase only after exact confirmation.",
+      "state": "OPEN"
+    },
+    {
+      "id": "REGISTRY_AND_DEPLOYMENT",
+      "next": "Publish the frozen OCI archive and execute admitted create-only deployment after protected Main and host gates.",
+      "state": "OPEN"
+    },
+    {
+      "id": "RAUMZEITTERMINAL_ACCEPTANCE",
+      "next": "Independent exact-host TLS, runtime/package/image binding and real original terminal readback.",
+      "state": "OPEN"
+    }
+  ],
+  "ordinary_release": false,
+  "predecessor_evidence_transfer": false,
+  "provider_capability": {
+    "DigitalOcean_REST_authenticated": true,
+    "DigitalOcean_account_warning": "Your team has created the maximum allowed number of Droplets. Please resolve this on the control panel.",
+    "DigitalOcean_droplets": [],
+    "IONOS_REST_operation_exposed": false,
+    "existing_Mesh_operations": [
+      "qikvrt_mesh_status",
+      "qikvrt_observe",
+      "qikvrt_readback"
+    ],
+    "existing_site_environment_keys": [],
+    "existing_site_environment_revision": 8,
+    "local_host_or_registrar_credential_bindings": [],
+    "workflow_dispatch_POST_exposed": false
+  },
+  "public_productivization_verified": false,
+  "release_inventory": {
+    "OCI_image_asset_found": false,
+    "S1_current_recipe": "runtime/self-host/Dockerfile",
+    "complete_pages": 1,
+    "other_existing_carrier": "deploy/universal-terminal/Dockerfile",
+    "release_count": 4
+  },
+  "review_pr": 457,
+  "schema": "qikvrt-linux-container-production-work-unit/v1",
+  "source_materialization": {
+    "all_original_blobs_byte_verified": true,
+    "blob_count": 4041,
+    "local_history": "EXACT_HEAD_WITH_SHALLOW_PARENT_BOUNDARY",
+    "route": "GITHUB_REST_ONLY",
+    "source_head": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+    "source_tree": "68bf501265ae7c79837e79c954d7d4f013642ea2",
+    "tar_sha256": "5323be0adecabe415c08de41907a52226057d8f1ecbd921d1d4abe3f97aa6bc4"
+  },
+  "source_parent_head": "bb1be6decdf1e9bf01c7b24aa625613053e4a352",
+  "source_parent_tree": "68bf501265ae7c79837e79c954d7d4f013642ea2",
+  "verification": {
+    "full_repository_tests": "make test repository-monitor-test self-host-test",
+    "independent_public_readback": "PENDING_ADMITTED_HOST_AND_DOMAIN",
+    "local_container_admission_tests": "PASS_12_CONTROLS",
+    "local_make_test": "PASS_BEFORE_NATIVE_S1_TARGET_ON_MODIFIED_WORKTREE",
+    "local_monitor_tests": "PASS_24_CONTROLS",
+    "native_OCI_build": "PENDING_EXACT_HEAD_CI",
+    "native_S1_local_gate": "BLOCK_AF_UNIX_SOCKET_CREATION_EPERM",
+    "native_container_claimed": false,
+    "new_admission_negative_tests": "tests/test_self_host_container.py",
+    "production_enabled_or_executed": false
+  },
+  "work_unit_id": "QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1"
+}

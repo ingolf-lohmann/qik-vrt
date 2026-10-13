@@ -1,0 +1,8 @@
+{
+  "original_bytes": 1137,
+  "original_filename": "afunix-runtime-diagnostic.log",
+  "original_sha256": "379c3df3d62675ccbf4d54dc20895770b20956ac749985485b7fc8c5eef06881",
+  "original_text": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\n  File \"/workspace/scratch/d939f4f7587b/qik-vrt/tests/test_temdd_event_ledger.py\", line 309, in test_ai_surface_and_subject_are_served\n    self.start_servers()\n  File \"/workspace/scratch/d939f4f7587b/qik-vrt/tests/test_temdd_event_ledger.py\", line 61, in start_servers\n    self.ingress = m.make_ingress(self.runtime)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/d939f4f7587b/qik-vrt/src/qikvrt_temdd_event_ledger.py\", line 394, in make_ingress\n    server = socketserver.UnixStreamServer(str(path), Ingress)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py\", line 453, in __init__\n    self.socket = socket.socket(self.address_family,\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py\", line 233, in __init__\n    _socket.socket.__init__(self, family, type, proto, fileno)\nPermissionError: [Errno 1] Operation not permitted\n",
+  "schema": "qikvrt-original-diagnostic-bytes/v1",
+  "scope": "LOCAL_WORKTREE_DIAGNOSTIC; not native or productive deployment evidence"
+}

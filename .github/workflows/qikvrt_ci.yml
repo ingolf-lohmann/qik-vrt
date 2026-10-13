@@ -188,3 +188,298 @@ jobs:
               ;;
           esac
           echo "QIKVRT_TERMINAL_DISPOSITION PASS mode=$mode"
+
+  container:
+    name: Linux S1 container production and smoke
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    outputs:
+      head: ${{ steps.receipt.outputs.head }}
+      tree: ${{ steps.receipt.outputs.tree }}
+      digest: ${{ steps.receipt.outputs.digest }}
+      manifest: ${{ steps.receipt.outputs.manifest }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Verify exact source and existing tool/integrity/admission controls
+        run: |
+          set -euo pipefail
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B tools/qikvrt_integrity.py verify
+          make self-host-container-test
+      - name: Set up exact Docker Buildx and BuildKit
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+        with:
+          version: v0.38.0
+          driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Export credential-free committed build context
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/container-evidence"
+          python3 -B tools/qikvrt_self_host.py container-context --root . \
+            --output "$RUNNER_TEMP/s1-context" --receipt "$RUNNER_TEMP/container-evidence/context.json"
+          docker version > "$RUNNER_TEMP/container-evidence/docker-version.txt"
+          docker buildx version > "$RUNNER_TEMP/container-evidence/buildx-version.txt"
+      - name: Two independent snapshot-bound Linux OCI builds
+        run: |
+          set -euo pipefail
+          head="$(git rev-parse HEAD)"
+          tree="$(git rev-parse HEAD^{tree})"
+          epoch="$(git show -s --format=%ct HEAD)"
+          for build in 1 2; do
+            docker buildx build --no-cache --platform linux/amd64 --target production \
+              --file "$RUNNER_TEMP/s1-context/runtime/self-host/Dockerfile" \
+              --provenance=false --sbom=false \
+              --build-arg "SOURCE_DATE_EPOCH=$epoch" \
+              --build-arg "QIKVRT_SOURCE_HEAD=$head" --build-arg "QIKVRT_SOURCE_TREE=$tree" \
+              --tag "qikvrt-s1:sha-$head" \
+              --output "type=oci,dest=$RUNNER_TEMP/s1-$build.tar,compression=gzip,compression-level=9,rewrite-timestamp=true" \
+              "$RUNNER_TEMP/s1-context"
+          done
+          python3 -B tools/qikvrt_self_host.py container-oci-check \
+            --oci-archive "$RUNNER_TEMP/s1-1.tar" --second-oci-archive "$RUNNER_TEMP/s1-2.tar" \
+            --expected-head "$head" --expected-tree "$tree" \
+            --receipt "$RUNNER_TEMP/container-evidence/oci.json"
+          mv "$RUNNER_TEMP/s1-1.tar" "$RUNNER_TEMP/container-evidence/image.oci.tar"
+      - name: Real unprivileged Firefox/terminal container and durable restart
+        run: |
+          set -euo pipefail
+          docker load --input "$RUNNER_TEMP/container-evidence/image.oci.tar"
+          python3 -B tools/qikvrt_self_host.py container-smoke \
+            --image "qikvrt-s1:sha-$(git rev-parse HEAD)" \
+            --output "$RUNNER_TEMP/container-evidence" \
+            --receipt "$RUNNER_TEMP/container-evidence/smoke.json"
+      - name: Bind exact image/package and CI execution identities
+        id: receipt
+        env:
+          EVIDENCE: ${{ runner.temp }}/container-evidence
+        run: |
+          python3 -B - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          p=Path(os.environ['EVIDENCE'])
+          o=json.loads((p/'oci.json').read_bytes()); s=json.loads((p/'smoke.json').read_bytes())
+          assert (o['source_head'],o['source_tree']) == (s['source_head'],s['source_tree'])
+          assert o['independent_rebuild_digest_equal'] is True
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip() == o['source_head']
+          assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
+          r={'repository':os.environ['GITHUB_REPOSITORY'],'run_id':os.environ['GITHUB_RUN_ID'],
+             'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'source_head':o['source_head'],
+             'source_tree':o['source_tree'],'image_digest':o['image_digest'],
+             'manifest_sha256':s['manifest_sha256'],'container_production_verified':True,
+             'registry_publication_verified':False,'public_production_verified':False,'effect_ack_done':False}
+          (p/'ci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              for k,v in [('head',o['source_head']),('tree',o['source_tree']),('digest',o['image_digest']),('manifest',s['manifest_sha256'])]:
+                  out.write(k+'='+v+'\n')
+          print(json.dumps(r,sort_keys=True))
+          PY
+      - name: Preserve exact OCI image and non-secret original evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-container-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/container-evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  container_publish:
+    name: Reviewed versioned OCI publication
+    needs: [test, container]
+    if: github.ref == 'refs/heads/main' && vars.QIKVRT_CONTAINER_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: qikvrt-production
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      packages: write
+    concurrency:
+      group: qikvrt-s1-publication-${{ github.repository }}-${{ needs.container.outputs.head }}
+      cancel-in-progress: false
+    outputs:
+      image: ${{ steps.publish.outputs.image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.container.outputs.head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Reobserve protected Main, native required checks and independent review
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B tools/qikvrt_self_host.py container-production-gate \
+            --expected-head "$(git rev-parse HEAD)" --receipt "$RUNNER_TEMP/production-admission.json"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: qikvrt-s1-container-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/container-evidence
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069
+        with:
+          version: v0.38.0
+          driver-opts: image=moby/buildkit@sha256:b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c
+      - name: Publish only immutable source-version tags and compare registry digest
+        id: publish
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EXPECTED_DIGEST: ${{ needs.container.outputs.digest }}
+          DOCKER_CONFIG: ${{ runner.temp }}/registry-auth
+        run: |
+          set -euo pipefail
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          printf '%s' "$GITHUB_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          head="$(git rev-parse HEAD)"
+          image="ghcr.io/ingolf-lohmann/qik-vrt-s1"
+          python3 -B tools/qikvrt_self_host.py container-oci-check \
+            --oci-archive "$RUNNER_TEMP/container-evidence/image.oci.tar" \
+            --expected-head "$head" --expected-tree "$(git rev-parse HEAD^{tree})" \
+            --receipt "$RUNNER_TEMP/publish-oci-check.json"
+          publisher="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
+          docker run --rm "$publisher" --version > "$RUNNER_TEMP/publisher-version.txt"
+          for tag in "sha-$head" "s1-1.6.1-$head"; do
+            if docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json" 2> "$RUNNER_TEMP/registry-error"; then
+              : # An existing immutable version is verified below, never overwritten.
+            else
+              python3 -c 'import pathlib,re,os; assert re.search("not found|manifest unknown",pathlib.Path(os.environ["RUNNER_TEMP"]+"/registry-error").read_text(),re.I), "registry transport/authentication unavailable"'
+              docker run --rm --read-only --cap-drop ALL --security-opt no-new-privileges:true \
+                --tmpfs /tmp:rw,nosuid,size=128m \
+                --mount "type=bind,source=$DOCKER_CONFIG,target=/auth,readonly" \
+                --mount "type=bind,source=$RUNNER_TEMP/container-evidence/image.oci.tar,target=/image.oci.tar,readonly" \
+                "$publisher" copy --preserve-digests --dest-authfile /auth/config.json \
+                oci-archive:/image.oci.tar "docker://$image:$tag"
+              docker buildx imagetools inspect "$image:$tag" --raw > "$RUNNER_TEMP/registry.json"
+            fi
+            python3 -B - <<'PYREGISTRY'
+          import hashlib,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'registry.json';raw=p.read_bytes()
+          expected=os.environ['EXPECTED_DIGEST']
+          if 'sha256:'+hashlib.sha256(raw).hexdigest()!=expected:
+              raw=raw.removesuffix(b'\n')
+          assert 'sha256:'+hashlib.sha256(raw).hexdigest()==expected, 'immutable tested registry digest differs'
+          p.write_bytes(raw)
+          PYREGISTRY
+          done
+          printf 'image=%s@%s\n' "$image" "$EXPECTED_DIGEST" >> "$GITHUB_OUTPUT"
+          cp "$RUNNER_TEMP/production-admission.json" "$RUNNER_TEMP/container-evidence/production-admission.json"
+          cp "$RUNNER_TEMP/registry.json" "$RUNNER_TEMP/container-evidence/published-manifest.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-publication-${{ needs.container.outputs.head }}
+          path: |
+            ${{ runner.temp }}/production-admission.json
+            ${{ runner.temp }}/registry.json
+          if-no-files-found: error
+          retention-days: 30
+
+  container_deploy:
+    name: Existing admitted Linux host via mutual TLS REST
+    needs: [container, container_publish]
+    if: github.ref == 'refs/heads/main' && vars.QIKVRT_CONTAINER_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    environment: qikvrt-production
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      packages: read
+    concurrency:
+      group: qikvrt-s1-owner-node-${{ github.repository }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.container.outputs.head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Execute exact create-only host deployment with no DNS operation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QIKVRT_HOST_BINDING: ${{ vars.QIKVRT_LINUX_HOST_BINDING_JSON }}
+          QIKVRT_HOST_BINDING_SHA256: ${{ vars.QIKVRT_LINUX_HOST_BINDING_SHA256 }}
+          QIKVRT_HOST_CA: ${{ secrets.QIKVRT_LINUX_HOST_CA }}
+          QIKVRT_HOST_CERT: ${{ secrets.QIKVRT_LINUX_HOST_CERT }}
+          QIKVRT_HOST_KEY: ${{ secrets.QIKVRT_LINUX_HOST_KEY }}
+          EXPECTED_IMAGE: ${{ needs.container_publish.outputs.image }}
+          EXPECTED_MANIFEST: ${{ needs.container.outputs.manifest }}
+        run: |
+          set -euo pipefail
+          private="$RUNNER_TEMP/qikvrt-host-auth"
+          trap 'rm -rf "$private"' EXIT
+          python3 -B - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'qikvrt-host-auth'; p.mkdir(mode=0o700)
+          fields={'binding.json':'QIKVRT_HOST_BINDING','ca.pem':'QIKVRT_HOST_CA','cert.pem':'QIKVRT_HOST_CERT','key.pem':'QIKVRT_HOST_KEY'}
+          for name,key in fields.items():
+              value=os.environ.get(key,''); assert value, 'protected host binding/credential unavailable'
+              file=p/name;file.write_text(value);file.chmod(0o600)
+          b=json.loads((p/'binding.json').read_bytes())
+          assert hashlib.sha256((p/'binding.json').read_bytes()).hexdigest()==os.environ['QIKVRT_HOST_BINDING_SHA256']
+          assert b['manifest_sha256']==os.environ['EXPECTED_MANIFEST']
+          assert b['image_digest']==os.environ['EXPECTED_IMAGE'].split('@')[1]
+          PY
+          python3 -B tools/qikvrt_self_host.py container-deploy \
+            --production-binding "$private/binding.json" --binding-sha256 "$QIKVRT_HOST_BINDING_SHA256" \
+            --ca-file "$private/ca.pem" --cert-file "$private/cert.pem" --key-file "$private/key.pem" \
+            --image "$EXPECTED_IMAGE" --receipt "$RUNNER_TEMP/host-start.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/host-start.json
+          if-no-files-found: error
+          retention-days: 30
+
+  container_public_readback:
+    name: Independent exact-domain TLS and terminal acceptance
+    needs: [container, container_deploy]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.container.outputs.head }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: qikvrt-s1-container-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/container-evidence
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: qikvrt-s1-host-start-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/host-evidence
+      - name: Verify HTTPS, fresh runtime/package pins and original terminal use
+        run: |
+          python3 -B tools/qikvrt_self_host.py container-readback \
+            --root "$RUNNER_TEMP/container-evidence/public-package" \
+            --production-binding "$RUNNER_TEMP/host-evidence/host-start.json" \
+            --receipt "$RUNNER_TEMP/public-delivery.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: qikvrt-raumzeitterminal-delivery-${{ needs.container.outputs.head }}
+          path: ${{ runner.temp }}/public-delivery.json
+          if-no-files-found: error
+          retention-days: 30

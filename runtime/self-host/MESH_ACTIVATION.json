@@ -299,5 +299,39 @@
       "native_safety": "Confirmed native effects retain immediate replication/fencing/Effect-Ack obligations. Deferred work proposals never become durable cross-node effect confirmation or execution authority.",
       "implementation_scope": "Existing S1 launcher private snapshot/fsync/OS-lock primitives and existing MonitorStore/listener; no parallel scheduler, executor or native effect ledger."
     }
+  },
+  "linux_container_delivery": {
+    "authorized_on": "2026-10-13",
+    "domain_registration_separate_from_dns": true,
+    "effect_ack_done": false,
+    "existing_ci": ".github/workflows/qikvrt_ci.yml",
+    "existing_launcher": "tools/qikvrt_self_host.py",
+    "existing_runtime_recipe": "runtime/self-host/Dockerfile",
+    "existing_source_reused": true,
+    "forced_dns_edits": false,
+    "ordinary_release": false,
+    "owner": "Ingolf Lohmann",
+    "owner_roles": [
+      "Principal",
+      "creator",
+      "Code Owner",
+      "Product Owner",
+      "licensor"
+    ],
+    "parallel_site_or_mesh_controller": false,
+    "production_stage_requires": [
+      "exact protected main",
+      "existing native review/required checks",
+      "independent protected Environment admission",
+      "independently verified existing persistent Linux host and routing",
+      "mutual TLS Docker Engine REST",
+      "exact tested OCI digest",
+      "original S1 independent exact-domain readback"
+    ],
+    "production_target": "production",
+    "requested_hostname": "raumzeitterminal.de",
+    "route": "REST_ONLY",
+    "schema": "qikvrt-s1-linux-container-delivery-contract/v1",
+    "unconfirmed_domain_purchases": false
   }
 }

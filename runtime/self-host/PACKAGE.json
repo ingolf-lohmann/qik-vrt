@@ -56,6 +56,7 @@
     "runtime/self-host/CONFIG.example.json",
     "runtime/self-host/Dockerfile",
     "runtime/self-host/HOST_ADMISSION.example.json",
+    "runtime/self-host/LINUX_HOST_BINDING.example.json",
     "runtime/self-host/MESH_ACTIVATION.json",
     "runtime/self-host/MIGRATION.md",
     "runtime/self-host/MIGRATION_SOURCE.example.json",
@@ -91,6 +92,7 @@
     "src/qikvrt_temdd_event_ledger.py",
     "tools/qikvrt_mesh_monitor_readback.mjs",
     "tools/qikvrt_self_host.py",
+    "tools/qikvrt_self_host_container.py",
     "tools/qikvrt_self_host_migration.py"
   ],
   "native_terminal_daemon_included": true,
@@ -98,5 +100,5 @@
   "schema": "qikvrt-self-host-definition/v1",
   "source_repository": "ingolf-lohmann/qik-vrt",
   "start": "python3 tools/qikvrt_self_host.py run",
-  "version": "1.6.0"
+  "version": "1.6.1"
 }

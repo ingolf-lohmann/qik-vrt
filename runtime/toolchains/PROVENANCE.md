@@ -227,3 +227,22 @@ manifest then binds the emitted assets. Corruption returns HOLD before export.
 Node VM/API and real exported-process HTTP controls verify this bounded scope.
 Browser rendering, public hosting, provider CI, native Mesh ping and all terminal
 receipts remain separately required; source assets never establish those effects.
+
+
+### S1 production extension, 2026-10-13
+
+The existing Docker component now covers Buildx v0.38.0 and official BuildKit
+v0.34.0, index digest b059f8d7226d0b326bc871af489a5dddf65e36af4d20d14251b072974d9ee87c.
+The existing Dockerfile's Python/Node base pins remain. Signed Debian snapshot
+20261013T000000Z fixes distribution inputs; every cold build runs the same
+integrity controls. Two independent OCI exports must have the same descriptor.
+The new publisher component is the official containers/skopeo stable image,
+index digest 97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9,
+Linux/amd64 manifest c8ff8395135363f083e849345612998aa3882f3796b73fa9341bff691df1ef24.
+Its actual version is recorded, and copy --preserve-digests plus registry
+readback verifies the tested bytes. Docker/BuildKit use Apache-2.0; Skopeo uses
+Apache-2.0. No credentials are admitted to any build/runtime cache.
+Primary sources: https://github.com/docker/buildx/releases/tag/v0.38.0 ,
+https://github.com/moby/buildkit/releases/tag/v0.34.0 ,
+https://github.com/containers/skopeo , https://quay.io/repository/skopeo/stable ,
+https://docs.docker.com/build/ci/github-actions/reproducible-builds/ .
