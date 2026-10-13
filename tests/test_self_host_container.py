@@ -250,6 +250,25 @@ class ContainerControls(unittest.TestCase):
                 c.public_readback(value, "/unused")
             get.assert_not_called()
 
+    def test_independent_reader_reports_only_typed_guard_codes(self):
+        script = """
+import {verifyClient, readbackFailure} from './tools/qikvrt_mesh_monitor_readback.mjs';
+let guarded;
+try { await verifyClient({public_url:'http://fixture.invalid',standalone:true},
+  async () => ({status:503})); } catch(error) { guarded = readbackFailure(error); }
+console.log(JSON.stringify({guarded,
+  arbitrary:readbackFailure(new Error('private-token-and-response-body')),
+  forged:readbackFailure(new Error('HOLD_PUBLIC_HTTP'))}));
+"""
+        raw = subprocess.check_output(["node", "--input-type=module", "-e", script],
+                                      cwd=Path(__file__).resolve().parents[1], timeout=30)
+        result = json.loads(raw)
+        self.assertEqual(result["guarded"]["cause"], "HOLD_PUBLIC_HTTP")
+        for key in ("arbitrary", "forged"):
+            self.assertEqual(result[key]["cause"], "READBACK_UNCLASSIFIED_ERROR")
+        self.assertNotIn(b"private-token", raw)
+        self.assertTrue(all(value["effect_ack_done"] is False for value in result.values()))
+
     def test_tls_redirect_not_followed(self):
         with self.assertRaisesRegex(ValueError, "REDIRECT_FORBIDDEN"):
             c.NoRedirect().redirect_request(None, None, 302, "", {}, "https://other.example")

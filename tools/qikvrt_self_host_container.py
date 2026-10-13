@@ -622,14 +622,22 @@ def smoke(image, output):
         before = ready()
         package = output / "public-package"
         command("docker", "cp", name + ":/opt/qikvrt", str(package))
-        def readback():
-            return command("node", str(package / "tools/qikvrt_mesh_monitor_readback.mjs"), "--self-host",
-                           str(package), origin, pin, sha(config_raw), config["node_id"], "none")
-        first = readback()
+        def readback(phase):
+            try:
+                original = command("node", str(package / "tools/qikvrt_mesh_monitor_readback.mjs"), "--self-host",
+                                   str(package), origin, pin, sha(config_raw), config["node_id"], "none")
+            except subprocess.CalledProcessError as error:
+                # This disposable fixture contains synthetic configuration only.
+                (output / ("smoke-readback-" + phase + ".stdout")).write_bytes((error.output or b"")[-30000:])
+                (output / ("smoke-readback-" + phase + ".stderr")).write_bytes((error.stderr or b"")[-30000:])
+                raise
+            (output / ("smoke-readback-" + phase + ".stdout")).write_bytes(original[-30000:])
+            return original
+        first = readback("before-restart")
         require(b'data-qikvrt-source="node"' in get(origin + "/AI/"), "ACTUAL_TERMINAL_ENTRY_REQUIRED")
         command("docker", "restart", name)
         after = ready()
-        second = readback()
+        second = readback("after-restart")
         require(before["ledger_id"] == after["ledger_id"], "DURABLE_LEDGER_ID_RESTART_MISMATCH")
         return {"state": "CONTAINER_SMOKE_AND_RESTART_VERIFIED", "source_head": manifest["source_head"],
                 "source_tree": manifest["source_tree"], "manifest_sha256": pin, "image": image,

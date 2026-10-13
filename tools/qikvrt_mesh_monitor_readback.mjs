@@ -9,7 +9,13 @@ import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const require = (condition, code) => {if (!condition) throw new Error(code);};
+class ReadbackGuardError extends Error {}
+const require = (condition, code) => {if (!condition) throw new ReadbackGuardError(code);};
+export function readbackFailure(error) {
+  return {state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',
+    cause:error instanceof ReadbackGuardError ? error.message : 'READBACK_UNCLASSIFIED_ERROR',
+    effect_ack_done:false};
+}
 const legacyContract = new URL('../state/deployments/MESH_MONITOR_RAILWAY_EXACT_674aa35.json', import.meta.url);
 const contract = existsSync(legacyContract) ? JSON.parse(readFileSync(legacyContract)) : null;
 
@@ -125,5 +131,5 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     }
     console.log(JSON.stringify(await verifyClient(plan)));
   }
-  catch (_) { console.log(JSON.stringify({state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',effect_ack_done:false})); process.exitCode=20; }
+  catch (error) { console.log(JSON.stringify(readbackFailure(error))); process.exitCode=20; }
 }

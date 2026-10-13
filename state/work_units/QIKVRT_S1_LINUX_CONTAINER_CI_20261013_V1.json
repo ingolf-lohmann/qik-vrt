@@ -218,6 +218,22 @@
       "licensor"
     ]
   },
+  "independent_reader_failure_diagnostics": {
+    "effect_ack_done": false,
+    "local_tests": {
+      "count": 18,
+      "result": "PASS",
+      "scope": "Local source controls only; no local Docker execution.",
+      "suite": "tests.test_self_host_container"
+    },
+    "native_run": "https://github.com/ingolf-lohmann/qik-vrt/actions/runs/38439078193",
+    "native_successor_result": "PENDING",
+    "observed": "Runtime reached NATIVE_TEMDD_READY; independent Node readback failed with exit 20. Actual guard cause is not yet observable.",
+    "production_verified": false,
+    "repair": "Expose only internal typed guard codes; retain bounded original reader stdout/stderr in the existing disposable CI fixture evidence. Preserve strict failure and all source/runtime/readback checks.",
+    "source_parent_head": "fa313c61b957f18ab01b3f0048c5a080dac7ece7",
+    "source_parent_tree": "4863b6afc7fe92014fc5bec3e3fc7f1457c62d5b"
+  },
   "isolated_fixture_bridge_readback_repair": {
     "actual_error": "'8080/tcp'",
     "job_id": 115432977331,
@@ -272,7 +288,7 @@
     "declaration": "secrets.IONOS_TOKEN names an IONOS Cloud credential, not authenticated Hosting registrar inventory or an exposed secret-reader operation. Private remote state remains unknown.",
     "new_secret_or_password_requested": false,
     "nonsecret_exact_item_reference": null,
-    "owner_selection": "Gesch\u00fctzter Sitzungs- oder Vault-Verweis",
+    "owner_selection": "Geschützter Sitzungs- oder Vault-Verweis",
     "source_library_file": "libfile_55afcea27d488191af8a916cae2f940d",
     "supported_reader_or_native_use_operation_exposed": false,
     "task_authorization_already_granted": true,
