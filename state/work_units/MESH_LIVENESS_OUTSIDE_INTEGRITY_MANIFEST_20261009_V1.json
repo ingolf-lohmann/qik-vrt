@@ -362,5 +362,129 @@
         "rule_applied_directly": true
       }
     }
+  },
+  "handover_continuation_20261014": {
+    "authorization": "Ingolf Lohmann: continue existing review and convergence to Main; preserve protected governance and REST-only routing.",
+    "prepared_by": {
+      "provider": "OpenAI",
+      "system": "Codex",
+      "model_family": "GPT-6",
+      "attribution_boundary": "Platform/session attribution, not identity proof"
+    },
+    "source_package": {
+      "name": "QIKVRT_Uebergabe_2026-10-14.tar.gz",
+      "bytes": 4864914,
+      "sha256": "6c56e493357a92810863073e9e90b8556a88581a8a568a78839c82999371120b",
+      "submissions": 12,
+      "payloads": 156,
+      "unique_payloads": 154,
+      "deletions": 1,
+      "plan_payload_digest_check": "PASS 156 payloads, zero mismatches"
+    },
+    "main": {
+      "head": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+      "tree": "e942e730c0e928a634c87c87d4b0b5856d4c1a99"
+    },
+    "prior_pr514": {
+      "head": "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
+      "tree": "26235bbba0594eeb355cbe3d30d5c093c6e7b70d"
+    },
+    "baseline": {
+      "bootloader_state": "BLOCK",
+      "reason": "repository manifest differs from deterministic regeneration",
+      "manifest_entries": 3974,
+      "tree_blobs": 3998,
+      "lifecycle_receipts": 20,
+      "raw_tree_minus_manifest_count": 24,
+      "deterministic_regeneration_entries": 3994,
+      "actual_new_manifest_entries": 20,
+      "count_boundary": "3998 Git blobs minus 3974 classified entries is not the deterministic manifest delta. Generator 3.1 regeneration has 3994 classified entries: exactly 20 added lifecycle receipt paths; no other added/removed path."
+    },
+    "preservation": {
+      "prior_pr514_non_manifest_blobs": "Byte-exact, except this append-only successor section",
+      "current_main_drift_paths": [
+        "evidence/node_health/38178388272-1.json",
+        "evidence/node_health/38209985280-1.json",
+        "evidence/node_health/38269469874-1.json",
+        "evidence/node_health/38328163947-1.json",
+        "evidence/node_health/38410822853-1.json",
+        "evidence/node_health/38479609272-1.json",
+        "evidence/node_health/38513473791-1.json",
+        "evidence/node_health/LATEST.json",
+        "evidence/node_registration_renewal/38178388272-1.json",
+        "evidence/node_registration_renewal/38209985280-1.json",
+        "evidence/node_registration_renewal/38269469874-1.json",
+        "evidence/node_registration_renewal/38328163947-1.json",
+        "evidence/node_registration_renewal/38410822853-1.json",
+        "evidence/node_registration_renewal/38479609272-1.json",
+        "evidence/node_registration_renewal/38513473791-1.json",
+        "evidence/node_registration_renewal/LATEST.json",
+        "qikvrt/runtime/onboarding/NODE_HEALTH.json",
+        "qikvrt/runtime/onboarding/NODE_REGISTRATION_RENEWAL.json"
+      ],
+      "intersection_with_prior_pr514_contribution": [],
+      "files_removed": [],
+      "new_exclusions": false,
+      "generator_and_tests": "Existing PR514 3.2 and streaming reader retained, no source/test replacement by older handoff payloads"
+    },
+    "submission_decisions": {
+      "integrity-liveness": "Continue existing PR514; no duplicate PR",
+      "rollenwechsel": "Do not replace delegated CODEOWNERS with owner-only candidate; existing PR523 retains ingolf-lohmann and Goldkelch for independent review",
+      "other_submissions": "Preserved in original byte-bound source package; not treated as integrated, published or reviewed by this continuation"
+    },
+    "governance": {
+      "observed_main_protected": false,
+      "observed_rulesets": [],
+      "observed_pr514_reviews": [],
+      "required_before_main_promotion": [
+        "native enforced code-owner governance",
+        "independent review for final unchanged HEAD",
+        "all exact-head checks green"
+      ],
+      "rest_operation_gap": "Exposed connector has no workflow_dispatch or administrative ruleset writer. Repository-native writer inspected; secure credential acquisition and initial execution are not established for this client."
+    },
+    "domain": {
+      "exact_host": "raumzeitterminal.de",
+      "observation_utc": "2026-10-14T09:45:31.860Z",
+      "http_status": 530,
+      "dns_interpretation": "NXDOMAIN_RECURSIVE_READBACK",
+      "readback_url": "https://qikvrt-scheibenhard.ingolf-lohmann.chatgpt.site/api/readback?id=cf969a38-a732-4fbf-af89-c4ba034163df",
+      "snapshot_sha256": "ccaedbdfeb64d87b72264ef190caeee3ef72a101215ac73dbb83650692e935ff",
+      "snapshot_byte_verified": true,
+      "robots_policy": "NOT_ESTABLISHED: failed browsing does not establish a deployed robots.txt exclusion"
+    },
+    "verification_required": [
+      "existing focused integrity and terminal tests",
+      "whole-repository make test with required historical object closure",
+      "integrity verify and deterministic regeneration",
+      "preservation of prior PR514 and current Main bytes",
+      "native CI and remote HEAD/TREE readback"
+    ],
+    "effect_boundary": {
+      "main_integrated": false,
+      "domain_delivery": false,
+      "zenodo_published": false,
+      "native_review_approval": false,
+      "predecessor_evidence_transfer": false,
+      "effect_ack_done": false
+    },
+    "local_verification": {
+      "cache_contract": "PASS 14/14 (100%)",
+      "focused_tests": {
+        "integrity": 11,
+        "terminal": 7,
+        "self_disclosure": 8,
+        "failures": 0,
+        "skips": 0
+      },
+      "canonical_integrity": "PASS verified 3893 classified entries and 3882 immutable digests",
+      "full_make_test": {
+        "result": "PASS",
+        "exit_code": 0,
+        "historical_object_required": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+        "history_gap_repaired_by": "Bounded public Git fetch of the exact existing source object; tests and policies unchanged",
+        "subject_boundary": "Prospective source tree; final commit requires its own native exact-head CI and independent readback"
+      }
+    }
   }
 }
