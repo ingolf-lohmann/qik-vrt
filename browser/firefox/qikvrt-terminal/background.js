@@ -1,4 +1,5 @@
-const AUTHORITY = "Goldkelch/qik-vrt";
+// Source: policy/CANONICAL_UPSTREAM_REMOTE_V1.json. Mirror entrypoints never select the observer source.
+const AUTHORITY = "ingolf-lohmann/qik-vrt";
 const DEFAULT_BACKEND = "http://127.0.0.1:8771";
 const ALLOWED_BACKENDS = new Set(["http://127.0.0.1:8771", "http://localhost:8771"]);
 const WATCHDOG_ALARM = "qikvrt-repository-watchdog";

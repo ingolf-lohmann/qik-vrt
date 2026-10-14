@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import fnmatch
 import importlib.util
 import json
 import socket
@@ -15,6 +16,7 @@ import unittest
 from unittest import mock
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
 from http.server import ThreadingHTTPServer
 from pathlib import Path
@@ -99,6 +101,258 @@ class EffectAckHttpTerminalContractTests(unittest.TestCase):
             terminal.parse_effect_ack_request("v=1, mode=commit")
         with self.assertRaises(ValueError):
             terminal.parse_effect_ack_request("v=2, mode=prepare")
+
+
+class FirefoxAuthorityRegressionTests(unittest.TestCase):
+    """Run the real adapter with bounded browser/HTTP fixtures, without effects."""
+
+    def test_content_script_entrypoints_are_policy_bound_and_closed(self) -> None:
+        binding = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text())
+        policy = json.loads((ROOT / "policy/QIKVRT_EFFECT_ACK_HTTP_TERMINAL_V1.json").read_text())
+        manifest = json.loads((ROOT / "browser/firefox/qikvrt-terminal/manifest.json").read_text())
+        authority = binding["canonical_upstream"]
+        mirror = binding["mirror"]
+        owner_match = f'https://github.com/{authority["repository"]}/blob/{authority["default_branch"]}/AI*'
+        mirror_match = f'https://github.com/{mirror["repository"]}/blob/{mirror["default_branch"]}/AI*'
+        owner_pages = f'https://{authority["repository"].lower().split("/")[0]}.github.io/qik-vrt/*'
+        mirror_pages = f'https://{mirror["repository"].lower().split("/")[0]}.github.io/qik-vrt/*'
+        self.assertEqual(policy["authority_repository"], authority["repository"])
+        self.assertEqual(policy["terminal"]["entrypoint_match"], owner_match)
+        self.assertEqual(len(manifest["content_scripts"]), 1)
+        script = manifest["content_scripts"][0]
+        self.assertCountEqual(script["matches"], [owner_match, owner_pages, mirror_match, mirror_pages])
+        self.assertEqual(script["js"], ["content.js"])
+        self.assertEqual(script["css"], ["terminal.css"])
+        self.assertEqual(script["run_at"], "document_idle")
+        for key in ("all_frames", "match_about_blank", "match_origin_as_fallback"):
+            self.assertFalse(script.get(key, False))
+
+        def allowed(url: str) -> bool:
+            # Fixed HTTPS hosts; match paths include query strings but exclude fragments.
+            parts = urlsplit(url)
+            return any(
+                parts.scheme == urlsplit(pattern).scheme
+                and parts.netloc == urlsplit(pattern).netloc
+                and fnmatch.fnmatchcase(parts.path + ("?" + parts.query if parts.query else ""), urlsplit(pattern).path)
+                for pattern in script["matches"]
+            )
+
+        for url in (
+            f'https://github.com/{authority["repository"]}/blob/main/AI',
+            f'https://github.com/{authority["repository"]}/blob/main/AI_CONTEXT.json?raw=1#context',
+            f'https://github.com/{mirror["repository"]}/blob/main/AI',
+            owner_pages.replace("*", "mesh/live/?view=terminal"),
+            mirror_pages.replace("*", "AI/"),
+        ):
+            with self.subTest(allowed=url):
+                self.assertTrue(allowed(url))
+        for url in (
+            f'https://github.com/{authority["repository"]}/pull/523',
+            f'https://github.com/{authority["repository"]}/blob/main/README.md',
+            f'https://github.com/{authority["repository"]}/blob/other/AI',
+            f'https://github.com/{authority["repository"]}-other/blob/main/AI',
+            'https://github.com/unrelated/qik-vrt/blob/main/AI',
+            'https://github.com.evil.example/ingolf-lohmann/qik-vrt/blob/main/AI',
+            'http://github.com/ingolf-lohmann/qik-vrt/blob/main/AI',
+            'https://ingolf-lohmann.github.io/unrelated/',
+            'https://goldkelch.github.io/unrelated/',
+            'https://other.github.io/qik-vrt/',
+            'https://raumzeitterminal.de/',
+            'http://127.0.0.1:8771/',
+        ):
+            with self.subTest(rejected=url):
+                self.assertFalse(allowed(url))
+
+    def test_host_permissions_add_only_owner_pages_origin(self) -> None:
+        binding = json.loads((ROOT / "policy/CANONICAL_UPSTREAM_REMOTE_V1.json").read_text())
+        manifest = json.loads((ROOT / "browser/firefox/qikvrt-terminal/manifest.json").read_text())
+        authority = binding["canonical_upstream"]["repository"]
+        self.assertCountEqual(manifest["host_permissions"], [
+            "https://api.github.com/*",
+            f"https://github.com/{authority}/*",
+            "https://ingolf-lohmann.github.io/qik-vrt/*",
+            "https://goldkelch.github.io/qik-vrt/*",
+            "http://127.0.0.1:8771/*",
+            "http://localhost:8771/*",
+        ])
+        self.assertCountEqual(manifest["permissions"], ["storage", "alarms"])
+        self.assertFalse(manifest.get("optional_host_permissions"))
+        self.assertEqual(manifest["browser_specific_settings"]["gecko"]["strict_min_version"], "158.0")
+
+    def run_adapter(self, assertions: str) -> None:
+        harness = r"""
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const policy = JSON.parse(fs.readFileSync('policy/CANONICAL_UPSTREAM_REMOTE_V1.json', 'utf8'));
+const source = fs.readFileSync('browser/firefox/qikvrt-terminal/background.js', 'utf8');
+const calls = [];
+let listener;
+let response = async () => { throw new Error('unexpected fetch'); };
+const stored = {qikvrtAuthority: policy.mirror.repository};
+const sandbox = {
+  console, URL, Uint8Array, atob, btoa,
+  location: {href: `https://github.com/${policy.mirror.repository}/blob/main/AI`},
+  fetch: async (url, init) => { calls.push({url, init}); return response(url, init); },
+  browser: {
+    storage: {local: {get: async () => stored, set: async value => Object.assign(stored, value)}},
+    // Leave automatic startup pending; only explicitly requested operations run.
+    alarms: {get: () => new Promise(() => {}), create: async () => {}, onAlarm: {addListener() {}}},
+    runtime: {onInstalled: {addListener() {}}, onStartup: {addListener() {}},
+      onMessage: {addListener(value) { listener = value; }}},
+  },
+};
+vm.createContext(sandbox);
+vm.runInContext(source, sandbox, {filename: 'background.js'});
+function http(body, ack = null, status = 200) {
+  return {ok: status >= 200 && status < 300, status,
+    headers: {get: name => name === 'Effect-Ack' ? ack : name === 'content-type' ? 'application/json' : null},
+    json: async () => body};
+}
+const digest = 'ab'.repeat(32);
+const token = 'exact-bound-single-use-token';
+function ack(state = 'done', hash = digest, commitToken = token) {
+  return `v=1, state=${state}, hash=:${Buffer.from(hash, 'hex').toString('base64')}:, token=:${Buffer.from(commitToken).toString('base64')}:`;
+}
+const input = {schema: 'qikvrt_terminal_input_v1', text: 'test', page: sandbox.location.href};
+const preparedBody = {record_hash: digest, commit_token: token, record_url: '/effect-ack/records/' + digest};
+const fullRecord = {state: 'EFFECT_ACK_DONE', ordinary_release: true, record_hash: 'sha256:' + digest};
+async function prepare({prepareAck = ack(), body = preparedBody, record = fullRecord} = {}) {
+  calls.length = 0;
+  response = async url => {
+    if (url.endsWith('/.well-known/effect-ack')) return http({});
+    if (url.endsWith('/terminal/prepare')) return http(body, prepareAck);
+    if (url.includes('/effect-ack/records/')) return http(record, ack());
+    throw new Error('unexpected prepare route');
+  };
+  return listener({kind: 'PREPARE_EFFECT', payload: input});
+}
+"""
+        result = subprocess.run(
+            ["node", "-e", harness + "\n(async () => {\n" + assertions + "\n})().catch(error => { console.error(error); process.exitCode = 1; });"],
+            cwd=ROOT, text=True, capture_output=True, timeout=15, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_observation_uses_authority_even_from_mirror_entrypoint(self) -> None:
+        self.run_adapter(r"""
+const head = '1'.repeat(40), tree = '2'.repeat(40);
+const base = policy.canonical_upstream.canonical_api_repository;
+response = async url => {
+  assert.ok(url.startsWith(base + '/'));
+  if (url.endsWith('/git/ref/heads/main')) return http({object: {sha: head}});
+  if (url.endsWith('/git/commits/' + head)) return http({tree: {sha: tree}});
+  if (url.endsWith('/actions/runs?branch=main&per_page=30')) return http({workflow_runs: []});
+  throw new Error('unexpected repository route');
+};
+const frame = await listener({kind: 'OBSERVE_AUTHORITY', payload: {repository: policy.mirror.repository}});
+assert.equal(frame.ok, true);
+assert.equal(frame.source.repository, policy.canonical_upstream.repository);
+assert.equal(frame.source.ref, 'refs/heads/' + policy.canonical_upstream.default_branch);
+assert.equal(frame.source.head, head); assert.equal(frame.source.tree, tree);
+assert.equal(frame.terminal_semantics.rendering_is_authorization, false);
+assert.equal(frame.terminal_semantics.ordinary_release_requires, 'VALID_EFFECT_ACK_DONE');
+assert.notEqual(frame.ordinary_release, true);
+assert.equal(stored.qikvrtWatchdogFrame.source.repository, policy.canonical_upstream.repository);
+assert.equal(calls.length, 3);
+for (const call of calls) {
+  assert.equal(call.init.method, 'GET'); assert.equal(call.init.credentials, 'omit');
+  assert.equal(call.init.cache, 'no-store');
+  assert.equal(call.init.headers['X-GitHub-Api-Version'], '2022-11-28');
+}
+""")
+
+    def test_authority_failure_and_invalid_binding_never_fall_back_to_mirror(self) -> None:
+        self.run_adapter(r"""
+const base = policy.canonical_upstream.canonical_api_repository;
+for (const status of [403, 404, 503]) {
+  calls.length = 0; response = async () => http({}, null, status);
+  const frame = await listener({kind: 'OBSERVE_AUTHORITY'});
+  assert.equal(frame.ok, false); assert.equal(frame.state, 'HOLD');
+  assert.equal(frame.ordinary_release, false); assert.equal(calls.length, 1);
+  assert.ok(calls[0].url.startsWith(base + '/'));
+}
+calls.length = 0;
+response = async () => http({object: {sha: 'not-a-head'}});
+let frame = await listener({kind: 'OBSERVE_AUTHORITY'});
+assert.equal(frame.state, 'HOLD'); assert.equal(calls.length, 1);
+calls.length = 0;
+response = async url => url.endsWith('/git/ref/heads/main')
+  ? http({object: {sha: '1'.repeat(40)}}) : http({tree: {sha: 'not-a-tree'}});
+frame = await listener({kind: 'OBSERVE_AUTHORITY'});
+assert.equal(frame.state, 'HOLD'); assert.equal(calls.length, 2);
+assert.ok(calls.every(call => call.url.startsWith(base + '/')));
+""")
+
+    def test_prepare_requires_compact_and_full_done_binding_without_release(self) -> None:
+        self.run_adapter(r"""
+for (const options of [
+  {prepareAck: null}, {prepareAck: 'malformed'},
+  {prepareAck: ack('continue')}, {prepareAck: ack('block')},
+  {body: {...preparedBody, record_hash: 'cd'.repeat(32)}},
+  {body: {...preparedBody, commit_token: 'different-token'}},
+  {body: {...preparedBody, record_url: 'https://evil.example/record'}},
+  {record: {...fullRecord, state: 'EFFECT_ACK_CONTINUE'}},
+  {record: {...fullRecord, ordinary_release: false}},
+  {record: {...fullRecord, record_hash: 'sha256:' + 'cd'.repeat(32)}},
+]) {
+  const result = await prepare(options);
+  assert.notEqual(result.record_validated, true); assert.equal(result.ordinary_release, false);
+  assert.ok(calls.every(call => !call.url.endsWith('/terminal/commit')));
+}
+const result = await prepare();
+assert.equal(result.record_validated, true); assert.equal(result.ordinary_release, false);
+assert.equal(calls.length, 3);
+assert.ok(calls.every(call => call.url.startsWith('http://127.0.0.1:8771/')));
+""")
+
+    def test_commit_confirmation_validation_and_effect_ack_boundaries(self) -> None:
+        self.run_adapter(r"""
+for (const payload of [null, {}, {confirmed: false},
+  {confirmed: true, prepared: {record_validated: false, effect_ack: {state: 'EFFECT_ACK_DONE'}}},
+  {confirmed: true, prepared: {record_validated: true, effect_ack: {state: 'EFFECT_ACK_CONTINUE'}}},
+]) {
+  calls.length = 0;
+  const result = await listener({kind: 'COMMIT_EFFECT', payload});
+  assert.equal(result.state, 'HOLD'); assert.equal(result.ordinary_release, false);
+  assert.equal(calls.length, 0);
+}
+const prepared = await prepare();
+for (const [header, body, released] of [
+  [null, {ordinary_release: true}, false],
+  [ack('continue'), {ordinary_release: true}, false],
+  [ack('done'), {ordinary_release: false}, false],
+  [ack('done'), {ordinary_release: true}, true],
+]) {
+  calls.length = 0; response = async () => http(body, header);
+  const result = await listener({kind: 'COMMIT_EFFECT', payload: {confirmed: true, prepared, request: input}});
+  assert.equal(result.ordinary_release, released); assert.equal(calls.length, 1);
+  const call = calls[0];
+  assert.equal(call.url, 'http://127.0.0.1:8771/terminal/commit');
+  assert.equal(call.init.method, 'POST');
+  assert.equal(call.init.headers['Effect-Ack-Request'],
+    `v=1, mode=commit, token=:${Buffer.from(token).toString('base64')}:, hash=:${Buffer.from(digest, 'hex').toString('base64')}:`);
+  assert.equal(call.init.headers['X-QIKVRT-Commit-Token'], undefined);
+  assert.equal(call.init.headers['X-QIKVRT-Record-Hash'], undefined);
+  assert.deepEqual(JSON.parse(call.init.body), input);
+}
+""")
+
+    def test_backend_allowlist_and_unrecognized_messages_remain_closed(self) -> None:
+        self.run_adapter(r"""
+for (const backend of ['https://evil.example', 'http://127.0.0.1:8772', 'http://localhost:8771/']) {
+  stored.qikvrtBackend = backend; calls.length = 0;
+  const result = await listener({kind: 'DISCOVER_EFFECT_ACK'});
+  assert.equal(result.state, 'HOLD'); assert.equal(result.ordinary_release, false);
+  assert.equal(calls.length, 0);
+}
+for (const message of [null, {}, {kind: 'OBSERVE_MIRROR'}, {kind: 'UNKNOWN', ordinary_release: true}]) {
+  calls.length = 0;
+  const result = await listener(message);
+  assert.equal(result.state, 'HOLD'); assert.equal(result.ordinary_release, false);
+  assert.equal(calls.length, 0);
+}
+""")
 
 
 class LoopbackTerminalE2ETests(unittest.TestCase):

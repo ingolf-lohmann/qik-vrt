@@ -8,6 +8,28 @@ The client is a Manifest V3 WebExtension rather than a forked Firefox binary. Th
 
 When installed, the content script is injected on the configured QIKVRT AI surfaces and presents a source-bound terminal with repository observation, text input, explicit microphone recording, explicit camera preview/snapshot, Prepare/Commit gating and local personalization.
 
+## Repository binding and entrypoints
+
+`policy/CANONICAL_UPSTREAM_REMOTE_V1.json` selects `ingolf-lohmann/qik-vrt`
+as Authority and `Goldkelch/qik-vrt` as Mirror. The background observer always
+reads the Authority's current Main HEAD, TREE and workflows through GitHub's
+read-only REST API, including when the terminal is opened on a Mirror page.
+An Authority read failure remains HOLD; it never selects the Mirror as fallback.
+
+Content scripts support the Owner's GitHub `/blob/main/AI*` entrypoint and
+`https://ingolf-lohmann.github.io/qik-vrt/*`. The existing Goldkelch GitHub
+`/blob/main/AI*` and `https://goldkelch.github.io/qik-vrt/*` entrypoints remain
+available as Mirror surfaces. An allowed address is not proof that it is
+currently published, synchronized or accepted for production.
+
+The GitHub host permission uses one Owner-named entry for the shared
+`github.com` origin; a second Mirror-named permission adds no host capability.
+Only the Owner's project Pages origin is added. Injection remains restricted
+by the four content-script matches; other repositories and GitHub pages are
+not terminal entrypoints. API observation and the two existing loopback
+backend permissions remain unchanged. Host permissions do not authenticate
+an account or authorize repository writes or protected effects.
+
 ## Security boundary
 
 - Public GitHub observation is read-only.
