@@ -297,6 +297,13 @@
   "firefox158_s1_upgrade": {
     "amo_unlisted_integration": {
       "api_status": "OFFICIALLY_DOCUMENTED_FROZEN_V4_SIGNING_API; NO TOOL OR FIREFOX DOWNGRADE",
+      "artifact_layout_repair": {
+        "consumer_requires": "root basename file_name in the pinned artifact",
+        "observed_original_preflight_path": "amo-original/ACCESS_PREFLIGHT.json",
+        "original_input_components_changed": false,
+        "repair": "Copy only the original non-secret attempt journal beside the returned original XPI; upload paths now share amo-original as their common parent. No archive recompression or XPI-byte mutation by the signer.",
+        "verification": "REQUIRE_FRESH_NATIVE_ARTIFACT_ROOT_READBACK"
+      },
       "channel": "unlisted",
       "concurrent_source_preserved": {
         "existing_cached_runtime_carrier_preserved": true,
@@ -429,6 +436,22 @@
       "local_regression_status": "PASS",
       "local_scope": "Exact-source REST projection plus real six-file Git fixtures and mocked AMO HTTP, not a native Mozilla signature",
       "main_integration_verified": false,
+      "native_access_preflight": {
+        "amo_authentication_verified": false,
+        "amo_submission_executed": false,
+        "artifact_bytes": 480,
+        "artifact_id": 11916121029,
+        "artifact_sha256": "10c5ea21a07d0075b9f3767c3d37be7e6c96902b2e09d856939ee789cd89fad6",
+        "credential_values_read": false,
+        "issuer_present": false,
+        "job_id": 116000756818,
+        "native_amo_controls_passed": 14,
+        "original_zip_download_and_hash_verified": true,
+        "run_id": 38607121555,
+        "secret_present": false,
+        "source_head": "1dfb5ec4b788a061f6be21895448cadf21198b09",
+        "source_tree": "11fc6caa75305aee9811ffec7457ead59a3a7f40"
+      },
       "owner_authorization": "Ingolf Lohmann direct instruction 2026-10-14: official AMO unlisted signing in existing PR523; only six existing Standard files; REST-only; no new PR",
       "primary_sources": [
         "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/",

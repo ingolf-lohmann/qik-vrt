@@ -411,6 +411,20 @@ jobs:
           print(json.dumps(receipt,sort_keys=True))
           assert receipt.get('signed_original_returned') is True,receipt['state']
           PYAMO
+      - name: Place the original non-secret attempt journal beside the exact XPI
+        if: always()
+        run: |
+          python3 -B - <<'PYLAYOUT'
+          import os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          journal=root/'amo-state/AMO_ATTEMPT.json'
+          if journal.is_file():
+              destination=root/'amo-original/AMO_ATTEMPT.json'
+              assert not journal.is_symlink() and not destination.exists()
+              shutil.copyfile(journal,destination);destination.chmod(0o600)
+              assert destination.read_bytes()==journal.read_bytes()
+          PYLAYOUT
       - name: Preserve only non-secret signing receipts, journal and original XPI
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -419,7 +433,6 @@ jobs:
           path: |
             ${{ runner.temp }}/amo-original/*.json
             ${{ runner.temp }}/amo-original/*.xpi
-            ${{ runner.temp }}/amo-state/AMO_ATTEMPT.json
           retention-days: 90
           if-no-files-found: error
 
