@@ -2315,12 +2315,187 @@ def start(package, pin, config_path, monolith=False):
             for s, handler in old_handlers.items(): signal.signal(s, handler)
 
 
+def firefox_extension_accepted(value):
+    """Require live Gecko acceptance and registration, not a copied XPI."""
+    addon = value.get("addon") or {}
+    return (value.get("minimum_satisfied") is True
+        and addon.get("isCompatible") is True and addon.get("isActive") is True
+        and addon.get("appDisabled") is False and addon.get("userDisabled") is False
+        and addon.get("temporarilyInstalled") is False
+        and value.get("temporary_installation_used") is False
+        and value.get("policy_active") is True and value.get("background_registered") is True)
+
+
+class FirefoxProbeConnection:
+    """Bounded loopback-only client for Firefox's existing Marionette protocol."""
+    def __init__(self, connection):
+        self.connection = connection
+        self.sequence = 0
+        if self.receive().get("marionetteProtocol") != 3:
+            raise ValueError("FIREFOX_PROBE_PROTOCOL_REQUIRED")
+
+    def exact(self, count):
+        data = bytearray()
+        while len(data) < count:
+            part = self.connection.recv(count - len(data))
+            if not part: raise ValueError("FIREFOX_PROBE_CONNECTION_CLOSED")
+            data.extend(part)
+        return bytes(data)
+
+    def receive(self):
+        length = bytearray()
+        while True:
+            byte = self.exact(1)
+            if byte == b":": break
+            if not byte.isdigit() or len(length) >= 8:
+                raise ValueError("FIREFOX_PROBE_FRAME_REQUIRED")
+            length.extend(byte)
+        count = int(length)
+        if not 0 < count <= 1024 * 1024: raise ValueError("FIREFOX_PROBE_FRAME_BOUND")
+        return json.loads(self.exact(count))
+
+    def call(self, method, params):
+        self.sequence += 1
+        raw = json.dumps([0, self.sequence, method, params]).encode()
+        self.connection.sendall(str(len(raw)).encode() + b":" + raw)
+        reply = self.receive()
+        if len(reply) != 4 or reply[:2] != [1, self.sequence]:
+            raise ValueError("FIREFOX_PROBE_RESPONSE_BINDING_REQUIRED")
+        if reply[2] is not None: raise ValueError("FIREFOX_PROBE_COMMAND:" + json.dumps(reply[2]))
+        return reply[3]
+
+
+FIREFOX_EXTENSION_READBACK = """
+const [id, minimum, done] = arguments;
+(async () => {
+  const {AddonManager} = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs");
+  const {ExtensionParent} = ChromeUtils.importESModule("resource://gre/modules/ExtensionParent.sys.mjs");
+  await AddonManager.readyPromise;
+  const addon = await AddonManager.getAddonByID(id);
+  const policy = WebExtensionPolicy.getByID(id);
+  const extension = ExtensionParent.GlobalManager.getExtension(id);
+  done({browser_version: Services.appinfo.version,
+    minimum_satisfied: Services.vc.compare(Services.appinfo.version, minimum) >= 0,
+    signatures_required: Services.prefs.getBoolPref("xpinstall.signatures.required", true),
+    addon: addon ? {id: addon.id, version: addon.version, isActive: addon.isActive,
+      isCompatible: addon.isCompatible, appDisabled: addon.appDisabled,
+      userDisabled: addon.userDisabled, signedState: addon.signedState,
+      temporarilyInstalled: addon.temporarilyInstalled} : null,
+    policy_active: policy ? policy.active === true : false,
+    background_registered: !!extension,
+    temporary_installation_used: false});
+})().catch(error => done({probe_error: String(error)}));
+"""
+
+
+def firefox_extension_probe(xpi, output):
+    """Persistent XPI installation in disposable profiles on the actual binary.
+
+    No temporary install, compatibility override or AddonManager enable call.
+    The second profile reproduces the existing explicit ESR reference exception.
+    """
+    import io
+    import zipfile
+    xpi, output = Path(xpi).resolve(), Path(output).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    raw = xpi.read_bytes()
+    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+        manifest = json.loads(archive.read("manifest.json"))
+    gecko = manifest["browser_specific_settings"]["gecko"]
+    identity, minimum = gecko["id"], gecko["strict_min_version"]
+    if identity != "qikvrt-ai-terminal@goldkelch.local" or minimum != "158.0":
+        raise ValueError("OWNER_FIREFOX_158_EXACT_EXTENSION_REQUIRED")
+    binary = shutil.which("firefox-esr")
+    if not binary: raise ValueError("ACTUAL_FIREFOX_ESR_BINARY_REQUIRED")
+    result = {"schema": "qikvrt-firefox-extension-installation/v1",
+        "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
+        "xpi_sha256": digest(raw), "xpi_bytes": len(raw), "extension_id": identity,
+        "strict_min_version": minimum, "extension_version": manifest["version"],
+        "binary_sha256": digest(Path(binary).resolve().read_bytes()),
+        "firefox_version_output": subprocess.check_output([binary, "--version"], stderr=subprocess.STDOUT,
+            text=True, timeout=15).strip(),
+        "debian_package_version": subprocess.check_output(
+            ["dpkg-query", "-W", "-f=${Version}", "firefox-esr"], text=True, timeout=15).strip(),
+        "existing_s1_bootstrap_xpi_present": Path(
+            "/opt/qikvrt/runtime/bootstrap-profile/extensions/" + identity + ".xpi").is_file(),
+        "profiles": {}, "effect_ack_done": False, "public_production_verified": False,
+        "ordinary_release": False, "predecessor_acceptance_transferred": False}
+    try:
+        with tempfile.TemporaryDirectory(prefix="qikvrt-extension-probe-") as work:
+            for mode, unsigned in (("default_signing_policy", False), ("explicit_esr_reference", True)):
+                profile = Path(work) / mode
+                (profile / "extensions").mkdir(parents=True)
+                (profile / "extensions" / (identity + ".xpi")).write_bytes(raw)
+                phases = []
+                result["profiles"][mode] = phases
+                for phase in ("initial_start", "process_restart"):
+                    with socket.socket() as reservation:
+                        reservation.bind(("127.0.0.1", 0)); port = reservation.getsockname()[1]
+                    preferences = {"marionette.port": port, "browser.shell.checkDefaultBrowser": False,
+                        "browser.startup.homepage": "about:blank", "browser.startup.page": 0,
+                        "datareporting.policy.dataSubmissionEnabled": False,
+                        "toolkit.telemetry.reportingpolicy.firstRun": False}
+                    if unsigned: preferences["xpinstall.signatures.required"] = False
+                    (profile / "user.js").write_text("".join(
+                        "user_pref(" + json.dumps(k) + ", " + json.dumps(v) + ");\n"
+                        for k, v in preferences.items()))
+                    log = output / (mode + "-" + phase + ".log")
+                    env = dict(os.environ, MOZ_REMOTE_ALLOW_SYSTEM_ACCESS="1")
+                    with log.open("wb") as stream:
+                        process = subprocess.Popen([binary, "--headless", "--no-remote", "--marionette",
+                            "--profile", str(profile), "about:blank"], env=env, stdout=stream, stderr=stream)
+                        connection = None
+                        try:
+                            until = time.monotonic() + 45
+                            while time.monotonic() < until:
+                                if process.poll() is not None: raise ValueError("FIREFOX_PROBE_BROWSER_EXITED")
+                                try:
+                                    connection = socket.create_connection(("127.0.0.1", port), timeout=1)
+                                    break
+                                except OSError: time.sleep(.1)
+                            if connection is None: raise ValueError("FIREFOX_PROBE_START_TIMEOUT")
+                            connection.settimeout(20)
+                            client = FirefoxProbeConnection(connection)
+                            session = client.call("WebDriver:NewSession", {"capabilities": {"alwaysMatch": {}}})
+                            client.call("Marionette:SetContext", {"value": "chrome"})
+                            observation = client.call("WebDriver:ExecuteAsyncScript", {
+                                "script": FIREFOX_EXTENSION_READBACK, "args": [identity, minimum],
+                                "newSandbox": True, "sandbox": "system", "scriptTimeout": 15000})["value"]
+                            if observation.get("probe_error"): raise ValueError(observation["probe_error"])
+                            observation.update(phase=phase, accepted=firefox_extension_accepted(observation),
+                                session_browser_version=session.get("capabilities", {}).get("browserVersion"),
+                                profile_xpi_sha256=digest((profile / "extensions" / (identity + ".xpi")).read_bytes()))
+                            phases.append(observation)
+                            client.call("WebDriver:DeleteSession", {})
+                        finally:
+                            if connection: connection.close()
+                            process.terminate()
+                            try: process.wait(timeout=10)
+                            except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=5)
+                result[mode + "_activation_verified"] = all(p["accepted"] for p in phases)
+        result["extension_activation_verified"] = result["default_signing_policy_activation_verified"]
+        result["reference_activation_verified"] = result["explicit_esr_reference_activation_verified"]
+        observations = [p for phases in result["profiles"].values() for p in phases]
+        result["state"] = ("HOLD_FIREFOX_BELOW_OWNER_MINIMUM" if
+            any(p["minimum_satisfied"] is False for p in observations) else
+            "EXTENSION_ACTIVATION_AND_RESTART_VERIFIED" if result["extension_activation_verified"]
+            else "HOLD_EXTENSION_INSTALLATION_OR_ACTIVATION")
+        return result
+    except Exception as error:
+        result.update(state="HOLD_EXTENSION_PROBE", probe_error=str(error),
+            extension_activation_verified=False, reference_activation_verified=False)
+        raise
+    finally:
+        (output / "extension-installation.json").write_bytes(raw_json(result))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
         "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
+    parser.add_argument("--extension-xpi", type=Path, help="exact candidate XPI; disposable local probe only")
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
@@ -2370,7 +2545,10 @@ def main():
     parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
     args = parser.parse_args()
     try:
-        if args.operation == "deployment-roles":
+        if args.operation == "firefox-extension-check":
+            if not args.extension_xpi or not args.output: raise ValueError("EXACT_XPI_AND_PROBE_OUTPUT_REQUIRED")
+            result = firefox_extension_probe(args.extension_xpi, args.output)
+        elif args.operation == "deployment-roles":
             result = deployment_roles(args.root)
         elif args.operation == "runtime-delivery-verify":
             result = delivery_verify(args.delivery, args.delivery_sha256)

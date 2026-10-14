@@ -241,3 +241,144 @@ jobs:
             ${{ runner.temp }}/offline-${{ matrix.engine }}/TRACKED_STATUS.txt
           retention-days: 30
           if-no-files-found: warn
+
+  s1_firefox_extension:
+    name: Existing S1 image - Firefox 158 XPI admission
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out exact candidate XPI and existing probe
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify existing tool contract and negative admission controls
+        run: |
+          python3 -B tools/qikvrt_tool_cache.py verify
+          python3 -B -m unittest -v tests.test_self_host_firefox.FirefoxExtensionAdmissionTests
+      - name: Reuse original S1 source verifier
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: c1cca8fae42166d456c776e5c876c23ac7689aea
+          path: .qikvrt/runtime/s1-baseline-source
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Retrieve existing proven OCI bytes without rebuilding runtime
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38475417828
+          name: qikvrt-s1-container-c1cca8fae42166d456c776e5c876c23ac7689aea
+          path: ${{ runner.temp }}/s1-original
+      - name: Verify original archive, every OCI object and exact image binding
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          import os
+          original=Path(os.environ['RUNNER_TEMP'])/'s1-original'
+          archive=original/'image.oci.tar'
+          h=hashlib.sha256()
+          with archive.open('rb') as f:
+              for block in iter(lambda:f.read(8*1024*1024),b''): h.update(block)
+          assert h.hexdigest()=='09ca059f741bdb93232c35fe463b37256dc8dfa25478804461a9c0b575b75b25'
+          sys.path.insert(0,str(Path('.qikvrt/runtime/s1-baseline-source').resolve()))
+          from tools import qikvrt_self_host_container as original_verifier
+          r=original_verifier.oci(archive,'c1cca8fae42166d456c776e5c876c23ac7689aea',
+              '65997163a6bee14f8d14f4a193038b51f4599ead')
+          assert r['image_digest']=='sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d'
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          evidence.mkdir(mode=0o777);evidence.chmod(0o777)
+          (evidence/'original-oci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+          PY
+          loader="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
+          mkdir "$RUNNER_TEMP/s1-original/load"
+          docker run --rm --read-only --user "$(id -u):$(id -g)" --env HOME=/tmp \
+            --cap-drop ALL --security-opt no-new-privileges:true \
+            --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
+            --mount "type=bind,source=$RUNNER_TEMP/s1-original/image.oci.tar,target=/input.oci.tar,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/s1-original/load,target=/output" \
+            "$loader" copy --format v2s2 oci-archive:/input.oci.tar \
+            docker-archive:/output/image.docker.tar:qikvrt-s1:firefox-158-baseline
+          docker load --input "$RUNNER_TEMP/s1-original/load/image.docker.tar"
+          python3 -B - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          o=json.loads((p/'original-oci.json').read_bytes())
+          live=json.loads(subprocess.check_output(['docker','image','inspect','qikvrt-s1:firefox-158-baseline']))[0]
+          assert live['Id']==o['config_digest']
+          assert live['RootFS']['Layers']==o['diff_ids']
+          assert live['Config']['Labels']['org.opencontainers.image.revision']==o['source_head']
+          assert live['Config']['Labels']['de.qikvrt.source-tree']==o['source_tree']
+          (p/'image-readback.json').write_text(json.dumps({'image_id':live['Id'],
+              'source_head':o['source_head'],'source_tree':o['source_tree'],
+              'original_oci_archive_sha256':'09ca059f741bdb93232c35fe463b37256dc8dfa25478804461a9c0b575b75b25',
+              'predecessor_acceptance_transferred':False,'rebuilt':False,
+              'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Package exact candidate source and bind all original extension blobs
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,zipfile
+          from pathlib import Path
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          root=Path('browser/firefox/qikvrt-terminal')
+          names=['manifest.json','background.js','content.js','options.html','options.js','terminal.css']
+          records=[]
+          with zipfile.ZipFile(evidence/'candidate.xpi','w',zipfile.ZIP_DEFLATED) as z:
+              for name in names:
+                  raw=(root/name).read_bytes()
+                  info=zipfile.ZipInfo(name,(2000,1,1,0,0,0))
+                  info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
+                  z.writestr(info,raw)
+                  blob=hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+                  assert blob==subprocess.check_output(['git','rev-parse','HEAD:'+str(root/name)],text=True).strip()
+                  records.append({'path':str(root/name),'git_blob':blob,'sha256':hashlib.sha256(raw).hexdigest()})
+          binding={'candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'candidate_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(),
+              'xpi_sha256':hashlib.sha256((evidence/'candidate.xpi').read_bytes()).hexdigest(),
+              'source_files':records,'signed_production_package':False,'effect_ack_done':False}
+          (evidence/'xpi-source-binding.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Actual package version, persistent installation and live AddonManager activation
+        run: |
+          docker run --rm --init --network none --user 10001:10001 --read-only \
+            --env HOME=/tmp --cap-drop ALL --security-opt no-new-privileges:true --shm-size 256m \
+            --tmpfs /tmp:rw,nosuid,size=768m,mode=1777 \
+            --mount "type=bind,source=$PWD/tools/qikvrt_self_host.py,target=/probe/qikvrt_self_host.py,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/s1-extension-evidence,target=/evidence" \
+            --entrypoint python3 qikvrt-s1:firefox-158-baseline \
+            -B /probe/qikvrt_self_host.py firefox-extension-check --extension-xpi /evidence/candidate.xpi \
+            --output /evidence
+      - name: Enforce actual compatible activation; a diagnostic read is not admission
+        run: |
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          r=json.loads((p/'extension-installation.json').read_bytes())
+          b=json.loads((p/'xpi-source-binding.json').read_bytes())
+          assert r['xpi_sha256']==b['xpi_sha256']
+          assert r['strict_min_version']=='158.0'
+          assert r['reference_activation_verified'] is True, 'HOLD: Firefox 158 reference XPI is not active in existing S1'
+          assert r['extension_activation_verified'] is True, 'HOLD: default production signing-policy activation is not verified'
+          PY
+      - name: Preserve bounded original installation and activation evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qikvrt-s1-firefox158-installation-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/s1-extension-evidence/*.json
+            ${{ runner.temp }}/s1-extension-evidence/*.log
+            ${{ runner.temp }}/s1-extension-evidence/candidate.xpi
+          retention-days: 30
+          if-no-files-found: warn

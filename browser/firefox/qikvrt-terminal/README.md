@@ -46,3 +46,33 @@ python3 -B src/qikvrt_effect_ack_http_terminal.py --host 127.0.0.1 --port 8771
 ```
 
 The bridge demonstrates the complete local prepare/commit/reobserve shape but deliberately cannot perform repository writes, releases, deployments, publication or actuator effects.
+
+## Existing S1 container installation gate
+
+The existing QIKVRT CI job `s1_firefox_extension` reuses the exact PR457
+OCI archive from run 38475417828 without rebuilding its runtime. The current
+candidate XPI remains source-bound and requires Firefox 158.0. The existing
+S1 launcher now offers `firefox-extension-check --extension-xpi <exact.xpi>
+--output <disposable-evidence-directory>`. The probe reads the installed Debian
+package, actual executable version and live AddonManager/WebExtensionPolicy
+state before and after a process restart. A copied archive or temporary install
+cannot satisfy activation. Missing, incompatible or disabled add-ons hold admission.
+
+Default signing policy and the existing isolated ESR reference exception are
+separate observations. Neither changes production policy. Current official ESR
+153.x is below this minimum; the actual existing image still requires native
+readback. The supported forward route is Mozilla's official Release package
+158 or newer on the retained Debian base, with a Mozilla-signed self-distributed
+XPI and the same persistent activation/restart gate. This route is proposed,
+not an installed upgrade or a signing receipt. The ESR exception cannot substitute
+for signing on Release. Never lower the owner's minimum to make a test green.
+
+Primary provider sources (current package listings are not image readback):
+https://packages.debian.org/bookworm/firefox-esr
+https://product-details.mozilla.org/1.0/firefox_versions.json
+https://support.mozilla.org/en-US/kb/install-firefox-linux
+https://www.firefox.com/en-US/firefox/158.0/releasenotes/
+https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/
+
+Installation acceptance, protected Main integration and productive delivery
+on https://raumzeitterminal.de/ remain distinct obligations.

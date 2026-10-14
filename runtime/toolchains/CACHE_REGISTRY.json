@@ -126,7 +126,8 @@
         "runtime/self-host/Dockerfile",
         "tools/qikvrt_self_host.py",
         "tests/test_self_host_firefox.py",
-        "runtime/toolchains/PROVENANCE.md"
+        "runtime/toolchains/PROVENANCE.md",
+        ".github/workflows/qikvrt_ci.yml"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -139,7 +140,8 @@
       "trusted_save": false,
       "verification": [
         "exact executable SHA-256 in manifest",
-        "productive startup, Unix/SQLite/SSE/restart and negative controls"
+        "productive startup, Unix/SQLite/SSE/restart and negative controls",
+        "live AddonManager compatibility, persistent XPI activation and process restart on the existing exact S1 OCI image; signing default and explicit ESR reference kept separate"
       ],
       "version": "exact-executable-binding"
     },

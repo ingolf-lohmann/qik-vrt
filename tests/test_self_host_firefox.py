@@ -22,6 +22,61 @@ from tests.test_self_host_temdd import NativeStandaloneTests
 from tests.test_self_host import host, ROOT
 
 
+class FirefoxExtensionAdmissionTests(unittest.TestCase):
+    def accepted(self):
+        return {"minimum_satisfied": True, "policy_active": True,
+            "background_registered": True, "temporary_installation_used": False,
+            "addon": {"isCompatible": True, "isActive": True, "appDisabled": False,
+                "userDisabled": False, "temporarilyInstalled": False}}
+
+    def test_live_persistent_compatible_registration_is_required(self):
+        self.assertTrue(host.firefox_extension_accepted(self.accepted()))
+        for field in ("minimum_satisfied", "policy_active", "background_registered"):
+            with self.subTest(field=field):
+                value=self.accepted();value[field]=False
+                self.assertFalse(host.firefox_extension_accepted(value))
+
+    def test_copied_missing_disabled_or_incompatible_xpi_is_not_activation(self):
+        self.assertFalse(host.firefox_extension_accepted({}))
+        value=self.accepted();value["addon"]=None
+        self.assertFalse(host.firefox_extension_accepted(value))
+        for field, bad in (("isCompatible",False),("isActive",False),
+                ("appDisabled",True),("userDisabled",True),("temporarilyInstalled",True)):
+            with self.subTest(field=field):
+                value=self.accepted();value["addon"][field]=bad
+                self.assertFalse(host.firefox_extension_accepted(value))
+        value=self.accepted();value["temporary_installation_used"]=True
+        self.assertFalse(host.firefox_extension_accepted(value))
+
+    def test_reference_exception_does_not_override_minimum_version(self):
+        value=self.accepted();value.update(minimum_satisfied=False,signatures_required=False)
+        self.assertFalse(host.firefox_extension_accepted(value))
+
+    def test_framed_readback_is_fragment_safe_and_rejects_stale_response(self):
+        import io
+        class Connection:
+            def __init__(self, values):
+                raw=b""
+                for value in values:
+                    encoded=json.dumps(value).encode()
+                    raw+=str(len(encoded)).encode()+b":"+encoded
+                self.data=io.BytesIO(raw);self.sent=[]
+            def recv(self,n): return self.data.read(min(n,3))
+            def sendall(self,value): self.sent.append(value)
+        connection=Connection([{"marionetteProtocol":3},[1,1,None,{"value":"bound"}]])
+        client=host.FirefoxProbeConnection(connection)
+        self.assertEqual(client.call("test",{}),{"value":"bound"})
+        stale=host.FirefoxProbeConnection(Connection([{"marionetteProtocol":3},[1,2,None,{}]]))
+        with self.assertRaisesRegex(ValueError,"RESPONSE_BINDING"):
+            stale.call("test",{})
+
+    def test_remote_error_or_unknown_protocol_cannot_be_pass(self):
+        from unittest.mock import Mock
+        connection=Mock();connection.recv.side_effect=[b"1",b":",b"{}"]
+        with self.assertRaises((ValueError,json.JSONDecodeError)):
+            host.FirefoxProbeConnection(connection)
+
+
 class FirefoxCarrierTests(NativeStandaloneTests):
     # The inherited native controls also execute against this browser profile.
     START_TIMEOUT = 60
