@@ -155,6 +155,14 @@
       "head": "9e89652683b6ae0772481bdb0a46073396e0a7cf",
       "number": 524,
       "title": "Require Firefox 158 for the terminal WebExtension"
+    },
+    {
+      "number": 514,
+      "branch": "claude/mesh-liveness-outside-integrity-manifest",
+      "head": "b0180527940c546fff4822858d9288a42391cf61",
+      "tree": "2461739b013235b1d746dd665987088483ecb252",
+      "title": "fix(integrity): reconcile lifecycle isolation with exact Main d060ae5d",
+      "evidence": "ORDERED_SECOND_PARENT_PLANNED; REQUIRE_FRESH_NATIVE_REST_ANCESTRY_READBACK_BEFORE_CLOSURE"
     }
   ],
   "initial_inventory": {
@@ -1119,7 +1127,13 @@
     "immutable_predecessors_retained": true,
     "promotion_gate_not_weakened": true,
     "regression_correction": "Delegated review may satisfy native governance while missing qualified target-ref CAS must still HOLD; self-review must remain BLOCK.",
-    "same_path_three_way": true
+    "same_path_three_way": true,
+    "pr514_history_preserving_merge": {
+      "first_parent": "88eb20a219ba8187a2ffdcae9e4b4ccdb8209b38",
+      "second_parent": "b0180527940c546fff4822858d9288a42391cf61",
+      "fast_forward_carrier_update": true,
+      "source_closure_after_independent_ancestry_only": true
+    }
   },
   "owner_access_gap_requirement": {
     "existing_authorization_preserved": true,
@@ -1343,7 +1357,137 @@
     },
     "main_merge": false,
     "main_protection_verified": false,
-    "native_ci": "PENDING_CURRENT_APP_RENEWAL_SUCCESSOR"
+    "native_ci": "PENDING_CURRENT_APP_RENEWAL_SUCCESSOR",
+    "pr514_source_consolidation": {
+      "observed_at_utc": "2026-10-14T12:04:06.364Z",
+      "authorization": "Direct Owner instruction of 2026-10-14: controlled history-preserving PR514 consolidation into existing PR523; close PR514 only after independent ancestry readback; preserve protected Main and independent review.",
+      "route": "REST_API_ONLY",
+      "carrier_pr": 523,
+      "first_parent": "88eb20a219ba8187a2ffdcae9e4b4ccdb8209b38",
+      "first_parent_tree": "5bbb815083ebe0084b6e169c6ea09686157cc9e7",
+      "second_parent": "b0180527940c546fff4822858d9288a42391cf61",
+      "second_parent_tree": "2461739b013235b1d746dd665987088483ecb252",
+      "merge_base": "1e3c0af8c841813188754e682f852b7b5c15934f",
+      "unique_source_commits": [
+        {
+          "head": "d6f1e874199b191f96b76d7497637da9bb420408",
+          "subject": "perf(integrity): stream immutable payload hashes through the guarded reader",
+          "parents": [
+            "e23a8185bbef669cead4c8d2c15b3e66ec189eb3"
+          ]
+        },
+        {
+          "head": "efb0c347c00d5f9abea765be21106b829eed39a1",
+          "subject": "chore(integrity): bind streaming-reader successor in canonical projections",
+          "parents": [
+            "d6f1e874199b191f96b76d7497637da9bb420408"
+          ]
+        },
+        {
+          "head": "c6dcc17bb638eed00d6d8a16eb45fb5121f97e1f",
+          "subject": "Merge current Main into PR514 without losing lifecycle or performance work",
+          "parents": [
+            "efb0c347c00d5f9abea765be21106b829eed39a1",
+            "cb6807675f4b80cc67359627b4e68073461eb7d7"
+          ]
+        },
+        {
+          "head": "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
+          "subject": "fix(integrity): reconcile generator 3.2 with current Main and PR519",
+          "parents": [
+            "c6dcc17bb638eed00d6d8a16eb45fb5121f97e1f",
+            "1e3c0af8c841813188754e682f852b7b5c15934f"
+          ]
+        },
+        {
+          "head": "b0180527940c546fff4822858d9288a42391cf61",
+          "subject": "fix(integrity): preserve PR514 and reconcile exact Main d060ae5d",
+          "parents": [
+            "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
+            "d060ae5db77d5e83a2bfc1fe009774e177d8b41e"
+          ]
+        }
+      ],
+      "commit_comparison": {
+        "source_ahead_by": 5,
+        "source_behind_by": 81
+      },
+      "current_inventory": {
+        "open_pull_requests": 112,
+        "pages": 2,
+        "complete": true,
+        "source_pr_open": true,
+        "carrier_open": true,
+        "expected_after_verified_source_closure": 111
+      },
+      "resolutions": [
+        {
+          "path": "tools/qikvrt_integrity.py",
+          "resolution": "Retain byte-identical generator 3.2 and guarded streaming reader; no duplicate implementation.",
+          "git_blob": "b65e8818f607b7f4c33ce90d97d9b4cb59ef90a9"
+        },
+        {
+          "path": "tests/test_integrity.py",
+          "resolution": "Retain PR523 exact bytes. The only PR514/PR523 difference is one blank line; all 11 regressions, including five streaming-reader regressions and lifecycle isolation, are already present.",
+          "source_blob": "58cc8240c89a8e8bf17c3c2c0a7cf410b74c4160",
+          "retained_blob": "2b5545c66a06a98a6bf3e401ae8e43691c50f6c1"
+        },
+        {
+          "path": "docs/news/physics-nobel-2026-decay-continuity/index.html",
+          "resolution": "PR514 equals the common merge-base. Retain PR523's successor with all six language sections and the three added visible copyable source URLs.",
+          "source_blob": "e2fbd4da96e56046f535cb1184b969551b8436f8",
+          "merge_base_blob": "e2fbd4da96e56046f535cb1184b969551b8436f8",
+          "retained_blob": "ab1c9d5e273802a51c48887b54428226616d5ced"
+        },
+        {
+          "path": "state/work_units/MESH_LIVENESS_OUTSIDE_INTEGRITY_MANIFEST_20261009_V1.json",
+          "resolution": "Reuse PR514 exact superset: every PR523 key/value is preserved; three added source-bound historical continuation sections retain original scope and gaps.",
+          "source_blob": "4dc30e5998daf1b1341daf28858ac2316a4f1dae"
+        },
+        {
+          "path": "evidence/performance/20261011/integrity-reader-local-comparison.json",
+          "resolution": "Reuse missing original exact observation bytes. Historical local warm-file/tracemalloc measurement, not a new benchmark or delivery proof.",
+          "source_blob": "742e3a209f213483af08c9f01b7f71f4d9a9f90b"
+        },
+        {
+          "path": "tools/qikvrt_integrity_memory_benchmark.py",
+          "resolution": "Reuse missing original exact source; no duplicate benchmark or newly executed performance trial.",
+          "source_blob": "1b68fe8f8179238887e0cdba0e3159f6c62ba5eb"
+        },
+        {
+          "scope": "All source-relative lifecycle changes",
+          "resolution": "Already byte-identical in the carrier; retain. Historical lifecycle receipts remain outside the immutable index under the unchanged existing generator."
+        },
+        {
+          "scope": "Canonical integrity trio",
+          "resolution": "Rebuild with the existing generator after byte-identical reproduction of all baseline outputs. Cached unchanged digests form a bounded source projection; fresh native full-tree integrity and CI remain required."
+        }
+      ],
+      "local_validation": {
+        "tool_cache": "PASS 29/29 (100%)",
+        "existing_integrity_tests": {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "result": "PASS",
+          "scope": "Bounded exact-source REST fixture; all 13 portable capsule Git objects restored and independently hash-checked. Not a complete repository checkout."
+        },
+        "full_local_make_test": "NOT_EXECUTED_ON_PARTIAL_SOURCE_FIXTURE"
+      },
+      "native_exact_successor_ci": "REQUIRED_PENDING",
+      "independent_ancestry_readback": "REQUIRED_PENDING_BEFORE_SOURCE_CLOSURE",
+      "predecessor_evidence_transfer": false,
+      "effects": {
+        "new_pull_requests": 0,
+        "main_write": false,
+        "force_push": false,
+        "main_integration": false,
+        "independent_review_approval": false,
+        "domain_delivery": false,
+        "zenodo_mutation": false
+      },
+      "first_remaining_main_boundary": "Enforced native protection and independent exact-head code-owner APPROVED remain required; consolidation does not satisfy Main acceptance."
+    }
   },
   "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1"
 }
