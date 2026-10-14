@@ -204,3 +204,9 @@ origin-adapter-test: tool-cache-contract
 
 origin-adapter-browser-test: origin-adapter-test
 	QIKVRT_ORIGIN_FIXTURE_DIR="$(CURDIR)/.qikvrt/evidence/origin-adapter-fixture" node --test docs/monitor/origin/origin.browser.test.mjs
+
+.PHONY: self-host-container-test
+self-host-container-test: tool-cache-contract
+	PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 $(PYTHON) -B -m unittest -v tests.test_self_host_container
+
+test: self-host-container-test

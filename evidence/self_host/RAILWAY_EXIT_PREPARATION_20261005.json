@@ -1,0 +1,234 @@
+{
+  "_license": {
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "rights_holder": "Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "license_text_ref": "LICENSES/CC-BY-NC-ND-4.0.txt",
+    "classification": "railway_exit_preparation_json"
+  },
+  "schema": "qikvrt-railway-exit-preparation/v1",
+  "observed_at": "2026-10-05T08:34:12.597Z",
+  "subject": {
+    "repository": "ingolf-lohmann/qik-vrt",
+    "pr": 457,
+    "parent_head": "4718e0ac162548f5285fb4a92e0f805f8c959965",
+    "parent_tree": "43d028a4d33dc2b41be59e85783aab5a29093782",
+    "successor_binding": "CONTAINING_COMMIT_AND_IMMUTABLE_NATIVE_WORKFLOW_HEAD"
+  },
+  "owner_authorization": {
+    "source": "Direct current user request",
+    "text": "Wir werden jetzt alles Notwendige tun, um auf Railway nicht mehr angewiesen zu sein. Product Owner Freigabe. erteilt.",
+    "role": "Product Owner",
+    "capability_or_external_acceptance_inferred": false
+  },
+  "railway_project_id": "a2440de5-6250-4d02-8845-c166aeaa3d0d",
+  "environment_id": "1286f33e-9f11-43d9-b86c-be5df57718a0",
+  "services": [
+    {
+      "observed_at": "2026-10-05T08:34:06.566Z",
+      "id": "9cd39ede-a001-4861-bd30-098e4d521ecf",
+      "name": "mesh-monitor-exact",
+      "applied_source": {
+        "repo": "Goldkelch/qik-vrt",
+        "rootDirectory": "/deploy/mesh-monitor"
+      },
+      "applied_start_command_sha256": "03f27210785635736d4dee8dfbd061dafe1c9e6d03f15db48388fa86012cf68e",
+      "applied_start_command_bytes": 17,
+      "applied_domains": {},
+      "applied_volume_mounts": {},
+      "defined_variable_names": [],
+      "variable_values_read": false,
+      "applied_config_sha256": "54d137e0af417d36cadc84951f150a13fcc93360414f6e7a516c46ffe1fa5973",
+      "staged": null,
+      "legacy_role_data_and_consumers_verified": false,
+      "legacy_volume_exported": false,
+      "decommissioned": false
+    },
+    {
+      "observed_at": "2026-10-05T08:34:08.041Z",
+      "id": "bef5c694-58ca-42f5-9a8a-01b370b0adce",
+      "name": "mesh-monitor-live",
+      "applied_source": {
+        "repo": "Goldkelch/qik-vrt",
+        "rootDirectory": "/deploy/mesh-monitor"
+      },
+      "applied_start_command_sha256": "03f27210785635736d4dee8dfbd061dafe1c9e6d03f15db48388fa86012cf68e",
+      "applied_start_command_bytes": 17,
+      "applied_domains": {},
+      "applied_volume_mounts": {},
+      "defined_variable_names": [],
+      "variable_values_read": false,
+      "applied_config_sha256": "54d137e0af417d36cadc84951f150a13fcc93360414f6e7a516c46ffe1fa5973",
+      "staged": null,
+      "legacy_role_data_and_consumers_verified": false,
+      "legacy_volume_exported": false,
+      "decommissioned": false
+    },
+    {
+      "observed_at": "2026-10-05T08:34:08.985Z",
+      "id": "fcefa27f-486a-4505-8a43-8080b8509e95",
+      "name": "mesh-monitor-bootstrap",
+      "applied_source": {
+        "image": "python:3.13-alpine"
+      },
+      "applied_start_command_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "applied_start_command_bytes": 0,
+      "applied_domains": {
+        "mesh-monitor-bootstrap-production.up.railway.app": {}
+      },
+      "applied_volume_mounts": {},
+      "defined_variable_names": [],
+      "variable_values_read": false,
+      "applied_config_sha256": "9474af92dd70d24c5f928b23e9c23fe11dc306ddd8e13b289720d2d3f1946fca",
+      "staged": null,
+      "legacy_role_data_and_consumers_verified": false,
+      "legacy_volume_exported": false,
+      "decommissioned": false
+    },
+    {
+      "observed_at": "2026-10-05T08:34:11.605Z",
+      "id": "dc3773e0-d057-4779-b9c1-9ca0f2074f69",
+      "name": "mesh-monitor",
+      "applied_source": {
+        "repo": "Goldkelch/qik-vrt",
+        "rootDirectory": "/docs/monitor"
+      },
+      "applied_start_command_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "applied_start_command_bytes": 0,
+      "applied_domains": {
+        "mesh-monitor-production.up.railway.app": {}
+      },
+      "applied_volume_mounts": {},
+      "defined_variable_names": [],
+      "variable_values_read": false,
+      "applied_config_sha256": "d7e22376894ac7171eb4b27341f9109c2330617067184094a8d6a2071b27101e",
+      "staged": {
+        "patch_id": "9d4860c4-5003-48ef-a07f-d383f303b539",
+        "status": "STAGED",
+        "change_count": 18,
+        "source": {
+          "repo": "ingolf-lohmann/qik-vrt",
+          "image": null,
+          "branch": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+          "commitSha": "674aa35ec0659119a19cda66b88f32050e34f105"
+        },
+        "volume_mounts": {
+          "e802140e-b6a9-476c-a937-dde322253539": {
+            "mountPath": "/var/lib/qikvrt/monitor"
+          }
+        },
+        "variable_names": [
+          "QIKVRT_GITHUB_WEBHOOK_SECRET",
+          "QIKVRT_MONITOR_NODE_ID",
+          "QIKVRT_MONITOR_SOURCE_HEAD",
+          "QIKVRT_MONITOR_SOURCE_REPOSITORY",
+          "QIKVRT_MONITOR_SOURCE_TREE",
+          "QIKVRT_MONITOR_STATE_DIR"
+        ],
+        "applied": false
+      },
+      "legacy_role_data_and_consumers_verified": false,
+      "legacy_volume_exported": false,
+      "decommissioned": false
+    },
+    {
+      "observed_at": "2026-10-05T08:34:12.597Z",
+      "id": "feb518e8-bfb2-450d-a36a-c992b052427c",
+      "name": "universal-terminal",
+      "applied_source": {
+        "repo": "Goldkelch/qik-vrt",
+        "branch": "feature/cloud-transputer-materialization-v1-b4b0038",
+        "commitSha": "2fdcf8d233b1495732ef38e3406ebfc095fd0ef3"
+      },
+      "applied_start_command_sha256": "8522a1218a6fc9eb8ce43c095c8c3c30734fc5056a0fae425b524dea6f927ed7",
+      "applied_start_command_bytes": 10140,
+      "applied_domains": {
+        "universal-terminal-production.up.railway.app": {
+          "port": 8080
+        }
+      },
+      "applied_volume_mounts": {
+        "0e2d37e2-ac58-4bdc-8238-ed81bf2aa187": {
+          "mountPath": "/var/lib/qikvrt"
+        }
+      },
+      "defined_variable_names": [
+        "PORT",
+        "QIKVRT_CLOUD_START_URL",
+        "QIKVRT_EXACT_HEAD",
+        "QIKVRT_EXACT_TREE",
+        "QIKVRT_MESH_PUBLIC_URL",
+        "QIKVRT_PROFILE_DIR",
+        "QIKVRT_REGENERABLE_CACHE",
+        "QIKVRT_REQUIRE_AUTHORITY_MIRROR",
+        "QIKVRT_RUNTIME_ID",
+        "QIKVRT_SERVICE_MODE",
+        "QIKVRT_SOURCE_DIRECTORY_MODE",
+        "QIKVRT_START_URL",
+        "QIKVRT_STATE_DIR",
+        "QIKVRT_TEMDD_PR",
+        "QIKVRT_TERMINAL_PASSWORD",
+        "QIKVRT_TERMINAL_USER"
+      ],
+      "variable_values_read": false,
+      "applied_config_sha256": "fbd441bd044bff7e8d07f4c01fe041f5f4f057b9779f8cdca77552e9280cf97a",
+      "staged": null,
+      "legacy_role_data_and_consumers_verified": false,
+      "legacy_volume_exported": false,
+      "decommissioned": false
+    }
+  ],
+  "observed_terminal_dependencies": [
+    "Mutable GitHub source fetch and exact subject at boot",
+    "APT/GCC installation at boot if unavailable",
+    "Railway public domain and deployment ID used by legacy follow script",
+    "Existing live Railway volume and private Firefox profile/state configuration"
+  ],
+  "reused_portable_replacement": {
+    "package": "runtime/self-host/PACKAGE.json",
+    "version": "1.1.3",
+    "adapter": "none",
+    "native_sources_modified": false,
+    "code_export": "Existing exact committed allowlist, executable/config/source pins",
+    "durable_state": "Existing original monitor journal and recovered native SQLite/WAL/SHM; private create-only snapshot/restore in same launcher",
+    "supervision": "Existing pinned systemd service/path/guard; no second executor, ledger or supervisor",
+    "independent_readback": "Existing tools/qikvrt_mesh_monitor_readback.mjs"
+  },
+  "exposed_capability_scope": {
+    "railway_config_inventory_available": true,
+    "railway_volume_export_or_shell_operation_exposed": false,
+    "authorized_own_host_execution_endpoint_exposed": false,
+    "target_persistent_mount_and_https_route_validated": false,
+    "credential_values_inspected": false,
+    "scope": "Current exposed tools and fresh five-service applied configuration; bounded absence, not global account claim"
+  },
+  "required_before_cutover": [
+    "Verify exact live legacy source and every original role/data store/consumer",
+    "Stop and durably fence source writers; retain recoverable original data",
+    "Export legacy data through authorized capability and validate original epoch/event/journal binding; do not relabel for S1 config",
+    "Admit actual own host and persistent mount; provision unchanged package/config plus credentials separately",
+    "Use existing supervisor; independently validate original acknowledged events and external HTTPS use",
+    "Restart deployed target and independently re-read exact events, monitor journal, mount and source identity",
+    "Establish responsible-role acceptance and review governance",
+    "Only then change actual routes and retire each old service under bound authorization"
+  ],
+  "boundaries": {
+    "railway_configuration_or_staged_changes_mutated": false,
+    "legacy_data_exported": false,
+    "host_admission_verified": false,
+    "deployment_performed": false,
+    "external_https_readback_verified": false,
+    "deployed_restart_verified": false,
+    "railway_cutover_verified": false,
+    "S1_DONE": false,
+    "EFFECT_ACK_DONE": false,
+    "predecessor_pass_transfer": false
+  },
+  "official_operator_export_reference": {
+    "url": "https://docs.railway.com/cli/ssh",
+    "read_on": "2026-10-05",
+    "observed_contract": "SSH needs an account-registered key; SCP/SFTP can transfer mounted-volume files",
+    "capability_exposed_in_current_task": false,
+    "key_registration_or_transfer_performed": false
+  }
+}

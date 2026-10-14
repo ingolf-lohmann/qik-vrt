@@ -209,6 +209,17 @@ class FirefoxAMOUnlistedTests(unittest.TestCase):
         self.assertNotEqual(baseline,host.firefox_amo_runtime_fingerprint(source.replace(
             b'"signatures_required"',b'"tampered_signatures_required"')))
 
+    def test_container_cli_changes_cannot_retry_the_same_firefox_failure(self):
+        source=(ROOT/'tools/qikvrt_self_host.py').read_bytes()
+        baseline=host.firefox_amo_runtime_fingerprint(source)
+        self.assertEqual(baseline,host.firefox_amo_runtime_fingerprint(source.replace(
+            b'non-secret container evidence output',b'changed unrelated container diagnostic')))
+        self.assertEqual(baseline,host.firefox_amo_runtime_fingerprint(source.replace(
+            b'.execute(args)\n        elif args.operation.startswith("provider-")',
+            b'.execute(args, changed_container_option=True)\n        elif args.operation.startswith("provider-")')))
+        self.assertNotEqual(baseline,host.firefox_amo_runtime_fingerprint(source.replace(
+            b'"FIREFOX_RELEASE_BELOW_OWNER_MINIMUM"',b'"CHANGED_FIREFOX_MINIMUM_GUARD"')))
+
 
 class FirefoxExtensionAdmissionTests(unittest.TestCase):
     def accepted(self):

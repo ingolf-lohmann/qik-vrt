@@ -2565,11 +2565,15 @@ def firefox_amo_runtime_fingerprint(source):
             isinstance(item, ast.Expr) and isinstance(item.value, ast.Call)
             and isinstance(item.value.func, ast.Attribute) and item.value.func.attr == "add_argument"
             and item.value.args and isinstance(item.value.args[0], ast.Constant)
-            and str(item.value.args[0].value).startswith("--amo-"))]
+            and (str(item.value.args[0].value).startswith("--amo-") or
+                 item.value.args[0].value in {"--image", "--receipt", "--oci-archive", "--second-oci-archive",
+                    "--carrier-archive", "--carrier-oci-archive", "--production-binding", "--binding-sha256",
+                    "--ca-file", "--cert-file", "--key-file"}))]
         for item in ast.walk(node):
             if isinstance(item, ast.keyword) and item.arg == "choices" and isinstance(item.value, ast.Tuple):
                 item.value.elts = [v for v in item.value.elts if not (
-                    isinstance(v, ast.Constant) and v.value == "firefox-amo-unlisted")]
+                    isinstance(v, ast.Constant) and (v.value == "firefox-amo-unlisted" or
+                        isinstance(v.value, str) and v.value.startswith("container-")))]
         for item in node.body:
             if not isinstance(item, ast.Try): continue
             first = item.body[0]
@@ -2577,6 +2581,16 @@ def firefox_amo_runtime_fingerprint(source):
                     and any(isinstance(v, ast.Constant) and v.value == "firefox-amo-unlisted"
                             for v in first.test.comparators)):
                 item.body = first.orelse + item.body[1:]
+        class ContainerCLIProjection(ast.NodeTransformer):
+            def visit_If(self, branch):
+                test = branch.test
+                if (isinstance(test, ast.Call) and isinstance(test.func, ast.Attribute)
+                        and test.func.attr == "startswith" and ast.unparse(test.func.value) == "args.operation"
+                        and len(test.args) == 1 and isinstance(test.args[0], ast.Constant)
+                        and test.args[0].value == "container-"):
+                    return [self.visit(child) for child in branch.orelse]
+                return self.generic_visit(branch)
+        ContainerCLIProjection().visit(node)
     return digest(ast.dump(module, include_attributes=False).encode())
 
 
@@ -3024,6 +3038,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+        "container-context", "container-carrier", "container-carrier-archive-check", "container-oci-check", "container-smoke", "container-production-gate", "container-deploy", "container-readback",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
         "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
@@ -3052,6 +3067,17 @@ def main():
     parser.add_argument("--admission-sha256", help="independently obtained host declaration pin")
     parser.add_argument("--admission-tool-sha256", help="independently reviewed guard pin; required for supervisor operations")
     parser.add_argument("--browser-assets-root", type=Path, help="explicit provisioned noVNC source tree; freeze a Firefox-capable variant")
+    parser.add_argument("--image", help="local smoke tag or exact versioned production digest")
+    parser.add_argument("--receipt", type=Path, help="non-secret container evidence output")
+    parser.add_argument("--oci-archive", type=Path)
+    parser.add_argument("--second-oci-archive", type=Path)
+    parser.add_argument("--carrier-archive", type=Path, help="existing pinned GitHub delivery ZIP; otherwise download through original Actions REST")
+    parser.add_argument("--carrier-oci-archive", type=Path, help="create-only OCI transport preserving the verified original ZIP for the existing publisher")
+    parser.add_argument("--production-binding", type=Path, help="existing protected Linux host binding; never credentials")
+    parser.add_argument("--binding-sha256", help="independently pinned protected host binding")
+    parser.add_argument("--ca-file", type=Path)
+    parser.add_argument("--cert-file", type=Path)
+    parser.add_argument("--key-file", type=Path)
     parser.add_argument("--snapshot", type=Path, help="separately sealed offline volume copy; never a live Railway mount")
     parser.add_argument("--source-declaration", type=Path, help="private independently validated capture/layout declaration")
     parser.add_argument("--source-declaration-sha256", help="independent exact declaration pin")
@@ -3099,6 +3125,10 @@ def main():
         elif args.operation == "docker-admit":
             result = docker_plan(args.root, args.manifest_sha256, args.config, args.admission,
                                  args.admission_sha256, args.delivery, args.delivery_sha256)
+        elif args.operation.startswith("container-"):
+            import importlib
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+            result = importlib.import_module("tools.qikvrt_self_host_container").execute(args)
         elif args.operation.startswith("provider-"):
             result = provider_module().execute(args)
         elif args.operation.startswith("mesh-cache-"):

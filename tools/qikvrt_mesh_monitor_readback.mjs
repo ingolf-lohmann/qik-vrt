@@ -11,7 +11,13 @@ import https from 'node:https';
 import {isIPv4} from 'node:net';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const require = (condition, code) => {if (!condition) throw new Error(code);};
+class ReadbackGuardError extends Error {}
+const require = (condition, code) => {if (!condition) throw new ReadbackGuardError(code);};
+export function readbackFailure(error) {
+  return {state:'HOLD_PUBLIC_OR_INDEPENDENT_CLIENT_READBACK',
+    cause:error instanceof ReadbackGuardError ? error.message : 'READBACK_UNCLASSIFIED_ERROR',
+    effect_ack_done:false};
+}
 const legacyContract = new URL('../state/deployments/MESH_MONITOR_RAILWAY_EXACT_674aa35.json', import.meta.url);
 const contract = existsSync(legacyContract) ? JSON.parse(readFileSync(legacyContract)) : null;
 

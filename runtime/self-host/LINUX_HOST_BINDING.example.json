@@ -1,0 +1,17 @@
+{
+  "schema": "qikvrt-s1-linux-host-binding/v1",
+  "repository": "ingolf-lohmann/qik-vrt",
+  "origin": "https://raumzeitterminal.de",
+  "docker_api": null,
+  "daemon_id": null,
+  "container_name": "qikvrt-s1",
+  "state_volume": null,
+  "config_directory": null,
+  "config_sha256": null,
+  "node_id": null,
+  "manifest_sha256": null,
+  "loopback_port": 8080,
+  "source_head": null,
+  "source_tree": null,
+  "image_digest": null
+}

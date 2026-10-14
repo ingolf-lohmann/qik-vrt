@@ -1154,6 +1154,29 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
             with self.assertRaisesRegex(ValueError,'INVOCATION_BINDING_MISMATCH'):
                 host.systemd_invocation('qikvrt-fixture-only.service')
 
+    def test_cold_start_has_durable_snapshot_before_first_independent_readback(self):
+        self.start()
+        status, health = self.get('/health')
+        self.assertEqual(status, 200)
+        self.assertTrue(health['snapshot_durable'])
+        args = ['node', str(self.export/'tools/qikvrt_mesh_monitor_readback.mjs'), '--self-host',
+                str(self.export), self.url, self.pin, host.digest(self.config_path.read_bytes()),
+                self.config['node_id'], 'none']
+        first = subprocess.run(args, capture_output=True, text=True, timeout=10)
+        self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
+        receipt = json.loads(first.stdout)
+        self.assertEqual(receipt['state'], 'CLIENT_BYTE_READBACK_VERIFIED')
+        self.assertEqual(receipt['source_head'], self.head)
+        self.assertFalse(receipt['effect_ack_done'])
+        self.stop(abrupt=True)
+        self.start()
+        second = subprocess.run(args, capture_output=True, text=True, timeout=10)
+        self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
+        restarted = json.loads(second.stdout)
+        self.assertEqual(restarted['epoch'], receipt['epoch'])
+        self.assertFalse(restarted['effect_ack_done'])
+
+
 
 class MeshWorkCacheTests(unittest.TestCase):
     """Actual local Git, Python cache, Node receiver and authenticated HTTP.

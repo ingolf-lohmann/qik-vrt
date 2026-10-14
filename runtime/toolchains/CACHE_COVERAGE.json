@@ -133,6 +133,12 @@
       "version": "1.13.4"
     },
     {
+      "cache_class": "runner-image-layer",
+      "component": "skopeo",
+      "provider": "containers/skopeo official quay.io/skopeo/stable SHA-256-bound OCI image",
+      "version": "exact-OCI-carrier-preserve-digests"
+    },
+    {
       "cache_class": "repo-managed-archive",
       "component": "sqljs-browser",
       "provider": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.2.tgz",
@@ -189,10 +195,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 31,
-  "declared_components": 31,
-  "lock_sha256": "1be203109c3fa3cfbebe2cf736e1505d6a22080e20af9f6dc4bbfdf359310369",
-  "registry_sha256": "92ab292819d74a7d7e22d8b136d5d65e4427ae7ea83e00c2cf0168bf8c96d874",
+  "covered_components": 32,
+  "declared_components": 32,
+  "lock_sha256": "b74996292e83d3657ae3032176225fd6ff3d969ef7afd00a0fbf0d6b3df652ce",
+  "registry_sha256": "0e8991b9b734558775d9e53275c3076d90139cfff9d8196166b6e62f87dd776e",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

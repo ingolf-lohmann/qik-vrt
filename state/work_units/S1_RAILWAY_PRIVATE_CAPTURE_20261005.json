@@ -1,0 +1,229 @@
+{
+  "_license": {
+    "classification": "work_unit_json",
+    "copyright": "Copyright 2026 Ingolf Lohmann",
+    "license": "CC-BY-NC-ND-4.0",
+    "rights_holder": "Ingolf Lohmann"
+  },
+  "artificial_cognitive_actor": {
+    "build": "UNAVAILABLE",
+    "model_family": "GPT-6",
+    "provider": "OpenAI",
+    "retention": "METADATA_ONLY",
+    "session_id": "ba357f78aaf7",
+    "system_family": "Codex"
+  },
+  "artificial_cognitive_contributions": [
+    "Reobserve exact PR HEAD/TREE, main, existing Railway service/deployment/volume and callable tool boundary",
+    "Extend original storage operations with pinned create-only arm, complete privileged private capture and unstarted composition of the exact original cloud supervisor",
+    "Reuse original streaming digest/copy/fsync, producer locks, native durable ledger cut and monitor validators; preserve all recovered source blobs",
+    "Stage and re-read only an early startCommand guard on the existing service; retain live deployment and 21 foreign staged changes",
+    "Require all 14 capture controls, positive real process census and foreign-owner preservation in existing isolated root Docker CI"
+  ],
+  "capability_hold": "evidence/self_host/RAILWAY_CAPTURE_CAPABILITY_20261005.json",
+  "capture_state": "CAPABILITY_HOLD; PRODUCTION_NOT_CAPTURED",
+  "created_at": "2026-10-05T10:44:31.627930+00:00",
+  "external_effects": {
+    "candidate_git_write": "AUTHORIZED_REVIEWABLE_FAST_FORWARD",
+    "live_writer_stop": false,
+    "own_host_cutover": false,
+    "production_capture_export_or_upload": false,
+    "railway_deploy_or_restart": false,
+    "railway_single_field_guard": "STAGED_NOT_APPLIED; bound public capability receipt",
+    "secrets_or_private_inventory_committed": false
+  },
+  "first_causal_external_blocker": "HOLD_PRIVILEGED_RAILWAY_CAPTURE_AND_PRIVATE_TRANSFER_CAPABILITY",
+  "fresh_base_head": "86d7062f25f174039da0a5df8a856127553036f1",
+  "git_history": {
+    "history_rewritten": false,
+    "original_recovered_source_files_modified": false,
+    "parent": "812d062f3e4f963e388ed89fdc8ece47f0541e64",
+    "successor_binding": "CONTAINING_COMMIT_AND_NATIVE_IMMUTABLE_EVENT_HEAD"
+  },
+  "human_actor": {
+    "identity_proof": "METADATA_ONLY; NOT_INFERRED",
+    "instruction_source": "CURRENT_EXPLICIT_USER_TASK",
+    "name": "Ingolf Lohmann"
+  },
+  "human_contributions": [
+    "Find existing authorized Railway Universal Terminal carrier and close private capture boundary if callable",
+    "Otherwise materialize the one-shot capture path on the existing deployment carrier and stop at its precise capability HOLD",
+    "Keep private volume/profile/snapshot/export bytes out of Git; no Own-Host cutover"
+  ],
+  "human_decision": {
+    "candidate_review": "PENDING",
+    "implementation": "EXPLICIT_CURRENT_TASK_AUTHORIZATION",
+    "main_merge": "NOT_PERFORMED"
+  },
+  "inputs": [
+    {
+      "bytes": 16202,
+      "git_blob_sha1": "6b849cfe80e8bb6075f07f539177a85cbc7de065",
+      "path": "runtime/self-host/MIGRATION.md",
+      "sha256": "3c3c4bfc3e1a3e1e4637fb72559f9f07b400ff4450d7b6ae5d7c4f1b16c4a0c6"
+    },
+    {
+      "bytes": 9688,
+      "git_blob_sha1": "1c98bbda3bae0773ac622ac54d09fe851aa6834e",
+      "path": "evidence/self_host/RAILWAY_EXIT_PREPARATION_20261005.json",
+      "sha256": "7960d08a255be6999a3dd32fe0cf046f0da08a4de6bfdad8723fe70418b0b86f"
+    },
+    {
+      "bytes": 120508,
+      "git_blob_sha1": "dfe1c78ead2edff550895e3fb32200e8892bce5d",
+      "path": "evidence/self_host/SOURCE_RECOVERY_20261005.json",
+      "sha256": "ac8e345f2b62a562d65cc670274959d41f1df4dbbde4229c2c4af61de815dd7e"
+    }
+  ],
+  "joint_components": [],
+  "milestone": "S1",
+  "milestone_state": "OPEN",
+  "next_action": "Admit authenticated privileged exec/SSH and private SFTP/SCP for exact deployment; independently verify applied restart fence, current clean runtime HEAD/TREE and durable ACK cut; preserve legacy binaries, admit sole supervisor composition, privately arm/quiesce/capture, independently pin evidence/SOURCE and run source/export verifiers. No Own-Host cutover.",
+  "outputs": [
+    {
+      "bytes": 9753,
+      "git_blob_sha1": "50494fb526de4737ee2d0cf8a8a6d71bd006dd5d",
+      "path": ".github/workflows/qikvrt_effect_ack_http_terminal.yml",
+      "sha256": "e52bc3e651f0b37c7dfe1e532134d5519067be69c0d1fb5d29614275eaf7ace6"
+    },
+    {
+      "bytes": 3000,
+      "git_blob_sha1": "26bc8f2dbcb4cf52fdd2f6a2c714c53fa12c4f04",
+      "path": "deploy/universal-terminal/railway-capture-hook.sh",
+      "sha256": "76321bfc22ad40768edd78ea73ca2845d5c91d7611430375f925524025cb077c"
+    },
+    {
+      "bytes": 5236,
+      "git_blob_sha1": "cf83484637ef766b2411e3f21f09367b3dc730e8",
+      "path": "evidence/self_host/RAILWAY_CAPTURE_CAPABILITY_20261005.json",
+      "sha256": "546508cbc7fe3e82521352e70392ebf1fc59f8857c5eb6de4a9f6afaa0097b32"
+    },
+    {
+      "bytes": 8949,
+      "git_blob_sha1": "380374107d7c1ecefd2b266901a3ee248701b4ca",
+      "path": "runtime/self-host/CAPTURE.md",
+      "sha256": "67620f371ff29834be238c56d33a5a766f0287354c5d01ac64ece66ee3fe8865"
+    },
+    {
+      "bytes": 876,
+      "git_blob_sha1": "ab052430a4d0e6018b5b222233782966f2645ab1",
+      "path": "runtime/self-host/CAPTURE_REQUEST.example.json",
+      "sha256": "8618c00576347cdd7094483e98f9c5a90088ebb2ecbd173d14649e6d309be963"
+    },
+    {
+      "bytes": 16512,
+      "git_blob_sha1": "176971014fe693f5ca56d0426c6385adfe37f668",
+      "path": "runtime/self-host/MIGRATION.md",
+      "sha256": "4545cadd9ddaaa848d3dcef63ad74b28df3b6d85971437ce2b28e919469c104a"
+    },
+    {
+      "bytes": 4246,
+      "git_blob_sha1": "aa56b973550487b3b356c7690ff3c003f496add2",
+      "path": "runtime/self-host/PACKAGE.json",
+      "sha256": "8974fc01de845cc0240c076b9310c30e58a89c4eec9510095b88eaf90cbe63be"
+    },
+    {
+      "bytes": 24796,
+      "git_blob_sha1": "061669583d09737839949fcb838300e5b8890b1c",
+      "path": "runtime/self-host/README.md",
+      "sha256": "9ca497fac786d4f035e64dd0fdb3c042e6928cd592d6a1106d6a75e570370d49"
+    },
+    {
+      "bytes": 5657,
+      "git_blob_sha1": "b24d056c02bd23aa75b89068ba0effa7c1d402cb",
+      "path": "runtime/toolchains/CACHE_COVERAGE.json",
+      "sha256": "3010d4df300006c48fdad17aa6fa14b80e6b5f353cc66f17939dcd872ab71ff5"
+    },
+    {
+      "bytes": 21692,
+      "git_blob_sha1": "c94f843ef6a56c062ba567fa2636f5e5ce07323e",
+      "path": "runtime/toolchains/CACHE_REGISTRY.json",
+      "sha256": "8a6019b230c9347d25b0ceb26ee4a4fb2c34d67b3200b0c3495bbcf90a97ab4a"
+    },
+    {
+      "bytes": 12688,
+      "git_blob_sha1": "ef898935060487b27b47c8771762a3907e0a5255",
+      "path": "runtime/toolchains/PROVENANCE.md",
+      "sha256": "38f2e84774022bee993e8481f9068403f1a43d10b259f59fa1dbeb58680a28f7"
+    },
+    {
+      "bytes": 13446,
+      "git_blob_sha1": "2ebac49ffda375b61704c2ee22034d9d263315b6",
+      "path": "tests/test_self_host_capture.py",
+      "sha256": "b04dc8514a3582766c4e1704e0b42c52f0ad141f5d28b5dff95339ff0e51b864"
+    },
+    {
+      "bytes": 60411,
+      "git_blob_sha1": "07f9ce3996e5dda95152a7417484fceed376b4d1",
+      "path": "tools/qikvrt_self_host.py",
+      "sha256": "cd7ec302c918fe631d458edbee41f0890523e14b8696c42d902182a7f746b860"
+    },
+    {
+      "bytes": 54166,
+      "git_blob_sha1": "b80664902586ee7e8199eeaf084180f25847e9a2",
+      "path": "tools/qikvrt_self_host_migration.py",
+      "sha256": "4fbde896752ec5032755f68ffd537df4d37059763d68f8b24f75ff523cde6746"
+    }
+  ],
+  "release_claims": {
+    "EFFECT_ACK_DONE": false,
+    "S1_DONE": false,
+    "deployment_performed": false,
+    "host_admission_verified": false,
+    "legacy_data_exported": false,
+    "ordinary_release": false,
+    "predecessor_evidence_transfer": false,
+    "production_capture_verified": false,
+    "public_readback_verified": false,
+    "railway_cutover_verified": false
+  },
+  "reuse_evidence": {
+    "additive_adapter": "railway-capture-hook.sh composed into an unstarted private supervisor; no second runtime/daemon or public data endpoint",
+    "ci": "Existing qikvrt_effect_ack_http_terminal.yml isolated root Docker lane",
+    "insufficiency": "No callable privileged deployed-container exec/write/private archive transfer route; mediated text read cannot quiesce or capture",
+    "runtime": "Original cloud-entrypoint.sh child registrations and role binaries; all 44 recovered files byte-frozen",
+    "storage": "Existing qikvrt_self_host streaming digest/copy/fsync and migration inventory/locks/native Ledger/MonitorStore/source/export verifiers"
+  },
+  "schema": "qikvrt_work_unit_v1",
+  "source_commit": "812d062f3e4f963e388ed89fdc8ece47f0541e64",
+  "source_ref": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+  "source_repository": "ingolf-lohmann/qik-vrt",
+  "source_tree": "0fecc2f728fb863f0b80d2bb68ecbf9e4e83cb35",
+  "unresolved_origin": [],
+  "verification": {
+    "combined_storage_source_and_capture": {
+      "capture_controls": 13,
+      "log_sha256": "f2248f022dceda82c6a00d625b09c08bd32c557381543a90ee0a291d10e5e71b",
+      "migration_controls": 22,
+      "scope": "SYNTHETIC_WORKING_TREE; NOT_PRODUCTION",
+      "source_recovery_controls": 3,
+      "status": "PASS",
+      "tests": 38
+    },
+    "exact_head_ci": "REQUIRED_FRESH_NEW_HEAD; NO_PREDECESSOR_PASS_TRANSFER",
+    "integrity": "REGENERATED_AND_VERIFIED_CONTAINING_TREE",
+    "latest_capture_controls": {
+      "log_sha256": "f63976c9d2a36842b17c61956a08a1038d41fe095bde0acf9160943d2fad686e",
+      "scope": "Latest capture source; synthetic carrier/mount/census mocks explicitly bounded",
+      "status": "PASS",
+      "tests": 13
+    },
+    "local_kernel_limitations": [
+      "Only UID/GID 0 mapped; foreign-owner chown returns EINVAL",
+      "/proc/1/ns/pid unobservable; real census refuses safely",
+      "Native Unix socket binding unavailable; existing self-host prerequisite errors and teardown interrupted"
+    ],
+    "mandatory_native_capture": "All 14 CaptureControls plus positive real PID namespace census in existing root Docker lane; no skip or gate weakening",
+    "portable_repository_and_monitor": {
+      "command": "make test repository-monitor-test",
+      "exit_code": 0,
+      "historical_fixture_object_fetched": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "log_sha256": "5699b31264f6d1a6c1fcf3852700e6d935f7f387af24d28139ed6148033ef1e4",
+      "node_monitor_tests": 24,
+      "python_test_executions": 527,
+      "status": "PASS"
+    },
+    "tool_cache": "PASS 25/25; no new executable dependency/profile"
+  },
+  "work_unit_id": "S1_RAILWAY_PRIVATE_CAPTURE_20261005"
+}

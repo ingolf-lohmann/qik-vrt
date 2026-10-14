@@ -19,8 +19,17 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
+      - name: Set up standalone Python runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Set up standalone Node runtime
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -36,7 +45,7 @@ jobs:
         run: bash tests/test_adaptive_runtime.sh
 
       - name: Run mandatory repository test suite
-        run: make test
+        run: make test repository-monitor-test self-host-test
 
       - name: Create two attributable deterministic observations
         shell: bash

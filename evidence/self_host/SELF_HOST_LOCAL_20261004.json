@@ -1,0 +1,75 @@
+{
+  "schema": "qikvrt-self-host-local-validation/v1",
+  "observed_at_utc": "2026-10-04T18:14:13Z",
+  "scope": "CANDIDATE_WORKTREE_AND_LOCAL_EXPORT_FIXTURE; NOT_COMMITTED_EXACT_HEAD_OR_DEPLOYMENT",
+  "parent_head": "3ccdf9134dbee584581fd35a2b24af59d80ce928",
+  "parent_tree": "510666384f4a0b6b92c8d0a8285b3fff09fc1958",
+  "runtime": {
+    "node_version": "v24.19.0",
+    "node_executable_sha256": "bc17c508ffeed0ec622934f9b7fa72f8e78da65350e63c3eceb56fa688aa5e12",
+    "python_version": "3.12.14",
+    "python_executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "system": "linux",
+    "architecture": "x86_64"
+  },
+  "self_host": {
+    "command": "python3 -B -m unittest -v tests.test_self_host",
+    "exit_code": 0,
+    "tests": 13,
+    "failures": 0,
+    "skips": 0,
+    "cases": [
+      "test_authenticated_reference_terminal_and_public_read_only_boundary",
+      "test_export_is_deterministic_and_contains_only_committed_public_bytes",
+      "test_missing_gh_is_optional_only_for_the_standalone_none_adapter",
+      "test_private_config_and_secret_symlink_fail_before_listener",
+      "test_railway_denial_happens_before_transport_with_or_without_github",
+      "test_second_writer_is_rejected_by_kernel_lock",
+      "test_sigkill_restart_preserves_acknowledged_original_bytes_and_independent_readback",
+      "test_surviving_monitor_retains_lock_after_launcher_only_sigkill",
+      "test_tampered_artifact_and_extra_file_are_not_admitted",
+      "test_wrong_manifest_pin_and_runtime_executable_binding_fail_closed",
+      "test_wrong_source_and_unreviewed_worktree_fail_export",
+      "test_wrong_source_binding_does_not_start",
+      "test_wrong_volume_identity_preserves_confirmed_data"
+    ],
+    "source_binding": {
+      "bytes": 17398,
+      "sha256": "9cdf286607f374242852f7d03339b2583bee1a915fe86a027b9b6a24d4099891",
+      "git_blob_sha1": "60e81d6cadda94fb2cfe66c1761a562194a04843"
+    }
+  },
+  "monitor": {
+    "command": "make repository-monitor-test",
+    "exit_code": 0,
+    "observer_clock_and_source_cases": "PASS",
+    "node_tests": 24,
+    "failures": 0,
+    "skips": 0
+  },
+  "full_make_test": {
+    "command": "make test repository-monitor-test self-host-test",
+    "exit_code": 0,
+    "python_test_invocations": 540,
+    "node_monitor_tests": 24,
+    "scope": "CURRENT_FINAL_CANDIDATE_WORKTREE; ALL_13_SELF_HOST_CASES_AND_24_ORIGINAL_MONITOR_CONTROLS_PLUS_UNCHANGED_FULL_SUITE",
+    "existing_source_archive_control": "SKIP_ONLY_WHEN_ARCHIVE_ABSENT_AS_PREEXISTING_TEST_CONTRACT; NO_TEST_REMOVED"
+  },
+  "owner_unix_client": {
+    "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal",
+    "exit_code": 1,
+    "attempted": 31,
+    "passed": 8,
+    "errors": 23,
+    "cause": "PermissionError: [Errno 1] Operation not permitted at socket.socket(AF_UNIX, SOCK_STREAM)",
+    "scope": "LOCAL_ENVIRONMENT_EXECUTION_HOLD; UNCHANGED_31_TESTS_REQUIRED_IN_EXISTING_NATIVE_LINUX_WORKFLOW"
+  },
+  "boundaries": {
+    "public_routing_verified": false,
+    "host_persistence_attested": false,
+    "power_loss_verified": false,
+    "productive_terminal_daemon_tested": false,
+    "predecessor_evidence_transfer": false,
+    "effect_ack_done": false
+  }
+}

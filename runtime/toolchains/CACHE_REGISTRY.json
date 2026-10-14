@@ -581,6 +581,29 @@
       ],
       "version": "1.13.4"
     },
+    "skopeo": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        ".github/workflows/qikvrt_ci.yml",
+        "tests/test_self_host_container.py",
+        "runtime/toolchains/PROVENANCE.md"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "Docker daemon content-addressed image layers; no authentication data"
+      ],
+      "profiles": [
+        "self-host-container"
+      ],
+      "provider": "containers/skopeo official quay.io/skopeo/stable SHA-256-bound OCI image",
+      "trusted_save": false,
+      "verification": [
+        "skopeo --version recorded; pinned official image",
+        "copy --preserve-digests of the independently verified OCI archive; every version tag read back against the frozen descriptor",
+        "failure refuses deployment; no image rebuild or tag overwrite after test"
+      ],
+      "version": "exact-OCI-carrier-preserve-digests"
+    },
     "sqljs-browser": {
       "authority_files": [
         "runtime/self-host/ORIGIN_SQLITE_LOCK.json",
