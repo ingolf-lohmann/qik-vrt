@@ -3524,6 +3524,63 @@
     "source_head": "986b6daa5fe2bf8f40111a2a242d610c5908c952",
     "source_repository": "ingolf-lohmann/qik-vrt",
     "source_tree": "b81d098b34ab71032d2056c970c3e60f2bbc3367",
+    "successor_fixpoint_fixture_repair": {
+      "all_original_methods_preserved": 126,
+      "all_original_test_assertions_unchanged": true,
+      "cause_evidence_class": "REPRODUCED_FIXTURE_DEFECT; native guard linkage inferred from the fixed config fields and exclusive remaining variable condition, not from retained native port values",
+      "ci_workflow_and_timeout_budget_byte_identical_to_predecessor": true,
+      "contribution_origin": {
+        "artificial_cognitive": "OpenAI Codex: exact-source diagnosis, kernel and deterministic reproduction, fixture correction and validation",
+        "classification": "JOINT_WITH_SEPARABLE_COMPONENTS",
+        "human": "Ingolf Lohmann: complete-suite repair authorization and no masking/extra-PR constraints"
+      },
+      "deterministic_regression_before": {
+        "actual": "41000 == 41000",
+        "outcome": "FAIL on unchanged original allocator",
+        "test": "StandaloneTests.test_fixture_selects_distinct_ports_when_kernel_reuses_released_port"
+      },
+      "effect_ack_done": false,
+      "failure_is_not_timeout": true,
+      "fresh_native_resulting_head_complete_suite_and_successful_job_conclusion": "REQUIRED_NOT_YET_ACCEPTED",
+      "local_validation": {
+        "additional_regressions": 2,
+        "bounded_source_projection_gap": "The unrelated missing-gh case initially lacked the original gh checksum authorities in this local projection. Both source-bound authorities restored, and that unchanged case passed. Original assertions/source never weakened or skipped.",
+        "deterministic_port_reuse_regression": "PASS",
+        "equal_port_actual_start_denial": "PASS",
+        "native_failure_test_actual_process_and_sigkill_restart": "PASS",
+        "original_cases_preserved": 29,
+        "standalone_cases_verified": 31
+      },
+      "main_merge": false,
+      "native_elapsed_seconds": 677,
+      "native_failure": "START_CONFIGURATION_BINDING_MISMATCH in test_surviving_monitor_retains_lock_after_launcher_only_sigkill; initial full test successful, regenerated integrity successful, explicit final full suite failed and terminal enforcement rejected it",
+      "native_job": 116106936989,
+      "native_job_conclusion": "failure",
+      "native_original_port_values_retained": false,
+      "native_run": 38638273739,
+      "observed_at_utc": "2026-10-14T21:31:44.875121+00:00",
+      "only_original_method_changed": "StandaloneTests.setUp",
+      "original_kernel_selection_reproduction": {
+        "bounded_trials": 50000,
+        "collision_observed": true,
+        "collision_trial": 4686,
+        "monitor_port": 40145,
+        "terminal_port": 40145
+      },
+      "overall_ci_accepted": false,
+      "production_guard_sha256": "6e6bfd9b176b4e5758a744352d9eb7f5d5538e6452bdc6c167ba3d2cea4b2fe7",
+      "production_guard_unchanged": true,
+      "productive_domain_accepted": false,
+      "push_elapsed_seconds": 368,
+      "push_job": 116106912375,
+      "push_job_conclusion": "success",
+      "push_run": 38638266027,
+      "repair": "Reserve both loopback sockets concurrently until both distinct ports are selected; release them before the original exported launcher starts. No runtime-start retry and no weakening of the actual production guard.",
+      "source_diagnosis": "Sequential bind(127.0.0.1,0) calls release the first socket before selecting the second; the kernel can return the same ephemeral port twice. The unchanged startup guard rejects equal monitor and terminal ports.",
+      "source_head": "df42f2cac3364683db6149f2d47b35ee075d09ed",
+      "source_tree": "8715f20a08b07419e9ba762f7acf8bc38db43fc9",
+      "unchanged_failed_run_rerun_count": 0
+    },
     "unchanged_failures_retried": false,
     "verification": {
       "all_other_workflow_bytes_identical": true,

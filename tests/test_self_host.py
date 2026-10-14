@@ -693,12 +693,17 @@ class StandaloneTests(unittest.TestCase):
         self.token_file = self.work / "terminal.token"
         self.token_file.write_text("test-only-32-byte-local-token-no-real-credential")
         self.token_file.chmod(0o600)
-        def port():
-            with socket.socket() as s:
-                s.bind(("127.0.0.1",0)); return s.getsockname()[1]
+        # Keep both sockets bound until the pair is selected. Closing the
+        # first bind(0) before the second permits the kernel to reuse its port,
+        # producing an invalid fixture which the real startup guard rejects.
+        with socket.socket() as monitor, socket.socket() as terminal:
+            monitor.bind(("127.0.0.1", 0))
+            terminal.bind(("127.0.0.1", 0))
+            monitor_port = monitor.getsockname()[1]
+            terminal_port = terminal.getsockname()[1]
         self.config = {"schema":"qikvrt-self-host-config/v1","node_id":"fixture:standalone",
             "source_head":self.head,"source_tree":self.tree,"adapter":"none","state_dir":str(self.volume),
-            "host":"127.0.0.1","port":port(),"terminal_port":port(),"terminal_token_file":str(self.token_file)}
+            "host":"127.0.0.1","port":monitor_port,"terminal_port":terminal_port,"terminal_token_file":str(self.token_file)}
         self.config_path = self.work / "config.json"
         self.save_config()
         self.url = "http://127.0.0.1:"+str(self.config["port"])
@@ -1000,6 +1005,39 @@ assert.equal(transports,0);console.log('PROVIDER_NEGATIVE_CONTROL_TRANSPORT_COUN
         self.start()
         self.assertIn('unavailable',self.denied())
         self.assertEqual(self.get('/api/runtime')[0],200)
+
+    def test_fixture_selects_distinct_ports_when_kernel_reuses_released_port(self):
+        # Model the observed allocation hazard deterministically: a released
+        # ephemeral port is immediately eligible for the next bind(0).
+        active = set()
+        sockets = []
+        class ReusingSocket:
+            def __init__(self):
+                self.port = None
+                sockets.append(self)
+            def __enter__(self): return self
+            def __exit__(self, *args): self.close()
+            def bind(self, address):
+                assert address == ('127.0.0.1', 0)
+                self.port = 41000
+                while self.port in active: self.port += 1
+                active.add(self.port)
+            def getsockname(self): return ('127.0.0.1', self.port)
+            def close(self): active.discard(self.port)
+        probe = StandaloneTests('test_surviving_monitor_retains_lock_after_launcher_only_sigkill')
+        try:
+            with mock.patch.object(socket, 'socket', ReusingSocket):
+                probe.setUp()
+            self.assertNotEqual(probe.config['port'], probe.config['terminal_port'])
+            self.assertEqual(len(sockets), 2)
+            self.assertFalse(active)
+        finally:
+            probe.doCleanups()
+
+    def test_equal_monitor_and_terminal_ports_are_rejected_before_listener(self):
+        self.config['terminal_port'] = self.config['port']
+        self.save_config()
+        self.assertIn('START_CONFIGURATION_BINDING_MISMATCH', self.denied())
 
     def test_surviving_monitor_retains_lock_after_launcher_only_sigkill(self):
         expected=self.seed_acknowledged_event()
