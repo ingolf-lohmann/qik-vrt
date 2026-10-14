@@ -84,6 +84,9 @@ class OpenAITransport:
         request = Request("https://api.openai.com/v1" + path, data=canonical(payload), method="POST",
                           headers={"Authorization": "Bearer " + self.credential,
                                    "Content-Type": "application/json", "X-Client-Request-Id": str(uuid.uuid4())})
+        return self._send(request)
+
+    def _send(self, request):
         try:
             with self.opener.open(request, timeout=90) as response:
                 raw = response.read(MAX_BYTES + 1)
@@ -103,14 +106,69 @@ class OpenAITransport:
             raise CapabilityBlock("PROVIDER_RESULT_UNRESOLVED_NO_RETRY") from None
 
 
+class GeminiTransport(OpenAITransport):
+    """Opt-in text-only Interactions adapter; no tools, redirects or retries.
+
+    store=false disables stored Interaction objects, not all provider safety logs.
+    Both comparison arms send their full local transcript as explicitly labelled data.
+    """
+    def __init__(self, credential):
+        if not credential or any(c.isspace() for c in credential):
+            raise CapabilityBlock("GEMINI_RUNTIME_CREDENTIAL_UNAVAILABLE")
+        super().__init__(credential)
+
+    def post(self, path, payload):
+        expected = {"model", "store", "background", "system_instruction", "generation_config", "input"}
+        if (path != "/responses" or set(payload) != expected or
+            payload["model"] != "gemini-4-argon" or payload["store"] is not False or
+            payload["background"] is not False or not isinstance(payload["input"], str) or
+            payload["system_instruction"] != INSTRUCTIONS or
+            payload["generation_config"] != {"thinking_level": "low", "max_output_tokens": 4096}):
+            raise CapabilityBlock("GEMINI_REQUEST_OUTSIDE_BOUND_CONTRACT")
+        raw = canonical(payload)
+        if len(raw) > MAX_BYTES or self.credential.encode() in raw:
+            raise CapabilityBlock("GEMINI_REQUEST_TOO_LARGE_OR_CONTAINS_SECRET")
+        request = Request("https://generativelanguage.googleapis.com/v1beta/interactions", data=raw, method="POST",
+                          headers={"x-goog-api-key": self.credential, "Content-Type": "application/json"})
+        value, receipt = self._send(request)
+        steps = value.get("steps")
+        if value.get("status") != "completed" or value.get("model") != payload["model"] or not isinstance(steps, list):
+            raise CapabilityBlock("GEMINI_RESPONSE_NOT_COMPLETED_OR_MODEL_MISMATCH")
+        texts = []
+        for step in steps:
+            if not isinstance(step, dict):
+                raise CapabilityBlock("GEMINI_STEPS_INVALID")
+            if step.get("type") == "model_output":
+                content = step.get("content")
+                if not isinstance(content, list):
+                    raise CapabilityBlock("GEMINI_CONTENT_INVALID")
+                for part in content:
+                    if not isinstance(part, dict) or part.get("type") != "text" or not isinstance(part.get("text"), str):
+                        raise CapabilityBlock("GEMINI_TEXT_ONLY_BOUNDARY")
+                    texts.append(part["text"])
+            elif step.get("type") != "thought":
+                raise CapabilityBlock("GEMINI_UNEXPECTED_TOOL_OR_STEP")
+        if not texts or not isinstance(value.get("id"), str):
+            raise CapabilityBlock("GEMINI_TEXT_OR_RESPONSE_ID_MISSING")
+        return {"id": value["id"], "model": value["model"], "status": "completed",
+                "output": [{"type": "message", "role": "assistant", "content": [
+                    {"type": "output_text", "text": "\n".join(texts)}]}],
+                "usage": value.get("usage")}, receipt
+
+
 class PersonalRuntime:
-    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None):
+    def __init__(self, state_dir: str | Path, model: str, credential: str, local_token: str, *, transport=None, provider="openai"):
+        if provider not in {"openai", "gemini"}:
+            raise CapabilityBlock("PROVIDER_NOT_ALLOWLISTED")
         if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", model):
             raise CapabilityBlock("EXPLICIT_MODEL_BINDING_REQUIRED")
         if not isinstance(local_token, str) or not re.fullmatch(r"[A-Za-z0-9_-]{32,256}", local_token):
             raise CapabilityBlock("LOCAL_PAIRING_SECRET_REQUIRED_32_TO_256_CHARACTERS")
         self.model, self.credential, self.local_token = model, credential, local_token
-        self.transport = transport if transport is not None else OpenAITransport(credential)
+        self.provider = provider
+        if provider == "gemini" and model != "gemini-4-argon":
+            raise CapabilityBlock("GEMINI_ARGON_EXPLICIT_MODEL_REQUIRED")
+        self.transport = transport if transport is not None else (GeminiTransport(credential) if provider == "gemini" else OpenAITransport(credential))
         requested_root = Path(state_dir).expanduser().absolute()
         if any(p.is_symlink() for p in [requested_root, *requested_root.parents]):
             raise CapabilityBlock("PRIVATE_STATE_DIRECTORY_UNSAFE")
@@ -144,6 +202,10 @@ class PersonalRuntime:
             self.binding = {"provider": "https://api.openai.com/v1", "model": model,
                             "instructions_sha256": digest(INSTRUCTIONS.encode()), "tools": [],
                             "parameters": {"store": True}, "normal_retention": "PROVIDER_CONVERSATION_AND_FULL_LOCAL_TRANSCRIPT"}
+            if provider == "gemini":
+                self.binding.update(provider="https://generativelanguage.googleapis.com/v1beta",
+                                    parameters={"store": False, "background": False, "max_output_tokens": 4096},
+                                    normal_retention="FULL_LOCAL_TRANSCRIPT_NO_STORED_PROVIDER_INTERACTION")
             row = self.db.execute("SELECT body FROM config WHERE key='binding'").fetchone()
             if row and json.loads(row[0]) != self.binding:
                 raise CapabilityBlock("EXISTING_STATE_MODEL_OR_SETTINGS_MISMATCH")
@@ -162,9 +224,10 @@ class PersonalRuntime:
         self.auth_receipt = None  # Runtime proof is never inherited from a prior process.
 
     @classmethod
-    def from_environment(cls, state_dir: str, model: str | None):
-        return cls(state_dir, model, os.environ.get("OPENAI_API_KEY", ""),
-                   os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", ""))
+    def from_environment(cls, state_dir: str, model: str | None, provider="openai"):
+        key = "GEMINI_API_KEY" if provider == "gemini" else "OPENAI_API_KEY"
+        return cls(state_dir, model, os.environ.get(key, ""),
+                   os.environ.get("QIKVRT_PERSONAL_LOCAL_TOKEN", ""), provider=provider)
 
     def close(self):
         self.db.close()
@@ -216,6 +279,10 @@ class PersonalRuntime:
                    "conversation_id": None, "history": [], "checkpoint": None,
                    "status": "CREATE_PENDING", "created_subject": self.subject}
         self.save(session)  # Durable intent before any external request.
+        if self.provider == "gemini":
+            session.update(status="READY", conversation_receipt={"evidence_class": "LOCAL_TRANSCRIPT_ONLY"})
+            self.save(session)
+            return session
         conversation, receipt = self.transport.post("/conversations", {})
         if not isinstance(conversation.get("id"), str) or not ID.fullmatch(conversation["id"]):
             raise CapabilityBlock("PROVIDER_CONVERSATION_ID_INVALID")
@@ -254,6 +321,13 @@ class PersonalRuntime:
             self._nonsecret(text)
             payload = {"model": self.model, "conversation": session["conversation_id"], "store": True,
                        "instructions": INSTRUCTIONS, "input": [{"role": "user", "content": text}]}
+            if self.provider == "gemini":
+                payload = {"model": self.model, "store": False, "background": False,
+                           "system_instruction": INSTRUCTIONS,
+                           "generation_config": {"thinking_level": "low", "max_output_tokens": 4096},
+                           "input": canonical({"kind": "LOCAL_CONVERSATION_DATA",
+                               "history": [{"input": h["intent"]["input"], "draft": h["text"]} for h in session["history"]],
+                               "current_user_input": text}).decode()}
             intent = {"id": uuid.uuid4().hex, "input": text, "request_sha256": digest(canonical(payload)),
                       "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
             session.update(status="TURN_PENDING", pending=intent)
@@ -286,7 +360,7 @@ class PersonalRuntime:
                                          "draft": output, "history_sha256": digest(canonical(session["history"])),
                                          "evidence": "ACTUAL_PROVIDER_OUTPUT_UNVERIFIED", "independent_acceptance": False}
             self.save(session)
-            if type(self.transport) is OpenAITransport and receipt.get("evidence_class") == "EXTERNAL_HTTPS_RESPONSE":
+            if type(self.transport) in {OpenAITransport, GeminiTransport} and receipt.get("evidence_class") == "EXTERNAL_HTTPS_RESPONSE":
                 self.auth_receipt = {"subject": self.subject, "binding": self.binding,
                                      "observed_monotonic": time.monotonic(), "response_id": response_id,
                                      "resolved_model": resolved, "receipt": receipt}
@@ -302,7 +376,7 @@ class PersonalRuntime:
             return {"manifest": manifest, "subject": self.subject, "binding": self.binding,
                     "local_client_authentication_required": True, "authenticated_runtime_readback": fresh,
                     "runtime_evidence": auth if fresh else None,
-                    "normal_retention": "PROVIDER_CONVERSATIONS_AND_FULL_LOCAL_TRANSCRIPTS_BOTH_ARMS",
+                    "normal_retention": self.binding["normal_retention"],
                     "baseline_local_sessions_observed": any(s["mode"] == "baseline" and s["turns"] for s in self.sessions()),
                     "baseline_provider_retention_readback": False,
                     "firefox_execution_observed": False, "equivalent_pre_runs_observed": False,

@@ -3,6 +3,29 @@
 
 # Universales Raumzeit-Terminal
 
+## Optionaler Argon-Prüfkandidat vom 14.10.2026
+
+Der vorhandene Server unterstützt nun zusätzlich die explizite Auswahl
+`--personal-provider gemini --personal-model gemini-4-argon`. Standard bleibt
+OpenAI. Gemini verwendet `GEMINI_API_KEY` aus der autorisierten Prozessumgebung,
+dieselbe lokale Client-Authentifizierung und ein getrenntes privates
+State-Verzeichnis. Ein bestehendes OpenAI-State-Verzeichnis wird wegen der
+abweichenden Providerbindung abgelehnt.
+
+Die Interactions-Anfragen sind auf Text, `store=false`, `background=false`,
+`thinking_level=low` und 4096 Output-/Thinking-Tokens begrenzt. Der vollständige
+lokale Verlauf wird als gekennzeichnete Gesprächsdaten erneut mitgesendet;
+es werden keine gespeicherten Google-Interaktionen oder Tools verwendet.
+Provider-Sicherheitslogs können trotz `store=false` bestehen. Die bisherige
+OpenAI-Baseline und ihre Provider-Conversations bleiben unverändert.
+Vergleiche zwischen den beiden Providern sind durch diese Tests nicht belegt.
+
+Technische Prüfung: `python3 -B -m unittest discover -s tests -p 'test_qikvrt_gemini_adapter.py' -v`.
+Transport-Doubles sind keine authentifizierten Argon-Antworten. Live-Nutzung
+setzt einen für den Zweck zulässigen Paid-Service-Zugang, sicher bereitgestellte
+Credentials und den in `ARGON_REVIEW.md` beschriebenen Rechtecheck voraus.
+Der Kandidat implementiert kein Browser-Autonomietool und keine SSO-/Passkey-Anmeldung.
+
 Der technische Produktname lautet **Universales Raumzeit-Terminal**. Product
 Owner Ingolf Lohmann hat diesen Namen am 2026-10-05 freigegeben. QIK-VRT bleibt
 die technische Systembezeichnung; der persönliche Browserassistent für
