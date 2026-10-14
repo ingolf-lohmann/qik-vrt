@@ -73,6 +73,28 @@ class AuthorityTokenRouteTests(unittest.TestCase):
         self.assertIn('app=true', output)
         self.assertIn('direct=false', output)
 
+    def test_complete_app_route_is_not_masked_by_static_credentials(self):
+        credentials = {'RULESET_ADMIN_TOKEN': 'expired-admin-fixture',
+                       'ADMIN_TOKEN': 'expired-legacy-fixture',
+                       'MESH_TOKEN': 'unscoped-mesh-fixture',
+                       'RULESET_APP_ID': '12345',
+                       'RULESET_APP_PRIVATE_KEY': 'private-key-fixture'}
+        code, output, error = self.run_route(**credentials)
+        self.assertEqual(code, 0)
+        self.assertIn('app=true', output)
+        self.assertIn('direct=false', output)
+        self.assertIn('route=app', output)
+        for value in credentials.values():
+            self.assertNotIn(value, output + error)
+
+    def test_incomplete_app_preserves_explicit_direct_compatibility(self):
+        code, output, error = self.run_route(
+            RULESET_APP_ID='12345', RULESET_ADMIN_TOKEN='direct-fixture')
+        self.assertEqual(code, 0)
+        self.assertIn('direct=true', output)
+        self.assertIn('app=false', output)
+        self.assertNotIn('direct-fixture', output + error)
+
     def test_target_and_conditional_guards_are_retained(self):
         source = WORKFLOW.read_text()
         for guard in ['TARGET_REPOSITORY: ${{ github.repository }}', 'headers["If-Match"] = etag',
@@ -92,7 +114,7 @@ class AuthorityTokenRouteTests(unittest.TestCase):
         desired.update(id=42, source='ingolf-lohmann/qik-vrt')
         return script, desired
 
-    def execute_projection(self, replies):
+    def execute_projection(self, replies, *, token_env=None):
         script, _ = self.projection()
         calls = []
         def response(request, timeout):
@@ -105,8 +127,10 @@ class AuthorityTokenRouteTests(unittest.TestCase):
             'TARGET_REPOSITORY': 'ingolf-lohmann/qik-vrt',
             'RULESET_NAME': 'QIK-VRT main protection',
             'RULESET_ADMIN_TOKEN': 'fixture-only',
+            'AUTHORITY_ROUTE': 'direct',
             'EXPECTED_POST_SHA256': '45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd',
         }
+        environment.update(token_env or {})
         output = io.StringIO()
         with mock.patch.dict(os.environ, environment, clear=True), \
              mock.patch('urllib.request.urlopen', side_effect=response), \
@@ -117,6 +141,37 @@ class AuthorityTokenRouteTests(unittest.TestCase):
                 if exc.code != 0:
                     return calls, output.getvalue(), str(exc)
         return calls, output.getvalue(), None
+
+    def test_app_projection_uses_only_the_fresh_minted_credential(self):
+        _, desired = self.projection()
+        calls, output, error = self.execute_projection(
+            [([], None), (desired, None), (desired, 'v1')],
+            token_env={'AUTHORITY_ROUTE': 'app', 'APP_TOKEN': 'fresh-app-fixture',
+                       'ADMIN_TOKEN': 'expired-legacy-fixture',
+                       'MESH_TOKEN': 'unscoped-mesh-fixture'})
+        self.assertIsNone(error)
+        self.assertEqual([call.get_method() for call in calls], ['GET', 'POST', 'GET'])
+        for call in calls:
+            self.assertEqual(call.get_header('Authorization'), 'Bearer fresh-app-fixture')
+        self.assertNotIn('fresh-app-fixture', output)
+
+    def test_missing_minted_app_token_cannot_fall_back_to_static_credentials(self):
+        _, desired = self.projection()
+        calls, output, error = self.execute_projection(
+            [([], None), (desired, None), (desired, 'v1')],
+            token_env={'AUTHORITY_ROUTE': 'app', 'APP_TOKEN': ''})
+        self.assertEqual(calls, [])
+        self.assertEqual(output, '')
+        self.assertIn('no authority token available', error)
+
+    def test_unadmitted_route_never_uses_available_static_credentials(self):
+        _, desired = self.projection()
+        calls, output, error = self.execute_projection(
+            [([], None), (desired, None), (desired, 'v1')],
+            token_env={'AUTHORITY_ROUTE': 'unknown-fixture'})
+        self.assertEqual(calls, [])
+        self.assertEqual(output, '')
+        self.assertIn('authority route not admitted', error)
 
     def test_changed_preimage_never_updates(self):
         _, desired = self.projection()
@@ -218,6 +273,7 @@ class RequiredReviewContextContractTests(unittest.TestCase):
             'TARGET_REPOSITORY': self.repository,
             'RULESET_NAME': 'QIK-VRT main protection',
             'RULESET_ADMIN_TOKEN': 'fixture-only',
+            'AUTHORITY_ROUTE': 'direct',
             'EXPECTED_POST_SHA256': env_value(WORKFLOW, 'EXPECTED_POST_SHA256'),
             **overrides,
         }

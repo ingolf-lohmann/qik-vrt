@@ -257,8 +257,9 @@ class RulesetClientFixture(unittest.TestCase):
 
     def setUp(self):
         self.version = self.writer_version or "legacy-v1"
-        path = (client.RULESET_WORKFLOW_PATH if self.version == "lifecycle-v2"
-                else "tests/fixtures/ruleset_writer_legacy_v1.yml")
+        path = {"legacy-v1": "tests/fixtures/ruleset_writer_legacy_v1.yml",
+                "lifecycle-v2": "tests/fixtures/ruleset_writer_lifecycle_v2.yml",
+                "app-renewal-v3": client.RULESET_WORKFLOW_PATH}[self.version]
         self.writer_bytes = (REPOSITORY_ROOT / path).read_bytes()
         self.writer_blob = hashlib.sha1(
             b"blob " + str(len(self.writer_bytes)).encode() + b"\0" + self.writer_bytes,
@@ -548,20 +549,27 @@ class RulesetClientTests(RulesetClientFixture):
 
 
 class LifecycleRulesetClientTests(RulesetClientTests):
-    """Run every original Ruleset regression on the actual integrated writer."""
+    """Preserve every original regression against the frozen lifecycle writer."""
     writer_version = "lifecycle-v2"
+
+
+class AppRenewalRulesetClientTests(RulesetClientTests):
+    """Verify the new writer's transport, admission and exact-effect boundaries."""
+    writer_version = "app-renewal-v3"
 
 
 class RulesetWriterVersionTests(RulesetClientFixture):
     """Version transitions are explicit and fail closed, including real bytes."""
 
-    def test_both_source_pins_and_unchanged_protection_projection(self):
+    def test_versioned_source_pins_and_unchanged_protection_projection(self):
         blobs = {"legacy-v1": "1202d24c2f23eb8fa52ab7c562a583e79f9e8444",
-                 "lifecycle-v2": "ab47a8ec98c39b39bda420050cb7c970a9da6165"}
+                 "lifecycle-v2": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
+                 "app-renewal-v3": "05066f6fb83a7f3ba8799677db35647e06942fd2"}
         projections = []
         for version, blob in blobs.items():
-            path = (client.RULESET_WORKFLOW_PATH if version == "lifecycle-v2"
-                    else "tests/fixtures/ruleset_writer_legacy_v1.yml")
+            path = {"legacy-v1": "tests/fixtures/ruleset_writer_legacy_v1.yml",
+                    "lifecycle-v2": "tests/fixtures/ruleset_writer_lifecycle_v2.yml",
+                    "app-renewal-v3": client.RULESET_WORKFLOW_PATH}[version]
             data = (REPOSITORY_ROOT / path).read_bytes()
             self.assertEqual(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(), blob)
             source = data.decode()
@@ -578,8 +586,11 @@ class RulesetWriterVersionTests(RulesetClientFixture):
             canonical = (json.dumps(projected, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
             self.assertEqual(hashlib.sha256(canonical).hexdigest(), "45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd")
             self.assertEqual(client.RULESET_WRITER_VERSIONS[version], (blob, hashlib.sha256(canonical).hexdigest()))
+            contract = (REPOSITORY_ROOT / 'api/qikvrt_github_api.openapi.yaml').read_text()
+            self.assertIn(f'        {version}:\n          workflow_blob_sha: {blob}', contract)
             projections.append(projected)
         self.assertEqual(projections[0], projections[1])
+        self.assertEqual(projections[0], projections[2])
         desired = projections[0]
         self.assertEqual(desired["enforcement"], "active")
         self.assertEqual(desired["bypass_actors"], [])
@@ -595,7 +606,7 @@ class RulesetWriterVersionTests(RulesetClientFixture):
     def test_known_other_version_never_becomes_an_automatic_fallback(self):
         other = (REPOSITORY_ROOT / client.RULESET_WORKFLOW_PATH).read_bytes()
         document = {**self.documents[self.writer_path],
-                    "sha": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
+                    "sha": "05066f6fb83a7f3ba8799677db35647e06942fd2",
                     "size": len(other), "content": base64.b64encode(other).decode()}
         for operation in ("ruleset_authority_dispatch", "ruleset_authority_readback"):
             with self.subTest(operation=operation):

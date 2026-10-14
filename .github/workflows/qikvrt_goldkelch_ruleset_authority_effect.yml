@@ -54,14 +54,17 @@ jobs:
           set -euo pipefail
           direct=false
           app=false
-          if [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
-            direct=true
-          fi
+          route=none
           if [ -n "${RULESET_APP_ID:-}" ] && [ -n "${RULESET_APP_PRIVATE_KEY:-}" ]; then
             app=true
+            route=app
+          elif [ -n "${RULESET_ADMIN_TOKEN:-}${ADMIN_TOKEN:-}${MESH_TOKEN:-}" ]; then
+            direct=true
+            route=direct
           fi
           echo "direct=$direct" >> "$GITHUB_OUTPUT"
           echo "app=$app" >> "$GITHUB_OUTPUT"
+          echo "route=$route" >> "$GITHUB_OUTPUT"
           if [ "$direct" != true ] && [ "$app" != true ]; then
             echo "No repository-provided authority credential route is configured." >&2
             exit 2
@@ -81,6 +84,7 @@ jobs:
       - name: Conditional canonical projection with exact readback
         env:
           APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          AUTHORITY_ROUTE: ${{ steps.authority.outputs.route }}
         shell: bash
         run: |
           set -euo pipefail
@@ -93,10 +97,15 @@ jobs:
 
           repo = os.environ["TARGET_REPOSITORY"]
           ruleset_name = os.environ["RULESET_NAME"]
-          token = (os.environ.get("RULESET_ADMIN_TOKEN", "") or
-                   os.environ.get("ADMIN_TOKEN", "") or
-                   os.environ.get("MESH_TOKEN", "") or
-                   os.environ.get("APP_TOKEN", ""))
+          route = os.environ.get("AUTHORITY_ROUTE", "")
+          if route == "app":
+              token = os.environ.get("APP_TOKEN", "")
+          elif route == "direct":
+              token = (os.environ.get("RULESET_ADMIN_TOKEN", "") or
+                       os.environ.get("ADMIN_TOKEN", "") or
+                       os.environ.get("MESH_TOKEN", ""))
+          else:
+              raise SystemExit("authority route not admitted")
           if not token:
               raise SystemExit("no authority token available")
           expected_post = os.environ["EXPECTED_POST_SHA256"]

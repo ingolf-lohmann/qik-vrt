@@ -1121,6 +1121,25 @@
     "regression_correction": "Delegated review may satisfy native governance while missing qualified target-ref CAS must still HOLD; self-review must remain BLOCK.",
     "same_path_three_way": true
   },
+  "owner_access_gap_requirement": {
+    "existing_authorization_preserved": true,
+    "instruction": "Dann ist diese Lücke jetzt unverzüglich zu schließen, so dass sie nie mehr entstehen kann.",
+    "new_issue_is_not_completion": true,
+    "new_pull_request_is_not_completion": true,
+    "owner": "Ingolf Lohmann",
+    "priority": "IMMEDIATE_CAUSAL_REPAIR",
+    "provider_revocation_impossibility_claimed": false,
+    "required_scope": [
+      "SECURE_DURABLE_APP_BINDING",
+      "ADMITTED_INITIAL_REST_EXECUTION",
+      "PER_RUN_TARGET_SCOPED_TOKEN_RENEWAL",
+      "NO_STATIC_TOKEN_MASKING",
+      "FAIL_CLOSED_WITHOUT_ADMITTED_ROUTE",
+      "INDEPENDENT_NATIVE_PROTECTION_READBACK"
+    ],
+    "rest_only_preserved": true,
+    "source": "Direct Owner instruction 2026-10-14"
+  },
   "owner_scope_update": {
     "applicability": "All QIK-VRT pull requests, including future candidates",
     "human": "Ingolf Lohmann",
@@ -1185,6 +1204,36 @@
   "state": "CANDIDATE_PREPARED_MAIN_GATE_OPEN",
   "target_ref": "main",
   "validation": {
+    "authority_app_renewal_successor": {
+      "before_log_sha256": "b4c6905c5a2a61dfd1d8eafd05320fc8669abb8e66e1a9ffc19ded1e4fa21b12",
+      "external_setup_state": "UNAVAILABLE_IN_THIS_CLIENT",
+      "first_remaining_causal_action": "Bind the existing repository App configuration through an authorized secure setup interface and expose/admit the existing initial REST dispatch; independently verify native Main protection.",
+      "historical_lifecycle_fixture": "tests/fixtures/ruleset_writer_lifecycle_v2.yml",
+      "historical_lifecycle_fixture_blob": "ab47a8ec98c39b39bda420050cb7c970a9da6165",
+      "initial_rest_dispatch_exposed": false,
+      "legacy_default_and_two_historical_pins_preserved": true,
+      "local_regression": {
+        "errors": [],
+        "log_sha256": "26c3655a3b6ab5c19d1f9b068f62130256782a0e2ee64d261775b1d97056a097",
+        "returncode": 0,
+        "scope": "PARTIAL_EXACT_SOURCE_LOCAL_FIXTURE_WITH_FAKE_PROVIDER_TRANSPORT",
+        "summary": [
+          "Ran 122 tests in 1.496s"
+        ],
+        "tests": 122
+      },
+      "native_administration_executed": false,
+      "new_native_ci": "PENDING_CURRENT_APP_RENEWAL_SUCCESSOR",
+      "new_writer_blob": "05066f6fb83a7f3ba8799677db35647e06942fd2",
+      "new_writer_version": "app-renewal-v3",
+      "parent": "eee0ad4dcd7bbd2e8dc186676305520b78938e60",
+      "parent_tree": "29720e70dec35f4e312bdc53cc317f1125efd9ce",
+      "permanent_operational_completion_claimed": false,
+      "reproduced_old_route_failures": 4,
+      "ruleset_post_sha256_unchanged": "45da27f3608b38f04b8252d7fc709a6337bff49d40fa2cf9baa4425dd36ec0dd",
+      "secure_app_configuration_written": false,
+      "unchanged_failed_administration_retry": "NOOP"
+    },
     "bootstrap": {
       "cache_coverage": "29/29",
       "integrity": "4177 classified entries /4166 immutable digests",
@@ -1242,6 +1291,17 @@
       ]
     },
     "firefox_minimum_successor": {
+      "historical_native_evidence": {
+        "head": "eee0ad4dcd7bbd2e8dc186676305520b78938e60",
+        "runs": [
+          38553047832,
+          38553056609,
+          38553056277,
+          38553056168
+        ],
+        "scope": "Verified predecessor only; no PASS transfer to changed successor",
+        "tree": "29720e70dec35f4e312bdc53cc317f1125efd9ce"
+      },
       "live_firefox158_execution": "NOT_PERFORMED",
       "local_verification": {
         "command": [
@@ -1270,7 +1330,7 @@
       "strict_min_version": "158.0"
     },
     "focused_governance": "111 tests PASS on predecessor d0f9e6c257f5a5c2b73debb1a780038ae56e8646; governance sources unchanged in this successor",
-    "full_suite": "PENDING_CURRENT_MINIMUM_158_SUCCESSOR",
+    "full_suite": "PENDING_CURRENT_APP_RENEWAL_SUCCESSOR",
     "live_goldkelch_approval": false,
     "local_focused_log_sha256": "f4cc44bd4ec130795eeb143280996d046fb6b3190820f6623dff2452f06c7643",
     "local_full_attempt_log_sha256": "0b470999fdcc3098dec3457dc47945e16586bc66890661a0d53d59a320e08cff",
@@ -1283,7 +1343,7 @@
     },
     "main_merge": false,
     "main_protection_verified": false,
-    "native_ci": "PENDING_CURRENT_MINIMUM_158_SUCCESSOR"
+    "native_ci": "PENDING_CURRENT_APP_RENEWAL_SUCCESSOR"
   },
   "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1"
 }
