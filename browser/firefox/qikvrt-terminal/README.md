@@ -95,8 +95,9 @@ The native gate correctly holds at HOLD_FIREFOX_BELOW_OWNER_MINIMUM.
 The existing work unit retains the byte-verified original artifact and all four
 observations; unchanged image/XPI/probe failure inputs do not trigger a repeat. The supported forward route is Mozilla's official Release package
 158 or newer on the retained Debian base, with a Mozilla-signed self-distributed
-XPI and the same persistent activation/restart gate. This route is proposed,
-not an installed upgrade or a signing receipt. The ESR exception cannot substitute
+XPI and the same persistent activation/restart gate. At that earlier diagnosis
+this was a proposed route; the later native upgrade result is recorded below.
+It still supplies no signing receipt. The ESR exception cannot substitute
 for signing on Release. Never lower the owner's minimum to make a test green.
 
 Primary provider sources (current package listings are not image readback):
@@ -171,3 +172,13 @@ restricted runtime PATH; the repaired source binds the Mozilla ELF directly.
 The existing recovery framework preserves both changed deployment originals
 byte-exact and verifies the corresponding successor bindings without relaxing
 its original checks.
+
+The upgraded archive was independently downloaded, hashed and reimported in
+native run 38604044266 on source `fa6b6b6701d920320cac753432064c918208fb4f`.
+The 572776390-byte compressed archive, image config, complete RootFS and nine
+parent layers, package `158.0~build2`, and actual ELF digest all match. Artifact
+11914257517 retains the independently downloaded 2681-byte reimport receipt.
+CI reused the image without rebuilding and kept the unchanged failed XPI
+installation at NOOP. Current-source full `test` and HTTP/container/provenance
+jobs pass for Push and PR; general carrier tests do not establish extension
+activation or public delivery. The signing admission gate correctly remains red.

@@ -296,6 +296,42 @@
   },
   "firefox158_s1_upgrade": {
     "artificial_cognitive_contribution": "OpenAI Codex / GPT-6; platform-session attribution only",
+    "candidate_validation": {
+      "classified_entries_verified": 4241,
+      "configured_full_make_test": {
+        "pull_request": {
+          "conclusion": "success",
+          "job_id": 115990268852,
+          "run_id": 38604051290
+        },
+        "push": {
+          "conclusion": "success",
+          "job_id": 115990244417,
+          "run_id": 38604044266
+        }
+      },
+      "effect_ack_done": false,
+      "extension_activation_verified": false,
+      "general_runtime_pipeline_scope": "Successful historical sealed dependency carrier and current-source package controls; no inference of Firefox158 XPI activation or productive delivery.",
+      "http_terminal_container_and_recovery": {
+        "pull_request": {
+          "conclusion": "success",
+          "job_id": 115990270805,
+          "run_id": 38604051293
+        },
+        "push": {
+          "conclusion": "success",
+          "job_id": 115990245324,
+          "run_id": 38604044089
+        }
+      },
+      "immutable_digests_verified": 4230,
+      "public_production_verified": false,
+      "s1_extension_gate": "FAIL_CLOSED_EXISTING_UNSIGNED_NEGATIVE_INPUT; unchanged causal inputs prevented repeat browser installation",
+      "source_head": "fa6b6b6701d920320cac753432064c918208fb4f",
+      "source_tree": "2fb4de81f299e689d1b5b929ab3cc6dc87bc11c8",
+      "tool_cache_strategy_coverage": "31/31 (100%)"
+    },
     "effect_ack_done": false,
     "existing_ci_path": ".github/workflows/qikvrt_ci.yml#s1_firefox_extension",
     "existing_runtime_path": "runtime/self-host/Dockerfile#s1-firefox-release",
@@ -618,8 +654,18 @@
         "deploy/universal-terminal/entrypoint.sh": "3db27a8487e67b2beac596e1f576afe1cf95b21e"
       },
       "historical_receipt_unchanged": true,
-      "native_successor_verification": "REQUIRED",
-      "original_assertions_preserved": true
+      "native_successor_verification": "PASS_ON_EXACT_SUCCESSOR_HEAD; source-recovery and complete native integrity assertions preserved",
+      "original_assertions_preserved": true,
+      "verified_jobs": [
+        115990245324,
+        115990270805
+      ],
+      "verified_runs": [
+        38604044089,
+        38604051293
+      ],
+      "verified_source_head": "fa6b6b6701d920320cac753432064c918208fb4f",
+      "verified_source_tree": "2fb4de81f299e689d1b5b929ab3cc6dc87bc11c8"
     },
     "retry_gate": "Unchanged image/source/probe/signed-XPI inputs plus an already retained failed observation admit NOOP; no repeat AMO submission or browser attempt.",
     "runtime_artifact": {
@@ -654,7 +700,44 @@
       "effect_ack_done": false,
       "extension_activation_verified": false,
       "image_id": "sha256:05066840525880b1e790a799ac3b0c1c145973fc7ab82b350659c765c0082bf7",
-      "independent_large_archive_redownload": "PENDING_NATIVE_CI_REIMPORT; connector binary limit excludes direct local download above 512MiB",
+      "independent_large_archive_redownload": "NATIVE_CI_REIMPORT_VERIFIED_FULL_ARCHIVE_HASH_IMAGE_CONFIG_PARENT_DIFF_IDS_PACKAGE_AND_ELF; dependency scope only",
+      "independent_reimport": {
+        "artifact_bytes": 2681,
+        "artifact_id": 11914257517,
+        "artifact_sha256": "d8c55693647338414fc02a1faf1b42e0f82b2240eef07ec27738023e33ef114c",
+        "browser_installation_retried": false,
+        "full_runtime_archive_download_and_hash_verified_by_native_ci": true,
+        "guard": "NOOP_UNCHANGED_FIREFOX_RELEASE_OR_SIGNING_FAILURE",
+        "job_id": 115990244184,
+        "original_small_receipt_zip_download_and_hash_verified": true,
+        "receipt": {
+          "actual": {
+            "binary_sha256": "a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789",
+            "package_version": "158.0~build2",
+            "version_output": "[8] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0"
+          },
+          "all_parent_layers_retained": true,
+          "archive_bytes": 572776390,
+          "archive_sha256": "9db43d3cc71aa7f9fb9432a5d656f8334dbe7923de147e00219351d61639139b",
+          "cached_source_head": "3136e142c01f05348e32dccaa3d234c596e02533",
+          "current_candidate_head": "fa6b6b6701d920320cac753432064c918208fb4f",
+          "effect_ack_done": false,
+          "extension_activation_verified": false,
+          "image_id": "sha256:05066840525880b1e790a799ac3b0c1c145973fc7ab82b350659c765c0082bf7",
+          "predecessor_full_head_acceptance_transferred": false,
+          "runtime_components_rebuilt": false,
+          "source_component_blobs": {
+            "deploy/universal-terminal/entrypoint.sh": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+            "runtime/self-host/Dockerfile": "f474fcba5ebc75be561ce7d37541cd04265ceed9",
+            "tools/qikvrt_self_host.py": "e2fce0efca763c7633871d80a801e67c817a56c8"
+          },
+          "state": "EXACT_UPGRADED_IMAGE_REIMPORTED_VERIFIED"
+        },
+        "run_id": 38604044266,
+        "runtime_components_rebuilt": false,
+        "source_head": "fa6b6b6701d920320cac753432064c918208fb4f",
+        "source_tree": "2fb4de81f299e689d1b5b929ab3cc6dc87bc11c8"
+      },
       "native_components_rebuilt": false,
       "native_runtime_controls": {
         "job_id": 115981195900,
