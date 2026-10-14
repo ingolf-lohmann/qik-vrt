@@ -1,0 +1,23 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 -->
+<!-- Copyright 2026 Ingolf Lohmann. -->
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Universales Raumzeit-Terminal</title><link rel="stylesheet" href="ui.css"></head>
+<body><main><h1>Universales Raumzeit-Terminal</h1>
+<p>Quellgebundene Recherche und Dokumentation. Antworten bleiben prüfbare Entwürfe.</p>
+<label>Lokaler Sitzungsschlüssel <input id="token" type="password" autocomplete="off" spellcheck="false"></label>
+<button id="connect">Verbinden und Gespräche laden</button>
+<p id="status" role="status">Noch nicht verbunden.</p>
+<section><h2>Gespeicherte Gespräche</h2><label>Gespräch <select id="sessions"></select></label><button id="restore">Öffnen</button></section>
+<section><h2>Neue Aufgabe</h2>
+<label>Modus <select id="mode"><option value="qikvrt">Mit QIK-VRT-Checkpoint</option><option value="baseline">Gespräch mit normaler Speicherung</option></select></label>
+<label>Aufgabe <textarea id="task" rows="4"></textarea></label>
+<label>Quellen als JSON: Liste mit id, revision, text <textarea id="sources" rows="4" spellcheck="false">[]</textarea></label>
+<button id="create">Aufgabe an Modell senden</button></section>
+<section><h2>Fortsetzen</h2><p id="session">Kein Gespräch geöffnet.</p>
+<label>Nachricht <textarea id="message" rows="3"></textarea></label>
+<button id="send">Nachricht senden</button><button id="resume">Arbeit wiederaufnehmen</button>
+<p>Beide Modi behalten ihre normale Gesprächshistorie. Wiederaufnahme ergänzt im QIK-VRT-Modus den gespeicherten Checkpoint.</p></section>
+<section><h2>Gesprächsverlauf</h2><div id="history" aria-live="polite"></div></section>
+<p>Jeder Sende-Klick löst eine authentifizierte Modellanfrage aus. Zugangsdaten bleiben im Backend beziehungsweise im Arbeitsspeicher dieser Seite. Keine Produktmessung oder Nutzenbehauptung.</p>
+</main><script src="ui.js"></script></body></html>

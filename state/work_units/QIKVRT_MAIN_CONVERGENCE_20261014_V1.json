@@ -1,11 +1,4 @@
 {
-  "schema": "qikvrt_main_convergence_work_unit_v1",
-  "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1",
-  "repository": "ingolf-lohmann/qik-vrt",
-  "target_ref": "main",
-  "carrier_pr": 523,
-  "carrier_branch": "integration/515-519-521-522-20261012-eceb9b63",
-  "state": "CANDIDATE_PREPARED_MAIN_GATE_OPEN",
   "authority": {
     "human": "Ingolf Lohmann",
     "roles": [
@@ -18,940 +11,147 @@
     "route": "REST_API_ONLY"
   },
   "authorization": {
+    "scope": "review, history-preserving consolidation and admitted Main integration",
     "source": "DIRECT_OWNER_REQUEST_2026-10-14",
-    "text": "Review und Main-Integration! Es muss immer weniger Pull-Requests geben und alles läuft zum Schluss auf Main hinaus.",
-    "scope": "review, history-preserving consolidation and admitted Main integration"
+    "text": "Review und Main-Integration! Es muss immer weniger Pull-Requests geben und alles läuft zum Schluss auf Main hinaus."
   },
-  "parents": {
-    "carrier": "1860447b515a3538f884d5b872eec0b939979d84",
-    "review_repair": "02fbe50638eb9064f44fe20e183fec15203364c5",
-    "main": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e"
+  "carrier_branch": "integration/515-519-521-522-20261012-eceb9b63",
+  "carrier_pr": 523,
+  "completion_claims": {
+    "EFFECT_ACK_DONE": false,
+    "MAIN_INTEGRATED": false,
+    "PRODUCTIVE_DOMAIN_ACCEPTED": false
   },
+  "consolidation_rule": {
+    "closed_superseded_is_not_native_main_merge": true,
+    "closure_only_after_carrier_source_ancestry_verified": true,
+    "general_priority": "NORMAL_BACKLOG_AFTER_PRODUCTIVE_DELIVERY",
+    "general_scope": "ALL_PULL_REQUESTS",
+    "new_pull_requests": 0,
+    "optimization_admitted": false,
+    "required_exact_ancestry_readback": true,
+    "unique_changes_and_open_obligations_remain_in_carrier": true
+  },
+  "contribution_origin": {
+    "artificial_cognitive": "Codex: current inventory, source review, three-way consolidation, tests and verified persistence",
+    "human": "Ingolf Lohmann: convergence goal, scope and authorization"
+  },
+  "incorporated_pull_requests": [
+    {
+      "branch": "work/issue-processing-repair-20261007-3d614851",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "96f708cfd4598619e061b8a4fc937968ce14b912",
+      "number": 486,
+      "title": "Fix native issue processing and require tested client continuation"
+    },
+    {
+      "branch": "fix/self-heal-rest-handoff-20261008-512ec968",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "d5e19ce27317c2c5bb359c24502057cf35870425",
+      "number": 499,
+      "title": "fix(autonomy): resume self-heal PR handoff idempotently via REST"
+    },
+    {
+      "branch": "fix/autonomous-pr-fairness-20261008-2be42d8b",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "2be42d8b0f24200a0491a7e9bbfe3e48f7be1b3b",
+      "number": 500,
+      "title": "fix(autonomy): rotate opted-in draft PRs without starvation"
+    },
+    {
+      "branch": "integration/autonomy-handoff-fairness-20261008-d87a68c3",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "80b68b00a20a68cd7367566276c4b915111502c5",
+      "number": 501,
+      "title": "fix(autonomy/api): integrate fair handoff and REST 2.1 continuation"
+    },
+    {
+      "branch": "repair/ruleset-client-dispatch-20261009-80b68b00",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "5ad88f106de6d2a34172ca7cbb750963c77bfdd3",
+      "number": 502,
+      "title": "Add bounded REST dispatch for the existing Ruleset writer"
+    },
+    {
+      "branch": "integration/lifecycle-governance-public-readback-20261009",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "08e382ec928c8e5dd2ecf120ab352274be96c62e",
+      "number": 505,
+      "title": "fix(mesh): integrate lifecycle governance with public TTL-bound readback"
+    },
+    {
+      "branch": "integration/ruleset-client-lifecycle-20261009",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+      "number": 508,
+      "title": "Integrate Ruleset client 2.3 with lifecycle governance and exact writer pins"
+    },
+    {
+      "branch": "integration/claude-remote-mcp-readback-20261009-468e9e42",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+      "number": 509,
+      "title": "feat(mcp): add authenticated, exact-source readback to the existing REST adapter"
+    },
+    {
+      "branch": "work/seed-identity-proof-repair-20261009-v1",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "3fd23f9ca6c23e4f80a551d4707de55b0d7be1b9",
+      "number": 510,
+      "title": "fix(mesh): close Seed identity and acceptance evidence gaps"
+    },
+    {
+      "branch": "integration/claude-remote-mcp-rest-20261009",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+      "number": 511,
+      "title": "feat(api): scoped Remote-MCP application path with independent byte readback"
+    },
+    {
+      "branch": "integration/seed-ruleset-lifecycle-20261009-v1",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "e1b1aaf0b81f58c8ae62cc7afcd5d25d0ccfa892",
+      "number": 512,
+      "title": "Integrate fresh Seed identity repair with REST 2.3 and lifecycle governance"
+    },
+    {
+      "branch": "integration/claude-mcp-consolidated-20261009-f760a409-18d2598f",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "5f0c897d1c1805eebe1e40f4631652ba075b0c4e",
+      "number": 513,
+      "title": "Integrate existing Claude MCP read/data tools with separate credentials and #508 governance"
+    },
+    {
+      "branch": "publication/raumzeitterminal-nobel-decay-20261010",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "c9c71bba5c03c1309f29cc898e83ecb035983853",
+      "number": 519,
+      "title": "Veröffentlichten Themenindex, Quellen und Repository-Terminal konsistent anbinden"
+    },
+    {
+      "branch": "work/ref-cas-readback-20261010-d8775f20",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "d44c48791c87dae4669036e49ce5db98e95e06eb",
+      "number": 521,
+      "title": "fix(promotion): integrate gated GraphQL target-ref CAS"
+    },
+    {
+      "branch": "work/client-end-of-action-regressions-20261012-v1",
+      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84",
+      "head": "094d3a8c074e399085a864f2844adcdafc3de3cf",
+      "number": 522,
+      "title": "fix(client/archive): preserve causal continuation and suppress identical Zenodo failures"
+    },
+    {
+      "branch": "integration/seed-mcp-governance-512-513-20261009-14c71097",
+      "evidence": "EXPLICIT_SECOND_PARENT_OF_PREPARED_MERGE",
+      "head": "02fbe50638eb9064f44fe20e183fec15203364c5",
+      "number": 515,
+      "title": "Integrate native Mesh authority and preserve delegated independent review"
+    }
+  ],
   "initial_inventory": {
     "complete": true,
-    "pages_pr": 2,
-    "pages_issues": 2,
-    "open_pr_count": 131,
-    "open_issue_count": 7,
-    "pull_requests": [
-      {
-        "number": 366,
-        "head": "3e6c31b65098842392970680c666a5b4cef6bb4c",
-        "base": "main",
-        "branch": "feat/authority-review-receiver-v1",
-        "draft": false
-      },
-      {
-        "number": 367,
-        "head": "d38a0a764804aec3852beb4e6a242c3f3b2ff63c",
-        "base": "main",
-        "branch": "mesh/recursive-authority-906-admission-v1",
-        "draft": false
-      },
-      {
-        "number": 369,
-        "head": "9e6cb2fa53fbecac3a4ce95ae51b5d28f260be44",
-        "base": "main",
-        "branch": "dependabot/github_actions/main/leanprover/lean-action-1.6.0",
-        "draft": false
-      },
-      {
-        "number": 370,
-        "head": "dd86b6b21cf8fc2ae8433da14d632d85db5d0529",
-        "base": "main",
-        "branch": "dependabot/github_actions/main/actions/upload-artifact-7.0.1",
-        "draft": false
-      },
-      {
-        "number": 371,
-        "head": "adc6df9c24d9ba9806bb94bb07fc621e4fff12f0",
-        "base": "main",
-        "branch": "dependabot/npm_and_yarn/tools/offline-audio-transcription/main/sherpa-onnx-node-1.13.6",
-        "draft": false
-      },
-      {
-        "number": 372,
-        "head": "446287c275225805b5a45baf27b6e3a047236e3c",
-        "base": "main",
-        "branch": "dependabot/pip/runtime/toolchains/main/platformdirs-4.11.5",
-        "draft": false
-      },
-      {
-        "number": 373,
-        "head": "afff4fa651948c244b2ceea7736ca6ca6eb1e48c",
-        "base": "main",
-        "branch": "mesh/review-authority-966-2db106e5-v1",
-        "draft": false
-      },
-      {
-        "number": 375,
-        "head": "15bad08883288f686bb7ce7567f092bbbdd5f08b",
-        "base": "main",
-        "branch": "work/20260906-author-positioning-roundtrip",
-        "draft": false
-      },
-      {
-        "number": 377,
-        "head": "c86c1b5dddcdf7060a75bef1ba8486f518be28e2",
-        "base": "main",
-        "branch": "copilot/improve-crates-dashboard",
-        "draft": true
-      },
-      {
-        "number": 378,
-        "head": "b43238cf651d74783f4d6ead97d633d962860f66",
-        "base": "main",
-        "branch": "repair/renew-mirror-node-liveness-20260911-v1",
-        "draft": false
-      },
-      {
-        "number": 379,
-        "head": "695bb4202a883a70893a50dd101bdc588f696e68",
-        "base": "main",
-        "branch": "repair/mesh-role-local-completion-v1",
-        "draft": false
-      },
-      {
-        "number": 381,
-        "head": "c81f5b9703d61f03beb9e6c27aca23c267a3be52",
-        "base": "main",
-        "branch": "ops/ruleset-admin-bridge-20260915",
-        "draft": true
-      },
-      {
-        "number": 382,
-        "head": "1b332614987b646fb5af452091b9ebe5c0437765",
-        "base": "main",
-        "branch": "repair/mirror-role-local-pre-effect-cas-20260918-v1",
-        "draft": true
-      },
-      {
-        "number": 383,
-        "head": "4f739f4b2d075b338bf217c152fc9cd1234e01b6",
-        "base": "main",
-        "branch": "publication/pr1128-dossier-v2",
-        "draft": false
-      },
-      {
-        "number": 384,
-        "head": "897a9f34e886884ca8ec2720ecdab96d421cfa69",
-        "base": "main",
-        "branch": "docs/universales-universalprinzip-20260919-v1",
-        "draft": true
-      },
-      {
-        "number": 385,
-        "head": "f257a8a8cf7378ab5c069d061daf41d6d59c9a98",
-        "base": "main",
-        "branch": "docs/qikvrt-standard-evidence-repair-20260921",
-        "draft": false
-      },
-      {
-        "number": 387,
-        "head": "174b979427517275ac33f15d53b2b2c41c85de41",
-        "base": "main",
-        "branch": "repair/permanent-mirror-liveness-current-main-v1",
-        "draft": true
-      },
-      {
-        "number": 388,
-        "head": "849dd5cd0535db591ff01444c0d04a4a9af18ac2",
-        "base": "main",
-        "branch": "repair/exact-pr-head-admission-carrier-v1",
-        "draft": true
-      },
-      {
-        "number": 389,
-        "head": "fc60ed6e7c5efcf9f93c5a93cd9cadc776722fc3",
-        "base": "main",
-        "branch": "docs/universal-effect-ack-frontdoor-v1",
-        "draft": false
-      },
-      {
-        "number": 391,
-        "head": "73b7d14688a8c22d25fefa254324ffc0fa85cbc0",
-        "base": "main",
-        "branch": "docs/charta-machine-verifiable-science-bootstrap-v1",
-        "draft": false
-      },
-      {
-        "number": 392,
-        "head": "9038911d7769130504b0741b4713b9fc09167ef7",
-        "base": "main",
-        "branch": "repair/qik-scientific-revision-governance-20260923",
-        "draft": false
-      },
-      {
-        "number": 393,
-        "head": "191edacb816bc944bc8bfa15abf7907b6d42f034",
-        "base": "main",
-        "branch": "evidence/requirements-carrier-readback-20260923",
-        "draft": false
-      },
-      {
-        "number": 396,
-        "head": "1819da9bf08478a7052312d24819a8c25c1533a3",
-        "base": "main",
-        "branch": "fix/autonomous-pr-closure-engine-20260923",
-        "draft": false
-      },
-      {
-        "number": 397,
-        "head": "f6247bb055ac7064a9081c92a9533a5c7b6a11fd",
-        "base": "main",
-        "branch": "repair/governance-enforcement-successor-20260923-v1",
-        "draft": false
-      },
-      {
-        "number": 398,
-        "head": "c3efa495f2195970f3aa6187170e29e6518a6d31",
-        "base": "main",
-        "branch": "publication/nash-kognition-20260923-v1",
-        "draft": false
-      },
-      {
-        "number": 399,
-        "head": "1ba3d7a16771b47553f2c68d9631b827421119ea",
-        "base": "main",
-        "branch": "agent/unicode-data-exchange-standard-v1-20260923",
-        "draft": false
-      },
-      {
-        "number": 400,
-        "head": "74db1c61a8cedeb6d8702e7acb1fe18aa45e7ebc",
-        "base": "main",
-        "branch": "temdd/executable-runtime-20260923-v1",
-        "draft": false
-      },
-      {
-        "number": 402,
-        "head": "fa1e9b15185594bd1e6771a49791b4c860c84309",
-        "base": "main",
-        "branch": "policy/qikvrt-note-inheritance-v1",
-        "draft": true
-      },
-      {
-        "number": 403,
-        "head": "6c4c8bb3664cd6fb6400a5e8261045e51090c06c",
-        "base": "main",
-        "branch": "policy/universal-proof-thought-schema-v1",
-        "draft": true
-      },
-      {
-        "number": 404,
-        "head": "6287a639f2386ffb195212875298cb77a48f926d",
-        "base": "main",
-        "branch": "publication/leibniz-qikvrt-persistence-v1",
-        "draft": true
-      },
-      {
-        "number": 408,
-        "head": "1f35dcb539f7da2479d7f3b847abbc94c24e5ff9",
-        "base": "main",
-        "branch": "repair/pr1214-seed-revalidation-stale-heartbeat-v1",
-        "draft": true
-      },
-      {
-        "number": 410,
-        "head": "45ed173e2599683c1b7fcda4681c1fbbc48bc63e",
-        "base": "main",
-        "branch": "repair/scaling-lossless-worker-v1",
-        "draft": false
-      },
-      {
-        "number": 414,
-        "head": "482dc6b84f73d912b3a3a5feada16f3b0fc4d8aa",
-        "base": "main",
-        "branch": "personal/autonomous-optimal-goal-contract-rebased-5418499-20260927",
-        "draft": false
-      },
-      {
-        "number": 415,
-        "head": "60f5051a33259c7654e9ee3f1e5bce0af61629fb",
-        "base": "main",
-        "branch": "policy/answer-search-roadmap-20260928",
-        "draft": false
-      },
-      {
-        "number": 416,
-        "head": "87b5fed25793ddd9490de77114535fa64b04362f",
-        "base": "main",
-        "branch": "docs/quality-gates-and-closure-archive-20260928",
-        "draft": false
-      },
-      {
-        "number": 417,
-        "head": "27e75695757338c60e634ed9ebd36c325f020c74",
-        "base": "main",
-        "branch": "fix/github-api-rate-budget-v1-20260928",
-        "draft": false
-      },
-      {
-        "number": 418,
-        "head": "d5aacbc7961346a0cc14c155b1955560aab2e5ca",
-        "base": "main",
-        "branch": "work/pipeline-mtbf-20260930",
-        "draft": true
-      },
-      {
-        "number": 421,
-        "head": "3d644eb951b1d65ab60dc207f9e90d4c146de788",
-        "base": "main",
-        "branch": "research/temdd-liveness-convergence-v1",
-        "draft": false
-      },
-      {
-        "number": 422,
-        "head": "630fd695791da71185077fb442e0f090a8fbcb13",
-        "base": "main",
-        "branch": "repair/main-test-gaps-20261001",
-        "draft": false
-      },
-      {
-        "number": 423,
-        "head": "c0d910dde7ffa2093f3ede115a278051c276a537",
-        "base": "main",
-        "branch": "automation/self-heal-24a786de1b669c13f83e4020",
-        "draft": true
-      },
-      {
-        "number": 425,
-        "head": "be2ce383af1b884ce86b891ac0208990f0e474ad",
-        "base": "main",
-        "branch": "work/qikvrt-codec-v1-20261001",
-        "draft": false
-      },
-      {
-        "number": 426,
-        "head": "b284dd0946c5147a0d3f4a38a2361df339c1738e",
-        "base": "main",
-        "branch": "feature/digital-twin-scheduling-sync-20261001",
-        "draft": false
-      },
-      {
-        "number": 427,
-        "head": "5254836e0865970cf79da2f012f74bcd04941857",
-        "base": "main",
-        "branch": "work/delegation-bootstrap-20261001",
-        "draft": false
-      },
-      {
-        "number": 428,
-        "head": "db636bf7ad220a7ca3fc793d311b3e2eafe3a4ad",
-        "base": "main",
-        "branch": "work/full-node-recovery-20261001-c621b863",
-        "draft": true
-      },
-      {
-        "number": 429,
-        "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
-        "base": "main",
-        "branch": "feature/digital-twin-scheduling-v1-20261001",
-        "draft": true
-      },
-      {
-        "number": 430,
-        "head": "c801b81c4928c344ccd41c3f4b1f5fb0601184a7",
-        "base": "main",
-        "branch": "work/processor-clock-core-20261001",
-        "draft": true
-      },
-      {
-        "number": 431,
-        "head": "96f5cc19f8fd3c69d28b8c2e3e1a0c6707ac7be3",
-        "base": "main",
-        "branch": "work/node-genesis-recovery-c621b863-20261001",
-        "draft": true
-      },
-      {
-        "number": 432,
-        "head": "dea9f25d657e27dd0e1082c14513d20b0d4968e4",
-        "base": "main",
-        "branch": "automation/self-heal-2f68655be93aca03e42fd992",
-        "draft": true
-      },
-      {
-        "number": 433,
-        "head": "4d33d78bee91cfa639abde0aceae95371ad8f55c",
-        "base": "main",
-        "branch": "work/reciprocal-devops-dod-20261001",
-        "draft": false
-      },
-      {
-        "number": 434,
-        "head": "854e1f835d2f5d5a45de2a96759bbd077e5118a4",
-        "base": "main",
-        "branch": "work/software-independent-promotion-proof-20261001-469a95ac",
-        "draft": true
-      },
-      {
-        "number": 435,
-        "head": "f53b386544542e180bdae84c98d86c6afcdacdff",
-        "base": "main",
-        "branch": "work/closure-promotion-consolidation-20261001",
-        "draft": true
-      },
-      {
-        "number": 436,
-        "head": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
-        "base": "main",
-        "branch": "work/api-acceptance-rest-repair-20261001",
-        "draft": true
-      },
-      {
-        "number": 437,
-        "head": "cc583e808494786df2b50e8ed481ef48622bd82f",
-        "base": "main",
-        "branch": "work/meta-transistor-feedback-20261001-7e5a588d",
-        "draft": true
-      },
-      {
-        "number": 438,
-        "head": "b018c155d651d35e140a2ce86050d59631271dca",
-        "base": "main",
-        "branch": "work/firefox-windows-witness-20261001",
-        "draft": true
-      },
-      {
-        "number": 439,
-        "head": "638397fc1b86ab44eac9f06f0c9754d3b5803a2b",
-        "base": "main",
-        "branch": "work/claim-audit-20261001-469a95ac",
-        "draft": true
-      },
-      {
-        "number": 440,
-        "head": "3704d402474dc3ec1e6aa710768c1888c023ae5e",
-        "base": "main",
-        "branch": "automation/self-heal-5af5ab2670695a64c87eedc1",
-        "draft": false
-      },
-      {
-        "number": 441,
-        "head": "86de509a78bc2a46587d3f5074a5a8ed3868f903",
-        "base": "main",
-        "branch": "agent/recursive-haltpoint-v1",
-        "draft": false
-      },
-      {
-        "number": 442,
-        "head": "f7ca844939ba70c2629e2e0f7ac910c66d87ca82",
-        "base": "main",
-        "branch": "publication/original-sketches-20261002-v1",
-        "draft": false
-      },
-      {
-        "number": 443,
-        "head": "8eeece5571c3235941e6ac10afd45e4cfbaaf623",
-        "base": "main",
-        "branch": "work/linux-ring-scale-consolidation-20261002",
-        "draft": true
-      },
-      {
-        "number": 444,
-        "head": "37e9aaccbb4f7046ce3d0ed536c8c205a71a13d2",
-        "base": "main",
-        "branch": "work/authority-recovery-acceptance-20261002",
-        "draft": true
-      },
-      {
-        "number": 445,
-        "head": "ca675b653e109640fe86767b1df51936b5cd55e5",
-        "base": "main",
-        "branch": "work/chat-interruption-continuity-20261002",
-        "draft": true
-      },
-      {
-        "number": 446,
-        "head": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
-        "base": "main",
-        "branch": "work/authority-url-probe-20261003-6fb101b",
-        "draft": true
-      },
-      {
-        "number": 447,
-        "head": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
-        "base": "main",
-        "branch": "work/collective-functional-consciousness-20261003",
-        "draft": false
-      },
-      {
-        "number": 448,
-        "head": "ce344c122f363aa00d18f935735126947f2b8454",
-        "base": "main",
-        "branch": "work/owner-dependency-assimilation-20261003-8153c4e6-4796ff30",
-        "draft": true
-      },
-      {
-        "number": 449,
-        "head": "a0c75916a13cca54b75044748c76ca3400c94428",
-        "base": "main",
-        "branch": "work/mirror-lifecycle-governance-20261003-8153c4e6",
-        "draft": true
-      },
-      {
-        "number": 450,
-        "head": "7b2d703c433995d650880a275d2a9cf9469ee6fe",
-        "base": "main",
-        "branch": "repair/windows-python-offline-cache-20261003",
-        "draft": false
-      },
-      {
-        "number": 451,
-        "head": "9d34e99aafa3abb9ed4bba37c16aea4c9bfdc9f5",
-        "base": "work/collective-functional-consciousness-20261003",
-        "branch": "staging/arxiv-kontinuitaet-a2dbd3ac-v1",
-        "draft": true
-      },
-      {
-        "number": 452,
-        "head": "c3de0a29d27702dfe7a39279017fea59ae905346",
-        "base": "work/collective-functional-consciousness-20261003",
-        "branch": "staging/ietf-epistemic-status-00-a2dbd3ac-v1",
-        "draft": true
-      },
-      {
-        "number": 453,
-        "head": "b8f5050587f7df637e5d1c792796e8a23e5a8ce7",
-        "base": "main",
-        "branch": "work/owner-hotpath-current-criteria-20261004-8658b113",
-        "draft": true
-      },
-      {
-        "number": 454,
-        "head": "c1424d4d53b03402c8284728d7a47e03c9de1b1c",
-        "base": "main",
-        "branch": "agent/labyrinth-closure-proof-20261004-v1",
-        "draft": true
-      },
-      {
-        "number": 455,
-        "head": "d893de1db8d12466f57eae1b0b3823a97c637b14",
-        "base": "main",
-        "branch": "fix/self-heal-pr-postcondition-20261004-93be182a",
-        "draft": false
-      },
-      {
-        "number": 456,
-        "head": "14fc43ec8263d7d278c54975ac0338130e0de716",
-        "base": "main",
-        "branch": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
-        "draft": true
-      },
-      {
-        "number": 457,
-        "head": "c1cca8fae42166d456c776e5c876c23ac7689aea",
-        "base": "main",
-        "branch": "candidate/provider-independent-roadmap-20261004-eeef48fd",
-        "draft": false
-      },
-      {
-        "number": 459,
-        "head": "9c431098c4680f295a90bafe49ba747a74d288e6",
-        "base": "main",
-        "branch": "automation/self-heal-e4d6a939ac3074c4f50a689e",
-        "draft": true
-      },
-      {
-        "number": 461,
-        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
-        "base": "candidate/provider-independent-roadmap-20261004-eeef48fd",
-        "branch": "work/bootstrap-runtime-release-20261005",
-        "draft": true
-      },
-      {
-        "number": 462,
-        "head": "d0477150b4cc0b2516c2579d70da9ed71c60e048",
-        "base": "main",
-        "branch": "work/browser-assistant-ab-20261005",
-        "draft": true
-      },
-      {
-        "number": 463,
-        "head": "ef1d2953a30c1bf27c4a9bc385316c9f50c0c114",
-        "base": "candidate/provider-independent-roadmap-20261004-eeef48fd",
-        "branch": "candidate/publication-runtime-adapter-20261005-86e0ba74",
-        "draft": true
-      },
-      {
-        "number": 464,
-        "head": "83439a26d3d80088e048e495ba46fff73785cf9c",
-        "base": "work/bootstrap-runtime-release-20261005",
-        "branch": "evidence/bootstrap-runtime-archive-bc2da76a-20261005",
-        "draft": true
-      },
-      {
-        "number": 465,
-        "head": "b0dd02397386103532608c39559522b6d5f3f967",
-        "base": "main",
-        "branch": "work/product-name-raumzeit-terminal-20261006",
-        "draft": false
-      },
-      {
-        "number": 467,
-        "head": "7a260c5304f520cf8a8fc105c969f20c72989589",
-        "base": "main",
-        "branch": "issue-agent/466",
-        "draft": true
-      },
-      {
-        "number": 468,
-        "head": "a4dc05c1fcef9390538a664eba75899f3a649582",
-        "base": "main",
-        "branch": "work/human-readable-feedback-goal-20261006-68d15cbf",
-        "draft": true
-      },
-      {
-        "number": 471,
-        "head": "45808064641c637a2a9c722e3305dfb7aa322db0",
-        "base": "work/native-acceptance-new-project-20261006",
-        "branch": "work/open-node-seed-lookup-20261006",
-        "draft": true
-      },
-      {
-        "number": 472,
-        "head": "0221b70e97274fbe7a29a40d9ccff5e8f2963961",
-        "base": "main",
-        "branch": "work/mesh-collective-goals-20261006-79ddba3b",
-        "draft": true
-      },
-      {
-        "number": 474,
-        "head": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
-        "base": "main",
-        "branch": "work/storage-contract-successor-20261006",
-        "draft": true
-      },
-      {
-        "number": 475,
-        "head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
-        "base": "main",
-        "branch": "work/provider-admission-main-successor-20261006",
-        "draft": true
-      },
-      {
-        "number": 476,
-        "head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
-        "base": "work/storage-contract-successor-20261006",
-        "branch": "work/raumzeitterminal-entry-20261006",
-        "draft": true
-      },
-      {
-        "number": 477,
-        "head": "93bab442e7cebe13cf11a909df8f949cd65f6dc8",
-        "base": "main",
-        "branch": "work/mail-webhooks-20261006",
-        "draft": false
-      },
-      {
-        "number": 481,
-        "head": "1e911c2d9d0bf6f66e633561b6bbb9ec24903194",
-        "base": "main",
-        "branch": "work/ietf169906-main-successor-20261006-v1",
-        "draft": true
-      },
-      {
-        "number": 482,
-        "head": "53040b450853b0ab5a3d59765b86030b3bd0c978",
-        "base": "work/raumzeitterminal-entry-20261006",
-        "branch": "work/react-authority404-feedback-b9e03ef6-20261006",
-        "draft": true
-      },
-      {
-        "number": 483,
-        "head": "50b79c4b53cee5609d6e60e7317f5c63eab12ef4",
-        "base": "main",
-        "branch": "work/react-feedback-main-71f8c153-20261007",
-        "draft": false
-      },
-      {
-        "number": 484,
-        "head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
-        "base": "main",
-        "branch": "work/offline-iphone-repository-20261007",
-        "draft": false
-      },
-      {
-        "number": 485,
-        "head": "65177d862f648f902ae383f2ef1d340d161d6848",
-        "base": "main",
-        "branch": "issue-agent/458",
-        "draft": true
-      },
-      {
-        "number": 486,
-        "head": "96f708cfd4598619e061b8a4fc937968ce14b912",
-        "base": "main",
-        "branch": "work/issue-processing-repair-20261007-3d614851",
-        "draft": false
-      },
-      {
-        "number": 487,
-        "head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
-        "base": "main",
-        "branch": "work/actions-node24-ubuntu26-20261007",
-        "draft": true
-      },
-      {
-        "number": 488,
-        "head": "9b91ab87294aff32fef72eb2858a594eb66e04de",
-        "base": "main",
-        "branch": "work/actions-retention-evidence-20261007-3d614851",
-        "draft": true
-      },
-      {
-        "number": 489,
-        "head": "7eb9e171f66c47b11f1ae74ff73f03c675201725",
-        "base": "main",
-        "branch": "work/pre-spacetime-index-binding-20261007",
-        "draft": true
-      },
-      {
-        "number": 490,
-        "head": "a886686521dee3810881db9ba1efdce05679c2fe",
-        "base": "main",
-        "branch": "repair/pr487-watchdog-readback-20261007",
-        "draft": true
-      },
-      {
-        "number": 491,
-        "head": "a879821845cb2aba6e841aa094d12d7a52d3a79b",
-        "base": "main",
-        "branch": "repair/authority-contract-20261007",
-        "draft": false
-      },
-      {
-        "number": 492,
-        "head": "a8a401c25da08f5fa60b8cf5f0f8b311fce8fbcd",
-        "base": "work/offline-iphone-repository-20261007",
-        "branch": "work/offline-iphone-repository-auto-update-20261008",
-        "draft": false
-      },
-      {
-        "number": 493,
-        "head": "7a1d039de4e062b0dac52c1ab373b46e25a84b40",
-        "base": "work/offline-iphone-repository-20261007",
-        "branch": "work/offline-safe-autoupdate-20261008",
-        "draft": true
-      },
-      {
-        "number": 494,
-        "head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
-        "base": "main",
-        "branch": "work/firefox-runtime-delivery-20261008",
-        "draft": true
-      },
-      {
-        "number": 495,
-        "head": "8813a79c72d8956f8691958bfaf2b268d8259577",
-        "base": "main",
-        "branch": "work/offline-iphone-repository-update-integration-20261008",
-        "draft": true
-      },
-      {
-        "number": 496,
-        "head": "6be946febbac4b9ac46fbd7c7789011c41609f5d",
-        "base": "work/browser-assistant-ab-20261005",
-        "branch": "integration/browser-ab-personal-http-20261008",
-        "draft": true
-      },
-      {
-        "number": 497,
-        "head": "32de04423c8d068ec02fe23d37253e8737c01683",
-        "base": "main",
-        "branch": "work/offline-post-activation-recovery-20261008",
-        "draft": true
-      },
-      {
-        "number": 498,
-        "head": "19f0207e1d4cf6146cbdcdf1ef598273bab22e3a",
-        "base": "main",
-        "branch": "automation/self-heal-f237f2d0d6c57af89fdeae30",
-        "draft": true
-      },
-      {
-        "number": 499,
-        "head": "d5e19ce27317c2c5bb359c24502057cf35870425",
-        "base": "main",
-        "branch": "fix/self-heal-rest-handoff-20261008-512ec968",
-        "draft": true
-      },
-      {
-        "number": 500,
-        "head": "2be42d8b0f24200a0491a7e9bbfe3e48f7be1b3b",
-        "base": "main",
-        "branch": "fix/autonomous-pr-fairness-20261008-2be42d8b",
-        "draft": true
-      },
-      {
-        "number": 501,
-        "head": "80b68b00a20a68cd7367566276c4b915111502c5",
-        "base": "main",
-        "branch": "integration/autonomy-handoff-fairness-20261008-d87a68c3",
-        "draft": true
-      },
-      {
-        "number": 502,
-        "head": "5ad88f106de6d2a34172ca7cbb750963c77bfdd3",
-        "base": "main",
-        "branch": "repair/ruleset-client-dispatch-20261009-80b68b00",
-        "draft": true
-      },
-      {
-        "number": 504,
-        "head": "2850f9ced2d274a525abfe5e59b28338450563c2",
-        "base": "main",
-        "branch": "issue-agent/503",
-        "draft": true
-      },
-      {
-        "number": 505,
-        "head": "08e382ec928c8e5dd2ecf120ab352274be96c62e",
-        "base": "main",
-        "branch": "integration/lifecycle-governance-public-readback-20261009",
-        "draft": true
-      },
-      {
-        "number": 506,
-        "head": "e31ca36c2e64d86a03696525a85865c7332a6377",
-        "base": "integration/browser-ab-personal-http-20261008",
-        "branch": "integration/personal-claude-budget-503-20261009",
-        "draft": true
-      },
-      {
-        "number": 507,
-        "head": "42008f98a94c28e9bfc1ae902fb190296c6ac5a6",
-        "base": "main",
-        "branch": "work/owner-end-of-action-grundregel-20261009-v1",
-        "draft": true
-      },
-      {
-        "number": 508,
-        "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
-        "base": "main",
-        "branch": "integration/ruleset-client-lifecycle-20261009",
-        "draft": true
-      },
-      {
-        "number": 509,
-        "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
-        "base": "main",
-        "branch": "integration/claude-remote-mcp-readback-20261009-468e9e42",
-        "draft": true
-      },
-      {
-        "number": 510,
-        "head": "3fd23f9ca6c23e4f80a551d4707de55b0d7be1b9",
-        "base": "main",
-        "branch": "work/seed-identity-proof-repair-20261009-v1",
-        "draft": true
-      },
-      {
-        "number": 511,
-        "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
-        "base": "integration/ruleset-client-lifecycle-20261009",
-        "branch": "integration/claude-remote-mcp-rest-20261009",
-        "draft": true
-      },
-      {
-        "number": 512,
-        "head": "e1b1aaf0b81f58c8ae62cc7afcd5d25d0ccfa892",
-        "base": "main",
-        "branch": "integration/seed-ruleset-lifecycle-20261009-v1",
-        "draft": true
-      },
-      {
-        "number": 513,
-        "head": "5f0c897d1c1805eebe1e40f4631652ba075b0c4e",
-        "base": "main",
-        "branch": "integration/claude-mcp-consolidated-20261009-f760a409-18d2598f",
-        "draft": true
-      },
-      {
-        "number": 514,
-        "head": "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
-        "base": "main",
-        "branch": "claude/mesh-liveness-outside-integrity-manifest",
-        "draft": false
-      },
-      {
-        "number": 515,
-        "head": "02fbe50638eb9064f44fe20e183fec15203364c5",
-        "base": "main",
-        "branch": "integration/seed-mcp-governance-512-513-20261009-14c71097",
-        "draft": true
-      },
-      {
-        "number": 516,
-        "head": "62fb6a03a75fef0e2d03f8468dc0f262e8fdef82",
-        "base": "main",
-        "branch": "automation/self-heal-dbefc01d712d25643c8277f0",
-        "draft": true
-      },
-      {
-        "number": 517,
-        "head": "11e231fdfe1cbde180a25a33f0f6e982f82fba89",
-        "base": "main",
-        "branch": "integration/owner-seal-layer-persistence-20261010-6ec5a830",
-        "draft": true
-      },
-      {
-        "number": 518,
-        "head": "f614cb5585264df3220355687a5a8096d76385e4",
-        "base": "main",
-        "branch": "release/brief-2610-owner-authorization-20261010",
-        "draft": false
-      },
-      {
-        "number": 519,
-        "head": "c9c71bba5c03c1309f29cc898e83ecb035983853",
-        "base": "main",
-        "branch": "publication/raumzeitterminal-nobel-decay-20261010",
-        "draft": false
-      },
-      {
-        "number": 520,
-        "head": "21b1cb0ee07e282978558dbad6f555ba51f93a53",
-        "base": "main",
-        "branch": "fix/brief-2610-publisher-authority-20261010-0b39160c",
-        "draft": true
-      },
-      {
-        "number": 521,
-        "head": "d44c48791c87dae4669036e49ce5db98e95e06eb",
-        "base": "main",
-        "branch": "work/ref-cas-readback-20261010-d8775f20",
-        "draft": true
-      },
-      {
-        "number": 522,
-        "head": "094d3a8c074e399085a864f2844adcdafc3de3cf",
-        "base": "main",
-        "branch": "work/client-end-of-action-regressions-20261012-v1",
-        "draft": true
-      },
-      {
-        "number": 523,
-        "head": "1860447b515a3538f884d5b872eec0b939979d84",
-        "base": "main",
-        "branch": "integration/515-519-521-522-20261012-eceb9b63",
-        "draft": true
-      },
-      {
-        "number": 524,
-        "head": "9e89652683b6ae0772481bdb0a46073396e0a7cf",
-        "base": "main",
-        "branch": "work/firefox-minimum-158-20261014",
-        "draft": true
-      },
-      {
-        "number": 525,
-        "head": "e2808b725a4e23fd4d42966efe11f12187ff9501",
-        "base": "work/browser-assistant-ab-20261005",
-        "branch": "work/firefox-argon-review-20261014",
-        "draft": true
-      }
-    ],
     "issues": [
       {
         "number": 362,
@@ -981,189 +181,1055 @@
         "number": 503,
         "title": "Apply Claude API-credit budgeting to personal Firefox MVP — exact-bound continuation"
       }
+    ],
+    "open_issue_count": 7,
+    "open_pr_count": 131,
+    "pages_issues": 2,
+    "pages_pr": 2,
+    "pull_requests": [
+      {
+        "base": "main",
+        "branch": "feat/authority-review-receiver-v1",
+        "draft": false,
+        "head": "3e6c31b65098842392970680c666a5b4cef6bb4c",
+        "number": 366
+      },
+      {
+        "base": "main",
+        "branch": "mesh/recursive-authority-906-admission-v1",
+        "draft": false,
+        "head": "d38a0a764804aec3852beb4e6a242c3f3b2ff63c",
+        "number": 367
+      },
+      {
+        "base": "main",
+        "branch": "dependabot/github_actions/main/leanprover/lean-action-1.6.0",
+        "draft": false,
+        "head": "9e6cb2fa53fbecac3a4ce95ae51b5d28f260be44",
+        "number": 369
+      },
+      {
+        "base": "main",
+        "branch": "dependabot/github_actions/main/actions/upload-artifact-7.0.1",
+        "draft": false,
+        "head": "dd86b6b21cf8fc2ae8433da14d632d85db5d0529",
+        "number": 370
+      },
+      {
+        "base": "main",
+        "branch": "dependabot/npm_and_yarn/tools/offline-audio-transcription/main/sherpa-onnx-node-1.13.6",
+        "draft": false,
+        "head": "adc6df9c24d9ba9806bb94bb07fc621e4fff12f0",
+        "number": 371
+      },
+      {
+        "base": "main",
+        "branch": "dependabot/pip/runtime/toolchains/main/platformdirs-4.11.5",
+        "draft": false,
+        "head": "446287c275225805b5a45baf27b6e3a047236e3c",
+        "number": 372
+      },
+      {
+        "base": "main",
+        "branch": "mesh/review-authority-966-2db106e5-v1",
+        "draft": false,
+        "head": "afff4fa651948c244b2ceea7736ca6ca6eb1e48c",
+        "number": 373
+      },
+      {
+        "base": "main",
+        "branch": "work/20260906-author-positioning-roundtrip",
+        "draft": false,
+        "head": "15bad08883288f686bb7ce7567f092bbbdd5f08b",
+        "number": 375
+      },
+      {
+        "base": "main",
+        "branch": "copilot/improve-crates-dashboard",
+        "draft": true,
+        "head": "c86c1b5dddcdf7060a75bef1ba8486f518be28e2",
+        "number": 377
+      },
+      {
+        "base": "main",
+        "branch": "repair/renew-mirror-node-liveness-20260911-v1",
+        "draft": false,
+        "head": "b43238cf651d74783f4d6ead97d633d962860f66",
+        "number": 378
+      },
+      {
+        "base": "main",
+        "branch": "repair/mesh-role-local-completion-v1",
+        "draft": false,
+        "head": "695bb4202a883a70893a50dd101bdc588f696e68",
+        "number": 379
+      },
+      {
+        "base": "main",
+        "branch": "ops/ruleset-admin-bridge-20260915",
+        "draft": true,
+        "head": "c81f5b9703d61f03beb9e6c27aca23c267a3be52",
+        "number": 381
+      },
+      {
+        "base": "main",
+        "branch": "repair/mirror-role-local-pre-effect-cas-20260918-v1",
+        "draft": true,
+        "head": "1b332614987b646fb5af452091b9ebe5c0437765",
+        "number": 382
+      },
+      {
+        "base": "main",
+        "branch": "publication/pr1128-dossier-v2",
+        "draft": false,
+        "head": "4f739f4b2d075b338bf217c152fc9cd1234e01b6",
+        "number": 383
+      },
+      {
+        "base": "main",
+        "branch": "docs/universales-universalprinzip-20260919-v1",
+        "draft": true,
+        "head": "897a9f34e886884ca8ec2720ecdab96d421cfa69",
+        "number": 384
+      },
+      {
+        "base": "main",
+        "branch": "docs/qikvrt-standard-evidence-repair-20260921",
+        "draft": false,
+        "head": "f257a8a8cf7378ab5c069d061daf41d6d59c9a98",
+        "number": 385
+      },
+      {
+        "base": "main",
+        "branch": "repair/permanent-mirror-liveness-current-main-v1",
+        "draft": true,
+        "head": "174b979427517275ac33f15d53b2b2c41c85de41",
+        "number": 387
+      },
+      {
+        "base": "main",
+        "branch": "repair/exact-pr-head-admission-carrier-v1",
+        "draft": true,
+        "head": "849dd5cd0535db591ff01444c0d04a4a9af18ac2",
+        "number": 388
+      },
+      {
+        "base": "main",
+        "branch": "docs/universal-effect-ack-frontdoor-v1",
+        "draft": false,
+        "head": "fc60ed6e7c5efcf9f93c5a93cd9cadc776722fc3",
+        "number": 389
+      },
+      {
+        "base": "main",
+        "branch": "docs/charta-machine-verifiable-science-bootstrap-v1",
+        "draft": false,
+        "head": "73b7d14688a8c22d25fefa254324ffc0fa85cbc0",
+        "number": 391
+      },
+      {
+        "base": "main",
+        "branch": "repair/qik-scientific-revision-governance-20260923",
+        "draft": false,
+        "head": "9038911d7769130504b0741b4713b9fc09167ef7",
+        "number": 392
+      },
+      {
+        "base": "main",
+        "branch": "evidence/requirements-carrier-readback-20260923",
+        "draft": false,
+        "head": "191edacb816bc944bc8bfa15abf7907b6d42f034",
+        "number": 393
+      },
+      {
+        "base": "main",
+        "branch": "fix/autonomous-pr-closure-engine-20260923",
+        "draft": false,
+        "head": "1819da9bf08478a7052312d24819a8c25c1533a3",
+        "number": 396
+      },
+      {
+        "base": "main",
+        "branch": "repair/governance-enforcement-successor-20260923-v1",
+        "draft": false,
+        "head": "f6247bb055ac7064a9081c92a9533a5c7b6a11fd",
+        "number": 397
+      },
+      {
+        "base": "main",
+        "branch": "publication/nash-kognition-20260923-v1",
+        "draft": false,
+        "head": "c3efa495f2195970f3aa6187170e29e6518a6d31",
+        "number": 398
+      },
+      {
+        "base": "main",
+        "branch": "agent/unicode-data-exchange-standard-v1-20260923",
+        "draft": false,
+        "head": "1ba3d7a16771b47553f2c68d9631b827421119ea",
+        "number": 399
+      },
+      {
+        "base": "main",
+        "branch": "temdd/executable-runtime-20260923-v1",
+        "draft": false,
+        "head": "74db1c61a8cedeb6d8702e7acb1fe18aa45e7ebc",
+        "number": 400
+      },
+      {
+        "base": "main",
+        "branch": "policy/qikvrt-note-inheritance-v1",
+        "draft": true,
+        "head": "fa1e9b15185594bd1e6771a49791b4c860c84309",
+        "number": 402
+      },
+      {
+        "base": "main",
+        "branch": "policy/universal-proof-thought-schema-v1",
+        "draft": true,
+        "head": "6c4c8bb3664cd6fb6400a5e8261045e51090c06c",
+        "number": 403
+      },
+      {
+        "base": "main",
+        "branch": "publication/leibniz-qikvrt-persistence-v1",
+        "draft": true,
+        "head": "6287a639f2386ffb195212875298cb77a48f926d",
+        "number": 404
+      },
+      {
+        "base": "main",
+        "branch": "repair/pr1214-seed-revalidation-stale-heartbeat-v1",
+        "draft": true,
+        "head": "1f35dcb539f7da2479d7f3b847abbc94c24e5ff9",
+        "number": 408
+      },
+      {
+        "base": "main",
+        "branch": "repair/scaling-lossless-worker-v1",
+        "draft": false,
+        "head": "45ed173e2599683c1b7fcda4681c1fbbc48bc63e",
+        "number": 410
+      },
+      {
+        "base": "main",
+        "branch": "personal/autonomous-optimal-goal-contract-rebased-5418499-20260927",
+        "draft": false,
+        "head": "482dc6b84f73d912b3a3a5feada16f3b0fc4d8aa",
+        "number": 414
+      },
+      {
+        "base": "main",
+        "branch": "policy/answer-search-roadmap-20260928",
+        "draft": false,
+        "head": "60f5051a33259c7654e9ee3f1e5bce0af61629fb",
+        "number": 415
+      },
+      {
+        "base": "main",
+        "branch": "docs/quality-gates-and-closure-archive-20260928",
+        "draft": false,
+        "head": "87b5fed25793ddd9490de77114535fa64b04362f",
+        "number": 416
+      },
+      {
+        "base": "main",
+        "branch": "fix/github-api-rate-budget-v1-20260928",
+        "draft": false,
+        "head": "27e75695757338c60e634ed9ebd36c325f020c74",
+        "number": 417
+      },
+      {
+        "base": "main",
+        "branch": "work/pipeline-mtbf-20260930",
+        "draft": true,
+        "head": "d5aacbc7961346a0cc14c155b1955560aab2e5ca",
+        "number": 418
+      },
+      {
+        "base": "main",
+        "branch": "research/temdd-liveness-convergence-v1",
+        "draft": false,
+        "head": "3d644eb951b1d65ab60dc207f9e90d4c146de788",
+        "number": 421
+      },
+      {
+        "base": "main",
+        "branch": "repair/main-test-gaps-20261001",
+        "draft": false,
+        "head": "630fd695791da71185077fb442e0f090a8fbcb13",
+        "number": 422
+      },
+      {
+        "base": "main",
+        "branch": "automation/self-heal-24a786de1b669c13f83e4020",
+        "draft": true,
+        "head": "c0d910dde7ffa2093f3ede115a278051c276a537",
+        "number": 423
+      },
+      {
+        "base": "main",
+        "branch": "work/qikvrt-codec-v1-20261001",
+        "draft": false,
+        "head": "be2ce383af1b884ce86b891ac0208990f0e474ad",
+        "number": 425
+      },
+      {
+        "base": "main",
+        "branch": "feature/digital-twin-scheduling-sync-20261001",
+        "draft": false,
+        "head": "b284dd0946c5147a0d3f4a38a2361df339c1738e",
+        "number": 426
+      },
+      {
+        "base": "main",
+        "branch": "work/delegation-bootstrap-20261001",
+        "draft": false,
+        "head": "5254836e0865970cf79da2f012f74bcd04941857",
+        "number": 427
+      },
+      {
+        "base": "main",
+        "branch": "work/full-node-recovery-20261001-c621b863",
+        "draft": true,
+        "head": "db636bf7ad220a7ca3fc793d311b3e2eafe3a4ad",
+        "number": 428
+      },
+      {
+        "base": "main",
+        "branch": "feature/digital-twin-scheduling-v1-20261001",
+        "draft": true,
+        "head": "e02529936bdeed3e3d2c71097c3b9dde4f206467",
+        "number": 429
+      },
+      {
+        "base": "main",
+        "branch": "work/processor-clock-core-20261001",
+        "draft": true,
+        "head": "c801b81c4928c344ccd41c3f4b1f5fb0601184a7",
+        "number": 430
+      },
+      {
+        "base": "main",
+        "branch": "work/node-genesis-recovery-c621b863-20261001",
+        "draft": true,
+        "head": "96f5cc19f8fd3c69d28b8c2e3e1a0c6707ac7be3",
+        "number": 431
+      },
+      {
+        "base": "main",
+        "branch": "automation/self-heal-2f68655be93aca03e42fd992",
+        "draft": true,
+        "head": "dea9f25d657e27dd0e1082c14513d20b0d4968e4",
+        "number": 432
+      },
+      {
+        "base": "main",
+        "branch": "work/reciprocal-devops-dod-20261001",
+        "draft": false,
+        "head": "4d33d78bee91cfa639abde0aceae95371ad8f55c",
+        "number": 433
+      },
+      {
+        "base": "main",
+        "branch": "work/software-independent-promotion-proof-20261001-469a95ac",
+        "draft": true,
+        "head": "854e1f835d2f5d5a45de2a96759bbd077e5118a4",
+        "number": 434
+      },
+      {
+        "base": "main",
+        "branch": "work/closure-promotion-consolidation-20261001",
+        "draft": true,
+        "head": "f53b386544542e180bdae84c98d86c6afcdacdff",
+        "number": 435
+      },
+      {
+        "base": "main",
+        "branch": "work/api-acceptance-rest-repair-20261001",
+        "draft": true,
+        "head": "a73e5fe2fdfd192b022d89d00499f9ceb7ebc673",
+        "number": 436
+      },
+      {
+        "base": "main",
+        "branch": "work/meta-transistor-feedback-20261001-7e5a588d",
+        "draft": true,
+        "head": "cc583e808494786df2b50e8ed481ef48622bd82f",
+        "number": 437
+      },
+      {
+        "base": "main",
+        "branch": "work/firefox-windows-witness-20261001",
+        "draft": true,
+        "head": "b018c155d651d35e140a2ce86050d59631271dca",
+        "number": 438
+      },
+      {
+        "base": "main",
+        "branch": "work/claim-audit-20261001-469a95ac",
+        "draft": true,
+        "head": "638397fc1b86ab44eac9f06f0c9754d3b5803a2b",
+        "number": 439
+      },
+      {
+        "base": "main",
+        "branch": "automation/self-heal-5af5ab2670695a64c87eedc1",
+        "draft": false,
+        "head": "3704d402474dc3ec1e6aa710768c1888c023ae5e",
+        "number": 440
+      },
+      {
+        "base": "main",
+        "branch": "agent/recursive-haltpoint-v1",
+        "draft": false,
+        "head": "86de509a78bc2a46587d3f5074a5a8ed3868f903",
+        "number": 441
+      },
+      {
+        "base": "main",
+        "branch": "publication/original-sketches-20261002-v1",
+        "draft": false,
+        "head": "f7ca844939ba70c2629e2e0f7ac910c66d87ca82",
+        "number": 442
+      },
+      {
+        "base": "main",
+        "branch": "work/linux-ring-scale-consolidation-20261002",
+        "draft": true,
+        "head": "8eeece5571c3235941e6ac10afd45e4cfbaaf623",
+        "number": 443
+      },
+      {
+        "base": "main",
+        "branch": "work/authority-recovery-acceptance-20261002",
+        "draft": true,
+        "head": "37e9aaccbb4f7046ce3d0ed536c8c205a71a13d2",
+        "number": 444
+      },
+      {
+        "base": "main",
+        "branch": "work/chat-interruption-continuity-20261002",
+        "draft": true,
+        "head": "ca675b653e109640fe86767b1df51936b5cd55e5",
+        "number": 445
+      },
+      {
+        "base": "main",
+        "branch": "work/authority-url-probe-20261003-6fb101b",
+        "draft": true,
+        "head": "3e8530f2beb158cdfebd3fa74d25498e7ac2aa4a",
+        "number": 446
+      },
+      {
+        "base": "main",
+        "branch": "work/collective-functional-consciousness-20261003",
+        "draft": false,
+        "head": "6aaac98a545b3855c3b7af2fdb5debc80b4ded66",
+        "number": 447
+      },
+      {
+        "base": "main",
+        "branch": "work/owner-dependency-assimilation-20261003-8153c4e6-4796ff30",
+        "draft": true,
+        "head": "ce344c122f363aa00d18f935735126947f2b8454",
+        "number": 448
+      },
+      {
+        "base": "main",
+        "branch": "work/mirror-lifecycle-governance-20261003-8153c4e6",
+        "draft": true,
+        "head": "a0c75916a13cca54b75044748c76ca3400c94428",
+        "number": 449
+      },
+      {
+        "base": "main",
+        "branch": "repair/windows-python-offline-cache-20261003",
+        "draft": false,
+        "head": "7b2d703c433995d650880a275d2a9cf9469ee6fe",
+        "number": 450
+      },
+      {
+        "base": "work/collective-functional-consciousness-20261003",
+        "branch": "staging/arxiv-kontinuitaet-a2dbd3ac-v1",
+        "draft": true,
+        "head": "9d34e99aafa3abb9ed4bba37c16aea4c9bfdc9f5",
+        "number": 451
+      },
+      {
+        "base": "work/collective-functional-consciousness-20261003",
+        "branch": "staging/ietf-epistemic-status-00-a2dbd3ac-v1",
+        "draft": true,
+        "head": "c3de0a29d27702dfe7a39279017fea59ae905346",
+        "number": 452
+      },
+      {
+        "base": "main",
+        "branch": "work/owner-hotpath-current-criteria-20261004-8658b113",
+        "draft": true,
+        "head": "b8f5050587f7df637e5d1c792796e8a23e5a8ce7",
+        "number": 453
+      },
+      {
+        "base": "main",
+        "branch": "agent/labyrinth-closure-proof-20261004-v1",
+        "draft": true,
+        "head": "c1424d4d53b03402c8284728d7a47e03c9de1b1c",
+        "number": 454
+      },
+      {
+        "base": "main",
+        "branch": "fix/self-heal-pr-postcondition-20261004-93be182a",
+        "draft": false,
+        "head": "d893de1db8d12466f57eae1b0b3823a97c637b14",
+        "number": 455
+      },
+      {
+        "base": "main",
+        "branch": "candidate/mesh-monitor-mirror-20261004-29a55ae4",
+        "draft": true,
+        "head": "14fc43ec8263d7d278c54975ac0338130e0de716",
+        "number": 456
+      },
+      {
+        "base": "main",
+        "branch": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+        "draft": false,
+        "head": "c1cca8fae42166d456c776e5c876c23ac7689aea",
+        "number": 457
+      },
+      {
+        "base": "main",
+        "branch": "automation/self-heal-e4d6a939ac3074c4f50a689e",
+        "draft": true,
+        "head": "9c431098c4680f295a90bafe49ba747a74d288e6",
+        "number": 459
+      },
+      {
+        "base": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+        "branch": "work/bootstrap-runtime-release-20261005",
+        "draft": true,
+        "head": "bc2da76a46b4f0e0eb3c63f3468f1cde83e6f698",
+        "number": 461
+      },
+      {
+        "base": "main",
+        "branch": "work/browser-assistant-ab-20261005",
+        "draft": true,
+        "head": "d0477150b4cc0b2516c2579d70da9ed71c60e048",
+        "number": 462
+      },
+      {
+        "base": "candidate/provider-independent-roadmap-20261004-eeef48fd",
+        "branch": "candidate/publication-runtime-adapter-20261005-86e0ba74",
+        "draft": true,
+        "head": "ef1d2953a30c1bf27c4a9bc385316c9f50c0c114",
+        "number": 463
+      },
+      {
+        "base": "work/bootstrap-runtime-release-20261005",
+        "branch": "evidence/bootstrap-runtime-archive-bc2da76a-20261005",
+        "draft": true,
+        "head": "83439a26d3d80088e048e495ba46fff73785cf9c",
+        "number": 464
+      },
+      {
+        "base": "main",
+        "branch": "work/product-name-raumzeit-terminal-20261006",
+        "draft": false,
+        "head": "b0dd02397386103532608c39559522b6d5f3f967",
+        "number": 465
+      },
+      {
+        "base": "main",
+        "branch": "issue-agent/466",
+        "draft": true,
+        "head": "7a260c5304f520cf8a8fc105c969f20c72989589",
+        "number": 467
+      },
+      {
+        "base": "main",
+        "branch": "work/human-readable-feedback-goal-20261006-68d15cbf",
+        "draft": true,
+        "head": "a4dc05c1fcef9390538a664eba75899f3a649582",
+        "number": 468
+      },
+      {
+        "base": "work/native-acceptance-new-project-20261006",
+        "branch": "work/open-node-seed-lookup-20261006",
+        "draft": true,
+        "head": "45808064641c637a2a9c722e3305dfb7aa322db0",
+        "number": 471
+      },
+      {
+        "base": "main",
+        "branch": "work/mesh-collective-goals-20261006-79ddba3b",
+        "draft": true,
+        "head": "0221b70e97274fbe7a29a40d9ccff5e8f2963961",
+        "number": 472
+      },
+      {
+        "base": "main",
+        "branch": "work/storage-contract-successor-20261006",
+        "draft": true,
+        "head": "a3a19ed041900fbffb2aa38bb4c51fdffb0f7751",
+        "number": 474
+      },
+      {
+        "base": "main",
+        "branch": "work/provider-admission-main-successor-20261006",
+        "draft": true,
+        "head": "b486e21e7bd364b7ef5165c3ee6fb8e67ecc90e4",
+        "number": 475
+      },
+      {
+        "base": "work/storage-contract-successor-20261006",
+        "branch": "work/raumzeitterminal-entry-20261006",
+        "draft": true,
+        "head": "b9e03ef678f1304c6cada3cfc37b311b7faea5b9",
+        "number": 476
+      },
+      {
+        "base": "main",
+        "branch": "work/mail-webhooks-20261006",
+        "draft": false,
+        "head": "93bab442e7cebe13cf11a909df8f949cd65f6dc8",
+        "number": 477
+      },
+      {
+        "base": "main",
+        "branch": "work/ietf169906-main-successor-20261006-v1",
+        "draft": true,
+        "head": "1e911c2d9d0bf6f66e633561b6bbb9ec24903194",
+        "number": 481
+      },
+      {
+        "base": "work/raumzeitterminal-entry-20261006",
+        "branch": "work/react-authority404-feedback-b9e03ef6-20261006",
+        "draft": true,
+        "head": "53040b450853b0ab5a3d59765b86030b3bd0c978",
+        "number": 482
+      },
+      {
+        "base": "main",
+        "branch": "work/react-feedback-main-71f8c153-20261007",
+        "draft": false,
+        "head": "50b79c4b53cee5609d6e60e7317f5c63eab12ef4",
+        "number": 483
+      },
+      {
+        "base": "main",
+        "branch": "work/offline-iphone-repository-20261007",
+        "draft": false,
+        "head": "ad47e6386536abdca5d5ba025832b27718ee66dd",
+        "number": 484
+      },
+      {
+        "base": "main",
+        "branch": "issue-agent/458",
+        "draft": true,
+        "head": "65177d862f648f902ae383f2ef1d340d161d6848",
+        "number": 485
+      },
+      {
+        "base": "main",
+        "branch": "work/issue-processing-repair-20261007-3d614851",
+        "draft": false,
+        "head": "96f708cfd4598619e061b8a4fc937968ce14b912",
+        "number": 486
+      },
+      {
+        "base": "main",
+        "branch": "work/actions-node24-ubuntu26-20261007",
+        "draft": true,
+        "head": "75dc18e9fb4f0593007a753dc4728537f2befb97",
+        "number": 487
+      },
+      {
+        "base": "main",
+        "branch": "work/actions-retention-evidence-20261007-3d614851",
+        "draft": true,
+        "head": "9b91ab87294aff32fef72eb2858a594eb66e04de",
+        "number": 488
+      },
+      {
+        "base": "main",
+        "branch": "work/pre-spacetime-index-binding-20261007",
+        "draft": true,
+        "head": "7eb9e171f66c47b11f1ae74ff73f03c675201725",
+        "number": 489
+      },
+      {
+        "base": "main",
+        "branch": "repair/pr487-watchdog-readback-20261007",
+        "draft": true,
+        "head": "a886686521dee3810881db9ba1efdce05679c2fe",
+        "number": 490
+      },
+      {
+        "base": "main",
+        "branch": "repair/authority-contract-20261007",
+        "draft": false,
+        "head": "a879821845cb2aba6e841aa094d12d7a52d3a79b",
+        "number": 491
+      },
+      {
+        "base": "work/offline-iphone-repository-20261007",
+        "branch": "work/offline-iphone-repository-auto-update-20261008",
+        "draft": false,
+        "head": "a8a401c25da08f5fa60b8cf5f0f8b311fce8fbcd",
+        "number": 492
+      },
+      {
+        "base": "work/offline-iphone-repository-20261007",
+        "branch": "work/offline-safe-autoupdate-20261008",
+        "draft": true,
+        "head": "7a1d039de4e062b0dac52c1ab373b46e25a84b40",
+        "number": 493
+      },
+      {
+        "base": "main",
+        "branch": "work/firefox-runtime-delivery-20261008",
+        "draft": true,
+        "head": "4bdda5c7534a2c4fbac224015179492a4b624b3a",
+        "number": 494
+      },
+      {
+        "base": "main",
+        "branch": "work/offline-iphone-repository-update-integration-20261008",
+        "draft": true,
+        "head": "8813a79c72d8956f8691958bfaf2b268d8259577",
+        "number": 495
+      },
+      {
+        "base": "work/browser-assistant-ab-20261005",
+        "branch": "integration/browser-ab-personal-http-20261008",
+        "draft": true,
+        "head": "6be946febbac4b9ac46fbd7c7789011c41609f5d",
+        "number": 496
+      },
+      {
+        "base": "main",
+        "branch": "work/offline-post-activation-recovery-20261008",
+        "draft": true,
+        "head": "32de04423c8d068ec02fe23d37253e8737c01683",
+        "number": 497
+      },
+      {
+        "base": "main",
+        "branch": "automation/self-heal-f237f2d0d6c57af89fdeae30",
+        "draft": true,
+        "head": "19f0207e1d4cf6146cbdcdf1ef598273bab22e3a",
+        "number": 498
+      },
+      {
+        "base": "main",
+        "branch": "fix/self-heal-rest-handoff-20261008-512ec968",
+        "draft": true,
+        "head": "d5e19ce27317c2c5bb359c24502057cf35870425",
+        "number": 499
+      },
+      {
+        "base": "main",
+        "branch": "fix/autonomous-pr-fairness-20261008-2be42d8b",
+        "draft": true,
+        "head": "2be42d8b0f24200a0491a7e9bbfe3e48f7be1b3b",
+        "number": 500
+      },
+      {
+        "base": "main",
+        "branch": "integration/autonomy-handoff-fairness-20261008-d87a68c3",
+        "draft": true,
+        "head": "80b68b00a20a68cd7367566276c4b915111502c5",
+        "number": 501
+      },
+      {
+        "base": "main",
+        "branch": "repair/ruleset-client-dispatch-20261009-80b68b00",
+        "draft": true,
+        "head": "5ad88f106de6d2a34172ca7cbb750963c77bfdd3",
+        "number": 502
+      },
+      {
+        "base": "main",
+        "branch": "issue-agent/503",
+        "draft": true,
+        "head": "2850f9ced2d274a525abfe5e59b28338450563c2",
+        "number": 504
+      },
+      {
+        "base": "main",
+        "branch": "integration/lifecycle-governance-public-readback-20261009",
+        "draft": true,
+        "head": "08e382ec928c8e5dd2ecf120ab352274be96c62e",
+        "number": 505
+      },
+      {
+        "base": "integration/browser-ab-personal-http-20261008",
+        "branch": "integration/personal-claude-budget-503-20261009",
+        "draft": true,
+        "head": "e31ca36c2e64d86a03696525a85865c7332a6377",
+        "number": 506
+      },
+      {
+        "base": "main",
+        "branch": "work/owner-end-of-action-grundregel-20261009-v1",
+        "draft": true,
+        "head": "42008f98a94c28e9bfc1ae902fb190296c6ac5a6",
+        "number": 507
+      },
+      {
+        "base": "main",
+        "branch": "integration/ruleset-client-lifecycle-20261009",
+        "draft": true,
+        "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
+        "number": 508
+      },
+      {
+        "base": "main",
+        "branch": "integration/claude-remote-mcp-readback-20261009-468e9e42",
+        "draft": true,
+        "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
+        "number": 509
+      },
+      {
+        "base": "main",
+        "branch": "work/seed-identity-proof-repair-20261009-v1",
+        "draft": true,
+        "head": "3fd23f9ca6c23e4f80a551d4707de55b0d7be1b9",
+        "number": 510
+      },
+      {
+        "base": "integration/ruleset-client-lifecycle-20261009",
+        "branch": "integration/claude-remote-mcp-rest-20261009",
+        "draft": true,
+        "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
+        "number": 511
+      },
+      {
+        "base": "main",
+        "branch": "integration/seed-ruleset-lifecycle-20261009-v1",
+        "draft": true,
+        "head": "e1b1aaf0b81f58c8ae62cc7afcd5d25d0ccfa892",
+        "number": 512
+      },
+      {
+        "base": "main",
+        "branch": "integration/claude-mcp-consolidated-20261009-f760a409-18d2598f",
+        "draft": true,
+        "head": "5f0c897d1c1805eebe1e40f4631652ba075b0c4e",
+        "number": 513
+      },
+      {
+        "base": "main",
+        "branch": "claude/mesh-liveness-outside-integrity-manifest",
+        "draft": false,
+        "head": "4edfc2b5bd6c502fc0ba682b5942cb2b41875070",
+        "number": 514
+      },
+      {
+        "base": "main",
+        "branch": "integration/seed-mcp-governance-512-513-20261009-14c71097",
+        "draft": true,
+        "head": "02fbe50638eb9064f44fe20e183fec15203364c5",
+        "number": 515
+      },
+      {
+        "base": "main",
+        "branch": "automation/self-heal-dbefc01d712d25643c8277f0",
+        "draft": true,
+        "head": "62fb6a03a75fef0e2d03f8468dc0f262e8fdef82",
+        "number": 516
+      },
+      {
+        "base": "main",
+        "branch": "integration/owner-seal-layer-persistence-20261010-6ec5a830",
+        "draft": true,
+        "head": "11e231fdfe1cbde180a25a33f0f6e982f82fba89",
+        "number": 517
+      },
+      {
+        "base": "main",
+        "branch": "release/brief-2610-owner-authorization-20261010",
+        "draft": false,
+        "head": "f614cb5585264df3220355687a5a8096d76385e4",
+        "number": 518
+      },
+      {
+        "base": "main",
+        "branch": "publication/raumzeitterminal-nobel-decay-20261010",
+        "draft": false,
+        "head": "c9c71bba5c03c1309f29cc898e83ecb035983853",
+        "number": 519
+      },
+      {
+        "base": "main",
+        "branch": "fix/brief-2610-publisher-authority-20261010-0b39160c",
+        "draft": true,
+        "head": "21b1cb0ee07e282978558dbad6f555ba51f93a53",
+        "number": 520
+      },
+      {
+        "base": "main",
+        "branch": "work/ref-cas-readback-20261010-d8775f20",
+        "draft": true,
+        "head": "d44c48791c87dae4669036e49ce5db98e95e06eb",
+        "number": 521
+      },
+      {
+        "base": "main",
+        "branch": "work/client-end-of-action-regressions-20261012-v1",
+        "draft": true,
+        "head": "094d3a8c074e399085a864f2844adcdafc3de3cf",
+        "number": 522
+      },
+      {
+        "base": "main",
+        "branch": "integration/515-519-521-522-20261012-eceb9b63",
+        "draft": true,
+        "head": "1860447b515a3538f884d5b872eec0b939979d84",
+        "number": 523
+      },
+      {
+        "base": "main",
+        "branch": "work/firefox-minimum-158-20261014",
+        "draft": true,
+        "head": "9e89652683b6ae0772481bdb0a46073396e0a7cf",
+        "number": 524
+      },
+      {
+        "base": "work/browser-assistant-ab-20261005",
+        "branch": "work/firefox-argon-review-20261014",
+        "draft": true,
+        "head": "e2808b725a4e23fd4d42966efe11f12187ff9501",
+        "number": 525
+      }
     ]
   },
-  "incorporated_pull_requests": [
-    {
-      "number": 486,
-      "head": "96f708cfd4598619e061b8a4fc937968ce14b912",
-      "branch": "work/issue-processing-repair-20261007-3d614851",
-      "title": "Fix native issue processing and require tested client continuation",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 499,
-      "head": "d5e19ce27317c2c5bb359c24502057cf35870425",
-      "branch": "fix/self-heal-rest-handoff-20261008-512ec968",
-      "title": "fix(autonomy): resume self-heal PR handoff idempotently via REST",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 500,
-      "head": "2be42d8b0f24200a0491a7e9bbfe3e48f7be1b3b",
-      "branch": "fix/autonomous-pr-fairness-20261008-2be42d8b",
-      "title": "fix(autonomy): rotate opted-in draft PRs without starvation",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 501,
-      "head": "80b68b00a20a68cd7367566276c4b915111502c5",
-      "branch": "integration/autonomy-handoff-fairness-20261008-d87a68c3",
-      "title": "fix(autonomy/api): integrate fair handoff and REST 2.1 continuation",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 502,
-      "head": "5ad88f106de6d2a34172ca7cbb750963c77bfdd3",
-      "branch": "repair/ruleset-client-dispatch-20261009-80b68b00",
-      "title": "Add bounded REST dispatch for the existing Ruleset writer",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 505,
-      "head": "08e382ec928c8e5dd2ecf120ab352274be96c62e",
-      "branch": "integration/lifecycle-governance-public-readback-20261009",
-      "title": "fix(mesh): integrate lifecycle governance with public TTL-bound readback",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 508,
-      "head": "2e847ce4af60451bef11ec1b89540d56ee4e3ea6",
-      "branch": "integration/ruleset-client-lifecycle-20261009",
-      "title": "Integrate Ruleset client 2.3 with lifecycle governance and exact writer pins",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 509,
-      "head": "f760a4090b4ca792ca1d79edacce11f4bded7ee0",
-      "branch": "integration/claude-remote-mcp-readback-20261009-468e9e42",
-      "title": "feat(mcp): add authenticated, exact-source readback to the existing REST adapter",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 510,
-      "head": "3fd23f9ca6c23e4f80a551d4707de55b0d7be1b9",
-      "branch": "work/seed-identity-proof-repair-20261009-v1",
-      "title": "fix(mesh): close Seed identity and acceptance evidence gaps",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 511,
-      "head": "18d2598fdbabf4630c9fe168313686aa5743df79",
-      "branch": "integration/claude-remote-mcp-rest-20261009",
-      "title": "feat(api): scoped Remote-MCP application path with independent byte readback",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 512,
-      "head": "e1b1aaf0b81f58c8ae62cc7afcd5d25d0ccfa892",
-      "branch": "integration/seed-ruleset-lifecycle-20261009-v1",
-      "title": "Integrate fresh Seed identity repair with REST 2.3 and lifecycle governance",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 513,
-      "head": "5f0c897d1c1805eebe1e40f4631652ba075b0c4e",
-      "branch": "integration/claude-mcp-consolidated-20261009-f760a409-18d2598f",
-      "title": "Integrate existing Claude MCP read/data tools with separate credentials and #508 governance",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 519,
-      "head": "c9c71bba5c03c1309f29cc898e83ecb035983853",
-      "branch": "publication/raumzeitterminal-nobel-decay-20261010",
-      "title": "Veröffentlichten Themenindex, Quellen und Repository-Terminal konsistent anbinden",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 521,
-      "head": "d44c48791c87dae4669036e49ce5db98e95e06eb",
-      "branch": "work/ref-cas-readback-20261010-d8775f20",
-      "title": "fix(promotion): integrate gated GraphQL target-ref CAS",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 522,
-      "head": "094d3a8c074e399085a864f2844adcdafc3de3cf",
-      "branch": "work/client-end-of-action-regressions-20261012-v1",
-      "title": "fix(client/archive): preserve causal continuation and suppress identical Zenodo failures",
-      "evidence": "NATIVE_REST_COMMIT_HISTORY_OF_1860447b515a3538f884d5b872eec0b939979d84"
-    },
-    {
-      "number": 515,
-      "head": "02fbe50638eb9064f44fe20e183fec15203364c5",
-      "branch": "integration/seed-mcp-governance-512-513-20261009-14c71097",
-      "title": "Integrate native Mesh authority and preserve delegated independent review",
-      "evidence": "EXPLICIT_SECOND_PARENT_OF_PREPARED_MERGE"
-    }
-  ],
-  "consolidation_rule": {
-    "new_pull_requests": 0,
-    "required_exact_ancestry_readback": true,
-    "closure_only_after_carrier_source_ancestry_verified": true,
-    "closed_superseded_is_not_native_main_merge": true,
-    "unique_changes_and_open_obligations_remain_in_carrier": true,
-    "optimization_admitted": false
-  },
   "merge": {
-    "same_path_three_way": true,
-    "immutable_predecessors_retained": true,
-    "current_main_lifecycle_receipts_retained": true,
-    "promotion_gate_not_weakened": true,
     "automatic_cas_stays_disabled": true,
-    "regression_correction": "Delegated review may satisfy native governance while missing qualified target-ref CAS must still HOLD; self-review must remain BLOCK."
+    "current_main_lifecycle_receipts_retained": true,
+    "immutable_predecessors_retained": true,
+    "promotion_gate_not_weakened": true,
+    "regression_correction": "Delegated review may satisfy native governance while missing qualified target-ref CAS must still HOLD; self-review must remain BLOCK.",
+    "same_path_three_way": true
   },
-  "validation": {
-    "cache_contract": "29/29 tools PASS",
-    "focused_governance": "111 tests PASS after three-way merge and CAS-aware assertion correction",
-    "full_suite": "PENDING_CURRENT_CANDIDATE",
-    "native_ci": "PENDING_NEW_HEAD",
-    "live_goldkelch_approval": false,
-    "main_protection_verified": false,
-    "main_merge": false,
-    "domain_delivery": false,
-    "local_full_suite": {
-      "state": "BLOCK_ENVIRONMENT_MISSING_HISTORICAL_GIT_FIXTURE",
-      "fixture_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
-      "first_failed_test": "tests.test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_write_then_committed_descendant_check_is_local_only",
-      "no_test_removed_or_weakened": true,
-      "continuation": "Run the unchanged complete suite in the existing native CI with full history; inspect fresh exact-head result."
+  "owner_scope_update": {
+    "applicability": "All QIK-VRT pull requests, including future candidates",
+    "human": "Ingolf Lohmann",
+    "priority": "Normal backlog priority; follow current productive-delivery work and causal prerequisite repairs",
+    "procedure": [
+      "Reuse existing Main carriers and preserve each unique change and acceptance obligation.",
+      "Close a superseded source PR only after independently verifying its exact source HEAD as an ancestor of the still-open Main carrier.",
+      "Do not equate CLOSED supersession with MERGED, independent APPROVED, successful Main checks or delivery.",
+      "Complete actual Main integration through the existing admitted review, protection and check gates.",
+      "Continue every remaining PR in the existing backlog; no new blanket optimization or artificial priority escalation."
+    ],
+    "received_at": "2026-10-14T08:59:35Z",
+    "source": "DIRECT_OWNER_INSTRUCTION",
+    "target": "All accepted work converges on protected Main; parallel candidates are temporary review carriers",
+    "task_scheduling_changed": false,
+    "text": "Das gilt natürlich generell für alle Pull-Requests. Nur damit wir uns mal verstanden haben. Aber das ist jetzt nichts, was mit hoher Priorität passieren muss. Aber es muss auch passieren, früher oder später.",
+    "unattended_execution_established": false
+  },
+  "parents": {
+    "carrier": "1860447b515a3538f884d5b872eec0b939979d84",
+    "firefox_argon": {
+      "base_head": "d0477150b4cc0b2516c2579d70da9ed71c60e048",
+      "base_pr": 462,
+      "head": "e2808b725a4e23fd4d42966efe11f12187ff9501",
+      "merge_base": "46d518469f6379aa4b78d4e610ef6415d1a12a71",
+      "pr": 525,
+      "role": "Second parent of the history-preserving successor on the existing PR523 branch",
+      "tree": "09d37e03bd567f11e3fe40bd87accd127c8f3689"
     },
-    "bootstrap": {
-      "state": "CONTINUE",
-      "integrity": "4177 classified entries /4166 immutable digests",
-      "cache_coverage": "29/29",
-      "meaning": "Missing unrelated runtime profiles remain explicit; no native execution or delivery inferred."
-    },
-    "local_focused_log_sha256": "f4cc44bd4ec130795eeb143280996d046fb6b3190820f6623dff2452f06c7643",
-    "local_full_attempt_log_sha256": "0b470999fdcc3098dec3457dc47945e16586bc66890661a0d53d59a320e08cff"
+    "main": "d060ae5db77d5e83a2bfc1fe009774e177d8b41e",
+    "review_repair": "02fbe50638eb9064f44fe20e183fec15203364c5"
   },
   "preserved_blockers": [
     {
-      "operation": "existing native ruleset writer initial REST dispatch",
       "class": "EXISTING_REST_CLIENT_DISPATCH_CREDENTIAL_NOT_DELIVERED_AND_INITIAL_DISPATCH_OPERATION_NOT_EXPOSED",
       "evidence": "Attached fresh 2026-10-14 administrative readback; Main remains unprotected and rulesets empty. Existing CLI and writer were inspected; local credential presence is false and adapter 127.0.0.1:8766 is unreachable.",
+      "operation": "existing native ruleset writer initial REST dispatch",
       "retry_condition": "Supported existing initial-dispatch route with repository-bound secure Actions credential, followed by exact active full-ruleset readback."
     },
     {
-      "operation": "native independent Goldkelch review",
       "class": "REVIEWER_COLLABORATOR_ADMISSION_NOT_CONFIRMED",
       "evidence": "PR457 reviewer request HTTP422 at 2026-10-14T08:11:35Z despite normalized write permission. Not repeated; no APPROVED is inferred from Owner authorization or tests.",
+      "operation": "native independent Goldkelch review",
       "retry_condition": "Effective provider membership/admission correction independently established under the actual account; native exact-head APPROVED retained."
     },
     {
-      "operation": "initial successor workflow admission",
       "class": "REST_INITIAL_WORKFLOW_APPROVAL_OPERATION_NOT_EXPOSED",
+      "operation": "initial successor workflow admission",
       "retry_condition": "Actually exposed and admitted REST initial approval capability; no rerun or synthetic trigger substitutes."
     }
   ],
-  "contribution_origin": {
-    "human": "Ingolf Lohmann: convergence goal, scope and authorization",
-    "artificial_cognitive": "Codex: current inventory, source review, three-way consolidation, tests and verified persistence"
+  "repository": "ingolf-lohmann/qik-vrt",
+  "schema": "qikvrt_main_convergence_work_unit_v1",
+  "state": "CANDIDATE_PREPARED_MAIN_GATE_OPEN",
+  "target_ref": "main",
+  "validation": {
+    "bootstrap": {
+      "cache_coverage": "29/29",
+      "integrity": "4177 classified entries /4166 immutable digests",
+      "meaning": "Missing unrelated runtime profiles remain explicit; no native execution or delivery inferred.",
+      "state": "CONTINUE"
+    },
+    "cache_contract": "29/29 tools PASS",
+    "domain_delivery": false,
+    "firefox_argon_successor": {
+      "actual_model_inference": false,
+      "cache_contract": "29/29 PASS; existing renderer and verifier",
+      "firefox_ui_acceptance": false,
+      "full_remote_suite": "PENDING_NEW_SUCCESSOR",
+      "local_fixture_scope": "PARTIAL_SOURCE_FIXTURE_WITH_EXACT_REMOTE_BLOB_BINDINGS_NOT_FULL_REMOTE_HEAD_OR_PINNED_RUNTIME",
+      "local_logs": {
+        "ab-isolated.log": "eb06c0ae323b84f39a4b5864294d031d780cff5d604c5cd4bc32d558d24ca3a2",
+        "boundary-tests.log": "721b393b22e4c3414f28ee6d1cc77384054baf7a074d23ea18b58a1ee0c65948",
+        "personal-tests.log": "52eedebfb9f521159fb6374b4883225514b3c6e899b39aca6ef1dc114a4ab03f",
+        "terminal-tests.log": "db507ae72e4407b856b8d1f610dd6e5e2cfc3fb427aca16469494c246a1cade5"
+      },
+      "local_passed": {
+        "ab": 18,
+        "capability_boundary": 5,
+        "gemini": 10,
+        "http_terminal_contract_and_loopback": 8,
+        "personal": 13
+      },
+      "local_total": 54,
+      "local_unix_socket_test_boundary": "23 existing DurableOwnerTerminalTests blocked by host AF_UNIX EPERM; unchanged source tests retained for native CI",
+      "pinned_runtime_equivalence": false,
+      "resolved_conflicts": [
+        "Preserve both durable terminal commands and opt-in personal provider flags",
+        "Retain all 29 locked cache components and add personal Python consumer authorities",
+        "Preserve all existing Makefile gates plus the Personal adapter and A/B gates"
+      ],
+      "runtime_python": "3.12.14",
+      "source_binding": "Exact remote Git blob bytes individually verified; partial local source fixture, not a full repository clone",
+      "state": "54_LOCAL_TECHNICAL_TESTS_PASS_REMOTE_FULL_SUITE_PENDING",
+      "tested_paths": [
+        "src/qikvrt_personal_assistant.py",
+        "src/qikvrt_effect_ack_http_terminal.py",
+        "Makefile",
+        "runtime/toolchains/CACHE_REGISTRY.json"
+      ]
+    },
+    "focused_governance": "111 tests PASS on predecessor d0f9e6c257f5a5c2b73debb1a780038ae56e8646; governance sources unchanged in this successor",
+    "full_suite": "PENDING_CURRENT_FIREFOX_ARGON_CONSOLIDATED_SUCCESSOR",
+    "live_goldkelch_approval": false,
+    "local_focused_log_sha256": "f4cc44bd4ec130795eeb143280996d046fb6b3190820f6623dff2452f06c7643",
+    "local_full_attempt_log_sha256": "0b470999fdcc3098dec3457dc47945e16586bc66890661a0d53d59a320e08cff",
+    "local_full_suite": {
+      "continuation": "Run the unchanged complete suite in the existing native CI with full history; inspect fresh exact-head result.",
+      "first_failed_test": "tests.test_observer_relative_retrocausality_zenodo_finalizer.ObserverRelativeRetrocausalityZenodoFinalizerTests.test_write_then_committed_descendant_check_is_local_only",
+      "fixture_commit": "56127a6fd7dadea331fea98ed6cba19b4b96c6b2",
+      "no_test_removed_or_weakened": true,
+      "state": "BLOCK_ENVIRONMENT_MISSING_HISTORICAL_GIT_FIXTURE"
+    },
+    "main_merge": false,
+    "main_protection_verified": false,
+    "native_ci": "PENDING_NEW_SUCCESSOR"
   },
-  "completion_claims": {
-    "MAIN_INTEGRATED": false,
-    "EFFECT_ACK_DONE": false,
-    "PRODUCTIVE_DOMAIN_ACCEPTED": false
-  }
+  "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1"
 }

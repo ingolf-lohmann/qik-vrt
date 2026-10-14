@@ -72,3 +72,13 @@ Legacy HTTP/HTML remains unchanged. A fail-closed client that requires EFFECT_AC
 - Old exact-head evidence is never transferred to a new head.
 - A browser permission is not effect authorization.
 - No PASS, FINAL_PASS or EFFECT_ACK_DONE claim follows merely from installing the extension or passing repository tests.
+
+## Interrupted-task product evaluation
+
+The reproducible preparation for the personal research/documentation assistant
+is [the interruption A/B harness](../../benchmarks/browser-assistant-ab/README.md).
+It binds identical paired fixtures, versions, observer events and evaluation of
+resume time, repeated context, false completion and human intervention. Its
+current status is harness-only: product execution and customer benefit remain
+unmeasured. The reference bridge's local terminal smoke is a separate technical
+test and is not an end-to-end browser-assistant benchmark.

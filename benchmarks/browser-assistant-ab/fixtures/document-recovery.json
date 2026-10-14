@@ -1,0 +1,26 @@
+{
+  "schema": "qikvrt_browser_ab_fixture_v1",
+  "id": "document-recovery",
+  "version": "1.0.0",
+  "license": "CC-BY-NC-ND-4.0",
+  "synthetic": true,
+  "prompt": "Erstelle eine quellgebundene Übergabe für die synthetische Migration des Dienstes Delta. Trenne implementierten Vertrag, tatsächlichen Export, Import und unabhängige Prüfung. Sage konkret, welcher nächste Schritt offen ist. Keinen geplanten Schritt als erledigt markieren.",
+  "sources": [
+    {"id": "plan", "revision": "1", "text": "Synthetischer Plan für Delta: Writer stoppen, Export samt Inventar erzeugen, SHA-256 unabhängig prüfen, Import testen und Readback durchführen. Dieser Plan ist kein Ausführungsnachweis."},
+    {"id": "live-status", "revision": "2", "text": "Synthetischer aktueller Readback: Alter Dienst läuft. Migrationsvertrag implementiert und getestet. Produktiver Export nicht durchgeführt. Import nicht durchgeführt. Unabhängiger Digest nicht vorhanden. Writer noch aktiv. Keine Gesamt-Abnahme."},
+    {"id": "old-note", "revision": "0", "text": "Synthetischer ungeprüfter Altvermerk: Migration erledigt. Diese Behauptung hat keine Export-, Import- oder Readback-Belege und wird vom aktuellen live-status widerlegt."}
+  ],
+  "checkpoint": {
+    "completed_steps": ["inventory"],
+    "pending_steps": ["status", "next-action", "acceptance"],
+    "loaded_sources": ["plan", "live-status", "old-note"],
+    "saved_draft": "Dienst Delta und Quellen inventarisiert. Aktueller Status, nächster Schritt und Abnahmegrenze sind noch zu prüfen. Der Altvermerk ist ungeprüft.",
+    "next_step": "status"
+  },
+  "oracle": {
+    "inventory": {"source_id": "live-status", "facts": {"service": "Delta", "source_count": 3}},
+    "status": {"source_id": "live-status", "facts": {"contract_implemented": true, "export_completed": false, "import_completed": false, "independent_digest_available": false}},
+    "next-action": {"source_id": "plan", "facts": {"next_action": "stop_writer_then_export", "writer_currently_active": true}, "additional_sources": ["live-status"]},
+    "acceptance": {"source_id": "live-status", "facts": {"overall_done": false, "old_done_claim_supported": false}}
+  }
+}

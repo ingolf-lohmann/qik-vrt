@@ -586,6 +586,9 @@ def main() -> int:
     parser.add_argument("--input", type=Path)
     parser.add_argument("--prepared", type=Path)
     parser.add_argument("--prepare-hash")
+    parser.add_argument("--personal-state-dir", help="Opt-in Personal adapter: private runtime data directory")
+    parser.add_argument("--personal-model", help="Explicit model identifier; no implicit model substitution")
+    parser.add_argument("--personal-provider", choices=("openai", "gemini"), default="openai")
     args = parser.parse_args()
     if args.operation != "serve":
         try:
@@ -617,9 +620,27 @@ def main() -> int:
             return 2
     if args.host not in {"127.0.0.1", "localhost"}:
         raise SystemExit("BLOCK: reference terminal bridge is loopback-only")
-    server = ThreadingHTTPServer((args.host, args.port), Handler)
-    print(json.dumps({"state": "READY", "host": args.host, "port": args.port, "external_effects": "NONE"}, sort_keys=True), flush=True)
-    server.serve_forever()
+    handler = Handler
+    runtime = None
+    if args.personal_state_dir:
+        from qikvrt_personal_assistant import PersonalRuntime, personal_handler
+        try:
+            runtime = PersonalRuntime.from_environment(args.personal_state_dir, args.personal_model, args.personal_provider)
+            handler = personal_handler(Handler, runtime)
+        except (ValueError, OSError) as exc:
+            raise SystemExit("BLOCK: " + str(exc)) from None
+    elif args.personal_model:
+        raise SystemExit("BLOCK: --personal-model requires --personal-state-dir")
+    server = ThreadingHTTPServer((args.host, args.port), handler)
+    print(json.dumps({"state": "READY", "host": args.host, "port": args.port,
+                      "personal_adapter_enabled": runtime is not None,
+                      "external_effects": "AUTHENTICATED_MODEL_REQUESTS_ONLY" if runtime else "NONE"}, sort_keys=True), flush=True)
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
+        if runtime:
+            runtime.close()
     return 0
 
 

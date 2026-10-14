@@ -1,0 +1,25 @@
+{
+  "schema": "qikvrt_browser_ab_validation_v1",
+  "evidence_class": "HARNESS_IMPLEMENTATION_VERIFICATION",
+  "focused_command": "python3 -B -m unittest -v tests.test_qikvrt_browser_assistant_ab tests.test_qikvrt_effect_ack_http_terminal tests.test_qikvrt_personal_firefox_capability_boundary",
+  "focused_tests_passed": 27,
+  "console_javascript_syntax": "PASS",
+  "full_repository_gate": "PASS_LOCAL_IMPLEMENTATION_AND_RECEIPT_TREE",
+  "initial_full_gate_blocker": "Historical source commit 56127a6fd7dadea331fea98ed6cba19b4b96c6b2 absent from local clone; explicitly fetched, not a harness defect.",
+  "product_trials_executed": 0,
+  "product_metrics": null,
+  "product_claim_allowed": false,
+  "self_test_boundary": "Synthetic clocks and scripted oracle outputs; not measured browser users or product outcomes.",
+  "source_binding": "Each frozen run manifest binds exact harness/terminal/toolchain file bytes plus base HEAD/TREE and dirty flag. Containing Git commit binds these receipts, no in-file self-hash.",
+  "raw_data": "self-test-run/events/*.jsonl only; prepared-run has no product events.",
+  "full_repository_command": "make test",
+  "full_repository_exit_code": 0,
+  "reported_unittest_tests": 542,
+  "full_log": {
+    "path": "evidence/benchmarks/browser-assistant-ab/2026-10-05/MAKE_TEST.txt",
+    "bytes": 106228,
+    "sha256": "f1d8996e49578c5138390633135be6004431c309a6fb859f662cc95e184528cd"
+  },
+  "remote_exact_head_gates": "NOT_YET_OBSERVED",
+  "csv_line_bytes": "LF_PRESERVED_IN_GIT"
+}
