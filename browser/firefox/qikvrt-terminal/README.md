@@ -151,3 +151,23 @@ requires real browser signature and activation proof. Until that input is
 bound and the live gate passes, extension activation, Main integration and
 productive delivery remain HOLD. Successful browser provisioning alone is
 not working software at https://raumzeitterminal.de/.
+
+Native result on source `3136e142c01f05348e32dccaa3d234c596e02533`:
+Mozilla DEB `158.0~build2`, actual `/usr/lib/firefox/firefox` SHA-256
+`a19472941a7cd7252ab5e61b02eb616a50389a784323c21dc6873a23fd700789`,
+and live Gecko 158.0 satisfy the unchanged minimum. All 13 existing native
+Firefox/noVNC/startup/restart controls pass in run 38601373928. All nine
+original S1 parent layers remain. The upgraded dependency image is retained
+in native artifact 11913319518; CI can verify and reuse those exact bytes
+instead of provisioning the browser again. Complete original evidence and
+the independently downloaded 33997-byte ZIP digest remain in the work unit.
+
+The unsigned Standard XPI remains unaccepted: normal persistent installation
+returns `rejected_before_install`, error -5, addon absent; Mozilla signed state,
+policy and background registration are false at initial start and restart.
+This repairs the version prerequisite, not the signing or production boundary.
+The Debian `firefox` wrapper initially delegated to ESR and failed inside the
+restricted runtime PATH; the repaired source binds the Mozilla ELF directly.
+The existing recovery framework preserves both changed deployment originals
+byte-exact and verifies the corresponding successor bindings without relaxing
+its original checks.

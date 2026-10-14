@@ -27,9 +27,31 @@
       "historical_sha256": "662d41da4b1e15237ee73ce73347d090c32e6fa7dcaaea208e95938cf20b3966",
       "successor_git_blob": "734f02a8114d4a7397b3c436f1000c9fcbc93af2",
       "successor_sha256": "ec3436a1e7bd0687dc1216994f2c60a01ed201cb97672aa53a94dfe08b972bc3"
+    },
+    {
+      "restored_path": "deploy/universal-terminal/Dockerfile",
+      "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/Dockerfile",
+      "historical_git_blob": "b793a5ba0cb966520f681399d8f2a61ceb5fe883",
+      "historical_sha256": "97a03ff7b88218050b4f4295bcf6369ba03a402388364666cca32a0673d4b4f7",
+      "successor_git_blob": "1e9818c551cb6cb30d418fd598ddc4f522004486",
+      "successor_sha256": "04b548338fdfb80a57a6de03636ad3a0fadee3dcde61c84da4d81719c44fccb9"
+    },
+    {
+      "restored_path": "deploy/universal-terminal/entrypoint.sh",
+      "historical_archive_path": "evidence/self_host/original-recovered/deploy/universal-terminal/entrypoint.sh",
+      "historical_git_blob": "3db27a8487e67b2beac596e1f576afe1cf95b21e",
+      "historical_sha256": "c0bae910a3220b79d283943294b0ace65b8787c8f95b275a75ffc73d65fb139b",
+      "successor_git_blob": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+      "successor_sha256": "2c63dd42df187fd9bff5313b8d7c572b802934c0f6c5e374c5cebed5e3112e6a"
     }
   ],
-  "scope": "Preserved historical original bytes plus current role and existing-lane test corrections; not historical PASS transfer",
+  "scope": "Preserved historical original bytes plus current role, existing-lane test and Owner Firefox-158 forward corrections; not historical PASS transfer",
   "predecessor_pass_transferred": false,
-  "effect_ack_done": false
+  "effect_ack_done": false,
+  "firefox158_extension": {
+    "human_authority": "Ingolf Lohmann",
+    "source_head": "3136e142c01f05348e32dccaa3d234c596e02533",
+    "source_tree": "2fc829e5718ca7119ae772927767c9a80e0d45a1",
+    "reason": "Native source-recovery test identified the two newly modified restored originals; exact originals now archived under the existing recovery path and all checks retained."
+  }
 }

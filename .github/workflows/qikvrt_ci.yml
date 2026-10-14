@@ -277,12 +277,22 @@ jobs:
           work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
           upgrade=work.get('firefox158_s1_upgrade',{})
           signed=upgrade.get('signed_xpi_artifact')
+          cached=upgrade.get('runtime_artifact')
           inputs={'image_digest':'sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d',
               'upgrade_dockerfile_blob':blob('runtime/self-host/Dockerfile'),
               'terminal_entrypoint_blob':blob('deploy/universal-terminal/entrypoint.sh'),
               'signed_xpi_artifact':signed,
               'probe_blob':blob('tools/qikvrt_self_host.py'),
               'extension_blobs':{name:blob(root+name) for name in files}}
+          reuse=(cached is not None and all(cached['component_blobs'].get(path)==blob(path)
+              for path in ('runtime/self-host/Dockerfile','tools/qikvrt_self_host.py','deploy/universal-terminal/entrypoint.sh')))
+          if reuse:
+              assert cached['repository']=='ingolf-lohmann/qik-vrt'
+              assert cached['parent_image_id']=='sha256:2f35af27a2cfd36e383ae0ced8f85eca4ff328d888a7169d7cdafa62810dfe2e'
+              assert type(cached['run_id']) is int and cached['run_id']>0
+              import re
+              assert re.fullmatch(r'[A-Za-z0-9_.-]{1,160}',cached['artifact_name'])
+              assert re.fullmatch(r'[a-f0-9]{64}',cached['archive_sha256'])
           causal_digest=hashlib.sha256(json.dumps(inputs,sort_keys=True,separators=(',',':')).encode()).hexdigest()
           work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
           prior=upgrade.get('native_observation',{})
@@ -306,13 +316,58 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'],'a') as output:
               output.write('probe_required='+str(not unchanged).lower()+'\n')
               output.write('signed_candidate='+str(signed is not None).lower()+'\n')
+              output.write('runtime_reuse='+str(reuse).lower()+'\n')
+              if reuse:
+                  output.write('runtime_run_id='+str(cached['run_id'])+'\n')
+                  output.write('runtime_artifact_name='+cached['artifact_name']+'\n')
               if signed:
                   output.write('signed_run_id='+str(signed['run_id'])+'\n')
                   output.write('signed_artifact_name='+signed['artifact_name']+'\n')
           PY
 
+      - name: Reuse the already verified Firefox-158 dependency bytes
+        if: steps.effect-admission.outputs.runtime_reuse == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.effect-admission.outputs.runtime_run_id }}
+          name: ${{ steps.effect-admission.outputs.runtime_artifact_name }}
+          path: ${{ runner.temp }}/s1-firefox158-cached
+      - name: Independently verify upgraded archive, parent layers, package and actual ELF
+        if: steps.effect-admission.outputs.runtime_reuse == 'true'
+        run: |
+          python3 -B - <<'PYCACHE'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+          bound=work['firefox158_s1_upgrade']['runtime_artifact']
+          root=Path(os.environ['RUNNER_TEMP']);archive=root/'s1-firefox158-cached/image.docker.tar.gz'
+          with archive.open('rb') as f: pin=hashlib.file_digest(f,'sha256').hexdigest()
+          assert archive.stat().st_size==bound['archive_bytes'] and pin==bound['archive_sha256']
+          subprocess.run(['docker','load','--input',str(archive)],check=True)
+          live=json.loads(subprocess.check_output(['docker','image','inspect','qikvrt-s1:firefox-158-release']))[0]
+          assert live['Id']==bound['image_id'] and live['RootFS']['Layers']==bound['diff_ids']
+          assert live['RootFS']['Layers'][:len(bound['parent_diff_ids'])]==bound['parent_diff_ids']
+          code="import hashlib,json,subprocess;from pathlib import Path;p=Path('/usr/lib/firefox/firefox');print(json.dumps({'binary_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'package_version':subprocess.check_output(['dpkg-query','-W','-f=${Version}','firefox'],text=True).strip(),'version_output':subprocess.check_output([str(p),'--version'],stderr=subprocess.STDOUT,text=True).strip()}))"
+          actual=json.loads(subprocess.check_output(['docker','run','--rm','--network','none','--user','10001:10001',
+              '--read-only','--cap-drop','ALL','--security-opt','no-new-privileges:true',
+              '--entrypoint','python3','qikvrt-s1:firefox-158-release','-B','-c',code]))
+          assert actual['binary_sha256']==bound['provision']['binary_sha256']
+          assert actual['package_version']==bound['provision']['debian_package_version']
+          from tools import qikvrt_self_host as host
+          assert host.firefox_release_minimum_satisfied(actual['version_output'])
+          evidence=root/'s1-extension-evidence'
+          (evidence/'release-cache-readback.json').write_text(json.dumps({'state':'EXACT_UPGRADED_IMAGE_REIMPORTED_VERIFIED',
+              'archive_sha256':pin,'archive_bytes':archive.stat().st_size,'image_id':live['Id'],
+              'all_parent_layers_retained':True,'actual':actual,'runtime_components_rebuilt':False,
+              'source_component_blobs':bound['component_blobs'],'cached_source_head':bound['source_head'],
+              'current_candidate_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'extension_activation_verified':False,'predecessor_full_head_acceptance_transferred':False,
+              'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
+          print('EXACT_UPGRADED_S1_BYTES_REUSED_WITHOUT_REBUILD')
+          PYCACHE
       - name: Reuse original S1 source verifier
-        if: steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: c1cca8fae42166d456c776e5c876c23ac7689aea
@@ -320,7 +375,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Retrieve existing proven OCI bytes without rebuilding runtime
-        if: steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           github-token: ${{ github.token }}
@@ -328,7 +383,7 @@ jobs:
           name: qikvrt-s1-container-c1cca8fae42166d456c776e5c876c23ac7689aea
           path: ${{ runner.temp }}/s1-original
       - name: Verify original archive, every OCI object and exact image binding
-        if: steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
         run: |
           python3 -B - <<'PY'
           import hashlib,json,sys
@@ -426,7 +481,7 @@ jobs:
           (evidence/'xpi-source-binding.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
           PY
       - name: Add only the supported Mozilla Release upgrade to verified S1 parent layers
-        if: steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
         run: |
           docker build --target s1-firefox-release --file runtime/self-host/Dockerfile \
             --build-arg QIKVRT_S1_BASE_IMAGE=qikvrt-s1:firefox-158-baseline \
@@ -454,7 +509,7 @@ jobs:
           (evidence/'release-image-readback.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PYUPGRADE
       - name: Freeze the upgraded dependency image for later signed-XPI admission
-        if: steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
         run: |
           mkdir "$RUNNER_TEMP/s1-firefox158-runtime"
           docker save --output "$RUNNER_TEMP/s1-firefox158-runtime/image.docker.tar" qikvrt-s1:firefox-158-release
@@ -477,7 +532,7 @@ jobs:
           (evidence/'release-image-readback.json').write_text(text)
           PYFREEZE
       - name: Preserve the reusable upgraded S1 dependency bytes
-        if: steps.effect-admission.outputs.probe_required == 'true'
+        if: steps.effect-admission.outputs.probe_required == 'true' && steps.effect-admission.outputs.runtime_reuse != 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: qikvrt-s1-firefox158-runtime-${{ github.event.pull_request.head.sha || github.sha }}
