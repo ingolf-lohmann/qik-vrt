@@ -263,7 +263,39 @@ jobs:
         run: |
           python3 -B tools/qikvrt_tool_cache.py verify
           python3 -B -m unittest -v tests.test_self_host_firefox.FirefoxExtensionAdmissionTests
+      - name: Admit only a materially changed image, XPI or probe
+        id: effect-admission
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
+          evidence.mkdir(mode=0o777,exist_ok=True);evidence.chmod(0o777)
+          root='browser/firefox/qikvrt-terminal/'
+          files=['manifest.json','background.js','content.js','options.html','options.js','terminal.css']
+          blob=lambda path:subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
+          inputs={'image_digest':'sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d',
+              'probe_blob':blob('tools/qikvrt_self_host.py'),
+              'extension_blobs':{name:blob(root+name) for name in files}}
+          causal_digest=hashlib.sha256(json.dumps(inputs,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+          work=json.loads(Path('state/work_units/QIKVRT_MAIN_CONVERGENCE_20261014_V1.json').read_bytes())
+          prior=work.get('firefox158_s1_installation_check',{}).get('native_observation',{})
+          unchanged=(prior.get('causal_input_sha256')==causal_digest and
+              prior.get('receipt',{}).get('state','').startswith('HOLD_'))
+          if unchanged:
+              r=dict(prior['receipt']);r.update(current_probe_executed=False,
+                  reused_failure_source_head=prior['source_head'],reused_failure_run_id=prior['run_id'])
+              (evidence/'extension-installation.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
+              print('NOOP_UNCHANGED_FIREFOX_INSTALLATION_FAILURE')
+          (evidence/'causal-inputs.json').write_text(json.dumps({'inputs':inputs,
+              'sha256':causal_digest,'current_probe_required':not unchanged,
+              'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as output:
+              output.write('probe_required='+str(not unchanged).lower()+'\n')
+          PY
+
       - name: Reuse original S1 source verifier
+        if: steps.effect-admission.outputs.probe_required == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: c1cca8fae42166d456c776e5c876c23ac7689aea
@@ -271,6 +303,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
       - name: Retrieve existing proven OCI bytes without rebuilding runtime
+        if: steps.effect-admission.outputs.probe_required == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           github-token: ${{ github.token }}
@@ -278,6 +311,7 @@ jobs:
           name: qikvrt-s1-container-c1cca8fae42166d456c776e5c876c23ac7689aea
           path: ${{ runner.temp }}/s1-original
       - name: Verify original archive, every OCI object and exact image binding
+        if: steps.effect-admission.outputs.probe_required == 'true'
         run: |
           python3 -B - <<'PY'
           import hashlib,json,sys
@@ -295,18 +329,18 @@ jobs:
               '65997163a6bee14f8d14f4a193038b51f4599ead')
           assert r['image_digest']=='sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d'
           evidence=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
-          evidence.mkdir(mode=0o777);evidence.chmod(0o777)
+          evidence.mkdir(mode=0o777,exist_ok=True);evidence.chmod(0o777)
           (evidence/'original-oci.json').write_text(json.dumps(r,sort_keys=True,indent=2)+'\n')
           PY
-          loader="quay.io/skopeo/stable@sha256:97772f3c64fd2fba720b2bafaf37239dc44d8b1c625c8383c64044832efe9ed9"
           mkdir "$RUNNER_TEMP/s1-original/load"
-          docker run --rm --read-only --user "$(id -u):$(id -g)" --env HOME=/tmp \
-            --cap-drop ALL --security-opt no-new-privileges:true \
-            --tmpfs /tmp:rw,nosuid,size=128m,mode=1777 --tmpfs /var/tmp:rw,nosuid,size=2g,mode=1777 \
-            --mount "type=bind,source=$RUNNER_TEMP/s1-original/image.oci.tar,target=/input.oci.tar,readonly" \
-            --mount "type=bind,source=$RUNNER_TEMP/s1-original/load,target=/output" \
-            "$loader" copy --format v2s2 oci-archive:/input.oci.tar \
-            docker-archive:/output/image.docker.tar:qikvrt-s1:firefox-158-baseline
+          python3 -B - <<'PYIMPORT'
+          import os
+          from pathlib import Path
+          from tools import qikvrt_self_host as host
+          p=Path(os.environ['RUNNER_TEMP'])/'s1-original'
+          print(host.oci_to_docker_archive(p/'image.oci.tar',p/'load/image.docker.tar',
+              'qikvrt-s1:firefox-158-baseline'))
+          PYIMPORT
           docker load --input "$RUNNER_TEMP/s1-original/load/image.docker.tar"
           python3 -B - <<'PY'
           import json,os,subprocess
@@ -325,6 +359,7 @@ jobs:
               'effect_ack_done':False},sort_keys=True,indent=2)+'\n')
           PY
       - name: Package exact candidate source and bind all original extension blobs
+        if: steps.effect-admission.outputs.probe_required == 'true'
         run: |
           python3 -B - <<'PY'
           import hashlib,json,os,subprocess,zipfile
@@ -349,6 +384,7 @@ jobs:
           (evidence/'xpi-source-binding.json').write_text(json.dumps(binding,sort_keys=True,indent=2)+'\n')
           PY
       - name: Actual package version, persistent installation and live AddonManager activation
+        if: steps.effect-admission.outputs.probe_required == 'true'
         run: |
           docker run --rm --init --network none --user 10001:10001 --read-only \
             --env HOME=/tmp --cap-drop ALL --security-opt no-new-privileges:true --shm-size 256m \
@@ -365,8 +401,9 @@ jobs:
           from pathlib import Path
           p=Path(os.environ['RUNNER_TEMP'])/'s1-extension-evidence'
           r=json.loads((p/'extension-installation.json').read_bytes())
-          b=json.loads((p/'xpi-source-binding.json').read_bytes())
-          assert r['xpi_sha256']==b['xpi_sha256']
+          if (p/'xpi-source-binding.json').exists():
+              b=json.loads((p/'xpi-source-binding.json').read_bytes())
+              assert r['xpi_sha256']==b['xpi_sha256']
           assert r['strict_min_version']=='158.0'
           assert r['reference_activation_verified'] is True, 'HOLD: Firefox 158 reference XPI is not active in existing S1'
           assert r['extension_activation_verified'] is True, 'HOLD: default production signing-policy activation is not verified'

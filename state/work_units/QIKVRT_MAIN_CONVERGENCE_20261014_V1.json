@@ -63,11 +63,12 @@
     "human_actor": "Ingolf Lohmann",
     "instruction": "Check actual Firefox ESR package, persistent installation and live activation of the Firefox 158 candidate XPI in the existing S1 image. Preserve owner minimum, governance and exact-host readback.",
     "local_control_scope": "source projection; no actual local Docker or Firefox executable",
-    "local_negative_control_tests": 5,
+    "local_negative_control_tests": 6,
     "minimum": "158.0",
     "native_state": "PENDING_EXACT_HEAD_CI",
     "probe": "tools/qikvrt_self_host.py firefox-extension-check",
     "public_production_verified": false,
+    "retry_gate": "Existing CI preserves a same-image/same-XPI/same-probe failed receipt and skips another browser/container attempt; reference/signing refusal remains a failed admission gate.",
     "reused_path": ".github/workflows/qikvrt_ci.yml#s1_firefox_extension",
     "schema": "qikvrt_firefox158_s1_installation_check_v1",
     "supported_forward_path": {
@@ -82,6 +83,16 @@
         "https://www.firefox.com/en-US/firefox/158.0/releasenotes/",
         "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/"
       ]
+    },
+    "transport_repair": {
+      "job_id": 115921028417,
+      "local_regression": "Exact config/layer preservation and changed compressed-layer rejection pass.",
+      "native_regression": "PENDING_CHANGED_TRANSPORT_NATIVE_RUN",
+      "original_failure": "Docker exit125: the previously successful pinned quay.io/skopeo/stable image is no longer found (manifest unknown). Browser probe not executed.",
+      "predecessor_head": "cce941dac01ab2fb912a737d649d5fab189088d0",
+      "repair": "Reuse Python tarfile/gzip and existing Docker load; verify original compressed blob hashes, original image config and every uncompressed diff ID. No image build or browser downgrade.",
+      "run_id": 38584008645,
+      "unchanged_error_retry": "NOOP; continuation uses changed import implementation"
     }
   },
   "incorporated_pull_requests": [

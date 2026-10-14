@@ -2315,6 +2315,71 @@ def start(package, pin, config_path, monolith=False):
             for s, handler in old_handlers.items(): signal.signal(s, handler)
 
 
+def oci_to_docker_archive(source, output, tag):
+    """Repackage the already verified OCI bytes for existing Docker load.
+
+    No builder, filesystem extraction, image/config rewrite or registry fetch.
+    Verify every blob, decompressed diff ID and the original image config.
+    """
+    import gzip
+    import io
+    if not re.fullmatch(r"[a-z0-9][a-z0-9:._/-]{1,150}", tag):
+        raise ValueError("LOCAL_DIAGNOSTIC_IMAGE_TAG_REQUIRED")
+    output = Path(output)
+    if output.exists(): raise ValueError("CREATE_ONLY_DOCKER_ARCHIVE_REQUIRED")
+    with tarfile.open(source, "r:*") as original, tempfile.TemporaryDirectory() as work:
+        def object_bytes(descriptor):
+            key=descriptor["digest"]
+            if not re.fullmatch(r"sha256:[a-f0-9]{64}", key):
+                raise ValueError("OCI_SHA256_DESCRIPTOR_REQUIRED")
+            raw=original.extractfile("blobs/sha256/"+key[7:]).read()
+            if len(raw)!=descriptor["size"] or digest(raw)!=key[7:]:
+                raise ValueError("OCI_OBJECT_DIGEST_MISMATCH")
+            return raw
+        index=json.loads(original.extractfile("index.json").read())
+        if len(index["manifests"])!=1: raise ValueError("SINGLE_OCI_IMAGE_REQUIRED")
+        image=json.loads(object_bytes(index["manifests"][0]))
+        config_raw=object_bytes(image["config"]);config=json.loads(config_raw)
+        diff_ids=config["rootfs"]["diff_ids"]
+        if len(diff_ids)!=len(image["layers"]): raise ValueError("OCI_DIFF_ID_COUNT_MISMATCH")
+        config_name=image["config"]["digest"][7:]+".json"
+        with tarfile.open(output,"w") as target:
+            def add(name,raw):
+                entry=tarfile.TarInfo(name);entry.size=len(raw);entry.mode=0o644
+                target.addfile(entry,io.BytesIO(raw))
+            add(config_name,config_raw)
+            layers=[]
+            for i,descriptor in enumerate(image["layers"]):
+                key=descriptor["digest"]
+                if not re.fullmatch(r"sha256:[a-f0-9]{64}",key):
+                    raise ValueError("OCI_LAYER_DESCRIPTOR_REQUIRED")
+                compressed=original.extractfile("blobs/sha256/"+key[7:])
+                # Stream and verify compressed bytes before decompression.
+                frozen=Path(work)/"blob";h=hashlib.sha256();size=0
+                with frozen.open("wb") as f:
+                    for block in iter(lambda:compressed.read(8*1024*1024),b""):
+                        f.write(block);h.update(block);size+=len(block)
+                if size!=descriptor["size"] or "sha256:"+h.hexdigest()!=key:
+                    raise ValueError("OCI_LAYER_BLOB_MISMATCH")
+                media=descriptor.get("mediaType","")
+                if media not in ("application/vnd.oci.image.layer.v1.tar+gzip",
+                        "application/vnd.oci.image.layer.v1.tar"):
+                    raise ValueError("SUPPORTED_OCI_LAYER_COMPRESSION_REQUIRED")
+                raw_layer=Path(work)/"layer";h=hashlib.sha256()
+                opener=gzip.open if media.endswith("+gzip") else open
+                with opener(frozen,"rb") as f,raw_layer.open("wb") as out:
+                    for block in iter(lambda:f.read(8*1024*1024),b""):
+                        h.update(block);out.write(block)
+                if "sha256:"+h.hexdigest()!=diff_ids[i]:
+                    raise ValueError("OCI_UNCOMPRESSED_DIFF_ID_MISMATCH")
+                name=key[7:]+"/layer.tar";layers.append(name)
+                entry=tarfile.TarInfo(name);entry.size=raw_layer.stat().st_size;entry.mode=0o644
+                with raw_layer.open("rb") as f: target.addfile(entry,f)
+            add("manifest.json",raw_json([{"Config":config_name,"RepoTags":[tag],"Layers":layers}]))
+    return {"config_digest":image["config"]["digest"],"diff_ids":diff_ids,
+        "tag":tag,"rebuilt":False,"config_rewritten":False,"effect_ack_done":False}
+
+
 def firefox_extension_accepted(value):
     """Require live Gecko acceptance and registration, not a copied XPI."""
     addon = value.get("addon") or {}

@@ -76,6 +76,41 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
         with self.assertRaises((ValueError,json.JSONDecodeError)):
             host.FirefoxProbeConnection(connection)
 
+    def test_existing_oci_repack_preserves_config_and_rejects_changed_layer(self):
+        import io,gzip,tarfile,hashlib
+        for corrupt in (False,True):
+            with self.subTest(corrupt=corrupt),tempfile.TemporaryDirectory() as directory:
+                directory=Path(directory);blobs={}
+                def add(raw,media=None):
+                    key="sha256:"+hashlib.sha256(raw).hexdigest()
+                    blobs["blobs/sha256/"+key[7:]]=raw
+                    value={"digest":key,"size":len(raw)}
+                    if media: value["mediaType"]=media
+                    return value
+                layer=b"original-uncompressed-layer-bytes"
+                layer_descriptor=add(gzip.compress(layer,mtime=0),"application/vnd.oci.image.layer.v1.tar+gzip")
+                config=json.dumps({"architecture":"amd64","os":"linux","rootfs":{"type":"layers",
+                    "diff_ids":["sha256:"+hashlib.sha256(layer).hexdigest()]}}).encode()
+                config_descriptor=add(config)
+                image=add(json.dumps({"config":config_descriptor,"layers":[layer_descriptor]}).encode())
+                blobs["index.json"]=json.dumps({"manifests":[image]}).encode()
+                if corrupt: blobs["blobs/sha256/"+layer_descriptor["digest"][7:]]=b"corrupt"
+                source=directory/"source.tar";target=directory/"loaded.tar"
+                with tarfile.open(source,"w") as output:
+                    for name,raw in blobs.items():
+                        entry=tarfile.TarInfo(name);entry.size=len(raw)
+                        output.addfile(entry,io.BytesIO(raw))
+                if corrupt:
+                    with self.assertRaisesRegex(ValueError,"OCI_LAYER_BLOB_MISMATCH"):
+                        host.oci_to_docker_archive(source,target,"qikvrt:test")
+                else:
+                    result=host.oci_to_docker_archive(source,target,"qikvrt:test")
+                    self.assertFalse(result["rebuilt"]);self.assertFalse(result["config_rewritten"])
+                    with tarfile.open(target) as archive:
+                        manifest=json.loads(archive.extractfile("manifest.json").read())[0]
+                        self.assertEqual(archive.extractfile(manifest["Config"]).read(),config)
+                        self.assertEqual(archive.extractfile(manifest["Layers"][0]).read(),layer)
+
 
 class FirefoxCarrierTests(NativeStandaloneTests):
     # The inherited native controls also execute against this browser profile.
