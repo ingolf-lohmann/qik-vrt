@@ -2222,6 +2222,16 @@
     "effect_ack_done": false,
     "historical_evidence": "state/work_units/QIKVRT_S1_LINUX_CONTAINER_CI_20261013_V1.json and original evidence/native-runtime-acceptance/s1-linux-container-20261013/ files retained byte-exact",
     "local_unix_socket_suite": "HOLD_ENVIRONMENT_PERMISSION_ERROR_AF_UNIX; NO_SECURITY_DOWNGRADE_OR_UNCHANGED_RETRY",
+    "native_ci_runtime_provision_repair": {
+      "cause_scope": "Original PR457 setup-python/setup-node steps missing before its restored full S1 test invocation",
+      "failed_head": "1aa6019d0ac0f173df6b23dcb24a4974e98b9c54",
+      "job": 116060442856,
+      "new_head_validation_required": true,
+      "no_repeated_unchanged_failure_attempt": true,
+      "observed_error": "LINUX_NODE24_PYTHON312_REQUIRED",
+      "repair": "Restore original pinned setup-python 3.12.x and setup-node 24.x actions in existing test job; provision declared S1 runtime, preserve host/runtime dependencies and all Firefox/signature requirements",
+      "run": 38624601512
+    },
     "operation": "MERGE_EXISTING_PR457_INTO_EXISTING_PR523_VIA_REST_GIT_OBJECTS",
     "original_archive_binding": {
       "archive_bytes": 382994793,
@@ -2274,7 +2284,7 @@
       {
         "path": ".github/workflows/qikvrt_ci.yml",
         "resolution": "SOURCE_FUNCTIONS_COMBINED_WITH_LATER_TARGET",
-        "resolved_blob": "c85466d8c97a5dd21bff5782034be0a4ba98d95b",
+        "resolved_blob": "98c8d6b7a03ec83c6e1deb416b141c1751f142ed",
         "source_blob": "b393fc2e76aa28d553e4a8cd3bc19e3af784b870",
         "source_mode": "100644",
         "target_blob": "e1f18d0ddc1225567340fe6f77d50c32cdb19a1e"
@@ -3207,7 +3217,7 @@
       {
         "path": "tests/test_self_host.py",
         "resolution": "SOURCE_FUNCTIONS_COMBINED_WITH_LATER_TARGET",
-        "resolved_blob": "44bf4ade8473cd4b5295c0c3b3a85a4eb2c99999",
+        "resolved_blob": "a8e53197a0d312a225ca7b7645cbef95fed97224",
         "source_blob": "bdf73ce1bad0b0e029f23756dab9fccdd6bfb6ce",
         "source_mode": "100644",
         "target_blob": "2b06e00ce416be31c22a73034b3b055ea9a73e12"

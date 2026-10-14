@@ -333,6 +333,16 @@ class WorkflowRuntimeTests(unittest.TestCase):
         self.assertNotIn("continue-on-error", complete)
         self.assertNotIn("|| true", complete)
 
+    def test_general_ci_provisions_declared_s1_runtimes_before_complete_tests(self):
+        workflow=(ROOT/'.github/workflows/qikvrt_ci.yml').read_text()
+        full=workflow.index('make test repository-monitor-test self-host-test')
+        prefix=workflow[:full]
+        self.assertIn('actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065',prefix)
+        self.assertIn("python-version: '3.12'",prefix)
+        self.assertIn('actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',prefix)
+        self.assertIn("node-version: '24'",prefix)
+
+
 
 class MeshContractTests(unittest.TestCase):
     """Source admission controls; no simulated receipt becomes live failover evidence."""
