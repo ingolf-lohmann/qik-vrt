@@ -32,15 +32,32 @@ Repository Authority/Mirror names are resolved solely from
 `policy/CANONICAL_UPSTREAM_REMOTE_V1.json`; governance must agree with that
 source and cannot create another role definition.
 
-The existing gate resolves the human login from that trusted policy and verifies
-all CODEOWNERS entries. Publisher, technical executor, Ruleset writer and both
-promotion observations use that resolver; an unknown repository or disagreement
-fails closed. Native review still requires an independent human APPROVED event
+The existing gate resolves the human principal from that trusted policy and
+verifies all CODEOWNERS entries. The Owner retains his Code Ownership and final
+authority. His explicit 28 September representative-review delegation to
+Goldkelch is retained in the existing Owner record and bound to its exact
+SHA-256 by the policy. Every CODEOWNERS entry contains the principal and that
+explicit delegate; an unrecorded, revoked, drifted or bot delegation fails closed.
+For a principal-authored PR the native reviewer is the delegate; for a
+delegate-authored PR and other authors the reviewer is the principal. Calls
+without a PR author continue to resolve the human principal for role readback.
+Publisher, live projection and both promotion observations pass the actual PR
+author to this same resolver. Ruleset/authority checks retain the principal
+binding; no former repository is restored as a permission issuer.
+Native review still requires an independent human APPROVED event
 on the exact current HEAD. An Owner decision is valid authority, while a
 COMMENT, author self-approval or automated technical APPROVE cannot fabricate
 that separate GitHub state. Drafts created through the Owner's own principal
 remain subject to the native self-approval restriction. A workflow/repository
 identity is an executor or store, never a substitute human reviewer.
+
+The Owner's renewed explicit authorization on 14 October 2026 is preserved in
+that same versioned record. It authorizes the existing repair; it does not
+manufacture GitHub APPROVED, collaborator membership, platform administration,
+Main enforcement or a changed REST-only route. Distinct platform account names
+are not by themselves proof of distinct natural persons or causal independence.
+Bot dispositions remain COMMENT-only, and all current-head, native-enforcement,
+last-push and stale-review protections remain required.
 
 The Ruleset writer retains its historical filename for continuity and every
 existing protection. Administrative credentials and live adoption remain
@@ -210,3 +227,4 @@ resolver before an effect. A historical role assignment fails
 `HISTORICAL_ROLE_REQUEST_NOT_CURRENT`; it cannot grant a current publication,
 tag or Authority change. New effects still require their separately reviewed
 exact-artifact contracts and all existing native approvals.
+

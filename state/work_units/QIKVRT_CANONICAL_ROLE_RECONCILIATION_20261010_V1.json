@@ -141,5 +141,69 @@
     }
   },
   "github_route": "REST_API_ONLY",
-  "optimization_admitted": false
+  "optimization_admitted": false,
+  "review_delegation_successor": {
+    "observed_source_head": "8d6b2385bfeaaacba0edf60673984a669c8b2f85",
+    "observed_source_tree": "d04b96dcd35a485f1961b7e2699760a8fce70dce",
+    "owner_reaffirmation_at": "2026-10-13T23:24:43Z",
+    "human_actor": "Ingolf Lohmann",
+    "artificial_cognitive_actor": "OpenAI Codex",
+    "repair": "Preserve the explicit representative-review delegation independently of repository Authority/Mirror roles; choose the delegate for an Owner-authored PR and the Owner for a delegate-authored PR through the existing resolver.",
+    "owner_role_retained": true,
+    "principal_login": "ingolf-lohmann",
+    "delegate_login": "Goldkelch",
+    "authorization_record": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+    "authorization_record_sha256": "b15ad3af5cf6298a9faac6b69a911710595e237fe4a2402887a82d0eb7212826",
+    "original_reproduction": "Actual publisher expected @ingolf-lohmann and returned CODE_OWNER_REVIEW_MISSING despite a matching current-head APPROVED @Goldkelch fixture for an Owner-authored PR.",
+    "validation_scope": "WORKING_SOURCE_ONLY; native successor execution required. Fixture GitHub calls are intercepted and no native review/admin/merge is performed.",
+    "guards": [
+      "native Main enforcement",
+      "exact HEAD and stale-review checks",
+      "last-push approval",
+      "separate native APPROVED event",
+      "no author self-approval",
+      "no bot approval",
+      "exact active Owner-record SHA256",
+      "no undeclared delegation",
+      "REST-only",
+      "no permission expansion"
+    ],
+    "native_candidate_tests": "REQUIRED_NEW_EXECUTION",
+    "predecessor_test_status_transfer": false,
+    "client_operation_blockers": [
+      "COLLABORATOR_MEMBERSHIP_REST_OPERATION_NOT_EXPOSED",
+      "ADMINISTRATION_WRITE_NOT_EXPOSED",
+      "WORKFLOW_DISPATCH_POST_NOT_EXPOSED"
+    ],
+    "review_request_retry_count": 0,
+    "main_mutation": false,
+    "native_activation_verified": false,
+    "EFFECT_ACK_DONE": false,
+    "local_validation": {
+      "review_publisher_promotion_and_lifecycle_controls": 126,
+      "result": "PASS_WORKING_SOURCE_ONLY",
+      "log_sha256": "78e7005c97e789ba8b1a48aecf36d3a6b630cfaa76980984269af319e1d971fc",
+      "tool_cache_coverage": "14/14 declared tools,100%; existing profiles unchanged",
+      "original_git_commit_and_all_tree_objects_byte_identity_verified": true,
+      "local_blob_and_history_closure": "PARTIAL; full clone/backup is not claimed",
+      "native_full_make_test": "REQUIRED_AT_SUCCESSOR_HEAD",
+      "native_contract": "REQUIRED_AT_SUCCESSOR_HEAD"
+    },
+    "integration_successor": {
+      "retained_review_repair_parent": "d2f11ca8ce54f4092207e75f1f54a53cd323094a",
+      "main_parent": "801210b6aff6eed64395f4d0b43cbce6e8966d90",
+      "merge_base": "d7fd8dccc1c608e155b2a17bbea88351662339d6",
+      "conflict_repair": "Keep candidate reciprocal REST/Authority binding and Main stop conditions/scoped-effect disposition in the existing ethical mesh policy; regenerate the canonical integrity trio. Preserve every historical liveness receipt and adopt current Main liveness data.",
+      "first_repair_native_ci": {
+        "run_id": 38487993800,
+        "job_id": 115606188546,
+        "MAKE_TEST_EXIT": 0,
+        "mode": "full-test",
+        "subject": "d2f11ca8ce54f4092207e75f1f54a53cd323094a",
+        "PASS_is_not_transferred_to_merge_successor": true
+      },
+      "merged_subject_native_full_test": "REQUIRED_NEW_EXECUTION",
+      "main_write": false
+    }
+  }
 }

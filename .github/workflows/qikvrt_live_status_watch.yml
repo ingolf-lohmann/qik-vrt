@@ -123,7 +123,7 @@ jobs:
               if not callable(getattr(gate, 'resolve_required_code_owner', None)):
                   projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':'AUTHORITY_BINDING_NOT_PROMOTED','head_sha':head}
               elif hasattr(gate, 'project_governance'):
-                  projection=gate.project_governance(pr, rules, reviews, statuses, required_code_owner=gate.resolve_required_code_owner(repo))
+                  projection=gate.project_governance(pr, rules, reviews, statuses, required_code_owner=gate.resolve_required_code_owner(repo, pr_author=pr['user']['login']))
               else:
                   projection={'gate_state':'failure','acceptance':'BLOCKED','first_blocker':'GOVERNANCE_PROJECTOR_NOT_PROMOTED','head_sha':head}
               current=one(f'repos/{repo}/pulls/{number}')

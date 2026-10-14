@@ -193,6 +193,19 @@
       "work_unit": "state/work_units/QIKVRT_SITE33_OWNER_AUTHORIZED_PRODUCTION_20261013_V1.json"
     },
     "github_platform_effects_are_separate": true,
-    "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+    "role_policy_path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
+    "code_owner_review_delegation": {
+      "principal_login": "ingolf-lohmann",
+      "delegate_login": "Goldkelch",
+      "scope": "REPOSITORY_CODE_REVIEW_ONLY",
+      "state": "ACTIVE",
+      "native_approval_required": true,
+      "owner_final_authority_retained": true,
+      "self_approval_allowed": false,
+      "automated_approval_can_substitute": false,
+      "source": "state/authorization/delegations/OWNER_REQUESTED_REVIEW_AND_ISSUE_LIFECYCLE_V1.json",
+      "source_sha256": "b15ad3af5cf6298a9faac6b69a911710595e237fe4a2402887a82d0eb7212826"
+    }
   }
 }
+
