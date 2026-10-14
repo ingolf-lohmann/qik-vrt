@@ -37,7 +37,7 @@
     "human": "Ingolf Lohmann: convergence goal, scope and authorization"
   },
   "firefox158_s1_installation_check": {
-    "actual_package_version": "UNKNOWN_PENDING_NATIVE_PROBE",
+    "actual_package_version": "153.4.0esr-1~deb12u1",
     "artificial_cognitive_actor": {
       "identity_limit": "platform session attribution",
       "model": "GPT-6",
@@ -45,6 +45,7 @@
       "system_family": "Codex"
     },
     "carrier_pr": 523,
+    "concurrent_authority_successor_preserved": "d0d9e305667f4cb595074ae365398acdfda594b0",
     "effect_ack_done": false,
     "existing_s1": {
       "archive_sha256": "09ca059f741bdb93232c35fe463b37256dc8dfa25478804461a9c0b575b75b25",
@@ -59,13 +60,32 @@
     "extension_activation_verified": false,
     "extension_manifest_blob": "20e3525f955ce4acf769d3c80ec570781c90ee36",
     "extension_source_head": "7f90df61995a81e1364fce25994803c15eb8a969",
+    "first_native_package_observation": {
+      "actual_binary_version": "Mozilla Firefox 153.4.0esr",
+      "artifact_id": 11905265831,
+      "binary_sha256": "617a7a905680b94f8d00e9bf92b8f03705389094e43edb9c7363756ca4b25327",
+      "diagnostic_failure": "The live observation completed, but the probe tried hashing an XPI that Gecko had removed. No completed initial/restart acceptance matrix was persisted.",
+      "existing_s1_bootstrap_xpi_present": false,
+      "installed_debian_package": "153.4.0esr-1~deb12u1",
+      "job_id": 115925661196,
+      "original_zip_byte_verified": true,
+      "original_zip_sha256": "bf7e80b5591db514d947e65a553aafe22e21c5a793647732730a12739f915709",
+      "profile_xpi_removed_by_browser": true,
+      "remaining": "Native complete activation matrix on the repaired probe; a package read is not extension acceptance.",
+      "run_id": 38585324961,
+      "source_head": "168fdb6c05ac83624c8cd1992038f2410b567b5f",
+      "source_tree": "8c5772a5b265ffb55950f2a963def0f8f6ff06ff",
+      "successor_repair": "Treat a removed profile XPI as a negative observation with present=false and hash=null; preserve live Gecko values and continue restart/reference profiles.",
+      "xpi_sha256": "d7d7e64df24835a986c65f83fe5c9c1e074936722c3ebc481def38d4d27dde65"
+    },
+    "future_extension_source_head": "d0d9e305667f4cb595074ae365398acdfda594b0",
     "governance": "Existing independent review, protected Main, exact-head checks and production admission retained; no new PR or Main write",
     "human_actor": "Ingolf Lohmann",
     "instruction": "Check actual Firefox ESR package, persistent installation and live activation of the Firefox 158 candidate XPI in the existing S1 image. Preserve owner minimum, governance and exact-host readback.",
     "local_control_scope": "source projection; no actual local Docker or Firefox executable",
-    "local_negative_control_tests": 6,
+    "local_negative_control_tests": 7,
     "minimum": "158.0",
-    "native_state": "PENDING_EXACT_HEAD_CI",
+    "native_state": "VERSION_CONFLICT_VERIFIED_ACTIVATION_MATRIX_PENDING_DIAGNOSTIC_SUCCESSOR",
     "probe": "tools/qikvrt_self_host.py firefox-extension-check",
     "public_production_verified": false,
     "retry_gate": "Existing CI preserves a same-image/same-XPI/same-probe failed receipt and skips another browser/container attempt; reference/signing refusal remains a failed admission gate.",
@@ -87,7 +107,7 @@
     "transport_repair": {
       "job_id": 115921028417,
       "local_regression": "Exact config/layer preservation and changed compressed-layer rejection pass.",
-      "native_regression": "PENDING_CHANGED_TRANSPORT_NATIVE_RUN",
+      "native_regression": "Exact original OCI config and all uncompressed diff IDs preserved after Python repack and actual Docker load in run38585324961.",
       "original_failure": "Docker exit125: the previously successful pinned quay.io/skopeo/stable image is no longer found (manifest unknown). Browser probe not executed.",
       "predecessor_head": "cce941dac01ab2fb912a737d649d5fab189088d0",
       "repair": "Reuse Python tarfile/gzip and existing Docker load; verify original compressed blob hashes, original image config and every uncompressed diff ID. No image build or browser downgrade.",
@@ -1363,6 +1383,73 @@
         "runtime/toolchains/CACHE_REGISTRY.json"
       ]
     },
+    "firefox_authority_binding_20261014": {
+      "applied_parent_head": "168fdb6c05ac83624c8cd1992038f2410b567b5f",
+      "applied_parent_tree": "8c5772a5b265ffb55950f2a963def0f8f6ff06ff",
+      "classification": "AUTHORIZED_CAUSAL_ADAPTER_REPAIR_NOT_MAIN_OR_PRODUCT_ACCEPTANCE",
+      "completion_claims": {
+        "EFFECT_ACK_DONE": false,
+        "independent_review_approved": false,
+        "main_integrated": false,
+        "mirror_synchronized": false,
+        "raumzeitterminal_de_accepted": false,
+        "remote_readback_pending_at_commit_creation": true
+      },
+      "contribution_origin": {
+        "artificial_cognitive": "OpenAI Codex / GPT-6: implementation, bounded JavaScript regression fixtures and verification; platform-session attribution only",
+        "human": "Ingolf Lohmann: task, Authority/Mirror contract and constraints"
+      },
+      "diagnosed_head": "7f90df61995a81e1364fce25994803c15eb8a969",
+      "effect_boundaries": "Read-only GitHub GET, no credentials; HOLD on failed or malformed Authority binding; loopback backend allowlist; explicit confirmed commit; compact/full DONE/hash/token binding; prepare and transport success do not authorize release.",
+      "host_permission_delta": "Only https://ingolf-lohmann.github.io added as a new origin. One Owner-named github.com host entry replaces the Mirror-named entry; no duplicate origin permission. Existing API and loopback scopes retained.",
+      "integrity_method": "Unchanged exact-native manifest records and Git blob/mode identities retained; checkout CRLF transformations preserved; changed file bytes rehashed; source inventory and canonical content-tree digest verified using the existing generator. Bounded projection, not a full local checkout.",
+      "local_e2e_limit": "Baseline and successor both have 23 socket-dependent errors: PermissionError [Errno 1] Operation not permitted. Native CI must execute all 38 HTTP-terminal tests; fixture success is not live Firefox acceptance.",
+      "local_tests": {
+        "cache_contract": "29/29 declared tools, 100 percent",
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests",
+        "defective_predecessor": "4 expected FAIL, 3 safety tests PASS",
+        "javascript_runtime": "Node.js 24.19.0; actual background.js executed in a VM with browser/HTTP fixtures",
+        "javascript_syntax": "background.js, content.js, options.js PASSED",
+        "new_regressions": 7,
+        "result": "11 PASSED"
+      },
+      "mirror_function": "Both existing Mirror injection entrypoints preserved; OBSERVE_AUTHORITY always selects current Owner Authority. No Mirror API fallback.",
+      "policy": {
+        "authority": "ingolf-lohmann/qik-vrt",
+        "git_blob_sha1": "c0107276f4118d5e8e4574407e3965e0a1d2732b",
+        "mirror": "Goldkelch/qik-vrt",
+        "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+      },
+      "request_authority": "Ingolf Lohmann direct instruction, 2026-10-14",
+      "required_followup": "Native exact-successor CI and independent commit/tree/changed-blob readback; then existing protected review/Main-integration path.",
+      "retained_concurrent_change": "Preserve both cce941da S1 Firefox-158 admission gate and 168fdb6c original-OCI loader repair, including inherited workflows, runtime, tests and README. Their native runtime acceptance remains separate.",
+      "source_bindings": [
+        {
+          "bytes": 10581,
+          "path": "browser/firefox/qikvrt-terminal/background.js",
+          "predecessor_blob_sha1": "73bdefe28c6ee262cb22c0c69a748f7da4499202",
+          "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
+        },
+        {
+          "bytes": 1216,
+          "path": "browser/firefox/qikvrt-terminal/manifest.json",
+          "predecessor_blob_sha1": "20e3525f955ce4acf769d3c80ec570781c90ee36",
+          "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
+        },
+        {
+          "bytes": 5646,
+          "path": "browser/firefox/qikvrt-terminal/README.md",
+          "predecessor_blob_sha1": "3850a496bd08cf06f904ca403aaa06f394aab6a8",
+          "sha256": "64f7df9b43667ce2beec39912e0f3756f9f0454fd2df3a523a2ea603c62d166c"
+        },
+        {
+          "bytes": 40600,
+          "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
+          "predecessor_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+          "sha256": "79326d98bfd9cb20e91b766b33c2a16d87fb42e76a941a131e19ffc0ac2e0853"
+        }
+      ]
+    },
     "firefox_minimum_successor": {
       "historical_native_evidence": {
         "head": "eee0ad4dcd7bbd2e8dc186676305520b78938e60",
@@ -1546,73 +1633,6 @@
           "subject": "fix(integrity): preserve PR514 and reconcile exact Main d060ae5d"
         }
       ]
-    },
-    "firefox_authority_binding_20261014": {
-      "classification": "AUTHORIZED_CAUSAL_ADAPTER_REPAIR_NOT_MAIN_OR_PRODUCT_ACCEPTANCE",
-      "request_authority": "Ingolf Lohmann direct instruction, 2026-10-14",
-      "contribution_origin": {
-        "human": "Ingolf Lohmann: task, Authority/Mirror contract and constraints",
-        "artificial_cognitive": "OpenAI Codex / GPT-6: implementation, bounded JavaScript regression fixtures and verification; platform-session attribution only"
-      },
-      "diagnosed_head": "7f90df61995a81e1364fce25994803c15eb8a969",
-      "applied_parent_head": "168fdb6c05ac83624c8cd1992038f2410b567b5f",
-      "applied_parent_tree": "8c5772a5b265ffb55950f2a963def0f8f6ff06ff",
-      "policy": {
-        "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
-        "git_blob_sha1": "c0107276f4118d5e8e4574407e3965e0a1d2732b",
-        "authority": "ingolf-lohmann/qik-vrt",
-        "mirror": "Goldkelch/qik-vrt"
-      },
-      "source_bindings": [
-        {
-          "path": "browser/firefox/qikvrt-terminal/background.js",
-          "predecessor_blob_sha1": "73bdefe28c6ee262cb22c0c69a748f7da4499202",
-          "bytes": 10581,
-          "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
-        },
-        {
-          "path": "browser/firefox/qikvrt-terminal/manifest.json",
-          "predecessor_blob_sha1": "20e3525f955ce4acf769d3c80ec570781c90ee36",
-          "bytes": 1216,
-          "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
-        },
-        {
-          "path": "browser/firefox/qikvrt-terminal/README.md",
-          "predecessor_blob_sha1": "3850a496bd08cf06f904ca403aaa06f394aab6a8",
-          "bytes": 5646,
-          "sha256": "64f7df9b43667ce2beec39912e0f3756f9f0454fd2df3a523a2ea603c62d166c"
-        },
-        {
-          "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
-          "predecessor_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
-          "bytes": 40600,
-          "sha256": "79326d98bfd9cb20e91b766b33c2a16d87fb42e76a941a131e19ffc0ac2e0853"
-        }
-      ],
-      "local_tests": {
-        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests",
-        "result": "11 PASSED",
-        "javascript_runtime": "Node.js 24.19.0; actual background.js executed in a VM with browser/HTTP fixtures",
-        "new_regressions": 7,
-        "defective_predecessor": "4 expected FAIL, 3 safety tests PASS",
-        "javascript_syntax": "background.js, content.js, options.js PASSED",
-        "cache_contract": "29/29 declared tools, 100 percent"
-      },
-      "local_e2e_limit": "Baseline and successor both have 23 socket-dependent errors: PermissionError [Errno 1] Operation not permitted. Native CI must execute all 38 HTTP-terminal tests; fixture success is not live Firefox acceptance.",
-      "host_permission_delta": "Only https://ingolf-lohmann.github.io added as a new origin. One Owner-named github.com host entry replaces the Mirror-named entry; no duplicate origin permission. Existing API and loopback scopes retained.",
-      "mirror_function": "Both existing Mirror injection entrypoints preserved; OBSERVE_AUTHORITY always selects current Owner Authority. No Mirror API fallback.",
-      "effect_boundaries": "Read-only GitHub GET, no credentials; HOLD on failed or malformed Authority binding; loopback backend allowlist; explicit confirmed commit; compact/full DONE/hash/token binding; prepare and transport success do not authorize release.",
-      "retained_concurrent_change": "Preserve both cce941da S1 Firefox-158 admission gate and 168fdb6c original-OCI loader repair, including inherited workflows, runtime, tests and README. Their native runtime acceptance remains separate.",
-      "integrity_method": "Unchanged exact-native manifest records and Git blob/mode identities retained; checkout CRLF transformations preserved; changed file bytes rehashed; source inventory and canonical content-tree digest verified using the existing generator. Bounded projection, not a full local checkout.",
-      "required_followup": "Native exact-successor CI and independent commit/tree/changed-blob readback; then existing protected review/Main-integration path.",
-      "completion_claims": {
-        "remote_readback_pending_at_commit_creation": true,
-        "main_integrated": false,
-        "independent_review_approved": false,
-        "mirror_synchronized": false,
-        "raumzeitterminal_de_accepted": false,
-        "EFFECT_ACK_DONE": false
-      }
     }
   },
   "work_unit_id": "QIKVRT_MAIN_CONVERGENCE_20261014_V1"

@@ -52,6 +52,17 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
         value=self.accepted();value.update(minimum_satisfied=False,signatures_required=False)
         self.assertFalse(host.firefox_extension_accepted(value))
 
+    def test_gecko_removed_xpi_is_retained_as_negative_observation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"removed.xpi"
+            self.assertEqual(host.firefox_profile_xpi_state(path),
+                {"profile_xpi_present":False,"profile_xpi_sha256":None})
+            path.write_bytes(b"original-package-bytes")
+            self.assertEqual(host.firefox_profile_xpi_state(path),
+                {"profile_xpi_present":True,"profile_xpi_sha256":host.digest(path.read_bytes())})
+            path.unlink()
+            self.assertFalse(host.firefox_profile_xpi_state(path)["profile_xpi_present"])
+
     def test_framed_readback_is_fragment_safe_and_rejects_stale_response(self):
         import io
         class Connection:

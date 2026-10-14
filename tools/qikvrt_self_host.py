@@ -2380,6 +2380,14 @@ def oci_to_docker_archive(source, output, tag):
         "tag":tag,"rebuilt":False,"config_rewritten":False,"effect_ack_done":False}
 
 
+def firefox_profile_xpi_state(path):
+    """Removal by Gecko is an observation, not a broken diagnostic."""
+    path = Path(path)
+    present = path.is_file()
+    return {"profile_xpi_present": present,
+        "profile_xpi_sha256": digest(path.read_bytes()) if present else None}
+
+
 def firefox_extension_accepted(value):
     """Require live Gecko acceptance and registration, not a copied XPI."""
     addon = value.get("addon") or {}
@@ -2527,9 +2535,10 @@ def firefox_extension_probe(xpi, output):
                                 "script": FIREFOX_EXTENSION_READBACK, "args": [identity, minimum],
                                 "newSandbox": True, "sandbox": "system", "scriptTimeout": 15000})["value"]
                             if observation.get("probe_error"): raise ValueError(observation["probe_error"])
+                            installed_xpi = profile / "extensions" / (identity + ".xpi")
                             observation.update(phase=phase, accepted=firefox_extension_accepted(observation),
                                 session_browser_version=session.get("capabilities", {}).get("browserVersion"),
-                                profile_xpi_sha256=digest((profile / "extensions" / (identity + ".xpi")).read_bytes()))
+                                **firefox_profile_xpi_state(installed_xpi))
                             phases.append(observation)
                             client.call("WebDriver:DeleteSession", {})
                         finally:

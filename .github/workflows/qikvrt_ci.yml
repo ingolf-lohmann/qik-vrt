@@ -405,6 +405,8 @@ jobs:
               b=json.loads((p/'xpi-source-binding.json').read_bytes())
               assert r['xpi_sha256']==b['xpi_sha256']
           assert r['strict_min_version']=='158.0'
+          assert r.get('current_probe_executed',True) is True, 'NOOP: unchanged failed installation remains unaccepted'
+          assert r['state']=='EXTENSION_ACTIVATION_AND_RESTART_VERIFIED', 'HOLD: actual extension activation is unverified'
           assert r['reference_activation_verified'] is True, 'HOLD: Firefox 158 reference XPI is not active in existing S1'
           assert r['extension_activation_verified'] is True, 'HOLD: default production signing-policy activation is not verified'
           PY
