@@ -34,7 +34,12 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The admitted PR writer runs one initial suite, then two complete suites
+    # per iteration (0..MAX_SUCCESSORS=4): at most 11 suites. Native PR38625640158
+    # needed 17m50s already at iteration 0 and was cancelled by the old 15m limit.
+    # Budget 90m for the bounded writer (~65m at measured suite times, plus margin).
+    # Non-writer paths retain 15m; all tests and terminal enforcement stay intact.
+    timeout-minutes: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && 90 || 15 }}
     steps:
       - name: Set up standalone Python runtime
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
