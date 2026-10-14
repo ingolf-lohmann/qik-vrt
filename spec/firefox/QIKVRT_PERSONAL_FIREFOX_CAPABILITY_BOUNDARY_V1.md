@@ -4,16 +4,16 @@ Status: normative candidate
 
 ## Product split
 
-- `Goldkelch/qik-vrt` is the public standard product baseline.
-- `ingolf-lohmann/qik-vrt` is the Ingolf Lohmann Personal Edition.
+- `policy/CANONICAL_UPSTREAM_REMOTE_V1.json` selects `ingolf-lohmann/qik-vrt` as Authority for the standard product and `Goldkelch/qik-vrt` as its Mirror.
+- Edition selection is separate from repository ownership. The opt-in Ingolf Lohmann Personal Edition is held under `personal/ingolf-lohmann/firefox-assistant` within the Authority repository.
 - Standard capabilities may flow into the Personal Edition only through an explicit, provenance-bound update.
-- Personal capabilities, personal state, personal prompts/policies, personal psychological/cognitive adaptation, and personal agent configuration MUST NOT flow into the Goldkelch standard download by default.
+- Personal capabilities, personal state, personal prompts/policies, personal psychological/cognitive adaptation, and personal agent configuration MUST NOT flow into the standard download by default, whether it is supplied by Authority or Mirror.
 
 ## Firefox editions
 
 ### Standard Firefox edition
 
-The Goldkelch Firefox distribution MUST be buildable and testable without any Ingolf-specific payload. It MUST NOT contain personal profiles, personal cognitive/psychological adaptation, personal development-agent configuration, personal credentials, tokens, account state, or personal evidence.
+The Standard Firefox distribution MUST be buildable and testable without any personal-edition payload. The canonical Owner repository name and its public entrypoint addresses are ordinary source bindings, not personal features, profiles or account state. A Mirror page never changes the canonical observer source. The distribution MUST NOT contain personal profiles, personal cognitive/psychological adaptation, personal development-agent configuration, personal credentials, tokens, account state, or personal evidence.
 
 ### Ingolf Personal Firefox edition
 

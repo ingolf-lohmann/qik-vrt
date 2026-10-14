@@ -1384,71 +1384,103 @@
       ]
     },
     "firefox_authority_binding_20261014": {
-      "applied_parent_head": "168fdb6c05ac83624c8cd1992038f2410b567b5f",
-      "applied_parent_tree": "8c5772a5b265ffb55950f2a963def0f8f6ff06ff",
       "classification": "AUTHORIZED_CAUSAL_ADAPTER_REPAIR_NOT_MAIN_OR_PRODUCT_ACCEPTANCE",
-      "completion_claims": {
-        "EFFECT_ACK_DONE": false,
-        "independent_review_approved": false,
-        "main_integrated": false,
-        "mirror_synchronized": false,
-        "raumzeitterminal_de_accepted": false,
-        "remote_readback_pending_at_commit_creation": true
-      },
+      "request_authority": "Ingolf Lohmann direct instruction, 2026-10-14",
       "contribution_origin": {
-        "artificial_cognitive": "OpenAI Codex / GPT-6: implementation, bounded JavaScript regression fixtures and verification; platform-session attribution only",
-        "human": "Ingolf Lohmann: task, Authority/Mirror contract and constraints"
+        "human": "Ingolf Lohmann: task, Authority/Mirror contract and constraints",
+        "artificial_cognitive": "OpenAI Codex / GPT-6: implementation, bounded JavaScript regression fixtures and verification; platform-session attribution only"
       },
       "diagnosed_head": "7f90df61995a81e1364fce25994803c15eb8a969",
-      "effect_boundaries": "Read-only GitHub GET, no credentials; HOLD on failed or malformed Authority binding; loopback backend allowlist; explicit confirmed commit; compact/full DONE/hash/token binding; prepare and transport success do not authorize release.",
-      "host_permission_delta": "Only https://ingolf-lohmann.github.io added as a new origin. One Owner-named github.com host entry replaces the Mirror-named entry; no duplicate origin permission. Existing API and loopback scopes retained.",
-      "integrity_method": "Unchanged exact-native manifest records and Git blob/mode identities retained; checkout CRLF transformations preserved; changed file bytes rehashed; source inventory and canonical content-tree digest verified using the existing generator. Bounded projection, not a full local checkout.",
-      "local_e2e_limit": "Baseline and successor both have 23 socket-dependent errors: PermissionError [Errno 1] Operation not permitted. Native CI must execute all 38 HTTP-terminal tests; fixture success is not live Firefox acceptance.",
-      "local_tests": {
-        "cache_contract": "29/29 declared tools, 100 percent",
-        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests",
-        "defective_predecessor": "4 expected FAIL, 3 safety tests PASS",
-        "javascript_runtime": "Node.js 24.19.0; actual background.js executed in a VM with browser/HTTP fixtures",
-        "javascript_syntax": "background.js, content.js, options.js PASSED",
-        "new_regressions": 7,
-        "result": "11 PASSED"
-      },
-      "mirror_function": "Both existing Mirror injection entrypoints preserved; OBSERVE_AUTHORITY always selects current Owner Authority. No Mirror API fallback.",
+      "applied_parent_head": "168fdb6c05ac83624c8cd1992038f2410b567b5f",
+      "applied_parent_tree": "8c5772a5b265ffb55950f2a963def0f8f6ff06ff",
       "policy": {
-        "authority": "ingolf-lohmann/qik-vrt",
+        "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json",
         "git_blob_sha1": "c0107276f4118d5e8e4574407e3965e0a1d2732b",
-        "mirror": "Goldkelch/qik-vrt",
-        "path": "policy/CANONICAL_UPSTREAM_REMOTE_V1.json"
+        "authority": "ingolf-lohmann/qik-vrt",
+        "mirror": "Goldkelch/qik-vrt"
       },
-      "request_authority": "Ingolf Lohmann direct instruction, 2026-10-14",
-      "required_followup": "Native exact-successor CI and independent commit/tree/changed-blob readback; then existing protected review/Main-integration path.",
-      "retained_concurrent_change": "Preserve both cce941da S1 Firefox-158 admission gate and 168fdb6c original-OCI loader repair, including inherited workflows, runtime, tests and README. Their native runtime acceptance remains separate.",
       "source_bindings": [
         {
-          "bytes": 10581,
           "path": "browser/firefox/qikvrt-terminal/background.js",
           "predecessor_blob_sha1": "73bdefe28c6ee262cb22c0c69a748f7da4499202",
+          "bytes": 10581,
           "sha256": "c7747216fd0cf618ef3592d310ff5d1b2adad6d6c5f8339a9f1c2fe14044856b"
         },
         {
-          "bytes": 1216,
           "path": "browser/firefox/qikvrt-terminal/manifest.json",
           "predecessor_blob_sha1": "20e3525f955ce4acf769d3c80ec570781c90ee36",
+          "bytes": 1216,
           "sha256": "abe2708d7e4875be8a2757c9adf40c8968fdabada836d90b9a1fec4dc5799308"
         },
         {
-          "bytes": 5646,
           "path": "browser/firefox/qikvrt-terminal/README.md",
           "predecessor_blob_sha1": "3850a496bd08cf06f904ca403aaa06f394aab6a8",
+          "bytes": 5646,
           "sha256": "64f7df9b43667ce2beec39912e0f3756f9f0454fd2df3a523a2ea603c62d166c"
         },
         {
-          "bytes": 40600,
           "path": "tests/test_qikvrt_effect_ack_http_terminal.py",
           "predecessor_blob_sha1": "c315dd7a54a46da9958273b87500759a5ff7140e",
+          "bytes": 40600,
           "sha256": "79326d98bfd9cb20e91b766b33c2a16d87fb42e76a941a131e19ffc0ac2e0853"
         }
-      ]
+      ],
+      "local_tests": {
+        "command": "python3 -B -m unittest -v tests.test_qikvrt_effect_ack_http_terminal.EffectAckHttpTerminalContractTests tests.test_qikvrt_effect_ack_http_terminal.FirefoxAuthorityRegressionTests",
+        "result": "11 PASSED",
+        "javascript_runtime": "Node.js 24.19.0; actual background.js executed in a VM with browser/HTTP fixtures",
+        "new_regressions": 7,
+        "defective_predecessor": "4 expected FAIL, 3 safety tests PASS",
+        "javascript_syntax": "background.js, content.js, options.js PASSED",
+        "cache_contract": "29/29 declared tools, 100 percent",
+        "combined_followup": "18 adapter, contract and Personal boundary tests PASSED"
+      },
+      "local_e2e_limit": "Baseline and successor both have 23 socket-dependent errors: PermissionError [Errno 1] Operation not permitted. Native CI must execute all 38 HTTP-terminal tests; fixture success is not live Firefox acceptance.",
+      "host_permission_delta": "Only https://ingolf-lohmann.github.io added as a new origin. One Owner-named github.com host entry replaces the Mirror-named entry; no duplicate origin permission. Existing API and loopback scopes retained.",
+      "mirror_function": "Both existing Mirror injection entrypoints preserved; OBSERVE_AUTHORITY always selects current Owner Authority. No Mirror API fallback.",
+      "effect_boundaries": "Read-only GitHub GET, no credentials; HOLD on failed or malformed Authority binding; loopback backend allowlist; explicit confirmed commit; compact/full DONE/hash/token binding; prepare and transport success do not authorize release.",
+      "retained_concurrent_change": "Preserve both cce941da S1 Firefox-158 admission gate and 168fdb6c original-OCI loader repair, including inherited workflows, runtime, tests and README. Their native runtime acceptance remains separate.",
+      "integrity_method": "Unchanged exact-native manifest records and Git blob/mode identities retained; checkout CRLF transformations preserved; changed file bytes rehashed; source inventory and canonical content-tree digest verified using the existing generator. Bounded projection, not a full local checkout.",
+      "required_followup": "Native exact-successor CI and independent commit/tree/changed-blob readback; then existing protected review/Main-integration path.",
+      "completion_claims": {
+        "remote_readback_pending_at_commit_creation": true,
+        "main_integrated": false,
+        "independent_review_approved": false,
+        "mirror_synchronized": false,
+        "raumzeitterminal_de_accepted": false,
+        "EFFECT_ACK_DONE": false
+      },
+      "dependent_standard_personal_boundary_repair": {
+        "native_failed_head": "d0d9e305667f4cb595074ae365398acdfda594b0",
+        "workflow_run": 38585802338,
+        "job": 115927369510,
+        "observed_error": "Standard-package guard requires Mirror host and forbids every Owner repository literal, misclassifying canonical authority as personal payload",
+        "repair": "Bind Standard Authority/Mirror to the existing role policy; distinguish edition payload path and capability/credential markers from public Owner repository identity. Preserve all existing DENY invariants and seven-file Standard packaging boundary.",
+        "local_followup": "18 adapter/contract/boundary tests passed; two new negative/positive personal-payload controls",
+        "predecessor_evidence_transfer": false,
+        "applied_parent_head": "04c705b96d7dfc77e3d6e1b5af892094f7a8b404",
+        "applied_parent_tree": "0f419f2b5217adab379799352712a0b5ed24a355",
+        "source_bindings": [
+          {
+            "path": "policy/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.json",
+            "predecessor_blob_sha1": "bb6154f246f044d28916ca9e9618e114f0ba6706",
+            "bytes": 2208,
+            "sha256": "865f3c0d40525db83a0d408cbd1e02948e0136dd3208c8de5131a1060829deaa"
+          },
+          {
+            "path": "spec/firefox/QIKVRT_PERSONAL_FIREFOX_CAPABILITY_BOUNDARY_V1.md",
+            "predecessor_blob_sha1": "197c6044687f71df330edb99d8030c1854bdea96",
+            "bytes": 4437,
+            "sha256": "f2ee1db4b3b715ef7fe4ca156311583de923394f1801883c07721e26ce9dca1c"
+          },
+          {
+            "path": "tests/test_qikvrt_personal_firefox_capability_boundary.py",
+            "predecessor_blob_sha1": "946ea3a663e450881ade1ad1e2438883c570ae68",
+            "bytes": 6468,
+            "sha256": "fd740f8ce598b6c6014e807c5dddd7d4363c9b32fe53c695480f573863c2c40d"
+          }
+        ]
+      }
     },
     "firefox_minimum_successor": {
       "historical_native_evidence": {
