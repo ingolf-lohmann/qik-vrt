@@ -193,7 +193,7 @@ class FirefoxCarrierTests(NativeStandaloneTests):
         # Build-time Git is available, but no Git/gh/provider is in runtime PATH.
         binpath=self.work/'runtime-bin';binpath.mkdir(exist_ok=True)
         for name in ('node','python3','python3.12',*self.manifest['browser_runtime']['executables']):
-            found=shutil.which(name)
+            found=str(host.firefox_binary(name)) if name in {'firefox','firefox-esr'} else shutil.which(name)
             self.assertIsNotNone(found, name)
             if not (binpath/name).exists(): (binpath/name).symlink_to(found)
         self.assertIsNone(shutil.which('git',path=str(binpath)))

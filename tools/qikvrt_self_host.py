@@ -388,10 +388,26 @@ def browser_commands(firefox_package="firefox-esr"):
     return (firefox_package, *BROWSER_COMMANDS[1:])
 
 
+def firefox_binary(package="firefox-esr"):
+    browser_commands(package)
+    if package == "firefox":
+        # Debian's existing /usr/bin/firefox wrapper can delegate to ESR.
+        # The Mozilla DEB owns this ELF; bind it directly, including in a
+        # restricted Git/gh-free runtime PATH. Never fall back to that wrapper.
+        path = Path("/usr/lib/firefox/firefox")
+        with path.open("rb") as source:
+            if source.read(4) != b"\x7fELF": raise ValueError("ACTUAL_MOZILLA_FIREFOX_ELF_REQUIRED")
+        return path.resolve(strict=True)
+    found = shutil.which(package)
+    if not found: raise ValueError("ACTUAL_FIREFOX_BINARY_REQUIRED:" + package)
+    return Path(found).resolve(strict=True)
+
+
 def browser_executables(firefox_package="firefox-esr"):
     # Distribution-built tools use an exact executable binding, not a made-up
     # universal version. Actual package versions are retained by the image build.
-    return {name: digest(Path(shutil.which(name) or name).resolve(strict=True).read_bytes())
+    return {name: digest((firefox_binary(name) if name == firefox_package else
+                Path(shutil.which(name) or name).resolve(strict=True)).read_bytes())
             for name in browser_commands(firefox_package)}
 
 
@@ -605,7 +621,7 @@ def freeze(root, output, head, tree, browser_assets=None, firefox_package="firef
                 "terminal_scope": "RECOVERED_HISTORICAL_TEMDD_DAEMON_AND_FIREFOX_NOVNC_SOURCES; SEALED_S1_ADAPTER",
                 "native_terminal_daemon_included": definition.get("native_terminal_daemon_included", False)}
     if browser_assets is not None:
-        browser_version = subprocess.check_output([shutil.which(firefox_package), "--version"],
+        browser_version = subprocess.check_output([str(firefox_binary(firefox_package)), "--version"],
             timeout=10, stderr=subprocess.DEVNULL).decode().strip()
         if firefox_package == "firefox" and not firefox_release_minimum_satisfied(browser_version):
             raise ValueError("FIREFOX_RELEASE_BELOW_OWNER_MINIMUM")
@@ -2119,7 +2135,7 @@ def browser_carrier(package, manifest, config, volume):
             "127.0.0.1:" + str(config["novnc_port"]), "127.0.0.1:" + str(config["vnc_port"])])
         firefox_package = manifest["browser_runtime"].get("firefox_command", "firefox-esr")
         browser_commands(firefox_package)  # fail closed on an undeclared executable
-        spawn("firefox", [shutil.which(firefox_package), "--no-remote", "--profile", str(directory / "profile"),
+        spawn("firefox", [str(firefox_binary(firefox_package)), "--no-remote", "--profile", str(directory / "profile"),
             "http://127.0.0.1:" + str(config["terminal_port"]) + "/AI"])
         def browser_window():
             raw = subprocess.check_output([shutil.which("xwininfo"), "-display", config["display"], "-root", "-tree"],
@@ -2459,6 +2475,9 @@ def firefox_release_provision(output):
         version = candidate[1]
         command("dpkg", "--compare-versions", version, "ge", "158")
         with tempfile.TemporaryDirectory(prefix="qikvrt-firefox-deb-") as work:
+            # Only public authenticated package bytes live here; permit _apt's
+            # ordinary sandbox to read the selected local DEB.
+            Path(work).chmod(0o755)
             command("apt-get", "download", "firefox=" + version, cwd=work)
             archives = list(Path(work).glob("*.deb"))
             if len(archives) != 1: raise ValueError("SINGLE_MOZILLA_FIREFOX_DEB_REQUIRED")
@@ -2469,7 +2488,9 @@ def firefox_release_provision(output):
             receipt.update(deb_sha256=digest(package.read_bytes()), deb_bytes=package.stat().st_size,
                 deb_metadata=metadata, apt_key_sha256=digest(key), apt_policy_sha256=digest(policy.encode()))
             command("apt-get", "install", "-y", "--no-install-recommends", "--no-remove", str(package))
-        binary = Path(shutil.which("firefox") or "").resolve()
+        binary = firefox_binary("firefox")
+        owned = command("dpkg-query", "-L", "firefox", capture=True).splitlines()
+        if str(binary) not in owned: raise ValueError("MOZILLA_FIREFOX_ELF_PACKAGE_OWNERSHIP_REQUIRED")
         installed = command("dpkg-query", "-W", "-f=${Version}", "firefox", capture=True).strip()
         browser_version = command(str(binary), "--version", capture=True).strip()
         if installed != version or not firefox_release_minimum_satisfied(browser_version):
@@ -2649,8 +2670,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
         raise ValueError("OWNER_FIREFOX_158_EXACT_EXTENSION_REQUIRED")
     if package not in {"firefox-esr", "firefox"}: raise ValueError("DECLARED_FIREFOX_PACKAGE_REQUIRED")
     release = package == "firefox"
-    binary = shutil.which(package)
-    if not binary: raise ValueError("ACTUAL_FIREFOX_BINARY_REQUIRED:" + package)
+    binary = str(firefox_binary(package))
     result = {"schema": "qikvrt-firefox-extension-installation/v1",
         "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
         "xpi_sha256": digest(raw), "xpi_bytes": len(raw), "extension_id": identity,

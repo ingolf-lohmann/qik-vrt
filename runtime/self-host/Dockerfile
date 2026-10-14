@@ -23,7 +23,7 @@ RUN python3 -B /opt/qikvrt-firefox-upgrade/qikvrt_self_host.py firefox-release-p
       --output /opt/qikvrt/runtime/firefox-release
 COPY deploy/universal-terminal/entrypoint.sh /usr/local/bin/qikvrt-universal-terminal
 RUN chmod 0755 /usr/local/bin/qikvrt-universal-terminal
-ENV QIKVRT_FIREFOX_BINARY=/usr/bin/firefox
+ENV QIKVRT_FIREFOX_BINARY=/usr/lib/firefox/firefox
 USER 10001:10001
 FROM ${QIKVRT_DEPENDENCY_IMAGE} AS delivery-runtime
 FROM delivery-runtime AS test

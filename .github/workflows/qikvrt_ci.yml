@@ -453,19 +453,6 @@ jobs:
               'provision':provision,'extension_activation_verified':False,'effect_ack_done':False}
           (evidence/'release-image-readback.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PYUPGRADE
-      - name: Reuse native Firefox, noVNC and persistent restart controls on the upgraded carrier
-        if: steps.effect-admission.outputs.probe_required == 'true'
-        run: |
-          docker build --target test --file runtime/self-host/Dockerfile \
-            --build-arg QIKVRT_DEPENDENCY_IMAGE=qikvrt-s1:firefox-158-release \
-            --tag qikvrt-s1:firefox-158-release-test .
-          docker run --rm --init --network none --shm-size 256m \
-            --tmpfs /tmp:size=768m,mode=1777 --workdir /source \
-            --mount "type=bind,source=$PWD,target=/source,readonly" \
-            --mount "type=bind,source=$RUNNER_TEMP/s1-extension-evidence,target=/evidence" \
-            --env QIKVRT_FIREFOX_PACKAGE=firefox --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
-            --entrypoint python3 qikvrt-s1:firefox-158-release-test \
-            -B -m unittest -v tests.test_self_host_firefox.FirefoxCarrierTests
       - name: Freeze the upgraded dependency image for later signed-XPI admission
         if: steps.effect-admission.outputs.probe_required == 'true'
         run: |
@@ -497,6 +484,19 @@ jobs:
           path: ${{ runner.temp }}/s1-firefox158-runtime
           retention-days: 90
           if-no-files-found: error
+      - name: Reuse native Firefox, noVNC and persistent restart controls on the upgraded carrier
+        if: steps.effect-admission.outputs.probe_required == 'true'
+        run: |
+          docker build --target test --file runtime/self-host/Dockerfile \
+            --build-arg QIKVRT_DEPENDENCY_IMAGE=qikvrt-s1:firefox-158-release \
+            --tag qikvrt-s1:firefox-158-release-test .
+          docker run --rm --init --network none --shm-size 256m \
+            --tmpfs /tmp:size=768m,mode=1777 --workdir /source \
+            --mount "type=bind,source=$PWD,target=/source,readonly" \
+            --mount "type=bind,source=$RUNNER_TEMP/s1-extension-evidence,target=/evidence" \
+            --env QIKVRT_FIREFOX_PACKAGE=firefox --env QIKVRT_BROWSER_TEST_EVIDENCE=/evidence \
+            --entrypoint python3 qikvrt-s1:firefox-158-release-test \
+            -B -m unittest -v tests.test_self_host_firefox.FirefoxCarrierTests
       - name: Actual package version, persistent installation and live AddonManager activation
         if: steps.effect-admission.outputs.probe_required == 'true'
         run: |

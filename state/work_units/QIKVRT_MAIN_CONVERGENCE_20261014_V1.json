@@ -318,6 +318,157 @@
       "Main protection and independent exact-head approval",
       "raumzeitterminal.de DNS/TLS/useful authenticated delivery"
     ],
+    "predecessor_diagnostics": [
+      {
+        "artifact_bytes": 42811,
+        "artifact_id": 11912657458,
+        "artifact_sha256": "d45b2f4a5548410e5b3be2657a55c837cc39e887665a18805217d4114ad035a9",
+        "failure": {
+          "actual_release_elf_activation_not_yet_proven": true,
+          "failed": 12,
+          "literal_firefox_error": "runtime-bin/firefox: 6: exec: firefox-esr: not found",
+          "native_tests": 13,
+          "state": "HOLD_BROWSER_CHILD_EXITED"
+        },
+        "image_and_package_receipt": {
+          "all_original_parent_layers_retained": true,
+          "component_blobs": {
+            "deploy/universal-terminal/entrypoint.sh": "031dbdbee810e55df133ec9176b49e036eb3d75c",
+            "runtime/self-host/Dockerfile": "907746c083e5c8af56740c58bfb7f75ccf557ad2",
+            "tools/qikvrt_self_host.py": "36dc100024b7a4b70fe6930fbca378cd73d16579"
+          },
+          "diff_ids": [
+            "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+            "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+            "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+            "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+            "sha256:a330acce559c4382d8f3aa869bff0cb33f7928ddd72e4e411e496fcfca89b4a9",
+            "sha256:24e1ce093f7727d9e25192bf0cac7dc2171d712cc82b4ee1abbb9d53ae1cbfe6",
+            "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
+            "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+            "sha256:8a6817c50a11018905a389f06d3d524564e4147da02ef16cd006d23585260706",
+            "sha256:bb14cafcc694c02b60364cf5dbeb3f246e69d824e8c0de1846dc9174ded4c6dc",
+            "sha256:418d15531f959888e6d36a1fc56fb0fa7aeca8970a3babb878de3336829dd546",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+          ],
+          "effect_ack_done": false,
+          "extension_activation_verified": false,
+          "image_id": "sha256:894584c9ff130d9bbe577cf13311354d1a1bee63bcc67dee365bfe7a873acf3f",
+          "native_components_rebuilt": false,
+          "parent_diff_ids": [
+            "sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d",
+            "sha256:d476c6746ca1e1594f36c28af7f3ebee76d63c6a6adaabcc2824c388930bf846",
+            "sha256:bb21db850823bcb6669b652ce8bff42787673cc8136550cc2d783af0415dc486",
+            "sha256:f4572018cf8016fadccf2df095d62525be857901cf1d837892078204a8f6cf43",
+            "sha256:a330acce559c4382d8f3aa869bff0cb33f7928ddd72e4e411e496fcfca89b4a9",
+            "sha256:24e1ce093f7727d9e25192bf0cac7dc2171d712cc82b4ee1abbb9d53ae1cbfe6",
+            "sha256:7e6ff46024450c208f8666e0171bf45d3adb09cc3c90ec43bc09f1b0644e7d2a",
+            "sha256:8745b1f3637b0bcef90aba1cd4a50bdbc0b5cda283873b37e584cce1354e7d42",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+          ],
+          "parent_image_id": "sha256:2f35af27a2cfd36e383ae0ced8f85eca4ff328d888a7169d7cdafa62810dfe2e",
+          "provision": {
+            "apt_key_sha256": "3ecc63922b7795eb23fdc449ff9396f9114cb3cf186d6f5b53ad4cc3ebfbb11f",
+            "apt_policy_sha256": "7f42ddbf41fd21986e6660435a80f10a4aeea41b5130d658faeb3cecbe8317ab",
+            "binary_path": "/usr/bin/firefox",
+            "binary_sha256": "54ec7b74f9fbbe15698eae5f76f93244818be2b2f08876049f4604a023d3b8c1",
+            "channel": "release",
+            "deb_bytes": 92896850,
+            "deb_metadata": "Package: firefox\nVersion: 158.0~build2\nArchitecture: amd64\n",
+            "deb_sha256": "06a608dd092b0ba2c7cb436df259025ffd006b16126bf1c0ab8121e869fdbebc",
+            "debian_package_version": "158.0~build2",
+            "effect_ack_done": false,
+            "extension_activation_verified": false,
+            "firefox_version_output": "[523] Sandbox: CanCreateUserNamespace() clone() failure: EPERM\nMozilla Firefox 158.0",
+            "gpg_version": "gpg (GnuPG) 2.2.40",
+            "key_fingerprint": "35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3",
+            "minimum": "158.0",
+            "minimum_satisfied": true,
+            "ordinary_release": false,
+            "origin": "https://packages.mozilla.org/apt",
+            "package": "firefox",
+            "package_changes": {
+              "dirmngr": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "firefox": {
+                "after": "158.0~build2",
+                "before": null
+              },
+              "gnupg": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gnupg-l10n": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gnupg-utils": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gpg": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gpg-agent": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gpg-wks-client": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gpg-wks-server": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gpgconf": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "gpgsm": {
+                "after": "2.2.40-1.1+deb12u2",
+                "before": null
+              },
+              "libassuan0:amd64": {
+                "after": "2.5.5-5",
+                "before": null
+              },
+              "libksba8:amd64": {
+                "after": "1.6.3-2",
+                "before": null
+              },
+              "libldap-2.5-0:amd64": {
+                "after": "2.5.13+dfsg-5",
+                "before": null
+              },
+              "libnpth0:amd64": {
+                "after": "1.6-3",
+                "before": null
+              },
+              "pinentry-curses": {
+                "after": "1.2.1-1",
+                "before": null
+              }
+            },
+            "public_production_verified": false,
+            "schema": "qikvrt-firefox-release-provision/v1",
+            "state": "FIREFOX_RELEASE_PROVISIONED_PENDING_SIGNED_XPI"
+          },
+          "source_head": "386b82a38225390957a74e1421857859f30eeca0",
+          "source_tree": "a02a8a4cb3e1ab5fb97373b7260d720685749b7c"
+        },
+        "job_id": 115974665302,
+        "original_zip_download_and_hash_verified": true,
+        "repair": "Bind /usr/lib/firefox/firefox directly; verify ELF magic and Mozilla package ownership, exact hash and actual Gecko version; do not reuse the Debian wrapper or lower minimum.",
+        "run_id": 38599472262,
+        "source_head": "386b82a38225390957a74e1421857859f30eeca0",
+        "source_tree": "a02a8a4cb3e1ab5fb97373b7260d720685749b7c"
+      }
+    ],
     "primary_sources": [
       "https://support.mozilla.org/en-US/kb/install-firefox-linux",
       "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/",
@@ -349,12 +500,13 @@
         "current workflow-executor contract",
         "standing owner context"
       ],
+      "plugin_search": "Mozilla AMO Firefox extension signing search returned no relevant provider; no plugin suggested or installed",
       "smallest_continuation": "Bind an authorized Mozilla-AMO unlisted signing executor with secure credentials, or a signed exact-source XPI artifact in this Authority; no credentials in chat/repository/artifact/log/cache.",
       "state": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE"
     },
     "source_head": "33a504702713cffc4d1f0168a09f379cefb3cba5",
     "source_tree": "5110efa6821a91a3a49aa5779b4b7c90a2e1e29f",
-    "state": "PREPARED_PENDING_NATIVE_UPGRADE_AND_SIGNED_XPI"
+    "state": "PREPARED_CAUSAL_ELF_SELECTION_REPAIR_PENDING_NATIVE"
   },
   "incorporated_pull_requests": [
     {
