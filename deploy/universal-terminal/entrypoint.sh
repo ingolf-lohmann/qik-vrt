@@ -150,18 +150,27 @@ websockify --web=/usr/share/novnc/ "$NOVNC_PORT" localhost:5900 \
 NOVNC_PID=$!
 PIDS="$PIDS ${NOVNC_PID}"
 
-firefox-esr --no-remote --profile "$PROFILE_DIR" "$START_URL" \
+FIREFOX_BINARY="${QIKVRT_FIREFOX_BINARY:-firefox-esr}"
+# Reject a new terminal start below the unchanged Owner minimum.
+python3 -B - "$FIREFOX_BINARY" <<'PY'
+import re,subprocess,sys
+raw=subprocess.check_output([sys.argv[1],'--version'],stderr=subprocess.STDOUT,text=True,timeout=15)
+version=re.search(r'Firefox\s+(\d+)(?:\.(\d+))?',raw)
+if version is None or (int(version[1]),int(version[2] or 0)) < (158,0):
+    raise SystemExit('HOLD_FIREFOX_BELOW_OWNER_MINIMUM_158_0')
+PY
+"$FIREFOX_BINARY" --no-remote --profile "$PROFILE_DIR" "$START_URL" \
   > /opt/qikvrt/runtime/logs/firefox.log 2>&1 &
 FIREFOX_PID=$!
 PIDS="$PIDS ${FIREFOX_PID}"
 
-python3 -B - "$STATE_DIR/runtime.json" "$RUNTIME_ID" "$PROFILE_DIR" "$START_URL" "$NOVNC_PORT" "$HTTP_HOST" "$HTTP_PORT" <<'PY'
+python3 -B - "$STATE_DIR/runtime.json" "$RUNTIME_ID" "$PROFILE_DIR" "$START_URL" "$NOVNC_PORT" "$HTTP_HOST" "$HTTP_PORT" "$FIREFOX_BINARY" <<'PY'
 import json,sys,time
-path,runtime_id,profile,start_url,novnc_port,http_host,http_port=sys.argv[1:]
+path,runtime_id,profile,start_url,novnc_port,http_host,http_port,browser=sys.argv[1:]
 obj={
   'schema':'qikvrt_universal_terminal_runtime_state_v2',
   'runtime_id':runtime_id,
-  'browser':'firefox-esr',
+  'browser':browser,
   'profile_dir':profile,
   'profile_persistent':True,
   'start_url':start_url,
@@ -212,3 +221,4 @@ while :; do
   done
   sleep 1
 done
+

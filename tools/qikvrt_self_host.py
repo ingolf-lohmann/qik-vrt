@@ -382,11 +382,17 @@ def runtime(command):
     return {"version": version, "executable_sha256": digest(path.read_bytes())}
 
 
-def browser_executables():
+def browser_commands(firefox_package="firefox-esr"):
+    if firefox_package not in {"firefox-esr", "firefox"}:
+        raise ValueError("DECLARED_FIREFOX_PACKAGE_REQUIRED")
+    return (firefox_package, *BROWSER_COMMANDS[1:])
+
+
+def browser_executables(firefox_package="firefox-esr"):
     # Distribution-built tools use an exact executable binding, not a made-up
     # universal version. Actual package versions are retained by the image build.
     return {name: digest(Path(shutil.which(name) or name).resolve(strict=True).read_bytes())
-            for name in BROWSER_COMMANDS}
+            for name in browser_commands(firefox_package)}
 
 
 def mesh_contract(root, definition=None):
@@ -582,7 +588,7 @@ def portable(root, output, head, tree):
         raise
 
 
-def freeze(root, output, head, tree, browser_assets=None):
+def freeze(root, output, head, tree, browser_assets=None, firefox_package="firefox-esr"):
     """Export committed bytes only. Tar metadata is deterministic; no credentials."""
     if git(root, "rev-parse", "HEAD").decode() != head or git(root, "rev-parse", "HEAD^{tree}").decode() != tree:
         raise ValueError("EXACT_SOURCE_BINDING_MISMATCH")
@@ -599,10 +605,14 @@ def freeze(root, output, head, tree, browser_assets=None):
                 "terminal_scope": "RECOVERED_HISTORICAL_TEMDD_DAEMON_AND_FIREFOX_NOVNC_SOURCES; SEALED_S1_ADAPTER",
                 "native_terminal_daemon_included": definition.get("native_terminal_daemon_included", False)}
     if browser_assets is not None:
-        manifest["browser_runtime"] = {"executables": browser_executables(), "files": [],
+        browser_version = subprocess.check_output([shutil.which(firefox_package), "--version"],
+            timeout=10, stderr=subprocess.DEVNULL).decode().strip()
+        if firefox_package == "firefox" and not firefox_release_minimum_satisfied(browser_version):
+            raise ValueError("FIREFOX_RELEASE_BELOW_OWNER_MINIMUM")
+        manifest["browser_runtime"] = {"executables": browser_executables(firefox_package), "files": [],
+            "firefox_command": firefox_package,
             "asset_origin": "OPERATOR_PROVISIONED_DEBIAN_NOVNC_SOURCE; EXACT_EXPORTED_BYTES",
-            "firefox_version": subprocess.check_output([shutil.which("firefox-esr"), "--version"],
-                timeout=10, stderr=subprocess.DEVNULL).decode().strip()}
+            "firefox_version": browser_version}
         if not (browser_assets / "vnc.html").is_file() or not (browser_assets / "core/rfb.js").is_file():
             raise ValueError("COMPLETE_NOVNC_SOURCE_REQUIRED")
     output.mkdir(mode=0o700, parents=True, exist_ok=False)
@@ -702,8 +712,9 @@ def verify(package, expected, *, check_runtime=True):
             raise ValueError("PACKAGE_ARTIFACT_MISMATCH")
     definition = json.loads((package / DEFINITION).read_bytes())
     browser = value.get("browser_runtime")
+    firefox_package = browser.get("firefox_command", "firefox-esr") if isinstance(browser, dict) else "firefox-esr"
     if browser is not None and (not isinstance(browser, dict)
-            or set(browser.get('executables', {})) != set(BROWSER_COMMANDS)
+            or set(browser.get('executables', {})) != set(browser_commands(firefox_package))
             or not isinstance(browser.get('files'), list)
             or len(browser['files']) != len(set(browser['files']))
             or not {'runtime/self-host/novnc/vnc.html', 'runtime/self-host/novnc/core/rfb.js',
@@ -716,7 +727,7 @@ def verify(package, expected, *, check_runtime=True):
         raise ValueError("PACKAGE_DEFINITION_MISMATCH")
     if value.get("mesh_node_contract_sha256") != mesh_contract(package, definition)["contract_sha256"]:
         raise ValueError("MESH_NODE_CONTRACT_BINDING_MISMATCH")
-    if browser is not None and check_runtime and browser["executables"] != browser_executables():
+    if browser is not None and check_runtime and browser["executables"] != browser_executables(firefox_package):
         raise ValueError("BROWSER_EXECUTABLE_BINDING_MISMATCH")
     if check_runtime and value["runtime"] != {"node": runtime("node"), "python": runtime(sys.executable),
                             "platform": platform.machine(), "system": sys.platform}:
@@ -2106,7 +2117,9 @@ def browser_carrier(package, manifest, config, volume):
             "-no6", "-rfbportv6", "0", "-rfbport", str(config["vnc_port"]), "-passwdfile", str(password)])
         spawn("novnc", [shutil.which("websockify"), "--web=" + str(package / "runtime/self-host/novnc"),
             "127.0.0.1:" + str(config["novnc_port"]), "127.0.0.1:" + str(config["vnc_port"])])
-        spawn("firefox", [shutil.which("firefox-esr"), "--no-remote", "--profile", str(directory / "profile"),
+        firefox_package = manifest["browser_runtime"].get("firefox_command", "firefox-esr")
+        browser_commands(firefox_package)  # fail closed on an undeclared executable
+        spawn("firefox", [shutil.which(firefox_package), "--no-remote", "--profile", str(directory / "profile"),
             "http://127.0.0.1:" + str(config["terminal_port"]) + "/AI"])
         def browser_window():
             raw = subprocess.check_output([shutil.which("xwininfo"), "-display", config["display"], "-root", "-tree"],
@@ -2380,12 +2393,139 @@ def oci_to_docker_archive(source, output, tag):
         "tag":tag,"rebuilt":False,"config_rewritten":False,"effect_ack_done":False}
 
 
+def firefox_release_minimum_satisfied(version_output):
+    """Bind the actual browser output to the unchanged Owner minimum 158.0."""
+    import re
+    version = re.search(r"Firefox\s+(\d+)(?:\.(\d+))?", version_output)
+    return version is not None and (int(version[1]), int(version[2] or 0)) >= (158, 0)
+
+
+def firefox_release_provision(output):
+    """Official signed Mozilla APT Release package on the retained Debian base.
+
+    No full distribution upgrade, removal, native rebuild, signing exception,
+    developer credentials, extension signing or production acceptance.
+    """
+    import re
+    import urllib.request
+    if os.geteuid() != 0: raise ValueError("FIREFOX_RELEASE_PROVISION_REQUIRES_IMAGE_BUILDER")
+    output = Path(output).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    receipt = {"schema": "qikvrt-firefox-release-provision/v1",
+        "state": "HOLD_FIREFOX_RELEASE_PROVISION", "minimum": "158.0",
+        "origin": "https://packages.mozilla.org/apt", "channel": "release",
+        "key_fingerprint": "35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3",
+        "extension_activation_verified": False, "effect_ack_done": False,
+        "public_production_verified": False, "ordinary_release": False}
+    def command(*args, capture=False, cwd=None):
+        return subprocess.run(args, check=True, cwd=cwd, timeout=300, text=True,
+            stdout=subprocess.PIPE if capture else None,
+            stderr=subprocess.STDOUT if capture else None).stdout
+    def packages():
+        raw = command("dpkg-query", "-W", "-f=${binary:Package}\t${Version}\n", capture=True)
+        return dict(line.split("\t", 1) for line in raw.splitlines())
+    before = packages()
+    try:
+        command("apt-get", "update")
+        command("apt-get", "install", "-y", "--no-install-recommends", "--no-remove", "gnupg")
+        receipt["gpg_version"] = command("gpg", "--version", capture=True).splitlines()[0]
+        with urllib.request.urlopen(receipt["origin"] + "/repo-signing-key.gpg", timeout=30) as response:
+            key = response.read(65537)
+        if not 0 < len(key) <= 65536: raise ValueError("MOZILLA_APT_KEY_SIZE_REQUIRED")
+        with tempfile.TemporaryDirectory(prefix="qikvrt-mozilla-key-") as work:
+            work = Path(work); key_path = work / "key.asc"; key_path.write_bytes(key)
+            keys = command("gpg", "--batch", "--homedir", str(work), "--with-colons",
+                "--show-keys", str(key_path), capture=True)
+            primary = []; expecting = False
+            for line in keys.splitlines():
+                fields = line.split(":")
+                if fields[0] == "pub": expecting = True
+                elif fields[0] == "fpr" and expecting:
+                    primary.append(fields[9]); expecting = False
+            if primary != [receipt["key_fingerprint"]]: raise ValueError("MOZILLA_APT_PRIMARY_KEY_MISMATCH")
+        keyring = Path("/etc/apt/keyrings/packages.mozilla.org.asc")
+        keyring.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+        keyring.write_bytes(key); keyring.chmod(0o644)
+        Path("/etc/apt/sources.list.d/qikvrt-mozilla.list").write_text(
+            "deb [signed-by=" + str(keyring) + "] " + receipt["origin"] + " mozilla main\n")
+        Path("/etc/apt/preferences.d/qikvrt-mozilla").write_text(
+            "Package: firefox\nPin: origin packages.mozilla.org\nPin-Priority: 1000\n")
+        command("apt-get", "update")
+        policy = command("apt-cache", "policy", "firefox", capture=True)
+        (output / "apt-policy.txt").write_text(policy)
+        candidate = re.search(r"^\s*Candidate:\s*(\S+)\s*$", policy, re.MULTILINE)
+        if candidate is None or not re.fullmatch(r"(?:\d+:)?\d+[.][0-9A-Za-z.+~:-]+", candidate[1]):
+            raise ValueError("MOZILLA_FIREFOX_PACKAGE_CANDIDATE_REQUIRED")
+        version = candidate[1]
+        command("dpkg", "--compare-versions", version, "ge", "158")
+        with tempfile.TemporaryDirectory(prefix="qikvrt-firefox-deb-") as work:
+            command("apt-get", "download", "firefox=" + version, cwd=work)
+            archives = list(Path(work).glob("*.deb"))
+            if len(archives) != 1: raise ValueError("SINGLE_MOZILLA_FIREFOX_DEB_REQUIRED")
+            package = archives[0]
+            metadata = command("dpkg-deb", "-f", str(package), "Package", "Version", "Architecture", capture=True)
+            if "Package: firefox\n" not in metadata or "Version: " + version + "\n" not in metadata:
+                raise ValueError("MOZILLA_FIREFOX_DEB_IDENTITY_REQUIRED")
+            receipt.update(deb_sha256=digest(package.read_bytes()), deb_bytes=package.stat().st_size,
+                deb_metadata=metadata, apt_key_sha256=digest(key), apt_policy_sha256=digest(policy.encode()))
+            command("apt-get", "install", "-y", "--no-install-recommends", "--no-remove", str(package))
+        binary = Path(shutil.which("firefox") or "").resolve()
+        installed = command("dpkg-query", "-W", "-f=${Version}", "firefox", capture=True).strip()
+        browser_version = command(str(binary), "--version", capture=True).strip()
+        if installed != version or not firefox_release_minimum_satisfied(browser_version):
+            raise ValueError("INSTALLED_FIREFOX_RELEASE_BELOW_OWNER_MINIMUM")
+        after = packages()
+        receipt.update(state="FIREFOX_RELEASE_PROVISIONED_PENDING_SIGNED_XPI", package="firefox",
+            debian_package_version=installed, binary_path=str(binary), binary_sha256=digest(binary.read_bytes()),
+            firefox_version_output=browser_version, minimum_satisfied=True,
+            package_changes={name: {"before": before.get(name), "after": after.get(name)}
+                for name in sorted(before.keys() | after.keys()) if before.get(name) != after.get(name)})
+        command("rm", "-rf", "/var/lib/apt/lists")
+        return receipt
+    except Exception as error:
+        receipt["provision_error"] = str(error); raise
+    finally:
+        (output / "provision.json").write_bytes(raw_json(receipt))
+
+
 def firefox_profile_xpi_state(path):
     """Removal by Gecko is an observation, not a broken diagnostic."""
     path = Path(path)
     present = path.is_file()
     return {"profile_xpi_present": present,
         "profile_xpi_sha256": digest(path.read_bytes()) if present else None}
+
+
+def firefox_xpi_source_binding(xpi, source):
+    """Verify unchanged Standard payload; signature files are not signature proof."""
+    import zipfile
+    xpi, source = Path(xpi), Path(source)
+    raw = xpi.read_bytes()
+    if not 0 < len(raw) <= 1024 * 1024: raise ValueError("BOUNDED_FIREFOX_XPI_REQUIRED")
+    names = {"manifest.json", "background.js", "content.js", "options.html", "options.js", "terminal.css"}
+    metadata = {"meta-inf/manifest.mf", "meta-inf/mozilla.sf", "meta-inf/mozilla.rsa",
+        "meta-inf/cose.manifest", "meta-inf/cose.sig"}
+    records = []
+    with zipfile.ZipFile(xpi) as archive:
+        entries = archive.infolist(); actual = [entry.filename for entry in entries]
+        if len(actual) != len(set(actual)) or not names <= set(actual) or len(actual) > 12:
+            raise ValueError("EXACT_STANDARD_FIREFOX_XPI_INVENTORY_REQUIRED")
+        for entry in entries:
+            if (entry.flag_bits & 1 or entry.file_size > 1024 * 1024 or
+                    stat.S_IFMT(entry.external_attr >> 16) == stat.S_IFLNK):
+                raise ValueError("REGULAR_BOUNDED_FIREFOX_XPI_ENTRY_REQUIRED")
+            if entry.filename not in names | {"README.md"}:
+                if entry.filename.lower() not in metadata:
+                    raise ValueError("FOREIGN_FIREFOX_XPI_PAYLOAD_FORBIDDEN")
+                continue
+            data = archive.read(entry)
+            if data != (source / entry.filename).read_bytes():
+                raise ValueError("FIREFOX_XPI_SOURCE_BYTES_MISMATCH:" + entry.filename)
+            records.append({"path": entry.filename, "git_blob": hashlib.sha1(
+                b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest(), "sha256": digest(data)})
+    return {"xpi_sha256": digest(raw), "xpi_bytes": len(raw), "source_files": records,
+        "signature_metadata_present": any(name.lower() in metadata for name in actual),
+        "mozilla_signature_verified": False, "effect_ack_done": False}
 
 
 def firefox_extension_accepted(value):
@@ -2397,6 +2537,11 @@ def firefox_extension_accepted(value):
         and addon.get("temporarilyInstalled") is False
         and value.get("temporary_installation_used") is False
         and value.get("policy_active") is True and value.get("background_registered") is True)
+
+
+def firefox_production_extension_accepted(value):
+    return (firefox_extension_accepted(value) and value.get("signatures_required") is True
+        and value.get("mozilla_signed") is True)
 
 
 class FirefoxProbeConnection:
@@ -2450,6 +2595,7 @@ const [id, minimum, done] = arguments;
   done({browser_version: Services.appinfo.version,
     minimum_satisfied: Services.vc.compare(Services.appinfo.version, minimum) >= 0,
     signatures_required: Services.prefs.getBoolPref("xpinstall.signatures.required", true),
+    mozilla_signed: addon ? addon.signedState === AddonManager.SIGNEDSTATE_SIGNED : false,
     addon: addon ? {id: addon.id, version: addon.version, isActive: addon.isActive,
       isCompatible: addon.isCompatible, appDisabled: addon.appDisabled,
       userDisabled: addon.userDisabled, signedState: addon.signedState,
@@ -2461,7 +2607,30 @@ const [id, minimum, done] = arguments;
 """
 
 
-def firefox_extension_probe(xpi, output):
+FIREFOX_PERSISTENT_INSTALL = """
+const [path, done] = arguments;
+(async () => {
+  const {AddonManager} = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs");
+  await AddonManager.readyPromise;
+  const file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
+  file.initWithPath(path);
+  const install = await AddonManager.getInstallForFile(file);
+  const status = event => ({event, state: install.state, error: install.error,
+    temporary_installation_used: false, explicit_enable_used: false});
+  if (install.state === AddonManager.STATE_DOWNLOAD_FAILED) {
+    done(status("rejected_before_install")); return;
+  }
+  install.addListener({onInstallEnded: () => done(status("onInstallEnded")),
+    onInstallFailed: () => done(status("onInstallFailed")),
+    onDownloadFailed: () => done(status("onDownloadFailed")),
+    onInstallCancelled: () => done(status("onInstallCancelled"))});
+  Promise.resolve(install.install()).catch(error => done({...status("install_rejected"), error_text: String(error)}));
+})().catch(error => done({event: "install_exception", error_text: String(error),
+  temporary_installation_used: false, explicit_enable_used: false}));
+"""
+
+
+def firefox_extension_probe(xpi, output, package="firefox-esr"):
     """Persistent XPI installation in disposable profiles on the actual binary.
 
     No temporary install, compatibility override or AddonManager enable call.
@@ -2478,27 +2647,33 @@ def firefox_extension_probe(xpi, output):
     identity, minimum = gecko["id"], gecko["strict_min_version"]
     if identity != "qikvrt-ai-terminal@goldkelch.local" or minimum != "158.0":
         raise ValueError("OWNER_FIREFOX_158_EXACT_EXTENSION_REQUIRED")
-    binary = shutil.which("firefox-esr")
-    if not binary: raise ValueError("ACTUAL_FIREFOX_ESR_BINARY_REQUIRED")
+    if package not in {"firefox-esr", "firefox"}: raise ValueError("DECLARED_FIREFOX_PACKAGE_REQUIRED")
+    release = package == "firefox"
+    binary = shutil.which(package)
+    if not binary: raise ValueError("ACTUAL_FIREFOX_BINARY_REQUIRED:" + package)
     result = {"schema": "qikvrt-firefox-extension-installation/v1",
         "scope": "EXACT_EXISTING_S1_IMAGE_AND_CANDIDATE_XPI_DISPOSABLE_PROFILES",
         "xpi_sha256": digest(raw), "xpi_bytes": len(raw), "extension_id": identity,
         "strict_min_version": minimum, "extension_version": manifest["version"],
+        "firefox_package": package, "binary_path": str(Path(binary).resolve()),
+        "installation_method": "AddonManager.getInstallForFile persistent" if release else "bootstrap profile XPI copy",
         "binary_sha256": digest(Path(binary).resolve().read_bytes()),
         "firefox_version_output": subprocess.check_output([binary, "--version"], stderr=subprocess.STDOUT,
             text=True, timeout=15).strip(),
         "debian_package_version": subprocess.check_output(
-            ["dpkg-query", "-W", "-f=${Version}", "firefox-esr"], text=True, timeout=15).strip(),
+            ["dpkg-query", "-W", "-f=${Version}", package], text=True, timeout=15).strip(),
         "existing_s1_bootstrap_xpi_present": Path(
             "/opt/qikvrt/runtime/bootstrap-profile/extensions/" + identity + ".xpi").is_file(),
         "profiles": {}, "effect_ack_done": False, "public_production_verified": False,
         "ordinary_release": False, "predecessor_acceptance_transferred": False}
     try:
         with tempfile.TemporaryDirectory(prefix="qikvrt-extension-probe-") as work:
-            for mode, unsigned in (("default_signing_policy", False), ("explicit_esr_reference", True)):
+            modes = (("default_signing_policy", False),) if release else (
+                ("default_signing_policy", False), ("explicit_esr_reference", True))
+            for mode, unsigned in modes:
                 profile = Path(work) / mode
                 (profile / "extensions").mkdir(parents=True)
-                (profile / "extensions" / (identity + ".xpi")).write_bytes(raw)
+                if not release: (profile / "extensions" / (identity + ".xpi")).write_bytes(raw)
                 phases = []
                 result["profiles"][mode] = phases
                 for phase in ("initial_start", "process_restart"):
@@ -2531,12 +2706,19 @@ def firefox_extension_probe(xpi, output):
                             client = FirefoxProbeConnection(connection)
                             session = client.call("WebDriver:NewSession", {"capabilities": {"alwaysMatch": {}}})
                             client.call("Marionette:SetContext", {"value": "chrome"})
+                            installation = None
+                            if release and phase == "initial_start":
+                                installation = client.call("WebDriver:ExecuteAsyncScript", {
+                                    "script": FIREFOX_PERSISTENT_INSTALL, "args": [str(xpi)],
+                                    "newSandbox": True, "sandbox": "system", "scriptTimeout": 15000})["value"]
                             observation = client.call("WebDriver:ExecuteAsyncScript", {
                                 "script": FIREFOX_EXTENSION_READBACK, "args": [identity, minimum],
                                 "newSandbox": True, "sandbox": "system", "scriptTimeout": 15000})["value"]
                             if observation.get("probe_error"): raise ValueError(observation["probe_error"])
                             installed_xpi = profile / "extensions" / (identity + ".xpi")
-                            observation.update(phase=phase, accepted=firefox_extension_accepted(observation),
+                            accepted = firefox_production_extension_accepted if release else firefox_extension_accepted
+                            observation.update(phase=phase, accepted=accepted(observation),
+                                persistent_installation=installation,
                                 session_browser_version=session.get("capabilities", {}).get("browserVersion"),
                                 **firefox_profile_xpi_state(installed_xpi))
                             phases.append(observation)
@@ -2548,7 +2730,8 @@ def firefox_extension_probe(xpi, output):
                             except subprocess.TimeoutExpired: process.kill(); process.wait(timeout=5)
                 result[mode + "_activation_verified"] = all(p["accepted"] for p in phases)
         result["extension_activation_verified"] = result["default_signing_policy_activation_verified"]
-        result["reference_activation_verified"] = result["explicit_esr_reference_activation_verified"]
+        result["reference_activation_verified"] = result.get("explicit_esr_reference_activation_verified", False)
+        result["signed_production_package_verified"] = release and result["extension_activation_verified"]
         observations = [p for phases in result["profiles"].values() for p in phases]
         result["state"] = ("HOLD_FIREFOX_BELOW_OWNER_MINIMUM" if
             any(p["minimum_satisfied"] is False for p in observations) else
@@ -2565,11 +2748,12 @@ def firefox_extension_probe(xpi, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
         "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
     parser.add_argument("--extension-xpi", type=Path, help="exact candidate XPI; disposable local probe only")
+    parser.add_argument("--firefox-package", choices=("firefox-esr", "firefox"), default="firefox-esr")
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
@@ -2619,9 +2803,12 @@ def main():
     parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
     args = parser.parse_args()
     try:
-        if args.operation == "firefox-extension-check":
+        if args.operation == "firefox-release-provision":
+            if args.output is None: raise ValueError("FIREFOX_RELEASE_PROVISION_RECEIPT_REQUIRED")
+            result = firefox_release_provision(args.output)
+        elif args.operation == "firefox-extension-check":
             if not args.extension_xpi or not args.output: raise ValueError("EXACT_XPI_AND_PROBE_OUTPUT_REQUIRED")
-            result = firefox_extension_probe(args.extension_xpi, args.output)
+            result = firefox_extension_probe(args.extension_xpi, args.output, args.firefox_package)
         elif args.operation == "deployment-roles":
             result = deployment_roles(args.root)
         elif args.operation == "runtime-delivery-verify":
@@ -2659,7 +2846,8 @@ def main():
             result = portable(args.root.resolve(), args.output.absolute(), args.expected_head, args.expected_tree)
         elif args.operation == "pack":
             if not args.output or not args.expected_head or not args.expected_tree: raise ValueError("EXACT_EXPORT_INPUTS_REQUIRED")
-            result = freeze(args.root, args.output, args.expected_head, args.expected_tree, args.browser_assets_root)
+            result = freeze(args.root, args.output, args.expected_head, args.expected_tree,
+                args.browser_assets_root, args.firefox_package)
         elif args.operation == "verify":
             verify(args.root, args.manifest_sha256)
             result = {"state": "EXACT_PACKAGE_RUNTIME_VERIFIED", "effect_ack_done": False}

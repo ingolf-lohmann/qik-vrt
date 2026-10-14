@@ -52,6 +52,25 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
         value=self.accepted();value.update(minimum_satisfied=False,signatures_required=False)
         self.assertFalse(host.firefox_extension_accepted(value))
 
+    def test_release_requires_real_mozilla_signature_and_default_enforcement(self):
+        value=self.accepted();value.update(signatures_required=True,mozilla_signed=True)
+        self.assertTrue(host.firefox_production_extension_accepted(value))
+        for field in ('signatures_required','mozilla_signed'):
+            for bad in (False,None,0,'true'):
+                with self.subTest(field=field,bad=bad):
+                    changed=dict(value);changed[field]=bad
+                    self.assertFalse(host.firefox_production_extension_accepted(changed))
+
+    def test_release_version_and_manifest_bound_browser_selection(self):
+        for value in ('Mozilla Firefox 158.0','Mozilla Firefox 158.0.1','Mozilla Firefox 159.0'):
+            self.assertTrue(host.firefox_release_minimum_satisfied(value))
+        for value in ('Mozilla Firefox 153.4.0esr','Mozilla Firefox 157.9','158.0',''):
+            self.assertFalse(host.firefox_release_minimum_satisfied(value))
+        self.assertEqual(host.browser_commands('firefox')[0],'firefox')
+        self.assertEqual(host.browser_commands()[0],'firefox-esr')
+        with self.assertRaisesRegex(ValueError,'DECLARED_FIREFOX_PACKAGE'):
+            host.browser_commands('/unbound/browser')
+
     def test_gecko_removed_xpi_is_retained_as_negative_observation(self):
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory)/"removed.xpi"
@@ -62,6 +81,27 @@ class FirefoxExtensionAdmissionTests(unittest.TestCase):
                 {"profile_xpi_present":True,"profile_xpi_sha256":host.digest(path.read_bytes())})
             path.unlink()
             self.assertFalse(host.firefox_profile_xpi_state(path)["profile_xpi_present"])
+
+    def test_signature_metadata_cannot_replace_source_or_browser_verification(self):
+        import zipfile
+        source=ROOT/'browser/firefox/qikvrt-terminal'
+        names=('manifest.json','background.js','content.js','options.html','options.js','terminal.css')
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'candidate.xpi'
+            for extra,changed in ((None,False),('META-INF/mozilla.rsa',False),
+                    ('personal/credentials.json',False),(None,True)):
+                with self.subTest(extra=extra,changed=changed):
+                    with zipfile.ZipFile(path,'w') as archive:
+                        for name in names:
+                            raw=(source/name).read_bytes()
+                            archive.writestr(name,raw+b'changed' if changed and name=='background.js' else raw)
+                        if extra: archive.writestr(extra,b'not-a-Mozilla-signature')
+                    if changed or extra=='personal/credentials.json':
+                        with self.assertRaises(ValueError): host.firefox_xpi_source_binding(path,source)
+                    else:
+                        binding=host.firefox_xpi_source_binding(path,source)
+                        self.assertFalse(binding['mozilla_signature_verified'])
+                        self.assertEqual(binding['signature_metadata_present'],extra is not None)
 
     def test_framed_readback_is_fragment_safe_and_rejects_stale_response(self):
         import io
@@ -134,7 +174,8 @@ class FirefoxCarrierTests(NativeStandaloneTests):
         cls.head = host.git(ROOT,'rev-parse','HEAD').decode()
         cls.tree = host.git(ROOT,'rev-parse','HEAD^{tree}').decode()
         cls.export = cls.base/'export'
-        cls.receipt = host.freeze(ROOT,cls.export,cls.head,cls.tree,Path('/usr/share/novnc'))
+        cls.receipt = host.freeze(ROOT,cls.export,cls.head,cls.tree,Path('/usr/share/novnc'),
+            os.environ.get('QIKVRT_FIREFOX_PACKAGE','firefox-esr'))
         cls.pin = cls.receipt['manifest_sha256']
         cls.manifest = json.loads((cls.export/'MANIFEST.json').read_bytes())
 
@@ -151,7 +192,7 @@ class FirefoxCarrierTests(NativeStandaloneTests):
     def start(self,path=None):
         # Build-time Git is available, but no Git/gh/provider is in runtime PATH.
         binpath=self.work/'runtime-bin';binpath.mkdir(exist_ok=True)
-        for name in ('node','python3','python3.12',*host.BROWSER_COMMANDS):
+        for name in ('node','python3','python3.12',*self.manifest['browser_runtime']['executables']):
             found=shutil.which(name)
             self.assertIsNotNone(found, name)
             if not (binpath/name).exists(): (binpath/name).symlink_to(found)

@@ -109,3 +109,45 @@ https://extensionworkshop.com/documentation/publish/signing-and-distribution-ove
 
 Installation acceptance, protected Main integration and productive delivery
 on https://raumzeitterminal.de/ remain distinct obligations.
+
+## Supported S1 forward path (Firefox 158 Owner minimum)
+
+The existing CI job `s1_firefox_extension` now verifies the original PR457 OCI
+bytes, retains every original parent layer, and uses the existing
+`runtime/self-host/Dockerfile` target `s1-firefox-release` to add official
+Mozilla Release Firefox. The original runtime components are not rebuilt.
+The existing package freezer binds either declared Firefox executable in its
+manifest; Release export uses `--firefox-package firefox`. Native Firefox/noVNC
+startup and persistent restart controls run on that upgraded carrier. The
+original sealed package remains historical, separate from the newly tested
+source package and from productive host admission.
+
+The provisioner verifies primary APT key fingerprint
+`35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3`, authenticated APT metadata, exact
+package/DEB/executable hashes and actual browser minimum 158.0. It issues no
+full distribution upgrade, downgrade, native rebuild or AMO signing request.
+The future clean universal-container path uses the same provisioner and
+rejects a terminal browser below 158.0. This prepares that path; its complete
+clean build and public deployment are separate acceptance scopes.
+
+The prepared persistent installer calls normal `AddonManager.getInstallForFile`
+once at initial startup and reads the same profile after process restart. It
+does not temporarily install, explicitly enable a disabled addon or bypass
+signatures. Acceptance additionally requires Mozilla's signed state under
+default signature enforcement. A fake signature filename is not proof.
+
+No authorized AMO signing binding or matching signed XPI is currently established.
+The exact-source unsigned native XPI is retained as a signing input and negative
+control. Secure AMO signing for self-distribution is the official `unlisted`
+route; developer credentials stay in its supported private connection/store.
+Use an actually admitted signer on the exact six-file Standard payload. Do
+not paste credentials into chat, the repository, artifacts, logs or caches.
+
+A returned signed XPI can be connected through `firefox158_s1_upgrade.signed_xpi_artifact`
+in the existing work unit. Required fields are `repository`, `run_id`,
+`artifact_name`, `file_name`, and `xpi_sha256`; the repository must be
+`ingolf-lohmann/qik-vrt`. CI verifies its unchanged Standard bytes and then
+requires real browser signature and activation proof. Until that input is
+bound and the live gate passes, extension activation, Main integration and
+productive delivery remain HOLD. Successful browser provisioning alone is
+not working software at https://raumzeitterminal.de/.

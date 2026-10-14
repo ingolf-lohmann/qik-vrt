@@ -267,3 +267,5 @@ archives may be reused only after the same pins pass. Browser-data profiles and
 production state are never cache inputs. Test receipts contain only synthetic
 original-kernel fixture bindings, runtime versions, hashes and scoped results.
 Desktop success does not establish a public HTTPS or Android/iOS witness.
+
+Mozilla Release forward path: the existing S1 image is verified before a bounded `s1-firefox-release` layer in the existing Dockerfile. The primary APT key fingerprint is 35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3; APT metadata verifies the selected package. Provision receipts retain exact DEB, package, executable and dependency changes. Existing Python/Node/noVNC and parent layers are reused. Browser-only version success is not signed extension activation. No AMO signing credential or source-bound signed artifact is currently established; the unsigned artifact remains a negative control. Missing credentials are never cached or logged.

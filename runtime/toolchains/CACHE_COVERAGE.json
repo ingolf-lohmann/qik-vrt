@@ -32,6 +32,12 @@
     },
     {
       "cache_class": "runner-image-layer",
+      "component": "firefox",
+      "provider": "Official Mozilla packages.mozilla.org signed APT Release packages on retained exact S1 image; no full OS upgrade or runtime rebuild",
+      "version": "158-or-newer-exact-Mozilla-APT-binding"
+    },
+    {
+      "cache_class": "runner-image-layer",
       "component": "firefox-esr",
       "provider": "official Python/Node digest-pinned OCI bases plus Debian Bookworm distribution packages",
       "version": "exact-executable-binding"
@@ -47,6 +53,12 @@
       "component": "git",
       "provider": "source builder and existing owner terminal subject reader",
       "version": "read-only-object-export"
+    },
+    {
+      "cache_class": "runner-image-layer",
+      "component": "gpg",
+      "provider": "Debian Bookworm gnupg package; fixed public Mozilla APT key, no private keys",
+      "version": "Mozilla-primary-key-fingerprint-contract"
     },
     {
       "cache_class": "build-cache",
@@ -177,10 +189,10 @@
   ],
   "coverage_basis": "unique components in runtime/toolchains/TOOLCHAIN.lock.tsv",
   "coverage_percent": 100,
-  "covered_components": 29,
-  "declared_components": 29,
-  "lock_sha256": "6134fbe1fa2d9258525c07be4ec08ae0542c3d08383e174a6d2f2aece448b7ac",
-  "registry_sha256": "7b00e6c3a403c523f8acf426e8d0ccd4cf5da7c9f8fd860976b5bf380cdcf90e",
+  "covered_components": 31,
+  "declared_components": 31,
+  "lock_sha256": "1be203109c3fa3cfbebe2cf736e1505d6a22080e20af9f6dc4bbfdf359310369",
+  "registry_sha256": "42947be3203d062e610a01a2e3296eca6faf64ff0a6f7cd96327c0f44a028f83",
   "rules": {
     "all_declared_tools_have_cache_strategy": true,
     "cache_never_replaces_required_checks": true,

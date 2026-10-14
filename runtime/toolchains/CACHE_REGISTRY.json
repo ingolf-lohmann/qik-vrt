@@ -120,6 +120,32 @@
       ],
       "version": "same-as-ffmpeg"
     },
+    "firefox": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "native qikvrt-s1-firefox158-runtime content-addressed image artifact; exact package DEB and executable digests in provision receipt"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "Official Mozilla packages.mozilla.org signed APT Release packages on retained exact S1 image; no full OS upgrade or runtime rebuild",
+      "trusted_save": false,
+      "verification": [
+        "Primary Mozilla signing-key fingerprint 35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3 and signed APT metadata",
+        "Actual package version and executable SHA-256; Firefox live version >=158.0",
+        "Parent RootFS diff IDs preserved; current source native startup/noVNC/restart controls",
+        "Persistent getInstallForFile plus live AddonManager Mozilla signedState, compatibility, policy and background registration before and after restart; no temporary installation or signing exception"
+      ],
+      "version": "158-or-newer-exact-Mozilla-APT-binding"
+    },
     "firefox-esr": {
       "authority_files": [
         "runtime/toolchains/TOOLCHAIN.lock.tsv",
@@ -200,6 +226,30 @@
         "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred"
       ],
       "version": "read-only-object-export"
+    },
+    "gpg": {
+      "authority_files": [
+        "runtime/toolchains/TOOLCHAIN.lock.tsv",
+        "runtime/self-host/Dockerfile",
+        "tools/qikvrt_self_host.py",
+        "tests/test_self_host_firefox.py",
+        "runtime/toolchains/PROVENANCE.md",
+        ".github/workflows/qikvrt_ci.yml"
+      ],
+      "cache_class": "runner-image-layer",
+      "cache_locations": [
+        "verified S1 provision layer with reported gpg version and Debian package version"
+      ],
+      "profiles": [
+        "self-host-firefox"
+      ],
+      "provider": "Debian Bookworm gnupg package; fixed public Mozilla APT key, no private keys",
+      "trusted_save": false,
+      "verification": [
+        "gpg --version",
+        "gpg --show-keys --with-colons yields exactly one declared primary fingerprint; reject mismatch before Mozilla APT admission"
+      ],
+      "version": "Mozilla-primary-key-fingerprint-contract"
     },
     "lean": {
       "authority_files": [

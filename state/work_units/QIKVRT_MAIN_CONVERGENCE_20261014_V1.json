@@ -294,6 +294,68 @@
       "unchanged_error_retry": "NOOP; continuation uses changed import implementation"
     }
   },
+  "firefox158_s1_upgrade": {
+    "artificial_cognitive_contribution": "OpenAI Codex / GPT-6; platform-session attribution only",
+    "effect_ack_done": false,
+    "existing_ci_path": ".github/workflows/qikvrt_ci.yml#s1_firefox_extension",
+    "existing_runtime_path": "runtime/self-host/Dockerfile#s1-firefox-release",
+    "extension_activation_verified": false,
+    "human_authority": "Ingolf Lohmann; continuation accepted 2026-10-14 after explicit Firefox >=158 plus signed-XPI next step",
+    "local_controls": {
+      "scope": "BOUNDED_SOURCE_FIXTURE; LIVE_BROWSER_REQUIRES_NATIVE_CI",
+      "status": "PASS",
+      "tests": 10
+    },
+    "main_integration_verified": false,
+    "minimum": "158.0",
+    "minimum_lowered": false,
+    "native_observation": {},
+    "new_workflow_or_pr_created": false,
+    "open_obligations": [
+      "native supported upgrade and current-source runtime controls",
+      "authorized AMO signing or exact-source signed XPI",
+      "default-policy persistent activation and restart",
+      "Main protection and independent exact-head approval",
+      "raumzeitterminal.de DNS/TLS/useful authenticated delivery"
+    ],
+    "primary_sources": [
+      "https://support.mozilla.org/en-US/kb/install-firefox-linux",
+      "https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/",
+      "https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/"
+    ],
+    "public_production_verified": false,
+    "retry_gate": "Unchanged image/source/probe/signed-XPI inputs plus an already retained failed observation admit NOOP; no repeat AMO submission or browser attempt.",
+    "runtime_artifact": null,
+    "s1_parent_oci_digest": "sha256:eda9516930cf7a51f0342e9b154b430c386ad04b80ce6401ce6b7d1a103ac74d",
+    "schema": "qikvrt_firefox158_s1_supported_upgrade_v1",
+    "signed_xpi_artifact": null,
+    "signed_xpi_artifact_contract": {
+      "acceptance": "All six Standard payload files byte-identical to current candidate; optional exact README plus only known Mozilla signature metadata. Browser must confirm Mozilla signedState, min>=158.0, live policy/background, compatible active persistent addon and restart under default enforcement.",
+      "artifact_name": "exact native artifact name",
+      "file_name": "safe XPI basename",
+      "repository": "ingolf-lohmann/qik-vrt",
+      "run_id": "positive native run ID",
+      "xpi_sha256": "exact 64-hex XPI digest"
+    },
+    "signing_route": {
+      "amo_signing_attempted": false,
+      "credential_acquired": false,
+      "credential_storage_claimed": false,
+      "current_package": "unsigned Standard verification artifact",
+      "inspected": [
+        "current native tool capabilities",
+        "existing repository package workflow",
+        "repository AMO/web-ext search",
+        "current workflow-executor contract",
+        "standing owner context"
+      ],
+      "smallest_continuation": "Bind an authorized Mozilla-AMO unlisted signing executor with secure credentials, or a signed exact-source XPI artifact in this Authority; no credentials in chat/repository/artifact/log/cache.",
+      "state": "MOZILLA_SIGNING_BINDING_AND_SIGNED_XPI_UNAVAILABLE"
+    },
+    "source_head": "33a504702713cffc4d1f0168a09f379cefb3cba5",
+    "source_tree": "5110efa6821a91a3a49aa5779b4b7c90a2e1e29f",
+    "state": "PREPARED_PENDING_NATIVE_UPGRADE_AND_SIGNED_XPI"
+  },
   "incorporated_pull_requests": [
     {
       "branch": "work/issue-processing-repair-20261007-3d614851",
