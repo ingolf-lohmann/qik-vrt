@@ -508,7 +508,10 @@
         "tests/test_self_host_capture.py",
         "tools/qikvrt_self_host_provider.py",
         "tests/test_self_host_provider.py",
-        "runtime/self-host/PROVIDER_ADMISSION.md"
+        "runtime/self-host/PROVIDER_ADMISSION.md",
+        "tests/test_self_host_firefox.py",
+        ".github/workflows/qikvrt_ci.yml",
+        "browser/firefox/qikvrt-terminal/README.md"
       ],
       "cache_class": "runner-image-layer",
       "cache_locations": [
@@ -525,7 +528,8 @@
         "positive, negative and restart tests",
         "separate-process offline Railway-state export/import/dry-run, corruption, completion and fail-closed rollback controls",
         "private pinned one-shot capture, root-only full metadata/inventory, original supervisor composition, durable acknowledgement cut, producer locks and fail-closed PID namespace census; no provider identity or live capture inferred",
-        "provider-neutral GET inventory, contradiction/partial-page refusal, exact cost/key binding, immutable fsynced intent and ambiguous-ACK restart/readback controls; no live host or payment/terms inference"
+        "provider-neutral GET inventory, contradiction/partial-page refusal, exact cost/key binding, immutable fsynced intent and ambiguous-ACK restart/readback controls; no live host or payment/terms inference",
+        "Official Mozilla AMO unlisted REST v4, Python stdlib HS256 JWT with 60-second expiry, exact six committed Standard source files, private fsynced one-shot journal, SHA256/source-bound original-byte readback and credential-free hostile HTTP controls; a mocked API or signature metadata is not Mozilla/browser acceptance"
       ],
       "version": "3.12.x"
     },

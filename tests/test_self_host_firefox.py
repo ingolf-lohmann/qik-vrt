@@ -22,6 +22,194 @@ from tests.test_self_host_temdd import NativeStandaloneTests
 from tests.test_self_host import host, ROOT
 
 
+class FirefoxAMOUnlistedTests(unittest.TestCase):
+    """Real six-file Git input; mocked AMO HTTP is never Mozilla signature proof."""
+    @classmethod
+    def setUpClass(cls):
+        cls.fixture = tempfile.TemporaryDirectory()
+        cls.root = Path(cls.fixture.name) / 'source'; cls.root.mkdir()
+        cls.names = ('manifest.json','background.js','content.js','options.html','options.js','terminal.css')
+        for relative in [*("browser/firefox/qikvrt-terminal/" + name for name in cls.names),
+                'policy/CANONICAL_UPSTREAM_REMOTE_V1.json']:
+            path = cls.root / relative; path.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(ROOT/relative,path)
+        (cls.root/'browser/firefox/qikvrt-terminal/README.md').write_text('excluded documentation')
+        (cls.root/'personal').mkdir();(cls.root/'personal/private.txt').write_text('must never be uploaded')
+        def git(*args):
+            return subprocess.check_output(['git','-C',str(cls.root),*args],stderr=subprocess.DEVNULL).decode().strip()
+        git('init');git('add','.')
+        git('-c','user.name=Local fixture','-c','user.email=fixture@example.invalid','commit','-m','local test fixture')
+        cls.head=git('rev-parse','HEAD');cls.tree=git('rev-parse','HEAD^{tree}')
+
+    @classmethod
+    def tearDownClass(cls): cls.fixture.cleanup()
+
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.output=Path(self.temp.name)/'output';self.state=Path(self.temp.name)/'state'
+        from unittest import mock
+        self.mock=mock
+        self.env={'WEB_EXT_API_KEY':'test-only-issuer','WEB_EXT_API_SECRET':'test-only-secret-32-characters-long'}
+        self.environment=mock.patch.dict(os.environ,self.env,clear=True);self.environment.start()
+        self.addCleanup(self.environment.stop)
+
+    def invoke(self,submit=True):
+        return host.firefox_amo_unlisted(self.root,self.output,self.head,self.tree,self.state,submit)
+
+    def signed(self,changed=False,extra=None):
+        import io,zipfile
+        stream=io.BytesIO()
+        with zipfile.ZipFile(stream,'w') as archive:
+            for name in self.names:
+                raw=(self.root/'browser/firefox/qikvrt-terminal'/name).read_bytes()
+                archive.writestr(name,raw+b'wrong source' if changed and name=='content.js' else raw)
+            archive.writestr('META-INF/mozilla.rsa',b'fixture only; not a Mozilla signature')
+            if extra:archive.writestr(extra,b'foreign or duplicate bytes')
+        return stream.getvalue()
+
+    def response(self,signed=None,**changes):
+        raw=signed if signed is not None else self.signed()
+        value={'guid':'qikvrt-ai-terminal@goldkelch.local','version':'1.0.0',
+            'processed':True,'valid':True,'reviewed':True,'passed_review':True,
+            'files':[{'signed':True,'hash':'sha256:'+host.digest(raw),
+                'download_url':'https://addons.mozilla.org/api/v4/downloads/file/123/standard.xpi'}]}
+        value.update(changes);return json.dumps(value).encode()
+
+    def test_exact_deterministic_six_committed_files_and_no_personal_or_readme(self):
+        import io,zipfile
+        first,binding=host.firefox_amo_input(self.root,self.head,self.tree)
+        self.assertEqual(first,host.firefox_amo_input(self.root,self.head,self.tree)[0])
+        with zipfile.ZipFile(io.BytesIO(first)) as archive:
+            self.assertCountEqual(archive.namelist(),self.names)
+        self.assertEqual(len(binding['source_files']),6);self.assertEqual(binding['strict_min_version'],'158.0')
+        self.assertEqual(binding['source_head'],self.head)
+
+    def test_wrong_head_tree_and_dirty_source_fail_before_http(self):
+        with self.assertRaisesRegex(ValueError,'EXACT_HEAD_TREE'):
+            host.firefox_amo_input(self.root,'0'*40,self.tree)
+        path=self.root/'browser/firefox/qikvrt-terminal/content.js';raw=path.read_bytes()
+        try:
+            path.write_bytes(raw+b'changed')
+            with self.mock.patch.object(host,'firefox_amo_transport',side_effect=AssertionError('no HTTP')):
+                with self.assertRaisesRegex(ValueError,'DIRTY_STANDARD'):self.invoke()
+        finally:path.write_bytes(raw)
+
+    def test_missing_pair_or_no_submission_request_has_zero_http_effects(self):
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=AssertionError('no HTTP')):
+            self.assertEqual(self.invoke(False)['state'],'HOLD_AMO_SUBMISSION_NOT_REQUESTED')
+            with self.mock.patch.dict(os.environ,{'WEB_EXT_API_SECRET':''}):
+                r=self.invoke();self.assertIn('CREDENTIAL_PAIR_UNAVAILABLE',r['state'])
+                self.assertFalse(r['submission_attempted'])
+
+    def test_jwt_hs256_short_expiry_fresh_nonce_and_header(self):
+        import hashlib,hmac
+        def decode(s):return base64.urlsafe_b64decode(s+'='*(-len(s)%4))
+        with self.mock.patch.object(host.time,'time',return_value=1700000000):
+            a=host.firefox_amo_jwt('test-only-issuer','synthetic-secret')
+            b=host.firefox_amo_jwt('test-only-issuer','synthetic-secret')
+        header,claims,signature=a.split('.');payload=json.loads(decode(claims))
+        self.assertEqual(json.loads(decode(header))['alg'],'HS256')
+        self.assertEqual(payload['exp']-payload['iat'],60)
+        self.assertNotEqual(payload['jti'],json.loads(decode(b.split('.')[1]))['jti'])
+        self.assertEqual(decode(signature),hmac.new(b'synthetic-secret',('.'.join(a.split('.')[:2])).encode(),hashlib.sha256).digest())
+
+    def test_original_hash_source_binding_and_distinct_browser_acceptance(self):
+        signed=self.signed()
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[
+                (404,b'{}'),(201,self.response()),(200,self.response()),(200,signed)]) as call:
+            r=self.invoke()
+        self.assertEqual([x.args[1] for x in call.call_args_list],['GET','PUT','GET','GET'])
+        self.assertIn('%40',call.call_args_list[0].args[0])
+        self.assertEqual((self.output/'standard-signed.xpi').read_bytes(),signed)
+        self.assertEqual(r['xpi_sha256'],host.digest(signed));self.assertTrue(r['signed_original_returned'])
+        for key in ('mozilla_signature_verified','extension_activation_verified','main_integration_verified','public_production_verified','effect_ack_done'):
+            self.assertFalse(r[key])
+        for path in [self.state/'AMO_ATTEMPT.json',self.output/'AMO_SIGNING_RECEIPT.json']:
+            text=path.read_text();self.assertNotIn(self.env['WEB_EXT_API_KEY'],text)
+            self.assertNotIn(self.env['WEB_EXT_API_SECRET'],text)
+
+    def test_existing_version_is_read_back_without_put_or_version_bump(self):
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(200,self.response()),(200,self.signed())]) as call:
+            r=self.invoke()
+        self.assertFalse(r['submission_attempted']);self.assertEqual([x.args[1] for x in call.call_args_list],['GET','GET'])
+
+    def test_pending_upload_and_resume_never_repeat_put(self):
+        pending=self.response(processed=False,files=[])
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[
+                (404,b'{}'),(202,pending),(200,pending),(404,b'{}')]) as call:
+            first=self.invoke();second=self.invoke()
+        self.assertTrue(first['state'].startswith('PENDING_AMO'))
+        self.assertIn('NO_RESUBMISSION',second['state'])
+        self.assertEqual(sum(x.args[1]=='PUT' for x in call.call_args_list),1)
+
+    def test_ambiguous_put_keeps_fsynced_journal_and_blocks_resubmission(self):
+        with self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(404,b'{}'),ValueError('AMO_TRANSPORT_OUTCOME_UNVERIFIED')]):
+            with self.assertRaisesRegex(ValueError,'OUTCOME_UNVERIFIED'):self.invoke()
+        self.assertTrue(json.loads((self.state/'AMO_ATTEMPT.json').read_bytes())['submission_attempted'])
+        with self.mock.patch.object(host,'firefox_amo_transport',return_value=(404,b'{}')) as call:
+            self.assertIn('NO_RESUBMISSION',self.invoke()['state']);self.assertEqual(call.call_count,1)
+
+    def test_wrong_guid_validation_rejection_and_unsigned_response_do_not_download(self):
+        for changes in ({'guid':'other@invalid'},{'valid':False},{'files':[]}):
+            with self.subTest(changes=changes),self.mock.patch.object(host,'firefox_amo_transport',return_value=(200,self.response(**changes))) as call:
+                if 'guid' in changes:
+                    with self.assertRaisesRegex(ValueError,'SUBJECT_MISMATCH'):self.invoke()
+                else:self.assertFalse(self.invoke()['extension_activation_verified'])
+                self.assertEqual(call.call_count,1)
+
+    def test_wrong_hash_changed_payload_and_personal_extra_are_rejected(self):
+        for signed,expected in ((b'not matching','SHA256_MISMATCH'),
+                (self.signed(changed=True),'SOURCE_BYTES_MISMATCH'),
+                (self.signed(extra='personal/secret.json'),'PAYLOAD_FORBIDDEN')):
+            response=self.response(signed if expected!='SHA256_MISMATCH' else None)
+            with self.subTest(expected=expected),self.mock.patch.object(host,'firefox_amo_transport',side_effect=[(200,response),(200,signed)]):
+                with self.assertRaisesRegex(ValueError,expected):self.invoke()
+                self.assertFalse((self.output/'standard-signed.xpi').exists())
+
+    def test_authentication_denial_is_hold_and_not_upload(self):
+        for code in (401,403):
+            with self.subTest(code=code),self.mock.patch.object(host,'firefox_amo_transport',return_value=(code,b'private error')) as call:
+                r=self.invoke();self.assertEqual(r['amo_http_status'],code)
+                self.assertFalse(r['submission_attempted']);self.assertEqual(call.call_count,1)
+
+    def test_authenticated_put_is_explicit_unlisted_multipart(self):
+        import io
+        class Response(io.BytesIO):
+            code=201;headers={}
+        opener=self.mock.Mock();opener.open.return_value=Response(b'{}')
+        with self.mock.patch.object(host.urllib.request,'build_opener',return_value=opener):
+            host.firefox_amo_transport('https://addons.mozilla.org/api/v4/addons/test%40example/versions/1.0/',
+                'PUT',b'original-standard-xpi','test-only-issuer','synthetic-secret')
+        request=opener.open.call_args.args[0]
+        self.assertEqual(request.method,'PUT');self.assertIn(b'\r\nunlisted\r\n',request.data)
+        self.assertIn(b'original-standard-xpi',request.data)
+        self.assertTrue(request.get_header('Authorization').startswith('JWT '))
+
+    def test_download_redirect_drops_jwt_and_foreign_origin_is_refused(self):
+        import io
+        class Response(io.BytesIO):
+            def __init__(self,code,location=''):
+                super().__init__(b'original');self.code=code;self.headers={'Location':location}
+        for target,allowed in [('https://addons.cdn.mozilla.net/standard.xpi',True),('https://attacker.invalid/xpi',False)]:
+            opener=self.mock.Mock();opener.open.side_effect=[Response(302,target),Response(200)]
+            with self.subTest(target=target),self.mock.patch.object(host.urllib.request,'build_opener',return_value=opener):
+                args=('https://addons.mozilla.org/api/v4/downloads/file/123/standard.xpi','GET',None,'synthetic-issuer','synthetic-secret')
+                if allowed:
+                    self.assertEqual(host.firefox_amo_transport(*args,download=True)[0],200)
+                    self.assertIsNone(opener.open.call_args_list[1].args[0].get_header('Authorization'))
+                else:
+                    with self.assertRaisesRegex(ValueError,'OFFICIAL_HTTPS_ORIGIN'):host.firefox_amo_transport(*args,download=True)
+                    self.assertEqual(opener.open.call_count,1)
+
+    def test_signing_helpers_cannot_admit_an_unchanged_s1_runtime_retry(self):
+        source=(ROOT/'tools/qikvrt_self_host.py').read_bytes()
+        baseline=host.firefox_amo_runtime_fingerprint(source)
+        self.assertEqual(baseline,host.firefox_amo_runtime_fingerprint(source.replace(
+            b'AMO_BOUNDED_STANDARD_XPI_REQUIRED',b'AMO_CHANGED_SIGNING_DIAGNOSTIC')))
+        self.assertNotEqual(baseline,host.firefox_amo_runtime_fingerprint(source.replace(
+            b'"signatures_required"',b'"tampered_signatures_required"')))
+
+
 class FirefoxExtensionAdmissionTests(unittest.TestCase):
     def accepted(self):
         return {"minimum_satisfied": True, "policy_active": True,

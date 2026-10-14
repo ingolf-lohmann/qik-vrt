@@ -269,3 +269,21 @@ original-kernel fixture bindings, runtime versions, hashes and scoped results.
 Desktop success does not establish a public HTTPS or Android/iOS witness.
 
 Mozilla Release forward path: the existing S1 image is verified before a bounded `s1-firefox-release` layer in the existing Dockerfile. The primary APT key fingerprint is 35BAA0B33E9EB396F59CA838C0BA5CE6DC6315A3; APT metadata verifies the selected package. Provision receipts retain exact DEB, package, executable and dependency changes. Existing Python/Node/noVNC and parent layers are reused. Browser-only version success is not signed extension activation. No AMO signing credential or source-bound signed artifact is currently established; the unsigned artifact remains a negative control. Missing credentials are never cached or logged.
+
+AMO unlisted extension signing reuses the existing Python self-host builder,
+its stdlib urllib/HMAC/SHA-256 primitives and the existing QIKVRT CI workflow.
+No web-ext/npm dependency, new workflow, credential cache, signing-policy
+exception or lowered minimum is introduced. The official frozen REST Signing
+API v4 supports unlisted self-distribution. An authorized Developer Hub issuer
+and secret pair is step-scoped through secure repository secrets only. The
+producer binds exactly six committed Standard files, uses 60-second HS256 JWTs,
+persists a non-secret fsynced attempt before one PUT, reads back on ambiguous or
+pending outcomes and verifies the unchanged original downloaded XPI against
+AMO's SHA-256 and all six source components. A declared Mozilla CDN redirect
+receives no JWT. Tests in `FirefoxAMOUnlistedTests` use synthetic credentials
+and mocked HTTP; they do not establish live AMO access or a Mozilla signature.
+The existing default-policy Gecko activation/restart gate remains mandatory.
+The S1 causal key binds all inherited runtime AST while projecting out only the
+new AMO helpers/options/branch, so signing preparation cannot retry the unchanged
+unsigned-XPI failure. The baseline failure remains exact-head historical
+evidence; it is never promoted to successor PASS or public product delivery.

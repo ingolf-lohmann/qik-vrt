@@ -182,3 +182,60 @@ CI reused the image without rebuilding and kept the unchanged failed XPI
 installation at NOOP. Current-source full `test` and HTTP/container/provenance
 jobs pass for Push and PR; general carrier tests do not establish extension
 activation or public delivery. The signing admission gate correctly remains red.
+
+## Official AMO unlisted producer in the existing CI
+
+`tools/qikvrt_self_host.py firefox-amo-unlisted` now supplies the missing
+producer through Mozilla's documented REST Signing API v4. That supported API
+is frozen; no Firefox or runtime version is lowered. The upload always declares
+`channel=unlisted`. It contains exactly the committed `manifest.json`,
+`background.js`, `content.js`, `options.html`, `options.js` and `terminal.css`.
+README, Personal payloads, credentials and build artifacts are excluded. The
+current HEAD/TREE, all six original Git blobs and SHA-256 values are checked
+before any request. The unchanged add-on ID and minimum `158.0` are mandatory.
+
+Use the existing `.github/workflows/qikvrt_ci.yml` REST `workflow_dispatch`
+with `amo_sign_unlisted=true`, `amo_expected_head` and `amo_expected_tree` equal
+to the reviewed current PR523 subject. No push or PR event submits to AMO.
+The secure repository secrets are `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`, from an
+authorized Mozilla Developer Hub account entitled to sign this add-on. They are
+delivered only to the explicitly admitted signing step as `WEB_EXT_API_KEY` and
+`WEB_EXT_API_SECRET`. Normal CI observes presence booleans only; presence is not
+authentication. Keys, secrets and JWTs never enter Git, receipts or artifacts.
+The JWT uses HS256, a fresh nonce and a 60-second lifetime.
+
+The producer first reads the existing version. Only a confirmed 404 with no
+preceding upload admits one PUT, preceded by a private fsynced non-secret
+journal. The existing CI serializes this add-on/version and automatically
+resolves the preceding actual signing invocation through GitHub REST reads.
+It recovers its original journal/receipt; optional `amo_previous_run_id` must
+match that observation. Reruns cannot resubmit. Pending review, an ambiguous
+upload or a rejected unchanged version remains HOLD/PENDING; resume reads the
+existing AMO version without another PUT. No automatic version bump occurs.
+
+Mozilla's original downloaded XPI is retained byte-exact as
+`standard-signed.xpi`. Its SHA-256 must equal AMO's signed-file hash, and all six
+components must remain byte-identical, with only known signing metadata added.
+An AMO API flag and signature-file presence do not prove cryptographic browser
+acceptance. Authenticated API calls remain on addons.mozilla.org; download
+redirects to the declared Mozilla CDN receive no Authorization header. An
+unrecognized download origin stops for review rather than forwarding a token.
+
+The original XPI and non-secret receipts are published as the existing CI's
+`qikvrt-amo-unlisted-<HEAD>` artifact. Repository, run ID, artifact name, filename
+and SHA-256 flow directly into the existing `signed_xpi_artifact` consumer in
+the same run. Its real S1 install/activation/process-restart checks continue to
+require Firefox >=158.0 and default signature enforcement. The binding can also
+be retained in the existing work unit for a later exact-source invocation.
+
+Current external prerequisite: an authorized, securely delivered AMO credential
+pair plus an actually callable exact-head REST dispatch. No such account access,
+signed original or successful XPI activation has been established by the local
+mocked HTTP regressions. Protected Main integration and productive operation of
+https://raumzeitterminal.de/ retain their independent acceptance gates.
+
+Primary sources:
+
+- https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/
+- https://mozilla.github.io/addons-server/topics/api/v4_frozen/signing.html
+- https://mozilla.github.io/addons-server/topics/api/auth.html

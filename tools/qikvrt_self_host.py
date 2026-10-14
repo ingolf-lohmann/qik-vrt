@@ -2549,6 +2549,261 @@ def firefox_xpi_source_binding(xpi, source):
         "mozilla_signature_verified": False, "effect_ack_done": False}
 
 
+def firefox_amo_runtime_fingerprint(source):
+    """Keep unrelated AMO helpers out of the existing S1 causal identity.
+
+    All pre-existing imports, globals and runtime bodies remain bound. Only the
+    new AMO CLI branch/options are projected out; this is no acceptance receipt.
+    """
+    import ast
+    module = ast.parse(source)
+    module.body = [node for node in module.body if not (
+        isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name.startswith("firefox_amo_"))]
+    for node in module.body:
+        if not isinstance(node, ast.FunctionDef) or node.name != "main": continue
+        node.body = [item for item in node.body if not (
+            isinstance(item, ast.Expr) and isinstance(item.value, ast.Call)
+            and isinstance(item.value.func, ast.Attribute) and item.value.func.attr == "add_argument"
+            and item.value.args and isinstance(item.value.args[0], ast.Constant)
+            and str(item.value.args[0].value).startswith("--amo-"))]
+        for item in ast.walk(node):
+            if isinstance(item, ast.keyword) and item.arg == "choices" and isinstance(item.value, ast.Tuple):
+                item.value.elts = [v for v in item.value.elts if not (
+                    isinstance(v, ast.Constant) and v.value == "firefox-amo-unlisted")]
+        for item in node.body:
+            if not isinstance(item, ast.Try): continue
+            first = item.body[0]
+            if (isinstance(first, ast.If) and isinstance(first.test, ast.Compare)
+                    and any(isinstance(v, ast.Constant) and v.value == "firefox-amo-unlisted"
+                            for v in first.test.comparators)):
+                item.body = first.orelse + item.body[1:]
+    return digest(ast.dump(module, include_attributes=False).encode())
+
+
+def firefox_amo_input(root, head, tree):
+    """The signing upload is precisely the six committed Standard components."""
+    import io
+    import zipfile
+    root = Path(root)
+    if (not re.fullmatch(r"[a-f0-9]{40}", head or "") or
+            not re.fullmatch(r"[a-f0-9]{40}", tree or "") or
+            git(root, "rev-parse", "HEAD").decode() != head or
+            git(root, "rev-parse", "HEAD^{tree}").decode() != tree):
+        raise ValueError("AMO_EXACT_HEAD_TREE_REQUIRED")
+    policy = json.loads(git(root, "show", head + ":policy/CANONICAL_UPSTREAM_REMOTE_V1.json"))
+    if policy["canonical_upstream"]["repository"] != "ingolf-lohmann/qik-vrt":
+        raise ValueError("AMO_OWNER_AUTHORITY_REQUIRED")
+    names = ("manifest.json", "background.js", "content.js", "options.html", "options.js", "terminal.css")
+    prefix = "browser/firefox/qikvrt-terminal/"
+    stream = io.BytesIO(); records = []
+    with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
+        for name in names:
+            path = prefix + name; local = root / path
+            if local.is_symlink() or not local.is_file(): raise ValueError("AMO_REGULAR_STANDARD_SOURCE_REQUIRED")
+            # git() strips bytes, so obtain payloads without that convenience wrapper.
+            raw = subprocess.check_output(["git", "-C", str(root), "show", head + ":" + path],
+                timeout=30, stderr=subprocess.DEVNULL)
+            if raw != local.read_bytes(): raise ValueError("AMO_DIRTY_STANDARD_SOURCE_FORBIDDEN")
+            if not 0 < len(raw) <= 1024 * 1024: raise ValueError("AMO_BOUNDED_STANDARD_SOURCE_REQUIRED")
+            info = zipfile.ZipInfo(name, (2000, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED; info.external_attr = 0o100644 << 16
+            archive.writestr(info, raw)
+            records.append({"path": name, "git_blob": hashlib.sha1(
+                b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest(), "sha256": digest(raw)})
+    manifest = json.loads((root / prefix / "manifest.json").read_bytes())
+    gecko = manifest["browser_specific_settings"]["gecko"]
+    if (gecko.get("strict_min_version") != "158.0" or
+            gecko.get("id") != "qikvrt-ai-terminal@goldkelch.local" or
+            not re.fullmatch(r"[A-Za-z0-9_.+-]{1,64}", manifest.get("version", ""))):
+        raise ValueError("AMO_STANDARD_ID_AND_FIREFOX158_MINIMUM_REQUIRED")
+    raw = stream.getvalue()
+    if len(raw) > 1024 * 1024: raise ValueError("AMO_BOUNDED_STANDARD_XPI_REQUIRED")
+    return raw, {"repository": "ingolf-lohmann/qik-vrt", "source_head": head, "source_tree": tree,
+        "extension_id": gecko["id"], "extension_version": manifest["version"],
+        "strict_min_version": "158.0", "source_files": records, "unsigned_xpi_sha256": digest(raw)}
+
+
+def firefox_amo_jwt(issuer, secret):
+    def encode(value): return base64.urlsafe_b64encode(value).rstrip(b"=")
+    now = int(time.time())
+    header = encode(b'{"alg":"HS256","typ":"JWT"}')
+    claims = encode(json.dumps({"iss": issuer, "jti": secrets.token_urlsafe(24),
+        "iat": now, "exp": now + 60}, separators=(",", ":")).encode())
+    message = header + b"." + claims
+    return (message + b"." + encode(hmac.new(secret.encode(), message, hashlib.sha256).digest())).decode()
+
+
+def firefox_amo_transport(url, method, payload, issuer, secret, download=False):
+    """AMO-only JWT; HTTPS download redirects never receive Authorization."""
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *args, **kwargs): return None
+    opener = urllib.request.build_opener(NoRedirect)
+    boundary = "qikvrt-amo-" + secrets.token_hex(16)
+    headers = {"Accept": "application/json"}
+    if method == "PUT":
+        payload = (f'--{boundary}\r\nContent-Disposition: form-data; name="channel"\r\n\r\nunlisted\r\n'
+            f'--{boundary}\r\nContent-Disposition: form-data; name="upload"; filename="standard.xpi"\r\n'
+            'Content-Type: application/x-xpinstall\r\n\r\n').encode() + payload + f'\r\n--{boundary}--\r\n'.encode()
+        headers["Content-Type"] = "multipart/form-data; boundary=" + boundary
+    for redirect in range(4):
+        target = urlsplit(url)
+        if (target.scheme != "https" or target.username or target.password or
+                target.port not in (None, 443) or target.fragment or
+                target.hostname not in {"addons.mozilla.org", "addons.cdn.mozilla.net"}):
+            raise ValueError("AMO_OFFICIAL_HTTPS_ORIGIN_REQUIRED")
+        if not download and (target.hostname != "addons.mozilla.org" or target.query or
+                not target.path.startswith("/api/v4/addons/")):
+            raise ValueError("AMO_FIXED_SIGNING_ENDPOINT_REQUIRED")
+        if redirect == 0:
+            if download and (target.hostname != "addons.mozilla.org" or target.query or
+                    not re.match(r"^/api/v4/(?:downloads/file|file)/[0-9]+/", target.path)):
+                raise ValueError("AMO_BOUND_FILE_ENDPOINT_REQUIRED")
+            headers["Authorization"] = "JWT " + firefox_amo_jwt(issuer, secret)
+        else:
+            headers.pop("Authorization", None)
+        request = urllib.request.Request(url, data=payload if method == "PUT" else None,
+            headers=headers, method=method)
+        try:
+            response = opener.open(request, timeout=30)
+        except urllib.error.HTTPError as exc:
+            response = exc
+        except (OSError, TimeoutError):
+            # Provider error bodies, URLs and credential-bearing objects stay private.
+            raise ValueError("AMO_TRANSPORT_OUTCOME_UNVERIFIED") from None
+        with response:
+            if download and response.code in (301, 302, 303, 307, 308):
+                url = urllib.parse.urljoin(url, response.headers.get("Location", ""))
+                if redirect == 3: raise ValueError("AMO_BOUNDED_DOWNLOAD_REDIRECT_REQUIRED")
+                continue
+            raw = response.read(1024 * 1024 + 1)
+            if len(raw) > 1024 * 1024: raise ValueError("AMO_RESPONSE_CAPACITY_LIMIT")
+            return response.code, raw
+    raise ValueError("AMO_DOWNLOAD_UNVERIFIED")
+
+
+def firefox_amo_unlisted(root, output, head, tree, state_dir, submit=False, previous_state=None):
+    try:
+        return firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit, previous_state)
+    except Exception as exc:
+        cause = str(exc)
+        code = cause.split(":", 1)[0]
+        if code in {"FIREFOX_XPI_SOURCE_BYTES_MISMATCH", "FOREIGN_FIREFOX_XPI_PAYLOAD_FORBIDDEN",
+                "EXACT_STANDARD_FIREFOX_XPI_INVENTORY_REQUIRED", "REGULAR_BOUNDED_FIREFOX_XPI_ENTRY_REQUIRED"}:
+            cause = "AMO_" + code
+        if not re.fullmatch(r"AMO_[A-Z0-9_]+", cause): cause = "AMO_EXTERNAL_OR_SOURCE_GATE_REFUSED"
+        raise ValueError(cause) from None
+
+
+def firefox_amo_unlisted_apply(root, output, head, tree, state_dir, submit=False, previous_state=None):
+    """One source-bound official signing submission, then independent readback.
+
+    No credentials in arguments, journal, output, archive or logs. A pending or
+    ambiguous upload is read back on resume, never submitted again unchanged.
+    """
+    raw, subject = firefox_amo_input(root, head, tree)
+    for path in (output, state_dir):
+        if path is None: raise ValueError("AMO_PRIVATE_OUTPUT_AND_JOURNAL_REQUIRED")
+        path = Path(path)
+        if not path.is_absolute() or Path(root).resolve() in path.resolve().parents:
+            raise ValueError("AMO_OUTSIDE_REPOSITORY_PRIVATE_DIRECTORY_REQUIRED")
+        path.mkdir(mode=0o700, exist_ok=True); private_path(path, directory=True)
+    output, state_dir = Path(output), Path(state_dir)
+    endpoint = "https://addons.mozilla.org/api/v4/addons/" + urllib.parse.quote(
+        subject["extension_id"], safe="") + "/versions/" + urllib.parse.quote(subject["extension_version"], safe="") + "/"
+    result = {"schema": "qikvrt-firefox-amo-unlisted/v1", **subject, "channel": "unlisted",
+        "amo_endpoint": endpoint, "submission_attempted": False, "mozilla_signature_verified": False,
+        "extension_activation_verified": False, "main_integration_verified": False,
+        "public_production_verified": False, "effect_ack_done": False}
+    def finish(state):
+        result["state"] = state
+        destination = output / "AMO_SIGNING_RECEIPT.json"
+        if destination.exists(): private_path(destination)
+        temporary = output / (".amo-receipt-" + secrets.token_hex(16))
+        synced_private_file(temporary, raw_json(result)); os.replace(temporary, destination)
+        sync_directory(output)
+        return result
+    if not submit: return finish("HOLD_AMO_SUBMISSION_NOT_REQUESTED")
+    issuer = os.environ.get("WEB_EXT_API_KEY", "")
+    secret = os.environ.get("WEB_EXT_API_SECRET", "")
+    if not issuer or not secret: return finish("HOLD_AMO_AUTHORIZED_CREDENTIAL_PAIR_UNAVAILABLE")
+    if (not 1 <= len(issuer) <= 256 or not 16 <= len(secret) <= 512 or
+            any(ord(c) < 33 or ord(c) > 126 for c in issuer + secret)):
+        raise ValueError("AMO_BOUNDED_PRIVATE_CREDENTIAL_PAIR_REQUIRED")
+    # Same-owner local lock and fsynced non-secret attempt metadata reuse the
+    # existing private-state primitives. AMO GET is authoritative across runners.
+    lock = state_dir / "amo-attempt.lock"
+    descriptor = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    try:
+        private_path(lock); fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        journal = state_dir / "AMO_ATTEMPT.json"
+        prior = None
+        if previous_state:
+            private_path(Path(previous_state))
+            if Path(previous_state).stat().st_size > 65536: raise ValueError("AMO_BOUNDED_JOURNAL_REQUIRED")
+            prior = json.loads(Path(previous_state).read_bytes())
+        if journal.exists():
+            private_path(journal)
+            if journal.stat().st_size > 65536: raise ValueError("AMO_BOUNDED_JOURNAL_REQUIRED")
+            prior = json.loads(journal.read_bytes())
+        if prior and (prior.get("extension_id") != subject["extension_id"] or
+                prior.get("extension_version") != subject["extension_version"]):
+            raise ValueError("AMO_JOURNAL_SUBJECT_MISMATCH")
+        status, data = firefox_amo_transport(endpoint, "GET", None, issuer, secret)
+        if status == 404:
+            if prior and prior.get("submission_attempted"):
+                return finish("HOLD_AMO_PRIOR_UPLOAD_OUTCOME_UNRESOLVED_NO_RESUBMISSION")
+            result["submission_attempted"] = True
+            # Persist before PUT. Timeout, interruption and 409 never cause retry.
+            synced_private_file(journal, raw_json({**subject, "channel": "unlisted", "submission_attempted": True}))
+            sync_directory(state_dir)
+            status, data = firefox_amo_transport(endpoint, "PUT", raw, issuer, secret)
+            if status not in (201, 202):
+                result["amo_http_status"] = status
+                return finish("HOLD_AMO_UPLOAD_NOT_CONFIRMED_NO_RETRY")
+            result["upload_response_sha256"] = digest(data)
+            status, data = firefox_amo_transport(endpoint, "GET", None, issuer, secret)
+        if status != 200:
+            result["amo_http_status"] = status
+            return finish("HOLD_AMO_STATUS_READBACK_UNAVAILABLE")
+        result["status_response_sha256"] = digest(data)
+        value = json.loads(data)
+        if value.get("guid") != subject["extension_id"] or value.get("version") != subject["extension_version"]:
+            raise ValueError("AMO_RESPONSE_SUBJECT_MISMATCH")
+        if value.get("processed") is True and value.get("valid") is False:
+            return finish("HOLD_AMO_VALIDATION_REJECTED_NO_RESUBMISSION")
+        if value.get("reviewed") is True and value.get("passed_review") is False:
+            return finish("HOLD_AMO_REVIEW_REJECTED_NO_RESUBMISSION")
+        files = value.get("files", [])
+        if (value.get("processed") is not True or value.get("valid") is not True or
+                value.get("reviewed") is not True or value.get("passed_review") is not True or
+                len(files) != 1 or files[0].get("signed") is not True):
+            return finish("PENDING_AMO_REVIEW_OR_SIGNING_READBACK_ONLY")
+        item = files[0]
+        if not re.fullmatch(r"sha256:[a-f0-9]{64}", item.get("hash", "")):
+            raise ValueError("AMO_ORIGINAL_SHA256_REQUIRED")
+        status, signed = firefox_amo_transport(item["download_url"], "GET", None, issuer, secret, download=True)
+        if status != 200: return finish("HOLD_AMO_ORIGINAL_DOWNLOAD_UNAVAILABLE")
+        if digest(signed) != item["hash"][7:]: raise ValueError("AMO_ORIGINAL_SHA256_MISMATCH")
+        artifact = output / "standard-signed.xpi"
+        if artifact.exists():
+            private_path(artifact)
+            if artifact.read_bytes() != signed: raise ValueError("AMO_EXISTING_ORIGINAL_BYTES_MISMATCH")
+        else:
+            synced_private_file(artifact, signed)
+        try:
+            checked = firefox_xpi_source_binding(artifact, Path(root) / "browser/firefox/qikvrt-terminal")
+            if (len(checked["source_files"]) != 6 or not checked["signature_metadata_present"]):
+                raise ValueError("AMO_SIX_STANDARD_COMPONENTS_AND_SIGNATURE_METADATA_REQUIRED")
+        except BaseException:
+            artifact.unlink(); raise
+        result.update(xpi_sha256=digest(signed), xpi_bytes=len(signed), file_name=artifact.name,
+            signed_original_returned=True, amo_api_signed_flag=True, source_component_binding=checked,
+            retry_condition="READ_EXISTING_VERSION_ONLY; NO_REPEAT_UPLOAD")
+        return finish("AMO_ORIGINAL_SIGNED_XPI_SOURCE_BOUND_PENDING_BROWSER_VERIFICATION")
+    finally:
+        os.close(descriptor)
+
+
 def firefox_extension_accepted(value):
     """Require live Gecko acceptance and registration, not a copied XPI."""
     addon = value.get("addon") or {}
@@ -2768,7 +3023,7 @@ def firefox_extension_probe(xpi, output, package="firefox-esr"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=("firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
+    parser.add_argument("operation", choices=("firefox-amo-unlisted", "firefox-release-provision", "firefox-extension-check", "deployment-roles", "runtime-delivery-verify", "runtime-delivery-load", "docker-admit", "pack", "portable", "verify", "monolith-pack", "monolith-verify", "monolith-run", "monolith-checkpoint", "monolith-origin-export", "monolith-transport-export", "monolith-transport-import", "mesh-contract", "mesh-cache-stage", "mesh-cache-idle", "mesh-cache-send", "run", "admit", "supervisor", "run-admitted", "snapshot-state", "restore-state",
         "migration-inventory", "migration-verify-source", "migration-export", "migration-verify-export", "migration-import",
         "migration-verify-import", "migration-rollback", "migration-capture-supervisor", "migration-capture-arm", "migration-capture",
         "provider-inventory", "provider-classify", "provider-plan", "provider-apply", "provider-reconcile", "provider-readback"))
@@ -2778,6 +3033,9 @@ def main():
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-head")
     parser.add_argument("--expected-tree")
+    parser.add_argument("--amo-submit", action="store_true", help="explicitly authorized unlisted upload; secrets only from protected environment")
+    parser.add_argument("--amo-state", type=Path, help="existing outside-repository owner-only non-secret attempt journal")
+    parser.add_argument("--amo-previous-state", type=Path, help="original private attempt journal from the preceding native signing run")
     parser.add_argument("--manifest-sha256")
     parser.add_argument("--image-sha256", help="independently obtained canonical SQLite image pin")
     parser.add_argument("--transport-sha256", help="independently obtained derived QIKMESH1 export pin")
@@ -2823,7 +3081,10 @@ def main():
     parser.add_argument("--provider-receipts", type=Path, help="existing separate owner-only durable receipt directory")
     args = parser.parse_args()
     try:
-        if args.operation == "firefox-release-provision":
+        if args.operation == "firefox-amo-unlisted":
+            result = firefox_amo_unlisted(args.root, args.output, args.expected_head, args.expected_tree,
+                args.amo_state, args.amo_submit, args.amo_previous_state)
+        elif args.operation == "firefox-release-provision":
             if args.output is None: raise ValueError("FIREFOX_RELEASE_PROVISION_RECEIPT_REQUIRED")
             result = firefox_release_provision(args.output)
         elif args.operation == "firefox-extension-check":
